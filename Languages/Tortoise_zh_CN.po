@@ -6,10 +6,10 @@
 #   <lznuaa@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: tortoisegit\n"
+"Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-03 07:01+0000\n"
+"PO-Revision-Date: 2012-05-13 03:03+0000\n"
 "Last-Translator: lznuaa <lznuaa@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -174,6 +174,31 @@ msgstr "已传输 %I64d 字节"
 msgid "%I64d kBytes transferred"
 msgstr "已传输 %I64d KB"
 
+#. Resource IDs: (1256)
+#, c-format
+msgid "%d Parent"
+msgstr "第%d父节点"
+
+#. Resource IDs: (75)
+#, c-format
+msgid "%d commits ahead \"%s\""
+msgstr "%d 提交先于 \"%s\""
+
+#. Resource IDs: (1256)
+#, c-format
+msgid "%d files changed"
+msgstr "%d个文件修改"
+
+#. Resource IDs: (65)
+#, c-format
+msgid "%d files removed."
+msgstr "%d个文件删除."
+
+#. Resource IDs: (69)
+#, c-format
+msgid "%d files reverted to %s."
+msgstr "%d个文件回滚到 %s."
+
 #. Resource IDs: (169)
 #, c-format
 msgid "%d files selected, %d files total"
@@ -184,6 +209,14 @@ msgstr "选择了 %d 个文件，共有 %d 个文件"
 msgid "%d most active author(s) with at least %d commits each (%d %%)"
 msgstr "%d 个最活跃的作者各自至少提交 %d 次 (%d %%)"
 
+#. Resource IDs: (8)
+#, c-format
+msgid ""
+"%i%% alpha\n"
+"click to toggle alpha\n"
+"double click to automatically toggle alpha"
+msgstr "%i%% alpha\n单击以切换 alpha\n双击以自动切换 alpha"
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%ld Bytes/s"
@@ -193,6 +226,11 @@ msgstr "%ld Bytes/s"
 #, c-format
 msgid "%ld minute(s) and %ld second(s)"
 msgstr "%ld 分 %ld 秒"
+
+#. Resource IDs: (7)
+#, c-format
+msgid "%ld of %ld"
+msgstr "%ld / %ld"
 
 #. Resource IDs: (563)
 #, c-format
@@ -284,6 +322,10 @@ msgid "&3 way merge"
 msgstr "3路合并(&3)"
 
 #. Resource IDs: (57664)
+msgid "&About TortoiseGitBlame..."
+msgstr "关于TortoiseGitBlame(A)..."
+
+#. Resource IDs: (57664)
 msgid "&About TortoiseMerge..."
 msgstr "关于 TortoiseMerge(&A)"
 
@@ -303,6 +345,10 @@ msgstr "增加(&A) >>"
 msgid "&Add New/Save"
 msgstr "添加/保存(&A)"
 
+#. Resource IDs: (68)
+msgid "&Add it"
+msgstr "添加(&A)"
+
 #. Resource IDs: (1064)
 msgid "&Add or Remove Buttons"
 msgstr "增加或删除按钮(&A)"
@@ -314,6 +360,10 @@ msgstr "增加(&A)..."
 #. Resource IDs: (1090, 1093)
 msgid "&Advanced..."
 msgstr "高级设置(&A)..."
+
+#. Resource IDs: (3936)
+msgid "&All Branches"
+msgstr "全部分支(&A)"
 
 #. Resource IDs: (65535)
 msgid "&Application Look"
@@ -427,7 +477,11 @@ msgstr "选择命令(&C):"
 msgid "&Clean up..."
 msgstr "清理(&C)"
 
-#. Resource IDs: (58112)
+#. Resource IDs: (57632)
+msgid "&Clear"
+msgstr "清除(&C)"
+
+#. Resource IDs: (1, 58112)
 msgid "&Close"
 msgstr "关闭(&C)"
 
@@ -441,6 +495,10 @@ msgstr "命令(&C):"
 
 #. Resource IDs: (1625)
 msgid "&Commit"
+msgstr "提交(&C)"
+
+#. Resource IDs: (68)
+msgid "&Commit w/o"
 msgstr "提交(&C)"
 
 #. Resource IDs: (8)
@@ -467,7 +525,11 @@ msgstr "复制(&C)"
 msgid "&Copy Button Image"
 msgstr "复制按钮图片(&C)"
 
-#. Resource IDs: (1097)
+#. Resource IDs: (57634)
+msgid "&Copy\tCtrl+C"
+msgstr "复制(&C)\tCtrl+C"
+
+#. Resource IDs: (1662)
 msgid "&Custom"
 msgstr "定制(&C)"
 
@@ -483,6 +545,10 @@ msgstr "删除(&D)"
 msgid "&Delete (keep local)"
 msgstr "删除(保留本地副本，&D)"
 
+#. Resource IDs: (70)
+msgid "&Delete remote && local"
+msgstr "删除远程和本地(&D)"
+
 #. Resource IDs: (12)
 msgid "&Diff"
 msgstr "比较差异(&D)"
@@ -494,6 +560,10 @@ msgstr "与前一版本比较(&D)"
 #. Resource IDs: (65535)
 msgid "&Directory:"
 msgstr "目录(&D)"
+
+#. Resource IDs: (71)
+msgid "&Discard"
+msgstr "放弃(&D)"
 
 #. Resource IDs: (1066)
 msgid "&Docking"
@@ -507,6 +577,10 @@ msgstr "向下(&D)"
 msgid "&Edit"
 msgstr "编辑(&E)"
 
+#. Resource IDs: (84)
+msgid "&Edit .git/config"
+msgstr "编辑(&E) .git/config"
+
 #. Resource IDs: (1559)
 msgid "&Edit ALL"
 msgstr "编辑全部(&E)"
@@ -515,7 +589,7 @@ msgstr "编辑全部(&E)"
 msgid "&Edit conflicts"
 msgstr "编辑冲突(&E)"
 
-#. Resource IDs: (1099, 1282, 16510)
+#. Resource IDs: (1099, 16510)
 msgid "&Edit..."
 msgstr "编辑(&E)..."
 
@@ -535,7 +609,7 @@ msgstr "使用代理服务器(&E)"
 msgid "&Export selection to..."
 msgstr "导出选择项(&E)..."
 
-#. Resource IDs: (1092, 1094, 1095)
+#. Resource IDs: (1092, 1095)
 msgid "&External"
 msgstr "外部(&E)"
 
@@ -543,9 +617,17 @@ msgstr "外部(&E)"
 msgid "&File"
 msgstr "文件(&F)"
 
-#. Resource IDs: (1)
+#. Resource IDs: (57636)
 msgid "&Find"
 msgstr "查找(&F)"
+
+#. Resource IDs: (57636)
+msgid "&Find\tCtrl+F"
+msgstr "查找(&F)\tCtrl+F"
+
+#. Resource IDs: (32778)
+msgid "&Fit images in window"
+msgstr "缩放图像以适应窗口(&F)"
 
 #. Resource IDs: (1050)
 msgid "&Fixed drives"
@@ -554,6 +636,10 @@ msgstr "本地硬盘(&F)"
 #. Resource IDs: (1065)
 msgid "&Floating"
 msgstr "浮动(&F)"
+
+#. Resource IDs: (32782)
+msgid "&Follow renames"
+msgstr "跟踪重命名(&F)"
 
 #. Resource IDs: (65535)
 msgid "&Font for log messages:"
@@ -579,7 +665,7 @@ msgstr "强制变基(rebase)(&F)"
 msgid "&From"
 msgstr "从(&F)"
 
-#. Resource IDs: (501, 65535)
+#. Resource IDs: (501)
 msgid "&From URL:"
 msgstr "从 URL(&F): "
 
@@ -590,6 +676,10 @@ msgstr "从工作副本 URL(&F): "
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "Git风格提交(--rmdir)(&G)"
+
+#. Resource IDs: (220)
+msgid "&Go to\tCtrl+G"
+msgstr "跳转(&G)\tCtrl+G"
 
 #. Resource IDs: (65535)
 msgid "&Green:"
@@ -619,6 +709,10 @@ msgstr "隐藏 (&H)"
 msgid "&Icon Set:"
 msgstr "图标集(&I): "
 
+#. Resource IDs: (72)
+msgid "&Ignore"
+msgstr "忽略(&I)"
+
 #. Resource IDs: (15)
 #, c-format
 msgid "&Ignore %d items by name"
@@ -631,6 +725,10 @@ msgstr "忽略空白字符的变化(&I)"
 #. Resource IDs: (16914)
 msgid "&Image"
 msgstr "图片(&I)"
+
+#. Resource IDs: (32790)
+msgid "&Image info"
+msgstr "图片信息(&I)"
 
 #. Resource IDs: (16505)
 msgid "&Image only"
@@ -656,6 +754,10 @@ msgstr "加载时跳转到第一个差异处(&J)"
 msgid "&Keep CR"
 msgstr "保持换行符(&K)"
 
+#. Resource IDs: (68)
+msgid "&Keep current state"
+msgstr "保持当前状态(&K)"
+
 #. Resource IDs: (65535)
 msgid "&Language:"
 msgstr "语言(&L)"
@@ -671,6 +773,10 @@ msgstr "下载后运行变基(&L)"
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
 msgstr "仅在已修改的行中搜索(&L)"
+
+#. Resource IDs: (32797)
+msgid "&Link image positions"
+msgstr "链接图片位置(&L)"
 
 #. Resource IDs: (1172)
 msgid "&List View"
@@ -736,11 +842,11 @@ msgstr "网络磁盘(&N)"
 msgid "&New "
 msgstr "新建(&N)"
 
-#. Resource IDs: (1310, 16509, 16615)
+#. Resource IDs: (16509, 16615)
 msgid "&New..."
 msgstr "新建(&N)..."
 
-#. Resource IDs: (115, 1208)
+#. Resource IDs: (115)
 #, c-format
 msgid "&Next %ld"
 msgstr "下 %ld (&N)"
@@ -777,9 +883,21 @@ msgstr "单页(&O)"
 msgid "&Open"
 msgstr "打开(&O)"
 
+#. Resource IDs: (84)
+msgid "&Open msysGit WebSite"
+msgstr "打开msysgit网站(&O)"
+
+#. Resource IDs: (57601)
+msgid "&Open...\tCtrl+O"
+msgstr "打开(&O)...\tCtrl+O"
+
 #. Resource IDs: (1382)
 msgid "&Options"
 msgstr "选项(&O)"
+
+#. Resource IDs: (32772)
+msgid "&Overlay images"
+msgstr "叠加图像(&O)"
 
 #. Resource IDs: (1411, 65535)
 msgid "&Password:"
@@ -809,9 +927,17 @@ msgstr "打印预览(&P)"
 msgid "&Print..."
 msgstr "打印(&P)..."
 
+#. Resource IDs: (76)
+msgid "&Pull"
+msgstr "拉取(&P)"
+
 #. Resource IDs: (1481)
 msgid "&Push all branches"
 msgstr "推送所有分支(&P)"
+
+#. Resource IDs: (72)
+msgid "&ReCommit"
+msgstr "继续提交(&R)"
 
 #. Resource IDs: (1246)
 msgid "&Recent messages"
@@ -837,7 +963,7 @@ msgstr "远端分支(&R)"
 msgid "&Remote:"
 msgstr "远端(&R)"
 
-#. Resource IDs: (1100, 1285, 16646)
+#. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "删除(&R)"
 
@@ -857,6 +983,18 @@ msgstr "重置我的使用信息(&R)"
 msgid "&Reset to Default"
 msgstr "恢复到默认值(&R)"
 
+#. Resource IDs: (66)
+msgid "&Resolved"
+msgstr "解决冲突(&R)"
+
+#. Resource IDs: (69)
+msgid "&Restore"
+msgstr "恢复(&R)"
+
+#. Resource IDs: (68)
+msgid "&Restore old state"
+msgstr "恢复到老状态(&R)"
+
 #. Resource IDs: (1252)
 msgid "&Revert change by this commit"
 msgstr "还原这个版本的改动(&R)"
@@ -873,7 +1011,7 @@ msgstr "SSH 客户端(&S): "
 msgid "&Sat:"
 msgstr "星期六(&S):"
 
-#. Resource IDs: (16921, 57603)
+#. Resource IDs: (57603)
 msgid "&Save"
 msgstr "保存(&S)"
 
@@ -881,7 +1019,7 @@ msgstr "保存(&S)"
 msgid "&Save authentication"
 msgstr "保存认证(&S)"
 
-#. Resource IDs: (272, 32771, 32806)
+#. Resource IDs: (272, 32806)
 msgid "&Save graph as..."
 msgstr "图片另存为(&S)..."
 
@@ -889,9 +1027,17 @@ msgstr "图片另存为(&S)..."
 msgid "&Save list of selected files to..."
 msgstr "保存选择文件列表(&S)"
 
+#. Resource IDs: (84)
+msgid "&Set MSysGit path"
+msgstr "设置MSysGit路径"
+
 #. Resource IDs: (9)
 msgid "&Settings"
 msgstr "设置(&S)"
+
+#. Resource IDs: (32783)
+msgid "&Settings..."
+msgstr "设置(&S)..."
 
 #. Resource IDs: (65535)
 msgid "&Show Menus for:"
@@ -912,6 +1058,10 @@ msgstr "&Signing key ID:"
 #. Resource IDs: (32851)
 msgid "&Silver Style"
 msgstr "银色风格(&S)"
+
+#. Resource IDs: (66)
+msgid "&Skip"
+msgstr "跳过(&S)"
 
 #. Resource IDs: (1185)
 msgid "&Specific revision in repository"
@@ -953,7 +1103,7 @@ msgstr "Tab 宽度:(&T)"
 msgid "&Tabbed Document"
 msgstr "标签显示文档(&T)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1513)
 msgid "&Tags"
 msgstr "标签(&T)"
 
@@ -969,7 +1119,7 @@ msgstr "仅文本(&T)"
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr "停止自动完成分析的超时时间(秒)(&T)"
 
-#. Resource IDs: (1384, 65535)
+#. Resource IDs: (1384)
 msgid "&To URL:"
 msgstr "至URL(&T): "
 
@@ -982,6 +1132,10 @@ msgid "&Toolbar Name:"
 msgstr "工具栏名称(&T):"
 
 #. Resource IDs: (65535)
+msgid "&Toolbars and Docking Windows"
+msgstr "工具栏和停靠窗口"
+
+#. Resource IDs: (65535)
 msgid "&Toolbars:"
 msgstr "工具栏(&T):"
 
@@ -989,11 +1143,11 @@ msgstr "工具栏(&T):"
 msgid "&TortoiseGit"
 msgstr "&TortoiseGit"
 
-#. Resource IDs: (1091, 1093, 1094)
+#. Resource IDs: (1091, 1094)
 msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1605)
 msgid "&Trunk"
 msgstr "主干(&T)"
 
@@ -1065,7 +1219,7 @@ msgstr "空白字符"
 msgid "&Whole Project"
 msgstr "整个工程(&W)"
 
-#. Resource IDs: (20085)
+#. Resource IDs: (1066, 20085)
 msgid "&Whole word"
 msgstr "全字匹配(&W)"
 
@@ -1146,7 +1300,8 @@ msgid ""
 msgstr "-------------------------------------------------------------------------------------------"
 
 #. Resource IDs: (1002, 1003, 1021, 1022, 1035, 1036, 1089, 1104, 1187, 1324,
-#. 1333, 1362, 1474)
+#. 1333, 1382, 1383, 1384, 1474, 1483, 1484, 1541, 1542, 1551, 1583, 1584,
+#. 1664, 1672)
 msgid "..."
 msgstr "..."
 
@@ -1175,6 +1330,10 @@ msgstr "< 后退(&B)"
 msgid "<.....>"
 msgstr "<.....>"
 
+#. Resource IDs: (65)
+msgid "<Auto Generated by Git>"
+msgstr "<Auto Generated by Git>"
+
 #. Resource IDs: (1069)
 msgid "<Separator>"
 msgstr "<分隔符>"
@@ -1192,6 +1351,69 @@ msgid ""
 "And <u>read the manual!</u>"
 msgstr "TortoiseGit 是一个 Windows 外壳扩展，\\n这意味着该程序是集成在 Windows 资源管理器中的。\\n要使用 TortoiseGit 请打开资源管理器并在任意目录中单击鼠标右键，\\n在弹出的右键菜单中可以找到所有的 TortoiseGit 命令。\\n更详细的使用请阅读手册！"
 
+#. Resource IDs: (84)
+msgid ""
+"<b>Warning:</b> It has not been checked if these branches have been fully "
+"merged into HEAD."
+msgstr "<b>警告:</b> 没有被检查如果这些分支已经合并到HEAD."
+
+#. Resource IDs: (84)
+msgid "<b>Warning:</b> This action will remove the branches on the remote."
+msgstr "<b>警告:</b> 这个操作将删除所有远程服务器上的分支"
+
+#. Resource IDs: (84)
+msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
+msgstr "<b>警告:</b> 这个分支没有被完全合并到HEAD."
+
+#. Resource IDs: (68)
+msgid ""
+"<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
+"Do you want create branch now?"
+msgstr "<ct=0x0000FF>当前HEAD已经剥离</ct>, 你将工作在 (no branch).\n是否你想创建新的分支?"
+
+#. Resource IDs: (70)
+msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
+msgstr "<ct=0x0000FF>是否你想删除 <b>全部</b> 储藏(stash)?</ct>"
+
+#. Resource IDs: (72)
+msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
+msgstr "<ct=0x0000FF>应用储藏(stash)失败!!!</ct>"
+
+#. Resource IDs: (85)
+msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
+msgstr "<ct=0x0000FF>弹出储藏(stash)失败!!!</ct>"
+
+#. Resource IDs: (72)
+msgid "<ct=0x0000FF>Stash failed!!!</ct>"
+msgstr "<ct=0x0000FF>储藏(stash)失败!!!</ct>"
+
+#. Resource IDs: (66)
+msgid ""
+"<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
+"\n"
+"Do you want to"
+msgstr "<ct=0x0000FF>先前变基目录rebase-apply仍然存在，但是提供mbox</ct>\n\n是否你想"
+
+#. Resource IDs: (85)
+msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
+msgstr "<ct=0x0000ff>应用储藏(stash)失败, 有冲突存在</ct>"
+
+#. Resource IDs: (85)
+msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
+msgstr "<ct=0x0000ff>弹出储藏(stash)失败, 有冲突存在</ct>"
+
+#. Resource IDs: (84)
+msgid "<ct=0xff0000>Stash Apply successful</ct>"
+msgstr "<ct=0xff0000>应用储藏(stash)成功</ct>"
+
+#. Resource IDs: (84)
+msgid "<ct=0xff0000>Stash POP successful</ct>"
+msgstr "<ct=0xff0000>弹出储藏(stash)成功</ct>"
+
+#. Resource IDs: (72)
+msgid "<ct=0xff0000>Stash Success</ct>"
+msgstr "<ct=0xff0000>储藏(stash)成功</ct>"
+
 #. Resource IDs: (16603)
 msgid "<descr>"
 msgstr "<描述>"
@@ -1200,13 +1422,13 @@ msgstr "<描述>"
 msgid "<new changelist>"
 msgstr "(新修改列表)"
 
-#. Resource IDs: (579)
-msgid "A list of user defined properties for files to show in the combo box"
-msgstr "在组合框中显示的用户定义的文件属性列表"
+#. Resource IDs: (59392)
+msgid "<placeholder>"
+msgstr "<placeholder>"
 
-#. Resource IDs: (579)
-msgid "A list of user defined properties for folders to show in the combo box"
-msgstr "在组合框中显示的用户定义的目录属性列表"
+#. Resource IDs: (32814)
+msgid "?"
+msgstr "?"
 
 #. Resource IDs: (201)
 msgid ""
@@ -1245,6 +1467,10 @@ msgid ""
 "If you don't have one use NotePad."
 msgstr "用来查看 GNU 差异文件(补丁文件)的程序。\r\n如果没有，可以使用记事本。"
 
+#. Resource IDs: (66)
+msgid "A&bort"
+msgstr "关于(&A)"
+
 #. Resource IDs: (9)
 msgid "A&bout"
 msgstr "关于(&B)"
@@ -1265,6 +1491,10 @@ msgstr "取消合并(&M)"
 msgid "About TortoiseGit"
 msgstr "关于TortoiseGit"
 
+#. Resource IDs: (100)
+msgid "About TortoiseGitBlame"
+msgstr "关于TortoiseGitBlame"
+
 #. Resource IDs: (136)
 msgid "About TortoiseMerge"
 msgstr "关于 TortoiseMerge"
@@ -1282,7 +1512,7 @@ msgstr "总是接受"
 msgid "Access to %1 was denied."
 msgstr "存取 %1 被拒绝。"
 
-#. Resource IDs: (77, 319)
+#. Resource IDs: (77, 319, 604)
 msgid "Action"
 msgstr "操作"
 
@@ -1309,7 +1539,7 @@ msgid ""
 "Discard all changes to %1?"
 msgstr "当窗口存在时不能保存 ActiveX 对象!\n丢弃对 %1 的全部修改?"
 
-#. Resource IDs: (155, 209, 229)
+#. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
 msgstr "加入"
 
@@ -1350,7 +1580,7 @@ msgstr "增加到忽略列表(&I)"
 msgid "Add to Quick Access Toolbar"
 msgstr "增加到快速访问工具栏"
 
-#. Resource IDs: (209, 1279)
+#. Resource IDs: (209)
 msgid "Add..."
 msgstr "增加..."
 
@@ -1358,7 +1588,7 @@ msgstr "增加..."
 msgid "Add/Edit Extension Specific Diff/Merge Program"
 msgstr "增加/编辑针对扩展名的差异比较/合并工具"
 
-#. Resource IDs: (73, 264, 65535)
+#. Resource IDs: (73, 264)
 msgid "Added"
 msgstr "已增加"
 
@@ -1390,10 +1620,6 @@ msgstr "将选定的文件类型\n%s\n增加到忽略列表。"
 msgid "Adding"
 msgstr "正在增加"
 
-#. Resource IDs: (582)
-msgid "Adds a new property"
-msgstr "增加新属性"
-
 #. Resource IDs: (9)
 msgid "Adds file(s) to Git control"
 msgstr "添加文件到Git版本控制"
@@ -1424,10 +1650,6 @@ msgstr "高级差异比较设置"
 msgid "Advanced merge settings"
 msgstr "高级合并设置"
 
-#. Resource IDs: (3936)
-msgid "All Branches"
-msgstr "全部分支"
-
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "所有命令"
@@ -1439,6 +1661,10 @@ msgstr "所有文件 (*.*)"
 #. Resource IDs: (157)
 msgid "All Files (*.*)|*.*||"
 msgstr "所有文件 (*.*)|*.*||"
+
+#. Resource IDs: (1256)
+msgid "All Parents"
+msgstr "全部分支"
 
 #. Resource IDs: (1008)
 msgid ""
@@ -1464,9 +1690,17 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "将要丢弃你的全部修改! 你真的要重置工具栏“%s”吗?"
 
+#. Resource IDs: (66)
+msgid "Already up to date."
+msgstr "已经最新"
+
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
 msgstr "始终使用系统区域设置显示时间和日期"
+
+#. Resource IDs: (67)
+msgid "Amend"
+msgstr "修改"
 
 #. Resource IDs: (80)
 msgid ""
@@ -1520,12 +1754,6 @@ msgstr "在第 %d 行发现不明型态数据！"
 msgid "Application Frame Menus: "
 msgstr "应用程序框架菜单:"
 
-#. Resource IDs: (581)
-msgid ""
-"Applies the properties recursively to all files/folders.\r\n"
-"bugtraq:, tsvn: and webviewer: properties are only applied to folders."
-msgstr "递归式将属性加到所有文件/目录上。\r\nbugtraq:、tsvn: 和 webviewer: 属性只用于目录。"
-
 #. Resource IDs: (20)
 msgid "Apply Patch Serial..."
 msgstr "应用补丁序列"
@@ -1546,6 +1774,10 @@ msgstr "从邮箱应用补丁序列"
 msgid "Apply unified diff"
 msgstr "应用标准差异文件"
 
+#. Resource IDs: (65535)
+msgid "Arabic"
+msgstr "阿拉伯语"
+
 #. Resource IDs: (1492)
 msgid "Arbitary &URL:"
 msgstr "其他&URL"
@@ -1553,6 +1785,10 @@ msgstr "其他&URL"
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "其他&URL"
+
+#. Resource IDs: (68)
+msgid "Are you sure you want to abort the rebase process?"
+msgstr "你真的想放弃变基过程吗？"
 
 #. Resource IDs: (145)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -1564,6 +1800,10 @@ msgid ""
 "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
 " since the last update!"
 msgstr "是否确定要复原 %d 个项目? 从上次更新之后的<b>所有</b>变更都会消失！"
+
+#. Resource IDs: (32793)
+msgid "Arrange &vertical"
+msgstr "垂直排列(&V)"
 
 #. Resource IDs: (199)
 msgid "Ask user"
@@ -1582,6 +1822,10 @@ msgstr "分配到:"
 #, c-format
 msgid "At revision: %d"
 msgstr "于版本: %d"
+
+#. Resource IDs: (84)
+msgid "At the moment, you can only rename branches."
+msgstr "这时你仅仅能重命名分支。"
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -1635,6 +1879,12 @@ msgstr "作者区分大小写"
 #. Resource IDs: (65535)
 msgid "Authors:"
 msgstr "作者: "
+
+#. Resource IDs: (65535)
+msgid ""
+"Authors:\tFrank Li (lznuaa@gmail.com),\n"
+"\t\tSven Strickroth (email@cs-ware.de)"
+msgstr "作者:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (65535)
 msgid "Auto CrLf convert"
@@ -1714,6 +1964,10 @@ msgstr "浏览(&B)"
 msgid "Back"
 msgstr "后退"
 
+#. Resource IDs: (65535)
+msgid "Baltic"
+msgstr "Baltic"
+
 #. Resource IDs: (246)
 msgid "Bar Graph"
 msgstr "柱状图"
@@ -1725,6 +1979,20 @@ msgstr "基于"
 #. Resource IDs: (65535)
 msgid "Base file:"
 msgstr "基础文件:"
+
+#. Resource IDs: (1005)
+msgid "Based on TortoiseIDiff of TortoiseSVN"
+msgstr "基于TortoiseSVN的TortoiseIDiff "
+
+#. Resource IDs: (69)
+msgid ""
+"Be warned that email clients tend to automatic wrap lines.\r\n"
+"Recommendation: Use attachments."
+msgstr "一般电子邮件客户端往往自动换行。\n建议：使用附件"
+
+#. Resource IDs: (5060)
+msgid "Big5 (Traditional)"
+msgstr "Big5 (繁体)"
 
 #. Resource IDs: (11)
 msgid "Bisect bad"
@@ -1748,6 +2016,10 @@ msgid ""
 "a bitmap"
 msgstr "位图\n一种位图"
 
+#. Resource IDs: (65535)
+msgid "BlAMEPOPUP"
+msgstr "追溯弹出菜单"
+
 #. Resource IDs: (114, 162)
 msgid "Blame"
 msgstr "追溯"
@@ -1756,9 +2028,21 @@ msgstr "追溯"
 msgid "Blame - TortoiseGit"
 msgstr "追溯 - TortoiseGit"
 
+#. Resource IDs: (1)
+msgid "Blame error"
+msgstr "追溯错误"
+
+#. Resource IDs: (32776)
+msgid "Blame previous revision"
+msgstr "追溯以前的版本"
+
 #. Resource IDs: (13)
 msgid "Blames each line of a file on an author"
 msgstr "列出文件每一行的作者"
+
+#. Resource IDs: (32812)
+msgid "Blend alpha"
+msgstr "Alpha 混和"
 
 #. Resource IDs: (83)
 msgid ""
@@ -1774,7 +2058,7 @@ msgstr "浏览(&o)"
 msgid "Branc&h"
 msgstr "分支(&h)"
 
-#. Resource IDs: (1500, 1512)
+#. Resource IDs: (1500, 1512, 1579, 1586)
 msgid "Branch"
 msgstr "分支"
 
@@ -1805,6 +2089,10 @@ msgstr "成功创建分支/标签"
 msgid "Branch:"
 msgstr "分支："
 
+#. Resource IDs: (68)
+msgid "Branchname"
+msgstr "分支名字"
+
 #. Resource IDs: (1383)
 msgid "Bro&wse"
 msgstr "浏览(&w)"
@@ -1822,8 +2110,8 @@ msgid "Browse reference"
 msgstr "浏览引用"
 
 #. Resource IDs: (322)
-msgid "Browse refs"
-msgstr "浏览引用"
+msgid "Browse references"
+msgstr "浏览参考"
 
 #. Resource IDs: (1069)
 msgid "Browse..."
@@ -1845,6 +2133,10 @@ msgstr "问题ID"
 msgid "Bug-IDs"
 msgstr "Bug-ID"
 
+#. Resource IDs: (1269)
+msgid "Build"
+msgstr "Build"
+
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "按钮外观"
@@ -1857,7 +2149,7 @@ msgstr "Button1"
 msgid "Button3"
 msgstr "Button3"
 
-#. Resource IDs: (1215)
+#. Resource IDs: (1215, 1216)
 msgid "C&heck now"
 msgstr "立即检查(&H)"
 
@@ -1942,6 +2234,17 @@ msgstr "取消"
 msgid "Cancelling TortoiseGit Blame..."
 msgstr "取消TortoiseGit追溯"
 
+#. Resource IDs: (70)
+msgid ""
+"Cannot combine commits now.\r\n"
+"Make sure you are viewing the log of your current branch and no filters are applied."
+msgstr "不能合并提交。\n确定你查看当前分支并且没有使用过滤器"
+
+#. Resource IDs: (1)
+#, c-format
+msgid "Cannot show blame. \"%s\" is not under version control by git."
+msgstr "不能显示追溯. \"%s\" 没有被git管理"
+
 #. Resource IDs: (68)
 msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr "由于文件中采用了不同的换行方式，不能显示其差异。"
@@ -1957,6 +2260,14 @@ msgstr "右键菜单"
 #. Resource IDs: (65535)
 msgid "Cate&gories:"
 msgstr "分类(&G):"
+
+#. Resource IDs: (65535)
+msgid "Celtic"
+msgstr "凯尔特语"
+
+#. Resource IDs: (65535)
+msgid "Central European"
+msgstr "中欧"
 
 #. Resource IDs: (82)
 msgid "Certificate expired or not yet valid"
@@ -1975,6 +2286,18 @@ msgstr "凭证尚未生效。起始日期: %s"
 #. Resource IDs: (157)
 msgid "Certificates|*.p12;*.pkcs12;*.pfx|All|*.*||"
 msgstr "凭证|*.p12;*.pkcs12|所有文件|*.*||"
+
+#. Resource IDs: (3601)
+msgid ""
+"Change the printer and printing options\n"
+"Print Setup"
+msgstr "更改打印机和打印选项\n打印设置"
+
+#. Resource IDs: (3601)
+msgid ""
+"Change the printing options\n"
+"Page Setup"
+msgstr "更改打印选项\n打印设置"
 
 #. Resource IDs: (3825)
 msgid "Change the window position"
@@ -2057,7 +2380,7 @@ msgstr "选中可在日志信息中使用较简短的日期及时间"
 msgid "Checking if a newer version of TortoiseGit is available..."
 msgstr "正在检查是否有更新版本的 TortoiseGit..."
 
-#. Resource IDs: (133, 65535)
+#. Resource IDs: (77)
 msgid "Checkout"
 msgstr "检出"
 
@@ -2065,6 +2388,14 @@ msgstr "检出"
 #, c-format
 msgid "Checkout from %s, revision %s, %s, %s"
 msgstr "正在从 %s 检出，版本 %s，%s，%s"
+
+#. Resource IDs: (67)
+msgid "Cherry Pick"
+msgstr "摘取"
+
+#. Resource IDs: (70)
+msgid "Cherry Pick failed"
+msgstr "摘取失败"
 
 #. Resource IDs: (1257)
 msgid "Cherry Pick selected commits..."
@@ -2077,6 +2408,10 @@ msgstr "摘取这个版本"
 #. Resource IDs: (20)
 msgid "Cherry Pick..."
 msgstr "摘取..."
+
+#. Resource IDs: (65535)
+msgid "Chinese"
+msgstr "中文"
 
 #. Resource IDs: (602)
 msgid "Choose Repository"
@@ -2127,6 +2462,10 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "清理以下路径成功: \n%s"
+
+#. Resource IDs: (76)
+msgid "Cleanup stale remote banches"
+msgstr "清理过时的远程分支"
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -2198,7 +2537,7 @@ msgstr "点击“高级设置”可根据不同扩展名指定不同合并程序
 msgid "Clipboard"
 msgstr "剪贴板"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1572)
 msgid "Clone Existing Repository"
 msgstr "克隆存在的版本库"
 
@@ -2231,6 +2570,18 @@ msgstr "关闭打印预览\n关闭(&C)"
 #. Resource IDs: (222)
 msgid "Close manually"
 msgstr "手动关闭"
+
+#. Resource IDs: (3841)
+msgid ""
+"Close print preview mode\n"
+"Cancel Preview"
+msgstr "关闭打印预览模式\n取消预览"
+
+#. Resource IDs: (3601)
+msgid ""
+"Close the active document\n"
+"Close"
+msgstr "关闭当前文档\n关闭"
 
 #. Resource IDs: (3825)
 msgid "Close the active window and prompts to save the documents"
@@ -2286,7 +2637,7 @@ msgstr "命令失败。"
 msgid "Commands"
 msgstr "命令"
 
-#. Resource IDs: (135, 229, 1083)
+#. Resource IDs: (77, 229)
 msgid "Commit"
 msgstr "提交"
 
@@ -2301,6 +2652,14 @@ msgstr "提交者邮件"
 #. Resource IDs: (603)
 msgid "Commit Finish"
 msgstr "完成提交"
+
+#. Resource IDs: (1260)
+msgid "Commit Info"
+msgstr "提交信息"
+
+#. Resource IDs: (66)
+msgid "Commit Message"
+msgstr "提交信息"
 
 #. Resource IDs: (1255)
 msgid "Commit Name"
@@ -2350,6 +2709,10 @@ msgstr "与工作基础版本比较并追溯(&B)"
 #. Resource IDs: (114)
 msgid "Compare and blame with previous revision"
 msgstr "与前一版本比较并追溯"
+
+#. Resource IDs: (79)
+msgid "Compare selected refs"
+msgstr "比较选定的引用"
 
 #. Resource IDs: (64)
 msgid "Compare two files"
@@ -2416,11 +2779,15 @@ msgstr "设置查看 GNU 差异文件（补丁文件）的程序"
 msgid "Conflict"
 msgstr "冲突"
 
+#. Resource IDs: (67)
+msgid "Conflict Files"
+msgstr "冲突文件"
+
 #. Resource IDs: (65535)
 msgid "Conflict resolved"
 msgstr "冲突已经解决"
 
-#. Resource IDs: (263, 65535)
+#. Resource IDs: (263)
 msgid "Conflicted"
 msgstr "冲突"
 
@@ -2457,7 +2824,7 @@ msgstr "复制自路径"
 msgid "Copied remotely"
 msgstr "远程复制完成"
 
-#. Resource IDs: (16991)
+#. Resource IDs: (78)
 msgid "Copy"
 msgstr "复制"
 
@@ -2506,6 +2873,14 @@ msgstr "复制和改名"
 msgid "Copy from path"
 msgstr "从路径复制"
 
+#. Resource IDs: (32778)
+msgid "Copy hash to clipboard"
+msgstr "复杂哈希值到剪贴板"
+
+#. Resource IDs: (32777)
+msgid "Copy log to clipboard"
+msgstr "复杂日志到剪贴板"
+
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
 msgstr "将路径复制到剪贴板"
@@ -2537,6 +2912,10 @@ msgstr "正在复制 %s"
 #. Resource IDs: (80)
 msgid "Copying..."
 msgstr "正在复制..."
+
+#. Resource IDs: (1001)
+msgid "Copyright (C) 2009-2011 TortoiseGit"
+msgstr "版权 (C) 2009-2011 TortoiseGit"
 
 #. Resource IDs: (188)
 msgid "Corrections"
@@ -2623,6 +3002,18 @@ msgstr "%1 是当前目录，无法删除。"
 #, c-format
 msgid "Could not remove %s from the ignore list"
 msgstr "无法从忽略列表删除 %s！"
+
+#. Resource IDs: (70)
+msgid "Could not reset to first commit (first step). Aborting..."
+msgstr "不能重置到第一个提交(第一步)。放弃..."
+
+#. Resource IDs: (70)
+msgid "Could not reset to last commit (second step). Aborting..."
+msgstr "不能重置到最后一个提交(第二步)。放弃..."
+
+#. Resource IDs: (70)
+msgid "Could not reset to original HEAD."
+msgstr "不能重置到原来的HEAD。"
 
 #. Resource IDs: (81)
 #, c-format
@@ -2719,6 +3110,12 @@ msgstr "在这个版本上创建标签"
 msgid "Create Tag..."
 msgstr "创建标签"
 
+#. Resource IDs: (3601)
+msgid ""
+"Create a new document\n"
+"New"
+msgstr "创建一个新文档\n新建"
+
 #. Resource IDs: (604)
 msgid ""
 "Create a shallow clone with a history truncated to the specified number of "
@@ -2739,6 +3136,10 @@ msgid ""
 "%s"
 msgstr "新建目录: \r\n%s"
 
+#. Resource IDs: (72)
+msgid "Create pull &request"
+msgstr "创建拉取请求(&r)"
+
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
 msgstr "在这里创建版本库(&y)"
@@ -2746,6 +3147,10 @@ msgstr "在这里创建版本库(&y)"
 #. Resource IDs: (32828)
 msgid "Create unified diff file"
 msgstr "创建标准差异文件"
+
+#. Resource IDs: (85)
+msgid "Created"
+msgstr "创建"
 
 #. Resource IDs: (126)
 msgid "Created folder remotely"
@@ -2777,6 +3182,10 @@ msgstr "贡献者: "
 #. Resource IDs: (376)
 msgid "Cu&t"
 msgstr "剪切(&T)"
+
+#. Resource IDs: (57635)
+msgid "Cu&t\tCtrl+X"
+msgstr "剪切(&t)\tCtrl+X"
 
 #. Resource IDs: (65535)
 msgid "Current"
@@ -2841,11 +3250,19 @@ msgstr "定制快速访问工具栏"
 msgid "Customize Quick Access Toolbar..."
 msgstr "定制快速访问工具栏..."
 
+#. Resource IDs: (1258)
+msgid "Customize..."
+msgstr "定制..."
+
 #. Resource IDs: (3603)
 msgid ""
 "Cut the selection and put it on the Clipboard\n"
 "Cut"
 msgstr "剪切选择的区块并放到剪贴板\n剪切"
+
+#. Resource IDs: (65535)
+msgid "Cyrillic"
+msgstr "Cyrillic"
 
 #. Resource IDs: (1624)
 msgid "DCommit Type"
@@ -2854,6 +3271,14 @@ msgstr "DCommit类型"
 #. Resource IDs: (19, 76, 208)
 msgid "Date"
 msgstr "日期"
+
+#. Resource IDs: (68)
+msgid "Date Last Commit"
+msgstr "最近提交的日期"
+
+#. Resource IDs: (1269)
+msgid "Debug"
+msgstr "调试"
 
 #. Resource IDs: (1008)
 msgid "Default"
@@ -2879,6 +3304,25 @@ msgstr "删除"
 msgid "Delete"
 msgstr "删除"
 
+#. Resource IDs: (81)
+#, c-format
+msgid "Delete %d branches"
+msgstr "删除%d个分支"
+
+#. Resource IDs: (80)
+#, c-format
+msgid "Delete %d remote branches"
+msgstr "删除%d个远程分支"
+
+#. Resource IDs: (84)
+#, c-format
+msgid "Delete %d tags"
+msgstr "删除%d标签"
+
+#. Resource IDs: (70)
+msgid "Delete &local"
+msgstr "删除本地(&l)"
+
 #. Resource IDs: (21)
 msgid "Delete Ref..."
 msgstr "删除引用..."
@@ -2897,9 +3341,21 @@ msgstr "删除并且添加到忽略列表(&i)"
 msgid "Delete and ignore %d items by &extension"
 msgstr "根据扩展名删除和忽略 %d 项(&E)"
 
+#. Resource IDs: (80)
+msgid "Delete branch"
+msgstr "删除分支"
+
 #. Resource IDs: (1255)
 msgid "Delete branch/tag"
 msgstr "删除分支/标签"
+
+#. Resource IDs: (80)
+msgid "Delete remote branch"
+msgstr "删除远程分支"
+
+#. Resource IDs: (83)
+msgid "Delete tag"
+msgstr "删除标签"
 
 #. Resource IDs: (73, 264)
 msgid "Deleted"
@@ -2980,7 +3436,11 @@ msgstr "差异查看/合并工具"
 msgid "Diff file:"
 msgstr "补丁文件:"
 
-#. Resource IDs: (146, 279)
+#. Resource IDs: (32780)
+msgid "Diff previous revision"
+msgstr "比较前一个版本"
+
+#. Resource IDs: (146)
 msgid "Diff with URL"
 msgstr "以 URL 比较"
 
@@ -2999,6 +3459,10 @@ msgstr "将工作副本中的文件与最后提交之前比较"
 #. Resource IDs: (22)
 msgid "Diffs two any commits"
 msgstr "比较任意两个版本"
+
+#. Resource IDs: (71)
+msgid "Dir..."
+msgstr "目录..."
 
 #. Resource IDs: (65535)
 msgid "Directory:"
@@ -3024,6 +3488,12 @@ msgstr "分派异常: %1"
 msgid "Display &buttons in this order"
 msgstr "按照此顺序显示按钮(&B)"
 
+#. Resource IDs: (3601)
+msgid ""
+"Display full pages\n"
+"Print Preview"
+msgstr "显示完整的页面\n打印预览"
+
 #. Resource IDs: (3605)
 msgid ""
 "Display help for clicked on buttons, menus and windows\n"
@@ -3048,6 +3518,10 @@ msgid ""
 "About"
 msgstr "显示文件信息, 版本号码, 以及版权声明\n关于"
 
+#. Resource IDs: (84)
+msgid "Do &not show me this warning again (if Ignore is selected)"
+msgstr "不要再显示这个警告消息(如果选择忽略)"
+
 #. Resource IDs: (1669)
 msgid "Do not autoselect submodules"
 msgstr "不自动选择子模块"
@@ -3055,6 +3529,11 @@ msgstr "不自动选择子模块"
 #. Resource IDs: (65535)
 msgid "Do not show the context menu for the following paths:"
 msgstr "对下述路径，不显示上下文菜单:"
+
+#. Resource IDs: (70)
+#, c-format
+msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
+msgstr "是否你真的想<ct=0x0000FF>删除</ct> <b>%s</b>吗?"
 
 #. Resource IDs: (1007)
 #, c-format
@@ -3064,6 +3543,24 @@ msgstr "你真的要删除工具栏“%s”吗？"
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
 msgstr "你确认要移动这个文件或目录吗？"
+
+#. Resource IDs: (70)
+#, c-format
+msgid ""
+"Do you really want to permanently delete the %d selected refs? It can "
+"<ct=0x0000FF><b>NOT</b></ct> be recovered!"
+msgstr "是否你真的想永久删除%d个选择的引用? 这个操作<ct=0x0000FF><b>不能</b></ct>被恢复!"
+
+#. Resource IDs: (71)
+#, c-format
+msgid "Do you really want to remove \"%s\"?"
+msgstr "是否你真的想删除\"%s\""
+
+#. Resource IDs: (69)
+msgid ""
+"Do you really want to restore the copy? You will loose all changes that you "
+"have done after creating the copy."
+msgstr "是否你真的想恢复拷贝? 所有的自从创建拷贝后的改动将被丢失。"
 
 #. Resource IDs: (119)
 #, c-format
@@ -3108,9 +3605,22 @@ msgstr "确定要从该项目及其子项目删除属性 %s 吗？"
 msgid "Do you want to save your changes?"
 msgstr "是否要保存你所做的修改？"
 
+#. Resource IDs: (66)
+msgid "Do you want to see changes?"
+msgstr "是否浏览改动？"
+
 #. Resource IDs: (65535)
 msgid "Document :"
 msgstr "文档:"
+
+#. Resource IDs: (75)
+#, c-format
+msgid "Don't know what will push because unknown branch \"%s\""
+msgstr "因为未知分支\"%s\"，所以不知道推送内容"
+
+#. Resource IDs: (75)
+msgid "Don't know what will push because you enter URL"
+msgstr "因为你输入URL，所以不知道推送内容"
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
@@ -3120,7 +3630,7 @@ msgstr "不再显示此信息"
 msgid "Done"
 msgstr "完成"
 
-#. Resource IDs: (1384)
+#. Resource IDs: (1385)
 msgid "Down"
 msgstr "向下"
 
@@ -3160,13 +3670,25 @@ msgstr "导出(&X)..."
 msgid "E&xternal"
 msgstr "外部(&x)"
 
+#. Resource IDs: (5064)
+msgid "EUC-KR"
+msgstr "EUC-KR"
+
 #. Resource IDs: (3697)
 msgid "EXT"
 msgstr "EXT"
 
+#. Resource IDs: (65535)
+msgid "Eastern European"
+msgstr "东欧"
+
 #. Resource IDs: (1237)
 msgid "Edit"
 msgstr "编辑"
+
+#. Resource IDs: (84)
+msgid "Edit &global .gitconfig"
+msgstr "编辑全局(&g) .gitconfig"
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
@@ -3180,7 +3702,7 @@ msgstr "编辑按钮图片"
 msgid "Edit Notes"
 msgstr "编辑注释"
 
-#. Resource IDs: (227, 564)
+#. Resource IDs: (564)
 msgid "Edit Properties"
 msgstr "修改属性"
 
@@ -3208,6 +3730,10 @@ msgstr "编辑根据扩展名的合并程序"
 msgid "Edit gl&obal .gitconfig"
 msgstr "编辑全局.git/config(&o)"
 
+#. Resource IDs: (71)
+msgid "Edit local git config"
+msgstr "编辑本地git config"
+
 #. Resource IDs: (113, 115)
 msgid "Edit log message"
 msgstr "编辑日志信息"
@@ -3219,13 +3745,13 @@ msgid ""
 "%s"
 msgstr "编辑属性“%s”于\r\n%s"
 
+#. Resource IDs: (1384)
+msgid "Edit s&ystemwide gitconfig"
+msgstr "编辑系统gitconfig(&y)"
+
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
 msgstr "编辑..."
-
-#. Resource IDs: (581)
-msgid "Edits the selected property value"
-msgstr "编辑选择的属性值"
 
 #. Resource IDs: (79)
 msgid "Either the name or IP of the proxy server"
@@ -3264,6 +3790,10 @@ msgid ""
 "Enables the spellchecker only if the\n"
 "tsvn:projectlanguage property is set."
 msgstr "仅在设置了 tsvn:projectlanguage\n时才进行拼写检查。"
+
+#. Resource IDs: (65535)
+msgid "Encode"
+msgstr "编码"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -3385,7 +3915,7 @@ msgid ""
 "Erase"
 msgstr "清除选择区\n清除"
 
-#. Resource IDs: (82)
+#. Resource IDs: (82, 602)
 msgid "Error"
 msgstr "错误"
 
@@ -3404,6 +3934,10 @@ msgid ""
 "Error while reading/writing the registry key %s\n"
 "%s"
 msgstr "读写注册表键 %s 时发生错误\n%s"
+
+#. Resource IDs: (75)
+msgid "Everything updated."
+msgstr "已经最新"
 
 #. Resource IDs: (1002)
 msgid ""
@@ -3428,7 +3962,7 @@ msgstr "展开钉住的窗口"
 msgid "Explore to"
 msgstr "浏览"
 
-#. Resource IDs: (229, 238)
+#. Resource IDs: (78, 229)
 msgid "Export"
 msgstr "导出"
 
@@ -3463,10 +3997,6 @@ msgid ""
 "folders"
 msgstr "导出版本库到干净的目录"
 
-#. Resource IDs: (581)
-msgid "Exports a set of properties to a file"
-msgstr "导出属性集合到文件"
-
 #. Resource IDs: (74, 207)
 msgid "Extension"
 msgstr "扩展名"
@@ -3499,9 +4029,23 @@ msgstr "排除外部依赖"
 msgid "Externals included"
 msgstr "包含外部依赖"
 
+#. Resource IDs: (65)
+msgid "Fail"
+msgstr "失败"
+
 #. Resource IDs: (74)
 msgid "Failed revert"
 msgstr "复原失败"
+
+#. Resource IDs: (1)
+#, c-format
+msgid "Failed to checkout file \"%s\""
+msgstr "失败签出文件\"%s\""
+
+#. Resource IDs: (69)
+#, c-format
+msgid "Failed to checkout file \"%s\" of revision %s to \"%s\"."
+msgstr "失败签出文件\"%s\"  从版本 %s 到版本 \"%s\"."
 
 #. Resource IDs: (3865)
 msgid ""
@@ -3522,6 +4066,18 @@ msgid ""
 "Failed to create object.  Make sure the application is entered in the system"
 " registry."
 msgstr "创建对象失败。请确认此应用在系统注册表中。"
+
+#. Resource IDs: (72)
+msgid "Failed to create pull-request."
+msgstr "失败创建拉取请求"
+
+#. Resource IDs: (69)
+msgid "Failed to get base file."
+msgstr "失败得到基本文件"
+
+#. Resource IDs: (69)
+msgid "Failed to get merge file."
+msgstr "失败得到合并文件"
 
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
@@ -3555,13 +4111,30 @@ msgid ""
 "%s"
 msgstr "启动问题跟踪器的 COM 提供者“%s”失败。\n%s"
 
+#. Resource IDs: (72)
+msgid "Failed waiting for pageant to finish loading key."
+msgstr "失败等待pageant加载密钥"
+
 #. Resource IDs: (220)
 msgid "Failed!"
 msgstr "失败！"
 
+#. Resource IDs: (75)
+msgid "Fast Forward"
+msgstr "直接迁移"
+
 #. Resource IDs: (1484)
 msgid "Fast Forward o&nly"
 msgstr "仅仅直接迁移(&n)"
+
+#. Resource IDs: (67)
+#, c-format
+msgid "Fast forward to %s"
+msgstr "直接迁移到%s"
+
+#. Resource IDs: (76)
+msgid "Fetc&h"
+msgstr "获取(&h)"
 
 #. Resource IDs: (20)
 msgid "Fetch"
@@ -3570,6 +4143,15 @@ msgstr "Fetch"
 #. Resource IDs: (14)
 msgid "Fetch from SVN repository"
 msgstr "从SVN版本库获取"
+
+#. Resource IDs: (78)
+#, c-format
+msgid "Fetch from \"%s\""
+msgstr "从\"%s\"获取"
+
+#. Resource IDs: (76)
+msgid "Fetch&&Re&base"
+msgstr "获取后变基(&b)"
 
 #. Resource IDs: (20)
 msgid "Fetch..."
@@ -3605,9 +4187,73 @@ msgstr "文件差异比较"
 msgid "File list is empty"
 msgstr "文件列表为空"
 
-#. Resource IDs: (135, 376)
+#. Resource IDs: (376)
 msgid "File patches"
 msgstr "文件补丁"
+
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"File size:\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%"
+msgstr "文件大小: \t\t%s (%s)\n宽度: \t\t\t%ld 像素\n高度:\t\t\t%ld 像素\n水平分辨率:\t%.1f dpi\n垂直分辨率: \t%.1f dpi\n色深: \t\t\t%d 位\n缩放比例: \t\t\t%d%%\""
+
+#. Resource IDs: (8)
+#, c-format
+msgid ""
+"File size:\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%\n"
+"\n"
+"File size:\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%"
+msgstr "文件大小:\t\t%s (%s)\n宽度:\t\t\t%ld 像素\n高度:\t\t\t%ld 像素\n水平分辨率:\t%.1f dpi\n垂直分辨率:\t%.1f dpi\n色深: \t\t\t%d 位\n缩放比例:\t\t\t%d%%\n\n文件大小:\t\t%s (%s)\n宽度:\t\t\t%ld 像素\n高度:\t\t\t\t%ld 像素\n水平分辨率:\t%.1f dpi\n垂直分辨率:\t%.1f dpi\n色深:\t\t\t%d 位\n缩放比例:\t\t\t%d%%"
+
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"File size:\t\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%"
+msgstr "文件大小:\t\t\t%s (%s)\n宽度:\t\t\t%ld 像素\n高度:\t\t\t\t%ld 像素\n水平分辨率:\t%.1f dpi\n垂直分辨率:\t\t%.1f dpi\n色深:\t\t\t%d 位\n缩放比例:\t\t\t%d%%"
+
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"File size:\t\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%\n"
+"\n"
+"File size:\t\t\t%s (%s)\n"
+"Width:\t\t\t%ld pixel\n"
+"Height:\t\t\t%ld pixel\n"
+"Horizontal Resolution:\t%.1f dpi\n"
+"Vertical Resolution:\t\t%.1f dpi\n"
+"Depth:\t\t\t%d bit\n"
+"Zoom:\t\t\t%d%%"
+msgstr "文件大小:\t\t\t%s (%s)\n宽度:\t\t\t%ld pixel\n高度:\t\t\t%ld pixel\n水平分辨率:\t%.1f dpi\n垂直分辨率:\t\t%.1f dpi\n色深:\t\t\t%d bit\n缩放比例:\t\t\t%d%%\n\n文件大小:\t\t\t%s (%s)\n宽度:\t\t\t%ld 像素\n高度:\t\t\t%ld 像素\n水平分辨率:\t%.1f dpi\n垂直分辨率:\t\t%.1f dpi\n色深:\t\t\t%d 位\n缩放比例:\t\t\t%d%%"
 
 #. Resource IDs: (208)
 msgid "Filename"
@@ -3641,6 +4287,14 @@ msgid ""
 "Find"
 msgstr "查找指定文字\n查找"
 
+#. Resource IDs: (67)
+msgid "Finish"
+msgstr "完成"
+
+#. Resource IDs: (67)
+msgid "Finished rebasing."
+msgstr "完成变基"
+
 #. Resource IDs: (77, 219)
 msgid "Finished!"
 msgstr "完成！"
@@ -3657,6 +4311,10 @@ msgstr "第一个父亲节点"
 msgid "First known &bad:"
 msgstr "一个已知问题版本(&b)"
 
+#. Resource IDs: (32810)
+msgid "Fit image &sizes"
+msgstr "优化图像显示尺寸(&S)"
+
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
 msgstr "软驱(A:B:)"
@@ -3672,6 +4330,10 @@ msgstr "跟随重命名"
 #. Resource IDs: (65535)
 msgid "Font"
 msgstr "字体"
+
+#. Resource IDs: (3585)
+msgid "For Help, press F1"
+msgstr "如需帮助，按F1"
 
 #. Resource IDs: (3585)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
@@ -3703,11 +4365,17 @@ msgstr "创建邮件补丁..."
 msgid "Forward"
 msgstr "转发"
 
+#. Resource IDs: (68)
+msgid ""
+"Found an empty commit message. You have to enter one or rebase cannot "
+"proceed."
+msgstr "找到一个空的提交信息。必须输入一个或者变基没完成。"
+
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 
-#. Resource IDs: (1522)
+#. Resource IDs: (1385, 1522, 65535)
 msgid "From"
 msgstr "从"
 
@@ -3735,6 +4403,10 @@ msgstr "全文搜索"
 msgid "Fully recursive"
 msgstr "全递归"
 
+#. Resource IDs: (5061)
+msgid "GB2312 (Simplified)"
+msgstr "GB2312 (Simplified)"
+
 #. Resource IDs: (273)
 msgid "GDI+ couldn't be initialized!"
 msgstr "无法初始化 GDI+"
@@ -3755,7 +4427,7 @@ msgstr "为了显示版本树，要求安装GDI+。你可以从下面链接获�
 msgid "Gathering information. Please wait..."
 msgstr "正在获取信息。请等待 ..."
 
-#. Resource IDs: (107, 143)
+#. Resource IDs: (107)
 msgid "General"
 msgstr "常规设置"
 
@@ -3861,6 +4533,10 @@ msgstr "Git 导出版本控制的条目到当前位置"
 msgid "Git Init"
 msgstr "Git Init"
 
+#. Resource IDs: (1270)
+msgid "Git Log"
+msgstr "Git日志"
+
 #. Resource IDs: (17)
 msgid "Git Move and rename versioned item here"
 msgstr "Git 移动版本控制的条目到当前位置并改名"
@@ -3869,9 +4545,17 @@ msgstr "Git 移动版本控制的条目到当前位置并改名"
 msgid "Git Move versioned item(s) here"
 msgstr "Git 移动版本控制的条目到当前位置"
 
+#. Resource IDs: (84)
+msgid "Git Remote Settings"
+msgstr "Git远程服务器设置"
+
 #. Resource IDs: (11)
 msgid "Git Revision"
 msgstr "Git 版本"
+
+#. Resource IDs: (1260)
+msgid "Git Revision List"
+msgstr "Git版本列表"
 
 #. Resource IDs: (22)
 msgid "Git SVN DCommit"
@@ -3921,6 +4605,10 @@ msgstr "Git.exe 路径:"
 msgid "Git::Remote"
 msgstr "Git::远端"
 
+#. Resource IDs: (221)
+msgid "Go to line"
+msgstr "跳到行"
+
 #. Resource IDs: (2051)
 msgid ""
 "Go to the next conflict\n"
@@ -3957,6 +4645,10 @@ msgstr "MIME 类型"
 msgid "Gray"
 msgstr "灰色"
 
+#. Resource IDs: (65535)
+msgid "Greek"
+msgstr "Greek"
+
 #. Resource IDs: (2050)
 msgid "Group by branch"
 msgstr "按照分支分组"
@@ -3977,7 +4669,7 @@ msgstr "色彩(&U):"
 msgid "HASH"
 msgstr "HASH"
 
-#. Resource IDs: (1353, 1354)
+#. Resource IDs: (1353, 1354, 1511)
 msgid "HEAD"
 msgstr "HEAD"
 
@@ -3993,7 +4685,11 @@ msgstr "Hard:重置工作区和索引(放弃本地改动)"
 msgid "Hash"
 msgstr "Hash"
 
-#. Resource IDs: (9, 73, 332, 1004)
+#. Resource IDs: (65535)
+msgid "Hebrew"
+msgstr "Hebrew"
+
+#. Resource IDs: (73, 332)
 msgid "Help"
 msgstr "帮助"
 
@@ -4008,6 +4704,10 @@ msgstr "十六进制"
 #. Resource IDs: (1660)
 msgid "Hide Menus for unversioned paths"
 msgstr "对于未版本控制的路径隐藏菜单"
+
+#. Resource IDs: (71)
+msgid "Hide Patch<<"
+msgstr "隐藏补丁<<"
 
 #. Resource IDs: (1001)
 msgid "Hide docked window"
@@ -4047,7 +4747,7 @@ msgstr "钩子脚本::配置问题跟踪"
 
 #. Resource IDs: (283)
 msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "钩子脚本::问题跟踪器集成"
+msgstr "Hook 脚本::问题跟踪器集成"
 
 #. Resource IDs: (198)
 msgid "Hook Type"
@@ -4070,6 +4770,18 @@ msgstr "包含路径(&I): "
 msgid "ID"
 msgstr "ID"
 
+#. Accelerator Entry for Menu ID:220; '&Go to\tCtrl+G'
+msgid "ID:220:V C +G"
+msgstr "ID:220:V C +G"
+
+#. Accelerator Entry for Menu ID:32772; '&Overlay images'
+msgid "ID:32772:V   +O"
+msgstr "ID:32772:V   +O"
+
+#. Accelerator Entry for Menu ID:32773; '&Open'
+msgid "ID:32773:V C +O"
+msgstr "ID:32773:V C +O"
+
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
 msgstr "ID:32774:V C +T"
@@ -4078,9 +4790,25 @@ msgstr "ID:32774:V C +T"
 msgid "ID:32775:V C +D"
 msgstr "ID:32775:V C +D"
 
+#. Accelerator Entry for Menu ID:32778; '&Fit images in window'
+msgid "ID:32778:V   +F"
+msgstr "ID:32778:V   +F"
+
+#. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
+msgid "ID:32779:V   +S"
+msgstr "ID:32779:V   +S"
+
+#. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
+msgid "ID:32793:V C +V"
+msgstr "ID:32793:V C +V"
+
 #. Accelerator Entry for Menu ID:32794; 'Reload'
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
+
+#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
+msgid "ID:32810:V   +T"
+msgstr "ID:32810:V   +T"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -4139,6 +4867,66 @@ msgstr "ID:57643:V C +Z"
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
 msgstr "ID:57665:V C +Q"
+
+#. Resource IDs: (5029)
+msgid "ISO 8859-1"
+msgstr "ISO 8859-1"
+
+#. Resource IDs: (5038)
+msgid "ISO 8859-10"
+msgstr "ISO 8859-10"
+
+#. Resource IDs: (5039)
+msgid "ISO 8859-11"
+msgstr "ISO 8859-11"
+
+#. Resource IDs: (5040)
+msgid "ISO 8859-13"
+msgstr "ISO 8859-13"
+
+#. Resource IDs: (5041)
+msgid "ISO 8859-14"
+msgstr "ISO 8859-14"
+
+#. Resource IDs: (5042)
+msgid "ISO 8859-15"
+msgstr "ISO 8859-15"
+
+#. Resource IDs: (5043)
+msgid "ISO 8859-16"
+msgstr "ISO 8859-16"
+
+#. Resource IDs: (5030)
+msgid "ISO 8859-2"
+msgstr "ISO 8859-2"
+
+#. Resource IDs: (5031)
+msgid "ISO 8859-3"
+msgstr "ISO 8859-3"
+
+#. Resource IDs: (5032)
+msgid "ISO 8859-4"
+msgstr "ISO 8859-4"
+
+#. Resource IDs: (5033)
+msgid "ISO 8859-5"
+msgstr "ISO 8859-5"
+
+#. Resource IDs: (5034)
+msgid "ISO 8859-6"
+msgstr "ISO 8859-6"
+
+#. Resource IDs: (5035)
+msgid "ISO 8859-7"
+msgstr "ISO 8859-7"
+
+#. Resource IDs: (5036)
+msgid "ISO 8859-8"
+msgstr "ISO 8859-8"
+
+#. Resource IDs: (5037)
+msgid "ISO 8859-9"
+msgstr "ISO 8859-9"
 
 #. Resource IDs: (106)
 msgid "Icon Overlays"
@@ -4315,7 +5103,7 @@ msgstr "图片"
 msgid "Immediate children, including folders"
 msgstr "直接子节点，包含文件夹"
 
-#. Resource IDs: (139)
+#. Resource IDs: (77)
 msgid "Import"
 msgstr "导入"
 
@@ -4336,10 +5124,6 @@ msgstr "输入SVN忽略设置"
 #. Resource IDs: (22)
 msgid "Import SVN Ignore ..."
 msgstr "导入SVN忽略..."
-
-#. Resource IDs: (581)
-msgid "Import a previously saved set of properties from a file"
-msgstr "从文件导入以前保存的属性集合"
 
 #. Resource IDs: (127)
 #, c-format
@@ -4376,6 +5160,14 @@ msgstr "正在导入文件 %s"
 #. Resource IDs: (10)
 msgid "Imports the directory to a repository"
 msgstr "导入目录至版本库"
+
+#. Resource IDs: (75)
+msgid "In ChangeList"
+msgstr "在改变列表中"
+
+#. Resource IDs: (75)
+msgid "In Commits"
+msgstr "在提交中"
 
 #. Resource IDs: (1499)
 msgid "Include &Tags"
@@ -4472,9 +5264,25 @@ msgid ""
 "Please consult the documentation for a way to work around this limitation."
 msgstr "不能仅仅修改文件名的大小写\n示例: 不能将 MyFile.txt 修改为 MYFILE.txt 。\n请阅读文档中关于如何在此限制下工作的部分。"
 
+#. Resource IDs: (65535)
+msgid "Japanese"
+msgstr "日语"
+
+#. Resource IDs: (5068)
+msgid "KOI8-R"
+msgstr "KOI8-R"
+
+#. Resource IDs: (5067)
+msgid "KOI8-U"
+msgstr "KOI8-U"
+
 #. Resource IDs: (1126)
 msgid "Keep changelists"
 msgstr "保持修改列表"
+
+#. Resource IDs: (65)
+msgid "Keep file locally?"
+msgstr "保留本地文件？"
 
 #. Resource IDs: (16136)
 msgid "Keyboard"
@@ -4487,6 +5295,10 @@ msgstr "键盘快捷键:"
 #. Resource IDs: (1002)
 msgid "Keys"
 msgstr "键"
+
+#. Resource IDs: (65535)
+msgid "Korean"
+msgstr "韩语"
 
 #. Resource IDs: (65535)
 msgid "LINE1"
@@ -4520,6 +5332,10 @@ msgstr "行7"
 msgid "LINE8"
 msgstr "行8"
 
+#. Resource IDs: (68)
+msgid "Last Commit"
+msgstr "最后的提交"
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr "最后修改:"
@@ -4548,6 +5364,10 @@ msgstr "剩下冲突: "
 msgid "Left View: "
 msgstr "左侧查看:"
 
+#. Resource IDs: (65535)
+msgid "Left image"
+msgstr "左侧图片"
+
 #. Resource IDs: (246)
 msgid "Line Graph"
 msgstr "折线图"
@@ -4566,6 +5386,10 @@ msgstr "行差异工具栏"
 msgid "Line differences"
 msgstr "行差异"
 
+#. Resource IDs: (65535)
+msgid "Line:"
+msgstr "行:"
+
 #. Resource IDs: (269)
 #, c-format
 msgid "Line: %*ld"
@@ -4581,11 +5405,15 @@ msgstr "列出帮助主题\n帮助主题"
 msgid "List1"
 msgstr "列表一"
 
+#. Resource IDs: (130)
+msgid "Load Images"
+msgstr "载入图片"
+
 #. Resource IDs: (1505)
 msgid "Load Putty &Key"
 msgstr "加载putty密钥(&key)"
 
-#. Resource IDs: (306, 65535)
+#. Resource IDs: (65535)
 msgid "Local Branch"
 msgstr "本地分支"
 
@@ -4673,6 +5501,18 @@ msgstr "亮度"
 msgid "MSysGit"
 msgstr "MsysGit"
 
+#. Resource IDs: (84)
+msgid "MSysGit (http://code.google.com/p/msysgit/) not found."
+msgstr "不能找到MSysGit (http://code.google.com/p/msysgit/)"
+
+#. Resource IDs: (71)
+msgid "MSysGit directory not set (see \"General\" settings page)."
+msgstr "MSysGit目录没有设置 (见\"常用\"设置页面)."
+
+#. Resource IDs: (5066)
+msgid "Macintosh"
+msgstr "Macintosh"
+
 #. Resource IDs: (1582)
 msgid "Mail"
 msgstr "邮件"
@@ -4727,7 +5567,7 @@ msgstr "标记为问题版本"
 msgid "Marks revision as good"
 msgstr "标记为好版本"
 
-#. Resource IDs: (20084)
+#. Resource IDs: (1064, 20084)
 msgid "Match &case"
 msgstr "区分大小写(&C)"
 
@@ -4759,7 +5599,7 @@ msgstr "菜单栏"
 msgid "Menu s&hadows"
 msgstr "阴影菜单(&H)"
 
-#. Resource IDs: (109, 110, 111, 112, 276, 278, 65535)
+#. Resource IDs: (78, 276)
 msgid "Merge"
 msgstr "合并"
 
@@ -4866,7 +5706,7 @@ msgstr "Mixed:保持工作区不变，重置索引文件"
 msgid "Modification date"
 msgstr "修改日期"
 
-#. Resource IDs: (74, 264, 65535)
+#. Resource IDs: (74, 264)
 msgid "Modified"
 msgstr "已修改"
 
@@ -5039,6 +5879,10 @@ msgstr "%s 的新名称"
 msgid "New name:"
 msgstr "新名称: "
 
+#. Resource IDs: (20308)
+msgid "Next"
+msgstr "下一个"
+
 #. Resource IDs: (3633)
 msgid ""
 "Next Page\n"
@@ -5056,6 +5900,10 @@ msgstr "不提交"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "非直接迁移(&F)"
+
+#. Resource IDs: (67)
+msgid "No HEAD found"
+msgstr "找不到HEAD"
 
 #. Resource IDs: (119)
 msgid "No Merge"
@@ -5118,6 +5966,10 @@ msgstr "自从上次提交没有添加或改变的文件。\nTortoiseGit不需�
 msgid "No image encoder found for %s."
 msgstr "没有找到适用于 %s 的图像解码器。"
 
+#. Resource IDs: (70)
+msgid "No previous version."
+msgstr "没有前一版本"
+
 #. Resource IDs: (603)
 msgid "No reference found"
 msgstr "没有找到引用"
@@ -5136,17 +5988,25 @@ msgstr "无状态缓存。仅影响版本控制的文件夹，不影响文件"
 msgid "No thesaurus suggestions"
 msgstr "没有建议辞典"
 
-#. Resource IDs: (1271)
+#. Resource IDs: (65)
+msgid "No working directory found."
+msgstr "没有找到工作目录"
+
+#. Resource IDs: (1272)
 msgid "None"
 msgstr "无"
 
-#. Resource IDs: (264, 65535)
+#. Resource IDs: (264)
 msgid "Normal"
 msgstr "正常"
 
 #. Resource IDs: (2152)
 msgid "Normal &SVN Commit"
 msgstr "正常&SVN Commit"
+
+#. Resource IDs: (65535)
+msgid "North European"
+msgstr "北欧"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -5155,6 +6015,10 @@ msgstr "没有删除全部的注册表项（或 INI 文件）。"
 #. Resource IDs: (83)
 msgid "Not enough memory to complete operation."
 msgstr "内存不足，无法完成操作。"
+
+#. Resource IDs: (72)
+msgid "Not patches generated."
+msgstr "没补丁创建"
 
 #. Resource IDs: (563)
 msgid "Not recursive"
@@ -5178,6 +6042,10 @@ msgid ""
 "Nothing need rebase\r\n"
 "%s equal %s"
 msgstr "不需要变基\n%s 等于 %s"
+
+#. Resource IDs: (67)
+msgid "Nothing to Rebase"
+msgstr "没有必要变基"
 
 #. Resource IDs: (603)
 msgid "Nothing to commit"
@@ -5204,9 +6072,79 @@ msgstr "作者数量: "
 msgid "Number of weeks:"
 msgstr "周数"
 
-#. Resource IDs: (1, 73)
+#. Resource IDs: (5045)
+msgid "OEM 720"
+msgstr "OEM 720"
+
+#. Resource IDs: (5046)
+msgid "OEM 737"
+msgstr "OEM 737"
+
+#. Resource IDs: (5047)
+msgid "OEM 775"
+msgstr "OEM 775"
+
+#. Resource IDs: (5048)
+msgid "OEM 850"
+msgstr "OEM 850"
+
+#. Resource IDs: (5049)
+msgid "OEM 852"
+msgstr "OEM 852"
+
+#. Resource IDs: (5050)
+msgid "OEM 855"
+msgstr "OEM 855"
+
+#. Resource IDs: (5051)
+msgid "OEM 857"
+msgstr "OEM 857"
+
+#. Resource IDs: (5052)
+msgid "OEM 858"
+msgstr "OEM 858"
+
+#. Resource IDs: (5053)
+msgid "OEM 860 : Portuguese"
+msgstr "OEM 860 : 葡萄牙语"
+
+#. Resource IDs: (5054)
+msgid "OEM 861 : Icelandic"
+msgstr "OEM 861 : 冰岛语"
+
+#. Resource IDs: (5055)
+msgid "OEM 862"
+msgstr "OEM 862"
+
+#. Resource IDs: (5056)
+msgid "OEM 863 : French"
+msgstr "OEM 863 : 法语"
+
+#. Resource IDs: (5057)
+msgid "OEM 865 : Nordic"
+msgstr "OEM 865 : Nordic"
+
+#. Resource IDs: (5058)
+msgid "OEM 866"
+msgstr "OEM 866"
+
+#. Resource IDs: (5059)
+msgid "OEM 869"
+msgstr "OEM 869"
+
+#. Resource IDs: (5044)
+msgid "OEM-US"
+msgstr "OEM-US"
+
+#. Resource IDs: (73)
 msgid "OK"
 msgstr "确定"
+
+#. Resource IDs: (7)
+msgid ""
+"OLE initialization failed.  Make sure that the OLE libraries are the correct"
+" version."
+msgstr "OLE初始化失败。确保OLE库是正确的版本"
 
 #. Resource IDs: (3697)
 msgid "OVR"
@@ -5224,11 +6162,27 @@ msgstr "Office 200&3"
 msgid "Office 200&7"
 msgstr "Office 200&7"
 
+#. Resource IDs: (218)
+msgid "Office 2007 (&Aqua Style)"
+msgstr "Office 2007 (水族风格&A)"
+
+#. Resource IDs: (215)
+msgid "Office 2007 (&Blue Style)"
+msgstr "Office 2007 (蓝色风格&B)"
+
+#. Resource IDs: (217)
+msgid "Office 2007 (&Silver Style)"
+msgstr "Office 2007 (银色风格&S)"
+
+#. Resource IDs: (216)
+msgid "Office 2007 (B&lack Style)"
+msgstr "Office 2007 (黑色风格&l)"
+
 #. Resource IDs: (65535)
 msgid "Older lines"
 msgstr "旧行"
 
-#. Resource IDs: (99, 1202)
+#. Resource IDs: (99)
 msgid "Omit e&xternals"
 msgstr "省略外部(&X)"
 
@@ -5247,6 +6201,10 @@ msgstr "你试图删除的目录中包含特殊目录(“branches”，“tags�
 #. Resource IDs: (219)
 msgid "One or more files are in a conflicted state."
 msgstr "至少还有一个的文件处于冲突状态。"
+
+#. Resource IDs: (1256)
+msgid "Only Merged Files"
+msgstr "仅合并文件"
 
 #. Resource IDs: (99)
 msgid "Only check out the &top folder"
@@ -5270,6 +6228,12 @@ msgstr "仅此项"
 msgid "Open"
 msgstr "打开"
 
+#. Resource IDs: (3601)
+msgid ""
+"Open an existing document\n"
+"Open"
+msgstr "打开一个现有的文档\n打开"
+
 #. Resource IDs: (76)
 msgid "Open client certificate file"
 msgstr "打开用户端凭证文件"
@@ -5282,9 +6246,17 @@ msgstr "打开文件"
 msgid "Open from clipboard"
 msgstr "从剪贴板复制"
 
+#. Resource IDs: (7)
+msgid "Open image file..."
+msgstr "打开图像文件..."
+
 #. Resource IDs: (282)
 msgid "Open parent folder"
 msgstr "打开父目录"
+
+#. Resource IDs: (3602)
+msgid "Open this document"
+msgstr "打开这个文档"
 
 #. Resource IDs: (113)
 msgid "Open with..."
@@ -5300,13 +6272,17 @@ msgstr "打开帮助\n帮助主题"
 msgid "Operate from log cache for now only"
 msgstr "现在只在日志缓存中操作"
 
-#. Resource IDs: (1502, 1517)
+#. Resource IDs: (357)
 msgid "Option"
 msgstr "选项"
 
-#. Resource IDs: (16137)
+#. Resource IDs: (1502, 1517, 16137)
 msgid "Options"
 msgstr "选项"
+
+#. Resource IDs: (32779)
+msgid "Ori&ginal size"
+msgstr "原始大小(&G)"
 
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
@@ -5315,6 +6291,14 @@ msgstr "其它任务窗格"
 #. Resource IDs: (245)
 msgid "Others"
 msgstr "对方的"
+
+#. Resource IDs: (75)
+msgid "Out ChangeList"
+msgstr "将推送的改动"
+
+#. Resource IDs: (75)
+msgid "Out Commits"
+msgstr "将推送的提交"
 
 #. Resource IDs: (3843)
 msgid "Out of memory."
@@ -5374,6 +6358,14 @@ msgstr "第 %u 页\n页面范围 %u-%u\n"
 msgid "Page :"
 msgstr "页:"
 
+#. Resource IDs: (1258)
+msgid "Pane 1"
+msgstr "窗格 1"
+
+#. Resource IDs: (1258)
+msgid "Pane 2"
+msgstr "窗格 2"
+
 #. Resource IDs: (63)
 msgid "Parameters"
 msgstr "参数"
@@ -5381,6 +6373,15 @@ msgstr "参数"
 #. Resource IDs: (1477)
 msgid "Parameters:"
 msgstr "参数:"
+
+#. Resource IDs: (70)
+#, c-format
+msgid "Parent %d does not exist"
+msgstr "父节点%d不存在"
+
+#. Resource IDs: (65535)
+msgid "Part of code come from TortoiseSVN Blame"
+msgstr "一部分代码来自TortoiseSVN Blame"
 
 #. Resource IDs: (69)
 msgid "Password:"
@@ -5410,6 +6411,10 @@ msgid ""
 "operation"
 msgstr "从剪贴板粘帖 svn 路径，它是移动(剪切)或复制操作的结果"
 
+#. Resource IDs: (65)
+msgid "Patch"
+msgstr "补丁"
+
 #. Resource IDs: (1076)
 msgid "Patch &all items"
 msgstr "修补全部项目(&A)"
@@ -5431,14 +6436,10 @@ msgid "Patch selected"
 msgstr "修补选定文件"
 
 #. Resource IDs: (157)
-msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All (*.*)|*.*||"
-msgstr "补丁文件(*.diff, *.patch)|*.diff;*.patch|所有文件(*.*)|*.*||"
-
-#. Resource IDs: (157)
 msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
 msgstr "补丁文件 (*.diff, *.patch)|*.diff;*.patch|全部 (*.*)|*.*||"
 
-#. Resource IDs: (20, 63, 77, 198, 207)
+#. Resource IDs: (63, 77, 198, 207)
 msgid "Path"
 msgstr "路径"
 
@@ -5471,6 +6472,11 @@ msgstr "个人菜单和工具栏"
 #. Resource IDs: (1254)
 msgid "Pick"
 msgstr "选取"
+
+#. Resource IDs: (69)
+#, c-format
+msgid "Pick up %s"
+msgstr "选取%s"
 
 #. Resource IDs: (3849)
 msgid ""
@@ -5537,9 +6543,13 @@ msgstr "正在取消, 请稍候…"
 msgid "Please wait while differences are obtained..."
 msgstr "正在获取差异，请稍候..."
 
-#. Resource IDs: (104, 119, 146, 213)
+#. Resource IDs: (119, 146, 213)
 msgid "Please wait..."
 msgstr "请稍候..."
+
+#. Resource IDs: (65535)
+msgid "Popup"
+msgstr "弹出"
 
 #. Resource IDs: (65535)
 msgid "Port :"
@@ -5577,6 +6587,10 @@ msgstr "Pre-Push Hook"
 msgid "Pre-Update Hook"
 msgstr "Pre-Update Hook"
 
+#. Resource IDs: (68)
+msgid "Preparing commit..."
+msgstr "准备提交..."
+
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
 msgstr "按新的快捷键(&N):"
@@ -5601,11 +6615,19 @@ msgstr "预览打过补丁的文件"
 msgid "Preview: "
 msgstr "预览: "
 
+#. Resource IDs: (20309)
+msgid "Previous"
+msgstr "上一个"
+
 #. Resource IDs: (3633)
 msgid ""
 "Previous Page\n"
 "Previous Page"
 msgstr "前页\n前页"
+
+#. Resource IDs: (72)
+msgid "Previous Version"
+msgstr "先前版本"
 
 #. Resource IDs: (1069, 16990)
 msgid "Print"
@@ -5616,6 +6638,18 @@ msgid ""
 "Print Document\n"
 "&Print"
 msgstr "打印文档\n打印(&P)"
+
+#. Resource IDs: (3601)
+msgid ""
+"Print the active document using current options\n"
+"Quick Print"
+msgstr "使用当前选项打印当前文档\n快速打印"
+
+#. Resource IDs: (3601)
+msgid ""
+"Print the active document\n"
+"Print"
+msgstr "打印当前文档\n打印"
 
 #. Resource IDs: (3845)
 msgid "Print to File"
@@ -5712,12 +6746,17 @@ msgid "Proxy Settings"
 msgstr "代理服务器设置"
 
 #. Resource IDs: (1603)
-msgid "Prune"
-msgstr "修剪(prune)"
+msgid ""
+"Prune (remove remote-tracking branches which no longer exist on the remote)"
+msgstr "修剪（删除已经不再存在的远程跟踪分支）"
 
 #. Resource IDs: (14)
 msgid "Pull"
 msgstr "拉取(Pull)"
+
+#. Resource IDs: (75)
+msgid "Pull requires the selected local branch to be the current branch."
+msgstr "拉取要求选择一个本地分支作为当前分支"
 
 #. Resource IDs: (14)
 msgid "Pull..."
@@ -5727,9 +6766,25 @@ msgstr "拉取(Pull)..."
 msgid "Pull/Fetch"
 msgstr "拉取/获取(Pull/Fetch)"
 
+#. Resource IDs: (66)
+msgid "Pulled Diff"
+msgstr "拉取到的差异"
+
+#. Resource IDs: (66)
+msgid "Pulled Log"
+msgstr "拉取到的日志"
+
+#. Resource IDs: (75)
+msgid "Pus&h"
+msgstr "推送(&h)"
+
 #. Resource IDs: (14, 303)
 msgid "Push"
 msgstr "推送"
+
+#. Resource IDs: (76)
+msgid "Push ta&gs"
+msgstr "推送标签(&g)"
 
 #. Resource IDs: (14, 64)
 msgid "Push..."
@@ -5738,6 +6793,10 @@ msgstr "推送..."
 #. Resource IDs: (65535)
 msgid "Putty Key:"
 msgstr "putty密钥:"
+
+#. Resource IDs: (71)
+msgid "Putty Private Key(*.ppk)|*.ppk|All Files(*.*)|*.*||"
+msgstr "Putty私钥(*.ppk)|*.ppk|所有文件(*.*)|*.*||"
 
 #. Resource IDs: (246)
 #, c-format
@@ -5810,9 +6869,18 @@ msgstr "在你卡住之前, 请先阅读日常使用指南…"
 msgid "Rebase"
 msgstr "变基"
 
+#. Resource IDs: (67)
+#, c-format
+msgid "Rebasing... (%d/%d)"
+msgstr "变基中... (%d/%d)"
+
 #. Resource IDs: (1002)
 msgid "Recent"
 msgstr "最近的"
+
+#. Resource IDs: (57616)
+msgid "Recent File"
+msgstr "最近文件"
 
 #. Resource IDs: (65535)
 msgid "Recently modified lines"
@@ -5846,21 +6914,29 @@ msgstr "重做上次还原的动作\n重做"
 msgid "Reduce the window to an icon"
 msgstr "缩小窗口为图标"
 
-#. Resource IDs: (604, 1579)
+#. Resource IDs: (604)
 msgid "Ref"
 msgstr "引用"
 
 #. Resource IDs: (20087)
-msgid "Ref(Click it then go to)"
+msgid "Ref (Click it then go to)"
 msgstr "引用(点击跳转)"
+
+#. Resource IDs: (69)
+msgid "RefBrowse"
+msgstr "浏览引用"
 
 #. Resource IDs: (1588)
 msgid "RefLog"
 msgstr "引用记录"
 
-#. Resource IDs: (101, 135, 1382)
+#. Resource IDs: (135)
 msgid "Refresh"
 msgstr "重新整理"
+
+#. Resource IDs: (75)
+msgid "Refreshing..."
+msgstr "刷新..."
 
 #. Resource IDs: (117)
 msgid ""
@@ -5916,7 +6992,7 @@ msgstr "记住 (\"svn.rmdir\"选项)"
 msgid "Reminder: Commit your change after resolve"
 msgstr "提醒:在解决冲突后提交改动"
 
-#. Resource IDs: (1490)
+#. Resource IDs: (1573)
 msgid "Remote"
 msgstr "远端"
 
@@ -5931,6 +7007,18 @@ msgstr "远端URL(&URL)"
 #. Resource IDs: (65535)
 msgid "Remote Branch"
 msgstr "远端分支"
+
+#. Resource IDs: (71)
+msgid "Remote URL must not be empty."
+msgstr "远程URL不能为空"
+
+#. Resource IDs: (76)
+msgid "Remote Update"
+msgstr "更新远程"
+
+#. Resource IDs: (71)
+msgid "Remote name must not be empty."
+msgstr "远程名字不能为空"
 
 #. Resource IDs: (207)
 msgid "Remote property status"
@@ -5948,7 +7036,7 @@ msgstr "远程状态"
 msgid "Remote text status"
 msgstr "远程文字状态: "
 
-#. Resource IDs: (1503)
+#. Resource IDs: (65535)
 msgid "Remote:"
 msgstr "远端:"
 
@@ -5973,6 +7061,10 @@ msgstr "删除 %ld 项"
 #, c-format
 msgid "Remove %s"
 msgstr "删除 %s"
+
+#. Resource IDs: (75)
+msgid "Remove &branch"
+msgstr "删除分支(&b)"
 
 #. Resource IDs: (1626)
 msgid "Remove Untracked Directory (-d)"
@@ -6029,13 +7121,13 @@ msgstr "已将选定的文件类型\n%s \n从忽略列表删除。"
 msgid "Removes the file or filemask from the list of ignored items"
 msgstr "将选定的文件或文件匹配列表从忽略列表删除"
 
-#. Resource IDs: (581)
-msgid "Removes the selected properties"
-msgstr "删除选择的属性"
-
 #. Resource IDs: (16616)
 msgid "Rena&me..."
 msgstr "改名(&M)..."
+
+#. Resource IDs: (79, 1257)
+msgid "Rename"
+msgstr "重命名"
 
 #. Resource IDs: (97)
 #, c-format
@@ -6093,7 +7185,7 @@ msgstr "替换的节点"
 msgid "Replacing"
 msgstr "替换"
 
-#. Resource IDs: (1055, 1374, 1383)
+#. Resource IDs: (1383)
 msgid "Repository"
 msgstr "版本库"
 
@@ -6151,7 +7243,7 @@ msgstr "重置列"
 msgid "Reset current branch \"%s\" to \"%s\""
 msgstr "重置当前分支从%s到%s"
 
-#. Resource IDs: (207, 229)
+#. Resource IDs: (77, 229)
 msgid "Resolve"
 msgstr "解决"
 
@@ -6179,7 +7271,7 @@ msgstr "解决冲突: "
 msgid "Resolve later"
 msgstr "以后解决"
 
-#. Resource IDs: (74, 209, 1400)
+#. Resource IDs: (74, 209)
 msgid "Resolved"
 msgstr "解决"
 
@@ -6193,6 +7285,10 @@ msgstr "解决: \n%s"
 #. Resource IDs: (9)
 msgid "Resolves conflicted files"
 msgstr "解决有冲突的文件"
+
+#. Resource IDs: (66)
+msgid "Restart rebase"
+msgstr "重新开始变基"
 
 #. Resource IDs: (64)
 msgid "Restore"
@@ -6232,9 +7328,18 @@ msgstr "撤销合并 %ld"
 msgid "Reverse merging %ld through %ld"
 msgstr "撤销合并 r%ld，经由 r%ld"
 
-#. Resource IDs: (175, 229)
+#. Resource IDs: (77, 229)
 msgid "Revert"
 msgstr "还原"
+
+#. Resource IDs: (69)
+msgid "Revert commit"
+msgstr "还原提交"
+
+#. Resource IDs: (69)
+#, c-format
+msgid "Revert commit %s"
+msgstr "还原提交%s"
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -6278,7 +7383,11 @@ msgstr "版本 %d"
 msgid "Revision %s"
 msgstr "版本 %s"
 
-#. Resource IDs: (269, 65535)
+#. Resource IDs: (67)
+msgid "Revision Files"
+msgstr "版本控制文件"
+
+#. Resource IDs: (65535)
 msgid "Revision graph"
 msgstr "版本分支图"
 
@@ -6286,7 +7395,7 @@ msgstr "版本分支图"
 msgid "Revision:"
 msgstr "版本:"
 
-#. Resource IDs: (116, 65535)
+#. Resource IDs: (116)
 msgid "Revisions"
 msgstr "版本"
 
@@ -6299,6 +7408,10 @@ msgstr "RTF 格式\n有字体和段落格式的文本"
 #. Resource IDs: (188)
 msgid "Right View: "
 msgstr "右侧查看:"
+
+#. Resource IDs: (65535)
+msgid "Right image"
+msgstr "右侧图片"
 
 #. Resource IDs: (1070)
 #, c-format
@@ -6413,6 +7526,18 @@ msgstr "保存版本至(&T)..."
 
 #. Resource IDs: (3601)
 msgid ""
+"Save the active document with a new name\n"
+"Save As"
+msgstr "用一个新名称保存当前文档\n另存为"
+
+#. Resource IDs: (3601)
+msgid ""
+"Save the active document\n"
+"Save"
+msgstr "保存当前文档\n保存"
+
+#. Resource IDs: (3601)
+msgid ""
 "Save the modified file\n"
 "Save file"
 msgstr "保存变更过的文件\n保存文件"
@@ -6433,15 +7558,20 @@ msgstr "自从HEAD保存差异文件"
 msgid "Saved Data"
 msgstr "已保存数据"
 
-#. Resource IDs: (581)
-msgid "Saves the selected property value to a file"
-msgstr "将选择的属性值保存到文件"
+#. Resource IDs: (71)
+#, c-format
+msgid "Saving config failed (key: \"%s\", value: \"%s\")."
+msgstr "失败保存配置(键: \"%s\", 值: \"%s\")。"
+
+#. Resource IDs: (75)
+msgid "Saving notes failed."
+msgstr "失败保存注释"
 
 #. Resource IDs: (144)
 msgid "Saving patchfile to:"
 msgstr "保存补丁文件至: "
 
-#. Resource IDs: (1014, 1017, 1064, 1212)
+#. Resource IDs: (1014, 1064, 1636)
 msgid "Scintilla"
 msgstr "Scintilla"
 
@@ -6617,6 +7747,10 @@ msgstr "发送补丁"
 msgid "Send Patch by Email"
 msgstr "用邮件发送补丁"
 
+#. Resource IDs: (21)
+msgid "Send Patch(es) by eMail"
+msgstr "有邮件发送补丁"
+
 #. Resource IDs: (74)
 msgid "Sending content"
 msgstr "正在发送内容"
@@ -6672,6 +7806,10 @@ msgstr "外壳增强"
 msgid "Shell Icon Cache was rebuilt!"
 msgstr "图标缓存重建完成！"
 
+#. Resource IDs: (5062)
+msgid "Shift-JIS"
+msgstr "Shift-JIS"
+
 #. Resource IDs: (1105)
 msgid "Short &date/time format in log messages"
 msgstr "日志信息使用短日期/时间格式(&D)"
@@ -6707,6 +7845,10 @@ msgstr "显示应用记录(&R)"
 #. Resource IDs: (1073)
 msgid "Show &Unversioned Files"
 msgstr "显示无版本控制的文件(&U)"
+
+#. Resource IDs: (1208)
+msgid "Show &Whole Project"
+msgstr "显示整个工程(&W)"
 
 #. Resource IDs: (113, 32783)
 msgid "Show &changes"
@@ -6761,6 +7903,10 @@ msgid ""
 "Inline diff word-wise"
 msgstr "按照单词显示内迁差异\n识别单词的内嵌差异"
 
+#. Resource IDs: (32781)
+msgid "Show Log"
+msgstr "显示日志"
+
 #. Resource IDs: (1065)
 msgid "Show More Buttons"
 msgstr "显示更多的按钮"
@@ -6777,13 +7923,17 @@ msgstr "在缎带下方显示快捷访问工具栏"
 msgid "Show Screen&Tips on toolbars"
 msgstr "在工具栏中显示屏幕提示(&T)"
 
-#. Resource IDs: (115, 1208)
+#. Resource IDs: (115)
 msgid "Show Whole Project"
 msgstr "显示整个工程"
 
 #. Resource IDs: (247)
 msgid "Show all branch commit"
 msgstr "显示所有分支的历史"
+
+#. Resource IDs: (32775)
+msgid "Show author"
+msgstr "显示作者"
 
 #. Resource IDs: (114)
 msgid "Show changes as &unified diff"
@@ -6829,6 +7979,12 @@ msgstr "显示日志..."
 msgid "Show modified files in working copy"
 msgstr "显示工作区修改的文件"
 
+#. Resource IDs: (1270)
+msgid ""
+"Show next change of selected commit\n"
+"Show next"
+msgstr "显示选定提交的下一个改动\n显示下一个"
+
 #. Resource IDs: (2054)
 msgid ""
 "Show or hide the line diff bar\n"
@@ -6844,6 +8000,12 @@ msgstr "显示或隐藏定位工具栏\n切换定位工具栏"
 #. Resource IDs: (3713)
 msgid ""
 "Show or hide the status bar\n"
+"Toggle Status Bar"
+msgstr "显示\\隐藏状态栏\n切换状态栏"
+
+#. Resource IDs: (3713)
+msgid ""
+"Show or hide the status bar\n"
 "Toggle StatusBar"
 msgstr "显示或隐藏状态栏\n切换状态栏"
 
@@ -6852,6 +8014,12 @@ msgid ""
 "Show or hide the toolbar\n"
 "Toggle ToolBar"
 msgstr "显示或隐藏工具栏\n切换工具栏"
+
+#. Resource IDs: (1270)
+msgid ""
+"Show previous change of selected commit\n"
+"Show previous"
+msgstr "显示选定提交的上一个改动\n显示上一个"
 
 #. Resource IDs: (102)
 msgid "Show revision properties"
@@ -6940,6 +8108,11 @@ msgstr "大小"
 msgid "Skip"
 msgstr "跳过"
 
+#. Resource IDs: (66)
+#, c-format
+msgid "Skip Patch: %s"
+msgstr "跳过补丁: %s"
+
 #. Resource IDs: (74)
 msgid "Skipped"
 msgstr "跳过"
@@ -6992,9 +8165,21 @@ msgstr "叠加折线图"
 msgid "Standard"
 msgstr "标准"
 
+#. Resource IDs: (68)
+msgid "Start (FastFwd)"
+msgstr "开始(直接迁移)"
+
+#. Resource IDs: (67)
+msgid "Start Cherry Pick"
+msgstr "开始摘取"
+
 #. Resource IDs: (569)
 msgid "Start Commit Hook"
 msgstr "启动提交 Hook"
+
+#. Resource IDs: (67, 68)
+msgid "Start Rebase"
+msgstr "开始变基"
 
 #. Resource IDs: (569)
 msgid "Start Update Hook"
@@ -7028,15 +8213,15 @@ msgstr "弹出贮藏"
 msgid "Stash Save"
 msgstr "保存贮藏"
 
-#. Resource IDs: (16514)
+#. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "静态"
 
-#. Resource IDs: (179, 245)
+#. Resource IDs: (245)
 msgid "Statistics"
 msgstr "统计"
 
-#. Resource IDs: (74, 77, 207, 65535)
+#. Resource IDs: (74, 77, 207)
 msgid "Status"
 msgstr "状态"
 
@@ -7107,9 +8292,17 @@ msgstr "比较子模块"
 msgid "Submodule Info"
 msgstr "显示子模块信息"
 
+#. Resource IDs: (76)
+msgid "Submodule Init"
+msgstr "Submodule Init"
+
 #. Resource IDs: (20)
 msgid "Submodule Sync"
 msgstr "同步子模块"
+
+#. Resource IDs: (76)
+msgid "Submodule Update"
+msgstr "Submodule Update"
 
 #. Resource IDs: (81)
 #, c-format
@@ -7118,6 +8311,10 @@ msgid ""
 "<hr=100%%>\n"
 "%s"
 msgstr "Subversion 在进行清理动作时回报错误!\n<hr=100%%>\n%s"
+
+#. Resource IDs: (65)
+msgid "Success"
+msgstr "成功"
 
 #. Resource IDs: (1232)
 msgid "Sw&itch working copy to new branch/tag"
@@ -7200,7 +8397,7 @@ msgstr "没有任何改动需要提交"
 msgid "Sync..."
 msgstr "同步.."
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1556)
 msgid "System &sounds"
 msgstr "系统声音(&S)"
 
@@ -7209,6 +8406,14 @@ msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
 msgstr "系统注册表及 INI 文件(如果有) 删除完成。"
+
+#. Resource IDs: (5065)
+msgid "TIS-620"
+msgstr "TIS-620"
+
+#. Resource IDs: (7)
+msgid "TORTOISEIDIFF"
+msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs"
@@ -7227,7 +8432,7 @@ msgstr "Tab 宽度: "
 msgid "Tagged the working copy to %s"
 msgstr "标记工作副本为 %s"
 
-#. Resource IDs: (308, 1513, 65535)
+#. Resource IDs: (1485, 1513, 65535)
 msgid "Tags"
 msgstr "标签"
 
@@ -7246,6 +8451,24 @@ msgstr "仅测试"
 #. Resource IDs: (207)
 msgid "Text status"
 msgstr "文字状态"
+
+#. Resource IDs: (65535)
+msgid "Thai"
+msgstr "Thai"
+
+#. Resource IDs: (71)
+msgid ""
+"The Remote Config was changed.\n"
+"Do you want to save now or discard changes?"
+msgstr "远程配置已经更新。\n现在保存还是放弃？"
+
+#. Resource IDs: (70)
+#, c-format
+msgid ""
+"The branch \"%s\" is a <i>remote</i> branch.\n"
+"\n"
+"Do you really want to <ct=0x0000FF>delete</ct> it?"
+msgstr "分支\"%s\"是一个<i>远程分支</i>.\n\n你真的想<ct=0x0000FF>删除</ct>吗?"
 
 #. Resource IDs: (63)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -7267,6 +8490,10 @@ msgid ""
 "The color of creation, copy and rename nodes of the trunk will be shifted "
 "towards green."
 msgstr "创建、复制和改名的主干节点的颜色应该向绿色渐变。"
+
+#. Resource IDs: (67)
+msgid "The commit message must not be empty."
+msgstr "提交消息不能为空"
 
 #. Resource IDs: (197)
 msgid "The default URL to checkout from if nothing else is specified"
@@ -7357,6 +8584,10 @@ msgid ""
 "The hook script returned an error:\n"
 "%s"
 msgstr "Hook 脚本返回了一个错误: \n%s"
+
+#. Resource IDs: (7)
+msgid "The image can not be shown."
+msgstr "无法显示图片。"
 
 #. Resource IDs: (63)
 msgid ""
@@ -7477,6 +8708,13 @@ msgid ""
 "matches it better. Do you want to use the suggested path instead?"
 msgstr "路径\n%s\n好像和补丁文件中的路径不符。\nTortoiseMerge已经找到了更匹配的路径\n%s。\n要使用建议路径替换吗？"
 
+#. Resource IDs: (71)
+#, c-format
+msgid ""
+"The remote \"%s\" already exists.\n"
+"Do you want to overwrite it?"
+msgstr "远端\"%s\"已经存在.\n你想覆盖吗?"
+
 #. Resource IDs: (80)
 msgid "The repository was successfully created."
 msgstr "版本库创建成功。"
@@ -7493,8 +8731,8 @@ msgid ""
 "The target folder \n"
 "%s\n"
 "is not empty!\n"
-"Are you sure you want to checkout/export into that folder?"
-msgstr "目标文件夹%s非空！\n你确定要检出/导出到该文件夹吗？"
+"Are you sure you want to clone/export into that folder?"
+msgstr "目标目录\n%s\n不为空!\n是否真的想克隆/导出到这个目录?"
 
 #. Resource IDs: (195)
 msgid ""
@@ -7571,6 +8809,10 @@ msgstr "没有可增加的条目，所有文件和文件夹都已经用 Subversi
 msgid "Thesaurus"
 msgstr "知识库"
 
+#. Resource IDs: (78)
+msgid "This field is required and must not be empty."
+msgstr "这个域必须输入且不能为空"
+
 #. Resource IDs: (83)
 msgid ""
 "This is not a valid URL.\n"
@@ -7609,6 +8851,10 @@ msgstr "该属性只能设置在文件夹上，不能在文件上设置。"
 #. Resource IDs: (15)
 msgid "This property must not have multiple lines. Only one line is allowed."
 msgstr "该属性只允许增加一行，不能增加多行文本。"
+
+#. Resource IDs: (67)
+msgid "This task requires a clean working copy."
+msgstr "这个操作要求一个干净的工作区"
 
 #. Resource IDs: (1016)
 msgid ""
@@ -7688,7 +8934,7 @@ msgstr "工具:"
 msgid "Tortoise&UDiff"
 msgstr "Tortoise&UDiff"
 
-#. Resource IDs: (602, 1253, 65535)
+#. Resource IDs: (65)
 msgid "TortoiseGit"
 msgstr "TortoiseGit"
 
@@ -7715,7 +8961,45 @@ msgstr "TortoiseGit 检测到类似的文件名。你要同时改名\n文件 %s 
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
 
-#. Resource IDs: (7, 130, 3585)
+#. Resource IDs: (1)
+#, c-format
+msgid "TortoiseGitBlame, Version %d.%d.%d.%d"
+msgstr "TortoiseGitBlame, 版本%d.%d.%d.%d"
+
+#. Resource IDs: (1)
+msgid ""
+"TortoiseGitBlame\n"
+"\n"
+"TortoiseGitBlam\n"
+"\n"
+"\n"
+"TortoiseGitBlame.Document\n"
+"TortoiseGitBlame.Document"
+msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+
+#. Resource IDs: (7)
+msgid "TortoiseIDiff"
+msgstr "TortoiseIDiff"
+
+#. Resource IDs: (65535)
+msgid "TortoiseIDiff - An image diff tool, part of TortoiseGit"
+msgstr "TortoiseIDiff - 一个图像比较工具，包含于 TortoiseGit"
+
+#. Resource IDs: (7)
+msgid ""
+"TortoiseIDiff: the image diff viewer for TortoiseSVN\n"
+"\n"
+"Available command line parameters are:\n"
+"/left:\"path to left picture\"\n"
+"/lefttitle:\"title to show for the left picture\"\n"
+"/right:\"path to right picture\"\n"
+"/righttitle:\"title to show for the right picture\"\n"
+"/overlay\t\tto enable overlay mode\n"
+"/fit\t\tto fit the images sizes\n"
+"/showinfo\t\tto show the image info boxes"
+msgstr "TortoiseIDiff:  TortoiseSVN 的图片差异查看器\n\n可用的命令行参数: \n/left: “左侧文件的路径”\n/lefttitle: “左侧窗口的标题”\n/right: “右侧文件的路径”\n/righttitle: “右侧窗口的标题”\n/overlay\t\t启用覆盖模式\n/fit\t\t适合图像尺寸\\n\n/showinfo\t\t显示图像信息框"
+
+#. Resource IDs: (7, 3585)
 msgid "TortoiseMerge"
 msgstr "TortoiseMerge"
 
@@ -7745,7 +9029,7 @@ msgstr "文件改动次数合计: "
 msgid "Trac&k"
 msgstr "跟踪(&k)"
 
-#. Resource IDs: (1480, 1520)
+#. Resource IDs: (1520)
 msgid "Track"
 msgstr "跟踪"
 
@@ -7758,6 +9042,10 @@ msgstr "跟踪远端分支:"
 msgid "Transferring at %s"
 msgstr "从 %s 开始传输"
 
+#. Resource IDs: (32816)
+msgid "Transparent &color..."
+msgstr "透明色(&C)..."
+
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr "试试“清理”，如果无效，你需要重新检出文件。"
@@ -7765,6 +9053,10 @@ msgstr "试试“清理”，如果无效，你需要重新检出文件。"
 #. Resource IDs: (73)
 msgid "Try again"
 msgstr "再试一次"
+
+#. Resource IDs: (65535)
+msgid "Turkish"
+msgstr "Turkish"
 
 #. Resource IDs: (10)
 msgid "Tweak TortoiseGit"
@@ -7774,7 +9066,7 @@ msgstr "调整 TortoiseGit 设置"
 msgid "Type"
 msgstr "类型"
 
-#. Resource IDs: (164, 207)
+#. Resource IDs: (207)
 msgid "URL"
 msgstr "URL"
 
@@ -7786,7 +9078,11 @@ msgstr "URL 历史记录"
 msgid "URL of Git items"
 msgstr "URL of Git items"
 
-#. Resource IDs: (144, 11023, 65535)
+#. Resource IDs: (71)
+msgid "URL or directory must not be empty."
+msgstr "URL或目录不能为空"
+
+#. Resource IDs: (144)
 msgid "URL:"
 msgstr "URL: "
 
@@ -7861,6 +9157,10 @@ msgid ""
 "text without any formatting"
 msgstr "未格式化的文本\n没有任何格式的文本"
 
+#. Resource IDs: (1258)
+msgid "Unknown"
+msgstr "未知"
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -7898,9 +9198,13 @@ msgstr "如果文件夹包含无版本控制的文件，则标识为已修改"
 msgid "Unversioning %s"
 msgstr "正在将 %s 去除版本控制"
 
-#. Resource IDs: (1383)
+#. Resource IDs: (1384)
 msgid "Up"
 msgstr "向上"
+
+#. Resource IDs: (65)
+msgid "Update Submodules"
+msgstr "更新子模块"
 
 #. Resource IDs: (74)
 msgid "Updated"
@@ -7909,6 +9213,10 @@ msgstr "更新"
 #. Resource IDs: (3849)
 msgid "Updating ActiveX objects"
 msgstr "更新 ActiveX 对象"
+
+#. Resource IDs: (68)
+msgid "Updating index"
+msgstr "更新索引"
 
 #. Resource IDs: (65535)
 msgid "Url:"
@@ -8105,6 +9413,12 @@ msgstr "用户名:"
 msgid "User cancelled"
 msgstr "用户操作已取消"
 
+#. Resource IDs: (72)
+msgid ""
+"User name and email must be set before commit.\r\n"
+" Do you want to set these now?"
+msgstr "在提交前必须设置用户名和电子邮箱。\n是否现在设置？"
+
 #. Resource IDs: (1650)
 msgid "UserName"
 msgstr "用户名"
@@ -8128,17 +9442,30 @@ msgstr "可用的命令行选项有: \n/base: <基础文件的路径>\n/theirs: 
 msgid "Value"
 msgstr "值"
 
-#. Resource IDs: (1004, 1075)
+#. Resource IDs: (1004, 1075, 1514, 1539)
 msgid "Version"
 msgstr "版本"
+
+#. Resource IDs: (7)
+#, c-format
+msgid "Version %d.%d.%d.%d"
+msgstr "版本 %d.%d.%d.%d"
 
 #. Resource IDs: (1644)
 msgid "Version 1"
 msgstr "版本1"
 
+#. Resource IDs: (72)
+msgid "Version 1 (Commit Data New)"
+msgstr "版本1(提交日期更新)"
+
 #. Resource IDs: (1645)
 msgid "Version 2 (Base)"
 msgstr "版本2(基础)"
+
+#. Resource IDs: (72)
+msgid "Version 2 (Base) (Commit Date New)"
+msgstr "版本2(基础)(提交日期更新)"
 
 #. Resource IDs: (1075)
 msgid "Version Information"
@@ -8152,7 +9479,11 @@ msgstr "版本:"
 msgid "Versioned"
 msgstr "已经版本控制"
 
-#. Resource IDs: (328, 603)
+#. Resource IDs: (65535)
+msgid "Vietnamese"
+msgstr "Vietnamese"
+
+#. Resource IDs: (603)
 msgid "View Patch"
 msgstr "查看补丁"
 
@@ -8191,6 +9522,10 @@ msgstr "等待"
 msgid "Wait for the script to finish"
 msgstr "等待脚本运行结束"
 
+#. Resource IDs: (75)
+msgid "Waiting for input"
+msgstr "等待输入"
+
 #. Resource IDs: (88)
 msgid "Warning"
 msgstr "警告"
@@ -8198,6 +9533,22 @@ msgstr "警告"
 #. Resource IDs: (219)
 msgid "Warning!"
 msgstr "警告！"
+
+#. Resource IDs: (70)
+#, c-format
+msgid ""
+"Warning: \"%s\" will be permanently deleted. It can <ct=0x0000FF><b>NOT</b></ct> be recovered!\r\n"
+"\r\n"
+"Do you really want to continue?"
+msgstr "警告: \"%s\" 将被永久删除. 这个操作<ct=0x0000FF><b>不能</b></ct>被恢复!\n\n你真的想继续吗?"
+
+#. Resource IDs: (71)
+msgid "Web"
+msgstr "Web"
+
+#. Resource IDs: (65535)
+msgid "Western European"
+msgstr "Western European"
 
 #. Resource IDs: (198)
 msgid ""
@@ -8240,11 +9591,47 @@ msgstr "窗口"
 msgid "Windows &2000"
 msgstr "Windows &2000"
 
+#. Resource IDs: (5020)
+msgid "Windows-1250"
+msgstr "Windows-1250"
+
+#. Resource IDs: (5021)
+msgid "Windows-1251"
+msgstr "Windows-1251"
+
+#. Resource IDs: (5022)
+msgid "Windows-1252"
+msgstr "Windows-1252"
+
+#. Resource IDs: (5023)
+msgid "Windows-1253"
+msgstr "Windows-1253"
+
+#. Resource IDs: (5024)
+msgid "Windows-1254"
+msgstr "Windows-1254"
+
+#. Resource IDs: (5025)
+msgid "Windows-1255"
+msgstr "Windows-1255"
+
+#. Resource IDs: (5026)
+msgid "Windows-1256"
+msgstr "Windows-1256"
+
+#. Resource IDs: (5027)
+msgid "Windows-1257"
+msgstr "Windows-1257"
+
+#. Resource IDs: (5028)
+msgid "Windows-1258"
+msgstr "Windows-1258"
+
 #. Resource IDs: (146)
 msgid "With URL:"
 msgstr "URL: "
 
-#. Resource IDs: (158, 65535)
+#. Resource IDs: (158)
 msgid "Working Copy"
 msgstr "工作副本"
 
@@ -8252,9 +9639,9 @@ msgstr "工作副本"
 msgid "Working Copy Path:"
 msgstr "工作副本路径"
 
-#. Resource IDs: (20)
-msgid "Working copy"
-msgstr "工作副本"
+#. Resource IDs: (1253)
+msgid "Working dir changes"
+msgstr "工作区改动"
 
 #. Resource IDs: (73)
 msgid "Yes"
@@ -8307,6 +9694,17 @@ msgid ""
 "you must activate the 'recursive' checkbox."
 msgstr "你不能在文件夹上设置该属性，它只能设置在文件上！\n如果你要为该文件夹中所有文件设置该属性，\n你必须选择“递归”选项。"
 
+#. Resource IDs: (84)
+msgid "You cannot change the type of this ref with a rename."
+msgstr "不能通过重命名改变这个引用的类型"
+
+#. Resource IDs: (84)
+msgid ""
+"You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n"
+"\n"
+"You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+msgstr "版本的msysGit (http://code.google.com/p/msysgit/)安装\n\n你应该考虑升级到 1.7.10+ ，这个版本支持UTF-并且兼任 *nix版本的 git."
+
 #. Resource IDs: (16)
 msgid ""
 "You have modified properties without saving them first.\n"
@@ -8318,6 +9716,16 @@ msgid ""
 "You haven't entered an issue number!\n"
 "Are you sure you want to commit without an issue number?"
 msgstr "你尚未输入问题编号！\n确定要进行提交吗？"
+
+#. Resource IDs: (68)
+msgid "You haven't entered your Signed-Off-By line!"
+msgstr "没有输入你的Signed-Off-By"
+
+#. Resource IDs: (68)
+msgid ""
+"You marked some files as \"Restore after commit\".\n"
+"Do you want to restore them now? You might loose all changes to this file after marking it."
+msgstr "你标记一些文件为\"提交后恢复\"。\n你现在想恢复码？这可能丢失标记后所有这些文件的改动。"
 
 #. Resource IDs: (1002)
 #, c-format
@@ -8332,6 +9740,22 @@ msgstr "必须为提交输入日志信息"
 msgid "You must restart your system for the changes to take effect."
 msgstr "你必须重新启动操作系统使改变生效。"
 
+#. Resource IDs: (65)
+msgid "You must select a filename for the zip-file!"
+msgstr "必须为zip文件输入一个文件名"
+
+#. Resource IDs: (604)
+msgid ""
+"You need to stash changes before you can use DCommit.\r\n"
+" Do you want to stash pop now?\r\n"
+msgstr "你在使用DCommit前需要存藏(stash)改动。\n你想现在弹出存藏(stash)改动吗?\n"
+
+#. Resource IDs: (65)
+msgid ""
+"You selected a folder.\r\n"
+"Exports are only possible to a (zip) file."
+msgstr "你选择的是目录\n导出只能是一个(zip)文件"
+
 #. Resource IDs: (77)
 msgid ""
 "You selected an unversioned file.\n"
@@ -8345,12 +9769,6 @@ msgstr "你应该输入文本!"
 #. Resource IDs: (1001)
 msgid "You should select an image!"
 msgstr "你应该选择一个图片!"
-
-#. Resource IDs: (604)
-msgid ""
-"You stash change before DCommit,\r\n"
-" Do you want to stash pop now?\r\n"
-msgstr "你做DCommit之前贮藏改动,\n\n现在恢复吗？\n"
 
 #. Resource IDs: (195)
 #, c-format
@@ -8393,6 +9811,10 @@ msgstr "你的工作副本已经有本地修改。\n如果你从 HEAD 版本创�
 msgid "Zip File"
 msgstr "Zip 文件"
 
+#. Resource IDs: (32783)
+msgid "Zoo&m out"
+msgstr "Zoo&m out"
+
 #. Resource IDs: (1069)
 msgid "Zoom"
 msgstr "窗口"
@@ -8417,6 +9839,10 @@ msgid ""
 "Zoom Out"
 msgstr "缩小\n缩小"
 
+#. Resource IDs: (32784)
+msgid "Zoom i&n"
+msgstr "放大(&N)"
+
 #. Resource IDs: (2049)
 msgid "Zoom in"
 msgstr "放大"
@@ -8429,10 +9855,21 @@ msgstr "缩小"
 msgid "[Unassigned]"
 msgstr "[未分配]"
 
+#. Resource IDs: (72)
+#, c-format
+msgid "\"%\" is invalid."
+msgstr "\"%\" 是非法字符"
+
 #. Resource IDs: (602)
 #, c-format
 msgid "\"%s\" is not git repository"
 msgstr "\"%s\"不是git版本库"
+
+#. Resource IDs: (65)
+msgid ""
+"\"git am\" is still in apply mode.\n"
+"Do you want to abort?"
+msgstr "\"git am\" 仍然在应用模式.\n你想放弃吗?"
 
 #. Resource IDs: (65535)
 msgid "_POPUP_"
@@ -8502,50 +9939,6 @@ msgstr "bugtraq.url"
 msgid "bugtraq.warningifnoissue"
 msgstr "bugtraq.warningifnoissue"
 
-#. Resource IDs: (577)
-msgid ""
-"bugtraq:append\r\n"
-"Set to 'false' if you want the bugtracking ID to be inserted at the top of the\r\n"
-"log message. The default is 'true' which means the bugtracking ID\r\n"
-"is appended to the log message."
-msgstr "bugtraq:append\r\n设为“否”时, bug 编号会加在日志信息最\r\n开头；默认值是“是”， 表示 bug 编号是加在日志信息的最后。"
-
-#. Resource IDs: (577)
-msgid ""
-"bugtraq:label\r\n"
-"Label text to show for the edit box where the user enters the issue number."
-msgstr "bugtraq:label\r\n用来提示使用者输入问题编号的信息。"
-
-#. Resource IDs: (577)
-msgid ""
-"bugtraq:logregex\r\n"
-"two regular expressions separated by a newline.\r\n"
-"The first expression is used to find a string referring to an issue,\r\n"
-"the second expression is used to extract the bare bug ID from that string."
-msgstr "bugtraq:logregex\r\n用换行分隔的两个正则表达式，\r\n第一个正则表达式用于查找问题标题中的字符串，\r\n第二个正则表达式用于从字符串获取问题编号。"
-
-#. Resource IDs: (577)
-#, c-format
-msgid ""
-"bugtraq:message\r\n"
-"String which is appended to a log message when an issue number is entered.\r\n"
-"The string must contain '%BUGID%' which gets replaced with the issue number."
-msgstr "bugtraq:mesage\r\n输入问题编号时, 要附加在后面的字符串。\r\n必须含有“%BUGID%”, 用来替换问题编号。"
-
-#. Resource IDs: (577)
-msgid ""
-"bugtraq:number\r\n"
-"Set to 'false' if your bugtracking system has issues which are referenced not by numbers."
-msgstr "bugtraq:number\r\n如果你的错误追踪系统不是以编号来管理问题，请设为“否”"
-
-#. Resource IDs: (577)
-#, c-format
-msgid ""
-"bugtraq:url\r\n"
-"URL pointing to the issue tracker. It must contain '%BUGID%' which\r\n"
-"gets replaced with the issue number."
-msgstr "bugtraq:url\r\n指向问题追踪的 URL，必须含有“%BUGID%”, \r\n用来代换问题编号。"
-
 #. Resource IDs: (244, 245)
 msgid "commits"
 msgstr "注解"
@@ -8594,6 +9987,11 @@ msgstr "外部"
 msgid "false"
 msgstr "否"
 
+#. Resource IDs: (66)
+#, c-format
+msgid "git did not exit cleanly (exit code %d)"
+msgstr "git不能完全退出(退出码 %d)"
+
 #. Resource IDs: (13)
 msgid "ignored"
 msgstr "忽略"
@@ -8626,7 +10024,27 @@ msgstr "它未受版本控制。"
 msgid "item kept locally"
 msgstr "保留本地项目"
 
-#. Resource IDs: (11, 195)
+#. Resource IDs: (69)
+#, c-format
+msgid ""
+"line: %d(+) %d(-) files: %s = %d\n"
+"%s = %d\n"
+"%s = %d\n"
+"%s = %d"
+msgstr "行: %d(+) %d(-) 文件: %s = %d\n%s = %d\n%s = %d\n%s = %d"
+
+#. Resource IDs: (69)
+#, c-format
+msgid ""
+"line: %d(+) %d(-) files: %s = %d\n"
+"%s = %d\n"
+"%s = %d\n"
+"%s = %d\n"
+"%s = %d\n"
+"%s = %d"
+msgstr "行: %d(+) %d(-) 文件: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"
+
+#. Resource IDs: (195)
 msgid "locked"
 msgstr "锁定"
 
@@ -8682,6 +10100,10 @@ msgstr "无版本控制"
 #. Resource IDs: (10)
 msgid "normal"
 msgstr "常规"
+
+#. Resource IDs: (1256)
+msgid "not found"
+msgstr "没有找到"
 
 #. Resource IDs: (11)
 msgid "obstructed"
@@ -8742,69 +10164,6 @@ msgstr "版本 %s-%s，版本 %s-%s"
 msgid "revisions %s-%s, %s"
 msgstr "版本 %s-%s，%s"
 
-#. Resource IDs: (576)
-msgid ""
-"svn:eol-style\r\n"
-"One of 'native', 'LF', 'CR', 'CRLF'."
-msgstr "svn:eol-style\r\n'native'，'LF'，'CR'，'CRLF' 四者之一。"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:executable\r\n"
-"If present, make the file executable. This property cannot be set on a directory.\r\n"
-"A non-recursive attempt will fail, and a recursive attempt will set the property only on the file children of the directory."
-msgstr "svn:executable\r\n设置后文件将具备执行权限。该属性不能设置到一个目录上。\r\n不能进行非递归操作，而递归操作将只对目录中的文件生效。"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:externals\r\n"
-"A newline separated list of module specifiers, each of which consists of\r\n"
-"an optional revision, an URL and a relative directory path. For example\r\n"
-"http://example.com/repos/zig foo\r\n"
-"-r 1234 http://example.com/repos/zag foo/bar\r\n"
-"\r\n"
-"The URLs can either be full URLs or relative. The format for\r\n"
-"the relative URLs is:\r\n"
-"../ relative to the parent directory of the external\r\n"
-"^/ relative to the repository root\r\n"
-"// relative to the URL scheme\r\n"
-"/ relative to the server's hostname"
-msgstr "svn:externals\r\n以换行字符分隔的模块指示列表, 每行包含可选的版本号，URL 和相对目录。例如: \r\nhttp://example.com/repos/zig foo\r\n-r 1234 http://example.com/repos/zag foo/bar\r\n\r\nURL 通常是全路径，也可以是相对路径。相对路径的格式是: \r\n../ 相对于外部路径的父目录\r\n^/  相对于版本库的根\r\n//  相对于 URL 方案\r\n/   相对于服务器的主机名称"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:ignore\r\n"
-"A newline separated list of file patterns to ignore."
-msgstr "svn:ignore\r\n以换行字符分隔的文件忽略模式列表。"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:keywords\r\n"
-"Keywords to be expanded. Valid keywords are:\r\n"
-"URL, HeadURL : The URL for the head revision of the object.\r\n"
-"Author, LastChangedBy : The last person to modify the file.\r\n"
-"Date, LastChangedDate : The date/time the object was last modified.\r\n"
-"Rev, LastChangedRevision : The last revision the object changed.\r\n"
-"Id : A compressed summary of the previous 4 keywords."
-msgstr "svn:keywords\r\n要展开的关键词。合法的关键词包括: \r\nURL，HeadURL : 此对象最新版本的 URL。\r\nAuthor，LastChangedBy : 最后一个修改此对象的人。\r\nDate，LastChangedDate : 此对象的最后修改日期。\r\nRev，LastChangedRevision : 此对象的最后修改版本。\r\nId : 上述四个关键词的组合。"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:mergeinfo\r\n"
-"A newline separated list of merge tracking info. Each line consists of an absolute\r\n"
-"path followed by a colon and a list of comma separated revision numbers.\r\n"
-"For example\r\n"
-"/trunk:123-125,129"
-msgstr "svn:mergeinfo\r\n用换行隔开的合并跟踪信息列表。每行包含一个绝对路径，\r\n随后一个冒号，然后是用逗号分割的版本号列表。例如\r\n/trunk:123-125,129"
-
-#. Resource IDs: (576)
-msgid ""
-"svn:mime-type\r\n"
-"The mime type of the file. Used to determine whether to merge the file, and how to serve it from Apache.\r\n"
-"A mime type beginning with 'text/' (or an absent mime type) is treated as text.\r\n"
-"Anything else is treated as binary."
-msgstr "svn:mime-type\r\n此文件的 mime 类型。用来决定文件是否要合并，以及由 Apache 传输时要怎么处理。\r\n以“text/”开头(或没有设置)的 mime 类型视为文本文件，\r\n其它则视为二进制文件。"
-
 #. Resource IDs: (208)
 #, c-format
 msgid ""
@@ -8825,7 +10184,7 @@ msgstr "有冲突的修改。"
 msgid "to %1"
 msgstr "至 %1"
 
-#. Resource IDs: (80, 103, 284)
+#. Resource IDs: (80, 284)
 #, c-format
 msgid "to %s"
 msgstr "至 %s"
@@ -8834,94 +10193,9 @@ msgstr "至 %s"
 msgid "true"
 msgstr "是"
 
-#. Resource IDs: (578)
-msgid ""
-"tsvn:autoprops\r\n"
-"A list of properties separated by newlines which get applied automatically when adding/importing files.\r\n"
-"Format: <filemask> = property=value;property=value\r\n"
-"Example: *.xml = svn:eol-style=native;svn:mime-type=text/xml"
-msgstr "tsvn:autoprops\r\n当增加/导入时自动应用的用换行分割的属性列表。\r\n格式: <filemask> = property=value;property=value\r\n样例: *.xml = svn:eol-style=native;svn:mime-type=text/xml"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:logfilelistenglish\r\n"
-"Set to 'false' if you don't want the list of changed files to be pasted in English\r\n"
-"in the commit dialog."
-msgstr "tsvn:logfilelistenglish\r\n如果你不想将修改文件列表以英文粘贴到提交对话框，\r\n请设置为“否”。"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:logminsize\r\n"
-"Minimum size in chars a log message must have before a commit is allowed."
-msgstr "tsvn:logminsize\r\n在允许提交之前必须输入的最短日志长度。"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:logsummary\r\n"
-"A regex string which extracts a summary from a log message in its first group."
-msgstr "tsvn:logsummary\r\n从第一组日志信息中抽取摘要的正则表达式字符串。"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:logtemplate\r\n"
-"String which is inserted in the log message boxes in the commit dialogs.\r\n"
-"Use this as a log message template for users to fill in."
-msgstr "tsvn:logtemplate\r\n自动加入日志信息对话框中的字符串，\r\n可以用作让使用者填写的日志信息模板。"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:logwidthmarker\r\n"
-"Set this to the number of chars the log message should not exceed its width.\r\n"
-"A faded line is shown in the commit dialogs at that position. The default is 80 chars."
-msgstr "tsvn:logwidthmarker\r\n设置日志信息一行的最大字符数。\r\n提交窗口中会在指定位置显示一条淡淡的直线，默认是 80 字符。"
-
-#. Resource IDs: (578)
-msgid ""
-"tsvn:projectlanguage\r\n"
-"Set this to the language number you want your log messages written in.\r\n"
-"TortoiseGit will then load the appropriate spell checker module if available."
-msgstr "tsvn:projectlanguage\r\n把该选项设置为希望写日志信息时所适用的语言编号。\r\n如果该语言的拼写检查模块有效，则 TortoiseGit 会自动载入。"
-
-#. Resource IDs: (581)
-msgid ""
-"tsvn:userfileproperties\r\n"
-"Newline separated list of user defined properties for files which will\r\n"
-"be shown in the property dialog to choose from."
-msgstr "tsvn:userfileproperties\r\n用换行符分隔的文件的用户自定义属性，\r\n这些属性将在属性选择对话框中列出。"
-
-#. Resource IDs: (581)
-msgid ""
-"tsvn:userfolderproperties\r\n"
-"Newline separated list of user defined properties for folders which will\r\n"
-"be shown in the property dialog to choose from."
-msgstr "tsvn:userfolderproperties\r\n用换行符分隔的文件夹的用户自定义属性，\r\n这些属性将在属性选择对话框中列出。"
-
-#. Resource IDs: (577)
-msgid ""
-"tsvn:warnifnoissue\r\n"
-"Set to 'yes' if a warning shall be shown when no issue is entered in the commit dialog."
-msgstr "tsvn:warnifnoissue\r\n如果设为“是”，则在提交对话框没有输入问题时，会显示警告信息。"
-
 #. Resource IDs: (563)
 msgid "values are different"
 msgstr "所取值是不同的"
-
-#. Resource IDs: (579)
-#, c-format
-msgid ""
-"webviewer:pathrevision\r\n"
-"URL pointing to the web viewer for the repository for a specific file and revision.\r\n"
-"The string %REVISION% in the URL is replaced with the revision number,\r\n"
-"the string %PATH% is replaced with the path to the file relative to the repository root."
-msgstr "webviewer:pathrevision\r\n指向版本库的特定文件和版本的 URL，用于在 Web 浏览器中浏览。\r\nURL 中的字符串 %REVISION% 将被版本号所替代，\r\n字符串 %PATH% 将被文件相对于版本库的路径所替代。"
-
-#. Resource IDs: (579)
-#, c-format
-msgid ""
-"webviewer:revision\r\n"
-"URL pointing to the web viewer for the repository for a specific revision.\r\n"
-"The string %REVISION% in that URL is replaced with the revision number."
-msgstr "webviewer:revision\r\n指向版本库的指定版本的 URL，用于在 Web 浏览器中浏览。\r\nURL 中的字符串 %REVISION% 将被版本号所替代。"
 
 #. Resource IDs: (245)
 msgid "week"
