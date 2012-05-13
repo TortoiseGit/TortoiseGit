@@ -243,16 +243,6 @@ msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "%s: Remote file"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "%s: Working Base"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
 msgid "%s: Working Copy"
 msgstr ""
 
@@ -633,10 +623,6 @@ msgstr ""
 msgid "&From"
 msgstr ""
 
-#. Resource IDs: (1259)
-msgid "&From WC at URL:"
-msgstr ""
-
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr ""
@@ -651,10 +637,6 @@ msgstr ""
 
 #. Resource IDs: (1511)
 msgid "&HEAD"
-msgstr ""
-
-#. Resource IDs: (1182)
-msgid "&HEAD revision in the repository"
 msgstr ""
 
 #. Resource IDs: (12, 32781, 57670, 65535)
@@ -1023,10 +1005,6 @@ msgstr ""
 msgid "&Skip"
 msgstr ""
 
-#. Resource IDs: (1185)
-msgid "&Specific revision in repository"
-msgstr ""
-
 #. Resource IDs: (1524)
 msgid "&Squash"
 msgstr ""
@@ -1077,10 +1055,6 @@ msgstr ""
 
 #. Resource IDs: (1222)
 msgid "&Timeout in seconds to stop the auto-completion parsing"
-msgstr ""
-
-#. Resource IDs: (1384)
-msgid "&To URL:"
 msgstr ""
 
 #. Resource IDs: (59392)
@@ -1183,10 +1157,6 @@ msgstr ""
 msgid "&Windows XP"
 msgstr ""
 
-#. Resource IDs: (1183)
-msgid "&Working copy"
-msgstr ""
-
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr ""
@@ -1260,19 +1230,6 @@ msgstr ""
 
 #. Resource IDs: (16527)
 msgid "....."
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid ": Revision %d"
-msgstr ""
-
-#. Resource IDs: (151)
-msgid ": working base"
-msgstr ""
-
-#. Resource IDs: (151)
-msgid ": working copy"
 msgstr ""
 
 #. Resource IDs: (16506)
@@ -1413,10 +1370,6 @@ msgstr ""
 
 #. Resource IDs: (73)
 msgid "Abort"
-msgstr ""
-
-#. Resource IDs: (1465)
-msgid "Abort &Merge"
 msgstr ""
 
 #. Resource IDs: (129)
@@ -1965,10 +1918,6 @@ msgstr ""
 msgid "Browse..."
 msgstr ""
 
-#. Resource IDs: (1119)
-msgid "Bug-&ID/Issue-Nr:"
-msgstr ""
-
 #. Resource IDs: (116)
 msgid "Bug-ID"
 msgstr ""
@@ -2205,10 +2154,6 @@ msgstr ""
 
 #. Resource IDs: (602)
 msgid "Choose Repository"
-msgstr ""
-
-#. Resource IDs: (1402)
-msgid "Choose item:"
 msgstr ""
 
 #. Resource IDs: (4572)
@@ -2521,7 +2466,7 @@ msgid "Configure Issue Tracker Integration"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Configure alternative editor. Preferably one which can handle *nix file endings."
+msgid "Configure alternative editor. Preferably one which can handle *nix line endings."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2590,10 +2535,6 @@ msgstr ""
 msgid "Copy %s to %s, Revision %s"
 msgstr ""
 
-#. Resource IDs: (142)
-msgid "Copy (Branch/Tag)"
-msgstr ""
-
 #. Resource IDs: (1255, 32778)
 msgid "Copy SHA-1 to clipboard"
 msgstr ""
@@ -2657,16 +2598,6 @@ msgstr ""
 msgid "Could not add %s to the ignore list!"
 msgstr ""
 
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not add '%s' because"
-msgstr ""
-
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not add property '%s' on '%s' because"
-msgstr ""
-
 #. Resource IDs: (201)
 msgid "Could not check for a newer version!"
 msgstr ""
@@ -2681,16 +2612,6 @@ msgstr ""
 msgid "Could not create %1 because the directory is full."
 msgstr ""
 
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not delete '%s' because"
-msgstr ""
-
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not delete property '%s' on '%s' because"
-msgstr ""
-
 #. Resource IDs: (83)
 msgid "Could not determine the last committed revision!"
 msgstr ""
@@ -2701,16 +2622,6 @@ msgstr ""
 
 #. Resource IDs: (81)
 msgid "Could not get the status!"
-msgstr ""
-
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not merge '%s' because"
-msgstr ""
-
-#. Resource IDs: (582)
-#, c-format
-msgid "Could not merge property '%s' on '%s' because"
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -2834,10 +2745,6 @@ msgstr ""
 
 #. Resource IDs: (604)
 msgid "Create a shallow clone with a history truncated to the specified number of revisions. A shallow repository has a number of limitations (you cannot clone or fetch from it, nor push from nor into it), but is adequate if you are only interested in the recent history of a large project with a long history, and would want to send in fixes as patches."
-msgstr ""
-
-#. Resource IDs: (1385)
-msgid "Create copy in the repository from:"
 msgstr ""
 
 #. Resource IDs: (72)
@@ -3350,10 +3257,6 @@ msgstr ""
 
 #. Resource IDs: (115)
 msgid "Edit author name"
-msgstr ""
-
-#. Resource IDs: (1399)
-msgid "Edit conflict"
 msgstr ""
 
 #. Resource IDs: (110)
@@ -4710,10 +4613,6 @@ msgstr ""
 msgid "Least active author:"
 msgstr ""
 
-#. Resource IDs: (1404)
-msgid "Leave conflicted:"
-msgstr ""
-
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr ""
@@ -4805,10 +4704,6 @@ msgstr ""
 
 #. Resource IDs: (130)
 msgid "Log Messages"
-msgstr ""
-
-#. Resource IDs: (1386)
-msgid "Log message"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -5729,10 +5624,6 @@ msgstr ""
 msgid "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
 msgstr ""
 
-#. Resource IDs: (1287)
-msgid "Please resolve the conflict by choosing one of the following options:"
-msgstr ""
-
 #. Resource IDs: (83)
 msgid "Please select a hook type"
 msgstr ""
@@ -5875,31 +5766,6 @@ msgstr ""
 
 #. Resource IDs: (11)
 msgid "Property"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "Property %s: Revision %s"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "Property %s: Working Base, Revision %ld"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "Property %s: remote"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "Property %s: working base"
-msgstr ""
-
-#. Resource IDs: (151)
-#, c-format
-msgid "Property %s: working copy"
 msgstr ""
 
 #. Resource IDs: (107)
@@ -6288,10 +6154,6 @@ msgstr ""
 msgid "Replacing"
 msgstr ""
 
-#. Resource IDs: (1383)
-msgid "Repository"
-msgstr ""
-
 #. Resource IDs: (1618)
 msgid "Repository &URL"
 msgstr ""
@@ -6346,28 +6208,12 @@ msgstr ""
 msgid "Resolve"
 msgstr ""
 
-#. Resource IDs: (268)
-msgid "Resolve Conflict"
-msgstr ""
-
-#. Resource IDs: (1382)
-msgid "Resolve all later"
-msgstr ""
-
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'mine'"
 msgstr ""
 
 #. Resource IDs: (282)
 msgid "Resolve conflict using 'theirs'"
-msgstr ""
-
-#. Resource IDs: (1403)
-msgid "Resolve conflict:"
-msgstr ""
-
-#. Resource IDs: (2)
-msgid "Resolve later"
 msgstr ""
 
 #. Resource IDs: (74, 209)
@@ -6555,7 +6401,7 @@ msgid "SHA-1"
 msgstr ""
 
 #. Resource IDs: (1585)
-msgid "SMTP Server require authentication"
+msgid "SMTP Server requires authentication"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7347,10 +7193,6 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#. Resource IDs: (1232)
-msgid "Sw&itch working copy to new branch/tag"
-msgstr ""
-
 #. Resource IDs: (78)
 msgid "Switch"
 msgstr ""
@@ -8092,20 +7934,12 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
-#. Resource IDs: (3)
-msgid "Use local"
-msgstr ""
-
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
 msgstr ""
 
 #. Resource IDs: (116)
 msgid "Use regular expression"
-msgstr ""
-
-#. Resource IDs: (4)
-msgid "Use repository"
 msgstr ""
 
 #. Resource IDs: (1066)
@@ -8597,10 +8431,6 @@ msgstr ""
 msgid "and support the developers"
 msgstr ""
 
-#. Resource IDs: (583)
-msgid "another item already exists in its place."
-msgstr ""
-
 #. Resource IDs: (1073)
 msgid "apply --topo-order"
 msgstr ""
@@ -8704,18 +8534,6 @@ msgstr ""
 msgid "incomplete"
 msgstr ""
 
-#. Resource IDs: (583)
-msgid "it does not exist."
-msgstr ""
-
-#. Resource IDs: (583)
-msgid "it is already deleted."
-msgstr ""
-
-#. Resource IDs: (583)
-msgid "it is unversioned."
-msgstr ""
-
 #. Resource IDs: (214)
 msgid "item kept locally"
 msgstr ""
@@ -8803,10 +8621,6 @@ msgstr ""
 msgid "online"
 msgstr ""
 
-#. Resource IDs: (1406, 1407)
-msgid "or"
-msgstr ""
-
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr ""
@@ -8842,10 +8656,6 @@ msgstr ""
 
 #. Resource IDs: (601)
 msgid "temp. offline"
-msgstr ""
-
-#. Resource IDs: (583)
-msgid "there are conflicting modifications."
 msgstr ""
 
 #. Resource IDs: (3845)
