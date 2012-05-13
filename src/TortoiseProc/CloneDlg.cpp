@@ -291,10 +291,8 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 
 	temp=temp.MakeLower();
 
-	int end;
-	end=temp.Find(_T(".git"));
-	if(end<0)
-		end=temp.GetLength();
+	// we've to check whether the URL ends with .git (instead of using the first .git)
+	int end = temp.Right(4) == _T(".git") ? (temp.GetLength() - 4) : temp.GetLength();
 
 	//CString modulename;
 	m_ModuleName=url.Mid(start+1,end);
