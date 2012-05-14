@@ -14,6 +14,14 @@ LANGDLLS	=	$(outdir)/TortoiseProc2052.dll \
 				$(outdir)/TortoiseMerge1031.dll \
 				$(outdir)/TortoiseIdiff1031.dll \
 				$(outdir)/TortoiseGitBlame1031.dll \
+				$(outdir)/TortoiseProc1036.dll \
+				$(outdir)/TortoiseMerge1036.dll \
+				$(outdir)/TortoiseIdiff1036.dll \
+				$(outdir)/TortoiseGitBlame1036.dll \
+				$(outdir)/TortoiseProc1049.dll \
+				$(outdir)/TortoiseMerge1049.dll \
+				$(outdir)/TortoiseIdiff1049.dll \
+				$(outdir)/TortoiseGitBlame1049.dll \
 
 all:$(LANGDLLS)
 
@@ -34,3 +42,21 @@ $(outdir)/TortoiseIdiff1031.dll:Tortoise_de.po $(outdir)\TortoiseIdiffLang.dll
   $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_de.po
 $(outdir)/TortoiseGitBlame1031.dll:Tortoise_de.po $(outdir)\TortoiseGitBlameLang.dll
   $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_de.po
+
+$(outdir)/TortoiseProc1036.dll:Tortoise_fr.po $(outdir)\TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_fr.po
+$(outdir)/TortoiseMerge1036.dll:Tortoise_fr.po $(outdir)\TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_fr.po
+$(outdir)/TortoiseIdiff1036.dll:Tortoise_fr.po $(outdir)\TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_fr.po
+$(outdir)/TortoiseGitBlame1036.dll:Tortoise_fr.po $(outdir)\TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_fr.po
+
+$(outdir)/TortoiseProc1049.dll:Tortoise_ru.po $(outdir)\TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_ru.po
+$(outdir)/TortoiseMerge1049.dll:Tortoise_ru.po $(outdir)\TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_ru.po
+$(outdir)/TortoiseIdiff1049.dll:Tortoise_ru.po $(outdir)\TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_ru.po
+$(outdir)/TortoiseGitBlame1049.dll:Tortoise_ru.po $(outdir)\TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_ru.po
