@@ -243,7 +243,7 @@ msgstr ""
 
 #. Resource IDs: (151)
 #, c-format
-msgid "%s: Working Copy"
+msgid "%s: Working Tree"
 msgstr ""
 
 #. Resource IDs: (145)
@@ -1666,7 +1666,7 @@ msgid "Attempted to write to the reading %1."
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Attention: This command affects the whole working copy and will delete all untracked files without using the recycle bin!"
+msgid "Attention: This command affects the whole working tree and will delete all untracked files without using the recycle bin!"
 msgstr ""
 
 #. Resource IDs: (131, 160)
@@ -2196,12 +2196,12 @@ msgstr ""
 
 #. Resource IDs: (196)
 #, c-format
-msgid "Clears %ld URLs stored for %ld working copies"
+msgid "Clears %ld URLs stored for %ld working trees"
 msgstr ""
 
 #. Resource IDs: (196)
 #, c-format
-msgid "Clears %ld log messages stored for %ld working copies"
+msgid "Clears %ld log messages stored for %ld working trees"
 msgstr ""
 
 #. Resource IDs: (196)
@@ -2412,8 +2412,8 @@ msgstr ""
 msgid "Compare two files"
 msgstr ""
 
-#. Resource IDs: (76)
-msgid "Compare with &working copy"
+#. Resource IDs: (1251)
+msgid "Compare with &working tree"
 msgstr ""
 
 #. Resource IDs: (138)
@@ -2792,7 +2792,7 @@ msgid "Current Filter"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Current Working Copy is not clear\r\n Do you want to stash change?"
+msgid "Current Working Tree is not clear\r\n Do you want to stash change?"
 msgstr ""
 
 #. Resource IDs: (603)
@@ -3027,7 +3027,7 @@ msgid "Diffing"
 msgstr ""
 
 #. Resource IDs: (14)
-msgid "Diffs the working copy file with the one before the last commit"
+msgid "Diffs the working tree file with the one before the last commit"
 msgstr ""
 
 #. Resource IDs: (22)
@@ -3043,7 +3043,7 @@ msgid "Directory:"
 msgstr ""
 
 #. Resource IDs: (195)
-msgid "Disable this option if you have really big working copies and experience\r\ntoo much disk access when browsing the working copy."
+msgid "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -3122,12 +3122,12 @@ msgstr ""
 
 #. Resource IDs: (119)
 #, c-format
-msgid "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working copy."
+msgid "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working tree."
 msgstr ""
 
 #. Resource IDs: (76)
 #, c-format
-msgid "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working copy."
+msgid "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr ""
 
 #. Resource IDs: (313)
@@ -4335,7 +4335,7 @@ msgid "If enabled, TortoiseGit checks once a week if a newer version is availabl
 msgstr ""
 
 #. Resource IDs: (197)
-msgid "If enabled, working copy folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
+msgid "If enabled, working tree folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
 msgstr ""
 
 #. Resource IDs: (196)
@@ -5559,7 +5559,7 @@ msgid "Please enter a path where to apply the hook script to."
 msgstr ""
 
 #. Resource IDs: (78)
-msgid "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
+msgid "Please note:\nYour working tree remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working tree over to the new URL.\nUse the Switch command to do that."
 msgstr ""
 
 #. Resource IDs: (83)
@@ -6780,7 +6780,7 @@ msgid "Show log..."
 msgstr ""
 
 #. Resource IDs: (1382)
-msgid "Show modified files in working copy"
+msgid "Show modified files in working tree"
 msgstr ""
 
 #. Resource IDs: (1270)
@@ -7133,7 +7133,7 @@ msgid "Switch/Checkout to this..."
 msgstr ""
 
 #. Resource IDs: (9)
-msgid "Switch/Checkout working copy to another branch/tag"
+msgid "Switch/Checkout working tree to another branch/tag"
 msgstr ""
 
 #. Resource IDs: (325)
@@ -7178,7 +7178,7 @@ msgstr ""
 
 #. Resource IDs: (79)
 #, c-format
-msgid "Tagged the working copy to %s"
+msgid "Tagged the working tree to %s"
 msgstr ""
 
 #. Resource IDs: (1485, 1513, 65535)
@@ -7391,11 +7391,11 @@ msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "The working copy has changed!\n<hr=100%>\nPlease commit your changes first or revert."
+msgid "The working tree has changed!\n<hr=100%>\nPlease commit your changes first or revert."
 msgstr ""
 
 #. Resource IDs: (81)
-msgid "The working copy is not up to date!\nPlease Update first."
+msgid "The working tree is not up to date!\nPlease Update first."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7462,7 +7462,7 @@ msgid "This property is only allowed on folders, not files."
 msgstr ""
 
 #. Resource IDs: (67)
-msgid "This task requires a clean working copy."
+msgid "This task requires a clean working tree."
 msgstr ""
 
 #. Resource IDs: (1016)
@@ -7670,7 +7670,7 @@ msgid "Unable to read write-only property."
 msgstr ""
 
 #. Resource IDs: (119)
-msgid "Unable to reconstruct working copy path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
+msgid "Unable to reconstruct working tree path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
 msgstr ""
 
 #. Resource IDs: (3865)
@@ -8106,12 +8106,12 @@ msgstr ""
 msgid "Windows-1258"
 msgstr ""
 
-#. Resource IDs: (158)
-msgid "Working Copy"
+#. Resource IDs: (20, 158)
+msgid "Working Tree"
 msgstr ""
 
 #. Resource IDs: (1335, 1472)
-msgid "Working Copy Path:"
+msgid "Working Tree Path:"
 msgstr ""
 
 #. Resource IDs: (1253)
@@ -8228,7 +8228,7 @@ msgid "Your version is: %d.%d.%d.%d"
 msgstr ""
 
 #. Resource IDs: (78)
-msgid "Your working copy appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
+msgid "Your working tree appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
 msgstr ""
 
 #. Resource IDs: (1074)

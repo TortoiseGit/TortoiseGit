@@ -218,7 +218,7 @@ BEGIN
     IDS_MENUDESCREVERT      "Reverts all changes you made since the last update"
     IDS_MENUDESCCLEANUP     "Remove untracked files from the working tree, ..."
     IDS_MENUDESCRESOLVE     "Resolves conflicted files"
-    IDS_MENUDESCSWITCH      "Switch/Checkout working copy to another branch/tag"
+    IDS_MENUDESCSWITCH      "Switch/Checkout working tree to another branch/tag"
 END
 
 STRINGTABLE 
@@ -243,7 +243,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_git_DEPTH_UNKNOWN   "Unknown depth"
-    IDS_git_DEPTH_WORKING   "Working Copy"
+    IDS_git_DEPTH_WORKING   "Working Tree"
     IDS_MENUTAG             "Create Tag..."
     IDS_MENUFORMATPATCH     "Create Patch Serial..."
     IDS_MENUIMPORTPATCH     "Apply Patch Serial..."
@@ -357,7 +357,7 @@ BEGIN
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
-    IDS_MENUDESCPREVDIFF    "Diffs the working copy file with the one before the last commit"
+    IDS_MENUDESCPREVDIFF    "Diffs the working tree file with the one before the last commit"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"

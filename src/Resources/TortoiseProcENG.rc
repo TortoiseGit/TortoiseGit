@@ -173,7 +173,7 @@ END
 
 IDD_CHANGEDFILES DIALOGEX 0, 0, 520, 228
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Working Copy"
+CAPTION "Working Tree"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_CHANGEDLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,506,161
@@ -750,7 +750,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Hook Type:",IDC_HOOKTYPELABEL,7,10,213,8
     COMBOBOX        IDC_HOOKTYPECOMBO,254,7,134,107,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Working Copy Path:",IDC_HOOKWCPATHLABEL,7,25,381,8
+    LTEXT           "Working Tree Path:",IDC_HOOKWCPATHLABEL,7,25,381,8
     EDITTEXT        IDC_HOOKPATH,7,36,351,14,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_HOOKBROWSE,366,36,22,14
     LTEXT           "Command Line To Execute:",IDC_HOOKCMLABEL,7,59,381,8
@@ -873,7 +873,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFR
 CAPTION "Configure Issue Tracker Integration"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "Working Copy Path:",IDC_BUGTRAQWCPATHLABEL,7,7,381,8
+    LTEXT           "Working Tree Path:",IDC_BUGTRAQWCPATHLABEL,7,7,381,8
     EDITTEXT        IDC_BUGTRAQPATH,7,18,351,14,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUGTRAQBROWSE,366,18,22,14
     LTEXT           "Provider:",IDC_BUGTRAQPROVIDERLABEL,7,36,381,8
@@ -1254,7 +1254,7 @@ BEGIN
     CONTROL         "Hard: Reset working tree and index (discard all local changes)",IDC_RADIO_RESET_HARD,
                     "Button",BS_AUTORADIOBUTTON,15,65,231,10
     LTEXT           "Reset active branch",IDC_RESET_BRANCH_NAME,8,6,244,18
-    PUSHBUTTON      "Show modified files in working copy",IDC_SHOW_MODIFIED_FILES,7,90,247,14
+    PUSHBUTTON      "Show modified files in working tree",IDC_SHOW_MODIFIED_FILES,7,90,247,14
 END
 
 IDD_REBASE DIALOGEX 0, 0, 380, 237
@@ -1445,7 +1445,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,81,104,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,142,104,50,14
     PUSHBUTTON      "Help",IDHELP,204,104,50,14
-    LTEXT           "Attention: This command affects the whole working copy and will delete all untracked files without using the recycle bin!",IDC_STATIC,14,83,233,20
+    LTEXT           "Attention: This command affects the whole working tree and will delete all untracked files without using the recycle bin!",IDC_STATIC,14,83,233,20
 END
 
 IDD_PATCH_VIEW DIALOGEX 0, 0, 248, 195
@@ -2374,7 +2374,7 @@ BEGIN
     IDS_PROC_SYNC_PULL      "&Pull"
     IDS_PROC_SYNC_FETCH     "Fetc&h"
     IDS_PROC_SYNC_FETCHREBASE "Fetch&&Re&base"
-    IDS_LOG_REVERT_CONFIRM  "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working copy."
+    IDS_LOG_REVERT_CONFIRM  "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
     IDS_PROC_SYNC_REMOTEUPDATE "Remote Update"
     IDS_PROC_SYNC_CLEANUPSTALEBRANCHES "Cleanup stale remote banches"
     IDS_PROC_SYNC_SUBKODULEUPDATE "Submodule Update"
@@ -2405,8 +2405,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_LOG_REVERTTOREV_CONFIRM 
-                            "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working copy."
-    IDS_LOG_REVERTREV_ERROR "Unable to reconstruct working copy path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
+                            "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working tree."
+    IDS_LOG_REVERTREV_ERROR "Unable to reconstruct working tree path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
     IDS_LOG_STOPONCOPY_HINT "For complete history deselect 'Stop on copy/rename'"
     IDS_LOG_SAVEFOLDERTOHINT "Select folder to save the selected files to"
     IDS_LOG_MERGETO         "Select merge target"
@@ -2426,9 +2426,9 @@ BEGIN
     IDS_PROGRS_TITLE_COPY   "Copy"
     IDS_PROGRS_MIMETYPE     "Mime type"
     IDS_ERR_MISSINGVALUE    "This field is required and must not be empty."
-    IDS_PROGRS_COPY_WARNING "Please note:\nYour working copy remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working copy over to the new URL.\nUse the Switch command to do that."
+    IDS_PROGRS_COPY_WARNING "Please note:\nYour working tree remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working tree over to the new URL.\nUse the Switch command to do that."
     IDS_PROGRS_COMMITT_TRUNK 
-                            "Your working copy appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
+                            "Your working tree appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
     IDS_PROGRS_REVERTMARKERS 
                             "The selected file appears to still have one or more conflict markers in it.\nAre you sure you want to mark the file resolved?"
     IDS_SETTINGS_SELECTDIFF "Select diff application"
@@ -2461,7 +2461,7 @@ BEGIN
     IDS_PROC_EXPORT_2       "Export unversioned files too"
     IDS_PROC_EXPORT_3       "Exporting..."
     IDS_PROC_EXPORT_4       "exported\n%s\nto\n%s"
-    IDS_PROC_COPY_SUCCESS   "Tagged the working copy to %s"
+    IDS_PROC_COPY_SUCCESS   "Tagged the working tree to %s"
 END
 
 STRINGTABLE 
@@ -2522,10 +2522,10 @@ BEGIN
     IDS_ERR_NOSTATUS        "Could not get the status!"
     IDS_ERR_CLEANUP         "Subversion reported an error while doing a cleanup!\n<hr=100%%>\n%s"
     IDS_ERR_NOURLOFFILE     "Could not retrieve URL of the file!\n%s"
-    IDS_ERR_WCCHANGED       "The working copy has changed!\n<hr=100%>\nPlease commit your changes first or revert."
+    IDS_ERR_WCCHANGED       "The working tree has changed!\n<hr=100%>\nPlease commit your changes first or revert."
     IDS_ERR_COPYFILES       "Could not copy the files!\n<hr=100%%>\n%s"
     IDS_ERR_EXTMERGESTART   "Could not start external merge program!\n<hr=100%%>\n%s"
-    IDS_ERR_NOTUPTODATE     "The working copy is not up to date!\nPlease Update first."
+    IDS_ERR_NOTUPTODATE     "The working tree is not up to date!\nPlease Update first."
     IDS_ERR_FAILEDIGNOREPROPERTY "Could not add %s to the ignore list!"
     IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n<hr=100%%>\n%s"
 END
@@ -2669,7 +2669,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_DIFF_WCNAME         "%s: Working Copy"
+    IDS_DIFF_WCNAME         "%s: Working Tree"
 END
 
 STRINGTABLE 
@@ -2866,7 +2866,7 @@ BEGIN
     IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT 
                             "The time in seconds after which the parsing of the selected files stops.\r\nA lower value will make the auto-completion list available sooner,\r\nbut maybe not scan all files."
     IDS_SETTINGS_RECURSIVE_TT 
-                            "Disable this option if you have really big working copies and experience\r\ntoo much disk access when browsing the working copy."
+                            "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
     IDS_SETTINGS_SPELLCHECKER_TT 
                             "Enables the spellchecker only if the\ntsvn:projectlanguage property is set."
 END
@@ -3040,9 +3040,9 @@ BEGIN
     IDS_SETTINGS_CACHENONE_TT 
                             "No status cache. Only versioned folders get an overlay, files don't get an overlay"
     IDS_SETTINGS_SAVEDDATA_LOGHIST_TT 
-                            "Clears %ld log messages stored for %ld working copies"
+                            "Clears %ld log messages stored for %ld working trees"
     IDS_SETTINGS_SAVEDDATA_URLHIST_TT 
-                            "Clears %ld URLs stored for %ld working copies"
+                            "Clears %ld URLs stored for %ld working trees"
     IDS_SETTINGS_SAVEDDATA_RESIZABLE_TT 
                             "Clears the stored sizes and positions of %ld dialogs"
     IDS_SETTINGS_SAVEDDATA_AUTH_TT 
@@ -3158,7 +3158,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT 
-                            "If enabled, working copy folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
+                            "If enabled, working tree folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
     IDS_SETTINGS_SAVEDDATA_REPOLOGHIST_TT 
                             "Clears cached logs from %ld repositories"
     IDS_SETTINGS_SELECTFILESONCOMMIT_TT 
@@ -3289,7 +3289,7 @@ BEGIN
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"
-    IDS_ERROR_NOCLEAN_STASH "Current Working Copy is not clear\r\n Do you want to stash change?"
+    IDS_ERROR_NOCLEAN_STASH "Current Working Tree is not clear\r\n Do you want to stash change?"
     IDS_ERROR_NOTHING_COMMIT "Nothing to commit"
     IDS_COMMIT_FINISH       "Commit Finish"
     IDS_COMMITDLG_POPUP_LOGHISTORY "Paste Recent Message..."
@@ -3373,7 +3373,7 @@ BEGIN
     IDS_PROGS_TITLE_CHERRYPICK "Cherry Pick"
     IDS_PROC_REVISIONFILES  "Revision Files"
     IDS_PROC_NOTHINGTOREBASE "Nothing to Rebase"
-    IDS_PROC_NOCLEAN        "This task requires a clean working copy."
+    IDS_PROC_NOCLEAN        "This task requires a clean working tree."
     IDS_PROC_NOHEAD         "No HEAD found"
     IDS_PROC_REBASE_STARTCHERRYPICK "Start Cherry Pick"
     IDS_PROC_REBASE_STARTREBASE "Start Rebase"
