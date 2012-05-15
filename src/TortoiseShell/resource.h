@@ -52,7 +52,6 @@
 #define IDI_HELP                        142
 #define IDS_MENUDESCSWITCH              143
 #define IDI_SHOWCHANGED                 143
-#define IDS_MENUDESCIMPORT              144
 #define IDI_IGNORE                      144
 #define IDS_MENUDESCEXPORT              145
 #define IDS_MENUDESCABOUT               146

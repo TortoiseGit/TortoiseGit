@@ -345,11 +345,6 @@ private:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	// some strings different methods can use
-	CString					sIgnoredIncluded;
-	CString					sExtExcluded;
-	CString					sExtIncluded;
-	CString					sIgnoreAncestry;
-	CString					sRespectAncestry;
 	CString					sDryRun;
 	CString					sRecordOnly;
 };

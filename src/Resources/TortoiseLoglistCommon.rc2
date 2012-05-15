@@ -42,7 +42,6 @@ BEGIN
     IDS_LOG_POPUP_REVERTREVS "&Revert changes by these commits"
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
-    IDS_LOG_POPUP_BLAMECOMPARE "Compare and &blame with working BASE"
     IDS_LOG_POPUP_BLAMEREVS "&Blame revisions"
     IDS_LOG_POPUP_BLAMEDIFF "&Blame changes"
     IDS_LOG_POPUP_VIEWREV   "View revision in alternative editor"

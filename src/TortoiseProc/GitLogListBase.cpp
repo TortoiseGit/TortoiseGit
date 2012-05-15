@@ -1450,13 +1450,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE) && m_hasWC) // compare revision with WC
 						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
-					// TODO:
-					// TortoiseMerge could be improved to take a /blame switch
-					// and then not 'cat' the files from a unified diff but
-					// blame then.
-					// But until that's implemented, the context menu entry for
-					// this feature is commented out.
-					//popup.AppendMenu(ID_BLAMECOMPARE, IDS_LOG_POPUP_BLAMECOMPARE, IDI_BLAME);
 				}
 				else
 				{

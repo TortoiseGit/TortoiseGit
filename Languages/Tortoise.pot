@@ -1161,10 +1161,6 @@ msgstr ""
 msgid "&ignore space change"
 msgstr ""
 
-#. Resource IDs: (208)
-msgid "(multiple targets selected)"
-msgstr ""
-
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr ""
@@ -2405,10 +2401,6 @@ msgid "Committing an unversioned folder will not recursively add its child items
 msgstr ""
 
 #. Resource IDs: (114)
-msgid "Compare and &blame with working BASE"
-msgstr ""
-
-#. Resource IDs: (114)
 msgid "Compare and blame with previous revision"
 msgstr ""
 
@@ -3491,7 +3483,7 @@ msgid "Exporting..."
 msgstr ""
 
 #. Resource IDs: (10)
-msgid "Exports a repository to a clean working copy without the git administrative folders"
+msgid "Exports a revision to a zip file"
 msgstr ""
 
 #. Resource IDs: (74, 207)
@@ -3516,14 +3508,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "External Program:"
-msgstr ""
-
-#. Resource IDs: (226)
-msgid "Externals excluded"
-msgstr ""
-
-#. Resource IDs: (226)
-msgid "Externals included"
 msgstr ""
 
 #. Resource IDs: (65)
@@ -3791,7 +3775,7 @@ msgid "Force"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation. "
+msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr ""
 
 #. Resource IDs: (312)
@@ -4391,10 +4375,6 @@ msgstr ""
 msgid "Ignored"
 msgstr ""
 
-#. Resource IDs: (226)
-msgid "Ignored items included"
-msgstr ""
-
 #. Resource IDs: (16916)
 msgid "Image &and Text"
 msgstr ""
@@ -4435,10 +4415,6 @@ msgstr ""
 #. Resource IDs: (120)
 #, c-format
 msgid "Importing file %s"
-msgstr ""
-
-#. Resource IDs: (10)
-msgid "Imports the directory to a repository"
 msgstr ""
 
 #. Resource IDs: (75)
@@ -4845,23 +4821,9 @@ msgstr ""
 msgid "Merging"
 msgstr ""
 
-#. Resource IDs: (264)
-msgid "Merging differences between repository URLs"
-msgstr ""
-
 #. Resource IDs: (229)
 #, c-format
 msgid "Merging from %s, revision %s to %s, revision %s into %s, %s%s"
-msgstr ""
-
-#. Resource IDs: (264)
-#, c-format
-msgid "Merging r%ld"
-msgstr ""
-
-#. Resource IDs: (264)
-#, c-format
-msgid "Merging r%ld through r%ld"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -5086,10 +5048,6 @@ msgstr ""
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
-msgstr ""
-
-#. Resource IDs: (119)
-msgid "No Merge"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -6010,10 +5968,6 @@ msgstr ""
 msgid "Remote property status"
 msgstr ""
 
-#. Resource IDs: (208)
-msgid "Remote revision"
-msgstr ""
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
 msgstr ""
@@ -6237,16 +6191,6 @@ msgstr ""
 msgid "Retrying..."
 msgstr ""
 
-#. Resource IDs: (264)
-#, c-format
-msgid "Reverse merging %ld"
-msgstr ""
-
-#. Resource IDs: (264)
-#, c-format
-msgid "Reverse merging %ld through %ld"
-msgstr ""
-
 #. Resource IDs: (77, 229)
 msgid "Revert"
 msgstr ""
@@ -6277,7 +6221,7 @@ msgid "Review Patch"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Review Path with TortoiseMerge"
+msgid "Review Patch with TortoiseMerge"
 msgstr ""
 
 #. Resource IDs: (14)
@@ -6551,10 +6495,6 @@ msgstr ""
 msgid "Select diff file..."
 msgstr ""
 
-#. Resource IDs: (276)
-msgid "Select end revision"
-msgstr ""
-
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
 msgstr ""
@@ -6585,14 +6525,6 @@ msgstr ""
 
 #. Resource IDs: (119)
 msgid "Select merge target"
-msgstr ""
-
-#. Resource IDs: (276)
-msgid "Select revision range"
-msgstr ""
-
-#. Resource IDs: (276)
-msgid "Select start revision"
 msgstr ""
 
 #. Resource IDs: (79)
@@ -6763,16 +6695,6 @@ msgstr ""
 msgid "Show Below the Ribbon"
 msgstr ""
 
-#. Resource IDs: (119)
-#, c-format
-msgid "Show Choosed Path(%s)"
-msgstr ""
-
-#. Resource IDs: (119)
-#, c-format
-msgid "Show Current Branch(%s)"
-msgstr ""
-
 #. Resource IDs: (1382)
 msgid "Show Environment Variables"
 msgstr ""
@@ -6811,10 +6733,6 @@ msgstr ""
 
 #. Resource IDs: (115)
 msgid "Show Whole Project"
-msgstr ""
-
-#. Resource IDs: (247)
-msgid "Show all branch commit"
 msgstr ""
 
 #. Resource IDs: (32775)
@@ -7979,7 +7897,7 @@ msgid "Use whole other &file"
 msgstr ""
 
 #. Resource IDs: (119)
-msgid "Used to amend the tip of the current branch. "
+msgid "Used to amend the tip of the current branch."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -8486,10 +8404,6 @@ msgstr ""
 msgid "ignored"
 msgstr ""
 
-#. Resource IDs: (220)
-msgid "ignoring ancestry"
-msgstr ""
-
 #. Resource IDs: (1130)
 msgid "include &untracked"
 msgstr ""
@@ -8607,10 +8521,6 @@ msgstr ""
 
 #. Resource IDs: (10)
 msgid "replaced"
-msgstr ""
-
-#. Resource IDs: (220)
-msgid "respecting ancestry"
 msgstr ""
 
 #. Resource IDs: (208)

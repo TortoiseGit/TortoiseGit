@@ -223,8 +223,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MENUDESCIMPORT      "Imports the directory to a repository"
-    IDS_MENUDESCEXPORT      "Exports a repository to a clean working copy without the git administrative folders"
+    IDS_MENUDESCEXPORT      "Exports a revision to a zip file"
     IDS_MENUDESCABOUT       "Shows information about TortoiseGit"
     IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
     IDS_MENUDESCCOPY        "Creates a branch or tag"

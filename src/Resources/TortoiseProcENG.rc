@@ -2383,11 +2383,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOG_ALLBRANCH_TT    "Show all branch commit"
-END
-
-STRINGTABLE 
-BEGIN
     IDS_LOG_POPUP_COPY      "C&reate branch/tag from revision"
     IDS_COMMITDLG_FILE      "File"
     IDS_COMMITDLG_STATUS    "Status"
@@ -2415,11 +2410,8 @@ BEGIN
     IDS_LOG_STOPONCOPY_HINT "For complete history deselect 'Stop on copy/rename'"
     IDS_LOG_SAVEFOLDERTOHINT "Select folder to save the selected files to"
     IDS_LOG_MERGETO         "Select merge target"
-    IDS_LOG_SHOW_CURRENT_BRANCH "Show Current Branch(%s)"
-    IDS_LOG_SHOW_CURRENT_PATH "Show Choosed Path(%s)"
     IDS_LOG_SHOW_FIRST_PARENT "First Parent Only"
-    IDS_LOG_SHOW_NO_MERGE   "No Merge"
-    IDS_COMMIT_AMEND_TT     "Used to amend the tip of the current branch. "
+    IDS_COMMIT_AMEND_TT     "Used to amend the tip of the current branch."
     IDS_PROGRESSGETFILE     "Getting file %s"
     IDS_PROGRESSREVISION    "Revision %d"
     IDS_PROGRESSWAIT        "Please wait..."
@@ -2838,8 +2830,6 @@ BEGIN
     IDS_STATUSLIST_COLCOPYFROM "Copied from URL"
     IDS_STATUSLIST_COLMODIFICATIONDATE "Modification date"
     IDS_STATUSLIST_COLFILENAME "Filename"
-    IDS_STATUSLIST_COLREMOTEREVISION "Remote revision"
-    IDS_STATUSLIST_MULTIPLETARGETS "(multiple targets selected)"
     IDS_STATUSLIST_PROPONLY "(property change only)"
     IDS_STATUSLIST_COPYFROM "copied from\r\n%s - revision %ld"
     IDS_STATUSLIST_SWITCHEDTO "switched to\r\n%s"
@@ -2894,9 +2884,6 @@ BEGIN
     IDS_PROGRS_PATHATREV    "%s - at revision: %d"
     IDS_PROGRS_TIME         "%ld minute(s) and %ld second(s)"
     IDS_PROGRS_FINALINFO    "%s in %s"
-    IDS_PROGRS_EXTERNALSEXCLUDED "Externals excluded"
-    IDS_PROGRS_EXTERNALSINCLUDED "Externals included"
-    IDS_PROGRS_IGNOREDINCLUDED "Ignored items included"
 END
 
 STRINGTABLE 
@@ -3004,12 +2991,7 @@ BEGIN
     IDS_SVNACTION_CHANGELISTSET "Assigned to changelist '%s'"
     IDS_SVNACTION_CHANGELISTCLEAR "Removed from changelist"
     IDS_SVNACTION_CHANGELISTFAILED "Failed to set/remove changelist '%s'"
-    IDS_SVNACTION_MERGEBEGINMULTIPLE "Merging r%ld through r%ld"
-    IDS_SVNACTION_MERGEBEGINSINGLE "Merging r%ld"
     IDS_SVNACTION_CHANGELISTMOVED "Changelist %s moved"
-    IDS_SVNACTION_MERGEBEGINNONE "Merging differences between repository URLs"
-    IDS_SVNACTION_MERGEBEGINSINGLEREVERSE "Reverse merging %ld"
-    IDS_SVNACTION_MERGEBEGINMULTIPLEREVERSE "Reverse merging %ld through %ld"
     IDS_SVN_SUMMARIZENORMAL "Normal"
     IDS_SVN_SUMMARIZEADDED  "Added"
     IDS_SVN_SUMMARIZEMODIFIED "Modified"
@@ -3025,11 +3007,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_MERGE_SELECTRANGE   "Select revision range"
-    IDS_MERGE_SELECTENDREVISION "Select end revision"
-    IDS_MERGE_SELECTSTARTREVISION "Select start revision"
     IDS_MERGE_RECORDONLY    "Record Only"
-    IDS_MERGE_MERGE         "Merge"
 END
 
 STRINGTABLE 
@@ -3220,8 +3198,6 @@ BEGIN
     IDS_PROGRS_TITLEFAILED  "Failed!"
     IDS_PROGRS_INFOFAILED   "The operation failed."
     IDS_PROGRS_CMDINFO      "Command"
-    IDS_PROGRS_IGNOREANCESTRY "ignoring ancestry"
-    IDS_PROGRS_RESPECTANCESTRY "respecting ancestry"
     IDS_PROGRS_INFOGETTINGINFO "Getting required information..."
 END
 
@@ -3309,7 +3285,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_PAGEANT         "Could not start pageant program."
     IDS_MENU_VIEWPATCH      "View Patch"
-    IDS_MENU_VIEWWITHMERGE  "Review Path with TortoiseMerge"
+    IDS_MENU_VIEWWITHMERGE  "Review Patch with TortoiseMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"
@@ -3318,7 +3294,7 @@ BEGIN
     IDS_COMMIT_FINISH       "Commit Finish"
     IDS_COMMITDLG_POPUP_LOGHISTORY "Paste Recent Message..."
     IDS_REBASE_UPTODATE_FMT "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below ""Force Rebase"" checkbox."
-    IDS_REBASE_FORCE_TT     "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message ""Current branch is up to date"" in such a situation. "
+    IDS_REBASE_FORCE_TT     "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message ""Current branch is up to date"" in such a situation."
     IDS_REBASE_ABORT_TT     "Recover to the status before rebase"
 END
 
