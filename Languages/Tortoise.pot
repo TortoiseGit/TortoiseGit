@@ -5558,10 +5558,6 @@ msgstr ""
 msgid "Please enter a path where to apply the hook script to."
 msgstr ""
 
-#. Resource IDs: (78)
-msgid "Please note:\nYour working tree remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working tree over to the new URL.\nUse the Switch command to do that."
-msgstr ""
-
 #. Resource IDs: (83)
 msgid "Please select a hook type"
 msgstr ""
@@ -7394,10 +7390,6 @@ msgstr ""
 msgid "The working tree has changed!\n<hr=100%>\nPlease commit your changes first or revert."
 msgstr ""
 
-#. Resource IDs: (81)
-msgid "The working tree is not up to date!\nPlease Update first."
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr ""
@@ -8225,10 +8217,6 @@ msgstr ""
 #. Resource IDs: (201)
 #, c-format
 msgid "Your version is: %d.%d.%d.%d"
-msgstr ""
-
-#. Resource IDs: (78)
-msgid "Your working tree appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
 msgstr ""
 
 #. Resource IDs: (1074)

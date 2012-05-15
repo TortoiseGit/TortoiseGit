@@ -572,9 +572,7 @@
 #define IDS_PROGRS_TITLE_COPY           1235
 #define IDS_PROGRS_MIMETYPE             1236
 #define IDS_ERR_MISSINGVALUE            1237
-#define IDS_PROGRS_COPY_WARNING         1238
 #define IDC_EXTERNALWARNING             1238
-#define IDS_PROGRS_COMMITT_TRUNK        1239
 #define IDC_SOUNDS                      1239
 #define IDS_PROGRS_REVERTMARKERS        1240
 #define IDC_ENABLEACCELERATORS          1240
@@ -671,7 +669,6 @@
 #define IDS_ERR_WCCHANGED               1288
 #define IDS_ERR_COPYFILES               1289
 #define IDS_ERR_EXTMERGESTART           1290
-#define IDS_ERR_NOTUPTODATE             1291
 #define IDS_ERR_FAILEDIGNOREPROPERTY    1292
 #define IDS_ERR_DIFFVIEWSTART           1293
 #define IDC_GRAPHBARBUTTON              1297

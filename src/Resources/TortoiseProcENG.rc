@@ -2426,9 +2426,6 @@ BEGIN
     IDS_PROGRS_TITLE_COPY   "Copy"
     IDS_PROGRS_MIMETYPE     "Mime type"
     IDS_ERR_MISSINGVALUE    "This field is required and must not be empty."
-    IDS_PROGRS_COPY_WARNING "Please note:\nYour working tree remains on the previous path. If you want your next changes\nto be committed to the copy or branch you have just created,\nthen you need to switch your working tree over to the new URL.\nUse the Switch command to do that."
-    IDS_PROGRS_COMMITT_TRUNK 
-                            "Your working tree appears to be on a tag path!\nYou should first switch to a branch or the main trunk before committing.\n\nDo you want to commit anyway?"
     IDS_PROGRS_REVERTMARKERS 
                             "The selected file appears to still have one or more conflict markers in it.\nAre you sure you want to mark the file resolved?"
     IDS_SETTINGS_SELECTDIFF "Select diff application"
@@ -2525,7 +2522,6 @@ BEGIN
     IDS_ERR_WCCHANGED       "The working tree has changed!\n<hr=100%>\nPlease commit your changes first or revert."
     IDS_ERR_COPYFILES       "Could not copy the files!\n<hr=100%%>\n%s"
     IDS_ERR_EXTMERGESTART   "Could not start external merge program!\n<hr=100%%>\n%s"
-    IDS_ERR_NOTUPTODATE     "The working tree is not up to date!\nPlease Update first."
     IDS_ERR_FAILEDIGNOREPROPERTY "Could not add %s to the ignore list!"
     IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n<hr=100%%>\n%s"
 END
