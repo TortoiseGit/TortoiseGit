@@ -2674,10 +2674,6 @@ msgstr ""
 msgid "Could not start external merge program!\n<hr=100%%>\n%s"
 msgstr ""
 
-#. Resource IDs: (603)
-msgid "Could not start pageant program."
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Could not start print job."
 msgstr ""
@@ -2685,6 +2681,10 @@ msgstr ""
 #. Resource IDs: (83)
 #, c-format
 msgid "Could not start text viewer!\n<hr=100%%>\n%s"
+msgstr ""
+
+#. Resource IDs: (603)
+msgid "Could not start the Putty Agent (pageant)."
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3284,7 +3284,7 @@ msgid "Email"
 msgstr ""
 
 #. Resource IDs: (602)
-msgid "Email Address To and CC can't empty."
+msgid "Email Address To and CC can't empty at the same time."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -4604,6 +4604,14 @@ msgstr ""
 #. Resource IDs: (269)
 #, c-format
 msgid "Line: %*ld"
+msgstr ""
+
+#. Resource IDs: (601)
+msgid "Lines added"
+msgstr ""
+
+#. Resource IDs: (601)
+msgid "Lines removed"
 msgstr ""
 
 #. Resource IDs: (3605)
@@ -7628,16 +7636,16 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
+#. Resource IDs: (71)
+msgid "URL and directory must not be empty at the same time."
+msgstr ""
+
 #. Resource IDs: (1272)
 msgid "URL history"
 msgstr ""
 
 #. Resource IDs: (12)
 msgid "URL of Git items"
-msgstr ""
-
-#. Resource IDs: (71)
-msgid "URL or directory must not be empty."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -8474,17 +8482,9 @@ msgstr ""
 msgid "obstructed"
 msgstr ""
 
-#. Resource IDs: (601)
-msgid "offline"
-msgstr ""
-
 #. Resource IDs: (3845)
 #, c-format
 msgid "on %1"
-msgstr ""
-
-#. Resource IDs: (601)
-msgid "online"
 msgstr ""
 
 #. Resource IDs: (3869)
@@ -8514,10 +8514,6 @@ msgstr ""
 #. Resource IDs: (208)
 #, c-format
 msgid "switched to\r\n%s"
-msgstr ""
-
-#. Resource IDs: (601)
-msgid "temp. offline"
 msgstr ""
 
 #. Resource IDs: (3845)
