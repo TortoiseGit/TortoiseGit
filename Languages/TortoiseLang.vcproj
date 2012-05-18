@@ -47,8 +47,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
+				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
+				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
 				CleanCommandLine="nmake /f Makefile clean "
 				Output="TortoiseLangs.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
@@ -87,8 +87,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
+				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
+				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
 				CleanCommandLine="nmake /f Makefile clean "
 				Output="TortoiseLangs.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
