@@ -11,7 +11,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\..\bin\setup\</OutputPath>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <WixVariables>
     </WixVariables>
@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\bin\setup\x86\</OutputPath>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
@@ -32,14 +32,14 @@
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
     <OutputPath>..\..\bin\setup\x64\</OutputPath>
-    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
