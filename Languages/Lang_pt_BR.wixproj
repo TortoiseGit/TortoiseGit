@@ -19,7 +19,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1046;LANGNATIVE="Portuguese (Brazil)";</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1046;LANGNATIVE='Portuguese (Brazil)';</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -32,7 +32,7 @@
     <IntermediateOutputPath>obj\$(Configuration)64\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1046;LANGNATIVE="Portuguese (Brazil)";</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1046;LANGNATIVE='Portuguese (Brazil)';</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
   </PropertyGroup>
   <ItemGroup>
