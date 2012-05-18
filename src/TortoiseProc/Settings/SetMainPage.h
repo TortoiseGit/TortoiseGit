@@ -56,6 +56,7 @@ protected:
 	afx_msg void OnBrowseDir();
 	afx_msg void OnCheck();
 	afx_msg void OnBnClickedButtonShowEnv();
+	afx_msg void OnBnClickedCreatelib();
 
 	CString GetVersionFromFile(const CString & p_strDateiname);
 

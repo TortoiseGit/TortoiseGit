@@ -2691,6 +2691,10 @@ msgstr ""
 msgid "Could not start thread!"
 msgstr ""
 
+#. Resource IDs: (1683)
+msgid "Create &Library"
+msgstr ""
+
 #. Resource IDs: (1641)
 msgid "Create .gitignore file"
 msgstr ""
@@ -2749,6 +2753,10 @@ msgstr ""
 
 #. Resource IDs: (10)
 msgid "Creates a branch or tag"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Creates a library folder with special settings for Git working trees"
 msgstr ""
 
 #. Resource IDs: (2052)

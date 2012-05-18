@@ -523,6 +523,7 @@
 #define IDS_PROC_LOG_ALLBRANCHES        1201
 #define IDS_PROC_LOG_NOBRANCH           1202
 #define IDC_WHOLE_PROJECT               1203
+#define IDS_SETTINGS_CREATELIB_TT       1203
 #define IDS_IMPORT_DEFAULTMSG           1205
 #define IDC_CHECKBOX                    1207
 #define IDS_PROC_SYNC_PUSHTAGS          1207
@@ -1103,6 +1104,7 @@
 #define IDC_TOSUBJECT                   1680
 #define IDC_CHECK_NEWBRANCH             1681
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
+#define IDC_CREATELIB                   1683
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1485,7 +1487,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1683
+#define _APS_NEXT_CONTROL_VALUE         1684
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

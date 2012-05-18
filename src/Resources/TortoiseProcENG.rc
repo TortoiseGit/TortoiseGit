@@ -286,7 +286,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "TortoiseGit",IDC_STATIC,7,7,286,76
+    GROUPBOX        "TortoiseGit",IDC_STATIC,7,7,286,92
     LTEXT           "&Language:",IDC_STATIC,14,20,86,8
     COMBOBOX        IDC_LANGUAGECOMBO,108,18,176,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Automatically check for &newer versions every week",IDC_CHECKNEWERVERSION,
@@ -294,15 +294,16 @@ BEGIN
     PUSHBUTTON      "C&heck now",IDC_CHECKNEWERBUTTON,212,38,72,14
     LTEXT           "System &sounds",IDC_SOUNDS_TEXT,14,62,192,8
     PUSHBUTTON      "&Configure",IDC_SOUNDS,212,59,72,14
-    GROUPBOX        "MSysGit",IDC_STATIC,7,92,286,118
-    LTEXT           "Git.exe Path:",IDC_STATIC,16,111,58,8
-    EDITTEXT        IDC_MSYSGIT_PATH,78,108,178,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_MSYSGIT_BROWSE,265,108,19,14
-    LTEXT           "Extern DLL Path:",IDC_STATIC,15,134,58,8
-    EDITTEXT        IDC_MSYSGIT_EXTERN_PATH,78,131,178,14,ES_AUTOHSCROLL
-    LTEXT           "Version:",IDC_MSYSGIT_VER,15,155,141,8
-    PUSHBUTTON      "C&heck now",IDC_MSYSGIT_CHECK,212,152,72,14
-    PUSHBUTTON      "Show Environment Variables",IDC_BUTTON_SHOW_ENV,14,171,129,14
+    PUSHBUTTON      "Create &Library",IDC_CREATELIB,212,79,72,14
+    GROUPBOX        "MSysGit",IDC_STATIC,7,113,286,98
+    LTEXT           "Git.exe Path:",IDC_STATIC,16,132,58,8
+    EDITTEXT        IDC_MSYSGIT_PATH,78,129,178,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_MSYSGIT_BROWSE,265,129,19,14
+    LTEXT           "Extern DLL Path:",IDC_STATIC,15,155,58,8
+    EDITTEXT        IDC_MSYSGIT_EXTERN_PATH,78,152,178,14,ES_AUTOHSCROLL
+    LTEXT           "Version:",IDC_MSYSGIT_VER,15,176,141,8
+    PUSHBUTTON      "C&heck now",IDC_MSYSGIT_CHECK,212,173,72,14
+    PUSHBUTTON      "Show Environment Variables",IDC_BUTTON_SHOW_ENV,14,192,129,14
 END
 
 IDD_SETTINGSOVERLAY DIALOGEX 0, 0, 300, 217
@@ -2369,6 +2370,8 @@ BEGIN
     IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
     IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
     IDS_PROC_LOG_NOBRANCH   "<No branch>"
+    IDS_SETTINGS_CREATELIB_TT 
+                            "Creates a library folder with special settings for Git working trees"
     IDS_IMPORT_DEFAULTMSG   "Initial import"
     IDS_PROC_SYNC_PUSHTAGS  "Push ta&gs"
     IDS_PROC_SYNC_PULL      "&Pull"

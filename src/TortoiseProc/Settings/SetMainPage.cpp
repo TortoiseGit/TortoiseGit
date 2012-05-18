@@ -31,6 +31,7 @@
 #include "GitConfig.h"
 #include "BrowseFolder.h"
 #include "SysInfo.h"
+#include "Libraries.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
 CSetMainPage::CSetMainPage()
@@ -79,6 +80,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_MSYSGIT_PATH, OnMsysGitPathModify)
 	ON_EN_CHANGE(IDC_MSYSGIT_EXTERN_PATH, OnModified)
 	ON_BN_CLICKED(IDC_BUTTON_SHOW_ENV, &CSetMainPage::OnBnClickedButtonShowEnv)
+	ON_BN_CLICKED(IDC_CREATELIB, &CSetMainPage::OnBnClickedCreatelib)
 END_MESSAGE_MAP()
 
 BOOL CSetMainPage::OnInitDialog()
@@ -98,6 +100,9 @@ BOOL CSetMainPage::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_MSYSGIT_PATH,IDS_MSYSGIT_PATH_TT);
 	m_tooltips.AddTool(IDC_CHECKNEWERVERSION, IDS_SETTINGS_CHECKNEWER_TT);
+	m_tooltips.AddTool(IDC_CREATELIB, IDS_SETTINGS_CREATELIB_TT);
+
+	GetDlgItem(IDC_CREATELIB)->EnableWindow(SysInfo::Instance().IsWin7OrLater());
 
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 
@@ -297,4 +302,11 @@ void CSetMainPage::OnBnClickedButtonShowEnv()
 	cmd=_T("cmd /c set");
 	g_Git.RunLogFile(cmd,tempfile);
 	CAppUtils::LaunchAlternativeEditor(tempfile);
+}
+
+void CSetMainPage::OnBnClickedCreatelib()
+{
+	CoInitialize(NULL);
+	EnsureGitLibrary();
+	CoUninitialize();
 }
