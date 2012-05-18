@@ -5295,7 +5295,7 @@ HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
 	CString filename;
-	filename.Format(_T("%s-%s%s"),path->GetBaseFilename(),this->m_CurrentVersion.Left(6),path->GetFileExtension());
+	filename.Format(_T("%s-%s%s"), path->GetBaseFilename(), this->m_CurrentVersion.Left(g_Git.GetShortHASHLength()), path->GetFileExtension());
 	CFileDialog dlg(FALSE,NULL,
 					filename,
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
@@ -5374,7 +5374,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		file.Format(_T("%s%s_%s%s"),
 					temppath,
 					filepath->GetBaseFilename(),
-					m_CurrentVersion.Left(6),
+					m_CurrentVersion.Left(g_Git.GetShortHASHLength()),
 					filepath->GetFileExtension());
 		CString cmd,out;
 		if(g_Git.GetOneFile(m_CurrentVersion, *filepath, file))

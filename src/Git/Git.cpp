@@ -1733,3 +1733,8 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 
 	return 0;
 }
+
+int CGit::GetShortHASHLength()
+{
+	return 7;
+}

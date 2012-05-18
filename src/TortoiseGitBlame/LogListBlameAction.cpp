@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
 				cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r1->m_CommitHash,r2->m_CommitHash);
 				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.Left(6)+_T(":")+r2->m_CommitHash.Left(6));
+				CAppUtils::StartUnifiedDiffViewer(tempfile, r1->m_CommitHash.Left(g_Git.GetShortHASHLength()) + _T(":") + r2->m_CommitHash.Left(g_Git.GetShortHASHLength()));
 
 			}
 			break;

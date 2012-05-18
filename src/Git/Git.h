@@ -304,6 +304,8 @@ public:
 		}
 		return -1;
 	}
+
+	int GetShortHASHLength();
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

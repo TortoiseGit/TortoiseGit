@@ -246,7 +246,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					command.Format(_T("git.exe diff -r -p --stat"));
 
 				g_Git.RunLogFile(command,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r1->m_CommitHash.ToString().Left(6)+_T(":")+r1->GetSubject());
+				CAppUtils::StartUnifiedDiffViewer(tempfile, r1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + _T(":") + r1->GetSubject());
 			}
 			break;
 
@@ -269,7 +269,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 
 				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile,r2->m_CommitHash.ToString().Left(6)+_T(":")+r1->m_CommitHash.ToString().Left(6));
+				CAppUtils::StartUnifiedDiffViewer(tempfile, r2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + _T(":") + r1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
 
 			}
 			break;

@@ -1324,14 +1324,14 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	file1.Format(_T("%s%s_%s%s"),
 				temppath,
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev1->m_CommitHash.ToString().Left(6),
+				rev1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString file2;
 	file2.Format(_T("%s\\%s_%s%s"),
 				temppath,
 				(*m_currentChangedArray)[selIndex].GetBaseFilename(),
-				rev2->m_CommitHash.ToString().Left(6),
+				rev2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()),
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString cmd;
@@ -2562,7 +2562,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.Format(IDS_PROC_LOG_STATS,
 		count - start,
-		rev2.ToString().Left(6), rev1.ToString().Left(6), selectedrevs);
+		rev2.ToString().Left(g_Git.GetShortHASHLength()), rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs);
 
 	if(selectedrevs == 1)
 	{

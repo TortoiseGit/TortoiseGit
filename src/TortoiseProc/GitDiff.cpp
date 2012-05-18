@@ -118,7 +118,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 		file1.Format(_T("%s\\%s-%s%s"),
 				temp,
 				pPath->GetBaseFilename(),
-				rev1.Left(6),
+				rev1.Left(g_Git.GetShortHASHLength()),
 				pPath->GetFileExtension());
 
 		g_Git.GetOneFile(rev1,*pPath,file1);
@@ -140,11 +140,11 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
+							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength())
 							,flags);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString()+_T(":")+rev1.Left(6)
+							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength())
 							,pPath->GetGitPathString(),flags);
 
 	return 0;
@@ -270,9 +270,9 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		file1.Format(_T("%s\\%s-%s-right%s"),
 				temp,
 				pPath->GetBaseFilename(),
-				rev1.Left(6),
+				rev1.Left(g_Git.GetShortHASHLength()),
 				pPath->GetFileExtension());
-		title1 = pPath->GetFileOrDirectoryName()+_T(":")+rev1.Left(6);
+		title1 = pPath->GetFileOrDirectoryName() + _T(":") + rev1.Left(g_Git.GetShortHASHLength());
 		g_Git.GetOneFile(rev1,*pPath,file1);
 		::SetFileAttributes(file1, FILE_ATTRIBUTE_READONLY);
 	}
@@ -299,9 +299,9 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		file2.Format(_T("%s\\%s-%s-left%s"),
 				temp,
 				fileName.GetBaseFilename(),
-				rev2.Left(6),
+				rev2.Left(g_Git.GetShortHASHLength()),
 				fileName.GetFileExtension());
-		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(6);
+		title2 = fileName.GetFileOrDirectoryName() + _T(":") + rev2.Left(g_Git.GetShortHASHLength());
 		g_Git.GetOneFile(rev2, fileName, file2);
 		::SetFileAttributes(file2, FILE_ATTRIBUTE_READONLY);
 	}
