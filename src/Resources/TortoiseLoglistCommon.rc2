@@ -99,6 +99,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_ERR_THREADSTARTFAILED "Could not start thread!"
+    IDS_LOG_FETCHINGSTATUS    "Fetching Status..."
 END
 
 STRINGTABLE 

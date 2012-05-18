@@ -18,6 +18,7 @@
 #define IDS_LOG_MESSAGE                 20002
 #define IDS_LOG_AUTHOR                  20003
 #define IDS_LOG_DATE                    20004
+#define IDS_LOG_FETCHINGSTATUS          20005
 #define IDS_LOG_BUGIDS                  20006
 #define IDS_LOG_ID						20007
 #define IDS_LOG_HASH					20008

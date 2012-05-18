@@ -3632,6 +3632,10 @@ msgstr ""
 msgid "Fetch..."
 msgstr ""
 
+#. Resource IDs: (76)
+msgid "Fetching Status..."
+msgstr ""
+
 #. Resource IDs: (313)
 msgid "Fetching file..."
 msgstr ""

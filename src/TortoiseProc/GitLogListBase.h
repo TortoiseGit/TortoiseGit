@@ -151,7 +151,7 @@ public:
 
 	void ResetWcRev()
 	{
-		m_wcRev.GetBody()=_T("Fetching Status...");
+		m_wcRev.GetBody() = CString(MAKEINTRESOURCE(IDS_LOG_FETCHINGSTATUS));
 		m_wcRev.m_CallDiffAsync = DiffAsync;
 		InterlockedExchange(&m_wcRev.m_IsDiffFiles, FALSE);
 	}
