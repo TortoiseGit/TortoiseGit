@@ -2568,7 +2568,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	{
 		CString str=m_ChangedFileListCtrl.GetStatisticsString(true);
 		str.Replace(_T('\n'), _T(' '));
-		sTemp += str;
+		sTemp += _T(' ') + str;
 	}
 	m_sLogInfo = sTemp;
 
