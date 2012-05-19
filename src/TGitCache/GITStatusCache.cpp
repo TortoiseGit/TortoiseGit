@@ -516,8 +516,11 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 			return m_mostRecentStatus;
 		}
 	}
-	m_mostRecentPath = path;
-	m_mostRecentExpiresAt = now+1000;
+	{
+		AutoLocker lock(m_critSec);
+		m_mostRecentPath = path;
+		m_mostRecentExpiresAt = now + 1000;
+	}
 
 	if (IsPathGood(path))
 	{
@@ -532,8 +535,12 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		if (cachedDir != NULL)
 		{
 			//ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
-			m_mostRecentStatus = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
-			return m_mostRecentStatus;
+			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
+			{
+				AutoLocker lock(m_critSec);
+				m_mostRecentStatus = entry;
+				return m_mostRecentStatus;
+			}
 		}
 	}
 	else
@@ -545,7 +552,9 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		{
 			if (path.IsDirectory())
 			{
-				m_mostRecentStatus = itMap->second->GetOwnStatus(false);
+				CStatusCacheEntry entry = itMap->second->GetOwnStatus(false);
+				AutoLocker lock(m_critSec);
+				m_mostRecentStatus = entry;
 				return m_mostRecentStatus;
 			}
 			else
@@ -554,12 +563,14 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 				CCachedDirectory * cachedDir = itMap->second;
 				CStatusCacheEntry entry = cachedDir->GetCacheStatusForMember(path);
 				{
+					AutoLocker lock(m_critSec);
 					m_mostRecentStatus = entry;
 					return m_mostRecentStatus;
 				}
 			}
 		}
 	}
+	AutoLocker lock(m_critSec);
 	ATLTRACE(_T("ignored no good path %s\n"), path.GetWinPath());
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasGITAdminDir(path.GetWinPath(), true))

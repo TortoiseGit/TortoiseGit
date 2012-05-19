@@ -125,6 +125,7 @@ private:
 	CFolderCrawler m_folderCrawler;
 	CShellUpdater m_shellUpdater;
 
+	CComAutoCriticalSection m_critSec;
 	CTGitPath m_mostRecentPath;
 	CStatusCacheEntry m_mostRecentStatus;
 	long m_mostRecentExpiresAt;
