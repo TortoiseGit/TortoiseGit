@@ -43,6 +43,8 @@
 #include "Commands\Command.h"
 #include "..\version.h"
 #include "JumpListHelpers.h"
+#include "SinglePropSheetDlg.h"
+#include "Settings\setmainpage.h"
 #include "..\Settings\Settings.h"
 #include "gitindex.h"
 #include "Libraries.h"
@@ -229,12 +231,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		else if(ret == 1)
 		{
 			// open settings dialog
-			CSettings dlg(IDS_PROC_SETTINGS_TITLE);
-			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-			dlg.SetTreeWidth(220);
-
-			dlg.DoModal();
-			dlg.HandleRestart();
+			CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROC_SETTINGS_TITLE)), new CSetMainPage(), this->GetMainWnd()).DoModal();
 		}
 		return FALSE;
 	}
