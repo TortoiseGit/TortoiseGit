@@ -447,6 +447,8 @@ void CFolderCrawler::WorkerThread()
 						CGitStatusCache::Instance().Done();
 						CGitStatusCache::Instance().WaitToWrite();
 						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
+						// now cacheDir is invalid because it got deleted in the RemoveCacheForPath() call above.
+						cachedDir = NULL;
 					}
 				}
 				if (cachedDir)
