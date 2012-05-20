@@ -904,7 +904,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 
 	if (((uFlags & CMF_EXTENDEDVERBS) == 0) && g_ShellCache.HideMenusForUnversionedItems())
 	{
-		if ((itemStates & (ITEMIS_INGIT|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINGIT|ITEMIS_BAREREPO))==0)
+		if ((itemStates & (ITEMIS_INGIT|ITEMIS_INVERSIONEDFOLDER|ITEMIS_FOLDERINGIT|ITEMIS_BAREREPO|ITEMIS_TWO))==0)
 			return S_OK;
 	}
 
