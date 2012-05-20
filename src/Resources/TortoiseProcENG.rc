@@ -2532,6 +2532,7 @@ BEGIN
     IDS_STATUSLIST_GROUP_DIFFWITHPARENT "Diff with parent %d"
     IDS_ERR_FAILEDIGNOREPROPERTY "Could not add %s to the ignore list!"
     IDS_ERR_DIFFVIEWSTART   "Could not start diff viewer!\n<hr=100%%>\n%s"
+    IDS_PROGS_TITLE_CREATETAG "Create Tag"
     IDS_PROC_LOG_FETCHINGFILES "Fetching changed files..."
 END
 
@@ -2646,6 +2647,12 @@ STRINGTABLE
 BEGIN
     IDS_NOTES               "Notes"
     IDS_PROC_LOG_TAGINFO    "Tag Info"
+    IDS_PROGS_TITLE_CREATEBRANCH "Create Branch"
+    IDS_PROC_TAG            "Tag"
+    IDS_PROC_BRANCH         "Branch"
+    IDS_PROC_NEWBRANCHTAG_FORCE_TT 
+                            "Force creation of branch/tag - even if one with same name already exists."
+    IDS_PROC_NEWBRANCHTAG_SIGN_TT "Requires GPG and a key without passphrase."
     IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
     IDS_ERR_INVALIDREV      "Invalid revision number! Valid revisions are:\nHEAD, BASE, PREV, COMMITTED, WC,\npositive decimal numbers,\ndates in one of the following example forms:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{""2002-02-17 15:30""}\n{""2002-02-17 15:30 +0230""}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
     IDS_ERR_EMPTYDIFF       "No differences found!"
@@ -3495,6 +3502,8 @@ BEGIN
     IDS_PROC_STASHAPPLYFAILEDCONFLICTS 
                             "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
     IDS_PROC_CREATED        "Created"
+    IDS_PROC_NEWBRANCHTAG_TRACK_TT 
+                            "If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."
 END
 
 #endif    // Englisch (USA) resources

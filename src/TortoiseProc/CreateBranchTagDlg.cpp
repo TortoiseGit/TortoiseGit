@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,15 +110,15 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CString sWindowTitle;
 	if(this->m_bIsTag)
 	{
-		sWindowTitle = _T("Create Tag");
-		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Tag"));
+		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATETAG));
+		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_TAG)));
 		this->GetDlgItem(IDC_CHECK_SIGN)->EnableWindow(!g_Git.GetConfigValue(_T("user.signingkey")).IsEmpty());
 	}
 	else
 	{
-		sWindowTitle = _T("Create Branch");
-		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowTextW(_T("Branch"));
-		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(false);
+		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATEBRANCH));
+		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
+		this->GetDlgItem(IDC_EDIT_MESSAGE)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
 	}
 
@@ -139,9 +139,9 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	}
 	else
 	{
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), _T("Force creationg of branch/tag - even if already exists."));
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), _T("Requires GPG and a key without passphrase."));
-		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_TRACK), _T("If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_FORCE_TT)));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_SIGN), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_SIGN_TT)));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_TRACK), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_TRACK_TT)));
 		m_ToolTip.Activate(TRUE);
 	}
 

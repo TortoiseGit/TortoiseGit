@@ -2699,6 +2699,10 @@ msgstr ""
 msgid "Create .gitignore file"
 msgstr ""
 
+#. Resource IDs: (82)
+msgid "Create Branch"
+msgstr ""
+
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
 msgstr ""
@@ -2717,6 +2721,10 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "Create Tag"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -3795,6 +3803,10 @@ msgstr ""
 msgid "Force"
 msgstr ""
 
+#. Resource IDs: (82)
+msgid "Force creation of branch/tag - even if one with same name already exists."
+msgstr ""
+
 #. Resource IDs: (603)
 msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr ""
@@ -4341,6 +4353,10 @@ msgstr ""
 
 #. Resource IDs: (194)
 msgid "If activated, prevents the overlays and the context menu from showing in 'save as...' or 'open' dialogs"
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."
 msgstr ""
 
 #. Resource IDs: (197)
@@ -6145,6 +6161,10 @@ msgstr ""
 msgid "Requests a username and a password"
 msgstr ""
 
+#. Resource IDs: (82)
+msgid "Requires GPG and a key without passphrase."
+msgstr ""
+
 #. Resource IDs: (8)
 msgid "Res&olve..."
 msgstr ""
@@ -7219,6 +7239,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Tab size:"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Tag"
 msgstr ""
 
 #. Resource IDs: (82)
