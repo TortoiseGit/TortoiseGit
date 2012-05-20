@@ -3026,6 +3026,11 @@ msgstr ""
 msgid "Diff previous revision"
 msgstr ""
 
+#. Resource IDs: (81)
+#, c-format
+msgid "Diff with parent %d"
+msgstr ""
+
 #. Resource IDs: (1302)
 msgid "Difference between"
 msgstr ""
@@ -3642,6 +3647,10 @@ msgstr ""
 
 #. Resource IDs: (76)
 msgid "Fetching Status..."
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "Fetching changed files..."
 msgstr ""
 
 #. Resource IDs: (313)
@@ -4387,6 +4396,10 @@ msgstr ""
 msgid "Ignored"
 msgstr ""
 
+#. Resource IDs: (78)
+msgid "Ignored Files"
+msgstr ""
+
 #. Resource IDs: (16916)
 msgid "Image &and Text"
 msgstr ""
@@ -4833,6 +4846,10 @@ msgstr ""
 msgid "Merged"
 msgstr ""
 
+#. Resource IDs: (76)
+msgid "Merged Files"
+msgstr ""
+
 #. Resource IDs: (10)
 msgid "Merges another branch"
 msgstr ""
@@ -4897,6 +4914,10 @@ msgstr ""
 
 #. Resource IDs: (74, 264)
 msgid "Modified"
+msgstr ""
+
+#. Resource IDs: (76)
+msgid "Modified Files"
 msgstr ""
 
 #. Resource IDs: (1070)
@@ -5152,6 +5173,10 @@ msgstr ""
 msgid "North European"
 msgstr ""
 
+#. Resource IDs: (78)
+msgid "Not Versioned Files"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr ""
@@ -5174,6 +5199,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Notes"
 msgstr ""
 
 #. Resource IDs: (604)
@@ -7190,6 +7219,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Tab size:"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Tag Info"
 msgstr ""
 
 #. Resource IDs: (79)

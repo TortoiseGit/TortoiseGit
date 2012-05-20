@@ -550,7 +550,7 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 
 	if(!output.IsEmpty())
 	{
-		output = _T("\n*Tag Info*\n\n") + output;
+		output = _T("\n*") + CString(MAKEINTRESOURCE(IDS_PROC_LOG_TAGINFO)) + _T("*\n\n") + output;
 	}
 
 	return output;
@@ -611,7 +611,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 		{
 			// set the log message text
-			pMsgView->SetWindowText(_T("Commit:")+pLogEntry->m_CommitHash.ToString()+_T("\r\n\r\n"));
+			pMsgView->SetWindowText(CString(MAKEINTRESOURCE(IDS_HASH)) + _T(": ") + pLogEntry->m_CommitHash.ToString() + _T("\r\n\r\n"));
 			// turn bug ID's into links if the bugtraq: properties have been set
 			// and we can find a match of those in the log message
 
@@ -636,7 +636,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			if(!pLogEntry->m_Notes.IsEmpty())
 			{
-				msg+= _T("\n*Notes* ");
+				msg+= _T("\n*") + CString(MAKEINTRESOURCE(IDS_NOTES)) + _T("* ");
 				msg+= pLogEntry->m_Notes;
 				msg+= _T("\n\n");
 			}
@@ -678,7 +678,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
 			m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED);
 
-			m_ChangedFileListCtrl.SetBusyString(_T("Fetch Changed File..."));
+			m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
 
 			if(!pLogEntry->m_IsDiffFiles)
 				m_ChangedFileListCtrl.SetBusy(TRUE);
@@ -893,7 +893,7 @@ BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString
 	}
 	catch (CException * e)
 	{
-		::MessageBox(NULL, _T("not enough memory!"), _T("TortoiseGit"), MB_ICONERROR);
+		CMessageBox::Show(NULL, IDS_ERR_NOTENOUGHMEMORY, IDS_APPNAME, MB_ICONERROR);
 		e->Delete();
 		m_bCancelled = TRUE;
 	}

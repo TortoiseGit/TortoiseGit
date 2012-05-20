@@ -4817,7 +4817,8 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		//if(m_UnRevFileList.GetCount()>0)
 		if(max >0)
 		{
-			grp.pszHeader = _T("Merged Files");
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MERGEDFILES)), 1023);
+			grp.pszHeader = groupname;
 			grp.iGroupId = MERGE_MASK;
 			grp.uAlign = LVGA_HEADER_LEFT;
 			InsertGroup(0, &grp);
@@ -4825,9 +4826,9 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			for(int i=0;i<=max;i++)
 			{
 				CString str;
-				str.Format(_T("Diff with parent %d"), i+1);
-				//_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
+				str.Format(IDS_STATUSLIST_GROUP_DIFFWITHPARENT, i+1);
 				grp.pszHeader = str.GetBuffer();
+				str.ReleaseBuffer();
 				grp.iGroupId = i;
 				grp.uAlign = LVGA_HEADER_LEFT;
 				InsertGroup(i+1, &grp);
@@ -4835,8 +4836,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 		}
 		else
 		{
-			CString sUnassignedName(_T("Modified File"));
-			_tcsncpy_s(groupname, 1024, (LPCTSTR)sUnassignedName, 1023);
+			_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_MODIFIEDFILES)), 1023);
 			grp.pszHeader = groupname;
 			grp.iGroupId = groupindex;
 			grp.uAlign = LVGA_HEADER_LEFT;
@@ -4844,7 +4844,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 
 			{
-				_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Not Versioned"), 1023);
+				_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES)), 1023);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
@@ -4853,7 +4853,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 			//if(m_IgnoreFileList.GetCount()>0)
 			{
-				_tcsncpy_s(groupname, 1024, (LPCTSTR)_T("Ignored"), 1023);
+				_tcsncpy_s(groupname, 1024, (LPCTSTR)CString(MAKEINTRESOURCE(IDS_STATUSLIST_GROUP_IGNOREDFILES)), 1023);
 				grp.pszHeader = groupname;
 				grp.iGroupId = groupindex;
 				grp.uAlign = LVGA_HEADER_LEFT;
