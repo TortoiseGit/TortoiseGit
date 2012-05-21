@@ -614,11 +614,20 @@ public:
 						CString str = CString(buffer);
 						if (str.Left(8) == _T("gitdir: "))
 						{
+							str = str.TrimRight().Mid(8);
 							str.Replace(_T("/"), _T("\\"));
-							str.TrimRight();
 							str.TrimRight(_T("\\"));
-							(*this)[thePath] = str.Mid(8) + _T("\\");
-							m_reverseLookup[str.Mid(8).MakeLower()] = path;
+							if (str.GetLength() > 0 && str[0] == _T('.'))
+							{
+								str = thePath + _T("\\") + str;
+								CString newPath;
+								PathCanonicalize(newPath.GetBuffer(MAX_PATH), str.GetBuffer());
+								newPath.ReleaseBuffer();
+								str.ReleaseBuffer();
+								str = newPath;
+							}
+							(*this)[thePath] = str + _T("\\");
+							m_reverseLookup[str.MakeLower()] = path;
 							return (*this)[thePath];
 						}
 					}

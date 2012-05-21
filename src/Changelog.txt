@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #1162: Sync dialog should use same font as progress dialog (use log font for both)
  * Fixed issue #1174: Clone Dialog incorrectly extracts name from URL that contains ".git" in the middle
  * Fixed issue #1184: diff of "Working dir changes" uses incorrect line endings (AutoCrLf=true)
+ * Fixed issue #1193: Not properly handling submodule meta information (.git-file contains relative path)
 
 = Release 1.7.9.0 =
 Released: 2012-05-05
