@@ -206,8 +206,15 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
 		gitPath.Replace('/', '\\');
 		gitPath.TrimRight('\\');
-		gitPath.TrimRight();
 		gitPath.Append(_T("\\"));
+		if (gitPath.GetLength() > 0 && gitPath[0] == _T('.'))
+		{
+			gitPath = projectTopDir + _T("\\") + gitPath;
+			PathCanonicalize(adminDir.GetBuffer(MAX_PATH), gitPath.GetBuffer());
+			adminDir.ReleaseBuffer();
+			gitPath.ReleaseBuffer();
+			return true;
+		}
 		adminDir = gitPath;
 		return true;
 	}
