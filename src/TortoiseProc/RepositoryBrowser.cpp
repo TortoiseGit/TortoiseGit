@@ -37,8 +37,9 @@
 
 IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 
-CRepositoryBrowser::CRepositoryBrowser(CWnd* pParent /*=NULL*/)
+CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
+, m_sRevision(rev)
 {
 }
 

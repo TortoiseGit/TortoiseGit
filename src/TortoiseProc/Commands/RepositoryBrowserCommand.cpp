@@ -23,6 +23,10 @@
 
 bool RepositoryBrowserCommand::Execute()
 {
-	CRepositoryBrowser().DoModal();
+	CString rev = _T("HEAD");
+	CString val = parser.GetVal(_T("rev"));
+	if (!val.IsEmpty())
+		rev = val;
+	CRepositoryBrowser(rev).DoModal();
 	return true;
 }

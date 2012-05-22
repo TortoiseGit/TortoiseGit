@@ -61,7 +61,7 @@ class CRepositoryBrowser : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRepositoryBrowser)
 
 public:
-	CRepositoryBrowser(CWnd* pParent = NULL);	// standard constructor
+	CRepositoryBrowser(CString rev, CWnd* pParent = NULL);	// standard constructor
 	virtual ~CRepositoryBrowser();
 
 	// Dialog Data
