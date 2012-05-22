@@ -20,6 +20,7 @@
 #define IDR_ANIMATION                   148
 #define IDR_MOVEANI                     149
 #define IDD_RENAME                      151
+#define IDD_REPOSITORY_BROWSER          153
 #define IDD_ADD                         155
 #define IDD_CHANGEDFILES                158
 #define IDD_SIMPLEPROMPT                160
@@ -773,6 +774,8 @@
 #define IDC_CHECKOUTURL                 1363
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
+#define IDC_REPOTREE                    1371
+#define IDC_REPOLIST                    1372
 #define IDC_LIST1                       1372
 #define IDC_BUGTRAQLIST                 1372
 #define IDC_LIST_PATCH                  1372
