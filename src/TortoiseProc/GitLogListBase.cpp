@@ -1570,6 +1570,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GetSelectedCount() == 1)
 						popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
 
+				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
+					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
+
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 

@@ -723,6 +723,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CAppUtils::RunTortoiseProc(cmd);
 			}
 			break;
+		case ID_REPOBROWSE:
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir, pSelLogEntry->m_CommitHash.ToString());
+				CAppUtils::RunTortoiseProc(sCmd);
+			}
+			break;
 		case ID_PUSH:
 			{
 				CString guessAssociatedBranch;

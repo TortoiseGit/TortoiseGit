@@ -66,6 +66,7 @@ BEGIN
     IDS_LOG_POPUP_EDITAUTHOR "Edit author"
     IDS_LOG_POPUP_EDITLOG   "Edit log message"
     IDS_LOG_POPUP_OPENWITH  "Open with..."
+    IDS_LOG_BROWSEREPO      "&Browse repository"
 	IDS_REPOBROWSE_SHOWREVPROP "Show revision properties"
 	IDS_LOG_WORKINGDIRCHANGES "Working dir changes"
 	IDS_FILESCHANGES		"%d files changed"
