@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #1184: diff of "Working dir changes" uses incorrect line endings (AutoCrLf=true)
  * Fixed issue #1193: Not properly handling submodule meta information (.git-file contains relative path)
  * Fixed issue #1167: TGitCache.exe crashes under Win7/64bit
+ * Fixed issue #1195: Problems with tags containing non-ascii chars
 
 = Release 1.7.9.0 =
 Released: 2012-05-05
