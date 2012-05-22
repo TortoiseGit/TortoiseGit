@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,6 +42,7 @@
 #define MENUIGNORE			0x0000000000200000
 #define MENUREFLOG			0x0000000000400000
 #define MENUBLAME			0x0000000000800000
+#define MENUREPOBROWSE		0x0000000001000000
 #define MENUAPPLYPATCH		0x0000000002000000
 #define MENUREMOVEKEEP		0x0000000004000000
 #define MENUSVNREBASE		0x0000000008000000

@@ -322,6 +322,8 @@ BEGIN
     IDS_SETPROPTITLE        "Setting properties..."
     IDS_MENUDESCBISECTBAD   "Marks revision as bad"
     IDS_MENUDESCBISECTRESET "Stops bisect mode"
+    IDS_MENUREPOBROWSE      "&Repo-browser"
+    IDS_MENUDESCREPOBROWSE  "Opens the repository browser"
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
