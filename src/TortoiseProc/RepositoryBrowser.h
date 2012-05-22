@@ -97,12 +97,15 @@ private:
 	int						m_nOpenIconFolder;
 
 	void					Refresh();
+	CString					m_sRevision;
 	void					FillListCtrlForTreeNode(HTREEITEM treeNode);
 	void					FillListCtrlForShadowTree(CShadowFilesTree* pTree);
 	afx_msg void			OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void			OnContextMenu(CWnd* pWndFrom, CPoint point);
 	void					OnContextMenu_RepoList(CPoint point);
+
+	afx_msg void			OnBnClickedButtonRevision();
 
 	virtual BOOL			PreTranslateMessage(MSG* pMsg);
 };

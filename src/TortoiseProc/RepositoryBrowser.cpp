@@ -24,6 +24,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "RepositoryBrowser.h"
+#include "LogDlg.h"
 #include "AppUtils.h"
 #include "IconMenu.h"
 #include "UnicodeUtils.h"
@@ -56,6 +57,7 @@ void CRepositoryBrowser::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_REPOTREE, &CRepositoryBrowser::OnTvnSelchangedRepoTree)
 	ON_WM_CONTEXTMENU()
+	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 END_MESSAGE_MAP()
 
 
@@ -67,6 +69,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_STATIC, TOP_LEFT);
+	AddAnchor(IDC_BUTTON_REVISION, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_REPOTREE, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_REPOLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -221,7 +224,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		if(ret)
 			break;
 
-		CGitHash hash = g_Git.GetHash(_T("HEAD"));
+		CGitHash hash = g_Git.GetHash(m_sRevision);
 		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
 		if(ret)
 			break;
@@ -233,6 +236,8 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		ret = ReadTreeRecursive(*repository, tree, treeroot);
 		if(ret)
 			break;
+
+		this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
 	} while(0);
 
 	if (tree)
@@ -346,4 +351,20 @@ BOOL CRepositoryBrowser::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CRepositoryBrowser::OnBnClickedButtonRevision()
+{
+		// use the git log to allow selection of a version
+		CLogDlg dlg;
+		// tell the dialog to use mode for selecting revisions
+		dlg.SetSelect(true);
+		// only one revision must be selected however
+		dlg.SingleSelection(true);
+		if (dlg.DoModal() == IDOK)
+		{
+			// get selected hash if any
+			m_sRevision = dlg.GetSelectedHash();
+			Refresh();
+		}
 }
