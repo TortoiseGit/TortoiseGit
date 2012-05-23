@@ -23,6 +23,8 @@
 #include <map>
 #include "StandAloneDlg.h"
 
+#define REPOBROWSER_CTRL_MIN_WIDTH	20
+
 class CShadowFilesTree;
 
 typedef std::map<CString, CShadowFilesTree> TShadowFilesTreeMap;
@@ -108,4 +110,17 @@ private:
 	afx_msg void			OnBnClickedButtonRevision();
 
 	virtual BOOL			PreTranslateMessage(MSG* pMsg);
+
+	/// resizes the control so that the divider is at position 'point'
+	void					HandleDividerMove(CPoint point, bool bDraw);
+	bool					bDragMode;
+	void					SaveDividerPosition();
+	int						oldy, oldx;
+	/// draws the bar when the tree and list control are resized
+	void					DrawXorBar(CDC * pDC, int x1, int y1, int width, int height);
+	afx_msg BOOL			OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void			OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void			OnCaptureChanged(CWnd *pWnd);
+	afx_msg void			OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void			OnLButtonUp(UINT nFlags, CPoint point);
 };
