@@ -33,12 +33,101 @@
 #include "SysInfo.h"
 #include "registry.h"
 
+void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
+{
+	if (control == NULL)
+		return;
+
+	// set the sort arrow
+	CHeaderCtrl * pHeader = control->GetHeaderCtrl();
+	HDITEM HeaderItem = {0};
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i = 0; i < pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (nColumn >= 0)
+	{
+		pHeader->GetItem(nColumn, &HeaderItem);
+		HeaderItem.fmt |= (bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(nColumn, &HeaderItem);
+	}
+}
+
+class CRepoListCompareFunc
+{
+public:
+	CRepoListCompareFunc(CListCtrl* pList, int col, bool desc)
+	: m_col(col)
+	, m_desc(desc)
+	, m_pList(pList)
+	{}
+
+	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+	{
+		return ((CRepoListCompareFunc *) lParamSort)->Compare(lParam1, lParam2);
+	}
+
+	int Compare(LPARAM lParam1, LPARAM lParam2)
+	{
+		return Compare((CShadowFilesTree *)m_pList->GetItemData(lParam1), (CShadowFilesTree *)m_pList->GetItemData(lParam2));
+	}
+
+	int Compare(CShadowFilesTree * pLeft, CShadowFilesTree * pRight)
+	{
+		int result = 0;
+		switch(m_col)
+		{
+		case CRepositoryBrowser::eCol_Name:
+			result = SortStrCmp(pLeft->m_sName, pRight->m_sName);
+			if (result != 0)
+				break;
+		case CRepositoryBrowser::eCol_FileSize:
+			if (pLeft->m_iSize > pRight->m_iSize)
+				result = 1;
+			else if (pLeft->m_iSize < pRight->m_iSize)
+				result = -1;
+			else // fallback
+				result = SortStrCmp(pLeft->m_sName, pRight->m_sName);
+		}
+
+		if (m_desc) 
+			result = -result;
+
+		if (pLeft->m_bFolder != pRight->m_bFolder)
+		{
+			if (pRight->m_bFolder)
+				result = 1;
+			else
+				result = -1;
+		}
+
+		return result;
+	}
+	int SortStrCmp(CString &left, CString &right)
+	{
+		if (CRepositoryBrowser::s_bSortLogical)
+			return StrCmpLogicalW(left, right);
+		return StrCmpI(left, right);
+	}
+
+	int m_col;
+	bool m_desc;
+	CListCtrl* m_pList;
+};
+
 // CRepositoryBrowser dialog
+
+bool CRepositoryBrowser::s_bSortLogical = true;
 
 IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 
 CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
+, m_currSortCol(0)
+, m_currSortDesc(false)
 , m_sRevision(rev)
 {
 }
@@ -58,6 +147,7 @@ void CRepositoryBrowser::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_REPOTREE, &CRepositoryBrowser::OnTvnSelchangedRepoTree)
 	ON_WM_CONTEXTMENU()
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_REPOLIST, &CRepositoryBrowser::OnLvnColumnclickRepoList)
 	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 	ON_WM_SETCURSOR()
 	ON_WM_MOUSEMOVE()
@@ -80,6 +170,10 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+
+	CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+	if (CRepositoryBrowser::s_bSortLogical)
+		CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
 	m_RepoList.SetExtendedStyle(m_RepoList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	CString temp;
@@ -309,6 +403,11 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 			m_RepoList.SetItemText(indexItem, eCol_FileSize, temp);
 		}
 	}
+
+	CRepoListCompareFunc compareFunc(&m_RepoList, m_currSortCol, m_currSortDesc);
+	m_RepoList.SortItemsEx(&CRepoListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
+
+	SetSortArrowA(&m_RepoList, m_currSortCol, !m_currSortDesc);
 }
 
 void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)
@@ -368,6 +467,26 @@ BOOL CRepositoryBrowser::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CRepositoryBrowser::OnLvnColumnclickRepoList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if (pResult)
+		*pResult = 0;
+
+	if (m_currSortCol == pNMLV->iSubItem)
+		m_currSortDesc = !m_currSortDesc;
+	else
+	{
+		m_currSortCol  = pNMLV->iSubItem;
+		m_currSortDesc = false;
+	}
+
+	CRepoListCompareFunc compareFunc(&m_RepoList, m_currSortCol, m_currSortDesc);
+	m_RepoList.SortItemsEx(&CRepoListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
+
+	SetSortArrowA(&m_RepoList, m_currSortCol, !m_currSortDesc);
 }
 
 void CRepositoryBrowser::OnBnClickedButtonRevision()

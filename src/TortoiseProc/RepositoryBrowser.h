@@ -69,6 +69,8 @@ public:
 	// Dialog Data
 	enum { IDD = IDD_REPOSITORY_BROWSER };
 
+	static bool s_bSortLogical;
+
 	enum eCmd
 	{
 		eCmd_ViewLog = WM_APP,
@@ -91,6 +93,10 @@ private:
 
 	CTreeCtrl				m_RepoTree;
 	CListCtrl				m_RepoList;
+
+	afx_msg void			OnLvnColumnclickRepoList(NMHDR *pNMHDR, LRESULT *pResult);
+	int						m_currSortCol;
+	bool					m_currSortDesc;
 
 	CShadowFilesTree		m_TreeRoot;
 	int						ReadTreeRecursive(git_repository &repo, git_tree * tree, CShadowFilesTree * treeroot);
