@@ -148,6 +148,7 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_REPOTREE, &CRepositoryBrowser::OnTvnSelchangedRepoTree)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_REPOLIST, &CRepositoryBrowser::OnLvnColumnclickRepoList)
+	ON_NOTIFY(NM_DBLCLK, IDC_REPOLIST, &CRepositoryBrowser::OnNMDblclk_RepoList)
 	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 	ON_WM_SETCURSOR()
 	ON_WM_MOUSEMOVE()
@@ -238,6 +239,23 @@ void CRepositoryBrowser::OnCancel()
 {
 	SaveDividerPosition();
 	CResizableStandAloneDialog::OnCancel();
+}
+
+void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	UNREFERENCED_PARAMETER(pNMHDR);
+	*pResult = 0;
+
+	LPNMITEMACTIVATE pNmItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pNmItemActivate->iItem < 0)
+		return;
+
+	CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNmItemActivate->iItem);
+	if (pItem == NULL || !pItem->m_bFolder)
+		return;
+
+	FillListCtrlForShadowTree(pItem);
+	m_RepoTree.SelectItem(pItem->m_hTree);
 }
 
 void CRepositoryBrowser::Refresh()
