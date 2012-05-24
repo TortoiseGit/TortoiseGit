@@ -37,11 +37,6 @@ msgstr ""
 msgid " "
 msgstr ""
 
-#. Resource IDs: (85)
-#, c-format
-msgid "(from %s)"
-msgstr ""
-
 #. Resource IDs: (188)
 #, c-format
 msgid "! %d"
@@ -1166,6 +1161,11 @@ msgstr ""
 msgid "&ignore space change"
 msgstr ""
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr ""
+
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr ""
@@ -1180,10 +1180,6 @@ msgstr ""
 
 #. Resource IDs: (314)
 msgid "(not found)"
-msgstr ""
-
-#. Resource IDs: (208)
-msgid "(property change only)"
 msgstr ""
 
 #. Resource IDs: (245)
@@ -2509,10 +2505,6 @@ msgstr ""
 
 #. Resource IDs: (73)
 msgid "Copied"
-msgstr ""
-
-#. Resource IDs: (208)
-msgid "Copied from URL"
 msgstr ""
 
 #. Resource IDs: (78)
@@ -5772,10 +5764,6 @@ msgstr ""
 msgid "Property Page"
 msgstr ""
 
-#. Resource IDs: (207)
-msgid "Property status"
-msgstr ""
-
 #. Resource IDs: (63)
 msgid "Provider"
 msgstr ""
@@ -6030,16 +6018,8 @@ msgstr ""
 msgid "Remote name must not be empty."
 msgstr ""
 
-#. Resource IDs: (207)
-msgid "Remote property status"
-msgstr ""
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
-msgstr ""
-
-#. Resource IDs: (207)
-msgid "Remote text status"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7273,10 +7253,6 @@ msgstr ""
 
 #. Resource IDs: (219)
 msgid "Test Only"
-msgstr ""
-
-#. Resource IDs: (207)
-msgid "Text status"
 msgstr ""
 
 #. Resource IDs: (65535)

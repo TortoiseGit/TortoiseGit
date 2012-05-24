@@ -971,7 +971,6 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 }
 void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
 {
-	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 
@@ -1033,7 +1032,6 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 #if 0
 void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 {
-	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 
 	CString path = entry->GetPath().GetGitPathString();
@@ -1075,13 +1073,6 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (s)"));
-#if 0
-		if ((entry->status == entry->propstatus)&&
-			(entry->status != git_wc_status_normal)&&
-			(entry->status != git_wc_status_unversioned)&&
-			(!GitStatus::IsImportant(entry->textstatus)))
-			_tcscat_s(buf, 100, ponly);
-#endif
 		SetItemText(index, nCol++, buf);
 	}
 	// SVNSLC_COLREMOTESTATUS
@@ -1098,12 +1089,6 @@ void CGitStatusListCtrl::AddEntry(FileEntry * entry, WORD langID, int listIndex)
 			_tcscat_s(buf, 100, _T(" (+)"));
 		if ((entry->switched)&&(_tcslen(buf)>1))
 			_tcscat_s(buf, 100, _T(" (s)"));
-		if ((entry->remotestatus == entry->remotepropstatus)&&
-			(entry->remotestatus != git_wc_status_none)&&
-			(entry->remotestatus != git_wc_status_normal)&&
-			(entry->remotestatus != git_wc_status_unversioned)&&
-			(!SVNStatus::IsImportant(entry->remotetextstatus)))
-			_tcscat_s(buf, 100, ponly);
 #endif
 		SetItemText(index, nCol++, buf);
 	}
@@ -4500,7 +4485,6 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 {
 
-	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 //	WORD langID = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), GetUserDefaultLangID());
 
@@ -4561,11 +4545,6 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (s)"));
-				if ((entry->status == entry->propstatus)&&
-					(entry->status != git_wc_status_normal)&&
-					(entry->status != git_wc_status_unversioned)&&
-					(!GitStatus::IsImportant(entry->textstatus)))
-					_tcscat_s(buf, 100, ponly);
 				temp = buf;
 			}
 #endif
@@ -4605,12 +4584,6 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 					_tcscat_s(buf, 100, _T(" (+)"));
 				if ((entry->switched)&&(_tcslen(buf)>1))
 					_tcscat_s(buf, 100, _T(" (s)"));
-				if ((entry->remotestatus == entry->remotepropstatus)&&
-					(entry->remotestatus != git_wc_status_none)&&
-					(entry->remotestatus != git_wc_status_normal)&&
-					(entry->remotestatus != git_wc_status_unversioned)&&
-					(!SVNStatus::IsImportant(entry->remotetextstatus)))
-					_tcscat_s(buf, 100, ponly);
 				temp = buf;
 			}
 			sClipboard += _T("\t")+temp;
