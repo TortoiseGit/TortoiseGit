@@ -3504,6 +3504,7 @@ BEGIN
     IDS_PROC_CREATED        "Created"
     IDS_PROC_NEWBRANCHTAG_TRACK_TT 
                             "If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."
+    IDS_STATUSLIST_FROM     "(from %s)"
 END
 
 #endif    // Englisch (USA) resources

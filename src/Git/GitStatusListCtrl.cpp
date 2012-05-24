@@ -972,6 +972,7 @@ int CGitStatusListCtrl::GetColumnIndex(int mask)
 void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int listIndex)
 {
 	static CString ponly(MAKEINTRESOURCE(IDS_STATUSLIST_PROPONLY));
+	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 
 	CString path = GitPath->GetGitPathString();
@@ -991,8 +992,8 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	{
 		// relative path
 		CString rename;
-		rename.Format(_T(" (from %s)"), GitPath->GetGitOldPathString());
-		entryname += rename;
+		rename.Format(from, GitPath->GetGitOldPathString());
+		entryname += _T(" ") + rename;
 	}
 
 	InsertItem(index, entryname, icon_idx);

@@ -37,6 +37,11 @@ msgstr ""
 msgid " "
 msgstr ""
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr ""
+
 #. Resource IDs: (188)
 #, c-format
 msgid "! %d"
