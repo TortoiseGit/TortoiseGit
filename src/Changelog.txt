@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1193: Not properly handling submodule meta information (.git-file contains relative path)
  * Fixed issue #1167: TGitCache.exe crashes under Win7/64bit
  * Fixed issue #1195: Problems with tags containing non-ascii chars
+ * Fixed issue #1185: In TortoiseGit log dialog info text, diff dialog and TortoiseGitBlame, git shows 7 chars of the hash by default (as git does)
 
 = Release 1.7.9.0 =
 Released: 2012-05-05
