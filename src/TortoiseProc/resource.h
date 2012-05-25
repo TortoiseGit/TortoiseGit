@@ -1010,7 +1010,7 @@
 #define IDC_SENDMAIL_ATTACHMENT         1579
 #define IDC_REFLOG_LIST                 1580
 #define IDC_SENDMAIL_SETUP              1580
-#define IDC_REPOURL                     1580
+#define IDC_STATIC_REPOURL              1580
 #define IDC_COMBOBOXEX_REPOSITORY       1581
 #define IDC_COMBOBOXEX_PATH             1582
 #define IDC_SENDMAIL_GROUP              1582

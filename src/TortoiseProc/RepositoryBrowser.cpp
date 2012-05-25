@@ -172,7 +172,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	AddAnchor(IDC_REPOURL, TOP_LEFT);
+	AddAnchor(IDC_STATIC_REPOURL, TOP_LEFT);
 	AddAnchor(IDC_REPOBROWSER_URL, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_STATIC_REF, TOP_RIGHT);
 	AddAnchor(IDC_BUTTON_REVISION, TOP_RIGHT);
