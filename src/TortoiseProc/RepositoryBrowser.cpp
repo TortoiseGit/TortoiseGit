@@ -259,11 +259,19 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 
 	CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNmItemActivate->iItem);
-	if (pItem == NULL || !pItem->m_bFolder)
+	if (pItem == NULL)
 		return;
 
-	FillListCtrlForShadowTree(pItem);
-	m_RepoTree.SelectItem(pItem->m_hTree);
+	if (!pItem->m_bFolder)
+	{
+		OpenFile(pItem->GetFullName(), OPEN);
+		return;
+	}
+	else
+	{
+		FillListCtrlForShadowTree(pItem);
+		m_RepoTree.SelectItem(pItem->m_hTree);
+	}
 }
 
 void CRepositoryBrowser::Refresh()
@@ -463,6 +471,16 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 
 	if (selectedLeafs.size() == 1)
 	{
+		popupMenu.AppendMenuIcon(eCmd_Open, IDS_REPOBROWSE_OPEN, IDI_OPEN);
+		popupMenu.SetDefaultItem(eCmd_Open, FALSE);
+		if (!selectedLeafs.at(0)->m_bFolder)
+		{
+			popupMenu.AppendMenuIcon(eCmd_OpenWith, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
+			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV);
+		}
+
+		popupMenu.AppendMenu(MF_SEPARATOR);
+
 		CString temp;
 		temp.LoadString(IDS_MENULOG);
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
@@ -492,6 +510,15 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
 			CAppUtils::RunTortoiseProc(sCmd);
 		}
+		break;
+	case eCmd_Open:
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN);
+		break;
+	case eCmd_OpenWith:
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN_WITH);
+		break;
+	case eCmd_OpenWithAlternativeEditor:
+		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR);
 		break;
 	case eCmd_SaveAs:
 		FileSaveAs(selectedLeafs.at(0)->GetFullName());
@@ -815,4 +842,39 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 			return;
 		}
 	}
+}
+
+void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
+{
+	CTGitPath gitPath(path);
+
+	CString temppath;
+	CString file;
+	GetTempPath(temppath);
+	file.Format(_T("%s%s_%s%s"), temppath, gitPath.GetBaseFilename(), m_sRevision.Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
+
+	CString out;
+	if(g_Git.GetOneFile(m_sRevision, gitPath, file))
+	{
+		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, gitPath.GetGitPathString(), m_sRevision, file);
+		MessageBox(out, _T("TortoiseGit"), MB_OK);
+		return;
+	}
+
+	if (mode == ALTERNATIVEEDITOR)
+	{
+		CAppUtils::LaunchAlternativeEditor(file);
+		return;
+	}
+	else if (mode == OPEN)
+	{
+		int ret = HINSTANCE_ERROR;
+		ret = (int)ShellExecute(this->m_hWnd, NULL, file, NULL, NULL, SW_SHOW);
+
+		if (ret > HINSTANCE_ERROR)
+			return;
+	}
+
+	CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ") + file;
+	CAppUtils::LaunchApplication(cmd, NULL, false);
 }

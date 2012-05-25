@@ -77,7 +77,10 @@ public:
 
 	enum eCmd
 	{
-		eCmd_ViewLog = WM_APP,
+		eCmd_Open = WM_APP,
+		eCmd_OpenWith,
+		eCmd_OpenWithAlternativeEditor,
+		eCmd_ViewLog,
 		eCmd_SaveAs,
 		eCmd_CopyPath,
 	};
@@ -87,6 +90,13 @@ public:
 		eCol_Name,
 		eCol_Extension,
 		eCol_FileSize,
+	};
+
+	enum eOpenType
+	{
+		ALTERNATIVEEDITOR,
+		OPEN,
+		OPEN_WITH,
 	};
 
 private:
@@ -122,6 +132,7 @@ private:
 	void					OnContextMenu_RepoList(CPoint point);
 
 	void					FileSaveAs(const CString path);
+	void					OpenFile(const CString path, eOpenType mode);
 
 	afx_msg void			OnBnClickedButtonRevision();
 
