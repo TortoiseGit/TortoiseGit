@@ -489,7 +489,7 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 	case eCmd_ViewLog:
 		{
 			CString sCmd;
-			sCmd.Format(_T("/command:log /path:\"%s%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
+			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
 			CAppUtils::RunTortoiseProc(sCmd);
 		}
 		break;

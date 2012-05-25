@@ -53,7 +53,11 @@ public:
 		if (m_pParent == NULL)
 			return m_sName;
 
-		return m_pParent->GetFullName() + _T("/") + m_sName;
+		CString parentPath = m_pParent->GetFullName();
+		if (parentPath.IsEmpty())
+			return m_sName;
+		else
+			return m_pParent->GetFullName() + _T("/") + m_sName;
 	}
 };
 typedef std::vector<CShadowFilesTree *> TShadowFilesTreeList;
