@@ -132,6 +132,8 @@
 #define IDS_MENUCLONE                   223
 #define IDS_MENUCLIPPASTE               225
 #define IDS_MENUDESCCLIPPASTE           226
+#define IDS_MENUREPOBROWSE              227
+#define IDS_MENUDESCREPOBROWSE          228
 #define IDS_ERR_PROPNOTONFILE           230
 #define IDS_MENUIGNOREMULTIPLE          231
 #define IDS_MENUUNIGNORE                237

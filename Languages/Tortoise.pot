@@ -399,6 +399,10 @@ msgstr ""
 msgid "&Browse Dir"
 msgstr ""
 
+#. Resource IDs: (1251)
+msgid "&Browse repository"
+msgstr ""
+
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
 msgstr ""
@@ -907,6 +911,10 @@ msgstr ""
 
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "&Repo-browser"
 msgstr ""
 
 #. Resource IDs: (16613, 16624)
@@ -5420,6 +5428,10 @@ msgstr ""
 msgid "Opens Help\nHelp Topics"
 msgstr ""
 
+#. Resource IDs: (15)
+msgid "Opens the repository browser"
+msgstr ""
+
 #. Resource IDs: (357)
 msgid "Option"
 msgstr ""
@@ -6132,6 +6144,10 @@ msgstr ""
 
 #. Resource IDs: (1618)
 msgid "Repository &URL"
+msgstr ""
+
+#. Resource IDs: (153)
+msgid "Repository Browser"
 msgstr ""
 
 #. Resource IDs: (65535)

@@ -20,6 +20,7 @@
 #define IDR_ANIMATION                   148
 #define IDR_MOVEANI                     149
 #define IDD_RENAME                      151
+#define IDD_REPOSITORY_BROWSER          153
 #define IDD_ADD                         155
 #define IDD_CHANGEDFILES                158
 #define IDD_SIMPLEPROMPT                160
@@ -76,13 +77,8 @@
 #define IDD_EXPORT                      238
 #define IDD_INPUTLOGDLG                 241
 #define IDD_CREATECHANGELIST            243
-#define IDI_REPO_FILE                   244
+#define IDI_REPOBROWSER_BKG             244
 #define IDD_SETTINGSTBLAME              244
-#define IDI_REPO_HTTP                   245
-#define IDI_REPO_HTTPS                  246
-#define IDI_REPO_SVN                    247
-#define IDI_REPO_SVNSSH                 248
-#define IDI_REPO_UNKNOWN                249
 #define IDC_PANCUR                      250
 #define IDC_PANCURDOWN                  251
 #define IDI_TORTOISEBLAME               252
@@ -774,6 +770,8 @@
 #define IDC_CHECKOUTURL                 1363
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
+#define IDC_REPOTREE                    1371
+#define IDC_REPOLIST                    1372
 #define IDC_LIST1                       1372
 #define IDC_BUGTRAQLIST                 1372
 #define IDC_LIST_PATCH                  1372
@@ -1012,6 +1010,7 @@
 #define IDC_SENDMAIL_ATTACHMENT         1579
 #define IDC_REFLOG_LIST                 1580
 #define IDC_SENDMAIL_SETUP              1580
+#define IDC_REPOURL                     1580
 #define IDC_COMBOBOXEX_REPOSITORY       1581
 #define IDC_COMBOBOXEX_PATH             1582
 #define IDC_SENDMAIL_GROUP              1582
@@ -1121,6 +1120,8 @@
 #define IDC_CHECK_NEWBRANCH             1681
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
 #define IDC_CREATELIB                   1683
+#define IDC_BUTTON_REVISION             1684
+#define IDC_REPOBROWSER_URL             1685
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1496,7 +1497,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1684
+#define _APS_NEXT_CONTROL_VALUE         1686
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

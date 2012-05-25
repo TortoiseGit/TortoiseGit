@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,6 +72,7 @@
 #include "PasteMoveCommand.h"
 #include "SVNIgnoreCommand.h"
 #include "BisectCommand.h"
+#include "RepositoryBrowserCommand.h"
 
 #if 0
 
@@ -87,7 +88,6 @@
 #include "RebuildIconCacheCommand.h"
 #include "RemoveCommand.h"
 
-#include "RepositoryBrowserCommand.h"
 
 
 #include "RevertCommand.h"
@@ -160,7 +160,8 @@ typedef enum
 	cmdSVNIgnore,
 	cmdSync,
 	cmdRequestPull,
-	cmdBisect
+	cmdBisect,
+	cmdRepoBrowser,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -230,6 +231,7 @@ static const struct CommandInfo
 	{	cmdSync,			_T("sync")				},
 	{	cmdRequestPull,		_T("requestpull")		},
 	{	cmdBisect,			_T("bisect")			},
+	{	cmdRepoBrowser,		_T("repobrowser")		},
 };
 
 
@@ -358,6 +360,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new SVNIgnoreCommand;
 	case cmdBisect:
 		return new BisectCommand;
+	case cmdRepoBrowser:
+		return new RepositoryBrowserCommand;
 
 #if 0
 
