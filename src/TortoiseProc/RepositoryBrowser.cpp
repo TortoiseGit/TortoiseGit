@@ -465,6 +465,14 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 		CString temp;
 		temp.LoadString(IDS_MENULOG);
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
+
+		if (!selectedLeafs.at(0)->m_bFolder)
+		{
+			popupMenu.AppendMenu(MF_SEPARATOR);
+			temp.LoadString(IDS_LOG_POPUP_SAVE);
+			popupMenu.AppendMenuIcon(eCmd_SaveAs, temp, IDI_SAVEAS);
+		}
+
 		bAddSeparator = true;
 	}
 
@@ -483,6 +491,9 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 			sCmd.Format(_T("/command:log /path:\"%s%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
 			CAppUtils::RunTortoiseProc(sCmd);
 		}
+		break;
+	case eCmd_SaveAs:
+		FileSaveAs(selectedLeafs.at(0)->GetFullName());
 		break;
 	case eCmd_CopyPath:
 		{
@@ -782,4 +793,25 @@ BOOL CRepositoryBrowser::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		}
 	}
 	return CStandAloneDialogTmpl<CResizableDialog>::OnSetCursor(pWnd, nHitTest, message);
+}
+
+void CRepositoryBrowser::FileSaveAs(const CString path)
+{
+	CTGitPath gitPath(path);
+
+	CString filename;
+	filename.Format(_T("%s-%s%s"), gitPath.GetBaseFilename(), m_sRevision.Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
+	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
+
+	CString cmd, out;
+	if (dlg.DoModal() == IDOK)
+	{
+		filename = dlg.GetPathName();
+		if (g_Git.GetOneFile(m_sRevision, gitPath, filename))
+		{
+			out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, gitPath.GetGitPathString(), m_sRevision, filename);
+			MessageBox(out, _T("TortoiseGit"), MB_OK);
+			return;
+		}
+	}
 }

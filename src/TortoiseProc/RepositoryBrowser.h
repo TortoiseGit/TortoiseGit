@@ -74,6 +74,7 @@ public:
 	enum eCmd
 	{
 		eCmd_ViewLog = WM_APP,
+		eCmd_SaveAs,
 		eCmd_CopyPath,
 	};
 
@@ -115,6 +116,8 @@ private:
 	afx_msg void			OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void			OnContextMenu(CWnd* pWndFrom, CPoint point);
 	void					OnContextMenu_RepoList(CPoint point);
+
+	void					FileSaveAs(const CString path);
 
 	afx_msg void			OnBnClickedButtonRevision();
 
