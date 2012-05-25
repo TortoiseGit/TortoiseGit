@@ -33,6 +33,7 @@
 #include "SysInfo.h"
 #include "registry.h"
 #include "PathUtils.h"
+#include "StringUtils.h"
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -467,6 +468,12 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 		bAddSeparator = true;
 	}
 
+	if (bAddSeparator)
+		popupMenu.AppendMenu(MF_SEPARATOR);
+	bAddSeparator = false;
+
+	popupMenu.AppendMenuIcon(eCmd_CopyPath, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
+
 	eCmd cmd = (eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
 	switch(cmd)
 	{
@@ -475,6 +482,16 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 			CString sCmd;
 			sCmd.Format(_T("/command:log /path:\"%s%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
 			CAppUtils::RunTortoiseProc(sCmd);
+		}
+		break;
+	case eCmd_CopyPath:
+		{
+			CString sClipboard;
+			for (TShadowFilesTreeList::iterator itShadowTree = selectedLeafs.begin(); itShadowTree != selectedLeafs.end(); ++itShadowTree)
+			{
+				sClipboard += (*itShadowTree)->m_sName + _T("\r\n");
+			}
+			CStringUtils::WriteAsciiStringToClipboard(sClipboard);
 		}
 		break;
 	}

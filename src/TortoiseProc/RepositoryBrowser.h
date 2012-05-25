@@ -74,6 +74,7 @@ public:
 	enum eCmd
 	{
 		eCmd_ViewLog = WM_APP,
+		eCmd_CopyPath,
 	};
 
 	enum eCol
