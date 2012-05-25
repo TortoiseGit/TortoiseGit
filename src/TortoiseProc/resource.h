@@ -77,6 +77,7 @@
 #define IDD_EXPORT                      238
 #define IDD_INPUTLOGDLG                 241
 #define IDD_CREATECHANGELIST            243
+#define IDI_REPOBROWSER_BKG             244
 #define IDD_SETTINGSTBLAME              244
 #define IDC_PANCUR                      250
 #define IDC_PANCURDOWN                  251

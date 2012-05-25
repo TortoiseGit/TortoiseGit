@@ -902,6 +902,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\RepoBrowserBackground.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\ResolveBackground.ico"
 				>
 			</File>

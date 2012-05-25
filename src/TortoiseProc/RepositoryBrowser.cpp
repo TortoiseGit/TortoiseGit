@@ -199,6 +199,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		exStyle |= LVS_EX_FULLROWSELECT;
 	m_RepoList.SetExtendedStyle(exStyle);
 	m_RepoList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
+	CAppUtils::SetListCtrlBackgroundImage(m_RepoList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 
 	m_RepoTree.SetImageList(&SYS_IMAGE_LIST(), TVSIL_NORMAL);
 	if (SysInfo::Instance().IsVistaOrLater())
