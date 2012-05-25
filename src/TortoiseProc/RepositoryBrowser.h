@@ -79,6 +79,7 @@ public:
 	enum eCol
 	{
 		eCol_Name,
+		eCol_Extension,
 		eCol_FileSize,
 	};
 

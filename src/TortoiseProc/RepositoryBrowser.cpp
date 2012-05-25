@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include "SysInfo.h"
 #include "registry.h"
+#include "PathUtils.h"
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -72,16 +73,20 @@ public:
 
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
-		return Compare((CShadowFilesTree *)m_pList->GetItemData(lParam1), (CShadowFilesTree *)m_pList->GetItemData(lParam2));
-	}
+		CShadowFilesTree * pLeft	= (CShadowFilesTree *)m_pList->GetItemData(lParam1);
+		CShadowFilesTree * pRight	= (CShadowFilesTree *)m_pList->GetItemData(lParam2);
 
-	int Compare(CShadowFilesTree * pLeft, CShadowFilesTree * pRight)
-	{
 		int result = 0;
 		switch(m_col)
 		{
 		case CRepositoryBrowser::eCol_Name:
 			result = SortStrCmp(pLeft->m_sName, pRight->m_sName);
+			if (result != 0)
+				break;
+		case CRepositoryBrowser::eCol_Extension:
+			result = m_pList->GetItemText(static_cast<int>(lParam1), 1).CompareNoCase(m_pList->GetItemText(static_cast<int>(lParam2), 1));
+			if (result == 0)  // if extensions are the same, use the filename to sort
+				result = SortStrCmp(pRight->m_sName, pRight->m_sName);
 			if (result != 0)
 				break;
 		case CRepositoryBrowser::eCol_FileSize:
@@ -176,10 +181,11 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	if (CRepositoryBrowser::s_bSortLogical)
 		CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
-	m_RepoList.SetExtendedStyle(m_RepoList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	CString temp;
 	temp.LoadString(IDS_STATUSLIST_COLFILENAME);
 	m_RepoList.InsertColumn(eCol_Name, temp, 0, 150);
+	temp.LoadString(IDS_STATUSLIST_COLEXT);
+	m_RepoList.InsertColumn(eCol_Extension, temp, 0, 100);
 	temp.LoadString(IDS_LOG_SIZE);
 	m_RepoList.InsertColumn(eCol_FileSize, temp, 0, 100);
 
@@ -416,6 +422,10 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		if (!(*itShadowTree).second.m_bFolder)
 		{
 			CString temp;
+
+			temp = CPathUtils::GetFileExtFromPath((*itShadowTree).second.m_sName);
+			m_RepoList.SetItemText(indexItem, eCol_Extension, temp);
+
 			StrFormatByteSize((*itShadowTree).second.m_iSize, temp.GetBuffer(20), 20);
 			temp.ReleaseBuffer();
 			m_RepoList.SetItemText(indexItem, eCol_FileSize, temp);
