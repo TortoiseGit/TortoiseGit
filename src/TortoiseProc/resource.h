@@ -1009,6 +1009,7 @@
 #define IDC_SENDMAIL_ATTACHMENT         1579
 #define IDC_REFLOG_LIST                 1580
 #define IDC_SENDMAIL_SETUP              1580
+#define IDC_REPOURL                     1580
 #define IDC_COMBOBOXEX_REPOSITORY       1581
 #define IDC_COMBOBOXEX_PATH             1582
 #define IDC_SENDMAIL_GROUP              1582
@@ -1119,6 +1120,7 @@
 #define IDC_CHECK_CHERRYPICKED_FROM     1682
 #define IDC_CREATELIB                   1683
 #define IDC_BUTTON_REVISION             1684
+#define IDC_REPOBROWSER_URL             1685
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
@@ -1501,7 +1503,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1685
+#define _APS_NEXT_CONTROL_VALUE         1686
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

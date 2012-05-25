@@ -170,8 +170,10 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	AddAnchor(IDC_STATIC, TOP_LEFT);
-	AddAnchor(IDC_BUTTON_REVISION, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_REPOURL, TOP_LEFT);
+	AddAnchor(IDC_REPOBROWSER_URL, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_STATIC_REF, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_REVISION, TOP_RIGHT);
 	AddAnchor(IDC_REPOTREE, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_REPOLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -415,6 +417,10 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 		ASSERT(FALSE);
 		return;
 	}
+
+	CString url = _T("/") + pTree->GetFullName();
+	GetDlgItem(IDC_REPOBROWSER_URL)->SetWindowText(url);
+
 	FillListCtrlForShadowTree(pTree);
 }
 
