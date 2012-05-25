@@ -989,10 +989,6 @@ msgstr ""
 msgid "&Show text labels"
 msgstr ""
 
-#. Resource IDs: (1482, 1523)
-msgid "&Sign"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "&Signing key ID:"
 msgstr ""
@@ -1409,6 +1405,10 @@ msgstr ""
 
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
+msgstr ""
+
+#. Resource IDs: (1482)
+msgid "Add &Signed-off-by"
 msgstr ""
 
 #. Resource IDs: (376)
