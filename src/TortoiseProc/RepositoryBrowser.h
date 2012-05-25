@@ -130,6 +130,8 @@ private:
 	afx_msg void			OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void			OnContextMenu(CWnd* pWndFrom, CPoint point);
 	void					OnContextMenu_RepoList(CPoint point);
+	void					OnContextMenu_RepoTree(CPoint point);
+	void					ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs);
 
 	void					FileSaveAs(const CString path);
 	void					OpenFile(const CString path, eOpenType mode);

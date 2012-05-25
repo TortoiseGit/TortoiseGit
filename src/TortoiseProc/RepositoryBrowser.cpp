@@ -452,6 +452,23 @@ void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {
 	if (pWndFrom == &m_RepoList)
 		OnContextMenu_RepoList(point);
+	else if (pWndFrom == &m_RepoTree)
+		OnContextMenu_RepoTree(point);
+}
+
+void CRepositoryBrowser::OnContextMenu_RepoTree(CPoint point)
+{
+	CPoint clientPoint = point;
+	m_RepoTree.ScreenToClient(&clientPoint);
+
+	HTREEITEM hTreeItem = m_RepoTree.HitTest(clientPoint);
+	if (hTreeItem == NULL)
+		return;
+
+	TShadowFilesTreeList selectedLeafs;
+	selectedLeafs.push_back((CShadowFilesTree *)m_RepoTree.GetItemData(hTreeItem));
+
+	ShowContextMenu(point, selectedLeafs);
 }
 
 void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
@@ -464,6 +481,11 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 		selectedLeafs.push_back((CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos)));
 	}
 
+	ShowContextMenu(point, selectedLeafs);
+}
+
+void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs)
+{
 	CIconMenu popupMenu;
 	popupMenu.CreatePopupMenu();
 
@@ -512,6 +534,12 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 		}
 		break;
 	case eCmd_Open:
+		if (selectedLeafs.at(0)->m_bFolder)
+		{
+			FillListCtrlForTreeNode(selectedLeafs.at(0)->m_hTree);
+			m_RepoTree.SelectItem(selectedLeafs.at(0)->m_hTree);
+			return;
+		}
 		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN);
 		break;
 	case eCmd_OpenWith:
