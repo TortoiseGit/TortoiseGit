@@ -902,30 +902,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\repo_file.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\repo_http.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\repo_https.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\repo_svn+ssh.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\repo_svn.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\Resources\repo_unknown.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\Resources\ResolveBackground.ico"
 				>
 			</File>

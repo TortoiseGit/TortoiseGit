@@ -77,13 +77,7 @@
 #define IDD_EXPORT                      238
 #define IDD_INPUTLOGDLG                 241
 #define IDD_CREATECHANGELIST            243
-#define IDI_REPO_FILE                   244
 #define IDD_SETTINGSTBLAME              244
-#define IDI_REPO_HTTP                   245
-#define IDI_REPO_HTTPS                  246
-#define IDI_REPO_SVN                    247
-#define IDI_REPO_SVNSSH                 248
-#define IDI_REPO_UNKNOWN                249
 #define IDC_PANCUR                      250
 #define IDC_PANCURDOWN                  251
 #define IDI_TORTOISEBLAME               252
