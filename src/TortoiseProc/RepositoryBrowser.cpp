@@ -478,23 +478,38 @@ void CRepositoryBrowser::OnContextMenu_RepoTree(CPoint point)
 	TShadowFilesTreeList selectedLeafs;
 	selectedLeafs.push_back((CShadowFilesTree *)m_RepoTree.GetItemData(hTreeItem));
 
-	ShowContextMenu(point, selectedLeafs);
+	ShowContextMenu(point, selectedLeafs, ONLY_FOLDERS);
 }
 
 void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 {
 	TShadowFilesTreeList selectedLeafs;
 	selectedLeafs.reserve(m_RepoList.GetSelectedCount());
+
+	bool folderSelected = false;
+	bool filesSelected = false;
+
 	POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		selectedLeafs.push_back((CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos)));
+		CShadowFilesTree * item = (CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos));
+		if (item->m_bFolder)
+			folderSelected = true;
+		else
+			filesSelected = true;
+		selectedLeafs.push_back(item);
 	}
 
-	ShowContextMenu(point, selectedLeafs);
+	eSelectionType selType = ONLY_FILES;
+	if (folderSelected && filesSelected)
+		selType = MIXED;
+	else if (folderSelected)
+		selType = ONLY_FOLDERS;
+
+	ShowContextMenu(point, selectedLeafs, selType);
 }
 
-void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs)
+void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs, eSelectionType selType)
 {
 	CIconMenu popupMenu;
 	popupMenu.CreatePopupMenu();
@@ -505,7 +520,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	{
 		popupMenu.AppendMenuIcon(eCmd_Open, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 		popupMenu.SetDefaultItem(eCmd_Open, FALSE);
-		if (!selectedLeafs.at(0)->m_bFolder)
+		if (selType == ONLY_FILES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_OpenWith, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV);
@@ -513,7 +528,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 
-		if (m_bHasWC && !selectedLeafs.at(0)->m_bFolder)
+		if (m_bHasWC && selType == ONLY_FILES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_CompareWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 			bAddSeparator = true;
@@ -527,13 +542,19 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		temp.LoadString(IDS_MENULOG);
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
 
-		if (!selectedLeafs.at(0)->m_bFolder)
+		if (selType == ONLY_FILES)
 		{
 			popupMenu.AppendMenu(MF_SEPARATOR);
 			temp.LoadString(IDS_LOG_POPUP_SAVE);
 			popupMenu.AppendMenuIcon(eCmd_SaveAs, temp, IDI_SAVEAS);
 		}
 
+		bAddSeparator = true;
+	}
+
+	if (selType == ONLY_FILES && m_bHasWC)
+	{
+		popupMenu.AppendMenuIcon(eCmd_Revert, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 		bAddSeparator = true;
 	}
 
@@ -572,6 +593,21 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		{
 			CTGitPath file(selectedLeafs.at(0)->GetFullName());
 			CGitDiff::Diff(&file, &file, GIT_REV_ZERO, m_sRevision);
+		}
+		break;
+	case eCmd_Revert:
+		{
+			int count = 0;
+			for (TShadowFilesTreeList::iterator itShadowTree = selectedLeafs.begin(); itShadowTree != selectedLeafs.end(); ++itShadowTree)
+			{
+				if (RevertItemToVersion((*itShadowTree)->GetFullName()))
+					count++;
+				else
+					break;
+			}
+			CString msg;
+			msg.Format(IDS_STATUSLIST_FILESREVERTED, count, m_sRevision);
+			MessageBox(msg, _T("TortoiseGit"), MB_OK);
 		}
 		break;
 	case eCmd_SaveAs:
@@ -931,4 +967,16 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
 
 	CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ") + file;
 	CAppUtils::LaunchApplication(cmd, NULL, false);
+}
+bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
+{
+	CString cmd, out;	
+	cmd.Format(_T("git.exe checkout %s -- \"%s\""), m_sRevision, path);
+	if (g_Git.Run(cmd, &out, CP_UTF8))
+	{
+		if (MessageBox(out, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
+			return false;
+	}
+
+	return true;
 }

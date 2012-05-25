@@ -82,6 +82,7 @@ public:
 		eCmd_OpenWithAlternativeEditor,
 		eCmd_ViewLog,
 		eCmd_CompareWC,
+		eCmd_Revert,
 		eCmd_SaveAs,
 		eCmd_CopyPath,
 	};
@@ -98,6 +99,13 @@ public:
 		ALTERNATIVEEDITOR,
 		OPEN,
 		OPEN_WITH,
+	};
+
+	enum eSelectionType
+	{
+		ONLY_FILES,
+		ONLY_FOLDERS,
+		MIXED,
 	};
 
 private:
@@ -134,10 +142,11 @@ private:
 	afx_msg void			OnContextMenu(CWnd* pWndFrom, CPoint point);
 	void					OnContextMenu_RepoList(CPoint point);
 	void					OnContextMenu_RepoTree(CPoint point);
-	void					ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs);
+	void					ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs, eSelectionType selType);
 
 	void					FileSaveAs(const CString path);
 	void					OpenFile(const CString path, eOpenType mode);
+	bool					RevertItemToVersion(const CString &path);
 
 	afx_msg void			OnBnClickedButtonRevision();
 
