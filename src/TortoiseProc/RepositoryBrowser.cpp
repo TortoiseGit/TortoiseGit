@@ -34,6 +34,7 @@
 #include "registry.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
+#include "GitDiff.h"
 
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -135,6 +136,7 @@ CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 , m_currSortCol(0)
 , m_currSortDesc(false)
 , m_sRevision(rev)
+, m_bHasWC(true)
 {
 }
 
@@ -231,6 +233,8 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
+	m_bHasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
 
 	Refresh();
 
@@ -509,6 +513,16 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 
+		if (m_bHasWC && !selectedLeafs.at(0)->m_bFolder)
+		{
+			popupMenu.AppendMenuIcon(eCmd_CompareWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+			bAddSeparator = true;
+		}
+
+		if (bAddSeparator)
+			popupMenu.AppendMenu(MF_SEPARATOR);
+		bAddSeparator = false;
+
 		CString temp;
 		temp.LoadString(IDS_MENULOG);
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
@@ -553,6 +567,12 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		break;
 	case eCmd_OpenWithAlternativeEditor:
 		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR);
+		break;
+	case eCmd_CompareWC:
+		{
+			CTGitPath file(selectedLeafs.at(0)->GetFullName());
+			CGitDiff::Diff(&file, &file, GIT_REV_ZERO, m_sRevision);
+		}
 		break;
 	case eCmd_SaveAs:
 		FileSaveAs(selectedLeafs.at(0)->GetFullName());

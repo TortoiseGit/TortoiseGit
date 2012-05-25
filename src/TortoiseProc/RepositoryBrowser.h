@@ -81,6 +81,7 @@ public:
 		eCmd_OpenWith,
 		eCmd_OpenWithAlternativeEditor,
 		eCmd_ViewLog,
+		eCmd_CompareWC,
 		eCmd_SaveAs,
 		eCmd_CopyPath,
 	};
@@ -120,6 +121,8 @@ private:
 	int						ReadTree(CShadowFilesTree * treeroot);
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;
+
+	bool					m_bHasWC;
 
 	void					Refresh();
 	CString					m_sRevision;
