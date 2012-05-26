@@ -414,7 +414,7 @@ void CDirectoryWatcher::WorkerThread()
 									CGitStatusCache::Instance().BlockPath(path);
 									continue;
 								}
-								else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || ((wcsstr(pFound, L"index") != NULL || wcsstr(pFound, L"HEAD") != NULL) && pnotify->Action == FILE_ACTION_MODIFIED))
+								else if (((wcsstr(pFound, L"index.lock") != NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_REMOVED) || (((wcsstr(pFound, L"index") != NULL && wcsstr(pFound, L"index.lock") == NULL) || (wcsstr(pFound, L"HEAD") != NULL && wcsstr(pFound, L"HEAD.lock") != NULL)) && pnotify->Action == FILE_ACTION_MODIFIED) || ((wcsstr(pFound, L"index.lock") == NULL || wcsstr(pFound, L"HEAD.lock") != NULL) && pnotify->Action == FILE_ACTION_RENAMED_NEW_NAME))
 								{
 									isIndex = true;
 									CGitStatusCache::Instance().BlockPath(path, 1);
