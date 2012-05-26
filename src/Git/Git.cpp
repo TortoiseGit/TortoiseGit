@@ -466,6 +466,8 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 	{
 		CString *git_path=NULL;
 
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+
 		try
 		{
 			CTGitPath path;
@@ -508,6 +510,8 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 {
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+
 		try
 		{
 			CheckAndInitDll();
@@ -554,6 +558,8 @@ int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding, CString 
 {
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+
 		try
 		{
 			CheckAndInitDll();
@@ -615,6 +621,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 		unsigned char sha1[20];
 		int flag;
 
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		const char *refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(CString(symbolicRefName)), sha1, 0, &flag);
 		if(refs_heads_master && (flag&REF_ISSYMREF))
 		{
@@ -973,6 +980,8 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 {
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+
 		this->CheckAndInitDll();
 
 		CGitHash hash;
@@ -1057,6 +1066,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		return git_for_each_ref_in("refs/tags/",addto_list_each_ref_fn, &list);
 
 	}
@@ -1198,6 +1208,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	int ret;
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		return git_for_each_ref_in("",addto_list_each_ref_fn, &list);
 
 	}
@@ -1251,6 +1262,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	int ret;
 	if(this->m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		return git_for_each_ref_in("",addto_map_each_ref_fn, &map);
 
 	}
@@ -1527,6 +1539,7 @@ int CGit::RefreshGitIndex()
 	{
 		try
 		{
+			CAutoLocker lock(g_Git.m_critGitDllSec);
 			return git_run_cmd("update-index","update-index -q --refresh");
 
 		}catch(...)
@@ -1549,6 +1562,7 @@ int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile
 	{
 		try
 		{
+			CAutoLocker lock(g_Git.m_critGitDllSec);
 			g_Git.CheckAndInitDll();
 			CStringA ref, patha, outa;
 			ref = CUnicodeUtils::GetMulti(Refname, CP_UTF8);
