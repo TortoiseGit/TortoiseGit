@@ -828,7 +828,7 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 
 void CGitProgressDlg::ReportGitError()
 {
-	ReportError(CString(git_lasterror()));
+	ReportError(CString(giterr_last()->message));
 }
 
 void CGitProgressDlg::ReportError(const CString& sError)
@@ -1852,12 +1852,12 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
 	// HACK for separate-git-dir, libgit2 doesn't support it atm
-	if (CTGitPath(g_Git.m_CurrentDir + _T("/.git")).IsDirectory() && CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE) == TRUE)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE) == TRUE)
 	{
 		git_repository *repo = NULL;
 		git_index *index;
 
-		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString() + _T("/.git"), CP_UTF8);
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 		if (git_repository_open(&repo, gitdir.GetBuffer()))
 		{
 			ReportGitError();

@@ -810,7 +810,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 			if(mode&S_IFDIR)
 			{
 				git_object *object = NULL;
-				git_tree_entry_2object(&object, &repo, entry);
+				git_tree_entry_to_object(&object, &repo, entry);
 				if (object == NULL)
 					continue;
 				CStringA parent = base;

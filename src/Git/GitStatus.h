@@ -71,7 +71,7 @@ typedef enum
 #define GIT_REV_ZERO _T("0000000000000000000000000000000000000000")
 #define GIT_INVALID_REVNUM _T("")
 typedef CString git_revnum_t;
-typedef int git_error_t;
+typedef int tgit_error_t;
 
 typedef struct git_wc_entry_t
 {
@@ -371,7 +371,7 @@ private:
 //	git_client_ctx_t * 			ctx;
 	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
 //	git_error_t *				m_err;			///< Subversion error baton
-	git_error_t							m_err;
+	tgit_error_t							m_err;
 
 	git_wc_status2_t			m_status;		// used for GetStatus
 
@@ -425,7 +425,7 @@ private:
 #pragma warning(pop)	// C4200
 
 	static int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);
-	static git_error_t* cancel(void *baton);
+	static tgit_error_t* cancel(void *baton);
 
 	// A sorted list of filenames (in Git format, in lowercase)
 	// when this list is set, we only pick-up files during a GetStatus which are found in this list

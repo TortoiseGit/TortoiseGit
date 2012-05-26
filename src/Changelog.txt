@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1150: Add support for ANSI Color Codes in log Outputs
  * Fixed issue #969: Support for localization (you can download/create language packs for TortoiseGit, see http://code.google.com/p/tortoisegit/wiki/Translation)
  * Added Repository Browser
+ * Updated shipped libgit2 to version 0.17.0
 
 == Bug Fix ==
  * Fixed issue #1162: Sync dialog should use same font as progress dialog (use log font for both)

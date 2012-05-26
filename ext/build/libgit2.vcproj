@@ -409,10 +409,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\src\hashtable.c"
-				>
-			</File>
-			<File
 				RelativePath="..\libgit2\src\ignore.c"
 				>
 			</File>
@@ -426,6 +422,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\iterator.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\message.c"
 				>
 			</File>
 			<File
@@ -470,6 +470,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\pkt.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\pool.c"
 				>
 			</File>
 			<File
@@ -525,6 +529,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\submodule.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\tag.c"
 				>
 			</File>
@@ -561,10 +569,6 @@
 				>
 				<File
 					RelativePath="..\libgit2\src\win32\dir.c"
-					>
-				</File>
-				<File
-					RelativePath="..\libgit2\src\win32\fnmatch.c"
 					>
 				</File>
 				<File
@@ -629,6 +633,14 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\xdiff\xutils.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="compat"
+				>
+				<File
+					RelativePath="..\libgit2\src\compat\fnmatch.c"
 					>
 				</File>
 			</Filter>
@@ -731,6 +743,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\message.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\mwindow.h"
 				>
 			</File>
@@ -756,6 +772,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\pkt.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\pool.h"
 				>
 			</File>
 			<File
@@ -834,10 +854,6 @@
 				Name="win32"
 				>
 				<File
-					RelativePath="..\libgit2\src\win32\fnmatch.h"
-					>
-				</File>
-				<File
 					RelativePath="..\libgit2\src\win32\mingw-compat.h"
 					>
 				</File>
@@ -859,6 +875,14 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\win32\utf-conv.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="compat"
+				>
+				<File
+					RelativePath="..\libgit2\src\compat\fnmatch.h"
 					>
 				</File>
 			</Filter>

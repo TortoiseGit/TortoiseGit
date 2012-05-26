@@ -116,7 +116,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 //	apr_hash_t *				statushash;
 //	apr_pool_t *				pool;
 	//git_error_t *				err = NULL; // If svn_client_status comes out through catch(...), err would else be unassigned
-	git_error_t err = 0;
+	tgit_error_t err = 0;
 
 	//dont' build the cache if an instance of TortoiseProc is running
 	//since this could interfere with svn commands running (concurrent

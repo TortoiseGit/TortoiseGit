@@ -840,7 +840,7 @@ int GitStatus::sort_compare_items_as_paths (const sort_item *a, const sort_item 
 }
 #endif
 
-git_error_t* GitStatus::cancel(void * /*baton*/)
+tgit_error_t* GitStatus::cancel(void * /*baton*/)
 {
 #if 0
 	volatile bool * canceled = (bool *)baton;
