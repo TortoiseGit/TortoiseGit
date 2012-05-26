@@ -431,14 +431,14 @@ public:
 	__time64_t  m_LastModifyTime;
 	CStringA m_BaseDir;
 	EXCLUDE_LIST m_pExcludeList;
-	int FetchIgnoreList(const CString &projectroot, const CString &file);
+	int FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal);
 };
 
 class CGitIgnoreList
 {
 private:
 	bool CheckFileChanged(const CString &path);
-	int	 FetchIgnoreFile(const CString &gitdir, const CString &gitignore);
+	int FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal);
 
 	int  CheckIgnore(const CString &path,const CString &root);
 
