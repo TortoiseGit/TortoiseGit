@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-18 13:53+0000\n"
+"PO-Revision-Date: 2012-05-25 19:31+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.net/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -178,7 +178,7 @@ msgstr "%I64d KBytes übertragen"
 #. Resource IDs: (1256)
 #, c-format
 msgid "%d Parent"
-msgstr "Elter %d"
+msgstr "Elternteil %d"
 
 #. Resource IDs: (75)
 #, c-format
@@ -412,6 +412,10 @@ msgstr "&Zweig:"
 #. Resource IDs: (1382)
 msgid "&Browse Dir"
 msgstr "&Suche Verzeichnis"
+
+#. Resource IDs: (1251)
+msgid "&Browse repository"
+msgstr "Projektarchiv durchsuchen"
 
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
@@ -923,6 +927,10 @@ msgstr "A&rchiv:"
 msgid "&Remove"
 msgstr "Ent&fernen"
 
+#. Resource IDs: (15)
+msgid "&Repo-browser"
+msgstr "P&rojektarchiv"
+
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
 msgstr "&Reset"
@@ -1002,10 +1010,6 @@ msgstr "&Zeige Menüs für"
 #. Resource IDs: (16612)
 msgid "&Show text labels"
 msgstr "&Textmarken zeigen"
-
-#. Resource IDs: (1482, 1523)
-msgid "&Sign"
-msgstr "&Abzeichnen"
 
 #. Resource IDs: (65535)
 msgid "&Signing key ID:"
@@ -1175,6 +1179,11 @@ msgstr "&Windows XP"
 msgid "&ignore space change"
 msgstr "&Ignoriere Änderungen in der Anzahl von Leerzeichen"
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr "(von %s)"
+
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr "(keine Änderungsliste)"
@@ -1190,10 +1199,6 @@ msgstr "(Kein Wert)"
 #. Resource IDs: (314)
 msgid "(not found)"
 msgstr "(nicht gefunden)"
-
-#. Resource IDs: (208)
-msgid "(property change only)"
-msgstr "(Nur Eigenschaftsänderung)"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
@@ -1453,6 +1458,10 @@ msgstr "ActiveX Objekte können während Windows beendet wird nicht gespeichert 
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
 msgstr "Hinz."
+
+#. Resource IDs: (1482)
+msgid "Add &Signed-off-by"
+msgstr "Ab&zeichnen"
 
 #. Resource IDs: (376)
 #, c-format
@@ -2635,10 +2644,6 @@ msgstr "&Kopieren"
 msgid "Copied"
 msgstr "Kopiert"
 
-#. Resource IDs: (208)
-msgid "Copied from URL"
-msgstr "Kopiert von URL"
-
 #. Resource IDs: (78)
 msgid "Copy"
 msgstr "Kopieren"
@@ -2853,6 +2858,10 @@ msgstr "&Bibliothek erstellen"
 msgid "Create .gitignore file"
 msgstr "Erstelle .gitignore-Datei"
 
+#. Resource IDs: (82)
+msgid "Create Branch"
+msgstr "Erzeuge Zweig"
+
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
 msgstr "Neuen Zweig dieser Revision erstellen"
@@ -2872,6 +2881,10 @@ msgstr "Erzeuge neuen Zweig"
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
 msgstr "Patch-Reihe erzeugen"
+
+#. Resource IDs: (81)
+msgid "Create Tag"
+msgstr "Erzeuge Markierung"
 
 #. Resource IDs: (1254)
 msgid "Create Tag at this version..."
@@ -3198,6 +3211,11 @@ msgstr "Diffdatei:"
 #. Resource IDs: (32780)
 msgid "Diff previous revision"
 msgstr "Vergleiche mit vorheriger Version"
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Diff with parent %d"
+msgstr "Vergleich mit Elternteil %d"
 
 #. Resource IDs: (1302)
 msgid "Difference between"
@@ -3859,6 +3877,10 @@ msgstr "Aktualisieren..."
 msgid "Fetching Status..."
 msgstr "Ermittle Status..."
 
+#. Resource IDs: (81)
+msgid "Fetching changed files..."
+msgstr "Hole geänderte Dateien..."
+
 #. Resource IDs: (313)
 msgid "Fetching file..."
 msgstr "Hole Datei..."
@@ -4003,11 +4025,11 @@ msgstr "Fertig!"
 
 #. Resource IDs: (1126)
 msgid "First Parent"
-msgstr "Erster Elter"
+msgstr "Erster Elternteil"
 
 #. Resource IDs: (119)
 msgid "First Parent Only"
-msgstr "Nur erste Elter"
+msgstr "Nur erster Elternteil"
 
 #. Resource IDs: (1617)
 msgid "First known &bad:"
@@ -4048,6 +4070,11 @@ msgstr "Deaktivieren Sie 'Bei Kopien/Umbenennen anhalten', um eine vollständige
 #. Resource IDs: (1521)
 msgid "Force"
 msgstr "Erzwingen"
+
+#. Resource IDs: (82)
+msgid ""
+"Force creation of branch/tag - even if one with same name already exists."
+msgstr "Erzwinge die Erstellung des Zweiges/der Markierung - selbst dann, wenn einer mit gleichem Namen existiert."
 
 #. Resource IDs: (603)
 msgid ""
@@ -4619,6 +4646,12 @@ msgid ""
 "'save as...' or 'open' dialogs"
 msgstr "Aktivieren Sie diese Option, damit die überlagerten Symbole und Kontextmenüs\nin 'Speichern unter...' und 'Öffnen' Dialogen nicht angezeigt werden."
 
+#. Resource IDs: (85)
+msgid ""
+"If checked --track is passed to git, if unchecked --no-track is passed to "
+"git, else neither --track nor --no-track is passed to git (see help)."
+msgstr "Ist dieses Feld markiert wird --track an git übergeben. Ist es nicht markiert, wird --no-track übergeben und sonst weder --track noch --no-track (siehe Hilfe)."
+
 #. Resource IDs: (197)
 msgid ""
 "If checked, double-clicking on a revision in the log list compares it with "
@@ -4685,6 +4718,10 @@ msgstr "Ignoriere &Zeilenenden (empfohlen)"
 #. Resource IDs: (1432)
 msgid "Ignored"
 msgstr "Ignoriert"
+
+#. Resource IDs: (78)
+msgid "Ignored Files"
+msgstr "Ignorierte Dateien"
 
 #. Resource IDs: (16916)
 msgid "Image &and Text"
@@ -5185,6 +5222,10 @@ msgstr "Mit \"%s\" zusammenführen..."
 msgid "Merged"
 msgstr "Zusammengeführt"
 
+#. Resource IDs: (76)
+msgid "Merged Files"
+msgstr "Zusammengefügte Dateien"
+
 #. Resource IDs: (10)
 msgid "Merges another branch"
 msgstr "Führt Eintragungen mit einem anderen Zweig zusammen"
@@ -5251,6 +5292,10 @@ msgstr "Änderungsdatum"
 #. Resource IDs: (74, 264)
 msgid "Modified"
 msgstr "Verändert"
+
+#. Resource IDs: (76)
+msgid "Modified Files"
+msgstr "Veränderte Dateien"
 
 #. Resource IDs: (1070)
 msgid "More"
@@ -5524,6 +5569,10 @@ msgstr "Normale &SVN Eintragung"
 msgid "North European"
 msgstr "Nord Europäisch"
 
+#. Resource IDs: (78)
+msgid "Not Versioned Files"
+msgstr "Nicht versionierte Dateien"
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nicht alle Einträge der System-Registry (oder INI Datei) wurden gelöscht."
@@ -5547,6 +5596,10 @@ msgstr "Hinweis: Die Schrifteinstellungen gelten auch für den TortoiseUDiff Bet
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
 msgstr "Hinweise: Diese Einstellung beeinflusst alle Tortoise Clients, nicht nur TortoiseGit!"
+
+#. Resource IDs: (82)
+msgid "Notes"
+msgstr "Anmerkungen"
 
 #. Resource IDs: (604)
 #, c-format
@@ -5764,6 +5817,10 @@ msgid ""
 "Help Topics"
 msgstr "Zeigt die Hilfe an\nHilfe"
 
+#. Resource IDs: (15)
+msgid "Opens the repository browser"
+msgstr "Öffnet das Projektarchiv"
+
 #. Resource IDs: (357)
 msgid "Option"
 msgstr "Einstellungen"
@@ -5847,7 +5904,7 @@ msgstr "Parameter:"
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
-msgstr "Elter %d existiert nicht"
+msgstr "Elternteil %d existiert nicht"
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
@@ -6128,10 +6185,6 @@ msgstr "Eigenschaft"
 msgid "Property Page"
 msgstr "Eigenschaften"
 
-#. Resource IDs: (207)
-msgid "Property status"
-msgstr "Eigenschaften"
-
 #. Resource IDs: (63)
 msgid "Provider"
 msgstr "Anbieter"
@@ -6410,17 +6463,9 @@ msgstr "Archiv aktualisieren"
 msgid "Remote name must not be empty."
 msgstr "Archivname darf nicht leer sein."
 
-#. Resource IDs: (207)
-msgid "Remote property status"
-msgstr "Eigenschaften Projektarchiv"
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
 msgstr "Status Projektarchiv"
-
-#. Resource IDs: (207)
-msgid "Remote text status"
-msgstr "Inhalt Projektarchiv"
 
 #. Resource IDs: (65535)
 msgid "Remote:"
@@ -6541,6 +6586,10 @@ msgstr "Ersetze"
 msgid "Repository &URL"
 msgstr "Projektarchiv &URL"
 
+#. Resource IDs: (153)
+msgid "Repository Browser"
+msgstr "Projektarchiv betrachten"
+
 #. Resource IDs: (65535)
 msgid "Repository:"
 msgstr "Projektarchiv:"
@@ -6552,6 +6601,10 @@ msgstr "Anforderungsanfrage"
 #. Resource IDs: (65535)
 msgid "Requests a username and a password"
 msgstr "Erfragt Anwendername und Passwort"
+
+#. Resource IDs: (82)
+msgid "Requires GPG and a key without passphrase."
+msgstr "Erfordert GPG und einen Schlüssel ohne Passphrase."
 
 #. Resource IDs: (8)
 msgid "Res&olve..."
@@ -7360,6 +7413,10 @@ msgstr "Zeigt das Aktionslog im Standard Texteditor an"
 msgid "Shows the log for the selected file/folder"
 msgstr "Zeigt das Log der gewählten Datei/Ordner"
 
+#. Resource IDs: (1523)
+msgid "Si&gn"
+msgstr "Si&gnieren"
+
 #. Resource IDs: (1532)
 msgid "Since"
 msgstr "Seit"
@@ -7538,7 +7595,7 @@ msgstr "Betreff"
 
 #. Resource IDs: (65535)
 msgid "Subject:"
-msgstr "Betreff"
+msgstr "Betreff:"
 
 #. Resource IDs: (1302)
 msgid "Submodule"
@@ -7691,6 +7748,14 @@ msgstr "Tab Platzhalter"
 msgid "Tab size:"
 msgstr "Tab Größe:"
 
+#. Resource IDs: (82)
+msgid "Tag"
+msgstr "Markierung"
+
+#. Resource IDs: (82)
+msgid "Tag Info"
+msgstr "Markierungsinformationen"
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7711,10 +7776,6 @@ msgstr "Werkzeugfläche"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Nur testen"
-
-#. Resource IDs: (207)
-msgid "Text status"
-msgstr "Text Status"
 
 #. Resource IDs: (65535)
 msgid "Thai"

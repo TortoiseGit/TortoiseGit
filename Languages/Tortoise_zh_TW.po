@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-18 13:57+0000\n"
-"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2012-05-25 19:29+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.net/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -413,6 +413,10 @@ msgstr "分支(&B):"
 #. Resource IDs: (1382)
 msgid "&Browse Dir"
 msgstr "瀏覽目錄(&B)"
+
+#. Resource IDs: (1251)
+msgid "&Browse repository"
+msgstr ""
 
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
@@ -924,6 +928,10 @@ msgstr "遠端(&R)"
 msgid "&Remove"
 msgstr "移除(&R)"
 
+#. Resource IDs: (15)
+msgid "&Repo-browser"
+msgstr ""
+
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
 msgstr "重置(&R)"
@@ -1003,10 +1011,6 @@ msgstr "顯示選單於(&S)："
 #. Resource IDs: (16612)
 msgid "&Show text labels"
 msgstr "顯示文字標籤(&S)"
-
-#. Resource IDs: (1482, 1523)
-msgid "&Sign"
-msgstr "簽名(&S)"
 
 #. Resource IDs: (65535)
 msgid "&Signing key ID:"
@@ -1176,6 +1180,11 @@ msgstr "&Windows XP"
 msgid "&ignore space change"
 msgstr "忽略空格改動(&i)"
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr "(由 %s)"
+
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr "(沒有變更列表)"
@@ -1191,10 +1200,6 @@ msgstr "(無此值)"
 #. Resource IDs: (314)
 msgid "(not found)"
 msgstr "(找不到)"
-
-#. Resource IDs: (208)
-msgid "(property change only)"
-msgstr "(僅性質改變)"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
@@ -1454,6 +1459,10 @@ msgstr "ActiveX 物件無法在離開視窗時儲存！\n要放棄所有對 %1 �
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
 msgstr "加入"
+
+#. Resource IDs: (1482)
+msgid "Add &Signed-off-by"
+msgstr "加入 &Signed-off-by"
 
 #. Resource IDs: (376)
 #, c-format
@@ -2636,10 +2645,6 @@ msgstr "複製(&Y)"
 msgid "Copied"
 msgstr "已複製"
 
-#. Resource IDs: (208)
-msgid "Copied from URL"
-msgstr "複製來源路徑"
-
 #. Resource IDs: (78)
 msgid "Copy"
 msgstr "複製"
@@ -2854,9 +2859,13 @@ msgstr "建立媒體櫃(&L)"
 msgid "Create .gitignore file"
 msgstr "建立.gitignore檔案"
 
+#. Resource IDs: (82)
+msgid "Create Branch"
+msgstr "建立分支"
+
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
-msgstr "在這版本建立分支"
+msgstr "在這版本建立分支..."
 
 #. Resource IDs: (9)
 msgid "Create Branch..."
@@ -2873,6 +2882,10 @@ msgstr "建立新分支"
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
 msgstr "建立補綴序列..."
+
+#. Resource IDs: (81)
+msgid "Create Tag"
+msgstr "建立標籤"
 
 #. Resource IDs: (1254)
 msgid "Create Tag at this version..."
@@ -2919,7 +2932,7 @@ msgstr "建立一個分支或標籤"
 
 #. Resource IDs: (76)
 msgid "Creates a library folder with special settings for Git working trees"
-msgstr ""
+msgstr "建立一個媒體櫃資料夾並含有為Git工作目錄的特別設定"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -3199,6 +3212,11 @@ msgstr "差異檔:"
 #. Resource IDs: (32780)
 msgid "Diff previous revision"
 msgstr "與前一修訂比較"
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Diff with parent %d"
+msgstr "與父版本 %d 比對"
 
 #. Resource IDs: (1302)
 msgid "Difference between"
@@ -3860,6 +3878,10 @@ msgstr "獲取..."
 msgid "Fetching Status..."
 msgstr "獲取狀態中..."
 
+#. Resource IDs: (81)
+msgid "Fetching changed files..."
+msgstr "獲取變更的檔案中..."
+
 #. Resource IDs: (313)
 msgid "Fetching file..."
 msgstr "正在取得檔案..."
@@ -4049,6 +4071,11 @@ msgstr "要列出完整歷程紀錄請勿選擇 '複製/重新命名時停止'"
 #. Resource IDs: (1521)
 msgid "Force"
 msgstr "強制"
+
+#. Resource IDs: (82)
+msgid ""
+"Force creation of branch/tag - even if one with same name already exists."
+msgstr "強制建立分支/標籤，即使已存在"
 
 #. Resource IDs: (603)
 msgid ""
@@ -4620,6 +4647,12 @@ msgid ""
 "'save as...' or 'open' dialogs"
 msgstr "如果選了這項，在“另存為...”或“開啟”對話視窗中不顯示覆蓋圖示和上下文功能表。"
 
+#. Resource IDs: (85)
+msgid ""
+"If checked --track is passed to git, if unchecked --no-track is passed to "
+"git, else neither --track nor --no-track is passed to git (see help)."
+msgstr "若選取則把 --track 傳給 git；若不選取則把 --no-track 傳給 git；否則兩者都不傳給 git"
+
 #. Resource IDs: (197)
 msgid ""
 "If checked, double-clicking on a revision in the log list compares it with "
@@ -4686,6 +4719,10 @@ msgstr "(建議)忽略換行CRLF符號(&E)"
 #. Resource IDs: (1432)
 msgid "Ignored"
 msgstr "忽略"
+
+#. Resource IDs: (78)
+msgid "Ignored Files"
+msgstr "忽略的檔案"
 
 #. Resource IDs: (16916)
 msgid "Image &and Text"
@@ -5186,6 +5223,10 @@ msgstr "合併至 \"%s\"..."
 msgid "Merged"
 msgstr "已合併"
 
+#. Resource IDs: (76)
+msgid "Merged Files"
+msgstr "已合併的檔案"
+
 #. Resource IDs: (10)
 msgid "Merges another branch"
 msgstr "合併另一分支"
@@ -5252,6 +5293,10 @@ msgstr "修改日期"
 #. Resource IDs: (74, 264)
 msgid "Modified"
 msgstr "已修改"
+
+#. Resource IDs: (76)
+msgid "Modified Files"
+msgstr "已修改的檔案"
 
 #. Resource IDs: (1070)
 msgid "More"
@@ -5525,6 +5570,10 @@ msgstr "正常&SVN Commit"
 msgid "North European"
 msgstr "北歐"
 
+#. Resource IDs: (78)
+msgid "Not Versioned Files"
+msgstr "未版本控制的檔案"
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "並未移除全部的登錄紀錄 (或 INI 檔案)."
@@ -5548,6 +5597,10 @@ msgstr "注意: 字型設定也會影響 TortoiseDiff"
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
 msgstr "注意：這將影響到所有的Tortoise客户端，不僅僅是TortoiseGit!"
+
+#. Resource IDs: (82)
+msgid "Notes"
+msgstr "備註"
 
 #. Resource IDs: (604)
 #, c-format
@@ -5764,6 +5817,10 @@ msgid ""
 "Opens Help\n"
 "Help Topics"
 msgstr "開啟說明\n說明主題"
+
+#. Resource IDs: (15)
+msgid "Opens the repository browser"
+msgstr ""
 
 #. Resource IDs: (357)
 msgid "Option"
@@ -6129,10 +6186,6 @@ msgstr "性質"
 msgid "Property Page"
 msgstr "性質頁面"
 
-#. Resource IDs: (207)
-msgid "Property status"
-msgstr "性質狀態"
-
 #. Resource IDs: (63)
 msgid "Provider"
 msgstr "提供者"
@@ -6411,17 +6464,9 @@ msgstr "遠端更新"
 msgid "Remote name must not be empty."
 msgstr "遠端名稱不能為空"
 
-#. Resource IDs: (207)
-msgid "Remote property status"
-msgstr "遠端性質狀態"
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
 msgstr "遠端狀態"
-
-#. Resource IDs: (207)
-msgid "Remote text status"
-msgstr "遠端文字狀態"
 
 #. Resource IDs: (65535)
 msgid "Remote:"
@@ -6542,6 +6587,10 @@ msgstr "正在取代"
 msgid "Repository &URL"
 msgstr "倉儲 URL"
 
+#. Resource IDs: (153)
+msgid "Repository Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Repository:"
 msgstr "倉儲:"
@@ -6553,6 +6602,10 @@ msgstr "要求拉取"
 #. Resource IDs: (65535)
 msgid "Requests a username and a password"
 msgstr "需要帳號和密碼"
+
+#. Resource IDs: (82)
+msgid "Requires GPG and a key without passphrase."
+msgstr "要求 GPG 及密鑰但沒有密碼"
 
 #. Resource IDs: (8)
 msgid "Res&olve..."
@@ -7012,11 +7065,11 @@ msgstr "選擇檢視差異檔工具"
 
 #. Resource IDs: (1067)
 msgid "Select/Deselect &All"
-msgstr "選擇全部或取消選擇(&A)"
+msgstr "全部選擇或取消(&A)"
 
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
-msgstr "選擇全部或取消選擇(&A)"
+msgstr "全部選擇或取消(&A)"
 
 #. Resource IDs: (1)
 msgid "Send"
@@ -7361,6 +7414,10 @@ msgstr "用預設的文字編輯器顯示行為紀錄"
 msgid "Shows the log for the selected file/folder"
 msgstr "顯示選定的檔案/資料夾的記錄"
 
+#. Resource IDs: (1523)
+msgid "Si&gn"
+msgstr "簽名(&G)"
+
 #. Resource IDs: (1532)
 msgid "Since"
 msgstr "自從"
@@ -7692,6 +7749,14 @@ msgstr "分隔線"
 msgid "Tab size:"
 msgstr "Tab 寬度:"
 
+#. Resource IDs: (82)
+msgid "Tag"
+msgstr "標籤"
+
+#. Resource IDs: (82)
+msgid "Tag Info"
+msgstr "標籤資訊"
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7712,10 +7777,6 @@ msgstr "工作面板"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "僅測試"
-
-#. Resource IDs: (207)
-msgid "Text status"
-msgstr "文字狀態"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -8672,7 +8733,7 @@ msgstr "以網頁瀏覽器檢視路徑的版本(&W)"
 
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
-msgstr "以其他編2器檢視版本(&W)"
+msgstr "以其他編輯器檢視版本(&W)"
 
 #. Resource IDs: (1084)
 msgid "Visit our website"

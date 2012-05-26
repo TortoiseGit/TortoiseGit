@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-18 13:52+0000\n"
+"PO-Revision-Date: 2012-05-25 19:28+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: French (http://www.transifex.net/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -197,7 +197,7 @@ msgstr "%d fichiers supprimés."
 #. Resource IDs: (69)
 #, c-format
 msgid "%d files reverted to %s."
-msgstr ""
+msgstr "%d fichiers restaurés dans %s."
 
 #. Resource IDs: (169)
 #, c-format
@@ -250,7 +250,7 @@ msgstr "%s, à %s"
 #. Resource IDs: (151)
 #, c-format
 msgid "%s: Working Tree"
-msgstr ""
+msgstr "%s: Arborescence de travail"
 
 #. Resource IDs: (145)
 #, c-format
@@ -412,6 +412,10 @@ msgstr "&Branche :"
 msgid "&Browse Dir"
 msgstr "&Parcourir le répertoire"
 
+#. Resource IDs: (1251)
+msgid "&Browse repository"
+msgstr ""
+
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
 msgstr "&Parcourir..."
@@ -534,7 +538,7 @@ msgstr "&Répertoire :"
 
 #. Resource IDs: (71)
 msgid "&Discard"
-msgstr ""
+msgstr "&Rejeter"
 
 #. Resource IDs: (1066)
 msgid "&Docking"
@@ -727,7 +731,7 @@ msgstr "&Grandes Icônes"
 
 #. Resource IDs: (1602)
 msgid "&Launch Rebase After Fetch"
-msgstr ""
+msgstr "&Lancer Rebase après extraction"
 
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
@@ -922,6 +926,10 @@ msgstr "À &distance :"
 msgid "&Remove"
 msgstr "&Effacer"
 
+#. Resource IDs: (15)
+msgid "&Repo-browser"
+msgstr ""
+
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
 msgstr "&Réinitialiser"
@@ -1002,10 +1010,6 @@ msgstr "&Afficher les Menus pour:"
 msgid "&Show text labels"
 msgstr "&Afficher les labels texte"
 
-#. Resource IDs: (1482, 1523)
-msgid "&Sign"
-msgstr "&Signer"
-
 #. Resource IDs: (65535)
 msgid "&Signing key ID:"
 msgstr "id de la clef de &signature :"
@@ -1020,11 +1024,11 @@ msgstr "&Sauter"
 
 #. Resource IDs: (1524)
 msgid "&Squash"
-msgstr ""
+msgstr "&Écraser"
 
 #. Resource IDs: (1561)
 msgid "&Squash ALL"
-msgstr ""
+msgstr "&Écraser TOUT"
 
 #. Resource IDs: (1616)
 msgid "&Start"
@@ -1174,6 +1178,11 @@ msgstr "&Windows XP"
 msgid "&ignore space change"
 msgstr "&ignorer les changements d'espaces"
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr ""
+
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr "(pas de liste de changements)"
@@ -1189,10 +1198,6 @@ msgstr "(pas de valeur)"
 #. Resource IDs: (314)
 msgid "(not found)"
 msgstr "(non trouvé)"
-
-#. Resource IDs: (208)
-msgid "(property change only)"
-msgstr "(changement de propriété seulement)"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
@@ -1277,60 +1282,60 @@ msgstr "<b>TortoiseGit<b> est une extension du shell.\nCela signifie qu'il est i
 msgid ""
 "<b>Warning:</b> It has not been checked if these branches have been fully "
 "merged into HEAD."
-msgstr ""
+msgstr "<b>Attention :</b> Aucun contrôle n'a été effectué pour savoir si ces branches sont complétement fusionnées sur HEAD."
 
 #. Resource IDs: (84)
 msgid "<b>Warning:</b> This action will remove the branches on the remote."
-msgstr ""
+msgstr "<b>Attention :</b> Cette action supprimera les branches distantes."
 
 #. Resource IDs: (84)
 msgid "<b>Warning:</b> This branch is not fully merged into HEAD."
-msgstr ""
+msgstr "<b>Attention :</b> Cette branche n'est pas totalement fusionnée sur HEAD."
 
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
 "Do you want create branch now?"
-msgstr ""
+msgstr "<ct=0x0000FF>HEAD courante isolée</ct>, vous ne travaillez sur aucune branche (particulière).\nVoulez-vous en créer une maintenant ?"
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
-msgstr ""
+msgstr "<ct=0x0000FF>Voulez-vous vraiment supprimer <b>TOUTE</b>la réserve ?</ct>"
 
 #. Resource IDs: (72)
 msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
-msgstr ""
+msgstr "<ct=0x0000FF>Application de la réserve en échec !!!</ct>"
 
 #. Resource IDs: (85)
 msgid "<ct=0x0000FF>Stash POP failed!!!</ct>"
-msgstr ""
+msgstr "<ct=0x0000FF>Réservation POP en échec !!!</ct>"
 
 #. Resource IDs: (72)
 msgid "<ct=0x0000FF>Stash failed!!!</ct>"
-msgstr ""
+msgstr "<ct=0x0000FF>Réservation échouée !!!</ct>"
 
 #. Resource IDs: (66)
 msgid ""
 "<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
 "\n"
 "Do you want to"
-msgstr ""
+msgstr "<ct=0x0000FF>le répertoire précédent sur lequel appliquer le rebase existe toujours mais est un mbox</ct>\n\nQue voulez-vous ?"
 
 #. Resource IDs: (85)
 msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
-msgstr ""
+msgstr "<ct=0x0000ff>Application de la réserve en échec, il y a des conflits</ct>"
 
 #. Resource IDs: (85)
 msgid "<ct=0x0000ff>Stash POP failed, there are conflicts</ct>"
-msgstr ""
+msgstr "<ct=0x0000ff>Réservation POP en échec, il y a des conflits</ct>"
 
 #. Resource IDs: (84)
 msgid "<ct=0xff0000>Stash Apply successful</ct>"
-msgstr ""
+msgstr "<ct=0xff0000>Application de la réserve réussie</ct>"
 
 #. Resource IDs: (84)
 msgid "<ct=0xff0000>Stash POP successful</ct>"
-msgstr ""
+msgstr "<ct=0xff0000>Réservation POP réussie</ct>"
 
 #. Resource IDs: (72)
 msgid "<ct=0xff0000>Stash Success</ct>"
@@ -1452,6 +1457,10 @@ msgstr "Les objets ActiveX ne peuvent pas être sauvegardés pendant la fermetur
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
 msgstr "Ajouter"
+
+#. Resource IDs: (1482)
+msgid "Add &Signed-off-by"
+msgstr ""
 
 #. Resource IDs: (376)
 #, c-format
@@ -1740,7 +1749,7 @@ msgstr "Une tentative a été faite pour écrire %1 ouvert en lecture."
 msgid ""
 "Attention: This command affects the whole working tree and will delete all "
 "untracked files without using the recycle bin!"
-msgstr ""
+msgstr "Attention : Cette commande affecte l'arborescence de travail entière et permet de supprimer tous les fichiers non versionés sans utiliser la corbeille !"
 
 #. Resource IDs: (131, 160)
 msgid "Authentication"
@@ -1874,7 +1883,7 @@ msgstr "Basé sur TortoiseIDiff de TortoiseSVN"
 msgid ""
 "Be warned that email clients tend to automatic wrap lines.\r\n"
 "Recommendation: Use attachments."
-msgstr ""
+msgstr "Attention, les clients email ajoutent quasi systèmatiquement des retours à la ligne.\nIl est recommandé d'utiliser des pièces jointes."
 
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
@@ -1882,11 +1891,11 @@ msgstr "Big5 (Traditionel)"
 
 #. Resource IDs: (11)
 msgid "Bisect bad"
-msgstr ""
+msgstr "Bifurcation incorrecte"
 
 #. Resource IDs: (9)
 msgid "Bisect good"
-msgstr ""
+msgstr "Bifurcation correcte"
 
 #. Resource IDs: (11)
 msgid "Bisect reset"
@@ -1894,7 +1903,7 @@ msgstr "Réinitialiser la bifurcation"
 
 #. Resource IDs: (9, 4574)
 msgid "Bisect start"
-msgstr "Début de la division"
+msgstr "Début de la bifurcation"
 
 #. Resource IDs: (3850)
 msgid ""
@@ -1949,7 +1958,7 @@ msgstr "Branche"
 msgid ""
 "Branch %s behind %s\r\n"
 "%s will fastforward to %s"
-msgstr ""
+msgstr "Branche %s en retard sur %s\n%s sera transférée rapidement vers %s"
 
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
@@ -2088,12 +2097,12 @@ msgstr "Annuler"
 msgid ""
 "Cannot combine commits now.\r\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
-msgstr ""
+msgstr "Impossible de combiner les livraisons pour le moment.\nAssurez-vous que vous consultez le journal de votre branche courante et qu'aucun filtre n'est actif."
 
 #. Resource IDs: (1)
 #, c-format
 msgid "Cannot show blame. \"%s\" is not under version control by git."
-msgstr ""
+msgstr "Impossible d'afficher l'annotation. \"%s\" n'est pas versionné par git."
 
 #. Resource IDs: (68)
 msgid "Cannot show diff because of inconsistent newlines in the file."
@@ -2287,7 +2296,7 @@ msgstr "Le nettoyage a été effectué avec succès dans les chemins suivants :\
 
 #. Resource IDs: (76)
 msgid "Cleanup stale remote banches"
-msgstr ""
+msgstr "Nettoyage banches distantes périmées"
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -2302,12 +2311,12 @@ msgstr "Outil Effacer\nEffacer"
 #. Resource IDs: (196)
 #, c-format
 msgid "Clears %ld URLs stored for %ld working trees"
-msgstr ""
+msgstr "Efface %ld URL stockées pour %ld arborescences de travail"
 
 #. Resource IDs: (196)
 #, c-format
 msgid "Clears %ld log messages stored for %ld working trees"
-msgstr ""
+msgstr "Efface %ld commentaires stockés pour %ld arborescences de travail"
 
 #. Resource IDs: (196)
 #, c-format
@@ -2369,7 +2378,7 @@ msgstr "&Cloner un dépôt"
 
 #. Resource IDs: (1653)
 msgid "Clone into Bare Repo"
-msgstr ""
+msgstr "Cloner vers un dépôt nu"
 
 #. Resource IDs: (14)
 msgid "Clone..."
@@ -2538,7 +2547,7 @@ msgstr "Comparer deux fichiers"
 
 #. Resource IDs: (1251)
 msgid "Compare with &working tree"
-msgstr ""
+msgstr "Comparer avec l'arborescence de travail"
 
 #. Resource IDs: (138)
 msgid "Compare with b&ase"
@@ -2579,7 +2588,7 @@ msgstr "Configurer Intégration du Système de Suivi de Problèmes"
 msgid ""
 "Configure alternative editor. Preferably one which can handle *nix line "
 "endings."
-msgstr ""
+msgstr "Configurer un éditeur alternatif. De préférence qui prenne en charge les fins de ligne *nix."
 
 #. Resource IDs: (65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -2633,10 +2642,6 @@ msgstr "&Copier"
 #. Resource IDs: (73)
 msgid "Copied"
 msgstr "Copié"
-
-#. Resource IDs: (208)
-msgid "Copied from URL"
-msgstr "Copié depuis l'URL"
 
 #. Resource IDs: (78)
 msgid "Copy"
@@ -2737,7 +2742,7 @@ msgstr "Impossible de déterminer la dernière révision livrée !"
 
 #. Resource IDs: (565)
 msgid "Could not find Super-project"
-msgstr ""
+msgstr "Impossible de trouver le super-projet"
 
 #. Resource IDs: (81)
 msgid "Could not get the status!"
@@ -2838,7 +2843,7 @@ msgstr "Impossible de démarrer l'éditeur de texte !\n<hr=100%%>\n%s"
 
 #. Resource IDs: (603)
 msgid "Could not start the Putty Agent (pageant)."
-msgstr ""
+msgstr "Impossible de lancer l'agent Putty (pageant)."
 
 #. Resource IDs: (81)
 msgid "Could not start thread!"
@@ -2846,11 +2851,15 @@ msgstr "Ne peut pas démarrer l'unité d'exécution(thread) !"
 
 #. Resource IDs: (1683)
 msgid "Create &Library"
-msgstr ""
+msgstr "Créer une bibliothèque"
 
 #. Resource IDs: (1641)
 msgid "Create .gitignore file"
 msgstr "Créer le fichier .gitignore"
+
+#. Resource IDs: (82)
+msgid "Create Branch"
+msgstr "Créer une branche"
 
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
@@ -2871,6 +2880,10 @@ msgstr "Créer une nouvelle branche"
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
 msgstr "Créer une série de patchs..."
+
+#. Resource IDs: (81)
+msgid "Create Tag"
+msgstr "Créer une étiquette"
 
 #. Resource IDs: (1254)
 msgid "Create Tag at this version..."
@@ -2893,11 +2906,11 @@ msgid ""
 "clone or fetch from it, nor push from nor into it), but is adequate if you "
 "are only interested in the recent history of a large project with a long "
 "history, and would want to send in fixes as patches."
-msgstr ""
+msgstr "Créer un clone allégé avec un historique tronqué au nombre de révisions spécifié. Un dépôt allégé a un certain nombre de limitations (vous ne pouvez ni le cloner li l'extraire, ni pousser quelque soit le sens), mais il est adéquate si vous êtes uniquement intéressé par l'historique récente d'un grand projet avec une longue histoire, et souhaitez envoyer des corrections sous forme de patch."
 
 #. Resource IDs: (72)
 msgid "Create pull &request"
-msgstr ""
+msgstr "Créer une &demande de tirage"
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
@@ -2917,7 +2930,7 @@ msgstr "Création d'une branche ou d'une étiquette"
 
 #. Resource IDs: (76)
 msgid "Creates a library folder with special settings for Git working trees"
-msgstr ""
+msgstr "Création d'un répertoire de bibliothèque avec des paramètres spéciaux pour les arborescences de travail de Git"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -2965,7 +2978,7 @@ msgstr "Filtre courant"
 msgid ""
 "Current Working Tree is not clear\r\n"
 " Do you want to stash change?"
-msgstr ""
+msgstr "La copie de travail actuelle n'est pas propre\nVoulez-vous mettre de côté les modifications ?"
 
 #. Resource IDs: (603)
 #, c-format
@@ -3198,6 +3211,11 @@ msgstr "Fichier diff :"
 msgid "Diff previous revision"
 msgstr "Comparer la révision précédente"
 
+#. Resource IDs: (81)
+#, c-format
+msgid "Diff with parent %d"
+msgstr "Comparer avec le parent %d"
+
 #. Resource IDs: (1302)
 msgid "Difference between"
 msgstr "Différences entre"
@@ -3208,7 +3226,7 @@ msgstr "Voir différence"
 
 #. Resource IDs: (14)
 msgid "Diffs the working tree file with the one before the last commit"
-msgstr ""
+msgstr "Compare le fichier de l'arborescence de travail avec celui avant la dernière livraison."
 
 #. Resource IDs: (22)
 msgid "Diffs two any commits"
@@ -3226,7 +3244,7 @@ msgstr "Répertoire :"
 msgid ""
 "Disable this option if you have really big working trees and experience\r\n"
 "too much disk access when browsing the working tree."
-msgstr ""
+msgstr "Désactiver cette option si vous avez une énorme arborescence de travail et que vous constatez trop d'accès disque lorsque vous explorez l'arborescence de travail."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -3303,7 +3321,7 @@ msgstr "Voulez-vous vraiment déplacer ce fichier ou ce répertoire ?"
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can "
 "<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr ""
+msgstr "Voulez-vous vraiment supprimer de manière permanante les %d références séletionnées ?\nElles ne pourront <ct=0x0000FF><b>PAS</b></ct> être restaurées !"
 
 #. Resource IDs: (71)
 #, c-format
@@ -3322,7 +3340,7 @@ msgid ""
 "Do you really want to revert all changes in\n"
 "%s\n"
 "and go back to this revision? These changes will be reverted by reverse-merging the revisions into your working tree."
-msgstr ""
+msgstr "Voulez-vous vraiment annuler toutes vos modifications dans \n%s\net revenir à cette révision ? Ces changements seront fusionnés dans votre arborescence de travail."
 
 #. Resource IDs: (76)
 #, c-format
@@ -3330,7 +3348,7 @@ msgid ""
 "Do you really want to revert all changes in\n"
 "%s\n"
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
-msgstr ""
+msgstr "Voulez-vous vraiment annuler toutes vos modifications dans \n%s\nqui ont été faites sur cette révision ? Ces changements seront fusionnés dans votre arborescence de travail."
 
 #. Resource IDs: (313)
 msgid ""
@@ -3353,7 +3371,7 @@ msgstr "Document :"
 #. Resource IDs: (75)
 #, c-format
 msgid "Don't know what will push because unknown branch \"%s\""
-msgstr ""
+msgstr "Je ne sais pas ce qui poussera, car la branche \"%s\" est inconnue"
 
 #. Resource IDs: (75)
 msgid "Don't know what will push because you enter URL"
@@ -3425,7 +3443,7 @@ msgstr "Editer"
 
 #. Resource IDs: (84)
 msgid "Edit &global .gitconfig"
-msgstr "Modifier la configuration &global de Git"
+msgstr "Modifier le fichier .gitconfig &global"
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
@@ -3457,7 +3475,7 @@ msgstr "Editer programme de fusion selon extension"
 
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
-msgstr "Modifier le fichier .git/config &global"
+msgstr "Modifier le fichier .gitconfig &global"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3469,7 +3487,7 @@ msgstr "Editer un commentaire"
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
-msgstr ""
+msgstr "Modifier le fichier .gitconfig &local"
 
 #. Resource IDs: (1331, 1382)
 msgid "Edit..."
@@ -3491,7 +3509,7 @@ msgstr "Email"
 
 #. Resource IDs: (602)
 msgid "Email Address To and CC can't empty at the same time."
-msgstr ""
+msgstr "Les champs 'À' et 'Copie à' ne peuvent pas être vide en même temps."
 
 #. Resource IDs: (65535)
 msgid "Empty"
@@ -3766,7 +3784,7 @@ msgstr "Échec de la création de l'objet. Assurez-vous que l'application est en
 
 #. Resource IDs: (72)
 msgid "Failed to create pull-request."
-msgstr ""
+msgstr "Impossible de créer une demande de tirage."
 
 #. Resource IDs: (69)
 msgid "Failed to get base file."
@@ -3810,7 +3828,7 @@ msgstr "Échec au démarrage du fournisseur COM du système de suivi des problè
 
 #. Resource IDs: (72)
 msgid "Failed waiting for pageant to finish loading key."
-msgstr ""
+msgstr "Pageant n'a pas chargé la clef dans le temps imparti."
 
 #. Resource IDs: (220)
 msgid "Failed!"
@@ -3831,41 +3849,45 @@ msgstr "Transfert rapide vers %s"
 
 #. Resource IDs: (76)
 msgid "Fetc&h"
-msgstr ""
+msgstr "Récupé&rer"
 
 #. Resource IDs: (20)
 msgid "Fetch"
-msgstr ""
+msgstr "Extraire"
 
 #. Resource IDs: (14)
 msgid "Fetch from SVN repository"
-msgstr "Tirer du dépôt SVN"
+msgstr "Extraire depuis un dépôt SVN"
 
 #. Resource IDs: (78)
 #, c-format
 msgid "Fetch from \"%s\""
-msgstr ""
+msgstr "Extraire depuis \"%s\""
 
 #. Resource IDs: (76)
 msgid "Fetch&&Re&base"
-msgstr ""
+msgstr "Extraire&&Re&base"
 
 #. Resource IDs: (20)
 msgid "Fetch..."
-msgstr ""
+msgstr "Extraire..."
 
 #. Resource IDs: (76)
 msgid "Fetching Status..."
-msgstr ""
+msgstr "Etat de l'extraction..."
+
+#. Resource IDs: (81)
+msgid "Fetching changed files..."
+msgstr "Extraction des fichiers modifiés..."
 
 #. Resource IDs: (313)
 msgid "Fetching file..."
-msgstr "Récupération fichier..."
+msgstr "Extraction du fichier..."
 
 #. Resource IDs: (313)
 #, c-format
 msgid "Fetching revision %s of file:"
-msgstr "Récupération de la révision %s du fichier :"
+msgstr "Extraction de la révision %s du fichier :"
 
 #. Resource IDs: (63, 74, 77, 319, 1001)
 msgid "File"
@@ -4010,7 +4032,7 @@ msgstr "Premier parent d'abord"
 
 #. Resource IDs: (1617)
 msgid "First known &bad:"
-msgstr ""
+msgstr "Dernière &mauvaise version connue :"
 
 #. Resource IDs: (32810)
 msgid "Fit image &sizes"
@@ -4048,6 +4070,11 @@ msgstr "Pour l'historique complet, désélectionnez 'Arrêt à la copie/renommag
 msgid "Force"
 msgstr "Forcer"
 
+#. Resource IDs: (82)
+msgid ""
+"Force creation of branch/tag - even if one with same name already exists."
+msgstr "Force la création d'une branche / étiquette - même s'il en existe déjà une de même nom."
+
 #. Resource IDs: (603)
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
@@ -4070,7 +4097,7 @@ msgstr "Transferer"
 msgid ""
 "Found an empty commit message. You have to enter one or rebase cannot "
 "proceed."
-msgstr ""
+msgstr "Un message de livraison vide a été trouvé. Vous devez en entrer un ou rebase ne pourra pas s'effectuer."
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
@@ -4618,6 +4645,12 @@ msgid ""
 "'save as...' or 'open' dialogs"
 msgstr "Si activé, empêche l'affichage du recouvrement dans les boîtes de dialogue 'Enregistrer sous...' ou 'Ouvrir...'"
 
+#. Resource IDs: (85)
+msgid ""
+"If checked --track is passed to git, if unchecked --no-track is passed to "
+"git, else neither --track nor --no-track is passed to git (see help)."
+msgstr "Si coché --track est passé à git, si non coché --no-track est passé à git, autrement ni --track ni --no-track ne sont passés à git (voir l'aide)."
+
 #. Resource IDs: (197)
 msgid ""
 "If checked, double-clicking on a revision in the log list compares it with "
@@ -4639,7 +4672,7 @@ msgstr "Si activé, TortoiseGit vérifie une fois par semaine si une nouvelle es
 msgid ""
 "If enabled, working tree folders which are excluded from\n"
 "showing overlays still show the overlay for status 'normal'"
-msgstr ""
+msgstr "Si activé, les répertoires de l'arborescence de travail qui n'affichent\npas de recouvrement afficheront quand-même le recouvrement\npour le status 'normal'"
 
 #. Resource IDs: (196)
 msgid ""
@@ -4658,7 +4691,7 @@ msgid ""
 "If you plan to work inside this folder, leave this unchecked. Typically a "
 "bare repo can only have changes 'pushed' to it. (By convention, a bare repo "
 "folder should have a name that ends with '.git')"
-msgstr ""
+msgstr "Si vous envisagez de travailler dans ce dossier, laissez l'option décochée. Typiquement, un dépôt nu ne peut accepter que avoir des changements 'poussés' vers lui. (Par convention, un dossier de dépôt doit avoir un nom qui se termine par \".git\")"
 
 #. Resource IDs: (73)
 msgid "Ignore"
@@ -4684,6 +4717,10 @@ msgstr "Ignor&er les fins de lignes (recommandé)"
 #. Resource IDs: (1432)
 msgid "Ignored"
 msgstr "Ignoré"
+
+#. Resource IDs: (78)
+msgid "Ignored Files"
+msgstr "Fichiers ignorés"
 
 #. Resource IDs: (16916)
 msgid "Image &and Text"
@@ -4944,7 +4981,7 @@ msgstr "Outil Ligne\nLigne"
 
 #. Resource IDs: (32853)
 msgid "Line diff bar"
-msgstr ""
+msgstr "Barre des lignes de différence"
 
 #. Resource IDs: (65535)
 msgid "Line differences"
@@ -4961,11 +4998,11 @@ msgstr "Ligne : %*ld"
 
 #. Resource IDs: (601)
 msgid "Lines added"
-msgstr ""
+msgstr "Lignes ajoutées"
 
 #. Resource IDs: (601)
 msgid "Lines removed"
-msgstr ""
+msgstr "Lignes supprimées"
 
 #. Resource IDs: (3605)
 msgid ""
@@ -5019,7 +5056,7 @@ msgstr "Journal"
 
 #. Resource IDs: (65535)
 msgid "Log Branch Line"
-msgstr ""
+msgstr "Ligne du journal de la branche"
 
 #. Resource IDs: (65535)
 msgid "Log Graphic"
@@ -5184,6 +5221,10 @@ msgstr "Fusionner vers \"%s\"..."
 msgid "Merged"
 msgstr "Fusionné"
 
+#. Resource IDs: (76)
+msgid "Merged Files"
+msgstr "Fichiers fusionnés"
+
 #. Resource IDs: (10)
 msgid "Merges another branch"
 msgstr "Fusion d'une autre branche"
@@ -5250,6 +5291,10 @@ msgstr "Date de modification"
 #. Resource IDs: (74, 264)
 msgid "Modified"
 msgstr "Modifié"
+
+#. Resource IDs: (76)
+msgid "Modified Files"
+msgstr "Fichiers modifiés"
 
 #. Resource IDs: (1070)
 msgid "More"
@@ -5523,6 +5568,10 @@ msgstr "Livraison &SVN normal"
 msgid "North European"
 msgstr "Europe du nord"
 
+#. Resource IDs: (78)
+msgid "Not Versioned Files"
+msgstr "Fichiers non versionnés"
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Certaines entrées dans le registre système (ou le fichier INI) n'ont pas été effacées."
@@ -5547,12 +5596,16 @@ msgstr "Note : les réglages de police de caractères affectent également Torto
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
 msgstr "Note : cela affecte tous les clients Tortoise, pas seulement TortoiseGit !"
 
+#. Resource IDs: (82)
+msgid "Notes"
+msgstr "Remarques"
+
 #. Resource IDs: (604)
 #, c-format
 msgid ""
 "Nothing need rebase\r\n"
 "%s equal %s"
-msgstr ""
+msgstr "Pas besoin de rebase\n%s identique à %s"
 
 #. Resource IDs: (67)
 msgid "Nothing to Rebase"
@@ -5655,7 +5708,7 @@ msgstr "OK"
 msgid ""
 "OLE initialization failed.  Make sure that the OLE libraries are the correct"
 " version."
-msgstr ""
+msgstr "Echec de l'initialisation d'OLE.  Assurez-vous de posséder la bonne version de la bibliothèque OLE."
 
 #. Resource IDs: (3697)
 msgid "OVR"
@@ -5762,6 +5815,10 @@ msgid ""
 "Opens Help\n"
 "Help Topics"
 msgstr "Ouvre l'aide\nAide"
+
+#. Resource IDs: (15)
+msgid "Opens the repository browser"
+msgstr ""
 
 #. Resource IDs: (357)
 msgid "Option"
@@ -6127,10 +6184,6 @@ msgstr "Propriété"
 msgid "Property Page"
 msgstr "Page des propriétés"
 
-#. Resource IDs: (207)
-msgid "Property status"
-msgstr "Statut de la propriété"
-
 #. Resource IDs: (63)
 msgid "Provider"
 msgstr "Fournisseur"
@@ -6146,7 +6199,7 @@ msgstr "Configuration du Proxy"
 #. Resource IDs: (1603)
 msgid ""
 "Prune (remove remote-tracking branches which no longer exist on the remote)"
-msgstr ""
+msgstr "Prune (enlever les branches distantes de suivi qui n'existent plus à distance)"
 
 #. Resource IDs: (14)
 msgid "Pull"
@@ -6154,15 +6207,15 @@ msgstr "Tirer"
 
 #. Resource IDs: (75)
 msgid "Pull requires the selected local branch to be the current branch."
-msgstr ""
+msgstr "Tirer nécessite que la branche sélectionnée localement soit la branche courante."
 
 #. Resource IDs: (14)
 msgid "Pull..."
-msgstr "Titre..."
+msgstr "Tirer..."
 
 #. Resource IDs: (302)
 msgid "Pull/Fetch"
-msgstr ""
+msgstr "Tirer/Extraction"
 
 #. Resource IDs: (66)
 msgid "Pulled Diff"
@@ -6318,7 +6371,7 @@ msgstr "Ref"
 
 #. Resource IDs: (20087)
 msgid "Ref (Click it then go to)"
-msgstr ""
+msgstr "Ref (Cliquer ici pour y aller)"
 
 #. Resource IDs: (69)
 msgid "RefBrowse"
@@ -6326,7 +6379,7 @@ msgstr "Parcourir Ref"
 
 #. Resource IDs: (1588)
 msgid "RefLog"
-msgstr ""
+msgstr "Journal de référence"
 
 #. Resource IDs: (135)
 msgid "Refresh"
@@ -6375,7 +6428,7 @@ msgstr "Relocalisation..."
 
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
-msgstr ""
+msgstr "Mémoriser la sélection (option \"svn.rmdir\")"
 
 #. Resource IDs: (1649)
 msgid "Reminder: Commit your change after resolve"
@@ -6409,17 +6462,9 @@ msgstr "Mise à jour distante"
 msgid "Remote name must not be empty."
 msgstr "Le nom distant ne doit pas être vide."
 
-#. Resource IDs: (207)
-msgid "Remote property status"
-msgstr "Statut de la propriété distante"
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
 msgstr "Statut distant"
-
-#. Resource IDs: (207)
-msgid "Remote text status"
-msgstr "Statut des propriétés textes distantes"
 
 #. Resource IDs: (65535)
 msgid "Remote:"
@@ -6540,17 +6585,25 @@ msgstr "Remplace"
 msgid "Repository &URL"
 msgstr "&URL du dépôt"
 
+#. Resource IDs: (153)
+msgid "Repository Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Repository:"
 msgstr "Dépôt :"
 
 #. Resource IDs: (334)
 msgid "Request pull"
-msgstr ""
+msgstr "Demande de tirage"
 
 #. Resource IDs: (65535)
 msgid "Requests a username and a password"
 msgstr "Requiert un nom d'utilisateur et un mot de passe"
+
+#. Resource IDs: (82)
+msgid "Requires GPG and a key without passphrase."
+msgstr "Demande une empreinte GPG et une clef sans passphrase."
 
 #. Resource IDs: (8)
 msgid "Res&olve..."
@@ -6798,7 +6851,7 @@ msgstr "DCommit SVN..."
 
 #. Resource IDs: (13)
 msgid "SVN Fetch"
-msgstr ""
+msgstr "Extraction SVN"
 
 #. Resource IDs: (21)
 msgid "SVN Rebase..."
@@ -6806,11 +6859,11 @@ msgstr "Rebase SVN..."
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
-msgstr ""
+msgstr "&Correction Crlf :"
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
-msgstr ""
+msgstr "Correction Crlf :"
 
 #. Resource IDs: (57604)
 msgid "Save &As..."
@@ -6826,7 +6879,7 @@ msgstr "Enregistrer sous"
 
 #. Resource IDs: (1567)
 msgid "Save as &Global"
-msgstr ""
+msgstr "Enregistrer sous &globalement"
 
 #. Resource IDs: (313)
 msgid "Save as..."
@@ -7090,7 +7143,7 @@ msgstr "Shell"
 
 #. Resource IDs: (1271)
 msgid "Shell Extended"
-msgstr ""
+msgstr "Shell étendu"
 
 #. Resource IDs: (145)
 msgid "Shell Icon Cache was rebuilt!"
@@ -7138,7 +7191,7 @@ msgstr "Voir les fichiers &non versionnés"
 
 #. Resource IDs: (1208)
 msgid "Show &Whole Project"
-msgstr ""
+msgstr "Affiche le projet &entier"
 
 #. Resource IDs: (113, 32783)
 msgid "Show &changes"
@@ -7253,7 +7306,7 @@ msgstr "Voir le journal..."
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
-msgstr ""
+msgstr "Afficher les fichiers modifiés dans l'arborescence de travail"
 
 #. Resource IDs: (1270)
 msgid ""
@@ -7335,7 +7388,7 @@ msgstr "Affiche %ld révision(s), de la révision %ld à la révision %ld - %ld 
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
 "selected\r\n"
-msgstr ""
+msgstr "Affiche %ld révision(s), de la révision %s à la révision %s - %ld révision(s) sélectionnées.\n"
 
 #. Resource IDs: (13)
 msgid ""
@@ -7358,6 +7411,10 @@ msgstr "Affiche le fichier du journal des actions dans l'éditeur de texte par d
 #. Resource IDs: (12)
 msgid "Shows the log for the selected file/folder"
 msgstr "Afficher le journal du fichier ou du répertoire sélectionné"
+
+#. Resource IDs: (1523)
+msgid "Si&gn"
+msgstr ""
 
 #. Resource IDs: (1532)
 msgid "Since"
@@ -7418,7 +7475,7 @@ msgstr "Séparer la fenêtre activée\nSéparer"
 
 #. Resource IDs: (1524)
 msgid "Squash"
-msgstr ""
+msgstr "Écraser"
 
 #. Resource IDs: (246)
 msgid "Stacked Bar Graph"
@@ -7454,7 +7511,7 @@ msgstr "Hook de début de mise à jour"
 
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
-msgstr ""
+msgstr "Démarrer le mode bifurcation"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -7525,7 +7582,7 @@ msgstr "État des éléments dans Git"
 
 #. Resource IDs: (13)
 msgid "Stops bisect mode"
-msgstr ""
+msgstr "Arrêter le mode bifurcation"
 
 #. Resource IDs: (1639)
 msgid "SubModule"
@@ -7646,7 +7703,7 @@ msgstr "Permuter/Extraire vers ce..."
 
 #. Resource IDs: (9)
 msgid "Switch/Checkout working tree to another branch/tag"
-msgstr ""
+msgstr "Permuter/Déplacer l'arborescence de travail sur une autre branche / étiquette"
 
 #. Resource IDs: (325)
 msgid "Switches the comparison left<<->right"
@@ -7690,10 +7747,18 @@ msgstr "Substitut de Tabulation"
 msgid "Tab size:"
 msgstr "Taille des tabulations :"
 
+#. Resource IDs: (82)
+msgid "Tag"
+msgstr "Étiquette"
+
+#. Resource IDs: (82)
+msgid "Tag Info"
+msgstr "Information sur l'étiquette"
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
-msgstr ""
+msgstr "Étiquettage de l'arborescence de travail sous %s"
 
 #. Resource IDs: (1485, 1513, 65535)
 msgid "Tags"
@@ -7710,10 +7775,6 @@ msgstr "Panneau des Tâches"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Tester uniquement"
-
-#. Resource IDs: (207)
-msgid "Text status"
-msgstr "État du texte"
 
 #. Resource IDs: (65535)
 msgid "Thai"
@@ -7948,7 +8009,7 @@ msgstr "Le chemin\n<i>%s</i>\nsemble ne pas correspondre aux chemins du fichier 
 msgid ""
 "The remote \"%s\" already exists.\n"
 "Do you want to overwrite it?"
-msgstr ""
+msgstr "L'élément distant \"%s\" existe déjà.\nVoulez-vous l'écraser ?"
 
 #. Resource IDs: (80)
 msgid "The repository was successfully created."
@@ -7992,7 +8053,7 @@ msgid ""
 "The working tree has changed!\n"
 "<hr=100%>\n"
 "Please commit your changes first or revert."
-msgstr ""
+msgstr "L'arborescence de travail a changée !\n<hr=100%>\nVeuillez livrer vos modifications avant ou revenir en arrière."
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -8079,7 +8140,7 @@ msgstr "Cette propriété est seulement autorisée sur les répertoires, pas sur
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
-msgstr ""
+msgstr "Cette tâche nécessite une arborescence de travail propre."
 
 #. Resource IDs: (1016)
 msgid ""
@@ -8106,7 +8167,7 @@ msgstr "Vers :"
 
 #. Resource IDs: (1201, 65535)
 msgid "To:"
-msgstr "Au :"
+msgstr "À :"
 
 #. Resource IDs: (3633)
 msgid ""
@@ -8239,15 +8300,15 @@ msgstr "Total de modifications de fichier :"
 
 #. Resource IDs: (1520)
 msgid "Trac&k"
-msgstr ""
+msgstr "Sui&vre"
 
 #. Resource IDs: (1520)
 msgid "Track"
-msgstr ""
+msgstr "Suivre"
 
 #. Resource IDs: (11023)
 msgid "Tracked Remote Branch:"
-msgstr ""
+msgstr "Branche distante suivie :"
 
 #. Resource IDs: (357)
 #, c-format
@@ -8284,7 +8345,7 @@ msgstr "URL"
 
 #. Resource IDs: (71)
 msgid "URL and directory must not be empty at the same time."
-msgstr ""
+msgstr "L'URL et le répertoire ne peuvent pas être vide en même temps."
 
 #. Resource IDs: (1272)
 msgid "URL history"
@@ -8321,7 +8382,7 @@ msgid ""
 "This can happen if the file has been renamed.\n"
 "Please start the log dialog on this specific file alone and then revert the changes\n"
 "from the top pane in the log dialog."
-msgstr ""
+msgstr "Impossible de reconstruire le chemin de l'arborescence de travail !\nCela peut se produire si le fichier a été renommé.\nVeuillez lancer la boîte de dialogue de Journal sur ce fichier spécifique et annuler alors les changements\ndepuis la panneau supérieur de la boîte de dialogue de Journal."
 
 #. Resource IDs: (3865)
 msgid "Unable to write read-only property."
@@ -8432,7 +8493,7 @@ msgstr "Utiliser MAPI"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
-msgstr ""
+msgstr "Utiliser des &paquets de petite taille (Pour les connexions réseau lentes)"
 
 #. Resource IDs: (1064)
 msgid "Use Unified Diff from &clipboard"
@@ -8568,7 +8629,7 @@ msgstr "Utiliser l'autre &fichier entier"
 
 #. Resource IDs: (119)
 msgid "Used to amend the tip of the current branch."
-msgstr ""
+msgstr "Utilisé pour corriger la tête de la branche courante."
 
 #. Resource IDs: (65535)
 msgid "User Email:"
@@ -8802,11 +8863,11 @@ msgstr "Windows-1258"
 
 #. Resource IDs: (20, 158)
 msgid "Working Tree"
-msgstr ""
+msgstr "Arborescence de travail"
 
 #. Resource IDs: (1335, 1472)
 msgid "Working Tree Path:"
-msgstr ""
+msgstr "Chemin de l'arborescence de travail :"
 
 #. Resource IDs: (1253)
 msgid "Working dir changes"
@@ -8878,7 +8939,7 @@ msgstr "Vous n'avez pas indiqué votre signature !"
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
 "Do you want to restore them now? You might loose all changes to this file after marking it."
-msgstr ""
+msgstr "Vous avez marqué certain fichier à \"restaurer après livraison\".\nVoulez-vous les restaurer maintenant ? Vous pourriez perdre toute modification de ces fichiers après cette opération."
 
 #. Resource IDs: (1002)
 #, c-format
@@ -8901,7 +8962,7 @@ msgstr "Vous devez sélecttionner un nom de fichier pour le fichier Zip !"
 msgid ""
 "You need to stash changes before you can use DCommit.\r\n"
 " Do you want to stash pop now?\r\n"
-msgstr ""
+msgstr "Vous devez mettre en réserve les modifications avant de pouvoir utiliser DCommit.\nVoulez-vous réserver pop maintenant ?\n"
 
 #. Resource IDs: (65)
 msgid ""
@@ -9015,7 +9076,7 @@ msgstr "_POPUP_"
 
 #. Resource IDs: (1682)
 msgid "add \"cherry picked from\""
-msgstr ""
+msgstr "ajoutir \"cherry picked depuis\""
 
 #. Resource IDs: (10)
 msgid "added"

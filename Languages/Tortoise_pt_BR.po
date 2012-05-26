@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-18 13:52+0000\n"
+"PO-Revision-Date: 2012-05-25 23:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.net/projects/p/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -410,6 +411,10 @@ msgstr "&Ramificação:"
 #. Resource IDs: (1382)
 msgid "&Browse Dir"
 msgstr "&Procurar Dir"
+
+#. Resource IDs: (1251)
+msgid "&Browse repository"
+msgstr ""
 
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
@@ -921,6 +926,10 @@ msgstr "&Remoto:"
 msgid "&Remove"
 msgstr "&Remover"
 
+#. Resource IDs: (15)
+msgid "&Repo-browser"
+msgstr ""
+
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
 msgstr "&Reiniciar"
@@ -1000,10 +1009,6 @@ msgstr "Mo&strar Menus para:"
 #. Resource IDs: (16612)
 msgid "&Show text labels"
 msgstr "&Mostrar etiquetas de texto"
-
-#. Resource IDs: (1482, 1523)
-msgid "&Sign"
-msgstr "&Assinar"
 
 #. Resource IDs: (65535)
 msgid "&Signing key ID:"
@@ -1173,6 +1178,11 @@ msgstr "&Windows XP"
 msgid "&ignore space change"
 msgstr "&ignorar mudanças de espaço"
 
+#. Resource IDs: (85)
+#, c-format
+msgid "(from %s)"
+msgstr ""
+
 #. Resource IDs: (213)
 msgid "(no changelist)"
 msgstr "(sem lista de alterações)"
@@ -1188,10 +1198,6 @@ msgstr "(sem valor)"
 #. Resource IDs: (314)
 msgid "(not found)"
 msgstr "(não encontrado)"
-
-#. Resource IDs: (208)
-msgid "(property change only)"
-msgstr "(mudança de propriedade apenas)"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
@@ -1451,6 +1457,10 @@ msgstr ""
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
 msgstr "Adicionar"
+
+#. Resource IDs: (1482)
+msgid "Add &Signed-off-by"
+msgstr ""
 
 #. Resource IDs: (376)
 #, c-format
@@ -2633,10 +2643,6 @@ msgstr "Cop&iar"
 msgid "Copied"
 msgstr "Copiado"
 
-#. Resource IDs: (208)
-msgid "Copied from URL"
-msgstr "Copiar a partir da URL"
-
 #. Resource IDs: (78)
 msgid "Copy"
 msgstr "Copiar"
@@ -2851,6 +2857,10 @@ msgstr ""
 msgid "Create .gitignore file"
 msgstr "Criar arquivo .gitignore"
 
+#. Resource IDs: (82)
+msgid "Create Branch"
+msgstr ""
+
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
 msgstr ""
@@ -2869,6 +2879,10 @@ msgstr "Criar Nova Ramificação"
 
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "Create Tag"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -3195,6 +3209,11 @@ msgstr "Arquivo de comparação:"
 
 #. Resource IDs: (32780)
 msgid "Diff previous revision"
+msgstr ""
+
+#. Resource IDs: (81)
+#, c-format
+msgid "Diff with parent %d"
 msgstr ""
 
 #. Resource IDs: (1302)
@@ -3857,6 +3876,10 @@ msgstr ""
 msgid "Fetching Status..."
 msgstr ""
 
+#. Resource IDs: (81)
+msgid "Fetching changed files..."
+msgstr ""
+
 #. Resource IDs: (313)
 msgid "Fetching file..."
 msgstr "Obtendo arquivo..."
@@ -4046,6 +4069,11 @@ msgstr "Para histórico completo deselecione 'Parar em cópia/renomeação'"
 #. Resource IDs: (1521)
 msgid "Force"
 msgstr "Forçar"
+
+#. Resource IDs: (82)
+msgid ""
+"Force creation of branch/tag - even if one with same name already exists."
+msgstr ""
 
 #. Resource IDs: (603)
 msgid ""
@@ -4617,6 +4645,12 @@ msgid ""
 "'save as...' or 'open' dialogs"
 msgstr ""
 
+#. Resource IDs: (85)
+msgid ""
+"If checked --track is passed to git, if unchecked --no-track is passed to "
+"git, else neither --track nor --no-track is passed to git (see help)."
+msgstr ""
+
 #. Resource IDs: (197)
 msgid ""
 "If checked, double-clicking on a revision in the log list compares it with "
@@ -4683,6 +4717,10 @@ msgstr "Ignorar fins d&e linha (recomendado)"
 #. Resource IDs: (1432)
 msgid "Ignored"
 msgstr "Ignorado"
+
+#. Resource IDs: (78)
+msgid "Ignored Files"
+msgstr ""
 
 #. Resource IDs: (16916)
 msgid "Image &and Text"
@@ -5183,6 +5221,10 @@ msgstr ""
 msgid "Merged"
 msgstr "Combinado"
 
+#. Resource IDs: (76)
+msgid "Merged Files"
+msgstr ""
+
 #. Resource IDs: (10)
 msgid "Merges another branch"
 msgstr ""
@@ -5249,6 +5291,10 @@ msgstr "Data de modificação:"
 #. Resource IDs: (74, 264)
 msgid "Modified"
 msgstr "Modificado"
+
+#. Resource IDs: (76)
+msgid "Modified Files"
+msgstr ""
 
 #. Resource IDs: (1070)
 msgid "More"
@@ -5522,6 +5568,10 @@ msgstr "Submissão Normal &SVN"
 msgid "North European"
 msgstr "Norte Europeu"
 
+#. Resource IDs: (78)
+msgid "Not Versioned Files"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nem todas as entradas de registro (ou arquivo INI) foram removidas."
@@ -5545,6 +5595,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
 msgstr "Nota: isto afetar todos os aplicativos Tortoise, não apenas o TortoiseGit!"
+
+#. Resource IDs: (82)
+msgid "Notes"
+msgstr ""
 
 #. Resource IDs: (604)
 #, c-format
@@ -5761,6 +5815,10 @@ msgid ""
 "Opens Help\n"
 "Help Topics"
 msgstr "Abre a Ajuda\nTópicos de Ajuda"
+
+#. Resource IDs: (15)
+msgid "Opens the repository browser"
+msgstr ""
 
 #. Resource IDs: (357)
 msgid "Option"
@@ -6126,10 +6184,6 @@ msgstr "Propriedade"
 msgid "Property Page"
 msgstr "Página de Propriedade"
 
-#. Resource IDs: (207)
-msgid "Property status"
-msgstr "Status da propriedade"
-
 #. Resource IDs: (63)
 msgid "Provider"
 msgstr "Provedor"
@@ -6408,17 +6462,9 @@ msgstr "Atualização Remote"
 msgid "Remote name must not be empty."
 msgstr "Nome remoto não pode ser vazio."
 
-#. Resource IDs: (207)
-msgid "Remote property status"
-msgstr "Status remoto da propriedade"
-
 #. Resource IDs: (63, 207)
 msgid "Remote status"
 msgstr "Status remoto"
-
-#. Resource IDs: (207)
-msgid "Remote text status"
-msgstr "Status remoto do texto"
 
 #. Resource IDs: (65535)
 msgid "Remote:"
@@ -6539,6 +6585,10 @@ msgstr "Substituindo"
 msgid "Repository &URL"
 msgstr "&URL do Repositório"
 
+#. Resource IDs: (153)
+msgid "Repository Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Repository:"
 msgstr "Repositório:"
@@ -6550,6 +6600,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Requests a username and a password"
 msgstr "Solicita um nome de usuário e uma senha"
+
+#. Resource IDs: (82)
+msgid "Requires GPG and a key without passphrase."
+msgstr ""
 
 #. Resource IDs: (8)
 msgid "Res&olve..."
@@ -7358,6 +7412,10 @@ msgstr "Exibe o arquivo de log de ações no editor de texto padrão"
 msgid "Shows the log for the selected file/folder"
 msgstr ""
 
+#. Resource IDs: (1523)
+msgid "Si&gn"
+msgstr ""
+
 #. Resource IDs: (1532)
 msgid "Since"
 msgstr "Desde"
@@ -7403,7 +7461,7 @@ msgstr "Especifica quantos ítens você quer manter no diálogo de mensagens de 
 
 #. Resource IDs: (16976, 16977, 16978, 16979, 16980, 16981)
 msgid "Spin1"
-msgstr ""
+msgstr "Spin1"
 
 #. Resource IDs: (376)
 msgid "Split lines"
@@ -7689,6 +7747,14 @@ msgstr ""
 msgid "Tab size:"
 msgstr "Tamanho da Tabulação:"
 
+#. Resource IDs: (82)
+msgid "Tag"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Tag Info"
+msgstr ""
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7709,10 +7775,6 @@ msgstr "Painel de Tarefas"
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr "Apenas Testar"
-
-#. Resource IDs: (207)
-msgid "Text status"
-msgstr "Status do texto"
 
 #. Resource IDs: (65535)
 msgid "Thai"
