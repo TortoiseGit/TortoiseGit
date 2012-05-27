@@ -425,6 +425,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), subpath.GetLength()) >= 0);
 			else
 				*isVersion = (SearchInSortVector(*pIndex, subpath.GetBuffer(), -1) >= 0);
+			subpath.ReleaseBuffer();
 		}
 
 	}catch(...)
