@@ -441,6 +441,7 @@ private:
 	int FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal);
 
 	int  CheckIgnore(const CString &path,const CString &root);
+	int CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type);
 
 public:
 	SharedMutex		m_SharedMutex;

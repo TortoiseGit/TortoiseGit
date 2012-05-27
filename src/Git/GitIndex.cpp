@@ -1193,6 +1193,18 @@ bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 
 	return (ret == 1);
 }
+int CGitIgnoreList::CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type)
+{
+	if (m_Map.find(ignorefile) != m_Map.end())
+	{
+		int ret = -1;
+		if(m_Map[ignorefile].m_pExcludeList)
+			ret = git_check_excluded_1(patha, patha.GetLength(), base, &type, m_Map[ignorefile].m_pExcludeList);
+		if (ret == 0 || ret == 1)
+			return ret;
+	}
+	return -1;
+}
 int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 {
 	__int64 time = 0;
@@ -1200,9 +1212,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 	CString temp = projectroot + _T("\\") + path;
 	temp.Replace(_T('/'), _T('\\'));
 
-	CStringA patha;
-
-	patha = CUnicodeUtils::GetMulti(path, CP_UTF8);
+	CStringA patha = CUnicodeUtils::GetMulti(path, CP_UTF8);
 	patha.Replace('\\', '/');
 
 	if(g_Git.GetFileModifyTime(temp, &time, &dir))
@@ -1210,61 +1220,65 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 
 	int type = 0;
 	if (dir)
+	{
 		type = DT_DIR;
+
+		// strip directory name
+		// we do not need to check for a .ignore file inside a directory we might ignore
+		int i = temp.ReverseFind(_T('\\'));
+		if (i >= 0)
+			temp = temp.Left(i);
+	}
 	else
 		type = DT_REG;
 
+	char * base = NULL;
+	int pos = patha.ReverseFind('/');
+	base = pos >= 0 ? patha.GetBuffer() + pos + 1 : patha.GetBuffer();
+
+	int ret = -1;
+
+	CAutoReadLock lock(&this->m_SharedMutex);
 	while (!temp.IsEmpty())
 	{
-		int x;
-		x = temp.ReverseFind(_T('\\'));
-		if(x < 0)
-			x=0;
-		temp=temp.Left(x);
+		CString tempOrig = temp;
+		temp += _T("\\.git");
 
-		temp += _T("\\.gitignore");
-
-		char *base;
-
-		patha.Replace('\\', '/');
-		int pos = patha.ReverseFind('/');
-		base = pos >= 0 ? patha.GetBuffer() + pos + 1 : patha.GetBuffer();
-
-		CAutoReadLock lock(&this->m_SharedMutex);
-
-		if(this->m_Map.find(temp) != m_Map.end())
+		if (CGit::GitPathFileExists(temp))
 		{
-			int ret=-1;
+			CString gitignore = temp;
+			gitignore += _T("ignore");
+			if ((ret = CheckFileAgainstIgnoreList(gitignore, patha, base, type)) != -1)
+				break;
 
-			if(m_Map[temp].m_pExcludeList)
-				ret = git_check_excluded_1( patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
-
-			if(ret == 1)
-				return 1;
-			if(ret == 0)
-				return 0;
+			CString wcglobalgitignore = g_AdminDirMap.GetAdminDir(tempOrig) + _T("info\\exclude");
+			ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type);
+			break;
+		}
+		else
+		{
+			temp += _T("ignore");
+			if ((ret = CheckFileAgainstIgnoreList(temp, patha, base, type)) != -1)
+				break;
 		}
 
-		temp = g_AdminDirMap.GetAdminDir(temp.Left(temp.GetLength() - 11)) + _T("info\\exclude");
-
-		if(this->m_Map.find(temp) != m_Map.end())
+		int found = 0;
+		int i;
+		for (i = temp.GetLength() - 1; i >= 0; i--)
 		{
-			int ret = -1;
+			if (temp[i] == _T('\\'))
+				found++;
 
-			if(m_Map[temp].m_pExcludeList)
-				ret = git_check_excluded_1(patha, patha.GetLength(), base, &type, m_Map[temp].m_pExcludeList);
-
-			if(ret == 1)
-				return 1;
-			if(ret == 0)
-				return 0;
-
-			return -1;
+			if (found == 2)
+				break;
 		}
-		temp = temp.Left(temp.GetLength() - 18);
+
+		temp = temp.Left(i);
 	}
 
-	return -1;
+	patha.ReleaseBuffer();
+
+	return ret;
 }
 
 bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
