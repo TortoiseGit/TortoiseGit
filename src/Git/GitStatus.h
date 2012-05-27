@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -215,7 +215,6 @@ public:
 	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore);
 	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
-	static int GetIgnoreFileChangeTimeList(const CString &path, std::vector<__int64> &timelist);
 
 	static int GetHeadHash(const CString &gitdir, CGitHash &hash);
 

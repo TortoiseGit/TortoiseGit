@@ -1056,10 +1056,6 @@ __int64 GitStatus::GetIndexFileTime(const CString &gitdir)
 	return ptr->m_LastModifyTime;
 }
 
-int GitStatus::GetIgnoreFileChangeTimeList(const CString &dir, std::vector<__int64> &timelist)
-{
-	return g_IgnoreList.GetIgnoreFileChangeTimeList(dir,timelist);
-}
 int GitStatus::IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore)
 {
 	if(::g_IgnoreList.CheckIgnoreChanged(gitdir,path))

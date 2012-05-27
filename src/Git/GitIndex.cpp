@@ -1120,55 +1120,6 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 	}
 	return 0;
 }
-int CGitIgnoreList::GetIgnoreFileChangeTimeList(const CString &path, std::vector<__int64> &timelist)
-{
-	CString temp = path;
-	CString ignore = temp;
-	int start = 0;
-
-	do{
-		CAutoReadLock lock(&this->m_SharedMutex);
-
-		ignore=temp;
-		ignore += _T("\\.gitignore");
-		std::map<CString, CGitIgnoreItem>::iterator itMap;
-		itMap = m_Map.find(ignore);
-		if (itMap == m_Map.end())
-		{
-			timelist.push_back(0);
-		}
-		else
-		{
-			timelist.push_back(itMap->second.m_LastModifyTime);
-		}
-
-		ignore = g_AdminDirMap.GetAdminDir(temp) + _T("info\\exclude");
-		itMap = m_Map.find(ignore);
-		if (itMap == m_Map.end())
-		{
-
-		}
-		else
-		{
-			timelist.push_back(itMap->second.m_LastModifyTime);
-			return 0;
-		}
-
-		ignore = temp;
-		ignore += _T("\\.git");
-
-		if (CGit::GitPathFileExists(ignore))
-			return 0;
-
-		start = temp.ReverseFind(_T('\\'));
-		if (start > 0)
-			temp=temp.Left(start);
-
-	} while(start > 0);
-
-	return -1;
-
-}
 bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
 {
 	CString str=path;

@@ -451,7 +451,6 @@ public:
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
-	int	 GetIgnoreFileChangeTimeList(const CString &dir, std::vector<__int64> &timelist);
 	bool CheckIgnoreChanged(const CString &gitdir,const CString &path);
 	int  LoadAllIgnoreFile(const CString &gitdir,const CString &path);
 	bool IsIgnore(const CString &path,const CString &root);
