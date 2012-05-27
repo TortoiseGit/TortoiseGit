@@ -1480,6 +1480,17 @@ int CGit::Revert(CString commit, CTGitPath &path)
 			return -1;
 		}
 	}
+
+	if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
+	{
+		cmd.Format(_T("git.exe add -f -- \"%s\""), path.GetGitPathString());
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return -1;
+		}
+	}
+
 	return 0;
 }
 
