@@ -1851,7 +1851,6 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
-	// HACK for separate-git-dir, libgit2 doesn't support it atm
 	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE) == TRUE)
 	{
 		git_repository *repo = NULL;
@@ -1860,9 +1859,58 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 		if (git_repository_open(&repo, gitdir.GetBuffer()))
 		{
+			gitdir.ReleaseBuffer();
 			ReportGitError();
 			return false;
 		}
+		gitdir.ReleaseBuffer();
+
+		git_config * config;
+		git_config_new(&config);
+
+		CString adminDir;
+		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
+		CStringA projectConfigA = CUnicodeUtils::GetMulti(adminDir + _T("config"), CP_UTF8);
+		if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3))
+		{
+			projectConfigA.ReleaseBuffer();
+			ReportGitError();
+			git_config_free(config);
+			git_repository_free(repo);
+			return false;
+		}
+		projectConfigA.ReleaseBuffer();
+		CString globalConfig = CString(get_windows_home_directory()) + _T("\\.gitconfig");
+		if (PathFileExists(globalConfig))
+		{
+			CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
+			if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 2))
+			{
+				globalConfigA.ReleaseBuffer();
+				ReportGitError();
+				git_config_free(config);
+				git_repository_free(repo);
+				return false;
+			}
+			globalConfigA.ReleaseBuffer();
+		}
+		CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
+		if (!msysGitBinPath.IsEmpty())
+		{
+			CStringA systemConfigA = CUnicodeUtils::GetMulti(msysGitBinPath + _T("\\..\\etc\\gitconfig"), CP_UTF8);
+			if (git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1))
+			{
+				systemConfigA.ReleaseBuffer();
+				ReportGitError();
+				git_config_free(config);
+				git_repository_free(repo);
+				return false;
+			}
+			systemConfigA.ReleaseBuffer();
+		}
+
+		git_repository_set_config(repo, config);
+
 		if (git_repository_index(&index, repo))
 		{
 			ReportGitError();
@@ -1907,7 +1955,6 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-	m_bErrorsOccurred=false;
 
 	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
 	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
