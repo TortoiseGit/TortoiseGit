@@ -1076,6 +1076,7 @@
 #define IDC_STATIC_MERGE_MESSAGE        1635
 #define IDC_PATCH                       1636
 #define IDC_VIEW_PATCH                  1637
+#define IDC_LOG_FOLLOWRENAMES           1638
 #define IDC_BUTTON_SUBMODULE            1639
 #define IDC_RADIO_EXCLUDE               1640
 #define IDC_RADIO_GITIGNORE             1641

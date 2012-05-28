@@ -2149,6 +2149,13 @@ int CGitLogListBase::BeginFetchLog()
 	data.m_IsRegex = m_bFilterWithRegex;
 #endif
 
+	// follow does not work for directories
+	if (!path || path->IsDirectory())
+		mask &= ~CGit::LOG_INFO_FOLLOW;
+	// follow does not work with all branches 8at least in TGit)
+	if (mask & CGit::LOG_INFO_FOLLOW)
+		mask &= ~CGit::LOG_INFO_ALL_BRANCH;
+
 	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,&data);
 
 	//this->m_logEntries.ParserFromLog();
@@ -2324,11 +2331,17 @@ UINT CGitLogListBase::LogThread()
 		while( ret== 0)
 		{
 			g_Git.m_critGitDllSec.Lock();
-			ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, 0);
+			ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW);
 			g_Git.m_critGitDllSec.Unlock();
 
 			if(ret)
 				break;
+
+			if (commit.m_ignore == 1)
+			{
+				git_free_commit(&commit);
+				continue;
+			}
 
 			//printf("%s\r\n",commit.GetSubject());
 			if(m_bExitThread)
@@ -2428,6 +2441,12 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 	this->Clear();
 
 	ResetWcRev();
+
+	// HACK to hide graph column
+	if (m_ShowMask & CGit::LOG_INFO_FOLLOW)
+		SetColumnWidth(0, 0);
+	else
+		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
 	//Update branch and Tag info
 	ReloadHashMap();
@@ -2974,6 +2993,9 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 void CGitLogListBase::SaveColumnWidths()
 {
 	int maxcol = m_ColumnManager.GetColumnCount();
+
+	// HACK that graph column is always shown
+	SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
 	for (int col = 0; col < maxcol; col++)
 		if (m_ColumnManager.IsVisible (col))

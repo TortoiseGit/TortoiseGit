@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -278,7 +279,31 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				CGitDiff::DiffCommit(this->m_Path, r1,r2);
+				if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+					CGitDiff::DiffCommit(this->m_Path, r1,r2);
+				else
+				{
+					CString path1 = m_Path.GetGitPathString();
+					// start with 1 (0 = working copy changes)
+					for (int i = 1; i < FirstSelect; i++)
+					{
+						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPath * file = list.LookForGitPath(path1);
+						if (file && !file->GetGitOldPathString().IsEmpty())
+							path1 = file->GetGitOldPathString();
+					}
+					CString path2 = path1;
+					for (int i = FirstSelect; i < LastSelect; i++)
+					{
+						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPath * file = list.LookForGitPath(path2);
+						if (file && !file->GetGitOldPathString().IsEmpty())
+							path2 = file->GetGitOldPathString();
+					}
+					CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), r1, r2);
+				}
 
 			}
 			break;
@@ -288,7 +313,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				GitRev * r1 = &m_wcRev;
 				GitRev * r2 = pSelLogEntry;
 
-				CGitDiff::DiffCommit(this->m_Path, r1,r2);
+				if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+					CGitDiff::DiffCommit(this->m_Path, r1,r2);
+				else
+				{
+					CString path1 = m_Path.GetGitPathString();
+					// start with 1 (0 = working copy changes)
+					for (int i = 1; i < FirstSelect; i++)
+					{
+						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPath * file = list.LookForGitPath(path1);
+						if (file && !file->GetGitOldPathString().IsEmpty())
+							path1 = file->GetGitOldPathString();
+					}
+					CGitDiff::DiffCommit(m_Path, CTGitPath(path1), r1, r2);
+				}
 
 				//user clicked on the menu item "compare with working copy"
 				//if (PromptShown())
@@ -305,7 +345,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 		case ID_COMPAREWITHPREVIOUS:
 			{
-
 				CFileDiffDlg dlg;
 
 				if(pSelLogEntry->m_ParentHash.size()>0)
@@ -317,8 +356,29 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(cmd == 0)
 						cmd=1;
 
-					CGitDiff::DiffCommit(this->m_Path, pSelLogEntry->m_CommitHash.ToString(),pSelLogEntry->m_ParentHash[cmd-1].ToString());
+					if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+						CGitDiff::DiffCommit(m_Path, pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString());
+					else
+					{
+						CString path1 = m_Path.GetGitPathString();
+						// start with 1 (0 = working copy changes)
+						for (int i = 1; i < indexNext; i++)
+						{
+							GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
+							CTGitPathList list = first->GetFiles(NULL);
+							CTGitPath * file = list.LookForGitPath(path1);
+							if (file && !file->GetGitOldPathString().IsEmpty())
+								path1 = file->GetGitOldPathString();
+						}
+						CString path2 = path1;
+						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(indexNext));
+						CTGitPathList list = first->GetFiles(NULL);
+						CTGitPath * file = list.LookForGitPath(path2);
+						if (file && !file->GetGitOldPathString().IsEmpty())
+							path2 = file->GetGitOldPathString();
 
+						CGitDiff::DiffCommit(CTGitPath(path1), CTGitPath(path2), pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString());
+					}
 				}
 				else
 				{
