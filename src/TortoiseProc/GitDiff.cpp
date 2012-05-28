@@ -280,6 +280,16 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 	{
 		file1=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 		title1.Format( IDS_DIFF_WCNAME, pPath->GetFileOrDirectoryName() );
+		if (!PathFileExists(file1))
+		{
+			CString sMsg;
+			sMsg.Format(_T("The file \"%s\" does not exist in your working tree.\nDo you want to select another file to diff?"), file1);
+			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
+				return 1;
+			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_DIFF_WCNAME, IDS_COMMONFILEFILTER, true))
+				return 1;
+			title1.Format(IDS_DIFF_WCNAME, CTGitPath(file1).GetUIFileOrDirectoryName());
+		}
 	}
 
 	CString file2;
