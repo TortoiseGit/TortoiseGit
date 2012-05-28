@@ -227,7 +227,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 		xPos = rc.right - rc.left;
 	}
-	bDragMode = true;
+	bDragMode = false;
 	HandleDividerMove(CPoint(xPos + 20, 10), false);
 
 	CString sWindowTitle;
