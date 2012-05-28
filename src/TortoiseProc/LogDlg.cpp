@@ -59,6 +59,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
 	, m_bShowedAll(false)
+	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 
 	, m_bSelectionMustBeContinuous(false)
@@ -116,6 +117,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
+	DDX_Check(pDX, IDC_LOG_FOLLOWRENAMES, m_bFollowRenames);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
@@ -149,6 +151,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
+	ON_BN_CLICKED(IDC_LOG_FOLLOWRENAMES, OnBnClickedFollowRenames)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
@@ -272,6 +275,7 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
+	AdjustControlSize(IDC_LOG_FOLLOWRENAMES);
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
@@ -303,6 +307,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
+	AddAnchor(IDC_LOG_FOLLOWRENAMES, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
 	//AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
@@ -390,6 +395,9 @@ BOOL CLogDlg::OnInitDialog()
 	else
 		m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
 
+	if (m_path.IsEmpty() || m_path.IsDirectory())
+		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
+
 	m_LogList.FetchLogAsync(this);
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
@@ -439,8 +447,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
-		//if (!m_bShowedAll)
-		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, TRUE);
+		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
 
 		//DialogEnableWindow(IDC_GETALL, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
@@ -3256,6 +3263,32 @@ void CLogDlg::OnBnClickedAllBranch()
 	FillLogMessageCtrl(false);
 }
 
+void CLogDlg::OnBnClickedFollowRenames()
+{
+	this->UpdateData();
+
+	if(m_bFollowRenames)
+	{
+		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
+		if (m_bAllBranch)
+		{
+			
+			m_bAllBranch = FALSE;
+			m_LogList.m_ShowMask &=~ CGit::LOG_INFO_ALL_BRANCH;
+		}
+
+	}
+	else
+		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FOLLOW;
+
+	DialogEnableWindow(IDC_LOG_ALLBRANCH, !m_bFollowRenames);
+	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
+
+	OnRefresh();
+
+	FillLogMessageCtrl(false);
+}
+
 void CLogDlg::OnBnClickedBrowseRef()
 {
 	CString newRef = CBrowseRefsDlg::PickRef(false,m_LogList.GetStartRef());
@@ -3336,10 +3369,12 @@ void CLogDlg::OnBnClickShowWholeProject()
 	{
 		m_LogList.m_Path.Reset();
 		SetDlgTitle();
+		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
 	}
 	else
 	{
 		m_LogList.m_Path=m_path;
+		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, !(m_path.IsEmpty() || m_path.IsDirectory()));
 	}
 
 	SetDlgTitle();

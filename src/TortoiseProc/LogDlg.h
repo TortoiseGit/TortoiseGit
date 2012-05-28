@@ -154,6 +154,7 @@ protected:
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
+	afx_msg void OnBnClickedFollowRenames();
 	afx_msg void OnBnClickedBrowseRef();
 	afx_msg void OnBnClickedCheckStoponcopy();
 
@@ -261,6 +262,7 @@ private:
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
+	BOOL				m_bFollowRenames;
 
 	git_revnum_t		m_lowestRev;
 	CTGitPathList	*   m_currentChangedArray;
