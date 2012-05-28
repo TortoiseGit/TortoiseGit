@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,6 +63,10 @@ BOOL CResetDlg::OnInitDialog()
 	GetDlgItem(IDC_RESET_BRANCH_NAME)->SetWindowTextW(resetTo);
 
 	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
+
+	AdjustControlSize(IDC_RADIO_RESET_SOFT);
+	AdjustControlSize(IDC_RADIO_RESET_MIXED);
+	AdjustControlSize(IDC_RADIO_RESET_HARD);
 
 	return TRUE;
 }

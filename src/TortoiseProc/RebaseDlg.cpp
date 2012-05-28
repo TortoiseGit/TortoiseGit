@@ -201,6 +201,11 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_ctrlTabCtrl.AddTab(&m_LogMessageCtrl, CString(MAKEINTRESOURCE(IDS_PROC_COMMITMESSAGE)), 1);
 	AddRebaseAnchor();
 
+	AdjustControlSize(IDC_PICK_ALL);
+	AdjustControlSize(IDC_SQUASH_ALL);
+	AdjustControlSize(IDC_EDIT_ALL);
+	AdjustControlSize(IDC_CHECK_CHERRYPICKED_FROM);
+
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);

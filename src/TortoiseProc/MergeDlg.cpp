@@ -83,6 +83,13 @@ BOOL CMergeDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_SQUASH);
+	AdjustControlSize(IDC_CHECK_NOFF);
+	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+
 	CheckRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION,IDC_RADIO_BRANCH);
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);
 

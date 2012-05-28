@@ -106,6 +106,17 @@ BOOL CCloneDlg::OnInitDialog()
 	AddAnchor(IDC_CLONE_GROUP_SVN,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	AdjustControlSize(IDC_CHECK_DEPTH);
+	AdjustControlSize(IDC_CHECK_RECURSIVE);
+	AdjustControlSize(IDC_CHECK_BARE);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
+	AdjustControlSize(IDC_CHECK_SVN);
+	AdjustControlSize(IDC_CHECK_SVN_TRUNK);
+	AdjustControlSize(IDC_CHECK_SVN_TAG);
+	AdjustControlSize(IDC_CHECK_SVN_BRANCH);
+	AdjustControlSize(IDC_CHECK_SVN_FROM);
+	AdjustControlSize(IDC_CHECK_USERNAME);
+
 	m_tooltips.Create(this);
 	CString tt;
 	tt.LoadString(IDS_CLONE_DEPTH_TT);

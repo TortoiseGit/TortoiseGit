@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011-2012 Sven Strickroth, <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,6 +57,8 @@ BOOL CStashSaveDlg::OnInitDialog()
 	AddAnchor(IDC_GROUP_STASHMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_STASHMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
+
+	AdjustControlSize(IDC_CHECK_UNTRACKED);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

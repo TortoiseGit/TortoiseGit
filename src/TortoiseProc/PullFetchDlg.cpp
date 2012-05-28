@@ -95,6 +95,18 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AddAnchor(IDC_REMOTE_MANAGE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	AdjustControlSize(IDC_REMOTE_RD);
+	AdjustControlSize(IDC_OTHER_RD);
+	AdjustControlSize(IDC_CHECK_SQUASH);
+	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+	AdjustControlSize(IDC_CHECK_NOFF);
+	AdjustControlSize(IDC_CHECK_FFONLY);
+	AdjustControlSize(IDC_CHECK_FETCHTAGS);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
+	AdjustControlSize(IDC_CHECK_REBASE);
+	AdjustControlSize(IDC_CHECK_PRUNE);
+	AdjustControlSize(IDC_REMOTE_MANAGE);
+
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 

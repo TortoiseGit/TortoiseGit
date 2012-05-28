@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,6 +100,12 @@ BOOL CSendMailDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	this->AddOthersToAnchor();
+
+	AdjustControlSize(IDC_SENDMAIL_ATTACHMENT);
+	AdjustControlSize(IDC_SENDMAIL_COMBINE);
+	AdjustControlSize(IDC_SENDMAIL_MAPI);
+	AdjustControlSize(IDC_SENDMAIL_SETUP);
+
 	EnableSaveRestore(_T("SendMailDlg"));
 
 	CString sWindowTitle;

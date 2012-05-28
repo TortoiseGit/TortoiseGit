@@ -103,6 +103,11 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_REF,TOP_RIGHT);
 
+	AdjustControlSize(IDC_RADIO_SINCE);
+	AdjustControlSize(IDC_RADIO_NUM);
+	AdjustControlSize(IDC_RADIO_RANGE);
+	AdjustControlSize(IDC_CHECK_SENDMAIL);
+
 	this->AddOthersToAnchor();
 
 	CString sWindowTitle;

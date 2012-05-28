@@ -271,6 +271,7 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_HIDEPATHS);
 	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
+	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);

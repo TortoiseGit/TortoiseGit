@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,6 +61,9 @@ BOOL CSVNIgnoreTypeDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+
+	AdjustControlSize(IDC_RADIO_EXCLUDE);
+	AdjustControlSize(IDC_RADIO_GITIGNORE);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

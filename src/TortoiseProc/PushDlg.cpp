@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,6 +110,14 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	AddOthersToAnchor();
+
+	AdjustControlSize(IDC_REMOTE_RD);
+	AdjustControlSize(IDC_RD_URL);
+	AdjustControlSize(IDC_PUSHALL);
+	AdjustControlSize(IDC_FORCE);
+	AdjustControlSize(IDC_PACK);
+	AdjustControlSize(IDC_TAGS);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

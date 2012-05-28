@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
 //
 // Based on PushDlg.cpp
 // Copyright (C) 2003-2008 - TortoiseGit
@@ -61,6 +61,10 @@ BOOL CSVNDCommitDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	CheckRadioButton(IDC_RADIO_SVN_COMMIT, IDC_RADIO_GIT_COMMIT, IDC_RADIO_SVN_COMMIT);
+
+	AdjustControlSize(IDC_RADIO_SVN_COMMIT);
+	AdjustControlSize(IDC_RADIO_GIT_COMMIT);
+	AdjustControlSize(IDC_REMEMBER);
 
 	this->UpdateData(false);
 	return TRUE;

@@ -82,6 +82,11 @@ BOOL CExportDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	AdjustControlSize(IDC_RADIO_HEAD);
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,6 +84,14 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
+
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
+	AdjustControlSize(IDC_CHECK_BRANCH);
+	AdjustControlSize(IDC_CHECK_FORCE);
+	AdjustControlSize(IDC_CHECK_TRACK);
+	AdjustControlSize(IDC_CHECK_BRANCHOVERRIDE);
 
 	EnableSaveRestore(_T("SwitchDlg"));
 

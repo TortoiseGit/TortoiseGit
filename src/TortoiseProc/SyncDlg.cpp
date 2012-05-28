@@ -743,6 +743,9 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_HIDE);
 
+	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
+	AdjustControlSize(IDC_CHECK_FORCE);
+
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
 	m_RegKeyRemoteBranch = CString(_T("Software\\TortoiseGit\\History\\SyncBranch\\"))+WorkingDir;

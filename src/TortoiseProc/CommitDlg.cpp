@@ -271,6 +271,12 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_SHOWUNVERSIONED);
 	AdjustControlSize(IDC_SELECTALL);
 	AdjustControlSize(IDC_WHOLE_PROJECT);
+	AdjustControlSize(IDC_CHECK_NEWBRANCH);
+	AdjustControlSize(IDC_COMMIT_AMEND);
+	AdjustControlSize(IDC_COMMIT_AMENDDIFF);
+	AdjustControlSize(IDC_COMMIT_SETDATETIME);
+	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
+	AdjustControlSize(IDC_KEEPLISTS);
 
 	GetClientRect(m_DlgOrigRect);
 	m_cLogMessage.GetClientRect(m_LogMsgOrigRect);

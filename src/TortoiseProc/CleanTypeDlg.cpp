@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,6 +65,11 @@ BOOL CCleanTypeDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
+	AdjustControlSize(IDC_RADIO_CLEAN_ALL);
+	AdjustControlSize(IDC_RADIO_CLEAN_NO);
+	AdjustControlSize(IDC_RADIO_CLEAN_IGNORE);
+	AdjustControlSize(IDC_CHECK_DIR);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

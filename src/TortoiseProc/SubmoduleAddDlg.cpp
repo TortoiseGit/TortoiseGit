@@ -77,8 +77,9 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddAnchor(IDC_BRANCH_CHECK,BOTTOM_LEFT);
 	AddAnchor(IDC_SUBMODULE_BRANCH,BOTTOM_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
-
 	AddOthersToAnchor();
+
+	AdjustControlSize(IDC_BRANCH_CHECK);
 
 	EnableSaveRestore(_T("SubmoduleAddDlg"));
 

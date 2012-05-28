@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,6 +79,7 @@ BOOL CAddDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, (g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetUIPathString()).TrimRight('\\'), sWindowTitle);
 
 	AdjustControlSize(IDC_SELECTALL);
+	AdjustControlSize(IDC_INCLUDE_IGNORED);
 
 	AddAnchor(IDC_ADDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
@@ -86,6 +87,7 @@ BOOL CAddDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("AddDlg"));
