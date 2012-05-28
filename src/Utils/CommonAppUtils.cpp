@@ -189,6 +189,8 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	{
 		bRet = !!GetSaveFileName(&ofn);
 	}
+	SetCurrentDirectory(sOrigCWD.GetBuffer());
+	sOrigCWD.ReleaseBuffer();
 	if (bRet)
 	{
 		if (pszFilters)
