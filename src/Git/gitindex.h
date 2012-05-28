@@ -443,11 +443,23 @@ private:
 	int  CheckIgnore(const CString &path,const CString &root);
 	int CheckFileAgainstIgnoreList(const CString &ignorefile, const CStringA &patha, const char * base, int &type);
 
+	// core.excludesfile stuff
+	std::map<CString, CString> m_CoreExcludesfiles;
+	CString m_sMsysGitBinPath;
+	DWORD m_dMsysGitBinPathLastChecked;
+	SharedMutex	m_coreExcludefilesSharedMutex;
+	// checks if the msysgit path has changed and return true/false
+	// if the path changed, the cache is update
+	// force is only ised in constructor
+	bool CheckAndUpdateMsysGitBinpath(bool force = true);
+	bool CheckAndUpdateCoreExcludefile(const CString &adminDir);
+	const CString GetWindowsHome();
+
 public:
 	SharedMutex		m_SharedMutex;
 
-	CGitIgnoreList(){ m_SharedMutex.Init(); }
-	~CGitIgnoreList() { m_SharedMutex.Release(); }
+	CGitIgnoreList(){ m_SharedMutex.Init(); m_coreExcludefilesSharedMutex.Init(); CheckAndUpdateMsysGitBinpath(true); }
+	~CGitIgnoreList() { m_SharedMutex.Release(); m_coreExcludefilesSharedMutex.Release(); }
 
 	std::map<CString, CGitIgnoreItem> m_Map;
 
