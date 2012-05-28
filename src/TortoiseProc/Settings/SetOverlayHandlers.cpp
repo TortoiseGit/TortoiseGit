@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010 - TortoiseSVN
+// Copyright (C) 2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,6 +74,8 @@ BOOL CSetOverlayHandlers::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	UpdateInfoLabel();
+
 	UpdateData(FALSE);
 
 	return TRUE;
@@ -81,6 +83,7 @@ BOOL CSetOverlayHandlers::OnInitDialog()
 
 void CSetOverlayHandlers::OnChange()
 {
+	UpdateInfoLabel();
 	SetModified();
 }
 
@@ -115,4 +118,87 @@ BOOL CSetOverlayHandlers::OnApply()
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+
+int CSetOverlayHandlers::GetInstalledOverlays()
+{
+	// if there are more than 12 overlay handlers installed, then that means not all
+	// of the overlay handlers can be shown. Windows chooses the ones first
+	// returned by RegEnumKeyEx() and just drops the ones that come last in
+	// that enumeration.
+	int nInstalledOverlayhandlers = 0;
+	// scan the registry for installed overlay handlers
+	HKEY hKey;
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+		_T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers"),
+		0, KEY_ENUMERATE_SUB_KEYS, &hKey)==ERROR_SUCCESS)
+	{
+		TCHAR value[2048];
+		TCHAR keystring[2048];
+		for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; i++)
+		{
+			DWORD size = _countof(value);
+			FILETIME last_write_time;
+			rc = RegEnumKeyEx(hKey, i, value, &size, NULL, NULL, NULL, &last_write_time);
+			if (rc == ERROR_SUCCESS)
+			{
+				if (_tcsnicmp(&value[1], L"tortoise", 8) != 0)
+				{
+					// check if there's a 'default' entry with a guid
+					_tcscpy_s(keystring, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers\\"));
+					_tcscat_s(keystring, value);
+					DWORD dwType = 0;
+					DWORD dwSize = _countof(value); // the API docs only specify "The size of the destination data buffer",
+					// but better be safe than sorry using _countof instead of sizeof
+					if (SHGetValue(HKEY_LOCAL_MACHINE,
+						keystring,
+						NULL,
+						&dwType, value, &dwSize) == ERROR_SUCCESS)
+					{
+						if ((dwSize > 10)&&(value[0] == '{'))
+							nInstalledOverlayhandlers++;
+					}
+				}
+			}
+		}
+		RegCloseKey(hKey);
+	}
+	return nInstalledOverlayhandlers;
+}
+
+void CSetOverlayHandlers::UpdateInfoLabel()
+{
+	CString sUnversioned, sNeedslock, sIgnored, sLocked;
+	GetDlgItemText(IDC_SHOWUNVERSIONEDOVERLAY, sUnversioned);
+	GetDlgItemText(IDC_SHOWREADONLYOVERLAY, sNeedslock);
+	GetDlgItemText(IDC_SHOWIGNOREDOVERLAY, sIgnored);
+	GetDlgItemText(IDC_SHOWLOCKEDOVERLAY, sLocked);
+
+	int nInstalledOverlays = GetInstalledOverlays();
+	CString sInfo;
+	sInfo.Format(IDS_SETTINGS_OVERLAYINFO, nInstalledOverlays);
+
+	const int nOverlayLimit = 3;
+	// max     registered: drop the locked overlay
+	// max + 1 registered: drop the locked and the ignored overlay
+	// max + 2 registered: drop the locked, ignored and readonly overlay
+	// max + 3 or more registered: drop the locked, ignored, readonly and unversioned overlay
+	CString sInfo2;
+	if (nInstalledOverlays > nOverlayLimit+3)
+		sInfo2 += L", " + sUnversioned;
+	if (nInstalledOverlays > nOverlayLimit+2)
+		sInfo2 += L", " + sNeedslock;
+	if (nInstalledOverlays > nOverlayLimit+1)
+		sInfo2 += L", " + sIgnored;
+	if (nInstalledOverlays > nOverlayLimit)
+		sInfo2 += L", " + sLocked;
+	sInfo2.Trim(L" ,");
+
+	if (!sInfo2.IsEmpty())
+	{
+		CString sTemp;
+		sTemp.Format(IDS_SETTINGS_OVERLAYINFO2, (LPCWSTR)sInfo2);
+		sInfo += L"\n" + sTemp;
+	}
+	SetDlgItemText(IDC_HANDLERHINT, sInfo);
 }

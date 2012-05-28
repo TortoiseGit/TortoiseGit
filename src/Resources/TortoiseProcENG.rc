@@ -355,14 +355,15 @@ CAPTION "Icon Overlays::Overlay Handlers"
 FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     GROUPBOX        "Enabled Overlay Handlers",IDC_STATIC,7,7,286,203
-    LTEXT           "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays.",IDC_STATIC,14,25,270,32
-    LTEXT           "Note: this affects all Tortoise clients, not just TortoiseGit!",IDC_STATIC,14,66,270,8
-    CONTROL         "Ignored",IDC_SHOWIGNOREDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,87,270,10
-    CONTROL         "Unversioned",IDC_SHOWUNVERSIONEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,102,270,10
-    CONTROL         "Added",IDC_SHOWADDEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,116,269,10
-    CONTROL         "Locked",IDC_SHOWLOCKEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,132,270,10
-    CONTROL         "Needs-lock",IDC_SHOWREADONLYOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,147,270,10
-    CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,162,270,10
+    LTEXT           "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays.",IDC_STATIC,14,18,270,32
+    LTEXT           "Note: this affects all Tortoise clients, not just TortoiseGit!",IDC_STATIC,14,54,270,8
+    CONTROL         "Ignored",IDC_SHOWIGNOREDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,67,270,10
+    CONTROL         "Unversioned",IDC_SHOWUNVERSIONEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,82,270,10
+    CONTROL         "Added",IDC_SHOWADDEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,96,269,10
+    CONTROL         "Locked",IDC_SHOWLOCKEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,112,270,10
+    CONTROL         "Needs-lock",IDC_SHOWREADONLYOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,127,270,10
+    CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,142,270,10
+    LTEXT           "",IDC_HANDLERHINT,14,159,270,36
 END
 
 IDD_SETTINGSPROXY DIALOGEX 0, 0, 300, 217
@@ -3205,6 +3206,10 @@ BEGIN
                             "The maximum number of action log lines to keep.\nAny lines added over this limit will remove the oldest lines from the file."
     IDS_SETTINGS_HIDEMENUS_TT 
                             "When activated, hold down the SHIFT key when right-clicking to get the TortoiseGit menus added to the context menu"
+    IDS_SETTINGS_OVERLAYINFO 
+                            "There are currently %d overlay handlers installed besides the ones Tortoise uses."
+    IDS_SETTINGS_OVERLAYINFO2 
+                            "TortoiseGit will not show the following overlays: %s"
 END
 
 STRINGTABLE 
