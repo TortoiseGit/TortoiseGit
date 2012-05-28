@@ -6801,6 +6801,10 @@ msgstr ""
 msgid "Show author"
 msgstr ""
 
+#. Resource IDs: (1251)
+msgid "Show branches this commit is on"
+msgstr ""
+
 #. Resource IDs: (114)
 msgid "Show changes as &unified diff"
 msgstr ""
