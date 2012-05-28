@@ -2442,6 +2442,12 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 
 	ResetWcRev();
 
+	// HACK to hide graph column
+	if (m_ShowMask & CGit::LOG_INFO_FOLLOW)
+		SetColumnWidth(0, 0);
+	else
+		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
+
 	//Update branch and Tag info
 	ReloadHashMap();
 	//Assume Thread have exited
@@ -2987,6 +2993,9 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM lParam)
 void CGitLogListBase::SaveColumnWidths()
 {
 	int maxcol = m_ColumnManager.GetColumnCount();
+
+	// HACK that graph column is always shown
+	SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
 	for (int col = 0; col < maxcol; col++)
 		if (m_ColumnManager.IsVisible (col))
