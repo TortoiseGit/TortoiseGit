@@ -970,6 +970,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\showbranches.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\TortoiseBlame\small.ico"
 				>
 			</File>

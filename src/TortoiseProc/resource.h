@@ -135,6 +135,7 @@
 #define IDD_DIALOG2                     324
 #define IDR_ACC_COMMITDLG               325
 #define IDD_SYNC                        326
+#define IDI_SHOWBRANCHES                326
 #define IDD_PATCH_VIEW                  328
 #define IDD_SVNIGNORE                   329
 #define IDD_CREATEREPO                  330

@@ -93,6 +93,7 @@ IDI_ACTIONFETCHING      ICON                    "..\\resources\\actionfetching.i
 IDI_LIBRARY             ICON                    "Library.ico"
 IDI_RESTORE             ICON                    "restore.ico"
 IDI_RESTOREOVL          ICON                    "restoreovl.ico"
+IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
