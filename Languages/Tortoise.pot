@@ -2898,10 +2898,6 @@ msgstr ""
 msgid "Default to UTF-8 encoding"
 msgstr ""
 
-#. Resource IDs: (64, 601)
-msgid "Del"
-msgstr ""
-
 #. Resource IDs: (1002)
 msgid "Delete"
 msgstr ""
@@ -4451,7 +4447,7 @@ msgid "Import SVN Ignore ..."
 msgstr ""
 
 #. Resource IDs: (1640)
-msgid "Import svn ignore file to .git/info/exclude file. (exclude will be overwrited)"
+msgid "Import svn ignore file to .git/info/exclude file (file will be overwritten)"
 msgstr ""
 
 #. Resource IDs: (120)
@@ -7316,6 +7312,11 @@ msgstr ""
 msgid "The file %s was not found in the patch file!"
 msgstr ""
 
+#. Resource IDs: (64)
+#, c-format
+msgid "The file \"%s\" does not exist in your working tree.\nDo you want to select another file to diff?"
+msgstr ""
+
 #. Resource IDs: (314)
 #, c-format
 msgid "The file \n%s\nis empty.\nDo you want to remove the file?"
@@ -7480,6 +7481,11 @@ msgstr ""
 msgid "There are changes or unversioned items inside one or more submodule.\nThose files are not listed for commit. You need to commit those files in submodule"
 msgstr ""
 
+#. Resource IDs: (198)
+#, c-format
+msgid "There are currently %d overlay handlers installed besides the ones Tortoise uses."
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr ""
@@ -7612,6 +7618,11 @@ msgstr ""
 #. Resource IDs: (98)
 #, c-format
 msgid "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
+msgstr ""
+
+#. Resource IDs: (198)
+#, c-format
+msgid "TortoiseGit will not show the following overlays: %s"
 msgstr ""
 
 #. Resource IDs: (244)

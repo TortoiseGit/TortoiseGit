@@ -2559,6 +2559,8 @@ BEGIN
                             "Select folder to associate with this issue tracker"
     IDS_FILEDIFF_STATADD    "Lines added"
     IDS_FILEDIFF_STATDEL    "Lines removed"
+    IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE 
+                            "The file ""%s"" does not exist in your working tree.\nDo you want to select another file to diff?"
     IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""

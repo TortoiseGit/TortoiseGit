@@ -169,6 +169,7 @@
 #define IDS_FILEDIFF_STATADD            1011
 #define IDS_FILEDIFF_STATDEL            1012
 #define IDC_SVNPROGRESS                 1013
+#define IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE 1013
 #define IDC_LOGMESSAGE                  1014
 #define IDS_MENURESTORE                 1014
 #define IDC_LOGMSG                      1015
