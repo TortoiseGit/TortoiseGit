@@ -745,6 +745,15 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					Refresh();
 			}
 			break;
+		case ID_SHOWBRANCHES:
+			{
+				CString cmd;
+				cmd.Format(_T("git.exe branch -a --contains %s"), pSelLogEntry->m_CommitHash.ToString());
+				CProgressDlg progress;
+				progress.m_GitCmd = cmd;
+				progress.DoModal();
+			}
+			break;
 		case ID_DELETE:
 			{
 				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);

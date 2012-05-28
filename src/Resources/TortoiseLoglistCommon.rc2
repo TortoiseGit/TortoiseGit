@@ -62,6 +62,7 @@ BEGIN
     IDS_LOG_POPUP_REVERTREV "&Revert change by this commit"
     IDS_LOG_POPUP_GNUDIFF   "Show differences as &unified diff"
     IDS_LOG_POPUP_FIND      "Search &log messages..."
+    IDS_LOG_POPUP_SHOWBRANCHES "Show branches this commit is on"
     IDS_LOG_POPUP_OPEN      "&Open"
     IDS_LOG_POPUP_EDITAUTHOR "Edit author"
     IDS_LOG_POPUP_EDITLOG   "Edit log message"

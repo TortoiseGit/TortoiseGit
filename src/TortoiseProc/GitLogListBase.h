@@ -271,6 +271,7 @@ public:
 	ID_COMMIT,
 	ID_PUSH,
 	ID_FETCH,
+	ID_SHOWBRANCHES,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();

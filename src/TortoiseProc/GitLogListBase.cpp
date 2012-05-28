@@ -1824,6 +1824,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
 			popup.AppendMenuIcon(ID_FINDENTRY, IDS_LOG_POPUP_FIND, IDI_FILTEREDIT);
 
+		if (GetSelectedCount() == 1 && m_ContextMenuMask & GetContextMenuBit(ID_SHOWBRANCHES) && !pSelLogEntry->m_CommitHash.IsEmpty())
+			popup.AppendMenuIcon(ID_SHOWBRANCHES, IDS_LOG_POPUP_SHOWBRANCHES, IDI_FILTEREDIT);
+
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 //		DialogEnableWindow(IDOK, FALSE);
 //		SetPromptApp(&theApp);
