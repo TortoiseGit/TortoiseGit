@@ -111,7 +111,7 @@ BOOL CPushDlg::OnInitDialog()
 
 	AddOthersToAnchor();
 
-	AdjustControlSize(IDC_REMOTE_RD);
+	AdjustControlSize(IDC_RD_REMOTE);
 	AdjustControlSize(IDC_RD_URL);
 	AdjustControlSize(IDC_PUSHALL);
 	AdjustControlSize(IDC_FORCE);

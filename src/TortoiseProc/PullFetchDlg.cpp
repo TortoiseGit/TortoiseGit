@@ -105,7 +105,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 	AdjustControlSize(IDC_CHECK_REBASE);
 	AdjustControlSize(IDC_CHECK_PRUNE);
-	AdjustControlSize(IDC_REMOTE_MANAGE);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
