@@ -2556,9 +2556,8 @@ BEGIN
                             "There are no issue-tracker providers available."
     IDS_SETTINGS_BUGTRAQ_SELECTFOLDERPATH 
                             "Select folder to associate with this issue tracker"
-    IDS_FILEDIFF_STATADD    "Add"
-    IDS_FILEDIFF_STATDEL    "Del"
-    IDS_LOG_FILE_LINE_ADD   "Add"
+    IDS_FILEDIFF_STATADD    "Lines added"
+    IDS_FILEDIFF_STATDEL    "Lines removed"
     IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
     IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""

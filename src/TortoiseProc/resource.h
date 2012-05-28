@@ -169,10 +169,7 @@
 #define IDS_FILEDIFF_STATADD            1011
 #define IDS_FILEDIFF_STATDEL            1012
 #define IDC_SVNPROGRESS                 1013
-#define IDS_LOG_FILE_LINE_ADD           1013
 #define IDC_LOGMESSAGE                  1014
-#define IDS_LOG_FILE_LINE_Del           1014
-#define IDS_LOG_FILE_LINE_DEL           1014
 #define IDS_MENURESTORE                 1014
 #define IDC_LOGMSG                      1015
 #define IDC_EXTDIFF                     1015
