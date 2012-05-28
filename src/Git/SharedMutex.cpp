@@ -21,9 +21,21 @@ SharedMutex::~SharedMutex()
 
 void SharedMutex::Release()
 {
-	::CloseHandle(m_mutex);
-    ::CloseHandle(m_sharedEvent);
-    ::CloseHandle(m_exclusiveEvent);
+	if (m_mutex)
+	{
+		::CloseHandle(m_mutex);
+		m_mutex = NULL;
+	}
+	if (m_sharedEvent)
+	{
+		::CloseHandle(m_sharedEvent);
+		m_sharedEvent = NULL;
+	}
+	if (m_exclusiveEvent)
+	{
+		::CloseHandle(m_exclusiveEvent);
+		m_exclusiveEvent = NULL;
+	}
 }
 void SharedMutex::Init()
 {
