@@ -96,7 +96,7 @@ public:
 	CTGitPathList & GetFiles(void * data)
 	{
 		CheckAndParser();
-		if(!m_IsDiffFiles && m_CallDiffAsync)
+		if(data && !m_IsDiffFiles && m_CallDiffAsync)
 			m_CallDiffAsync(this, data);
 		else
 			CheckAndDiff();

@@ -342,42 +342,53 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 
 int CGitDiff::DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2)
 {
-	if (path.GetWinPathString().IsEmpty())
+	return DiffCommit(path, path, r1, r2);
+}
+
+int CGitDiff::DiffCommit(CTGitPath &path1, CTGitPath &path2, GitRev *r1, GitRev *r2)
+{
+	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL,*r1,*r2);
+		dlg.SetDiff(NULL, *r1, *r2);
 		dlg.DoModal();
 	}
-	else if (path.IsDirectory())
+	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(&path,*r1,*r2);
+		dlg.SetDiff(&path1, *r1, *r2);
 		dlg.DoModal();
 	}
 	else
 	{
-		Diff(&path,&path,r1->m_CommitHash.ToString(),r2->m_CommitHash.ToString());
+		Diff(&path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString());
 	}
 	return 0;
 }
 
 int CGitDiff::DiffCommit(CTGitPath &path, CString r1, CString r2)
 {
-	if (path.GetWinPathString().IsEmpty())
+	return DiffCommit(path, path, r1, r2);
+}
+
+
+int CGitDiff::DiffCommit(CTGitPath &path1, CTGitPath &path2, CString r1, CString r2)
+{
+	if (path1.GetWinPathString().IsEmpty())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL,r1,r2);
+		dlg.SetDiff(NULL, r1, r2);
 		dlg.DoModal();
 	}
-	else if (path.IsDirectory())
+	else if (path1.IsDirectory())
 	{
 		CFileDiffDlg dlg;
-		dlg.SetDiff(&path,r1,r2);
+		dlg.SetDiff(&path1, r1, r2);
 		dlg.DoModal();
 	}
 	else
 	{
-		Diff(&path,&path,r1,r2);
+		Diff(&path1, &path2, r1, r2);
 	}
 	return 0;
 }
