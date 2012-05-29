@@ -7622,7 +7622,7 @@ msgstr ""
 
 #. Resource IDs: (1)
 #, c-format
-msgid "TortoiseGit was already initialized for the repository \"%s\". Cannot switch to another repository (\"%s\") at runtime."
+msgid "TortoiseGitBlame was already initialized for the repository \"%s\". Cannot switch to another repository (\"%s\") at runtime."
 msgstr ""
 
 #. Resource IDs: (198)

@@ -426,7 +426,7 @@ BEGIN
     IDS_CANNOTBLAMENOGIT    "Cannot show blame. ""%s"" is not under version control by git."
     IDS_BLAMEERROR          "Blame error"
     IDS_CHECKOUTFAILED      "Failed to checkout file ""%s"""
-    IDS_ERR_DIFFENERTPREPO  "TortoiseGit was already initialized for the repository ""%s"". Cannot switch to another repository (""%s"") at runtime."
+    IDS_ERR_DIFFENERTPREPO  "TortoiseGitBlame was already initialized for the repository ""%s"". Cannot switch to another repository (""%s"") at runtime."
 END
 
 STRINGTABLE 
