@@ -110,8 +110,11 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
 	g_Git.GetMapHashToFriendName(m_HashMap);
-	m_CurrentBranch=g_Git.GetCurrentBranch();
-	this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
+	if (CTGitPath(g_Git.m_CurrentDir).HasAdminDir())
+	{
+		m_CurrentBranch=g_Git.GetCurrentBranch();
+		m_HeadHash=g_Git.GetHash(_T("HEAD"));
+	}
 
 	m_From=-1;;
 	m_To=-1;
@@ -2061,7 +2064,6 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 {
 	ClearText();
 
-
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
@@ -2084,6 +2086,9 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 			this->m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
 		}
 	}
+
+	m_CurrentBranch = g_Git.GetCurrentBranch();
+	m_HeadHash = g_Git.GetHash(_T("HEAD"));
 
 	if(path)
 		m_Path=*path;
