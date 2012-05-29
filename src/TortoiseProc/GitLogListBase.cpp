@@ -2067,7 +2067,8 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog(path,-1,info,from,to);
+	if (this->m_logEntries.ParserFromLog(path,-1,info,from,to))
+		return -1;
 
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx(this->m_logEntries.size());
