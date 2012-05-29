@@ -60,10 +60,6 @@ CTortoiseGitBlameDoc::~CTortoiseGitBlameDoc()
 
 BOOL CTortoiseGitBlameDoc::OnNewDocument()
 {
-	if (!CDocument::OnNewDocument())
-		return FALSE;
-
-	// (SDI documents will reuse this document)
 	return TRUE;
 }
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
