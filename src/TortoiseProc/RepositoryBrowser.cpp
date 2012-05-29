@@ -544,6 +544,9 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 		if (selType == ONLY_FILES)
 		{
+			if (m_bHasWC)
+				popupMenu.AppendMenuIcon(eCmd_Blame, IDS_LOG_POPUP_BLAME, IDI_BLAME);
+
 			popupMenu.AppendMenu(MF_SEPARATOR);
 			temp.LoadString(IDS_LOG_POPUP_SAVE);
 			popupMenu.AppendMenuIcon(eCmd_SaveAs, temp, IDI_SAVEAS);
@@ -572,6 +575,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			CString sCmd;
 			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
 			CAppUtils::RunTortoiseProc(sCmd);
+		}
+		break;
+	case eCmd_Blame:
+		{
+			CAppUtils::LaunchTortoiseBlame(g_Git.m_CurrentDir + _T("\\") + selectedLeafs.at(0)->GetFullName(), m_sRevision);
 		}
 		break;
 	case eCmd_Open:

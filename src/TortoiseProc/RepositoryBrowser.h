@@ -81,6 +81,7 @@ public:
 		eCmd_OpenWith,
 		eCmd_OpenWithAlternativeEditor,
 		eCmd_ViewLog,
+		eCmd_Blame,
 		eCmd_CompareWC,
 		eCmd_Revert,
 		eCmd_SaveAs,
