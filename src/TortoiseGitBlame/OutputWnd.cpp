@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -187,14 +187,14 @@ void COutputWnd::FillFindWindow()
 //	m_wndOutputFind.AddString(_T("but you can change the way it is displayed as you wish..."));
 }
 
-int COutputWnd::LoadHistory(CString filename, bool follow)
+int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 {
 	m_LogList.ReloadHashMap();
 	CTGitPath path;
 	path.SetFromGit(filename);
 
 	m_LogList.Clear();
-	m_LogList.FillGitLog(&path, follow ? CGit::LOG_INFO_FOLLOW : 0);
+	m_LogList.FillGitLog(&path, follow ? CGit::LOG_INFO_FOLLOW : 0, NULL, &revision);
 	m_LogList.UpdateProjectProperties();
 	return 0;
 

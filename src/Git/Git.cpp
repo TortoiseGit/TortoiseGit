@@ -818,6 +818,12 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 		range.Format(_T(" %s..%s "),FixBranchName(*from),FixBranchName(*to));
 		param += range;
 	}
+	else if(to != NULL && hash.IsEmpty())
+	{
+		CString range;
+		range.Format(_T(" %s "), FixBranchName(*to));
+		param += range;
+	}
 	param+=hash;
 
 	CString st1,st2;

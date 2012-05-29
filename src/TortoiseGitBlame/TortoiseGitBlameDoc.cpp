@@ -88,6 +88,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		return FALSE;
 
 	m_CurrentFileName=lpszPathName;
+
+	if(Rev.IsEmpty())
+		Rev = _T("HEAD");
+
 	m_Rev=Rev;
 
 	// (SDI documents will reuse this document)
@@ -124,12 +128,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			SetCurrentDirectory(g_Git.m_CurrentDir);
 
 		m_GitPath = path;
-		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), (theApp.GetInt(_T("FollowRenames"), 0) == 1));
+		GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1));
 
 		CString cmd;
-
-		if(Rev.IsEmpty())
-			Rev=_T("HEAD");
 
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.clear();
