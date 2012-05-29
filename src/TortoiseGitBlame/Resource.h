@@ -9,6 +9,7 @@
 #define IDS_CANNOTBLAMENOGIT            4
 #define IDS_BLAMEERROR                  5
 #define IDS_CHECKOUTFAILED              6
+#define IDS_ERR_DIFFENERTPREPO          7
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_STATUSBAR_PANE1              120
