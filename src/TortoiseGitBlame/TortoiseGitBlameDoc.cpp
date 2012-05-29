@@ -80,13 +80,22 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 {
-	if (!CDocument::OnOpenDocument(lpszPathName))
-		return FALSE;
-
-	m_CurrentFileName=lpszPathName;
-
 	if(Rev.IsEmpty())
 		Rev = _T("HEAD");
+
+	// enable blame for files which do not exist in current working tree
+	if (!PathFileExists(lpszPathName) && Rev != _T("HEAD"))
+	{
+		if (!CDocument::OnOpenDocument(GetTempFile()))
+			return FALSE;
+	}
+	else
+	{
+		if (!CDocument::OnOpenDocument(lpszPathName))
+			return FALSE;
+	}
+
+	m_CurrentFileName = lpszPathName;
 
 	m_Rev=Rev;
 
@@ -96,13 +105,12 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		CCommonAppUtils::RunTortoiseProc(_T(" /command:settings"));
 		return FALSE;
 	}
-
 	GitAdminDir admindir;
 	CString topdir;
-	if(!admindir.HasAdminDir(lpszPathName,&topdir))
+	if(!admindir.HasAdminDir(m_CurrentFileName, &topdir))
 	{
 		CString temp;
-		temp.Format(IDS_CANNOTBLAMENOGIT, CString(lpszPathName));
+		temp.Format(IDS_CANNOTBLAMENOGIT, CString(m_CurrentFileName));
 		CMessageBox::Show(NULL, temp, _T("TortoiseGitBlame"), MB_OK);
 	}
 	else
@@ -120,7 +128,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		m_IsGitFile=TRUE;
 		sOrigCWD = g_Git.m_CurrentDir = topdir;
 
-		CString PathName=lpszPathName;
+		CString PathName = m_CurrentFileName;
 		if(topdir[topdir.GetLength()-1] == _T('\\') ||
 			topdir[topdir.GetLength()-1] == _T('/'))
 			PathName=PathName.Right(PathName.GetLength()-g_Git.m_CurrentDir.GetLength());
