@@ -13,7 +13,7 @@
 			<guimenuitem>Cleanup</guimenuitem>
 		</menuchoice>
 		Cleans the working tree by recursively removing files that are not under version control,
-		starting from the current directory <emphasis>or</emphasis> on the whole working copy (depends on version of installed git).
+		starting from the current directory <emphasis>or</emphasis> on the whole working tree (depends on version of installed git).
 		<figure id="tsvn-dug-clean-dia-1">
 			<title>Clean dialog</title>
 			<graphic fileref="../images/clean.png"/>
@@ -34,7 +34,7 @@
 	<caution>
 		<title>Attention</title>
 		<para>
-			This command affects the <emphasis>whole</emphasis> working copy and will delete
+			This command affects the <emphasis>whole</emphasis> working tree and will delete
 			all untracked files <emphasis>without</emphasis> using the recycle bin!
 		</para>
 	</caution>

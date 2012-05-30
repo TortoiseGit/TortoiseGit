@@ -101,7 +101,7 @@
 		</variablelist>
 	</para>
 	<para>
-		A hook is defined for a particular working copy path. You only need to
+		A hook is defined for a particular working tree path. You only need to
 		specify the top level path; if you perform an operation in a sub-folder,
 		TortoiseGit will automatically search upwards for a matching path.
 	</para>
@@ -331,7 +331,7 @@
 			<xref linkend="tsvn-dug-bugtracker-ref" />.
 			If your system administrator has provided you with a plugin, which
 			you have already installed and registered, this is the place to
-			specify how it integrates with your working copy.
+			specify how it integrates with your working tree.
 		</para>
 		<para>
 			<figure id="tsvn-dug-settings-dia-issuetracker">
@@ -339,7 +339,7 @@
 				<graphic fileref="../images/SettingsIssueTracker.png"/>
 			</figure>
 			Click on <guibutton>Add...</guibutton> to use the plugin with
-			a particular working copy. Here you can specify the working copy
+			a particular working tree. Here you can specify the working tree
 			path, choose which plugin to use from a drop down list of all
 			registered issue tracker plugins, and any parameters to pass.
 			The parameters will be specific to the plugin, but might include

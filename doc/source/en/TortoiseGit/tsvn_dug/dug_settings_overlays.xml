@@ -29,11 +29,11 @@
 		status cache option (see below).
 	</para>
 	<para>
-		Since it takes quite a while to fetch the status of a working copy,
+		Since it takes quite a while to fetch the status of a working tree,
 		TortoiseGit uses a cache to store the status so the explorer
 		doesn't get hogged too much when showing the overlays.
 		You can choose which type of cache TortoiseGit should use according
-		to your system and working copy size here:
+		to your system and working tree size here:
 		<variablelist>
 			<varlistentry>
 				<term>Default</term>
@@ -42,7 +42,7 @@
 						Caches all status information in a separate process
 						(<filename>TGitCache.exe</filename>). That process
 						watches all drives for changes and fetches the status
-						again if files inside a working copy get modified.
+						again if files inside a working tree get modified.
 						The process runs with the least possible priority so
 						other programs don't get hogged because of it. That 
 						also means that the status information is not
@@ -51,8 +51,8 @@
 					</para>
 					<para>
 						Advantage: the overlays show the status recursively,
-						i.e. if a file deep inside a working copy is modified,
-						all folders up to the working copy root will also
+						i.e. if a file deep inside a working tree is modified,
+						all folders up to the working tree root will also
 						show the modified overlay. And since the process can
 						send notifications to the shell, the overlays on the left
 						tree view usually change too.
@@ -60,7 +60,7 @@
 					<para>
 						Disadvantage: the process runs constantly, even if you're not 
 						working on your projects. It also uses around 10-50 MB of RAM 
-						depending on number and size of your working copies. In the
+						depending on number and size of your working trees. In the
 						current implementation it doesn't check the contents of the files,
 						it just checks the last modification time against the time stored
 						in the git index file.
@@ -80,7 +80,7 @@
 						Advantage: can show the status in <emphasis>real time</emphasis>.
 					</para>
 					<para>
-						Disadvantage: only one folder is cached and for big working copies,
+						Disadvantage: only one folder is cached and for big working trees,
 						it can take much more time to show a folder in explorer than
 						with the default cache or with shell mode. The Shell variant only shows
 						differences of the filesystem to the git index (does not include revision
@@ -105,7 +105,7 @@
 					</para>
 					<para>
 						Disadvantage: Since only one folder is cached, the overlays
-						don't show the status recursively. For big working copies,
+						don't show the status recursively. For big working trees,
 						it can take more time to show a folder in explorer than
 						with the default cache. The Shell variant only shows
 						differences of the filesystem to the git index (does not include revision
@@ -131,7 +131,7 @@
 					</para>
 					<para>
 						Disadvantage: Status information of files and folders is not
-						shown in Explorer. To see if your working copies are modified,
+						shown in Explorer. To see if your working trees are modified,
 						you have to use the <quote>Check for modifications</quote> dialog.
 					</para>
 				</listitem>
@@ -145,7 +145,7 @@
 	</para>
 	<para>
 		Network drives can be very slow, so by default
-		icons are not shown for working copies located on network shares.
+		icons are not shown for working trees located on network shares.
 	</para>
 	<para>
 		USB Flash drives appear to be a special case in that the drive type
@@ -156,7 +156,7 @@
 		The <guilabel>Exclude Paths</guilabel> are used to tell TortoiseGit
 		those paths for which it should <emphasis>not</emphasis> show icon
 		overlays and status columns.
-		This is useful if you have some very big working copies containing
+		This is useful if you have some very big working trees containing
 		only libraries which you won't change at all and therefore don't
 		need the overlays. For example:
 	</para>
@@ -202,7 +202,7 @@ if (path is allowed drive type) AND (path is not in exclude list)
 		</indexterm>
 		<para>
 			It is often convenient to use a <literal>SUBST</literal> drive
-			to access your working copies, e.g. using the command
+			to access your working trees, e.g. using the command
 <screen>
 subst T: C:\TortoiseGit\trunk\doc
 </screen>
@@ -219,14 +219,14 @@ subst T: C:\TortoiseGit\trunk\doc
 		</para>
 	</tip>
 	<para>
-		Sometimes you will exclude areas that contain working copies,
+		Sometimes you will exclude areas that contain working trees,
 		which saves TGitCache from scanning and monitoring for changes,
 		but you still want a visual indication that such folders are versioned.
 		The <guilabel>Show excluded folders as 'normal'</guilabel> checkbox
 		allows you to do this. With this option, versioned folders in any
 		excluded area (drive type not checked, or specifically excluded)
 		will show up as normal and up-to-date, with a green check
-		mark. This reminds you that you are looking at a working copy, even
+		mark. This reminds you that you are looking at a working tree, even
 		though the folder overlays may not be correct. Files do not get an
 		overlay at all. Note that the context menus still work, even though
 		the overlays are not shown.

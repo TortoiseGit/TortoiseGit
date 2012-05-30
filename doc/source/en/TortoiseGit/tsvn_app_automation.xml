@@ -211,7 +211,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:update</entry>
 							<entry>
-								Updates the working copy in <option>/path</option> to
+								Updates the working tree in <option>/path</option> to
 								HEAD. If the option <option>/rev</option> is given
 								then a dialog is shown to ask the user to which
 								revision the update should go. To avoid the dialog
@@ -248,7 +248,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:revert</entry>
 							<entry>
-								Reverts local modifications of a working copy.
+								Reverts local modifications of a working tree.
 								The <option>/path</option> tells which items
 								to revert.
 							</entry>
@@ -257,7 +257,7 @@ Don't touch these lines:
 							<entry condition="pot">:cleanup</entry>
 							<entry>
 								Cleans up interrupted or aborted operations and
-								unlocks the working copy in <option>/path</option>.
+								unlocks the working tree in <option>/path</option>.
 							</entry>
 						</row>
 						<row>
@@ -286,7 +286,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:export</entry>
 							<entry>
-								Exports the working copy in <option>/path</option>
+								Exports the working tree in <option>/path</option>
 								to another directory. If the <option>/path</option>
 								points to an unversioned directory, a dialog will ask
 								for an URL to export to the directory in <option>/path</option>.
@@ -316,7 +316,7 @@ Don't touch these lines:
 							<entry>
 								Brings up the branch/tag dialog.
 								The <option>/path</option>
-								is the working copy to branch/tag from.
+								is the working tree to branch/tag from.
 								And the <option>/url</option> is the
 								target URL.
 								You can also specify the <option>/logmsg</option> switch
@@ -403,7 +403,7 @@ Don't touch these lines:
 							<entry condition="pot">:relocate</entry>
 							<entry>
 								Opens the relocate dialog. The <option>/path</option>
-								specifies the working copy path to relocate.
+								specifies the working tree path to relocate.
 							</entry>
 						</row>
 						-->
@@ -417,7 +417,7 @@ Don't touch these lines:
 							<entry condition="pot">:repostatus</entry>
 							<entry>
 								Opens the check-for-modifications dialog. The <option>/path</option>
-								specifies the working copy directory.
+								specifies the working tree directory.
 							</entry>
 						</row>
 						<!--
@@ -425,7 +425,7 @@ Don't touch these lines:
 							<entry condition="pot">:repobrowser</entry>
 							<entry>
 								Starts the repository browser dialog, pointing to
-								the URL of the working copy given in
+								the URL of the working tree given in
 								<option>/path</option> or <option>/path</option>
 								points directly to an URL.
 								An additional option <option>/rev:xxx</option> can
@@ -469,7 +469,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:cat</entry>
 							<entry>
-								Saves a file from an URL or working copy path given
+								Saves a file from an URL or working tree path given
 								in <option>/path</option> to the location given in
 								<option>/savepath:path</option>. The revision is
 								given in <option>/revision:xxx</option>. This can

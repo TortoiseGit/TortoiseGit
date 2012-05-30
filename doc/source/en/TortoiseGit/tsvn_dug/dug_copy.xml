@@ -25,10 +25,11 @@
 		in the original files, you can only merge the fix automatically if the
 		new copy is related to the original in Git.
 	</para>
+<!--
 	<para>
-		The easiest way to copy files and folders from within a working copy is
+		The easiest way to copy files and folders from within a working tree is
 		to use the right-drag menu. When you <action>right-drag</action> a file
-		or folder from one working copy to another, or even within the same
+		or folder from one working tree to another, or even within the same
 		folder, a context menu appears when you release the mouse.
 		<figure id="tsvn-dug-copy-right-drag">
 			<title>Right drag menu for a directory under version control</title>
@@ -38,8 +39,8 @@
 		renaming it at the same time.
 	</para>
 	<para>
-		You can also copy or move versioned files within a working copy, or between two
-		working copies, using the familiar cut-and-paste method. Use the standard Windows
+		You can also copy or move versioned files within a working tree, or between two
+		working trees, using the familiar cut-and-paste method. Use the standard Windows
 		<action>Copy</action> or <action>Cut</action> to copy one or more versioned items
 		to the clipboard. If the clipboard contains such versioned items, you can then use
 		<menuchoice>
@@ -47,10 +48,11 @@
 			<guimenuitem>Paste</guimenuitem>
 		</menuchoice>
 		(note: not the standard Windows <action>Paste</action>)
-		to copy or move those items to the new working copy location.
+		to copy or move those items to the new working tree location.
 	</para>
+-->
 	<para>
-		You can copy files and folders from your working copy to another
+		You can copy files and folders from your working tree to another
 		location in the repository using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -68,9 +70,10 @@
 		</menuchoice>.
 		Refer to <xref linkend="tsvn-dug-showlog-2"/> to find out more.
 	</para>
+<!--
 	<para>
 		You can also use the repository browser to locate content you want,
-		and copy it into your working copy directly from the repository,
+		and copy it into your working tree directly from the repository,
 		or copy between two locations within the repository.
 		Refer to <xref linkend="tsvn-dug-repobrowser"/> to find out more.
 	</para>
@@ -92,4 +95,5 @@
 			they are in the same repository.
 		</para>
 	</tip>
+-->
 </sect1>

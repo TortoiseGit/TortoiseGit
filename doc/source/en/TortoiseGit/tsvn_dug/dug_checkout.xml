@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-checkout">
-	<title>Checking Out A Working Copy (Switch to commit)</title>
+	<title>Checking Out A Working Tree (Switch to commit)</title>
 	<indexterm>
 		<primary>checkout</primary>
 	</indexterm>
@@ -9,11 +9,11 @@
 		<primary>Switch</primary>
 	</indexterm>
 	<indexterm>
-		<primary>create working copy</primary>
+		<primary>create working tree</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_GITSWITCH"?>
 	<para>
-		To obtain a special version working copy you need to do a <firstterm>checkout</firstterm>
+		To obtain a special version working tree you need to do a <firstterm>checkout</firstterm>
 		from a local repository.
 	</para>
 	<para>
@@ -35,7 +35,7 @@
     You can click <guibutton>...</guibutton> to browse git log and choose special version. 
   </para>
   <para>
-    Check <guilabel>Force</guilabel> will overwrite working copy with repository version.
+    Check <guilabel>Force</guilabel> will overwrite working tree with repository version.
   </para>
   <para>
     Check <guilabel>Track</guilabel> will track remote branch with local branch. When you pull change from remote
@@ -87,10 +87,10 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Working copy</term>
+					<term>Working tree</term>
 					<listitem>
 						<para>
-							Retain the depth specified in the working copy. This
+							Retain the depth specified in the working tree. This
 							option is not used in the checkout dialog, but it is
 							the default in all other dialogs which have a depth
 							setting.
@@ -100,7 +100,7 @@
 			</variablelist>
 		</para>
 		<para>
-			If you check out a sparse working copy (i.e., by choosing something other
+			If you check out a sparse working tree (i.e., by choosing something other
 			than <literal>fully recursive</literal> for the checkout depth), you can
 			fetch additional sub-folders by using the repository browser
 			(<xref linkend="tsvn-dug-repobrowser" />) or the check for modifications dialog
@@ -114,13 +114,13 @@
 				<guimenuitem>Repo-Browser</guimenuitem>
 			</menuchoice>
 			to bring up the repository browser. Find the sub-folder you would like
-			to add to your working copy, then use
+			to add to your working tree, then use
 			<menuchoice>
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>Update item to revision...</guimenuitem>
 			</menuchoice>
 			That menu will only be visible if the selected item does not exist yet
-			in your working copy, but the parent item does exist.
+			in your working tree, but the parent item does exist.
 		</para>
 		<para>
 			In the check for modifications dialog, first click on the button
@@ -128,7 +128,7 @@
 			the files and folders which are in the repository but which you
 			have not checked out as <literal>remotely added</literal>.
 			<action>Right click</action> on the folder(s) you would like to add
-			to your working copy, then use
+			to your working tree, then use
 			<menuchoice>
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>Update</guimenuitem>
@@ -189,9 +189,9 @@
 			</listitem>
 		</orderedlist>
 		<tip>
-			<title>Working copy depth cannot be reduced</title>
+			<title>Working tree depth cannot be reduced</title>
 			<para>
-				Once you have checked out a working copy to a particular
+				Once you have checked out a working tree to a particular
 				depth you can increase that depth later to get more content.
 				However you cannot reduce the depth again to remove content.
 				That feature may be added in a later version of Git.
@@ -200,7 +200,7 @@
 		<tip>
 			<title>Using an older server</title>
 			<para>
-				Pre-1.5 servers do not understand the working copy depth
+				Pre-1.5 servers do not understand the working tree depth
 				request, so they cannot always deal with requests efficiently.
 				The command will still work, but an older server may send all
 				the data, leaving the client to filter out what is not required,

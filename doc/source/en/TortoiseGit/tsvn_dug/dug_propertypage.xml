@@ -269,7 +269,7 @@
 				An alternative method is to set the <literal>tsvn:autoprops</literal>
 				property on folders, as described in the next section. This method
 				only works for TortoiseGit clients, but it does get propagated
-				to all working copies on update.
+				to all working trees on update.
 			</para>
 			<para>
 				Whichever method you choose, you should note that auto-props

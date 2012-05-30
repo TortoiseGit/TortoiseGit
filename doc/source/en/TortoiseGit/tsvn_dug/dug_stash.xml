@@ -29,7 +29,7 @@
 			<graphic fileref="../images/ContextMenuStash.png"/>
 		</figure>
 		The stash is implemented as a stack. <guimenuitem>Stash Apply</guimenuitem> will apply the changes of the latest stash
-		to your working copy. <guimenuitem>Stash Pop</guimenuitem> does the same, but will remove the latest stash from the stack
+		to your working tree. <guimenuitem>Stash Pop</guimenuitem> does the same, but will remove the latest stash from the stack
 		after applying it. <guimenuitem>Stash Save</guimenuitem> is still possible and will stash the current changes of the working
 		copy to the top of the stack. <guimenuitem>Stash List</guimenuitem> provides an overview of all the whole stash stack. You
 		can also remove and view the stashed changes there (similarly to the <xref linkend="tsvn-dug-showlog"/> and <xref linkend="tsvn-dug-update"/>).

@@ -33,7 +33,7 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
-			a file, it is removed from your working copy immediately as well
+			a file, it is removed from your working tree immediately as well
 			as being marked for deletion in the repository on next commit.
 			The file's parent folder shows a <quote>deleted</quote> icon overlay.
 			Up until you commit the change, you can get the file back using
@@ -49,7 +49,7 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
-			a folder, it remains in your working copy, but the overlay
+			a folder, it remains in your working tree, but the overlay
 			changes to indicate that it is marked for deletion.
 			Up until you commit the change, you can get the folder back using
 			<menuchoice>
@@ -76,7 +76,7 @@
 			instead of using the TortoiseGit context menu, the commit
 			dialog shows those files and lets you remove them from
 			version control too before the commit. However, if you update
-			your working copy, Git will spot the missing file and
+			your working tree, Git will spot the missing file and
 			replace it with the latest version from the repository.
 			If you need to delete a version-controlled file, always use
 			<menuchoice>
@@ -126,8 +126,9 @@
 			</menuchoice>
 			Enter the new name for the item and you're done.
 		</para>
+<!--
 		<para>
-			If you want to move files around inside your working copy,
+			If you want to move files around inside your working tree,
 			perhaps to a different sub-folder,
 			use the right-mouse drag-and-drop handler:
 			<orderedlist>
@@ -139,7 +140,7 @@
 				<listitem>
 					<para>
 						<action>right-drag</action> them to the
-						new location inside the working copy
+						new location inside the working tree
 					</para>
 				</listitem>
 				<listitem>
@@ -158,6 +159,7 @@
 				</listitem>
 			</orderedlist>
 		</para>
+-->
 		<caution>
 			<title>Commit the parent folder</title>
 			<para>
@@ -169,11 +171,6 @@
 				and when your co-workers update, the old file will not be
 				removed. i.e. they will have <emphasis>both</emphasis> the old
 				and the new copies.
-			</para>
-			<para>
-				You <emphasis>must</emphasis> commit a folder rename before
-				changing any of the files inside the folder, otherwise your
-				working copy can get really messed up.
 			</para>
 		</caution>
     <!--
@@ -218,14 +215,14 @@
 			Fortunately there are (at least) two possible methods to rename a file 
 			without losing its log history. It is important to rename it 
 			within Git. Just renaming in the explorer will corrupt 
-			your working copy!
+			your working tree!
 		</para>
 		<para>
 			Solution A) (recommended)
 			<orderedlist>
 				<listitem>
 					<para>
-						Commit the changes in your working copy.
+						Commit the changes in your working tree.
 					</para>
 				</listitem>
 				<listitem>
@@ -236,7 +233,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Update your working copy.
+						Update your working tree.
 					</para>
 				</listitem>
 			</orderedlist>
@@ -283,7 +280,7 @@
 		</para>
 		<para>
 			This sometimes happens when two people commit, from separate
-			working copies, files which happen to have
+			working trees, files which happen to have
 			the same name, but with a case difference. It can also happen
 			when files are committed from a system with a case-sensitive
 			file system, like Linux.
@@ -347,7 +344,7 @@
 			in the explorer list pane (right pane) in order to see this in the extended
 			context menu.
 			This will produce a dialog which lists all unversioned files anywhere in your
-			working copy. You can then select or deselect items to be removed.
+			working tree. You can then select or deselect items to be removed.
 		</para>
 		<para>
 			When such items are deleted, the recycle bin is used, so if you make a mistake

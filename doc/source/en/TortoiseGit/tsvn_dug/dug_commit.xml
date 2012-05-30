@@ -13,7 +13,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_COMMITDLG"?>
 	<para>
-		Sending the changes you made to your working copy is known as
+		Sending the changes you made to your working tree is known as
 		<firstterm>committing</firstterm> the changes. you can use
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -91,7 +91,7 @@
 						<para>
 							add the file (or a wildcard extension)
 							to the list of files to exclude on the settings page.
-							This will affect every working copy you have.
+							This will affect every working tree you have.
 						</para>
 					</listitem>
 					-->
@@ -152,8 +152,8 @@
 			<!--
 			<para>
 				You can drag files into the commit dialog from elsewhere, so
-				long as the working copies are checked out from the same repository.
-				For example, you may have a huge working copy with several
+				long as the working trees are checked out from the same repository.
+				For example, you may have a huge working tree with several
 				explorer windows open to look at distant folders of the
 				hierarchy. If you want to avoid committing from the top
 				level folder (with a lengthy folder crawl to check for changes)
@@ -161,7 +161,7 @@
 				from the other windows to include within the same atomic commit.
 			</para>
 			<para>
-				You can drag unversioned files which reside within a working copy
+				You can drag unversioned files which reside within a working tree
 				into the commit dialog, and they will be Git added automatically.
 			</para>
 			-->
@@ -297,7 +297,7 @@
 		<para>
 			You can re-use previously entered log messages. Just click on
 			<guibutton>Recent messages</guibutton> to view a list of the last few
-			messages you entered for this working copy. The number of stored messages
+			messages you entered for this working tree. The number of stored messages
 			can be customized in the TortoiseGit settings dialog.
 		</para>
 		-->

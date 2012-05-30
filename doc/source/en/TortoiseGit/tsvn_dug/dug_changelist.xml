@@ -7,7 +7,7 @@
 	</indexterm>
 	<para>
 		In an ideal world, you only ever work on one thing at a time, and your
-		working copy contains only one set of logical changes. OK, back to reality.
+		working tree contains only one set of logical changes. OK, back to reality.
 		It often happens that you have to work on several unrelated tasks at once,
 		and when you look in the commit dialog, all the changes are mixed in together.
 		The <firstterm>changelist</firstterm> feature helps you group files together,

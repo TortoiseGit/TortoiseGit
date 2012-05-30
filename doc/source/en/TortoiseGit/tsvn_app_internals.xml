@@ -77,7 +77,7 @@
 		<para>
 			<graphic fileref="images/LockedIcon.png"/> 
 			The <emphasis>Locked</emphasis> overlay is used when the local
-			working copy holds a lock for that file.
+			working tree holds a lock for that file.
 		</para>
 		-->
 		<para>
@@ -98,7 +98,7 @@
 		</para>
 		<para>
 			If an item has Git status <literal>none</literal> (the item
-			is not within a working copy) then no overlay is shown.
+			is not within a working tree) then no overlay is shown.
 			If you have chosen to disable the <emphasis>Ignored</emphasis>
 			and <emphasis>Unversioned</emphasis> overlays then no overlay
 			will be shown for those files either.

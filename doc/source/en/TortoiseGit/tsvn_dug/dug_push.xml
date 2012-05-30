@@ -8,7 +8,7 @@
   </indexterm>
   <para>
 	Push Change to the other repository. You must push change to bare repository. 
-	If you push change to repository with working copy, there are unexpected result.
+	If you push change to repository with working tree, there are unexpected result.
   </para>
   <para>
 	<menuchoice>

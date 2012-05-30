@@ -86,14 +86,14 @@
 		<para>
 			The <xref linkend="tsvn-dug"/> is the most important section as
 			it explains all the main features of TortoiseGit and how to use them.
-			It takes the form of a tutorial, starting with checking out a working copy,
+			It takes the form of a tutorial, starting with checking out a working tree,
 			modifying it, committing your changes, etc. It then progresses to more
 			advanced topics.
 		</para>
 		<!--
 		<para>
 			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseGit
-			which can extract the information from your working copy and write it into a
+			which can extract the information from your working tree and write it into a
 			file. This is useful for including build information in your projects.
 		</para>
 		-->

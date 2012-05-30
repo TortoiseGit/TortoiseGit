@@ -26,7 +26,7 @@
 	<para>
 		After you added the files/directories to source control
 		the file appears with a <literal>added</literal> icon overlay which means you
-		first have to commit your working copy to make those
+		first have to commit your working tree to make those
 		files/directories available to other developers.
 		Adding a file/directory does <emphasis>not</emphasis> affect
 		the repository!
@@ -41,8 +41,9 @@
 			them all at once.
 		</para>
 	</tip>
+<!--
 	<para>
-		To add files from outside your working copy you can use
+		To add files from outside your working tree you can use
 		the drag-and-drop handler:
 		<orderedlist>
 			<listitem>
@@ -53,7 +54,7 @@
 			<listitem>
 				<para>
 					<action>right-drag</action> them
-					to the new location inside the working copy
+					to the new location inside the working tree
 				</para>
 			</listitem>
 			<listitem>
@@ -66,9 +67,9 @@
 					select
 					<menuchoice>
 						<guimenu>Context Menu</guimenu>
-						<guimenuitem>Git Add files to this WC</guimenuitem>
+						<guimenuitem>Git Add files to this WT</guimenuitem>
 					</menuchoice>.
-					The files will then be copied to the working copy and
+					The files will then be copied to the working tree and
 					added to version control.
 				</para>
 			</listitem>
@@ -78,6 +79,7 @@
 		You can also add files within a working copy simply by left-dragging and
 		dropping them onto the commit dialog.
 	</para>
+-->
 	<para>
 		If you add a file or folder by mistake, you can undo the addition
 		before you commit using

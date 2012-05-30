@@ -216,7 +216,7 @@
 						error condition, which occurs when Git is unable
 						to complete the task. For example, an update fails
 						because the server is inaccessible, or a commit fails
-						because the working copy is out-of-date.
+						because the working tree is out-of-date.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -324,7 +324,7 @@
 				<listitem>
 					<para>
 						Items deleted from the repository, missing from the working
-						copy, or deleted from the working copy and replaced with
+						copy, or deleted from the working tree and replaced with
 						another file of the same name.
 					</para>
 				</listitem>
@@ -333,7 +333,7 @@
 				<term>Merged</term>
 				<listitem>
 					<para>
-						Changes from the repository successfully merged into the WC
+						Changes from the repository successfully merged into the working tree
 						without creating any conflicts.
 					</para>
 				</listitem>

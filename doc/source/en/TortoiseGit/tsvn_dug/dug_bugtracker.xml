@@ -326,7 +326,7 @@
 			<para>
 				Because the issue tracker integration depends upon accessing Git
 				properties, you will only see the results when using a checked
-				out working copy. Fetching properties remotely is a slow operation,
+				out working tree. Fetching properties remotely is a slow operation,
 				so you will not see this feature in action from the repo browser.
 			</para>
 		</tip>
@@ -376,9 +376,9 @@
 		<para>
 			For illustration purposes, let's suppose that your system administrator
 			has provided you with an issue tracker plugin which you have installed,
-			and that you have set up some of your working copies to use the plugin
+			and that you have set up some of your working trees to use the plugin
 			in TortoiseGit's settings dialog.
-			When you open the commit dialog from a working copy to which the plugin
+			When you open the commit dialog from a working tree to which the plugin
 			has been assigned, you will see a new button at the top of the dialog.
 			<figure id="tsvn-dug-bugtracker-dia-1">
 				<title>Example issue tracker query dialog</title>

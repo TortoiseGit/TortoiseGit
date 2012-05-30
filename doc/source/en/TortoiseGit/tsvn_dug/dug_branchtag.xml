@@ -69,12 +69,12 @@
 			<xi:include href="./dug_chooseversion.xml"/> 
 		</para>
 		<para>
-			If you want your working copy to be switched to the newly created
+			If you want your working tree to be switched to the newly created
 			branch automatically, use the
 			<guilabel>Switch to new branch/tag</guilabel> checkbox.
-			But if you do that, first make sure that your working copy does not
+			But if you do that, first make sure that your working tree does not
 			contain modifications. If it does, those changes will be merged into
-			the branch WC when you switch.
+			the branch working tree when you switch.
 		</para>
 		<para>
 			<guilabel>track</guilabel> is a checkbox with three values. If it is checked
@@ -93,13 +93,13 @@
 			<emphasis>local repository</emphasis>.
 		</para>
 		<para>
-			Note that unless you opted to switch your working copy to the newly
+			Note that unless you opted to switch your working tree to the newly
 			created branch, creating a Branch or Tag does <emphasis>not</emphasis>
-			affect your working copy. Even if you create the branch from your WC,
+			affect your working tree. Even if you create the branch from your working tree,
 			those changes are committed to the original branch, not to the new branch.
 		</para>
 		<para>
-			How to switch working copy to tag\branch,
+			How to switch working tree to tag\branch,
 			please refer to <xref linkend="tsvn-dug-checkout"/> 
 		</para>
 	</sect2>

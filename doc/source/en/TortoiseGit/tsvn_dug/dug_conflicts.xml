@@ -45,7 +45,7 @@
 				<listitem>
 					<para>
 						This is your file as it existed in your
-						working copy before you updated your working copy
+						working tree before you updated your working tree
 						- that is, without conflict markers. This file has
 						your latest changes in it and nothing else.
 					</para>
@@ -56,7 +56,7 @@
 				<listitem>
 					<para>
 						This is the file that was the BASE
-						revision before you updated your working copy. That is,
+						revision before you updated your working tree. That is,
 						it the file that you checked out before you made
 						your latest edits.
 					</para>
@@ -68,7 +68,7 @@
 					<para>
 						This is the file that your Git
 						client just received from the server when you updated
-						your working copy. This file corresponds to the HEAD
+						your working tree. This file corresponds to the HEAD
 						revision of the repository.
 					</para>
 				</listitem>

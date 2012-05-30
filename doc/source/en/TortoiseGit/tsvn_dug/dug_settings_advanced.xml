@@ -54,7 +54,7 @@
                     The extra columns the TortoiseGit adds to the details view
                     in Windows Explorer are normally only active in a working
                     copy. If you want those to be accessible everywhere, not
-                    just in working copies, set this value to
+                    just in working trees, set this value to
                     <literal>true</literal>.
                     Note that the extra columns are only available in XP.
                     Vista and later doesn't support that feature any more.

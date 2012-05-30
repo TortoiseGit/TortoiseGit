@@ -29,7 +29,7 @@
 				<listitem>
 					<para>
 						If you want to see what changes <emphasis>you</emphasis>
-						have made in your working copy, just use the explorer
+						have made in your working tree, just use the explorer
 						context menu and select
 						<menuchoice>
 							<guimenu>TortoiseGit</guimenu>
@@ -70,24 +70,24 @@
 				<listitem>
 					<para>
 						If you want to see the difference between a particular
-						revision and your working copy, use the Revision Log
+						revision and your working tree, use the Revision Log
 						dialog, select the revision of interest, then select
-						<guimenuitem>Compare with working copy</guimenuitem>
+						<guimenuitem>Compare with working tree</guimenuitem>
 						from the context menu.
 					</para>
 					<para>
 						If you want to see the difference between the last committed
-						revision and your working copy, assuming that the working copy
+						revision and your working tree, assuming that the working tree
 						hasn't been modified, just right click on the file. Then select
 						<menuchoice>
 							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff with previous version</guimenuitem>
 						</menuchoice>.
 						This will perform a diff between the revision before
-						the last-commit-date (as recorded in your working copy) and the
+						the last-commit-date (as recorded in your working tree) and the
 						working BASE. This shows you the last change made to that file
-						to bring it to the state you now see in your working copy.
-						It will not show changes newer than your working copy.
+						to bring it to the state you now see in your working tree.
+						It will not show changes newer than your working tree.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -143,11 +143,11 @@
 			</varlistentry>
       <!--
 			<varlistentry>
-				<term>Difference between WC file/folder and a URL</term>
+				<term>Difference between working tree file/folder and a URL</term>
 				<listitem>
 					<para>
 						If you want to see the differences between a file in your
-						working copy, and a file in any Git repository,
+						working tree, and a file in any Git repository,
 						you can do that directly in explorer by selecting the
 						file then holding down the <keycap>Shift</keycap> key whilst
 						right clicking to obtain the context menu. Select
@@ -155,7 +155,7 @@
 							<guimenu>TortoiseGit</guimenu>
 							<guimenuitem>Diff with URL</guimenuitem>
 						</menuchoice>.
-						You can do the same thing for a working copy folder.
+						You can do the same thing for a working tree folder.
 						TortoiseMerge shows these differences in the same way
 						as it shows a patch file - a list of changed files which
 						you can view one at a time.

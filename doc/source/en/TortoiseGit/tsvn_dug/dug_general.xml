@@ -10,7 +10,7 @@
 				<graphic fileref="../images/Overlays.png"/>
 			</figure>
 			One of the most visible features of TortoiseGit is the icon
-			overlays which appear on files in your working copy. These
+			overlays which appear on files in your working tree. These
 			show you at a glance which of your files have been modified.
 			Refer to <xref linkend="tsvn-dug-wcstatus-1"/> to find out
 			what the different overlays represent.
@@ -75,7 +75,7 @@
 				<graphic fileref="../images/RightDragMenu.png"/>
 			</figure>
 			Other commands are available as drag handlers, when you <action>right drag</action>
-			files or folders to a new location inside working copies or when you 
+			files or folders to a new location inside working trees or when you 
 			<action>right drag</action> a non-versioned file or folder into a directory 
 			which is under version control.
 		</para>
@@ -102,8 +102,8 @@
 						<para>
 							Refresh the current view. This is perhaps the single
 							most useful one-key command. For example ...
-							In Explorer this will refresh the icon overlays on your working copy.
-							In the commit dialog it will re-scan the working copy
+							In Explorer this will refresh the icon overlays on your working tree.
+							In the commit dialog it will re-scan the working tree
 							to see what may need to be committed.
 							In the Revision Log dialog it will contact the repository
 							again to check for more recent changes.

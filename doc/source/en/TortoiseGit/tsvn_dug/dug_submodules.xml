@@ -4,7 +4,7 @@
 	<?dbhh topicname="HIDD_SUBMODULE_ADD"?>
 	<title>Submodules</title>
 	<para>
-		When you want to embedd foreign repositories into a working copy/git repository, this is called a submodule.
+		When you want to embedd foreign repositories into a working tree/git repository, this is called a submodule.
 		Here using the
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -26,7 +26,7 @@
 		into the current source tree.
 	</para>
 	<para>
-		If a working copy contains submodules, two new context menu entries are available:
+		If a working tree contains submodules, two new context menu entries are available:
 		<figure id="tsvn-dug-submodules-dia-2">
 			<title>Submodule context menu entries</title>
 			<graphic fileref="../images/ContextMenuSubmodules.png"/>
@@ -39,7 +39,7 @@
 		<guimenuitem>Submodule Sync</guimenuitem>: Synchronizes submodules' remote URL configuration setting to the value specified in .gitmodules. This is useful when submodule URLs change upstream and you need to update your local repositories accordingly. 
 	</para>
 	<para>
-		Also if a working copy contains submodules, <xref linkend="tsvn-dug-checkout"/> and <xref linkend="tsvn-dug-reset"/> contain a button for updating submodules:
+		Also if a working tree contains submodules, <xref linkend="tsvn-dug-checkout"/> and <xref linkend="tsvn-dug-reset"/> contain a button for updating submodules:
 		<figure id="tsvn-dug-submodules-dia-3">
 			<title>Button for updating submodules in progress dialog</title>
 			<graphic fileref="../images/CheckoutSubmodules.png"/>

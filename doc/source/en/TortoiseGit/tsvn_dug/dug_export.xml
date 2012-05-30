@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-export" xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title>Exporting a Git Working Copy</title>
+	<title>Exporting a Git Working Tree</title>
 	<?dbhh topicname="HIDD_EXPORT"?>
 	<indexterm>
 		<primary>export</primary>
 	</indexterm>
 	<indexterm>
-		<primary>unversioned 'working copy'</primary>
+		<primary>unversioned 'working tree'</primary>
 	</indexterm>
 	<para>
 		Sometimes you may want a copy of your working tree without any of
@@ -32,9 +32,10 @@
 	<para>
 		<xi:include href="./dug_chooseversion.xml"/>
 	</para>
+<!--
 	<para>
-		Another way to export from a working copy is to <action>right drag</action>
-		the working copy folder to another location and choose
+		Another way to export from a working tree is to <action>right drag</action>
+		the working tree folder to another location and choose
 		<menuchoice>
 			<guimenu>Context Menu</guimenu>
 			<guimenuitem>Git Export here</guimenuitem>
@@ -47,12 +48,13 @@
 		The second option includes the unversioned files as well.
 	</para>
 	<para>
-		When exporting from a working copy,
+		When exporting from a working tree,
 		if the target folder already contains a folder of the same
 		name as the one you are exporting, you will be given the option
 		to overwrite the existing content, or to create a new folder with
 		an automatically generated name, eg. <literal>Target (1)</literal>.
 	</para>
+-->
 	<!--
 	<tip>
 		<title>Exporting single files</title>
@@ -80,12 +82,12 @@
 		</para>
 	</tip>
 	<sect2 id="tsvn-dug-export-unversion">
-		<title>Removing a working copy from version control</title>
+		<title>Removing a working tree from version control</title>
 		<indexterm>
 			<primary>unversion</primary>
 		</indexterm>
 		<para>
-			Sometimes you have a working copy which you want to convert back
+			Sometimes you have a working tree which you want to convert back
 			to a normal folder without the <literal>.svn</literal> directories.
 			What you really need is an export-in-place command, that just
 			removes the control directories rather than generating a new
@@ -94,7 +96,7 @@
 		<para>
 			The answer is surprisingly simple - export the folder to itself!
 			TortoiseGit detects this special case and asks if you want to
-			make the working copy unversioned. If you answer
+			make the working tree unversioned. If you answer
 			<emphasis>yes</emphasis> the control directories will be removed
 			and you will have a plain, unversioned directory tree.
 		</para>

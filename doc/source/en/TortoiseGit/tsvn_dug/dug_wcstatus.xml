@@ -9,10 +9,10 @@
 		<primary>view changes</primary>
 	</indexterm>
 	<indexterm>
-		<primary>working copy status</primary>
+		<primary>working tree status</primary>
 	</indexterm>
 	<para>
-		While you are working on your working copy you often need to know
+		While you are working on your working tree you often need to know
 		which files you have changed/added/removed or renamed, or even which
 		files got changed and committed by others.
 	</para>
@@ -31,7 +31,7 @@
 			</figure>
 		</para>
 		<para>
-			Now that you have checked out a working copy from a Git
+			Now that you have checked out a working tree from a Git
 			repository you can see your files in the windows explorer with
 			changed icons. This is one of the reasons why TortoiseGit is so
 			popular. TortoiseGit adds a so called overlay icon to each
@@ -40,7 +40,7 @@
 		</para>
 		<para>
 			<graphic fileref="../images/InGitIcon.png"/>
-			A fresh checked out working copy has a green checkmark as overlay.
+			A fresh checked out working tree has a green checkmark as overlay.
 			That means the Git status is <emphasis>normal</emphasis>.
 		</para>
 		<para>
@@ -49,7 +49,7 @@
 			the status changes to <emphasis>modified</emphasis>
 			and the icon overlay then changes to a red exclamation
 			mark. That way you can easily see which files were changed
-			since you last updated your working copy and need to be committed.
+			since you last updated your working tree and need to be committed.
 		</para>
 		<para>
 			<graphic fileref="../images/ConflictIcon.png"/>
@@ -144,7 +144,7 @@
 		<tip>
 			<para>
 				If you want the current layout to be displayed in all your
-				working copies, you may want to make this the default view.
+				working trees, you may want to make this the default view.
 			</para>
 		</tip>
 	</sect2>
@@ -171,7 +171,7 @@
 			</menuchoice>
 			comes in handy.
 			This dialog will show you every file that has changed in any
-			way in your working copy, as well as any unversioned files
+			way in your working tree, as well as any unversioned files
 			you may have.
 		</para>
 		<!--
@@ -183,7 +183,7 @@
 			You can also update selected files from the repository without
 			updating the whole folder. By default, the <guibutton>Check Repository</guibutton>
 			button only fetches the remote status with the checkout depth
-			of the working copy. If you want to see all files and folders
+			of the working tree. If you want to see all files and folders
 			in the repository, even those you have not checked out, then you
 			have to hold down the <keycap>Shift</keycap> key when you 
 			click on the <guibutton>Check Repository</guibutton> button.
@@ -310,22 +310,22 @@
 		-->
 		<para>
 			At the bottom of the dialog you can see a summary of the range of repository
-			revisions in use in your working copy. These are the <emphasis>commit</emphasis>
+			revisions in use in your working tree. These are the <emphasis>commit</emphasis>
 			revisions, not the <emphasis>update</emphasis> revisions; they represent the
 			range of revisions where these files were last committed, not the revisions
 			to which they have been updated. Note that the revision range shown applies
-			only to the items displayed, not to the entire working copy. If you want to
-			see that information for the whole working copy you must check the
+			only to the items displayed, not to the entire working tree. If you want to
+			see that information for the whole working tree you must check the
 			<guilabel>Show unmodified files</guilabel> checkbox.
 		</para>
 		<tip>
 			<para>
-				If you want a flat view of your working copy, i.e. showing all files
+				If you want a flat view of your working tree, i.e. showing all files
 				and folders at every level of the folder hierarchy, then the
 				<guilabel>Check for Modifications</guilabel> dialog is the
 				easiest way to achieve that. Just check the
 				<guilabel>Show unmodified files</guilabel> checkbox to show
-				all files in your working copy.
+				all files in your working tree.
 			</para>
 		</tip>
 		<!--
@@ -362,7 +362,7 @@
 		</para>
 		<tip>
 			<para>
-				Even when not inside a working copy or when you have multiple
+				Even when not inside a working tree or when you have multiple
 				versions of the file lying around, you can still display diffs:
 			</para>
 			<para>

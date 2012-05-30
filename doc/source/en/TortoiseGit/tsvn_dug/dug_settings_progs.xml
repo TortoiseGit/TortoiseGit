@@ -67,10 +67,10 @@
 			TortoiseGit treats that as a name to display and creates
 			the names accordingly. So e.g. if you're doing a
 			diff from a file in revision 123 with a file 
-			in your working copy, the names will be
-			<filename>filename : revision 123</filename>
+			in your working tree, the names will be
+			<filename>filename: revision 123</filename>
 			and
-			<filename>filename : working copy</filename>
+			<filename>filename: working tree</filename>
 		</para>
 		<para>
 			For example, with ExamDiff Pro:

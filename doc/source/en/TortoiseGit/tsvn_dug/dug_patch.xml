@@ -35,7 +35,7 @@
 	</para>
 	<para>
 		Patch files are simply Unified-Diff files showing the differences
-		between your working copy and the base revision.
+		between your working tree and the base revision.
 	</para>
 	<para>
 		A pull request is an request to another repository owner to <link linkend="tsvn-dug-pull">pull</link>
@@ -135,7 +135,7 @@
 	<sect2 id="tsvn-dug-patch-applysinglepatch">
 		<title>Applying a single Patch File</title>
 		<para>
-			Patch files are applied to your working copy. This should be done
+			Patch files are applied to your working tree. This should be done
 			from the same folder level as was used to create the patch.
 			If you are not sure what this is, just look at the first line of
 			the patch file. For example, if the first file being worked on was
@@ -144,7 +144,7 @@
 			<filename>Index: english/chapter1.xml</filename>
 			then you need to apply the patch to the
 			<filename>doc/source/</filename> folder.
-			However, provided you are in the correct working copy, if you
+			However, provided you are in the correct working tree, if you
 			pick the wrong folder level, TortoiseGit will notice and suggest the
 			correct level.
 		</para>
@@ -155,19 +155,19 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Review/apply single patch...</guimenuitem>
 			</menuchoice>
-			You might be prompted to enter a working copy location:
+			You might be prompted to enter a working tree location:
 			<figure id="tsvn-dug-choose-repository">
 				<title>The Choose Repository Dialog</title>
 				<graphic fileref="../images/ChooseRepository.png"/>
 			</figure>
-			If the working copy is found, TortoiseMerge is launched to show and apply differences.
+			If the working tree is found, TortoiseMerge is launched to show and apply differences.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-patch-applaypatchserial">
 		<title>Applying a Patch Serial</title>
 		<para>
-			Patch files are applied to your working copy. For this copy the patch (or mbox)
-			files to the root of your working copy.
+			Patch files are applied to your working tree. For this copy the patch (or mbox)
+			files to the root of your working tree.
 		</para>
 		<para>
 			From the context menu for that folder (or all marked patch files), click on

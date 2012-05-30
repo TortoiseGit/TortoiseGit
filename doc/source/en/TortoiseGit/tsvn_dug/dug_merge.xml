@@ -21,10 +21,10 @@
 	</para>
 	<para>
 		The next point to note is that merging <emphasis>always</emphasis>
-		takes place within a working copy. If you want to merge changes
-		<emphasis>into</emphasis> a branch, you have to have a working copy
+		takes place within a working tree. If you want to merge changes
+		<emphasis>into</emphasis> a branch, you have to have a working tree
 		for that branch checked out, and invoke the merge wizard from that
-		working copy using
+		working tree using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Merge...</guimenuitem>
@@ -36,7 +36,7 @@
 	</para>
 	<para>
 		In general it is a good idea to perform a merge into an unmodified
-		working copy. If you have made other changes in your WC, commit those
+		working tree. If you have made other changes in your working tree, commit those
 		first. If the merge does not go as you expect, you may want to revert
 		the changes, and the <guilabel>Revert</guilabel> command will discard
 		<emphasis>all</emphasis> changes including any you made before the merge.

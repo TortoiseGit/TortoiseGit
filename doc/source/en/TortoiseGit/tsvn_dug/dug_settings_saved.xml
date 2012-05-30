@@ -17,7 +17,7 @@
 			<term>URL history</term>
 			<listitem>
 				<para>
-					Whenever you checkout a working copy, merge changes
+					Whenever you checkout a working tree, merge changes
 					or use the repository browser, TortoiseGit keeps a record
 					of recently used URLs and offers them in a combo box.
 					Sometimes that list gets cluttered with outdated URLs

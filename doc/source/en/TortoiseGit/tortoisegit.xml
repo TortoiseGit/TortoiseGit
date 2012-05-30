@@ -36,15 +36,9 @@
 	-->
 	<xi:include href="./tsvn_dug/dug.xml"/>
 	<xi:include href="./tsvn_app_faq.xml"/>
-	<!--
-	<xi:include href="./tsvn_app_howto.xml"/>
-	-->
 	<xi:include href="./tsvn_app_admins.xml" />
 	<xi:include href="./tsvn_app_automation.xml"/>	
 	
-	<!--
-	<xi:include href="./tsvn_app_cli.xml"/>
-	-->
 	<xi:include href="./tsvn_app_internals.xml"/>
 
 	<xi:include href="./tsvn_app_ssh.xml"/>

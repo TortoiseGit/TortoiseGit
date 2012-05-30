@@ -128,10 +128,10 @@
 			for a folder.
 			<variablelist>
 				<varlistentry>
-					<term>Compare with working copy</term>
+					<term>Compare with working tree</term>
 					<listitem>
 						<para>
-							Compare the selected revision with your working copy.
+							Compare the selected revision with your working tree.
 							The default Diff-Tool is TortoiseMerge which
 							is supplied with TortoiseGit.
 							If the log dialog is for a folder, this will show you a list
@@ -171,7 +171,7 @@
 						<para>
 							Compare the selected revision with the previous revision.
 							This works in a similar manner to comparing with your
-							working copy.
+							working tree.
 							For folders this option will first show the changed files
 							dialog allowing you to select files to compare.
 						</para>
@@ -244,10 +244,10 @@
 					<term>Switch\Checkout to revision</term>
 					<listitem>
 						<para>
-							Update your working copy to the selected revision.
-							Useful if you want to have your working copy reflect
+							Update your working tree to the selected revision.
+							Useful if you want to have your working tree reflect
 							a time in the past, or if there have been further commits to
-							the repository and you want to update your working copy one
+							the repository and you want to update your working tree one
 							step at a time. 
 						</para>
 					</listitem>
@@ -297,15 +297,15 @@
 					<listitem>
 						<para>
 							Revert changes from which were made in the selected
-							revision. The changes are reverted in your working copy so
+							revision. The changes are reverted in your working tree so
 							this operation does <emphasis>not</emphasis> affect the
 							repository at all! Note that this will undo the changes
 							made in that revision only. It does not replace your
-							working copy with the entire file at the earlier revision.
+							working tree with the entire file at the earlier revision.
 							This is very useful for undoing an earlier change when
 							other unrelated changes have been made since. If you have
 							made local changes, this command will merge these changes
-							into your working copy.
+							into your working tree.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -318,13 +318,13 @@
 							Revert to an earlier revision. If you have made several
 							changes, and then decide that you really want to go back to
 							how things were in revision N, this is the command you need.
-							Again, the changes are reverted in your working copy so
+							Again, the changes are reverted in your working tree so
 							this operation does <emphasis>not</emphasis> affect the
 							repository until you commit the changes. Note that this
 							will undo <emphasis>all</emphasis> changes made after the
 							selected revision, replacing the file/folder with the
 							earlier version. If you have made local changes, this
-							command will merge these changes into your working copy.
+							command will merge these changes into your working tree.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -334,11 +334,11 @@
 					<term>Merge revision to...</term>
 					<listitem>
 						<para>
-							Merge the selected revision(s) into a different working copy.
+							Merge the selected revision(s) into a different working tree.
 							A folder selection dialog allows you to choose the working
 							copy to merge into, but after that there is no confirmation
 							dialog, nor any opportunity to try a test merge. It is a good
-							idea to merge into an unmodified working copy so that you can
+							idea to merge into an unmodified working tree so that you can
 							revert the changes if it doesn't work out!
 							This is a useful feature if you want to merge selected
 							revisions from one branch to another.
@@ -522,7 +522,7 @@
 		<!--
 		<para>
 			You can also choose to merge the selected revisions to another
-			working copy, as described above.
+			working tree, as described above.
 		</para>
 		<para>
 			If all selected revisions have the same author, you can edit
@@ -627,10 +627,10 @@
         </varlistentry>
         
         <varlistentry>
-          <term>Compare with working copy</term>
+          <term>Compare with working tree</term>
           <listitem>
             <para>
-              Compare chosen file with working copy.
+              Compare chosen file with working tree.
             </para>
           </listitem>
         </varlistentry>
@@ -807,21 +807,21 @@
 	-->
 	<!--
 	<sect2 id="tsvn-dug-showlog-current-rev">
-		<title>Current Working Copy Revision</title>
+		<title>Current Working Tree Revision</title>
 		<para>
 			Because the log dialog shows you the log from HEAD, not from the
-			current working copy revision, it often happens that there are
+			current working tree revision, it often happens that there are
 			log messages shown for content which has not yet been updated
-			in your working copy. To help make this clearer, the commit
+			in your working tree. To help make this clearer, the commit
 			message which corresponds to the revision you have in your
-			working copy is shown in bold.
+			working tree is shown in bold.
 		</para>
 		<para>
 			By default this only works for files. This is because the
 			update revision for a folder may not correspond to the update
 			revision of its content, and the only way to find the effective
-			update revision for the folder is to crawl the working copy.
-			This can be a slow operation for large working copies so if
+			update revision for the folder is to crawl the working tree.
+			This can be a slow operation for large working trees so if
 			you want to enable this feature you must create a
 			<literal>DWORD</literal> registry key with value 1 at
 			<literal>HKCU\Software\TortoiseGit\RecursiveLogRev</literal>.
@@ -994,7 +994,7 @@
 			<para>
 				Because the formatting depends upon accessing Git
 				properties, you will only see the results when using a checked
-				out working copy. Fetching properties remotely is a slow operation,
+				out working tree. Fetching properties remotely is a slow operation,
 				so you will not see this feature in action from the repo browser.
 			</para>
 		</tip>
