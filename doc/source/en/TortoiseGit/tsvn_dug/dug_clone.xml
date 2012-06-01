@@ -37,7 +37,7 @@
     Clone will checkout currrent HEAD to work space automatically. 
   </para>
   <para> <!-- FIXME command git-choose-ssh does not exist -->
-    Git clone supports http, git and ssh protocol. <xref linkend="git-choose-ssh"/> shows how to choose SSH client.
+    Git clone supports http, git and ssh protocol. <xref linkend="tsvn-dug-settings-network"/> shows how to choose SSH client.
     OpenSSH, PLink or TortoisePlink. 
   </para>
   <para>
