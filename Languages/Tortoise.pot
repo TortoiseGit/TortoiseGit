@@ -4689,7 +4689,7 @@ msgid "Locator Bar"
 msgstr ""
 
 #. Resource IDs: (1529)
-msgid "Locked"
+msgid "Locked (not used by TortoiseGit)"
 msgstr ""
 
 #. Resource IDs: (126)
@@ -5040,7 +5040,7 @@ msgid "Navigation Pane Options..."
 msgstr ""
 
 #. Resource IDs: (1550)
-msgid "Needs-lock"
+msgid "Needs-lock (not used by TortoiseGit)"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -7620,11 +7620,6 @@ msgstr ""
 msgid "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
 msgstr ""
 
-#. Resource IDs: (1)
-#, c-format
-msgid "TortoiseGitBlame was already initialized for the repository \"%s\". Cannot switch to another repository (\"%s\") at runtime."
-msgstr ""
-
 #. Resource IDs: (198)
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
@@ -7632,6 +7627,11 @@ msgstr ""
 
 #. Resource IDs: (244)
 msgid "TortoiseGitBlame"
+msgstr ""
+
+#. Resource IDs: (1)
+#, c-format
+msgid "TortoiseGitBlame was already initialized for the repository \"%s\". Cannot switch to another repository (\"%s\") at runtime."
 msgstr ""
 
 #. Resource IDs: (1)
