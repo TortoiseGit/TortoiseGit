@@ -335,7 +335,7 @@ public:
 		setRelOp(CharacterSet::setNone, "=!<>"),
 		setLogicalOp(CharacterSet::setNone, "|&") {
 	}
-	~LexerCPP() {
+	virtual ~LexerCPP() {
 	}
 	void SCI_METHOD Release() {
 		delete this;
@@ -464,9 +464,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	bool isIncludePreprocessor = false;
 
 	int lineCurrent = styler.GetLine(startPos);
-	if ((initStyle == SCE_C_PREPROCESSOR) ||
-      (initStyle == SCE_C_COMMENTLINE) ||
-      (initStyle == SCE_C_COMMENTLINEDOC)) {
+	if ((MaskActive(initStyle) == SCE_C_PREPROCESSOR) ||
+      (MaskActive(initStyle) == SCE_C_COMMENTLINE) ||
+      (MaskActive(initStyle) == SCE_C_COMMENTLINEDOC)) {
 		// Set continuationLine if last character of previous line is '\'
 		if (lineCurrent > 0) {
 			int chBack = styler.SafeGetCharAt(startPos-1, 0);
@@ -484,9 +484,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	// look back to set chPrevNonWhite properly for better regex colouring
 	if (startPos > 0) {
 		int back = startPos;
-		while (--back && IsSpaceEquiv(styler.StyleAt(back)))
+		while (--back && IsSpaceEquiv(MaskActive(styler.StyleAt(back))))
 			;
-		if (styler.StyleAt(back) == SCE_C_OPERATOR) {
+		if (MaskActive(styler.StyleAt(back)) == SCE_C_OPERATOR) {
 			chPrevNonWhite = styler.SafeGetCharAt(back);
 		}
 	}
@@ -520,6 +520,8 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	for (; sc.More(); sc.Forward()) {
 
 		if (sc.atLineStart) {
+			// Using MaskActive() is not needed in the following statement.
+			// Inside inactive preprocessor declaration, state will be reset anyway at the end of this block.
 			if ((sc.state == SCE_C_STRING) || (sc.state == SCE_C_CHARACTER)) {
 				// Prevent SCE_C_STRINGEOL from leaking back to previous line which
 				// ends with a line continuation by locking in the state upto this position.
@@ -533,13 +535,6 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 			if (preproc.IsInactive()) {
 				activitySet = activeFlag;
 				sc.SetState(sc.state | activitySet);
-			}
-			if (activitySet) {
-				if (sc.ch == '#') {
-					if (sc.Match("#else") || sc.Match("#end") || sc.Match("#if")) {
-						//activitySet = 0;
-					}
-				}
 			}
 		}
 

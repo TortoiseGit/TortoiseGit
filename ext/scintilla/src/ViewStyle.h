@@ -112,7 +112,6 @@ public:
 	int whitespaceSize;
 	IndentView viewIndentationGuides;
 	bool viewEOL;
-	bool showMarkedLines;
 	ColourDesired caretcolour;
 	ColourDesired additionalCaretColour;
 	bool showCaretLineBackground;

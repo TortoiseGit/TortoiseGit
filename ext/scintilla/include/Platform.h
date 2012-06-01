@@ -20,6 +20,7 @@
 #define PLAT_MACOSX 0
 #define PLAT_WIN 0
 #define PLAT_WX  0
+#define PLAT_QT 0
 #define PLAT_FOX 0
 
 #if defined(FOX)
@@ -33,6 +34,10 @@
 #elif defined(GTK)
 #undef PLAT_GTK
 #define PLAT_GTK 1
+
+#elif defined(SCINTILLA_QT)
+#undef PLAT_QT
+#define PLAT_QT 1
 
 #if defined(__WIN32__) || defined(_MSC_VER)
 #undef PLAT_GTK_WIN32
@@ -509,6 +514,12 @@ public:
 // Shut up annoying Visual C++ warnings:
 #ifdef _MSC_VER
 #pragma warning(disable: 4244 4309 4514 4710)
+#endif
+
+#if defined(__GNUC__) && defined(SCINTILLA_QT)
+#pragma GCC diagnostic ignored "-Wmissing-braces"
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#pragma GCC diagnostic ignored "-Wchar-subscripts"
 #endif
 
 #endif

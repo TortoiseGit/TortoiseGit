@@ -394,6 +394,12 @@
 	<td>Bruno Barbieri</td>
 	<td>Gordon Smith</td>
 	<td>dimitar</td>
+	<td>Sébastien Granjoux</td>
+      </tr><tr>
+	<td>zeniko</td>
+	<td>James Ribe</td>
+	<td>Markus Nißl</td>
+	<td>Martin Panter</td>
     </tr>
     </table>
     <p>
@@ -404,6 +410,188 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite320.zip?download">Release 3.2.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 1 June 2012.
+	</li>
+	<li>
+	Platform layer added for the Qt open-source cross-platform application and user interface framework
+	for development in C++ or in Python with the PySide bindings for Qt.
+	</li>
+	<li>
+	Direct access provided to the document bytes for ranges within Scintilla.
+	This is similar to the existing SCI_GETCHARACTERPOINTER API but allows for better performance.
+	</li>
+	<li>
+	Ctrl+Double Click and Ctrl+Triple Click add the word or line to the set of selections.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3520037&group_id=2439">Feature #3520037.</a>
+	</li>
+	<li>
+	A SCI_DELETERANGE API was added for deleting a range of text.
+	</li>
+	<li>
+	Line wrap markers may now be drawn in the line number margin.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3518198&group_id=2439">Feature #3518198.</a>
+	</li>
+	<li>
+	SciTE on OS X adds option to hide hidden files in the open dialog box.
+	</li>
+	<li>
+	Lexer added for OScript language.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3523197&group_id=2439">Feature #3523197.</a>
+	</li>
+	<li>
+	Lexer added for Visual Prolog language.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3523018&group_id=2439">Feature #3523018.</a>
+	</li>
+	<li>
+	UTF-8 validity is checked more stringently and consistently. All 66 non-characters are now treated as invalid.
+	</li>
+	<li>
+	HTML lexer bug fixed with inconsistant highlighting for PHP when attribute on separate line from tag.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3520027&group_id=2439">Bug #3520027.</a>
+	</li>
+	<li>
+	HTML lexer bug fixed for JavaScript block comments.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3520032&group_id=2439">Bug #3520032.</a>
+	</li>
+	<li>
+	Annotation drawing bug fixed when box displayed with different colours on different lines.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3519872&group_id=2439">Bug #3519872.</a>
+	</li>
+	<li>
+	On Windows with Direct2D, fix drawing with 125% and 150% DPI system settings.
+	</li>
+	<li>
+	Virtual space selection bug fixed for rectangular selections.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3519246&group_id=2439">Bug #3519246.</a>
+	</li>
+	<li>
+	Replacing multiple selection with newline changed to only affect main selection.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3522251&group_id=2439">Bug #3522251.</a>
+	</li>
+	<li>
+	Replacing selection with newline changed to group deletion and insertion as a single undo action.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3522250&group_id=2439">Bug #3522250.</a>
+	</li>
+	<li>
+	Auto-completion lists on GTK+ 3 set height correctly instead of showing too few lines.
+	</li>
+	<li>
+	Mouse wheel scrolling changed to avoid GTK+ bug in recent distributions.
+	</li>
+	<li>
+	IME bug on Windows fixed for horizontal jump.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3529728&group_id=2439">Bug #3529728.</a>
+	</li>
+	<li>
+	SciTE case-insensitive autocompletion filters equal identifiers better.
+	Calltip arrows work with bare word identifiers.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3517810&group_id=2439">Bug #3517810.</a>
+	</li>
+	<li>
+	SciTE bug fixed where shbang lines not setting file type when switching
+	to file loaded in background.
+	</li>
+	<li>
+	SciTE on GTK+ shows open and save dialogs with the directory of the current file displayed.
+	</li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite310.zip?download">Release 3.1.0</a>
+    </h3>
+    <ul>
+	<li>
+	Released 20 April 2012.
+	</li>
+	<li>
+	Animated find indicator added on Cocoa.
+	</li>
+	<li>
+	Buttons can be made default in SciTE user strips.
+	</li>
+	<li>
+	SciTE allows find and replace histories to be saved in session.
+	</li>
+	<li>
+	Option added to allow case-insensitive selection in auto-completion lists.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3516538&group_id=2439">Bug #3516538.</a>
+	</li>
+	<li>
+	Replace \0 by complete found text in regular expressions.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3510979&group_id=2439">Feature #3510979.</a>
+	</li>
+	<li>
+	Fixed single quoted strings in bash lexer. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3512208&group_id=2439">Bug #3512208.</a>
+	</li>
+	<li>
+	Incorrect highlighting fixed in C++ lexer for continued lines.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3509317&group_id=2439">Bug #3509317.</a>
+	</li>
+	<li>
+	Hang fixed in diff lexer.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3508602&group_id=2439">Bug #3508602.</a>
+	</li>
+	<li>
+	Folding improved for SQL CASE/MERGE statement.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3503277&group_id=2439">Bug #3503277.</a>
+	</li>
+	<li>
+	Fix extra drawing of selection inside word wrap indentation.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3515555&group_id=2439">Bug #3515555.</a>
+	</li>
+	<li>
+	Fix problem with determining the last line that needs styling when drawing.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3514882&group_id=2439">Bug #3514882.</a>
+	</li>
+	<li>
+	Fix problems with drawing in margins.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3514882&group_id=2439">Bug #3514882.</a>
+	</li>
+	<li>
+	Fix printing crash when using Direct2D to display on-screen. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3513946&group_id=2439">Bug #3513946.</a>
+	</li>
+	<li>
+	Fix SciTE bug where background.*.size disabled restoration of bookmarks and positions from session.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3514885&group_id=2439">Bug #3514885.</a>
+	</li>
+	<li>
+	Fixed the Move Selected Lines command when last line does not end with a line end character. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3511023&group_id=2439">Bug #3511023.</a>
+	</li>
+	<li>
+	Fix word wrap indentation printing to use printer settings instead of screen settings. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3512961&group_id=2439">Bug #3512961.</a>
+	</li>
+	<li>
+	Fix SciTE bug where executing an empty command prevented executing further commands 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3512976&group_id=2439">Bug #3512976.</a>
+	</li>
+	<li>
+	Fix SciTE bugs with focus in user strips and made strips more robust with invalid definitions.
+	</li>
+	<li>
+	Suppress SciTE regular expression option when searching with find next selection. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3510985&group_id=2439">Bug #3510985.</a>
+	</li>
+	<li>
+	SciTE Find in Files command matches empty pattern to all files.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3495918&group_id=2439">Feature #3495918.</a>
+	</li>
+	<li>
+	Fix scroll with mouse wheel on GTK+.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3501321&group_id=2439">Bug #3501321.</a>
+	</li>
+	<li>
+	Fix column finding method so that tab is counted correctly. 
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3483713&group_id=2439">Bug #3483713.</a>
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite304.zip?download">Release 3.0.4</a>

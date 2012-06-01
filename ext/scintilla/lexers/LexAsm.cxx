@@ -153,7 +153,7 @@ class LexerAsm : public ILexer {
 public:
 	LexerAsm() {
 	}
-	~LexerAsm() {
+	virtual ~LexerAsm() {
 	}
 	void SCI_METHOD Release() {
 		delete this;

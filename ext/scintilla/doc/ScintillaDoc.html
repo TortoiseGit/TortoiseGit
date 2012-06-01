@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 6/March/2012 NH</p>
+    <p>Last edited 16/April/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -387,6 +387,7 @@
      <a class="message" href="#SCI_APPENDTEXT">SCI_APPENDTEXT(int length, const char *s)</a><br />
      <a class="message" href="#SCI_INSERTTEXT">SCI_INSERTTEXT(int pos, const char *text)</a><br />
      <a class="message" href="#SCI_CLEARALL">SCI_CLEARALL</a><br />
+     <a class="message" href="#SCI_DELETERANGE">SCI_DELETERANGE(int pos, int deleteLength)</a><br />
      <a class="message" href="#SCI_CLEARDOCUMENTSTYLE">SCI_CLEARDOCUMENTSTYLE</a><br />
      <a class="message" href="#SCI_GETCHARAT">SCI_GETCHARAT(int position)</a><br />
      <a class="message" href="#SCI_GETSTYLEAT">SCI_GETSTYLEAT(int position)</a><br />
@@ -518,6 +519,9 @@
 
     <p><b id="SCI_CLEARALL">SCI_CLEARALL</b><br />
      Unless the document is read-only, this deletes all the text.</p>
+
+    <p><b id="SCI_DELETERANGE">SCI_DELETERANGE(int pos, int deleteLength)</b><br />
+     Deletes a range of text in the document.</p>
 
     <p><b id="SCI_CLEARDOCUMENTSTYLE">SCI_CLEARDOCUMENTSTYLE</b><br />
      When wanting to completely restyle the document, for example after choosing a lexer, the
@@ -664,7 +668,8 @@ struct Sci_TextRange {
           <td>Where <code>n</code> is 1 through 9 refers to the first through ninth tagged region
           when replacing. For example, if the search string was <code>Fred\([1-9]\)XXX</code> and
           the replace string was <code>Sam\1YYY</code>, when applied to <code>Fred2XXX</code> this
-          would generate <code>Sam2YYY</code>.</td>
+          would generate <code>Sam2YYY</code>.
+	  <code>\0</code> refers to all of the matching text.</td>
         </tr>
 
         <tr>
@@ -861,7 +866,7 @@ struct Sci_TextToFind {
     <code>text</code> is a zero terminated string, otherwise <code>length</code> is the number of
     characters to use. The replacement string is formed from the text string with any sequences of
     <code>\1</code> through <code>\9</code> replaced by tagged matches from the most recent regular
-    expression search.
+    expression search. <code>\0</code> is replaced with all the matched text from the most recent search.
            After replacement, the target range refers to the replacement text.
            The return value is the length of the replacement string.</p>
 
@@ -3855,6 +3860,29 @@ struct Sci_TextToFind {
     Can be used to iterate through the document to discover all the indicator positions.
     </p>
 
+    <h3 id="FindIndicators">OS X Find Indicator</h3>
+
+    <p>On OS X search matches are highlighted with an animated gold rounded rectangle.
+    The indicator shows, then briefly grows 25% and shrinks to the original size to draw the user's attention.
+    While this feature is currently only implemented on OS X, it may be implemented on other platforms
+    in the future.</p>
+
+    <p><b id="SCI_FINDINDICATORSHOW">SCI_FINDINDICATORSHOW(int start, int end)</b><br />
+     <b id="SCI_FINDINDICATORFLASH">SCI_FINDINDICATORFLASH(int start, int end)</b><br />
+     These two messages show and animate the find indicator. The indicator remains visible with
+     <code>SCI_FINDINDICATORSHOW</code> and fades out after showing for half a second with 
+     <code>SCI_FINDINDICATORFLASH</code>.
+     <code>SCI_FINDINDICATORSHOW</code> behaves similarly to the OS X TextEdit and Safari applications
+     and is best suited to editing documentation where the search target is often a word.
+     <code>SCI_FINDINDICATORFLASH</code> is similar to Xcode and is suited to editing source code
+     where the match will often be located next to operators which would otherwise be hidden under the indicator's
+     padding.
+     </p>
+
+    <p><b id="SCI_FINDINDICATORHIDE">SCI_FINDINDICATORHIDE</b><br />
+     This message hides the find indicator.
+     </p>
+
     <h3 id="StyleByteIndicators">Style Byte Indicators (deprecated)</h3>
     <p>By default, Scintilla organizes the style byte associated with each text byte as 5 bits of
     style information (for 32 styles) and 3 bits of indicator information for 3 independent
@@ -3930,6 +3958,8 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_AUTOCSETIGNORECASE">SCI_AUTOCSETIGNORECASE(bool
     ignoreCase)</a><br />
      <a class="message" href="#SCI_AUTOCGETIGNORECASE">SCI_AUTOCGETIGNORECASE</a><br />
+     <a class="message" href="#SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR(int behaviour)</a><br>
+     <a class="message" href="#SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR</a><br>
      <a class="message" href="#SCI_AUTOCSETAUTOHIDE">SCI_AUTOCSETAUTOHIDE(bool autoHide)</a><br />
      <a class="message" href="#SCI_AUTOCGETAUTOHIDE">SCI_AUTOCGETAUTOHIDE</a><br />
      <a class="message" href="#SCI_AUTOCSETDROPRESTOFWORD">SCI_AUTOCSETDROPRESTOFWORD(bool
@@ -4034,6 +4064,13 @@ struct Sci_TextToFind {
      <b id="SCI_AUTOCGETIGNORECASE">SCI_AUTOCGETIGNORECASE</b><br />
      By default, matching of characters to list members is case sensitive. These messages let you
     set and get case sensitivity.</p>
+
+    <p><b id="SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR(int behaviour)</b><br>
+    <b id="SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR">SCI_AUTOCGETCASEINSENSITIVEBEHAVIOUR</b><br>
+    When autocompletion is set to ignore case (<code>SCI_AUTOCSETIGNORECASE</code>), by default it will
+    nonetheless select the first list member that matches in a case sensitive way to entered characters.
+    This corresponds to a behaviour property of <code>SC_CASEINSENSITIVEBEHAVIOUR_RESPECTCASE</code> (0).
+    If you want autocompletion to ignore case at all, choose <code>SC_CASEINSENSITIVEBEHAVIOUR_IGNORECASE</code> (1).</p>
 
     <p><b id="SCI_AUTOCSETAUTOHIDE">SCI_AUTOCSETAUTOHIDE(bool autoHide)</b><br />
      <b id="SCI_AUTOCGETAUTOHIDE">SCI_AUTOCGETAUTOHIDE</b><br />
@@ -4737,6 +4774,8 @@ struct Sci_RangeToFormat {
     <code><a class="message" href="#SCI_GETDIRECTFUNCTION">SCI_GETDIRECTFUNCTION</a><br />
      <a class="message" href="#SCI_GETDIRECTPOINTER">SCI_GETDIRECTPOINTER</a><br />
      <a class="message" href="#SCI_GETCHARACTERPOINTER">SCI_GETCHARACTERPOINTER</a><br />
+     <a class="message" href="#SCI_GETRANGEPOINTER">SCI_GETRANGEPOINTER(int position, int rangeLength)</a><br />
+     <a class="message" href="#SCI_GETGAPPOSITION">SCI_GETGAPPOSITION</a><br />
     </code>
 
     <p>On Windows, the message-passing scheme used to communicate between the container and
@@ -4782,8 +4821,13 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     pass in the direct pointer associated with the target window.</p>
 
     <p><b id="SCI_GETCHARACTERPOINTER">SCI_GETCHARACTERPOINTER</b><br />
-     Move the gap within Scintilla so that the text of the document is stored consecutively
-     and ensure there is a NUL character after the text, then return a pointer to the first character.
+    <b id="SCI_GETRANGEPOINTER">SCI_GETRANGEPOINTER(int position, int rangeLength)</b><br />
+    <b id="SCI_GETGAPPOSITION">SCI_GETGAPPOSITION</b><br />
+     Grant temporary direct read-only access to the memory used by Scintilla to store
+     the document.</p>
+     <p><code>SCI_GETCHARACTERPOINTER</code> moves the gap within Scintilla so that the
+     text of the document is stored consecutively
+     and ensure there is a NUL character after the text, then returns a pointer to the first character.
      Applications may then pass this to a function that accepts a character pointer such as a regular
      expression search or a parser. The pointer should <em>not</em> be written to as that may desynchronize
      the internal state of Scintilla.</p>
@@ -4799,6 +4843,15 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
      move the gap so if <code>SCI_GETCHARACTERPOINTER</code> is called after
      each replacement then the operation will become O(n^2) rather than O(n). Instead, all
      matches should be found and remembered, then all the replacements performed.</p>
+
+     <p><code>SCI_GETRANGEPOINTER</code> provides direct access to just the
+     range requested. The gap is not moved unless it is within the requested range so this call
+     can be faster than <code>SCI_GETCHARACTERPOINTER</code>. 
+     This can be used by application code that is able to act on blocks of text or ranges of lines.</p>
+
+     <p><code>SCI_GETGAPPOSITION</code> returns the current gap position.
+     This is a hint that applications can use to avoid calling <code>SCI_GETRANGEPOINTER</code>
+     with a range that contains the gap and consequent costs of moving the gap.</p>
 
     <h2 id="MultipleViews">Multiple views</h2>
 
@@ -5215,6 +5268,12 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
           <td>Visual flag at begin of subline of a wrapped line.<br />
                                              Subline is indented by at least 1 to make room for the flag.<br />
                                 </td>
+        </tr>
+
+        <tr>
+          <td align="left"><code>SC_WRAPVISUALFLAG_MARGIN</code></td>
+          <td align="center">4</td>
+          <td>Visual flag in line number margin.</td>
         </tr>
       </tbody>
     </table>
