@@ -86,9 +86,19 @@
 		</para>
 		<important>
 			<para>
-				Here is different to TortoiseSVN: In TortoiseSVN you directly create a patch instead of committing
-				your changes and create a patch of the commits afterwards. To generate a patch containing the uncommitted,
+				Here Git is different to TortoiseSVN: In TortoiseSVN you directly create a patch instead of committing
+				your changes and create a patch of the commits afterwards (in git you have a full local copy/fork of the project you cloned - commits are just local).
+				To generate a patch containing the uncommitted,
 				but staged, changes click on <guibutton>Save unified diff since HEAD</guibutton>.
+				If you need an introduction to version control with Git,
+			then we recommend two videos on YouTube:
+<ulink url="http://www.youtube.com/watch?v=4XpnKHJAok8">
+<citetitle>Tech Talk: Linus Torvalds on git</citetitle>
+</ulink> (about design and differences to other VCS)
+and
+<ulink url="http://www.youtube.com/watch?v=8dhZ9BXQgc4">
+<citetitle>Tech Talk: Git</citetitle>
+</ulink> (more technical). You can also read <xref linkend="git-book"/>.
 			</para>
 		</important>
 	</sect2>

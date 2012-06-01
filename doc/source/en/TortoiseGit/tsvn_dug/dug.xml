@@ -12,15 +12,17 @@
 			more like a place you may turn to when you know	approximately 
 			what you want to do, but don't quite remember how to do it.
 		</para>
-		<!--
 		<para>
 			If you need an introduction to version control with Git,
-			then we recommend you read the fantastic book:
-<ulink url="http://svnbook.red-bean.com/">
-<citetitle>Version Control with Git</citetitle>
-</ulink>.
+			then we recommend two videos on YouTube:
+<ulink url="http://www.youtube.com/watch?v=4XpnKHJAok8">
+<citetitle>Tech Talk: Linus Torvalds on git</citetitle>
+</ulink> (about design and differences to other VCS)
+and
+<ulink url="http://www.youtube.com/watch?v=8dhZ9BXQgc4">
+<citetitle>Tech Talk: Git</citetitle>
+</ulink> (more technical). You can also read <xref linkend="git-book"/>.
 		</para>
-		-->
 		<para>
 			This document is also a work in progress, just as TortoiseGit and
 			Git are. If you find any mistakes, please report them to

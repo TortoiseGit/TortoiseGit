@@ -70,7 +70,16 @@
 			on your PC.
 		</para>
 		<para>
-			In <xref linkend="git-book"/> we give a short introduction
+			If you need a general introduction to version control with <emphasis>Git</emphasis>,
+			then we recommend two videos on YouTube:
+<ulink url="http://www.youtube.com/watch?v=4XpnKHJAok8">
+<citetitle>Tech Talk: Linus Torvalds on git</citetitle>
+</ulink> (about design and differences to other VCS)
+and
+<ulink url="http://www.youtube.com/watch?v=8dhZ9BXQgc4">
+<citetitle>Tech Talk: Git</citetitle>
+</ulink> (more technical). You can also read <xref linkend="git-book"/>
+			which is a short introduction
 			to the <emphasis>Git</emphasis> revision control system. 
 			This is borrowed from the documentation for the
 			Git project and explains the different approaches to version
