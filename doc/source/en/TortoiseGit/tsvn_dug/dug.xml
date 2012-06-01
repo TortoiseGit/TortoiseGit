@@ -76,6 +76,7 @@ and
 	-->
 	<xi:include href="./dug_log.xml"/>
 	<xi:include href="./dug_reflog.xml"/>
+	<xi:include href="./dug_repobrowser.xml"/>
 	<xi:include href="./dug_diff.xml"/>
 	<xi:include href="./dug_add.xml"/>
 	<xi:include href="./dug_copy.xml"/>

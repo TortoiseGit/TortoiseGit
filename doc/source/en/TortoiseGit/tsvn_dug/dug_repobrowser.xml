@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tsvn-dug-repobrowser">
+    <title>The Repository Browser</title>
+    <indexterm>
+        <primary>repo-browser</primary>
+    </indexterm>
+    <?dbhh topicname="HIDD_REPOSITORY_BROWSER"?>
+    <para>
+        Sometimes you need to see all contents/files of a repository, without having
+        a working tree (e.g. a bare repository) or you want to see all files of a revision without switching to it.
+        That's what the <firstterm>Repository Browser</firstterm>
+        is for.
+        <figure id="tsvn-dug-repobrowser-dia-1">
+            <title>The Repository Browser</title>
+            <graphic fileref="../images/RepoBrowser.png"/>
+        </figure>
+    </para>
+    <para>
+        The repository browser looks very similar to the Windows explorer,
+        except that it is showing the content of the repository at a particular
+        revision rather than files on your computer. In the left pane you
+        can see a directory tree, and in the right pane are the contents
+        of the selected directory.
+        At the top of the Repository Browser Window you can see the path within the repository
+        and the revision you want to browse.
+    </para>
+    <para>
+        Just like Windows explorer, you can click on the column headings in
+        the right pane if you want to set the sort order. And as in explorer
+        there are context menus available in both panes.
+    </para>
+    <para>
+        The context menu for a file allows you to:
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Open the selected file, either with the default viewer for
+                    that file type, or with a program you choose.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Show the revision log for that file so you can see the history of it.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Compare the file at the selected revision with the same file in your working tree.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Blame the file, to see who changed which line and when.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Save an unversioned copy of the file to your hard drive or revert this file in your working copy (i.e. saves the file to it's old path in the working tree).
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Copy the filename with full path shown in the address bar to the clipboard.
+                </para>
+            </listitem>
+        </itemizedlist>
+    </para>
+    <para>
+        The context menu for a folder allows you to:
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Show the revision log for that folder.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Copy the full path to the clipboard.
+                </para>
+            </listitem>
+        </itemizedlist>
+    </para>
+    <para>
+        You can use <keycap>F5</keycap> to refresh the view as usual. This will
+        refresh everything which is currently displayed.
+    </para>
+</sect1>
