@@ -19,5 +19,6 @@
 				<title>RefLog Dialog</title>
 				<graphic fileref="../images/GitReflog.png"/>
 		</figure>
-	</para>	
+		The RefLog can be used to restore deleted commits or HEAD positions (e.g. when you deleted a branch which was HEAD some time ago).
+	</para>
 </sect1>
