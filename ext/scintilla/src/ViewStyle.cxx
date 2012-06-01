@@ -200,7 +200,6 @@ ViewStyle::ViewStyle(const ViewStyle &source) {
 	whitespaceSize = source.whitespaceSize;
 	viewIndentationGuides = source.viewIndentationGuides;
 	viewEOL = source.viewEOL;
-	showMarkedLines = source.showMarkedLines;
 	extraFontFlag = source.extraFontFlag;
 	extraAscent = source.extraAscent;
 	extraDescent = source.extraDescent;
@@ -314,7 +313,6 @@ void ViewStyle::Init(size_t stylesSize_) {
 	whitespaceSize = 1;
 	viewIndentationGuides = ivNone;
 	viewEOL = false;
-	showMarkedLines = true;
 	extraFontFlag = 0;
 	extraAscent = 0;
 	extraDescent = 0;

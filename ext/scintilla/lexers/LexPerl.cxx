@@ -366,7 +366,7 @@ public:
 		setSpecialVar(CharacterSet::setNone, "\"$;<>&`'+,./\\%:=~!?@[]"),
 		setControlVar(CharacterSet::setNone, "ACDEFHILMNOPRSTVWX") {
 	}
-	~LexerPerl() {
+	virtual ~LexerPerl() {
 	}
 	void SCI_METHOD Release() {
 		delete this;

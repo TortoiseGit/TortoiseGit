@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #1152: Log-Dialog constantly crashes when diffing a file while loading
  * Fixed issue #719: TortoiseGit is ignoring Global excludesfile for overlays
  * Fixed issue #1199: TortoiseGitBlame shows wrong revision history
+ * Fixed issue #1157: Custom screen DPI causes wrong text size calculation
 
 = Release 1.7.9.0 =
 Released: 2012-05-05

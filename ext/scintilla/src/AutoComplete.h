@@ -31,6 +31,7 @@ public:
 	bool cancelAtStartPos;
 	bool autoHide;
 	bool dropRestOfWord;
+	unsigned int ignoreCaseBehaviour;
 
 	AutoComplete();
 	~AutoComplete();

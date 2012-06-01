@@ -424,7 +424,7 @@ void ScintillaWin::EnsureRenderTarget() {
 		// Create a Direct2D render target.
 #if 1
 		pD2DFactory->CreateHwndRenderTarget(
-			D2D1::RenderTargetProperties(),
+			D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_DEFAULT, D2D1::PixelFormat(), 96.0, 96.0),
 			D2D1::HwndRenderTargetProperties(hw, size),
 			&pRenderTarget);
 #else
@@ -924,7 +924,7 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		case WM_CHAR:
 			if (((wParam >= 128) || !iscntrl(wParam)) || !lastKeyDownConsumed) {
 				if (::IsWindowUnicode(MainHWND()) || keysAlwaysUnicode) {
-					wchar_t wcs[2] = {wParam, 0};
+					wchar_t wcs[2] = {static_cast<wchar_t>(wParam), 0};
 					if (IsUnicodeMode()) {
 						// For a wide character version of the window:
 						char utfval[4];
@@ -1044,7 +1044,7 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 				if ((pt.x == -1) && (pt.y == -1)) {
 					// Caused by keyboard so display menu near caret
 					pt = PointMainCaret();
-					POINT spt = {pt.x, pt.y};
+					POINT spt = {static_cast<int>(pt.x), static_cast<int>(pt.y)};
 					::ClientToScreen(MainHWND(), &spt);
 					pt = Point(spt.x, spt.y);
 				}
@@ -2818,7 +2818,7 @@ sptr_t PASCAL ScintillaWin::CTWndProc(
 					} else {
 #if defined(USE_D2D)
 						pD2DFactory->CreateHwndRenderTarget(
-							D2D1::RenderTargetProperties(),
+							D2D1::RenderTargetProperties(D2D1_RENDER_TARGET_TYPE_DEFAULT, D2D1::PixelFormat(), 96.0, 96.0),
 							D2D1::HwndRenderTargetProperties(hWnd, D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)),
 							&pCTRenderTarget);
 						surfaceWindow->Init(pCTRenderTarget, hWnd);

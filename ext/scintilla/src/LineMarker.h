@@ -36,7 +36,7 @@ public:
 		image = NULL;
 	}
 	LineMarker(const LineMarker &) {
-		// Defined to avoid pxpm being blindly copied, not as real copy constructor
+		// Defined to avoid pxpm being blindly copied, not as a complete copy constructor
 		markType = SC_MARK_CIRCLE;
 		fore = ColourDesired(0,0,0);
 		back = ColourDesired(0xff,0xff,0xff);
@@ -49,17 +49,19 @@ public:
 		delete pxpm;
 		delete image;
 	}
-	LineMarker &operator=(const LineMarker &) {
-		// Defined to avoid pxpm being blindly copied, not as real assignment operator
-		markType = SC_MARK_CIRCLE;
-		fore = ColourDesired(0,0,0);
-		back = ColourDesired(0xff,0xff,0xff);
-		backSelected = ColourDesired(0xff,0x00,0x00);
-		alpha = SC_ALPHA_NOALPHA;
-		delete pxpm;
-		pxpm = NULL;
-		delete image;
-		image = NULL;
+	LineMarker &operator=(const LineMarker &other) {
+		// Defined to avoid pxpm being blindly copied, not as a complete assignment operator
+		if (this != &other) {
+			markType = SC_MARK_CIRCLE;
+			fore = ColourDesired(0,0,0);
+			back = ColourDesired(0xff,0xff,0xff);
+			backSelected = ColourDesired(0xff,0x00,0x00);
+			alpha = SC_ALPHA_NOALPHA;
+			delete pxpm;
+			pxpm = NULL;
+			delete image;
+			image = NULL;
+		}
 		return *this;
 	}
 	void SetXPM(const char *textForm);

@@ -160,7 +160,7 @@ public:
 	LexerD(bool caseSensitive_) :
 		caseSensitive(caseSensitive_) {
 	}
-	~LexerD() {
+	virtual ~LexerD() {
 	}
 	void SCI_METHOD Release() {
 		delete this;

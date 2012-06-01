@@ -101,6 +101,9 @@ fun void InsertText=2003(position pos, string text)
 # Delete all text in the document.
 fun void ClearAll=2004(,)
 
+# Delete a range of text in the document.
+fun void DeleteRange=2645(position pos, int deleteLength)
+
 # Set all style bytes to 0, remove all folding information.
 fun void ClearDocumentStyle=2005(,)
 
@@ -791,7 +794,7 @@ set void SetHighlightGuide=2134(int column,)
 get int GetHighlightGuide=2135(,)
 
 # Get the position after the last visible characters on a line.
-get int GetLineEndPosition=2136(int line,)
+get position GetLineEndPosition=2136(int line,)
 
 # Get the code page used to interpret the bytes of the document as characters.
 get int GetCodePage=2137(,)
@@ -1152,6 +1155,7 @@ enu WrapVisualFlag=SC_WRAPVISUALFLAG_
 val SC_WRAPVISUALFLAG_NONE=0x0000
 val SC_WRAPVISUALFLAG_END=0x0001
 val SC_WRAPVISUALFLAG_START=0x0002
+val SC_WRAPVISUALFLAG_MARGIN=0x0004
 
 # Set the display mode of visual flags for wrapped lines.
 set void SetWrapVisualFlags=2460(int wrapVisualFlags,)
@@ -1806,6 +1810,16 @@ fun int AutoCGetCurrent=2445(,)
 # Returns the length of the item text
 fun int AutoCGetCurrentText=2610(, stringresult s)
 
+enu CaseInsensitiveBehaviour=SC_CASEINSENSITIVEBEHAVIOUR_
+val SC_CASEINSENSITIVEBEHAVIOUR_RESPECTCASE=0
+val SC_CASEINSENSITIVEBEHAVIOUR_IGNORECASE=1
+
+# Set auto-completion case insensitive behaviour to either prefer case-sensitive matches or have no preference.
+set void AutoCSetCaseInsensitiveBehaviour=2634(int behaviour,)
+
+# Get auto-completion case insensitive behaviour.
+get int AutoCGetCaseInsensitiveBehaviour=2635(,)
+
 # Enlarge the document to a particular size of text bytes.
 fun void Allocate=2446(int bytes,)
 
@@ -1912,6 +1926,15 @@ fun void CopyAllowLine=2519(,)
 # Compact the document buffer and return a read-only pointer to the
 # characters in the document.
 get int GetCharacterPointer=2520(,)
+
+# Return a read-only pointer to a range of characters in the document.
+# May move the gap so that the range is contiguous, but will only move up
+# to rangeLength bytes.
+get int GetRangePointer=2643(int position, int rangeLength)
+
+# Return a position which, to avoid performance costs, should not be within
+# the range of a call to GetRangePointer.
+get position GetGapPosition=2644(,)
 
 # Always interpret keyboard input as Unicode
 set void SetKeysUnicode=2521(bool keysUnicode,)
@@ -2207,6 +2230,15 @@ get int GetTechnology=2631(,)
 # Create an ILoader*.
 fun int CreateLoader=2632(int bytes,)
 
+# On OS X, show a find indicator.
+fun void FindIndicatorShow=2640(position start, position end)
+
+# On OS X, flash a find indicator, then fade out.
+fun void FindIndicatorFlash=2641(position start, position end)
+
+# On OS X, hide the find indicator.
+fun void FindIndicatorHide=2642(,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -2457,6 +2489,8 @@ val SCLEX_COFFEESCRIPT=102
 val SCLEX_TCMD=103
 val SCLEX_AVS=104
 val SCLEX_ECL=105
+val SCLEX_OSCRIPT=106
+val SCLEX_VISUALPROLOG=107
 
 # When a lexer specifies its language as SCLEX_AUTOMATIC it receives a
 # value assigned in sequence from SCLEX_AUTOMATIC+1.
@@ -4094,6 +4128,52 @@ val SCE_ECL_ADDED=24
 val SCE_ECL_DELETED=25
 val SCE_ECL_CHANGED=26
 val SCE_ECL_MOVED=27
+# Lexical states for SCLEX_OSCRIPT
+lex OScript=SCLEX_OSCRIPT SCE_OSCRIPT_
+val SCE_OSCRIPT_DEFAULT=0
+val SCE_OSCRIPT_LINE_COMMENT=1
+val SCE_OSCRIPT_BLOCK_COMMENT=2
+val SCE_OSCRIPT_DOC_COMMENT=3
+val SCE_OSCRIPT_PREPROCESSOR=4
+val SCE_OSCRIPT_NUMBER=5
+val SCE_OSCRIPT_SINGLEQUOTE_STRING=6
+val SCE_OSCRIPT_DOUBLEQUOTE_STRING=7
+val SCE_OSCRIPT_CONSTANT=8
+val SCE_OSCRIPT_IDENTIFIER=9
+val SCE_OSCRIPT_GLOBAL=10
+val SCE_OSCRIPT_KEYWORD=11
+val SCE_OSCRIPT_OPERATOR=12
+val SCE_OSCRIPT_LABEL=13
+val SCE_OSCRIPT_TYPE=14
+val SCE_OSCRIPT_FUNCTION=15
+val SCE_OSCRIPT_OBJECT=16
+val SCE_OSCRIPT_PROPERTY=17
+val SCE_OSCRIPT_METHOD=18
+# Lexical states for SCLEX_VISUALPROLOG
+lex VisualProlog=SCLEX_VISUALPROLOG SCE_VISUALPROLOG_
+val SCE_VISUALPROLOG_DEFAULT=0
+val SCE_VISUALPROLOG_KEY_MAJOR=1
+val SCE_VISUALPROLOG_KEY_MINOR=2
+val SCE_VISUALPROLOG_KEY_DIRECTIVE=3
+val SCE_VISUALPROLOG_COMMENT_BLOCK=4
+val SCE_VISUALPROLOG_COMMENT_LINE=5
+val SCE_VISUALPROLOG_COMMENT_KEY=6
+val SCE_VISUALPROLOG_COMMENT_KEY_ERROR=7
+val SCE_VISUALPROLOG_IDENTIFIER=8
+val SCE_VISUALPROLOG_VARIABLE=9
+val SCE_VISUALPROLOG_ANONYMOUS=10
+val SCE_VISUALPROLOG_NUMBER=11
+val SCE_VISUALPROLOG_OPERATOR=12
+val SCE_VISUALPROLOG_CHARACTER=13
+val SCE_VISUALPROLOG_CHARACTER_TOO_MANY=14
+val SCE_VISUALPROLOG_CHARACTER_ESCAPE_ERROR=15
+val SCE_VISUALPROLOG_STRING=16
+val SCE_VISUALPROLOG_STRING_ESCAPE=17
+val SCE_VISUALPROLOG_STRING_ESCAPE_ERROR=18
+val SCE_VISUALPROLOG_STRING_EOL_OPEN=19
+val SCE_VISUALPROLOG_STRING_VERBATIM=20
+val SCE_VISUALPROLOG_STRING_VERBATIM_SPECIAL=21
+val SCE_VISUALPROLOG_STRING_VERBATIM_EOL=22
 
 # Events
 

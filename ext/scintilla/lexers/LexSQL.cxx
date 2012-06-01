@@ -1,8 +1,10 @@
+//-*- coding: utf-8 -*-
 // Scintilla source code edit control
 /** @file LexSQL.cxx
  ** Lexer for SQL, including PL/SQL and SQL*Plus.
+ ** Improved by Jérôme LAFORGE <jerome.laforge_AT_gmail_DOT_com> from 2010 to 2012.
  **/
-// Copyright 1998-2011 by Neil Hodgson <neilh@scintilla.org>
+// Copyright 1998-2012 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
 #include <stdlib.h>
@@ -28,6 +30,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 #include "OptionSet.h"
+#include "SparseState.h"
 
 #ifdef SCI_NAMESPACE
 using namespace Scintilla;
@@ -63,10 +66,7 @@ static inline bool IsANumberChar(int ch) {
 class SQLStates {
 public :
 	void Set(int lineNumber, unsigned short int sqlStatesLine) {
-		if (!sqlStatement.size() == 0 || !sqlStatesLine == 0) {
-			sqlStatement.resize(lineNumber + 1, 0);
-			sqlStatement[lineNumber] = sqlStatesLine;
-		}
+		sqlStatement.Set(lineNumber, sqlStatesLine);
 	}
 
 	unsigned short int IgnoreWhen (unsigned short int sqlStatesLine, bool enable) {
@@ -105,6 +105,33 @@ public :
 		return sqlStatesLine;
 	}
 
+	unsigned short int IntoMergeStatement (unsigned short int sqlStatesLine, bool enable) {
+		if (enable)
+			sqlStatesLine |= MASK_MERGE_STATEMENT;
+		else
+			sqlStatesLine &= ~MASK_MERGE_STATEMENT;
+
+		return sqlStatesLine;
+	}
+
+	unsigned short int CaseMergeWithoutWhenFound (unsigned short int sqlStatesLine, bool found) {
+		if (found)
+			sqlStatesLine |= MASK_CASE_MERGE_WITHOUT_WHEN_FOUND;
+		else
+			sqlStatesLine &= ~MASK_CASE_MERGE_WITHOUT_WHEN_FOUND;
+
+		return sqlStatesLine;
+	}
+
+	unsigned short int IntoSelectStatement (unsigned short int sqlStatesLine, bool found) {
+		if (found)
+			sqlStatesLine |= MASK_INTO_SELECT_STATEMENT;
+		else
+			sqlStatesLine &= ~MASK_INTO_SELECT_STATEMENT;
+
+		return sqlStatesLine;
+	}
+
 	unsigned short int BeginCaseBlock (unsigned short int sqlStatesLine) {
 		if ((sqlStatesLine & MASK_NESTED_CASES) < MASK_NESTED_CASES) {
 			sqlStatesLine++;
@@ -135,28 +162,39 @@ public :
 		return (sqlStatesLine & MASK_INTO_EXCEPTION) != 0;
 	}
 
+	bool IsIntoSelectStatement (unsigned short int sqlStatesLine) {
+		return (sqlStatesLine & MASK_INTO_SELECT_STATEMENT) != 0;
+	}
+
+	bool IsCaseMergeWithoutWhenFound (unsigned short int sqlStatesLine) {
+		return (sqlStatesLine & MASK_CASE_MERGE_WITHOUT_WHEN_FOUND) != 0;
+	}
+
 	bool IsIntoDeclareBlock (unsigned short int sqlStatesLine) {
 		return (sqlStatesLine & MASK_INTO_DECLARE) != 0;
 	}
 
+	bool IsIntoMergeStatement (unsigned short int sqlStatesLine) {
+		return (sqlStatesLine & MASK_MERGE_STATEMENT) != 0;
+	}
+
 	unsigned short int ForLine(int lineNumber) {
-		if ((lineNumber > 0) && (sqlStatement.size() > static_cast<size_t>(lineNumber))) {
-			return sqlStatement[lineNumber];
-		} else {
-			return 0;
-		}
+		return sqlStatement.ValueAt(lineNumber);
 	}
 
 	SQLStates() {}
 
 private :
-	std::vector <unsigned short int> sqlStatement;
+	SparseState <unsigned short int> sqlStatement;
 	enum {
+		MASK_NESTED_CASES = 0x01FF,
+		MASK_INTO_SELECT_STATEMENT = 0x0200,
+		MASK_CASE_MERGE_WITHOUT_WHEN_FOUND = 0x0400,
+		MASK_MERGE_STATEMENT = 0x0800,
 		MASK_INTO_DECLARE = 0x1000,
 		MASK_INTO_EXCEPTION = 0x2000,
 		MASK_INTO_CONDITION = 0x4000,
-		MASK_IGNORE_WHEN = 0x8000,
-		MASK_NESTED_CASES = 0x0FFF
+		MASK_IGNORE_WHEN = 0x8000
 	};
 };
 
@@ -228,6 +266,8 @@ struct OptionSetSQL : public OptionSet<OptionsSQL> {
 class LexerSQL : public ILexer {
 public :
 	LexerSQL() {}
+
+	virtual ~LexerSQL() {}
 
 	int SCI_METHOD Version () const {
 		return lvOriginal;
@@ -560,6 +600,17 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 			endFound = false;
 			isUnfoldingIgnored = false;
 		}
+		if ((!IsCommentStyle(style) && ch == ';')) {
+			if (sqlStates.IsIntoMergeStatement(sqlStatesCurrentLine)) {
+				// This is the end of "MERGE" statement.
+				if (!sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine))
+					levelNext--;
+				sqlStatesCurrentLine = sqlStates.IntoMergeStatement(sqlStatesCurrentLine, false);
+				levelNext--;
+			}
+			if (sqlStates.IsIntoSelectStatement(sqlStatesCurrentLine))
+				sqlStatesCurrentLine = sqlStates.IntoSelectStatement(sqlStatesCurrentLine, false);
+		}
 		if (options.foldComment && IsStreamCommentStyle(style)) {
 			if (!IsStreamCommentStyle(stylePrev)) {
 				levelNext++;
@@ -616,7 +667,10 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 				s[j] = '\0';
 			}
 
-			if (strcmp(s, "if") == 0) {
+			if (!options.foldOnlyBegin &&
+			        strcmp(s, "select") == 0) {
+				sqlStatesCurrentLine = sqlStates.IntoSelectStatement(sqlStatesCurrentLine, true);
+			} else if (strcmp(s, "if") == 0) {
 				if (endFound) {
 					endFound = false;
 					if (options.foldOnlyBegin && !isUnfoldingIgnored) {
@@ -661,23 +715,20 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 					}
 					if ((!options.foldOnlyBegin) && strcmp(s, "case") == 0) {
 						sqlStatesCurrentLine = sqlStates.EndCaseBlock(sqlStatesCurrentLine);
-						levelNext--; //again for the "end case;" and block when
+						if (!sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine))
+							levelNext--; //again for the "end case;" and block when
 					}
 				} else if (!options.foldOnlyBegin) {
-					if (strcmp(s, "case") == 0) {
+					if (strcmp(s, "case") == 0)
 						sqlStatesCurrentLine = sqlStates.BeginCaseBlock(sqlStatesCurrentLine);
 
-						//for case block increment 2 times
-						if (!statementFound)
-							levelNext++;
-					}
-
-					if (levelCurrent > levelNext) {
+					if (levelCurrent > levelNext)
 						levelCurrent = levelNext;
-					}
+
 					if (!statementFound)
 						levelNext++;
 
+					sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, true);
 					statementFound = true;
 				} else if (levelCurrent > levelNext) {
 					// doesn't include this line into the folding block
@@ -697,9 +748,13 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 			               options.foldAtElse && !statementFound) && strcmp(s, "else") == 0) {
 				// prevent also ELSE is on the same line (eg. "ELSE ... END IF;")
 				statementFound = true;
-				// we are in same case "} ELSE {" in C language
-				levelCurrent--;
-
+				if (sqlStates.IsIntoCaseBlock(sqlStatesCurrentLine) && sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine)) {
+					sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, false);
+					levelNext++;
+				} else {
+					// we are in same case "} ELSE {" in C language
+					levelCurrent--;
+				}
 			} else if (strcmp(s, "begin") == 0) {
 				levelNext++;
 				sqlStatesCurrentLine = sqlStates.IntoDeclareBlock(sqlStatesCurrentLine, false);
@@ -710,6 +765,8 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 			           (strcmp(s, "endif") == 0)) {
 				endFound = true;
 				levelNext--;
+				if (sqlStates.IsIntoSelectStatement(sqlStatesCurrentLine) && !sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine))
+					levelNext--;
 				if (levelNext < SC_FOLDLEVELBASE) {
 					levelNext = SC_FOLDLEVELBASE;
 					isUnfoldingIgnored = true;
@@ -717,14 +774,21 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 			} else if ((!options.foldOnlyBegin) &&
 			           strcmp(s, "when") == 0 &&
 			           !sqlStates.IsIgnoreWhen(sqlStatesCurrentLine) &&
-			           !sqlStates.IsIntoExceptionBlock(sqlStatesCurrentLine) &&
-			           sqlStates.IsIntoCaseBlock(sqlStatesCurrentLine)) {
+			           !sqlStates.IsIntoExceptionBlock(sqlStatesCurrentLine) && (
+			               sqlStates.IsIntoCaseBlock(sqlStatesCurrentLine) ||
+			               sqlStates.IsIntoMergeStatement(sqlStatesCurrentLine)
+			               )
+			           ) {
 				sqlStatesCurrentLine = sqlStates.IntoCondition(sqlStatesCurrentLine, true);
 
 				// Don't foldind when CASE and WHEN are on the same line (with flag statementFound) (eg. "CASE selector WHEN expression1 THEN sequence_of_statements1;\n")
+				// and same way for MERGE statement.
 				if (!statementFound) {
-					levelCurrent--;
-					levelNext--;
+					if (!sqlStates.IsCaseMergeWithoutWhenFound(sqlStatesCurrentLine)) {
+						levelCurrent--;
+						levelNext--;
+					}
+					sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, false);
 				}
 			} else if ((!options.foldOnlyBegin) && strcmp(s, "exit") == 0) {
 				sqlStatesCurrentLine = sqlStates.IgnoreWhen(sqlStatesCurrentLine, true);
@@ -736,6 +800,12 @@ void SCI_METHOD LexerSQL::Fold(unsigned int startPos, int length, int initStyle,
 			            strcmp(s, "procedure") == 0 ||
 			            strcmp(s, "package") == 0)) {
 				sqlStatesCurrentLine = sqlStates.IntoDeclareBlock(sqlStatesCurrentLine, true);
+			} else if ((!options.foldOnlyBegin) &&
+			           strcmp(s, "merge") == 0) {
+				sqlStatesCurrentLine = sqlStates.IntoMergeStatement(sqlStatesCurrentLine, true);
+				sqlStatesCurrentLine = sqlStates.CaseMergeWithoutWhenFound(sqlStatesCurrentLine, true);
+				levelNext++;
+				statementFound = true;
 			}
 		}
 		if (atEOL) {
