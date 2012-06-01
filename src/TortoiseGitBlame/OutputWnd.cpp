@@ -135,7 +135,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //	FillDebugWindow();
 //	FillFindWindow();
 
-	this->SetWindowTextW(_T("Git Log"));
+	this->SetWindowTextW(CString(MAKEINTRESOURCE(IDS_GIT_LOG_TAB)));
 	return 0;
 }
 

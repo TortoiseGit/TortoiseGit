@@ -1802,6 +1802,10 @@ msgstr ""
 msgid "Based on TortoiseIDiff of TortoiseSVN"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Basic Info"
+msgstr ""
+
 #. Resource IDs: (69)
 msgid "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
 msgstr ""
@@ -1852,6 +1856,10 @@ msgstr ""
 
 #. Resource IDs: (32812)
 msgid "Blend alpha"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "Body"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -5505,6 +5513,10 @@ msgstr ""
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "Parent(s)"
 msgstr ""
 
 #. Resource IDs: (65535)

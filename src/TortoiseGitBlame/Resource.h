@@ -10,6 +10,10 @@
 #define IDS_BLAMEERROR                  5
 #define IDS_CHECKOUTFAILED              6
 #define IDS_ERR_DIFFENERTPREPO          7
+#define IDS_PROPERTIES_BASICINFO        8
+#define IDS_SUBJECT                     9
+#define IDS_BODY                        10
+#define IDS_PARENTS                     11
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_STATUSBAR_PANE1              120

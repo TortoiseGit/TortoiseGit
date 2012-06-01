@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,69 +142,69 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Basic Info"));
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(CString(MAKEINTRESOURCE(IDS_PROPERTIES_BASICINFO)));
 
 
 	m_CommitHash = new CMFCPropertyGridProperty(
-				_T("Commit Hash"),
+				CString(MAKEINTRESOURCE(IDS_LOG_HASH)),
 				_T(""),
-				_T("Commit Hash")
+				CString(MAKEINTRESOURCE(IDS_LOG_HASH))
 				);
 	pGroup1->AddSubItem(m_CommitHash);
 
 	m_AuthorName = new CMFCPropertyGridProperty(
-				_T("Author"),
+				CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
 				_T(""),
-				_T("Author")
+				CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))
 				);
 	pGroup1->AddSubItem(m_AuthorName);
 
 	m_AuthorDate = new CMFCPropertyGridProperty(
-				_T("Author Date"),
+				CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
 				_T(""),
-				_T("Author Date")
+				CString(MAKEINTRESOURCE(IDS_LOG_DATE))
 				);
 	pGroup1->AddSubItem(m_AuthorDate);
 
 	m_AuthorEmail= new CMFCPropertyGridProperty(
-				_T("Author Email"),
+				CString(MAKEINTRESOURCE(IDS_LOG_EMAIL)),
 				_T(""),
-				_T("Author Email")
+				CString(MAKEINTRESOURCE(IDS_LOG_EMAIL))
 				);
 	pGroup1->AddSubItem(m_AuthorEmail);
 
 	m_CommitterName = new CMFCPropertyGridProperty(
-				_T("Committer Name"),
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_NAME)),
 				_T(""),
-				_T("Committer Name")
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_NAME))
 				);
 	pGroup1->AddSubItem(m_CommitterName);
 
 	m_CommitterEmail =new CMFCPropertyGridProperty(
-				_T("Committer Email"),
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_EMAIL)),
 				_T(""),
-				_T("Committer Email")
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_EMAIL))
 				);
 	pGroup1->AddSubItem(m_CommitterEmail);
 
 	m_CommitterDate = new CMFCPropertyGridProperty(
-				_T("Committer Date"),
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_DATE)),
 				_T(""),
-				_T("Committer Date")
+				CString(MAKEINTRESOURCE(IDS_LOG_COMMIT_DATE))
 				);;
 	pGroup1->AddSubItem(m_CommitterDate);
 
 	m_Subject = new CMFCPropertyGridProperty(
-				_T("Subject"),
+				CString(MAKEINTRESOURCE(IDS_SUBJECT)),
 				_T(""),
-				_T("Subject")
+				CString(MAKEINTRESOURCE(IDS_SUBJECT))
 				);;;
 	pGroup1->AddSubItem(m_Subject);
 
 	m_Body = new CMFCPropertyGridProperty(
-				_T("Body"),
+				CString(MAKEINTRESOURCE(IDS_BODY)),
 				_T(""),
-				_T("Body")
+				CString(MAKEINTRESOURCE(IDS_BODY))
 				);;;;
 	pGroup1->AddSubItem(m_Body);
 
@@ -219,7 +219,7 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.AddProperty(pGroup1);
 	m_BaseInfoGroup=pGroup1;
 
-	m_ParentGroup=new CMFCPropertyGridProperty(_T("Parent(s)"));
+	m_ParentGroup=new CMFCPropertyGridProperty(CString(MAKEINTRESOURCE(IDS_PARENTS)));
 
 	m_wndPropList.AddProperty(m_ParentGroup);
 #if 0

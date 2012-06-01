@@ -427,6 +427,10 @@ BEGIN
     IDS_BLAMEERROR          "Blame error"
     IDS_CHECKOUTFAILED      "Failed to checkout file ""%s"""
     IDS_ERR_DIFFENERTPREPO  "TortoiseGitBlame was already initialized for the repository ""%s"". Cannot switch to another repository (""%s"") at runtime."
+    IDS_PROPERTIES_BASICINFO "Basic Info"
+    IDS_SUBJECT             "Subject"
+    IDS_BODY                "Body"
+    IDS_PARENTS             "Parent(s)"
 END
 
 STRINGTABLE 
@@ -583,7 +587,6 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-#define _AFX_NO_SPLITTER_RESOURCES
 #define _AFX_NO_OLE_RESOURCES
 #define _AFX_NO_TRACKER_RESOURCES
 #define _AFX_NO_PROPERTY_RESOURCES
