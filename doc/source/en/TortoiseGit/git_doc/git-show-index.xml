@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-show-index(1)">
+<articleinfo>
+    <title>git-show-index(1)</title>
+<indexterm>
+<primary>git-show-index(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-show-index - Show packed archive index</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git show-index</emphasis> &lt; idx-file</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Reads given idx file for packed git archive created with
+<emphasis>git pack-objects</emphasis> command, and dumps its contents.</simpara>
+<simpara>The information it outputs is subset of what you can get from
+<emphasis>git verify-pack -v</emphasis>; this command only shows the packfile
+offset and SHA1 of each object.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

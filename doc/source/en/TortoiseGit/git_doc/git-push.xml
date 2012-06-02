@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-push(1)">
+<articleinfo>
+    <title>git-push(1)</title>
+<indexterm>
+<primary>git-push(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-push - Update remote refs along with associated objects</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git push</emphasis> [--all | --mirror | --tags] [-n | --dry-run] [--receive-pack=&lt;git-receive-pack&gt;]
+           [--repo=&lt;repository&gt;] [-f | --force] [--prune] [-v | --verbose] [-u | --set-upstream]
+           [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Updates remote refs using local refs, while sending objects
+necessary to complete the given refs.</simpara>
+<simpara>You can make interesting things happen to a repository
+every time you push into it, by setting up <emphasis>hooks</emphasis> there.  See
+documentation for <xref linkend="git-receive-pack(1)" />.</simpara>
+</simplesect>
+<simplesect id="_options_anchor_id_options_xreflabel_options">
+<title>OPTIONS<anchor id="OPTIONS" xreflabel="[OPTIONS]"/></title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        The "remote" repository that is destination of a push
+        operation.  This parameter can be either a URL
+        (see the section <link linkend="URLS">GIT URLS</link> below) or the name
+        of a remote (see the section <link linkend="REMOTES">REMOTES</link> below).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;refspec&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        The format of a &lt;refspec&gt; parameter is an optional plus
+        <emphasis>+</emphasis>, followed by the source ref &lt;src&gt;, followed
+        by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
+        It is used to specify with what &lt;src&gt; object the &lt;dst&gt; ref
+        in the remote repository is to be updated.
+</simpara>
+<simpara>The &lt;src&gt; is often the name of the branch you would want to push, but
+it can be any arbitrary "SHA-1 expression", such as <emphasis>master~4</emphasis> or
+<emphasis>HEAD</emphasis> (see <xref linkend="gitrevisions(7)" />).</simpara>
+<simpara>The &lt;dst&gt; tells which ref on the remote side is updated with this
+push. Arbitrary expressions cannot be used here, an actual ref must
+be named. If <emphasis>:</emphasis>&lt;dst&gt; is omitted, the same ref as &lt;src&gt; will be
+updated.</simpara>
+<simpara>The object referenced by &lt;src&gt; is used to update the &lt;dst&gt; reference
+on the remote side, but by default this is only allowed if the
+update can fast-forward &lt;dst&gt;.  By having the optional leading <emphasis>+</emphasis>,
+you can tell git to update the &lt;dst&gt; ref even when the update is not a
+fast-forward.  This does <emphasis role="strong">not</emphasis> attempt to merge &lt;src&gt; into &lt;dst&gt;.  See
+EXAMPLES below for details.</simpara>
+<simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>.</simpara>
+<simpara>Pushing an empty &lt;src&gt; allows you to delete the &lt;dst&gt; ref from
+the remote repository.</simpara>
+<simpara>The special refspec <emphasis>:</emphasis> (or <emphasis>+:</emphasis> to allow non-fast-forward updates)
+directs git to push "matching" branches: for every branch that exists on
+the local side, the remote side is updated if a branch of the same name
+already exists on the remote side.  This is the default operation mode
+if no explicit refspec is found (that is neither on the command line
+nor in any Push line of the corresponding remotes file---see below).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Instead of naming each ref to push, specifies that all
+        refs under <emphasis>refs/heads/</emphasis> be pushed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prune
+</term>
+<listitem>
+<simpara>
+        Remove remote branches that don't have a local counterpart. For example
+        a remote branch <emphasis>tmp</emphasis> will be removed if a local branch with the same
+        name doesn't exist any more. This also respects refspecs, e.g.
+        <emphasis>git push --prune remote refs/heads/*:refs/tmp/*</emphasis> would
+        make sure that remote <emphasis>refs/tmp/foo</emphasis> will be removed if <emphasis>refs/heads/foo</emphasis>
+        doesn't exist.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mirror
+</term>
+<listitem>
+<simpara>
+        Instead of naming each ref to push, specifies that all
+        refs under <emphasis>refs/</emphasis> (which includes but is not
+        limited to <emphasis>refs/heads/</emphasis>, <emphasis>refs/remotes/</emphasis>, and <emphasis>refs/tags/</emphasis>)
+        be mirrored to the remote repository.  Newly created local
+        refs will be pushed to the remote end, locally updated refs
+        will be force updated on the remote end, and deleted refs
+        will be removed from the remote end.  This is the default
+        if the configuration option <emphasis>remote.&lt;remote&gt;.mirror</emphasis> is
+        set.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do everything except actually send the updates.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--porcelain
+</term>
+<listitem>
+<simpara>
+        Produce machine-readable output.  The output status line for each ref
+        will be tab-separated and sent to stdout instead of stderr.  The full
+        symbolic names of the refs will be given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--delete
+</term>
+<listitem>
+<simpara>
+        All listed refs are deleted from the remote repository. This is
+        the same as prefixing all refs with a colon.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--tags
+</term>
+<listitem>
+<simpara>
+        All refs under <emphasis>refs/tags</emphasis> are pushed, in
+        addition to refspecs explicitly listed on the command
+        line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--receive-pack=&lt;git-receive-pack&gt;
+</term>
+<term>
+--exec=&lt;git-receive-pack&gt;
+</term>
+<listitem>
+<simpara>
+        Path to the <emphasis>git-receive-pack</emphasis> program on the remote
+        end.  Sometimes useful when pushing to a remote
+        repository over ssh, and you do not have the program in
+        a directory on the default $PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Usually, the command refuses to update a remote ref that is
+        not an ancestor of the local ref used to overwrite it.
+        This flag disables the check.  This can cause the
+        remote repository to lose commits; use it with care.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--repo=&lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        This option is only relevant if no &lt;repository&gt; argument is
+        passed in the invocation. In this case, <emphasis>git push</emphasis> derives the
+        remote name from the current branch: If it tracks a remote
+        branch, then that remote repository is pushed to. Otherwise,
+        the name "origin" is used. For this latter case, this option
+        can be used to override the name "origin". In other words,
+        the difference between these two commands
+</simpara>
+<screen>git push public         #1
+git push --repo=public  #2</screen>
+<simpara>is that #1 always pushes to "public" whereas #2 pushes to "public"
+only if the current branch does not track a remote branch. This is
+useful if you write an alias or script around <emphasis>git push</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u
+</term>
+<term>
+--set-upstream
+</term>
+<listitem>
+<simpara>
+        For every branch that is up to date or successfully pushed, add
+        upstream (tracking) reference, used by argument-less
+        <xref linkend="git-pull(1)" /> and other commands. For more information,
+        see <emphasis>branch.&lt;name&gt;.merge</emphasis> in <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--thin
+</term>
+<term>
+--no-thin
+</term>
+<listitem>
+<simpara>
+        These options are passed to <xref linkend="git-send-pack(1)" />. A thin transfer
+        significantly reduces the amount of sent data when the sender and
+        receiver share many of the same objects in common. The default is
+        --thin.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Suppress all output, including the listing of updated refs,
+        unless an error occurs. Progress is not reported to the standard
+        error stream.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Run verbosely.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless -q
+        is specified. This flag forces progress status even if the
+        standard error stream is not directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recurse-submodules=check
+</term>
+<listitem>
+<simpara>
+        Check whether all submodule commits used by the revisions to be
+        pushed are available on a remote tracking branch. Otherwise the
+        push will be aborted and the command will exit with non-zero status.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
+<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simpara>In general, URLs contain information about the transport protocol, the
+address of the remote server, and the path to the repository.
+Depending on the transport protocol, some of this information may be
+absent.</simpara>
+<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
+protocols. The following syntaxes may be used with them:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+rsync://host.xz/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>An alternative scp-like syntax may also be used with the ssh protocol:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>For local repositories, also supported by git natively, the following
+syntaxes may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<ulink url="file:///path/to/repo.git/">file:///path/to/repo.git/</ulink>
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These two syntaxes are mostly equivalent, except when cloning, when
+the former implies --local option. See <xref linkend="git-clone(1)" /> for
+details.</simpara>
+<simpara>When git doesn't know how to handle a certain transport protocol, it
+attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+exists. To explicitly request a remote helper, the following syntax
+may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&lt;transport&gt;::&lt;address&gt;
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+URL-like string recognized by the specific remote helper being
+invoked. See <xref linkend="git-remote-helpers(1)" /> for details.</simpara>
+<simpara>If there are a large number of similarly-named remote repositories and
+you want to use a different format for them (such that the URLs you
+use will be rewritten into URLs that work), you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                insteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "git://git.host.xz/"]
+                insteadOf = host.xz:/path/to/
+                insteadOf = work:</screen>
+<simpara>a URL like "work:repo.git" or like "host.xz:/path/to/repo.git" will be
+rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
+<simpara>If you want to rewrite URLs for push only, you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                pushInsteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "ssh://example.org/"]
+                pushInsteadOf = git://example.org/</screen>
+<simpara>a URL like "git://example.org/path/to/repo.git" will be rewritten to
+"ssh://example.org/path/to/repo.git" for pushes, but pulls will still
+use the original URL.</simpara>
+</simplesect>
+<simplesect id="_remotes_anchor_id_remotes_xreflabel_remotes">
+<title>REMOTES<anchor id="REMOTES" xreflabel="[REMOTES]"/></title>
+<simpara>The name of one of the following can be used instead
+of a URL as <emphasis>&lt;repository&gt;</emphasis> argument:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+a remote in the git configuration file: <emphasis>$GIT_DIR/config</emphasis>,
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a file in the <emphasis>$GIT_DIR/remotes</emphasis> directory, or
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a file in the <emphasis>$GIT_DIR/branches</emphasis> directory.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>All of these also allow you to omit the refspec from the command line
+because they each contain a refspec which git will use by default.</simpara>
+<section id="_named_remote_in_configuration_file">
+<title>Named remote in configuration file</title>
+<simpara>You can choose to provide the name of a remote which you had previously
+configured using <xref linkend="git-remote(1)" />, <xref linkend="git-config(1)" />
+or even by a manual edit to the <emphasis>$GIT_DIR/config</emphasis> file.  The URL of
+this remote will be used to access the repository.  The refspec
+of this remote will be used by default when you do
+not provide a refspec on the command line.  The entry in the
+config file would appear like this:</simpara>
+<screen>        [remote "&lt;name&gt;"]
+                url = &lt;url&gt;
+                pushurl = &lt;pushurl&gt;
+                push = &lt;refspec&gt;
+                fetch = &lt;refspec&gt;</screen>
+<simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
+to <emphasis>&lt;url&gt;</emphasis>.</simpara>
+</section>
+<section id="_named_file_in_emphasis_git_dir_remotes_emphasis">
+<title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
+<simpara>You can choose to provide the name of a
+file in <emphasis>$GIT_DIR/remotes</emphasis>.  The URL
+in this file will be used to access the repository.  The refspec
+in this file will be used as default when you do not
+provide a refspec on the command line.  This file should have the
+following format:</simpara>
+<screen>        URL: one of the above URL format
+        Push: &lt;refspec&gt;
+        Pull: &lt;refspec&gt;</screen>
+<simpara><emphasis>Push:</emphasis> lines are used by <emphasis>git push</emphasis> and
+<emphasis>Pull:</emphasis> lines are used by <emphasis>git pull</emphasis> and <emphasis>git fetch</emphasis>.
+Multiple <emphasis>Push:</emphasis> and <emphasis>Pull:</emphasis> lines may
+be specified for additional branch mappings.</simpara>
+</section>
+<section id="_named_file_in_emphasis_git_dir_branches_emphasis">
+<title>Named file in <emphasis>$GIT_DIR/branches</emphasis></title>
+<simpara>You can choose to provide the name of a
+file in <emphasis>$GIT_DIR/branches</emphasis>.
+The URL in this file will be used to access the repository.
+This file should have the following format:</simpara>
+<screen>        &lt;url&gt;#&lt;head&gt;</screen>
+<simpara><emphasis>&lt;url&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
+<simpara>Depending on the operation, git will use one of the following
+refspecs, if you don't provide one on the command line.
+<emphasis>&lt;branch&gt;</emphasis> is the name of this file in <emphasis>$GIT_DIR/branches</emphasis> and
+<emphasis>&lt;head&gt;</emphasis> defaults to <emphasis>master</emphasis>.</simpara>
+<simpara>git fetch uses:</simpara>
+<screen>        refs/heads/&lt;head&gt;:refs/heads/&lt;branch&gt;</screen>
+<simpara>git push uses:</simpara>
+<screen>        HEAD:refs/heads/&lt;head&gt;</screen>
+</section>
+</simplesect>
+<simplesect id="_output">
+<title>OUTPUT</title>
+<simpara>The output of "git push" depends on the transport method used; this
+section describes the output when pushing over the git protocol (either
+locally or via ssh).</simpara>
+<simpara>The status of the push is output in tabular form, with each line
+representing the status of a single ref. Each line is of the form:</simpara>
+<screen> &lt;flag&gt; &lt;summary&gt; &lt;from&gt; -&gt; &lt;to&gt; (&lt;reason&gt;)</screen>
+<simpara>If --porcelain is used, then each line of the output is of the form:</simpara>
+<screen> &lt;flag&gt; \t &lt;from&gt;:&lt;to&gt; \t &lt;summary&gt; (&lt;reason&gt;)</screen>
+<simpara>The status of up-to-date refs is shown only if --porcelain or --verbose
+option is used.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+flag
+</term>
+<listitem>
+<simpara>
+        A single character indicating the status of the ref:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+(space)
+</term>
+<listitem>
+<simpara>
+for a successfully pushed fast-forward;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>+</emphasis>
+</term>
+<listitem>
+<simpara>
+for a successful forced update;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-</emphasis>
+</term>
+<listitem>
+<simpara>
+for a successfully deleted ref;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>*</emphasis>
+</term>
+<listitem>
+<simpara>
+for a successfully pushed new ref;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>!</emphasis>
+</term>
+<listitem>
+<simpara>
+for a ref that was rejected or failed to push; and
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>=</emphasis>
+</term>
+<listitem>
+<simpara>
+for a ref that was up to date and did not need pushing.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+summary
+</term>
+<listitem>
+<simpara>
+        For a successfully pushed ref, the summary shows the old and new
+        values of the ref in a form suitable for using as an argument to
+        <emphasis>git log</emphasis> (this is <emphasis>&lt;old&gt;..&lt;new&gt;</emphasis> in most cases, and
+        <emphasis>&lt;old&gt;...&lt;new&gt;</emphasis> for forced non-fast-forward updates).
+</simpara>
+<simpara>For a failed update, more details are given:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+rejected
+</term>
+<listitem>
+<simpara>
+        Git did not try to send the ref at all, typically because it
+        is not a fast-forward and you did not force the update.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote rejected
+</term>
+<listitem>
+<simpara>
+        The remote end refused the update.  Usually caused by a hook
+        on the remote side, or because the remote repository has one
+        of the following safety options in effect:
+        <emphasis>receive.denyCurrentBranch</emphasis> (for pushes to the checked out
+        branch), <emphasis>receive.denyNonFastForwards</emphasis> (for forced
+        non-fast-forward updates), <emphasis>receive.denyDeletes</emphasis> or
+        <emphasis>receive.denyDeleteCurrent</emphasis>.  See <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote failure
+</term>
+<listitem>
+<simpara>
+        The remote end did not report the successful update of the ref,
+        perhaps because of a temporary error on the remote side, a
+        break in the network connection, or other transient error.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+from
+</term>
+<listitem>
+<simpara>
+        The name of the local ref being pushed, minus its
+        <emphasis>refs/&lt;type&gt;/</emphasis> prefix. In the case of deletion, the
+        name of the local ref is omitted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+to
+</term>
+<listitem>
+<simpara>
+        The name of the remote ref being updated, minus its
+        <emphasis>refs/&lt;type&gt;/</emphasis> prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+reason
+</term>
+<listitem>
+<simpara>
+        A human-readable explanation. In the case of successfully pushed
+        refs, no explanation is needed. For a failed ref, the reason for
+        failure is described.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_note_about_fast_forwards">
+<title>Note about fast-forwards</title>
+<simpara>When an update changes a branch (or more in general, a ref) that used to
+point at commit A to point at another commit B, it is called a
+fast-forward update if and only if B is a descendant of A.</simpara>
+<simpara>In a fast-forward update from A to B, the set of commits that the original
+commit A built on top of is a subset of the commits the new commit B
+builds on top of.  Hence, it does not lose any history.</simpara>
+<simpara>In contrast, a non-fast-forward update will lose history.  For example,
+suppose you and somebody else started at the same commit X, and you built
+a history leading to commit B while the other person built a history
+leading to commit A.  The history looks like this:</simpara>
+<screen>      B
+     /
+ ---X---A</screen>
+<simpara>Further suppose that the other person already pushed changes leading to A
+back to the original repository you two obtained the original commit X.</simpara>
+<simpara>The push done by the other person updated the branch that used to point at
+commit X to point at commit A.  It is a fast-forward.</simpara>
+<simpara>But if you try to push, you will attempt to update the branch (that
+now points at A) with commit B.  This does <emphasis>not</emphasis> fast-forward.  If you did
+so, the changes introduced by commit A will be lost, because everybody
+will now start building on top of B.</simpara>
+<simpara>The command by default does not allow an update that is not a fast-forward
+to prevent such loss of history.</simpara>
+<simpara>If you do not want to lose your work (history from X to B) nor the work by
+the other person (history from X to A), you would need to first fetch the
+history from the repository, create a history that contains changes done
+by both parties, and push the result back.</simpara>
+<simpara>You can perform "git pull", resolve potential conflicts, and "git push"
+the result.  A "git pull" will create a merge commit C between commits A
+and B.</simpara>
+<screen>      B---C
+     /   /
+ ---X---A</screen>
+<simpara>Updating A with the resulting merge commit will fast-forward and your
+push will be accepted.</simpara>
+<simpara>Alternatively, you can rebase your change between X and B on top of A,
+with "git pull --rebase", and push the result back.  The rebase will
+create a new commit D that builds the change between X and B on top of
+A.</simpara>
+<screen>      B   D
+     /   /
+ ---X---A</screen>
+<simpara>Again, updating A with this commit will fast-forward and your push will be
+accepted.</simpara>
+<simpara>There is another common situation where you may encounter non-fast-forward
+rejection when you try to push, and it is possible even when you are
+pushing into a repository nobody else pushes into. After you push commit
+A yourself (in the first picture in this section), replace it with "git
+commit --amend" to produce commit B, and you try to push it out, because
+forgot that you have pushed A out already. In such a case, and only if
+you are certain that nobody in the meantime fetched your earlier commit A
+(and started building on top of it), you can run "git push --force" to
+overwrite it. In other words, "git push --force" is a method reserved for
+a case where you do mean to lose history.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git push</emphasis>
+</term>
+<listitem>
+<simpara>
+        Works like <emphasis>git push &lt;remote&gt;</emphasis>, where &lt;remote&gt; is the
+        current branch's remote (or <emphasis>origin</emphasis>, if no remote is
+        configured for the current branch).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin</emphasis>
+</term>
+<listitem>
+<simpara>
+        Without additional configuration, works like
+        <emphasis>git push origin :</emphasis>.
+</simpara>
+<simpara>The default behavior of this command when no &lt;refspec&gt; is given can be
+configured by setting the <emphasis>push</emphasis> option of the remote.</simpara>
+<simpara>For example, to default to pushing only the current branch to <emphasis>origin</emphasis>
+use <emphasis>git config remote.origin.push HEAD</emphasis>.  Any valid &lt;refspec&gt; (like
+the ones in the examples below) can be configured as the default for
+<emphasis>git push origin</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin :</emphasis>
+</term>
+<listitem>
+<simpara>
+        Push "matching" branches to <emphasis>origin</emphasis>. See
+        &lt;refspec&gt; in the <link linkend="OPTIONS">OPTIONS</link> section above for a
+        description of "matching" branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Find a ref that matches <emphasis>master</emphasis> in the source repository
+        (most likely, it would find <emphasis>refs/heads/master</emphasis>), and update
+        the same ref (e.g. <emphasis>refs/heads/master</emphasis>) in <emphasis>origin</emphasis> repository
+        with it.  If <emphasis>master</emphasis> did not exist remotely, it would be
+        created.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin HEAD</emphasis>
+</term>
+<listitem>
+<simpara>
+        A handy way to push the current branch to the same name on the
+        remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin master:satellite/master dev:satellite/dev</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use the source ref that matches <emphasis>master</emphasis> (e.g. <emphasis>refs/heads/master</emphasis>)
+        to update the ref that matches <emphasis>satellite/master</emphasis> (most probably
+        <emphasis>refs/remotes/satellite/master</emphasis>) in the <emphasis>origin</emphasis> repository, then
+        do the same for <emphasis>dev</emphasis> and <emphasis>satellite/dev</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin HEAD:master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Push the current branch to the remote ref matching <emphasis>master</emphasis> in the
+        <emphasis>origin</emphasis> repository. This form is convenient to push the current
+        branch without thinking about its local name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin master:refs/heads/experimental</emphasis>
+</term>
+<listitem>
+<simpara>
+        Create the branch <emphasis>experimental</emphasis> in the <emphasis>origin</emphasis> repository
+        by copying the current <emphasis>master</emphasis> branch.  This form is only
+        needed to create a new branch or tag in the remote repository when
+        the local name and the remote name are different; otherwise,
+        the ref name on its own will work.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin :experimental</emphasis>
+</term>
+<listitem>
+<simpara>
+        Find a ref that matches <emphasis>experimental</emphasis> in the <emphasis>origin</emphasis> repository
+        (e.g. <emphasis>refs/heads/experimental</emphasis>), and delete it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push origin +dev:master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Update the origin repository's master branch with the dev branch,
+        allowing non-fast-forward updates.  <emphasis role="strong">This can leave unreferenced
+        commits dangling in the origin repository.</emphasis>  Consider the
+        following situation, where a fast-forward is not possible:
+</simpara>
+<screen>            o---o---o---A---B  origin/master
+                     \
+                      X---Y---Z  dev</screen>
+<simpara>The above command would change the origin repository to</simpara>
+<screen>                      A---B  (unnamed branch)
+                     /
+            o---o---o---X---Y---Z  master</screen>
+<simpara>Commits A and B would no longer belong to a branch with a symbolic name,
+and so would be unreachable.  As such, these commits would be removed by
+a <emphasis>git gc</emphasis> command on the origin repository.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

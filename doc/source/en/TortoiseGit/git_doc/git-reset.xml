@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-reset(1)">
+<articleinfo>
+    <title>git-reset(1)</title>
+<indexterm>
+<primary>git-reset(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-reset - Reset current HEAD to the specified state</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git reset</emphasis> [-q] [&lt;commit&gt;] [--] &lt;paths&gt;&#8230;
+<emphasis>git reset</emphasis> (--patch | -p) [&lt;commit&gt;] [--] [&lt;paths&gt;&#8230;]
+<emphasis>git reset</emphasis> (--soft | --mixed | --hard | --merge | --keep) [-q] [&lt;commit&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>In the first and second form, copy entries from &lt;commit&gt; to the index.
+In the third form, set the current branch head (HEAD) to &lt;commit&gt;, optionally
+modifying index and working tree to match.  The &lt;commit&gt; defaults to HEAD
+in all forms.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git reset</emphasis> [-q] [&lt;commit&gt;] [--] &lt;paths&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        This form resets the index entries for all &lt;paths&gt; to their
+        state at &lt;commit&gt;.  (It does not affect the working tree, nor
+        the current branch.)
+</simpara>
+<simpara>This means that <emphasis>git reset &lt;paths&gt;</emphasis> is the opposite of <emphasis>git add
+&lt;paths&gt;</emphasis>.</simpara>
+<simpara>After running <emphasis>git reset &lt;paths&gt;</emphasis> to update the index entry, you can
+use <xref linkend="git-checkout(1)" /> to check the contents out of the index to
+the working tree.
+Alternatively, using <xref linkend="git-checkout(1)" /> and specifying a commit, you
+can copy the contents of a path out of a commit to the index and to the
+working tree in one go.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git reset</emphasis> (--patch | -p) [&lt;commit&gt;] [--] [&lt;paths&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        Interactively select hunks in the difference between the index
+        and &lt;commit&gt; (defaults to HEAD).  The chosen hunks are applied
+        in reverse to the index.
+</simpara>
+<simpara>This means that <emphasis>git reset -p</emphasis> is the opposite of <emphasis>git add -p</emphasis>, i.e.
+you can use it to selectively reset hunks. See the Interactive Mode
+section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git reset</emphasis> --&lt;mode&gt; [&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        This form resets the current branch head to &lt;commit&gt; and
+        possibly updates the index (resetting it to the tree of &lt;commit&gt;) and
+        the working tree depending on &lt;mode&gt;, which
+        must be one of the following:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--soft
+</term>
+<listitem>
+<simpara>
+        Does not touch the index file nor the working tree at all (but
+        resets the head to &lt;commit&gt;, just like all modes do). This leaves
+        all your changed files "Changes to be committed", as <emphasis>git status</emphasis>
+        would put it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mixed
+</term>
+<listitem>
+<simpara>
+        Resets the index but not the working tree (i.e., the changed files
+        are preserved but not marked for commit) and reports what has not
+        been updated. This is the default action.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--hard
+</term>
+<listitem>
+<simpara>
+        Resets the index and working tree. Any changes to tracked files in the
+        working tree since &lt;commit&gt; are discarded.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--merge
+</term>
+<listitem>
+<simpara>
+        Resets the index and updates the files in the working tree that are
+        different between &lt;commit&gt; and HEAD, but keeps those which are
+        different between the index and working tree (i.e. which have changes
+        which have not been added).
+        If a file that is different between &lt;commit&gt; and the index has unstaged
+        changes, reset is aborted.
+</simpara>
+<simpara>In other words, --merge does something like a <emphasis>git read-tree -u -m &lt;commit&gt;</emphasis>,
+but carries forward unmerged index entries.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep
+</term>
+<listitem>
+<simpara>
+        Resets index entries and updates files in the working tree that are
+        different between &lt;commit&gt; and HEAD.
+        If a file that is different between &lt;commit&gt; and HEAD has local changes,
+        reset is aborted.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If you want to undo a commit other than the latest on a branch,
+<xref linkend="git-revert(1)" /> is your friend.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Be quiet, only report errors.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+Undo add
+</term>
+<listitem>
+<screen>$ edit                                     <co id="CO1-1"/>
+$ git add frotz.c filfre.c
+$ mailx                                    <co id="CO1-2"/>
+$ git reset                                <co id="CO1-3"/>
+$ git pull git://info.example.com/ nitfol  <co id="CO1-4"/></screen>
+<calloutlist>
+<callout arearefs="CO1-1">
+<para>
+You are happily working on something, and find the changes
+in these files are in good order.  You do not want to see them
+when you run "git diff", because you plan to work on other files
+and changes with these files are distracting.
+</para>
+</callout>
+<callout arearefs="CO1-2">
+<para>
+Somebody asks you to pull, and the changes sounds worthy of merging.
+</para>
+</callout>
+<callout arearefs="CO1-3">
+<para>
+However, you already dirtied the index (i.e. your index does
+not match the HEAD commit).  But you know the pull you are going
+to make does not affect frotz.c nor filfre.c, so you revert the
+index changes for these two files.  Your changes in working tree
+remain there.
+</para>
+</callout>
+<callout arearefs="CO1-4">
+<para>
+Then you can pull and merge, leaving frotz.c and filfre.c
+changes still in the working tree.
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Undo a commit and redo
+</term>
+<listitem>
+<screen>$ git commit ...
+$ git reset --soft HEAD^      <co id="CO2-1"/>
+$ edit                        <co id="CO2-2"/>
+$ git commit -a -c ORIG_HEAD  <co id="CO2-3"/></screen>
+<calloutlist>
+<callout arearefs="CO2-1">
+<para>
+This is most often done when you remembered what you
+just committed is incomplete, or you misspelled your commit
+message, or both.  Leaves working tree as it was before "reset".
+</para>
+</callout>
+<callout arearefs="CO2-2">
+<para>
+Make corrections to working tree files.
+</para>
+</callout>
+<callout arearefs="CO2-3">
+<para>
+"reset" copies the old head to .git/ORIG_HEAD; redo the
+commit by starting with its log message.  If you do not need to
+edit the message further, you can give -C option instead.
+</para>
+<simpara>See also the --amend option to <xref linkend="git-commit(1)" />.</simpara>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Undo a commit, making it a topic branch
+</term>
+<listitem>
+<screen>$ git branch topic/wip     <co id="CO3-1"/>
+$ git reset --hard HEAD~3  <co id="CO3-2"/>
+$ git checkout topic/wip   <co id="CO3-3"/></screen>
+<calloutlist>
+<callout arearefs="CO3-1">
+<para>
+You have made some commits, but realize they were premature
+to be in the "master" branch.  You want to continue polishing
+them in a topic branch, so create "topic/wip" branch off of the
+current HEAD.
+</para>
+</callout>
+<callout arearefs="CO3-2">
+<para>
+Rewind the master branch to get rid of those three commits.
+</para>
+</callout>
+<callout arearefs="CO3-3">
+<para>
+Switch to "topic/wip" branch and keep working.
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Undo commits permanently
+</term>
+<listitem>
+<screen>$ git commit ...
+$ git reset --hard HEAD~3   <co id="CO4-1"/></screen>
+<calloutlist>
+<callout arearefs="CO4-1">
+<para>
+The last three commits (HEAD, HEAD^, and HEAD~2) were bad
+and you do not want to ever see them again.  Do <emphasis role="strong">not</emphasis> do this if
+you have already given these commits to somebody else.  (See the
+"RECOVERING FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" /> for
+the implications of doing so.)
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Undo a merge or pull
+</term>
+<listitem>
+<screen>$ git pull                         <co id="CO5-1"/>
+Auto-merging nitfol
+CONFLICT (content): Merge conflict in nitfol
+Automatic merge failed; fix conflicts and then commit the result.
+$ git reset --hard                 <co id="CO5-2"/>
+$ git pull . topic/branch          <co id="CO5-3"/>
+Updating from 41223... to 13134...
+Fast-forward
+$ git reset --hard ORIG_HEAD       <co id="CO5-4"/></screen>
+<calloutlist>
+<callout arearefs="CO5-1">
+<para>
+Try to update from the upstream resulted in a lot of
+conflicts; you were not ready to spend a lot of time merging
+right now, so you decide to do that later.
+</para>
+</callout>
+<callout arearefs="CO5-2">
+<para>
+"pull" has not made merge commit, so "git reset --hard"
+which is a synonym for "git reset --hard HEAD" clears the mess
+from the index file and the working tree.
+</para>
+</callout>
+<callout arearefs="CO5-3">
+<para>
+Merge a topic branch into the current branch, which resulted
+in a fast-forward.
+</para>
+</callout>
+<callout arearefs="CO5-4">
+<para>
+But you decided that the topic branch is not ready for public
+consumption yet.  "pull" or "merge" always leaves the original
+tip of the current branch in ORIG_HEAD, so resetting hard to it
+brings your index file and the working tree back to that state,
+and resets the tip of the branch to that commit.
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Undo a merge or pull inside a dirty working tree
+</term>
+<listitem>
+<screen>$ git pull                         <co id="CO6-1"/>
+Auto-merging nitfol
+Merge made by recursive.
+ nitfol                |   20 +++++----
+ ...
+$ git reset --merge ORIG_HEAD      <co id="CO6-2"/></screen>
+<calloutlist>
+<callout arearefs="CO6-1">
+<para>
+Even if you may have local modifications in your
+working tree, you can safely say "git pull" when you know
+that the change in the other branch does not overlap with
+them.
+</para>
+</callout>
+<callout arearefs="CO6-2">
+<para>
+After inspecting the result of the merge, you may find
+that the change in the other branch is unsatisfactory.  Running
+"git reset --hard ORIG_HEAD" will let you go back to where you
+were, but it will discard your local changes, which you do not
+want.  "git reset --merge" keeps your local changes.
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Interrupted workflow
+</term>
+<listitem>
+<simpara>Suppose you are interrupted by an urgent fix request while you
+are in the middle of a large change.  The files in your
+working tree are not in any shape to be committed yet, but you
+need to get to the other branch for a quick bugfix.</simpara>
+<screen>$ git checkout feature ;# you were working in "feature" branch and
+$ work work work       ;# got interrupted
+$ git commit -a -m "snapshot WIP"                 <co id="CO7-1"/>
+$ git checkout master
+$ fix fix fix
+$ git commit ;# commit with real log
+$ git checkout feature
+$ git reset --soft HEAD^ ;# go back to WIP state  <co id="CO7-2"/>
+$ git reset                                       <co id="CO7-3"/></screen>
+<calloutlist>
+<callout arearefs="CO7-1">
+<para>
+This commit will get blown away so a throw-away log message is OK.
+</para>
+</callout>
+<callout arearefs="CO7-2">
+<para>
+This removes the <emphasis>WIP</emphasis> commit from the commit history, and sets
+    your working tree to the state just before you made that snapshot.
+</para>
+</callout>
+<callout arearefs="CO7-3">
+<para>
+At this point the index file still has all the WIP changes you
+    committed as <emphasis>snapshot WIP</emphasis>.  This updates the index to show your
+    WIP files as uncommitted.
+</para>
+<simpara>See also <xref linkend="git-stash(1)" />.</simpara>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Reset a single file in the index
+</term>
+<listitem>
+<simpara>Suppose you have added a file to your index, but later decide you do not
+want to add it to your commit. You can remove the file from the index
+while keeping your changes with git reset.</simpara>
+<screen>$ git reset -- frotz.c                      <co id="CO8-1"/>
+$ git commit -m "Commit files in index"     <co id="CO8-2"/>
+$ git add frotz.c                           <co id="CO8-3"/></screen>
+<calloutlist>
+<callout arearefs="CO8-1">
+<para>
+This removes the file from the index while keeping it in the working
+    directory.
+</para>
+</callout>
+<callout arearefs="CO8-2">
+<para>
+This commits all other changes in the index.
+</para>
+</callout>
+<callout arearefs="CO8-3">
+<para>
+Adds the file to the index again.
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Keep changes in working tree while discarding some previous commits
+</term>
+<listitem>
+<simpara>Suppose you are working on something and you commit it, and then you
+continue working a bit more, but now you think that what you have in
+your working tree should be in another branch that has nothing to do
+with what you committed previously. You can start a new branch and
+reset it while keeping the changes in your working tree.</simpara>
+<screen>$ git tag start
+$ git checkout -b branch1
+$ edit
+$ git commit ...                            <co id="CO9-1"/>
+$ edit
+$ git checkout -b branch2                   <co id="CO9-2"/>
+$ git reset --keep start                    <co id="CO9-3"/></screen>
+<calloutlist>
+<callout arearefs="CO9-1">
+<para>
+This commits your first edits in branch1.
+</para>
+</callout>
+<callout arearefs="CO9-2">
+<para>
+In the ideal world, you could have realized that the earlier
+    commit did not belong to the new topic when you created and switched
+    to branch2 (i.e. "git checkout -b branch2 start"), but nobody is
+    perfect.
+</para>
+</callout>
+<callout arearefs="CO9-3">
+<para>
+But you can use "reset --keep" to remove the unwanted commit after
+    you switched to "branch2".
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>The tables below show what happens when running:</simpara>
+<screen>git reset --option target</screen>
+<simpara>to reset the HEAD to another commit (<emphasis>target</emphasis>) with the different
+reset options depending on the state of the files.</simpara>
+<simpara>In these tables, A, B, C and D are some different states of a
+file. For example, the first line of the first table means that if a
+file is in state A in the working tree, in state B in the index, in
+state C in HEAD and in state D in the target, then "git reset --soft
+target" will leave the file in the working tree in state A and in the
+index in state B.  It resets (i.e. moves) the HEAD (i.e. the tip of
+the current branch, if you are on one) to "target" (which has the file
+in state D).</simpara>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ A       B     C    D     --soft   A       B     D
+                          --mixed  A       D     D
+                          --hard   D       D     D
+                          --merge (disallowed)
+                          --keep  (disallowed)</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ A       B     C    C     --soft   A       B     C
+                          --mixed  A       C     C
+                          --hard   C       C     C
+                          --merge (disallowed)
+                          --keep   A       C     C</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ B       B     C    D     --soft   B       B     D
+                          --mixed  B       D     D
+                          --hard   D       D     D
+                          --merge  D       D     D
+                          --keep  (disallowed)</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ B       B     C    C     --soft   B       B     C
+                          --mixed  B       C     C
+                          --hard   C       C     C
+                          --merge  C       C     C
+                          --keep   B       C     C</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ B       C     C    D     --soft   B       C     D
+                          --mixed  B       D     D
+                          --hard   D       D     D
+                          --merge (disallowed)
+                          --keep  (disallowed)</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ B       C     C    C     --soft   B       C     C
+                          --mixed  B       C     C
+                          --hard   C       C     C
+                          --merge  B       C     C
+                          --keep   B       C     C</literallayout>
+<simpara>"reset --merge" is meant to be used when resetting out of a conflicted
+merge. Any mergy operation guarantees that the working tree file that is
+involved in the merge does not have local change wrt the index before
+it starts, and that it writes the result out to the working tree. So if
+we see some difference between the index and the target and also
+between the index and the working tree, then it means that we are not
+resetting out from a state that a mergy operation left after failing
+with a conflict. That is why we disallow --merge option in this case.</simpara>
+<simpara>"reset --keep" is meant to be used when removing some of the last
+commits in the current branch while keeping changes in the working
+tree. If there could be conflicts between the changes in the commit we
+want to remove and the changes in the working tree we want to keep,
+the reset is disallowed. That's why it is disallowed if there are both
+changes between the working tree and HEAD, and between HEAD and the
+target. To be safe, it is also disallowed when there are unmerged
+entries.</simpara>
+<simpara>The following tables show what happens when there are unmerged
+entries:</simpara>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ X       U     A    B     --soft  (disallowed)
+                          --mixed  X       B     B
+                          --hard   B       B     B
+                          --merge  B       B     B
+                          --keep  (disallowed)</literallayout>
+<literallayout class="monospaced">working index HEAD target         working index HEAD
+----------------------------------------------------
+ X       U     A    A     --soft  (disallowed)
+                          --mixed  X       A     A
+                          --hard   A       A     A
+                          --merge  A       A     A
+                          --keep  (disallowed)</literallayout>
+<simpara>X means any state and U means an unmerged index.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

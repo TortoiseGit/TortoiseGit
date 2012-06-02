@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-merge-file(1)">
+<articleinfo>
+    <title>git-merge-file(1)</title>
+<indexterm>
+<primary>git-merge-file(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-merge-file - Run a three-way file merge</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git merge-file</emphasis> [-L &lt;current-name&gt; [-L &lt;base-name&gt; [-L &lt;other-name&gt;]]]
+        [--ours|--theirs|--union] [-p|--stdout] [-q|--quiet] [--marker-size=&lt;n&gt;]
+        &lt;current-file&gt; &lt;base-file&gt; &lt;other-file&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara><emphasis>git merge-file</emphasis> incorporates all changes that lead from the <emphasis>&lt;base-file&gt;</emphasis>
+to <emphasis>&lt;other-file&gt;</emphasis> into <emphasis>&lt;current-file&gt;</emphasis>. The result ordinarily goes into
+<emphasis>&lt;current-file&gt;</emphasis>. <emphasis>git merge-file</emphasis> is useful for combining separate changes
+to an original. Suppose <emphasis>&lt;base-file&gt;</emphasis> is the original, and both
+<emphasis>&lt;current-file&gt;</emphasis> and <emphasis>&lt;other-file&gt;</emphasis> are modifications of <emphasis>&lt;base-file&gt;</emphasis>,
+then <emphasis>git merge-file</emphasis> combines both changes.</simpara>
+<simpara>A conflict occurs if both <emphasis>&lt;current-file&gt;</emphasis> and <emphasis>&lt;other-file&gt;</emphasis> have changes
+in a common segment of lines. If a conflict is found, <emphasis>git merge-file</emphasis>
+normally outputs a warning and brackets the conflict with lines containing
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; and &gt;&gt;&gt;&gt;&gt;&gt;&gt; markers. A typical conflict will look like this:</simpara>
+<literallayout class="monospaced">&lt;&lt;&lt;&lt;&lt;&lt;&lt; A
+lines in file A
+=======
+lines in file B
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; B</literallayout>
+<simpara>If there are conflicts, the user should edit the result and delete one of
+the alternatives.  When <emphasis>--ours</emphasis>, <emphasis>--theirs</emphasis>, or <emphasis>--union</emphasis> option is in effect,
+however, these conflicts are resolved favouring lines from <emphasis>&lt;current-file&gt;</emphasis>,
+lines from <emphasis>&lt;other-file&gt;</emphasis>, or lines from both respectively.  The length of the
+conflict markers can be given with the <emphasis>--marker-size</emphasis> option.</simpara>
+<simpara>The exit value of this program is negative on error, and the number of
+conflicts otherwise. If the merge was clean, the exit value is 0.</simpara>
+<simpara><emphasis>git merge-file</emphasis> is designed to be a minimal clone of RCS <emphasis>merge</emphasis>; that is, it
+implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed by
+<xref linkend="git(1)" />.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-L &lt;label&gt;
+</term>
+<listitem>
+<simpara>
+        This option may be given up to three times, and
+        specifies labels to be used in place of the
+        corresponding file names in conflict reports. That is,
+        <emphasis>git merge-file -L x -L y -L z a b c</emphasis> generates output that
+        looks like it came from files x, y and z instead of
+        from files a, b and c.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<listitem>
+<simpara>
+        Send results to standard output instead of overwriting
+        <emphasis>&lt;current-file&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<listitem>
+<simpara>
+        Quiet; do not warn about conflicts.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ours
+</term>
+<term>
+--theirs
+</term>
+<term>
+--union
+</term>
+<listitem>
+<simpara>
+        Instead of leaving conflicts in the file, resolve conflicts
+        favouring our (or their or both) side of the lines.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git merge-file README.my README README.upstream</emphasis>
+</term>
+<listitem>
+<simpara>
+        combines the changes of README.my and README.upstream since README,
+        tries to merge them and writes the result into README.my.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git merge-file -L a -L b -L c tmp/a123 tmp/b234 tmp/c345</emphasis>
+</term>
+<listitem>
+<simpara>
+        merges tmp/a123 and tmp/c345 with the base tmp/b234, but uses labels
+        <emphasis>a</emphasis> and <emphasis>c</emphasis> instead of <emphasis>tmp/a123</emphasis> and <emphasis>tmp/c345</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

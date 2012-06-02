@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="githooks(5)">
+<articleinfo>
+    <title>githooks(5)</title>
+<indexterm>
+<primary>githooks(5)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>githooks - Hooks used by git</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>$GIT_DIR/hooks/*</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Hooks are little scripts you can place in <emphasis>$GIT_DIR/hooks</emphasis>
+directory to trigger action at certain points.  When
+<emphasis>git init</emphasis> is run, a handful of example hooks are copied into the
+<emphasis>hooks</emphasis> directory of the new repository, but by default they are
+all disabled.  To enable a hook, rename it by removing its <emphasis>.sample</emphasis>
+suffix.</simpara>
+<note><simpara>It is also a requirement for a given hook to be executable.
+However - in a freshly initialized repository - the <emphasis>.sample</emphasis> files are
+executable by default.</simpara></note>
+<simpara>This document describes the currently defined hooks.</simpara>
+</simplesect>
+<simplesect id="_hooks">
+<title>HOOKS</title>
+<section id="_applypatch_msg">
+<title>applypatch-msg</title>
+<simpara>This hook is invoked by <emphasis>git am</emphasis> script.  It takes a single
+parameter, the name of the file that holds the proposed commit
+log message.  Exiting with non-zero status causes
+<emphasis>git am</emphasis> to abort before applying the patch.</simpara>
+<simpara>The hook is allowed to edit the message file in place, and can
+be used to normalize the message into some project standard
+format (if the project has one). It can also be used to refuse
+the commit after inspecting the message file.</simpara>
+<simpara>The default <emphasis>applypatch-msg</emphasis> hook, when enabled, runs the
+<emphasis>commit-msg</emphasis> hook, if the latter is enabled.</simpara>
+</section>
+<section id="_pre_applypatch">
+<title>pre-applypatch</title>
+<simpara>This hook is invoked by <emphasis>git am</emphasis>.  It takes no parameter, and is
+invoked after the patch is applied, but before a commit is made.</simpara>
+<simpara>If it exits with non-zero status, then the working tree will not be
+committed after applying the patch.</simpara>
+<simpara>It can be used to inspect the current working tree and refuse to
+make a commit if it does not pass certain test.</simpara>
+<simpara>The default <emphasis>pre-applypatch</emphasis> hook, when enabled, runs the
+<emphasis>pre-commit</emphasis> hook, if the latter is enabled.</simpara>
+</section>
+<section id="_post_applypatch">
+<title>post-applypatch</title>
+<simpara>This hook is invoked by <emphasis>git am</emphasis>.  It takes no parameter,
+and is invoked after the patch is applied and a commit is made.</simpara>
+<simpara>This hook is meant primarily for notification, and cannot affect
+the outcome of <emphasis>git am</emphasis>.</simpara>
+</section>
+<section id="_pre_commit">
+<title>pre-commit</title>
+<simpara>This hook is invoked by <emphasis>git commit</emphasis>, and can be bypassed
+with <emphasis>--no-verify</emphasis> option.  It takes no parameter, and is
+invoked before obtaining the proposed commit log message and
+making a commit.  Exiting with non-zero status from this script
+causes the <emphasis>git commit</emphasis> to abort.</simpara>
+<simpara>The default <emphasis>pre-commit</emphasis> hook, when enabled, catches introduction
+of lines with trailing whitespaces and aborts the commit when
+such a line is found.</simpara>
+<simpara>All the <emphasis>git commit</emphasis> hooks are invoked with the environment
+variable <emphasis>GIT_EDITOR=:</emphasis> if the command will not bring up an editor
+to modify the commit message.</simpara>
+</section>
+<section id="_prepare_commit_msg">
+<title>prepare-commit-msg</title>
+<simpara>This hook is invoked by <emphasis>git commit</emphasis> right after preparing the
+default log message, and before the editor is started.</simpara>
+<simpara>It takes one to three parameters.  The first is the name of the file
+that contains the commit log message.  The second is the source of the commit
+message, and can be: <emphasis>message</emphasis> (if a <emphasis>-m</emphasis> or <emphasis>-F</emphasis> option was
+given); <emphasis>template</emphasis> (if a <emphasis>-t</emphasis> option was given or the
+configuration option <emphasis>commit.template</emphasis> is set); <emphasis>merge</emphasis> (if the
+commit is a merge or a <emphasis>.git/MERGE_MSG</emphasis> file exists); <emphasis>squash</emphasis>
+(if a <emphasis>.git/SQUASH_MSG</emphasis> file exists); or <emphasis>commit</emphasis>, followed by
+a commit SHA1 (if a <emphasis>-c</emphasis>, <emphasis>-C</emphasis> or <emphasis>--amend</emphasis> option was given).</simpara>
+<simpara>If the exit status is non-zero, <emphasis>git commit</emphasis> will abort.</simpara>
+<simpara>The purpose of the hook is to edit the message file in place, and
+it is not suppressed by the <emphasis>--no-verify</emphasis> option.  A non-zero exit
+means a failure of the hook and aborts the commit.  It should not
+be used as replacement for pre-commit hook.</simpara>
+<simpara>The sample <emphasis>prepare-commit-msg</emphasis> hook that comes with git comments
+out the <emphasis>Conflicts:</emphasis> part of a merge's commit message.</simpara>
+</section>
+<section id="_commit_msg">
+<title>commit-msg</title>
+<simpara>This hook is invoked by <emphasis>git commit</emphasis>, and can be bypassed
+with <emphasis>--no-verify</emphasis> option.  It takes a single parameter, the
+name of the file that holds the proposed commit log message.
+Exiting with non-zero status causes the <emphasis>git commit</emphasis> to
+abort.</simpara>
+<simpara>The hook is allowed to edit the message file in place, and can
+be used to normalize the message into some project standard
+format (if the project has one). It can also be used to refuse
+the commit after inspecting the message file.</simpara>
+<simpara>The default <emphasis>commit-msg</emphasis> hook, when enabled, detects duplicate
+"Signed-off-by" lines, and aborts the commit if one is found.</simpara>
+</section>
+<section id="_post_commit">
+<title>post-commit</title>
+<simpara>This hook is invoked by <emphasis>git commit</emphasis>.  It takes no
+parameter, and is invoked after a commit is made.</simpara>
+<simpara>This hook is meant primarily for notification, and cannot affect
+the outcome of <emphasis>git commit</emphasis>.</simpara>
+</section>
+<section id="_pre_rebase">
+<title>pre-rebase</title>
+<simpara>This hook is called by <emphasis>git rebase</emphasis> and can be used to prevent a branch
+from getting rebased.</simpara>
+</section>
+<section id="_post_checkout">
+<title>post-checkout</title>
+<simpara>This hook is invoked when a <emphasis>git checkout</emphasis> is run after having updated the
+worktree.  The hook is given three parameters: the ref of the previous HEAD,
+the ref of the new HEAD (which may or may not have changed), and a flag
+indicating whether the checkout was a branch checkout (changing branches,
+flag=1) or a file checkout (retrieving a file from the index, flag=0).
+This hook cannot affect the outcome of <emphasis>git checkout</emphasis>.</simpara>
+<simpara>It is also run after <emphasis>git clone</emphasis>, unless the --no-checkout (-n) option is
+used. The first parameter given to the hook is the null-ref, the second the
+ref of the new HEAD and the flag is always 1.</simpara>
+<simpara>This hook can be used to perform repository validity checks, auto-display
+differences from the previous HEAD if different, or set working dir metadata
+properties.</simpara>
+</section>
+<section id="_post_merge">
+<title>post-merge</title>
+<simpara>This hook is invoked by <emphasis>git merge</emphasis>, which happens when a <emphasis>git pull</emphasis>
+is done on a local repository.  The hook takes a single parameter, a status
+flag specifying whether or not the merge being done was a squash merge.
+This hook cannot affect the outcome of <emphasis>git merge</emphasis> and is not executed,
+if the merge failed due to conflicts.</simpara>
+<simpara>This hook can be used in conjunction with a corresponding pre-commit hook to
+save and restore any form of metadata associated with the working tree
+(eg: permissions/ownership, ACLS, etc).  See contrib/hooks/setgitperms.perl
+for an example of how to do this.</simpara>
+</section>
+<section id="pre-receive">
+<title>pre-receive</title>
+<simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
+which happens when a <emphasis>git push</emphasis> is done on a local repository.
+Just before starting to update refs on the remote repository, the
+pre-receive hook is invoked.  Its exit status determines the success
+or failure of the update.</simpara>
+<simpara>This hook executes once for the receive operation. It takes no
+arguments, but for each ref to be updated it receives on standard
+input a line of the format:</simpara>
+<literallayout class="monospaced">&lt;old-value&gt; SP &lt;new-value&gt; SP &lt;ref-name&gt; LF</literallayout>
+<simpara>where <emphasis>&lt;old-value&gt;</emphasis> is the old object name stored in the ref,
+<emphasis>&lt;new-value&gt;</emphasis> is the new object name to be stored in the ref and
+<emphasis>&lt;ref-name&gt;</emphasis> is the full name of the ref.
+When creating a new ref, <emphasis>&lt;old-value&gt;</emphasis> is 40 <emphasis>0</emphasis>.</simpara>
+<simpara>If the hook exits with non-zero status, none of the refs will be
+updated. If the hook exits with zero, updating of individual refs can
+still be prevented by the <link linkend="update"><emphasis>update</emphasis></link> hook.</simpara>
+<simpara>Both standard output and standard error output are forwarded to
+<emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
+for the user.</simpara>
+</section>
+<section id="update">
+<title>update</title>
+<simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
+which happens when a <emphasis>git push</emphasis> is done on a local repository.
+Just before updating the ref on the remote repository, the update hook
+is invoked.  Its exit status determines the success or failure of
+the ref update.</simpara>
+<simpara>The hook executes once for each ref to be updated, and takes
+three parameters:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+the name of the ref being updated,
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the old object name stored in the ref,
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+and the new objectname to be stored in the ref.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>A zero exit from the update hook allows the ref to be updated.
+Exiting with a non-zero status prevents <emphasis>git-receive-pack</emphasis>
+from updating that ref.</simpara>
+<simpara>This hook can be used to prevent <emphasis>forced</emphasis> update on certain refs by
+making sure that the object name is a commit object that is a
+descendant of the commit object named by the old object name.
+That is, to enforce a "fast-forward only" policy.</simpara>
+<simpara>It could also be used to log the old..new status.  However, it
+does not know the entire set of branches, so it would end up
+firing one e-mail per ref when used naively, though.  The
+<link linkend="post-receive"><emphasis>post-receive</emphasis></link> hook is more suited to that.</simpara>
+<simpara>Another use suggested on the mailing list is to use this hook to
+implement access control which is finer grained than the one
+based on filesystem group.</simpara>
+<simpara>Both standard output and standard error output are forwarded to
+<emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
+for the user.</simpara>
+<simpara>The default <emphasis>update</emphasis> hook, when enabled--and with
+<emphasis>hooks.allowunannotated</emphasis> config option unset or set to false--prevents
+unannotated tags to be pushed.</simpara>
+</section>
+<section id="post-receive">
+<title>post-receive</title>
+<simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
+which happens when a <emphasis>git push</emphasis> is done on a local repository.
+It executes on the remote repository once after all the refs have
+been updated.</simpara>
+<simpara>This hook executes once for the receive operation.  It takes no
+arguments, but gets the same information as the
+<link linkend="pre-receive"><emphasis>pre-receive</emphasis></link>
+hook does on its standard input.</simpara>
+<simpara>This hook does not affect the outcome of <emphasis>git-receive-pack</emphasis>, as it
+is called after the real work is done.</simpara>
+<simpara>This supersedes the <link linkend="post-update"><emphasis>post-update</emphasis></link> hook in that it gets
+both old and new values of all the refs in addition to their
+names.</simpara>
+<simpara>Both standard output and standard error output are forwarded to
+<emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
+for the user.</simpara>
+<simpara>The default <emphasis>post-receive</emphasis> hook is empty, but there is
+a sample script <emphasis>post-receive-email</emphasis> provided in the <emphasis>contrib/hooks</emphasis>
+directory in git distribution, which implements sending commit
+emails.</simpara>
+</section>
+<section id="post-update">
+<title>post-update</title>
+<simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
+which happens when a <emphasis>git push</emphasis> is done on a local repository.
+It executes on the remote repository once after all the refs have
+been updated.</simpara>
+<simpara>It takes a variable number of parameters, each of which is the
+name of ref that was actually updated.</simpara>
+<simpara>This hook is meant primarily for notification, and cannot affect
+the outcome of <emphasis>git-receive-pack</emphasis>.</simpara>
+<simpara>The <emphasis>post-update</emphasis> hook can tell what are the heads that were pushed,
+but it does not know what their original and updated values are,
+so it is a poor place to do log old..new. The
+<link linkend="post-receive"><emphasis>post-receive</emphasis></link> hook does get both original and
+updated values of the refs. You might consider it instead if you need
+them.</simpara>
+<simpara>When enabled, the default <emphasis>post-update</emphasis> hook runs
+<emphasis>git update-server-info</emphasis> to keep the information used by dumb
+transports (e.g., HTTP) up-to-date.  If you are publishing
+a git repository that is accessible via HTTP, you should
+probably enable this hook.</simpara>
+<simpara>Both standard output and standard error output are forwarded to
+<emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
+for the user.</simpara>
+</section>
+<section id="_pre_auto_gc">
+<title>pre-auto-gc</title>
+<simpara>This hook is invoked by <emphasis>git gc --auto</emphasis>. It takes no parameter, and
+exiting with non-zero status from this script causes the <emphasis>git gc --auto</emphasis>
+to abort.</simpara>
+</section>
+<section id="_post_rewrite">
+<title>post-rewrite</title>
+<simpara>This hook is invoked by commands that rewrite commits (<emphasis>git commit
+--amend</emphasis>, <emphasis>git-rebase</emphasis>; currently <emphasis>git-filter-branch</emphasis> does <emphasis>not</emphasis> call
+it!).  Its first argument denotes the command it was invoked by:
+currently one of <emphasis>amend</emphasis> or <emphasis>rebase</emphasis>.  Further command-dependent
+arguments may be passed in the future.</simpara>
+<simpara>The hook receives a list of the rewritten commits on stdin, in the
+format</simpara>
+<literallayout class="monospaced">&lt;old-sha1&gt; SP &lt;new-sha1&gt; [ SP &lt;extra-info&gt; ] LF</literallayout>
+<simpara>The <emphasis>extra-info</emphasis> is again command-dependent.  If it is empty, the
+preceding SP is also omitted.  Currently, no commands pass any
+<emphasis>extra-info</emphasis>.</simpara>
+<simpara>The hook always runs after the automatic note copying (see
+"notes.rewrite.&lt;command&gt;" in linkgit:git-config.txt) has happened, and
+thus has access to these notes.</simpara>
+<simpara>The following command-specific comments apply:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+rebase
+</term>
+<listitem>
+<simpara>
+        For the <emphasis>squash</emphasis> and <emphasis>fixup</emphasis> operation, all commits that were
+        squashed are listed as being rewritten to the squashed commit.
+        This means that there will be several lines sharing the same
+        <emphasis>new-sha1</emphasis>.
+</simpara>
+<simpara>The commits are guaranteed to be listed in the order that they were
+processed by rebase.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-mergetool&#45;&#45;lib(1)">
+<articleinfo>
+    <title>git-mergetool&#45;&#45;lib(1)</title>
+<indexterm>
+<primary>git-mergetool&#45;&#45;lib(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-mergetool--lib - Common git merge tool shell scriptlets</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>TOOL_MODE=(diff|merge) . "$(git --exec-path)/git-mergetool&#45;&#45;lib"</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This is not a command the end user would want to run.  Ever.
+This documentation is meant for people who are studying the
+Porcelain-ish scripts and/or are writing new ones.</simpara>
+<simpara>The <emphasis>git-mergetool&#45;&#45;lib</emphasis> scriptlet is designed to be sourced (using
+<emphasis>.</emphasis>) by other shell scripts to set up functions for working
+with git merge tools.</simpara>
+<simpara>Before sourcing <emphasis>git-mergetool&#45;&#45;lib</emphasis>, your script must set <emphasis>TOOL_MODE</emphasis>
+to define the operation mode for the functions listed below.
+<emphasis>diff</emphasis> and <emphasis>merge</emphasis> are valid values.</simpara>
+</simplesect>
+<simplesect id="_functions">
+<title>FUNCTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+get_merge_tool
+</term>
+<listitem>
+<simpara>
+        returns a merge tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+get_merge_tool_cmd
+</term>
+<listitem>
+<simpara>
+        returns the custom command for a merge tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+get_merge_tool_path
+</term>
+<listitem>
+<simpara>
+        returns the custom path for a merge tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+run_merge_tool
+</term>
+<listitem>
+<simpara>
+        launches a merge tool given the tool name and a true/false
+        flag to indicate whether a merge base is present.
+        <emphasis>$MERGED</emphasis>, <emphasis>$LOCAL</emphasis>, <emphasis>$REMOTE</emphasis>, and <emphasis>$BASE</emphasis> must be defined
+        for use by the merge tool.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

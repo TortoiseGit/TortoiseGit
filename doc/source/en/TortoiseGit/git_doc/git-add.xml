@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-add(1)">
+<articleinfo>
+    <title>git-add(1)</title>
+<indexterm>
+<primary>git-add(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-add - Add file contents to the index</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git add</emphasis> [-n] [-v] [--force | -f] [--interactive | -i] [--patch | -p]
+          [--edit | -e] [--all | [--update | -u]] [--intent-to-add | -N]
+          [--refresh] [--ignore-errors] [--ignore-missing] [--]
+          [&lt;filepattern&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This command updates the index using the current content found in
+the working tree, to prepare the content staged for the next commit.
+It typically adds the current content of existing paths as a whole,
+but with some options it can also be used to add content with
+only part of the changes made to the working tree files applied, or
+remove paths that do not exist in the working tree anymore.</simpara>
+<simpara>The "index" holds a snapshot of the content of the working tree, and it
+is this snapshot that is taken as the contents of the next commit.  Thus
+after making any changes to the working directory, and before running
+the commit command, you must use the <emphasis>add</emphasis> command to add any new or
+modified files to the index.</simpara>
+<simpara>This command can be performed multiple times before a commit.  It only
+adds the content of the specified file(s) at the time the add command is
+run; if you want subsequent changes included in the next commit, then
+you must run <emphasis>git add</emphasis> again to add the new content to the index.</simpara>
+<simpara>The <emphasis>git status</emphasis> command can be used to obtain a summary of which
+files have changes that are staged for the next commit.</simpara>
+<simpara>The <emphasis>git add</emphasis> command will not add ignored files by default.  If any
+ignored files were explicitly specified on the command line, <emphasis>git add</emphasis>
+will fail with a list of ignored files.  Ignored files reached by
+directory recursion or filename globbing performed by Git (quote your
+globs before the shell) will be silently ignored.  The <emphasis>git add</emphasis> command can
+be used to add ignored files with the <emphasis>-f</emphasis> (force) option.</simpara>
+<simpara>Please see <xref linkend="git-commit(1)" /> for alternative ways to add content to a
+commit.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;filepattern&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Files to add content from.  Fileglobs (e.g. <emphasis>*.c</emphasis>) can
+        be given to add all matching files.  Also a
+        leading directory name (e.g. <emphasis>dir</emphasis> to add <emphasis>dir/file1</emphasis>
+        and <emphasis>dir/file2</emphasis>) can be given to add all files in the
+        directory, recursively.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Don't actually add the file(s), just show if they exist and/or will
+        be ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Be verbose.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Allow adding otherwise ignored files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-i
+</term>
+<term>
+--interactive
+</term>
+<listitem>
+<simpara>
+        Add modified contents in the working tree interactively to
+        the index. Optional path arguments may be supplied to limit
+        operation to a subset of the working tree. See Interactive
+        mode for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<term>
+--patch
+</term>
+<listitem>
+<simpara>
+        Interactively choose hunks of patch between the index and the
+        work tree and add them to the index. This gives the user a chance
+        to review the difference before adding modified contents to the
+        index.
+</simpara>
+<simpara>This effectively runs <emphasis>add --interactive</emphasis>, but bypasses the
+initial command menu and directly jumps to the <emphasis>patch</emphasis> subcommand.
+See Interactive mode for details.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-e, --edit
+</term>
+<listitem>
+<simpara>
+        Open the diff vs. the index in an editor and let the user
+        edit it.  After the editor was closed, adjust the hunk headers
+        and apply the patch to the index.
+</simpara>
+<simpara>The intent of this option is to pick and choose lines of the patch to
+apply, or even to modify the contents of lines to be staged. This can be
+quicker and more flexible than using the interactive hunk selector.
+However, it is easy to confuse oneself and create a patch that does not
+apply to the index. See EDITING PATCHES below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u
+</term>
+<term>
+--update
+</term>
+<listitem>
+<simpara>
+        Only match &lt;filepattern&gt; against already tracked files in
+        the index rather than the working tree. That means that it
+        will never stage new files, but that it will stage modified
+        new contents of tracked files and that it will remove files
+        from the index if the corresponding files in the working tree
+        have been removed.
+</simpara>
+<simpara>If no &lt;filepattern&gt; is given, default to "."; in other words,
+update all tracked files in the current directory and its
+subdirectories.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-A
+</term>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Like <emphasis>-u</emphasis>, but match &lt;filepattern&gt; against files in the
+        working tree in addition to the index. That means that it
+        will find new files as well as staging modified content and
+        removing files that are no longer in the working tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-N
+</term>
+<term>
+--intent-to-add
+</term>
+<listitem>
+<simpara>
+        Record only the fact that the path will be added later. An entry
+        for the path is placed in the index with no content. This is
+        useful for, among other things, showing the unstaged content of
+        such files with <emphasis>git diff</emphasis> and committing them with <emphasis>git commit
+        -a</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--refresh
+</term>
+<listitem>
+<simpara>
+        Don't add the file(s), but only refresh their stat()
+        information in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-errors
+</term>
+<listitem>
+<simpara>
+        If some files could not be added because of errors indexing
+        them, do not abort the operation, but continue adding the
+        others. The command shall still exit with non-zero status.
+        The configuration variable <emphasis>add.ignoreErrors</emphasis> can be set to
+        true to make this the default behaviour.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-missing
+</term>
+<listitem>
+<simpara>
+        This option can only be used together with --dry-run. By using
+        this option the user can check if any of the given files would
+        be ignored, no matter if they are already present in the work
+        tree or not.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        This option can be used to separate command-line options from
+        the list of files, (useful when filenames might be mistaken
+        for command-line options).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>Configuration</title>
+<simpara>The optional configuration variable <emphasis>core.excludesfile</emphasis> indicates a path to a
+file containing patterns of file names to exclude from git-add, similar to
+$GIT_DIR/info/exclude.  Patterns in the exclude file are used in addition to
+those in info/exclude.  See <xref linkend="gitrepository-layout(5)" />.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Adds content from all <emphasis>*.txt</emphasis> files under <emphasis>Documentation</emphasis> directory
+and its subdirectories:
+</simpara>
+<screen>$ git add Documentation/\*.txt</screen>
+<simpara>Note that the asterisk <emphasis>*</emphasis> is quoted from the shell in this
+example; this lets the command include the files from
+subdirectories of <emphasis>Documentation/</emphasis> directory.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Considers adding content from all git-*.sh scripts:
+</simpara>
+<screen>$ git add git-*.sh</screen>
+<simpara>Because this example lets the shell expand the asterisk (i.e. you are
+listing the files explicitly), it does not consider
+<emphasis>subdir/git-foo.sh</emphasis>.</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_interactive_mode">
+<title>Interactive mode</title>
+<simpara>When the command enters the interactive mode, it shows the
+output of the <emphasis>status</emphasis> subcommand, and then goes into its
+interactive command loop.</simpara>
+<simpara>The command loop shows the list of subcommands available, and
+gives a prompt "What now&gt; ".  In general, when the prompt ends
+with a single <emphasis>&gt;</emphasis>, you can pick only one of the choices given
+and type return, like this:</simpara>
+<screen>    *** Commands ***
+      1: status       2: update       3: revert       4: add untracked
+      5: patch        6: diff         7: quit         8: help
+    What now&gt; 1</screen>
+<simpara>You also could say <emphasis>s</emphasis> or <emphasis>sta</emphasis> or <emphasis>status</emphasis> above as long as the
+choice is unique.</simpara>
+<simpara>The main command loop has 6 subcommands (plus help and quit).</simpara>
+<variablelist>
+<varlistentry>
+<term>
+status
+</term>
+<listitem>
+<simpara>
+   This shows the change between HEAD and index (i.e. what will be
+   committed if you say <emphasis>git commit</emphasis>), and between index and
+   working tree files (i.e. what you could stage further before
+   <emphasis>git commit</emphasis> using <emphasis>git add</emphasis>) for each path.  A sample output
+   looks like this:
+</simpara>
+<screen>              staged     unstaged path
+     1:       binary      nothing foo.png
+     2:     +403/-35        +1/-1 git-add--interactive.perl</screen>
+<simpara>It shows that foo.png has differences from HEAD (but that is
+binary so line count cannot be shown) and there is no
+difference between indexed copy and the working tree
+version (if the working tree version were also different,
+<emphasis>binary</emphasis> would have been shown in place of <emphasis>nothing</emphasis>).  The
+other file, git-add&#45;&#45;interactive.perl, has 403 lines added
+and 35 lines deleted if you commit what is in the index, but
+working tree file has further modifications (one addition and
+one deletion).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+update
+</term>
+<listitem>
+<simpara>
+   This shows the status information and issues an "Update&gt;&gt;"
+   prompt.  When the prompt ends with double <emphasis>&gt;&gt;</emphasis>, you can
+   make more than one selection, concatenated with whitespace or
+   comma.  Also you can say ranges.  E.g. "2-5 7,9" to choose
+   2,3,4,5,7,9 from the list.  If the second number in a range is
+   omitted, all remaining patches are taken.  E.g. "7-" to choose
+   7,8,9 from the list.  You can say <emphasis>*</emphasis> to choose everything.
+</simpara>
+<simpara>What you chose are then highlighted with <emphasis>*</emphasis>,
+like this:</simpara>
+<screen>           staged     unstaged path
+  1:       binary      nothing foo.png
+* 2:     +403/-35        +1/-1 git-add--interactive.perl</screen>
+<simpara>To remove selection, prefix the input with <emphasis>-</emphasis>
+like this:</simpara>
+<screen>Update&gt;&gt; -2</screen>
+<simpara>After making the selection, answer with an empty line to stage the
+contents of working tree files for selected paths in the index.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+revert
+</term>
+<listitem>
+<simpara>
+  This has a very similar UI to <emphasis>update</emphasis>, and the staged
+  information for selected paths are reverted to that of the
+  HEAD version.  Reverting new paths makes them untracked.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+add untracked
+</term>
+<listitem>
+<simpara>
+  This has a very similar UI to <emphasis>update</emphasis> and
+  <emphasis>revert</emphasis>, and lets you add untracked paths to the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+patch
+</term>
+<listitem>
+<simpara>
+  This lets you choose one path out of a <emphasis>status</emphasis> like selection.
+  After choosing the path, it presents the diff between the index
+  and the working tree file and asks you if you want to stage
+  the change of each hunk.  You can select one of the following
+  options and type return:
+</simpara>
+<literallayout class="monospaced">y - stage this hunk
+n - do not stage this hunk
+q - quit; do not stage this hunk nor any of the remaining ones
+a - stage this hunk and all later hunks in the file
+d - do not stage this hunk nor any of the later hunks in the file
+g - select a hunk to go to
+/ - search for a hunk matching the given regex
+j - leave this hunk undecided, see next undecided hunk
+J - leave this hunk undecided, see next hunk
+k - leave this hunk undecided, see previous undecided hunk
+K - leave this hunk undecided, see previous hunk
+s - split the current hunk into smaller hunks
+e - manually edit the current hunk
+? - print help</literallayout>
+<simpara>After deciding the fate for all hunks, if there is any hunk
+that was chosen, the index is updated with the selected hunks.</simpara>
+<simpara>You can omit having to type return here, by setting the configuration
+variable <emphasis>interactive.singlekey</emphasis> to <emphasis>true</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff
+</term>
+<listitem>
+<simpara>
+  This lets you review what will be committed (i.e. between
+  HEAD and index).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_editing_patches">
+<title>EDITING PATCHES</title>
+<simpara>Invoking <emphasis>git add -e</emphasis> or selecting <emphasis>e</emphasis> from the interactive hunk
+selector will open a patch in your editor; after the editor exits, the
+result is applied to the index. You are free to make arbitrary changes
+to the patch, but note that some changes may have confusing results, or
+even result in a patch that cannot be applied.  If you want to abort the
+operation entirely (i.e., stage nothing new in the index), simply delete
+all lines of the patch. The list below describes some common things you
+may see in a patch, and which editing operations make sense on them.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+added content
+</term>
+<listitem>
+<simpara>
+Added content is represented by lines beginning with "&#43;". You can
+prevent staging any addition lines by deleting them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+removed content
+</term>
+<listitem>
+<simpara>
+Removed content is represented by lines beginning with "-". You can
+prevent staging their removal by converting the "-" to a " " (space).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+modified content
+</term>
+<listitem>
+<simpara>
+Modified content is represented by "-" lines (removing the old content)
+followed by "&#43;" lines (adding the replacement content). You can
+prevent staging the modification by converting "-" lines to " ", and
+removing "&#43;" lines. Beware that modifying only half of the pair is
+likely to introduce confusing changes to the index.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>There are also more complex operations that can be performed. But beware
+that because the patch is applied only to the index and not the working
+tree, the working tree will appear to "undo" the change in the index.
+For example, introducing a new line into the index that is in neither
+the HEAD nor the working tree will stage the new line for commit, but
+the line will appear to be reverted in the working tree.</simpara>
+<simpara>Avoid using these constructs, or do so with extreme caution.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+removing untouched content
+</term>
+<listitem>
+<simpara>
+Content which does not differ between the index and working tree may be
+shown on context lines, beginning with a " " (space).  You can stage
+context lines for removal by converting the space to a "-". The
+resulting working tree file will appear to re-add the content.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+modifying existing content
+</term>
+<listitem>
+<simpara>
+One can also modify context lines by staging them for removal (by
+converting " " to "-") and adding a "&#43;" line with the new content.
+Similarly, one can modify "&#43;" lines for existing additions or
+modifications. In all cases, the new modification will appear reverted
+in the working tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+new content
+</term>
+<listitem>
+<simpara>
+You may also add new content that does not exist in the patch; simply
+add new lines, each starting with "&#43;". The addition will appear
+reverted in the working tree.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>There are also several operations which should be avoided entirely, as
+they will make the patch impossible to apply:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+adding context (" ") or removal ("-") lines
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+deleting context or removal lines
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+modifying the contents of context or removal lines
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-status(1)" />
+<xref linkend="git-rm(1)" />
+<xref linkend="git-reset(1)" />
+<xref linkend="git-mv(1)" />
+<xref linkend="git-commit(1)" />
+<xref linkend="git-update-index(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

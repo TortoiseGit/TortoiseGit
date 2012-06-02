@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-upload-archive(1)">
+<articleinfo>
+    <title>git-upload-archive(1)</title>
+<indexterm>
+<primary>git-upload-archive(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-upload-archive - Send archive back to git-archive</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git upload-archive</emphasis> &lt;directory&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Invoked by <emphasis>git archive --remote</emphasis> and sends a generated archive to the
+other end over the git protocol.</simpara>
+<simpara>This command is usually not invoked directly by the end user.  The UI
+for the protocol is on the <emphasis>git archive</emphasis> side, and the program pair
+is meant to be used to get an archive from a remote repository.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;directory&gt;
+</term>
+<listitem>
+<simpara>
+        The repository to get a tar archive from.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

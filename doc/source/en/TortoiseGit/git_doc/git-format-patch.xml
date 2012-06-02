@@ -1,0 +1,1308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-format-patch(1)">
+<articleinfo>
+    <title>git-format-patch(1)</title>
+<indexterm>
+<primary>git-format-patch(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-format-patch - Prepare patches for e-mail submission</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git format-patch</emphasis> [-k] [(-o|--output-directory) &lt;dir&gt; | --stdout]
+                   [--no-thread | --thread[=&lt;style&gt;]]
+                   [(--attach|--inline)[=&lt;boundary&gt;] | --no-attach]
+                   [-s | --signoff]
+                   [--signature=&lt;signature&gt; | --no-signature]
+                   [-n | --numbered | -N | --no-numbered]
+                   [--start-number &lt;n&gt;] [--numbered-files]
+                   [--in-reply-to=Message-Id] [--suffix=.&lt;sfx&gt;]
+                   [--ignore-if-in-upstream]
+                   [--subject-prefix=Subject-Prefix]
+                   [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
+                   [--cover-letter] [--quiet]
+                   [&lt;common diff options&gt;]
+                   [ &lt;since&gt; | &lt;revision range&gt; ]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Prepare each commit with its patch in
+one file per commit, formatted to resemble UNIX mailbox format.
+The output of this command is convenient for e-mail submission or
+for use with <emphasis>git am</emphasis>.</simpara>
+<simpara>There are two ways to specify which commits to operate on.</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+A single commit, &lt;since&gt;, specifies that the commits leading
+   to the tip of the current branch that are not in the history
+   that leads to the &lt;since&gt; to be output.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Generic &lt;revision range&gt; expression (see "SPECIFYING
+   REVISIONS" section in <xref linkend="gitrevisions(7)" />) means the
+   commits in the specified range.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>The first rule takes precedence in the case of a single &lt;commit&gt;.  To
+apply the second rule, i.e., format everything since the beginning of
+history up until &lt;commit&gt;, use the <emphasis>--root</emphasis> option: <emphasis>git format-patch
+--root &lt;commit&gt;</emphasis>.  If you want to format only &lt;commit&gt; itself, you
+can do this with <emphasis>git format-patch -1 &lt;commit&gt;</emphasis>.</simpara>
+<simpara>By default, each output file is numbered sequentially from 1, and uses the
+first line of the commit message (massaged for pathname safety) as
+the filename. With the <emphasis>--numbered-files</emphasis> option, the output file names
+will only be numbers, without the first line of the commit appended.
+The names of the output files are printed to standard
+output, unless the <emphasis>--stdout</emphasis> option is specified.</simpara>
+<simpara>If <emphasis>-o</emphasis> is specified, output files are created in &lt;dir&gt;.  Otherwise
+they are created in the current working directory.</simpara>
+<simpara>By default, the subject of a single patch is "[PATCH] First Line" and
+the subject when multiple patches are output is "[PATCH n/m] First
+Line". To force 1/1 to be added for a single patch, use <emphasis>-n</emphasis>.  To omit
+patch numbers from the subject, use <emphasis>-N</emphasis>.</simpara>
+<simpara>If given <emphasis>--thread</emphasis>, <emphasis>git-format-patch</emphasis> will generate <emphasis>In-Reply-To</emphasis> and
+<emphasis>References</emphasis> headers to make the second and subsequent patch mails appear
+as replies to the first mail; this also generates a <emphasis>Message-Id</emphasis> header to
+reference.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-p
+</term>
+<term>
+--no-stat
+</term>
+<listitem>
+<simpara>
+        Generate plain patches without any diffstats.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-U&lt;n&gt;
+</term>
+<term>
+--unified=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Generate diffs with &lt;n&gt; lines of context instead of
+        the usual three.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--minimal
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible
+        diff is produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--patience
+</term>
+<listitem>
+<simpara>
+        Generate a diff using the "patience diff" algorithm.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--histogram
+</term>
+<listitem>
+<simpara>
+        Generate a diff using the "histogram diff" algorithm.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stat[=&lt;width&gt;[,&lt;name-width&gt;[,&lt;count&gt;]]]
+</term>
+<listitem>
+<simpara>
+        Generate a diffstat. By default, as much space as necessary
+        will be used for the filename part, and the rest for the graph
+        part. Maximum width defaults to terminal width, or 80 columns
+        if not connected to a terminal, and can be overriden by
+        <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
+        giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
+        of the graph part can be limited by using
+        <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> (affects all commands generating
+        a stat graph) or by setting <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>
+        (does not affect <emphasis>git format-patch</emphasis>).
+        By giving a third parameter <emphasis>&lt;count&gt;</emphasis>, you can limit the
+        output to the first <emphasis>&lt;count&gt;</emphasis> lines, followed by <emphasis>...</emphasis> if
+        there are more.
+</simpara>
+<simpara>These parameters can also be set individually with <emphasis>--stat-width=&lt;width&gt;</emphasis>,
+<emphasis>--stat-name-width=&lt;name-width&gt;</emphasis> and <emphasis>--stat-count=&lt;count&gt;</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--numstat
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>--stat</emphasis>, but shows number of added and
+        deleted lines in decimal notation and pathname without
+        abbreviation, to make it more machine friendly.  For
+        binary files, outputs two <emphasis>-</emphasis> instead of saying
+        <emphasis>0 0</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shortstat
+</term>
+<listitem>
+<simpara>
+        Output only the last line of the <emphasis>--stat</emphasis> format containing total
+        number of modified files, as well as number of added and deleted
+        lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dirstat[=&lt;param1,param2,&#8230;&gt;]
+</term>
+<listitem>
+<simpara>
+        Output the distribution of relative amount of changes for each
+        sub-directory. The behavior of <emphasis>--dirstat</emphasis> can be customized by
+        passing it a comma separated list of parameters.
+        The defaults are controlled by the <emphasis>diff.dirstat</emphasis> configuration
+        variable (see <xref linkend="git-config(1)" />).
+        The following parameters are available:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>changes</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the lines that have been
+        removed from the source, or added to the destination. This ignores
+        the amount of pure code movements within a file.  In other words,
+        rearranging lines in a file is not counted as much as other changes.
+        This is the default behavior when no parameter is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>lines</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by doing the regular line-based diff
+        analysis, and summing the removed/added line counts. (For binary
+        files, count 64-byte chunks instead, since binary files have no
+        natural concept of lines). This is a more expensive <emphasis>--dirstat</emphasis>
+        behavior than the <emphasis>changes</emphasis> behavior, but it does count rearranged
+        lines within a file as much as other changes. The resulting output
+        is consistent with what you get from the other <emphasis>--*stat</emphasis> options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>files</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the number of files changed.
+        Each changed file counts equally in the dirstat analysis. This is
+        the computationally cheapest <emphasis>--dirstat</emphasis> behavior, since it does
+        not have to look at the file contents at all.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>cumulative</emphasis>
+</term>
+<listitem>
+<simpara>
+        Count changes in a child directory for the parent directory as well.
+        Note that when using <emphasis>cumulative</emphasis>, the sum of the percentages
+        reported may exceed 100%. The default (non-cumulative) behavior can
+        be specified with the <emphasis>noncumulative</emphasis> parameter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;limit&gt;
+</term>
+<listitem>
+<simpara>
+        An integer parameter specifies a cut-off percent (3% by default).
+        Directories contributing less than this percentage of the changes
+        are not shown in the output.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Example: The following will count changed files, while ignoring
+directories with less than 10% of the total amount of changed files,
+and accumulating child directory counts in the parent directories:
+<emphasis>--dirstat=files,10,cumulative</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--summary
+</term>
+<listitem>
+<simpara>
+        Output a condensed summary of extended header information
+        such as creations, renames and mode changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-renames
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection, even when the configuration
+        file gives the default to do so.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full-index
+</term>
+<listitem>
+<simpara>
+        Instead of the first handful of characters, show the full
+        pre- and post-image blob object names on the "index"
+        line when generating patch format output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--binary
+</term>
+<listitem>
+<simpara>
+        In addition to <emphasis>--full-index</emphasis>, output a binary diff that
+        can be applied with <emphasis>git-apply</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abbrev[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Instead of showing the full 40-byte hexadecimal object
+        name in diff-raw format output and diff-tree header
+        lines, show only a partial prefix.  This is
+        independent of the <emphasis>--full-index</emphasis> option above, which controls
+        the diff-patch output format.  Non default number of
+        digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-B[&lt;n&gt;][/&lt;m&gt;]
+</term>
+<term>
+--break-rewrites[=[&lt;n&gt;][/&lt;m&gt;]]
+</term>
+<listitem>
+<simpara>
+        Break complete rewrite changes into pairs of delete and
+        create. This serves two purposes:
+</simpara>
+<simpara>It affects the way a change that amounts to a total rewrite of a file
+not as a series of deletion and insertion mixed together with a very
+few lines that happen to match textually as the context, but as a
+single deletion of everything old followed by a single insertion of
+everything new, and the number <emphasis>m</emphasis> controls this aspect of the -B
+option (defaults to 60%). <emphasis>-B/70%</emphasis> specifies that less than 30% of the
+original should remain in the result for git to consider it a total
+rewrite (i.e. otherwise the resulting patch will be a series of
+deletion and insertion mixed together with context lines).</simpara>
+<simpara>When used with -M, a totally-rewritten file is also considered as the
+source of a rename (usually -M only considers a file that disappeared
+as the source of a rename), and the number <emphasis>n</emphasis> controls this aspect of
+the -B option (defaults to 50%). <emphasis>-B20%</emphasis> specifies that a change with
+addition and deletion compared to 20% or more of the file's size are
+eligible for being picked up as a possible source of a rename to
+another file.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-M[&lt;n&gt;]
+</term>
+<term>
+--find-renames[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Detect renames.
+        If <emphasis>n</emphasis> is specified, it is a threshold on the similarity
+        index (i.e. amount of addition/deletions compared to the
+        file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
+        delete/add pair to be a rename if more than 90% of the file
+        hasn't changed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-C[&lt;n&gt;]
+</term>
+<term>
+--find-copies[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Detect copies as well as renames.  See also <emphasis>--find-copies-harder</emphasis>.
+        If <emphasis>n</emphasis> is specified, it has the same meaning as for <emphasis>-M&lt;n&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--find-copies-harder
+</term>
+<listitem>
+<simpara>
+        For performance reasons, by default, <emphasis>-C</emphasis> option finds copies only
+        if the original file of the copy was modified in the same
+        changeset.  This flag makes the command
+        inspect unmodified files as candidates for the source of
+        copy.  This is a very expensive operation for large
+        projects, so use it with caution.  Giving more than one
+        <emphasis>-C</emphasis> option has the same effect.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-D
+</term>
+<term>
+--irreversible-delete
+</term>
+<listitem>
+<simpara>
+        Omit the preimage for deletes, i.e. print only the header but not
+        the diff between the preimage and <emphasis>/dev/null</emphasis>. The resulting patch
+        is not meant to be applied with <emphasis>patch</emphasis> nor <emphasis>git apply</emphasis>; this is
+        solely for people who want to just concentrate on reviewing the
+        text after the change. In addition, the output obviously lack
+        enough information to apply such a patch in reverse, even manually,
+        hence the name of the option.
+</simpara>
+<simpara>When used together with <emphasis>-B</emphasis>, omit also the preimage in the deletion part
+of a delete/create pair.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l&lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        The <emphasis>-M</emphasis> and <emphasis>-C</emphasis> options require O(n^2) processing time where n
+        is the number of potential rename/copy targets.  This
+        option prevents rename/copy detection from running if
+        the number of rename/copy targets exceeds the specified
+        number.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-O&lt;orderfile&gt;
+</term>
+<listitem>
+<simpara>
+        Output the patch in the order specified in the
+        &lt;orderfile&gt;, which has one shell glob pattern per line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--text
+</term>
+<listitem>
+<simpara>
+        Treat all files as text.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-space-at-eol
+</term>
+<listitem>
+<simpara>
+        Ignore changes in whitespace at EOL.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b
+</term>
+<term>
+--ignore-space-change
+</term>
+<listitem>
+<simpara>
+        Ignore changes in amount of whitespace.  This ignores whitespace
+        at line end, and considers all other sequences of one or
+        more whitespace characters to be equivalent.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-w
+</term>
+<term>
+--ignore-all-space
+</term>
+<listitem>
+<simpara>
+        Ignore whitespace when comparing lines.  This ignores
+        differences even if one line has whitespace where the other
+        line has none.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--inter-hunk-context=&lt;lines&gt;
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified number
+        of lines, thereby fusing hunks that are close to each other.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-W
+</term>
+<term>
+--function-context
+</term>
+<listitem>
+<simpara>
+        Show whole surrounding functions of changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ext-diff
+</term>
+<listitem>
+<simpara>
+        Allow an external diff helper to be executed. If you set an
+        external diff driver with <xref linkend="gitattributes(5)" />, you need
+        to use this option with <xref linkend="git-log(1)" /> and friends.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-ext-diff
+</term>
+<listitem>
+<simpara>
+        Disallow external diff drivers.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--textconv
+</term>
+<term>
+--no-textconv
+</term>
+<listitem>
+<simpara>
+        Allow (or disallow) external text conversion filters to be run
+        when comparing binary files. See <xref linkend="gitattributes(5)" /> for
+        details. Because textconv filters are typically a one-way
+        conversion, the resulting diff is suitable for human
+        consumption, but cannot be applied. For this reason, textconv
+        filters are enabled by default only for <xref linkend="git-diff(1)" /> and
+        <xref linkend="git-log(1)" />, but not for <xref linkend="git-format-patch(1)" /> or
+        diff plumbing commands.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-submodules[=&lt;when&gt;]
+</term>
+<listitem>
+<simpara>
+        Ignore changes to submodules in the diff generation. &lt;when&gt; can be
+        either "none", "untracked", "dirty" or "all", which is the default
+        Using "none" will consider the submodule modified when it either contains
+        untracked or modified files or its HEAD differs from the commit recorded
+        in the superproject and can be used to override any settings of the
+        <emphasis>ignore</emphasis> option in <xref linkend="git-config(1)" /> or <xref linkend="gitmodules(5)" />. When
+        "untracked" is used submodules are not considered dirty when they only
+        contain untracked content (but they are still scanned for modified
+        content). Using "dirty" ignores all changes to the work tree of submodules,
+        only changes to the commits stored in the superproject are shown (this was
+        the behavior until 1.7.0). Using "all" hides all changes to submodules.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--src-prefix=&lt;prefix&gt;
+</term>
+<listitem>
+<simpara>
+        Show the given source prefix instead of "a/".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dst-prefix=&lt;prefix&gt;
+</term>
+<listitem>
+<simpara>
+        Show the given destination prefix instead of "b/".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-prefix
+</term>
+<listitem>
+<simpara>
+        Do not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>For more detailed explanation on these common options, see also
+<xref linkend="gitdiffcore(7)" />.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Prepare patches from the topmost &lt;n&gt; commits.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-o &lt;dir&gt;
+</term>
+<term>
+--output-directory &lt;dir&gt;
+</term>
+<listitem>
+<simpara>
+        Use &lt;dir&gt; to store the resulting files, instead of the
+        current working directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--numbered
+</term>
+<listitem>
+<simpara>
+        Name output in <emphasis>[PATCH n/m]</emphasis> format, even with a single patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-N
+</term>
+<term>
+--no-numbered
+</term>
+<listitem>
+<simpara>
+        Name output in <emphasis>[PATCH]</emphasis> format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--start-number &lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Start numbering the patches at &lt;n&gt; instead of 1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--numbered-files
+</term>
+<listitem>
+<simpara>
+        Output file names will be a simple number sequence
+        without the default first line of the commit appended.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-k
+</term>
+<term>
+--keep-subject
+</term>
+<listitem>
+<simpara>
+        Do not strip/add <emphasis>[PATCH]</emphasis> from the first line of the
+        commit log message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--signoff
+</term>
+<listitem>
+<simpara>
+        Add <emphasis>Signed-off-by:</emphasis> line to the commit message, using
+        the committer identity of yourself.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdout
+</term>
+<listitem>
+<simpara>
+        Print all commits to the standard output in mbox format,
+        instead of creating a file for each one.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--attach[=&lt;boundary&gt;]
+</term>
+<listitem>
+<simpara>
+        Create multipart/mixed attachment, the first part of
+        which is the commit message and the patch itself in the
+        second part, with <emphasis>Content-Disposition: attachment</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-attach
+</term>
+<listitem>
+<simpara>
+        Disable the creation of an attachment, overriding the
+        configuration setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--inline[=&lt;boundary&gt;]
+</term>
+<listitem>
+<simpara>
+        Create multipart/mixed attachment, the first part of
+        which is the commit message and the patch itself in the
+        second part, with <emphasis>Content-Disposition: inline</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--thread[=&lt;style&gt;]
+</term>
+<term>
+--no-thread
+</term>
+<listitem>
+<simpara>
+        Controls addition of <emphasis>In-Reply-To</emphasis> and <emphasis>References</emphasis> headers to
+        make the second and subsequent mails appear as replies to the
+        first.  Also controls generation of the <emphasis>Message-Id</emphasis> header to
+        reference.
+</simpara>
+<simpara>The optional &lt;style&gt; argument can be either <emphasis>shallow</emphasis> or <emphasis>deep</emphasis>.
+<emphasis>shallow</emphasis> threading makes every mail a reply to the head of the
+series, where the head is chosen from the cover letter, the
+<emphasis>--in-reply-to</emphasis>, and the first patch mail, in this order.  <emphasis>deep</emphasis>
+threading makes every mail a reply to the previous one.</simpara>
+<simpara>The default is <emphasis>--no-thread</emphasis>, unless the <emphasis>format.thread</emphasis> configuration
+is set.  If <emphasis>--thread</emphasis> is specified without a style, it defaults to the
+style specified by <emphasis>format.thread</emphasis> if any, or else <emphasis>shallow</emphasis>.</simpara>
+<simpara>Beware that the default for <emphasis>git send-email</emphasis> is to thread emails
+itself.  If you want <emphasis>git format-patch</emphasis> to take care of threading, you
+will want to ensure that threading is disabled for <emphasis>git send-email</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--in-reply-to=Message-Id
+</term>
+<listitem>
+<simpara>
+        Make the first mail (or all the mails with <emphasis>--no-thread</emphasis>) appear as a
+        reply to the given Message-Id, which avoids breaking threads to
+        provide a new patch series.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-if-in-upstream
+</term>
+<listitem>
+<simpara>
+        Do not include a patch that matches a commit in
+        &lt;until&gt;..&lt;since&gt;.  This will examine all patches reachable
+        from &lt;since&gt; but not from &lt;until&gt; and compare them with the
+        patches being generated, and any patch that matches is
+        ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--subject-prefix=&lt;Subject-Prefix&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of the standard <emphasis>[PATCH]</emphasis> prefix in the subject
+        line, instead use <emphasis>[&lt;Subject-Prefix&gt;]</emphasis>. This
+        allows for useful naming of a patch series, and can be
+        combined with the <emphasis>--numbered</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--to=&lt;email&gt;
+</term>
+<listitem>
+<simpara>
+        Add a <emphasis>To:</emphasis> header to the email headers. This is in addition
+        to any configured headers, and may be used multiple times.
+        The negated form <emphasis>--no-to</emphasis> discards all <emphasis>To:</emphasis> headers added so
+        far (from config or command line).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cc=&lt;email&gt;
+</term>
+<listitem>
+<simpara>
+        Add a <emphasis>Cc:</emphasis> header to the email headers. This is in addition
+        to any configured headers, and may be used multiple times.
+        The negated form <emphasis>--no-cc</emphasis> discards all <emphasis>Cc:</emphasis> headers added so
+        far (from config or command line).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--add-header=&lt;header&gt;
+</term>
+<listitem>
+<simpara>
+        Add an arbitrary header to the email headers.  This is in addition
+        to any configured headers, and may be used multiple times.
+        For example, <emphasis>--add-header="Organization: git-foo"</emphasis>.
+        The negated form <emphasis>--no-add-header</emphasis> discards <emphasis role="strong">all</emphasis> (<emphasis>To:</emphasis>,
+        <emphasis>Cc:</emphasis>, and custom) headers added so far from config or command
+        line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cover-letter
+</term>
+<listitem>
+<simpara>
+        In addition to the patches, generate a cover letter file
+        containing the shortlog and the overall diffstat.  You can
+        fill in a description in the file before sending it out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no]-signature=&lt;signature&gt;
+</term>
+<listitem>
+<simpara>
+        Add a signature to each message produced. Per RFC 3676 the signature
+        is separated from the body by a line with '-- ' on it. If the
+        signature option is omitted the signature defaults to the git version
+        number.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--suffix=.&lt;sfx&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of using <emphasis>.patch</emphasis> as the suffix for generated
+        filenames, use specified suffix.  A common alternative is
+        <emphasis>--suffix=.txt</emphasis>.  Leaving this empty will remove the <emphasis>.patch</emphasis>
+        suffix.
+</simpara>
+<simpara>Note that the leading character does not have to be a dot; for example,
+you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-description-of-my-change-patch</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Do not print the names of the generated files to standard output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-binary
+</term>
+<listitem>
+<simpara>
+        Do not output contents of changes in binary files, instead
+        display a notice that those files changed.  Patches generated
+        using this option cannot be applied properly, but they are
+        still useful for code review.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--root
+</term>
+<listitem>
+<simpara>
+        Treat the revision argument as a &lt;revision range&gt;, even if it
+        is just a single commit (that would normally be treated as a
+        &lt;since&gt;).  Note that root commits included in the specified
+        range are always formatted as creation patches, independently
+        of this flag.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<simpara>You can specify extra mail header lines to be added to each message,
+defaults for the subject prefix and file suffix, number patches when
+outputting more than one patch, add "To" or "Cc:" headers, configure
+attachments, and sign off patches with configuration variables.</simpara>
+<screen>[format]
+        headers = "Organization: git-foo\n"
+        subjectprefix = CHANGE
+        suffix = .txt
+        numbered = auto
+        to = &lt;email&gt;
+        cc = &lt;email&gt;
+        attach [ = mime-boundary-string ]
+        signoff = true</screen>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>The patch produced by <emphasis>git format-patch</emphasis> is in UNIX mailbox format,
+with a fixed "magic" time stamp to indicate that the file is output
+from format-patch rather than a real mailbox, like so:</simpara>
+<screen>From 8f72bad1baf19a53459661343e21d6491c3908d3 Mon Sep 17 00:00:00 2001
+From: Tony Luck &lt;tony.luck@intel.com&gt;
+Date: Tue, 13 Jul 2010 11:42:54 -0700
+Subject: [PATCH] =?UTF-8?q?[IA64]=20Put=20ia64=20config=20files=20on=20the=20?=
+ =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20diet?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+arch/arm config files were slimmed down using a python script
+(See commit c2330e286f68f1c408b4aa6515ba49d57f05beae comment)
+
+Do the same for ia64 so we can have sleek &amp; trim looking
+...</screen>
+<simpara>Typically it will be placed in a MUA's drafts folder, edited to add
+timely commentary that should not go in the changelog after the three
+dashes, and then sent as a message whose body, in our example, starts
+with "arch/arm config files were&#8230;".  On the receiving end, readers
+can save interesting patches in a UNIX mailbox and apply them with
+<xref linkend="git-am(1)" />.</simpara>
+<simpara>When a patch is part of an ongoing discussion, the patch generated by
+<emphasis>git format-patch</emphasis> can be tweaked to take advantage of the <emphasis>git am
+--scissors</emphasis> feature.  After your response to the discussion comes a
+line that consists solely of "<emphasis>-- &gt;8 --</emphasis>" (scissors and perforation),
+followed by the patch with unnecessary header fields removed:</simpara>
+<screen>...
+&gt; So we should do such-and-such.
+
+Makes sense to me.  How about this patch?
+
+-- &gt;8 --
+Subject: [IA64] Put ia64 config files on the Uwe Kleine-König diet
+
+arch/arm config files were slimmed down using a python script
+...</screen>
+<simpara>When sending a patch this way, most often you are sending your own
+patch, so in addition to the "<emphasis>From $SHA1 $magic_timestamp</emphasis>" marker you
+should omit <emphasis>From:</emphasis> and <emphasis>Date:</emphasis> lines from the patch file.  The patch
+title is likely to be different from the subject of the discussion the
+patch is in response to, so it is likely that you would want to keep
+the Subject: line, like the example above.</simpara>
+<section id="_checking_for_patch_corruption">
+<title>Checking for patch corruption</title>
+<simpara>Many mailers if not set up properly will corrupt whitespace.  Here are
+two common types of corruption:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Empty context lines that do not have <emphasis>any</emphasis> whitespace.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Non-empty context lines that have one extra whitespace at the
+  beginning.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>One way to test if your MUA is set up correctly is:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Send the patch to yourself, exactly the way you would, except
+  with To: and Cc: lines that do not contain the list and
+  maintainer address.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Save that patch to a file in UNIX mailbox format.  Call it a.patch,
+  say.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Apply it:
+</simpara>
+<literallayout class="monospaced">$ git fetch &lt;project&gt; master:test-apply
+$ git checkout test-apply
+$ git reset --hard
+$ git am a.patch</literallayout>
+</listitem>
+</itemizedlist>
+<simpara>If it does not apply correctly, there can be various reasons.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The patch itself does not apply cleanly.  That is <emphasis>bad</emphasis> but
+  does not have much to do with your MUA.  You might want to rebase
+  the patch with <xref linkend="git-rebase(1)" /> before regenerating it in
+  this case.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The MUA corrupted your patch; "am" would complain that
+  the patch does not apply.  Look in the .git/rebase-apply/ subdirectory and
+  see what <emphasis>patch</emphasis> file contains and check for the common
+  corruption patterns mentioned above.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+While at it, check the <emphasis>info</emphasis> and <emphasis>final-commit</emphasis> files as well.
+  If what is in <emphasis>final-commit</emphasis> is not exactly what you would want to
+  see in the commit log message, it is very likely that the
+  receiver would end up hand editing the log message when applying
+  your patch.  Things like "Hi, this is my first patch.\n" in the
+  patch e-mail should come after the three-dash line that signals
+  the end of the commit message.
+</simpara>
+</listitem>
+</itemizedlist>
+</section>
+</simplesect>
+<simplesect id="_mua_specific_hints">
+<title>MUA-SPECIFIC HINTS</title>
+<simpara>Here are some hints on how to successfully submit patches inline using
+various mailers.</simpara>
+<section id="_gmail">
+<title>GMail</title>
+<simpara>GMail does not have any way to turn off line wrapping in the web
+interface, so it will mangle any emails that you send.  You can however
+use "git send-email" and send your patches through the GMail SMTP server, or
+use any IMAP email client to connect to the google IMAP server and forward
+the emails through that.</simpara>
+<simpara>For hints on using <emphasis>git send-email</emphasis> to send your patches through the
+GMail SMTP server, see the EXAMPLE section of <xref linkend="git-send-email(1)" />.</simpara>
+<simpara>For hints on submission using the IMAP interface, see the EXAMPLE
+section of <xref linkend="git-imap-send(1)" />.</simpara>
+</section>
+<section id="_thunderbird">
+<title>Thunderbird</title>
+<simpara>By default, Thunderbird will both wrap emails as well as flag
+them as being <emphasis>format=flowed</emphasis>, both of which will make the
+resulting email unusable by git.</simpara>
+<simpara>There are three different approaches: use an add-on to turn off line wraps,
+configure Thunderbird to not mangle patches, or use
+an external editor to keep Thunderbird from mangling the patches.</simpara>
+<section id="_approach_1_add_on">
+<title>Approach #1 (add-on)</title>
+<simpara>Install the Toggle Word Wrap add-on that is available from
+<ulink url="https://addons.mozilla.org/thunderbird/addon/toggle-word-wrap/">https://addons.mozilla.org/thunderbird/addon/toggle-word-wrap/</ulink>
+It adds a menu entry "Enable Word Wrap" in the composer's "Options" menu
+that you can tick off. Now you can compose the message as you otherwise do
+(cut + paste, <emphasis>git format-patch</emphasis> | <emphasis>git imap-send</emphasis>, etc), but you have to
+insert line breaks manually in any text that you type.</simpara>
+</section>
+<section id="_approach_2_configuration">
+<title>Approach #2 (configuration)</title>
+<simpara>Three steps:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Configure your mail server composition as plain text:
+   Edit&#8230;Account Settings&#8230;Composition &amp; Addressing,
+   uncheck "Compose Messages in HTML".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Configure your general composition window to not wrap.
+</simpara>
+<simpara>In Thunderbird 2:
+Edit..Preferences..Composition, wrap plain text messages at 0</simpara>
+<simpara>In Thunderbird 3:
+Edit..Preferences..Advanced..Config Editor.  Search for
+"mail.wrap_long_lines".
+Toggle it to make sure it is set to <emphasis>false</emphasis>.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Disable the use of format=flowed:
+Edit..Preferences..Advanced..Config Editor.  Search for
+"mailnews.send_plaintext_flowed".
+Toggle it to make sure it is set to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>After that is done, you should be able to compose email as you
+otherwise would (cut + paste, <emphasis>git format-patch</emphasis> | <emphasis>git imap-send</emphasis>, etc),
+and the patches will not be mangled.</simpara>
+</section>
+<section id="_approach_3_external_editor">
+<title>Approach #3 (external editor)</title>
+<simpara>The following Thunderbird extensions are needed:
+AboutConfig from <ulink url="http://aboutconfig.mozdev.org/">http://aboutconfig.mozdev.org/</ulink> and
+External Editor from <ulink url="http://globs.org/articles.php?lng=en&amp;pg=8">http://globs.org/articles.php?lng=en&amp;pg=8</ulink></simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Prepare the patch as a text file using your method of choice.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Before opening a compose window, use Edit&#8594;Account Settings to
+   uncheck the "Compose messages in HTML format" setting in the
+   "Composition &amp; Addressing" panel of the account to be used to
+   send the patch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+In the main Thunderbird window, <emphasis>before</emphasis> you open the compose
+   window for the patch, use Tools&#8594;about:config to set the
+   following to the indicated values:
+</simpara>
+<screen>        mailnews.send_plaintext_flowed  =&gt; false
+        mailnews.wraplength             =&gt; 0</screen>
+</listitem>
+<listitem>
+<simpara>
+Open a compose window and click the external editor icon.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+In the external editor window, read in the patch file and exit
+   the editor normally.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>Side note: it may be possible to do step 2 with
+about:config and the following settings but no one's tried yet.</simpara>
+<screen>        mail.html_compose                       =&gt; false
+        mail.identity.default.compose_html      =&gt; false
+        mail.identity.id?.compose_html          =&gt; false</screen>
+<simpara>There is a script in contrib/thunderbird-patch-inline which can help
+you include patches with Thunderbird in an easy way. To use it, do the
+steps above and then use the script as the external editor.</simpara>
+</section>
+</section>
+<section id="_kmail">
+<title>KMail</title>
+<simpara>This should help you to submit patches inline using KMail.</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Prepare the patch as a text file.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Click on New Mail.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Go under "Options" in the Composer window and be sure that
+   "Word wrap" is not set.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Use Message &#8594; Insert file&#8230; and insert the patch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Back in the compose window: add whatever other text you wish to the
+   message, complete the addressing and subject fields, and press send.
+</simpara>
+</listitem>
+</orderedlist>
+</section>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Extract commits between revisions R1 and R2, and apply them on top of
+the current branch using <emphasis>git am</emphasis> to cherry-pick them:
+</simpara>
+<screen>$ git format-patch -k --stdout R1..R2 | git am -3 -k</screen>
+</listitem>
+<listitem>
+<simpara>
+Extract all commits which are in the current branch but not in the
+origin branch:
+</simpara>
+<screen>$ git format-patch origin</screen>
+<simpara>For each commit a separate file is created in the current directory.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Extract all commits that lead to <emphasis>origin</emphasis> since the inception of the
+project:
+</simpara>
+<screen>$ git format-patch --root origin</screen>
+</listitem>
+<listitem>
+<simpara>
+The same as the previous one:
+</simpara>
+<screen>$ git format-patch -M -B origin</screen>
+<simpara>Additionally, it detects and handles renames and complete rewrites
+intelligently to produce a renaming patch.  A renaming patch reduces
+the amount of text output, and generally makes it easier to review.
+Note that non-git "patch" programs won't understand renaming patches, so
+use it only when you know the recipient uses git to apply your patch.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Extract three topmost commits from the current branch and format them
+as e-mailable patches:
+</simpara>
+<screen>$ git format-patch -3</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-am(1)" />, <xref linkend="git-send-email(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

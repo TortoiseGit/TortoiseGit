@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="gitk(1)">
+<articleinfo>
+    <title>gitk(1)</title>
+<indexterm>
+<primary>gitk(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>gitk - The git repository browser</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>gitk</emphasis> [&lt;option&gt;&#8230;] [&lt;revs&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Displays changes in a repository or a selected set of commits. This includes
+visualizing the commit graph, showing information related to each commit, and
+the files in the trees of each revision.</simpara>
+<simpara>Historically, gitk was the first repository browser. It's written in tcl/tk
+and started off in a separate repository but was later merged into the main
+git repository.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<simpara>To control which revisions to show, the command takes options applicable to
+the <emphasis>git rev-list</emphasis> command (see <xref linkend="git-rev-list(1)" />).
+This manual page describes only the most
+frequently used options.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-n &lt;number&gt;
+</term>
+<term>
+--max-count=&lt;number&gt;
+</term>
+<listitem>
+<simpara>
+        Limits the number of commits to show.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--since=&lt;date&gt;
+</term>
+<listitem>
+<simpara>
+        Show commits more recent than a specific date.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--until=&lt;date&gt;
+</term>
+<listitem>
+<simpara>
+        Show commits older than a specific date.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Show all branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--merge
+</term>
+<listitem>
+<simpara>
+        After an attempt to merge stops with conflicts, show the commits on
+        the history between two branches (i.e. the HEAD and the MERGE_HEAD)
+        that modify the conflicted files and do not exist on all the heads
+        being merged.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--argscmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Command to be run each time gitk has to determine the list of
+        &lt;revs&gt; to show.  The command is expected to print on its standard
+        output a list of additional revs to be shown, one per line.
+        Use this instead of explicitly specifying &lt;revs&gt; if the set of
+        commits to show may vary between refreshes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--select-commit=&lt;ref&gt;
+</term>
+<listitem>
+<simpara>
+        Automatically select the specified commit after loading the graph.
+        Default behavior is equivalent to specifying <emphasis>--select-commit=HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;revs&gt;
+</term>
+<listitem>
+<simpara>
+        Limit the revisions to show. This can be either a single revision
+        meaning show from the given revision and back, or it can be a range in
+        the form "<emphasis>&lt;from&gt;</emphasis>..<emphasis>&lt;to&gt;</emphasis>" to show all revisions between <emphasis>&lt;from&gt;</emphasis> and
+        back to <emphasis>&lt;to&gt;</emphasis>. Note, more advanced revision selection can be applied.
+        For a more complete list of ways to spell object names, see
+        <xref linkend="gitrevisions(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;path&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Limit commits to the ones touching files in the given paths. Note, to
+        avoid ambiguity with respect to revision names use "--" to separate the paths
+        from any preceding options.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<variablelist>
+<varlistentry>
+<term>
+gitk v2.6.12.. include/scsi drivers/scsi
+</term>
+<listitem>
+<simpara>
+        Show the changes since version <emphasis>v2.6.12</emphasis> that changed any
+        file in the include/scsi or drivers/scsi subdirectories
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitk --since="2 weeks ago" -- gitk
+</term>
+<listitem>
+<simpara>
+        Show the changes during the last two weeks to the file <emphasis>gitk</emphasis>.
+        The "--" is necessary to avoid confusion with the <emphasis role="strong">branch</emphasis> named
+        <emphasis>gitk</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitk --max-count=100 --all -- Makefile
+</term>
+<listitem>
+<simpara>
+        Show at most 100 changes made to the file <emphasis>Makefile</emphasis>. Instead of only
+        looking for changes in the current branch look in all branches.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_files">
+<title>Files</title>
+<simpara>Gitk creates the .gitk file in your $HOME directory to store preferences
+such as display options, font, and colors.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>qgit(1)</emphasis>
+</term>
+<listitem>
+<simpara>
+        A repository browser written in C++ using Qt.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitview(1)</emphasis>
+</term>
+<listitem>
+<simpara>
+        A repository browser written in Python using Gtk. It's based on
+        <emphasis>bzrk(1)</emphasis> and distributed in the contrib area of the git repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tig(1)</emphasis>
+</term>
+<listitem>
+<simpara>
+        A minimal repository browser and git tool output highlighter written
+        in C using Ncurses.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

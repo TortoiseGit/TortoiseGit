@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-difftool(1)">
+<articleinfo>
+    <title>git-difftool(1)</title>
+<indexterm>
+<primary>git-difftool(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-difftool - Show changes using common diff tools</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git difftool</emphasis> [&lt;options&gt;] [&lt;commit&gt; [&lt;commit&gt;]] [--] [&lt;path&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara><emphasis>git difftool</emphasis> is a git command that allows you to compare and edit files
+between revisions using common diff tools.  <emphasis>git difftool</emphasis> is a frontend
+to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
+<xref linkend="git-diff(1)" />.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-y
+</term>
+<term>
+--no-prompt
+</term>
+<listitem>
+<simpara>
+        Do not prompt before launching a diff tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prompt
+</term>
+<listitem>
+<simpara>
+        Prompt before each invocation of the diff tool.
+        This is the default behaviour; the option is provided to
+        override any configuration settings.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t &lt;tool&gt;
+</term>
+<term>
+--tool=&lt;tool&gt;
+</term>
+<listitem>
+<simpara>
+        Use the diff tool specified by &lt;tool&gt;.
+        Valid diff tools are:
+        araxis, bc3, deltawalker, diffuse, emerge, ecmerge, gvimdiff,
+        kdiff3, kompare, meld, opendiff, p4merge, tkdiff, vimdiff and
+        xxdiff.
+</simpara>
+<simpara>If a diff tool is not specified, <emphasis>git difftool</emphasis>
+will use the configuration variable <emphasis>diff.tool</emphasis>.  If the
+configuration variable <emphasis>diff.tool</emphasis> is not set, <emphasis>git difftool</emphasis>
+will pick a suitable default.</simpara>
+<simpara>You can explicitly provide a full path to the tool by setting the
+configuration variable <emphasis>difftool.&lt;tool&gt;.path</emphasis>. For example, you
+can configure the absolute path to kdiff3 by setting
+<emphasis>difftool.kdiff3.path</emphasis>. Otherwise, <emphasis>git difftool</emphasis> assumes the
+tool is available in PATH.</simpara>
+<simpara>Instead of running one of the known diff tools,
+<emphasis>git difftool</emphasis> can be customized to run an alternative program
+by specifying the command line to invoke in a configuration
+variable <emphasis>difftool.&lt;tool&gt;.cmd</emphasis>.</simpara>
+<simpara>When <emphasis>git difftool</emphasis> is invoked with this tool (either through the
+<emphasis>-t</emphasis> or <emphasis>--tool</emphasis> option or the <emphasis>diff.tool</emphasis> configuration variable)
+the configured command line will be invoked with the following
+variables available: <emphasis>$LOCAL</emphasis> is set to the name of the temporary
+file containing the contents of the diff pre-image and <emphasis>$REMOTE</emphasis>
+is set to the name of the temporary file containing the contents
+of the diff post-image.  <emphasis>$MERGED</emphasis> is the name of the file which is
+being compared. <emphasis>$BASE</emphasis> is provided for compatibility
+with custom merge tool commands and has the same value as <emphasis>$MERGED</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-x &lt;command&gt;
+</term>
+<term>
+--extcmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a custom command for viewing diffs.
+        <emphasis>git-difftool</emphasis> ignores the configured defaults and runs
+        <emphasis>$command $LOCAL $REMOTE</emphasis> when this option is specified.
+        Additionally, <emphasis>$BASE</emphasis> is set in the environment.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-g
+</term>
+<term>
+--gui
+</term>
+<listitem>
+<simpara>
+        When <emphasis>git-difftool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option
+        the default diff tool will be read from the configured
+        <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>See <xref linkend="git-diff(1)" /> for the full list of supported options.</simpara>
+</simplesect>
+<simplesect id="_config_variables">
+<title>CONFIG VARIABLES</title>
+<simpara><emphasis>git difftool</emphasis> falls back to <emphasis>git mergetool</emphasis> config variables when the
+difftool equivalents have not been defined.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+diff.tool
+</term>
+<listitem>
+<simpara>
+        The default diff tool to use.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.guitool
+</term>
+<listitem>
+<simpara>
+        The default diff tool to use when <emphasis>--gui</emphasis> is specified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool.  This is useful in case
+        your tool is not in the PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified diff tool.
+</simpara>
+<simpara>See the <emphasis>--tool=&lt;tool&gt;</emphasis> option above for more details.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.prompt
+</term>
+<listitem>
+<simpara>
+        Prompt before each invocation of the diff tool.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<variablelist>
+<varlistentry>
+<term>
+<xref linkend="git-diff(1)" />
+</term>
+<listitem>
+<simpara>
+         Show changes between commits, commit and working tree, etc
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-mergetool(1)" />
+</term>
+<listitem>
+<simpara>
+        Run merge conflict resolution tools to resolve merge conflicts
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-config(1)" />
+</term>
+<listitem>
+<simpara>
+         Get and set repository or global options
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

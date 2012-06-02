@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-rm(1)">
+<articleinfo>
+    <title>git-rm(1)</title>
+<indexterm>
+<primary>git-rm(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-rm - Remove files from the working tree and from the index</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git rm</emphasis> [-f | --force] [-n] [-r] [--cached] [--ignore-unmatch] [--quiet] [--] &lt;file&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Remove files from the index, or from the working tree and the index.
+<emphasis>git rm</emphasis> will not remove a file from just your working directory.
+(There is no option to remove a file only from the working tree
+and yet keep it in the index; use <emphasis>/bin/rm</emphasis> if you want to do that.)
+The files being removed have to be identical to the tip of the branch,
+and no updates to their contents can be staged in the index,
+though that default behavior can be overridden with the <emphasis>-f</emphasis> option.
+When <emphasis>--cached</emphasis> is given, the staged content has to
+match either the tip of the branch or the file on disk,
+allowing the file to be removed from just the index.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;file&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Files to remove.  Fileglobs (e.g. <emphasis>*.c</emphasis>) can be given to
+        remove all matching files.  If you want git to expand
+        file glob characters, you may need to shell-escape them.
+        A leading directory name
+        (e.g. <emphasis>dir</emphasis> to remove <emphasis>dir/file1</emphasis> and <emphasis>dir/file2</emphasis>) can be
+        given to remove all files in the directory, and recursively
+        all sub-directories,
+        but this requires the <emphasis>-r</emphasis> option to be explicitly given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Override the up-to-date check.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Don't actually remove any file(s).  Instead, just show
+        if they exist in the index and would otherwise be removed
+        by the command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-r
+</term>
+<listitem>
+<simpara>
+        Allow recursive removal when a leading directory name is
+        given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        This option can be used to separate command-line options from
+        the list of files, (useful when filenames might be mistaken
+        for command-line options).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cached
+</term>
+<listitem>
+<simpara>
+        Use this option to unstage and remove paths only from the index.
+        Working tree files, whether modified or not, will be
+        left alone.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-unmatch
+</term>
+<listitem>
+<simpara>
+        Exit with a zero status even if no files matched.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        <emphasis>git rm</emphasis> normally outputs one line (in the form of an <emphasis>rm</emphasis> command)
+        for each file removed. This option suppresses that output.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>The &lt;file&gt; list given to the command can be exact pathnames,
+file glob patterns, or leading directory names.  The command
+removes only the paths that are known to git.  Giving the name of
+a file that you have not told git about does not remove that file.</simpara>
+<simpara>File globbing matches across directory boundaries.  Thus, given
+two directories <emphasis>d</emphasis> and <emphasis>d2</emphasis>, there is a difference between
+using <emphasis>git rm 'd*'</emphasis> and <emphasis>git rm 'd/*'</emphasis>, as the former will
+also remove all of directory <emphasis>d2</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_removing_files_that_have_disappeared_from_the_filesystem">
+<title>REMOVING FILES THAT HAVE DISAPPEARED FROM THE FILESYSTEM</title>
+<simpara>There is no option for <emphasis>git rm</emphasis> to remove from the index only
+the paths that have disappeared from the filesystem. However,
+depending on the use case, there are several ways that can be
+done.</simpara>
+<section id="_using_git_commit_a">
+<title>Using git commit -a</title>
+<simpara>If you intend that your next commit should record all modifications
+of tracked files in the working tree and record all removals of
+files that have been removed from the working tree with <emphasis>rm</emphasis>
+(as opposed to <emphasis>git rm</emphasis>), use <emphasis>git commit -a</emphasis>, as it will
+automatically notice and record all removals.  You can also have a
+similar effect without committing by using <emphasis>git add -u</emphasis>.</simpara>
+</section>
+<section id="_using_git_add_a">
+<title>Using git add -A</title>
+<simpara>When accepting a new code drop for a vendor branch, you probably
+want to record both the removal of paths and additions of new paths
+as well as modifications of existing paths.</simpara>
+<simpara>Typically you would first remove all tracked files from the working
+tree using this command:</simpara>
+<screen>git ls-files -z | xargs -0 rm -f</screen>
+<simpara>and then untar the new code in the working tree. Alternately
+you could <emphasis>rsync</emphasis> the changes into the working tree.</simpara>
+<simpara>After that, the easiest way to record all removals, additions, and
+modifications in the working tree is:</simpara>
+<screen>git add -A</screen>
+<simpara>See <xref linkend="git-add(1)" />.</simpara>
+</section>
+<section id="_other_ways">
+<title>Other ways</title>
+<simpara>If all you really want to do is to remove from the index the files
+that are no longer present in the working tree (perhaps because
+your working tree is dirty so that you cannot use <emphasis>git commit -a</emphasis>),
+use the following command:</simpara>
+<screen>git diff --name-only --diff-filter=D -z | xargs -0 git rm --cached</screen>
+</section>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git rm Documentation/\*.txt</emphasis>
+</term>
+<listitem>
+<simpara>
+        Removes all <emphasis>*.txt</emphasis> files from the index that are under the
+        <emphasis>Documentation</emphasis> directory and any of its subdirectories.
+</simpara>
+<simpara>Note that the asterisk <emphasis>*</emphasis> is quoted from the shell in this
+example; this lets git, and not the shell, expand the pathnames
+of files and subdirectories under the <emphasis>Documentation/</emphasis> directory.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git rm -f git-*.sh</emphasis>
+</term>
+<listitem>
+<simpara>
+        Because this example lets the shell expand the asterisk
+        (i.e. you are listing the files explicitly), it
+        does not remove <emphasis>subdir/git-foo.sh</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-add(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

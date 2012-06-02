@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-repack(1)">
+<articleinfo>
+    <title>git-repack(1)</title>
+<indexterm>
+<primary>git-repack(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-repack - Pack unpacked objects in a repository</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This script is used to combine all objects that do not currently
+reside in a "pack", into a pack.  It can also be used to re-organize
+existing packs into a single, more efficient pack.</simpara>
+<simpara>A pack is a collection of objects, individually compressed, with
+delta compression applied, stored in a single file, with an
+associated index file.</simpara>
+<simpara>Packs are used to reduce the load on mirror systems, backup
+engines, disk storage, etc.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-a
+</term>
+<listitem>
+<simpara>
+        Instead of incrementally packing the unpacked objects,
+        pack everything referenced into a single pack.
+        Especially useful when packing a repository that is used
+        for private development. Use
+        with <emphasis>-d</emphasis>.  This will clean up the objects that <emphasis>git prune</emphasis>
+        leaves behind, but <emphasis>git fsck --full --dangling</emphasis> shows as
+        dangling.
+</simpara>
+<simpara>Note that users fetching over dumb protocols will have to fetch the
+whole new pack in order to get any contained object, no matter how many
+other objects in that pack they already have locally.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-A
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>-a</emphasis>, unless <emphasis>-d</emphasis> is used.  Then any unreachable
+        objects in a previous pack become loose, unpacked objects,
+        instead of being left in the old pack.  Unreachable objects
+        are never intentionally added to a pack, even when repacking.
+        This option prevents unreachable objects from being immediately
+        deleted by way of being left in the old pack and then
+        removed.  Instead, the loose unreachable objects
+        will be pruned according to normal expiry rules
+        with the next <emphasis>git gc</emphasis> invocation. See <xref linkend="git-gc(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<listitem>
+<simpara>
+        After packing, if the newly created packs make some
+        existing packs redundant, remove the redundant packs.
+        Also run  <emphasis>git prune-packed</emphasis> to remove redundant
+        loose object files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>--local</emphasis> option to <emphasis>git pack-objects</emphasis>. See
+        <xref linkend="git-pack-objects(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>--no-reuse-delta</emphasis> option to <emphasis>git-pack-objects</emphasis>, see
+        <xref linkend="git-pack-objects(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>--no-reuse-object</emphasis> option to <emphasis>git-pack-objects</emphasis>, see
+        <xref linkend="git-pack-objects(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>-q</emphasis> option to <emphasis>git pack-objects</emphasis>. See
+        <xref linkend="git-pack-objects(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<listitem>
+<simpara>
+        Do not update the server information with
+        <emphasis>git update-server-info</emphasis>.  This option skips
+        updating local catalog files needed to publish
+        this repository (or a direct copy of it)
+        over HTTP or FTP.  See <xref linkend="git-update-server-info(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--window=&lt;n&gt;
+</term>
+<term>
+--depth=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        These two options affect how the objects contained in the pack are
+        stored using delta compression. The objects are first internally
+        sorted by type, size and optionally names and compared against the
+        other objects within <emphasis>--window</emphasis> to see if using delta compression saves
+        space. <emphasis>--depth</emphasis> limits the maximum delta depth; making it too deep
+        affects the performance on the unpacker side, because delta data needs
+        to be applied that many times to get to the necessary object.
+        The default value for --window is 10 and --depth is 50.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--window-memory=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        This option provides an additional limit on top of <emphasis>--window</emphasis>;
+        the window size will dynamically scale down so as to not take
+        up more than <emphasis>&lt;n&gt;</emphasis> bytes in memory.  This is useful in
+        repositories with a mix of large and small objects to not run
+        out of memory with a large window, but still be able to take
+        advantage of the large window for the smaller objects.  The
+        size can be suffixed with "k", "m", or "g".
+        <emphasis>--window-memory=0</emphasis> makes memory usage unlimited, which is the
+        default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--max-pack-size=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Maximum size of each output pack file. The size can be suffixed with
+        "k", "m", or "g". The minimum size allowed is limited to 1 MiB.
+        If specified,  multiple packfiles may be created.
+        The default is unlimited, unless the config variable
+        <emphasis>pack.packSizeLimit</emphasis> is set.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>Configuration</title>
+<simpara>By default, the command passes <emphasis>--delta-base-offset</emphasis> option to
+<emphasis>git pack-objects</emphasis>; this typically results in slightly smaller packs,
+but the generated packs are incompatible with versions of Git older than
+version 1.4.4. If you need to share your repository with such ancient Git
+versions, either directly or via the dumb http or rsync protocol, then you
+need to set the configuration variable <emphasis>repack.UseDeltaBaseOffset</emphasis> to
+"false" and repack. Access from old Git versions over the native protocol
+is unaffected by this option as the conversion is performed on the fly
+as needed in that case.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-pack-objects(1)" />
+<xref linkend="git-prune-packed(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

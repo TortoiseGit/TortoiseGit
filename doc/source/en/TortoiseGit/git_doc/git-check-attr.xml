@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-check-attr(1)">
+<articleinfo>
+    <title>git-check-attr(1)</title>
+<indexterm>
+<primary>git-check-attr(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-check-attr - Display gitattributes information</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git check-attr</emphasis> [-a | --all | attr&#8230;] [--] pathname&#8230;
+<emphasis>git check-attr</emphasis> --stdin [-z] [-a | --all | attr&#8230;] &lt; &lt;list-of-paths&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>For every pathname, this command will list if each attribute is <emphasis>unspecified</emphasis>,
+<emphasis>set</emphasis>, or <emphasis>unset</emphasis> as a gitattribute on that pathname.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-a, --all
+</term>
+<listitem>
+<simpara>
+        List all attributes that are associated with the specified
+        paths.  If this option is used, then <emphasis>unspecified</emphasis> attributes
+        will not be included in the output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cached
+</term>
+<listitem>
+<simpara>
+        Consider <emphasis>.gitattributes</emphasis> in the index only, ignoring the working tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Read file names from stdin instead of from the command-line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--stdin</emphasis>; paths are separated with a
+        NUL character instead of a linefeed character.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Interpret all preceding arguments as attributes and all following
+        arguments as path names.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If none of <emphasis>--stdin</emphasis>, <emphasis>--all</emphasis>, or <emphasis>--</emphasis> is used, the first argument
+will be treated as an attribute and the rest of the arguments as
+pathnames.</simpara>
+</simplesect>
+<simplesect id="_output">
+<title>OUTPUT</title>
+<simpara>The output is of the form:
+&lt;path&gt; COLON SP &lt;attribute&gt; COLON SP &lt;info&gt; LF</simpara>
+<simpara>&lt;path&gt; is the path of a file being queried, &lt;attribute&gt; is an attribute
+being queried and &lt;info&gt; can be either:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>unspecified</emphasis>
+</term>
+<listitem>
+<simpara>
+when the attribute is not defined for the path.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>unset</emphasis>
+</term>
+<listitem>
+<simpara>
+when the attribute is defined as false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>set</emphasis>
+</term>
+<listitem>
+<simpara>
+when the attribute is defined as true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;value&gt;
+</term>
+<listitem>
+<simpara>
+when a value has been assigned to the attribute.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<simpara>In the examples, the following <emphasis>.gitattributes</emphasis> file is used:</simpara>
+<screen>*.java diff=java -crlf myAttr
+NoMyAttr.java !myAttr
+README caveat=unspecified</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+Listing a single attribute:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>$ git check-attr diff org/example/MyClass.java
+org/example/MyClass.java: diff: java</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+Listing multiple attributes for a file:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>$ git check-attr crlf diff myAttr -- org/example/MyClass.java
+org/example/MyClass.java: crlf: unset
+org/example/MyClass.java: diff: java
+org/example/MyClass.java: myAttr: set</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+Listing all attributes for a file:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>$ git check-attr --all -- org/example/MyClass.java
+org/example/MyClass.java: diff: java
+org/example/MyClass.java: myAttr: set</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+Listing an attribute for multiple files:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>$ git check-attr myAttr -- org/example/MyClass.java org/example/NoMyAttr.java
+org/example/MyClass.java: myAttr: set
+org/example/NoMyAttr.java: myAttr: unspecified</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+Not all values are equally unambiguous:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>$ git check-attr caveat README
+README: caveat: unspecified</screen>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gitattributes(5)" />.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

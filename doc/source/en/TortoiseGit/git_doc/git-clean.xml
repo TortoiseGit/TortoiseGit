@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-clean(1)">
+<articleinfo>
+    <title>git-clean(1)</title>
+<indexterm>
+<primary>git-clean(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-clean - Remove untracked files from the working tree</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git clean</emphasis> [-d] [-f] [-n] [-q] [-e &lt;pattern&gt;] [-x | -X] [--] &lt;path&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Cleans the working tree by recursively removing files that are not
+under version control, starting from the current directory.</simpara>
+<simpara>Normally, only files unknown to git are removed, but if the <emphasis>-x</emphasis>
+option is specified, ignored files are also removed. This can, for
+example, be useful to remove all build products.</simpara>
+<simpara>If any optional <emphasis>&lt;path&gt;...</emphasis> arguments are given, only those paths
+are affected.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-d
+</term>
+<listitem>
+<simpara>
+        Remove untracked directories in addition to untracked files.
+        If an untracked directory is managed by a different git
+        repository, it is not removed by default.  Use -f option twice
+        if you really want to remove such a directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        If the git configuration variable clean.requireForce is not set
+        to false, <emphasis>git clean</emphasis> will refuse to run unless given -f or -n.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Don't actually remove anything, just show what would be done.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Be quiet, only report errors, but not the files that are
+        successfully removed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-e &lt;pattern&gt;
+</term>
+<term>
+--exclude=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        In addition to those found in .gitignore (per directory) and
+        $GIT_DIR/info/exclude, also consider these patterns to be in the
+        set of the ignore rules in effect.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-x
+</term>
+<listitem>
+<simpara>
+        Don't use the standard ignore rules read from .gitignore (per
+        directory) and $GIT_DIR/info/exclude, but do still use the ignore
+        rules given with <emphasis>-e</emphasis> options.  This allows removing all untracked
+        files, including build products.  This can be used (possibly in
+        conjunction with <emphasis>git reset</emphasis>) to create a pristine
+        working directory to test a clean build.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-X
+</term>
+<listitem>
+<simpara>
+        Remove only files ignored by git.  This may be useful to rebuild
+        everything from scratch, but keep manually created files.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

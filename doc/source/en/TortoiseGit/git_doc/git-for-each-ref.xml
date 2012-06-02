@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-for-each-ref(1)">
+<articleinfo>
+    <title>git-for-each-ref(1)</title>
+<indexterm>
+<primary>git-for-each-ref(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-for-each-ref - Output information on each ref</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
+                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Iterate over all refs that match <emphasis>&lt;pattern&gt;</emphasis> and show them
+according to the given <emphasis>&lt;format&gt;</emphasis>, after sorting them according
+to the given set of <emphasis>&lt;key&gt;</emphasis>.  If <emphasis>&lt;count&gt;</emphasis> is given, stop after
+showing that many refs.  The interpolated values in <emphasis>&lt;format&gt;</emphasis>
+can optionally be quoted as string literals in the specified
+host language allowing their direct evaluation in that language.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;count&gt;
+</term>
+<listitem>
+<simpara>
+        By default the command shows all refs that match
+        <emphasis>&lt;pattern&gt;</emphasis>.  This option makes it stop after showing
+        that many refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;key&gt;
+</term>
+<listitem>
+<simpara>
+        A field name to sort on.  Prefix <emphasis>-</emphasis> to sort in
+        descending order of the value.  When unspecified,
+        <emphasis>refname</emphasis> is used.  You may use the --sort=&lt;key&gt; option
+        multiple times, in which case the last key becomes the primary
+        key.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from the
+        object pointed at by a ref being shown.  If <emphasis>fieldname</emphasis>
+        is prefixed with an asterisk (<emphasis>*</emphasis>) and the ref points
+        at a tag object, the value for the field in the object
+        tag refers is used.  When unspecified, defaults to
+        <emphasis>%(objectname) SPC %(objecttype) TAB %(refname)</emphasis>.
+        It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xx</emphasis> where <emphasis>xx</emphasis>
+        are hex digits interpolates to character with hex code
+        <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis> interpolates to <emphasis>\0</emphasis> (NUL),
+        <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;pattern&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        If one or more patterns are given, only refs are shown that
+        match against at least one pattern, either using fnmatch(3) or
+        literally, in the latter case matching completely or from the
+        beginning up to a slash.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shell
+</term>
+<term>
+--perl
+</term>
+<term>
+--python
+</term>
+<term>
+--tcl
+</term>
+<listitem>
+<simpara>
+        If given, strings that substitute <emphasis>%(fieldname)</emphasis>
+        placeholders are quoted as string literals suitable for
+        the specified host language.  This is meant to produce
+        a scriptlet that can directly be `eval`ed.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_field_names">
+<title>FIELD NAMES</title>
+<simpara>Various values from structured fields in referenced objects can
+be used to interpolate into the resulting output, or as sort
+keys.</simpara>
+<simpara>For all objects, the following names can be used:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+refname
+</term>
+<listitem>
+<simpara>
+        The name of the ref (the part after $GIT_DIR/).
+        For a non-ambiguous short name of the ref append <emphasis>:short</emphasis>.
+        The option core.warnAmbiguousRefs is used to select the strict
+        abbreviation mode.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objecttype
+</term>
+<listitem>
+<simpara>
+        The type of the object (<emphasis>blob</emphasis>, <emphasis>tree</emphasis>, <emphasis>commit</emphasis>, <emphasis>tag</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectsize
+</term>
+<listitem>
+<simpara>
+        The size of the object (the same as <emphasis>git cat-file -s</emphasis> reports).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectname
+</term>
+<listitem>
+<simpara>
+        The object name (aka SHA-1).
+        For a non-ambiguous abbreviation of the object name append <emphasis>:short</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+upstream
+</term>
+<listitem>
+<simpara>
+        The name of a local ref which can be considered upstream
+        from the displayed ref. Respects <emphasis>:short</emphasis> in the same way as
+        <emphasis>refname</emphasis> above.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>In addition to the above, for commit and tag objects, the header
+field names (<emphasis>tree</emphasis>, <emphasis>parent</emphasis>, <emphasis>object</emphasis>, <emphasis>type</emphasis>, and <emphasis>tag</emphasis>) can
+be used to specify the value in the header field.</simpara>
+<simpara>Fields that have name-email-date tuple as its value (<emphasis>author</emphasis>,
+<emphasis>committer</emphasis>, and <emphasis>tagger</emphasis>) can be suffixed with <emphasis>name</emphasis>, <emphasis>email</emphasis>,
+and <emphasis>date</emphasis> to extract the named component.</simpara>
+<simpara>The complete message in a commit and tag object is <emphasis>contents</emphasis>.
+Its first line is <emphasis>contents:subject</emphasis>, the remaining lines
+are <emphasis>contents:body</emphasis> and the optional GPG signature
+is <emphasis>contents:signature</emphasis>.</simpara>
+<simpara>For sorting purposes, fields with numeric values sort in numeric
+order (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>taggerdate</emphasis>).
+All other fields are used to sort in their byte-value order.</simpara>
+<simpara>In any case, a field name that refers to a field inapplicable to
+the object referred by the ref does not cause an error.  It
+returns an empty string instead.</simpara>
+<simpara>As a special case for the date-type fields, you may specify a format for
+the date by adding one of <emphasis>:default</emphasis>, <emphasis>:relative</emphasis>, <emphasis>:short</emphasis>, <emphasis>:local</emphasis>,
+<emphasis>:iso8601</emphasis> or <emphasis>:rfc2822</emphasis> to the end of the fieldname; e.g.
+<emphasis>%(taggerdate:relative)</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<simpara>An example directly producing formatted text.  Show the most recent
+3 tagged commits:</simpara>
+<screen>#!/bin/sh
+
+git for-each-ref --count=3 --sort='-*authordate' \
+--format='From: %(*authorname) %(*authoremail)
+Subject: %(*subject)
+Date: %(*authordate)
+Ref: %(*refname)
+
+%(*body)
+' 'refs/tags'</screen>
+<simpara>A simple example showing the use of shell eval on the output,
+demonstrating the use of --shell.  List the prefixes of all heads:</simpara>
+<screen>#!/bin/sh
+
+git for-each-ref --shell --format="ref=%(refname)" refs/heads | \
+while read entry
+do
+        eval "$entry"
+        echo `dirname $ref`
+done</screen>
+<simpara>A bit more elaborate report on tags, demonstrating that the format
+may be an entire script:</simpara>
+<screen>#!/bin/sh
+
+fmt='
+        r=%(refname)
+        t=%(*objecttype)
+        T=${r#refs/tags/}
+
+        o=%(*objectname)
+        n=%(*authorname)
+        e=%(*authoremail)
+        s=%(*subject)
+        d=%(*authordate)
+        b=%(*body)
+
+        kind=Tag
+        if test "z$t" = z
+        then
+                # could be a lightweight tag
+                t=%(objecttype)
+                kind="Lightweight tag"
+                o=%(objectname)
+                n=%(authorname)
+                e=%(authoremail)
+                s=%(subject)
+                d=%(authordate)
+                b=%(body)
+        fi
+        echo "$kind $T points at a $t object $o"
+        if test "z$t" = zcommit
+        then
+                echo "The commit was authored by $n $e
+at $d, and titled
+
+    $s
+
+Its message reads as:
+"
+                echo "$b" | sed -e "s/^/    /"
+                echo
+        fi
+'
+
+eval=`git for-each-ref --shell --format="$fmt" \
+        --sort='*objecttype' \
+        --sort=-taggerdate \
+        refs/tags`
+eval "$eval"</screen>
+</simplesect>
+<simplesect id="_author">
+<title>Author</title>
+<simpara>Written by Junio C Hamano &lt;<ulink url="mailto:gitster@pobox.com">gitster@pobox.com</ulink>&gt;.</simpara>
+</simplesect>
+<simplesect id="_documentation">
+<title>Documentation</title>
+<simpara>Documentation by Junio C Hamano and the git-list &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

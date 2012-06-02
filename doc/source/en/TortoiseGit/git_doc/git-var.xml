@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-var(1)">
+<articleinfo>
+    <title>git-var(1)</title>
+<indexterm>
+<primary>git-var(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-var - Show a git logical variable</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git var</emphasis> ( -l | &lt;variable&gt; )</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Prints a git logical variable.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-l
+</term>
+<listitem>
+<simpara>
+        Cause the logical variables to be listed. In addition, all the
+        variables of the git configuration file .git/config are listed
+        as well. (However, the configuration variables listing functionality
+        is deprecated in favor of <emphasis>git config -l</emphasis>.)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<literallayout class="monospaced">$ git var GIT_AUTHOR_IDENT
+Eric W. Biederman &lt;ebiederm@lnxi.com&gt; 1121223278 -0600</literallayout>
+</simplesect>
+<simplesect id="_variables">
+<title>VARIABLES</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_AUTHOR_IDENT
+</term>
+<listitem>
+<simpara>
+    The author of a piece of code.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_COMMITTER_IDENT
+</term>
+<listitem>
+<simpara>
+    The person who put a piece of code into git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_EDITOR
+</term>
+<listitem>
+<simpara>
+    Text editor for use by git commands.  The value is meant to be
+    interpreted by the shell when it is used.  Examples: <emphasis>~/bin/vi</emphasis>,
+    <emphasis>$SOME_ENVIRONMENT_VARIABLE</emphasis>, <emphasis>"C:\Program Files\Vim\gvim.exe"
+    --nofork</emphasis>.  The order of preference is the <emphasis>$GIT_EDITOR</emphasis>
+    environment variable, then <emphasis>core.editor</emphasis> configuration, then
+    <emphasis>$VISUAL</emphasis>, then <emphasis>$EDITOR</emphasis>, and then finally <emphasis>vi</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_PAGER
+</term>
+<listitem>
+<simpara>
+    Text viewer for use by git commands (e.g., <emphasis>less</emphasis>).  The value
+    is meant to be interpreted by the shell.  The order of preference
+    is the <emphasis>$GIT_PAGER</emphasis> environment variable, then <emphasis>core.pager</emphasis>
+    configuration, then <emphasis>$PAGER</emphasis>, and then finally <emphasis>less</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_diagnostics">
+<title>Diagnostics</title>
+<variablelist>
+<varlistentry>
+<term>
+You don't exist. Go away!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) gecos field couldn't be read
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Your parents must have hated you!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) gecos field is longer than a giant static buffer.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Your sysadmin must hate you!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) name field is longer than a giant static buffer.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-commit-tree(1)" />
+<xref linkend="git-tag(1)" />
+<xref linkend="git-config(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

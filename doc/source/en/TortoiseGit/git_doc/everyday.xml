@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="Everyday">
+<article lang="en" id="everyday">
 <articleinfo>
-    <title>Everyday</title>
-        <indexterm>
-                <primary>Everyday</primary>
-        </indexterm>
+    <title>Everyday GIT With 20 Commands Or So</title>
+<indexterm>
+<primary>Everyday GIT With 20 Commands Or So</primary>
+</indexterm>
 </articleinfo>
-<simpara><xref linkend="Basic Repository"/> commands are needed by people who have a
-repository --- that is everybody, because every working tree of
-git is a repository.</simpara>
-<simpara>In addition, <xref linkend="Individual Developer (Standalone)"/> commands are
-essential for anybody who makes a commit, even for somebody who
-works alone.</simpara>
+<simpara><xref linkend="Individual Developer (Standalone)"/> commands are essential for
+anybody who makes a commit, even for somebody who works alone.</simpara>
 <simpara>If you work with other people, you will need commands listed in
 the <xref linkend="Individual Developer (Participant)"/> section as well.</simpara>
 <simpara>People who play the <xref linkend="Integrator"/> role need to learn some more
@@ -21,79 +17,6 @@ commands in addition to the above.</simpara>
 <simpara><xref linkend="Repository Administration"/> commands are for system
 administrators who are responsible for the care and feeding
 of git repositories.</simpara>
-<simplesect id="_basic_repository_anchor_id_basic_repository_xreflabel_basic_repository">
-<title>Basic Repository<anchor id="Basic Repository" xreflabel="[Basic Repository]"/></title>
-<simpara>Everybody uses these commands to maintain git repositories.</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-<xref linkend="git-init(1)"/> or <xref linkend="git-clone(1)"/> to create a
-    new repository.
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<xref linkend="git-fsck(1)"/> to check the repository for errors.
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<xref linkend="git-gc(1)"/> to do common housekeeping tasks such as
-    repack and prune.
-</simpara>
-</listitem>
-</itemizedlist>
-<simplesect id="_examples">
-<title>Examples</title>
-<variablelist>
-<varlistentry>
-<term>
-Check health and remove cruft.
-</term>
-<listitem>
-<literallayout>$ git fsck <co id="CO1-1"/>
-$ git count-objects <co id="CO1-2"/>
-$ git gc <co id="CO1-3"/></literallayout>
-<calloutlist>
-<callout arearefs="CO1-1">
-<simpara>
-running without <literal>--full</literal> is usually cheap and assures the
-repository health reasonably well.
-</simpara>
-</callout>
-<callout arearefs="CO1-2">
-<simpara>
-check how many loose objects there are and how much
-disk space is wasted by not repacking.
-</simpara>
-</callout>
-<callout arearefs="CO1-3">
-<simpara>
-repacks the local repository and performs other housekeeping tasks.
-</simpara>
-</callout>
-</calloutlist>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-Repack a small project into single pack.
-</term>
-<listitem>
-<literallayout>$ git gc <co id="CO2-1"/></literallayout>
-<calloutlist>
-<callout arearefs="CO2-1">
-<simpara>
-pack all the objects reachable from the refs into one pack,
-then remove the other packs.
-</simpara>
-</callout>
-</calloutlist>
-</listitem>
-</varlistentry>
-</variablelist>
-</simplesect>
-</simplesect>
 <simplesect id="_individual_developer_standalone_anchor_id_individual_developer_standalone_xreflabel_individual_developer_standalone">
 <title>Individual Developer (Standalone)<anchor id="Individual Developer (Standalone)" xreflabel="[Individual Developer (Standalone)]"/></title>
 <simpara>A standalone individual developer does not exchange patches with
@@ -102,59 +25,64 @@ following commands.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<xref linkend="git-show-branch(1)"/> to see where you are.
+<xref linkend="git-init(1)" /> to create a new repository.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-log(1)"/> to see what happened.
+<xref linkend="git-show-branch(1)" /> to see where you are.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-checkout(1)"/> and <xref linkend="git-branch(1)"/> to switch
+<xref linkend="git-log(1)" /> to see what happened.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<xref linkend="git-checkout(1)" /> and <xref linkend="git-branch(1)" /> to switch
     branches.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-add(1)"/> to manage the index file.
+<xref linkend="git-add(1)" /> to manage the index file.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-diff(1)"/> and <xref linkend="git-status(1)"/> to see what
+<xref linkend="git-diff(1)" /> and <xref linkend="git-status(1)" /> to see what
     you are in the middle of doing.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-commit(1)"/> to advance the current branch.
+<xref linkend="git-commit(1)" /> to advance the current branch.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-reset(1)"/> and <xref linkend="git-checkout(1)"/> (with
+<xref linkend="git-reset(1)" /> and <xref linkend="git-checkout(1)" /> (with
     pathname parameters) to undo changes.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-merge(1)"/> to merge between local branches.
+<xref linkend="git-merge(1)" /> to merge between local branches.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-rebase(1)"/> to maintain topic branches.
+<xref linkend="git-rebase(1)" /> to maintain topic branches.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-tag(1)"/> to mark known point.
+<xref linkend="git-tag(1)" /> to mark known point.
 </simpara>
 </listitem>
 </itemizedlist>
-<simplesect id="_examples_2">
+<section id="_examples">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -162,22 +90,22 @@ following commands.</simpara>
 Use a tarball as a starting point for a new repository.
 </term>
 <listitem>
-<literallayout>$ tar zxf frotz.tar.gz
+<screen>$ tar zxf frotz.tar.gz
 $ cd frotz
-$ git-init
-$ git add . <co id="CO3-1"/>
+$ git init
+$ git add . <co id="CO1-1"/>
 $ git commit -m "import of frotz source tree."
-$ git tag v2.43 <co id="CO3-2"/></literallayout>
+$ git tag v2.43 <co id="CO1-2"/></screen>
 <calloutlist>
-<callout arearefs="CO3-1">
-<simpara>
+<callout arearefs="CO1-1">
+<para>
 add everything under the current directory.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO3-2">
-<simpara>
+<callout arearefs="CO1-2">
+<para>
 make a lightweight, unannotated tag.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
@@ -187,93 +115,93 @@ make a lightweight, unannotated tag.
 Create a topic branch and develop.
 </term>
 <listitem>
-<literallayout>$ git checkout -b alsa-audio <co id="CO4-1"/>
+<screen>$ git checkout -b alsa-audio <co id="CO2-1"/>
 $ edit/compile/test
-$ git checkout -- curses/ux_audio_oss.c <co id="CO4-2"/>
-$ git add curses/ux_audio_alsa.c <co id="CO4-3"/>
+$ git checkout -- curses/ux_audio_oss.c <co id="CO2-2"/>
+$ git add curses/ux_audio_alsa.c <co id="CO2-3"/>
 $ edit/compile/test
-$ git diff HEAD <co id="CO4-4"/>
-$ git commit -a -s <co id="CO4-5"/>
+$ git diff HEAD <co id="CO2-4"/>
+$ git commit -a -s <co id="CO2-5"/>
 $ edit/compile/test
-$ git reset --soft HEAD^ <co id="CO4-6"/>
+$ git reset --soft HEAD^ <co id="CO2-6"/>
 $ edit/compile/test
-$ git diff ORIG_HEAD <co id="CO4-7"/>
-$ git commit -a -c ORIG_HEAD <co id="CO4-8"/>
-$ git checkout master <co id="CO4-9"/>
-$ git merge alsa-audio <co id="CO4-10"/>
-$ git log --since='3 days ago' <co id="CO4-11"/>
-$ git log v2.43.. curses/ <co id="CO4-12"/></literallayout>
+$ git diff ORIG_HEAD <co id="CO2-7"/>
+$ git commit -a -c ORIG_HEAD <co id="CO2-8"/>
+$ git checkout master <co id="CO2-9"/>
+$ git merge alsa-audio <co id="CO2-10"/>
+$ git log --since='3 days ago' <co id="CO2-11"/>
+$ git log v2.43.. curses/ <co id="CO2-12"/></screen>
 <calloutlist>
-<callout arearefs="CO4-1">
-<simpara>
+<callout arearefs="CO2-1">
+<para>
 create a new topic branch.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-2">
-<simpara>
-revert your botched changes in <literal>curses/ux_audio_oss.c</literal>.
-</simpara>
+<callout arearefs="CO2-2">
+<para>
+revert your botched changes in <emphasis>curses/ux_audio_oss.c</emphasis>.
+</para>
 </callout>
-<callout arearefs="CO4-3">
-<simpara>
+<callout arearefs="CO2-3">
+<para>
 you need to tell git if you added a new file; removal and
-modification will be caught if you do <literal>git commit -a</literal> later.
-</simpara>
+modification will be caught if you do <emphasis>git commit -a</emphasis> later.
+</para>
 </callout>
-<callout arearefs="CO4-4">
-<simpara>
+<callout arearefs="CO2-4">
+<para>
 to see what changes you are committing.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-5">
-<simpara>
+<callout arearefs="CO2-5">
+<para>
 commit everything as you have tested, with your sign-off.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-6">
-<simpara>
+<callout arearefs="CO2-6">
+<para>
 take the last commit back, keeping what is in the working tree.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-7">
-<simpara>
+<callout arearefs="CO2-7">
+<para>
 look at the changes since the premature commit we took back.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-8">
-<simpara>
+<callout arearefs="CO2-8">
+<para>
 redo the commit undone in the previous step, using the message
 you originally wrote.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-9">
-<simpara>
+<callout arearefs="CO2-9">
+<para>
 switch to the master branch.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-10">
-<simpara>
+<callout arearefs="CO2-10">
+<para>
 merge a topic branch into your master branch.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO4-11">
-<simpara>
+<callout arearefs="CO2-11">
+<para>
 review commit logs; other forms to limit output can be
-combined and include <literal>--max-count=10</literal> (show 10 commits),
-<literal>--until=2005-12-10</literal>, etc.
-</simpara>
+combined and include <emphasis>--max-count=10</emphasis> (show 10 commits),
+<emphasis>--until=2005-12-10</emphasis>, etc.
+</para>
 </callout>
-<callout arearefs="CO4-12">
-<simpara>
-view only the changes that touch what&#8217;s in <literal>curses/</literal>
-directory, since <literal>v2.43</literal> tag.
-</simpara>
+<callout arearefs="CO2-12">
+<para>
+view only the changes that touch what's in <emphasis>curses/</emphasis>
+directory, since <emphasis>v2.43</emphasis> tag.
+</para>
 </callout>
 </calloutlist>
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
+</section>
 </simplesect>
 <simplesect id="_individual_developer_participant_anchor_id_individual_developer_participant_xreflabel_individual_developer_participant">
 <title>Individual Developer (Participant)<anchor id="Individual Developer (Participant)" xreflabel="[Individual Developer (Participant)]"/></title>
@@ -283,30 +211,30 @@ addition to the ones needed by a standalone developer.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<xref linkend="git-clone(1)"/> from the upstream to prime your local
+<xref linkend="git-clone(1)" /> from the upstream to prime your local
     repository.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-pull(1)"/> and <xref linkend="git-fetch(1)"/> from "origin"
+<xref linkend="git-pull(1)" /> and <xref linkend="git-fetch(1)" /> from "origin"
     to keep up-to-date with the upstream.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-push(1)"/> to shared repository, if you adopt CVS
+<xref linkend="git-push(1)" /> to shared repository, if you adopt CVS
     style shared repository workflow.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-format-patch(1)"/> to prepare e-mail submission, if
+<xref linkend="git-format-patch(1)" /> to prepare e-mail submission, if
     you adopt Linux kernel-style public forum workflow.
 </simpara>
 </listitem>
 </itemizedlist>
-<simplesect id="_examples_3">
+<section id="_examples_2">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -314,60 +242,60 @@ addition to the ones needed by a standalone developer.</simpara>
 Clone the upstream and work on it.  Feed changes to upstream.
 </term>
 <listitem>
-<literallayout>$ git clone git://git.kernel.org/pub/scm/.../torvalds/linux-2.6 my2.6
+<screen>$ git clone git://git.kernel.org/pub/scm/.../torvalds/linux-2.6 my2.6
 $ cd my2.6
-$ edit/compile/test; git commit -a -s <co id="CO5-1"/>
-$ git format-patch origin <co id="CO5-2"/>
-$ git pull <co id="CO5-3"/>
-$ git log -p ORIG_HEAD.. arch/i386 include/asm-i386 <co id="CO5-4"/>
-$ git pull git://git.kernel.org/pub/.../jgarzik/libata-dev.git ALL <co id="CO5-5"/>
-$ git reset --hard ORIG_HEAD <co id="CO5-6"/>
-$ git gc <co id="CO5-7"/>
-$ git fetch --tags <co id="CO5-8"/></literallayout>
+$ edit/compile/test; git commit -a -s <co id="CO3-1"/>
+$ git format-patch origin <co id="CO3-2"/>
+$ git pull <co id="CO3-3"/>
+$ git log -p ORIG_HEAD.. arch/i386 include/asm-i386 <co id="CO3-4"/>
+$ git pull git://git.kernel.org/pub/.../jgarzik/libata-dev.git ALL <co id="CO3-5"/>
+$ git reset --hard ORIG_HEAD <co id="CO3-6"/>
+$ git gc <co id="CO3-7"/>
+$ git fetch --tags <co id="CO3-8"/></screen>
 <calloutlist>
-<callout arearefs="CO5-1">
-<simpara>
+<callout arearefs="CO3-1">
+<para>
 repeat as needed.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-2">
-<simpara>
+<callout arearefs="CO3-2">
+<para>
 extract patches from your branch for e-mail submission.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-3">
-<simpara>
-<literal>git pull</literal> fetches from <literal>origin</literal> by default and merges into the
+<callout arearefs="CO3-3">
+<para>
+<emphasis>git pull</emphasis> fetches from <emphasis>origin</emphasis> by default and merges into the
 current branch.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-4">
-<simpara>
+<callout arearefs="CO3-4">
+<para>
 immediately after pulling, look at the changes done upstream
 since last time we checked, only in the
 area we are interested in.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-5">
-<simpara>
+<callout arearefs="CO3-5">
+<para>
 fetch from a specific branch from a specific repository and merge.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-6">
-<simpara>
+<callout arearefs="CO3-6">
+<para>
 revert the pull.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-7">
-<simpara>
+<callout arearefs="CO3-7">
+<para>
 garbage collect leftover objects from reverted pull.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO5-8">
-<simpara>
-from time to time, obtain official tags from the <literal>origin</literal>
-and store them under <literal>.git/refs/tags/</literal>.
-</simpara>
+<callout arearefs="CO3-8">
+<para>
+from time to time, obtain official tags from the <emphasis>origin</emphasis>
+and store them under <emphasis>.git/refs/tags/</emphasis>.
+</para>
 </callout>
 </calloutlist>
 </listitem>
@@ -377,54 +305,54 @@ and store them under <literal>.git/refs/tags/</literal>.
 Push into another repository.
 </term>
 <listitem>
-<literallayout>satellite$ git clone mothership:frotz frotz <co id="CO6-1"/>
+<screen>satellite$ git clone mothership:frotz frotz <co id="CO4-1"/>
 satellite$ cd frotz
-satellite$ git config --get-regexp '^(remote|branch)\.' <co id="CO6-2"/>
+satellite$ git config --get-regexp '^(remote|branch)\.' <co id="CO4-2"/>
 remote.origin.url mothership:frotz
 remote.origin.fetch refs/heads/*:refs/remotes/origin/*
 branch.master.remote origin
 branch.master.merge refs/heads/master
 satellite$ git config remote.origin.push \
-           master:refs/remotes/satellite/master <co id="CO6-3"/>
+           master:refs/remotes/satellite/master <co id="CO4-3"/>
 satellite$ edit/compile/test/commit
-satellite$ git push origin <co id="CO6-4"/>
+satellite$ git push origin <co id="CO4-4"/>
 
 mothership$ cd frotz
 mothership$ git checkout master
-mothership$ git merge satellite/master <co id="CO6-5"/></literallayout>
+mothership$ git merge satellite/master <co id="CO4-5"/></screen>
 <calloutlist>
-<callout arearefs="CO6-1">
-<simpara>
+<callout arearefs="CO4-1">
+<para>
 mothership machine has a frotz repository under your home
 directory; clone from it to start a repository on the satellite
 machine.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO6-2">
-<simpara>
+<callout arearefs="CO4-2">
+<para>
 clone sets these configuration variables by default.
-It arranges <literal>git pull</literal> to fetch and store the branches of mothership
-machine to local <literal>remotes/origin/*</literal> tracking branches.
-</simpara>
+It arranges <emphasis>git pull</emphasis> to fetch and store the branches of mothership
+machine to local <emphasis>remotes/origin/*</emphasis> remote-tracking branches.
+</para>
 </callout>
-<callout arearefs="CO6-3">
-<simpara>
-arrange <literal>git push</literal> to push local <literal>master</literal> branch to
-<literal>remotes/satellite/master</literal> branch of the mothership machine.
-</simpara>
+<callout arearefs="CO4-3">
+<para>
+arrange <emphasis>git push</emphasis> to push local <emphasis>master</emphasis> branch to
+<emphasis>remotes/satellite/master</emphasis> branch of the mothership machine.
+</para>
 </callout>
-<callout arearefs="CO6-4">
-<simpara>
-push will stash our work away on <literal>remotes/satellite/master</literal>
-tracking branch on the mothership machine.  You could use this as
-a back-up method.
-</simpara>
+<callout arearefs="CO4-4">
+<para>
+push will stash our work away on <emphasis>remotes/satellite/master</emphasis>
+remote-tracking branch on the mothership machine.  You could use this
+as a back-up method.
+</para>
 </callout>
-<callout arearefs="CO6-5">
-<simpara>
+<callout arearefs="CO4-5">
+<para>
 on mothership machine, merge the work done on the satellite
 machine into the master branch.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
@@ -434,29 +362,29 @@ machine into the master branch.
 Branch off of a specific tag.
 </term>
 <listitem>
-<literallayout>$ git checkout -b private2.6.14 v2.6.14 <co id="CO7-1"/>
+<screen>$ git checkout -b private2.6.14 v2.6.14 <co id="CO5-1"/>
 $ edit/compile/test; git commit -a
 $ git checkout master
 $ git format-patch -k -m --stdout v2.6.14..private2.6.14 |
-  git am -3 -k <co id="CO7-2"/></literallayout>
+  git am -3 -k <co id="CO5-2"/></screen>
 <calloutlist>
-<callout arearefs="CO7-1">
-<simpara>
+<callout arearefs="CO5-1">
+<para>
 create a private branch based on a well known (but somewhat behind)
 tag.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO7-2">
-<simpara>
-forward port all changes in <literal>private2.6.14</literal> branch to <literal>master</literal> branch
+<callout arearefs="CO5-2">
+<para>
+forward port all changes in <emphasis>private2.6.14</emphasis> branch to <emphasis>master</emphasis> branch
 without a formal "merging".
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
+</section>
 </simplesect>
 <simplesect id="_integrator_anchor_id_integrator_xreflabel_integrator">
 <title>Integrator<anchor id="Integrator" xreflabel="[Integrator]"/></title>
@@ -467,33 +395,33 @@ commands in addition to the ones needed by participants.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<xref linkend="git-am(1)"/> to apply patches e-mailed in from your
+<xref linkend="git-am(1)" /> to apply patches e-mailed in from your
     contributors.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-pull(1)"/> to merge from your trusted lieutenants.
+<xref linkend="git-pull(1)" /> to merge from your trusted lieutenants.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-format-patch(1)"/> to prepare and send suggested
+<xref linkend="git-format-patch(1)" /> to prepare and send suggested
     alternative to contributors.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-revert(1)"/> to undo botched commits.
+<xref linkend="git-revert(1)" /> to undo botched commits.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-push(1)"/> to publish the bleeding edge.
+<xref linkend="git-push(1)" /> to publish the bleeding edge.
 </simpara>
 </listitem>
 </itemizedlist>
-<simplesect id="_examples_4">
+<section id="_examples_3">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -501,88 +429,88 @@ commands in addition to the ones needed by participants.</simpara>
 My typical GIT day.
 </term>
 <listitem>
-<literallayout>$ git status <co id="CO8-1"/>
-$ git show-branch <co id="CO8-2"/>
-$ mailx <co id="CO8-3"/>
+<screen>$ git status <co id="CO6-1"/>
+$ git show-branch <co id="CO6-2"/>
+$ mailx <co id="CO6-3"/>
 &amp; s 2 3 4 5 ./+to-apply
 &amp; s 7 8 ./+hold-linus
 &amp; q
 $ git checkout -b topic/one master
-$ git am -3 -i -s -u ./+to-apply <co id="CO8-4"/>
+$ git am -3 -i -s -u ./+to-apply <co id="CO6-4"/>
 $ compile/test
-$ git checkout -b hold/linus &amp;&amp; git am -3 -i -s -u ./+hold-linus <co id="CO8-5"/>
-$ git checkout topic/one &amp;&amp; git rebase master <co id="CO8-6"/>
-$ git checkout pu &amp;&amp; git reset --hard next <co id="CO8-7"/>
-$ git merge topic/one topic/two &amp;&amp; git merge hold/linus <co id="CO8-8"/>
+$ git checkout -b hold/linus &amp;&amp; git am -3 -i -s -u ./+hold-linus <co id="CO6-5"/>
+$ git checkout topic/one &amp;&amp; git rebase master <co id="CO6-6"/>
+$ git checkout pu &amp;&amp; git reset --hard next <co id="CO6-7"/>
+$ git merge topic/one topic/two &amp;&amp; git merge hold/linus <co id="CO6-8"/>
 $ git checkout maint
-$ git cherry-pick master~4 <co id="CO8-9"/>
+$ git cherry-pick master~4 <co id="CO6-9"/>
 $ compile/test
-$ git tag -s -m "GIT 0.99.9x" v0.99.9x <co id="CO8-10"/>
-$ git fetch ko &amp;&amp; git show-branch master maint 'tags/ko-*' <co id="CO8-11"/>
-$ git push ko <co id="CO8-12"/>
-$ git push ko v0.99.9x <co id="CO8-13"/></literallayout>
+$ git tag -s -m "GIT 0.99.9x" v0.99.9x <co id="CO6-10"/>
+$ git fetch ko &amp;&amp; git show-branch master maint 'tags/ko-*' <co id="CO6-11"/>
+$ git push ko <co id="CO6-12"/>
+$ git push ko v0.99.9x <co id="CO6-13"/></screen>
 <calloutlist>
-<callout arearefs="CO8-1">
-<simpara>
+<callout arearefs="CO6-1">
+<para>
 see what I was in the middle of doing, if any.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-2">
-<simpara>
+<callout arearefs="CO6-2">
+<para>
 see what topic branches I have and think about how ready
 they are.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-3">
-<simpara>
+<callout arearefs="CO6-3">
+<para>
 read mails, save ones that are applicable, and save others
 that are not quite ready.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-4">
-<simpara>
+<callout arearefs="CO6-4">
+<para>
 apply them, interactively, with my sign-offs.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-5">
-<simpara>
+<callout arearefs="CO6-5">
+<para>
 create topic branch as needed and apply, again with my
 sign-offs.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-6">
-<simpara>
+<callout arearefs="CO6-6">
+<para>
 rebase internal topic branch that has not been merged to the
 master, nor exposed as a part of a stable branch.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-7">
-<simpara>
-restart <literal>pu</literal> every time from the next.
-</simpara>
+<callout arearefs="CO6-7">
+<para>
+restart <emphasis>pu</emphasis> every time from the next.
+</para>
 </callout>
-<callout arearefs="CO8-8">
-<simpara>
+<callout arearefs="CO6-8">
+<para>
 and bundle topic branches still cooking.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-9">
-<simpara>
+<callout arearefs="CO6-9">
+<para>
 backport a critical fix.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-10">
-<simpara>
+<callout arearefs="CO6-10">
+<para>
 create a signed tag.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-11">
-<simpara>
+<callout arearefs="CO6-11">
+<para>
 make sure I did not accidentally rewind master beyond what I
-already pushed out.  <literal>ko</literal> shorthand points at the repository I have
+already pushed out.  <emphasis>ko</emphasis> shorthand points at the repository I have
 at kernel.org, and looks like this:
-</simpara>
-<literallayout>$ cat .git/remotes/ko
+</para>
+<screen>$ cat .git/remotes/ko
 URL: kernel.org:/pub/scm/git/git.git
 Pull: master:refs/tags/ko-master
 Pull: next:refs/tags/ko-next
@@ -590,26 +518,26 @@ Pull: maint:refs/tags/ko-maint
 Push: master
 Push: next
 Push: +pu
-Push: maint</literallayout>
-<simpara>In the output from <literal>git show-branch</literal>, <literal>master</literal> should have
-everything <literal>ko-master</literal> has, and <literal>next</literal> should have
-everything <literal>ko-next</literal> has.</simpara>
+Push: maint</screen>
+<simpara>In the output from <emphasis>git show-branch</emphasis>, <emphasis>master</emphasis> should have
+everything <emphasis>ko-master</emphasis> has, and <emphasis>next</emphasis> should have
+everything <emphasis>ko-next</emphasis> has.</simpara>
 </callout>
-<callout arearefs="CO8-12">
-<simpara>
+<callout arearefs="CO6-12">
+<para>
 push out the bleeding edge.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO8-13">
-<simpara>
+<callout arearefs="CO6-13">
+<para>
 push the tag out, too.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
+</section>
 </simplesect>
 <simplesect id="_repository_administration_anchor_id_repository_administration_xreflabel_repository_administration">
 <title>Repository Administration<anchor id="Repository Administration" xreflabel="[Repository Administration]"/></title>
@@ -618,20 +546,20 @@ and maintain access to the repository by developers.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<xref linkend="git-daemon(1)"/> to allow anonymous download from
+<xref linkend="git-daemon(1)" /> to allow anonymous download from
     repository.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<xref linkend="git-shell(1)"/> can be used as a <emphasis>restricted login shell</emphasis>
+<xref linkend="git-shell(1)" /> can be used as a <emphasis>restricted login shell</emphasis>
     for shared central repository users.
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara><ulink url="howto/update-hook-example.txt">update hook howto</ulink> has a good
+<simpara>link:howto/update-hook-example.txt[update hook howto] has a good
 example of managing a shared central repository.</simpara>
-<simplesect id="_examples_5">
+<section id="_examples_4">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -639,8 +567,8 @@ example of managing a shared central repository.</simpara>
 We assume the following in /etc/services
 </term>
 <listitem>
-<literallayout>$ grep 9418 /etc/services
-git             9418/tcp                # Git Version Control System</literallayout>
+<screen>$ grep 9418 /etc/services
+git             9418/tcp                # Git Version Control System</screen>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -648,9 +576,9 @@ git             9418/tcp                # Git Version Control System</literallay
 Run git-daemon to serve /pub/scm from inetd.
 </term>
 <listitem>
-<literallayout>$ grep git /etc/inetd.conf
+<screen>$ grep git /etc/inetd.conf
 git     stream  tcp     nowait  nobody \
-  /usr/bin/git-daemon git-daemon --inetd --export-all /pub/scm</literallayout>
+  /usr/bin/git-daemon git-daemon --inetd --export-all /pub/scm</screen>
 <simpara>The actual configuration line should be on one line.</simpara>
 </listitem>
 </varlistentry>
@@ -659,7 +587,7 @@ git     stream  tcp     nowait  nobody \
 Run git-daemon to serve /pub/scm from xinetd.
 </term>
 <listitem>
-<literallayout>$ cat /etc/xinetd.d/git-daemon
+<screen>$ cat /etc/xinetd.d/git-daemon
 # default: off
 # description: The git server offers access to git repositories
 service git
@@ -673,7 +601,7 @@ service git
         server          = /usr/bin/git-daemon
         server_args     = --inetd --export-all --base-path=/pub/scm
         log_on_failure  += USERID
-}</literallayout>
+}</screen>
 <simpara>Check your xinetd(8) documentation and setup, this is from a Fedora system.
 Others might be different.</simpara>
 </listitem>
@@ -683,26 +611,26 @@ Others might be different.</simpara>
 Give push/pull only access to developers.
 </term>
 <listitem>
-<literallayout>$ grep git /etc/passwd <co id="CO9-1"/>
+<screen>$ grep git /etc/passwd <co id="CO7-1"/>
 alice:x:1000:1000::/home/alice:/usr/bin/git-shell
 bob:x:1001:1001::/home/bob:/usr/bin/git-shell
 cindy:x:1002:1002::/home/cindy:/usr/bin/git-shell
 david:x:1003:1003::/home/david:/usr/bin/git-shell
-$ grep git /etc/shells <co id="CO9-2"/>
-/usr/bin/git-shell</literallayout>
+$ grep git /etc/shells <co id="CO7-2"/>
+/usr/bin/git-shell</screen>
 <calloutlist>
-<callout arearefs="CO9-1">
-<simpara>
+<callout arearefs="CO7-1">
+<para>
 log-in shell is set to /usr/bin/git-shell, which does not
-allow anything but <literal>git push</literal> and <literal>git pull</literal>.  The users should
+allow anything but <emphasis>git push</emphasis> and <emphasis>git pull</emphasis>.  The users should
 get an ssh access to the machine.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO9-2">
-<simpara>
+<callout arearefs="CO7-2">
+<para>
 in many distributions /etc/shells needs to list what is used
 as the login shell.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
@@ -712,10 +640,10 @@ as the login shell.
 CVS-style shared repository.
 </term>
 <listitem>
-<literallayout>$ grep git /etc/group <co id="CO10-1"/>
+<screen>$ grep git /etc/group <co id="CO8-1"/>
 git:x:9418:alice,bob,cindy,david
 $ cd /home/devo.git
-$ ls -l <co id="CO10-2"/>
+$ ls -l <co id="CO8-2"/>
   lrwxrwxrwx   1 david git    17 Dec  4 22:40 HEAD -&gt; refs/heads/master
   drwxrwsr-x   2 david git  4096 Dec  4 22:40 branches
   -rw-rw-r--   1 david git    84 Dec  4 22:40 config
@@ -726,35 +654,35 @@ $ ls -l <co id="CO10-2"/>
   drwxrwsr-x   4 david git  4096 Dec  4 22:40 objects
   drwxrwsr-x   4 david git  4096 Nov  7 14:58 refs
   drwxrwsr-x   2 david git  4096 Dec  4 22:40 remotes
-$ ls -l hooks/update <co id="CO10-3"/>
+$ ls -l hooks/update <co id="CO8-3"/>
   -r-xr-xr-x   1 david git  3536 Dec  4 22:40 update
-$ cat info/allowed-users <co id="CO10-4"/>
+$ cat info/allowed-users <co id="CO8-4"/>
 refs/heads/master       alice\|cindy
 refs/heads/doc-update   bob
-refs/tags/v[0-9]*       david</literallayout>
+refs/tags/v[0-9]*       david</screen>
 <calloutlist>
-<callout arearefs="CO10-1">
-<simpara>
+<callout arearefs="CO8-1">
+<para>
 place the developers into the same git group.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO10-2">
-<simpara>
+<callout arearefs="CO8-2">
+<para>
 and make the shared repository writable by the group.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO10-3">
-<simpara>
+<callout arearefs="CO8-3">
+<para>
 use update-hook example by Carl from Documentation/howto/
 for branch policy control.
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO10-4">
-<simpara>
+<callout arearefs="CO8-4">
+<para>
 alice and cindy can push into master, only bob can push into doc-update.
 david is the release manager and is the only person who can
 create and push version tags.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
@@ -764,24 +692,24 @@ create and push version tags.
 HTTP server to support dumb protocol transfer.
 </term>
 <listitem>
-<literallayout>dev$ git update-server-info <co id="CO11-1"/>
-dev$ ftp user@isp.example.com <co id="CO11-2"/>
-ftp&gt; cp -r .git /home/user/myproject.git</literallayout>
+<screen>dev$ git update-server-info <co id="CO9-1"/>
+dev$ ftp user@isp.example.com <co id="CO9-2"/>
+ftp&gt; cp -r .git /home/user/myproject.git</screen>
 <calloutlist>
-<callout arearefs="CO11-1">
-<simpara>
+<callout arearefs="CO9-1">
+<para>
 make sure your info/refs and objects/info/packs are up-to-date
-</simpara>
+</para>
 </callout>
-<callout arearefs="CO11-2">
-<simpara>
+<callout arearefs="CO9-2">
+<para>
 upload to public HTTP server hosted by your ISP.
-</simpara>
+</para>
 </callout>
 </calloutlist>
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
+</section>
 </simplesect>
 </article>

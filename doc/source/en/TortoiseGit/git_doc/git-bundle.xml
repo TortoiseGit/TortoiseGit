@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-bundle(1)">
+<articleinfo>
+    <title>git-bundle(1)</title>
+<indexterm>
+<primary>git-bundle(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-bundle - Move objects and refs by archive</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git bundle</emphasis> create &lt;file&gt; &lt;git-rev-list-args&gt;
+<emphasis>git bundle</emphasis> verify &lt;file&gt;
+<emphasis>git bundle</emphasis> list-heads &lt;file&gt; [&lt;refname&gt;&#8230;]
+<emphasis>git bundle</emphasis> unbundle &lt;file&gt; [&lt;refname&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Some workflows require that one or more branches of development on one
+machine be replicated on another machine, but the two machines cannot
+be directly connected, and therefore the interactive git protocols (git,
+ssh, rsync, http) cannot be used.  This command provides support for
+<emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis> to operate by packaging objects and references
+in an archive at the originating machine, then importing those into
+another repository using <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>
+after moving the archive by some means (e.g., by sneakernet).  As no
+direct connection between the repositories exists, the user must specify a
+basis for the bundle that is held by the destination repository: the
+bundle assumes that all objects in the basis are already in the
+destination repository.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+create &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Used to create a bundle named <emphasis>file</emphasis>.  This requires the
+        <emphasis>git-rev-list-args</emphasis> arguments to define the bundle contents.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+verify &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Used to check that a bundle file is valid and will apply
+        cleanly to the current repository.  This includes checks on the
+        bundle format itself as well as checking that the prerequisite
+        commits exist and are fully linked in the current repository.
+        <emphasis>git bundle</emphasis> prints a list of missing commits, if any, and exits
+        with a non-zero status.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+list-heads &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Lists the references defined in the bundle.  If followed by a
+        list of references, only references matching those given are
+        printed out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+unbundle &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Passes the objects in the bundle to <emphasis>git index-pack</emphasis>
+        for storage in the repository, then prints the names of all
+        defined references. If a list of references is given, only
+        references matching those in the list are printed. This command is
+        really plumbing, intended to be called only by <emphasis>git fetch</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;git-rev-list-args&gt;
+</term>
+<listitem>
+<simpara>
+        A list of arguments, acceptable to <emphasis>git rev-parse</emphasis> and
+        <emphasis>git rev-list</emphasis> (and containing a named ref, see SPECIFYING REFERENCES
+        below), that specifies the specific objects and references
+        to transport.  For example, <emphasis>master~10..master</emphasis> causes the
+        current master reference to be packaged along with all objects
+        added since its 10th ancestor commit.  There is no explicit
+        limit to the number of references and objects that may be
+        packaged.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+[&lt;refname&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        A list of references used to limit the references reported as
+        available. This is principally of use to <emphasis>git fetch</emphasis>, which
+        expects to receive only those references asked for and not
+        necessarily everything in the pack (in this case, <emphasis>git bundle</emphasis> acts
+        like <emphasis>git fetch-pack</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_specifying_references">
+<title>SPECIFYING REFERENCES</title>
+<simpara><emphasis>git bundle</emphasis> will only package references that are shown by
+<emphasis>git show-ref</emphasis>: this includes heads, tags, and remote heads.  References
+such as <emphasis>master~1</emphasis> cannot be packaged, but are perfectly suitable for
+defining the basis.  More than one reference may be packaged, and more
+than one basis can be specified.  The objects packaged are those not
+contained in the union of the given bases.  Each basis can be
+specified explicitly (e.g. <emphasis>^master~10</emphasis>), or implicitly (e.g.
+<emphasis>master~10..master</emphasis>, <emphasis>--since=10.days.ago master</emphasis>).</simpara>
+<simpara>It is very important that the basis used be held by the destination.
+It is okay to err on the side of caution, causing the bundle file
+to contain objects already in the destination, as these are ignored
+when unpacking at the destination.</simpara>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<simpara>Assume you want to transfer the history from a repository R1 on machine A
+to another repository R2 on machine B.
+For whatever reason, direct connection between A and B is not allowed,
+but we can move data from A to B via some mechanism (CD, email, etc.).
+We want to update R2 with development made on the branch master in R1.</simpara>
+<simpara>To bootstrap the process, you can first create a bundle that does not have
+any basis. You can use a tag to remember up to what commit you last
+processed, in order to make it easy to later update the other repository
+with an incremental bundle:</simpara>
+<screen>machineA$ cd R1
+machineA$ git bundle create file.bundle master
+machineA$ git tag -f lastR2bundle master</screen>
+<simpara>Then you transfer file.bundle to the target machine B. If you are creating
+the repository on machine B, then you can clone from the bundle as if it
+were a remote repository instead of creating an empty repository and then
+pulling or fetching objects from the bundle:</simpara>
+<screen>machineB$ git clone /home/me/tmp/file.bundle R2</screen>
+<simpara>This will define a remote called "origin" in the resulting repository that
+lets you fetch and pull from the bundle. The $GIT_DIR/config file in R2 will
+have an entry like this:</simpara>
+<screen>[remote "origin"]
+    url = /home/me/tmp/file.bundle
+    fetch = refs/heads/*:refs/remotes/origin/*</screen>
+<simpara>To update the resulting mine.git repository, you can fetch or pull after
+replacing the bundle stored at /home/me/tmp/file.bundle with incremental
+updates.</simpara>
+<simpara>After working some more in the original repository, you can create an
+incremental bundle to update the other repository:</simpara>
+<screen>machineA$ cd R1
+machineA$ git bundle create file.bundle lastR2bundle..master
+machineA$ git tag -f lastR2bundle master</screen>
+<simpara>You then transfer the bundle to the other machine to replace
+/home/me/tmp/file.bundle, and pull from it.</simpara>
+<screen>machineB$ cd R2
+machineB$ git pull</screen>
+<simpara>If you know up to what commit the intended recipient repository should
+have the necessary objects, you can use that knowledge to specify the
+basis, giving a cut-off point to limit the revisions and objects that go
+in the resulting bundle. The previous example used the lastR2bundle tag
+for this purpose, but you can use any other options that you would give to
+the <xref linkend="git-log(1)" /> command. Here are more examples:</simpara>
+<simpara>You can use a tag that is present in both:</simpara>
+<screen>$ git bundle create mybundle v1.0.0..master</screen>
+<simpara>You can use a basis based on time:</simpara>
+<screen>$ git bundle create mybundle --since=10.days master</screen>
+<simpara>You can use the number of commits:</simpara>
+<screen>$ git bundle create mybundle -10 master</screen>
+<simpara>You can run <emphasis>git-bundle verify</emphasis> to see if you can extract from a bundle
+that was created with a basis:</simpara>
+<screen>$ git bundle verify mybundle</screen>
+<simpara>This will list what commits you must have in order to extract from the
+bundle and will error out if you do not have them.</simpara>
+<simpara>A bundle from a recipient repository's point of view is just like a
+regular repository which it fetches or pulls from. You can, for example, map
+references when fetching:</simpara>
+<screen>$ git fetch mybundle master:localRef</screen>
+<simpara>You can also see what references it offers:</simpara>
+<screen>$ git ls-remote mybundle</screen>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

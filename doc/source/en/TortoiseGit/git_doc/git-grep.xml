@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-grep(1)">
+<articleinfo>
+    <title>git-grep(1)</title>
+<indexterm>
+<primary>git-grep(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-grep - Print lines matching a pattern</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git grep</emphasis> [-a | --text] [-I] [-i | --ignore-case] [-w | --word-regexp]
+           [-v | --invert-match] [-h|-H] [--full-name]
+           [-E | --extended-regexp] [-G | --basic-regexp]
+           [-P | --perl-regexp]
+           [-F | --fixed-strings] [-n | --line-number]
+           [-l | --files-with-matches] [-L | --files-without-match]
+           [(-O | --open-files-in-pager) [&lt;pager&gt;]]
+           [-z | --null]
+           [-c | --count] [--all-match] [-q | --quiet]
+           [--max-depth &lt;depth&gt;]
+           [--color[=&lt;when&gt;] | --no-color]
+           [--break] [--heading] [-p | --show-function]
+           [-A &lt;post-context&gt;] [-B &lt;pre-context&gt;] [-C &lt;context&gt;]
+           [-W | --function-context]
+           [-f &lt;file&gt;] [-e] &lt;pattern&gt;
+           [--and|--or|--not|(|)|-e &lt;pattern&gt;&#8230;]
+           [ [--exclude-standard] [--cached | --no-index | --untracked] | &lt;tree&gt;&#8230;]
+           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Look for specified patterns in the tracked files in the work tree, blobs
+registered in the index file, or blobs in given tree objects.</simpara>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+grep.lineNumber
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>-n</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.extendedRegexp
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--cached
+</term>
+<listitem>
+<simpara>
+        Instead of searching tracked files in the working tree, search
+        blobs registered in the index file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-index
+</term>
+<listitem>
+<simpara>
+        Search files in the current directory that is not managed by git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--untracked
+</term>
+<listitem>
+<simpara>
+        In addition to searching in the tracked files in the working
+        tree, search also in untracked files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-exclude-standard
+</term>
+<listitem>
+<simpara>
+        Also search in ignored files by not honoring the <emphasis>.gitignore</emphasis>
+        mechanism. Only useful with <emphasis>--untracked</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude-standard
+</term>
+<listitem>
+<simpara>
+        Do not pay attention to ignored files specified via the <emphasis>.gitignore</emphasis>
+        mechanism.  Only useful when searching files in the current directory
+        with <emphasis>--no-index</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--text
+</term>
+<listitem>
+<simpara>
+        Process binary files as if they were text.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-i
+</term>
+<term>
+--ignore-case
+</term>
+<listitem>
+<simpara>
+        Ignore case differences between the patterns and the
+        files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-I
+</term>
+<listitem>
+<simpara>
+        Don't match the pattern in binary files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--max-depth &lt;depth&gt;
+</term>
+<listitem>
+<simpara>
+        For each &lt;pathspec&gt; given on command line, descend at most &lt;depth&gt;
+        levels of directories. A negative value means no limit.
+        This option is ignored if &lt;pathspec&gt; contains active wildcards.
+        In other words if "a*" matches a directory named "a*",
+        "*" is matched literally so --max-depth is still effective.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-w
+</term>
+<term>
+--word-regexp
+</term>
+<listitem>
+<simpara>
+        Match the pattern only at word boundary (either begin at the
+        beginning of a line, or preceded by a non-word character; end at
+        the end of a line or followed by a non-word character).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--invert-match
+</term>
+<listitem>
+<simpara>
+        Select non-matching lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-h
+</term>
+<term>
+-H
+</term>
+<listitem>
+<simpara>
+        By default, the command shows the filename for each
+        match.  <emphasis>-h</emphasis> option is used to suppress this output.
+        <emphasis>-H</emphasis> is there for completeness and does not do anything
+        except it overrides <emphasis>-h</emphasis> given earlier on the command
+        line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full-name
+</term>
+<listitem>
+<simpara>
+        When run from a subdirectory, the command usually
+        outputs paths relative to the current directory.  This
+        option forces paths to be output relative to the project
+        top directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-E
+</term>
+<term>
+--extended-regexp
+</term>
+<term>
+-G
+</term>
+<term>
+--basic-regexp
+</term>
+<listitem>
+<simpara>
+        Use POSIX extended/basic regexp for patterns.  Default
+        is to use basic regexp.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-P
+</term>
+<term>
+--perl-regexp
+</term>
+<listitem>
+<simpara>
+        Use Perl-compatible regexp for patterns. Requires libpcre to be
+        compiled in.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F
+</term>
+<term>
+--fixed-strings
+</term>
+<listitem>
+<simpara>
+        Use fixed strings for patterns (don't interpret pattern
+        as a regex).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--line-number
+</term>
+<listitem>
+<simpara>
+        Prefix the line number to matching lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<term>
+--files-with-matches
+</term>
+<term>
+--name-only
+</term>
+<term>
+-L
+</term>
+<term>
+--files-without-match
+</term>
+<listitem>
+<simpara>
+        Instead of showing every matched line, show only the
+        names of files that contain (or do not contain) matches.
+        For better compatibility with <emphasis>git diff</emphasis>, <emphasis>--name-only</emphasis> is a
+        synonym for <emphasis>--files-with-matches</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-O [&lt;pager&gt;]
+</term>
+<term>
+--open-files-in-pager [&lt;pager&gt;]
+</term>
+<listitem>
+<simpara>
+        Open the matching files in the pager (not the output of <emphasis>grep</emphasis>).
+        If the pager happens to be "less" or "vi", and the user
+        specified only one pattern, the first file is positioned at
+        the first match automatically.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<term>
+--null
+</term>
+<listitem>
+<simpara>
+        Output \0 instead of the character that normally follows a
+        file name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c
+</term>
+<term>
+--count
+</term>
+<listitem>
+<simpara>
+        Instead of showing every matched line, show the number of
+        lines that match.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color[=&lt;when&gt;]
+</term>
+<listitem>
+<simpara>
+        Show colored matches.
+        The value must be always (the default), never, or auto.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-color
+</term>
+<listitem>
+<simpara>
+        Turn off match highlighting, even when the configuration file
+        gives the default to color output.
+        Same as <emphasis>--color=never</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--break
+</term>
+<listitem>
+<simpara>
+        Print an empty line between matches from different files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--heading
+</term>
+<listitem>
+<simpara>
+        Show the filename above the matches in that file instead of
+        at the start of each shown line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<term>
+--show-function
+</term>
+<listitem>
+<simpara>
+        Show the preceding line that contains the function name of
+        the match, unless the matching line is a function name itself.
+        The name is determined in the same way as <emphasis>git diff</emphasis> works out
+        patch hunk headers (see <emphasis>Defining a custom hunk-header</emphasis> in
+        <xref linkend="gitattributes(5)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-&lt;num&gt;
+</term>
+<term>
+-C &lt;num&gt;
+</term>
+<term>
+--context &lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Show &lt;num&gt; leading and trailing lines, and place a line
+        containing <emphasis>--</emphasis> between contiguous groups of matches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-A &lt;num&gt;
+</term>
+<term>
+--after-context &lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Show &lt;num&gt; trailing lines, and place a line containing
+        <emphasis>--</emphasis> between contiguous groups of matches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-B &lt;num&gt;
+</term>
+<term>
+--before-context &lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Show &lt;num&gt; leading lines, and place a line containing
+        <emphasis>--</emphasis> between contiguous groups of matches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-W
+</term>
+<term>
+--function-context
+</term>
+<listitem>
+<simpara>
+        Show the surrounding text from the previous line containing a
+        function name up to the one before the next function name,
+        effectively showing the whole function in which the match was
+        found.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Read patterns from &lt;file&gt;, one per line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-e
+</term>
+<listitem>
+<simpara>
+        The next parameter is the pattern. This option has to be
+        used for patterns starting with <emphasis>-</emphasis> and should be used in
+        scripts passing user input to grep.  Multiple patterns are
+        combined by <emphasis>or</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--and
+</term>
+<term>
+--or
+</term>
+<term>
+--not
+</term>
+<term>
+( &#8230; )
+</term>
+<listitem>
+<simpara>
+        Specify how multiple patterns are combined using Boolean
+        expressions.  <emphasis>--or</emphasis> is the default operator.  <emphasis>--and</emphasis> has
+        higher precedence than <emphasis>--or</emphasis>.  <emphasis>-e</emphasis> has to be used for all
+        patterns.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--all-match
+</term>
+<listitem>
+<simpara>
+        When giving multiple pattern expressions combined with <emphasis>--or</emphasis>,
+        this flag is specified to limit the match to files that
+        have lines to match all of them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Do not output matched lines; instead, exit with status 0 when
+        there is a match and with non-zero status when there isn't.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;tree&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Instead of searching tracked files in the working tree, search
+        blobs in the given trees.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Signals the end of options; the rest of the parameters
+        are &lt;pathspec&gt; limiters.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;pathspec&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        If given, limit the search to paths matching at least one pattern.
+        Both leading paths match and glob(7) patterns are supported.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git grep 'time_t' -- '*.[ch]'</emphasis>
+</term>
+<listitem>
+<simpara>
+        Looks for <emphasis>time_t</emphasis> in all tracked .c and .h files in the working
+        directory and its subdirectories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git grep -e '#define' --and \( -e MAX_PATH -e PATH_MAX \)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Looks for a line that has <emphasis>#define</emphasis> and either <emphasis>MAX_PATH</emphasis> or
+        <emphasis>PATH_MAX</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git grep --all-match -e NODE -e Unexpected</emphasis>
+</term>
+<listitem>
+<simpara>
+        Looks for a line that has <emphasis>NODE</emphasis> or <emphasis>Unexpected</emphasis> in
+        files that have lines that match both.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

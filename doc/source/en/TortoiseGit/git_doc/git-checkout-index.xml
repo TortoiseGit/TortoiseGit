@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-checkout-index(1)">
+<articleinfo>
+    <title>git-checkout-index(1)</title>
+<indexterm>
+<primary>git-checkout-index(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-checkout-index - Copy files from the index to the working tree</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git checkout-index</emphasis> [-u] [-q] [-a] [-f] [-n] [--prefix=&lt;string&gt;]
+                   [--stage=&lt;number&gt;|all]
+                   [--temp]
+                   [-z] [--stdin]
+                   [--] [&lt;file&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Will copy all files listed from the index to the working directory
+(not overwriting existing files).</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-u
+</term>
+<term>
+--index
+</term>
+<listitem>
+<simpara>
+        update stat information for the checked out entries in
+        the index file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        be quiet if files exist or are not in the index
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        forces overwrite of existing files
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        checks out all files in the index.  Cannot be used
+        together with explicit filenames.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--no-create
+</term>
+<listitem>
+<simpara>
+        Don't checkout new files, only refresh files already checked
+        out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prefix=&lt;string&gt;
+</term>
+<listitem>
+<simpara>
+        When creating files, prepend &lt;string&gt; (usually a directory
+        including a trailing /)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stage=&lt;number&gt;|all
+</term>
+<listitem>
+<simpara>
+        Instead of checking out unmerged entries, copy out the
+        files from named stage.  &lt;number&gt; must be between 1 and 3.
+        Note: --stage=all automatically implies --temp.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--temp
+</term>
+<listitem>
+<simpara>
+        Instead of copying the files to the working directory
+        write the content to temporary files.  The temporary name
+        associations will be written to stdout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Instead of taking list of paths from the command line,
+        read list of paths from the standard input.  Paths are
+        separated by LF (i.e. one path per line) by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--stdin</emphasis>; paths are separated with
+        NUL character instead of LF.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Do not interpret any more arguments as options.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The order of the flags used to matter, but not anymore.</simpara>
+<simpara>Just doing <emphasis>git checkout-index</emphasis> does nothing. You probably meant
+<emphasis>git checkout-index -a</emphasis>. And if you want to force it, you want
+<emphasis>git checkout-index -f -a</emphasis>.</simpara>
+<simpara>Intuitiveness is not the goal here. Repeatability is. The reason for
+the "no arguments means no work" behavior is that from scripts you are
+supposed to be able to do:</simpara>
+<screen>$ find . -name '*.h' -print0 | xargs -0 git checkout-index -f --</screen>
+<simpara>which will force all existing <emphasis>*.h</emphasis> files to be replaced with their
+cached copies. If an empty command line implied "all", then this would
+force-refresh everything in the index, which was not the point.  But
+since <emphasis>git checkout-index</emphasis> accepts --stdin it would be faster to use:</simpara>
+<screen>$ find . -name '*.h' -print0 | git checkout-index -f -z --stdin</screen>
+<simpara>The <emphasis>--</emphasis> is just a good idea when you know the rest will be filenames;
+it will prevent problems with a filename of, for example,  <emphasis>-a</emphasis>.
+Using <emphasis>--</emphasis> is probably a good policy in scripts.</simpara>
+</simplesect>
+<simplesect id="_using_temp_or_stage_all">
+<title>Using --temp or --stage=all</title>
+<simpara>When <emphasis>--temp</emphasis> is used (or implied by <emphasis>--stage=all</emphasis>)
+<emphasis>git checkout-index</emphasis> will create a temporary file for each index
+entry being checked out.  The index will not be updated with stat
+information.  These options can be useful if the caller needs all
+stages of all unmerged entries so that the unmerged files can be
+processed by an external merge tool.</simpara>
+<simpara>A listing will be written to stdout providing the association of
+temporary file names to tracked path names.  The listing format
+has two variations:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+tempname TAB path RS
+</simpara>
+<simpara>The first format is what gets used when <emphasis>--stage</emphasis> is omitted or
+is not <emphasis>--stage=all</emphasis>. The field tempname is the temporary file
+name holding the file content and path is the tracked path name in
+the index.  Only the requested entries are output.</simpara>
+</listitem>
+<listitem>
+<simpara>
+stage1temp SP stage2temp SP stage3tmp TAB path RS
+</simpara>
+<simpara>The second format is what gets used when <emphasis>--stage=all</emphasis>.  The three
+stage temporary fields (stage1temp, stage2temp, stage3temp) list the
+name of the temporary file if there is a stage entry in the index
+or <emphasis>.</emphasis> if there is no stage entry.  Paths which only have a stage 0
+entry will always be omitted from the output.</simpara>
+</listitem>
+</orderedlist>
+<simpara>In both formats RS (the record separator) is newline by default
+but will be the null byte if -z was passed on the command line.
+The temporary file names are always safe strings; they will never
+contain directory separators or whitespace characters.  The path
+field is always relative to the current directory and the temporary
+file names are always relative to the top level directory.</simpara>
+<simpara>If the object being copied out to a temporary file is a symbolic
+link the content of the link will be written to a normal file.  It is
+up to the end-user or the Porcelain to make use of this information.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+To update and refresh only the files already checked out
+</term>
+<listitem>
+<screen>$ git checkout-index -n -f -a &amp;&amp; git update-index --ignore-missing --refresh</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Using <emphasis>git checkout-index</emphasis> to "export an entire tree"
+</term>
+<listitem>
+<simpara>
+        The prefix ability basically makes it trivial to use
+        <emphasis>git checkout-index</emphasis> as an "export as tree" function.
+        Just read the desired tree into the index, and do:
+</simpara>
+<screen>$ git checkout-index --prefix=git-export-dir/ -a</screen>
+<simpara><emphasis>git checkout-index</emphasis> will "export" the index into the specified
+directory.</simpara>
+<simpara>The final "/" is important. The exported name is literally just
+prefixed with the specified string.  Contrast this with the
+following example.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Export files with a prefix
+</term>
+<listitem>
+<screen>$ git checkout-index --prefix=.merged- Makefile</screen>
+<simpara>This will check out the currently cached copy of <emphasis>Makefile</emphasis>
+into the file <emphasis>.merged-Makefile</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-sh-i18n(1)">
+<articleinfo>
+    <title>git-sh-i18n(1)</title>
+<indexterm>
+<primary>git-sh-i18n(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-sh-i18n - Git's i18n setup code for shell scripts</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>. "$(git --exec-path)/git-sh-i18n"</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This is not a command the end user would want to run.  Ever.
+This documentation is meant for people who are studying the
+Porcelain-ish scripts and/or are writing new ones.</simpara>
+<simpara>The 'git sh-i18n scriptlet is designed to be sourced (using
+<emphasis>.</emphasis>) by Git's porcelain programs implemented in shell
+script. It provides wrappers for the GNU <emphasis>gettext</emphasis> and
+<emphasis>eval_gettext</emphasis> functions accessible through the <emphasis>gettext.sh</emphasis>
+script, and provides pass-through fallbacks on systems
+without GNU gettext.</simpara>
+</simplesect>
+<simplesect id="_functions">
+<title>FUNCTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+gettext
+</term>
+<listitem>
+<simpara>
+        Currently a dummy fall-through function implemented as a wrapper
+        around <emphasis>printf(1)</emphasis>. Will be replaced by a real gettext
+        implementation in a later version.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+eval_gettext
+</term>
+<listitem>
+<simpara>
+        Currently a dummy fall-through function implemented as a wrapper
+        around <emphasis>printf(1)</emphasis> with variables expanded by the
+        <xref linkend="git-sh-i18n&#45;&#45;envsubst(1)" /> helper. Will be replaced by a
+        real gettext implementation in a later version.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

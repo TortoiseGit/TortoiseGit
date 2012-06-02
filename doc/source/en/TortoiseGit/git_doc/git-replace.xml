@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-replace(1)">
+<articleinfo>
+    <title>git-replace(1)</title>
+<indexterm>
+<primary>git-replace(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-replace - Create, list, delete refs to replace objects</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git replace</emphasis> [-f] &lt;object&gt; &lt;replacement&gt;
+<emphasis>git replace</emphasis> -d &lt;object&gt;&#8230;
+<emphasis>git replace</emphasis> -l [&lt;pattern&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Adds a <emphasis>replace</emphasis> reference in <emphasis>.git/refs/replace/</emphasis></simpara>
+<simpara>The name of the <emphasis>replace</emphasis> reference is the SHA1 of the object that is
+replaced. The content of the <emphasis>replace</emphasis> reference is the SHA1 of the
+replacement object.</simpara>
+<simpara>Unless <emphasis>-f</emphasis> is given, the <emphasis>replace</emphasis> reference must not yet exist in
+<emphasis>.git/refs/replace/</emphasis> directory.</simpara>
+<simpara>Replacement references will be used by default by all git commands
+except those doing reachability traversal (prune, pack transfer and
+fsck).</simpara>
+<simpara>It is possible to disable use of replacement references for any
+command using the <emphasis>--no-replace-objects</emphasis> option just after <emphasis>git</emphasis>.</simpara>
+<simpara>For example if commit <emphasis>foo</emphasis> has been replaced by commit <emphasis>bar</emphasis>:</simpara>
+<screen>$ git --no-replace-objects cat-file commit foo</screen>
+<simpara>shows information about commit <emphasis>foo</emphasis>, while:</simpara>
+<screen>$ git cat-file commit foo</screen>
+<simpara>shows information about commit <emphasis>bar</emphasis>.</simpara>
+<simpara>The <emphasis>GIT_NO_REPLACE_OBJECTS</emphasis> environment variable can be set to
+achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-f
+</term>
+<listitem>
+<simpara>
+        If an existing replace ref for the same object exists, it will
+        be overwritten (instead of failing).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<listitem>
+<simpara>
+        Delete existing replace refs for the given objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        List replace refs for objects that match the given pattern (or
+        all if no pattern is given).
+        Typing "git replace" without arguments, also lists all replace
+        refs.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_bugs">
+<title>BUGS</title>
+<simpara>Comparing blobs or trees that have been replaced with those that
+replace them will not work properly. And using <emphasis>git reset --hard</emphasis> to
+go back to a replaced commit will move the branch to the replacement
+commit instead of the replaced commit.</simpara>
+<simpara>There may be other problems when using <emphasis>git rev-list</emphasis> related to
+pending objects. And of course things may break if an object of one
+type is replaced by an object of another type (for example a blob
+replaced by a commit).</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-tag(1)" />
+<xref linkend="git-branch(1)" />
+<xref linkend="git(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

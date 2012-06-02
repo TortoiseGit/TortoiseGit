@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-notes(1)">
+<articleinfo>
+    <title>git-notes(1)</title>
+<indexterm>
+<primary>git-notes(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-notes - Add or inspect object notes</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git notes</emphasis> [list [&lt;object&gt;]]
+<emphasis>git notes</emphasis> add [-f] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> copy [-f] ( --stdin | &lt;from-object&gt; &lt;to-object&gt; )
+<emphasis>git notes</emphasis> append [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> edit [&lt;object&gt;]
+<emphasis>git notes</emphasis> show [&lt;object&gt;]
+<emphasis>git notes</emphasis> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes_ref&gt;
+<emphasis>git notes</emphasis> merge --commit [-v | -q]
+<emphasis>git notes</emphasis> merge --abort [-v | -q]
+<emphasis>git notes</emphasis> remove [--ignore-missing] [--stdin] [&lt;object&gt;&#8230;]
+<emphasis>git notes</emphasis> prune [-n | -v]
+<emphasis>git notes</emphasis> get-ref</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Adds, removes, or reads notes attached to objects, without touching
+the objects themselves.</simpara>
+<simpara>By default, notes are saved to and read from <emphasis>refs/notes/commits</emphasis>, but
+this default can be overridden.  See the OPTIONS, CONFIGURATION, and
+ENVIRONMENT sections below.  If this ref does not exist, it will be
+quietly created when it is first needed to store a note.</simpara>
+<simpara>A typical use of notes is to supplement a commit message without
+changing the commit itself. Notes can be shown by <emphasis>git log</emphasis> along with
+the original commit message. To distinguish these notes from the
+message stored in the commit object, the notes are indented like the
+message, after an unindented line saying "Notes (&lt;refname&gt;):" (or
+"Notes:" for <emphasis>refs/notes/commits</emphasis>).</simpara>
+<simpara>To change which notes are shown by <emphasis>git log</emphasis>, see the
+"notes.displayRef" configuration in <xref linkend="git-log(1)" />.</simpara>
+<simpara>See the "notes.rewrite.&lt;command&gt;" configuration for a way to carry
+notes across commands that rewrite commits.</simpara>
+</simplesect>
+<simplesect id="_subcommands">
+<title>SUBCOMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+list
+</term>
+<listitem>
+<simpara>
+        List the notes object for a given object. If no object is
+        given, show a list of all note objects and the objects they
+        annotate (in the format "&lt;note object&gt; &lt;annotated object&gt;").
+        This is the default subcommand if no subcommand is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+add
+</term>
+<listitem>
+<simpara>
+        Add notes for a given object (defaults to HEAD). Abort if the
+        object already has notes (use <emphasis>-f</emphasis> to overwrite existing notes).
+        However, if you're using <emphasis>add</emphasis> interactively (using an editor
+        to supply the notes contents), then - instead of aborting -
+        the existing notes will be opened in the editor (like the <emphasis>edit</emphasis>
+        subcommand).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+copy
+</term>
+<listitem>
+<simpara>
+        Copy the notes for the first object onto the second object.
+        Abort if the second object already has notes, or if the first
+        object has none (use -f to overwrite existing notes to the
+        second object). This subcommand is equivalent to:
+        <emphasis>git notes add [-f] -C $(git notes list &lt;from-object&gt;) &lt;to-object&gt;</emphasis>
+</simpara>
+<simpara>In <emphasis>--stdin</emphasis> mode, take lines in the format</simpara>
+<screen>&lt;from-object&gt; SP &lt;to-object&gt; [ SP &lt;rest&gt; ] LF</screen>
+<simpara>on standard input, and copy the notes from each &lt;from-object&gt; to its
+corresponding &lt;to-object&gt;.  (The optional <emphasis>&lt;rest&gt;</emphasis> is ignored so that
+the command can read the input given to the <emphasis>post-rewrite</emphasis> hook.)</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+append
+</term>
+<listitem>
+<simpara>
+        Append to the notes of an existing object (defaults to HEAD).
+        Creates a new notes object if needed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+edit
+</term>
+<listitem>
+<simpara>
+        Edit the notes for a given object (defaults to HEAD).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+show
+</term>
+<listitem>
+<simpara>
+        Show the notes for a given object (defaults to HEAD).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge
+</term>
+<listitem>
+<simpara>
+        Merge the given notes ref into the current notes ref.
+        This will try to merge the changes made by the given
+        notes ref (called "remote") since the merge-base (if
+        any) into the current notes ref (called "local").
+</simpara>
+<simpara>If conflicts arise and a strategy for automatically resolving
+conflicting notes (see the -s/--strategy option) is not given,
+the "manual" resolver is used. This resolver checks out the
+conflicting notes in a special worktree (<emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>),
+and instructs the user to manually resolve the conflicts there.
+When done, the user can either finalize the merge with
+<emphasis>git notes merge --commit</emphasis>, or abort the merge with
+<emphasis>git notes merge --abort</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remove
+</term>
+<listitem>
+<simpara>
+        Remove the notes for given objects (defaults to HEAD). When
+        giving zero or one object from the command line, this is
+        equivalent to specifying an empty note message to
+        the <emphasis>edit</emphasis> subcommand.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+prune
+</term>
+<listitem>
+<simpara>
+        Remove all notes for non-existing/unreachable objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+get-ref
+</term>
+<listitem>
+<simpara>
+        Print the current notes ref. This provides an easy way to
+        retrieve the current notes ref (e.g. from scripts).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        When adding notes to an object that already has notes,
+        overwrite the existing notes (instead of aborting).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m &lt;msg&gt;
+</term>
+<term>
+--message=&lt;msg&gt;
+</term>
+<listitem>
+<simpara>
+        Use the given note message (instead of prompting).
+        If multiple <emphasis>-m</emphasis> options are given, their values
+        are concatenated as separate paragraphs.
+        Lines starting with <emphasis>#</emphasis> and empty lines other than a
+        single line between paragraphs will be stripped out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F &lt;file&gt;
+</term>
+<term>
+--file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Take the note message from the given file.  Use <emphasis>-</emphasis> to
+        read the note message from the standard input.
+        Lines starting with <emphasis>#</emphasis> and empty lines other than a
+        single line between paragraphs will be stripped out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-C &lt;object&gt;
+</term>
+<term>
+--reuse-message=&lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Take the given blob object (for example, another note) as the
+        note message. (Use <emphasis>git notes copy &lt;object&gt;</emphasis> instead to
+        copy notes between objects.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c &lt;object&gt;
+</term>
+<term>
+--reedit-message=&lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Like <emphasis>-C</emphasis>, but with <emphasis>-c</emphasis> the editor is invoked, so that
+        the user can further edit the note message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ref &lt;ref&gt;
+</term>
+<listitem>
+<simpara>
+        Manipulate the notes tree in &lt;ref&gt;.  This overrides
+        <emphasis>GIT_NOTES_REF</emphasis> and the "core.notesRef" configuration.  The ref
+        is taken to be in <emphasis>refs/notes/</emphasis> if it is not qualified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-missing
+</term>
+<listitem>
+<simpara>
+        Do not consider it an error to request removing notes from an
+        object that does not have notes attached to it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Also read the object names to remove notes from from the standard
+        input (there is no reason you cannot combine this with object
+        names from the command line).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do not remove anything; just report the object names whose notes
+        would be removed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s &lt;strategy&gt;
+</term>
+<term>
+--strategy=&lt;strategy&gt;
+</term>
+<listitem>
+<simpara>
+        When merging notes, resolve notes conflicts using the given
+        strategy. The following strategies are recognized: "manual"
+        (default), "ours", "theirs", "union" and "cat_sort_uniq".
+        See the "NOTES MERGE STRATEGIES" section below for more
+        information on each notes merge strategy.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--commit
+</term>
+<listitem>
+<simpara>
+        Finalize an in-progress <emphasis>git notes merge</emphasis>. Use this option
+        when you have resolved the conflicts that <emphasis>git notes merge</emphasis>
+        stored in .git/NOTES_MERGE_WORKTREE. This amends the partial
+        merge commit created by <emphasis>git notes merge</emphasis> (stored in
+        .git/NOTES_MERGE_PARTIAL) by adding the notes in
+        .git/NOTES_MERGE_WORKTREE. The notes ref stored in the
+        .git/NOTES_MERGE_REF symref is updated to the resulting commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abort
+</term>
+<listitem>
+<simpara>
+        Abort/reset a in-progress <emphasis>git notes merge</emphasis>, i.e. a notes merge
+        with conflicts. This simply removes all files related to the
+        notes merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        When merging notes, operate quietly.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        When merging notes, be more verbose.
+        When pruning notes, report all object names whose notes are
+        removed.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>Commit notes are blobs containing extra information about an object
+(usually information to supplement a commit's message).  These blobs
+are taken from notes refs.  A notes ref is usually a branch which
+contains "files" whose paths are the object names for the objects
+they describe, with some directory separators included for performance
+reasons <footnote><simpara>Permitted pathnames have the form
+<emphasis>ab</emphasis><emphasis>/</emphasis><emphasis>cd</emphasis><emphasis>/</emphasis><emphasis>ef</emphasis><emphasis>/</emphasis><emphasis>&#8230;</emphasis><emphasis>/</emphasis><emphasis>abcdef&#8230;</emphasis>: a sequence of directory
+names of two hexadecimal digits each followed by a filename with the
+rest of the object ID.</simpara></footnote>.</simpara>
+<simpara>Every notes change creates a new commit at the specified notes ref.
+You can therefore inspect the history of the notes by invoking, e.g.,
+<emphasis>git log -p notes/commits</emphasis>.  Currently the commit message only records
+which operation triggered the update, and the commit authorship is
+determined according to the usual rules (see <xref linkend="git-commit(1)" />).
+These details may change in the future.</simpara>
+<simpara>It is also permitted for a notes ref to point directly to a tree
+object, in which case the history of the notes can be read with
+<emphasis>git log -p -g &lt;refname&gt;</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_notes_merge_strategies">
+<title>NOTES MERGE STRATEGIES</title>
+<simpara>The default notes merge strategy is "manual", which checks out
+conflicting notes in a special work tree for resolving notes conflicts
+(<emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>), and instructs the user to resolve the
+conflicts in that work tree.
+When done, the user can either finalize the merge with
+<emphasis>git notes merge --commit</emphasis>, or abort the merge with
+<emphasis>git notes merge --abort</emphasis>.</simpara>
+<simpara>"ours" automatically resolves conflicting notes in favor of the local
+version (i.e. the current notes ref).</simpara>
+<simpara>"theirs" automatically resolves notes conflicts in favor of the remote
+version (i.e. the given notes ref being merged into the current notes
+ref).</simpara>
+<simpara>"union" automatically resolves notes conflicts by concatenating the
+local and remote versions.</simpara>
+<simpara>"cat_sort_uniq" is similar to "union", but in addition to concatenating
+the local and remote versions, this strategy also sorts the resulting
+lines, and removes duplicate lines from the result. This is equivalent
+to applying the "cat | sort | uniq" shell pipeline to the local and
+remote versions. This strategy is useful if the notes follow a line-based
+format where one wants to avoid duplicated lines in the merge result.
+Note that if either the local or remote version contain duplicate lines
+prior to the merge, these will also be removed by this notes merge
+strategy.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<simpara>You can use notes to add annotations with information that was not
+available at the time a commit was written.</simpara>
+<screen>$ git notes add -m 'Tested-by: Johannes Sixt &lt;j6t@kdbg.org&gt;' 72a144e2
+$ git show -s 72a144e
+[...]
+    Signed-off-by: Junio C Hamano &lt;gitster@pobox.com&gt;
+
+Notes:
+    Tested-by: Johannes Sixt &lt;j6t@kdbg.org&gt;</screen>
+<simpara>In principle, a note is a regular Git blob, and any kind of
+(non-)format is accepted.  You can binary-safely create notes from
+arbitrary files using <emphasis>git hash-object</emphasis>:</simpara>
+<screen>$ cc *.c
+$ blob=$(git hash-object -w a.out)
+$ git notes --ref=built add -C "$blob" HEAD</screen>
+<simpara>(You cannot simply use <emphasis>git notes --ref=built add -F a.out HEAD</emphasis>
+because that is not binary-safe.)
+Of course, it doesn't make much sense to display non-text-format notes
+with <emphasis>git log</emphasis>, so if you use such notes, you'll probably need to write
+some special-purpose tools to do something useful with them.</simpara>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+core.notesRef
+</term>
+<listitem>
+<simpara>
+        Notes ref to read and manipulate instead of
+        <emphasis>refs/notes/commits</emphasis>.  Must be an unabbreviated ref name.
+        This setting can be overridden through the environment and
+        command line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.displayRef
+</term>
+<listitem>
+<simpara>
+        Which ref (or refs, if a glob or specified more than once), in
+        addition to the default set by <emphasis>core.notesRef</emphasis> or
+        <emphasis>GIT_NOTES_REF</emphasis>, to read notes from when showing commit
+        messages with the <emphasis>git log</emphasis> family of commands.
+        This setting can be overridden on the command line or by the
+        <emphasis>GIT_NOTES_DISPLAY_REF</emphasis> environment variable.
+        See <xref linkend="git-log(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewrite.&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        When rewriting commits with &lt;command&gt; (currently <emphasis>amend</emphasis> or
+        <emphasis>rebase</emphasis>), if this variable is <emphasis>false</emphasis>, git will not copy
+        notes from the original to the rewritten commit.  Defaults to
+        <emphasis>true</emphasis>.  See also "<emphasis>notes.rewriteRef</emphasis>" below.
+</simpara>
+<simpara>This setting can be overridden by the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
+environment variable.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteMode
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite, what to do if the target
+        commit already has a note.  Must be one of <emphasis>overwrite</emphasis>,
+        <emphasis>concatenate</emphasis>, and <emphasis>ignore</emphasis>.  Defaults to <emphasis>concatenate</emphasis>.
+</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
+environment variable.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteRef
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite, specifies the (fully
+        qualified) ref whose notes should be copied.  May be a glob,
+        in which case notes in all matching refs will be copied.  You
+        may also specify this configuration several times.
+</simpara>
+<simpara>Does not have a default value; you must configure this variable to
+enable note rewriting.</simpara>
+<simpara>Can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis> environment variable.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_environment">
+<title>ENVIRONMENT</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>GIT_NOTES_REF</emphasis>
+</term>
+<listitem>
+<simpara>
+        Which ref to manipulate notes from, instead of <emphasis>refs/notes/commits</emphasis>.
+        This overrides the <emphasis>core.notesRef</emphasis> setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_NOTES_DISPLAY_REF</emphasis>
+</term>
+<listitem>
+<simpara>
+        Colon-delimited list of refs or globs indicating which refs,
+        in addition to the default from <emphasis>core.notesRef</emphasis> or
+        <emphasis>GIT_NOTES_REF</emphasis>, to read notes from when showing commit
+        messages.
+        This overrides the <emphasis>notes.displayRef</emphasis> setting.
+</simpara>
+<simpara>A warning will be issued for refs that do not exist, but a glob that
+does not match any refs is silently ignored.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite, what to do if the target
+        commit already has a note.
+        Must be one of <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, and <emphasis>ignore</emphasis>.
+        This overrides the <emphasis>core.rewriteMode</emphasis> setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_NOTES_REWRITE_REF</emphasis>
+</term>
+<listitem>
+<simpara>
+        When rewriting commits, which notes to copy from the original
+        to the rewritten commit.  Must be a colon-delimited list of
+        refs or globs.
+</simpara>
+<simpara>If not set in the environment, the list of notes to copy depends
+on the <emphasis>notes.rewrite.&lt;command&gt;</emphasis> and <emphasis>notes.rewriteRef</emphasis> settings.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_author">
+<title>Author</title>
+<simpara>Written by Johannes Schindelin &lt;<ulink url="mailto:johannes.schindelin@gmx.de">johannes.schindelin@gmx.de</ulink>&gt; and
+Johan Herland &lt;<ulink url="mailto:johan@herland.net">johan@herland.net</ulink>&gt;</simpara>
+</simplesect>
+<simplesect id="_documentation">
+<title>Documentation</title>
+<simpara>Documentation by Johannes Schindelin and Johan Herland</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(7)" /> suite</simpara>
+</simplesect>
+</article>

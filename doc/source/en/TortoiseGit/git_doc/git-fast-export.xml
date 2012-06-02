@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-fast-export(1)">
+<articleinfo>
+    <title>git-fast-export(1)</title>
+<indexterm>
+<primary>git-fast-export(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-fast-export - Git data exporter</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git fast-export [options]</emphasis> | <emphasis>git fast-import</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This program dumps the given revisions in a form suitable to be piped
+into <emphasis>git fast-import</emphasis>.</simpara>
+<simpara>You can use it as a human-readable bundle replacement (see
+<xref linkend="git-bundle(1)" />), or as a kind of an interactive
+<emphasis>git filter-branch</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--progress=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Insert <emphasis>progress</emphasis> statements every &lt;n&gt; objects, to be shown by
+        <emphasis>git fast-import</emphasis> during import.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--signed-tags=(verbatim|warn|strip|abort)
+</term>
+<listitem>
+<simpara>
+        Specify how to handle signed tags.  Since any transformation
+        after the export can change the tag names (which can also happen
+        when excluding revisions) the signatures will not match.
+</simpara>
+<simpara>When asking to <emphasis>abort</emphasis> (which is the default), this program will die
+when encountering a signed tag.  With <emphasis>strip</emphasis>, the tags will be made
+unsigned, with <emphasis>verbatim</emphasis>, they will be silently exported
+and with <emphasis>warn</emphasis>, they will be exported, but you will see a warning.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--tag-of-filtered-object=(abort|drop|rewrite)
+</term>
+<listitem>
+<simpara>
+        Specify how to handle tags whose tagged object is filtered out.
+        Since revisions and files to export can be limited by path,
+        tagged objects may be filtered completely.
+</simpara>
+<simpara>When asking to <emphasis>abort</emphasis> (which is the default), this program will die
+when encountering such a tag.  With <emphasis>drop</emphasis> it will omit such tags from
+the output.  With <emphasis>rewrite</emphasis>, if the tagged object is a commit, it will
+rewrite the tag to tag an ancestor commit (via parent rewriting; see
+<xref linkend="git-rev-list(1)" />)</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-M
+</term>
+<term>
+-C
+</term>
+<listitem>
+<simpara>
+        Perform move and/or copy detection, as described in the
+        <xref linkend="git-diff(1)" /> manual page, and use it to generate
+        rename and copy commands in the output dump.
+</simpara>
+<simpara>Note that earlier versions of this command did not complain and
+produced incorrect results if you gave these options.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--export-marks=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Dumps the internal marks table to &lt;file&gt; when complete.
+        Marks are written one per line as <emphasis>:markid SHA-1</emphasis>. Only marks
+        for revisions are dumped; marks for blobs are ignored.
+        Backends can use this file to validate imports after they
+        have been completed, or to save the marks table across
+        incremental runs.  As &lt;file&gt; is only opened and truncated
+        at completion, the same path can also be safely given to
+        --import-marks.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--import-marks=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Before processing any input, load the marks specified in
+        &lt;file&gt;.  The input file must exist, must be readable, and
+        must use the same format as produced by --export-marks.
+</simpara>
+<simpara>Any commits that have already been marked will not be exported again.
+If the backend uses a similar --import-marks file, this allows for
+incremental bidirectional exporting of the repository by keeping the
+marks the same across runs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--fake-missing-tagger
+</term>
+<listitem>
+<simpara>
+        Some old repositories have tags without a tagger.  The
+        fast-import protocol was pretty strict about that, and did not
+        allow that.  So fake a tagger to be able to fast-import the
+        output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--use-done-feature
+</term>
+<listitem>
+<simpara>
+        Start the stream with a <emphasis>feature done</emphasis> stanza, and terminate
+        it with a <emphasis>done</emphasis> command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-data
+</term>
+<listitem>
+<simpara>
+        Skip output of blob objects and instead refer to blobs via
+        their original SHA-1 hash.  This is useful when rewriting the
+        directory structure or history of a repository without
+        touching the contents of individual files.  Note that the
+        resulting stream can only be used by a repository which
+        already contains the necessary objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full-tree
+</term>
+<listitem>
+<simpara>
+        This option will cause fast-export to issue a "deleteall"
+        directive for each commit followed by a full list of all files
+        in the commit (as opposed to just listing the files which are
+        different from the commit's first parent).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+[&lt;git-rev-list-args&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+       A list of arguments, acceptable to <emphasis>git rev-parse</emphasis> and
+       <emphasis>git rev-list</emphasis>, that specifies the specific objects and references
+       to export.  For example, <emphasis>master~10..master</emphasis> causes the
+       current master reference to be exported along with all objects
+       added since its 10th ancestor commit.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<screen>$ git fast-export --all | (cd /empty/repository &amp;&amp; git fast-import)</screen>
+<simpara>This will export the whole repository and import it into the existing
+empty repository.  Except for reencoding commits that are not in
+UTF-8, it would be a one-to-one mirror.</simpara>
+<screen>$ git fast-export master~5..master |
+        sed "s|refs/heads/master|refs/heads/other|" |
+        git fast-import</screen>
+<simpara>This makes a new branch called <emphasis>other</emphasis> from <emphasis>master~5..master</emphasis>
+(i.e. if <emphasis>master</emphasis> has linear history, it will take the last 5 commits).</simpara>
+<simpara>Note that this assumes that none of the blobs and commit messages
+referenced by that revision range contains the string
+<emphasis>refs/heads/master</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_limitations">
+<title>Limitations</title>
+<simpara>Since <emphasis>git fast-import</emphasis> cannot tag trees, you will not be
+able to export the linux-2.6.git repository completely, as it contains
+a tag referencing a tree instead of a commit.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

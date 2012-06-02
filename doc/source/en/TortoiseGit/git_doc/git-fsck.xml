@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-fsck(1)">
+<articleinfo>
+    <title>git-fsck(1)</title>
+<indexterm>
+<primary>git-fsck(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-fsck - Verifies the connectivity and validity of the objects in the database</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git fsck</emphasis> [--tags] [--root] [--unreachable] [--cache] [--no-reflogs]
+         [--[no-]full] [--strict] [--verbose] [--lost-found]
+         [--[no-]dangling] [--[no-]progress] [&lt;object&gt;*]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Verifies the connectivity and validity of the objects in the database.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        An object to treat as the head of an unreachability trace.
+</simpara>
+<simpara>If no objects are given, <emphasis>git fsck</emphasis> defaults to using the
+index file, all SHA1 references in .git/refs/*, and all reflogs (unless
+--no-reflogs is given) as heads.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unreachable
+</term>
+<listitem>
+<simpara>
+        Print out objects that exist but that aren't reachable from any
+        of the reference nodes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dangling
+</term>
+<term>
+--no-dangling
+</term>
+<listitem>
+<simpara>
+        Print objects that exist but that are never <emphasis>directly</emphasis> used (default).
+        <emphasis>--no-dangling</emphasis> can be used to omit this information from the output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--root
+</term>
+<listitem>
+<simpara>
+        Report root nodes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--tags
+</term>
+<listitem>
+<simpara>
+        Report tags.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cache
+</term>
+<listitem>
+<simpara>
+        Consider any object recorded in the index also as a head node for
+        an unreachability trace.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-reflogs
+</term>
+<listitem>
+<simpara>
+        Do not consider commits that are referenced only by an
+        entry in a reflog to be reachable.  This option is meant
+        only to search for commits that used to be in a ref, but
+        now aren't, but are still in that corresponding reflog.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full
+</term>
+<listitem>
+<simpara>
+        Check not just objects in GIT_OBJECT_DIRECTORY
+        ($GIT_DIR/objects), but also the ones found in alternate
+        object pools listed in GIT_ALTERNATE_OBJECT_DIRECTORIES
+        or $GIT_DIR/objects/info/alternates,
+        and in packed git archives found in $GIT_DIR/objects/pack
+        and corresponding pack subdirectories in alternate
+        object pools.  This is now default; you can turn it off
+        with --no-full.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--strict
+</term>
+<listitem>
+<simpara>
+        Enable more strict checking, namely to catch a file mode
+        recorded with g+w bit set, which was created by older
+        versions of git.  Existing repositories, including the
+        Linux kernel, git itself, and sparse repository have old
+        objects that triggers this check, but it is recommended
+        to check new projects with this flag.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Be chatty.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--lost-found
+</term>
+<listitem>
+<simpara>
+        Write dangling objects into .git/lost-found/commit/ or
+        .git/lost-found/other/, depending on type.  If the object is
+        a blob, the contents are written into the file, rather than
+        its object name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<term>
+--no-progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream by
+        default when it is attached to a terminal, unless
+        --no-progress or --verbose is specified. --progress forces
+        progress status even if the standard error stream is not
+        directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>git-fsck tests SHA1 and general object sanity, and it does full tracking
+of the resulting reachability and everything else. It prints out any
+corruption it finds (missing or bad objects), and if you use the
+<emphasis>--unreachable</emphasis> flag it will also print out objects that exist but that
+aren't reachable from any of the specified head nodes (or the default
+set, as mentioned above).</simpara>
+<simpara>Any corrupt objects you will have to find in backups or other archives
+(i.e., you can just remove them and do an <emphasis>rsync</emphasis> with some other site in
+the hopes that somebody else has the object you have corrupted).</simpara>
+</simplesect>
+<simplesect id="_extracted_diagnostics">
+<title>Extracted Diagnostics</title>
+<variablelist>
+<varlistentry>
+<term>
+expect dangling commits - potential heads - due to lack of head information
+</term>
+<listitem>
+<simpara>
+        You haven't specified any nodes as heads so it won't be
+        possible to differentiate between un-parented commits and
+        root nodes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+missing sha1 directory <emphasis>&lt;dir&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        The directory holding the sha1 objects is missing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+unreachable &lt;type&gt; &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        The &lt;type&gt; object &lt;object&gt;, isn't actually referred to directly
+        or indirectly in any of the trees or commits seen. This can
+        mean that there's another root node that you're not specifying
+        or that the tree is corrupt. If you haven't missed a root node
+        then you might as well delete unreachable nodes since they
+        can't be used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+missing &lt;type&gt; &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        The &lt;type&gt; object &lt;object&gt;, is referred to but isn't present in
+        the database.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+dangling &lt;type&gt; &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        The &lt;type&gt; object &lt;object&gt;, is present in the database but never
+        <emphasis>directly</emphasis> used. A dangling commit could be a root node.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sha1 mismatch &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        The database has an object who's sha1 doesn't match the
+        database value.
+        This indicates a serious data integrity problem.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_environment_variables">
+<title>Environment Variables</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_OBJECT_DIRECTORY
+</term>
+<listitem>
+<simpara>
+        used to specify the object database root (usually $GIT_DIR/objects)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_INDEX_FILE
+</term>
+<listitem>
+<simpara>
+        used to specify the index file of the index
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_ALTERNATE_OBJECT_DIRECTORIES
+</term>
+<listitem>
+<simpara>
+        used to specify additional object database roots (usually unset)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

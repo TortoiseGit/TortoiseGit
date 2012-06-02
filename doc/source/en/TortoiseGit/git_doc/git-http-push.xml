@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-http-push(1)">
+<articleinfo>
+    <title>git-http-push(1)</title>
+<indexterm>
+<primary>git-http-push(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-http-push - Push objects over HTTP/DAV to another repository</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git http-push</emphasis> [--all] [--dry-run] [--force] [--verbose] &lt;url&gt; &lt;ref&gt; [&lt;ref&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Sends missing objects to remote repository, and updates the
+remote branch.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: This command is temporarily disabled if your libcurl
+is older than 7.16, as the combination has been reported
+not to work and sometimes corrupts repository.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Do not assume that the remote repository is complete in its
+        current state, and verify all objects in the entire local
+        ref's history exist in the remote repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Usually, the command refuses to update a remote ref that
+        is not an ancestor of the local ref used to overwrite it.
+        This flag disables the check.  What this means is that
+        the remote repository can lose commits; use it with
+        care.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do everything except actually send the updates.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Report the list of objects being walked locally and the
+        list of objects successfully sent to the remote repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<term>
+-D
+</term>
+<listitem>
+<simpara>
+        Remove &lt;ref&gt; from remote repository.  The specified branch
+        cannot be the remote HEAD.  If -d is specified the following
+        other conditions must also be met:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Remote HEAD must resolve to an object that exists locally
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Specified branch resolves to an object that exists locally
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Specified branch is an ancestor of the remote HEAD
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;ref&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        The remote refs to update.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_specifying_the_refs">
+<title>Specifying the Refs</title>
+<simpara>A <emphasis>&lt;ref&gt;</emphasis> specification can be either a single pattern, or a pair
+of such patterns separated by a colon ":" (this means that a ref name
+cannot have a colon in it).  A single pattern <emphasis>&lt;name&gt;</emphasis> is just a
+shorthand for <emphasis>&lt;name&gt;:&lt;name&gt;</emphasis>.</simpara>
+<simpara>Each pattern pair consists of the source side (before the colon)
+and the destination side (after the colon).  The ref to be
+pushed is determined by finding a match that matches the source
+side, and where it is pushed is determined by using the
+destination side.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+It is an error if &lt;src&gt; does not match exactly one of the
+   local refs.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If &lt;dst&gt; does not match any remote ref, either
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+it has to start with "refs/"; &lt;dst&gt; is used as the
+     destination literally in this case.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+&lt;src&gt; == &lt;dst&gt; and the ref that matched the &lt;src&gt; must not
+     exist in the set of remote refs; the ref matched &lt;src&gt;
+     locally is used as the name of the destination.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</itemizedlist>
+<simpara>Without <emphasis>--force</emphasis>, the &lt;src&gt; ref is stored at the remote only if
+&lt;dst&gt; does not exist, or &lt;dst&gt; is a proper subset (i.e. an
+ancestor) of &lt;src&gt;.  This check, known as "fast-forward check",
+is performed in order to avoid accidentally overwriting the
+remote ref and lose other peoples' commits from there.</simpara>
+<simpara>With <emphasis>--force</emphasis>, the fast-forward check is disabled for all refs.</simpara>
+<simpara>Optionally, a &lt;ref&gt; parameter can be prefixed with a plus <emphasis>+</emphasis> sign
+to disable the fast-forward check only on that ref.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

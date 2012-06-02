@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-cherry(1)">
+<articleinfo>
+    <title>git-cherry(1)</title>
+<indexterm>
+<primary>git-cherry(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-cherry - Find commits not merged upstream</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git cherry</emphasis> [-v] [&lt;upstream&gt; [&lt;head&gt; [&lt;limit&gt;]]]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>The changeset (or "diff") of each commit between the fork-point and &lt;head&gt;
+is compared against each commit between the fork-point and &lt;upstream&gt;.
+The commits are compared with their <emphasis>patch id</emphasis>, obtained from
+the <emphasis>git patch-id</emphasis> program.</simpara>
+<simpara>Every commit that doesn't exist in the &lt;upstream&gt; branch
+has its id (sha1) reported, prefixed by a symbol.  The ones that have
+equivalent change already
+in the &lt;upstream&gt; branch are prefixed with a minus (-) sign, and those
+that only exist in the &lt;head&gt; branch are prefixed with a plus (+) symbol:</simpara>
+<literallayout class="monospaced">           __*__*__*__*__&gt; &lt;upstream&gt;
+          /
+fork-point
+          \__+__+__-__+__+__-__+__&gt; &lt;head&gt;</literallayout>
+<simpara>If a &lt;limit&gt; has been given then the commits along the &lt;head&gt; branch up
+to and including &lt;limit&gt; are not reported:</simpara>
+<literallayout class="monospaced">           __*__*__*__*__&gt; &lt;upstream&gt;
+          /
+fork-point
+          \__*__*__&lt;limit&gt;__-__+__&gt; &lt;head&gt;</literallayout>
+<simpara>Because <emphasis>git cherry</emphasis> compares the changeset rather than the commit id
+(sha1), you can use <emphasis>git cherry</emphasis> to find out if a commit you made locally
+has been applied &lt;upstream&gt; under a different commit id.  For example,
+this will happen if you're feeding patches &lt;upstream&gt; via email rather
+than pushing or pulling commits directly.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-v
+</term>
+<listitem>
+<simpara>
+        Verbose.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;upstream&gt;
+</term>
+<listitem>
+<simpara>
+        Upstream branch to compare against.
+        Defaults to the first tracked remote branch, if available.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;head&gt;
+</term>
+<listitem>
+<simpara>
+        Working branch; defaults to HEAD.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;limit&gt;
+</term>
+<listitem>
+<simpara>
+        Do not report commits up to (and including) limit.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-patch-id(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

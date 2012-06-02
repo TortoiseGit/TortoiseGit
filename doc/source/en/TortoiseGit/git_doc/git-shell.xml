@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-shell(1)">
+<articleinfo>
+    <title>git-shell(1)</title>
+<indexterm>
+<primary>git-shell(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-shell - Restricted login shell for Git-only SSH access</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git shell</emphasis> [-c &lt;command&gt; &lt;argument&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>A login shell for SSH accounts to provide restricted Git access. When
+<emphasis>-c</emphasis> is given, the program executes &lt;command&gt; non-interactively;
+&lt;command&gt; can be one of <emphasis>git receive-pack</emphasis>, <emphasis>git upload-pack</emphasis>, <emphasis>git
+upload-archive</emphasis>, <emphasis>cvs server</emphasis>, or a command in COMMAND_DIR. The shell
+is started in interactive mode when no arguments are given; in this
+case, COMMAND_DIR must exist, and any of the executables in it can be
+invoked.</simpara>
+<simpara><emphasis>cvs server</emphasis> is a special command which executes git-cvsserver.</simpara>
+<simpara>COMMAND_DIR is the path "$HOME/git-shell-commands". The user must have
+read and execute permissions to the directory in order to execute the
+programs in it. The programs are executed with a cwd of $HOME, and
+&lt;argument&gt; is parsed as a command-line string.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

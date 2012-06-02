@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-submodule(1)">
+<articleinfo>
+    <title>git-submodule(1)</title>
+<indexterm>
+<primary>git-submodule(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-submodule - Initialize, update or inspect submodules</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git submodule</emphasis> [--quiet] add [-b branch] [-f|--force]
+              [--reference &lt;repository&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
+<emphasis>git submodule</emphasis> [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;&#8230;]
+<emphasis>git submodule</emphasis> [--quiet] init [--] [&lt;path&gt;&#8230;]
+<emphasis>git submodule</emphasis> [--quiet] update [--init] [-N|--no-fetch] [--rebase]
+              [--reference &lt;repository&gt;] [--merge] [--recursive] [--] [&lt;path&gt;&#8230;]
+<emphasis>git submodule</emphasis> [--quiet] summary [--cached|--files] [(-n|--summary-limit) &lt;n&gt;]
+              [commit] [--] [&lt;path&gt;&#8230;]
+<emphasis>git submodule</emphasis> [--quiet] foreach [--recursive] &lt;command&gt;
+<emphasis>git submodule</emphasis> [--quiet] sync [--] [&lt;path&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Submodules allow foreign repositories to be embedded within
+a dedicated subdirectory of the source tree, always pointed
+at a particular commit.</simpara>
+<simpara>They are not to be confused with remotes, which are meant mainly
+for branches of the same project; submodules are meant for
+different projects you would like to make part of your source tree,
+while the history of the two projects still stays completely
+independent and you cannot modify the contents of the submodule
+from within the main project.
+If you want to merge the project histories and want to treat the
+aggregated whole as a single project from then on, you may want to
+add a remote for the other project and use the <emphasis>subtree</emphasis> merge strategy,
+instead of treating the other project as a submodule. Directories
+that come from both projects can be cloned and checked out as a whole
+if you choose to go that route.</simpara>
+<simpara>Submodules are composed from a so-called <emphasis>gitlink</emphasis> tree entry
+in the main repository that refers to a particular commit object
+within the inner repository that is completely separate.
+A record in the <emphasis>.gitmodules</emphasis> (see <xref linkend="gitmodules(5)" />) file at the
+root of the source tree assigns a logical name to the submodule and
+describes the default URL the submodule shall be cloned from.
+The logical name can be used for overriding this URL within your
+local repository configuration (see <emphasis>submodule init</emphasis>).</simpara>
+<simpara>This command will manage the tree entries and contents of the
+gitmodules file for you, as well as inspect the status of your
+submodules and update them.
+When adding a new submodule to the tree, the <emphasis>add</emphasis> subcommand
+is to be used.  However, when pulling a tree containing submodules,
+these will not be checked out by default;
+the <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands will maintain submodules
+checked out and at appropriate revision in your working tree.
+You can briefly inspect the up-to-date status of your submodules
+using the <emphasis>status</emphasis> subcommand and get a detailed overview of the
+difference between the index and checkouts using the <emphasis>summary</emphasis>
+subcommand.</simpara>
+</simplesect>
+<simplesect id="_commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+add
+</term>
+<listitem>
+<simpara>
+        Add the given repository as a submodule at the given path
+        to the changeset to be committed next to the current
+        project: the current project is termed the "superproject".
+</simpara>
+<simpara>This requires at least one argument: &lt;repository&gt;. The optional
+argument &lt;path&gt; is the relative location for the cloned submodule
+to exist in the superproject. If &lt;path&gt; is not given, the
+"humanish" part of the source repository is used ("repo" for
+"/path/to/repo.git" and "foo" for "host.xz:foo/.git").</simpara>
+<simpara>&lt;repository&gt; is the URL of the new submodule's origin repository.
+This may be either an absolute URL, or (if it begins with ./
+or ../), the location relative to the superproject's origin
+repository (Please note that to specify a repository <emphasis>foo.git</emphasis>
+which is located right next to a superproject <emphasis>bar.git</emphasis>, you'll
+have to use <emphasis>../foo.git</emphasis> instead of <emphasis>./foo.git</emphasis> - as one might expect
+when following the rules for relative URLs - because the evaluation
+of relative URLs in Git is identical to that of relative directories).
+If the superproject doesn't have an origin configured
+the superproject is its own authoritative upstream and the current
+working directory is used instead.</simpara>
+<simpara>&lt;path&gt; is the relative location for the cloned submodule to
+exist in the superproject. If &lt;path&gt; does not exist, then the
+submodule is created by cloning from the named URL. If &lt;path&gt; does
+exist and is already a valid git repository, then this is added
+to the changeset without cloning. This second form is provided
+to ease creating a new submodule from scratch, and presumes
+the user will later push the submodule to the given URL.</simpara>
+<simpara>In either case, the given URL is recorded into .gitmodules for
+use by subsequent users cloning the superproject. If the URL is
+given relative to the superproject's repository, the presumption
+is the superproject and submodule repositories will be kept
+together in the same relative location, and only the
+superproject's URL needs to be provided: git-submodule will correctly
+locate the submodule using the relative URL in .gitmodules.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status
+</term>
+<listitem>
+<simpara>
+        Show the status of the submodules. This will print the SHA-1 of the
+        currently checked out commit for each submodule, along with the
+        submodule path and the output of <emphasis>git describe</emphasis> for the
+        SHA-1. Each SHA-1 will be prefixed with <emphasis>-</emphasis> if the submodule is not
+        initialized, <emphasis>+</emphasis> if the currently checked out submodule commit
+        does not match the SHA-1 found in the index of the containing
+        repository and <emphasis>U</emphasis> if the submodule has merge conflicts.
+        This command is the default command for <emphasis>git submodule</emphasis>.
+</simpara>
+<simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into nested
+submodules, and show their status as well.</simpara>
+<simpara>If you are only interested in changes of the currently initialized
+submodules with respect to the commit recorded in the index or the HEAD,
+<xref linkend="git-status(1)" /> and <xref linkend="git-diff(1)" /> will provide that information
+too (and can also report changes to a submodule's work tree).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+init
+</term>
+<listitem>
+<simpara>
+        Initialize the submodules, i.e. register each submodule name
+        and url found in .gitmodules into .git/config.
+        It will also copy the value of <emphasis>submodule.$name.update</emphasis> into
+        .git/config.
+        The key used in .git/config is <emphasis>submodule.$name.url</emphasis>.
+        This command does not alter existing information in .git/config.
+        You can then customize the submodule clone URLs in .git/config
+        for your local setup and proceed to <emphasis>git submodule update</emphasis>;
+        you can also just use <emphasis>git submodule update --init</emphasis> without
+        the explicit <emphasis>init</emphasis> step if you do not intend to customize
+        any submodule locations.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+update
+</term>
+<listitem>
+<simpara>
+        Update the registered submodules, i.e. clone missing submodules and
+        checkout the commit specified in the index of the containing repository.
+        This will make the submodules HEAD be detached unless <emphasis>--rebase</emphasis> or
+        <emphasis>--merge</emphasis> is specified or the key <emphasis>submodule.$name.update</emphasis> is set to
+        <emphasis>rebase</emphasis>, <emphasis>merge</emphasis> or <emphasis>none</emphasis>. <emphasis>none</emphasis> can be overriden by specifying
+        <emphasis>--checkout</emphasis>.
+</simpara>
+<simpara>If the submodule is not yet initialized, and you just want to use the
+setting as stored in .gitmodules, you can automatically initialize the
+submodule with the <emphasis>--init</emphasis> option.</simpara>
+<simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into the
+registered submodules, and update any nested submodules within.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+summary
+</term>
+<listitem>
+<simpara>
+        Show commit summary between the given commit (defaults to HEAD) and
+        working tree/index. For a submodule in question, a series of commits
+        in the submodule between the given super project commit and the
+        index or working tree (switched by <emphasis>--cached</emphasis>) are shown. If the option
+        <emphasis>--files</emphasis> is given, show the series of commits in the submodule between
+        the index of the super project and the working tree of the submodule
+        (this option doesn't allow to use the <emphasis>--cached</emphasis> option or to provide an
+        explicit commit).
+</simpara>
+<simpara>Using the <emphasis>--submodule=log</emphasis> option with <xref linkend="git-diff(1)" /> will provide that
+information too.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+foreach
+</term>
+<listitem>
+<simpara>
+        Evaluates an arbitrary shell command in each checked out submodule.
+        The command has access to the variables $name, $path, $sha1 and
+        $toplevel:
+        $name is the name of the relevant submodule section in .gitmodules,
+        $path is the name of the submodule directory relative to the
+        superproject, $sha1 is the commit as recorded in the superproject,
+        and $toplevel is the absolute path to the top-level of the superproject.
+        Any submodules defined in the superproject but not checked out are
+        ignored by this command. Unless given <emphasis>--quiet</emphasis>, foreach prints the name
+        of each submodule before evaluating the command.
+        If <emphasis>--recursive</emphasis> is given, submodules are traversed recursively (i.e.
+        the given shell command is evaluated in nested submodules as well).
+        A non-zero return from the command in any submodule causes
+        the processing to terminate. This can be overridden by adding <emphasis>|| :</emphasis>
+        to the end of the command.
+</simpara>
+<simpara>As an example, <literal>git submodule foreach 'echo $path &#96;git
+rev-parse HEAD&#96;'</literal> will show the path and currently checked out
+commit for each submodule.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sync
+</term>
+<listitem>
+<simpara>
+        Synchronizes submodules' remote URL configuration setting
+        to the value specified in .gitmodules. It will only affect those
+        submodules which already have a URL entry in .git/config (that is the
+        case when they are initialized or freshly added). This is useful when
+        submodule URLs change upstream and you need to update your local
+        repositories accordingly.
+</simpara>
+<simpara>"git submodule sync" synchronizes all submodules while
+"git submodule sync -- A" synchronizes submodule "A" only.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Only print error messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b
+</term>
+<term>
+--branch
+</term>
+<listitem>
+<simpara>
+        Branch of repository to add as submodule.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        This option is only valid for add and update commands.
+        When running add, allow adding an otherwise ignored submodule path.
+        When running update, throw away local changes in submodules when
+        switching to a different commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cached
+</term>
+<listitem>
+<simpara>
+        This option is only valid for status and summary commands.  These
+        commands typically use the commit found in the submodule HEAD, but
+        with this option, the commit stored in the index is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--files
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the summary command. This command
+        compares the commit in the index with that in the submodule HEAD
+        when this option is used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--summary-limit
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the summary command.
+        Limit the summary size (number of commits shown in total).
+        Giving 0 will disable the summary; a negative number means unlimited
+        (the default). This limit only applies to modified submodules. The
+        size is always limited to 1 for added/deleted/typechanged submodules.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-N
+</term>
+<term>
+--no-fetch
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Don't fetch new objects from the remote site.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--merge
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Merge the commit recorded in the superproject into the current branch
+        of the submodule. If this option is given, the submodule's HEAD will
+        not be detached. If a merge failure prevents this process, you will
+        have to resolve the resulting conflicts within the submodule with the
+        usual conflict resolution tools.
+        If the key <emphasis>submodule.$name.update</emphasis> is set to <emphasis>merge</emphasis>, this option is
+        implicit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--rebase
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Rebase the current branch onto the commit recorded in the
+        superproject. If this option is given, the submodule's HEAD will not
+        be detached. If a merge failure prevents this process, you will have
+        to resolve these failures with <xref linkend="git-rebase(1)" />.
+        If the key <emphasis>submodule.$name.update</emphasis> is set to <emphasis>rebase</emphasis>, this option is
+        implicit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--init
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the update command.
+        Initialize all submodules for which "git submodule init" has not been
+        called so far before updating.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reference &lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        This option is only valid for add and update commands.  These
+        commands sometimes need to clone a remote repository. In this case,
+        this option will be passed to the <xref linkend="git-clone(1)" /> command.
+</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: Do <emphasis role="strong">not</emphasis> use this option unless you have read the note
+for <xref linkend="git-clone(1)" />'s <emphasis>--reference</emphasis> and <emphasis>--shared</emphasis> options carefully.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recursive
+</term>
+<listitem>
+<simpara>
+        This option is only valid for foreach, update and status commands.
+        Traverse submodules recursively. The operation is performed not
+        only in the submodules of the current repo, but also
+        in any nested submodules inside those submodules (and so on).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;path&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Paths to submodule(s). When specified this will restrict the command
+        to only operate on the submodules found at the specified paths.
+        (This argument is required with add).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_files">
+<title>FILES</title>
+<simpara>When initializing submodules, a .gitmodules file in the top-level directory
+of the containing repository is used to find the url of each submodule.
+This file should be formatted in the same way as <emphasis>$GIT_DIR/config</emphasis>. The key
+to each submodule url is "submodule.$name.url".  See <xref linkend="gitmodules(5)" />
+for details.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

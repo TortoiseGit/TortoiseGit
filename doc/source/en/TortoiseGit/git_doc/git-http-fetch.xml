@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-http-fetch(1)">
+<articleinfo>
+    <title>git-http-fetch(1)</title>
+<indexterm>
+<primary>git-http-fetch(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-http-fetch - Download from a remote git repository via HTTP</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git http-fetch</emphasis> [-c] [-t] [-a] [-d] [-v] [-w filename] [--recover] [--stdin] &lt;commit&gt; &lt;url&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Downloads a remote git repository via HTTP.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: use of this command without -a is deprecated.  The -a
+behaviour will become the default in a future release.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+commit-id
+</term>
+<listitem>
+<simpara>
+        Either the hash or the filename under [URL]/refs/ to
+        pull.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c
+</term>
+<listitem>
+<simpara>
+        Get the commit objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t
+</term>
+<listitem>
+<simpara>
+        Get trees associated with the commit objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<listitem>
+<simpara>
+        Get all the objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<listitem>
+<simpara>
+        Report what is downloaded.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-w &lt;filename&gt;
+</term>
+<listitem>
+<simpara>
+        Writes the commit-id into the filename under $GIT_DIR/refs/&lt;filename&gt; on
+        the local end after the transfer is complete.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Instead of a commit id on the command line (which is not expected in this
+        case), <emphasis>git http-fetch</emphasis> expects lines on stdin in the format
+</simpara>
+<literallayout class="monospaced">&lt;commit-id&gt;['\t'&lt;filename-as-in--w&gt;]</literallayout>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recover
+</term>
+<listitem>
+<simpara>
+        Verify that everything reachable from target is fetched.  Used after
+        an earlier fetch is interrupted.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

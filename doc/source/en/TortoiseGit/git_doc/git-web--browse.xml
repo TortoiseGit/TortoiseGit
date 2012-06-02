@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-web&#45;&#45;browse(1)">
+<articleinfo>
+    <title>git-web&#45;&#45;browse(1)</title>
+<indexterm>
+<primary>git-web&#45;&#45;browse(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-web--browse - git helper script to launch a web browser</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git web&#45;&#45;browse</emphasis> [OPTIONS] URL/FILE &#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This script tries, as much as possible, to display the URLs and FILEs
+that are passed as arguments, as HTML pages in new tabs on an already
+opened web browser.</simpara>
+<simpara>The following browsers (or commands) are currently supported:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+firefox (this is the default under X Window when not using KDE)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+iceweasel
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+seamonkey
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+iceape
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+chromium (also supported as chromium-browser)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+google-chrome (also supported as chrome)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+konqueror (this is the default under KDE, see <emphasis>Note about konqueror</emphasis> below)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+opera
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+w3m (this is the default outside graphical environments)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+elinks
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+links
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+lynx
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+dillo
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+open (this is the default under Mac OS X GUI)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+start (this is the default under MinGW)
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Custom commands may also be specified.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-b &lt;browser&gt;
+</term>
+<term>
+--browser=&lt;browser&gt;
+</term>
+<listitem>
+<simpara>
+        Use the specified browser. It must be in the list of supported
+        browsers.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t &lt;browser&gt;
+</term>
+<term>
+--tool=&lt;browser&gt;
+</term>
+<listitem>
+<simpara>
+        Same as above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c &lt;conf.var&gt;
+</term>
+<term>
+--config=&lt;conf.var&gt;
+</term>
+<listitem>
+<simpara>
+        CONF.VAR is looked up in the git config files. If it's set,
+        then its value specifies the browser that should be used.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration_variables">
+<title>CONFIGURATION VARIABLES</title>
+<section id="_conf_var_from_c_option_and_web_browser">
+<title>CONF.VAR (from -c option) and web.browser</title>
+<simpara>The web browser can be specified using a configuration variable passed
+with the -c (or --config) command line option, or the <emphasis>web.browser</emphasis>
+configuration variable if the former is not used.</simpara>
+</section>
+<section id="_browser_lt_tool_gt_path">
+<title>browser.&lt;tool&gt;.path</title>
+<simpara>You can explicitly provide a full path to your preferred browser by
+setting the configuration variable <emphasis>browser.&lt;tool&gt;.path</emphasis>. For example,
+you can configure the absolute path to firefox by setting
+<emphasis>browser.firefox.path</emphasis>. Otherwise, <emphasis>git web&#45;&#45;browse</emphasis> assumes the tool
+is available in PATH.</simpara>
+</section>
+<section id="_browser_lt_tool_gt_cmd">
+<title>browser.&lt;tool&gt;.cmd</title>
+<simpara>When the browser, specified by options or configuration variables, is
+not among the supported ones, then the corresponding
+<emphasis>browser.&lt;tool&gt;.cmd</emphasis> configuration variable will be looked up. If this
+variable exists then <emphasis>git web&#45;&#45;browse</emphasis> will treat the specified tool
+as a custom command and will use a shell eval to run the command with
+the URLs passed as arguments.</simpara>
+</section>
+</simplesect>
+<simplesect id="_note_about_konqueror">
+<title>Note about konqueror</title>
+<simpara>When <emphasis>konqueror</emphasis> is specified by a command line option or a
+configuration variable, we launch <emphasis>kfmclient</emphasis> to try to open the HTML
+man page on an already opened konqueror in a new tab if possible.</simpara>
+<simpara>For consistency, we also try such a trick if <emphasis>browser.konqueror.path</emphasis> is
+set to something like <emphasis>A_PATH_TO/konqueror</emphasis>. That means we will try to
+launch <emphasis>A_PATH_TO/kfmclient</emphasis> instead.</simpara>
+<simpara>If you really want to use <emphasis>konqueror</emphasis>, then you can use something like
+the following:</simpara>
+<screen>        [web]
+                browser = konq
+
+        [browser "konq"]
+                cmd = A_PATH_TO/konqueror</screen>
+<section id="_note_about_git_config_global">
+<title>Note about git-config --global</title>
+<simpara>Note that these configuration variables should probably be set using
+the <emphasis>--global</emphasis> flag, for example like this:</simpara>
+<screen>$ git config --global web.browser firefox</screen>
+<simpara>as they are probably more user specific than repository specific.
+See <xref linkend="git-config(1)" /> for more information about this.</simpara>
+</section>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

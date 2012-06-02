@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-merge-base(1)">
+<articleinfo>
+    <title>git-merge-base(1)</title>
+<indexterm>
+<primary>git-merge-base(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-merge-base - Find as good common ancestors as possible for a merge</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git merge-base</emphasis> [-a|--all] &lt;commit&gt; &lt;commit&gt;&#8230;
+<emphasis>git merge-base</emphasis> [-a|--all] --octopus &lt;commit&gt;&#8230;
+<emphasis>git merge-base</emphasis> --independent &lt;commit&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara><emphasis>git merge-base</emphasis> finds best common ancestor(s) between two commits to use
+in a three-way merge.  One common ancestor is <emphasis>better</emphasis> than another common
+ancestor if the latter is an ancestor of the former.  A common ancestor
+that does not have any better common ancestor is a <emphasis>best common
+ancestor</emphasis>, i.e. a <emphasis>merge base</emphasis>.  Note that there can be more than one
+merge base for a pair of commits.</simpara>
+</simplesect>
+<simplesect id="_operation_mode">
+<title>OPERATION MODE</title>
+<simpara>As the most common special case, specifying only two commits on the
+command line means computing the merge base between the given two commits.</simpara>
+<simpara>More generally, among the two commits to compute the merge base from,
+one is specified by the first commit argument on the command line;
+the other commit is a (possibly hypothetical) commit that is a merge
+across all the remaining commits on the command line.</simpara>
+<simpara>As a consequence, the <emphasis>merge base</emphasis> is not necessarily contained in each of the
+commit arguments if more than two commits are specified. This is different
+from <xref linkend="git-show-branch(1)" /> when used with the <emphasis>--merge-base</emphasis> option.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--octopus
+</term>
+<listitem>
+<simpara>
+        Compute the best common ancestors of all supplied commits,
+        in preparation for an n-way merge.  This mimics the behavior
+        of <emphasis>git show-branch --merge-base</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--independent
+</term>
+<listitem>
+<simpara>
+        Instead of printing merge bases, print a minimal subset of
+        the supplied commits with the same ancestors.  In other words,
+        among the commits given, list those which cannot be reached
+        from any other.  This mimics the behavior of <emphasis>git show-branch
+        --independent</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Output all merge bases for the commits, instead of just one.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>Given two commits <emphasis>A</emphasis> and <emphasis>B</emphasis>, <emphasis>git merge-base A B</emphasis> will output a commit
+which is reachable from both <emphasis>A</emphasis> and <emphasis>B</emphasis> through the parent relationship.</simpara>
+<simpara>For example, with this topology:</simpara>
+<literallayout class="monospaced">         o---o---o---B
+        /
+---o---1---o---o---o---A</literallayout>
+<simpara>the merge base between <emphasis>A</emphasis> and <emphasis>B</emphasis> is <emphasis>1</emphasis>.</simpara>
+<simpara>Given three commits <emphasis>A</emphasis>, <emphasis>B</emphasis> and <emphasis>C</emphasis>, <emphasis>git merge-base A B C</emphasis> will compute the
+merge base between <emphasis>A</emphasis> and a hypothetical commit <emphasis>M</emphasis>, which is a merge
+between <emphasis>B</emphasis> and <emphasis>C</emphasis>.  For example, with this topology:</simpara>
+<literallayout class="monospaced">       o---o---o---o---C
+      /
+     /   o---o---o---B
+    /   /
+---2---1---o---o---o---A</literallayout>
+<simpara>the result of <emphasis>git merge-base A B C</emphasis> is <emphasis>1</emphasis>.  This is because the
+equivalent topology with a merge commit <emphasis>M</emphasis> between <emphasis>B</emphasis> and <emphasis>C</emphasis> is:</simpara>
+<literallayout class="monospaced">       o---o---o---o---o
+      /                 \
+     /   o---o---o---o---M
+    /   /
+---2---1---o---o---o---A</literallayout>
+<simpara>and the result of <emphasis>git merge-base A M</emphasis> is <emphasis>1</emphasis>.  Commit <emphasis>2</emphasis> is also a
+common ancestor between <emphasis>A</emphasis> and <emphasis>M</emphasis>, but <emphasis>1</emphasis> is a better common ancestor,
+because <emphasis>2</emphasis> is an ancestor of <emphasis>1</emphasis>.  Hence, <emphasis>2</emphasis> is not a merge base.</simpara>
+<simpara>The result of <emphasis>git merge-base --octopus A B C</emphasis> is <emphasis>2</emphasis>, because <emphasis>2</emphasis> is
+the best common ancestor of all commits.</simpara>
+<simpara>When the history involves criss-cross merges, there can be more than one
+<emphasis>best</emphasis> common ancestor for two commits.  For example, with this topology:</simpara>
+<literallayout class="monospaced">---1---o---A
+    \ /
+     X
+    / \
+---2---o---o---B</literallayout>
+<simpara>both <emphasis>1</emphasis> and <emphasis>2</emphasis> are merge-bases of A and B.  Neither one is better than
+the other (both are <emphasis>best</emphasis> merge bases).  When the <emphasis>--all</emphasis> option is not given,
+it is unspecified which best one is output.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>See also</title>
+<simpara><xref linkend="git-rev-list(1)" />,
+<xref linkend="git-show-branch(1)" />,
+<xref linkend="git-merge(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

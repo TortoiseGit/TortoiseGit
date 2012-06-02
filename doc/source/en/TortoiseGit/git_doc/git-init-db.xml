@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-init-db(1)">
+<articleinfo>
+    <title>git-init-db(1)</title>
+<indexterm>
+<primary>git-init-db(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-init-db - Creates an empty git repository</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git init-db</emphasis> [-q | --quiet] [--bare] [--template=&lt;template_directory&gt;] [--separate-git-dir &lt;git dir&gt;] [--shared[=&lt;permissions&gt;]]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This is a synonym for <xref linkend="git-init(1)" />.  Please refer to the
+documentation of that command.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

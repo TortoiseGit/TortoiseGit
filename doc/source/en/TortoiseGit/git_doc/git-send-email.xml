@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-send-email(1)">
+<articleinfo>
+    <title>git-send-email(1)</title>
+<indexterm>
+<primary>git-send-email(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-send-email - Send a collection of patches as emails</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git send-email</emphasis> [options] &lt;file|directory|rev-list options&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Takes the patches given on the command line and emails them out.
+Patches can be specified as files, directories (which will send all
+files in the directory), or directly as a revision list.  In the
+last case, any format accepted by <xref linkend="git-format-patch(1)" /> can
+be passed to git send-email.</simpara>
+<simpara>The header of the email is configurable by command line options.  If not
+specified on the command line, the user will be prompted with a ReadLine
+enabled interface to provide the necessary information.</simpara>
+<simpara>There are two formats accepted for patch files:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+mbox format files
+</simpara>
+<simpara>This is what <xref linkend="git-format-patch(1)" /> generates.  Most headers and MIME
+formatting are ignored.</simpara>
+</listitem>
+<listitem>
+<simpara>
+The original format used by Greg Kroah-Hartman's <emphasis>send_lots_of_email.pl</emphasis>
+script
+</simpara>
+<simpara>This format expects the first line of the file to contain the "Cc:" value
+and the "Subject:" of the message as the second line.</simpara>
+</listitem>
+</orderedlist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<section id="_composing">
+<title>Composing</title>
+<variablelist>
+<varlistentry>
+<term>
+--annotate
+</term>
+<listitem>
+<simpara>
+        Review and edit each patch you're about to send. See the
+        CONFIGURATION section for <emphasis>sendemail.multiedit</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--bcc=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a "Bcc:" value for each email. Default is the value of
+        <emphasis>sendemail.bcc</emphasis>.
+</simpara>
+<simpara>The --bcc option must be repeated for each user you want on the bcc list.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cc=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a starting "Cc:" value for each email.
+        Default is the value of <emphasis>sendemail.cc</emphasis>.
+</simpara>
+<simpara>The --cc option must be repeated for each user you want on the cc list.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--compose
+</term>
+<listitem>
+<simpara>
+        Invoke a text editor (see GIT_EDITOR in <xref linkend="git-var(1)" />)
+        to edit an introductory message for the patch series.
+</simpara>
+<simpara>When <emphasis>--compose</emphasis> is used, git send-email will use the From, Subject, and
+In-Reply-To headers specified in the message. If the body of the message
+(what you type after the headers and a blank line) only contains blank
+(or GIT: prefixed) lines the summary won't be sent, but From, Subject,
+and In-Reply-To headers will be used unless they are removed.</simpara>
+<simpara>Missing From or In-Reply-To headers will be prompted for.</simpara>
+<simpara>See the CONFIGURATION section for <emphasis>sendemail.multiedit</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--from=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the sender of the emails.  If not specified on the command line,
+        the value of the <emphasis>sendemail.from</emphasis> configuration option is used.  If
+        neither the command line option nor <emphasis>sendemail.from</emphasis> are set, then the
+        user will be prompted for the value.  The default for the prompt will be
+        the value of GIT_AUTHOR_IDENT, or GIT_COMMITTER_IDENT if that is not
+        set, as returned by "git var -l".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--in-reply-to=&lt;identifier&gt;
+</term>
+<listitem>
+<simpara>
+        Make the first mail (or all the mails with <emphasis>--no-thread</emphasis>) appear as a
+        reply to the given Message-Id, which avoids breaking threads to
+        provide a new patch series.
+        The second and subsequent emails will be sent as replies according to
+        the <emphasis>--[no]-chain-reply-to</emphasis> setting.
+</simpara>
+<simpara>So for example when <emphasis>--thread</emphasis> and <emphasis>--no-chain-reply-to</emphasis> are specified, the
+second and subsequent patches will be replies to the first one like in the
+illustration below where <emphasis>[PATCH v2 0/3]</emphasis> is in reply to <emphasis>[PATCH 0/2]</emphasis>:</simpara>
+<literallayout class="monospaced">[PATCH 0/2] Here is what I did...
+  [PATCH 1/2] Clean up and tests
+  [PATCH 2/2] Implementation
+  [PATCH v2 0/3] Here is a reroll
+    [PATCH v2 1/3] Clean up
+    [PATCH v2 2/3] New tests
+    [PATCH v2 3/3] Implementation</literallayout>
+<simpara>Only necessary if --compose is also set.  If --compose
+is not set, this will be prompted for.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--subject=&lt;string&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the initial subject of the email thread.
+        Only necessary if --compose is also set.  If --compose
+        is not set, this will be prompted for.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--to=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the primary recipient of the emails generated. Generally, this
+        will be the upstream maintainer of the project involved. Default is the
+        value of the <emphasis>sendemail.to</emphasis> configuration value; if that is unspecified,
+        and --to-cmd is not specified, this will be prompted for.
+</simpara>
+<simpara>The --to option must be repeated for each user you want on the to list.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--8bit-encoding=&lt;encoding&gt;
+</term>
+<listitem>
+<simpara>
+        When encountering a non-ASCII message or subject that does not
+        declare its encoding, add headers/quoting to indicate it is
+        encoded in &lt;encoding&gt;.  Default is the value of the
+        <emphasis>sendemail.assume8bitEncoding</emphasis>; if that is unspecified, this
+        will be prompted for if any non-ASCII files are encountered.
+</simpara>
+<simpara>Note that no attempts whatsoever are made to validate the encoding.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_sending">
+<title>Sending</title>
+<variablelist>
+<varlistentry>
+<term>
+--envelope-sender=&lt;address&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the envelope sender used to send the emails.
+        This is useful if your default address is not the address that is
+        subscribed to a list. In order to use the <emphasis>From</emphasis> address, set the
+        value to "auto". If you use the sendmail binary, you must have
+        suitable privileges for the -f parameter.  Default is the value of the
+        <emphasis>sendemail.envelopesender</emphasis> configuration variable; if that is
+        unspecified, choosing the envelope sender is left to your MTA.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-encryption=&lt;encryption&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the encryption to use, either <emphasis>ssl</emphasis> or <emphasis>tls</emphasis>.  Any other
+        value reverts to plain SMTP.  Default is the value of
+        <emphasis>sendemail.smtpencryption</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-domain=&lt;FQDN&gt;
+</term>
+<listitem>
+<simpara>
+        Specifies the Fully Qualified Domain Name (FQDN) used in the
+        HELO/EHLO command to the SMTP server.  Some servers require the
+        FQDN to match your IP address.  If not set, git send-email attempts
+        to determine your FQDN automatically.  Default is the value of
+        <emphasis>sendemail.smtpdomain</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-pass[=&lt;password&gt;]
+</term>
+<listitem>
+<simpara>
+        Password for SMTP-AUTH. The argument is optional: If no
+        argument is specified, then the empty string is used as
+        the password. Default is the value of <emphasis>sendemail.smtppass</emphasis>,
+        however <emphasis>--smtp-pass</emphasis> always overrides this value.
+</simpara>
+<simpara>Furthermore, passwords need not be specified in configuration files
+or on the command line. If a username has been specified (with
+<emphasis>--smtp-user</emphasis> or a <emphasis>sendemail.smtpuser</emphasis>), but no password has been
+specified (with <emphasis>--smtp-pass</emphasis> or <emphasis>sendemail.smtppass</emphasis>), then the
+user is prompted for a password while the input is masked for privacy.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-server=&lt;host&gt;
+</term>
+<listitem>
+<simpara>
+        If set, specifies the outgoing SMTP server to use (e.g.
+        <emphasis>smtp.example.com</emphasis> or a raw IP address).  Alternatively it can
+        specify a full pathname of a sendmail-like program instead;
+        the program must support the <emphasis>-i</emphasis> option.  Default value can
+        be specified by the <emphasis>sendemail.smtpserver</emphasis> configuration
+        option; the built-in default is <emphasis>/usr/sbin/sendmail</emphasis> or
+        <emphasis>/usr/lib/sendmail</emphasis> if such program is available, or
+        <emphasis>localhost</emphasis> otherwise.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-server-port=&lt;port&gt;
+</term>
+<listitem>
+<simpara>
+        Specifies a port different from the default port (SMTP
+        servers typically listen to smtp port 25, but may also listen to
+        submission port 587, or the common SSL smtp port 465);
+        symbolic port names (e.g. "submission" instead of 587)
+        are also accepted. The port can also be set with the
+        <emphasis>sendemail.smtpserverport</emphasis> configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-server-option=&lt;option&gt;
+</term>
+<listitem>
+<simpara>
+        If set, specifies the outgoing SMTP server option to use.
+        Default value can be specified by the <emphasis>sendemail.smtpserveroption</emphasis>
+        configuration option.
+</simpara>
+<simpara>The --smtp-server-option option must be repeated for each option you want
+to pass to the server. Likewise, different lines in the configuration files
+must be used for each option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-ssl
+</term>
+<listitem>
+<simpara>
+        Legacy alias for <emphasis>--smtp-encryption ssl</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-user=&lt;user&gt;
+</term>
+<listitem>
+<simpara>
+        Username for SMTP-AUTH. Default is the value of <emphasis>sendemail.smtpuser</emphasis>;
+        if a username is not specified (with <emphasis>--smtp-user</emphasis> or <emphasis>sendemail.smtpuser</emphasis>),
+        then authentication is not attempted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--smtp-debug=0|1
+</term>
+<listitem>
+<simpara>
+        Enable (1) or disable (0) debug output. If enabled, SMTP
+        commands and replies will be printed. Useful to debug TLS
+        connection and authentication problems.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_automating">
+<title>Automating</title>
+<variablelist>
+<varlistentry>
+<term>
+--to-cmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a command to execute once per patch file which
+        should generate patch file specific "To:" entries.
+        Output of this command must be single email address per line.
+        Default is the value of <emphasis>sendemail.tocmd</emphasis> configuration value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cc-cmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a command to execute once per patch file which
+        should generate patch file specific "Cc:" entries.
+        Output of this command must be single email address per line.
+        Default is the value of <emphasis>sendemail.cccmd</emphasis> configuration value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]chain-reply-to
+</term>
+<listitem>
+<simpara>
+        If this is set, each email will be sent as a reply to the previous
+        email sent.  If disabled with "--no-chain-reply-to", all emails after
+        the first will be sent as replies to the first email sent.  When using
+        this, it is recommended that the first file given be an overview of the
+        entire patch series. Disabled by default, but the <emphasis>sendemail.chainreplyto</emphasis>
+        configuration variable can be used to enable it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--identity=&lt;identity&gt;
+</term>
+<listitem>
+<simpara>
+        A configuration identity. When given, causes values in the
+        <emphasis>sendemail.&lt;identity&gt;</emphasis> subsection to take precedence over
+        values in the <emphasis>sendemail</emphasis> section. The default identity is
+        the value of <emphasis>sendemail.identity</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]signed-off-by-cc
+</term>
+<listitem>
+<simpara>
+        If this is set, add emails found in Signed-off-by: or Cc: lines to the
+        cc list. Default is the value of <emphasis>sendemail.signedoffbycc</emphasis> configuration
+        value; if that is unspecified, default to --signed-off-by-cc.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--suppress-cc=&lt;category&gt;
+</term>
+<listitem>
+<simpara>
+        Specify an additional category of recipients to suppress the
+        auto-cc of:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>author</emphasis> will avoid including the patch author
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>self</emphasis> will avoid including the sender
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>cc</emphasis> will avoid including anyone mentioned in Cc lines in the patch header
+  except for self (use <emphasis>self</emphasis> for that).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>bodycc</emphasis> will avoid including anyone mentioned in Cc lines in the
+  patch body (commit message) except for self (use <emphasis>self</emphasis> for that).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>sob</emphasis> will avoid including anyone mentioned in Signed-off-by lines except
+   for self (use <emphasis>self</emphasis> for that).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>cccmd</emphasis> will avoid running the --cc-cmd.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>body</emphasis> is equivalent to <emphasis>sob</emphasis> + <emphasis>bodycc</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>all</emphasis> will suppress all auto cc values.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Default is the value of <emphasis>sendemail.suppresscc</emphasis> configuration value; if
+that is unspecified, default to <emphasis>self</emphasis> if --suppress-from is
+specified, as well as <emphasis>body</emphasis> if --no-signed-off-cc is specified.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]suppress-from
+</term>
+<listitem>
+<simpara>
+        If this is set, do not add the From: address to the cc: list.
+        Default is the value of <emphasis>sendemail.suppressfrom</emphasis> configuration
+        value; if that is unspecified, default to --no-suppress-from.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]thread
+</term>
+<listitem>
+<simpara>
+        If this is set, the In-Reply-To and References headers will be
+        added to each email sent.  Whether each mail refers to the
+        previous email (<emphasis>deep</emphasis> threading per <emphasis>git format-patch</emphasis>
+        wording) or to the first email (<emphasis>shallow</emphasis> threading) is
+        governed by "--[no-]chain-reply-to".
+</simpara>
+<simpara>If disabled with "--no-thread", those headers will not be added
+(unless specified with --in-reply-to).  Default is the value of the
+<emphasis>sendemail.thread</emphasis> configuration value; if that is unspecified,
+default to --thread.</simpara>
+<simpara>It is up to the user to ensure that no In-Reply-To header already
+exists when <emphasis>git send-email</emphasis> is asked to add it (especially note that
+<emphasis>git format-patch</emphasis> can be configured to do the threading itself).
+Failure to do so may not produce the expected result in the
+recipient's MUA.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_administering">
+<title>Administering</title>
+<variablelist>
+<varlistentry>
+<term>
+--confirm=&lt;mode&gt;
+</term>
+<listitem>
+<simpara>
+        Confirm just before sending:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>always</emphasis> will always confirm before sending
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>never</emphasis> will never confirm before sending
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>cc</emphasis> will confirm before sending when send-email has automatically
+  added addresses from the patch to the Cc list
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>compose</emphasis> will confirm before sending the first message when using --compose.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>auto</emphasis> is equivalent to <emphasis>cc</emphasis> + <emphasis>compose</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Default is the value of <emphasis>sendemail.confirm</emphasis> configuration value; if that
+is unspecified, default to <emphasis>auto</emphasis> unless any of the suppress options
+have been specified, in which case default to <emphasis>compose</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do everything except actually send the emails.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]format-patch
+</term>
+<listitem>
+<simpara>
+        When an argument may be understood either as a reference or as a file name,
+        choose to understand it as a format-patch argument (<emphasis>--format-patch</emphasis>)
+        or as a file name (<emphasis>--no-format-patch</emphasis>). By default, when such a conflict
+        occurs, git send-email will fail.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Make git-send-email less verbose.  One line per email should be
+        all that is output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]validate
+</term>
+<listitem>
+<simpara>
+        Perform sanity checks on patches.
+        Currently, validation means the following:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Warn of patches that contain lines longer than 998 characters; this
+                        is due to SMTP limits as described by <ulink url="http://www.ietf.org/rfc/rfc2821.txt">http://www.ietf.org/rfc/rfc2821.txt</ulink>.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Default is the value of <emphasis>sendemail.validate</emphasis>; if this is not set,
+default to <emphasis>--validate</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Send emails even if safety checks would prevent it.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+sendemail.aliasesfile
+</term>
+<listitem>
+<simpara>
+        To avoid typing long email addresses, point this to one or more
+        email aliases files.  You must also supply <emphasis>sendemail.aliasfiletype</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.aliasfiletype
+</term>
+<listitem>
+<simpara>
+        Format of the file(s) specified in sendemail.aliasesfile. Must be
+        one of <emphasis>mutt</emphasis>, <emphasis>mailrc</emphasis>, <emphasis>pine</emphasis>, <emphasis>elm</emphasis>, or <emphasis>gnus</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.multiedit
+</term>
+<listitem>
+<simpara>
+        If true (default), a single editor instance will be spawned to edit
+        files you have to edit (patches when <emphasis>--annotate</emphasis> is used, and the
+        summary when <emphasis>--compose</emphasis> is used). If false, files will be edited one
+        after the other, spawning a new editor each time.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.confirm
+</term>
+<listitem>
+<simpara>
+        Sets the default for whether to confirm before sending. Must be
+        one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, <emphasis>cc</emphasis>, <emphasis>compose</emphasis>, or <emphasis>auto</emphasis>. See <emphasis>--confirm</emphasis>
+        in the previous section for the meaning of these values.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<section id="_use_gmail_as_the_smtp_server">
+<title>Use gmail as the smtp server</title>
+<simpara>To use <emphasis>git send-email</emphasis> to send your patches through the GMail SMTP server,
+edit ~/.gitconfig to specify your account settings:</simpara>
+<literallayout class="monospaced">[sendemail]
+        smtpencryption = tls
+        smtpserver = smtp.gmail.com
+        smtpuser = yourname@gmail.com
+        smtpserverport = 587</literallayout>
+<simpara>Once your commits are ready to be sent to the mailing list, run the
+following commands:</simpara>
+<literallayout class="monospaced">$ git format-patch --cover-letter -M origin/master -o outgoing/
+$ edit outgoing/0000-*
+$ git send-email outgoing/*</literallayout>
+<simpara>Note: the following perl modules are required
+      Net::SMTP::SSL, MIME::Base64 and Authen::SASL</simpara>
+</section>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-format-patch(1)" />, <xref linkend="git-imap-send(1)" />, mbox(5)</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

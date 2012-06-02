@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-stripspace(1)">
+<articleinfo>
+    <title>git-stripspace(1)</title>
+<indexterm>
+<primary>git-stripspace(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-stripspace - Remove unnecessary whitespace</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git stripspace</emphasis> [-s | --strip-comments] &lt; input</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Clean the input in the manner used by <emphasis>git</emphasis> for text such as commit
+messages, notes, tags and branch descriptions.</simpara>
+<simpara>With no arguments, this will:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+remove trailing whitespace from all lines
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+collapse multiple consecutive empty lines into one empty line
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+remove empty lines from the beginning and end of the input
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+add a missing <emphasis>\n</emphasis> to the last line if necessary.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>In the case where the input consists entirely of whitespace characters, no
+output will be produced.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: This is intended for cleaning metadata, prefer the <emphasis>--whitespace=fix</emphasis>
+mode of <xref linkend="git-apply(1)" /> for correcting whitespace of patches or files in
+the repository.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--strip-comments
+</term>
+<listitem>
+<simpara>
+        Skip and remove all lines starting with <emphasis>#</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<simpara>Given the following noisy input with <emphasis>$</emphasis> indicating the end of a line:</simpara>
+<screen>|A brief introduction   $
+|   $
+|$
+|A new paragraph$
+|# with a commented-out line    $
+|explaining lots of stuff.$
+|$
+|# An old paragraph, also commented-out. $
+|      $
+|The end.$
+|  $</screen>
+<simpara>Use <emphasis>git stripspace</emphasis> with no arguments to obtain:</simpara>
+<screen>|A brief introduction$
+|$
+|A new paragraph$
+|# with a commented-out line$
+|explaining lots of stuff.$
+|$
+|# An old paragraph, also commented-out.$
+|$
+|The end.$</screen>
+<simpara>Use <emphasis>git stripspace --strip-comments</emphasis> to obtain:</simpara>
+<screen>|A brief introduction$
+|$
+|A new paragraph$
+|explaining lots of stuff.$
+|$
+|The end.$</screen>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

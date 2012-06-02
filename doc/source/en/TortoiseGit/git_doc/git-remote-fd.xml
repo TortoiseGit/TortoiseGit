@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-remote-fd(1)">
+<articleinfo>
+    <title>git-remote-fd(1)</title>
+<indexterm>
+<primary>git-remote-fd(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-remote-fd - Reflect smart transport stream back to caller</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>"fd::&lt;infd&gt;[,&lt;outfd&gt;][/&lt;anything&gt;]" (as URL)</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This helper uses specified file descriptors to connect to a remote git server.
+This is not meant for end users but for programs and scripts calling git
+fetch, push or archive.</simpara>
+<simpara>If only &lt;infd&gt; is given, it is assumed to be a bidirectional socket connected
+to remote git server (git-upload-pack, git-receive-pack or
+git-upload-achive). If both &lt;infd&gt; and &lt;outfd&gt; are given, they are assumed
+to be pipes connected to a remote git server (&lt;infd&gt; being the inbound pipe
+and &lt;outfd&gt; being the outbound pipe.</simpara>
+<simpara>It is assumed that any handshaking procedures have already been completed
+(such as sending service request for git://) before this helper is started.</simpara>
+<simpara>&lt;anything&gt; can be any string. It is ignored. It is meant for providing
+information to user in the URL in case that URL is displayed in some
+context.</simpara>
+</simplesect>
+<simplesect id="_environment_variables">
+<title>ENVIRONMENT VARIABLES</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_TRANSLOOP_DEBUG
+</term>
+<listitem>
+<simpara>
+        If set, prints debugging information about various reads/writes.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git fetch fd::17 master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Fetch master, using file descriptor #17 to communicate with
+        git-upload-pack.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git fetch fd::17/foo master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Same as above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push fd::7,8 master (as URL)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Push master, using file descriptor #7 to read data from
+        git-receive-pack and file descriptor #8 to write data to
+        same service.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git push fd::7,8/bar master</emphasis>
+</term>
+<listitem>
+<simpara>
+        Same as above.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_documentation">
+<title>Documentation</title>
+<simpara>Documentation by Ilari Liusvaara and the git list &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

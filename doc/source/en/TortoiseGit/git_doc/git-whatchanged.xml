@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-whatchanged(1)">
+<articleinfo>
+    <title>git-whatchanged(1)</title>
+<indexterm>
+<primary>git-whatchanged(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-whatchanged - Show logs with difference each commit introduces</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git whatchanged</emphasis> &lt;option&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Shows commit logs and diff output each commit introduces.  The
+command internally invokes <emphasis>git rev-list</emphasis> piped to
+<emphasis>git diff-tree</emphasis>, and takes command line options for both of
+these commands.</simpara>
+<simpara>This manual page describes only the most frequently used options.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-p
+</term>
+<listitem>
+<simpara>
+        Show textual diffs, instead of the git internal diff
+        output format that is useful only to tell the changed
+        paths and their nature of changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Limit output to &lt;n&gt; commits.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;since&gt;..&lt;until&gt;
+</term>
+<listitem>
+<simpara>
+        Limit output to between the two named commits (bottom
+        exclusive, top inclusive).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-r
+</term>
+<listitem>
+<simpara>
+        Show git internal diff output, but for the whole tree,
+        not just the top level.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<listitem>
+<simpara>
+        By default, differences for merge commits are not shown.
+        With this flag, show differences to that commit from all
+        of its parents.
+</simpara>
+<simpara>However, it is not very useful in general, although it
+<emphasis role="strong">is</emphasis> useful on a file-by-file basis.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--pretty[=&lt;format&gt;]
+</term>
+<term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Pretty-print the contents of the commit logs in a given format,
+        where <emphasis>&lt;format&gt;</emphasis> can be one of <emphasis>oneline</emphasis>, <emphasis>short</emphasis>, <emphasis>medium</emphasis>,
+        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis> and <emphasis>format:&lt;string&gt;</emphasis>.  See
+        the "PRETTY FORMATS" section for some additional details for each
+        format.  When omitted, the format defaults to <emphasis>medium</emphasis>.
+</simpara>
+<simpara>Note: you can specify the default pretty format in the repository
+configuration (see <xref linkend="git-config(1)" />).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abbrev-commit
+</term>
+<listitem>
+<simpara>
+        Instead of showing the full 40-byte hexadecimal commit object
+        name, show only a partial prefix.  Non default number of
+        digits can be specified with "--abbrev=&lt;n&gt;" (which also modifies
+        diff output, if it is displayed).
+</simpara>
+<simpara>This should make "--pretty=oneline" a whole lot more readable for
+people using 80-column terminals.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-abbrev-commit
+</term>
+<listitem>
+<simpara>
+        Show the full 40-byte hexadecimal commit object name. This negates
+        <emphasis>--abbrev-commit</emphasis> and those options which imply it such as
+        "--oneline". It also overrides the <emphasis>log.abbrevCommit</emphasis> variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--oneline
+</term>
+<listitem>
+<simpara>
+        This is a shorthand for "--pretty=oneline --abbrev-commit"
+        used together.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--encoding[=&lt;encoding&gt;]
+</term>
+<listitem>
+<simpara>
+        The commit objects record the encoding used for the log message
+        in their encoding header; this option can be used to tell the
+        command to re-code the commit log message in the encoding
+        preferred by the user.  For non plumbing commands this
+        defaults to UTF-8.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--notes[=&lt;ref&gt;]
+</term>
+<listitem>
+<simpara>
+        Show the notes (see <xref linkend="git-notes(1)" />) that annotate the
+        commit, when showing the commit log message.  This is the default
+        for <emphasis>git log</emphasis>, <emphasis>git show</emphasis> and <emphasis>git whatchanged</emphasis> commands when
+        there is no <emphasis>--pretty</emphasis>, <emphasis>--format</emphasis> nor <emphasis>--oneline</emphasis> option given
+        on the command line.
+</simpara>
+<simpara>By default, the notes shown are from the notes refs listed in the
+<emphasis>core.notesRef</emphasis> and <emphasis>notes.displayRef</emphasis> variables (or corresponding
+environment overrides). See <xref linkend="git-config(1)" /> for more details.</simpara>
+<simpara>With an optional <emphasis>&lt;ref&gt;</emphasis> argument, show this notes ref instead of the
+default notes ref(s). The ref is taken to be in <emphasis>refs/notes/</emphasis> if it
+is not qualified.</simpara>
+<simpara>Multiple --notes options can be combined to control which notes are
+being displayed. Examples: "--notes=foo" will show only notes from
+"refs/notes/foo"; "--notes=foo --notes" will show both notes from
+"refs/notes/foo" and from the default notes ref(s).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-notes
+</term>
+<listitem>
+<simpara>
+        Do not show notes. This negates the above <emphasis>--notes</emphasis> option, by
+        resetting the list of notes refs from which notes are shown.
+        Options are parsed in the order given on the command line, so e.g.
+        "--notes --notes=foo --no-notes --notes=bar" will only show notes
+        from "refs/notes/bar".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-notes[=&lt;ref&gt;]
+</term>
+<term>
+--[no-]standard-notes
+</term>
+<listitem>
+<simpara>
+        These options are deprecated. Use the above --notes/--no-notes
+        options instead.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_pretty_formats">
+<title>PRETTY FORMATS</title>
+<simpara>If the commit is a merge, and if the pretty-format
+is not <emphasis>oneline</emphasis>, <emphasis>email</emphasis> or <emphasis>raw</emphasis>, an additional line is
+inserted before the <emphasis>Author:</emphasis> line.  This line begins with
+"Merge: " and the sha1s of ancestral commits are printed,
+separated by spaces.  Note that the listed commits may not
+necessarily be the list of the <emphasis role="strong">direct</emphasis> parent commits if you
+have limited your view of history: for example, if you are
+only interested in changes related to a certain directory or
+file.</simpara>
+<simpara>There are several built-in formats, and you can define
+additional formats by setting a pretty.&lt;name&gt;
+config option to either another format name, or a
+<emphasis>format:</emphasis> string, as described below (see
+<xref linkend="git-config(1)" />). Here are the details of the
+built-in formats:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>oneline</emphasis>
+</simpara>
+<literallayout class="monospaced">&lt;sha1&gt; &lt;title line&gt;</literallayout>
+<simpara>This is designed to be as compact as possible.</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>short</emphasis>
+</simpara>
+<literallayout class="monospaced">commit &lt;sha1&gt;
+Author: &lt;author&gt;</literallayout>
+<literallayout class="monospaced">&lt;title line&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>medium</emphasis>
+</simpara>
+<literallayout class="monospaced">commit &lt;sha1&gt;
+Author: &lt;author&gt;
+Date:   &lt;author date&gt;</literallayout>
+<literallayout class="monospaced">&lt;title line&gt;</literallayout>
+<literallayout class="monospaced">&lt;full commit message&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>full</emphasis>
+</simpara>
+<literallayout class="monospaced">commit &lt;sha1&gt;
+Author: &lt;author&gt;
+Commit: &lt;committer&gt;</literallayout>
+<literallayout class="monospaced">&lt;title line&gt;</literallayout>
+<literallayout class="monospaced">&lt;full commit message&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>fuller</emphasis>
+</simpara>
+<literallayout class="monospaced">commit &lt;sha1&gt;
+Author:     &lt;author&gt;
+AuthorDate: &lt;author date&gt;
+Commit:     &lt;committer&gt;
+CommitDate: &lt;committer date&gt;</literallayout>
+<literallayout class="monospaced">&lt;title line&gt;</literallayout>
+<literallayout class="monospaced">&lt;full commit message&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>email</emphasis>
+</simpara>
+<literallayout class="monospaced">From &lt;sha1&gt; &lt;date&gt;
+From: &lt;author&gt;
+Date: &lt;author date&gt;
+Subject: [PATCH] &lt;title line&gt;</literallayout>
+<literallayout class="monospaced">&lt;full commit message&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>raw</emphasis>
+</simpara>
+<simpara>The <emphasis>raw</emphasis> format shows the entire commit exactly as
+stored in the commit object.  Notably, the SHA1s are
+displayed in full, regardless of whether --abbrev or
+--no-abbrev are used, and <emphasis>parents</emphasis> information show the
+true parent commits, without taking grafts nor history
+simplification into account.</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>format:&lt;string&gt;</emphasis>
+</simpara>
+<simpara>The <emphasis>format:&lt;string&gt;</emphasis> format allows you to specify which information
+you want to show. It works a little bit like printf format,
+with the notable exception that you get a newline with <emphasis>%n</emphasis>
+instead of <emphasis>\n</emphasis>.</simpara>
+<simpara>E.g, <emphasis>format:"The author of %h was %an, %ar%nThe title was &gt;&gt;%s&lt;&lt;%n"</emphasis>
+would show something like this:</simpara>
+<screen>The author of fe6e0ee was Junio C Hamano, 23 hours ago
+The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff input.&lt;&lt;</screen>
+<simpara>The placeholders are:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>%H</emphasis>: commit hash
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%h</emphasis>: abbreviated commit hash
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%T</emphasis>: tree hash
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%t</emphasis>: abbreviated tree hash
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%P</emphasis>: parent hashes
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%p</emphasis>: abbreviated parent hashes
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%an</emphasis>: author name
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%aN</emphasis>: author name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ae</emphasis>: author email
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%aE</emphasis>: author email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ad</emphasis>: author date (format respects --date= option)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%aD</emphasis>: author date, RFC2822 style
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ar</emphasis>: author date, relative
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%at</emphasis>: author date, UNIX timestamp
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ai</emphasis>: author date, ISO 8601 format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cn</emphasis>: committer name
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cN</emphasis>: committer name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ce</emphasis>: committer email
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cE</emphasis>: committer email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cd</emphasis>: committer date
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cD</emphasis>: committer date, RFC2822 style
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%cr</emphasis>: committer date, relative
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ct</emphasis>: committer date, UNIX timestamp
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ci</emphasis>: committer date, ISO 8601 format
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%d</emphasis>: ref names, like the --decorate option of <xref linkend="git-log(1)" />
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%e</emphasis>: encoding
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%s</emphasis>: subject
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%f</emphasis>: sanitized subject line, suitable for a filename
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%b</emphasis>: body
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%B</emphasis>: raw body (unwrapped subject and body)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%N</emphasis>: commit notes
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gD</emphasis>: reflog selector, e.g., <emphasis>refs/stash@{1}</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gd</emphasis>: shortened reflog selector, e.g., <emphasis>stash@{1}</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gn</emphasis>: reflog identity name
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gN</emphasis>: reflog identity name (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%ge</emphasis>: reflog identity email
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gE</emphasis>: reflog identity email (respecting .mailmap, see <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%gs</emphasis>: reflog subject
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%Cred</emphasis>: switch color to red
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%Cgreen</emphasis>: switch color to green
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%Cblue</emphasis>: switch color to blue
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%Creset</emphasis>: reset color
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%C(&#8230;)</emphasis>: color specification, as described in color.branch.* config option
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%m</emphasis>: left, right or boundary mark
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%n</emphasis>: newline
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%%</emphasis>: a raw <emphasis>%</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%x00</emphasis>: print a byte from a hex code
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%w([&lt;w&gt;[,&lt;i1&gt;[,&lt;i2&gt;]]])</emphasis>: switch line wrapping, like the -w option of
+  <xref linkend="git-shortlog(1)" />.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</itemizedlist>
+<note><simpara>Some placeholders may depend on other options given to the
+revision traversal engine. For example, the <emphasis>%g*</emphasis> reflog options will
+insert an empty string unless we are traversing reflog entries (e.g., by
+<emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> placeholder will use the "short" decoration
+format if <emphasis>--decorate</emphasis> was not already provided on the command line.</simpara></note>
+<simpara>If you add a <emphasis>+</emphasis> (plus sign) after <emphasis>%</emphasis> of a placeholder, a line-feed
+is inserted immediately before the expansion if and only if the
+placeholder expands to a non-empty string.</simpara>
+<simpara>If you add a <emphasis>-</emphasis> (minus sign) after <emphasis>%</emphasis> of a placeholder, line-feeds that
+immediately precede the expansion are deleted if and only if the
+placeholder expands to an empty string.</simpara>
+<simpara>If you add a ` ` (space) after <emphasis>%</emphasis> of a placeholder, a space
+is inserted immediately before the expansion if and only if the
+placeholder expands to a non-empty string.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>tformat:</emphasis>
+</simpara>
+<simpara>The <emphasis>tformat:</emphasis> format works exactly like <emphasis>format:</emphasis>, except that it
+provides "terminator" semantics instead of "separator" semantics. In
+other words, each commit has the message terminator character (usually a
+newline) appended, rather than a separator placed between entries.
+This means that the final entry of a single-line format will be properly
+terminated with a new line, just as the "oneline" format does.
+For example:</simpara>
+<screen>$ git log -2 --pretty=format:%h 4da45bef \
+  | perl -pe '$_ .= " -- NO NEWLINE\n" unless /\n/'
+4da45be
+7134973 -- NO NEWLINE
+
+$ git log -2 --pretty=tformat:%h 4da45bef \
+  | perl -pe '$_ .= " -- NO NEWLINE\n" unless /\n/'
+4da45be
+7134973</screen>
+<simpara>In addition, any unrecognized string that has a <emphasis>%</emphasis> in it is interpreted
+as if it has <emphasis>tformat:</emphasis> in front of it.  For example, these two are
+equivalent:</simpara>
+<screen>$ git log -2 --pretty=tformat:%h 4da45bef
+$ git log -2 --pretty=%h 4da45bef</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git whatchanged -p v2.6.12.. include/scsi drivers/scsi</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show as patches the commits since version <emphasis>v2.6.12</emphasis> that changed
+        any file in the include/scsi or drivers/scsi subdirectories
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git whatchanged --since="2 weeks ago" -- gitk</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the changes during the last two weeks to the file <emphasis>gitk</emphasis>.
+        The "--" is necessary to avoid confusion with the <emphasis role="strong">branch</emphasis> named
+        <emphasis>gitk</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

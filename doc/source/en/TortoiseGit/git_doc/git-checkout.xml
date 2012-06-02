@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-checkout(1)">
+<articleinfo>
+    <title>git-checkout(1)</title>
+<indexterm>
+<primary>git-checkout(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-checkout - Checkout a branch or paths to the working tree</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git checkout</emphasis> [-q] [-f] [-m] [&lt;branch&gt;]
+<emphasis>git checkout</emphasis> [-q] [-f] [-m] [--detach] [&lt;commit&gt;]
+<emphasis>git checkout</emphasis> [-q] [-f] [-m] [[-b|-B|--orphan] &lt;new_branch&gt;] [&lt;start_point&gt;]
+<emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;paths&gt;&#8230;
+<emphasis>git checkout</emphasis> [-p|--patch] [&lt;tree-ish&gt;] [--] [&lt;paths&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Updates files in the working tree to match the version in the index
+or the specified tree.  If no paths are given, <emphasis>git checkout</emphasis> will
+also update <emphasis>HEAD</emphasis> to set the specified branch as the current
+branch.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git checkout</emphasis> [&lt;branch&gt;]
+</term>
+<term>
+<emphasis>git checkout</emphasis> -b|-B &lt;new_branch&gt; [&lt;start point&gt;]
+</term>
+<term>
+<emphasis>git checkout</emphasis> [--detach] [&lt;commit&gt;]
+</term>
+<listitem>
+<simpara>
+        This form switches branches by updating the index, working
+        tree, and HEAD to reflect the specified branch or commit.
+</simpara>
+<simpara>If <emphasis>-b</emphasis> is given, a new branch is created as if <xref linkend="git-branch(1)" />
+were called and then checked out; in this case you can
+use the <emphasis>--track</emphasis> or <emphasis>--no-track</emphasis> options, which will be passed to
+<emphasis>git branch</emphasis>.  As a convenience, <emphasis>--track</emphasis> without <emphasis>-b</emphasis> implies branch
+creation; see the description of <emphasis>--track</emphasis> below.</simpara>
+<simpara>If <emphasis>-B</emphasis> is given, &lt;new_branch&gt; is created if it doesn't exist; otherwise, it
+is reset. This is the transactional equivalent of</simpara>
+<screen>$ git branch -f &lt;branch&gt; [&lt;start point&gt;]
+$ git checkout &lt;branch&gt;</screen>
+<simpara>that is to say, the branch is not reset/created unless "git checkout" is
+successful.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git checkout</emphasis> [-p|--patch] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        When &lt;paths&gt; or <emphasis>--patch</emphasis> are given, <emphasis>git checkout</emphasis> does <emphasis role="strong">not</emphasis>
+        switch branches.  It updates the named paths in the working tree
+        from the index file or from a named &lt;tree-ish&gt; (most often a
+        commit).  In this case, the <emphasis>-b</emphasis> and <emphasis>--track</emphasis> options are
+        meaningless and giving either of them results in an error.  The
+        &lt;tree-ish&gt; argument can be used to specify a specific tree-ish
+        (i.e.  commit, tag or tree) to update the index for the given
+        paths before updating the working tree.
+</simpara>
+<simpara>The index may contain unmerged entries because of a previous failed merge.
+By default, if you try to check out such an entry from the index, the
+checkout operation will fail and nothing will be checked out.
+Using <emphasis>-f</emphasis> will ignore these unmerged entries.  The contents from a
+specific side of the merge can be checked out of the index by
+using <emphasis>--ours</emphasis> or <emphasis>--theirs</emphasis>.  With <emphasis>-m</emphasis>, changes made to the working tree
+file can be discarded to re-create the original conflicted merge result.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Quiet, suppress feedback messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        When switching branches, proceed even if the index or the
+        working tree differs from HEAD.  This is used to throw away
+        local changes.
+</simpara>
+<simpara>When checking out paths from the index, do not fail upon unmerged
+entries; instead, unmerged entries are ignored.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ours
+</term>
+<term>
+--theirs
+</term>
+<listitem>
+<simpara>
+        When checking out paths from the index, check out stage #2
+        (<emphasis>ours</emphasis>) or #3 (<emphasis>theirs</emphasis>) for unmerged paths.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b
+</term>
+<listitem>
+<simpara>
+        Create a new branch named &lt;new_branch&gt; and start it at
+        &lt;start_point&gt;; see <xref linkend="git-branch(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-B
+</term>
+<listitem>
+<simpara>
+        Creates the branch &lt;new_branch&gt; and start it at &lt;start_point&gt;;
+        if it already exists, then reset it to &lt;start_point&gt;. This is
+        equivalent to running "git branch" with "-f"; see
+        <xref linkend="git-branch(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t
+</term>
+<term>
+--track
+</term>
+<listitem>
+<simpara>
+        When creating a new branch, set up "upstream" configuration. See
+        "--track" in <xref linkend="git-branch(1)" /> for details.
+</simpara>
+<simpara>If no <emphasis>-b</emphasis> option is given, the name of the new branch will be
+derived from the remote-tracking branch.  If "remotes/" or "refs/remotes/"
+is prefixed it is stripped away, and then the part up to the
+next slash (which would be the nickname of the remote) is removed.
+This would tell us to use "hack" as the local branch when branching
+off of "origin/hack" (or "remotes/origin/hack", or even
+"refs/remotes/origin/hack").  If the given name has no slash, or the above
+guessing results in an empty name, the guessing is aborted.  You can
+explicitly give a name with <emphasis>-b</emphasis> in such a case.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-track
+</term>
+<listitem>
+<simpara>
+        Do not set up "upstream" configuration, even if the
+        branch.autosetupmerge configuration variable is true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<listitem>
+<simpara>
+        Create the new branch's reflog; see <xref linkend="git-branch(1)" /> for
+        details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--detach
+</term>
+<listitem>
+<simpara>
+        Rather than checking out a branch to work on it, check out a
+        commit for inspection and discardable experiments.
+        This is the default behavior of "git checkout &lt;commit&gt;" when
+        &lt;commit&gt; is not a branch name.  See the "DETACHED HEAD" section
+        below for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--orphan
+</term>
+<listitem>
+<simpara>
+        Create a new <emphasis>orphan</emphasis> branch, named &lt;new_branch&gt;, started from
+        &lt;start_point&gt; and switch to it.  The first commit made on this
+        new branch will have no parents and it will be the root of a new
+        history totally disconnected from all the other branches and
+        commits.
+</simpara>
+<simpara>The index and the working tree are adjusted as if you had previously run
+"git checkout &lt;start_point&gt;".  This allows you to start a new history
+that records a set of paths similar to &lt;start_point&gt; by easily running
+"git commit -a" to make the root commit.</simpara>
+<simpara>This can be useful when you want to publish the tree from a commit
+without exposing its full history. You might want to do this to publish
+an open source branch of a project whose current tree is "clean", but
+whose full history contains proprietary or otherwise encumbered bits of
+code.</simpara>
+<simpara>If you want to start a disconnected history that records a set of paths
+that is totally different from the one of &lt;start_point&gt;, then you should
+clear the index and the working tree right after creating the orphan
+branch by running "git rm -rf ." from the top level of the working tree.
+Afterwards you will be ready to prepare your new files, repopulating the
+working tree, by copying them from elsewhere, extracting a tarball, etc.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<term>
+--merge
+</term>
+<listitem>
+<simpara>
+        When switching branches,
+        if you have local modifications to one or more files that
+        are different between the current branch and the branch to
+        which you are switching, the command refuses to switch
+        branches in order to preserve your modifications in context.
+        However, with this option, a three-way merge between the current
+        branch, your working tree contents, and the new branch
+        is done, and you will be on the new branch.
+</simpara>
+<simpara>When a merge conflict happens, the index entries for conflicting
+paths are left unmerged, and you need to resolve the conflicts
+and mark the resolved paths with <emphasis>git add</emphasis> (or <emphasis>git rm</emphasis> if the merge
+should result in deletion of the path).</simpara>
+<simpara>When checking out paths from the index, this option lets you recreate
+the conflicted merge in the specified paths.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--conflict=&lt;style&gt;
+</term>
+<listitem>
+<simpara>
+        The same as --merge option above, but changes the way the
+        conflicting hunks are presented, overriding the
+        merge.conflictstyle configuration variable.  Possible values are
+        "merge" (default) and "diff3" (in addition to what is shown by
+        "merge" style, shows the original contents).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<term>
+--patch
+</term>
+<listitem>
+<simpara>
+        Interactively select hunks in the difference between the
+        &lt;tree-ish&gt; (or the index, if unspecified) and the working
+        tree.  The chosen hunks are then applied in reverse to the
+        working tree (and if a &lt;tree-ish&gt; was specified, the index).
+</simpara>
+<simpara>This means that you can use <emphasis>git checkout -p</emphasis> to selectively discard
+edits from your current working tree. See the Interactive Mode
+section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;branch&gt;
+</term>
+<listitem>
+<simpara>
+        Branch to checkout; if it refers to a branch (i.e., a name that,
+        when prepended with "refs/heads/", is a valid ref), then that
+        branch is checked out. Otherwise, if it refers to a valid
+        commit, your HEAD becomes "detached" and you are no longer on
+        any branch (see below for details).
+</simpara>
+<simpara>As a special case, the <emphasis>"@{-N}"</emphasis> syntax for the N-th last branch
+checks out the branch (instead of detaching).  You may also specify
+<emphasis>-</emphasis> which is synonymous with <emphasis>"@{-1}"</emphasis>.</simpara>
+<simpara>As a further special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
+merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;new_branch&gt;
+</term>
+<listitem>
+<simpara>
+        Name for the new branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;start_point&gt;
+</term>
+<listitem>
+<simpara>
+        The name of a commit at which to start the new branch; see
+        <xref linkend="git-branch(1)" /> for details. Defaults to HEAD.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;tree-ish&gt;
+</term>
+<listitem>
+<simpara>
+        Tree to checkout from (when paths are given). If not specified,
+        the index will be used.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_detached_head">
+<title>DETACHED HEAD</title>
+<simpara>HEAD normally refers to a named branch (e.g. <emphasis>master</emphasis>). Meanwhile, each
+branch refers to a specific commit. Let's look at a repo with three
+commits, one of them tagged, and with branch <emphasis>master</emphasis> checked out:</simpara>
+<screen>           HEAD (refers to branch 'master')
+            |
+            v
+a---b---c  branch 'master' (refers to commit 'c')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>When a commit is created in this state, the branch is updated to refer to
+the new commit. Specifically, <emphasis>git commit</emphasis> creates a new commit <emphasis>d</emphasis>, whose
+parent is commit <emphasis>c</emphasis>, and then updates branch <emphasis>master</emphasis> to refer to new
+commit <emphasis>d</emphasis>. HEAD still refers to branch <emphasis>master</emphasis> and so indirectly now refers
+to commit <emphasis>d</emphasis>:</simpara>
+<screen>$ edit; git add; git commit
+
+               HEAD (refers to branch 'master')
+                |
+                v
+a---b---c---d  branch 'master' (refers to commit 'd')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>It is sometimes useful to be able to checkout a commit that is not at
+the tip of any named branch, or even to create a new commit that is not
+referenced by a named branch. Let's look at what happens when we
+checkout commit <emphasis>b</emphasis> (here we show two ways this may be done):</simpara>
+<screen>$ git checkout v2.0  # or
+$ git checkout master^^
+
+   HEAD (refers to commit 'b')
+    |
+    v
+a---b---c---d  branch 'master' (refers to commit 'd')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>Notice that regardless of which checkout command we use, HEAD now refers
+directly to commit <emphasis>b</emphasis>. This is known as being in detached HEAD state.
+It means simply that HEAD refers to a specific commit, as opposed to
+referring to a named branch. Let's see what happens when we create a commit:</simpara>
+<screen>$ edit; git add; git commit
+
+     HEAD (refers to commit 'e')
+      |
+      v
+      e
+     /
+a---b---c---d  branch 'master' (refers to commit 'd')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>There is now a new commit <emphasis>e</emphasis>, but it is referenced only by HEAD. We can
+of course add yet another commit in this state:</simpara>
+<screen>$ edit; git add; git commit
+
+         HEAD (refers to commit 'f')
+          |
+          v
+      e---f
+     /
+a---b---c---d  branch 'master' (refers to commit 'd')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>In fact, we can perform all the normal git operations. But, let's look
+at what happens when we then checkout master:</simpara>
+<screen>$ git checkout master
+
+               HEAD (refers to branch 'master')
+      e---f     |
+     /          v
+a---b---c---d  branch 'master' (refers to commit 'd')
+    ^
+    |
+  tag 'v2.0' (refers to commit 'b')</screen>
+<simpara>It is important to realize that at this point nothing refers to commit
+<emphasis>f</emphasis>. Eventually commit <emphasis>f</emphasis> (and by extension commit <emphasis>e</emphasis>) will be deleted
+by the routine git garbage collection process, unless we create a reference
+before that happens. If we have not yet moved away from commit <emphasis>f</emphasis>,
+any of these will create a reference to it:</simpara>
+<screen>$ git checkout -b foo   <co id="CO1-1"/>
+$ git branch foo        <co id="CO1-2"/>
+$ git tag foo           <co id="CO1-3"/></screen>
+<calloutlist>
+<callout arearefs="CO1-1">
+<para>
+creates a new branch <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>, and then
+updates HEAD to refer to branch <emphasis>foo</emphasis>. In other words, we'll no longer
+be in detached HEAD state after this command.
+</para>
+</callout>
+<callout arearefs="CO1-2">
+<para>
+similarly creates a new branch <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>,
+but leaves HEAD detached.
+</para>
+</callout>
+<callout arearefs="CO1-3">
+<para>
+creates a new tag <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>,
+leaving HEAD detached.
+</para>
+</callout>
+</calloutlist>
+<simpara>If we have moved away from commit <emphasis>f</emphasis>, then we must first recover its object
+name (typically by using git reflog), and then we can create a reference to
+it. For example, to see the last two commits to which HEAD referred, we
+can use either of these commands:</simpara>
+<screen>$ git reflog -2 HEAD # or
+$ git log -g -2 HEAD</screen>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+The following sequence checks out the <emphasis>master</emphasis> branch, reverts
+the <emphasis>Makefile</emphasis> to two revisions back, deletes hello.c by
+mistake, and gets it back from the index.
+</simpara>
+<screen>$ git checkout master             <co id="CO2-1"/>
+$ git checkout master~2 Makefile  <co id="CO2-2"/>
+$ rm -f hello.c
+$ git checkout hello.c            <co id="CO2-3"/></screen>
+<calloutlist>
+<callout arearefs="CO2-1">
+<para>
+switch branch
+</para>
+</callout>
+<callout arearefs="CO2-2">
+<para>
+take a file out of another commit
+</para>
+</callout>
+<callout arearefs="CO2-3">
+<para>
+restore hello.c from the index
+</para>
+<simpara>If you have an unfortunate branch that is named <emphasis>hello.c</emphasis>, this
+step would be confused as an instruction to switch to that branch.
+You should instead write:</simpara>
+<screen>$ git checkout -- hello.c</screen>
+</callout>
+</calloutlist>
+</listitem>
+<listitem>
+<simpara>
+After working in the wrong branch, switching to the correct
+branch would be done using:
+</simpara>
+<screen>$ git checkout mytopic</screen>
+<simpara>However, your "wrong" branch and correct "mytopic" branch may
+differ in files that you have modified locally, in which case
+the above checkout would fail like this:</simpara>
+<screen>$ git checkout mytopic
+error: You have local changes to 'frotz'; not switching branches.</screen>
+<simpara>You can give the <emphasis>-m</emphasis> flag to the command, which would try a
+three-way merge:</simpara>
+<screen>$ git checkout -m mytopic
+Auto-merging frotz</screen>
+<simpara>After this three-way merge, the local modifications are <emphasis>not</emphasis>
+registered in your index file, so <emphasis>git diff</emphasis> would show you what
+changes you made since the tip of the new branch.</simpara>
+</listitem>
+<listitem>
+<simpara>
+When a merge conflict happens during switching branches with
+the <emphasis>-m</emphasis> option, you would see something like this:
+</simpara>
+<screen>$ git checkout -m mytopic
+Auto-merging frotz
+ERROR: Merge conflict in frotz
+fatal: merge program failed</screen>
+<simpara>At this point, <emphasis>git diff</emphasis> shows the changes cleanly merged as in
+the previous example, as well as the changes in the conflicted
+files.  Edit and resolve the conflict and mark it resolved with
+<emphasis>git add</emphasis> as usual:</simpara>
+<screen>$ edit frotz
+$ git add frotz</screen>
+</listitem>
+</orderedlist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

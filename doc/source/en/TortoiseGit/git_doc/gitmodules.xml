@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="gitmodules(5)">
+<articleinfo>
+    <title>gitmodules(5)</title>
+<indexterm>
+<primary>gitmodules(5)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>gitmodules - defining submodule properties</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>$GIT_WORK_DIR/.gitmodules</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>The <emphasis>.gitmodules</emphasis> file, located in the top-level directory of a git
+working tree, is a text file with a syntax matching the requirements
+of <xref linkend="git-config(1)" />.</simpara>
+<simpara>The file contains one subsection per submodule, and the subsection value
+is the name of the submodule. Each submodule section also contains the
+following required keys:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.path
+</term>
+<listitem>
+<simpara>
+        Defines the path, relative to the top-level directory of the git
+        working tree, where the submodule is expected to be checked out.
+        The path name must not end with a <emphasis>/</emphasis>. All submodule paths must
+        be unique within the .gitmodules file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.url
+</term>
+<listitem>
+<simpara>
+        Defines a URL from which the submodule repository can be cloned.
+        This may be either an absolute URL ready to be passed to
+        <xref linkend="git-clone(1)" /> or (if it begins with ./ or ../) a location
+        relative to the superproject's origin repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.update
+</term>
+<listitem>
+<simpara>
+        Defines what to do when the submodule is updated by the superproject.
+        If <emphasis>checkout</emphasis> (the default), the new commit specified in the
+        superproject will be checked out in the submodule on a detached HEAD.
+        If <emphasis>rebase</emphasis>, the current branch of the submodule will be rebased onto
+        the commit specified in the superproject. If <emphasis>merge</emphasis>, the commit
+        specified in the superproject will be merged into the current branch
+        in the submodule.
+        If <emphasis>none</emphasis>, the submodule with name <emphasis>$name</emphasis> will not be updated
+        by default.
+</simpara>
+<literallayout class="monospaced">This config option is overridden if 'git submodule update' is given
+the '--merge', '--rebase' or '--checkout' options.</literallayout>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.fetchRecurseSubmodules
+</term>
+<listitem>
+<simpara>
+        This option can be used to control recursive fetching of this
+        submodule. If this option is also present in the submodules entry in
+        .git/config of the superproject, the setting there will override the
+        one found in .gitmodules.
+        Both settings can be overridden on the command line by using the
+        "--[no-]recurse-submodules" option to "git fetch" and "git pull".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.ignore
+</term>
+<listitem>
+<simpara>
+        Defines under what circumstances "git status" and the diff family show
+        a submodule as modified. When set to "all", it will never be considered
+        modified, "dirty" will ignore all changes to the submodules work tree and
+        takes only differences between the HEAD of the submodule and the commit
+        recorded in the superproject into account. "untracked" will additionally
+        let submodules with modified tracked files in their work tree show up.
+        Using "none" (the default when this option is not set) also shows
+        submodules that have untracked files in their work tree as changed.
+        If this option is also present in the submodules entry in .git/config of
+        the superproject, the setting there will override the one found in
+        .gitmodules.
+        Both settings can be overridden on the command line by using the
+        "--ignore-submodule" option.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<simpara>Consider the following .gitmodules file:</simpara>
+<literallayout class="monospaced">[submodule "libfoo"]
+        path = include/foo
+        url = git://foo.com/git/lib.git</literallayout>
+<literallayout class="monospaced">[submodule "libbar"]
+        path = include/bar
+        url = git://bar.com/git/lib.git</literallayout>
+<simpara>This defines two submodules, <emphasis>libfoo</emphasis> and <emphasis>libbar</emphasis>. These are expected to
+be checked out in the paths <emphasis>include/foo</emphasis> and <emphasis>include/bar</emphasis>, and for both
+submodules a URL is specified which can be used for cloning the submodules.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-submodule(1)" /> <xref linkend="git-config(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

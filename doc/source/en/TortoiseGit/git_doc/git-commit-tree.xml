@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-commit-tree(1)">
+<articleinfo>
+    <title>git-commit-tree(1)</title>
+<indexterm>
+<primary>git-commit-tree(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-commit-tree - Create a new commit object</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git commit-tree</emphasis> &lt;tree&gt; [(-p &lt;parent&gt;)&#8230;] &lt; changelog
+<emphasis>git commit-tree</emphasis> [(-p &lt;parent&gt;)&#8230;] [(-m &lt;message&gt;)&#8230;] [(-F &lt;file&gt;)&#8230;] &lt;tree&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This is usually not what an end user wants to run directly.  See
+<xref linkend="git-commit(1)" /> instead.</simpara>
+<simpara>Creates a new commit object based on the provided tree object and
+emits the new commit object id on stdout. The log message is read
+from the standard input, unless <emphasis>-m</emphasis> or <emphasis>-F</emphasis> options are given.</simpara>
+<simpara>A commit object may have any number of parents. With exactly one
+parent, it is an ordinary commit. Having more than one parent makes
+the commit a merge between several lines of history. Initial (root)
+commits have no parents.</simpara>
+<simpara>While a tree represents a particular directory state of a working
+directory, a commit represents that state in "time", and explains how
+to get there.</simpara>
+<simpara>Normally a commit would identify a new "HEAD" state, and while git
+doesn't care where you save the note about that state, in practice we
+tend to just write the result to the file that is pointed at by
+<emphasis>.git/HEAD</emphasis>, so that we can always see what the last committed
+state was.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;tree&gt;
+</term>
+<listitem>
+<simpara>
+        An existing tree object
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p &lt;parent&gt;
+</term>
+<listitem>
+<simpara>
+        Each <emphasis>-p</emphasis> indicates the id of a parent commit object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m &lt;message&gt;
+</term>
+<listitem>
+<simpara>
+        A paragraph in the commig log message. This can be given more than
+        once and each &lt;message&gt; becomes its own paragraph.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Read the commit log message from the given file. Use <emphasis>-</emphasis> to read
+        from the standard input.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_commit_information">
+<title>Commit Information</title>
+<simpara>A commit encapsulates:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+all parent object ids
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+author name, email and date
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+committer name and email and the commit time.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>While parent object ids are provided on the command line, author and
+committer information is taken from the following environment variables,
+if set:</simpara>
+<literallayout class="monospaced">GIT_AUTHOR_NAME
+GIT_AUTHOR_EMAIL
+GIT_AUTHOR_DATE
+GIT_COMMITTER_NAME
+GIT_COMMITTER_EMAIL
+GIT_COMMITTER_DATE
+EMAIL</literallayout>
+<simpara>(nb "&lt;", "&gt;" and "\n"s are stripped)</simpara>
+<simpara>In case (some of) these environment variables are not set, the information
+is taken from the configuration items user.name and user.email, or, if not
+present, system user name and the hostname used for outgoing mail (taken
+from <emphasis>/etc/mailname</emphasis> and falling back to the fully qualified hostname when
+that file does not exist).</simpara>
+<simpara>A commit comment is read from stdin. If a changelog
+entry is not provided via "&lt;" redirection, <emphasis>git commit-tree</emphasis> will just wait
+for one to be entered and terminated with ^D.</simpara>
+</simplesect>
+<simplesect id="_date_formats">
+<title>DATE FORMATS</title>
+<simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
+support the following date formats:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+Git internal format
+</term>
+<listitem>
+<simpara>
+        It is <emphasis>&lt;unix timestamp&gt; &lt;timezone offset&gt;</emphasis>, where <emphasis>&lt;unix
+        timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
+        <emphasis>&lt;timezone offset&gt;</emphasis> is a positive or negative offset from UTC.
+        For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+RFC 2822
+</term>
+<listitem>
+<simpara>
+        The standard email format as described by RFC 2822, for example
+        <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ISO 8601
+</term>
+<listitem>
+<simpara>
+        Time and date specified by the ISO 8601 standard, for example
+        <emphasis>2005-04-07T22:13:13</emphasis>. The parser accepts a space instead of the
+        <emphasis>T</emphasis> character as well.
+</simpara>
+<note><simpara>In addition, the date part is accepted in the following formats:
+<emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_diagnostics">
+<title>Diagnostics</title>
+<variablelist>
+<varlistentry>
+<term>
+You don't exist. Go away!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) gecos field couldn't be read
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Your parents must have hated you!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) gecos field is longer than a giant static buffer.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Your sysadmin must hate you!
+</term>
+<listitem>
+<simpara>
+    The passwd(5) name field is longer than a giant static buffer.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>Discussion</title>
+<simpara>At the core level, git is character encoding agnostic.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The pathnames recorded in the index and in the tree objects
+   are treated as uninterpreted sequences of non-NUL bytes.
+   What readdir(2) returns are what are recorded and compared
+   with the data git keeps track of, which in turn are expected
+   to be what lstat(2) and creat(2) accepts.  There is no such
+   thing as pathname encoding translation.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The contents of the blob objects are uninterpreted sequences
+   of bytes.  There is no encoding translation at the core
+   level.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The commit log messages are uninterpreted sequences of non-NUL
+   bytes.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Although we encourage that the commit log messages are encoded
+in UTF-8, both the core and git Porcelain are designed not to
+force UTF-8 on projects.  If all participants of a particular
+project find it more convenient to use legacy encodings, git
+does not forbid it.  However, there are a few things to keep in
+mind.</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+<emphasis>git commit</emphasis> and <emphasis>git commit-tree</emphasis> issues
+  a warning if the commit log message given to it does not look
+  like a valid UTF-8 string, unless you explicitly say your
+  project uses a legacy encoding.  The way to say this is to
+  have i18n.commitencoding in <emphasis>.git/config</emphasis> file, like this:
+</simpara>
+<screen>[i18n]
+        commitencoding = ISO-8859-1</screen>
+<simpara>Commit objects created with the above setting record the value
+of <emphasis>i18n.commitencoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
+help other people who look at them later.  Lack of this header
+implies that the commit log message is encoded in UTF-8.</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>git log</emphasis>, <emphasis>git show</emphasis>, <emphasis>git blame</emphasis> and friends look at the
+  <emphasis>encoding</emphasis> header of a commit object, and try to re-code the
+  log message into UTF-8 unless otherwise specified.  You can
+  specify the desired output encoding with
+  <emphasis>i18n.logoutputencoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
+</simpara>
+<screen>[i18n]
+        logoutputencoding = ISO-8859-1</screen>
+<simpara>If you do not have this configuration variable, the value of
+<emphasis>i18n.commitencoding</emphasis> is used instead.</simpara>
+</listitem>
+</orderedlist>
+<simpara>Note that we deliberately chose not to re-code the commit log
+message when a commit is made to force UTF-8 at the commit
+object level, because re-coding to UTF-8 is not necessarily a
+reversible operation.</simpara>
+</simplesect>
+<simplesect id="_files">
+<title>FILES</title>
+<simpara>/etc/mailname</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-write-tree(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

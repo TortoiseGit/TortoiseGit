@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-request-pull(1)">
+<articleinfo>
+    <title>git-request-pull(1)</title>
+<indexterm>
+<primary>git-request-pull(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-request-pull - Generates a summary of pending changes</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git request-pull</emphasis> [-p] &lt;start&gt; &lt;url&gt; [&lt;end&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Summarizes the changes between two commits to the standard output, and includes
+the given URL in the generated summary.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-p
+</term>
+<listitem>
+<simpara>
+        Show patch text
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;start&gt;
+</term>
+<listitem>
+<simpara>
+        Commit to start at.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;url&gt;
+</term>
+<listitem>
+<simpara>
+        URL to include in the summary.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;end&gt;
+</term>
+<listitem>
+<simpara>
+        Commit to end at; defaults to HEAD.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

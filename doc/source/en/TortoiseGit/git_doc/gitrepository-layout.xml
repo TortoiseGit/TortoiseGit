@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="gitrepository-layout(5)">
+<articleinfo>
+    <title>gitrepository-layout(5)</title>
+<indexterm>
+<primary>gitrepository-layout(5)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>gitrepository-layout - Git Repository Layout</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>$GIT_DIR/*</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>You may find these things in your git repository (<emphasis>.git</emphasis>
+directory for a repository associated with your working tree, or
+<emphasis>&lt;project&gt;.git</emphasis> directory for a public <emphasis>bare</emphasis> repository. It is
+also possible to have a working tree where <emphasis>.git</emphasis> is a plain
+ASCII file containing <emphasis>gitdir: &lt;path&gt;</emphasis>, i.e. the path to the
+real git repository).</simpara>
+<variablelist>
+<varlistentry>
+<term>
+objects
+</term>
+<listitem>
+<simpara>
+        Object store associated with this repository.  Usually
+        an object store is self sufficient (i.e. all the objects
+        that are referred to by an object found in it are also
+        found in it), but there are a few ways to violate it.
+</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+You could have an incomplete but locally usable repository
+by creating a shallow clone.  See <xref linkend="git-clone(1)" />.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+You could be using the <emphasis>objects/info/alternates</emphasis> or
+<emphasis>$GIT_ALTERNATE_OBJECT_DIRECTORIES</emphasis> mechanisms to <emphasis>borrow</emphasis>
+objects from other object stores.  A repository with this kind
+of incomplete object store is not suitable to be published for
+use with dumb transports but otherwise is OK as long as
+<emphasis>objects/info/alternates</emphasis> points at the object stores it
+borrows from.
+</simpara>
+</listitem>
+</orderedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/[0-9a-f][0-9a-f]
+</term>
+<listitem>
+<simpara>
+        A newly created object is stored in its own file.
+        The objects are splayed over 256 subdirectories using
+        the first two characters of the sha1 object name to
+        keep the number of directory entries in <emphasis>objects</emphasis>
+        itself to a manageable number. Objects found
+        here are often called <emphasis>unpacked</emphasis> (or <emphasis>loose</emphasis>) objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/pack
+</term>
+<listitem>
+<simpara>
+        Packs (files that store many object in compressed form,
+        along with index files to allow them to be randomly
+        accessed) are found in this directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/info
+</term>
+<listitem>
+<simpara>
+        Additional information about the object store is
+        recorded in this directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/info/packs
+</term>
+<listitem>
+<simpara>
+        This file is to help dumb transports discover what packs
+        are available in this object store.  Whenever a pack is
+        added or removed, <emphasis>git update-server-info</emphasis> should be run
+        to keep this file up-to-date if the repository is
+        published for dumb transports.  <emphasis>git repack</emphasis> does this
+        by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/info/alternates
+</term>
+<listitem>
+<simpara>
+        This file records paths to alternate object stores that
+        this object store borrows objects from, one pathname per
+        line. Note that not only native Git tools use it locally,
+        but the HTTP fetcher also tries to use it remotely; this
+        will usually work if you have relative paths (relative
+        to the object database, not to the repository!) in your
+        alternates file, but it will not work if you use absolute
+        paths unless the absolute path in filesystem and web URL
+        is the same. See also <emphasis>objects/info/http-alternates</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objects/info/http-alternates
+</term>
+<listitem>
+<simpara>
+        This file records URLs to alternate object stores that
+        this object store borrows objects from, to be used when
+        the repository is fetched over HTTP.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+refs
+</term>
+<listitem>
+<simpara>
+        References are stored in subdirectories of this
+        directory.  The <emphasis>git prune</emphasis> command knows to preserve
+        objects reachable from refs found in this directory and
+        its subdirectories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+refs/heads/<emphasis>name</emphasis>
+</term>
+<listitem>
+<simpara>
+        records tip-of-the-tree commit objects of branch <emphasis>name</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+refs/tags/<emphasis>name</emphasis>
+</term>
+<listitem>
+<simpara>
+        records any object name (not necessarily a commit
+        object, or a tag object that points at a commit object).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+refs/remotes/<emphasis>name</emphasis>
+</term>
+<listitem>
+<simpara>
+        records tip-of-the-tree commit objects of branches copied
+        from a remote repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+packed-refs
+</term>
+<listitem>
+<simpara>
+        records the same information as refs/heads/, refs/tags/,
+        and friends record in a more efficient way.  See
+        <xref linkend="git-pack-refs(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+HEAD
+</term>
+<listitem>
+<simpara>
+        A symref (see glossary) to the <emphasis>refs/heads/</emphasis> namespace
+        describing the currently active branch.  It does not mean
+        much if the repository is not associated with any working tree
+        (i.e. a <emphasis>bare</emphasis> repository), but a valid git repository
+        <emphasis role="strong">must</emphasis> have the HEAD file; some porcelains may use it to
+        guess the designated "default" branch of the repository
+        (usually <emphasis>master</emphasis>).  It is legal if the named branch
+        <emphasis>name</emphasis> does not (yet) exist.  In some legacy setups, it is
+        a symbolic link instead of a symref that points at the current
+        branch.
+</simpara>
+<simpara>HEAD can also record a specific commit directly, instead of
+being a symref to point at the current branch.  Such a state
+is often called <emphasis>detached HEAD.</emphasis>  See <xref linkend="git-checkout(1)" />
+for details.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branches
+</term>
+<listitem>
+<simpara>
+        A slightly deprecated way to store shorthands to be used
+        to specify a URL to <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis> and <emphasis>git push</emphasis>.
+        A file can be stored as <emphasis>branches/&lt;name&gt;</emphasis> and then
+        <emphasis>name</emphasis> can be given to these commands in place of
+        <emphasis>repository</emphasis> argument.  See the REMOTES section in
+        <xref linkend="git-fetch(1)" /> for details.  This mechanism is legacy
+        and not likely to be found in modern repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+hooks
+</term>
+<listitem>
+<simpara>
+        Hooks are customization scripts used by various git
+        commands.  A handful of sample hooks are installed when
+        <emphasis>git init</emphasis> is run, but all of them are disabled by
+        default.  To enable, the <emphasis>.sample</emphasis> suffix has to be
+        removed from the filename by renaming.
+        Read <xref linkend="githooks(5)" /> for more details about
+        each hook.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+index
+</term>
+<listitem>
+<simpara>
+        The current index file for the repository.  It is
+        usually not found in a bare repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+info
+</term>
+<listitem>
+<simpara>
+        Additional information about the repository is recorded
+        in this directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+info/refs
+</term>
+<listitem>
+<simpara>
+        This file helps dumb transports discover what refs are
+        available in this repository.  If the repository is
+        published for dumb transports, this file should be
+        regenerated by <emphasis>git update-server-info</emphasis> every time a tag
+        or branch is created or modified.  This is normally done
+        from the <emphasis>hooks/update</emphasis> hook, which is run by the
+        <emphasis>git-receive-pack</emphasis> command when you <emphasis>git push</emphasis> into the
+        repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+info/grafts
+</term>
+<listitem>
+<simpara>
+        This file records fake commit ancestry information, to
+        pretend the set of parents a commit has is different
+        from how the commit was actually created.  One record
+        per line describes a commit and its fake parents by
+        listing their 40-byte hexadecimal object names separated
+        by a space and terminated by a newline.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+info/exclude
+</term>
+<listitem>
+<simpara>
+        This file, by convention among Porcelains, stores the
+        exclude pattern list. <emphasis>.gitignore</emphasis> is the per-directory
+        ignore file.  <emphasis>git status</emphasis>, <emphasis>git add</emphasis>, <emphasis>git rm</emphasis> and
+        <emphasis>git clean</emphasis> look at it but the core git commands do not look
+        at it.  See also: <xref linkend="gitignore(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remotes
+</term>
+<listitem>
+<simpara>
+        Stores shorthands for URL and default refnames for use
+        when interacting with remote repositories via <emphasis>git fetch</emphasis>,
+        <emphasis>git pull</emphasis> and <emphasis>git push</emphasis> commands.  See the REMOTES section
+        in <xref linkend="git-fetch(1)" /> for details.  This mechanism is legacy
+        and not likely to be found in modern repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+logs
+</term>
+<listitem>
+<simpara>
+        Records of changes made to refs are stored in this
+        directory.  See <xref linkend="git-update-ref(1)" />
+        for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+logs/refs/heads/<emphasis>name</emphasis>
+</term>
+<listitem>
+<simpara>
+        Records all changes made to the branch tip named <emphasis>name</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+logs/refs/tags/<emphasis>name</emphasis>
+</term>
+<listitem>
+<simpara>
+        Records all changes made to the tag named <emphasis>name</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+shallow
+</term>
+<listitem>
+<simpara>
+        This is similar to <emphasis>info/grafts</emphasis> but is internally used
+        and maintained by shallow clone mechanism.  See <emphasis>--depth</emphasis>
+        option to <xref linkend="git-clone(1)" /> and <xref linkend="git-fetch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-init(1)" />,
+<xref linkend="git-clone(1)" />,
+<xref linkend="git-fetch(1)" />,
+<xref linkend="git-pack-refs(1)" />,
+<xref linkend="git-gc(1)" />,
+<xref linkend="git-checkout(1)" />,
+<xref linkend="gitglossary(7)" />,
+link:user-manual.html[The Git User's Manual]</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+</simplesect>
+</article>

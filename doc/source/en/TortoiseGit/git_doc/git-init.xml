@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-init(1)">
+<articleinfo>
+    <title>git-init(1)</title>
+<indexterm>
+<primary>git-init(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-init - Create an empty git repository or reinitialize an existing one</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git init</emphasis> [-q | --quiet] [--bare] [--template=&lt;template_directory&gt;]
+          [--separate-git-dir &lt;git dir&gt;]
+          [--shared[=&lt;permissions&gt;]] [directory]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This command creates an empty git repository - basically a <emphasis>.git</emphasis>
+directory with subdirectories for <emphasis>objects</emphasis>, <emphasis>refs/heads</emphasis>,
+<emphasis>refs/tags</emphasis>, and template files.  An initial <emphasis>HEAD</emphasis> file that
+references the HEAD of the master branch is also created.</simpara>
+<simpara>If the <emphasis>$GIT_DIR</emphasis> environment variable is set then it specifies a path
+to use instead of <emphasis>./.git</emphasis> for the base of the repository.</simpara>
+<simpara>If the object storage directory is specified via the
+<emphasis>$GIT_OBJECT_DIRECTORY</emphasis> environment variable then the sha1 directories
+are created underneath - otherwise the default <emphasis>$GIT_DIR/objects</emphasis>
+directory is used.</simpara>
+<simpara>Running <emphasis>git init</emphasis> in an existing repository is safe. It will not
+overwrite things that are already there. The primary reason for
+rerunning <emphasis>git init</emphasis> is to pick up newly added templates (or to move
+the repository to another place if --separate-git-dir is given).</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+Only print error and warning messages, all other output will be suppressed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--bare
+</term>
+<listitem>
+<simpara>
+Create a bare repository. If GIT_DIR environment is not set, it is set to the
+current working directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--template=&lt;template_directory&gt;
+</term>
+<listitem>
+<simpara>
+Specify the directory from which templates will be used.  (See the "TEMPLATE
+DIRECTORY" section below.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--separate-git-dir=&lt;git dir&gt;
+</term>
+<listitem>
+<simpara>
+Instead of initializing the repository where it is supposed to be,
+place a filesytem-agnostic git symbolic link there, pointing to the
+specified git path, and initialize a git repository at the path. The
+result is git repository can be separated from working tree. If this
+is reinitialization, the repository will be moved to the specified
+path.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shared[=(false|true|umask|group|all|world|everybody|0xxx)]
+</term>
+<listitem>
+<simpara>
+Specify that the git repository is to be shared amongst several users.  This
+allows users belonging to the same group to push into that
+repository.  When specified, the config variable "core.sharedRepository" is
+set so that files and directories under <emphasis>$GIT_DIR</emphasis> are created with the
+requested permissions.  When not specified, git will use permissions reported
+by umask(2).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The option can have the following values, defaulting to <emphasis>group</emphasis> if no value
+is given:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>umask</emphasis> (or <emphasis>false</emphasis>): Use permissions reported by umask(2). The default,
+   when <emphasis>--shared</emphasis> is not specified.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>group</emphasis> (or <emphasis>true</emphasis>): Make the repository group-writable, (and g+sx, since
+   the git group may be not the primary group of all users).
+   This is used to loosen the permissions of an otherwise safe umask(2) value.
+   Note that the umask still applies to the other permission bits (e.g. if
+   umask is <emphasis>0022</emphasis>, using <emphasis>group</emphasis> will not remove read privileges from other
+   (non-group) users). See <emphasis>0xxx</emphasis> for how to exactly specify the repository
+   permissions.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>all</emphasis> (or <emphasis>world</emphasis> or <emphasis>everybody</emphasis>): Same as <emphasis>group</emphasis>, but make the repository
+   readable by all users.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>0xxx</emphasis>: <emphasis>0xxx</emphasis> is an octal number and each file will have mode <emphasis>0xxx</emphasis>.
+   <emphasis>0xxx</emphasis> will override users' umask(2) value (and not only loosen permissions
+   as <emphasis>group</emphasis> and <emphasis>all</emphasis> does). <emphasis>0640</emphasis> will create a repository which is
+   group-readable, but not group-writable or accessible to others. <emphasis>0660</emphasis> will
+   create a repo that is readable and writable to the current user and group,
+   but inaccessible to others.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>By default, the configuration flag receive.denyNonFastForwards is enabled
+in shared repositories, so that you cannot force a non fast-forwarding push
+into it.</simpara>
+<simpara>If you name a (possibly non-existent) directory at the end of the command
+line, the command is run inside the directory (possibly after creating it).</simpara>
+</simplesect>
+<simplesect id="_template_directory">
+<title>TEMPLATE DIRECTORY</title>
+<simpara>The template directory contains files and directories that will be copied to
+the <emphasis>$GIT_DIR</emphasis> after it is created.</simpara>
+<simpara>The template directory used will (in order):</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The argument given with the <emphasis>--template</emphasis> option.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The contents of the <emphasis>$GIT_TEMPLATE_DIR</emphasis> environment variable.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>init.templatedir</emphasis> configuration variable.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The default template directory: <emphasis>/usr/share/git-core/templates</emphasis>.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The default template directory includes some directory structure, some
+suggested "exclude patterns", and copies of sample "hook" files.
+The suggested patterns and hook files are all modifiable and extensible.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+Start a new git repository for an existing code base
+</term>
+<listitem>
+<screen>$ cd /path/to/my/codebase
+$ git init      <co id="CO1-1"/>
+$ git add .     <co id="CO1-2"/></screen>
+<calloutlist>
+<callout arearefs="CO1-1">
+<para>
+prepare /path/to/my/codebase/.git directory
+</para>
+</callout>
+<callout arearefs="CO1-2">
+<para>
+add all existing file to the index
+</para>
+</callout>
+</calloutlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

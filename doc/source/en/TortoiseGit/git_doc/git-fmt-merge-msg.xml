@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-fmt-merge-msg(1)">
+<articleinfo>
+    <title>git-fmt-merge-msg(1)</title>
+<indexterm>
+<primary>git-fmt-merge-msg(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-fmt-merge-msg - Produce a merge commit message</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] &lt;$GIT_DIR/FETCH_HEAD
+<emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] -F &lt;file&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Takes the list of merged objects on stdin and produces a suitable
+commit message to be used for the merge commit, usually to be
+passed as the <emphasis>&lt;merge-message&gt;</emphasis> argument of <emphasis>git merge</emphasis>.</simpara>
+<simpara>This command is intended mostly for internal use by scripts
+automatically invoking <emphasis>git merge</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--log[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with
+        one-line descriptions from the actual commits that are being
+        merged.  At most &lt;n&gt; commits from each merge parent will be
+        used (20 if &lt;n&gt; is omitted).  This overrides the <emphasis>merge.log</emphasis>
+        configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-log
+</term>
+<listitem>
+<simpara>
+        Do not list one-line descriptions from the actual commits being
+        merged.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--summary
+</term>
+<term>
+--no-summary
+</term>
+<listitem>
+<simpara>
+        Synonyms to --log and --no-log; these are deprecated and will be
+        removed in the future.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m &lt;message&gt;
+</term>
+<term>
+--message &lt;message&gt;
+</term>
+<listitem>
+<simpara>
+        Use &lt;message&gt; instead of the branch names for the first line
+        of the log message.  For use with <emphasis>--log</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F &lt;file&gt;
+</term>
+<term>
+--file &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Take the list of merged objects from &lt;file&gt; instead of
+        stdin.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+merge.branchdesc
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with
+        the branch description text associated with them.  Defaults
+        to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.log
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with at
+        most the specified number of one-line descriptions from the
+        actual commits that are being merged.  Defaults to false, and
+        true is a synonym for 20.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.summary
+</term>
+<listitem>
+<simpara>
+        Synonym to <emphasis>merge.log</emphasis>; this is deprecated and will be removed in
+        the future.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-merge(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

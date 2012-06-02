@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-citool(1)">
+<articleinfo>
+    <title>git-citool(1)</title>
+<indexterm>
+<primary>git-citool(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-citool - Graphical alternative to git-commit</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git citool</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>A Tcl/Tk based graphical interface to review modified files, stage
+them into the index, enter a commit message and record the new
+commit onto the current branch.  This interface is an alternative
+to the less interactive <emphasis>git commit</emphasis> program.</simpara>
+<simpara><emphasis>git citool</emphasis> is actually a standard alias for <emphasis>git gui citool</emphasis>.
+See <xref linkend="git-gui(1)" /> for more details.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

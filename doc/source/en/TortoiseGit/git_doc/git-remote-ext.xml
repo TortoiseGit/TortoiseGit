@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-remote-ext(1)">
+<articleinfo>
+    <title>git-remote-ext(1)</title>
+<indexterm>
+<primary>git-remote-ext(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-remote-ext - Bridge smart transport to external command.</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>git remote add &lt;nick&gt; "ext::&lt;command&gt;[ &lt;arguments&gt;&#8230;]"</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This remote helper uses the specified <emphasis>&lt;command&gt;</emphasis> to connect
+to a remote git server.</simpara>
+<simpara>Data written to stdin of the specified <emphasis>&lt;command&gt;</emphasis> is assumed
+to be sent to a git:// server, git-upload-pack, git-receive-pack
+or git-upload-archive (depending on situation), and data read
+from stdout of &lt;command&gt; is assumed to be received from
+the same service.</simpara>
+<simpara>Command and arguments are separated by an unescaped space.</simpara>
+<simpara>The following sequences have a special meaning:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+'% '
+</term>
+<listitem>
+<simpara>
+        Literal space in command or argument.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%%</emphasis>
+</term>
+<listitem>
+<simpara>
+        Literal percent sign.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%s</emphasis>
+</term>
+<listitem>
+<simpara>
+        Replaced with name (receive-pack, upload-pack, or
+        upload-archive) of the service git wants to invoke.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%S</emphasis>
+</term>
+<listitem>
+<simpara>
+        Replaced with long name (git-receive-pack,
+        git-upload-pack, or git-upload-archive) of the service
+        git wants to invoke.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%G</emphasis> (must be the first characters in an argument)
+</term>
+<listitem>
+<simpara>
+        This argument will not be passed to <emphasis>&lt;command&gt;</emphasis>. Instead, it
+        will cause the helper to start by sending git:// service requests to
+        the remote side with the service field set to an appropriate value and
+        the repository field set to rest of the argument. Default is not to send
+        such a request.
+</simpara>
+<simpara>This is useful if remote side is git:// server accessed over
+some tunnel.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%V</emphasis> (must be first characters in argument)
+</term>
+<listitem>
+<simpara>
+        This argument will not be passed to <emphasis>&lt;command&gt;</emphasis>. Instead it sets
+        the vhost field in the git:// service request (to rest of the argument).
+        Default is not to send vhost in such request (if sent).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_environment_variables">
+<title>ENVIRONMENT VARIABLES:</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_TRANSLOOP_DEBUG
+</term>
+<listitem>
+<simpara>
+        If set, prints debugging information about various reads/writes.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_environment_variables_passed_to_command">
+<title>ENVIRONMENT VARIABLES PASSED TO COMMAND:</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_EXT_SERVICE
+</term>
+<listitem>
+<simpara>
+        Set to long name (git-upload-pack, etc&#8230;) of service helper needs
+        to invoke.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_EXT_SERVICE_NOPREFIX
+</term>
+<listitem>
+<simpara>
+        Set to long name (upload-pack, etc&#8230;) of service helper needs
+        to invoke.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES:</title>
+<simpara>This remote helper is transparently used by git when
+you use commands such as "git fetch &lt;URL&gt;", "git clone &lt;URL&gt;",
+, "git push &lt;URL&gt;" or "git remote add &lt;nick&gt; &lt;URL&gt;", where &lt;URL&gt;
+begins with <emphasis>ext::</emphasis>.  Examples:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+"ext::ssh -i /home/foo/.ssh/somekey user&#64;host.example %S <emphasis>foo/repo</emphasis>"
+</term>
+<listitem>
+<simpara>
+        Like host.example:foo/repo, but use /home/foo/.ssh/somekey as
+        keypair and user as user on remote side. This avoids needing to
+        edit .ssh/config.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+"ext::socat -t3600 - ABSTRACT-CONNECT:/git-server %G/somerepo"
+</term>
+<listitem>
+<simpara>
+        Represents repository with path /somerepo accessable over
+        git protocol at abstract namespace address /git-server.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+"ext::git-server-alias foo %G/repo"
+</term>
+<listitem>
+<simpara>
+        Represents a repository with path /repo accessed using the
+        helper program "git-server-alias foo".  The path to the
+        repository and type of request are not passed on the command
+        line but as part of the protocol stream, as usual with git://
+        protocol.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+"ext::git-server-alias foo %G/repo %Vfoo"
+</term>
+<listitem>
+<simpara>
+        Represents a repository with path /repo accessed using the
+        helper program "git-server-alias foo".  The hostname for the
+        remote server passed in the protocol stream will be "foo"
+        (this allows multiple virtual git servers to share a
+        link-level address).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+"ext::git-server-alias foo %G/repo% with% spaces %Vfoo"
+</term>
+<listitem>
+<simpara>
+        Represents a repository with path <emphasis>/repo with spaces</emphasis> accessed
+        using the helper program "git-server-alias foo".  The hostname for
+        the remote server passed in the protocol stream will be "foo"
+        (this allows multiple virtual git servers to share a
+        link-level address).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+"ext::git-ssl foo.example /bar"
+</term>
+<listitem>
+<simpara>
+        Represents a repository accessed using the helper program
+        "git-ssl foo.example /bar".  The type of request can be
+        determined by the helper using environment variables (see
+        above).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_documentation">
+<title>Documentation</title>
+<simpara>Documentation by Ilari Liusvaara, Jonathan Nieder and the git list
+&lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

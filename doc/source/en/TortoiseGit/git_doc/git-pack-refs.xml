@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-pack-refs(1)">
+<articleinfo>
+    <title>git-pack-refs(1)</title>
+<indexterm>
+<primary>git-pack-refs(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-pack-refs - Pack heads and tags for efficient repository access</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git pack-refs</emphasis> [--all] [--no-prune]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Traditionally, tips of branches and tags (collectively known as
+<emphasis>refs</emphasis>) were stored one file per ref under <emphasis>$GIT_DIR/refs</emphasis>
+directory.  While many branch tips tend to be updated often,
+most tags and some branch tips are never updated.  When a
+repository has hundreds or thousands of tags, this
+one-file-per-ref format both wastes storage and hurts
+performance.</simpara>
+<simpara>This command is used to solve the storage and performance
+problem by stashing the refs in a single file,
+<emphasis>$GIT_DIR/packed-refs</emphasis>.  When a ref is missing from the
+traditional <emphasis>$GIT_DIR/refs</emphasis> hierarchy, it is looked up in this
+file and used if found.</simpara>
+<simpara>Subsequent updates to branches always create new files under
+<emphasis>$GIT_DIR/refs</emphasis> hierarchy.</simpara>
+<simpara>A recommended practice to deal with a repository with too many
+refs is to pack its refs with <emphasis>--all --prune</emphasis> once, and
+occasionally run <emphasis>git pack-refs --prune</emphasis>.  Tags are by
+definition stationary and are not expected to change.  Branch
+heads will be packed with the initial <emphasis>pack-refs --all</emphasis>, but
+only the currently active branch heads will become unpacked,
+and the next <emphasis>pack-refs</emphasis> (without <emphasis>--all</emphasis>) will leave them
+unpacked.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+The command by default packs all tags and refs that are already
+packed, and leaves other refs
+alone.  This is because branches are expected to be actively
+developed and packing their tips does not help performance.
+This option causes branch tips to be packed as well.  Useful for
+a repository with many branches of historical interests.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-prune
+</term>
+<listitem>
+<simpara>
+The command usually removes loose refs under <emphasis>$GIT_DIR/refs</emphasis>
+hierarchy after packing them.  This option tells it not to.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

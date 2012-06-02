@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="gitcli(7)">
+<articleinfo>
+    <title>gitcli(7)</title>
+<indexterm>
+<primary>gitcli(7)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>gitcli - git command line interface and conventions</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>gitcli</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This manual describes the convention used throughout git CLI.</simpara>
+<simpara>Many commands take revisions (most often "commits", but sometimes
+"tree-ish", depending on the context and command) and paths as their
+arguments.  Here are the rules:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Revisions come first and then paths.
+   E.g. in <emphasis>git diff v1.0 v2.0 arch/x86 include/asm-x86</emphasis>,
+   <emphasis>v1.0</emphasis> and <emphasis>v2.0</emphasis> are revisions and <emphasis>arch/x86</emphasis> and <emphasis>include/asm-x86</emphasis>
+   are paths.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When an argument can be misunderstood as either a revision or a path,
+   they can be disambiguated by placing <emphasis>--</emphasis> between them.
+   E.g. <emphasis>git diff -- HEAD</emphasis> is, "I have a file called HEAD in my work
+   tree.  Please show changes between the version I staged in the index
+   and what I have in the work tree for that file". not "show difference
+   between the HEAD commit and the work tree as a whole".  You can say
+   <emphasis>git diff HEAD --</emphasis> to ask for the latter.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Without disambiguating <emphasis>--</emphasis>, git makes a reasonable guess, but errors
+   out and asking you to disambiguate when ambiguous.  E.g. if you have a
+   file called HEAD in your work tree, <emphasis>git diff HEAD</emphasis> is ambiguous, and
+   you have to say either <emphasis>git diff HEAD --</emphasis> or <emphasis>git diff -- HEAD</emphasis> to
+   disambiguate.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>When writing a script that is expected to handle random user-input, it is
+a good practice to make it explicit which arguments are which by placing
+disambiguating <emphasis>--</emphasis> at appropriate places.</simpara>
+<simpara>Here are the rules regarding the "flags" that you should follow when you are
+scripting git:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+it's preferred to use the non dashed form of git commands, which means that
+   you should prefer <emphasis>git foo</emphasis> to <emphasis>git-foo</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+splitting short options to separate words (prefer <emphasis>git foo -a -b</emphasis>
+   to <emphasis>git foo -ab</emphasis>, the latter may not even work).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+when a command line option takes an argument, use the <emphasis>sticked</emphasis> form.  In
+   other words, write <emphasis>git foo -oArg</emphasis> instead of <emphasis>git foo -o Arg</emphasis> for short
+   options, and <emphasis>git foo --long-opt=Arg</emphasis> instead of <emphasis>git foo --long-opt Arg</emphasis>
+   for long options.  An option that takes optional option-argument must be
+   written in the <emphasis>sticked</emphasis> form.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+when you give a revision parameter to a command, make sure the parameter is
+   not ambiguous with a name of a file in the work tree.  E.g. do not write
+   <emphasis>git log -1 HEAD</emphasis> but write <emphasis>git log -1 HEAD --</emphasis>; the former will not work
+   if you happen to have a file called <emphasis>HEAD</emphasis> in the work tree.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_enhanced_option_parser">
+<title>ENHANCED OPTION PARSER</title>
+<simpara>From the git 1.5.4 series and further, many git commands (not all of them at the
+time of the writing though) come with an enhanced option parser.</simpara>
+<simpara>Here is an exhaustive list of the facilities provided by this option parser.</simpara>
+<section id="_magic_options">
+<title>Magic Options</title>
+<simpara>Commands which have the enhanced option parser activated all understand a
+couple of magic command line options:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-h
+</term>
+<listitem>
+<simpara>
+        gives a pretty printed usage of the command.
+</simpara>
+<screen>$ git describe -h
+usage: git describe [options] &lt;committish&gt;*
+
+    --contains            find the tag that comes after the commit
+    --debug               debug search strategy on stderr
+    --all                 use any ref in .git/refs
+    --tags                use any tag in .git/refs/tags
+    --abbrev [&lt;n&gt;]        use &lt;n&gt; digits to display SHA-1s
+    --candidates &lt;n&gt;      consider &lt;n&gt; most recent tags (default: 10)</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--help-all
+</term>
+<listitem>
+<simpara>
+        Some git commands take options that are only used for plumbing or that
+        are deprecated, and such options are hidden from the default usage. This
+        option gives the full list of options.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_negating_options">
+<title>Negating options</title>
+<simpara>Options with long option names can be negated by prefixing <emphasis>--no-</emphasis>. For
+example, <emphasis>git branch</emphasis> has the option <emphasis>--track</emphasis> which is <emphasis>on</emphasis> by default. You
+can use <emphasis>--no-track</emphasis> to override that behaviour. The same goes for <emphasis>--color</emphasis>
+and <emphasis>--no-color</emphasis>.</simpara>
+</section>
+<section id="_aggregating_short_options">
+<title>Aggregating short options</title>
+<simpara>Commands that support the enhanced option parser allow you to aggregate short
+options. This means that you can for example use <emphasis>git rm -rf</emphasis> or
+<emphasis>git clean -fdx</emphasis>.</simpara>
+</section>
+<section id="_separating_argument_from_the_option">
+<title>Separating argument from the option</title>
+<simpara>You can write the mandatory option parameter to an option as a separate
+word on the command line.  That means that all the following uses work:</simpara>
+<screen>$ git foo --long-opt=Arg
+$ git foo --long-opt Arg
+$ git foo -oArg
+$ git foo -o Arg</screen>
+<simpara>However, this is <emphasis role="strong">NOT</emphasis> allowed for switches with an optional value, where the
+<emphasis>sticked</emphasis> form must be used:</simpara>
+<screen>$ git describe --abbrev HEAD     # correct
+$ git describe --abbrev=10 HEAD  # correct
+$ git describe --abbrev 10 HEAD  # NOT WHAT YOU MEANT</screen>
+</section>
+</simplesect>
+<simplesect id="_notes_on_frequently_confused_options">
+<title>NOTES ON FREQUENTLY CONFUSED OPTIONS</title>
+<simpara>Many commands that can work on files in the working tree
+and/or in the index can take <emphasis>--cached</emphasis> and/or <emphasis>--index</emphasis>
+options.  Sometimes people incorrectly think that, because
+the index was originally called cache, these two are
+synonyms.  They are <emphasis role="strong">not</emphasis> -- these two options mean very
+different things.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The <emphasis>--cached</emphasis> option is used to ask a command that
+   usually works on files in the working tree to <emphasis role="strong">only</emphasis> work
+   with the index.  For example, <emphasis>git grep</emphasis>, when used
+   without a commit to specify from which commit to look for
+   strings in, usually works on files in the working tree,
+   but with the <emphasis>--cached</emphasis> option, it looks for strings in
+   the index.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>--index</emphasis> option is used to ask a command that
+   usually works on files in the working tree to <emphasis role="strong">also</emphasis>
+   affect the index.  For example, <emphasis>git stash apply</emphasis> usually
+   merges changes recorded in a stash to the working tree,
+   but with the <emphasis>--index</emphasis> option, it also merges changes to
+   the index as well.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara><emphasis>git apply</emphasis> command can be used with <emphasis>--cached</emphasis> and
+<emphasis>--index</emphasis> (but not at the same time).  Usually the command
+only affects the files in the working tree, but with
+<emphasis>--index</emphasis>, it patches both the files and their index
+entries, and with <emphasis>--cached</emphasis>, it modifies only the index
+entries.</simpara>
+<simpara>See also <ulink url="http://marc.info/?l=git&amp;m=116563135620359">http://marc.info/?l=git&amp;m=116563135620359</ulink> and
+<ulink url="http://marc.info/?l=git&amp;m=119150393620273">http://marc.info/?l=git&amp;m=119150393620273</ulink> for further
+information.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

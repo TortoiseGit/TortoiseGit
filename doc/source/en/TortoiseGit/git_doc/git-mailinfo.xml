@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-mailinfo(1)">
+<articleinfo>
+    <title>git-mailinfo(1)</title>
+<indexterm>
+<primary>git-mailinfo(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-mailinfo - Extracts patch and authorship from a single e-mail message</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n] [--scissors] &lt;msg&gt; &lt;patch&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Reads a single e-mail message from the standard input, and
+writes the commit log message in &lt;msg&gt; file, and the patches in
+&lt;patch&gt; file.  The author name, e-mail and e-mail subject are
+written out to the standard output to be used by <emphasis>git am</emphasis>
+to create a commit.  It is usually not necessary to use this
+command directly.  See <xref linkend="git-am(1)" /> instead.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-k
+</term>
+<listitem>
+<simpara>
+        Usually the program removes email cruft from the Subject:
+        header line to extract the title line for the commit log
+        message.  This option prevents this munging, and is most
+        useful when used to read back <emphasis>git format-patch -k</emphasis> output.
+</simpara>
+<simpara>Specifically, the following are removed until none of them remain:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Leading and trailing whitespace.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Leading <emphasis>Re:</emphasis>, <emphasis>re:</emphasis>, and <emphasis>:</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Leading bracketed strings (between <emphasis>[</emphasis> and <emphasis>]</emphasis>, usually
+        <emphasis>[PATCH]</emphasis>).
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Finally, runs of whitespace are normalized to a single ASCII space
+character.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b
+</term>
+<listitem>
+<simpara>
+        When -k is not in effect, all leading strings bracketed with <emphasis>[</emphasis>
+        and <emphasis>]</emphasis> pairs are stripped.  This option limits the stripping to
+        only the pairs whose bracketed string contains the word "PATCH".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u
+</term>
+<listitem>
+<simpara>
+        The commit log message, author name and author email are
+        taken from the e-mail, and after minimally decoding MIME
+        transfer encoding, re-coded in the charset specified by
+        i18n.commitencoding (defaulting to UTF-8) by transliterating
+        them.  This used to be optional but now it is the default.
+</simpara>
+<simpara>Note that the patch is always used as-is without charset
+conversion, even with this flag.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--encoding=&lt;encoding&gt;
+</term>
+<listitem>
+<simpara>
+        Similar to -u.  But when re-coding, the charset specified here is
+        used instead of the one specified by i18n.commitencoding or UTF-8.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<listitem>
+<simpara>
+        Disable all charset re-coding of the metadata.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--scissors
+</term>
+<listitem>
+<simpara>
+        Remove everything in body before a scissors line.  A line that
+        mainly consists of scissors (either "&gt;8" or "8&lt;") and perforation
+        (dash "-") marks is called a scissors line, and is used to request
+        the reader to cut the message at that line.  If such a line
+        appears in the body of the message before the patch, everything
+        before it (including the scissors line itself) is ignored when
+        this option is used.
+</simpara>
+<simpara>This is useful if you want to begin your message in a discussion thread
+with comments and suggestions on the message you are responding to, and to
+conclude it with a patch submission, separating the discussion and the
+beginning of the proposed commit log message with a scissors line.</simpara>
+<simpara>This can enabled by default with the configuration option mailinfo.scissors.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-scissors
+</term>
+<listitem>
+<simpara>
+        Ignore scissors lines. Useful for overriding mailinfo.scissors settings.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;msg&gt;
+</term>
+<listitem>
+<simpara>
+        The commit log message extracted from e-mail, usually
+        except the title line which comes from e-mail Subject.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;patch&gt;
+</term>
+<listitem>
+<simpara>
+        The patch extracted from e-mail.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

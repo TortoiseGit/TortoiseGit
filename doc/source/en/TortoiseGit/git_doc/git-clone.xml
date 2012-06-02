@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-clone(1)">
+<articleinfo>
+    <title>git-clone(1)</title>
+<indexterm>
+<primary>git-clone(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-clone - Clone a repository into a new directory</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git clone</emphasis> [--template=&lt;template_directory&gt;]
+          [-l] [-s] [--no-hardlinks] [-q] [-n] [--bare] [--mirror]
+          [-o &lt;name&gt;] [-b &lt;name&gt;] [-u &lt;upload-pack&gt;] [--reference &lt;repository&gt;]
+          [--separate-git-dir &lt;git dir&gt;]
+          [--depth &lt;depth&gt;] [--[no-]single-branch]
+          [--recursive|--recurse-submodules] [--] &lt;repository&gt;
+          [&lt;directory&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Clones a repository into a newly created directory, creates
+remote-tracking branches for each branch in the cloned repository
+(visible using <emphasis>git branch -r</emphasis>), and creates and checks out an
+initial branch that is forked from the cloned repository's
+currently active branch.</simpara>
+<simpara>After the clone, a plain <emphasis>git fetch</emphasis> without arguments will update
+all the remote-tracking branches, and a <emphasis>git pull</emphasis> without
+arguments will in addition merge the remote master branch into the
+current master branch, if any.</simpara>
+<simpara>This default configuration is achieved by creating references to
+the remote branch heads under <emphasis>refs/remotes/origin</emphasis> and
+by initializing <emphasis>remote.origin.url</emphasis> and <emphasis>remote.origin.fetch</emphasis>
+configuration variables.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--local
+</term>
+<term>
+-l
+</term>
+<listitem>
+<simpara>
+        When the repository to clone from is on a local machine,
+        this flag bypasses the normal "git aware" transport
+        mechanism and clones the repository by making a copy of
+        HEAD and everything under objects and refs directories.
+        The files under <emphasis>.git/objects/</emphasis> directory are hardlinked
+        to save space when possible.  This is now the default when
+        the source repository is specified with <emphasis>/path/to/repo</emphasis>
+        syntax, so it essentially is a no-op option.  To force
+        copying instead of hardlinking (which may be desirable
+        if you are trying to make a back-up of your repository),
+        but still avoid the usual "git aware" transport
+        mechanism, <emphasis>--no-hardlinks</emphasis> can be used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-hardlinks
+</term>
+<listitem>
+<simpara>
+        Optimize the cloning process from a repository on a
+        local filesystem by copying files under <emphasis>.git/objects</emphasis>
+        directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--shared
+</term>
+<term>
+-s
+</term>
+<listitem>
+<simpara>
+        When the repository to clone is on the local machine,
+        instead of using hard links, automatically setup
+        <emphasis>.git/objects/info/alternates</emphasis> to share the objects
+        with the source repository.  The resulting repository
+        starts out without any object of its own.
+</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: this is a possibly dangerous operation; do <emphasis role="strong">not</emphasis> use
+it unless you understand what it does. If you clone your
+repository using this option and then delete branches (or use any
+other git command that makes any existing commit unreferenced) in the
+source repository, some objects may become unreferenced (or dangling).
+These objects may be removed by normal git operations (such as <emphasis>git commit</emphasis>)
+which automatically call <emphasis>git gc --auto</emphasis>. (See <xref linkend="git-gc(1)" />.)
+If these objects are removed and were referenced by the cloned repository,
+then the cloned repository will become corrupt.</simpara>
+<simpara>Note that running <emphasis>git repack</emphasis> without the <emphasis>-l</emphasis> option in a repository
+cloned with <emphasis>-s</emphasis> will copy objects from the source repository into a pack
+in the cloned repository, removing the disk space savings of <emphasis>clone -s</emphasis>.
+It is safe, however, to run <emphasis>git gc</emphasis>, which uses the <emphasis>-l</emphasis> option by
+default.</simpara>
+<simpara>If you want to break the dependency of a repository cloned with <emphasis>-s</emphasis> on
+its source repository, you can simply run <emphasis>git repack -a</emphasis> to copy all
+objects from the source repository into a pack in the cloned repository.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reference &lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        If the reference repository is on the local machine,
+        automatically setup <emphasis>.git/objects/info/alternates</emphasis> to
+        obtain objects from the reference repository.  Using
+        an already existing repository as an alternate will
+        require fewer objects to be copied from the repository
+        being cloned, reducing network and local storage costs.
+</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: see the NOTE for the <emphasis>--shared</emphasis> option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quiet
+</term>
+<term>
+-q
+</term>
+<listitem>
+<simpara>
+        Operate quietly.  Progress is not reported to the standard
+        error stream. This flag is also passed to the rsync
+        command when given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verbose
+</term>
+<term>
+-v
+</term>
+<listitem>
+<simpara>
+        Run verbosely. Does not affect the reporting of progress status
+        to the standard error stream.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless -q
+        is specified. This flag forces progress status even if the
+        standard error stream is not directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-checkout
+</term>
+<term>
+-n
+</term>
+<listitem>
+<simpara>
+        No checkout of HEAD is performed after the clone is complete.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--bare
+</term>
+<listitem>
+<simpara>
+        Make a <emphasis>bare</emphasis> GIT repository.  That is, instead of
+        creating <emphasis>&lt;directory&gt;</emphasis> and placing the administrative
+        files in <emphasis>&lt;directory&gt;/.git</emphasis>, make the <emphasis>&lt;directory&gt;</emphasis>
+        itself the <emphasis>$GIT_DIR</emphasis>. This obviously implies the <emphasis>-n</emphasis>
+        because there is nowhere to check out the working tree.
+        Also the branch heads at the remote are copied directly
+        to corresponding local branch heads, without mapping
+        them to <emphasis>refs/remotes/origin/</emphasis>.  When this option is
+        used, neither remote-tracking branches nor the related
+        configuration variables are created.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mirror
+</term>
+<listitem>
+<simpara>
+        Set up a mirror of the source repository.  This implies <emphasis>--bare</emphasis>.
+        Compared to <emphasis>--bare</emphasis>, <emphasis>--mirror</emphasis> not only maps local branches of the
+        source to local branches of the target, it maps all refs (including
+        remote-tracking branches, notes etc.) and sets up a refspec configuration such
+        that all these refs are overwritten by a <emphasis>git remote update</emphasis> in the
+        target repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--origin &lt;name&gt;
+</term>
+<term>
+-o &lt;name&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of using the remote name <emphasis>origin</emphasis> to keep track
+        of the upstream repository, use <emphasis>&lt;name&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--branch &lt;name&gt;
+</term>
+<term>
+-b &lt;name&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of pointing the newly created HEAD to the branch pointed
+        to by the cloned repository's HEAD, point to <emphasis>&lt;name&gt;</emphasis> branch
+        instead. <emphasis>--branch</emphasis> can also take tags and treat them like
+        detached HEAD. In a non-bare repository, this is the branch
+        that will be checked out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--upload-pack &lt;upload-pack&gt;
+</term>
+<term>
+-u &lt;upload-pack&gt;
+</term>
+<listitem>
+<simpara>
+        When given, and the repository to clone from is accessed
+        via ssh, this specifies a non-default path for the command
+        run on the other end.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--template=&lt;template_directory&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the directory from which templates will be used;
+        (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--config &lt;key&gt;=&lt;value&gt;
+</term>
+<term>
+-c &lt;key&gt;=&lt;value&gt;
+</term>
+<listitem>
+<simpara>
+        Set a configuration variable in the newly-created repository;
+        this takes effect immediately after the repository is
+        initialized, but before the remote history is fetched or any
+        files checked out.  The key is in the same format as expected by
+        <xref linkend="git-config(1)" /> (e.g., <emphasis>core.eol=true</emphasis>). If multiple
+        values are given for the same key, each value will be written to
+        the config file. This makes it safe, for example, to add
+        additional fetch refspecs to the origin remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--depth &lt;depth&gt;
+</term>
+<listitem>
+<simpara>
+        Create a <emphasis>shallow</emphasis> clone with a history truncated to the
+        specified number of revisions.  A shallow repository has a
+        number of limitations (you cannot clone or fetch from
+        it, nor push from nor into it), but is adequate if you
+        are only interested in the recent history of a large project
+        with a long history, and would want to send in fixes
+        as patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--single-branch
+</term>
+<listitem>
+<simpara>
+        Clone only the history leading to the tip of a single branch,
+        either specified by the <emphasis>--branch</emphasis> option or the primary
+        branch remote's <emphasis>HEAD</emphasis> points at. When creating a shallow
+        clone with the <emphasis>--depth</emphasis> option, this is the default, unless
+        <emphasis>--no-single-branch</emphasis> is given to fetch the histories near the
+        tips of all branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recursive
+</term>
+<term>
+--recurse-submodules
+</term>
+<listitem>
+<simpara>
+        After the clone is created, initialize all submodules within,
+        using their default settings. This is equivalent to running
+        <emphasis>git submodule update --init --recursive</emphasis> immediately after
+        the clone is finished. This option is ignored if the cloned
+        repository does not have a worktree/checkout (i.e. if any of
+        <emphasis>--no-checkout</emphasis>/<emphasis>-n</emphasis>, <emphasis>--bare</emphasis>, or <emphasis>--mirror</emphasis> is given)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--separate-git-dir=&lt;git dir&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of placing the cloned repository where it is supposed
+        to be, place the cloned repository at the specified directory,
+        then make a filesytem-agnostic git symbolic link to there.
+        The result is git repository can be separated from working
+        tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        The (possibly remote) repository to clone from.  See the
+        <link linkend="URLS">URLS</link> section below for more information on specifying
+        repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;directory&gt;
+</term>
+<listitem>
+<simpara>
+        The name of a new directory to clone into.  The "humanish"
+        part of the source repository is used if no directory is
+        explicitly given (<emphasis>repo</emphasis> for <emphasis>/path/to/repo.git</emphasis> and <emphasis>foo</emphasis>
+        for <emphasis>host.xz:foo/.git</emphasis>).  Cloning into an existing directory
+        is only allowed if the directory is empty.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
+<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simpara>In general, URLs contain information about the transport protocol, the
+address of the remote server, and the path to the repository.
+Depending on the transport protocol, some of this information may be
+absent.</simpara>
+<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
+protocols. The following syntaxes may be used with them:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+rsync://host.xz/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>An alternative scp-like syntax may also be used with the ssh protocol:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>For local repositories, also supported by git natively, the following
+syntaxes may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<ulink url="file:///path/to/repo.git/">file:///path/to/repo.git/</ulink>
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These two syntaxes are mostly equivalent, except the former implies
+--local option.</simpara>
+<simpara>When git doesn't know how to handle a certain transport protocol, it
+attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+exists. To explicitly request a remote helper, the following syntax
+may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&lt;transport&gt;::&lt;address&gt;
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+URL-like string recognized by the specific remote helper being
+invoked. See <xref linkend="git-remote-helpers(1)" /> for details.</simpara>
+<simpara>If there are a large number of similarly-named remote repositories and
+you want to use a different format for them (such that the URLs you
+use will be rewritten into URLs that work), you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                insteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "git://git.host.xz/"]
+                insteadOf = host.xz:/path/to/
+                insteadOf = work:</screen>
+<simpara>a URL like "work:repo.git" or like "host.xz:/path/to/repo.git" will be
+rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
+<simpara>If you want to rewrite URLs for push only, you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                pushInsteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "ssh://example.org/"]
+                pushInsteadOf = git://example.org/</screen>
+<simpara>a URL like "git://example.org/path/to/repo.git" will be rewritten to
+"ssh://example.org/path/to/repo.git" for pushes, but pulls will still
+use the original URL.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Clone from upstream:
+</simpara>
+<screen>$ git clone git://git.kernel.org/pub/scm/.../linux-2.6 my2.6
+$ cd my2.6
+$ make</screen>
+</listitem>
+<listitem>
+<simpara>
+Make a local clone that borrows from the current directory, without checking things out:
+</simpara>
+<screen>$ git clone -l -s -n . ../copy
+$ cd ../copy
+$ git show-branch</screen>
+</listitem>
+<listitem>
+<simpara>
+Clone from upstream while borrowing from an existing local directory:
+</simpara>
+<screen>$ git clone --reference my2.6 \
+        git://git.kernel.org/pub/scm/.../linux-2.7 \
+        my2.7
+$ cd my2.7</screen>
+</listitem>
+<listitem>
+<simpara>
+Create a bare repository to publish your changes to the public:
+</simpara>
+<screen>$ git clone --bare -l /home/proj/.git /pub/scm/proj.git</screen>
+</listitem>
+<listitem>
+<simpara>
+Create a repository on the kernel.org machine that borrows from Linus:
+</simpara>
+<screen>$ git clone --bare -l -s /pub/scm/.../torvalds/linux-2.6.git \
+    /pub/scm/.../me/subsys-2.6.git</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

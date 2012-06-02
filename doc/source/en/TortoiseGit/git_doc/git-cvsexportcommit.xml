@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-cvsexportcommit(1)">
+<articleinfo>
+    <title>git-cvsexportcommit(1)</title>
+<indexterm>
+<primary>git-cvsexportcommit(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-cvsexportcommit - Export a single commit to a CVS checkout</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git cvsexportcommit</emphasis> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d cvsroot]
+        [-w cvsworkdir] [-W] [-f] [-m msgprefix] [PARENTCOMMIT] COMMITID</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Exports a commit from GIT to a CVS checkout, making it easier
+to merge patches from a git repository into a CVS repository.</simpara>
+<simpara>Specify the name of a CVS checkout using the -w switch or execute it
+from the root of the CVS working copy. In the latter case GIT_DIR must
+be defined. See examples below.</simpara>
+<simpara>It does its best to do the safe thing, it will check that the files are
+unchanged and up to date in the CVS checkout, and it will not autocommit
+by default.</simpara>
+<simpara>Supports file additions, removals, and commits that affect binary files.</simpara>
+<simpara>If the commit is a merge commit, you must tell <emphasis>git cvsexportcommit</emphasis> what
+parent the changeset should be done against.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-c
+</term>
+<listitem>
+<simpara>
+        Commit automatically if the patch applied cleanly. It will not
+        commit if any hunks fail to apply or there were other problems.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<listitem>
+<simpara>
+        Be pedantic (paranoid) when applying patches. Invokes patch with
+        --fuzz=0
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<listitem>
+<simpara>
+        Add authorship information. Adds Author line, and Committer (if
+        different from Author) to the message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<listitem>
+<simpara>
+        Set an alternative CVSROOT to use.  This corresponds to the CVS
+        -d parameter.  Usually users will not want to set this, except
+        if using CVS in an asymmetric fashion.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<listitem>
+<simpara>
+        Force the merge even if the files are not up to date.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-P
+</term>
+<listitem>
+<simpara>
+        Force the parent commit, even if it is not a direct parent.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<listitem>
+<simpara>
+        Prepend the commit message with the provided prefix.
+        Useful for patch series and the like.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u
+</term>
+<listitem>
+<simpara>
+        Update affected files from CVS repository before attempting export.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-k
+</term>
+<listitem>
+<simpara>
+        Reverse CVS keyword expansion (e.g. $Revision: 1.2.3.4$
+        becomes $Revision$) in working CVS checkout before applying patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-w
+</term>
+<listitem>
+<simpara>
+        Specify the location of the CVS checkout to use for the export. This
+        option does not require GIT_DIR to be set before execution if the
+        current directory is within a git repository.  The default is the
+        value of <emphasis>cvsexportcommit.cvsdir</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-W
+</term>
+<listitem>
+<simpara>
+        Tell cvsexportcommit that the current working directory is not only
+        a Git checkout, but also the CVS checkout.  Therefore, Git will
+        reset the working directory to the parent commit before proceeding.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<listitem>
+<simpara>
+        Verbose.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+cvsexportcommit.cvsdir
+</term>
+<listitem>
+<simpara>
+        The default location of the CVS checkout to use for the export.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+Merge one patch into CVS
+</term>
+<listitem>
+<screen>$ export GIT_DIR=~/project/.git
+$ cd ~/project_cvs_checkout
+$ git cvsexportcommit -v &lt;commit-sha1&gt;
+$ cvs commit -F .msg &lt;files&gt;</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Merge one patch into CVS (-c and -w options). The working directory is within the Git Repo
+</term>
+<listitem>
+<screen>        $ git cvsexportcommit -v -c -w ~/project_cvs_checkout &lt;commit-sha1&gt;</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Merge pending patches into CVS automatically -- only if you really know what you are doing
+</term>
+<listitem>
+<screen>$ export GIT_DIR=~/project/.git
+$ cd ~/project_cvs_checkout
+$ git cherry cvshead myhead | sed -n 's/^+ //p' | xargs -l1 git cvsexportcommit -c -p -v</screen>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-pull(1)">
+<articleinfo>
+    <title>git-pull(1)</title>
+<indexterm>
+<primary>git-pull(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-pull - Fetch from and merge with another repository or a local branch</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git pull</emphasis> [options] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Incorporates changes from a remote repository into the current
+branch.  In its default mode, <emphasis>git pull</emphasis> is shorthand for
+<emphasis>git fetch</emphasis> followed by <emphasis>git merge FETCH_HEAD</emphasis>.</simpara>
+<simpara>More precisely, <emphasis>git pull</emphasis> runs <emphasis>git fetch</emphasis> with the given
+parameters and calls <emphasis>git merge</emphasis> to merge the retrieved branch
+heads into the current branch.
+With <emphasis>--rebase</emphasis>, it runs <emphasis>git rebase</emphasis> instead of <emphasis>git merge</emphasis>.</simpara>
+<simpara>&lt;repository&gt; should be the name of a remote repository as
+passed to <xref linkend="git-fetch(1)" />.  &lt;refspec&gt; can name an
+arbitrary remote ref (for example, the name of a tag) or even
+a collection of refs with corresponding remote-tracking branches
+(e.g., refs/heads/&#42;:refs/remotes/origin/&#42;),
+but usually it is the name of a branch in the remote repository.</simpara>
+<simpara>Default values for &lt;repository&gt; and &lt;branch&gt; are read from the
+"remote" and "merge" configuration for the current branch
+as set by <xref linkend="git-branch(1)" /> <emphasis>--track</emphasis>.</simpara>
+<simpara>Assume the following history exists and the current branch is
+"<emphasis>master</emphasis>":</simpara>
+<screen>          A---B---C master on origin
+         /
+    D---E---F---G master</screen>
+<simpara>Then "<emphasis>git pull</emphasis>" will fetch and replay the changes from the remote
+<emphasis>master</emphasis> branch since it diverged from the local <emphasis>master</emphasis> (i.e., <emphasis>E</emphasis>)
+until its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis> and record the
+result in a new commit along with the names of the two parent commits
+and a log message from the user describing the changes.</simpara>
+<screen>          A---B---C remotes/origin/master
+         /         \
+    D---E---F---G---H master</screen>
+<simpara>See <xref linkend="git-merge(1)" /> for details, including how conflicts
+are presented and handled.</simpara>
+<simpara>In git 1.7.0 or later, to cancel a conflicting merge, use
+<emphasis>git reset --merge</emphasis>.  <emphasis role="strong">Warning</emphasis>: In older versions of git, running <emphasis>git pull</emphasis>
+with uncommitted changes is discouraged: while possible, it leaves you
+in a state that may be hard to back out of in the case of a conflict.</simpara>
+<simpara>If any of the remote changes overlap with local uncommitted changes,
+the merge will be automatically cancelled and the work tree untouched.
+It is generally best to get any local changes in working order before
+pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<simpara>Options meant for <emphasis>git pull</emphasis> itself and the underlying <emphasis>git merge</emphasis>
+must be given before the options meant for <emphasis>git fetch</emphasis>.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        This is passed to both underlying git-fetch to squelch reporting of
+        during transfer, and underlying git-merge to squelch output during
+        merging.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Pass --verbose to git-fetch and git-merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]recurse-submodules[=yes|on-demand|no]
+</term>
+<listitem>
+<simpara>
+        This option controls if new commits of all populated submodules should
+        be fetched too (see <xref linkend="git-config(1)" /> and <xref linkend="gitmodules(5)" />).
+        That might be necessary to get the data needed for merging submodule
+        commits, a feature git learned in 1.7.3. Notice that the result of a
+        merge will not be checked out in the submodule, "git submodule update"
+        has to be called afterwards to bring the work tree up to date with the
+        merge result.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<section id="_options_related_to_merging">
+<title>Options related to merging</title>
+<variablelist>
+<varlistentry>
+<term>
+--commit
+</term>
+<term>
+--no-commit
+</term>
+<listitem>
+<simpara>
+        Perform the merge and commit the result. This option can
+        be used to override --no-commit.
+</simpara>
+<simpara>With --no-commit perform the merge but pretend the merge
+failed and do not autocommit, to give the user a chance to
+inspect and further tweak the merge result before committing.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--edit
+</term>
+<term>
+--no-edit
+</term>
+<listitem>
+<simpara>
+        Invoke an editor before committing successful mechanical merge to
+        further edit the auto-generated merge message, so that the user
+        can explain and justify the merge. The <emphasis>--no-edit</emphasis> option can be
+        used to accept the auto-generated message (this is generally
+        discouraged). The <emphasis>--edit</emphasis> option is still useful if you are
+        giving a draft message with the <emphasis>-m</emphasis> option from the command line
+        and want to edit it in the editor.
+</simpara>
+<simpara>Older scripts may depend on the historical behaviour of not allowing the
+user to edit the merge log message. They will see an editor opened when
+they run <emphasis>git merge</emphasis>. To make it easier to adjust such scripts to the
+updated behaviour, the environment variable <emphasis>GIT_MERGE_AUTOEDIT</emphasis> can be
+set to <emphasis>no</emphasis> at the beginning of them.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ff
+</term>
+<listitem>
+<simpara>
+        When the merge resolves as a fast-forward, only update the branch
+        pointer, without creating a merge commit.  This is the default
+        behavior.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-ff
+</term>
+<listitem>
+<simpara>
+        Create a merge commit even when the merge resolves as a
+        fast-forward.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ff-only
+</term>
+<listitem>
+<simpara>
+        Refuse to merge and exit with a non-zero status unless the
+        current <emphasis>HEAD</emphasis> is already up-to-date or the merge can be
+        resolved as a fast-forward.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--log[=&lt;n&gt;]
+</term>
+<term>
+--no-log
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with
+        one-line descriptions from at most &lt;n&gt; actual commits that are being
+        merged. See also <xref linkend="git-fmt-merge-msg(1)" />.
+</simpara>
+<simpara>With --no-log do not list one-line descriptions from the
+actual commits being merged.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stat
+</term>
+<term>
+-n
+</term>
+<term>
+--no-stat
+</term>
+<listitem>
+<simpara>
+        Show a diffstat at the end of the merge. The diffstat is also
+        controlled by the configuration option merge.stat.
+</simpara>
+<simpara>With -n or --no-stat do not show a diffstat at the end of the
+merge.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--squash
+</term>
+<term>
+--no-squash
+</term>
+<listitem>
+<simpara>
+        Produce the working tree and index state as if a real
+        merge happened (except for the merge information),
+        but do not actually make a commit or
+        move the <emphasis>HEAD</emphasis>, nor record <emphasis>$GIT_DIR/MERGE_HEAD</emphasis> to
+        cause the next <emphasis>git commit</emphasis> command to create a merge
+        commit.  This allows you to create a single commit on
+        top of the current branch whose effect is the same as
+        merging another branch (or more in case of an octopus).
+</simpara>
+<simpara>With --no-squash perform the merge and commit the result. This
+option can be used to override --squash.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s &lt;strategy&gt;
+</term>
+<term>
+--strategy=&lt;strategy&gt;
+</term>
+<listitem>
+<simpara>
+        Use the given merge strategy; can be supplied more than
+        once to specify them in the order they should be tried.
+        If there is no <emphasis>-s</emphasis> option, a built-in list of strategies
+        is used instead (<emphasis>git merge-recursive</emphasis> when merging a single
+        head, <emphasis>git merge-octopus</emphasis> otherwise).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-X &lt;option&gt;
+</term>
+<term>
+--strategy-option=&lt;option&gt;
+</term>
+<listitem>
+<simpara>
+        Pass merge strategy specific option through to the merge
+        strategy.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--summary
+</term>
+<term>
+--no-summary
+</term>
+<listitem>
+<simpara>
+        Synonyms to --stat and --no-stat; these are deprecated and will be
+        removed in the future.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Operate quietly. Implies --no-progress.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Be verbose.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<term>
+--no-progress
+</term>
+<listitem>
+<simpara>
+        Turn progress on/off explicitly. If neither is specified,
+        progress is shown if standard error is connected to a terminal.
+        Note that not all merge strategies may support progress
+        reporting.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist>
+<varlistentry>
+<term>
+--rebase
+</term>
+<listitem>
+<simpara>
+        Rebase the current branch on top of the upstream branch after
+        fetching.  If there is a remote-tracking branch corresponding to
+        the upstream branch and the upstream branch was rebased since last
+        fetched, the rebase uses that information to avoid rebasing
+        non-local changes.
+</simpara>
+<simpara>See <emphasis>pull.rebase</emphasis>, <emphasis>branch.&lt;name&gt;.rebase</emphasis> and <emphasis>branch.autosetuprebase</emphasis> in
+<xref linkend="git-config(1)" /> if you want to make <emphasis>git pull</emphasis> always use
+<emphasis>--rebase</emphasis> instead of merging.</simpara>
+<note><simpara>This is a potentially <emphasis>dangerous</emphasis> mode of operation.
+It rewrites history, which does not bode well when you
+published that history already.  Do <emphasis role="strong">not</emphasis> use this option
+unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-rebase
+</term>
+<listitem>
+<simpara>
+        Override earlier --rebase.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_options_related_to_fetching">
+<title>Options related to fetching</title>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Fetch all remotes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--append
+</term>
+<listitem>
+<simpara>
+        Append ref names and object names of fetched refs to the
+        existing contents of <emphasis>.git/FETCH_HEAD</emphasis>.  Without this
+        option old data in <emphasis>.git/FETCH_HEAD</emphasis> will be overwritten.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--depth=&lt;depth&gt;
+</term>
+<listitem>
+<simpara>
+        Deepen the history of a <emphasis>shallow</emphasis> repository created by
+        <emphasis>git clone</emphasis> with <emphasis>--depth=&lt;depth&gt;</emphasis> option (see <xref linkend="git-clone(1)" />)
+        by the specified number of commits.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;rbranch&gt;:&lt;lbranch&gt;</emphasis>
+        refspec, it refuses to update the local branch
+        <emphasis>&lt;lbranch&gt;</emphasis> unless the remote branch <emphasis>&lt;rbranch&gt;</emphasis> it
+        fetches is a descendant of <emphasis>&lt;lbranch&gt;</emphasis>.  This option
+        overrides that check.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-k
+</term>
+<term>
+--keep
+</term>
+<listitem>
+<simpara>
+        Keep downloaded pack.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-tags
+</term>
+<listitem>
+<simpara>
+        By default, tags that point at objects that are downloaded
+        from the remote repository are fetched and stored locally.
+        This option disables this automatic tag following. The default
+        behavior for a remote may be specified with the remote.&lt;name&gt;.tagopt
+        setting. See <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u
+</term>
+<term>
+--update-head-ok
+</term>
+<listitem>
+<simpara>
+        By default <emphasis>git fetch</emphasis> refuses to update the head which
+        corresponds to the current branch.  This flag disables the
+        check.  This is purely for the internal use for <emphasis>git pull</emphasis>
+        to communicate with <emphasis>git fetch</emphasis>, and unless you are
+        implementing your own Porcelain you are not supposed to
+        use it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--upload-pack &lt;upload-pack&gt;
+</term>
+<listitem>
+<simpara>
+        When given, and the repository to fetch from is handled
+        by <emphasis>git fetch-pack</emphasis>, <emphasis>--exec=&lt;upload-pack&gt;</emphasis> is passed to
+        the command to specify non-default path for the command
+        run on the other end.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--progress
+</term>
+<listitem>
+<simpara>
+        Progress status is reported on the standard error stream
+        by default when it is attached to a terminal, unless -q
+        is specified. This flag forces progress status even if the
+        standard error stream is not directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;repository&gt;
+</term>
+<listitem>
+<simpara>
+        The "remote" repository that is the source of a fetch
+        or pull operation.  This parameter can be either a URL
+        (see the section <link linkend="URLS">GIT URLS</link> below) or the name
+        of a remote (see the section <link linkend="REMOTES">REMOTES</link> below).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;refspec&gt;
+</term>
+<listitem>
+<simpara>
+        The format of a &lt;refspec&gt; parameter is an optional plus
+        <emphasis>+</emphasis>, followed by the source ref &lt;src&gt;, followed
+        by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
+</simpara>
+<simpara>The remote ref that matches &lt;src&gt;
+is fetched, and if &lt;dst&gt; is not empty string, the local
+ref that matches it is fast-forwarded using &lt;src&gt;.
+If the optional plus <emphasis>+</emphasis> is used, the local ref
+is updated even if it does not result in a fast-forward
+update.</simpara>
+<note><simpara>If the remote branch from which you want to pull is
+modified in non-linear ways such as being rewound and
+rebased frequently, then a pull will attempt a merge with
+an older version of itself, likely conflict, and fail.
+It is under these conditions that you would want to use
+the <emphasis>+</emphasis> sign to indicate non-fast-forward updates will
+be needed.  There is currently no easy way to determine
+or declare that a branch will be made available in a
+repository with this behavior; the pulling user simply
+must know this is the expected usage pattern for a branch.</simpara></note>
+<note><simpara>You never do your own development on branches that appear
+on the right hand side of a &lt;refspec&gt; colon on <emphasis>Pull:</emphasis> lines;
+they are to be updated by <emphasis>git fetch</emphasis>.  If you intend to do
+development derived from a remote branch <emphasis>B</emphasis>, have a <emphasis>Pull:</emphasis>
+line to track it (i.e. <emphasis>Pull: B:remote-B</emphasis>), and have a separate
+branch <emphasis>my-B</emphasis> to do your development on top of it.  The latter
+is created by <emphasis>git branch my-B remote-B</emphasis> (or its equivalent <emphasis>git
+checkout -b my-B remote-B</emphasis>).  Run <emphasis>git fetch</emphasis> to keep track of
+the progress of the remote side, and when you see something new
+on the remote branch, merge it into your development branch with
+<emphasis>git pull . remote-B</emphasis>, while you are on <emphasis>my-B</emphasis> branch.</simpara></note>
+<note><simpara>There is a difference between listing multiple &lt;refspec&gt;
+directly on <emphasis>git pull</emphasis> command line and having multiple
+<emphasis>Pull:</emphasis> &lt;refspec&gt; lines for a &lt;repository&gt; and running
+<emphasis>git pull</emphasis> command without any explicit &lt;refspec&gt; parameters.
+&lt;refspec&gt; listed explicitly on the command line are always
+merged into the current branch after fetching.  In other words,
+if you list more than one remote refs, you would be making
+an Octopus.  While <emphasis>git pull</emphasis> run without any explicit &lt;refspec&gt;
+parameter takes default &lt;refspec&gt;s from <emphasis>Pull:</emphasis> lines, it
+merges only the first &lt;refspec&gt; found into the current branch,
+after fetching all the remote refs.  This is because making an
+Octopus from remote refs is rarely done, while keeping track
+of multiple remote heads in one-go by fetching more than one
+is often useful.</simpara></note>
+<simpara>Some short-cut notations are also supported.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
+  it requests fetching everything up to the given tag.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+A parameter &lt;ref&gt; without a colon is equivalent to
+  &lt;ref&gt;: when pulling/fetching, so it merges &lt;ref&gt; into the current
+  branch without storing the remote branch anywhere locally
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
+<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simpara>In general, URLs contain information about the transport protocol, the
+address of the remote server, and the path to the repository.
+Depending on the transport protocol, some of this information may be
+absent.</simpara>
+<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
+protocols. The following syntaxes may be used with them:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+rsync://host.xz/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>An alternative scp-like syntax may also be used with the ssh protocol:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>For local repositories, also supported by git natively, the following
+syntaxes may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+/path/to/repo.git/
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<ulink url="file:///path/to/repo.git/">file:///path/to/repo.git/</ulink>
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These two syntaxes are mostly equivalent, except when cloning, when
+the former implies --local option. See <xref linkend="git-clone(1)" /> for
+details.</simpara>
+<simpara>When git doesn't know how to handle a certain transport protocol, it
+attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+exists. To explicitly request a remote helper, the following syntax
+may be used:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+&lt;transport&gt;::&lt;address&gt;
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+URL-like string recognized by the specific remote helper being
+invoked. See <xref linkend="git-remote-helpers(1)" /> for details.</simpara>
+<simpara>If there are a large number of similarly-named remote repositories and
+you want to use a different format for them (such that the URLs you
+use will be rewritten into URLs that work), you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                insteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "git://git.host.xz/"]
+                insteadOf = host.xz:/path/to/
+                insteadOf = work:</screen>
+<simpara>a URL like "work:repo.git" or like "host.xz:/path/to/repo.git" will be
+rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
+<simpara>If you want to rewrite URLs for push only, you can create a
+configuration section of the form:</simpara>
+<screen>        [url "&lt;actual url base&gt;"]
+                pushInsteadOf = &lt;other url base&gt;</screen>
+<simpara>For example, with this:</simpara>
+<screen>        [url "ssh://example.org/"]
+                pushInsteadOf = git://example.org/</screen>
+<simpara>a URL like "git://example.org/path/to/repo.git" will be rewritten to
+"ssh://example.org/path/to/repo.git" for pushes, but pulls will still
+use the original URL.</simpara>
+</simplesect>
+<simplesect id="_remotes_anchor_id_remotes_xreflabel_remotes">
+<title>REMOTES<anchor id="REMOTES" xreflabel="[REMOTES]"/></title>
+<simpara>The name of one of the following can be used instead
+of a URL as <emphasis>&lt;repository&gt;</emphasis> argument:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+a remote in the git configuration file: <emphasis>$GIT_DIR/config</emphasis>,
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a file in the <emphasis>$GIT_DIR/remotes</emphasis> directory, or
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a file in the <emphasis>$GIT_DIR/branches</emphasis> directory.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>All of these also allow you to omit the refspec from the command line
+because they each contain a refspec which git will use by default.</simpara>
+<section id="_named_remote_in_configuration_file">
+<title>Named remote in configuration file</title>
+<simpara>You can choose to provide the name of a remote which you had previously
+configured using <xref linkend="git-remote(1)" />, <xref linkend="git-config(1)" />
+or even by a manual edit to the <emphasis>$GIT_DIR/config</emphasis> file.  The URL of
+this remote will be used to access the repository.  The refspec
+of this remote will be used by default when you do
+not provide a refspec on the command line.  The entry in the
+config file would appear like this:</simpara>
+<screen>        [remote "&lt;name&gt;"]
+                url = &lt;url&gt;
+                pushurl = &lt;pushurl&gt;
+                push = &lt;refspec&gt;
+                fetch = &lt;refspec&gt;</screen>
+<simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
+to <emphasis>&lt;url&gt;</emphasis>.</simpara>
+</section>
+<section id="_named_file_in_emphasis_git_dir_remotes_emphasis">
+<title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
+<simpara>You can choose to provide the name of a
+file in <emphasis>$GIT_DIR/remotes</emphasis>.  The URL
+in this file will be used to access the repository.  The refspec
+in this file will be used as default when you do not
+provide a refspec on the command line.  This file should have the
+following format:</simpara>
+<screen>        URL: one of the above URL format
+        Push: &lt;refspec&gt;
+        Pull: &lt;refspec&gt;</screen>
+<simpara><emphasis>Push:</emphasis> lines are used by <emphasis>git push</emphasis> and
+<emphasis>Pull:</emphasis> lines are used by <emphasis>git pull</emphasis> and <emphasis>git fetch</emphasis>.
+Multiple <emphasis>Push:</emphasis> and <emphasis>Pull:</emphasis> lines may
+be specified for additional branch mappings.</simpara>
+</section>
+<section id="_named_file_in_emphasis_git_dir_branches_emphasis">
+<title>Named file in <emphasis>$GIT_DIR/branches</emphasis></title>
+<simpara>You can choose to provide the name of a
+file in <emphasis>$GIT_DIR/branches</emphasis>.
+The URL in this file will be used to access the repository.
+This file should have the following format:</simpara>
+<screen>        &lt;url&gt;#&lt;head&gt;</screen>
+<simpara><emphasis>&lt;url&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
+<simpara>Depending on the operation, git will use one of the following
+refspecs, if you don't provide one on the command line.
+<emphasis>&lt;branch&gt;</emphasis> is the name of this file in <emphasis>$GIT_DIR/branches</emphasis> and
+<emphasis>&lt;head&gt;</emphasis> defaults to <emphasis>master</emphasis>.</simpara>
+<simpara>git fetch uses:</simpara>
+<screen>        refs/heads/&lt;head&gt;:refs/heads/&lt;branch&gt;</screen>
+<simpara>git push uses:</simpara>
+<screen>        HEAD:refs/heads/&lt;head&gt;</screen>
+</section>
+</simplesect>
+<simplesect id="_merge_strategies">
+<title>MERGE STRATEGIES</title>
+<simpara>The merge mechanism (<emphasis>git-merge</emphasis> and <emphasis>git-pull</emphasis> commands) allows the
+backend <emphasis>merge strategies</emphasis> to be chosen with <emphasis>-s</emphasis> option.  Some strategies
+can also take their own options, which can be passed by giving <emphasis>-X&lt;option&gt;</emphasis>
+arguments to <emphasis>git-merge</emphasis> and/or <emphasis>git-pull</emphasis>.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+resolve
+</term>
+<listitem>
+<simpara>
+        This can only resolve two heads (i.e. the current branch
+        and another branch you pulled from) using a 3-way merge
+        algorithm.  It tries to carefully detect criss-cross
+        merge ambiguities and is considered generally safe and
+        fast.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+recursive
+</term>
+<listitem>
+<simpara>
+        This can only resolve two heads using a 3-way merge
+        algorithm.  When there is more than one common
+        ancestor that can be used for 3-way merge, it creates a
+        merged tree of the common ancestors and uses that as
+        the reference tree for the 3-way merge.  This has been
+        reported to result in fewer merge conflicts without
+        causing mis-merges by tests done on actual merge commits
+        taken from Linux 2.6 kernel development history.
+        Additionally this can detect and handle merges involving
+        renames.  This is the default merge strategy when
+        pulling or merging one branch.
+</simpara>
+<simpara>The <emphasis>recursive</emphasis> strategy can take the following options:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+ours
+</term>
+<listitem>
+<simpara>
+        This option forces conflicting hunks to be auto-resolved cleanly by
+        favoring <emphasis>our</emphasis> version.  Changes from the other tree that do not
+        conflict with our side are reflected to the merge result.
+</simpara>
+<simpara>This should not be confused with the <emphasis>ours</emphasis> merge strategy, which does not
+even look at what the other tree contains at all.  It discards everything
+the other tree did, declaring <emphasis>our</emphasis> history contains all that happened in it.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+theirs
+</term>
+<listitem>
+<simpara>
+        This is opposite of <emphasis>ours</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+patience
+</term>
+<listitem>
+<simpara>
+        With this option, <emphasis>merge-recursive</emphasis> spends a little extra time
+        to avoid mismerges that sometimes occur due to unimportant
+        matching lines (e.g., braces from distinct functions).  Use
+        this when the branches to be merged have diverged wildly.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ignore-space-change
+</term>
+<term>
+ignore-all-space
+</term>
+<term>
+ignore-space-at-eol
+</term>
+<listitem>
+<simpara>
+        Treats lines with the indicated type of whitespace change as
+        unchanged for the sake of a three-way merge.  Whitespace
+        changes mixed with other changes to a line are not ignored.
+        See also <xref linkend="git-diff(1)" /> <emphasis>-b</emphasis>, <emphasis>-w</emphasis>, and
+        <emphasis>--ignore-space-at-eol</emphasis>.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+If <emphasis>their</emphasis> version only introduces whitespace changes to a line,
+  <emphasis>our</emphasis> version is used;
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If <emphasis>our</emphasis> version introduces whitespace changes but <emphasis>their</emphasis>
+  version includes a substantial change, <emphasis>their</emphasis> version is used;
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Otherwise, the merge proceeds in the usual way.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+renormalize
+</term>
+<listitem>
+<simpara>
+        This runs a virtual check-out and check-in of all three stages
+        of a file when resolving a three-way merge.  This option is
+        meant to be used when merging branches with different clean
+        filters or end-of-line normalization rules.  See "Merging
+        branches with differing checkin/checkout attributes" in
+        <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+no-renormalize
+</term>
+<listitem>
+<simpara>
+        Disables the <emphasis>renormalize</emphasis> option.  This overrides the
+        <emphasis>merge.renormalize</emphasis> configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rename-threshold=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Controls the similarity threshold used for rename detection.
+        See also <xref linkend="git-diff(1)" /> <emphasis>-M</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+subtree[=&lt;path&gt;]
+</term>
+<listitem>
+<simpara>
+        This option is a more advanced form of <emphasis>subtree</emphasis> strategy, where
+        the strategy makes a guess on how two trees must be shifted to
+        match with each other when merging.  Instead, the specified path
+        is prefixed (or stripped from the beginning) to make the shape of
+        two trees to match.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+octopus
+</term>
+<listitem>
+<simpara>
+        This resolves cases with more than two heads, but refuses to do
+        a complex merge that needs manual resolution.  It is
+        primarily meant to be used for bundling topic branch
+        heads together.  This is the default merge strategy when
+        pulling or merging more than one branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ours
+</term>
+<listitem>
+<simpara>
+        This resolves any number of heads, but the resulting tree of the
+        merge is always that of the current branch head, effectively
+        ignoring all changes from all other branches.  It is meant to
+        be used to supersede old development history of side
+        branches.  Note that this is different from the -Xours option to
+        the <emphasis>recursive</emphasis> merge strategy.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+subtree
+</term>
+<listitem>
+<simpara>
+        This is a modified recursive strategy. When merging trees A and
+        B, if B corresponds to a subtree of A, B is first adjusted to
+        match the tree structure of A, instead of reading the trees at
+        the same level. This adjustment is also done to the common
+        ancestor tree.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_default_behaviour">
+<title>DEFAULT BEHAVIOUR</title>
+<simpara>Often people use <emphasis>git pull</emphasis> without giving any parameter.
+Traditionally, this has been equivalent to saying <emphasis>git pull
+origin</emphasis>.  However, when configuration <emphasis>branch.&lt;name&gt;.remote</emphasis> is
+present while on branch <emphasis>&lt;name&gt;</emphasis>, that value is used instead of
+<emphasis>origin</emphasis>.</simpara>
+<simpara>In order to determine what URL to use to fetch from, the value
+of the configuration <emphasis>remote.&lt;origin&gt;.url</emphasis> is consulted
+and if there is not any such variable, the value on <emphasis>URL: ` line
+in `$GIT_DIR/remotes/&lt;origin&gt;</emphasis> file is used.</simpara>
+<simpara>In order to determine what remote branches to fetch (and
+optionally store in the remote-tracking branches) when the command is
+run without any refspec parameters on the command line, values
+of the configuration variable <emphasis>remote.&lt;origin&gt;.fetch</emphasis> are
+consulted, and if there aren't any, <emphasis>$GIT_DIR/remotes/&lt;origin&gt;</emphasis>
+file is consulted and its `Pull: ` lines are used.
+In addition to the refspec formats described in the OPTIONS
+section, you can have a globbing refspec that looks like this:</simpara>
+<screen>refs/heads/*:refs/remotes/origin/*</screen>
+<simpara>A globbing refspec must have a non-empty RHS (i.e. must store
+what were fetched in remote-tracking branches), and its LHS and RHS
+must end with <emphasis>/*</emphasis>.  The above specifies that all remote
+branches are tracked using remote-tracking branches in
+<emphasis>refs/remotes/origin/</emphasis> hierarchy under the same name.</simpara>
+<simpara>The rule to determine which remote branch to merge after
+fetching is a bit involved, in order not to break backward
+compatibility.</simpara>
+<simpara>If explicit refspecs were given on the command
+line of <emphasis>git pull</emphasis>, they are all merged.</simpara>
+<simpara>When no refspec was given on the command line, then <emphasis>git pull</emphasis>
+uses the refspec from the configuration or
+<emphasis>$GIT_DIR/remotes/&lt;origin&gt;</emphasis>.  In such cases, the following
+rules apply:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+If <emphasis>branch.&lt;name&gt;.merge</emphasis> configuration for the current
+  branch <emphasis>&lt;name&gt;</emphasis> exists, that is the name of the branch at the
+  remote site that is merged.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If the refspec is a globbing one, nothing is merged.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Otherwise the remote branch of the first refspec is merged.
+</simpara>
+</listitem>
+</orderedlist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Update the remote-tracking branches for the repository
+  you cloned from, then merge one of them into your
+  current branch:
+</simpara>
+<screen>$ git pull, git pull origin</screen>
+<simpara>Normally the branch merged in is the HEAD of the remote repository,
+but the choice is determined by the branch.&lt;name&gt;.remote and
+branch.&lt;name&gt;.merge options; see <xref linkend="git-config(1)" /> for details.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Merge into the current branch the remote branch <emphasis>next</emphasis>:
+</simpara>
+<screen>$ git pull origin next</screen>
+<simpara>This leaves a copy of <emphasis>next</emphasis> temporarily in FETCH_HEAD, but
+does not update any remote-tracking branches. Using remote-tracking
+branches, the same can be done by invoking fetch and merge:</simpara>
+<screen>$ git fetch origin
+$ git merge origin/next</screen>
+</listitem>
+</itemizedlist>
+<simpara>If you tried a pull which resulted in a complex conflicts and
+would want to start over, you can recover with <emphasis>git reset</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_bugs">
+<title>BUGS</title>
+<simpara>Using --recurse-submodules can only fetch new commits in already checked
+out submodules right now. When e.g. upstream added a new submodule in the
+just fetched commits of the superproject the submodule itself can not be
+fetched, making it impossible to check out that submodule later without
+having to do a fetch again. This is expected to be fixed in a future git
+version.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fetch(1)" />, <xref linkend="git-merge(1)" />, <xref linkend="git-config(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

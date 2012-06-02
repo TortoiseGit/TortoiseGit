@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-archive(1)">
+<articleinfo>
+    <title>git-archive(1)</title>
+<indexterm>
+<primary>git-archive(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-archive - Create an archive of files from a named tree</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git archive</emphasis> [--format=&lt;fmt&gt;] [--list] [--prefix=&lt;prefix&gt;/] [&lt;extra&gt;]
+              [-o | --output=&lt;file&gt;] [--worktree-attributes]
+              [--remote=&lt;repo&gt; [--exec=&lt;git-upload-archive&gt;]] &lt;tree-ish&gt;
+              [&lt;path&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Creates an archive of the specified format containing the tree
+structure for the named tree, and writes it out to the standard
+output.  If &lt;prefix&gt; is specified it is
+prepended to the filenames in the archive.</simpara>
+<simpara><emphasis>git archive</emphasis> behaves differently when given a tree ID versus when
+given a commit ID or tag ID.  In the first case the current time is
+used as the modification time of each file in the archive.  In the latter
+case the commit time as recorded in the referenced commit object is
+used instead.  Additionally the commit ID is stored in a global
+extended pax header if the tar format is used; it can be extracted
+using <emphasis>git get-tar-commit-id</emphasis>. In ZIP files it is stored as a file
+comment.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--format=&lt;fmt&gt;
+</term>
+<listitem>
+<simpara>
+        Format of the resulting archive: <emphasis>tar</emphasis> or <emphasis>zip</emphasis>. If this option
+        is not given, and the output file is specified, the format is
+        inferred from the filename if possible (e.g. writing to "foo.zip"
+        makes the output to be in the zip format). Otherwise the output
+        format is <emphasis>tar</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<term>
+--list
+</term>
+<listitem>
+<simpara>
+        Show all available formats.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Report progress to stderr.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prefix=&lt;prefix&gt;/
+</term>
+<listitem>
+<simpara>
+        Prepend &lt;prefix&gt;/ to each filename in the archive.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-o &lt;file&gt;
+</term>
+<term>
+--output=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Write the archive to &lt;file&gt; instead of stdout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--worktree-attributes
+</term>
+<listitem>
+<simpara>
+        Look for attributes in .gitattributes in working directory too.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;extra&gt;
+</term>
+<listitem>
+<simpara>
+        This can be any options that the archiver backend understands.
+        See next section.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--remote=&lt;repo&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of making a tar archive from the local repository,
+        retrieve a tar archive from a remote repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exec=&lt;git-upload-archive&gt;
+</term>
+<listitem>
+<simpara>
+        Used with --remote to specify the path to the
+        <emphasis>git-upload-archive</emphasis> on the remote side.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;tree-ish&gt;
+</term>
+<listitem>
+<simpara>
+        The tree or commit to produce an archive for.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        Without an optional path parameter, all files and subdirectories
+        of the current working directory are included in the archive.
+        If one or more paths are specified, only these are included.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_backend_extra_options">
+<title>BACKEND EXTRA OPTIONS</title>
+<section id="_zip">
+<title>zip</title>
+<variablelist>
+<varlistentry>
+<term>
+-0
+</term>
+<listitem>
+<simpara>
+        Store the files instead of deflating them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-9
+</term>
+<listitem>
+<simpara>
+        Highest and slowest compression level.  You can specify any
+        number from 1 to 9 to adjust compression speed and ratio.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+tar.umask
+</term>
+<listitem>
+<simpara>
+        This variable can be used to restrict the permission bits of
+        tar archive entries.  The default is 0002, which turns off the
+        world write bit.  The special value "user" indicates that the
+        archiving user's umask will be used instead.  See umask(2) for
+        details.  If <emphasis>--remote</emphasis> is used then only the configuration of
+        the remote repository takes effect.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+tar.&lt;format&gt;.command
+</term>
+<listitem>
+<simpara>
+        This variable specifies a shell command through which the tar
+        output generated by <emphasis>git archive</emphasis> should be piped. The command
+        is executed using the shell with the generated tar file on its
+        standard input, and should produce the final output on its
+        standard output. Any compression-level options will be passed
+        to the command (e.g., "-9"). An output file with the same
+        extension as <emphasis>&lt;format&gt;</emphasis> will be use this format if no other
+        format is given.
+</simpara>
+<simpara>The "tar.gz" and "tgz" formats are defined automatically and default to
+<emphasis>gzip -cn</emphasis>. You may override them with custom commands.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+tar.&lt;format&gt;.remote
+</term>
+<listitem>
+<simpara>
+        If true, enable <emphasis>&lt;format&gt;</emphasis> for use by remote clients via
+        <xref linkend="git-upload-archive(1)" />. Defaults to false for
+        user-defined formats, but true for the "tar.gz" and "tgz"
+        formats.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_attributes">
+<title>ATTRIBUTES</title>
+<variablelist>
+<varlistentry>
+<term>
+export-ignore
+</term>
+<listitem>
+<simpara>
+        Files and directories with the attribute export-ignore won't be
+        added to archive files.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+export-subst
+</term>
+<listitem>
+<simpara>
+        If the attribute export-subst is set for a file then git will
+        expand several placeholders when adding this file to an archive.
+        See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Note that attributes are by default taken from the <emphasis>.gitattributes</emphasis> files
+in the tree that is being archived.  If you want to tweak the way the
+output is generated after the fact (e.g. you committed without adding an
+appropriate export-ignore in its <emphasis>.gitattributes</emphasis>), adjust the checked out
+<emphasis>.gitattributes</emphasis> file as necessary and use <emphasis>--worktree-attributes</emphasis>
+option.  Alternatively you can keep necessary attributes that should apply
+while archiving any tree in your <emphasis>$GIT_DIR/info/attributes</emphasis> file.</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git archive --format=tar --prefix=junk/ HEAD | (cd /var/tmp/ &amp;&amp; tar xf -)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Create a tar archive that contains the contents of the
+        latest commit on the current branch, and extract it in the
+        <emphasis>/var/tmp/junk</emphasis> directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive --format=tar --prefix=git-1.4.0/ v1.4.0 | gzip &gt;git-1.4.0.tar.gz</emphasis>
+</term>
+<listitem>
+<simpara>
+        Create a compressed tarball for v1.4.0 release.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive --format=tar.gz --prefix=git-1.4.0/ v1.4.0 &gt;git-1.4.0.tar.gz</emphasis>
+</term>
+<listitem>
+<simpara>
+        Same as above, but using the builtin tar.gz handling.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive --prefix=git-1.4.0/ -o git-1.4.0.tar.gz v1.4.0</emphasis>
+</term>
+<listitem>
+<simpara>
+        Same as above, but the format is inferred from the output file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive --format=tar --prefix=git-1.4.0/ v1.4.0^{tree} | gzip &gt;git-1.4.0.tar.gz</emphasis>
+</term>
+<listitem>
+<simpara>
+        Create a compressed tarball for v1.4.0 release, but without a
+        global extended pax header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive --format=zip --prefix=git-docs/ HEAD:Documentation/ &gt; git-1.4.0-docs.zip</emphasis>
+</term>
+<listitem>
+<simpara>
+        Put everything in the current head's Documentation/ directory
+        into <emphasis>git-1.4.0-docs.zip</emphasis>, with the prefix <emphasis>git-docs/</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git archive -o latest.zip HEAD</emphasis>
+</term>
+<listitem>
+<simpara>
+        Create a Zip archive that contains the contents of the latest
+        commit on the current branch. Note that the output format is
+        inferred by the extension of the output file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git config tar.tar.xz.command "xz -c"</emphasis>
+</term>
+<listitem>
+<simpara>
+        Configure a "tar.xz" format for making LZMA-compressed tarfiles.
+        You can use it specifying <emphasis>--format=tar.xz</emphasis>, or by creating an
+        output file like <emphasis>-o foo.tar.xz</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gitattributes(5)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

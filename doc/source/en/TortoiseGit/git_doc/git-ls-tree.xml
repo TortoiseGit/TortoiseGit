@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-ls-tree(1)">
+<articleinfo>
+    <title>git-ls-tree(1)</title>
+<indexterm>
+<primary>git-ls-tree(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-ls-tree - List the contents of a tree object</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git ls-tree</emphasis> [-d] [-r] [-t] [-l] [-z]
+            [--name-only] [--name-status] [--full-name] [--full-tree] [--abbrev[=&lt;n&gt;]]
+            &lt;tree-ish&gt; [&lt;path&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Lists the contents of a given tree object, like what "/bin/ls -a" does
+in the current working directory.  Note that:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+the behaviour is slightly different from that of "/bin/ls" in that the
+   <emphasis>&lt;path&gt;</emphasis> denotes just a list of patterns to match, e.g. so specifying
+   directory name (without <emphasis>-r</emphasis>) will behave differently, and order of the
+   arguments does not matter.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;</emphasis> is
+   taken as relative to the current working directory.  E.g. when you are
+   in a directory <emphasis>sub</emphasis> that has a directory <emphasis>dir</emphasis>, you can run <emphasis>git
+   ls-tree -r HEAD dir</emphasis> to list the contents of the tree (that is
+   <emphasis>sub/dir</emphasis> in <emphasis>HEAD</emphasis>).  You don't want to give a tree that is not at the
+   root level (e.g. <emphasis>git ls-tree -r HEAD:sub dir</emphasis>) in this case, as that
+   would result in asking for <emphasis>sub/sub/dir</emphasis> in the <emphasis>HEAD</emphasis> commit.
+   However, the current working directory can be ignored by passing
+   --full-tree option.
+</simpara>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;tree-ish&gt;
+</term>
+<listitem>
+<simpara>
+        Id of a tree-ish.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<listitem>
+<simpara>
+        Show only the named tree entry itself, not its children.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-r
+</term>
+<listitem>
+<simpara>
+        Recurse into sub-trees.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t
+</term>
+<listitem>
+<simpara>
+        Show tree entries even when going to recurse them. Has no effect
+        if <emphasis>-r</emphasis> was not passed. <emphasis>-d</emphasis> implies <emphasis>-t</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<term>
+--long
+</term>
+<listitem>
+<simpara>
+        Show object size of blob (file) entries.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        \0 line termination on output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--name-only
+</term>
+<term>
+--name-status
+</term>
+<listitem>
+<simpara>
+        List only filenames (instead of the "long" output), one per line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abbrev[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Instead of showing the full 40-byte hexadecimal object
+        lines, show only a partial prefix.
+        Non default number of digits can be specified with --abbrev=&lt;n&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full-name
+</term>
+<listitem>
+<simpara>
+        Instead of showing the path names relative to the current working
+        directory, show the full path names.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--full-tree
+</term>
+<listitem>
+<simpara>
+        Do not limit the listing to the current working directory.
+        Implies --full-name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+[&lt;path&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        When paths are given, show them (note that this isn't really raw
+        pathnames, but rather a list of patterns to match).  Otherwise
+        implicitly uses the root level of the tree as the sole path argument.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_output_format">
+<title>Output Format</title>
+<literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; TAB &lt;file&gt;</literallayout>
+<simpara>Unless the <emphasis>-z</emphasis> option is used, TAB, LF, and backslash characters
+in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>, respectively.
+This output format is compatible with what <emphasis>--index-info --stdin</emphasis> of
+<emphasis>git update-index</emphasis> expects.</simpara>
+<simpara>When the <emphasis>-l</emphasis> option is used, format changes to</simpara>
+<literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; SP &lt;object size&gt; TAB &lt;file&gt;</literallayout>
+<simpara>Object size identified by &lt;object&gt; is given in bytes, and right-justified
+with minimum width of 7 characters.  Object size is given only for blobs
+(file) entries; for other entries <emphasis>-</emphasis> character is used in place of size.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-upload-pack(1)">
+<articleinfo>
+    <title>git-upload-pack(1)</title>
+<indexterm>
+<primary>git-upload-pack(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-upload-pack - Send objects packed back to git-fetch-pack</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git-upload-pack</emphasis> [--strict] [--timeout=&lt;n&gt;] &lt;directory&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Invoked by <emphasis>git fetch-pack</emphasis>, learns what
+objects the other side is missing, and sends them after packing.</simpara>
+<simpara>This command is usually not invoked directly by the end user.
+The UI for the protocol is on the <emphasis>git fetch-pack</emphasis> side, and the
+program pair is meant to be used to pull updates from a remote
+repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--strict
+</term>
+<listitem>
+<simpara>
+        Do not try &lt;directory&gt;/.git/ if &lt;directory&gt; is no git directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--timeout=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Interrupt transfer after &lt;n&gt; seconds of inactivity.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;directory&gt;
+</term>
+<listitem>
+<simpara>
+        The repository to sync from.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gitnamespaces(7)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

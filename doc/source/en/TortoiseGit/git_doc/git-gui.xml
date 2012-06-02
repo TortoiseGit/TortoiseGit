@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-gui(1)">
+<articleinfo>
+    <title>git-gui(1)</title>
+<indexterm>
+<primary>git-gui(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-gui - A portable graphical interface to Git</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git gui</emphasis> [&lt;command&gt;] [arguments]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>A Tcl/Tk based graphical user interface to Git.  <emphasis>git gui</emphasis> focuses
+on allowing users to make changes to their repository by making
+new commits, amending existing ones, creating branches, performing
+local merges, and fetching/pushing to remote repositories.</simpara>
+<simpara>Unlike <emphasis>gitk</emphasis>, <emphasis>git gui</emphasis> focuses on commit generation
+and single file annotation and does not show project history.
+It does however supply menu actions to start a <emphasis>gitk</emphasis> session from
+within <emphasis>git gui</emphasis>.</simpara>
+<simpara><emphasis>git gui</emphasis> is known to work on all popular UNIX systems, Mac OS X,
+and Windows (under both Cygwin and MSYS).  To the extent possible
+OS specific user interface guidelines are followed, making <emphasis>git gui</emphasis>
+a fairly native interface for users.</simpara>
+</simplesect>
+<simplesect id="_commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+blame
+</term>
+<listitem>
+<simpara>
+        Start a blame viewer on the specified file on the given
+        version (or working directory if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+browser
+</term>
+<listitem>
+<simpara>
+        Start a tree browser showing all files in the specified
+        commit (or <emphasis>HEAD</emphasis> by default).  Files selected through the
+        browser are opened in the blame viewer.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+citool
+</term>
+<listitem>
+<simpara>
+        Start <emphasis>git gui</emphasis> and arrange to make exactly one commit before
+        exiting and returning to the shell.  The interface is limited
+        to only commit actions, slightly reducing the application's
+        startup time and simplifying the menubar.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+version
+</term>
+<listitem>
+<simpara>
+        Display the currently running version of <emphasis>git gui</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git gui blame Makefile</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the contents of the file <emphasis>Makefile</emphasis> in the current
+        working directory, and provide annotations for both the
+        original author of each line, and who moved the line to its
+        current location.  The uncommitted file is annotated, and
+        uncommitted changes (if any) are explicitly attributed to
+        <emphasis>Not Yet Committed</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui blame v0.99.8 Makefile</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the contents of <emphasis>Makefile</emphasis> in revision <emphasis>v0.99.8</emphasis>
+        and provide annotations for each line.  Unlike the above
+        example the file is read from the object database and not
+        the working directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui blame --line=100 Makefile</emphasis>
+</term>
+<listitem>
+<simpara>
+        Loads annotations as described above and automatically
+        scrolls the view to center on line <emphasis>100</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui citool</emphasis>
+</term>
+<listitem>
+<simpara>
+        Make one commit and return to the shell when it is complete.
+        This command returns a non-zero exit code if the window was
+        closed in any way other than by making a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui citool --amend</emphasis>
+</term>
+<listitem>
+<simpara>
+        Automatically enter the <emphasis>Amend Last Commit</emphasis> mode of
+        the interface.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui citool --nocommit</emphasis>
+</term>
+<listitem>
+<simpara>
+        Behave as normal citool, but instead of making a commit
+        simply terminate with a zero exit code. It still checks
+        that the index does not contain any unmerged entries, so
+        you can use it as a GUI version of <xref linkend="git-mergetool(1)" />
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git citool</emphasis>
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>git gui citool</emphasis> (above).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git gui browser maint</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show a browser for the tree of the <emphasis>maint</emphasis> branch.  Files
+        selected in the browser can be viewed with the internal
+        blame viewer.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<variablelist>
+<varlistentry>
+<term>
+<xref linkend="gitk(1)" />
+</term>
+<listitem>
+<simpara>
+        The git repository browser.  Shows branches, commit history
+        and file differences.  gitk is the utility started by
+        <emphasis>git gui</emphasis>'s Repository Visualize actions.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_other">
+<title>Other</title>
+<simpara><emphasis>git gui</emphasis> is actually maintained as an independent project, but stable
+versions are distributed as part of the Git suite for the convenience
+of end users.</simpara>
+<simpara>A <emphasis>git gui</emphasis> development repository can be obtained from:</simpara>
+<literallayout class="monospaced">git clone git://repo.or.cz/git-gui.git</literallayout>
+<simpara>or</simpara>
+<literallayout class="monospaced">git clone http://repo.or.cz/r/git-gui.git</literallayout>
+<simpara>or browsed online at <ulink url="http://repo.or.cz/w/git-gui.git/">http://repo.or.cz/w/git-gui.git/</ulink>[].</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

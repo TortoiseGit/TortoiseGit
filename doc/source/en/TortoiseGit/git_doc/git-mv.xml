@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-mv(1)">
+<articleinfo>
+    <title>git-mv(1)</title>
+<indexterm>
+<primary>git-mv(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-mv - Move or rename a file, a directory, or a symlink</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git mv</emphasis> &lt;options&gt;&#8230; &lt;args&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This script is used to move or rename a file, directory or symlink.</simpara>
+<literallayout class="monospaced">git mv [-v] [-f] [-n] [-k] &lt;source&gt; &lt;destination&gt;
+git mv [-v] [-f] [-n] [-k] &lt;source&gt; ... &lt;destination directory&gt;</literallayout>
+<simpara>In the first form, it renames &lt;source&gt;, which must exist and be either
+a file, symlink or directory, to &lt;destination&gt;.
+In the second form, the last argument has to be an existing
+directory; the given sources will be moved into this directory.</simpara>
+<simpara>The index is updated after successful completion, but the change must still be
+committed.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Force renaming or moving of a file even if the target exists
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-k
+</term>
+<listitem>
+<simpara>
+        Skip move or rename actions which would lead to an error
+        condition. An error happens when a source is neither existing nor
+        controlled by GIT, or when it would overwrite an existing
+        file unless <emphasis>-f</emphasis> is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do nothing; only show what would happen
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Report the names of files as they are moved.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

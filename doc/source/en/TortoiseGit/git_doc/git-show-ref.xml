@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-show-ref(1)">
+<articleinfo>
+    <title>git-show-ref(1)</title>
+<indexterm>
+<primary>git-show-ref(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-show-ref - List references in a local repository</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git show-ref</emphasis> [-q|--quiet] [--verify] [--head] [-d|--dereference]
+             [-s|--hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]] [--tags]
+             [--heads] [--] [&lt;pattern&gt;&#8230;]
+<emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;] &lt; ref-list</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Displays references available in a local repository along with the associated
+commit IDs. Results can be filtered using a pattern and tags can be
+dereferenced into object IDs. Additionally, it can be used to test whether a
+particular ref exists.</simpara>
+<simpara>The --exclude-existing form is a filter that does the inverse, it shows the
+refs from stdin that don't exist in the local repository.</simpara>
+<simpara>Use of this utility is encouraged in favor of directly accessing files under
+the <emphasis>.git</emphasis> directory.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--head
+</term>
+<listitem>
+<simpara>
+        Show the HEAD reference.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--tags
+</term>
+<term>
+--heads
+</term>
+<listitem>
+<simpara>
+        Limit to only "refs/heads" and "refs/tags", respectively.  These
+        options are not mutually exclusive; when given both, references stored
+        in "refs/heads" and "refs/tags" are displayed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<term>
+--dereference
+</term>
+<listitem>
+<simpara>
+        Dereference tags into object IDs as well. They will be shown with "&#94;{}"
+        appended.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--hash[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Only show the SHA1 hash, not the reference name. When combined with
+        --dereference the dereferenced tag will still be shown after the SHA1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verify
+</term>
+<listitem>
+<simpara>
+        Enable stricter reference checking by requiring an exact ref path.
+        Aside from returning an error code of 1, it will also print an error
+        message if <emphasis>--quiet</emphasis> was not specified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abbrev[=&lt;n&gt;]
+</term>
+<listitem>
+<simpara>
+        Abbreviate the object name.  When using <emphasis>--hash</emphasis>, you do
+        not have to say <emphasis>--hash --abbrev</emphasis>; <emphasis>--hash=n</emphasis> would do.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Do not print any results to stdout. When combined with <emphasis>--verify</emphasis> this
+        can be used to silently check if a reference exists.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude-existing[=&lt;pattern&gt;]
+</term>
+<listitem>
+<simpara>
+        Make <emphasis>git show-ref</emphasis> act as a filter that reads refs from stdin of the
+        form "<emphasis>^(?:&lt;anything&gt;\s)?&lt;refname&gt;(?:\^{})?$</emphasis>"
+        and performs the following actions on each:
+        (1) strip "&#94;{}" at the end of line if any;
+        (2) ignore if pattern is provided and does not head-match refname;
+        (3) warn if refname is not a well-formed refname and skip;
+        (4) ignore if refname is a ref that exists in the local repository;
+        (5) otherwise output the line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;pattern&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        Show references matching one or more patterns. Patterns are matched from
+        the end of the full name, and only complete parts are matched, e.g.
+        <emphasis>master</emphasis> matches <emphasis>refs/heads/master</emphasis>, <emphasis>refs/remotes/origin/master</emphasis>,
+        <emphasis>refs/tags/jedi/master</emphasis> but not <emphasis>refs/heads/mymaster</emphasis> nor
+        <emphasis>refs/remotes/master/jedi</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_output">
+<title>OUTPUT</title>
+<simpara>The output is in the format: <emphasis>&lt;SHA-1 ID&gt;</emphasis> <emphasis>&lt;space&gt;</emphasis> <emphasis>&lt;reference name&gt;</emphasis>.</simpara>
+<screen>$ git show-ref --head --dereference
+832e76a9899f560a90ffd62ae2ce83bbeff58f54 HEAD
+832e76a9899f560a90ffd62ae2ce83bbeff58f54 refs/heads/master
+832e76a9899f560a90ffd62ae2ce83bbeff58f54 refs/heads/origin
+3521017556c5de4159da4615a39fa4d5d2c279b5 refs/tags/v0.99.9c
+6ddc0964034342519a87fe013781abf31c6db6ad refs/tags/v0.99.9c^{}
+055e4ae3ae6eb344cbabf2a5256a49ea66040131 refs/tags/v1.0rc4
+423325a2d24638ddcc82ce47be5e40be550f4507 refs/tags/v1.0rc4^{}
+...</screen>
+<simpara>When using --hash (and not --dereference) the output format is: <emphasis>&lt;SHA-1 ID&gt;</emphasis></simpara>
+<screen>$ git show-ref --heads --hash
+2e3ba0114a1f52b47df29743d6915d056be13278
+185008ae97960c8d551adcd9e23565194651b5d1
+03adf42c988195b50e1a1935ba5fcbc39b2b029b
+...</screen>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<simpara>To show all references called "master", whether tags or heads or anything
+else, and regardless of how deep in the reference naming hierarchy they are,
+use:</simpara>
+<screen>        git show-ref master</screen>
+<simpara>This will show "refs/heads/master" but also "refs/remote/other-repo/master",
+if such references exists.</simpara>
+<simpara>When using the <emphasis>--verify</emphasis> flag, the command requires an exact path:</simpara>
+<screen>        git show-ref --verify refs/heads/master</screen>
+<simpara>will only match the exact branch called "master".</simpara>
+<simpara>If nothing matches, <emphasis>git show-ref</emphasis> will return an error code of 1,
+and in the case of verification, it will show an error message.</simpara>
+<simpara>For scripting, you can ask it to be quiet with the "--quiet" flag, which
+allows you to do things like</simpara>
+<screen>        git show-ref --quiet --verify -- "refs/heads/$headname" ||
+                echo "$headname is not a valid branch"</screen>
+<simpara>to check whether a particular branch exists or not (notice how we don't
+actually want to show any results, and we want to use the full refname for it
+in order to not trigger the problem with ambiguous partial matches).</simpara>
+<simpara>To show only tags, or only proper branch heads, use "--tags" and/or "--heads"
+respectively (using both means that it shows tags and heads, but not other
+random references under the refs/ subdirectory).</simpara>
+<simpara>To do automatic tag object dereferencing, use the "-d" or "--dereference"
+flag, so you can do</simpara>
+<screen>        git show-ref --tags --dereference</screen>
+<simpara>to get a listing of all tags together with what they dereference.</simpara>
+</simplesect>
+<simplesect id="_files">
+<title>FILES</title>
+<simpara><emphasis>.git/refs/*</emphasis>, <emphasis>.git/packed-refs</emphasis></simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-ls-remote(1)" />,
+<xref linkend="git-update-ref(1)" />,
+<xref linkend="gitrepository-layout(5)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-prune(1)">
+<articleinfo>
+    <title>git-prune(1)</title>
+<indexterm>
+<primary>git-prune(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-prune - Prune all unreachable objects from the object database</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git prune</emphasis> [-n] [-v] [--expire &lt;expire&gt;] [--] [&lt;head&gt;&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<note><simpara>In most cases, users should run <emphasis>git gc</emphasis>, which calls
+<emphasis>git prune</emphasis>. See the section "NOTES", below.</simpara></note>
+<simpara>This runs <emphasis>git fsck --unreachable</emphasis> using all the refs
+available in <emphasis>refs/</emphasis>, optionally with additional set of
+objects specified on the command line, and prunes all unpacked
+objects unreachable from any of these head objects from the object database.
+In addition, it
+prunes the unpacked objects that are also found in packs by
+running <emphasis>git prune-packed</emphasis>.</simpara>
+<simpara>Note that unreachable, packed objects will remain.  If this is
+not desired, see <xref linkend="git-repack(1)" />.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Do not remove anything; just report what it would
+        remove.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Report all removed objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--
+</term>
+<listitem>
+<simpara>
+        Do not interpret any more arguments as options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--expire &lt;time&gt;
+</term>
+<listitem>
+<simpara>
+        Only expire loose objects older than &lt;time&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;head&gt;&#8230;
+</term>
+<listitem>
+<simpara>
+        In addition to objects
+        reachable from any of our references, keep objects
+        reachable from listed &lt;head&gt;s.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<simpara>To prune objects not used by your repository nor another that
+borrows from your repository via its
+<emphasis>.git/objects/info/alternates</emphasis>:</simpara>
+<screen>$ git prune $(cd ../another &amp;&amp; $(git rev-parse --all))</screen>
+</simplesect>
+<simplesect id="_notes">
+<title>Notes</title>
+<simpara>In most cases, users will not need to call <emphasis>git prune</emphasis> directly, but
+should instead call <emphasis>git gc</emphasis>, which handles pruning along with
+many other housekeeping tasks.</simpara>
+<simpara>For a description of which objects are considered for pruning, see
+<emphasis>git fsck</emphasis>'s --unreachable option.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fsck(1)" />,
+<xref linkend="git-gc(1)" />,
+<xref linkend="git-reflog(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

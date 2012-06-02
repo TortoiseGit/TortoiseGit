@@ -1,0 +1,173 @@
+Generating git docbook documentation:
+- Clone git
+- apply patch
+- change (system/global) asciidoc.conf
+  - comment:
+    (?su)(?<!\w)[\\]?(?P<name>http|https|ftp|file|irc|mailto|callto|image|link|anchor|xref|indexterm):(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
+    lsquo=&#8216;
+    rsquo=&#8217;
+    ldquo=&#8220;
+    rdquo=&#8221;
+    (^-- )=&#8212;&#8201;
+    (\n-- )|( -- )|( --\n)=&#8201;&#8212;&#8201;
+    (\w)--(\w)=\1&#8212;\2
+    (\w)'(\w)=\1&#8217;\2
+- make xml
+- take *.xml files
+- after generation change everyday.xml: article-id to everyday
+
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index 9ad6a6a..adfe07a 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -165,6 +165,8 @@ html: $(DOC_HTML)
+ 
+ $(DOC_HTML) $(DOC_MAN1) $(DOC_MAN5) $(DOC_MAN7): asciidoc.conf
+ 
++xml: cmd-list.perl $(MAN_XML) user-manual.xml everyday.xml
++
+ man: man1 man5 man7
+ man1: $(DOC_MAN1)
+ man5: $(DOC_MAN5)
+@@ -257,13 +259,13 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+ 
+ %.xml : %.txt
+ 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
+-	$(ASCIIDOC) -b docbook -d manpage -f asciidoc.conf \
++	$(ASCIIDOC) -b docbook -d article -f asciidoc.conf \
+ 		$(ASCIIDOC_EXTRA) -agit_version=$(GIT_VERSION) -o $@+ $< && \
+ 	mv $@+ $@
+ 
+ user-manual.xml: user-manual.txt user-manual.conf
+ 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
+-	$(ASCIIDOC) $(ASCIIDOC_EXTRA) -b docbook -d book -o $@+ $< && \
++	$(ASCIIDOC) $(ASCIIDOC_EXTRA) -b docbook -d article -o $@+ $< && \
+ 	mv $@+ $@
+ 
+ technical/api-index.txt: technical/api-index-skel.txt \
+diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
+index aea8627..5a920b6 100644
+--- a/Documentation/asciidoc.conf
++++ b/Documentation/asciidoc.conf
+@@ -9,6 +9,7 @@
+ 
+ [macros]
+ (?su)[\\]?(?P<name>linkgit):(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
++(?su)(?<!\w)[\\]?(?P<name>link):\S*?#(?P<target>\S*?)\[(?P<attrlist>.*?)\]=
+ 
+ [attributes]
+ asterisk=&#42;
+@@ -31,6 +32,49 @@ ifdef::backend-docbook[]
+ endif::backend-docbook[]
+ 
+ ifdef::backend-docbook[]
++[header-declarations]
++<?xml version="1.0" encoding="{encoding}"?>
++<!DOCTYPE {doctype-article?article}{doctype-book?book}{doctype-manpage?refentry} PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
++
++ifdef::doctype-article[]
++[header]
++template::[header-declarations]
++
++<article lang="{lang=en}" id="{doctitle}">
++<articleinfo>
++template::[docinfo]
++<indexterm>
++<primary>{doctitle}</primary>
++</indexterm>
++</articleinfo>
++
++[linkgit-inlinemacro]
++{0%{target}}
++<xref linkend="{target}({0})" />
++
++[link-inlinemacro]
++{0%{target}}
++<link linkend="{target}">{0}</link>
++
++[sect1]
++<simplesect{id? id="{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</simplesect>
++
++[literal-inlinemacro]
++# Inline literal.
++<emphasis>{passtext}</emphasis>
++
++[quotes]
++ifdef::no-inline-literal[]
++`=literal
++endif::no-inline-literal[]
++
++endif::doctype-article[]
++endif::backend-docbook[]
++
++ifdef::backend-docbook[]
+ ifndef::git-asciidoc-no-roff[]
+ # "unbreak" docbook-xsl v1.68 for manpages. v1.69 works with or without this.
+ # v1.72 breaks with this because it replaces dots not in roff requests.
+diff --git a/Documentation/user-manual.conf b/Documentation/user-manual.conf
+index 339b309..d422ae4 100644
+--- a/Documentation/user-manual.conf
++++ b/Documentation/user-manual.conf
+@@ -7,15 +7,44 @@ startsb=&#91;
+ endsb=&#93;
+ tilde=&#126;
+ 
++[header]
++template::[header-declarations]
++
++<article lang="{lang=en}">
++<articleinfo>
++template::[docinfo]
++</articleinfo>
++
+ [linkgit-inlinemacro]
+-<ulink url="{target}.html">{target}{0?({0})}</ulink>
++<xref linkend="{target}{0?({0})}" />
++
++[sect1]
++<section{id? id="{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
+ 
+-ifdef::backend-docbook[]
+-# "unbreak" docbook-xsl v1.68 for manpages. v1.69 works with or without this.
+ [listingblock]
+ <example><title>{title}</title>
+ <literallayout>
++ifdef::doctype-manpage[]
++&#10;.ft C&#10;
++endif::doctype-manpage[]
+ |
++ifdef::doctype-manpage[]
++&#10;.ft&#10;
++endif::doctype-manpage[]
+ </literallayout>
+ {title#}</example>
+-endif::backend-docbook[]
++endif::git-asciidoc-no-roff[]
++
++ifdef::git-asciidoc-no-roff[]
++ifdef::doctype-manpage[]
++# The following two small workarounds insert a simple paragraph after screen
++[listingblock]
++<example><title>{title}</title>
++<literallayout>
++|
++</literallayout><simpara></simpara>
++{title#}</example>
++endif::doctype-manpage[]
+diff --git a/Documentation/user-manual.txt b/Documentation/user-manual.txt
+index 1b94207..49a0a9c 100644
+--- a/Documentation/user-manual.txt
++++ b/Documentation/user-manual.txt
+@@ -1,5 +1,5 @@
+ Git User's Manual (for version 1.5.3 or newer)
+-______________________________________________
++==============================================
+ 
+ 
+ Git is a fast distributed revision control system.

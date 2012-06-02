@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-mktree(1)">
+<articleinfo>
+    <title>git-mktree(1)</title>
+<indexterm>
+<primary>git-mktree(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-mktree - Build a tree-object from ls-tree formatted text</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git mktree</emphasis> [-z] [--missing] [--batch]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Reads standard input in non-recursive <emphasis>ls-tree</emphasis> output format, and creates
+a tree object.  The order of the tree entries is normalised by mktree so
+pre-sorting the input is not required.  The object name of the tree object
+built is written to the standard output.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        Read the NUL-terminated <emphasis>ls-tree -z</emphasis> output instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--missing
+</term>
+<listitem>
+<simpara>
+        Allow missing objects.  The default behaviour (without this option)
+        is to verify that each tree entry's sha1 identifies an existing
+        object.  This option has no effect on the treatment of gitlink entries
+        (aka "submodules") which are always allowed to be missing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--batch
+</term>
+<listitem>
+<simpara>
+        Allow building of more than one tree object before exiting.  Each
+        tree is separated by as single blank line. The final new-line is
+        optional.  Note - if the <emphasis>-z</emphasis> option is used, lines are terminated
+        with NUL.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

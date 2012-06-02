@@ -1,0 +1,4925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-config(1)">
+<articleinfo>
+    <title>git-config(1)</title>
+<indexterm>
+<primary>git-config(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-config - Get and set repository or global options</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git config</emphasis> [&lt;file-option&gt;] [type] [-z|--null] name [value [value_regex]]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [type] --add name value
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [type] --replace-all name value [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [type] [-z|--null] --get name [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [type] [-z|--null] --get-all name [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [type] [-z|--null] --get-regexp name_regex [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --unset name [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --unset-all name [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --rename-section old_name new_name
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --remove-section name
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [-z|--null] -l | --list
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --get-color name [default]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] --get-colorbool name [stdout-is-tty]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] -e | --edit</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>You can query/set/replace/unset options with this command. The name is
+actually the section and the key separated by a dot, and the value will be
+escaped.</simpara>
+<simpara>Multiple lines can be added to an option by using the <emphasis>--add</emphasis> option.
+If you want to update or unset an option which can occur on multiple
+lines, a POSIX regexp <emphasis>value_regex</emphasis> needs to be given.  Only the
+existing values that match the regexp are updated or unset.  If
+you want to handle the lines that do <emphasis role="strong">not</emphasis> match the regex, just
+prepend a single exclamation mark in front (see also <xref linkend="EXAMPLES"/>).</simpara>
+<simpara>The type specifier can be either <emphasis>--int</emphasis> or <emphasis>--bool</emphasis>, to make
+<emphasis>git config</emphasis> ensure that the variable(s) are of the given type and
+convert the value to the canonical form (simple decimal number for int,
+a "true" or "false" string for bool), or <emphasis>--path</emphasis>, which does some
+path expansion (see <emphasis>--path</emphasis> below).  If no type specifier is passed, no
+checks or transformations are performed on the value.</simpara>
+<simpara>When reading, the values are read from the system, global and
+repository local configuration files by default, and options
+<emphasis>--system</emphasis>, <emphasis>--global</emphasis>, <emphasis>--local</emphasis> and <emphasis>--file &lt;filename&gt;</emphasis> can be
+used to tell the command to read from only that location (see <xref linkend="FILES"/>).</simpara>
+<simpara>When writing, the new value is written to the repository local
+configuration file by default, and options <emphasis>--system</emphasis>, <emphasis>--global</emphasis>,
+<emphasis>--file &lt;filename&gt;</emphasis> can be used to tell the command to write to
+that location (you can say <emphasis>--local</emphasis> but that is the default).</simpara>
+<simpara>This command will fail (with exit code ret) if:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+The config file is invalid (ret=3),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+can not write to the config file (ret=4),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+no section or name was provided (ret=2),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the section or key is invalid (ret=1),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+you try to unset an option which does not exist (ret=5),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+you try to unset/set an option for which multiple lines match (ret=5),
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+you try to use an invalid regexp (ret=6), or
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+you use <emphasis>--global</emphasis> option without $HOME being properly set (ret=128).
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>On success, the command returns the exit code 0.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--replace-all
+</term>
+<listitem>
+<simpara>
+        Default behavior is to replace at most one line. This replaces
+        all lines matching the key (and optionally the value_regex).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--add
+</term>
+<listitem>
+<simpara>
+        Adds a new line to the option without altering any existing
+        values.  This is the same as providing <emphasis>^$</emphasis> as the value_regex
+        in <emphasis>--replace-all</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--get
+</term>
+<listitem>
+<simpara>
+        Get the value for a given key (optionally filtered by a regex
+        matching the value). Returns error code 1 if the key was not
+        found and error code 2 if multiple key values were found.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--get-all
+</term>
+<listitem>
+<simpara>
+        Like get, but does not fail if the number of values for the key
+        is not exactly one.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--get-regexp
+</term>
+<listitem>
+<simpara>
+        Like --get-all, but interprets the name as a regular expression and
+        writes out the key names.  Regular expression matching is currently
+        case-sensitive and done against a canonicalized version of the key
+        in which section and variable names are lowercased, but subsection
+        names are not.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--global
+</term>
+<listitem>
+<simpara>
+        For writing options: write to global ~/.gitconfig file rather than
+        the repository .git/config.
+</simpara>
+<simpara>For reading options: read only from global ~/.gitconfig rather than
+from all available files.</simpara>
+<simpara>See also <xref linkend="FILES"/>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--system
+</term>
+<listitem>
+<simpara>
+        For writing options: write to system-wide $(prefix)/etc/gitconfig
+        rather than the repository .git/config.
+</simpara>
+<simpara>For reading options: read only from system-wide $(prefix)/etc/gitconfig
+rather than from all available files.</simpara>
+<simpara>See also <xref linkend="FILES"/>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f config-file
+</term>
+<term>
+--file config-file
+</term>
+<listitem>
+<simpara>
+        Use the given config file instead of the one specified by GIT_CONFIG.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--remove-section
+</term>
+<listitem>
+<simpara>
+        Remove the given section from the configuration file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--rename-section
+</term>
+<listitem>
+<simpara>
+        Rename the given section to a new name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unset
+</term>
+<listitem>
+<simpara>
+        Remove the line matching the key from config file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--unset-all
+</term>
+<listitem>
+<simpara>
+        Remove all lines matching the key from config file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l
+</term>
+<term>
+--list
+</term>
+<listitem>
+<simpara>
+        List all variables set in config file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--bool
+</term>
+<listitem>
+<simpara>
+        <emphasis>git config</emphasis> will ensure that the output is "true" or "false"
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--int
+</term>
+<listitem>
+<simpara>
+        <emphasis>git config</emphasis> will ensure that the output is a simple
+        decimal number.  An optional value suffix of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis>
+        in the config file will cause the value to be multiplied
+        by 1024, 1048576, or 1073741824 prior to output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--bool-or-int
+</term>
+<listitem>
+<simpara>
+        <emphasis>git config</emphasis> will ensure that the output matches the format of
+        either --bool or --int, as described above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--path
+</term>
+<listitem>
+<simpara>
+        <emphasis>git-config</emphasis> will expand leading <emphasis>&#126;</emphasis> to the value of
+        <emphasis>$HOME</emphasis>, and <emphasis>&#126;user</emphasis> to the home directory for the
+        specified user.  This option has no effect when setting the
+        value (but you can use <emphasis>git config bla &#126;/</emphasis> from the
+        command line to let your shell do the expansion).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<term>
+--null
+</term>
+<listitem>
+<simpara>
+        For all options that output values and/or keys, always
+        end values with the null character (instead of a
+        newline). Use newline instead as a delimiter between
+        key and value. This allows for secure parsing of the
+        output without getting confused e.g. by values that
+        contain line breaks.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--get-colorbool name [stdout-is-tty]
+</term>
+<listitem>
+<simpara>
+        Find the color setting for <emphasis>name</emphasis> (e.g. <emphasis>color.diff</emphasis>) and output
+        "true" or "false".  <emphasis>stdout-is-tty</emphasis> should be either "true" or
+        "false", and is taken into account when configuration says
+        "auto".  If <emphasis>stdout-is-tty</emphasis> is missing, then checks the standard
+        output of the command itself, and exits with status 0 if color
+        is to be used, or exits with status 1 otherwise.
+        When the color setting for <emphasis>name</emphasis> is undefined, the command uses
+        <emphasis>color.ui</emphasis> as fallback.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--get-color name [default]
+</term>
+<listitem>
+<simpara>
+        Find the color configured for <emphasis>name</emphasis> (e.g. <emphasis>color.diff.new</emphasis>) and
+        output it as the ANSI color escape sequence to the standard
+        output.  The optional <emphasis>default</emphasis> parameter is used instead, if
+        there is no color configured for <emphasis>name</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-e
+</term>
+<term>
+--edit
+</term>
+<listitem>
+<simpara>
+        Opens an editor to modify the specified config file; either
+        <emphasis>--system</emphasis>, <emphasis>--global</emphasis>, or repository (default).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--includes
+</term>
+<term>
+--no-includes
+</term>
+<listitem>
+<simpara>
+        Respect <emphasis>include.*</emphasis> directives in config files when looking up
+        values. Defaults to on.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="FILES">
+<title>FILES</title>
+<simpara>If not set explicitly with <emphasis>--file</emphasis>, there are three files where
+<emphasis>git config</emphasis> will search for configuration options:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+$GIT_DIR/config
+</term>
+<listitem>
+<simpara>
+        Repository specific configuration file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+~/.gitconfig
+</term>
+<listitem>
+<simpara>
+        User-specific configuration file. Also called "global"
+        configuration file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+$(prefix)/etc/gitconfig
+</term>
+<listitem>
+<simpara>
+        System-wide configuration file.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If no further options are given, all reading options will read all of these
+files that are available. If the global or the system-wide configuration
+file are not available they will be ignored. If the repository configuration
+file is not available or readable, <emphasis>git config</emphasis> will exit with a non-zero
+error code. However, in neither case will an error message be issued.</simpara>
+<simpara>All writing options will per default write to the repository specific
+configuration file. Note that this also affects options like <emphasis>--replace-all</emphasis>
+and <emphasis>--unset</emphasis>. <emphasis role="strong"><emphasis>git config</emphasis> will only ever change one file at a time</emphasis>.</simpara>
+<simpara>You can override these rules either by command line options or by environment
+variables. The <emphasis>--global</emphasis> and the <emphasis>--system</emphasis> options will limit the file used
+to the global or system-wide file respectively. The GIT_CONFIG environment
+variable has a similar effect, but you can specify any filename you want.</simpara>
+</simplesect>
+<simplesect id="_environment">
+<title>ENVIRONMENT</title>
+<variablelist>
+<varlistentry>
+<term>
+GIT_CONFIG
+</term>
+<listitem>
+<simpara>
+        Take the configuration from the given file instead of .git/config.
+        Using the "--global" option forces this to ~/.gitconfig. Using the
+        "--system" option forces this to $(prefix)/etc/gitconfig.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>See also <xref linkend="FILES"/>.</simpara>
+</simplesect>
+<simplesect id="EXAMPLES">
+<title>EXAMPLES</title>
+<simpara>Given a .git/config like this:</simpara>
+<literallayout class="monospaced">#
+# This is the config file, and
+# a '#' or ';' character indicates
+# a comment
+#</literallayout>
+<literallayout class="monospaced">; core variables
+[core]
+        ; Don't trust file modes
+        filemode = false</literallayout>
+<literallayout class="monospaced">; Our diff algorithm
+[diff]
+        external = /usr/local/bin/diff-wrapper
+        renames = true</literallayout>
+<literallayout class="monospaced">; Proxy settings
+[core]
+        gitproxy="proxy-command" for kernel.org
+        gitproxy=default-proxy ; for all the rest</literallayout>
+<simpara>you can set the filemode to true with</simpara>
+<screen>% git config core.filemode true</screen>
+<simpara>The hypothetical proxy command entries actually have a postfix to discern
+what URL they apply to. Here is how to change the entry for kernel.org
+to "ssh".</simpara>
+<screen>% git config core.gitproxy '"ssh" for kernel.org' 'for kernel.org$'</screen>
+<simpara>This makes sure that only the key/value pair for kernel.org is replaced.</simpara>
+<simpara>To delete the entry for renames, do</simpara>
+<screen>% git config --unset diff.renames</screen>
+<simpara>If you want to delete an entry for a multivar (like core.gitproxy above),
+you have to provide a regex matching the value of exactly one line.</simpara>
+<simpara>To query the value for a given key, do</simpara>
+<screen>% git config --get core.filemode</screen>
+<simpara>or</simpara>
+<screen>% git config core.filemode</screen>
+<simpara>or, to query a multivar:</simpara>
+<screen>% git config --get core.gitproxy "for kernel.org$"</screen>
+<simpara>If you want to know all the values for a multivar, do:</simpara>
+<screen>% git config --get-all core.gitproxy</screen>
+<simpara>If you like to live dangerously, you can replace <emphasis role="strong">all</emphasis> core.gitproxy by a
+new one with</simpara>
+<screen>% git config --replace-all core.gitproxy ssh</screen>
+<simpara>However, if you really only want to replace the line for the default proxy,
+i.e. the one without a "for &#8230;" postfix, do something like this:</simpara>
+<screen>% git config core.gitproxy ssh '! for '</screen>
+<simpara>To actually match only values with an exclamation mark, you have to</simpara>
+<screen>% git config section.key value '[!]'</screen>
+<simpara>To add a new proxy, without altering any of the existing ones, use</simpara>
+<screen>% git config core.gitproxy '"proxy-command" for example.com'</screen>
+<simpara>An example to use customized color from the configuration in your
+script:</simpara>
+<screen>#!/bin/sh
+WS=$(git config --get-color color.diff.whitespace "blue reverse")
+RESET=$(git config --get-color "" "reset")
+echo "${WS}your whitespace color or blue reverse${RESET}"</screen>
+</simplesect>
+<simplesect id="_configuration_file">
+<title>CONFIGURATION FILE</title>
+<simpara>The git configuration file contains a number of variables that affect
+the git command's behavior. The <emphasis>.git/config</emphasis> file in each repository
+is used to store the configuration for that repository, and
+<emphasis>$HOME/.gitconfig</emphasis> is used to store a per-user configuration as
+fallback values for the <emphasis>.git/config</emphasis> file. The file <emphasis>/etc/gitconfig</emphasis>
+can be used to store a system-wide default configuration.</simpara>
+<simpara>The configuration variables are used by both the git plumbing
+and the porcelains. The variables are divided into sections, wherein
+the fully qualified variable name of the variable itself is the last
+dot-separated segment and the section name is everything before the last
+dot. The variable names are case-insensitive, allow only alphanumeric
+characters and <emphasis>-</emphasis>, and must start with an alphabetic character.  Some
+variables may appear multiple times.</simpara>
+<section id="_syntax">
+<title>Syntax</title>
+<simpara>The syntax is fairly flexible and permissive; whitespaces are mostly
+ignored.  The <emphasis>#</emphasis> and <emphasis>;</emphasis> characters begin comments to the end of line,
+blank lines are ignored.</simpara>
+<simpara>The file consists of sections and variables.  A section begins with
+the name of the section in square brackets and continues until the next
+section begins.  Section names are not case sensitive.  Only alphanumeric
+characters, <emphasis>-</emphasis> and <emphasis>.</emphasis> are allowed in section names.  Each variable
+must belong to some section, which means that there must be a section
+header before the first setting of a variable.</simpara>
+<simpara>Sections can be further divided into subsections.  To begin a subsection
+put its name in double quotes, separated by space from the section name,
+in the section header, like in the example below:</simpara>
+<screen>        [section "subsection"]</screen>
+<simpara>Subsection names are case sensitive and can contain any characters except
+newline (doublequote <emphasis>"</emphasis> and backslash have to be escaped as <emphasis>\"</emphasis> and <emphasis>\\</emphasis>,
+respectively).  Section headers cannot span multiple
+lines.  Variables may belong directly to a section or to a given subsection.
+You can have <emphasis>[section]</emphasis> if you have <emphasis>[section "subsection"]</emphasis>, but you
+don't need to.</simpara>
+<simpara>There is also a deprecated <emphasis>[section.subsection]</emphasis> syntax. With this
+syntax, the subsection name is converted to lower-case and is also
+compared case sensitively. These subsection names follow the same
+restrictions as section names.</simpara>
+<simpara>All the other lines (and the remainder of the line after the section
+header) are recognized as setting variables, in the form
+<emphasis>name = value</emphasis>.  If there is no equal sign on the line, the entire line
+is taken as <emphasis>name</emphasis> and the variable is recognized as boolean "true".
+The variable names are case-insensitive, allow only alphanumeric characters
+and <emphasis>-</emphasis>, and must start with an alphabetic character.  There can be more
+than one value for a given variable; we say then that the variable is
+multivalued.</simpara>
+<simpara>Leading and trailing whitespace in a variable value is discarded.
+Internal whitespace within a variable value is retained verbatim.</simpara>
+<simpara>The values following the equals sign in variable assign are all either
+a string, an integer, or a boolean.  Boolean values may be given as yes/no,
+1/0, true/false or on/off.  Case is not significant in boolean values, when
+converting value to the canonical form using <emphasis>--bool</emphasis> type specifier;
+<emphasis>git config</emphasis> will ensure that the output is "true" or "false".</simpara>
+<simpara>String values may be entirely or partially enclosed in double quotes.
+You need to enclose variable values in double quotes if you want to
+preserve leading or trailing whitespace, or if the variable value contains
+comment characters (i.e. it contains <emphasis>#</emphasis> or <emphasis>;</emphasis>).
+Double quote <emphasis>"</emphasis> and backslash <emphasis>\</emphasis> characters in variable values must
+be escaped: use <emphasis>\"</emphasis> for <emphasis>"</emphasis> and <emphasis>\\</emphasis> for <emphasis>\</emphasis>.</simpara>
+<simpara>The following escape sequences (beside <emphasis>\"</emphasis> and <emphasis>\\</emphasis>) are recognized:
+<emphasis>\n</emphasis> for newline character (NL), <emphasis>\t</emphasis> for horizontal tabulation (HT, TAB)
+and <emphasis>\b</emphasis> for backspace (BS).  No other char escape sequence, nor octal
+char sequences are valid.</simpara>
+<simpara>Variable values ending in a <emphasis>\</emphasis> are continued on the next line in the
+customary UNIX fashion.</simpara>
+<simpara>Some variables may require a special value format.</simpara>
+</section>
+<section id="_includes">
+<title>Includes</title>
+<simpara>You can include one config file from another by setting the special
+<emphasis>include.path</emphasis> variable to the name of the file to be included. The
+included file is expanded immediately, as if its contents had been
+found at the location of the include directive. If the value of the
+<emphasis>include.path</emphasis> variable is a relative path, the path is considered to be
+relative to the configuration file in which the include directive was
+found. The value of <emphasis>include.path</emphasis> is subject to tilde expansion: <emphasis>{tilde}/</emphasis>
+is expanded to the value of <emphasis>$HOME</emphasis>, and <emphasis>{tilde}user/</emphasis> to the specified
+user's home directory. See below for examples.</simpara>
+</section>
+<section id="_example">
+<title>Example</title>
+<literallayout class="monospaced"># Core variables
+[core]
+        ; Don't trust file modes
+        filemode = false</literallayout>
+<literallayout class="monospaced"># Our diff algorithm
+[diff]
+        external = /usr/local/bin/diff-wrapper
+        renames = true</literallayout>
+<literallayout class="monospaced">[branch "devel"]
+        remote = origin
+        merge = refs/heads/devel</literallayout>
+<literallayout class="monospaced"># Proxy settings
+[core]
+        gitProxy="ssh" for "kernel.org"
+        gitProxy=default-proxy ; for the rest</literallayout>
+<literallayout class="monospaced">[include]
+        path = /path/to/foo.inc ; include by absolute path
+        path = foo ; expand "foo" relative to the current file
+        path = ~/foo ; expand "foo" in your $HOME directory</literallayout>
+</section>
+<section id="_variables">
+<title>Variables</title>
+<simpara>Note that this list is non-comprehensive and not necessarily complete.
+For command-specific variables, you will find a more detailed description
+in the appropriate manual page. You will find a description of non-core
+porcelain configuration variables in the respective porcelain documentation.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+advice.*
+</term>
+<listitem>
+<simpara>
+        These variables control various optional help messages designed to
+        aid new users. All <emphasis>advice.*</emphasis> variables default to <emphasis>true</emphasis>, and you
+        can tell Git that you do not need help by setting these to <emphasis>false</emphasis>:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+pushNonFastForward
+</term>
+<listitem>
+<simpara>
+                Set this variable to <emphasis>false</emphasis> if you want to disable
+                <emphasis>pushNonFFCurrent</emphasis>, <emphasis>pushNonFFDefault</emphasis>, and
+                <emphasis>pushNonFFMatching</emphasis> simultaneously.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pushNonFFCurrent
+</term>
+<listitem>
+<simpara>
+                Advice shown when <xref linkend="git-push(1)" /> fails due to a
+                non-fast-forward update to the current branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pushNonFFDefault
+</term>
+<listitem>
+<simpara>
+                Advice to set <emphasis>push.default</emphasis> to <emphasis>upstream</emphasis> or <emphasis>current</emphasis>
+                when you ran <xref linkend="git-push(1)" /> and pushed <emphasis>matching
+                refs</emphasis> by default (i.e. you did not provide an explicit
+                refspec, and no <emphasis>push.default</emphasis> configuration was set)
+                and it resulted in a non-fast-forward error.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pushNonFFMatching
+</term>
+<listitem>
+<simpara>
+                Advice shown when you ran <xref linkend="git-push(1)" /> and pushed
+                <emphasis>matching refs</emphasis> explicitly (i.e. you used <emphasis>:</emphasis>, or
+                specified a refspec that isn't your current branch) and
+                it resulted in a non-fast-forward error.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+statusHints
+</term>
+<listitem>
+<simpara>
+                Directions on how to stage/unstage/add shown in the
+                output of <xref linkend="git-status(1)" /> and the template shown
+                when writing commit messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commitBeforeMerge
+</term>
+<listitem>
+<simpara>
+                Advice shown when <xref linkend="git-merge(1)" /> refuses to
+                merge to avoid overwriting local changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+resolveConflict
+</term>
+<listitem>
+<simpara>
+                Advices shown by various commands when conflicts
+                prevent the operation from being performed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+implicitIdentity
+</term>
+<listitem>
+<simpara>
+                Advice on how to set your identity configuration when
+                your information is guessed from the system username and
+                domain name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+detachedHead
+</term>
+<listitem>
+<simpara>
+                Advice shown when you used <xref linkend="git-checkout(1)" /> to
+                move to the detach HEAD state, to instruct how to create
+                a local branch after the fact.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.fileMode
+</term>
+<listitem>
+<simpara>
+        If false, the executable bit differences between the index and
+        the working tree are ignored; useful on broken filesystems like FAT.
+        See <xref linkend="git-update-index(1)" />.
+</simpara>
+<simpara>The default is true, except <xref linkend="git-clone(1)" /> or <xref linkend="git-init(1)" />
+will probe and set core.fileMode false if appropriate when the
+repository is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.ignoreCygwinFSTricks
+</term>
+<listitem>
+<simpara>
+        This option is only used by Cygwin implementation of Git. If false,
+        the Cygwin stat() and lstat() functions are used. This may be useful
+        if your repository consists of a few separate directories joined in
+        one hierarchy using Cygwin mount. If true, Git uses native Win32 API
+        whenever it is possible and falls back to Cygwin functions only to
+        handle symbol links. The native mode is more than twice faster than
+        normal Cygwin l/stat() functions. True by default, unless core.filemode
+        is true, in which case ignoreCygwinFSTricks is ignored as Cygwin's
+        POSIX emulation is required to support core.filemode.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.ignorecase
+</term>
+<listitem>
+<simpara>
+        If true, this option enables various workarounds to enable
+        git to work better on filesystems that are not case sensitive,
+        like FAT. For example, if a directory listing finds
+        "makefile" when git expects "Makefile", git will assume
+        it is really the same file, and continue to remember it as
+        "Makefile".
+</simpara>
+<simpara>The default is false, except <xref linkend="git-clone(1)" /> or <xref linkend="git-init(1)" />
+will probe and set core.ignorecase true if appropriate when the repository
+is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.trustctime
+</term>
+<listitem>
+<simpara>
+        If false, the ctime differences between the index and the
+        working tree are ignored; useful when the inode change time
+        is regularly modified by something outside Git (file system
+        crawlers and some backup systems).
+        See <xref linkend="git-update-index(1)" />. True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.quotepath
+</term>
+<listitem>
+<simpara>
+        The commands that output paths (e.g. <emphasis>ls-files</emphasis>,
+        <emphasis>diff</emphasis>), when not given the <emphasis>-z</emphasis> option, will quote
+        "unusual" characters in the pathname by enclosing the
+        pathname in a double-quote pair and with backslashes the
+        same way strings in C source code are quoted.  If this
+        variable is set to false, the bytes higher than 0x80 are
+        not quoted but output as verbatim.  Note that double
+        quote, backslash and control characters are always
+        quoted without <emphasis>-z</emphasis> regardless of the setting of this
+        variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.eol
+</term>
+<listitem>
+<simpara>
+        Sets the line ending type to use in the working directory for
+        files that have the <emphasis>text</emphasis> property set.  Alternatives are
+        <emphasis>lf</emphasis>, <emphasis>crlf</emphasis> and <emphasis>native</emphasis>, which uses the platform's native
+        line ending.  The default value is <emphasis>native</emphasis>.  See
+        <xref linkend="gitattributes(5)" /> for more information on end-of-line
+        conversion.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.safecrlf
+</term>
+<listitem>
+<simpara>
+        If true, makes git check if converting <emphasis>CRLF</emphasis> is reversible when
+        end-of-line conversion is active.  Git will verify if a command
+        modifies a file in the work tree either directly or indirectly.
+        For example, committing a file followed by checking out the
+        same file should yield the original file in the work tree.  If
+        this is not the case for the current setting of
+        <emphasis>core.autocrlf</emphasis>, git will reject the file.  The variable can
+        be set to "warn", in which case git will only warn about an
+        irreversible conversion but continue the operation.
+</simpara>
+<simpara>CRLF conversion bears a slight chance of corrupting data.
+When it is enabled, git will convert CRLF to LF during commit and LF to
+CRLF during checkout.  A file that contains a mixture of LF and
+CRLF before the commit cannot be recreated by git.  For text
+files this is the right thing to do: it corrects line endings
+such that we have only LF line endings in the repository.
+But for binary files that are accidentally classified as text the
+conversion can corrupt data.</simpara>
+<simpara>If you recognize such corruption early you can easily fix it by
+setting the conversion type explicitly in .gitattributes.  Right
+after committing you still have the original file in your work
+tree and this file is not yet corrupted.  You can explicitly tell
+git that this file is binary and git will handle the file
+appropriately.</simpara>
+<simpara>Unfortunately, the desired effect of cleaning up text files with
+mixed line endings and the undesired effect of corrupting binary
+files cannot be distinguished.  In both cases CRLFs are removed
+in an irreversible way.  For text files this is the right thing
+to do because CRLFs are line endings, while for binary files
+converting CRLFs corrupts data.</simpara>
+<simpara>Note, this safety check does not mean that a checkout will generate a
+file identical to the original file for a different setting of
+<emphasis>core.eol</emphasis> and <emphasis>core.autocrlf</emphasis>, but only for the current one.  For
+example, a text file with <emphasis>LF</emphasis> would be accepted with <emphasis>core.eol=lf</emphasis>
+and could later be checked out with <emphasis>core.eol=crlf</emphasis>, in which case the
+resulting file would contain <emphasis>CRLF</emphasis>, although the original file
+contained <emphasis>LF</emphasis>.  However, in both work trees the line endings would be
+consistent, that is either all <emphasis>LF</emphasis> or all <emphasis>CRLF</emphasis>, but never mixed.  A
+file with mixed line endings would be reported by the <emphasis>core.safecrlf</emphasis>
+mechanism.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.autocrlf
+</term>
+<listitem>
+<simpara>
+        Setting this variable to "true" is almost the same as setting
+        the <emphasis>text</emphasis> attribute to "auto" on all files except that text
+        files are not guaranteed to be normalized: files that contain
+        <emphasis>CRLF</emphasis> in the repository will not be touched.  Use this
+        setting if you want to have <emphasis>CRLF</emphasis> line endings in your
+        working directory even though the repository does not have
+        normalized line endings.  This variable can be set to <emphasis>input</emphasis>,
+        in which case no output conversion is performed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.symlinks
+</term>
+<listitem>
+<simpara>
+        If false, symbolic links are checked out as small plain files that
+        contain the link text. <xref linkend="git-update-index(1)" /> and
+        <xref linkend="git-add(1)" /> will not change the recorded type to regular
+        file. Useful on filesystems like FAT that do not support
+        symbolic links.
+</simpara>
+<simpara>The default is true, except <xref linkend="git-clone(1)" /> or <xref linkend="git-init(1)" />
+will probe and set core.symlinks false if appropriate when the repository
+is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.gitProxy
+</term>
+<listitem>
+<simpara>
+        A "proxy command" to execute (as <emphasis>command host port</emphasis>) instead
+        of establishing direct connection to the remote server when
+        using the git protocol for fetching. If the variable value is
+        in the "COMMAND for DOMAIN" format, the command is applied only
+        on hostnames ending with the specified domain string. This variable
+        may be set multiple times and is matched in the given order;
+        the first match wins.
+</simpara>
+<simpara>Can be overridden by the <emphasis>GIT_PROXY_COMMAND</emphasis> environment variable
+(which always applies universally, without the special "for"
+handling).</simpara>
+<simpara>The special string <emphasis>none</emphasis> can be used as the proxy command to
+specify that no proxy be used for a given domain pattern.
+This is useful for excluding servers inside a firewall from
+proxy use, while defaulting to a common proxy for external domains.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.ignoreStat
+</term>
+<listitem>
+<simpara>
+        If true, commands which modify both the working tree and the index
+        will mark the updated paths with the "assume unchanged" bit in the
+        index. These marked files are then assumed to stay unchanged in the
+        working tree, until you mark them otherwise manually - Git will not
+        detect the file changes by lstat() calls. This is useful on systems
+        where those are very slow, such as Microsoft Windows.
+        See <xref linkend="git-update-index(1)" />.
+        False by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.preferSymlinkRefs
+</term>
+<listitem>
+<simpara>
+        Instead of the default "symref" format for HEAD
+        and other symbolic reference files, use symbolic links.
+        This is sometimes needed to work with old scripts that
+        expect HEAD to be a symbolic link.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.bare
+</term>
+<listitem>
+<simpara>
+        If true this repository is assumed to be <emphasis>bare</emphasis> and has no
+        working directory associated with it.  If this is the case a
+        number of commands that require a working directory will be
+        disabled, such as <xref linkend="git-add(1)" /> or <xref linkend="git-merge(1)" />.
+</simpara>
+<simpara>This setting is automatically guessed by <xref linkend="git-clone(1)" /> or
+<xref linkend="git-init(1)" /> when the repository was created.  By default a
+repository that ends in "/.git" is assumed to be not bare (bare =
+false), while all other repositories are assumed to be bare (bare
+= true).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.worktree
+</term>
+<listitem>
+<simpara>
+        Set the path to the root of the working tree.
+        This can be overridden by the GIT_WORK_TREE environment
+        variable and the <emphasis>--work-tree</emphasis> command line option.
+        The value can be an absolute path or relative to the path to
+        the .git directory, which is either specified by --git-dir
+        or GIT_DIR, or automatically discovered.
+        If --git-dir or GIT_DIR is specified but none of
+        --work-tree, GIT_WORK_TREE and core.worktree is specified,
+        the current working directory is regarded as the top level
+        of your working tree.
+</simpara>
+<simpara>Note that this variable is honored even when set in a configuration
+file in a ".git" subdirectory of a directory and its value differs
+from the latter directory (e.g. "/path/to/.git/config" has
+core.worktree set to "/different/path"), which is most likely a
+misconfiguration.  Running git commands in the "/path/to" directory will
+still use "/different/path" as the root of the work tree and can cause
+confusion unless you know what you are doing (e.g. you are creating a
+read-only snapshot of the same index to a location different from the
+repository's usual working tree).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.logAllRefUpdates
+</term>
+<listitem>
+<simpara>
+        Enable the reflog. Updates to a ref &lt;ref&gt; is logged to the file
+        "$GIT_DIR/logs/&lt;ref&gt;", by appending the new and old
+        SHA1, the date/time and the reason of the update, but
+        only when the file exists.  If this configuration
+        variable is set to true, missing "$GIT_DIR/logs/&lt;ref&gt;"
+        file is automatically created for branch heads (i.e. under
+        refs/heads/), remote refs (i.e. under refs/remotes/),
+        note refs (i.e. under refs/notes/), and the symbolic ref HEAD.
+</simpara>
+<simpara>This information can be used to determine what commit
+was the tip of a branch "2 days ago".</simpara>
+<simpara>This value is true by default in a repository that has
+a working directory associated with it, and false by
+default in a bare repository.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.repositoryFormatVersion
+</term>
+<listitem>
+<simpara>
+        Internal variable identifying the repository format and layout
+        version.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.sharedRepository
+</term>
+<listitem>
+<simpara>
+        When <emphasis>group</emphasis> (or <emphasis>true</emphasis>), the repository is made shareable between
+        several users in a group (making sure all the files and objects are
+        group-writable). When <emphasis>all</emphasis> (or <emphasis>world</emphasis> or <emphasis>everybody</emphasis>), the
+        repository will be readable by all users, additionally to being
+        group-shareable. When <emphasis>umask</emphasis> (or <emphasis>false</emphasis>), git will use permissions
+        reported by umask(2). When <emphasis>0xxx</emphasis>, where <emphasis>0xxx</emphasis> is an octal number,
+        files in the repository will have this mode value. <emphasis>0xxx</emphasis> will override
+        user's umask value (whereas the other options will only override
+        requested parts of the user's umask value). Examples: <emphasis>0660</emphasis> will make
+        the repo read/write-able for the owner and group, but inaccessible to
+        others (equivalent to <emphasis>group</emphasis> unless umask is e.g. <emphasis>0022</emphasis>). <emphasis>0640</emphasis> is a
+        repository that is group-readable but not group-writable.
+        See <xref linkend="git-init(1)" />. False by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.warnAmbiguousRefs
+</term>
+<listitem>
+<simpara>
+        If true, git will warn you if the ref name you passed it is ambiguous
+        and might match multiple refs in the .git/refs/ tree. True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.compression
+</term>
+<listitem>
+<simpara>
+        An integer -1..9, indicating a default compression level.
+        -1 is the zlib default. 0 means no compression,
+        and 1..9 are various speed/size tradeoffs, 9 being slowest.
+        If set, this provides a default to other compression variables,
+        such as <emphasis>core.loosecompression</emphasis> and <emphasis>pack.compression</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.loosecompression
+</term>
+<listitem>
+<simpara>
+        An integer -1..9, indicating the compression level for objects that
+        are not in a pack file. -1 is the zlib default. 0 means no
+        compression, and 1..9 are various speed/size tradeoffs, 9 being
+        slowest.  If not set,  defaults to core.compression.  If that is
+        not set,  defaults to 1 (best speed).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.packedGitWindowSize
+</term>
+<listitem>
+<simpara>
+        Number of bytes of a pack file to map into memory in a
+        single mapping operation.  Larger window sizes may allow
+        your system to process a smaller number of large pack files
+        more quickly.  Smaller window sizes will negatively affect
+        performance due to increased calls to the operating system's
+        memory manager, but may improve performance when accessing
+        a large number of large pack files.
+</simpara>
+<simpara>Default is 1 MiB if NO_MMAP was set at compile time, otherwise 32
+MiB on 32 bit platforms and 1 GiB on 64 bit platforms.  This should
+be reasonable for all users/operating systems.  You probably do
+not need to adjust this value.</simpara>
+<simpara>Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.packedGitLimit
+</term>
+<listitem>
+<simpara>
+        Maximum number of bytes to map simultaneously into memory
+        from pack files.  If Git needs to access more than this many
+        bytes at once to complete an operation it will unmap existing
+        regions to reclaim virtual address space within the process.
+</simpara>
+<simpara>Default is 256 MiB on 32 bit platforms and 8 GiB on 64 bit platforms.
+This should be reasonable for all users/operating systems, except on
+the largest projects.  You probably do not need to adjust this value.</simpara>
+<simpara>Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.deltaBaseCacheLimit
+</term>
+<listitem>
+<simpara>
+        Maximum number of bytes to reserve for caching base objects
+        that may be referenced by multiple deltified objects.  By storing the
+        entire decompressed base objects in a cache Git is able
+        to avoid unpacking and decompressing frequently used base
+        objects multiple times.
+</simpara>
+<simpara>Default is 16 MiB on all platforms.  This should be reasonable
+for all users/operating systems, except on the largest projects.
+You probably do not need to adjust this value.</simpara>
+<simpara>Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.bigFileThreshold
+</term>
+<listitem>
+<simpara>
+        Files larger than this size are stored deflated, without
+        attempting delta compression.  Storing large files without
+        delta compression avoids excessive memory usage, at the
+        slight expense of increased disk usage.
+</simpara>
+<simpara>Default is 512 MiB on all platforms.  This should be reasonable
+for most projects as source code and other text files can still
+be delta compressed, but larger binary media files won't be.</simpara>
+<simpara>Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.excludesfile
+</term>
+<listitem>
+<simpara>
+        In addition to <emphasis>.gitignore</emphasis> (per-directory) and
+        <emphasis>.git/info/exclude</emphasis>, git looks into this file for patterns
+        of files which are not meant to be tracked.  "<emphasis>~/</emphasis>" is expanded
+        to the value of <emphasis>$HOME</emphasis> and "<emphasis>~user/</emphasis>" to the specified user's
+        home directory.  See <xref linkend="gitignore(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.askpass
+</term>
+<listitem>
+<simpara>
+        Some commands (e.g. svn and http interfaces) that interactively
+        ask for a password can be told to use an external program given
+        via the value of this variable. Can be overridden by the <emphasis>GIT_ASKPASS</emphasis>
+        environment variable. If not set, fall back to the value of the
+        <emphasis>SSH_ASKPASS</emphasis> environment variable or, failing that, a simple password
+        prompt. The external program shall be given a suitable prompt as
+        command line argument and write the password on its STDOUT.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.attributesfile
+</term>
+<listitem>
+<simpara>
+        In addition to <emphasis>.gitattributes</emphasis> (per-directory) and
+        <emphasis>.git/info/attributes</emphasis>, git looks into this file for attributes
+        (see <xref linkend="gitattributes(5)" />). Path expansions are made the same
+        way as for <emphasis>core.excludesfile</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.editor
+</term>
+<listitem>
+<simpara>
+        Commands such as <emphasis>commit</emphasis> and <emphasis>tag</emphasis> that lets you edit
+        messages by launching an editor uses the value of this
+        variable when it is set, and the environment variable
+        <emphasis>GIT_EDITOR</emphasis> is not set.  See <xref linkend="git-var(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sequence.editor
+</term>
+<listitem>
+<simpara>
+        Text editor used by <emphasis>git rebase -i</emphasis> for editing the rebase insn file.
+        The value is meant to be interpreted by the shell when it is used.
+        It can be overridden by the <emphasis>GIT_SEQUENCE_EDITOR</emphasis> environment variable.
+        When not configured the default commit message editor is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.pager
+</term>
+<listitem>
+<simpara>
+        The command that git will use to paginate output.  Can
+        be overridden with the <emphasis>GIT_PAGER</emphasis> environment
+        variable.  Note that git sets the <emphasis>LESS</emphasis> environment
+        variable to <emphasis>FRSX</emphasis> if it is unset when it runs the
+        pager.  One can change these settings by setting the
+        <emphasis>LESS</emphasis> variable to some other value.  Alternately,
+        these settings can be overridden on a project or
+        global basis by setting the <emphasis>core.pager</emphasis> option.
+        Setting <emphasis>core.pager</emphasis> has no affect on the <emphasis>LESS</emphasis>
+        environment variable behaviour above, so if you want
+        to override git's default settings this way, you need
+        to be explicit.  For example, to disable the S option
+        in a backward compatible manner, set <emphasis>core.pager</emphasis>
+        to <emphasis>less -+$LESS -FRX</emphasis>.  This will be passed to the
+        shell by git, which will translate the final command to
+        <emphasis>LESS=FRSX less -+FRSX -FRX</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.whitespace
+</term>
+<listitem>
+<simpara>
+        A comma separated list of common whitespace problems to
+        notice.  <emphasis>git diff</emphasis> will use <emphasis>color.diff.whitespace</emphasis> to
+        highlight them, and <emphasis>git apply --whitespace=error</emphasis> will
+        consider them as errors.  You can prefix <emphasis>-</emphasis> to disable
+        any of them (e.g. <emphasis>-trailing-space</emphasis>):
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>blank-at-eol</emphasis> treats trailing whitespaces at the end of the line
+  as an error (enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>space-before-tab</emphasis> treats a space character that appears immediately
+  before a tab character in the initial indent part of the line as an
+  error (enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>indent-with-non-tab</emphasis> treats a line that is indented with 8 or more
+  space characters as an error (not enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tab-in-indent</emphasis> treats a tab character in the initial indent part of
+  the line as an error (not enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>blank-at-eof</emphasis> treats blank lines added at the end of file as an error
+  (enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>trailing-space</emphasis> is a short-hand to cover both <emphasis>blank-at-eol</emphasis> and
+  <emphasis>blank-at-eof</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>cr-at-eol</emphasis> treats a carriage-return at the end of line as
+  part of the line terminator, i.e. with it, <emphasis>trailing-space</emphasis>
+  does not trigger if the character before such a carriage-return
+  is not a whitespace (not enabled by default).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tabwidth=&lt;n&gt;</emphasis> tells how many character positions a tab occupies; this
+  is relevant for <emphasis>indent-with-non-tab</emphasis> and when git fixes <emphasis>tab-in-indent</emphasis>
+  errors. The default tab width is 8. Allowed values are 1 to 63.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.fsyncobjectfiles
+</term>
+<listitem>
+<simpara>
+        This boolean will enable <emphasis>fsync()</emphasis> when writing object files.
+</simpara>
+<simpara>This is a total waste of time and effort on a filesystem that orders
+data writes properly, but can be useful for filesystems that do not use
+journalling (traditional UNIX filesystems) or that only journal metadata
+and not file contents (OS X's HFS+, or Linux ext3 with "data=writeback").</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.preloadindex
+</term>
+<listitem>
+<simpara>
+        Enable parallel index preload for operations like <emphasis>git diff</emphasis>
+</simpara>
+<simpara>This can speed up operations like <emphasis>git diff</emphasis> and <emphasis>git status</emphasis> especially
+on filesystems like NFS that have weak caching semantics and thus
+relatively high IO latencies.  With this set to <emphasis>true</emphasis>, git will do the
+index comparison to the filesystem data in parallel, allowing
+overlapping IO's.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.createObject
+</term>
+<listitem>
+<simpara>
+        You can set this to <emphasis>link</emphasis>, in which case a hardlink followed by
+        a delete of the source are used to make sure that object creation
+        will not overwrite existing objects.
+</simpara>
+<simpara>On some file system/operating system combinations, this is unreliable.
+Set this config setting to <emphasis>rename</emphasis> there; However, This will remove the
+check that makes sure that existing object files will not get overwritten.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.notesRef
+</term>
+<listitem>
+<simpara>
+        When showing commit messages, also show notes which are stored in
+        the given ref.  The ref must be fully qualified.  If the given
+        ref does not exist, it is not an error but means that no
+        notes should be printed.
+</simpara>
+<simpara>This setting defaults to "refs/notes/commits", and it can be overridden by
+the <emphasis>GIT_NOTES_REF</emphasis> environment variable.  See <xref linkend="git-notes(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.sparseCheckout
+</term>
+<listitem>
+<simpara>
+        Enable "sparse checkout" feature. See section "Sparse checkout" in
+        <xref linkend="git-read-tree(1)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.abbrev
+</term>
+<listitem>
+<simpara>
+        Set the length object names are abbreviated to.  If unspecified,
+        many commands abbreviate to 7 hexdigits, which may not be enough
+        for abbreviated object names to stay unique for sufficiently long
+        time.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+add.ignore-errors
+</term>
+<term>
+add.ignoreErrors
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>git add</emphasis> to continue adding files when some files cannot be
+        added due to indexing errors. Equivalent to the <emphasis>--ignore-errors</emphasis>
+        option of <xref linkend="git-add(1)" />.  Older versions of git accept only
+        <emphasis>add.ignore-errors</emphasis>, which does not follow the usual naming
+        convention for configuration variables.  Newer versions of git
+        honor <emphasis>add.ignoreErrors</emphasis> as well.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+alias.*
+</term>
+<listitem>
+<simpara>
+        Command aliases for the <xref linkend="git(1)" /> command wrapper - e.g.
+        after defining "alias.last = cat-file commit HEAD", the invocation
+        "git last" is equivalent to "git cat-file commit HEAD". To avoid
+        confusion and troubles with script usage, aliases that
+        hide existing git commands are ignored. Arguments are split by
+        spaces, the usual shell quoting and escaping is supported.
+        quote pair and a backslash can be used to quote them.
+</simpara>
+<simpara>If the alias expansion is prefixed with an exclamation point,
+it will be treated as a shell command.  For example, defining
+"alias.new = !gitk --all --not ORIG_HEAD", the invocation
+"git new" is equivalent to running the shell command
+"gitk --all --not ORIG_HEAD".  Note that shell commands will be
+executed from the top-level directory of a repository, which may
+not necessarily be the current directory.
+<emphasis>GIT_PREFIX</emphasis> is set as returned by running <emphasis>git rev-parse --show-prefix</emphasis>
+from the original current directory. See <xref linkend="git-rev-parse(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+am.keepcr
+</term>
+<listitem>
+<simpara>
+        If true, git-am will call git-mailsplit for patches in mbox format
+        with parameter <emphasis>--keep-cr</emphasis>. In this case git-mailsplit will
+        not remove <emphasis>\r</emphasis> from lines ending with <emphasis>\r\n</emphasis>. Can be overridden
+        by giving <emphasis>--no-keep-cr</emphasis> from the command line.
+        See <xref linkend="git-am(1)" />, <xref linkend="git-mailsplit(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+apply.ignorewhitespace
+</term>
+<listitem>
+<simpara>
+        When set to <emphasis>change</emphasis>, tells <emphasis>git apply</emphasis> to ignore changes in
+        whitespace, in the same way as the <emphasis>--ignore-space-change</emphasis>
+        option.
+        When set to one of: no, none, never, false tells <emphasis>git apply</emphasis> to
+        respect all whitespace differences.
+        See <xref linkend="git-apply(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+apply.whitespace
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>git apply</emphasis> how to handle whitespaces, in the same way
+        as the <emphasis>--whitespace</emphasis> option. See <xref linkend="git-apply(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.autosetupmerge
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>git branch</emphasis> and <emphasis>git checkout</emphasis> to set up new branches
+        so that <xref linkend="git-pull(1)" /> will appropriately merge from the
+        starting point branch. Note that even if this option is not set,
+        this behavior can be chosen per-branch using the <emphasis>--track</emphasis>
+        and <emphasis>--no-track</emphasis> options. The valid settings are: <emphasis>false</emphasis> -- no
+        automatic setup is done; <emphasis>true</emphasis> -- automatic setup is done when the
+        starting point is a remote-tracking branch; <emphasis>always</emphasis> --
+        automatic setup is done when the starting point is either a
+        local branch or remote-tracking
+        branch. This option defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.autosetuprebase
+</term>
+<listitem>
+<simpara>
+        When a new branch is created with <emphasis>git branch</emphasis> or <emphasis>git checkout</emphasis>
+        that tracks another branch, this variable tells git to set
+        up pull to rebase instead of merge (see "branch.&lt;name&gt;.rebase").
+        When <emphasis>never</emphasis>, rebase is never automatically set to true.
+        When <emphasis>local</emphasis>, rebase is set to true for tracked branches of
+        other local branches.
+        When <emphasis>remote</emphasis>, rebase is set to true for tracked branches of
+        remote-tracking branches.
+        When <emphasis>always</emphasis>, rebase will be set to true for all tracking
+        branches.
+        See "branch.autosetupmerge" for details on how to set up a
+        branch to track another branch.
+        This option defaults to never.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.remote
+</term>
+<listitem>
+<simpara>
+        When in branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis> which
+        remote to fetch from/push to.  It defaults to <emphasis>origin</emphasis> if no remote is
+        configured. <emphasis>origin</emphasis> is also used if you are not on any branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.merge
+</term>
+<listitem>
+<simpara>
+        Defines, together with branch.&lt;name&gt;.remote, the upstream branch
+        for the given branch. It tells <emphasis>git fetch</emphasis>/<emphasis>git pull</emphasis>/<emphasis>git rebase</emphasis> which
+        branch to merge and can also affect <emphasis>git push</emphasis> (see push.default).
+        When in branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> the default
+        refspec to be marked for merging in FETCH_HEAD. The value is
+        handled like the remote part of a refspec, and must match a
+        ref which is fetched from the remote given by
+        "branch.&lt;name&gt;.remote".
+        The merge information is used by <emphasis>git pull</emphasis> (which at first calls
+        <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
+        this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
+        Specify multiple values to get an octopus merge.
+        If you wish to setup <emphasis>git pull</emphasis> so that it merges into &lt;name&gt; from
+        another branch in the local repository, you can point
+        branch.&lt;name&gt;.merge to the desired branch, and use the special setting
+        <emphasis>.</emphasis> (a period) for branch.&lt;name&gt;.remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.mergeoptions
+</term>
+<listitem>
+<simpara>
+        Sets default options for merging into branch &lt;name&gt;. The syntax and
+        supported options are the same as those of <xref linkend="git-merge(1)" />, but
+        option values containing whitespace characters are currently not
+        supported.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.rebase
+</term>
+<listitem>
+<simpara>
+        When true, rebase the branch &lt;name&gt; on top of the fetched branch,
+        instead of merging the default branch from the default remote when
+        "git pull" is run. See "pull.rebase" for doing this in a non
+        branch-specific manner.
+</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: this is a possibly dangerous operation; do <emphasis role="strong">not</emphasis> use
+it unless you understand the implications (see <xref linkend="git-rebase(1)" />
+for details).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+browser.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified browser. The
+        specified command is evaluated in shell with the URLs passed
+        as arguments. (See <xref linkend="git-web&#45;&#45;browse(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+browser.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool that may be used to
+        browse HTML help (see <emphasis>-w</emphasis> option in <xref linkend="git-help(1)" />) or a
+        working repository in gitweb (see <xref linkend="git-instaweb(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+clean.requireForce
+</term>
+<listitem>
+<simpara>
+        A boolean to make git-clean do nothing unless given -f
+        or -n.   Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.branch
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable color in the output of
+        <xref linkend="git-branch(1)" />. May be set to <emphasis>always</emphasis>,
+        <emphasis>false</emphasis> (or <emphasis>never</emphasis>) or <emphasis>auto</emphasis> (or <emphasis>true</emphasis>), in which case colors are used
+        only when the output is to a terminal. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.branch.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for branch coloration. <emphasis>&lt;slot&gt;</emphasis> is one of
+        <emphasis>current</emphasis> (the current branch), <emphasis>local</emphasis> (a local branch),
+        <emphasis>remote</emphasis> (a remote-tracking branch in refs/remotes/), <emphasis>plain</emphasis> (other
+        refs).
+</simpara>
+<simpara>The value for these configuration variables is a list of colors (at most
+two) and attributes (at most one), separated by spaces.  The colors
+accepted are <emphasis>normal</emphasis>, <emphasis>black</emphasis>, <emphasis>red</emphasis>, <emphasis>green</emphasis>, <emphasis>yellow</emphasis>, <emphasis>blue</emphasis>,
+<emphasis>magenta</emphasis>, <emphasis>cyan</emphasis> and <emphasis>white</emphasis>; the attributes are <emphasis>bold</emphasis>, <emphasis>dim</emphasis>, <emphasis>ul</emphasis>,
+<emphasis>blink</emphasis> and <emphasis>reverse</emphasis>.  The first color given is the foreground; the
+second is the background.  The position of the attribute, if any,
+doesn't matter.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.diff
+</term>
+<listitem>
+<simpara>
+        Whether to use ANSI escape sequences to add color to patches.
+        If this is set to <emphasis>always</emphasis>, <xref linkend="git-diff(1)" />,
+        <xref linkend="git-log(1)" />, and <xref linkend="git-show(1)" /> will use color
+        for all patches.  If it is set to <emphasis>true</emphasis> or <emphasis>auto</emphasis>, those
+        commands will only use color when output is to the terminal.
+        Defaults to false.
+</simpara>
+<simpara>This does not affect <xref linkend="git-format-patch(1)" /> nor the
+<emphasis>git-diff-&#42;</emphasis> plumbing commands.  Can be overridden on the
+command line with the <emphasis>--color[=&lt;when&gt;]</emphasis> option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.diff.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for diff colorization.  <emphasis>&lt;slot&gt;</emphasis> specifies
+        which part of the patch to use the specified color, and is one
+        of <emphasis>plain</emphasis> (context text), <emphasis>meta</emphasis> (metainformation), <emphasis>frag</emphasis>
+        (hunk header), <emphasis>func</emphasis> (function in hunk header), <emphasis>old</emphasis> (removed lines),
+        <emphasis>new</emphasis> (added lines), <emphasis>commit</emphasis> (commit headers), or <emphasis>whitespace</emphasis>
+        (highlighting whitespace errors). The values of these variables may be
+        specified as in color.branch.&lt;slot&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.decorate.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for <emphasis>git log --decorate</emphasis> output.  <emphasis>&lt;slot&gt;</emphasis> is one
+        of <emphasis>branch</emphasis>, <emphasis>remoteBranch</emphasis>, <emphasis>tag</emphasis>, <emphasis>stash</emphasis> or <emphasis>HEAD</emphasis> for local
+        branches, remote-tracking branches, tags, stash and HEAD, respectively.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.grep
+</term>
+<listitem>
+<simpara>
+        When set to <emphasis>always</emphasis>, always highlight matches.  When <emphasis>false</emphasis> (or
+        <emphasis>never</emphasis>), never.  When set to <emphasis>true</emphasis> or <emphasis>auto</emphasis>, use color only
+        when the output is written to the terminal.  Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.grep.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for grep colorization.  <emphasis>&lt;slot&gt;</emphasis> specifies which
+        part of the line to use the specified color, and is one of
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>context</emphasis>
+</term>
+<listitem>
+<simpara>
+        non-matching text in context lines (when using <emphasis>-A</emphasis>, <emphasis>-B</emphasis>, or <emphasis>-C</emphasis>)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>filename</emphasis>
+</term>
+<listitem>
+<simpara>
+        filename prefix (when not using <emphasis>-h</emphasis>)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>function</emphasis>
+</term>
+<listitem>
+<simpara>
+        function name lines (when using <emphasis>-p</emphasis>)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>linenumber</emphasis>
+</term>
+<listitem>
+<simpara>
+        line number prefix (when using <emphasis>-n</emphasis>)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>match</emphasis>
+</term>
+<listitem>
+<simpara>
+        matching text
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>selected</emphasis>
+</term>
+<listitem>
+<simpara>
+        non-matching text in selected lines
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>separator</emphasis>
+</term>
+<listitem>
+<simpara>
+        separators between fields on a line (<emphasis>:</emphasis>, <emphasis>-</emphasis>, and <emphasis>=</emphasis>)
+        and between hunks (<emphasis>--</emphasis>)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The values of these variables may be specified as in color.branch.&lt;slot&gt;.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.interactive
+</term>
+<listitem>
+<simpara>
+        When set to <emphasis>always</emphasis>, always use colors for interactive prompts
+        and displays (such as those used by "git-add --interactive").
+        When false (or <emphasis>never</emphasis>), never.  When set to <emphasis>true</emphasis> or <emphasis>auto</emphasis>, use
+        colors only when the output is to the terminal. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.interactive.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for <emphasis>git add --interactive</emphasis>
+        output. <emphasis>&lt;slot&gt;</emphasis> may be <emphasis>prompt</emphasis>, <emphasis>header</emphasis>, <emphasis>help</emphasis> or <emphasis>error</emphasis>, for
+        four distinct types of normal output from interactive
+        commands.  The values of these variables may be specified as
+        in color.branch.&lt;slot&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.pager
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable colored output when the pager is in
+        use (default is true).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.showbranch
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable color in the output of
+        <xref linkend="git-show-branch(1)" />. May be set to <emphasis>always</emphasis>,
+        <emphasis>false</emphasis> (or <emphasis>never</emphasis>) or <emphasis>auto</emphasis> (or <emphasis>true</emphasis>), in which case colors are used
+        only when the output is to a terminal. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.status
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable color in the output of
+        <xref linkend="git-status(1)" />. May be set to <emphasis>always</emphasis>,
+        <emphasis>false</emphasis> (or <emphasis>never</emphasis>) or <emphasis>auto</emphasis> (or <emphasis>true</emphasis>), in which case colors are used
+        only when the output is to a terminal. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.status.&lt;slot&gt;
+</term>
+<listitem>
+<simpara>
+        Use customized color for status colorization. <emphasis>&lt;slot&gt;</emphasis> is
+        one of <emphasis>header</emphasis> (the header text of the status message),
+        <emphasis>added</emphasis> or <emphasis>updated</emphasis> (files which are added but not committed),
+        <emphasis>changed</emphasis> (files which are changed but not added in the index),
+        <emphasis>untracked</emphasis> (files which are not tracked by git),
+        <emphasis>branch</emphasis> (the current branch), or
+        <emphasis>nobranch</emphasis> (the color the <emphasis>no branch</emphasis> warning is shown in, defaulting
+        to red). The values of these variables may be specified as in
+        color.branch.&lt;slot&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+color.ui
+</term>
+<listitem>
+<simpara>
+        This variable determines the default value for variables such
+        as <emphasis>color.diff</emphasis> and <emphasis>color.grep</emphasis> that control the use of color
+        per command family. Its scope will expand as more commands learn
+        configuration to set a default for the <emphasis>--color</emphasis> option.  Set it
+        to <emphasis>always</emphasis> if you want all output not intended for machine
+        consumption to use color, to <emphasis>true</emphasis> or <emphasis>auto</emphasis> if you want such
+        output to use color when written to the terminal, or to <emphasis>false</emphasis> or
+        <emphasis>never</emphasis> if you prefer git commands not to use color unless enabled
+        explicitly with some other configuration or the <emphasis>--color</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.status
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable inclusion of status information in the
+        commit message template when using an editor to prepare the commit
+        message.  Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.template
+</term>
+<listitem>
+<simpara>
+        Specify a file to use as the template for new commit messages.
+        "<emphasis>~/</emphasis>" is expanded to the value of <emphasis>$HOME</emphasis> and "<emphasis>~user/</emphasis>" to the
+        specified user's home directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+credential.helper
+</term>
+<listitem>
+<simpara>
+        Specify an external helper to be called when a username or
+        password credential is needed; the helper may consult external
+        storage to avoid prompting the user for the credentials. See
+        <xref linkend="gitcredentials(7)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+credential.useHttpPath
+</term>
+<listitem>
+<simpara>
+        When acquiring credentials, consider the "path" component of an http
+        or https URL to be important. Defaults to false. See
+        <xref linkend="gitcredentials(7)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+credential.username
+</term>
+<listitem>
+<simpara>
+        If no username is set for a network authentication, use this username
+        by default. See credential.&lt;context&gt;.* below, and
+        <xref linkend="gitcredentials(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+credential.&lt;url&gt;.*
+</term>
+<listitem>
+<simpara>
+        Any of the credential.* options above can be applied selectively to
+        some credentials. For example "credential.https://example.com.username"
+        would set the default username only for https connections to
+        example.com. See <xref linkend="gitcredentials(7)" /> for details on how URLs are
+        matched.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.autorefreshindex
+</term>
+<listitem>
+<simpara>
+        When using <emphasis>git diff</emphasis> to compare with work tree
+        files, do not consider stat-only change as changed.
+        Instead, silently run <emphasis>git update-index --refresh</emphasis> to
+        update the cached stat information for paths whose
+        contents in the work tree match the contents in the
+        index.  This option defaults to true.  Note that this
+        affects only <emphasis>git diff</emphasis> Porcelain, and not lower level
+        <emphasis>diff</emphasis> commands such as <emphasis>git diff-files</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.dirstat
+</term>
+<listitem>
+<simpara>
+        A comma separated list of <emphasis>--dirstat</emphasis> parameters specifying the
+        default behavior of the <emphasis>--dirstat</emphasis> option to <xref linkend="git-diff(1)" />`
+        and friends. The defaults can be overridden on the command line
+        (using <emphasis>--dirstat=&lt;param1,param2,...&gt;</emphasis>). The fallback defaults
+        (when not changed by <emphasis>diff.dirstat</emphasis>) are <emphasis>changes,noncumulative,3</emphasis>.
+        The following parameters are available:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>changes</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the lines that have been
+        removed from the source, or added to the destination. This ignores
+        the amount of pure code movements within a file.  In other words,
+        rearranging lines in a file is not counted as much as other changes.
+        This is the default behavior when no parameter is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>lines</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by doing the regular line-based diff
+        analysis, and summing the removed/added line counts. (For binary
+        files, count 64-byte chunks instead, since binary files have no
+        natural concept of lines). This is a more expensive <emphasis>--dirstat</emphasis>
+        behavior than the <emphasis>changes</emphasis> behavior, but it does count rearranged
+        lines within a file as much as other changes. The resulting output
+        is consistent with what you get from the other <emphasis>--*stat</emphasis> options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>files</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the number of files changed.
+        Each changed file counts equally in the dirstat analysis. This is
+        the computationally cheapest <emphasis>--dirstat</emphasis> behavior, since it does
+        not have to look at the file contents at all.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>cumulative</emphasis>
+</term>
+<listitem>
+<simpara>
+        Count changes in a child directory for the parent directory as well.
+        Note that when using <emphasis>cumulative</emphasis>, the sum of the percentages
+        reported may exceed 100%. The default (non-cumulative) behavior can
+        be specified with the <emphasis>noncumulative</emphasis> parameter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;limit&gt;
+</term>
+<listitem>
+<simpara>
+        An integer parameter specifies a cut-off percent (3% by default).
+        Directories contributing less than this percentage of the changes
+        are not shown in the output.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Example: The following will count changed files, while ignoring
+directories with less than 10% of the total amount of changed files,
+and accumulating child directory counts in the parent directories:
+<emphasis>files,10,cumulative</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.statGraphWidth
+</term>
+<listitem>
+<simpara>
+        Limit the width of the graph part in --stat output. If set, applies
+        to all commands generating --stat outuput except format-patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.external
+</term>
+<listitem>
+<simpara>
+        If this config variable is set, diff generation is not
+        performed using the internal diff machinery, but using the
+        given command.  Can be overridden with the GIT_EXTERNAL_DIFF
+        environment variable.  The command is called with parameters
+        as described under "git Diffs" in <xref linkend="git(1)" />.  Note: if
+        you want to use an external diff program only on a subset of
+        your files, you might want to use <xref linkend="gitattributes(5)" /> instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.ignoreSubmodules
+</term>
+<listitem>
+<simpara>
+        Sets the default value of --ignore-submodules. Note that this
+        affects only <emphasis>git diff</emphasis> Porcelain, and not lower level <emphasis>diff</emphasis>
+        commands such as <emphasis>git diff-files</emphasis>. <emphasis>git checkout</emphasis> also honors
+        this setting when reporting uncommitted changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.mnemonicprefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> uses a prefix pair that is different from the
+        standard "a/" and "b/" depending on what is being compared.  When
+        this configuration is in effect, reverse diff output also swaps
+        the order of the prefixes:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git diff</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares the (i)ndex and the (w)ork tree;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff HEAD</emphasis>
+</term>
+<listitem>
+<simpara>
+         compares a (c)ommit and the (w)ork tree;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff --cached</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares a (c)ommit and the (i)ndex;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff HEAD:file1 file2</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares an (o)bject and a (w)ork tree entity;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff --no-index a b</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares two non-git things (1) and (2).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.noprefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> does not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.renameLimit
+</term>
+<listitem>
+<simpara>
+        The number of files to consider when performing the copy/rename
+        detection; equivalent to the <emphasis>git diff</emphasis> option <emphasis>-l</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.renames
+</term>
+<listitem>
+<simpara>
+        Tells git to detect renames.  If set to any boolean value, it
+        will enable basic rename detection.  If set to "copies" or
+        "copy", it will detect copies, as well.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.suppressBlankEmpty
+</term>
+<listitem>
+<simpara>
+        A boolean to inhibit the standard behavior of printing a space
+        before each empty output line. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.command
+</term>
+<listitem>
+<simpara>
+        The custom diff driver command.  See <xref linkend="gitattributes(5)" />
+        for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.xfuncname
+</term>
+<listitem>
+<simpara>
+        The regular expression that the diff driver should use to
+        recognize the hunk header.  A built-in pattern may also be used.
+        See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.binary
+</term>
+<listitem>
+<simpara>
+        Set this option to true to make the diff driver treat files as
+        binary.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.textconv
+</term>
+<listitem>
+<simpara>
+        The command that the diff driver should call to generate the
+        text-converted version of a file.  The result of the
+        conversion is used to generate a human-readable diff.  See
+        <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.wordregex
+</term>
+<listitem>
+<simpara>
+        The regular expression that the diff driver should use to
+        split words in a line.  See <xref linkend="gitattributes(5)" /> for
+        details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.cachetextconv
+</term>
+<listitem>
+<simpara>
+        Set this option to true to make the diff driver cache the text
+        conversion outputs.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.tool
+</term>
+<listitem>
+<simpara>
+        The diff tool to be used by <xref linkend="git-difftool(1)" />.  This
+        option overrides <emphasis>merge.tool</emphasis>, and has the same valid built-in
+        values as <emphasis>merge.tool</emphasis> minus "tortoisemerge" and plus
+        "kompare".  Any other value is treated as a custom diff tool,
+        and there must be a corresponding <emphasis>difftool.&lt;tool&gt;.cmd</emphasis>
+        option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool.  This is useful in case
+        your tool is not in the PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified diff tool.
+        The specified command is evaluated in shell with the following
+        variables available:  <emphasis>LOCAL</emphasis> is set to the name of the temporary
+        file containing the contents of the diff pre-image and <emphasis>REMOTE</emphasis>
+        is set to the name of the temporary file containing the contents
+        of the diff post-image.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.prompt
+</term>
+<listitem>
+<simpara>
+        Prompt before each invocation of the diff tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.wordRegex
+</term>
+<listitem>
+<simpara>
+        A POSIX Extended Regular Expression used to determine what is a "word"
+        when performing word-by-word difference calculations.  Character
+        sequences that match the regular expression are "words", all other
+        characters are <emphasis role="strong">ignorable</emphasis> whitespace.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.recurseSubmodules
+</term>
+<listitem>
+<simpara>
+        This option can be either set to a boolean value or to <emphasis>on-demand</emphasis>.
+        Setting it to a boolean changes the behavior of fetch and pull to
+        unconditionally recurse into submodules when set to true or to not
+        recurse at all when set to false. When set to <emphasis>on-demand</emphasis> (the default
+        value), fetch and pull will only recurse into a populated submodule
+        when its superproject retrieves a commit that updates the submodule's
+        reference.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.fsckObjects
+</term>
+<listitem>
+<simpara>
+        If it is set to true, git-fetch-pack will check all fetched
+        objects. It will abort in the case of a malformed object or a
+        broken link. The result of an abort are only dangling objects.
+        Defaults to false. If not set, the value of <emphasis>transfer.fsckObjects</emphasis>
+        is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.unpackLimit
+</term>
+<listitem>
+<simpara>
+        If the number of objects fetched over the git native
+        transfer is below this
+        limit, then the objects will be unpacked into loose object
+        files. However if the number of received objects equals or
+        exceeds this limit then the received pack will be stored as
+        a pack, after adding any missing delta bases.  Storing the
+        pack from a push can make the push operation complete faster,
+        especially on slow filesystems.  If not set, the value of
+        <emphasis>transfer.unpackLimit</emphasis> is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.attach
+</term>
+<listitem>
+<simpara>
+        Enable multipart/mixed attachments as the default for
+        <emphasis>format-patch</emphasis>.  The value can also be a double quoted string
+        which will enable attachments as the default and set the
+        value as the boundary.  See the --attach option in
+        <xref linkend="git-format-patch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.numbered
+</term>
+<listitem>
+<simpara>
+        A boolean which can enable or disable sequence numbers in patch
+        subjects.  It defaults to "auto" which enables it only if there
+        is more than one patch.  It can be enabled or disabled for all
+        messages by setting it to "true" or "false".  See --numbered
+        option in <xref linkend="git-format-patch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.headers
+</term>
+<listitem>
+<simpara>
+        Additional email headers to include in a patch to be submitted
+        by mail.  See <xref linkend="git-format-patch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.to
+</term>
+<term>
+format.cc
+</term>
+<listitem>
+<simpara>
+        Additional recipients to include in a patch to be submitted
+        by mail.  See the --to and --cc options in
+        <xref linkend="git-format-patch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.subjectprefix
+</term>
+<listitem>
+<simpara>
+        The default for format-patch is to output files with the <emphasis>[PATCH]</emphasis>
+        subject prefix. Use this variable to change that prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.signature
+</term>
+<listitem>
+<simpara>
+        The default for format-patch is to output a signature containing
+        the git version number. Use this variable to change that default.
+        Set this variable to the empty string ("") to suppress
+        signature generation.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.suffix
+</term>
+<listitem>
+<simpara>
+        The default for format-patch is to output files with the suffix
+        <emphasis>.patch</emphasis>. Use this variable to change that suffix (make sure to
+        include the dot if you want it).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.pretty
+</term>
+<listitem>
+<simpara>
+        The default pretty format for log/show/whatchanged command,
+        See <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />,
+        <xref linkend="git-whatchanged(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.thread
+</term>
+<listitem>
+<simpara>
+        The default threading style for <emphasis>git format-patch</emphasis>.  Can be
+        a boolean value, or <emphasis>shallow</emphasis> or <emphasis>deep</emphasis>.  <emphasis>shallow</emphasis> threading
+        makes every mail a reply to the head of the series,
+        where the head is chosen from the cover letter, the
+        <emphasis>--in-reply-to</emphasis>, and the first patch mail, in this order.
+        <emphasis>deep</emphasis> threading makes every mail a reply to the previous one.
+        A true boolean value is the same as <emphasis>shallow</emphasis>, and a false
+        value disables threading.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.signoff
+</term>
+<listitem>
+<simpara>
+    A boolean value which lets you enable the <emphasis>-s/--signoff</emphasis> option of
+    format-patch by default. <emphasis role="strong">Note:</emphasis> Adding the Signed-off-by: line to a
+    patch should be a conscious act and means that you certify you have
+    the rights to submit this work under the same open source license.
+    Please see the <emphasis>SubmittingPatches</emphasis> document for further discussion.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+filter.&lt;driver&gt;.clean
+</term>
+<listitem>
+<simpara>
+        The command which is used to convert the content of a worktree
+        file to a blob upon checkin.  See <xref linkend="gitattributes(5)" /> for
+        details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+filter.&lt;driver&gt;.smudge
+</term>
+<listitem>
+<simpara>
+        The command which is used to convert the content of a blob
+        object to a worktree file upon checkout.  See
+        <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.aggressiveWindow
+</term>
+<listitem>
+<simpara>
+        The window size parameter used in the delta compression
+        algorithm used by <emphasis>git gc --aggressive</emphasis>.  This defaults
+        to 250.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.auto
+</term>
+<listitem>
+<simpara>
+        When there are approximately more than this many loose
+        objects in the repository, <emphasis>git gc --auto</emphasis> will pack them.
+        Some Porcelain commands use this command to perform a
+        light-weight garbage collection from time to time.  The
+        default value is 6700.  Setting this to 0 disables it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.autopacklimit
+</term>
+<listitem>
+<simpara>
+        When there are more than this many packs that are not
+        marked with <emphasis>*.keep</emphasis> file in the repository, <emphasis>git gc
+        --auto</emphasis> consolidates them into one larger pack.  The
+        default value is 50.  Setting this to 0 disables it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.packrefs
+</term>
+<listitem>
+<simpara>
+        Running <emphasis>git pack-refs</emphasis> in a repository renders it
+        unclonable by Git versions prior to 1.5.1.2 over dumb
+        transports such as HTTP.  This variable determines whether
+        <emphasis>git gc</emphasis> runs <emphasis>git pack-refs</emphasis>. This can be set to <emphasis>notbare</emphasis>
+        to enable it within all non-bare repos or it can be set to a
+        boolean value.  The default is <emphasis>true</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.pruneexpire
+</term>
+<listitem>
+<simpara>
+        When <emphasis>git gc</emphasis> is run, it will call <emphasis>prune --expire 2.weeks.ago</emphasis>.
+        Override the grace period with this config variable.  The value
+        "now" may be used to disable this  grace period and always prune
+        unreachable objects immediately.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.reflogexpire
+</term>
+<term>
+gc.&lt;pattern&gt;.reflogexpire
+</term>
+<listitem>
+<simpara>
+        <emphasis>git reflog expire</emphasis> removes reflog entries older than
+        this time; defaults to 90 days.  With "&lt;pattern&gt;" (e.g.
+        "refs/stash") in the middle the setting applies only to
+        the refs that match the &lt;pattern&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.reflogexpireunreachable
+</term>
+<term>
+gc.&lt;ref&gt;.reflogexpireunreachable
+</term>
+<listitem>
+<simpara>
+        <emphasis>git reflog expire</emphasis> removes reflog entries older than
+        this time and are not reachable from the current tip;
+        defaults to 30 days.  With "&lt;pattern&gt;" (e.g. "refs/stash")
+        in the middle, the setting applies only to the refs that
+        match the &lt;pattern&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.rerereresolved
+</term>
+<listitem>
+<simpara>
+        Records of conflicted merge you resolved earlier are
+        kept for this many days when <emphasis>git rerere gc</emphasis> is run.
+        The default is 60 days.  See <xref linkend="git-rerere(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.rerereunresolved
+</term>
+<listitem>
+<simpara>
+        Records of conflicted merge you have not resolved are
+        kept for this many days when <emphasis>git rerere gc</emphasis> is run.
+        The default is 15 days.  See <xref linkend="git-rerere(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.commitmsgannotation
+</term>
+<listitem>
+<simpara>
+        Append this string to each commit message. Set to empty string
+        to disable this feature. Defaults to "via git-CVS emulator".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.enabled
+</term>
+<listitem>
+<simpara>
+        Whether the CVS server interface is enabled for this repository.
+        See <xref linkend="git-cvsserver(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.logfile
+</term>
+<listitem>
+<simpara>
+        Path to a log file where the CVS server interface well&#8230; logs
+        various stuff. See <xref linkend="git-cvsserver(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.usecrlfattr
+</term>
+<listitem>
+<simpara>
+        If true, the server will look up the end-of-line conversion
+        attributes for files to determine the <emphasis>-k</emphasis> modes to use. If
+        the attributes force git to treat a file as text,
+        the <emphasis>-k</emphasis> mode will be left blank so CVS clients will
+        treat it as text. If they suppress text conversion, the file
+        will be set with <emphasis>-kb</emphasis> mode, which suppresses any newline munging
+        the client might otherwise do. If the attributes do not allow
+        the file type to be determined, then <emphasis>gitcvs.allbinary</emphasis> is
+        used. See <xref linkend="gitattributes(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.allbinary
+</term>
+<listitem>
+<simpara>
+        This is used if <emphasis>gitcvs.usecrlfattr</emphasis> does not resolve
+        the correct <emphasis>-kb</emphasis> mode to use. If true, all
+        unresolved files are sent to the client in
+        mode <emphasis>-kb</emphasis>. This causes the client to treat them
+        as binary files, which suppresses any newline munging it
+        otherwise might do. Alternatively, if it is set to "guess",
+        then the contents of the file are examined to decide if
+        it is binary, similar to <emphasis>core.autocrlf</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.dbname
+</term>
+<listitem>
+<simpara>
+        Database used by git-cvsserver to cache revision information
+        derived from the git repository. The exact meaning depends on the
+        used database driver, for SQLite (which is the default driver) this
+        is a filename. Supports variable substitution (see
+        <xref linkend="git-cvsserver(1)" /> for details). May not contain semicolons (<emphasis>;</emphasis>).
+        Default: <emphasis>%Ggitcvs.%m.sqlite</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.dbdriver
+</term>
+<listitem>
+<simpara>
+        Used Perl DBI driver. You can specify any available driver
+        for this here, but it might not work. git-cvsserver is tested
+        with <emphasis>DBD::SQLite</emphasis>, reported to work with <emphasis>DBD::Pg</emphasis>, and
+        reported <emphasis role="strong">not</emphasis> to work with <emphasis>DBD::mysql</emphasis>. Experimental feature.
+        May not contain double colons (<emphasis>:</emphasis>). Default: <emphasis>SQLite</emphasis>.
+        See <xref linkend="git-cvsserver(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.dbuser, gitcvs.dbpass
+</term>
+<listitem>
+<simpara>
+        Database user and password. Only useful if setting <emphasis>gitcvs.dbdriver</emphasis>,
+        since SQLite has no concept of database users and/or passwords.
+        <emphasis>gitcvs.dbuser</emphasis> supports variable substitution (see
+        <xref linkend="git-cvsserver(1)" /> for details).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitcvs.dbTableNamePrefix
+</term>
+<listitem>
+<simpara>
+        Database table name prefix.  Prepended to the names of any
+        database tables used, allowing a single database to be used
+        for several repositories.  Supports variable substitution (see
+        <xref linkend="git-cvsserver(1)" /> for details).  Any non-alphabetic
+        characters will be replaced with underscores.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>All gitcvs variables except for <emphasis>gitcvs.usecrlfattr</emphasis> and
+<emphasis>gitcvs.allbinary</emphasis> can also be specified as
+<emphasis>gitcvs.&lt;access_method&gt;.&lt;varname&gt;</emphasis> (where <emphasis>access_method</emphasis>
+is one of "ext" and "pserver") to make them apply only for the given
+access method.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+gitweb.category
+</term>
+<term>
+gitweb.description
+</term>
+<term>
+gitweb.owner
+</term>
+<term>
+gitweb.url
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="gitweb(1)" /> for description.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gitweb.avatar
+</term>
+<term>
+gitweb.blame
+</term>
+<term>
+gitweb.grep
+</term>
+<term>
+gitweb.highlight
+</term>
+<term>
+gitweb.patches
+</term>
+<term>
+gitweb.pickaxe
+</term>
+<term>
+gitweb.remote_heads
+</term>
+<term>
+gitweb.showsizes
+</term>
+<term>
+gitweb.snapshot
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="gitweb.conf(5)" /> for description.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.lineNumber
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>-n</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.extendedRegexp
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gpg.program
+</term>
+<listitem>
+<simpara>
+        Use this custom program instead of "gpg" found on $PATH when
+        making or verifying a PGP signature. The program must support the
+        same command line interface as GPG, namely, to verify a detached
+        signature, "gpg --verify $file - &lt;$signature" is run, and the
+        program is expected to signal a good signature by exiting with
+        code 0, and to generate an ascii-armored detached signature, the
+        standard input of "gpg -bsau $key" is fed with the contents to be
+        signed, and the program is expected to send the result to its
+        standard output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.commitmsgwidth
+</term>
+<listitem>
+<simpara>
+        Defines how wide the commit message window is in the
+        <xref linkend="git-gui(1)" />. "75" is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.diffcontext
+</term>
+<listitem>
+<simpara>
+        Specifies how many context lines should be used in calls to diff
+        made by the <xref linkend="git-gui(1)" />. The default is "5".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.encoding
+</term>
+<listitem>
+<simpara>
+        Specifies the default encoding to use for displaying of
+        file contents in <xref linkend="git-gui(1)" /> and <xref linkend="gitk(1)" />.
+        It can be overridden by setting the <emphasis>encoding</emphasis> attribute
+        for relevant files (see <xref linkend="gitattributes(5)" />).
+        If this option is not set, the tools default to the
+        locale encoding.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.matchtrackingbranch
+</term>
+<listitem>
+<simpara>
+        Determines if new branches created with <xref linkend="git-gui(1)" /> should
+        default to tracking remote branches with matching names or
+        not. Default: "false".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.newbranchtemplate
+</term>
+<listitem>
+<simpara>
+        Is used as suggested name when creating new branches using the
+        <xref linkend="git-gui(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.pruneduringfetch
+</term>
+<listitem>
+<simpara>
+        "true" if <xref linkend="git-gui(1)" /> should prune remote-tracking branches when
+        performing a fetch. The default value is "false".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.trustmtime
+</term>
+<listitem>
+<simpara>
+        Determines if <xref linkend="git-gui(1)" /> should trust the file modification
+        timestamp or not. By default the timestamps are not trusted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.spellingdictionary
+</term>
+<listitem>
+<simpara>
+        Specifies the dictionary used for spell checking commit messages in
+        the <xref linkend="git-gui(1)" />. When set to "none" spell checking is turned
+        off.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.fastcopyblame
+</term>
+<listitem>
+<simpara>
+        If true, <emphasis>git gui blame</emphasis> uses <emphasis>-C</emphasis> instead of <emphasis>-C -C</emphasis> for original
+        location detection. It makes blame significantly faster on huge
+        repositories at the expense of less thorough copy detection.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.copyblamethreshold
+</term>
+<listitem>
+<simpara>
+        Specifies the threshold to use in <emphasis>git gui blame</emphasis> original location
+        detection, measured in alphanumeric characters. See the
+        <xref linkend="git-blame(1)" /> manual for more information on copy detection.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.blamehistoryctx
+</term>
+<listitem>
+<simpara>
+        Specifies the radius of history context in days to show in
+        <xref linkend="gitk(1)" /> for the selected commit, when the <emphasis>Show History
+        Context</emphasis> menu item is invoked from <emphasis>git gui blame</emphasis>. If this
+        variable is set to zero, the whole history is shown.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specifies the shell command line to execute when the corresponding item
+        of the <xref linkend="git-gui(1)" /> <emphasis>Tools</emphasis> menu is invoked. This option is
+        mandatory for every tool. The command is executed from the root of
+        the working directory, and in the environment it receives the name of
+        the tool as <emphasis>GIT_GUITOOL</emphasis>, the name of the currently selected file as
+        <emphasis>FILENAME</emphasis>, and the name of the current branch as <emphasis>CUR_BRANCH</emphasis> (if
+        the head is detached, <emphasis>CUR_BRANCH</emphasis> is empty).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.needsfile
+</term>
+<listitem>
+<simpara>
+        Run the tool only if a diff is selected in the GUI. It guarantees
+        that <emphasis>FILENAME</emphasis> is not empty.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.noconsole
+</term>
+<listitem>
+<simpara>
+        Run the command silently, without creating a window to display its
+        output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.norescan
+</term>
+<listitem>
+<simpara>
+        Don't rescan the working directory for changes after the tool
+        finishes execution.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.confirm
+</term>
+<listitem>
+<simpara>
+        Show a confirmation dialog before actually running the tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.argprompt
+</term>
+<listitem>
+<simpara>
+        Request a string argument from the user, and pass it to the tool
+        through the <emphasis>ARGS</emphasis> environment variable. Since requesting an
+        argument implies confirmation, the <emphasis>confirm</emphasis> option has no effect
+        if this is enabled. If the option is set to <emphasis>true</emphasis>, <emphasis>yes</emphasis>, or <emphasis>1</emphasis>,
+        the dialog uses a built-in generic prompt; otherwise the exact
+        value of the variable is used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.revprompt
+</term>
+<listitem>
+<simpara>
+        Request a single valid revision from the user, and set the
+        <emphasis>REVISION</emphasis> environment variable. In other aspects this option
+        is similar to <emphasis>argprompt</emphasis>, and can be used together with it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.revunmerged
+</term>
+<listitem>
+<simpara>
+        Show only unmerged branches in the <emphasis>revprompt</emphasis> subdialog.
+        This is useful for tools similar to merge or rebase, but not
+        for things like checkout or reset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.title
+</term>
+<listitem>
+<simpara>
+        Specifies the title to use for the prompt dialog. The default
+        is the tool name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+guitool.&lt;name&gt;.prompt
+</term>
+<listitem>
+<simpara>
+        Specifies the general prompt string to display at the top of
+        the dialog, before subsections for <emphasis>argprompt</emphasis> and <emphasis>revprompt</emphasis>.
+        The default value includes the actual command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+help.browser
+</term>
+<listitem>
+<simpara>
+        Specify the browser that will be used to display help in the
+        <emphasis>web</emphasis> format. See <xref linkend="git-help(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+help.format
+</term>
+<listitem>
+<simpara>
+        Override the default help format used by <xref linkend="git-help(1)" />.
+        Values <emphasis>man</emphasis>, <emphasis>info</emphasis>, <emphasis>web</emphasis> and <emphasis>html</emphasis> are supported. <emphasis>man</emphasis> is
+        the default. <emphasis>web</emphasis> and <emphasis>html</emphasis> are the same.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+help.autocorrect
+</term>
+<listitem>
+<simpara>
+        Automatically correct and execute mistyped commands after
+        waiting for the given number of deciseconds (0.1 sec). If more
+        than one command can be deduced from the entered text, nothing
+        will be executed.  If the value of this option is negative,
+        the corrected command will be executed immediately. If the
+        value is 0 - the command will be just shown but not executed.
+        This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.proxy
+</term>
+<listitem>
+<simpara>
+        Override the HTTP proxy, normally configured using the <emphasis>http_proxy</emphasis>,
+        <emphasis>https_proxy</emphasis>, and <emphasis>all_proxy</emphasis> environment variables (see
+        <emphasis>curl(1)</emphasis>).  This can be overridden on a per-remote basis; see
+        remote.&lt;name&gt;.proxy
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.cookiefile
+</term>
+<listitem>
+<simpara>
+        File containing previously stored cookie lines which should be used
+        in the git http session, if they match the server. The file format
+        of the file to read cookies from should be plain HTTP headers or
+        the Netscape/Mozilla cookie file format (see <xref linkend="curl(1)" />).
+        NOTE that the file specified with http.cookiefile is only used as
+        input. No cookies will be stored in the file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslVerify
+</term>
+<listitem>
+<simpara>
+        Whether to verify the SSL certificate when fetching or pushing
+        over HTTPS. Can be overridden by the <emphasis>GIT_SSL_NO_VERIFY</emphasis> environment
+        variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslCert
+</term>
+<listitem>
+<simpara>
+        File containing the SSL certificate when fetching or pushing
+        over HTTPS. Can be overridden by the <emphasis>GIT_SSL_CERT</emphasis> environment
+        variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslKey
+</term>
+<listitem>
+<simpara>
+        File containing the SSL private key when fetching or pushing
+        over HTTPS. Can be overridden by the <emphasis>GIT_SSL_KEY</emphasis> environment
+        variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslCertPasswordProtected
+</term>
+<listitem>
+<simpara>
+        Enable git's password prompt for the SSL certificate.  Otherwise
+        OpenSSL will prompt the user, possibly many times, if the
+        certificate or private key is encrypted.  Can be overridden by the
+        <emphasis>GIT_SSL_CERT_PASSWORD_PROTECTED</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslCAInfo
+</term>
+<listitem>
+<simpara>
+        File containing the certificates to verify the peer with when
+        fetching or pushing over HTTPS. Can be overridden by the
+        <emphasis>GIT_SSL_CAINFO</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslCAPath
+</term>
+<listitem>
+<simpara>
+        Path containing files with the CA certificates to verify the peer
+        with when fetching or pushing over HTTPS. Can be overridden
+        by the <emphasis>GIT_SSL_CAPATH</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.maxRequests
+</term>
+<listitem>
+<simpara>
+        How many HTTP requests to launch in parallel. Can be overridden
+        by the <emphasis>GIT_HTTP_MAX_REQUESTS</emphasis> environment variable. Default is 5.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.minSessions
+</term>
+<listitem>
+<simpara>
+        The number of curl sessions (counted across slots) to be kept across
+        requests. They will not be ended with curl_easy_cleanup() until
+        http_cleanup() is invoked. If USE_CURL_MULTI is not defined, this
+        value will be capped at 1. Defaults to 1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.postBuffer
+</term>
+<listitem>
+<simpara>
+        Maximum size in bytes of the buffer used by smart HTTP
+        transports when POSTing data to the remote system.
+        For requests larger than this buffer size, HTTP/1.1 and
+        Transfer-Encoding: chunked is used to avoid creating a
+        massive pack file locally.  Default is 1 MiB, which is
+        sufficient for most requests.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.lowSpeedLimit, http.lowSpeedTime
+</term>
+<listitem>
+<simpara>
+        If the HTTP transfer speed is less than <emphasis>http.lowSpeedLimit</emphasis>
+        for longer than <emphasis>http.lowSpeedTime</emphasis> seconds, the transfer is aborted.
+        Can be overridden by the <emphasis>GIT_HTTP_LOW_SPEED_LIMIT</emphasis> and
+        <emphasis>GIT_HTTP_LOW_SPEED_TIME</emphasis> environment variables.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.noEPSV
+</term>
+<listitem>
+<simpara>
+        A boolean which disables using of EPSV ftp command by curl.
+        This can helpful with some "poor" ftp servers which don't
+        support EPSV mode. Can be overridden by the <emphasis>GIT_CURL_FTP_NO_EPSV</emphasis>
+        environment variable. Default is false (curl will use EPSV).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.useragent
+</term>
+<listitem>
+<simpara>
+        The HTTP USER_AGENT string presented to an HTTP server.  The default
+        value represents the version of the client git such as git/1.7.1.
+        This option allows you to override this value to a more common value
+        such as Mozilla/4.0.  This may be necessary, for instance, if
+        connecting through a firewall that restricts HTTP connections to a set
+        of common USER_AGENT strings (but not including those like git/1.7.1).
+        Can be overridden by the <emphasis>GIT_HTTP_USER_AGENT</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+i18n.commitEncoding
+</term>
+<listitem>
+<simpara>
+        Character encoding the commit messages are stored in; git itself
+        does not care per se, but this information is necessary e.g. when
+        importing commits from emails or in the gitk graphical history
+        browser (and possibly at other places in the future or in other
+        porcelains). See e.g. <xref linkend="git-mailinfo(1)" />. Defaults to <emphasis>utf-8</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+i18n.logOutputEncoding
+</term>
+<listitem>
+<simpara>
+        Character encoding the commit messages are converted to when
+        running <emphasis>git log</emphasis> and friends.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap
+</term>
+<listitem>
+<simpara>
+        The configuration variables in the <emphasis>imap</emphasis> section are described
+        in <xref linkend="git-imap-send(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+init.templatedir
+</term>
+<listitem>
+<simpara>
+        Specify the directory from which templates will be copied.
+        (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+instaweb.browser
+</term>
+<listitem>
+<simpara>
+        Specify the program that will be used to browse your working
+        repository in gitweb. See <xref linkend="git-instaweb(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+instaweb.httpd
+</term>
+<listitem>
+<simpara>
+        The HTTP daemon command-line to start gitweb on your working
+        repository. See <xref linkend="git-instaweb(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+instaweb.local
+</term>
+<listitem>
+<simpara>
+        If true the web server started by <xref linkend="git-instaweb(1)" /> will
+        be bound to the local IP (127.0.0.1).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+instaweb.modulepath
+</term>
+<listitem>
+<simpara>
+        The default module path for <xref linkend="git-instaweb(1)" /> to use
+        instead of /usr/lib/apache2/modules.  Only used if httpd
+        is Apache.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+instaweb.port
+</term>
+<listitem>
+<simpara>
+        The port number to bind the gitweb httpd to. See
+        <xref linkend="git-instaweb(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+interactive.singlekey
+</term>
+<listitem>
+<simpara>
+        In interactive commands, allow the user to provide one-letter
+        input with a single key (i.e., without hitting enter).
+        Currently this is used by the <emphasis>--patch</emphasis> mode of
+        <xref linkend="git-add(1)" />, <xref linkend="git-checkout(1)" />, <xref linkend="git-commit(1)" />,
+        <xref linkend="git-reset(1)" />, and <xref linkend="git-stash(1)" />. Note that this
+        setting is silently ignored if portable keystroke input
+        is not available.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.abbrevCommit
+</term>
+<listitem>
+<simpara>
+        If true, makes <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />, and
+        <xref linkend="git-whatchanged(1)" /> assume <emphasis>--abbrev-commit</emphasis>. You may
+        override this option with <emphasis>--no-abbrev-commit</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.date
+</term>
+<listitem>
+<simpara>
+        Set the default date-time mode for the <emphasis>log</emphasis> command.
+        Setting a value for log.date is similar to using <emphasis>git log</emphasis>'s
+        <emphasis>--date</emphasis> option.  Possible values are <emphasis>relative</emphasis>, <emphasis>local</emphasis>,
+        <emphasis>default</emphasis>, <emphasis>iso</emphasis>, <emphasis>rfc</emphasis>, and <emphasis>short</emphasis>; see <xref linkend="git-log(1)" />
+        for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.decorate
+</term>
+<listitem>
+<simpara>
+        Print out the ref names of any commits that are shown by the log
+        command. If <emphasis>short</emphasis> is specified, the ref name prefixes <emphasis>refs/heads/</emphasis>,
+        <emphasis>refs/tags/</emphasis> and <emphasis>refs/remotes/</emphasis> will not be printed. If <emphasis>full</emphasis> is
+        specified, the full ref name (including prefix) will be printed.
+        This is the same as the log commands <emphasis>--decorate</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.showroot
+</term>
+<listitem>
+<simpara>
+        If true, the initial commit will be shown as a big creation event.
+        This is equivalent to a diff against an empty tree.
+        Tools like <xref linkend="git-log(1)" /> or <xref linkend="git-whatchanged(1)" />, which
+        normally hide the root commit will now show it. True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mailmap.file
+</term>
+<listitem>
+<simpara>
+        The location of an augmenting mailmap file. The default
+        mailmap, located in the root of the repository, is loaded
+        first, then the mailmap file pointed to by this variable.
+        The location of the mailmap file may be in a repository
+        subdirectory, or somewhere outside of the repository itself.
+        See <xref linkend="git-shortlog(1)" /> and <xref linkend="git-blame(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+man.viewer
+</term>
+<listitem>
+<simpara>
+        Specify the programs that may be used to display help in the
+        <emphasis>man</emphasis> format. See <xref linkend="git-help(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+man.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified man viewer. The
+        specified command is evaluated in shell with the man page
+        passed as argument. (See <xref linkend="git-help(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+man.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool that may be used to
+        display help in the <emphasis>man</emphasis> format. See <xref linkend="git-help(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.conflictstyle
+</term>
+<listitem>
+<simpara>
+        Specify the style in which conflicted hunks are written out to
+        working tree files upon merge.  The default is "merge", which
+        shows a <emphasis>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</emphasis> conflict marker, changes made by one side,
+        a <emphasis>=======</emphasis> marker, changes made by the other side, and then
+        a <emphasis>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</emphasis> marker.  An alternate style, "diff3", adds a <emphasis>|||||||</emphasis>
+        marker and the original text before the <emphasis>=======</emphasis> marker.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.defaultToUpstream
+</term>
+<listitem>
+<simpara>
+        If merge is called without any commit argument, merge the upstream
+        branches configured for the current branch by using their last
+        observed values stored in their remote tracking branches.
+        The values of the <emphasis>branch.&lt;current branch&gt;.merge</emphasis> that name the
+        branches at the remote named by <emphasis>branch.&lt;current branch&gt;.remote</emphasis>
+        are consulted, and then they are mapped via <emphasis>remote.&lt;remote&gt;.fetch</emphasis>
+        to their corresponding remote tracking branches, and the tips of
+        these tracking branches are merged.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.ff
+</term>
+<listitem>
+<simpara>
+        By default, git does not create an extra merge commit when merging
+        a commit that is a descendant of the current commit. Instead, the
+        tip of the current branch is fast-forwarded. When set to <emphasis>false</emphasis>,
+        this variable tells git to create an extra merge commit in such
+        a case (equivalent to giving the <emphasis>--no-ff</emphasis> option from the command
+        line). When set to <emphasis>only</emphasis>, only such fast-forward merges are
+        allowed (equivalent to giving the <emphasis>--ff-only</emphasis> option from the
+        command line).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.log
+</term>
+<listitem>
+<simpara>
+        In addition to branch names, populate the log message with at
+        most the specified number of one-line descriptions from the
+        actual commits that are being merged.  Defaults to false, and
+        true is a synonym for 20.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.renameLimit
+</term>
+<listitem>
+<simpara>
+        The number of files to consider when performing rename detection
+        during a merge; if not specified, defaults to the value of
+        diff.renameLimit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.renormalize
+</term>
+<listitem>
+<simpara>
+        Tell git that canonical representation of files in the
+        repository has changed over time (e.g. earlier commits record
+        text files with CRLF line endings, but recent ones use LF line
+        endings).  In such a repository, git can convert the data
+        recorded in commits to a canonical form before performing a
+        merge to reduce unnecessary conflicts.  For more information,
+        see section "Merging branches with differing checkin/checkout
+        attributes" in <xref linkend="gitattributes(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.stat
+</term>
+<listitem>
+<simpara>
+        Whether to print the diffstat between ORIG_HEAD and the merge result
+        at the end of the merge.  True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.tool
+</term>
+<listitem>
+<simpara>
+        Controls which merge resolution program is used by
+        <xref linkend="git-mergetool(1)" />.  Valid built-in values are: "araxis",
+        "bc3", "diffuse", "ecmerge", "emerge", "gvimdiff", "kdiff3", "meld",
+        "opendiff", "p4merge", "tkdiff", "tortoisemerge", "vimdiff"
+        and "xxdiff".  Any other value is treated is custom merge tool
+        and there must be a corresponding mergetool.&lt;tool&gt;.cmd option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.verbosity
+</term>
+<listitem>
+<simpara>
+        Controls the amount of output shown by the recursive merge
+        strategy.  Level 0 outputs nothing except a final error
+        message if conflicts were detected. Level 1 outputs only
+        conflicts, 2 outputs conflicts and file changes.  Level 5 and
+        above outputs debugging information.  The default is level 2.
+        Can be overridden by the <emphasis>GIT_MERGE_VERBOSITY</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.&lt;driver&gt;.name
+</term>
+<listitem>
+<simpara>
+        Defines a human-readable name for a custom low-level
+        merge driver.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.&lt;driver&gt;.driver
+</term>
+<listitem>
+<simpara>
+        Defines the command that implements a custom low-level
+        merge driver.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.&lt;driver&gt;.recursive
+</term>
+<listitem>
+<simpara>
+        Names a low-level merge driver to be used when
+        performing an internal merge between common ancestors.
+        See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool.  This is useful in case
+        your tool is not in the PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified merge tool.  The
+        specified command is evaluated in shell with the following
+        variables available: <emphasis>BASE</emphasis> is the name of a temporary file
+        containing the common base of the files to be merged, if available;
+        <emphasis>LOCAL</emphasis> is the name of a temporary file containing the contents of
+        the file on the current branch; <emphasis>REMOTE</emphasis> is the name of a temporary
+        file containing the contents of the file from the branch being
+        merged; <emphasis>MERGED</emphasis> contains the name of the file to which the merge
+        tool should write the results of a successful merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.trustExitCode
+</term>
+<listitem>
+<simpara>
+        For a custom merge command, specify whether the exit code of
+        the merge command can be used to determine whether the merge was
+        successful.  If this is not set to true then the merge target file
+        timestamp is checked and the merge assumed to have been successful
+        if the file has been updated, otherwise the user is prompted to
+        indicate the success of the merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.keepBackup
+</term>
+<listitem>
+<simpara>
+        After performing a merge, the original file with conflict markers
+        can be saved as a file with a <emphasis>.orig</emphasis> extension.  If this variable
+        is set to <emphasis>false</emphasis> then this file is not preserved.  Defaults to
+        <emphasis>true</emphasis> (i.e. keep the backup files).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.keepTemporaries
+</term>
+<listitem>
+<simpara>
+        When invoking a custom merge tool, git uses a set of temporary
+        files to pass to the tool. If the tool returns an error and this
+        variable is set to <emphasis>true</emphasis>, then these temporary files will be
+        preserved, otherwise they will be removed after the tool has
+        exited. Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.prompt
+</term>
+<listitem>
+<simpara>
+        Prompt before each invocation of the merge resolution program.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.displayRef
+</term>
+<listitem>
+<simpara>
+        The (fully qualified) refname from which to show notes when
+        showing commit messages.  The value of this variable can be set
+        to a glob, in which case notes from all matching refs will be
+        shown.  You may also specify this configuration variable
+        several times.  A warning will be issued for refs that do not
+        exist, but a glob that does not match any refs is silently
+        ignored.
+</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_DISPLAY_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
+<simpara>The effective value of "core.notesRef" (possibly overridden by
+GIT_NOTES_REF) is also implicitly added to the list of refs to be
+displayed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewrite.&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        When rewriting commits with &lt;command&gt; (currently <emphasis>amend</emphasis> or
+        <emphasis>rebase</emphasis>) and this variable is set to <emphasis>true</emphasis>, git
+        automatically copies your notes from the original to the
+        rewritten commit.  Defaults to <emphasis>true</emphasis>, but see
+        "notes.rewriteRef" below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteMode
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite (see the
+        "notes.rewrite.&lt;command&gt;" option), determines what to do if
+        the target commit already has a note.  Must be one of
+        <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, or <emphasis>ignore</emphasis>.  Defaults to
+        <emphasis>concatenate</emphasis>.
+</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
+environment variable.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteRef
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite, specifies the (fully
+        qualified) ref whose notes should be copied.  The ref may be a
+        glob, in which case notes in all matching refs will be copied.
+        You may also specify this configuration several times.
+</simpara>
+<simpara>Does not have a default value; you must configure this variable to
+enable note rewriting.  Set it to <emphasis>refs/notes/commits</emphasis> to enable
+rewriting for the default commit notes.</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.window
+</term>
+<listitem>
+<simpara>
+        The size of the window used by <xref linkend="git-pack-objects(1)" /> when no
+        window size is given on the command line. Defaults to 10.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.depth
+</term>
+<listitem>
+<simpara>
+        The maximum delta depth used by <xref linkend="git-pack-objects(1)" /> when no
+        maximum depth is given on the command line. Defaults to 50.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.windowMemory
+</term>
+<listitem>
+<simpara>
+        The window memory size limit used by <xref linkend="git-pack-objects(1)" />
+        when no limit is given on the command line.  The value can be
+        suffixed with "k", "m", or "g".  Defaults to 0, meaning no
+        limit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.compression
+</term>
+<listitem>
+<simpara>
+        An integer -1..9, indicating the compression level for objects
+        in a pack file. -1 is the zlib default. 0 means no
+        compression, and 1..9 are various speed/size tradeoffs, 9 being
+        slowest.  If not set,  defaults to core.compression.  If that is
+        not set,  defaults to -1, the zlib default, which is "a default
+        compromise between speed and compression (currently equivalent
+        to level 6)."
+</simpara>
+<simpara>Note that changing the compression level will not automatically recompress
+all existing objects. You can force recompression by passing the -F option
+to <xref linkend="git-repack(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.deltaCacheSize
+</term>
+<listitem>
+<simpara>
+        The maximum memory in bytes used for caching deltas in
+        <xref linkend="git-pack-objects(1)" /> before writing them out to a pack.
+        This cache is used to speed up the writing object phase by not
+        having to recompute the final delta result once the best match
+        for all objects is found.  Repacking large repositories on machines
+        which are tight with memory might be badly impacted by this though,
+        especially if this cache pushes the system into swapping.
+        A value of 0 means no limit. The smallest size of 1 byte may be
+        used to virtually disable this cache. Defaults to 256 MiB.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.deltaCacheLimit
+</term>
+<listitem>
+<simpara>
+        The maximum size of a delta, that is cached in
+        <xref linkend="git-pack-objects(1)" />. This cache is used to speed up the
+        writing object phase by not having to recompute the final delta
+        result once the best match for all objects is found. Defaults to 1000.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.threads
+</term>
+<listitem>
+<simpara>
+        Specifies the number of threads to spawn when searching for best
+        delta matches.  This requires that <xref linkend="git-pack-objects(1)" />
+        be compiled with pthreads otherwise this option is ignored with a
+        warning. This is meant to reduce packing time on multiprocessor
+        machines. The required amount of memory for the delta search window
+        is however multiplied by the number of threads.
+        Specifying 0 will cause git to auto-detect the number of CPU's
+        and set the number of threads accordingly.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.indexVersion
+</term>
+<listitem>
+<simpara>
+        Specify the default pack index version.  Valid values are 1 for
+        legacy pack index used by Git versions prior to 1.5.2, and 2 for
+        the new pack index with capabilities for packs larger than 4 GB
+        as well as proper protection against the repacking of corrupted
+        packs.  Version 2 is the default.  Note that version 2 is enforced
+        and this config option ignored whenever the corresponding pack is
+        larger than 2 GB.
+</simpara>
+<simpara>If you have an old git that does not understand the version 2 <emphasis>*.idx</emphasis> file,
+cloning or fetching over a non native protocol (e.g. "http" and "rsync")
+that will copy both <emphasis>*.pack</emphasis> file and corresponding <emphasis>*.idx</emphasis> file from the
+other side may give you a repository that cannot be accessed with your
+older version of git. If the <emphasis>*.pack</emphasis> file is smaller than 2 GB, however,
+you can use <xref linkend="git-index-pack(1)" /> on the *.pack file to regenerate
+the <emphasis>*.idx</emphasis> file.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.packSizeLimit
+</term>
+<listitem>
+<simpara>
+        The maximum size of a pack.  This setting only affects
+        packing to a file when repacking, i.e. the git:// protocol
+        is unaffected.  It can be overridden by the <emphasis>--max-pack-size</emphasis>
+        option of <xref linkend="git-repack(1)" />. The minimum size allowed is
+        limited to 1 MiB. The default is unlimited.
+        Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are
+        supported.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pager.&lt;cmd&gt;
+</term>
+<listitem>
+<simpara>
+        If the value is boolean, turns on or off pagination of the
+        output of a particular git subcommand when writing to a tty.
+        Otherwise, turns on pagination for the subcommand using the
+        pager specified by the value of <emphasis>pager.&lt;cmd&gt;</emphasis>.  If <emphasis>--paginate</emphasis>
+        or <emphasis>--no-pager</emphasis> is specified on the command line, it takes
+        precedence over this option.  To disable pagination for all
+        commands, set <emphasis>core.pager</emphasis> or <emphasis>GIT_PAGER</emphasis> to <emphasis>cat</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pretty.&lt;name&gt;
+</term>
+<listitem>
+<simpara>
+        Alias for a --pretty= format string, as specified in
+        <xref linkend="git-log(1)" />. Any aliases defined here can be used just
+        as the built-in pretty formats could. For example,
+        running <emphasis>git config pretty.changelog "format:* %H %s"</emphasis>
+        would cause the invocation <emphasis>git log --pretty=changelog</emphasis>
+        to be equivalent to running <emphasis>git log "--pretty=format:* %H %s"</emphasis>.
+        Note that an alias with the same name as a built-in format
+        will be silently ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pull.rebase
+</term>
+<listitem>
+<simpara>
+        When true, rebase branches on top of the fetched branch, instead
+        of merging the default branch from the default remote when "git
+        pull" is run. See "branch.&lt;name&gt;.rebase" for setting this on a
+        per-branch basis.
+</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: this is a possibly dangerous operation; do <emphasis role="strong">not</emphasis> use
+it unless you understand the implications (see <xref linkend="git-rebase(1)" />
+for details).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pull.octopus
+</term>
+<listitem>
+<simpara>
+        The default merge strategy to use when pulling multiple branches
+        at once.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pull.twohead
+</term>
+<listitem>
+<simpara>
+        The default merge strategy to use when pulling a single branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.default
+</term>
+<listitem>
+<simpara>
+        Defines the action git push should take if no refspec is given
+        on the command line, no refspec is configured in the remote, and
+        no refspec is implied by any of the options given on the command
+        line. Possible values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>nothing</emphasis> - do not push anything.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>matching</emphasis> - push all matching branches.
+  All branches having the same name in both ends are considered to be
+  matching. This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>upstream</emphasis> - push the current branch to its upstream branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tracking</emphasis> - deprecated synonym for <emphasis>upstream</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>current</emphasis> - push the current branch to a branch of the same name.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.stat
+</term>
+<listitem>
+<simpara>
+        Whether to show a diffstat of what changed upstream since the last
+        rebase. False by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.autosquash
+</term>
+<listitem>
+<simpara>
+        If set to true enable <emphasis>--autosquash</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.autogc
+</term>
+<listitem>
+<simpara>
+        By default, git-receive-pack will run "git-gc --auto" after
+        receiving data from git-push and updating refs.  You can stop
+        it by setting this variable to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.fsckObjects
+</term>
+<listitem>
+<simpara>
+        If it is set to true, git-receive-pack will check all received
+        objects. It will abort in the case of a malformed object or a
+        broken link. The result of an abort are only dangling objects.
+        Defaults to false. If not set, the value of <emphasis>transfer.fsckObjects</emphasis>
+        is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.unpackLimit
+</term>
+<listitem>
+<simpara>
+        If the number of objects received in a push is below this
+        limit then the objects will be unpacked into loose object
+        files. However if the number of received objects equals or
+        exceeds this limit then the received pack will be stored as
+        a pack, after adding any missing delta bases.  Storing the
+        pack from a push can make the push operation complete faster,
+        especially on slow filesystems.  If not set, the value of
+        <emphasis>transfer.unpackLimit</emphasis> is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.denyDeletes
+</term>
+<listitem>
+<simpara>
+        If set to true, git-receive-pack will deny a ref update that deletes
+        the ref. Use this to prevent such a ref deletion via a push.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.denyDeleteCurrent
+</term>
+<listitem>
+<simpara>
+        If set to true, git-receive-pack will deny a ref update that
+        deletes the currently checked out branch of a non-bare repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.denyCurrentBranch
+</term>
+<listitem>
+<simpara>
+        If set to true or "refuse", git-receive-pack will deny a ref update
+        to the currently checked out branch of a non-bare repository.
+        Such a push is potentially dangerous because it brings the HEAD
+        out of sync with the index and working tree. If set to "warn",
+        print a warning of such a push to stderr, but allow the push to
+        proceed. If set to false or "ignore", allow such pushes with no
+        message. Defaults to "refuse".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.denyNonFastForwards
+</term>
+<listitem>
+<simpara>
+        If set to true, git-receive-pack will deny a ref update which is
+        not a fast-forward. Use this to prevent such an update via a push,
+        even if that push is forced. This configuration variable is
+        set when initializing a shared repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.updateserverinfo
+</term>
+<listitem>
+<simpara>
+        If set to true, git-receive-pack will run git-update-server-info
+        after receiving data from git-push and updating refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.url
+</term>
+<listitem>
+<simpara>
+        The URL of a remote repository.  See <xref linkend="git-fetch(1)" /> or
+        <xref linkend="git-push(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.pushurl
+</term>
+<listitem>
+<simpara>
+        The push URL of a remote repository.  See <xref linkend="git-push(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.proxy
+</term>
+<listitem>
+<simpara>
+        For remotes that require curl (http, https and ftp), the URL to
+        the proxy to use for that remote.  Set to the empty string to
+        disable proxying for that remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.fetch
+</term>
+<listitem>
+<simpara>
+        The default set of "refspec" for <xref linkend="git-fetch(1)" />. See
+        <xref linkend="git-fetch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.push
+</term>
+<listitem>
+<simpara>
+        The default set of "refspec" for <xref linkend="git-push(1)" />. See
+        <xref linkend="git-push(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.mirror
+</term>
+<listitem>
+<simpara>
+        If true, pushing to this remote will automatically behave
+        as if the <emphasis>--mirror</emphasis> option was given on the command line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.skipDefaultUpdate
+</term>
+<listitem>
+<simpara>
+        If true, this remote will be skipped by default when updating
+        using <xref linkend="git-fetch(1)" /> or the <emphasis>update</emphasis> subcommand of
+        <xref linkend="git-remote(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.skipFetchAll
+</term>
+<listitem>
+<simpara>
+        If true, this remote will be skipped by default when updating
+        using <xref linkend="git-fetch(1)" /> or the <emphasis>update</emphasis> subcommand of
+        <xref linkend="git-remote(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.receivepack
+</term>
+<listitem>
+<simpara>
+        The default program to execute on the remote side when pushing.  See
+        option --receive-pack of <xref linkend="git-push(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.uploadpack
+</term>
+<listitem>
+<simpara>
+        The default program to execute on the remote side when fetching.  See
+        option --upload-pack of <xref linkend="git-fetch-pack(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.tagopt
+</term>
+<listitem>
+<simpara>
+        Setting this value to --no-tags disables automatic tag following when
+        fetching from remote &lt;name&gt;. Setting it to --tags will fetch every
+        tag from remote &lt;name&gt;, even if they are not reachable from remote
+        branch heads. Passing these flags directly to <xref linkend="git-fetch(1)" /> can
+        override this setting. See options --tags and --no-tags of
+        <xref linkend="git-fetch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remote.&lt;name&gt;.vcs
+</term>
+<listitem>
+<simpara>
+        Setting this to a value &lt;vcs&gt; will cause git to interact with
+        the remote with the git-remote-&lt;vcs&gt; helper.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+remotes.&lt;group&gt;
+</term>
+<listitem>
+<simpara>
+        The list of remotes which are fetched by "git remote update
+        &lt;group&gt;".  See <xref linkend="git-remote(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+repack.usedeltabaseoffset
+</term>
+<listitem>
+<simpara>
+        By default, <xref linkend="git-repack(1)" /> creates packs that use
+        delta-base offset. If you need to share your repository with
+        git older than version 1.4.4, either directly or via a dumb
+        protocol such as http, then you need to set this option to
+        "false" and repack. Access from old git versions over the
+        native protocol are unaffected by this option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rerere.autoupdate
+</term>
+<listitem>
+<simpara>
+        When set to true, <emphasis>git-rerere</emphasis> updates the index with the
+        resulting contents after it cleanly resolves conflicts using
+        previously recorded resolution.  Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rerere.enabled
+</term>
+<listitem>
+<simpara>
+        Activate recording of resolved conflicts, so that identical
+        conflict hunks can be resolved automatically, should they be
+        encountered again.  By default, <xref linkend="git-rerere(1)" /> is
+        enabled if there is an <emphasis>rr-cache</emphasis> directory under the
+        <emphasis>$GIT_DIR</emphasis>, e.g. if "rerere" was previously used in the
+        repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.identity
+</term>
+<listitem>
+<simpara>
+        A configuration identity. When given, causes values in the
+        <emphasis>sendemail.&lt;identity&gt;</emphasis> subsection to take precedence over
+        values in the <emphasis>sendemail</emphasis> section. The default identity is
+        the value of <emphasis>sendemail.identity</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpencryption
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="git-send-email(1)" /> for description.  Note that this
+        setting is not subject to the <emphasis>identity</emphasis> mechanism.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpssl
+</term>
+<listitem>
+<simpara>
+        Deprecated alias for <emphasis>sendemail.smtpencryption = ssl</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.&lt;identity&gt;.*
+</term>
+<listitem>
+<simpara>
+        Identity-specific versions of the <emphasis>sendemail.*</emphasis> parameters
+        found below, taking precedence over those when the this
+        identity is selected, through command-line or
+        <emphasis>sendemail.identity</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.aliasesfile
+</term>
+<term>
+sendemail.aliasfiletype
+</term>
+<term>
+sendemail.bcc
+</term>
+<term>
+sendemail.cc
+</term>
+<term>
+sendemail.cccmd
+</term>
+<term>
+sendemail.chainreplyto
+</term>
+<term>
+sendemail.confirm
+</term>
+<term>
+sendemail.envelopesender
+</term>
+<term>
+sendemail.from
+</term>
+<term>
+sendemail.multiedit
+</term>
+<term>
+sendemail.signedoffbycc
+</term>
+<term>
+sendemail.smtppass
+</term>
+<term>
+sendemail.suppresscc
+</term>
+<term>
+sendemail.suppressfrom
+</term>
+<term>
+sendemail.to
+</term>
+<term>
+sendemail.smtpdomain
+</term>
+<term>
+sendemail.smtpserver
+</term>
+<term>
+sendemail.smtpserverport
+</term>
+<term>
+sendemail.smtpserveroption
+</term>
+<term>
+sendemail.smtpuser
+</term>
+<term>
+sendemail.thread
+</term>
+<term>
+sendemail.validate
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="git-send-email(1)" /> for description.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.signedoffcc
+</term>
+<listitem>
+<simpara>
+        Deprecated alias for <emphasis>sendemail.signedoffbycc</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+showbranch.default
+</term>
+<listitem>
+<simpara>
+        The default set of branches for <xref linkend="git-show-branch(1)" />.
+        See <xref linkend="git-show-branch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status.relativePaths
+</term>
+<listitem>
+<simpara>
+        By default, <xref linkend="git-status(1)" /> shows paths relative to the
+        current directory. Setting this variable to <emphasis>false</emphasis> shows paths
+        relative to the repository root (this was the default for git
+        prior to v1.5.4).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status.showUntrackedFiles
+</term>
+<listitem>
+<simpara>
+        By default, <xref linkend="git-status(1)" /> and <xref linkend="git-commit(1)" /> show
+        files which are not currently tracked by Git. Directories which
+        contain only untracked files, are shown with the directory name
+        only. Showing untracked files means that Git needs to lstat() all
+        all the files in the whole repository, which might be slow on some
+        systems. So, this variable controls how the commands displays
+        the untracked files. Possible values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>no</emphasis> - Show no untracked files.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>normal</emphasis> - Show untracked files and directories.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>all</emphasis> - Show also individual files in untracked directories.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>If this variable is not specified, it defaults to <emphasis>normal</emphasis>.
+This variable can be overridden with the -u|--untracked-files option
+of <xref linkend="git-status(1)" /> and <xref linkend="git-commit(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status.submodulesummary
+</term>
+<listitem>
+<simpara>
+        Defaults to false.
+        If this is set to a non zero number or true (identical to -1 or an
+        unlimited number), the submodule summary will be enabled and a
+        summary of commits for modified submodules will be shown (see
+        --summary-limit option of <xref linkend="git-submodule(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.path
+</term>
+<term>
+submodule.&lt;name&gt;.url
+</term>
+<term>
+submodule.&lt;name&gt;.update
+</term>
+<listitem>
+<simpara>
+        The path within this project, URL, and the updating strategy
+        for a submodule.  These variables are initially populated
+        by <emphasis>git submodule init</emphasis>; edit them to override the
+        URL and other values found in the <emphasis>.gitmodules</emphasis> file.  See
+        <xref linkend="git-submodule(1)" /> and <xref linkend="gitmodules(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.fetchRecurseSubmodules
+</term>
+<listitem>
+<simpara>
+        This option can be used to control recursive fetching of this
+        submodule. It can be overridden by using the --[no-]recurse-submodules
+        command line option to "git fetch" and "git pull".
+        This setting will override that from in the <xref linkend="gitmodules(5)" />
+        file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+submodule.&lt;name&gt;.ignore
+</term>
+<listitem>
+<simpara>
+        Defines under what circumstances "git status" and the diff family show
+        a submodule as modified. When set to "all", it will never be considered
+        modified, "dirty" will ignore all changes to the submodules work tree and
+        takes only differences between the HEAD of the submodule and the commit
+        recorded in the superproject into account. "untracked" will additionally
+        let submodules with modified tracked files in their work tree show up.
+        Using "none" (the default when this option is not set) also shows
+        submodules that have untracked files in their work tree as changed.
+        This setting overrides any setting made in .gitmodules for this submodule,
+        both settings can be overridden on the command line by using the
+        "--ignore-submodules" option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+tar.umask
+</term>
+<listitem>
+<simpara>
+        This variable can be used to restrict the permission bits of
+        tar archive entries.  The default is 0002, which turns off the
+        world write bit.  The special value "user" indicates that the
+        archiving user's umask will be used instead.  See umask(2) and
+        <xref linkend="git-archive(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+transfer.fsckObjects
+</term>
+<listitem>
+<simpara>
+        When <emphasis>fetch.fsckObjects</emphasis> or <emphasis>receive.fsckObjects</emphasis> are
+        not set, the value of this variable is used instead.
+        Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+transfer.unpackLimit
+</term>
+<listitem>
+<simpara>
+        When <emphasis>fetch.unpackLimit</emphasis> or <emphasis>receive.unpackLimit</emphasis> are
+        not set, the value of this variable is used instead.
+        The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+url.&lt;base&gt;.insteadOf
+</term>
+<listitem>
+<simpara>
+        Any URL that starts with this value will be rewritten to
+        start, instead, with &lt;base&gt;. In cases where some site serves a
+        large number of repositories, and serves them with multiple
+        access methods, and some users need to use different access
+        methods, this feature allows people to specify any of the
+        equivalent URLs and have git automatically rewrite the URL to
+        the best alternative for the particular user, even for a
+        never-before-seen repository on the site.  When more than one
+        insteadOf strings match a given URL, the longest match is used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+url.&lt;base&gt;.pushInsteadOf
+</term>
+<listitem>
+<simpara>
+        Any URL that starts with this value will not be pushed to;
+        instead, it will be rewritten to start with &lt;base&gt;, and the
+        resulting URL will be pushed to. In cases where some site serves
+        a large number of repositories, and serves them with multiple
+        access methods, some of which do not allow push, this feature
+        allows people to specify a pull-only URL and have git
+        automatically use an appropriate URL to push, even for a
+        never-before-seen repository on the site.  When more than one
+        pushInsteadOf strings match a given URL, the longest match is
+        used.  If a remote has an explicit pushurl, git will ignore this
+        setting for that remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+user.email
+</term>
+<listitem>
+<simpara>
+        Your email address to be recorded in any newly created commits.
+        Can be overridden by the <emphasis>GIT_AUTHOR_EMAIL</emphasis>, <emphasis>GIT_COMMITTER_EMAIL</emphasis>, and
+        <emphasis>EMAIL</emphasis> environment variables.  See <xref linkend="git-commit-tree(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+user.name
+</term>
+<listitem>
+<simpara>
+        Your full name to be recorded in any newly created commits.
+        Can be overridden by the <emphasis>GIT_AUTHOR_NAME</emphasis> and <emphasis>GIT_COMMITTER_NAME</emphasis>
+        environment variables.  See <xref linkend="git-commit-tree(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+user.signingkey
+</term>
+<listitem>
+<simpara>
+        If <xref linkend="git-tag(1)" /> is not selecting the key you want it to
+        automatically when creating a signed tag, you can override the
+        default selection with this variable.  This option is passed
+        unchanged to gpg's --local-user parameter, so you may specify a key
+        using any method that gpg supports.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+web.browser
+</term>
+<listitem>
+<simpara>
+        Specify a web browser that may be used by some commands.
+        Currently only <xref linkend="git-instaweb(1)" /> and <xref linkend="git-help(1)" />
+        may use it.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

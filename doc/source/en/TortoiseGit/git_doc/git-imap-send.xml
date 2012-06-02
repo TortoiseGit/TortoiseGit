@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-imap-send(1)">
+<articleinfo>
+    <title>git-imap-send(1)</title>
+<indexterm>
+<primary>git-imap-send(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-imap-send - Send a collection of patches from stdin to an IMAP folder</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git imap-send</emphasis></literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This command uploads a mailbox generated with <emphasis>git format-patch</emphasis>
+into an IMAP drafts folder.  This allows patches to be sent as
+other email is when using mail clients that cannot read mailbox
+files directly. The command also works with any general mailbox
+in which emails have the fields "From", "Date", and "Subject" in
+that order.</simpara>
+<simpara>Typical usage is something like:</simpara>
+<simpara>git format-patch --signoff --stdout --attach origin | git imap-send</simpara>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<simpara>To use the tool, imap.folder and either imap.tunnel or imap.host must be set
+to appropriate values.</simpara>
+<section id="_variables">
+<title>Variables</title>
+<variablelist>
+<varlistentry>
+<term>
+imap.folder
+</term>
+<listitem>
+<simpara>
+        The folder to drop the mails into, which is typically the Drafts
+        folder. For example: "INBOX.Drafts", "INBOX/Drafts" or
+        "[Gmail]/Drafts". Required to use imap-send.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.tunnel
+</term>
+<listitem>
+<simpara>
+        Command used to setup a tunnel to the IMAP server through which
+        commands will be piped instead of using a direct network connection
+        to the server. Required when imap.host is not set to use imap-send.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.host
+</term>
+<listitem>
+<simpara>
+        A URL identifying the server. Use a <emphasis>imap://</emphasis> prefix for non-secure
+        connections and a <emphasis>imaps://</emphasis> prefix for secure connections.
+        Ignored when imap.tunnel is set, but required to use imap-send
+        otherwise.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.user
+</term>
+<listitem>
+<simpara>
+        The username to use when logging in to the server.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.pass
+</term>
+<listitem>
+<simpara>
+        The password to use when logging in to the server.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.port
+</term>
+<listitem>
+<simpara>
+        An integer port number to connect to on the server.
+        Defaults to 143 for imap:// hosts and 993 for imaps:// hosts.
+        Ignored when imap.tunnel is set.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.sslverify
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable verification of the server certificate
+        used by the SSL/TLS connection. Default is <emphasis>true</emphasis>. Ignored when
+        imap.tunnel is set.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.preformattedHTML
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable the use of html encoding when sending
+        a patch.  An html encoded patch will be bracketed with &lt;pre&gt;
+        and have a content type of text/html.  Ironically, enabling this
+        option causes Thunderbird to send the patch as a plain/text,
+        format=fixed email.  Default is <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+imap.authMethod
+</term>
+<listitem>
+<simpara>
+        Specify authenticate method for authentication with IMAP server.
+        Current supported method is <emphasis>CRAM-MD5</emphasis> only.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="_examples">
+<title>Examples</title>
+<simpara>Using tunnel mode:</simpara>
+<literallayout class="monospaced">[imap]
+    folder = "INBOX.Drafts"
+    tunnel = "ssh -q -C user@example.com /usr/bin/imapd ./Maildir 2&gt; /dev/null"</literallayout>
+<simpara>Using direct mode:</simpara>
+<literallayout class="monospaced">[imap]
+    folder = "INBOX.Drafts"
+    host = imap://imap.example.com
+    user = bob
+    pass = p4ssw0rd</literallayout>
+<simpara>Using direct mode with SSL:</simpara>
+<literallayout class="monospaced">[imap]
+    folder = "INBOX.Drafts"
+    host = imaps://imap.example.com
+    user = bob
+    pass = p4ssw0rd
+    port = 123
+    sslverify = false</literallayout>
+</section>
+</simplesect>
+<simplesect id="_example">
+<title>EXAMPLE</title>
+<simpara>To submit patches using GMail's IMAP interface, first, edit your ~/.gitconfig
+to specify your account settings:</simpara>
+<screen>[imap]
+        folder = "[Gmail]/Drafts"
+        host = imaps://imap.gmail.com
+        user = user@gmail.com
+        port = 993
+        sslverify = false</screen>
+<simpara>You might need to instead use: folder = "[Google Mail]/Drafts" if you get an error
+that the "Folder doesn't exist".</simpara>
+<simpara>Once the commits are ready to be sent, run the following command:</simpara>
+<literallayout class="monospaced">$ git format-patch --cover-letter -M --stdout origin/master | git imap-send</literallayout>
+<simpara>Just make sure to disable line wrapping in the email client (GMail's web
+interface will wrap lines no matter what, so you need to use a real
+IMAP client).</simpara>
+</simplesect>
+<simplesect id="_caution">
+<title>CAUTION</title>
+<simpara>It is still your responsibility to make sure that the email message
+sent by your email program meets the standards of your project.
+Many projects do not like patches to be attached.  Some mail
+agents will transform patches (e.g. wrap lines, send them as
+format=flowed) in ways that make them fail.  You will get angry
+flames ridiculing you if you don't check this.</simpara>
+<simpara>Thunderbird in particular is known to be problematic.  Thunderbird
+users may wish to visit this web page for more information:
+  <ulink url="http://kb.mozillazine.org/Plain_text_e-mail_-_Thunderbird#Completely_plain_email">http://kb.mozillazine.org/Plain_text_e-mail_-_Thunderbird#Completely_plain_email</ulink></simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-format-patch(1)" />, <xref linkend="git-send-email(1)" />, mbox(5)</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

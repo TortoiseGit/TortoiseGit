@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-remote-testgit(1)">
+<articleinfo>
+    <title>git-remote-testgit(1)</title>
+<indexterm>
+<primary>git-remote-testgit(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-remote-testgit - Example remote-helper</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>git clone testgit::&lt;source-repo&gt; [&lt;destination&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>This command is a simple remote-helper, that is used both as a
+testcase for the remote-helper functionality, and as an example to
+show remote-helper authors one possible implementation.</simpara>
+<simpara>The best way to learn more is to read the comments and source code in
+<emphasis>git-remote-testgit.py</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-remote-helpers(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

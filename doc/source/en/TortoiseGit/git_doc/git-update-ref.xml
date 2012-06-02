@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-update-ref(1)">
+<articleinfo>
+    <title>git-update-ref(1)</title>
+<indexterm>
+<primary>git-update-ref(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-update-ref - Update the object name stored in a ref safely</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--no-deref] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;])</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Given two arguments, stores the &lt;newvalue&gt; in the &lt;ref&gt;, possibly
+dereferencing the symbolic refs.  E.g. <emphasis>git update-ref HEAD
+&lt;newvalue&gt;</emphasis> updates the current branch head to the new object.</simpara>
+<simpara>Given three arguments, stores the &lt;newvalue&gt; in the &lt;ref&gt;,
+possibly dereferencing the symbolic refs, after verifying that
+the current value of the &lt;ref&gt; matches &lt;oldvalue&gt;.
+E.g. <emphasis>git update-ref refs/heads/master &lt;newvalue&gt; &lt;oldvalue&gt;</emphasis>
+updates the master branch head to &lt;newvalue&gt; only if its current
+value is &lt;oldvalue&gt;.  You can specify 40 "0" or an empty string
+as &lt;oldvalue&gt; to make sure that the ref you are creating does
+not exist.</simpara>
+<simpara>It also allows a "ref" file to be a symbolic pointer to another
+ref file by starting with the four-byte header sequence of
+"ref:".</simpara>
+<simpara>More importantly, it allows the update of a ref file to follow
+these symbolic pointers, whether they are symlinks or these
+"regular file symbolic refs".  It follows <emphasis role="strong">real</emphasis> symlinks only
+if they start with "refs/": otherwise it will just try to read
+them and update them as a regular file (i.e. it will allow the
+filesystem to follow them, but will overwrite such a symlink to
+somewhere else with a regular filename).</simpara>
+<simpara>If --no-deref is given, &lt;ref&gt; itself is overwritten, rather than
+the result of following the symbolic pointers.</simpara>
+<simpara>In general, using</simpara>
+<literallayout class="monospaced">git update-ref HEAD "$head"</literallayout>
+<simpara>should be a <emphasis>lot</emphasis> safer than doing</simpara>
+<literallayout class="monospaced">echo "$head" &gt; "$GIT_DIR/HEAD"</literallayout>
+<simpara>both from a symlink following standpoint <emphasis role="strong">and</emphasis> an error checking
+standpoint.  The "refs/" rule for symlinks means that symlinks
+that point to "outside" the tree are safe: they'll be followed
+for reading but not for writing (so we'll never write through a
+ref symlink to some other tree, if you have copied a whole
+archive by creating a symlink tree).</simpara>
+<simpara>With <emphasis>-d</emphasis> flag, it deletes the named &lt;ref&gt; after verifying it
+still contains &lt;oldvalue&gt;.</simpara>
+</simplesect>
+<simplesect id="_logging_updates">
+<title>Logging Updates</title>
+<simpara>If config parameter "core.logAllRefUpdates" is true and the ref is one under
+"refs/heads/", "refs/remotes/", "refs/notes/", or the symbolic ref HEAD; or
+the file "$GIT_DIR/logs/&lt;ref&gt;" exists then <emphasis>git update-ref</emphasis> will append
+a line to the log file "$GIT_DIR/logs/&lt;ref&gt;" (dereferencing all
+symbolic refs before creating the log name) describing the change
+in ref value.  Log lines are formatted as:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+oldsha1 SP newsha1 SP committer LF
+</simpara>
+<simpara>Where "oldsha1" is the 40 character hexadecimal value previously
+stored in &lt;ref&gt;, "newsha1" is the 40 character hexadecimal value of
+&lt;newvalue&gt; and "committer" is the committer's name, email address
+and date in the standard GIT committer ident format.</simpara>
+</listitem>
+</orderedlist>
+<simpara>Optionally with -m:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+oldsha1 SP newsha1 SP committer TAB message LF
+</simpara>
+<simpara>Where all fields are as described above and "message" is the
+value supplied to the -m option.</simpara>
+</listitem>
+</orderedlist>
+<simpara>An update will fail (without changing &lt;ref&gt;) if the current user is
+unable to create a new log file, append to the existing log file
+or does not have committer information available.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

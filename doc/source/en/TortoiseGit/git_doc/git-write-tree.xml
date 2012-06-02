@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-write-tree(1)">
+<articleinfo>
+    <title>git-write-tree(1)</title>
+<indexterm>
+<primary>git-write-tree(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-write-tree - Create a tree object from the current index</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git write-tree</emphasis> [--missing-ok] [--prefix=&lt;prefix&gt;/]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Creates a tree object using the current index. The name of the new
+tree object is printed to standard output.</simpara>
+<simpara>The index must be in a fully merged state.</simpara>
+<simpara>Conceptually, <emphasis>git write-tree</emphasis> sync()s the current index contents
+into a set of tree files.
+In order to have that match what is actually in your directory right
+now, you need to have done a <emphasis>git update-index</emphasis> phase before you did the
+<emphasis>git write-tree</emphasis>.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--missing-ok
+</term>
+<listitem>
+<simpara>
+        Normally <emphasis>git write-tree</emphasis> ensures that the objects referenced by the
+        directory exist in the object database.  This option disables this
+        check.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prefix=&lt;prefix&gt;/
+</term>
+<listitem>
+<simpara>
+        Writes a tree object that represents a subdirectory
+        <emphasis>&lt;prefix&gt;</emphasis>.  This can be used to write the tree object
+        for a subproject that is in the named subdirectory.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

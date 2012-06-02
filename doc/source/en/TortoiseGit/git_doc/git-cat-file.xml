@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-cat-file(1)">
+<articleinfo>
+    <title>git-cat-file(1)</title>
+<indexterm>
+<primary>git-cat-file(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-cat-file - Provide content or type and size information for repository objects</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git cat-file</emphasis> (-t | -s | -e | -p | &lt;type&gt; | --textconv ) &lt;object&gt;
+<emphasis>git cat-file</emphasis> (--batch | --batch-check) &lt; &lt;list-of-objects&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>In its first form, the command provides the content or the type of an object in
+the repository. The type is required unless <emphasis>-t</emphasis> or <emphasis>-p</emphasis> is used to find the
+object type, or <emphasis>-s</emphasis> is used to find the object size, or <emphasis>--textconv</emphasis> is used
+(which implies type "blob").</simpara>
+<simpara>In the second form, a list of objects (separated by linefeeds) is provided on
+stdin, and the SHA1, type, and size of each object is printed on stdout.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+&lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        The name of the object to show.
+        For a more complete list of ways to spell object names, see
+        the "SPECIFYING REVISIONS" section in <xref linkend="gitrevisions(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t
+</term>
+<listitem>
+<simpara>
+        Instead of the content, show the object type identified by
+        &lt;object&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<listitem>
+<simpara>
+        Instead of the content, show the object size identified by
+        &lt;object&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-e
+</term>
+<listitem>
+<simpara>
+        Suppress all output; instead exit with zero status if &lt;object&gt;
+        exists and is a valid object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-p
+</term>
+<listitem>
+<simpara>
+        Pretty-print the contents of &lt;object&gt; based on its type.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;type&gt;
+</term>
+<listitem>
+<simpara>
+        Typically this matches the real type of &lt;object&gt; but asking
+        for a type that can trivially be dereferenced from the given
+        &lt;object&gt; is also permitted.  An example is to ask for a
+        "tree" with &lt;object&gt; being a commit object that contains it,
+        or to ask for a "blob" with &lt;object&gt; being a tag object that
+        points at it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--textconv
+</term>
+<listitem>
+<simpara>
+        Show the content as transformed by a textconv filter. In this case,
+        &lt;object&gt; has be of the form &lt;treeish&gt;:&lt;path&gt;, or :&lt;path&gt; in order
+        to apply the filter to the content recorded in the index at &lt;path&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--batch
+</term>
+<listitem>
+<simpara>
+        Print the SHA1, type, size, and contents of each object provided on
+        stdin. May not be combined with any other options or arguments.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--batch-check
+</term>
+<listitem>
+<simpara>
+        Print the SHA1, type, and size of each object provided on stdin. May not
+        be combined with any other options or arguments.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_output">
+<title>OUTPUT</title>
+<simpara>If <emphasis>-t</emphasis> is specified, one of the &lt;type&gt;.</simpara>
+<simpara>If <emphasis>-s</emphasis> is specified, the size of the &lt;object&gt; in bytes.</simpara>
+<simpara>If <emphasis>-e</emphasis> is specified, no output.</simpara>
+<simpara>If <emphasis>-p</emphasis> is specified, the contents of &lt;object&gt; are pretty-printed.</simpara>
+<simpara>If &lt;type&gt; is specified, the raw (though uncompressed) contents of the &lt;object&gt;
+will be returned.</simpara>
+<simpara>If <emphasis>--batch</emphasis> is specified, output of the following form is printed for each
+object specified on stdin:</simpara>
+<screen>&lt;sha1&gt; SP &lt;type&gt; SP &lt;size&gt; LF
+&lt;contents&gt; LF</screen>
+<simpara>If <emphasis>--batch-check</emphasis> is specified, output of the following form is printed for
+each object specified on stdin:</simpara>
+<screen>&lt;sha1&gt; SP &lt;type&gt; SP &lt;size&gt; LF</screen>
+<simpara>For both <emphasis>--batch</emphasis> and <emphasis>--batch-check</emphasis>, output of the following form is printed
+for each object specified on stdin that does not exist in the repository:</simpara>
+<screen>&lt;object&gt; SP missing LF</screen>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

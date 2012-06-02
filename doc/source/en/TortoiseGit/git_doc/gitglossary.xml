@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="gitglossary(7)">
+<articleinfo>
+    <title>gitglossary(7)</title>
+<indexterm>
+<primary>gitglossary(7)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>gitglossary - A GIT Glossary</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<simpara>*</simpara>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<variablelist>
+<varlistentry>
+<term>
+<anchor id="def_alternate_object_database" xreflabel="[def_alternate_object_database]"/>alternate object database
+</term>
+<listitem>
+<simpara>
+        Via the alternates mechanism, a <link linkend="def_repository">repository</link>
+        can inherit part of its <link linkend="def_object_database">object database</link>
+        from another object database, which is called "alternate".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_bare_repository" xreflabel="[def_bare_repository]"/>bare repository
+</term>
+<listitem>
+<simpara>
+        A bare repository is normally an appropriately
+        named <link linkend="def_directory">directory</link> with a <emphasis>.git</emphasis> suffix that does not
+        have a locally checked-out copy of any of the files under
+        revision control. That is, all of the <emphasis>git</emphasis>
+        administrative and control files that would normally be present in the
+        hidden <emphasis>.git</emphasis> sub-directory are directly present in the
+        <emphasis>repository.git</emphasis> directory instead,
+        and no other files are present and checked out. Usually publishers of
+        public repositories make bare repositories available.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_blob_object" xreflabel="[def_blob_object]"/>blob object
+</term>
+<listitem>
+<simpara>
+        Untyped <link linkend="def_object">object</link>, e.g. the contents of a file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_branch" xreflabel="[def_branch]"/>branch
+</term>
+<listitem>
+<simpara>
+        A "branch" is an active line of development.  The most recent
+        <link linkend="def_commit">commit</link> on a branch is referred to as the tip of
+        that branch.  The tip of the branch is referenced by a branch
+        <link linkend="def_head">head</link>, which moves forward as additional development
+        is done on the branch.  A single git
+        <link linkend="def_repository">repository</link> can track an arbitrary number of
+        branches, but your <link linkend="def_working_tree">working tree</link> is
+        associated with just one of them (the "current" or "checked out"
+        branch), and <link linkend="def_HEAD">HEAD</link> points to that branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_cache" xreflabel="[def_cache]"/>cache
+</term>
+<listitem>
+<simpara>
+        Obsolete for: <link linkend="def_index">index</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_chain" xreflabel="[def_chain]"/>chain
+</term>
+<listitem>
+<simpara>
+        A list of objects, where each <link linkend="def_object">object</link> in the list contains
+        a reference to its successor (for example, the successor of a
+        <link linkend="def_commit">commit</link> could be one of its <link linkend="def_parent">parents</link>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_changeset" xreflabel="[def_changeset]"/>changeset
+</term>
+<listitem>
+<simpara>
+        BitKeeper/cvsps speak for "<link linkend="def_commit">commit</link>". Since git does not
+        store changes, but states, it really does not make sense to use the term
+        "changesets" with git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_checkout" xreflabel="[def_checkout]"/>checkout
+</term>
+<listitem>
+<simpara>
+        The action of updating all or part of the
+        <link linkend="def_working_tree">working tree</link> with a <link linkend="def_tree_object">tree object</link>
+        or <link linkend="def_blob_object">blob</link> from the
+        <link linkend="def_object_database">object database</link>, and updating the
+        <link linkend="def_index">index</link> and <link linkend="def_HEAD">HEAD</link> if the whole working tree has
+        been pointed at a new <link linkend="def_branch">branch</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_cherry-picking" xreflabel="[def_cherry-picking]"/>cherry-picking
+</term>
+<listitem>
+<simpara>
+        In <link linkend="def_SCM">SCM</link> jargon, "cherry pick" means to choose a subset of
+        changes out of a series of changes (typically commits) and record them
+        as a new series of changes on top of a different codebase. In GIT, this is
+        performed by the "git cherry-pick" command to extract the change introduced
+        by an existing <link linkend="def_commit">commit</link> and to record it based on the tip
+        of the current <link linkend="def_branch">branch</link> as a new commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_clean" xreflabel="[def_clean]"/>clean
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_working_tree">working tree</link> is clean, if it
+        corresponds to the <link linkend="def_revision">revision</link> referenced by the current
+        <link linkend="def_head">head</link>. Also see "<link linkend="def_dirty">dirty</link>".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_commit" xreflabel="[def_commit]"/>commit
+</term>
+<listitem>
+<simpara>
+        As a noun: A single point in the
+        git history; the entire history of a project is represented as a
+        set of interrelated commits.  The word "commit" is often
+        used by git in the same places other revision control systems
+        use the words "revision" or "version".  Also used as a short
+        hand for <link linkend="def_commit_object">commit object</link>.
+</simpara>
+<simpara>As a verb: The action of storing a new snapshot of the project's
+state in the git history, by creating a new commit representing the current
+state of the <link linkend="def_index">index</link> and advancing <link linkend="def_HEAD">HEAD</link>
+to point at the new commit.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_commit_object" xreflabel="[def_commit_object]"/>commit object
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_object">object</link> which contains the information about a
+        particular <link linkend="def_revision">revision</link>, such as <link linkend="def_parent">parents</link>, committer,
+        author, date and the <link linkend="def_tree_object">tree object</link> which corresponds
+        to the top <link linkend="def_directory">directory</link> of the stored
+        revision.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_core_git" xreflabel="[def_core_git]"/>core git
+</term>
+<listitem>
+<simpara>
+        Fundamental data structures and utilities of git. Exposes only limited
+        source code management tools.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_DAG" xreflabel="[def_DAG]"/>DAG
+</term>
+<listitem>
+<simpara>
+        Directed acyclic graph. The <link linkend="def_commit_object">commit objects</link> form a
+        directed acyclic graph, because they have parents (directed), and the
+        graph of commit objects is acyclic (there is no <link linkend="def_chain">chain</link>
+        which begins and ends with the same <link linkend="def_object">object</link>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_dangling_object" xreflabel="[def_dangling_object]"/>dangling object
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_unreachable_object">unreachable object</link> which is not
+        <link linkend="def_reachable">reachable</link> even from other unreachable objects; a
+        dangling object has no references to it from any
+        reference or <link linkend="def_object">object</link> in the <link linkend="def_repository">repository</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_detached_HEAD" xreflabel="[def_detached_HEAD]"/>detached HEAD
+</term>
+<listitem>
+<simpara>
+        Normally the <link linkend="def_HEAD">HEAD</link> stores the name of a
+        <link linkend="def_branch">branch</link>.  However, git also allows you to <link linkend="def_checkout">check out</link>
+        an arbitrary <link linkend="def_commit">commit</link> that isn't necessarily the tip of any
+        particular branch.  In this case HEAD is said to be "detached".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_dircache" xreflabel="[def_dircache]"/>dircache
+</term>
+<listitem>
+<simpara>
+        You are <emphasis role="strong">waaaaay</emphasis> behind. See <link linkend="def_index">index</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_directory" xreflabel="[def_directory]"/>directory
+</term>
+<listitem>
+<simpara>
+        The list you get with "ls" :-)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_dirty" xreflabel="[def_dirty]"/>dirty
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_working_tree">working tree</link> is said to be "dirty" if
+        it contains modifications which have not been <link linkend="def_commit">committed</link> to the current
+        <link linkend="def_branch">branch</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_ent" xreflabel="[def_ent]"/>ent
+</term>
+<listitem>
+<simpara>
+        Favorite synonym to "<link linkend="def_tree-ish">tree-ish</link>" by some total geeks. See
+        <emphasis>http://en.wikipedia.org/wiki/Ent_(Middle-earth)</emphasis> for an in-depth
+        explanation. Avoid this term, not to confuse people.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_evil_merge" xreflabel="[def_evil_merge]"/>evil merge
+</term>
+<listitem>
+<simpara>
+        An evil merge is a <link linkend="def_merge">merge</link> that introduces changes that
+        do not appear in any <link linkend="def_parent">parent</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_fast_forward" xreflabel="[def_fast_forward]"/>fast-forward
+</term>
+<listitem>
+<simpara>
+        A fast-forward is a special type of <link linkend="def_merge">merge</link> where you have a
+        <link linkend="def_revision">revision</link> and you are "merging" another
+        <link linkend="def_branch">branch</link>'s changes that happen to be a descendant of what
+        you have. In such these cases, you do not make a new <link linkend="def_merge">merge</link>
+        <link linkend="def_commit">commit</link> but instead just update to his
+        revision. This will happen frequently on a
+        <link linkend="def_remote_tracking_branch">remote-tracking branch</link> of a remote
+        <link linkend="def_repository">repository</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_fetch" xreflabel="[def_fetch]"/>fetch
+</term>
+<listitem>
+<simpara>
+        Fetching a <link linkend="def_branch">branch</link> means to get the
+        branch's <link linkend="def_head_ref">head ref</link> from a remote
+        <link linkend="def_repository">repository</link>, to find out which objects are
+        missing from the local <link linkend="def_object_database">object database</link>,
+        and to get them, too.  See also <xref linkend="git-fetch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_file_system" xreflabel="[def_file_system]"/>file system
+</term>
+<listitem>
+<simpara>
+        Linus Torvalds originally designed git to be a user space file system,
+        i.e. the infrastructure to hold files and directories. That ensured the
+        efficiency and speed of git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_git_archive" xreflabel="[def_git_archive]"/>git archive
+</term>
+<listitem>
+<simpara>
+        Synonym for <link linkend="def_repository">repository</link> (for arch people).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_grafts" xreflabel="[def_grafts]"/>grafts
+</term>
+<listitem>
+<simpara>
+        Grafts enables two otherwise different lines of development to be joined
+        together by recording fake ancestry information for commits. This way
+        you can make git pretend the set of <link linkend="def_parent">parents</link> a <link linkend="def_commit">commit</link> has
+        is different from what was recorded when the commit was
+        created. Configured via the <emphasis>.git/info/grafts</emphasis> file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_hash" xreflabel="[def_hash]"/>hash
+</term>
+<listitem>
+<simpara>
+        In git's context, synonym to <link linkend="def_object_name">object name</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_head" xreflabel="[def_head]"/>head
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_ref">named reference</link> to the <link linkend="def_commit">commit</link> at the tip of a
+        <link linkend="def_branch">branch</link>.  Heads are stored in a file in
+        <emphasis>$GIT_DIR/refs/heads/</emphasis> directory, except when using packed refs. (See
+        <xref linkend="git-pack-refs(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_HEAD" xreflabel="[def_HEAD]"/>HEAD
+</term>
+<listitem>
+<simpara>
+        The current <link linkend="def_branch">branch</link>.  In more detail: Your <link linkend="def_working_tree">working tree</link> is normally derived from the state of the tree
+        referred to by HEAD.  HEAD is a reference to one of the
+        <link linkend="def_head">heads</link> in your repository, except when using a
+        <link linkend="def_detached_HEAD">detached HEAD</link>, in which case it directly
+        references an arbitrary commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_head_ref" xreflabel="[def_head_ref]"/>head ref
+</term>
+<listitem>
+<simpara>
+        A synonym for <link linkend="def_head">head</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_hook" xreflabel="[def_hook]"/>hook
+</term>
+<listitem>
+<simpara>
+        During the normal execution of several git commands, call-outs are made
+        to optional scripts that allow a developer to add functionality or
+        checking. Typically, the hooks allow for a command to be pre-verified
+        and potentially aborted, and allow for a post-notification after the
+        operation is done. The hook scripts are found in the
+        <emphasis>$GIT_DIR/hooks/</emphasis> directory, and are enabled by simply
+        removing the <emphasis>.sample</emphasis> suffix from the filename. In earlier versions
+        of git you had to make them executable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_index" xreflabel="[def_index]"/>index
+</term>
+<listitem>
+<simpara>
+        A collection of files with stat information, whose contents are stored
+        as objects. The index is a stored version of your
+        <link linkend="def_working_tree">working tree</link>. Truth be told, it can also contain a second, and even
+        a third version of a working tree, which are used
+        when <link linkend="def_merge">merging</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_index_entry" xreflabel="[def_index_entry]"/>index entry
+</term>
+<listitem>
+<simpara>
+        The information regarding a particular file, stored in the
+        <link linkend="def_index">index</link>. An index entry can be unmerged, if a
+        <link linkend="def_merge">merge</link> was started, but not yet finished (i.e. if
+        the index contains multiple versions of that file).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_master" xreflabel="[def_master]"/>master
+</term>
+<listitem>
+<simpara>
+        The default development <link linkend="def_branch">branch</link>. Whenever you
+        create a git <link linkend="def_repository">repository</link>, a branch named
+        "master" is created, and becomes the active branch. In most
+        cases, this contains the local development, though that is
+        purely by convention and is not required.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_merge" xreflabel="[def_merge]"/>merge
+</term>
+<listitem>
+<simpara>
+        As a verb: To bring the contents of another
+        <link linkend="def_branch">branch</link> (possibly from an external
+        <link linkend="def_repository">repository</link>) into the current branch.  In the
+        case where the merged-in branch is from a different repository,
+        this is done by first <link linkend="def_fetch">fetching</link> the remote branch
+        and then merging the result into the current branch.  This
+        combination of fetch and merge operations is called a
+        <link linkend="def_pull">pull</link>.  Merging is performed by an automatic process
+        that identifies changes made since the branches diverged, and
+        then applies all those changes together.  In cases where changes
+        conflict, manual intervention may be required to complete the
+        merge.
+</simpara>
+<simpara>As a noun: unless it is a <link linkend="def_fast_forward">fast-forward</link>, a
+successful merge results in the creation of a new <link linkend="def_commit">commit</link>
+representing the result of the merge, and having as
+<link linkend="def_parent">parents</link> the tips of the merged <link linkend="def_branch">branches</link>.
+This commit is referred to as a "merge commit", or sometimes just a
+"merge".</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_object" xreflabel="[def_object]"/>object
+</term>
+<listitem>
+<simpara>
+        The unit of storage in git. It is uniquely identified by the
+        <link linkend="def_SHA1">SHA1</link> of its contents. Consequently, an
+        object can not be changed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_object_database" xreflabel="[def_object_database]"/>object database
+</term>
+<listitem>
+<simpara>
+        Stores a set of "objects", and an individual <link linkend="def_object">object</link> is
+        identified by its <link linkend="def_object_name">object name</link>. The objects usually
+        live in <emphasis>$GIT_DIR/objects/</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier
+</term>
+<listitem>
+<simpara>
+        Synonym for <link linkend="def_object_name">object name</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_object_name" xreflabel="[def_object_name]"/>object name
+</term>
+<listitem>
+<simpara>
+        The unique identifier of an <link linkend="def_object">object</link>. The <link linkend="def_hash">hash</link>
+        of the object's contents using the Secure Hash Algorithm
+        1 and usually represented by the 40 character hexadecimal encoding of
+        the <link linkend="def_hash">hash</link> of the object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_object_type" xreflabel="[def_object_type]"/>object type
+</term>
+<listitem>
+<simpara>
+        One of the identifiers "<link linkend="def_commit_object">commit</link>",
+        "<link linkend="def_tree_object">tree</link>", "<link linkend="def_tag_object">tag</link>" or
+        "<link linkend="def_blob_object">blob</link>" describing the type of an
+        <link linkend="def_object">object</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_octopus" xreflabel="[def_octopus]"/>octopus
+</term>
+<listitem>
+<simpara>
+        To <link linkend="def_merge">merge</link> more than two <link linkend="def_branch">branches</link>. Also denotes an
+        intelligent predator.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_origin" xreflabel="[def_origin]"/>origin
+</term>
+<listitem>
+<simpara>
+        The default upstream <link linkend="def_repository">repository</link>. Most projects have
+        at least one upstream project which they track. By default
+        <emphasis>origin</emphasis> is used for that purpose. New upstream updates
+        will be fetched into remote <link linkend="def_remote_tracking_branch">remote-tracking branches</link> named
+        origin/name-of-upstream-branch, which you can see using
+        <emphasis>git branch -r</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_pack" xreflabel="[def_pack]"/>pack
+</term>
+<listitem>
+<simpara>
+        A set of objects which have been compressed into one file (to save space
+        or to transmit them efficiently).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_pack_index" xreflabel="[def_pack_index]"/>pack index
+</term>
+<listitem>
+<simpara>
+        The list of identifiers, and other information, of the objects in a
+        <link linkend="def_pack">pack</link>, to assist in efficiently accessing the contents of a
+        pack.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_pathspec" xreflabel="[def_pathspec]"/>pathspec
+</term>
+<listitem>
+<simpara>
+       Pattern used to specify paths.
+</simpara>
+<simpara>Pathspecs are used on the command line of "git ls-files", "git
+ls-tree", "git add", "git grep", "git diff", "git checkout",
+and many other commands to
+limit the scope of operations to some subset of the tree or
+worktree.  See the documentation of each command for whether
+paths are relative to the current directory or toplevel.  The
+pathspec syntax is as follows:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+any path matches itself
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the pathspec up to the last slash represents a
+  directory prefix.  The scope of that pathspec is
+  limited to that subtree.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+the rest of the pathspec is a pattern for the remainder
+  of the pathname.  Paths relative to the directory
+  prefix will be matched against that pattern using fnmatch(3);
+  in particular, <emphasis>*</emphasis> and <emphasis>?</emphasis> <emphasis>can</emphasis> match directory separators.
+</simpara>
+<simpara>For example, Documentation/*.jpg will match all .jpg files
+in the Documentation subtree,
+including Documentation/chapter_1/figure_1.jpg.</simpara>
+</listitem>
+</itemizedlist>
+<simpara>A pathspec that begins with a colon <emphasis>:</emphasis> has special meaning.  In the
+short form, the leading colon <emphasis>:</emphasis> is followed by zero or more "magic
+signature" letters (which optionally is terminated by another colon <emphasis>:</emphasis>),
+and the remainder is the pattern to match against the path. The optional
+colon that terminates the "magic signature" can be omitted if the pattern
+begins with a character that cannot be a "magic signature" and is not a
+colon.</simpara>
+<simpara>In the long form, the leading colon <emphasis>:</emphasis> is followed by a open
+parenthesis <emphasis>(</emphasis>, a comma-separated list of zero or more "magic words",
+and a close parentheses <emphasis>)</emphasis>, and the remainder is the pattern to match
+against the path.</simpara>
+<simpara>The "magic signature" consists of an ASCII symbol that is not
+alphanumeric.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+top <emphasis>/</emphasis>
+</term>
+<listitem>
+<simpara>
+        The magic word <emphasis>top</emphasis> (mnemonic: <emphasis>/</emphasis>) makes the pattern match
+        from the root of the working tree, even when you are running
+        the command from inside a subdirectory.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Currently only the slash <emphasis>/</emphasis> is recognized as the "magic signature",
+but it is envisioned that we will support more types of magic in later
+versions of git.</simpara>
+<simpara>A pathspec with only a colon means "there is no pathspec". This form
+should not be combined with other pathspec.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_parent" xreflabel="[def_parent]"/>parent
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_commit_object">commit object</link> contains a (possibly empty) list
+        of the logical predecessor(s) in the line of development, i.e. its
+        parents.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_pickaxe" xreflabel="[def_pickaxe]"/>pickaxe
+</term>
+<listitem>
+<simpara>
+        The term <link linkend="def_pickaxe">pickaxe</link> refers to an option to the diffcore
+        routines that help select changes that add or delete a given text
+        string. With the <emphasis>--pickaxe-all</emphasis> option, it can be used to view the full
+        <link linkend="def_changeset">changeset</link> that introduced or removed, say, a
+        particular line of text. See <xref linkend="git-diff(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_plumbing" xreflabel="[def_plumbing]"/>plumbing
+</term>
+<listitem>
+<simpara>
+        Cute name for <link linkend="def_core_git">core git</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_porcelain" xreflabel="[def_porcelain]"/>porcelain
+</term>
+<listitem>
+<simpara>
+        Cute name for programs and program suites depending on
+        <link linkend="def_core_git">core git</link>, presenting a high level access to
+        core git. Porcelains expose more of a <link linkend="def_SCM">SCM</link>
+        interface than the <link linkend="def_plumbing">plumbing</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_pull" xreflabel="[def_pull]"/>pull
+</term>
+<listitem>
+<simpara>
+        Pulling a <link linkend="def_branch">branch</link> means to <link linkend="def_fetch">fetch</link> it and
+        <link linkend="def_merge">merge</link> it.  See also <xref linkend="git-pull(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_push" xreflabel="[def_push]"/>push
+</term>
+<listitem>
+<simpara>
+        Pushing a <link linkend="def_branch">branch</link> means to get the branch's
+        <link linkend="def_head_ref">head ref</link> from a remote <link linkend="def_repository">repository</link>,
+        find out if it is a direct ancestor to the branch's local
+        head ref, and in that case, putting all
+        objects, which are <link linkend="def_reachable">reachable</link> from the local
+        head ref, and which are missing from the remote
+        repository, into the remote
+        <link linkend="def_object_database">object database</link>, and updating the remote
+        head ref. If the remote <link linkend="def_head">head</link> is not an
+        ancestor to the local head, the push fails.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_reachable" xreflabel="[def_reachable]"/>reachable
+</term>
+<listitem>
+<simpara>
+        All of the ancestors of a given <link linkend="def_commit">commit</link> are said to be
+        "reachable" from that commit. More
+        generally, one <link linkend="def_object">object</link> is reachable from
+        another if we can reach the one from the other by a <link linkend="def_chain">chain</link>
+        that follows <link linkend="def_tag">tags</link> to whatever they tag,
+        <link linkend="def_commit_object">commits</link> to their parents or trees, and
+        <link linkend="def_tree_object">trees</link> to the trees or <link linkend="def_blob_object">blobs</link>
+        that they contain.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_rebase" xreflabel="[def_rebase]"/>rebase
+</term>
+<listitem>
+<simpara>
+        To reapply a series of changes from a <link linkend="def_branch">branch</link> to a
+        different base, and reset the <link linkend="def_head">head</link> of that branch
+        to the result.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_ref" xreflabel="[def_ref]"/>ref
+</term>
+<listitem>
+<simpara>
+        A 40-byte hex representation of a <link linkend="def_SHA1">SHA1</link> or a name that
+        denotes a particular <link linkend="def_object">object</link>. They may be stored in
+        a file under <emphasis>$GIT_DIR/refs/</emphasis> directory, or
+        in the <emphasis>$GIT_DIR/packed-refs</emphasis> file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_reflog" xreflabel="[def_reflog]"/>reflog
+</term>
+<listitem>
+<simpara>
+        A reflog shows the local "history" of a ref.  In other words,
+        it can tell you what the 3rd last revision in <emphasis>this</emphasis> repository
+        was, and what was the current state in <emphasis>this</emphasis> repository,
+        yesterday 9:14pm.  See <xref linkend="git-reflog(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_refspec" xreflabel="[def_refspec]"/>refspec
+</term>
+<listitem>
+<simpara>
+        A "refspec" is used by <link linkend="def_fetch">fetch</link> and
+        <link linkend="def_push">push</link> to describe the mapping between remote
+        <link linkend="def_ref">ref</link> and local ref. They are combined with a colon in
+        the format &lt;src&gt;:&lt;dst&gt;, preceded by an optional plus sign, +.
+        For example: <emphasis>git fetch $URL
+        refs/heads/master:refs/heads/origin</emphasis> means "grab the master
+        <link linkend="def_branch">branch</link> <link linkend="def_head">head</link> from the $URL and store
+        it as my origin branch head". And <emphasis>git push
+        $URL refs/heads/master:refs/heads/to-upstream</emphasis> means "publish my
+        master branch head as to-upstream branch at $URL". See also
+        <xref linkend="git-push(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_remote_tracking_branch" xreflabel="[def_remote_tracking_branch]"/>remote-tracking branch
+</term>
+<listitem>
+<simpara>
+        A regular git <link linkend="def_branch">branch</link> that is used to follow changes from
+        another <link linkend="def_repository">repository</link>. A remote-tracking
+        branch should not contain direct modifications or have local commits
+        made to it. A remote-tracking branch can usually be
+        identified as the right-hand-side <link linkend="def_ref">ref</link> in a Pull:
+        <link linkend="def_refspec">refspec</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_repository" xreflabel="[def_repository]"/>repository
+</term>
+<listitem>
+<simpara>
+        A collection of <link linkend="def_ref">refs</link> together with an
+        <link linkend="def_object_database">object database</link> containing all objects
+        which are <link linkend="def_reachable">reachable</link> from the refs, possibly
+        accompanied by meta data from one or more <link linkend="def_porcelain">porcelains</link>. A
+        repository can share an object database with other repositories
+        via <link linkend="def_alternate_object_database">alternates mechanism</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_resolve" xreflabel="[def_resolve]"/>resolve
+</term>
+<listitem>
+<simpara>
+        The action of fixing up manually what a failed automatic
+        <link linkend="def_merge">merge</link> left behind.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_revision" xreflabel="[def_revision]"/>revision
+</term>
+<listitem>
+<simpara>
+        A particular state of files and directories which was stored in the
+        <link linkend="def_object_database">object database</link>. It is referenced by a
+        <link linkend="def_commit_object">commit object</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_rewind" xreflabel="[def_rewind]"/>rewind
+</term>
+<listitem>
+<simpara>
+        To throw away part of the development, i.e. to assign the
+        <link linkend="def_head">head</link> to an earlier <link linkend="def_revision">revision</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_SCM" xreflabel="[def_SCM]"/>SCM
+</term>
+<listitem>
+<simpara>
+        Source code management (tool).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_SHA1" xreflabel="[def_SHA1]"/>SHA1
+</term>
+<listitem>
+<simpara>
+        Synonym for <link linkend="def_object_name">object name</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_shallow_repository" xreflabel="[def_shallow_repository]"/>shallow repository
+</term>
+<listitem>
+<simpara>
+        A shallow <link linkend="def_repository">repository</link> has an incomplete
+        history some of whose <link linkend="def_commit">commits</link> have <link linkend="def_parent">parents</link> cauterized away (in other
+        words, git is told to pretend that these commits do not have the
+        parents, even though they are recorded in the <link linkend="def_commit_object">commit         object</link>). This is sometimes useful when you are interested only in the
+        recent history of a project even though the real history recorded in the
+        upstream is much larger. A shallow repository
+        is created by giving the <emphasis>--depth</emphasis> option to <xref linkend="git-clone(1)" />, and
+        its history can be later deepened with <xref linkend="git-fetch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_symref" xreflabel="[def_symref]"/>symref
+</term>
+<listitem>
+<simpara>
+        Symbolic reference: instead of containing the <link linkend="def_SHA1">SHA1</link>
+        id itself, it is of the format <emphasis>ref: refs/some/thing</emphasis> and when
+        referenced, it recursively dereferences to this reference.
+        <emphasis><link linkend="def_HEAD">HEAD</link></emphasis> is a prime example of a symref. Symbolic
+        references are manipulated with the <xref linkend="git-symbolic-ref(1)" />
+        command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_tag" xreflabel="[def_tag]"/>tag
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_ref">ref</link> under <emphasis>refs/tags/</emphasis> namespace that points to an
+        object of an arbitrary type (typically a tag points to either a
+        <link linkend="def_tag_object">tag</link> or a <link linkend="def_commit_object">commit object</link>).
+        In contrast to a <link linkend="def_head">head</link>, a tag is not updated by
+        the <emphasis>commit</emphasis> command. A git tag has nothing to do with a Lisp
+        tag (which would be called an <link linkend="def_object_type">object type</link>
+        in git's context). A tag is most typically used to mark a particular
+        point in the commit ancestry <link linkend="def_chain">chain</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_tag_object" xreflabel="[def_tag_object]"/>tag object
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_object">object</link> containing a <link linkend="def_ref">ref</link> pointing to
+        another object, which can contain a message just like a
+        <link linkend="def_commit_object">commit object</link>. It can also contain a (PGP)
+        signature, in which case it is called a "signed tag object".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_topic_branch" xreflabel="[def_topic_branch]"/>topic branch
+</term>
+<listitem>
+<simpara>
+        A regular git <link linkend="def_branch">branch</link> that is used by a developer to
+        identify a conceptual line of development. Since branches are very easy
+        and inexpensive, it is often desirable to have several small branches
+        that each contain very well defined concepts or small incremental yet
+        related changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_tree" xreflabel="[def_tree]"/>tree
+</term>
+<listitem>
+<simpara>
+        Either a <link linkend="def_working_tree">working tree</link>, or a <link linkend="def_tree_object">tree         object</link> together with the dependent <link linkend="def_blob_object">blob</link> and tree objects
+        (i.e. a stored representation of a working tree).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_tree_object" xreflabel="[def_tree_object]"/>tree object
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_object">object</link> containing a list of file names and modes along
+        with refs to the associated blob and/or tree objects. A
+        <link linkend="def_tree">tree</link> is equivalent to a <link linkend="def_directory">directory</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_tree-ish" xreflabel="[def_tree-ish]"/>tree-ish
+</term>
+<listitem>
+<simpara>
+        A <link linkend="def_ref">ref</link> pointing to either a <link linkend="def_commit_object">commit         object</link>, a <link linkend="def_tree_object">tree object</link>, or a <link linkend="def_tag_object">tag         object</link> pointing to a tag or commit or tree object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_unmerged_index" xreflabel="[def_unmerged_index]"/>unmerged index
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_index">index</link> which contains unmerged
+        <link linkend="def_index_entry">index entries</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_unreachable_object" xreflabel="[def_unreachable_object]"/>unreachable object
+</term>
+<listitem>
+<simpara>
+        An <link linkend="def_object">object</link> which is not <link linkend="def_reachable">reachable</link> from a
+        <link linkend="def_branch">branch</link>, <link linkend="def_tag">tag</link>, or any other reference.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_upstream_branch" xreflabel="[def_upstream_branch]"/>upstream branch
+</term>
+<listitem>
+<simpara>
+        The default <link linkend="def_branch">branch</link> that is merged into the branch in
+        question (or the branch in question is rebased onto). It is configured
+        via branch.&lt;name&gt;.remote and branch.&lt;name&gt;.merge. If the upstream branch
+        of <emphasis>A</emphasis> is <emphasis>origin/B</emphasis> sometimes we say "<emphasis>A</emphasis> is tracking <emphasis>origin/B</emphasis>".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="def_working_tree" xreflabel="[def_working_tree]"/>working tree
+</term>
+<listitem>
+<simpara>
+        The tree of actual checked out files.  The working tree normally
+        contains the contents of the <link linkend="def_HEAD">HEAD</link> commit's tree,
+        plus any local changes that you have made but not yet committed.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gittutorial(7)" />,
+<xref linkend="gittutorial-2(7)" />,
+<xref linkend="gitcvs-migration(7)" />,
+link:everyday.html[Everyday git],
+link:user-manual.html[The Git User's Manual]</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
+</simplesect>
+</article>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-remote(1)">
+<articleinfo>
+    <title>git-remote(1)</title>
+<indexterm>
+<primary>git-remote(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-remote - manage set of tracked repositories</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git remote</emphasis> [-v | --verbose]
+<emphasis>git remote add</emphasis> [-t &lt;branch&gt;] [-m &lt;master&gt;] [-f] [--tags|--no-tags] [--mirror=&lt;fetch|push&gt;] &lt;name&gt; &lt;url&gt;
+<emphasis>git remote rename</emphasis> &lt;old&gt; &lt;new&gt;
+<emphasis>git remote rm</emphasis> &lt;name&gt;
+<emphasis>git remote set-head</emphasis> &lt;name&gt; (-a | -d | &lt;branch&gt;)
+<emphasis>git remote set-branches</emphasis> [--add] &lt;name&gt; &lt;branch&gt;&#8230;
+<emphasis>git remote set-url</emphasis> [--push] &lt;name&gt; &lt;newurl&gt; [&lt;oldurl&gt;]
+<emphasis>git remote set-url --add</emphasis> [--push] &lt;name&gt; &lt;newurl&gt;
+<emphasis>git remote set-url --delete</emphasis> [--push] &lt;name&gt; &lt;url&gt;
+<emphasis>git remote</emphasis> [-v | --verbose] <emphasis>show</emphasis> [-n] &lt;name&gt;
+<emphasis>git remote prune</emphasis> [-n | --dry-run] &lt;name&gt;
+<emphasis>git remote</emphasis> [-v | --verbose] <emphasis>update</emphasis> [-p | --prune] [(&lt;group&gt; | &lt;remote&gt;)&#8230;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Manage the set of repositories ("remotes") whose branches you track.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        Be a little more verbose and show remote url after name.
+        NOTE: This must be placed between <emphasis>remote</emphasis> and <emphasis>subcommand</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_commands">
+<title>COMMANDS</title>
+<simpara>With no arguments, shows a list of existing remotes.  Several
+subcommands are available to perform operations on the remotes.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>add</emphasis>
+</term>
+<listitem>
+<simpara>
+Adds a remote named &lt;name&gt; for the repository at
+&lt;url&gt;.  The command <emphasis>git fetch &lt;name&gt;</emphasis> can then be used to create and
+update remote-tracking branches &lt;name&gt;/&lt;branch&gt;.
+</simpara>
+<simpara>With <emphasis>-f</emphasis> option, <emphasis>git fetch &lt;name&gt;</emphasis> is run immediately after
+the remote information is set up.</simpara>
+<simpara>With <emphasis>--tags</emphasis> option, <emphasis>git fetch &lt;name&gt;</emphasis> imports every tag from the
+remote repository.</simpara>
+<simpara>With <emphasis>--no-tags</emphasis> option, <emphasis>git fetch &lt;name&gt;</emphasis> does not import tags from
+the remote repository.</simpara>
+<simpara>With <emphasis>-t &lt;branch&gt;</emphasis> option, instead of the default glob
+refspec for the remote to track all branches under
+the <emphasis>refs/remotes/&lt;name&gt;/</emphasis> namespace, a refspec to track only <emphasis>&lt;branch&gt;</emphasis>
+is created.  You can give more than one <emphasis>-t &lt;branch&gt;</emphasis> to track
+multiple branches without grabbing all branches.</simpara>
+<simpara>With <emphasis>-m &lt;master&gt;</emphasis> option, a symbolic-ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is set
+up to point at remote's <emphasis>&lt;master&gt;</emphasis> branch. See also the set-head command.</simpara>
+<simpara>When a fetch mirror is created with <emphasis>--mirror=fetch</emphasis>, the refs will not
+be stored in the <emphasis>refs/remotes/</emphasis> namespace, but rather everything in
+<emphasis>refs/</emphasis> on the remote will be directly mirrored into <emphasis>refs/</emphasis> in the
+local repository. This option only makes sense in bare repositories,
+because a fetch would overwrite any local commits.</simpara>
+<simpara>When a push mirror is created with <emphasis>--mirror=push</emphasis>, then <emphasis>git push</emphasis>
+will always behave as if <emphasis>--mirror</emphasis> was passed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>rename</emphasis>
+</term>
+<listitem>
+<simpara>
+Rename the remote named &lt;old&gt; to &lt;new&gt;. All remote-tracking branches and
+configuration settings for the remote are updated.
+</simpara>
+<simpara>In case &lt;old&gt; and &lt;new&gt; are the same, and &lt;old&gt; is a file under
+<emphasis>$GIT_DIR/remotes</emphasis> or <emphasis>$GIT_DIR/branches</emphasis>, the remote is converted to
+the configuration file format.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>rm</emphasis>
+</term>
+<listitem>
+<simpara>
+Remove the remote named &lt;name&gt;. All remote-tracking branches and
+configuration settings for the remote are removed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>set-head</emphasis>
+</term>
+<listitem>
+<simpara>
+Sets or deletes the default branch (i.e. the target of the
+symbolic-ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis>) for
+the named remote. Having a default branch for a remote is not required,
+but allows the name of the remote to be specified in lieu of a specific
+branch. For example, if the default branch for <emphasis>origin</emphasis> is set to
+<emphasis>master</emphasis>, then <emphasis>origin</emphasis> may be specified wherever you would normally
+specify <emphasis>origin/master</emphasis>.
+</simpara>
+<simpara>With <emphasis>-d</emphasis>, the symbolic ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is deleted.</simpara>
+<simpara>With <emphasis>-a</emphasis>, the remote is queried to determine its <emphasis>HEAD</emphasis>, then the
+symbolic-ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> is set to the same branch. e.g., if the remote
+<emphasis>HEAD</emphasis> is pointed at <emphasis>next</emphasis>, "<emphasis>git remote set-head origin -a</emphasis>" will set
+the symbolic-ref <emphasis>refs/remotes/origin/HEAD</emphasis> to <emphasis>refs/remotes/origin/next</emphasis>. This will
+only work if <emphasis>refs/remotes/origin/next</emphasis> already exists; if not it must be
+fetched first.</simpara>
+<simpara>Use <emphasis>&lt;branch&gt;</emphasis> to set the symbolic-ref <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> explicitly. e.g., "git
+remote set-head origin master" will set the symbolic-ref <emphasis>refs/remotes/origin/HEAD</emphasis> to
+<emphasis>refs/remotes/origin/master</emphasis>. This will only work if
+<emphasis>refs/remotes/origin/master</emphasis> already exists; if not it must be fetched first.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>set-branches</emphasis>
+</term>
+<listitem>
+<simpara>
+Changes the list of branches tracked by the named remote.
+This can be used to track a subset of the available remote branches
+after the initial setup for a remote.
+</simpara>
+<simpara>The named branches will be interpreted as if specified with the
+<emphasis>-t</emphasis> option on the <emphasis>git remote add</emphasis> command line.</simpara>
+<simpara>With <emphasis>--add</emphasis>, instead of replacing the list of currently tracked
+branches, adds to that list.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>set-url</emphasis>
+</term>
+<listitem>
+<simpara>
+Changes URL remote points to. Sets first URL remote points to matching
+regex &lt;oldurl&gt; (first URL if no &lt;oldurl&gt; is given) to &lt;newurl&gt;. If
+&lt;oldurl&gt; doesn't match any URL, error occurs and nothing is changed.
+</simpara>
+<simpara>With <emphasis>--push</emphasis>, push URLs are manipulated instead of fetch URLs.</simpara>
+<simpara>With <emphasis>--add</emphasis>, instead of changing some URL, new URL is added.</simpara>
+<simpara>With <emphasis>--delete</emphasis>, instead of changing some URL, all URLs matching
+regex &lt;url&gt; are deleted. Trying to delete all non-push URLs is an
+error.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>show</emphasis>
+</term>
+<listitem>
+<simpara>
+Gives some information about the remote &lt;name&gt;.
+</simpara>
+<simpara>With <emphasis>-n</emphasis> option, the remote heads are not queried first with
+<emphasis>git ls-remote &lt;name&gt;</emphasis>; cached information is used instead.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>prune</emphasis>
+</term>
+<listitem>
+<simpara>
+Deletes all stale remote-tracking branches under &lt;name&gt;.
+These stale branches have already been removed from the remote repository
+referenced by &lt;name&gt;, but are still locally available in
+"remotes/&lt;name&gt;".
+</simpara>
+<simpara>With <emphasis>--dry-run</emphasis> option, report what branches will be pruned, but do not
+actually prune them.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>update</emphasis>
+</term>
+<listitem>
+<simpara>
+Fetch updates for a named set of remotes in the repository as defined by
+remotes.&lt;group&gt;.  If a named group is not specified on the command line,
+the configuration parameter remotes.default will be used; if
+remotes.default is not defined, all remotes which do not have the
+configuration parameter remote.&lt;name&gt;.skipDefaultUpdate set to true will
+be updated.  (See <xref linkend="git-config(1)" />).
+</simpara>
+<simpara>With <emphasis>--prune</emphasis> option, prune all the remotes that are updated.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<simpara>The remote configuration is achieved using the <emphasis>remote.origin.url</emphasis> and
+<emphasis>remote.origin.fetch</emphasis> configuration variables.  (See
+<xref linkend="git-config(1)" />).</simpara>
+</simplesect>
+<simplesect id="_examples">
+<title>Examples</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Add a new remote, fetch, and check out a branch from it
+</simpara>
+<screen>$ git remote
+origin
+$ git branch -r
+origin/master
+$ git remote add linux-nfs git://linux-nfs.org/pub/linux/nfs-2.6.git
+$ git remote
+linux-nfs
+origin
+$ git fetch
+* refs/remotes/linux-nfs/master: storing branch 'master' ...
+  commit: bf81b46
+$ git branch -r
+origin/master
+linux-nfs/master
+$ git checkout -b nfs linux-nfs/master
+...</screen>
+</listitem>
+<listitem>
+<simpara>
+Imitate <emphasis>git clone</emphasis> but track only selected branches
+</simpara>
+<screen>$ mkdir project.git
+$ cd project.git
+$ git init
+$ git remote add -f -t master -m master origin git://example.com/git.git/
+$ git merge origin</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-fetch(1)" />
+<xref linkend="git-branch(1)" />
+<xref linkend="git-config(1)" /></simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

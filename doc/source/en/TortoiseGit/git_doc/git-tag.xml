@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-tag(1)">
+<articleinfo>
+    <title>git-tag(1)</title>
+<indexterm>
+<primary>git-tag(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-tag - Create, list, delete or verify a tag object signed with GPG</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;key-id&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;]
+        &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
+<emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
+<emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--points-at &lt;object&gt;]
+        [&lt;pattern&gt;&#8230;]
+<emphasis>git tag</emphasis> -v &lt;tagname&gt;&#8230;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Add a tag reference in <emphasis>.git/refs/tags/</emphasis>, unless <emphasis>-d/-l/-v</emphasis> is given
+to delete, list or verify tags.</simpara>
+<simpara>Unless <emphasis>-f</emphasis> is given, the tag to be created must not yet exist in the
+<emphasis>.git/refs/tags/</emphasis> directory.</simpara>
+<simpara>If one of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis> is passed, the command
+creates a <emphasis>tag</emphasis> object, and requires a tag message.  Unless
+<emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given, an editor is started for the user to type
+in the tag message.</simpara>
+<simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;key-id&gt;</emphasis>
+are absent, <emphasis>-a</emphasis> is implied.</simpara>
+<simpara>Otherwise just a tag reference for the SHA1 object name of the commit object is
+created (i.e. a lightweight tag).</simpara>
+<simpara>A GnuPG signed tag object will be created when <emphasis>-s</emphasis> or <emphasis>-u
+&lt;key-id&gt;</emphasis> is used.  When <emphasis>-u &lt;key-id&gt;</emphasis> is not used, the
+committer identity for the current user is used to find the
+GnuPG key for signing.  The configuration variable <emphasis>gpg.program</emphasis>
+is used to specify custom GnuPG binary.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-a
+</term>
+<term>
+--annotate
+</term>
+<listitem>
+<simpara>
+        Make an unsigned, annotated tag object
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s
+</term>
+<term>
+--sign
+</term>
+<listitem>
+<simpara>
+        Make a GPG-signed tag, using the default e-mail address's key.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-u &lt;key-id&gt;
+</term>
+<term>
+--local-user=&lt;key-id&gt;
+</term>
+<listitem>
+<simpara>
+        Make a GPG-signed tag, using the given key.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-f
+</term>
+<term>
+--force
+</term>
+<listitem>
+<simpara>
+        Replace an existing tag with the given name (instead of failing)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-d
+</term>
+<term>
+--delete
+</term>
+<listitem>
+<simpara>
+        Delete existing tags with the given names.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-v
+</term>
+<term>
+--verify
+</term>
+<listitem>
+<simpara>
+        Verify the gpg signature of the given tag names.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n&lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        &lt;num&gt; specifies how many lines from the annotation, if any,
+        are printed when using -l.
+        The default is not to print any annotation lines.
+        If no number is given to <emphasis>-n</emphasis>, only the first line is printed.
+        If the tag is not annotated, the commit message is displayed instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-l &lt;pattern&gt;
+</term>
+<term>
+--list &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        List tags with names that match the given pattern (or all if no
+        pattern is given).  Running "git tag" without arguments also
+        lists all tags. The pattern is a shell wildcard (i.e., matched
+        using fnmatch(3)).  Multiple patterns may be given; if any of
+        them matches, the tag is shown.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--contains &lt;commit&gt;
+</term>
+<listitem>
+<simpara>
+        Only list tags which contain the specified commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--points-at &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Only list tags of the given object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m &lt;msg&gt;
+</term>
+<term>
+--message=&lt;msg&gt;
+</term>
+<listitem>
+<simpara>
+        Use the given tag message (instead of prompting).
+        If multiple <emphasis>-m</emphasis> options are given, their values are
+        concatenated as separate paragraphs.
+        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
+        is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-F &lt;file&gt;
+</term>
+<term>
+--file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Take the tag message from the given file.  Use <emphasis>-</emphasis> to
+        read the message from the standard input.
+        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
+        is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cleanup=&lt;mode&gt;
+</term>
+<listitem>
+<simpara>
+        This option sets how the tag message is cleaned up.
+        The  <emphasis>&lt;mode&gt;</emphasis> can be one of <emphasis>verbatim</emphasis>, <emphasis>whitespace</emphasis> and <emphasis>strip</emphasis>.  The
+        <emphasis>strip</emphasis> mode is default. The <emphasis>verbatim</emphasis> mode does not change message at
+        all, <emphasis>whitespace</emphasis> removes just leading/trailing whitespace lines and
+        <emphasis>strip</emphasis> removes both whitespace and commentary.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;tagname&gt;
+</term>
+<listitem>
+<simpara>
+        The name of the tag to create, delete, or describe.
+        The new tag name must pass all checks defined by
+        <xref linkend="git-check-ref-format(1)" />.  Some of these checks
+        may restrict the characters allowed in a tag name.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_configuration">
+<title>CONFIGURATION</title>
+<simpara>By default, <emphasis>git tag</emphasis> in sign-with-default mode (-s) will use your
+committer identity (of the form "Your Name &lt;<ulink url="mailto:your@email.address">your@email.address</ulink>&gt;") to
+find a key.  If you want to use a different default key, you can specify
+it in the repository configuration as follows:</simpara>
+<screen>[user]
+    signingkey = &lt;gpg-key-id&gt;</screen>
+</simplesect>
+<simplesect id="_discussion">
+<title>DISCUSSION</title>
+<section id="_on_re_tagging">
+<title>On Re-tagging</title>
+<simpara>What should you do when you tag a wrong commit and you would
+want to re-tag?</simpara>
+<simpara>If you never pushed anything out, just re-tag it. Use "-f" to
+replace the old one. And you're done.</simpara>
+<simpara>But if you have pushed things out (or others could just read
+your repository directly), then others will have already seen
+the old tag. In that case you can do one of two things:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+The sane thing.
+Just admit you screwed up, and use a different name. Others have
+already seen one tag-name, and if you keep the same name, you
+may be in the situation that two people both have "version X",
+but they actually have <emphasis>different</emphasis> "X"'s.  So just call it "X.1"
+and be done with it.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The insane thing.
+You really want to call the new version "X" too, <emphasis>even though</emphasis>
+others have already seen the old one. So just use <emphasis>git tag -f</emphasis>
+again, as if you hadn't already published the old one.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>However, Git does <emphasis role="strong">not</emphasis> (and it should not) change tags behind
+users back. So if somebody already got the old tag, doing a
+<emphasis>git pull</emphasis> on your tree shouldn't just make them overwrite the old
+one.</simpara>
+<simpara>If somebody got a release tag from you, you cannot just change
+the tag for them by updating your own one. This is a big
+security issue, in that people MUST be able to trust their
+tag-names.  If you really want to do the insane thing, you need
+to just fess up to it, and tell people that you messed up. You
+can do that by making a very public announcement saying:</simpara>
+<screen>Ok, I messed up, and I pushed out an earlier version tagged as X. I
+then fixed something, and retagged the *fixed* tree as X again.
+
+If you got the wrong tag, and want the new one, please delete
+the old one and fetch the new one by doing:
+
+        git tag -d X
+        git fetch origin tag X
+
+to get my updated tag.
+
+You can test which tag you have by doing
+
+        git rev-parse X
+
+which should return 0123456789abcdef.. if you have the new version.
+
+Sorry for the inconvenience.</screen>
+<simpara>Does this seem a bit complicated?  It <emphasis role="strong">should</emphasis> be. There is no
+way that it would be correct to just "fix" it automatically.
+People need to know that their tags might have been changed.</simpara>
+</section>
+<section id="_on_automatic_following">
+<title>On Automatic following</title>
+<simpara>If you are following somebody else's tree, you are most likely
+using remote-tracking branches (<emphasis>refs/heads/origin</emphasis> in traditional
+layout, or <emphasis>refs/remotes/origin/master</emphasis> in the separate-remote
+layout).  You usually want the tags from the other end.</simpara>
+<simpara>On the other hand, if you are fetching because you would want a
+one-shot merge from somebody else, you typically do not want to
+get tags from there.  This happens more often for people near
+the toplevel but not limited to them.  Mere mortals when pulling
+from each other do not necessarily want to automatically get
+private anchor point tags from the other person.</simpara>
+<simpara>Often, "please pull" messages on the mailing list just provide
+two pieces of information: a repo URL and a branch name; this
+is designed to be easily cut&amp;pasted at the end of a <emphasis>git fetch</emphasis>
+command line:</simpara>
+<screen>Linus, please pull from
+
+        git://git..../proj.git master
+
+to get the following updates...</screen>
+<simpara>becomes:</simpara>
+<screen>$ git pull git://git..../proj.git master</screen>
+<simpara>In such a case, you do not want to automatically follow the other
+person's tags.</simpara>
+<simpara>One important aspect of git is its distributed nature, which
+largely means there is no inherent "upstream" or
+"downstream" in the system.  On the face of it, the above
+example might seem to indicate that the tag namespace is owned
+by the upper echelon of people and that tags only flow downwards, but
+that is not the case.  It only shows that the usage pattern
+determines who are interested in whose tags.</simpara>
+<simpara>A one-shot pull is a sign that a commit history is now crossing
+the boundary between one circle of people (e.g. "people who are
+primarily interested in the networking part of the kernel") who may
+have their own set of tags (e.g. "this is the third release
+candidate from the networking group to be proposed for general
+consumption with 2.6.21 release") to another circle of people
+(e.g. "people who integrate various subsystem improvements").
+The latter are usually not interested in the detailed tags used
+internally in the former group (that is what "internal" means).
+That is why it is desirable not to follow tags automatically in
+this case.</simpara>
+<simpara>It may well be that among networking people, they may want to
+exchange the tags internal to their group, but in that workflow
+they are most likely tracking each other's progress by
+having remote-tracking branches.  Again, the heuristic to automatically
+follow such tags is a good thing.</simpara>
+</section>
+<section id="_on_backdating_tags">
+<title>On Backdating Tags</title>
+<simpara>If you have imported some changes from another VCS and would like
+to add tags for major releases of your work, it is useful to be able
+to specify the date to embed inside of the tag object; such data in
+the tag object affects, for example, the ordering of tags in the
+gitweb interface.</simpara>
+<simpara>To set the date used in future tag objects, set the environment
+variable GIT_COMMITTER_DATE (see the later discussion of possible
+values; the most common form is "YYYY-MM-DD HH:MM").</simpara>
+<simpara>For example:</simpara>
+<screen>$ GIT_COMMITTER_DATE="2006-10-02 10:31" git tag -s v1.0.1</screen>
+</section>
+</simplesect>
+<simplesect id="_date_formats">
+<title>DATE FORMATS</title>
+<simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
+support the following date formats:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+Git internal format
+</term>
+<listitem>
+<simpara>
+        It is <emphasis>&lt;unix timestamp&gt; &lt;timezone offset&gt;</emphasis>, where <emphasis>&lt;unix
+        timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
+        <emphasis>&lt;timezone offset&gt;</emphasis> is a positive or negative offset from UTC.
+        For example CET (which is 2 hours ahead UTC) is <emphasis>+0200</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+RFC 2822
+</term>
+<listitem>
+<simpara>
+        The standard email format as described by RFC 2822, for example
+        <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ISO 8601
+</term>
+<listitem>
+<simpara>
+        Time and date specified by the ISO 8601 standard, for example
+        <emphasis>2005-04-07T22:13:13</emphasis>. The parser accepts a space instead of the
+        <emphasis>T</emphasis> character as well.
+</simpara>
+<note><simpara>In addition, the date part is accepted in the following formats:
+<emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-check-ref-format(1)" />.</simpara>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>

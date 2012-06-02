@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<article lang="en" id="git-check-ref-format(1)">
+<articleinfo>
+    <title>git-check-ref-format(1)</title>
+<indexterm>
+<primary>git-check-ref-format(1)</primary>
+</indexterm>
+</articleinfo>
+<simplesect id="_name">
+<title>NAME</title>
+<simpara>git-check-ref-format - Ensures that a reference name is well formed</simpara>
+</simplesect>
+<simplesect id="_synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git check-ref-format</emphasis> [--normalize]
+       [--[no-]allow-onelevel] [--refspec-pattern]
+       &lt;refname&gt;
+<emphasis>git check-ref-format</emphasis> --branch &lt;branchname-shorthand&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="_description">
+<title>DESCRIPTION</title>
+<simpara>Checks if a given <emphasis>refname</emphasis> is acceptable, and exits with a non-zero
+status if it is not.</simpara>
+<simpara>A reference is used in git to specify branches and tags.  A
+branch head is stored in the <emphasis>refs/heads</emphasis> hierarchy, while
+a tag is stored in the <emphasis>refs/tags</emphasis> hierarchy of the ref namespace
+(typically in <emphasis>$GIT_DIR/refs/heads</emphasis> and <emphasis>$GIT_DIR/refs/tags</emphasis>
+directories or, as entries in file <emphasis>$GIT_DIR/packed-refs</emphasis>
+if refs are packed by <emphasis>git gc</emphasis>).</simpara>
+<simpara>git imposes the following rules on how references are named:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+They can include slash <emphasis>/</emphasis> for hierarchical (directory)
+  grouping, but no slash-separated component can begin with a
+  dot <emphasis>.</emphasis> or end with the sequence <emphasis>.lock</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They must contain at least one <emphasis>/</emphasis>. This enforces the presence of a
+  category like <emphasis>heads/</emphasis>, <emphasis>tags/</emphasis> etc. but the actual names are not
+  restricted.  If the <emphasis>--allow-onelevel</emphasis> option is used, this rule
+  is waived.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot have two consecutive dots <emphasis>..</emphasis> anywhere.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot have ASCII control characters (i.e. bytes whose
+  values are lower than \040, or \177 <emphasis>DEL</emphasis>), space, tilde <emphasis>~</emphasis>,
+  caret <emphasis>^</emphasis>, or colon <emphasis>:</emphasis> anywhere.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot have question-mark <emphasis>?</emphasis>, asterisk <emphasis>*</emphasis>, or open
+  bracket <emphasis>[</emphasis> anywhere.  See the <emphasis>--refspec-pattern</emphasis> option below for
+  an exception to this rule.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot begin or end with a slash <emphasis>/</emphasis> or contain multiple
+  consecutive slashes (see the <emphasis>--normalize</emphasis> option below for an
+  exception to this rule)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot end with a dot <emphasis>.</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot contain a sequence <emphasis>@{</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot contain a <emphasis>\</emphasis>.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>These rules make it easy for shell script based tools to parse
+reference names, pathname expansion by the shell when a reference name is used
+unquoted (by mistake), and also avoids ambiguities in certain
+reference name expressions (see <xref linkend="gitrevisions(7)" />):</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+A double-dot <emphasis>..</emphasis> is often used as in <emphasis>ref1..ref2</emphasis>, and in some
+  contexts this notation means <emphasis>^ref1 ref2</emphasis> (i.e. not in
+  <emphasis>ref1</emphasis> and in <emphasis>ref2</emphasis>).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+A tilde <emphasis>~</emphasis> and caret <emphasis>^</emphasis> are used to introduce the postfix
+  <emphasis>nth parent</emphasis> and <emphasis>peel onion</emphasis> operation.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+A colon <emphasis>:</emphasis> is used as in <emphasis>srcref:dstref</emphasis> to mean "use srcref's
+  value and store it in dstref" in fetch and push operations.
+  It may also be used to select a specific object such as with
+  <emphasis>git cat-file</emphasis>: "git cat-file blob v1.3.3:refs.c".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+at-open-brace <emphasis>@{</emphasis> is used as a notation to access a reflog entry.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>With the <emphasis>--branch</emphasis> option, it expands the previous branch syntax
+<emphasis>@{-n}</emphasis>.  For example, <emphasis>@{-1}</emphasis> is a way to refer the last branch you
+were on.  This option should be used by porcelains to accept this
+syntax anywhere a branch name is expected, so they can act as if you
+typed the branch name.</simpara>
+</simplesect>
+<simplesect id="_options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--allow-onelevel
+</term>
+<term>
+--no-allow-onelevel
+</term>
+<listitem>
+<simpara>
+        Controls whether one-level refnames are accepted (i.e.,
+        refnames that do not contain multiple <emphasis>/</emphasis>-separated
+        components).  The default is <emphasis>--no-allow-onelevel</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--refspec-pattern
+</term>
+<listitem>
+<simpara>
+        Interpret &lt;refname&gt; as a reference name pattern for a refspec
+        (as used with remote repositories).  If this option is
+        enabled, &lt;refname&gt; is allowed to contain a single <emphasis>*</emphasis>
+        in place of a one full pathname component (e.g.,
+        <emphasis>foo/*/bar</emphasis> but not <emphasis>foo/bar*</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--normalize
+</term>
+<listitem>
+<simpara>
+        Normalize <emphasis>refname</emphasis> by removing any leading slash (<emphasis>/</emphasis>)
+        characters and collapsing runs of adjacent slashes between
+        name components into a single slash.  Iff the normalized
+        refname is valid then print it to standard output and exit
+        with a status of 0.  (<emphasis>--print</emphasis> is a deprecated way to spell
+        <emphasis>--normalize</emphasis>.)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="_examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Print the name of the previous branch:
+</simpara>
+<screen>$ git check-ref-format --branch @{-1}</screen>
+</listitem>
+<listitem>
+<simpara>
+Determine the reference name to use for a new branch:
+</simpara>
+<screen>$ ref=$(git check-ref-format --normalize "refs/heads/$newbranch") ||
+die "we do not like '$newbranch' as a branch name."</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="_git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</article>
