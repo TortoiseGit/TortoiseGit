@@ -1,5 +1,5 @@
 = Release 1.7.10.0 =
-Released: unreleased
+Released: 2012-06-03
 
 == Features==
  * Updated shipped zlib library to version 1.2.7

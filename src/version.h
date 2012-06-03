@@ -1,11 +1,11 @@
-#define FILEVER        1,7,9,0
-#define PRODUCTVER     1,7,9,0
-#define STRFILEVER     "1, 7, 9, 0\0"
-#define STRPRODUCTVER  "1, 7, 9, 0\0"
+#define FILEVER        1,7,10,0
+#define PRODUCTVER     1,7,10,0
+#define STRFILEVER     "1, 7, 10, 0\0"
+#define STRPRODUCTVER  "1, 7, 10, 0\0"
 
 #define TGIT_VERMAJOR             1
 #define TGIT_VERMINOR             7
-#define TGIT_VERMICRO             9
+#define TGIT_VERMICRO             10
 #define TGIT_VERBUILD			  0
 #define TGIT_VERDATE			  __DATE__
 
