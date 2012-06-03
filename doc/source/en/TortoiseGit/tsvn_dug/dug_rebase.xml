@@ -21,6 +21,9 @@
   </para>
 	<tip>
 		<para>
+			If you want to squash two (or more) revisions which follow directly one after another, you have to select "squash" for all of them.
+		</para>
+		<para>
 			Instead of setting "pick", "skip", "edit", "squash" by using the context-menu, you can also use the following keys:
 			<keycap>space</keycap>: shifts the state, <keycap>s</keycap>: skip, <keycap>e</keycap>: edit, <keycap>p</keycap>: pick, <keycap>q</keycap>: squash
 		</para>
