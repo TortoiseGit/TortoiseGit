@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-25 23:48+0000\n"
+"PO-Revision-Date: 2012-06-01 20:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.net/projects/p/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -1295,7 +1295,7 @@ msgstr ""
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want create branch now?"
+"Do you want to a create branch now?"
 msgstr ""
 
 #. Resource IDs: (70)
@@ -1879,6 +1879,10 @@ msgstr "Arquivo Base:"
 msgid "Based on TortoiseIDiff of TortoiseSVN"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Basic Info"
+msgstr ""
+
 #. Resource IDs: (69)
 msgid ""
 "Be warned that email clients tend to automatic wrap lines.\r\n"
@@ -1933,6 +1937,10 @@ msgstr "Atribui a responsabilidade de cada linha de um arquivo a um autor"
 
 #. Resource IDs: (32812)
 msgid "Blend alpha"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "Body"
 msgstr ""
 
 #. Resource IDs: (83)
@@ -3067,10 +3075,6 @@ msgstr ""
 msgid "Default to UTF-8 encoding"
 msgstr ""
 
-#. Resource IDs: (64, 601)
-msgid "Del"
-msgstr "Del"
-
 #. Resource IDs: (1002)
 msgid "Delete"
 msgstr "Excluir"
@@ -3518,12 +3522,6 @@ msgstr "Vazio"
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
 msgstr ""
-
-#. Resource IDs: (195)
-msgid ""
-"Enables the spellchecker only if the\n"
-"tsvn:projectlanguage property is set."
-msgstr "Habilita o verificador ortográfico apenas quando\na propriedade tsvn:projectlanguage estiver ativa."
 
 #. Resource IDs: (65535)
 msgid "Encode"
@@ -4757,8 +4755,7 @@ msgstr ""
 
 #. Resource IDs: (1640)
 msgid ""
-"Import svn ignore file to .git/info/exclude file. (exclude will be "
-"overwrited)"
+"Import svn ignore file to .git/info/exclude file (file will be overwritten)"
 msgstr ""
 
 #. Resource IDs: (120)
@@ -4817,23 +4814,8 @@ msgid "Invalid Currency."
 msgstr "Moeda inválida."
 
 #. Resource IDs: (82)
-msgid ""
-"Invalid revision number! Valid revisions are:\n"
-"HEAD, BASE, PREV, COMMITTED, WC,\n"
-"positive decimal numbers,\n"
-"dates in one of the following example forms:\n"
-"{2002-02-17}\n"
-"{15:30}\n"
-"{15:30:00.200000}\n"
-"{\"2002-02-17 15:30\"}\n"
-"{\"2002-02-17 15:30 +0230\"}\n"
-"{2002-02-17T15:30}\n"
-"{2002-02-17T15:30Z}\n"
-"{2002-02-17T15:30-04:00}\n"
-"{20020217T1530}\n"
-"{20020217T1530Z}\n"
-"{20020217T1530-0500}"
-msgstr "Número de revisão inválido! As revisões válidas são:\nHEAD (Mais Recente), BASE (Base), PREV (Anterior), COMMITTED (Atualizado), WC,\nnúmeros decimais positivos,\ndatas em uma das seguintes formas de exemplo:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30 +0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
+msgid "Invalid revision number!"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid ""
@@ -5047,8 +5029,8 @@ msgid "Locator Bar"
 msgstr "Barra de Localização"
 
 #. Resource IDs: (1529)
-msgid "Locked"
-msgstr "Travado"
+msgid "Locked (not used by TortoiseGit)"
+msgstr ""
 
 #. Resource IDs: (126)
 msgid "Log"
@@ -5403,8 +5385,8 @@ msgid "Navigation Pane Options..."
 msgstr "Opções do Painel de Navegação..."
 
 #. Resource IDs: (1550)
-msgid "Needs-lock"
-msgstr "Precisa-travar"
+msgid "Needs-lock (not used by TortoiseGit)"
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "Nested"
@@ -5903,6 +5885,10 @@ msgstr "Parâmetros:"
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "Parent(s)"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7264,6 +7250,10 @@ msgstr "Mostrar Todo o Projeto"
 msgid "Show author"
 msgstr "Mostrar autor"
 
+#. Resource IDs: (1251)
+msgid "Show branches this commit is on"
+msgstr ""
+
 #. Resource IDs: (114)
 msgid "Show changes as &unified diff"
 msgstr "Exibir diferenças como comparação &unificada"
@@ -7824,6 +7814,13 @@ msgstr "O arquivo %s não existe!"
 msgid "The file %s was not found in the patch file!"
 msgstr "O arquivo %s não foi encontrado no arquivo de correção!"
 
+#. Resource IDs: (64)
+#, c-format
+msgid ""
+"The file \"%s\" does not exist in your working tree.\n"
+"Do you want to select another file to diff?"
+msgstr ""
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -8069,6 +8066,13 @@ msgid ""
 "Those files are not listed for commit. You need to commit those files in submodule"
 msgstr ""
 
+#. Resource IDs: (198)
+#, c-format
+msgid ""
+"There are currently %d overlay handlers installed besides the ones Tortoise "
+"uses."
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr ""
@@ -8091,9 +8095,8 @@ msgstr "Existem alterações não salvas!\nVocê deseja salvar suas alterações
 #. Resource IDs: (82)
 msgid ""
 "There is nothing to add. All the files and folders are either under version "
-"control or have been ignored using the svn:ignore property or the global "
-"ignore configuration setting."
-msgstr "Não há nada para adicionar. Todos os arquivos e pastas já estão sob controle de versão, ou estão sendo ignorados pela propriedade svn:ignorar ou pela configuração ignorar global nas preferências"
+"control, have been ignored or the global ignore configuration setting."
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Thesaurus"
@@ -8230,9 +8233,21 @@ msgid ""
 "to be renamed too?"
 msgstr ""
 
+#. Resource IDs: (198)
+#, c-format
+msgid "TortoiseGit will not show the following overlays: %s"
+msgstr ""
+
 #. Resource IDs: (244)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
+
+#. Resource IDs: (1)
+#, c-format
+msgid ""
+"TortoiseGitBlame was already initialized for the repository \"%s\". Cannot "
+"switch to another repository (\"%s\") at runtime."
+msgstr ""
 
 #. Resource IDs: (1)
 #, c-format

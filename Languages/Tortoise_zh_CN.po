@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Freeman Ke <guang810828@gmail.com>, 2012.
 #   <lznuaa@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 msgid ""
@@ -10,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-25 19:28+0000\n"
+"PO-Revision-Date: 2012-06-03 12:14+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.net/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -415,7 +416,7 @@ msgstr "浏览目录(&B)"
 
 #. Resource IDs: (1251)
 msgid "&Browse repository"
-msgstr ""
+msgstr "浏览版本库(&B)"
 
 #. Resource IDs: (1001, 1009)
 msgid "&Browse..."
@@ -929,7 +930,7 @@ msgstr "删除(&R)"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
-msgstr ""
+msgstr "版本库浏览器(&R)"
 
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
@@ -1182,7 +1183,7 @@ msgstr "忽略空格改动(&i)"
 #. Resource IDs: (85)
 #, c-format
 msgid "(from %s)"
-msgstr ""
+msgstr "(从 %s)"
 
 #. Resource IDs: (213)
 msgid "(no changelist)"
@@ -1296,8 +1297,8 @@ msgstr "<b>警告:</b> 这个分支没有被完全合并到HEAD."
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want create branch now?"
-msgstr "<ct=0x0000FF>当前HEAD已经剥离</ct>, 你将工作在 (no branch).\n是否你想创建新的分支?"
+"Do you want to a create branch now?"
+msgstr "你是否想创建分支?"
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
@@ -1461,7 +1462,7 @@ msgstr "加入"
 
 #. Resource IDs: (1482)
 msgid "Add &Signed-off-by"
-msgstr ""
+msgstr "添加签署通过(&S)"
 
 #. Resource IDs: (376)
 #, c-format
@@ -1880,6 +1881,10 @@ msgstr "基础文件:"
 msgid "Based on TortoiseIDiff of TortoiseSVN"
 msgstr "基于TortoiseSVN的TortoiseIDiff "
 
+#. Resource IDs: (1)
+msgid "Basic Info"
+msgstr ""
+
 #. Resource IDs: (69)
 msgid ""
 "Be warned that email clients tend to automatic wrap lines.\r\n"
@@ -1935,6 +1940,10 @@ msgstr "列出文件每一行的作者"
 #. Resource IDs: (32812)
 msgid "Blend alpha"
 msgstr "Alpha 混和"
+
+#. Resource IDs: (1)
+msgid "Body"
+msgstr ""
 
 #. Resource IDs: (83)
 msgid ""
@@ -3068,10 +3077,6 @@ msgstr "默认应用程序菜单。在没有打开文档的时候显示。"
 msgid "Default to UTF-8 encoding"
 msgstr "默认为UTF-8编码"
 
-#. Resource IDs: (64, 601)
-msgid "Del"
-msgstr "删除"
-
 #. Resource IDs: (1002)
 msgid "Delete"
 msgstr "删除"
@@ -3519,12 +3524,6 @@ msgstr "空"
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
 msgstr "启用的图标覆盖"
-
-#. Resource IDs: (195)
-msgid ""
-"Enables the spellchecker only if the\n"
-"tsvn:projectlanguage property is set."
-msgstr "仅在设置了 tsvn:projectlanguage\n时才进行拼写检查。"
 
 #. Resource IDs: (65535)
 msgid "Encode"
@@ -4758,9 +4757,8 @@ msgstr "导入SVN忽略..."
 
 #. Resource IDs: (1640)
 msgid ""
-"Import svn ignore file to .git/info/exclude file. (exclude will be "
-"overwrited)"
-msgstr "导入svn忽略文件到.git/info/exclude(原有内容会被覆盖)"
+"Import svn ignore file to .git/info/exclude file (file will be overwritten)"
+msgstr "导入 SVN 忽略文件到目录.git/info/exclude file(如果存在，文件将被覆盖)"
 
 #. Resource IDs: (120)
 #, c-format
@@ -4818,23 +4816,8 @@ msgid "Invalid Currency."
 msgstr "非法货币。"
 
 #. Resource IDs: (82)
-msgid ""
-"Invalid revision number! Valid revisions are:\n"
-"HEAD, BASE, PREV, COMMITTED, WC,\n"
-"positive decimal numbers,\n"
-"dates in one of the following example forms:\n"
-"{2002-02-17}\n"
-"{15:30}\n"
-"{15:30:00.200000}\n"
-"{\"2002-02-17 15:30\"}\n"
-"{\"2002-02-17 15:30 +0230\"}\n"
-"{2002-02-17T15:30}\n"
-"{2002-02-17T15:30Z}\n"
-"{2002-02-17T15:30-04:00}\n"
-"{20020217T1530}\n"
-"{20020217T1530Z}\n"
-"{20020217T1530-0500}"
-msgstr "错误的版本编号! 正确的版本如下: \nHEAD, BASE, PREV, COMMITTED, WC\n十进制正整数\n如下格式之一的日期: \n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30+0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
+msgid "Invalid revision number!"
+msgstr "无效的修订版本号"
 
 #. Resource IDs: (83)
 msgid ""
@@ -5013,7 +4996,7 @@ msgstr "列出帮助主题\n帮助主题"
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
-msgstr "列表一"
+msgstr "List1"
 
 #. Resource IDs: (130)
 msgid "Load Images"
@@ -5048,8 +5031,8 @@ msgid "Locator Bar"
 msgstr "定位工具栏"
 
 #. Resource IDs: (1529)
-msgid "Locked"
-msgstr "锁定"
+msgid "Locked (not used by TortoiseGit)"
+msgstr ""
 
 #. Resource IDs: (126)
 msgid "Log"
@@ -5404,8 +5387,8 @@ msgid "Navigation Pane Options..."
 msgstr "窗格选项导航..."
 
 #. Resource IDs: (1550)
-msgid "Needs-lock"
-msgstr "需要锁定"
+msgid "Needs-lock (not used by TortoiseGit)"
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "Nested"
@@ -5819,7 +5802,7 @@ msgstr "打开帮助\n帮助主题"
 
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
-msgstr ""
+msgstr "打开库浏览器"
 
 #. Resource IDs: (357)
 msgid "Option"
@@ -5905,6 +5888,10 @@ msgstr "参数:"
 #, c-format
 msgid "Parent %d does not exist"
 msgstr "父节点%d不存在"
+
+#. Resource IDs: (1)
+msgid "Parent(s)"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
@@ -6588,7 +6575,7 @@ msgstr "版本库URL(&U)"
 
 #. Resource IDs: (153)
 msgid "Repository Browser"
-msgstr ""
+msgstr "版本库浏览器"
 
 #. Resource IDs: (65535)
 msgid "Repository:"
@@ -7265,6 +7252,10 @@ msgstr "显示整个工程"
 msgid "Show author"
 msgstr "显示作者"
 
+#. Resource IDs: (1251)
+msgid "Show branches this commit is on"
+msgstr "显示所有分支为已提交"
+
 #. Resource IDs: (114)
 msgid "Show changes as &unified diff"
 msgstr "以标准差异格式显示改变(&U)"
@@ -7415,7 +7406,7 @@ msgstr "显示选定的文件/文件夹的日志"
 
 #. Resource IDs: (1523)
 msgid "Si&gn"
-msgstr ""
+msgstr "签名(&G)"
 
 #. Resource IDs: (1532)
 msgid "Since"
@@ -7825,6 +7816,13 @@ msgstr "文件 %s 不存在！"
 msgid "The file %s was not found in the patch file!"
 msgstr "补丁文件中找不到文件: %s！"
 
+#. Resource IDs: (64)
+#, c-format
+msgid ""
+"The file \"%s\" does not exist in your working tree.\n"
+"Do you want to select another file to diff?"
+msgstr "文件“%s“不在你的操作树中，你是否想选择另一个文件去比较？"
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -8070,6 +8068,13 @@ msgid ""
 "Those files are not listed for commit. You need to commit those files in submodule"
 msgstr "子模块中包含的目录中有修改或未版本控制的对象。\n那些文件不会在提交列表中列出，您需要单独提交。"
 
+#. Resource IDs: (198)
+#, c-format
+msgid ""
+"There are currently %d overlay handlers installed besides the ones Tortoise "
+"uses."
+msgstr "除了 Tortoise 以外，現在还有%d 个图示覆盖。"
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "没有可用的问题跟踪器。"
@@ -8092,9 +8097,8 @@ msgstr "有尚未保存的修改！\n是否要保存你做的修改？"
 #. Resource IDs: (82)
 msgid ""
 "There is nothing to add. All the files and folders are either under version "
-"control or have been ignored using the svn:ignore property or the global "
-"ignore configuration setting."
-msgstr "没有可增加的条目，所有文件和文件夹都已经用 Subversion 进行了版本控制或者在 svn:ignore 属性或全局忽略设置中设为忽略。"
+"control, have been ignored or the global ignore configuration setting."
+msgstr "没有待添加的内容，所有文件和目录已在在版本库中或是被全局配置文件忽略。"
 
 #. Resource IDs: (188)
 msgid "Thesaurus"
@@ -8231,9 +8235,21 @@ msgid ""
 "to be renamed too?"
 msgstr "TortoiseGit 检测到类似的文件名。你要同时改名\n文件 %s 吗？"
 
+#. Resource IDs: (198)
+#, c-format
+msgid "TortoiseGit will not show the following overlays: %s"
+msgstr "TortoiseGit将不显示以下覆盖：%s"
+
 #. Resource IDs: (244)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
+
+#. Resource IDs: (1)
+#, c-format
+msgid ""
+"TortoiseGitBlame was already initialized for the repository \"%s\". Cannot "
+"switch to another repository (\"%s\") at runtime."
+msgstr ""
 
 #. Resource IDs: (1)
 #, c-format

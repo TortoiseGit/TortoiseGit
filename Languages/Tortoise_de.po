@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-05-25 19:31+0000\n"
+"PO-Revision-Date: 2012-06-03 11:52+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.net/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -523,7 +523,7 @@ msgstr "&Löschen (lokal erhalten)"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
-msgstr "&Lösche gegenüber und lokal"
+msgstr "&Lösche entfernt und lokal"
 
 #. Resource IDs: (12)
 msgid "&Diff"
@@ -1296,8 +1296,8 @@ msgstr "<b>Warnung:</b> Dieser Zweig wurde bisher nicht vollständig in HEAD int
 #. Resource IDs: (68)
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
-"Do you want create branch now?"
-msgstr "<ct=0x0000FF>Aktueller HEAD losgelöst</ct>, Sie arbeiten gerade auf keinem Zweig.\nMöchten Sie einen Zweig anlegen?"
+"Do you want to a create branch now?"
+msgstr "<ct=0x0000FF>Der aktuelle HEAD ist losgelöst</ct>, Sie arbeiten gerade auf keinem Zweig.\nMöchten Sie einen Zweig anlegen?"
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
@@ -1457,7 +1457,7 @@ msgstr "ActiveX Objekte können während Windows beendet wird nicht gespeichert 
 
 #. Resource IDs: (64, 77, 209, 229, 601)
 msgid "Add"
-msgstr "Hinz."
+msgstr "Hinzufügen"
 
 #. Resource IDs: (1482)
 msgid "Add &Signed-off-by"
@@ -1880,6 +1880,10 @@ msgstr "Basis Datei:"
 msgid "Based on TortoiseIDiff of TortoiseSVN"
 msgstr "Basiert auf TortoiseIDiff von TortoiseSVN"
 
+#. Resource IDs: (1)
+msgid "Basic Info"
+msgstr "Allgemeine Informationen"
+
 #. Resource IDs: (69)
 msgid ""
 "Be warned that email clients tend to automatic wrap lines.\r\n"
@@ -1935,6 +1939,10 @@ msgstr "Zeigt, welcher Autor eine Zeile zuletzt geändert hat."
 #. Resource IDs: (32812)
 msgid "Blend alpha"
 msgstr "Differenz/Überblenden"
+
+#. Resource IDs: (1)
+msgid "Body"
+msgstr "Hauptmeldung"
 
 #. Resource IDs: (83)
 msgid ""
@@ -3068,10 +3076,6 @@ msgstr "Standard Anwendungsmenü. Wird angezeigt, wenn keine Dokumente geöffnet
 msgid "Default to UTF-8 encoding"
 msgstr "UTF-8 Codierung als Vorgabe"
 
-#. Resource IDs: (64, 601)
-msgid "Del"
-msgstr "Gel."
-
 #. Resource IDs: (1002)
 msgid "Delete"
 msgstr "Löschen"
@@ -3519,12 +3523,6 @@ msgstr "Leer"
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
 msgstr "Aktivierte überlagerte Symbole"
-
-#. Resource IDs: (195)
-msgid ""
-"Enables the spellchecker only if the\n"
-"tsvn:projectlanguage property is set."
-msgstr "Verwende Rechtschreibkorrektur nur,\nwenn 'tsvn:projectlanguage' gesetzt ist."
 
 #. Resource IDs: (65535)
 msgid "Encode"
@@ -4758,8 +4756,7 @@ msgstr "Importiere SVN 'Ignorieren' Liste..."
 
 #. Resource IDs: (1640)
 msgid ""
-"Import svn ignore file to .git/info/exclude file. (exclude will be "
-"overwrited)"
+"Import svn ignore file to .git/info/exclude file (file will be overwritten)"
 msgstr "Importiert die SVN 'Ignorieren'-Liste in die Datei .git/info/exclude (diese Datei wird überschrieben)."
 
 #. Resource IDs: (120)
@@ -4818,23 +4815,8 @@ msgid "Invalid Currency."
 msgstr "Ungültige Währung"
 
 #. Resource IDs: (82)
-msgid ""
-"Invalid revision number! Valid revisions are:\n"
-"HEAD, BASE, PREV, COMMITTED, WC,\n"
-"positive decimal numbers,\n"
-"dates in one of the following example forms:\n"
-"{2002-02-17}\n"
-"{15:30}\n"
-"{15:30:00.200000}\n"
-"{\"2002-02-17 15:30\"}\n"
-"{\"2002-02-17 15:30 +0230\"}\n"
-"{2002-02-17T15:30}\n"
-"{2002-02-17T15:30Z}\n"
-"{2002-02-17T15:30-04:00}\n"
-"{20020217T1530}\n"
-"{20020217T1530Z}\n"
-"{20020217T1530-0500}"
-msgstr "Ungültige Revisionsnummer! Gültige Revisionen sind:\nHEAD, BASE, PREV, COMMITTED, WC,\npositive Dezimalzahlen,\nDatumsangaben entsprechend der folgenden Beispiele:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30 +0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
+msgid "Invalid revision number!"
+msgstr "Ungültige Revisionsangabe."
 
 #. Resource IDs: (83)
 msgid ""
@@ -5048,8 +5030,8 @@ msgid "Locator Bar"
 msgstr "Navigationsleiste"
 
 #. Resource IDs: (1529)
-msgid "Locked"
-msgstr "Gesperrt"
+msgid "Locked (not used by TortoiseGit)"
+msgstr "Locked (nicht genutzt von TortoiseGit)"
 
 #. Resource IDs: (126)
 msgid "Log"
@@ -5404,8 +5386,8 @@ msgid "Navigation Pane Options..."
 msgstr "Optionen der Navigationsfläche..."
 
 #. Resource IDs: (1550)
-msgid "Needs-lock"
-msgstr "Benötigt Sperre"
+msgid "Needs-lock (not used by TortoiseGit)"
+msgstr "Needs-lock (nicht genutzt von TortoiseGit)"
 
 #. Resource IDs: (213)
 msgid "Nested"
@@ -5905,6 +5887,10 @@ msgstr "Parameter:"
 #, c-format
 msgid "Parent %d does not exist"
 msgstr "Elternteil %d existiert nicht"
+
+#. Resource IDs: (1)
+msgid "Parent(s)"
+msgstr "Elternteil(e)"
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
@@ -7265,6 +7251,10 @@ msgstr "Zeige gesamtes Projekt"
 msgid "Show author"
 msgstr "Zeige Author"
 
+#. Resource IDs: (1251)
+msgid "Show branches this commit is on"
+msgstr "Zeige Zweige auf denen diese Revision liegt"
+
 #. Resource IDs: (114)
 msgid "Show changes as &unified diff"
 msgstr "Zeige Änderungen als &Standard-Diff"
@@ -7825,6 +7815,13 @@ msgstr "Die Datei %s existiert nicht!"
 msgid "The file %s was not found in the patch file!"
 msgstr "Die Datei %s wurde in der Patch-Datei nicht gefunden!"
 
+#. Resource IDs: (64)
+#, c-format
+msgid ""
+"The file \"%s\" does not exist in your working tree.\n"
+"Do you want to select another file to diff?"
+msgstr "Die Datei \"%s\" existiert im Arbeitsbaum nicht.\nMöchten SIe eine andere Datei zum Vergleichen wählen?"
+
 #. Resource IDs: (314)
 #, c-format
 msgid ""
@@ -8070,6 +8067,13 @@ msgid ""
 "Those files are not listed for commit. You need to commit those files in submodule"
 msgstr "Es gibt Änderungen oder nicht-versionierte Objekte in einem oder mehreren Submodulen.\nDiese Dateien werden für eine Eintragung nicht aufgelistet. Sie müssen diese Dateien in den Submodulen eintragen."
 
+#. Resource IDs: (198)
+#, c-format
+msgid ""
+"There are currently %d overlay handlers installed besides the ones Tortoise "
+"uses."
+msgstr "Derzeit sind %d überlagerte Symbole neben den von Tortoise verwendeten installiert."
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "Es stehen keine COM-Anbieter für das Fehlerverfolgungssystem zur Verfügung."
@@ -8092,9 +8096,8 @@ msgstr "Die Änderungen sind noch nicht gespeichert!\nWollen Sie Ihre Änderunge
 #. Resource IDs: (82)
 msgid ""
 "There is nothing to add. All the files and folders are either under version "
-"control or have been ignored using the svn:ignore property or the global "
-"ignore configuration setting."
-msgstr "Es gibt nichts hinzuzufügen. Alle Dateien und Ordner befinden sich entweder bereits unter Versionskontrolle oder sie werden aufgrund der 'svn:ignore' Eigenschaft beziehungsweise der globalen Ausschlussmuster ignoriert."
+"control, have been ignored or the global ignore configuration setting."
+msgstr "Es gibt nichts hinzuzufügen. Alle Dateien und Ordner befinden sich entweder bereits unter Versionskontrolle oder werden bzw. der globalen Ausschlussmuster ignoriert."
 
 #. Resource IDs: (188)
 msgid "Thesaurus"
@@ -8231,9 +8234,21 @@ msgid ""
 "to be renamed too?"
 msgstr "TortoiseGit hat ähnliche Dateinamen gefunden. Wollen Sie, dass die Dateien: %s\nebenfalls umbenannt werden?"
 
+#. Resource IDs: (198)
+#, c-format
+msgid "TortoiseGit will not show the following overlays: %s"
+msgstr "TortoiseGit wird die folgenden überlagerten Symbole nicht anzeigen: %s"
+
 #. Resource IDs: (244)
 msgid "TortoiseGitBlame"
 msgstr "TortoiseGitBlame"
+
+#. Resource IDs: (1)
+#, c-format
+msgid ""
+"TortoiseGitBlame was already initialized for the repository \"%s\". Cannot "
+"switch to another repository (\"%s\") at runtime."
+msgstr "TortoiseGitBlame wurde bereits für das Projektarchiv \"%s\" initialisiert. Es kann nicht zur Laufzeit auf ein anderes Archiv (\"%s\") gewechselt werden."
 
 #. Resource IDs: (1)
 #, c-format
@@ -8454,7 +8469,7 @@ msgstr "Hebe Versionierung von %s auf"
 
 #. Resource IDs: (1384)
 msgid "Up"
-msgstr "hoch"
+msgstr "Hoch"
 
 #. Resource IDs: (65)
 msgid "Update Submodules"
