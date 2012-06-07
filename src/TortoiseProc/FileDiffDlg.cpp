@@ -410,8 +410,11 @@ void CFileDiffDlg::EnableInputControl(bool b)
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 {
 	CGitDiff diff;
-	CTGitPath* fd = m_arFilteredList[selIndex];
-	diff.Diff(fd, fd,this->m_rev1.m_CommitHash.ToString(), this->m_rev2.m_CommitHash.ToString(), blame, FALSE);
+	CTGitPath* fd2 = m_arFilteredList[selIndex];
+	CTGitPath* fd1 = fd2;
+	if (fd2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+		fd1 = new CTGitPath(fd2->GetGitOldPathString());
+	diff.Diff(fd2, fd1, this->m_rev1.m_CommitHash.ToString(), this->m_rev2.m_CommitHash.ToString(), blame, FALSE);
 }
 
 

@@ -1,3 +1,9 @@
+= Release 1.7.11.0 =
+Released: unreleased
+
+== Bug Fix ==
+ * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
+
 = Release 1.7.10.0 =
 Released: 2012-06-03
 
