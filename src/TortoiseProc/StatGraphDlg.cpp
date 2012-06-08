@@ -28,6 +28,7 @@
 #include "Registry.h"
 #include "FormatMessageWrapper.h"
 
+#include <iterator>
 #include <cmath>
 #include <locale>
 #include <list>
