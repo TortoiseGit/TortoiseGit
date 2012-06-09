@@ -599,7 +599,7 @@
 
 					<?if $(var.IncludeCrashReportDll) = 1 ?>
 					<Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
-						<File Id="F__crashrpt" ShortName="CRASHRPT.DLL" Name="CrashRpt.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\CrashRpt.dll" KeyPath="yes" />
+						<File Id="F__crashrpt" Name="crshhndl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\crshhndl.dll" KeyPath="yes" />
 					</Component>
 					<?endif ?>
 

@@ -25,6 +25,7 @@
 #include "TortoiseGitBlame.h"
 #include "MainFrm.h"
 #include "../version.h"
+#include "../Utils/CrashReport.h"
 
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
@@ -54,6 +55,8 @@ END_MESSAGE_MAP()
 CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 {
 	SetDllDirectory(L"");
+	CCrashReportTGit crasher(L"TortoiseGitBlame " _T(APP_X64_STRING));
+	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 
 	m_bHiColorIcons = TRUE;

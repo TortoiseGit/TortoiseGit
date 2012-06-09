@@ -1,0 +1,105 @@
+#ifndef __VERSION_RC
+#define __VERSION_RC
+
+#include "winver.h"
+#include "windows.h"
+
+
+#ifndef VERSION_FILEFLAGSMASK
+#	define VERSION_FILEFLAGSMASK     VS_FFI_FILEFLAGSMASK
+#endif
+
+
+#ifndef VERSION_FILEOS
+#	define VERSION_FILEOS        VOS__WINDOWS32
+#endif
+
+
+#ifdef _DLL
+#	ifndef VERSION_FILETYPE
+#		define VERSION_FILETYPE               VFT_DLL
+#	endif
+#	ifndef VERSION_INTERNALEXTENSION_STR
+#		define VERSION_INTERNALEXTENSION_STR "dll"
+#	endif
+#else
+#	ifndef VERSION_FILETYPE
+#		define VERSION_FILETYPE               VFT_APP
+#	endif
+#	ifndef VERSION_INTERNALEXTENSION_STR
+#		define VERSION_INTERNALEXTENSION_STR "exe"
+#	endif
+#endif
+
+
+#ifndef VERSION_FILESUBTYPE
+#	define VERSION_FILESUBTYPE   VFT2_UNKNOWN
+#endif
+
+
+#ifndef VERSION_PRODUCTNAME_STR
+#	error "There is no VERSION_PRODUCTNAME_STR"
+#endif
+
+
+#ifndef VERSION_FILEDESCRIPTION_STR
+#	error "There is no VERSION_FILEDESCRIPTION_STR"
+#endif
+
+#ifndef VERSION_INTERNALNAME_STR
+#	error There is no VERSION_INTERNALNAME_STR
+#endif
+
+#ifndef VERSION_LEGALCOPYRIGHT_STR
+#	define VERSION_LEGALCOPYRIGHT_STR   "Copyright (C) " VERSION_COMPANYNAME_STR " 2012"
+#endif
+
+#ifndef VERSION_ORIGINALFILENAME_STR
+#	define VERSION_ORIGINALFILENAME_STR VERSION_INTERNALNAME_STR "." VERSION_INTERNALEXTENSION_STR
+#endif
+
+
+#ifndef VERSION_VERSION_UNICODE_LANG
+#	define VERSION_VERSION_UNICODE_LANG "040904B0"   /* LANG_ENGLISH/SUBLANG_ENGLISH_US, Unicode CP */
+#endif
+
+
+#ifndef VERSION_VERSION_TRANSLATION
+#	define VERSION_VERSION_TRANSLATION  0x409, 0x4B0 /* LANG_ENGLISH/SUBLANG_ENGLISH_US, Unicode CP */
+#endif
+
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION                        VERSION_FILEVERSION
+ PRODUCTVERSION                     VERSION_PRODUCTVERSION
+ FILEFLAGSMASK                      VERSION_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS                              VERSION_FILEOS          
+ FILETYPE                            VERSION_FILETYPE        
+ FILESUBTYPE                         VERSION_FILESUBTYPE     
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+       BLOCK VERSION_VERSION_UNICODE_LANG
+        BEGIN
+            VALUE "CompanyName",     VERSION_COMPANYNAME_STR
+            VALUE "FileDescription", VERSION_FILEDESCRIPTION_STR
+            VALUE "FileVersion",     VERSION_FILEVERSION_STR
+            VALUE "InternalName",    VERSION_INTERNALNAME_STR
+            VALUE "LegalCopyright",  VERSION_LEGALCOPYRIGHT_STR
+            VALUE "OriginalFilename",VERSION_ORIGINALFILENAME_STR
+            VALUE "ProductName",     VERSION_PRODUCTNAME_STR
+            VALUE "ProductVersion",  VERSION_PRODUCTVERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", VERSION_VERSION_TRANSLATION
+    END
+END
+
+#endif // __VERSION_RC

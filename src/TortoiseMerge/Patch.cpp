@@ -2,7 +2,7 @@
 
 // Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2004-2009,2011 - TortoiseSVN
+// Copyright (C) 2004-2009,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -330,7 +330,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	EOL ending = EOL_NOENDING;
 	INT_PTR nIndex = 0;
 	INT_PTR nLineCount = 0;
-	g_crasher.AddFile((LPCSTR)(LPCTSTR)filename, (LPCSTR)(LPCTSTR)_T("unified diff file"));
+	CCrashReport::Instance().AddFile2(filename, NULL, _T("unified diff file"), CR_AF_MAKE_FILE_COPY);
 
 	CFileTextLines PatchLines;
 	if (!PatchLines.Load(filename))
@@ -807,7 +807,7 @@ int CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSav
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
 	if (PathFileExists(sPatchFile))
 	{
-		g_crasher.AddFile((LPCSTR)(LPCTSTR)sPatchFile, (LPCSTR)(LPCTSTR)_T("File to patch"));
+		CCrashReport::Instance().AddFile2(sPatchFile, NULL, _T("File to patch"), CR_AF_MAKE_FILE_COPY);
 	}
 	CFileTextLines PatchLines;
 	CFileTextLines PatchLinesResult;
