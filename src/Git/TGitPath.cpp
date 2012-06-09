@@ -1534,7 +1534,7 @@ void CTGitPathList::SortByPathname(bool bReverse /*= false*/)
 		std::reverse(m_paths.begin(), m_paths.end());
 }
 
-void CTGitPathList::DeleteAllFiles(bool bTrash)
+void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly)
 {
 	PathVector::const_iterator it;
 	SortByPathname(true); // nested ones first
@@ -1542,9 +1542,11 @@ void CTGitPathList::DeleteAllFiles(bool bTrash)
 	CString sPaths;
 	for (it = m_paths.begin(); it != m_paths.end(); ++it)
 	{
-		if ((it->Exists())&&(!it->IsDirectory()))
+		if ((it->Exists()) && ((it->IsDirectory() != bFilesOnly) || !bFilesOnly))
 		{
-			::SetFileAttributes(it->GetWinPath(), FILE_ATTRIBUTE_NORMAL);
+			if (!it->IsDirectory())
+				::SetFileAttributes(it->GetWinPath(), FILE_ATTRIBUTE_NORMAL);
+
 			sPaths += it->GetWinPath();
 			sPaths += '\0';
 		}
