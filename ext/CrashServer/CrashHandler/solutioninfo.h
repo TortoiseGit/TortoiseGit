@@ -24,6 +24,6 @@
 #define VERSION_PRODUCTVERSION_BUILD            10
 #define VERSION_PRODUCTVERSION_COMPILATION      0
 
-#include "CommonLibs\Version\version.h"
+#include "..\CommonLibs\Version\version.h"
 
 #endif//__SOLUTIONINFO_H

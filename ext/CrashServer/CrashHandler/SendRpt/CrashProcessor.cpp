@@ -27,7 +27,7 @@
 #include "CrashInfo.h"
 
 Config g_Config;
-Log g_Log(NULL, _T("sendrpt"));
+Log g_Log(LogMediaPtr(), _T("sendrpt"));
 
 using namespace std;
 
@@ -567,7 +567,7 @@ public:
                     if (0 == _tfopen_s(&f, crashUserInfoFile, _T("wt")))
                     {
                         fprintf_s(f, "<UserInfo>\n");
-                        for (auto it = g_Config.UserInfo.cbegin(), end = g_Config.UserInfo.cend(); it != end; ++it)
+						for (std::vector<std::pair<CStringW, CStringW>>::iterator it = g_Config.UserInfo.begin(), end = g_Config.UserInfo.end(); it != end; ++it)
                         {
                             g_Log.Info(_T("Adding UserInfo \"%ls\" as \"%ls\"..."), static_cast<LPCWSTR>(it->first), static_cast<LPCWSTR>(it->second));
                             fprintf_s(f,
@@ -587,7 +587,7 @@ public:
                 __int64 attachedSizeLimit = max(1024*1024I64, (static_cast<__int64>(ff.nFileSizeHigh) << 32) | ff.nFileSizeLow);
 
                 g_Log.Info(_T("Adding %d attaches..."), g_Config.FilesToAttach.size());
-                for (auto it = g_Config.FilesToAttach.begin(), end = g_Config.FilesToAttach.end(); it != end; ++it)
+				for (std::vector<std::pair<CStringW, CStringW> >::iterator it = g_Config.FilesToAttach.begin(), end = g_Config.FilesToAttach.end(); it != end; ++it)
                 {
                     g_Log.Info(_T("Adding \"%ls\" as \"%ls\"..."), static_cast<LPCWSTR>(it->first), static_cast<LPCWSTR>(it->second));
                     WIN32_FIND_DATAW ff;

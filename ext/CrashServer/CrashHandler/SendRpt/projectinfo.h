@@ -21,6 +21,6 @@
 #define VERSION_INTERNALNAME_STR        "sendrpt"
 #define VERSION_FILEDESCRIPTION_STR     "Report sending utility"
 
-#include <solutioninfo.h>
+#include <../solutioninfo.h>
 
 #endif// __PROJECTINFO_H

@@ -32,20 +32,8 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // RCDATA
 //
 
-#if defined(APSTUDIO_INVOKED) || defined(_DBGHELP32)
-#if defined(APSTUDIO_INVOKED)
-IDR_DBGHELP$(_DBGHELP32) RCDATA                  "dbghelp_x86.dll"
-#else
 IDR_DBGHELP             RCDATA                  "dbghelp_x86.dll"
-#endif
-#endif
-#if defined(APSTUDIO_INVOKED) || defined(_DBGHELP64)
-#if defined(APSTUDIO_INVOKED)
-IDR_DBGHELPX64$(_DBGHELP64) RCDATA                  "dbghelp_x64.dll"
-#else
 IDR_DBGHELPX64          RCDATA                  "dbghelp_x64.dll"
-#endif
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 //

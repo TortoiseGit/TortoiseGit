@@ -86,7 +86,7 @@ public:
     virtual bool IsWorking() const { return true; }
 };
 
-typedef std::shared_ptr<ILogMedia> LogMediaPtr;
+typedef std::tr1::shared_ptr<ILogMedia> LogMediaPtr;
 
 //! Лог-заглушка.
 class LogMediaProxy: public ILogMedia
@@ -131,7 +131,7 @@ public:
         ) = 0;
 };
 
-typedef std::shared_ptr<IFilter> FilterPtr;
+typedef std::tr1::shared_ptr<IFilter> FilterPtr;
 
 //! Фильтр по типу и уровню сообщения.
 //! Разрешает сообщения более приоритетного типа и сообщения указанного типа с важностью не ниже указанной.
@@ -402,8 +402,8 @@ private:
 //! "Логический" лог с фильтрацией.
 class FilterLog: public Log
 {
-    typedef std::shared_ptr<FilterLogMedia> TFilterLogMediaPtr;
-    TFilterLogMediaPtr GetFilterLogMedia() { return std::static_pointer_cast<FilterLogMedia>(GetMedia()); }
+    typedef std::tr1::shared_ptr<FilterLogMedia> TFilterLogMediaPtr;
+    TFilterLogMediaPtr GetFilterLogMedia() { return std::tr1::static_pointer_cast<FilterLogMedia>(GetMedia()); }
 public:
     FilterLog(const LogParam& param, LPCTSTR pszModule): Log(param, pszModule)
     {

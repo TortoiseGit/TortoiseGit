@@ -491,10 +491,12 @@ void RemoveFileFromReport(LPCWSTR path)
 {
     if (!g_pConfig)
         return;
+/* TODO: needs to be converted to work with VS2008, but atm it's never called
     auto it = std::find_if(g_pConfig->FilesToAttach.begin(), g_pConfig->FilesToAttach.end(),
         [path](std::pair<CStringW, CStringW>& x){ return x.first == path; });
     if (it != g_pConfig->FilesToAttach.end())
         g_pConfig->FilesToAttach.erase(it);
+*/
 }
 
 BOOL GetVersionFromFile(LPCWSTR path, ApplicationInfo* appInfo)

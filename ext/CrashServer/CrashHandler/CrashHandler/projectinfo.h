@@ -21,6 +21,6 @@
 #define VERSION_INTERNALNAME_STR        "crshhndl"
 #define VERSION_FILEDESCRIPTION_STR     "Crash handler library"
 
-#include <solutioninfo.h>
+#include <../solutioninfo.h>
 
 #endif// __PROJECTINFO_H

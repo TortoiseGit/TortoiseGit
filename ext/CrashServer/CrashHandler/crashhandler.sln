@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrashHandler", "CrashHandler\CrashHandler.vcxproj", "{17308759-20C0-493C-8190-06224DBCFD88}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DumpUploaderServiceLib", "DumpUploaderServiceLib\DumpUploaderServiceLib.vcxproj", "{EEA8E6F4-76F0-42F7-A139-725C0B368A36}"

@@ -129,7 +129,7 @@ void LogBase::SetAppLogMedia(LogMediaPtr pLog)
     ASSERT(pLog != GetAppLogMedia());
     if (pLog == GetAppLogMedia())
         return;
-    std::static_pointer_cast<LogMediaProxy>(GetAppLogMedia())->SetLog(pLog);
+    std::tr1::static_pointer_cast<LogMediaProxy>(GetAppLogMedia())->SetLog(pLog);
 }
 
 LogMediaPtr LogBase::CreateConsoleMedia()
