@@ -3876,10 +3876,6 @@ msgstr ""
 msgid "GDI+ couldn't create a bitmap object. You probably don't have enough memory."
 msgstr ""
 
-#. Resource IDs: (83)
-msgid "GDI+ is required to save the revision graph as a picture.\nYou can get GDI+ from\n<u><a=http://www.microsoft.com/downloads/details.aspx?FamilyID=6a63ab9c-df12-4d41-933c-be590feaa05a&DisplayLang=en>http://www.microsoft.com/downloads/details.aspx?FamilyID=6a63ab9c-df12-4d41-933c-be590feaa05a&DisplayLang=en</a></u>"
-msgstr ""
-
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
 msgstr ""
