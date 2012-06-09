@@ -420,24 +420,17 @@ Don't touch these lines:
 								specifies the working tree directory.
 							</entry>
 						</row>
-						<!--
 						<row>
 							<entry condition="pot">:repobrowser</entry>
 							<entry>
 								Starts the repository browser dialog, pointing to
-								the URL of the working tree given in
-								<option>/path</option> or <option>/path</option>
-								points directly to an URL.
+								the working tree given in <option>/path</option>.
 								An additional option <option>/rev:xxx</option> can
 								be used to specify the revision which the repository
 								browser should show. If the <option>/rev:xxx</option>
 								is omitted, it defaults to HEAD.
-								If <option>/path</option> points to an URL, the 
-								<option>/projectpropertiespath:path/to/wc</option> specifies
-								the path from where to read and use the project properties.
 							</entry>
 						</row>
-						-->
 						<row>
 							<entry condition="pot">:ignore</entry>
 							<entry>
