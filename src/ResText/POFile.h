@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,9 +45,12 @@ public:
 	CPOFile();
 	~CPOFile(void);
 
-	BOOL ParseFile(LPCTSTR szPath, BOOL bUpdateExisting = TRUE);
-	BOOL SaveFile(LPCTSTR szPath);
+	BOOL ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs);
+	BOOL SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile);
 	void SetQuiet(BOOL bQuiet = TRUE) {m_bQuiet = bQuiet;}
+
 private:
+	void AdjustEOLs(std::wstring& str);
 	BOOL m_bQuiet;
+	bool m_bAdjustEOLs;
 };

@@ -1,6 +1,7 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2003-2008, 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,10 +34,12 @@ CPOFile::~CPOFile(void)
 {
 }
 
-BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
+BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 {
 	if (!PathFileExists(szPath))
 		return FALSE;
+
+	m_bAdjustEOLs = bAdjustEOLs;
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("parsing file %s...\n"), szPath);
@@ -48,7 +51,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 	//we need to convert the filepath to multibyte
 	char filepath[MAX_PATH+1];
 	SecureZeroMemory(filepath, sizeof(filepath));
-	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
 
 	std::wifstream File;
 	File.imbue(std::locale(std::locale(), new utf8_conversion()));
@@ -94,7 +97,19 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 					//message id
 					msgid = I->c_str();
 					msgid = std::wstring(msgid.substr(7, msgid.size() - 8));
-					nEntries++;
+
+					bool foundNonSpace = false;
+					for (std::wstring::iterator it = msgid.begin(); it < msgid.end(); it++)
+					{
+						if (*it != _T(' ') && *it != _T('\n') && *it != _T('\r'))
+						{
+							foundNonSpace = true;
+							break;
+						}
+					}
+					if (foundNonSpace)
+						nEntries++;
+
 					type = 1;
 				}
 				if (_tcsncmp(I->c_str(), _T("msgstr"), 6)==0)
@@ -128,7 +143,13 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 			if ((bUpdateExisting)&&(this->count(msgid) == 0))
 				nDeleted++;
 			else
+			{
+				if ((m_bAdjustEOLs)&&(msgid.find(L"\\r\\n") != std::string::npos))
+				{
+					AdjustEOLs(resEntry.msgstr);
+				}
 				(*this)[msgid] = resEntry;
+			}
 			msgid.clear();
 		}
 		else
@@ -145,38 +166,51 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting /* = TRUE */)
 	return TRUE;
 }
 
-BOOL CPOFile::SaveFile(LPCTSTR szPath)
+BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 {
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte
 	char filepath[MAX_PATH+1];
 	int nEntries = 0;
 	SecureZeroMemory(filepath, sizeof(filepath));
-	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, NULL, szPath, -1, filepath, _countof(filepath)-1, NULL, NULL);
 
 	std::wofstream File;
-//	File.open(filepath, std::ios_base::binary);
-//	File << _T("\xEF\xBB\xBF");
-//	File.close();
 	File.imbue(std::locale(std::locale(), new utf8_conversion()));
 	File.open(filepath, std::ios_base::binary);
-	File << _T("# SOME DESCRIPTIVE TITLE.\n");
-	File << _T("# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n");
-	File << _T("# This file is distributed under the same license as the PACKAGE package.\n");
-	File << _T("# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n");
-	File << _T("#\n");
-	File << _T("#, fuzzy\n");
-	File << _T("msgid \"\"\n");
-	File << _T("msgstr \"\"\n");
-	File << _T("\"Project-Id-Version: PACKAGE VERSION\\n\"\n");
-	File << _T("\"Report-Msgid-Bugs-To: \\n\"\n");
-	File << _T("\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n");
-	File << _T("\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n");
-	File << _T("\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n");
-	File << _T("\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n");
-	File << _T("\"MIME-Version: 1.0\\n\"\n");
-	File << _T("\"Content-Type: text/plain; charset=UTF-8\\n\"\n");
-	File << _T("\"Content-Transfer-Encoding: 8bit\\n\"\n\n");
+
+	if ((lpszHeaderFile)&&(lpszHeaderFile[0])&&(PathFileExists(lpszHeaderFile)))
+	{
+		// read the header file and save it to the top of the pot file
+		std::wifstream inFile;
+		inFile.imbue(std::locale(std::locale(), new utf8_conversion()));
+		inFile.open(lpszHeaderFile, std::ios_base::binary);
+
+		wchar_t ch;
+		while(inFile && inFile.get(ch))
+			File.put(ch);
+		inFile.close();
+	}
+	else
+	{
+		File << _T("# SOME DESCRIPTIVE TITLE.\n");
+		File << _T("# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n");
+		File << _T("# This file is distributed under the same license as the PACKAGE package.\n");
+		File << _T("# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n");
+		File << _T("#\n");
+		File << _T("#, fuzzy\n");
+		File << _T("msgid \"\"\n");
+		File << _T("msgstr \"\"\n");
+		File << _T("\"Project-Id-Version: PACKAGE VERSION\\n\"\n");
+		File << _T("\"Report-Msgid-Bugs-To: \\n\"\n");
+		File << _T("\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n");
+		File << _T("\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n");
+		File << _T("\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n");
+		File << _T("\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n");
+		File << _T("\"MIME-Version: 1.0\\n\"\n");
+		File << _T("\"Content-Type: text/plain; charset=UTF-8\\n\"\n");
+		File << _T("\"Content-Transfer-Encoding: 8bit\\n\"\n");
+	}
 	File << _T("\n");
 	File << _T("# msgid/msgstr fields for Accelerator keys\n");
 	File << _T("# Format is: \"ID:xxxxxx:VACS+X\" where:\n");
@@ -199,6 +233,21 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath)
 	{
 		if (I->first.size() == 0)
 			continue;
+
+		std::wstring s = I->first;
+		bool foundNonSpace = false;
+		for (std::wstring::iterator it = s.begin(); it < s.end(); it++)
+		{
+			if (*it != _T(' ') && *it != _T('\n') && *it != _T('\r'))
+			{
+				foundNonSpace = true;
+				break;
+			}
+		}
+
+		if (!foundNonSpace)
+			continue;
+
 		RESOURCEENTRY entry = I->second;
 		for (std::vector<std::wstring>::iterator II = entry.automaticcomments.begin(); II != entry.automaticcomments.end(); ++II)
 		{
@@ -234,3 +283,43 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath)
 		_ftprintf(stdout, _T("File %s saved, containing %d entries\n"), szPath, nEntries);
 	return TRUE;
 }
+
+void CPOFile::AdjustEOLs(std::wstring& str)
+{
+	std::wstring result;
+	std::wstring::size_type pos = 0;
+	for ( ; ; ) // while (true)
+	{
+		std::wstring::size_type next = str.find(L"\\r\\n", pos);
+		result.append(str, pos, next-pos);
+		if( next != std::string::npos )
+		{
+			result.append(L"\\n");
+			pos = next + 4; // 4 = sizeof("\\r\\n")
+		}
+		else
+		{
+			break;  // exit loop
+		}
+	}
+	str.swap(result);
+	result.clear();
+	pos = 0;
+
+	for ( ; ; ) // while (true)
+	{
+		std::wstring::size_type next = str.find(L"\\n", pos);
+		result.append(str, pos, next-pos);
+		if( next != std::string::npos )
+		{
+			result.append(L"\\r\\n");
+			pos = next + 2; // 2 = sizeof("\\n")
+		}
+		else
+		{
+			break;  // exit loop
+		}
+	}
+	str.swap(result);
+}
+

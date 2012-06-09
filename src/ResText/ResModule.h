@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,12 +83,13 @@ public:
 	CResModule(void);
 	~CResModule(void);
 
-	BOOL	ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPOFilePath, BOOL bNoUpdate);
-	BOOL	ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate);
+	BOOL	ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile);
+	BOOL	ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile);
 	BOOL	CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszDestLangDllPath, LPCTSTR lpszPOFilePath);
 	void	SetQuiet(BOOL bQuiet = TRUE) {m_bQuiet = bQuiet; m_StringEntries.SetQuiet(bQuiet);}
 	void	SetLanguage(WORD wLangID) {m_wTargetLang = wLangID;}
 	void	SetRTL(bool bRTL = true) {m_bRTL = bRTL;}
+	void	SetAdjustEOLs(bool bAdjustEOLs = true) {m_bAdjustEOLs = bAdjustEOLs;}
 
 private:
 	static  BOOL CALLBACK EnumResNameCallback(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam);
@@ -123,6 +124,7 @@ private:
 	BOOL			m_bQuiet;
 
 	bool			m_bRTL;
+	bool			m_bAdjustEOLs;
 
 	int				m_bTranslatedStrings;
 	int				m_bDefaultStrings;

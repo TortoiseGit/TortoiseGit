@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "StdAfx.h"
 #include ".\utils.h"
+#include "..\Utils\FormatMessageWrapper.h"
 
 CUtils::CUtils(void)
 {
@@ -129,24 +130,28 @@ void CUtils::StringCollapse(LPTSTR str)
 
 void CUtils::Error()
 {
-	LPVOID lpMsgBuf;
-	if (!FormatMessage( 
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-		FORMAT_MESSAGE_FROM_SYSTEM | 
-		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
-		GetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-		(LPTSTR) &lpMsgBuf,
-		0,
-		NULL ))
+	CFormatMessageWrapper errorDetails;
+	if (errorDetails)
+		_ftprintf (stderr, _T("%s\n"), (LPCTSTR)errorDetails);
+}
+
+void CUtils::SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith)
+{
+	std::wstring result;
+	std::wstring::size_type pos = 0;
+	for ( ; ; )	// while (true)
 	{
-		return;
+		std::wstring::size_type next = str.find(toreplace, pos);
+		result.append(str, pos, next-pos);
+		if( next != std::string::npos )
+		{
+			result.append(replacewith);
+			pos = next + toreplace.size();
+		}
+		else
+		{
+			break;  // exit loop
+		}
 	}
-
-	// Display the string.
-	_ftprintf(stderr, _T("%s\n"), (LPCTSTR)lpMsgBuf);
-
-	// Free the buffer.
-	LocalFree( lpMsgBuf );
+	str.swap(result);
 }

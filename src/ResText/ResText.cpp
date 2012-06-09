@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006,2009-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,12 +23,7 @@
 #include "shlwapi.h"
 #pragma comment(lib, "shlwapi.lib")
 
-typedef std::basic_string<wchar_t> wstring;
-#ifdef UNICODE
-#	define stdstring wstring
-#else
-#	define stdstring std::string
-#endif
+typedef std::basic_string<TCHAR> tstring;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -36,24 +31,26 @@ int _tmain(int argc, _TCHAR* argv[])
 	bool bQuiet = false;
 	bool bNoUpdate = false;
 	bool bRTL = false;
+	bool bUseHeader = false;
+	bool bAdjustEOLs = false;
 	//parse the command line
-	std::vector<stdstring> arguments;
-	std::vector<stdstring> switches;
+	std::vector<tstring> arguments;
+	std::vector<tstring> switches;
 	for (int i=1; i<argc; ++i)
 	{
 		if ((argv[i][0] == '-')||(argv[i][0] == '/'))
 		{
-			stdstring str = stdstring(&argv[i][1]);
+			tstring str = tstring(&argv[i][1]);
 			switches.push_back(str);
 		}
 		else
 		{
-			stdstring str = stdstring(&argv[i][0]);
+			tstring str = tstring(&argv[i][0]);
 			arguments.push_back(str);
 		}
 	}
 
-	for (std::vector<stdstring>::iterator I = switches.begin(); I != switches.end(); ++I)
+	for (std::vector<tstring>::iterator I = switches.begin(); I != switches.end(); ++I)
 	{
 		if (_tcscmp(I->c_str(), _T("?"))==0)
 			bShowHelp = true;
@@ -65,33 +62,43 @@ int _tmain(int argc, _TCHAR* argv[])
 			bNoUpdate = true;
 		if (_tcscmp(I->c_str(), _T("rtl"))==0)
 			bRTL = true;
+		if (_tcscmp(I->c_str(), _T("useheaderfile"))==0)
+			bUseHeader = true;
+		if (_tcscmp(I->c_str(), _T("adjusteols"))==0)
+			bAdjustEOLs = true;
 	}
-	std::vector<stdstring>::iterator arg = arguments.begin();
+	std::vector<tstring>::iterator arg = arguments.begin();
 
 	if (arg != arguments.end())
 	{
 		if (_tcscmp(arg->c_str(), _T("extract"))==0)
 		{
-			stdstring sDllFile;
-			stdstring sPoFile;
+			tstring sDllFile;
+			tstring sPoFile;
+			tstring sHeaderFile;
 			++arg;
-			
+
 			std::vector<std::wstring> filelist = arguments;
 			filelist.erase(filelist.begin());
-			sPoFile = stdstring((--filelist.end())->c_str());
+			sPoFile = tstring((--filelist.end())->c_str());
 			filelist.erase(--filelist.end());
-			
+			if (bUseHeader)
+			{
+				sHeaderFile = tstring((--filelist.end())->c_str());
+				filelist.erase(--filelist.end());
+			}
+
 			CResModule module;
 			module.SetQuiet(bQuiet);
-			if (!module.ExtractResources(filelist, sPoFile.c_str(), bNoUpdate))
+			if (!module.ExtractResources(filelist, sPoFile.c_str(), bNoUpdate, sHeaderFile.c_str()))
 				return -1;
 			bShowHelp = false;
 		}
 		else if (_tcscmp(arg->c_str(), _T("apply"))==0)
 		{
-			stdstring sSrcDllFile;
-			stdstring sDstDllFile;
-			stdstring sPoFile;
+			tstring sSrcDllFile;
+			tstring sDstDllFile;
+			tstring sPoFile;
 			WORD wLang = 0;
 			++arg;
 			if (!PathFileExists(arg->c_str()))
@@ -99,16 +106,16 @@ int _tmain(int argc, _TCHAR* argv[])
 				_ftprintf(stderr, _T("the resource dll <%s> does not exist!\n"), arg->c_str());
 				return -1;
 			}
-			sSrcDllFile = stdstring(arg->c_str());
+			sSrcDllFile = tstring(arg->c_str());
 			++arg;
-			sDstDllFile = stdstring(arg->c_str());
+			sDstDllFile = tstring(arg->c_str());
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
 				_ftprintf(stderr, _T("the po-file <%s> does not exist!\n"), arg->c_str());
 				return -1;
 			}
-			sPoFile = stdstring(arg->c_str());
+			sPoFile = tstring(arg->c_str());
 			++arg;
 			if (arg != arguments.end())
 			{
@@ -118,6 +125,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			module.SetQuiet(bQuiet);
 			module.SetLanguage(wLang);
 			module.SetRTL(bRTL);
+			module.SetAdjustEOLs(bAdjustEOLs);
 			if (!module.CreateTranslatedResources(sSrcDllFile.c_str(), sDstDllFile.c_str(), sPoFile.c_str()))
 				return -1;
 			bShowHelp = false;
@@ -128,8 +136,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		_ftprintf(stdout, _T("usage:\n"));
 		_ftprintf(stdout, _T("\n"));
-		_ftprintf(stdout, _T("ResText extract <resource.dll> [<resource.dll> ...] <po-file> [-quiet] [-noupdate]\n"));
+		_ftprintf(stdout, _T("ResText extract <resource.dll> [<resource.dll> ...] [-useheaderfile <headerfile>] <po-file> [-quiet] [-noupdate]\n"));
 		_ftprintf(stdout, _T("Extracts all strings from the resource dll and writes them to the po-file\n"));
+		_ftprintf(stdout, _T("-useheaderfile: the content of the header file instead of a default header\n"));
 		_ftprintf(stdout, _T("-quiet: don't print progress messages\n"));
 		_ftprintf(stdout, _T("-noupdate: overwrite the po-file\n"));
 		_ftprintf(stdout, _T("\n"));
@@ -137,6 +146,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		_ftprintf(stdout, _T("Replaces all strings in the dst resource.dll with the po-file translations\n"));
 		_ftprintf(stdout, _T("-quiet: don't print progress messages\n"));
 		_ftprintf(stdout, _T("-rtl  : change the controls to RTL reading\n"));
+		_ftprintf(stdout, _T("-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n"));
 		_ftprintf(stdout, _T("\n"));
 	}
 

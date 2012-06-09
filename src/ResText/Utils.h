@@ -1,6 +1,6 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,4 +29,5 @@ public:
 	static void StringExtend(LPTSTR str);
 	static void StringCollapse(LPTSTR str);
 	static void Error();
+	static void SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith);
 };
