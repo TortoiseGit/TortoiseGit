@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009,2011-2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,9 +36,8 @@ bool CleanupCommand::Execute()
 	CCleanTypeDlg dlg;
 	if( dlg.DoModal() == IDOK)
 	{
-		CProgressDlg progress;
 		CString cmd;
-		cmd.Format(_T("git clean "));
+		cmd.Format(_T("git clean -n"));
 		if(dlg.m_bDir)
 			cmd += _T(" -d ");
 		switch(dlg.m_CleanType)
@@ -53,19 +53,23 @@ bool CleanupCommand::Execute()
 			break;
 		}
 
-		for(int i=0;i<this->pathList.GetCount();i++)
-		{
-			CString path;
-			if(this->pathList[i].IsDirectory())
-				path = pathList[i].GetGitPathString();
-			else
-				path = pathList[i].GetContainingDirectory().GetGitPathString();
-
-			progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
-
+		CString cmdout, cmdouterr;
+		if (g_Git.Run(cmd, &cmdout, &cmdouterr, CP_UTF8)) {
+			MessageBox(NULL, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+			return FALSE;
 		}
-		if(progress.DoModal()==IDOK)
-			return TRUE;
+
+		int pos = 0;
+		CString token = cmdout.Tokenize(_T("\n"), pos);
+		CTGitPathList delList;
+		while (!token.IsEmpty())
+		{
+			if (token.Mid(0, 13) == _T("Would remove "))
+				delList.AddPath(CTGitPath(token.Mid(13).TrimRight()));
+
+			token = cmdout.Tokenize(_T("\n"), pos);
+		}
+		delList.DeleteAllFiles(true, false);	
 	}
 #if 0
 	CProgressDlg progress;

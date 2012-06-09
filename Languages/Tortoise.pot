@@ -1675,7 +1675,7 @@ msgid "Attempted to write to the reading %1."
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Attention: This command affects the whole working tree and will delete all untracked files without using the recycle bin!"
+msgid "Attention: This command affects the whole working tree!"
 msgstr ""
 
 #. Resource IDs: (131, 160)
