@@ -699,7 +699,8 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	{
 		//# We're on a branch.  It might not exist.  But
 		//# HEAD looks good enough to be a branch.
-		sBranchOut = s + len;
+		CStringA utf8Branch(s + len);
+		sBranchOut = CUnicodeUtils::GetUnicode(utf8Branch);
 		sBranchOut.TrimRight(_T(" \r\n\t"));
 
 		if ( sBranchOut.IsEmpty() )

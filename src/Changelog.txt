@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
+ * Fixed issue #1215: Branch name in the right click menu (for commit) does not support utf-8
 
 = Release 1.7.10.0 =
 Released: 2012-06-03
