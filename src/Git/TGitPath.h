@@ -392,6 +392,7 @@ public:
 	 * \param bTrash if true, the items are deleted using the Windows trash bin
 	 */
 	void DeleteAllFiles(bool bTrash);
+	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin);
 	/** Remove duplicate entries from the list (sorts the list as a side-effect */
 	void RemoveDuplicates();
 	/** Removes all paths which are on or in a Subversion admin directory */
