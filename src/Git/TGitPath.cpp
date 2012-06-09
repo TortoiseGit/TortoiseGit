@@ -1545,7 +1545,7 @@ void CTGitPathList::DeleteAllFiles(bool bTrash)
 	PathVector::const_iterator it;
 	if (bTrash)
 	{
-		SortByPathname();
+		SortByPathname(true); // nested ones first
 		CString sPaths;
 		for (it = m_paths.begin(); it != m_paths.end(); ++it)
 		{
