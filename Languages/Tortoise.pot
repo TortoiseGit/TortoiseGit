@@ -2165,18 +2165,6 @@ msgstr ""
 msgid "Clean"
 msgstr ""
 
-#. Resource IDs: (1627)
-msgid "Clean &All Untracked file (-fx)"
-msgstr ""
-
-#. Resource IDs: (1628)
-msgid "Clean Only &Non-ignore untrack (-f)"
-msgstr ""
-
-#. Resource IDs: (1629)
-msgid "Clean Only Ignore file (-fX)"
-msgstr ""
-
 #. Resource IDs: (1630)
 msgid "Clean Type"
 msgstr ""
@@ -6052,12 +6040,16 @@ msgstr ""
 msgid "Remove %s"
 msgstr ""
 
+#. Resource IDs: (1627)
+msgid "Remove &all untracked files (-fx)"
+msgstr ""
+
 #. Resource IDs: (75)
 msgid "Remove &branch"
 msgstr ""
 
-#. Resource IDs: (1626)
-msgid "Remove Untracked Directory (-d)"
+#. Resource IDs: (1628)
+msgid "Remove &non-ignored untracked files (-f)"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -6070,6 +6062,14 @@ msgstr ""
 
 #. Resource IDs: (209)
 msgid "Remove from changelist"
+msgstr ""
+
+#. Resource IDs: (1629)
+msgid "Remove ignored files (-fX)"
+msgstr ""
+
+#. Resource IDs: (1626)
+msgid "Remove untracked directories (-d)"
 msgstr ""
 
 #. Resource IDs: (9)
