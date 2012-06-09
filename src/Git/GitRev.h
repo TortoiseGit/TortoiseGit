@@ -229,5 +229,6 @@ public:
 	void DbgPrint();
 	int	AddMergeFiles();
 private:
+	int GetCommitFromHash_withoutLock(CGitHash &hash);
 	TIME_ZONE_INFORMATION m_TimeZone;
 };

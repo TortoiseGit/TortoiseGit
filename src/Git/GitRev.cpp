@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -372,9 +372,9 @@ void GitRev::DbgPrint()
 
 int GitRev::GetParentFromHash(CGitHash &hash)
 {
-	g_Git.CheckAndInitDll();
-
 	CAutoLocker lock(g_Git.m_critGitDllSec);
+
+	g_Git.CheckAndInitDll();
 
 	GIT_COMMIT commit;
 	if(git_get_commit_from_hash( &commit, hash.m_hash))
@@ -389,8 +389,15 @@ int GitRev::GetParentFromHash(CGitHash &hash)
 }
 int GitRev::GetCommitFromHash(CGitHash &hash)
 {
+	CAutoLocker lock(g_Git.m_critGitDllSec);
+
 	g_Git.CheckAndInitDll();
 
+	return GetCommitFromHash_withoutLock(hash);
+}
+
+int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
+{
 	GIT_COMMIT commit;
 	if(git_get_commit_from_hash( &commit, hash.m_hash))
 		return -1;
@@ -406,6 +413,8 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 
 int GitRev::GetCommit(CString refname)
 {
+	CAutoLocker lock(g_Git.m_critGitDllSec);
+
 	g_Git.CheckAndInitDll();
 
 	if(refname.GetLength() >= 8)
@@ -423,7 +432,7 @@ int GitRev::GetCommit(CString refname)
 		return -1;
 
 	CGitHash hash((char*)sha);
-	GetCommitFromHash(hash);
+	GetCommitFromHash_withoutLock(hash);
 	return 0;
 }
 
