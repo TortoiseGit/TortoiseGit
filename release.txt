@@ -5,3 +5,5 @@ Upgrade numbers in:
 -# doc/doc.build.include
 -# src/version.h
 -# src/TortoiseGitSetup/VersionNumberInclude.wxi
+
+Uploads symbols to crash-server.com

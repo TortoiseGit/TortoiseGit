@@ -619,10 +619,10 @@ void CMainFrame::OnFileOpen()
 	m_Data.m_sDiffFile = dlg.m_sUnifiedDiffFile;
 	m_Data.m_sPatchPath = dlg.m_sPatchDirectory;
 	m_Data.m_mergedFile.SetOutOfUse();
-	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sBaseFile, (LPCSTR)(LPCTSTR)_T("Basefile"));
-	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sTheirFile, (LPCSTR)(LPCTSTR)_T("Theirfile"));
-	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sYourFile, (LPCSTR)(LPCTSTR)_T("Yourfile"));
-	g_crasher.AddFile((LPCSTR)(LPCTSTR)dlg.m_sUnifiedDiffFile, (LPCSTR)(LPCTSTR)_T("Difffile"));
+	CCrashReport::Instance().AddFile2(dlg.m_sBaseFile, NULL, _T("Basefile"), CR_AF_MAKE_FILE_COPY);
+	CCrashReport::Instance().AddFile2(dlg.m_sTheirFile, NULL, _T("Theirfile"), CR_AF_MAKE_FILE_COPY);
+	CCrashReport::Instance().AddFile2(dlg.m_sYourFile, NULL, _T("Yourfile"), CR_AF_MAKE_FILE_COPY);
+	CCrashReport::Instance().AddFile2(dlg.m_sUnifiedDiffFile, NULL, _T("Difffile"), CR_AF_MAKE_FILE_COPY);
 	
 	if (!m_Data.IsBaseFileInUse() && m_Data.IsTheirFileInUse() && m_Data.IsYourFileInUse())
 	{

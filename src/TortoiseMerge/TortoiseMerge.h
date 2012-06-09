@@ -23,8 +23,6 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include "CrashReport.h"
-
 
 /**
  * \ingroup TortoiseMerge
@@ -54,4 +52,3 @@ private:
 };
 
 extern CTortoiseMergeApp theApp;
-extern CCrashReport g_crasher;

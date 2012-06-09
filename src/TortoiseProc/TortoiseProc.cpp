@@ -21,7 +21,7 @@
 //#include "vld.h"
 #include "TortoiseProc.h"
 #include "SysImageList.h"
-#include "CrashReport.h"
+#include "..\Utils\CrashReport.h"
 #include "CmdLineParser.h"
 #include "Hooks.h"
 #include "AppUtils.h"
@@ -71,6 +71,7 @@ END_MESSAGE_MAP()
 CTortoiseProcApp::CTortoiseProcApp()
 {
 	SetDllDirectory(L"");
+	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 //	int argc = 0;
 //	const char* const * argv = NULL;
@@ -117,13 +118,12 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
 	return g_Git.CheckMsysGitDir();
 }
-CCrashReport crasher("tortoisegit-bug@googlegroups.com", "Crash Report for TortoiseGit " APP_X64_STRING " : " STRPRODUCTVER, TRUE);// crash
+CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING));
 
 // CTortoiseProcApp initialization
 
 BOOL CTortoiseProcApp::InitInstance()
 {
-	EnableCrashHandler();
 	CheckUpgrade();
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	CMFCButton::EnableWindowsTheming();
@@ -607,39 +607,6 @@ void CTortoiseProcApp::CheckUpgrade()
 
 	// set the current version so we don't come here again until the next update!
 	regVersion = _T(STRPRODUCTVER);
-}
-
-void CTortoiseProcApp::EnableCrashHandler()
-{
-	// the crash handler is enabled by default, but we disable it
-	// after 3 months after a release
-
-#define YEAR ((((__DATE__ [7] - '0') * 10 + (__DATE__ [8] - '0')) * 10  \
-              + (__DATE__ [9] - '0')) * 10 + (__DATE__ [10] - '0'))
-
-#define MONTH (__DATE__ [2] == 'n' ? (__DATE__ [1] == 'a' ? 1 : 6)      \
-                : __DATE__ [2] == 'b' ? 2                               \
-                : __DATE__ [2] == 'r' ? (__DATE__ [0] == 'M' ? 3 : 4)   \
-                : __DATE__ [2] == 'y' ? 5								\
-                : __DATE__ [2] == 'l' ? 7                               \
-                : __DATE__ [2] == 'g' ? 8                               \
-                : __DATE__ [2] == 'p' ? 9                               \
-                : __DATE__ [2] == 't' ? 10                               \
-                : __DATE__ [2] == 'v' ? 11 : 12)
-
- #define DAY ((__DATE__ [4] == ' ' ? 0 : __DATE__ [4] - '0') * 10       \
-              + (__DATE__ [5] - '0'))
-
- #define DATE_AS_INT (((YEAR - 2000) * 12 + MONTH) * 31 + DAY)
-
-	CTime compiletime(YEAR, MONTH, DAY, 0, 0, 0);
-	CTime now = CTime::GetCurrentTime();
-
-	CTimeSpan timediff = now-compiletime;
-	if (timediff.GetDays() > 3*31)
-	{
-//		crasher.Enable(FALSE);
-	}
 }
 
 void CTortoiseProcApp::InitializeJumpList()
