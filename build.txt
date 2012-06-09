@@ -58,17 +58,11 @@ You only have to do this once.
 \section get external source code
 git submodule update --init
 
-\section build32 Building 32 bit packages
+\section build Building the packages
 
 Open TortoiseGit.sln
 Build all projects.
 
-\section Create MSI Package
-
-Before create MSI Package, you need build tortoisegit release version.
-
-Then
-Build WixSetup
-
+If you want to build the installer package, make sure you build the Win32 configuration before the x64 one.
 
 */
