@@ -214,6 +214,12 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 	}
 	else
 	{
+		//All file ignored if under ignore directory
+		if (m_ownStatus.GetEffectiveStatus() == git_wc_status_ignored)
+			return CStatusCacheEntry(git_wc_status_ignored);
+		if (m_ownStatus.GetEffectiveStatus() == git_wc_status_unversioned)
+			return CStatusCacheEntry(git_wc_status_unversioned);
+
 		// Look up a file in our own cache
 		AutoLocker lock(m_critSec);
 		CString strCacheKey = GetCacheKey(path);
@@ -234,12 +240,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 					}
 				}
 			}
-		}
-		else
-		{
-			//All file ignored if under ignore directory
-			if( m_currentFullStatus == git_wc_status_ignored)
-				return CStatusCacheEntry(git_wc_status_ignored);
 		}
 
 		CGitStatusCache::Instance().AddFolderForCrawling(path);
@@ -589,14 +589,17 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
 //OutputDebugStringA("AddFolderCrawl: ");OutputDebugStringW(svnPath.GetWinPathString());OutputDebugStringA("\r\n");
 					if(status >= git_wc_status_normal)
-						if(status != git_wc_status_missing)
-							if(status != git_wc_status_deleted)
-								CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
+						CGitStatusCache::Instance().AddFolderForCrawling(gitPath);
 				}
 
 				// Make sure we know about this child directory
 				// This initial status value is likely to be overwritten from below at some point
 				git_wc_status_kind s = GitStatus::GetMoreImportant(status2->text_status, status2->prop_status);
+
+				// folders must not be displayed as added or deleted only as modified
+				if (s == git_wc_status_deleted || s == git_wc_status_added)
+					s = git_wc_status_modified;
+
 				CCachedDirectory * cdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(gitPath);
 				if (cdir)
 				{
@@ -894,10 +897,12 @@ void CCachedDirectory::UpdateChildDirectoryStatus(const CTGitPath& childDir, git
 CStatusCacheEntry CCachedDirectory::GetOwnStatus(bool bRecursive)
 {
 	// Don't return recursive status if we're unversioned ourselves.
-	if(bRecursive && m_ownStatus.GetEffectiveStatus() > git_wc_status_unversioned)
+	if(bRecursive && m_ownStatus.GetEffectiveStatus() > git_wc_status_unversioned && m_ownStatus.GetEffectiveStatus() != git_wc_status_ignored)
 	{
 		CStatusCacheEntry recursiveStatus(m_ownStatus);
 		UpdateCurrentStatus();
+		if (m_currentFullStatus == git_wc_status_deleted || m_currentFullStatus == git_wc_status_added)
+			m_currentFullStatus = git_wc_status_modified;
 		recursiveStatus.ForceStatus(m_currentFullStatus);
 		return recursiveStatus;
 	}

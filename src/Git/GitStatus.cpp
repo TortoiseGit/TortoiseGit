@@ -238,7 +238,9 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	if(isDir)
 	{
 		err = GetDirStatus(sProjectRoot,sSubPath,&statuskind, isfull,bIsRecursive,isfull,NULL, NULL);
-
+		// folders must not be displayed as added or deleted only as modified (this is for Shell Overlay-Modes)
+		if (statuskind == git_wc_status_deleted || statuskind == git_wc_status_added)
+			statuskind = git_wc_status_modified;
 	}
 	else
 	{
@@ -1044,7 +1046,11 @@ int GitStatus::LoadIgnoreFile(const CString &gitdir,const CString &subpaths)
 }
 int GitStatus::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir,bool *isVersion)
 {
-	return g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
+	if (g_IndexFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion))
+		return 1;
+	if (!*isVersion)
+		return g_HeadFileMap.IsUnderVersionControl(gitdir, path, isDir, isVersion);
+	return 0;
 }
 
 __int64 GitStatus::GetIndexFileTime(const CString &gitdir)
@@ -1203,7 +1209,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				}
 				else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
-					*status = git_wc_status_modified;
+					*status = git_wc_status_deleted;
 					if(callback)
 						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
 
@@ -1285,7 +1291,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						oldstring = filename;
 						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
 						{
-							*status = git_wc_status_modified;
+							*status = git_wc_status_deleted;
 							if(callback)
 								callback(gitdir+_T("/")+(*it).m_FileName, *status, false,pData);
 						}
@@ -1439,7 +1445,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 								if(pos < 0)
 								{
-									*status = max(git_wc_status_modified, *status); // added file found
+									*status = max(git_wc_status_added, *status); // added file found
 									if(callback)
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
@@ -1474,7 +1480,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 								pos = SearchInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength());
 								if(pos <0)
 								{
-									*status = max(git_wc_status_modified, *status); // added file found
+									*status = max(git_wc_status_added, *status); // added file found
 
 								}
 								else
@@ -1489,7 +1495,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),-1) < 0)
 										{
 											(*hit).m_FileName.ReleaseBuffer();
-											*status = max(git_wc_status_modified, *status); // deleted file found
+											*status = max(git_wc_status_deleted, *status); // deleted file found
 											break;
 										}
 										(*hit).m_FileName.ReleaseBuffer();
@@ -1535,9 +1541,6 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 							git_wc_status_kind filestatus = git_wc_status_none;
 
 							GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
-
-							if (filestatus > git_wc_status_normal && filestatus != git_wc_status_conflicted)
-								*status = git_wc_status_modified; // folders can only be modified or conflicted
 						}
 					}
 				}
