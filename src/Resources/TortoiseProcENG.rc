@@ -135,7 +135,7 @@ IDB_BITMAP_REFTYPE      BITMAP                  "..\\resources\\reftype.bmp"
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 333, 297
+IDD_ABOUT DIALOGEX 0, 0, 333, 265
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About TortoiseGit"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -148,9 +148,8 @@ BEGIN
     LTEXT           "and support the developers",IDC_SUPPORTLINK,14,165,312,8
     GROUPBOX        "Version Information",IDC_VERSIONBOX,7,187,319,50
     EDITTEXT        IDC_VERSIONABOUT,14,199,304,35,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "This product includes software developed by CollabNet (http://www.Collab.Net/)",IDC_STATIC,14,239,312,8
-    PUSHBUTTON      "Check For Updates...",IDC_UPDATE,7,276,110,14
-    DEFPUSHBUTTON   "OK",IDOK,276,276,50,14
+    PUSHBUTTON      "Check For Updates...",IDC_UPDATE,7,244,110,14
+    DEFPUSHBUTTON   "OK",IDOK,276,244,50,14
     LTEXT           "based on TortoiseSVN (http://www.tortoisesvn.net/)",IDC_STATIC,13,71,114,8
 END
 
@@ -1576,6 +1575,11 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO 
 BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 258
+    END
+
     IDD_ADD, DIALOG
     BEGIN
         LEFTMARGIN, 7
