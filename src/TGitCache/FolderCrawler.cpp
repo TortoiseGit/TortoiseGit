@@ -342,8 +342,6 @@ void CFolderCrawler::WorkerThread()
 						CGitStatusCache::Instance().Done();
 						continue;
 					}
-					if (!workingPath.Exists())
-						continue;
 					ATLTRACE(_T("Updating path: %s\n"), workingPath.GetWinPath());
 					{
 						AutoLocker print(critSec);
