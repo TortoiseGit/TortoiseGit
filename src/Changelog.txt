@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features==
  * Fixed issue #746: Make tortoisegit more gerrit friendly
+ * Optimized TGitCache overlay calculation (deleted but kept files are now displayed as such)
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
