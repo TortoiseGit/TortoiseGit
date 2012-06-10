@@ -340,7 +340,10 @@ void CFolderCrawler::WorkerThread()
 						CGitStatusCache::Instance().WaitToWrite();
 						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
 						CGitStatusCache::Instance().Done();
-						continue;
+						if (!workingPath.GetContainingDirectory().Exists())
+							continue;
+						else
+							workingPath = workingPath.GetContainingDirectory();
 					}
 					ATLTRACE(_T("Updating path: %s\n"), workingPath.GetWinPath());
 					{
