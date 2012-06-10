@@ -1364,6 +1364,61 @@ bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 	return false;
 }
 
+int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion)
+{
+	try
+	{
+		if (path.IsEmpty())
+		{
+			*isVersion = true;
+			return 0;
+		}
+
+		CString subpath = path;
+		subpath.Replace(_T('\\'), _T('/'));
+		if(isDir)
+			subpath += _T('/');
+
+		subpath.MakeLower();
+
+		CheckHeadUpdate(gitdir);
+
+		SHARED_TREE_PTR treeptr;
+		treeptr = SafeGet(gitdir);
+
+		if (treeptr->m_Head != treeptr->m_TreeHash)
+		{
+			treeptr->ReadHeadHash(gitdir);
+
+			// Init Repository
+			if (treeptr->m_HeadFile.IsEmpty())
+			{
+				*isVersion = false;
+				return 0;
+			}
+			else if (treeptr->ReadTree())
+			{
+				treeptr->m_LastModifyTimeHead = 0;
+				*isVersion = false;
+				return 1;
+			}
+			SafeSet(gitdir, treeptr);
+		}
+
+		if(isDir)
+			*isVersion = (SearchInSortVector(*treeptr, subpath.GetBuffer(), subpath.GetLength()) >= 0);
+		else
+			*isVersion = (SearchInSortVector(*treeptr, subpath.GetBuffer(), -1) >= 0);
+		subpath.ReleaseBuffer();
+	}
+	catch(...)
+	{
+		return -1;
+	}
+
+	return 0;
+}
+
 int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
 {
 	SHARED_TREE_PTR ptr;
