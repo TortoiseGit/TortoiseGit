@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,15 +59,11 @@ private:
 	__int64				m_lastWriteTime;
 	bool				m_bSet;
 	git_node_kind_t		m_kind;
-	bool				m_bReadOnly;
 
 	// Values copied from the 'entries' structure
 	bool				m_bSVNEntryFieldSet;
 	CStringA			m_sUrl;
-	CStringA			m_sOwner;
 	CStringA			m_sAuthor;
-	CStringA			m_sPresentProps;
-	git_revnum_t		m_commitRevision;
 
 	friend class CGitStatusCache;
 };

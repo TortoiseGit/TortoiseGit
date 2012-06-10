@@ -49,7 +49,7 @@ typedef enum git_node_kind_t
 
 /**
  * RAII class that temporarily disables updates for the given path
- * by sending TSVNCACHECOMMAND_BLOCK and TSVNCACHECOMMAND_UNBLOCK.
+ * by sending TGITCACHECOMMAND_BLOCK and TGITCACHECOMMAND_UNBLOCK.
  */
 class CBlockCacheForPath
 {
@@ -73,10 +73,8 @@ struct TGITCacheRequest
 
 // CustomActions will use this header but does not need nor understand the SVN types ...
 
-//#ifdef SVN_WC_H
-
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * The structure returned as a response
  */
 struct TGITCacheResponse
@@ -85,10 +83,8 @@ struct TGITCacheResponse
 	git_wc_entry_t m_entry;
 };
 
-//#endif // SVN_WC_H
-
 /**
- * \ingroup TSVNCache
+ * \ingroup TGitCache
  * a cache command
  */
 struct TGITCacheCommand

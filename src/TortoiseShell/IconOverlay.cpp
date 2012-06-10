@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -153,10 +154,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 				{
 					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
-/*					if ((itemStatus.m_kind == git_node_file)&&(status == git_wc_status_normal)&&((itemStatus.m_needslock && itemStatus.m_owner[0]==0)||(itemStatus.m_readonly)))
-						readonlyoverlay = true;
-					if (itemStatus.m_owner[0]!=0)
-						lockedoverlay = true;*/
 				}
 			}
 			break;
@@ -188,15 +185,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 							{
 								const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
 								status = s->status;
-								// GitFolderStatus does not list unversioned files/dir so they would always end up as normal below
-								// so let's assume file/dir is unversioned if not found in cache
-								/*// sub-dirs that are empty (or contain no versioned files) are reported as unversioned (and should be kept as such)
-								if (status != git_wc_status_unversioned)
-								{
-									// if get status fails then display status as 'normal' on folder (since it contains .git)
-									// TODO: works for svn since each folder has .svn, not sure if git needs additinoal processing
-									status = GitStatus::GetMoreImportant(git_wc_status_normal, status);
-								}*/
 							}
 						}
 						else
@@ -210,12 +198,6 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 						status = s->status;
 					}
 				}
-#if 0
-				if ((s)&&(status == git_wc_status_normal)&&(s->needslock)&&(s->owner[0]==0))
-					readonlyoverlay = true;
-				if ((s)&&(s->owner[0]!=0))
-					lockedoverlay = true;
-#endif
 			}
 
 			break;

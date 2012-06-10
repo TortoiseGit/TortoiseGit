@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -78,12 +78,8 @@ typedef struct FileStatusCacheEntry
 	git_wc_status_kind		status;
 	const char*				author;		///< points to a (possibly) shared value
 	const char*				url;		///< points to a (possibly) shared value
-	const char*				owner;		///< points to a (possible) lock owner
-	bool					needslock;
 	git_revnum_t			rev;
 	int						askedcounter;
-	//git_lock_t *			lock;
-	bool					tree_conflict;
 } FileStatusCacheEntry;
 
 #define GITFOLDERSTATUS_CACHETIMES				10
@@ -119,12 +115,7 @@ public:
 private:
 	const FileStatusCacheEntry * BuildCache(const CTGitPath& filepath, const CString& sProjectRoot, BOOL bIsFolder, BOOL bDirectFolder = FALSE);
 	DWORD				GetTimeoutValue();
-	//static git_error_t*	fillstatusmap (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
-	//static git_error_t*	findfolderstatus (void *baton, const char *path, git_wc_status2_t *status, apr_pool_t *pool);
-	static BOOL			fillstatusmap(const struct wgFile_s *pFile, void *pUserData);
-	static void			fillstatusmap_idx(CString &path,git_wc_status_kind status,void *pdata);
 
-	static CTGitPath	folderpath;
 	void				ClearCache();
 
 	int					m_nCounter;
@@ -134,14 +125,12 @@ private:
 	FileStatusCacheEntry	dirstat;
 	FileStatusCacheEntry	filestat;
 	git_wc_status2_t *		dirstatus;
-	//apr_pool_t *			rootpool;
 
 	// merging these pools won't save memory
 	// but access will become slower
 
 	StringPool		authors;
 	StringPool		urls;
-	StringPool		owners;
 	char			emptyString[1];
 
 	stdstring		sCacheKey;

@@ -223,7 +223,6 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 				columnrev = GIT_INVALID_REVNUM;
 				itemurl.clear();
 				itemshorturl.clear();
-				owner.clear();
 				return;
 			}
 		}
@@ -246,7 +245,6 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 			columnrev = GIT_INVALID_REVNUM;
 			itemurl.clear();
 			itemshorturl.clear();
-			owner.clear();
 			return;
 		}
 		break;

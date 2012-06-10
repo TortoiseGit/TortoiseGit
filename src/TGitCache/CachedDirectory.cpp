@@ -653,135 +653,6 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 	return FALSE;
 }
 
-#if 0
-git_error_t * CCachedDirectory::GetStatusCallback(void *baton, const char *path, git_wc_status2_t *status)
-{
-	CCachedDirectory* pThis = (CCachedDirectory*)baton;
-
-	if (path == NULL)
-		return 0;
-
-	CTGitPath svnPath;
-
-	if(status->entry)
-	{
-		if ((status->text_status != git_wc_status_none)&&(status->text_status != git_wc_status_missing))
-			svnPath.SetFromSVN(path, (status->entry->kind == svn_node_dir));
-		else
-			svnPath.SetFromSVN(path);
-
-		if(svnPath.IsDirectory())
-		{
-			if(!svnPath.IsEquivalentToWithoutCase(pThis->m_directoryPath))
-			{
-				if (pThis->m_bRecursive)
-				{
-					// Add any versioned directory, which is not our 'self' entry, to the list for having its status updated
-					CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
-				}
-
-				// Make sure we know about this child directory
-				// This initial status value is likely to be overwritten from below at some point
-				git_wc_status_kind s = GitStatus::GetMoreImportant(status->text_status, status->prop_status);
-				CCachedDirectory * cdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(svnPath);
-				if (cdir)
-				{
-					// This child directory is already in our cache!
-					// So ask this dir about its recursive status
-					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
-					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[svnPath] = st;
-				}
-				else
-				{
-					// the child directory is not in the cache. Create a new entry for it in the cache which is
-					// initially 'unversioned'. But we added that directory to the crawling list above, which
-					// means the cache will be updated soon.
-					CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
-					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[svnPath] = s;
-				}
-			}
-		}
-		else
-		{
-			// Keep track of the most important status of all the files in this directory
-			// Don't include subdirectories in this figure, because they need to provide their
-			// own 'most important' value
-			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status->text_status);
-			pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status->prop_status);
-			if (((status->text_status == git_wc_status_unversioned)||(status->text_status == git_wc_status_none))
-				&&(CGitStatusCache::Instance().IsUnversionedAsModified()))
-			{
-				// treat unversioned files as modified
-				if (pThis->m_mostImportantFileStatus != git_wc_status_added)
-					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
-			}
-		}
-	}
-	else
-	{
-		svnPath.SetFromSVN(path);
-		// Subversion returns no 'entry' field for versioned folders if they're
-		// part of another working copy (nested layouts).
-		// So we have to make sure that such an 'unversioned' folder really
-		// is unversioned.
-		if (((status->text_status == git_wc_status_unversioned)||(status->text_status == git_wc_status_missing))&&(!svnPath.IsEquivalentToWithoutCase(pThis->m_directoryPath))&&(svnPath.IsDirectory()))
-		{
-			if (svnPath.HasAdminDir())
-			{
-				CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
-				// Mark the directory as 'versioned' (status 'normal' for now).
-				// This initial value will be overwritten from below some time later
-				{
-					AutoLocker lock(pThis->m_critSec);
-					pThis->m_childDirectories[svnPath] = git_wc_status_normal;
-				}
-				// Make sure the entry is also in the cache
-				CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
-				// also mark the status in the status object as normal
-				status->text_status = git_wc_status_normal;
-			}
-		}
-		else if (status->text_status == git_wc_status_external)
-		{
-			CGitStatusCache::Instance().AddFolderForCrawling(svnPath);
-			// Mark the directory as 'versioned' (status 'normal' for now).
-			// This initial value will be overwritten from below some time later
-			{
-				AutoLocker lock(pThis->m_critSec);
-				pThis->m_childDirectories[svnPath] = git_wc_status_normal;
-			}
-			// we have added a directory to the child-directory list of this
-			// directory. We now must make sure that this directory also has
-			// an entry in the cache.
-			CGitStatusCache::Instance().GetDirectoryCacheEntry(svnPath);
-			// also mark the status in the status object as normal
-			status->text_status = git_wc_status_normal;
-		}
-		else
-		{
-			if (svnPath.IsDirectory())
-			{
-				AutoLocker lock(pThis->m_critSec);
-				pThis->m_childDirectories[svnPath] = GitStatus::GetMoreImportant(status->text_status, status->prop_status);
-			}
-			else if ((CGitStatusCache::Instance().IsUnversionedAsModified())&&(status->text_status != git_wc_status_missing))
-			{
-				// make this unversioned item change the most important status of this
-				// folder to modified if it doesn't already have another status
-				if (pThis->m_mostImportantFileStatus != git_wc_status_added)
-					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_modified);
-			}
-		}
-	}
-
-	pThis->AddEntry(svnPath, status);
-
-	return 0;
-}
-#endif
-
 bool
 CCachedDirectory::IsOwnStatusValid() const
 {
@@ -799,26 +670,12 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 	// Combine our OWN folder status with the most important of our *FILES'* status.
 	git_wc_status_kind retVal = GitStatus::GetMoreImportant(m_mostImportantFileStatus, m_ownStatus.GetEffectiveStatus());
 
-	// NOTE: TSVN marks dir as modified if it contains added/deleted/missing files, but we prefer the most important
-	//       status to propagate upward in its original state
-	/*if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
-	{
-		if ((retVal == git_wc_status_added)||(retVal == git_wc_status_deleted)||(retVal == git_wc_status_missing))
-			retVal = git_wc_status_modified;
-	}*/
-
 	// Now combine all our child-directorie's status
-
 	AutoLocker lock(m_critSec);
 	ChildDirStatus::const_iterator it;
 	for(it = m_childDirectories.begin(); it != m_childDirectories.end(); ++it)
 	{
 		retVal = GitStatus::GetMoreImportant(retVal, it->second);
-		/*if ((retVal != git_wc_status_modified)&&(retVal != m_ownStatus.GetEffectiveStatus()))
-		{
-			if ((retVal == git_wc_status_added)||(retVal == git_wc_status_deleted)||(retVal == git_wc_status_missing))
-				retVal = git_wc_status_modified;
-		}*/
 	}
 
 	return retVal;
