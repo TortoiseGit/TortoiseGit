@@ -27,7 +27,9 @@
 #include "Git.h"
 #include "registry.h"
 #include "AppUtils.h"
+#include "LogDlg.h"
 #include "BrowseRefsDlg.h"
+#include "RefLogDlg.h"
 #include "MessageBox.h"
 
 // CPushDlg dialog
@@ -56,6 +58,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BRANCH_SOURCE, this->m_BranchSource);
 	DDX_Control(pDX, IDC_REMOTE, this->m_Remote);
 	DDX_Control(pDX, IDC_URL, this->m_RemoteURL);
+	DDX_Control(pDX, IDC_BUTTON_BROWSE_SOURCE_BRANCH, m_BrowseLocalRef);
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
@@ -147,6 +150,13 @@ BOOL CPushDlg::OnInitDialog()
 	m_bAutoLoad = this->m_regAutoLoad;
 	if(!CAppUtils::IsSSHPutty())
 		m_bAutoLoad = false;
+
+	m_BrowseLocalRef.m_bRightArrow = TRUE;
+	m_BrowseLocalRef.m_bDefaultClick = FALSE;
+	m_BrowseLocalRef.m_bMarkDefault = FALSE;
+	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFBROWSE)));
+	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
+	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
 	Refresh();
 
@@ -324,8 +334,41 @@ void CPushDlg::OnBnClickedRemoteManage()
 
 void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 {
-	if(CBrowseRefsDlg::PickRefForCombo(&m_BranchSource, gPickRef_Head))
-		OnCbnSelchangeBranchSource();
+	switch (m_BrowseLocalRef.GetCurrentEntry())
+	{
+	case 0: /* Browse Refence*/
+		{
+			if(CBrowseRefsDlg::PickRefForCombo(&m_BranchSource, gPickRef_Head))
+				OnCbnSelchangeBranchSource();
+		}
+		break;
+
+	case 1: /* Log */
+		{
+			CLogDlg dlg;
+			dlg.SetSelect(true);
+			if(dlg.DoModal() == IDOK)
+			{
+				if (dlg.GetSelectedHash().IsEmpty())
+					return;
+				
+				m_BranchSource.SetWindowText(dlg.GetSelectedHash());
+				OnCbnSelchangeBranchSource();
+			}
+		}
+		break;
+
+	case 2: /*RefLog*/
+		{
+			CRefLogDlg dlg;
+			if(dlg.DoModal() == IDOK)
+			{
+				m_BranchSource.SetWindowText(dlg.m_SelectedHash);
+				OnCbnSelchangeBranchSource();
+			}
+		}
+		break;
+	}
 }
 
 void CPushDlg::OnBnClickedButtonBrowseDestBranch()

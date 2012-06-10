@@ -1,6 +1,9 @@
 = Release 1.7.11.0 =
 Released: unreleased
 
+== Features==
+ * Fixed issue #746: Make tortoisegit more gerrit friendly
+
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
  * Fixed issue #1215: Branch name in the right click menu (for commit) does not support utf-8

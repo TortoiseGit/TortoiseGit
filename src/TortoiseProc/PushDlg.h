@@ -21,6 +21,7 @@
 
 #include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
+#include "MenuButton.h"
 #include "registry.h"
 // CPushDlg dialog
 
@@ -40,6 +41,7 @@ protected:
 	CHistoryCombo	m_BranchSource;
 	CHistoryCombo	m_Remote;
 	CHistoryCombo	m_RemoteURL;
+	CMenuButton		m_BrowseLocalRef;
 
 public:
 	CString			m_URL;
