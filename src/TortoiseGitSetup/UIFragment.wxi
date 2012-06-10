@@ -200,16 +200,16 @@
 
 		<Dialog Id="SSHClient" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">InstallMode = "Repair" OR InstallMode = "Change"</Publish>
+				<Publish Event="NewDialog" Value="LicenseAgreementDlg">NOT (InstallMode = "Repair" OR InstallMode = "Change")</Publish>
 			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
-				<Publish Property="InstallMode" Value="Custom">1</Publish>
 				<Publish Event="ValidateProductID" Value="0">0</Publish>
 				<Publish Event="AddLocal" Value="SSHPlink">1</Publish>
 				<Publish Event="AddLocal" Value="SSHOpenSSH">1</Publish>
-				<Publish Event="Remove" Value="SSHPlink">SSHRadio = "OpenSSH"</Publish>
-				<Publish Event="Remove" Value="SSHOpenSSH">SSHRadio = "Plink"</Publish>
+				<Publish Event="Remove" Value="SSHPlink">NOT SSHTOOL = "Plink"</Publish>
+				<Publish Event="Remove" Value="SSHOpenSSH">NOT SSHTOOL = "OpenSSH"</Publish>
 				<Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
@@ -223,11 +223,11 @@
 			<Control Id="DialogDescription" Type="Text" X="75" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
 				<Text>Choose a kind of SSH Client</Text>
 			</Control>
-			<Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="60" Width="330" Height="150" Property="SSHRadio" />
+			<Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="60" Width="330" Height="150" Property="SSHTOOL" />
 			<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 		</Dialog>
 
-		<RadioButtonGroup Property="SSHRadio">
+		<RadioButtonGroup Property="SSHTOOL">
 			<RadioButton Text="{\DlgFont8}TortoisePLink, coming from Putty, integrates with Windows better." Value="Plink" X="5" Y="0" Width="300" Height="30" />
 			<RadioButton Text="{\DlgFont8}OpenSSH, Git default SSH Client" Value="OpenSSH" X="5" Y="60" Width="300" Height="30" />
 		</RadioButtonGroup>
@@ -279,8 +279,9 @@
 
 		<Dialog Id="CustomizeDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
-				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Change"]]></Publish>
-				<Publish Event="NewDialog" Value="SSHClient"><![CDATA[InstallMode = "Custom"]]></Publish>
+				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Change" AND NOT OLDSSH = ""]]></Publish>
+				<Publish Event="NewDialog" Value="SSHClient"><![CDATA[OLDSSH = ""]]></Publish>
+				<Publish Event="NewDialog" Value="LicenseAgreementDlg">NOT OLDSSH = "" AND NOT InstallMode = "Change"</Publish>
 			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
@@ -492,7 +493,8 @@
 				<Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
 			</Control>
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
-				<Publish Event="NewDialog" Value="SSHClient">1</Publish>
+				<Publish Event="NewDialog" Value="SSHClient">OLDSSH = ""</Publish>
+				<Publish Event="NewDialog" Value="CustomizeDlg">NOT OLDSSH = ""</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
@@ -529,7 +531,8 @@
 				<Publish Property="InstallMode" Value="Change">1</Publish>
 				<Publish Property="Progress1" Value="Changing">1</Publish>
 				<Publish Property="Progress2" Value="changes">1</Publish>
-				<Publish Event="NewDialog" Value="CustomizeDlg">1</Publish>
+				<Publish Event="NewDialog" Value="CustomizeDlg">NOT OLDSSH = ""</Publish>
+				<Publish Event="NewDialog" Value="SSHClient">OLDSSH = ""</Publish>
 			</Control>
 			<Control Id="RepairLabel" Type="Text" X="105" Y="114" Width="100" Height="10" TabSkip="no">
 				<Text>[DlgTitleFont]Re&amp;pair</Text>
@@ -541,7 +544,8 @@
 				<Publish Property="InstallMode" Value="Repair">1</Publish>
 				<Publish Property="Progress1" Value="Repairing">1</Publish>
 				<Publish Property="Progress2" Value="repaires">1</Publish>
-				<Publish Event="NewDialog" Value="VerifyRepairDlg">1</Publish>
+				<Publish Event="NewDialog" Value="VerifyRepairDlg">NOT OLDSSH = ""</Publish>
+				<Publish Event="NewDialog" Value="SSHClient">OLDSSH = ""</Publish>
 			</Control>
 			<Control Id="RemoveLabel" Type="Text" X="105" Y="163" Width="100" Height="10" TabSkip="no">
 				<Text>[DlgTitleFont]&amp;Remove</Text>
@@ -731,7 +735,7 @@
 		<Dialog Id="VerifyReadyDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes" TrackDiskSpace="yes">
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="[ButtonText_Back]">
 				<Publish Event="NewDialog" Value="AdminInstallPointDlg"><![CDATA[InstallMode = "Server Image"]]></Publish>
-				<Publish Event="NewDialog" Value="CustomizeDlg"><![CDATA[InstallMode = "Custom" OR InstallMode = "Change"]]></Publish>
+				<Publish Event="NewDialog" Value="CustomizeDlg"><![CDATA[InstallMode = "Custom" OR InstallMode = "Change" OR InstallMode = "Complete"]]></Publish>
 				<Publish Event="NewDialog" Value="MaintenanceTypeDlg"><![CDATA[InstallMode = "Repair"]]></Publish>
 			</Control>
 			<Control Id="Install" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Install]">

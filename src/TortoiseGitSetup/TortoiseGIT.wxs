@@ -17,7 +17,10 @@
 
 		<Icon Id="TGITIcon" SourceFile="..\Resources\Tortoise.ico" />
 
-		<Property Id="SSHRadio">Plink</Property>
+		<Property Id="SSHTOOL">Plink</Property>
+		<Property Id="OLDSSH">
+			<RegistrySearch Id="oldSSHSetting" Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Type="raw" />
+		</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
 		<Property Id="ShowChangelogCheck">1</Property>
