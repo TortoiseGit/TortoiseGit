@@ -64,6 +64,8 @@ BOOL CAboutDlg::OnInitDialog()
 	out=out.Tokenize(_T("\n"),start);
 
 	CAppUtils::GetMsysgitVersion(&out);
+	if (!CGit::ms_LastMsysGitDir.IsEmpty())
+		out += _T(" (") + CGit::ms_LastMsysGitDir + _T(")");
 
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD,out);
 #if 0
