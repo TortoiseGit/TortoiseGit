@@ -702,6 +702,11 @@
 						<File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
 					</Component>
 
+					<Component Id="C__TortoiseGitBlameShortcuts" Guid="$(var.GuidTortoiseGitBlameShortcuts)" Win64="$(var.Win64YesNo)">
+						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGitBlame" Value="TortoiseGitBlame" Type="string" />
+						<Shortcut Id="S__TortoiseGitBlame" Directory="D_TortoisePrgMenu" Name="TortoiseGitBlame" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitBlame.exe" Description="TortoiseGitBlame, the TortoiseGit annotation tool" Show="normal" />
+					</Component>
+
 					<Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseIDiff.exe" KeyPath="yes" />
 					</Component>

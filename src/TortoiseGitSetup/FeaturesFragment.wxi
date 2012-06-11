@@ -15,6 +15,7 @@
 		<ComponentRef Id="C__TortoiseMergeShortcuts" />
 
 		<ComponentRef Id="C__TortoiseBlame" />
+    <ComponentRef Id="C__TortoiseGitBlameShortcuts" />
 
 		<ComponentRef Id="C__TortoiseIDiff" />
 		<ComponentRef Id="C__TortoiseIDiffShortcuts" />

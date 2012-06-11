@@ -85,6 +85,7 @@
 	<?define GuidTortoiseGITShortcuts="BFF1875C-D7A8-49cf-BD30-C2B76C5576CF"?>
 	<?define GuidTortoiseMerge="8D5CCE58-8F79-4ff1-A25A-E40D41357D45"?>
 	<?define GuidTortoiseMergeShortcuts="659A37E6-CE9A-4a30-AFF5-6FA1A077AA33"?>
+	<?define GuidTortoiseGitBlameShortcuts="FEE5C1A9-0319-4ea8-A5C7-AD470F52481A"?>
 	<?define GuidSounds="504B02AA-9C6E-4639-99BC-8F5A885BACBD"?>
 	<?define GuidTortoiseBlame="4B84CF65-1FE5-4736-B880-F04490D150C5"?>
 	<?define GuidTortoiseIDiff="75D19614-B4D4-4661-A7EB-683CEE849CF3"?>
@@ -151,6 +152,7 @@
 	<?define GuidTortoiseGITShortcuts="664008F0-5BF8-4c11-AAA4-A5DD9C237BBF"?>
 	<?define GuidTortoiseMerge="F97E61D9-AECD-4160-AB31-5E5C78ADDD9F"?>
 	<?define GuidTortoiseMergeShortcuts="C22CF21D-57F0-471b-80AE-E8C101AA27CA"?>
+	<?define GuidTortoiseGitBlameShortcuts="8184046F-7E9C-4f26-9B74-8ADC7DDF9882"?>
 	<?define GuidSounds="0DD7EE86-517F-49a1-AA47-69EA7F171050"?>
 	<?define GuidTortoiseBlame="6C0D7DE5-7CDA-4fa2-9939-0AA274C929A7"?>
 	<?define GuidTortoiseIDiff="742E7CF3-0255-4100-B241-E753BF92F9F0"?>
