@@ -261,14 +261,15 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	if (svnerr)
 	{
 		TRACE(_T("diff-error in CDiffData::Load()\n"));
-		CString sMsg = CString(svnerr->message);
+		CStringA sMsg = CStringA(svnerr->message);
 		while (svnerr->child)
 		{
 			svnerr = svnerr->child;
 			sMsg += _T("\n");
-			sMsg += CString(svnerr->message);
+			sMsg += CStringA(svnerr->message);
 		}
-		m_sError.Format(IDS_ERR_DIFF_DIFF, (LPCTSTR)sMsg);
+		CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);
+		m_sError.Format(IDS_ERR_DIFF_DIFF, (LPCTSTR)readableMsg);
 		svn_error_clear(svnerr);
 		return false;
 	}
@@ -494,14 +495,15 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	if (svnerr)
 	{
 		TRACE(_T("diff-error in CDiffData::Load()\n"));
-		CString sMsg = CString(svnerr->message);
+		CStringA sMsg = CStringA(svnerr->message);
 		while (svnerr->child)
 		{
 			svnerr = svnerr->child;
 			sMsg += _T("\n");
-			sMsg += CString(svnerr->message);
+			sMsg += CStringA(svnerr->message);
 		}
-		m_sError.Format(IDS_ERR_DIFF_DIFF, (LPCTSTR)sMsg);
+		CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);
+		m_sError.Format(IDS_ERR_DIFF_DIFF, (LPCTSTR)readableMsg);
 		svn_error_clear(svnerr);
 		return false;
 	}
