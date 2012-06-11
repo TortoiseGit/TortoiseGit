@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #652: "Clean up" should use recycle bin
  * Fixed issue #1166: Unreadable error message in TortoiseMerge
  * Fixed issue #665: Problem with temporary file creation
+ * Fixed issue #1221: Log Dialog revert files shows wrong number of files in message
 
 = Release 1.7.10.0 =
 Released: 2012-06-03

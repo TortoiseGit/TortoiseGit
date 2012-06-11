@@ -5324,8 +5324,10 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 		cmd.Format(_T("git.exe checkout %s -- \"%s\""),m_CurrentVersion,fentry->GetGitPathString());
 		out.Empty();
 		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
 			if (MessageBox(out, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
 				break;
+		}
 		else
 			count++;
 	}
