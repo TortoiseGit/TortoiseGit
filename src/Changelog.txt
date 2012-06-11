@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #1166: Unreadable error message in TortoiseMerge
  * Fixed issue #665: Problem with temporary file creation
  * Fixed issue #1221: Log Dialog revert files shows wrong number of files in message
+ * Fixed issue #1207: TortoiseGit 1.7.10 crashes directly when trying to start
 
 = Release 1.7.10.0 =
 Released: 2012-06-03
