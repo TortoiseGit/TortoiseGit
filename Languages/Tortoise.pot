@@ -437,6 +437,10 @@ msgstr ""
 msgid "&Clear"
 msgstr ""
 
+#. Resource IDs: (1686)
+msgid "&Clear stash"
+msgstr ""
+
 #. Resource IDs: (1, 58112)
 msgid "&Close"
 msgstr ""
@@ -889,6 +893,10 @@ msgstr ""
 
 #. Resource IDs: (1253)
 msgid "&Redo"
+msgstr ""
+
+#. Resource IDs: (1579)
+msgid "&Ref:"
 msgstr ""
 
 #. Resource IDs: (1382)
@@ -7523,10 +7531,6 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "This is not a valid path!\nA valid path must not contain '<<>|\"?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "This product includes software developed by CollabNet (http://www.Collab.Net/)"
 msgstr ""
 
 #. Resource IDs: (3857)
