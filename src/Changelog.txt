@@ -2,6 +2,7 @@
 Released: unreleased
 
 == Features==
+ * Push Dialog: Allow to enter SHA-1 or more complex refs as source ref
  * Fixed issue #746: Make tortoisegit more gerrit friendly
  * Optimized TGitCache overlay calculation (deleted but kept files are now displayed as such)
  * Fixed issue #1067: Add clear button into "stash list"
