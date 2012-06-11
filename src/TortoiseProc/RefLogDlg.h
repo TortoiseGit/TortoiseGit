@@ -41,7 +41,10 @@ protected:
 	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedClearStash();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
+
+	void			Refresh();
 
 	CHistoryCombo	m_ChooseRef;
 

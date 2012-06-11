@@ -82,36 +82,13 @@ BOOL CRefLogDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	STRING_VECTOR list;
-	list.push_back(_T("HEAD"));
-	g_Git.GetRefList(list);
+	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
 
 	m_RefList.m_hasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
 
-	m_ChooseRef.SetMaxHistoryItems(0x7FFFFFFF);
-	this->m_ChooseRef.AddString(list);
-
 	this->m_RefList.InsertRefLogColumn();
-	//m_RefList.m_logEntries.ParserFromRefLog(_T("master"));
-	if(this->m_CurrentBranch.IsEmpty())
-	{
-		m_CurrentBranch.Format(_T("refs/heads/%s"),g_Git.GetCurrentBranch());
-		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
-	}
-	else
-	{
-		for(int i=0;i<list.size();i++)
-		{
-			if(list[i] == m_CurrentBranch)
-			{
-				m_ChooseRef.SetCurSel(i);
-				break;
-			}
-		}
-	}
 
-
-	OnCbnSelchangeRef();
+	Refresh();
 
 	return TRUE;
 }
@@ -190,4 +167,46 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	}
 	else
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_HIDE);
+}
+
+BOOL CRefLogDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F5)
+		Refresh();
+
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
+}
+
+void CRefLogDlg::Refresh()
+{
+	STRING_VECTOR list;
+	list.push_back(_T("HEAD"));
+	g_Git.GetRefList(list);		
+
+	m_ChooseRef.AddString(list);
+
+	if (m_CurrentBranch.IsEmpty())
+	{
+		m_CurrentBranch.Format(_T("refs/heads/%s"), g_Git.GetCurrentBranch());
+		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
+	}
+	else
+	{
+		bool found = false;
+		for (int i = 0; i < list.size(); i++)
+		{
+			if(list[i] == m_CurrentBranch)
+			{
+				m_ChooseRef.SetCurSel(i);
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			m_ChooseRef.SetCurSel(0);
+	}
+
+	m_RefList.m_RefMap.clear();
+
+	OnCbnSelchangeRef();
 }
