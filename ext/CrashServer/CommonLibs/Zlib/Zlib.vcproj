@@ -83,7 +83,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\bin\"
-			IntermediateDirectory="$(SolutionDir)..\obj\CrashServer_Zlib_static\$(ConfigurationName)64\"
+			IntermediateDirectory="$(SolutionDir)..\obj\CrashServer_Zlib_static\$(ConfigurationName)\"
 			ConfigurationType="4"
 			CharacterSet="2"
 			WholeProgramOptimization="0"
