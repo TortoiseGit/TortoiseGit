@@ -1381,6 +1381,8 @@ BOOL CGit::CheckMsysGitDir()
 			if ( FindGitPath() )
 			{
 				m_bInitialized = TRUE;
+				msysdir = CGit::ms_LastMsysGitDir;
+				msysdir.write();
 				return TRUE;
 			}
 
