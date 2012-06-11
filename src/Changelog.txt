@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1215: Branch name in the right click menu (for commit) does not support utf-8
  * Fixed issue #652: "Clean up" should use recycle bin
  * Fixed issue #1166: Unreadable error message in TortoiseMerge
+ * Fixed issue #665: Problem with temporary file creation
 
 = Release 1.7.10.0 =
 Released: 2012-06-03

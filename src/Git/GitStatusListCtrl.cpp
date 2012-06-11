@@ -3636,14 +3636,15 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			if( file1.m_ParentNo & MERGE_MASK)
 			{
 
-				CTGitPath base,theirs, mine;
+				CTGitPath base, theirs, mine, merge;
 
-				CTGitPath merge=file1;
-				CTGitPath directory = merge.GetDirectory();
+				CString temppath;
+				GetTempPath(temppath);
+				temppath.TrimRight(_T("\\"));
 
-				mine.SetFromGit(CAppUtils::GetMergeTempFile(_T("LOCAL"),merge));
-				theirs.SetFromGit(CAppUtils::GetMergeTempFile(_T("REMOTE"),merge));
-				base.SetFromGit(CAppUtils::GetMergeTempFile(_T("BASE"),merge));
+				mine.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".LOCAL") + file1.GetFileExtension());
+				theirs.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".REMOTE") + file1.GetFileExtension());
+				base.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".BASE") + file1.GetFileExtension());
 
 				CFile tempfile;
 				//create a empty file, incase stage is not three
@@ -3654,7 +3655,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
 				tempfile.Close();
 
-				merge.SetFromGit(merge.GetGitPathString()+_T("Merged"));
+				merge.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".Merged") + file1.GetFileExtension());
 
 				int parent1=-1, parent2 =-1;
 				for(int i=0;i<this->m_arStatusArray.size();i++)
