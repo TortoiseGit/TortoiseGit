@@ -124,6 +124,12 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path)
 			return false;
 		}
 	}
+
+	if (path.GetWinPathString().Find(L":\\RECYCLER\\") >= 0)
+		return false;
+	if (path.GetWinPathString().Find(L":\\$Recycle.Bin\\") >= 0)
+		return false;
+
 	AutoLocker lock(m_critSec);
 	for (int i=0; i<watchedPaths.GetCount(); ++i)
 	{
