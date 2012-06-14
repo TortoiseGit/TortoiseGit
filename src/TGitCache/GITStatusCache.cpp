@@ -375,7 +375,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		for (; it != cdir->m_childDirectories.end(); )
 		{
 			CCachedDirectory * childdir = CGitStatusCache::Instance().GetDirectoryCacheEntryNoCreate(it->first);
-			if ((childdir)&&(!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)))
+			if ((childdir) && (!cdir->m_directoryPath.IsEquivalentTo(childdir->m_directoryPath)) && (cdir->m_directoryPath.GetFileOrDirectoryName() != L".."))
 				RemoveCacheForDirectory(childdir);
 			cdir->m_childDirectories.erase(it->first);
 			it = cdir->m_childDirectories.begin();
