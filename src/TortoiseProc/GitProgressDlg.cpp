@@ -971,8 +971,12 @@ UINT CGitProgressDlg::ProgressThread()
 		info.LoadString(IDS_PROGRS_INFOFAILED);
 	SetDlgItemText(IDC_INFOTEXT, info);
 	ResizeColumns();
-	SendMessage(DM_SETDEFID, IDOK);
-	GetDlgItem(IDOK)->SetFocus();
+	CWnd * pWndOk = GetDlgItem(IDOK);
+	if (pWndOk && ::IsWindow(pWndOk->GetSafeHwnd()))
+	{
+		SendMessage(DM_SETDEFID, IDOK);
+		GetDlgItem(IDOK)->SetFocus();
+	}
 
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
