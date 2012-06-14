@@ -186,6 +186,7 @@ EOL CFileTextLines::CheckLineEndings(LPVOID pBuffer, int cb)
 
 BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 {
+	WCHAR exceptionError[1000] = {0};
 	m_LineEndings = EOL_AUTOLINE;
 	m_UnicodeType = CFileTextLines::AUTOTYPE;
 	RemoveAll();
@@ -230,7 +231,17 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	// If new[] was done for type T delete[] must be called on a pointer of type T*,
 	// otherwise the behavior is undefined.
 	// +1 is to address possible truncation when integer division is done
-	wchar_t* pFileBuf = new wchar_t[fsize.LowPart/sizeof(wchar_t) + 1];
+	wchar_t* pFileBuf = NULL;
+	try
+	{
+		pFileBuf = new wchar_t[fsize.LowPart/sizeof(wchar_t) + 1];
+	}
+		catch (CMemoryException* e)
+	{
+		e->GetErrorMessage(exceptionError, _countof(exceptionError));
+		m_sErrorString = exceptionError;
+		return FALSE;
+	}
 	DWORD dwReadBytes = 0;
 	if (!ReadFile(hFile, pFileBuf, fsize.LowPart, &dwReadBytes, NULL))
 	{
@@ -259,7 +270,18 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	if ((m_UnicodeType == UTF8)||(m_UnicodeType == UTF8BOM))
 	{
 		int ret = MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pFileBuf, dwReadBytes, NULL, 0);
-		wchar_t * pWideBuf = new wchar_t[ret];
+		wchar_t * pWideBuf = NULL;
+		try
+		{
+			pWideBuf = new wchar_t[ret];
+		}
+		catch (CMemoryException* e)
+		{
+			e->GetErrorMessage(exceptionError, _countof(exceptionError));
+			m_sErrorString = exceptionError;
+			delete [] pFileBuf;
+			return FALSE;
+		}
 		int ret2 = MultiByteToWideChar(CP_UTF8, 0, (LPCSTR)pFileBuf, dwReadBytes, pWideBuf, ret);
 		if (ret2 == ret)
 		{
@@ -272,7 +294,18 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	else if (m_UnicodeType == ASCII)
 	{
 		int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)pFileBuf, dwReadBytes, NULL, 0);
-		wchar_t * pWideBuf = new wchar_t[ret];
+		wchar_t * pWideBuf = NULL;
+		try
+		{
+			pWideBuf = new wchar_t[ret];
+		}
+		catch (CMemoryException* e)
+		{
+			e->GetErrorMessage(exceptionError, _countof(exceptionError));
+			m_sErrorString = exceptionError;
+			delete [] pFileBuf;
+			return FALSE;
+		}
 		int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)pFileBuf, dwReadBytes, pWideBuf, ret);
 		if (ret2 == ret)
 		{
