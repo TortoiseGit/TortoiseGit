@@ -26,6 +26,7 @@
 #include <regex>
 #include "git.h"
 #include "Globals.h"
+#include "StringUtils.h"
 #include "../Resources/LoglistCommonResource.h"
 
 #if defined(_MFC_VER)
@@ -1467,64 +1468,36 @@ CTGitPath CTGitPathList::GetCommonDirectory() const
 
 CTGitPath CTGitPathList::GetCommonRoot() const
 {
-	PathVector::const_iterator it;
-	CString sRoot, sTempRoot;
-	bool bEqual = true;
+	if (GetCount() == 0)
+		return CTGitPath();
 
 	if (GetCount() == 1)
 		return m_paths[0];
 
-	int backSlashPos = 0;
-	int searchStartPos = 0;
-	while (bEqual)
-	{
-		if(m_paths.empty())
-			break;
+	// first entry is common root for itself
+	// (add trailing '\\' to detect partial matches of the last path element)
+	CString root = m_paths[0].GetWinPathString() + _T('\\');
+	int rootLength = root.GetLength();
 
-		for (it = m_paths.begin(); it != m_paths.end(); ++it)
+	// determine common path string prefix
+	for (PathVector::const_iterator it = m_paths.begin() + 1; it != m_paths.end(); ++it)
+	{
+		CString path = it->GetWinPathString() + _T('\\');
+
+		int newLength = CStringUtils::GetMatchingLength(root, path);
+		if (newLength != rootLength)
 		{
-			if (backSlashPos == 0)
-			{
-				backSlashPos = it->GetWinPathString().Find('\\', searchStartPos+1);
-				if ((backSlashPos < 0)&&(searchStartPos != it->GetWinPathString().GetLength()))
-					backSlashPos = it->GetWinPathString().GetLength();
-				sTempRoot = it->GetWinPathString().Left(backSlashPos+1);
-			}
-			else if (it->GetWinPathString().Find('\\', searchStartPos+1) != backSlashPos || it->GetWinPathString().Left(backSlashPos+1) != sTempRoot.Left(backSlashPos+1))
-			{
-				if (it->GetWinPathString().Find('\\', searchStartPos+1) < 0)
-				{
-					if (it->GetWinPathString().GetLength() != backSlashPos || it->GetWinPathString().Left(backSlashPos+1) != sTempRoot.Left(backSlashPos+1))
-					{
-						bEqual = false;
-						break;
-					}
-				}
-				else
-				{
-					bEqual = false;
-					break;
-				}
-			}
-			if (backSlashPos < 0)
-			{
-				bEqual = false;
-				break;
-			}
+			root.Delete(newLength, rootLength);
+			rootLength = newLength;
 		}
-		if (bEqual == false)
-		{
-			if (searchStartPos)
-				sRoot = m_paths[0].GetWinPathString().Left(searchStartPos+1);
-		}
-		else
-		{
-			searchStartPos = backSlashPos;
-		}
-		backSlashPos = 0;
 	}
 
-	return CTGitPath(sRoot.TrimRight('\\'));
+	// remove the last (partial) path element
+	if (rootLength > 0)
+		root.Delete(root.ReverseFind(_T('\\')), rootLength);
+
+	// done
+	return CTGitPath(root);
 }
 
 void CTGitPathList::SortByPathname(bool bReverse /*= false*/)
