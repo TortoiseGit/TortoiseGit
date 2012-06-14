@@ -99,6 +99,22 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ScintillaDirect2D</term>
+            <listitem>
+                <para>
+                    This option enables the use of Direct2D accelerated
+                    drawing in the Scintilla control which is used
+                    as the edit box in e.g. the commit dialog (also for the attached patch window), the
+                    unified diff viewer and TortoiseGitBlame.
+                    With some graphic cards however this sometimes
+                    doesn't work properly so that the cursor to enter
+                    text isn't always visible. If that happens, you
+                    can turn this feature off by setting this value
+                    to <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ShowContextMenuIcons</term>
             <listitem>
                 <para>
