@@ -562,6 +562,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\Utils\StringUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\SysInfo.cpp"
 				>
 			</File>
@@ -636,6 +640,10 @@
 			</File>
 			<File
 				RelativePath="stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Utils\StringUtils.h"
 				>
 			</File>
 			<File
