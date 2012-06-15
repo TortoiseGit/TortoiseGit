@@ -113,7 +113,15 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	if (CTGitPath(g_Git.m_CurrentDir).HasAdminDir())
 	{
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		m_HeadHash=g_Git.GetHash(_T("HEAD"));
+		try {
+			m_HeadHash=g_Git.GetHash(_T("HEAD"));
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(_T("Could not get HEAD hash\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
 	}
 
 	m_From=-1;;
@@ -2179,8 +2187,16 @@ int CGitLogListBase::BeginFetchLog()
 	if(g_Git.IsInitRepos())
 		return 0;
 
-	if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
+	try {
+		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
+		{
+			return -1;
+		}
+	}
+	catch (char* msg)
 	{
+		CString err(msg);
+		MessageBox(_T("Could not open log.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
 
