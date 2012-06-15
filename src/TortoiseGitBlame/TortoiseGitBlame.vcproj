@@ -86,6 +86,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="..\DeclareDPIAware.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -168,6 +169,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="..\DeclareDPIAware.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -253,6 +255,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="..\DeclareDPIAware.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -337,6 +340,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				AdditionalManifestFiles="..\DeclareDPIAware.manifest"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -616,6 +620,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\TortoiseGitBlameENG.rc"
 				>
 				<FileConfiguration
@@ -650,10 +658,6 @@
 						AdditionalIncludeDirectories="$(IntDir);..\TortoiseShell"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\Resources\blameres\TortoiseGitBlameDoc.ico"
-				>
 			</File>
 		</Filter>
 		<Filter
