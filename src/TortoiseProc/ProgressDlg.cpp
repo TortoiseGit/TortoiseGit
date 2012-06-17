@@ -340,13 +340,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			}
 
 			if(m_PostCmdList.GetCount() > 0)
-			{
-				//GetDlgItem(IDC_PROGRESS_BUTTON1)->SetWindowText(m_changeAbortButtonOnSuccessTo);
 				GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
-				//GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
-				//Set default button is "close" rather than "push"
-				this->SendMessage(WM_NEXTDLGCTL, (WPARAM)GetDlgItem(IDOK)->m_hWnd, TRUE);
-			}
 		}
 	}
 

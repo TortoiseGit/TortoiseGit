@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1221: Log Dialog revert files shows wrong number of files in message
  * Fixed issue #1207: TortoiseGit 1.7.10 crashes directly when trying to start
  * Fixed issue #1226: Show log crash when path contain some unicode symbols
+ * Fixed issue #1229: Progress Window Gains Focus on Command Completion
 
 = Release 1.7.10.0 =
 Released: 2012-06-03
