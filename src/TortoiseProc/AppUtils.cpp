@@ -1074,29 +1074,24 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 		return FALSE;
 	}
 
-	CString ignorelist;
-	CString mask;
 	try
 	{
-		//file.ReadString(ignorelist);
 		file.SeekToEnd();
 		for(int i=0;i<path.GetCount();i++)
 		{
+			CString ignorePattern;
 			if(IsMask)
 			{
-				mask=_T("*")+path[i].GetFileExtension();
-				if(ignorelist.Find(mask)<0)
-					ignorelist += _T("\n")+mask;
+				ignorePattern += _T("*") + path[i].GetFileExtension();
 			}
 			else
 			{
-				ignorelist += _T("\n/")+path[i].GetGitPathString();
+				ignorePattern += _T("/") + path[i].GetGitPathString();
 			}
+			file.WriteString(_T("\n") + ignorePattern);
 		}
-		file.WriteString(ignorelist);
 
 		file.Close();
-
 	}catch(...)
 	{
 		file.Close();
