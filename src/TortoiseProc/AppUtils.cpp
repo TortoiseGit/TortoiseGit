@@ -1064,7 +1064,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 	}
 	else
 	{
-		ignorefile += _T("\\.gitignore");
+		ignorefile += _T(".gitignore");
 	}
 
 	CStdioFile file;
@@ -1076,7 +1076,17 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 
 	try
 	{
-		file.SeekToEnd();
+		if (file.GetLength() > 0)
+		{
+			file.Seek(file.GetLength() - 1, 0);
+			auto_buffer<TCHAR> buf(1);
+			file.Read(buf, 1);
+			file.SeekToEnd();
+			if (buf[0] != _T('\n'))
+				file.WriteString(_T("\n"));
+		}
+		else
+			file.SeekToEnd();
 		for(int i=0;i<path.GetCount();i++)
 		{
 			CString ignorePattern;
@@ -1088,7 +1098,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 			{
 				ignorePattern += _T("/") + path[i].GetGitPathString();
 			}
-			file.WriteString(_T("\n") + ignorePattern);
+			file.WriteString(ignorePattern + _T("\n"));
 		}
 
 		file.Close();
