@@ -128,6 +128,16 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ShowListBackgroundImage</term>
+            <listitem>
+                <para>
+                    If you do not want to have a small background image in list controls (e.g. Commit Dialog)
+                    set this value to <literal>false</literal>.
+                    Set this value to <literal>true</literal> to show the images again (default).
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">UseLibgit2</term>
             <listitem>
                 <para>

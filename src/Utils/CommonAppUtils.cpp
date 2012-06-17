@@ -24,6 +24,7 @@
 #include "StringUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
+#include "Registry.h"
 
 extern CString sOrigCWD;
 
@@ -79,6 +80,8 @@ bool CCommonAppUtils::RunTortoiseProc(const CString& sCommandLine)
 
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width /* = 128 */, int height /* = 128 */)
 {
+	if ((((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ShowListBackgroundImage"), TRUE)) == FALSE))
+		return false;
 	ListView_SetTextBkColor(hListCtrl, CLR_NONE);
 	COLORREF bkColor = ListView_GetBkColor(hListCtrl);
 	// create a bitmap from the icon
