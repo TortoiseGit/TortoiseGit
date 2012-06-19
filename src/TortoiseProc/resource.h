@@ -702,6 +702,7 @@
 #define IDS_ERR_NOTHINGTOREVERT         1310
 #define IDS_ERR_NOCOMMONCOPYFROM        1311
 #define IDC_SPLITTER                    1312
+#define IDS_LOG_FILTER_REFNAME          1312
 #define IDS_ERR_NOTENOUGHMEMORY         1313
 #define IDC_UNVERSIONEDASMODIFIED       1313
 #define IDS_ERR_MUSTBEURL               1314

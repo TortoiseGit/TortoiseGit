@@ -76,6 +76,7 @@ enum LISTITEMSTATES_MINE {
 #define LOGFILTER_REGEX			0x0010
 #define LOGFILTER_BUGID			0x0020
 #define LOGFILTER_SUBJECT		0x0040
+#define LOGFILTER_REFNAME		0x0080 // only used in RefBrowser so far
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)

@@ -66,7 +66,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_initialRef(L"HEAD"),
 	m_pickRef_Kind(gPickRef_All),
 	m_pListCtrlRoot(NULL),
-	m_bHasWC(true)
+	m_bHasWC(true),
+	m_SelectedFilters(LOGFILTER_ALL)
 {
 
 }
@@ -94,6 +95,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
 	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
+	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -109,6 +111,11 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
+	// the filter control has a 'cancel' button (the red 'X'), we need to load its bitmap
+	m_ctrlFilter.SetCancelBitmaps(IDI_CANCELNORMAL, IDI_CANCELPRESSED);
+	m_ctrlFilter.SetInfoIcon(IDI_FILTEREDIT);
+	SetFilterCueText();
 
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
@@ -413,8 +420,9 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	{
 		CString filter;
 		m_ctrlFilter.GetWindowText(filter);
+		filter.MakeLower();
 		CString ref = refNamePrefix + pTree->m_csRefName;
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && ref.Find(filter) >= 0)
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && IsMatchFilter(pTree, ref, filter))
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
@@ -438,6 +446,46 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
 		}
 	}
+}
+
+bool CBrowseRefsDlg::IsMatchFilter(const CShadowTree* pTree, const CString &ref, const CString &filter)
+{
+	if (m_SelectedFilters & LOGFILTER_REFNAME)
+	{
+		CString msg = ref;
+		msg = msg.MakeLower();
+
+		if (msg.Find(filter) >= 0)
+			return true;
+	}
+
+	if (m_SelectedFilters & LOGFILTER_SUBJECT)
+	{
+		CString msg = pTree->m_csSubject;
+		msg = msg.MakeLower();
+
+		if (msg.Find(filter) >= 0)
+			return true;
+	}
+
+	if (m_SelectedFilters & LOGFILTER_AUTHORS)
+	{
+		CString msg = pTree->m_csAuthor;
+		msg = msg.MakeLower();
+
+		if (msg.Find(filter) >= 0)
+			return true;
+	}
+
+	if (m_SelectedFilters & LOGFILTER_REVS)
+	{
+		CString msg = pTree->m_csRefHash;
+		msg = msg.MakeLower();
+
+		if (msg.Find(filter) >= 0)
+			return true;
+	}
+	return false;
 }
 
 bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
@@ -1144,4 +1192,75 @@ void CBrowseRefsDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	CResizableStandAloneDialog::OnTimer(nIDEvent);
+}
+
+LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
+{
+	// FIXME: x64 version would get this function called with unexpected parameters.
+	if (!lParam)
+		return 0;
+
+	RECT * rect = (LPRECT)lParam;
+	CPoint point;
+	CString temp;
+	point = CPoint(rect->left, rect->bottom);
+#define LOGMENUFLAGS(x) (MF_STRING | MF_ENABLED | (m_SelectedFilters & x ? MF_CHECKED : MF_UNCHECKED))
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		temp.LoadString(IDS_LOG_FILTER_REFNAME);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REFNAME), LOGFILTER_REFNAME, temp);
+
+		temp.LoadString(IDS_LOG_FILTER_SUBJECT);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_SUBJECT), LOGFILTER_SUBJECT, temp);
+
+		temp.LoadString(IDS_LOG_FILTER_AUTHORS);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
+
+		temp.LoadString(IDS_LOG_FILTER_REVS);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
+
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		if (selection != 0)
+		{
+			m_SelectedFilters ^= selection;
+			SetFilterCueText();
+			SetTimer(IDT_FILTER, 1000, NULL);
+		}
+	}
+	return 0L;
+}
+
+void CBrowseRefsDlg::SetFilterCueText()
+{
+	CString temp(MAKEINTRESOURCE(IDS_LOG_FILTER_BY));
+	temp += _T(" ");
+
+	if (m_SelectedFilters & LOGFILTER_REFNAME)
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
+
+	if (m_SelectedFilters & LOGFILTER_SUBJECT)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_SUBJECT));
+	}
+
+	if (m_SelectedFilters & LOGFILTER_AUTHORS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
+	}
+
+	if (m_SelectedFilters & LOGFILTER_REVS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
+	}
+
+	// to make the cue banner text appear more to the right of the edit control
+	temp = _T("   ") + temp;
+	m_ctrlFilter.SetCueBanner(temp.TrimRight());
 }
