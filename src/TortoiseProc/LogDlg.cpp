@@ -393,7 +393,17 @@ BOOL CLogDlg::OnInitDialog()
 	else if (!m_LogList.m_endrev.IsEmpty() && m_LogList.m_endrev.GetLength() >= GIT_HASH_SIZE)
 		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 	else
-		m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
+	{
+		try {
+			m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
+	}
 
 	if (m_path.IsEmpty() || m_path.IsDirectory())
 		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);

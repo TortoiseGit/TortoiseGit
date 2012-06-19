@@ -119,7 +119,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 		catch (char* msg)
 		{
 			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 			ExitProcess(1);
 		}
 	}
@@ -2341,8 +2341,18 @@ UINT CGitLogListBase::LogThread()
 	if(!g_Git.IsInitRepos())
 	{
 		g_Git.m_critGitDllSec.Lock();
-		git_get_log_firstcommit(m_DllGitLog);
-		int total = git_get_log_estimate_commit_count(m_DllGitLog);
+		int total = 0;
+		try
+		{
+			git_get_log_firstcommit(m_DllGitLog);
+			total = git_get_log_estimate_commit_count(m_DllGitLog);
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(_T("Could not get first commit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
 		g_Git.m_critGitDllSec.Unlock();
 
 		GIT_COMMIT commit;
@@ -2353,7 +2363,16 @@ UINT CGitLogListBase::LogThread()
 		while( ret== 0)
 		{
 			g_Git.m_critGitDllSec.Lock();
-			ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW);
+			try
+			{
+				ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW);
+			}
+			catch (char* msg)
+			{
+				CString err(msg);
+				MessageBox(_T("Could not get next commit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				ExitProcess(1);
+			}
 			g_Git.m_critGitDllSec.Unlock();
 
 			if(ret)
