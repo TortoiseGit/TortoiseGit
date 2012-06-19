@@ -1324,9 +1324,11 @@ int CRebaseDlg::DoRebase()
 
 	if (!CheckNextCommitIsSquash() || mode != CTGitPath::LOGACTIONS_REBASE_PICK)
 	{ // next commit is squash or not pick
-		this->m_SquashMessage+= pRev->GetSubject();
-		this->m_SquashMessage+= _T("\n");
-		this->m_SquashMessage+= pRev->GetBody();
+		if (!this->m_SquashMessage.IsEmpty())
+			this->m_SquashMessage += _T("\n\n");
+		this->m_SquashMessage += pRev->GetSubject();
+		this->m_SquashMessage += _T("\n");
+		this->m_SquashMessage += pRev->GetBody().TrimRight();
 	}
 	else
 		this->m_SquashMessage.Empty();
