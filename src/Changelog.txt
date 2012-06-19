@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #746: Make tortoisegit more gerrit friendly
  * Optimized TGitCache overlay calculation (deleted but kept files are now displayed as such)
  * Fixed issue #1067: Add clear button into "stash list"
+ * Fixed issue #1230: Filter/Search for Branches in Reference Browser
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
