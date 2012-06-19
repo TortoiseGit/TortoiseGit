@@ -1322,8 +1322,8 @@ int CRebaseDlg::DoRebase()
 		return 0;
 	}
 
-	if( mode != CTGitPath::LOGACTIONS_REBASE_PICK )
-	{
+	if (!CheckNextCommitIsSquash() || mode != CTGitPath::LOGACTIONS_REBASE_PICK)
+	{ // next commit is squash or not pick
 		this->m_SquashMessage+= pRev->GetSubject();
 		this->m_SquashMessage+= _T("\n");
 		this->m_SquashMessage+= pRev->GetBody();
@@ -1331,8 +1331,10 @@ int CRebaseDlg::DoRebase()
 	else
 		this->m_SquashMessage.Empty();
 
-	if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+	if (!CheckNextCommitIsSquash() || mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+	{ // next or this commit is squash
 		nocommit=_T(" --no-commit ");
+	}
 
 	CString log;
 	log.Format(_T("%s %d: %s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());
