@@ -80,6 +80,7 @@ void CBrowseRefsDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TREE_REF,			m_RefTreeCtrl);
 	DDX_Control(pDX, IDC_LIST_REF_LEAFS,	m_ListRefLeafs);
+	DDX_Control(pDX, IDC_BROWSEREFS_EDIT_FILTER, m_ctrlFilter);
 }
 
 
@@ -92,6 +93,8 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
+	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -109,6 +112,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	AddAnchor(IDC_TREE_REF, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_LIST_REF_LEAFS, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_BROWSEREFS_STATIC_FILTER, BOTTOM_LEFT);
+	AddAnchor(IDC_BROWSEREFS_EDIT_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
@@ -406,12 +411,15 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 {
 	if(pTree->IsLeaf())
 	{
-		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL))
+		CString filter;
+		m_ctrlFilter.GetWindowText(filter);
+		CString ref = refNamePrefix + pTree->m_csRefName;
+		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == "refs" && pTree->m_pParent == NULL) && ref.Find(filter) >= 0)
 		{
 			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
 			m_ListRefLeafs.SetItemData(indexItem,(DWORD_PTR)pTree);
-			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, refNamePrefix+pTree->m_csRefName);
+			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Date, pTree->m_csDate);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
@@ -1120,4 +1128,20 @@ void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pRe
 		*pResult = TRUE; //Dont allow renaming any other things then branches at the moment.
 		return;
 	}
+}
+
+void CBrowseRefsDlg::OnEnChangeEditFilter()
+{
+	SetTimer(IDT_FILTER, 1000, NULL);
+}
+
+void CBrowseRefsDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == IDT_FILTER)
+	{
+		KillTimer(IDT_FILTER);
+		FillListCtrlForTreeNode(m_RefTreeCtrl.GetSelectedItem());
+	}
+
+	CResizableStandAloneDialog::OnTimer(nIDEvent);
 }

@@ -21,6 +21,7 @@
 #include "Git.h"
 #include <map>
 #include "StandAloneDlg.h"
+#include "afxwin.h"
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;
@@ -137,6 +138,10 @@ private:
 	CShadowTree*	m_pListCtrlRoot;
 	CTreeCtrl		m_RefTreeCtrl;
 	CListCtrl		m_ListRefLeafs;
+
+	CEdit			m_ctrlFilter;
+	afx_msg void OnEnChangeEditFilter();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 	int				m_currSortCol;
 	bool			m_currSortDesc;
