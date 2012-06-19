@@ -98,6 +98,7 @@ public:
 		eCol_Name,
 		eCol_Date,
 		eCol_Msg,
+		eCol_LastAuthor,
 		eCol_Hash
 	};
 

@@ -131,6 +131,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	m_ListRefLeafs.InsertColumn(eCol_Date, temp, 0, 100);
 	temp.LoadString(IDS_LASTCOMMIT);
 	m_ListRefLeafs.InsertColumn(eCol_Msg, temp, 0, 300);
+	temp.LoadString(IDS_LASTAUTHOR);
+	m_ListRefLeafs.InsertColumn(eCol_LastAuthor, temp, 0, 100);
 	temp.LoadString(IDS_HASH);
 	m_ListRefLeafs.InsertColumn(eCol_Hash, temp, 0, 80);
 
@@ -430,6 +432,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Date, pTree->m_csDate);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
+			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
 		}
 	}
@@ -1019,6 +1022,7 @@ public:
 		case CBrowseRefsDlg::eCol_Name:	return pLeft->GetRefName().CompareNoCase(pRight->GetRefName());
 		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
 		case CBrowseRefsDlg::eCol_Msg:	return pLeft->m_csSubject.CompareNoCase(pRight->m_csSubject);
+		case CBrowseRefsDlg::eCol_LastAuthor: return pLeft->m_csAuthor.CompareNoCase(pRight->m_csAuthor);
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
 		}
 		return 0;

@@ -760,6 +760,7 @@
 #define IDS_PROC_CREATED                1347
 #define IDS_PROC_NEWBRANCHTAG_TRACK_TT  1348
 #define IDS_STATUSLIST_FROM             1349
+#define IDS_LASTAUTHOR                  1350
 #define IDC_REV1BTN                     1353
 #define IDC_REV2BTN                     1354
 #define IDC_ACTIONLABEL                 1356
