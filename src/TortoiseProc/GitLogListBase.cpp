@@ -3100,7 +3100,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		CGitHash hash;
 
 		if(!str.IsEmpty())
-			hash = g_Git.GetHash(str);
+			hash = g_Git.GetHash(str + _T("^{}")); // add ^{} in order to get the correct SHA-1 (especially for signed tags)
 
 		if(!hash.IsEmpty())
 		{

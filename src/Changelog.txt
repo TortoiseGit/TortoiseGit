@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #1226: Show log crash when path contain some unicode symbols
  * Fixed issue #1229: Progress Window Gains Focus on Command Completion
  * Fixed issue #1231: incorrect behavior of squash in rebase/cherry pick
+ * Fixed issue #1233: Could not go to annotated tag
 
 = Release 1.7.10.0 =
 Released: 2012-06-03
