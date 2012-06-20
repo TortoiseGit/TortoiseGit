@@ -2210,6 +2210,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IgnoreDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IgnoreDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\InputDlg.cpp"
 				>
 			</File>

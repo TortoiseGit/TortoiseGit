@@ -58,6 +58,7 @@
 #include "RebaseDlg.h"
 #include "PropKey.h"
 #include "StashSave.h"
+#include "IgnoreDlg.h"
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 
@@ -1052,63 +1053,97 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	return FALSE;
 }
 
-bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
+bool CAppUtils::OpenIgnoreFile(CStdioFile &file, const CString& filename)
 {
-	CString ignorefile;
-	ignorefile=g_Git.m_CurrentDir+_T("\\");
-
-	if(IsMask)
+	if (!file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate))
 	{
-		ignorefile+=path.GetCommonRoot().GetDirectory().GetWinPathString()+_T("\\.gitignore");
+		CMessageBox::Show(NULL, filename + _T(" Open Failure"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return false;
+	}
 
+	if (file.GetLength() > 0)
+	{
+		file.Seek(file.GetLength() - 1, 0);
+		auto_buffer<TCHAR> buf(1);
+		file.Read(buf, 1);
+		file.SeekToEnd();
+		if (buf[0] != _T('\n'))
+			file.WriteString(_T("\n"));
 	}
 	else
-	{
-		ignorefile += _T(".gitignore");
-	}
+		file.SeekToEnd();
 
-	CStdioFile file;
-	if(!file.Open(ignorefile,CFile::modeCreate|CFile::modeReadWrite|CFile::modeNoTruncate))
-	{
-		CMessageBox::Show(NULL,ignorefile+_T(" Open Failure"),_T("TortoiseGit"),MB_OK);
-		return FALSE;
-	}
+	return true;
+}
 
-	try
+bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
+{
+	CIgnoreDlg ignoreDlg;
+	if (ignoreDlg.DoModal() == IDOK)
 	{
-		if (file.GetLength() > 0)
+		CString ignorefile;
+		ignorefile = g_Git.m_CurrentDir + _T("\\");
+
+		switch (ignoreDlg.m_IgnoreFile)
 		{
-			file.Seek(file.GetLength() - 1, 0);
-			auto_buffer<TCHAR> buf(1);
-			file.Read(buf, 1);
-			file.SeekToEnd();
-			if (buf[0] != _T('\n'))
-				file.WriteString(_T("\n"));
-		}
-		else
-			file.SeekToEnd();
-		for(int i=0;i<path.GetCount();i++)
-		{
-			CString ignorePattern;
-			if(IsMask)
-			{
-				ignorePattern += _T("*") + path[i].GetFileExtension();
-			}
-			else
-			{
-				ignorePattern += _T("/") + path[i].GetGitPathString();
-			}
-			file.WriteString(ignorePattern + _T("\n"));
+			case 0:
+				ignorefile += _T(".gitignore");
+				break;
+			case 2:
+				ignorefile += _T(".git/info/exclude");
+				break;
 		}
 
-		file.Close();
-	}catch(...)
-	{
-		file.Close();
-		return FALSE;
-	}
+		CStdioFile file;
+		try
+		{
+			if (ignoreDlg.m_IgnoreFile != 1 && !OpenIgnoreFile(file, ignorefile))
+				return false;
 
-	return TRUE;
+			for (int i = 0; i < path.GetCount(); i++)
+			{
+				if (ignoreDlg.m_IgnoreFile == 1)
+				{
+					ignorefile = g_Git.m_CurrentDir + _T("\\") + path[i].GetContainingDirectory().GetWinPathString() + _T("\\.gitignore");
+					if (!OpenIgnoreFile(file, ignorefile))
+						return false;
+				}
+
+				CString ignorePattern;
+				if (ignoreDlg.m_IgnoreType == 0)
+				{
+					if (ignoreDlg.m_IgnoreFile != 1 && !path[i].GetContainingDirectory().GetWinPathString().IsEmpty())
+						ignorePattern += _T("/") + path[i].GetContainingDirectory().GetWinPathString();
+
+					ignorePattern += _T("/");
+				}
+				if (IsMask)
+				{
+					if (ignoreDlg.m_IgnoreFile)
+					ignorePattern += _T("*") + path[i].GetFileExtension();
+				}
+				else
+				{
+					ignorePattern += path[i].GetFileOrDirectoryName();
+				}
+				file.WriteString(ignorePattern + _T("\n"));
+
+				if (ignoreDlg.m_IgnoreFile == 1)
+					file.Close();
+			}
+
+			if (ignoreDlg.m_IgnoreFile != 1)
+				file.Close();
+		}
+		catch(...)
+		{
+			file.Abort();
+			return false;
+		}
+
+		return true;
+	}
+	return false;
 }
 
 

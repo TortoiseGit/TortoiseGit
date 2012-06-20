@@ -150,7 +150,6 @@ public:
 	static bool Switch(CString *CommitHash, CString initialRefName = CString(), bool autoClose = false);
 	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, bool bTrack = false, bool autoClose = false);
 
-//	static bool IgnoreFile(CTGitPath &file, bool IsMask);
 	static bool IgnoreFile(CTGitPathList &filelist,bool IsMask);
 	static bool GitReset(CString *CommitHash,int type=1);
 	static bool ConflictEdit(CTGitPath &file,bool bAlternativeTool=false,bool revertTheirMy=false);
@@ -202,6 +201,8 @@ public:
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
+
+	static bool OpenIgnoreFile(CStdioFile &file, const CString& filename);
 
 	static void DescribeFile(bool mode, bool base,CString &descript);
 };

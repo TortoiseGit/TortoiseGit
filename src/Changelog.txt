@@ -7,6 +7,7 @@ Released: unreleased
  * Optimized TGitCache overlay calculation (deleted but kept files are now displayed as such)
  * Fixed issue #1067: Add clear button into "stash list"
  * Fixed issue #1230: Filter/Search for Branches in Reference Browser
+ * Fixed issue #1228: Ignore by mask work recursively
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
