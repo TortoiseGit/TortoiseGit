@@ -883,14 +883,14 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 	this->m_BaseDir.Empty();
 	if (!isGlobal)
 	{
-		CString base = file.Mid(projectroot.GetLength());
+		CString base = file.Mid(projectroot.GetLength() + 1);
 		base.Replace(_T('\\'), _T('/'));
 
 		int start = base.ReverseFind(_T('/'));
 		if(start > 0)
 		{
 			base = base.Left(start);
-			this->m_BaseDir = CUnicodeUtils::GetMulti(base, CP_UTF8);
+			this->m_BaseDir = CUnicodeUtils::GetMulti(base, CP_UTF8) + "/";
 		}
 	}
 	{
