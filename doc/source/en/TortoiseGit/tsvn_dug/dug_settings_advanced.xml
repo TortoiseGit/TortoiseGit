@@ -99,6 +99,18 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
+            <listitem>
+                <para>
+                    This option toggles the re-adding of unselected added files after a commit. Up to
+                    TortoiseGit 1.7.10 added files which were not checked on a commit, were removed from
+                    the index and unversioned after the commit. Set this value to <literal>false</literal>
+                    to restore the old behavior.
+                    Set this value to <literal>true</literal> to readd these files again after the commit (default).
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ScintillaDirect2D</term>
             <listitem>
                 <para>

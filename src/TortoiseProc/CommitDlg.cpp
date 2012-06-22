@@ -832,8 +832,11 @@ void CCommitDlg::OnOK()
 			}
 		}
 		RestoreFiles(progress.m_GitStatus == 0);
-		BOOL cancel;
-		mgtReAddAfterCommit.Execute(cancel);
+		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
+		{
+			BOOL cancel;
+			mgtReAddAfterCommit.Execute(cancel);
+		}
 	}
 	else if(bAddSuccess)
 	{
