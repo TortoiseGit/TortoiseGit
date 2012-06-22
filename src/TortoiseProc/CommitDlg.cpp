@@ -69,6 +69,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bSetCommitDateTime(FALSE)
 	, m_bCreateNewBranch(FALSE)
 	, m_bCreateTagAfterCommit(FALSE)
+	, m_bForceCommitAmend(false)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -369,32 +370,6 @@ BOOL CCommitDlg::OnInitDialog()
 //		ShowBalloon(IDC_HISTORY, IDS_COMMITDLG_HISTORYHINT_TT, IDI_INFORMATION);
 	}
 	err = FALSE;
-
-	if (g_Git.IsInitRepos())
-	{
-		m_bCommitAmend = FALSE;
-		GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
-		UpdateData(FALSE);
-	}
-	else
-	{
-		if(m_bCommitAmend)
-		{
-			GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(FALSE);
-			GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
-		}
-
-		CGitHash hash = g_Git.GetHash(_T("HEAD"));
-		GitRev headRevision;
-		headRevision.GetParentFromHash(hash);
-		// do not allow to show diff to "last" revision if it has more that one parent
-		if (headRevision.ParentsCount() != 1)
-		{
-			m_bAmendDiffToLastCommit = true;
-			UpdateData(FALSE);
-			GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(FALSE);
-		}
-	}
 
 	this->m_ctrlShowPatch.SetURL(CString());
 
@@ -1016,6 +991,8 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, false);
 	GetDlgItem(IDC_EXTERNALWARNING)->ShowWindow(SW_HIDE);
 	DialogEnableWindow(IDC_EXTERNALWARNING, false);
+	DialogEnableWindow(IDC_COMMIT_AMEND, FALSE);
+	DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 	// read the list of recent log entries before querying the WC for status
 	// -> the user may select one and modify / update it while we are crawling the WC
 
@@ -1116,6 +1093,37 @@ UINT CCommitDlg::StatusThread()
 			DialogEnableWindow(IDC_KEEPLISTS, true);
 		if (m_ListCtrl.HasLocks())
 			DialogEnableWindow(IDC_WHOLE_PROJECT, true);
+
+		// activate amend checkbox (if necessary)
+		if (g_Git.IsInitRepos())
+		{
+			m_bCommitAmend = FALSE;
+			UpdateData(FALSE);
+		}
+		else
+		{
+			if (m_bForceCommitAmend)
+			{
+				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+				m_bCommitAmend = TRUE;
+				UpdateData(FALSE);
+			}
+			else
+				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
+
+			CGitHash hash = g_Git.GetHash(_T("HEAD"));
+			GitRev headRevision;
+			headRevision.GetParentFromHash(hash);
+			// do not allow to show diff to "last" revision if it has more that one parent
+			if (headRevision.ParentsCount() != 1)
+			{
+				m_bAmendDiffToLastCommit = true;
+				UpdateData(FALSE);
+			}
+			else
+				GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(TRUE);
+		}
+
 		// we have the list, now signal the main thread about it
 		SendMessage(WM_AUTOLISTREADY);	// only send the message if the thread wasn't told to quit!
 	}

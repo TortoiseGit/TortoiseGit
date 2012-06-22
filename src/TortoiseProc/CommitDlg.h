@@ -118,6 +118,7 @@ public:
 	CString				m_sLogMessage;
 	BOOL				m_bKeepChangeList;
 	BOOL				m_bDoNotAutoselectSubmodules;
+	bool				m_bForceCommitAmend;
 	BOOL				m_bCommitAmend;
 	BOOL				m_bNoPostActions;
 	bool				m_bSelectFilesForCommit;
