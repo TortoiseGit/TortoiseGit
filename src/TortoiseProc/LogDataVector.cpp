@@ -142,8 +142,15 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			git_free_commit(&commit);
 			//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
 			//file list will wrong if parent rewrite.
-			pRev->SafeFetchFullInfo(&g_Git);
-
+			try
+			{
+				pRev->SafeFetchFullInfo(&g_Git);
+			}
+			catch (char * g_last_error)
+			{
+				MessageBox(NULL, _T("Could not fetch full info of a commit.\nlibgit reports:\n") + CString(g_last_error), _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
 		}
 		else
 		{
