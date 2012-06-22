@@ -90,7 +90,7 @@ static int convert_slash(char * path)
 
 int git_init()
 {
-	const char *home;
+	const wchar_t *home;
 	char path[MAX_PATH+1];
 	char *prefix;
 	int ret;
@@ -105,8 +105,8 @@ int git_init()
 	getenv_s(&homesize, NULL, 0, "HOME");
 	if (!homesize)
 	{
-		home = get_windows_home_directory();
-		_putenv_s("HOME",home);
+		home = wget_windows_home_directory();
+		_wputenv_s(L"HOME",home);
 	}
 	GetModuleFileName(NULL, path, MAX_PATH);
 	convert_slash(path);
@@ -1075,6 +1075,15 @@ const char *get_windows_home_directory(void)
 	home_directory = strbuf_detach(&buf, NULL);
 
 	return home_directory;
+}
+
+// wchar_t wrapper for get_windows_home_directory()
+const wchar_t *wget_windows_home_directory(void)
+{
+	wchar_t * wpointer[MAX_PATH];
+	if (xutftowcs(wpointer, get_windows_home_directory(), MAX_PATH) < 0)
+		return NULL;
+	return wpointer;
 }
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
