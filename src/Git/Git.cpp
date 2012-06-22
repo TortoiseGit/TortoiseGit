@@ -1321,11 +1321,9 @@ BOOL CGit::CheckMsysGitDir()
 	_tgetenv_s(&homesize, NULL, 0, _T("HOME"));
 	if (!homesize)
 	{
-		char charBuf[MAX_PATH];
-		TCHAR buf[MAX_PATH];
-		strcpy_s(charBuf, MAX_PATH, get_windows_home_directory());
-		_tcscpy_s(buf, MAX_PATH, CA2CT(charBuf));
-		m_Environment.SetEnv(_T("HOME"), buf);
+		CString home = g_Git.GetHomeDirectory();
+		m_Environment.SetEnv(_T("HOME"), home.GetBuffer());
+		home.ReleaseBuffer();
 	}
 	CString str;
 
@@ -1415,6 +1413,11 @@ BOOL CGit::CheckMsysGitDir()
 
 	m_bInitialized = TRUE;
 	return true;
+}
+
+CString CGit::GetHomeDirectory()
+{
+	return CString(get_windows_home_directory());
 }
 
 BOOL CGit::CheckCleanWorkTree()

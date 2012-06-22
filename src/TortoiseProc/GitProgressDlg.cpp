@@ -1884,7 +1884,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 		projectConfigA.ReleaseBuffer();
-		CString globalConfig = CString(get_windows_home_directory()) + _T("\\.gitconfig");
+		CString globalConfig = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
 		if (PathFileExists(globalConfig))
 		{
 			CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);

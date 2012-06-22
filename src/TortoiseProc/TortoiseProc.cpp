@@ -446,12 +446,8 @@ BOOL CTortoiseProcApp::InitInstance()
 			else if (choice == 2)
 			{
 				// open the global config file with alternative editor
-				char charBuf[MAX_PATH];
-				TCHAR buf[MAX_PATH];
-				strcpy_s(charBuf, MAX_PATH, get_windows_home_directory());
-				_tcscpy_s(buf, MAX_PATH, CA2CT(charBuf));
-				_tcscat_s(buf, MAX_PATH, _T("\\.gitconfig"));
-				CAppUtils::LaunchAlternativeEditor(buf);
+				CString filename = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+				CAppUtils::LaunchAlternativeEditor(filename);
 			}
 			return FALSE;
 		}

@@ -1220,7 +1220,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 }
 const CString CGitIgnoreList::GetWindowsHome()
 {
-	static CString sWindowsHome(get_windows_home_directory());
+	static CString sWindowsHome(g_Git.GetHomeDirectory());
 	return sWindowsHome;
 }
 bool CGitIgnoreList::IsIgnore(const CString &path,const CString &projectroot)
