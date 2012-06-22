@@ -1005,26 +1005,20 @@ static int get_config(const char *key_, const char *value_, void *cb)
 
 }
 
-static const char *get_msysgit_etc(void)
+// wchar_t wrapper for git_etc_gitconfig()
+const wchar_t *wget_msysgit_etc(void)
 {
-	char lszValue[255];
-	HKEY hKey;
-	DWORD dwType=REG_SZ;
-	DWORD dwSize=255;
-	const char * system = NULL;
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\TortoiseGit", NULL, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
-	{
-		if (RegQueryValueEx(hKey, TEXT("MSysGit"), NULL, &dwType,(LPBYTE)&lszValue, &dwSize) == ERROR_SUCCESS)
-			system = xstrdup(mkpath("%s/../etc/gitconfig", &lszValue));
-	}
-	RegCloseKey(hKey);
-	return system;
+	const char * gitconfig = git_etc_gitconfig();
+	wchar_t wpointer[MAX_PATH];
+	if (!gitconfig || xutftowcs_path(wpointer, gitconfig) < 0)
+		return NULL;
+	return wpointer;
 }
 
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
-	char *local, *global, *system;
-	const char *home;
+	char *local, *global;
+	const char *home, *system;
 	struct config_buf buf;
 	buf.buf=buffer;
 	buf.size=size;
@@ -1037,7 +1031,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 	if (home)
 		global = xstrdup(mkpath("%s/.gitconfig", home));
 
-	system = get_msysgit_etc();
+	system = git_etc_gitconfig();
 
 	local = git_pathdup("config");
 
@@ -1052,8 +1046,6 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 		free(local);
 	if(global)
 		free(global);
-	if(system)
-		free(system);
 
 	return !buf.seen;
 }
@@ -1080,8 +1072,8 @@ const char *get_windows_home_directory(void)
 // wchar_t wrapper for get_windows_home_directory()
 const wchar_t *wget_windows_home_directory(void)
 {
-	wchar_t * wpointer[MAX_PATH];
-	if (xutftowcs(wpointer, get_windows_home_directory(), MAX_PATH) < 0)
+	wchar_t wpointer[MAX_PATH];
+	if (xutftowcs_path(wpointer, get_windows_home_directory()) < 0)
 		return NULL;
 	return wpointer;
 }
