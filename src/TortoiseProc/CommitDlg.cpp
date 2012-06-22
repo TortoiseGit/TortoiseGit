@@ -40,6 +40,7 @@
 #include "COMError.h"
 #include "Globals.h"
 #include "SysProgressDlg.h"
+#include "MassiveGitTask.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -477,6 +478,7 @@ void CCommitDlg::OnOK()
 
 	CTGitPathList itemsToAdd;
 	CTGitPathList itemsToRemove;
+	CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
 	//std::set<CString> checkedLists;
 	//std::set<CString> uncheckedLists;
 
@@ -615,7 +617,7 @@ void CCommitDlg::OnOK()
 					bCloseCommitDlg=false;
 					break;
 				}
-
+				mgtReAddAfterCommit.AddFile(*entry);
 			}
 			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
@@ -830,6 +832,11 @@ void CCommitDlg::OnOK()
 			}
 		}
 		RestoreFiles(progress.m_GitStatus == 0);
+		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
+		{
+			BOOL cancel;
+			mgtReAddAfterCommit.Execute(cancel);
+		}
 	}
 	else if(bAddSuccess)
 	{
