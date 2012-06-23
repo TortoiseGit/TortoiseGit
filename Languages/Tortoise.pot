@@ -1231,6 +1231,18 @@ msgstr ""
 msgid "....."
 msgstr ""
 
+#. Resource IDs: (1691)
+msgid ".git/info/exclude"
+msgstr ""
+
+#. Resource IDs: (1690)
+msgid ".gitignore in the containing directories of the items"
+msgstr ""
+
+#. Resource IDs: (1689)
+msgid ".gitignore in the repository root"
+msgstr ""
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr ""
@@ -3726,6 +3738,10 @@ msgstr ""
 msgid "Filter paths"
 msgstr ""
 
+#. Resource IDs: (1479)
+msgid "Filter:"
+msgstr ""
+
 #. Resource IDs: (20090)
 msgid "Filter: "
 msgstr ""
@@ -4399,6 +4415,22 @@ msgstr ""
 msgid "Ignore &case changes"
 msgstr ""
 
+#. Resource IDs: (1692)
+msgid "Ignore File"
+msgstr ""
+
+#. Resource IDs: (1686)
+msgid "Ignore Type"
+msgstr ""
+
+#. Resource IDs: (1687)
+msgid "Ignore item(s) only in the containing folder(s)"
+msgstr ""
+
+#. Resource IDs: (1688)
+msgid "Ignore item(s) recursively"
+msgstr ""
+
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr ""
@@ -4583,6 +4615,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "LINE8"
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Last Author"
 msgstr ""
 
 #. Resource IDs: (68)
@@ -5958,6 +5994,10 @@ msgstr ""
 
 #. Resource IDs: (69, 1588)
 msgid "RefLog"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Refname"
 msgstr ""
 
 #. Resource IDs: (135, 1382)
