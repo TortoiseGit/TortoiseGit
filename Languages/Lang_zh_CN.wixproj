@@ -5,7 +5,7 @@
     <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{b0e79916-b2b5-464d-ab25-8269b0f40f4a}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TortoiseGit_Lang_zh_CN</OutputName>
+    <OutputName>TortoiseGit-LanguagePack-zh_CN</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
