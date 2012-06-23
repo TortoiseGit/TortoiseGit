@@ -235,10 +235,10 @@ DWORD CChangedDlg::UpdateShowFlags()
 void CChangedDlg::OnBnClickedShowunversioned()
 {
 	UpdateData();
+	m_regAddBeforeCommit = m_bShowUnversioned;
 	if(m_FileListCtrl.m_FileLoaded & CGitStatusListCtrl::FILELIST_UNVER)
 	{
 		m_FileListCtrl.Show(UpdateShowFlags());
-		m_regAddBeforeCommit = m_bShowUnversioned;
 	}
 	else
 	{
