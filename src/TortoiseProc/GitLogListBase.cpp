@@ -1905,7 +1905,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 
 				for (int cpPathIndex = 0; cpPathIndex<pLogEntry->GetFiles(this).GetCount(); ++cpPathIndex)
 				{
-					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + _T(" : ") + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
+					sPaths += ((CTGitPath&)pLogEntry->GetFiles(this)[cpPathIndex]).GetActionName() + _T(": ") + pLogEntry->GetFiles(this)[cpPathIndex].GetGitPathString();
 					sPaths += _T("\r\n");
 				}
 				sPaths.Trim();
