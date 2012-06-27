@@ -1,7 +1,7 @@
 = Release 1.7.11.0 =
 Released: unreleased
 
-== Features==
+== Features ==
  * Push Dialog: Allow to enter SHA-1 or more complex refs as source ref
  * Fixed issue #746: Make tortoisegit more gerrit friendly
  * Optimized TGitCache overlay calculation (deleted but kept files are now displayed as such)
@@ -27,7 +27,7 @@ Released: unreleased
 = Release 1.7.10.0 =
 Released: 2012-06-03
 
-== Features==
+== Features ==
  * Updated shipped zlib library to version 1.2.7
  * Synced TortoiseIDiff with TortoiseSVN
  * Synced TortoiseUDiff with TortoiseSVN
@@ -55,7 +55,7 @@ Released: 2012-06-03
 = Release 1.7.9.0 =
 Released: 2012-05-05
 
-== Features==
+== Features ==
  * Allow to fetch from log dialog
  * Fixed issue #1058: Allow to create tag after commit
  * Fixed issue #101: UTF-8 support
@@ -83,7 +83,7 @@ Released: 2012-05-05
 = Release 1.7.8.0 =
 Released: 2012-04-01
 
-== Features==
+== Features ==
  * Updated shipped zlib library to version 1.2.6
  * Updated shipped apr library to version 1.4.6
  * Updated shipped libgit2 to version 0.16.0
@@ -116,7 +116,7 @@ Released: 2012-04-01
 = Release 1.7.7.0 =
 Released: 2012-02-09
 
-== Features==
+== Features ==
  * Fixed issue #758: Make the log of a bare repository available
  * Fixed issue #880: Allow sync / fetch / push on bare repository
  * Fixed issue #818: SafeCRLF = warn should be available
@@ -156,7 +156,7 @@ Released: 2012-02-09
 = Release 1.7.6.0 =
 Released: 2011-12-10
 
-== Features==
+== Features ==
  * Fixed issue #972: Add "fast forward only" checkbox in pull dialog
  * Fixed issue #976: Compare Revisions should inherit path filter
  * Fixed issue #869: TortoiseProc CloneCommand is ignoring "url" command line parameter
@@ -195,7 +195,7 @@ Released: 2011-12-10
 = Release 1.7.5.0 =
 Released: 2011-11-09
 
-== Features==
+== Features ==
  * Fixed issue #260: Added support for bisect
  * Fixed issue #916: Fixed wrong contextmenu icon display position with installed TSVN 1.7
  * Add new command to diff two selected files in the CGitStatusListCtrl.
@@ -217,7 +217,7 @@ Released: 2011-11-09
 = Release 1.7.4.0 =
 Released: 2011-10-10
 
-== Features==
+== Features ==
  * Add Show Environment variables at setting dialog to help debug user problem.
  * Allow users to be warned if there is no Signed-Off-By line in a commit message
  * Fixed issue #375: Implement --date/time option gui interface in the commit dialog
