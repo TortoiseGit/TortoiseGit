@@ -28,6 +28,10 @@
 
 	<Property Id="ALLUSERS">1</Property>
 
+    <?if $(env.Platform) = "win32" ?>
+        <Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of the TortoiseGit language pack instead.">NOT Msix64</Condition>
+    <?endif ?>
+
     <Property Id="INSTALLDIR">
       <RegistrySearch Id="TGitInstallationDir" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)"/>
     </Property>
