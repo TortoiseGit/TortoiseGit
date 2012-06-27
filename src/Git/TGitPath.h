@@ -86,6 +86,7 @@ public:
 	 */
 	void SetFromWin(LPCTSTR pPath);
 	void SetFromWin(const CString& sPath);
+	void SetFromWin(LPCTSTR pPath, bool bIsDirectory);
 	void SetFromWin(const CString& sPath, bool bIsDirectory);
 	/**
 	 * Set the path from an unknown source.

@@ -728,7 +728,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_CRAWL:
 				{
 					CTGitPath changedpath;
-					changedpath.SetFromWin(CString(command.path), true);
+					changedpath.SetFromWin(command.path, true);
 					// remove the path from our cache - that will 'invalidate' it.
 					CGitStatusCache::Instance().WaitToWrite();
 					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
@@ -744,7 +744,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_RELEASE:
 				{
 					CTGitPath changedpath;
-					changedpath.SetFromWin(CString(command.path), true);
+					changedpath.SetFromWin(command.path, true);
 					ATLTRACE(_T("release handle for path %s\n"), changedpath.GetWinPath());
 					CGitStatusCache::Instance().WaitToWrite();
 					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
@@ -755,7 +755,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_BLOCK:
 				{
 					CTGitPath changedpath;
-					changedpath.SetFromWin(CString(command.path));
+					changedpath.SetFromWin(command.path);
 					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
 					CGitStatusCache::Instance().BlockPath(changedpath);
 				}
@@ -763,7 +763,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_UNBLOCK:
 				{
 					CTGitPath changedpath;
-					changedpath.SetFromWin(CString(command.path));
+					changedpath.SetFromWin(command.path);
 					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
 					CGitStatusCache::Instance().UnBlockPath(changedpath);
 				}
