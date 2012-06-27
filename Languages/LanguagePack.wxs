@@ -21,6 +21,8 @@
       Compressed='yes' 
       SummaryCodepage='1252' />
 
+    <MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+
     <Media Id='1' Cabinet='langpack.cab' EmbedCab='yes' CompressionLevel="high" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
 
