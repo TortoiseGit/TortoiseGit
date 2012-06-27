@@ -1257,10 +1257,18 @@ int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int /*
 
 	if(strncmp(refname, "refs/tags", 9) == 0)
 	{
-		GIT_HASH refhash;
-		if(!git_deref_tag(sha1, refhash))
+		try
 		{
-			(*map)[(char*)refhash].push_back(str+_T("^{}"));
+			GIT_HASH refhash;
+			if(!git_deref_tag(sha1, refhash))
+			{
+				(*map)[(char*)refhash].push_back(str+_T("^{}"));
+			}
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			::MessageBox(NULL, _T("Could not get (readable) reference for hash ") + hash.ToString() + _T(".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 		}
 	}
 	return 0;
