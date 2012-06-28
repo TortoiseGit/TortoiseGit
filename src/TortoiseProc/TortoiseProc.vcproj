@@ -1264,6 +1264,14 @@
 					RelativePath=".\Commands\SubmoduleCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\SubmoduleUpdateDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\SubmoduleUpdateDlg.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Rename"

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2012 - TortoiseGit
+// Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,41 +16,32 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-#include "Command.h"
 
-class SubmoduleAddCommand : public Command
+#include "StandAloneDlg.h"
+
+class CSubmoduleUpdateDlg : public CStandAloneDialog
 {
+	DECLARE_DYNAMIC(CSubmoduleUpdateDlg)
+
 public:
-	/**
-	 * Executes the command.
-	 */
-	virtual bool			Execute();
-};
+	CSubmoduleUpdateDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CSubmoduleUpdateDlg();
 
-class SubmoduleCommand:public Command
-{
+// Dialog Data
+	enum { IDD = IDD_SUBMODULE_UPDATE };
+
+protected:
+	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+	DECLARE_MESSAGE_MAP()
+
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedHelp();
+
 public:
-	virtual bool Execute(CString cmd,CString arg=_T(""));
-
+	BOOL m_bInit;
+	BOOL m_bRecursive;
 };
-
-class SubmoduleUpdateCommand : public Command
-{
-public:
-	/**
-	 * Executes the command.
-	 */
-	virtual bool			Execute();
-};
-
-class SubmoduleSyncCommand : public SubmoduleCommand
-{
-public:
-	/**
-	 * Executes the command.
-	 */
-	virtual bool			Execute() {return SubmoduleCommand::Execute(_T("sync"));};
-};
-
-

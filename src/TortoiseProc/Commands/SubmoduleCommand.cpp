@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009 - TortoiseGit
+// Copyright (C) 2008-2009,2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "SubmoduleAddDlg.h"
+#include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
 
 bool SubmoduleAddCommand::Execute()
@@ -58,6 +59,56 @@ bool SubmoduleAddCommand::Execute()
 		bRet = TRUE;
 	}
 	return bRet;
+}
+
+bool SubmoduleUpdateCommand::Execute()
+{
+	CString bkpath;
+	if (parser.HasKey(_T("bkpath")))
+		bkpath = parser.GetVal(_T("bkpath"));
+	else
+	{
+		bkpath = this->orgPathList[0].GetWinPathString();
+		int start = bkpath.ReverseFind(_T('\\'));
+		if (start >= 0)
+			bkpath = bkpath.Left(start);
+	}
+
+	CString super = g_GitAdminDir.GetSuperProjectRoot(bkpath);
+	if (super.IsEmpty())
+	{
+		CMessageBox::Show(NULL,IDS_ERR_NOTFOUND_SUPER_PRJECT,IDS_APPNAME,MB_OK|MB_ICONERROR);
+		//change current project root to super project
+		return false;
+	}
+
+	CSubmoduleUpdateDlg submoduleUpdateDlg;
+	if (submoduleUpdateDlg.DoModal() != IDOK)
+		return false;
+
+	CProgressDlg progress;
+
+	g_Git.m_CurrentDir = super;
+
+	CString params;
+	if (submoduleUpdateDlg.m_bInit)
+		params = _T(" --init");
+	if (submoduleUpdateDlg.m_bRecursive)
+		params += _T(" --recursive");
+
+	for (int i = 0; i < this->orgPathList.GetCount(); i++)
+	{
+		if (orgPathList[i].IsDirectory())
+		{
+			CString str;
+			str.Format(_T("git.exe submodule update%s \"%s\""), params, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			progress.m_GitCmdList.push_back(str);
+		}
+	}
+
+	progress.DoModal();
+
+	return !progress.m_GitStatus;
 }
 
 bool SubmoduleCommand::Execute(CString cmd,  CString arg)

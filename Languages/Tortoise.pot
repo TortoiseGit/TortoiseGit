@@ -690,6 +690,10 @@ msgstr ""
 msgid "&Initial directory:"
 msgstr ""
 
+#. Resource IDs: (1693)
+msgid "&Initialize submodules (--init)"
+msgstr ""
+
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
 msgstr ""
@@ -885,6 +889,10 @@ msgstr ""
 
 #. Resource IDs: (1246)
 msgid "&Recent messages"
+msgstr ""
+
+#. Resource IDs: (1694)
+msgid "&Recursive"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7188,6 +7196,10 @@ msgstr ""
 
 #. Resource IDs: (76)
 msgid "Submodule Update"
+msgstr ""
+
+#. Resource IDs: (1624)
+msgid "Submodule Update Options"
 msgstr ""
 
 #. Resource IDs: (81)
