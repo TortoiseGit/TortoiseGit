@@ -1538,18 +1538,31 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
 						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
+				}
 
-					if (CTGitPath(g_Git.m_CurrentDir).HasStashDir())
+				bool isStash = false;
+				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i] == _T("refs/stash"))
 					{
-						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
-							popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
-
-						if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
-							popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
+						isStash = true;
+						break;
 					}
+				}
+
+				if (CTGitPath(g_Git.m_CurrentDir).HasStashDir() && (pSelLogEntry->m_CommitHash.IsEmpty() || isStash))
+				{
+					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_POP))
+						popup.AppendMenuIcon(ID_STASH_POP, IDS_MENUSTASHPOP, IDI_RELOCATE);
+
+					if (m_ContextMenuMask&GetContextMenuBit(ID_STASH_LIST))
+						popup.AppendMenuIcon(ID_STASH_LIST, IDS_MENUSTASHLIST, IDI_LOG);
 
 					popup.AppendMenu(MF_SEPARATOR, NULL);
+				}
 
+				if (pSelLogEntry->m_CommitHash.IsEmpty())
+				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_FETCH))
 						popup.AppendMenuIcon(ID_FETCH, IDS_MENUFETCH, IDI_PULL);
 
