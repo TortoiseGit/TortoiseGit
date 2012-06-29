@@ -997,6 +997,11 @@ bool CAppUtils::Switch(CString *CommitHash, CString initialRefName, bool autoclo
 		if (dlg.m_bBranch)
 			branch = dlg.m_NewBranch;
 
+		// if refs/heads/ is not stripped, checkout will detach HEAD
+		// checkout prefers branches on name clashes (with tags)
+		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
+			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
+
 		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack == TRUE, autoclose);
 	}
 	return FALSE;

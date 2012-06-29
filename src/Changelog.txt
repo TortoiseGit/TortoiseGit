@@ -4,6 +4,9 @@ Released: unreleased
 == Features ==
  * Fixed issue #238: submodule update should be recursive
 
+== Bug Fix ==
+ * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
+
 = Release 1.7.11.0 =
 Released: unreleased
 

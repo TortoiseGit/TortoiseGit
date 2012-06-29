@@ -171,7 +171,9 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	}
 	else
 	{
-		m_NewBranch = CString(_T("Branch_"))+this->m_VersionName;
+		if (m_VersionName.Left(11) == _T("refs/heads/"))
+			version = m_VersionName.Mid(11);
+		m_NewBranch = CString(_T("Branch_")) + version;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 		if(isUpdateCreateBranch)

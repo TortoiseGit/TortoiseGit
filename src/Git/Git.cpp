@@ -1114,6 +1114,25 @@ CString	CGit::FixBranchName(const CString& branchName)
 	return tempBranchName;
 }
 
+bool CGit::IsBranchTagNameUnique(const CString& name)
+{
+	CString output;
+
+	int ret = g_Git.Run(_T("git show-ref --tags --heads ") + name, &output, NULL, CP_UTF8);
+	if (!ret)
+	{
+		int i = 0, pos = 0;
+		while (pos >= 0)
+		{
+			output.Tokenize(_T("\n"), pos);
+			i++;
+		}
+		if (i >= 2)
+			return false;
+	}
+
+	return true;
+}
 
 CString CGit::DerefFetchHead()
 {
