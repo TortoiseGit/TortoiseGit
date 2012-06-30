@@ -148,18 +148,18 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib)
 
 STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
-	PreserveChdir preserveChdir;
-	git_wc_status_kind status = git_wc_status_none;
-	bool readonlyoverlay = false;
-	bool lockedoverlay = false;
 	if (pwszPath == NULL)
 		return E_INVALIDARG;
 	const TCHAR* pPath = pwszPath;
-
 	// the shell sometimes asks overlays for invalid paths, e.g. for network
 	// printers (in that case the path is "0", at least for me here).
 	if (_tcslen(pPath)<2)
 		return S_FALSE;
+	PreserveChdir preserveChdir;
+	git_wc_status_kind status = git_wc_status_none;
+	bool readonlyoverlay = false;
+	bool lockedoverlay = false;
+
 	// since the shell calls each and every overlay handler with the same filepath
 	// we use a small 'fast' cache of just one path here.
 	// To make sure that cache expires, clear it as soon as one handler is used.
