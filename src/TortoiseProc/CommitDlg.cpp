@@ -414,6 +414,11 @@ void CCommitDlg::OnOK()
 		ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 		return;
 	}
+	if (m_bCreateNewBranch && g_Git.BranchTagExists(m_sCreateNewBranch, false))
+	{
+		if (CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
+			return;
+	}
 
 	CString id;
 	GetDlgItemText(IDC_BUGID, id);

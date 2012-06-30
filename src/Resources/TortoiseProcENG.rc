@@ -3642,6 +3642,9 @@ BEGIN
                             "Use a different name or use the ""Force"" option to overwrite it."
     IDS_B_DIFFERENTNAMEOROVERRIDE 
                             "Use a different name or use the ""Override branch"" option."
+    IDS_T_SAMEBRANCHNAMEEXISTS 
+                            "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
+    IDS_B_SAMETAGNAMEEXISTS "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
 END
 
 #endif    // Englisch (USA) resources

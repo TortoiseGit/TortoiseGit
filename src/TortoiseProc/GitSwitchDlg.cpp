@@ -144,6 +144,10 @@ void CGitSwitchDlg::OnBnClickedOk()
 		msg.LoadString(IDS_B_EXISTS);
 		ShowEditBalloon(IDC_NEWBRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 	}
+	else if (m_bBranch && g_Git.BranchTagExists(m_NewBranch, false) && CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
+	{
+			return;
+	}
 	else
 	{
 		UpdateRevsionName();

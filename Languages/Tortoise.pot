@@ -1352,6 +1352,10 @@ msgid "?"
 msgstr ""
 
 #. Resource IDs: (85)
+msgid "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
 msgid "A branch with this name already exists."
 msgstr ""
 
@@ -1373,6 +1377,10 @@ msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
 msgstr ""
 
 #. Resource IDs: (85)
