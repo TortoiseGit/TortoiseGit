@@ -147,6 +147,7 @@ public:
 	static int m_LogEncode;
 	static bool IsBranchNameValid(CString branchname);
 	static bool IsBranchTagNameUnique(const CString& name);
+	static bool BranchTagExists(const CString& name, bool isBranch = true);
 	unsigned int Hash2int(CGitHash &hash);
 //	static CString m_MsysGitPath;
 

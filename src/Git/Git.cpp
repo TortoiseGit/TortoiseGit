@@ -1134,6 +1134,30 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	return true;
 }
 
+/*
+Checks if a branch or tag with the given name exists
+isBranch is true -> branch, tag otherwise
+*/
+bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
+{
+	CString cmd, output;
+
+	cmd = _T("git show-ref ");
+	if (isBranch)
+		cmd += _T("--heads ");
+	else
+		cmd += _T("--tags ");
+
+	int ret = g_Git.Run(cmd + name, &output, NULL, CP_UTF8);
+	if (!ret)
+	{
+		if (!output.IsEmpty())
+			return true;
+	}
+
+	return false;
+}
+
 CString CGit::DerefFetchHead()
 {
 	using namespace std;

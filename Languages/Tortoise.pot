@@ -1351,6 +1351,10 @@ msgstr ""
 msgid "?"
 msgstr ""
 
+#. Resource IDs: (85)
+msgid "A branch with this name already exists."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please go to http://code.google.com/p/tortoisegit and download the current version! Click _here_ to go directly to our website."
 msgstr ""
@@ -1369,6 +1373,10 @@ msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A tag with this name already exists."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -2971,6 +2979,10 @@ msgstr ""
 
 #. Resource IDs: (83)
 msgid "Delete tag"
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Delete the existing branch or use a different name."
 msgstr ""
 
 #. Resource IDs: (73, 264, 1257, 1551)
@@ -7934,6 +7946,14 @@ msgstr ""
 
 #. Resource IDs: (1064)
 msgid "Use Unified Diff from &clipboard"
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Force\" option to overwrite it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Override branch\" option."
 msgstr ""
 
 #. Resource IDs: (2054)

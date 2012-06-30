@@ -762,9 +762,14 @@
 #define IDS_STATUSLIST_FROM             1349
 #define IDS_LASTAUTHOR                  1350
 #define IDS_B_T_NOT_UNIQUE              1351
+#define IDS_B_EXISTS                    1352
 #define IDC_REV1BTN                     1353
+#define IDS_T_EXISTS                    1353
 #define IDC_REV2BTN                     1354
+#define IDS_B_DELETEORDIFFERENTNAME     1354
+#define IDS_B_T_DIFFERENTNAMEORFORCE    1355
 #define IDC_ACTIONLABEL                 1356
+#define IDS_B_DIFFERENTNAMEOROVERRIDE   1356
 #define IDC_GROUPBOX                    1359
 #define IDC_CHECKOUTPATH                1361
 #define IDC_BROWSECHECKOUTPATH          1362

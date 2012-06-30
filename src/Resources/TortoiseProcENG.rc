@@ -3634,6 +3634,14 @@ BEGIN
     IDS_STATUSLIST_FROM     "(from %s)"
     IDS_LASTAUTHOR          "Last Author"
     IDS_B_T_NOT_UNIQUE      "The entered source ref is ambiguous. You have to make it unique (e.g. by adding ""refs/heads/"" as a prefix for branches or ""refs/tags/"" for tags)!"
+    IDS_B_EXISTS            "A branch with this name already exists."
+    IDS_T_EXISTS            "A tag with this name already exists."
+    IDS_B_DELETEORDIFFERENTNAME 
+                            "Delete the existing branch or use a different name."
+    IDS_B_T_DIFFERENTNAMEORFORCE 
+                            "Use a different name or use the ""Force"" option to overwrite it."
+    IDS_B_DIFFERENTNAMEOROVERRIDE 
+                            "Use a different name or use the ""Override branch"" option."
 END
 
 #endif    // Englisch (USA) resources

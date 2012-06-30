@@ -406,6 +406,14 @@ void CCommitDlg::OnOK()
 		ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
 		return;
 	}
+	if (m_bCreateNewBranch && g_Git.BranchTagExists(m_sCreateNewBranch))
+	{
+		CString msg;
+		msg.LoadString(IDS_B_EXISTS);
+		msg += _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DELETEORDIFFERENTNAME));
+		ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+		return;
+	}
 
 	CString id;
 	GetDlgItemText(IDC_BUGID, id);

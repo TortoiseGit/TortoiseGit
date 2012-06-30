@@ -175,6 +175,17 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
 		return;
 	}
+	if (!m_bForce && g_Git.BranchTagExists(m_BranchTagName, !m_bIsTag))
+	{
+		CString msg;
+		if (m_bIsTag)
+			msg.LoadString(IDS_T_EXISTS);
+		else
+			msg.LoadString(IDS_B_EXISTS);
+		CMessageBox::Show(NULL, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), _T("TortoiseGit"), MB_OK);
+		return;
+	}
+
 	this->UpdateRevsionName();
 	OnOK();
 }
