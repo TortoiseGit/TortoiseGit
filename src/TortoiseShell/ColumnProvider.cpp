@@ -54,6 +54,9 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 // IColumnProvider members
 STDMETHODIMP CShellExt::GetColumnInfo_Wrap(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
+	if (psci == 0)
+		return E_POINTER;
+
 	PreserveChdir preserveChdir;
 	if (dwIndex > 0) // TODO: keep for now to be able to hide unimplemented columns
 		return S_FALSE;
@@ -125,6 +128,11 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 
 STDMETHODIMP CShellExt::GetItemData_Wrap(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData)
 {
+	if ((pscid == 0) || (pscd == 0))
+		return E_INVALIDARG;
+	if (pvarData == 0)
+		return E_POINTER;
+
 	PreserveChdir preserveChdir;
 	if (!g_ShellCache.IsPathAllowed((TCHAR *)pscd->wszFile))
 	{
@@ -214,6 +222,8 @@ STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 
 STDMETHODIMP CShellExt::Initialize_Wrap(LPCSHCOLUMNINIT psci)
 {
+	if (psci == 0)
+		return E_INVALIDARG;
 	// psci->wszFolder (WCHAR) holds the path to the folder to be displayed
 	// Should check to see if its a "SVN" folder and if not return E_FAIL
 

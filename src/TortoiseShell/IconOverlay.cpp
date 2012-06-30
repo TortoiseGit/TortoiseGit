@@ -44,6 +44,15 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIn
 
 STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
 {
+	if(pwszIconFile == 0)
+		return E_POINTER;
+	if(pIndex == 0)
+		return E_POINTER;
+	if(pdwFlags == 0)
+		return E_POINTER;
+	if(cchMax < 1)
+		return E_INVALIDARG;
+
 	// Now here's where we can find out if due to lack of enough overlay
 	// slots some of our overlays won't be shown.
 	// To do that we have to mark every overlay handler that's successfully
@@ -80,6 +89,9 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 
 STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
 {
+	if (pPriority == 0)
+		return E_POINTER;
+
 	switch (m_State)
 	{
 		case FileStateConflict:
@@ -136,7 +148,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	bool readonlyoverlay = false;
 	bool lockedoverlay = false;
 	if (pwszPath == NULL)
-		return S_FALSE;
+		return E_INVALIDARG;
 	const TCHAR* pPath = pwszPath;
 
 	// the shell sometimes asks overlays for invalid paths, e.g. for network
