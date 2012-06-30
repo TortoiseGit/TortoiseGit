@@ -136,13 +136,13 @@ void CGitSwitchDlg::OnBnClickedOk()
 	if (m_bBranch && (!g_Git.IsBranchNameValid(m_NewBranch)))
 	{
 		// new branch requested but name is empty or contains spaces
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
+		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
 	}
 	else if (m_bBranch && !m_bBranchOverride && g_Git.BranchTagExists(m_NewBranch))
 	{
 		CString msg;
 		msg.LoadString(IDS_B_EXISTS);
-		CMessageBox::Show(NULL, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), _T("TortoiseGit"), MB_OK);
+		ShowEditBalloon(IDC_NEWBRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 	}
 	else
 	{

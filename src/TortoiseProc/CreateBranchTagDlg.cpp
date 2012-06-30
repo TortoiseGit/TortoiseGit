@@ -172,7 +172,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	this->m_BranchTagName.Trim();
 	if(!g_Git.IsBranchNameValid(this->m_BranchTagName))
 	{
-		CMessageBox::Show(NULL, IDS_B_T_NOTEMPTY, IDS_APPNAME, MB_OK);
+		ShowEditBalloon(IDC_BRANCH_TAG, IDS_B_T_NOTEMPTY, TTI_ERROR);
 		return;
 	}
 	if (!m_bForce && g_Git.BranchTagExists(m_BranchTagName, !m_bIsTag))
@@ -182,7 +182,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 			msg.LoadString(IDS_T_EXISTS);
 		else
 			msg.LoadString(IDS_B_EXISTS);
-		CMessageBox::Show(NULL, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), _T("TortoiseGit"), MB_OK);
+		ShowEditBalloon(IDC_BRANCH_TAG, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 		return;
 	}
 
