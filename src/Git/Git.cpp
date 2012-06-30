@@ -1124,8 +1124,8 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 		int i = 0, pos = 0;
 		while (pos >= 0)
 		{
-			output.Tokenize(_T("\n"), pos);
-			i++;
+			if (!output.Tokenize(_T("\n"), pos).IsEmpty())
+				i++;
 		}
 		if (i >= 2)
 			return false;
