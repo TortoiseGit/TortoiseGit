@@ -30,10 +30,20 @@
 //  the name of the file containing the overlay image, and its index within
 //  that file. The Shell then adds the icon overlay to the system image list."
 
-STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR /*pwszIconFile*/, int /*cchMax*/, int * /*pIndex*/, DWORD * /*pdwFlags*/)
+STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
 {
-	PreserveChdir preserveChdir;
+	__try
+	{
+		return GetOverlayInfo_Wrap(pwszIconFile, cchMax, pIndex, pdwFlags);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
 
+STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
+{
 	// Now here's where we can find out if due to lack of enough overlay
 	// slots some of our overlays won't be shown.
 	// To do that we have to mark every overlay handler that's successfully
@@ -57,6 +67,18 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR /*pwszIconFile*/, int /*cchMax*/, 
 };
 
 STDMETHODIMP CShellExt::GetPriority(int *pPriority)
+{
+	__try
+	{
+		return GetPriority_Wrap(pPriority);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
 {
 	switch (m_State)
 	{
@@ -95,7 +117,19 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 //  IShellIconOverlayIdentifier::GetOverlayInfo method to determine which icon
 //  to display."
 
-STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
+STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib)
+{
+	__try
+	{
+		return IsMemberOf_Wrap(pwszPath, dwAttrib);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
 	PreserveChdir preserveChdir;
 	git_wc_status_kind status = git_wc_status_none;
