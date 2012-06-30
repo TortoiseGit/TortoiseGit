@@ -158,9 +158,8 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	{
 		if (!g_ShellCache.IsPathAllowed(pPath))
 		{
-			int drivenumber = -1;
 			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() &&
-				((drivenumber=PathGetDriveNumber(pPath))!=0)&&(drivenumber!=1) &&
+				(PathGetDriveNumber(pPath)>1) &&
 				PathIsDirectory(pPath) && g_ShellCache.HasGITAdminDir(pPath, true))
 			{
 				return S_OK;
