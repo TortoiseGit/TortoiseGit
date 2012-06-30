@@ -401,23 +401,28 @@ void CCommitDlg::OnOK()
 	}
 	this->UpdateData();
 
-	if (m_bCreateNewBranch && !g_Git.IsBranchNameValid(m_sCreateNewBranch))
+	if (m_bCreateNewBranch)
 	{
-		ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
-		return;
-	}
-	if (m_bCreateNewBranch && g_Git.BranchTagExists(m_sCreateNewBranch))
-	{
-		CString msg;
-		msg.LoadString(IDS_B_EXISTS);
-		msg += _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DELETEORDIFFERENTNAME));
-		ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
-		return;
-	}
-	if (m_bCreateNewBranch && g_Git.BranchTagExists(m_sCreateNewBranch, false))
-	{
-		if (CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
+		if (!g_Git.IsBranchNameValid(m_sCreateNewBranch))
+		{
+			ShowEditBalloon(IDC_NEWBRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
 			return;
+		}
+		if (g_Git.BranchTagExists(m_sCreateNewBranch))
+		{
+			// branch already exists
+			CString msg;
+			msg.LoadString(IDS_B_EXISTS);
+			msg += _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DELETEORDIFFERENTNAME));
+			ShowEditBalloon(IDC_NEWBRANCH, msg, CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+			return;
+		}
+		if (g_Git.BranchTagExists(m_sCreateNewBranch, false))
+		{
+			// tag with the same name exists -> shortref is ambiguous
+			if (CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
+				return;
+		}
 	}
 
 	CString id;

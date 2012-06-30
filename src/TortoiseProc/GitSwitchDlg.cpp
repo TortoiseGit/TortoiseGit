@@ -133,27 +133,33 @@ void CGitSwitchDlg::OnBnClickedOk()
 
 	// make sure a valid branch has been entered if a new branch is required
 	m_NewBranch.Trim();
-	if (m_bBranch && (!g_Git.IsBranchNameValid(m_NewBranch)))
+	if (m_bBranch)
 	{
-		// new branch requested but name is empty or contains spaces
-		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
-	}
-	else if (m_bBranch && !m_bBranchOverride && g_Git.BranchTagExists(m_NewBranch))
-	{
-		CString msg;
-		msg.LoadString(IDS_B_EXISTS);
-		ShowEditBalloon(IDC_NEWBRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
-	}
-	else if (m_bBranch && g_Git.BranchTagExists(m_NewBranch, false) && CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
-	{
+		if (!g_Git.IsBranchNameValid(m_NewBranch))
+		{
+			// new branch requested but name is empty or contains spaces
+			ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
 			return;
+		}
+		else if (!m_bBranchOverride && g_Git.BranchTagExists(m_NewBranch))
+		{
+			// branch already exists
+			CString msg;
+			msg.LoadString(IDS_B_EXISTS);
+			ShowEditBalloon(IDC_NEWBRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+			return;
+		}
+		else if (g_Git.BranchTagExists(m_NewBranch, false))
+		{
+			// tag with the same name exists -> shortref is ambiguous
+			if (CMessageBox::Show(m_hWnd, IDS_B_SAMETAGNAMEEXISTS, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
+				return;
+		}
 	}
-	else
-	{
-		UpdateRevsionName();
-		//this->m_Version.SaveHistory();
-		OnOK();
-	}
+
+	UpdateRevsionName();
+	//this->m_Version.SaveHistory();
+	OnOK();
 }
 void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 {
