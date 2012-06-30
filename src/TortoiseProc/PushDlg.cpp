@@ -312,17 +312,17 @@ void CPushDlg::OnBnClickedOk()
 			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_APPNAME, MB_OK);
 			return;
 		}
-		else if (!m_BranchSourceName.IsEmpty() && g_Git.IsBranchTagNameUnique(m_BranchSourceName))
-		{
-			CMessageBox::Show(NULL, IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
-			return;
-		}
 		else
 		{
 			// do not store branch names on removal
 			this->m_RemoteURL.SaveHistory();
 			this->m_BranchRemote.SaveHistory();
 			m_RemoteReg = m_Remote.GetString();
+		}
+		if (!m_BranchSourceName.IsEmpty() && !g_Git.IsBranchTagNameUnique(m_BranchSourceName))
+		{
+			CMessageBox::Show(NULL, IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+			return;
 		}
 	}
 
