@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-09 22:25+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
-"Language-Team: French (http://www.transifex.net/projects/p/tortoisegit/language/fr/)\n"
+"PO-Revision-Date: 2012-06-23 19:49+0000\n"
+"Last-Translator: Freddydelanuit Dec <fred.dec@free.fr>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -454,6 +454,10 @@ msgstr "&Nettoyer..."
 #. Resource IDs: (57632)
 msgid "&Clear"
 msgstr "&Nettoyer"
+
+#. Resource IDs: (1686)
+msgid "&Clear stash"
+msgstr "&Vider la réserve"
 
 #. Resource IDs: (1, 58112)
 msgid "&Close"
@@ -909,6 +913,10 @@ msgstr "&Rouge:"
 msgid "&Redo"
 msgstr "&Refaire"
 
+#. Resource IDs: (1579)
+msgid "&Ref:"
+msgstr "&Ref:"
+
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Rafraîchir"
@@ -1242,6 +1250,18 @@ msgstr "..."
 #. Resource IDs: (16527)
 msgid "....."
 msgstr "....."
+
+#. Resource IDs: (1691)
+msgid ".git/info/exclude"
+msgstr ".git/info/exclure"
+
+#. Resource IDs: (1690)
+msgid ".gitignore in the containing directories of the items"
+msgstr ".gitignore dans les dossiers contenant les objets"
+
+#. Resource IDs: (1689)
+msgid ".gitignore in the repository root"
+msgstr ".gitignore dans le dépôt racine"
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -1745,7 +1765,7 @@ msgstr "Une tentative a été faite pour écrire %1 ouvert en lecture."
 
 #. Resource IDs: (65535)
 msgid "Attention: This command affects the whole working tree!"
-msgstr ""
+msgstr "Attention: cette commande affecte toute l'arborescence de travail."
 
 #. Resource IDs: (131, 160)
 msgid "Authentication"
@@ -3978,6 +3998,10 @@ msgstr "Filtrer"
 msgid "Filter paths"
 msgstr "Filtrer les chemins"
 
+#. Resource IDs: (1479)
+msgid "Filter:"
+msgstr "Filtre:"
+
 #. Resource IDs: (20090)
 msgid "Filter: "
 msgstr "Filtre :"
@@ -4689,6 +4713,22 @@ msgstr "Ignorer tous les esp&acements"
 msgid "Ignore &case changes"
 msgstr "Ignorer les changements de &casse"
 
+#. Resource IDs: (1692)
+msgid "Ignore File"
+msgstr "Ignorer le fichier"
+
+#. Resource IDs: (1686)
+msgid "Ignore Type"
+msgstr "Ignorer le type"
+
+#. Resource IDs: (1687)
+msgid "Ignore item(s) only in the containing folder(s)"
+msgstr "Ignorer l'objet(s) seulement dans le dossier(s) conteneur"
+
+#. Resource IDs: (1688)
+msgid "Ignore item(s) recursively"
+msgstr "Ignorer l'objet(s) récursivement"
+
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignor&er les fins de lignes (recommandé)"
@@ -4899,6 +4939,10 @@ msgstr "LIGNE7"
 #. Resource IDs: (65535)
 msgid "LINE8"
 msgstr "LIGNE8"
+
+#. Resource IDs: (85)
+msgid "Last Author"
+msgstr "Dernier auteur"
 
 #. Resource IDs: (68)
 msgid "Last Commit"
@@ -6348,6 +6392,10 @@ msgstr "Parcourir Ref"
 msgid "RefLog"
 msgstr "Journal de référence"
 
+#. Resource IDs: (83)
+msgid "Refname"
+msgstr "Refname"
+
 #. Resource IDs: (135, 1382)
 msgid "Refresh"
 msgstr "Rafraîchir"
@@ -6453,7 +6501,7 @@ msgstr "Supprimer %s"
 
 #. Resource IDs: (1627)
 msgid "Remove &all untracked files (-fx)"
-msgstr ""
+msgstr "Retirer &tous les fichiers non pistés (-fx)"
 
 #. Resource IDs: (75)
 msgid "Remove &branch"
@@ -6461,7 +6509,7 @@ msgstr "Supprimer la &branche"
 
 #. Resource IDs: (1628)
 msgid "Remove &non-ignored untracked files (-f)"
-msgstr ""
+msgstr "Retirer les fichiers &non-ignorés et non pistés (-f)"
 
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
@@ -6477,11 +6525,11 @@ msgstr "Retirer de la liste des changements"
 
 #. Resource IDs: (1629)
 msgid "Remove ignored files (-fX)"
-msgstr ""
+msgstr "Retirer les fichiers ignorés (-fX)"
 
 #. Resource IDs: (1626)
 msgid "Remove untracked directories (-d)"
-msgstr ""
+msgstr "Retirer les répertoires non pistés (-d)"
 
 #. Resource IDs: (9)
 msgid "Remove untracked files from the working tree, ..."
@@ -8110,12 +8158,6 @@ msgid ""
 "A valid path must not contain '<<>|\"?*:' or one of the following device names:\n"
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Ce n'est pas un chemin valide !\nUn chemin valide ne doit pas contenir '<<>|\"?*:' ou l'un des noms de périphériques suivant :\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
-
-#. Resource IDs: (65535)
-msgid ""
-"This product includes software developed by CollabNet "
-"(http://www.Collab.Net/)"
-msgstr "Ce produit inclut des logiciels développés par CollabNet (http://www.Collab.Net/)"
 
 #. Resource IDs: (3857)
 #, c-format

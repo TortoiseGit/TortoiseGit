@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-09 22:25+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.net/projects/p/tortoisegit/language/es_ES/)\n"
+"PO-Revision-Date: 2012-06-25 17:34+0000\n"
+"Last-Translator: Mrbytes <eguervos@msn.com>\n"
+"Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/tortoisegit/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -159,7 +159,7 @@ msgid ""
 "%1\n"
 "Cannot find this file.\n"
 "Verify that the correct path and file name are given."
-msgstr "%1\nNo se puede encontrar el archivo.\nCompruebe que tanto archivo y ruta sean correctos"
+msgstr "%1\nNo se encontró el archivo.\nCompruebe que tanto archivo y ruta sean correctos"
 
 #. Resource IDs: (357)
 #, c-format
@@ -189,7 +189,7 @@ msgstr "%d archivos cambiados"
 #. Resource IDs: (65)
 #, c-format
 msgid "%d files removed."
-msgstr "%d archivos elimenados."
+msgstr "%d archivos eliminados."
 
 #. Resource IDs: (69)
 #, c-format
@@ -311,7 +311,7 @@ msgstr "&Añadir >>"
 
 #. Resource IDs: (1382)
 msgid "&Add New/Save"
-msgstr "&Añadir nuevo/guardar"
+msgstr "&Añadir/Guardar"
 
 #. Resource IDs: (68)
 msgid "&Add it"
@@ -452,6 +452,10 @@ msgstr "&Limpiar..."
 #. Resource IDs: (57632)
 msgid "&Clear"
 msgstr "&Limpia"
+
+#. Resource IDs: (1686)
+msgid "&Clear stash"
+msgstr "&Limpiar Resguardos"
 
 #. Resource IDs: (1, 58112)
 msgid "&Close"
@@ -627,7 +631,7 @@ msgstr "&Forzar"
 
 #. Resource IDs: (1480)
 msgid "&Force Overwrite Existing Branch (May discard changes)"
-msgstr "&Fuerza sobrescribir ramal existente (puede descartar cambios)"
+msgstr "&Forzar sobrescribir rama existente (puede descartar cambios)"
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
@@ -792,7 +796,7 @@ msgstr "&Nombre:"
 
 #. Resource IDs: (65535)
 msgid "&Navigate"
-msgstr "&Navegar"
+msgstr "&Explorar"
 
 #. Resource IDs: (1049)
 msgid "&Network drives"
@@ -907,6 +911,10 @@ msgstr "&Rojo:"
 msgid "&Redo"
 msgstr "&Repetir"
 
+#. Resource IDs: (1579)
+msgid "&Ref:"
+msgstr "&Ref:"
+
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Refresca"
@@ -957,11 +965,11 @@ msgstr "&Restaurar el estado anterior"
 
 #. Resource IDs: (1252)
 msgid "&Revert change by this commit"
-msgstr "&Revertir cambios de esta consigna"
+msgstr "&Restituir cambios de esta consigna"
 
 #. Resource IDs: (1252)
 msgid "&Revert changes by these commits"
-msgstr "&Revertir cambios de estas consignas"
+msgstr "&Restituir cambios de estas consignas"
 
 #. Resource IDs: (65535)
 msgid "&SSH client:"
@@ -1240,6 +1248,18 @@ msgstr "..."
 #. Resource IDs: (16527)
 msgid "....."
 msgstr "....."
+
+#. Resource IDs: (1691)
+msgid ".git/info/exclude"
+msgstr ".git/info/exclude"
+
+#. Resource IDs: (1690)
+msgid ".gitignore in the containing directories of the items"
+msgstr ".gitignore en los directorios que contengan los objetos"
+
+#. Resource IDs: (1689)
+msgid ".gitignore in the repository root"
+msgstr ".gitignore en la raiz de repositorio"
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -1679,7 +1699,7 @@ msgstr "Arábigo"
 
 #. Resource IDs: (1492)
 msgid "Arbitary &URL:"
-msgstr "&URL arbitraria:"
+msgstr "Lanzar &URL:"
 
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
@@ -1698,7 +1718,7 @@ msgstr "¿Seguro que deseas marcar el(los) archivo(s) en conflicto como resuelto
 msgid ""
 "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
 " since the last update!"
-msgstr "¿Seguro que quieres revertir %d objeto(s)? ¡Perderás <b>todos</b> los cambios desde el última actualización!"
+msgstr "¿Seguro que quieres restituir %d objeto(s)? ¡Perderás <b>todos</b> los cambios desde la última actualización!"
 
 #. Resource IDs: (32793)
 msgid "Arrange &vertical"
@@ -1743,7 +1763,7 @@ msgstr "Se intentó escribir cuando se leía de %1."
 
 #. Resource IDs: (65535)
 msgid "Attention: This command affects the whole working tree!"
-msgstr ""
+msgstr "Atención: ¡Este comando afecta a todo el árbol de trabajo!"
 
 #. Resource IDs: (131, 160)
 msgid "Authentication"
@@ -2676,7 +2696,7 @@ msgstr "Copiar selección al por&tapapeles"
 msgid ""
 "Copy the selection and put it on the Clipboard\n"
 "Copy"
-msgstr "Copiar la selección y colocarla en el Portapapeles\nCopiar"
+msgstr "Copia la selección al Portapapeles\nCopiar"
 
 #. Resource IDs: (1252)
 msgid "Copy to clipboard"
@@ -2887,7 +2907,7 @@ msgstr "Crear Etiqueta..."
 msgid ""
 "Create a new document\n"
 "New"
-msgstr "Crar un nuevo documento\nNuevo"
+msgstr "Crea un nuevo documento\nNuevo"
 
 #. Resource IDs: (604)
 msgid ""
@@ -3326,7 +3346,7 @@ msgid ""
 "Do you really want to revert all changes in\n"
 "%s\n"
 "and go back to this revision? These changes will be reverted by reverse-merging the revisions into your working tree."
-msgstr "¿Realmente desea revertir todos los cambios en\n%s\ny volver a esta revisión? Estas modificaciones serán revertidas por combinación-inversa de las revisiones en tu árbol de trabajo."
+msgstr "¿Realmente desea restituir todos los cambios en\n%s\ny volver a esta revisión? Estas modificaciones serán restituidas por combinación-inversa de las revisiones en tu árbol de trabajo."
 
 #. Resource IDs: (76)
 #, c-format
@@ -3334,7 +3354,7 @@ msgid ""
 "Do you really want to revert all changes in\n"
 "%s\n"
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
-msgstr "¿Realmente desea revertir todos los cambios en\n%s\nque se hicierón en esta revisión? Estas modificaciones serán revertidas por combinación-inversa de las revisiones en tu árbol de trabajo."
+msgstr "¿Realmente desea restituir todos los cambios en\n%s\nque se hicierón en esta revisión? Estas modificaciones serán restituidas por combinación-inversa de las revisiones en tu árbol de trabajo."
 
 #. Resource IDs: (313)
 msgid ""
@@ -3730,7 +3750,7 @@ msgstr "Fallo"
 
 #. Resource IDs: (74)
 msgid "Failed revert"
-msgstr "Revertir fallido"
+msgstr "Restitución fallida"
 
 #. Resource IDs: (1)
 #, c-format
@@ -3792,7 +3812,7 @@ msgstr "Error al ejecutar la operación del servidor."
 
 #. Resource IDs: (3857)
 msgid "Failed to save document."
-msgstr "Error al guardar el documento."
+msgstr "Error al guardar documento."
 
 #. Resource IDs: (264)
 #, c-format
@@ -3975,6 +3995,10 @@ msgstr "Filtrado por"
 #. Resource IDs: (321)
 msgid "Filter paths"
 msgstr "Rutas filtradas"
+
+#. Resource IDs: (1479)
+msgid "Filter:"
+msgstr "Flltro:"
 
 #. Resource IDs: (20090)
 msgid "Filter: "
@@ -4244,7 +4268,7 @@ msgstr "Git Revisión"
 
 #. Resource IDs: (1260)
 msgid "Git Revision List"
-msgstr "Git Listar Revisión"
+msgstr "Listar Revisión Git"
 
 #. Resource IDs: (22)
 msgid "Git SVN DCommit"
@@ -4687,6 +4711,22 @@ msgstr "Ignorar &todos los espacios en blanco"
 msgid "Ignore &case changes"
 msgstr "Ignorar &cambios de mayúsculas"
 
+#. Resource IDs: (1692)
+msgid "Ignore File"
+msgstr "Archivo ignorado"
+
+#. Resource IDs: (1686)
+msgid "Ignore Type"
+msgstr "Tipo ignorado"
+
+#. Resource IDs: (1687)
+msgid "Ignore item(s) only in the containing folder(s)"
+msgstr "Ignorar objeto(s) sólo en la(s) carpeta(s) que los contienen"
+
+#. Resource IDs: (1688)
+msgid "Ignore item(s) recursively"
+msgstr "Ignorar objeto(s) recusivamente"
+
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignorar terminaciones de línea (recomendable)"
@@ -4897,6 +4937,10 @@ msgstr "LÍNEA7"
 #. Resource IDs: (65535)
 msgid "LINE8"
 msgstr "LÍNEA8"
+
+#. Resource IDs: (85)
+msgid "Last Author"
+msgstr "Últim. Autor"
 
 #. Resource IDs: (68)
 msgid "Last Commit"
@@ -5176,7 +5220,7 @@ msgstr "Combinar no interactivo"
 #. Resource IDs: (1252)
 #, c-format
 msgid "Merge to \"%s\"..."
-msgstr "Combinar a \"%s\"..."
+msgstr "Combinar con \"%s\"..."
 
 #. Resource IDs: (263, 1257)
 msgid "Merged"
@@ -5227,7 +5271,7 @@ msgstr "Min"
 
 #. Resource IDs: (263)
 msgid "Mine"
-msgstr "MINE"
+msgstr "El mío"
 
 #. Resource IDs: (1068)
 msgid "Minimize the Ribbon"
@@ -5324,7 +5368,7 @@ msgstr "Mover: Nuevo nombre para %s"
 
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
-msgstr "Mover los archivos modificados a la papelera de reciclaje antes de revertir"
+msgstr "Mover los archivos modificados a la papelera de reciclaje antes de restituir"
 
 #. Resource IDs: (80)
 #, c-format
@@ -5458,7 +5502,7 @@ msgstr "No ocurrió ningún error."
 msgid ""
 "No files or folders were modified. There is nothing for TortoiseGit to "
 "revert!"
-msgstr "No se modificarón archivos o carpetas, ¡no hay nada que TortoiseGit revierta!"
+msgstr "No se modificaron archivos o carpetas, ¡no hay nada que TortoiseGit restituya!"
 
 #. Resource IDs: (239)
 msgid ""
@@ -5582,7 +5626,7 @@ msgstr "Atención"
 
 #. Resource IDs: (1534)
 msgid "Number Commits"
-msgstr "Número de Consignas"
+msgstr "Nº de Consignas"
 
 #. Resource IDs: (604)
 #, c-format
@@ -5872,7 +5916,7 @@ msgstr "Antecessor(es)"
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
-msgstr "Parte del código viene de TortoiseSVN Blame"
+msgstr "Parte del código es de TortoiseSVN Blame"
 
 #. Resource IDs: (69, 65535)
 msgid "Password:"
@@ -5916,7 +5960,7 @@ msgstr "Parchea objeto &seleccionado"
 
 #. Resource IDs: (1579)
 msgid "Patch As Attachment"
-msgstr "Parchea como adjunto"
+msgstr "Parche como adjunto"
 
 #. Resource IDs: (376)
 msgid "Patch all"
@@ -6208,7 +6252,7 @@ msgstr "Empujar..."
 
 #. Resource IDs: (65535)
 msgid "Putty Key:"
-msgstr "Clave putty:"
+msgstr "Clave:"
 
 #. Resource IDs: (71)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
@@ -6346,6 +6390,10 @@ msgstr "Buscar Ref."
 msgid "RefLog"
 msgstr "Reg.Ref."
 
+#. Resource IDs: (83)
+msgid "Refname"
+msgstr "NombrRef"
+
 #. Resource IDs: (135, 1382)
 msgid "Refresh"
 msgstr "Actualizar"
@@ -6385,7 +6433,7 @@ msgstr "Recargar"
 msgid ""
 "Reloads the opened files and reverts all changes.\n"
 "Reload"
-msgstr "Vuelve a cargar los archivos abiertos y revierte todos los cambios.\nRecargar"
+msgstr "Regarga los archivos abiertos y restituye todos los cambios.\nRecargar"
 
 #. Resource IDs: (80)
 msgid "Relocating..."
@@ -6451,7 +6499,7 @@ msgstr "Quitar %s"
 
 #. Resource IDs: (1627)
 msgid "Remove &all untracked files (-fx)"
-msgstr ""
+msgstr "Eliminar &todos los archivos sín seguimiento (-fx)"
 
 #. Resource IDs: (75)
 msgid "Remove &branch"
@@ -6459,7 +6507,7 @@ msgstr "Quitar &rama"
 
 #. Resource IDs: (1628)
 msgid "Remove &non-ignored untracked files (-f)"
-msgstr ""
+msgstr "Eliminar archvios sín seguimiento &no-ignorados (-f)"
 
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
@@ -6475,11 +6523,11 @@ msgstr "Quitar de lista de cambios"
 
 #. Resource IDs: (1629)
 msgid "Remove ignored files (-fX)"
-msgstr ""
+msgstr "Eliminar archvios ignorados (-fX)"
 
 #. Resource IDs: (1626)
 msgid "Remove untracked directories (-d)"
-msgstr ""
+msgstr "Eliminar directorios sin seguimiento (-d)"
 
 #. Resource IDs: (9)
 msgid "Remove untracked files from the working tree, ..."
@@ -6511,7 +6559,7 @@ msgstr "Renom&brar..."
 
 #. Resource IDs: (79, 1257)
 msgid "Rename"
-msgstr "Renombrar"
+msgstr "Renombrado"
 
 #. Resource IDs: (97)
 #, c-format
@@ -6677,28 +6725,28 @@ msgstr "Reintentando..."
 
 #. Resource IDs: (77, 175, 229)
 msgid "Revert"
-msgstr "Revertir"
+msgstr "Restituir"
 
 #. Resource IDs: (69)
 msgid "Revert commit"
-msgstr "Revertir consigna"
+msgstr "Restituir consigna"
 
 #. Resource IDs: (69)
 #, c-format
 msgid "Revert commit %s"
-msgstr "Revertir consigna %s"
+msgstr "Restituir consigna %s"
 
 #. Resource IDs: (73)
 msgid "Reverted"
-msgstr "Revertido"
+msgstr "Restituido"
 
 #. Resource IDs: (9)
 msgid "Reverts all changes you made since the last update"
-msgstr "Revierte todos los cambios realizados desde la última actualización"
+msgstr "Restituye todos los cambios realizados desde la última actualización"
 
 #. Resource IDs: (14)
 msgid "Reverts an addition to version control"
-msgstr "Revierte una adición al control de versión"
+msgstr "Restituye un añadido al control de versión"
 
 #. Resource IDs: (376)
 msgid "Review Patch"
@@ -6881,7 +6929,7 @@ msgstr "Guarda el documento activo con un nuevo nombre\nGuardar Como"
 msgid ""
 "Save the active document\n"
 "Save"
-msgstr "Guarda el documento activo\nGuardar"
+msgstr "Guardar documento activo\nGuardar"
 
 #. Resource IDs: (3601)
 msgid ""
@@ -7618,7 +7666,7 @@ msgstr "¡Subversion informó de un error mientras se hacía una limpieza!\n<hr=
 
 #. Resource IDs: (65)
 msgid "Success"
-msgstr "Éxito"
+msgstr "Correcto"
 
 #. Resource IDs: (78)
 msgid "Switch"
@@ -8040,7 +8088,7 @@ msgid ""
 "The working tree has changed!\n"
 "<hr=100%>\n"
 "Please commit your changes first or revert."
-msgstr "¡El árbol de trabajo ha cambiado!\n<hr=100%>\nPor favor, consigna tus cambios primero o revierta."
+msgstr "¡El árbol de trabajo ha cambiado!\n<hr=100%>\nPor favor, consigna tus cambios primero o restituye."
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -8048,7 +8096,7 @@ msgstr "Sus archivos:"
 
 #. Resource IDs: (263)
 msgid "Theirs"
-msgstr "Suyos"
+msgstr "De ellos"
 
 #. Resource IDs: (169)
 msgid ""
@@ -8109,12 +8157,6 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "¡Esta no es una ruta válida!\nUna ruta válida no debe contener '<<>|\"?*:' o uno de los nombres de los siguientes dispositivos:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 
-#. Resource IDs: (65535)
-msgid ""
-"This product includes software developed by CollabNet "
-"(http://www.Collab.Net/)"
-msgstr "Este producto incluye software desarrollado por CollabNet (http://www.Collab.Net/)"
-
 #. Resource IDs: (3857)
 #, c-format
 msgid ""
@@ -8156,11 +8198,11 @@ msgstr "Mosaico &vertical"
 
 #. Resource IDs: (1676)
 msgid "To"
-msgstr "Hacia"
+msgstr "A"
 
 #. Resource IDs: (1201, 65535)
 msgid "To:"
-msgstr "al:"
+msgstr "A:"
 
 #. Resource IDs: (3633)
 msgid ""
@@ -8387,7 +8429,7 @@ msgid ""
 "This can happen if the file has been renamed.\n"
 "Please start the log dialog on this specific file alone and then revert the changes\n"
 "from the top pane in the log dialog."
-msgstr "¡No se pudo reconstruir la ruta del árbol de trabajo!\nEsto suele ocurrir si el archivo se ha renombrado.\nPor favor, inicie el diálogo de registro en este archivo unicamente y luego revierta los cambios\nen el panel superior en el diálogo de registro."
+msgstr "¡No se pudo reconstruir la ruta del árbol de trabajo!\nEsto pasará si el archivo se ha renombrado.\nPor favor, inicie el diálogo de registro solamente en este archivo y luego restituye los cambios\neb el panel superior del diálogo de registro."
 
 #. Resource IDs: (3865)
 msgid "Unable to write read-only property."
@@ -8544,7 +8586,7 @@ msgstr "Usar archivo Izqi"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
-msgstr "Usar la papelera de reciclaje al revertir"
+msgstr "Usar la papelera de reciclaje al restituir"
 
 #. Resource IDs: (116)
 msgid "Use regular expression"
@@ -8568,13 +8610,13 @@ msgstr "Usar bloque de texto de '&ellos'"
 
 #. Resource IDs: (251)
 msgid "Use text block from 'm&ine' before 'theirs'"
-msgstr "Usar bloque de texto '&mío' antes que de '&ellos'"
+msgstr "Usar bloque de texto '&mío' antes que el de '&ellos'"
 
 #. Resource IDs: (2052)
 msgid ""
 "Use text block from 'mine' before 'theirs'\n"
 "Use 'mine' text block then 'theirs'"
-msgstr "Usar bloque de texto '&mío' antes que de '&ellos'Usar el bloque de texto 'mio' luego el de 'ellos'"
+msgstr "Usar bloque de texto '&mío' antes que el de '&ellos'Usar el bloque de texto 'mio' el lugar de el de 'ellos'"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -8584,13 +8626,13 @@ msgstr "Usar bloque de texto '&mío'\nUsar el  '&mío' como bloque de texto"
 
 #. Resource IDs: (251)
 msgid "Use text block from 't&heirs' before 'mine"
-msgstr "Usar bloque de texto de '&ellos' antes que el 'mío'"
+msgstr "Usar bloque de texto de '&ellos' en lugar del 'mío'"
 
 #. Resource IDs: (2052)
 msgid ""
 "Use text block from 'theirs' before 'mine'\n"
 "Use 'theirs' text block then 'mine'"
-msgstr "Usar bloque de texto de 'ellos' antes que el 'mío'\nUsar el de 'ellos' como bloque de texto antes que el 'mío'"
+msgstr "Usar bloque de texto de 'ellos' antes que el 'mío'\nUsar el de 'ellos' como bloque de texto en lugar de el 'mío'"
 
 #. Resource IDs: (2052)
 msgid ""
