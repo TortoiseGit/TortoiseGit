@@ -53,6 +53,11 @@ STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int
 	if(cchMax < 1)
 		return E_INVALIDARG;
 
+	// Set "out parameters" since we return S_OK later.
+	*pwszIconFile = 0;
+	*pIndex = 0;
+	*pdwFlags = 0;
+
 	// Now here's where we can find out if due to lack of enough overlay
 	// slots some of our overlays won't be shown.
 	// To do that we have to mark every overlay handler that's successfully
