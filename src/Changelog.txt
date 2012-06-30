@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #1230: Filter/Search for Branches in Reference Browser
  * Fixed issue #1228: Ignore by mask work recursively
  * Fixed issue #1086: Partial commit resets "Added" status on files omitted from checkin
+ * Fixed issue #1250: Sync Dialog should reload remote combo box after clicking "Manage"
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog

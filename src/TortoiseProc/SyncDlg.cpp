@@ -838,12 +838,36 @@ void CSyncDlg::Refresh()
 {
 	theApp.DoWaitCursor(1);
 
+	int lastSelected = m_ctrlURL.GetCurSel();
+	CString url;
+	this->m_ctrlURL.GetWindowText(url);
+
+	this->m_ctrlURL.Reset();
+	CString workingDir = g_Git.m_CurrentDir;
+	workingDir.Replace(_T(':'), _T('_'));
+	this->m_ctrlURL.LoadHistory(_T("Software\\TortoiseGit\\History\\SyncURL\\") + workingDir, _T("url"));
+
+	STRING_VECTOR list;
+	bool found = false;
+	if (!g_Git.GetRemoteList(list))
+	{
+		for (int i = 0; i < list.size(); i++)
+		{
+			m_ctrlURL.AddString(list[i]);
+			if (list[i] == url)
+				found = true;
+		}
+	}
+	if (lastSelected >= 0 && !found)
+	{
+		m_ctrlURL.SetCurSel(0);
+		m_ctrlURL.GetWindowText(url);
+	}
+
 	CString local;
 	CString remote;
-	CString url;
 	this->m_ctrlLocalBranch.GetWindowText(local);
 	this->m_ctrlRemoteBranch.GetWindowText(remote);
-	this->m_ctrlURL.GetWindowText(url);
 
 	this->LoadBranchInfo();
 
