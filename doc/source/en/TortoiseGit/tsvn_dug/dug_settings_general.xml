@@ -171,6 +171,16 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>Abbreviate renamings</term>
+				<listitem>
+					<para>
+						Normally renamed files are listed as "long/path/for/file.txt (from long/path/to/file.txt)".
+						If you check this option renamed files will be listed in a shorter format ("long/path/{to => for}/file.txt"),
+						however, this abbreviated format might be harder to understand.
+					</para>
+				</listitem>
+			</varlistentry>
 <!--
 			<varlistentry>
 				<term>Progress Dialog</term>
