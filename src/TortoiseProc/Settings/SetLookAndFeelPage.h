@@ -46,6 +46,7 @@ protected:
 	virtual BOOL OnApply();
 	afx_msg void OnBnClickedOnlyexplorer();
 	afx_msg void OnBnClickedSelectall();
+	afx_msg void OnBnClickedRestoreDefaults();
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnChange();
 	afx_msg void OnEnChangeNocontextpaths();

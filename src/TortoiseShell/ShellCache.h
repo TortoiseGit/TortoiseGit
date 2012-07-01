@@ -29,6 +29,9 @@
 #define NUMBERFMTTIMEOUT 300000
 #define MENUTIMEOUT 100
 
+#define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
+#define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUSUBSYNC
+
 typedef CComCritSecLock<CComCriticalSection> Locker;
 
 /**
@@ -87,11 +90,11 @@ public:
 		hidemenusforunversioneditemsticker = cachetypeticker;
 		excontextticker = cachetypeticker;
 
-		unsigned __int64 entries = MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT;
+		unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
 		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
 		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
 
-		unsigned __int64 ext=(MENUSVNIGNORE|MENUREFLOG|MENUREFBROWSE|MENUSTASHAPPLY|MENUSUBSYNC);
+		unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
 		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
 		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
 

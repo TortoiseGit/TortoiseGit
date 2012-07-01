@@ -169,6 +169,7 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetLookAndFeelPage, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 	ON_BN_CLICKED(IDC_HIDEMENUS, OnChange)
 	ON_EN_CHANGE(IDC_NOCONTEXTPATHS, &CSetLookAndFeelPage::OnEnChangeNocontextpaths)
 END_MESSAGE_MAP()
@@ -246,6 +247,15 @@ BOOL CSetLookAndFeelPage::OnApply()
 	return ISettingsPropPage::OnApply();
 }
 
+void CSetLookAndFeelPage::OnBnClickedRestoreDefaults()
+{
+	SetModified(TRUE);
+	m_topmenu = DEFAULTMENUTOPENTRIES;
+	m_bBlock = true;
+	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
+}
+
 void CSetLookAndFeelPage::OnBnClickedSelectall()
 {
 	if (m_bBlock)
@@ -312,6 +322,7 @@ void CSetExtMenu::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetExtMenu, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 END_MESSAGE_MAP()
 
 
@@ -374,6 +385,15 @@ BOOL CSetExtMenu::OnApply()
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
+}
+
+void CSetExtMenu::OnBnClickedRestoreDefaults()
+{
+	SetModified(TRUE);
+	m_extmenu = DEFAULTMENUEXTENTRIES;
+	m_bBlock = true;
+	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
 }
 
 void CSetExtMenu::OnBnClickedSelectall()
