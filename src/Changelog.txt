@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1228: Ignore by mask work recursively
  * Fixed issue #1086: Partial commit resets "Added" status on files omitted from checkin
  * Fixed issue #1250: Sync Dialog should reload remote combo box after clicking "Manage"
+ * Fixed issue #462: Implement 'All' and 'None' opportunities in the Set Extended menu settings dialog
  * TortoiseGit 1.7.11 comes with a new crash handler (crash-server.com) and lots of crash fixes (found using crash reports in our preview releases)
 
 == Bug Fix ==
