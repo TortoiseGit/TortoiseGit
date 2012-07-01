@@ -638,7 +638,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Dialogs"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Log messages",IDC_STATIC,7,7,286,62
+    GROUPBOX        "Log messages",IDC_STATIC,7,7,286,73
     LTEXT           "&Font for log messages:",IDC_STATIC,14,17,92,13,SS_CENTERIMAGE
     COMBOBOX        IDC_FONTNAMES,107,17,136,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_FONTSIZES,253,17,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
@@ -650,20 +650,21 @@ BEGIN
     CONTROL         "apply --topo-order",IDC_TOPOORDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,44,120,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,55,270,10
-    GROUPBOX        "Misc",IDC_STATIC,7,73,286,47
-    LTEXT           "&Autoclose:",IDC_STATIC,14,82,85,16,SS_CENTERIMAGE | NOT WS_VISIBLE
-    COMBOBOX        IDC_AUTOCLOSECOMBO,107,85,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,270,10
+    GROUPBOX        "Misc",IDC_STATIC,7,86,286,47
+    LTEXT           "&Autoclose:",IDC_STATIC,14,95,85,16,SS_CENTERIMAGE | NOT WS_VISIBLE
+    COMBOBOX        IDC_AUTOCLOSECOMBO,107,98,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Use recycle bin when reverting",IDC_USERECYCLEBIN,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,103,270,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,116,270,10
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,135,271,10
-    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,152,231,8,SS_NOTIFY
-    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,150,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
-    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,167,226,8,SS_NOTIFY
-    EDITTEXT        IDC_MAXHISTORY,252,163,31,14,ES_AUTOHSCROLL
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,150,271,10
+    LTEXT           "&Timeout in seconds to stop the auto-completion parsing",IDC_AUTOCOMPLETIONTIMEOUTLABEL,14,167,231,8,SS_NOTIFY
+    EDITTEXT        IDC_AUTOCOMPLETIONTIMEOUT,252,165,31,12,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    LTEXT           "Max. items to keep in the log message history",IDC_MAXHISTORYLABEL,14,182,226,8,SS_NOTIFY
+    EDITTEXT        IDC_MAXHISTORY,252,178,31,14,ES_AUTOHSCROLL
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,180,238,10
-    GROUPBOX        "Commit",IDC_COMMITGROUP,7,124,286,71
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,195,238,10
+    GROUPBOX        "Commit",IDC_COMMITGROUP,7,139,286,71
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -3645,6 +3646,8 @@ BEGIN
     IDS_T_SAMEBRANCHNAMEEXISTS 
                             "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
     IDS_B_SAMETAGNAMEEXISTS "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\nThis can cause problems so you should avoid it."
+    IDS_SETTINGS_ABBREVIATERENAMINGS_TT 
+                            "List a renamed file as ""long/path/{to => for}/file.txt"" instead of ""long/path/for/file.txt (from long/path/to/file.txt)""."
 END
 
 #endif    // Englisch (USA) resources

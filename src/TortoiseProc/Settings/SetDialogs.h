@@ -76,6 +76,8 @@ private:
 	BOOL				m_bDiffByDoubleClick;
 	CRegDWORD			m_regUseRecycleBin;
 	BOOL				m_bUseRecycleBin;
+	CRegDWORD			m_regAbbreviateRenamings;
+	BOOL				m_bAbbreviateRenamings;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;

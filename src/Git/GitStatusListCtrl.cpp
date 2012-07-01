@@ -973,6 +973,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 {
 	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
+	static bool abbreviateRenamings(((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\AbbreviateRenamings"), FALSE)) == TRUE); 
 
 	CString path = GitPath->GetGitPathString();
 
@@ -989,10 +990,35 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	}
 	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !GitPath->GetGitOldPathString().IsEmpty())
 	{
-		// relative path
-		CString rename;
-		rename.Format(from, GitPath->GetGitOldPathString());
-		entryname += _T(" ") + rename;
+		if (!abbreviateRenamings)
+		{
+			// relative path
+			CString rename;
+			rename.Format(from, GitPath->GetGitOldPathString());
+			entryname += _T(" ") + rename;
+		}
+		else
+		{
+			CTGitPathList tgpl;
+			tgpl.AddPath(*GitPath);
+			CTGitPath old(GitPath->GetGitOldPathString());
+			tgpl.AddPath(old);
+			CString commonRoot = tgpl.GetCommonRoot().GetGitPathString();
+			if (!commonRoot.IsEmpty())
+				commonRoot += _T("/");
+			if (old.GetFileOrDirectoryName() == GitPath->GetFileOrDirectoryName() && old.GetContainingDirectory().GetGitPathString() != "" && GitPath->GetContainingDirectory().GetGitPathString())
+			{
+				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength(), old.GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength(), GitPath->GetGitPathString().GetLength() - commonRoot.GetLength() - old.GetFileOrDirectoryName().GetLength() - 1) +  _T("}/") + old.GetFileOrDirectoryName();
+			}
+			else if (!commonRoot.IsEmpty())
+			{
+				entryname = commonRoot + _T("{") + GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength()) + _T("}");
+			}
+			else
+			{
+				entryname = GitPath->GetGitOldPathString().Mid(commonRoot.GetLength()) + _T(" => ") + GitPath->GetGitPathString().Mid(commonRoot.GetLength());
+			}
+		}
 	}
 
 	InsertItem(index, entryname, icon_idx);
