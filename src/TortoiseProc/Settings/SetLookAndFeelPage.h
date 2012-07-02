@@ -44,7 +44,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
-	afx_msg void OnBnClickedOnlyexplorer();
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
