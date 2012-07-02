@@ -30,9 +30,33 @@
 //  the name of the file containing the overlay image, and its index within
 //  that file. The Shell then adds the icon overlay to the system image list."
 
-STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR /*pwszIconFile*/, int /*cchMax*/, int * /*pIndex*/, DWORD * /*pdwFlags*/)
+STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
 {
-	PreserveChdir preserveChdir;
+	__try
+	{
+		return GetOverlayInfo_Wrap(pwszIconFile, cchMax, pIndex, pdwFlags);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::GetOverlayInfo_Wrap(LPWSTR pwszIconFile, int cchMax, int* pIndex, DWORD* pdwFlags)
+{
+	if(pwszIconFile == 0)
+		return E_POINTER;
+	if(pIndex == 0)
+		return E_POINTER;
+	if(pdwFlags == 0)
+		return E_POINTER;
+	if(cchMax < 1)
+		return E_INVALIDARG;
+
+	// Set "out parameters" since we return S_OK later.
+	*pwszIconFile = 0;
+	*pIndex = 0;
+	*pdwFlags = 0;
 
 	// Now here's where we can find out if due to lack of enough overlay
 	// slots some of our overlays won't be shown.
@@ -58,6 +82,21 @@ STDMETHODIMP CShellExt::GetOverlayInfo(LPWSTR /*pwszIconFile*/, int /*cchMax*/, 
 
 STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 {
+	__try
+	{
+		return GetPriority_Wrap(pPriority);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::GetPriority_Wrap(int *pPriority)
+{
+	if (pPriority == 0)
+		return E_POINTER;
+
 	switch (m_State)
 	{
 		case FileStateConflict:
@@ -95,20 +134,32 @@ STDMETHODIMP CShellExt::GetPriority(int *pPriority)
 //  IShellIconOverlayIdentifier::GetOverlayInfo method to determine which icon
 //  to display."
 
-STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
+STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD dwAttrib)
 {
-	PreserveChdir preserveChdir;
-	git_wc_status_kind status = git_wc_status_none;
-	bool readonlyoverlay = false;
-	bool lockedoverlay = false;
-	if (pwszPath == NULL)
-		return S_FALSE;
-	const TCHAR* pPath = pwszPath;
+	__try
+	{
+		return IsMemberOf_Wrap(pwszPath, dwAttrib);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
 
+STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
+{
+	if (pwszPath == NULL)
+		return E_INVALIDARG;
+	const TCHAR* pPath = pwszPath;
 	// the shell sometimes asks overlays for invalid paths, e.g. for network
 	// printers (in that case the path is "0", at least for me here).
 	if (_tcslen(pPath)<2)
 		return S_FALSE;
+	PreserveChdir preserveChdir;
+	git_wc_status_kind status = git_wc_status_none;
+	bool readonlyoverlay = false;
+	bool lockedoverlay = false;
+
 	// since the shell calls each and every overlay handler with the same filepath
 	// we use a small 'fast' cache of just one path here.
 	// To make sure that cache expires, clear it as soon as one handler is used.
@@ -124,9 +175,8 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 	{
 		if (!g_ShellCache.IsPathAllowed(pPath))
 		{
-			int drivenumber = -1;
 			if ((m_State == FileStateVersioned) && g_ShellCache.ShowExcludedAsNormal() &&
-				((drivenumber=PathGetDriveNumber(pPath))!=0)&&(drivenumber!=1) &&
+				(PathGetDriveNumber(pPath)>1) &&
 				PathIsDirectory(pPath) && g_ShellCache.HasGITAdminDir(pPath, true))
 			{
 				return S_OK;

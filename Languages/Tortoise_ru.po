@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-09 22:25+0000\n"
+"PO-Revision-Date: 2012-06-19 22:12+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
-"Language-Team: Russian (http://www.transifex.net/projects/p/tortoisegit/language/ru/)\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -452,6 +452,10 @@ msgstr "&Очистить..."
 
 #. Resource IDs: (57632)
 msgid "&Clear"
+msgstr ""
+
+#. Resource IDs: (1686)
+msgid "&Clear stash"
 msgstr ""
 
 #. Resource IDs: (1, 58112)
@@ -908,6 +912,10 @@ msgstr "&Крсн:"
 msgid "&Redo"
 msgstr "&Вернуть"
 
+#. Resource IDs: (1579)
+msgid "&Ref:"
+msgstr ""
+
 #. Resource IDs: (1382)
 msgid "&Refresh"
 msgstr "&Обновить"
@@ -1241,6 +1249,18 @@ msgstr "..."
 #. Resource IDs: (16527)
 msgid "....."
 msgstr "....."
+
+#. Resource IDs: (1691)
+msgid ".git/info/exclude"
+msgstr ""
+
+#. Resource IDs: (1690)
+msgid ".gitignore in the containing directories of the items"
+msgstr ""
+
+#. Resource IDs: (1689)
+msgid ".gitignore in the repository root"
+msgstr ""
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -3977,6 +3997,10 @@ msgstr ""
 msgid "Filter paths"
 msgstr "Фильтр путей"
 
+#. Resource IDs: (1479)
+msgid "Filter:"
+msgstr ""
+
 #. Resource IDs: (20090)
 msgid "Filter: "
 msgstr ""
@@ -4688,6 +4712,22 @@ msgstr "Игнорировать &все непечатаемые знаки"
 msgid "Ignore &case changes"
 msgstr "Игнорировать изменения &регистра"
 
+#. Resource IDs: (1692)
+msgid "Ignore File"
+msgstr ""
+
+#. Resource IDs: (1686)
+msgid "Ignore Type"
+msgstr ""
+
+#. Resource IDs: (1687)
+msgid "Ignore item(s) only in the containing folder(s)"
+msgstr ""
+
+#. Resource IDs: (1688)
+msgid "Ignore item(s) recursively"
+msgstr ""
+
 #. Resource IDs: (1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Игнорировать &завершения строк(рекомендуется)"
@@ -4898,6 +4938,10 @@ msgstr "7-я линия"
 #. Resource IDs: (65535)
 msgid "LINE8"
 msgstr "8-я линия"
+
+#. Resource IDs: (85)
+msgid "Last Author"
+msgstr ""
 
 #. Resource IDs: (68)
 msgid "Last Commit"
@@ -6346,6 +6390,10 @@ msgstr ""
 #. Resource IDs: (69, 1588)
 msgid "RefLog"
 msgstr "RefLog"
+
+#. Resource IDs: (83)
+msgid "Refname"
+msgstr ""
 
 #. Resource IDs: (135, 1382)
 msgid "Refresh"
@@ -8109,12 +8157,6 @@ msgid ""
 "A valid path must not contain '<<>|\"?*:' or one of the following device names:\n"
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
 msgstr "Этот путь не является корректным!\nКорректный путь не должен содержать '<<>|\"?*:' или одно из следующих имён устройств:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
-
-#. Resource IDs: (65535)
-msgid ""
-"This product includes software developed by CollabNet "
-"(http://www.Collab.Net/)"
-msgstr "Этот продукт содержит ПО, разработанное CollabNet (http://www.Collab.Net/)"
 
 #. Resource IDs: (3857)
 #, c-format

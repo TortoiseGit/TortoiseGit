@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008+2011 - TortoiseSVN
+// Copyright (C) 2011-2012 - TortoiseGit
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,19 +59,30 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 	}
 }
 
-void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask)
+void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask, CButton *selectAll)
 {
+	bool allChecked = true;
 	for(int i=0;i<list->GetItemCount();i++)
 	{
 		int data = list->GetItemData(i);
 
 		list->SetCheck(i,(menuInfo[data].menuID & mask) == menuInfo[data].menuID);
+		if (!((menuInfo[data].menuID & mask) == menuInfo[data].menuID))
+			allChecked = false;
 	}
+
+	if (!mask)
+		selectAll->SetCheck(BST_UNCHECKED);
+	else if (allChecked)
+		selectAll->SetCheck(BST_CHECKED);
+	else
+		selectAll->SetCheck(BST_INDETERMINATE);
 }
 
-unsigned __int64 GetMenuListMask(CListCtrl *list)
+unsigned __int64 GetMenuListMask(CListCtrl *list, CButton *selectAll = NULL)
 {
 	unsigned __int64 mask = 0;
+	bool allChecked = true;
 
 	for(int i=0;i<list->GetItemCount();i++)
 	{
@@ -79,7 +91,44 @@ unsigned __int64 GetMenuListMask(CListCtrl *list)
 			int data = list->GetItemData(i);
 			mask |= menuInfo[data].menuID ;
 		}
+		else
+			allChecked = false;
 	}
+	if (!selectAll)
+		return mask;
+
+	if (!mask)
+		selectAll->SetCheck(BST_UNCHECKED);
+	else if (allChecked)
+		selectAll->SetCheck(BST_CHECKED);
+	else
+		selectAll->SetCheck(BST_INDETERMINATE);
+	return mask;
+}
+
+// Handles click on "select all" and returns the calculated mask
+unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
+{
+	UINT state = (selectAll->GetState() & 0x0003);
+	if (state == BST_INDETERMINATE)
+	{
+		// It is not at all useful to manually place the checkbox into the indeterminate state...
+		// We will force this on to the unchecked state
+		state = BST_UNCHECKED;
+		selectAll->SetCheck(state);
+	}
+
+	theApp.DoWaitCursor(1);
+
+	for (int i = 0; i < list->GetItemCount(); i++)
+	{
+		list->SetCheck(i, state == BST_CHECKED);
+	}
+
+	unsigned __int64 mask = GetMenuListMask(list);
+
+	theApp.DoWaitCursor(-1);
+
 	return mask;
 }
 
@@ -119,6 +168,8 @@ void CSetLookAndFeelPage::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSetLookAndFeelPage, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
+	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 	ON_BN_CLICKED(IDC_HIDEMENUS, OnChange)
 	ON_EN_CHANGE(IDC_NOCONTEXTPATHS, &CSetLookAndFeelPage::OnEnChangeNocontextpaths)
 END_MESSAGE_MAP()
@@ -150,7 +201,7 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 	m_bBlock = true;
 
 	InsertMenuItemToList(&m_cMenuList,&m_imgList);
-	SetMenuItemCheck(&m_cMenuList,m_topmenu);
+	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
 
 	m_bBlock = false;
 
@@ -196,6 +247,26 @@ BOOL CSetLookAndFeelPage::OnApply()
 	return ISettingsPropPage::OnApply();
 }
 
+void CSetLookAndFeelPage::OnBnClickedRestoreDefaults()
+{
+	SetModified(TRUE);
+	m_topmenu = DEFAULTMENUTOPENTRIES;
+	m_bBlock = true;
+	SetMenuItemCheck(&m_cMenuList, m_topmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
+}
+
+void CSetLookAndFeelPage::OnBnClickedSelectall()
+{
+	if (m_bBlock)
+		return;
+
+	SetModified(TRUE);
+	m_bBlock = true;
+	m_topmenu = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
+}
+
 void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	if (m_bBlock)
@@ -203,7 +274,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
 	{
-		m_topmenu = GetMenuListMask(&m_cMenuList);
+		m_topmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	}
 	*pResult = 0;
 }
@@ -250,6 +321,8 @@ void CSetExtMenu::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSetExtMenu, ISettingsPropPage)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
+	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
 END_MESSAGE_MAP()
 
 
@@ -278,7 +351,7 @@ BOOL CSetExtMenu::OnInitDialog()
 	m_bBlock = true;
 
 	InsertMenuItemToList(&m_cMenuList,&m_imgList);
-	SetMenuItemCheck(&m_cMenuList,m_extmenu);
+	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
 
 	m_bBlock = false;
 
@@ -314,6 +387,26 @@ BOOL CSetExtMenu::OnApply()
 	return ISettingsPropPage::OnApply();
 }
 
+void CSetExtMenu::OnBnClickedRestoreDefaults()
+{
+	SetModified(TRUE);
+	m_extmenu = DEFAULTMENUEXTENTRIES;
+	m_bBlock = true;
+	SetMenuItemCheck(&m_cMenuList, m_extmenu, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
+}
+
+void CSetExtMenu::OnBnClickedSelectall()
+{
+	if (m_bBlock)
+		return;
+
+	SetModified(TRUE);
+	m_bBlock = true;
+	m_extmenu = ClickedSelectAll(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
+	m_bBlock = false;
+}
+
 void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	if( m_bBlock )
@@ -322,7 +415,7 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
 	{
-		m_extmenu = GetMenuListMask(&m_cMenuList);
+		m_extmenu = GetMenuListMask(&m_cMenuList, (CButton*)GetDlgItem(IDC_SELECTALL));
 	}
 	*pResult = 0;
 }

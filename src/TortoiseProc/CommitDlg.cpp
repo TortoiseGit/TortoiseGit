@@ -751,21 +751,24 @@ void CCommitDlg::OnOK()
 		progress.m_PreText = out;			// show any output already generated in log window
 		progress.m_bAutoCloseOnSuccess = m_bAutoClose;
 
+		int indexReCommit = -1;
+		int indexTag = -1;
+
 		if (!m_bNoPostActions && !m_bAutoClose)
 		{
-			progress.m_PostCmdList.Add( IsGitSVN? CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)): CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
+			if (IsGitSVN)
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+			indexReCommit = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
+			indexTag = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
 		}
-
-		m_PostCmd = IsGitSVN? GIT_POST_CMD_DCOMMIT:GIT_POST_CMD_PUSH;
 
 		DWORD userResponse = progress.DoModal();
 
-		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1+1))
+		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1 + indexReCommit))
 		{
 			bCloseCommitDlg = false;
-			if( userResponse == (IDC_PROGRESS_BUTTON1+1 ))
+			if (userResponse == IDC_PROGRESS_BUTTON1 + indexReCommit)
 			{
 				this->m_sLogMessage.Empty();
 				m_cLogMessage.SetText(m_sLogMessage);
@@ -773,14 +776,18 @@ void CCommitDlg::OnOK()
 
 			this->Refresh();
 		}
-		else if(userResponse == IDC_PROGRESS_BUTTON1 + 2)
+		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexTag)
 		{
 			m_bCreateTagAfterCommit=true;
 		}
-		else if(userResponse == IDC_PROGRESS_BUTTON1)
+		else if (userResponse >= IDC_PROGRESS_BUTTON1 && userResponse < IDC_PROGRESS_BUTTON1 + indexReCommit)
 		{
-			//User pressed 'Push' button after successful commit.
+			// User pressed 'DCommit' or 'Push' button after successful commit.
 			m_bPushAfterCommit=true;
+			if (userResponse == IDC_PROGRESS_BUTTON1 && IsGitSVN)
+				m_PostCmd = GIT_POST_CMD_DCOMMIT;
+			else
+				m_PostCmd = GIT_POST_CMD_PUSH;
 		}
 
 		CFile::Remove(tempfile);

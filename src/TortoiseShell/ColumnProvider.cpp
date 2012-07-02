@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2012 - TortoiseSVN
 // Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -39,9 +39,24 @@ const static int ColumnFlags = SHCOLSTATE_TYPE_STR | SHCOLSTATE_ONBYDEFAULT;
 // characters, large numbers will produce large strings. These, in turn, will
 // affect column auto sizing. This setting is a reasonable compromise.
 
-// IColumnProvider members
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci)
 {
+	__try
+	{
+		return GetColumnInfo_Wrap(dwIndex, psci);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+// IColumnProvider members
+STDMETHODIMP CShellExt::GetColumnInfo_Wrap(DWORD dwIndex, SHCOLUMNINFO *psci)
+{
+	if (psci == 0)
+		return E_POINTER;
+
 	PreserveChdir preserveChdir;
 	if (dwIndex > 0) // TODO: keep for now to be able to hide unimplemented columns
 		return S_FALSE;
@@ -101,6 +116,23 @@ void CShellExt::GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci, UINT characterC
 
 STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData)
 {
+	__try
+	{
+		return GetItemData_Wrap(pscid, pscd, pvarData);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::GetItemData_Wrap(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData)
+{
+	if ((pscid == 0) || (pscd == 0))
+		return E_INVALIDARG;
+	if (pvarData == 0)
+		return E_POINTER;
+
 	PreserveChdir preserveChdir;
 	if (!g_ShellCache.IsPathAllowed((TCHAR *)pscd->wszFile))
 	{
@@ -178,6 +210,20 @@ STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, V
 
 STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 {
+	__try
+	{
+		return Initialize_Wrap(psci);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return E_FAIL;
+}
+
+STDMETHODIMP CShellExt::Initialize_Wrap(LPCSHCOLUMNINIT psci)
+{
+	if (psci == 0)
+		return E_INVALIDARG;
 	// psci->wszFolder (WCHAR) holds the path to the folder to be displayed
 	// Should check to see if its a "SVN" folder and if not return E_FAIL
 

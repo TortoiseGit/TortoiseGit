@@ -34,6 +34,7 @@ std::set<CShellExt *> g_exts;
 
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
+	: m_crasher(L"TortoiseGit", false)
 {
     m_State = state;
 
@@ -278,7 +279,19 @@ STDMETHODIMP CShellExt::Load(LPCOLESTR /*pszFileName*/, DWORD /*dwMode*/)
 }
 
 // ICopyHook member
-UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
+UINT __stdcall CShellExt::CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs)
+{
+	__try
+	{
+		return CopyCallback_Wrap(hWnd, wFunc, wFlags, pszSrcFile, dwSrcAttribs, pszDestFile, dwDestAttribs);
+	}
+	__except(CCrashReport::Instance().SendReport(GetExceptionInformation()))
+	{
+	}
+	return IDYES;
+}
+
+UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
 {
 	if (wFunc == FO_COPY)
 		return IDYES;	// copying is not a problem for us

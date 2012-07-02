@@ -22,6 +22,8 @@
 #include "resource.h"
 #include "Globals.h"
 
+// defaults are specified in ShellCache.h
+
 MenuInfo menuInfo[] =
 {
 	{ ShellMenuClone,						MENUCLONE,			IDI_CLONE,				IDS_MENUCLONE,			IDS_MENUDESCCLONE,

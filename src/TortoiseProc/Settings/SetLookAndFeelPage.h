@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008+2011 - TortoiseSVN
+// Copyright (C) 2011-2012 - TortoiseGit
+// Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +44,8 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
-	afx_msg void OnBnClickedOnlyexplorer();
+	afx_msg void OnBnClickedSelectall();
+	afx_msg void OnBnClickedRestoreDefaults();
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnChange();
 	afx_msg void OnEnChangeNocontextpaths();

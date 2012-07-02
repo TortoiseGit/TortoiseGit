@@ -253,7 +253,7 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname)
+	CCrashReportTGit(LPCTSTR appname, bool bOwnProcess = true)
 	{
 		char s_month[6];
 		int month, day, year;
@@ -295,7 +295,7 @@ public:
 			handlerSettings.OpenProblemInBrowser = TRUE;
 			handlerSettings.SubmitterID = 0;
 
-			CCrashReport::Instance().InitCrashHandler(&appInfo, &handlerSettings);
+			CCrashReport::Instance().InitCrashHandler(&appInfo, &handlerSettings, bOwnProcess);
 		}
 	}
 

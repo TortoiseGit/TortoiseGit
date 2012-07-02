@@ -9,7 +9,7 @@ Released: unreleased
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
 
 = Release 1.7.11.0 =
-Released: unreleased
+Released: 2012-07-02
 
 == Features ==
  * Push Dialog: Allow to enter SHA-1 or more complex refs as source ref
@@ -19,6 +19,9 @@ Released: unreleased
  * Fixed issue #1230: Filter/Search for Branches in Reference Browser
  * Fixed issue #1228: Ignore by mask work recursively
  * Fixed issue #1086: Partial commit resets "Added" status on files omitted from checkin
+ * Fixed issue #1250: Sync Dialog should reload remote combo box after clicking "Manage"
+ * Fixed issue #462: Implement 'All' and 'None' opportunities in the Set Extended menu settings dialog
+ * TortoiseGit 1.7.11 comes with a new crash handler (crash-server.com) and lots of crash fixes (found using crash reports in our preview releases)
 
 == Bug Fix ==
  * Fixed issue #1213: cannot diff renamed files with Revision Diff Dialog
@@ -33,6 +36,7 @@ Released: unreleased
  * Fixed issue #1231: incorrect behavior of squash in rebase/cherry pick
  * Fixed issue #1233: Could not go to annotated tag
  * Fixed issue #947: The "Git check for modifications" form does not remember the setting for "Show unversioned files"
+ * Fixed issue #1093: Directory incorrectly shown as changed (overlay icon)
 
 = Release 1.7.10.0 =
 Released: 2012-06-03
