@@ -1403,6 +1403,10 @@ msgstr ""
 msgid "A&pply"
 msgstr ""
 
+#. Resource IDs: (1128)
+msgid "Abbreviate renamings"
+msgstr ""
+
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr ""
@@ -4716,6 +4720,10 @@ msgstr ""
 
 #. Resource IDs: (3605)
 msgid "List Help topics\nHelp Topics"
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "List a renamed file as \"long/path/{to => for}/file.txt\" instead of \"long/path/for/file.txt (from long/path/to/file.txt)\"."
 msgstr ""
 
 #. Resource IDs: (16631, 16992)
