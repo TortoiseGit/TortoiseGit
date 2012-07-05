@@ -48,6 +48,21 @@ BOOL IsWow64()
     return bIsWow64;
 }
 
+CStringA GetUTF8(const CStringW& string)
+{
+    int size = string.GetLength()+1;
+    char * buffer = new char[4 * size];
+
+    int len = WideCharToMultiByte(CP_UTF8, 0, (const wchar_t*)string, size, buffer, 4*size, 0, NULL);
+
+    CStringA ret;
+    if (len != 0)
+        ret = CStringA(buffer, len-1);
+    delete [] buffer;
+
+    return ret;
+}
+
 struct ModuleInfo
 {
     CStringW name;
@@ -569,12 +584,12 @@ public:
                         fprintf_s(f, "<UserInfo>\n");
 						for (std::vector<std::pair<CStringW, CStringW>>::iterator it = g_Config.UserInfo.begin(), end = g_Config.UserInfo.end(); it != end; ++it)
                         {
-                            g_Log.Info(_T("Adding UserInfo \"%ls\" as \"%ls\"..."), static_cast<LPCWSTR>(it->first), static_cast<LPCWSTR>(it->second));
+                            g_Log.Info(_T("Adding UserInfo \"%ws\" as \"%ws\"..."), static_cast<LPCWSTR>(it->first), static_cast<LPCWSTR>(it->second));
                             fprintf_s(f,
-                                "<%ls>%ls</%ls>\n",
-                                static_cast<LPCWSTR>(it->first),
-                                static_cast<LPCWSTR>(it->second),
-                                static_cast<LPCWSTR>(it->first));
+                                "<%s>%s</%s>\n",
+                                static_cast<LPCSTR>(GetUTF8(it->first)),
+                                static_cast<LPCSTR>(GetUTF8(it->second)),
+                                static_cast<LPCSTR>(GetUTF8(it->first)));
                         }
                         fprintf_s(f, "</UserInfo>");
                         fclose(f);
