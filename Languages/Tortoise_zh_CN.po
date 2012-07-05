@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Frank Li <lznuaa@gmail.com>, 2012.
 # Freeman Ke <guang810828@gmail.com>, 2012.
 #   <lznuaa@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
@@ -12,8 +13,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-25 03:33+0000\n"
-"Last-Translator: lznuaa <lznuaa@gmail.com>\n"
+"PO-Revision-Date: 2012-07-05 16:42+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -708,6 +709,10 @@ msgstr "导入(&I)..."
 msgid "&Initial directory:"
 msgstr "初始目录(&I):"
 
+#. Resource IDs: (1693)
+msgid "&Initialize submodules (--init)"
+msgstr ""
+
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
 msgstr "行间差异（智能）(&I)"
@@ -904,6 +909,10 @@ msgstr "继续提交(&R)"
 #. Resource IDs: (1246)
 msgid "&Recent messages"
 msgstr "最近信息(&R)"
+
+#. Resource IDs: (1694)
+msgid "&Recursive"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1375,6 +1384,16 @@ msgstr "<placeholder>"
 msgid "?"
 msgstr "?"
 
+#. Resource IDs: (85)
+msgid ""
+"A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A branch with this name already exists."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid ""
 "A newer version is available. Please go to "
@@ -1406,6 +1425,16 @@ msgstr "以换行分隔的列表，列出的目录不显示图标覆盖。\r\n�
 msgid "A required resource was unavailable."
 msgstr "找不到需要的资源。"
 
+#. Resource IDs: (85)
+msgid ""
+"A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A tag with this name already exists."
+msgstr ""
+
 #. Resource IDs: (79)
 msgid ""
 "A viewer program for GNU diff files (patch files).\r\n"
@@ -1423,6 +1452,10 @@ msgstr "关于(&B)"
 #. Resource IDs: (1)
 msgid "A&pply"
 msgstr "应用(&p)"
+
+#. Resource IDs: (1128)
+msgid "Abbreviate renamings"
+msgstr ""
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -3135,6 +3168,10 @@ msgstr "删除远程分支"
 #. Resource IDs: (83)
 msgid "Delete tag"
 msgstr "删除标签"
+
+#. Resource IDs: (85)
+msgid "Delete the existing branch or use a different name."
+msgstr ""
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -5016,6 +5053,12 @@ msgid ""
 "List Help topics\n"
 "Help Topics"
 msgstr "列出帮助主题\n帮助主题"
+
+#. Resource IDs: (85)
+msgid ""
+"List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
+"\"long/path/for/file.txt (from long/path/to/file.txt)\"."
+msgstr ""
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -7658,6 +7701,10 @@ msgstr "同步子模块"
 msgid "Submodule Update"
 msgstr "Submodule Update"
 
+#. Resource IDs: (1624)
+msgid "Submodule Update Options"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -7843,6 +7890,12 @@ msgid ""
 "The diffing engine aborted because of an error:\n"
 "%s"
 msgstr "差异比较引擎终止，错误信息:\n%s"
+
+#. Resource IDs: (85)
+msgid ""
+"The entered source ref is ambiguous. You have to make it unique (e.g. by "
+"adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgstr ""
 
 #. Resource IDs: (64)
 #, c-format
@@ -8548,6 +8601,14 @@ msgstr "使用小包(为慢速网络连接)(&P)"
 msgid "Use Unified Diff from &clipboard"
 msgstr "使用剪贴板上的标准差异(&C)"
 
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Force\" option to overwrite it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Override branch\" option."
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid ""
 "Use all content from the left view\n"
@@ -9105,8 +9166,8 @@ msgstr "[未分配]"
 
 #. Resource IDs: (72)
 #, c-format
-msgid "\"%\" is invalid."
-msgstr "\"%\" 是非法字符"
+msgid "\"%s\" is invalid."
+msgstr "\"%s\" 是非法字符"
 
 #. Resource IDs: (602)
 #, c-format

@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-28 10:27+0000\n"
-"Last-Translator: Tetsuhiko Koto <>\n"
+"PO-Revision-Date: 2012-07-05 16:41+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -710,6 +710,10 @@ msgstr "インポート(&I)..."
 msgid "&Initial directory:"
 msgstr "初期ディレクトリ(&I):"
 
+#. Resource IDs: (1693)
+msgid "&Initialize submodules (--init)"
+msgstr ""
+
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
 msgstr "単語単位での行内差分(&I)"
@@ -853,7 +857,7 @@ msgstr "msysGit のサイトを開く(&O)"
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
-msgstr "開く...(&O)\tCtrl+O"
+msgstr "開く(&O)...\tCtrl+O"
 
 #. Resource IDs: (1382)
 msgid "&Options"
@@ -906,6 +910,10 @@ msgstr "コミットをやり直す(&R)"
 #. Resource IDs: (1246)
 msgid "&Recent messages"
 msgstr "最近のログメッセージ(&R)"
+
+#. Resource IDs: (1694)
+msgid "&Recursive"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1377,6 +1385,16 @@ msgstr "<placeholder>"
 msgid "?"
 msgstr "?"
 
+#. Resource IDs: (85)
+msgid ""
+"A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A branch with this name already exists."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid ""
 "A newer version is available. Please go to "
@@ -1408,6 +1426,16 @@ msgstr "アイコンオーバーレイを表示させないパスのリストを
 msgid "A required resource was unavailable."
 msgstr "要求されたリソースは使用できませんでした。"
 
+#. Resource IDs: (85)
+msgid ""
+"A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A tag with this name already exists."
+msgstr ""
+
 #. Resource IDs: (79)
 msgid ""
 "A viewer program for GNU diff files (patch files).\r\n"
@@ -1425,6 +1453,10 @@ msgstr "TortoiseGit について(&B)"
 #. Resource IDs: (1)
 msgid "A&pply"
 msgstr "適用(A&)"
+
+#. Resource IDs: (1128)
+msgid "Abbreviate renamings"
+msgstr ""
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -2008,7 +2040,7 @@ msgstr "ブランチ名"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
-msgstr "ブラウズ(&w)"
+msgstr "ブラウズ(&W)"
 
 #. Resource IDs: (21)
 msgid "Browse Reference"
@@ -2924,7 +2956,7 @@ msgstr "指定された個数のリビジョンに切り捨てられた履歴を
 
 #. Resource IDs: (72)
 msgid "Create pull &request"
-msgstr "プル申請を作成(&r)"
+msgstr "プル申請を作成(&R)"
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
@@ -3102,7 +3134,7 @@ msgstr "%d タグを削除"
 
 #. Resource IDs: (70)
 msgid "Delete &local"
-msgstr "ローカルを削除(&l)"
+msgstr "ローカルを削除(&L)"
 
 #. Resource IDs: (21)
 msgid "Delete Ref..."
@@ -3137,6 +3169,10 @@ msgstr "リモートブランチを削除"
 #. Resource IDs: (83)
 msgid "Delete tag"
 msgstr "タグを削除"
+
+#. Resource IDs: (85)
+msgid "Delete the existing branch or use a different name."
+msgstr ""
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -3302,7 +3338,7 @@ msgstr "プログラムの情報、バージョン、コピーライトを表示
 
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
-msgstr "２度と警告メッセージを表示しない (無視を選択した場合)(&n)"
+msgstr "２度と警告メッセージを表示しない (無視を選択した場合)(&N)"
 
 #. Resource IDs: (1669)
 msgid "Do not autoselect submodules"
@@ -3853,7 +3889,7 @@ msgstr ""
 
 #. Resource IDs: (76)
 msgid "Fetc&h"
-msgstr "フェッチ(&h)"
+msgstr "フェッチ(&H)"
 
 #. Resource IDs: (22, 66)
 msgid "Fetch"
@@ -3870,7 +3906,7 @@ msgstr "\"%s\" からのフェッチ"
 
 #. Resource IDs: (76)
 msgid "Fetch&&Re&base"
-msgstr "フェッチ&&リベース(&b)"
+msgstr "フェッチ&&リベース(&B)"
 
 #. Resource IDs: (20)
 msgid "Fetch..."
@@ -5018,6 +5054,12 @@ msgid ""
 "List Help topics\n"
 "Help Topics"
 msgstr "ヘルプトピックを列挙\nヘルプトピック"
+
+#. Resource IDs: (85)
+msgid ""
+"List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
+"\"long/path/for/file.txt (from long/path/to/file.txt)\"."
+msgstr ""
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -6507,7 +6549,7 @@ msgstr "全てのバージョン管理外のファイルを削除 (-fx) (&A)"
 
 #. Resource IDs: (75)
 msgid "Remove &branch"
-msgstr "ブランチを削除(&b)"
+msgstr "ブランチを削除(&B)"
 
 #. Resource IDs: (1628)
 msgid "Remove &non-ignored untracked files (-f)"
@@ -6888,7 +6930,7 @@ msgstr "SVN リベース..."
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
-msgstr "安全な改行コード(&f):"
+msgstr "安全な改行コード(&F):"
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
@@ -7224,7 +7266,7 @@ msgstr "全てのプロジェクトを表示(&W)"
 
 #. Resource IDs: (1254)
 msgid "Show &changes"
-msgstr "変更内容を表示(&c)"
+msgstr "変更内容を表示(&C)"
 
 #. Resource IDs: (12, 101, 1016)
 msgid "Show &log"
@@ -7660,6 +7702,10 @@ msgstr ""
 msgid "Submodule Update"
 msgstr "サブモジュールを更新"
 
+#. Resource IDs: (1624)
+msgid "Submodule Update Options"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -7769,7 +7815,7 @@ msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs"
-msgstr "タグ(&g)"
+msgstr "タグ(&G)"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -7845,6 +7891,12 @@ msgid ""
 "The diffing engine aborted because of an error:\n"
 "%s"
 msgstr "次のエラーにより、差分ツールは中止されました:\n%s"
+
+#. Resource IDs: (85)
+msgid ""
+"The entered source ref is ambiguous. You have to make it unique (e.g. by "
+"adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgstr ""
 
 #. Resource IDs: (64)
 #, c-format
@@ -8550,6 +8602,14 @@ msgstr ""
 msgid "Use Unified Diff from &clipboard"
 msgstr "クリップボードのUnified形式の差分を使用(&C)"
 
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Force\" option to overwrite it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Override branch\" option."
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid ""
 "Use all content from the left view\n"
@@ -9107,8 +9167,8 @@ msgstr "[Unassigned]"
 
 #. Resource IDs: (72)
 #, c-format
-msgid "\"%\" is invalid."
-msgstr "\"%\" は不適切です。"
+msgid "\"%s\" is invalid."
+msgstr "\"%s\" は不適切です。"
 
 #. Resource IDs: (602)
 #, c-format

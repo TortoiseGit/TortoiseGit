@@ -8461,7 +8461,7 @@ msgstr ""
 
 #. Resource IDs: (72)
 #, c-format
-msgid "\"%\" is invalid."
+msgid "\"%s\" is invalid."
 msgstr ""
 
 #. Resource IDs: (602)

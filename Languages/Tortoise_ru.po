@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-19 22:12+0000\n"
+"PO-Revision-Date: 2012-07-05 16:08+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -707,6 +707,10 @@ msgstr "И&мпорт..."
 msgid "&Initial directory:"
 msgstr "&Исходная папка:"
 
+#. Resource IDs: (1693)
+msgid "&Initialize submodules (--init)"
+msgstr ""
+
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
 msgstr "Внутри&строчные различия по словам"
@@ -903,6 +907,10 @@ msgstr ""
 #. Resource IDs: (1246)
 msgid "&Recent messages"
 msgstr "&Недавние сообщения"
+
+#. Resource IDs: (1694)
+msgid "&Recursive"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1374,6 +1382,16 @@ msgstr ""
 msgid "?"
 msgstr "?"
 
+#. Resource IDs: (85)
+msgid ""
+"A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A branch with this name already exists."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid ""
 "A newer version is available. Please go to "
@@ -1405,6 +1423,16 @@ msgstr "Список путей, по одному в строке, где не 
 msgid "A required resource was unavailable."
 msgstr "Запрашиваемый ресурс был недоступен."
 
+#. Resource IDs: (85)
+msgid ""
+"A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
+"This can cause problems so you should avoid it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "A tag with this name already exists."
+msgstr ""
+
 #. Resource IDs: (79)
 msgid ""
 "A viewer program for GNU diff files (patch files).\r\n"
@@ -1422,6 +1450,10 @@ msgstr "&О программе"
 #. Resource IDs: (1)
 msgid "A&pply"
 msgstr "П&рименить"
+
+#. Resource IDs: (1128)
+msgid "Abbreviate renamings"
+msgstr ""
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -3134,6 +3166,10 @@ msgstr "Удаление дистанционной ветви"
 #. Resource IDs: (83)
 msgid "Delete tag"
 msgstr "Удалить метку"
+
+#. Resource IDs: (85)
+msgid "Delete the existing branch or use a different name."
+msgstr ""
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -5015,6 +5051,12 @@ msgid ""
 "List Help topics\n"
 "Help Topics"
 msgstr "Показать разделы справки\nРазделы справки"
+
+#. Resource IDs: (85)
+msgid ""
+"List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
+"\"long/path/for/file.txt (from long/path/to/file.txt)\"."
+msgstr ""
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -7657,6 +7699,10 @@ msgstr ""
 msgid "Submodule Update"
 msgstr ""
 
+#. Resource IDs: (1624)
+msgid "Submodule Update Options"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -7842,6 +7888,12 @@ msgid ""
 "The diffing engine aborted because of an error:\n"
 "%s"
 msgstr "Механизм различий прекратил работу из-за ошибки:\n%s"
+
+#. Resource IDs: (85)
+msgid ""
+"The entered source ref is ambiguous. You have to make it unique (e.g. by "
+"adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgstr ""
 
 #. Resource IDs: (64)
 #, c-format
@@ -8547,6 +8599,14 @@ msgstr ""
 msgid "Use Unified Diff from &clipboard"
 msgstr "Использовать объединённые &различия из буфера обмена"
 
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Force\" option to overwrite it."
+msgstr ""
+
+#. Resource IDs: (85)
+msgid "Use a different name or use the \"Override branch\" option."
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid ""
 "Use all content from the left view\n"
@@ -9104,7 +9164,7 @@ msgstr "[Не назначено]"
 
 #. Resource IDs: (72)
 #, c-format
-msgid "\"%\" is invalid."
+msgid "\"%s\" is invalid."
 msgstr ""
 
 #. Resource IDs: (602)
