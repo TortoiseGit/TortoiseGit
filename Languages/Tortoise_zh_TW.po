@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-06-23 11:22+0000\n"
-"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2012-07-05 16:43+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -9105,8 +9105,8 @@ msgstr "[未指定]"
 
 #. Resource IDs: (72)
 #, c-format
-msgid "\"%\" is invalid."
-msgstr "\"%\" 無效"
+msgid "\"%s\" is invalid."
+msgstr "\"%s\" 無效"
 
 #. Resource IDs: (602)
 #, c-format
