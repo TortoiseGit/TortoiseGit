@@ -1124,7 +1124,6 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				}
 				if (IsMask)
 				{
-					if (ignoreDlg.m_IgnoreFile)
 					ignorePattern += _T("*") + path[i].GetFileExtension();
 				}
 				else
