@@ -1,3 +1,9 @@
+= Release 1.7.11.1 =
+Released: unreleased
+
+== Bug Fix ==
+ * Fixed issue #1256: TortoiseProc crashes on composing invalid ref error message
+
 = Release 1.7.11.0 =
 Released: 2012-07-02
 

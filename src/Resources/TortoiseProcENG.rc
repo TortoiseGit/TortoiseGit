@@ -3540,7 +3540,7 @@ BEGIN
     IDS_PROC_STASHSUCCESS   "<ct=0xff0000>Stash Success</ct>"
     IDS_PROC_NOUSERDATA     "User name and email must be set before commit.\r\n Do you want to set these now?"
     IDS_PROC_PREVIOUSVERSION "Previous Version"
-    IDS_PROC_REFINVALID     """%"" is invalid."
+    IDS_PROC_REFINVALID     """%s"" is invalid."
     IDS_IGNOREBUTTON        "&Ignore"
     IDS_PROC_STASHAPPLYFAILED "<ct=0x0000FF>Stash Apply failed!!!</ct>"
     IDS_PROC_FILEDIFF_VERSION2BASE "Version 2 (Base)"
