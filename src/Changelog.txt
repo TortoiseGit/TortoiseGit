@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #238: submodule update should be recursive
  * Fixed issue #1234: Abbreviate renamings in the Log dialog as in the Commit Progress dialog
+ * Fixed issue #1256: TortoiseProc crashes on composing invalid ref error message
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
