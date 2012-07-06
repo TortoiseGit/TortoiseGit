@@ -2487,25 +2487,37 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	}
 
 	int start=0;
-	int ver;
+	int ver = 0;
 
-	CString str=version.Tokenize(_T("."),start);
-	int space = str.ReverseFind(_T(' '));
-	str=str.Mid(space+1,start);
-	ver = _ttol(str);
-	ver <<=24;
+	try
+	{
+		CString str=version.Tokenize(_T("."), start);
+		int space = str.ReverseFind(_T(' '));
+		str = str.Mid(space+1,start);
+		ver = _ttol(str);
+		ver <<=24;
 
-	version = version.Mid(start);
-	start = 0;
-	str = version.Tokenize(_T("."),start);
+		version = version.Mid(start);
+		start = 0;
 
-	ver |= (_ttol(str)&0xFF)<<16;
+		str = version.Tokenize(_T("."), start);
 
-	str = version.Tokenize(_T("."),start);
-	ver |= (_ttol(str)&0xFF)<<8;
+		ver |= (_ttol(str) & 0xFF) << 16;
 
-	str = version.Tokenize(_T("."),start);
-	ver |= (_ttol(str)&0xFF);
+		str = version.Tokenize(_T("."), start);
+		ver |= (_ttol(str) & 0xFF) << 8;
+
+		str = version.Tokenize(_T("."), start);
+		ver |= (_ttol(str) & 0xFF);
+	}
+	catch(...)
+	{
+		if (!ver)
+		{
+			CMessageBox::Show(NULL, _T("Could not parse git.exe version number."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return false;
+		}
+	}
 
 	regTime = time&0xFFFFFFFF;
 	regVersion = ver;
