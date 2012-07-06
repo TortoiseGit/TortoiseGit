@@ -99,7 +99,7 @@ int CGitIndexList::ReadIndex(CString IndexFile)
 
 			CAutoFile hfile = CreateFile(IndexFile,
 									GENERIC_READ,
-									FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE,
+									FILE_SHARE_READ|FILE_SHARE_DELETE,
 									NULL,
 									OPEN_EXISTING,
 									FILE_ATTRIBUTE_NORMAL,
