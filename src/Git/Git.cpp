@@ -1425,7 +1425,8 @@ BOOL CGit::CheckMsysGitDir()
 
 CString CGit::GetHomeDirectory()
 {
-	return CString(wget_windows_home_directory());
+	const wchar_t * homeDir = wget_windows_home_directory();
+	return CString(homeDir, wcslen(homeDir));
 }
 
 BOOL CGit::CheckCleanWorkTree()

@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #1254: Adding file extensions to root .gitignore
  * Fixed issue #1260: Concurrent write access to git index can crash TGitCache
  * Fixed issue #1261: gitdll.dll can crash if an already closed handle is closed again
+ * Fixed issue #1257: HOME environment variable is not set up correctly on x86
 
 = Release 1.7.11.0 =
 Released: 2012-07-02
