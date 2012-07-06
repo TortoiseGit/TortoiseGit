@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
  * Fixed issue #1256: TortoiseProc crashes on composing invalid ref error message
  * Fixed issue #1254: Adding file extensions to root .gitignore
+ * Fixed issue #1260: Concurrent write access to git index can crash TGitCache
 
 = Release 1.7.11.0 =
 Released: 2012-07-02
