@@ -257,8 +257,15 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 
-		if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
+		try
+		{
+			if (git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
+				return -1;
+		}
+		catch (char * msg)
+		{
 			return -1;
+		}
 
 		int i=0;
 
@@ -270,11 +277,18 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			GIT_FILE file=0;
 			int count=0;
 
-			if(isRoot)
-				git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count,1);
-			else
-				git_diff(git->GetGitDiff(),parent,commit.m_hash,&file,&count,1);
-
+			try
+			{
+				if (isRoot)
+					git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count, 1);
+				else
+					git_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
+			}
+			catch (char * msg)
+			{
+				git_free_commit(&commit);
+				return -1;
+			}
 			isRoot = false;
 
 			CTGitPath path;
