@@ -90,7 +90,6 @@ static int convert_slash(char * path)
 
 int git_init()
 {
-	const wchar_t *home;
 	char path[MAX_PATH+1];
 	char *prefix;
 	int ret;
@@ -105,8 +104,7 @@ int git_init()
 	getenv_s(&homesize, NULL, 0, "HOME");
 	if (!homesize)
 	{
-		home = wget_windows_home_directory();
-		_wputenv_s(L"HOME",home);
+		_wputenv_s(L"HOME", wget_windows_home_directory());
 	}
 	GetModuleFileName(NULL, path, MAX_PATH);
 	convert_slash(path);
@@ -1008,11 +1006,18 @@ static int get_config(const char *key_, const char *value_, void *cb)
 // wchar_t wrapper for git_etc_gitconfig()
 const wchar_t *wget_msysgit_etc(void)
 {
-	const char * gitconfig = git_etc_gitconfig();
+	static const wchar_t *etc_gitconfig = NULL;
 	wchar_t wpointer[MAX_PATH];
-	if (!gitconfig || xutftowcs_path(wpointer, gitconfig) < 0)
+
+	if (etc_gitconfig)
+		return etc_gitconfig;
+
+	if (xutftowcs_path(wpointer, git_etc_gitconfig()) < 0)
 		return NULL;
-	return wpointer;
+
+	etc_gitconfig = _wcsdup(wpointer);
+
+	return etc_gitconfig;
 }
 
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
@@ -1072,10 +1077,18 @@ const char *get_windows_home_directory(void)
 // wchar_t wrapper for get_windows_home_directory()
 const wchar_t *wget_windows_home_directory(void)
 {
+	static const wchar_t *home_directory = NULL;
 	wchar_t wpointer[MAX_PATH];
+
+	if (home_directory)
+		return home_directory;
+
 	if (xutftowcs_path(wpointer, get_windows_home_directory()) < 0)
 		return NULL;
-	return wpointer;
+
+	home_directory = _wcsdup(wpointer);
+
+	return home_directory;
 }
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
