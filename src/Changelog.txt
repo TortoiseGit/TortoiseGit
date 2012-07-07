@@ -1,4 +1,4 @@
-= Release 1.7.11.2 =
+= Release 1.7.11.3 =
 Released: 2012-07-07
 
 == Bug Fix ==
