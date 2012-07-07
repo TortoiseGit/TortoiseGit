@@ -1136,7 +1136,17 @@ UINT CCommitDlg::StatusThread()
 			else
 				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
 
-			CGitHash hash = g_Git.GetHash(_T("HEAD"));
+			CGitHash hash;
+			try
+			{
+				hash = g_Git.GetHash(_T("HEAD"));
+			}
+			catch (char* msg)
+			{
+				CString err(msg);
+				MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				ExitProcess(1);
+			}
 			GitRev headRevision;
 			headRevision.GetParentFromHash(hash);
 			// do not allow to show diff to "last" revision if it has more that one parent

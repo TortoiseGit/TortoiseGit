@@ -246,7 +246,7 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
-	CString filename(systemdir);
+	CString filename(systemdir, wcslen(systemdir));
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename);
 }
