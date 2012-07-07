@@ -18,11 +18,16 @@
 //
 #include "StdAfx.h"
 #include "RepositoryBrowserCommand.h"
-
+#include "MessageBox.h"
 #include "RepositoryBrowser.h"
 
 bool RepositoryBrowserCommand::Execute()
 {
+	if (!GitAdminDir().HasAdminDir(g_Git.m_CurrentDir) && !GitAdminDir().IsBareRepo(g_Git.m_CurrentDir)) {
+		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CString rev = _T("HEAD");
 	CString val = parser.GetVal(_T("rev"));
 	if (!val.IsEmpty())

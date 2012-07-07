@@ -34,6 +34,11 @@
 
 bool PullCommand::Execute()
 {
+	if (!GitAdminDir().HasAdminDir(g_Git.m_CurrentDir)) {
+		CMessageBox::Show(hwndExplorer, IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
 	CPullFetchDlg dlg;
 	dlg.m_IsPull=TRUE;
 	if(dlg.DoModal()==IDOK)
@@ -47,7 +52,17 @@ bool PullCommand::Execute()
 		}
 
 		CString cmd;
-		CString hashOld = g_Git.GetHash(L"HEAD");
+		CString hashOld;
+		try
+		{
+			hashOld = g_Git.GetHash(_T("HEAD"));
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(NULL, _T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
 		CString cmdRebase;
 		if(dlg.m_bRebase)
 			cmdRebase = "--rebase ";
