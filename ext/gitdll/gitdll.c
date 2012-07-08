@@ -871,7 +871,7 @@ static struct cmd_struct commands[] = {
 int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 {
 	int ret;
-	invalidate_cached_refs();
+	invalidate_ref_cache(NULL);
 	ret = for_each_ref_in(refname, fn, data);
 	free_all_pack();
 	return ret;
@@ -879,8 +879,8 @@ int git_for_each_ref_in(const char * refname, each_ref_fn fn, void * data)
 
 const char *git_resolve_ref(const char *ref, unsigned char *sha1, int reading, int *flag)
 {
-	invalidate_cached_refs();
-	return resolve_ref(ref,sha1,reading, flag);
+	invalidate_ref_cache(NULL);
+	return resolve_ref_unsafe(ref,sha1,reading, flag);
 }
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
 {
@@ -1093,6 +1093,7 @@ const wchar_t *wget_windows_home_directory(void)
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
+	char * config_exclusive_filename;
 	switch(type)
 	{
 	case CONFIG_LOCAL:
@@ -1115,5 +1116,5 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 	if(!config_exclusive_filename)
 		return -1;
 
-	return git_config_set(key, value);
+	return git_config_set_multivar_in_file(config_exclusive_filename, key, value, NULL, 0);
 }
