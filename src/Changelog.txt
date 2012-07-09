@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
  * Fixed issue #1266: gitdll can cause stack overflow becasue of endless recursion in mark_parents_uninteresting (revision.c)
    Upgraded gitdll and libgit to 1.7.11.1
+ * Fixed issue #1267: Tortoisegit adding gitignore backslash instead of slash
 
 = Release 1.7.11.3 =
 Released: 2012-07-07

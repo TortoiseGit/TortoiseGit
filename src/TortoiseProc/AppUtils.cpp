@@ -1117,8 +1117,8 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				CString ignorePattern;
 				if (ignoreDlg.m_IgnoreType == 0)
 				{
-					if (ignoreDlg.m_IgnoreFile != 1 && !path[i].GetContainingDirectory().GetWinPathString().IsEmpty())
-						ignorePattern += _T("/") + path[i].GetContainingDirectory().GetWinPathString();
+					if (ignoreDlg.m_IgnoreFile != 1 && !path[i].GetContainingDirectory().GetGitPathString().IsEmpty())
+						ignorePattern += _T("/") + path[i].GetContainingDirectory().GetGitPathString();
 
 					ignorePattern += _T("/");
 				}
