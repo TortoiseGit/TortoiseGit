@@ -42,12 +42,12 @@ protected:
 	CHistoryCombo	m_Remote;
 	CHistoryCombo	m_RemoteURL;
 	CMenuButton		m_BrowseLocalRef;
+	CRegString		m_RemoteReg;
 
 public:
 	CString			m_URL;
 	CString			m_BranchSourceName;
 	CString			m_BranchRemoteName;
-	CRegString		m_RemoteReg;
 
 	BOOL			m_bTags;
 	BOOL			m_bForce;
