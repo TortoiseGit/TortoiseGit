@@ -43,6 +43,7 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	, m_bPack(FALSE)
 	, m_bTags(FALSE)
 	, m_bAutoLoad(FALSE)
+	, m_bPushAllRemotes(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
@@ -179,8 +180,12 @@ void CPushDlg::Refresh()
 	STRING_VECTOR list;
 	m_Remote.Reset();
 
+	list.push_back(_T("- all -"));
 	if(!g_Git.GetRemoteList(list))
 	{
+		if (list.size() <= 2)
+			list.erase(list.begin());
+
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_Remote.AddString(list[i]);
@@ -286,6 +291,7 @@ void CPushDlg::OnBnClickedOk()
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
 	{
 		m_URL=m_Remote.GetString();
+		m_bPushAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1);
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 	{

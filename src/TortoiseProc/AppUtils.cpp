@@ -2030,7 +2030,6 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 	if(dlg.DoModal()==IDOK)
 	{
-		CString cmd;
 		CString arg;
 
 		if(dlg.m_bAutoLoad)
@@ -2050,27 +2049,38 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 		if(ver >= 0x01070203) //above 1.7.0.2
 			arg += _T("--progress ");
 
-		if (dlg.m_bPushAllBranches)
-		{
-			cmd.Format(_T("git.exe push --all %s \"%s\""),
-					arg,
-					dlg.m_URL);
-		}
-		else
-		{
-			cmd.Format(_T("git.exe push %s \"%s\" %s"),
-					arg,
-					dlg.m_URL,
-					dlg.m_BranchSourceName);
-			if (!dlg.m_BranchRemoteName.IsEmpty())
-			{
-				cmd += _T(":") + dlg.m_BranchRemoteName;
-			}
-		}
-
 		CProgressDlg progress;
 		progress.m_bAutoCloseOnSuccess=autoClose;
-		progress.m_GitCmd=cmd;
+
+		STRING_VECTOR remotesList;
+		if (dlg.m_bPushAllRemotes)
+			g_Git.GetRemoteList(remotesList);
+		else
+			remotesList.push_back(dlg.m_URL);
+
+		for (unsigned int i = 0; i < remotesList.size(); i++)
+		{
+			CString cmd;
+			if (dlg.m_bPushAllBranches)
+			{
+				cmd.Format(_T("git.exe push --all %s \"%s\""),
+						arg,
+						remotesList[i]);
+			}
+			else
+			{
+				cmd.Format(_T("git.exe push %s \"%s\" %s"),
+						arg,
+						remotesList[i],
+						dlg.m_BranchSourceName);
+				if (!dlg.m_BranchRemoteName.IsEmpty())
+				{
+					cmd += _T(":") + dlg.m_BranchRemoteName;
+				}
+			}
+			progress.m_GitCmdList.push_back(cmd);
+		}
+
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
 		int ret = progress.DoModal();
