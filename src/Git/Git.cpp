@@ -1249,7 +1249,8 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		while( pos>=0 )
 		{
 			one=output.Tokenize(_T("\n"),pos);
-			list.push_back(one);
+			if (!one.IsEmpty())
+				list.push_back(one);
 		}
 	}
 	return ret;
