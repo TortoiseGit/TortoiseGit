@@ -42,6 +42,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bNoCommit = false;
 	m_bFFonly = false;
 	m_bFetchTags = 2;
+	m_bAllRemotes = FALSE;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -211,8 +212,13 @@ void CPullFetchDlg::Refresh()
 
 	STRING_VECTOR list;
 	int sel=0;
+	if (!m_IsPull)
+		list.push_back(_T("- all -"));
 	if(!g_Git.GetRemoteList(list))
 	{
+		if (!m_IsPull && list.size() <= 2)
+			list.erase(list.begin());
+
 		for(unsigned int i=0;i<list.size();i++)
 		{
 			m_Remote.AddString(list[i]);
@@ -248,6 +254,7 @@ void CPullFetchDlg::OnBnClickedOk()
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_REMOTE_RD)
 	{
 		m_RemoteURL=m_Remote.GetString();
+		m_bAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1 && !m_IsPull);
 		if( !m_IsPull ||
 			(m_configPullRemote == m_RemoteURL && m_configPullBranch == m_RemoteBranch.GetString() ))
 			//When fetching or when pulling from the configured tracking branch, dont explicitly set the remote branch name,

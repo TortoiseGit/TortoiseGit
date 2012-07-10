@@ -1943,7 +1943,11 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			arg += _T("--no-tags ");
 		}
 
-		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),arg, url,dlg.m_RemoteBranchName);
+		if (dlg.m_bAllRemotes)
+			cmd.Format(_T("git.exe fetch --all -v %s"), arg);
+		else
+			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"), arg, url, dlg.m_RemoteBranchName);
+
 		CProgressDlg progress;
 
 		progress.m_bAutoCloseOnSuccess = autoClose;

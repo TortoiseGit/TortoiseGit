@@ -5,6 +5,7 @@ Released: unreleased
  * Fixed issue #238: submodule update should be recursive
  * Fixed issue #1234: Abbreviate renamings in the Log dialog as in the Commit Progress dialog
  * Fixed issue #822: allow push to all remotes defined by checking a mark
+ * Fixed issue #1192: fetch --all via dialog
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names

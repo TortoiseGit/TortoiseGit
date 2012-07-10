@@ -59,6 +59,7 @@ public:
 	BOOL		m_bFetchTags;
 	BOOL		m_bNoCommit;
 	BOOL		m_bAutoLoadEnable;
+	BOOL		m_bAllRemotes;
 	CString		m_PreSelectRemote;
 
 	CString		m_RemoteURL;
