@@ -180,7 +180,7 @@ void CPushDlg::Refresh()
 	STRING_VECTOR list;
 	m_Remote.Reset();
 
-	list.push_back(_T("- all -"));
+	list.push_back(CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)));
 	if(!g_Git.GetRemoteList(list))
 	{
 		if (list.size() <= 2)

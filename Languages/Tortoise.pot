@@ -1227,6 +1227,10 @@ msgstr ""
 msgid "- %d"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "-------------------------------------------------------------------------------------------"
 msgstr ""

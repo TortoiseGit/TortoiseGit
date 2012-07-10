@@ -3654,6 +3654,11 @@ BEGIN
                             "List a renamed file as ""long/path/{to => for}/file.txt"" instead of ""long/path/for/file.txt (from long/path/to/file.txt)""."
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_PROC_PUSHFETCH_ALLREMOTES "- all -"
+END
+
 #endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 
