@@ -2370,7 +2370,6 @@ UINT CGitLogListBase::LogThread()
 		}
 		catch (char* msg)
 		{
-			g_Git.m_critGitDllSec.Unlock();
 			CString err(msg);
 			MessageBox(_T("Could not get first commit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 			ret = -1;
