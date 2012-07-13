@@ -1622,9 +1622,9 @@ int CGit::RefreshGitIndex()
 {
 	if(g_Git.m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
 		{
-			CAutoLocker lock(g_Git.m_critGitDllSec);
 			return git_run_cmd("update-index","update-index -q --refresh");
 
 		}catch(...)
@@ -1645,9 +1645,9 @@ int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile
 {
 	if(g_Git.m_IsUseGitDLL)
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
 		{
-			CAutoLocker lock(g_Git.m_critGitDllSec);
 			g_Git.CheckAndInitDll();
 			CStringA ref, patha, outa;
 			ref = CUnicodeUtils::GetMulti(Refname, CP_UTF8);

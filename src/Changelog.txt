@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #1267: Tortoisegit adding gitignore backslash instead of slash
  * Fixed issue #1260: TortoiseGit crashes if index is broken
  * Fixed issue #1280: TortoiseProc might crash after displaying libgit error
+ * Fixed issue #1235: TortoiseGIT commit dialog freezes if index.lock file already exists
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
