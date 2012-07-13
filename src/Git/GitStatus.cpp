@@ -34,6 +34,7 @@
 //#	include "PathUtils.h"
 #endif
 #include "git.h"
+#include "git2.h"
 #include "gitindex.h"
 #include "shellcache.h"
 
@@ -872,7 +873,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 				// Check Conflict;
 				for(int i=start;i<=end;i++)
 				{
-					if( ((*it).m_Flags & CE_STAGEMASK) !=0)
+					if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) !=0)
 					{
 						*status = git_wc_status_conflicted;
 						if(callback)
