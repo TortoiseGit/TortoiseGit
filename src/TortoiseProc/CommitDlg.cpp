@@ -1145,18 +1145,20 @@ UINT CCommitDlg::StatusThread()
 			{
 				CString err(msg);
 				MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-				ExitProcess(1);
 			}
-			GitRev headRevision;
-			headRevision.GetParentFromHash(hash);
-			// do not allow to show diff to "last" revision if it has more that one parent
-			if (headRevision.ParentsCount() != 1)
+			if (!hash.IsEmpty())
 			{
-				m_bAmendDiffToLastCommit = true;
-				UpdateData(FALSE);
+				GitRev headRevision;
+				headRevision.GetParentFromHash(hash);
+				// do not allow to show diff to "last" revision if it has more that one parent
+				if (headRevision.ParentsCount() != 1)
+				{
+					m_bAmendDiffToLastCommit = true;
+					UpdateData(FALSE);
+				}
+				else
+					GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(TRUE);
 			}
-			else
-				GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(TRUE);
 		}
 
 		// we have the list, now signal the main thread about it

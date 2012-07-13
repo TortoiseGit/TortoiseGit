@@ -394,14 +394,14 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 	else
 	{
-		try {
+		try
+		{
 			m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
 		}
 		catch (char* msg)
 		{
 			CString err(msg);
 			MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-			ExitProcess(1);
 		}
 	}
 

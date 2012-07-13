@@ -119,7 +119,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 		catch (char* msg)
 		{
 			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(_T("Could not get HEAD hash. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 			ExitProcess(1);
 		}
 	}
@@ -2357,6 +2357,7 @@ UINT CGitLogListBase::LogThread()
 
 	// store commit number of the last selected commit/line before the refresh or -1
 	int lastSelectedHashNItem = -1;
+	int ret = 0;
 
 	if(!g_Git.IsInitRepos())
 	{
@@ -2369,9 +2370,10 @@ UINT CGitLogListBase::LogThread()
 		}
 		catch (char* msg)
 		{
+			g_Git.m_critGitDllSec.Unlock();
 			CString err(msg);
 			MessageBox(_T("Could not get first commit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-			ExitProcess(1);
+			ret = -1;
 		}
 		g_Git.m_critGitDllSec.Unlock();
 
@@ -2379,7 +2381,6 @@ UINT CGitLogListBase::LogThread()
 		t2=t1=GetTickCount();
 		int oldprecentage = 0;
 		int oldsize=m_logEntries.size();
-		int ret=0;
 		while( ret== 0)
 		{
 			g_Git.m_critGitDllSec.Lock();
@@ -2389,9 +2390,10 @@ UINT CGitLogListBase::LogThread()
 			}
 			catch (char* msg)
 			{
+				g_Git.m_critGitDllSec.Unlock();
 				CString err(msg);
 				MessageBox(_T("Could not get next commit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-				ExitProcess(1);
+				break;
 			}
 			g_Git.m_critGitDllSec.Unlock();
 
