@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #1266: gitdll can cause stack overflow becasue of endless recursion in mark_parents_uninteresting (revision.c)
    Upgraded gitdll and libgit to 1.7.11.1
  * Fixed issue #1267: Tortoisegit adding gitignore backslash instead of slash
+ * Fixed issue #1260: TortoiseGit crashes if index is broken
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
@@ -19,7 +20,6 @@ Released: 2012-07-07
 == Bug Fix ==
  * Fixed issue #1256: TortoiseProc crashes on composing invalid ref error message
  * Fixed issue #1254: Adding file extensions to root .gitignore
- * Fixed issue #1260: Concurrent write access to git index can crash TGitCache
  * Fixed issue #1261: gitdll.dll can crash if an already closed handle is closed again
  * Fixed issue #1257: HOME environment variable is not set up correctly on x86
  * Fixed issue #1262: TortoiseProc might crash if git.exe version is not parseable

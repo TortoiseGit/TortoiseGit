@@ -34,27 +34,6 @@
 
 CGitAdminDirMap g_AdminDirMap;
 
-#define FILL_DATA() \
-	m_FileName.Empty();\
-	g_Git.StringAppend(&m_FileName, (BYTE*)entry->name, CP_UTF8, Big2lit(entry->flags)&CE_NAMEMASK);\
-	m_FileName.MakeLower(); \
-	this->m_Flags=Big2lit(entry->flags);\
-	this->m_ModifyTime=Big2lit(entry->mtime.sec);\
-	this->m_IndexHash=(char*)(entry->sha1);
-
-int CGitIndex::FillData(ondisk_cache_entry * entry)
-{
-	FILL_DATA();
-	return 0;
-}
-
-int CGitIndex::FillData(ondisk_cache_entry_extended * entry)
-{
-	FILL_DATA();
-	this->m_Flags |= ((int)Big2lit(entry->flags2))<<16;
-	return 0;
-}
-
 int CGitIndex::Print()
 {
 	_tprintf(_T("0x%08X  0x%08X %s %s\n"),
@@ -81,96 +60,46 @@ static bool SortTree(CGitTreeItem &Item1, CGitTreeItem &Item2)
 	return Item1.m_FileName.Compare(Item2.m_FileName) < 0;
 }
 
-int CGitIndexList::ReadIndex(CString IndexFile)
+int CGitIndexList::ReadIndex(CString dgitdir)
 {
-	int ret=0;
-	BYTE *buffer = NULL, *p;
-	CGitIndex GitIndex;
+	this->clear();
 
-#ifdef DEBUG
-	m_GitFile = IndexFile;
-#endif
+	CStringA gitdir = CUnicodeUtils::GetMulti(dgitdir, CP_UTF8);
+	git_repository *repository = NULL;
+	git_index *index = NULL;
 
-	try
+	int ret = git_repository_open(&repository, gitdir.GetBuffer());
+	gitdir.ReleaseBuffer();
+	if (ret)
+		return -1;
+
+	if (git_repository_index(&index, repository))
 	{
-		do
-		{
-			this->clear();
-
-			CAutoFile hfile = CreateFile(IndexFile,
-									GENERIC_READ,
-									FILE_SHARE_READ|FILE_SHARE_DELETE,
-									NULL,
-									OPEN_EXISTING,
-									FILE_ATTRIBUTE_NORMAL,
-									NULL);
-
-
-			if (!hfile)
-			{
-				ret = -1 ;
-				break;
-			}
-
-			CAutoFile hmap = CreateFileMapping(hfile, NULL, PAGE_READONLY, 0, 0, NULL);
-			if (!hmap)
-			{
-				ret =-1;
-				break;
-			}
-
-			p = buffer = (BYTE*)MapViewOfFile(hmap, FILE_MAP_READ, 0, 0, 0);
-			if (buffer == NULL)
-			{
-				ret = -1;
-				break;
-			}
-
-			cache_header *header;
-			header = (cache_header *) buffer;
-
-			if (Big2lit(header->hdr_signature) != CACHE_SIGNATURE )
-			{
-				ret = -1;
-				break;
-			}
-			p += sizeof(cache_header);
-
-			int entries = Big2lit(header->hdr_entries);
-			resize(entries);
-
-				for(int i = 0; i < entries; i++)
-				{
-					ondisk_cache_entry *entry;
-					ondisk_cache_entry_extended *entryex;
-					entry = (ondisk_cache_entry*)p;
-					entryex = (ondisk_cache_entry_extended*)p;
-					int flags=Big2lit(entry->flags);
-					if (flags & CE_EXTENDED)
-					{
-						this->at(i).FillData(entryex);
-						p += ondisk_ce_size(entryex);
-					}
-					else
-					{
-						this->at(i).FillData(entry);
-						p += ondisk_ce_size(entry);
-					}
-				}
-
-			std::sort(this->begin(), this->end(), SortIndex);
-			g_Git.GetFileModifyTime(IndexFile, &this->m_LastModifyTime);
-		} while(0);
-	}
-	catch(...)
-	{
-		ret= -1;
+		git_repository_free(repository);
+		return -1;
 	}
 
-	if (buffer)
-		UnmapViewOfFile(buffer);
+	unsigned int ecount = git_index_entrycount(index);
+	resize(ecount);
+	for (unsigned int i = 0; i < ecount; ++i)
+	{
+		git_index_entry *e = git_index_get(index, i);
 
-	return ret;
+		this->at(i).m_FileName.Empty();
+		g_Git.StringAppend(&this->at(i).m_FileName, (BYTE*)e->path, CP_UTF8);
+		this->at(i).m_FileName.MakeLower();
+		this->at(i).m_ModifyTime = e->mtime.seconds;
+		this->at(i).m_Flags = e->flags;
+		this->at(i).m_IndexHash = (char *) e->oid.id;
+	}
+
+	git_index_free(index);
+	git_repository_free(repository);
+
+	g_Git.GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
+	std::sort(this->begin(), this->end(), SortIndex);
+
+	return 0;
 }
 
 int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
@@ -207,9 +136,9 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 				*status = git_wc_status_modified;
 			}
 
-			if (at(index).m_Flags & CE_STAGEMASK )
+			if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
 				*status = git_wc_status_conflicted;
-			else if (at(index).m_Flags & CE_INTENT_TO_ADD)
+			else if (at(index).m_Flags & GIT_IDXENTRY_INTENT_TO_ADD)
 				*status = git_wc_status_added;
 
 			if(pHash)
@@ -361,9 +290,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 	{
 		SHARED_INDEX_PTR pIndex(new CGitIndexList);
 
-		CString IndexFile = g_AdminDirMap.GetAdminDir(gitdir) + _T("index");
-
-		if(pIndex->ReadIndex(IndexFile))
+		if(pIndex->ReadIndex(g_AdminDirMap.GetAdminDir(gitdir)))
 			return -1;
 
 		this->SafeSet(gitdir, pIndex);
