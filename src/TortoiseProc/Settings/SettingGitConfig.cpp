@@ -240,13 +240,12 @@ void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 {
-	const wchar_t * systemdir = wget_msysgit_etc();
-	if (!systemdir)
+	CString filename = g_Git.GetGitSystemConfig();
+	if (filename.IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
-	CString filename(systemdir, wcslen(systemdir));
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(filename);
 }

@@ -27,6 +27,7 @@
 #include "UnicodeUtils.h"
 #include "gitdll.h"
 #include <fstream>
+#include "git2.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
@@ -1471,6 +1472,12 @@ CString CGit::GetHomeDirectory()
 {
 	const wchar_t * homeDir = wget_windows_home_directory();
 	return CString(homeDir, wcslen(homeDir));
+}
+
+CString CGit::GetGitSystemConfig()
+{
+	const wchar_t * systemConfig = wget_msysgit_etc();
+	return CString(systemConfig, wcslen(systemConfig));
 }
 
 BOOL CGit::CheckCleanWorkTree()
