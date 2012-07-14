@@ -400,6 +400,15 @@
 	<td>James Ribe</td>
 	<td>Markus Nißl</td>
 	<td>Martin Panter</td>
+      </tr><tr>
+	<td>Mark Yen</td>
+	<td>Philippe Elsass</td>
+	<td>Dimitar Zhekov</td>
+	<td>Fan Yang</td>
+      </tr><tr>
+	<td>Denis Shelomovskij</td>
+	<td>darmar</td>
+	<td>John Vella</td>
     </tr>
     </table>
     <p>
@@ -410,6 +419,122 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite321.zip?download">Release 3.2.1</a>
+    </h3>
+    <ul>
+	<li>
+	Released 14 July 2012.
+	</li>
+	<li>
+	In Scintilla.iface, specify features as properties instead of functions where possible and fix some enumerations.
+	</li>
+	<li>
+	In SciTE Lua scripts, string properties in Scintilla API can be retrieved as well as set using property notation.
+	</li>
+	<li>
+	Added character class APIs: SCI_SETPUNCTUATIONCHARS, SCI_GETWORDCHARS, SCI_GETWHITESPACECHARS,
+	and SCI_GETPUNCTUATIONCHARS.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3529805&group_id=2439">Feature #3529805.</a>
+	</li>
+	<li>
+	Less/Hss support added to CSS lexer.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=352439&aid=3532413&group_id=2439">Feature #3532413.</a>
+	</li>
+	<li>
+	C++ lexer style SCE_C_PREPROCESSORCOMMENT added for stream comments in preprocessor.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3487406&group_id=2439">Bug #3487406.</a>
+	</li>
+	<li>
+	Fix incorrect styling of inactive code in C++ lexer.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3533036&group_id=2439">Bug #3533036.</a>
+	</li>
+	<li>
+	Fix incorrect styling by C++ lexer after empty lines in preprocessor style.
+	</li>
+	<li>
+	C++ lexer option "lexer.cpp.allow.dollars" fixed so can be turned off after being on.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3541461&group_id=2439">Bug #3541461.</a>
+	</li>
+	<li>
+	Fortran fixed format lexer fixed to style comments from column 73.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3540486&group_id=2439">Bug #3540486.</a>
+	</li>
+	<li>
+	Fortran folder folds CRITICAL .. END CRITICAL.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3540486&group_id=2439">Bug #3540486.</a>
+	</li>
+	<li>
+	Fortran lexer fixes styling after comment line ending with '&amp;'.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3087226&group_id=2439">Bug #3087226.</a>
+	</li>
+	<li>
+	Fortran lexer styles preprocessor lines so they do not trigger incorrect folding.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=2906275&group_id=2439">Bug #2906275.</a>
+	</li>
+	<li>
+	Fortran folder fixes folding of nested ifs.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=2809176&group_id=2439">Bug #2809176.</a>
+	</li>
+	<li>
+	HTML folder fixes folding of CDATA when fold.html.preprocessor=0.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3540491&group_id=2439">Bug #3540491.</a>
+	</li>
+	<li>
+	On Cocoa, fix autocompletion font lifetime issue and row height computation.
+	</li>
+	<li>
+	In 'choose single' mode, autocompletion will close an existing list if asked to display a single entry list.
+	</li>
+	<li>
+	Fixed SCI_MARKERDELETE to only delete one marker per call.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3535806&group_id=2439">Bug #3535806.</a>
+	</li>
+	<li>
+	Properly position caret after undoing coalesced delete operations.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3523326&group_id=2439">Bug #3523326.</a>
+	</li>
+	<li>
+	Ensure margin is redrawn when SCI_MARGINSETSTYLE called.
+	</li>
+	<li>
+	Fix clicks in first pixel of margins to send SCN_MARGINCLICK.
+	</li>
+	<li>
+	Fix infinite loop when drawing block caret for a zero width space character at document start.
+	</li>
+	<li>
+	Crash fixed for deleting negative range.
+	</li>
+	<li>
+	For characters that overlap the beginning of their space such as italics descenders and bold serifs, allow start
+	of text to draw 1 pixel into margin.
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=699587&group_id=2439">Bug #699587.</a>
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3537799&group_id=2439">Bug #3537799.</a>
+	</li>
+	<li>
+	Fixed problems compiling Scintilla for Qt with GCC 4.7.1 x64.
+	</li>
+	<li>
+	Fixed problem with determining GTK+ sub-platform caused when adding Qt support in 3.2.0.
+	</li>
+	<li>
+	Fix incorrect measurement of untitled file in SciTE on Linux leading to message "File ...' is 2147483647 bytes long".
+	<a href="https://sourceforge.net/tracker/?func=detail&atid=102439&aid=3537764&group_id=2439">Bug #3537764.</a>
+	</li>
+	<li>
+	In SciTE, fix open of selected filename with line number to go to that line.
+	</li>
+	<li>
+	Fix problem with last visible buffer closing in SciTE causing invisible buffers to be active.
+	</li>
+	<li>
+	Avoid blinking of SciTE's current word highlight when output pane changes.
+	</li>
+	<li>
+	SciTE properties files can be longer than 60K.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite320.zip?download">Release 3.2.0</a>

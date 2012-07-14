@@ -386,7 +386,8 @@ void ScintillaWin::Initialise() {
 
 	// Find TrackMouseEvent which is available on Windows > 95
 	HMODULE user32 = ::GetModuleHandle(TEXT("user32.dll"));
-	TrackMouseEventFn = (TrackMouseEventSig)::GetProcAddress(user32, "TrackMouseEvent");
+	if (user32)
+		TrackMouseEventFn = (TrackMouseEventSig)::GetProcAddress(user32, "TrackMouseEvent");
 	if (TrackMouseEventFn == NULL) {
 		// Windows 95 has an emulation in comctl32.dll:_TrackMouseEvent
 		HMODULE commctrl32 = ::LoadLibrary(TEXT("comctl32.dll"));

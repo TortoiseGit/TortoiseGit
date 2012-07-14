@@ -772,44 +772,46 @@ void SurfaceGDI::AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fil
 		HBITMAP hbmMem = CreateDIBSection(reinterpret_cast<HDC>(hMemDC), &bpih,
 			DIB_RGB_COLORS, &image, NULL, 0);
 
-		HBITMAP hbmOld = SelectBitmap(hMemDC, hbmMem);
+		if (hbmMem) {
+			HBITMAP hbmOld = SelectBitmap(hMemDC, hbmMem);
 
-		DWORD valEmpty = dwordFromBGRA(0,0,0,0);
-		DWORD valFill = dwordFromBGRA(
-			static_cast<byte>(GetBValue(fill.AsLong()) * alphaFill / 255),
-			static_cast<byte>(GetGValue(fill.AsLong()) * alphaFill / 255),
-			static_cast<byte>(GetRValue(fill.AsLong()) * alphaFill / 255),
-			static_cast<byte>(alphaFill));
-		DWORD valOutline = dwordFromBGRA(
-			static_cast<byte>(GetBValue(outline.AsLong()) * alphaOutline / 255),
-			static_cast<byte>(GetGValue(outline.AsLong()) * alphaOutline / 255),
-			static_cast<byte>(GetRValue(outline.AsLong()) * alphaOutline / 255),
-			static_cast<byte>(alphaOutline));
-		DWORD *pixels = reinterpret_cast<DWORD *>(image);
-		for (int y=0; y<height; y++) {
-			for (int x=0; x<width; x++) {
-				if ((x==0) || (x==width-1) || (y == 0) || (y == height-1)) {
-					pixels[y*width+x] = valOutline;
-				} else {
-					pixels[y*width+x] = valFill;
+			DWORD valEmpty = dwordFromBGRA(0,0,0,0);
+			DWORD valFill = dwordFromBGRA(
+				static_cast<byte>(GetBValue(fill.AsLong()) * alphaFill / 255),
+				static_cast<byte>(GetGValue(fill.AsLong()) * alphaFill / 255),
+				static_cast<byte>(GetRValue(fill.AsLong()) * alphaFill / 255),
+				static_cast<byte>(alphaFill));
+			DWORD valOutline = dwordFromBGRA(
+				static_cast<byte>(GetBValue(outline.AsLong()) * alphaOutline / 255),
+				static_cast<byte>(GetGValue(outline.AsLong()) * alphaOutline / 255),
+				static_cast<byte>(GetRValue(outline.AsLong()) * alphaOutline / 255),
+				static_cast<byte>(alphaOutline));
+			DWORD *pixels = reinterpret_cast<DWORD *>(image);
+			for (int y=0; y<height; y++) {
+				for (int x=0; x<width; x++) {
+					if ((x==0) || (x==width-1) || (y == 0) || (y == height-1)) {
+						pixels[y*width+x] = valOutline;
+					} else {
+						pixels[y*width+x] = valFill;
+					}
 				}
 			}
-		}
-		for (int c=0;c<cornerSize; c++) {
-			for (int x=0;x<c+1; x++) {
-				AllFour(pixels, width, height, x, c-x, valEmpty);
+			for (int c=0;c<cornerSize; c++) {
+				for (int x=0;x<c+1; x++) {
+					AllFour(pixels, width, height, x, c-x, valEmpty);
+				}
 			}
+			for (int x=1;x<cornerSize; x++) {
+				AllFour(pixels, width, height, x, cornerSize-x, valOutline);
+			}
+
+			BLENDFUNCTION merge = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+
+			AlphaBlendFn(reinterpret_cast<HDC>(hdc), rc.left, rc.top, width, height, hMemDC, 0, 0, width, height, merge);
+
+			SelectBitmap(hMemDC, hbmOld);
+			::DeleteObject(hbmMem);
 		}
-		for (int x=1;x<cornerSize; x++) {
-			AllFour(pixels, width, height, x, cornerSize-x, valOutline);
-		}
-
-		BLENDFUNCTION merge = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-
-		AlphaBlendFn(reinterpret_cast<HDC>(hdc), rc.left, rc.top, width, height, hMemDC, 0, 0, width, height, merge);
-
-		SelectBitmap(hMemDC, hbmOld);
-		::DeleteObject(hbmMem);
 		::DeleteDC(hMemDC);
 	} else {
 		BrushColor(outline);
@@ -832,26 +834,28 @@ void SurfaceGDI::DrawRGBAImage(PRectangle rc, int width, int height, const unsig
 		unsigned char *image = 0;
 		HBITMAP hbmMem = CreateDIBSection(reinterpret_cast<HDC>(hMemDC), &bpih,
 			DIB_RGB_COLORS, reinterpret_cast<void **>(&image), NULL, 0);
-		HBITMAP hbmOld = SelectBitmap(hMemDC, hbmMem);
+		if (hbmMem) {
+			HBITMAP hbmOld = SelectBitmap(hMemDC, hbmMem);
 		
-		for (int y=height-1; y>=0; y--) {
-			for (int x=0; x<width; x++) {
-				unsigned char *pixel = image + (y*width+x) * 4;
-				unsigned char alpha = pixelsImage[3];
-				// Input is RGBA, output is BGRA with premultiplied alpha
-				pixel[2] = (*pixelsImage++) * alpha / 255;
-				pixel[1] = (*pixelsImage++) * alpha / 255;
-				pixel[0] = (*pixelsImage++) * alpha / 255;
-				pixel[3] = *pixelsImage++;
+			for (int y=height-1; y>=0; y--) {
+				for (int x=0; x<width; x++) {
+					unsigned char *pixel = image + (y*width+x) * 4;
+					unsigned char alpha = pixelsImage[3];
+					// Input is RGBA, output is BGRA with premultiplied alpha
+					pixel[2] = (*pixelsImage++) * alpha / 255;
+					pixel[1] = (*pixelsImage++) * alpha / 255;
+					pixel[0] = (*pixelsImage++) * alpha / 255;
+					pixel[3] = *pixelsImage++;
+				}
 			}
-		}
 		
-		BLENDFUNCTION merge = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
+			BLENDFUNCTION merge = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 
-		AlphaBlendFn(reinterpret_cast<HDC>(hdc), rc.left, rc.top, rc.Width(), rc.Height(), hMemDC, 0, 0, width, height, merge);
+			AlphaBlendFn(reinterpret_cast<HDC>(hdc), rc.left, rc.top, rc.Width(), rc.Height(), hMemDC, 0, 0, width, height, merge);
 
-		SelectBitmap(hMemDC, hbmOld);
-		::DeleteObject(hbmMem);
+			SelectBitmap(hMemDC, hbmOld);
+			::DeleteObject(hbmMem);
+		}
 		::DeleteDC(hMemDC);
 
 	}
@@ -1567,12 +1571,16 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 	}
 }
 
-void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len, UINT) {
+void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, const char *s, int len, UINT fuOptions) {
 	SetFont(font_);
 
 	// Use Unicode calls
 	const TextWide tbuf(s, len, unicodeMode, codePage);
 	if (pRenderTarget && pTextFormat && pBrush) {
+		if (fuOptions & ETO_CLIPPED) {
+			D2D1_RECT_F rcClip = {rc.left, rc.top, rc.right, rc.bottom};
+			pRenderTarget->PushAxisAlignedClip(rcClip, D2D1_ANTIALIAS_MODE_ALIASED);
+		}
 		
 		// Explicitly creating a text layout appears a little faster 
 		IDWriteTextLayout *pTextLayout;
@@ -1582,6 +1590,10 @@ void SurfaceD2D::DrawTextCommon(PRectangle rc, Font &font_, XYPOSITION ybase, co
 			D2D1_POINT_2F origin = {rc.left, ybase-yAscent};
 			pRenderTarget->DrawTextLayout(origin, pTextLayout, pBrush, D2D1_DRAW_TEXT_OPTIONS_NONE);
 			pTextLayout->Release();
+		}
+
+		if (fuOptions & ETO_CLIPPED) {
+			pRenderTarget->PopAxisAlignedClip();
 		}
 	}
 }
@@ -2483,14 +2495,13 @@ void ListBoxX::SetList(const char *list, char separator, char typesep) {
 	// the listbox is not visible.
 	SetRedraw(false);
 	Clear();
-	size_t size = strlen(list) + 1;
-	char *words = new char[size];
+	size_t size = strlen(list);
+	char *words = new char[size+1];
 	lti.SetWords(words);
-	memcpy(words, list, size);
+	memcpy(words, list, size+1);
 	char *startword = words;
 	char *numword = NULL;
-	int i = 0;
-	for (; words[i]; i++) {
+	for (size_t i=0; i < size; i++) {
 		if (words[i] == separator) {
 			words[i] = '\0';
 			if (numword)
