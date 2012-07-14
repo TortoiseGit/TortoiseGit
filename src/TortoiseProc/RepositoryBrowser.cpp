@@ -372,21 +372,31 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 	do
 	{
 		ret = git_repository_open(&repository, gitdir.GetBuffer());
-		if(ret)
+		if (ret)
+		{
+			const git_error * err = giterr_last();
+			MessageBox(_T("Could not open repository.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
 			break;
+		}
 
 		CGitHash hash = g_Git.GetHash(m_sRevision);
 		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
-		if(ret)
+		if (ret)
+		{
+			const git_error * err = giterr_last();
+			MessageBox(_T("Could not lookup commit.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
 			break;
+		}
 
 		ret = git_commit_tree(&tree, commit);
-		if(ret)
+		if (ret)
+		{
+			const git_error * err = giterr_last();
+			MessageBox(_T("Could get tree of commit.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
 			break;
+		}
 
-		ret = ReadTreeRecursive(*repository, tree, treeroot);
-		if(ret)
-			break;
+		ReadTreeRecursive(*repository, tree, treeroot);
 
 		this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
 	} while(0);
