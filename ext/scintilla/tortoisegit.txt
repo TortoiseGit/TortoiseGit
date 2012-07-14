@@ -2,7 +2,7 @@ The following folders are not imported:
 bin
 cocoa
 gtk
-macosx
+qt
 test
 
 apply backgroundcolors.patch

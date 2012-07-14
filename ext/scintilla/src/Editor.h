@@ -426,7 +426,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	virtual void SetCtrlID(int identifier);
 	virtual int GetCtrlID() { return ctrlID; }
 	virtual void NotifyParent(SCNotification scn) = 0;
-	virtual void NotifyParent(SCNotification * scn) = 0;
 	virtual void NotifyStyleToNeeded(int endStyleNeeded);
 	void NotifyChar(int ch);
 	void NotifySavePoint(bool isSavePoint);
@@ -481,6 +480,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	virtual void CopyToClipboard(const SelectionText &selectedText) = 0;
 	char *CopyRange(int start, int end);
+	std::string RangeText(int start, int end) const;
 	void CopySelectionRange(SelectionText *ss, bool allowLineCopy=false);
 	void CopyRangeToClipboard(int start, int end);
 	void CopyText(int length, const char *text);

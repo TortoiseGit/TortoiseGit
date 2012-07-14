@@ -12,7 +12,7 @@ def decodeFunction(featureVal):
 	nameIdent, params = rest.split("(")
 	name, value = nameIdent.split("=")
 	params, rest = params.split(")")
-	param1, param2 = params.split(",")[0:2]
+	param1, param2 = params.split(",")
 	return retType, name, value, param1, param2
 	
 def decodeEvent(featureVal):
@@ -60,7 +60,11 @@ class Face:
 					currentCommentFinished = 1
 					featureType, featureVal = line.split(" ", 1)
 					if featureType in ["fun", "get", "set"]:
-						retType, name, value, param1, param2 = decodeFunction(featureVal)
+						try:
+							retType, name, value, param1, param2 = decodeFunction(featureVal)
+						except ValueError:
+							print("Failed to decode %s" % line)
+							raise
 						p1 = decodeParam(param1)
 						p2 = decodeParam(param2)
 						self.features[name] = { 

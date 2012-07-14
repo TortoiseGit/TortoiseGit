@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 16/April/2012 NH</p>
+    <p>Last edited 27/June/2012 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -2899,6 +2899,9 @@ struct Sci_TextToFind {
      notification to be sent.
     </p>
     <p>
+    Only some style attributes are active in text margins: font, size/sizeFractional, bold/weight, italics, fore, back, and characterSet.
+    </p>
+    <p>
      <b id="SCI_MARGINSETSTYLEOFFSET">SCI_MARGINSETSTYLEOFFSET(int style)</b><br />
      <b id="SCI_MARGINGETSTYLEOFFSET">SCI_MARGINGETSTYLEOFFSET</b><br />
     Margin styles may be completely separated from standard text styles by setting a style offset. For example,
@@ -2966,6 +2969,9 @@ struct Sci_TextToFind {
     which is equivalent to clearing each line (setting to 0) and then deleting other memory used for this feature.
     </p>
     <p>
+    Only some style attributes are active in annotations: font, size/sizeFractional, bold/weight, italics, fore, back, and characterSet.
+    </p>
+    <p>
      <b id="SCI_ANNOTATIONSETVISIBLE">SCI_ANNOTATIONSETVISIBLE(int visible)</b><br />
      <b id="SCI_ANNOTATIONGETVISIBLE">SCI_ANNOTATIONGETVISIBLE</b><br />
      Annotations can be made visible in a view and there is a choice of display style when visible.
@@ -3026,10 +3032,12 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_GETCODEPAGE">SCI_GETCODEPAGE</a><br />
      <a class="message" href="#SCI_SETKEYSUNICODE">SCI_SETKEYSUNICODE(bool keysUnicode)</a><br />
      <a class="message" href="#SCI_GETKEYSUNICODE">SCI_GETKEYSUNICODE</a><br />
-     <a class="message" href="#SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char
-    *chars)</a><br />
-     <a class="message" href="#SCI_SETWHITESPACECHARS">SCI_SETWHITESPACECHARS(&lt;unused&gt;, const char
-    *chars)</a><br />
+     <a class="message" href="#SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char *characters)</a><br />
+     <a class="message" href="#SCI_GETWORDCHARS">SCI_GETWORDCHARS(&lt;unused&gt;, char *characters)</a><br />
+     <a class="message" href="#SCI_SETWHITESPACECHARS">SCI_SETWHITESPACECHARS(&lt;unused&gt;, const char *characters)</a><br />
+     <a class="message" href="#SCI_GETWHITESPACECHARS">SCI_GETWHITESPACECHARS(&lt;unused&gt;, char *characters)</a><br />
+     <a class="message" href="#SCI_SETPUNCTUATIONCHARS">SCI_SETPUNCTUATIONCHARS(&lt;unused&gt;, const char *characters)</a><br />
+     <a class="message" href="#SCI_GETPUNCTUATIONCHARS">SCI_GETPUNCTUATIONCHARS(&lt;unused&gt;, char *characters)</a><br />
      <a class="message" href="#SCI_SETCHARSDEFAULT">SCI_SETCHARSDEFAULT</a><br />
      <a class="message" href="#SCI_GRABFOCUS">SCI_GRABFOCUS</a><br />
      <a class="message" href="#SCI_SETFOCUS">SCI_SETFOCUS(bool focus)</a><br />
@@ -3111,7 +3119,7 @@ struct Sci_TextToFind {
      or narrow character window with character messages treated as Unicode when wide and as 8 bit otherwise.
      Set this property to always treat as Unicode. This option is needed for Delphi.</p>
 
-    <p><b id="SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char *chars)</b><br />
+    <p><b id="SCI_SETWORDCHARS">SCI_SETWORDCHARS(&lt;unused&gt;, const char *characters)</b><br />
      Scintilla has several functions that operate on words, which are defined to be contiguous
     sequences of characters from a particular set of characters. This message defines which
     characters are members of that set. The character sets are set to default values before processing this
@@ -3120,13 +3128,28 @@ struct Sci_TextToFind {
     use:<br />
      <code>SCI_SETWORDCHARS(0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")</code>;</p>
 
-    <p><b id="SCI_SETWHITESPACECHARS">SCI_SETWHITESPACECHARS(&lt;unused&gt;, const char *chars)</b><br />
+    <p><b id="SCI_GETWORDCHARS">SCI_GETWORDCHARS(&lt;unused&gt;, char *characters)</b><br />
+     This fills the characters parameter with all the characters included in words.
+     The characters parameter must be large enough to hold all of the characters. 
+     If the characters parameter is 0 then the length that should be allocated
+     to store the entire set is returned.</p>
+
+    <p><b id="SCI_SETWHITESPACECHARS">SCI_SETWHITESPACECHARS(&lt;unused&gt;, const char *characters)</b><br />
+    <b id="SCI_GETWHITESPACECHARS">SCI_GETWHITESPACECHARS(&lt;unused&gt;, char *characters)</b><br />
      Similar to <code>SCI_SETWORDCHARS</code>, this message allows the user to define which chars Scintilla considers
           as whitespace.  Setting the whitespace chars allows the user to fine-tune Scintilla's behaviour doing
           such things as moving the cursor to the start or end of a word; for example, by defining punctuation chars
           as whitespace, they will be skipped over when the user presses ctrl+left or ctrl+right.
           This function should be called after <code>SCI_SETWORDCHARS</code> as it will
-          reset the whitespace characters to the default set.</p>
+          reset the whitespace characters to the default set.
+	  <code>SCI_GETWHITESPACECHARS</code> behaves similarly to <code>SCI_GETWORDCHARS</code>.</p>
+
+    <p><b id="SCI_SETPUNCTUATIONCHARS">SCI_SETPUNCTUATIONCHARS(&lt;unused&gt;, const char *characters)</b><br />
+    <b id="SCI_GETPUNCTUATIONCHARS">SCI_GETPUNCTUATIONCHARS(&lt;unused&gt;, char *characters)</b><br />
+     Similar to <code>SCI_SETWORDCHARS</code> and <code>SCI_SETWHITESPACECHARS</code>, this message
+     allows the user to define which chars Scintilla considers as punctuation.
+	  <code>SCI_GETPUNCTUATIONCHARS</code> behaves similarly to <code>SCI_GETWORDCHARS</code>.</p>
+
     <p><b id="SCI_SETCHARSDEFAULT">SCI_SETCHARSDEFAULT</b><br />
      Use the default sets of word and whitespace characters. This sets whitespace to space, tab and other
      characters with codes less than 0x20, with word characters set to alphanumeric and '_'.
@@ -4621,8 +4644,6 @@ struct Sci_TextToFind {
     <p>Different platforms use different display surface ID types to print on. On Windows, these are
     <code>HDC</code>s., on GTK+ 3.x <code>cairo_t *</code>,
     and on Cocoa <code>CGContextRef</code> is used.</p>
-
-    <p><code>SCI_FORMATRANGE</code> is not supported on GTK+ 2.x.</p>
 
     <code><a class="message" href="#SCI_FORMATRANGE">SCI_FORMATRANGE(bool bDraw, Sci_RangeToFormat
     *pfr)</a><br />
