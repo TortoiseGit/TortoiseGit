@@ -37,7 +37,12 @@ int CGitDiff::Parser(git_revnum_t &rev)
 {
 	if(rev == GIT_REV_ZERO)
 		return 0;
-	if(rev.GetLength() > 40)
+	bool isNotSHA1 = (rev.GetLength() != 40);
+	for (int i = 0; !isNotSHA1 && i < rev.GetLength(); i++)
+	{
+		isNotSHA1 = !((rev[i] >= '0' && rev[i] <= '9') || (rev[i] >= 'a' && rev[i] <= 'f') || (rev[i] >= 'A' && rev[i] <= 'F'));
+	}
+	if (isNotSHA1)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe rev-parse %s"),rev);
