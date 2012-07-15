@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1280: TortoiseProc might crash after displaying libgit error
  * Fixed issue #1235: TortoiseGIT commit dialog freezes if index.lock file already exists
  * Fixed issue #1283: TortoiseProc might crash after LogDialog is closed
+ * Fixed issue #1282: gitdll.dll might crash if a pack file is closed which is still in use
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
