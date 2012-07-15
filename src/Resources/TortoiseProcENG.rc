@@ -1444,7 +1444,7 @@ BEGIN
     PUSHBUTTON      "&Apply Patch",IDC_BUTTON_APPLY,260,215,71,14
     PUSHBUTTON      "&Email Patch",IDC_BUTTON_EMAIL,338,215,50,14
     PUSHBUTTON      "&Commit",IDC_BUTTON_COMMIT,7,232,73,14
-    LTEXT           "",IDC_STATIC_STATUS,10,247,211,8
+    LTEXT           "",IDC_STATIC_STATUS,10,247,251,8
     PUSHBUTTON      "OK",IDOK,281,241,50,14
     PUSHBUTTON      "Help",IDHELP,338,241,50,14
 END
@@ -3657,6 +3657,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_PROC_PUSHFETCH_ALLREMOTES "- all -"
+    IDS_PROC_SYNC_NOFASTFORWARD 
+                            "The local branch ""%s"" does not fast-forward to the remote branch ""%s""."
 END
 
 #endif    // Englisch (USA) resources

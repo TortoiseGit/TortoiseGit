@@ -730,7 +730,7 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_PROGRESS_SYNC,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDHELP,BOTTOM_RIGHT);
-	AddAnchor(IDC_STATIC_STATUS,BOTTOM_LEFT);
+	AddAnchor(IDC_STATIC_STATUS, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_ANIMATE_SYNC,TOP_LEFT);
 	AddAnchor(IDC_BUTTON_COMMIT,BOTTOM_LEFT);
 
@@ -959,20 +959,28 @@ void CSyncDlg::FetchOutList(bool force)
 		if(localbranch != m_OutLocalBranch || m_OutRemoteBranch != remotebranch || force)
 		{
 			m_OutLogList.ClearText();
-			m_OutLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&remotebranch,&localbranch);
 
-			CString str;
-			if(m_OutLogList.GetItemCount() == 0)
+			CGitHash base, remotehash;
+			CString cmd, basestr, err;
+			cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(remotebranch), g_Git.FixBranchName(localbranch));
+			g_Git.Run(cmd, &basestr, &err, CP_UTF8);
+			base = basestr;
+
+			remotehash = g_Git.GetHash(remotebranch);
+			if (remotehash == g_Git.GetHash(localbranch))
 			{
+				CString str;
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, 0, remotebranch);
 				m_OutLogList.ShowText(str);
 				this->m_ctrlStatus.SetWindowText(str);
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 			}
-			else
+			else if (remotehash == base)
 			{
+				//fast forward
+				m_OutLogList.FillGitLog(NULL, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, &remotebranch, &localbranch);
+				CString str;
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
 
@@ -980,6 +988,15 @@ void CSyncDlg::FetchOutList(bool force)
 
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
+			}
+			else
+			{
+				CString str;
+				str.Format(IDS_PROC_SYNC_NOFASTFORWARD, localbranch, remotebranch);
+				m_OutLogList.ShowText(str);
+				this->m_ctrlStatus.SetWindowText(str);
+				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID() - 1, FALSE);
+				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 			}
 		}
 		this->m_OutLocalBranch=localbranch;
