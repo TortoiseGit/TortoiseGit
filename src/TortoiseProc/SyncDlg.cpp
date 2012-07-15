@@ -82,6 +82,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
 	ON_WM_TIMER()
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
 END_MESSAGE_MAP()
 
 
@@ -976,7 +977,7 @@ void CSyncDlg::FetchOutList(bool force)
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 			}
-			else if (remotehash == base)
+			else if (remotehash == base || m_bForce)
 			{
 				//fast forward
 				m_OutLogList.FillGitLog(NULL, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, &remotebranch, &localbranch);
@@ -984,7 +985,10 @@ void CSyncDlg::FetchOutList(bool force)
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
 
-				AddDiffFileList(&m_OutChangeFileList,&m_arOutChangeList,localbranch,remotebranch);
+				if (remotehash == base)
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, remotebranch);
+				else
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, base.ToString());
 
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
@@ -1198,4 +1202,9 @@ LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+void CSyncDlg::OnBnClickedCheckForce()
+{
+	UpdateData();
 }
