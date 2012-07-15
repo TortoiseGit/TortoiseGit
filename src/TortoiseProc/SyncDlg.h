@@ -110,7 +110,7 @@ protected:
 	void				ParserCmdOutput(char ch);
 
 	virtual void LocalBranchChange(){FetchOutList();};
-	virtual void RemoteBranchChange(){FetchOutList();};
+	virtual void RemoteBranchChange(){};
 
 	void ShowTab(int windowid)
 	{
