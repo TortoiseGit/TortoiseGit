@@ -46,6 +46,7 @@
 #define ID_CLIPBOARD_PATH 5
 #define ID_CLIPBOARD_ALL 6
 #define ID_LOG 7
+#define ID_GNUDIFFCOMPARE 8
 
 BOOL	CFileDiffDlg::m_bAscending = FALSE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
@@ -524,8 +525,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
-		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
+		popup.AppendMenuIcon(ID_GNUDIFFCOMPARE, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
+		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -544,6 +547,19 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					DoDiff(index, false);
+				}
+			}
+			break;
+		case ID_GNUDIFFCOMPARE:
+			{
+				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+				while (pos)
+				{
+					CTGitPath *fd2 = m_arFilteredList[m_cFileList.GetNextSelectedItem(pos)];
+					CTGitPath *fd1 = fd2;
+					if (fd2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+						fd1 = new CTGitPath(fd2->GetGitOldPathString());
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd2, m_rev2.m_CommitHash.ToString(), *fd1, m_rev1.m_CommitHash.ToString());
 				}
 			}
 			break;
