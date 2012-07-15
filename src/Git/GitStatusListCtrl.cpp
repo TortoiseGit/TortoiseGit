@@ -2314,15 +2314,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDGITLC_GNUDIFF2:
 				{
-				//	SVNDiff diff(NULL, this->m_hWnd, true);
-				//
-				//	if (entry->remotestatus <= git_wc_status_normal)
-				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_BASE, entry->path, SVNRev::REV_WC);
-				//	else
-				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
-
-					CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_Rev1,
-															*filepath,m_Rev2);
+					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1);
 				}
 				break;
 
