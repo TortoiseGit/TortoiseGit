@@ -343,7 +343,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 
 CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bRecursive,  bool bFetch /* = true */)
 {
-	CString strCacheKey;
 	bool bRequestForSelf = false;
 	if(path.IsEquivalentToWithoutCase(m_directoryPath))
 	{
