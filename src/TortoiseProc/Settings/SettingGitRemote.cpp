@@ -134,9 +134,6 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_strUrl.Replace(L'\\', L'/');
-	UpdateData(FALSE);
-
 	m_ChangedMask = REMOTE_NAME	|REMOTE_URL	|REMOTE_PUTTYKEY;
 	if(IsRemoteExist(m_strRemote))
 	{
@@ -284,6 +281,7 @@ BOOL CSettingGitRemote::OnApply()
 	}
 	if(m_ChangedMask & REMOTE_URL)
 	{
+		m_strUrl.Replace(L'\\', L'/');
 		Save(_T("url"),this->m_strUrl);
 	}
 
