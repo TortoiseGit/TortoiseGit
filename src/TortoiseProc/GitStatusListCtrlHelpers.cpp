@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -296,7 +296,7 @@ int ColumnManager::GetWidth (int column, bool useDefaults) const
 
 	int width = columns[index].width;
 	if ((width == 0) && useDefaults)
-		width = LVSCW_AUTOSIZE_USEHEADER;
+		width = LVSCW_AUTOSIZE;
 
 	return width;
 }
