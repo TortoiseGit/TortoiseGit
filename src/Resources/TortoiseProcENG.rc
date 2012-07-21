@@ -3676,6 +3676,7 @@ BEGIN
                             "Sets the remote branch as the ""pushbranch"" for the selected local branch."
     IDS_PUSHDLG_PUSHREMOTE_TT 
                             "Sets the remote as the ""pushremote"" for the selected local branch."
+    IDS_STATUSLIST_COLLASTMODIFIED "Last Modified"
 END
 
 #endif    // Englisch (USA) resources

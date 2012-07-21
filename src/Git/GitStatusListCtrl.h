@@ -38,10 +38,10 @@
 //#define SVNSLC_COLAUTHOR			0x000000040
 //#define	SVNSLC_COLREVISION			0x000000080
 //#define	SVNSLC_COLDATE				0x000000100
-//#define	SVNSLC_COLMODIFICATIONDATE	0x000000200
 #define GITSLC_COLADD				0x000000010
 #define GITSLC_COLDEL				0x000000020
-#define GITSLC_NUMCOLUMNS			6
+#define GITSLC_COLMODIFICATIONDATE	0x000000040
+#define GITSLC_NUMCOLUMNS			7
 
 //#define SVNSLC_COLREMOTESTATUS		0x000000010
 //#define SVNSLC_COLREMOTETEXT		0x000000080
@@ -753,7 +753,7 @@ public:
 	 * \param bHasCheckboxes TRUE if the control should show check boxes on the left of each file entry.
 	 * \param bHasWC TRUE if the reporisty is not a bare repository (hides wc related items on the contextmenu)
 	 */
-	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = ((GITSLC_POPALL ^ GITSLC_POPCOMMIT) ^ GITSLC_POPRESTORE), bool bHasCheckboxes = true, bool bHasWC = true);
+	void Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus = ((GITSLC_POPALL ^ GITSLC_POPCOMMIT) ^ GITSLC_POPRESTORE), bool bHasCheckboxes = true, bool bHasWC = true, DWORD allowedColumns = 0xffffffff);
 	/**
 	 * Sets a background image for the list control.
 	 * The image is shown in the right bottom corner.

@@ -666,7 +666,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	m_InChangeFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("OutSyncDlg"),
 							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)),false);
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
 
 
 	//---------- Create Conflict List Ctrl -----------------
@@ -712,9 +712,9 @@ BOOL CSyncDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.InsertTab(&m_OutChangeFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_OUTCHANGELIST)), -1);
 
-	m_OutChangeFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("OutSyncDlg"),
+	m_OutChangeFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, _T("OutSyncDlg"),
 							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
-							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)),false);
+							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE);
 
 	this->m_tooltips.Create(this);
 

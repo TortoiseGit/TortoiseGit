@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -64,7 +65,7 @@ BOOL CRevertDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	m_RevertList.Init(0, _T("RevertDlg"));
+	m_RevertList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL, _T("RevertDlg"));
 	m_RevertList.SetConfirmButton((CButton*)GetDlgItem(IDOK));
 	m_RevertList.SetSelectButton(&m_SelectAll);
 	m_RevertList.SetCancelBool(&m_bCancelled);

@@ -890,6 +890,19 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 	int result = 0;
 	switch (sortedColumn)
 	{
+	case 6: //Last Modification Date
+		{
+			if (result == 0)
+			{
+				__int64 writetime1 = entry1->GetLastWriteTime();
+				__int64 writetime2 = entry2->GetLastWriteTime();
+
+				FILETIME* filetime1 = (FILETIME*)(__int64*)&writetime1;
+				FILETIME* filetime2 = (FILETIME*)(__int64*)&writetime2;
+
+				result = CompareFileTime(filetime1, filetime2);
+			}
+		}
 	case 5: //Del Number
 		{
 			if (result == 0)

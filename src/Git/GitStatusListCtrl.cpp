@@ -32,6 +32,7 @@
 #include "StringUtils.h"
 #include "DirFileEnum.h"
 #include "GitConfig.h"
+#include "LoglistUtils.h"
 //#include "SVNProperties.h"
 #include "Git.h"
 #include "GitDiff.h"
@@ -206,7 +207,7 @@ int CGitStatusListCtrl::GetIndex(const CTGitPath& path)
 }
 #endif
 
-void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */, bool bHasWC /* = true */)
+void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContainer, unsigned __int64 dwContextMenus /* = GitSLC_POPALL */, bool bHasCheckboxes /* = true */, bool bHasWC /* = true */, DWORD allowedColumns /* = 0xffffffff */)
 {
 	Locker lock(m_critSec);
 
@@ -240,10 +241,11 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			, IDS_STATUSLIST_COLSTATUS
 			, IDS_STATUSLIST_COLADD
 			, IDS_STATUSLIST_COLDEL
+			, IDS_STATUSLIST_COLLASTMODIFIED
 			};
 
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
-	m_ColumnManager.ReadSettings (m_dwDefaultColumns, 0, sColumnInfoContainer, GITSLC_NUMCOLUMNS);
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, GITSLC_NUMCOLUMNS);
 
 	// enable file drops
 #if 0
@@ -983,6 +985,7 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	static CString from(MAKEINTRESOURCE(IDS_STATUSLIST_FROM));
 	static HINSTANCE hResourceHandle(AfxGetResourceHandle());
 	static bool abbreviateRenamings(((DWORD)CRegDWORD(_T("Software\\TortoiseGit\\AbbreviateRenamings"), FALSE)) == TRUE); 
+	static bool relativeTimes = (CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE) != FALSE);
 
 	CString path = GitPath->GetGitPathString();
 
@@ -1073,6 +1076,16 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	SetItemText(index, GetColumnIndex(GITSLC_COLADD),GitPath->m_StatAdd);
 	SetItemText(index, GetColumnIndex(GITSLC_COLDEL),GitPath->m_StatDel);
 
+	{
+		CString modificationDate;
+		__int64 filetime = GitPath->GetLastWriteTime();
+		if (filetime && (GitPath->m_Action != CTGitPath::LOGACTIONS_DELETED))
+		{
+			FILETIME* f = (FILETIME*)(__int64*)&filetime;
+			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(g_Git.filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
+		}
+		SetItemText(index, GetColumnIndex(GITSLC_COLMODIFICATIONDATE), modificationDate);
+	}
 
 	SetCheck(index, GitPath->m_Checked);
 	if (GitPath->m_Checked)
