@@ -1152,8 +1152,18 @@
 #define IDC_GROUP_IGNORE_FILE           1692
 #define IDC_CHECK_SUBMODULE_INIT        1693
 #define IDC_CHECK_SUBMODULE_RECURSIVE   1694
+#define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
+#define IDC_CHECKALL                    1701
 #define IDS_ABOUTVERSIONBOX             1701
+#define IDC_CHECKNONE                   1702
+#define IDC_CHECKUNVERSIONED            1703
+#define IDC_CHECKVERSIONED              1704
+#define IDC_CHECKADDED                  1705
+#define IDC_CHECKMODIFIED               1706
+#define IDC_CHECKFILES                  1707
+#define IDC_CHECKSUBMODULES             1708
+#define IDC_CHECKDELETED                1709
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1530,7 +1540,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1694
+#define _APS_NEXT_CONTROL_VALUE         1710
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

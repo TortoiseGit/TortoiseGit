@@ -579,6 +579,14 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	DeleteAllItems();
 	m_nSelected = 0;
 
+	m_nShownUnversioned = 0;
+	m_nShownModified = 0;
+	m_nShownAdded = 0;
+	m_nShownDeleted = 0;
+	m_nShownConflicted = 0;
+	m_nShownFiles = 0;
+	m_nShownSubmodules = 0;
+
 	if(UpdateStatusList)
 	{
 		m_arStatusArray.clear();
@@ -984,10 +992,38 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 	CString entryname = GitPath->GetGitPathString();
 	int icon_idx = 0;
 	if (GitPath->IsDirectory())
+	{
 		icon_idx = m_nIconFolder;
+		m_nShownSubmodules++;
+	}
 	else
 	{
 		icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(*GitPath);
+		m_nShownFiles++;
+	}
+	switch (GitPath->m_Action)
+	{
+	case CTGitPath::LOGACTIONS_ADDED:
+	case CTGitPath::LOGACTIONS_COPY:
+		m_nShownAdded++;
+		break;
+	case CTGitPath::LOGACTIONS_DELETED:
+		m_nShownDeleted++;
+		break;
+	case CTGitPath::LOGACTIONS_REPLACED:
+	case CTGitPath::LOGACTIONS_MODIFIED:
+	case CTGitPath::LOGACTIONS_MERGED:
+		m_nShownModified++;
+		break;
+	case CTGitPath::LOGACTIONS_UNMERGED:
+		m_nShownConflicted++;
+		break;
+	case CTGitPath::LOGACTIONS_UNVER:
+		m_nShownUnversioned++;
+		break;
+	default:
+		m_nShownUnversioned++;
+		break;
 	}
 	if(GitPath->m_Action & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !GitPath->GetGitOldPathString().IsEmpty())
 	{
@@ -3921,6 +3957,44 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 		SetEntryCheck(path,i,bSelect);
 	}
 
+	// unblock before redrawing
+	m_bBlock = FALSE;
+	SetRedraw(TRUE);
+	GetStatisticsString();
+	NotifyCheck();
+}
+
+void CGitStatusListCtrl::Check(DWORD dwCheck, bool uncheckNonMatches)
+{
+	CWaitCursor waitCursor;
+	// block here so the LVN_ITEMCHANGED messages
+	// get ignored
+	m_bBlock = TRUE;
+	SetRedraw(FALSE);
+
+	int nListItems = GetItemCount();
+	m_nSelected = 0;
+
+	for (int i = 0; i < nListItems; ++i)
+	{
+		CTGitPath *entry = (CTGitPath *) GetItemData(i);
+		if (entry == NULL)
+			continue;
+
+		DWORD showFlags = entry->m_Action;
+		if (entry->IsDirectory())
+			showFlags |= GITSLC_SHOWSUBMODULES;
+		else
+			showFlags |= GITSLC_SHOWFILES;
+
+		if (showFlags & dwCheck && !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules && !(dwCheck & GITSLC_SHOWSUBMODULES)))
+		{
+			SetEntryCheck(entry, i, true);
+			m_nSelected++;
+		}
+		else if (uncheckNonMatches)
+			SetEntryCheck(entry, i, false);
+	}
 	// unblock before redrawing
 	m_bBlock = FALSE;
 	SetRedraw(TRUE);

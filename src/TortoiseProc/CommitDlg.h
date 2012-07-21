@@ -26,6 +26,7 @@
 #include "Registry.h"
 #include "SciEdit.h"
 #include "SplitterControl.h"
+#include "LinkControl.h"
 #include "PathWatcher.h"
 #include "BugTraqAssociations.h"
 #include "Tooltip.h"
@@ -87,7 +88,6 @@ protected:
 	virtual void OnCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowunversioned();
 	afx_msg void OnBnClickedHistory();
@@ -100,6 +100,7 @@ protected:
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlItemChanged(WPARAM, LPARAM);
 
+	afx_msg LRESULT OnCheck(WPARAM count, LPARAM);
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -110,6 +111,7 @@ protected:
 	void DoSize(int delta);
 	void SetSplitterRange();
 	void SaveSplitterPos();
+	void UpdateCheckLinks();
 	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex);
 
 	DECLARE_MESSAGE_MAP()
@@ -160,7 +162,6 @@ private:
 	CRegDWORD			m_regKeepChangelists;
 	CRegDWORD			m_regDoNotAutoselectSubmodules;
 	ProjectProperties	m_ProjectProperties;
-	CButton				m_SelectAll;
 	CString				m_sWindowTitle;
 	static UINT			WM_AUTOLISTREADY;
 	int					m_nPopupPasteListCmd;
@@ -177,6 +178,7 @@ private:
 	BOOL				m_bSetCommitDateTime;
 	CDateTimeCtrl		m_CommitDate;
 	CDateTimeCtrl		m_CommitTime;
+	CLinkControl		m_linkControl;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;

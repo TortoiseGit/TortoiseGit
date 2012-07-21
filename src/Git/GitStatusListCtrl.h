@@ -56,7 +56,7 @@
 //#define SVNSLC_COLCOPYFROM			0x000020000
 
 #define GITSLC_SHOWUNVERSIONED	CTGitPath::LOGACTIONS_UNVER
-#define GITSLC_SHOWNORMAL		0x000000000
+#define GITSLC_SHOWNORMAL		0x00000000
 #define GITSLC_SHOWMODIFIED		(CTGitPath::LOGACTIONS_MODIFIED)
 #define GITSLC_SHOWADDED		(CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY)
 #define GITSLC_SHOWREMOVED		CTGitPath::LOGACTIONS_DELETED
@@ -79,6 +79,9 @@
 
 #define GITSLC_SHOWDIRECTS		(GITSLC_SHOWDIRECTFILES | GITSLC_SHOWDIRECTFOLDER)
 
+#define GITSLC_SHOWFILES		0x01000000
+#define GITSLC_SHOWSUBMODULES	0x02000000
+#define GITSLC_SHOWEVERYTHING	0xffffffff
 
 #define GITSLC_SHOWVERSIONED (CTGitPath::LOGACTIONS_FORWORD|GITSLC_SHOWNORMAL|GITSLC_SHOWMODIFIED|\
 GITSLC_SHOWADDED|GITSLC_SHOWREMOVED|GITSLC_SHOWCONFLICTED|GITSLC_SHOWMISSING|\
@@ -877,6 +880,12 @@ public:
 	 */
 	void SelectAll(bool bSelect, bool bIncludeNoCommits = false);
 
+	/**
+	 * Checks all specified items, removes the checks from the ones not specified
+	 * \param dwCheck SVNLC_SHOWxxx defines
+	 */
+	void Check(DWORD dwCheck, bool uncheckNonMatches);
+
 	/** Set a checkbox on an entry in the listbox
 	 * Keeps the listctrl checked state and the FileEntry's checked flag in sync
 	 */
@@ -971,6 +980,14 @@ public:
 	CString GetLastErrorMessage() {return m_sLastError;}
 
 	void Block(BOOL block, BOOL blockUI) {m_bBlock = block; m_bBlockUI = blockUI;}
+
+	LONG GetUnversionedCount() { return m_nShownUnversioned; }
+	LONG GetModifiedCount() { return m_nShownModified; }
+	LONG GetAddedCount() { return m_nShownAdded; }
+	LONG GetDeletedCount() { return m_nShownDeleted; }
+	LONG GetConflictedCount() { return m_nShownConflicted; }
+	LONG GetFileCount() { return m_nShownFiles; }
+	LONG GetSubmoduleCount() { return m_nShownSubmodules; }
 
 	LONG						m_nTargetCount;		///< number of targets in the file passed to GetStatus()
 
@@ -1138,6 +1155,14 @@ private:
 	LONG						m_nLineAdded;
 	LONG						m_nLineDeleted;
 	LONG						m_nRenamed;
+
+	LONG						m_nShownUnversioned;
+	LONG						m_nShownModified;
+	LONG						m_nShownAdded;
+	LONG						m_nShownDeleted;
+	LONG						m_nShownConflicted;
+	LONG						m_nShownFiles;
+	LONG						m_nShownSubmodules;
 
 	DWORD						m_dwDefaultColumns;
 	DWORD						m_dwShow;

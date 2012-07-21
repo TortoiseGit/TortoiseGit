@@ -496,6 +496,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utils\MiscUI\LinkControl.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utils\MiscUI\LinkControl.h"
+					>
+				</File>
+				<File
 					RelativePath="..\Utils\MiscUI\SciEdit.cpp"
 					>
 				</File>

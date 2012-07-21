@@ -121,7 +121,7 @@ protected:
 	 * this method can reduce the size of those controls again to only
 	 * fit the text.
 	 */
-	void AdjustControlSize(UINT nID)
+	RECT AdjustControlSize(UINT nID)
 	{
 		CWnd * pwndDlgItem = GetDlgItem(nID);
 		// adjust the size of the control to fit its content
@@ -155,6 +155,53 @@ protected:
 			pDC->SelectObject(pOldFont);
 			ReleaseDC(pDC);
 		}
+		return controlrectorig;
+	}
+
+	/**
+	* Adjusts the size of a static control.
+	* \param rc the position of the control where this control shall
+	*           be positioned next to on its right side.
+	* \param spacing number of pixels to add to rc.right
+	*/
+	RECT AdjustStaticSize(UINT nID, RECT rc, long spacing)
+	{
+		CWnd * pwndDlgItem = GetDlgItem(nID);
+		// adjust the size of the control to fit its content
+		CString sControlText;
+		pwndDlgItem->GetWindowText(sControlText);
+		// next step: find the rectangle the control text needs to
+		// be displayed
+
+		CDC * pDC = pwndDlgItem->GetWindowDC();
+		RECT controlrect;
+		RECT controlrectorig;
+		pwndDlgItem->GetWindowRect(&controlrect);
+		::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&controlrect, 2);
+		controlrect.right += 200;   // in case the control needs to be bigger than it currently is (e.g., due to translations)
+		controlrectorig = controlrect;
+
+		long height = controlrectorig.bottom-controlrectorig.top;
+		long width = controlrectorig.right-controlrectorig.left;
+		controlrectorig.left = rc.right + spacing;
+		controlrectorig.right = controlrectorig.left + width;
+		controlrectorig.bottom = rc.bottom;
+		controlrectorig.top = controlrectorig.bottom - height;
+
+		if (pDC)
+		{
+			CFont * font = pwndDlgItem->GetFont();
+			CFont * pOldFont = pDC->SelectObject(font);
+			if (pDC->DrawText(sControlText, -1, &controlrect, DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT))
+			{
+				// now we have the rectangle the control really needs
+				controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left);
+				pwndDlgItem->MoveWindow(&controlrectorig);
+			}
+			pDC->SelectObject(pOldFont);
+			ReleaseDC(pDC);
+		}
+		return controlrectorig;
 	}
 
 	/**
