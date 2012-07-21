@@ -1551,6 +1551,10 @@ msgstr ""
 msgid "Advanced merge settings"
 msgstr ""
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr ""
@@ -2172,6 +2176,10 @@ msgstr ""
 
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
+msgstr ""
+
+#. Resource IDs: (1700)
+msgid "Check:"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3770,6 +3778,10 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr ""
+
 #. Resource IDs: (1057)
 msgid "Fill Tool\nFill"
 msgstr ""
@@ -4667,6 +4679,10 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Last Commit"
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "Last Modified"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6700,10 +6716,6 @@ msgid "Select viewer for diff-files"
 msgstr ""
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr ""
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -7248,6 +7260,10 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
+msgstr ""
+
+#. Resource IDs: (1708)
+msgid "Submodules"
 msgstr ""
 
 #. Resource IDs: (81)
