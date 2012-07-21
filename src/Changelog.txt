@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #1283: TortoiseProc might crash after LogDialog is closed
  * Fixed issue #1282: gitdll.dll might crash if a pack file is closed which is still in use
  * Fixed issue #1287: Setting Remote URL not translated to '/' when clicking Apply or OK
+ * Fixed issue #1290: When pushing, 'remote' should default to the tracked archive, or empty
 
 = Release 1.7.11.3 =
 Released: 2012-07-07

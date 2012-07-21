@@ -175,7 +175,7 @@ void CPushDlg::Refresh()
 
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
 	m_RemoteReg = remote;
-	int sel=0;
+	int sel = -1;
 
 	STRING_VECTOR list;
 	m_Remote.Reset();
@@ -193,6 +193,9 @@ void CPushDlg::Refresh()
 				sel = i;
 		}
 	}
+	// if the last selected remote was "- All -" and "- All -" is still in the list -> select it
+	if (list.size() > 1 && remote == CString(MAKEINTRESOURCE(IDS_PROC_PUSHFETCH_ALLREMOTES)))
+		sel = 0;
 	m_Remote.SetCurSel(sel);
 
 	int current=0;
@@ -243,8 +246,28 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 
 	CRegString remote(CString(_T("Software\\TortoiseGit\\History\\PushRemote\\")+WorkingDir));
 
-	if( !pushRemote.IsEmpty() )
-		remote=pushRemote;
+	if (!pushRemote.IsEmpty())
+	{
+		remote = pushRemote;
+		// if a pushRemote exists, select it
+		for (int i = 0; i < m_Remote.GetCount(); i++)
+		{
+			CString str;
+			int n = m_Remote.GetLBTextLen(i);
+			m_Remote.GetLBText(i, str.GetBuffer(n));
+			str.ReleaseBuffer();
+			if (str == pushRemote)
+			{
+				m_Remote.SetCurSel(i);
+				break;
+			}
+		}
+	}
+	// select no remote if no push-remote is specified AND push to all remotes is not selected
+	else if (!(m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0))
+	{
+		m_Remote.SetCurSel(-1);
+	}
 
 	//Select pull-branch from current branch
 	configName.Format(L"branch.%s.pushbranch", currentBranch);
