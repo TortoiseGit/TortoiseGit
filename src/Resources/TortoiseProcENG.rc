@@ -994,7 +994,7 @@ BEGIN
     GROUPBOX        "Options",IDC_GROUP_OPTION,7,89,293,61
 END
 
-IDD_PUSH DIALOGEX 0, 0, 316, 234
+IDD_PUSH DIALOGEX 0, 0, 317, 255
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Push"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1013,16 +1013,20 @@ BEGIN
     PUSHBUTTON      "Mana&ge",IDC_REMOTE_MANAGE,254,91,40,16
     CONTROL         "Arbitrary &URL:",IDC_RD_URL,"Button",BS_AUTORADIOBUTTON,15,113,57,10
     CONTROL         "",IDC_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,76,111,218,64
-    GROUPBOX        "Options",IDC_OPTION_GROUP,7,142,295,63
+    GROUPBOX        "Options",IDC_OPTION_GROUP,7,142,295,86
     CONTROL         "&Force Overwrite Existing Branch (May discard changes)",IDC_FORCE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,154,279,10
     CONTROL         "Use Thin &Pack (For slow network connections)",IDC_PACK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,165,279,10
     CONTROL         "Include &Tags",IDC_TAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,178,279,10
     CONTROL         "&Autoload Putty Key",IDC_PUTTYKEY_AUTOLOAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,190,279,10
-    DEFPUSHBUTTON   "OK",IDOK,143,213,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,201,213,50,14
-    PUSHBUTTON      "Help",IDHELP,258,213,50,14
+    CONTROL         "Always push to the selected remote archive for this local branch",IDC_PROC_PUSH_SET_PUSHREMOTE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,202,279,10
+    CONTROL         "Always push to the selected remote branch for this local branch",IDC_PROC_PUSH_SET_PUSHBRANCH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,213,279,10
+    DEFPUSHBUTTON   "OK",IDOK,143,234,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,201,234,50,14
+    PUSHBUTTON      "Help",IDHELP,258,234,50,14
 END
 
 IDD_SVNDCOMMITTYPE DIALOGEX 0, 0, 242, 90
@@ -2116,14 +2120,14 @@ BEGIN
     IDD_PUSH, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 306
+        RIGHTMARGIN, 307
         VERTGUIDE, 15
         VERTGUIDE, 76
         VERTGUIDE, 271
         VERTGUIDE, 294
         VERTGUIDE, 302
         TOPMARGIN, 7
-        BOTTOMMARGIN, 227
+        BOTTOMMARGIN, 248
     END
 
     IDD_SVNDCOMMITTYPE, DIALOG
@@ -3659,6 +3663,10 @@ BEGIN
     IDS_PROC_PUSHFETCH_ALLREMOTES "- all -"
     IDS_PROC_SYNC_NOFASTFORWARD 
                             "The local branch ""%s"" does not fast-forward to the remote branch ""%s""."
+    IDS_PUSHDLG_PUSHBRANCH_TT 
+                            "Sets the remote branch as the ""pushbranch"" for the selected local branch."
+    IDS_PUSHDLG_PUSHREMOTE_TT 
+                            "Sets the remote as the ""pushremote"" for the selected local branch."
 END
 
 #endif    // Englisch (USA) resources

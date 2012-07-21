@@ -779,7 +779,9 @@
 #define IDC_CHECKOUTPATH                1361
 #define IDS_PROC_SYNC_NOFASTFORWARD     1361
 #define IDC_BROWSECHECKOUTPATH          1362
+#define IDS_PUSHDLG_PUSHBRANCH_TT       1362
 #define IDC_CHECKOUTURL                 1363
+#define IDS_PUSHDLG_PUSHREMOTE_TT       1363
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
 #define IDC_REPOTREE                    1371
@@ -887,6 +889,7 @@
 #define IDC_SIGNOFF                     1482
 #define IDC_CHECK_NOCOMMIT              1482
 #define IDC_SENDMAIL_MAPI               1482
+#define IDC_PROC_PUSH_SET_PUSHREMOTE    1482
 #define IDC_BUTTON_BROWSE               1483
 #define IDC_BUTTON_BROWSE_SOURCE_BRANCH 1483
 #define IDC_BUTTON_BROWSE_REF           1483
@@ -898,6 +901,7 @@
 #define IDC_CHECK_FFONLY                1484
 #define IDC_TITLE_ANIMATE               1485
 #define IDC_CHECK_FETCHTAGS             1485
+#define IDC_PROC_PUSH_SET_PUSHBRANCH    1485
 #define IDC_RUN_PROGRESS                1486
 #define IDC_CURRENT                     1487
 #define IDC_COMBOBOXEX1                 1489

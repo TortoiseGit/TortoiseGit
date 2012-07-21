@@ -23,8 +23,9 @@
 #include "HistoryCombo.h"
 #include "MenuButton.h"
 #include "registry.h"
-// CPushDlg dialog
+#include "Tooltip.h"
 
+// CPushDlg dialog
 class CPushDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CPushDlg)
@@ -59,6 +60,11 @@ public:
 protected:
 	CRegDWORD		m_regAutoLoad;
 
+	BOOL			m_bSetPushRemote;
+	BOOL			m_bSetPushBranch;
+
+	CToolTips		m_tooltips;
+
 	virtual BOOL OnInitDialog();
 
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -75,4 +81,5 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
 	void GetRemoteBranch(CString currentBranch);
+	void EnDisablePushRemoteArchiveBranch();
 };

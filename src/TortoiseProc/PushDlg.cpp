@@ -65,12 +65,15 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
 	DDX_Check(pDX,IDC_TAGS,this->m_bTags);
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
+	DDX_Check(pDX, IDC_PROC_PUSH_SET_PUSHREMOTE, m_bSetPushRemote);
+	DDX_Check(pDX, IDC_PROC_PUSH_SET_PUSHBRANCH, m_bSetPushBranch);
 }
 
 BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_RD_REMOTE, &CPushDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_RD_URL, &CPushDlg::OnBnClickedRd)
 	ON_CBN_SELCHANGE(IDC_BRANCH_SOURCE, &CPushDlg::OnCbnSelchangeBranchSource)
+	ON_CBN_SELCHANGE(IDC_REMOTE, &CPushDlg::EnDisablePushRemoteArchiveBranch)
 	ON_BN_CLICKED(IDOK, &CPushDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_REMOTE_MANAGE, &CPushDlg::OnBnClickedRemoteManage)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
@@ -109,6 +112,8 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_PACK, TOP_LEFT);
 	AddAnchor(IDC_TAGS, TOP_LEFT);
 	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
+	AddAnchor(IDC_PROC_PUSH_SET_PUSHBRANCH, TOP_LEFT);
+	AddAnchor(IDC_PROC_PUSH_SET_PUSHREMOTE, TOP_LEFT);
 
 	AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -122,6 +127,8 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_PACK);
 	AdjustControlSize(IDC_TAGS);
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
+	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
+	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -159,10 +166,11 @@ BOOL CPushDlg::OnInitDialog()
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_LOG)));
 	m_BrowseLocalRef.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
+	m_tooltips.Create(this);
+	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHBRANCH, IDS_PUSHDLG_PUSHBRANCH_TT);
+	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHREMOTE, IDS_PUSHDLG_PUSHREMOTE_TT);
+
 	Refresh();
-
-
-	//m_BranchRemote.SetWindowTextW(m_BranchSource.GetString());
 
 	this->UpdateData(false);
 	return TRUE;
@@ -232,7 +240,10 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	WorkingDir.Replace(_T(':'), _T('_'));
 
 	if (currentBranch.IsEmpty())
+	{
+		EnDisablePushRemoteArchiveBranch();
 		return;
+	}
 
 	CString configName;
 
@@ -281,6 +292,25 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	m_BranchRemote.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\RemoteBranch\\"))+WorkingDir, _T("branch"));
 	if( !pushBranch.IsEmpty() )
 		m_BranchRemote.AddString(pushBranch);
+
+	EnDisablePushRemoteArchiveBranch();
+}
+
+void CPushDlg::EnDisablePushRemoteArchiveBranch()
+{
+	if ((m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0) || m_bPushAllBranches || GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL || m_BranchSource.GetString().Trim().IsEmpty())
+	{
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHBRANCH, FALSE);
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHREMOTE, FALSE);
+		m_bSetPushRemote = FALSE;
+		m_bSetPushBranch = FALSE;
+		UpdateData(FALSE);
+	}
+	else
+	{
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHBRANCH, TRUE);
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHREMOTE, TRUE);
+	}
 }
 
 // CPushDlg message handlers
@@ -299,6 +329,7 @@ void CPushDlg::OnBnClickedRd()
 		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(FALSE);
 		m_RemoteURL.EnableWindow(TRUE);
 	}
+	EnDisablePushRemoteArchiveBranch();
 }
 
 
@@ -346,17 +377,38 @@ void CPushDlg::OnBnClickedOk()
 			CMessageBox::Show(NULL, IDS_B_T_INVALID, IDS_APPNAME, MB_OK);
 			return;
 		}
+		else if (!m_BranchSourceName.IsEmpty() && !g_Git.IsBranchTagNameUnique(m_BranchSourceName))
+		{
+			CMessageBox::Show(NULL, IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
+			return;
+		}
 		else
 		{
 			// do not store branch names on removal
 			this->m_RemoteURL.SaveHistory();
 			this->m_BranchRemote.SaveHistory();
 			m_RemoteReg = m_Remote.GetString();
-		}
-		if (!m_BranchSourceName.IsEmpty() && !g_Git.IsBranchTagNameUnique(m_BranchSourceName))
-		{
-			CMessageBox::Show(NULL, IDS_B_T_NOT_UNIQUE, IDS_APPNAME, MB_OK | MB_ICONEXCLAMATION);
-			return;
+
+			if (!m_BranchSourceName.IsEmpty())
+			{
+				CString configName;
+				if (m_bSetPushBranch)
+				{
+					configName.Format(L"branch.%s.pushbranch", m_BranchSourceName);
+					if (!m_BranchRemoteName.IsEmpty())
+						g_Git.SetConfigValue(configName, m_BranchRemoteName);
+					else
+						g_Git.UnsetConfigValue(configName);
+				}
+				if (m_bSetPushRemote)
+				{
+					configName.Format(L"branch.%s.pushremote", m_BranchSourceName);
+					if (!m_BranchRemoteName.IsEmpty())
+						g_Git.SetConfigValue(configName, m_URL);
+					else
+						g_Git.UnsetConfigValue(configName);
+				}
+			}
 		}
 	}
 
@@ -436,6 +488,8 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 
 BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)
 {
+	m_tooltips.RelayEvent(pMsg);
+
 	if (pMsg->message == WM_KEYDOWN)
 	{
 		switch (pMsg->wParam)
@@ -464,4 +518,5 @@ void CPushDlg::OnBnClickedPushall()
 		m_bTags = FALSE;
 		UpdateData(FALSE);
 	}
+	EnDisablePushRemoteArchiveBranch();
 }
