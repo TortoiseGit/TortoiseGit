@@ -1589,6 +1589,14 @@ msgstr ""
 msgid "Already up to date."
 msgstr ""
 
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr ""
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
+msgstr ""
+
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
 msgstr ""
@@ -6755,6 +6763,14 @@ msgstr ""
 msgid "Set up SMTP Server"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "Sets the remote branch as the \"pushbranch\" for the selected local branch."
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Setting properties..."
 msgstr ""
@@ -7486,6 +7502,11 @@ msgstr ""
 #. Resource IDs: (63)
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
 msgstr ""
 
 #. Resource IDs: (64)
