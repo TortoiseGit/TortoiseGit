@@ -1171,7 +1171,7 @@ private:
 
     ColumnManager               m_ColumnManager;
 
-	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember manually de-/selected items
+	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	CComCriticalSection			m_critSec;
 
 	friend class CGitStatusListCtrlDropTarget;

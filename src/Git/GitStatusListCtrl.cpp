@@ -621,6 +621,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 				entry->m_Checked=true;
 			else
 				entry->m_Checked=false;
+			m_mapFilenameToChecked[path] = entry->m_Checked;
 		}
 
 		if(entry->m_Action & dwShow)
@@ -4074,6 +4075,7 @@ void CGitStatusListCtrl::RemoveListEntry(int index)
 void CGitStatusListCtrl::SetEntryCheck(CTGitPath* pEntry, int listboxIndex, bool bCheck)
 {
 	pEntry->m_Checked = bCheck;
+	m_mapFilenameToChecked[pEntry->GetGitPathString()] = bCheck;
 	SetCheck(listboxIndex, bCheck);
 }
 
