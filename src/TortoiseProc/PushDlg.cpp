@@ -314,6 +314,11 @@ void CPushDlg::OnBnClickedOk()
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_REMOTE)
 	{
 		m_URL=m_Remote.GetString();
+		if (m_URL.IsEmpty())
+		{
+			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK);
+			return;
+		}
 		m_bPushAllRemotes = (m_Remote.GetCurSel() == 0 && m_Remote.GetCount() > 1);
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
