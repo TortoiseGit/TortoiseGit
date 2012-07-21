@@ -3677,6 +3677,7 @@ BEGIN
     IDS_PUSHDLG_PUSHREMOTE_TT 
                             "Sets the remote as the ""pushremote"" for the selected local branch."
     IDS_STATUSLIST_COLLASTMODIFIED "Last Modified"
+    IDS_STATUSLIST_COLSIZE  "Size"
 END
 
 #endif    // Englisch (USA) resources

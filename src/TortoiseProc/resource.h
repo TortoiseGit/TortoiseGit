@@ -783,6 +783,7 @@
 #define IDC_CHECKOUTURL                 1363
 #define IDS_PUSHDLG_PUSHREMOTE_TT       1363
 #define IDS_STATUSLIST_COLLASTMODIFIED  1364
+#define IDS_STATUSLIST_COLSIZE          1365
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
 #define IDC_REPOTREE                    1371

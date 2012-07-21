@@ -242,6 +242,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			, IDS_STATUSLIST_COLADD
 			, IDS_STATUSLIST_COLDEL
 			, IDS_STATUSLIST_COLLASTMODIFIED
+			, IDS_STATUSLIST_COLSIZE
 			};
 
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
@@ -1085,6 +1086,15 @@ void CGitStatusListCtrl::AddEntry(CTGitPath * GitPath, WORD /*langID*/, int list
 			modificationDate = CLoglistUtils::FormatDateAndTime(CTime(g_Git.filetime_to_time_t(f)), DATE_SHORTDATE, true, relativeTimes);
 		}
 		SetItemText(index, GetColumnIndex(GITSLC_COLMODIFICATIONDATE), modificationDate);
+	}
+	// SVNSLC_COLSIZE
+	if (GitPath->IsDirectory())
+		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), _T(""));
+	else
+	{
+		TCHAR buf[100];
+		StrFormatByteSize64(GitPath->GetFileSize(), buf, 100);
+		SetItemText(index, GetColumnIndex(GITSLC_COLSIZE), buf);
 	}
 
 	SetCheck(index, GitPath->m_Checked);

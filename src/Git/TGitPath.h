@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -224,6 +224,11 @@ public:
 	 */
 	__int64 GetLastWriteTime() const;
 
+	/**
+	 * Get the file size. Returns zero for directories or files that don't exist.
+	 */
+	__int64 GetFileSize() const;
+
 	bool IsReadOnly() const;
 
 	/**
@@ -326,6 +331,7 @@ private:
 	mutable bool m_bURLKnown;
 	mutable bool m_bIsURL;
 	mutable __int64 m_lastWriteTime;
+	mutable __int64 m_fileSize;
 	mutable bool m_bIsReadOnly;
 	mutable bool m_bHasAdminDirKnown;
 	mutable bool m_bHasAdminDir;

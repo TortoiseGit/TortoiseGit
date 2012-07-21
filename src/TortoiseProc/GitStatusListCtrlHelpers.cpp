@@ -24,7 +24,7 @@
 #include <iterator>
 
 // registry version number of column-settings of GitLogListBase
-#define GITSLC_COL_VERSION 4
+#define GITSLC_COL_VERSION 5
 
 #ifndef assert
 #define assert(x) ATLASSERT(x)
@@ -890,6 +890,16 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 	int result = 0;
 	switch (sortedColumn)
 	{
+	case 7: // File size
+		{
+			if (result == 0)
+			{
+				__int64 fileSize1 = entry1->IsDirectory() ? 0 : entry1->GetFileSize();
+				__int64 fileSize2 = entry2->IsDirectory() ? 0 : entry2->GetFileSize();
+				
+				result = int(fileSize1 - fileSize2);
+			}
+		}
 	case 6: //Last Modification Date
 		{
 			if (result == 0)

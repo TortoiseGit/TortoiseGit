@@ -61,6 +61,7 @@ CTGitPath::CTGitPath(void)
 	, m_bIsSpecialDirectory(false)
 	, m_bIsWCRootKnown(false)
 	, m_bIsWCRoot(false)
+	, m_fileSize(0)
 {
 	m_Action=0;
 	m_ParentNo=0;
@@ -91,6 +92,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	, m_bIsSpecialDirectory(false)
 	, m_bIsWCRootKnown(false)
 	, m_bIsWCRoot(false)
+	, m_fileSize(0)
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
@@ -402,6 +404,15 @@ __int64  CTGitPath::GetLastWriteTime() const
 	return m_lastWriteTime;
 }
 
+__int64 CTGitPath::GetFileSize() const
+{
+	if(!m_bDirectoryKnown)
+	{
+		UpdateAttributes();
+	}
+	return m_fileSize;
+}
+
 bool CTGitPath::IsReadOnly() const
 {
 	if(!m_bLastWriteTimeKnown)
@@ -419,22 +430,29 @@ void CTGitPath::UpdateAttributes() const
 	{
 		m_bIsDirectory = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 		m_lastWriteTime = *(__int64*)&attribs.ftLastWriteTime;
+		if (m_bIsDirectory)
+		{
+			m_fileSize = 0;
+		}
+		else
+		{
+			m_fileSize = ((INT64)( (DWORD)(attribs.nFileSizeLow) ) | ( (INT64)( (DWORD)(attribs.nFileSizeHigh) )<<32 ));
+		}
 		m_bIsReadOnly = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_READONLY);
 		m_bExists = true;
 	}
 	else
 	{
+		m_bIsDirectory = false;
+		m_lastWriteTime = 0;
+		m_fileSize = 0;
 		DWORD err = GetLastError();
 		if ((err == ERROR_FILE_NOT_FOUND)||(err == ERROR_PATH_NOT_FOUND)||(err == ERROR_INVALID_NAME))
 		{
-			m_bIsDirectory = false;
-			m_lastWriteTime = 0;
 			m_bExists = false;
 		}
 		else
 		{
-			m_bIsDirectory = false;
-			m_lastWriteTime = 0;
 			m_bExists = true;
 			return;
 		}
