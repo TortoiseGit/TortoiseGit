@@ -24,7 +24,7 @@
 #include <iterator>
 
 // registry version number of column-settings of GitLogListBase
-#define BLAME_COLUMN_VERSION 4
+#define GITSLC_COL_VERSION 4
 
 #ifndef assert
 #define assert(x) ATLASSERT(x)
@@ -136,7 +136,7 @@ void ColumnManager::ReadSettings
 	registryPrefix = _T("Software\\TortoiseGit\\StatusColumns\\") + containerName;
 
 	// we accept settings of current version only
-	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == BLAME_COLUMN_VERSION;
+	bool valid = (DWORD)CRegDWORD (registryPrefix + _T("Version"), 0xff) == GITSLC_COL_VERSION;
 	if (valid)
 	{
 		// read (possibly different) column selection
@@ -192,7 +192,7 @@ void ColumnManager::ReadSettings
 void ColumnManager::WriteSettings() const
 {
 	CRegDWORD regVersion (registryPrefix + _T("Version"), 0, TRUE);
-	regVersion = BLAME_COLUMN_VERSION;
+	regVersion = GITSLC_COL_VERSION;
 
 	// write (possibly different) column selection
 
