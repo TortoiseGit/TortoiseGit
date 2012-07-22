@@ -49,10 +49,12 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="precompiled.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 				CompileAs="1"
+				ForcedIncludeFiles="precompiled.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -126,10 +128,12 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="precompiled.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
+				ForcedIncludeFiles="precompiled.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -201,10 +205,12 @@
 				PreprocessorDefinitions="NDEBUG"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="precompiled.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
+				ForcedIncludeFiles="precompiled.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -277,10 +283,12 @@
 				PreprocessorDefinitions="NDEBUG"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="precompiled.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="1"
+				ForcedIncludeFiles="precompiled.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -580,6 +588,42 @@
 					>
 				</File>
 				<File
+					RelativePath="..\libgit2\src\win32\precompiled.c"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\libgit2\src\win32\pthread.c"
 					>
 				</File>
@@ -867,6 +911,10 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\win32\posix.h"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\win32\precompiled.h"
 					>
 				</File>
 				<File
