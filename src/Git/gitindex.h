@@ -70,14 +70,6 @@ protected:
 public:
 	__time64_t  m_LastModifyTime;
 
-#ifdef DEBUG
-	CString m_GitFile;
-	~CGitIndexList()
-	{
-		//TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
-	}
-#endif
-
 	CGitIndexList();
 
 	int ReadIndex(CString file);
@@ -186,14 +178,6 @@ public:
 		m_LastModifyTimeRef=0;
 		m_LastModifyTimePackRef = 0;
 	}
-
-#ifdef DEBUG
-	CString m_GitFile;
-	~CGitHeadFileList()
-	{
-		//TRACE(_T("Free Index List 0x%x %s"),this, m_GitFile);
-	}
-#endif
 
 	int ReadTree();
 	int ReadHeadHash(CString gitdir);
