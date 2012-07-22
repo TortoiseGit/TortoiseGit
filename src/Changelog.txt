@@ -24,6 +24,7 @@ Released: unreleased
  * Optimized remembering of checked/unchecked files on the commit dialog
  * Fixed issue #767: Default column widths in log commit file list are off
  * Fixed issue #1294: TortoiseGit might crash on concurrent access on CGitHeadFileList
+ * Fixed issue #1279: Nothing seen in Repository Browser without config core.bare=false
 
 = Release 1.7.11.3 =
 Released: 2012-07-07

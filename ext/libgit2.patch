@@ -1,0 +1,152 @@
+Fix for https://github.com/libgit2/libgit2/issues/824
+
+ include/git2/attr.h | 63 -----------------------------------------------------
+ src/attr_file.h     | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+), 63 deletions(-)
+
+diff --git a/include/git2/attr.h b/include/git2/attr.h
+index fad7183..9b567b6 100644
+--- a/include/git2/attr.h
++++ b/include/git2/attr.h
+@@ -20,69 +20,6 @@
+ GIT_BEGIN_DECL
+ 
+ /**
+- * GIT_ATTR_TRUE checks if an attribute is set on.  In core git
+- * parlance, this the value for "Set" attributes.
+- *
+- * For example, if the attribute file contains:
+- *
+- *    *.c foo
+- *
+- * Then for file `xyz.c` looking up attribute "foo" gives a value for
+- * which `GIT_ATTR_TRUE(value)` is true.
+- */
+-#define GIT_ATTR_TRUE(attr)		((attr) == git_l_attr__true)
+-
+-/**
+- * GIT_ATTR_FALSE checks if an attribute is set off.  In core git
+- * parlance, this is the value for attributes that are "Unset" (not to
+- * be confused with values that a "Unspecified").
+- *
+- * For example, if the attribute file contains:
+- *
+- *    *.h -foo
+- *
+- * Then for file `zyx.h` looking up attribute "foo" gives a value for
+- * which `GIT_ATTR_FALSE(value)` is true.
+- */
+-#define GIT_ATTR_FALSE(attr)	((attr) == git_l_attr__false)
+-
+-/**
+- * GIT_ATTR_UNSPECIFIED checks if an attribute is unspecified.  This
+- * may be due to the attribute not being mentioned at all or because
+- * the attribute was explicitly set unspecified via the `!` operator.
+- *
+- * For example, if the attribute file contains:
+- *
+- *    *.c foo
+- *    *.h -foo
+- *    onefile.c !foo
+- *
+- * Then for `onefile.c` looking up attribute "foo" yields a value with
+- * `GIT_ATTR_UNSPECIFIED(value)` of true.  Also, looking up "foo" on
+- * file `onefile.rb` or looking up "bar" on any file will all give
+- * `GIT_ATTR_UNSPECIFIED(value)` of true.
+- */
+-#define GIT_ATTR_UNSPECIFIED(attr)	(!(attr) || (attr) == git_l_attr__unset)
+-
+-/**
+- * GIT_ATTR_HAS_VALUE checks if an attribute is set to a value (as
+- * opposed to TRUE, FALSE or UNSPECIFIED).  This would be the case if
+- * for a file with something like:
+- *
+- *    *.txt eol=lf
+- *
+- * Given this, looking up "eol" for `onefile.txt` will give back the
+- * string "lf" and `GIT_ATTR_SET_TO_VALUE(attr)` will return true.
+- */
+-#define GIT_ATTR_HAS_VALUE(attr) \
+-	((attr) && (attr) != git_l_attr__unset && \
+-	 (attr) != git_l_attr__true && (attr) != git_attr__false)
+-
+-GIT_EXTERN(const char *) git_l_attr__true;
+-GIT_EXTERN(const char *) git_l_attr__false;
+-GIT_EXTERN(const char *) git_l_attr__unset;
+-
+-/**
+  * Check attribute flags: Reading values from index and working directory.
+  *
+  * When checking attributes, it is possible to check attribute files
+diff --git a/src/attr_file.h b/src/attr_file.h
+index 7939f83..fb93e65 100644
+--- a/src/attr_file.h
++++ b/src/attr_file.h
+@@ -142,4 +142,67 @@ extern int git_attr_assignment__parse(
+ 	git_vector *assigns,
+ 	const char **scan);
+ 
++/**
++ * GIT_ATTR_TRUE checks if an attribute is set on.  In core git
++ * parlance, this the value for "Set" attributes.
++ *
++ * For example, if the attribute file contains:
++ *
++ *    *.c foo
++ *
++ * Then for file `xyz.c` looking up attribute "foo" gives a value for
++ * which `GIT_ATTR_TRUE(value)` is true.
++ */
++#define GIT_ATTR_TRUE(attr)		((attr) == git_l_attr__true)
++
++/**
++ * GIT_ATTR_FALSE checks if an attribute is set off.  In core git
++ * parlance, this is the value for attributes that are "Unset" (not to
++ * be confused with values that a "Unspecified").
++ *
++ * For example, if the attribute file contains:
++ *
++ *    *.h -foo
++ *
++ * Then for file `zyx.h` looking up attribute "foo" gives a value for
++ * which `GIT_ATTR_FALSE(value)` is true.
++ */
++#define GIT_ATTR_FALSE(attr)	((attr) == git_l_attr__false)
++
++/**
++ * GIT_ATTR_UNSPECIFIED checks if an attribute is unspecified.  This
++ * may be due to the attribute not being mentioned at all or because
++ * the attribute was explicitly set unspecified via the `!` operator.
++ *
++ * For example, if the attribute file contains:
++ *
++ *    *.c foo
++ *    *.h -foo
++ *    onefile.c !foo
++ *
++ * Then for `onefile.c` looking up attribute "foo" yields a value with
++ * `GIT_ATTR_UNSPECIFIED(value)` of true.  Also, looking up "foo" on
++ * file `onefile.rb` or looking up "bar" on any file will all give
++ * `GIT_ATTR_UNSPECIFIED(value)` of true.
++ */
++#define GIT_ATTR_UNSPECIFIED(attr)	(!(attr) || (attr) == git_l_attr__unset)
++
++/**
++ * GIT_ATTR_HAS_VALUE checks if an attribute is set to a value (as
++ * opposed to TRUE, FALSE or UNSPECIFIED).  This would be the case if
++ * for a file with something like:
++ *
++ *    *.txt eol=lf
++ *
++ * Given this, looking up "eol" for `onefile.txt` will give back the
++ * string "lf" and `GIT_ATTR_SET_TO_VALUE(attr)` will return true.
++ */
++#define GIT_ATTR_HAS_VALUE(attr) \
++	((attr) && (attr) != git_l_attr__unset && \
++	 (attr) != git_l_attr__true && (attr) != git_attr__false)
++
++GIT_EXTERN(const char *) git_l_attr__true;
++GIT_EXTERN(const char *) git_l_attr__false;
++GIT_EXTERN(const char *) git_l_attr__unset;
++
+ #endif
