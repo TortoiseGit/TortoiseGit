@@ -156,6 +156,7 @@ class CGitHeadFileList:public std::vector<CGitTreeItem>
 private:
 
 	int GetPackRef(const CString &gitdir);
+	SharedMutex	m_SharedMutex;
 
 public:
 	__time64_t  m_LastModifyTimeHead;
@@ -177,6 +178,12 @@ public:
 		m_LastModifyTimeHead=0;
 		m_LastModifyTimeRef=0;
 		m_LastModifyTimePackRef = 0;
+		m_SharedMutex.Init();
+	}
+
+	~CGitHeadFileList()
+	{
+		m_SharedMutex.Release();
 	}
 
 	int ReadTree();

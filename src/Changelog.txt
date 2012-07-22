@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #1290: When pushing, 'remote' should default to the tracked archive, or empty
  * Optimized remembering of checked/unchecked files on the commit dialog
  * Fixed issue #767: Default column widths in log commit file list are off
+ * Fixed issue #1294: TortoiseGit might crash on concurrent access on CGitHeadFileList
 
 = Release 1.7.11.3 =
 Released: 2012-07-07

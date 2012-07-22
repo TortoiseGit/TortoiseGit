@@ -369,6 +369,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	__int64 mtime;
 	if (g_Git.GetFileModifyTime(PackRef, &mtime))
 	{
+		CAutoWriteLock lock(&this->m_SharedMutex);
 		//packed refs is not existed
 		this->m_PackRefFile.Empty();
 		this->m_PackRefMap.clear();
@@ -380,12 +381,14 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	}
 	else
 	{
+		CAutoWriteLock lock(&this->m_SharedMutex);
 		this->m_PackRefFile = PackRef;
 		this->m_LastModifyTimePackRef = mtime;
 	}
 
 	int ret = 0;
 	{
+		CAutoWriteLock lock(&this->m_SharedMutex);
 		this->m_PackRefMap.clear();
 
 		CAutoFile hfile = CreateFile(PackRef,
@@ -480,6 +483,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 int CGitHeadFileList::ReadHeadHash(CString gitdir)
 {
 	int ret = 0;
+	CAutoWriteLock lock(&this->m_SharedMutex);
 	m_Gitdir = g_AdminDirMap.GetAdminDir(gitdir);
 
 	m_HeadFile = m_Gitdir + _T("HEAD");
@@ -613,6 +617,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 
 bool CGitHeadFileList::CheckHeadUpdate()
 {
+	CAutoReadLock lock(&m_SharedMutex);
 	if (this->m_HeadFile.IsEmpty())
 		return true;
 
@@ -756,6 +761,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 
 int CGitHeadFileList::ReadTree()
 {
+	CAutoWriteLock lock(&m_SharedMutex);
 	CStringA gitdir = CUnicodeUtils::GetMulti(m_Gitdir, CP_UTF8);
 	git_repository *repository = NULL;
 	git_commit *commit = NULL;
