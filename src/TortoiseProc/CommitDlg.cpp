@@ -803,6 +803,8 @@ void CCommitDlg::OnOK()
 				m_cLogMessage.SetText(m_sLogMessage);
 			}
 
+			m_bCommitAmend = FALSE;
+			UpdateData(FALSE);
 			this->Refresh();
 		}
 		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexTag)
