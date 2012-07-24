@@ -2202,7 +2202,16 @@ int CGitLogListBase::BeginFetchLog()
 		SetItemCountEx(this->m_logEntries.size());
 	}
 
-	git_init();
+	try
+	{
+		git_init();
+	}
+	catch (char* msg)
+	{
+		CString err(msg);
+		MessageBox(_T("Could not initialize libgit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 
 	if(g_Git.IsInitRepos())
 		return 0;
