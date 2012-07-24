@@ -1855,7 +1855,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
-	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE) == TRUE)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) == TRUE)
 	{
 		git_repository *repo = NULL;
 		git_index *index;
