@@ -561,6 +561,10 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId)
 {
 	// recursively kills a process tree
 	// This is not optimized, but works and isn't called very often ;)
+
+	if (!dwProcessId)
+		return;
+
 	PROCESSENTRY32 pe;
 	memset(&pe, 0, sizeof(PROCESSENTRY32));
 	pe.dwSize = sizeof(PROCESSENTRY32);
