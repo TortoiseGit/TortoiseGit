@@ -557,12 +557,12 @@ void CProgressDlg::OnCancel()
 	CResizableStandAloneDialog::OnCancel();
 }
 
-void CProgressDlg::KillProcessTree(DWORD dwProcessId)
+void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 {
 	// recursively kills a process tree
 	// This is not optimized, but works and isn't called very often ;)
 
-	if (!dwProcessId)
+	if (!dwProcessId || depth > 20)
 		return;
 
 	PROCESSENTRY32 pe;
@@ -576,7 +576,7 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId)
 		do
 		{
 			if (pe.th32ParentProcessID == dwProcessId)
-				KillProcessTree(pe.th32ProcessID);
+				KillProcessTree(pe.th32ProcessID, depth + 1);
 		} while (::Process32Next(hSnap, &pe));
 
 		HANDLE hProc = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
