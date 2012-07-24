@@ -54,6 +54,60 @@ void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 	}
 }
 
+class CRefLeafListCompareFunc
+{
+public:
+	CRefLeafListCompareFunc(CListCtrl* pList, int col, bool desc):m_col(col),m_desc(desc),m_pList(pList){
+		m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+		if (m_bSortLogical)
+			m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
+	}
+
+	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+	{
+		return ((CRefLeafListCompareFunc*)lParamSort)->Compare(lParam1,lParam2);
+	}
+
+	int Compare(LPARAM lParam1, LPARAM lParam2)
+	{
+		return Compare(
+			(CShadowTree*)m_pList->GetItemData(lParam1),
+			(CShadowTree*)m_pList->GetItemData(lParam2));
+	}
+
+	int Compare(CShadowTree* pLeft, CShadowTree* pRight)
+	{
+		int result=CompareNoDesc(pLeft,pRight);
+		if(m_desc)
+			return -result;
+		return result;
+	}
+
+	int CompareNoDesc(CShadowTree* pLeft, CShadowTree* pRight)
+	{
+		switch(m_col)
+		{
+		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
+		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
+		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
+		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
+		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
+		}
+		return 0;
+	}
+	int SortStrCmp(CString &left, CString &right)
+	{
+		if (m_bSortLogical)
+			return StrCmpLogicalW(left, right);
+		return StrCmpI(left, right);
+	}
+
+	int m_col;
+	bool m_desc;
+	CListCtrl* m_pList;
+	bool m_bSortLogical;
+};
+
 // CBrowseRefsDlg dialog
 
 IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
@@ -61,7 +115,7 @@ IMPLEMENT_DYNAMIC(CBrowseRefsDlg, CResizableStandAloneDialog)
 CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 :	CResizableStandAloneDialog(CBrowseRefsDlg::IDD, pParent),
 	m_cmdPath(cmdPath),
-	m_currSortCol(-1),
+	m_currSortCol(0),
 	m_currSortDesc(false),
 	m_initialRef(L"HEAD"),
 	m_pickRef_Kind(gPickRef_All),
@@ -403,9 +457,6 @@ void CBrowseRefsDlg::OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult)
 void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 {
 	m_ListRefLeafs.DeleteAllItems();
-	m_currSortCol = -1;
-	m_currSortDesc = false;
-	SetSortArrow(&m_ListRefLeafs,-1,false);
 
 	CShadowTree* pTree=(CShadowTree*)(m_RefTreeCtrl.GetItemData(treeNode));
 	if(pTree==NULL)
@@ -448,6 +499,13 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		{
 			FillListCtrlForShadowTree(&itSubTree->second,csThisName,false);
 		}
+	}
+	if (isFirstLevel)
+	{
+		CRefLeafListCompareFunc compareFunc(&m_ListRefLeafs, m_currSortCol, m_currSortDesc);
+		m_ListRefLeafs.SortItemsEx(&CRefLeafListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
+
+		SetSortArrow(&m_ListRefLeafs,m_currSortCol,!m_currSortDesc);
 	}
 }
 
@@ -989,61 +1047,6 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
-
-class CRefLeafListCompareFunc
-{
-public:
-	CRefLeafListCompareFunc(CListCtrl* pList, int col, bool desc):m_col(col),m_desc(desc),m_pList(pList){
-		m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
-		if (m_bSortLogical)
-			m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
-	}
-
-	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
-	{
-		return ((CRefLeafListCompareFunc*)lParamSort)->Compare(lParam1,lParam2);
-	}
-
-	int Compare(LPARAM lParam1, LPARAM lParam2)
-	{
-		return Compare(
-			(CShadowTree*)m_pList->GetItemData(lParam1),
-			(CShadowTree*)m_pList->GetItemData(lParam2));
-	}
-
-	int Compare(CShadowTree* pLeft, CShadowTree* pRight)
-	{
-		int result=CompareNoDesc(pLeft,pRight);
-		if(m_desc)
-			return -result;
-		return result;
-	}
-
-	int CompareNoDesc(CShadowTree* pLeft, CShadowTree* pRight)
-	{
-		switch(m_col)
-		{
-		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
-		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
-		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
-		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
-		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
-		}
-		return 0;
-	}
-	int SortStrCmp(CString &left, CString &right)
-	{
-		if (m_bSortLogical)
-			return StrCmpLogicalW(left, right);
-		return StrCmpI(left, right);
-	}
-
-	int m_col;
-	bool m_desc;
-	CListCtrl* m_pList;
-	bool m_bSortLogical;
-};
-
 
 void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 {
