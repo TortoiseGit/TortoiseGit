@@ -80,6 +80,7 @@ protected:
 public:
 	CComCriticalSection			m_critGitDllSec;
 	bool	m_IsUseGitDLL;
+	bool	m_IsUseLibGit2;
 
 	CEnvironment m_Environment;
 

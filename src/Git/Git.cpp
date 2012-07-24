@@ -148,6 +148,7 @@ CGit::CGit(void)
 	m_GitDiff=0;
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
+	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), FALSE);
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
@@ -1072,20 +1073,46 @@ int addto_list_each_ref_fn(const char *refname, const unsigned char * /*sha1*/, 
 
 int CGit::GetTagList(STRING_VECTOR &list)
 {
-	int ret;
-
-	if(this->m_IsUseGitDLL)
+	if (this->m_IsUseLibGit2)
 	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		return git_for_each_ref_in("refs/tags/",addto_list_each_ref_fn, &list);
+		git_repository *repo = NULL;
 
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			return -1;
+		}
+		gitdir.ReleaseBuffer();
+
+		git_strarray tag_names;
+		
+		if (git_tag_list(&tag_names, repo))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+		
+		for (int i = 0; i < tag_names.count; i++)
+		{
+			CStringA tagName(tag_names.strings[i]);
+			list.push_back(CUnicodeUtils::GetUnicode(tagName).Mid(10)); // strip "refs/tags/"
+		}
+
+		git_strarray_free(&tag_names);
+
+		git_repository_free(repo);
+
+		std::sort(list.begin(), list.end());
+
+		return 0;
 	}
 	else
 	{
 		CString cmd, output;
 		cmd=_T("git.exe tag -l");
 		int i=0;
-		ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
+		int ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1097,8 +1124,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 				list.push_back(one);
 			}
 		}
+		return ret;
 	}
-	return ret;
 }
 
 CString CGit::FixBranchName_Mod(CString& branchName)
