@@ -993,7 +993,11 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 class CRefLeafListCompareFunc
 {
 public:
-	CRefLeafListCompareFunc(CListCtrl* pList, int col, bool desc):m_col(col),m_desc(desc),m_pList(pList){}
+	CRefLeafListCompareFunc(CListCtrl* pList, int col, bool desc):m_col(col),m_desc(desc),m_pList(pList){
+		m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+		if (m_bSortLogical)
+			m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
+	}
 
 	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	{
@@ -1019,20 +1023,25 @@ public:
 	{
 		switch(m_col)
 		{
-		case CBrowseRefsDlg::eCol_Name:	return pLeft->GetRefName().CompareNoCase(pRight->GetRefName());
+		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
 		case CBrowseRefsDlg::eCol_Date:	return pLeft->m_csDate_Iso8601.CompareNoCase(pRight->m_csDate_Iso8601);
-		case CBrowseRefsDlg::eCol_Msg:	return pLeft->m_csSubject.CompareNoCase(pRight->m_csSubject);
-		case CBrowseRefsDlg::eCol_LastAuthor: return pLeft->m_csAuthor.CompareNoCase(pRight->m_csAuthor);
+		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
+		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
 		}
 		return 0;
+	}
+	int SortStrCmp(CString &left, CString &right)
+	{
+		if (m_bSortLogical)
+			return StrCmpLogicalW(left, right);
+		return StrCmpI(left, right);
 	}
 
 	int m_col;
 	bool m_desc;
 	CListCtrl* m_pList;
-
-
+	bool m_bSortLogical;
 };
 
 

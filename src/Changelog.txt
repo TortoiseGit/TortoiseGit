@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1192: fetch --all via dialog
  * Allow users to store pushremote and pushbranch on push dialog for local branches
  * Fixed issue #1205: Add "Last modified" column to commit dialog
+ * Fixed issue #1295: Browse Ref Dialog ref name order consider numbers in string
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
