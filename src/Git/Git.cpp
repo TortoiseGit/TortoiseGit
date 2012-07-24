@@ -1266,22 +1266,59 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
-	int ret;
-	CString cmd, output;
-	cmd=_T("git.exe remote");
-	ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
-	if(!ret)
+	if (this->m_IsUseLibGit2)
 	{
-		int pos=0;
-		CString one;
-		while( pos>=0 )
+		git_repository *repo = NULL;
+
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
 		{
-			one=output.Tokenize(_T("\n"),pos);
-			if (!one.IsEmpty())
-				list.push_back(one);
+			gitdir.ReleaseBuffer();
+			return -1;
 		}
+		gitdir.ReleaseBuffer();
+
+		git_strarray remotes;
+		
+		if (git_remote_list(&remotes, repo))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+		
+		for (int i = 0; i < remotes.count; i++)
+		{
+			CStringA remote(remotes.strings[i]);
+			list.push_back(CUnicodeUtils::GetUnicode(remote));
+		}
+
+		git_strarray_free(&remotes);
+
+		git_repository_free(repo);
+
+		std::sort(list.begin(), list.end());
+
+		return 0;
 	}
-	return ret;
+	else
+	{
+		int ret;
+		CString cmd, output;
+		cmd=_T("git.exe remote");
+		ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
+		if(!ret)
+		{
+			int pos=0;
+			CString one;
+			while( pos>=0 )
+			{
+				one=output.Tokenize(_T("\n"),pos);
+				if (!one.IsEmpty())
+					list.push_back(one);
+			}
+		}
+		return ret;
+	}
 }
 
 int CGit::GetRefList(STRING_VECTOR &list)
