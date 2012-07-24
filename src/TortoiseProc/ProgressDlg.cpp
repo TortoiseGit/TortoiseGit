@@ -569,7 +569,7 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId)
 	memset(&pe, 0, sizeof(PROCESSENTRY32));
 	pe.dwSize = sizeof(PROCESSENTRY32);
 
-	HANDLE hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	CAutoGeneralHandle hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
 	if (::Process32First(hSnap, &pe))
 	{
@@ -581,12 +581,8 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId)
 
 		HANDLE hProc = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
 		if (hProc)
-		{
 			::TerminateProcess(hProc, 1);
-			::CloseHandle(hProc);
-		}
 	}
-	::CloseHandle(hSnap);
 }
 
 void CProgressDlg::InsertCRLF()
