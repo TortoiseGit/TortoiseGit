@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2008 - TortoiseSVN
+// External Cache Copyright (C) 2005-2008, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "TGitPath.h"
 #include "FolderCrawler.h"
 #include "ShellCache.h"
+#include "SmartHandle.h"
 
 #define READ_DIR_CHANGE_BUFFER_SIZE 4096
 
@@ -51,7 +52,7 @@ public:
 	 * watched recursively, then the new path is just ignored and the method
 	 * returns false.
 	 */
-	bool AddPath(const CTGitPath& path);
+	bool AddPath(const CTGitPath& path, bool bCloseInfoMap = true);
 	/**
 	 * Removes a path and all its children from the watched list.
 	 */
@@ -76,22 +77,36 @@ public:
 	 */
 	void Stop();
 
-	CTGitPath CloseInfoMap(HDEVNOTIFY hdev = INVALID_HANDLE_VALUE);
+	CTGitPath CloseInfoMap(HANDLE hDir);
+	void ClearInfoMap();
 	bool CloseHandlesForPath(const CTGitPath& path);
 
 private:
 	static unsigned int __stdcall ThreadEntry(void* pContext);
 	void WorkerThread();
 
-	void ClearInfoMap();
+	void CloseWatchHandles();
 
 	void BlockPath(const CTGitPath& path);
 
+	// close handle (if open) and
+	// release all async I/O objects
+
+	void CloseCompletionPort();
+
+	// enqueue the info object for deletion as soon as the
+	// completion port is no longer used
+
+	class CDirWatchInfo;
+	void ScheduleForDeletion(CDirWatchInfo* info);
+	void CleanupWatchInfo();
+
 private:
-	CComAutoCriticalSection	m_critSec;
-	HANDLE					m_hThread;
-	HANDLE					m_hCompPort;
+	CComAutoCriticalSection m_critSec;
+	CAutoGeneralHandle		m_hThread;
+	CAutoGeneralHandle		m_hCompPort;
 	volatile LONG			m_bRunning;
+	volatile LONG			m_bCleaned;
 
 	CFolderCrawler *		m_FolderCrawler;	///< where the change reports go to
 
@@ -117,17 +132,19 @@ private:
 	public:
 		bool	CloseDirectoryHandle();
 
-		HANDLE		m_hDir;			///< handle to the directory that we're watching
+		CAutoFile	m_hDir;			///< handle to the directory that we're watching
 		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
-		DWORD		m_dwBufLength;	///< length or returned data from ReadDirectoryChangesW -- ignored?...
-		OVERLAPPED  m_Overlapped;
+		OVERLAPPED	m_Overlapped;
 		CString		m_DirPath;		///< the directory name we're watching with a backslash at the end
 		HDEVNOTIFY	m_hDevNotify;	///< Notification handle
 	};
 
-	std::map<HANDLE, CDirWatchInfo *> watchInfoMap;
+	typedef std::map<HANDLE, CDirWatchInfo *> TInfoMap;
+	TInfoMap watchInfoMap;
 
 	HDEVNOTIFY		m_hdev;
 
+	// scheduled for deletion upon the next CleanupWatchInfo()
+	std::vector<CDirWatchInfo*> infoToDelete;
 };
