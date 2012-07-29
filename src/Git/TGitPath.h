@@ -314,6 +314,7 @@ private:
 
 private:
 	mutable CString m_sBackslashPath;
+	mutable CString m_sLongBackslashPath;
 	mutable CString m_sFwdslashPath;
 	mutable CString m_sUIPath;
 	mutable	CStringA m_sUTF8FwdslashPath;

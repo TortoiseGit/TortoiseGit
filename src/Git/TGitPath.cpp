@@ -169,6 +169,7 @@ void CTGitPath::SetFromWin(LPCTSTR pPath)
 {
 	Reset();
 	m_sBackslashPath = pPath;
+	m_sBackslashPath.Replace(L"\\\\?\\", L"");
 	SanitizeRootPath(m_sBackslashPath, false);
 	ATLASSERT(m_sBackslashPath.Find('/')<0);
 }
@@ -176,6 +177,7 @@ void CTGitPath::SetFromWin(const CString& sPath)
 {
 	Reset();
 	m_sBackslashPath = sPath;
+	m_sBackslashPath.Replace(L"\\\\?\\", L"");
 	SanitizeRootPath(m_sBackslashPath, false);
 }
 void CTGitPath::SetFromWin(LPCTSTR pPath, bool bIsDirectory)
@@ -426,7 +428,9 @@ void CTGitPath::UpdateAttributes() const
 {
 	EnsureBackslashPathSet();
 	WIN32_FILE_ATTRIBUTE_DATA attribs;
-	if(GetFileAttributesEx(m_sBackslashPath, GetFileExInfoStandard, &attribs))
+	if (m_sBackslashPath.GetLength() >= 248)
+		m_sLongBackslashPath = _T("\\\\?\\") + m_sBackslashPath;
+	if(GetFileAttributesEx(m_sBackslashPath.GetLength() >= 248 ? m_sLongBackslashPath : m_sBackslashPath, GetFileExInfoStandard, &attribs))
 	{
 		m_bIsDirectory = !!(attribs.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 		m_lastWriteTime = *(__int64*)&attribs.ftLastWriteTime;
