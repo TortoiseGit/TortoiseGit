@@ -1188,7 +1188,15 @@ UINT CCommitDlg::StatusThread()
 			if (!hash.IsEmpty())
 			{
 				GitRev headRevision;
-				headRevision.GetParentFromHash(hash);
+				try
+				{
+					headRevision.GetParentFromHash(hash);
+				}
+				catch (char* msg)
+				{
+					CString err(msg);
+					MessageBox(_T("Could not get parent from HEAD.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				}
 				// do not allow to show diff to "last" revision if it has more that one parent
 				if (headRevision.ParentsCount() != 1)
 				{
