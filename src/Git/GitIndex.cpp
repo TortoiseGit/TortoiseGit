@@ -127,7 +127,11 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 			if (index >= size() )
 				return -1;
 
-			if (time == at(index).m_ModifyTime)
+			if (at(index).m_Flags & GIT_IDXENTRY_VALID)
+			{
+				*status = git_wc_status_normal;
+			}
+			else if (time == at(index).m_ModifyTime)
 			{
 				*status = git_wc_status_normal;
 			}
