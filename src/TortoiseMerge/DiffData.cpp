@@ -134,11 +134,11 @@ BOOL CDiffData::Load()
 			m_sError = m_arBaseFile.GetErrorString();
 			return FALSE;
 		}
-		if ((bIgnoreCase)||(m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_LE))
+		if ((bIgnoreCase)||(m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_LE)||(m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_BE))
 		{
 			CFileTextLines converted(m_arBaseFile);
 			sConvertedBaseFilename = tempfiles.GetTempFilePath();
-			converted.Save(sConvertedBaseFilename, m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_LE, dwIgnoreWS, bIgnoreCase, m_bBlame);
+			converted.Save(sConvertedBaseFilename, m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_LE || m_arBaseFile.GetUnicodeType() == CFileTextLines::UNICODE_BE, dwIgnoreWS, bIgnoreCase, m_bBlame);
 		}
 	}
 
@@ -151,11 +151,11 @@ BOOL CDiffData::Load()
 			m_sError = m_arTheirFile.GetErrorString();
 			return FALSE;
 		}
-		if ((bIgnoreCase)||(m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_LE))
+		if ((bIgnoreCase)||(m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_LE)||(m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_BE))
 		{
 			CFileTextLines converted(m_arTheirFile);
 			sConvertedTheirFilename = tempfiles.GetTempFilePath();
-			converted.Save(sConvertedTheirFilename, m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_LE, dwIgnoreWS, bIgnoreCase, m_bBlame);
+			converted.Save(sConvertedTheirFilename, m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_LE || m_arTheirFile.GetUnicodeType() == CFileTextLines::UNICODE_BE, dwIgnoreWS, bIgnoreCase, m_bBlame);
 		}
 	}
 
@@ -168,11 +168,11 @@ BOOL CDiffData::Load()
 			m_sError = m_arYourFile.GetErrorString();
 			return FALSE;
 		}
-		if ((bIgnoreCase)||(m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_LE))
+		if ((bIgnoreCase)||(m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_LE)||(m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_BE))
 		{
 			CFileTextLines converted(m_arYourFile);
 			sConvertedYourFilename = tempfiles.GetTempFilePath();
-			converted.Save(sConvertedYourFilename, m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_LE, dwIgnoreWS, bIgnoreCase, m_bBlame);
+			converted.Save(sConvertedYourFilename, m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_LE || m_arYourFile.GetUnicodeType() == CFileTextLines::UNICODE_BE, dwIgnoreWS, bIgnoreCase, m_bBlame);
 		}
 	}
 

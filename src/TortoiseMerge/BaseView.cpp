@@ -282,6 +282,9 @@ void CBaseView::UpdateStatusBar()
 	case CFileTextLines::UNICODE_LE:
 		sBarText = _T("UTF-16LE ");
 		break;
+	case CFileTextLines::UNICODE_BE:
+		sBarText = _T("UTF-16BE ");
+		break;
 	case CFileTextLines::UTF8:
 		sBarText = _T("UTF8 ");
 		break;

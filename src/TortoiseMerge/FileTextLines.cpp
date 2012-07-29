@@ -23,6 +23,12 @@
 #include ".\filetextlines.h"
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
+#include "auto_buffer.h"
+
+wchar_t WideCharSwap(wchar_t nValue)
+{
+	return (((nValue>> 8)) | (nValue << 8));
+}
 
 CFileTextLines::CFileTextLines(void)
 	: m_UnicodeType(CFileTextLines::AUTOTYPE)
@@ -51,6 +57,8 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	pVal16 = (UINT16 *)pBuffer;
 	if (*pVal16 == 0xFEFF)
 		return CFileTextLines::UNICODE_LE;
+	if (*pVal16 == 0xFFFE)
+		return CFileTextLines::UNICODE_BE;
 	if (cb < 3)
 		return ASCII;
 	if (*pVal16 == 0xBBEF)
@@ -319,17 +327,28 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	// fill in the lines into the array
 	wchar_t * pTextBuf = pFileBuf;
 	wchar_t * pLineStart = pFileBuf;
-	if (m_UnicodeType == UNICODE_LE)
+	if ((m_UnicodeType == UNICODE_LE)||(m_UnicodeType == UNICODE_BE))
 	{
 		// UTF16 have two bytes per char
 		dwReadBytes/=2;
 	}
-	if ((m_UnicodeType == UTF8BOM)||(m_UnicodeType == UNICODE_LE))
+	if ((m_UnicodeType == UTF8BOM)||(m_UnicodeType == UNICODE_LE)||(m_UnicodeType == UNICODE_BE))
 	{
 		// ignore the BOM
 		++pTextBuf;
 		++pLineStart;
 		--dwReadBytes;
+	}
+
+	if (m_UnicodeType == UNICODE_BE)
+	{
+		// swap the bytes to little-endian order to get proper strings in wchar_t format
+		wchar_t * pSwapBuf = pTextBuf;
+		for (DWORD i = 0; i<dwReadBytes; ++i)
+		{
+			*pSwapBuf = WideCharSwap(*pSwapBuf);
+			++pSwapBuf;
+		}
 	}
 
 	for (DWORD i = 0; i<dwReadBytes; ++i)
@@ -515,6 +534,78 @@ BOOL CFileTextLines::Save(const CString& sFilePath, bool bSaveAsUTF8, DWORD dwIg
 				}
 				if ((m_bReturnAtEnd)||(i != GetCount()-1))
 					file.Write((LPCTSTR)sLine, sLine.GetLength()*sizeof(TCHAR));
+			}
+		}
+		if ((!bSaveAsUTF8)&&(m_UnicodeType == CFileTextLines::UNICODE_BE))
+		{
+			int linebuflen = 4096;
+			auto_buffer<BYTE> beBuf(linebuflen);
+			//first write the BOM
+			UINT16 wBOM = 0xFFFE;
+			file.Write(&wBOM, 2);
+			for (int i=0; i<GetCount(); i++)
+			{
+				CString sLine = GetAt(i);
+				EOL ending = GetLineEnding(i);
+				StripWhiteSpace(sLine,dwIgnoreWhitespaces, bBlame);
+				if (bIgnoreCase)
+					sLine = sLine.MakeLower();
+				int bytelen = sLine.GetLength()*sizeof(WCHAR);
+				if (bytelen > linebuflen)
+				{
+					// increase buffer size if necessary
+					linebuflen = bytelen + 1024;
+					beBuf.reset(linebuflen);
+				}
+				for (int spos = 0; spos < bytelen; )
+				{
+					// swap the bytes to big-endian order
+					wchar_t c = sLine[spos/2];
+					beBuf[spos++] = c>>8;
+					beBuf[spos++] = c & 0xFF;
+				}
+				file.Write(beBuf.get(), sLine.GetLength()*sizeof(WCHAR));
+				if (ending == EOL_AUTOLINE)
+					ending = m_LineEndings;
+				switch (ending)
+				{
+				case EOL_CR:
+					sLine = _T("\x0d");
+					break;
+				case EOL_CRLF:
+				case EOL_AUTOLINE:
+					sLine = _T("\x0d\x0a");
+					break;
+				case EOL_LF:
+					sLine = _T("\x0a");
+					break;
+				case EOL_LFCR:
+					sLine = _T("\x0a\x0d");
+					break;
+				default:
+					sLine.Empty();
+					break;
+				}
+				if ((m_bReturnAtEnd)||(i != GetCount()-1))
+				{
+					// swap the bytes to big-endian order
+					BYTE buf[5];
+					int p = 0;
+					if (sLine.GetLength() > 0)
+					{
+						wchar_t c = sLine[0];
+						buf[p++] = c>>8;
+						buf[p++] = c & 0xFF;
+					}
+					if (sLine.GetLength() > 1)
+					{
+						wchar_t c = sLine[1];
+						buf[p++] = c>>8;
+						buf[p++] = c & 0xFF;
+					}
+
+					file.Write(buf, sLine.GetLength()*sizeof(TCHAR));
+				}
 			}
 		}
 		else if ((!bSaveAsUTF8)&&((m_UnicodeType == CFileTextLines::ASCII)||(m_UnicodeType == CFileTextLines::AUTOTYPE)))

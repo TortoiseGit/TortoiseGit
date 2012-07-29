@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,6 +60,7 @@ public:
 		BINARY,
 		ASCII,
 		UNICODE_LE,
+		UNICODE_BE,
 		UTF8,
 		UTF8BOM,
 	};
