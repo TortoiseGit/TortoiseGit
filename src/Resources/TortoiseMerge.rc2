@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseMerge\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseMerge.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2011-2012 - TortoiseGit and Copyright (C) 2003-2008 - TortoiseSVN\0"
+            VALUE "LegalCopyright", "Copyright (C) 2011-2012 - TortoiseGit and Copyright (C) 2003-2008,2012 - TortoiseSVN\0"
             VALUE "OriginalFilename", "TortoiseMerge.exe\0"
             VALUE "ProductName", "TortoiseMerge\0"
             VALUE "ProductVersion", STRPRODUCTVER

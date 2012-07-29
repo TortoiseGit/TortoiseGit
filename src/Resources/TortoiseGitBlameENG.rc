@@ -370,7 +370,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_TORTOISE_GIT_BLAME_MAINFRAME,IDC_STATIC,14,14,21,20
     LTEXT           "TortoiseGitBlame",IDC_VERSION,42,14,138,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2009-2011 TortoiseGit",IDC_COPYRIGHT,42,26,156,8
+    LTEXT           "Copyright (C) 2009-2012 TortoiseGit",IDC_COPYRIGHT,42,26,156,8
     DEFPUSHBUTTON   "OK",IDOK,173,69,50,14,WS_GROUP
     LTEXT           "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)",IDC_STATIC,42,37,174,18
     LTEXT           "Part of code come from TortoiseSVN Blame",IDC_STATIC,42,55,138,8
