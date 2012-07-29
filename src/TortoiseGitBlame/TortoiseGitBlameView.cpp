@@ -41,6 +41,11 @@
 #define new DEBUG_NEW
 #endif
 
+wchar_t WideCharSwap2(wchar_t nValue)
+{
+	return (((nValue>> 8)) | (nValue << 8));
+}
+
 UINT CTortoiseGitBlameView::m_FindDialogMessage;
 
 // CTortoiseGitBlameView
@@ -2452,6 +2457,13 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 		return 1200;
 	}
 
+	// check for UNICODE_BE does not work, because git blame produces two NUL chars in a row
+	if(type == CFileTextLines::BINARY && size > 2 && buff[0] == 0xFE && buff[1] == 0xFF)
+	{
+		*bomoffset = 2;
+		return 1201;
+	}
+
 	return GetACP();
 }
 
@@ -2531,7 +2543,24 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 				encoding = GetEncode( &data[start+2], data.size() - start -2, &bomoffset);
 			}
 			{
-				if(encoding == 1200)
+				if(encoding == 1201)
+				{
+					CString strw;
+					int size = ((current - start -2 - bomoffset)/2);
+					TCHAR *buffer = strw.GetBuffer(size);
+					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
+					// swap the bytes to little-endian order to get proper strings in wchar_t format
+					wchar_t * pSwapBuf = buffer;
+					for (DWORD i = 0; i<size; ++i)
+					{
+						*pSwapBuf = WideCharSwap2(*pSwapBuf);
+						++pSwapBuf;
+					}
+					strw.ReleaseBuffer();
+
+					stra = CUnicodeUtils::GetUTF8(strw);
+				}
+				else if(encoding == 1200)
 				{
 					CString strw;
 					// the first bomoffset is 2, after that it's 1 (see issue #920)
