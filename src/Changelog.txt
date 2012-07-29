@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #1294: TortoiseGit might crash on concurrent access on CGitHeadFileList
  * Fixed issue #1279: Nothing seen in Repository Browser without config core.bare=false
  * Fixed issue #1296: Closing log dialog might cause crash
+ * Fixed issue #1300: TortoiseProc LogDialog might crash if tortoisegit.index or tortoisegit.data is broken
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
