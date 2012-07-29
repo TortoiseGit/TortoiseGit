@@ -28,6 +28,7 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CSubmoduleUpdateDlg::IDD, pParent)
 	, m_bInit(true)
 	, m_bRecursive(FALSE)
+	, m_bForce(FALSE)
 {
 }
 
@@ -40,6 +41,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_INIT, m_bInit);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_RECURSIVE, m_bRecursive);
+	DDX_Check(pDX, IDC_FORCE, m_bForce);
 }
 
 

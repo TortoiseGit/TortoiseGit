@@ -44,4 +44,5 @@ protected:
 public:
 	BOOL m_bInit;
 	BOOL m_bRecursive;
+	BOOL m_bForce;
 };

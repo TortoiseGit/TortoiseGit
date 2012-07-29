@@ -95,6 +95,8 @@ bool SubmoduleUpdateCommand::Execute()
 		params = _T(" --init");
 	if (submoduleUpdateDlg.m_bRecursive)
 		params += _T(" --recursive");
+	if (submoduleUpdateDlg.m_bForce)
+		params += _T(" --force");
 
 	for (int i = 0; i < this->orgPathList.GetCount(); i++)
 	{
