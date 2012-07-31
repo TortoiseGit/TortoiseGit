@@ -59,6 +59,7 @@ private:
 	__int64				m_lastWriteTime;
 	bool				m_bSet;
 	git_node_kind_t		m_kind;
+	bool				m_bAssumeValid;
 
 	// Values copied from the 'entries' structure
 	bool				m_bSVNEntryFieldSet;

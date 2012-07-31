@@ -23,7 +23,7 @@
 #include "CacheInterface.h"
 #include "registry.h"
 
-#define CACHEVERION 5
+#define CACHEVERION 6
 
 DWORD cachetimeout = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), CACHETIMEOUT);
 
@@ -41,6 +41,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	, m_bSVNEntryFieldSet(false)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(status)
+	, m_bAssumeValid(false)
 {
 	m_GitStatus.prop_status=m_GitStatus.text_status = status;
 	m_discardAtTime = GetTickCount()+cachetimeout;
@@ -75,11 +76,12 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 	WRITESTRINGTOFILE(m_sAuthor);
 	WRITEVALUETOFILE(m_kind);
 
-	// now save the status struct (without the entry field, because we don't use that)	WRITEVALUETOFILE(m_GitStatus.copied);
+	// now save the status struct (without the entry field, because we don't use that)
 	WRITEVALUETOFILE(m_GitStatus.prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_prop_status);
 //	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
 	WRITEVALUETOFILE(m_GitStatus.text_status);
+	WRITEVALUETOFILE(m_GitStatus.assumeValid);
 	return true;
 }
 
@@ -124,6 +126,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 //		LOADVALUEFROMFILE(m_GitStatus.repos_prop_status);
 //		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
 		LOADVALUEFROMFILE(m_GitStatus.text_status);
+		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
 //		m_GitStatus.entry = NULL;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 	}
@@ -144,6 +147,7 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 	{
 		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
 		m_GitStatus = *pGitStatus;
+		m_bAssumeValid = pGitStatus->assumeValid;
 
 		// Currently we don't deep-copy the whole entry value, but we do take a few members
 /*        if(pGitStatus->entry != NULL)
@@ -178,6 +182,7 @@ void CStatusCacheEntry::SetAsUnversioned()
 	m_GitStatus.prop_status = git_wc_status_none;
 	m_GitStatus.text_status = status;
 	m_lastWriteTime = 0;
+	m_bAssumeValid = false;
 }
 
 bool CStatusCacheEntry::HasExpired(long now) const
@@ -191,6 +196,7 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 	if(m_bSVNEntryFieldSet)
 	{
 		response.m_status = m_GitStatus;
+		response.m_bAssumeValid = m_bAssumeValid;
 		// There is no point trying to set these pointers here, because this is not 
 		// the process which will be using the data.
 		// The process which receives this response (generally the TSVN Shell Extension)
@@ -201,7 +207,8 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 	else
 	{
 		response.m_status = m_GitStatus;
-		responseLength = sizeof(response.m_status);
+		response.m_bAssumeValid = m_bAssumeValid;
+		responseLength = sizeof(response);
 	}
 
 	// directories that are empty or only contain unversioned files will be git_wc_status_incomplete, report as unversioned

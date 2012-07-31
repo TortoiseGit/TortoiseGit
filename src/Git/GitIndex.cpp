@@ -102,7 +102,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash)
+int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash, bool * assumeValid)
 {
 	if(status)
 	{
@@ -130,6 +130,8 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 			if (at(index).m_Flags & GIT_IDXENTRY_VALID)
 			{
 				*status = git_wc_status_normal;
+				if (assumeValid)
+					*assumeValid = true;
 			}
 			else if (time == at(index).m_ModifyTime)
 			{
@@ -152,14 +154,14 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 	}
 
 	if(callback && status)
-			callback(gitdir + _T("\\") + pathorg, *status, false, pData);
+			callback(gitdir + _T("\\") + pathorg, *status, false, pData, *assumeValid);
 	return 0;
 }
 
 int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git_wc_status_kind *status,
 							 BOOL IsFull, BOOL IsRecursive,
 							 FIll_STATUS_CALLBACK callback,void *pData,
-							 CGitHash *pHash)
+							 CGitHash *pHash, bool * assumeValid)
 {
 	int result;
 	git_wc_status_kind dirstatus = git_wc_status_none;
@@ -178,7 +180,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		{
 			*status = git_wc_status_deleted;
 			if (callback)
-				callback(gitdir + _T("\\") + path, git_wc_status_deleted, false, pData);
+				callback(gitdir + _T("\\") + path, git_wc_status_deleted, false, pData, *assumeValid);
 
 			return 0;
 		}
@@ -201,7 +203,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							{
 								*status = git_wc_status_normal;
 								if (callback)
-									callback(gitdir + _T("\\") + path, *status, false, pData);
+									callback(gitdir + _T("\\") + path, *status, false, pData, at(i).m_Flags & GIT_IDXENTRY_VALID);
 								return 0;
 
 							}
@@ -212,7 +214,9 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 									continue;
 
 								*status = git_wc_status_none;
-								GetFileStatus(gitdir, at(i).m_FileName, status, time, callback, pData);
+								if (assumeValid)
+									*assumeValid = false;
+								GetFileStatus(gitdir, at(i).m_FileName, status, time, callback, pData, NULL, assumeValid);
 								if (*status != git_wc_status_none)
 								{
 									if (dirstatus == git_wc_status_none)
@@ -239,14 +243,14 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 				*status = git_wc_status_unversioned;
 			}
 			if(callback)
-				callback(gitdir + _T("\\") + path, *status, false, pData);
+				callback(gitdir + _T("\\") + path, *status, false, pData, false);
 
 			return 0;
 
 		}
 		else
 		{
-			GetFileStatus(gitdir, path, status, time, callback, pData, pHash);
+			GetFileStatus(gitdir, path, status, time, callback, pData, pHash, assumeValid);
 		}
 	}
 	return 0;
@@ -309,7 +313,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
 									FIll_STATUS_CALLBACK callback,void *pData,
 									CGitHash *pHash,
-									bool isLoadUpdatedIndex)
+									bool isLoadUpdatedIndex, bool * assumeValid)
 {
 	try
 	{
@@ -318,7 +322,7 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 		SHARED_INDEX_PTR pIndex = this->SafeGet(gitdir);
 		if (pIndex.get() != NULL)
 		{
-			pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash);
+			pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash, assumeValid);
 		}
 
 	}
