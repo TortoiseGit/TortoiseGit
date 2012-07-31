@@ -1704,6 +1704,14 @@ msgstr ""
 msgid "Assigned to:"
 msgstr ""
 
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr ""
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr ""
+
 #. Resource IDs: (77)
 #, c-format
 msgid "At revision: %d"
@@ -2633,7 +2641,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -5137,10 +5145,6 @@ msgstr ""
 msgid "Navigation Pane Options..."
 msgstr ""
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr ""
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr ""
@@ -5196,6 +5200,10 @@ msgstr ""
 
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
 msgstr ""
 
 #. Resource IDs: (67)
@@ -6775,6 +6783,10 @@ msgstr ""
 msgid "Set up SMTP Server"
 msgstr ""
 
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr ""
+
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr ""
@@ -7940,6 +7952,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr ""
 
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
+msgstr ""
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr ""
@@ -8542,6 +8558,10 @@ msgstr ""
 msgid "apply --topo-order"
 msgstr ""
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr ""
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr ""
@@ -8730,10 +8750,6 @@ msgstr ""
 
 #. Resource IDs: (245)
 msgid "quarter of year"
-msgstr ""
-
-#. Resource IDs: (195)
-msgid "readonly"
 msgstr ""
 
 #. Resource IDs: (10)
