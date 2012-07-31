@@ -858,6 +858,7 @@ static struct cmd_struct commands[] = {
 			if(argv)
 				free(argv);
 
+			discard_cache();
 			free_all_pack();
 
 			return ret;
