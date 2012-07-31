@@ -53,6 +53,7 @@
 #define IDS_MENUDESCSWITCH              143
 #define IDI_SHOWCHANGED                 143
 #define IDI_IGNORE                      144
+#define IDS_MENUASSUMEVALID             144
 #define IDS_MENUDESCEXPORT              145
 #define IDS_MENUDESCABOUT               146
 #define IDS_MENUDESCCREATEREPOS         147
@@ -120,10 +121,13 @@
 #define IDS_MENUDESCCREATEPATCH         208
 #define IDS_MENUDESCAPPLYPATCH          209
 #define IDS_MENUDESCSVNFETCH            210
+#define IDS_MENUDESCASSUMEVALID         211
 #define IDS_MENUUNDOADD                 212
 #define IDS_MENUDESCUNDOADD             213
 #define IDS_MENUPREVDIFF                214
 #define IDS_MENUDESCPREVDIFF            215
+#define IDS_MENUNOASSUMEVALID           216
+#define IDS_MENUDESCNOASSUMEVALID       217
 #define IDS_DROPEXPORTMENU              218
 #define IDS_DROPEXPORTEXTENDEDMENU      219
 #define IDS_MENUIGNOREMULTIPLEMASK      220

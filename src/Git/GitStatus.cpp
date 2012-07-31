@@ -53,7 +53,7 @@ GitStatus::~GitStatus(void)
 }
 
 // static method
-git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth)
+git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t depth, bool * assumeValid)
 {
 	git_wc_status_kind			statuskind;
 	BOOL						err;
@@ -91,7 +91,7 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	}
 	else
 	{
-		err = GetFileStatus(sProjectRoot,sSubPath,&statuskind,isfull, false,isfull, NULL,NULL);
+		err = GetFileStatus(sProjectRoot,sSubPath,&statuskind,isfull, false,isfull, NULL,NULL, assumeValid);
 	}
 
 	return statuskind;
@@ -173,6 +173,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool
 		}
 
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
+		m_status.assumeValid = false;
 
 		if(path.IsDirectory())
 		{
@@ -181,7 +182,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool
 		}
 		else
 		{
-			m_err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status ,isfull, false,!noignore, NULL,NULL);
+			m_err = GetFileStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status ,isfull, false,!noignore, NULL,NULL, &m_status.assumeValid);
 		}
 	}
 
@@ -355,7 +356,7 @@ int GitStatus::LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FIll_STATUS_CALLBACK callback,void *pData, bool * assumeValid)
 {
 	try
 	{
@@ -374,13 +375,13 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 			git_wc_status_kind st = git_wc_status_none;
 			CGitHash hash;
 
-			g_IndexFileMap.GetFileStatus(gitdir,path,&st,IsFull,false,callback,pData,&hash);
+			g_IndexFileMap.GetFileStatus(gitdir,path,&st,IsFull,false,callback,pData,&hash, true, assumeValid);
 
 			if( st == git_wc_status_conflicted )
 			{
 				*status =st;
 				if(callback)
-					callback(gitdir+_T("/")+path,st,false,pData);
+					callback(gitdir+_T("/")+path,st,false,pData, *assumeValid);
 				return 0;
 			}
 
@@ -390,7 +391,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 				{
 					*status = git_wc_status_unversioned;
 					if(callback)
-						callback(gitdir+_T("/")+path, *status, false,pData);
+						callback(gitdir+_T("/")+path, *status, false,pData, *assumeValid);
 					return 0;
 				}
 
@@ -404,7 +405,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 				}
 				*status = st;
 				if(callback)
-					callback(gitdir+_T("/")+path,st, false, pData);
+					callback(gitdir+_T("/")+path,st, false, pData, *assumeValid);
 
 				return 0;
 			}
@@ -430,7 +431,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 						{
 							*status =st=git_wc_status_added;
 							if(callback)
-								callback(gitdir+_T("/")+path,st,false,pData);
+								callback(gitdir+_T("/")+path,st,false,pData, *assumeValid);
 							return 0;
 						}
 						if(treeptr->ReadTree())
@@ -439,7 +440,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 							//Check if init repository
 							*status = treeptr->m_Head.IsEmpty()? git_wc_status_added: st;
 							if(callback)
-								callback(gitdir+_T("/")+path,*status,false,pData);
+								callback(gitdir+_T("/")+path,*status,false,pData, *assumeValid);
 							return 0;
 						}
 						g_HeadFileMap.SafeSet(gitdir, treeptr);
@@ -457,7 +458,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 							*status =st=git_wc_status_added;
 							ATLTRACE(_T("File miss in head tree %s"), path);
 							if(callback)
-								callback(gitdir+_T("/")+path,st,false, pData);
+								callback(gitdir+_T("/")+path,st,false, pData, *assumeValid);
 							return 0;
 						}
 
@@ -466,7 +467,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 						{
 							*status =st=git_wc_status_modified;
 							if(callback)
-								callback(gitdir+_T("/")+path,st, false, pData);
+								callback(gitdir+_T("/")+path,st, false, pData, *assumeValid);
 							return 0;
 						}
 					}
@@ -474,7 +475,7 @@ int GitStatus::GetFileStatus(const CString &gitdir,const CString &pathParam,git_
 			}
 			*status =st;
 			if(callback)
-				callback(gitdir+_T("/")+path,st,false, pData);
+				callback(gitdir+_T("/")+path,st,false, pData, *assumeValid);
 			return 0;
 		}
 	}
@@ -657,7 +658,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						{ /* That is git submodule */
 							*status = git_wc_status_unknown;
 							if(callback)
-								callback(gitdir+_T("/")+casepath, *status, bIsDir, pData);
+								callback(gitdir+_T("/")+casepath, *status, bIsDir, pData, false);
 							continue;
 						}
 					}
@@ -666,7 +667,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					{
 						*status = git_wc_status_unversioned;
 						if(callback)
-							callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+							callback(gitdir+_T("/")+casepath, *status, bIsDir,pData, false);
 						continue;
 					}
 
@@ -679,21 +680,21 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						*status = git_wc_status_unversioned;
 
 					if(callback)
-						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData, false);
 
 				}
 				else if(pos <0 && posintree>=0) /* check if file delete in index */
 				{
 					*status = git_wc_status_deleted;
 					if(callback)
-						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData, false);
 
 				}
 				else if(pos >=0 && posintree <0) /* Check if file added */
 				{
 					*status = git_wc_status_added;
 					if(callback)
-						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+						callback(gitdir+_T("/")+casepath, *status, bIsDir,pData, false);
 				}
 				else
 				{
@@ -704,12 +705,13 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					{
 						*status = git_wc_status_normal;
 						if(callback)
-							callback(gitdir+_T("/")+casepath, *status, bIsDir,pData);
+							callback(gitdir+_T("/")+casepath, *status, bIsDir,pData, false);
 					}
 					else
 					{
+						bool assumeValid = false;
 						git_wc_status_kind filestatus;
-						GetFileStatus(gitdir,casepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
+						GetFileStatus(gitdir,casepath, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData, &assumeValid);
 					}
 				}
 
@@ -740,7 +742,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
-								callback(gitdir+_T("/")+filename, *status, false,pData);
+								callback(gitdir+_T("/")+filename, *status, false,pData, false);
 						}
 					}
 				}
@@ -768,7 +770,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						{
 							*status = git_wc_status_deleted;
 							if(callback)
-								callback(gitdir+_T("/")+(*it).m_FileName, *status, false,pData);
+								callback(gitdir+_T("/")+(*it).m_FileName, *status, false,pData, false);
 						}
 					}
 				}
@@ -816,7 +818,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 			{ // for new init repository
 				*status = git_wc_status_normal;
 				if(callback)
-					callback(gitdir+_T("/")+path, *status, false,pData);
+					callback(gitdir+_T("/")+path, *status, false,pData, false);
 				return 0;
 			}
 
@@ -830,7 +832,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 				{
 					*status = git_wc_status_unversioned;
 					if(callback)
-						callback(gitdir+_T("/")+path, *status, false,pData);
+						callback(gitdir+_T("/")+path, *status, false,pData, false);
 					return 0;
 				}
 				//Check ignore always.
@@ -880,7 +882,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						{
 							int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 							if(dirpos<0 || IsRecursive)
-								callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_conflicted,false,pData);
+								callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_conflicted,false,pData, false);
 						}
 						else
 							break;
@@ -925,7 +927,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 										if(dirpos<0 || IsRecursive)
-											callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_added,false, pData);
+											callback(gitdir+_T("\\")+ it->m_FileName,git_wc_status_added,false, pData, false);
 
 									}
 									else
@@ -939,7 +941,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 										if(dirpos<0 || IsRecursive)
-											callback(gitdir+_T("\\")+ it->m_FileName, git_wc_status_modified,false, pData);
+											callback(gitdir+_T("\\")+ it->m_FileName, git_wc_status_modified,false, pData, (*it).m_Flags & GIT_IDXENTRY_VALID);
 
 									}
 									else
@@ -1007,21 +1009,21 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 										sub = currentPath;
 										ATLTRACE(_T("index subdir %s\n"),sub);
 										if(callback) callback(gitdir + _T("\\")+sub,
-											git_wc_status_normal,true, pData);
+											git_wc_status_normal,true, pData, false);
 									}
 									continue;
 								}
 							}
 
 							git_wc_status_kind filestatus = git_wc_status_none;
-
-							GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData);
+							bool assumeValid = false;
+							GetFileStatus(gitdir,(*it).m_FileName, &filestatus,IsFul, IsRecursive,IsIgnore, callback,pData, &assumeValid);
 						}
 					}
 				}
 			}
 
-			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData);
+			if(callback) callback(gitdir+_T("/")+subpath,*status,true, pData, false);
 		}
 
 	}catch(...)

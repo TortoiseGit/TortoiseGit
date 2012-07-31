@@ -87,11 +87,13 @@ typedef struct git_wc_status2_t
 
 	/** The status of the entries properties. */
 	git_wc_status_kind prop_status;
+
+	bool assumeValid;
 } git_wc_status2;
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FIll_STATUS_CALLBACK)(const CString &path,git_wc_status_kind status,bool isDir, void *pdata);
+typedef BOOL (*FIll_STATUS_CALLBACK)(const CString &path,git_wc_status_kind status,bool isDir, void *pdata, bool assumeValid);
 
 /**
  * \ingroup Git
@@ -106,7 +108,7 @@ public:
 #define GIT_MODE_IGNORE 0x4
 #define GIT_MODE_ALL (GIT_MODE_INDEX|GIT_MODE_HEAD|GIT_MODE_IGNORE)
 
-	static int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
+	static int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL, bool * assumeValid = NULL);
 	static int GetDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
 	static int EnumDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
 	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CGitFileName> &list);
@@ -130,7 +132,7 @@ public:
 	 * If the status of the text and property part are different
 	 * then the more important status is returned.
 	 */
-	static git_wc_status_kind GetAllStatus(const CTGitPath& path, git_depth_t depth = git_depth_empty);
+	static git_wc_status_kind GetAllStatus(const CTGitPath& path, git_depth_t depth = git_depth_empty, bool * assumeValid = NULL);
 
 	/**
 	 * Reads the Subversion status of the working copy entry and all its

@@ -27,7 +27,7 @@ class CGitIndex
 public:
 	CString    m_FileName;
 	__time64_t	m_ModifyTime;
-	int			m_Flags;
+	unsigned short m_Flags;
 	CGitHash	m_IndexHash;
 
 	int Print();
@@ -73,9 +73,9 @@ public:
 	CGitIndexList();
 
 	int ReadIndex(CString file);
-	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL);
 protected:
-	int GetFileStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetFileStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL);
 	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
@@ -130,7 +130,7 @@ public:
 							BOOL IsFull=false, BOOL IsRecursive=false,
 							FIll_STATUS_CALLBACK callback=NULL,
 							void *pData=NULL,CGitHash *pHash=NULL,
-							bool isLoadUpdatedIndex=true);
+							bool isLoadUpdatedIndex=true, bool * assumeValid = NULL);
 
 	int IsUnderVersionControl(const CString &gitdir,
 							  const CString &path,

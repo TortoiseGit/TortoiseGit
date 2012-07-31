@@ -223,6 +223,7 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_MENUASSUMEVALID     "Assume Unchanged"
     IDS_MENUDESCEXPORT      "Exports a revision to a zip file"
     IDS_MENUDESCABOUT       "Shows information about TortoiseGit"
     IDS_MENUDESCCREATEREPOS "Creates a repository database at the current location"
@@ -322,13 +323,23 @@ BEGIN
     IDS_SETPROPTITLE        "Setting properties..."
     IDS_MENUDESCBISECTBAD   "Marks revision as bad"
     IDS_MENUDESCBISECTRESET "Stops bisect mode"
-    IDS_MENUREPOBROWSE      "&Repo-browser"
-    IDS_MENUDESCREPOBROWSE  "Opens the repository browser"
     IDS_MENUBLAME           "&Blame"
     IDS_STATUSEXTERNAL      "external"
     IDS_MENUDESCBLAME       "Blames each line of a file on an author"
     IDS_MENUSVNFETCH        "SVN Fetch"
     IDS_MENUAPPLYPATCH      "Review/apply single &patch..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MENUCLIPPASTE       "&Paste"
+    IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
+    IDS_MENUREPOBROWSE      "&Repo-browser"
+    IDS_MENUDESCREPOBROWSE  "Opens the repository browser"
+    IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
+    IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
+    IDS_MENUUNIGNORE        "Remove from &ignore list"
+    IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END
 
 STRINGTABLE 
@@ -356,10 +367,13 @@ BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
     IDS_MENUDESCAPPLYPATCH  "Review/apply a unified diff file with TortoiseMerge"
     IDS_MENUDESCSVNFETCH    "Fetch from SVN repository"
+    IDS_MENUDESCASSUMEVALID "Sets the Assume Valid flag for this file"
     IDS_MENUUNDOADD         "Undo Add..."
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
     IDS_MENUDESCPREVDIFF    "Diffs the working tree file with the one before the last commit"
+    IDS_MENUNOASSUMEVALID   "No Assume Unchanged"
+    IDS_MENUDESCNOASSUMEVALID "Unsets the Assume Valid flag for this file"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"
@@ -375,16 +389,6 @@ BEGIN
     IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
     IDS_MENUDESCDELETEIGNORE 
                             "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_MENUCLIPPASTE       "&Paste"
-    IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
-    IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
-    IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
-    IDS_MENUUNIGNORE        "Remove from &ignore list"
-    IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END
 
 STRINGTABLE 
@@ -434,3 +438,4 @@ LANGUAGE 9, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
