@@ -203,6 +203,8 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				SecureZeroMemory(&itemStatus, sizeof(itemStatus));
 				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
 				{
+					if (itemStatus.m_bAssumeValid)
+						readonlyoverlay = true;
 					status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
 				}
 			}
@@ -215,6 +217,8 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 				if (s)
 				{
 					status = s->status;
+					if (s->assumeValid)
+						readonlyoverlay = true;
 				}
 				else
 				{
@@ -246,6 +250,8 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					{
 						const FileStatusCacheEntry * s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), FALSE);
 						status = s->status;
+						if (s->assumeValid)
+							readonlyoverlay = true;
 					}
 				}
 			}
