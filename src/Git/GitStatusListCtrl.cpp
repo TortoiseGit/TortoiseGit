@@ -2030,6 +2030,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
 				}
 
+				if ((m_dwContextMenus & GITSLC_POPASSUMEVALID) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO) && !(wcStatus & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_UNMERGED)) && !filepath->IsDirectory())
+				{
+					popup.AppendMenuIcon(IDGITLC_ASSUMEVALID, IDS_MENUASSUMEVALID);
+				}
+
 				if (m_dwContextMenus & GITSLC_POPRESTORE && !filepath->IsDirectory())
 				{
 					if (m_restorepaths.find(filepath->GetWinPathString()) == m_restorepaths.end())
@@ -3004,6 +3009,33 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							NotifyCheck();
 						}
 					}
+				}
+				break;
+
+			case IDGITLC_ASSUMEVALID:
+				{
+					CString cmdTemplate;
+					cmdTemplate = _T("git.exe update-index --assume-unchanged \"%s\"");
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index = -1;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						CTGitPath * path = (CTGitPath *)GetItemData(index);
+						ASSERT(path);
+						if(path == NULL)
+							continue;
+
+						CString cmd, output;
+						cmd.Format(cmdTemplate, path->GetGitPathString());
+						if (g_Git.Run(cmd, &output, CP_UTF8))
+						{
+							MessageBox(output, _T("TortoiseGit"), MB_ICONERROR);
+						}
+					}
+					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
+						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+
+					SetRedraw(TRUE);
 				}
 				break;
 
