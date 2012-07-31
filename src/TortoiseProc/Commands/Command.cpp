@@ -73,6 +73,7 @@
 #include "SVNIgnoreCommand.h"
 #include "BisectCommand.h"
 #include "RepositoryBrowserCommand.h"
+#include "AssumeValidCommand.h"
 
 #if 0
 
@@ -162,6 +163,7 @@ typedef enum
 	cmdRequestPull,
 	cmdBisect,
 	cmdRepoBrowser,
+	cmdAssumeValid,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -232,6 +234,7 @@ static const struct CommandInfo
 	{	cmdRequestPull,		_T("requestpull")		},
 	{	cmdBisect,			_T("bisect")			},
 	{	cmdRepoBrowser,		_T("repobrowser")		},
+	{	cmdAssumeValid,		_T("assumevalid")		},
 };
 
 
@@ -362,6 +365,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new BisectCommand;
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
+	case cmdAssumeValid:
+		return new AssumeValidCommand;
 
 #if 0
 
