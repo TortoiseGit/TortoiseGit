@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-bugtracker">
+	<?dbhh topicname="HIDD_SETTINGSBUGTRAQ_CONFIG"?>
 	<title>Integration with Bug Tracking Systems / Issue Trackers</title>
 	<indexterm>
 		<primary>bug tracking</primary>

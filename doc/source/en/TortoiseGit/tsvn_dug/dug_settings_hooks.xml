@@ -349,7 +349,6 @@
 	</sect3>
 	<sect3 id="tsvn-dug-settings-hooks-issuetracker-config">
 	<title>Config</title>
-		<?dbhh topicname="HIDD_SETTINGSBUGTRAQ_CONFIG"?>
 		<para>
 			<figure id="tsvn-dug-settings-hooks-issuetrack-config">
 				<title>The Settings Dialog, issue track config</title>
