@@ -3001,7 +3001,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										}
 										break;
 									}
-									else if (path->IsDirectory() && path->IsWCRoot())
+									else if (path->GetGitPathString()==targetList[i].GetGitPathString() && path->IsDirectory() && path->IsWCRoot())
 									{
 										CString sCmd;
 										sCmd.Format(_T("/command:revert /path:\"%s\""), path->GetGitPathString());
