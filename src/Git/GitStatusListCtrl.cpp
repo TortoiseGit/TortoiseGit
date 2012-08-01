@@ -2928,7 +2928,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						//FileEntry * fentry = GetListEntry(index);
 						CTGitPath *fentry=(CTGitPath*)GetItemData(index);
-						if(fentry && fentry->m_Action &CTGitPath::LOGACTIONS_MODIFIED )
+						if(fentry && fentry->m_Action &CTGitPath::LOGACTIONS_MODIFIED && !fentry->IsDirectory())
 						{
 							bConfirm = TRUE;
 							break;
@@ -2956,7 +2956,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							CTGitPath *entry=(CTGitPath *)GetItemData(index);
 							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED))
-									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)))
+									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)) && !entry->IsDirectory())
 							{
 								CTGitPath fullpath;
 								fullpath.SetFromWin(g_Git.m_CurrentDir+_T("\\")+entry->GetWinPath());
@@ -2982,7 +2982,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								for (int nItem=0; nItem<nListboxEntries; ++nItem)
 								{
 									CTGitPath *path=(CTGitPath*)GetItemData(nItem);
-									if (path->GetGitPathString()==targetList[i].GetGitPathString())
+									if (path->GetGitPathString()==targetList[i].GetGitPathString() && !path->IsDirectory())
 									{
 										if(path->m_Action & CTGitPath::LOGACTIONS_ADDED)
 										{
@@ -3000,6 +3000,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 											RemoveListEntry(nItem);
 										}
 										break;
+									}
+									else if (path->IsDirectory() && path->IsWCRoot())
+									{
+										CString sCmd;
+										sCmd.Format(_T("/command:revert /path:\"%s\""), path->GetGitPathString());
+										CCommonAppUtils::RunTortoiseProc(sCmd);
 									}
 								}
 							}

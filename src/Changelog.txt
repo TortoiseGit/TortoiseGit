@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #1300: TortoiseProc LogDialog might crash if tortoisegit.index or tortoisegit.data is broken
  * Fixed issue #1255: Adding non-versioned files from the commit dialog does not always work
  * Fixed issue #620: Unmodified files appear in the Modified File list while committing
+ * Fixed issue #774: Revert does not work for submodules
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
