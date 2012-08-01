@@ -2247,7 +2247,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						int index = GetNextSelectedItem(pos);
 						CTGitPath * entry2 = (CTGitPath * )GetItemData(index);
 						ASSERT(entry2 != NULL);
-						if (entry2 == NULL)
+						if (entry2 == NULL || entry2->IsDirectory())
 							continue;
 						if (m_restorepaths.find(entry2->GetWinPathString()) != m_restorepaths.end())
 							continue;
