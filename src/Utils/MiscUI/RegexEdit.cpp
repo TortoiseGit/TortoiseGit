@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,6 +38,7 @@ END_MESSAGE_MAP()
 
 HBRUSH CRegexEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
+	bool oldState = m_bValid;
 	// check if the regex is valid
 	m_bValid = true;
 	try
@@ -57,6 +59,8 @@ HBRUSH CRegexEdit::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 			m_invalidBkgnd.CreateSolidBrush(GetSysColor(COLOR_3DFACE) - RGB(0,20,20));
 		return (HBRUSH)m_invalidBkgnd.GetSafeHandle();
 	}
+	else if (!oldState)
+		this->Invalidate();
 
 	return NULL;
 }
