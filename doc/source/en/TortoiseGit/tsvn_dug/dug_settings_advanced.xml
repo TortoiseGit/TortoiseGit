@@ -40,7 +40,7 @@
             <term condition="pot">CacheTrayIcon</term>
             <listitem>
                 <para>
-                    To add a cache tray icon for the TSVNCache program, set
+                    To add a cache tray icon for the TGitCache program, set
                     this value to <literal>true</literal>.
                     This is really only useful for developers as it allows
                     you to terminate the program gracefully.

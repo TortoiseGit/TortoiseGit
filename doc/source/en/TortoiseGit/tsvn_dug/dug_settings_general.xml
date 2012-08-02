@@ -65,6 +65,24 @@
 				</para>
 			</listitem>
 		</varlistentry>
+		<varlistentry>
+			<term>Create Library</term>
+			<listitem>
+				<para>
+					On Windows 7 you can create a Library in which to group working copies
+					which are scattered in various places on your system.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>Extern DLL Path</term>
+			<listitem>
+				<para>
+					If your git installation needs an extra entry in the PATH environment variable,
+					you can enter it here and it will get added to the PATH environment variable automatically when TortoiseGit starts.
+				</para>
+			</listitem>
+		</varlistentry>
 	</variablelist>
 	<sect3 id="tsvn-dug-settings-look-feel">
 		<title>Context Menu Settings</title>
