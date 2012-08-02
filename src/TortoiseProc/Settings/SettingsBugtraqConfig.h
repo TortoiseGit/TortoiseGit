@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SettingsPropPage.h"
+#include "RegexEdit.h"
 // CSettingsBugtraqConfig dialog 
 
 class CSettingsBugtraqConfig : public ISettingsPropPage
@@ -46,6 +47,8 @@ protected:
 	afx_msg void OnBnClickedBugtraqNumberTrue();
 	afx_msg void OnBnClickedBugtraqNumberFalse();
 	afx_msg void OnEnChangeBugtraqLogregex();
+
+	CRegexEdit	m_BugtraqRegex1;
 
 	CString	m_URL;
 	BOOL	m_bNWarningifnoissue;

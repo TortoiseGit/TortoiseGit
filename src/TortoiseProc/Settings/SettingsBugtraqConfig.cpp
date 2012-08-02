@@ -38,6 +38,7 @@ void CSettingsBugtraqConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BUGTRAQ_LABEL, m_Label);
 	DDX_Radio(pDX, IDC_BUGTRAQ_NUMBER_TRUE, m_bNNumber);
 	DDX_Text(pDX, IDC_BUGTRAQ_LOGREGEX, m_Logregex);
+	DDX_Control(pDX, IDC_BUGTRAQ_LOGREGEX, m_BugtraqRegex1);
 }
 
 
