@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include <set>
 #include "TGitPath.h"
 using namespace std;
+#include <regex>
 
 #define BUGTRAQPROPNAME_LABEL             _T("bugtraq.label")
 #define BUGTRAQPROPNAME_MESSAGE           _T("bugtraq.message")
@@ -82,10 +83,21 @@ public:
 	 * \param msg the log message
 	 * \param pWnd Pointer to a rich edit control
 	 */
+#ifdef _RICHEDIT_
+	std::vector<CHARRANGE> FindBugIDPositions(const CString& msg);
+#endif
 	BOOL FindBugID(const CString& msg, CWnd * pWnd);
 
 	CString FindBugID(const CString& msg);
 	std::set<CString> FindBugIDs(const CString& msg);
+
+	/**
+	 * Check whether calling \ref FindBugID or \ref FindBugIDPositions
+	 * is worthwhile. If the result is @a false, those functions would
+	 * return empty strings or sets, respectively.
+	 */
+	bool MightContainABugID();
+
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
 	 * that BugID is returned. If none is found, an empty string is returned.
@@ -140,6 +152,16 @@ public:
 	 * Returns the path from which the properties were read.
 	 */
 	CTGitPath GetPropsPath() {return propsPath;}
+
+	/** replaces bNumer: a regular expression string to check the validity of
+	  * the entered bug ID. */
+	const CString& GetCheckRe() const {return sCheckRe;}
+	void SetCheckRe(const CString& s) {sCheckRe = s;regExNeedUpdate=true;AutoUpdateRegex();}
+
+	/** used to extract the bug ID from the string matched by sCheckRe */
+	const CString& GetBugIDRe() const {return sBugIDRe;}
+	void SetBugIDRe(const CString& s) {sBugIDRe = s;regExNeedUpdate=true;AutoUpdateRegex();}
+
 public:
 	/** The label to show in the commit dialog where the issue number/bug id
 	 * is entered. Example: "Bug-ID: " or "Issue-No.:". Default is "Bug-ID :" */
@@ -229,6 +251,20 @@ public:
 private:
 	CString		sAutoProps;
 	CTGitPath	propsPath;
+
+	/**
+	 * Constructing regex objects is expensive. Therefore, cache them here.
+	 */
+	void AutoUpdateRegex();
+
+	bool CheckStringProp(CString& s, const std::string& propname, const CString& propval, LPCSTR prop);
+
+	bool regExNeedUpdate;
+	std::tr1::wregex regCheck;
+	std::tr1::wregex regBugID;
+
+	int			nBugIdPos;				///< result	of sMessage.Find(L"%BUGID%");
+
 #ifdef DEBUG
 	friend class PropTest;
 #endif

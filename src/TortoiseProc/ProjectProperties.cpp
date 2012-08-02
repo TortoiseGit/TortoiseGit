@@ -20,15 +20,25 @@
 #include "TortoiseProc.h"
 #include "UnicodeUtils.h"
 #include "ProjectProperties.h"
+#include "AppUtils.h"
 //#include "GitProperties.h"
 #include "TGitPath.h"
-#include <regex>
 #include "git.h"
 
 using namespace std;
 
 
+struct num_compare
+{
+	bool operator() (const CString& lhs, const CString& rhs) const
+	{
+		return StrCmpLogicalW(lhs, rhs) < 0;
+	}
+};
+
 ProjectProperties::ProjectProperties(void)
+	: regExNeedUpdate (true)
+	, nBugIdPos(-1)
 {
 	bNumber = TRUE;
 	bWarnIfNoIssue = FALSE;
@@ -96,6 +106,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 
 	GetStringProps(this->sLabel,BUGTRAQPROPNAME_LABEL);
 	GetStringProps(this->sMessage,BUGTRAQPROPNAME_MESSAGE);
+	nBugIdPos = sMessage.Find(L"%BUGID%");
 	GetStringProps(this->sUrl,BUGTRAQPROPNAME_URL);
 
 	GetBOOLProps(this->bWarnIfNoIssue,BUGTRAQPROPNAME_WARNIFNOISSUE);
@@ -335,10 +346,10 @@ CString ProjectProperties::GetBugIDFromLog(CString& msg)
 		CString sFirstPart;
 		CString sLastPart;
 		BOOL bTop = FALSE;
-		if (sMessage.Find(_T("%BUGID%"))<0)
+		if (nBugIdPos < 0)
 			return sBugID;
-		sFirstPart = sMessage.Left(sMessage.Find(_T("%BUGID%")));
-		sLastPart = sMessage.Mid(sMessage.Find(_T("%BUGID%"))+7);
+		sFirstPart = sMessage.Left(nBugIdPos);
+		sLastPart = sMessage.Mid(nBugIdPos + 7);
 		msg.TrimRight('\n');
 		if (msg.ReverseFind('\n')>=0)
 		{
@@ -369,6 +380,10 @@ CString ProjectProperties::GetBugIDFromLog(CString& msg)
 			}
 			else
 				sBugLine = msg;
+		}
+		if (sBugLine.IsEmpty() && (msg.ReverseFind('\n') < 0))
+		{
+			sBugLine = msg.Mid(msg.ReverseFind('\n')+1);
 		}
 		if (sBugLine.Left(sFirstPart.GetLength()).Compare(sFirstPart)!=0)
 			sBugLine.Empty();
@@ -401,14 +416,28 @@ CString ProjectProperties::GetBugIDFromLog(CString& msg)
 	return sBugID;
 }
 
-BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
+void ProjectProperties::AutoUpdateRegex()
+{
+	if (regExNeedUpdate)
+	{
+		try
+		{
+			regCheck = tr1::wregex(sCheckRe);
+			regBugID = tr1::wregex(sBugIDRe);
+		}
+		catch (std::exception)
+		{
+		}
+
+		regExNeedUpdate = false;
+	}
+}
+
+std::vector<CHARRANGE> ProjectProperties::FindBugIDPositions(const CString& msg)
 {
 	size_t offset1 = 0;
 	size_t offset2 = 0;
-	bool bFound = false;
-
-	if (sUrl.IsEmpty())
-		return FALSE;
+	std::vector<CHARRANGE> result;
 
 	// first use the checkre string to find bug ID's in the message
 	if (!sCheckRe.IsEmpty())
@@ -419,8 +448,7 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 			// match with two regex strings (without grouping!)
 			try
 			{
-				const tr1::wregex regCheck(sCheckRe);
-				const tr1::wregex regBugID(sBugIDRe);
+				AutoUpdateRegex();
 				const tr1::wsregex_iterator end;
 				wstring s = msg;
 				for (tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
@@ -433,14 +461,7 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 						ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
 						ptrdiff_t matchposID = it2->position(0);
 						CHARRANGE range = {(LONG)(matchpos+matchposID), (LONG)(matchpos+matchposID+(*it2)[0].str().size())};
-						pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-						CHARFORMAT2 format;
-						SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-						format.cbSize = sizeof(CHARFORMAT2);
-						format.dwMask = CFM_LINK;
-						format.dwEffects = CFE_LINK;
-						pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
-						bFound = true;
+						result.push_back(range);
 					}
 				}
 			}
@@ -450,7 +471,7 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 		{
 			try
 			{
-				const tr1::wregex regCheck(sCheckRe);
+				AutoUpdateRegex();
 				const tr1::wsregex_iterator end;
 				wstring s = msg;
 				for (tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
@@ -462,30 +483,24 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 					{
 						ATLTRACE(_T("matched id : %s\n"), wstring(match[1]).c_str());
 						CHARRANGE range = {(LONG)(match[1].first-s.begin()), (LONG)(match[1].second-s.begin())};
-						pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-						CHARFORMAT2 format;
-						SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-						format.cbSize = sizeof(CHARFORMAT2);
-						format.dwMask = CFM_LINK;
-						format.dwEffects = CFE_LINK;
-						pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
-						bFound = true;
+						result.push_back(range);
 					}
 				}
 			}
 			catch (exception) {}
 		}
 	}
-	else if ((!bFound)&&(!sMessage.IsEmpty()))
+	else if (result.empty() && (!sMessage.IsEmpty()))
 	{
 		CString sBugLine;
 		CString sFirstPart;
 		CString sLastPart;
 		BOOL bTop = FALSE;
-		if (sMessage.Find(_T("%BUGID%"))<0)
-			return FALSE;
-		sFirstPart = sMessage.Left(sMessage.Find(_T("%BUGID%")));
-		sLastPart = sMessage.Mid(sMessage.Find(_T("%BUGID%"))+7);
+		if (nBugIdPos < 0)
+			return result;
+
+		sFirstPart = sMessage.Left(nBugIdPos);
+		sLastPart = sMessage.Mid(nBugIdPos + 7);
 		CString sMsg = msg;
 		sMsg.TrimRight('\n');
 		if (sMsg.ReverseFind('\n')>=0)
@@ -515,10 +530,12 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 			bTop = TRUE;
 		}
 		if (sBugLine.IsEmpty())
-			return FALSE;
+			return result;
+
 		CString sBugIDPart = sBugLine.Mid(sFirstPart.GetLength(), sBugLine.GetLength() - sFirstPart.GetLength() - sLastPart.GetLength());
 		if (sBugIDPart.IsEmpty())
-			return FALSE;
+			return result;
+
 		//the bug id part can contain several bug id's, separated by commas
 		if (!bTop)
 			offset1 = sMsg.GetLength() - sBugLine.GetLength() + sFirstPart.GetLength();
@@ -529,144 +546,34 @@ BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 		{
 			offset2 = offset1 + sBugIDPart.Find(',');
 			CHARRANGE range = {(LONG)offset1, (LONG)offset2};
-			pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-			CHARFORMAT2 format;
-			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-			format.cbSize = sizeof(CHARFORMAT2);
-			format.dwMask = CFM_LINK;
-			format.dwEffects = CFE_LINK;
-			pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			result.push_back(range);
 			sBugIDPart = sBugIDPart.Mid(sBugIDPart.Find(',')+1);
 			offset1 = offset2 + 1;
 		}
 		offset2 = offset1 + sBugIDPart.GetLength();
 		CHARRANGE range = {(LONG)offset1, (LONG)offset2};
-		pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-		CHARFORMAT2 format;
-		SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-		format.cbSize = sizeof(CHARFORMAT2);
-		format.dwMask = CFM_LINK;
-		format.dwEffects = CFE_LINK;
-		pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
-		return TRUE;
+		result.push_back(range);
 	}
-	return FALSE;
+
+	return result;
 }
 
-std::set<CString> ProjectProperties::FindBugIDs(const CString& msg)
+BOOL ProjectProperties::FindBugID(const CString& msg, CWnd * pWnd)
 {
-	size_t offset1 = 0;
-	size_t offset2 = 0;
-	bool bFound = false;
+	std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
+	CAppUtils::SetCharFormat(pWnd, CFM_LINK, CFE_LINK, positions);
+
+	return positions.empty() ? FALSE : TRUE;
+}
+
+std::set<CString> ProjectProperties::FindBugIDs (const CString& msg)
+{
+	std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
 	std::set<CString> bugIDs;
 
-	// first use the checkre string to find bug ID's in the message
-	if (!sCheckRe.IsEmpty())
+	for (std::vector<CHARRANGE>::iterator iter = positions.begin(), end = positions.end(); iter != end; ++iter)
 	{
-		if (!sBugIDRe.IsEmpty())
-		{
-			// match with two regex strings (without grouping!)
-			try
-			{
-				const tr1::wregex regCheck(sCheckRe);
-				const tr1::wregex regBugID(sBugIDRe);
-				const tr1::wsregex_iterator end;
-				wstring s = msg;
-				for (tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
-				{
-					// (*it)[0] is the matched string
-					wstring matchedString = (*it)[0];
-					for (tr1::wsregex_iterator it2(matchedString.begin(), matchedString.end(), regBugID); it2 != end; ++it2)
-					{
-						ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
-						bugIDs.insert(CString((*it2)[0].str().c_str()));
-					}
-				}
-			}
-			catch (exception) {}
-		}
-		else
-		{
-			try
-			{
-				const tr1::wregex regCheck(sCheckRe);
-				const tr1::wsregex_iterator end;
-				wstring s = msg;
-				for (tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
-				{
-					const tr1::wsmatch match = *it;
-					// we define group 1 as the whole issue text and
-					// group 2 as the bug ID
-					if (match.size() >= 2)
-					{
-						ATLTRACE(_T("matched id : %s\n"), wstring(match[1]).c_str());
-						bugIDs.insert(CString(wstring(match[1]).c_str()));
-					}
-				}
-			}
-			catch (exception) {}
-		}
-	}
-	else if ((!bFound)&&(!sMessage.IsEmpty()))
-	{
-		CString sBugLine;
-		CString sFirstPart;
-		CString sLastPart;
-		BOOL bTop = FALSE;
-		if (sMessage.Find(_T("%BUGID%"))<0)
-			return bugIDs;
-		sFirstPart = sMessage.Left(sMessage.Find(_T("%BUGID%")));
-		sLastPart = sMessage.Mid(sMessage.Find(_T("%BUGID%"))+7);
-		CString sMsg = msg;
-		sMsg.TrimRight('\n');
-		if (sMsg.ReverseFind('\n')>=0)
-		{
-			if (bAppend)
-				sBugLine = sMsg.Mid(sMsg.ReverseFind('\n')+1);
-			else
-			{
-				sBugLine = sMsg.Left(sMsg.Find('\n'));
-				bTop = TRUE;
-			}
-		}
-		else
-			sBugLine = sMsg;
-		if (sBugLine.Left(sFirstPart.GetLength()).Compare(sFirstPart)!=0)
-			sBugLine.Empty();
-		if (sBugLine.Right(sLastPart.GetLength()).Compare(sLastPart)!=0)
-			sBugLine.Empty();
-		if (sBugLine.IsEmpty())
-		{
-			if (sMsg.Find('\n')>=0)
-				sBugLine = sMsg.Left(sMsg.Find('\n'));
-			if (sBugLine.Left(sFirstPart.GetLength()).Compare(sFirstPart)!=0)
-				sBugLine.Empty();
-			if (sBugLine.Right(sLastPart.GetLength()).Compare(sLastPart)!=0)
-				sBugLine.Empty();
-			bTop = TRUE;
-		}
-		if (sBugLine.IsEmpty())
-			return bugIDs;
-		CString sBugIDPart = sBugLine.Mid(sFirstPart.GetLength(), sBugLine.GetLength() - sFirstPart.GetLength() - sLastPart.GetLength());
-		if (sBugIDPart.IsEmpty())
-			return bugIDs;
-		//the bug id part can contain several bug id's, separated by commas
-		if (!bTop)
-			offset1 = sMsg.GetLength() - sBugLine.GetLength() + sFirstPart.GetLength();
-		else
-			offset1 = sFirstPart.GetLength();
-		sBugIDPart.Trim(_T(","));
-		while (sBugIDPart.Find(',')>=0)
-		{
-			offset2 = offset1 + sBugIDPart.Find(',');
-			CHARRANGE range = {(LONG)offset1, (LONG)offset2};
-			bugIDs.insert(msg.Mid(range.cpMin, range.cpMax-range.cpMin));
-			sBugIDPart = sBugIDPart.Mid(sBugIDPart.Find(',')+1);
-			offset1 = offset2 + 1;
-		}
-		offset2 = offset1 + sBugIDPart.GetLength();
-		CHARRANGE range = {(LONG)offset1, (LONG)offset2};
-		bugIDs.insert(msg.Mid(range.cpMin, range.cpMax-range.cpMin));
+		bugIDs.insert(msg.Mid(iter->cpMin, iter->cpMax - iter->cpMin));
 	}
 
 	return bugIDs;
@@ -675,16 +582,29 @@ std::set<CString> ProjectProperties::FindBugIDs(const CString& msg)
 CString ProjectProperties::FindBugID(const CString& msg)
 {
 	CString sRet;
-
-	std::set<CString> bugIDs = FindBugIDs(msg);
-
-	for (std::set<CString>::iterator it = bugIDs.begin(); it != bugIDs.end(); ++it)
+	if (!sCheckRe.IsEmpty() || (nBugIdPos >= 0))
 	{
-		sRet += *it;
-		sRet += _T(" ");
+		std::vector<CHARRANGE> positions = FindBugIDPositions(msg);
+		std::set<CString, num_compare> bugIDs;
+		for (std::vector<CHARRANGE>::iterator iter = positions.begin(), end = positions.end(); iter != end; ++iter)
+		{
+			bugIDs.insert(msg.Mid(iter->cpMin, iter->cpMax - iter->cpMin));
+		}
+
+		for (std::set<CString, num_compare>::iterator it = bugIDs.begin(); it != bugIDs.end(); ++it)
+		{
+			sRet += *it;
+			sRet += _T(" ");
+		}
+		sRet.Trim();
 	}
-	sRet.Trim();
+
 	return sRet;
+}
+
+bool ProjectProperties::MightContainABugID()
+{
+	return !sCheckRe.IsEmpty() || (nBugIdPos >= 0);
 }
 
 CString ProjectProperties::GetBugIDUrl(const CString& sBugID)
@@ -702,15 +622,6 @@ CString ProjectProperties::GetBugIDUrl(const CString& sBugID)
 
 BOOL ProjectProperties::CheckBugID(const CString& sID)
 {
-	if (!sCheckRe.IsEmpty()&&(!bNumber)&&!sID.IsEmpty())
-	{
-		CString sBugID = sID;
-		sBugID.Replace(_T(", "), _T(","));
-		sBugID.Replace(_T(" ,"), _T(","));
-		CString sMsg = sMessage;
-		sMsg.Replace(_T("%BUGID%"), sBugID);
-		return HasBugID(sMsg);
-	}
 	if (bNumber)
 	{
 		// check if the revision actually _is_ a number
@@ -720,7 +631,7 @@ BOOL ProjectProperties::CheckBugID(const CString& sID)
 		for (int i=0; i<len; ++i)
 		{
 			c = sID.GetAt(i);
-			if ((c < '0')&&(c != ','))
+			if ((c < '0')&&(c != ',')&&(c != ' '))
 			{
 				return FALSE;
 			}
@@ -737,13 +648,14 @@ BOOL ProjectProperties::HasBugID(const CString& sMessage)
 	{
 		try
 		{
-			tr1::wregex rx(sCheckRe);
-			return tr1::regex_search((LPCTSTR)sMessage, rx);
+			AutoUpdateRegex();
+			return tr1::regex_search((LPCTSTR)sMessage, regCheck);
 		}
 		catch (exception) {}
 	}
 	return FALSE;
 }
+
 #if 0
 void ProjectProperties::InsertAutoProps(Git_config_t *cfg)
 {
@@ -904,33 +816,40 @@ public:
 	PropTest()
 	{
 		CString msg = _T("this is a test logmessage: issue 222\nIssue #456, #678, 901  #456");
-		CString sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		CString sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		CString sCheckRe = _T("[Ii]ssue #?(\\d+)(,? ?#?(\\d+))+");
 		CString sBugIDRe = _T("(\\d+)");
 		ProjectProperties props;
 		props.sCheckRe = _T("PAF-[0-9]+");
-		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
 		CString sRet = props.FindBugID(_T("This is a test for PAF-88"));
 		ATLASSERT(sRet.IsEmpty());
 		props.sCheckRe = _T("[Ii]ssue #?(\\d+)");
+		props.regExNeedUpdate = true;
 		sRet = props.FindBugID(_T("Testing issue #99"));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("99"))==0);
 		props.sCheckRe = _T("[Ii]ssues?:?(\\s*(,|and)?\\s*#\\d+)+");
 		props.sBugIDRe = _T("(\\d+)");
-		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.regExNeedUpdate = true;
 		sRet = props.FindBugID(_T("This is a test for Issue #7463,#666"));
 		ATLASSERT(props.HasBugID(_T("This is a test for Issue #7463,#666")));
 		ATLASSERT(!props.HasBugID(_T("This is a test for Issue 7463,666")));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("666 7463"))==0);
+		sRet = props.FindBugID(_T("This is a test for Issue #850,#1234,#1345"));
+		sRet.Trim();
+		ATLASSERT(sRet.Compare(_T("850 1234 1345"))==0);
 		props.sCheckRe = _T("^\\[(\\d+)\\].*");
-		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.regExNeedUpdate = true;
 		sRet = props.FindBugID(_T("[000815] some stupid programming error fixed"));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("000815"))==0);
 		props.sCheckRe = _T("\\[\\[(\\d+)\\]\\]\\]");
-		props.sUrl = _T("http://tortoiseGit.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.sUrl = _T("http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%");
+		props.regExNeedUpdate = true;
 		sRet = props.FindBugID(_T("test test [[000815]]] some stupid programming error fixed"));
 		sRet.Trim();
 		ATLASSERT(sRet.Compare(_T("000815"))==0);

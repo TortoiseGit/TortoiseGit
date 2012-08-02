@@ -504,44 +504,6 @@ void CCommitDlg::OnOK()
 	//std::set<CString> checkedLists;
 	//std::set<CString> uncheckedLists;
 
-		// now let the bugtraq plugin check the commit message
-	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
-	if (m_BugTraqProvider)
-	{
-		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
-		if (SUCCEEDED(hr))
-		{
-			BSTR temp = NULL;
-			CString common = g_Git.m_CurrentDir;
-			BSTR repositoryRoot = common.AllocSysString();
-			BSTR parameters = m_bugtraq_association.GetParameters().AllocSysString();
-			BSTR commonRoot = SysAllocString(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
-			BSTR commitMessage = m_sLogMessage.AllocSysString();
-			SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0, m_selectedPathList.GetCount());
-
-			for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
-				SafeArrayPutElement(pathList, &index, m_selectedPathList[index].GetGitPathString().AllocSysString());
-
-			if (FAILED(hr = pProvider2->CheckCommit(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, commitMessage, &temp)))
-			{
-				COMError ce(hr);
-				CString sErr;
-				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
-				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
-			}
-			else
-			{
-				CString sError = temp;
-				if (!sError.IsEmpty())
-				{
-					CMessageBox::Show(m_hWnd, sError, _T("TortoiseGit"), MB_ICONERROR);
-					return;
-				}
-				SysFreeString(temp);
-			}
-		}
-	}
-
 	//CString checkedfiles;
 	//CString uncheckedfiles;
 
@@ -728,7 +690,9 @@ void CCommitDlg::OnOK()
 	//}
 
 	m_sBugID.Trim();
-	if (!m_sBugID.IsEmpty())
+	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
+	sExistingBugID.Trim();
+	if (!m_sBugID.IsEmpty() && m_sBugID.Compare(sExistingBugID))
 	{
 		m_sBugID.Replace(_T(", "), _T(","));
 		m_sBugID.Replace(_T(" ,"), _T(","));
@@ -738,6 +702,44 @@ void CCommitDlg::OnOK()
 			m_sLogMessage += _T("\n") + sBugID + _T("\n");
 		else
 			m_sLogMessage = sBugID + _T("\n") + m_sLogMessage;
+	}
+
+	// now let the bugtraq plugin check the commit message
+	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
+	if (m_BugTraqProvider)
+	{
+		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
+		if (SUCCEEDED(hr))
+		{
+			BSTR temp = NULL;
+			CString common = g_Git.m_CurrentDir;
+			BSTR repositoryRoot = common.AllocSysString();
+			BSTR parameters = m_bugtraq_association.GetParameters().AllocSysString();
+			BSTR commonRoot = SysAllocString(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
+			BSTR commitMessage = m_sLogMessage.AllocSysString();
+			SAFEARRAY *pathList = SafeArrayCreateVector(VT_BSTR, 0, m_selectedPathList.GetCount());
+
+			for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
+				SafeArrayPutElement(pathList, &index, m_selectedPathList[index].GetGitPathString().AllocSysString());
+
+			if (FAILED(hr = pProvider2->CheckCommit(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, commitMessage, &temp)))
+			{
+				COMError ce(hr);
+				CString sErr;
+				sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, m_bugtraq_association.GetProviderName(), ce.GetMessageAndDescription().c_str());
+				CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
+			}
+			else
+			{
+				CString sError = temp;
+				if (!sError.IsEmpty())
+				{
+					CMessageBox::Show(m_hWnd, sError, _T("TortoiseGit"), MB_ICONERROR);
+					return;
+				}
+				SysFreeString(temp);
+			}
+		}
 	}
 
 	//if(checkedfiles.GetLength()>0)
@@ -1791,8 +1793,8 @@ void CCommitDlg::OnBnClickedHistory()
 	CString sMsg = historyDlg.GetSelectedText();
 	if (sMsg != m_cLogMessage.GetText().Left(sMsg.GetLength()))
 	{
-		CString sBugID = m_ProjectProperties.GetBugIDFromLog(sMsg);
-		if (!sBugID.IsEmpty())
+		CString sBugID = m_ProjectProperties.FindBugID(sMsg);
+		if ((!sBugID.IsEmpty()) && ((GetDlgItem(IDC_BUGID)->IsWindowVisible())))
 		{
 			SetDlgItemText(IDC_BUGID, sBugID);
 		}
@@ -1829,6 +1831,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	// first try the IBugTraqProvider2 interface
 	CComPtr<IBugTraqProvider2> pProvider2 = NULL;
 	HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
+	bool bugIdOutSet = false;
 	if (SUCCEEDED(hr))
 	{
 		//CString common = m_ListCtrl.GetCommonURL(false).GetGitPathString();
@@ -1848,6 +1851,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		{
 			if (bugIDOut)
 			{
+				bugIdOutSet = true;
 				m_sBugID = bugIDOut;
 				SysFreeString(bugIDOut);
 				SetDlgItemText(IDC_BUGID, m_sBugID);
@@ -1907,7 +1911,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	if (!m_ProjectProperties.sMessage.IsEmpty())
 	{
 		CString sBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
-		if (!sBugID.IsEmpty())
+		if (!sBugID.IsEmpty() && !bugIdOutSet)
 		{
 			SetDlgItemText(IDC_BUGID, sBugID);
 		}
@@ -1920,7 +1924,6 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	SafeArrayDestroy(pathList);
 	SysFreeString(originalMessage);
 	SysFreeString(temp);
-
 }
 
 void CCommitDlg::FillPatchView()

@@ -38,6 +38,16 @@ public:
 
 	static bool FileOpenSave(CString& path, int * filterindex, UINT title, UINT filter, bool bOpen, HWND hwndOwner = NULL);
 
+	/**
+	 * Apply the @a effects or color (depending on @a mask)
+	 * for all char ranges given in @a positions to the
+	 * @a window text.
+	 */
+	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects, const std::vector<CHARRANGE>& positions);
+
+private:
+	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
+
 protected:
 	CCommonAppUtils(void){};
 	~CCommonAppUtils(void){};
