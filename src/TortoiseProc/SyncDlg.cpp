@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
+	ON_BN_CLICKED(IDC_LOG, &CSyncDlg::OnBnClickedLog)
 END_MESSAGE_MAP()
 
 
@@ -734,6 +735,7 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_STATUS, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_ANIMATE_SYNC,TOP_LEFT);
 	AddAnchor(IDC_BUTTON_COMMIT,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_LOG, BOTTOM_LEFT);
 
 	// do not use BRANCH_COMBOX_ADD_ANCHOR here, we want to have different stylings
 	AddAnchor(IDC_COMBOBOXEX_LOCAL_BRANCH, TOP_LEFT,TOP_CENTER);
@@ -1207,4 +1209,14 @@ LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 void CSyncDlg::OnBnClickedCheckForce()
 {
 	UpdateData();
+}
+
+void CSyncDlg::OnBnClickedLog()
+{
+	CString cmd = _T("/command:log");
+	cmd += _T(" /path:\"");
+	cmd += g_Git.m_CurrentDir;
+	cmd += _T("\"");
+
+	CAppUtils::RunTortoiseProc(cmd);
 }

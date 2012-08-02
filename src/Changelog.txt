@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1295: Browse Ref Dialog ref name order consider numbers in string
  * Added unicode big-endian text file support to TortoiseMerge and TortoiseGitBlame
  * Fixed issue #277: Add the ability to run the 'assume-unchanged' command
+ * Fixed issue #626: add "show log" in Git Sync dialog
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names

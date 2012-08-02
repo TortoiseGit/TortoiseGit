@@ -208,4 +208,5 @@ protected:
 	afx_msg void OnBnClickedButtonSubmodule();
 	afx_msg void OnLvnInLogListColumnClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCheckForce();
+	afx_msg void OnBnClickedLog();
 };
