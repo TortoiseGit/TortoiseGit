@@ -150,7 +150,7 @@ UINT CAddDlg::AddThread()
 	DialogEnableWindow(IDOK, false);
 	m_bCancelled = false;
 	m_addListCtrl.Clear();
-	if (!m_addListCtrl.GetStatus(&m_pathList, false, m_bIncludeIgnored != FALSE, true, true))
+	if (!m_addListCtrl.GetStatus(&m_pathList, false, m_bIncludeIgnored != FALSE, true))
 	{
 		m_addListCtrl.SetEmptyString(m_addListCtrl.GetLastErrorMessage());
 	}

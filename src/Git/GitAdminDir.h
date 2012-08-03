@@ -25,21 +25,6 @@ class GitAdminDir
 public:
 	GitAdminDir(void);
 	~GitAdminDir(void);
-	/**
-	 * Initializes the global object. Call this after apr is initialized but
-	 * before using any other methods of this class.
-	 */
-	bool Init();
-	/**
-	 * Clears the memory pool. Call this before you clear *all* pools
-	 * with apr_pool_terminate(). If you don't use apr_pool_terminate(), then
-	 * this method doesn't need to be called, because the deconstructor will
-	 * do the same too.
-	 */
-	bool Close();
-
-	/// Returns true if \a name is the admin dir name
-	bool IsAdminDirName(const CString& name) const;
 
 	/// Returns true if the path points to or below an admin directory
 	bool IsAdminDirPath(const CString& path) const;
@@ -59,10 +44,6 @@ public:
 	CString GetGitTopDir(const CString& path);
 
 	CString GetAdminDirName() const {return _T(".git");}
-
-private:
-	int m_nInit;
-
 };
 
 extern GitAdminDir g_GitAdminDir;

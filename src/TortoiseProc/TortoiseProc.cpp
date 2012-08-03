@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-//#include "vld.h"
 #include "TortoiseProc.h"
 #include "SysImageList.h"
 #include "..\Utils\CrashReport.h"
@@ -31,14 +30,8 @@
 //#include "libintl.h"
 #include "DirFileEnum.h"
 //#include "SoundUtils.h"
-//#include "SVN.h"
 #include "GitAdminDir.h"
 #include "Git.h"
-//#include "SVNGlobal.h"
-//#include "svn_types.h"
-//#include "svn_dso.h"
-//#include <openssl/ssl.h>
-//#include <openssl/err.h>
 #include "SmartHandle.h"
 #include "Commands\Command.h"
 #include "..\version.h"
@@ -50,7 +43,6 @@
 #include "Libraries.h"
 
 #define STRUCT_IOVEC_DEFINED
-//#include "sasl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,11 +67,8 @@ CTortoiseProcApp::CTortoiseProcApp()
 	EnableHtmlHelp();
 //	int argc = 0;
 //	const char* const * argv = NULL;
-//	apr_app_initialize(&argc, &argv, NULL);
-//	svn_dso_initialize2();
 	SYS_IMAGE_LIST();
 	CHooks::Create();
-	g_GitAdminDir.Init();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
@@ -88,20 +77,8 @@ CTortoiseProcApp::CTortoiseProcApp()
 
 CTortoiseProcApp::~CTortoiseProcApp()
 {
-	// global application exit cleanup (after all SSL activity is shutdown)
-	// we have to clean up SSL ourselves, since neon doesn't do that (can't do it)
-	// because those cleanup functions work globally per process.
-	//ERR_free_strings();
-	//EVP_cleanup();
-	//CRYPTO_cleanup_all_ex_data();
-
-	// since it is undefined *when* the global object SVNAdminDir is
-	// destroyed, we tell it to destroy the memory pools and terminate apr
-	// *now* instead of later when the object itself is destroyed.
-	g_GitAdminDir.Close();
 	CHooks::Destroy();
 	SYS_IMAGE_LIST().Cleanup();
-	//apr_terminate();
 }
 
 // The one and only CTortoiseProcApp object
@@ -400,10 +377,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		CString sConfigDir = parser.GetVal(_T("configdir"));
 //		g_GitGlobal.SetConfigDir(sConfigDir);
 	}
-	// to avoid that SASL will look for and load its plugin dlls all around the
-	// system, we set the path here.
-	// Note that SASL doesn't have to be initialized yet for this to work
-//	sasl_set_path(SASL_PATH_TYPE_PLUGIN, (LPSTR)(LPCSTR)CUnicodeUtils::GetUTF8(CPathUtils::GetAppDirectory().TrimRight('\\')));
 
 	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	if(!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString()))

@@ -58,16 +58,12 @@
 #define IDS_TOOLBAR_CUSTOMIZE           20125
 #define IDS_OUTPUT_WND                  20157
 #define IDS_PROPERTIES_WND              20158
-#define IDS_BUILD_TAB                   20300
-#define IDS_DEBUG_TAB                   20301
-#define IDS_FIND_TAB                    20302
 #define IDS_EDIT_MENU                   20306
 #define IDS_GIT_LOG_TAB                 20307
 #define ID_VIEW_NEXT                    20308
 #define ID_VIEW_PREV                    20309
 #define ID_EDIT_ENCODING                32771
 #define ID_EDIT_ENCODE                  32772
-#define ID_EDIT_ENCODE32773             32773
 #define ID_ENCODE_AUTO                  32774
 #define ID_VIEW_SHOWAUTHOR              32775
 #define ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION 32776

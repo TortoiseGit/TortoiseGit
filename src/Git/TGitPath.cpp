@@ -43,7 +43,6 @@ extern CGit g_Git;
 CTGitPath::CTGitPath(void)
 	: m_bDirectoryKnown(false)
 	, m_bIsDirectory(false)
-	, m_bIsURL(false)
 	, m_bURLKnown(false)
 	, m_bHasAdminDirKnown(false)
 	, m_bHasAdminDir(false)
@@ -74,7 +73,6 @@ CTGitPath::~CTGitPath(void)
 CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	  m_bDirectoryKnown(false)
 	, m_bIsDirectory(false)
-	, m_bIsURL(false)
 	, m_bURLKnown(false)
 	, m_bHasAdminDirKnown(false)
 	, m_bHasAdminDir(false)
@@ -281,19 +279,7 @@ const CString& CTGitPath::GetUIPathString() const
 {
 	if (m_sUIPath.IsEmpty())
 	{
-#if defined(_MFC_VER)
-		//BUGBUG HORRIBLE!!! - CPathUtils::IsEscaped doesn't need to be MFC-only
-		if (IsUrl())
-		{
-			m_sUIPath = CPathUtils::PathUnescape(GetGitPathString());
-			m_sUIPath.Replace(_T("file:////"), _T("file:///\\"));
-
-		}
-		else
-#endif
-		{
-			m_sUIPath = GetWinPathString();
-		}
+		m_sUIPath = GetWinPathString();
 	}
 	return m_sUIPath;
 }
@@ -333,24 +319,6 @@ void CTGitPath::SanitizeRootPath(CString& sPath, bool bIsForwardPath) const
 	{
 		sPath += (bIsForwardPath) ? _T("/") : _T("\\");
 	}
-}
-
-bool CTGitPath::IsUrl() const
-{
-#if 0
-	if (!m_bURLKnown)
-	{
-		EnsureFwdslashPathSet();
-		if(m_sUTF8FwdslashPath.IsEmpty())
-		{
-			SetUTF8FwdslashPath(m_sFwdslashPath);
-		}
-		m_bIsURL = !!svn_path_is_url(m_sUTF8FwdslashPath);
-		m_bURLKnown = true;
-	}
-	return m_bIsURL;
-#endif
-	return false;
 }
 
 bool CTGitPath::IsDirectory() const
@@ -980,10 +948,6 @@ bool CTGitPath::IsValidOnWindows() const
 		sMatch.TrimLeft(_T("\\"));
 		sPattern = _T("^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
 	}
-	else if (IsUrl())
-	{
-		sPattern = _T("^((http|https|svn|svn\\+ssh|file)\\:\\\\+([^\\\\@\\:]+\\:[^\\\\@\\:]+@)?\\\\[^\\\\]+(\\:\\d+)?)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<>\\. ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<>\\. ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
-	}
 	else
 	{
 		sPattern = _T("^(\\\\\\\\\\?\\\\)?(([a-zA-Z]:|\\\\)\\\\)?(((\\.)|(\\.\\.)|([^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?))\\\\)*[^\\\\/:\\*\\?\"\\|<> ](([^\\\\/:\\*\\?\"\\|<>\\. ])|([^\\\\/:\\*\\?\"\\|<>]*[^\\\\/:\\*\\?\"\\|<>\\. ]))?$");
@@ -1013,29 +977,6 @@ bool CTGitPath::IsValidOnWindows() const
 
 	m_bIsValidOnWindowsKnown = true;
 	return m_bIsValidOnWindows;
-}
-
-bool CTGitPath::IsSpecialDirectory() const
-{
-	if (m_bIsSpecialDirectoryKnown)
-		return m_bIsSpecialDirectory;
-
-	static LPCTSTR specialDirectories[]
-		= { _T("trunk"), _T("tags"), _T("branches") };
-
-	for (int i = 0; i < _countof(specialDirectories); ++i)
-	{
-		CString name = GetFileOrDirectoryName();
-		if (0 == name.CompareNoCase(specialDirectories[i]))
-		{
-			m_bIsSpecialDirectory = true;
-			break;
-		}
-	}
-
-	m_bIsSpecialDirectoryKnown = true;
-
-	return m_bIsSpecialDirectory;
 }
 
 //////////////////////////////////////////////////////////////////////////

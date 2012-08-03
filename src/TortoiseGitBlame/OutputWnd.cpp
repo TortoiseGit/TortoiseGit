@@ -82,7 +82,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	// Create output panes:
-	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
 	if (! m_LogList.Create(dwStyle,rectDummy,&m_wndTabs,0) )
@@ -90,20 +89,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
 	}
-#if 0
-	if (!m_wndOutputBuild.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputFind.Create(dwStyle, rectDummy, &m_wndTabs, 4))
-	{
-		TRACE0("Failed to create output windows\n");
-		return -1;      // fail to create
-	}
-#endif
 
 	m_LogList.SetFont(&m_Font);
-	//m_wndOutputBuild.SetFont(&m_Font);
-	//m_wndOutputDebug.SetFont(&m_Font);
-	//m_wndOutputFind.SetFont(&m_Font);
 
 	CString strTabName;
 	BOOL bNameValid;
@@ -120,20 +107,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_LogList.InsertGitColumn();
 
 	m_LogList.hideUnimplementedCommands();
-
-#if 0
-	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDebug, strTabName, (UINT)1);
-	bNameValid = strTabName.LoadString(IDS_FIND_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputFind, strTabName, (UINT)2);
-#endif;
-
-	// Fill output tabs with some dummy text (nothing magic here)
-	FillBuildWindow();
-//	FillDebugWindow();
-//	FillFindWindow();
 
 	this->SetWindowTextW(CString(MAKEINTRESOURCE(IDS_GIT_LOG_TAB)));
 	return 0;
@@ -164,27 +137,6 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 
 	wndListBox.SetHorizontalExtent(cxExtentMax);
 	dc.SelectObject(pOldFont);
-}
-
-void COutputWnd::FillBuildWindow()
-{
-//	m_wndOutputBuild.AddString(_T("Build output is being displayed here."));
-//	m_wndOutputBuild.AddString(_T("The output is being displayed in rows of a list view"));
-//	m_wndOutputBuild.AddString(_T("but you can change the way it is displayed as you wish..."));
-}
-
-void COutputWnd::FillDebugWindow()
-{
-//	m_wndOutputDebug.AddString(_T("Debug output is being displayed here."));
-//	m_wndOutputDebug.AddString(_T("The output is being displayed in rows of a list view"));
-//	m_wndOutputDebug.AddString(_T("but you can change the way it is displayed as you wish..."));
-}
-
-void COutputWnd::FillFindWindow()
-{
-//	m_wndOutputFind.AddString(_T("Find output is being displayed here."));
-//	m_wndOutputFind.AddString(_T("The output is being displayed in rows of a list view"));
-//	m_wndOutputFind.AddString(_T("but you can change the way it is displayed as you wish..."));
 }
 
 int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
@@ -233,8 +185,6 @@ COutputList::~COutputList()
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
@@ -260,16 +210,6 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	}
 
 	SetFocus();
-}
-
-void COutputList::OnEditCopy()
-{
-	MessageBox(_T("Copy output"));
-}
-
-void COutputList::OnEditClear()
-{
-	MessageBox(_T("Clear output"));
 }
 
 void COutputList::OnViewOutput()

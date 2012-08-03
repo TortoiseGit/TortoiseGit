@@ -37,17 +37,12 @@ using namespace std;
 #define PROJECTPROPNAME_LOGMINSIZE		  _T("tsvn.logminsize")
 #define PROJECTPROPNAME_LOCKMSGMINSIZE	  _T("tsvn.lockmsgminsize")
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
-#define PROJECTPROPNAME_LOGSUMMARY		  _T("tsvn.logsummary")
 #define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tsvn.projectlanguage")
 #define PROJECTPROPNAME_USERFILEPROPERTY  _T("tsvn.userfileproperties")
 #define PROJECTPROPNAME_USERDIRPROPERTY   _T("tsvn.userdirproperties")
-#define PROJECTPROPNAME_AUTOPROPS		  _T("tsvn.autoprops")
 
 #define PROJECTPROPNAME_WEBVIEWER_REV     _T("webviewer.revision")
 #define PROJECTPROPNAME_WEBVIEWER_PATHREV _T("webviewer.pathrevision")
-
-class CTSVNPathList;
-struct svn_config_t;
 
 /**
  * \ingroup TortoiseProc
@@ -123,35 +118,6 @@ public:
 	 * \param msg the BugID extracted from the log message
 	 */
 	CString GetBugIDUrl(const CString& sBugID);
-
-	/**
-	 * Inserts the tGit:autoprops into the Subversion config section.
-	 * Call this before an import or an add operation.
-	 */
-	//void InsertAutoProps(git_config_t *cfg);
-
-	/**
-	 * Adds all the project properties to the specified entry
-	 */
-	bool AddAutoProps(const CTGitPath& path);
-
-	/**
-	 * Returns the log message summary if the tGit:logsummaryregex property is
-	 * set and there are actually some matches.
-	 * Otherwise, an empty string is returned.
-	 */
-	CString GetLogSummary(const CString& sMessage);
-
-	/**
-	 * Transform the log message using \ref GetLogSummary and post-process it
-	 * to be suitable for 1-line controls.
-	 */
-	CString MakeShortMessage(const CString& message);
-
-	/**
-	 * Returns the path from which the properties were read.
-	 */
-	CTGitPath GetPropsPath() {return propsPath;}
 
 	/** replaces bNumer: a regular expression string to check the validity of
 	  * the entered bug ID. */
@@ -239,17 +205,10 @@ public:
 	CString		sWebViewerPathRev;
 
 	/**
-	 * The regex string to extract a summary from a log message. The summary
-	 * is the first matching regex group.
-	 */
-	CString		sLogSummaryRe;
-
-	/**
 	 * A regex string to extract revisions from a log message.
 	 */
 	CString		sLogRevRegex;
 private:
-	CString		sAutoProps;
 	CTGitPath	propsPath;
 
 	/**

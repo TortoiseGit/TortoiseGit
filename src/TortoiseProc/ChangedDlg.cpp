@@ -39,7 +39,6 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=NULL*/)
 	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
 	, m_bShowExternals(TRUE)
-	, m_bShowUserProps(FALSE)
 {
 	m_bRemote = FALSE;
 }
@@ -57,7 +56,6 @@ void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWUNMODIFIED, m_iShowUnmodified);
 	DDX_Check(pDX, IDC_SHOWIGNORED, m_bShowIgnored);
 //	DDX_Check(pDX, IDC_SHOWEXTERNALS, m_bShowExternals);
-//	DDX_Check(pDX, IDC_SHOWUSERPROPS, m_bShowUserProps);
 }
 
 
@@ -149,7 +147,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWUSERPROPS, FALSE);
 	CString temp;
 	m_FileListCtrl.Clear();
-	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE,m_bShowUserProps != FALSE))
+	if (!m_FileListCtrl.GetStatus(&m_pathList, m_bRemote, m_bShowIgnored != FALSE, m_bShowUnversioned != FALSE))
 	{
 		if (!m_FileListCtrl.GetLastErrorMessage().IsEmpty())
 			m_FileListCtrl.SetEmptyString(m_FileListCtrl.GetLastErrorMessage());

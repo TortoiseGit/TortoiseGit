@@ -37,8 +37,6 @@ public:
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditClear();
 	afx_msg void OnViewOutput();
 
 	DECLARE_MESSAGE_MAP()
@@ -69,15 +67,8 @@ public:
 	CGitMFCTabCtrl	m_wndTabs;
 
 	CGitBlameLogList m_LogList;
-//	COutputList m_wndOutputBuild;
-//	COutputList m_wndOutputDebug;
-//	COutputList m_wndOutputFind;
 
 protected:
-	void FillBuildWindow();
-	void FillDebugWindow();
-	void FillFindWindow();
-
 	void AdjustHorzScroll(CListBox& wndListBox);
 
 private:

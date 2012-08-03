@@ -25,7 +25,6 @@
 
 UINT				g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
-int					g_cAprInit = 0;
 ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
 DWORD				g_langTimeout = 0;
@@ -108,11 +107,6 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 				delete *it;
 				it = g_exts.begin();
 			}
-			while (g_cAprInit--)
-			{
-				g_GitAdminDir.Close();
-//				apr_terminate();
-			}
 		}
 		g_csGlobalCOMGuard.Term();
     }
@@ -154,11 +148,6 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 
     if (state != FileStateInvalid)
     {
-//		apr_initialize();
-//		git_dso_initialize2();
-		g_GitAdminDir.Init();
-		g_cAprInit++;
-
 		CShellExtClassFactory *pcf = new CShellExtClassFactory(state);
 		return pcf->QueryInterface(riid, ppvOut);
     }

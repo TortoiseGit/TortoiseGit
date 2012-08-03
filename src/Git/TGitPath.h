@@ -119,10 +119,6 @@ public:
 	 */
 	const CString& GetUIPathString() const;
 	/**
-	 * Checks if the path is an URL.
-	 */
-	bool IsUrl() const;
-	/**
 	 * Returns true if the path points to a directory
 	 */
 	bool IsDirectory() const;
@@ -279,11 +275,6 @@ public:
 	 */
 	bool IsValidOnWindows() const;
 
-	/**
-	 * Checks to see if the path or URL represents one of the special directories
-	 * (branches, tags, or trunk).
-	 */
-	bool IsSpecialDirectory() const;
 private:
 	// All these functions are const, and all the data
 	// is mutable, in order that the hidden caching operations
@@ -330,7 +321,6 @@ private:
 	mutable bool m_bIsDirectory;
 	mutable bool m_bLastWriteTimeKnown;
 	mutable bool m_bURLKnown;
-	mutable bool m_bIsURL;
 	mutable __int64 m_lastWriteTime;
 	mutable __int64 m_fileSize;
 	mutable bool m_bIsReadOnly;

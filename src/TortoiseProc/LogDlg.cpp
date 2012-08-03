@@ -23,7 +23,6 @@
 #include "InputDlg.h"
 #include "GITProgressDlg.h"
 #include "ProgressDlg.h"
-//#include "RepositoryBrowser.h"
 //#include "CopyDlg.h"
 #include "StatGraphDlg.h"
 #include "Logdlg.h"
@@ -37,16 +36,11 @@
 //#include "GitInfo.h"
 //#include "GitDiff.h"
 #include "IconMenu.h"
-//#include "RevisionRangeDlg.h"
 //#include "BrowseFolder.h"
-//#include "BlameDlg.h"
-//#include "Blame.h"
 //#include "GitHelpers.h"
 #include "GitStatus.h"
 //#include "LogDlgHelper.h"
 //#include "CachedLogInfo.h"
-//#include "RepositoryInfo.h"
-//#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
@@ -54,16 +48,13 @@
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
-	, m_logcounter(0)
 	, m_wParam(0)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
-	, m_bShowedAll(false)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 
 	, m_bSelectionMustBeContinuous(false)
-	, m_lowestRev(_T(""))
 
 	, m_sLogInfo(_T(""))
 
@@ -73,9 +64,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bAscending(FALSE)
 
 	, m_limit(0)
-	, m_childCounter(0)
-	, m_maxChild(0)
-	, m_bIncludeMerges(FALSE)
 	, m_hAccel(NULL)
 {
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
@@ -124,15 +112,12 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
-	//ON_BN_CLICKED(IDC_GETALL, OnBnClickedGetall)
-	//ON_NOTIFY(NM_DBLCLK, IDC_LOGMSG, OnNMDblclkChangedFileList)
 	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
-
 
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_MESSAGE(WM_FILTEREDIT_CANCELCLICKED, OnClickedCancelFilter)
@@ -144,10 +129,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEFROM, OnDtnDatetimechangeDatefrom)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
-	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_LOGMSG, OnNMCustomdrawChangedFileList)
-	//ON_NOTIFY(LVN_GETDISPINFO, IDC_LOGMSG, OnLvnGetdispinfoChangedFileList)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
-	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LOGMSG, OnLvnColumnclickChangedFileList)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
@@ -158,7 +140,6 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
-//	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
@@ -186,7 +167,6 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	if(!endrev.IsEmpty())
 		this->SetStartRef(endrev);
 
-	m_hasWC = !path.IsUrl();
 	m_limit = limit;
 	if (::IsWindow(m_hWnd))
 		UpdateData(FALSE);
@@ -256,9 +236,6 @@ BOOL CLogDlg::OnInitDialog()
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 
-	m_logcounter = 0;
-	m_sMessageBuf.Preallocate(100000);
-
 	SetDlgTitle();
 
 	m_tooltips.Create(this);
@@ -309,7 +286,6 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FOLLOWRENAMES, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
-	//AddAnchor(IDC_GETALL, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
@@ -380,8 +356,6 @@ BOOL CLogDlg::OnInitDialog()
 		GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
 	}
 
-	m_mergedRevs.clear();
-
 	// first start a thread to obtain the log messages without
 	// blocking the dialog
 	//m_tTo = 0;
@@ -438,7 +412,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
-		//DialogEnableWindow(IDC_GETALL, FALSE);
 		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
 		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
@@ -459,7 +432,6 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
 
-		//DialogEnableWindow(IDC_GETALL, TRUE);
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
 		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
@@ -797,136 +769,6 @@ void CLogDlg::OnCancel()
 	__super::OnCancel();
 }
 
-CString CLogDlg::MakeShortMessage(const CString& message)
-{
-	bool bFoundShort = true;
-	CString sShortMessage = m_LogList.m_ProjectProperties.GetLogSummary(message);
-	if (sShortMessage.IsEmpty())
-	{
-		bFoundShort = false;
-		sShortMessage = message;
-	}
-	// Remove newlines and tabs 'cause those are not shown nicely in the list control
-	sShortMessage.Remove('\r');
-	sShortMessage.Replace(_T('\t'), _T(' '));
-
-	// Suppose the first empty line separates 'summary' from the rest of the message.
-	int found = sShortMessage.Find(_T("\n\n"));
-	// To avoid too short 'short' messages
-	// (e.g. if the message looks something like "Bugfix:\n\n*done this\n*done that")
-	// only use the empty newline as a separator if it comes after at least 15 chars.
-	if ((!bFoundShort)&&(found >= 15))
-	{
-		sShortMessage = sShortMessage.Left(found);
-	}
-	sShortMessage.Replace('\n', ' ');
-	return sShortMessage;
-}
-
-BOOL CLogDlg::Log(git_revnum_t /*rev*/, const CString& /*author*/, const CString& /*date*/, const CString& /*message*/, LogChangedPathArray * /*cpaths*/,  int /*filechanges*/, BOOL /*copies*/, DWORD /*actions*/, BOOL /*haschildren*/)
-{
-#if 0
-	if (rev == SVN_INVALID_REVNUM)
-	{
-		m_childCounter--;
-		return TRUE;
-	}
-
-	// this is the callback function which receives the data for every revision we ask the log for
-	// we store this information here one by one.
-	m_logcounter += 1;
-	if (m_startrev == -1)
-		m_startrev = rev;
-	if (m_limit != 0)
-	{
-		m_limitcounter--;
-		m_LogProgress.SetPos(m_limit - m_limitcounter);
-	}
-	else if (m_startrev.IsNumber() && m_startrev.IsNumber())
-		m_LogProgress.SetPos((git_revnum_t)m_startrev-rev+(git_revnum_t)m_endrev);
-	__time64_t ttime = time/1000000L;
-	if (m_tTo < (DWORD)ttime)
-		m_tTo = (DWORD)ttime;
-	if (m_tFrom > (DWORD)ttime)
-		m_tFrom = (DWORD)ttime;
-	if ((m_lowestRev > rev)||(m_lowestRev < 0))
-		m_lowestRev = rev;
-	// Add as many characters from the log message to the list control
-	PLOGENTRYDATA pLogItem = new LOGENTRYDATA;
-	pLogItem->bCopies = !!copies;
-
-	// find out if this item was copied in the revision
-	BOOL copiedself = FALSE;
-	if (copies)
-	{
-		for (INT_PTR cpPathIndex = 0; cpPathIndex < cpaths->GetCount(); ++cpPathIndex)
-		{
-			LogChangedPath * cpath = cpaths->SafeGetAt(cpPathIndex);
-			if (!cpath->sCopyFromPath.IsEmpty() && (cpath->sPath.Compare(m_sSelfRelativeURL) == 0))
-			{
-				// note: this only works if the log is fetched top-to-bottom
-				// but since we do that, it shouldn't be a problem
-				m_sSelfRelativeURL = cpath->sCopyFromPath;
-				copiedself = TRUE;
-				break;
-			}
-		}
-	}
-	pLogItem->bCopiedSelf = copiedself;
-	pLogItem->tmDate = ttime;
-	pLogItem->sAuthor = author;
-	pLogItem->sDate = date;
-	pLogItem->sShortMessage = MakeShortMessage(message);
-	pLogItem->dwFileChanges = filechanges;
-	pLogItem->actions = actions;
-	pLogItem->haschildren = haschildren;
-	pLogItem->childStackDepth = m_childCounter;
-	m_maxChild = max(m_childCounter, m_maxChild);
-	if (haschildren)
-		m_childCounter++;
-	pLogItem->sBugIDs = m_ProjectProperties.FindBugID(message).Trim();
-
-	// split multi line log entries and concatenate them
-	// again but this time with \r\n as line separators
-	// so that the edit control recognizes them
-	try
-	{
-		if (message.GetLength()>0)
-		{
-			m_sMessageBuf = message;
-			m_sMessageBuf.Replace(_T("\n\r"), _T("\n"));
-			m_sMessageBuf.Replace(_T("\r\n"), _T("\n"));
-			if (m_sMessageBuf.Right(1).Compare(_T("\n"))==0)
-				m_sMessageBuf = m_sMessageBuf.Left(m_sMessageBuf.GetLength()-1);
-		}
-		else
-			m_sMessageBuf.Empty();
-		pLogItem->sMessage = m_sMessageBuf;
-		pLogItem->Rev = rev;
-
-		// move-construct path array
-
-		pLogItem->pArChangedPaths = new LogChangedPathArray (*cpaths);
-		cpaths->RemoveAll();
-	}
-	catch (CException * e)
-	{
-		CMessageBox::Show(NULL, IDS_ERR_NOTENOUGHMEMORY, IDS_APPNAME, MB_ICONERROR);
-		e->Delete();
-		m_bCancelled = TRUE;
-	}
-	m_logEntries.push_back(pLogItem);
-	m_arShownList.Add(pLogItem);
-#endif
-	return TRUE;
-}
-
-GitRev g_rev;
-//this is the thread function which calls the subversion function
-
-
-
-
 void CLogDlg::CopyChangedSelectionToClipBoard()
 {
 
@@ -988,41 +830,13 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 
 }
 
-BOOL CLogDlg::IsDiffPossible(LogChangedPath * /*changedpath*/, git_revnum_t rev)
-{
-#if 0
-	CString added, deleted;
-	if (changedpath == NULL)
-		return false;
-
-	if ((rev > 1)&&(changedpath->action != LOGACTIONS_DELETED))
-	{
-		if (changedpath->action == LOGACTIONS_ADDED) // file is added
-		{
-			if (changedpath->lCopyFromRev == 0)
-				return FALSE; // but file was not added with history
-		}
-		return TRUE;
-	}
-#endif
-	return FALSE;
-}
-
 void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	// we have two separate context menus:
 	// one shown on the log message list control,
 	// the other shown in the changed-files list control
 	int selCount = m_LogList.GetSelectedCount();
-	if (pWnd == &m_LogList)
-	{
-		//ShowContextMenuForRevisions(pWnd, point);
-	}
-	else if (pWnd == &m_ChangedFileListCtrl)
-	{
-		//ShowContextMenuForChangedpaths(pWnd, point);
-	}
-	else if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
+	if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
 	{
 		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 		int selIndex = -1;
@@ -1049,13 +863,6 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenu(MF_STRING | MF_ENABLED, EM_SETSEL, sMenuItemText);
 			sMenuItemText.LoadString(IDS_EDIT_NOTES);
 			popup.AppendMenuIcon( CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
-
-			//if (selIndex >= 0)
-			//{
-			//	popup.AppendMenu(MF_SEPARATOR);
-			//	sMenuItemText.LoadString(IDS_LOG_POPUP_EDITLOG);
-			//	popup.AppendMenu(MF_STRING | MF_ENABLED, CGitLogList::ID_EDITAUTHOR, sMenuItemText);
-			//}
 
 			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 			switch (cmd)
@@ -1190,144 +997,9 @@ void CLogDlg::OnOK()
 	}
 	UpdateData();
 	CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowAllEntry"));
-	reg = m_btnShow.GetCurrentEntry();
 	SaveSplitterPos();
 #endif
 }
-
-void CLogDlg::OnNMDblclkChangedFileList(NMHDR * /*pNMHDR*/, LRESULT *pResult)
-{
-	// a double click on an entry in the changed-files list has happened
-	*pResult = 0;
-
-	DiffSelectedFile();
-}
-
-void CLogDlg::DiffSelectedFile()
-{
-#if 0
-	if (m_bThreadRunning)
-		return;
-	UpdateLogInfoLabel();
-	INT_PTR selIndex = m_ChangedFileListCtrl.GetSelectionMark();
-	if (selIndex < 0)
-		return;
-	if (m_ChangedFileListCtrl.GetSelectedCount() == 0)
-		return;
-	// find out if there's an entry selected in the log list
-	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
-	git_revnum_t rev1 = pLogEntry->Rev;
-	git_revnum_t rev2 = rev1;
-	if (pos)
-	{
-		while (pos)
-		{
-			// there's at least a second entry selected in the log list: several revisions selected!
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
-			if (pLogEntry)
-			{
-				rev1 = max(rev1,(long)pLogEntry->Rev);
-				rev2 = min(rev2,(long)pLogEntry->Rev);
-			}
-		}
-		rev2--;
-		// now we have both revisions selected in the log list, so we can do a diff of the selected
-		// entry in the changed files list with these two revisions.
-		DoDiffFromLog(selIndex, rev1, rev2, false, false);
-	}
-	else
-	{
-		rev2 = rev1-1;
-		// nothing or only one revision selected in the log list
-		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
-
-		if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
-		{
-			// some items are hidden! So find out which item the user really clicked on
-			INT_PTR selRealIndex = -1;
-			for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
-			{
-				if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
-					selRealIndex++;
-				if (selRealIndex == selIndex)
-				{
-					selIndex = hiddenindex;
-					changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
-					break;
-				}
-			}
-		}
-
-		if (IsDiffPossible(changedpath, rev1))
-		{
-			// diffs with renamed files are possible
-			if ((changedpath)&&(!changedpath->sCopyFromPath.IsEmpty()))
-				rev2 = changedpath->lCopyFromRev;
-			else
-			{
-				// if the path was modified but the parent path was 'added with history'
-				// then we have to use the copy from revision of the parent path
-				CTGitPath cpath = CTGitPath(changedpath->sPath);
-				for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
-				{
-					CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->SafeGetAt(flist)->sPath);
-					if (p.IsAncestorOf(cpath))
-					{
-						if (!pLogEntry->pArChangedPaths->SafeGetAt(flist)->sCopyFromPath.IsEmpty())
-							rev2 = pLogEntry->pArChangedPaths->SafeGetAt(flist)->lCopyFromRev;
-					}
-				}
-			}
-			DoDiffFromLog(selIndex, rev1, rev2, false, false);
-		}
-		else
-		{
-			CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
-			CTGitPath tempfile2 = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(changedpath->sPath));
-			GitRev r = rev1;
-			// deleted files must be opened from the revision before the deletion
-			if (changedpath->action == LOGACTIONS_DELETED)
-				r = rev1-1;
-			m_bCancelled = false;
-
-			CProgressDlg progDlg;
-			progDlg.SetTitle(IDS_APPNAME);
-			progDlg.SetAnimation(IDR_DOWNLOAD);
-			CString sInfoLine;
-			sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)(m_sRepositoryRoot + changedpath->sPath), (LPCTSTR)r.ToString());
-			progDlg.SetLine(1, sInfoLine, true);
-			SetAndClearProgressInfo(&progDlg);
-			progDlg.ShowModeless(m_hWnd);
-
-			if (!Cat(CTGitPath(m_sRepositoryRoot + changedpath->sPath), r, r, tempfile))
-			{
-				m_bCancelled = false;
-				if (!Cat(CTGitPath(m_sRepositoryRoot + changedpath->sPath), GitRev::REV_HEAD, r, tempfile))
-				{
-					progDlg.Stop();
-					SetAndClearProgressInfo((HWND)NULL);
-					CMessageBox::Show(m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					return;
-				}
-			}
-			progDlg.Stop();
-			SetAndClearProgressInfo((HWND)NULL);
-
-			CString sName1, sName2;
-			sName1.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (git_revnum_t)rev1);
-			sName2.Format(_T("%s - Revision %ld"), (LPCTSTR)CPathUtils::GetFileNameFromPath(changedpath->sPath), (git_revnum_t)rev1-1);
-			CAppUtils::DiffFlags flags;
-			flags.AlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-			if (changedpath->action == LOGACTIONS_DELETED)
-				CAppUtils::StartExtDiff(tempfile, tempfile2, sName2, sName1, flags);
-			else
-				CAppUtils::StartExtDiff(tempfile2, tempfile, sName2, sName1, flags);
-		}
-	}
-#endif
-}
-
 
 void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /*blame*/, bool /*unified*/)
 {
@@ -1361,309 +1033,8 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 	CAppUtils::DiffFlags flags;
 	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),flags);
 
-#if 0
-	//get the filename
-	CString filepath;
-	if (Git::PathIsURL(m_path))
-	{
-		filepath = m_path.GetGitPathString();
-	}
-	else
-	{
-		filepath = GetURLFromPath(m_path);
-		if (filepath.IsEmpty())
-		{
-			theApp.DoWaitCursor(-1);
-			CString temp;
-			temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-			TRACE(_T("could not retrieve the URL of the file!\n"));
-			EnableOKButton();
-			theApp.DoWaitCursor(-11);
-			return;		//exit
-		}
-	}
-	m_bCancelled = FALSE;
-	filepath = GetRepositoryRoot(CTGitPath(filepath));
-
-	CString firstfile, secondfile;
-	if (m_LogList.GetSelectedCount()==1)
-	{
-		int s = m_LogList.GetSelectionMark();
-		PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(s));
-		LogChangedPath * changedpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
-		firstfile = changedpath->sPath;
-		secondfile = firstfile;
-		if ((rev2 == rev1-1)&&(changedpath->lCopyFromRev > 0)) // is it an added file with history?
-		{
-			secondfile = changedpath->sCopyFromPath;
-			rev2 = changedpath->lCopyFromRev;
-		}
-	}
-	else
-	{
-		firstfile = m_currentChangedPathList[selIndex].GetGitPathString();
-		secondfile = firstfile;
-	}
-
-	firstfile = filepath + firstfile.Trim();
-	secondfile = filepath + secondfile.Trim();
-
-	GitDiff diff(this, this->m_hWnd, true);
-	diff.SetAlternativeTool(!!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-	diff.SetHEADPeg(m_LogRevision);
-	if (unified)
-	{
-		if (PromptShown())
-			diff.ShowUnifiedDiff(CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1);
-		else
-			CAppUtils::StartShowUnifiedDiff(m_hWnd, CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1, GitRev(), m_LogRevision);
-	}
-	else
-	{
-		if (diff.ShowCompare(CTGitPath(secondfile), rev2, CTGitPath(firstfile), rev1, GitRev(), false, blame))
-		{
-			if (firstfile.Compare(secondfile)==0)
-			{
-				git_revnum_t baseRev = 0;
-				diff.DiffProps(CTGitPath(firstfile), rev2, rev1, baseRev);
-			}
-		}
-	}
-
-#endif
-
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();
-}
-
-BOOL CLogDlg::Open(bool /*bOpenWith*/,CString changedpath, git_revnum_t rev)
-{
-#if 0
-	DialogEnableWindow(IDOK, FALSE);
-	SetPromptApp(&theApp);
-	theApp.DoWaitCursor(1);
-	CString filepath;
-	if (Git::PathIsURL(m_path))
-	{
-		filepath = m_path.GetGitPathString();
-	}
-	else
-	{
-		filepath = GetURLFromPath(m_path);
-		if (filepath.IsEmpty())
-		{
-			theApp.DoWaitCursor(-1);
-			CString temp;
-			temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-			CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-			TRACE(_T("could not retrieve the URL of the file!\n"));
-			EnableOKButton();
-			return FALSE;
-		}
-	}
-	m_bCancelled = false;
-	filepath = GetRepositoryRoot(CTGitPath(filepath));
-	filepath += changedpath;
-
-	CProgressDlg progDlg;
-	progDlg.SetTitle(IDS_APPNAME);
-	progDlg.SetAnimation(IDR_DOWNLOAD);
-	CString sInfoLine;
-	sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)filepath, (LPCTSTR)GitRev(rev).ToString());
-	progDlg.SetLine(1, sInfoLine, true);
-	SetAndClearProgressInfo(&progDlg);
-	progDlg.ShowModeless(m_hWnd);
-
-	CTGitPath tempfile = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(filepath), rev);
-	m_bCancelled = false;
-	if (!Cat(CTGitPath(filepath), GitRev(rev), rev, tempfile))
-	{
-		progDlg.Stop();
-		SetAndClearProgressInfo((HWND)NULL);
-		CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-		EnableOKButton();
-		theApp.DoWaitCursor(-1);
-		return FALSE;
-	}
-	progDlg.Stop();
-	SetAndClearProgressInfo((HWND)NULL);
-	SetFileAttributes(tempfile.GetWinPath(), FILE_ATTRIBUTE_READONLY);
-	if (!bOpenWith)
-	{
-		int ret = (int)ShellExecute(this->m_hWnd, NULL, tempfile.GetWinPath(), NULL, NULL, SW_SHOWNORMAL);
-		if (ret <= HINSTANCE_ERROR)
-			bOpenWith = true;
-	}
-	if (bOpenWith)
-	{
-		CString cmd = _T("RUNDLL32 Shell32,OpenAs_RunDLL ");
-		cmd += tempfile.GetWinPathString() + _T(" ");
-		CAppUtils::LaunchApplication(cmd, NULL, false);
-	}
-	EnableOKButton();
-	theApp.DoWaitCursor(-1);
-#endif
-	return TRUE;
-}
-
-void CLogDlg::EditAuthor(const CLogDataVector& /*logs*/)
-{
-#if 0
-	CString url;
-	CString name;
-	if (logs.size() == 0)
-		return;
-	DialogEnableWindow(IDOK, FALSE);
-	SetPromptApp(&theApp);
-	theApp.DoWaitCursor(1);
-	if (Git::PathIsURL(m_path))
-		url = m_path.GetGitPathString();
-	else
-	{
-		url = GetURLFromPath(m_path);
-	}
-	name = Git_PROP_REVISION_AUTHOR;
-
-	CString value = RevPropertyGet(name, CTGitPath(url), logs[0]->Rev);
-	CString sOldValue = value;
-	value.Replace(_T("\n"), _T("\r\n"));
-	CInputDlg dlg(this);
-	dlg.m_sHintText.LoadString(IDS_LOG_AUTHOR);
-	dlg.m_sInputText = value;
-	dlg.m_sTitle.LoadString(IDS_LOG_AUTHOREDITTITLE);
-	dlg.m_pProjectProperties = &m_ProjectProperties;
-	dlg.m_bUseLogWidth = false;
-	if (dlg.DoModal() == IDOK)
-	{
-		dlg.m_sInputText.Remove('\r');
-
-		LogCache::CCachedLogInfo* toUpdate = GetLogCache (CTGitPath (m_sRepositoryRoot));
-
-		CProgressDlg progDlg;
-		progDlg.SetTitle(IDS_APPNAME);
-		progDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-		progDlg.SetTime(true);
-		progDlg.SetShowProgressBar(true);
-		progDlg.ShowModeless(m_hWnd);
-		for (DWORD i=0; i<logs.size(); ++i)
-		{
-			if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTGitPath(url), logs[i]->Rev))
-			{
-				progDlg.Stop();
-				CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-				break;
-			}
-			else
-			{
-
-				logs[i]->sAuthor = dlg.m_sInputText;
-				m_LogList.Invalidate();
-
-				// update the log cache
-
-				if (toUpdate != NULL)
-				{
-					// log caching is active
-
-					LogCache::CCachedLogInfo newInfo;
-					newInfo.Insert ( logs[i]->Rev
-						, (const char*) CUnicodeUtils::GetUTF8 (logs[i]->sAuthor)
-						, ""
-						, 0
-						, LogCache::CRevisionInfoContainer::HAS_AUTHOR);
-
-					toUpdate->Update (newInfo);
-				}
-			}
-			progDlg.SetProgress64(i, logs.size());
-		}
-		progDlg.Stop();
-	}
-	theApp.DoWaitCursor(-1);
-	EnableOKButton();
-#endif
-}
-
-void CLogDlg::EditLogMessage(int /*index*/)
-{
-
-#if 0
-	CString url;
-	CString name;
-	DialogEnableWindow(IDOK, FALSE);
-	SetPromptApp(&theApp);
-	theApp.DoWaitCursor(1);
-	if (Git::PathIsURL(m_path))
-		url = m_path.GetGitPathString();
-	else
-	{
-		url = GetURLFromPath(m_path);
-	}
-	name = Git_PROP_REVISION_LOG;
-
-	PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(index));
-	m_bCancelled = FALSE;
-	CString value = RevPropertyGet(name, CTGitPath(url), pLogEntry->Rev);
-	CString sOldValue = value;
-	value.Replace(_T("\n"), _T("\r\n"));
-	CInputDlg dlg(this);
-	dlg.m_sHintText.LoadString(IDS_LOG_MESSAGE);
-	dlg.m_sInputText = value;
-	dlg.m_sTitle.LoadString(IDS_LOG_MESSAGEEDITTITLE);
-	dlg.m_pProjectProperties = &m_ProjectProperties;
-	dlg.m_bUseLogWidth = true;
-	if (dlg.DoModal() == IDOK)
-	{
-		dlg.m_sInputText.Remove('\r');
-		if (!RevPropertySet(name, dlg.m_sInputText, sOldValue, CTGitPath(url), pLogEntry->Rev))
-		{
-			CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-		}
-		else
-		{
-			pLogEntry->sShortMessage = MakeShortMessage(dlg.m_sInputText);
-			// split multi line log entries and concatenate them
-			// again but this time with \r\n as line separators
-			// so that the edit control recognizes them
-			if (dlg.m_sInputText.GetLength()>0)
-			{
-				m_sMessageBuf = dlg.m_sInputText;
-				dlg.m_sInputText.Replace(_T("\n\r"), _T("\n"));
-				dlg.m_sInputText.Replace(_T("\r\n"), _T("\n"));
-				if (dlg.m_sInputText.Right(1).Compare(_T("\n"))==0)
-					dlg.m_sInputText = dlg.m_sInputText.Left(dlg.m_sInputText.GetLength()-1);
-			}
-			else
-				dlg.m_sInputText.Empty();
-			pLogEntry->sMessage = dlg.m_sInputText;
-			pLogEntry->sBugIDs = m_ProjectProperties.FindBugID(dlg.m_sInputText);
-			CWnd * pMsgView = GetDlgItem(IDC_MSGVIEW);
-			pMsgView->SetWindowText(_T(" "));
-			pMsgView->SetWindowText(dlg.m_sInputText);
-			m_ProjectProperties.FindBugID(dlg.m_sInputText, pMsgView);
-			m_LogList.Invalidate();
-
-			// update the log cache
-			LogCache::CCachedLogInfo* toUpdate = GetLogCache(CTGitPath (m_sRepositoryRoot));
-			if (toUpdate != NULL)
-			{
-				// log caching is active
-
-				LogCache::CCachedLogInfo newInfo;
-				newInfo.Insert( pLogEntry->Rev
-								, ""
-								, (const char*) CUnicodeUtils::GetUTF8 (pLogEntry->sMessage)
-								, 0
-								, LogCache::CRevisionInfoContainer::HAS_COMMENT);
-
-				toUpdate->Update(newInfo);
-			}
-		}
-	}
-	theApp.DoWaitCursor(-1);
-	EnableOKButton();
-#endif
 }
 
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
@@ -1903,8 +1274,6 @@ public:
 	}
 
 };
-
-
 
 void CLogDlg::OnBnClickedStatbutton()
 {
@@ -2475,89 +1844,15 @@ void CLogDlg::SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 		pHeader->SetItem(nColumn, &HeaderItem);
 	}
 }
-void CLogDlg::OnLvnColumnclickChangedFileList(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
-{
-#if 0
-	if (this->IsThreadRunning())
-		return;		//no sorting while the arrays are filled
-	if (m_currentChangedArray == NULL)
-		return;
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	const int nColumn = pNMLV->iSubItem;
-	m_bAscendingPathList = nColumn == m_nSortColumnPathList ? !m_bAscendingPathList : TRUE;
-	m_nSortColumnPathList = nColumn;
-//	qsort(m_currentChangedArray->GetData(), m_currentChangedArray->GetSize(), sizeof(LogChangedPath*), (GENERICCOMPAREFN)SortCompare);
-
-	SetSortArrow(&m_ChangedFileListCtrl, m_nSortColumnPathList, m_bAscendingPathList);
-	m_ChangedFileListCtrl.Invalidate();
-	*pResult = 0;
-#endif
-}
 
 int CLogDlg::m_nSortColumnPathList = 0;
 bool CLogDlg::m_bAscendingPathList = false;
-
-int CLogDlg::SortCompare(const void * /*pElem1*/, const void * /*pElem2*/)
-{
-#if 0
-	LogChangedPath * cpath1 = *((LogChangedPath**)pElem1);
-	LogChangedPath * cpath2 = *((LogChangedPath**)pElem2);
-
-	if (m_bAscendingPathList)
-		std::swap (cpath1, cpath2);
-
-	int cmp = 0;
-	switch (m_nSortColumnPathList)
-	{
-	case 0:	// action
-			cmp = cpath2->GetAction().Compare(cpath1->GetAction());
-			if (cmp)
-				return cmp;
-			// fall through
-	case 1:	// path
-			cmp = cpath2->sPath.CompareNoCase(cpath1->sPath);
-			if (cmp)
-				return cmp;
-			// fall through
-	case 2:	// copy from path
-			cmp = cpath2->sCopyFromPath.Compare(cpath1->sCopyFromPath);
-			if (cmp)
-				return cmp;
-			// fall through
-	case 3:	// copy from revision
-			return cpath2->lCopyFromRev > cpath1->lCopyFromRev;
-	}
-#endif
-	return 0;
-}
 
 void CLogDlg::OnBnClickedHidepaths()
 {
 	FillLogMessageCtrl();
 	m_ChangedFileListCtrl.Invalidate();
 }
-
-
-
-void CLogDlg::OnBnClickedCheckStoponcopy()
-{
-#if 0
-	if (!GetDlgItem(IDC_GETALL)->IsWindowEnabled())
-		return;
-
-	// ignore old fetch limits when switching
-	// between copy-following and stop-on-copy
-	// (otherwise stop-on-copy will limit what
-	// we see immediately after switching to
-	// copy-following)
-
-	m_endrev = 0;
-
-	// now, restart the query
-#endif
-	Refresh();
-}
-
 
 void CLogDlg::UpdateLogInfoLabel()
 {
@@ -2593,544 +1888,6 @@ void CLogDlg::UpdateLogInfoLabel()
 	UpdateData(FALSE);
 }
 
-#if 0
-void CLogDlg::ShowContextMenuForChangedpaths(CWnd* /*pWnd*/, CPoint point)
-{
-
-	int selIndex = m_ChangedFileListCtrl.GetSelectionMark();
-	if ((point.x == -1) && (point.y == -1))
-	{
-		CRect rect;
-		m_ChangedFileListCtrl.GetItemRect(selIndex, &rect, LVIR_LABEL);
-		m_ChangedFileListCtrl.ClientToScreen(&rect);
-		point = rect.CenterPoint();
-	}
-	if (selIndex < 0)
-		return;
-	int s = m_LogList.GetSelectionMark();
-	if (s < 0)
-		return;
-	std::vector<CString> changedpaths;
-	std::vector<LogChangedPath*> changedlogpaths;
-	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
-	if (pos == NULL)
-		return;	// nothing is selected, get out of here
-
-	bool bOneRev = true;
-	int sel=m_LogList.GetNextSelectedItem(pos);
-	GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(sel));
-	GitRev * rev1 = pLogEntry;
-	GitRev * rev2 = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(sel+1));
-#if 0
-	bool bOneRev = true;
-	if (pos)
-	{
-		while (pos)
-		{
-			pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetNextSelectedItem(pos)));
-			if (pLogEntry)
-			{
-				rev1 = max(rev1,(git_revnum_t)pLogEntry->Rev);
-				rev2 = min(rev2,(git_revnum_t)pLogEntry->Rev);
-				bOneRev = false;
-			}
-		}
-		if (!bOneRev)
-			rev2--;
-		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
-		while (pos)
-		{
-			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			changedpaths.push_back(m_currentChangedPathList[nItem].GetGitPathString());
-		}
-	}
-	else
-	{
-		// only one revision is selected in the log dialog top pane
-		// but multiple items could be selected  in the changed items list
-		rev2 = rev1-1;
-
-		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
-		while (pos)
-		{
-			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
-			LogChangedPath * changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(nItem);
-
-			if (m_ChangedFileListCtrl.GetSelectedCount() == 1)
-			{
-				if ((changedlogpath)&&(!changedlogpath->sCopyFromPath.IsEmpty()))
-					rev2 = changedlogpath->lCopyFromRev;
-				else
-				{
-					// if the path was modified but the parent path was 'added with history'
-					// then we have to use the copy from revision of the parent path
-					CTGitPath cpath = CTGitPath(changedlogpath->sPath);
-					for (int flist = 0; flist < pLogEntry->pArChangedPaths->GetCount(); ++flist)
-					{
-						CTGitPath p = CTGitPath(pLogEntry->pArChangedPaths->SafeGetAt(flist)->sPath);
-						if (p.IsAncestorOf(cpath))
-						{
-							if (!pLogEntry->pArChangedPaths->SafeGetAt(flist)->sCopyFromPath.IsEmpty())
-								rev2 = pLogEntry->pArChangedPaths->SafeGetAt(flist)->lCopyFromRev;
-						}
-					}
-				}
-			}
-			if ((m_cHidePaths.GetState() & 0x0003)==BST_CHECKED)
-			{
-				// some items are hidden! So find out which item the user really clicked on
-				INT_PTR selRealIndex = -1;
-				for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
-				{
-					if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
-						selRealIndex++;
-					if (selRealIndex == nItem)
-					{
-						selIndex = hiddenindex;
-						changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(selIndex);
-						break;
-					}
-				}
-			}
-			if (changedlogpath)
-			{
-				changedpaths.push_back(changedlogpath->sPath);
-				changedlogpaths.push_back(changedlogpath);
-			}
-		}
-	}
-#endif
-	//entry is selected, now show the popup menu
-	CIconMenu popup;
-	if (popup.CreatePopupMenu())
-	{
-		bool bEntryAdded = false;
-		if (m_ChangedFileListCtrl.GetSelectedCount() == 1)
-		{
-//			if ((!bOneRev)||(IsDiffPossible(changedlogpaths[0], rev1)))
-			{
-				popup.AppendMenuIcon(CGitLogList::ID_DIFF, IDS_LOG_POPUP_DIFF, IDI_DIFF);
-				popup.AppendMenuIcon(CGitLogList::ID_BLAMEDIFF, IDS_LOG_POPUP_BLAMEDIFF, IDI_BLAME);
-				popup.SetDefaultItem(CGitLogList::ID_DIFF, FALSE);
-				popup.AppendMenuIcon(CGitLogList::ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
-				bEntryAdded = true;
-			}
-//			if (rev2 == rev1-1)
-			{
-				if (bEntryAdded)
-					popup.AppendMenu(MF_SEPARATOR, NULL);
-				popup.AppendMenuIcon(CGitLogList::ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
-				popup.AppendMenuIcon(CGitLogList::ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
-				popup.AppendMenuIcon(CGitLogList::ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
-				popup.AppendMenu(MF_SEPARATOR, NULL);
-				if (m_hasWC)
-					popup.AppendMenuIcon(CGitLogList::ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
-				popup.AppendMenuIcon(CGitLogList::ID_POPPROPS, IDS_REPOBROWSE_SHOWPROP, IDI_PROPERTIES);	// "Show Properties"
-				popup.AppendMenuIcon(CGitLogList::ID_LOG, IDS_MENULOG, IDI_LOG);							// "Show Log"
-				popup.AppendMenuIcon(CGitLogList::ID_GETMERGELOGS, IDS_LOG_POPUP_GETMERGELOGS, IDI_LOG);	// "Show merge log"
-				popup.AppendMenuIcon(CGitLogList::ID_SAVEAS, IDS_LOG_POPUP_SAVE, IDI_SAVEAS);
-				bEntryAdded = true;
-				if (!m_ProjectProperties.sWebViewerPathRev.IsEmpty())
-				{
-					popup.AppendMenu(MF_SEPARATOR, NULL);
-					popup.AppendMenuIcon(CGitLogList::ID_VIEWPATHREV, IDS_LOG_POPUP_VIEWPATHREV);
-				}
-				if (popup.GetDefaultItem(0,FALSE)==-1)
-					popup.SetDefaultItem(CGitLogList::ID_OPEN, FALSE);
-			}
-		}
-		else if (changedlogpaths.size())
-		{
-			// more than one entry is selected
-			popup.AppendMenuIcon(CGitLogList::ID_SAVEAS, IDS_LOG_POPUP_SAVE);
-			bEntryAdded = true;
-		}
-
-		if (!bEntryAdded)
-			return;
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
-		bool bOpenWith = false;
-		bool bMergeLog = false;
-		m_bCancelled = false;
-
-		switch (cmd)
-		{
-		case CGitLogList::ID_DIFF:
-			{
-				DoDiffFromLog(selIndex, rev1, rev2, false, false);
-			}
-			break;
-#if 0
-		case ID_BLAMEDIFF:
-			{
-				DoDiffFromLog(selIndex, rev1, rev2, true, false);
-			}
-			break;
-		case ID_GNUDIFF1:
-			{
-				DoDiffFromLog(selIndex, rev1, rev2, false, true);
-			}
-			break;
-		case ID_REVERTREV:
-			{
-				SetPromptApp(&theApp);
-				theApp.DoWaitCursor(1);
-				CString sUrl;
-				if (Git::PathIsURL(m_path))
-				{
-					sUrl = m_path.GetGitPathString();
-				}
-				else
-				{
-					sUrl = GetURLFromPath(m_path);
-					if (sUrl.IsEmpty())
-					{
-						theApp.DoWaitCursor(-1);
-						CString temp;
-						temp.Format(IDS_ERR_NOURLOFFILE, m_path.GetWinPath());
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-						EnableOKButton();
-						theApp.DoWaitCursor(-1);
-						break;		//exit
-					}
-				}
-				// find the working copy path of the selected item from the URL
-				m_bCancelled = false;
-				CString sUrlRoot = GetRepositoryRoot(CTGitPath(sUrl));
-
-				CString fileURL = changedpaths[0];
-				fileURL = sUrlRoot + fileURL.Trim();
-				// firstfile = (e.g.) http://mydomain.com/repos/trunk/folder/file1
-				// sUrl = http://mydomain.com/repos/trunk/folder
-				CString sUnescapedUrl = CPathUtils::PathUnescape(sUrl);
-				// find out until which char the urls are identical
-				int i=0;
-				while ((i<fileURL.GetLength())&&(i<sUnescapedUrl.GetLength())&&(fileURL[i]==sUnescapedUrl[i]))
-					i++;
-				int leftcount = m_path.GetWinPathString().GetLength()-(sUnescapedUrl.GetLength()-i);
-				CString wcPath = m_path.GetWinPathString().Left(leftcount);
-				wcPath += fileURL.Mid(i);
-				wcPath.Replace('/', '\\');
-				CGitProgressDlg dlg;
-				if (changedlogpaths[0]->action == LOGACTIONS_DELETED)
-				{
-					// a deleted path! Since the path isn't there anymore, merge
-					// won't work. So just do a copy url->wc
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Copy);
-					dlg.SetPathList(CTGitPathList(CTGitPath(fileURL)));
-					dlg.SetUrl(wcPath);
-					dlg.SetRevision(rev2);
-				}
-				else
-				{
-					if (!PathFileExists(wcPath))
-					{
-						// seems the path got renamed
-						// tell the user how to work around this.
-						CMessageBox::Show(this->m_hWnd, IDS_LOG_REVERTREV_ERROR, IDS_APPNAME, MB_ICONERROR);
-						EnableOKButton();
-						theApp.DoWaitCursor(-1);
-						break;		//exit
-					}
-					dlg.SetCommand(CGitProgressDlg::GitProgress_Merge);
-					dlg.SetPathList(CTGitPathList(CTGitPath(wcPath)));
-					dlg.SetUrl(fileURL);
-					dlg.SetSecondUrl(fileURL);
-					GitRevRangeArray revarray;
-					revarray.AddRevRange(rev1, rev2);
-					dlg.SetRevisionRanges(revarray);
-				}
-				CString msg;
-				msg.Format(IDS_LOG_REVERT_CONFIRM, (LPCTSTR)wcPath);
-				if (CMessageBox::Show(this->m_hWnd, msg, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					dlg.DoModal();
-				}
-				theApp.DoWaitCursor(-1);
-			}
-			break;
-		case ID_POPPROPS:
-			{
-				DialogEnableWindow(IDOK, FALSE);
-				SetPromptApp(&theApp);
-				theApp.DoWaitCursor(1);
-				CString filepath;
-				if (Git::PathIsURL(m_path))
-				{
-					filepath = m_path.GetGitPathString();
-				}
-				else
-				{
-					filepath = GetURLFromPath(m_path);
-					if (filepath.IsEmpty())
-					{
-						theApp.DoWaitCursor(-1);
-						CString temp;
-						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-						TRACE(_T("could not retrieve the URL of the file!\n"));
-						EnableOKButton();
-						break;
-					}
-				}
-				filepath = GetRepositoryRoot(CTGitPath(filepath));
-				filepath += changedpaths[0];
-				CPropDlg dlg;
-				dlg.m_rev = rev1;
-				dlg.m_Path = CTGitPath(filepath);
-				dlg.DoModal();
-				EnableOKButton();
-				theApp.DoWaitCursor(-1);
-			}
-			break;
-		case ID_SAVEAS:
-			{
-				DialogEnableWindow(IDOK, FALSE);
-				SetPromptApp(&theApp);
-				theApp.DoWaitCursor(1);
-				CString filepath;
-				if (Git::PathIsURL(m_path))
-				{
-					filepath = m_path.GetGitPathString();
-				}
-				else
-				{
-					filepath = GetURLFromPath(m_path);
-					if (filepath.IsEmpty())
-					{
-						theApp.DoWaitCursor(-1);
-						CString temp;
-						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-						TRACE(_T("could not retrieve the URL of the file!\n"));
-						EnableOKButton();
-						break;
-					}
-				}
-				m_bCancelled = false;
-				CString sRoot = GetRepositoryRoot(CTGitPath(filepath));
-				// if more than one entry is selected, we save them
-				// one by one into a folder the user has selected
-				bool bTargetSelected = false;
-				CTGitPath TargetPath;
-				if (m_ChangedFileListCtrl.GetSelectedCount() > 1)
-				{
-					CBrowseFolder browseFolder;
-					browseFolder.SetInfo(CString(MAKEINTRESOURCE(IDS_LOG_SAVEFOLDERTOHINT)));
-					browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-					CString strSaveAsDirectory;
-					if (browseFolder.Show(GetSafeHwnd(), strSaveAsDirectory) == CBrowseFolder::OK)
-					{
-						TargetPath = CTGitPath(strSaveAsDirectory);
-						bTargetSelected = true;
-					}
-				}
-				else
-				{
-					// Display the Open dialog box.
-					CString revFilename;
-					CString temp;
-					temp = CPathUtils::GetFileNameFromPath(changedpaths[0]);
-					int rfind = temp.ReverseFind('.');
-					if (rfind > 0)
-						revFilename.Format(_T("%s-%ld%s"), (LPCTSTR)temp.Left(rfind), rev1, (LPCTSTR)temp.Mid(rfind));
-					else
-						revFilename.Format(_T("%s-%ld"), (LPCTSTR)temp, rev1);
-					bTargetSelected = CAppUtils::FileOpenSave(revFilename, NULL, IDS_LOG_POPUP_SAVE, IDS_COMMONFILEFILTER, false, m_hWnd);
-					TargetPath.SetFromWin(revFilename);
-				}
-				if (bTargetSelected)
-				{
-					CProgressDlg progDlg;
-					progDlg.SetTitle(IDS_APPNAME);
-					progDlg.SetAnimation(IDR_DOWNLOAD);
-					for (std::vector<LogChangedPath*>::iterator it = changedlogpaths.begin(); it!= changedlogpaths.end(); ++it)
-					{
-						GitRev getrev = ((*it)->action == LOGACTIONS_DELETED) ? rev2 : rev1;
-
-						CString sInfoLine;
-						sInfoLine.Format(IDS_PROGRESSGETFILEREVISION, (LPCTSTR)filepath, (LPCTSTR)getrev.ToString());
-						progDlg.SetLine(1, sInfoLine, true);
-						SetAndClearProgressInfo(&progDlg);
-						progDlg.ShowModeless(m_hWnd);
-
-						CTGitPath tempfile = TargetPath;
-						if (changedpaths.size() > 1)
-						{
-							// if multiple items are selected, then the TargetPath
-							// points to a folder and we have to append the filename
-							// to save to to that folder.
-							CString sName = (*it)->sPath;
-							int slashpos = sName.ReverseFind('/');
-							if (slashpos >= 0)
-								sName = sName.Mid(slashpos);
-							tempfile.AppendPathString(sName);
-							// one problem here:
-							// a user could have selected multiple items which
-							// have the same filename but reside in different
-							// directories, e.g.
-							// /folder1/file1
-							// /folder2/file1
-							// in that case, the second 'file1' will overwrite
-							// the already saved 'file1'.
-							//
-							// we could maybe find the common root of all selected
-							// items and then create sub folders to save those files
-							// there.
-							// But I think we should just leave it that way: to check
-							// out multiple items at once, the better way is still to
-							// use the export command from the top pane of the log dialog.
-						}
-						filepath = sRoot + (*it)->sPath;
-						if (!Cat(CTGitPath(filepath), getrev, getrev, tempfile))
-						{
-							progDlg.Stop();
-							SetAndClearProgressInfo((HWND)NULL);
-							CMessageBox::Show(this->m_hWnd, GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-							EnableOKButton();
-							theApp.DoWaitCursor(-1);
-							break;
-						}
-					}
-					progDlg.Stop();
-					SetAndClearProgressInfo((HWND)NULL);
-				}
-				EnableOKButton();
-				theApp.DoWaitCursor(-1);
-			}
-			break;
-		case ID_OPENWITH:
-			bOpenWith = true;
-		case ID_OPEN:
-			{
-				GitRev getrev = pLogEntry->pArChangedPaths->SafeGetAt(selIndex)->action == LOGACTIONS_DELETED ? rev2 : rev1;
-				Open(bOpenWith,changedpaths[0],getrev);
-			}
-			break;
-		case ID_BLAME:
-			{
-				CString filepath;
-				if (Git::PathIsURL(m_path))
-				{
-					filepath = m_path.GetGitPathString();
-				}
-				else
-				{
-					filepath = GetURLFromPath(m_path);
-					if (filepath.IsEmpty())
-					{
-						theApp.DoWaitCursor(-1);
-						CString temp;
-						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-						TRACE(_T("could not retrieve the URL of the file!\n"));
-						EnableOKButton();
-						break;
-					}
-				}
-				filepath = GetRepositoryRoot(CTGitPath(filepath));
-				filepath += changedpaths[0];
-				CBlameDlg dlg;
-				dlg.EndRev = rev1;
-				if (dlg.DoModal() == IDOK)
-				{
-					CBlame blame;
-					CString tempfile;
-					CString logfile;
-					tempfile = blame.BlameToTempFile(CTGitPath(filepath), dlg.StartRev, dlg.EndRev, dlg.EndRev, logfile, _T(""), dlg.m_bIncludeMerge, TRUE, TRUE);
-					if (!tempfile.IsEmpty())
-					{
-						if (dlg.m_bTextView)
-						{
-							//open the default text editor for the result file
-							CAppUtils::StartTextViewer(tempfile);
-						}
-						else
-						{
-							CString sParams = _T("/path:\"") + filepath + _T("\" ");
-							if(!CAppUtils::LaunchTortoiseBlame(tempfile, logfile, CPathUtils::GetFileNameFromPath(filepath),sParams))
-							{
-								break;
-							}
-						}
-					}
-					else
-					{
-						CMessageBox::Show(this->m_hWnd, blame.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-					}
-				}
-			}
-			break;
-		case ID_GETMERGELOGS:
-			bMergeLog = true;
-			// fall through
-		case ID_LOG:
-			{
-				DialogEnableWindow(IDOK, FALSE);
-				SetPromptApp(&theApp);
-				theApp.DoWaitCursor(1);
-				CString filepath;
-				if (Git::PathIsURL(m_path))
-				{
-					filepath = m_path.GetGitPathString();
-				}
-				else
-				{
-					filepath = GetURLFromPath(m_path);
-					if (filepath.IsEmpty())
-					{
-						theApp.DoWaitCursor(-1);
-						CString temp;
-						temp.Format(IDS_ERR_NOURLOFFILE, (LPCTSTR)filepath);
-						CMessageBox::Show(this->m_hWnd, temp, _T("TortoiseGit"), MB_ICONERROR);
-						TRACE(_T("could not retrieve the URL of the file!\n"));
-						EnableOKButton();
-						break;
-					}
-				}
-				m_bCancelled = false;
-				filepath = GetRepositoryRoot(CTGitPath(filepath));
-				filepath += changedpaths[0];
-				git_revnum_t logrev = rev1;
-				if (changedlogpaths[0]->action == LOGACTIONS_DELETED)
-				{
-					// if the item got deleted in this revision,
-					// fetch the log from the previous revision where it
-					// still existed.
-					logrev--;
-				}
-				CString sCmd;
-				sCmd.Format(_T("\"%s\" /command:log /path:\"%s\" /startrev:%ld"), (LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")), (LPCTSTR)filepath, logrev);
-				if (bMergeLog)
-					sCmd += _T(" /merge");
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-				EnableOKButton();
-				theApp.DoWaitCursor(-1);
-			}
-			break;
-		case ID_VIEWPATHREV:
-			{
-				PLOGENTRYDATA pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_LogList.GetSelectionMark()));
-				GitRev rev = pLogEntry->Rev;
-				CString relurl = changedpaths[0];
-				CString url = m_ProjectProperties.sWebViewerPathRev;
-				url.Replace(_T("%REVISION%"), rev.ToString());
-				url.Replace(_T("%PATH%"), relurl);
-				relurl = relurl.Mid(relurl.Find('/'));
-				url.Replace(_T("%PATH1%"), relurl);
-				if (!url.IsEmpty())
-					ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
-			}
-			break;
-#endif
-		default:
-			break;
-		} // switch (cmd)
-
-	} // if (popup.CreatePopupMenu())
-}
-#endif
-
 void CLogDlg::OnDtnDropdownDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	// the date control should not show the "today" button
@@ -3158,7 +1915,6 @@ void CLogDlg::OnSize(UINT nType, int cx, int cy)
 
 void CLogDlg::OnRefresh()
 {
-	//if (GetDlgItem(IDC_GETALL)->IsWindowEnabled())
 	{
 		m_limit = 0;
 		this->m_LogProgress.SetPos(0);
@@ -3166,8 +1922,6 @@ void CLogDlg::OnRefresh()
 		Refresh (false);
 	}
 }
-
-
 
 void CLogDlg::OnFocusFilter()
 {

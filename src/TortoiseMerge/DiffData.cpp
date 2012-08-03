@@ -42,7 +42,6 @@ CDiffData::CDiffData(void)
 {
 	apr_initialize();
 	svn_dso_initialize2();
-	g_GitAdminDir.Init();
 
 	m_sPatchOriginal = _T(": original");
 	m_sPatchPatched = _T(": patched");
@@ -50,7 +49,6 @@ CDiffData::CDiffData(void)
 
 CDiffData::~CDiffData(void)
 {
-	g_GitAdminDir.Close();
 	apr_terminate();
 }
 

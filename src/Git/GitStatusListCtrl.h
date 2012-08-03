@@ -33,8 +33,6 @@
 #define GITSLC_COLFILENAME			0x000000002
 #define GITSLC_COLEXT				0x000000004
 #define GITSLC_COLSTATUS			0x000000008
-//#define SVNSLC_COLTEXTSTATUS		0x000000010
-//#define SVNSLC_COLPROPSTATUS		0x000000020
 //#define SVNSLC_COLAUTHOR			0x000000040
 //#define	SVNSLC_COLREVISION			0x000000080
 //#define	SVNSLC_COLDATE				0x000000100
@@ -44,16 +42,7 @@
 #define	GITSLC_COLSIZE				0x000000080
 #define GITSLC_NUMCOLUMNS			8
 
-//#define SVNSLC_COLREMOTESTATUS		0x000000010
-//#define SVNSLC_COLREMOTETEXT		0x000000080
-//#define SVNSLC_COLREMOTEPROP		0x000000100
 //#define SVNSLC_COLURL				0x000000200
-//#define SVNSLC_COLLOCK				0x000000400
-//#define SVNSLC_COLLOCKCOMMENT		0x000000800
-
-//#define	SVNSLC_COLREMOTEREVISION	0x000004000
-
-//#define SVNSLC_COLSVNNEEDSLOCK		0x000010000
 //#define SVNSLC_COLCOPYFROM			0x000020000
 
 #define GITSLC_SHOWUNVERSIONED	CTGitPath::LOGACTIONS_UNVER
@@ -139,21 +128,9 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 #define GITSLC_IGNORECHANGELIST			_T("ignore-on-commit")
 
 // This gives up to 64 standard properties and menu entries
-// plus 192 user-defined properties (should be plenty).
-// User-defined properties will start at column SVNSLC_NUMCOLUMNS+1
-// but in the registry, we will record them starting at SVNSLC_USERPROPCOLOFFSET.
-
-#define GITSLC_USERPROPCOLOFFSET        0x40
-#define GITSLC_USERPROPCOLLIMIT         0xff
 #define GITSLC_MAXCOLUMNCOUNT           0xff
 
 #define OVL_RESTORE			1
-
-// Supporting extreamly long user props makes no sense here --
-// especially for binary properties. CString uses a pool allocator
-// that works for up to 256 chars. Make sure we are well below that.
-
-#define GITSLC_MAXUSERPROPLENGTH        0x70
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 typedef CComCritSecLock<CComCriticalSection> Locker;
@@ -168,17 +145,10 @@ class CGitStatusListCtrlDropTarget;
 *
 * It assigns logical index values to the (potential) columns:
 * 0 .. GitSLC_NUMCOLUMNS-1 contain the standard attributes
-* GitSLC_USERPROPCOLOFFSET .. GitSLC_MAXCOLUMNCOUNT are user props.
 *
 * The column vector contains the columns that are actually
 * available in the control.
 *
-* Since the set of userprops may change from one WC to another,
-* we also store the settings (width and order) for those
-* userprops that are not used in this WC.
-*
-* A userprop is considered "in use", if the respective column
-* is not hidden or if at least one item has this property set.
 */
 class ColumnManager
 {
@@ -201,7 +171,6 @@ public:
 	bool IsVisible (int column) const;
 	int GetInvisibleCount() const;
 	bool IsRelevant (int column) const;
-	bool IsUserProp (int column) const;
 	CString GetName (int column) const;
 	int SetNames(UINT * buff, int size);
 	int GetWidth (int column, bool useDefaults = false) const;
@@ -219,13 +188,8 @@ public:
 	/// call these to update the user-prop list
 	/// (will also auto-insert /-remove new list columns)
 
-	//void UpdateUserPropList (const std::vector<FileEntry*>& files);
-	//void UpdateRelevance ( const std::vector<FileEntry*>& files
-	//                    , const std::vector<size_t>& visibleFiles);
-
 	/// don't clutter the context menu with irrelevant prop info
 
-	bool AnyUnusedProperties() const;
 	void RemoveUnusedProps();
 
 	/// bring everything back to its "natural" order
@@ -335,12 +299,6 @@ public:
 			//temp.LoadString(IDS_STATUSLIST_SHOWGROUPS);
 			//popup.AppendMenu(isGroundEnable? uCheckedFlags : uUnCheckedFlags, columnCount, temp);
 
-			if (AnyUnusedProperties())
-			{
-				temp.LoadString(IDS_STATUSLIST_REMOVEUNUSEDPROPS);
-				popup.AppendMenu(uUnCheckedFlags, columnCount+1, temp);
-			}
-
 			temp.LoadString(IDS_STATUSLIST_RESETCOLUMNORDER);
 			popup.AppendMenu(uUnCheckedFlags, columnCount+2, temp);
 			popup.AppendMenu(MF_SEPARATOR);
@@ -417,8 +375,6 @@ private:
 
 	/// initialization utilities
 
-	void ParseUserPropSettings ( const CString& userPropList
-		, const CString& shownUserProps);
 	void ParseWidths (const CString& widths);
 	void SetStandardColumnVisibility (DWORD visibility);
 	void ParseColumnOrder (const CString& widths);
@@ -432,8 +388,6 @@ private:
 	/// utilities used when writing data to the registry
 
 	DWORD GetSelectedStandardColumns() const;
-	CString GetUserPropList() const;
-	CString GetShownUserProps() const;
 	CString GetWidthString() const;
 	CString GetColumnOrderString() const;
 
@@ -458,16 +412,6 @@ private:
 	std::vector<ColumnInfo> columns;
 
 	/// user-defined properties
-
-	struct UserProp
-	{
-		CString name;       ///< is a user prop when < GitSLC_USERPROPCOLOFFSET
-		int width;
-	};
-
-	std::vector<UserProp> userProps;
-
-	/// stored result from last UpdateUserPropList() call
 
 	std::set<CString> itemProps;
 
@@ -786,8 +730,7 @@ public:
 	BOOL GetStatus ( const CTGitPathList* pathList=NULL
                    , bool bUpdate = false
                    , bool bShowIgnores = false
-				   , bool bShowUnRev=false
-                   , bool bShowUserProps = false);
+				   , bool bShowUnRev=false);
 
 	/**
 	 * Populates the list control with the previously (with GetStatus) gathered status information.
@@ -1026,9 +969,6 @@ private:
 	};
 	void OpenFile(CTGitPath *path,int mode);
 
-    /// fetch all user properties for all items
-    void FetchUserProperties();
-
 	/// Process one line of the command file supplied to GetStatus
 	bool FetchStatusForSingleTarget(GitConfig& config, GitStatus& status, const CTGitPath& target,
 		bool bFetchStatusFromRepository, CStringA& strCurrentRepositoryUUID, CTGitPathList& arExtPaths,
@@ -1051,16 +991,6 @@ private:
 
 	/// Look up the relevant show flags for a particular Git status value
 	DWORD GetShowFlagsFromGitStatus(git_wc_status_kind status);
-
-	/// Build a FileEntry item and add it to the FileEntry array
-	//const FileEntry* AddNewFileEntry(
-	//	const git_wc_status2_t* pGitStatus,  // The return from the Git GetStatus functions
-	//	const CTGitPath& path,				// The path of the item we're adding
-	//	const CTGitPath& basePath,			// The base directory for this status build
-	//	bool bDirectItem,					// Was this item the first found by GetFirstFileStatus or by a subsequent GetNextFileStatus call
-	//	bool bInExternal,					// Are we in an 'external' folder
-	//	bool bEntryfromDifferentRepo		// if the entry is from a different repository
-	//	);
 
 	/// Adjust the checkbox-state on all descendants of a specific item
 	//void SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck);

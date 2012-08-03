@@ -90,7 +90,6 @@ private:
 	bool					m_bCanceled;
 	BOOL					m_bShowIgnored;
 	BOOL					m_bShowExternals;
-	BOOL					m_bShowUserProps;
 	CToolTips				m_tooltips;
 };
 

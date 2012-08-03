@@ -24,47 +24,11 @@
 GitAdminDir g_GitAdminDir;
 
 GitAdminDir::GitAdminDir()
-	: m_nInit(0)
-//	, m_bVSNETHack(false)
-//	, m_pool(NULL)
 {
 }
 
 GitAdminDir::~GitAdminDir()
 {
-//	if (m_nInit)
-//		 (m_pool);
-}
-
-bool GitAdminDir::Init()
-{
-	if (m_nInit==0)
-	{
-#if 0
-		m_bVSNETHack = false;
-		m_pool = svn_pool_create(NULL);
-		size_t ret = 0;
-		getenv_s(&ret, NULL, 0, "GIT_ASP_DOT_NET_HACK");
-		if (ret)
-		{
-			svn_error_clear(svn_wc_set_adm_dir("_git", m_pool));
-			m_bVSNETHack = true;
-		}
-#endif
-	}
-	m_nInit++;
-	return true;
-}
-
-bool GitAdminDir::Close()
-{
-	m_nInit--;
-	if (m_nInit>0)
-		return false;
-#if 0
-	svn_pool_destroy(m_pool);
-#endif
-	return true;
 }
 
 CString GitAdminDir::GetSuperProjectRoot(const CString& path)
@@ -86,14 +50,6 @@ CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 
 }
 
-bool GitAdminDir::IsAdminDirName(const CString& name) const
-{
-#if 0
-	CStringA nameA = CUnicodeUtils::GetUTF8(name).MakeLower();
-	return !!svn_wc_is_adm_dir(nameA, m_pool);
-#endif
-	return name == ".git";
-}
 CString GitAdminDir::GetGitTopDir(const CString& path)
 {
 	CString str;

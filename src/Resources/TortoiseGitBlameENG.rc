@@ -570,13 +570,6 @@ BEGIN
     IDS_PROPERTIES_WND      "Commit Info"
 END
 
-STRINGTABLE 
-BEGIN
-    IDS_BUILD_TAB           "Build"
-    IDS_DEBUG_TAB           "Debug"
-    IDS_FIND_TAB            "Find"
-END
-
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

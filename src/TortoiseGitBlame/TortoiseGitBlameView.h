@@ -182,22 +182,11 @@ public:
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 
-	void GetRange(int start, int end, char *text);
-
-	void SetTitle();
-	BOOL OpenFile(const char *fileName);
-	BOOL OpenLogFile(const char *fileName);
-
-	void Command(int id);
-	void Notify(SCNotification *notification);
-
 	void SetAStyle(int style, COLORREF fore, COLORREF back=::GetSysColor(COLOR_WINDOW), int size=-1, CString *face=0);
 
 	void InitialiseEditor();
-	void InitSize();
 	LONG GetBlameWidth();
 	void DrawBlame(HDC hDC);
-	void DrawHeader(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
 	void StartSearch();
 	void CopySelectedLogToClipboard();
@@ -223,18 +212,14 @@ public:
 	long					m_highestrev;
 	bool					m_colorage;
 
-//	std::vector<bool>		m_Mergelines;
 	std::vector<LONG>		m_ID;
 	std::vector<LONG>		m_LineNum;
-//	std::vector<LONG>		m_Origrevs;
 	std::vector<CString>	m_Dates;
 	std::vector<CString>	m_Authors;
 	std::vector<CGitHash>	m_CommitHash;
 
 	std::map<CString,GitRev> m_NoListCommit;
 
-//	std::vector<CString>	m_Paths;
-//	std::map<LONG, CString>	logmessages;
 	char					m_szTip[MAX_LOG_LENGTH*2+6];
 	wchar_t					m_wszTip[MAX_LOG_LENGTH*2+6];
 	void StringExpand(LPSTR str);
@@ -258,7 +243,6 @@ protected:
 	LONG					m_revwidth;
 	LONG					m_datewidth;
 	LONG					m_authorwidth;
-	LONG					m_pathwidth;
 	LONG					m_linewidth;
 	LONG					m_SelectedLine; ///< zero-based
 
