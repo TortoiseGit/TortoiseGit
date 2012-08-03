@@ -668,7 +668,8 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 
 	TCHAR buf[MAX_PATH];
 
-	::GetTextExtentPoint32(hDC, _T("fffffff"), 7, &width);
+	CString shortHash('f', g_Git.GetShortHASHLength() + 1);
+	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength() + 1, &width);
 	m_revwidth = width.cx + BLAMESPACE;
 	blamewidth += m_revwidth;
 
