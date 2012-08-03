@@ -408,11 +408,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\Registry.cpp"
+				RelativePath="..\Utils\ReaderWriterLock.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Utils\RWSection.cpp"
+				RelativePath="..\Utils\Registry.cpp"
 				>
 			</File>
 			<File
@@ -530,15 +530,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Utils\ReaderWriterLock.h"
+				>
+			</File>
+			<File
 				RelativePath="..\Utils\registry.h"
 				>
 			</File>
 			<File
 				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Utils\RWSection.h"
 				>
 			</File>
 			<File

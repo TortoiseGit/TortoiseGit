@@ -32,6 +32,36 @@
 #include "git2.h"
 #include "SmartHandle.h"
 
+class CAutoReadLock
+{
+	SharedMutex *m_Lock;
+public:
+	CAutoReadLock(SharedMutex * lock)
+	{
+		m_Lock = lock;
+		lock->AcquireShared();
+	}
+	~CAutoReadLock()
+	{
+		m_Lock->ReleaseShared();
+	}
+};
+
+class CAutoWriteLock
+{
+	SharedMutex *m_Lock;
+public:
+	CAutoWriteLock(SharedMutex * lock)
+	{
+		m_Lock = lock;
+		lock->AcquireExclusive();
+	}
+	~CAutoWriteLock()
+	{
+		m_Lock->ReleaseExclusive();
+	}
+};
+
 CGitAdminDirMap g_AdminDirMap;
 
 int CGitIndex::Print()

@@ -322,11 +322,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_QUERYENDSESSION:
 		{
 			ATLTRACE("WM_QUERYENDSESSION\n");
-			if (CGitStatusCache::Instance().WaitToWrite(200))
-			{
-				CGitStatusCache::Instance().Stop();
-				CGitStatusCache::Instance().Done();
-			}
+			CAutoWriteWeakLock writeLock(CGitStatusCache::Instance().GetGuard(), 200);
+			CGitStatusCache::Instance().Stop();
 			return TRUE;
 		}
 		break;
@@ -336,7 +333,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_QUIT:
 		{
 			ATLTRACE("WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
-			CGitStatusCache::Instance().WaitToWrite();
+			CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 			CGitStatusCache::Instance().Stop();
 			CGitStatusCache::Instance().SaveCache();
 			if (message != WM_QUIT)
@@ -359,16 +356,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_DISMOUNT))
 						{
 							ATLTRACE("Device to be dismounted\n");
-							CGitStatusCache::Instance().WaitToWrite();
+							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-							CGitStatusCache::Instance().Done();
 						}
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_LOCK))
 						{
 							ATLTRACE("Device lock event\n");
-							CGitStatusCache::Instance().WaitToWrite();
+							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-							CGitStatusCache::Instance().Done();
 						}
 					}
 				}
@@ -378,15 +373,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CGitStatusCache::Instance().Done();
 				}
 				break;
 			case DBT_DEVICEQUERYREMOVE:
@@ -394,15 +387,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CGitStatusCache::Instance().Done();
 				}
 				break;
 			case DBT_DEVICEREMOVECOMPLETE:
@@ -410,15 +401,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-					CGitStatusCache::Instance().Done();
 				}
 				else
 				{
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-					CGitStatusCache::Instance().Done();
 				}
 				break;
 			}
@@ -445,10 +434,10 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 		path.SetFromWin(pRequest->path);
 	}
 
-	if (CGitStatusCache::Instance().WaitToRead(2000))
+	CAutoReadWeakLock readLock(CGitStatusCache::Instance().GetGuard(), 2000);
+	if (readLock.IsAcquired())
 	{
 		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags, false).BuildCacheResponse(*pReply, *pResponseLength);
-		CGitStatusCache::Instance().Done();
 	}
 	else
 	{
@@ -725,26 +714,27 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path, true);
 					// remove the path from our cache - that will 'invalidate' it.
-					CGitStatusCache::Instance().WaitToWrite();
-					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
-					CGitStatusCache::Instance().Done();
+					{
+						CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+						CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
+					}
 					CGitStatusCache::Instance().AddFolderForCrawling(changedpath.GetDirectory());
 				}
 				break;
 			case TGITCACHECOMMAND_REFRESHALL:
-				CGitStatusCache::Instance().WaitToWrite();
-				CGitStatusCache::Instance().Refresh();
-				CGitStatusCache::Instance().Done();
+				{
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+					CGitStatusCache::Instance().Refresh();
+				}
 				break;
 			case TGITCACHECOMMAND_RELEASE:
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path, true);
 					ATLTRACE(_T("release handle for path %s\n"), changedpath.GetWinPath());
-					CGitStatusCache::Instance().WaitToWrite();
+					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
 					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
-					CGitStatusCache::Instance().Done();
 				}
 				break;
 			case TGITCACHECOMMAND_BLOCK:

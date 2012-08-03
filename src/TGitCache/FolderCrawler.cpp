@@ -179,9 +179,8 @@ void CFolderCrawler::WorkerThread()
 			// Any locks today?
 			if (CGitStatusCache::Instance().m_bClearMemory)
 			{
-				CGitStatusCache::Instance().WaitToWrite();
+				CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 				CGitStatusCache::Instance().ClearCache();
-				CGitStatusCache::Instance().Done();
 				CGitStatusCache::Instance().m_bClearMemory = false;
 			}
 			if(m_lCrawlInhibitSet > 0)
@@ -270,9 +269,8 @@ void CFolderCrawler::WorkerThread()
 					}
 					else if (!workingPath.Exists())
 					{
-						CGitStatusCache::Instance().WaitToWrite();
+						CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
-						CGitStatusCache::Instance().Done();
 						continue;
 					}
 
@@ -298,35 +296,35 @@ void CFolderCrawler::WorkerThread()
 							nCurrentCrawledpathIndex = 0;
 					}
 					InvalidateRect(hWnd, NULL, FALSE);
-					CGitStatusCache::Instance().WaitToRead();
-					// Invalidate the cache of this folder, to make sure its status is fetched again.
-					CCachedDirectory * pCachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath);
-					if (pCachedDir)
 					{
-						git_wc_status_kind status = pCachedDir->GetCurrentFullStatus();
-						pCachedDir->Invalidate();
-						if (workingPath.Exists())
+						CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
+						// Invalidate the cache of this folder, to make sure its status is fetched again.
+						CCachedDirectory * pCachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath);
+						if (pCachedDir)
 						{
-							pCachedDir->RefreshStatus(bRecursive);
-							// if the previous status wasn't normal and now it is, then
-							// send a notification too.
-							// We do this here because GetCurrentFullStatus() doesn't send
-							// notifications for 'normal' status - if it would, we'd get tons
-							// of notifications when crawling a working copy not yet in the cache.
-							if ((status != git_wc_status_normal)&&(pCachedDir->GetCurrentFullStatus() != status))
+							git_wc_status_kind status = pCachedDir->GetCurrentFullStatus();
+							pCachedDir->Invalidate();
+							if (workingPath.Exists())
 							{
-								CGitStatusCache::Instance().UpdateShell(workingPath);
-								ATLTRACE(_T("shell update in crawler for %s\n"), workingPath.GetWinPath());
+								pCachedDir->RefreshStatus(bRecursive);
+								// if the previous status wasn't normal and now it is, then
+								// send a notification too.
+								// We do this here because GetCurrentFullStatus() doesn't send
+								// notifications for 'normal' status - if it would, we'd get tons
+								// of notifications when crawling a working copy not yet in the cache.
+								if ((status != git_wc_status_normal) && (pCachedDir->GetCurrentFullStatus() != status))
+								{
+									CGitStatusCache::Instance().UpdateShell(workingPath);
+									ATLTRACE(_T("shell update in crawler for %s\n"), workingPath.GetWinPath());
+								}
+							}
+							else
+							{
+								CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+								CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
 							}
 						}
-						else
-						{
-							CGitStatusCache::Instance().Done();
-							CGitStatusCache::Instance().WaitToWrite();
-							CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
-						}
 					}
-					CGitStatusCache::Instance().Done();
 					//In case that svn_client_stat() modified a file and we got
 					//a notification about that in the directory watcher,
 					//remove that here again - this is to prevent an endless loop
@@ -337,9 +335,8 @@ void CFolderCrawler::WorkerThread()
 				{
 					if (!workingPath.Exists())
 					{
-						CGitStatusCache::Instance().WaitToWrite();
+						CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
-						CGitStatusCache::Instance().Done();
 						if (!workingPath.GetContainingDirectory().Exists())
 							continue;
 						else
@@ -358,23 +355,24 @@ void CFolderCrawler::WorkerThread()
 					DWORD flags = TGITCACHE_FLAGS_FOLDERISKNOWN;
 					flags |= (workingPath.IsDirectory() ? TGITCACHE_FLAGS_ISFOLDER : 0);
 					flags |= (bRecursive ? TGITCACHE_FLAGS_RECUSIVE_STATUS : 0);
-					CGitStatusCache::Instance().WaitToRead();
-					// Invalidate the cache of folders manually. The cache of files is invalidated
-					// automatically if the status is asked for it and the file times don't match
-					// anymore, so we don't need to manually invalidate those.
-					if (workingPath.IsDirectory())
 					{
-						CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath);
-						if (cachedDir)
-							cachedDir->Invalidate();
+						CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
+						// Invalidate the cache of folders manually. The cache of files is invalidated
+						// automatically if the status is asked for it and the file times don't match
+						// anymore, so we don't need to manually invalidate those.
+						if (workingPath.IsDirectory())
+						{
+							CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath);
+							if (cachedDir)
+								cachedDir->Invalidate();
+						}
+						CStatusCacheEntry ce = CGitStatusCache::Instance().GetStatusForPath(workingPath, flags);
+						if (ce.GetEffectiveStatus() > git_wc_status_unversioned)
+						{
+							CGitStatusCache::Instance().UpdateShell(workingPath);
+							ATLTRACE(_T("shell update in folder crawler for %s\n"), workingPath.GetWinPath());
+						}
 					}
-					CStatusCacheEntry ce = CGitStatusCache::Instance().GetStatusForPath(workingPath, flags);
-					if (ce.GetEffectiveStatus() > git_wc_status_unversioned)
-					{
-						CGitStatusCache::Instance().UpdateShell(workingPath);
-						ATLTRACE(_T("shell update in folder crawler for %s\n"), workingPath.GetWinPath());
-					}
-					CGitStatusCache::Instance().Done();
 					AutoLocker lock(m_critSec);
 					m_pathsToUpdate.erase(workingPath);
 				}
@@ -382,9 +380,8 @@ void CFolderCrawler::WorkerThread()
 				{
 					if (!workingPath.Exists())
 					{
-						CGitStatusCache::Instance().WaitToWrite();
+						CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
-						CGitStatusCache::Instance().Done();
 					}
 				}
 			}
@@ -429,31 +426,32 @@ void CFolderCrawler::WorkerThread()
 						nCurrentCrawledpathIndex = 0;
 				}
 				InvalidateRect(hWnd, NULL, FALSE);
-				CGitStatusCache::Instance().WaitToRead();
-				// Now, we need to visit this folder, to make sure that we know its 'most important' status
-				CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath.GetDirectory());
-				// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache
-				// for that path and add it to the watcher.
-				if (!CGitStatusCache::Instance().IsPathWatched(workingPath))
 				{
-					if (workingPath.HasAdminDir())
+					CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
+					// Now, we need to visit this folder, to make sure that we know its 'most important' status
+					CCachedDirectory * cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath.GetDirectory());
+					// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache
+					// for that path and add it to the watcher.
+					if (!CGitStatusCache::Instance().IsPathWatched(workingPath))
 					{
-						ATLTRACE(_T("Add watch path %s\n"), workingPath.GetWinPath());
-						CGitStatusCache::Instance().AddPathToWatch(workingPath);
+						if (workingPath.HasAdminDir())
+						{
+							ATLTRACE(_T("Add watch path %s\n"), workingPath.GetWinPath());
+							CGitStatusCache::Instance().AddPathToWatch(workingPath);
+						}
+						if (cachedDir)
+							cachedDir->Invalidate();
+						else
+						{
+							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+							CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
+							// now cacheDir is invalid because it got deleted in the RemoveCacheForPath() call above.
+							cachedDir = NULL;
+						}
 					}
 					if (cachedDir)
-						cachedDir->Invalidate();
-					else
-					{
-						CGitStatusCache::Instance().Done();
-						CGitStatusCache::Instance().WaitToWrite();
-						CGitStatusCache::Instance().RemoveCacheForPath(workingPath);
-						// now cacheDir is invalid because it got deleted in the RemoveCacheForPath() call above.
-						cachedDir = NULL;
-					}
+						cachedDir->RefreshStatus(bRecursive);
 				}
-				if (cachedDir)
-					cachedDir->RefreshStatus(bRecursive);
 
 				// While refreshing the status, we could get another crawl request for the same folder.
 				// This can happen if the crawled folder has a lower status than one of the child folders
@@ -463,8 +461,6 @@ void CFolderCrawler::WorkerThread()
 				{
 					m_foldersToUpdate.erase(workingPath);
 				}
-
-				CGitStatusCache::Instance().Done();
 			}
 		}
 	}

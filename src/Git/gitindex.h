@@ -33,36 +33,6 @@ public:
 	int Print();
 };
 
-class CAutoReadLock
-{
-	SharedMutex *m_Lock;
-public:
-	CAutoReadLock(SharedMutex * lock)
-	{
-		m_Lock = lock;
-		lock->AcquireShared();
-	}
-	~CAutoReadLock()
-	{
-		m_Lock->ReleaseShared();
-	}
-};
-
-class CAutoWriteLock
-{
-	SharedMutex *m_Lock;
-public:
-	CAutoWriteLock(SharedMutex * lock)
-	{
-		m_Lock = lock;
-		lock->AcquireExclusive();
-	}
-	~CAutoWriteLock()
-	{
-		m_Lock->ReleaseExclusive();
-	}
-};
-
 class CGitIndexList:public std::vector<CGitIndex>
 {
 protected:
