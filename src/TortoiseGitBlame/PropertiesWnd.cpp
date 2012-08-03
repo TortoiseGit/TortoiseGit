@@ -25,6 +25,8 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "TortoiseGitBlame.h"
+#include "IconMenu.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -52,6 +54,7 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -339,4 +342,27 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 	}
 	this->Invalidate();
 	m_wndPropList.Invalidate();
+}
+
+void CPropertiesWnd::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	CMFCPropertyGridProperty * pProtery = m_wndPropList.GetCurSel();
+
+	CString sMenuItemText;
+	CIconMenu popup;
+	if (pProtery && !pProtery->IsGroup() && popup.CreatePopupMenu())
+	{
+		sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
+		popup.AppendMenu(MF_STRING | MF_ENABLED, WM_COPY, sMenuItemText);
+
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		switch (cmd)
+		{
+		case 0:
+			break;	// no command selected
+		case WM_COPY:
+			CStringUtils::WriteAsciiStringToClipboard(pProtery->GetValue(), GetSafeHwnd());
+			break;
+		}
+	}
 }
