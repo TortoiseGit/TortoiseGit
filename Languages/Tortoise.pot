@@ -2001,10 +2001,6 @@ msgstr ""
 msgid "Bug-IDs"
 msgstr ""
 
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr ""
-
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr ""
@@ -2858,10 +2854,6 @@ msgstr ""
 msgid "Cu&t"
 msgstr ""
 
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Current"
 msgstr ""
@@ -2942,10 +2934,6 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Date Last Commit"
-msgstr ""
-
-#. Resource IDs: (1269)
-msgid "Debug"
 msgstr ""
 
 #. Resource IDs: (1008)
