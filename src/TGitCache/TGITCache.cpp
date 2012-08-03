@@ -103,9 +103,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 		return 0;
 	}
 
-//	apr_initialize();
-//	svn_dso_initialize2();
-	g_GitAdminDir.Init();
 	CGitStatusCache::Create();
 	CGitStatusCache::Instance().Init();
 
@@ -223,8 +220,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 	Shell_NotifyIcon(NIM_DELETE,&niData);
 	CGitStatusCache::Destroy();
-	g_GitAdminDir.Close();
-//	apr_terminate();
 
 	return 0;
 }
