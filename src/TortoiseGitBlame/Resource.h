@@ -22,17 +22,13 @@
 #define IDR_TortoiseGitBlamTYPE         130
 #define ID_VIEW_OUTPUTWND               149
 #define ID_VIEW_PROPERTIESWND           150
-#define ID_SORTPROPERTIES               151
 #define ID_PROPERTIES1                  152
 #define ID_PROPERTIES2                  153
-#define ID_EXPAND_ALL                   154
 #define IDI_OUTPUT_WND                  165
 #define IDI_OUTPUT_WND_HC               166
 #define IDI_PROPERTIES_WND              167
 #define IDI_PROPERTIES_WND_HC           168
 #define IDR_OUTPUT_POPUP                182
-#define IDR_PROPERTIES                  183
-#define IDB_PROPERTIES_HC               184
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        210

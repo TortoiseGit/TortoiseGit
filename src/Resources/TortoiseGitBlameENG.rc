@@ -90,8 +90,6 @@ IDI_PROPERTIES_WND_HC   ICON                    "..\\Resources\\blameres\\proper
 
 IDR_TORTOISE_GIT_BLAME_MAINFRAME BITMAP                  "..\\Resources\\blameres\\Toolbar.bmp"
 IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 BITMAP                  "..\\Resources\\blameres\\Toolbar256.bmp"
-IDR_PROPERTIES          BITMAP                  "..\\Resources\\blameres\\properties.bmp"
-IDB_PROPERTIES_HC       BITMAP                  "..\\Resources\\blameres\\properties_hc.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -132,12 +130,6 @@ BEGIN
     BUTTON      ID_FILE_PRINT
     BUTTON      ID_APP_ABOUT
     BUTTON      ID_CONTEXT_HELP
-END
-
-IDR_PROPERTIES TOOLBAR  16, 16
-BEGIN
-    BUTTON      ID_EXPAND_ALL
-    BUTTON      ID_SORTPROPERTIES
 END
 
 
