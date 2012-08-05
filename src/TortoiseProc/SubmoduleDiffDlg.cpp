@@ -41,6 +41,8 @@ void CSubmoduleDiffDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
+	ON_BN_CLICKED(IDC_LOG, &CSubmoduleDiffDlg::OnBnClickedLog)
+	ON_BN_CLICKED(IDC_LOG2, &CSubmoduleDiffDlg::OnBnClickedLog2)
 END_MESSAGE_MAP()
 
 BOOL CSubmoduleDiffDlg::OnInitDialog()
@@ -53,6 +55,9 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	AddAnchor(IDC_FROMGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TOGROUP, TOP_LEFT, TOP_RIGHT);
+
+	AddAnchor(IDC_LOG, TOP_LEFT);
+	AddAnchor(IDC_LOG2, TOP_LEFT);
 
 	AddAnchor(IDC_FROMHASH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FROMSUBJECT, TOP_LEFT, TOP_RIGHT);
@@ -87,4 +92,21 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 	m_sFromSubject = fromSubject;
 	m_sToHash = toHash;
 	m_sToSubject = toSubject;
+}
+
+void CSubmoduleDiffDlg::ShowLog(CString hash)
+{
+	CString sCmd;
+	sCmd.Format(_T("/command:log /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, hash);
+	CAppUtils::RunTortoiseProc(sCmd);
+}
+
+void CSubmoduleDiffDlg::OnBnClickedLog()
+{
+	ShowLog(m_sFromHash);
+}
+
+void CSubmoduleDiffDlg::OnBnClickedLog2()
+{
+	ShowLog(m_sToHash);
 }

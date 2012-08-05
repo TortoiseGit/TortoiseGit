@@ -1154,6 +1154,7 @@
 #define IDC_GROUP_IGNORE_FILE           1692
 #define IDC_CHECK_SUBMODULE_INIT        1693
 #define IDC_CHECK_SUBMODULE_RECURSIVE   1694
+#define IDC_LOG2                        1695
 #define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
 #define IDC_CHECKALL                    1701
