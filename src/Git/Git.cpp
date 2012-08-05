@@ -132,6 +132,21 @@ static BOOL FindGitPath()
 	return FALSE;
 }
 
+static bool g_bSortLogical;
+
+static void GetSortLogicalEnabled()
+{
+	g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+	if (g_bSortLogical)
+		g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
+}
+
+static int LogicalComparePredicate(CString &left, CString &right)
+{
+	if (g_bSortLogical)
+		return StrCmpLogicalW(left, right) < 0;
+	return StrCmpI(left, right) < 0;
+}
 
 #define MAX_DIRBUFFER 1000
 #define CALL_OUTPUT_READ_CHUNK_SIZE 1024
@@ -149,6 +164,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
+	GetSortLogicalEnabled();
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
@@ -1103,7 +1119,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 
 		git_repository_free(repo);
 
-		std::sort(list.begin(), list.end());
+		std::sort(list.begin(), list.end(), LogicalComparePredicate);
 
 		return 0;
 	}
@@ -1123,6 +1139,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 				one=output.Tokenize(_T("\n"),pos);
 				list.push_back(one);
 			}
+			std::sort(list.begin(), list.end(), LogicalComparePredicate);
 		}
 		return ret;
 	}
@@ -1261,6 +1278,8 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	if(type & BRANCH_FETCH_HEAD && !DerefFetchHead().IsEmpty())
 		list.push_back(L"FETCH_HEAD");
 
+	std::sort(list.begin(), list.end(), LogicalComparePredicate);
+
 	return ret;
 }
 
@@ -1327,8 +1346,8 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	if(this->m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		return git_for_each_ref_in("",addto_list_each_ref_fn, &list);
-
+		ret = git_for_each_ref_in("",addto_list_each_ref_fn, &list);
+		std::sort(list.begin(), list.end(), LogicalComparePredicate);
 	}
 	else
 	{

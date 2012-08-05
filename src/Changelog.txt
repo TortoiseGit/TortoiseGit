@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #277: Add the ability to run the 'assume-unchanged' command
  * Fixed issue #626: add "show log" in Git Sync dialog
  * Fixed issue #884: Blame dialog Commit Info doesn't allow copy-paste
+ * Fixed issue #1165: sort UI items alphabetically
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
