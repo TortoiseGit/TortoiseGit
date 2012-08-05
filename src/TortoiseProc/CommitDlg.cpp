@@ -501,11 +501,6 @@ void CCommitDlg::OnOK()
 	CTGitPathList itemsToAdd;
 	CTGitPathList itemsToRemove;
 	CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
-	//std::set<CString> checkedLists;
-	//std::set<CString> uncheckedLists;
-
-	//CString checkedfiles;
-	//CString uncheckedfiles;
 
 	CString cmd;
 	CString out;
@@ -539,31 +534,8 @@ void CCommitDlg::OnOK()
 				currentTicks = GetTickCount();
 			}
 		}
-		//const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(j);
 		if (entry->m_Checked)
 		{
-#if 0
-			if (entry->status == Git_wc_status_unversioned)
-			{
-				itemsToAdd.AddPath(entry->GetPath());
-			}
-			if (entry->status == Git_wc_status_conflicted)
-			{
-				bHasConflicted = true;
-			}
-			if (entry->status == Git_wc_status_missing)
-			{
-				itemsToRemove.AddPath(entry->GetPath());
-			}
-			if (entry->status == Git_wc_status_deleted)
-			{
-				arDeleted.Add(j);
-			}
-			if (entry->IsInExternal())
-			{
-				bCheckedInExternal = true;
-			}
-#endif
 			if( entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 				cmd.Format(_T("git.exe add -f -- \"%s\""),entry->GetGitPathString());
 			else if ( entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
@@ -584,13 +556,9 @@ void CCommitDlg::OnOK()
 			g_Git.Run(cmd, &out, CP_UTF8);
 
 			nchecked++;
-
-			//checkedLists.insert(entry->GetGitPathString());
-//			checkedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
 		}
 		else
 		{
-			//uncheckedLists.insert(entry->GetGitPathString());
 			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
 				cmd.Format(_T("git.exe rm -f --cache -- \"%s\""),entry->GetGitPathString());
@@ -622,45 +590,10 @@ void CCommitDlg::OnOK()
 				{
 					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
 				}
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					/* when reset a unstage file will report error.
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					bAddSuccess = false ;
-					bCloseCommitDlg=false;
-					break;
-					*/
-				}
-				// && !entry->IsDirectory()
+				g_Git.Run(cmd, &out, CP_UTF8);
 				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
 					continue;
 			}
-
-		//	uncheckedfiles += _T("\"")+entry->GetGitPathString()+_T("\" ");
-#if 0
-			if ((entry->status != Git_wc_status_unversioned)	&&
-				(entry->status != Git_wc_status_ignored))
-			{
-				nUnchecked++;
-				uncheckedLists.insert(entry->GetChangeList());
-				if (m_bRecursive)
-				{
-					// This algorithm is for the sake of simplicity of the complexity O(N?
-					for (int k=0; k<nListItems; k++)
-					{
-						const CGitStatusListCtrl::FileEntry * entryK = m_ListCtrl.GetListEntry(k);
-						if (entryK->IsChecked() && entryK->GetPath().IsAncestorOf(entry->GetPath())  )
-						{
-							// Fall back to a non-recursive commit to prevent items being
-							// committed which aren't checked although its parent is checked
-							// (property change, directory deletion, ... )
-							m_bRecursive = false;
-							break;
-						}
-					}
-				}
-			}
-#endif
 		}
 
 		if (sysProgressDlg.IsValid() && sysProgressDlg.HasUserCancelled())
@@ -691,12 +624,6 @@ void CCommitDlg::OnOK()
 
 	if (bAddSuccess && CheckHeadDetach())
 		bAddSuccess = false;
-
-	//if(uncheckedfiles.GetLength()>0)
-	//{
-	//	cmd.Format(_T("git.exe reset -- %s"),uncheckedfiles);
-	//	g_Git.Run(cmd,&out);
-	//}
 
 	m_sBugID.Trim();
 	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
@@ -751,18 +678,13 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	//if(checkedfiles.GetLength()>0)
 	if (bAddSuccess && (nchecked || m_bCommitAmend ||  CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
 	{
-	//	cmd.Format(_T("git.exe update-index -- %s"),checkedfiles);
-	//	g_Git.Run(cmd,&out);
-
 		bCloseCommitDlg = true;
 
 		CString tempfile=::GetTempFile();
 
 		CAppUtils::SaveCommitUnicodeFile(tempfile,m_sLogMessage);
-		//file.WriteString(m_sLogMessage);
 
 		CTGitPath path=g_Git.m_CurrentDir;
 
@@ -885,119 +807,7 @@ void CCommitDlg::OnOK()
 		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
 		bCloseCommitDlg=false;
 	}
-#if 0
-	if (m_pathwatcher.GetNumberOfChangedPaths() && m_bRecursive)
-	{
-		// There are paths which got changed (touched at least).
-		// We have to find out if this affects the selection in the commit dialog
-		// If it could affect the selection, revert back to a non-recursive commit
-		CTGitPathList changedList = m_pathwatcher.GetChangedPaths();
-		changedList.RemoveDuplicates();
-		for (int i=0; i<changedList.GetCount(); ++i)
-		{
-			if (changedList[i].IsAdminDir())
-			{
-				// something inside an admin dir was changed.
-				// if it's the entries file, then we have to fully refresh because
-				// files may have been added/removed from version control
-				if ((changedList[i].GetWinPathString().Right(7).CompareNoCase(_T("entries")) == 0) &&
-					(changedList[i].GetWinPathString().Find(_T("\\tmp\\"))<0))
-				{
-					m_bRecursive = false;
-					break;
-				}
-			}
-			else if (!m_ListCtrl.IsPathShown(changedList[i]))
-			{
-				// a path which is not shown in the list has changed
-				CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(changedList[i]);
-				if (entry)
-				{
-					// check if the changed path would get committed by a recursive commit
-					if ((!entry->IsFromDifferentRepository()) &&
-						(!entry->IsInExternal()) &&
-						(!entry->IsNested()) &&
-						(!entry->IsChecked()))
-					{
-						m_bRecursive = false;
-						break;
-					}
-				}
-			}
-		}
-	}
 
-
-	// Now, do all the adds - make sure that the list is sorted so that parents
-	// are added before their children
-	itemsToAdd.SortByPathname();
-	Git Git;
-	if (!Git.Add(itemsToAdd, &m_ProjectProperties, Git_depth_empty, FALSE, FALSE, TRUE))
-	{
-		CMessageBox::Show(m_hWnd, Git.GetLastErrorMessage(), _T("TortoiseGit"), MB_ICONERROR);
-		InterlockedExchange(&m_bBlock, FALSE);
-		Refresh();
-		return;
-	}
-
-	// Remove any missing items
-	// Not sure that this sort is really necessary - indeed, it might be better to do a reverse sort at this point
-	itemsToRemove.SortByPathname();
-	Git.Remove(itemsToRemove, TRUE);
-
-	//the next step: find all deleted files and check if they're
-	//inside a deleted folder. If that's the case, then remove those
-	//files from the list since they'll get deleted by the parent
-	//folder automatically.
-	m_ListCtrl.Block(TRUE, FALSE);
-	INT_PTR nDeleted = arDeleted.GetCount();
-	for (INT_PTR i=0; i<arDeleted.GetCount(); i++)
-	{
-		if (m_ListCtrl.GetCheck(arDeleted.GetAt(i)))
-		{
-			const CTGitPath& path = m_ListCtrl.GetListEntry(arDeleted.GetAt(i))->GetPath();
-			if (path.IsDirectory())
-			{
-				//now find all children of this directory
-				for (int j=0; j<arDeleted.GetCount(); j++)
-				{
-					if (i!=j)
-					{
-						CGitStatusListCtrl::FileEntry* childEntry = m_ListCtrl.GetListEntry(arDeleted.GetAt(j));
-						if (childEntry->IsChecked())
-						{
-							if (path.IsAncestorOf(childEntry->GetPath()))
-							{
-								m_ListCtrl.SetEntryCheck(childEntry, arDeleted.GetAt(j), false);
-								nDeleted--;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	m_ListCtrl.Block(FALSE, FALSE);
-
-	if ((nUnchecked != 0)||(bCheckedInExternal)||(bHasConflicted)||(!m_bRecursive))
-	{
-		//save only the files the user has checked into the temporary file
-		m_ListCtrl.WriteCheckedNamesToPathList(m_pathList);
-	}
-
-	// the item count is used in the progress dialog to show the overall commit
-	// progress.
-	// deleted items only send one notification event, all others send two
-	m_itemsCount = ((m_selectedPathList.GetCount() - nDeleted - itemsToRemove.GetCount()) * 2) + nDeleted + itemsToRemove.GetCount();
-
-	if ((m_bRecursive)&&(checkedLists.size() == 1))
-	{
-		// all checked items belong to the same changelist
-		// find out if there are any unchecked items which belong to that changelist
-		if (uncheckedLists.find(*checkedLists.begin()) == uncheckedLists.end())
-			m_sChangeList = *checkedLists.begin();
-	}
-#endif
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
 	if (!GetDlgItem(IDC_WHOLE_PROJECT)->IsWindowEnabled())
