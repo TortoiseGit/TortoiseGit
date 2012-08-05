@@ -4186,7 +4186,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 			return;
 		}
-
+		SetFileAttributes(file, FILE_ATTRIBUTE_READONLY);
 	}
 	if(mode == ALTERNATIVEEDITOR)
 	{
