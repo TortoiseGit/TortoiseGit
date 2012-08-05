@@ -1134,6 +1134,11 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				{
 					ignorePattern += path[i].GetFileOrDirectoryName();
 				}
+
+				// escape [ and ] so that files get ignored correctly
+				ignorePattern.Replace(_T("\["), _T("\\\["));
+				ignorePattern.Replace(_T("\]"), _T("\\\]"));
+
 				file.WriteString(ignorePattern + _T("\n"));
 
 				if (ignoreDlg.m_IgnoreFile == 1)
