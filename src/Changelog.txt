@@ -37,6 +37,7 @@ Released: unreleased
  * Fixed issue #774: Revert does not work for submodules
  * Fixed issue #1303: Past Recent Message command in commit dialog doesn't work
  * Fixed issue #1311: Open With is broken
+ * Fixed issue #898: Committed everything even though I only selected one file
 
 = Release 1.7.11.3 =
 Released: 2012-07-07

@@ -591,7 +591,7 @@ void CCommitDlg::OnOK()
 		else
 		{
 			//uncheckedLists.insert(entry->GetGitPathString());
-			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED)
+			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			{	//To init git repository, there are not HEAD, so we can use git reset command
 				cmd.Format(_T("git.exe rm -f --cache -- \"%s\""),entry->GetGitPathString());
 				if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -602,6 +602,15 @@ void CCommitDlg::OnOK()
 					break;
 				}
 				mgtReAddAfterCommit.AddFile(*entry);
+
+				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+				{
+					if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+						cmd.Format(_T("git.exe reset HEAD~2 -- \"%s\""), entry->GetGitOldPathString());
+					else
+						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
+					g_Git.Run(cmd, &out, CP_UTF8);
+				}
 			}
 			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
 			{
