@@ -2216,24 +2216,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					FillListOfSelectedItemPaths(ignorelist, true);
 					SetRedraw(FALSE);
 
-					CAppUtils::IgnoreFile(ignorelist,true);
-
-					common=ignorelist.GetCommonRoot().GetGitPathString();
-
-					for (int i=0; i< GetItemCount(); ++i)
-					{
-						CTGitPath *path=(CTGitPath*)GetItemData(i);
-						if(!( path->m_Action & CTGitPath::LOGACTIONS_UNVER))
-							continue;
-						if( path->GetGitPathString().Left(common.GetLength()) == common )
-						{
-							if (path->GetFileExtension()==ext)
-							{
-								RemoveListEntry(i);
-								i--; // remove index i at item, new one will replace.
-							}
-						}
-					}
+					if (!CAppUtils::IgnoreFile(ignorelist,true))
+						break;
 
 					CWnd* pParent = GetParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
