@@ -2192,18 +2192,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if(!CAppUtils::IgnoreFile(ignorelist,false))
 					break;
 
-				for(int i=0;i<ignorelist.GetCount();i++)
+				CWnd* pParent = GetParent();
+				if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 				{
-					int nListboxEntries = GetItemCount();
-					for (int nItem=0; nItem<nListboxEntries; ++nItem)
-					{
-						CTGitPath *path=(CTGitPath*)GetItemData(nItem);
-						if (path->GetGitPathString()==ignorelist[i].GetGitPathString())
-						{
-							RemoveListEntry(nItem);
-							break;
-						}
-					}
+					pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 				}
 				SetRedraw(TRUE);
 			}
