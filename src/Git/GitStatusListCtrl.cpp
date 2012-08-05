@@ -4168,7 +4168,7 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	CString file;
 	if(this->m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
 	{
-		file= filepath->GetWinPath();
+		file = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath();
 	}
 	else
 	{

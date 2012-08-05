@@ -36,6 +36,7 @@ Released: unreleased
  * Fixed issue #620: Unmodified files appear in the Modified File list while committing
  * Fixed issue #774: Revert does not work for submodules
  * Fixed issue #1303: Past Recent Message command in commit dialog doesn't work
+ * Fixed issue #1311: Open With is broken
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
