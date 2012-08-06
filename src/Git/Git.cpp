@@ -1243,7 +1243,7 @@ CString CGit::DerefFetchHead()
 int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 {
 	int ret;
-	CString cmd, output;
+	CString cmd, output, cur;
 	cmd = _T("git.exe branch --no-color");
 
 	if((type&BRANCH_ALL) == BRANCH_ALL)
@@ -1251,7 +1251,6 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	else if(type&BRANCH_REMOTE)
 		cmd += _T(" -r");
 
-	int i=0;
 	ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
 	if(!ret)
 	{
@@ -1265,13 +1264,11 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 				continue; // skip something like: refs/origin/HEAD -> refs/origin/master
 			if(one[0] == _T('*'))
 			{
-				if(current)
-					*current=i;
 				one = one.Mid(2);
+				cur = one;
 			}
 			if (one != _T("(no branch)"))
 				list.push_back(one);
-			i++;
 		}
 	}
 
@@ -1279,6 +1276,18 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 		list.push_back(L"FETCH_HEAD");
 
 	std::sort(list.begin(), list.end(), LogicalComparePredicate);
+
+	if (current)
+	{
+		for (unsigned int i = 0; i < list.size(); i++)
+		{
+			if (list[i] == cur)
+			{
+				*current = i;
+				break;
+			}
+		}
+	}
 
 	return ret;
 }
