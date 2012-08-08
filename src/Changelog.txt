@@ -40,6 +40,7 @@ Released: unreleased
  * Fixed issue #1311: Open With is broken
  * Fixed issue #898: Committed everything even though I only selected one file
  * Fixed issue #693: Ignoring *.[mime] in the commit window doesn't refresh file list
+ * Fixed issue #1318: Higher dir combox box in format patch dialog
 
 = Release 1.7.11.3 =
 Released: 2012-07-07
