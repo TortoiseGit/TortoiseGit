@@ -1277,7 +1277,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 	std::sort(list.begin(), list.end(), LogicalComparePredicate);
 
-	if (current)
+	if (current && cur != _T("(no branch)"))
 	{
 		for (unsigned int i = 0; i < list.size(); i++)
 		{

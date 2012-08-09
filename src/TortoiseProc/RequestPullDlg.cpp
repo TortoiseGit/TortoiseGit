@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011-2012 Sven Strickroth, <email@cs-ware.de>
 
 // with code of PullFetchDlg.cpp
 
@@ -73,8 +73,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	STRING_VECTOR list;
-	int current;
-	g_Git.GetBranchList(list, &current, CGit::BRANCH_ALL);
+	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL);
 	m_cStartRevision.SetMaxHistoryItems(0x7FFFFFFF);
 	for (unsigned int i = 0; i < list.size(); i++)
 	{
