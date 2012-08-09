@@ -237,6 +237,7 @@ CGitStatusCache::CGitStatusCache(void)
 
 CGitStatusCache::~CGitStatusCache(void)
 {
+	CAutoWriteLock writeLock(m_guard);
 	ClearCache();
 }
 
