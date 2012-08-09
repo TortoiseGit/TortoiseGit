@@ -127,11 +127,13 @@ exit:
 	if (pFile)
 		fclose(pFile);
 	DeleteFile(path2);
+	m_pInstance->watcher.ClearInfoMap();
 	ATLTRACE("cache loaded from disk successfully!\n");
 	return;
 error:
 	fclose(pFile);
 	DeleteFile(path2);
+	m_pInstance->watcher.ClearInfoMap();
 	Destroy();
 	m_pInstance = new CGitStatusCache;
 	ATLTRACE("cache not loaded from disk\n");
@@ -195,9 +197,9 @@ void CGitStatusCache::Destroy()
 	{
 		m_pInstance->Stop();
 		Sleep(100);
+		delete m_pInstance;
+		m_pInstance = NULL;
 	}
-	delete m_pInstance;
-	m_pInstance = NULL;
 }
 
 void CGitStatusCache::Stop()
