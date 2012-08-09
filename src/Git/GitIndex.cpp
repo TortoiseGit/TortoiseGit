@@ -692,39 +692,6 @@ bool CGitHeadFileList::CheckHeadUpdate()
 
 	return false;
 }
-#if 0
-int CGitHeadFileList::ReadTree()
-{
-	int ret;
-	if (this->m_Head.IsEmpty())
-		return -1;
-
-	try
-	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		CAutoWriteLock lock1(&this->m_SharedMutex);
-
-		if (m_Gitdir != g_Git.m_CurrentDir)
-		{
-			g_Git.SetCurrentDir(m_Gitdir);
-			SetCurrentDirectory(g_Git.m_CurrentDir);
-			git_init();
-		}
-
-		this->m_Map.clear();
-		this->clear();
-
-		ret = git_read_tree(this->m_Head.m_hash, CGitHeadFileList::CallBack, this);
-		if (!ret)
-			m_TreeHash = m_Head;
-
-	} catch(...)
-	{
-		return -1;
-	}
-	return ret;
-}
-#endif;
 
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int /*stage*/, void *context)
