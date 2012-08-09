@@ -445,11 +445,10 @@ void CRebaseDlg::LoadBranchInfo()
 	int current;
 	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL);
 	m_BranchCtrl.AddString(list);
-	list.clear();
-	g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
-	m_UpstreamCtrl.AddString(list);
-
 	m_BranchCtrl.SetCurSel(current);
+	list.clear();
+	g_Git.GetBranchList(list, NULL, CGit::BRANCH_ALL_F);
+	m_UpstreamCtrl.AddString(list);
 
 	AddBranchToolTips(&m_BranchCtrl);
 	AddBranchToolTips(&m_UpstreamCtrl);
@@ -604,7 +603,7 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		GitRev rev;
 		rev.GetCommit(text);
 
-		tooltip.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n<b>%s</b>\n%s"),
+		tooltip.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),
 			CString(MAKEINTRESOURCE(IDS_LOG_REVISION)),
 			rev.m_CommitHash.ToString(),
 			CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),

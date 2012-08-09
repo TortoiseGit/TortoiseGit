@@ -202,7 +202,7 @@ protected:
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
 		{
 			list.clear();
-			g_Git.GetBranchList(list,&current,CGit::BRANCH_REMOTE);
+			g_Git.GetBranchList(list, NULL, CGit::BRANCH_REMOTE);
 
 			m_ctrlRemoteBranch.AddString(list);
 
