@@ -21,7 +21,6 @@
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"
 #include "HistoryCombo.h"
-#include "HistoryCombo.h"
 #include "LoglistUtils.h"
 #include "UnicodeUtils.h"
 #include "Tooltip.h"
