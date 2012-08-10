@@ -1612,6 +1612,13 @@ int CGit::Revert(CString commit, CTGitPath &path)
 
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
 	{
+		if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
+		{
+			CString err;
+			err.Format(_T("Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists."), path.GetGitPathString(), path.GetGitOldPathString());
+			::MessageBox(NULL, err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			return -1;
+		}
 		CString force;
 		// if the filenames only differ in case, we have to pass "-f"
 		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
