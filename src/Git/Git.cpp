@@ -1612,7 +1612,11 @@ int CGit::Revert(CString commit, CTGitPath &path)
 
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
 	{
-		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),path.GetGitPathString(),path.GetGitOldPathString());
+		CString force;
+		// if the filenames only differ in case, we have to pass "-f"
+		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
+			force = _T("-f ");
+		cmd.Format(_T("git.exe mv %s-- \"%s\" \"%s\""), force, path.GetGitPathString(), path.GetGitOldPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			::MessageBox(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
