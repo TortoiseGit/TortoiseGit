@@ -2218,6 +2218,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeleteRemoteTagDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DeleteRemoteTagDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FileDiffDlg.cpp"
 				>
 			</File>

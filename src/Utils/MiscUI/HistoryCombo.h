@@ -118,6 +118,12 @@ public:
 
 	void AddString(STRING_VECTOR &list,BOOL isSel=true);
 
+	/**
+	 * Removes the selected item from the combo box and updates
+	 * the registry settings. Returns TRUE if successful.
+	 */
+	BOOL RemoveSelectedItem();
+
 protected:
 	/**
 	 * Will be called whenever the return key is pressed while the
@@ -127,12 +133,6 @@ protected:
 	 * return key. The default implementation returns false.
 	 */
 	virtual bool OnReturnKeyPressed() { return m_bWantReturn; }
-
-	/**
-	 * Removes the selected item from the combo box and updates
-	 * the registry settings. Returns TRUE if successful.
-	 */
-	BOOL RemoveSelectedItem();
 
 protected:
 	CStringArray	m_arEntries;

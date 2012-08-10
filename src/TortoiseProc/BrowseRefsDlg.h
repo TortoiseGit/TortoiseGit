@@ -91,6 +91,7 @@ public:
 		eCmd_Switch,
 		eCmd_Rename,
 		eCmd_RepoBrowser,
+		eCmd_DeleteRemoteTag,
 	};
 
 	enum eCol

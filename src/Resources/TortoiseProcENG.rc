@@ -1653,6 +1653,17 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,243,63,50,14
 END
 
+IDD_DELETEREMOTETAG DIALOGEX 0, 0, 255, 47
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Delete remote tag - TortoiseGit"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Tag:",IDC_STATIC,7,7,43,13
+    CONTROL         "",IDC_COMBOBOXEX_TAGS,"ComboBoxEx32",CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,55,7,123,84
+    DEFPUSHBUTTON   "&Delete",IDOK,189,7,59,14,WS_DISABLED
+    PUSHBUTTON      "Close",IDCANCEL,189,26,59,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2429,6 +2440,14 @@ BEGIN
         VERTGUIDE, 44
         TOPMARGIN, 7
         BOTTOMMARGIN, 77
+    END
+
+    IDD_DELETEREMOTETAG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 40
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -3681,6 +3700,7 @@ BEGIN
                             "Sets the remote as the ""pushremote"" for the selected local branch."
     IDS_STATUSLIST_COLLASTMODIFIED "Last Modified"
     IDS_STATUSLIST_COLSIZE  "Size"
+    IDS_DELETEREMOTETAG     "Delete remote tags..."
 END
 
 #endif    // Englisch (USA) resources

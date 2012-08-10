@@ -31,6 +31,7 @@
 #include "RefLogDlg.h"
 #include "IconMenu.h"
 #include "FileDiffDlg.h"
+#include "DeleteRemoteTagDlg.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -879,9 +880,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				remoteName = remoteName.Tokenize(L"/", dummy);
 				if(!remoteName.IsEmpty())
 				{
-					CString fetchFromCmd;
-					fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
-					popupMenu.AppendMenuIcon(eCmd_Fetch, fetchFromCmd, IDI_PULL);
+					CString temp;
+					temp.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
+					popupMenu.AppendMenuIcon(eCmd_Fetch, temp, IDI_PULL);
+
+					temp.LoadString(IDS_DELETEREMOTETAG);
+					popupMenu.AppendMenuIcon(eCmd_DeleteRemoteTag, temp, IDI_DELETE);
 				}
 			}
 		}
@@ -943,6 +947,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CAppUtils::Fetch(remoteName);
 			Refresh();
+		}
+		break;
+	case eCmd_DeleteRemoteTag:
+		{
+			CDeleteRemoteTagDlg deleteRemoteTagDlg;
+			deleteRemoteTagDlg.m_sRemote = remoteName;
+			deleteRemoteTagDlg.DoModal();
 		}
 		break;
 	case eCmd_Switch:

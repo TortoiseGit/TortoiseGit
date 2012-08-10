@@ -1349,6 +1349,28 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 }
 
+int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
+{
+	CString cmd, out, err;
+	cmd.Format(_T("git.exe ls-remote -t \"%s\""), remote);
+	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
+	{
+		MessageBox(NULL, err, _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
+
+	int pos = 0;
+	while (pos >= 0)
+	{
+		CString one = out.Tokenize(_T("\n"), pos).Mid(51).Trim(); // sha1, tab + refs/tags/
+		if (one.Find(_T("^{}")) >= 1)
+			one = one.Left(one.GetLength() - 3);
+		list.push_back(one);
+	}
+	std::sort(list.begin(), list.end(), LogicalComparePredicate);
+	return 0;
+}
+
 int CGit::GetRefList(STRING_VECTOR &list)
 {
 	int ret;

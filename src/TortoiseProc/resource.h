@@ -784,6 +784,7 @@
 #define IDS_PUSHDLG_PUSHREMOTE_TT       1363
 #define IDS_STATUSLIST_COLLASTMODIFIED  1364
 #define IDS_STATUSLIST_COLSIZE          1365
+#define IDS_DELETEREMOTETAG             1366
 #define IDC_HOOKCOPYBUTTON              1367
 #define IDC_INFOLABEL                   1368
 #define IDC_REPOTREE                    1371
@@ -1439,6 +1440,7 @@
 #define IDD_DIFFSUBMODULE               4576
 #define IDD_IGNORE                      4577
 #define IDD_SUBMODULE_UPDATE            4578
+#define IDD_DELETEREMOTETAG             4579
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
