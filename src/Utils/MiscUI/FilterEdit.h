@@ -121,6 +121,7 @@ protected:
 	afx_msg void	OnPaint();
 	afx_msg void	OnEnKillfocus();
 	afx_msg void	OnEnSetfocus();
+	afx_msg LRESULT	OnPaste(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 
 

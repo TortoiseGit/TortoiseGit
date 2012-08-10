@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #1224: Still can't delete a remote tag
+ * Fixed issue #366: Log - multiline search
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
