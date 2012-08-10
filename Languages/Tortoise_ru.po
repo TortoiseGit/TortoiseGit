@@ -6,12 +6,13 @@
 # Translators:
 # German Borisov <borisov.german@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
+#   <the_Arioch@nm.ru>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-07-05 16:08+0000\n"
+"PO-Revision-Date: 2012-08-03 23:03+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -1178,7 +1179,7 @@ msgstr "Непечатаемые &знаки"
 
 #. Resource IDs: (1203)
 msgid "&Whole Project"
-msgstr "&Весть проект"
+msgstr "&Весь проект"
 
 #. Resource IDs: (1066, 20085)
 msgid "&Whole word"
@@ -1243,6 +1244,10 @@ msgstr "+ %d"
 #, c-format
 msgid "- %d"
 msgstr "- %d"
+
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr ""
 
 #. Resource IDs: (1007)
 msgid ""
@@ -1602,6 +1607,10 @@ msgstr "Дополнительные настройки программы пр�
 msgid "Advanced merge settings"
 msgstr "Дополнительные настройки программы слияния"
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "Все команды"
@@ -1644,6 +1653,14 @@ msgstr "Все ваши изменения будут потеряны! Вы д�
 
 #. Resource IDs: (66)
 msgid "Already up to date."
+msgstr ""
+
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr ""
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1765,6 +1782,14 @@ msgstr "Внесено в группу изменений '%s'"
 #. Resource IDs: (16528)
 msgid "Assigned to:"
 msgstr "Назначено на:"
+
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr ""
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr ""
 
 #. Resource IDs: (77)
 #, c-format
@@ -2067,10 +2092,6 @@ msgstr "ID ошибки/N проблемы:"
 msgid "Bug-IDs"
 msgstr "ID ошибок"
 
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr ""
-
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "Внешний вид кнопки"
@@ -2109,7 +2130,7 @@ msgstr "CAP"
 
 #. Resource IDs: (65535)
 msgid "CC:"
-msgstr ""
+msgstr "Копия: "
 
 #. Resource IDs: (1127)
 msgid "Can double-click in log list to compare with previous revision"
@@ -2265,6 +2286,10 @@ msgstr "Отметьте чтобы отображать относительн�
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
 msgstr "Отметьте для использования более короткого формата даты и времени в сообщениях журнала."
+
+#. Resource IDs: (1700)
+msgid "Check:"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Checking if a newer version of TortoiseGit is available..."
@@ -2465,7 +2490,7 @@ msgstr "Закрывает активное окно и приглашает с�
 msgid ""
 "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't "
 "Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
-msgstr ""
+msgstr "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 
 #. Resource IDs: (16662)
 msgid "Color"
@@ -2750,7 +2775,7 @@ msgid "Copying..."
 msgstr "Копирование..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -2922,7 +2947,7 @@ msgstr "Создать новую ветвь"
 
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
-msgstr "СОздать серию заплаток"
+msgstr "Создать серию заплаток"
 
 #. Resource IDs: (81)
 msgid "Create Tag"
@@ -2996,10 +3021,6 @@ msgstr "Участники:"
 #. Resource IDs: (1253)
 msgid "Cu&t"
 msgstr "В&ырезать"
-
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Current"
@@ -3088,10 +3109,6 @@ msgstr "Дата"
 
 #. Resource IDs: (68)
 msgid "Date Last Commit"
-msgstr ""
-
-#. Resource IDs: (1269)
-msgid "Debug"
 msgstr ""
 
 #. Resource IDs: (1008)
@@ -3426,7 +3443,7 @@ msgstr "Больше не показывать это сообщение"
 
 #. Resource IDs: (66, 602)
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 #. Resource IDs: (1385)
 msgid "Down"
@@ -4018,6 +4035,10 @@ msgstr "Размер файла:\t\t%s (%s)\nШирина:\t\t\t%ld пиксел
 #. Resource IDs: (208)
 msgid "Filename"
 msgstr "Имя файла"
+
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr ""
 
 #. Resource IDs: (1057)
 msgid ""
@@ -4983,6 +5004,10 @@ msgstr ""
 msgid "Last Commit"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Last Modified"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr ""
@@ -5450,10 +5475,6 @@ msgstr "Параметры панели навигации"
 msgid "Navigation Pane Options..."
 msgstr "Параметры панели навигации..."
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr ""
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr "Вложен"
@@ -5511,6 +5532,10 @@ msgstr "Не &Фиксировать"
 
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
 msgstr ""
 
 #. Resource IDs: (67)
@@ -7130,10 +7155,6 @@ msgid "Select viewer for diff-files"
 msgstr "Выберите программу просмотра файлов различий"
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr ""
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -7191,6 +7212,19 @@ msgstr "Установить дату фиксации"
 
 #. Resource IDs: (1580)
 msgid "Set up SMTP Server"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid ""
+"Sets the remote branch as the \"pushbranch\" for the selected local branch."
 msgstr ""
 
 #. Resource IDs: (13)
@@ -7703,6 +7737,10 @@ msgstr ""
 msgid "Submodule Update Options"
 msgstr ""
 
+#. Resource IDs: (1708)
+msgid "Submodules"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -8003,6 +8041,11 @@ msgstr "Строка, обозначающая новый файл, ожидал
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
 msgstr "Строка, обозначающая старый файл, ожидалась в строке %d !"
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
+msgstr ""
 
 #. Resource IDs: (64)
 msgid ""
@@ -8533,6 +8576,10 @@ msgstr ""
 #. Resource IDs: (20)
 msgid "Unknown depth"
 msgstr "Неизвестная глубина"
+
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -9206,6 +9253,10 @@ msgstr "и поддержать разработчиков"
 msgid "apply --topo-order"
 msgstr ""
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr ""
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr "автор"
@@ -9411,10 +9462,6 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "квартал"
-
-#. Resource IDs: (195)
-msgid "readonly"
-msgstr "только-для-чтения"
 
 #. Resource IDs: (10)
 msgid "replaced"

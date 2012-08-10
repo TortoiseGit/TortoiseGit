@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-07-05 16:41+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2012-08-06 13:46+0000\n"
+"Last-Translator: Ricardo Souza <srrcdmk@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -372,7 +372,7 @@ msgstr "Fechar &automaticamente:"
 
 #. Resource IDs: (1505)
 msgid "&Autoload Putty Key"
-msgstr "&Auto carregar chave do Putty"
+msgstr "&Auto carregar SSH"
 
 #. Resource IDs: (1015)
 msgid "&Backup original file"
@@ -524,7 +524,7 @@ msgstr "&Excluir (manter local)"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
-msgstr "&Apagar remoto && local"
+msgstr "&Excluir remoto && local"
 
 #. Resource IDs: (12)
 msgid "&Diff"
@@ -636,7 +636,7 @@ msgstr "&Forçar Sobrescrever Ramificação Existente (Mudanças podem ser perdi
 
 #. Resource IDs: (1607)
 msgid "&Force Rebase"
-msgstr "&Forçar Rebasear"
+msgstr "&Forçar Reorganização"
 
 #. Resource IDs: (1608)
 msgid "&From"
@@ -709,7 +709,7 @@ msgstr "Diretório &inicial:"
 
 #. Resource IDs: (1693)
 msgid "&Initialize submodules (--init)"
-msgstr ""
+msgstr "&Inicializar submódulos (--init)"
 
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
@@ -737,7 +737,7 @@ msgstr "Ícones &Grandes"
 
 #. Resource IDs: (1602)
 msgid "&Launch Rebase After Fetch"
-msgstr "&Lançar Rebasear Aós Obter"
+msgstr "&Lançar Reorganização Após Obter"
 
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
@@ -894,7 +894,7 @@ msgstr "Im&primir..."
 
 #. Resource IDs: (76)
 msgid "&Pull"
-msgstr "Em&purrar"
+msgstr "&Puxar"
 
 #. Resource IDs: (1481)
 msgid "&Push all branches"
@@ -910,7 +910,7 @@ msgstr "Mensagens de Log &recentes"
 
 #. Resource IDs: (1694)
 msgid "&Recursive"
-msgstr ""
+msgstr "&Recursivo"
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1228,11 +1228,11 @@ msgstr "*Combinar à uma submissão"
 #. Resource IDs: (1254)
 #, c-format
 msgid "*Rebase \"%s\" onto this..."
-msgstr "*Rebasear \"%s\" neste..."
+msgstr "*Reorganizar \"%s\" neste..."
 
 #. Resource IDs: (20)
 msgid "*Rebase..."
-msgstr "*Rebasear..."
+msgstr "*Reorganização..."
 
 #. Resource IDs: (188)
 #, c-format
@@ -1243,6 +1243,10 @@ msgstr "+ %d"
 #, c-format
 msgid "- %d"
 msgstr "- %d"
+
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr "- tudo -"
 
 #. Resource IDs: (1007)
 msgid ""
@@ -1325,7 +1329,7 @@ msgstr "<ct=0x0000FF>HEAD Atual Destacada</ct>, você está trabalhando em (nenh
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
-msgstr "<ct=0x0000FF>Você realmente quer apagar <b>TODAS</b> as reservas?</ct>"
+msgstr "<ct=0x0000FF>Você realmente quer excluir <b>TODAS</b> as reservas?</ct>"
 
 #. Resource IDs: (72)
 msgid "<ct=0x0000FF>Stash Apply failed!!!</ct>"
@@ -1344,7 +1348,7 @@ msgid ""
 "<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
 "\n"
 "Do you want to"
-msgstr "<ct=0x0000FF>diretório de rebaseamento anterior rebase-apply ainda existe mas foi dado mbox</ct>\n\nVocê quer"
+msgstr "<ct=0x0000FF>diretório de reorganização anterior \"rebase-apply\" ainda existe mas foi dado um mbox</ct>\n\nVocê quer"
 
 #. Resource IDs: (85)
 msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
@@ -1386,11 +1390,11 @@ msgstr "?"
 msgid ""
 "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Um ramo com o mesmo nome que você entrou já existe (ou a referência curta é ambígua).\nIsto pode causar problemas, então você deve evitar isto."
 
 #. Resource IDs: (85)
 msgid "A branch with this name already exists."
-msgstr ""
+msgstr "Um ramo com este nome já existe."
 
 #. Resource IDs: (201)
 msgid ""
@@ -1427,11 +1431,11 @@ msgstr "Um recurso necessário estava indisponível."
 msgid ""
 "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Uma etiqueta com o mesmo nome que você entrou já existe (ou a referência curta é ambígua).\nIsto pode causar problemas, então você deve evitar isto."
 
 #. Resource IDs: (85)
 msgid "A tag with this name already exists."
-msgstr ""
+msgstr "Uma etiqueta com este nome já existe."
 
 #. Resource IDs: (79)
 msgid ""
@@ -1453,7 +1457,7 @@ msgstr "A&plicar"
 
 #. Resource IDs: (1128)
 msgid "Abbreviate renamings"
-msgstr ""
+msgstr "Abreviar renomeações"
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -1534,7 +1538,7 @@ msgstr "Adicionar programa de comparação para extensão específica"
 
 #. Resource IDs: (110)
 msgid "Add extension specific merge program"
-msgstr "Adicionar de programa de combinação para extensão específica"
+msgstr "Adicionar programa de combinação para extensão específica"
 
 #. Resource IDs: (13)
 msgid "Add to &ignore list"
@@ -1602,6 +1606,10 @@ msgstr "Opções avançadas de comparação"
 msgid "Advanced merge settings"
 msgstr "Opções avançadas de combinação"
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr "Todos"
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "Todos os comandos"
@@ -1645,6 +1653,14 @@ msgstr "Todas as suas mudanças serão perdidas! Você realmente quer restaurar 
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Já está atualizado."
+
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr "Sempre empurrar para o arquivo remoto selecionado para este ramo local"
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
+msgstr "Sempre empurrar para o ramo remoto selecionado para este ramo local"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1740,7 +1756,7 @@ msgstr "&URL Arbitrária:"
 
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
-msgstr "Tem certeza de que quer abortar o processo de rebaseamento?"
+msgstr "Tem certeza de que quer abortar o processo de reorganização?"
 
 #. Resource IDs: (145)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -1765,6 +1781,14 @@ msgstr "Associado a lista de alterações '%s'"
 #. Resource IDs: (16528)
 msgid "Assigned to:"
 msgstr "Associado a:"
+
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr "Assumir Não Modificado"
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr "Assumir valido/não modificado"
 
 #. Resource IDs: (77)
 #, c-format
@@ -1876,11 +1900,11 @@ msgstr "O autocompletar sugere palavras (geralmente nomes de classes ou\nmembros
 
 #. Resource IDs: (1505)
 msgid "AutoLoad Putty &Key"
-msgstr "Auto Carregar &Chave do Putty"
+msgstr "Auto Carregar &Chave SSH"
 
 #. Resource IDs: (1619)
 msgid "Autoload Putty &Key"
-msgstr "Auto Carregar &Chave do Putty"
+msgstr "Auto Carregar &Chave SSH"
 
 #. Resource IDs: (438)
 msgid "Automatic"
@@ -2066,10 +2090,6 @@ msgstr "Bug-ID/Issue-Nr:"
 #. Resource IDs: (117)
 msgid "Bug-IDs"
 msgstr "Bug-IDs"
-
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr "Construir"
 
 #. Resource IDs: (16132)
 msgid "Button Appearance"
@@ -2265,6 +2285,10 @@ msgstr "Marque para mostrar tempos relativos em mensagens de log"
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
 msgstr "Marque para usar um formato de data e hora mais conciso nos comentários"
+
+#. Resource IDs: (1700)
+msgid "Check:"
+msgstr "Checar:"
 
 #. Resource IDs: (65535)
 msgid "Checking if a newer version of TortoiseGit is available..."
@@ -2750,8 +2774,8 @@ msgid "Copying..."
 msgstr "Copiando..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
-msgstr "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
+msgstr "Copyright (C) 2009-2012 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -2997,10 +3021,6 @@ msgstr "Créditos:"
 msgid "Cu&t"
 msgstr "Recor&tar"
 
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr "Recor&tar\tCtrl+X"
-
 #. Resource IDs: (65535)
 msgid "Current"
 msgstr "Atual"
@@ -3029,7 +3049,7 @@ msgid ""
 "Current branch %s is up to date\r\n"
 "\r\n"
 " If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
-msgstr "Ramo atual %s já está atualizado\n\nSe você quer forçar o rebaseamento mesmo se o ramo atual é um descentende da submissão que você está rebaseando, por favor, marque a caixa \"Forçar Rebaseamento\" abaixo."
+msgstr "O ramo atual %s já está atualizado\n\nSe você quer forçar a reorganização mesmo se o ramo atual é um descentende da submissão que você está reorganizando, por favor, marque a caixa \"Forçar Reorganização\" abaixo."
 
 #. Resource IDs: (1113)
 msgid "Current version is:"
@@ -3090,10 +3110,6 @@ msgstr "Data"
 msgid "Date Last Commit"
 msgstr "Data da Última Submissão"
 
-#. Resource IDs: (1269)
-msgid "Debug"
-msgstr "Depurar"
-
 #. Resource IDs: (1008)
 msgid "Default"
 msgstr "Padrão"
@@ -3117,51 +3133,51 @@ msgstr "Excluir"
 #. Resource IDs: (81)
 #, c-format
 msgid "Delete %d branches"
-msgstr "Apagar %d ramos"
+msgstr "Excluir %d ramos"
 
 #. Resource IDs: (80)
 #, c-format
 msgid "Delete %d remote branches"
-msgstr "Apagar %d ramos remotos"
+msgstr "Excluir %d ramos remotos"
 
 #. Resource IDs: (84)
 #, c-format
 msgid "Delete %d tags"
-msgstr "Apagar %d etiquetas"
+msgstr "Excluir %d etiquetas"
 
 #. Resource IDs: (70)
 msgid "Delete &local"
-msgstr "Apagar &local"
+msgstr "Excluir &local"
 
 #. Resource IDs: (21)
 msgid "Delete Ref..."
-msgstr "Apagar Ref..."
+msgstr "Excluir Referência..."
 
 #. Resource IDs: (22)
 #, c-format
 msgid "Delete and &ignore %d items by name"
-msgstr "Apagar e &ignorar %d itens por nome"
+msgstr "Excluir e &ignorar %d itens por nome"
 
 #. Resource IDs: (23)
 msgid "Delete and add to &ignore list"
-msgstr "Apagar e adicionar para a lista de &ignorados"
+msgstr "Excluir e adicionar para a lista de &ignorados"
 
 #. Resource IDs: (23)
 #, c-format
 msgid "Delete and ignore %d items by &extension"
-msgstr "Deletar e ignorar %d itens por &extensão"
+msgstr "Excluir e ignorar %d itens por &extensão"
 
 #. Resource IDs: (80)
 msgid "Delete branch"
-msgstr "Apagar ramo"
+msgstr "Excluir ramo"
 
 #. Resource IDs: (1255)
 msgid "Delete branch/tag"
-msgstr "Apagar ramo/etiqueta"
+msgstr "Excluir ramo/etiqueta"
 
 #. Resource IDs: (80)
 msgid "Delete remote branch"
-msgstr "Apagar ramo remoto"
+msgstr "Excluir ramo remoto"
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3169,7 +3185,7 @@ msgstr "Apagar etiqueta"
 
 #. Resource IDs: (85)
 msgid "Delete the existing branch or use a different name."
-msgstr ""
+msgstr "Exclua o ramo existente ou use um nome direfente."
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -3177,7 +3193,7 @@ msgstr "Excluído"
 
 #. Resource IDs: (4570)
 msgid "Deleted merge conflict"
-msgstr "Conflito de combinação apagado"
+msgstr "Conflito de combinação excluído"
 
 #. Resource IDs: (65535)
 msgid "Deleted node"
@@ -3186,7 +3202,7 @@ msgstr "Nó excluído"
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
-msgstr "Apaga e adiciona os arquivos selecionados ou a máscara de arquivos à lista de 'ignorados'"
+msgstr "Exclui e adiciona os arquivos selecionados ou a máscara de arquivos à lista de 'ignorados'"
 
 #. Resource IDs: (11)
 msgid "Deletes files/folders from version control"
@@ -3198,7 +3214,7 @@ msgstr "Excluir arquivos/pastas do controle de versão, mas mantêm o arquivo"
 
 #. Resource IDs: (198)
 msgid "Deletes the action log file"
-msgstr "Deleta o arquivo de log de ação"
+msgstr "Exclui o arquivo de log de ação"
 
 #. Resource IDs: (263)
 msgid "Deleting"
@@ -3348,12 +3364,12 @@ msgstr "Não mostrar o menu de contexto para os seguintes caminhos:"
 #. Resource IDs: (70)
 #, c-format
 msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
-msgstr "Você realmente quer <ct=0x0000FF>apagar</ct> <b>%s</b>?"
+msgstr "Você realmente quer <ct=0x0000FF>excluir</ct> <b>%s</b>?"
 
 #. Resource IDs: (1007)
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
-msgstr "Você realmente deseja deletar a barra de ferramentas '%s'?"
+msgstr "Você realmente deseja excluir a barra de ferramentas '%s'?"
 
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
@@ -3364,7 +3380,7 @@ msgstr "Você realmente deseja mover esse arquivo ou pasta?"
 msgid ""
 "Do you really want to permanently delete the %d selected refs? It can "
 "<ct=0x0000FF><b>NOT</b></ct> be recovered!"
-msgstr "Você realmente quer apagar permanentemente %d referências selecionadas? Isto <ct=0x0000FF><b>NÃO</b></ct> pode ser recuperado!"
+msgstr "Você realmente quer excluir permanentemente %d referências selecionadas? Isto <ct=0x0000FF><b>NÃO</b></ct> pode ser recuperado!"
 
 #. Resource IDs: (71)
 #, c-format
@@ -4019,6 +4035,10 @@ msgstr "Tamanho do arquivo:\t\t\t%s (%s)\nLargura:\t\t\t%ld pixel\nAltura:\t\t\t
 msgid "Filename"
 msgstr "Nome do arquivo"
 
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr "Arquivos"
+
 #. Resource IDs: (1057)
 msgid ""
 "Fill Tool\n"
@@ -4120,7 +4140,7 @@ msgstr "Forcar criação de um ramo/etiqueta - mesmo que uma com o mesmo nome j�
 msgid ""
 "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto. \r\n"
 "Normally the command will exit with the message \"Current branch is up to date\" in such a situation."
-msgstr "Força o rebaseamento mesmo se o ramo atual é um descendente da submissão que você está rebaseando.\nNormalmente o comando irá sair com a mensagem \"Ramo atual já está atualizado\" nesta situação."
+msgstr "Força a reorganização mesmo se o ramo atual é um descendente da submissão que você está reorganizando.\nNormalmente o comando irá sair com a mensagem \"Ramo atual já está atualizado\" nesta situação."
 
 #. Resource IDs: (312)
 msgid "Format Patch"
@@ -4138,7 +4158,7 @@ msgstr "Encaminhar"
 msgid ""
 "Found an empty commit message. You have to enter one or rebase cannot "
 "proceed."
-msgstr "Encontrada uma mensagem de submissão em branco. Você tem que informar uma ou o rebasamento não pode prosseguir."
+msgstr "Encontrada uma mensagem de submissão em branco. Você tem que informar uma ou a reorganização não pode prosseguir."
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
@@ -4313,7 +4333,7 @@ msgstr "DCommit do Git SVN"
 
 #. Resource IDs: (22)
 msgid "Git SVN Rebase"
-msgstr "Rebasear do Git SVN"
+msgstr "Reorganização do Git SVN"
 
 #. Resource IDs: (11)
 msgid "Git Status"
@@ -4983,6 +5003,10 @@ msgstr "Último Autor"
 msgid "Last Commit"
 msgstr "Última Submissão:"
 
+#. Resource IDs: (86)
+msgid "Last Modified"
+msgstr "Última Modificação"
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr "Última Modificação:"
@@ -5056,7 +5080,7 @@ msgstr "Listar Tópicos de Ajuda \nTópicos de Ajuda"
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr ""
+msgstr "Lista um arquivo renomeado como \"caminho/longo/{do => para}/arquivo.txt\" ao invés de \"caminho/longo/para/arquivo.txt (de caminho/longo/do/arquivo.txt)\"."
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -5068,7 +5092,7 @@ msgstr "Carregar Imagens"
 
 #. Resource IDs: (1505)
 msgid "Load Putty &Key"
-msgstr "Carregar &Chave do Putty"
+msgstr "Carregar &Chave SSH"
 
 #. Resource IDs: (65535)
 msgid "Local Branch"
@@ -5450,10 +5474,6 @@ msgstr "Opções do Painel de Navegação"
 msgid "Navigation Pane Options..."
 msgstr "Opções do Painel de Navegação..."
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr "Precisa-bloquear (não usado pelo TortoiseGit)"
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr "Aninhado"
@@ -5512,6 +5532,10 @@ msgstr "Não &Submeter"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Sem &Avanço Rápido"
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
+msgstr "Não Assumir Não Modificado"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -5653,11 +5677,11 @@ msgstr "Notas"
 msgid ""
 "Nothing need rebase\r\n"
 "%s equal %s"
-msgstr "Nada precisa de rebaseamento\n%s igual a %s"
+msgstr "Nada precisa ser reorganizado\n%s igual a %s"
 
 #. Resource IDs: (67)
 msgid "Nothing to Rebase"
-msgstr "Nada para Rebasear"
+msgstr "Nada para Reorganizar"
 
 #. Resource IDs: (603)
 msgid "Nothing to commit"
@@ -6259,7 +6283,7 @@ msgstr "Puxar"
 
 #. Resource IDs: (75)
 msgid "Pull requires the selected local branch to be the current branch."
-msgstr "Empurrar requer que o ramo local selecionado seja o ramo atual."
+msgstr "Puxar requer que o ramo local selecionado seja o ramo atual."
 
 #. Resource IDs: (14)
 msgid "Pull..."
@@ -6271,11 +6295,11 @@ msgstr "Puxar/Obter"
 
 #. Resource IDs: (66)
 msgid "Pulled Diff"
-msgstr "Comparação Empurrada"
+msgstr "Comparação Puxada"
 
 #. Resource IDs: (66)
 msgid "Pulled Log"
-msgstr "Log Empurrado"
+msgstr "Log Puxado"
 
 #. Resource IDs: (75)
 msgid "Pus&h"
@@ -6326,7 +6350,7 @@ msgstr "R&everter para essa revisão"
 
 #. Resource IDs: (1255)
 msgid "REBASE"
-msgstr "REBASEAR"
+msgstr "REORGANIZAR"
 
 #. Resource IDs: (3697)
 msgid "REC"
@@ -6370,12 +6394,12 @@ msgstr "Leia o 'Guia de Uso Diário' antes que você fique empacado..."
 
 #. Resource IDs: (318)
 msgid "Rebase"
-msgstr "Rebasear"
+msgstr "Reorganizar"
 
 #. Resource IDs: (67)
 #, c-format
 msgid "Rebasing... (%d/%d)"
-msgstr "Rebaseando... (%d/%d)"
+msgstr "Reorganizando ... (%d/%d)"
 
 #. Resource IDs: (1002)
 msgid "Recent"
@@ -6395,7 +6419,7 @@ msgstr "Gravar"
 
 #. Resource IDs: (603)
 msgid "Recover to the status before rebase"
-msgstr "Recuperar para o estado antes do rebaseamento"
+msgstr "Recuperar para o estado antes da reorganização"
 
 #. Resource IDs: (1057)
 msgid ""
@@ -6736,7 +6760,7 @@ msgstr "Resolve os arquivos com conflito"
 
 #. Resource IDs: (66)
 msgid "Restart rebase"
-msgstr "Reiniciar rebaseamento"
+msgstr "Reiniciar reorganização"
 
 #. Resource IDs: (64)
 msgid "Restore"
@@ -6923,7 +6947,7 @@ msgstr "Obter do SVN"
 
 #. Resource IDs: (21)
 msgid "SVN Rebase..."
-msgstr "Rebasear do SVN..."
+msgstr "Reorganização do SVN..."
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
@@ -7130,10 +7154,6 @@ msgid "Select viewer for diff-files"
 msgstr "Selecionar visualizador para arquivos de comparação"
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr "Selecion&ar/Desselecionar Todos"
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr "Selecion&ar/desselecionar todos"
 
@@ -7192,6 +7212,19 @@ msgstr "Definir &data de submissão"
 #. Resource IDs: (1580)
 msgid "Set up SMTP Server"
 msgstr "Configurar Servidor SMTP"
+
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr "Habilita a opção de Assumir Válido para este arquivo"
+
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr "Configura o remoto como o \"pushremote\" para o ramo local selecionado."
+
+#. Resource IDs: (86)
+msgid ""
+"Sets the remote branch as the \"pushbranch\" for the selected local branch."
+msgstr "Configura o ramo remoto como o \"pushbranch\" para o ramo local selecionado."
 
 #. Resource IDs: (13)
 msgid "Setting properties..."
@@ -7574,7 +7607,7 @@ msgstr "Iniciar Submissão de Gancho"
 
 #. Resource IDs: (67, 68)
 msgid "Start Rebase"
-msgstr "Iniciar Rebaseamento"
+msgstr "Iniciar Reorganização"
 
 #. Resource IDs: (569)
 msgid "Start Update Hook"
@@ -7673,19 +7706,19 @@ msgstr "Submódulo"
 
 #. Resource IDs: (8, 11)
 msgid "Submodule &Update"
-msgstr "Submódulo &Atualizar"
+msgstr "&Atualizar Submódulo"
 
 #. Resource IDs: (20, 1589)
 msgid "Submodule Add"
-msgstr "Submódulo Adicionar"
+msgstr "Adicionar Submódulo "
 
 #. Resource IDs: (4576)
 msgid "Submodule Diff"
-msgstr "Submódulo Diff"
+msgstr "Comparar Submódulo"
 
 #. Resource IDs: (1585)
 msgid "Submodule Info"
-msgstr "Submódulo Info"
+msgstr "Inforçações do Submódulo"
 
 #. Resource IDs: (76)
 msgid "Submodule Init"
@@ -7693,15 +7726,19 @@ msgstr "Inicializar Submódulo"
 
 #. Resource IDs: (20, 77)
 msgid "Submodule Sync"
-msgstr "Submódulo Sincronizar"
+msgstr "Sincronizar Submódulo"
 
 #. Resource IDs: (76)
 msgid "Submodule Update"
-msgstr "Submódulo Atualizar"
+msgstr "Atualizar Submódulo"
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
-msgstr ""
+msgstr "Opções de Atualização de Submódulos"
+
+#. Resource IDs: (1708)
+msgid "Submodules"
+msgstr "Submódulos"
 
 #. Resource IDs: (81)
 #, c-format
@@ -7800,7 +7837,7 @@ msgstr "&Sons do sistema"
 msgid ""
 "System registry entries have been removed and the INI file (if any) was "
 "deleted."
-msgstr "As entradas no registro do sistema foram removidas e o arquivo INI (se existia) foi apagado."
+msgstr "As entradas no registro do sistema foram removidas e o arquivo INI (se existia) foi excluído."
 
 #. Resource IDs: (5065)
 msgid "TIS-620"
@@ -7867,7 +7904,7 @@ msgid ""
 "The branch \"%s\" is a <i>remote</i> branch.\n"
 "\n"
 "Do you really want to <ct=0x0000FF>delete</ct> it?"
-msgstr "O ramo \"%s\" é um ramo <i>remoto</i>.\n\nVocê realmente quer <ct=0x0000FF>apagá-lo</ct>?"
+msgstr "O ramo \"%s\" é um ramo <i>remoto</i>.\n\nVocê realmente quer <ct=0x0000FF>excluí-lo</ct>?"
 
 #. Resource IDs: (63)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -7893,7 +7930,7 @@ msgstr "O mecanismo de comparação foi interrompido devido a um erro:\n%s"
 msgid ""
 "The entered source ref is ambiguous. You have to make it unique (e.g. by "
 "adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "A origem informada é ambígua. Você tem que torná-la única (ex.: adicionando \"refs/head/\" como um prefixo para ramos ou \"refs/tags/\" para tags)!"
 
 #. Resource IDs: (64)
 #, c-format
@@ -8003,6 +8040,11 @@ msgstr "A linha indicando o novo arquivo era esperada na linha %d !"
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
 msgstr "A linha indicando o arquivo antigo era esperada na linha %d !"
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
+msgstr "O ramo local \"%s\" não avança rápido para o ramo remoto \"%s\"."
 
 #. Resource IDs: (64)
 msgid ""
@@ -8235,7 +8277,7 @@ msgid ""
 "This will delete the record of commands you've used in this application and "
 "restore the default set of visible commands to the menus and toolbars. It "
 "will not undo any explicit customizations. Are you sure you want to do this?"
-msgstr "Isto irá apagar os comandos que você usou nesta aplicação e restaurará o conjunto de comandos visíveis aos menus e ferramentas. Isto não irá desfazer qualquer customização explícita. Você tem certeza de que quer fazer isto?"
+msgstr "Isto irá excluir os comandos que você usou nesta aplicação e restaurará o conjunto de comandos visíveis aos menus e ferramentas. Isto não irá desfazer qualquer customização explícita. Você tem certeza de que quer fazer isto?"
 
 #. Resource IDs: (604)
 msgid "Three way diff"
@@ -8534,6 +8576,10 @@ msgstr "Desconhecido"
 msgid "Unknown depth"
 msgstr "Profundidade desconhecida"
 
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
+msgstr "Desabilita a opção de Assumir Válido para este arquivo"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Sem Título"
@@ -8601,11 +8647,11 @@ msgstr "Usar Comparação Unificada a partir da área de transferência"
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Force\" option to overwrite it."
-msgstr ""
+msgstr "Use um nome direfente ou use a opção \"Forçar\" para sobrescrevê-lo."
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Override branch\" option."
-msgstr ""
+msgstr "Use um nome diferente ou use a opção \"Sobrepor ramo\"."
 
 #. Resource IDs: (2054)
 msgid ""
@@ -8854,7 +8900,7 @@ msgid ""
 "WARNING:\r\n"
 "Only change these settings if you are absolutely sure what you are doing!\r\n"
 "To set the values to their default, delete the value text."
-msgstr "AVISO:\nSomente mude estas configurações se você tem certeza absoluta do que está fazendo!\nPara ajustar estes valores para o padrão, delete o texto do valor."
+msgstr "AVISO:\nSomente mude estas configurações se você tem certeza absoluta do que está fazendo!\nPara ajustar estes valores para o padrão, exclua o texto do valor."
 
 #. Resource IDs: (198)
 msgid "Wait"
@@ -9206,6 +9252,10 @@ msgstr "e apóie os desenvolvedores"
 msgid "apply --topo-order"
 msgstr "aplicar --topo-order"
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr "assume-valid"
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr "autor"
@@ -9349,7 +9399,7 @@ msgstr "ausente"
 
 #. Resource IDs: (65535)
 msgid "missing/deleted/replaced"
-msgstr "faltando/apagado/substituído"
+msgstr "faltando/excluído/substituído"
 
 #. Resource IDs: (10)
 msgid "modified"
@@ -9411,10 +9461,6 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "trimestre"
-
-#. Resource IDs: (195)
-msgid "readonly"
-msgstr "somente-leitura"
 
 #. Resource IDs: (10)
 msgid "replaced"

@@ -7,13 +7,14 @@
 # Freddydelanuit Dec <fred.dec@free.fr>, 2012.
 # Stéphane Aulery <lkppo@free.fr>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
+#   <ykatchou@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-07-05 16:38+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2012-08-05 08:45+0000\n"
+"Last-Translator: ykatchou <ykatchou@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,7 +162,7 @@ msgid ""
 "%1\n"
 "Cannot find this file.\n"
 "Verify that the correct path and file name are given."
-msgstr "%1\nImpossible de trouver ce fichier.\nVeuillez vérifier que le chemin et le nom du fichier spécifiés sont corrects."
+msgstr "%1\nImpossible de trouver ce fichier.\nVérifier que le chemin et le nom du fichier spécifiés sont corrects."
 
 #. Resource IDs: (357)
 #, c-format
@@ -710,7 +711,7 @@ msgstr "Répertoire &initial :"
 
 #. Resource IDs: (1693)
 msgid "&Initialize submodules (--init)"
-msgstr ""
+msgstr "&Initialiser les sous-modules (--init)"
 
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
@@ -911,7 +912,7 @@ msgstr "Commentaires &récents"
 
 #. Resource IDs: (1694)
 msgid "&Recursive"
-msgstr ""
+msgstr "&Récursif"
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1245,6 +1246,10 @@ msgstr "+ %d"
 msgid "- %d"
 msgstr "- %d"
 
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr "- tout -"
+
 #. Resource IDs: (1007)
 msgid ""
 "-------------------------------------------------------------------------------------------"
@@ -1387,18 +1392,18 @@ msgstr "?"
 msgid ""
 "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Une branche avec un nom identique à celui saisie pour le tag existe déjà (donc la référence est ambigue).⏎ Cela peut poser des problèmes, vous devriez donc éviter cela."
 
 #. Resource IDs: (85)
 msgid "A branch with this name already exists."
-msgstr ""
+msgstr "Une branche avec ce nom existe déjà."
 
 #. Resource IDs: (201)
 msgid ""
 "A newer version is available. Please go to "
 "http://code.google.com/p/tortoisegit and download the current version! Click"
 " _here_ to go directly to our website."
-msgstr "Une nouvelle version est disponible.\r\nVeuillez aller sur http://code.google.com/p/tortoisegit et téléchargez la version actuelle ! Cliquer _ici_ pour aller directement sur notre site web."
+msgstr "Une nouvelle version est disponible.\nVeuillez aller sur http://code.google.com/p/tortoisegit et téléchargez la version actuelle ! Cliquer _ici_ pour aller directement sur notre site web."
 
 #. Resource IDs: (195)
 msgid ""
@@ -1428,11 +1433,11 @@ msgstr "Une ressource demandée n'est pas disponible."
 msgid ""
 "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "Un tag avec un nom identique à celui saisie pour la branche existe déjà (donc la référence est ambigüe).⏎ Cela peut poser des problèmes, vous devriez éviter cela."
 
 #. Resource IDs: (85)
 msgid "A tag with this name already exists."
-msgstr ""
+msgstr "Un tag avec ce nom existe déjà."
 
 #. Resource IDs: (79)
 msgid ""
@@ -1454,7 +1459,7 @@ msgstr "A&ppliquer"
 
 #. Resource IDs: (1128)
 msgid "Abbreviate renamings"
-msgstr ""
+msgstr "Renommer avec des abréviations"
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -1603,6 +1608,10 @@ msgstr "Configuration avancée de la comparaison"
 msgid "Advanced merge settings"
 msgstr "Configuration avancée de la fusion"
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr "Tout"
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "Toutes les Commandes"
@@ -1646,6 +1655,14 @@ msgstr "Toutes vos modifications seront perdues ! Voulez-vous réellement réini
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Déjà à jour."
+
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr "Toujours envoyer les modifications à l'archive distante sélectionnée pour cette branche locale"
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
+msgstr "Toujours envoyer les modifications à la branche distante sélectionnée pour cette branche locale"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1766,6 +1783,14 @@ msgstr "Assigné à la liste de modifications '%s'"
 #. Resource IDs: (16528)
 msgid "Assigned to:"
 msgstr "Assigné à:"
+
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr "Ignorer le suivi de modification locale"
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr "Gérer manuellement le suivi de modification"
 
 #. Resource IDs: (77)
 #, c-format
@@ -2068,10 +2093,6 @@ msgstr "Bug-&ID/ N° d'incident :"
 msgid "Bug-IDs"
 msgstr "Bug-IDs"
 
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr "Build"
-
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "Apparence du Bouton"
@@ -2266,6 +2287,10 @@ msgstr "Sélectionnez pour afficher le format de date et heure relatif dans le j
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
 msgstr "Sélectionnez pour utiliser un format de date et heure moins détaillé dans le journal"
+
+#. Resource IDs: (1700)
+msgid "Check:"
+msgstr "Vérifier : "
 
 #. Resource IDs: (65535)
 msgid "Checking if a newer version of TortoiseGit is available..."
@@ -2751,8 +2776,8 @@ msgid "Copying..."
 msgstr "Copie..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
-msgstr "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
+msgstr "Copyright (C) 2009-2012 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -2998,10 +3023,6 @@ msgstr "Crédits :"
 msgid "Cu&t"
 msgstr "C&ouper"
 
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr "Cou&per\tCtrl+X"
-
 #. Resource IDs: (65535)
 msgid "Current"
 msgstr "Courant"
@@ -3091,10 +3112,6 @@ msgstr "Date"
 msgid "Date Last Commit"
 msgstr "Date de dernière livraison"
 
-#. Resource IDs: (1269)
-msgid "Debug"
-msgstr "Debogage"
-
 #. Resource IDs: (1008)
 msgid "Default"
 msgstr "Défaut"
@@ -3170,7 +3187,7 @@ msgstr "Supprimer l'étiquette"
 
 #. Resource IDs: (85)
 msgid "Delete the existing branch or use a different name."
-msgstr ""
+msgstr "Effacer la branche existante ou utiliser un autre nom."
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -4019,6 +4036,10 @@ msgstr "Taille du fichier :\t%s (%s)\nLargeur :\t\t\t%ld pixel\nHauteur :\t\t\t%
 #. Resource IDs: (208)
 msgid "Filename"
 msgstr "Nom de fichier"
+
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr "Fichiers"
 
 #. Resource IDs: (1057)
 msgid ""
@@ -4984,6 +5005,10 @@ msgstr "Dernier auteur"
 msgid "Last Commit"
 msgstr "Dernière livraison"
 
+#. Resource IDs: (86)
+msgid "Last Modified"
+msgstr "Dernière modification"
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr "Dernière modification :"
@@ -5057,7 +5082,7 @@ msgstr "Voir les sujets de l'aide\nAide"
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr ""
+msgstr "Liste les fichiers renommés sous la forme \"dossierparent/dossier/{avant => apres}/fichier.txt\" à la place de \"dossierparent/dossier/apres/fichier.txt (depuis dossierparent/dossier/avant/file.txt)\"."
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -5451,10 +5476,6 @@ msgstr "Options du Panneau de Navigation"
 msgid "Navigation Pane Options..."
 msgstr "Options du Panneau de Navigation..."
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr "Nécessite-verrouillage (pas utilisé par TortoiseGit)"
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr "Niché"
@@ -5513,6 +5534,10 @@ msgstr "Pas de &livraison"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Pas de transfert &rapide"
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
+msgstr "Prendre en compte le suivi de modification locale"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -7131,10 +7156,6 @@ msgid "Select viewer for diff-files"
 msgstr "Sélectionner l'application de visualisation des différences"
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr "Sélectionner / désélectionner &tout"
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr "Sélectionner / désélectionner &tout"
 
@@ -7193,6 +7214,19 @@ msgstr "Sélectionner la date de livraison"
 #. Resource IDs: (1580)
 msgid "Set up SMTP Server"
 msgstr "Sélectionner le serveur SMTP"
+
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr "Confirmer les modifications pour ce fichier"
+
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr "Définir la destination comme \"pushremote\" pour la branche locale sélectionnée."
+
+#. Resource IDs: (86)
+msgid ""
+"Sets the remote branch as the \"pushbranch\" for the selected local branch."
+msgstr "Définir la branche de destination comme \"pushbranch\" pour la branche locale sélectionnée."
 
 #. Resource IDs: (13)
 msgid "Setting properties..."
@@ -7702,7 +7736,11 @@ msgstr "Mise à jour du sous-module"
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
-msgstr ""
+msgstr "Options de mise à jour du sous-module"
+
+#. Resource IDs: (1708)
+msgid "Submodules"
+msgstr "Sous-modules"
 
 #. Resource IDs: (81)
 #, c-format
@@ -7894,7 +7932,7 @@ msgstr "Le code de gestion des différences s'est arrêté en raison d'un erreur
 msgid ""
 "The entered source ref is ambiguous. You have to make it unique (e.g. by "
 "adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "La source ref saisie est ambigüe. Vous devez le rendre unique (i.e. en ajoutant \"refs/heads/\" comme un préfixe pour les branches ou \"refs/tags/\" pour les tags) !"
 
 #. Resource IDs: (64)
 #, c-format
@@ -8004,6 +8042,11 @@ msgstr "La ligne indiquant le nouveau fichier était attendu à la ligne %d !"
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
 msgstr "La ligne indiquant l'ancien fichier était attendu à la ligne %d !"
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
+msgstr "La branche locale \"%s\" ne correspond pas à une mise à jour de la branche distante \"%s\"."
 
 #. Resource IDs: (64)
 msgid ""
@@ -8535,6 +8578,10 @@ msgstr "Inconnu"
 msgid "Unknown depth"
 msgstr "Profondeur inconnu"
 
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
+msgstr "Ignorer la confirmation de modification pour ce fichier"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Sans nom"
@@ -8602,11 +8649,11 @@ msgstr "Utiliser les Différen&ces unifiées du presse-papiers"
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Force\" option to overwrite it."
-msgstr ""
+msgstr "Utiliser un autre nom ou utiliser l'option \"Force\" pour forcer l'écriture."
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Override branch\" option."
-msgstr ""
+msgstr "Utiliser un autre nom ou utiliser l'option \"Override branch\" option"
 
 #. Resource IDs: (2054)
 msgid ""
@@ -9207,6 +9254,10 @@ msgstr "et supportez les développeurs"
 msgid "apply --topo-order"
 msgstr "appliquer --topo-order"
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr "Confirmation de modification"
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr "auteur"
@@ -9412,10 +9463,6 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "trimestre"
-
-#. Resource IDs: (195)
-msgid "readonly"
-msgstr "lecture seule"
 
 #. Resource IDs: (10)
 msgid "replaced"

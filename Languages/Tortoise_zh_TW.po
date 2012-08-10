@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-07-05 16:43+0000\n"
+"PO-Revision-Date: 2012-08-03 23:03+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -710,7 +710,7 @@ msgstr "初始目錄(&I)："
 
 #. Resource IDs: (1693)
 msgid "&Initialize submodules (--init)"
-msgstr ""
+msgstr "初始化子模組(&I) (--init)"
 
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
@@ -911,7 +911,7 @@ msgstr "最近的紀錄訊息(&R)"
 
 #. Resource IDs: (1694)
 msgid "&Recursive"
-msgstr ""
+msgstr "遞迴(&R)"
 
 #. Resource IDs: (65535)
 msgid "&Red:"
@@ -1245,6 +1245,10 @@ msgstr "+ %d"
 msgid "- %d"
 msgstr "- %d"
 
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr "- 全部 -"
+
 #. Resource IDs: (1007)
 msgid ""
 "-------------------------------------------------------------------------------------------"
@@ -1387,11 +1391,11 @@ msgstr "?"
 msgid ""
 "A branch with the same name as your entered tag name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "與你輸入的標籤相同名稱的分支已經存在(所以短參考點是無棱兩可的)，這可能導致一些問題，所以應盡量避免"
 
 #. Resource IDs: (85)
 msgid "A branch with this name already exists."
-msgstr ""
+msgstr "相同名稱的分支已經存在"
 
 #. Resource IDs: (201)
 msgid ""
@@ -1428,11 +1432,11 @@ msgstr "找不到需要的資源檔。"
 msgid ""
 "A tag with the same name as your entered branch name already exists (so the short ref is ambiguous).\n"
 "This can cause problems so you should avoid it."
-msgstr ""
+msgstr "與你輸入的分支相同名稱的標籤已經存在(所以短參考點是無棱兩可的)，這可能導致一些問題，所以應盡量避免"
 
 #. Resource IDs: (85)
 msgid "A tag with this name already exists."
-msgstr ""
+msgstr "相同名稱的標籤已經存在"
 
 #. Resource IDs: (79)
 msgid ""
@@ -1454,7 +1458,7 @@ msgstr "套用(&p)"
 
 #. Resource IDs: (1128)
 msgid "Abbreviate renamings"
-msgstr ""
+msgstr "縮寫重新命名"
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -1603,6 +1607,10 @@ msgstr "進階差異比對設定"
 msgid "Advanced merge settings"
 msgstr "進階合併設定"
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr "全部"
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "全部命令"
@@ -1646,6 +1654,14 @@ msgstr "全部的變更都會消失！確定要重置工具列 '%s' 嗎？"
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "己經是最新的"
+
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr "永遠推送這本地分支到已選遠端保存"
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
+msgstr "永遠推送這本地分支到已選遠端分支"
 
 #. Resource IDs: (197)
 msgid "Always use the system locale settings to show times and dates"
@@ -1766,6 +1782,14 @@ msgstr "指定為變更列表 '%s'"
 #. Resource IDs: (16528)
 msgid "Assigned to:"
 msgstr "指定給:"
+
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr "假設沒有變更"
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr "假設有效/沒有變更"
 
 #. Resource IDs: (77)
 #, c-format
@@ -2068,10 +2092,6 @@ msgstr "Bug編號 / 問題編號:"
 msgid "Bug-IDs"
 msgstr "Bug編號"
 
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr "Build"
-
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "按鈕外觀"
@@ -2266,6 +2286,10 @@ msgstr "在歷史記錄中顯示相對時間"
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
 msgstr "勾選可在記錄訊息中使用較簡短的日期及時間"
+
+#. Resource IDs: (1700)
+msgid "Check:"
+msgstr "勾選:"
 
 #. Resource IDs: (65535)
 msgid "Checking if a newer version of TortoiseGit is available..."
@@ -2751,8 +2775,8 @@ msgid "Copying..."
 msgstr "正在複製..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
-msgstr "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
+msgstr "版權所有 (C) 2009-2012 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -2998,10 +3022,6 @@ msgstr "作者："
 msgid "Cu&t"
 msgstr "剪下(&T)"
 
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr "剪下(&T)\tCtrl+X"
-
 #. Resource IDs: (65535)
 msgid "Current"
 msgstr "目前"
@@ -3091,10 +3111,6 @@ msgstr "日期"
 msgid "Date Last Commit"
 msgstr "上次提交日期"
 
-#. Resource IDs: (1269)
-msgid "Debug"
-msgstr "偵錯"
-
 #. Resource IDs: (1008)
 msgid "Default"
 msgstr "預設"
@@ -3170,7 +3186,7 @@ msgstr "刪除標籤"
 
 #. Resource IDs: (85)
 msgid "Delete the existing branch or use a different name."
-msgstr ""
+msgstr "刪除現有分支或用另一名稱"
 
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
@@ -4019,6 +4035,10 @@ msgstr "檔案大小:\t\t\t%s (%s)\n寬度:\t\t\t%ld 像素\n高度:\t\t\t%ld �
 #. Resource IDs: (208)
 msgid "Filename"
 msgstr "檔案名稱"
+
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr "檔案"
 
 #. Resource IDs: (1057)
 msgid ""
@@ -4984,6 +5004,10 @@ msgstr "上一個作者"
 msgid "Last Commit"
 msgstr "上次提交"
 
+#. Resource IDs: (86)
+msgid "Last Modified"
+msgstr "最後修改"
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr "上次修改:"
@@ -5057,7 +5081,7 @@ msgstr "列出說明主題\n說明主題"
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr ""
+msgstr "顯示一重新命名檔案為 \"long/path/{to => for}/file.txt\" 而非 \"long/path/for/file.txt (from long/path/to/file.txt)\"."
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -5451,10 +5475,6 @@ msgstr "導覽面板選項"
 msgid "Navigation Pane Options..."
 msgstr "導覽面板選項..."
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr "需要鎖定(不被TortoiseGit使用)"
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr "多層次"
@@ -5513,6 +5533,10 @@ msgstr "不提交(&C)"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "非 Fast Forward(&F)"
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
+msgstr "不假設沒有變更"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -7131,10 +7155,6 @@ msgid "Select viewer for diff-files"
 msgstr "選擇檢視差異檔工具"
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr "全部選擇或取消(&A)"
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr "全部選擇或取消(&A)"
 
@@ -7193,6 +7213,19 @@ msgstr "將檔案日期設定(&d)"
 #. Resource IDs: (1580)
 msgid "Set up SMTP Server"
 msgstr "設定 SMTP伺服器"
+
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr "為此檔案設為假設有效"
+
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr "設定已選本地分支的推送遠端"
+
+#. Resource IDs: (86)
+msgid ""
+"Sets the remote branch as the \"pushbranch\" for the selected local branch."
+msgstr "設定已選本地分支的推送遠端分支"
 
 #. Resource IDs: (13)
 msgid "Setting properties..."
@@ -7702,7 +7735,11 @@ msgstr "子模組更新"
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
-msgstr ""
+msgstr "子模組更新選項"
+
+#. Resource IDs: (1708)
+msgid "Submodules"
+msgstr "子模組"
 
 #. Resource IDs: (81)
 #, c-format
@@ -7894,7 +7931,7 @@ msgstr "差異比對引擎停止, 錯誤:\n%s"
 msgid ""
 "The entered source ref is ambiguous. You have to make it unique (e.g. by "
 "adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "輸入的參考點是無棱兩可的，你應輸入獨一無二的參考點(如：在分支名稱前加上 \"refs/heads/\" 或 在標籤名稱前加上 \"refs/tags/\")！"
 
 #. Resource IDs: (64)
 #, c-format
@@ -8004,6 +8041,11 @@ msgstr "新檔案的標示行應該位於第 %d 行!"
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
 msgstr "舊檔案的標示行應該位於第 %d 行!"
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
+msgstr "本地分支 \"%s\" 並不可直接遷移到遠端分支 \"%s\""
 
 #. Resource IDs: (64)
 msgid ""
@@ -8535,6 +8577,10 @@ msgstr "不明"
 msgid "Unknown depth"
 msgstr "不明層數"
 
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
+msgstr "為此檔案取消假設有效"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "未命名"
@@ -8602,11 +8648,11 @@ msgstr "使用剪貼簿中的單一差異檔(&C)"
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Force\" option to overwrite it."
-msgstr ""
+msgstr "用另一名稱或用「強制」選項覆寫"
 
 #. Resource IDs: (85)
 msgid "Use a different name or use the \"Override branch\" option."
-msgstr ""
+msgstr "用另一名稱或用「覆寫分支」選項"
 
 #. Resource IDs: (2054)
 msgid ""
@@ -9207,6 +9253,10 @@ msgstr "並請支持開發者"
 msgid "apply --topo-order"
 msgstr "套用--topo-order"
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr "假設有效"
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr "作者"
@@ -9412,10 +9462,6 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "季"
-
-#. Resource IDs: (195)
-msgid "readonly"
-msgstr "唯讀"
 
 #. Resource IDs: (10)
 msgid "replaced"

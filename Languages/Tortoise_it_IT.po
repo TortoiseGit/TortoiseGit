@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-07-05 16:49+0000\n"
+"PO-Revision-Date: 2012-08-03 23:03+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/tortoisegit/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -656,7 +656,7 @@ msgstr ""
 
 #. Resource IDs: (1511)
 msgid "&HEAD"
-msgstr ""
+msgstr "&HEAD"
 
 #. Resource IDs: (12, 57670, 65535)
 msgid "&Help"
@@ -1244,6 +1244,10 @@ msgstr ""
 msgid "- %d"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "- all -"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid ""
 "-------------------------------------------------------------------------------------------"
@@ -1602,6 +1606,10 @@ msgstr ""
 msgid "Advanced merge settings"
 msgstr ""
 
+#. Resource IDs: (1701)
+msgid "All"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr ""
@@ -1644,6 +1652,14 @@ msgstr ""
 
 #. Resource IDs: (66)
 msgid "Already up to date."
+msgstr ""
+
+#. Resource IDs: (1482)
+msgid "Always push to the selected remote archive for this local branch"
+msgstr ""
+
+#. Resource IDs: (1485)
+msgid "Always push to the selected remote branch for this local branch"
 msgstr ""
 
 #. Resource IDs: (197)
@@ -1765,6 +1781,14 @@ msgstr ""
 #. Resource IDs: (16528)
 msgid "Assigned to:"
 msgstr "Assegnato a:"
+
+#. Resource IDs: (10)
+msgid "Assume Unchanged"
+msgstr ""
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged"
+msgstr ""
 
 #. Resource IDs: (77)
 #, c-format
@@ -2067,10 +2091,6 @@ msgstr ""
 msgid "Bug-IDs"
 msgstr ""
 
-#. Resource IDs: (1269)
-msgid "Build"
-msgstr ""
-
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr ""
@@ -2264,6 +2284,10 @@ msgstr ""
 
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
+msgstr ""
+
+#. Resource IDs: (1700)
+msgid "Check:"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2750,7 +2774,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2011 TortoiseGit"
+msgid "Copyright (C) 2009-2012 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -2997,10 +3021,6 @@ msgstr ""
 msgid "Cu&t"
 msgstr ""
 
-#. Resource IDs: (57635)
-msgid "Cu&t\tCtrl+X"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Current"
 msgstr ""
@@ -3088,10 +3108,6 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Date Last Commit"
-msgstr ""
-
-#. Resource IDs: (1269)
-msgid "Debug"
 msgstr ""
 
 #. Resource IDs: (1008)
@@ -4019,6 +4035,10 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
+#. Resource IDs: (1707)
+msgid "Files"
+msgstr ""
+
 #. Resource IDs: (1057)
 msgid ""
 "Fill Tool\n"
@@ -4405,11 +4425,11 @@ msgstr ""
 
 #. Resource IDs: (1353, 1354, 1511, 1684)
 msgid "HEAD"
-msgstr ""
+msgstr "HEAD"
 
 #. Resource IDs: (65535)
 msgid "HEAD:"
-msgstr ""
+msgstr "HEAD:"
 
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
@@ -4983,6 +5003,10 @@ msgstr ""
 msgid "Last Commit"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Last Modified"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Last Modified:"
 msgstr ""
@@ -5450,10 +5474,6 @@ msgstr ""
 msgid "Navigation Pane Options..."
 msgstr ""
 
-#. Resource IDs: (1550)
-msgid "Needs-lock (not used by TortoiseGit)"
-msgstr ""
-
 #. Resource IDs: (213)
 msgid "Nested"
 msgstr ""
@@ -5511,6 +5531,10 @@ msgstr ""
 
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "No Assume Unchanged"
 msgstr ""
 
 #. Resource IDs: (67)
@@ -6895,7 +6919,7 @@ msgstr ""
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
-msgstr ""
+msgstr "SHA-1"
 
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
@@ -7130,10 +7154,6 @@ msgid "Select viewer for diff-files"
 msgstr ""
 
 #. Resource IDs: (1067)
-msgid "Select/Deselect &All"
-msgstr ""
-
-#. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -7191,6 +7211,19 @@ msgstr ""
 
 #. Resource IDs: (1580)
 msgid "Set up SMTP Server"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Sets the Assume Valid flag for this file"
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "Sets the remote as the \"pushremote\" for the selected local branch."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid ""
+"Sets the remote branch as the \"pushbranch\" for the selected local branch."
 msgstr ""
 
 #. Resource IDs: (13)
@@ -7703,6 +7736,10 @@ msgstr ""
 msgid "Submodule Update Options"
 msgstr ""
 
+#. Resource IDs: (1708)
+msgid "Submodules"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -8002,6 +8039,11 @@ msgstr ""
 #. Resource IDs: (63)
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
+msgstr ""
+
+#. Resource IDs: (86)
+#, c-format
+msgid "The local branch \"%s\" does not fast-forward to the remote branch \"%s\"."
 msgstr ""
 
 #. Resource IDs: (64)
@@ -8532,6 +8574,10 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Unknown depth"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Unsets the Assume Valid flag for this file"
 msgstr ""
 
 #. Resource IDs: (3841)
@@ -9206,6 +9252,10 @@ msgstr "e supporta gli sviluppatori"
 msgid "apply --topo-order"
 msgstr ""
 
+#. Resource IDs: (195)
+msgid "assume-valid"
+msgstr ""
+
 #. Resource IDs: (245)
 msgid "author"
 msgstr "autore"
@@ -9411,10 +9461,6 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "trimestre"
-
-#. Resource IDs: (195)
-msgid "readonly"
-msgstr "solo lettura"
 
 #. Resource IDs: (10)
 msgid "replaced"
