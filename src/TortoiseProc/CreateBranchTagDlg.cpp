@@ -30,8 +30,9 @@
 IMPLEMENT_DYNAMIC(CCreateBranchTagDlg, CResizableStandAloneDialog)
 
 CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CCreateBranchTagDlg::IDD, pParent),
-	CChooseVersion(this)
+	: CResizableStandAloneDialog(CCreateBranchTagDlg::IDD, pParent)
+	, m_bForce(FALSE)
+	, CChooseVersion(this)
 {
 	m_bIsTag=0;
 	m_bSwitch = 0;	// default switch to checkbox not selected
