@@ -242,7 +242,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 			}
 		}
 
-		CGitStatusCache::Instance().AddFolderForCrawling(path);
+		CGitStatusCache::Instance().AddFolderForCrawling(path.GetContainingDirectory());
 		return CStatusCacheEntry();
 	}
 
