@@ -862,6 +862,7 @@ int CRebaseDlg::FinishRebase()
 
 	m_ctrlTabCtrl.RemoveTab(0);
 	m_ctrlTabCtrl.RemoveTab(0);
+	m_LogMessageCtrl.ShowWindow(SW_HIDE);
 	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
 
 	return 0;
