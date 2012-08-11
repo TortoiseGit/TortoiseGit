@@ -24,6 +24,8 @@
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
 #include "GitStatus.h"
+#include "git2.h"
+#include "UnicodeUtils.h"
 
 #define MAX_STRING_LENGTH	4096	//should be big enough
 
@@ -71,6 +73,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 
 CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
 	:filenames(newFilenames)
+	,m_bChanged(false)
 {
 }
 
@@ -99,8 +102,73 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			//
 			// Respond to notifications.
 			//
-			if (code == PSN_APPLY)
+			if (code == PSN_APPLY && filenames.size() == 1 && m_bChanged)
 			{
+				do
+				{
+					CTGitPath path(filenames.front().c_str());
+					CString projectTopDir;
+					if(!path.HasAdminDir(&projectTopDir) || path.IsDirectory())
+						break;
+
+					CTGitPath relatepath;
+					CString strpath=path.GetWinPathString();
+
+					if(projectTopDir[projectTopDir.GetLength() - 1] == _T('\\'))
+						relatepath.SetFromWin(strpath.Right(strpath.GetLength() - projectTopDir.GetLength()));
+					else
+						relatepath.SetFromWin(strpath.Right(strpath.GetLength() - projectTopDir.GetLength() - 1));
+
+					CStringA gitdir = CUnicodeUtils::GetMulti(projectTopDir, CP_UTF8);
+					git_repository *repository = NULL;
+					git_index *index = NULL;
+
+					int ret = git_repository_open(&repository, gitdir.GetBuffer());
+					gitdir.ReleaseBuffer();
+					if (ret)
+						break;
+
+					if (git_repository_index(&index, repository))
+					{
+						git_repository_free(repository);
+						break;
+					}
+
+					bool changed = false;
+
+					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
+					int idx = git_index_find(index, pathA);
+					if (idx >= 0) {
+						git_index_entry *e = git_index_get(index, idx);
+
+						if (SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0) == BST_CHECKED)
+						{
+							if (!(e->flags & GIT_IDXENTRY_VALID))
+							{
+								e->flags |= GIT_IDXENTRY_VALID;
+								git_index_add2(index, e);
+								changed = true;
+							}
+						}
+						else
+						{
+							if (e->flags & GIT_IDXENTRY_VALID)
+							{
+								e->flags &= ~GIT_IDXENTRY_VALID;
+								git_index_add2(index, e);
+								changed = true;
+							}
+						}
+					}
+
+					if (changed)
+					{
+						if (!git_index_write(index))
+							m_bChanged = false;
+					}
+
+					git_index_free(index);
+				} while (0);
 			}
 			SetWindowLongPtr (m_hwnd, DWLP_MSGRESULT, FALSE);
 			return TRUE;
@@ -120,47 +188,56 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	if(HIWORD(wParam) != BN_CLICKED)
 		return;
 
-	if (LOWORD(wParam) == IDC_SHOWLOG)
+	switch (LOWORD(wParam))
 	{
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
-		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
-		CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-		stdstring gitCmd = _T(" /command:");
-		gitCmd += _T("log /path:\"");
-		gitCmd += filenames.front().c_str();
-		gitCmd += _T("\"");
-		if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+	case IDC_SHOWLOG:
 		{
-			CloseHandle(process.hThread);
-			CloseHandle(process.hProcess);
+			STARTUPINFO startup;
+			PROCESS_INFORMATION process;
+			memset(&startup, 0, sizeof(startup));
+			startup.cb = sizeof(startup);
+			memset(&process, 0, sizeof(process));
+			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+			stdstring gitCmd = _T(" /command:");
+			gitCmd += _T("log /path:\"");
+			gitCmd += filenames.front().c_str();
+			gitCmd += _T("\"");
+			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+			{
+				CloseHandle(process.hThread);
+				CloseHandle(process.hProcess);
+			}
 		}
-	}
-	if (LOWORD(wParam) == IDC_SHOWSETTINGS)
-	{
-		CTGitPath path(filenames.front().c_str());
-		CString projectTopDir;
-		if(!path.HasAdminDir(&projectTopDir))
-			return;
-
-		STARTUPINFO startup;
-		PROCESS_INFORMATION process;
-		memset(&startup, 0, sizeof(startup));
-		startup.cb = sizeof(startup);
-		memset(&process, 0, sizeof(process));
-		CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
-
-		stdstring gitCmd = _T(" /command:");
-		gitCmd += _T("settings /path:\"");
-		gitCmd += projectTopDir;
-		gitCmd += _T("\"");
-		if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+		break;
+	case IDC_SHOWSETTINGS:
 		{
-			CloseHandle(process.hThread);
-			CloseHandle(process.hProcess);
+			CTGitPath path(filenames.front().c_str());
+			CString projectTopDir;
+			if(!path.HasAdminDir(&projectTopDir))
+				return;
+
+			STARTUPINFO startup;
+			PROCESS_INFORMATION process;
+			memset(&startup, 0, sizeof(startup));
+			startup.cb = sizeof(startup);
+			memset(&process, 0, sizeof(process));
+			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+
+			stdstring gitCmd = _T(" /command:");
+			gitCmd += _T("settings /path:\"");
+			gitCmd += projectTopDir;
+			gitCmd += _T("\"");
+			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+			{
+				CloseHandle(process.hThread);
+				CloseHandle(process.hProcess);
+			}
 		}
+		break;
+	case IDC_ASSUMEVALID:
+		m_bChanged = true;
+		SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
+		break;
 	}
 }
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
@@ -333,7 +410,47 @@ void CGitPropertyPage::InitWorkfileView()
 				SetDlgItemText(m_hwnd, IDC_LAST_DATE, _T(""));
 			else
 				SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
+
+			if (!path.IsDirectory())
+			{
+				// get assume valid flag
+				bool assumevalid = false;
+				do
+				{
+					CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
+					git_repository *repository = NULL;
+					git_index *index = NULL;
+
+					int ret = git_repository_open(&repository, gitdir.GetBuffer());
+					gitdir.ReleaseBuffer();
+					if (ret)
+						break;
+
+					if (git_repository_index(&index, repository))
+					{
+						git_repository_free(repository);
+						break;
+					}
+
+					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
+					int idx = git_index_find(index, pathA);
+					if (idx >= 0) {
+						git_index_entry *e = git_index_get(index, idx);
+
+						if (e->flags & GIT_IDXENTRY_VALID)
+							assumevalid = true;
+					}
+
+					git_index_free(index);
+				} while (0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, assumevalid ? BST_CHECKED : BST_UNCHECKED, 0);
+			}
+			else
+				ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
 		}
+		else
+			ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+
 	}catch(...)
 	{
 	}

@@ -264,6 +264,7 @@
 #define IDC_DEPTHEDIT                   11026
 #define IDC_CONFIG_USEREMAIL            11026
 #define IDC_CHECKSUM                    11027
+#define IDC_ASSUMEVALID                 11027
 
 // Next default values for new objects
 // 
@@ -271,7 +272,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        5180
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         11026
+#define _APS_NEXT_CONTROL_VALUE         11028
 #define _APS_NEXT_SYMED_VALUE           5101
 #endif
 #endif
