@@ -2871,7 +2871,7 @@ void CBaseView::RemoveSelectedText()
 	}
 	CUndo::GetInstance().AddState(leftstate, rightstate, bottomstate, m_ptCaretPos);
 	// remove the lines at the end, to avoid problems with line indexes
-	if (linestoremove.size())
+	if (!linestoremove.empty())
 	{
 		std::vector<LONG>::const_iterator it = linestoremove.begin();
 		int nLineToRemove = *it;

@@ -245,7 +245,7 @@ void CGitStatusCache::Refresh()
 {
 	m_shellCache.ForceRefresh();
 //	m_pInstance->m_svnHelp.ReloadConfig();
-	if (m_pInstance->m_directoryCache.size())
+	if (!m_pInstance->m_directoryCache.empty())
 	{
 		CCachedDirectory::CachedDirMap::iterator I = m_pInstance->m_directoryCache.begin();
 		for (/* no init */; I != m_pInstance->m_directoryCache.end(); ++I)
@@ -325,7 +325,7 @@ bool CGitStatusCache::RemoveTimedoutBlocks()
 			toRemove.push_back(it->first);
 		}
 	}
-	if (toRemove.size())
+	if (!toRemove.empty())
 	{
 		for (std::vector<CTGitPath>::const_iterator it = toRemove.begin(); it != toRemove.end(); ++it)
 		{
@@ -357,7 +357,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		return false;
 
 	typedef std::map<CTGitPath, git_wc_status_kind>  ChildDirStatus;
-	if (cdir->m_childDirectories.size())
+	if (!cdir->m_childDirectories.empty())
 	{
 		ChildDirStatus::iterator it = cdir->m_childDirectories.begin();
 		for (; it != cdir->m_childDirectories.end(); )

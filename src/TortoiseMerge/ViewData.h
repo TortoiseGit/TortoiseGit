@@ -53,7 +53,7 @@ public:
 	const viewdata&	GetData(int index) {return m_data[index];}
 	const CString&	GetLine(int index) {return m_data[index].sLine;}
 	DiffStates		GetState(int index) {return m_data[index].state;}
-	int				GetLineNumber(int index) {return m_data.size() ? m_data[index].linenumber : 0;}
+	int				GetLineNumber(int index) { return (!m_data.empty()) ? m_data[index].linenumber : 0; }
 	int				FindLineNumber(int number);
 	EOL				GetLineEnding(int index) {return m_data[index].ending;}
 

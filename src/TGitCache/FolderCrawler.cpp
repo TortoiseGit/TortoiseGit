@@ -204,13 +204,13 @@ void CFolderCrawler::WorkerThread()
 			}
 			CGitStatusCache::Instance().RemoveTimedoutBlocks();
 
-			if ((m_foldersToUpdate.size() == 0) && (m_pathsToUpdate.size() == 0))
+			if (m_foldersToUpdate.empty() && m_pathsToUpdate.empty())
 			{
 				// Nothing left to do
 				break;
 			}
 			currentTicks = GetTickCount();
-			if (m_pathsToUpdate.size())
+			if (!m_pathsToUpdate.empty())
 			{
 				{
 					AutoLocker lock(m_critSec);
@@ -385,7 +385,7 @@ void CFolderCrawler::WorkerThread()
 					}
 				}
 			}
-			else if (m_foldersToUpdate.size())
+			else if (!m_foldersToUpdate.empty())
 			{
 				{
 					AutoLocker lock(m_critSec);

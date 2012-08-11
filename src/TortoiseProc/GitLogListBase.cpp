@@ -184,7 +184,7 @@ int CGitLogListBase::AsyncDiffThread()
 		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
 
 		GitRev *pRev = NULL;
-		while(!m_AsyncThreadExit && m_AsynDiffList.size() > 0)
+		while(!m_AsyncThreadExit && !m_AsynDiffList.empty())
 		{
 			m_AsynDiffListLock.Lock();
 			pRev = m_AsynDiffList.back();
@@ -980,7 +980,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 
 //	p->translate(QPoint(opt.rect.left(), opt.rect.top()));
 
-	if (data->m_Lanes.size() == 0)
+	if (data->m_Lanes.empty())
 		m_logEntries.setLane(data->m_CommitHash);
 
 	std::vector<int>& lanes=data->m_Lanes;
@@ -1155,7 +1155,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						//TRACE(_T("Update ... %d\r\n"),pLVCD->nmcd.dwItemSpec);
 					//}
 
-					if(m_HashMap[data->m_CommitHash].size()!=0)
+					if (!m_HashMap[data->m_CommitHash].empty())
 					{
 						CRect rect;
 
@@ -1470,7 +1470,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1) && m_hasWC) // compare with WC, unified
 				{
 					GitRev *pRev=pSelLogEntry;
-					if(pSelLogEntry->m_ParentHash.size()==0)
+					if (pSelLogEntry->m_ParentHash.empty())
 					{
 						pRev->GetParentFromHash(pRev->m_CommitHash);
 					}
@@ -1500,7 +1500,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 
 					GitRev *pRev=pSelLogEntry;
-					if(pSelLogEntry->m_ParentHash.size()==0)
+					if (pSelLogEntry->m_ParentHash.empty())
 					{
 						pRev->GetParentFromHash(pRev->m_CommitHash);
 					}
@@ -1779,7 +1779,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			bool bAddSeparator = false;
-			if(m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && m_HashMap[pSelLogEntry->m_CommitHash].size() >= 1)
+			if(m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && !m_HashMap[pSelLogEntry->m_CommitHash].empty())
 			{
 				// show the push-option only if the log entry has an associated local branch
 				bool isLocal = false;
@@ -2363,7 +2363,7 @@ UINT CGitLogListBase::LogThread()
 	TRACE(_T("\n===Begin===\n"));
 	//Update work copy item;
 
-	if( m_logEntries.size() > 0)
+	if (!m_logEntries.empty())
 	{
 		GitRev *pRev = &m_logEntries.GetGitRevAt(0);
 

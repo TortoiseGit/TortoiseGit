@@ -287,7 +287,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 
 	*start=*end=-1;
 
-	if(vector.size() ==0)
+	if (vector.empty())
 		return -1;
 
 	if(pos >= vector.size())
@@ -344,7 +344,7 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 	int start = 0;
 	int mid = (start+end)/2;
 
-	if(vector.size() == 0)
+	if (vector.empty())
 		return -1;
 
 	while(!( start == end && start==mid))

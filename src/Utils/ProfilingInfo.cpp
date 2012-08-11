@@ -100,7 +100,7 @@ CProfilingInfo::CProfilingInfo()
 
 CProfilingInfo::~CProfilingInfo(void)
 {
-	if (records.size() > 0)
+	if (!records.empty())
 	{
 		// write profile to file
 

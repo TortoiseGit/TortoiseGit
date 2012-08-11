@@ -247,7 +247,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
+	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
 	//DETACHED_PROCESS make ssh recognize that it has no console to launch askpass to input password.
@@ -978,7 +978,7 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 	si.dwFlags = STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 	si.hStdOutput = houtfile;
 
-	LPTSTR pEnv = m_Environment.size()? &m_Environment[0]: NULL;
+	LPTSTR pEnv = (!m_Environment.empty()) ? &m_Environment[0]: NULL;
 	DWORD dwFlags = pEnv ? CREATE_UNICODE_ENVIRONMENT : 0;
 
 	if(cmd.Find(_T("git")) == 0)

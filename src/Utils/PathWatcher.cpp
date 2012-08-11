@@ -332,7 +332,7 @@ continuewatching:
 
 void CPathWatcher::ClearInfoMap()
 {
-	if (watchInfoMap.size()!=0)
+	if (!watchInfoMap.empty())
 	{
 		AutoLocker lock(m_critSec);
 		for (std::map<HANDLE, CDirWatchInfo *>::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)

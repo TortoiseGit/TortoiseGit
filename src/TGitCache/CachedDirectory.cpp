@@ -780,7 +780,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	CacheEntryMap::iterator itMembers;
 	std::set<CTGitPath> refreshedpaths;
 	DWORD now = GetTickCount();
-	if (m_entryCache.size() == 0)
+	if (m_entryCache.empty())
 		return;
 	for (itMembers = m_entryCache.begin(); itMembers != m_entryCache.end(); ++itMembers)
 	{

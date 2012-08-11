@@ -63,7 +63,7 @@ BOOL CSetBugTraqAdv::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 
 	std::vector<CBugTraqProvider> providers = CBugTraqAssociations::GetAvailableProviders();
-	if (providers.size() == 0)
+	if (providers.empty())
 	{
 		AfxMessageBox(IDS_ERR_NO_AVAILABLE_BUGTRAQ_PROVIDERS);
 		EndDialog(IDCANCEL);

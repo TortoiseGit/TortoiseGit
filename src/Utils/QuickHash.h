@@ -308,7 +308,7 @@ public:
 
 	void clear()
 	{
-		if (grower.size() > 0)
+		if (!grower.empty())
 		{
 			delete[] data;
 			grower = prime_grower();

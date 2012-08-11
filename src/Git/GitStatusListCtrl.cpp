@@ -241,7 +241,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 
 	m_mapFilenameToChecked.clear();
 	//m_StatusUrlList.Clear();
-	bool bHasChangelists = (m_changelists.size()>1 || (m_changelists.size()>0 && !m_bHasIgnoreGroup));
+	bool bHasChangelists = (m_changelists.size() > 1 || (!m_changelists.empty() && !m_bHasIgnoreGroup));
 	m_changelists.clear();
 	for (size_t i=0; i < m_arStatusArray.size(); i++)
 	{
@@ -487,7 +487,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		//set default checkbox status
 		CTGitPath* entry = ((CTGitPath*)m_arStatusArray[i]);
 		CString path = entry->GetGitPathString();
-		if (m_mapFilenameToChecked.size()!=0 && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
+		if (!m_mapFilenameToChecked.empty() && m_mapFilenameToChecked.find(path) != m_mapFilenameToChecked.end())
 		{
 			entry->m_Checked=m_mapFilenameToChecked[path];
 		}
@@ -603,7 +603,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 			showFlags |= SVNSLC_SHOWINCHANGELIST;
 #endif
 		bool bAllowCheck = ((entry->changelist.Compare(GITSLC_IGNORECHANGELIST) != 0)
-			&& (m_bCheckIfGroupsExist || (m_changelists.size()==0 || (m_changelists.size()==1 && m_bHasIgnoreGroup))));
+			&& (m_bCheckIfGroupsExist || (m_changelists.empty() || (m_changelists.size() == 1 && m_bHasIgnoreGroup))));
 
 		// status_ignored is a special case - we must have the 'direct' flag set to add a status_ignored item
 #if 0
@@ -1810,7 +1810,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							changelistSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDSVNLC_CREATEIGNORECS, SVNSLC_IGNORECHANGELIST);
 						}
 
-						if (m_changelists.size() > 0)
+						if (!m_changelists.empty())
 						{
 							// find the changelist names
 							bool bNeedSeparator = true;

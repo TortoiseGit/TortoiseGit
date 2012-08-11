@@ -466,7 +466,7 @@ bool CSmtp::Send()
 	delete[] FileName;
 
 	// sending last message block (if there is one or more attachments)
-	if(Attachments.size())
+	if (!Attachments.empty())
 	{
 		sprintf(SendBuf,"\r\n--%s--\r\n",BOUNDARY_TEXT);
 		if(!SendData())
@@ -597,7 +597,7 @@ bool CSmtp::FormatHeader(char* header)
 	char *bcc = NULL;
 
 	// check for at least one recipient
-	if(Recipients.size())
+	if (!Recipients.empty())
 	{
 		for (i=s=0;i<Recipients.size();i++)
 			s += Recipients[i].Mail.size() + Recipients[i].Name.size() + 3;
@@ -625,7 +625,7 @@ bool CSmtp::FormatHeader(char* header)
 		return false;
 	}
 
-	if(CCRecipients.size())
+	if (!CCRecipients.empty())
 	{
 		for (i=s=0;i<CCRecipients.size();i++)
 			s += CCRecipients[i].Mail.size() + CCRecipients[i].Name.size() + 3;
@@ -649,7 +649,7 @@ bool CSmtp::FormatHeader(char* header)
 		}
 	}
 
-	if(BCCRecipients.size())
+	if (!BCCRecipients.empty())
 	{
 		for (i=s=0;i<BCCRecipients.size();i++)
 			s += BCCRecipients[i].Mail.size() + BCCRecipients[i].Name.size() + 3;
@@ -735,14 +735,14 @@ bool CSmtp::FormatHeader(char* header)
 	strcat(header, "\r\n");
 
 	// Cc: <SP> <remote-user-mail> <CRLF>
-	if(CCRecipients.size())
+	if (!CCRecipients.empty())
 	{
 		strcat(header,"Cc: ");
 		strcat(header, cc);
 		strcat(header, "\r\n");
 	}
 
-	if(BCCRecipients.size())
+	if (!BCCRecipients.empty())
 	{
 		strcat(header,"Bcc: ");
 		strcat(header, bcc);

@@ -141,7 +141,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 	if(logs.ParserFromLog(NULL,-1,0,&from,&to))
 		return -1;
 
-	if(logs.size() == 0)
+	if (logs.empty())
 		return 0;
 
 	CSysProgressDlg progress;
@@ -347,7 +347,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CFileDiffDlg dlg;
 
-				if(pSelLogEntry->m_ParentHash.size()>0)
+				if (!pSelLogEntry->m_ParentHash.empty())
 				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
 				{
 					cmd>>=16;
@@ -793,7 +793,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_PUSH:
 			{
 				CString guessAssociatedBranch;
-				if (m_HashMap[pSelLogEntry->m_CommitHash].size() > 0)
+				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
 					guessAssociatedBranch = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				if (CAppUtils::Push(guessAssociatedBranch))
 					Refresh();
@@ -901,7 +901,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_MERGEREV:
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
-				if (m_HashMap[pSelLogEntry->m_CommitHash].size() > 0)
+				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
 					str = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
 				// we need an URL to complete this command, so error out if we can't get an URL
 				if(CAppUtils::Merge(&str))

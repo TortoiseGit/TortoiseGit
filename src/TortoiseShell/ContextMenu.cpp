@@ -422,7 +422,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 			if (status == git_wc_status_ignored)
 				itemStatesFolder |= ITEMIS_IGNORED;
 			itemStatesFolder |= ITEMIS_FOLDER;
-			if (files_.size() == 0)
+			if (files_.empty())
 				itemStates |= ITEMIS_ONLYONE;
 			if (m_State != FileStateDropHandler)
 				itemStates |= itemStatesFolder;
@@ -785,7 +785,7 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 	if ((uFlags & CMF_DEFAULTONLY)!=0)
 		return S_OK;					//we don't change the default action
 
-	if ((files_.size() == 0)||(folder_.size() == 0))
+	if (files_.empty() || folder_.empty())
 		return S_OK;
 
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
@@ -888,7 +888,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	if ((uFlags & CMF_DEFAULTONLY)!=0)
 		return S_OK;					//we don't change the default action
 
-	if ((files_.size() == 0)&&(folder_.size() == 0))
+	if (files_.empty() && folder_.empty())
 		return S_OK;
 
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
@@ -924,7 +924,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	if (folder_.empty())
 	{
 		// folder is empty, but maybe files are selected
-		if (files_.size() == 0)
+		if (files_.empty())
 			return S_OK;	// nothing selected - we don't have a menu to show
 		// check whether a selected entry is an UID - those are namespace extensions
 		// which we can't handle
@@ -1189,7 +1189,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
  	menuiteminfo.dwTypeData = stringtablebuffer;
 
 	UINT uIcon = bShowIcons ? IDI_APP : 0;
-	if (folder_.size())
+	if (!folder_.empty())
 	{
 		uIcon = bShowIcons ? IDI_MENUFOLDER : 0;
 		myIDMap[idCmd - idCmdFirst] = ShellSubMenuFolder;
@@ -1208,7 +1208,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		myIDMap[idCmd - idCmdFirst] = ShellSubMenuLink;
 		myIDMap[idCmd] = ShellSubMenuLink;
 	}
-	else if (files_.size() > 1)
+	else if (!files_.empty())
 	{
 		uIcon = bShowIcons ? IDI_MENUMULTIPLE : 0;
 		myIDMap[idCmd - idCmdFirst] = ShellSubMenuMultiple;
@@ -1272,7 +1272,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 	std::string parent;
 	std::string file;
 
-	if ((files_.size() > 0)||(folder_.size() > 0))
+	if (!files_.empty() || !folder_.empty())
 	{
 		UINT_PTR idCmd = LOWORD(lpcmi->lpVerb);
 
@@ -1307,7 +1307,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				//#region case
 			case ShellMenuSync:
 				gitCmd += _T("sync /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1436,7 +1436,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuSwitch:
 				gitCmd += _T("switch /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1444,7 +1444,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuExport:
 				gitCmd += _T("export /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1455,7 +1455,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuCreateRepos:
 				gitCmd += _T("repocreate /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1463,7 +1463,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuMerge:
 				gitCmd += _T("merge /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1471,7 +1471,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuCopy:
 				gitCmd += _T("copy /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1479,7 +1479,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuSettings:
 				gitCmd += _T("settings /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1490,7 +1490,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRename:
 				gitCmd += _T("rename /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1620,7 +1620,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuLog:
 				gitCmd += _T("log /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1628,7 +1628,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuConflictEditor:
 				gitCmd += _T("conflicteditor /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1636,7 +1636,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuGitSVNRebase:
 				gitCmd += _T("svnrebase /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1644,7 +1644,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuGitSVNDCommit:
 				gitCmd += _T("svndcommit /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1652,7 +1652,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuGitSVNDFetch:
 				gitCmd += _T("svnfetch /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1660,7 +1660,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuGitSVNIgnore:
 				gitCmd += _T("svnignore /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1668,7 +1668,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRebase:
 				gitCmd += _T("rebase /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1700,7 +1700,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
                 else
                 {
                     gitCmd += _T("repostatus /path:\"");
-				    if (files_.size() > 0)
+				    if (!files_.empty())
 					    gitCmd += files_.front();
 				    else
 					    gitCmd += folder_;
@@ -1712,7 +1712,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRefBrowse:
 				gitCmd += _T("refbrowse /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1720,7 +1720,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuRefLog:
 				gitCmd += _T("reflog /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1729,7 +1729,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuStashSave:
 				gitCmd += _T("stashsave /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1738,7 +1738,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuStashApply:
 				gitCmd += _T("stashapply /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1747,7 +1747,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuStashPop:
 				gitCmd += _T("stashpop /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1757,7 +1757,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuStashList:
 				gitCmd += _T("reflog /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1766,7 +1766,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuBisectStart:
 				gitCmd += _T("bisect /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1775,7 +1775,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuBisectGood:
 				gitCmd += _T("bisect /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1785,7 +1785,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				
 			case ShellMenuBisectBad:
 				gitCmd += _T("bisect /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1794,7 +1794,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuBisectReset:
 				gitCmd += _T("bisect /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1803,7 +1803,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuSubAdd:
 				gitCmd += _T("subadd /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1812,7 +1812,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuBlame:
 				gitCmd += _T("blame /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1859,7 +1859,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				if (itemStates & ITEMIS_PATCHFILE)
 				{
 					gitCmd = _T(" /diff:\"");
-					if (files_.size() > 0)
+					if (!files_.empty())
 					{
 						gitCmd += files_.front();
 						if (itemStatesFolder & ITEMIS_FOLDERINGIT)
@@ -1878,7 +1878,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				else
 				{
 					gitCmd = _T(" /patchpath:\"");
-					if (files_.size() > 0)
+					if (!files_.empty())
 						gitCmd += files_.front();
 					else
 						gitCmd += folder_;
@@ -1933,7 +1933,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuClone:
 				gitCmd += _T("clone /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1941,7 +1941,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuPull:
 				gitCmd += _T("pull /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1949,7 +1949,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuPush:
 				gitCmd += _T("push /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1957,7 +1957,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuBranch:
 				gitCmd += _T("branch /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1966,7 +1966,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuTag:
 				gitCmd += _T("tag /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1975,7 +1975,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuFormatPatch:
 				gitCmd += _T("formatpatch /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -1992,7 +1992,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 
 			case ShellMenuCherryPick:
 				gitCmd += _T("cherrypick /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -2000,7 +2000,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuFetch:
 				gitCmd += _T("fetch /path:\"");
-				if (files_.size() > 0)
+				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
@@ -2021,7 +2021,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			RunCommand(tortoiseProcPath, gitCmd, _T("TortoiseProc launch failed"));
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
-	} // if ((files_.size() > 0)||(folder_.size() > 0))
+	} // if (files_.empty() || folder_.empty())
 	return hr;
 
 }
@@ -2223,7 +2223,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 					accmenus.push_back(It->first);
 				}
 			}
-			if (accmenus.size() == 0)
+			if (accmenus.empty())
 			{
 				// no menu with that accelerator key.
 				*pResult = MAKELONG(0, MNC_IGNORE);
@@ -2340,7 +2340,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	bool bShowIgnoreMenu = false;
 	TCHAR maskbuf[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
 	TCHAR ignorepath[MAX_PATH];		// MAX_PATH is ok, since this only holds a filename
-	if (files_.size() == 0)
+	if (files_.empty())
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
@@ -2349,7 +2349,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		_tcscpy_s(ignorepath, MAX_PATH, _tcsrchr(I->c_str(), '\\')+1);
 	else
 		_tcscpy_s(ignorepath, MAX_PATH, I->c_str());
-	if ((itemStates & ITEMIS_IGNORED)&&(ignoredprops.size() > 0))
+	if ((itemStates & ITEMIS_IGNORED) && (!ignoredprops.empty()))
 	{
 		// check if the item name is ignored or the mask
 		size_t p = 0;

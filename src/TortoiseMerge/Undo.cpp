@@ -65,7 +65,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 	if (!CanUndo())
 		return false;
 
-	if (m_groups.size() && m_groups.back() == m_caretpoints.size())
+	if (!m_groups.empty() && m_groups.back() == m_caretpoints.size())
 	{
 		m_groups.pop_back();
 		std::list<int>::size_type b = m_groups.back();

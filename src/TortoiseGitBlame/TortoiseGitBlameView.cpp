@@ -869,7 +869,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 		Y = lineRect.bottom;
 	}
 
-	if (m_ID.size())
+	if (!m_ID.empty())
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);

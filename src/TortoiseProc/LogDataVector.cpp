@@ -259,7 +259,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 		GitRev* r = & this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;
 
-		if (r->m_Lanes.size() == 0)
+		if (r->m_Lanes.empty())
 			updateLanes(*r, *l, curSha);
 
 		if (curSha == sha)

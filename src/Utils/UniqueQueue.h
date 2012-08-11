@@ -48,6 +48,7 @@ public:
 	T				Pop();
 	size_t			erase(T value);
 	size_t			size() { return m_Queue.size(); }
+	bool			empty() { return m_Queue.empty(); }
 private:
 	typedef struct UniqueQueueStruct
 	{
@@ -125,14 +126,14 @@ size_t UniqueQueue<T>::Push( T value )
 template <class T>
 T UniqueQueue<T>::Pop()
 {
-	if (m_Queue.size() == 0)
+	if (m_Queue.empty())
 		return T();
 
 	T value = m_Queue.front().value;
 	m_Queue.pop_front();
 	m_QueueTMap.erase(value);
 
-	if (m_Queue.size() == 0)
+	if (m_Queue.empty())
 		m_highestValue = 0;
 
 	return value;

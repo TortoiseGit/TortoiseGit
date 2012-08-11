@@ -88,7 +88,7 @@ void CSetHooks::RebuildHookList()
 	m_cHookList.SetRedraw(false);
 	m_cHookList.DeleteAllItems();
 	// fill the list control with all the hooks
-	if (CHooks::Instance().size())
+	if (!CHooks::Instance().empty())
 	{
 		for (hookiterator it = CHooks::Instance().begin(); it != CHooks::Instance().end(); ++it)
 		{

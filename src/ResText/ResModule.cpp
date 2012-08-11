@@ -1894,7 +1894,7 @@ void CResModule::ReplaceStr(LPCWSTR src, WORD * dest, size_t * count, int * tran
 
 	std::wstring wstr = std::wstring(pBuf);
 	RESOURCEENTRY entry = m_StringEntries[wstr];
-	if (entry.msgstr.size())
+	if (!entry.msgstr.empty())
 	{
 		wcscpy(pBuf, entry.msgstr.c_str());
 		CUtils::StringCollapse(pBuf);

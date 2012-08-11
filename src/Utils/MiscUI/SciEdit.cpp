@@ -578,7 +578,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 
 void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 {
-	if (m_autolist.size()==0)
+	if (m_autolist.empty())
 		return;
 	if (Call(SCI_AUTOCACTIVE))
 		return;

@@ -362,7 +362,7 @@ public:
 				stdstring str = I->substr(0, I->size()-1);
 				if (_tcsnicmp(str.c_str(), path, str.size())==0)
 					return TRUE;
-				if (str.size() && (str.at(str.size()-1) == '\\') && (_tcsnicmp(str.c_str(), path, str.size()-1)==0))
+				if (!str.empty() && (str.at(str.size()-1) == '\\') && (_tcsnicmp(str.c_str(), path, str.size()-1)==0))
 					return TRUE;
 			}
 			else if (_tcsicmp(I->c_str(), path)==0)

@@ -296,7 +296,7 @@ void CGitPropertyPage::InitWorkfileView()
 {
 	CString username;
 	CGit git;
-	if( filenames.size() ==0)
+	if (filenames.empty())
 		return;
 
 	CTGitPath path(filenames.front().c_str());
@@ -519,7 +519,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 			return S_OK;
 	}
 
-	if (files_.size() == 0)
+	if (files_.empty())
 		return S_OK;
 
 	LoadLangDll();
