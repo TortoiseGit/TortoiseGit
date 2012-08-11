@@ -459,9 +459,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_RESET:
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
-				CAppUtils::GitReset(&str);
-				ReloadHashMap();
-				Invalidate();
+				if (CAppUtils::GitReset(&str))
+				{
+					ReloadHashMap();
+					Invalidate();
+				}
 			}
 			break;
 		case ID_REBASE_PICK:
