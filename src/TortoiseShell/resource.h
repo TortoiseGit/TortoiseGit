@@ -225,6 +225,7 @@
 #define IDC_EDITNAME                    1014
 #define IDC_EDITVALUE                   1015
 #define IDC_SHOWLOG                     1016
+#define IDC_SHOWSETTINGS                1017
 #define IDC_RECURSIVE                   1018
 #define IDS_git_USERCANCELLED           1181
 #define IDI_REPOBROWSE                  5145

@@ -138,6 +138,30 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			CloseHandle(process.hProcess);
 		}
 	}
+	if (LOWORD(wParam) == IDC_SHOWSETTINGS)
+	{
+		CTGitPath path(filenames.front().c_str());
+		CString projectTopDir;
+		if(!path.HasAdminDir(&projectTopDir))
+			return;
+
+		STARTUPINFO startup;
+		PROCESS_INFORMATION process;
+		memset(&startup, 0, sizeof(startup));
+		startup.cb = sizeof(startup);
+		memset(&process, 0, sizeof(process));
+		CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+
+		stdstring gitCmd = _T(" /command:");
+		gitCmd += _T("settings /path:\"");
+		gitCmd += projectTopDir;
+		gitCmd += _T("\"");
+		if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+		{
+			CloseHandle(process.hThread);
+			CloseHandle(process.hProcess);
+		}
+	}
 }
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
 {
