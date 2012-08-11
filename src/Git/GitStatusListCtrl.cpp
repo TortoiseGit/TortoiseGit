@@ -37,7 +37,7 @@
 #include "Git.h"
 #include "GitDiff.h"
 //#include "LogDlg.h"
-//#include "SVNProgressDlg.h"
+#include "GitProgressDlg.h"
 #include "SysImageList.h"
 //#include "Svnstatuslistctrl.h"
 #include "TGitPath.h"
@@ -53,7 +53,6 @@
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
 #include "FormatMessageWrapper.h"
-#include "MassiveGitTask.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
@@ -2003,25 +2002,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_ADD:
-				{	// The add went ok, but we now need to run through the selected items again
-					// and update their status
-					std::vector<int> selectIndex;
+				{
+					CTGitPathList paths;
+					FillListOfSelectedItemPaths(paths, true);
 
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index;
-					CMassiveGitTask mgt(L"add -f");
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						CTGitPath * path = (CTGitPath *)GetItemData(index);
-						ASSERT(path);
-						if(path == NULL)
-							continue;
-
-						selectIndex.push_back(index);
-						mgt.AddFile(*path);
-					}
-					BOOL cancel = FALSE;
-					mgt.Execute(cancel);
+					CGitProgressDlg progDlg;
+					progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
+					progDlg.SetPathList(paths);
+					progDlg.SetItemCount(paths.GetCount());
+					progDlg.DoModal();
 
 					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
 						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
