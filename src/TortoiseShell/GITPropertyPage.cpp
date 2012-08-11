@@ -284,13 +284,8 @@ void CGitPropertyPage::InitWorkfileView()
 
 		if (filenames.size() == 1)
 		{
-			CTGitPath path(filenames.front().c_str());
 			CTGitPath relatepath;
 			CString strpath=path.GetWinPathString();
-			CString ProjectTopDir;
-
-			if(!path.HasAdminDir(&ProjectTopDir))
-				return;
 
 			if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
 			{
