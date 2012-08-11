@@ -265,6 +265,7 @@
 #define IDC_CONFIG_USEREMAIL            11026
 #define IDC_CHECKSUM                    11027
 #define IDC_ASSUMEVALID                 11027
+#define IDC_EXECUTABLE                  11028
 
 // Next default values for new objects
 // 

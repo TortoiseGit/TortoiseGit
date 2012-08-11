@@ -146,7 +146,6 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							if (!(e->flags & GIT_IDXENTRY_VALID))
 							{
 								e->flags |= GIT_IDXENTRY_VALID;
-								git_index_add2(index, e);
 								changed = true;
 							}
 						}
@@ -155,10 +154,27 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							if (e->flags & GIT_IDXENTRY_VALID)
 							{
 								e->flags &= ~GIT_IDXENTRY_VALID;
-								git_index_add2(index, e);
 								changed = true;
 							}
 						}
+						if (SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0) == BST_CHECKED)
+						{
+							if (!(e->mode & 0111))
+							{
+								e->mode |= 0111;
+								changed = true;
+							}
+						}
+						else
+						{
+							if (e->mode & 0111)
+							{
+								e->mode &= ~0111;
+								changed = true;
+							}
+						}
+						if (changed)
+							git_index_add2(index, e);
 					}
 
 					if (changed)
@@ -235,6 +251,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		}
 		break;
 	case IDC_ASSUMEVALID:
+	case IDC_EXECUTABLE:
 		m_bChanged = true;
 		SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
 		break;
@@ -415,6 +432,7 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				// get assume valid flag
 				bool assumevalid = false;
+				bool executable = false;
 				do
 				{
 					CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
@@ -439,17 +457,27 @@ void CGitPropertyPage::InitWorkfileView()
 
 						if (e->flags & GIT_IDXENTRY_VALID)
 							assumevalid = true;
+
+						if (e->mode & 0111)
+							executable = true;
 					}
 
 					git_index_free(index);
 				} while (0);
 				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, assumevalid ? BST_CHECKED : BST_UNCHECKED, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, executable ? BST_CHECKED : BST_UNCHECKED, 0);
 			}
 			else
+			{
 				ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+				ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+			}
 		}
 		else
+		{
 			ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+		}
 
 	}catch(...)
 	{
