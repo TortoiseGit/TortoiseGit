@@ -310,7 +310,10 @@ void CGitPropertyPage::InitWorkfileView()
 			SetDlgItemText(m_hwnd, IDC_LAST_HASH, revLast.m_CommitHash.ToString());
 			SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, revLast.GetSubject());
 			SetDlgItemText(m_hwnd, IDC_LAST_AUTHOR, revLast.GetAuthorName());
-			SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
+			if (revLast.m_CommitHash.IsEmpty())
+				SetDlgItemText(m_hwnd, IDC_LAST_DATE, _T(""));
+			else
+				SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 		}
 	}catch(...)
 	{
