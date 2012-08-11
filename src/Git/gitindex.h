@@ -160,7 +160,6 @@ public:
 	int ReadHeadHash(CString gitdir);
 	bool CheckHeadUpdate();
 	static int CallBack(const unsigned char *, const char *, int, const char *, unsigned int, int, void *);
-	//int ReadTree();
 };
 
 typedef std::tr1::shared_ptr<CGitHeadFileList> SHARED_TREE_PTR;
@@ -199,7 +198,6 @@ public:
 	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion);
 
-
 	bool IsHashChanged(const CString &gitdir)
 	{
 		SHARED_TREE_PTR ptr = SafeGet(gitdir);
@@ -209,7 +207,6 @@ public:
 
 		return ptr->m_Head != ptr->m_TreeHash;
 	}
-
 };
 
 class CGitFileName
@@ -382,21 +379,6 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 	}
 	return -1;
 };
-#if 0
-
-class CGitStatus
-{
-protected:
-	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
-public:
-	CGitIgnoreList m_IgnoreList;
-	CGitHeadFileMap m_HeadFilesMap;
-	CGitIndexFileMap m_IndexFilesMap;
-
-	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL);
-};
-
-#endif
 
 class CGitAdminDirMap:public std::map<CString, CString>
 {
