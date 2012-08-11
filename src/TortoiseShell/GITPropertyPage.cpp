@@ -232,8 +232,6 @@ void CGitPropertyPage::InitWorkfileView()
 
 	::SetCurrentDirectory(ProjectTopDir);
 
-	GitRev rev;
-
 	if (autocrlf.Trim().IsEmpty())
 		autocrlf = _T("false");
 	if (safecrlf.Trim().IsEmpty())
@@ -252,12 +250,13 @@ void CGitPropertyPage::InitWorkfileView()
 	{
 		AutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.CheckAndInitDll();
-		rev.GetCommit(CString(_T("HEAD")));
+		GitRev revHEAD;
+		revHEAD.GetCommit(CString(_T("HEAD")));
 
-		SetDlgItemText(m_hwnd,IDC_HEAD_HASH,rev.m_CommitHash.ToString());
-		SetDlgItemText(m_hwnd,IDC_HEAD_SUBJECT,rev.GetSubject());
-		SetDlgItemText(m_hwnd,IDC_HEAD_AUTHOR,rev.GetAuthorName());
-		SetDlgItemText(m_hwnd,IDC_HEAD_DATE,rev.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
+		SetDlgItemText(m_hwnd, IDC_HEAD_HASH, revHEAD.m_CommitHash.ToString());
+		SetDlgItemText(m_hwnd, IDC_HEAD_SUBJECT, revHEAD.GetSubject());
+		SetDlgItemText(m_hwnd, IDC_HEAD_AUTHOR, revHEAD.GetAuthorName());
+		SetDlgItemText(m_hwnd, IDC_HEAD_DATE, revHEAD.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 
 		if (filenames.size() == 1)
 		{
@@ -278,7 +277,7 @@ void CGitPropertyPage::InitWorkfileView()
 				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
 			}
 
-
+			GitRev revLast;
 			if(! relatepath.GetGitPathString().IsEmpty())
 			{
 				cmd=_T("-z --topo-order -n1 --parents -- \"");
@@ -299,7 +298,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 					git_close_log(handle);
 					handle = NULL;
-					rev.ParserFromCommit(&commit);
+					revLast.ParserFromCommit(&commit);
 					git_free_commit(&commit);
 
 				}while(0);
@@ -308,17 +307,15 @@ void CGitPropertyPage::InitWorkfileView()
 				}
 			}
 
-			SetDlgItemText(m_hwnd,IDC_LAST_HASH,rev.m_CommitHash.ToString());
-			SetDlgItemText(m_hwnd,IDC_LAST_SUBJECT,rev.GetSubject());
-			SetDlgItemText(m_hwnd,IDC_LAST_AUTHOR,rev.GetAuthorName());
-			SetDlgItemText(m_hwnd,IDC_LAST_DATE,rev.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
-
+			SetDlgItemText(m_hwnd, IDC_LAST_HASH, revLast.m_CommitHash.ToString());
+			SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, revLast.GetSubject());
+			SetDlgItemText(m_hwnd, IDC_LAST_AUTHOR, revLast.GetAuthorName());
+			SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 		}
 	}catch(...)
 	{
 	}
 	::SetCurrentDirectory(oldpath);
-
 }
 
 

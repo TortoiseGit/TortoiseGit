@@ -367,6 +367,8 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 		encode = CUnicodeUtils::GetCPCode(str);
 	}
 
+	this->m_CommitHash = (char*)commit->m_hash;
+
 	this->m_AuthorDate = commit->m_Author.Date;
 
 	this->m_AuthorEmail.Empty();
@@ -438,8 +440,6 @@ int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
 
 	this->ParserFromCommit(&commit);
 	git_free_commit(&commit);
-
-	this->m_CommitHash=hash;
 
 	return 0;
 }
