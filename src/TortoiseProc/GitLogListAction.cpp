@@ -461,6 +461,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				if (CAppUtils::GitReset(&str))
 				{
+					ResetWcRev(true);
 					ReloadHashMap();
 					Invalidate();
 				}
