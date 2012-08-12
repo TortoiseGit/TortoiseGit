@@ -1430,7 +1430,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu subbranchmenu, submenu, gnudiffmenu,diffmenu;
+	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, revertmenu;
 
 	if (popup.CreatePopupMenu())
 	{
@@ -1673,7 +1673,29 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC)
-					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
+				{
+					GitRev *pRev = pSelLogEntry;
+					if (pSelLogEntry->m_ParentHash.empty())
+					{
+						pRev->GetParentFromHash(pRev->m_CommitHash);
+					}
+					if (pRev->m_ParentHash.size() == 1)
+					{
+						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
+					}
+					else
+					{
+						revertmenu.CreatePopupMenu();
+						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
+
+						for (int i = 0; i < pRev->m_ParentHash.size(); i++)
+						{
+							CString str;
+							str.Format(IDS_PARENT, i + 1);
+							revertmenu.AppendMenuIcon(ID_REVERTREV + ((i + 1) << 16), str);
+						}
+					}
+				}
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_EDITNOTE))
 					popup.AppendMenuIcon(ID_EDITNOTE, IDS_EDIT_NOTES, IDI_EDIT);

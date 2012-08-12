@@ -63,7 +63,7 @@
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintListCtrl)
 
-int CGitLogList::RevertSelectedCommits()
+int CGitLogList::RevertSelectedCommits(int parent)
 {
 	CSysProgressDlg progress;
 	int ret = -1;
@@ -106,8 +106,10 @@ int CGitLogList::RevertSelectedCommits()
 		if(r1->m_CommitHash.IsEmpty())
 			continue;
 
-		CString cmd, output;
-		cmd.Format(_T("git.exe revert --no-edit --no-commit %s"), r1->m_CommitHash.ToString());
+		CString cmd, output, merge;
+		if (parent)
+			merge.Format(_T("-m %d "), parent);
+		cmd.Format(_T("git.exe revert --no-edit --no-commit %s%s"), merge, r1->m_CommitHash.ToString());
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
 			CString str;
@@ -915,7 +917,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		break;
 		case ID_REVERTREV:
 			{
-				if(!this->RevertSelectedCommits())
+				int parent = 0;
+				if (GetSelectedCount() == 1)
+				{
+					parent = cmd >> 16;
+					if (parent > pSelLogEntry->m_ParentHash.size())
+					{
+						CString str;
+						str.Format(IDS_PROC_NOPARENT, parent);
+						MessageBox(str, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+						return;
+					}
+				}
+
+				if (!this->RevertSelectedCommits(parent))
 					this->Refresh();
 			}
 			break;

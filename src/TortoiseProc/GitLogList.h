@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ public:
 
 protected:
 	int	 CherryPickFrom(CString from, CString to);
-	int  RevertSelectedCommits();
+	int  RevertSelectedCommits(int parent);
 	void CloseHandles();
 	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu);
 };
