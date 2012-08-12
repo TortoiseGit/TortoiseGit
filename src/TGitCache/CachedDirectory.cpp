@@ -540,7 +540,7 @@ CCachedDirectory::GetCacheKey(const CTGitPath& path)
 {
 	// All we put into the cache as a key is just the end portion of the pathname
 	// There's no point storing the path of the containing directory for every item
-	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).MakeLower();
+	return path.GetWinPathString().Mid(m_directoryPath.GetWinPathString().GetLength()).MakeLower().TrimLeft(_T("\\"));
 }
 
 CString
