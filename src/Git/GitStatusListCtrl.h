@@ -827,10 +827,10 @@ public:
 	void SelectAll(bool bSelect, bool bIncludeNoCommits = false);
 
 	/**
-	 * Checks all specified items, removes the checks from the ones not specified
-	 * \param dwCheck SVNLC_SHOWxxx defines
+	 * Checks all specified items
+	 * \param dwCheck GITLC_SHOWxxx defines
 	 */
-	void Check(DWORD dwCheck, bool uncheckNonMatches);
+	void Check(DWORD dwCheck);
 
 	/**
 	 * UnChecks all specified items

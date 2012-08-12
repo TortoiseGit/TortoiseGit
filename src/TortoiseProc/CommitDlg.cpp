@@ -1796,28 +1796,30 @@ LRESULT CCommitDlg::OnCheck(WPARAM wnd, LPARAM)
 	if (!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 	{
 		if (hwnd == GetDlgItem(IDC_CHECKALL)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWEVERYTHING, true);
+			m_ListCtrl.Check(GITSLC_SHOWEVERYTHING);
 		else if (hwnd == GetDlgItem(IDC_CHECKNONE)->GetSafeHwnd())
-			m_ListCtrl.Check(0, true);
+			m_ListCtrl.UnCheck(GITSLC_SHOWEVERYTHING);
 		else if (hwnd == GetDlgItem(IDC_CHECKUNVERSIONED)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWUNVERSIONED, false);
+			m_ListCtrl.Check(GITSLC_SHOWUNVERSIONED);
 		else if (hwnd == GetDlgItem(IDC_CHECKVERSIONED)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWVERSIONED, false);
+			m_ListCtrl.Check(GITSLC_SHOWVERSIONED);
 		else if (hwnd == GetDlgItem(IDC_CHECKADDED)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWADDED, false);
+			m_ListCtrl.Check(GITSLC_SHOWADDED);
 		else if (hwnd == GetDlgItem(IDC_CHECKDELETED)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWREMOVED, false);
+			m_ListCtrl.Check(GITSLC_SHOWREMOVED);
 		else if (hwnd == GetDlgItem(IDC_CHECKMODIFIED)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWMODIFIED, false);
+			m_ListCtrl.Check(GITSLC_SHOWMODIFIED);
 		else if (hwnd == GetDlgItem(IDC_CHECKFILES)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWFILES, false);
+			m_ListCtrl.Check(GITSLC_SHOWFILES);
 		else if (hwnd == GetDlgItem(IDC_CHECKSUBMODULES)->GetSafeHwnd())
-			m_ListCtrl.Check(GITSLC_SHOWSUBMODULES, false);
+			m_ListCtrl.Check(GITSLC_SHOWSUBMODULES);
 	}
 	else
 	{
 		if (hwnd == GetDlgItem(IDC_CHECKALL)->GetSafeHwnd())
-			m_ListCtrl.Check(0, true);
+			m_ListCtrl.UnCheck(GITSLC_SHOWEVERYTHING);
+		else if (hwnd == GetDlgItem(IDC_CHECKNONE)->GetSafeHwnd())
+			m_ListCtrl.Check(GITSLC_SHOWEVERYTHING);
 		else if (hwnd == GetDlgItem(IDC_CHECKUNVERSIONED)->GetSafeHwnd())
 			m_ListCtrl.UnCheck(GITSLC_SHOWUNVERSIONED);
 		else if (hwnd == GetDlgItem(IDC_CHECKVERSIONED)->GetSafeHwnd())

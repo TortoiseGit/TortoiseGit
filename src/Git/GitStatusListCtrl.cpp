@@ -2884,7 +2884,7 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 	NotifyCheck();
 }
 
-void CGitStatusListCtrl::Check(DWORD dwCheck, bool uncheckNonMatches)
+void CGitStatusListCtrl::Check(DWORD dwCheck)
 {
 	CWaitCursor waitCursor;
 	// block here so the LVN_ITEMCHANGED messages
@@ -2893,7 +2893,6 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool uncheckNonMatches)
 	SetRedraw(FALSE);
 
 	int nListItems = GetItemCount();
-	m_nSelected = 0;
 
 	for (int i = 0; i < nListItems; ++i)
 	{
@@ -2907,13 +2906,11 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool uncheckNonMatches)
 		else
 			showFlags |= GITSLC_SHOWFILES;
 
-		if (showFlags & dwCheck && !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules && !(dwCheck & GITSLC_SHOWSUBMODULES)))
+		if (showFlags & dwCheck && !GetCheck(i) && !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules && !(dwCheck & GITSLC_SHOWSUBMODULES)))
 		{
 			SetEntryCheck(entry, i, true);
 			m_nSelected++;
 		}
-		else if (uncheckNonMatches)
-			SetEntryCheck(entry, i, false);
 	}
 	// unblock before redrawing
 	m_bBlock = FALSE;
@@ -2944,7 +2941,7 @@ void CGitStatusListCtrl::UnCheck(DWORD dwCheck)
 		else
 			showFlags |= GITSLC_SHOWFILES;
 
-		if (showFlags & dwCheck)
+		if (showFlags & dwCheck && GetCheck(i))
 		{
 			SetEntryCheck(entry, i, false);
 			m_nSelected--;
