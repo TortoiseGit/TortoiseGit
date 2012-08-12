@@ -832,6 +832,12 @@ public:
 	 */
 	void Check(DWORD dwCheck, bool uncheckNonMatches);
 
+	/**
+	 * UnChecks all specified items
+	 * \param dwCheck GITLC_SHOWxxx defines
+	 */
+	void UnCheck(DWORD dwCheck);
+
 	/** Set a checkbox on an entry in the listbox
 	 * Keeps the listctrl checked state and the FileEntry's checked flag in sync
 	 */

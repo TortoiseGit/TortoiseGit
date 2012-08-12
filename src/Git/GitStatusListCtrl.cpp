@@ -2922,6 +2922,41 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool uncheckNonMatches)
 	NotifyCheck();
 }
 
+void CGitStatusListCtrl::UnCheck(DWORD dwCheck)
+{
+	CWaitCursor waitCursor;
+	// block here so the LVN_ITEMCHANGED messages
+	// get ignored
+	m_bBlock = TRUE;
+	SetRedraw(FALSE);
+
+	int nListItems = GetItemCount();
+
+	for (int i = 0; i < nListItems; ++i)
+	{
+		CTGitPath *entry = (CTGitPath *) GetItemData(i);
+		if (entry == NULL)
+			continue;
+
+		DWORD showFlags = entry->m_Action;
+		if (entry->IsDirectory())
+			showFlags |= GITSLC_SHOWSUBMODULES;
+		else
+			showFlags |= GITSLC_SHOWFILES;
+
+		if (showFlags & dwCheck)
+		{
+			SetEntryCheck(entry, i, false);
+			m_nSelected--;
+		}
+	}
+	// unblock before redrawing
+	m_bBlock = FALSE;
+	SetRedraw(TRUE);
+	GetStatisticsString();
+	NotifyCheck();
+}
+
 void CGitStatusListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVGETINFOTIP pGetInfoTip = reinterpret_cast<LPNMLVGETINFOTIP>(pNMHDR);
