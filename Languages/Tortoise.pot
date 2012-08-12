@@ -6438,6 +6438,10 @@ msgstr ""
 msgid "Revision graph"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Revision(s) reverted. All changes are integrated into your working tree now."
+msgstr ""
+
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
 msgstr ""

@@ -786,6 +786,7 @@
 #define IDS_STATUSLIST_COLSIZE          1365
 #define IDS_DELETEREMOTETAG             1366
 #define IDC_HOOKCOPYBUTTON              1367
+#define IDS_REVREVERTED                 1367
 #define IDC_INFOLABEL                   1368
 #define IDC_REPOTREE                    1371
 #define IDC_REPOLIST                    1372

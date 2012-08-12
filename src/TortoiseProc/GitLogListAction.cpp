@@ -931,7 +931,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 
 				if (!this->RevertSelectedCommits(parent))
+				{
+					if (CMessageBox::Show(m_hWnd, IDS_REVREVERTED, IDS_APPNAME, 1, IDI_QUESTION, IDS_OKBUTTON, IDS_COMMITBUTTON) == 2)
+					{
+						CTGitPathList pathlist;
+						CTGitPathList selectedlist;
+						pathlist.AddPath(this->m_Path);
+						bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+						CString str;
+						CAppUtils::Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
+					}
 					this->Refresh();
+				}
 			}
 			break;
 		case ID_EDITNOTE:
