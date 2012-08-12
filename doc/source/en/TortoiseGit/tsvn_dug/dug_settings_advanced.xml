@@ -154,9 +154,8 @@
             <listitem>
                 <para>
                     This makes TortoiseGit to use libgit2 as much as possible (e.g. for
-                    adding files to the index). It's disabled by default, since libgit2
-                    has some limitations ATM (UTF8 filename problems, doesn't support AutoCRLF and separate-git-dir).
-                    If you t want TortoiseGit to use libgit2, set this value to <literal>true</literal>.
+                    adding files to the index).
+                    If you do not want TortoiseGit to use libgit2 for file operations, set this value to <literal>false</literal>.
                 </para>
             </listitem>
         </varlistentry>
