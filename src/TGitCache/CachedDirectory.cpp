@@ -423,6 +423,9 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() );
 	}
 
+	// strip "\" at the end, otherwise cache lookups for drives do not work correctly
+	sProjectRoot.TrimRight(_T("\\"));
+
 	GitStatus *pStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pStatus);
 	git_wc_status_kind status;
