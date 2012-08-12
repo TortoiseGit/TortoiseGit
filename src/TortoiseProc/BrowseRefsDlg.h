@@ -171,6 +171,7 @@ private:
 	CString m_initialRef;
 	int		m_pickRef_Kind;
 	CString m_pickedRef;
+	bool	m_bPickOne;
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All);

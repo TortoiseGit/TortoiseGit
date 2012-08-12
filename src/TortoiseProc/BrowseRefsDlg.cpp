@@ -122,7 +122,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_pickRef_Kind(gPickRef_All),
 	m_pListCtrlRoot(NULL),
 	m_bHasWC(true),
-	m_SelectedFilters(LOGFILTER_ALL)
+	m_SelectedFilters(LOGFILTER_ALL),
+	m_bPickOne(false)
 {
 
 }
@@ -203,6 +204,9 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	m_bHasWC = !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir);
+
+	if (m_bPickOne)
+		m_ListRefLeafs.ModifyStyle(0, LVS_SINGLESEL);
 
 	m_ListRefLeafs.SetFocus();
 	return FALSE;
@@ -1101,6 +1105,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
+	dlg.m_bPickOne = true;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();
