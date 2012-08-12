@@ -827,16 +827,11 @@ public:
 	void SelectAll(bool bSelect, bool bIncludeNoCommits = false);
 
 	/**
-	 * Checks all specified items
+	 * Checks or unchecks all specified items
 	 * \param dwCheck GITLC_SHOWxxx defines
+	 * \param check if true matching items will be selected, false unchecks matching items
 	 */
-	void Check(DWORD dwCheck);
-
-	/**
-	 * UnChecks all specified items
-	 * \param dwCheck GITLC_SHOWxxx defines
-	 */
-	void UnCheck(DWORD dwCheck);
+	void Check(DWORD dwCheck, bool check = true);
 
 	/** Set a checkbox on an entry in the listbox
 	 * Keeps the listctrl checked state and the FileEntry's checked flag in sync
