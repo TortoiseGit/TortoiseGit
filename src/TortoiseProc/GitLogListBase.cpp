@@ -2132,16 +2132,6 @@ int CGitLogListBase::BeginFetchLog()
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	try
-	{
-		git_init();
-	}
-	catch (char* msg)
-	{
-		CString err(msg);
-		MessageBox(_T("Could not initialize libgit.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-		return -1;
-	}
 
 	this->m_LogCache.ClearAllParent();
 
