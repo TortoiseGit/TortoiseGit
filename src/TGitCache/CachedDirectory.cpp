@@ -807,7 +807,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 					lock.Lock();
 					refreshedpaths.insert(refr_it, filePath);
 					itMembers = m_entryCache.begin();
-					if (m_entryCache.size()==0)
+					if (m_entryCache.empty())
 						return;
 					continue;
 				}
