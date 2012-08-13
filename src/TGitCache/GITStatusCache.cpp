@@ -107,7 +107,7 @@ void CGitStatusCache::Create()
 							m_pInstance->m_directoryCache[KeyPath] = cacheddir;
 							// only add the path to the watch list if it is versioned
 							if ((cacheddir->GetCurrentFullStatus() != git_wc_status_unversioned)&&(cacheddir->GetCurrentFullStatus() != git_wc_status_none))
-								m_pInstance->watcher.AddPath(KeyPath);
+								m_pInstance->watcher.AddPath(KeyPath, false);
 							// do *not* add the paths for crawling!
 							// because crawled paths will trigger a shell
 							// notification, which makes the desktop flash constantly
