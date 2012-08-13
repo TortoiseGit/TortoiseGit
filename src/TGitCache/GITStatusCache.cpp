@@ -443,23 +443,9 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 					CString gitdir;
 					if ((!path.IsEmpty())&&(path.HasAdminDir(&gitdir))&&isAddToWatch)
 					{
-						bool isVersion = true;
-						CString subpaths;
-						if(subpaths.GetLength() > gitdir.GetLength())
-						{
-							if(subpaths[gitdir.GetLength()] == _T('\\'))
-								subpaths=subpaths.Right(subpaths.GetLength() - gitdir.GetLength()-1);
-							else
-								subpaths=subpaths.Right(subpaths.GetLength() - gitdir.GetLength());
-						}
-						CGitStatusCache::Instance().m_GitStatus.IsUnderVersionControl(gitdir, subpaths, true, &isVersion);
-
 						/* Just watch version path */
-						if(isVersion)
-						{
-							watcher.AddPath(gitdir);
-							watcher.AddPath(path);
-						}
+						watcher.AddPath(gitdir);
+						watcher.AddPath(path);
 					}
 					return cdir;
 				}
