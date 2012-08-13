@@ -39,6 +39,7 @@ CCachedDirectory::CCachedDirectory(const CTGitPath& directoryPath)
 	ATLASSERT(directoryPath.IsDirectory() || !PathFileExists(directoryPath.GetWinPath()));
 
 	m_directoryPath = directoryPath;
+	m_directoryPath.GetGitPathString(); // make sure git path string is set
 
 	m_currentFullStatus = m_mostImportantFileStatus = git_wc_status_none;
 	m_bRecursive = true;
@@ -162,6 +163,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			}
 			sPath.ReleaseBuffer(value);
 			m_directoryPath.SetFromWin(sPath);
+			m_directoryPath.GetGitPathString(); // make sure git path string is set
 		}
 		if (!m_ownStatus.LoadFromDisk(pFile))
 			return false;
