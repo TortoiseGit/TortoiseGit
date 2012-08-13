@@ -348,7 +348,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{
 		bRequestForSelf = true;
 	}
-//OutputDebugStringA("GetStatusForMember: ");OutputDebugStringW(path.GetWinPathString());OutputDebugStringA("\r\n");
+
 	// In all most circumstances, we ask for the status of a member of this directory.
 	ATLASSERT(m_directoryPath.IsEquivalentToWithoutCase(path.GetContainingDirectory()) || bRequestForSelf);
 
