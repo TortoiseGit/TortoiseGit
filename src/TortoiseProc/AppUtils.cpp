@@ -973,6 +973,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			return FALSE;
 		}
 		if( !IsTag  &&  dlg.m_bSwitch )
 		{
