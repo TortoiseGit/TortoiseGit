@@ -451,8 +451,6 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 			m_ownStatus = git_wc_status_normal;
 	}
 
-	m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
-
 	return 0;
 }
 void
