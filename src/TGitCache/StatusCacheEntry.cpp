@@ -147,7 +147,8 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 	{
 		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
 		m_GitStatus = *pGitStatus;
-		m_bAssumeValid = pGitStatus->assumeValid;
+		if (m_kind != git_node_dir)
+			m_bAssumeValid = pGitStatus->assumeValid;
 
 		// Currently we don't deep-copy the whole entry value, but we do take a few members
 /*        if(pGitStatus->entry != NULL)

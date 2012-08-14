@@ -299,8 +299,8 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 					status2.text_status = status2.prop_status =
 						(isignore? git_wc_status_ignored:git_wc_status_unversioned);
 
-					dirEntry->m_ownStatus.SetStatus(&status2);
 					dirEntry->m_ownStatus.SetKind(git_node_dir);
+					dirEntry->m_ownStatus.SetStatus(&status2);
 
 				}
 				return dirEntry->m_ownStatus;
@@ -476,8 +476,8 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 					{
 						CGitStatusCache::Instance().UpdateShell(path);
 						//ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
-						childDir->m_ownStatus.SetStatus(pGitStatus);
 						childDir->m_ownStatus.SetKind(git_node_dir);
+						childDir->m_ownStatus.SetStatus(pGitStatus);
 					}
 				}
 			}
@@ -540,8 +540,8 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 				{
 					CGitStatusCache::Instance().UpdateShell(parent->m_directoryPath);
 					//ATLTRACE(_T("shell update for %s\n"), parent->m_directoryPath.GetWinPathString());
-					parent->m_ownStatus.SetStatus(pGitStatus);
 					parent->m_ownStatus.SetKind(git_node_dir);
+					parent->m_ownStatus.SetStatus(pGitStatus);
 				}
 			}
 		}
