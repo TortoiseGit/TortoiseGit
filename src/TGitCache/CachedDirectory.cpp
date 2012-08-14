@@ -649,7 +649,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 			{
 				pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status2->text_status);
 				pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, status2->prop_status);
-				if (((status2->text_status == git_wc_status_unversioned)||(status2->text_status == git_wc_status_none))
+				if ((status2->text_status == git_wc_status_unversioned)
 					&&(CGitStatusCache::Instance().IsUnversionedAsModified()))
 				{
 					// treat unversioned files as modified
