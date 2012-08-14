@@ -444,11 +444,17 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	}
 	else
 	{
-		m_mostImportantFileStatus = git_wc_status_normal;
+		m_mostImportantFileStatus = git_wc_status_none;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 
 		if (sSubPath.IsEmpty())
+		{
+			// we need to set m_currentFullStatus to > git_wc_status_none,
+			// so that (especially empty) working trees get a shell notification for update
+			if (m_currentFullStatus == git_wc_status_none)
+				m_currentFullStatus = git_wc_status_unversioned;
 			m_ownStatus = git_wc_status_normal;
+		}
 	}
 
 	return 0;
