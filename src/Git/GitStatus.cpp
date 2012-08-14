@@ -625,10 +625,53 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-			if( indexptr.get() == NULL)
-				return -1;
-
 			std::vector<CGitFileName>::iterator it;
+
+			// new git working tree has no index file
+			if (indexptr.get() == NULL)
+			{
+				for(it = filelist.begin(); it < filelist.end(); it++)
+				{
+					CString casepath = path + it->m_CaseFileName;
+
+					bool bIsDir = false;
+					if (casepath.GetLength() > 0 && casepath[casepath.GetLength() - 1] == _T('/'))
+						bIsDir = true;
+
+					if (bIsDir) /*check if it is directory*/
+					{
+						if (::PathFileExists(gitdir + casepath + _T("\\.git")))
+						{ /* That is git submodule */
+							*status = git_wc_status_unknown;
+							if (callback)
+								callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false);
+							continue;
+						}
+					}
+
+					if (IsIgnore)
+					{
+						if (g_IgnoreList.CheckIgnoreChanged(gitdir, casepath))
+							g_IgnoreList.LoadAllIgnoreFile(gitdir, casepath);
+
+						if (g_IgnoreList.IsIgnore(casepath, gitdir))
+							*status = git_wc_status_ignored;
+						else if (bIsDir)
+							continue;
+						else
+							*status = git_wc_status_unversioned;
+					}
+					else if (bIsDir)
+						continue;
+					else
+						*status = git_wc_status_unversioned;
+
+					if(callback)
+						callback(gitdir + _T("/") + casepath, *status, bIsDir, pData, false);
+				}
+				return 0;
+			}
+
 			CString onepath;
 			CString casepath;
 			for(it = filelist.begin(); it<filelist.end();it++)
