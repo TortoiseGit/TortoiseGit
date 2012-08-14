@@ -449,10 +449,12 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 
 		if (sSubPath.IsEmpty())
 		{
-			// we need to set m_currentFullStatus to > git_wc_status_none,
-			// so that (especially empty) working trees get a shell notification for update
+			// request a shell notification for working trees which have not been examined before
 			if (m_currentFullStatus == git_wc_status_none)
-				m_currentFullStatus = git_wc_status_unversioned;
+			{
+				m_currentFullStatus = git_wc_status_normal;
+				CGitStatusCache::Instance().UpdateShell(sProjectRoot);
+			}
 			m_ownStatus = git_wc_status_normal;
 		}
 	}
