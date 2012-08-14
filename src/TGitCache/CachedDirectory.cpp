@@ -345,17 +345,22 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 
 CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bRecursive,  bool bFetch /* = true */)
 {
+	CString sProjectRoot;
+	bool bIsVersionedPath;
+
 	bool bRequestForSelf = false;
 	if(path.IsEquivalentToWithoutCase(m_directoryPath))
 	{
 		bRequestForSelf = true;
+		AutoLocker lock(m_critSec);
+		// HasAdminDir might modify m_directoryPath, so we need to do it synchronized
+		bIsVersionedPath = m_directoryPath.HasAdminDir(&sProjectRoot);
 	}
+	else
+		bIsVersionedPath = path.HasAdminDir(&sProjectRoot);
 
 	// In all most circumstances, we ask for the status of a member of this directory.
 	ATLASSERT(m_directoryPath.IsEquivalentToWithoutCase(path.GetContainingDirectory()) || bRequestForSelf);
-
-	CString sProjectRoot;
-	const BOOL bIsVersionedPath = path.HasAdminDir(&sProjectRoot);
 
 	//If is not version control path
 	if( !bIsVersionedPath)
