@@ -457,6 +457,8 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 			}
 			m_ownStatus = git_wc_status_normal;
 		}
+		else if (m_ownStatus.GetEffectiveStatus() == git_wc_status_ignored) // otherwise folders which contain at least one ignored item gets displayed as ignored
+			m_ownStatus = git_wc_status_normal;
 	}
 
 	return 0;
