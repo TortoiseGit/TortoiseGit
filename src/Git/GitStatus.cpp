@@ -86,7 +86,9 @@ git_wc_status_kind GitStatus::GetAllStatus(const CTGitPath& path, git_depth_t de
 	{
 		err = GetDirStatus(sProjectRoot,sSubPath,&statuskind, isfull,bIsRecursive,isfull,NULL, NULL);
 		// folders must not be displayed as added or deleted only as modified (this is for Shell Overlay-Modes)
-		if (statuskind == git_wc_status_deleted || statuskind == git_wc_status_added)
+		if (statuskind == git_wc_status_unversioned && sSubPath.IsEmpty())
+			statuskind = git_wc_status_normal;
+		else if (statuskind == git_wc_status_deleted || statuskind == git_wc_status_added)
 			statuskind = git_wc_status_modified;
 	}
 	else
@@ -854,14 +856,6 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 			if (indexptr == NULL)
 			{
 				*status = git_wc_status_unversioned;
-				return 0;
-			}
-
-			if(subpath.IsEmpty() && (!indexptr.use_count()))
-			{ // for new init repository
-				*status = git_wc_status_normal;
-				if(callback)
-					callback(gitdir+_T("/")+path, *status, false,pData, false);
 				return 0;
 			}
 
