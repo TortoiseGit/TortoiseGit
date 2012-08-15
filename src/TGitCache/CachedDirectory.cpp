@@ -439,8 +439,6 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 
 	if(!path->IsDirectory())
 	{
-		// initialize status with unversioned, because "GetFileStatus" does nothing if we are in an empty working tree without .git/index file
-		status = git_wc_status_unversioned;
 		bool assumeValid = false;
 		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback, this, &assumeValid);
 	}

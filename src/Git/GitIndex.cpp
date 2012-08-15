@@ -357,7 +357,11 @@ int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, 
 		{
 			pIndex->GetStatus(gitdir, path, status, IsFull, IsRecursive, callback, pData, pHash, assumeValid);
 		}
-
+		else
+		{
+			// git working tree has not index
+			*status = git_wc_status_unversioned;
+		}
 	}
 	catch(...)
 	{
