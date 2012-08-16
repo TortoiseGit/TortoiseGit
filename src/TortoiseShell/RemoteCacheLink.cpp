@@ -226,8 +226,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 		startup.cb = sizeof(startup);
 		memset(&process, 0, sizeof(process));
 
-		CRegString cachePath(_T("Software\\TortoiseGit\\CachePath"), _T("TGitCache.exe"), false, HKEY_LOCAL_MACHINE);
-		CString sCachePath = cachePath;
+		CString sCachePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TGitCache.exe");
 #ifndef _WIN64
 		typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 		LPFN_ISWOW64PROCESS fnIsWow64Process;

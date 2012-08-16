@@ -213,12 +213,12 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			memset(&startup, 0, sizeof(startup));
 			startup.cb = sizeof(startup);
 			memset(&process, 0, sizeof(process));
-			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
 			stdstring gitCmd = _T(" /command:");
 			gitCmd += _T("log /path:\"");
 			gitCmd += filenames.front().c_str();
 			gitCmd += _T("\"");
-			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+			if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 			{
 				CloseHandle(process.hThread);
 				CloseHandle(process.hProcess);
@@ -237,13 +237,13 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			memset(&startup, 0, sizeof(startup));
 			startup.cb = sizeof(startup);
 			memset(&process, 0, sizeof(process));
-			CRegStdString tortoiseProcPath(_T("Software\\TortoiseGit\\ProcPath"), _T("TortoiseProc.exe"), false, HKEY_LOCAL_MACHINE);
+			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
 
 			stdstring gitCmd = _T(" /command:");
 			gitCmd += _T("settings /path:\"");
 			gitCmd += projectTopDir;
 			gitCmd += _T("\"");
-			if (CreateProcess(((stdstring)tortoiseProcPath).c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
+			if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
 			{
 				CloseHandle(process.hThread);
 				CloseHandle(process.hProcess);
@@ -563,4 +563,3 @@ STDMETHODIMP CShellExt::ReplacePage (UINT /*uPageID*/, LPFNADDPROPSHEETPAGE /*lp
 {
 	return E_FAIL;
 }
-
