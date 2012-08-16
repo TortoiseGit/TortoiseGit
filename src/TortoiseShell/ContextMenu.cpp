@@ -57,9 +57,9 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 	ATLTRACE("Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
 	files_.clear();
-	folder_.erase();
-	uuidSource.erase();
-	uuidTarget.erase();
+	folder_.clear();
+	uuidSource.clear();
+	uuidTarget.clear();
 	itemStates = 0;
 	itemStatesFolder = 0;
 	stdstring statuspath;
