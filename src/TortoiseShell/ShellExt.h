@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@
 #include "MenuInfo.h"
 #include "CrashReport.h"
 
-extern	UINT				g_cRefThisDll;			// Reference count of this DLL.
+extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
 extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
 extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
 extern	DWORD				g_langid;
@@ -37,7 +37,7 @@ extern	DWORD				g_langTimeout;
 extern	HINSTANCE			g_hResInst;
 extern	stdstring			g_filepath;
 extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
-extern  bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
+extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not
 extern	bool				g_lockedoverlay;		///< whether to show the locked overlay or not
 
 extern bool					g_normalovlloaded;

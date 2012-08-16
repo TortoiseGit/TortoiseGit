@@ -532,7 +532,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 	PROPSHEETPAGE psp;
 	SecureZeroMemory(&psp, sizeof(PROPSHEETPAGE));
 	HPROPSHEETPAGE hPage;
-	CGitPropertyPage *sheetpage = new CGitPropertyPage(files_);
+	CGitPropertyPage *sheetpage = new (std::nothrow) CGitPropertyPage(files_);
 
 	psp.dwSize = sizeof (psp);
 	psp.dwFlags = PSP_USEREFPARENT | PSP_USETITLE | PSP_USEICONID | PSP_USECALLBACK;
@@ -543,7 +543,7 @@ STDMETHODIMP CShellExt::AddPages_Wrap(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM l
 	psp.pfnDlgProc = (DLGPROC) PageProc;
 	psp.lParam = (LPARAM) sheetpage;
 	psp.pfnCallback = PropPageCallbackProc;
-	psp.pcRefParent = &g_cRefThisDll;
+	psp.pcRefParent = (UINT*)&g_cRefThisDll;
 
 	hPage = CreatePropertySheetPage (&psp);
 

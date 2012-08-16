@@ -526,6 +526,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ShellObjects.cpp"
+				>
+			</File>
+			<File
 				RelativePath="stdafx.cpp"
 				>
 				<FileConfiguration
@@ -636,6 +640,10 @@
 			</File>
 			<File
 				RelativePath=".\ShellExtClassFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ShellObjects.h"
 				>
 			</File>
 			<File

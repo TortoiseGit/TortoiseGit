@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2009-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 #include "ShellExt.h"
 #include "ShellExtClassFactory.h"
 
-extern std::set<CShellExt *> g_exts;
 
 CShellExtClassFactory::CShellExtClassFactory(FileState state)
 {
@@ -28,27 +27,28 @@ CShellExtClassFactory::CShellExtClassFactory(FileState state)
 
 	m_cRef = 0L;
 
-	g_cRefThisDll++;
+	InterlockedIncrement(&g_cRefThisDll);
 }
 
 CShellExtClassFactory::~CShellExtClassFactory()
 {
-	g_cRefThisDll--;
+	InterlockedDecrement(&g_cRefThisDll);
 }
 
 STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
-													LPVOID FAR *ppv)
+												   LPVOID FAR *ppv)
 {
+	if(ppv == 0)
+		return E_POINTER;
+
 	*ppv = NULL;
 
 	// Any interface on this object is the object pointer
 
 	if (IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_IClassFactory))
 	{
-		*ppv = (LPCLASSFACTORY)this;
-
+		*ppv = static_cast<LPCLASSFACTORY>(this);
 		AddRef();
-
 		return S_OK;
 	}
 
@@ -71,9 +71,12 @@ STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
 }
 
 STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
-													REFIID riid,
-													LPVOID *ppvObj)
+												   REFIID riid,
+												   LPVOID *ppvObj)
 {
+	if(ppvObj == 0)
+		return E_POINTER;
+
 	*ppvObj = NULL;
 
 	// Shell extensions typically don't support aggregation (inheritance)
@@ -85,12 +88,15 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 	// QueryInterface with IID_IShellExtInit--this is how shell extensions are
 	// initialized.
 
-	CShellExt* pShellExt = new CShellExt(m_StateToMake);  //Create the CShellExt object
+	CShellExt* pShellExt = new (std::nothrow) CShellExt(m_StateToMake);  //Create the CShellExt object
 
 	if (NULL == pShellExt)
 		return E_OUTOFMEMORY;
 
-	return pShellExt->QueryInterface(riid, ppvObj);
+	const HRESULT hr = pShellExt->QueryInterface(riid, ppvObj);
+	if(FAILED(hr))
+		delete pShellExt;
+	return hr;
 }
 
 STDMETHODIMP CShellExtClassFactory::LockServer(BOOL /*fLock*/)

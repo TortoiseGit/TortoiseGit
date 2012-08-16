@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2003-2010, 2012 - TortoiseSVN
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,9 +21,9 @@
 #include "ShellExt.h"
 #include "Guids.h"
 #include "ShellExtClassFactory.h"
-//#include "git_dso.h"
+#include "ShellObjects.h"
 
-UINT				g_cRefThisDll = 0;				///< reference count of this DLL.
+volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = NULL;			///< handle to this DLL itself.
 ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
@@ -46,7 +46,8 @@ bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
 LPCTSTR				g_MenuIDString = _T("TortoiseGit");
-extern std::set<CShellExt *> g_exts;
+
+ShellObjects		g_shellObjects;
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -84,33 +85,29 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// because those functions call LoadLibrary() indirectly through malloc().
 	// And LoadLibrary() inside DllMain() is not allowed and can lead to unexpected
 	// behavior and even may create dependency loops in the dll load order.
-    if (dwReason == DLL_PROCESS_ATTACH)
-    {
+	if (dwReason == DLL_PROCESS_ATTACH)
+	{
 		if (g_hmodThisDll == NULL)
 		{
 			g_csGlobalCOMGuard.Init();
 		}
 
-        // Extension DLL one-time initialization
-        g_hmodThisDll = hInstance;
-    }
-    else if (dwReason == DLL_PROCESS_DETACH)
-    {
+		// Extension DLL one-time initialization
+		g_hmodThisDll = hInstance;
+	}
+	else if (dwReason == DLL_PROCESS_DETACH)
+	{
+		// do not clean up memory here:
+		// if an application doesn't release all COM objects
+		// but still unloads the dll, cleaning up ourselves
+		// will lead to crashes.
+		// better to leak some memory than to crash other apps.
 		// sometimes an application doesn't release all COM objects
 		// but still unloads the dll.
 		// in that case, we do it ourselves
-		if (g_cRefThisDll > 0)
-		{
-			std::set<CShellExt *>::iterator it = g_exts.begin();
-			while (it != g_exts.end())
-			{
-				delete *it;
-				it = g_exts.begin();
-			}
-		}
 		g_csGlobalCOMGuard.Term();
-    }
-    return 1;   // ok
+	}
+	return 1;	// ok
 }
 
 STDAPI DllCanUnloadNow(void)
@@ -120,17 +117,19 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 {
-    *ppvOut = NULL;
+	if (ppvOut == 0)
+		return E_POINTER;
+	*ppvOut = NULL;
 
-    FileState state = FileStateInvalid;
-    if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
-        state = FileStateVersioned;
-    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_MODIFIED))
-        state = FileStateModified;
-    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_CONFLICTING))
-        state = FileStateConflict;
-    else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNCONTROLLED))
-        state = FileStateUncontrolled;
+	FileState state = FileStateInvalid;
+	if (IsEqualIID(rclsid, CLSID_Tortoisegit_UPTODATE))
+		state = FileStateVersioned;
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_MODIFIED))
+		state = FileStateModified;
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_CONFLICTING))
+		state = FileStateConflict;
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNCONTROLLED))
+		state = FileStateUncontrolled;
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DROPHANDLER))
 		state = FileStateDropHandler;
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_DELETED))
@@ -146,14 +145,18 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNVERSIONED))
 		state = FileStateUnversionedOverlay;
 
-    if (state != FileStateInvalid)
-    {
-		CShellExtClassFactory *pcf = new CShellExtClassFactory(state);
-		return pcf->QueryInterface(riid, ppvOut);
-    }
+	if (state != FileStateInvalid)
+	{
+		CShellExtClassFactory *pcf = new (std::nothrow) CShellExtClassFactory(state);
+		if (pcf == NULL)
+			return E_OUTOFMEMORY;
+		// refcount currently set to 0
+		const HRESULT hr = pcf->QueryInterface(riid, ppvOut);
+		if(FAILED(hr))
+			delete pcf;
+		return hr;
+	}
 
-    return CLASS_E_CLASSNOTAVAILABLE;
+	return CLASS_E_CLASSNOTAVAILABLE;
 
 }
-
-

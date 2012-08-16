@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,31 +23,34 @@
 // Initialize GUIDs (should be done only and at-least once per DLL/EXE)
 #include <initguid.h>
 #include "Guids.h"
-#include "git.h"
+
 #include "ShellExt.h"
+#include "ShellObjects.h"
 //#include "..\version.h"
 //#include "libintl.h"
 #undef swprintf
-#include "GitPropertyPage.h"
 
-std::set<CShellExt *> g_exts;
+extern ShellObjects g_shellObjects;
 
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
 	: m_crasher(L"TortoiseGit", false)
 {
-    m_State = state;
+	m_State = state;
 
-    m_cRef = 0L;
-    g_cRefThisDll++;
+	m_cRef = 0L;
+	InterlockedIncrement(&g_cRefThisDll);
 
-	g_exts.insert(this);
+	{
+		AutoLocker lock(g_csGlobalCOMGuard);
+		g_shellObjects.Insert(this);
+	}
 
-    INITCOMMONCONTROLSEX used = {
-        sizeof(INITCOMMONCONTROLSEX),
+	INITCOMMONCONTROLSEX used = {
+		sizeof(INITCOMMONCONTROLSEX),
 			ICC_LISTVIEW_CLASSES | ICC_WIN95_CLASSES | ICC_BAR_CLASSES | ICC_USEREX_CLASSES
-    };
-    InitCommonControlsEx(&used);
+	};
+	InitCommonControlsEx(&used);
 	LoadLangDll();
 
 	if (SysInfo::Instance().IsVistaOrLater())
@@ -62,14 +65,9 @@ CShellExt::CShellExt(FileState state)
 
 CShellExt::~CShellExt()
 {
-	std::map<UINT, HBITMAP>::iterator it;
-	for (it = bitmaps.begin(); it != bitmaps.end(); ++it)
-	{
-		::DeleteObject(it->second);
-	}
-	bitmaps.clear();
-	g_cRefThisDll--;
-	g_exts.erase(this);
+	AutoLocker lock(g_csGlobalCOMGuard);
+	InterlockedDecrement(&g_cRefThisDll);
+	g_shellObjects.Erase(this);
 }
 
 void LoadLangDll()
@@ -82,9 +80,9 @@ void LoadLangDll()
 		HINSTANCE hInst = NULL;
 		TCHAR langdir[MAX_PATH] = {0};
 		char langdirA[MAX_PATH] = {0};
-		if (GetModuleFileName(g_hmodThisDll, langdir, MAX_PATH)==0)
+		if (GetModuleFileName(g_hmodThisDll, langdir, _countof(langdir))==0)
 			return;
-		if (GetModuleFileNameA(g_hmodThisDll, langdirA, MAX_PATH)==0)
+		if (GetModuleFileNameA(g_hmodThisDll, langdirA, _countof(langdirA))==0)
 			return;
 		TCHAR * dirpoint = _tcsrchr(langdir, '\\');
 		char * dirpointA = strrchr(langdirA, '\\');
@@ -98,7 +96,7 @@ void LoadLangDll()
 			*dirpoint = 0;
 		if (dirpointA)
 			*dirpointA = 0;
-		strcat_s(langdirA, MAX_PATH, "\\Languages");
+		strcat_s(langdirA, "\\Languages");
 //		bindtextdomain ("subversion", langdirA);
 
 		BOOL bIsWow = FALSE;
@@ -127,8 +125,8 @@ void LoadLangDll()
 
 				if (pBuffer != (void*) NULL)
 				{
-					UINT        nInfoSize = 0,
-						nFixedLength = 0;
+					UINT        nInfoSize = 0;
+					UINT        nFixedLength = 0;
 					LPSTR       lpVersion = NULL;
 					VOID*       lpFixedPointer;
 					TRANSARRAY* lpTransArray;
@@ -147,7 +145,7 @@ void LoadLangDll()
 						{
 							lpTransArray = (TRANSARRAY*) lpFixedPointer;
 
-							_stprintf_s(strLangProduktVersion, MAX_PATH, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
+							_stprintf_s(strLangProduktVersion, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
 								lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 							if (VerQueryValue(pBuffer,
@@ -155,7 +153,7 @@ void LoadLangDll()
 								(LPVOID *)&lpVersion,
 								&nInfoSize))
 							{
-//								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
+								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
 							}
 
 						}
@@ -207,75 +205,79 @@ void LoadLangDll()
 
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
-    *ppv = NULL;
+	if(ppv == 0)
+		return E_POINTER;
 
-    if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
-    {
-        *ppv = (LPSHELLEXTINIT)this;
-    }
-    else if (IsEqualIID(riid, IID_IContextMenu))
-    {
-        *ppv = (LPCONTEXTMENU)this;
-    }
-    else if (IsEqualIID(riid, IID_IContextMenu2))
-    {
-        *ppv = (LPCONTEXTMENU2)this;
-    }
-    else if (IsEqualIID(riid, IID_IContextMenu3))
-    {
-        *ppv = (LPCONTEXTMENU3)this;
-    }
-    else if (IsEqualIID(riid, IID_IShellIconOverlayIdentifier))
-    {
-        *ppv = (IShellIconOverlayIdentifier*)this;
-    }
-    else if (IsEqualIID(riid, IID_IShellPropSheetExt))
-    {
-        *ppv = (LPSHELLPROPSHEETEXT)this;
-    }
+	*ppv = NULL;
+
+	if (IsEqualIID(riid, IID_IShellExtInit) || IsEqualIID(riid, IID_IUnknown))
+	{
+		*ppv = static_cast<LPSHELLEXTINIT>(this);
+	}
+	else if (IsEqualIID(riid, IID_IContextMenu))
+	{
+		*ppv = static_cast<LPCONTEXTMENU>(this);
+	}
+	else if (IsEqualIID(riid, IID_IContextMenu2))
+	{
+		*ppv = static_cast<LPCONTEXTMENU2>(this);
+	}
+	else if (IsEqualIID(riid, IID_IContextMenu3))
+	{
+		*ppv = static_cast<LPCONTEXTMENU3>(this);
+	}
+	else if (IsEqualIID(riid, IID_IShellIconOverlayIdentifier))
+	{
+		*ppv = static_cast<IShellIconOverlayIdentifier*>(this);
+	}
+	else if (IsEqualIID(riid, IID_IShellPropSheetExt))
+	{
+		*ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
+	}
 	else if (IsEqualIID(riid, IID_IColumnProvider))
 	{
-		*ppv = (IColumnProvider *)this;
+		*ppv = static_cast<IColumnProvider*>(this);
 	}
 	else if (IsEqualIID(riid, IID_IShellCopyHook))
 	{
-		*ppv = (ICopyHook *)this;
+		*ppv = static_cast<ICopyHook*>(this);
 	}
-    if (*ppv)
-    {
-        AddRef();
+	else
+	{
+		return E_NOINTERFACE;
+	}
 
-        return S_OK;
-    }
-
-    return E_NOINTERFACE;
+	AddRef();
+	return S_OK;
 }
 
 STDMETHODIMP_(ULONG) CShellExt::AddRef()
 {
-    return ++m_cRef;
+	return ++m_cRef;
 }
 
 STDMETHODIMP_(ULONG) CShellExt::Release()
 {
-    if (--m_cRef)
-        return m_cRef;
+	if (--m_cRef)
+		return m_cRef;
 
-    delete this;
+	delete this;
 
-    return 0L;
+	return 0L;
 }
 
 // IPersistFile members
 STDMETHODIMP CShellExt::GetClassID(CLSID *pclsid)
 {
-    *pclsid = CLSID_Tortoisegit_UNCONTROLLED;
-    return S_OK;
+	if(pclsid == 0)
+		return E_POINTER;
+	*pclsid = CLSID_Tortoisegit_UNCONTROLLED;
+	return S_OK;
 }
 
 STDMETHODIMP CShellExt::Load(LPCOLESTR /*pszFileName*/, DWORD /*dwMode*/)
 {
-    return S_OK;
+	return S_OK;
 }
 
 // ICopyHook member
@@ -294,7 +296,7 @@ UINT __stdcall CShellExt::CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTS
 UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
 {
 	if (wFunc == FO_COPY)
-		return IDYES;	// copying is not a problem for us
+		return IDYES;   // copying is not a problem for us
 
 	m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
 	// we could now wait a little bit to give the cache time to release the handles.
