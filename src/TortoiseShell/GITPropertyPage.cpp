@@ -26,6 +26,8 @@
 #include "GitStatus.h"
 #include "git2.h"
 #include "UnicodeUtils.h"
+#include "CreateProcessHelper.h"
+#include "FormatMessageWrapper.h"
 
 #define MAX_STRING_LENGTH	4096	//should be big enough
 
@@ -208,21 +210,11 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	{
 	case IDC_SHOWLOG:
 		{
-			STARTUPINFO startup;
-			PROCESS_INFORMATION process;
-			memset(&startup, 0, sizeof(startup));
-			startup.cb = sizeof(startup);
-			memset(&process, 0, sizeof(process));
-			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
-			stdstring gitCmd = _T(" /command:");
+			tstring gitCmd = _T("/command:");
 			gitCmd += _T("log /path:\"");
 			gitCmd += filenames.front().c_str();
 			gitCmd += _T("\"");
-			if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-			{
-				CloseHandle(process.hThread);
-				CloseHandle(process.hProcess);
-			}
+			RunCommand(gitCmd);
 		}
 		break;
 	case IDC_SHOWSETTINGS:
@@ -232,22 +224,11 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			if(!path.HasAdminDir(&projectTopDir))
 				return;
 
-			STARTUPINFO startup;
-			PROCESS_INFORMATION process;
-			memset(&startup, 0, sizeof(startup));
-			startup.cb = sizeof(startup);
-			memset(&process, 0, sizeof(process));
-			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
-
-			stdstring gitCmd = _T(" /command:");
+			tstring gitCmd = _T("/command:");
 			gitCmd += _T("settings /path:\"");
 			gitCmd += projectTopDir;
 			gitCmd += _T("\"");
-			if (CreateProcess(tortoiseProcPath.c_str(), const_cast<TCHAR*>(gitCmd.c_str()), NULL, NULL, FALSE, 0, 0, 0, &startup, &process))
-			{
-				CloseHandle(process.hThread);
-				CloseHandle(process.hProcess);
-			}
+			RunCommand(gitCmd);
 		}
 		break;
 	case IDC_ASSUMEVALID:
@@ -257,6 +238,19 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		break;
 	}
 }
+
+void CGitPropertyPage::RunCommand(const tstring& command)
+{
+	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
+	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str())))
+	{
+		// process started - exit
+		return;
+	}
+
+	MessageBox(NULL, CFormatMessageWrapper(), _T("TortoiseProc launch failed"), MB_OK | MB_ICONINFORMATION);
+}
+
 void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen)
 {
 	struct tm newtime;
