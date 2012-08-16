@@ -2013,7 +2013,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			} // switch (id_it->second)
 			gitCmd += _T(" /hwnd:");
 			TCHAR buf[30];
-			_stprintf_s(buf, 30, _T("%d"), lpcmi->hwnd);
+			_stprintf_s(buf, _T("%ld"), (LONG_PTR)lpcmi->hwnd);
 			gitCmd += buf;
 			myIDMap.clear();
 			myVerbsIDMap.clear();
