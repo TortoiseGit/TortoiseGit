@@ -461,6 +461,12 @@ void CGitPropertyPage::InitWorkfileView()
 						if (e->mode & 0111)
 							executable = true;
 					}
+					else
+					{
+						// do not show checkboxes for unversioned files
+						ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+						ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+					}
 
 					git_index_free(index);
 				} while (0);
