@@ -210,7 +210,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	{
 	case IDC_SHOWLOG:
 		{
-			tstring gitCmd = _T("/command:");
+			tstring gitCmd = _T(" /command:");
 			gitCmd += _T("log /path:\"");
 			gitCmd += filenames.front().c_str();
 			gitCmd += _T("\"");
@@ -224,7 +224,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 			if(!path.HasAdminDir(&projectTopDir))
 				return;
 
-			tstring gitCmd = _T("/command:");
+			tstring gitCmd = _T(" /command:");
 			gitCmd += _T("settings /path:\"");
 			gitCmd += projectTopDir;
 			gitCmd += _T("\"");
