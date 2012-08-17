@@ -295,17 +295,4 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 		}
 		break;
 	}
-
-	if (t == ShellCache::exe)
-	{
-		columnrev = itemStatus.m_entry.cmt_rev;
-	}
-	else
-	{
-		if (status)
-		{
-			columnrev = status->rev;
-		}
-	}
 }
-

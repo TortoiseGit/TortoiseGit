@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1062: Log window should refresh automatically after reset --hard
  * Fixed issue #641: Failure trying to revert a "merge"
  * Fixed issue #1338: Assume Unchanged and Executable Bit checkboxes not show in TortoiseShell tab page on x86
+ * Fixed issue #1341: Overlays missing in TotalCommander (x86) with TGitCache on x64
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
