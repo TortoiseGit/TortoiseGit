@@ -925,7 +925,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 	dlg.m_bSwitch=switch_new_brach;
 
 	if(CommitHash)
-		dlg.m_Base = *CommitHash;
+		dlg.m_initialRefName = *CommitHash;
 
 	if(dlg.DoModal()==IDOK)
 	{

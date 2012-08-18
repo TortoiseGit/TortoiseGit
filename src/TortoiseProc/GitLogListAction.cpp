@@ -414,17 +414,19 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_CREATE_BRANCH:
-			{
-				CString str = pSelLogEntry->m_CommitHash.ToString();
-				CAppUtils::CreateBranchTag(FALSE,&str);
-				ReloadHashMap();
-				Invalidate();
-			}
-			break;
 		case ID_CREATE_TAG:
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
-				CAppUtils::CreateBranchTag(TRUE,&str);
+				// try to guess remote branch in order to enable tracking
+				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/") == 0))
+					{
+						str = m_HashMap[pSelLogEntry->m_CommitHash][i];
+						break;
+					}
+				}
+				CAppUtils::CreateBranchTag((cmd&0xFFFF) == ID_CREATE_TAG, &str);
 				ReloadHashMap();
 				Invalidate();
 				::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);

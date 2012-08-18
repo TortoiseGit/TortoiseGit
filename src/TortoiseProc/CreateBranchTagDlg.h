@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,6 @@ public:
 	BOOL	m_bSwitch;
 	BOOL	m_bSign;
 
-	CString	m_Base;
 	CString	m_BranchTagName;
 	CString	m_Message;
 	CString	m_OldSelectBranch;

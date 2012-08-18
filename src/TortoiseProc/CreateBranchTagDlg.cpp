@@ -102,16 +102,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SWITCH);
 	AdjustControlSize(IDC_CHECK_SIGN);
 
-	if(m_Base.IsEmpty())
-	{
-		this->SetDefaultChoose(IDC_RADIO_HEAD);
-
-	}
-	else
-	{
-		this->SetDefaultChoose(IDC_RADIO_VERSION);
-		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Base);
-	}
+	this->SetDefaultChoose(IDC_RADIO_HEAD);
 
 	Init();
 
