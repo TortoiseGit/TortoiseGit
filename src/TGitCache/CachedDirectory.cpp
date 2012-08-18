@@ -262,6 +262,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	}
 
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
+	UNREFERENCED_PARAMETER(pGitStatus);
 
 	CGitHash head;
 
@@ -567,7 +568,7 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return m_directoryPath.GetWinPathString() + _T("\\") + cacheKey;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *pUserData, bool assumeValid)
+BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *, bool assumeValid)
 {
 	git_wc_status2_t _status;
 	git_wc_status2_t *status2 = &_status;
