@@ -157,7 +157,7 @@ void CGitSwitchDlg::OnBnClickedOk()
 			// branch already exists
 			CString msg;
 			msg.LoadString(IDS_B_EXISTS);
-			ShowEditBalloon(IDC_NEWBRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
+			ShowEditBalloon(IDC_EDIT_BRANCH, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_DIFFERENTNAMEOROVERRIDE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 			return;
 		}
 		else if (g_Git.BranchTagExists(m_NewBranch, false))
