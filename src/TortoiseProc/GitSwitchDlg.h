@@ -44,6 +44,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	CToolTipCtrl m_ToolTip;
 	void OnBnClickedOk();
 
 	afx_msg void OnBnClickedChooseRadioHost();
