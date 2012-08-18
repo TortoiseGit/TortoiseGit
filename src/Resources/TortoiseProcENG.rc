@@ -3702,6 +3702,7 @@ BEGIN
     IDS_STATUSLIST_COLSIZE  "Size"
     IDS_DELETEREMOTETAG     "Delete remote tags..."
     IDS_REVREVERTED         "Revision(s) reverted. All changes are integrated into your working tree now."
+    IDS_DESCRIPTION         "Description"
 END
 
 #endif    // Englisch (USA) resources

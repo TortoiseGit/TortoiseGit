@@ -59,6 +59,7 @@ public:
 	CString			m_csDate_Iso8601;
 	CString			m_csAuthor;
 	CString			m_csSubject;
+	CString			m_csDescription;
 
 	HTREEITEM		m_hTree;
 
@@ -100,7 +101,8 @@ public:
 		eCol_Date,
 		eCol_Msg,
 		eCol_LastAuthor,
-		eCol_Hash
+		eCol_Hash,
+		eCol_Description,
 	};
 
 // Dialog Data

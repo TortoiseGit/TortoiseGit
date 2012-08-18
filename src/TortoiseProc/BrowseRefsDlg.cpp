@@ -32,6 +32,8 @@
 #include "IconMenu.h"
 #include "FileDiffDlg.h"
 #include "DeleteRemoteTagDlg.h"
+#include "git2.h"
+#include "UnicodeUtils.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -93,6 +95,7 @@ public:
 		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
 		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
+		case CBrowseRefsDlg::eCol_Description: return SortStrCmp(pLeft->m_csDescription, pRight->m_csDescription);
 		}
 		return 0;
 	}
@@ -191,6 +194,8 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	m_ListRefLeafs.InsertColumn(eCol_LastAuthor, temp, 0, 100);
 	temp.LoadString(IDS_HASH);
 	m_ListRefLeafs.InsertColumn(eCol_Hash, temp, 0, 80);
+	temp.LoadString(IDS_DESCRIPTION);
+	m_ListRefLeafs.InsertColumn(eCol_Description, temp, 0, 80);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -292,6 +297,28 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 	return CString();//None
 }
 
+static int GetBranchDescriptionsCallback(const char *var_name, const char *value, void *data)
+{
+	MAP_STRING_STRING *descriptions = (MAP_STRING_STRING *) data;
+	CString key = CUnicodeUtils::GetUnicode(var_name, CP_UTF8);
+	CString val = CUnicodeUtils::GetUnicode(value, CP_UTF8);
+	descriptions->insert(make_pair(key.Mid(7, key.GetLength() - 7 - 12), val)); // 7: branch., 12: .description
+	return 0;
+}
+
+MAP_STRING_STRING GetBranchDescriptions()
+{
+	MAP_STRING_STRING descriptions;
+	git_config * config;
+	git_config_new(&config);
+	CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir + _T("\\.git\\config"), CP_UTF8);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
+	projectConfigA.ReleaseBuffer();
+	git_config_foreach_match(config, "branch\\..*\\.description", GetBranchDescriptionsCallback, &descriptions);
+	git_config_free(config);
+	return descriptions;
+}
+
 void CBrowseRefsDlg::Refresh(CString selectRef)
 {
 //	m_RefMap.clear();
@@ -353,7 +380,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		refMap[refName] = refRest; //Use
 	}
 
-
+	MAP_STRING_STRING descriptions = GetBranchDescriptions();
 
 	//Populate ref tree
 	for(MAP_STRING_STRING::iterator iterRefMap=refMap.begin();iterRefMap!=refMap.end();++iterRefMap)
@@ -368,6 +395,9 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		treeLeaf.m_csSubject=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csDate_Iso8601=	values.Tokenize(L"\04",valuePos);
+
+		if (wcsncmp(iterRefMap->first, L"refs/heads", 10) == 0)
+			treeLeaf.m_csDescription = descriptions[treeLeaf.m_csRefName];
 	}
 
 
@@ -490,6 +520,8 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
+			int pos;
+			m_ListRefLeafs.SetItemText(indexItem,eCol_Description, pTree->m_csDescription.Tokenize(_T("\n"), pos));
 		}
 	}
 	else
