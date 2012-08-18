@@ -34,6 +34,7 @@
 #include "DeleteRemoteTagDlg.h"
 #include "git2.h"
 #include "UnicodeUtils.h"
+#include "InputDlg.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -782,6 +783,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowSwitchOption				= false;
 		bool bShowRenameOption				= false;
 		bool bShowCreateBranchOption		= false;
+		bool bShowEditBranchDescriptionOption = false;
 
 		CString fetchFromCmd;
 
@@ -790,6 +792,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			bShowReflogOption = true;
 			bShowSwitchOption = true;
 			bShowRenameOption = true;
+			bShowEditBranchDescriptionOption = true;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
 		{
@@ -843,6 +846,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			popupMenu.AppendMenuIcon(eCmd_CreateBranch, temp, IDI_COPY);
 		}
 
+		if (bShowEditBranchDescriptionOption)
+		{
+			bAddSeparator = true;
+			popupMenu.AppendMenuIcon(eCmd_EditBranchDescription, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION)), IDI_RENAME);
+		}
 		if(bShowRenameOption)
 		{
 			bAddSeparator = true;
@@ -1041,6 +1049,27 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				selectedLeafs[0]->m_csRefHash,
 				selectedLeafs[1]->m_csRefHash);
 			dlg.DoModal();
+		}
+		break;
+	case eCmd_EditBranchDescription:
+		{
+			CInputDlg dlg;
+			dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION));
+			dlg.m_sInputText = selectedLeafs[0]->m_csDescription;
+			dlg.m_sTitle = CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_EDITDESCRIPTION));
+			dlg.m_bUseLogWidth = true;
+			if(dlg.DoModal() == IDOK)
+			{
+				CString key;
+				key.Format(_T("branch.%s.description"), selectedLeafs[0]->m_csRefName);
+				dlg.m_sInputText.Replace(_T("\r"), _T(""));
+				dlg.m_sInputText.Trim();
+				if (dlg.m_sInputText.IsEmpty())
+					g_Git.UnsetConfigValue(key);
+				else
+					g_Git.SetConfigValue(key, dlg.m_sInputText);
+				Refresh();
+			}
 		}
 		break;
 	}
