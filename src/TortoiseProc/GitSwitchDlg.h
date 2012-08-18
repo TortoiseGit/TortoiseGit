@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,8 +53,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnBnClickedCheckBranch();
 	void SetDefaultName(BOOL isUpdateCreateBranch);
+	virtual void OnVersionChanged();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditchangeComboboxexVersion();

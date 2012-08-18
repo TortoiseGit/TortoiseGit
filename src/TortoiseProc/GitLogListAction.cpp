@@ -432,8 +432,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_SWITCHTOREV:
 			{
-				CString str = pSelLogEntry->m_CommitHash.ToString();
-				CAppUtils::Switch(&str);
+				bool found = false;
+				// try to guess remote branch in order to recommend good branch name and tracking
+				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				{
+					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/") == 0))
+					{
+						CAppUtils::Switch(NULL, m_HashMap[pSelLogEntry->m_CommitHash][i]);
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					CString str = pSelLogEntry->m_CommitHash.ToString();
+					CAppUtils::Switch(&str);
+				}
 			}
 			ReloadHashMap();
 			Invalidate();

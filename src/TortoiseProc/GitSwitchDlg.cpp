@@ -61,7 +61,6 @@ void CGitSwitchDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CGitSwitchDlg, CHorizontalResizableStandAloneDialog)
 
 	CHOOSE_VERSION_EVENT
-	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CGitSwitchDlg::OnBnClickedCheckBranch)
 	ON_BN_CLICKED(IDOK, &CGitSwitchDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
@@ -109,7 +108,6 @@ BOOL CGitSwitchDlg::OnInitDialog()
 		SetDefaultChoose(IDC_RADIO_VERSION);
 	}
 
-	SetDefaultName(TRUE);
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 	return TRUE;
@@ -224,10 +222,10 @@ void CGitSwitchDlg::OnDestroy()
 
 void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 {
-	SetDefaultName(TRUE);
+	OnVersionChanged();
 }
 
-void CGitSwitchDlg::OnBnClickedCheckBranch()
+void CGitSwitchDlg::OnVersionChanged()
 {
-	SetDefaultName(FALSE);
+	SetDefaultName(TRUE);
 }
