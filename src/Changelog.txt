@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #366: Log - multiline search
  * Fixed issue #696: Allow specifying execute bit
  * Fixed issue #1335: Available the branch edit description
+ * Fixed issue #494: Implement a commit button in the sync dialog
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

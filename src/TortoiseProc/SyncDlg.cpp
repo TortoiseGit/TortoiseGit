@@ -146,8 +146,6 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 
-	this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_HIDE);
-
 	///Pull
 	if(CurrentEntry == 0) //Pull
 	{
@@ -314,8 +312,6 @@ void CSyncDlg::PullComplete()
 											CTGitPath::LOGACTIONS_UNMERGED);
 
 			this->ShowTab(IDC_IN_CONFLICT);
-
-			this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_NORMAL);
 		}
 		else
 			this->ShowTab(IDC_CMD_LOG);
@@ -743,8 +739,6 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_LOCAL_BRANCH, TOP_CENTER);
 	AddAnchor(IDC_BUTTON_REMOTE_BRANCH, TOP_RIGHT);
 	AddAnchor(IDC_STATIC_REMOTE_BRANCH, TOP_CENTER);
-
-	this->GetDlgItem(IDC_BUTTON_COMMIT)->ShowWindow(SW_HIDE);
 
 	AdjustControlSize(IDC_CHECK_PUTTY_KEY);
 	AdjustControlSize(IDC_CHECK_FORCE);
