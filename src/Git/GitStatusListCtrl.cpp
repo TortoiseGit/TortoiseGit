@@ -1493,6 +1493,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
 			{
+				bool bEntryAdded = false;
 				if ( (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
 				{
 					if(filepath->m_ParentNo & MERGE_MASK)
@@ -1501,17 +1502,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_LOG_COMPAREWITHBASE, IDI_DIFF);
 
 					popup.SetDefaultItem(IDGITLC_COMPARE, FALSE);
+					bEntryAdded = true;
 				}
 
-				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && GetSelectedCount()>0 && m_bHasWC)
-				{
-					if( (!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
-						popup.AppendMenuIcon(IDGITLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
-				}
 				//Select one items
 				if (GetSelectedCount() == 1)
 				{
-					bool bEntryAdded = false;
 					//if (entry->remotestatus <= git_wc_status_normal)
 					//{
 					//	if (wcStatus > git_wc_status_normal)
@@ -1521,7 +1517,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if(!g_Git.IsInitRepos() && (m_dwContextMenus&GITSLC_POPGNUDIFF))
 					{
 						popup.AppendMenuIcon(IDGITLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-
 						bEntryAdded = true;
 					}
 					//		}
@@ -1542,9 +1537,17 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					//		bEntryAdded = true;
 					//	}
 					//}
-					if (bEntryAdded)
-						popup.AppendMenu(MF_SEPARATOR);
 				}
+
+				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && GetSelectedCount() > 0 && m_bHasWC)
+				{
+					if ((!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
+					{
+						popup.AppendMenuIcon(IDGITLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+						bEntryAdded = true;
+					}
+				}
+
 				//else if (GetSelectedCount() > 1)
 				//{
 				//	if (m_dwContextMenus & SVNSLC_POPCOMMIT)
@@ -1553,6 +1556,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//		popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
 				//	}
 				//}
+
+				if (bEntryAdded)
+					popup.AppendMenu(MF_SEPARATOR);
 			}
 
 			if( (!this->m_Rev1.IsEmpty()) || (!this->m_Rev1.IsEmpty()) )

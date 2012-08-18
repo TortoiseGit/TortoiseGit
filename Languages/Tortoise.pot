@@ -6951,10 +6951,6 @@ msgstr ""
 msgid "Show diff to last commit"
 msgstr ""
 
-#. Resource IDs: (1252)
-msgid "Show differences as &unified diff"
-msgstr ""
-
 #. Resource IDs: (1126)
 msgid "Show excluded folders as normal"
 msgstr ""
