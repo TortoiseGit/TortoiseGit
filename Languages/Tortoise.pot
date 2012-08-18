@@ -3331,6 +3331,10 @@ msgstr ""
 msgid "Edit author name"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Edit description"
+msgstr ""
+
 #. Resource IDs: (110)
 msgid "Edit extension specific diff program"
 msgstr ""
