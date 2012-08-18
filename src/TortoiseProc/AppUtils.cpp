@@ -988,11 +988,9 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 	return FALSE;
 }
 
-bool CAppUtils::Switch(CString *CommitHash, CString initialRefName, bool autoclose)
+bool CAppUtils::Switch(CString initialRefName, bool autoclose)
 {
 	CGitSwitchDlg dlg;
-	if(CommitHash)
-		dlg.m_Base=*CommitHash;
 	if(!initialRefName.IsEmpty())
 		dlg.m_initialRefName = initialRefName;
 

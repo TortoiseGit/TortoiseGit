@@ -40,7 +40,6 @@ public:
 	BOOL	m_bBranch;
 	BOOL	m_bBranchOverride;
 	CString	m_NewBranch;
-	CString	m_Base;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

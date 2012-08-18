@@ -962,7 +962,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_Switch:
 		{
-			CAppUtils::Switch(NULL, selectedLeafs[0]->GetRefName());
+			CAppUtils::Switch(selectedLeafs[0]->GetRefName());
 		}
 		break;
 	case eCmd_Rename:

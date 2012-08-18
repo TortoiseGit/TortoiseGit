@@ -100,13 +100,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 
 	Init();
 
-	if(m_Base.IsEmpty())
-		SetDefaultChoose(IDC_RADIO_BRANCH);
-	else
-	{
-		this->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetWindowTextW(m_Base);
-		SetDefaultChoose(IDC_RADIO_VERSION);
-	}
+	SetDefaultChoose(IDC_RADIO_BRANCH);
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
