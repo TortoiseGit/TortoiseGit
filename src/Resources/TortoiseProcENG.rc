@@ -369,9 +369,10 @@ BEGIN
     CONTROL         "Ignored",IDC_SHOWIGNOREDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,67,270,10
     CONTROL         "Unversioned",IDC_SHOWUNVERSIONEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,82,270,10
     CONTROL         "Added",IDC_SHOWADDEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,96,269,10
-    CONTROL         "Locked (not used by TortoiseGit)",IDC_SHOWLOCKEDOVERLAY,
+    CONTROL         "Skip worktree (""Locked"" in TortoiseSVN)",IDC_SHOWLOCKEDOVERLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,112,270,10
-    CONTROL         "Assume valid/unchanged",IDC_SHOWREADONLYOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,127,270,10
+    CONTROL         "Assume valid/unchanged (""Needs-lock"" in TortoiseSVN)",IDC_SHOWREADONLYOVERLAY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,127,270,10
     CONTROL         "Deleted",IDC_SHOWDELETEDOVERLAY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,142,270,10
     LTEXT           "",IDC_HANDLERHINT,14,159,270,36
 END
@@ -3037,7 +3038,7 @@ BEGIN
     IDS_SETTINGS_ICONSETCHANGED 
                             "You've changed the icon set from <i>%s</i> to <i>%s</i>.\nThat change won't take effect until you restart your computer or logoff and logon again!"
     IDS_SETTINGS_READONLYNAME "assume-valid"
-    IDS_SETTINGS_LOCKEDNAME "locked"
+    IDS_SETTINGS_LOCKEDNAME "skip-worktree"
     IDS_SETTINGS_AUTOCOMPLETION_TT 
                             "Auto-complete suggests words (usually class or member names)\r\nfrom the files that you have changed as you type a log message."
     IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT 
