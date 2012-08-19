@@ -71,15 +71,6 @@ typedef enum
 #define GIT_INVALID_REVNUM _T("")
 typedef CString git_revnum_t;
 
-typedef struct git_wc_entry_t
-{
-	// url in repository
-	const char *url;
-
-	TCHAR cmt_rev[41];
-} git_wc_entry_t;
-
-
 typedef struct git_wc_status2_t
 {
 	/** The status of the entries text. */
