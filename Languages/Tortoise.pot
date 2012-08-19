@@ -1712,6 +1712,10 @@ msgstr ""
 msgid "Assume valid/unchanged"
 msgstr ""
 
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
+msgstr ""
+
 #. Resource IDs: (77)
 #, c-format
 msgid "At revision: %d"
@@ -4798,10 +4802,6 @@ msgstr ""
 msgid "Locator Bar"
 msgstr ""
 
-#. Resource IDs: (1529)
-msgid "Locked (not used by TortoiseGit)"
-msgstr ""
-
 #. Resource IDs: (65)
 msgid "Log"
 msgstr ""
@@ -7090,6 +7090,14 @@ msgstr ""
 msgid "Skip Patch: %s"
 msgstr ""
 
+#. Resource IDs: (11029)
+msgid "Skip worktree"
+msgstr ""
+
+#. Resource IDs: (1529)
+msgid "Skip worktree (\"Locked\" in TortoiseSVN)"
+msgstr ""
+
 #. Resource IDs: (74)
 msgid "Skipped"
 msgstr ""
@@ -8679,10 +8687,6 @@ msgstr ""
 msgid "line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"
 msgstr ""
 
-#. Resource IDs: (195)
-msgid "locked"
-msgstr ""
-
 #. Resource IDs: (1494)
 msgid "master"
 msgstr ""
@@ -8762,6 +8766,10 @@ msgstr ""
 
 #. Resource IDs: (10)
 msgid "replaced"
+msgstr ""
+
+#. Resource IDs: (195)
+msgid "skip-worktree"
 msgstr ""
 
 #. Resource IDs: (208)

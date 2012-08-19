@@ -247,7 +247,7 @@ subst T: C:\TortoiseGit\trunk\doc
 				<title>The Settings Dialog, Icon Set Page</title>
 				<graphic fileref="../images/SettingsOverlayChooser.png"/>
 			</figure>
-			You can change the overlay icon set to the one you like best. Especially you can disable overlays which are not used by TortoiseGit (but other Tortoise* tools) like locked and needs-lock.
+			You can change the overlay icon set to the one you like best. Especially you can disable overlays which you do not need like assume-valid and skip-worktree, however other Tortoise* tools use these two for different purposes.
 			Note that if you change overlay set, you may have to restart
 			your computer for the changes to take effect.
 		</para>

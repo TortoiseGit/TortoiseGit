@@ -48,7 +48,7 @@ public:
 	bool IsDirectory() const { return ((m_kind == git_node_dir)&&(m_highestPriorityLocalStatus != git_wc_status_ignored)); }
 	bool SaveToDisk(FILE * pFile);
 	bool LoadFromDisk(FILE * pFile);
-	void SetKind(git_node_kind_t kind) { m_kind = kind; if (kind == git_node_dir) m_bAssumeValid = false;}
+	void SetKind(git_node_kind_t kind) { m_kind = kind; if (kind == git_node_dir) { m_bAssumeValid = false; m_bSkipWorktree = false; } }
 private:
 	void SetAsUnversioned();
 
@@ -60,6 +60,7 @@ private:
 	bool				m_bSet;
 	git_node_kind_t		m_kind;
 	bool				m_bAssumeValid;
+	bool				m_bSkipWorktree;
 
 	friend class CGitStatusCache;
 };

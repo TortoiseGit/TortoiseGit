@@ -266,6 +266,7 @@
 #define IDC_CHECKSUM                    11027
 #define IDC_ASSUMEVALID                 11027
 #define IDC_EXECUTABLE                  11028
+#define IDC_SKIPWORKTREE                11029
 
 // Next default values for new objects
 // 

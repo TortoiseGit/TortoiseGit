@@ -23,7 +23,7 @@
 #include "CacheInterface.h"
 #include "registry.h"
 
-#define CACHEVERION 6
+#define CACHEVERION 7
 
 DWORD cachetimeout = (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\Cachetimeout"), CACHETIMEOUT);
 
@@ -32,6 +32,7 @@ CStatusCacheEntry::CStatusCacheEntry()
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
 	, m_bAssumeValid(false)
+	, m_bSkipWorktree(false)
 {
 	SetAsUnversioned();
 }
@@ -41,6 +42,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(status)
 	, m_bAssumeValid(false)
+	, m_bSkipWorktree(false)
 {
 	m_GitStatus.prop_status=m_GitStatus.text_status = status;
 	m_discardAtTime = GetTickCount()+cachetimeout;
@@ -77,6 +79,7 @@ bool CStatusCacheEntry::SaveToDisk(FILE * pFile)
 //	WRITEVALUETOFILE(m_GitStatus.repos_text_status);
 	WRITEVALUETOFILE(m_GitStatus.text_status);
 	WRITEVALUETOFILE(m_GitStatus.assumeValid);
+	WRITEVALUETOFILE(m_GitStatus.skipWorktree);
 	return true;
 }
 
@@ -99,6 +102,7 @@ bool CStatusCacheEntry::LoadFromDisk(FILE * pFile)
 //		LOADVALUEFROMFILE(m_GitStatus.repos_text_status);
 		LOADVALUEFROMFILE(m_GitStatus.text_status);
 		LOADVALUEFROMFILE(m_GitStatus.assumeValid);
+		LOADVALUEFROMFILE(m_GitStatus.skipWorktree);
 //		m_GitStatus.entry = NULL;
 		m_discardAtTime = GetTickCount()+cachetimeout;
 	}
@@ -120,7 +124,10 @@ void CStatusCacheEntry::SetStatus(const git_wc_status2_t* pGitStatus)
 		m_highestPriorityLocalStatus = GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status);
 		m_GitStatus = *pGitStatus;
 		if (m_kind != git_node_dir)
+		{
 			m_bAssumeValid = pGitStatus->assumeValid;
+			m_bSkipWorktree = pGitStatus->skipWorktree;
+		}
 	}
 	m_discardAtTime = GetTickCount()+cachetimeout;
 	m_bSet = true;
@@ -153,6 +160,7 @@ void CStatusCacheEntry::BuildCacheResponse(TGITCacheResponse& response, DWORD& r
 	SecureZeroMemory(&response, sizeof(response));
 	response.m_status = m_GitStatus;
 	response.m_bAssumeValid = m_bAssumeValid;
+	response.m_bSkipWorktree = m_bSkipWorktree;
 	responseLength = sizeof(response);
 
 	// directories that are empty or only contain unversioned files will be git_wc_status_incomplete, report as unversioned

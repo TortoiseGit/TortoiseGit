@@ -43,9 +43,9 @@ public:
 	CGitIndexList();
 
 	int ReadIndex(CString file);
-	int GetStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL);
+	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull=false, BOOL IsRecursive=false, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 protected:
-	int GetFileStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL);
+	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL, CGitHash *pHash = NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };
 
@@ -100,7 +100,7 @@ public:
 							BOOL IsFull=false, BOOL IsRecursive=false,
 							FIll_STATUS_CALLBACK callback=NULL,
 							void *pData=NULL,CGitHash *pHash=NULL,
-							bool isLoadUpdatedIndex=true, bool * assumeValid = NULL);
+							bool isLoadUpdatedIndex = true, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 
 	int IsUnderVersionControl(const CString &gitdir,
 							  const CString &path,

@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #696: Allow specifying execute bit
  * Fixed issue #1335: Available the branch edit description
  * Fixed issue #494: Implement a commit button in the sync dialog
+ * Fixed issue #1333: Added support for "update-index --skip-worktree"
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

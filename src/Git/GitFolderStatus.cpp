@@ -89,6 +89,7 @@ GitFolderStatus::GitFolderStatus(void)
 	invalidstatus.status = git_wc_status_none;
 	invalidstatus.url = emptyString;
 	invalidstatus.assumeValid = FALSE;
+	invalidstatus.skipWorktree = FALSE;
 //	invalidstatus.rev = -1;
 	m_nCounter = 0;
 	dirstatus = NULL;
@@ -137,6 +138,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			dirstat.url = urls.GetString(NULL);
 			dirstat.askedcounter = GITFOLDERSTATUS_CACHETIMES;
 			dirstat.assumeValid = FALSE;
+			dirstat.skipWorktree = FALSE;
 
 			dirstatus = NULL;
 //			git_revnum_t youngest = GIT_INVALID_REVNUM;
@@ -164,6 +166,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 	git_wc_status_kind status;
 	bool assumeValid = false;
+	bool skipWorktree = false;
 	int t1,t2;
 	t2=t1=0;
 	try
@@ -176,7 +179,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		}
 
 		t1 = ::GetCurrentTime();
-		status = m_GitStatus.GetAllStatus(filepath, depth, &assumeValid);
+		status = m_GitStatus.GetAllStatus(filepath, depth, &assumeValid, &skipWorktree);
 		t2 = ::GetCurrentTime();
 	}
 	catch ( ... )
@@ -195,6 +198,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 
 	ret->status = status;
 	ret->assumeValid = assumeValid;
+	ret->skipWorktree = skipWorktree;
 
 	m_mostRecentPath = filepath;
 	m_mostRecentStatus = ret;

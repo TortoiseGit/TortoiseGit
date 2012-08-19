@@ -441,7 +441,8 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	if(!path->IsDirectory())
 	{
 		bool assumeValid = false;
-		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback, this, &assumeValid);
+		bool skipWorktree = false;
+		pStatus->GetFileStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback, this, &assumeValid, &skipWorktree);
 	}
 	else
 	{
@@ -568,13 +569,14 @@ CCachedDirectory::GetFullPathString(const CString& cacheKey)
 	return m_directoryPath.GetWinPathString() + _T("\\") + cacheKey;
 }
 
-BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *, bool assumeValid)
+BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kind status,bool isDir, void *, bool assumeValid, bool skipWorktree)
 {
 	git_wc_status2_t _status;
 	git_wc_status2_t *status2 = &_status;
 
 	status2->prop_status = status2->text_status = status;
 	status2->assumeValid = assumeValid;
+	status2->skipWorktree = skipWorktree;
 
 	CTGitPath gitPath;
 
