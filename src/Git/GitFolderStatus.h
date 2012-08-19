@@ -81,6 +81,7 @@ typedef struct FileStatusCacheEntry
 	git_revnum_t			rev;
 	int						askedcounter;
 	bool					assumeValid;
+	bool					skipWorktree;
 } FileStatusCacheEntry;
 
 #define GITFOLDERSTATUS_CACHETIMES				10
