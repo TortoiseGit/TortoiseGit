@@ -155,8 +155,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 									//}
 									//if ((stat.status->entry)&&(stat.status->entry->uuid))
 									//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-									if (stat.status->assumeValid)
-										itemStates |= ITEMIS_ASSUMEVALID;
 								}
 								else
 								{
@@ -259,8 +257,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										//}
 										//if ((stat.status->entry)&&(stat.status->entry->uuid))
 										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-										if (stat.status->assumeValid)
-											itemStates |= ITEMIS_ASSUMEVALID;
 									}
 									else
 									{
@@ -1674,20 +1670,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				else
 					gitCmd += folder_;
 				gitCmd += _T("\"");
-				break;
-			case ShellMenuAssumeValid:
-			    tempfile = WriteFileListToTempFile();
-			    gitCmd += _T("assumevalid /pathfile:\"");
-			    gitCmd += tempfile;
-   				gitCmd += _T("\"");
-   				gitCmd += _T(" /deletepathfile");
-				break;
-			case ShellMenuNoAssumeValid:
-			    tempfile = WriteFileListToTempFile();
-			    gitCmd += _T("assumevalid /pathfile:\"");
-			    gitCmd += tempfile;
-   				gitCmd += _T("\"");
-   				gitCmd += _T(" /deletepathfile /unset");
 				break;
 			case ShellMenuShowChanged:
 				if (files_.size() > 1)

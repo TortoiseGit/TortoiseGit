@@ -5201,10 +5201,6 @@ msgstr ""
 msgid "No &Fast Forward"
 msgstr ""
 
-#. Resource IDs: (14)
-msgid "No Assume Unchanged"
-msgstr ""
-
 #. Resource IDs: (67)
 msgid "No HEAD found"
 msgstr ""
@@ -6791,10 +6787,6 @@ msgstr ""
 msgid "Set up SMTP Server"
 msgstr ""
 
-#. Resource IDs: (14)
-msgid "Sets the Assume Valid flag for this file"
-msgstr ""
-
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr ""
@@ -7966,10 +7958,6 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Unknown depth"
-msgstr ""
-
-#. Resource IDs: (14)
-msgid "Unsets the Assume Valid flag for this file"
 msgstr ""
 
 #. Resource IDs: (3841)

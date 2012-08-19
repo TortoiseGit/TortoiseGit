@@ -2189,14 +2189,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="AssumeValid"
-				>
-				<File
-					RelativePath=".\Commands\AssumeValidCommand.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"
