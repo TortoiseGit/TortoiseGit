@@ -159,6 +159,22 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 								changed = true;
 							}
 						}
+						if (SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0) == BST_CHECKED)
+						{
+							if (!(e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE))
+							{
+								e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+								changed = true;
+							}
+						}
+						else
+						{
+							if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+							{
+								e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+								changed = true;
+							}
+						}
 						if (SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0) == BST_CHECKED)
 						{
 							if (!(e->mode & 0111))
@@ -232,6 +248,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		}
 		break;
 	case IDC_ASSUMEVALID:
+	case IDC_SKIPWORKTREE:
 	case IDC_EXECUTABLE:
 		m_bChanged = true;
 		SendMessage(GetParent(m_hwnd), PSM_CHANGED, (WPARAM)m_hwnd, 0);
@@ -426,6 +443,7 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				// get assume valid flag
 				bool assumevalid = false;
+				bool skipworktree = false;
 				bool executable = false;
 				do
 				{
@@ -452,6 +470,9 @@ void CGitPropertyPage::InitWorkfileView()
 						if (e->flags & GIT_IDXENTRY_VALID)
 							assumevalid = true;
 
+						if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+							skipworktree = true;
+
 						if (e->mode & 0111)
 							executable = true;
 					}
@@ -459,23 +480,27 @@ void CGitPropertyPage::InitWorkfileView()
 					{
 						// do not show checkboxes for unversioned files
 						ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+						ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 						ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 					}
 
 					git_index_free(index);
 				} while (0);
 				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, assumevalid ? BST_CHECKED : BST_UNCHECKED, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, skipworktree ? BST_CHECKED : BST_UNCHECKED, 0);
 				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, executable ? BST_CHECKED : BST_UNCHECKED, 0);
 			}
 			else
 			{
 				ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+				ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 				ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 			}
 		}
 		else
 		{
 			ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
+			ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 		}
 
