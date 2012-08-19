@@ -31,6 +31,7 @@ CStatusCacheEntry::CStatusCacheEntry()
 	: m_bSet(false)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)
+	, m_bAssumeValid(false)
 {
 	SetAsUnversioned();
 }
