@@ -1200,19 +1200,6 @@ msgstr ""
 msgid "(unknown)"
 msgstr ""
 
-#. Resource IDs: (1555)
-msgid "*Amend &Last Commit"
-msgstr ""
-
-#. Resource IDs: (1255)
-msgid "*Combine to one commit"
-msgstr ""
-
-#. Resource IDs: (1254)
-#, c-format
-msgid "*Rebase \"%s\" onto this..."
-msgstr ""
-
 #. Resource IDs: (20)
 msgid "*Rebase..."
 msgstr ""
@@ -1607,6 +1594,10 @@ msgstr ""
 
 #. Resource IDs: (67)
 msgid "Amend"
+msgstr ""
+
+#. Resource IDs: (1555)
+msgid "Amend &Last Commit"
 msgstr ""
 
 #. Resource IDs: (80)
@@ -2388,6 +2379,10 @@ msgstr ""
 
 #. Resource IDs: (1481)
 msgid "Combine One Mail"
+msgstr ""
+
+#. Resource IDs: (1255)
+msgid "Combine to one commit"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6013,6 +6008,11 @@ msgstr ""
 
 #. Resource IDs: (318)
 msgid "Rebase"
+msgstr ""
+
+#. Resource IDs: (1254)
+#, c-format
+msgid "Rebase \"%s\" onto this..."
 msgstr ""
 
 #. Resource IDs: (67)
