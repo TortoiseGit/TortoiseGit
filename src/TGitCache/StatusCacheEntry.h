@@ -61,10 +61,5 @@ private:
 	git_node_kind_t		m_kind;
 	bool				m_bAssumeValid;
 
-	// Values copied from the 'entries' structure
-	bool				m_bSVNEntryFieldSet;
-	CStringA			m_sUrl;
-	CStringA			m_sAuthor;
-
 	friend class CGitStatusCache;
 };
