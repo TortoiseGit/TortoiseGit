@@ -521,7 +521,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
-			int pos;
+			int pos = 0;
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Description, pTree->m_csDescription.Tokenize(_T("\n"), pos));
 		}
 	}
