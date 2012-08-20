@@ -100,7 +100,7 @@ public:
 		}
 		return 0;
 	}
-	int SortStrCmp(CString &left, CString &right)
+	int SortStrCmp(CString left, CString right)
 	{
 		if (m_bSortLogical)
 			return StrCmpLogicalW(left, right);

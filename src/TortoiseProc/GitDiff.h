@@ -34,8 +34,8 @@ public:
 	static int SubmoduleDiff(CTGitPath * pPath1, CTGitPath *pPath2 ,git_revnum_t  rev1, git_revnum_t rev2, bool blame=false, bool unified=false);
 	static int DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd=true);
 	static int DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2);
-	static int DiffCommit(CTGitPath &path1, CTGitPath &path2, GitRev *r1, GitRev *r2);
+	static int DiffCommit(CTGitPath path1, CTGitPath path2, GitRev *r1, GitRev *r2);
 	static int DiffCommit(CTGitPath &path, CString r1, CString r2);
-	static int DiffCommit(CTGitPath &path1, CTGitPath &path2, CString r1, CString r2);
+	static int DiffCommit(CTGitPath path1, CTGitPath path2, CString r1, CString r2);
 	static int SubmoduleDiffNull(CTGitPath *pPath1,git_revnum_t &rev1);
 };

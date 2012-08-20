@@ -281,7 +281,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
 					CGitDiff::DiffCommit(this->m_Path, r1,r2);
 				else
 				{
@@ -315,7 +315,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				GitRev * r1 = &m_wcRev;
 				GitRev * r2 = pSelLogEntry;
 
-				if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+				if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
 					CGitDiff::DiffCommit(this->m_Path, r1,r2);
 				else
 				{
@@ -358,7 +358,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if(cmd == 0)
 						cmd=1;
 
-					if (m_Path.IsDirectory() || ! m_ShowMask & CGit::LOG_INFO_FOLLOW)
+					if (m_Path.IsDirectory() || !(m_ShowMask & CGit::LOG_INFO_FOLLOW))
 						CGitDiff::DiffCommit(m_Path, pSelLogEntry->m_CommitHash.ToString(), pSelLogEntry->m_ParentHash[cmd - 1].ToString());
 					else
 					{

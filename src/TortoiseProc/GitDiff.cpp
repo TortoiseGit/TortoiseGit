@@ -350,7 +350,7 @@ int CGitDiff::DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2)
 	return DiffCommit(path, path, r1, r2);
 }
 
-int CGitDiff::DiffCommit(CTGitPath &path1, CTGitPath &path2, GitRev *r1, GitRev *r2)
+int CGitDiff::DiffCommit(CTGitPath path1, CTGitPath path2, GitRev *r1, GitRev *r2)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
@@ -377,7 +377,7 @@ int CGitDiff::DiffCommit(CTGitPath &path, CString r1, CString r2)
 }
 
 
-int CGitDiff::DiffCommit(CTGitPath &path1, CTGitPath &path2, CString r1, CString r2)
+int CGitDiff::DiffCommit(CTGitPath path1, CTGitPath path2, CString r1, CString r2)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
