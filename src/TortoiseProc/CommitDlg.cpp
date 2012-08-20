@@ -2004,6 +2004,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 
 	OnBnClickedCommitSetDateTime(); // to update the commit date and time
 
+	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	Refresh();
 }
 

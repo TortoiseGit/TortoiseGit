@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1335: Available the branch edit description
  * Fixed issue #494: Implement a commit button in the sync dialog
  * Fixed issue #1333: Added support for "update-index --skip-worktree"
+ * Fixed issue #1350: Commit Dialog set focus to message editor after clicking amend checkbox
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard
