@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowInfo(FALSE)
 	, m_bVisible(FALSE)
 {
-	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/downloads");
+	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/wiki/Download?tm=2");
 	m_sUpdateChangeLogLink = _T("http://code.google.com/p/tortoisegit/wiki/ReleaseNotes");
 }
 
