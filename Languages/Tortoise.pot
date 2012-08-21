@@ -2654,7 +2654,7 @@ msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "Could not copy the files!\n<hr=100%%>\n%s"
+msgid "Could not copy the files!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -2727,17 +2727,17 @@ msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "Could not start diff viewer!\n<hr=100%%>\n%s"
+msgid "Could not start diff viewer!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "Could not start external diff program!\n<hr=100%%>\n%s"
+msgid "Could not start external diff program!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "Could not start external merge program!\n<hr=100%%>\n%s"
+msgid "Could not start external merge program!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (3857)
@@ -2746,7 +2746,7 @@ msgstr ""
 
 #. Resource IDs: (83)
 #, c-format
-msgid "Could not start text viewer!\n<hr=100%%>\n%s"
+msgid "Could not start text viewer!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (603)
@@ -5206,8 +5206,7 @@ msgid "No HEAD found"
 msgstr ""
 
 #. Resource IDs: (81)
-#, c-format
-msgid "No command specified!\n<hr=100%>\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
+msgid "No command specified!\n\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -7284,7 +7283,7 @@ msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
-msgid "Subversion reported an error while doing a cleanup!\n<hr=100%%>\n%s"
+msgid "Subversion reported an error while doing a cleanup!\n\n%s"
 msgstr ""
 
 #. Resource IDs: (65)
@@ -7624,8 +7623,7 @@ msgid "The user who did the last commit"
 msgstr ""
 
 #. Resource IDs: (81)
-#, c-format
-msgid "The working tree has changed!\n<hr=100%>\nPlease commit your changes first or revert."
+msgid "The working tree has changed!\n\nPlease commit your changes first or revert."
 msgstr ""
 
 #. Resource IDs: (65535)
