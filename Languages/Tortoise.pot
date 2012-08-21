@@ -4896,7 +4896,7 @@ msgid "Mark as resolved"
 msgstr ""
 
 #. Resource IDs: (2051)
-msgid "Marks a file as resolved in Subversion\nMark as resolved"
+msgid "Marks a file as resolved in Git\nMark as resolved"
 msgstr ""
 
 #. Resource IDs: (13)
@@ -7281,11 +7281,6 @@ msgstr ""
 msgid "Submodules"
 msgstr ""
 
-#. Resource IDs: (81)
-#, c-format
-msgid "Subversion reported an error while doing a cleanup!\n\n%s"
-msgstr ""
-
 #. Resource IDs: (65)
 msgid "Success"
 msgstr ""
@@ -7620,10 +7615,6 @@ msgstr ""
 
 #. Resource IDs: (16)
 msgid "The user who did the last commit"
-msgstr ""
-
-#. Resource IDs: (81)
-msgid "The working tree has changed!\n\nPlease commit your changes first or revert."
 msgstr ""
 
 #. Resource IDs: (65535)

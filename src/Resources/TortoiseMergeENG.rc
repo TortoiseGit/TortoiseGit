@@ -757,7 +757,7 @@ BEGIN
     ID_NAVIGATE_PREVIOUSCONFLICT 
                             "Go to the previous conflict\nPrevious conflict"
     ID_NAVIGATE_NEXTCONFLICT "Go to the next conflict\nNext conflict"
-    ID_EDIT_MARKASRESOLVED  "Marks a file as resolved in Subversion\nMark as resolved"
+    ID_EDIT_MARKASRESOLVED  "Marks a file as resolved in Git\nMark as resolved"
     ID_VIEW_SWITCHLEFT      "Switch the contents of the left and right view\nSwitch left and right view"
 END
 
