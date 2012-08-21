@@ -103,7 +103,7 @@ GitFolderStatus::~GitFolderStatus(void)
 {
 }
 
-const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& sProjectRoot, BOOL bIsFolder, BOOL bDirectFolder)
+const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& /*sProjectRoot*/, BOOL bIsFolder, BOOL bDirectFolder)
 {
 	//dont' build the cache if an instance of TortoiseProc is running
 	//since this could interfere with svn commands running (concurrent
@@ -184,6 +184,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	}
 	catch ( ... )
 	{
+		status = git_wc_status_unknown;
 	}
 
 	ATLTRACE2(_T("building cache for %s - time %d\n"), filepath.GetWinPath(), t2 -t1);

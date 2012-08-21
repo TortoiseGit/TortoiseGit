@@ -21,7 +21,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef __CSTRINGT_H__ || __ATLSTR_H__
+#if defined(__CSTRINGT_H__) || defined(__ATLSTR_H__)
 CRegBase::CRegBase()
 {
 }

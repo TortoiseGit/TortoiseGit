@@ -1216,7 +1216,6 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		myIDMap[idCmd - idCmdFirst] = ShellSubMenu;
 		myIDMap[idCmd] = ShellSubMenu;
 	}
-	HBITMAP bmp = NULL;
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
 	if (uIcon)
 	{
@@ -2316,7 +2315,7 @@ bool CShellExt::IsIllegalFolder(std::wstring folder, int * cslidarray)
 	return false;
 }
 
-bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
+bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT /*uFlags*/)
 {
 	HMENU ignoresubmenu = NULL;
 	int indexignoresub = 0;

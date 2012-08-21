@@ -148,7 +148,7 @@ int GitStatus::GetStatusRanking(git_wc_status_kind status)
 	return 0;
 }
 
-void GitStatus::GetStatus(const CTGitPath& path, bool update /* = false */, bool noignore /* = false */, bool /*noexternals*/ /* = false */)
+void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, bool noignore /* = false */, bool /*noexternals*/ /* = false */)
 {
 	// NOTE: unlike the SVN version this one does not cache the enumerated files, because in practice no code in all of
 	//       Tortoise uses this, all places that call GetStatus create a temp GitStatus object which gets destroyed right
@@ -980,7 +980,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									{
 										int dirpos = (*it).m_FileName.Find(_T('/'), path.GetLength());
 										if(dirpos<0 || IsRecursive)
-											callback(gitdir + _T("\\") + it->m_FileName, git_wc_status_modified, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), (*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE);
+											callback(gitdir + _T("\\") + it->m_FileName, git_wc_status_modified, false, pData, ((*it).m_Flags & GIT_IDXENTRY_VALID) && !((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), ((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 
 									}
 									else

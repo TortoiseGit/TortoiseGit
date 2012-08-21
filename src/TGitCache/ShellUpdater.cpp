@@ -71,7 +71,7 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
 	{
 		AutoLocker lock(m_critSec);
-		for(int i=0;i<m_pathsToUpdate.size();i++)
+		for (unsigned int i = 0; i < m_pathsToUpdate.size(); i++)
 		{
 			if(m_pathsToUpdate[i] == path)
 				return;

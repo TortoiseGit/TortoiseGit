@@ -196,7 +196,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 }
 
 int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git_wc_status_kind *status,
-							 BOOL IsFull, BOOL IsRecursive,
+							 BOOL IsFull, BOOL /*IsRecursive*/,
 							 FIll_STATUS_CALLBACK callback,void *pData,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
@@ -240,7 +240,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							{
 								*status = git_wc_status_normal;
 								if (callback)
-									callback(gitdir + _T("\\") + path, *status, false, pData, (at(i).m_Flags & GIT_IDXENTRY_VALID) && !(at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE);
+									callback(gitdir + _T("\\") + path, *status, false, pData, (at(i).m_Flags & GIT_IDXENTRY_VALID) && !(at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE), (at(i).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0);
 								return 0;
 
 							}

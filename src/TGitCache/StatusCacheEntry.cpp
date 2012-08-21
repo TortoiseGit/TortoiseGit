@@ -48,7 +48,7 @@ CStatusCacheEntry::CStatusCacheEntry(const git_wc_status_kind status)
 	m_discardAtTime = GetTickCount()+cachetimeout;
 }
 
-CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool bReadOnly, DWORD validuntil /* = 0*/)
+CStatusCacheEntry::CStatusCacheEntry(const git_wc_status2_t* pGitStatus, __int64 lastWriteTime, bool /*bReadOnly*/, DWORD validuntil /* = 0*/)
 	: m_bSet(false)
 	, m_kind(git_node_unknown)
 	, m_highestPriorityLocalStatus(git_wc_status_none)

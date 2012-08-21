@@ -157,6 +157,7 @@ CTime GitRev::ConverFromString(CString input)
 			//This will probably never happen because when CException is not defined, it cannot be thrown.
 		e->Delete();
 #endif //ifdef _AFX
+		UNREFERENCED_PARAMETER(e);
 	}
 	return CTime(); //Return an invalid time
 }
@@ -179,7 +180,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 			if(git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
 				return -1;
 		}
-		catch (char * msg)
+		catch (char *)
 		{
 			return -1;
 		}
@@ -198,7 +199,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 				else
 					git_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
 			}
-			catch (char * msg)
+			catch (char *)
 			{
 				return -1;
 			}
@@ -223,7 +224,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 				{
 					git_get_diff_file(git->GetGitSimpleListDiff(), file, j, &newname, &oldname, &mode, &IsBin, &inc, &dec);
 				}
-				catch (char * msg)
+				catch (char *)
 				{
 					return -1;
 				}
@@ -262,7 +263,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			if (git_get_commit_from_hash(&commit, this->m_CommitHash.m_hash))
 				return -1;
 		}
-		catch (char * msg)
+		catch (char *)
 		{
 			return -1;
 		}
@@ -284,7 +285,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				else
 					git_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 			}
-			catch (char * msg)
+			catch (char *)
 			{
 				git_free_commit(&commit);
 				return -1;
@@ -393,17 +394,14 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 
 	return 0;
 }
-#ifndef TRACE
-#define TRACE(x) 1?0:(x)
-#endif
 void GitRev::DbgPrint()
 {
-	TRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
+	ATLTRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
 	for(unsigned int i=0;i<this->m_ParentHash.size();i++)
 	{
-		TRACE(_T("Parent %i %s"),i, m_ParentHash[i].ToString());
+		ATLTRACE(_T("Parent %i %s"), i, m_ParentHash[i].ToString());
 	}
-	TRACE(_T("\n"));
+	ATLTRACE(_T("\n"));
 }
 
 int GitRev::GetParentFromHash(CGitHash &hash)

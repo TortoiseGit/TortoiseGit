@@ -105,7 +105,7 @@ static BOOL FindGitPath()
 	TCHAR buf[_MAX_PATH];
 
 	// search in all paths defined in PATH
-	while ((env = nextpath(env, buf, _MAX_PATH-1)) && *buf)
+	while ((env = nextpath(env, buf, _MAX_PATH-1)) != NULL && *buf)
 	{
 		TCHAR *pfin = buf + _tcslen(buf)-1;
 

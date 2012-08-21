@@ -158,7 +158,7 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 		fclose(pFile);
 		CString gitPath(s);
 		if (gitPath.Find(L"gitdir: ") != 0)
-			return -1;
+			return false;
 		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
 		gitPath.Replace('/', '\\');
 		gitPath.TrimRight('\\');
