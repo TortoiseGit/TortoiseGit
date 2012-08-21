@@ -402,10 +402,13 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 		CloseClipboard();
 
 		// elimate control chars, especially newlines
-		toInsert.Replace(_T("\r\n"), _T(" "));
-		toInsert.Replace(_T('\r'), _T(' '));
-		toInsert.Replace(_T('\n'), _T(' '));
 		toInsert.Replace(_T('\t'), _T(' '));
+
+		// only insert first line
+		toInsert.Replace(_T('\r'), _T('\n'));
+		int pos = 0;
+		toInsert = toInsert.Tokenize(_T("\n"), pos);
+		toInsert.Trim();
 
 		// get the current text
 		CString text;
