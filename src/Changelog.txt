@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1338: Assume Unchanged and Executable Bit checkboxes not show in TortoiseShell tab page on x86
  * Fixed issue #1341: Overlays missing in TotalCommander (x86) with TGitCache on x64
  * Fixed issue #1265: MSVC crashing unloading TortoiseGit32.dll (faulting module TortoiseGit32.dll_unloaded)
+ * Fixed issue #1355: Added files are no-longer auto-checked for commit
 
 = Release 1.7.12.0 =
 Released: 2012-08-10

@@ -2018,6 +2018,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					progDlg.SetItemCount(paths.GetCount());
 					progDlg.DoModal();
 
+					// reset unchecked status
+					POSITION pos = GetFirstSelectedItemPosition();
+					int index;
+					while ((index = GetNextSelectedItem(pos)) >= 0)
+					{
+						m_mapFilenameToChecked.erase(((CTGitPath*)GetItemData(index))->GetGitPathString());
+					}
+
 					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
 						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
