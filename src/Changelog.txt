@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #494: Implement a commit button in the sync dialog
  * Fixed issue #1333: Added support for "update-index --skip-worktree"
  * Fixed issue #1350: Commit Dialog set focus to message editor after clicking amend checkbox
+ * Fixed issue #811: Log the history of a submodule not its contents
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

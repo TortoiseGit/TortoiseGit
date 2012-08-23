@@ -84,6 +84,7 @@ enum GitCommands
 		ShellMenuBisectBad,
 		ShellMenuBisectReset,
 		ShellMenuRepoBrowse,
+		ShellMenuLogSubmoduleFolder,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

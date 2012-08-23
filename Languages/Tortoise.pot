@@ -6966,6 +6966,14 @@ msgstr ""
 msgid "Show log &before rename/copy"
 msgstr ""
 
+#. Resource IDs: (81)
+msgid "Show log of submodule"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Show log of this folder"
+msgstr ""
+
 #. Resource IDs: (1256)
 msgid "Show log..."
 msgstr ""

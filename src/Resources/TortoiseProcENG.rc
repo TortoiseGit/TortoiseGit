@@ -2696,6 +2696,7 @@ BEGIN
     IDS_ERR_NOCOMMAND       "No command specified!\n\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
     IDS_ERR_NOCOMMANDVALUE  "No command value specified!"
     IDS_ERR_NOSTATUS        "Could not get the status!"
+    IDS_LOG_SUBMODULE       "Show log of submodule"
     IDS_ERR_NOURLOFFILE     "Could not retrieve URL of the file!\n%s"
     IDS_ERR_COPYFILES       "Could not copy the files!\n\n%s"
     IDS_ERR_EXTMERGESTART   "Could not start external merge program!\n\n%s"

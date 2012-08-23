@@ -817,7 +817,12 @@ int CTGitPath::GetAdminDirMask() const
 	{
 		status |= ITEMIS_FOLDERINGIT;
 		if (IsWCRoot())
+		{
 			status |= ITEMIS_WCROOT;
+
+			if (g_GitAdminDir.HasAdminDir(GetWinPathString(), false))
+				status |= ITEMIS_SUBMODULE;
+		}
 	}
 
 	CString dotGitPath;

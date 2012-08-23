@@ -1615,12 +1615,15 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				gitCmd += _T(" /extended");
 				break;
 			case ShellMenuLog:
+			case ShellMenuLogSubmoduleFolder:
 				gitCmd += _T("log /path:\"");
 				if (!files_.empty())
 					gitCmd += files_.front();
 				else
 					gitCmd += folder_;
 				gitCmd += _T("\"");
+				if (id_it->second == ShellMenuLogSubmoduleFolder)
+					gitCmd += _T(" /submodule");
 				break;
 			case ShellMenuConflictEditor:
 				gitCmd += _T("conflicteditor /path:\"");

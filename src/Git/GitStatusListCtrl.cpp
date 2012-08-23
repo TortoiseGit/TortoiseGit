@@ -1681,6 +1681,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDGITLC_LOG, IDS_REPOBROWSE_SHOWLOG, IDI_LOG);
 				}
+				if (m_dwContextMenus & GITSLC_POPSHOWLOGSUBMODULE && filepath->IsDirectory())
+				{
+					popup.AppendMenuIcon(IDGITLC_LOGSUBMODULE, IDS_LOG_SUBMODULE, IDI_LOG);
+				}
 				if (m_dwContextMenus & GITSLC_POPSHOWLOGOLDNAME && (wcStatus & (CTGitPath::LOGACTIONS_REPLACED|CTGitPath::LOGACTIONS_COPY) && !filepath->GetGitOldPathString().IsEmpty()))
 				{
 					popup.AppendMenuIcon(IDGITLC_LOGOLDNAME, IDS_STATUSLIST_SHOWLOGOLDNAME, IDI_LOG);
@@ -2101,9 +2105,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_LOG:
+			case IDGITLC_LOGSUBMODULE:
 				{
 					CString sCmd;
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
+					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
+						sCmd += _T(" /submodule");
 					CAppUtils::RunTortoiseProc(sCmd);
 				}
 				break;

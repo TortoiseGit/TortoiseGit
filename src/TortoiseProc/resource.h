@@ -665,6 +665,7 @@
 #define IDS_ERR_NOCOMMAND               1283
 #define IDS_ERR_NOCOMMANDVALUE          1284
 #define IDS_ERR_NOSTATUS                1285
+#define IDS_LOG_SUBMODULE               1286
 #define IDS_ERR_NOURLOFFILE             1287
 #define IDS_ERR_COPYFILES               1289
 #define IDS_ERR_EXTMERGESTART           1290

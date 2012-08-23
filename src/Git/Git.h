@@ -195,9 +195,9 @@ public:
 	int Revert(CString commit, CTGitPathList &list, bool keep=true);
 	int Revert(CString commit, CTGitPath &path);
 
-	bool SetCurrentDir(CString path)
+	bool SetCurrentDir(CString path, bool submodule = false)
 	{
-		bool b = m_GitDir.HasAdminDir(path,&m_CurrentDir);
+		bool b = m_GitDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
 		if (!b && g_GitAdminDir.IsBareRepo(path))
 		{
 			m_CurrentDir = path;
