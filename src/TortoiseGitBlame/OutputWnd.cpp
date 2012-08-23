@@ -141,7 +141,6 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 
 int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 {
-	m_LogList.ReloadHashMap();
 	CTGitPath path;
 	path.SetFromGit(filename);
 

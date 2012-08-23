@@ -2138,8 +2138,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 		}
 	}
 
-	m_CurrentBranch = g_Git.GetCurrentBranch();
-	m_HeadHash = g_Git.GetHash(_T("HEAD"));
+	ReloadHashMap();
 
 	if(path)
 		m_Path=*path;
