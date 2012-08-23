@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #1265: MSVC crashing unloading TortoiseGit32.dll (faulting module TortoiseGit32.dll_unloaded)
  * Fixed issue #1355: Added files are no-longer auto-checked for commit
  * Fixed issue #1356: File ignoring works not well with unicode filenames
+ * Fixed issue #1354: Remote archive in push dialog not remembered, even if selected
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
