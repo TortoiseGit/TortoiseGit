@@ -44,6 +44,8 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	, m_bTags(FALSE)
 	, m_bAutoLoad(FALSE)
 	, m_bPushAllRemotes(FALSE)
+	, m_bSetPushBranch(FALSE)
+	, m_bSetPushRemote(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
