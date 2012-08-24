@@ -402,9 +402,17 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CopySelectionToClipBoard();
 			}
 			break;
+		case ID_COPYCLIPBOARDMESSAGES:
+			{
+				if ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0)
+					CopySelectionToClipBoard(ID_COPY_SUBJECT);
+				else
+					CopySelectionToClipBoard(ID_COPY_MESSAGE);
+			}
+			break;
 		case ID_COPYHASH:
 			{
-				CopySelectionToClipBoard(TRUE);
+				CopySelectionToClipBoard(ID_COPY_HASH);
 			}
 			break;
 		case ID_EXPORT:

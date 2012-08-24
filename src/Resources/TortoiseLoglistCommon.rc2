@@ -41,6 +41,7 @@ STRINGTABLE
 BEGIN
     IDS_LOG_POPUP_REVERTREVS "&Revert changes by these commits"
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
+    IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES "Copy log messages to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
     IDS_LOG_POPUP_BLAMEREVS "&Blame revisions"
     IDS_LOG_POPUP_BLAMEDIFF "&Blame changes"

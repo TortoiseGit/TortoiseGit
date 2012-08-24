@@ -1865,6 +1865,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
 				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
+			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARDMESSAGES))
+				popup.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES, IDI_COPYCLIP);
 		}
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_FINDENTRY))
@@ -1912,7 +1914,7 @@ bool CGitLogListBase::IsSelectionContinuous()
 	return bContinuous;
 }
 
-void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
+void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 {
 
 	CString sClipdata;
@@ -1933,7 +1935,7 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 			CString sPaths;
 			GitRev * pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.SafeGetAt(GetNextSelectedItem(pos)));
 
-			if(!HashOnly)
+			if (toCopy == ID_COPY_ALL)
 			{
 				//pLogEntry->GetFiles(this)
 				//LogChangedPathArray * cpatharray = pLogEntry->pArChangedPaths;
@@ -1961,6 +1963,16 @@ void CGitLogListBase::CopySelectionToClipBoard(bool HashOnly)
 					(LPCTSTR)sMessage, (pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim()).Trim(),
 					(LPCTSTR)sPaths);
 				sClipdata +=  sLogCopyText;
+			}
+			else if (toCopy == ID_COPY_MESSAGE)
+			{
+				CString body = pLogEntry->GetBody();
+				body.Replace(_T("\n"), _T("\r\n"));
+				sClipdata += _T("* ") + (pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim()).Trim() + _T("\r\n\r\n");
+			}
+			else if (toCopy == ID_COPY_SUBJECT)
+			{
+				sClipdata += _T("* ") + pLogEntry->GetSubject().Trim() + _T("\r\n\r\n");
 			}
 			else
 			{

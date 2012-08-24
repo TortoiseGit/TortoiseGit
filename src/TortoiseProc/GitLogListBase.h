@@ -278,11 +278,19 @@ public:
 	ID_PUSH,
 	ID_FETCH,
 	ID_SHOWBRANCHES,
+	ID_COPYCLIPBOARDMESSAGES,
+	};
+	enum
+	{
+	ID_COPY_ALL,
+	ID_COPY_MESSAGE,
+	ID_COPY_SUBJECT,
+	ID_COPY_HASH,
 	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
-	void CopySelectionToClipBoard(bool hashonly=FALSE);
+	void CopySelectionToClipBoard(int toCopy = ID_COPY_ALL);
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();

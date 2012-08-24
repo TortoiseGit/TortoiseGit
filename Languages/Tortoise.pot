@@ -2589,6 +2589,10 @@ msgstr ""
 msgid "Copy and rename"
 msgstr ""
 
+#. Resource IDs: (1252)
+msgid "Copy log messages to clipboard"
+msgstr ""
+
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
 msgstr ""
