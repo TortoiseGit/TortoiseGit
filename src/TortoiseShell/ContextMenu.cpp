@@ -930,6 +930,11 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 				return S_OK;
 		}
 	}
+	else
+	{
+		if (_tcsncmp(folder_.c_str(), _T("::{"), 3) == 0)
+			return S_OK;
+	}
 
 	if (((uFlags & CMF_EXTENDEDVERBS) == 0) && g_ShellCache.HideMenusForUnversionedItems())
 	{
