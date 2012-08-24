@@ -243,7 +243,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 			}
 			int len = path.GetLength();
 
-				for (int i = 0; i < size(); i++)
+				for (size_t i = 0; i < size(); i++)
 				{
 					if (at(i).m_FileName.GetLength() > len)
 					{
@@ -734,7 +734,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 			return READ_TREE_RECURSIVE;
 	}
 
-	unsigned int cur = p->size();
+	size_t cur = p->size();
 	p->resize(p->size() + 1);
 	p->at(cur).m_Hash = (char*)sha1;
 	p->at(cur).m_FileName.Empty();
@@ -758,8 +758,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
-	size_t count = git_tree_entrycount(tree);
-	for (int i = 0; i < count; i++)
+	unsigned int count = git_tree_entrycount(tree);
+	for (unsigned int i = 0; i < count; i++)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
@@ -897,7 +897,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			return GetLastError();
 
 		BYTE *p = buffer;
-		for (int i = 0; i < size; i++)
+		for (DWORD i = 0; i < size; i++)
 		{
 			if (buffer[i] == '\n' || buffer[i] == '\r' || i == (size - 1))
 			{

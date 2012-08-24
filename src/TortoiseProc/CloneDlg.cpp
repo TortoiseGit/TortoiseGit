@@ -210,7 +210,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
 	CString strCloneDirectory;
 
-	int sel = this->m_BrowseUrl.GetCurrentEntry();
+	int sel = (int)this->m_BrowseUrl.GetCurrentEntry();
 	this->m_regBrowseUrl = sel;
 
 	if( sel == 1 )

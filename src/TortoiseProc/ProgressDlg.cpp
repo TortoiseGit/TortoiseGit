@@ -521,7 +521,7 @@ void CProgressDlg::OnBnClickedOk()
 
 void CProgressDlg::OnBnClickedButton1()
 {
-	this->EndDialog(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
+	this->EndDialog((int)IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
 }
 
 void CProgressDlg::OnClose()
@@ -637,7 +637,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 
 	start =0;
 	if(size == -1)
-		size=strlen(buff);
+		size = (int)strlen(buff);
 
 	for(int i=0;i<size;i++)
 	{

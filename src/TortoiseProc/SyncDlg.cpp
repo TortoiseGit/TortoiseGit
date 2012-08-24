@@ -351,7 +351,7 @@ void CSyncDlg::FetchComplete()
 	{
 		CRebaseDlg dlg;
 		dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
-		int response = dlg.DoModal();
+		INT_PTR response = dlg.DoModal();
 		if(response == IDOK)
 		{
 			return ;
@@ -555,7 +555,7 @@ void CSyncDlg::ShowProgressCtrl(bool bShow)
 	this->m_ctrlProgress.ShowWindow(b);
 	this->m_ctrlAnimate.Open(IDR_DOWNLOAD);
 	if(b == SW_NORMAL)
-		this->m_ctrlAnimate.Play(0,-1,-1);
+		this->m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 	else
 		this->m_ctrlAnimate.Stop();
 }
@@ -1034,7 +1034,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
-		m_ctrlAnimate.Play(0,-1,-1);
+		m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 		this->m_ctrlProgress.SetPos(0);
 		if (m_pTaskbarList)
 		{
@@ -1188,7 +1188,7 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 }
 
 
-void CSyncDlg::OnLvnInLogListColumnClick(NMHDR *pNMHDR, LRESULT *pResult)
+void CSyncDlg::OnLvnInLogListColumnClick(NMHDR * /* pNMHDR */, LRESULT *pResult)
 {
 	*pResult = 0;
 }

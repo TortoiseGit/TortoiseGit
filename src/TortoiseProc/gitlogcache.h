@@ -182,7 +182,7 @@ protected:
 		return FALSE;
 	}
 
-	int SaveOneItem(GitRev &Rev,ULONGLONG offset);
+	int SaveOneItem(GitRev &Rev, LONG offset);
 
 	CString m_GitDir;
 	int RebuildCacheFile();

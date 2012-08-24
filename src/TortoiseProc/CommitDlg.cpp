@@ -721,11 +721,11 @@ void CCommitDlg::OnOK()
 			if (IsGitSVN)
 				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUSVNDCOMMIT)));
 			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-			indexReCommit = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
-			indexTag = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
+			indexReCommit = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_RECOMMIT)));
+			indexTag = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUTAG)));
 		}
 
-		DWORD userResponse = progress.DoModal();
+		INT_PTR userResponse = progress.DoModal();
 
 		if(progress.m_GitStatus || userResponse == (IDC_PROGRESS_BUTTON1 + indexReCommit))
 		{

@@ -60,7 +60,7 @@ bool BisectCommand::Execute()
 			if (path.HasSubmodules())
 				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
-			int ret = progress.DoModal();
+			INT_PTR ret = progress.DoModal();
 			if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 			{
 				CString sCmd;
@@ -107,7 +107,7 @@ bool BisectCommand::Execute()
 		if (!this->parser.HasKey(_T("reset")))
 			reset = progress.m_PostCmdList.Add(_T("Bisect reset"));
 
-		int ret = progress.DoModal();
+		INT_PTR ret = progress.DoModal();
 		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;

@@ -103,7 +103,7 @@ bool PullCommand::Execute()
 		if (parser.HasVal(_T("closeonend")))
 			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
 
-		int ret = progress.DoModal();
+		INT_PTR ret = progress.DoModal();
 
 		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 		{

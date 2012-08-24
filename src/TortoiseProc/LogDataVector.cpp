@@ -254,7 +254,7 @@ void CLogDataVector::setLane(CGitHash& sha)
 //	const ShaString& ss = toPersistentSha(sha, ba);
 //	const ShaVect& shaVec(fh->revOrder);
 
-	for (int cnt = size(); i < cnt; ++i) {
+	for (int cnt = (int)size(); i < cnt; ++i) {
 
 		GitRev* r = & this->GetGitRevAt(i);
 		CGitHash curSha=r->m_CommitHash;

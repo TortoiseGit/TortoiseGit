@@ -157,7 +157,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
-	for(int i=logs.size()-1;i>=0;i--)
+	for (int i = (int)logs.size() - 1; i >= 0; i--)
 	{
 		if (progress.IsValid())
 		{

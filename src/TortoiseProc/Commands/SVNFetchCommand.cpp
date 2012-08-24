@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ bool SVNFetchCommand::Execute()
 	progress.m_PostCmdList.Add(_T("Fetched Log"));
 	progress.m_bAutoCloseOnSuccess = autoClose;
 
-	int userResponse = progress.DoModal();
+	INT_PTR userResponse = progress.DoModal();
 	upstreamNewHash = g_Git.GetHash(out);
 	if (userResponse == IDC_PROGRESS_BUTTON1)
 	{

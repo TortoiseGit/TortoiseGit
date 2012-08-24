@@ -57,7 +57,7 @@ public:
 	int				FindLineNumber(int number);
 	EOL				GetLineEnding(int index) {return m_data[index].ending;}
 
-	int				GetCount() {return m_data.size();}
+	int				GetCount() { return (int)m_data.size(); }
 
 	void			SetState(int index, DiffStates state) {m_data[index].state = state;}
 	void			SetLine(int index, const CString& sLine) {m_data[index].sLine = sLine;}

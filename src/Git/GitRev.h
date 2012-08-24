@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -200,7 +200,7 @@ public:
 	void Clear();
 	//int ParserFromLog(BYTE_VECTOR &log,int start=0);
 	CTime ConverFromString(CString input);
-	inline int ParentsCount(){return m_ParentHash.size();}
+	inline int ParentsCount(){ return (int)m_ParentHash.size(); }
 
 	//Show version tree Graphic
 	std::vector<int> m_Lanes;

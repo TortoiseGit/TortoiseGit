@@ -177,7 +177,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 		ShowEditBalloon(IDC_BRANCH_TAG, msg + _T(" ") + CString(MAKEINTRESOURCE(IDS_B_T_DIFFERENTNAMEORFORCE)), CString(MAKEINTRESOURCE(IDS_WARN_WARNING)));
 		return;
 	}
-	if (g_Git.BranchTagExists(m_BranchTagName, m_bIsTag))
+	if (g_Git.BranchTagExists(m_BranchTagName, m_bIsTag == TRUE))
 	{
 		CString msg;
 		if (m_bIsTag)

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -132,7 +132,7 @@ bool CloneCommand::Execute()
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
-		int ret = progress.DoModal();
+		INT_PTR ret = progress.DoModal();
 
 		if( progress.m_GitStatus == 0)
 		{

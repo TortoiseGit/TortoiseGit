@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,7 +56,7 @@ bool RebaseCommand::Execute()
 	{
 		CRebaseDlg dlg;
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
-		int ret = dlg.DoModal();
+		INT_PTR ret = dlg.DoModal();
 		if( ret == IDOK)
 		{
 			bRet=true;

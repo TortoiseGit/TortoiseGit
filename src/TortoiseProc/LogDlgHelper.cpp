@@ -21,7 +21,7 @@
 #include "LogDlgHelper.h"
 #include "LogDlg.h"
 
-CStoreSelection::CStoreSelection(CLogDlg* dlg)
+CStoreSelection::CStoreSelection(CLogDlg* /* dlg */)
 {
 #if 0
 	m_logdlg = dlg;

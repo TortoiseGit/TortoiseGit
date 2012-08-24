@@ -902,7 +902,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 				if(path.IsEmpty())
 				{
 					start=0;
-					end=indexptr->size()-1;
+					end = (int)indexptr->size() - 1;
 				}
 				LPTSTR lowcasepathBuffer = lowcasepath.GetBuffer();
 				GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos);

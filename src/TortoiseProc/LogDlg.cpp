@@ -1228,8 +1228,8 @@ public:
 		const CCommitPointer& operator*()const{return m_ptr;}
 		const CCommitPointer* operator->()const{return &m_ptr;}
 
-		iterator& operator+=(size_t P_iOffset){m_ptr.m_place += P_iOffset;return *this;}
-		iterator& operator-=(size_t P_iOffset){m_ptr.m_place -= P_iOffset;return *this;}
+		iterator& operator+=(size_t P_iOffset){m_ptr.m_place += (int)P_iOffset;return *this;}
+		iterator& operator-=(size_t P_iOffset){m_ptr.m_place -= (int)P_iOffset;return *this;}
 		iterator operator+(size_t P_iOffset)const{iterator it(*this); it += P_iOffset;return it;}
 		iterator operator-(size_t P_iOffset)const{iterator it(*this); it -= P_iOffset;return it;}
 
@@ -1255,7 +1255,7 @@ public:
 	iterator end()
 	{
 		iterator it;
-		it->m_place = m_parDates->GetCount();
+		it->m_place = (int)m_parDates->GetCount();
 		it->m_cont = this;
 		return it;
 	}
@@ -1860,7 +1860,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CGitHash rev1 ;
 	CGitHash rev2 ;
 	long selectedrevs = 0;
-	int count =m_LogList.m_arShownList.GetCount();
+	int count = (int)m_LogList.m_arShownList.GetCount();
 	int start = 0;
 	if (count)
 	{

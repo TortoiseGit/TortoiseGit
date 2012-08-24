@@ -1046,7 +1046,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 		count=1;
 	else
 		count=list->GetCount();
-	for(int i=0;i<count;i++)
+	for (size_t i = 0; i < count; i++)
 	{
 		CString cmd;
 		pos=0;

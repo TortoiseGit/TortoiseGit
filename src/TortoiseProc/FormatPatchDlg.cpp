@@ -120,7 +120,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	STRING_VECTOR list;
 	g_Git.GetBranchList(list,NULL,CGit::BRANCH_ALL_F);
-	m_cSince.SetMaxHistoryItems(list.size());
+	m_cSince.SetMaxHistoryItems((int)list.size());
 	m_cSince.AddString(list);
 
 	if(!m_Since.IsEmpty())

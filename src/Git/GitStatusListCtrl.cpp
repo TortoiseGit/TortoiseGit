@@ -3749,7 +3749,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				{
 					int last = cmdErr.RevertFind(0,-1);
 					CString str;
-					g_Git.StringAppend(&str, &cmdErr[last + 1], CP_UTF8, cmdErr.size() - last -1);
+					g_Git.StringAppend(&str, &cmdErr[last + 1], CP_UTF8, (int)cmdErr.size() - last -1);
 					CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 				}
 

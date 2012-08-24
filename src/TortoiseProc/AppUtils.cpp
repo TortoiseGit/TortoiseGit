@@ -626,7 +626,8 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	proc += tempfile;
 	proc += _T("\"");
 
-	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &CPathUtils::GetAppDirectory());
+	CString appDir = CPathUtils::GetAppDirectory();
+	bool b = LaunchApplication(proc, IDS_ERR_PAGEANT, true, &appDir);
 	if(!b)
 		return b;
 
@@ -1046,7 +1047,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	if (gitPath.HasSubmodules())
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
-	int ret = progress.DoModal();
+	INT_PTR ret = progress.DoModal();
 	if (gitPath.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
 	{
 		CString sCmd;
@@ -1195,7 +1196,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
 			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
 
-		int ret = progress.DoModal();
+		INT_PTR ret = progress.DoModal();
 		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
 		{
 			CString sCmd;
@@ -1971,7 +1972,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		}
 
 		progress.m_GitCmd=cmd;
-		int userResponse=progress.DoModal();
+		INT_PTR userResponse = progress.DoModal();
 
 		if (userResponse == IDC_PROGRESS_BUTTON1)
 		{
@@ -1987,7 +1988,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				CRebaseDlg dlg;
 				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
 				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
-				int response = dlg.DoModal();
+				INT_PTR response = dlg.DoModal();
 				if(response == IDOK)
 				{
 					return TRUE;
@@ -2100,7 +2101,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-		int ret = progress.DoModal();
+		INT_PTR ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
 		{
@@ -2423,11 +2424,16 @@ BOOL CAppUtils::Merge(CString *commit)
 		else if (dlg.m_bIsBranch)
 			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
 
-		int ret = Prodlg.DoModal();
+		INT_PTR ret = Prodlg.DoModal();
 
 		if (ret == IDC_PROGRESS_BUTTON1)
 			if (dlg.m_bNoCommit)
-				return Commit(_T(""), TRUE, CString(), CTGitPathList(), CTGitPathList(), true);
+			{
+				CString sLogMsg;
+				CTGitPathList pathList;
+				CTGitPathList selectedList;
+				return Commit(_T(""), TRUE, sLogMsg, pathList, selectedList, true);
+			}
 			else if (dlg.m_bIsBranch)
 			{
 				CString msg;

@@ -288,12 +288,12 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 	if (vector.empty())
 		return -1;
 
-	if(pos >= vector.size())
+	if (pos >= (int)vector.size())
 		return -1;
 
 	if( _tcsnccmp(vector[pos].m_FileName, pstr,len) != 0)
 	{
-		for(int i=0;i< vector.size();i++)
+		for (int i = 0; i < (int)vector.size(); i++)
 		{
 			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
 			{
@@ -307,9 +307,9 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 	else
 	{
 		*start =0;
-		*end = vector.size();
+		*end = (int)vector.size();
 
-		for(int i=pos;i<vector.size();i++)
+		for (int i = pos; i < (int)vector.size(); i++)
 		{
 			if( _tcsnccmp(vector[i].m_FileName, pstr,len) == 0 )
 			{
@@ -338,7 +338,7 @@ int GetRangeInSortVector(T &vector,LPTSTR pstr,int len, int *start, int *end, in
 template<class T>
 int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 {
-	int end=vector.size()-1;
+	int end = (int)vector.size() - 1;
 	int start = 0;
 	int mid = (start+end)/2;
 

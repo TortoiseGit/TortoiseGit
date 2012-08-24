@@ -212,7 +212,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 DWORD GitFolderStatus::GetTimeoutValue()
 {
 	DWORD timeout = GITFOLDERSTATUS_CACHETIMEOUT;
-	DWORD factor = m_cache.size()/200;
+	DWORD factor = (DWORD)m_cache.size() / 200;
 	if (factor==0)
 		factor = 1;
 	return factor*timeout;

@@ -311,7 +311,7 @@ public:
 			// find relevant ones and sort 'em
 
 			std::map<CString, int> sortedProps;
-			for (int i = itemName.size(); i < columnCount; ++i)
+			for (int i = (int)itemName.size(); i < columnCount; ++i)
 			if (IsRelevant(i))
 				sortedProps[GetName(i)] = i;
 

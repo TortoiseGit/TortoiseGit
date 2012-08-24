@@ -113,7 +113,7 @@ static BOOL FindGitPath()
 		if (*pfin != _T('/') && *pfin != _T('\\'))
 			_tcscpy(++pfin, _T("\\"));
 
-		const int len = _tcslen(buf);
+		const size_t len = _tcslen(buf);
 
 		if ((len + 7) < _MAX_PATH)
 			_tcscpy(pfin+1, _T("git.exe"));
@@ -302,7 +302,7 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 
 	int len ;
 	if(length<0)
-		len= strlen((const char*)p);
+		len = (int)strlen((const char*)p);
 	else
 		len=length;
 	//if (len==0)
@@ -1109,7 +1109,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			return -1;
 		}
 		
-		for (int i = 0; i < tag_names.count; i++)
+		for (size_t i = 0; i < tag_names.count; i++)
 		{
 			CStringA tagName(tag_names.strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(tagName).Mid(10)); // strip "refs/tags/"
@@ -1314,7 +1314,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 			return -1;
 		}
 		
-		for (int i = 0; i < remotes.count; i++)
+		for (size_t i = 0; i < remotes.count; i++)
 		{
 			CStringA remote(remotes.strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(remote));
@@ -1585,13 +1585,13 @@ BOOL CGit::CheckMsysGitDir()
 CString CGit::GetHomeDirectory()
 {
 	const wchar_t * homeDir = wget_windows_home_directory();
-	return CString(homeDir, wcslen(homeDir));
+	return CString(homeDir, (int)wcslen(homeDir));
 }
 
 CString CGit::GetGitSystemConfig()
 {
 	const wchar_t * systemConfig = wget_msysgit_etc();
-	return CString(systemConfig, wcslen(systemConfig));
+	return CString(systemConfig, (int)wcslen(systemConfig));
 }
 
 BOOL CGit::CheckCleanWorkTree()

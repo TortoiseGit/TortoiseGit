@@ -379,7 +379,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
-	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(_T("submodule"))))
+	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(_T("submodule")) == TRUE))
 	{
 		int i=0;
 		for(i=0;i<pathList.GetCount();i++)

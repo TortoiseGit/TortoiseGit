@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ public:
 	int RevertFind(BYTE data, int start=-1)
 	{
 		if(start == -1)
-			start=size()-1;
+			start = (int)size() - 1;
 
 		if(start<0)
 			return -1;
@@ -67,7 +67,7 @@ public:
 			else
 				break;
 
-			if( pos >= size())
+			if (pos >= (int)size())
 				return -1;
 
 		}while(at(pos)==0);
@@ -100,7 +100,7 @@ public:
 				return -1;//Not found
 			//check rest of characters
 			if(memcmp(found,dataToFind,dataSize)==0)
-				return found-&*begin();//Match. Return position.
+				return (int)(found-&*begin());//Match. Return position.
 			//No match. Set position on next byte and continue search
 			pos=found+1;
 		}
@@ -109,7 +109,7 @@ public:
 	int append( std::vector<BYTE> &v,int start=0,int end=-1)
 	{
 		if(end<0)
-			end=v.size();
+			end = (int)v.size();
 		for(int i=start;i<end;i++)
 			this->push_back(v[i]);
 		return 0;

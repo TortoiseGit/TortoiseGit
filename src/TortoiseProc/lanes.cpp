@@ -295,5 +295,5 @@ int Lanes::add(int type, const CGitHash& next, int pos) {
 	// if all lanes are occupied add a new lane
 	typeVec.push_back(type);
 	nextShaVec.push_back(next);
-	return typeVec.size() - 1;
+	return (int)typeVec.size() - 1;
 }
