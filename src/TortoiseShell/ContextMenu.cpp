@@ -1001,62 +1001,6 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
 	bool bShowIcons = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\ShowContextMenuIcons"), TRUE));
 
-#if 0
-	if (itemStates & (ITEMIS_INSVN|ITEMIS_FOLDERINSVN))
-	{
-		// show current branch name (as a "read-only" menu entry)
-
-		CTGitPath path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
-		CString sProjectRoot;
-		CString sBranchName;
-
-		if (path.HasAdminDir(&sProjectRoot) && !g_Git.GetCurrentBranchFromFile(sProjectRoot, sBranchName))
-		{
-			if (sBranchName.GetLength() == 40)
-			{
-				// if SHA1 only show 4 first bytes
-				BOOL bIsSha1 = TRUE;
-				for (int i=0; i<40; i++)
-					if ( !iswxdigit(sBranchName[i]) )
-					{
-						bIsSha1 = FALSE;
-						break;
-					}
-				if (bIsSha1)
-					sBranchName = sBranchName.Left(8) + _T("....");
-			}
-
-			sBranchName = _T('"') + sBranchName + _T('"');
-
-			const int icon = IDI_COPY;
-			const int pos = indexMenu++;
-			const int id = idCmd++;
-
-			MENUITEMINFO menuiteminfo;
-			SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
-			menuiteminfo.cbSize = sizeof(menuiteminfo);
-			menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_STRING | MIIM_STATE;
-			menuiteminfo.fState = MFS_DISABLED;
-			menuiteminfo.fType = MFT_STRING;
-			menuiteminfo.dwTypeData = (LPWSTR)sBranchName.GetString();
-			if (icon)
-			{
-				menuiteminfo.fMask |= MIIM_BITMAP;
-				menuiteminfo.hbmpItem = (SysInfo::Instance().IsVistaOrLater()) ? IconToBitmapPARGB32(icon) : HBMMENU_CALLBACK;
-
-				if (menuiteminfo.hbmpItem == HBMMENU_CALLBACK)
-				{
-					// WM_DRAWITEM uses myIDMap to get icon, we use the same icon as create branch
-					myIDMap[id - idCmdFirst] = ShellMenuBranch;
-					myIDMap[id] = ShellMenuBranch;
-				}
-			}
-			menuiteminfo.wID = id;
-			InsertMenuItem(hMenu, pos, TRUE, &menuiteminfo);
-		}
-	}
-#endif
-
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
 	{
 		if (menuInfo[menuIndex].command == ShellSeparator)
