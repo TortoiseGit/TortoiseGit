@@ -3671,7 +3671,7 @@ BEGIN
                             "If checked --track is passed to git, if unchecked --no-track is passed to git, else neither --track nor --no-track is passed to git (see help)."
     IDS_STATUSLIST_FROM     "(from %s)"
     IDS_LASTAUTHOR          "Last Author"
-    IDS_B_T_NOT_UNIQUE      "The entered source ref is ambiguous. You have to make it unique (e.g. by adding ""refs/heads/"" as a prefix for branches or ""refs/tags/"" for tags)!"
+    IDS_B_T_NOT_UNIQUE      "The entered source ref is ambiguous.\nYou have to make it unique (e.g. by adding ""refs/heads/"" as a prefix for branches or ""refs/tags/"" for tags)!"
     IDS_B_EXISTS            "A branch with this name already exists."
     IDS_T_EXISTS            "A tag with this name already exists."
     IDS_B_DELETEORDIFFERENTNAME 

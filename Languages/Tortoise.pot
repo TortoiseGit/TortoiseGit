@@ -7443,7 +7443,7 @@ msgid "The diffing engine aborted because of an error:\n%s"
 msgstr ""
 
 #. Resource IDs: (85)
-msgid "The entered source ref is ambiguous. You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgid "The entered source ref is ambiguous.\nYou have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
 msgstr ""
 
 #. Resource IDs: (64)
