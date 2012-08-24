@@ -247,6 +247,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_CommitList.m_IsIDReplaceAction = TRUE;
 //	m_CommitList.m_IsOldFirst = TRUE;
 	m_CommitList.m_IsRebaseReplaceGraph = TRUE;
+	m_CommitList.m_bNoHightlightHead = TRUE;
 
 	m_CommitList.InsertGitColumn();
 

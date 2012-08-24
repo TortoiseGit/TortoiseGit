@@ -168,6 +168,7 @@ public:
 	BOOL m_IsOldFirst;
 	void hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow);
 	BOOL m_IsRebaseReplaceGraph;
+	BOOL m_bNoHightlightHead;
 
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 

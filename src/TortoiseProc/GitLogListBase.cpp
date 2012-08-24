@@ -79,6 +79,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_dwDefaultColumns(0)
 	, m_arShownList(&m_critSec)
 	, m_hasWC(true)
+	, m_bNoHightlightHead(FALSE)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -1088,7 +1089,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
-					if(data->m_CommitHash.ToString() == m_HeadHash)
+					if (data->m_CommitHash.ToString() == m_HeadHash && m_bNoHightlightHead == FALSE)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
