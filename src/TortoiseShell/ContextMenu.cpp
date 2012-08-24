@@ -1066,56 +1066,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 		else
 		{
 			// check the conditions whether to show the menu entry or not
-			bool bInsertMenu = false;
-
-			if (menuInfo[menuIndex].firstyes && menuInfo[menuIndex].firstno)
-			{
-				if (((menuInfo[menuIndex].firstyes & itemStates) == menuInfo[menuIndex].firstyes)
-					&&
-					((menuInfo[menuIndex].firstno & (~itemStates)) == menuInfo[menuIndex].firstno))
-					bInsertMenu = true;
-			}
-			else if ((menuInfo[menuIndex].firstyes)&&((menuInfo[menuIndex].firstyes & itemStates) == menuInfo[menuIndex].firstyes))
-				bInsertMenu = true;
-			else if ((menuInfo[menuIndex].firstno)&&((menuInfo[menuIndex].firstno & (~itemStates)) == menuInfo[menuIndex].firstno))
-				bInsertMenu = true;
-
-			if (menuInfo[menuIndex].secondyes && menuInfo[menuIndex].secondno)
-			{
-				if (((menuInfo[menuIndex].secondyes & itemStates) == menuInfo[menuIndex].secondyes)
-					&&
-					((menuInfo[menuIndex].secondno & (~itemStates)) == menuInfo[menuIndex].secondno))
-					bInsertMenu = true;
-			}
-			else if ((menuInfo[menuIndex].secondyes)&&((menuInfo[menuIndex].secondyes & itemStates) == menuInfo[menuIndex].secondyes))
-				bInsertMenu = true;
-			else if ((menuInfo[menuIndex].secondno)&&((menuInfo[menuIndex].secondno & (~itemStates)) == menuInfo[menuIndex].secondno))
-				bInsertMenu = true;
-
-			if (menuInfo[menuIndex].thirdyes && menuInfo[menuIndex].thirdno)
-			{
-				if (((menuInfo[menuIndex].thirdyes & itemStates) == menuInfo[menuIndex].thirdyes)
-					&&
-					((menuInfo[menuIndex].thirdno & (~itemStates)) == menuInfo[menuIndex].thirdno))
-					bInsertMenu = true;
-			}
-			else if ((menuInfo[menuIndex].thirdyes)&&((menuInfo[menuIndex].thirdyes & itemStates) == menuInfo[menuIndex].thirdyes))
-				bInsertMenu = true;
-			else if ((menuInfo[menuIndex].thirdno)&&((menuInfo[menuIndex].thirdno & (~itemStates)) == menuInfo[menuIndex].thirdno))
-				bInsertMenu = true;
-
-			if (menuInfo[menuIndex].fourthyes && menuInfo[menuIndex].fourthno)
-			{
-				if (((menuInfo[menuIndex].fourthyes & itemStates) == menuInfo[menuIndex].fourthyes)
-					&&
-					((menuInfo[menuIndex].fourthno & (~itemStates)) == menuInfo[menuIndex].fourthno))
-					bInsertMenu = true;
-			}
-			else if ((menuInfo[menuIndex].fourthyes)&&((menuInfo[menuIndex].fourthyes & itemStates) == menuInfo[menuIndex].fourthyes))
-				bInsertMenu = true;
-			else if ((menuInfo[menuIndex].fourthno)&&((menuInfo[menuIndex].fourthno & (~itemStates)) == menuInfo[menuIndex].fourthno))
-				bInsertMenu = true;
-
+			bool bInsertMenu = ShouldInsertItem(menuInfo[menuIndex]);
 			if (menuInfo[menuIndex].menuID & menuex)
 			{
 				if( !(itemStates & ITEMIS_EXTENDED) )
@@ -2413,4 +2364,24 @@ void CShellExt::RunCommand(const tstring& path, const tstring& command, LPCTSTR 
 	}
 
 	MessageBox(NULL, CFormatMessageWrapper(), errorMessage, MB_OK | MB_ICONINFORMATION);
+}
+
+bool CShellExt::ShouldInsertItem(const MenuInfo& item) const
+{
+	return ShouldEnableMenu(item.first) || ShouldEnableMenu(item.second) ||
+		ShouldEnableMenu(item.third) || ShouldEnableMenu(item.fourth);
+}
+
+bool CShellExt::ShouldEnableMenu(const YesNoPair& pair) const
+{
+	if (pair.yes && pair.no)
+	{
+		if (((pair.yes & itemStates) == pair.yes) && ((pair.no & (~itemStates)) == pair.no))
+			return true;
+	}
+	else if ((pair.yes) && ((pair.yes & itemStates) == pair.yes))
+		return true;
+	else if ((pair.no) && ((pair.no & (~itemStates)) == pair.no))
+		return true;
+	return false;
 }

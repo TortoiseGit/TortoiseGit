@@ -127,6 +127,8 @@ private:
 	LPCTSTR			GetMenuTextFromResource(int id);
 	void			GetColumnStatus(const TCHAR * path, BOOL bIsDir);
 	void			GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci, UINT characterCount, UINT title, UINT description);
+	bool			ShouldInsertItem(const MenuInfo& pair) const;
+	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
 	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
 	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
