@@ -2645,7 +2645,6 @@ BEGIN
     IDS_LOG_FILTER_REFNAME  "Refname"
     IDS_ERR_NOTENOUGHMEMORY "Not enough memory to complete operation."
     IDS_ERR_MUSTBEURL       "This is not a valid URL.\nPlease enter an URL here."
-    IDS_ERR_INVALIDREVNOWC  "Invalid revision number! Valid revisions are:\nHEAD\npositive decimal numbers,\ndates in one of the following example forms:\n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{""2002-02-17 15:30""}\n{""2002-02-17 15:30 +0230""}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
     IDS_ERR_MERGEIDENTICALREVISIONS 
                             "Merging requires different revisions or different URLs in 'From:' and 'To:'"
     IDS_ERR_NOHOOKTYPESPECIFIED "Please select a hook type"
@@ -2654,7 +2653,6 @@ BEGIN
     IDS_ERR_NOHOOKCOMMANDPECIFIED "Please enter a hook script to execute."
     IDS_ERR_HOOKFAILED      "The hook script returned an error:\n%s"
     IDS_PROC_BROWSEREFS_DELETETAG "Delete tag"
-    IDS_ERR_INVALIDREVRANGE "Invalid revision range!\nValid revisions are numbers and HEAD, separated by commas.\nA range can be specified with a dash.\nExample: 2-5,7,10,44-70,300-HEAD"
     IDS_ERR_NOPREVREVISION  "Could not determine the last committed revision!"
     IDS_PROC_CLEANUPFINISHED_FAILED 
                             "Cleanup failed to process the following paths:\n%s"
@@ -2764,8 +2762,6 @@ BEGIN
     IDS_CHSTAT_FILECOL      "File"
     IDS_CHSTAT_WCCOL        "Local status"
     IDS_CHSTAT_REPOCOL      "Remote status"
-    IDS_WARN_CONFIRM_MOVE_SPECIAL_DIRECTORY 
-                            "One of the paths you are attempting to move appears to be a special path\n(one of 'branches', 'tags' or 'trunk').\n\nAre you sure you want to move the selected paths?"
     IDS_SETTINGS_BUGTRAQ_PATHCOL "Path"
     IDS_SETTINGS_BUGTRAQ_PROVIDERCOL "Provider"
     IDS_SETTINGS_BUGTRAQ_PARAMETERSCOL "Parameters"

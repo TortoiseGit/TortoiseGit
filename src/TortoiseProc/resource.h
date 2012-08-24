@@ -155,7 +155,6 @@
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
 #define IDC_LOGLIST                     1003
-#define IDS_WARN_CONFIRM_MOVE_SPECIAL_DIRECTORY 1003
 #define IDC_PASSEDIT                    1004
 #define IDS_SETTINGS_BUGTRAQ_PATHCOL    1004
 #define IDC_INFOTEXT                    1005
@@ -706,7 +705,6 @@
 #define IDS_ERR_NOTENOUGHMEMORY         1313
 #define IDC_UNVERSIONEDASMODIFIED       1313
 #define IDS_ERR_MUSTBEURL               1314
-#define IDS_ERR_INVALIDREVNOWC          1315
 #define IDC_FLOPPY                      1315
 #define IDS_ERR_MERGEIDENTICALREVISIONS 1316
 #define IDC_REOPENCOMMIT                1316
@@ -716,7 +714,6 @@
 #define IDS_ERR_NOHOOKCOMMANDPECIFIED   1319
 #define IDS_ERR_HOOKFAILED              1320
 #define IDS_PROC_BROWSEREFS_DELETETAG   1321
-#define IDS_ERR_INVALIDREVRANGE         1322
 #define IDC_HOOKPATH                    1323
 #define IDS_ERR_NOPREVREVISION          1323
 #define IDC_HOOKBROWSE                  1324
