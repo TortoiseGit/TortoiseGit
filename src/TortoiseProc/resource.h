@@ -905,6 +905,7 @@
 #define IDC_CHECK_FETCHTAGS             1485
 #define IDC_PROC_PUSH_SET_PUSHBRANCH    1485
 #define IDC_RUN_PROGRESS                1486
+#define IDC_PROC_PUSH_SET_UPSTREAM      1486
 #define IDC_CURRENT                     1487
 #define IDC_COMBOBOXEX1                 1489
 #define IDC_REMOTE_COMBO                1489

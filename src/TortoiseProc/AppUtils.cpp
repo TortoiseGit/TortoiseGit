@@ -2058,6 +2058,8 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			arg += _T("--tags ");
 		if(dlg.m_bForce)
 			arg += _T("--force ");
+		if (dlg.m_bSetUpstream)
+			arg += _T("--set-upstream ");
 
 		int ver = CAppUtils::GetMsysgitVersion();
 

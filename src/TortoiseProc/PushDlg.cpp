@@ -46,6 +46,7 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	, m_bPushAllRemotes(FALSE)
 	, m_bSetPushBranch(FALSE)
 	, m_bSetPushRemote(FALSE)
+	, m_bSetUpstream(FALSE)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
@@ -69,6 +70,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD,this->m_bAutoLoad);
 	DDX_Check(pDX, IDC_PROC_PUSH_SET_PUSHREMOTE, m_bSetPushRemote);
 	DDX_Check(pDX, IDC_PROC_PUSH_SET_PUSHBRANCH, m_bSetPushBranch);
+	DDX_Check(pDX, IDC_PROC_PUSH_SET_UPSTREAM, m_bSetUpstream);
 }
 
 BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
@@ -81,6 +83,9 @@ BEGIN_MESSAGE_MAP(CPushDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_SOURCE_BRANCH, &CPushDlg::OnBnClickedButtonBrowseSourceBranch)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE_DEST_BRANCH, &CPushDlg::OnBnClickedButtonBrowseDestBranch)
 	ON_BN_CLICKED(IDC_PUSHALL, &CPushDlg::OnBnClickedPushall)
+	ON_BN_CLICKED(IDC_PROC_PUSH_SET_UPSTREAM, &CPushDlg::OnBnClickedProcPushSetUpstream)
+	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHREMOTE, &CPushDlg::OnBnClickedProcPushSetPushremote)
+	ON_BN_CLICKED(IDC_PROC_PUSH_SET_PUSHBRANCH, &CPushDlg::OnBnClickedProcPushSetPushremote)
 END_MESSAGE_MAP()
 
 BOOL CPushDlg::OnInitDialog()
@@ -116,6 +121,7 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
 	AddAnchor(IDC_PROC_PUSH_SET_PUSHBRANCH, TOP_LEFT);
 	AddAnchor(IDC_PROC_PUSH_SET_PUSHREMOTE, TOP_LEFT);
+	AddAnchor(IDC_PROC_PUSH_SET_UPSTREAM, TOP_LEFT);
 
 	AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -131,6 +137,7 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
+	AdjustControlSize(IDC_PROC_PUSH_SET_UPSTREAM);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -304,14 +311,19 @@ void CPushDlg::EnDisablePushRemoteArchiveBranch()
 	{
 		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHBRANCH, FALSE);
 		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHREMOTE, FALSE);
+		bool enableUpstream = (GetCheckedRadioButton(IDC_RD_REMOTE, IDC_RD_URL) != IDC_RD_URL && (!m_BranchSource.GetString().Trim().IsEmpty() || m_bPushAllBranches));
+		DialogEnableWindow(IDC_PROC_PUSH_SET_UPSTREAM, enableUpstream);
+		if (m_bSetUpstream && !enableUpstream)
+			m_bSetUpstream = FALSE;
 		m_bSetPushRemote = FALSE;
 		m_bSetPushBranch = FALSE;
 		UpdateData(FALSE);
 	}
 	else
 	{
-		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHBRANCH, TRUE);
-		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHREMOTE, TRUE);
+		DialogEnableWindow(IDC_PROC_PUSH_SET_UPSTREAM, TRUE);
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHBRANCH, !m_bSetUpstream);
+		DialogEnableWindow(IDC_PROC_PUSH_SET_PUSHREMOTE, !m_bSetUpstream);
 	}
 }
 
@@ -521,4 +533,22 @@ void CPushDlg::OnBnClickedPushall()
 		UpdateData(FALSE);
 	}
 	EnDisablePushRemoteArchiveBranch();
+}
+
+void CPushDlg::OnBnClickedProcPushSetUpstream()
+{
+	UpdateData();
+	this->GetDlgItem(IDC_PROC_PUSH_SET_PUSHREMOTE)->EnableWindow(!m_bSetUpstream);
+	this->GetDlgItem(IDC_PROC_PUSH_SET_PUSHBRANCH)->EnableWindow(!m_bSetUpstream);
+	m_bSetPushBranch = FALSE;
+	m_bSetPushRemote = FALSE;
+	UpdateData(FALSE);
+}
+
+void CPushDlg::OnBnClickedProcPushSetPushremote()
+{
+	UpdateData();
+	this->GetDlgItem(IDC_PROC_PUSH_SET_UPSTREAM)->EnableWindow(!(m_bSetPushBranch || m_bSetPushRemote));
+	m_bSetUpstream = FALSE;
+	UpdateData(FALSE);
 }

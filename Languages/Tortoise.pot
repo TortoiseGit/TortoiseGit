@@ -991,6 +991,10 @@ msgstr ""
 msgid "&Set MSysGit path"
 msgstr ""
 
+#. Resource IDs: (1486)
+msgid "&Set upstream/track remote branch"
+msgstr ""
+
 #. Resource IDs: (9)
 msgid "&Settings"
 msgstr ""

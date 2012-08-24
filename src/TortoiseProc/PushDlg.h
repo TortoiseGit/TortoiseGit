@@ -56,6 +56,7 @@ public:
 	BOOL			m_bAutoLoad;
 	BOOL			m_bPushAllBranches;
 	BOOL			m_bPushAllRemotes;
+	BOOL			m_bSetUpstream;
 
 protected:
 	CRegDWORD		m_regAutoLoad;
@@ -78,6 +79,8 @@ protected:
 	afx_msg void OnBnClickedButtonBrowseSourceBranch();
 	afx_msg void OnBnClickedButtonBrowseDestBranch();
 	afx_msg void OnBnClickedPushall();
+	afx_msg void OnBnClickedProcPushSetUpstream();
+	afx_msg void OnBnClickedProcPushSetPushremote();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	void Refresh();
 	void GetRemoteBranch(CString currentBranch);
