@@ -1200,10 +1200,6 @@ msgstr ""
 msgid "(unknown)"
 msgstr ""
 
-#. Resource IDs: (20)
-msgid "*Rebase..."
-msgstr ""
-
 #. Resource IDs: (188)
 #, c-format
 msgid "+ %d"
@@ -5988,6 +5984,10 @@ msgstr ""
 #. Resource IDs: (1254)
 #, c-format
 msgid "Rebase \"%s\" onto this..."
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Rebase..."
 msgstr ""
 
 #. Resource IDs: (67)
