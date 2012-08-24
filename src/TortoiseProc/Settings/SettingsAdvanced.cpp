@@ -64,7 +64,7 @@ CSettingsAdvanced::CSettingsAdvanced()
 
 	settings[i].sName	= L"ScintillaDirect2D";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
+	settings[i++].def.b	= false;
 
 	settings[i].sName	= L"ShowContextMenuIcons";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;

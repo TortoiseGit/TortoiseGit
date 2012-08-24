@@ -154,7 +154,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 	Call(SCI_ASSIGNCMDKEY, SCK_END + (SCMOD_SHIFT << 16), SCI_LINEENDWRAPEXTEND);
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME, SCI_HOMEWRAP);
 	Call(SCI_ASSIGNCMDKEY, SCK_HOME + (SCMOD_SHIFT << 16), SCI_HOMEWRAPEXTEND);
-	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", TRUE);
+	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
 		Call(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);

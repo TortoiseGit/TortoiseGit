@@ -118,11 +118,12 @@
                     drawing in the Scintilla control which is used
                     as the edit box in e.g. the commit dialog (also for the attached patch window), the
                     unified diff viewer and TortoiseGitBlame.
-                    With some graphic cards however this sometimes
+                    With some graphic cards, however, this sometimes
                     doesn't work properly so that the cursor to enter
-                    text isn't always visible. If that happens, you
-                    can turn this feature off by setting this value
-                    to <literal>false</literal>.
+                    text isn't always visible, the redraw does not work
+                    or the background is flashing. It's disabled by default. You
+                    can turn this feature on by setting this value
+                    to <literal>true</literal>.
                 </para>
             </listitem>
         </varlistentry>

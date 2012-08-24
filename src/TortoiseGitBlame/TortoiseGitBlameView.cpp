@@ -470,7 +470,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
 	m_regOldLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
 	m_regNewLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
-	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", TRUE);
+	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);

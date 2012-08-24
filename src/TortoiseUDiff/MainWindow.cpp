@@ -333,7 +333,7 @@ bool CMainWindow::Initialize()
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
-	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", TRUE);
+	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
