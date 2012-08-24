@@ -1138,8 +1138,10 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				ignorePattern.Replace(_T("["), _T("\\["));
 				ignorePattern.Replace(_T("]"), _T("\\]"));
 
+				ignorePattern += _T("\n");
 				CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
-				file.WriteString(ignorePatternA + _T("\n"));
+				file.Write(ignorePatternA.GetBuffer(), ignorePatternA.GetLength());
+				ignorePatternA.ReleaseBuffer();
 
 				if (ignoreDlg.m_IgnoreFile == 1)
 					file.Close();
