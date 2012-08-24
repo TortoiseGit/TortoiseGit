@@ -145,7 +145,6 @@
 #define IDS_COLDESCAUTHOR               252
 #define IDS_FILEPROPONFOLDER            253
 #define IDS_PROPSNOTSAVED               254
-#define IDS_MENUADDASREPLACEMENT        255
 #define IDS_DROPMOVERENAMEMENU          256
 #define IDS_MENUREMOVEKEEP              271
 #define IDS_MENUDESCREMOVEKEEP          272
@@ -161,7 +160,6 @@
 #define IDS_MENUTAG                     307
 #define IDS_MENUFORMATPATCH             308
 #define IDS_MENUIMPORTPATCH             309
-#define IDS_MENUCHERRYPICK              310
 #define IDS_MENUFETCH                   311
 #define IDS_MENUREBASE                  312
 #define IDS_MENUSTASHSAVE               313

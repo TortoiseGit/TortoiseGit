@@ -22,7 +22,6 @@
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
 #include "UnicodeUtils.h"
-//#include "GitProperties.h"
 #include "GitStatus.h"
 #include "TGitPath.h"
 #include "PathUtils.h"
@@ -1338,9 +1337,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			case ShellMenuSync:
 				AddPathCommand(gitCmd, L"sync", false);
 				break;
-			case ShellMenuUpdate:
-				AddPathFileCommand(gitCmd, L"update");
-				break;
 			case ShellMenuSubSync:
 				AddPathFileCommand(gitCmd, L"subsync");
 				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
@@ -1363,7 +1359,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathFileCommand(gitCmd, L"commit");
 				break;
 			case ShellMenuAdd:
-			case ShellMenuAddAsReplacement:
 				AddPathFileCommand(gitCmd, L"add");
 				break;
 			case ShellMenuIgnore:
@@ -1634,9 +1629,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseMerge launch failed"));
 				return S_OK;
 				break;
-			case ShellMenuProperties:
-				AddPathFileCommand(gitCmd, L"properties");
-				break;
 			case ShellMenuClipPaste:
 				if (WriteClipboardPathsToTempFile(tempfile))
 				{
@@ -1691,9 +1683,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 			case ShellMenuImportPatch:
 				AddPathFileCommand(gitCmd, L"importpatch");
-				break;
-			case ShellMenuCherryPick:
-				AddPathCommand(gitCmd, L"cherrypick", false);
 				break;
 			case ShellMenuFetch:
 				AddPathCommand(gitCmd, L"fetch", false);

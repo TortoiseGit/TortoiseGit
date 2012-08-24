@@ -1457,10 +1457,6 @@ msgstr ""
 msgid "Add '%s' to dictionary"
 msgstr ""
 
-#. Resource IDs: (16)
-msgid "Add (as replacement)..."
-msgstr ""
-
 #. Resource IDs: (323)
 msgid "Add Remote"
 msgstr ""
@@ -2208,10 +2204,6 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
-msgstr ""
-
-#. Resource IDs: (20)
-msgid "Cherry Pick..."
 msgstr ""
 
 #. Resource IDs: (65535)
