@@ -1244,6 +1244,40 @@ void CShellExt::TweakMenu(HMENU hMenu)
 	SetMenuInfo(hMenu, &MenuInfo);
 }
 
+void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed)
+{
+	gitCmd += command;
+	gitCmd += _T(" /path:\"");
+	if ((bFilesAllowed) && !files_.empty())
+		gitCmd += files_.front();
+	else
+		gitCmd += folder_;
+	gitCmd += _T("\"");
+}
+
+void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command)
+{
+	tstring tempfile = WriteFileListToTempFile();
+	gitCmd += command;
+	gitCmd += _T(" /pathfile:\"");
+	gitCmd += tempfile;
+	gitCmd += _T("\"");
+	gitCmd += _T(" /deletepathfile");
+}
+
+void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
+{
+	tstring tempfile = WriteFileListToTempFile();
+	gitCmd += command;
+	gitCmd += _T(" /pathfile:\"");
+	gitCmd += tempfile;
+	gitCmd += _T("\"");
+	gitCmd += _T(" /deletepathfile");
+	gitCmd += _T(" /droptarget:\"");
+	gitCmd += folder_;
+	gitCmd += _T("\"");
+}
+
 STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 {
 	__try
@@ -1302,26 +1336,13 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			{
 				//#region case
 			case ShellMenuSync:
-				gitCmd += _T("sync /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"sync", false);
 				break;
 			case ShellMenuUpdate:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("update /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"update");
 				break;
 			case ShellMenuSubSync:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("subsync /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"subsync");
 				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
 					gitCmd += _T(" /bkpath:\"");
@@ -1330,11 +1351,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				break;
 			case ShellMenuUpdateExt:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("subupdate /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"subupdate");
 				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
 				{
 					gitCmd += _T(" /bkpath:\"");
@@ -1343,168 +1360,78 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				}
 				break;
 			case ShellMenuCommit:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("commit /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"commit");
 				break;
 			case ShellMenuAdd:
 			case ShellMenuAddAsReplacement:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("add /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"add");
 				break;
 			case ShellMenuIgnore:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("ignore /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"ignore");
 				break;
 			case ShellMenuIgnoreCaseSensitive:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("ignore /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"ignore");
 				gitCmd += _T(" /onlymask");
 				break;
 			case ShellMenuDeleteIgnore:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("ignore /delete /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"ignore");
+				gitCmd += _T(" /delete");
 				break;
 			case ShellMenuDeleteIgnoreCaseSensitive:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("ignore /delete /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /onlymask");
+				AddPathFileCommand(gitCmd, L"ignore");
+				gitCmd += _T(" /delete /onlymask");
 				break;
 			case ShellMenuUnIgnore:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("unignore /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"unignore");
 				break;
 			case ShellMenuUnIgnoreCaseSensitive:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("unignore /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"unignore");
 				gitCmd += _T(" /onlymask");
 				break;
 			case ShellMenuRevert:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("revert /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"revert");
 				break;
 			case ShellMenuCleanup:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("cleanup /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"cleanup");
 				break;
 			case ShellMenuSendMail:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("sendmail /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"sendmail");
 				break;
 			case ShellMenuResolve:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("resolve /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"resolve");
 				break;
 			case ShellMenuSwitch:
-				gitCmd += _T("switch /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"switch", false);
 				break;
 			case ShellMenuExport:
-				gitCmd += _T("export /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"export", false);
 				break;
 			case ShellMenuAbout:
 				gitCmd += _T("about");
 				break;
 			case ShellMenuCreateRepos:
-				gitCmd += _T("repocreate /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"repocreate", false);
 				break;
 			case ShellMenuMerge:
-				gitCmd += _T("merge /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"merge", false);
 				break;
 			case ShellMenuCopy:
-				gitCmd += _T("copy /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"copy", true);
 				break;
 			case ShellMenuSettings:
-				gitCmd += _T("settings /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"settings", false);
 				break;
 			case ShellMenuHelp:
 				gitCmd += _T("help");
 				break;
 			case ShellMenuRename:
-				gitCmd += _T("rename /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"rename", true);
 				break;
 			case ShellMenuRemove:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("remove /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"remove");
 				break;
 			case ShellMenuRemoveKeep:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("remove /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"remove");
 				gitCmd += _T(" /keep");
 				break;
 			case ShellMenuDiff:
@@ -1526,282 +1453,114 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 					gitCmd += _T(" /alternative");
 				break;
 			case ShellMenuPrevDiff:
-				gitCmd += _T("prevdiff /path:\"");
-				if (files_.size() == 1)
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"prevdiff", true);
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					gitCmd += _T(" /alternative");
 				break;
 			case ShellMenuDiffTwo:
-				gitCmd += _T("diffcommits /path:\"");
-				if (files_.size() == 1)
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"diffcommits", true);
 				break;
 			case ShellMenuDropCopyAdd:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropcopyadd /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
-				gitCmd += _T("\"";)
-					break;
+				AddPathFileDropCommand(gitCmd, L"dropcopyadd");
+				break;
 			case ShellMenuDropCopy:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropcopy /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
-				gitCmd += _T("\"";)
-					break;
+				AddPathFileDropCommand(gitCmd, L"dropcopy");
+				break;
 			case ShellMenuDropCopyRename:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropcopy /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
+				AddPathFileDropCommand(gitCmd, L"dropcopy");
 				gitCmd += _T("\" /rename";)
-					break;
+				break;
 			case ShellMenuDropMove:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropmove /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathFileDropCommand(gitCmd, L"dropmove");
 				break;
 			case ShellMenuDropMoveRename:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropmove /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
+				AddPathFileDropCommand(gitCmd, L"dropmove");
 				gitCmd += _T("\" /rename";)
 				break;
 			case ShellMenuDropExport:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropexport /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathFileDropCommand(gitCmd, L"dropexport");
 				break;
 			case ShellMenuDropExportExtended:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("dropexport /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
-				gitCmd += _T(" /droptarget:\"");
-				gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathFileDropCommand(gitCmd, L"dropexport");
 				gitCmd += _T(" /extended");
 				break;
 			case ShellMenuLog:
 			case ShellMenuLogSubmoduleFolder:
-				gitCmd += _T("log /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"log", true);
 				if (id_it->second == ShellMenuLogSubmoduleFolder)
 					gitCmd += _T(" /submodule");
 				break;
 			case ShellMenuConflictEditor:
-				gitCmd += _T("conflicteditor /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"conflicteditor", true);
 				break;
 			case ShellMenuGitSVNRebase:
-				gitCmd += _T("svnrebase /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"svnrebase", false);
 				break;
 			case ShellMenuGitSVNDCommit:
-				gitCmd += _T("svndcommit /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"svndcommit", true);
 				break;
 			case ShellMenuGitSVNDFetch:
-				gitCmd += _T("svnfetch /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"svnfetch", false);
 				break;
 			case ShellMenuGitSVNIgnore:
-				gitCmd += _T("svnignore /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"svnignore", true);
 				break;
 			case ShellMenuRebase:
-				gitCmd += _T("rebase /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"rebase", false);
 				break;
 			case ShellMenuShowChanged:
 				if (files_.size() > 1)
-                {
-				    tempfile = WriteFileListToTempFile();
-				    gitCmd += _T("repostatus /pathfile:\"");
-				    gitCmd += tempfile;
-    				gitCmd += _T("\"");
-    				gitCmd += _T(" /deletepathfile");
-                }
-                else
-                {
-                    gitCmd += _T("repostatus /path:\"");
-				    if (!files_.empty())
-					    gitCmd += files_.front();
-				    else
-					    gitCmd += folder_;
-    				gitCmd += _T("\"");
-                }
+				{
+					AddPathFileCommand(gitCmd, L"repostatus");
+				}
+				else
+				{
+					AddPathCommand(gitCmd, L"repostatus", true);
+				}
 				break;
 			case ShellMenuRepoBrowse:
-				gitCmd += _T("repobrowser /path:\"") + folder_ + _T("\"");
+				AddPathCommand(gitCmd, L"repobrowser", false);
 				break;
 			case ShellMenuRefBrowse:
-				gitCmd += _T("refbrowse /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"refbrowse", false);
 				break;
 			case ShellMenuRefLog:
-				gitCmd += _T("reflog /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"reflog", false);
 				break;
-
 			case ShellMenuStashSave:
-				gitCmd += _T("stashsave /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"stashsave", true);
 				break;
-
 			case ShellMenuStashApply:
-				gitCmd += _T("stashapply /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"stashapply", false);
 				break;
-
 			case ShellMenuStashPop:
-				gitCmd += _T("stashpop /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"stashpop", false);
 				break;
-
-
 			case ShellMenuStashList:
-				gitCmd += _T("reflog /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\" /ref:refs/stash");
+				AddPathCommand(gitCmd, L"reflog", false);
+				gitCmd += _T(" /ref:refs/stash");
 				break;
-
 			case ShellMenuBisectStart:
-				gitCmd += _T("bisect /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
+				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /start");
 				break;
-
 			case ShellMenuBisectGood:
-				gitCmd += _T("bisect /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
+				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /good");
 				break;
-
-				
 			case ShellMenuBisectBad:
-				gitCmd += _T("bisect /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
+				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /bad");
 				break;
-
 			case ShellMenuBisectReset:
-				gitCmd += _T("bisect /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
+				AddPathCommand(gitCmd, L"bisect", false);
 				gitCmd += _T("\" /reset");
 				break;
-
 			case ShellMenuSubAdd:
-				gitCmd += _T("subadd /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"subadd", false);
 				break;
-
 			case ShellMenuBlame:
-				gitCmd += _T("blame /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"blame", true);
 				break;
 			case ShellMenuApplyPatch:
 				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
@@ -1876,11 +1635,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				return S_OK;
 				break;
 			case ShellMenuProperties:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("properties /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"properties");
 				break;
 			case ShellMenuClipPaste:
 				if (WriteClipboardPathsToTempFile(tempfile))
@@ -1917,79 +1672,31 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				else return S_OK;
 				break;
 			case ShellMenuClone:
-				gitCmd += _T("clone /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"clone", false);
 				break;
 			case ShellMenuPull:
-				gitCmd += _T("pull /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"pull", false);
 				break;
 			case ShellMenuPush:
-				gitCmd += _T("push /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"push", false);
 				break;
 			case ShellMenuBranch:
-				gitCmd += _T("branch /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"branch", false);
 				break;
-
 			case ShellMenuTag:
-				gitCmd += _T("tag /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"tag", false);
 				break;
-
 			case ShellMenuFormatPatch:
-				gitCmd += _T("formatpatch /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"formatpatch", false);
 				break;
-
 			case ShellMenuImportPatch:
-				tempfile = WriteFileListToTempFile();
-				gitCmd += _T("importpatch /pathfile:\"");
-				gitCmd += tempfile;
-				gitCmd += _T("\"");
-				gitCmd += _T(" /deletepathfile");
+				AddPathFileCommand(gitCmd, L"importpatch");
 				break;
-
 			case ShellMenuCherryPick:
-				gitCmd += _T("cherrypick /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"cherrypick", false);
 				break;
 			case ShellMenuFetch:
-				gitCmd += _T("fetch /path:\"");
-				if (!files_.empty())
-					gitCmd += files_.front();
-				else
-					gitCmd += folder_;
-				gitCmd += _T("\"");
+				AddPathCommand(gitCmd, L"fetch", false);
 				break;
 
 			default:

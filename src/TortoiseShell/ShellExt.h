@@ -128,6 +128,9 @@ private:
 	void			GetColumnStatus(const TCHAR * path, BOOL bIsDir);
 	void			GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci, UINT characterCount, UINT title, UINT description);
 	void			TweakMenu(HMENU menu);
+	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
+	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
+	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
 	HBITMAP			IconToBitmap(UINT uIcon);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(std::wstring folder, int * cslidarray);
