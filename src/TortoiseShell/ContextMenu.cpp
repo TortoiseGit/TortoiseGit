@@ -1498,7 +1498,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"svnfetch", false);
 				break;
 			case ShellMenuGitSVNIgnore:
-				AddPathCommand(gitCmd, L"svnignore", true);
+				AddPathCommand(gitCmd, L"svnignore", false);
 				break;
 			case ShellMenuRebase:
 				AddPathCommand(gitCmd, L"rebase", false);
