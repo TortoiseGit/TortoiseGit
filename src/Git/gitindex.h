@@ -45,6 +45,7 @@ public:
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull=false, BOOL IsRecursive=false, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 protected:
+	bool m_bCheckContent;
 	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL, CGitHash *pHash = NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };

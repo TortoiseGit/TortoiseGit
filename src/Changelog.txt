@@ -11,6 +11,9 @@ Released: unreleased
  * Fixed issue #1350: Commit Dialog set focus to message editor after clicking amend checkbox
  * Fixed issue #811: Log the history of a submodule not its contents
  * Fixed issue #1344: Log list add copy to clipboard only with commit message
+ * TGitCache only checked timestamps of files in order to get their state since 1.7.0 (see issue #861).
+   If you have AutoCrLf disabled, you can make TGitCache check the contents of modified files.
+   This can be done via the Settings dialog -> Advanced and set TGitCacheCheckContent to "true".
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

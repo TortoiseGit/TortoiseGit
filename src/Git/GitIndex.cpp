@@ -78,6 +78,7 @@ int CGitIndex::Print()
 CGitIndexList::CGitIndexList()
 {
 	this->m_LastModifyTime = 0;
+	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), FALSE) == TRUE);
 }
 
 static bool SortIndex(CGitIndex &Item1, CGitIndex &Item2)
@@ -174,10 +175,22 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 			{
 				*status = git_wc_status_normal;
 			}
-			else
+			else if (m_bCheckContent)
 			{
-				*status = git_wc_status_modified;
+				git_oid actual;
+				CString file = gitdir + _T("\\") + pathorg;
+				CStringA fileA = CUnicodeUtils::GetMulti(file, CP_UTF8);
+				if (!git_odb_hashfile(&actual, fileA.GetBuffer(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+				{
+					at(index).m_ModifyTime = time;
+					*status = git_wc_status_normal;
+				}
+				else
+					*status = git_wc_status_modified;
+				fileA.ReleaseBuffer();
 			}
+			else
+				*status = git_wc_status_modified;
 
 			if (at(index).m_Flags & GIT_IDXENTRY_STAGEMASK)
 				*status = git_wc_status_conflicted;
