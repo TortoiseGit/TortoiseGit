@@ -162,6 +162,7 @@ protected:
 		else if(wcsncmp(refName,L"tags/",5)==0)
 		{
 			refName = refName.Mid(5);
+			refName.Replace(_T("^{}"), _T(""));
 			SetDefaultChoose(IDC_RADIO_TAGS);
 			m_ChooseVersioinTags.SetCurSel(
 				m_ChooseVersioinTags.FindStringExact(-1, refName));

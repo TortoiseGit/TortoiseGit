@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #1354: Remote archive in push dialog not remembered, even if selected
  * Fixed issue #1358: Sync Dialog Pull cannot show updated ref labels in "In commits"
  * Disabled Direct2D by default for textboxes (in Commit Dialog, Patch Viewer, TortoiseGitBlame and TortoiseUDiff).
+ * Fixed issue #1362: Merge Dialog cannot automatically select the annotated tag
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
