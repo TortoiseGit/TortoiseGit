@@ -49,7 +49,7 @@ Released: 2012-08-10
 
 == Bug Fix ==
  * Fixed issue #913: Merge does not cope with ambiguous tag and branch names
- * Fixed issue #1266: gitdll can cause stack overflow becasue of endless recursion in mark_parents_uninteresting (revision.c)
+ * Fixed issue #1266: gitdll can cause stack overflow because of endless recursion in mark_parents_uninteresting (revision.c)
    Upgraded gitdll and libgit to 1.7.11.1
  * Fixed issue #1267: Tortoisegit adding gitignore backslash instead of slash
  * Fixed issue #1260: TortoiseGit crashes if index is broken
@@ -753,7 +753,7 @@ Released: 2010-06-10
 Released: 2010-06-03 (internal release)
 
 == Features ==
- * TortoiseMerege
+ * TortoiseMerge
    Tip show "new file" "delete file" "rename file" status at tortoisemerge
 
  * TortoiseGitBlame
@@ -1203,7 +1203,7 @@ Released: 2009-07-03
 
  * RebaseDlg: Update rebase lines after browserefs
 
-== BugFix ==
+== Bug Fix ==
  * Fixed issue #64: When the graph column is small, the graph sometimes appears through the text of the next column on Vista
  * Fix log graph tree mass when dragon scroll bar from left to right
  * Fixed issue #104: Doubleclicking changed submodule dir in Check For Modifications dlg, crashes TGit
@@ -1426,10 +1426,10 @@ Released: 2009-02-08
 Released: 2009-01-04
 
 == Features ==
- * Add TortoisgeMerge as default compare tools
+ * Add TortoiseMerge as default compare tools
  * Pull, Fetch, Push
  * Create Branch\Tag
- * Switch branch \Chechout
+ * Switch branch\Chechout
  * Compare with previous version
  * Clone(only support local repository, see known issue for detail)
  * Log Dialog support filter
@@ -1444,7 +1444,7 @@ Released: 2009-01-04
  * A2W cause stack overwrite bug when git output is long.
 
 == Known Issue ==
- * ProcessDlg will wait for ever when clone remote repository(ssh, http,git).
+ * ProgressDlg will wait for ever when clone remote repository(ssh, http,git).
  * push fetch and pull don't support password mode. Just support public key problem.
  * Just fetch first 100 log item.
  * If install TortoiseGit before MsysGit, you need modify register
