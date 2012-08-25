@@ -33,29 +33,6 @@ CGitDiff::CGitDiff(void)
 CGitDiff::~CGitDiff(void)
 {
 }
-int CGitDiff::Parser(git_revnum_t &rev)
-{
-	if(rev == GIT_REV_ZERO)
-		return 0;
-	bool isNotSHA1 = (rev.GetLength() != 40);
-	for (int i = 0; !isNotSHA1 && i < rev.GetLength(); i++)
-	{
-		isNotSHA1 = !((rev[i] >= '0' && rev[i] <= '9') || (rev[i] >= 'a' && rev[i] <= 'f') || (rev[i] >= 'A' && rev[i] <= 'F'));
-	}
-	if (isNotSHA1)
-	{
-		CString cmd;
-		cmd.Format(_T("git.exe rev-parse %s"),rev);
-		CString output;
-		if (!g_Git.Run(cmd, &output, NULL, CP_UTF8))
-		{
-			//int start=output.Find(_T('\n'));
-			rev=output.Left(40);
-		}
-	}
-	return 0;
-}
-
 int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 {
 	CString oldhash = GIT_REV_ZERO;
@@ -102,7 +79,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 {
 	CString temppath;
 	GetTempPath(temppath);
-	Parser(rev1);
+	rev1 = g_Git.GetHash(rev1); // make sure we have a HASH here, otherwise filenames might be invalid
 	CString file1;
 	CString nullfile;
 	CString cmd;
@@ -253,8 +230,11 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 {
 	CString temppath;
 	GetTempPath(temppath);
-	Parser(rev1);
-	Parser(rev2);
+
+	// make sure we have HASHes here, otherwise filenames might be invalid
+	rev1 = g_Git.GetHash(rev1);
+	rev2 = g_Git.GetHash(rev2);
+
 	CString file1;
 	CString title1;
 	CString cmd;
