@@ -178,18 +178,18 @@ private:
 		CString					sActionColumnText;
 		CTGitPath				path;
 		CTGitPath				basepath;
-		CString					changelistname;
+//		CString					changelistname;
 
 ///		git_wc_notify_action_t	action;
 //		git_node_kind_t			kind;
-		CString					mime_type;
+//		CString					mime_type;
 //		git_wc_notify_state_t	content_state;
 //		git_wc_notify_state_t	prop_state;
 //		git_wc_notify_lock_state_t lock_state;
 //		git_merge_range_t		merge_range;
 		git_revnum_t			rev;
 		COLORREF				color;
-		CString					owner;						///< lock owner
+//		CString					owner;						///< lock owner
 		bool					bConflictedActionItem;		// Is this item a conflict?
 		bool					bAuxItem;					// Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
