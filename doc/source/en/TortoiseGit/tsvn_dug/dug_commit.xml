@@ -48,37 +48,6 @@
 			If you want to list all files of project, you can just click <guilabel>
 			Whole Project</guilabel>
 		</para>
-		<!--
-		<para>
-			Items which have been switched to a different repository path are
-			also indicated using an <literal>(s)</literal> marker. You may have
-			switched something while working on a branch and forgotten to switch
-			back to trunk. This is your warning sign!
-		</para>
-		-->
-		<!--
-		<tip>
-			<title>Commit files or folders?</title>
-			<para>
-				When you commit files, the commit dialog shows only
-				the files you have selected. When you commit a folder
-				the commit dialog will select the changed files automatically.
-				If you forget about a new file you created, committing the
-				folder will find it anyway. Committing a folder does <emphasis>not</emphasis>
-				mean that every file gets marked as changed; It just makes
-				your life easier by doing more work for you.
-			</para>
-		</tip>
-		-->
-		<!--
-		<para>
-			If you have modified files which have been included from a different
-			repository using <literal>svn:externals</literal>, those changes cannot
-			be included in the same atomic commit. A warning symbol below the file
-			list tells you if this has happened, and the tooltip explains that
-			those external files have to be committed separately.
-		</para>
-		-->
 		<tip>
 			<title>Many unversioned files in the commit dialog</title>
 			<para>
@@ -103,12 +72,6 @@
 								<guimenu>TortoiseGit</guimenu>
 								<guimenuitem>Add to ignore list</guimenuitem>
 							</menuchoice>
-							<!--
-							This will only affect the directory on
-							which you set the <literal>svn:ignore</literal> property.
-							Using the SVN Property Dialog, you can alter the
-							<literal>svn:ignore</literal> property for a directory.
-							-->
 						</para>
 					</listitem>
 				</itemizedlist>
@@ -124,8 +87,7 @@
 		</para>
 		<para>
 			You can select or deselect items by clicking on the checkbox to the
-			left of the item. For directories you can use <keycap>Shift</keycap>-<action>select</action>
-			to make the action recursive.
+			left of the item.
 		</para>
 		<para>
 			The columns displayed in the bottom pane are customizable. If you
@@ -136,20 +98,9 @@
 			customizations are preserved, so you will see the same headings
 			next time.
 		</para>
-		<!--
-		<para>
-			By default when you commit changes, any locks that you hold on files
-			are released automatically after the commit succeeds. If you want
-			to keep those locks, make sure the <guilabel>Keep locks</guilabel>
-			checkbox is checked. The default state of this checkbox is taken
-			from the <literal>no_unlock</literal> option in the Git
-			configuration file. Read <xref linkend="tsvn-dug-settings-main"/>
-			for information on how to edit the Git configuration file.
-		</para>
-		-->
+<!--
 		<tip>
 			<title>Drag and Drop</title>
-			<!--
 			<para>
 				You can drag files into the commit dialog from elsewhere, so
 				long as the working trees are checked out from the same repository.
@@ -164,25 +115,8 @@
 				You can drag unversioned files which reside within a working tree
 				into the commit dialog, and they will be Git added automatically.
 			</para>
-			-->
 		</tip>
-		<!--
-		<tip>
-			<title>Repairing External Renames</title>
-			<para>
-				Sometimes files get renamed outside of Git, and they show up
-				in the file list as a missing file and an unversioned file. To avoid
-				losing the history you need to notify Git about the connection.
-				Simply select both the old name (missing) and the new name (unversioned)
-				and use
-				<menuchoice>
-					<guimenu>Context Menu</guimenu>
-					<guimenuitem>Repair Move</guimenuitem>
-				</menuchoice>
-				to pair the two files as a rename.
-			</para>
-		</tip>
-		-->
+-->
 	</sect2>
 	<!--
 	<sect2 id="tsvn-dug-commit-changelists">
@@ -293,26 +227,26 @@
 				<citetitle>http://www.regular-expressions.info/</citetitle>
 			</ulink>.
 		</para>
-		<!--
 		<para>
-			You can re-use previously entered log messages. Just click on
-			<guibutton>Recent messages</guibutton> to view a list of the last few
+			You can re-use previously entered log messages. Just use the command
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Paste Recent messages</guimenuitem>
+			</menuchoice>
+			to view a list of the last few
 			messages you entered for this working tree. The number of stored messages
 			can be customized in the TortoiseGit settings dialog.
 		</para>
-		-->
 		<para>
 			You can add your name and email address to end of log message by click
 			<guibutton>Sign</guibutton>
 		</para>
-		<!--
 		<para>
 			You can clear all stored commit messages from the <guilabel>Saved data</guilabel>
 			page of TortoiseGit's settings, or you can clear individual messages from
 			within the <guilabel>Recent messages</guilabel> dialog using the
 			<keycap>Delete</keycap> key.
 		</para>
-		-->
 		<para>
 			If you want to include the checked paths in your log message, you can use
 			the command
@@ -322,21 +256,12 @@
 			</menuchoice>
 			in the edit control.
 		</para>
+<!--
 		<para>
 			Another way to insert the paths into the log message is to simply
 			drag the files from the file list onto the edit control.
 		</para>
-		<!--
-		<tip>
-			<title>Special Folder Properties</title>
-			<para>
-				There are several special folder properties which can be used to
-				help give more control over the formatting of commit log messages and
-				the language used by the spellchecker module.
-				Read <xref linkend="tsvn-dug-propertypage"/> for further information.
-			</para>
-		</tip>
-		-->
+-->
 		<tip>
 			<title>Using keyboard</title>
 			<para>
