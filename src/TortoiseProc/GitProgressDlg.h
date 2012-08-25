@@ -153,7 +153,9 @@ private:
 	class NotificationData
 	{
 	public:
-		NotificationData(){} ;
+		NotificationData()
+		: color(::GetSysColor(COLOR_WINDOWTEXT)),
+		{};
 	    git_wc_notify_action_t action;
 #if 0
 		  action((git_wc_notify_action_t)-1),
@@ -162,7 +164,6 @@ private:
 			  prop_state(git_wc_notify_state_inapplicable),
 			  rev(0),
 
-			  color(::GetSysColor(COLOR_WINDOWTEXT)),
 			  bConflictedActionItem(false),
 			  bAuxItem(false)
 			  //,
