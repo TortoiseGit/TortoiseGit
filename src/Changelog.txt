@@ -15,6 +15,7 @@ Released: unreleased
    If you have AutoCrLf disabled, you can make TGitCache check the contents of modified files.
    This can be done via the Settings dialog -> Advanced and set TGitCacheCheckContent to "true".
  * Fixed issue #1336: Have visible the name of the branch in Repository Browser
+ * Fixed issue #1351: Add Hotkey to select all files and commit
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

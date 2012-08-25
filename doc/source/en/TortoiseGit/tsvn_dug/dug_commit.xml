@@ -338,6 +338,12 @@
 		</tip>
 		-->
 		<tip>
+			<title>Using keyboard</title>
+			<para>
+				You can access the <guilabel>OK</guilabel> button from keyboard by pressing <keycap>Ctrl+return</keycap>.
+			</para>
+		</tip>
+		<tip>
 			<title>Integration with Bug Tracking Tools</title>
 			<para>
 				If you have activated the bug tracking system, you can set one or more 

@@ -313,6 +313,10 @@ msgstr ""
 msgid "&Advanced..."
 msgstr ""
 
+#. Resource IDs: (1701)
+msgid "&All"
+msgstr ""
+
 #. Resource IDs: (3936)
 msgid "&All Branches"
 msgstr ""
@@ -1532,10 +1536,6 @@ msgstr ""
 
 #. Resource IDs: (110)
 msgid "Advanced merge settings"
-msgstr ""
-
-#. Resource IDs: (1701)
-msgid "All"
 msgstr ""
 
 #. Resource IDs: (1007)
