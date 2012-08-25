@@ -251,7 +251,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	int graphtype = lastStatsPage / 10;
 	for (int i = 0; i < m_cGraphType.GetCount(); i++)
 	{
-		if (m_cGraphType.GetItemData(i) == graphtype)
+		if ((int)m_cGraphType.GetItemData(i) == graphtype)
 		{
 			m_cGraphType.SetCurSel(i);
 			break;

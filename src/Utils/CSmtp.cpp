@@ -240,7 +240,7 @@ bool CSmtp::Send()
 		m_oError = CSMTP_UNDEF_LOGIN;
 		return false;
 	}
-	std::string encoded_login = base64_encode(reinterpret_cast<const unsigned char*>(m_pcLogin),strlen(m_pcLogin));
+	std::string encoded_login = base64_encode(reinterpret_cast<const unsigned char*>(m_pcLogin), (unsigned int)strlen(m_pcLogin));
 	sprintf(SendBuf,"%s\r\n",encoded_login.c_str());
 	if(!SendData())
 		return false;
@@ -263,7 +263,7 @@ bool CSmtp::Send()
 		m_oError = CSMTP_UNDEF_PASSWORD;
 		return false;
 	}
-	std::string encoded_password = base64_encode(reinterpret_cast<const unsigned char*>(m_pcPassword),strlen(m_pcPassword));
+	std::string encoded_password = base64_encode(reinterpret_cast<const unsigned char*>(m_pcPassword), (unsigned int)strlen(m_pcPassword));
 	sprintf(SendBuf,"%s\r\n",encoded_password.c_str());
 	if(!SendData())
 		return false;
@@ -308,7 +308,7 @@ bool CSmtp::Send()
 	}
 
 	// RCPT <SP> TO:<forward-path> <CRLF>
-	rcpt_count = Recipients.size();
+	rcpt_count = (unsigned int)Recipients.size();
 	for(i=0;i<Recipients.size();i++)
 	{
 		sprintf(SendBuf,"RCPT TO:<%s>\r\n",(Recipients.at(i).Mail).c_str());
@@ -419,7 +419,7 @@ bool CSmtp::Send()
 		// checking file size:
 		FileSize = 0;
 		while(!feof(hFile))
-			FileSize += fread(FileBuf,sizeof(char),54,hFile);
+			FileSize += (unsigned long)fread(FileBuf,sizeof(char),54,hFile);
 		TotalSize += FileSize;
 
 		// sending the file:
@@ -432,7 +432,7 @@ bool CSmtp::Send()
 			MsgPart = 0;
 			for(i=0;i<FileSize/54+1;i++)
 			{
-				res = fread(FileBuf,sizeof(char),54,hFile);
+				res = (unsigned int)fread(FileBuf,sizeof(char),54,hFile);
 				MsgPart ? strcat(SendBuf,base64_encode(reinterpret_cast<const unsigned char*>(FileBuf),res).c_str())
 						  : strcpy(SendBuf,base64_encode(reinterpret_cast<const unsigned char*>(FileBuf),res).c_str());
 				strcat(SendBuf,"\r\n");
@@ -600,7 +600,7 @@ bool CSmtp::FormatHeader(char* header)
 	if (!Recipients.empty())
 	{
 		for (i=s=0;i<Recipients.size();i++)
-			s += Recipients[i].Mail.size() + Recipients[i].Name.size() + 3;
+			s += (unsigned int)(Recipients[i].Mail.size() + Recipients[i].Name.size() + 3);
 		if (s == 0)
 			s = 1;
 		if((to = new char[s]) == NULL)
@@ -628,7 +628,7 @@ bool CSmtp::FormatHeader(char* header)
 	if (!CCRecipients.empty())
 	{
 		for (i=s=0;i<CCRecipients.size();i++)
-			s += CCRecipients[i].Mail.size() + CCRecipients[i].Name.size() + 3;
+			s += (unsigned int)(CCRecipients[i].Mail.size() + CCRecipients[i].Name.size() + 3);
 		if (s == 0)
 			s = 1;
 		if((cc = new char[s]) == NULL)
@@ -652,7 +652,7 @@ bool CSmtp::FormatHeader(char* header)
 	if (!BCCRecipients.empty())
 	{
 		for (i=s=0;i<BCCRecipients.size();i++)
-			s += BCCRecipients[i].Mail.size() + BCCRecipients[i].Name.size() + 3;
+			s += (unsigned int)(BCCRecipients[i].Mail.size() + BCCRecipients[i].Name.size() + 3);
 		if(s == 0)
 			s=1;
 		if((bcc = new char[s]) == NULL)
@@ -822,7 +822,7 @@ bool CSmtp::SendData()
 {
 	assert(SendBuf);
 
-	int idx = 0,res,nLeft = strlen(SendBuf);
+	int idx = 0,res,nLeft = (int)strlen(SendBuf);
 	while(nLeft > 0)
 	{
 		if( res = send(hSocket,&SendBuf[idx],nLeft,0) == SOCKET_ERROR)
@@ -890,12 +890,12 @@ const char* const CSmtp::GetLocalHostName()
 
 unsigned const int CSmtp::GetBCCRecipientCount()
 {
-	return BCCRecipients.size();
+	return (unsigned int)BCCRecipients.size();
 }
 
 unsigned const int CSmtp::GetCCRecipientCount()
 {
-	return CCRecipients.size();
+	return (unsigned int)CCRecipients.size();
 }
 
 const char* const CSmtp::GetMessageBody()
@@ -905,7 +905,7 @@ const char* const CSmtp::GetMessageBody()
 
 unsigned const int CSmtp::GetRecipientCount()
 {
-	return Recipients.size();
+	return (unsigned int)Recipients.size();
 }
 
 const char* const CSmtp::GetReplyTo()
@@ -946,7 +946,7 @@ void CSmtp::SetXPriority(CSmptXPriority priority)
 void CSmtp::SetMessageBody(const char *body)
 {
 	assert(body);
-	int s = strlen(body);
+	int s = (int)strlen(body);
 	if (m_pcMsgBody)
 		delete[] m_pcMsgBody;
 	if((m_pcMsgBody = new char[s+1]) == NULL)
@@ -960,7 +960,7 @@ void CSmtp::SetMessageBody(const char *body)
 void CSmtp::SetReplyTo(const char *replyto)
 {
 	assert(replyto);
-	int s = strlen(replyto);
+	int s = (int)strlen(replyto);
 	if (m_pcReplyTo)
 		delete[] m_pcReplyTo;
 	if((m_pcReplyTo = new char[s+1]) == NULL)
@@ -974,7 +974,7 @@ void CSmtp::SetReplyTo(const char *replyto)
 void CSmtp::SetSenderMail(const char *email)
 {
 	assert(email);
-	int s = strlen(email);
+	int s = (int)strlen(email);
 	if (m_pcMailFrom)
 		delete[] m_pcMailFrom;
 	if((m_pcMailFrom = new char[s+1]) == NULL)
@@ -988,7 +988,7 @@ void CSmtp::SetSenderMail(const char *email)
 void CSmtp::SetSenderName(const char *name)
 {
 	assert(name);
-	int s = strlen(name);
+	int s = (int)strlen(name);
 	if (m_pcNameFrom)
 		delete[] m_pcNameFrom;
 	if((m_pcNameFrom = new char[s+1]) == NULL)
@@ -1002,7 +1002,7 @@ void CSmtp::SetSenderName(const char *name)
 void CSmtp::SetSubject(const char *subject)
 {
 	assert(subject);
-	int s = strlen(subject);
+	int s = (int)strlen(subject);
 	if (m_pcSubject)
 		delete[] m_pcSubject;
 	m_pcSubject = new char[s+1];
@@ -1012,7 +1012,7 @@ void CSmtp::SetSubject(const char *subject)
 void CSmtp::SetXMailer(const char *xmailer)
 {
 	assert(xmailer);
-	int s = strlen(xmailer);
+	int s = (int)strlen(xmailer);
 	if (m_pcXMailer)
 		delete[] m_pcXMailer;
 	if((m_pcXMailer = new char[s+1]) == NULL)
@@ -1026,7 +1026,7 @@ void CSmtp::SetXMailer(const char *xmailer)
 void CSmtp::SetLogin(const char *login)
 {
 	assert(login);
-	int s = strlen(login);
+	int s = (int)strlen(login);
 	if (m_pcLogin)
 		delete[] m_pcLogin;
 	if((m_pcLogin = new char[s+1]) == NULL)
@@ -1040,7 +1040,7 @@ void CSmtp::SetLogin(const char *login)
 void CSmtp::SetPassword(const char *password)
 {
 	assert(password);
-	int s = strlen(password);
+	int s = (int)strlen(password);
 	if (m_pcPassword)
 		delete[] m_pcPassword;
 	if((m_pcPassword = new char[s+1]) == NULL)
@@ -1055,7 +1055,7 @@ void CSmtp::SetSMTPServer(const char* SrvName,const unsigned short SrvPort)
 {
 	assert(SrvName);
 	m_iSMTPSrvPort = SrvPort;
-	int s = strlen(SrvName);
+	int s = (int)strlen(SrvName);
 	if(m_pcSMTPSrvName)
 		delete[] m_pcSMTPSrvName;
 	if((m_pcSMTPSrvName = new char[s+1]) == NULL)

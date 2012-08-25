@@ -206,7 +206,7 @@ void CACListWnd::Init(CWnd *pWnd)
 	SetScroller();
 	m_pEditParent = (CEdit*)pWnd;
 
-	m_lCount = m_DisplayList.GetSize();
+	m_lCount = (long)m_DisplayList.GetSize();
 	m_VertBar.SetScrollPos(0,false);
 	SetProp();
 
@@ -552,7 +552,7 @@ int CACListWnd::FindStringExact( int nStartAfter, LPCTSTR lpszString )
 */
 int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayOnly)
 {
-	long m_AktCount = m_DisplayList.GetSize();
+	long m_AktCount = (long)m_DisplayList.GetSize();
 
 	if(!m_bDisplayOnly)
 	{
@@ -606,7 +606,7 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 			}
 		}
 	}
-	m_lCount = m_DisplayList.GetSize();
+	m_lCount = (long)m_DisplayList.GetSize();
 
 	if(m_lCount)
 	{
@@ -685,7 +685,7 @@ void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	if(bShow)
 	{
-		m_nIDTimer =  SetTimer( IDTimerInstall, 200, NULL);
+		m_nIDTimer = (long)SetTimer( IDTimerInstall, 200, NULL);
 		m_pEditParent->GetParent()->GetWindowRect(m_ParentRect);
 	}
 	else
@@ -715,7 +715,7 @@ void CACListWnd::OnNcLButtonDown(UINT nHitTest, CPoint point)
 
 CString CACListWnd::GetString()
 {
-	int i = m_DisplayList.GetSize();
+	int i = (int)m_DisplayList.GetSize();
 
 	if(!i)
 		return _T("");
@@ -887,7 +887,7 @@ int CACListWnd::CompareString(const void* p1, const void* p2)
 
 void CACListWnd::SortList(CStringArray& m_List)
 {
-	int m_Count = m_List.GetSize();
+	int m_Count = (int)m_List.GetSize();
 	int i;
 
 	if (m_Count > 1)
@@ -924,7 +924,7 @@ void CACListWnd::SortList(CStringArray& m_List)
 void CACListWnd::CopyList()
 {
 	m_DisplayList.Copy(m_SearchList);
-	m_lCount = m_DisplayList.GetSize();
+	m_lCount = (long)m_DisplayList.GetSize();
 	if(m_lCount)
 		FindString(0,_T(""),true);
 }

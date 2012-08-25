@@ -58,7 +58,7 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 	m_nDefault = entry + 1;
 	SetWindowText(m_sEntries[entry]);
 	if (m_bMarkDefault)
-		m_btnMenu.SetDefaultItem(m_nDefault, FALSE);
+		m_btnMenu.SetDefaultItem((UINT)m_nDefault, FALSE);
 
 	return true;
 }

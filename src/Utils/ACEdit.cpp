@@ -479,12 +479,12 @@ BOOL CACEdit::PreTranslateMessage(MSG* pMsg)
 			if(m_iType == _COMBOBOX_)
 			{
 				if(pMsg->wParam == VK_DOWN || pMsg->wParam == VK_UP)
-					if(HandleKey(pMsg->wParam,false))
+					if (HandleKey((UINT)pMsg->wParam, false))
 						return true;
 			}
 
 			if(pMsg->wParam == VK_ESCAPE || pMsg->wParam == VK_RETURN)
-				if(HandleKey(pMsg->wParam,false))
+				if (HandleKey((UINT)pMsg->wParam, false))
 					return true;
 		}
 	}

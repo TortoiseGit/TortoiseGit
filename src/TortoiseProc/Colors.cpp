@@ -108,9 +108,9 @@ COLORREF CColors::MixColors(COLORREF baseColor, COLORREF newColor, unsigned char
 	short colRed;
 	short colGreen;
 	short colBlue;
-	colRed	 = ((float)( baseColor&0x000000FF)     -(float)( newColor&0x000000FF)     )*mixFactor/0xFF;//red
-	colGreen = ((float)((baseColor&0x0000FF00)>>8) -(float)((newColor&0x0000FF00)>>8 ))*mixFactor/0xFF;//green
-	colBlue  = ((float)((baseColor&0x00FF0000)>>16)-(float)((newColor&0x00FF0000)>>16))*mixFactor/0xFF;//blue
+	colRed	 = (short)((float)( baseColor&0x000000FF)     -(float)( newColor&0x000000FF)     )*mixFactor/0xFF;//red
+	colGreen = (short)((float)((baseColor&0x0000FF00)>>8) -(float)((newColor&0x0000FF00)>>8 ))*mixFactor/0xFF;//green
+	colBlue  = (short)((float)((baseColor&0x00FF0000)>>16)-(float)((newColor&0x00FF0000)>>16))*mixFactor/0xFF;//blue
 
 	colRed   = ( baseColor&0x000000FF)		-colRed;
 	colGreen = ((baseColor&0x0000FF00)>>8)	-colGreen;

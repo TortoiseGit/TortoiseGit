@@ -75,8 +75,8 @@ public:
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
 		return Compare(
-			(CShadowTree*)m_pList->GetItemData(lParam1),
-			(CShadowTree*)m_pList->GetItemData(lParam2));
+			(CShadowTree*)m_pList->GetItemData((int)lParam1),
+			(CShadowTree*)m_pList->GetItemData((int)lParam2));
 	}
 
 	int Compare(CShadowTree* pLeft, CShadowTree* pRight)

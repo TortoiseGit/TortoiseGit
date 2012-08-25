@@ -171,7 +171,7 @@ int CPatch::Parser(CString &pathfile)
 
 	LONGLONG offset=PatchFile.GetPosition();
 #endif
-	PatchFile.Read(m_Body.GetBuffer(PatchFile.GetLength()),PatchFile.GetLength());
+	PatchFile.Read(m_Body.GetBuffer((UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
 	m_Body.ReleaseBuffer();
 	PatchFile.Close();
 

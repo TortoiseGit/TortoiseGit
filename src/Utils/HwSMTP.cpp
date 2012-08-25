@@ -348,7 +348,7 @@ BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 BOOL CHwSMTP::SendBuffer(char *buff,int size)
 {
 	if(size<0)
-		size=strlen(buff);
+		size=(int)strlen(buff);
 	if ( !m_bConnected )
 	{
 		m_csLastError.Format ( _T("Didn't connect") );

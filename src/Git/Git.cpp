@@ -111,12 +111,12 @@ static BOOL FindGitPath()
 
 		// ensure trailing slash
 		if (*pfin != _T('/') && *pfin != _T('\\'))
-			_tcscpy(++pfin, _T("\\"));
+			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, _MAX_PATH-1 is used in nextpath above
 
 		const size_t len = _tcslen(buf);
 
 		if ((len + 7) < _MAX_PATH)
-			_tcscpy(pfin+1, _T("git.exe"));
+			_tcscpy_s(pfin + 1, _MAX_PATH - len, _T("git.exe"));
 		else
 			break;
 
@@ -1007,7 +1007,10 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
-		return CGitHash(CString(friendname));
+	{
+		CString sHash(friendname);
+		return CGitHash(sHash);
+	}
 
 	if(this->m_IsUseGitDLL)
 	{
@@ -1512,7 +1515,7 @@ BOOL CGit::CheckMsysGitDir()
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
-			_tcscpy(ptr + 1, _T("TortoisePlink.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoisePlink.exe"));
 			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
 			m_Environment.SetEnv(_T("SVN_SSH"), sPlink);
 		}
@@ -1524,7 +1527,7 @@ BOOL CGit::CheckMsysGitDir()
 		LPTSTR ptr = _tcsrchr(sAskPass, _T('\\'));
 		if (ptr)
 		{
-			_tcscpy(ptr + 1, _T("SshAskPass.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sAskPass + 1), _T("SshAskPass.exe"));
 			m_Environment.SetEnv(_T("DISPLAY"),_T(":9999"));
 			m_Environment.SetEnv(_T("SSH_ASKPASS"),sAskPass);
 			m_Environment.SetEnv(_T("GIT_ASKPASS"),sAskPass);
@@ -1810,7 +1813,7 @@ void CEnvironment::CopyProcessEnvironment()
 CString CEnvironment::GetEnv(TCHAR *name)
 {
 	CString str;
-	for(int i=0;i<size();i++)
+	for (size_t i = 0; i < size(); i++)
 	{
 		str = &(*this)[i];
 		int start =0;

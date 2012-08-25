@@ -1046,7 +1046,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 		count=1;
 	else
 		count=list->GetCount();
-	for (size_t i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		CString cmd;
 		pos=0;
@@ -1073,7 +1073,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 
 		pos=0;
 		CString one;
-		while( pos>=0 && pos<out.size())
+		while (pos >= 0 && pos < (int)out.size())
 		{
 			one.Empty();
 			g_Git.StringAppend(&one, &out[pos], CP_UTF8);
@@ -1098,7 +1098,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 	//CString one;
 	CTGitPath path;
 	m_Action=0;
-	while( pos>=0 && pos<log.size())
+	while (pos >= 0 && pos < (int)log.size())
 	{
 		//one=log.Tokenize(_T("\n"),pos);
 		path.Reset();

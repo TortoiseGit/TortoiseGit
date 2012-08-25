@@ -155,7 +155,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
  			int index = start;
 			if (index <0)
 				return -1;
-			if (index >= size() )
+			if (index >= (int)size())
 				return -1;
 
 			// skip-worktree has higher priority than assume-valid

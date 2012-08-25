@@ -1485,8 +1485,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
 
-						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1 + (0xFFFF << 16), CString(MAKEINTRESOURCE(IDS_ALLPARENTS)));
-						gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1 + (0xFFFE << 16), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
+						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFF << 16)), CString(MAKEINTRESOURCE(IDS_ALLPARENTS)));
+						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFE << 16)), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
 
 						for(int i=0;i<pRev->m_ParentHash.size();i++)
 						{

@@ -2038,12 +2038,11 @@ void CCommitDlg::OnFocusMessage()
 	m_cLogMessage.SetFocus();
 }
 
-void CCommitDlg::OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult)
+void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
-	int pos=this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
-	int line=this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
-	int column=this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
+	int pos = (int)this->m_cLogMessage.Call(SCI_GETCURRENTPOS);
+	int line = (int)this->m_cLogMessage.Call(SCI_LINEFROMPOSITION,pos);
+	int column = (int)this->m_cLogMessage.Call(SCI_GETCOLUMN,pos);
 
 	CString str;
 	str.Format(_T("%d/%d"),line+1,column+1);

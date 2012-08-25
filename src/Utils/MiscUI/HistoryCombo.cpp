@@ -79,7 +79,7 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 			CPoint pt;
 			pt.x = LOWORD(pMsg->lParam);
 			pt.y = HIWORD(pMsg->lParam);
-			OnMouseMove(pMsg->wParam, pt);
+			OnMouseMove((UINT)pMsg->wParam, pt);
 			return TRUE;
 		}
 	}

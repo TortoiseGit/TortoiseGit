@@ -265,7 +265,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
 		m_BufStart = 0 ;
-		m_Animate.Play(0,-1,-1);
+		m_Animate.Play(0, INT_MAX, INT_MAX);
 		this->DialogEnableWindow(IDOK,FALSE);
 		if (m_pTaskbarList)
 		{
@@ -296,7 +296,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Progress.SetPos(100);
 		this->DialogEnableWindow(IDOK,TRUE);
 
-		m_GitStatus = lParam;
+		m_GitStatus = (DWORD)lParam;
 
 		// detect crashes of perl when performing git svn actions
 		if (m_GitStatus == 0 && m_GitCmd.Find(_T(" svn ")) > 1)
@@ -304,7 +304,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			m_Log.GetWindowText(log);
 			if (log.GetLength() > 18 && log.Mid(log.GetLength() - 18) == _T("perl.exe.stackdump"))
-				m_GitStatus = -1;
+				m_GitStatus = (DWORD)-1;
 		}
 
 		if(this->m_GitStatus)
@@ -521,7 +521,7 @@ void CProgressDlg::OnBnClickedOk()
 
 void CProgressDlg::OnBnClickedButton1()
 {
-	this->EndDialog((int)IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry());
+	this->EndDialog((int)(IDC_PROGRESS_BUTTON1 + this->m_ctrlPostCmd.GetCurrentEntry()));
 }
 
 void CProgressDlg::OnClose()

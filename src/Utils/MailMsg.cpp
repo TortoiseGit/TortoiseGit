@@ -309,7 +309,7 @@ BOOL CMailMsg::MAPISend()
 	message.lpszConversationID				= NULL;
 	message.flFlags							= 0;
 	message.lpOriginator					= pRecipients;
-	message.nRecipCount						= 1 + m_cc.size();
+	message.nRecipCount						= (ULONG)(1 + m_cc.size());
 	message.lpRecips						= &pRecipients[1];
 	message.nFileCount						= nAttachments;
 	message.lpFiles							= nAttachments ? pAttachments : NULL;

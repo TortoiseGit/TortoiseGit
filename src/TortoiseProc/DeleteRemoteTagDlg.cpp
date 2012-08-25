@@ -58,7 +58,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
-	AdjustControlSize(IDC_STATIC);
+	AdjustControlSize((UINT)IDC_STATIC);
 
 	Refresh();
 

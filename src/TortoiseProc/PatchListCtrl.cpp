@@ -176,7 +176,7 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
-			DWORD data = this->GetItemData(pNMCD->nmcd.dwItemSpec);
+			DWORD_PTR data = this->GetItemData((int)pNMCD->nmcd.dwItemSpec);
 			if(data & (STATUS_APPLY_FAIL | STATUS_APPLY_SUCCESS | STATUS_APPLY_SKIP))
 			{
 				pNMCD->clrTextBk = RGB(200,200,200);

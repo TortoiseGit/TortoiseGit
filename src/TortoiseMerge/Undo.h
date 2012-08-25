@@ -59,7 +59,7 @@ public:
 	void BeginGrouping() { ASSERT(!IsGrouping()); m_groups.push_back(m_caretpoints.size()); }
 	void EndGrouping(){ ASSERT(IsGrouping()); m_groups.push_back(m_caretpoints.size()); }
 	void Clear();
-	void MarkAsOriginalState() { m_originalstate = m_viewstates.size(); }
+	void MarkAsOriginalState() { m_originalstate = (unsigned int)m_viewstates.size(); }
 protected:
 	void Undo(const viewstate& state, CBaseView * pView);
 	void UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);

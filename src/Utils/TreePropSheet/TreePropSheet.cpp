@@ -946,7 +946,7 @@ void CTreePropSheet::OnPageTreeSelChanging(NMHDR *pNotifyStruct, LRESULT *plResu
 	if (nPage >= (int)m_pwndPageTree->GetCount())
 		bResult = KillActiveCurrentPage();
 	else
-		bResult = SetActivePage(nPage);
+		bResult = SetActivePage((int)nPage);
 
 	if (!bResult)
 		// prevent selection to change

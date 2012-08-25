@@ -321,7 +321,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT nFlags, CPoint point)
 	{
 		if(m_ID[line] >= 0) // only show context menu if we have log data for it
 		{
-			m_MouseLine = line;
+			m_MouseLine = (LONG)line;
 			ClientToScreen(&point);
 			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_BLAME_POPUP, point.x, point.y, this, TRUE);
 		}
@@ -505,8 +505,8 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 {
 
 	//char szWhat[80];
-	int pos = SendEditor(SCI_GETCURRENTPOS);
-	int line = SendEditor(SCI_LINEFROMPOSITION, pos);
+	int pos = (int)SendEditor(SCI_GETCURRENTPOS);
+	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
 	bool bFound = false;
 	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
 
@@ -524,7 +524,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	int i=line;
 	do
 	{
-		int bufsize = SendEditor(SCI_GETLINE, i);
+		int bufsize = (int)SendEditor(SCI_GETLINE, i);
 		char * linebuf = new char[bufsize+1];
 		SecureZeroMemory(linebuf, bufsize+1);
 		SendEditor(SCI_GETLINE, i, (LPARAM)linebuf);
@@ -551,8 +551,8 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	if (bFound)
 	{
 		GotoLine(i);
-		int selstart = SendEditor(SCI_GETCURRENTPOS);
-		int selend = SendEditor(SCI_POSITIONFROMLINE, i);
+		int selstart = (int)SendEditor(SCI_GETCURRENTPOS);
+		int selend = (int)SendEditor(SCI_POSITIONFROMLINE, i);
 		SendEditor(SCI_SETSELECTIONSTART, selstart);
 		SendEditor(SCI_SETSELECTIONEND, selend);
 		m_SelectedLine = i-1;
@@ -572,13 +572,13 @@ bool CTortoiseGitBlameView::GotoLine(long line)
 		return false;
 	if ((unsigned long)line >= m_CommitHash.size())
 	{
-		line = m_CommitHash.size()-1;
+		line = (long)m_CommitHash.size()-1;
 	}
 
-	int nCurrentPos = SendEditor(SCI_GETCURRENTPOS);
-	int nCurrentLine = SendEditor(SCI_LINEFROMPOSITION,nCurrentPos);
-	int nFirstVisibleLine = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	int nLinesOnScreen = SendEditor(SCI_LINESONSCREEN);
+	int nCurrentPos = (int)SendEditor(SCI_GETCURRENTPOS);
+	int nCurrentLine = (int)SendEditor(SCI_LINEFROMPOSITION,nCurrentPos);
+	int nFirstVisibleLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int nLinesOnScreen = (int)SendEditor(SCI_LINESONSCREEN);
 
 	if ( line>=nFirstVisibleLine && line<=nFirstVisibleLine+nLinesOnScreen)
 	{
@@ -599,8 +599,8 @@ bool CTortoiseGitBlameView::GotoLine(long line)
 	}
 
 	// Highlight the line
-	int nPosStart = SendEditor(SCI_POSITIONFROMLINE,line);
-	int nPosEnd = SendEditor(SCI_GETLINEENDPOSITION,line);
+	int nPosStart = (int)SendEditor(SCI_POSITIONFROMLINE,line);
+	int nPosEnd = (int)SendEditor(SCI_GETLINEENDPOSITION,line);
 	SendEditor(SCI_SETSEL,nPosEnd,nPosStart);
 
 	return true;
@@ -611,7 +611,7 @@ bool CTortoiseGitBlameView::ScrollToLine(long line)
 	if (line < 0)
 		return false;
 
-	int nCurrentLine = SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int nCurrentLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 
 	int scrolldelta = line - nCurrentLine;
 	SendEditor(SCI_LINESCROLL, 0, scrolldelta);
@@ -676,7 +676,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	if (m_bShowDate)
 	{
 		_stprintf_s(buf, MAX_PATH, _T("%30s"), _T("31.08.2001 06:24:14"));
-		::GetTextExtentPoint32(hDC, buf, _tcslen(buf), &width);
+		::GetTextExtentPoint32(hDC, buf, (int)_tcslen(buf), &width);
 		m_datewidth = width.cx + BLAMESPACE;
 		blamewidth += m_datewidth;
 	}
@@ -775,18 +775,18 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			str = m_CommitHash[i].ToString().Left(g_Git.GetShortHASHLength());
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
-			rc.top=Y;
+			rc.top = (LONG)Y;
 			rc.left=LOCATOR_WIDTH;
-			rc.bottom=Y+height;
+			rc.bottom = (LONG)(Y + height);
 			rc.right = rc.left + m_blamewidth;
-			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+			::ExtTextOut(hDC, LOCATOR_WIDTH, (int)Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 			int Left = m_revwidth;
 
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
 				//_stprintf_s(buf, MAX_PATH, _T("%-30s            "), authors[i].c_str());
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
 				Left += m_authorwidth;
 			}
 #if 0
@@ -808,8 +808,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, NULL);
 				HGDIOBJ hPenOld = SelectObject(hDC, pen);
 				RECT rc2 = rc;
-				rc2.top = Y;
-				rc2.bottom = Y + height;
+				rc2.top = (LONG)Y;
+				rc2.bottom = (LONG)(Y + height);
 				::MoveToEx(hDC, rc2.left, rc2.top, NULL);
 				::LineTo(hDC, rc2.right, rc2.top);
 				::LineTo(hDC, rc2.right, rc2.bottom);
@@ -826,7 +826,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			::SetBkColor(hDC, m_windowcolor);
 			for (int j=0; j< MAX_PATH; ++j)
 				buf[j]=' ';
-			::ExtTextOut(hDC, 0, Y, ETO_CLIPPED, &rc, buf, MAX_PATH-1, 0);
+			::ExtTextOut(hDC, 0, (int)Y, ETO_CLIPPED, &rc, buf, MAX_PATH-1, 0);
 			Y += height;
 		}
 	}
@@ -863,8 +863,8 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 			cr = InterColor(cr, blackColor, 10);
 		}
 		SetBkColor(hDC, cr);
-		lineRect.top = Y;
-		lineRect.bottom = (currentLine * height / m_ID.size());
+		lineRect.top = (LONG)Y;
+		lineRect.bottom = (currentLine * height / (LONG)m_ID.size());
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 		Y = lineRect.bottom;
 	}
@@ -873,10 +873,10 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);
-		lineRect.top = line * height / m_ID.size();
+		lineRect.top = (LONG)line * height / (LONG)m_ID.size();
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
-		lineRect.top = (line + linesonscreen) * height / m_ID.size();
+		lineRect.top = (LONG)(line + linesonscreen) * height / (LONG)m_ID.size();
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
@@ -1429,13 +1429,13 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			if( pos <40 && encoding==0)
 			{
 				// first line
-				encoding = GetEncode( &data[start+2], data.size() - start -2, &bomoffset);
+				encoding = GetEncode(&data[start + 2], (int)(data.size() - start - 2), &bomoffset);
 			}
 			{
 				if(encoding == 1201)
 				{
 					CString strw;
-					int size = ((current - start -2 - bomoffset)/2);
+					DWORD size = ((current - start -2 - bomoffset)/2);
 					TCHAR *buffer = strw.GetBuffer(size);
 					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
 					// swap the bytes to little-endian order to get proper strings in wchar_t format
@@ -1529,7 +1529,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(SCI_SETREADONLY, TRUE);
 
 	m_lowestrev=0;
-	m_highestrev=this->GetLogData()->size()+m_NoListCommit.size();
+	m_highestrev = (long)(this->GetLogData()->size() + m_NoListCommit.size());
 
 	GetBlameWidth();
 	CRect rect;
@@ -1561,8 +1561,8 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
 
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	LONG line = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG height = (LONG)SendEditor(SCI_TEXTHEIGHT);
 	line = line + (point.y/height);
 
 	if (line < (LONG)m_CommitHash.size())
@@ -1580,7 +1580,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 				{
 					if(m_SelectedHash == this->GetLogData()->at(i))
 					{
-						m_ID[line] = this->GetLogData()->size()-i;
+						m_ID[line] = (LONG)(this->GetLogData()->size() - i);
 						break;
 					}
 				}
@@ -1659,7 +1659,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 	{
 		if (line != m_MouseLine)
 		{
-			m_MouseLine = line;//m_CommitHash[line];
+			m_MouseLine = (LONG)line;//m_CommitHash[line];
 			GitRev *pRev;
 			if(m_ID[line]<0)
 			{
@@ -1684,8 +1684,8 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			CRect rect;
 			rect.left=LOCATOR_WIDTH;
 			rect.right=this->m_blamewidth+rect.left;
-			rect.top=point.y-height;
-			rect.bottom=point.y+height;
+			rect.top = point.y - (LONG)height;
+			rect.bottom = point.y + (LONG)height;
 			this->InvalidateRect(rect);
 		}
 	}
@@ -1807,8 +1807,8 @@ void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 
 int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
 {
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR startline =line;
+	LONG line = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	LONG startline = line;
 	bool findNoMatch =false;
 	while(line>=0 && line<m_CommitHash.size())
 	{

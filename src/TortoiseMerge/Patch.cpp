@@ -346,7 +346,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 
 	for(nIndex=0;nIndex<PatchLines.GetCount();nIndex++)
 	{
-		sLine = PatchLines.GetAt(nIndex);
+		sLine = PatchLines.GetAt((int)nIndex);
 		if(sLine.Left(10).Compare(_T("diff --git")) == 0)
 		{
 			this->m_IsGitPatch=true;
@@ -361,13 +361,13 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	{
 		for (nIndex=0; nIndex<PatchLines.GetCount(); nIndex++)
 		{
-			sLine = PatchLines.GetAt(nIndex);
+			sLine = PatchLines.GetAt((int)nIndex);
 
 			if (sLine.Left(4).Compare(_T("--- "))==0)
 				break;
 			if ((nIndex+1)<PatchLines.GetCount())
 			{
-				sLine = PatchLines.GetAt(nIndex+1);
+				sLine = PatchLines.GetAt((int)nIndex + 1);
 
 				if(sLine.IsEmpty()&&m_IsGitPatch)
 					continue;
@@ -387,7 +387,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	}
 
 	if( m_IsGitPatch )
-		return ParserGitPatch(PatchLines,nIndex);
+		return ParserGitPatch(PatchLines, (int)nIndex);
 
 	//from this point on we have the real unified diff data
 	int state = 0;
@@ -398,8 +398,8 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 	int nContextLineCount = 0;
 	for ( ;nIndex<PatchLines.GetCount(); nIndex++)
 	{
-		sLine = PatchLines.GetAt(nIndex);
-		ending = PatchLines.GetLineEnding(nIndex);
+		sLine = PatchLines.GetAt((int)nIndex);
+		ending = PatchLines.GetLineEnding((int)nIndex);
 		if (ending != EOL_NOENDING)
 			ending = EOL_AUTOLINE;
 		if (state == 0)
@@ -437,7 +437,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 				CString nextLine;
 				if ((nIndex+1)<PatchLines.GetCount())
 				{
-					nextLine = PatchLines.GetAt(nIndex+1);
+					nextLine = PatchLines.GetAt((int)nIndex + 1);
 					if (!nextLine.IsEmpty())
 					{
 						nextLine.Remove('=');
@@ -493,7 +493,7 @@ BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 					if (PatchLines.GetCount() > (nIndex + 1))
 					{
 
-						if (PatchLines.GetAt(nIndex+1).Left(2).Compare(_T("@@"))==0)
+						if (PatchLines.GetAt((int)nIndex + 1).Left(2).Compare(_T("@@"))==0)
 						{
 							state += 2;
 						}

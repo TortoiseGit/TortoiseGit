@@ -1580,7 +1580,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			//Select Multi item
 			if (GetSelectedCount() > 0)
 			{
-				if ((GetSelectedCount() == 2) && (m_dwContextMenus & this->GetContextMenuBit(GITSLC_POPCOMPARETWOFILES)) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				if ((GetSelectedCount() == 2) && (m_dwContextMenus & GITSLC_POPCOMPARETWOFILES) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = GetNextSelectedItem(pos);

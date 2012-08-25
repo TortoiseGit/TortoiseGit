@@ -61,6 +61,6 @@ int CViewData::FindLineNumber(int number)
 {
 	for(size_t i = 0; i < m_data.size(); ++i)
 		if (m_data[i].linenumber >= number)
-			return i;
+			return (int)i;
 	return -1;
 }

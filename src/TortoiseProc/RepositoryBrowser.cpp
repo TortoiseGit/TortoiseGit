@@ -75,8 +75,8 @@ public:
 
 	int Compare(LPARAM lParam1, LPARAM lParam2)
 	{
-		CShadowFilesTree * pLeft	= (CShadowFilesTree *)m_pList->GetItemData(lParam1);
-		CShadowFilesTree * pRight	= (CShadowFilesTree *)m_pList->GetItemData(lParam2);
+		CShadowFilesTree * pLeft	= (CShadowFilesTree *)m_pList->GetItemData((int)lParam1);
+		CShadowFilesTree * pRight	= (CShadowFilesTree *)m_pList->GetItemData((int)lParam2);
 
 		int result = 0;
 		switch(m_col)

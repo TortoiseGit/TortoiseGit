@@ -984,7 +984,10 @@ void CSyncDlg::FetchOutList(bool force)
 				if (remotehash == base)
 					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, remotebranch);
 				else
-					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, base.ToString());
+				{
+					CString baseString = base.ToString();
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, baseString);
+				}
 
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(TRUE);
