@@ -145,7 +145,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	CLogDataVector *plog;
 	plog = &m_RefList.m_RefMap[ref];
 
-	m_RefList.SetItemCountEx(plog->size());
+	m_RefList.SetItemCountEx((int)plog->size());
 
 	this->m_RefList.m_arShownList.RemoveAll();
 

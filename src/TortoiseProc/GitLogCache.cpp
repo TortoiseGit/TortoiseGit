@@ -299,19 +299,16 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 	for (DWORD i = 0; i < header->m_FileCount; i++)
 	{
 		CTGitPath path;
-		CString file,oldfile;
+		CString oldfile;
 		path.Reset();
 
 		if(!CheckHeader(fileheader))
 			return -1;
 
-		_tcsncpy_s(file.GetBufferSetLength(fileheader->m_FileNameSize), fileheader->m_FileNameSize, fileheader->m_FileName, fileheader->m_FileNameSize);
+		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)
 		{
-			_tcsncpy_s(oldfile.GetBufferSetLength(fileheader->m_OldFileNameSize),
-						fileheader->m_OldFileNameSize,
-						fileheader->m_FileName+fileheader->m_FileNameSize,
-						fileheader->m_OldFileNameSize);
+			oldfile = CString(fileheader->m_FileName + fileheader->m_FileNameSize, fileheader->m_OldFileNameSize);
 		}
 		path.SetFromGit(file,&oldfile);
 

@@ -486,12 +486,12 @@ BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefi
 	return FALSE;
 }
 
-void CGitLogListBase::FillBackGround(HDC hdc, int Index,CRect &rect)
+void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 {
 	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
-	rItem.iItem = Index;
+	rItem.iItem = (int)Index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
@@ -530,7 +530,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
-	rItem.iItem = index;
+	rItem.iItem = (int)index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
@@ -975,7 +975,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	LVITEM rItem;
 	SecureZeroMemory(&rItem, sizeof(LVITEM));
 	rItem.mask  = LVIF_STATE;
-	rItem.iItem = index;
+	rItem.iItem = (int)index;
 	rItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
 	GetItem(&rItem);
 
@@ -985,7 +985,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		m_logEntries.setLane(data->m_CommitHash);
 
 	std::vector<int>& lanes=data->m_Lanes;
-	UINT laneNum = lanes.size();
+	size_t laneNum = lanes.size();
 	UINT activeLane = 0;
 	for (UINT i = 0; i < laneNum; i++)
 		if (Lanes::isMerge(lanes[i])) {
@@ -1130,10 +1130,10 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
 					CRect rect;
-					GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, rect);
+					GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_LABEL, rect);
 
 					//TRACE(_T("A Graphic left %d right %d\r\n"),rect.left,rect.right);
-					FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+					FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
 
 					GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 					if( !data ->m_CommitHash.IsEmpty())
@@ -1160,9 +1160,9 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					{
 						CRect rect;
 
-						GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
-						FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
 						DrawTagBranch(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
 						*pResult = CDRF_SKIPDEFAULT;
@@ -1191,13 +1191,13 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 				GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec));
 				CRect rect;
-				GetSubItemRect(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+				GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 				//TRACE(_T("Action left %d right %d\r\n"),rect.left,rect.right);
 				// Get the selected state of the
 				// item being drawn.
 
 				// Fill the background if necessary
-				FillBackGround(pLVCD->nmcd.hdc, (INT_PTR)pLVCD->nmcd.dwItemSpec,rect);
+				FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
 
 				// Draw the icon(s) into the compatible DC
 				pLogEntry->GetAction(this);
@@ -2134,7 +2134,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 		return -1;
 
 	//this->m_logEntries.ParserFromLog();
-	SetItemCountEx(this->m_logEntries.size());
+	SetItemCountEx((int)m_logEntries.size());
 
 	for(unsigned int i=0;i<m_logEntries.size();i++)
 	{
@@ -2232,7 +2232,7 @@ int CGitLogListBase::BeginFetchLog()
 	}
 	else
 	{
-		SetItemCountEx(this->m_logEntries.size());
+		SetItemCountEx((int)m_logEntries.size());
 	}
 
 	try
@@ -2376,7 +2376,7 @@ UINT CGitLogListBase::LogThread()
 		InterlockedExchange(&m_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
-		return -1;
+		return 1;
 	}
 
 	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
@@ -2421,7 +2421,7 @@ UINT CGitLogListBase::LogThread()
 		GIT_COMMIT commit;
 		t2=t1=GetTickCount();
 		int oldprecentage = 0;
-		int oldsize=m_logEntries.size();
+		size_t oldsize = m_logEntries.size();
 		while( ret== 0)
 		{
 			g_Git.m_critGitDllSec.Lock();
@@ -2491,14 +2491,14 @@ UINT CGitLogListBase::LogThread()
 			this->m_critSec.Unlock();
 
 			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
-				lastSelectedHashNItem = m_arShownList.GetCount() - 1;
+				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
 
 			t2=GetTickCount();
 
 			if(t2-t1>500 || (m_logEntries.size()-oldsize >100))
 			{
 				//update UI
-				int percent=m_logEntries.size()*100/total + GITLOG_START+1;
+				int percent = (int)m_logEntries.size() * 100 / total + GITLOG_START + 1;
 				if(percent > 99)
 					percent =99;
 				if(percent < GITLOG_START)
@@ -2678,7 +2678,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					}
 				}
 
-			for(INT_PTR i=0;i<pRev->m_SimpleFileList.size();i++)
+			for(size_t i = 0; i < pRev->m_SimpleFileList.size(); i++)
 			{
 				if (regex_search(wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
 				{
@@ -2775,7 +2775,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					}
 				}
 
-			for (INT_PTR i=0;i<pRev->m_SimpleFileList.size();i++)
+			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); i++)
 			{
 				CString path = pRev->m_SimpleFileList[i];
 				path.MakeLower();

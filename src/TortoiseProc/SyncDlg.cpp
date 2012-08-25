@@ -101,7 +101,7 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 void CSyncDlg::OnBnClickedButtonPull()
 {
 	int CurrentEntry;
-	CurrentEntry = this->m_ctrlPull.GetCurrentEntry();
+	CurrentEntry = (int)this->m_ctrlPull.GetCurrentEntry();
 	this->m_regPullButton = CurrentEntry;
 
 	this->m_bAbort=false;
@@ -386,7 +386,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 		return;
 	}
 
-	this->m_regPushButton=this->m_ctrlPush.GetCurrentEntry();
+	this->m_regPushButton=(DWORD)this->m_ctrlPush.GetCurrentEntry();
 	this->SwitchToRun();
 	this->m_bAbort=false;
 	this->m_GitCmdList.clear();
@@ -1138,7 +1138,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	this->UpdateData();
 	UpdateCombox();
 
-	this->m_regSubmoduleButton = this->m_ctrlSubmodule.GetCurrentEntry();
+	this->m_regSubmoduleButton = (DWORD)this->m_ctrlSubmodule.GetCurrentEntry();
 
 	this->SwitchToRun();
 

@@ -70,7 +70,7 @@ public:
 	{
 		m_pLogCache = pLogCache;
 	}
-	GitRev & GetGitRevAt(int i)
+	GitRev & GetGitRevAt(size_t i)
 	{
 		ASSERT(i<size());
 		return 	m_pLogCache->m_HashMap[(*this)[i]];

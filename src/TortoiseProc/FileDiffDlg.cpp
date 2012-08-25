@@ -941,7 +941,7 @@ void CFileDiffDlg::OnBnClickedRev1btn()
 
 void CFileDiffDlg::ClickRevButton(CMenuButton *button, GitRev *rev, CACEdit *edit)
 {
-	int entry=button->GetCurrentEntry();
+	INT_PTR entry=button->GetCurrentEntry();
 	if(entry == 0) /* Browse Refence*/
 	{
 		{

@@ -588,7 +588,7 @@ void CRebaseDlg::FetchLogList()
 	if(m_CommitList.m_IsOldFirst)
 		this->m_CurrentRebaseIndex = -1;
 	else
-		this->m_CurrentRebaseIndex = m_CommitList.m_logEntries.size();
+		this->m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 
 	this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(m_CommitList.GetItemCount());
 	SetContinueButtonText();
@@ -1232,7 +1232,7 @@ void CRebaseDlg::UpdateProgress()
 	else
 		index = m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
 
-	m_ProgressBar.SetRange(1,m_CommitList.GetItemCount());
+	m_ProgressBar.SetRange(1, m_CommitList.GetItemCount());
 	m_ProgressBar.SetPos(index);
 	if (m_pTaskbarList)
 	{
@@ -1641,7 +1641,7 @@ void CRebaseDlg::OnBnClickedRebasePostButton()
 	this->m_Upstream=this->m_UpstreamCtrl.GetString();
 	this->m_Branch=this->m_BranchCtrl.GetString();
 
-	this->EndDialog((int)IDC_REBASE_POST_BUTTON+this->m_PostButton.GetCurrentEntry());
+	this->EndDialog((int)(IDC_REBASE_POST_BUTTON+this->m_PostButton.GetCurrentEntry()));
 }
 
 void CRebaseDlg::Refresh()

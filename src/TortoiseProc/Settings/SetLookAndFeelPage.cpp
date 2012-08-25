@@ -64,7 +64,7 @@ void SetMenuItemCheck(CListCtrl *list, unsigned __int64 mask, CButton *selectAll
 	bool allChecked = true;
 	for(int i=0;i<list->GetItemCount();i++)
 	{
-		int data = list->GetItemData(i);
+		int data = (int)list->GetItemData(i);
 
 		list->SetCheck(i,(menuInfo[data].menuID & mask) == menuInfo[data].menuID);
 		if (!((menuInfo[data].menuID & mask) == menuInfo[data].menuID))
@@ -88,7 +88,7 @@ unsigned __int64 GetMenuListMask(CListCtrl *list, CButton *selectAll = NULL)
 	{
 		if(list->GetCheck(i))
 		{
-			int data = list->GetItemData(i);
+			int data = (int)list->GetItemData(i);
 			mask |= menuInfo[data].menuID ;
 		}
 		else

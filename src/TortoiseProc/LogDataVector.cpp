@@ -161,7 +161,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 
 		this->push_back(pRev->m_CommitHash);
 
-		m_HashMap[rev.m_CommitHash]=size()-1;
+		m_HashMap[rev.m_CommitHash] = (int)size() - 1;
 
 	}
 
