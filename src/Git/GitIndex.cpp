@@ -764,7 +764,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
 			continue;
-		int mode = git_tree_entry_attributes(entry);
+		int mode = git_tree_entry_filemode(entry);
 		if( CallBack(git_tree_entry_id(entry)->id,
 			base,
 			base.GetLength(),

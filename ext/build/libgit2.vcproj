@@ -226,6 +226,7 @@
 				OutputFile="$(OutDir)\$(ProjectName)32.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				LinkTimeCodeGeneration="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -303,6 +304,7 @@
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				LinkTimeCodeGeneration="0"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -349,11 +351,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\branch.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\buffer.c"
 				>
 			</File>
 			<File
 				RelativePath="..\libgit2\src\cache.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\checkout.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\clone.c"
 				>
 			</File>
 			<File
@@ -374,6 +388,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\crlf.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\date.c"
 				>
 			</File>
 			<File
@@ -514,6 +532,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\repository.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\revparse.c"
 				>
 			</File>
 			<File
@@ -851,6 +873,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\repo_template.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\repository.h"
 				>
 			</File>
@@ -864,6 +890,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\signature.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\submodule.h"
 				>
 			</File>
 			<File
@@ -951,6 +981,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\include\git2\checkout.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\include\git2\clone.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\include\git2\commit.h"
 				>
 			</File>
@@ -968,6 +1006,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\include\git2\errors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\include\git2\ignore.h"
 				>
 			</File>
 			<File

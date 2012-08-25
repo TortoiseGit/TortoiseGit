@@ -313,7 +313,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
 			continue;
-		int mode = git_tree_entry_attributes(entry);
+		int mode = git_tree_entry_filemode(entry);
 		
 		CString base = CUnicodeUtils::GetUnicode(git_tree_entry_name(entry), CP_UTF8);
 
