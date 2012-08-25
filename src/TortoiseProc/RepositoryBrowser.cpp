@@ -398,6 +398,14 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 
 		ReadTreeRecursive(*repository, tree, treeroot);
 
+		// try to resolve hash to a branch name
+		if (m_sRevision == hash.ToString())
+		{
+			MAP_HASH_NAME map;
+			g_Git.GetMapHashToFriendName(map);
+			if (!map[hash].empty())
+				m_sRevision = map[hash].at(0);
+		}
 		this->GetDlgItem(IDC_BUTTON_REVISION)->SetWindowText(m_sRevision);
 	} while(0);
 

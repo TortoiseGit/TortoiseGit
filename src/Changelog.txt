@@ -14,6 +14,7 @@ Released: unreleased
  * TGitCache only checked timestamps of files in order to get their state since 1.7.0 (see issue #861).
    If you have AutoCrLf disabled, you can make TGitCache check the contents of modified files.
    This can be done via the Settings dialog -> Advanced and set TGitCacheCheckContent to "true".
+ * Fixed issue #1336: Have visible the name of the branch in Repository Browser
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard
