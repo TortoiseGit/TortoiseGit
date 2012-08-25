@@ -1170,7 +1170,9 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 {
 	CString output;
 
-	int ret = g_Git.Run(_T("git show-ref --tags --heads ") + name, &output, NULL, CP_UTF8);
+	CString cmd;
+	cmd.Format(_T("git show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
+	int ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
 	if (!ret)
 	{
 		int i = 0, pos = 0;
@@ -1200,7 +1202,10 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 	else
 		cmd += _T("--tags ");
 
-	int ret = g_Git.Run(cmd + name, &output, NULL, CP_UTF8);
+	cmd += _T("refs/heads/") + name;
+	cmd += _T(" refs/tags/") + name;
+
+	int ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
 	if (!ret)
 	{
 		if (!output.IsEmpty())
