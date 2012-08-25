@@ -1005,6 +1005,10 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 
 CGitHash CGit::GetHash(TCHAR* friendname)
 {
+	// no need to parse a ref if it's already a 40-byte hash
+	if (CGitHash::IsValidSHA1(friendname))
+		return CGitHash(CString(friendname));
+
 	if(this->m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
