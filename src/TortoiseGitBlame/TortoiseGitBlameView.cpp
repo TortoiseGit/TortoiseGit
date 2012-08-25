@@ -1672,8 +1672,8 @@ void CTortoiseGitBlameView::OnMouseHover(UINT nFlags, CPoint point)
 			}
 
 			CString str;
-			str.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
-																	m_sAuthor, pRev->GetAuthorName(),
+			str.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
+																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
 																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
 																	pRev->GetBody());

@@ -164,11 +164,12 @@ protected:
 				return;
 			}
 
-			tooltip.Format(_T("%s: %s\n%s: %s\n%s: %s\n%s:\n%s\n%s"),
+			tooltip.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),
 				CString(MAKEINTRESOURCE(IDS_LOG_REVISION)),
 				rev.m_CommitHash.ToString(),
 				CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR)),
 				rev.GetAuthorName(),
+				rev.GetAuthorEmail(),
 				CString(MAKEINTRESOURCE(IDS_LOG_DATE)),
 				CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE),
 				CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE)),

@@ -1956,9 +1956,9 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 				sPaths.Trim();
 				CString body = pLogEntry->GetBody();
 				body.Replace(_T("\n"), _T("\r\n"));
-				sLogCopyText.Format(_T("%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
+				sLogCopyText.Format(_T("%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n----\r\n%s\r\n\r\n"),
 					(LPCTSTR)sRev, pLogEntry->m_CommitHash.ToString(),
-					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(),
+					(LPCTSTR)sAuthor, (LPCTSTR)pLogEntry->GetAuthorName(), (LPCTSTR)pLogEntry->GetAuthorEmail(),
 					(LPCTSTR)sDate,
 					(LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 					(LPCTSTR)sMessage, (pLogEntry->GetSubject().Trim() + _T("\r\n\r\n") + body.Trim()).Trim(),
