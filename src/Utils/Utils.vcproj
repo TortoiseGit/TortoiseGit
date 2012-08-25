@@ -481,10 +481,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\RWSection.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ShellUpdater.cpp"
 				>
 			</File>
@@ -535,10 +531,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\StdioFileT.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\strconv.h"
