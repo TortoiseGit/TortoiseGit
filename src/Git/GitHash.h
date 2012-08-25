@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ public:
 	}
 	CGitHash(CString &str)
 	{
-		if(str.GetLength()<GIT_HASH_SIZE)
+		if (!IsValidSHA1(str))
 		{
 #ifdef ASSERT
 			ASSERT(FALSE);
@@ -159,5 +159,16 @@ public:
 		return ar;
 	}
 #endif
+	static bool IsValidSHA1(const CString &possibleSHA1)
+	{
+		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)
+			return false;
+		for (int i = 0; i < possibleSHA1.GetLength(); i++)
+		{
+			if (!((possibleSHA1[i] >= '0' && possibleSHA1[i] <= '9') || (possibleSHA1[i] >= 'a' && possibleSHA1[i] <= 'f') || (possibleSHA1[i] >= 'A' && possibleSHA1[i] <= 'F')))
+				return false;
+		}
+		return true;
+	}
 };
 
