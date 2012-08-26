@@ -738,9 +738,6 @@ void CGitProgressDlg::ResizeColumns()
 			case 1:
 				linewidth = m_ProgList.GetStringWidth(m_arData[index]->sPathColumnText) + 12;
 				break;
-			case 2:
-				linewidth = m_ProgList.GetStringWidth(m_arData[index]->mime_type) + 12;
-				break;
 			}
 			if (cx < linewidth)
 				cx = linewidth;
@@ -784,8 +781,6 @@ BOOL CGitProgressDlg::OnInitDialog()
 	m_ProgList.InsertColumn(0, temp);
 	temp.LoadString(IDS_PROGRS_PATH);
 	m_ProgList.InsertColumn(1, temp);
-	temp.LoadString(IDS_PROGRS_MIMETYPE);
-	m_ProgList.InsertColumn(2, temp);
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
 	if (m_pThread==NULL)
@@ -1149,9 +1144,6 @@ void CGitProgressDlg::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResul
                         }
 					}
 					break;
-				case 2:
-					lstrcpyn(m_columnbuf, data->mime_type, MAX_PATH);
-					break;
 				default:
 					m_columnbuf[0] = 0;
 				}
@@ -1371,9 +1363,6 @@ bool CGitProgressDlg::SortCompare(const NotificationData * pData1, const Notific
 		break;
 	case 1:		//path column
 		// Compare happens after switch()
-		break;
-	case 2:		//mime-type column
-		result = pData1->mime_type.Compare(pData2->mime_type);
 		break;
 	default:
 		break;

@@ -154,7 +154,7 @@ private:
 	{
 	public:
 		NotificationData()
-		: color(::GetSysColor(COLOR_WINDOWTEXT)),
+		: color(::GetSysColor(COLOR_WINDOWTEXT))
 		{};
 	    git_wc_notify_action_t action;
 #if 0

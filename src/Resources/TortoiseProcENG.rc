@@ -2603,7 +2603,6 @@ BEGIN
     IDS_PROGRS_TITLE_EXPORT "Export"
     IDS_PROGRS_TITLE_MERGE  "Merge"
     IDS_PROGRS_TITLE_COPY   "Copy"
-    IDS_PROGRS_MIMETYPE     "Mime type"
     IDS_ERR_MISSINGVALUE    "This field is required and must not be empty."
     IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES "Not Versioned Files"
     IDS_STATUSLIST_GROUP_IGNOREDFILES "Ignored Files"
