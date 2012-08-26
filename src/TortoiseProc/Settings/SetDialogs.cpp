@@ -212,7 +212,7 @@ BOOL CSetDialogs::OnApply()
 	else
 		m_sFontName = m_regFontName;
 
-    Store (m_dwAutoClose, m_regAutoClose);
+	Store ((DWORD)m_dwAutoClose, m_regAutoClose);
 	Store (m_bShortDateFormat, m_regShortDateFormat);
 	Store (m_bRelativeTimes, m_regRelativeTimes);
     Store (m_bUseSystemLocaleForDates, m_regUseSystemLocaleForDates);
