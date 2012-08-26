@@ -819,6 +819,10 @@ msgstr ""
 msgid "&No double-click event"
 msgstr ""
 
+#. Resource IDs: (1702)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1661)
 msgid "&Notepad2"
 msgstr ""
