@@ -3325,7 +3325,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr.h from apr.hw"
-						CommandLine="type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
 						Outputs="..\apr\include\apr.h"
 					/>
 				</FileConfiguration>
@@ -3335,7 +3335,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr.h from apr.hw"
-						CommandLine="type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
 						Outputs="..\apr\include\apr.h"
 					/>
 				</FileConfiguration>
@@ -3345,7 +3345,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr.h from apr.hw"
-						CommandLine="type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
 						Outputs="..\apr\include\apr.h"
 					/>
 				</FileConfiguration>
@@ -3355,7 +3355,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr.h from apr.hw"
-						CommandLine="type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h&#x0D;&#x0A;"
 						Outputs="..\apr\include\apr.h"
 					/>
 				</FileConfiguration>

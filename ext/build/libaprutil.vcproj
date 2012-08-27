@@ -2464,7 +2464,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr_ldap.h from apr_ldap.hw"
-						CommandLine="type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apr_ldap.hw ..\apr-util\include\apr_ldap.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apr_ldap.h"
 					/>
 				</FileConfiguration>
@@ -2474,7 +2474,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr_ldap.h from apr_ldap.hw"
-						CommandLine="type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apr_ldap.hw ..\apr-util\include\apr_ldap.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apr_ldap.h"
 					/>
 				</FileConfiguration>
@@ -2484,7 +2484,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr_ldap.h from apr_ldap.hw"
-						CommandLine="type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apr_ldap.hw ..\apr-util\include\apr_ldap.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apr_ldap.h"
 					/>
 				</FileConfiguration>
@@ -2494,7 +2494,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apr_ldap.h from apr_ldap.hw"
-						CommandLine="type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apr_ldap.hw ..\apr-util\include\apr_ldap.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apr_ldap.h"
 					/>
 				</FileConfiguration>
@@ -2516,7 +2516,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu.h from apu.hw"
-						CommandLine="type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu.hw ..\apr-util\include\apu.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu.h"
 					/>
 				</FileConfiguration>
@@ -2526,7 +2526,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu.h from apu.hw"
-						CommandLine="type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu.hw ..\apr-util\include\apu.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu.h"
 					/>
 				</FileConfiguration>
@@ -2536,7 +2536,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu.h from apu.hw"
-						CommandLine="type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu.hw ..\apr-util\include\apu.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu.h"
 					/>
 				</FileConfiguration>
@@ -2546,7 +2546,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu.h from apu.hw"
-						CommandLine="type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu.hw ..\apr-util\include\apu.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu.h"
 					/>
 				</FileConfiguration>
@@ -2564,7 +2564,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_config.h from apu_config.hw"
-						CommandLine="type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_config.hw ..\apr-util\include\private\apu_config.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_config.h"
 					/>
 				</FileConfiguration>
@@ -2574,7 +2574,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_config.h from apu_config.hw"
-						CommandLine="type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_config.hw ..\apr-util\include\private\apu_config.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_config.h"
 					/>
 				</FileConfiguration>
@@ -2584,7 +2584,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_config.h from apu_config.hw"
-						CommandLine="type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_config.hw ..\apr-util\include\private\apu_config.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_config.h"
 					/>
 				</FileConfiguration>
@@ -2594,7 +2594,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_config.h from apu_config.hw"
-						CommandLine="type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_config.hw ..\apr-util\include\private\apu_config.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_config.hw &gt; ..\apr-util\include\private\apu_config.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_config.h"
 					/>
 				</FileConfiguration>
@@ -2612,7 +2612,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_select_dbm.h from apu_select_dbm.hw"
-						CommandLine="type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_select_dbm.hw ..\apr-util\include\private\apu_select_dbm.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_select_dbm.h"
 					/>
 				</FileConfiguration>
@@ -2622,7 +2622,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_select_dbm.h from apu_select_dbm.hw"
-						CommandLine="type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_select_dbm.hw ..\apr-util\include\private\apu_select_dbm.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_select_dbm.h"
 					/>
 				</FileConfiguration>
@@ -2632,7 +2632,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_select_dbm.h from apu_select_dbm.hw"
-						CommandLine="type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_select_dbm.hw ..\apr-util\include\private\apu_select_dbm.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_select_dbm.h"
 					/>
 				</FileConfiguration>
@@ -2642,7 +2642,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_select_dbm.h from apu_select_dbm.hw"
-						CommandLine="type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\private\apu_select_dbm.hw ..\apr-util\include\private\apu_select_dbm.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\private\apu_select_dbm.hw &gt; ..\apr-util\include\private\apu_select_dbm.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\private\apu_select_dbm.h"
 					/>
 				</FileConfiguration>
@@ -2664,7 +2664,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_want.h from apu_want.hw"
-						CommandLine="type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu_want.hw ..\apr-util\include\apu_want.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu_want.h"
 					/>
 				</FileConfiguration>
@@ -2674,7 +2674,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_want.h from apu_want.hw"
-						CommandLine="type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu_want.hw ..\apr-util\include\apu_want.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu_want.h"
 					/>
 				</FileConfiguration>
@@ -2684,7 +2684,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_want.h from apu_want.hw"
-						CommandLine="type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu_want.hw ..\apr-util\include\apu_want.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu_want.h"
 					/>
 				</FileConfiguration>
@@ -2694,7 +2694,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating apu_want.h from apu_want.hw"
-						CommandLine="type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
+						CommandLine="fc ..\apr-util\include\apu_want.hw ..\apr-util\include\apu_want.h &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type ..\apr-util\include\apu_want.hw &gt; ..\apr-util\include\apu_want.h&#x0D;&#x0A;"
 						Outputs="..\apr-util\include\apu_want.h"
 					/>
 				</FileConfiguration>
