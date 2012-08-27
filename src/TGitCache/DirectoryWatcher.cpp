@@ -496,7 +496,7 @@ void CDirectoryWatcher::WorkerThread()
 									}
 								}
 								else
-									path.SetFromWin(buf);
+									path.SetFromUnknown(buf);
 
 								if(!path.HasAdminDir() && !isIndex)
 									continue;
