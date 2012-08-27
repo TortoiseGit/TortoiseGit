@@ -860,7 +860,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						if(CAppUtils::IsSSHPutty())
 							CAppUtils::LaunchPAgent(NULL, &remoteName);
 
-						cmd.Format(L"git.exe push \"%s\" :%s", remoteName, shortname);
+						cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, shortname);
 					}
 					else if (result == 2)
 						cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);

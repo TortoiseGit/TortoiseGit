@@ -696,7 +696,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 				CAppUtils::LaunchPAgent(NULL, &remoteName);
 			}
 
-			cmd.Format(L"git.exe push \"%s\" :%s", remoteName, remoteBranchToDelete);
+			cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, remoteBranchToDelete);
 		}
 		else
 			cmd.Format(L"git.exe branch -%c -- %s",bForce?L'D':L'd',branchToDelete);
