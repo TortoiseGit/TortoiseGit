@@ -449,6 +449,13 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 		m_mostImportantFileStatus = git_wc_status_none;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 
+		// folders must not be displayed as added or deleted only as modified
+		if (status == git_wc_status_deleted || status == git_wc_status_added)
+			status == git_wc_status_modified;
+		// this is necessary, even if the m_mostImportantFileStatus is set in GetStatusCallback,
+		// however, if it's missing, deleted subdirectories won't mark parents as modified
+		m_mostImportantFileStatus = GitStatus::GetMoreImportant(m_mostImportantFileStatus, status);
+
 		if (sSubPath.IsEmpty())
 		{
 			// request a shell notification for working trees which have not been examined before
