@@ -79,23 +79,11 @@ BOOL CSettingGitRemote::OnInitDialog()
 		this->SetWindowText(title + _T(" - ") + proj);
 	}
 
-	CString cmd, out, err;
-	cmd=_T("git.exe remote");
-	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
-	{
-		CMessageBox::Show(NULL, out + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-		return FALSE;
-	}
-	int start =0;
+	STRING_VECTOR remotes;
+	g_Git.GetRemoteList(remotes);
 	m_ctrlRemoteList.ResetContent();
-	do
-	{
-		CString one;
-		one=out.Tokenize(_T("\n"),start);
-		if(!one.IsEmpty())
-			this->m_ctrlRemoteList.AddString(one);
-
-	}while(start>=0);
+	for (size_t i = 0; i < remotes.size(); i++)
+		m_ctrlRemoteList.AddString(remotes[i]);
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
