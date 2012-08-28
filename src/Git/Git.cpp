@@ -1134,7 +1134,6 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	{
 		CString cmd, output;
 		cmd=_T("git.exe tag -l");
-		int i=0;
 		int ret = g_Git.Run(cmd, &output, NULL, CP_UTF8);
 		if(!ret)
 		{
@@ -1142,7 +1141,6 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			CString one;
 			while( pos>=0 )
 			{
-				i++;
 				one=output.Tokenize(_T("\n"),pos);
 				list.push_back(one);
 			}
