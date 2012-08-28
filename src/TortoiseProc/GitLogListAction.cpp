@@ -990,19 +990,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					CAppUtils::StartShowCompare(m_hWnd, m_path, GitRev::REV_BASE, m_path, revSelected, GitRev(), m_LogRevision, false, false, true);
 			}
 			break;
-		case ID_BLAMETWO:
-			{
-				//user clicked on the menu item "compare and blame revisions"
-				if (PromptShown())
-				{
-					GitDiff diff(this, this->m_hWnd, true);
-					diff.SetHEADPeg(m_LogRevision);
-					diff.ShowCompare(CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), false, true);
-				}
-				else
-					CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revSelected2, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, false, false, true);
-			}
-			break;
 		case ID_BLAMEWITHPREVIOUS:
 			{
 				//user clicked on the menu item "Compare and Blame with previous revision"
@@ -1095,39 +1082,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 			}
 			break;
-		case ID_UPDATE:
-			{
-				CString sCmd;
-				CString url = _T("tgit:")+pathURL;
-				sCmd.Format(_T("%s /command:update /path:\"%s\" /rev:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
-					(LPCTSTR)m_path.GetWinPath(), (LONG)revSelected);
-				CAppUtils::LaunchApplication(sCmd, NULL, false);
-			}
-			break;
-
-		case ID_EDITLOG:
-			{
-				EditLogMessage(selIndex);
-			}
-			break;
-		case ID_EDITAUTHOR:
-			{
-				EditAuthor(selEntries);
-			}
-			break;
-		case ID_REVPROPS:
-			{
-				CEditPropertiesDlg dlg;
-				dlg.SetProjectProperties(&m_ProjectProperties);
-				CTGitPathList escapedlist;
-				dlg.SetPathList(CTGitPathList(CTGitPath(pathURL)));
-				dlg.SetRevision(revSelected);
-				dlg.RevProps(true);
-				dlg.DoModal();
-			}
-			break;
-
 		case ID_EXPORT:
 			{
 				CString sCmd;

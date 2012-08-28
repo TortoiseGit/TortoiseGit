@@ -1725,7 +1725,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if (GetSelectedCount() == 2)
 			{
-				//popup.AppendMenuIcon(ID_BLAMETWO, IDS_LOG_POPUP_BLAMEREVS, IDI_BLAME);
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 				bAddSeparator = true;
@@ -1733,9 +1732,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if (m_hasWC)
 			{
-				//popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
-//				if (m_hasWC)
-//					popup.AppendMenuIcon(ID_MERGEREV, IDS_LOG_POPUP_MERGEREVS, IDI_MERGE);
 				bAddSeparator = true;
 			}
 
@@ -1785,19 +1781,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
-
-#if 0
-//		if ((selEntries.size() > 0)&&(bAllFromTheSameAuthor))
-//		{
-//			popup.AppendMenuIcon(ID_EDITAUTHOR, IDS_LOG_POPUP_EDITAUTHOR);
-//		}
-//		if (GetSelectedCount() == 1)
-//		{
-//			popup.AppendMenuIcon(ID_EDITLOG, IDS_LOG_POPUP_EDITLOG);
-//			popup.AppendMenuIcon(ID_REVPROPS, IDS_REPOBROWSE_SHOWREVPROP, IDI_PROPERTIES); // "Show Revision Properties"
-//			popup.AppendMenu(MF_SEPARATOR, NULL);
-//		}
-#endif
 
 		if (GetSelectedCount() == 1)
 		{
