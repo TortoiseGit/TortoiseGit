@@ -20,7 +20,6 @@
 #pragma once
 
 #include "HorizontalResizableStandAloneDialog.h"
-#include "HistoryCombo.h"
 
 class CDeleteRemoteTagDlg : public CHorizontalResizableStandAloneDialog
 {
@@ -41,12 +40,13 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	CHistoryCombo m_ctrlTags;
+	CListCtrl m_ctrlTags;
+	STRING_VECTOR m_taglist;
 
 	void Refresh();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnCbnSelchangeTags();
+	afx_msg void OnSelchangeTags(NMHDR* pNMHDR, LRESULT* pResult);
 };
