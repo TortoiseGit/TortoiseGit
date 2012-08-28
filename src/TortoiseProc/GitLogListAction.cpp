@@ -807,6 +807,23 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				CAppUtils::RunTortoiseProc(cmd);
 			}
 			break;
+		case ID_BISECTSTART:
+			{
+				GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				GitRev * last = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
+				ASSERT(first != NULL && last != NULL);
+
+				CString firstBad = first->m_CommitHash.ToString();
+				if (!m_HashMap[first->m_CommitHash].empty())
+					firstBad = m_HashMap[first->m_CommitHash].at(0);
+				CString lastGood = last->m_CommitHash.ToString();
+				if (!m_HashMap[last->m_CommitHash].empty())
+					lastGood = m_HashMap[last->m_CommitHash].at(0);
+
+				if (CAppUtils::BisectStart(lastGood, firstBad))
+					Refresh();
+			}
+			break;
 		case ID_REPOBROWSE:
 			{
 				CString sCmd;

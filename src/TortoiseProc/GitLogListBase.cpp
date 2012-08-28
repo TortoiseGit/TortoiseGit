@@ -1782,6 +1782,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
+		if (m_hasWC && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect))->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+		{
+			popup.AppendMenuIcon(ID_BISECTSTART, IDS_MENUBISECTSTART);
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+		}
+
 		if (GetSelectedCount() == 1)
 		{
 			bool bAddSeparator = false;
