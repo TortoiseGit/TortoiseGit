@@ -1375,8 +1375,9 @@ int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
 	while (pos >= 0)
 	{
 		CString one = out.Tokenize(_T("\n"), pos).Mid(51).Trim(); // sha1, tab + refs/tags/
+		// dot not include annotated tags twice; this works, because an annotated tag appears twice (one normal tag and one with ^{} at the end)
 		if (one.Find(_T("^{}")) >= 1)
-			one = one.Left(one.GetLength() - 3);
+			continue;
 		if (!one.IsEmpty())
 			list.push_back(one);
 	}
