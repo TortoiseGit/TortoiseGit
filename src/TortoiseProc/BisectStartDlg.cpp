@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_BAD, &CBisectStartDlg::OnBnClickedButtonBad)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_GOOD, &CBisectStartDlg::OnChangedRevision)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BAD, &CBisectStartDlg::OnChangedRevision)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_GOOD, &CBisectStartDlg::OnChangedRevision)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_BAD, &CBisectStartDlg::OnChangedRevision)
 END_MESSAGE_MAP()
 
 BOOL CBisectStartDlg::OnInitDialog()
@@ -102,12 +104,15 @@ BOOL CBisectStartDlg::OnInitDialog()
 
 	this->UpdateData(FALSE);
 
+	// EnDisable OK Button
+	OnChangedRevision();
+
 	return TRUE;
 }
 
 void CBisectStartDlg::OnChangedRevision()
 {
-	this->GetDlgItem(IDOK)->EnableWindow(!(m_cLastGoodRevision.GetString().Trim().IsEmpty() && m_cFirstBadRevision.GetString().Trim().IsEmpty()));
+	this->GetDlgItem(IDOK)->EnableWindow(!(m_cLastGoodRevision.GetString().Trim().IsEmpty() || m_cFirstBadRevision.GetString().Trim().IsEmpty()));
 }
 
 void CBisectStartDlg::OnBnClickedOk()
