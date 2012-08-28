@@ -198,6 +198,8 @@ public:
 	static int GetMsysgitVersion(CString *versionstring=NULL);
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
+	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
+
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

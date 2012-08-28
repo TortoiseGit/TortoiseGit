@@ -61,6 +61,7 @@
 #include "IgnoreDlg.h"
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
+#include "BisectStartDlg.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2598,4 +2599,59 @@ void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CStrin
 	wcscat_s(pathbuf, L" - ");
 	wcscat_s(pathbuf, CString(MAKEINTRESOURCE(IDS_APPNAME)));
 	SetWindowText(hWnd, pathbuf);
+}
+
+bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
+{
+	if (!g_Git.CheckCleanWorkTree())
+	{
+		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
+		{
+			CString cmd, out;
+			cmd = _T("git.exe stash");
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+				return false;
+			}
+		}
+		else
+			return false;
+	}
+
+	CBisectStartDlg bisectStartDlg;
+
+	if (!lastGood.IsEmpty())
+		bisectStartDlg.m_sLastGood = lastGood;
+	if (!firstBad.IsEmpty())
+		bisectStartDlg.m_sFirstBad = firstBad;
+
+	if (bisectStartDlg.DoModal() == IDOK)
+	{
+		CProgressDlg progress;
+		theApp.m_pMainWnd = &progress;
+		progress.m_bAutoCloseOnSuccess = autoClose;
+		progress.m_GitCmdList.push_back(_T("git.exe bisect start"));
+		progress.m_GitCmdList.push_back(_T("git.exe bisect good ") + bisectStartDlg.m_LastGoodRevision);
+		progress.m_GitCmdList.push_back(_T("git.exe bisect bad ") + bisectStartDlg.m_FirstBadRevision);
+
+		CTGitPath path(g_Git.m_CurrentDir);
+
+		if (path.HasSubmodules())
+			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+
+		INT_PTR ret = progress.DoModal();
+		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+
+			CAppUtils::RunTortoiseProc(sCmd);
+			return true;
+		}
+		else if (ret == IDOK)
+			return true;
+	}
+
+	return false;
 }
