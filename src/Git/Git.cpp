@@ -1377,7 +1377,8 @@ int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
 		CString one = out.Tokenize(_T("\n"), pos).Mid(51).Trim(); // sha1, tab + refs/tags/
 		if (one.Find(_T("^{}")) >= 1)
 			one = one.Left(one.GetLength() - 3);
-		list.push_back(one);
+		if (!one.IsEmpty())
+			list.push_back(one);
 	}
 	std::sort(list.begin(), list.end(), LogicalComparePredicate);
 	return 0;
