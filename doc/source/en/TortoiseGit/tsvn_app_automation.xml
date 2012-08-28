@@ -134,6 +134,14 @@ Don't touch these lines:
 							</entry>
 						</row>
 						<row>
+							<entry condition="pot">:bisect</entry>
+							<entry>
+								Allows to control the bisect logic of TortoiseGit.
+								Use the <option>/start</option> parameter to start a bisect you can specify <option>/good:<REF/option> and <option>/bad:REF</option> here).
+								When bisect is active, you can use <option>/good</option>, <option>/bad</option> and <option>/reset</option> to control the bisect process.
+							</entry>
+						</row>
+						<row>
 							<entry condition="pot">:log</entry>
 							<entry>
 								Opens the log dialog. The <option>/path</option> specifies the

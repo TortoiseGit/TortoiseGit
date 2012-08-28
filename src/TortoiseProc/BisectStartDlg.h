@@ -33,6 +33,9 @@ public:
 	// Dialog Data
 	enum { IDD = IDD_BISECTSTART };
 
+	CString			m_sLastGood;
+	CString			m_sFirstBad;
+
 protected:
 	virtual BOOL OnInitDialog();
 

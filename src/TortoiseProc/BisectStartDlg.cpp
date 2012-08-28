@@ -91,8 +91,14 @@ BOOL CBisectStartDlg::OnInitDialog()
 		m_cFirstBadRevision.AddString(list[i]);
 	}
 
-	m_cLastGoodRevision.SetCurSel(-1);
-	m_cFirstBadRevision.SetCurSel(current);
+	if (m_sLastGood.IsEmpty())
+		m_cLastGoodRevision.SetCurSel(-1);
+	else
+		m_cLastGoodRevision.SetWindowTextW(m_sLastGood);
+	if (m_sFirstBad.IsEmpty())
+		m_cFirstBadRevision.SetCurSel(current);
+	else
+		m_cFirstBadRevision.SetWindowTextW(m_sFirstBad);
 
 	this->UpdateData(FALSE);
 

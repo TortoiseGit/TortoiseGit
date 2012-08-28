@@ -47,6 +47,12 @@ bool BisectCommand::Execute()
 		}
 
 		CBisectStartDlg bisectStartDlg;
+
+		if (parser.HasKey(_T("good")))
+			bisectStartDlg.m_sLastGood = parser.GetVal(_T("good"));
+		if (parser.HasKey(_T("bad")))
+			bisectStartDlg.m_sFirstBad = parser.GetVal(_T("bad"));
+
 		if (bisectStartDlg.DoModal() == IDOK)
 		{
 			CProgressDlg progress;
