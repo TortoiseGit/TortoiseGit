@@ -155,6 +155,7 @@
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
 #define IDC_LOGLIST                     1003
+#define IDS_STATUSLIST_SKIPWORKTREE     1003
 #define IDC_PASSEDIT                    1004
 #define IDS_SETTINGS_BUGTRAQ_PATHCOL    1004
 #define IDC_INFOTEXT                    1005
