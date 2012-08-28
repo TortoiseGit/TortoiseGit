@@ -614,7 +614,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			cmd.Format(L"git.exe merge-base HEAD %s", leafs[0]->GetRefName());
 			g_Git.Run(cmd, &commonAncestorstr, NULL, CP_UTF8);
 
-			commonAncestor=commonAncestorstr;
+			commonAncestor = commonAncestorstr.Trim();
 
 			if(commonAncestor != branchHash)
 			{

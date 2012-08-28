@@ -499,7 +499,7 @@ void CRebaseDlg::FetchLogList()
 											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
 	g_Git.Run(cmd, &basestr, &err, CP_UTF8);
 
-	base=basestr;
+	base = basestr.Trim();
 
 	hash=g_Git.GetHash(m_BranchCtrl.GetString());
 

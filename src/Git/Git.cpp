@@ -1739,7 +1739,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to)
 		//CMessageBox::Show(NULL, base + _T("\n") + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		return false;
 	}
-	basehash = base;
+	basehash = base.Trim();
 
 	hash=g_Git.GetHash(from);
 
