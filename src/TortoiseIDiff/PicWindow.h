@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2010 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,10 +84,22 @@ public:
         , startHScrollPos(0)
         , startVSecondScrollPos(0)
         , startHSecondScrollPos(0)
+        , hwndTT(0)
+        , hwndLeftBtn(0)
+        , hwndRightBtn(0)
+        , hwndPlayBtn(0)
+        , hwndAlphaToggleBtn(0)
+        , hLeft(0)
+        , hRight(0)
+        , hPlay(0)
+        , hStop(0)
+        , hAlphaToggle(0)
     {
         SetWindowTitle(_T("Picture Window"));
         m_lastTTPos.x = 0;
         m_lastTTPos.y = 0;
+        m_wszTip[0]   = 0;
+        m_szTip[0]    = 0;
     };
 
     enum BlendType
