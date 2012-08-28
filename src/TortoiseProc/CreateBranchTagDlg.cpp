@@ -194,7 +194,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 
 void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 {
-	if(this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/"))
+	if (this->m_ChooseVersioinBranch.GetString().Left(8)==_T("remotes/") && !m_bIsTag)
 	{
 		bool isDefault = false;
 		this->UpdateData();
