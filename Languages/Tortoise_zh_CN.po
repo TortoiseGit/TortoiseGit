@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-08-09 04:40+0000\n"
-"Last-Translator: lznuaa <lznuaa@gmail.com>\n"
+"PO-Revision-Date: 2012-08-26 10:34+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -331,6 +331,10 @@ msgstr "增加(&A)..."
 #. Resource IDs: (1090, 1093)
 msgid "&Advanced..."
 msgstr "高级设置(&A)..."
+
+#. Resource IDs: (1701)
+msgid "&All"
+msgstr ""
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
@@ -834,6 +838,10 @@ msgstr "下页(&N)"
 msgid "&No double-click event"
 msgstr "无双击事件(&N)"
 
+#. Resource IDs: (1702)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1661)
 msgid "&Notepad2"
 msgstr "&Notepad2"
@@ -1009,6 +1017,10 @@ msgstr "保存选择文件列表(&S)"
 #. Resource IDs: (84)
 msgid "&Set MSysGit path"
 msgstr "设置MSysGit路径"
+
+#. Resource IDs: (1486)
+msgid "&Set upstream/track remote branch"
+msgstr ""
 
 #. Resource IDs: (9)
 msgid "&Settings"
@@ -1218,23 +1230,6 @@ msgstr "(没找到)"
 #. Resource IDs: (245)
 msgid "(unknown)"
 msgstr "(未知)"
-
-#. Resource IDs: (1555)
-msgid "*Amend &Last Commit"
-msgstr "×修改上次提交"
-
-#. Resource IDs: (1255)
-msgid "*Combine to one commit"
-msgstr "×合并到一个提交"
-
-#. Resource IDs: (1254)
-#, c-format
-msgid "*Rebase \"%s\" onto this..."
-msgstr "*变基 \"%s\" 到这..."
-
-#. Resource IDs: (20)
-msgid "*Rebase..."
-msgstr "×变基(rebase)..."
 
 #. Resource IDs: (188)
 #, c-format
@@ -1522,10 +1517,6 @@ msgstr "添加签署通过(&S)"
 msgid "Add '%s' to dictionary"
 msgstr "增加“%s”到目录"
 
-#. Resource IDs: (16)
-msgid "Add (as replacement)..."
-msgstr "增加(替换)..."
-
 #. Resource IDs: (323)
 msgid "Add Remote"
 msgstr "添加远程服务器"
@@ -1608,10 +1599,6 @@ msgstr "高级差异比较设置"
 msgid "Advanced merge settings"
 msgstr "高级合并设置"
 
-#. Resource IDs: (1701)
-msgid "All"
-msgstr "全部"
-
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr "所有命令"
@@ -1671,6 +1658,10 @@ msgstr "始终使用系统区域设置显示时间和日期"
 #. Resource IDs: (67)
 msgid "Amend"
 msgstr "修改"
+
+#. Resource IDs: (1555)
+msgid "Amend &Last Commit"
+msgstr ""
 
 #. Resource IDs: (80)
 msgid ""
@@ -1791,6 +1782,10 @@ msgstr "假定无修改"
 #. Resource IDs: (1550)
 msgid "Assume valid/unchanged"
 msgstr "假定有效/无修改"
+
+#. Resource IDs: (1550)
+msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
+msgstr ""
 
 #. Resource IDs: (77)
 #, c-format
@@ -2321,10 +2316,6 @@ msgstr "摘取选中的版本..."
 msgid "Cherry Pick this commit..."
 msgstr "摘取这个版本"
 
-#. Resource IDs: (20)
-msgid "Cherry Pick..."
-msgstr "摘取..."
-
 #. Resource IDs: (65535)
 msgid "Chinese"
 msgstr "中文"
@@ -2512,6 +2503,10 @@ msgstr "颜色:"
 #. Resource IDs: (1481)
 msgid "Combine One Mail"
 msgstr "合并成一个邮件"
+
+#. Resource IDs: (1255)
+msgid "Combine to one commit"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Comman&ds:"
@@ -2739,6 +2734,10 @@ msgstr "复制所有信息到剪贴板"
 msgid "Copy and rename"
 msgstr "复制和改名"
 
+#. Resource IDs: (1252)
+msgid "Copy log messages to clipboard"
+msgstr ""
+
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
 msgstr "复杂日志到剪贴板"
@@ -2796,9 +2795,9 @@ msgstr "无法检查新版！"
 #, c-format
 msgid ""
 "Could not copy the files!\n"
-"<hr=100%%>\n"
+"\n"
 "%s"
-msgstr "无法复制文件！\n<hr=100%%>\n%s"
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2878,25 +2877,25 @@ msgstr "不能打开TortoiseGitBlame"
 #, c-format
 msgid ""
 "Could not start diff viewer!\n"
-"<hr=100%%>\n"
+"\n"
 "%s"
-msgstr "无法启动差异查看工具！\n<hr=100%%>\n%s"
+msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
 msgid ""
 "Could not start external diff program!\n"
-"<hr=100%%>\n"
+"\n"
 "%s"
-msgstr "无法启动外部差异比较工具！\n<hr=100%%>\n%s"
+msgstr ""
 
 #. Resource IDs: (81)
 #, c-format
 msgid ""
 "Could not start external merge program!\n"
-"<hr=100%%>\n"
+"\n"
 "%s"
-msgstr "无法启动外部合并工具！\n<hr=100%%>\n%s"
+msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
@@ -2906,9 +2905,9 @@ msgstr "无法启动打印任务。"
 #, c-format
 msgid ""
 "Could not start text viewer!\n"
-"<hr=100%%>\n"
+"\n"
 "%s"
-msgstr "无法启动文本查看器！\n<hr=100%%>\n%s"
+msgstr ""
 
 #. Resource IDs: (603)
 msgid "Could not start the Putty Agent (pageant)."
@@ -3180,6 +3179,14 @@ msgstr "删除分支/标签"
 #. Resource IDs: (80)
 msgid "Delete remote branch"
 msgstr "删除远程分支"
+
+#. Resource IDs: (4579)
+msgid "Delete remote tag - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "Delete remote tags..."
+msgstr ""
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3526,6 +3533,10 @@ msgstr "编辑作者"
 msgid "Edit author name"
 msgstr "编辑作者名"
 
+#. Resource IDs: (86)
+msgid "Edit description"
+msgstr ""
+
 #. Resource IDs: (110)
 msgid "Edit extension specific diff program"
 msgstr "编辑根据扩展名的差异比较程序"
@@ -3724,6 +3735,10 @@ msgid ""
 "Executable (*.exe)|*.exe|Command (*.com)|*.com|Information "
 "(*.pdf)|*.pdf|Batch (*.bat)|*.bat|All Files (*.*)|*.*||"
 msgstr "可执行 (*.exe)|*.exe|命令 (*.com)|*.com|信息 (*.pdf)|*.pdf|批处理 (*.bat)|*.bat|全部文件 (*.*)|*.*||"
+
+#. Resource IDs: (11028)
+msgid "Executable (+x)"
+msgstr ""
 
 #. Resource IDs: (1002)
 msgid "Existing"
@@ -4895,33 +4910,6 @@ msgstr "非法货币。"
 msgid "Invalid revision number!"
 msgstr "无效的修订版本号"
 
-#. Resource IDs: (83)
-msgid ""
-"Invalid revision number! Valid revisions are:\n"
-"HEAD\n"
-"positive decimal numbers,\n"
-"dates in one of the following example forms:\n"
-"{2002-02-17}\n"
-"{15:30}\n"
-"{15:30:00.200000}\n"
-"{\"2002-02-17 15:30\"}\n"
-"{\"2002-02-17 15:30 +0230\"}\n"
-"{2002-02-17T15:30}\n"
-"{2002-02-17T15:30Z}\n"
-"{2002-02-17T15:30-04:00}\n"
-"{20020217T1530}\n"
-"{20020217T1530Z}\n"
-"{20020217T1530-0500}"
-msgstr "错误的版本编号! 正确的版本如下: \nHEAD\n十进制正整数\n如下格式之一的日期: \n{2002-02-17}\n{15:30}\n{15:30:00.200000}\n{\"2002-02-17 15:30\"}\n{\"2002-02-17 15:30+0230\"}\n{2002-02-17T15:30}\n{2002-02-17T15:30Z}\n{2002-02-17T15:30-04:00}\n{20020217T1530}\n{20020217T1530Z}\n{20020217T1530-0500}"
-
-#. Resource IDs: (83)
-msgid ""
-"Invalid revision range!\n"
-"Valid revisions are numbers and HEAD, separated by commas.\n"
-"A range can be specified with a dash.\n"
-"Example: 2-5,7,10,44-70,300-HEAD"
-msgstr "非法版本范围！\n合法版本是数字和 HEAD，用逗号隔开。\n范围用减号指定。\n例如: 2-5,7,10,44-70,300-HEAD"
-
 #. Resource IDs: (145)
 msgid ""
 "It is not possible to rename a file by changing the case of its name alone.\n"
@@ -5120,10 +5108,6 @@ msgstr "版本库 URL 的内容将要保存到的位置。"
 msgid "Locator Bar"
 msgstr "定位工具栏"
 
-#. Resource IDs: (1529)
-msgid "Locked (not used by TortoiseGit)"
-msgstr "加锁(TortoiseGit不用这个命令）"
-
 #. Resource IDs: (65)
 msgid "Log"
 msgstr "日志"
@@ -5226,9 +5210,9 @@ msgstr "标记为已解决"
 
 #. Resource IDs: (2051)
 msgid ""
-"Marks a file as resolved in Subversion\n"
+"Marks a file as resolved in Git\n"
 "Mark as resolved"
-msgstr "把一个文件在 Subversion 中标记为已解决\n标记为已解决"
+msgstr ""
 
 #. Resource IDs: (13)
 msgid "Marks revision as bad"
@@ -5535,21 +5519,16 @@ msgstr "不提交"
 msgid "No &Fast Forward"
 msgstr "非直接迁移(&F)"
 
-#. Resource IDs: (14)
-msgid "No Assume Unchanged"
-msgstr "取消假定无修改"
-
 #. Resource IDs: (67)
 msgid "No HEAD found"
 msgstr "找不到HEAD"
 
 #. Resource IDs: (81)
-#, c-format
 msgid ""
 "No command specified!\n"
-"<hr=100%>\n"
+"\n"
 "TortoiseProc.exe is used by the Shell extension and should not be called directly!"
-msgstr "未指定命令！\n<hr=100%>\nTortoiseProc.exe 用于浏览器扩展，不能直接执行！"
+msgstr ""
 
 #. Resource IDs: (81)
 msgid "No command value specified!"
@@ -5819,14 +5798,6 @@ msgstr "Office 2007 (黑色风格&l)"
 #. Resource IDs: (65535)
 msgid "Older lines"
 msgstr "旧行"
-
-#. Resource IDs: (63)
-msgid ""
-"One of the paths you are attempting to move appears to be a special path\n"
-"(one of 'branches', 'tags' or 'trunk').\n"
-"\n"
-"Are you sure you want to move the selected paths?"
-msgstr "你试图删除的目录中包含特殊目录(“branches”，“tags”或“trunk”)。\n\n你确认要删除这些目录吗?"
 
 #. Resource IDs: (219)
 msgid "One or more files are in a conflicted state."
@@ -6398,6 +6369,15 @@ msgstr "在你卡住之前, 请先阅读日常使用指南…"
 msgid "Rebase"
 msgstr "变基"
 
+#. Resource IDs: (1254)
+#, c-format
+msgid "Rebase \"%s\" onto this..."
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Rebase..."
+msgstr ""
+
 #. Resource IDs: (67)
 #, c-format
 msgid "Rebasing... (%d/%d)"
@@ -6855,6 +6835,11 @@ msgstr "版本控制文件"
 msgid "Revision graph"
 msgstr "版本分支图"
 
+#. Resource IDs: (86)
+msgid ""
+"Revision(s) reverted. All changes are integrated into your working tree now."
+msgstr ""
+
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
 msgstr "版本:"
@@ -7215,10 +7200,6 @@ msgstr "设置提交日期(&d)"
 msgid "Set up SMTP Server"
 msgstr "设置 SMTP服务器"
 
-#. Resource IDs: (14)
-msgid "Sets the Assume Valid flag for this file"
-msgstr "为这个文件设置假定有效标志"
-
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr "为选定的本地分支设置远端作为\"pushremote\""
@@ -7378,10 +7359,6 @@ msgstr "以标准差异格式显示改变(&U)"
 msgid "Show diff to last commit"
 msgstr "显示和上次提交的差异"
 
-#. Resource IDs: (1252)
-msgid "Show differences as &unified diff"
-msgstr "以标准差异文件显示修改(&U)"
-
 #. Resource IDs: (1126)
 msgid "Show excluded folders as normal"
 msgstr "对排除的目录正常显示"
@@ -7405,6 +7382,14 @@ msgstr "显示日志"
 #. Resource IDs: (65)
 msgid "Show log &before rename/copy"
 msgstr "现实重命名和复制之前的历史"
+
+#. Resource IDs: (81)
+msgid "Show log of submodule"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Show log of this folder"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "Show log..."
@@ -7542,6 +7527,14 @@ msgstr "跳过"
 #, c-format
 msgid "Skip Patch: %s"
 msgstr "跳过补丁: %s"
+
+#. Resource IDs: (11029)
+msgid "Skip worktree"
+msgstr ""
+
+#. Resource IDs: (1529)
+msgid "Skip worktree (\"Locked\" in TortoiseSVN)"
+msgstr ""
 
 #. Resource IDs: (74)
 msgid "Skipped"
@@ -7742,14 +7735,6 @@ msgstr "子模块更新选项"
 msgid "Submodules"
 msgstr "子模块"
 
-#. Resource IDs: (81)
-#, c-format
-msgid ""
-"Subversion reported an error while doing a cleanup!\n"
-"<hr=100%%>\n"
-"%s"
-msgstr "Subversion 在进行清理动作时回报错误!\n<hr=100%%>\n%s"
-
 #. Resource IDs: (65)
 msgid "Success"
 msgstr "成功"
@@ -7869,6 +7854,10 @@ msgstr "标签"
 msgid "Tag Info"
 msgstr "标签信息"
 
+#. Resource IDs: (65535)
+msgid "Tag:"
+msgstr ""
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7930,9 +7919,9 @@ msgstr "差异比较引擎终止，错误信息:\n%s"
 
 #. Resource IDs: (85)
 msgid ""
-"The entered source ref is ambiguous. You have to make it unique (e.g. by "
-"adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr "含糊的原引用名，分支使用\"refs/heads/\"前缀，标签使用 \"refs/tags/\"前缀来使得名字唯一！"
+"The entered source ref is ambiguous.\n"
+"You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
+msgstr ""
 
 #. Resource IDs: (64)
 #, c-format
@@ -8178,14 +8167,6 @@ msgstr "选择的两个URL不是从相同的来源建立的。\n不能显示它�
 #. Resource IDs: (16)
 msgid "The user who did the last commit"
 msgstr "执行最后一次提交操作的用户"
-
-#. Resource IDs: (81)
-#, c-format
-msgid ""
-"The working tree has changed!\n"
-"<hr=100%>\n"
-"Please commit your changes first or revert."
-msgstr "工作副本已修改！\n<hr=100%>\n请先提交或撤销你的修改。"
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -8577,10 +8558,6 @@ msgstr "未知"
 #. Resource IDs: (20)
 msgid "Unknown depth"
 msgstr "未知深度"
-
-#. Resource IDs: (14)
-msgid "Unsets the Assume Valid flag for this file"
-msgstr "为这个文件取消设置假定有效标志"
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -9383,10 +9360,6 @@ msgid ""
 "%s = %d"
 msgstr "行: %d(+) %d(-) 文件: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"
 
-#. Resource IDs: (195)
-msgid "locked"
-msgstr "锁定"
-
 #. Resource IDs: (1494)
 msgid "master"
 msgstr "master"
@@ -9467,6 +9440,10 @@ msgstr "季度"
 #. Resource IDs: (10)
 msgid "replaced"
 msgstr "已替换"
+
+#. Resource IDs: (195)
+msgid "skip-worktree"
+msgstr ""
 
 #. Resource IDs: (208)
 #, c-format
