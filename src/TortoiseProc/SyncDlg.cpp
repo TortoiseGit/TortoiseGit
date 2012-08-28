@@ -961,7 +961,7 @@ void CSyncDlg::FetchOutList(bool force)
 			CString cmd, basestr, err;
 			cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(remotebranch), g_Git.FixBranchName(localbranch));
 			g_Git.Run(cmd, &basestr, &err, CP_UTF8);
-			base = basestr;
+			base = basestr.Trim();
 
 			remotehash = g_Git.GetHash(remotebranch);
 			if (remotehash == g_Git.GetHash(localbranch))
