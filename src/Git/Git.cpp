@@ -1413,6 +1413,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 					list.push_back(name);
 				}
 			}
+			std::sort(list.begin(), list.end(), LogicalComparePredicate);
 		}
 	}
 	return ret;
