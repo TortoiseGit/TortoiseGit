@@ -1142,7 +1142,8 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			while( pos>=0 )
 			{
 				one=output.Tokenize(_T("\n"),pos);
-				list.push_back(one);
+				if (!one.IsEmpty())
+					list.push_back(one);
 			}
 			std::sort(list.begin(), list.end(), LogicalComparePredicate);
 		}
