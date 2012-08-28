@@ -492,14 +492,7 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 void CRebaseDlg::FetchLogList()
 {
 	CGitHash base,hash;
-	CString basestr, err;
-	CString cmd;
 	m_IsFastForward=FALSE;
-	cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()),
-											   g_Git.FixBranchName(m_BranchCtrl.GetString()));
-	g_Git.Run(cmd, &basestr, &err, CP_UTF8);
-
-	base = basestr.Trim();
 
 	hash=g_Git.GetHash(m_BranchCtrl.GetString());
 
@@ -515,7 +508,7 @@ void CRebaseDlg::FetchLogList()
 		return;
 	}
 
-	if(hash == base )
+	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base))
 	{
 		//fast forword
 		this->m_IsFastForward=TRUE;

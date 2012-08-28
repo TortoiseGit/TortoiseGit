@@ -958,10 +958,7 @@ void CSyncDlg::FetchOutList(bool force)
 			m_OutLogList.ClearText();
 
 			CGitHash base, remotehash;
-			CString cmd, basestr, err;
-			cmd.Format(_T("git.exe merge-base %s %s"), g_Git.FixBranchName(remotebranch), g_Git.FixBranchName(localbranch));
-			g_Git.Run(cmd, &basestr, &err, CP_UTF8);
-			base = basestr.Trim();
+			bool isFastForward = g_Git.IsFastForward(remotebranch, localbranch, &base);
 
 			remotehash = g_Git.GetHash(remotebranch);
 			if (remotehash == g_Git.GetHash(localbranch))
@@ -973,7 +970,7 @@ void CSyncDlg::FetchOutList(bool force)
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,FALSE);
 				this->GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(FALSE);
 			}
-			else if (remotehash == base || m_bForce)
+			else if (isFastForward || m_bForce)
 			{
 				//fast forward
 				m_OutLogList.FillGitLog(NULL, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, &remotebranch, &localbranch);
@@ -981,7 +978,7 @@ void CSyncDlg::FetchOutList(bool force)
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);
 
-				if (remotehash == base)
+				if (isFastForward)
 					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, remotebranch);
 				else
 				{

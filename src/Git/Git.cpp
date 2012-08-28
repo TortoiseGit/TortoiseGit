@@ -1727,7 +1727,7 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 	return 0;
 }
 
-bool CGit::IsFastForward(const CString &from, const CString &to)
+bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor)
 {
 	CString base;
 	CGitHash basehash,hash;
@@ -1742,6 +1742,9 @@ bool CGit::IsFastForward(const CString &from, const CString &to)
 	basehash = base.Trim();
 
 	hash=g_Git.GetHash(from);
+
+	if (commonAncestor)
+		*commonAncestor = basehash;
 
 	return hash == basehash;
 }
