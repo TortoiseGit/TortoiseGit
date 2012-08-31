@@ -859,16 +859,16 @@ BOOL CMessageBox::OnInitDialog()
 	else
 		GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->ShowWindow(SW_HIDE);
 
+	SetWindowPos(&CWnd::wndTopMost,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+	SetForegroundWindow();
+	SetFocus(); //Just playing safe
+
 	if (m_nDefButton == 1)
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->SetFocus();
 	if (m_nDefButton == 2)
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->SetFocus();
 	if (m_nDefButton == 3)
 		GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->SetFocus();
-
-	SetWindowPos(&CWnd::wndTopMost,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
-	SetForegroundWindow();
-	SetFocus(); //Just playing safe
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
