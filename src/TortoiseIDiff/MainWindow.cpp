@@ -126,11 +126,11 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 
             picWindow1.SetOtherPicWindow(&picWindow2);
             picWindow2.SetOtherPicWindow(&picWindow1);
+            CreateToolbar();
             // center the splitter
             RECT rect;
             GetClientRect(hwnd, &rect);
             nSplitterPos = (rect.right-rect.left)/2;
-            CreateToolbar();
             PositionChildren(&rect);
             picWindow1.FitImageInWindow();
             picWindow2.FitImageInWindow();
