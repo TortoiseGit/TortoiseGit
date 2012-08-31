@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #1336: Have visible the name of the branch in Repository Browser
  * Fixed issue #1351: Add Hotkey to (de)select all files and commit
  * Fixed issue #1363: copy email in the log window
+ * Fixed issue #1373: The only available remote should be set on PUSH
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

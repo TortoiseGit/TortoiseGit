@@ -283,6 +283,9 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 			}
 		}
 	}
+	// select the only remote if only one exists
+	else if (m_Remote.GetCount() == 1)
+		m_Remote.SetCurSel(0);
 	// select no remote if no push-remote is specified AND push to all remotes is not selected
 	else if (!(m_Remote.GetCount() > 1 && m_Remote.GetCurSel() == 0))
 	{
