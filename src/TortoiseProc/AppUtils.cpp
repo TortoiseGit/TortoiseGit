@@ -1100,7 +1100,8 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				ignorefile += _T(".gitignore");
 				break;
 			case 2:
-				ignorefile += _T(".git/info/exclude");
+				g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, ignorefile);
+				ignorefile += _T("info/exclude");
 				break;
 		}
 
