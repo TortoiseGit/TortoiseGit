@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,6 +32,7 @@ CMessageBox::CMessageBox(void)
 	, m_bShowCheck(FALSE)
 	, m_bDestroyIcon(FALSE)
 	, m_nDefButton(0)
+	, m_uType(0)
 {
 }
 
