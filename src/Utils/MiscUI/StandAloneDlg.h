@@ -147,7 +147,9 @@ protected:
 				{
 					// we're dealing with radio buttons and check boxes,
 					// which means we have to add a little space for the checkbox
-					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2*GetSystemMetrics(SM_CXEDGE);
+					// the value of 3 pixels added here is necessary in case certain visual styles have
+					// been disabled. Without this, the width is calculated too short.
+					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2*GetSystemMetrics(SM_CXEDGE) + 3;
 					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + checkWidth;
 					pwndDlgItem->MoveWindow(&controlrectorig);
 				}
