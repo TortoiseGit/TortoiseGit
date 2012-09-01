@@ -215,10 +215,9 @@ public:
 			// visible item - otherwise the 'invisible' columns are not at the far left
 			// anymore and we get all kinds of redrawing problems.
 			&& (header->pitem)
-			&& (header->pitem->iOrder > GetInvisibleCount()))
+			&& (header->pitem->iOrder >= GetInvisibleCount()))
 		{
 			ColumnMoved (header->iItem, header->pitem->iOrder);
-			*pResult = FALSE;
 		}
 	}
 

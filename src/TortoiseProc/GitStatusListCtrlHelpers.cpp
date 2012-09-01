@@ -321,15 +321,11 @@ void ColumnManager::ColumnMoved (int column, int position)
 	size_t visiblePosition = static_cast<size_t>(position);
 	size_t columnCount = gridColumnOrder.size();
 
-	for (; (visiblePosition < columnCount)
-			&& !columns[gridColumnOrder[visiblePosition]].visible
-			; ++visiblePosition )
-	{
-	}
-
 	int next = -1;
-	if (visiblePosition != columnCount)
+	if (visiblePosition < columnCount - 1)
 	{
+		// the new position (visiblePosition) is the column id w/o the moved column
+		gridColumnOrder.erase(std::find(gridColumnOrder.begin(), gridColumnOrder.end(), index));
 		next = gridColumnOrder[visiblePosition];
 	}
 
