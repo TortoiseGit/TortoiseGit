@@ -2411,7 +2411,7 @@ UINT CGitLogListBase::LogThread()
 		t2=t1=GetTickCount();
 		int oldprecentage = 0;
 		size_t oldsize = m_logEntries.size();
-		while( ret== 0)
+		while (ret== 0 && !m_bExitThread)
 		{
 			g_Git.m_critGitDllSec.Lock();
 			try
@@ -2508,6 +2508,12 @@ UINT CGitLogListBase::LogThread()
 		git_close_log(m_DllGitLog);
 		g_Git.m_critGitDllSec.Unlock();
 
+	}
+
+	if (m_bExitThread)
+	{
+		InterlockedExchange(&m_bThreadRunning, FALSE);
+		return 0;
 	}
 
 	// restore last selected item
