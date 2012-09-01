@@ -509,6 +509,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		if(!childDir)
 			return ;
 
+		AutoLocker lock(childDir->m_critSec);
 		CString cachekey = GetCacheKey(path);
 		CacheEntryMap::iterator entry_it = childDir->m_entryCache.lower_bound(cachekey);
 		if (entry_it != childDir->m_entryCache.end() && entry_it->first == cachekey)
