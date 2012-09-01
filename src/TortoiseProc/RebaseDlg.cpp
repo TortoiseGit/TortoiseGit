@@ -1226,7 +1226,7 @@ void CRebaseDlg::UpdateProgress()
 	else
 		index = m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
 
-	m_ProgressBar.SetRange(1, m_CommitList.GetItemCount());
+	m_ProgressBar.SetRange32(1, m_CommitList.GetItemCount());
 	m_ProgressBar.SetPos(index);
 	if (m_pTaskbarList)
 	{
