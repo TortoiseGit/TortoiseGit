@@ -29,7 +29,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw "
+				CommandLine="fc apu.hw ..\apr-util\include\apu.hw &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -128,7 +128,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw "
+				CommandLine="fc apu.hw ..\apr-util\include\apu.hw &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -228,7 +228,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw "
+				CommandLine="fc apu.hw ..\apr-util\include\apu.hw &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -327,7 +327,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="type apu.hw &gt;..\apr-util\include\apu.hw "
+				CommandLine="fc apu.hw ..\apr-util\include\apu.hw &gt;NUL 2&gt;NUL&#x0D;&#x0A;if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
