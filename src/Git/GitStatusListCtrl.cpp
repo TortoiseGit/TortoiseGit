@@ -1000,7 +1000,7 @@ void CGitStatusListCtrl::OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	*pResult = 0;
-	if (m_bBlock)
+	if (m_bBlock || m_arStatusArray.empty())
 		return;
 	m_bBlock = TRUE;
 	if (m_nSortedColumn == phdr->iItem)
