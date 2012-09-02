@@ -500,7 +500,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,326,58,50,14
 END
 
-IDD_CHECKFORUPDATES DIALOGEX 0, 0, 203, 147
+IDD_CHECKFORUPDATES DIALOGEX 0, 0, 203, 245
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Check For Updates"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -509,9 +509,12 @@ BEGIN
     LTEXT           "Your version is:",IDC_YOURVERSION,7,28,189,8
     LTEXT           "Current version is:",IDC_CURRENTVERSION,7,40,189,8
     LTEXT           "",IDC_CHECKRESULT,7,55,189,37,SS_NOTIFY
-    CTEXT           "Click here to go to the website",IDC_LINK,7,116,189,8,SS_CENTERIMAGE | NOT WS_VISIBLE
-    DEFPUSHBUTTON   "OK",IDOK,65,126,50,14
     CTEXT           "Click here to view change log",IDC_LINK_CHANGE_LOG,14,103,172,8,SS_CENTERIMAGE | NOT WS_VISIBLE
+    CTEXT           "Click here to go to the website",IDC_LINK,7,116,189,8,SS_CENTERIMAGE | NOT WS_VISIBLE
+    CONTROL         "",IDC_LIST_DOWNLOADS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,131,189,67
+    CONTROL         "",IDC_PROGRESSBAR,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,7,205,108,14
+    PUSHBUTTON      "&Download",IDC_BUTTON_UPDATE,121,205,75,14
+    DEFPUSHBUTTON   "&Close",IDOK,76,224,50,14
 END
 
 IDD_REVERT DIALOGEX 0, 0, 279, 232
@@ -1865,7 +1868,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 196
         TOPMARGIN, 7
-        BOTTOMMARGIN, 140
+        BOTTOMMARGIN, 238
     END
 
     IDD_REVERT, DIALOG
@@ -2603,6 +2606,7 @@ BEGIN
     IDS_PROGRS_TITLE_EXPORT "Export"
     IDS_PROGRS_TITLE_MERGE  "Merge"
     IDS_PROGRS_TITLE_COPY   "Copy"
+    IDS_PROC_DOWNLOAD       "&Download"
     IDS_ERR_MISSINGVALUE    "This field is required and must not be empty."
     IDS_STATUSLIST_GROUP_NOTVERSIONEDFILES "Not Versioned Files"
     IDS_STATUSLIST_GROUP_IGNOREDFILES "Ignored Files"
@@ -2646,6 +2650,7 @@ BEGIN
     IDS_LOG_FILTER_REFNAME  "Refname"
     IDS_ERR_NOTENOUGHMEMORY "Not enough memory to complete operation."
     IDS_ERR_MUSTBEURL       "This is not a valid URL.\nPlease enter an URL here."
+    IDS_CHECKUPDATE_DESTFOLDER "Show destination folder"
     IDS_ERR_MERGEIDENTICALREVISIONS 
                             "Merging requires different revisions or different URLs in 'From:' and 'To:'"
     IDS_ERR_NOHOOKTYPESPECIFIED "Please select a hook type"
@@ -2654,6 +2659,8 @@ BEGIN
     IDS_ERR_NOHOOKCOMMANDPECIFIED "Please enter a hook script to execute."
     IDS_ERR_HOOKFAILED      "The hook script returned an error:\n%s"
     IDS_PROC_BROWSEREFS_DELETETAG "Delete tag"
+    IDS_ERR_FAILEDUPDATEDOWNLOAD 
+                            "Not all files could be downloaded and verified."
     IDS_ERR_NOPREVREVISION  "Could not determine the last committed revision!"
     IDS_PROC_CLEANUPFINISHED_FAILED 
                             "Cleanup failed to process the following paths:\n%s"
@@ -2697,6 +2704,7 @@ BEGIN
     IDS_ERR_NOSTATUS        "Could not get the status!"
     IDS_LOG_SUBMODULE       "Show log of submodule"
     IDS_ERR_NOURLOFFILE     "Could not retrieve URL of the file!\n%s"
+    IDS_PROC_INSTALL        "&Install"
     IDS_ERR_COPYFILES       "Could not copy the files!\n\n%s"
     IDS_ERR_EXTMERGESTART   "Could not start external merge program!\n\n%s"
     IDS_STATUSLIST_GROUP_DIFFWITHPARENT "Diff with parent %d"

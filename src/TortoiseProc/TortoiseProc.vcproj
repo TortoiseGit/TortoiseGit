@@ -2096,6 +2096,14 @@
 					RelativePath=".\Commands\UpdateCheckCommand.h"
 					>
 				</File>
+				<File
+					RelativePath=".\UpdateListCtrl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\UpdateListCtrl.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Paste"
