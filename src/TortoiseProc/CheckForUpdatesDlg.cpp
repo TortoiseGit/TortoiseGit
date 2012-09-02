@@ -103,8 +103,10 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	temp.LoadString(IDS_STATUSLIST_COLFILE);
 	m_ctrlFiles.InsertColumn(0, temp, 0, -1);
-	m_ctrlFiles.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
+	m_ctrlFiles.InsertColumn(1, temp, 0, -1);
 	m_ctrlFiles.SetExtendedStyle(LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
+	m_ctrlFiles.SetColumnWidth(0, 350);
+	m_ctrlFiles.SetColumnWidth(1, 200);
 
 	ProjectProperties pp;
 	pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
@@ -334,21 +336,22 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 	CString langs;
 	while (file.ReadString(langs) && !langs.IsEmpty())
 	{
-		CString sLang = _T("TortoiseGit Language Pack ");
+		CString sLang = _T("TortoiseGit Language Pack ") + langs.Mid(5);
 
 		DWORD loc = _tstoi(langs.Mid(0, 4));
 		TCHAR buf[MAX_PATH];
 		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-		sLang += buf;
+		CString sLang2(buf);
 		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
 		if (buf[0])
 		{
-			sLang += _T(" (");
-			sLang += buf;
-			sLang += _T(")");
+			sLang2 += _T(" (");
+			sLang2 += buf;
+			sLang2 += _T(")");
 		}
 
 		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), sLang);
+		m_ctrlFiles.SetItemText(pos, 1, sLang2);
 
 		CString filename;
 		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.Mid(5));
