@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +23,7 @@
 #include "UpdateListCtrl.h"
 #include "HyperLink.h"
 #include "MenuButton.h"
+#include "SciEdit.h"
 
 /**
  * \ingroup TortoiseProc
@@ -52,6 +54,7 @@ protected:
 	afx_msg void OnBnClickedButtonUpdate();
 	afx_msg LRESULT OnDisplayStatus(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
+	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -85,11 +88,12 @@ private:
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update
 	CString		m_sUpdateChangeLogLink;			///< Where to send a user looking to change log
 	CHyperLink	m_link;
-	CHyperLink	m_ChangeLogLink;
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
 	BOOL		VerifySignature(CString fileName);
 	void		FillDownloads(CStdioFile &file, CString version);
+	CSciEdit	m_cLogMessage;
+	void		FillChangelog(CStdioFile &file);
 };
 
 class CBSCallbackImpl : public IBindStatusCallback

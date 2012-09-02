@@ -1161,6 +1161,8 @@
 #define IDC_CHECK_SUBMODULE_RECURSIVE   1694
 #define IDC_LOG2                        1695
 #define IDC_LIST_TAGS                   1696
+#define IDC_GROUP_CHANGELOG             1697
+#define IDC_GROUP_DOWNLOADS             1698
 #define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
 #define IDC_CHECKALL                    1701
