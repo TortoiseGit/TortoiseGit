@@ -56,6 +56,8 @@
  */
 class CPicWindow : public CWindow
 {
+private:
+    CPicWindow() : CWindow(NULL) {}
 public:
     CPicWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL) : CWindow(hInst, wcx)
         , bValid(false)
@@ -100,6 +102,8 @@ public:
         m_lastTTPos.y = 0;
         m_wszTip[0]   = 0;
         m_szTip[0]    = 0;
+        ptPanStart.x = -1;
+        ptPanStart.y = -1;
     };
 
     enum BlendType

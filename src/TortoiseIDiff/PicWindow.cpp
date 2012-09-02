@@ -230,6 +230,8 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         ReleaseCapture();
         break;
     case WM_MOUSELEAVE:
+        ptPanStart.x = -1;
+        ptPanStart.y = -1;
         m_lastTTPos.x = 0;
         m_lastTTPos.y = 0;
         SendMessage(hwndTT, TTM_TRACKACTIVATE, FALSE, 0);
@@ -264,7 +266,9 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 m_lastTTPos.x = 0;
                 m_lastTTPos.y = 0;
             }
-            if (wParam & MK_LBUTTON)
+            if ((wParam & MK_LBUTTON) &&
+                 (ptPanStart.x >= 0) &&
+                 (ptPanStart.y >= 0))
             {
                 // pan the image
                 int xPos = GET_X_LPARAM(lParam);
