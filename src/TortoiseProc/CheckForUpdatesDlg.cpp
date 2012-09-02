@@ -26,16 +26,29 @@
 #include "Registry.h"
 #include "AppUtils.h"
 #include "TempFile.h"
+#include <wintrust.h>
+#include <Softpub.h>
+#include "SmartHandle.h"
+#include "SysInfo.h"
+#include "PathUtils.h"
+#include "DirFileEnum.h"
+#include "ProjectProperties.h"
 
+// Link with Wintrust.lib
+#pragma comment (lib, "wintrust")
+
+#define WM_USER_DISPLAYSTATUS	(WM_USER + 1)
+#define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
+#define WM_USER_FILLCHANGELOG	(WM_USER + 3)
 
 IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CStandAloneDialog)
 CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
 	, m_bShowInfo(FALSE)
 	, m_bVisible(FALSE)
+	, m_pDownloadThread(NULL)
 {
 	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/wiki/Download?tm=2");
-	m_sUpdateChangeLogLink = _T("http://code.google.com/p/tortoisegit/wiki/ReleaseNotes");
 }
 
 CCheckForUpdatesDlg::~CCheckForUpdatesDlg()
@@ -46,15 +59,21 @@ void CCheckForUpdatesDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LINK, m_link);
-	DDX_Control(pDX, IDC_LINK_CHANGE_LOG, m_ChangeLogLink);
+	DDX_Control(pDX, IDC_PROGRESSBAR, m_progress);
+	DDX_Control(pDX, IDC_LIST_DOWNLOADS, m_ctrlFiles);
+	DDX_Control(pDX, IDC_BUTTON_UPDATE, m_ctrlUpdate);
+	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 }
-
 
 BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_STN_CLICKED(IDC_CHECKRESULT, OnStnClickedCheckresult)
 	ON_WM_TIMER()
 	ON_WM_WINDOWPOSCHANGING()
 	ON_WM_SETCURSOR()
+	ON_BN_CLICKED(IDC_BUTTON_UPDATE, OnBnClickedButtonUpdate)
+	ON_MESSAGE(WM_USER_DISPLAYSTATUS, OnDisplayStatus)
+	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
+	ON_MESSAGE(WM_USER_FILLCHANGELOG, OnFillChangelog)
 END_MESSAGE_MAP()
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
@@ -68,6 +87,33 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 	DialogEnableWindow(IDOK, FALSE);
 
+	// hide download controls
+	m_ctrlFiles.ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_HIDE);
+	RECT rectWindow, rectGroupDownloads, rectOKButton;
+	GetWindowRect(&rectWindow);
+	GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+	GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+	LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+	OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
+	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+	MoveWindow(&rectWindow);
+	::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+
+	temp.LoadString(IDS_STATUSLIST_COLFILE);
+	m_ctrlFiles.InsertColumn(0, temp, 0, -1);
+	m_ctrlFiles.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
+	m_ctrlFiles.SetExtendedStyle(LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
+
+	ProjectProperties pp;
+	pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
+	pp.SetBugIDRe(_T("(\\d+)"));
+	pp.sUrl = _T("http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
+	m_cLogMessage.Init(pp);
+	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
+	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
+
 	if (AfxBeginThread(CheckThreadEntry, this)==NULL)
 	{
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
@@ -79,15 +125,16 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 
 void CCheckForUpdatesDlg::OnOK()
 {
-	if (m_bThreadRunning)
-		return;
+	if (m_bThreadRunning || m_pDownloadThread != NULL)
+		return; // Don't exit while downloading
+
 	CStandAloneDialog::OnOK();
 }
 
 void CCheckForUpdatesDlg::OnCancel()
 {
-	if (m_bThreadRunning)
-		return;
+	if (m_bThreadRunning || m_pDownloadThread != NULL)
+		return; // Don't exit while downloading
 	CStandAloneDialog::OnCancel();
 }
 
@@ -110,7 +157,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		sCheckURL = checkurlmachine;
 		if (sCheckURL.IsEmpty())
-			sCheckURL = _T("http://code.google.com/p/tortoisegit/downloads/list?q=label%3AFeatured");
+			sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version.txt");
 	}
 	CoInitialize(NULL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
@@ -124,46 +171,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			major=minor=micro=build=0;
 			unsigned __int64 version=0;
 
-			if(file.GetLength()>100)
-			{
-				while(file.ReadString(ver))
-				{
-					ver.Trim().MakeLower();
-					int start;
-					while( (start=ver.Find(_T("tortoisegit-"))) > 0 )
-					{
-						ver = ver.Mid(start+CString(_T("tortoisegit-")).GetLength());
-						unsigned int x1,x2,x3,x4;
-						x1=_ttoi(ver)&0xFFFF;
-						ver = ver.Mid(ver.Find('.')+1);
-						x2=_ttoi(ver)&0xFFFF;
-						ver = ver.Mid(ver.Find('.')+1);
-						x3=_ttoi(ver)&0xFFFF;
-						ver = ver.Mid(ver.Find('.')+1);
-						x4=_ttoi(ver)&0xFFFF;
-
-						unsigned __int64 newversion;
-						newversion = x1;
-						newversion <<= 16;
-						newversion += x2;
-						newversion <<= 16;
-						newversion += x3;
-						newversion <<=16;
-						newversion += x4;
-
-						if(newversion>version)
-						{
-							major=x1;
-							minor=x2;
-							micro=x3;
-							build=x4;
-							version = newversion;
-						}
-					}
-				}
-
-			}
-			else if (file.ReadString(ver))
+			if (file.ReadString(ver))
 			{
 				CString vertemp = ver;
 				major = _ttoi(vertemp);
@@ -215,19 +223,42 @@ UINT CCheckForUpdatesDlg::CheckThread()
 						{	// Read another line to find out the download link-URL, if any
 							m_sUpdateDownloadLink = tempLink;
 						}
-
 					}
 					else
 					{
 						temp.LoadString(IDS_CHECKNEWER_NEWERVERSIONAVAILABLE);
+						CString tempLink;
+						file.ReadString(tempLink);
 					}
 					SetDlgItemText(IDC_CHECKRESULT, temp);
 					m_bShowInfo = TRUE;
+
+					FillChangelog(file);
+					FillDownloads(file, ver);
+
+					// Show download controls
+					RECT rectWindow, rectProgress, rectGroupDownloads, rectOKButton;
+					GetWindowRect(&rectWindow);
+					m_progress.GetWindowRect(&rectProgress);
+					GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+					GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+					LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+					OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
+					rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+					MoveWindow(&rectWindow);
+					::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+					GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+					m_ctrlFiles.ShowWindow(SW_SHOW);
+					GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
+					CenterWindow();
 				}
 				else
 				{
 					temp.LoadString(IDS_CHECKNEWER_YOURUPTODATE);
 					SetDlgItemText(IDC_CHECKRESULT, temp);
+					file.ReadString(temp);
+					file.ReadString(temp);
+					FillChangelog(file);
 				}
 			}
 		}
@@ -250,16 +281,106 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		m_link.ShowWindow(SW_SHOW);
 		m_link.SetURL(m_sUpdateDownloadLink);
 	}
-	if (!m_sUpdateDownloadLink.IsEmpty())
-	{
-		m_ChangeLogLink.ShowWindow(SW_SHOW);
-		m_ChangeLogLink.SetURL(m_sUpdateChangeLogLink);
-	}
 
 	DeleteFile(tempfile);
 	m_bThreadRunning = FALSE;
 	DialogEnableWindow(IDOK, TRUE);
 	return 0;
+}
+
+void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
+{
+#if WIN64
+	const CString x86x64 = _T("64");
+#else
+	const CString x86x64 = _T("32");
+#endif
+
+	if (!file.ReadString(m_sFilesURL) || m_sFilesURL.IsEmpty())
+		m_sFilesURL = _T("http://tortoisegit.googlecode.com/files/");
+
+	m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
+	CString filename;
+	filename.Format(_T("TortoiseGit-%s-%sbit.msi"), version, x86x64);
+	m_fileNames.push_back(filename);
+	m_ctrlFiles.SetCheck(0 , TRUE);
+
+	std::vector<DWORD> m_installedLangs;
+	{
+		// set up the language selecting combobox
+		CString path = CPathUtils::GetAppParentDirectory();
+		path = path + _T("Languages\\");
+		CSimpleFileFind finder(path, _T("*.dll"));
+		while (finder.FindNextFileNoDirectories())
+		{
+			CString file = finder.GetFilePath();
+			CString filename = finder.GetFileName();
+			if (filename.Left(12).CompareNoCase(_T("TortoiseProc")) == 0)
+			{
+				CString sVer = _T(STRPRODUCTVER);
+				sVer = sVer.Left(sVer.ReverseFind(','));
+				CString sFileVer = CPathUtils::GetVersionFromFile(file);
+				sFileVer = sFileVer.Left(sFileVer.ReverseFind(','));
+				CString sLoc = filename.Mid(12);
+				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
+				if ((sLoc.Left(2) == L"32") && (sLoc.GetLength() > 5))
+					continue;
+				DWORD loc = _tstoi(filename.Mid(12));
+				m_installedLangs.push_back(loc);
+			}
+		}
+	}
+
+	CString langs;
+	while (file.ReadString(langs) && !langs.IsEmpty())
+	{
+		CString sLang = _T("TortoiseGit Language Pack ");
+
+		DWORD loc = _tstoi(langs.Mid(0, 4));
+		TCHAR buf[MAX_PATH];
+		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		sLang += buf;
+		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
+		if (buf[0])
+		{
+			sLang += _T(" (");
+			sLang += buf;
+			sLang += _T(")");
+		}
+
+		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), sLang);
+
+		CString filename;
+		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.Mid(5));
+		m_fileNames.push_back(filename);
+
+		if (std::find(m_installedLangs.begin(), m_installedLangs.end(), loc) != m_installedLangs.end())
+			m_ctrlFiles.SetCheck(pos , TRUE);
+	}
+	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
+}
+
+void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
+{
+	CString sChangelogURL;
+	if (!file.ReadString(sChangelogURL) || sChangelogURL.IsEmpty())
+		sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
+
+	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+	HRESULT res = URLDownloadToFile(NULL, sChangelogURL, tempchangelogfile, 0, NULL);
+	if (SUCCEEDED(res))
+	{
+		CString temp;
+		CStdioFile file(tempchangelogfile, CFile::modeRead|CFile::typeText);
+		CString str;
+		while (file.ReadString(str))
+		{
+			temp += str + _T("\n");
+		}
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(temp.GetBuffer()));
+	}
+	else
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not load changelog.")));
 }
 
 void CCheckForUpdatesDlg::OnStnClickedCheckresult()
@@ -311,4 +432,346 @@ BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
 	SetCursor(hCur);
 	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
+}
+
+void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
+{
+	CString title;
+	m_ctrlUpdate.GetWindowText(title);
+	if (m_pDownloadThread == NULL && title == CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)))
+	{
+		bool isOneSelected = false;
+		for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+		{
+			if (m_ctrlFiles.GetCheck(i))
+			{
+				isOneSelected = true;
+				break;
+			}
+		}
+		if (!isOneSelected)
+			return;
+
+		m_eventStop.ResetEvent();
+
+		m_pDownloadThread = ::AfxBeginThread(DownloadThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
+		if (m_pDownloadThread != NULL)
+		{
+			m_pDownloadThread->m_bAutoDelete = FALSE;
+			m_pDownloadThread->ResumeThread();
+
+			GetDlgItem(IDC_BUTTON_UPDATE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		}
+		else
+		{
+			CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		}
+	}
+	else if (title == CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)))
+	{
+		// Abort
+		m_eventStop.SetEvent();
+	}
+	else
+	{
+		CString folder = GetDownloadsDirectory();
+		if (m_ctrlUpdate.GetCurrentEntry() == 0)
+		{
+			for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+			{
+				if (m_ctrlFiles.GetCheck(i) == TRUE)
+					ShellExecute(NULL, _T("open"), folder + m_fileNames[i], NULL, NULL, SW_SHOWNORMAL);
+			}
+			ExitProcess(0);
+		}
+		else if (m_ctrlUpdate.GetCurrentEntry() == 1)
+		{
+			ShellExecute(NULL, _T("open"), folder, NULL, NULL, SW_SHOWNORMAL);
+		}
+
+		m_ctrlUpdate.SetCurrentEntry(0);
+	}
+}
+
+UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
+{
+	return ((CCheckForUpdatesDlg*)pVoid)->DownloadThread();
+}
+
+bool CCheckForUpdatesDlg::Download(CString filename)
+{
+	CString destFilename = GetDownloadsDirectory() + filename;
+	if (PathFileExists(destFilename))
+	{
+		if (VerifySignature(destFilename))
+			return true;
+		else
+			DeleteFile(destFilename);
+	}
+
+	CBSCallbackImpl bsc(this->GetSafeHwnd(), m_eventStop);
+
+	CString url = m_sFilesURL + filename;
+
+	m_progress.SetRange32(0, 1);
+	m_progress.SetPos(0);
+	m_progress.ShowWindow(SW_SHOW);
+
+	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
+	if (res == S_OK)
+	{
+		if (VerifySignature(tempfile))
+		{
+			if (PathFileExists(destFilename))
+				DeleteFile(destFilename);
+			MoveFile(tempfile, destFilename);
+			return true;
+		}
+	}
+	return false;
+}
+
+UINT CCheckForUpdatesDlg::DownloadThread()
+{
+	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
+
+	BOOL result = TRUE;
+	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+	{
+		m_ctrlFiles.EnsureVisible(i, FALSE);
+		CRect rect;
+		m_ctrlFiles.GetItemRect(i, &rect, LVIR_BOUNDS);
+		if (m_ctrlFiles.GetCheck(i) == TRUE)
+		{
+			m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_DOWNLOADING);
+			m_ctrlFiles.InvalidateRect(rect);
+			if (Download(m_fileNames[i]))
+				m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_SUCCESS);
+			else
+			{
+				m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_FAIL);
+				result = FALSE;
+			}
+		}
+		else
+			m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_IGNORE);
+		m_ctrlFiles.InvalidateRect(rect);
+	}
+
+	::PostMessage(GetSafeHwnd(), WM_USER_ENDDOWNLOAD, 0, 0);
+
+	return result;
+}
+
+LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
+{
+	ASSERT(m_pDownloadThread != NULL);
+
+	// wait until the thread terminates
+	DWORD dwExitCode;
+	if (::GetExitCodeThread(m_pDownloadThread->m_hThread, &dwExitCode) && dwExitCode == STILL_ACTIVE)
+		::WaitForSingleObject(m_pDownloadThread->m_hThread, INFINITE);
+
+	// make sure we always have the correct exit code
+	::GetExitCodeThread(m_pDownloadThread->m_hThread, &dwExitCode);
+
+	delete m_pDownloadThread;
+	m_pDownloadThread = NULL;
+
+	m_progress.ShowWindow(SW_HIDE);
+
+	if (dwExitCode == TRUE)
+	{
+		m_ctrlUpdate.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_INSTALL)));
+		m_ctrlUpdate.AddEntry(CString(MAKEINTRESOURCE(IDS_CHECKUPDATE_DESTFOLDER)));
+		m_ctrlUpdate.Invalidate();
+	}
+	else
+	{
+		m_ctrlUpdate.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)));
+		CMessageBox::Show(NULL, IDS_ERR_FAILEDUPDATEDOWNLOAD, IDS_APPNAME, MB_ICONERROR);
+	}
+
+	return 0;
+}
+
+LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
+{
+	ASSERT(lParam != NULL);
+
+	TCHAR * changelog = reinterpret_cast<TCHAR *>(lParam);
+	m_cLogMessage.Call(SCI_SETREADONLY, FALSE);
+	m_cLogMessage.SetText(changelog);
+	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
+	m_cLogMessage.Call(SCI_GOTOPOS, 0);
+
+	return 0;
+}
+
+CString CCheckForUpdatesDlg::GetDownloadsDirectory()
+{
+	CString folder;
+
+	if (SysInfo::Instance().IsVistaOrLater())
+	{
+		CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));
+		if (hShell)
+		{
+			typedef HRESULT STDAPICALLTYPE SHGetKnownFolderPathFN(__in REFKNOWNFOLDERID rfid, __in DWORD dwFlags, __in_opt HANDLE hToken, __deref_out PWSTR *ppszPath);
+			SHGetKnownFolderPathFN *pfnSHGetKnownFolderPath = (SHGetKnownFolderPathFN*)GetProcAddress(hShell, "SHGetKnownFolderPath");
+			if (pfnSHGetKnownFolderPath)
+			{
+				wchar_t * wcharPtr = 0;
+				HRESULT hr = pfnSHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, NULL, &wcharPtr);
+				if (SUCCEEDED(hr))
+				{
+					folder = wcharPtr;
+					CoTaskMemFree(static_cast<void*>(wcharPtr));
+					return folder.TrimRight(_T("\\")) + _T("\\");
+				}
+			}
+		}
+	}
+
+	TCHAR szPath[MAX_PATH];
+	if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
+		folder = szPath;
+	CString downloads = folder.TrimRight(_T("\\")) + _T("\\Downloads\\");
+	if ((PathFileExists(downloads) && PathIsDirectory(downloads)) || (!PathFileExists(downloads) && CreateDirectory(downloads, NULL)))
+		return downloads;
+
+	return folder;
+}
+
+LRESULT CCheckForUpdatesDlg::OnDisplayStatus(WPARAM, LPARAM lParam)
+{
+	const DOWNLOADSTATUS *const pDownloadStatus = reinterpret_cast<DOWNLOADSTATUS *>(lParam);
+	if (pDownloadStatus != NULL)
+	{
+		ASSERT(::AfxIsValidAddress(pDownloadStatus, sizeof(DOWNLOADSTATUS)));
+
+		m_progress.SetRange32(0, pDownloadStatus->ulProgressMax);
+		m_progress.SetPos(pDownloadStatus->ulProgress);
+	}
+
+	return 0;
+}
+
+CBSCallbackImpl::CBSCallbackImpl(HWND hWnd, HANDLE hEventStop)
+{
+	m_hWnd = hWnd;
+	m_hEventStop = hEventStop;
+	m_ulObjRefCount = 1;
+}
+
+// IUnknown
+STDMETHODIMP CBSCallbackImpl::QueryInterface(REFIID riid, void **ppvObject)
+{
+	*ppvObject = NULL;
+	
+	// IUnknown
+	if (::IsEqualIID(riid, __uuidof(IUnknown)))
+		*ppvObject = this;
+
+	// IBindStatusCallback
+	else if (::IsEqualIID(riid, __uuidof(IBindStatusCallback)))
+		*ppvObject = static_cast<IBindStatusCallback *>(this);
+
+	if (*ppvObject)
+	{
+		(*reinterpret_cast<LPUNKNOWN *>(ppvObject))->AddRef();
+		return S_OK;
+	}
+	
+	return E_NOINTERFACE;
+}
+
+STDMETHODIMP_(ULONG) CBSCallbackImpl::AddRef()
+{
+	return ++m_ulObjRefCount;
+}
+
+STDMETHODIMP_(ULONG) CBSCallbackImpl::Release()
+{
+	return --m_ulObjRefCount;
+}
+
+// IBindStatusCallback
+STDMETHODIMP CBSCallbackImpl::OnStartBinding(DWORD, IBinding *)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::GetPriority(LONG *)
+{
+	return E_NOTIMPL;
+}
+STDMETHODIMP CBSCallbackImpl::OnLowResource(DWORD)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::OnProgress(ULONG ulProgress, ULONG ulProgressMax, ULONG ulStatusCode, LPCWSTR /* szStatusText */)
+{
+	TRACE(_T("IBindStatusCallback::OnProgress\n"));
+	TRACE(_T("ulProgress: %lu, ulProgressMax: %lu\n"), ulProgress, ulProgressMax);
+	UNREFERENCED_PARAMETER(ulStatusCode);
+	TRACE(_T("ulStatusCode: %lu "), ulStatusCode);
+
+	if (m_hWnd != NULL)
+	{
+		// inform the dialog box to display current status,
+		// don't use PostMessage
+		CCheckForUpdatesDlg::DOWNLOADSTATUS downloadStatus = { ulProgress, ulProgressMax };
+		::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
+	}
+
+	if (m_hEventStop != NULL && ::WaitForSingleObject(m_hEventStop, 0) == WAIT_OBJECT_0)
+	{
+		return E_ABORT;  // canceled by the user
+	}
+
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::OnStopBinding(HRESULT, LPCWSTR)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::GetBindInfo(DWORD *, BINDINFO *)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::OnDataAvailable(DWORD, DWORD, FORMATETC *, STGMEDIUM *)
+{
+	return S_OK;
+}
+
+STDMETHODIMP CBSCallbackImpl::OnObjectAvailable(REFIID, IUnknown *)
+{
+	return S_OK;
+}
+
+BOOL CCheckForUpdatesDlg::VerifySignature(CString fileName)
+{
+	WINTRUST_FILE_INFO fileInfo;
+	memset(&fileInfo, 0, sizeof(fileInfo));
+	fileInfo.cbStruct = sizeof(WINTRUST_FILE_INFO);
+	fileInfo.pcwszFilePath = fileName;
+
+	WINTRUST_DATA data;
+	memset(&data, 0, sizeof(data));
+	data.cbStruct = sizeof(data);
+	
+	data.dwUIChoice = WTD_UI_NONE;
+	data.fdwRevocationChecks = WTD_REVOKE_NONE; 
+	data.dwUnionChoice = WTD_CHOICE_FILE;
+	data.pFile = &fileInfo;
+
+	GUID policyGUID = WINTRUST_ACTION_GENERIC_VERIFY_V2;
+
+	return (WinVerifyTrust(NULL, &policyGUID, &data) == ERROR_SUCCESS);
 }

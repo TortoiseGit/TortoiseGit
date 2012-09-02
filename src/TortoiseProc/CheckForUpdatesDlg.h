@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +20,10 @@
 #pragma once
 
 #include "StandAloneDlg.h"
+#include "UpdateListCtrl.h"
 #include "HyperLink.h"
+#include "MenuButton.h"
+#include "SciEdit.h"
 
 /**
  * \ingroup TortoiseProc
@@ -36,11 +40,21 @@ public:
 
 	enum { IDD = IDD_CHECKFORUPDATES };
 
+	struct DOWNLOADSTATUS
+	{
+		ULONG ulProgress;
+		ULONG ulProgressMax;
+	};
+
 protected:
 	afx_msg void OnStnClickedCheckresult();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg void OnBnClickedButtonUpdate();
+	afx_msg LRESULT OnDisplayStatus(WPARAM, LPARAM lParam);
+	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
+	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
@@ -59,10 +73,53 @@ public:
 
 private:
 	BOOL		m_bVisible;
+	CProgressCtrl	m_progress;
+	CEvent		m_eventStop;
+	CWinThread	*m_pDownloadThread;
+	CString		m_sFilesURL;
+	std::vector<CString> m_fileNames;
+
+	static UINT	DownloadThreadEntry(LPVOID pParam);
+	UINT		DownloadThread();
+	bool		Download(CString filename);
+
+	CUpdateListCtrl	m_ctrlFiles;
 
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update
 	CString		m_sUpdateChangeLogLink;			///< Where to send a user looking to change log
 	CHyperLink	m_link;
-	CHyperLink	m_ChangeLogLink;
+	CString		GetDownloadsDirectory();
+	CMenuButton	m_ctrlUpdate;
+	BOOL		VerifySignature(CString fileName);
+	void		FillDownloads(CStdioFile &file, CString version);
+	CSciEdit	m_cLogMessage;
+	void		FillChangelog(CStdioFile &file);
 };
 
+class CBSCallbackImpl : public IBindStatusCallback
+{
+public:
+	CBSCallbackImpl(HWND hWnd, HANDLE hEventStop);
+
+	// IUnknown methods
+	STDMETHOD(QueryInterface)(REFIID riid, void **ppvObject);
+	STDMETHOD_(ULONG, AddRef)();
+	STDMETHOD_(ULONG, Release)();
+
+	// IBindStatusCallback methods
+	STDMETHOD(OnStartBinding)(DWORD, IBinding *);
+	STDMETHOD(GetPriority)(LONG *);
+	STDMETHOD(OnLowResource)(DWORD);
+	STDMETHOD(OnProgress)(ULONG ulProgress, ULONG ulProgressMax, ULONG ulStatusCode, LPCWSTR szStatusText);
+	STDMETHOD(OnStopBinding)(HRESULT, LPCWSTR);
+	STDMETHOD(GetBindInfo)(DWORD *, BINDINFO *);
+	STDMETHOD(OnDataAvailable)(DWORD, DWORD, FORMATETC *, STGMEDIUM *);
+	STDMETHOD(OnObjectAvailable)(REFIID, IUnknown *);
+
+protected:
+	ULONG m_ulObjRefCount;
+
+private:
+	HWND m_hWnd;
+	HANDLE m_hEventStop;
+};

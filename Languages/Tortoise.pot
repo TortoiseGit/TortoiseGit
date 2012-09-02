@@ -537,6 +537,10 @@ msgstr ""
 msgid "&Down"
 msgstr ""
 
+#. Resource IDs: (78, 1710)
+msgid "&Download"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Edit"
 msgstr ""
@@ -700,6 +704,10 @@ msgstr ""
 
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
+msgstr ""
+
+#. Resource IDs: (81)
+msgid "&Install"
 msgstr ""
 
 #. Resource IDs: (1016)
@@ -1071,6 +1079,10 @@ msgstr ""
 msgid "&Tags"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "&Tags:"
+msgstr ""
+
 #. Resource IDs: (16915)
 msgid "&Text"
 msgstr ""
@@ -1359,7 +1371,7 @@ msgid "A branch with this name already exists."
 msgstr ""
 
 #. Resource IDs: (201)
-msgid "A newer version is available. Please go to http://code.google.com/p/tortoisegit and download the current version! Click _here_ to go directly to our website."
+msgid "A newer version is available. Please download the current version!"
 msgstr ""
 
 #. Resource IDs: (195)
@@ -2102,6 +2114,10 @@ msgstr ""
 msgid "Central European"
 msgstr ""
 
+#. Resource IDs: (1697)
+msgid "Change log"
+msgstr ""
+
 #. Resource IDs: (3601)
 msgid "Change the printer and printing options\nPrint Setup"
 msgstr ""
@@ -2146,7 +2162,7 @@ msgid "Check"
 msgstr ""
 
 #. Resource IDs: (174)
-msgid "Check For Updates"
+msgid "Check For Updates - TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1031)
@@ -2179,10 +2195,6 @@ msgstr ""
 
 #. Resource IDs: (1700)
 msgid "Check:"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Checking if a newer version of TortoiseGit is available..."
 msgstr ""
 
 #. Resource IDs: (77)
@@ -2291,10 +2303,6 @@ msgstr ""
 
 #. Resource IDs: (170)
 msgid "Click here to select a recently typed message"
-msgstr ""
-
-#. Resource IDs: (1467)
-msgid "Click here to view change log"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3252,6 +3260,10 @@ msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Down"
+msgstr ""
+
+#. Resource IDs: (1698)
+msgid "Download"
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -4990,10 +5002,6 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-#. Resource IDs: (78)
-msgid "Mime type"
-msgstr ""
-
 #. Resource IDs: (1158)
 msgid "Min"
 msgstr ""
@@ -5280,6 +5288,10 @@ msgstr ""
 
 #. Resource IDs: (78)
 msgid "Not Versioned Files"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Not all files could be downloaded and verified."
 msgstr ""
 
 #. Resource IDs: (3857)
@@ -6930,6 +6942,10 @@ msgstr ""
 msgid "Show changes as &unified diff"
 msgstr ""
 
+#. Resource IDs: (83)
+msgid "Show destination folder"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -7388,10 +7404,6 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "Tag Info"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Tag:"
 msgstr ""
 
 #. Resource IDs: (79)
