@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #1363: copy email in the log window
  * Fixed issue #1373: The only available remote should be set on PUSH
  * Fixed issue #1216: Revamp update dialog
+ * Fixed issue #1381: Sync Dialog log message add colored "success" or "git did not exit cleanly" at the end
 
 == Bug Fix ==
  * Fixed issue #1062: Log window should refresh automatically after reset --hard

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -115,9 +115,9 @@ public:
 
 	static UINT	RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
 
-private:
 	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
 
+private:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedButton1();
 

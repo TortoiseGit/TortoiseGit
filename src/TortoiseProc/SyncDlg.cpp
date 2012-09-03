@@ -1053,8 +1053,31 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
 		//this->DialogEnableWindow(IDOK,TRUE);
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+
+		DWORD exitCode = (DWORD)lParam;
+		if (exitCode)
+		{
+			if (m_pTaskbarList)
+			{
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
+			}
+			CString log;
+			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, exitCode);
+			CString err;
+			err.Format(_T("\r\n\r\n%s\r\n"), log);
+			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, err, RGB(255,0,0));
+		}
+		else
+		{
+			if (m_pTaskbarList)
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+			CString temp;
+			temp.LoadString(IDS_SUCCESS);
+			CString log;
+			log.Format(_T("\r\n%s\r\n"), temp);
+			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, log, RGB(0,0,255));
+		}
 
 		//if(wParam == MSG_PROGRESSDLG_END)
 		if(this->m_CurrentCmd == GIT_COMMAND_PUSH )
