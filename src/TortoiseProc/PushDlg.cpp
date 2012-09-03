@@ -500,7 +500,7 @@ void CPushDlg::OnBnClickedButtonBrowseDestBranch()
 		m_Remote.SetCurSel(remoteSel);
 
 	//Select branch
-	m_BranchRemote.AddString(remoteBranchName);
+	m_BranchRemote.AddString(remoteBranchName, 0);
 }
 
 BOOL CPushDlg::PreTranslateMessage(MSG* pMsg)

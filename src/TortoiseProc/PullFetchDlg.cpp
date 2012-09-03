@@ -303,7 +303,7 @@ void CPullFetchDlg::OnBnClickedButtonBrowseRef()
 	int ixFound = m_Remote.FindStringExact(0, remoteName);
 	if(ixFound >= 0)
 		m_Remote.SetCurSel(ixFound);
-	m_RemoteBranch.AddString(remoteBranch);
+	m_RemoteBranch.AddString(remoteBranch, 0);
 
 	CheckRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD,IDC_REMOTE_RD);
 }
