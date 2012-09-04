@@ -255,6 +255,7 @@ BOOL CSettingGitRemote::OnApply()
 			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
+		m_strUrl.Replace(L'\\', L'/');
 		CString cmd,out;
 		cmd.Format(_T("git.exe remote add \"%s\" \"%s\""),m_strRemote,m_strUrl);
 		if (g_Git.Run(cmd, &out, CP_UTF8))
