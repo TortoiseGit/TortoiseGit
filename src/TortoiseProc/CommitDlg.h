@@ -71,7 +71,6 @@ public:
 private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
-	void UpdateOKButton();
 	void FillPatchView();
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
@@ -102,6 +101,7 @@ protected:
 
 	afx_msg LRESULT OnCheck(WPARAM count, LPARAM);
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
+	afx_msg LRESULT OnUpdateOKButton(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -164,6 +164,7 @@ private:
 	ProjectProperties	m_ProjectProperties;
 	CString				m_sWindowTitle;
 	static UINT			WM_AUTOLISTREADY;
+	static UINT			WM_UPDATEOKBUTTON;
 	int					m_nPopupPasteListCmd;
 	int					m_nPopupPasteLastMessage;
 	int					m_nPopupRecentMessage;

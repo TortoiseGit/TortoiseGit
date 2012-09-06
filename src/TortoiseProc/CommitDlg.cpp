@@ -49,6 +49,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(_T("TORTOISEGIT_AUTOLISTREADY_MSG"));
+UINT CCommitDlg::WM_UPDATEOKBUTTON = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEOKBUTTON"));
 
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
 CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
@@ -119,6 +120,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 
 	ON_REGISTERED_MESSAGE(CLinkControl::LK_LINKITEMCLICKED, &CCommitDlg::OnCheck)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady)
+	ON_REGISTERED_MESSAGE(WM_UPDATEOKBUTTON, OnUpdateOKButton)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
@@ -968,7 +970,7 @@ UINT CCommitDlg::StatusThread()
 		GetAutocompletionList();
 		m_ListCtrl.Block(FALSE, FALSE);
 	}
-	UpdateOKButton();
+	SendMessage(WM_UPDATEOKBUTTON);
 	if (m_bRunThread)
 	{
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
@@ -1201,7 +1203,7 @@ void CCommitDlg::OnStnClickedExternalwarning()
 
 void CCommitDlg::OnEnChangeLogmessage()
 {
-	UpdateOKButton();
+	SendMessage(WM_UPDATEOKBUTTON);
 }
 
 LRESULT CCommitDlg::OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM)
@@ -1623,7 +1625,7 @@ void CCommitDlg::OnBnClickedHistory()
 			m_cLogMessage.SetText(sMsg);
 	}
 
-	UpdateOKButton();
+	SendMessage(WM_UPDATEOKBUTTON);
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 
 }
@@ -1786,7 +1788,7 @@ LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*l
 
 LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 {
-	UpdateOKButton();
+	SendMessage(WM_UPDATEOKBUTTON);
 	return 0;
 }
 
@@ -1816,15 +1818,17 @@ LRESULT CCommitDlg::OnCheck(WPARAM wnd, LPARAM)
 	return 0;
 }
 
-void CCommitDlg::UpdateOKButton()
+LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 {
 	if (m_bBlock)
-		return;
+		return 0;
 
 	bool bValidLogSize = m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize && m_cLogMessage.GetText().GetLength() > 0;
 	bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
 	DialogEnableWindow(IDOK, bValidLogSize && bAmendOrSelectFilesOrMerge);
+
+	return 0;
 }
 
 LRESULT CCommitDlg::DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam)
