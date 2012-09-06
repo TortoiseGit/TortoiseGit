@@ -174,13 +174,13 @@ int git_parse_commit(GIT_COMMIT *commit)
 	pbuf = p->buffer;
 	while(pbuf)
 	{
-		if( strncmp(pbuf,"author",6) == 0)
+		if (strncmp(pbuf, "author", 6) == 0)
 		{
 			ret = git_parse_commit_author(&commit->m_Author,pbuf + 7);
 			if(ret)
 				return ret;
 		}
-		if( strncmp(pbuf, "committer",9) == 0)
+		else if (strncmp(pbuf, "committer", 9) == 0)
 		{
 			ret =  git_parse_commit_author(&commit->m_Committer,pbuf + 10);
 			if(ret)
@@ -189,21 +189,19 @@ int git_parse_commit(GIT_COMMIT *commit)
 			pbuf = strchr(pbuf,'\n');
 			if(pbuf == NULL)
 				return -1;
+		}
+		else if (strncmp(pbuf, "encoding", 8) == 0)
+		{
+			pbuf += 9;
+			commit->m_Encode=pbuf;
+			end = strchr(pbuf,'\n');
+			commit->m_EncodeSize=end -pbuf;
+		}
 
-			pbuf ++;
-
-			if( strncmp(pbuf, "encoding",8) == 0 )
-			{
-				pbuf += 9;
-				commit->m_Encode=pbuf;
-				end = strchr(pbuf,'\n');
-				commit->m_EncodeSize=end -pbuf;
-
-				pbuf = end +1;
-			}
-
-			while((*pbuf) && (*pbuf == '\n'))
-				pbuf ++;
+		// the headers end after the first empty line
+		else if (*pbuf == '\n')
+		{
+			pbuf++;
 
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
@@ -217,7 +215,6 @@ int git_parse_commit(GIT_COMMIT *commit)
 				commit->m_BodySize = strlen(pbuf);
 				return 0;
 			}
-
 		}
 
 		pbuf = strchr(pbuf,'\n');
