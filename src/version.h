@@ -15,4 +15,4 @@
 #define TGIT_PLATFORM		"32 Bit"
 #endif
 
-
+#define PREVIEW		0

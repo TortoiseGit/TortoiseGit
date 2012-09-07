@@ -160,7 +160,20 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		sCheckURL = checkurlmachine;
 		if (sCheckURL.IsEmpty())
-			sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version.txt");
+		{
+			bool checkPreview = false;
+#if PREVIEW
+			checkPreview = true;
+#else
+			CRegStdDWORD regCheckPreview(L"Software\\TortoiseGit\\VersionCheckPreview", FALSE);
+			if (DWORD(regCheckPreview))
+				checkPreview = true;
+#endif
+			if (checkPreview)
+				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version-preview.txt");
+			else
+				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version.txt");
+		}
 	}
 	CoInitialize(NULL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
@@ -177,6 +190,15 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			if (file.ReadString(ver))
 			{
 				CString vertemp = ver;
+				// another versionstring for the filename can be provided after a semicolon
+				// this is needed for preview releases
+				int differentFilenamePos = vertemp.Find(_T(";"));
+				if (differentFilenamePos > 0)
+				{
+					vertemp = vertemp.Left(differentFilenamePos);
+					ver = ver.Mid(differentFilenamePos + 1);
+				}
+
 				major = _ttoi(vertemp);
 				vertemp = vertemp.Mid(vertemp.Find('.')+1);
 				minor = _ttoi(vertemp);
@@ -206,10 +228,12 @@ UINT CCheckForUpdatesDlg::CheckThread()
 
 				if (version != 0)
 				{
-					ver.Format(_T("%d.%d.%d.%d"),major,minor,micro,build);
-					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)ver);
+					CString version;
+					version.Format(_T("%d.%d.%d.%d"),major,minor,micro,build);
+					if (version != ver)
+						version += _T(" (") + ver + _T(")");
+					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)version);
 					SetDlgItemText(IDC_CURRENTVERSION, temp);
-					temp.Format(_T("%d.%d.%d.%d"), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 				}
 
 				if (version == 0)

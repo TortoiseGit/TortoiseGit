@@ -86,6 +86,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
+	settings[i].sName	= L"VersionCheckPreview";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
 	settings[i].sName	= L"";
 	settings[i].type	= CSettingsAdvanced::SettingTypeNone;
 	settings[i++].def.b	= false;

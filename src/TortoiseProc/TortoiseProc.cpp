@@ -655,6 +655,17 @@ void CTortoiseProcApp::CheckForNewerVersion()
 		time(&now);
 		if ((now != 0) && (localtime_s(&ptm, &now)==0))
 		{
+#if PREVIEW
+			// Check daily for new preview releases
+			CRegDWORD oldday = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewerDay"), (DWORD)-1);
+			if (((DWORD)oldday) == -1)
+				oldday = ptm.tm_yday;
+			else
+			{
+				if ((DWORD)oldday != ptm.tm_yday)
+				{
+					oldday = ptm.tm_yday;
+#else
 			int week = 0;
 			// we don't calculate the real 'week of the year' here
 			// because just to decide if we should check for an update
@@ -669,7 +680,7 @@ void CTortoiseProcApp::CheckForNewerVersion()
 				if ((DWORD)week != oldweek)
 				{
 					oldweek = week;
-
+#endif
 					TCHAR com[MAX_PATH+100];
 					GetModuleFileName(NULL, com, MAX_PATH);
 					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
