@@ -71,6 +71,9 @@ bool PullCommand::Execute()
 		CString ffonly;
 		CString squash;
 		CString nocommit;
+		CString notags;
+		if (!dlg.m_bFetchTags)
+			notags = _T("--no-tags");
 		if(dlg.m_bNoFF)
 			noff=_T("--no-ff");
 
@@ -88,7 +91,7 @@ bool PullCommand::Execute()
 		if(ver >= 0x01070203) //above 1.7.0.2
 			cmdRebase += _T("--progress ");
 
-		cmd.Format(_T("git.exe pull -v %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, url, dlg.m_RemoteBranchName);
+		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s \"%s\" %s"), notags, cmdRebase, noff, ffonly, squash, nocommit, url, dlg.m_RemoteBranchName);
 		CProgressDlg progress;
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));

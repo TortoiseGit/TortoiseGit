@@ -148,7 +148,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	{
 		GetDlgItem(IDC_CHECK_REBASE)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_CHECK_FETCHTAGS)->EnableWindow(FALSE);
+		// check tags checkbox and make it a normal checkbox
+		m_bFetchTags = 1;
+		UpdateData(FALSE);
+		::SendMessage(GetDlgItem(IDC_CHECK_FETCHTAGS)->GetSafeHwnd(), BM_SETSTYLE, GetDlgItem(IDC_CHECK_FETCHTAGS)->GetStyle() & ~BS_AUTO3STATE | BS_AUTOCHECKBOX, 0);
 	}
 	else
 	{
