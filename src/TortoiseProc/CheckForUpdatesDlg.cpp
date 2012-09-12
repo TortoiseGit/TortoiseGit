@@ -510,7 +510,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
 					ShellExecute(NULL, _T("open"), folder + m_fileNames[i], NULL, NULL, SW_SHOWNORMAL);
 			}
-			ExitProcess(0);
+			CStandAloneDialog::OnOK();
 		}
 		else if (m_ctrlUpdate.GetCurrentEntry() == 1)
 		{
