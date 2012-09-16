@@ -2555,6 +2555,10 @@ msgstr ""
 msgid "Conflicted"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Conflicts"
+msgstr ""
+
 #. Resource IDs: (188)
 #, c-format
 msgid "Conflicts: %d"

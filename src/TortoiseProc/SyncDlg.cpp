@@ -678,7 +678,7 @@ BOOL CSyncDlg::OnInitDialog()
 		TRACE0("Failed to create output change files window\n");
 		return FALSE;      // fail to create
 	}
-	m_ctrlTabCtrl.InsertTab(&m_ConflictFileList,_T("Conflict"),-1);
+	m_ctrlTabCtrl.InsertTab(&m_ConflictFileList, CString(MAKEINTRESOURCE(IDS_PROC_SYNC_CONFLICTS)), -1);
 
 	m_ConflictFileList.Init(GITSLC_COLEXT | GITSLC_COLSTATUS |GITSLC_COLADD|GITSLC_COLDEL , _T("ConflictSyncDlg"),
 							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|

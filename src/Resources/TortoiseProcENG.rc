@@ -3713,6 +3713,7 @@ BEGIN
     IDS_REVREVERTED         "Revision(s) reverted. All changes are integrated into your working tree now."
     IDS_DESCRIPTION         "Description"
     IDS_PROC_BROWSEREFS_EDITDESCRIPTION "Edit description"
+    IDS_PROC_SYNC_CONFLICTS "Conflicts"
 END
 
 #endif    // Englisch (USA) resources
