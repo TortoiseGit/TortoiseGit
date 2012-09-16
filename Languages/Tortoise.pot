@@ -1673,10 +1673,6 @@ msgstr ""
 msgid "Arabic"
 msgstr ""
 
-#. Resource IDs: (1492)
-msgid "Arbitary &URL:"
-msgstr ""
-
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr ""
