@@ -97,7 +97,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:log /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, hash);
+	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, hash);
 	CAppUtils::RunTortoiseProc(sCmd);
 }
 

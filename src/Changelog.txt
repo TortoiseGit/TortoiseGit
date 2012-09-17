@@ -44,6 +44,7 @@ Released: unreleased
  * Fixed issue #1380: When chosing Pull Remote Branch using Browse Reference the remote branch name won't get updated
  * Fixed issue #1287: Setting Remote URL not translated to '/' when clicking Apply or OK
  * Fixed issue #1382: Log messages with PGP signatures showing badly
+ * Fixed issue #1394: Submodule Diff Dialog cannot jump to a commit that not belongs to current branch
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
