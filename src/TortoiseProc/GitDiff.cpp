@@ -33,7 +33,7 @@ CGitDiff::CGitDiff(void)
 CGitDiff::~CGitDiff(void)
 {
 }
-int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
+int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 {
 	CString oldhash = GIT_REV_ZERO;
 	CString oldsub ;
@@ -41,7 +41,11 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 	CString newhash;
 
 	CString cmd;
-	cmd.Format(_T("git.exe ls-tree  HEAD -- \"%s\""), pPath->GetGitPathString());
+	if (rev1 != GIT_REV_ZERO)
+		cmd.Format(_T("git.exe ls-tree \"%s\" -- \"%s\""), rev1, pPath->GetGitPathString());
+	else
+		cmd.Format(_T("git.exe ls-files -s \"%s\""), pPath->GetGitPathString());
+
 	CString output, err;
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
@@ -71,7 +75,10 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &/*rev1*/)
 		return 0;
 	}
 
-	CMessageBox::Show(NULL,_T("ls-tree output format error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+	if (rev1 != GIT_REV_ZERO)
+		CMessageBox::Show(NULL, _T("ls-tree output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+	else
+		CMessageBox::Show(NULL, _T("ls-files output format error"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 	return -1;
 }
 
