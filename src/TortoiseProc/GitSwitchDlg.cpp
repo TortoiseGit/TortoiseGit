@@ -61,6 +61,7 @@ void CGitSwitchDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CGitSwitchDlg, CHorizontalResizableStandAloneDialog)
 
 	CHOOSE_VERSION_EVENT
+	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CGitSwitchDlg::OnBnClickedCheckBranch)
 	ON_BN_CLICKED(IDOK, &CGitSwitchDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
@@ -241,4 +242,9 @@ void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 void CGitSwitchDlg::OnVersionChanged()
 {
 	SetDefaultName(TRUE);
+}
+void CGitSwitchDlg::OnBnClickedCheckBranch()
+{
+	UpdateData();
+	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
 }

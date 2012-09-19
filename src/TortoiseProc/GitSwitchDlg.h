@@ -54,6 +54,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	afx_msg void OnBnClickedCheckBranch();
 	void SetDefaultName(BOOL isUpdateCreateBranch);
 	virtual void OnVersionChanged();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
