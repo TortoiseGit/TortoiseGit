@@ -130,6 +130,7 @@ BOOL CCloneDlg::OnInitDialog()
 	if(m_URL.IsEmpty())
 	{
 		CString str=CAppUtils::GetClipboardLink();
+		str.Trim();
 		if(str.IsEmpty())
 			m_URLCombo.SetCurSel(0);
 		else
@@ -217,7 +218,7 @@ void CCloneDlg::OnBnClickedCloneBrowseUrl()
 	{
 		CString str;
 		m_URLCombo.GetWindowText(str);
-		ShellExecute(NULL, _T("open"), str, NULL,NULL, SW_SHOW);
+		ShellExecute(NULL, _T("open"), str.Trim(), NULL,NULL, SW_SHOW);
 		return ;
 	}
 
@@ -268,6 +269,7 @@ void CCloneDlg::OnCbnEditchangeUrlcombo()
 	this->UpdateData();
 	CString url;
 	m_URLCombo.GetWindowText(url);
+	url.Trim();
 
 	if(m_OldURL == url )
 		return;
