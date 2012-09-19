@@ -255,7 +255,9 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 	dlg.m_ofn.nMaxFile = 65536;
 	auto_buffer<TCHAR> path(dlg.m_ofn.nMaxFile);
 	dlg.m_ofn.lpstrFile = path;
-	if(dlg.DoModal() == IDOK)
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
 	{
 		POSITION pos;
 		pos = dlg.GetStartPosition();

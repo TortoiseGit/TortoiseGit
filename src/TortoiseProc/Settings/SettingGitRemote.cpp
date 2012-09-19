@@ -99,7 +99,9 @@ void CSettingGitRemote::OnBnClickedButtonBrowse()
 					CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
 
 	this->UpdateData();
-	if(dlg.DoModal()==IDOK)
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
 	{
 		this->m_strPuttyKeyfile = dlg.GetPathName();
 		this->UpdateData(FALSE);

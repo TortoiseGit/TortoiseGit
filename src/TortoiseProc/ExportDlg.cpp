@@ -177,7 +177,9 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	this->UpdateRevsionName();
 	CFileDialog dlg(FALSE, _T("zip"), this->m_VersionName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("*.zip"));
 
-	if(dlg.DoModal()==IDOK)
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
 	{
 		UpdateData(TRUE);
 		m_strExportDirectory = dlg.GetPathName();

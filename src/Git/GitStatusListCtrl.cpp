@@ -4126,7 +4126,9 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 	dlg.m_ofn.lpstrInitialDir=currentpath.GetBuffer();
 
 	CString cmd,out;
-	if(dlg.DoModal()==IDOK)
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
 	{
 		filename = dlg.GetPathName();
 		if(m_CurrentVersion == GIT_REV_ZERO)

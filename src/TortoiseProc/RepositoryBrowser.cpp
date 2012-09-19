@@ -948,7 +948,9 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
 
 	CString cmd, out;
-	if (dlg.DoModal() == IDOK)
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
 	{
 		filename = dlg.GetPathName();
 		if (g_Git.GetOneFile(m_sRevision, gitPath, filename))
