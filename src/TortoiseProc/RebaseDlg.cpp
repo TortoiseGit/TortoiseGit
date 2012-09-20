@@ -672,6 +672,20 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				return TRUE;
 			}
 			break;
+		case VK_RETURN:
+			{
+				if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+				{
+					if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled())
+						GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
+					else if (GetDlgItem(IDC_REBASE_ABORT)->IsWindowEnabled())
+						GetDlgItem(IDC_REBASE_ABORT)->SetFocus();
+					else
+						GetDlgItem(IDHELP)->SetFocus();
+					return TRUE;
+				}
+			}
+			break;
 		/* Avoid TAB control destroy but dialog exist*/
 		case VK_ESCAPE:
 		case VK_CANCEL:
@@ -689,6 +703,19 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 					return TRUE;
 				}
 			}
+		}
+	}
+	else if (pMsg->message == WM_NEXTDLGCTL)
+	{
+		if (GetFocus()->GetSafeHwnd() == m_LogMessageCtrl.GetSafeHwnd())
+		{
+			if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled())
+				GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
+			else if (GetDlgItem(IDC_REBASE_ABORT)->IsWindowEnabled())
+				GetDlgItem(IDC_REBASE_ABORT)->SetFocus();
+			else
+				GetDlgItem(IDHELP)->SetFocus();
+			return TRUE;
 		}
 	}
 	m_tooltips.RelayEvent(pMsg);
