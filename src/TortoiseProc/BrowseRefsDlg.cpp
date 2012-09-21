@@ -312,7 +312,9 @@ MAP_STRING_STRING GetBranchDescriptions()
 	MAP_STRING_STRING descriptions;
 	git_config * config;
 	git_config_new(&config);
-	CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.m_CurrentDir + _T("\\.git\\config"), CP_UTF8);
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+	CStringA projectConfigA = CUnicodeUtils::GetMulti(dotGitPath + _T("config"), CP_UTF8);
 	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
 	projectConfigA.ReleaseBuffer();
 	git_config_foreach_match(config, "branch\\..*\\.description", GetBranchDescriptionsCallback, &descriptions);
