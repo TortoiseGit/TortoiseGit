@@ -941,9 +941,11 @@ UINT CCommitDlg::StatusThread()
 			m_ListCtrl.SetEmptyString(m_ListCtrl.GetLastErrorMessage());
 		m_ListCtrl.Show(dwShow);
 	}
-	//
+
+	CString dotGitPath;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
-		 && !PathFileExists(g_Git.m_CurrentDir+_T("\\.git\\MERGE_HEAD")))
+		 && !PathFileExists(dotGitPath + _T("MERGE_HEAD")))
 	{
 		CString temp;
 		temp.LoadString(IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED);

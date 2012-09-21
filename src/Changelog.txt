@@ -50,6 +50,7 @@ Released: unreleased
  * Fixed issue #1395: Problem restoring from earlier commit for file in a subdirectory
  * Fixed issue #1392: Window with rebase results is non-manageable via keyboard (no focus, can't press Done)
  * Fixed issue #1405: Cannot show branch description in Browse Reference Dialog with separate .git directory
+ * Fixed issue #1406: Commit dialog cannot check MERGE_HEAD with separate .git directory
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
