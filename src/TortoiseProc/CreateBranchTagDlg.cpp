@@ -93,7 +93,6 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 
 	this->AddOthersToAnchor();
 
-	AdjustControlSize(IDC_RADIO_HEAD);
 	AdjustControlSize(IDC_RADIO_BRANCH);
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
@@ -131,6 +130,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CString HeadText;
 	pHead->GetWindowText( HeadText );
 	pHead->SetWindowText( HeadText + " (" + g_Git.GetCurrentBranch() + ")");
+	AdjustControlSize(IDC_RADIO_HEAD);
 	EnableSaveRestore(_T("BranchTagDlg"));
 
 	//Create the ToolTip control
