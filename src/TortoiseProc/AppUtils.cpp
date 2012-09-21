@@ -103,7 +103,7 @@ bool CAppUtils::StashSave()
 	return false;
 }
 
-int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
+bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 {
 	CString cmd,out;
 	cmd = _T("git.exe stash apply ");
@@ -134,18 +134,18 @@ int	 CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 				dlg.m_pathList.AddPath(CTGitPath());
 				dlg.DoModal();
 			}
-			return 0;
+			return true;
 		}
 		else
 		{
 			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			return 0;
+			return true;
 		}
 	}
-	return -1;
+	return false;
 }
 
-int	 CAppUtils::StashPop(bool showChanges /* true */)
+bool CAppUtils::StashPop(bool showChanges /* true */)
 {
 	CString cmd,out;
 	cmd=_T("git.exe stash pop ");
@@ -171,15 +171,15 @@ int	 CAppUtils::StashPop(bool showChanges /* true */)
 				dlg.m_pathList.AddPath(CTGitPath());
 				dlg.DoModal();
 			}
-			return 0;
+			return true;
 		}
 		else
 		{
 			CMessageBox::Show(NULL, message ,_T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-			return 0;
+			return true;
 		}
 	}
-	return -1;
+	return false;
 }
 
 bool CAppUtils::GetMimeType(const CTGitPath& /*file*/, CString& /*mimetype*/)

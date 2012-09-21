@@ -397,7 +397,7 @@ void CChangedDlg::OnBnClickedStash()
 			break;
 		case ID_STASH_POP:
 			CAppUtils::StashPop(false);
-			return;
+			break;
 		case ID_STASH_APPLY:
 			CAppUtils::StashApply(_T(""), false);
 			break;

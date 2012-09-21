@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,19 +33,12 @@ bool StashSaveCommand::Execute()
 	return CAppUtils::StashSave();
 }
 
-
 bool StashApplyCommand::Execute()
 {
-	if(CAppUtils::StashApply(_T("")), true)
-		return false;
-	return true;
-
+	return CAppUtils::StashApply(_T(""), true);
 }
 
 bool StashPopCommand::Execute()
 {
-	if(CAppUtils::StashPop(true))
-		return false;
-	return true;
-
+	return !CAppUtils::StashPop(true);
 }
