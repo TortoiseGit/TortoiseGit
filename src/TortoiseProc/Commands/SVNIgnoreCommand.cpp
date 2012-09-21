@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2008 - TortoiseGit
+// Copyright (C) 2007-2008,2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,10 +37,14 @@ bool SVNIgnoreCommand::Execute()
 		switch (dlg.m_SVNIgnoreType)
 		{
 		case 0:
-			progress.m_GitCmd=_T("git.exe svn show-ignore");
-			progress.m_LogFile=g_Git.m_CurrentDir+_T("\\.git\\info\\exclude");
-			progress.m_bShowCommand=false;
-			progress.m_PreText=_T("git.exe svn show-ignore > .git\\info\\exclude");
+			{
+				progress.m_GitCmd = _T("git.exe svn show-ignore");
+				CString dotGitPath;
+				g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
+				progress.m_LogFile = dotGitPath + _T("info\\exclude");
+				progress.m_bShowCommand = false;
+				progress.m_PreText = _T("git.exe svn show-ignore > ") + progress.m_LogFile;
+			}
 			break;
 		case 1:
 			progress.m_GitCmd=_T("git.exe svn create-ignore");
