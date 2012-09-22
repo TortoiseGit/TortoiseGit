@@ -44,7 +44,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 	if (rev1 != GIT_REV_ZERO)
 		cmd.Format(_T("git.exe ls-tree \"%s\" -- \"%s\""), rev1, pPath->GetGitPathString());
 	else
-		cmd.Format(_T("git.exe ls-files -s \"%s\""), pPath->GetGitPathString());
+		cmd.Format(_T("git.exe ls-files -s -- \"%s\""), pPath->GetGitPathString());
 
 	CString output, err;
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
