@@ -21,6 +21,7 @@
 #include "gitdll.h"
 #include "gitstatus.h"
 #include "SharedMutex.h"
+#include "git2.h"
 
 class CGitIndex
 {
@@ -41,11 +42,14 @@ public:
 	__time64_t  m_LastModifyTime;
 
 	CGitIndexList();
+	~CGitIndexList();
 
 	int ReadIndex(CString file);
 	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull=false, BOOL IsRecursive=false, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 protected:
 	bool m_bCheckContent;
+	CComCriticalSection m_critRepoSec;
+	git_repository * repository;
 	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL, CGitHash *pHash = NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
 };

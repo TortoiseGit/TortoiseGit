@@ -11,9 +11,6 @@ Released: unreleased
  * Fixed issue #1350: Commit Dialog set focus to message editor after clicking amend checkbox
  * Fixed issue #811: Log the history of a submodule not its contents
  * Fixed issue #1344: Log list add copy to clipboard only with commit message
- * TGitCache only checked timestamps of files in order to get their state since 1.7.0 (see issue #861).
-   If you have AutoCrLf disabled, you can make TGitCache check the contents of modified files.
-   This can be done via the Settings dialog -> Advanced and set TGitCacheCheckContent to "true".
  * Fixed issue #1336: Have visible the name of the branch in Repository Browser
  * Fixed issue #1351: Add Hotkey to (de)select all files and commit
  * Fixed issue #1363: copy email in the log window
@@ -51,6 +48,11 @@ Released: unreleased
  * Fixed issue #1392: Window with rebase results is non-manageable via keyboard (no focus, can't press Done)
  * Fixed issue #1405: Cannot show branch description in Browse Reference Dialog with separate .git directory
  * Fixed issue #1406: Commit dialog cannot check MERGE_HEAD with separate .git directory
+ * Fixed issue #861: TGitCache gets confused about file status (should detect touched file as unmodified)
+   TGitCache only checked timestamps of files in order to get their state since 1.7.0.
+   This fix makes TortoiseGit check the content of the files.
+   If you want to restore the old behavior, you can disable checking the contents via
+   the Settings dialog -> Advanced and set TGitCacheCheckContent to "false".
 
 = Release 1.7.12.0 =
 Released: 2012-08-10

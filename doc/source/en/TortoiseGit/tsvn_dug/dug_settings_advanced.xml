@@ -156,10 +156,8 @@
                 <para>
                     This makes TGitCache check file contents if timestamps (to index) missmatch in order to
                     calculate the file status.
-                    TortoiseGit 1.7.0 up to 1.7.12 calculated the file status based on the timestamp only,
-                    this is still the default, because checking the content of the files only works
-                    if AutoCrLf is disabled at the moment.
-                    If you want TGitCache to check the file contents (this might increase disk access and CPU time), set this value to <literal>true</literal>.
+                    TortoiseGit 1.7.0 up to 1.7.12 calculated the file status based on the timestamp only.
+                    If do not you want TGitCache to check the file contents (this lowers disk access and CPU time), set this value to <literal>false</literal>.
                 </para>
             </listitem>
         </varlistentry>

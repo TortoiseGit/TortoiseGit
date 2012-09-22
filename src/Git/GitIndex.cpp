@@ -29,7 +29,6 @@
 #include "gitindex.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "git2.h"
 #include "SmartHandle.h"
 
 class CAutoReadLock
@@ -78,7 +77,18 @@ int CGitIndex::Print()
 CGitIndexList::CGitIndexList()
 {
 	this->m_LastModifyTime = 0;
+	m_critRepoSec.Init();
+	repository = NULL;
 	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), FALSE) == TRUE);
+}
+
+CGitIndexList::~CGitIndexList()
+{
+	if (repository != NULL)
+	{
+		git_repository_free(repository);
+		m_critRepoSec.Term();
+	}
 }
 
 static bool SortIndex(CGitIndex &Item1, CGitIndex &Item2)
@@ -96,7 +106,13 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	this->clear();
 
 	CStringA gitdir = CUnicodeUtils::GetMulti(dgitdir, CP_UTF8);
-	git_repository *repository = NULL;
+
+	m_critRepoSec.Lock();
+	if (repository != NULL)
+	{
+		git_repository_free(repository);
+		repository = NULL;
+	}
 	git_index *index = NULL;
 
 	int ret = git_repository_open(&repository, gitdir.GetBuffer());
@@ -104,9 +120,35 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (ret)
 		return -1;
 
+	// add config files
+	git_config * config;
+	git_config_new(&config);
+
+	CString projectConfig = dgitdir + _T("config");
+	CString globalConfig = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
+
+	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
+	projectConfigA.ReleaseBuffer();
+	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
+	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 2);
+	globalConfigA.ReleaseBuffer();
+	if (!msysGitBinPath.IsEmpty())
+	{
+		CString systemConfig = msysGitBinPath + _T("\\..\\etc\\gitconfig");
+		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
+		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1);
+		systemConfigA.ReleaseBuffer();
+	}
+
+	git_repository_set_config(repository, config);
+
+	// load index in order to enumerate files
 	if (git_repository_index(&index, repository))
 	{
-		git_repository_free(repository);
+		repository = NULL;
+		m_critRepoSec.Unlock();
 		return -1;
 	}
 
@@ -125,10 +167,11 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	}
 
 	git_index_free(index);
-	git_repository_free(repository);
 
 	g_Git.GetFileModifyTime(dgitdir + _T("index"), &this->m_LastModifyTime);
 	std::sort(this->begin(), this->end(), SortIndex);
+
+	m_critRepoSec.Unlock();
 
 	return 0;
 }
@@ -175,12 +218,12 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 			{
 				*status = git_wc_status_normal;
 			}
-			else if (m_bCheckContent)
+			else if (m_bCheckContent && repository)
 			{
 				git_oid actual;
-				CString file = gitdir + _T("\\") + pathorg;
-				CStringA fileA = CUnicodeUtils::GetMulti(file, CP_UTF8);
-				if (!git_odb_hashfile(&actual, fileA.GetBuffer(), GIT_OBJ_BLOB) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
+				CStringA fileA = CUnicodeUtils::GetMulti(pathorg, CP_UTF8);
+				m_critRepoSec.Lock(); // prevent concurrent access to repository instance and especially filter-lists
+				if (!git_repository_hashfile(&actual, repository, fileA.GetBuffer(), GIT_OBJ_BLOB, NULL) && !git_oid_cmp(&actual, (const git_oid*)at(index).m_IndexHash.m_hash))
 				{
 					at(index).m_ModifyTime = time;
 					*status = git_wc_status_normal;
@@ -188,6 +231,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 				else
 					*status = git_wc_status_modified;
 				fileA.ReleaseBuffer();
+				m_critRepoSec.Unlock();
 			}
 			else
 				*status = git_wc_status_modified;
