@@ -79,7 +79,7 @@ CGitIndexList::CGitIndexList()
 	this->m_LastModifyTime = 0;
 	m_critRepoSec.Init();
 	repository = NULL;
-	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), FALSE) == TRUE);
+	m_bCheckContent = !!(CRegDWORD(_T("Software\\TortoiseGit\\TGitCacheCheckContent"), TRUE) == TRUE);
 }
 
 CGitIndexList::~CGitIndexList()
