@@ -33,6 +33,7 @@ CLogCache::CLogCache()
 	m_DataFile = INVALID_HANDLE_VALUE;
 	m_DataFileMap = INVALID_HANDLE_VALUE;
 	m_pCacheData = NULL;
+	m_DataFileLength = 0;
 }
 
 void CLogCache::CloseDataHandles()
@@ -194,7 +195,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 			}
 		}
-
+		m_DataFileLength = GetFileSize(m_DataFile, NULL);
 		if(	m_pCacheData == NULL)
 		{
 			m_pCacheData = (BYTE*)MapViewOfFile(m_DataFileMap,FILE_MAP_READ,0,0,0);
@@ -284,6 +285,9 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 	if(m_pCacheData == NULL)
 		return -1;
 
+	if (offset + sizeof(SLogCacheRevItemHeader) > m_DataFileLength)
+		return -2;
+
 	SLogCacheRevItemHeader *header;
 	header = (SLogCacheRevItemHeader *)(this->m_pCacheData + offset);
 
@@ -302,8 +306,11 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 		CString oldfile;
 		path.Reset();
 
+		if (offset + sizeof(SLogCacheRevFileHeader) > m_DataFileLength)
+			return -2;
+
 		if(!CheckHeader(fileheader))
-			return -1;
+			return -2;
 
 		CString file(fileheader->m_FileName, fileheader->m_FileNameSize);
 		if(fileheader->m_OldFileNameSize)

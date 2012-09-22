@@ -53,6 +53,7 @@ Released: unreleased
    This fix makes TortoiseGit check the content of the files.
    If you want to restore the old behavior, you can disable checking the contents via
    the Settings dialog -> Advanced and set TGitCacheCheckContent to "false".
+ * Fixed issue #1300: TortoiseProc LogDialog might crash if tortoisegit.index or tortoisegit.data is broken
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
@@ -87,7 +88,6 @@ Released: 2012-08-10
  * Fixed issue #1294: TortoiseGit might crash on concurrent access on CGitHeadFileList
  * Fixed issue #1279: Nothing seen in Repository Browser without config core.bare=false
  * Fixed issue #1296: Closing log dialog might cause crash
- * Fixed issue #1300: TortoiseProc LogDialog might crash if tortoisegit.index or tortoisegit.data is broken
  * Fixed issue #1255: Adding non-versioned files from the commit dialog does not always work
  * Fixed issue #620: Unmodified files appear in the Modified File list while committing
  * Fixed issue #774: Revert does not work for submodules

@@ -105,6 +105,7 @@ protected:
 	HANDLE m_DataFile;
 	HANDLE m_DataFileMap;
 	BYTE  *m_pCacheData;
+	DWORD m_DataFileLength;
 
 	void CloseDataHandles();
 	void CloseIndexHandles();
