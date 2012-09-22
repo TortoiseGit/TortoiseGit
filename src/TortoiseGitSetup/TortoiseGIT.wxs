@@ -23,7 +23,7 @@
 		</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
-		<Property Id="ShowChangelogCheck" Secure="yes">1</Property>
+		<Property Id="ShowChangelogCheck">1</Property>
 		<Property Id="ALLUSERS" Secure="yes">1</Property>
 
 		<Condition Message="[ProductName] requires Windows XP SP3 or later."><![CDATA[(VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3))]]></Condition>
