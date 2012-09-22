@@ -404,12 +404,21 @@
 				<varlistentry>
 					<term>Search log messages...</term>
 					<listitem>
+						<figure id="tsvn-dug-showlog-1-dia-2">
+							<title>The Search Log Messages Dialog</title>
+							<graphic fileref="../images/LogSearch.png"/>
+						</figure>
 						<para>
 							Search log messages for the text you enter. This searches
 							the log messages that you entered and also the action summaries
 							created by Git (shown in the bottom pane). The search
 							is not case sensitive.
 						</para>
+						<tip>
+							<para>
+								This allows you to easily search for refs (tags and branches).
+							</para>
+						</tip>
 					</listitem>
 				</varlistentry>
         <varlistentry>
