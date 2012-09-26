@@ -6243,10 +6243,6 @@ msgstr ""
 msgid "Renames files/folders inside version control"
 msgstr ""
 
-#. Resource IDs: (209)
-msgid "Repair move"
-msgstr ""
-
 #. Resource IDs: (3603)
 msgid "Repeat the last action\nRepeat"
 msgstr ""

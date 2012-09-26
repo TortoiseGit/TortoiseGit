@@ -1602,31 +1602,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 				}
-			//	if ((GetSelectedCount() == 2)&&(m_dwContextMenus & SVNSLC_POPREPAIRMOVE))
-			//	{
-			//		POSITION pos = GetFirstSelectedItemPosition();
-			//		int index = GetNextSelectedItem(pos);
-			//		if (index >= 0)
-			//		{
-			//			FileEntry * entry = GetListEntry(index);
-			//			git_wc_status_kind status1 = git_wc_status_none;
-			//			git_wc_status_kind status2 = git_wc_status_none;
-			//			if (entry)
-			//				status1 = entry->status;
-			//			index = GetNextSelectedItem(pos);
-			//			if (index >= 0)
-			//			{
-			//				entry = GetListEntry(index);
-			//				if (entry)
-			//					status2 = entry->status;
-			//				if ((status1 == git_wc_status_missing && status2 == git_wc_status_unversioned) ||
-			//					(status2 == git_wc_status_missing && status1 == git_wc_status_unversioned))
-			//				{
-			//					popup.AppendMenuIcon(IDSVNLC_REPAIRMOVE, IDS_STATUSLIST_CONTEXT_REPAIRMOVE);
-			//				}
-			//			}
-			//		}
-			//	}
 			//	if (wcStatus > git_wc_status_normal)
 			//	{
 			//		if (m_dwContextMenus & SVNSLC_POPREVERT)

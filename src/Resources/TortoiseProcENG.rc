@@ -3123,7 +3123,6 @@ BEGIN
     IDS_STATUSLIST_CONTEXT_COMMIT "Commit..."
     IDS_STATUSLIST_CONTEXT_COPY "Copy paths to clipboard"
     IDS_STATUSLIST_CONTEXT_COPYEXT "Copy all information to clipboard"
-    IDS_STATUSLIST_CONTEXT_REPAIRMOVE "Repair move"
     IDS_STATUSLIST_CONTEXT_REMOVEFROMCS "Remove from changelist"
     IDS_STATUSLIST_CONTEXT_CREATECS "<new changelist>"
     IDS_STATUSLIST_CONTEXT_MOVETOCS "Move to changelist"
