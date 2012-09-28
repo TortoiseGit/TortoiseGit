@@ -53,6 +53,12 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
+	AddAnchor(IDC_SUBMODULEDIFFTITLE, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_STATIC_REVISION, TOP_LEFT);
+	AddAnchor(IDC_STATIC_REVISION2, TOP_LEFT);
+	AddAnchor(IDC_STATIC_SUBJECT, TOP_LEFT);
+	AddAnchor(IDC_STATIC_SUBJECT2, TOP_LEFT);
+
 	AddAnchor(IDC_FROMGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TOGROUP, TOP_LEFT, TOP_RIGHT);
 

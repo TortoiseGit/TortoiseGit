@@ -55,6 +55,7 @@ Released: unreleased
    the Settings dialog -> Advanced and set TGitCacheCheckContent to "false".
  * Fixed issue #1300: TortoiseProc LogDialog might crash if tortoisegit.index or tortoisegit.data is broken
  * Fixed issue #1413: Submodule Diff Dialog: show log button should be right-aligned
+ * Fixed issue #1418: Submodule Diff Dialog labels disappeared
 
 = Release 1.7.12.0 =
 Released: 2012-08-10
