@@ -863,6 +863,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 
 void CCachedDirectory::RefreshMostImportant()
 {
+	AutoLocker lock(m_critSec);
 	CacheEntryMap::iterator itMembers;
 	git_wc_status_kind newStatus = m_ownStatus.GetEffectiveStatus();
 	for (itMembers = m_entryCache.begin(); itMembers != m_entryCache.end(); ++itMembers)
