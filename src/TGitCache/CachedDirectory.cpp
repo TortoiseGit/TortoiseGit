@@ -127,7 +127,9 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				CStatusCacheEntry entry;
 				if (!entry.LoadFromDisk(pFile))
 					return false;
-				m_entryCache[sKey] = entry;
+				// only read non empty keys (just needed for transition from old TGit clients)
+				if (!sKey.IsEmpty())
+					m_entryCache[sKey] = entry;
 			}
 		}
 		LOADVALUEFROMFILE(mapsize);
@@ -162,6 +164,9 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 				return false;
 			}
 			sPath.ReleaseBuffer(value);
+			// make sure paths do not end with backslash (just needed for transition from old TGit clients)
+			if (sPath.GetLength() > 3 && sPath[sPath.GetLength() - 1] == _T('\\'))
+				sPath.TrimRight(_T("\\"));
 			m_directoryPath.SetFromWin(sPath);
 			m_directoryPath.GetGitPathString(); // make sure git path string is set
 		}
@@ -312,6 +317,9 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 		{
 			AutoLocker lock(m_critSec);
 			CString strCacheKey = GetCacheKey(path);
+
+			if (strCacheKey.IsEmpty())
+				return CStatusCacheEntry();
 
 			CacheEntryMap::iterator itMap = m_entryCache.find(strCacheKey);
 			if(itMap == m_entryCache.end() || isIgnoreFileChanged)
