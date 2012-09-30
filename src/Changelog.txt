@@ -1,5 +1,5 @@
 = Release 1.7.13.0 =
-Released: unreleased
+Released: 2012-09-30
 
 == Features ==
  * Fixed issue #1224: Still can't delete a remote tag
