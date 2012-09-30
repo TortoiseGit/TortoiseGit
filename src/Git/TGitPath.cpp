@@ -291,10 +291,11 @@ void CTGitPath::SetFwdslashPath(const CString& sPath) const
 
 	// We don't leave a trailing /
 	m_sFwdslashPath.TrimRight('/');
+	m_sFwdslashPath.Replace(L"//?/", L"");
 
 	SanitizeRootPath(m_sFwdslashPath, true);
 
-	m_sFwdslashPath.Replace(_T("file:////"), _T("file:///\\"));
+	m_sFwdslashPath.Replace(_T("file:////"), _T("file://"));
 
 	m_sUTF8FwdslashPath.Empty();
 }
