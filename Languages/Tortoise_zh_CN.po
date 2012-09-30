@@ -13,14 +13,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-08-26 10:34+0000\n"
+"PO-Revision-Date: 2012-09-27 11:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -334,7 +334,7 @@ msgstr "高级设置(&A)..."
 
 #. Resource IDs: (1701)
 msgid "&All"
-msgstr ""
+msgstr "全部(&A)"
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
@@ -556,6 +556,10 @@ msgstr "钉住(&D)"
 msgid "&Down"
 msgstr "向下(&D)"
 
+#. Resource IDs: (78, 1710)
+msgid "&Download"
+msgstr "下载(&D)"
+
 #. Resource IDs: (65535)
 msgid "&Edit"
 msgstr "编辑(&E)"
@@ -721,6 +725,10 @@ msgstr "初始化子模块(&I)(--init)"
 msgid "&Inline diff word-wise"
 msgstr "行间差异（智能）(&I)"
 
+#. Resource IDs: (81)
+msgid "&Install"
+msgstr "安装(&I)"
+
 #. Resource IDs: (1016)
 msgid "&Jump to first difference when loading"
 msgstr "加载时跳转到第一个差异处(&J)"
@@ -840,7 +848,7 @@ msgstr "无双击事件(&N)"
 
 #. Resource IDs: (1702)
 msgid "&None"
-msgstr ""
+msgstr "无(&N)"
 
 #. Resource IDs: (1661)
 msgid "&Notepad2"
@@ -1020,7 +1028,7 @@ msgstr "设置MSysGit路径"
 
 #. Resource IDs: (1486)
 msgid "&Set upstream/track remote branch"
-msgstr ""
+msgstr "设置上游/跟踪远程分支(&S)"
 
 #. Resource IDs: (9)
 msgid "&Settings"
@@ -1088,6 +1096,10 @@ msgstr "标签显示文档(&T)"
 
 #. Resource IDs: (1513)
 msgid "&Tags"
+msgstr "标签(&T)"
+
+#. Resource IDs: (65535)
+msgid "&Tags:"
 msgstr "标签(&T)"
 
 #. Resource IDs: (16915)
@@ -1394,11 +1406,8 @@ msgid "A branch with this name already exists."
 msgstr "分支名已存在"
 
 #. Resource IDs: (201)
-msgid ""
-"A newer version is available. Please go to "
-"http://code.google.com/p/tortoisegit and download the current version! Click"
-" _here_ to go directly to our website."
-msgstr "有更新的版本。\\r\\n请到 http://code.google.com/p/tortoisegit 下载当前最新版本。"
+msgid "A newer version is available. Please download the current version!"
+msgstr "新版本发布，请下载!"
 
 #. Resource IDs: (195)
 msgid ""
@@ -1661,7 +1670,7 @@ msgstr "修改"
 
 #. Resource IDs: (1555)
 msgid "Amend &Last Commit"
-msgstr ""
+msgstr "修改上次提交(&L)"
 
 #. Resource IDs: (80)
 msgid ""
@@ -1739,10 +1748,6 @@ msgstr "应用标准差异文件"
 msgid "Arabic"
 msgstr "阿拉伯语"
 
-#. Resource IDs: (1492)
-msgid "Arbitary &URL:"
-msgstr "其他&URL"
-
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "其他&URL"
@@ -1785,7 +1790,7 @@ msgstr "假定有效/无修改"
 
 #. Resource IDs: (1550)
 msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
-msgstr ""
+msgstr "假设有效/没有修改(\"Needs-lock\" 在TortotiseSVN)"
 
 #. Resource IDs: (77)
 #, c-format
@@ -2200,6 +2205,10 @@ msgstr "凯尔特语"
 msgid "Central European"
 msgstr "中欧"
 
+#. Resource IDs: (1697)
+msgid "Change log"
+msgstr "改动日志"
+
 #. Resource IDs: (3601)
 msgid ""
 "Change the printer and printing options\n"
@@ -2248,8 +2257,8 @@ msgid "Check"
 msgstr "选中"
 
 #. Resource IDs: (174)
-msgid "Check For Updates"
-msgstr "检查更新"
+msgid "Check For Updates - TortoiseGit"
+msgstr "检查新版本 - TortoiseGit"
 
 #. Resource IDs: (1031)
 msgid "Check For Updates..."
@@ -2286,10 +2295,6 @@ msgstr "选中可在日志信息中使用较简短的日期及时间"
 #. Resource IDs: (1700)
 msgid "Check:"
 msgstr "核查"
-
-#. Resource IDs: (65535)
-msgid "Checking if a newer version of TortoiseGit is available..."
-msgstr "正在检查是否有更新版本的 TortoiseGit..."
 
 #. Resource IDs: (77)
 msgid "Checkout"
@@ -2408,10 +2413,6 @@ msgstr "点击这里进入网站"
 msgid "Click here to select a recently typed message"
 msgstr "点击这里选择一条最近输入过的信息"
 
-#. Resource IDs: (1467)
-msgid "Click here to view change log"
-msgstr "点击这里改变历史"
-
 #. Resource IDs: (65535)
 msgid ""
 "Click on \"Advanced\" to specify alternate diff programs based on file "
@@ -2506,7 +2507,7 @@ msgstr "合并成一个邮件"
 
 #. Resource IDs: (1255)
 msgid "Combine to one commit"
-msgstr ""
+msgstr "合并到一个提交"
 
 #. Resource IDs: (65535)
 msgid "Comman&ds:"
@@ -2682,6 +2683,10 @@ msgstr "冲突已经解决"
 msgid "Conflicted"
 msgstr "冲突"
 
+#. Resource IDs: (86)
+msgid "Conflicts"
+msgstr "冲突"
+
 #. Resource IDs: (188)
 #, c-format
 msgid "Conflicts: %d"
@@ -2736,7 +2741,7 @@ msgstr "复制和改名"
 
 #. Resource IDs: (1252)
 msgid "Copy log messages to clipboard"
-msgstr ""
+msgstr "复制历史信息到剪贴板"
 
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
@@ -2797,7 +2802,7 @@ msgid ""
 "Could not copy the files!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "不能复制文件!\n\n%s"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2879,7 +2884,7 @@ msgid ""
 "Could not start diff viewer!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "不能开始比较程序!\n\n%s"
 
 #. Resource IDs: (81)
 #, c-format
@@ -2887,7 +2892,7 @@ msgid ""
 "Could not start external diff program!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "不能打开外部比较程序!\n\n%s"
 
 #. Resource IDs: (81)
 #, c-format
@@ -2895,7 +2900,7 @@ msgid ""
 "Could not start external merge program!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "不能打开外部合并程序!\n\n%s"
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
@@ -2907,7 +2912,7 @@ msgid ""
 "Could not start text viewer!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "不能打开文本视图!\n\n%s"
 
 #. Resource IDs: (603)
 msgid "Could not start the Putty Agent (pageant)."
@@ -3182,11 +3187,11 @@ msgstr "删除远程分支"
 
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
-msgstr ""
+msgstr "删除远程标签 - TortoiseGit"
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
-msgstr ""
+msgstr "删除远程标签 ..."
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3457,6 +3462,10 @@ msgstr "完成"
 msgid "Down"
 msgstr "向下"
 
+#. Resource IDs: (1698)
+msgid "Download"
+msgstr "下载"
+
 #. Resource IDs: (1002)
 msgid "Drag to make this menu float"
 msgstr "通过拖动使此菜单浮动"
@@ -3535,7 +3544,7 @@ msgstr "编辑作者名"
 
 #. Resource IDs: (86)
 msgid "Edit description"
-msgstr ""
+msgstr "编辑描述"
 
 #. Resource IDs: (110)
 msgid "Edit extension specific diff program"
@@ -3738,7 +3747,7 @@ msgstr "可执行 (*.exe)|*.exe|命令 (*.com)|*.com|信息 (*.pdf)|*.pdf|批处
 
 #. Resource IDs: (11028)
 msgid "Executable (+x)"
-msgstr ""
+msgstr "可执行(+X)"
 
 #. Resource IDs: (1002)
 msgid "Existing"
@@ -5212,7 +5221,7 @@ msgstr "标记为已解决"
 msgid ""
 "Marks a file as resolved in Git\n"
 "Mark as resolved"
-msgstr ""
+msgstr "把一个文件在Git中标记为已解决\n标记为已解决"
 
 #. Resource IDs: (13)
 msgid "Marks revision as bad"
@@ -5313,10 +5322,6 @@ msgstr "信息"
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "信息"
-
-#. Resource IDs: (78)
-msgid "Mime type"
-msgstr "MIME 类型"
 
 #. Resource IDs: (1158)
 msgid "Min"
@@ -5528,7 +5533,7 @@ msgid ""
 "No command specified!\n"
 "\n"
 "TortoiseProc.exe is used by the Shell extension and should not be called directly!"
-msgstr ""
+msgstr "未指定命令！\n\nTortoiseProc.exe 用于浏览器扩展，不能直接执行！"
 
 #. Resource IDs: (81)
 msgid "No command value specified!"
@@ -5624,6 +5629,10 @@ msgstr "北欧"
 #. Resource IDs: (78)
 msgid "Not Versioned Files"
 msgstr "不受版本管理的文件"
+
+#. Resource IDs: (83)
+msgid "Not all files could be downloaded and verified."
+msgstr "不是所有文件已经下载和验证"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -6372,11 +6381,11 @@ msgstr "变基"
 #. Resource IDs: (1254)
 #, c-format
 msgid "Rebase \"%s\" onto this..."
-msgstr ""
+msgstr "变基 \"%s\" 到这..."
 
 #. Resource IDs: (20)
 msgid "Rebase..."
-msgstr ""
+msgstr "变基(rebase)..."
 
 #. Resource IDs: (67)
 #, c-format
@@ -6631,10 +6640,6 @@ msgstr "改名的节点"
 msgid "Renames files/folders inside version control"
 msgstr "重命名版本控制树中的文件/文件夹"
 
-#. Resource IDs: (209)
-msgid "Repair move"
-msgstr "准备移动"
-
 #. Resource IDs: (3603)
 msgid ""
 "Repeat the last action\n"
@@ -6838,7 +6843,7 @@ msgstr "版本分支图"
 #. Resource IDs: (86)
 msgid ""
 "Revision(s) reverted. All changes are integrated into your working tree now."
-msgstr ""
+msgstr "版本已经回溯. 所有的改动现在已经在工作目录."
 
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
@@ -7355,6 +7360,10 @@ msgstr "显示所有分支为已提交"
 msgid "Show changes as &unified diff"
 msgstr "以标准差异格式显示改变(&U)"
 
+#. Resource IDs: (83)
+msgid "Show destination folder"
+msgstr "显示目标文件夹"
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr "显示和上次提交的差异"
@@ -7385,11 +7394,11 @@ msgstr "现实重命名和复制之前的历史"
 
 #. Resource IDs: (81)
 msgid "Show log of submodule"
-msgstr ""
+msgstr "显示子模块历史"
 
 #. Resource IDs: (14)
 msgid "Show log of this folder"
-msgstr ""
+msgstr "现实这个目录历史"
 
 #. Resource IDs: (1256)
 msgid "Show log..."
@@ -7530,11 +7539,11 @@ msgstr "跳过补丁: %s"
 
 #. Resource IDs: (11029)
 msgid "Skip worktree"
-msgstr ""
+msgstr "跳过工作树"
 
 #. Resource IDs: (1529)
 msgid "Skip worktree (\"Locked\" in TortoiseSVN)"
-msgstr ""
+msgstr "跳过工作树(\"Lockes\"在TortoiseSVN)"
 
 #. Resource IDs: (74)
 msgid "Skipped"
@@ -7854,10 +7863,6 @@ msgstr "标签"
 msgid "Tag Info"
 msgstr "标签信息"
 
-#. Resource IDs: (65535)
-msgid "Tag:"
-msgstr ""
-
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7921,7 +7926,7 @@ msgstr "差异比较引擎终止，错误信息:\n%s"
 msgid ""
 "The entered source ref is ambiguous.\n"
 "You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "含糊的原引用名\n分支使用\"refs/heads/\"前缀，标签使用 \"refs/tags/\"前缀来使得名字唯一！"
 
 #. Resource IDs: (64)
 #, c-format
@@ -9443,7 +9448,7 @@ msgstr "已替换"
 
 #. Resource IDs: (195)
 msgid "skip-worktree"
-msgstr ""
+msgstr "跳过工作树"
 
 #. Resource IDs: (208)
 #, c-format

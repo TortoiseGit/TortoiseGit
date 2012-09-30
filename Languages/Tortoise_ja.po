@@ -15,14 +15,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-08-26 10:34+0000\n"
+"PO-Revision-Date: 2012-09-27 11:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -336,7 +336,7 @@ msgstr "高度な設定(&A)..."
 
 #. Resource IDs: (1701)
 msgid "&All"
-msgstr ""
+msgstr "全て(&A)"
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
@@ -558,6 +558,10 @@ msgstr "ドッキング(&D)"
 msgid "&Down"
 msgstr "下へ(&D)"
 
+#. Resource IDs: (78, 1710)
+msgid "&Download"
+msgstr "ダウンロード(&D)"
+
 #. Resource IDs: (65535)
 msgid "&Edit"
 msgstr "編集(&E)"
@@ -723,6 +727,10 @@ msgstr "サブモジュールを初期化する(--init) (&I)"
 msgid "&Inline diff word-wise"
 msgstr "単語単位での行内差分(&I)"
 
+#. Resource IDs: (81)
+msgid "&Install"
+msgstr "インストール(&I)"
+
 #. Resource IDs: (1016)
 msgid "&Jump to first difference when loading"
 msgstr "ロード時に最初の相違点へ移動する(&J)"
@@ -842,7 +850,7 @@ msgstr "ダブルクリックイベントを発生しない(&N)"
 
 #. Resource IDs: (1702)
 msgid "&None"
-msgstr ""
+msgstr "無し(&N)"
 
 #. Resource IDs: (1661)
 msgid "&Notepad2"
@@ -1092,6 +1100,10 @@ msgstr "タブ型ドキュメント(&T)"
 msgid "&Tags"
 msgstr "タグ(&T)"
 
+#. Resource IDs: (65535)
+msgid "&Tags:"
+msgstr "タグ(&T):"
+
 #. Resource IDs: (16915)
 msgid "&Text"
 msgstr "テキスト(&T)"
@@ -1186,7 +1198,7 @@ msgstr "表示(&V)"
 
 #. Resource IDs: (1568)
 msgid "&Warn on missing Signed-Off-By on commit"
-msgstr "コメントに Signed-off-by が含まれない場合に警告する(&W)"
+msgstr "コミットに Signed-off-by が含まれない場合に警告する(&W)"
 
 #. Resource IDs: (32774)
 msgid "&Whitespaces"
@@ -1396,11 +1408,8 @@ msgid "A branch with this name already exists."
 msgstr "このブランチ名は既に存在します"
 
 #. Resource IDs: (201)
-msgid ""
-"A newer version is available. Please go to "
-"http://code.google.com/p/tortoisegit and download the current version! Click"
-" _here_ to go directly to our website."
-msgstr "新しいバージョンを利用できます。http://code.google.com/p/tortoisegit から最新のバージョンをダウンロードして下さい（このメッセージをクリックすると、直接ウェブサイトへ行くことができます）。"
+msgid "A newer version is available. Please download the current version!"
+msgstr "新しいバージョンが利用可能です。最新バージョンをダウンロードしてください。"
 
 #. Resource IDs: (195)
 msgid ""
@@ -1741,10 +1750,6 @@ msgstr "Unified形式の差分を適用"
 msgid "Arabic"
 msgstr "アラビア語"
 
-#. Resource IDs: (1492)
-msgid "Arbitary &URL:"
-msgstr "任意のURL(&U):"
-
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "任意の&URL:"
@@ -2036,7 +2041,7 @@ msgstr "ブランチ"
 msgid ""
 "Branch %s behind %s\r\n"
 "%s will fastforward to %s"
-msgstr ""
+msgstr "ブランチ %s は %s の下流にあります。\n%s は %s へファスト・フォワードされます"
 
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
@@ -2202,6 +2207,10 @@ msgstr "ケルト語"
 msgid "Central European"
 msgstr "中央ヨーロッパ"
 
+#. Resource IDs: (1697)
+msgid "Change log"
+msgstr "変更ログ"
+
 #. Resource IDs: (3601)
 msgid ""
 "Change the printer and printing options\n"
@@ -2250,8 +2259,8 @@ msgid "Check"
 msgstr "チェック"
 
 #. Resource IDs: (174)
-msgid "Check For Updates"
-msgstr "最新バージョンをチェック"
+msgid "Check For Updates - TortoiseGit"
+msgstr "更新を確認する - TortoiseGit"
 
 #. Resource IDs: (1031)
 msgid "Check For Updates..."
@@ -2289,10 +2298,6 @@ msgstr "有効にすると、ログメッセージで短い日付/時刻形式�
 msgid "Check:"
 msgstr "チェック:"
 
-#. Resource IDs: (65535)
-msgid "Checking if a newer version of TortoiseGit is available..."
-msgstr "TortoiseGit の最新バージョンが使用可能かどうかをチェックしています..."
-
 #. Resource IDs: (77)
 msgid "Checkout"
 msgstr "チェックアウト"
@@ -2316,7 +2321,7 @@ msgstr "選択したコミットをチェリーピック"
 
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
-msgstr "このコメントをチェリーピック"
+msgstr "このコミットをチェリーピック"
 
 #. Resource IDs: (65535)
 msgid "Chinese"
@@ -2409,10 +2414,6 @@ msgstr "WEBサイトへ行くにはここをクリックしてください"
 #. Resource IDs: (170)
 msgid "Click here to select a recently typed message"
 msgstr "最近入力したメッセージを選択する場合はここをクリックしてください"
-
-#. Resource IDs: (1467)
-msgid "Click here to view change log"
-msgstr "変更履歴を見るにはここをクリックして下さい"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -2683,6 +2684,10 @@ msgstr "解決済みの競合"
 #. Resource IDs: (263, 65535)
 msgid "Conflicted"
 msgstr "競合"
+
+#. Resource IDs: (86)
+msgid "Conflicts"
+msgstr ""
 
 #. Resource IDs: (188)
 #, c-format
@@ -3459,6 +3464,10 @@ msgstr "終了"
 msgid "Down"
 msgstr "下へ"
 
+#. Resource IDs: (1698)
+msgid "Download"
+msgstr "ダウンロード"
+
 #. Resource IDs: (1002)
 msgid "Drag to make this menu float"
 msgstr "ドラッグするとメニューがフローティング表示になります"
@@ -3501,7 +3510,7 @@ msgstr "EUC-KR"
 
 #. Resource IDs: (3697)
 msgid "EXT"
-msgstr ""
+msgstr "EXT"
 
 #. Resource IDs: (65535)
 msgid "Eastern European"
@@ -5316,10 +5325,6 @@ msgstr "メッセージ"
 msgid "Messages"
 msgstr "メッセージ"
 
-#. Resource IDs: (78)
-msgid "Mime type"
-msgstr "MIMEタイプ"
-
 #. Resource IDs: (1158)
 msgid "Min"
 msgstr "最小"
@@ -5626,6 +5631,10 @@ msgstr "北ヨーロッパ"
 #. Resource IDs: (78)
 msgid "Not Versioned Files"
 msgstr "バージョン管理下のファイルではありません"
+
+#. Resource IDs: (83)
+msgid "Not all files could be downloaded and verified."
+msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -6633,10 +6642,6 @@ msgstr "名前を変更されたノード"
 msgid "Renames files/folders inside version control"
 msgstr "バージョン管理内のファイル/フォルダーの名前を変更"
 
-#. Resource IDs: (209)
-msgid "Repair move"
-msgstr "移動を修復"
-
 #. Resource IDs: (3603)
 msgid ""
 "Repeat the last action\n"
@@ -6744,7 +6749,7 @@ msgstr "ファイルの競合を解決する"
 
 #. Resource IDs: (66)
 msgid "Restart rebase"
-msgstr "付け替え(Rebase)再開"
+msgstr "付け替え再開"
 
 #. Resource IDs: (64)
 msgid "Restore"
@@ -7357,6 +7362,10 @@ msgstr "このコミットを含むブランチを表示"
 msgid "Show changes as &unified diff"
 msgstr "&Unified 形式で変更を表示"
 
+#. Resource IDs: (83)
+msgid "Show destination folder"
+msgstr "宛先のフォルダを表示"
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr "最後のコミットとの差分を表示"
@@ -7604,7 +7613,7 @@ msgstr "コミットフックを開始"
 
 #. Resource IDs: (67, 68)
 msgid "Start Rebase"
-msgstr "付け替え(Rebase)開始"
+msgstr "付け替え開始"
 
 #. Resource IDs: (569)
 msgid "Start Update Hook"
@@ -7855,10 +7864,6 @@ msgstr "タグ"
 #. Resource IDs: (82)
 msgid "Tag Info"
 msgstr "タグ情報"
-
-#. Resource IDs: (65535)
-msgid "Tag:"
-msgstr "タグ:"
 
 #. Resource IDs: (79)
 #, c-format

@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-08-26 10:34+0000\n"
+"PO-Revision-Date: 2012-09-27 11:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -555,6 +555,10 @@ msgstr "&Присоединение"
 msgid "&Down"
 msgstr "&Вниз"
 
+#. Resource IDs: (78, 1710)
+msgid "&Download"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Edit"
 msgstr "&Правка"
@@ -719,6 +723,10 @@ msgstr ""
 #. Resource IDs: (32825)
 msgid "&Inline diff word-wise"
 msgstr "Внутри&строчные различия по словам"
+
+#. Resource IDs: (81)
+msgid "&Install"
+msgstr ""
 
 #. Resource IDs: (1016)
 msgid "&Jump to first difference when loading"
@@ -1089,6 +1097,10 @@ msgstr "Документ с &закладками"
 msgid "&Tags"
 msgstr "&Метки"
 
+#. Resource IDs: (65535)
+msgid "&Tags:"
+msgstr ""
+
 #. Resource IDs: (16915)
 msgid "&Text"
 msgstr "&Текст"
@@ -1393,11 +1405,8 @@ msgid "A branch with this name already exists."
 msgstr ""
 
 #. Resource IDs: (201)
-msgid ""
-"A newer version is available. Please go to "
-"http://code.google.com/p/tortoisegit and download the current version! Click"
-" _here_ to go directly to our website."
-msgstr "Доступна новая версия. Пожалуйста, посетите http://code.google.com/p/tortoisegit и скачайте новую версию! Вы можете нажать _здесь_ для того, чтобы перейти прямо на наш сайт."
+msgid "A newer version is available. Please download the current version!"
+msgstr ""
 
 #. Resource IDs: (195)
 msgid ""
@@ -1736,10 +1745,6 @@ msgstr "Применение объединённых различий"
 
 #. Resource IDs: (65535)
 msgid "Arabic"
-msgstr ""
-
-#. Resource IDs: (1492)
-msgid "Arbitary &URL:"
 msgstr ""
 
 #. Resource IDs: (1495)
@@ -2199,6 +2204,10 @@ msgstr ""
 msgid "Central European"
 msgstr ""
 
+#. Resource IDs: (1697)
+msgid "Change log"
+msgstr ""
+
 #. Resource IDs: (3601)
 msgid ""
 "Change the printer and printing options\n"
@@ -2247,8 +2256,8 @@ msgid "Check"
 msgstr "Отметить"
 
 #. Resource IDs: (174)
-msgid "Check For Updates"
-msgstr "Проверка обновлений"
+msgid "Check For Updates - TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (1031)
 msgid "Check For Updates..."
@@ -2285,10 +2294,6 @@ msgstr "Отметьте для использования более корот
 #. Resource IDs: (1700)
 msgid "Check:"
 msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Checking if a newer version of TortoiseGit is available..."
-msgstr "Проверка наличия более новой версии TortoiseGit..."
 
 #. Resource IDs: (77)
 msgid "Checkout"
@@ -2406,10 +2411,6 @@ msgstr "Щёлкните здесь для перехода на web-сайт"
 #. Resource IDs: (170)
 msgid "Click here to select a recently typed message"
 msgstr "Нажмите для выбора из недавно введённых сообщений"
-
-#. Resource IDs: (1467)
-msgid "Click here to view change log"
-msgstr "Кликните для отображения журнала изменений"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -2680,6 +2681,10 @@ msgstr "Улаженный конфликт"
 #. Resource IDs: (263, 65535)
 msgid "Conflicted"
 msgstr "Конфликтующее"
+
+#. Resource IDs: (86)
+msgid "Conflicts"
+msgstr ""
 
 #. Resource IDs: (188)
 #, c-format
@@ -3455,6 +3460,10 @@ msgstr "Готово"
 #. Resource IDs: (1385)
 msgid "Down"
 msgstr "Вниз"
+
+#. Resource IDs: (1698)
+msgid "Download"
+msgstr ""
 
 #. Resource IDs: (1002)
 msgid "Drag to make this menu float"
@@ -5313,10 +5322,6 @@ msgstr "Сообщение"
 msgid "Messages"
 msgstr "Сообщения"
 
-#. Resource IDs: (78)
-msgid "Mime type"
-msgstr "Mime-тип"
-
 #. Resource IDs: (1158)
 msgid "Min"
 msgstr "Min"
@@ -5622,6 +5627,10 @@ msgstr ""
 
 #. Resource IDs: (78)
 msgid "Not Versioned Files"
+msgstr ""
+
+#. Resource IDs: (83)
+msgid "Not all files could be downloaded and verified."
 msgstr ""
 
 #. Resource IDs: (3857)
@@ -6630,10 +6639,6 @@ msgstr "Переименованный узел"
 msgid "Renames files/folders inside version control"
 msgstr "Переименовывает файлы/папки внутри управления версиями"
 
-#. Resource IDs: (209)
-msgid "Repair move"
-msgstr "Поправить переименование"
-
 #. Resource IDs: (3603)
 msgid ""
 "Repeat the last action\n"
@@ -7354,6 +7359,10 @@ msgstr ""
 msgid "Show changes as &unified diff"
 msgstr "Показать изменения как объединённые разли&чия"
 
+#. Resource IDs: (83)
+msgid "Show destination folder"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -7852,10 +7861,6 @@ msgstr "Метка"
 #. Resource IDs: (82)
 msgid "Tag Info"
 msgstr "Информация о метке"
-
-#. Resource IDs: (65535)
-msgid "Tag:"
-msgstr ""
 
 #. Resource IDs: (79)
 #, c-format

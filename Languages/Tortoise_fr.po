@@ -13,14 +13,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-08-26 10:34+0000\n"
+"PO-Revision-Date: 2012-09-27 11:48+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -334,7 +334,7 @@ msgstr "&Avancé..."
 
 #. Resource IDs: (1701)
 msgid "&All"
-msgstr ""
+msgstr "&Tous"
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
@@ -556,6 +556,10 @@ msgstr "&Ranger"
 msgid "&Down"
 msgstr "&Bas"
 
+#. Resource IDs: (78, 1710)
+msgid "&Download"
+msgstr "&Télécharger"
+
 #. Resource IDs: (65535)
 msgid "&Edit"
 msgstr "&Editer"
@@ -721,6 +725,10 @@ msgstr "&Initialiser les sous-modules (--init)"
 msgid "&Inline diff word-wise"
 msgstr "Différences de &ligne dans les mots"
 
+#. Resource IDs: (81)
+msgid "&Install"
+msgstr "&Installer"
+
 #. Resource IDs: (1016)
 msgid "&Jump to first difference when loading"
 msgstr "&Aller directement à la première différence au chargement"
@@ -840,7 +848,7 @@ msgstr "&Pas d'événement double-clic"
 
 #. Resource IDs: (1702)
 msgid "&None"
-msgstr ""
+msgstr "&Aucun"
 
 #. Resource IDs: (1661)
 msgid "&Notepad2"
@@ -1020,7 +1028,7 @@ msgstr "&Sélectionner le chemin de MSysGit"
 
 #. Resource IDs: (1486)
 msgid "&Set upstream/track remote branch"
-msgstr ""
+msgstr "&Régler le flux d'envoi/la piste de la branche distante"
 
 #. Resource IDs: (9)
 msgid "&Settings"
@@ -1089,6 +1097,10 @@ msgstr "Document &Tabulé"
 #. Resource IDs: (1513)
 msgid "&Tags"
 msgstr "&Tags"
+
+#. Resource IDs: (65535)
+msgid "&Tags:"
+msgstr "&Tags:"
 
 #. Resource IDs: (16915)
 msgid "&Text"
@@ -1394,11 +1406,8 @@ msgid "A branch with this name already exists."
 msgstr "Une branche avec ce nom existe déjà."
 
 #. Resource IDs: (201)
-msgid ""
-"A newer version is available. Please go to "
-"http://code.google.com/p/tortoisegit and download the current version! Click"
-" _here_ to go directly to our website."
-msgstr "Une nouvelle version est disponible.\nVeuillez aller sur http://code.google.com/p/tortoisegit et téléchargez la version actuelle ! Cliquer _ici_ pour aller directement sur notre site web."
+msgid "A newer version is available. Please download the current version!"
+msgstr "Une nouvelle version est disponible. Veuillez télécharger la version actuelle!"
 
 #. Resource IDs: (195)
 msgid ""
@@ -1739,10 +1748,6 @@ msgstr "Appliquer un diff standard"
 msgid "Arabic"
 msgstr "Arabe"
 
-#. Resource IDs: (1492)
-msgid "Arbitary &URL:"
-msgstr "&URL arbitraire :"
-
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
 msgstr "&URL arbitraire :"
@@ -1785,7 +1790,7 @@ msgstr "Gérer manuellement le suivi de modification"
 
 #. Resource IDs: (1550)
 msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
-msgstr ""
+msgstr "Assumer valide/inchangé (\"Besoin-verrou\" dans TortoiseSVN)"
 
 #. Resource IDs: (77)
 #, c-format
@@ -2200,6 +2205,10 @@ msgstr "Celte"
 msgid "Central European"
 msgstr "Europe centrale"
 
+#. Resource IDs: (1697)
+msgid "Change log"
+msgstr "Changer le journal"
+
 #. Resource IDs: (3601)
 msgid ""
 "Change the printer and printing options\n"
@@ -2248,8 +2257,8 @@ msgid "Check"
 msgstr "Sélectionner"
 
 #. Resource IDs: (174)
-msgid "Check For Updates"
-msgstr "Vérifier les mises à jours"
+msgid "Check For Updates - TortoiseGit"
+msgstr "Vérifier les mises à jour - TortoiseGit"
 
 #. Resource IDs: (1031)
 msgid "Check For Updates..."
@@ -2286,10 +2295,6 @@ msgstr "Sélectionnez pour utiliser un format de date et heure moins détaillé 
 #. Resource IDs: (1700)
 msgid "Check:"
 msgstr "Vérifier : "
-
-#. Resource IDs: (65535)
-msgid "Checking if a newer version of TortoiseGit is available..."
-msgstr "Contrôle si une nouvelle version de TortoiseGit est disponible..."
 
 #. Resource IDs: (77)
 msgid "Checkout"
@@ -2407,10 +2412,6 @@ msgstr "Cliquez ici pour accéder au site internet"
 #. Resource IDs: (170)
 msgid "Click here to select a recently typed message"
 msgstr "Cliquez ici pour sélectionner un commentaire précédent"
-
-#. Resource IDs: (1467)
-msgid "Click here to view change log"
-msgstr "Cliquez ici pour consulter le journal des modifications"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -2682,6 +2683,10 @@ msgstr "Conflit résolu"
 msgid "Conflicted"
 msgstr "En conflit"
 
+#. Resource IDs: (86)
+msgid "Conflicts"
+msgstr "Conflits"
+
 #. Resource IDs: (188)
 #, c-format
 msgid "Conflicts: %d"
@@ -2736,7 +2741,7 @@ msgstr "Copier et renommer"
 
 #. Resource IDs: (1252)
 msgid "Copy log messages to clipboard"
-msgstr ""
+msgstr "Copier les messages des journaux dans le presse-papier"
 
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
@@ -2797,7 +2802,7 @@ msgid ""
 "Could not copy the files!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Impossible de copier les fichiers!\n\n%s"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2879,7 +2884,7 @@ msgid ""
 "Could not start diff viewer!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Impossible de démarrer le visionneur de différences!\n\n%s"
 
 #. Resource IDs: (81)
 #, c-format
@@ -2887,7 +2892,7 @@ msgid ""
 "Could not start external diff program!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Impossible de démarrer le programme externe de différenciation!\n\n%s"
 
 #. Resource IDs: (81)
 #, c-format
@@ -2895,7 +2900,7 @@ msgid ""
 "Could not start external merge program!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Impossible de démarrer le programme externe de fusion!\n\n%s"
 
 #. Resource IDs: (3857)
 msgid "Could not start print job."
@@ -2907,7 +2912,7 @@ msgid ""
 "Could not start text viewer!\n"
 "\n"
 "%s"
-msgstr ""
+msgstr "Impossible de démarrer le visionneur de texte!\n\n%s"
 
 #. Resource IDs: (603)
 msgid "Could not start the Putty Agent (pageant)."
@@ -3182,11 +3187,11 @@ msgstr "Supprimer la branche distante"
 
 #. Resource IDs: (4579)
 msgid "Delete remote tag - TortoiseGit"
-msgstr ""
+msgstr "Supprimer le tag distant - Tortoisegit"
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
-msgstr ""
+msgstr "Supprimer les tags distants..."
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3457,6 +3462,10 @@ msgstr "Terminé"
 msgid "Down"
 msgstr "Bas"
 
+#. Resource IDs: (1698)
+msgid "Download"
+msgstr "Télécharger"
+
 #. Resource IDs: (1002)
 msgid "Drag to make this menu float"
 msgstr "Glisser pour rendre ce menu flottant"
@@ -3535,7 +3544,7 @@ msgstr "Editer le nom de l'auteur"
 
 #. Resource IDs: (86)
 msgid "Edit description"
-msgstr ""
+msgstr "Editer la description"
 
 #. Resource IDs: (110)
 msgid "Edit extension specific diff program"
@@ -3738,7 +3747,7 @@ msgstr "Exécutable (*.exe)|*.exe|Commande (*.com)|*.com|Information (*.pdf)|*.p
 
 #. Resource IDs: (11028)
 msgid "Executable (+x)"
-msgstr ""
+msgstr "Exécutable (+x)"
 
 #. Resource IDs: (1002)
 msgid "Existing"
@@ -5212,7 +5221,7 @@ msgstr "Marquer comme résolu"
 msgid ""
 "Marks a file as resolved in Git\n"
 "Mark as resolved"
-msgstr ""
+msgstr "Marque un fichier comme résolu dans Git\nMarque comme résolu"
 
 #. Resource IDs: (13)
 msgid "Marks revision as bad"
@@ -5313,10 +5322,6 @@ msgstr "Commentaire"
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "Commentaires"
-
-#. Resource IDs: (78)
-msgid "Mime type"
-msgstr "Type mime"
 
 #. Resource IDs: (1158)
 msgid "Min"
@@ -5528,7 +5533,7 @@ msgid ""
 "No command specified!\n"
 "\n"
 "TortoiseProc.exe is used by the Shell extension and should not be called directly!"
-msgstr ""
+msgstr "Aucune commande indiquée!\n\nTortoiseProc.exe est utilisé par l'extension extension et ne doit pas être appelé directement!"
 
 #. Resource IDs: (81)
 msgid "No command value specified!"
@@ -5624,6 +5629,10 @@ msgstr "Europe du nord"
 #. Resource IDs: (78)
 msgid "Not Versioned Files"
 msgstr "Fichiers non versionnés"
+
+#. Resource IDs: (83)
+msgid "Not all files could be downloaded and verified."
+msgstr "Tous les fichiers n'ont pas pu être téléchargés et vérifiés."
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -6376,7 +6385,7 @@ msgstr "Rebase \"%s\" sur..."
 
 #. Resource IDs: (20)
 msgid "Rebase..."
-msgstr ""
+msgstr "Rebase..."
 
 #. Resource IDs: (67)
 #, c-format
@@ -6631,10 +6640,6 @@ msgstr "Noeud renommé"
 msgid "Renames files/folders inside version control"
 msgstr "Renomme les fichiers / les répertoires internes du contrôle de version"
 
-#. Resource IDs: (209)
-msgid "Repair move"
-msgstr "Réparer le déplacement"
-
 #. Resource IDs: (3603)
 msgid ""
 "Repeat the last action\n"
@@ -6838,7 +6843,7 @@ msgstr "Graphique de révision "
 #. Resource IDs: (86)
 msgid ""
 "Revision(s) reverted. All changes are integrated into your working tree now."
-msgstr ""
+msgstr "Révision(s) revenue(s). Tous les changements sont intégrés dans votre arborescence de travail maintenant."
 
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
@@ -7355,6 +7360,10 @@ msgstr "Voir les sections pour lesquelles cet engagement est actif"
 msgid "Show changes as &unified diff"
 msgstr "Voir les différences en mode diff &unifié"
 
+#. Resource IDs: (83)
+msgid "Show destination folder"
+msgstr "Voir le dossier de destination"
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr "Afficher la différence avec la dernière livraison"
@@ -7385,11 +7394,11 @@ msgstr "Afficher le journal &avant de renommer/copier"
 
 #. Resource IDs: (81)
 msgid "Show log of submodule"
-msgstr ""
+msgstr "Voir le journal du sous-module"
 
 #. Resource IDs: (14)
 msgid "Show log of this folder"
-msgstr ""
+msgstr "Voir le journal de ce dossier"
 
 #. Resource IDs: (1256)
 msgid "Show log..."
@@ -7530,11 +7539,11 @@ msgstr "Sauter le patch : %s"
 
 #. Resource IDs: (11029)
 msgid "Skip worktree"
-msgstr ""
+msgstr "Eviter l'arborescence de travail"
 
 #. Resource IDs: (1529)
 msgid "Skip worktree (\"Locked\" in TortoiseSVN)"
-msgstr ""
+msgstr "Eviter l'arborescence de travail (\"Verrouillé\" dans TortoiseSVN)"
 
 #. Resource IDs: (74)
 msgid "Skipped"
@@ -7854,10 +7863,6 @@ msgstr "Étiquette"
 msgid "Tag Info"
 msgstr "Information sur l'étiquette"
 
-#. Resource IDs: (65535)
-msgid "Tag:"
-msgstr ""
-
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
@@ -7921,7 +7926,7 @@ msgstr "Le code de gestion des différences s'est arrêté en raison d'un erreur
 msgid ""
 "The entered source ref is ambiguous.\n"
 "You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "La ref de source saisie est équivoque.\nVous devez la rendre unique (e.g.en ajoutant \"refs/en-têtes/\" comme préfixe pour le branches ou \"refs/tags/\" pour les tags)!"
 
 #. Resource IDs: (64)
 #, c-format
@@ -9443,7 +9448,7 @@ msgstr "remplacé"
 
 #. Resource IDs: (195)
 msgid "skip-worktree"
-msgstr ""
+msgstr "Eviter l'arborescence de travail"
 
 #. Resource IDs: (208)
 #, c-format
