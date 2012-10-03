@@ -329,7 +329,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 	m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
 	CString filename;
 	filename.Format(_T("TortoiseGit-%s-%sbit.msi"), version, x86x64);
-	m_fileNames.push_back(filename);
+	m_ctrlFiles.SetItemData(0, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
 
 	std::vector<DWORD> m_installedLangs;
@@ -380,7 +380,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 
 		CString filename;
 		filename.Format(_T("TortoiseGit-LanguagePack-%s-%sbit-%s.msi"), version, x86x64, langs.Mid(5));
-		m_fileNames.push_back(filename);
+		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE)));
 
 		if (std::find(m_installedLangs.begin(), m_installedLangs.end(), loc) != m_installedLangs.end())
 			m_ctrlFiles.SetCheck(pos , TRUE);
@@ -507,8 +507,9 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 		{
 			for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
 			{
+				CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
-					ShellExecute(NULL, _T("open"), folder + m_fileNames[i], NULL, NULL, SW_SHOWNORMAL);
+					ShellExecute(NULL, _T("open"), folder + data->m_filename, NULL, NULL, SW_SHOWNORMAL);
 			}
 			CStandAloneDialog::OnOK();
 		}
@@ -570,20 +571,21 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 		m_ctrlFiles.EnsureVisible(i, FALSE);
 		CRect rect;
 		m_ctrlFiles.GetItemRect(i, &rect, LVIR_BOUNDS);
+		CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 		if (m_ctrlFiles.GetCheck(i) == TRUE)
 		{
-			m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_DOWNLOADING);
+			data->m_status = CUpdateListCtrl::STATUS_DOWNLOADING;
 			m_ctrlFiles.InvalidateRect(rect);
-			if (Download(m_fileNames[i]))
-				m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_SUCCESS);
+			if (Download(data->m_filename))
+				data->m_status = CUpdateListCtrl::STATUS_SUCCESS;
 			else
 			{
-				m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_FAIL);
+				data->m_status = CUpdateListCtrl::STATUS_FAIL;
 				result = FALSE;
 			}
 		}
 		else
-			m_ctrlFiles.SetItemData(i, CUpdateListCtrl::STATUS_IGNORE);
+			data->m_status = CUpdateListCtrl::STATUS_IGNORE;
 		m_ctrlFiles.InvalidateRect(rect);
 	}
 

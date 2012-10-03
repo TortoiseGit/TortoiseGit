@@ -77,7 +77,6 @@ private:
 	CEvent		m_eventStop;
 	CWinThread	*m_pDownloadThread;
 	CString		m_sFilesURL;
-	std::vector<CString> m_fileNames;
 
 	static UINT	DownloadThreadEntry(LPVOID pParam);
 	UINT		DownloadThread();
