@@ -553,6 +553,17 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:updatecheck</entry>
+							<entry>
+								Shows the dialog even if no newer TortoiseGit version is available.
+								<option>/visible</option>.
+							</entry>
+							<entry>
+								Shows file list for download even if the latest TortoiseGit has been installed.
+								<option>/force</option>.
+							</entry>
+						</row>
 						<!--
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
