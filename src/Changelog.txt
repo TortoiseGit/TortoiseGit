@@ -273,7 +273,7 @@ Released: 2012-02-09
  * Fixed issue #607 and issue #1005: Tortoisegit overlay icons are not correctly shown for new create local repo
  * Fixed issue #1051: Adding files using the add files dialog doesn't normalize line endings
  * Fixed issue #582, issue #956, issue #960, issue #973, issue #980, issue #959 and issue #1016: 100% CPU, icons blinking and refreshing bugs in TGitCache
- * Fixed issue #1044: Add file to index with special character (ei – "dash") or accent fail without any message
+ * Fixed issue #1044: Add file to index with special character (ei â€“ "dash") or accent fail without any message
 
 == Known Issue ==
  * separate-git-dir .git-directories do not work for overlays
