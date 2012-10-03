@@ -68,8 +68,8 @@ void CUpdateListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			// Tell Windows to send draw notifications for each subitem.
 			*pResult = CDRF_NOTIFYSUBITEMDRAW;
 
-			DWORD_PTR data = this->GetItemData((int)pNMCD->nmcd.dwItemSpec);
-			switch(data & STATUS_MASK)
+			CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)this->GetItemData((int)pNMCD->nmcd.dwItemSpec);
+			switch(data->m_status & STATUS_MASK)
 			{
 			case STATUS_SUCCESS:
 				pNMCD->clrText = RGB(0,128,0);
@@ -82,7 +82,7 @@ void CUpdateListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				break;
 			}
 
-			if(data & STATUS_DOWNLOADING)
+			if(data->m_status & STATUS_DOWNLOADING)
 			{
 				SelectObject(pNMCD->nmcd.hdc, m_boldFont);
 				*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
