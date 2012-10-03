@@ -1,3 +1,9 @@
+= Release 1.7.14.0 =
+Released: unreleased
+
+== Bug Fix ==
+Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
+
 = Release 1.7.13.0 =
 Released: 2012-09-30
 
