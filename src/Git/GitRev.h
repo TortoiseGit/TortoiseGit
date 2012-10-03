@@ -65,6 +65,7 @@ protected:
 
 	CTGitPathList	m_Files;
 	int		m_Action;
+	CTGitPathList	m_UnRevFiles;
 
 public:
 	GitRev(void);
@@ -101,6 +102,11 @@ public:
 		else
 			CheckAndDiff();
 		return m_Files;
+	}
+
+	CTGitPathList & GetUnRevFiles()
+	{
+		return m_UnRevFiles;
 	}
 
 //	GitRev(GitRev &rev);

@@ -79,6 +79,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
+
+	m_bShowUnversioned = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 }
 
 CLogDlg::~CLogDlg()
@@ -666,7 +668,13 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(pLogEntry->GetFiles(&m_LogList));
 			m_ChangedFileListCtrl.m_CurrentVersion=pLogEntry->m_CommitHash;
-			m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED);
+			if (pLogEntry->m_CommitHash.IsEmpty() && m_bShowUnversioned)
+			{
+				m_ChangedFileListCtrl.UpdateUnRevFileList(pLogEntry->GetUnRevFiles());
+				m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED | GITSLC_SHOWUNVERSIONED);
+			}
+			else
+				m_ChangedFileListCtrl.Show(GITSLC_SHOWVERSIONED);
 
 			m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
 

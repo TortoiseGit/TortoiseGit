@@ -198,6 +198,7 @@ private:
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
+	BOOL				m_bShowUnversioned;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

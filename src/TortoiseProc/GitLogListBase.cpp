@@ -215,6 +215,8 @@ int CGitLogListBase::AsyncDiffThread()
 				for(int j=0;j< pRev->GetFiles(this).GetCount();j++)
 					pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
 
+				pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER);
+
 				InterlockedExchange(&pRev->m_IsDiffFiles, TRUE);
 				InterlockedExchange(&pRev->m_IsFull, TRUE);
 

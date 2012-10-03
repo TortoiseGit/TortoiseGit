@@ -3874,6 +3874,18 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 	return 0;
 }
 
+int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
+{
+	m_UnRevFileList = list;
+	for(int i=0;i<m_UnRevFileList.GetCount();i++)
+	{
+		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
+		gitpatch->m_Checked = FALSE;
+		m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
+	}
+	return 0;
+}
+
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 {
 	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER,List);

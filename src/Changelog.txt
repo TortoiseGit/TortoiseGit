@@ -1,6 +1,9 @@
 ﻿= Release 1.7.16.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
+
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
 

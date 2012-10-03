@@ -1139,6 +1139,7 @@ public:
 public:
 	int UpdateFileList(git_revnum_t hash,CTGitPathList *List=NULL);
 	int UpdateFileList(int mask, bool once=true,CTGitPathList *List=NULL);
+	int UpdateUnRevFileList(CTGitPathList &list);
 	int UpdateUnRevFileList(CTGitPathList *List=NULL);
 	int UpdateIgnoreFileList(CTGitPathList *List=NULL);
 
