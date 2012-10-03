@@ -69,8 +69,13 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
+		bool dirty = false;
+		CString dirtyList;
+		subgit.Run(_T("git.exe status --porcelain"), &dirtyList, encode);
+		dirty = !dirtyList.IsEmpty();
+
 		CSubmoduleDiffDlg submoduleDiffDlg;
-		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK);
+		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty);
 		submoduleDiffDlg.DoModal();
 
 		return 0;
@@ -144,6 +149,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 {
 	CString oldhash;
 	CString newhash;
+	bool dirty = false;
 	CString cmd;
 	bool isWorkingCopy = false;
 	if( rev2 == GIT_REV_ZERO || rev1 == GIT_REV_ZERO )
@@ -184,7 +190,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			return -1;
 		}
 		newhash = output.Mid(newstart+ CString(_T("+Subproject commit")).GetLength()+1,40);
-
+		dirty = output.Mid(newstart + CString(_T("+Subproject commit")).GetLength() + 41) == _T("-dirty\n");
 	}
 	else
 	{
@@ -229,7 +235,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 	}
 
 	CSubmoduleDiffDlg submoduleDiffDlg;
-	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK);
+	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty);
 	submoduleDiffDlg.DoModal();
 
 	return 0;

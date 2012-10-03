@@ -30,7 +30,7 @@ public:
 
 	enum { IDD = IDD_DIFFSUBMODULE };
 
-	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK);
+	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -52,4 +52,5 @@ protected:
 	CString	m_sToHash;
 	CString	m_sToSubject;
 	bool	m_bToOK;
+	bool	m_bDirty;
 };
