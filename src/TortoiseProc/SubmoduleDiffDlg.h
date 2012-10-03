@@ -30,11 +30,12 @@ public:
 
 	enum { IDD = IDD_DIFFSUBMODULE };
 
-	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, CString toHash, CString toSubject);
+	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();
@@ -47,6 +48,8 @@ protected:
 
 	CString	m_sFromHash;
 	CString	m_sFromSubject;
+	bool	m_bFromOK;
 	CString	m_sToHash;
 	CString	m_sToSubject;
+	bool	m_bToOK;
 };
