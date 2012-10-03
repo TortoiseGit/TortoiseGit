@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #1424: Better Indicate submodule diff error
+ * Fixed issue #1425: Indicate dirty state in Submodule Diff Dialog
 
 == Bug Fix ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
