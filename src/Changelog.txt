@@ -1,6 +1,9 @@
 = Release 1.7.14.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #1424: Better Indicate submodule diff error
+
 == Bug Fix ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
  * Fixed issue #1423: Update Dialog downloads the wrong language pack

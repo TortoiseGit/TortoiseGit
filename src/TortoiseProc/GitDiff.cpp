@@ -67,10 +67,10 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
 		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
-		subgit.Run(cmd,&newsub,encode);
+		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
-		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, newhash, newsub);
+		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK);
 		submoduleDiffDlg.DoModal();
 
 		return 0;
@@ -207,6 +207,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 
 	CString oldsub;
 	CString newsub;
+	bool oldOK = false, newOK = false;
 
 	CGit subgit;
 	subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
@@ -218,17 +219,17 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		if(oldhash != GIT_REV_ZERO)
 		{
 			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),oldhash);
-			subgit.Run(cmd,&oldsub,encode);
+			oldOK = !subgit.Run(cmd,&oldsub,encode);
 		}
 		if(newsub != GIT_REV_ZERO)
 		{
 			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),newhash);
-			subgit.Run(cmd,&newsub,encode);
+			newOK = !subgit.Run(cmd,&newsub,encode);
 		}
 	}
 
 	CSubmoduleDiffDlg submoduleDiffDlg;
-	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, newhash, newsub);
+	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK);
 	submoduleDiffDlg.DoModal();
 
 	return 0;
