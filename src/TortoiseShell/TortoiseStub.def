@@ -1,0 +1,6 @@
+LIBRARY TortoiseStub
+
+EXPORTS
+  DllGetClassObject PRIVATE
+  DllCanUnloadNow PRIVATE
+
