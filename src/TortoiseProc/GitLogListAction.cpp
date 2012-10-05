@@ -524,6 +524,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				break;
 			}
 
+			GitRev lastRevision;
+			try
+			{
+				lastRevision.GetParentFromHash(hashLast);
+			}
+			catch (char* msg)
+			{
+				CString err(msg);
+				MessageBox(_T("Could not get parent(s) of ") + hashLast.ToString() + _T(".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
+
 			headhash=g_Git.GetHash(_T("HEAD"));
 
 			if(!g_Git.CheckCleanWorkTree())
@@ -591,7 +603,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bForceCommitAmend=true;
-				dlg.m_bAmendDiffToLastCommit = FALSE;
+				if (lastRevision.ParentsCount() != 1)
+				{
+					CMessageBox::Show(NULL, _T("The following commit dialog can only show changes of oldest commit if it has exactly one parent. This is not the case right now."), _T("TortoiseGit"),MB_OK);
+					dlg.m_bAmendDiffToLastCommit = TRUE;
+				}
+				else
+					dlg.m_bAmendDiffToLastCommit = FALSE;
 				dlg.m_bNoPostActions=true;
 				dlg.m_AmendStr=dlg.m_sLogMessage;
 
