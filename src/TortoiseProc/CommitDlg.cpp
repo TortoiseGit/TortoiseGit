@@ -896,7 +896,7 @@ UINT CCommitDlg::StatusThread()
 	m_ListCtrl.Clear();
 	BOOL success;
 	CTGitPathList *pList;
-	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE) && (m_bAmendDiffToLastCommit==FALSE);
+	m_ListCtrl.m_amend = (m_bCommitAmend==TRUE || m_bForceCommitAmend) && (m_bAmendDiffToLastCommit==FALSE);
 	m_ListCtrl.m_bDoNotAutoselectSubmodules = (m_bDoNotAutoselectSubmodules == TRUE);
 
 	if(m_bWholeProject)
