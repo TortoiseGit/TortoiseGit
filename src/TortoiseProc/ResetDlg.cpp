@@ -24,13 +24,15 @@
 #include "ResetDlg.h"
 #include "Git.h"
 #include "FileDiffDlg.h"
+#include "AppUtils.h"
 
 // CResetDlg dialog
 
-IMPLEMENT_DYNAMIC(CResetDlg, CStandAloneDialog)
+IMPLEMENT_DYNAMIC(CResetDlg, CHorizontalResizableStandAloneDialog)
 
 CResetDlg::CResetDlg(CWnd* pParent /*=NULL*/)
-	: CStandAloneDialog(CResetDlg::IDD, pParent)
+	: CHorizontalResizableStandAloneDialog(CResetDlg::IDD, pParent)
+	, CChooseVersion(this)
 	, m_ResetType(1)
 {
 
@@ -43,10 +45,12 @@ CResetDlg::~CResetDlg()
 void CResetDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	CHOOSE_VERSION_DDX;
 }
 
 
-BEGIN_MESSAGE_MAP(CResetDlg, CStandAloneDialog)
+BEGIN_MESSAGE_MAP(CResetDlg, CHorizontalResizableStandAloneDialog)
+	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
@@ -55,26 +59,62 @@ END_MESSAGE_MAP()
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()
 {
-	CStandAloneDialog::OnInitDialog();
+	CHorizontalResizableStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	CString resetTo;
-	CString currentBranch = g_Git.GetCurrentBranch();
-	resetTo.Format(IDS_PROC_RESETBRANCH, currentBranch, m_ResetToVersion);
-	GetDlgItem(IDC_RESET_BRANCH_NAME)->SetWindowTextW(resetTo);
+	AddAnchor(IDC_SHOW_MODIFIED_FILES, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_GROUP_RESET_TYPE, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDOK, BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
-	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
+	CHOOSE_VERSION_ADDANCHOR;
+	this->AddOthersToAnchor();
 
+	AdjustControlSize(IDC_RADIO_BRANCH);
+	AdjustControlSize(IDC_RADIO_TAGS);
+	AdjustControlSize(IDC_RADIO_VERSION);
 	AdjustControlSize(IDC_RADIO_RESET_SOFT);
 	AdjustControlSize(IDC_RADIO_RESET_MIXED);
 	AdjustControlSize(IDC_RADIO_RESET_HARD);
 
+	EnableSaveRestore(_T("ResetDlg"));
+
+	CString resetTo;
+	CString currentBranch = g_Git.GetCurrentBranch();
+	resetTo.Format(IDS_PROC_RESETBRANCH, currentBranch);
+	GetDlgItem(IDC_GROUP_BASEON)->SetWindowTextW(resetTo);
+
+	this->CheckRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD,IDC_RADIO_RESET_SOFT+m_ResetType);
+
+	Init();
+	SetDefaultChoose(IDC_RADIO_BRANCH);
+
 	return TRUE;
+}
+
+void CResetDlg::OnBnClickedChooseRadioHost()
+{
+	OnBnClickedChooseRadio();
+}
+
+void CResetDlg::OnBnClickedShow()
+{
+	OnBnClickedChooseVersion();
+}
+
+void CResetDlg::OnVersionChanged()
+{
+	UpdateData(TRUE);
+	UpdateRevsionName();
+	UpdateData(FALSE);
 }
 
 void CResetDlg::OnOK()
 {
+	m_ResetToVersion = m_VersionName;
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
-	return CStandAloneDialog::OnOK();
+	return CHorizontalResizableStandAloneDialog::OnOK();
 }
 
 void CResetDlg::OnBnClickedHelp()

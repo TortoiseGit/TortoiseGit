@@ -1315,6 +1315,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 	CResetDlg dlg;
 	dlg.m_ResetType=type;
 	dlg.m_ResetToVersion=*CommitHash;
+	dlg.m_initialRefName = *CommitHash;
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;

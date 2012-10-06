@@ -6442,7 +6442,7 @@ msgstr ""
 
 #. Resource IDs: (64)
 #, c-format
-msgid "Reset current branch \"%s\" to \"%s\""
+msgid "Reset current branch \"%s\" to"
 msgstr ""
 
 #. Resource IDs: (77, 207, 229)

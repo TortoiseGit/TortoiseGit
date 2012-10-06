@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,10 +18,11 @@
 //
 #pragma once
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
+#include "ChooseVersion.h"
 // CResetDlg dialog
 
-class CResetDlg : public CStandAloneDialog
+class CResetDlg : public CHorizontalResizableStandAloneDialog, public CChooseVersion
 {
 	DECLARE_DYNAMIC(CResetDlg)
 
@@ -35,6 +36,10 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedChooseRadioHost();
+	afx_msg void OnBnClickedShow();
+	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
+	virtual void OnVersionChanged();
 	virtual void OnOK();
 	virtual void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowModifiedFiles();
