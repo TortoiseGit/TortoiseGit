@@ -142,7 +142,10 @@ BOOL CPullFetchDlg::OnInitDialog()
 	m_Remote.EnableWindow(TRUE);
 	m_Other.EnableWindow(FALSE);
 	if(!m_IsPull)
+	{
 		m_RemoteBranch.EnableWindow(FALSE);
+		GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
+	}
 
 	if(m_IsPull)
 	{
