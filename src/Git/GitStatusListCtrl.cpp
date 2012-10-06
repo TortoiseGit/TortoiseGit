@@ -1491,10 +1491,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 			}
 
-			if (!(wcStatus &CTGitPath::LOGACTIONS_UNVER))
+			if (!(wcStatus & CTGitPath::LOGACTIONS_UNVER) && GetSelectedCount() > 0)
 			{
 				bool bEntryAdded = false;
-				if ( (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE) && GetSelectedCount()>0)
+				if (m_dwContextMenus & GITSLC_POPCOMPAREWITHBASE)
 				{
 					if(filepath->m_ParentNo & MERGE_MASK)
 						popup.AppendMenuIcon(IDGITLC_COMPARE, IDS_TREE_DIFF, IDI_DIFF);
@@ -1508,38 +1508,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				//Select one items
 				if (GetSelectedCount() == 1)
 				{
-					//if (entry->remotestatus <= git_wc_status_normal)
-					//{
-					//	if (wcStatus > git_wc_status_normal)
-					//	{
-					//		if ((m_dwContextMenus & SVNSLC_POPGNUDIFF)&&(wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing))
-					//		{
 					if(!g_Git.IsInitRepos() && (m_dwContextMenus&GITSLC_POPGNUDIFF))
 					{
 						popup.AppendMenuIcon(IDGITLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 						bEntryAdded = true;
 					}
-					//		}
-					//	}
-					//
-					//}
-					//else if (wcStatus != git_wc_status_deleted)
-					//{
-					//	if (m_dwContextMenus & SVNSLC_POPCOMPARE)
-					//	{
-					//		popup.AppendMenuIcon(IDSVNLC_COMPAREWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
-					//		popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
-					//		bEntryAdded = true;
-					//	}
-					//	if (m_dwContextMenus & SVNSLC_POPGNUDIFF)
-					//	{
-					//		popup.AppendMenuIcon(IDSVNLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-					//		bEntryAdded = true;
-					//	}
-					//}
 				}
 
-				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && GetSelectedCount() > 0 && m_bHasWC)
+				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && m_bHasWC)
 				{
 					if ((!m_CurrentVersion.IsEmpty()) && m_CurrentVersion != GIT_REV_ZERO)
 					{
