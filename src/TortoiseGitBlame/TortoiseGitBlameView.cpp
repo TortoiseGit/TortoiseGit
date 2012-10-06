@@ -354,7 +354,7 @@ void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
 
 void CTortoiseGitBlameView::CopyHashToClipboard()
 {
-	this->GetLogList()->CopySelectionToClipBoard(TRUE);
+	this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
 }
 
 // CTortoiseGitBlameView diagnostics
