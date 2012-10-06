@@ -1505,14 +1505,10 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					bEntryAdded = true;
 				}
 
-				//Select one items
-				if (GetSelectedCount() == 1)
+				if (!g_Git.IsInitRepos() && (m_dwContextMenus & GITSLC_POPGNUDIFF))
 				{
-					if(!g_Git.IsInitRepos() && (m_dwContextMenus&GITSLC_POPGNUDIFF))
-					{
-						popup.AppendMenuIcon(IDGITLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
-						bEntryAdded = true;
-					}
+					popup.AppendMenuIcon(IDGITLC_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+					bEntryAdded = true;
 				}
 
 				if ((m_dwContextMenus & this->GetContextMenuBit(IDGITLC_COMPAREWC)) && m_bHasWC)
@@ -1924,39 +1920,29 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDGITLC_GNUDIFF1:
 				{
-				//	SVNDiff diff(NULL, this->m_hWnd, true);
-				//
-				//	if (entry->remotestatus <= git_wc_status_normal)
-				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_BASE, entry->path, SVNRev::REV_WC);
-				//	else
-				//		CAppUtils::StartShowUnifiedDiff(m_hWnd, entry->path, SVNRev::REV_WC, entry->path, SVNRev::REV_HEAD);
-					if(m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+					POSITION pos = GetFirstSelectedItemPosition();
+					while (pos)
 					{
-						CString fromwhere;
-						if(m_amend)
-							fromwhere = _T("~1");
-						CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,GitRev::GetHead()+fromwhere,
-															*filepath,GitRev::GetWorkingCopy());
-					}
-					else
-					{
-						if((filepath->m_ParentNo&(PARENT_MASK|MERGE_MASK)) ==0)
-							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath,m_CurrentVersion+_T("~1"),
-															*filepath,m_CurrentVersion);
+						CTGitPath * selectedFilepath = (CTGitPath * )GetItemData(GetNextSelectedItem(pos));
+						if (m_CurrentVersion.IsEmpty() || m_CurrentVersion == GIT_REV_ZERO)
+						{
+							CString fromwhere;
+							if (m_amend)
+								fromwhere = _T("~1");
+							CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, GitRev::GetHead() + fromwhere, *selectedFilepath, GitRev::GetWorkingCopy());
+						}
 						else
 						{
-							CString str;
-							if(filepath->m_ParentNo & MERGE_MASK)
-							{
-							}
+							if ((selectedFilepath->m_ParentNo & (PARENT_MASK | MERGE_MASK)) == 0)
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion + _T("~1"), *selectedFilepath, m_CurrentVersion);
 							else
 							{
-								str.Format(_T("%s^%d"),m_CurrentVersion,(filepath->m_ParentNo&PARENT_MASK)+1);
-							}
+								CString str;
+								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
+									str.Format(_T("%s^%d"), m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-							CAppUtils::StartShowUnifiedDiff(m_hWnd,*filepath, str,
-															*filepath, m_CurrentVersion, false, false, false,
-															!!(filepath->m_ParentNo & MERGE_MASK));
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+							}
 						}
 					}
 				}
