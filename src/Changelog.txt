@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
  * Fixed issue #1423: Update Dialog downloads the wrong language pack
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
+ * Fixed issue #1439: In Show log, long messages don't have the triple dots appended, when a Tag/Branch lable is visible
 
 = Release 1.7.13.0 =
 Released: 2012-09-30
