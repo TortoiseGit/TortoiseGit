@@ -2882,10 +2882,6 @@ msgid "Current Filter"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Current Working Tree is not clear\r\n Do you want to stash change?"
-msgstr ""
-
-#. Resource IDs: (603)
 #, c-format
 msgid "Current branch %s is up to date\r\n\r\n If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
 msgstr ""
@@ -7451,6 +7447,10 @@ msgstr ""
 
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
+msgstr ""
+
+#. Resource IDs: (603)
+msgid "The current working tree is not clean.\nDo you want to stash the changes?"
 msgstr ""
 
 #. Resource IDs: (68)
