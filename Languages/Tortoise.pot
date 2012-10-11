@@ -1055,6 +1055,10 @@ msgstr ""
 msgid "&Start Group"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "&Stash"
+msgstr ""
+
 #. Resource IDs: (59393)
 msgid "&Status Bar"
 msgstr ""

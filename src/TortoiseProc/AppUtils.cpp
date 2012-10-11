@@ -2332,7 +2332,7 @@ BOOL CAppUtils::SVNDCommit()
 	BOOL IsStash = false;
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");
@@ -2606,7 +2606,7 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 {
 	if (!g_Git.CheckCleanWorkTree())
 	{
-		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
+		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CString cmd, out;
 			cmd = _T("git.exe stash");

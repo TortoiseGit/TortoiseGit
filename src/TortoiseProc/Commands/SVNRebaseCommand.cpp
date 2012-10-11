@@ -33,7 +33,7 @@ bool SVNRebaseCommand::Execute()
 
 	if(!g_Git.CheckCleanWorkTree())
 	{
-		if(CMessageBox::Show(NULL,	IDS_ERROR_NOCLEAN_STASH,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
+		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
 			CString cmd,out;
 			cmd=_T("git.exe stash");

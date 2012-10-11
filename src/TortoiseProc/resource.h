@@ -792,6 +792,7 @@
 #define IDS_PROC_BROWSEREFS_EDITDESCRIPTION 1369
 #define IDS_PROC_SYNC_CONFLICTS         1370
 #define IDC_REPOTREE                    1371
+#define IDS_STASHBUTTON                 1371
 #define IDC_REPOLIST                    1372
 #define IDC_LIST1                       1372
 #define IDC_BUGTRAQLIST                 1372
