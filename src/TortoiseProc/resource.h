@@ -1183,6 +1183,7 @@
 #define IDC_STATIC_REVISION2            1713
 #define IDC_STATIC_SUBJECT              1714
 #define IDC_STATIC_SUBJECT2             1715
+#define IDC_CHECK_NOCHECKOUT            1716
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1559,7 +1560,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1716
+#define _APS_NEXT_CONTROL_VALUE         1717
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

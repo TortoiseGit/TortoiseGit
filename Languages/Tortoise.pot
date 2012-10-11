@@ -5201,6 +5201,10 @@ msgstr ""
 msgid "No &Fast Forward"
 msgstr ""
 
+#. Resource IDs: (1716)
+msgid "No Checkout"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "No HEAD found"
 msgstr ""

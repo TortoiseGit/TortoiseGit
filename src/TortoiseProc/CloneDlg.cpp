@@ -37,6 +37,8 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 
 	m_bRecursive = FALSE;
 	m_bBare = FALSE;
+	m_bBranch = FALSE;
+	m_bNoCheckout = FALSE;
 	m_bSVN = FALSE;
 	m_bSVNTrunk = FALSE;
 	m_bSVNTags = FALSE;
@@ -84,7 +86,9 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_BARE, m_bBare);
 	DDX_Check(pDX, IDC_CHECK_RECURSIVE, m_bRecursive);
 	DDX_Text(pDX, IDC_EDIT_DEPTH,m_nDepth);
-
+	DDX_Check(pDX,IDC_CHECK_BRANCH, m_bBranch);
+	DDX_Text(pDX, IDC_EDIT_BRANCH, m_strBranch);
+	DDX_Check(pDX,IDC_CHECK_NOCHECKOUT, m_bNoCheckout);
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -159,12 +163,14 @@ BOOL CCloneDlg::OnInitDialog()
 
 	OnBnClickedCheckSvn();
 	OnBnClickedCheckDepth();
+	OnBnClickedCheckBranch();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
 BEGIN_MESSAGE_MAP(CCloneDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_BROWSE_URL, &CCloneDlg::OnBnClickedCloneBrowseUrl)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
+	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CCloneDlg::OnBnClickedCheckBranch)
 	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, &CCloneDlg::OnBnClickedPuttykeyfileBrowse)
 	ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, &CCloneDlg::OnBnClickedPuttykeyAutoload)
 	ON_CBN_EDITCHANGE(IDC_URLCOMBO, &CCloneDlg::OnCbnEditchangeUrlcombo)
@@ -189,6 +195,12 @@ void CCloneDlg::OnOK()
 	if(m_URL.IsEmpty() || m_Directory.IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_OK);
+		return;
+	}
+
+	if (m_bBranch && !g_Git.IsBranchNameValid(m_strBranch))
+	{
+		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
 		return;
 	}
 
@@ -373,12 +385,15 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_bDepth = false;
 		m_bBare = false;
 		m_bRecursive = false;
+		m_bBranch = FALSE;
 		this->UpdateData(FALSE);
 		OnBnClickedCheckDepth();
 	}
 	this->GetDlgItem(IDC_CHECK_DEPTH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_BARE)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
@@ -427,6 +442,13 @@ void CCloneDlg::OnBnClickedCheckDepth()
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_EDIT_DEPTH)->EnableWindow(this->m_bDepth);
 }
+
+void CCloneDlg::OnBnClickedCheckBranch()
+{
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(this->m_bBranch);
+}
+
 BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)
 {
 	m_tooltips.RelayEvent(pMsg);

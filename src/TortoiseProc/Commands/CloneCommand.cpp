@@ -50,6 +50,14 @@ bool CloneCommand::Execute()
 		else
 			bareStr = _T("");
 
+		CString nocheckoutStr;
+		if (dlg.m_bNoCheckout)
+			nocheckoutStr = _T("--no-checkout");
+
+		CString branchStr;
+		if (dlg.m_bBranch)
+			branchStr = _T("--branch ") + dlg.m_strBranch;
+
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
@@ -93,9 +101,11 @@ bool CloneCommand::Execute()
 		if(ver >= 0x01070002) //above 1.7.0.2
 			progressarg = _T("--progress");
 
-		cmd.Format(_T("git.exe clone %s %s %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone %s %s %s %s %s -v %s \"%s\" \"%s\""),
+						nocheckoutStr,
 						recursiveStr,
 						bareStr,
+						branchStr,
 						progressarg,
 						depth,
 						url,
