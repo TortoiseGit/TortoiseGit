@@ -1314,7 +1314,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				AddPathCommand(gitCmd, L"copy", true);
 				break;
 			case ShellMenuSettings:
-				AddPathCommand(gitCmd, L"settings", false);
+				AddPathCommand(gitCmd, L"settings", true);
 				break;
 			case ShellMenuHelp:
 				gitCmd += _T("help");

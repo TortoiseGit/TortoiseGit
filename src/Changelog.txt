@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
  * Fixed issue #1439: In Show log, long messages don't have the triple dots appended, when a Tag/Branch lable is visible
+ * Fixed issue #1444: Cannot launch settings dialog from shell context menu when selecting a file
 
 = Release 1.7.13.0 =
 Released: 2012-09-30
