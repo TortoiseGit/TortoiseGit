@@ -214,10 +214,6 @@ private:
 				&& m_GetVersionFromFile;
 		}
 
-		// if no crash processing was started, we need to ignore ExceptionAssertionViolated exceptions.
-		if (!result)
-			::AddVectoredExceptionHandler(TRUE, SkipAsserts);
-
 		return result;
 	}
 
