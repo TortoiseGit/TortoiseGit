@@ -3237,6 +3237,10 @@ msgstr ""
 msgid "Do you want to see changes?"
 msgstr ""
 
+#. Resource IDs: (604)
+msgid "Do you want to stash pop now?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Document :"
 msgstr ""
@@ -8441,10 +8445,6 @@ msgstr ""
 
 #. Resource IDs: (65)
 msgid "You must select a filename for the zip-file!"
-msgstr ""
-
-#. Resource IDs: (604)
-msgid "You need to stash changes before you can use DCommit.\r\n Do you want to stash pop now?\r\n"
 msgstr ""
 
 #. Resource IDs: (65)

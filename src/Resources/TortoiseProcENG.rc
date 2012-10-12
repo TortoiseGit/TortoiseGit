@@ -3496,7 +3496,7 @@ BEGIN
     IDS_CLONE_DEPTH_TT      "Create a shallow clone with a history truncated to the specified number of revisions. A shallow repository has a number of limitations (you cannot clone or fetch from it, nor push from nor into it), but is adequate if you are only interested in the recent history of a large project with a long history, and would want to send in fixes as patches."
     IDS_HOOKTYPE_PREPUSH    "Pre-Push Hook"
     IDS_HOOKTYPE_POSTPUSH   "Post-Push Hook"
-    IDS_DCOMMIT_STASH_POP   "You need to stash changes before you can use DCommit.\r\n Do you want to stash pop now?\r\n"
+    IDS_DCOMMIT_STASH_POP   "Do you want to stash pop now?"
     IDS_HASH                "SHA-1"
     IDS_REF                 "Ref"
     IDS_ACTION              "Action"
