@@ -3716,6 +3716,8 @@ BEGIN
     IDS_PROC_BROWSEREFS_EDITDESCRIPTION "Edit description"
     IDS_PROC_SYNC_CONFLICTS "Conflicts"
     IDS_STASHBUTTON         "&Stash"
+    IDS_SETTINGS_FETCH_ADDEDREMOTE 
+                            "Do you want to fetch remote branches from the newly added remote?"
 END
 
 #endif    // Englisch (USA) resources

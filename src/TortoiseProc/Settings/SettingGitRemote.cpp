@@ -25,6 +25,7 @@
 #include "Settings.h"
 #include "GitAdminDir.h"
 #include "MessageBox.h"
+#include "AppUtils.h"
 #include "git.h"
 
 // CSettingGitRemote dialog
@@ -269,6 +270,8 @@ BOOL CSettingGitRemote::OnApply()
 
 		this->m_ctrlRemoteList.AddString(m_strRemote);
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
+		if (CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
+			CCommonAppUtils::RunTortoiseProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
 	if(m_ChangedMask & REMOTE_URL)
 	{

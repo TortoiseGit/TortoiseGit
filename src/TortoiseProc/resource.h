@@ -800,6 +800,7 @@
 #define IDC_COMMIT_LIST                 1372
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
+#define IDS_SETTINGS_FETCH_ADDEDREMOTE  1372
 #define IDC_NEWLINESCOLOR               1378
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
