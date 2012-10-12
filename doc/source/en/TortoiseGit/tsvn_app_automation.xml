@@ -142,6 +142,13 @@ Don't touch these lines:
 							</entry>
 						</row>
 						<row>
+							<entry condition="pot">:fetch</entry>
+							<entry>
+								Opens the fetch dialog.
+								Use the <option>/remote</option> parameter to control the remote which should be pre-selected.
+							</entry>
+						</row>
+						<row>
 							<entry condition="pot">:log</entry>
 							<entry>
 								Opens the log dialog. The <option>/path</option> specifies the
