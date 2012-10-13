@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-09-27 11:48+0000\n"
+"PO-Revision-Date: 2012-10-12 09:30+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -1073,6 +1073,10 @@ msgstr "开始(&S)"
 #. Resource IDs: (16917)
 msgid "&Start Group"
 msgstr "启动组(&S)"
+
+#. Resource IDs: (86)
+msgid "&Stash"
+msgstr ""
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -3044,12 +3048,6 @@ msgid "Current Filter"
 msgstr "当前过滤器"
 
 #. Resource IDs: (603)
-msgid ""
-"Current Working Tree is not clear\r\n"
-" Do you want to stash change?"
-msgstr "当前工作区有改动\n你想储藏(stash)改动吗？"
-
-#. Resource IDs: (603)
 #, c-format
 msgid ""
 "Current branch %s is up to date\r\n"
@@ -3436,6 +3434,10 @@ msgstr "是否要保存你所做的修改？"
 #. Resource IDs: (66)
 msgid "Do you want to see changes?"
 msgstr "是否浏览改动？"
+
+#. Resource IDs: (604)
+msgid "Do you want to stash pop now?"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -5523,6 +5525,10 @@ msgstr "不提交"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "非直接迁移(&F)"
+
+#. Resource IDs: (1716)
+msgid "No Checkout"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -7915,6 +7921,12 @@ msgstr "区块起始标记“@@”应该位于第 %d 行！"
 msgid "The commit message must not be empty."
 msgstr "提交消息不能为空"
 
+#. Resource IDs: (603)
+msgid ""
+"The current working tree is not clean.\n"
+"Do you want to stash the changes?"
+msgstr ""
+
 #. Resource IDs: (68)
 #, c-format
 msgid ""
@@ -9095,12 +9107,6 @@ msgstr "你必须重新启动操作系统使改变生效。"
 #. Resource IDs: (65)
 msgid "You must select a filename for the zip-file!"
 msgstr "必须为zip文件输入一个文件名"
-
-#. Resource IDs: (604)
-msgid ""
-"You need to stash changes before you can use DCommit.\r\n"
-" Do you want to stash pop now?\r\n"
-msgstr "你在使用DCommit前需要存藏(stash)改动。\n你想现在弹出存藏(stash)改动吗?\n"
 
 #. Resource IDs: (65)
 msgid ""

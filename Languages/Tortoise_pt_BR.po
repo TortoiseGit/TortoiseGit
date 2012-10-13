@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-09-27 11:48+0000\n"
+"PO-Revision-Date: 2012-10-12 09:30+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -1071,6 +1071,10 @@ msgstr "&Começar"
 #. Resource IDs: (16917)
 msgid "&Start Group"
 msgstr "&Iniciar Grupo"
+
+#. Resource IDs: (86)
+msgid "&Stash"
+msgstr ""
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -3042,12 +3046,6 @@ msgid "Current Filter"
 msgstr "Filtro atual"
 
 #. Resource IDs: (603)
-msgid ""
-"Current Working Tree is not clear\r\n"
-" Do you want to stash change?"
-msgstr "Cópia de trabalho atual não está limpa\nVocê quer reservar as mudanças agora?"
-
-#. Resource IDs: (603)
 #, c-format
 msgid ""
 "Current branch %s is up to date\r\n"
@@ -3434,6 +3432,10 @@ msgstr "Você deseja salvar suas alterações?"
 #. Resource IDs: (66)
 msgid "Do you want to see changes?"
 msgstr "Quer visualizar as mudanças?"
+
+#. Resource IDs: (604)
+msgid "Do you want to stash pop now?"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -5521,6 +5523,10 @@ msgstr "Não &Submeter"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Sem &Avanço Rápido"
+
+#. Resource IDs: (1716)
+msgid "No Checkout"
+msgstr ""
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -7913,6 +7919,12 @@ msgstr "O início de bloco '@@' foi esperado na linha %d !"
 msgid "The commit message must not be empty."
 msgstr "A mensagem de submissão não pode ser vazia."
 
+#. Resource IDs: (603)
+msgid ""
+"The current working tree is not clean.\n"
+"Do you want to stash the changes?"
+msgstr ""
+
 #. Resource IDs: (68)
 #, c-format
 msgid ""
@@ -9093,12 +9105,6 @@ msgstr "O sistema deve ser reiniciado "
 #. Resource IDs: (65)
 msgid "You must select a filename for the zip-file!"
 msgstr "Você deve escolher um nome de arquivo para o arquivo Zip!"
-
-#. Resource IDs: (604)
-msgid ""
-"You need to stash changes before you can use DCommit.\r\n"
-" Do you want to stash pop now?\r\n"
-msgstr "Você precisa reservar as mudanças antes que possa usar DCommit.\nVocê quer estourar a reserva agora?\n"
 
 #. Resource IDs: (65)
 msgid ""
