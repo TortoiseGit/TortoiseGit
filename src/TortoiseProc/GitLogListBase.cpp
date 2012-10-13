@@ -1846,13 +1846,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		} // GetSelectedCount() == 1
 
-		if (GetSelectedCount() == 1)
+		if (GetSelectedCount() != 0)
 		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYHASH))
 				popup.AppendMenuIcon(ID_COPYHASH, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
-		}
-		if (GetSelectedCount() != 0)
-		{
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARD))
 				popup.AppendMenuIcon(ID_COPYCLIPBOARD, IDS_LOG_POPUP_COPYTOCLIPBOARD, IDI_COPYCLIP);
 			if(m_ContextMenuMask&GetContextMenuBit(ID_COPYCLIPBOARDMESSAGES))
@@ -1919,6 +1916,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 		sDate.LoadString(IDS_LOG_DATE);
 		CString sMessage;
 		sMessage.LoadString(IDS_LOG_MESSAGE);
+		bool first = true;
 		while (pos)
 		{
 			CString sLogCopyText;
@@ -1966,10 +1964,12 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 			}
 			else
 			{
+				if (!first)
+					sClipdata += _T("\r\n");
 				sClipdata += pLogEntry->m_CommitHash;
-				break;
 			}
 
+			first = false;
 		}
 		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
 	}
