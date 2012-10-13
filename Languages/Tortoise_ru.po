@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Translators:
 # German Borisov <borisov.german@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 #   <the_Arioch@nm.ru>, 2012.
@@ -12,7 +13,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-09-27 11:48+0000\n"
+"PO-Revision-Date: 2012-10-13 18:41+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"

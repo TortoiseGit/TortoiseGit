@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Translators:
 #  Koto <>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 # Takumi Shotoku <sinsoku.listy@gmail.com>, 2012.
@@ -15,7 +16,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-09-27 11:48+0000\n"
+"PO-Revision-Date: 2012-10-13 18:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -184,7 +185,7 @@ msgstr "%d ペアレント"
 #. Resource IDs: (75)
 #, c-format
 msgid "%d commits ahead \"%s\""
-msgstr ""
+msgstr "%d個のコミット(\"%s\"に対して)"
 
 #. Resource IDs: (1256)
 #, c-format
@@ -1030,7 +1031,7 @@ msgstr "MsysGit のパスを設定"
 
 #. Resource IDs: (1486)
 msgid "&Set upstream/track remote branch"
-msgstr ""
+msgstr "上流/追跡しているリモートブランチに設定(&S)"
 
 #. Resource IDs: (9)
 msgid "&Settings"
@@ -1279,11 +1280,11 @@ msgstr ".git/info/exclude"
 
 #. Resource IDs: (1690)
 msgid ".gitignore in the containing directories of the items"
-msgstr ""
+msgstr "アイテムのディレクトリの除外ファイルリスト(.gitignore) "
 
 #. Resource IDs: (1689)
 msgid ".gitignore in the repository root"
-msgstr "リポジトリルートに除外ファイルリスト(.gitignore) があります"
+msgstr "リポジトリルートの除外ファイルリスト(.gitignore) "
 
 #. Resource IDs: (16506)
 msgid "<.....>"
@@ -1336,7 +1337,7 @@ msgstr "<b>警告:</b> このブランチはまだ完全にHEADにマージさ�
 msgid ""
 "<ct=0x0000FF>Current HEAD Detached</ct>, you are working on (no branch).\n"
 "Do you want to a create branch now?"
-msgstr "<ct=0x0000FF>現在の HEAD は切り離されました</ct>, 部ブランチ無し(no branch)で作業しています。\nブランチを今作成しますか？"
+msgstr "<ct=0x0000FF>現在の HEAD は切り離されました</ct>, ブランチ無し(no branch)で作業しています。\nブランチを今作成しますか？"
 
 #. Resource IDs: (70)
 msgid "<ct=0x0000FF>Do you really want to delete <b>ALL</b> stash?</ct>"
@@ -1359,7 +1360,7 @@ msgid ""
 "<ct=0x0000FF>previous rebase directory rebase-apply still exists but mbox given</ct>\n"
 "\n"
 "Do you want to"
-msgstr ""
+msgstr "<ct=0x0000FF>mboxが与えられましたが、前のリベースディレクトリにrebase-applyファイルが残っています。</ct>どうしますか？"
 
 #. Resource IDs: (85)
 msgid "<ct=0x0000ff>Stash Apply failed, there are conflicts</ct>"
@@ -1792,7 +1793,7 @@ msgstr "適切/変更無しとする"
 
 #. Resource IDs: (1550)
 msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
-msgstr ""
+msgstr "有効/変更なしと仮定する (TortoiseSVNでは\"Needs-lock\")"
 
 #. Resource IDs: (77)
 #, c-format
@@ -2687,7 +2688,7 @@ msgstr "競合"
 
 #. Resource IDs: (86)
 msgid "Conflicts"
-msgstr ""
+msgstr "競合"
 
 #. Resource IDs: (188)
 #, c-format
@@ -4186,7 +4187,7 @@ msgstr "前へ"
 msgid ""
 "Found an empty commit message. You have to enter one or rebase cannot "
 "proceed."
-msgstr ""
+msgstr "空のコミットメッセージが見つかったため、リベース出来ません。"
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
@@ -4806,7 +4807,7 @@ msgstr "除外タイプ"
 
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
-msgstr "フォルダーに含まれる場合に限り再帰的にアイテムを無視します"
+msgstr "このアイテム含むフォルダに限り、アイテムを無視します"
 
 #. Resource IDs: (1688)
 msgid "Ignore item(s) recursively"
@@ -5634,7 +5635,7 @@ msgstr "バージョン管理下のファイルではありません"
 
 #. Resource IDs: (83)
 msgid "Not all files could be downloaded and verified."
-msgstr ""
+msgstr "一部（もしくは全部）のファイルがダウンロード・検査されませんでした。"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -6567,7 +6568,7 @@ msgstr "ブランチを削除(&B)"
 
 #. Resource IDs: (1628)
 msgid "Remove &non-ignored untracked files (-f)"
-msgstr "無視リストにない、バージョン管理外のファイルを削除 (-fx) (&A)"
+msgstr "無視リストにない、バージョン管理外のファイルを削除 (-f) (&A)"
 
 #. Resource IDs: (15)
 msgid "Remove from &ignore list"
@@ -7911,7 +7912,7 @@ msgstr "チャンクサイズが追加・削除された行数と合いません
 #. Resource IDs: (63)
 #, c-format
 msgid "The chunk start '@@' was expected in line %d !"
-msgstr ""
+msgstr "チャンクの開始 '@@'が%d 行目にありません!"
 
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
