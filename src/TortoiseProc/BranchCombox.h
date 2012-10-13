@@ -76,10 +76,6 @@ protected:
 			else
 				m_ctrlRemoteBranch.SetCurSel(index);
 		}
-		else if(!this->m_RegKeyRemoteBranch.IsEmpty())
-		{
-			m_ctrlRemoteBranch.SetCurSel(0);
-		}
 		else
 		{
 			m_ctrlRemoteBranch.SetCurSel(-1);
