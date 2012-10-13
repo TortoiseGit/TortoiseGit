@@ -476,6 +476,8 @@ void CRebaseDlg::LoadBranchInfo()
 		int found = m_UpstreamCtrl.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 			m_UpstreamCtrl.SetCurSel(found);
+		else
+			m_UpstreamCtrl.SetCurSel(-1);
 	}
 }
 

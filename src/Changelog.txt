@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1439: In Show log, long messages don't have the triple dots appended, when a Tag/Branch lable is visible
  * Fixed issue #1444: Cannot launch settings dialog from shell context menu when selecting a file
  * Fixed issue #1265: MSVC crashing unloading TortoiseGit32.dll (faulting module TortoiseGit32.dll_unloaded)
+ * Fixed issue #772: Rebase may take extremely long time to open window
 
 = Release 1.7.13.0 =
 Released: 2012-09-30
