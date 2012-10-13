@@ -630,7 +630,7 @@ msgid "&Force Rebase"
 msgstr ""
 
 #. Resource IDs: (1608)
-msgid "&From"
+msgid "&From:"
 msgstr ""
 
 #. Resource IDs: (2153)
@@ -1124,7 +1124,7 @@ msgid "&TortoiseMerge"
 msgstr ""
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
+msgid "&Trunk:"
 msgstr ""
 
 #. Resource IDs: (3845)
@@ -1944,7 +1944,7 @@ msgid "Br&owse..."
 msgstr ""
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
+msgid "Branc&h:"
 msgstr ""
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
@@ -6111,10 +6111,6 @@ msgstr ""
 msgid "Reloads the opened files and reverts all changes.\nReload"
 msgstr ""
 
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr ""
-
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
 msgstr ""
@@ -7395,7 +7391,7 @@ msgid "TORTOISEIDIFF"
 msgstr ""
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
+msgid "Ta&gs:"
 msgstr ""
 
 #. Resource IDs: (16970)
@@ -8183,7 +8179,7 @@ msgid "User name and email must be set before commit.\r\n Do you want to set the
 msgstr ""
 
 #. Resource IDs: (1650)
-msgid "UserName"
+msgid "User&name:"
 msgstr ""
 
 #. Resource IDs: (69)
