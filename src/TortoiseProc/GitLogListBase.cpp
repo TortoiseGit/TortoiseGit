@@ -125,8 +125,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 		}
 	}
 
-	m_From=-1;;
-	m_To=-1;
+	m_From = -1;
+	m_To = -1;
 
 	m_ShowMask = 0;
 	m_LoadingThread = NULL;
@@ -1089,7 +1089,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
-					if (data->m_CommitHash.ToString() == m_HeadHash && m_bNoHightlightHead == FALSE)
+					if (data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
