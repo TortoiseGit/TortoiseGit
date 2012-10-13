@@ -31,13 +31,14 @@
 #include "AppUtils.h"
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"
+#include "LoglistUtils.h"
 
 // CProgressDlg dialog
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false)
+	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false), m_startTick(GetTickCount())
 {
 	m_pThread = NULL;
 	m_bAltAbortPress=false;
@@ -256,6 +257,7 @@ UINT CProgressDlg::ProgressThread()
 	else
 		pfilename=&m_LogFile;
 
+	m_startTick = GetTickCount();
 	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort,&this->m_Databuf);;
 	return 0;
 }
@@ -275,6 +277,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		DWORD tickSpent = GetTickCount() - m_startTick;
+		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
+
 		if(m_bBufferAll)
 		{
 			m_Databuf.m_critSec.Lock();
@@ -317,7 +322,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
-			err.Format(_T("\r\n\r\n%s\r\n"), log);
+			err.Format(_T("\r\n\r\n%s (%d ms @ %s)\r\n"), log, tickSpent, strEndTime);
 			InsertColorText(this->m_Log, err, RGB(255,0,0));
 		}
 		else {
@@ -326,7 +331,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
-			log.Format(_T("\r\n%s\r\n"), temp);
+			log.Format(_T("\r\n%s (%d ms @ %s)\r\n"), temp, tickSpent, strEndTime);
 			InsertColorText(this->m_Log, log, RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}

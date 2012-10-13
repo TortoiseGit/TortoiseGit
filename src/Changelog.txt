@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #1425: Indicate dirty state in Submodule Diff Dialog
  * Fixed issue #1430: Diff: allow multiple files unified diff
  * Fixed issue #1453: Allow Log List to copy multiple SHA-1 hashes
+ * Fixed issue #1454: Show git progress time spent and end time in Progress Dialog and Sync Dialog
 
 == Bug Fix ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags

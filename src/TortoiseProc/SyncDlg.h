@@ -139,6 +139,7 @@ protected:
 	std::vector<CString> m_GitCmdList;
 
 	bool			m_bAbort;
+	DWORD			m_startTick;
 
 	int				m_GitCmdStatus;
 
