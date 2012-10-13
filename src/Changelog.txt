@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1436: Clone Dialog add --branch and --no-checkout options
  * Fixed issue #1450: Option to fetch when adding a remote
  * Fixed issue #1453: Allow Log List to copy multiple SHA-1 hashes
+ * Fixed issue #1454: Show git progress time spent and end time in Progress Dialog and Sync Dialog
 
 == Bug Fix ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags

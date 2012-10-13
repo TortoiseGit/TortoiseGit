@@ -44,6 +44,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
 	m_bForce=false;
 	m_bBlock = false;
+	m_startTick = GetTickCount();
 }
 
 CSyncDlg::~CSyncDlg()
@@ -1028,6 +1029,7 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 
 UINT CSyncDlg::ProgressThread()
 {
+	m_startTick = GetTickCount();
 	m_GitCmdStatus=CProgressDlg::RunCmdList(this,m_GitCmdList,true,NULL,&this->m_bAbort);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
@@ -1049,6 +1051,8 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		DWORD tickSpent = GetTickCount() - m_startTick;
+		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 		//m_bDone = true;
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
@@ -1065,7 +1069,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, exitCode);
 			CString err;
-			err.Format(_T("\r\n\r\n%s\r\n"), log);
+			err.Format(_T("\r\n\r\n%s (%d ms @ %s)\r\n"), log, tickSpent, strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, err, RGB(255,0,0));
 		}
 		else
@@ -1075,7 +1079,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
-			log.Format(_T("\r\n%s\r\n"), temp);
+			log.Format(_T("\r\n%s (%d ms @ %s)\r\n"), temp, tickSpent, strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, log, RGB(0,0,255));
 		}
 
