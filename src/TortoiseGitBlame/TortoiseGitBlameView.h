@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -136,7 +136,8 @@ protected:
 	afx_msg void CopyHashToClipboard();
 	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
-	
+	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
+
 	int FindNextLine(CGitHash commithash, bool bUpOrDown=false);
 	int FindFirstLine(CGitHash commithash, int line)
 	{
@@ -189,6 +190,7 @@ public:
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
 	void StartSearch();
+	void CopyToClipboard();
 	void CopySelectedLogToClipboard();
 	void BlamePreviousRevision();
 	void DiffPreviousRevision();

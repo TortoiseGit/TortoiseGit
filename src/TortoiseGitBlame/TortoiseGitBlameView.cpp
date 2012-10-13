@@ -36,6 +36,7 @@
 #include "MenuEncode.h"
 #include "gitdll.h"
 #include "SysInfo.h"
+#include "StringUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,7 +61,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CTortoiseGitBlameView::OnFilePrintPreview)
 	ON_COMMAND(ID_EDIT_FIND,OnEditFind)
 	ON_COMMAND(ID_EDIT_GOTO,OnEditGoto)
-	ON_COMMAND(ID_EDIT_COPY,CopySelectedLogToClipboard)
+	ON_COMMAND(ID_EDIT_COPY, CopyToClipboard)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateViewCopyToClipboard)
 	ON_COMMAND(ID_VIEW_NEXT,OnViewNext)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
@@ -617,6 +619,24 @@ bool CTortoiseGitBlameView::ScrollToLine(long line)
 	SendEditor(SCI_LINESCROLL, 0, scrolldelta);
 
 	return true;
+}
+
+void CTortoiseGitBlameView::CopyToClipboard()
+{
+	CWnd * wnd = GetFocus();
+	if (wnd == this->GetLogList())
+		CopySelectedLogToClipboard();
+	else if (wnd)
+	{
+		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == _T("CMFCPropertyGridCtrl"))
+		{
+			CMFCPropertyGridCtrl *grid = (CMFCPropertyGridCtrl *)wnd;
+			if (grid->GetCurSel() && !grid->GetCurSel()->IsGroup())
+				CStringUtils::WriteAsciiStringToClipboard(grid->GetCurSel()->GetValue(), GetSafeHwnd());
+		}
+		else
+			m_TextView.Call(SCI_COPY);
+	}
 }
 
 void CTortoiseGitBlameView::CopySelectedLogToClipboard()
@@ -1803,6 +1823,27 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bFollowRenames);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
+{
+	CWnd * wnd = GetFocus();
+	if (wnd == GetLogList())
+	{
+		pCmdUI->Enable(GetLogList()->GetSelectedCount() > 0);
+	}
+	else if (wnd)
+	{
+		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == _T("CMFCPropertyGridCtrl"))
+		{
+			CMFCPropertyGridCtrl *grid = (CMFCPropertyGridCtrl *)wnd;
+			pCmdUI->Enable(grid->GetCurSel() && !grid->GetCurSel()->IsGroup() && !CString(grid->GetCurSel()->GetValue()).IsEmpty());
+		}
+		else
+			pCmdUI->Enable(m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND));
+	}
+	else
+		pCmdUI->Enable(FALSE);
 }
 
 int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
