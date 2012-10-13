@@ -490,6 +490,47 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
+	int nListItems = m_ListCtrl.GetItemCount();
+	for (int i = 0; i < nListItems; i++)
+	{
+		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
+		if (!entry->m_Checked || !entry->IsDirectory())
+			continue;
+
+		bool dirty = false;
+		if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+		{
+			CString subcmdout;
+			g_Git.Run(_T("git.exe status --porcelain"), &subcmdout, CP_UTF8);
+			dirty = !subcmdout.IsEmpty();
+		}
+		else
+		{
+			CString cmd, cmdout;
+			cmd.Format(_T("git.exe diff -- \"%s\""), entry->GetWinPathString());
+			g_Git.Run(cmd, &cmdout, CP_UTF8);
+			dirty = cmdout.Right(7) == _T("-dirty\n");
+		}
+
+		if (dirty)
+		{
+			CString message;
+			message.Format(CString(MAKEINTRESOURCE(IDS_COMMITDLG_SUBMODULEDIRTY)), entry->GetGitPathString());
+			int result = CMessageBox::Show(m_hWnd, message, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
+			if (result == 1)
+			{
+				CString cmdCommit;
+				cmdCommit.Format(_T("/command:commit /path:\"%s\\%s\""), g_Git.m_CurrentDir, entry->GetWinPathString());
+				CAppUtils::RunTortoiseProc(cmdCommit);
+				return;
+			}
+			else if (result == 2)
+				continue;
+			else
+				return;
+		}
+	}
+
 	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
@@ -498,7 +539,6 @@ void CCommitDlg::OnOK()
 	//and check if all versioned files are selected
 	int nchecked = 0;
 	m_bRecursive = true;
-	int nListItems = m_ListCtrl.GetItemCount();
 
 	CTGitPathList itemsToAdd;
 	CTGitPathList itemsToRemove;

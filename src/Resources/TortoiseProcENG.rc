@@ -2942,6 +2942,8 @@ BEGIN
     IDS_COMMITDLG_UNVERSIONEDFOLDERWARNING 
                             "Committing an unversioned folder will not recursively add its child items!\nYou might want to add these folders recursively by using the 'Add...' context menu item.\n\nAre you sure that you want to continue the commit?"
     IDS_COMMITDLG_NOMESSAGE "You must enter a log message for the commit"
+    IDS_COMMITDLG_SUBMODULEDIRTY 
+                            "The submodule ""%s"" is dirty.\nMerely committing the superproject cannot track or save such changes to the submodule.\nCommit the submodule now or ignore dirty changes?"
 END
 
 STRINGTABLE 

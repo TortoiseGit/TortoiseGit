@@ -7620,6 +7620,11 @@ msgstr ""
 msgid "The selected file appears to still have one or more conflict markers in it.\nAre you sure you want to mark the file resolved?"
 msgstr ""
 
+#. Resource IDs: (170)
+#, c-format
+msgid "The submodule \"%s\" is dirty.\nMerely committing the superproject cannot track or save such changes to the submodule.\nCommit the submodule now or ignore dirty changes?"
+msgstr ""
+
 #. Resource IDs: (88)
 #, c-format
 msgid "The target folder \n%s\nis not empty!\nAre you sure you want to clone/export into that folder?"
