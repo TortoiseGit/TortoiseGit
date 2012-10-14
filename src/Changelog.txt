@@ -750,7 +750,7 @@ Released: 2010-09-22
  * Fixed issue #191: No Progress Indicator making one believe a hang or some failure.
 
 = Release 1.5.3.0 =
-Released: 2010-04-21
+Released: 2010-08-22
 
 == Features ==
  * Add pre and post push hook support
