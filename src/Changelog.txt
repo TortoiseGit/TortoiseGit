@@ -1,26 +1,33 @@
-﻿= Release 1.7.14.0 =
+﻿= Release 1.7.15.0 =
 Released: unreleased
+
+== Features ==
+ * Fixed issue #1436: Clone Dialog add --branch and --no-checkout options
+ * Fixed issue #1450: Option to fetch when adding a remote
+ * Fixed issue #1411: Commit dialog checks submodule dirty state
+
+== Bug Fix ==
+ * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
+ * Fixed issue #1443: git svn dcommit: unclear behavior for dirty working tree
+
+= Release 1.7.14.0 =
+Released: 2012-10-14
 
 == Features ==
  * Fixed issue #1424: Better Indicate submodule diff error
  * Fixed issue #1425: Indicate dirty state in Submodule Diff Dialog
  * Fixed issue #1430: Diff: allow multiple files unified diff
- * Fixed issue #1436: Clone Dialog add --branch and --no-checkout options
- * Fixed issue #1450: Option to fetch when adding a remote
  * Fixed issue #1453: Allow Log List to copy multiple SHA-1 hashes
  * Fixed issue #1454: Show git progress time spent and end time in Progress Dialog and Sync Dialog
- * Fixed issue #1411: Commit dialog checks submodule dirty state
  * Fixed issue #1434: Easier to copy to file text to clipboard in TortoiseGitBlame
 
 == Bug Fix ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
  * Fixed issue #1423: Update Dialog downloads the wrong language pack
- * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
  * Fixed issue #1439: In Show log, long messages don't have the triple dots appended, when a Tag/Branch lable is visible
  * Fixed issue #1444: Cannot launch settings dialog from shell context menu when selecting a file
  * Fixed issue #1265: MSVC crashing unloading TortoiseGit32.dll (faulting module TortoiseGit32.dll_unloaded)
- * Fixed issue #1443: git svn dcommit: unclear behavior for dirty working tree
  * Fixed issue #772: Rebase may take extremely long time to open window
 
 = Release 1.7.13.0 =
