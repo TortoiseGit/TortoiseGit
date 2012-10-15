@@ -9,6 +9,7 @@ Released: unreleased
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
  * Fixed issue #1443: git svn dcommit: unclear behavior for dirty working tree
+ * Fixed issue #1457: Confusing amend commit behaviour
 
 = Release 1.7.14.0 =
 Released: 2012-10-14

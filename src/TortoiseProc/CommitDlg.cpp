@@ -616,7 +616,7 @@ void CCommitDlg::OnOK()
 				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
 				{
 					if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-						cmd.Format(_T("git.exe reset HEAD~2 -- \"%s\""), entry->GetGitOldPathString());
+						cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitOldPathString());
 					else
 						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
 					g_Git.Run(cmd, &out, CP_UTF8);
@@ -626,7 +626,7 @@ void CCommitDlg::OnOK()
 			{
 				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
 				{
-					cmd.Format(_T("git.exe reset HEAD~2 -- \"%s\""), entry->GetGitPathString());
+					cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitPathString());
 				}
 				else
 				{
