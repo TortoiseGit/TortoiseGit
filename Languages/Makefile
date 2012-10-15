@@ -46,6 +46,10 @@ LANGDLLS	=	$(outdir)/TortoiseProc2052.dll \
 				$(outdir)/TortoiseMerge1029.dll \
 				$(outdir)/TortoiseIdiff1029.dll \
 				$(outdir)/TortoiseGitBlame1029.dll \
+				$(outdir)/TortoiseProc1045.dll \
+				$(outdir)/TortoiseMerge1045.dll \
+				$(outdir)/TortoiseIdiff1045.dll \
+				$(outdir)/TortoiseGitBlame1045.dll \
 
 all:$(LANGDLLS)
 
@@ -138,3 +142,12 @@ $(outdir)/TortoiseIdiff1029.dll:Tortoise_cs.po $(outdir)\TortoiseIdiffLang.dll
   $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_cs.po
 $(outdir)/TortoiseGitBlame1029.dll:Tortoise_cs.po $(outdir)\TortoiseGitBlameLang.dll
   $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_cs.po
+
+$(outdir)/TortoiseProc1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_pl_PL.po
+$(outdir)/TortoiseMerge1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_pl_PL.po
+$(outdir)/TortoiseIdiff1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_pl_PL.po
+$(outdir)/TortoiseGitBlame1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_pl_PL.po
