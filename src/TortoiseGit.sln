@@ -242,8 +242,14 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ja", "..\Languages\Lan
 	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_tr", "..\Languages\Lang_tr.wixproj", "{DD9A2398-7A47-48C4-9601-89856128AAC9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56016512-D578-46FD-85E0-9EDCD37433AC} = {56016512-D578-46FD-85E0-9EDCD37433AC}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_cs", "..\Languages\Lang_cs.wixproj", "{D83CB1C3-3DB4-4760-BBB7-618198180D5B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseStub", "TortoiseShell\TortoiseStub.vcproj", "{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}"
 EndProject
@@ -3509,7 +3515,7 @@ Global
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.debug_static|x86.ActiveCfg = Debug|x64
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|Win32.ActiveCfg = Debug|x64
+		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|Win32.ActiveCfg = Debug|x86
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|x64.ActiveCfg = Debug|x64
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.Debug|x86.ActiveCfg = Debug|x86
 		{B9C725A7-9727-48B2-86E5-F905F6C2B9E6}.DLL ASM Debug|Mixed Platforms.ActiveCfg = Debug|x64
@@ -4048,7 +4054,7 @@ Global
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.debug_static|x86.ActiveCfg = Debug|x64
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|Win32.ActiveCfg = Debug|x64
+		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|Win32.ActiveCfg = Debug|x86
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|x64.ActiveCfg = Debug|x64
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.Debug|x86.ActiveCfg = Debug|x86
 		{DD9A2398-7A47-48C4-9601-89856128AAC9}.DLL ASM Debug|Mixed Platforms.ActiveCfg = Debug|x64
