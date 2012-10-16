@@ -1055,9 +1055,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		CString out;
 		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
 		Run(cmd, &out, NULL, CP_UTF8);
-	//	int pos=out.ReverseFind(_T('\n'));
-		out.FindOneOf(_T("\r\n"));
-		return CGitHash(out);
+		return CGitHash(out.Trim());
 	}
 }
 
