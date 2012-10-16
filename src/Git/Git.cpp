@@ -1049,25 +1049,6 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 
 		return hash;
 	}
-	else if (this->m_IsUseGitDLL)
-	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-
-		this->CheckAndInitDll();
-
-		CGitHash hash;
-		CStringA ref;
-		ref = CUnicodeUtils::GetMulti(FixBranchName(friendname), CP_UTF8);
-		try
-		{
-			git_get_sha1(ref, hash.m_hash);
-
-		}catch(...)
-		{
-		}
-		return hash;
-
-	}
 	else
 	{
 		CString cmd;
