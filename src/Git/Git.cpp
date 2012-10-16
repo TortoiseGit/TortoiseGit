@@ -1012,7 +1012,44 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		return CGitHash(sHash);
 	}
 
-	if(this->m_IsUseGitDLL)
+	if (m_IsUseLibGit2)
+	{
+		git_repository *repo = NULL;
+		CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdirA.GetBuffer()))
+		{
+			gitdirA.ReleaseBuffer();
+			return CGitHash();
+		}
+		gitdirA.ReleaseBuffer();
+
+		CStringA refnameA = CUnicodeUtils::GetMulti(friendname, CP_UTF8);
+
+		git_object * gitObject = NULL;
+		if (git_revparse_single(&gitObject, repo, refnameA.GetBuffer()))
+		{
+			refnameA.ReleaseBuffer();
+			git_repository_free(repo);
+			return CGitHash();
+		}
+		refnameA.ReleaseBuffer();
+
+		const git_oid * oid = git_object_id(gitObject);
+		if (oid == NULL)
+		{
+			git_object_free(gitObject);
+			git_repository_free(repo);
+			return CGitHash();
+		}
+
+		CGitHash hash((char *)oid->id);
+
+		git_object_free(gitObject); // also frees oid
+		git_repository_free(repo);
+
+		return hash;
+	}
+	else if (this->m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 

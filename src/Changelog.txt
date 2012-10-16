@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1443: git svn dcommit: unclear behavior for dirty working tree
  * Fixed issue #1457: Confusing amend commit behaviour
  * Fixed issue #1466: Checkout Dialog always track remote branches
+ * Fixed issue #1396: Sync Dialog Pull show wrong commit range in "In commits"
 
 = Release 1.7.14.0 =
 Released: 2012-10-14
