@@ -1119,7 +1119,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		for (size_t i = 0; i < tag_names.count; i++)
 		{
 			CStringA tagName(tag_names.strings[i]);
-			list.push_back(CUnicodeUtils::GetUnicode(tagName).Mid(10)); // strip "refs/tags/"
+			list.push_back(CUnicodeUtils::GetUnicode(tagName));
 		}
 
 		git_strarray_free(&tag_names);

@@ -375,6 +375,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\compress.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\config.c"
 				>
 			</File>
@@ -396,6 +400,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\delta-apply.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\delta.c"
 				>
 			</File>
 			<File
@@ -424,6 +432,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\filter.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\fnmatch.c"
 				>
 			</File>
 			<File
@@ -484,6 +496,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\oid.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\pack-objects.c"
 				>
 			</File>
 			<File
@@ -602,6 +618,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\libgit2\src\win32\findfile.c"
+					>
+				</File>
+				<File
 					RelativePath="..\libgit2\src\win32\map.c"
 					>
 				</File>
@@ -702,14 +722,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="compat"
-				>
-				<File
-					RelativePath="..\libgit2\src\compat\fnmatch.c"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -753,6 +765,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\compress.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\config.h"
 				>
 			</File>
@@ -761,7 +777,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\delta.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\diff.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\diff_output.h"
 				>
 			</File>
 			<File
@@ -778,6 +802,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\filter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\fnmatch.h"
 				>
 			</File>
 			<File
@@ -826,6 +854,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\odb.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\pack-objects.h"
 				>
 			</File>
 			<File
@@ -928,6 +960,10 @@
 				Name="win32"
 				>
 				<File
+					RelativePath="..\libgit2\src\win32\findfile.h"
+					>
+				</File>
+				<File
 					RelativePath="..\libgit2\src\win32\mingw-compat.h"
 					>
 				</File>
@@ -953,14 +989,6 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\win32\utf-conv.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="compat"
-				>
-				<File
-					RelativePath="..\libgit2\src\compat\fnmatch.h"
 					>
 				</File>
 			</Filter>
@@ -1046,6 +1074,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\include\git2\oid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\include\git2\pack.h"
 				>
 			</File>
 			<File
