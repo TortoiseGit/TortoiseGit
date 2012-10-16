@@ -49,6 +49,7 @@ public:
 #ifdef ASSERT
 			ASSERT(FALSE);
 #endif
+			memset(m_hash, 0, GIT_HASH_SIZE);
 			return;
 		}
 
