@@ -1007,12 +1007,12 @@ bool CAppUtils::Switch(CString initialRefName, bool autoclose)
 		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
 			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
 
-		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack == TRUE, autoclose);
+		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose);
 	}
 	return FALSE;
 }
 
-bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, bool bTrack /* false */, bool autoClose /* false */)
+bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool autoClose /* false */)
 {
 	CString cmd;
 	CString track;
@@ -1028,8 +1028,10 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		{
 			branch.Format(_T("-b %s"), sNewBranch);
 		}
-		if (bTrack)
+		if (bTrack == TRUE)
 			track = _T("--track");
+		else if (bTrack == FALSE)
+			track = _T("--no-track");
 	}
 	if (bForce)
 		force = _T("-f");

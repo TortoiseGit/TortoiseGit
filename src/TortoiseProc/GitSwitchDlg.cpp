@@ -36,7 +36,7 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=NULL*/)
 	,CChooseVersion(this)
 {
 	m_bBranch=FALSE;
-	m_bTrack=FALSE;
+	m_bTrack = 2;
 	m_bForce=FALSE;
 }
 
@@ -195,7 +195,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		if(isUpdateCreateBranch)
 			this->m_bBranch=TRUE;
 
-		this->m_bTrack=TRUE;
+		this->m_bTrack = 2;
 	}
 	else
 	{
