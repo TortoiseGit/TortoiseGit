@@ -2805,7 +2805,7 @@ BEGIN
     IDS_PROC_SENDMAIL_WRAPTOOLTIP 
                             "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
     IDS_STATUSLIST_RESTOREPATH 
-                            "Do you really want to restore the copy? You will loose all changes that you have done after creating the copy."
+                            "Do you really want to restore the copy? You will lose all changes that you have done after creating the copy."
     IDS_RESTOREBUTTON       "&Restore"
     IDS_STATUSLIST_STATUSLINE1 
                             "line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d"
