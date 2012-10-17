@@ -28,6 +28,28 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "CleanTypeDlg.h"
+#include "..\Utils\UnicodeUtils.h"
+#include "ProjectProperties.h"
+
+static CString UnescapeQuotePath(CString s)
+{
+	CStringA t;
+	for (int i = 0; i < s.GetLength(); i++)
+	{
+		if (s[i] == '\\' && i + 3 < s.GetLength())
+		{
+			char c = (char)((s[i + 1] - '0') * 64 + (s[i + 2] - '0') * 8 + (s[i + 3] - '0'));
+			t += c;
+			i += 3;
+		}
+		else
+		{
+			t += s[i];
+		}
+	}
+
+	return CUnicodeUtils::GetUnicode(t);
+}
 
 bool CleanupCommand::Execute()
 {
@@ -36,6 +58,10 @@ bool CleanupCommand::Execute()
 	CCleanTypeDlg dlg;
 	if( dlg.DoModal() == IDOK)
 	{
+		ProjectProperties pp;
+		BOOL quotepath = TRUE;
+		pp.GetBOOLProps(quotepath, _T("core.quotepath"));
+
 		CString cmd;
 		cmd.Format(_T("git clean -n"));
 		if(dlg.m_bDir)
@@ -65,7 +91,14 @@ bool CleanupCommand::Execute()
 		while (!token.IsEmpty())
 		{
 			if (token.Mid(0, 13) == _T("Would remove "))
-				delList.AddPath(CTGitPath(token.Mid(13).TrimRight()));
+			{
+				CString tempPath = token.Mid(13).TrimRight();
+				if (quotepath)
+				{
+					tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+				}
+				delList.AddPath(CTGitPath(tempPath));
+			}
 
 			token = cmdout.Tokenize(_T("\n"), pos);
 		}

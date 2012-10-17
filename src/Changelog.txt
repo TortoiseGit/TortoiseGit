@@ -12,6 +12,7 @@ Released: unreleased
  * Fixed issue #1457: Confusing amend commit behaviour
  * Fixed issue #1466: Checkout Dialog always track remote branches
  * Fixed issue #1396: Sync Dialog Pull show wrong commit range in "In commits"
+ * Fixed issue #1465: Clean up does not work with core.quotepath=true
 
 = Release 1.7.14.0 =
 Released: 2012-10-14
