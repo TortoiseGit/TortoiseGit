@@ -315,19 +315,26 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	//str->Append(buf);
 	//delete buf;
 }
-BOOL CGit::IsInitRepos()
+
+BOOL CGit::IsOrphanBranch(CString ref)
 {
+	if (ref.IsEmpty())
+		ref = _T("HEAD");
+
 	CString cmdout;
-	cmdout.Empty();
-	if(g_Git.Run(_T("git.exe rev-parse --revs-only HEAD"),&cmdout,CP_UTF8))
+	if (g_Git.Run(_T("git.exe rev-parse --revs-only ") + ref, &cmdout, CP_UTF8))
 	{
-	//	CMessageBox::Show(NULL,cmdout,_T("TortoiseGit"),MB_OK);
 		return TRUE;
 	}
 	if(cmdout.IsEmpty())
 		return TRUE;
 
 	return FALSE;
+}
+
+BOOL CGit::IsInitRepos()
+{
+	return IsOrphanBranch(_T("HEAD"));
 }
 
 DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)

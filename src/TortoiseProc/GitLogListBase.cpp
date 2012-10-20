@@ -2235,7 +2235,7 @@ int CGitLogListBase::BeginFetchLog()
 		return -1;
 	}
 
-	if(g_Git.IsInitRepos())
+	if (g_Git.IsOrphanBranch(m_StartRef))
 		return 0;
 
 	try {
@@ -2390,7 +2390,7 @@ UINT CGitLogListBase::LogThread()
 	int lastSelectedHashNItem = -1;
 	int ret = 0;
 
-	if(!g_Git.IsInitRepos())
+	if (!g_Git.IsOrphanBranch(m_StartRef))
 	{
 		g_Git.m_critGitDllSec.Lock();
 		int total = 0;

@@ -272,6 +272,7 @@ public:
 	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);
 	static void StringAppend(CString *str,BYTE *p,int code=CP_UTF8,int length=-1);
 
+	BOOL IsOrphanBranch(CString ref);
 	BOOL IsInitRepos();
 	int ListConflictFile(CTGitPathList &list,CTGitPath *path=NULL);
 	int GetRefList(STRING_VECTOR &list);

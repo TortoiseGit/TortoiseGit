@@ -89,7 +89,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 	CString hash;
 	CString cmd=g_Git.GetLogCmd(hash,path,count,infomask,from,to,true);
 
-	if(g_Git.IsInitRepos())
+	if (g_Git.IsOrphanBranch(hash))
 		return 0;
 
 	git_init();
