@@ -1933,7 +1933,21 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 	{
 		if(dlg.m_bAutoLoad)
 		{
-			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
+			if (dlg.m_bAllRemotes)
+			{
+				STRING_VECTOR list;
+				g_Git.GetRemoteList(list);
+
+				STRING_VECTOR::const_iterator it = list.begin();
+				while (it != list.end())
+				{
+					CString remote(*it);
+					CAppUtils::LaunchPAgent(NULL, &remote);
+					it++;
+				}
+			}
+			else
+				CAppUtils::LaunchPAgent(NULL, &dlg.m_RemoteURL);
 		}
 
 		CString url;
@@ -2052,11 +2066,6 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 	{
 		CString arg;
 
-		if(dlg.m_bAutoLoad)
-		{
-			CAppUtils::LaunchPAgent(NULL,&dlg.m_URL);
-		}
-
 		if(dlg.m_bPack)
 			arg += _T("--thin ");
 		if(dlg.m_bTags && !dlg.m_bPushAllBranches)
@@ -2082,6 +2091,9 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 		for (unsigned int i = 0; i < remotesList.size(); i++)
 		{
+			if (dlg.m_bAutoLoad)
+				CAppUtils::LaunchPAgent(NULL, &remotesList[i]);
+
 			CString cmd;
 			if (dlg.m_bPushAllBranches)
 			{
