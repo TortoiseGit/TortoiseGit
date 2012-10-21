@@ -34,6 +34,7 @@
 #include "DiffColors.h"
 #include ".\mainfrm.h"
 #include "FormatMessageWrapper.h"
+#include "EditGotoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
 	ON_COMMAND(ID_EDIT_FINDNEXT, OnEditFindnext)
 	ON_COMMAND(ID_EDIT_FINDPREV, OnEditFindprev)
+	ON_COMMAND(ID_EDIT_GOTO, OnEditGoto)
 	ON_COMMAND(ID_FILE_RELOAD, OnFileReload)
 	ON_COMMAND(ID_VIEW_LINEDOWN, OnViewLinedown)
 	ON_COMMAND(ID_VIEW_LINEUP, OnViewLineup)
@@ -1549,6 +1551,45 @@ int CMainFrame::FindSearchStart(int nDefault)
 		}
 	}
 	return nLine;
+}
+
+void CMainFrame::OnEditGoto()
+{
+	CWnd *wnd = this->GetFocus();
+	if (wnd != m_pwndLeftView && wnd != m_pwndRightView && wnd != m_pwndBottomView)
+		return;
+
+	CBaseView *view = (CBaseView *)wnd;
+	CBaseView *view2 = view == m_pwndBottomView || view == m_pwndRightView ? (CBaseView *)m_pwndLeftView : m_pwndRightView;
+	CBaseView *view3 = view == m_pwndBottomView || view == m_pwndLeftView ? (CBaseView *)m_pwndRightView : m_Data.IsTheirFileInUse() ? m_pwndBottomView : NULL;
+
+
+	CEditGotoDlg dlg;
+	int start, end;
+	int count = view->m_pViewData->GetCount();
+	if (view->GetSelection(start, end))
+	{
+		int line = DIFF_EMPTYLINENUMBER;
+		for (int i = start; i < count; i++)
+		{
+			line = view->m_pViewData->GetLineNumber(i);
+			if (line != DIFF_EMPTYLINENUMBER)
+				break;
+		}
+		dlg.m_LineNumber = line == DIFF_EMPTYLINENUMBER ? 1 : (line + 1);
+	}
+
+	if (dlg.DoModal() == IDOK)
+	{
+		int index = view->m_pViewData->FindLineNumber(dlg.m_LineNumber - 1);
+		if (index < 0)
+			index = 0;
+		view->HiglightLines(index);
+		view->GoToLine(index, FALSE);
+		view2->GoToLine(index, FALSE);
+		if (view3)
+			view3->GoToLine(index, FALSE);
+	}
 }
 
 void CMainFrame::OnViewLinedown()

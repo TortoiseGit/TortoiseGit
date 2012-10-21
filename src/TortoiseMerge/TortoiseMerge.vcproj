@@ -741,6 +741,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EditGotoDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FilePatchesDlg.cpp"
 				>
 			</File>
@@ -916,6 +920,10 @@
 			</File>
 			<File
 				RelativePath=".\DiffStates.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditGotoDlg.h"
 				>
 			</File>
 			<File

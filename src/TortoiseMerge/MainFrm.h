@@ -66,6 +66,7 @@ protected:
 	afx_msg void	OnEditFind();
 	afx_msg void	OnEditFindnext();
 	afx_msg void	OnEditFindprev();
+	afx_msg void	OnEditGoto();
 	afx_msg void	OnViewWhitespaces();
 	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void	OnSize(UINT nType, int cx, int cy);

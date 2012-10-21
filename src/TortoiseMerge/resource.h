@@ -29,6 +29,8 @@
 #define IDB_LOGOFLIPPED                 168
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
+#define IDD_GOTODLG                     221
+#define IDC_LINENUMBER                  222
 #define IDC_BASEFILEEDIT                1000
 #define IDS_ERR_PATCH_NOINDEX           1000
 #define IDC_BASEFILEBROWSE              1001
@@ -249,13 +251,14 @@
 #define ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT 32859
 #define ID_EDIT_TEST                    32862
 #define ID_EDIT_SELECTALL               32883
+#define ID_EDIT_GOTO                    32884
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         32884
+#define _APS_NEXT_COMMAND_VALUE         32885
 #define _APS_NEXT_CONTROL_VALUE         1072
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
