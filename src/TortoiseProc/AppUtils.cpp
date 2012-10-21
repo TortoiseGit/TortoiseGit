@@ -899,8 +899,6 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 
 bool CAppUtils::Export(CString *BashHash)
 {
-	bool bRet = false;
-
 		// ask from where the export has to be done
 	CExportDlg dlg;
 	if(BashHash)
@@ -914,10 +912,9 @@ bool CAppUtils::Export(CString *BashHash)
 
 		CProgressDlg pro;
 		pro.m_GitCmd=cmd;
-		pro.DoModal();
-		return TRUE;
+		return (pro.DoModal() == IDOK);
 	}
-	return bRet;
+	return false;
 }
 
 bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_brach)
