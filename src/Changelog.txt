@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #1450: Option to fetch when adding a remote
  * Fixed issue #1411: Commit dialog checks submodule dirty state
  * Fixed issue #1485: Implement a Goto-Line dialog in TortoiseMerge
+ * Upgraded gitdll and libgit to 1.8.0
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit

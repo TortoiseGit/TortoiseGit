@@ -35,9 +35,6 @@
 #include "quote.h"
 #include "run-command.h"
 
-const char git_version_string[] = GIT_VERSION;
-
-
 #if 0
 
 // This is an example of an exported variable
