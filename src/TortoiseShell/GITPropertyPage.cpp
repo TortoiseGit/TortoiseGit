@@ -313,6 +313,14 @@ void CGitPropertyPage::InitWorkfileView()
 	if(!path.HasAdminDir(&ProjectTopDir))
 		return;
 
+	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
+	git_repository *repository = NULL;
+
+	int ret = git_repository_open(&repository, gitdir.GetBuffer());
+	gitdir.ReleaseBuffer();
+	if (ret)
+		return;
+
 	CGit git;
 
 	git.SetCurrentDir(ProjectTopDir);
@@ -326,14 +334,11 @@ void CGitPropertyPage::InitWorkfileView()
 	git.Run(_T("git.exe config core.safecrlf"), &safecrlf, CP_UTF8);
 
 	CString branch;
-	CString headhash;
 	CString remotebranch;
-
-	CString cmd,log;
 
 	if (!g_Git.GetCurrentBranchFromFile(ProjectTopDir, branch))
 	{
-		CString remote;
+		CString cmd, remote;
 		cmd.Format(_T("git.exe config branch.%s.merge"), branch.Trim());
 		git.Run(cmd, &remotebranch, CP_UTF8);
 		cmd.Format(_T("git.exe config branch.%s.remote"), branch.Trim());
@@ -346,12 +351,6 @@ void CGitPropertyPage::InitWorkfileView()
 	}
 	else
 		branch = _T("detached HEAD");
-
-	TCHAR oldpath[MAX_PATH+1];
-
-	::GetCurrentDirectory(MAX_PATH, oldpath);
-
-	::SetCurrentDirectory(ProjectTopDir);
 
 	if (autocrlf.Trim().IsEmpty())
 		autocrlf = _T("false");
@@ -367,19 +366,41 @@ void CGitPropertyPage::InitWorkfileView()
 	remotebranch.Trim().Replace(_T("\n"), _T("; "));
 	SetDlgItemText(m_hwnd,IDC_SHELL_REMOTE_BRANCH, remotebranch);
 
-	try
+	git_oid oid;
+	git_commit *HEADcommit = NULL;
+	if (!git_reference_name_to_oid(&oid, repository, "HEAD") && !git_commit_lookup(&HEADcommit, repository, &oid) && HEADcommit != NULL)
 	{
-		AutoLocker lock(g_Git.m_critGitDllSec);
-		g_Git.CheckAndInitDll();
-		GitRev revHEAD;
-		revHEAD.GetCommit(CString(_T("HEAD")));
+		int encode = CP_UTF8;
+		const char * encodingString = git_commit_message_encoding(HEADcommit);
+		if (encodingString != NULL)
+		{
+			CString str;
+			g_Git.StringAppend(&str, (BYTE*)encodingString, CP_UTF8);
+			encode = CUnicodeUtils::GetCPCode(str);
+		}
 
-		SetDlgItemText(m_hwnd, IDC_HEAD_HASH, revHEAD.m_CommitHash.ToString());
-		SetDlgItemText(m_hwnd, IDC_HEAD_SUBJECT, revHEAD.GetSubject());
-		SetDlgItemText(m_hwnd, IDC_HEAD_AUTHOR, revHEAD.GetAuthorName());
-		if (!revHEAD.m_CommitHash.IsEmpty())
-			SetDlgItemText(m_hwnd, IDC_HEAD_DATE, revHEAD.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
+		CGitHash HEADcommitHash((char*)(git_commit_id(HEADcommit)->id));
 
+		const git_signature * author = git_commit_author(HEADcommit);
+		CTime authorDate(author->when.time);
+		CString authorName;
+		g_Git.StringAppend(&authorName, (BYTE*)author->name, encode);
+
+		CString message;
+		g_Git.StringAppend(&message, (BYTE*)git_commit_message(HEADcommit), encode);
+
+		int start = 0;
+		message = message.Tokenize(L"\n", start);
+
+		SetDlgItemText(m_hwnd, IDC_HEAD_HASH, HEADcommitHash.ToString());
+		SetDlgItemText(m_hwnd, IDC_HEAD_SUBJECT, message);
+		SetDlgItemText(m_hwnd, IDC_HEAD_AUTHOR, authorName);
+		SetDlgItemText(m_hwnd, IDC_HEAD_DATE, authorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
+
+		git_commit_free(HEADcommit);
+	}
+
+	{
 		if (filenames.size() == 1)
 		{
 			CTGitPath relatepath;
@@ -393,35 +414,13 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
 			}
-
+/*
 			GitRev revLast;
 			if(! relatepath.GetGitPathString().IsEmpty())
 			{
 				cmd=_T("-z --topo-order -n1 --parents -- \"");
 				cmd+=relatepath.GetGitPathString();
 				cmd+=_T("\"");
-
-				GIT_LOG handle;
-				do
-				{
-					if(git_open_log(&handle, CUnicodeUtils::GetUTF8(cmd).GetBuffer()))
-						break;
-					if(git_get_log_firstcommit(handle))
-						break;
-
-					GIT_COMMIT commit;
-					if (git_get_log_nextcommit(handle, &commit, 0))
-						break;
-
-					git_close_log(handle);
-					handle = NULL;
-					revLast.ParserFromCommit(&commit);
-					git_free_commit(&commit);
-
-				}while(0);
-				if (handle != NULL) {
-					git_close_log(handle);
-				}
 			}
 
 			SetDlgItemText(m_hwnd, IDC_LAST_HASH, revLast.m_CommitHash.ToString());
@@ -431,7 +430,7 @@ void CGitPropertyPage::InitWorkfileView()
 				SetDlgItemText(m_hwnd, IDC_LAST_DATE, _T(""));
 			else
 				SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
-
+*/
 			if (!path.IsDirectory())
 			{
 				// get assume valid flag
@@ -440,20 +439,10 @@ void CGitPropertyPage::InitWorkfileView()
 				bool executable = false;
 				do
 				{
-					CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
-					git_repository *repository = NULL;
 					git_index *index = NULL;
 
-					int ret = git_repository_open(&repository, gitdir.GetBuffer());
-					gitdir.ReleaseBuffer();
-					if (ret)
-						break;
-
 					if (git_repository_index(&index, repository))
-					{
-						git_repository_free(repository);
 						break;
-					}
 
 					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
 					int idx = git_index_find(index, pathA);
@@ -496,11 +485,8 @@ void CGitPropertyPage::InitWorkfileView()
 			ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 		}
-
-	}catch(...)
-	{
 	}
-	::SetCurrentDirectory(oldpath);
+	git_repository_free(repository);
 }
 
 
