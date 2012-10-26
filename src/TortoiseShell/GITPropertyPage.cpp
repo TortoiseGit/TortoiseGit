@@ -23,7 +23,6 @@
 #include "gitpropertypage.h"
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
-#include "GitStatus.h"
 #include "git2.h"
 #include "UnicodeUtils.h"
 #include "CreateProcessHelper.h"
@@ -305,19 +304,19 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 
 void CGitPropertyPage::InitWorkfileView()
 {
-	CString username;
-	CGit git;
 	if (filenames.empty())
 		return;
 
 	CTGitPath path(filenames.front().c_str());
-	CString ProjectTopDir;
 
+	CString ProjectTopDir;
 	if(!path.HasAdminDir(&ProjectTopDir))
 		return;
 
+	CGit git;
+
 	git.SetCurrentDir(ProjectTopDir);
-	//can't git.exe when create process
+	CString username;
 	git.Run(_T("git.exe config user.name"), &username, CP_UTF8);
 	CString useremail;
 	git.Run(_T("git.exe config user.email"), &useremail, CP_UTF8);
