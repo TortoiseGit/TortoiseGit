@@ -330,30 +330,23 @@ void CGitPropertyPage::InitWorkfileView()
 	CString headhash;
 	CString remotebranch;
 
-	git.Run(_T("git.exe symbolic-ref HEAD"), &branch, CP_UTF8);
 	CString cmd,log;
 
-	if(!branch.IsEmpty())
+	if (!g_Git.GetCurrentBranchFromFile(ProjectTopDir, branch))
 	{
-		if( branch.Find(_T("refs/heads/"),0) >=0 )
+		CString remote;
+		cmd.Format(_T("git.exe config branch.%s.merge"), branch.Trim());
+		git.Run(cmd, &remotebranch, CP_UTF8);
+		cmd.Format(_T("git.exe config branch.%s.remote"), branch.Trim());
+		git.Run(cmd, &remote, CP_UTF8);
+		if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
 		{
-			CString remote;
-			branch=branch.Mid(11);
-			int start=0;
-			branch=branch.Tokenize(_T("\n"),start);
-			start=0;
-			branch=branch.Tokenize(_T("\r"),start);
-			cmd.Format(_T("git.exe config branch.%s.merge"),branch);
-			git.Run(cmd, &remotebranch, CP_UTF8);
-			cmd.Format(_T("git.exe config branch.%s.remote"),branch);
-			git.Run(cmd, &remote, CP_UTF8);
-			if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
-			{
-				remotebranch=remotebranch.Mid(11);
-				remotebranch=remote+_T("/")+remotebranch;
-			}
+			remotebranch = remotebranch.Mid(11);
+			remotebranch = remote + _T("/") + remotebranch;
 		}
 	}
+	else
+		branch = _T("detached HEAD");
 
 	TCHAR oldpath[MAX_PATH+1];
 
@@ -385,7 +378,8 @@ void CGitPropertyPage::InitWorkfileView()
 		SetDlgItemText(m_hwnd, IDC_HEAD_HASH, revHEAD.m_CommitHash.ToString());
 		SetDlgItemText(m_hwnd, IDC_HEAD_SUBJECT, revHEAD.GetSubject());
 		SetDlgItemText(m_hwnd, IDC_HEAD_AUTHOR, revHEAD.GetAuthorName());
-		SetDlgItemText(m_hwnd, IDC_HEAD_DATE, revHEAD.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
+		if (!revHEAD.m_CommitHash.IsEmpty())
+			SetDlgItemText(m_hwnd, IDC_HEAD_DATE, revHEAD.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
 
 		if (filenames.size() == 1)
 		{
