@@ -297,6 +297,8 @@ public:
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
 
+	static const UINT	m_ScrollToMessage;
+
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);
 	CThreadSafePtrArray			m_arShownList;
@@ -368,6 +370,7 @@ protected:
 	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	virtual afx_msg void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnScrollToMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg LRESULT OnLoad(WPARAM wParam, LPARAM lParam);

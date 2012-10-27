@@ -61,6 +61,7 @@
 #include "SysInfo.h"
 
 const UINT CGitLogListBase::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
+const UINT CGitLogListBase::m_ScrollToMessage = RegisterWindowMessage(_T("TORTOISEGIT_LOG_SCROLLTO"));
 
 IMPLEMENT_DYNAMIC(CGitLogListBase, CHintListCtrl)
 
@@ -300,6 +301,7 @@ CGitLogListBase::~CGitLogListBase()
 
 BEGIN_MESSAGE_MAP(CGitLogListBase, CHintListCtrl)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
+	ON_REGISTERED_MESSAGE(m_ScrollToMessage, OnScrollToMessage)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawLoglist)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoLoglist)
 	ON_WM_CONTEXTMENU()
@@ -2516,15 +2518,12 @@ UINT CGitLogListBase::LogThread()
 		return 0;
 	}
 
-	// restore last selected item
-	if (lastSelectedHashNItem >= 0)
-	{
-		SetItemState(lastSelectedHashNItem, LVIS_SELECTED, LVIS_SELECTED);
-		EnsureVisible(lastSelectedHashNItem, FALSE);
-	}
-
 	//Update UI;
 	PostMessage(LVM_SETITEMCOUNT, (WPARAM) this->m_logEntries.size(),(LPARAM) LVSICF_NOINVALIDATEALL|LVSICF_NOSCROLL);
+
+	if (lastSelectedHashNItem >= 0)
+		PostMessage(m_ScrollToMessage, lastSelectedHashNItem);
+
 	if (this->m_hWnd)
 		::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) GITLOG_END,0);
 
@@ -3136,6 +3135,12 @@ void CGitLogListBase::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	if(!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
 		Default();
+}
+LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*/)
+{
+	SetItemState((int)itemToSelect, LVIS_SELECTED, LVIS_SELECTED);
+	EnsureVisible((int)itemToSelect, FALSE);
+	return 0;
 }
 LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
