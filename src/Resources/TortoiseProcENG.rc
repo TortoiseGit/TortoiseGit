@@ -2685,6 +2685,7 @@ BEGIN
     IDS_PROC_REPOCREATEFINISHED "The repository was successfully created."
     IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH "Delete remote branch"
     IDS_PROC_MOVING         "Moving..."
+    IDS_PROC_STASHRUNNING   "Stash operation running..."
     IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCHES "Delete %d remote branches"
     IDS_MSGBOX_DONOTSHOW    "Don't show this message again"
     IDS_PROC_COPYING        "Copying..."

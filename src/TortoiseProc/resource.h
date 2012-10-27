@@ -634,6 +634,7 @@
 #define IDS_PROC_MOVING                 1269
 #define IDC_CACHEDEFAULT                1269
 #define IDC_CACHESHELL                  1270
+#define IDS_PROC_STASHRUNNING           1270
 #define IDC_CACHESHELL2                 1271
 #define IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCHES 1271
 #define IDC_CACHENONE                   1272

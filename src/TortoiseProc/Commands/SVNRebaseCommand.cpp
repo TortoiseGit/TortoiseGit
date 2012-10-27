@@ -26,6 +26,7 @@
 #include "Git.h"
 #include "ShellUpdater.h"
 #include "rebasedlg.h"
+#include "SysProgressDlg.h"
 
 bool SVNRebaseCommand::Execute()
 {
@@ -35,13 +36,25 @@ bool SVNRebaseCommand::Execute()
 	{
 		if (CMessageBox::Show(NULL, IDS_ERROR_NOCLEAN_STASH, IDS_APPNAME, 1, IDI_QUESTION, IDS_STASHBUTTON, IDS_ABORTBUTTON) == 1)
 		{
+			CSysProgressDlg sysProgressDlg;
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
+			sysProgressDlg.ShowModeless((HWND)NULL, true);
+
 			CString cmd,out;
 			cmd=_T("git.exe stash");
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
+				if (sysProgressDlg.IsValid())
+					sysProgressDlg.Stop();
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
 			}
+			if (sysProgressDlg.IsValid())
+				sysProgressDlg.Stop();
 			isStash = true;
 		}
 		else
@@ -136,11 +149,23 @@ void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
 	if(CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
 	{
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
+		sysProgressDlg.ShowModeless((HWND)NULL, true);
+
 		CString cmd,out;
 		cmd=_T("git.exe stash pop");
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
+			if (sysProgressDlg.IsValid())
+				sysProgressDlg.Stop();
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
 		}
+		if (sysProgressDlg.IsValid())
+			sysProgressDlg.Stop();
 	}
 }
