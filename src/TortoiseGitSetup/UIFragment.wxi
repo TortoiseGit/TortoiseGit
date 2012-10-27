@@ -206,10 +206,6 @@
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Event="SpawnWaitDialog" Value="WaitForCostingPopup">CostingComplete = 1</Publish>
 				<Publish Event="ValidateProductID" Value="0">0</Publish>
-				<Publish Event="AddLocal" Value="SSHPlink">1</Publish>
-				<Publish Event="AddLocal" Value="SSHOpenSSH">1</Publish>
-				<Publish Event="Remove" Value="SSHPlink">NOT SSHTOOL = "Plink"</Publish>
-				<Publish Event="Remove" Value="SSHOpenSSH">NOT SSHTOOL = "OpenSSH"</Publish>
 				<Publish Event="NewDialog" Value="CustomizeDlg">"Yes"</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">

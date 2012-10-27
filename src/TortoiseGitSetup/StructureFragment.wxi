@@ -326,10 +326,12 @@
 				</Component>
 				<?endif ?>
 
-				<Component Id="C_SSHCLIENT_PLINK" Guid="$(var.RegSSHPLINK)" Win64="$(var.Win64YesNo)">
+				<Component Id="C_SSHCLIENT_PLINK" Guid="$(var.RegSSHPLINK)" Win64="$(var.Win64YesNo)" Permanent="yes">
+					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
 					<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoisePLink.exe" Type="string" />
 				</Component>
-				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)">
+				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)" Permanent="yes">
+					<Condition>(OLDSSH = "") and (SSHTOOL="OpenSSH")</Condition>
 					<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" />
 				</Component>
 

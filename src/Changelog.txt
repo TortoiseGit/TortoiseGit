@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #1419: Push window doesn't load PuTTY key when pushing to multiple remotes
  * Fixed issue #1482: Allow to show log of other branches if current HEAD points to an orphan branch
  * Fixed issue #1487: Do not use libgit in TortoiseShell for displaying HEAD commit (might set %GIT_DIR% permanently)
+ * Fixed issue #1475: Installer resets your SSH preference to ssh.exe when run silently
 
 = Release 1.7.14.0 =
 Released: 2012-10-14
