@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1485: Implement a Goto-Line dialog in TortoiseMerge
  * Upgraded gitdll and libgit to 1.8.0
  * Fixed issue #1461: Add progress indicator for stash operations
+ * Fixed issue #1484: Settings dialog default to Git page
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit

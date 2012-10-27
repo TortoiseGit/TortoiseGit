@@ -346,6 +346,10 @@ BOOL CSettings::OnInitDialog()
 	{
 		this->SetActivePage(this->m_pTBlamePage);
 	}
+	else if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	{
+		this->SetActivePage(this->m_pGitConfig);
+	}
 	return bResult;
 }
 
