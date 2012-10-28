@@ -343,6 +343,8 @@ void CGitPropertyPage::InitWorkfileView()
 		git.Run(cmd, &remotebranch, CP_UTF8);
 		cmd.Format(_T("git.exe config branch.%s.remote"), branch.Trim());
 		git.Run(cmd, &remote, CP_UTF8);
+		remote.Trim();
+		remotebranch.Trim();
 		if((!remote.IsEmpty()) && (!remotebranch.IsEmpty()))
 		{
 			remotebranch = remotebranch.Mid(11);
