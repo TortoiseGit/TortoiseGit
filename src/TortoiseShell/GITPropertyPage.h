@@ -19,6 +19,7 @@
 //
 #pragma once
 #include "ShellUpdater.h"
+#include "git2.h"
 
 #define ListView_GetItemTextEx(hwndLV, i, iSubItem_, __buf) \
 { \
@@ -78,6 +79,7 @@ protected:
 	 * Initializes the property page.
 	 */
 	virtual void InitWorkfileView();
+	void DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel);
 	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen);
 	void PageProcOnCommand(WPARAM wParam);
 	void RunCommand(const tstring& command);

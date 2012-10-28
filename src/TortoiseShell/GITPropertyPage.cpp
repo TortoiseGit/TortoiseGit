@@ -23,7 +23,6 @@
 #include "gitpropertypage.h"
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
@@ -302,6 +301,173 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	}
 }
 
+struct TreewalkStruct
+{
+	const char *folder;
+	const char *name;
+	git_oid oid;
+};
+
+static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entry *entry, void *payload)
+{
+	TreewalkStruct *treewalkstruct = (TreewalkStruct *)payload;
+	char folder[MAX_PATH];
+	strcpy(folder, root);
+	strcat(folder, git_tree_entry_name(entry));
+	strcat(folder, "/");
+	if (strstr(treewalkstruct->folder, folder))
+		return 0;
+
+	if (!strcmp(treewalkstruct->folder, root))
+	{
+		if (!strcmp(git_tree_entry_name(entry), treewalkstruct->name))
+		{
+			git_oid_cpy(&treewalkstruct->oid, git_tree_entry_id(entry));
+			return -1;
+		}
+
+		return 0;
+	}
+
+	return 1;
+}
+
+static git_commit * FindFileRecentCommit(git_repository *repository, CString path)
+{
+	git_commit *commit = NULL, *commit2 = NULL;
+	git_revwalk *walk;
+	if (git_revwalk_new(&walk, repository))
+		return NULL;
+
+	CStringA pathA = CUnicodeUtils::GetUTF8(path);
+	const char *pathC = pathA.GetBuffer();
+	char folder[MAX_PATH], file[MAX_PATH];
+	const char *slash = strrchr(pathC, '/');
+	if (slash)
+	{
+		strncpy(folder, pathC, slash - pathC + 1);
+		folder[slash - pathC + 1] = '\0';
+		strcpy(file, slash + 1);
+	}
+	else
+	{
+		folder[0] = '\0';
+		strcpy(file, pathC);
+	}
+	pathA.ReleaseBuffer();
+
+	TreewalkStruct treewalkstruct = { folder, file };
+	TreewalkStruct treewalkstruct2 = { folder, file };
+
+	try
+	{
+		if (git_revwalk_push_head(walk))
+			throw "git_revwalk_push_head";
+
+		git_oid oid;
+		while (!git_revwalk_next(&oid, walk))
+		{
+			if (commit != NULL)
+			{
+				git_commit_free(commit);
+				commit = NULL;
+			}
+
+			if (git_commit_lookup(&commit, repository, &oid))
+			{
+				commit = NULL;
+				throw "git_commit_lookup 1";
+			}
+
+			git_tree *tree;
+			if (git_commit_tree(&tree, commit))
+				throw "git_commit_tree 1";
+
+			memset(&treewalkstruct.oid.id, 0, sizeof(treewalkstruct.oid.id));
+			int ret = git_tree_walk(tree, TreewalkCB_FindFileRecentCommit, GIT_TREEWALK_PRE, &treewalkstruct);
+			git_tree_free(tree);
+			if (ret < 0 && ret != GIT_EUSER)
+				throw "git_tree_walk 1";
+
+			bool diff = true;
+			// for merge point, check if it is different to all parents, if yes then there are real change in the merge point.
+			// if no parent then of course it is different
+			for (unsigned int i = 0; i < git_commit_parentcount(commit); i++)
+			{
+				if (git_commit_parent(&commit2, commit, i))
+				{
+					commit2 = NULL;
+					throw "git_commit_parent";
+				}
+
+				if (git_commit_tree(&tree, commit2))
+					throw "git_commit_tree 2";
+				
+				git_commit_free(commit2);
+				memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
+				int ret = git_tree_walk(tree, TreewalkCB_FindFileRecentCommit, GIT_TREEWALK_PRE, &treewalkstruct2);
+				git_tree_free(tree);
+				if (ret < 0 && ret != GIT_EUSER)
+					throw "git_tree_walk 2";
+
+				if (!git_oid_cmp(&treewalkstruct.oid, &treewalkstruct2.oid))
+					diff = false;
+				else if (git_revwalk_hide(walk, git_commit_parent_oid(commit, i)))
+					throw "git_revwalk_hide";
+			}
+
+			if (diff)
+				break;
+		}
+	}
+	catch (...)
+	{
+		if (commit != NULL)
+		{
+			git_commit_free(commit);
+			commit = NULL;
+		}
+		if (commit2 != NULL)
+		{
+			git_commit_free(commit2);
+			commit2 = NULL;
+		}
+	}
+	
+	git_revwalk_free(walk);
+	return commit;
+}
+
+void CGitPropertyPage::DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
+{
+	int encode = CP_UTF8;
+	const char * encodingString = git_commit_message_encoding(commit);
+	if (encodingString != NULL)
+	{
+		CString str;
+		g_Git.StringAppend(&str, (BYTE*)encodingString, CP_UTF8);
+		encode = CUnicodeUtils::GetCPCode(str);
+	}
+
+	const git_signature * author = git_commit_author(commit);
+	CString authorName;
+	g_Git.StringAppend(&authorName, (BYTE*)author->name, encode);
+
+	CString message;
+	g_Git.StringAppend(&message, (BYTE*)git_commit_message(commit), encode);
+
+	int start = 0;
+	message = message.Tokenize(L"\n", start);
+
+	SetDlgItemText(m_hwnd, hashLabel, CGitHash((char*)(git_commit_id(commit)->id)).ToString());
+	SetDlgItemText(m_hwnd, subjectLabel, message);
+	SetDlgItemText(m_hwnd, authorLabel, authorName);
+
+	CString authorDate;
+	Time64ToTimeString(author->when.time, authorDate.GetBufferSetLength(200), 200);
+	SetDlgItemText(m_hwnd, dateLabel, authorDate);
+}
+
 void CGitPropertyPage::InitWorkfileView()
 {
 	if (filenames.empty())
@@ -372,33 +538,7 @@ void CGitPropertyPage::InitWorkfileView()
 	git_commit *HEADcommit = NULL;
 	if (!git_reference_name_to_oid(&oid, repository, "HEAD") && !git_commit_lookup(&HEADcommit, repository, &oid) && HEADcommit != NULL)
 	{
-		int encode = CP_UTF8;
-		const char * encodingString = git_commit_message_encoding(HEADcommit);
-		if (encodingString != NULL)
-		{
-			CString str;
-			g_Git.StringAppend(&str, (BYTE*)encodingString, CP_UTF8);
-			encode = CUnicodeUtils::GetCPCode(str);
-		}
-
-		CGitHash HEADcommitHash((char*)(git_commit_id(HEADcommit)->id));
-
-		const git_signature * author = git_commit_author(HEADcommit);
-		CTime authorDate(author->when.time);
-		CString authorName;
-		g_Git.StringAppend(&authorName, (BYTE*)author->name, encode);
-
-		CString message;
-		g_Git.StringAppend(&message, (BYTE*)git_commit_message(HEADcommit), encode);
-
-		int start = 0;
-		message = message.Tokenize(L"\n", start);
-
-		SetDlgItemText(m_hwnd, IDC_HEAD_HASH, HEADcommitHash.ToString());
-		SetDlgItemText(m_hwnd, IDC_HEAD_SUBJECT, message);
-		SetDlgItemText(m_hwnd, IDC_HEAD_AUTHOR, authorName);
-		SetDlgItemText(m_hwnd, IDC_HEAD_DATE, authorDate.Format(_T("%Y-%m-%d %H:%M:%S")));
-
+		DisplayCommit(HEADcommit, IDC_HEAD_HASH, IDC_HEAD_SUBJECT, IDC_HEAD_AUTHOR, IDC_HEAD_DATE);
 		git_commit_free(HEADcommit);
 	}
 
@@ -416,23 +556,14 @@ void CGitPropertyPage::InitWorkfileView()
 			{
 				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
 			}
-/*
-			GitRev revLast;
-			if(! relatepath.GetGitPathString().IsEmpty())
+
+			git_commit *commit = FindFileRecentCommit(repository, relatepath.GetGitPathString());
+			if (commit != NULL)
 			{
-				cmd=_T("-z --topo-order -n1 --parents -- \"");
-				cmd+=relatepath.GetGitPathString();
-				cmd+=_T("\"");
+				DisplayCommit(commit, IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
+				git_commit_free(commit);
 			}
 
-			SetDlgItemText(m_hwnd, IDC_LAST_HASH, revLast.m_CommitHash.ToString());
-			SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, revLast.GetSubject());
-			SetDlgItemText(m_hwnd, IDC_LAST_AUTHOR, revLast.GetAuthorName());
-			if (revLast.m_CommitHash.IsEmpty())
-				SetDlgItemText(m_hwnd, IDC_LAST_DATE, _T(""));
-			else
-				SetDlgItemText(m_hwnd, IDC_LAST_DATE, revLast.GetAuthorDate().Format(_T("%Y-%m-%d %H:%M:%S")));
-*/
 			if (!path.IsDirectory())
 			{
 				// get assume valid flag
