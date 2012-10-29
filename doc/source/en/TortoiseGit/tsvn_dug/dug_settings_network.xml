@@ -62,13 +62,13 @@
 	<para>
 		To avoid being prompted for a password repeatedly, you might also
 		consider using a password caching tool such as Pageant. This is also
-		available for download from the PuTTY website.
+		available for download from the PuTTY website or included in the TortoiseGit package.
 	</para>
 	<para>
-		Finally, setting up SSH on server and clients is a non-trivial process
+		Finally, setting up SSH on clients is a non-trivial process
 		which is beyond the scope of this help file. However, you can find a
 		guide in the TortoiseGit FAQ listed under
-		<ulink url="http://TortoiseGit.net/ssh_howto">
+		<ulink url="http://code.google.com/p/tortoisegit/wiki/UsingPuTTY">
 			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
 	</para>

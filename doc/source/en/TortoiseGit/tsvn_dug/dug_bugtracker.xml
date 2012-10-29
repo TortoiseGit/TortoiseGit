@@ -92,21 +92,21 @@
 						<para>
 							If it begins with the string <literal>^/</literal> it is assumed
 							to be relative to the repository root.
-							For example, <literal>^/../?do=details&amp;id=%BUGID%</literal>
+							For example, <literal>^/issues/details?id=%BUGID%</literal>
 							will resolve to
-							<systemitem class="url">http://TortoiseGit.net/?do=details&amp;id=%BUGID%</systemitem>
+							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
 							if your repository is located on
-							<systemitem class="url">http://TortoiseGit.net/svn/trunk/</systemitem>.
+							<systemitem class="url">http://code.google.com/p/tortoisegit/</systemitem>.
 						</para>
 						-->
 						<para>
 							A URL beginning with the string <literal>/</literal> is assumed
 							to be relative to the server's hostname.
-							For example <literal>/?do=details&amp;id=%BUGID%</literal>
+							For example <literal>/issues/details?id=%BUGID%</literal>
 							will resolve to
-							<systemitem class="url">http://TortoiseGit.net/?do=details&amp;id=%BUGID%</systemitem>
+							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
 							if your repository is located anywhere on
-							<systemitem class="url">http://TortoiseGit.net</systemitem>.
+							<systemitem class="url">http://code.google.com/p/tortoisegit/</systemitem>.
 						</para>
 					</listitem>
 				</varlistentry>
