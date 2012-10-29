@@ -114,7 +114,7 @@ public:
 	/**
 	* Launch alternative editor
 	*/
-	static bool LaunchAlternativeEditor(const CString& filename);
+	static bool LaunchAlternativeEditor(const CString& filename, bool uac = false);
 
 	/**
 	* Sets the title of a dialog

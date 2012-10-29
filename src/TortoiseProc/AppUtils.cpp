@@ -693,7 +693,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	::DeleteFile(tempfile);
 	return true;
 }
-bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
+bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 {
 	CString editTool = CRegString(_T("Software\\TortoiseGit\\AlternativeEditor"));
 	if (editTool.IsEmpty() || (editTool.Left(1).Compare(_T("#"))==0)) {
@@ -703,7 +703,7 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
 	CString sCmd;
 	sCmd.Format(_T("\"%s\" \"%s\""), editTool, filename);
 
-	LaunchApplication(sCmd, NULL, false);
+	LaunchApplication(sCmd, NULL, false, NULL, uac);
 	return true;
 }
 bool CAppUtils::LaunchRemoteSetting()
