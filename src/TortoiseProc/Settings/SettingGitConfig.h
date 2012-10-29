@@ -64,6 +64,7 @@ protected:
 	afx_msg void OnCbnSelchangeSafeCrLf();
 	afx_msg void OnBnClickedCheckWarnNoSignedOffBy();
 	afx_msg void OnBnClickedEditsystemgitconfig();
+	afx_msg void OnBnClickedViewsystemgitconfig();
 	afx_msg void OnBnClickedEditglobalgitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
 

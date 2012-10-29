@@ -72,7 +72,26 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
+	ON_BN_CLICKED(IDC_VIEWSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedViewsystemgitconfig)
 END_MESSAGE_MAP()
+
+BOOL IsAdmin()
+{
+	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+	PSID AdministratorsGroup;
+	// Initialize SID.
+	if (!AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &AdministratorsGroup))
+		return false;
+
+	// Check whether the token is present in admin group.
+	BOOL IsInAdminGroup = FALSE;
+	if (!CheckTokenMembership(NULL, AdministratorsGroup, &IsInAdminGroup))
+		IsInAdminGroup = FALSE;
+
+	// Free SID and return.
+	FreeSid(AdministratorsGroup);
+	return IsInAdminGroup;
+}
 
 BOOL CSettingGitConfig::OnInitDialog()
 {
@@ -123,6 +142,12 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 	if (isBareRepo)
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
+
+	if (!IsAdmin())
+	{
+		((CButton *)this->GetDlgItem(IDC_EDITSYSTEMGITCONFIG))->SetShield(TRUE);
+		this->GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->ShowWindow(SW_SHOW);
+	}
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -239,6 +264,18 @@ void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 }
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
+{
+	CString filename = g_Git.GetGitSystemConfig();
+	if (filename.IsEmpty())
+	{
+		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
+		return;
+	}
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(filename, true);
+}
+
+void CSettingGitConfig::OnBnClickedViewsystemgitconfig()
 {
 	CString filename = g_Git.GetGitSystemConfig();
 	if (filename.IsEmpty())
