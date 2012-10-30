@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnCbnSelchangeSafeCrLf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
+	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
@@ -251,6 +252,12 @@ void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 {
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitGlobalConfig());
+}
+
+void CSettingGitConfig::OnBnClickedEditglobalxdggitconfig()
+{
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitGlobalXDGConfig());
 }
 
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()

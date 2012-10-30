@@ -66,6 +66,7 @@ protected:
 	afx_msg void OnBnClickedEditsystemgitconfig();
 	afx_msg void OnBnClickedViewsystemgitconfig();
 	afx_msg void OnBnClickedEditglobalgitconfig();
+	afx_msg void OnBnClickedEditglobalxdggitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
 
 	CString	m_UserName;
