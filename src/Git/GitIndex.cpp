@@ -126,14 +126,18 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	CString projectConfig = dgitdir + _T("config");
 	CString globalConfig = g_Git.GetGitGlobalConfig();
+	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
 
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4);
 	projectConfigA.ReleaseBuffer();
 	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 2);
+	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3);
 	globalConfigA.ReleaseBuffer();
+	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
+	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2);
+	globalXDGConfigA.ReleaseBuffer();
 	if (!msysGitBinPath.IsEmpty())
 	{
 		CString systemConfig = msysGitBinPath + _T("\\..\\etc\\gitconfig");
@@ -1167,6 +1171,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 
 	CString projectConfig = adminDir + _T("config");
 	CString globalConfig = g_Git.GetGitGlobalConfig();
+	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 
 	CAutoWriteLock lock(&m_coreExcludefilesSharedMutex);
 	hasChanged = CheckAndUpdateMsysGitBinpath();
@@ -1174,6 +1179,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 
 	hasChanged = hasChanged || CheckFileChanged(projectConfig);
 	hasChanged = hasChanged || CheckFileChanged(globalConfig);
+	hasChanged = hasChanged || CheckFileChanged(globalXDGConfig);
 	if (!m_sMsysGitBinPath.IsEmpty())
 		hasChanged = hasChanged || CheckFileChanged(systemConfig);
 
@@ -1189,11 +1195,14 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	git_config * config;
 	git_config_new(&config);
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4);
 	projectConfigA.ReleaseBuffer();
 	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 2);
+	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3);
 	globalConfigA.ReleaseBuffer();
+	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
+	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2);
+	globalXDGConfigA.ReleaseBuffer();
 	if (!m_sMsysGitBinPath.IsEmpty())
 	{
 		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
@@ -1212,6 +1221,12 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 
 	CAutoWriteLock lockMap(&m_SharedMutex);
 	g_Git.GetFileModifyTime(projectConfig, &m_Map[projectConfig].m_LastModifyTime);
+	g_Git.GetFileModifyTime(globalXDGConfig, &m_Map[globalXDGConfig].m_LastModifyTime);
+	if (m_Map[globalXDGConfig].m_LastModifyTime == 0)
+	{
+		m_Map[globalXDGConfig].m_SharedMutex.Release();
+		m_Map.erase(globalXDGConfig);
+	}
 	g_Git.GetFileModifyTime(globalConfig, &m_Map[globalConfig].m_LastModifyTime);
 	if (m_Map[globalConfig].m_LastModifyTime == 0)
 	{
