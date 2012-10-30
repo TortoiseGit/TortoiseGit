@@ -125,7 +125,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	git_config_new(&config);
 
 	CString projectConfig = dgitdir + _T("config");
-	CString globalConfig = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
 
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
@@ -1166,7 +1166,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	bool hasChanged = false;
 
 	CString projectConfig = adminDir + _T("config");
-	CString globalConfig = GetWindowsHome() + _T("\\.gitconfig");
+	CString globalConfig = g_Git.GetGitGlobalConfig();
 
 	CAutoWriteLock lock(&m_coreExcludefilesSharedMutex);
 	hasChanged = CheckAndUpdateMsysGitBinpath();

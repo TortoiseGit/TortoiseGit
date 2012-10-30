@@ -249,18 +249,14 @@ void CSettingGitConfig::OnCbnSelchangeSafeCrLf()
 
 void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 {
-	CString filename = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
 	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(filename);
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitGlobalConfig());
 }
 
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 {
-	CString path;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, path);
-	path += _T("config");
 	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(path);
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitLocalConfig());
 }
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
