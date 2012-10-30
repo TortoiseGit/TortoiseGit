@@ -1625,6 +1625,24 @@ CString CGit::GetHomeDirectory()
 	return CString(homeDir, (int)wcslen(homeDir));
 }
 
+CString CGit::GetGitLocalConfig()
+{
+	CString path;
+	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, path);
+	path += _T("config");
+	return path;
+}
+
+CString CGit::GetGitGlobalConfig()
+{
+	return g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+}
+
+CString CGit::GetGitGlobalXDGConfig()
+{
+	return g_Git.GetHomeDirectory() + _T("\\.config\\git\\config");
+}
+
 CString CGit::GetGitSystemConfig()
 {
 	const wchar_t * systemConfig = wget_msysgit_etc();
