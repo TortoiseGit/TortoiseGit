@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #1487: Do not use libgit in TortoiseShell for displaying HEAD commit (might set %GIT_DIR% permanently)
  * Fixed issue #1475: Installer resets your SSH preference to ssh.exe when run silently
  * Fixed issue #1470: Log Dialog: Selected item not remembered after refresh if item is one of the first 100
+ * Fixed issue #1499: Allow to show log if current HEAD and selected ref is orphan branch when show all branches checked
 
 = Release 1.7.14.0 =
 Released: 2012-10-14

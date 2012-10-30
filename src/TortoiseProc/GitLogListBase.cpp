@@ -2238,7 +2238,18 @@ int CGitLogListBase::BeginFetchLog()
 	}
 
 	if (g_Git.IsOrphanBranch(m_StartRef))
-		return 0;
+	{
+		if (!(mask & CGit::LOG_INFO_ALL_BRANCH))
+			return 0;
+
+		// if show all branches, pick any ref as dummy entry ref
+		STRING_VECTOR list;
+		g_Git.GetRefList(list);
+		if (list.size() == 0)
+			return 0;
+
+		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, pFrom, pTo, true, &data);
+	}
 
 	try {
 		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
@@ -2392,7 +2403,22 @@ UINT CGitLogListBase::LogThread()
 	int lastSelectedHashNItem = -1;
 	int ret = 0;
 
-	if (!g_Git.IsOrphanBranch(m_StartRef))
+	bool shouldWalk = true;
+	if (g_Git.IsOrphanBranch(m_StartRef))
+	{
+		// walk revisions if show all branches and there exists any ref
+		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH))
+			shouldWalk = false;
+		else
+		{
+			STRING_VECTOR list;
+			g_Git.GetRefList(list);
+			if (list.size() == 0)
+				shouldWalk = false;
+		}
+	}
+
+	if (shouldWalk)
 	{
 		g_Git.m_critGitDllSec.Lock();
 		int total = 0;
