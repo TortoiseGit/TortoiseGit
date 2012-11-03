@@ -9,6 +9,7 @@ Released: unreleased
  * Upgraded gitdll and libgit to 1.8.0
  * Fixed issue #1461: Add progress indicator for stash operations
  * Fixed issue #1484: Settings dialog default to Git page
+ * Fixed issue #1505: Tell user that author not set in Rebase Dialog
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
