@@ -60,6 +60,38 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%bpath</term>
+					<listitem>
+						<para>
+							Full path to the original file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%ypath</term>
+					<listitem>
+						<para>
+							Full path to your file
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%brev</term>
+					<listitem>
+						<para>
+							The revision of the original file, if available
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term condition="pot">%yrev</term>
+					<listitem>
+						<para>
+							The revision of the second file, if available
+						</para>
+					</listitem>
+				</varlistentry>
 			</variablelist>
 		</para>
 		<para>

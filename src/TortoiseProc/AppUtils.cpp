@@ -445,6 +445,8 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 bool CAppUtils::StartExtDiff(
 	const CString& file1,  const CString& file2,
 	const CString& sName1, const CString& sName2,
+	const CString& originalFile1, const CString& originalFile2,
+	const git_revnum_t& hash1, const git_revnum_t& hash2,
 	const DiffFlags& flags)
 {
 	CString viewer;
@@ -500,6 +502,12 @@ bool CAppUtils::StartExtDiff(
 		viewer.Replace(_T("%yname"), _T("\"") + file2 + _T("\""));
 	else
 		viewer.Replace(_T("%yname"), _T("\"") + sName2 + _T("\""));
+
+	viewer.Replace(_T("%bpath"), _T("\"") + originalFile1 + _T("\""));
+	viewer.Replace(_T("%ypath"), _T("\"") + originalFile2 + _T("\""));
+
+	viewer.Replace(_T("%brev"), _T("\"") + hash1 + _T("\""));
+	viewer.Replace(_T("%yrev"), _T("\"") + hash2 + _T("\""));
 
 	if (flags.bReadOnly && bInternal)
 		viewer += _T(" /readonly");

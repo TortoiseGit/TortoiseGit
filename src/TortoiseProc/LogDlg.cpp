@@ -1025,13 +1025,16 @@ void CLogDlg::DoDiffFromLog(INT_PTR selIndex, GitRev* rev1, GitRev* rev2, bool /
 				(*m_currentChangedArray)[selIndex].GetFileExtension());
 
 	CString cmd;
+	CTGitPath &path = (CTGitPath &)(*m_currentChangedArray)[selIndex];
 
-	g_Git.GetOneFile(rev1->m_CommitHash.ToString(), (CTGitPath &)(*m_currentChangedArray)[selIndex],file1);
-
-	g_Git.GetOneFile(rev2->m_CommitHash.ToString(), (CTGitPath &)(*m_currentChangedArray)[selIndex],file2);
+	g_Git.GetOneFile(rev1->m_CommitHash.ToString(), path, file1);
+	g_Git.GetOneFile(rev2->m_CommitHash.ToString(), path, file2);
 
 	CAppUtils::DiffFlags flags;
-	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),flags);
+	CAppUtils::StartExtDiff(file1,file2,_T("A"),_T("B"),
+													g_Git.m_CurrentDir + _T("\\") + path.GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + path.GetWinPathString(),
+													rev1->m_CommitHash.ToString(), rev2->m_CommitHash.ToString(),
+													flags);
 
 	theApp.DoWaitCursor(-1);
 	EnableOKButton();

@@ -135,12 +135,17 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
-							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength())
-							,flags);
+							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
+							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+							git_revnum_t(GIT_REV_ZERO), rev1
+							, flags);
 	else
 		CAppUtils::StartExtDiff(file1,tempfile,
-							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength())
-							,pPath->GetGitPathString(),flags);
+							pPath->GetGitPathString() + _T(":") + rev1.Left(g_Git.GetShortHASHLength()),
+							pPath->GetGitPathString(),
+							g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(), g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+							rev1, git_revnum_t(GIT_REV_ZERO)
+							, flags);
 
 	return 0;
 }
@@ -334,8 +339,12 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		CAppUtils::DiffFlags flags;
 		CAppUtils::StartExtDiff(file2,file1,
 								title2,
-								title1
-								,flags);
+								title1,
+								g_Git.m_CurrentDir + _T("\\") + pPath2->GetWinPathString(),
+								g_Git.m_CurrentDir + _T("\\") + pPath->GetWinPathString(),
+								rev2,
+								rev1,
+								flags);
 	}
 	return 0;
 }

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2012 - TortoiseGit
+// Copyright (C) 2007-2011 - TortoiseGit
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -66,6 +66,7 @@ bool DiffCommand::Execute()
 	else
 		bRet = CAppUtils::StartExtDiff(
 			path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
+			CString(), CString(), git_revnum_t(GIT_REV_ZERO), git_revnum_t(GIT_REV_ZERO),
 			CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
 
 	return bRet;

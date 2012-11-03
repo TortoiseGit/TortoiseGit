@@ -83,7 +83,9 @@ public:
 	 */
 	static bool StartExtDiff(
 		const CString& file1, const CString& file2,
-		const CString& sName1, const CString& sName2, const DiffFlags& flags);
+		const CString& sName1, const CString& sName2,
+		const CString& originalFile1, const CString& originalFile2,
+		const git_revnum_t& hash1, const git_revnum_t& hash2, const DiffFlags& flags);
 
 	/**
 	 * Launches the standard text viewer/editor application which is associated
