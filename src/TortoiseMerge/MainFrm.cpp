@@ -1873,7 +1873,7 @@ BOOL CMainFrame::MarkAsResolved()
 
 	CString cmd = _T("/command:resolve /path:\"");
 	cmd += m_Data.m_mergedFile.GetFilename();
-	cmd += _T("\" /closeonend:1 /noquestion /skipcheck");
+	cmd += _T("\" /closeonend:1 /noquestion /skipcheck /silent");
 	if (!CAppUtils::RunTortoiseProc(cmd))
 		return FALSE;
 

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +19,8 @@
 //
 #include "StdAfx.h"
 #include "ResolveCommand.h"
-
+#include "AppUtils.h"
+#include "MessageBox.h"
 #include "ResolveDlg.h"
 #include "GITProgressDlg.h"
 
@@ -33,17 +35,34 @@ bool ResolveCommand::Execute()
 	{
 		if (dlg.m_pathList.GetCount())
 		{
+			if (parser.HasKey(L"silent"))
+			{
+				for (int i = 0; i < dlg.m_pathList.GetCount(); i++)
+				{
+					CString cmd, out;
+					cmd.Format(_T("git.exe add -f -- \"%s\""), dlg.m_pathList[i].GetGitPathString());
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+					{
+						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+						return false;
+					}
 
-			CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
-			theApp.m_pMainWnd = &progDlg;
-			progDlg.SetCommand(CGitProgressDlg::GitProgress_Resolve);
-			if (parser.HasVal(_T("closeonend")))
-				progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
-			progDlg.SetOptions(parser.HasKey(_T("skipcheck")) ? ProgOptSkipConflictCheck : ProgOptNone);
-			progDlg.SetPathList(dlg.m_pathList);
-			progDlg.DoModal();
-			return !progDlg.DidErrorsOccur();
-
+					CAppUtils::RemoveTempMergeFile((CTGitPath &)dlg.m_pathList[i]);
+				}
+				return true;
+			}
+			else
+			{
+				CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
+				theApp.m_pMainWnd = &progDlg;
+				progDlg.SetCommand(CGitProgressDlg::GitProgress_Resolve);
+				if (parser.HasVal(_T("closeonend")))
+					progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
+				progDlg.SetOptions(parser.HasKey(_T("skipcheck")) ? ProgOptSkipConflictCheck : ProgOptNone);
+				progDlg.SetPathList(dlg.m_pathList);
+				progDlg.DoModal();
+				return !progDlg.DidErrorsOccur();
+			}
 		}
 	}
 	return false;
