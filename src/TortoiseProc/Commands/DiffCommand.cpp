@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2007-2011 - TortoiseGit
+// Copyright (C) 2007-2012 - TortoiseGit
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -56,8 +56,8 @@ bool DiffCommand::Execute()
 				CString topDir;
 				if (orgCmdLinePath.HasAdminDir(&topDir))
 					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
-					if (status == git_wc_status_added)
-						cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
+				if (status == git_wc_status_added)
+					cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
 
 				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
