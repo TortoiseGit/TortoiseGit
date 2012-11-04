@@ -152,8 +152,8 @@ public:
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;
 	static bool IsBranchNameValid(CString branchname);
-	static bool IsBranchTagNameUnique(const CString& name);
-	static bool BranchTagExists(const CString& name, bool isBranch = true);
+	bool IsBranchTagNameUnique(const CString& name);
+	bool BranchTagExists(const CString& name, bool isBranch = true);
 	unsigned int Hash2int(CGitHash &hash);
 //	static CString m_MsysGitPath;
 
