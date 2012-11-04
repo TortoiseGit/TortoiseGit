@@ -120,7 +120,7 @@ HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return CHorizontalResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty)
+void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType)
 {
 	m_bToIsWorkingCopy = toIsWorkingCopy;
 
@@ -133,6 +133,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 	m_sToSubject = toSubject;
 	m_bToOK = toOK;
 	m_bDirty = dirty;
+	m_nChangeType = changeType;
 }
 
 void CSubmoduleDiffDlg::ShowLog(CString hash)
