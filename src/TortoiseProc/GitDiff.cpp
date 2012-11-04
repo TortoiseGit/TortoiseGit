@@ -70,9 +70,12 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		bool dirty = false;
-		CString dirtyList;
-		subgit.Run(_T("git.exe status --porcelain"), &dirtyList, encode);
-		dirty = !dirtyList.IsEmpty();
+		if (rev1 == GIT_REV_ZERO)
+		{
+			CString dirtyList;
+			subgit.Run(_T("git.exe status --porcelain"), &dirtyList, encode);
+			dirty = !dirtyList.IsEmpty();
+		}
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
 		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty);
