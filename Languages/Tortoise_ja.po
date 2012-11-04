@@ -3403,7 +3403,7 @@ msgstr "\"%s\" を削除しても宜しいですか？"
 
 #. Resource IDs: (69)
 msgid ""
-"Do you really want to restore the copy? You will loose all changes that you "
+"Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
 msgstr "本当にコピーをリストアしてもよろしいですか？コピーを作成した後の全て変更が失われます。"
 
@@ -9090,7 +9090,7 @@ msgstr "Signed-off-by 行がありません。"
 #. Resource IDs: (68)
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
-"Do you want to restore them now? You might loose all changes to this file after marking it."
+"Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "「コミット後にリストア」といくつかのファイルがマークされました。\n今、それらをリストアしますか？マークした後、このファイルに対する全ての変更が失われるかもしれません。"
 
 #. Resource IDs: (1002)

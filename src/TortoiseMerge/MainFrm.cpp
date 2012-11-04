@@ -2005,7 +2005,7 @@ int CMainFrame::CheckForSave()
 		((m_pwndRightView)&&(m_pwndRightView->IsModified())))
 	{
 		CString sTemp;
-		sTemp.LoadString(IDS_WARNMODIFIEDLOOSECHANGES);
+		sTemp.LoadString(IDS_WARNMODIFIEDLOSECHANGES);
 		ret = MessageBox(sTemp, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
 
 		if (ret == IDYES)

@@ -709,10 +709,10 @@ BEGIN
     IDS_OPENDIFFFILETITLE   "Select diff file..."
     IDS_GETVERSIONOFFILETITLE "Fetching file..."
     IDS_GETVERSIONOFFILE    "Fetching revision %s of file:"
-    IDS_WARNMODIFIEDLOOSECHANGES 
+    IDS_WARNMODIFIEDLOSECHANGES 
                             "There are unsaved modifications!\nDo you want to save your changes?"
     IDS_ASKFORSAVE          "Do you want to save your changes?"
-    IDS_WARNMODIFIEDLOOSECHANGESOPTIONS 
+    IDS_WARNMODIFIEDLOSECHANGESOPTIONS 
                             "Do you want to reload the documents to reflect the settings changes?\nNote: you will lose all changes you've made!"
 END
 

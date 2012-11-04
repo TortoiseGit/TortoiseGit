@@ -3401,7 +3401,7 @@ msgstr "是否你真的想删除\"%s\""
 
 #. Resource IDs: (69)
 msgid ""
-"Do you really want to restore the copy? You will loose all changes that you "
+"Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
 msgstr "是否你真的想恢复拷贝? 所有的自从创建拷贝后的改动将被丢失。"
 
@@ -9088,7 +9088,7 @@ msgstr "没有输入你的Signed-Off-By"
 #. Resource IDs: (68)
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
-"Do you want to restore them now? You might loose all changes to this file after marking it."
+"Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "你标记一些文件为\"提交后恢复\"。\n你现在想恢复码？这可能丢失标记后所有这些文件的改动。"
 
 #. Resource IDs: (1002)

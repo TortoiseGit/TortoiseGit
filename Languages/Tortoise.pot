@@ -3212,7 +3212,7 @@ msgid "Do you really want to remove \"%s\"?"
 msgstr ""
 
 #. Resource IDs: (69)
-msgid "Do you really want to restore the copy? You will loose all changes that you have done after creating the copy."
+msgid "Do you really want to restore the copy? You will lose all changes that you have done after creating the copy."
 msgstr ""
 
 #. Resource IDs: (119)
@@ -8432,7 +8432,7 @@ msgid "You haven't entered your Signed-Off-By line!"
 msgstr ""
 
 #. Resource IDs: (68)
-msgid "You marked some files as \"Restore after commit\".\nDo you want to restore them now? You might loose all changes to this file after marking it."
+msgid "You marked some files as \"Restore after commit\".\nDo you want to restore them now? You might lose all changes to this file after marking it."
 msgstr ""
 
 #. Resource IDs: (1002)

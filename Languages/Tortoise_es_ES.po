@@ -3398,7 +3398,7 @@ msgstr "¿Realmente deseas eliminar \"%s\"?"
 
 #. Resource IDs: (69)
 msgid ""
-"Do you really want to restore the copy? You will loose all changes that you "
+"Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
 msgstr "¿Realmente deseas restaurar la copia? Perderás todos los cambios que has hecho después de crear la copia."
 
@@ -9085,7 +9085,7 @@ msgstr "¡No has introducido tu línea de Firmado-por!"
 #. Resource IDs: (68)
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
-"Do you want to restore them now? You might loose all changes to this file after marking it."
+"Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "Has marcado algunos archivos como \"Restaurar después de consignar\".\n¿Quieres restaurarlos ahora? Perderás todos los cambios en este archivo después de marcarlo."
 
 #. Resource IDs: (1002)

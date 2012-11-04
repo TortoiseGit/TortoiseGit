@@ -3399,7 +3399,7 @@ msgstr "Sind Sie sicher, dass Sie \"%s\" löschen möchten?"
 
 #. Resource IDs: (69)
 msgid ""
-"Do you really want to restore the copy? You will loose all changes that you "
+"Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
 msgstr "Möchten Sie die Kopie wirklich wiederherstellen? Sie werden alle Änderungen, die Sie nach dem Anlegen der Kopie vorgenommen haben, verlieren."
 
@@ -9086,7 +9086,7 @@ msgstr "Sie haben keine Signed-Off-By eignegeben!"
 #. Resource IDs: (68)
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
-"Do you want to restore them now? You might loose all changes to this file after marking it."
+"Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "Sie haben einige Dateien als \"Wiederherstellen nach Eintragen\" markiert.\nMöchten Sie diese jetzt wiederherstellen? Sie können dabei alle Änderungen in den Dateien, die Sie nach der Markierung erstellt haben, verlieren."
 
 #. Resource IDs: (1002)

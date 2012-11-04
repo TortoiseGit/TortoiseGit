@@ -298,7 +298,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 	// we still can get out of it. We NEVER MUST BLOCK THE SHELL!
 	// A blocked shell is a very bad user impression, because users
 	// who don't know why it's blocked might find the only solution
-	// to such a problem is a reboot and therefore they might loose
+	// to such a problem is a reboot and therefore they might lose
 	// valuable data.
 	// One particular situation where the shell could hang is when
 	// the cache crashes and our crash report dialog comes up.

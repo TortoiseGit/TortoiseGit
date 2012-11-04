@@ -3400,7 +3400,7 @@ msgstr "確定要移除 \"%s\"？"
 
 #. Resource IDs: (69)
 msgid ""
-"Do you really want to restore the copy? You will loose all changes that you "
+"Do you really want to restore the copy? You will lose all changes that you "
 "have done after creating the copy."
 msgstr "確定要還原這複本？你會丟失所有改動"
 
@@ -9087,7 +9087,7 @@ msgstr "未輸入 Signed-Off-By"
 #. Resource IDs: (68)
 msgid ""
 "You marked some files as \"Restore after commit\".\n"
-"Do you want to restore them now? You might loose all changes to this file after marking it."
+"Do you want to restore them now? You might lose all changes to this file after marking it."
 msgstr "有一些檔案加上 \"提交後還原\"\n是否現在就還原這些檔案？你可能會丟失這些檔案的改動"
 
 #. Resource IDs: (1002)
