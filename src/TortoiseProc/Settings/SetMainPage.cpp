@@ -197,6 +197,11 @@ void CSetMainPage::OnMsysGitPathModify()
 BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
+	if (!m_sMsysGitPath.IsEmpty() && (m_sMsysGitPath.Right(1) == _T("\\") || m_sMsysGitPath.Right(1) == _T("/")))
+	{
+		m_sMsysGitPath = m_sMsysGitPath.Left(m_sMsysGitPath.GetLength() - 1);
+		UpdateData(FALSE);
+	}
 	Store (m_dwLanguage, m_regLanguage);
 	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) ||
 		this->m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
