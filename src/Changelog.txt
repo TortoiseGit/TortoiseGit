@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #1470: Log Dialog: Selected item not remembered after refresh if item is one of the first 100
  * Fixed issue #1499: Allow to show log if current HEAD and selected ref is orphan branch when show all branches checked
  * Fixed issue #1507: Submodule Diff Dialog should show dirty state only on working copy revision
+ * Fixed issue #1511: Changed Files Dialog cannot show icons as folder for submodule
 
 = Release 1.7.14.0 =
 Released: 2012-10-14

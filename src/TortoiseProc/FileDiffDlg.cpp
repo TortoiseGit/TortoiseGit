@@ -383,12 +383,10 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 		int index = m_cFileList.GetItemCount();
 
 		int icon_idx = 0;
-//		if (fd->node == svn_node_dir)
-//				icon_idx = m_nIconFolder;
-//		else
-		{
+		if (fd->IsDirectory())
+			icon_idx = m_nIconFolder;
+		else
 			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->GetGitPathString());
-		}
 
 		ret = m_cFileList.InsertItem(index, fd->GetGitPathString(), icon_idx);
 		m_cFileList.SetItemText(index, 1, ((CTGitPath*)fd)->GetActionName());
