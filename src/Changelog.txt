@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #1503: Passing full file paths and revisions into diff viewer
  * Fixed issue #1518: Add "Export selection to" menu item in Log Dialog
  * Fixed issue #1497: Systemwide gitconfig may require UAC elevation when editing
+ * Fixed issue #1512: In Rebase Dialog, ask user to retry after failed "git checkout" and "git reset"
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
