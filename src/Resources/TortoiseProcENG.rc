@@ -3326,6 +3326,7 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_FILEDIFF_POPREVERTTOREV "Revert to revision %s"
     IDS_FILEDIFF_POPEXPORT  "&Export selection to..."
     IDS_FILEDIFF_POPCLIPBOARD "Copy selection to cli&pboard"
 END

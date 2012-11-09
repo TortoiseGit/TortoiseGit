@@ -112,6 +112,8 @@ protected:
 
 	void				EnableInputControl(bool b=true);
 
+	int					RevertSelectedItemToVersion(CString rev);
+
 	int					FillRevFromString(GitRev *rev, CString str)
 	{
 		GitRev gitrev;

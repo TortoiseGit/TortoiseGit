@@ -47,6 +47,8 @@
 #define ID_CLIPBOARD_ALL 6
 #define ID_LOG 7
 #define ID_GNUDIFFCOMPARE 8
+#define ID_REVERT1 9
+#define ID_REVERT2 10
 
 BOOL	CFileDiffDlg::m_bAscending = FALSE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
@@ -522,8 +524,14 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	CIconMenu popup;
 	if (popup.CreatePopupMenu())
 	{
+		CString menuText;
 		popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARETWO, IDI_DIFF);
 		popup.AppendMenuIcon(ID_GNUDIFFCOMPARE, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev1.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+		popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
+		menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, m_rev2.m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+		popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_LOG, IDS_FILEDIFF_LOG, IDI_LOG);
 		popup.AppendMenuIcon(ID_BLAME, IDS_FILEDIFF_POPBLAME, IDI_BLAME);
@@ -560,6 +568,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CAppUtils::StartShowUnifiedDiff(m_hWnd, *fd2, m_rev2.m_CommitHash.ToString(), *fd1, m_rev1.m_CommitHash.ToString());
 				}
 			}
+			break;
+		case ID_REVERT1:
+			RevertSelectedItemToVersion(m_rev1.m_CommitHash.ToString());
+			break;
+		case ID_REVERT2:
+			RevertSelectedItemToVersion(m_rev2.m_CommitHash.ToString());
 			break;
 		case ID_BLAME:
 			{
@@ -1180,4 +1194,32 @@ void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 {
 	SetTimer(IDT_INPUT, 1000, NULL);
 	this->m_cFileList.ShowText(_T("Wait For input validate version"));
+}
+
+int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
+{
+	if (rev.IsEmpty() || rev == GIT_REV_ZERO)
+		return 0;
+
+	POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
+	int index;
+	int count = 0;
+	while ((index = m_cFileList.GetNextSelectedItem(pos)) >= 0)
+	{
+		CString cmd, out;
+		CTGitPath *fentry = (CTGitPath *)m_arFilteredList[index];
+		cmd.Format(_T("git.exe checkout %s -- \"%s\""), rev, fentry->GetGitPathString());
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				break;
+		}
+		else
+			count++;
+	}
+
+	CString out;
+	out.Format(IDS_STATUSLIST_FILESREVERTED, count, rev);
+	CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+	return 0;
 }

@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1497: Systemwide gitconfig may require UAC elevation when editing
  * Fixed issue #1512: In Rebase Dialog, ask user to retry after failed "git checkout" and "git reset"
  * Fixed issue #1330: Preparing for git 1.7.12 new config file location
+ * Fixed issue #1515: Allow Changed Files Dialog to revert selected files
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
