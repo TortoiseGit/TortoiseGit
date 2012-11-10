@@ -129,3 +129,5 @@
 #define IDS_PATHACTIONS_PICK            20112
 #define IDS_PATHACTIONS_SKIP            20113
 #define IDS_PATHACTIONS_UNKNOWN         20114
+
+#define IDS_LOG_POPUP_EXPORT            20115

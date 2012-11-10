@@ -53,6 +53,7 @@
 //#include "EditPropertiesDlg.h"
 //#include "CreateChangelistDlg.h"
 #include "FormatMessageWrapper.h"
+#include "BrowseFolder.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(_T("GITSLNM_ITEMCOUNTCHANGED"));
@@ -1646,6 +1647,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					popup.AppendMenuIcon(IDGITLC_BLAME, IDS_MENUBLAME, IDI_BLAME);
 				}
 			}
+
+			if (GetSelectedCount() > 1)
+			{
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_EXPORT)) && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
+					popup.AppendMenuIcon(IDGITLC_EXPORT, IDS_LOG_POPUP_EXPORT, IDI_EXPORT);
+			}
+
 //			if ((wcStatus != git_wc_status_deleted)&&(wcStatus != git_wc_status_missing) && (GetSelectedCount() == 1))
 			if ( (GetSelectedCount() == 1) )
 			{
@@ -2332,7 +2340,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_COPYEXT:
 				CopySelectedEntriesToClipboard((DWORD)-1);
 				break;
-
+			case IDGITLC_EXPORT:
+				FilesExport();
+				break;
 			case IDGITLC_SAVEAS:
 				FileSaveAs(filepath);
 				break;
@@ -4047,6 +4057,47 @@ HRESULT STDMETHODCALLTYPE CSVNStatusListCtrlDropTarget::DragOver(DWORD grfKeySta
 }f
 
 #endif
+
+void CGitStatusListCtrl::FilesExport()
+{
+	CString exportDir;
+	// export all changed files to a folder
+	CBrowseFolder browseFolder;
+	browseFolder.m_style = BIF_EDITBOX | BIF_NEWDIALOGSTYLE | BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	if (browseFolder.Show(GetSafeHwnd(), exportDir) != CBrowseFolder::OK)
+		return;
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index;
+	while ((index = GetNextSelectedItem(pos)) >= 0)
+	{
+		CTGitPath *fd = (CTGitPath*)GetItemData(index);
+		// we cannot export directories or folders
+		if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
+			continue;
+
+		CAppUtils::CreateMultipleDirectory(exportDir + _T("\\") + fd->GetDirectory().GetWinPathString());
+		CString filename = exportDir + _T("\\") + fd->GetWinPathString();
+		if (m_CurrentVersion == GIT_REV_ZERO)
+		{
+			if (!CopyFile(g_Git.m_CurrentDir + _T("\\") + fd->GetWinPath(), filename, false))
+			{
+				MessageBox(CFormatMessageWrapper(), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return;
+			}
+		}
+		else
+		{
+			if (g_Git.GetOneFile(m_CurrentVersion, *fd, filename))
+			{
+				CString out;
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, fd->GetGitPathString(), m_CurrentVersion, filename);
+				if (CMessageBox::Show(NULL, out, _T("TortoiseGit"), 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+					return;
+			}
+		}
+	}
+}
 
 void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 {
