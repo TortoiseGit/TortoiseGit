@@ -3370,6 +3370,10 @@ msgstr ""
 msgid "Edit gl&obal .gitconfig"
 msgstr ""
 
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
+msgstr ""
+
 #. Resource IDs: (71)
 msgid "Edit local git config"
 msgstr ""
