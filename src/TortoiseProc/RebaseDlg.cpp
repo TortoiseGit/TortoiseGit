@@ -1681,6 +1681,12 @@ void CRebaseDlg::OnBnClickedRebasePostButton()
 
 void CRebaseDlg::Refresh()
 {
+	if (m_RebaseStage == REBASE_CONFLICT || m_RebaseStage == REBASE_SQUASH_CONFLICT)
+	{
+		ListConflictFile();
+		return;
+	}
+
 	if(this->m_IsCherryPick)
 		return ;
 
