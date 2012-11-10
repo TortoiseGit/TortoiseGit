@@ -1638,9 +1638,14 @@ CString CGit::GetGitGlobalConfig()
 	return g_Git.GetHomeDirectory() + _T("\\.gitconfig");
 }
 
+CString CGit::GetGitGlobalXDGConfigPath()
+{
+	return g_Git.GetHomeDirectory() + _T("\\.config\\git");
+}
+
 CString CGit::GetGitGlobalXDGConfig()
 {
-	return g_Git.GetHomeDirectory() + _T("\\.config\\git\\config");
+	return g_Git.GetGitGlobalXDGConfigPath() + _T("\\config");
 }
 
 CString CGit::GetGitSystemConfig()

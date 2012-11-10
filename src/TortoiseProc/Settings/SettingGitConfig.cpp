@@ -150,6 +150,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->ShowWindow(SW_SHOW);
 	}
 
+	if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
+		this->GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->ShowWindow(SW_SHOW);
+
 	this->UpdateData(FALSE);
 	return TRUE;
 }
