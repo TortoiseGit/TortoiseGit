@@ -637,6 +637,10 @@ msgstr ""
 msgid "&Git Style Commit (--rmdir)"
 msgstr ""
 
+#. Resource IDs: (32884)
+msgid "&Go to"
+msgstr ""
+
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
 msgstr ""
@@ -3576,6 +3580,10 @@ msgstr ""
 msgid "Export directory:"
 msgstr ""
 
+#. Resource IDs: (1258)
+msgid "Export selection to..."
+msgstr ""
+
 #. Resource IDs: (1254)
 msgid "Export this version..."
 msgstr ""
@@ -4325,6 +4333,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
@@ -7205,6 +7217,10 @@ msgstr ""
 msgid "Stash Save"
 msgstr ""
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr ""
@@ -8254,6 +8270,10 @@ msgstr ""
 
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
+msgstr ""
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
 msgstr ""
 
 #. Resource IDs: (1084)
