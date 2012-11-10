@@ -1215,7 +1215,9 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	name.ReleaseBuffer();
 	CStringA excludesFileA(out);
 	excludesFile = CUnicodeUtils::GetUnicode(excludesFileA);
-	if (excludesFile.Find(_T("~/")) == 0)
+	if (excludesFile.IsEmpty())
+		excludesFile = GetWindowsHome() + _T("\\.config\\git\\ignore");
+	else if (excludesFile.Find(_T("~/")) == 0)
 		excludesFile = GetWindowsHome() + excludesFile.Mid(1);
 	git_config_free(config);
 
