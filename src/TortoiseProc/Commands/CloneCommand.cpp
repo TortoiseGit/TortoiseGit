@@ -64,7 +64,8 @@ bool CloneCommand::Execute()
 		}
 
 		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
-		CAppUtils::RemoveTrailSlash(dlg.m_URL);
+		if (!dlg.m_bSVN)
+			CAppUtils::RemoveTrailSlash(dlg.m_URL);
 
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
