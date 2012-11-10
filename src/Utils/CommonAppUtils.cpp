@@ -28,38 +28,106 @@
 
 extern CString sOrigCWD;
 
-bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd)
+bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd, bool uac)
 {
-	STARTUPINFO startup;
-	PROCESS_INFORMATION process;
-	memset(&startup, 0, sizeof(startup));
-	startup.cb = sizeof(startup);
-	memset(&process, 0, sizeof(process));
-
-	CString cleanCommandLine(sCommandLine);
-
 	CString theCWD = sOrigCWD;
 	if (cwd != NULL)
 		theCWD = *cwd;
 
-	if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, theCWD, &startup, &process)==0)
+	if (uac)
 	{
-		if(idErrMessageFormat != 0)
+		CString file, param;
+		SHELLEXECUTEINFO shellinfo;
+		memset(&shellinfo, 0, sizeof(shellinfo));
+		shellinfo.cbSize = sizeof(shellinfo);
+		shellinfo.hwnd = NULL;
+		shellinfo.lpVerb = _T("runas");
+		shellinfo.nShow = SW_SHOWNORMAL;
+		shellinfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+		shellinfo.lpDirectory = theCWD;
+
+		int pos = sCommandLine.Find('"');
+		if (pos == 0)
 		{
-			CString temp;
-			temp.Format(idErrMessageFormat, CFormatMessageWrapper());
-			MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			pos = sCommandLine.Find('"', 2);
+			if (pos > 1)
+			{
+				file = sCommandLine.Mid(1, pos - 1);
+				param = sCommandLine.Mid(pos + 1);
+			}
+			else
+			{
+				if (idErrMessageFormat != 0)
+				{
+					CString temp;
+					temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+					MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+				}
+				return false;
+			}
 		}
-		return false;
-	}
+		else
+		{
+			pos = sCommandLine.Find(' ', 1);
+			if (pos > 0)
+			{
+				file = sCommandLine.Mid(0, pos);
+				param = sCommandLine.Mid(pos + 1);
+			}
+			else
+				file = sCommandLine;
+		}
 
-	if (bWaitForStartup)
+		shellinfo.lpFile = file;
+		shellinfo.lpParameters = param;
+
+		if (!ShellExecuteEx(&shellinfo))
+		{
+			if (idErrMessageFormat != 0)
+			{
+				CString temp;
+				temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			}
+			return false;
+		}
+
+		if (bWaitForStartup)
+		{
+			WaitForInputIdle(shellinfo.hProcess, 10000);
+		}
+
+		CloseHandle(shellinfo.hProcess);
+	}
+	else
 	{
-		WaitForInputIdle(process.hProcess, 10000);
-	}
+		STARTUPINFO startup;
+		PROCESS_INFORMATION process;
+		memset(&startup, 0, sizeof(startup));
+		startup.cb = sizeof(startup);
+		memset(&process, 0, sizeof(process));
 
-	CloseHandle(process.hThread);
-	CloseHandle(process.hProcess);
+		CString cleanCommandLine(sCommandLine);
+
+		if (CreateProcess(NULL, const_cast<TCHAR*>((LPCTSTR)cleanCommandLine), NULL, NULL, FALSE, 0, 0, theCWD, &startup, &process)==0)
+		{
+			if(idErrMessageFormat != 0)
+			{
+				CString temp;
+				temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
+			}
+			return false;
+		}
+
+		if (bWaitForStartup)
+		{
+			WaitForInputIdle(process.hProcess, 10000);
+		}
+
+		CloseHandle(process.hThread);
+		CloseHandle(process.hProcess);
+	}
 	return true;
 }
 
