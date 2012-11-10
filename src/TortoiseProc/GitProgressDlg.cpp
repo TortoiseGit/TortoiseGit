@@ -1861,10 +1861,8 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		git_config * config;
 		git_config_new(&config);
 
-		CString adminDir;
-		g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
-		CStringA projectConfigA = CUnicodeUtils::GetMulti(adminDir + _T("config"), CP_UTF8);
-		if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3))
+		CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8);
+		if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4))
 		{
 			projectConfigA.ReleaseBuffer();
 			ReportGitError();
@@ -1873,11 +1871,11 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 		projectConfigA.ReleaseBuffer();
-		CString globalConfig = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+		CString globalConfig = g_Git.GetGitGlobalConfig();
 		if (PathFileExists(globalConfig))
 		{
 			CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-			if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 2))
+			if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3))
 			{
 				globalConfigA.ReleaseBuffer();
 				ReportGitError();
@@ -1887,10 +1885,24 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			}
 			globalConfigA.ReleaseBuffer();
 		}
-		CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
-		if (!msysGitBinPath.IsEmpty())
+		CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
+		if (PathFileExists(globalXDGConfig))
 		{
-			CStringA systemConfigA = CUnicodeUtils::GetMulti(msysGitBinPath + _T("\\..\\etc\\gitconfig"), CP_UTF8);
+			CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
+			if (git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2))
+			{
+				globalXDGConfigA.ReleaseBuffer();
+				ReportGitError();
+				git_config_free(config);
+				git_repository_free(repo);
+				return false;
+			}
+			globalXDGConfigA.ReleaseBuffer();
+		}
+		CString systemConfig = g_Git.GetGitSystemConfig();
+		if (!systemConfig.IsEmpty())
+		{
+			CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
 			if (git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1))
 			{
 				systemConfigA.ReleaseBuffer();

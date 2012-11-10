@@ -144,6 +144,10 @@ public:
 	BOOL m_bInitialized;
 
 	CString GetHomeDirectory();
+	CString GetGitLocalConfig();
+	CString GetGitGlobalConfig();
+	CString GetGitGlobalXDGConfigPath();
+	CString GetGitGlobalXDGConfig();
 	CString GetGitSystemConfig();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int m_LogEncode;

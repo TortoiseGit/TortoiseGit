@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnCbnSelchangeSafeCrLf)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
+	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
@@ -148,6 +149,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 		((CButton *)this->GetDlgItem(IDC_EDITSYSTEMGITCONFIG))->SetShield(TRUE);
 		this->GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->ShowWindow(SW_SHOW);
 	}
+
+	if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
+		this->GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->ShowWindow(SW_SHOW);
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -249,18 +253,20 @@ void CSettingGitConfig::OnCbnSelchangeSafeCrLf()
 
 void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
 {
-	CString filename = g_Git.GetHomeDirectory() + _T("\\.gitconfig");
 	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(filename);
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitGlobalConfig());
+}
+
+void CSettingGitConfig::OnBnClickedEditglobalxdggitconfig()
+{
+	// use alternative editor because of LineEndings
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitGlobalXDGConfig());
 }
 
 void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 {
-	CString path;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, path);
-	path += _T("config");
 	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(path);
+	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitLocalConfig());
 }
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
