@@ -618,6 +618,15 @@
         </varlistentry>
         
         <varlistentry>
+          <term>Export selection to...</term>
+          <listitem>
+            <para>
+              Saves the selected files to a target directory. Compared to "Save revision to..." this preserves the directory structure.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <varlistentry>
           <term>Show log</term>
           <listitem>
             <para>
