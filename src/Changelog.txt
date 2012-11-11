@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #1330: Preparing for git 1.7.12 new config file location
  * Fixed issue #1515: Allow Changed Files Dialog to revert selected files
  * Fixed issue #1458: Shell context menu shows "Commit submodule" if the selected folder is submodule root
+ * Fixed issue #1211, issue #1472: Commit dialog can amend message only without affecting any files
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit

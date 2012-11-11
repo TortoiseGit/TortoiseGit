@@ -5026,6 +5026,10 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr ""

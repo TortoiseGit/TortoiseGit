@@ -135,6 +135,7 @@ public:
 	BOOL				m_bPushAfterCommit;
 	BOOL				m_bCreateTagAfterCommit;
 	BOOL				m_bAmendDiffToLastCommit;
+	BOOL				m_bCommitMessageOnly;
 
 protected:
 	CTGitPathList		m_selectedPathList;
@@ -188,6 +189,7 @@ private:
 protected:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnBnClickedCommitAmend();
+	afx_msg void OnBnClickedCommitMessageOnly();
 	afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();

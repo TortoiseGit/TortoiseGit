@@ -71,6 +71,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bCreateNewBranch(FALSE)
 	, m_bCreateTagAfterCommit(FALSE)
 	, m_bForceCommitAmend(false)
+	, m_bCommitMessageOnly(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -99,6 +100,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
 	DDX_Check(pDX, IDC_NOAUTOSELECTSUBMODULES, m_bDoNotAutoselectSubmodules);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
+	DDX_Check(pDX, IDC_COMMIT_MESSAGEONLY, m_bCommitMessageOnly);
 	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
@@ -126,6 +128,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
 	ON_BN_CLICKED(IDC_COMMIT_AMEND, &CCommitDlg::OnBnClickedCommitAmend)
+	ON_BN_CLICKED(IDC_COMMIT_MESSAGEONLY, &CCommitDlg::OnBnClickedCommitMessageOnly)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
 	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
@@ -272,6 +275,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_WHOLE_PROJECT);
 	AdjustControlSize(IDC_CHECK_NEWBRANCH);
 	AdjustControlSize(IDC_COMMIT_AMEND);
+	AdjustControlSize(IDC_COMMIT_MESSAGEONLY);
 	AdjustControlSize(IDC_COMMIT_AMENDDIFF);
 	AdjustControlSize(IDC_COMMIT_SETDATETIME);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
@@ -330,6 +334,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_MESSAGEONLY, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
@@ -491,7 +496,7 @@ void CCommitDlg::OnOK()
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
-	for (int i = 0; i < nListItems; i++)
+	for (int i = 0; i < nListItems && m_bCommitMessageOnly; i++)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
 		if (!entry->m_Checked || !entry->IsDirectory())
@@ -531,7 +536,8 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
+	if (!m_bCommitMessageOnly)
+		m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
 	CDWordArray arDeleted;
@@ -576,7 +582,7 @@ void CCommitDlg::OnOK()
 				currentTicks = GetTickCount();
 			}
 		}
-		if (entry->m_Checked)
+		if (entry->m_Checked && !m_bCommitMessageOnly)
 		{
 			if( entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 				cmd.Format(_T("git.exe add -f -- \"%s\""),entry->GetGitPathString());
@@ -720,7 +726,7 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	if (bAddSuccess && (nchecked || m_bCommitAmend ||  CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
+	if (m_bCommitMessageOnly || bAddSuccess && (nchecked || m_bCommitAmend ||  CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
 	{
 		bCloseCommitDlg = true;
 
@@ -746,7 +752,8 @@ void CCommitDlg::OnOK()
 			m_CommitTime.GetTime(time);
 			dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
 		}
-		cmd.Format(_T("git.exe commit %s %s -F \"%s\""), dateTime, amend, tempfile);
+		CString allowEmpty = m_bCommitMessageOnly ? _T("--allow-empty") : _T("");
+		cmd.Format(_T("git.exe commit %s %s %s -F \"%s\""), dateTime, amend, allowEmpty, tempfile);
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -1873,7 +1880,7 @@ LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 	bool bValidLogSize = m_cLogMessage.GetText().GetLength() >= m_ProjectProperties.nMinLogSize && m_cLogMessage.GetText().GetLength() > 0;
 	bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
-	DialogEnableWindow(IDOK, bValidLogSize && bAmendOrSelectFilesOrMerge);
+	DialogEnableWindow(IDOK, bValidLogSize && (m_bCommitMessageOnly || bAmendOrSelectFilesOrMerge));
 
 	return 0;
 }
@@ -1915,6 +1922,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_SPLITTER);
 	RemoveAnchor(IDC_SIGNOFF);
 	RemoveAnchor(IDC_COMMIT_AMEND);
+	RemoveAnchor(IDC_COMMIT_MESSAGEONLY);
 	RemoveAnchor(IDC_COMMIT_AMENDDIFF);
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
@@ -1939,6 +1947,7 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_MESSAGEONLY), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMENDDIFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
@@ -1962,6 +1971,7 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_MESSAGEONLY, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
@@ -2057,6 +2067,13 @@ void CCommitDlg::OnBnClickedCommitAmend()
 
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	Refresh();
+}
+
+void CCommitDlg::OnBnClickedCommitMessageOnly()
+{
+	this->UpdateData();
+	this->m_ListCtrl.EnableWindow(m_bCommitMessageOnly ? FALSE : TRUE);
+	SendMessage(WM_UPDATEOKBUTTON);
 }
 
 void CCommitDlg::OnBnClickedWholeProject()
