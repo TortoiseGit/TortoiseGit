@@ -2544,8 +2544,12 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	if( file->m_Action&CTGitPath::LOGACTIONS_UNMERGED )
 	{
-		CAppUtils::ConflictEdit(*file,false,m_bIsRevertTheirMy);
-
+		if (CAppUtils::ConflictEdit(*file, false, m_bIsRevertTheirMy))
+		{
+			CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + file->GetWinPathString();
+			if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+		}
 	}
 	else
 	{
