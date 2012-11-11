@@ -27,6 +27,7 @@
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
+#include "resource.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
 #define GetPIDLItem(pida, i) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[i+1])
@@ -518,6 +519,13 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		CTGitPath path(folder_.empty() ? files_.front().c_str() : folder_.c_str());
 		CString sProjectRoot;
 		CString sBranchName;
+
+		if (path.GetAdminDirMask() & ITEMIS_SUBMODULE)
+		{
+			if (istop)
+				_tcscpy_s(menutextbuffer, 255, _T("Git "));
+			_tcscat_s(menutextbuffer, 255, CString(MAKEINTRESOURCE(IDS_MENUCOMMITSUBMODULE)));
+		}
 
 		if (path.HasAdminDir(&sProjectRoot) && !g_Git.GetCurrentBranchFromFile(sProjectRoot, sBranchName))
 		{

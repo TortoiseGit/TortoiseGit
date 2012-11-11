@@ -461,6 +461,10 @@ msgstr ""
 msgid "&Commit"
 msgstr ""
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr ""

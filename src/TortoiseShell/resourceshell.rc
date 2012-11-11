@@ -199,6 +199,7 @@ STRINGTABLE
 BEGIN
     IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
+    IDS_MENUCOMMITSUBMODULE "&Commit submodule..."
     IDS_MENUCREATEREPOS     "Create repositor&y here..."
     IDS_MENUADD             "&Add..."
     IDS_MENUREVERT          "Re&vert..."
