@@ -658,7 +658,7 @@ void CTortoiseProcApp::CheckForNewerVersion()
 				oldday = ptm.tm_yday;
 			else
 			{
-				if ((DWORD)oldday != ptm.tm_yday)
+				if ((DWORD)oldday != (DWORD)ptm.tm_yday)
 				{
 					oldday = ptm.tm_yday;
 #else
