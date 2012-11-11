@@ -86,6 +86,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_BRANCH,   &CRebaseDlg::OnCbnSelchangeBranch)
 	ON_CBN_SELCHANGE(IDC_REBASE_COMBOXEX_UPSTREAM, &CRebaseDlg::OnCbnSelchangeUpstream)
 	ON_MESSAGE(MSG_REBASE_UPDATE_UI, OnRebaseUpdateUI)
+	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnGitStatusListCtrlNeedsRefresh)
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CRebaseDlg::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_REBASE_CHECK_FORCE, &CRebaseDlg::OnBnClickedRebaseCheckForce)
 	ON_BN_CLICKED(IDC_CHECK_CHERRYPICKED_FROM, &CRebaseDlg::OnBnClickedCheckCherryPickedFrom)
@@ -1742,6 +1743,12 @@ void CRebaseDlg::OnBnClickedRebasePostButton()
 	this->m_Branch=this->m_BranchCtrl.GetString();
 
 	this->EndDialog((int)(IDC_REBASE_POST_BUTTON+this->m_PostButton.GetCurrentEntry()));
+}
+
+LRESULT CRebaseDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
+{
+	Refresh();
+	return 0;
 }
 
 void CRebaseDlg::Refresh()

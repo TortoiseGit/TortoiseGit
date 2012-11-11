@@ -2077,7 +2077,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_EDITCONFLICT:
 			{
-				CAppUtils::ConflictEdit(*filepath,false,this->m_bIsRevertTheirMy);
+				if (CAppUtils::ConflictEdit(*filepath, false, this->m_bIsRevertTheirMy))
+				{
+					CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+					if (!PathFileExists(conflictedFile) && NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
+						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+				}
 				break;
 			}
 			case IDGITLC_RESOLVETHEIRS: //follow up

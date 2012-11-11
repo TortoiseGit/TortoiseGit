@@ -95,6 +95,7 @@ protected:
 	void UpdateCurrentStatus();
 	void ListConflictFile();
 	int  DoRebase();
+	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	void Refresh();
 	volatile LONG m_bThreadRunning;
 	int  RebaseThread();

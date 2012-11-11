@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #1507: Submodule Diff Dialog should show dirty state only on working copy revision
  * Fixed issue #1511: Changed Files Dialog cannot show icons as folder for submodule
  * Fixed issue #1516: SVN clone strips trailing slashes
+ * Fixed issue #1486: Rebase/Cherry-pick Dialog conflict list fail to refresh the status of resolved deleted file
 
 = Release 1.7.14.0 =
 Released: 2012-10-14
