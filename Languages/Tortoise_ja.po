@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-10-12 09:30+0000\n"
+"PO-Revision-Date: 2012-11-11 00:47+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -482,6 +482,10 @@ msgstr "コマンド(&C):"
 msgid "&Commit"
 msgstr "コミット(&C)"
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr "コミット（除外）(&C)"
@@ -651,12 +655,16 @@ msgid "&Force Rebase"
 msgstr "強制リベース(&F)"
 
 #. Resource IDs: (1608)
-msgid "&From"
-msgstr "開始リビジョン(&F)"
+msgid "&From:"
+msgstr "&From:"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "&Git スタイル コミット (--rmdir)"
+
+#. Resource IDs: (32884)
+msgid "&Go to"
+msgstr ""
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -1078,7 +1086,7 @@ msgstr "グループの始まり(&S)"
 
 #. Resource IDs: (86)
 msgid "&Stash"
-msgstr ""
+msgstr "スタッシュ(&S)"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -1145,8 +1153,8 @@ msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
-msgstr "トランク(&T)"
+msgid "&Trunk:"
+msgstr "&Trunk:"
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -2033,8 +2041,8 @@ msgid "Br&owse..."
 msgstr "参照(&O)..."
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
-msgstr "ブランチ(&H)"
+msgid "Branc&h:"
+msgstr "ブランチ(&H):"
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -3423,6 +3431,10 @@ msgid ""
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr "このリビジョンで作成した\n%s\nの全ての変更を本当に取り消しますか?\nワーキングツリーでリビジョンをさかのぼって逆マージされて変更が取り消されます。"
 
+#. Resource IDs: (86)
+msgid "Do you want to fetch remote branches from the newly added remote?"
+msgstr "新しく追加されたリモートからブランチをフェッチしますか？"
+
 #. Resource IDs: (313)
 msgid ""
 "Do you want to reload the documents to reflect the settings changes?\n"
@@ -3439,7 +3451,7 @@ msgstr "変更点を表示しますか？"
 
 #. Resource IDs: (604)
 msgid "Do you want to stash pop now?"
-msgstr ""
+msgstr "スタッシュに保存した変更を復元しますか？"
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -3561,6 +3573,10 @@ msgstr "拡張子に対応したマージプログラムを編集"
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
 msgstr "このユーザの設定ファイル(&O)"
+
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
+msgstr ""
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3781,6 +3797,10 @@ msgstr "zipファイルへエクスポート"
 #. Resource IDs: (94)
 msgid "Export directory:"
 msgstr "エクスポート先ディレクトリ:"
+
+#. Resource IDs: (1258)
+msgid "Export selection to..."
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4604,6 +4624,10 @@ msgstr "ID:32837:VA  +M"
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
 msgstr "ID:32883:V C +A"
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5530,7 +5554,7 @@ msgstr "Fast Forward しない(&F)"
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "チェックアウトしない"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -6501,10 +6525,6 @@ msgid ""
 "Reload"
 msgstr "開いているファイルを再読み込みし、すべての変更を取り消す。\n再読み込み"
 
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr "再配置中 ..."
-
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
 msgstr "選択を記憶する(\"svn.rmdir\" オプションで)"
@@ -6797,6 +6817,11 @@ msgstr "コミットを取り消す"
 #, c-format
 msgid "Revert commit %s"
 msgstr "コミット %s を取り消す"
+
+#. Resource IDs: (323)
+#, c-format
+msgid "Revert to revision %s"
+msgstr ""
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -7653,6 +7678,10 @@ msgstr "一時保存の復帰"
 msgid "Stash Save"
 msgstr "一時保存実行"
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "Static"
@@ -7852,8 +7881,8 @@ msgid "TORTOISEIDIFF"
 msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
-msgstr "タグ(&G)"
+msgid "Ta&gs:"
+msgstr "タグ(&G):"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -7927,7 +7956,7 @@ msgstr "コミットする際はメッセージは何らかのメッセージを
 msgid ""
 "The current working tree is not clean.\n"
 "Do you want to stash the changes?"
-msgstr ""
+msgstr "作業ツリーにコミットしていない変更があります。スタッシュに隠しますか？"
 
 #. Resource IDs: (68)
 #, c-format
@@ -8160,6 +8189,14 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "選択されたファイル内には、まだ競合状態のファイルがあります。\n本当に、ファイルを解決済みにしてもよろしいですか？"
+
+#. Resource IDs: (170)
+#, c-format
+msgid ""
+"The submodule \"%s\" is dirty.\n"
+"Merely committing the superproject cannot track or save such changes to the submodule.\n"
+"Commit the submodule now or ignore dirty changes?"
+msgstr "サブモジュール \"%s\" にコミットしていない変更があります。サブモジュールの変更をコミットしないと、親プロジェクトはこの変更を記録できません。サブモジュールへコミットしますか？ それとも、この変更を無視しますか？"
 
 #. Resource IDs: (88)
 #, c-format
@@ -8806,8 +8843,8 @@ msgid ""
 msgstr "コミット前にユーザー名とメールアドレスの設定が必要です。\r\n すぐに設定しますか？"
 
 #. Resource IDs: (1650)
-msgid "UserName"
-msgstr "ユーザー名"
+msgid "User&name:"
+msgstr "ユーザ名(&N):"
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8884,6 +8921,10 @@ msgstr "パスのリビジョンをウェブビューアーで表示(&W)"
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
 msgstr "外部エディターでリビジョンを参照"
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
+msgstr ""
 
 #. Resource IDs: (1084)
 msgid "Visit our website"

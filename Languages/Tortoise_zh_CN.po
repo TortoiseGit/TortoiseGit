@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-10-12 09:30+0000\n"
+"PO-Revision-Date: 2012-11-11 00:46+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -480,6 +480,10 @@ msgstr "命令(&C):"
 msgid "&Commit"
 msgstr "提交(&C)"
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr "提交(&C)"
@@ -649,12 +653,16 @@ msgid "&Force Rebase"
 msgstr "强制变基(rebase)(&F)"
 
 #. Resource IDs: (1608)
-msgid "&From"
-msgstr "从(&F)"
+msgid "&From:"
+msgstr ""
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "Git风格提交(--rmdir)(&G)"
+
+#. Resource IDs: (32884)
+msgid "&Go to"
+msgstr ""
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -1143,8 +1151,8 @@ msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
-msgstr "主干(&T)"
+msgid "&Trunk:"
+msgstr ""
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -2031,8 +2039,8 @@ msgid "Br&owse..."
 msgstr "浏览(&o)"
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
-msgstr "分支(&h)"
+msgid "Branc&h:"
+msgstr ""
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -3421,6 +3429,10 @@ msgid ""
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr "你确定要恢复此版本对\n%s\n的所有修改吗？这些修改将会反向合并到你的工作副本。"
 
+#. Resource IDs: (86)
+msgid "Do you want to fetch remote branches from the newly added remote?"
+msgstr ""
+
 #. Resource IDs: (313)
 msgid ""
 "Do you want to reload the documents to reflect the settings changes?\n"
@@ -3559,6 +3571,10 @@ msgstr "编辑根据扩展名的合并程序"
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
 msgstr "编辑全局.git/config(&o)"
+
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
+msgstr ""
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3779,6 +3795,10 @@ msgstr "导出为zip文件"
 #. Resource IDs: (94)
 msgid "Export directory:"
 msgstr "导出目录: "
+
+#. Resource IDs: (1258)
+msgid "Export selection to..."
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4602,6 +4622,10 @@ msgstr "ID:32837:VA  +M"
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
 msgstr "ID:32883:V C +A"
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6499,10 +6523,6 @@ msgid ""
 "Reload"
 msgstr "重新加载所有已打开的文件并且还原所有变更。\n重新加载"
 
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr "正在重新定位..."
-
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
 msgstr "记住 (\"svn.rmdir\"选项)"
@@ -6795,6 +6815,11 @@ msgstr "还原提交"
 #, c-format
 msgid "Revert commit %s"
 msgstr "还原提交%s"
+
+#. Resource IDs: (323)
+#, c-format
+msgid "Revert to revision %s"
+msgstr ""
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -7651,6 +7676,10 @@ msgstr "弹出贮藏"
 msgid "Stash Save"
 msgstr "保存贮藏"
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "静态"
@@ -7850,8 +7879,8 @@ msgid "TORTOISEIDIFF"
 msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
-msgstr "标签(&g)"
+msgid "Ta&gs:"
+msgstr ""
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -8158,6 +8187,14 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "选择的文件尚有一个以上的冲突标记。\n你确定要将其视为已解决？"
+
+#. Resource IDs: (170)
+#, c-format
+msgid ""
+"The submodule \"%s\" is dirty.\n"
+"Merely committing the superproject cannot track or save such changes to the submodule.\n"
+"Commit the submodule now or ignore dirty changes?"
+msgstr ""
 
 #. Resource IDs: (88)
 #, c-format
@@ -8804,8 +8841,8 @@ msgid ""
 msgstr "在提交前必须设置用户名和电子邮箱。\n是否现在设置？"
 
 #. Resource IDs: (1650)
-msgid "UserName"
-msgstr "用户名"
+msgid "User&name:"
+msgstr ""
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8882,6 +8919,10 @@ msgstr "在 &Web 浏览器中查看路径的版本"
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
 msgstr "在其他编辑器中查看版本"
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
+msgstr ""
 
 #. Resource IDs: (1084)
 msgid "Visit our website"

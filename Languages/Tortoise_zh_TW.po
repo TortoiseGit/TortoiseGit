@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-10-12 13:42+0000\n"
-"Last-Translator: ch cooli <ch3cooli@gmail.com>\n"
+"PO-Revision-Date: 2012-11-11 07:55+0000\n"
+"Last-Translator: 鋰 乙酸 <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -479,6 +479,10 @@ msgstr "命令(&C)："
 msgid "&Commit"
 msgstr "提交(&C)"
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr "提交子模組(&C) ..."
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr "提交但不(&C)"
@@ -648,12 +652,16 @@ msgid "&Force Rebase"
 msgstr "強制變基(rebase)(&F)"
 
 #. Resource IDs: (1608)
-msgid "&From"
+msgid "&From:"
 msgstr "從(&F)"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "Git形式提交(--rmdir)(&G)"
+
+#. Resource IDs: (32884)
+msgid "&Go to"
+msgstr "前往(&G)"
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -1142,7 +1150,7 @@ msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
+msgid "&Trunk:"
 msgstr "主幹(&T)"
 
 #. Resource IDs: (3845)
@@ -2030,8 +2038,8 @@ msgid "Br&owse..."
 msgstr "瀏覽(&O)..."
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
-msgstr "分支(&h)"
+msgid "Branc&h:"
+msgstr "分支(&H)"
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -3420,6 +3428,10 @@ msgid ""
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr "確定要復原\n%s\n此版本的所有變更? 這些變更將會反向合併至工作目錄."
 
+#. Resource IDs: (86)
+msgid "Do you want to fetch remote branches from the newly added remote?"
+msgstr "你要從新增的遠端獲取遠端分支嗎？"
+
 #. Resource IDs: (313)
 msgid ""
 "Do you want to reload the documents to reflect the settings changes?\n"
@@ -3558,6 +3570,10 @@ msgstr "編輯根據副檔名的合併程式"
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
 msgstr "編輯全域 .git/config(&O)"
+
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
+msgstr "編輯全域 &XDG config"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3778,6 +3794,10 @@ msgstr "匯出 zip 檔案:"
 #. Resource IDs: (94)
 msgid "Export directory:"
 msgstr "匯出目錄："
+
+#. Resource IDs: (1258)
+msgid "Export selection to..."
+msgstr "匯出選取範圍至..."
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4601,6 +4621,10 @@ msgstr "ID:32837:VA  +M"
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
 msgstr "ID:32883:V C +A"
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
+msgstr "ID:32884:V C +G"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6498,10 +6522,6 @@ msgid ""
 "Reload"
 msgstr "重新載入所有已開啟的檔案並且還原所有變更.\n重新載入"
 
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr "正在重新定位..."
-
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
 msgstr "記住 (\"svn.rmdir\"選項)"
@@ -6794,6 +6814,11 @@ msgstr "復原版本"
 #, c-format
 msgid "Revert commit %s"
 msgstr "復原版本 %s"
+
+#. Resource IDs: (323)
+#, c-format
+msgid "Revert to revision %s"
+msgstr "還原到版本 %s"
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -7650,6 +7675,10 @@ msgstr "彈出藏起"
 msgid "Stash Save"
 msgstr "保存藏起"
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr "藏起操作執行中..."
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "靜態"
@@ -7849,8 +7878,8 @@ msgid "TORTOISEIDIFF"
 msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
-msgstr "標籤(&g)"
+msgid "Ta&gs:"
+msgstr "標籤(&G)"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -8157,6 +8186,14 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "選擇的檔案尚有一個以上的衝突標記.\n你確定要將之視為已解決?"
+
+#. Resource IDs: (170)
+#, c-format
+msgid ""
+"The submodule \"%s\" is dirty.\n"
+"Merely committing the superproject cannot track or save such changes to the submodule.\n"
+"Commit the submodule now or ignore dirty changes?"
+msgstr "子模組 \"%s\" 有未提交的變更，\n僅僅提交至父專案並不能夠儲存子模組的變更。\n要現在提交子模組的變更，還是忽略呢？"
 
 #. Resource IDs: (88)
 #, c-format
@@ -8803,8 +8840,8 @@ msgid ""
 msgstr "必須在提交前設定姓名及電郵，要現在設定？"
 
 #. Resource IDs: (1650)
-msgid "UserName"
-msgstr "用户名稱"
+msgid "User&name:"
+msgstr "使用者名稱(&N)"
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8881,6 +8918,10 @@ msgstr "以網頁瀏覽器檢視路徑的版本(&W)"
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
 msgstr "以其他編輯器檢視版本(&W)"
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
+msgstr "檢視系統 gitconfig (&W)"
 
 #. Resource IDs: (1084)
 msgid "Visit our website"

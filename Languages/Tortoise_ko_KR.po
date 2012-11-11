@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-10-12 09:30+0000\n"
+"PO-Revision-Date: 2012-11-11 00:47+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/projects/p/tortoisegit/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -478,6 +478,10 @@ msgstr ""
 msgid "&Commit"
 msgstr "커밋(&C)"
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr ""
@@ -647,11 +651,15 @@ msgid "&Force Rebase"
 msgstr ""
 
 #. Resource IDs: (1608)
-msgid "&From"
+msgid "&From:"
 msgstr ""
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
+msgstr ""
+
+#. Resource IDs: (32884)
+msgid "&Go to"
 msgstr ""
 
 #. Resource IDs: (220)
@@ -1141,8 +1149,8 @@ msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
-msgstr "&Trunk"
+msgid "&Trunk:"
+msgstr ""
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -2029,7 +2037,7 @@ msgid "Br&owse..."
 msgstr ""
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
+msgid "Branc&h:"
 msgstr ""
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
@@ -3419,6 +3427,10 @@ msgid ""
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Do you want to fetch remote branches from the newly added remote?"
+msgstr ""
+
 #. Resource IDs: (313)
 msgid ""
 "Do you want to reload the documents to reflect the settings changes?\n"
@@ -3556,6 +3568,10 @@ msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
+msgstr ""
+
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -3776,6 +3792,10 @@ msgstr ""
 
 #. Resource IDs: (94)
 msgid "Export directory:"
+msgstr ""
+
+#. Resource IDs: (1258)
+msgid "Export selection to..."
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -4599,6 +4619,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
@@ -6497,10 +6521,6 @@ msgid ""
 "Reload"
 msgstr ""
 
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr ""
-
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
 msgstr ""
@@ -6792,6 +6812,11 @@ msgstr ""
 #. Resource IDs: (69)
 #, c-format
 msgid "Revert commit %s"
+msgstr ""
+
+#. Resource IDs: (323)
+#, c-format
+msgid "Revert to revision %s"
 msgstr ""
 
 #. Resource IDs: (73)
@@ -7649,6 +7674,10 @@ msgstr ""
 msgid "Stash Save"
 msgstr ""
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "Static"
@@ -7848,7 +7877,7 @@ msgid "TORTOISEIDIFF"
 msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
+msgid "Ta&gs:"
 msgstr ""
 
 #. Resource IDs: (16970)
@@ -8155,6 +8184,14 @@ msgstr ""
 msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
+msgstr ""
+
+#. Resource IDs: (170)
+#, c-format
+msgid ""
+"The submodule \"%s\" is dirty.\n"
+"Merely committing the superproject cannot track or save such changes to the submodule.\n"
+"Commit the submodule now or ignore dirty changes?"
 msgstr ""
 
 #. Resource IDs: (88)
@@ -8802,7 +8839,7 @@ msgid ""
 msgstr ""
 
 #. Resource IDs: (1650)
-msgid "UserName"
+msgid "User&name:"
 msgstr ""
 
 #. Resource IDs: (69)
@@ -8879,6 +8916,10 @@ msgstr ""
 
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
+msgstr ""
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
 msgstr ""
 
 #. Resource IDs: (1084)

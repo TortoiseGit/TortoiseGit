@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Ricardo RCDMK Souza <srrcdmk@gmail.com>, 2012.
 # Ricardo Souza <srrcdmk@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-10-12 09:30+0000\n"
+"PO-Revision-Date: 2012-11-11 00:46+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -332,7 +333,7 @@ msgstr "&Avançado..."
 
 #. Resource IDs: (1701)
 msgid "&All"
-msgstr ""
+msgstr "&Todos"
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
@@ -478,6 +479,10 @@ msgstr "&Comando:"
 msgid "&Commit"
 msgstr "&Submeter"
 
+#. Resource IDs: (355)
+msgid "&Commit submodule..."
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "&Commit w/o"
 msgstr "&Submeter w/o"
@@ -556,7 +561,7 @@ msgstr "&Baixo"
 
 #. Resource IDs: (78, 1710)
 msgid "&Download"
-msgstr ""
+msgstr "&Baixar"
 
 #. Resource IDs: (65535)
 msgid "&Edit"
@@ -647,12 +652,16 @@ msgid "&Force Rebase"
 msgstr "&Forçar Reorganização"
 
 #. Resource IDs: (1608)
-msgid "&From"
-msgstr "&De"
+msgid "&From:"
+msgstr "&De:"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
 msgstr "Estilo de Submissão do &Git (--rmdir)"
+
+#. Resource IDs: (32884)
+msgid "&Go to"
+msgstr ""
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -725,7 +734,7 @@ msgstr "Diferenças em linha por palavra"
 
 #. Resource IDs: (81)
 msgid "&Install"
-msgstr ""
+msgstr "&Instalar"
 
 #. Resource IDs: (1016)
 msgid "&Jump to first difference when loading"
@@ -846,7 +855,7 @@ msgstr "Sem eve&nto de duplo-clique"
 
 #. Resource IDs: (1702)
 msgid "&None"
-msgstr ""
+msgstr "&Nenhum"
 
 #. Resource IDs: (1661)
 msgid "&Notepad2"
@@ -1026,7 +1035,7 @@ msgstr "&Definir caminho MSysGit"
 
 #. Resource IDs: (1486)
 msgid "&Set upstream/track remote branch"
-msgstr ""
+msgstr "Configurar up&stream/rastrear ramo remoto"
 
 #. Resource IDs: (9)
 msgid "&Settings"
@@ -1074,7 +1083,7 @@ msgstr "&Iniciar Grupo"
 
 #. Resource IDs: (86)
 msgid "&Stash"
-msgstr ""
+msgstr "Re&servar"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -1102,7 +1111,7 @@ msgstr "E&tiquetas"
 
 #. Resource IDs: (65535)
 msgid "&Tags:"
-msgstr ""
+msgstr "E&tiquetas:"
 
 #. Resource IDs: (16915)
 msgid "&Text"
@@ -1141,8 +1150,8 @@ msgid "&TortoiseMerge"
 msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
-msgid "&Trunk"
-msgstr "&Tronco"
+msgid "&Trunk:"
+msgstr "&Tronco:"
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -1409,7 +1418,7 @@ msgstr "Um ramo com este nome já existe."
 
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
-msgstr ""
+msgstr "Uma nova versão está disponível. Por favor baixe a versão atual!"
 
 #. Resource IDs: (195)
 msgid ""
@@ -2029,8 +2038,8 @@ msgid "Br&owse..."
 msgstr "&Navegar..."
 
 #. Resource IDs: (1510)
-msgid "Branc&h"
-msgstr "Criar &ramo"
+msgid "Branc&h:"
+msgstr "Ra&mo:"
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -2209,7 +2218,7 @@ msgstr "Centro Europeu"
 
 #. Resource IDs: (1697)
 msgid "Change log"
-msgstr ""
+msgstr "Histórico de mudanças"
 
 #. Resource IDs: (3601)
 msgid ""
@@ -2260,7 +2269,7 @@ msgstr "Verificar"
 
 #. Resource IDs: (174)
 msgid "Check For Updates - TortoiseGit"
-msgstr ""
+msgstr "Verificar Por Atualizações - TortoiseGit"
 
 #. Resource IDs: (1031)
 msgid "Check For Updates..."
@@ -2687,7 +2696,7 @@ msgstr "Conflitante"
 
 #. Resource IDs: (86)
 msgid "Conflicts"
-msgstr ""
+msgstr "Conflitos"
 
 #. Resource IDs: (188)
 #, c-format
@@ -2743,7 +2752,7 @@ msgstr "Copiar e renomear"
 
 #. Resource IDs: (1252)
 msgid "Copy log messages to clipboard"
-msgstr ""
+msgstr "Copiar mensagens de log para a área de trabalho"
 
 #. Resource IDs: (32777)
 msgid "Copy log to clipboard"
@@ -3419,6 +3428,10 @@ msgid ""
 "which were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
 msgstr "Você deseja reverter todas as alterações em\n%s\nque foram feitas nesta revisão? As alterações serão desfeitas revertendo as combinações da revisão de sua cópia de trabalho."
 
+#. Resource IDs: (86)
+msgid "Do you want to fetch remote branches from the newly added remote?"
+msgstr "Você quer obter ramos remotos do remoto que foi adicionado?"
+
 #. Resource IDs: (313)
 msgid ""
 "Do you want to reload the documents to reflect the settings changes?\n"
@@ -3435,7 +3448,7 @@ msgstr "Quer visualizar as mudanças?"
 
 #. Resource IDs: (604)
 msgid "Do you want to stash pop now?"
-msgstr ""
+msgstr "Você quer restaurar a reserva agora?"
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -3464,7 +3477,7 @@ msgstr "Abaixo"
 
 #. Resource IDs: (1698)
 msgid "Download"
-msgstr ""
+msgstr "Baixar"
 
 #. Resource IDs: (1002)
 msgid "Drag to make this menu float"
@@ -3557,6 +3570,10 @@ msgstr "Atribuir programa de combinação para extensões específicas"
 #. Resource IDs: (1382)
 msgid "Edit gl&obal .gitconfig"
 msgstr "Editar .gitconfig gl&obal"
+
+#. Resource IDs: (1718)
+msgid "Edit global &XDG config"
+msgstr ""
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3777,6 +3794,10 @@ msgstr "Exportar Arquivo Zip"
 #. Resource IDs: (94)
 msgid "Export directory:"
 msgstr "Exportar diretório:"
+
+#. Resource IDs: (1258)
+msgid "Export selection to..."
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4600,6 +4621,10 @@ msgstr "ID:32837:VA  +M"
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
 msgstr "ID:32883:V C +A"
+
+#. Accelerator Entry for Menu ID:32884; '&Go to'
+msgid "ID:32884:V C +G"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5526,7 +5551,7 @@ msgstr "Sem &Avanço Rápido"
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "Sem Restaurar"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -5636,7 +5661,7 @@ msgstr "Arquivos Não Versionados"
 
 #. Resource IDs: (83)
 msgid "Not all files could be downloaded and verified."
-msgstr ""
+msgstr "Nem todos os arquivos puderam ser baixados e verificados."
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -6389,7 +6414,7 @@ msgstr "Reorganizar \"%s\" sobre este..."
 
 #. Resource IDs: (20)
 msgid "Rebase..."
-msgstr ""
+msgstr "Reorganizar..."
 
 #. Resource IDs: (67)
 #, c-format
@@ -6496,10 +6521,6 @@ msgid ""
 "Reloads the opened files and reverts all changes.\n"
 "Reload"
 msgstr "Recarrega os arquivos abertos e reverte todas as alterações.\nRecarregar"
-
-#. Resource IDs: (80)
-msgid "Relocating..."
-msgstr "Reposicionando..."
 
 #. Resource IDs: (1660)
 msgid "Remember selection (\"svn.rmdir\" option)"
@@ -6793,6 +6814,11 @@ msgstr "Reverter submissão"
 #, c-format
 msgid "Revert commit %s"
 msgstr "Reverter submissão %s"
+
+#. Resource IDs: (323)
+#, c-format
+msgid "Revert to revision %s"
+msgstr ""
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -7366,7 +7392,7 @@ msgstr "Exibir diferenças como comparação &unificada"
 
 #. Resource IDs: (83)
 msgid "Show destination folder"
-msgstr ""
+msgstr "Mostrar pasta de destino"
 
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
@@ -7649,6 +7675,10 @@ msgstr "Arrebentar Reserva"
 msgid "Stash Save"
 msgstr "Salvar Reserva"
 
+#. Resource IDs: (80)
+msgid "Stash operation running..."
+msgstr ""
+
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
 msgstr "Estático"
@@ -7848,8 +7878,8 @@ msgid "TORTOISEIDIFF"
 msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
-msgid "Ta&gs"
-msgstr "&Etiquetas"
+msgid "Ta&gs:"
+msgstr "Eti&quetas:"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -7923,7 +7953,7 @@ msgstr "A mensagem de submissão não pode ser vazia."
 msgid ""
 "The current working tree is not clean.\n"
 "Do you want to stash the changes?"
-msgstr ""
+msgstr "A cópia de trabalho atual não está limpa.\nVocê quer reservar as mudanças?"
 
 #. Resource IDs: (68)
 #, c-format
@@ -7936,7 +7966,7 @@ msgstr "O mecanismo de comparação foi interrompido devido a um erro:\n%s"
 msgid ""
 "The entered source ref is ambiguous.\n"
 "You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "A referência informada é ambígua.\nVocê tem que torná-la única (ex.: adicionando \"refs/heads/\" como um prefixo para ramos ou \"refs/tags/\" para etiquetas)!"
 
 #. Resource IDs: (64)
 #, c-format
@@ -8156,6 +8186,14 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "O arquivo selecionado parece ainda conter uma ou mais marcas de conflito.\nVocê tem certeza que quer marcar como resolvido?"
+
+#. Resource IDs: (170)
+#, c-format
+msgid ""
+"The submodule \"%s\" is dirty.\n"
+"Merely committing the superproject cannot track or save such changes to the submodule.\n"
+"Commit the submodule now or ignore dirty changes?"
+msgstr "O submódulo \"%s\" está sujo.\nMeramente submetendo o superprojeto não pode rastrear ou salvar tais mudanças no submódulo.\nSubmeter o submódulo agora ou ignorar as mudanças sujas?"
 
 #. Resource IDs: (88)
 #, c-format
@@ -8802,8 +8840,8 @@ msgid ""
 msgstr "O nome de usuário e e-mail devem ser configurados antes de submeter.\nVocê quer configurá-los agora?"
 
 #. Resource IDs: (1650)
-msgid "UserName"
-msgstr "NomeDoUsuário"
+msgid "User&name:"
+msgstr "&Nome de usuário:"
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8880,6 +8918,10 @@ msgstr "Visualizar revisão do caminho no &webviewer"
 #. Resource IDs: (1252)
 msgid "View revision in alternative editor"
 msgstr "Ver revisão no editor alternativo"
+
+#. Resource IDs: (1717)
+msgid "View system&wide gitconfig"
+msgstr ""
 
 #. Resource IDs: (1084)
 msgid "Visit our website"
