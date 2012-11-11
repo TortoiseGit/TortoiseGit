@@ -171,6 +171,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		TRACE0("Failed to create output windows\n");
 		return FALSE;      // fail to create
 	}
+	m_FileListCtrl.m_hwndLogicalParent = this;
 
 	if( ! this->m_LogMessageCtrl.Create(_T("Scintilla"),_T("source"),0,rectDummy,&m_ctrlTabCtrl,0,0) )
 	{
