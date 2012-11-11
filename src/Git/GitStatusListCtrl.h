@@ -939,6 +939,8 @@ public:
 
 	bool						m_bIsRevertTheirMy;	///< at rebase case, Their and My version is revert.
 
+	CWnd						*m_hwndLogicalParent;
+
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -1007,6 +1009,7 @@ private:
 
 	/// sends an GitSLNM_CHECKCHANGED notification to the parent
 	void NotifyCheck();
+	CWnd * GetLogicalParent() { return m_hwndLogicalParent != NULL ? m_hwndLogicalParent : this->GetParent(); }
 
 	int CellRectFromPoint(CPoint& point, RECT *cellrect, int *col) const;
 

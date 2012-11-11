@@ -125,6 +125,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_amend(false)
 	, m_bDoNotAutoselectSubmodules(false)
 	, m_bHasWC(true)
+	, m_hwndLogicalParent(NULL)
 {
 	m_FileLoaded=0;
 	m_critSec.Init();
@@ -1033,7 +1034,7 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	*pResult = 0;
-	CWnd* pParent = GetParent();
+	CWnd* pParent = GetLogicalParent();
 	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 	{
 		pParent->SendMessage(GITSLNM_ITEMCHANGED, pNMLV->iItem);
@@ -1980,8 +1981,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						m_mapFilenameToChecked.erase(((CTGitPath*)GetItemData(index))->GetGitPathString());
 					}
 
-					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
-						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
 				}
@@ -2080,8 +2081,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if (CAppUtils::ConflictEdit(*filepath, false, this->m_bIsRevertTheirMy))
 				{
 					CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
-					if (!PathFileExists(conflictedFile) && NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
-						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 				}
 				break;
 			}
@@ -2157,7 +2158,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				if(!CAppUtils::IgnoreFile(ignorelist,false))
 					break;
 
-				CWnd* pParent = GetParent();
+				CWnd* pParent = GetLogicalParent();
 				if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 				{
 					pParent->SendMessage(GITSLNM_NEEDSREFRESH);
@@ -2176,7 +2177,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!CAppUtils::IgnoreFile(ignorelist,true))
 						break;
 
-					CWnd* pParent = GetParent();
+					CWnd* pParent = GetLogicalParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 					{
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
@@ -2307,8 +2308,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							MessageBox(output, _T("TortoiseGit"), MB_ICONERROR);
 						}
 					}
-					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
-						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
 				}
@@ -2333,8 +2334,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							MessageBox(output, _T("TortoiseGit"), MB_ICONERROR);
 						}
 					}
-					if (NULL != GetParent() && NULL != GetParent()->GetSafeHwnd())
-						GetParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					if (NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
 				}
@@ -3183,13 +3184,13 @@ void CGitStatusListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 	case (VK_TAB):
 		{
-			::PostMessage(GetParent()->GetSafeHwnd(), WM_NEXTDLGCTL, GetKeyState(VK_SHIFT)&0x8000, 0);
+			::PostMessage(GetLogicalParent()->GetSafeHwnd(), WM_NEXTDLGCTL, GetKeyState(VK_SHIFT)&0x8000, 0);
 			return;
 		}
 		break;
 	case (VK_ESCAPE):
 		{
-			::SendMessage(GetParent()->GetSafeHwnd(), WM_CLOSE, 0, 0);
+			::SendMessage(GetLogicalParent()->GetSafeHwnd(), WM_CLOSE, 0, 0);
 		}
 		break;
 	}
@@ -3685,7 +3686,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 
 void CGitStatusListCtrl::NotifyCheck()
 {
-	CWnd* pParent = GetParent();
+	CWnd* pParent = GetLogicalParent();
 	if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 	{
 		pParent->SendMessage(GITSLNM_CHECKCHANGED, m_nSelected);
