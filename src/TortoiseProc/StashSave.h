@@ -43,8 +43,11 @@ protected:
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedHelp();
+	afx_msg void OnBnClickedCheckUntracked();
+	afx_msg void OnBnClickedCheckAll();
 
 public:
 	CString	m_sMessage;
 	BOOL	m_bIncludeUntracked;
+	BOOL	m_bAll;
 };

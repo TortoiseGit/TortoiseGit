@@ -1566,18 +1566,19 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,255,44,50,14
 END
 
-IDD_STASH DIALOGEX 0, 0, 267, 97
+IDD_STASH DIALOGEX 0, 0, 267, 108
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Stash"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Stash &Message",IDC_GROUP_STASHMESSAGE,7,7,253,32
     EDITTEXT        IDC_STASHMESSAGE,15,19,237,13,ES_AUTOHSCROLL
-    GROUPBOX        "Options",IDC_GROUP_OPTION,7,42,253,29
+    GROUPBOX        "Options",IDC_GROUP_OPTION,7,42,253,38
     CONTROL         "include &untracked",IDC_CHECK_UNTRACKED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,54,236,10
-    DEFPUSHBUTTON   "OK",IDOK,99,76,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,154,76,50,14
-    PUSHBUTTON      "Help",IDHELP,210,76,50,14
+    CONTROL         "--&all",IDC_CHECK_ALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,66,236,10
+    DEFPUSHBUTTON   "OK",IDOK,99,87,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,154,87,50,14
+    PUSHBUTTON      "Help",IDHELP,210,87,50,14
 END
 
 IDD_DIFFSUBMODULE DIALOGEX 0, 0, 381, 121
@@ -2406,7 +2407,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 260
         TOPMARGIN, 7
-        BOTTOMMARGIN, 90
+        BOTTOMMARGIN, 101
     END
 
     IDD_DIFFSUBMODULE, DIALOG
@@ -3724,6 +3725,10 @@ BEGIN
     IDS_STASHBUTTON         "&Stash"
     IDS_SETTINGS_FETCH_ADDEDREMOTE 
                             "Do you want to fetch remote branches from the newly added remote?"
+    IDS_STASHSAVE_INCLUDEUNTRACKED 
+                            "You have checked ""include untracked"".\nThis includes a ""git clean -fd"" call, so ignored files/directories are removed w/o using recycle bin."
+    IDS_PROC_NOTSHOWAGAINCONTINUE 
+                            "Do &not show me this warning again (if Continue is selected)"
 END
 
 #endif    // Englisch (USA) resources

@@ -397,6 +397,7 @@
 #define IDS_PROC_GITCONFIG_NOMSYSGIT    1130
 #define IDC_GRAPH                       1131
 #define IDS_PROC_CLONE_DIR              1131
+#define IDC_CHECK_ALL                   1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
 #define IDC_SELECTOVERLAYSET            1132
@@ -801,6 +802,8 @@
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
 #define IDS_SETTINGS_FETCH_ADDEDREMOTE  1372
+#define IDS_STASHSAVE_INCLUDEUNTRACKED  1373
+#define IDS_PROC_NOTSHOWAGAINCONTINUE   1374
 #define IDC_NEWLINESCOLOR               1378
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
