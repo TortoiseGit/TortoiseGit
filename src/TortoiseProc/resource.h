@@ -397,6 +397,7 @@
 #define IDS_PROC_GITCONFIG_NOMSYSGIT    1130
 #define IDC_GRAPH                       1131
 #define IDS_PROC_CLONE_DIR              1131
+#define IDC_CHECK_ALL                   1131
 #define IDC_STATBUTTON                  1132
 #define IDC_PATCH_TO_CLIPBOARD          1132
 #define IDC_SELECTOVERLAYSET            1132

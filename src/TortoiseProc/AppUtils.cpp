@@ -81,8 +81,13 @@ bool CAppUtils::StashSave()
 		CString cmd, out;
 		cmd = _T("git.exe stash save");
 
-		if (dlg.m_bIncludeUntracked && CAppUtils::GetMsysgitVersion() >= 0x01070700)
-			cmd += _T(" --include-untracked");
+		if (CAppUtils::GetMsysgitVersion() >= 0x01070700)
+		{
+			if (dlg.m_bIncludeUntracked)
+				cmd += _T(" --include-untracked");
+			else if (dlg.m_bAll)
+				cmd += _T(" --all");
+		}
 
 		if (!dlg.m_sMessage.IsEmpty())
 		{

@@ -27,6 +27,7 @@ IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 CStashSaveDlg::CStashSaveDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CStashSaveDlg::IDD, pParent)
 	, m_bIncludeUntracked(FALSE)
+	, m_bAll(FALSE)
 {
 }
 
@@ -39,11 +40,14 @@ void CStashSaveDlg::DoDataExchange(CDataExchange* pDX)
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STASHMESSAGE, m_sMessage);
 	DDX_Check(pDX, IDC_CHECK_UNTRACKED, m_bIncludeUntracked);
+	DDX_Check(pDX, IDC_CHECK_ALL, m_bAll);
 }
 
 BEGIN_MESSAGE_MAP(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CStashSaveDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDHELP, &CStashSaveDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_CHECK_UNTRACKED, &CStashSaveDlg::OnBnClickedCheckUntracked)
+	ON_BN_CLICKED(IDC_CHECK_ALL, &CStashSaveDlg::OnBnClickedCheckAll)
 END_MESSAGE_MAP()
 
 BOOL CStashSaveDlg::OnInitDialog()
@@ -59,6 +63,7 @@ BOOL CStashSaveDlg::OnInitDialog()
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
 
 	AdjustControlSize(IDC_CHECK_UNTRACKED);
+	AdjustControlSize(IDC_CHECK_ALL);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -67,7 +72,10 @@ BOOL CStashSaveDlg::OnInitDialog()
 	this->UpdateData(false);
 
 	if (CAppUtils::GetMsysgitVersion() < 0x01070700)
+	{
 		GetDlgItem(IDC_CHECK_UNTRACKED)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_ALL)->EnableWindow(FALSE);
+	}
 
 	return TRUE;
 }
@@ -82,4 +90,16 @@ void CStashSaveDlg::OnBnClickedOk()
 void CStashSaveDlg::OnBnClickedHelp()
 {
 	OnHelp();
+}
+
+void CStashSaveDlg::OnBnClickedCheckUntracked()
+{
+	UpdateData();
+	DialogEnableWindow(IDC_CHECK_ALL, !m_bIncludeUntracked);
+}
+
+void CStashSaveDlg::OnBnClickedCheckAll()
+{
+	UpdateData();
+	DialogEnableWindow(IDC_CHECK_UNTRACKED, !m_bAll);
 }

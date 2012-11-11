@@ -1250,6 +1250,10 @@ msgstr ""
 msgid "- all -"
 msgstr ""
 
+#. Resource IDs: (1131)
+msgid "--&all"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "-------------------------------------------------------------------------------------------"
 msgstr ""
