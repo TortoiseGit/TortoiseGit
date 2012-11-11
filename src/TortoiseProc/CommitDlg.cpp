@@ -334,7 +334,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
-	AddAnchor(IDC_COMMIT_MESSAGEONLY, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_MESSAGEONLY, BOTTOM_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
@@ -1922,7 +1922,6 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_SPLITTER);
 	RemoveAnchor(IDC_SIGNOFF);
 	RemoveAnchor(IDC_COMMIT_AMEND);
-	RemoveAnchor(IDC_COMMIT_MESSAGEONLY);
 	RemoveAnchor(IDC_COMMIT_AMENDDIFF);
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
@@ -1947,7 +1946,6 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_LISTGROUP), -delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SIGNOFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMEND),0,delta);
-	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_MESSAGEONLY), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AMENDDIFF),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
@@ -1971,7 +1969,6 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SIGNOFF,TOP_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
-	AddAnchor(IDC_COMMIT_MESSAGEONLY, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
