@@ -1670,6 +1670,8 @@ void CRebaseDlg::OnBnClickedAbort()
 				return;
 			}
 		}
+		else
+			break;
 	}
 
 	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.ToString());
