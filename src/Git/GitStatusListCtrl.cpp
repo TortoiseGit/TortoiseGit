@@ -1648,7 +1648,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 
-			if (GetSelectedCount() > 1)
+			if (GetSelectedCount() > 0)
 			{
 				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_EXPORT)) && !(wcStatus & CTGitPath::LOGACTIONS_DELETED))
 					popup.AppendMenuIcon(IDGITLC_EXPORT, IDS_LOG_POPUP_EXPORT, IDI_EXPORT);
