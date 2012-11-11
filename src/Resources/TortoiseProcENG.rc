@@ -3725,6 +3725,10 @@ BEGIN
     IDS_STASHBUTTON         "&Stash"
     IDS_SETTINGS_FETCH_ADDEDREMOTE 
                             "Do you want to fetch remote branches from the newly added remote?"
+    IDS_STASHSAVE_INCLUDEUNTRACKED 
+                            "You have checked ""include untracked"".\nThis includes a ""git clean -fd"" call, so ignored files/directories are removed w/o using recycle bin."
+    IDS_PROC_NOTSHOWAGAINCONTINUE 
+                            "Do &not show me this warning again (if Continue is selected)"
 END
 
 #endif    // Englisch (USA) resources

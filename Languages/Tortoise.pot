@@ -3187,6 +3187,10 @@ msgstr ""
 msgid "Display program information, version number and copyright\nAbout"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr ""
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr ""
@@ -8458,6 +8462,10 @@ msgstr ""
 
 #. Resource IDs: (84)
 msgid "You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "You have checked \"include untracked\".\nThis includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
 msgstr ""
 
 #. Resource IDs: (16)

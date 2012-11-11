@@ -21,6 +21,8 @@
 #include "TortoiseProc.h"
 #include "StashSave.h"
 #include "AppUtils.h"
+#include "MessageBox.h"
+#include "Registry.h"
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 
@@ -83,6 +85,15 @@ BOOL CStashSaveDlg::OnInitDialog()
 void CStashSaveDlg::OnBnClickedOk()
 {
 	CHorizontalResizableStandAloneDialog::UpdateData(TRUE);
+
+	if (m_bIncludeUntracked)
+	{
+		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_STASHSAVE_INCLUDEUNTRACKED, IDS_APPNAME, 2, IDI_WARNING, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON, IDS_PROC_NOTSHOWAGAINCONTINUE, _T("NoStashIncludeUntrackedWarning")) == 2)
+		{
+			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\NoStashIncludeUntrackedWarning")).removeValue(); // only store answer if it is "Continue"
+			return;
+		}
+	}
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }
