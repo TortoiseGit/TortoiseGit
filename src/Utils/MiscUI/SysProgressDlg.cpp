@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011 - TortoiseGit
+// Copyright (C) 2010-2012 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -140,7 +140,7 @@ void CSysProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
 	va_start(args, idFormatText);
 
 	CString sText;
-	sText.FormatMessageV(CString(MAKEINTRESOURCE(idFormatText)), &args);
+	sText.FormatV(CString(MAKEINTRESOURCE(idFormatText)), args);
 	SetLine(dwLine, sText, true);
 
 	va_end(args);
@@ -152,7 +152,7 @@ void CSysProgressDlg::FormatPathLine ( DWORD dwLine, CString FormatText, ...)
 	va_start(args, FormatText);
 
 	CString sText;
-	sText.FormatMessageV(FormatText, &args);
+	sText.FormatV(FormatText, args);
 	SetLine(dwLine, sText, true);
 
 	va_end(args);
@@ -164,7 +164,7 @@ void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 	va_start(args, idFormatText);
 
 	CString sText;
-	sText.FormatMessageV(CString(MAKEINTRESOURCE(idFormatText)), &args);
+	sText.FormatV(CString(MAKEINTRESOURCE(idFormatText)), args);
 	SetLine(dwLine, sText, false);
 
 	va_end(args);
