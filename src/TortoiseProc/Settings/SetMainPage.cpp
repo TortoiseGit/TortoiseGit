@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ CSetMainPage::CSetMainPage()
 	m_sMsysGitPath = m_regMsysGitPath;
 	m_sMsysGitExtranPath = m_regMsysGitExtranPath;
 
-	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE);
+	m_regCheckNewer = CRegDWORD(_T("Software\\TortoiseGit\\VersionCheck"), TRUE);
 }
 
 CSetMainPage::~CSetMainPage()

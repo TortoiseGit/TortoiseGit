@@ -518,11 +518,11 @@ void CTortoiseProcApp::CheckUpgrade()
 		CRegStdDWORD(_T("Software\\TortoiseGit\\DiffProps")).removeValue();
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) == FALSE)
 			CRegStdDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
-		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
 	}
 
 	if (lVersion <= 0x01070E00)
 	{
+		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
 		// upgrade to 1.7.15: force recreation of all diff scripts.
 		CAppUtils::SetupDiffScripts(true, CString());
 	}
