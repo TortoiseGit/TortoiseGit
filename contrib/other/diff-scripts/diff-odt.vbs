@@ -1,17 +1,18 @@
+' extensions: odt;ods
 '
 ' TortoiseSVN Diff script for Open Office Text files
 '
-' Copyright (C) 2004-2008 the TortoiseSVN team
+' Copyright (C) 2004-2009 the TortoiseSVN team
 ' This file is distributed under the same license as TortoiseSVN
 '
 ' Last commit by:
-' $Author: steveking $
-' $Date: 2008-06-17 03:36:28 +0800 (Tue, 17 Jun 2008) $
-' $Rev: 13285 $
+' $Author: tortoisesvn $
+' $Date: 2012-10-11 20:47:11 +0200 (Do, 11. Okt 2012) $
+' $Rev: 23366 $
 '
 ' Authors:
 ' Jonathan Ashley, 2007
-' Stefan Küng, 2006
+' Stefan Küng, 2006, 2009
 '
 dim objArgs,num,sBaseDoc,sNewDoc,objScript,word,destination
 
@@ -34,6 +35,9 @@ If objScript.FileExists(sNewDoc) = False Then
     MsgBox "File " + sNewDoc +" does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
     Wscript.Quit 1
 End If
+'remove the file write protection
+objScript.GetFile(sBaseDoc).Attributes = objScript.GetFile(sBaseDoc).Attributes And Not 1
+objScript.GetFile(sNewDoc).Attributes = objScript.GetFile(sNewDoc).Attributes And Not 1
 
 Set objScript = Nothing
 
@@ -65,12 +69,14 @@ sBaseDoc=Replace(sBaseDoc, "\", "/")
 sBaseDoc=Replace(sBaseDoc, ":", "|")
 sBaseDoc=Replace(sBaseDoc, "%", "%25")
 sBaseDoc=Replace(sBaseDoc, " ", "%20")
+sBaseDoc=Replace(sBaseDoc, "#", "%23")
 sBaseDoc="file:///"&sBaseDoc
 sBaseDoc=objUriTranslator.translateToInternal(sBaseDoc)
 sNewDoc=Replace(sNewDoc, "\", "/")
 sNewDoc=Replace(sNewDoc, ":", "|")
 sNewDoc=Replace(sNewDoc, "%", "%25")
 sNewDoc=Replace(sNewDoc, " ", "%20")
+sNewDoc=Replace(sNewDoc, "#", "%23")
 sNewDoc="file:///"&sNewDoc
 sNewDoc=objUriTranslator.translateToInternal(sNewDoc)
 

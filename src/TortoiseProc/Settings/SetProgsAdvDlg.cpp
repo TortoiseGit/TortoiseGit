@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,12 +20,11 @@
 #include "TortoiseProc.h"
 #include "ToolAssocDlg.h"
 #include "SetProgsAdvDlg.h"
-#include "PathUtils.h"
-#include "DirFileEnum.h"
+#include "AppUtils.h"
 
-IMPLEMENT_DYNAMIC(CSetProgsAdvDlg, CDialog)
+IMPLEMENT_DYNAMIC(CSetProgsAdvDlg, CResizableStandAloneDialog)
 CSetProgsAdvDlg::CSetProgsAdvDlg(const CString& type, CWnd* pParent /*=NULL*/)
-	: CDialog(CSetProgsAdvDlg::IDD, pParent)
+	: CResizableStandAloneDialog(CSetProgsAdvDlg::IDD, pParent)
 	, m_sType(type)
 	, m_regToolKey(_T("Software\\TortoiseGit\\") + type + _T("Tools"))
 	, m_ToolsValid(false)
@@ -76,7 +75,7 @@ int CSetProgsAdvDlg::SaveData()
 		}
 
 		// Add or update new or changed values
-		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; it++)
+		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; ++it)
 		{
 			CString ext = it->first;
 			CString new_value = it->second;
@@ -90,7 +89,7 @@ int CSetProgsAdvDlg::SaveData()
 
 void CSetProgsAdvDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TOOLLISTCTRL, m_ToolListCtrl);
 
 	if (pDX->m_bSaveAndValidate)
@@ -107,7 +106,7 @@ void CSetProgsAdvDlg::DoDataExchange(CDataExchange* pDX)
 	else
 	{
 		m_ToolListCtrl.DeleteAllItems();
-		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; it++)
+		for (TOOL_MAP::iterator it = m_Tools.begin(); it != m_Tools.end() ; ++it)
 		{
 			CString ext = it->first;
 			CString value = it->second;
@@ -117,7 +116,7 @@ void CSetProgsAdvDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CSetProgsAdvDlg, CDialog)
+BEGIN_MESSAGE_MAP(CSetProgsAdvDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_ADDTOOL, OnBnClickedAddtool)
 	ON_BN_CLICKED(IDC_REMOVETOOL, OnBnClickedRemovetool)
 	ON_BN_CLICKED(IDC_EDITTOOL, OnBnClickedEdittool)
@@ -129,7 +128,7 @@ END_MESSAGE_MAP()
 
 BOOL CSetProgsAdvDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+	CResizableStandAloneDialog::OnInitDialog();
 
 	m_ToolListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
@@ -138,7 +137,7 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	while (c>=0)
 		m_ToolListCtrl.DeleteColumn(c--);
 
-	SetWindowTheme(m_hWnd, L"Explorer", NULL);
+	SetWindowTheme(m_ToolListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
 	CString temp;
 	temp.LoadString(IDS_PROGS_EXTCOL);
@@ -162,6 +161,16 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	LoadData();
 	UpdateData(FALSE);
 	EnableBtns();
+
+	AddAnchor(IDC_GROUP, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_TOOLLISTCTRL, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_ADDTOOL, BOTTOM_LEFT);
+	AddAnchor(IDC_EDITTOOL, BOTTOM_LEFT);
+	AddAnchor(IDC_REMOVETOOL, BOTTOM_LEFT);
+	AddAnchor(IDC_RESTOREDEFAULTS, BOTTOM_LEFT);
+	AddAnchor(IDOK, BOTTOM_RIGHT);
+	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+
 	return TRUE;
 }
 
@@ -201,7 +210,7 @@ void CSetProgsAdvDlg::EnableBtns()
 
 void CSetProgsAdvDlg::OnBnClickedAddtool()
 {
-	CToolAssocDlg dlg(m_sType, true);;
+	CToolAssocDlg dlg(m_sType, true);
 	dlg.m_sExtension = _T("");
 	dlg.m_sTool = _T("");
 	if (dlg.DoModal() == IDOK)
@@ -220,7 +229,7 @@ void CSetProgsAdvDlg::OnBnClickedEdittool()
 	int selected = m_ToolListCtrl.GetSelectionMark();
 	if (selected >= 0)
 	{
-		CToolAssocDlg dlg(m_sType, false);;
+		CToolAssocDlg dlg(m_sType, false);
 		dlg.m_sExtension = m_ToolListCtrl.GetItemText(selected, 0);
 		dlg.m_sTool = m_ToolListCtrl.GetItemText(selected, 1);
 		if (dlg.DoModal() == IDOK)
@@ -276,43 +285,7 @@ void CSetProgsAdvDlg::OnLvnItemchangedToollistctrl(NMHDR * /* pNMHDR */, LRESULT
 
 void CSetProgsAdvDlg::OnBnClickedRestoredefaults()
 {
-	// set the custom diff/merge scripts
-	CString scriptsdir = CPathUtils::GetAppParentDirectory();
-	scriptsdir += _T("Diff-Scripts");
-	CSimpleFileFind files(scriptsdir);
-	while (files.FindNextFileNoDirectories())
-	{
-		CString file = files.GetFilePath();
-		CString filename = files.GetFileName();
-		CString ext = file.Mid(file.ReverseFind('-')+1);
-		ext = _T(".")+ext.Left(ext.ReverseFind('.'));
-		CString kind;
-		if (file.Right(3).CompareNoCase(_T("vbs"))==0)
-		{
-			kind = _T(" //E:vbscript");
-		}
-		if (file.Right(2).CompareNoCase(_T("js"))==0)
-		{
-			kind = _T(" //E:javascript");
-		}
-
-		if (m_sType.Compare(_T("Diff"))==0)
-		{
-			if (filename.Left(5).CompareNoCase(_T("diff-"))==0)
-			{
-				CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\")+ext);
-				diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
-			}
-		}
-		else if (m_sType.Compare(_T("Merge"))==0)
-		{
-			if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
-			{
-				CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\")+ext);
-				diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
-			}
-		}
-	}
+	CAppUtils::SetupDiffScripts(true, m_sType);
 	m_ToolsValid = FALSE;
 	LoadData();
 	UpdateData(FALSE);

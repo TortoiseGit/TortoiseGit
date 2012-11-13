@@ -1,17 +1,18 @@
+' extensions: ods;odt;sxw
 '
 ' TortoiseSVN Merge script for Open Office Calc files
 '
-' Copyright (C) 2004-2008 the TortoiseSVN team
+' Copyright (C) 2004-2009 the TortoiseSVN team
 ' This file is distributed under the same license as TortoiseSVN
 '
 ' Last commit by:
-' $Author: steveking $
-' $Date: 2008-06-17 03:36:28 +0800 (Tue, 17 Jun 2008) $
-' $Rev: 13285 $
+' $Author: tortoisesvn $
+' $Date: 2012-10-11 20:47:11 +0200 (Do, 11. Okt 2012) $
+' $Rev: 23366 $
 '
 ' Authors:
 ' Jonathan Ashley, 2007
-' Stefan Küng, 2006
+' Stefan Küng, 2006, 2009
 '
 dim objArgs,num,sBaseDoc,sMergedDoc,sTheirDoc,sMyDoc,objScript,word,destination
 
@@ -36,6 +37,9 @@ If objScript.FileExists(sTheirDoc) = False Then
     MsgBox "File " + sTheirDoc +" does not exist.  Cannot compare the documents.", vbExclamation, "File not found"
     Wscript.Quit 1
 End If
+'remove the file write protection
+objScript.GetFile(sMyDoc).Attributes = objScript.GetFile(sMyDoc).Attributes And Not 1
+objScript.GetFile(sTheirDoc).Attributes = objScript.GetFile(sTheirDoc).Attributes And Not 1
 
 Set objScript = Nothing
 
@@ -56,11 +60,13 @@ sMyDoc=Replace(sMyDoc, "\", "/")
 sMyDoc=Replace(sMyDoc, ":", "|")
 sMyDoc=Replace(sMyDoc, "%", "%25")
 sMyDoc=Replace(sMyDoc, " ", "%20")
+sMyDoc=Replace(sMyDoc, "#", "%23")
 sMyDoc="file:///"&sMyDoc
 sTheirDoc=Replace(sTheirDoc, "\", "/")
 sTheirDoc=Replace(sTheirDoc, ":", "|")
 sTheirDoc=Replace(sTheirDoc, "%", "%25")
 sTheirDoc=Replace(sTheirDoc, " ", "%20")
+sTheirDoc=Replace(sTheirDoc, "#", "%23")
 sTheirDoc="file:///"&sTheirDoc
 
 'Open the %mine document

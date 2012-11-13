@@ -79,6 +79,13 @@ public:
 	static BOOL StartUnifiedDiffViewer(const CString& patchfile, const CString& title, BOOL bWait = FALSE);
 
 	/**
+	 * Sets up all the default diff and merge scripts.
+	 * \param force if true, overwrite all existing entries
+	 * \param either "Diff", "Merge" or an empty string
+	 */
+	static bool SetupDiffScripts(bool force, const CString& type);
+
+	/**
 	 * Starts the external diff application
 	 */
 	static bool StartExtDiff(

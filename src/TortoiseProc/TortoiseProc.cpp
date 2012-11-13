@@ -514,61 +514,17 @@ void CTortoiseProcApp::CheckUpgrade()
 		CSoundUtils::RegisterTSVNSounds();
 	}
 #endif
-	if (lVersion <= 0x01020200)
-	{
-		// upgrade to > 1.2.3 means the doc diff scripts changed from vbs to js
-		// so remove the diff/merge scripts if they're the defaults
-		CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.doc"));
-		CString sDiff = diffreg;
-		CString sCL = _T("wscript.exe \"") + CPathUtils::GetAppParentDirectory()+_T("Diff-Scripts\\diff-doc.vbs\"");
-		if (sDiff.Left(sCL.GetLength()).CompareNoCase(sCL)==0)
-			diffreg = _T("");
-		CRegString mergereg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\.doc"));
-		sDiff = mergereg;
-		sCL = _T("wscript.exe \"") + CPathUtils::GetAppParentDirectory()+_T("Diff-Scripts\\merge-doc.vbs\"");
-		if (sDiff.Left(sCL.GetLength()).CompareNoCase(sCL)==0)
-			mergereg = _T("");
-	}
 	if (lVersion <= 0x01040000)
 	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
 	}
 
-	// set the custom diff scripts for every user
-	CString scriptsdir = CPathUtils::GetAppParentDirectory();
-	scriptsdir += _T("Diff-Scripts");
-	CSimpleFileFind files(scriptsdir);
-	while (files.FindNextFileNoDirectories())
+	if (lVersion <= 0x01070E00)
 	{
-		CString file = files.GetFilePath();
-		CString filename = files.GetFileName();
-		CString ext = file.Mid(file.ReverseFind('-')+1);
-		ext = _T(".")+ext.Left(ext.ReverseFind('.'));
-		CString kind;
-		if (file.Right(3).CompareNoCase(_T("vbs"))==0)
-		{
-			kind = _T(" //E:vbscript");
-		}
-		if (file.Right(2).CompareNoCase(_T("js"))==0)
-		{
-			kind = _T(" //E:javascript");
-		}
-
-		if (filename.Left(5).CompareNoCase(_T("diff-"))==0)
-		{
-			CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\")+ext);
-			CString diffregstring = diffreg;
-			if ((diffregstring.IsEmpty()) || (diffregstring.Find(filename)>=0))
-				diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
-		}
-		if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
-		{
-			CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\")+ext);
-			CString diffregstring = diffreg;
-			if ((diffregstring.IsEmpty()) || (diffregstring.Find(filename)>=0))
-				diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
-		}
+		// upgrade to 1.7.15: force recreation of all diff scripts.
+		CAppUtils::SetupDiffScripts(true, CString());
 	}
+	CAppUtils::SetupDiffScripts(false, CString());
 
 	// set the current version so we don't come here again until the next update!
 	regVersion = _T(STRPRODUCTVER);

@@ -269,6 +269,12 @@ BOOL CAppUtils::StartExtMerge(
 			com = mergetool;
 		}
 	}
+	// is there a filename specific merge tool?
+	CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\.") + mergedfile.GetFilename().MakeLower());
+	if (CString(mergetool) != "")
+	{
+		com = mergetool;
+	}
 
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
 	{
@@ -414,11 +420,18 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 
 CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 {
+	CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.") + file2.GetFilename().MakeLower());
+	if (!difftool.IsEmpty())
+		return difftool;
+	difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\.") + file1.GetFilename().MakeLower());
+	if (!difftool.IsEmpty())
+		return difftool;
+
 	// Is there a mime type specific diff tool?
 	CString mimetype;
 	if (GetMimeType(file1, mimetype) ||  GetMimeType(file2, mimetype))
 	{
-		CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + mimetype);
+		difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + mimetype);
 		if (!difftool.IsEmpty())
 			return difftool;
 	}
@@ -427,7 +440,7 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 	CString ext = file2.GetFileExtension().MakeLower();
 	if (!ext.IsEmpty())
 	{
-		CString difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + ext);
+		difftool = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + ext);
 		if (!difftool.IsEmpty())
 			return difftool;
 		// Maybe we should use TortoiseIDiff?
@@ -443,7 +456,7 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 	}
 
 	// Finally, pick a generic external diff tool
-	CString difftool = CRegString(_T("Software\\TortoiseGit\\Diff"));
+	difftool = CRegString(_T("Software\\TortoiseGit\\Diff"));
 	return difftool;
 }
 
@@ -946,6 +959,93 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 	return TRUE;
 }
 
+bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
+{
+	CString scriptsdir = CPathUtils::GetAppParentDirectory();
+	scriptsdir += _T("Diff-Scripts");
+	CSimpleFileFind files(scriptsdir);
+	while (files.FindNextFileNoDirectories())
+	{
+		CString file = files.GetFilePath();
+		CString filename = files.GetFileName();
+		CString ext = file.Mid(file.ReverseFind('-') + 1);
+		ext = _T(".") + ext.Left(ext.ReverseFind('.'));
+		std::set<CString> extensions;
+		extensions.insert(ext);
+		CString kind;
+		if (file.Right(3).CompareNoCase(_T("vbs"))==0)
+		{
+			kind = _T(" //E:vbscript");
+		}
+		if (file.Right(2).CompareNoCase(_T("js"))==0)
+		{
+			kind = _T(" //E:javascript");
+		}
+		// open the file, read the first line and find possible extensions
+		// this script can handle
+		try
+		{
+			CStdioFile f(file, CFile::modeRead | CFile::shareDenyNone);
+			CString extline;
+			if (f.ReadString(extline))
+			{
+				if ((extline.GetLength() > 15 ) &&
+					((extline.Left(15).Compare(_T("// extensions: ")) == 0) ||
+					(extline.Left(14).Compare(_T("' extensions: ")) == 0)))
+				{
+					if (extline[0] == '/')
+						extline = extline.Mid(15);
+					else
+						extline = extline.Mid(14);
+					CString sToken;
+					int curPos = 0;
+					sToken = extline.Tokenize(_T(";"), curPos);
+					while (!sToken.IsEmpty())
+					{
+						if (!sToken.IsEmpty())
+						{
+							if (sToken[0] != '.')
+								sToken = _T(".") + sToken;
+							extensions.insert(sToken);
+						}
+						sToken = extline.Tokenize(_T(";"), curPos);
+					}
+				}
+			}
+			f.Close();
+		}
+		catch (CFileException* e)
+		{
+			e->Delete();
+		}
+
+		for (std::set<CString>::const_iterator it = extensions.begin(); it != extensions.end(); ++it)
+		{
+			if (type.IsEmpty() || (type.Compare(_T("Diff")) == 0))
+			{
+				if (filename.Left(5).CompareNoCase(_T("diff-")) == 0)
+				{
+					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\DiffTools\\") + *it);
+					CString diffregstring = diffreg;
+					if (force || (diffregstring.IsEmpty()) || (diffregstring.Find(filename) >= 0))
+						diffreg = _T("wscript.exe \"") + file + _T("\" %base %mine") + kind;
+				}
+			}
+			if (type.IsEmpty() || (type.Compare(_T("Merge"))==0))
+			{
+				if (filename.Left(6).CompareNoCase(_T("merge-"))==0)
+				{
+					CRegString diffreg = CRegString(_T("Software\\TortoiseGit\\MergeTools\\") + *it);
+					CString diffregstring = diffreg;
+					if (force || (diffregstring.IsEmpty()) || (diffregstring.Find(filename) >= 0))
+						diffreg = _T("wscript.exe \"") + file + _T("\" %merged %theirs %mine %base") + kind;
+				}
+			}
+		}
+	}
+
+	return true;
+}
 
 bool CAppUtils::Export(CString *BashHash)
 {

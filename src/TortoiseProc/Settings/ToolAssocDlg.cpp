@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,7 +40,6 @@ void CToolAssocDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EXTEDIT, m_sExtension);
-	DDV_MaxChars(pDX, m_sExtension, 20);
 	DDX_Text(pDX, IDC_TOOLEDIT, m_sTool);
 
 	if (pDX->m_bSaveAndValidate)
@@ -48,8 +47,6 @@ void CToolAssocDlg::DoDataExchange(CDataExchange* pDX)
 		if (m_sExtension.Find('/')<0)
 		{
 			m_sExtension.TrimLeft(_T("*"));
-			m_sExtension.TrimLeft(_T("."));
-			m_sExtension = _T(".") + m_sExtension;
 		}
 	}
 }

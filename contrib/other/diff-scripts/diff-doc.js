@@ -1,3 +1,4 @@
+// extensions: doc;docx;docm
 //
 // TortoiseSVN Diff script for Word Doc files
 //
@@ -5,11 +6,12 @@
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
-// $Author: steveking $
-// $Date: 2008-07-17 23:29:51 +0800 (Thu, 17 Jul 2008) $
-// $Rev: 13493 $
+// $Author: tortoisesvn $
+// $Date: 2012-10-11 20:47:11 +0200 (Do, 11. Okt 2012) $
+// $Rev: 23366 $
 //
 // Authors:
+// Stefan Kueng, 2011
 // Jared Silva, 2008
 // Davide Orlandi and Hans-Emil Skogh, 2005
 //
@@ -87,11 +89,13 @@ catch(e)
 	sBaseDoc = sBaseDoc.replace(/\\/g, "/");
 	sBaseDoc = sBaseDoc.replace(/:/g, "|");
 	sBaseDoc = sBaseDoc.replace(/ /g, "%20");
+	sBaseDoc = sBaseDoc.replace(/#/g, "%23");
 	sBaseDoc="file:///" + sBaseDoc;
 	sBaseDoc=objUriTranslator.translateToInternal(sBaseDoc);
 	sNewDoc = sNewDoc.replace(/\\/g, "/");
 	sNewDoc = sNewDoc.replace(/:/g, "|");
 	sNewDoc = sNewDoc.replace(/ /g, "%20");
+	sNewDoc = sNewDoc.replace(/#/g, "%23");
 	sNewDoc="file:///" + sNewDoc;
 	sNewDoc=objUriTranslator.translateToInternal(sNewDoc);
 
@@ -115,7 +119,7 @@ catch(e)
 	WScript.Quit(0);
 }
 
-if (Number(word.Version) >= vOffice2007)
+if (parseInt(word.Version) >= vOffice2007)
 {
 	sTempDoc = sNewDoc;
 	sNewDoc = sBaseDoc;
@@ -133,9 +137,18 @@ try
 }
 catch(e)
 {
-    WScript.Echo("Error opening " + sNewDoc);
-    // Quit
-    WScript.Quit(1);
+    try
+    {
+        // open empty document to prevent bug where first Open() call fails
+        word.Documents.Add();
+        destination = word.Documents.Open(sNewDoc, true, true);
+    }
+    catch(e)
+    {
+        WScript.Echo("Error opening " + sNewDoc);
+        // Quit
+        WScript.Quit(1);
+    }
 }
 
 // If the Type property returns either wdOutlineView or wdMasterView and the Count property returns zero, the current document is an outline.
@@ -146,7 +159,7 @@ if (((destination.ActiveWindow.View.Type == wdOutlineView) || (destination.Activ
 }
 
 // Compare to the base document
-if (Number(word.Version) <= vOffice2000)
+if (parseInt(word.Version) <= vOffice2000)
 {
     // Compare for Office 2000 and earlier
     try
@@ -177,7 +190,7 @@ else
 }
     
 // Show the comparison result
-if (Number(word.Version) < vOffice2007)
+if (parseInt(word.Version) < vOffice2007)
 {
 	word.ActiveDocument.Windows(1).Visible = 1;
 }
@@ -187,7 +200,7 @@ if (Number(word.Version) < vOffice2007)
 word.ActiveDocument.Saved = 1;
     
 // Close the first document
-if (Number(word.Version) >= vOffice2002)
+if (parseInt(word.Version) >= vOffice2002)
 {
     destination.Close(wdDoNotSaveChanges);
 }

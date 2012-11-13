@@ -5,8 +5,8 @@
 ' This file is distributed under the same license as TortoiseSVN
 '
 ' Last commit by:
-' $Author: steveking $
-' $Date: 2008-06-17 03:36:28 +0800 (Tue, 17 Jun 2008) $
+' $Author: tortoisesvn $
+' $Date: 2008-06-16 21:36:28 +0200 (Mo, 16. Jun 2008) $
 ' $Rev: 13285 $
 '
 ' Authors:

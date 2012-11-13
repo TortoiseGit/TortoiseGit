@@ -1193,6 +1193,7 @@
 #define IDC_COMMIT_MESSAGEONLY          1719
 #define IDC_STATIC_CHANGETYPE           1720
 #define IDC_CHANGETYPE                  1721
+#define IDC_GROUP                       1722
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1578,7 +1579,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1722
+#define _APS_NEXT_CONTROL_VALUE         1723
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
