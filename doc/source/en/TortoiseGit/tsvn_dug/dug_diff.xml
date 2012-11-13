@@ -309,6 +309,109 @@
 			<filename>*.c</filename>.
 		</para>
 	</sect2>
+	<sect2 id="tsvn-dug-submodulediff">
+		<title>Diffing submodules using Submodule Diff Dialog</title>
+		<indexterm>
+			<primary>Submodule Diff Dialog</primary>
+		</indexterm>
+		<para>
+			The built-in diff command of git is available for diffing submodules, 
+			but we often find ourselves wanting to see more details how
+			a submodule has changed too. That's why we created Submodule Diff Dialog.
+		</para>
+		<para>
+			<figure id="tsvn-dug-submodulediff-dia-1">
+				<title>The submodule difference dialog</title>
+				<graphic fileref="../images/SubmoduleDiff.png"/>
+			</figure>
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Diff</guimenuitem>
+			</menuchoice>
+			for submodules will start Submodule Diff Dialog to show submodules differences. 
+			The summary of the two revisions are displayed.
+		</para>
+		<para>
+			The 'From' group box on the top displays the information of the original revision.
+			Below it, there is a 'To' group box, which display the information of the changed revision.
+			For each group box, the full commit hash is displayed, and can be highlighted and copied to clipboard;
+			the subject (i.e. first line of commit message) is displayed and also copiable to clipboard;
+			the Show Log button brings you to a new Log Dialog and jump to that revision.
+		</para>
+		<para>
+			To better draw the attention of the change of revision of submodule mounted, 
+			we added some indicators.
+			In 'To' group box, there is a change type field. Here list out the types:
+			<variablelist>
+				<varlistentry>
+					<term>Fast-forward</term>
+					<listitem>
+						<para>
+							Topology-based. This is for a fast-forward change.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Rewind</term>
+					<listitem>
+						<para>
+							Topology-based. This is the reversed direction of a fast-forward change.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Newer commit time</term>
+					<listitem>
+						<para>
+							Time-based. If it is neither fast-forward nor rewind, then we compare commit time.
+							This is for a revision with newer commit time than the original revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Older commit time</term>
+					<listitem>
+						<para>
+							Time-based. This is the reversal of 'Newer commit time'.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Same commit time</term>
+					<listitem>
+						<para>
+							Time-based. The commit time is the same. 
+							This may be produced by auto-generating commits or committing at the same time by two persons.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>New Submodule</term>
+					<listitem>
+						<para>
+							This is for newly added submodule.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Unknown</term>
+					<listitem>
+						<para>
+							This is for submodule revision hash not changed, error, etc..
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+
+			If current workspace of the submodule is dirty, 
+			the commit hash will be rendered in yellow background and red text.
+		</para>
+		<para>
+			In both group boxes,
+			if the revision is not fetched, submodule not initialized or other errors,
+			the commit hash will be rendered in red background.
+		</para>
+	</sect2>
 	<sect2 id="tsvn-dug-idiff">
 		<title>Diffing Images Using TortoiseIDiff</title>
 		<indexterm>
