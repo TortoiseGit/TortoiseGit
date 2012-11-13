@@ -497,6 +497,18 @@ void CTortoiseProcApp::CheckUpgrade()
 		lVersion |= (_ttol(sVersion.Mid(pos+1))<<8);
 	}
 
+#if 0
+	if (lVersion <= 0x01010300)
+	{
+		CSoundUtils::RegisterTSVNSounds();
+	}
+#endif
+
+	if (lVersion <= 0x01040000)
+	{
+		CRegStdDWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
+	}
+
 	if (lVersion <= 0x01070600)
 	{
 		CoInitialize(NULL);
@@ -507,16 +519,6 @@ void CTortoiseProcApp::CheckUpgrade()
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer"), TRUE) == FALSE)
 			CRegStdDWORD(_T("Software\\TortoiseGit\\VersionCheck")) = FALSE;
 		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
-	}
-#if 0
-	if (lVersion <= 0x01010300)
-	{
-		CSoundUtils::RegisterTSVNSounds();
-	}
-#endif
-	if (lVersion <= 0x01040000)
-	{
-		CRegStdDWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();
 	}
 
 	if (lVersion <= 0x01070E00)
