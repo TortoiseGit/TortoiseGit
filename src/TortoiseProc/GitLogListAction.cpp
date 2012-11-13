@@ -97,8 +97,8 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		{
 			CString temp;
 			temp.Format(IDS_PROC_REVERTCOMMIT, r1->m_CommitHash.ToString());
-			progress.FormatPathLine(1, temp);
-			progress.FormatPathLine(2, _T("%s"), r1->GetSubject());
+			progress.FormatNonPathLine(1, temp);
+			progress.FormatNonPathLine(2, _T("%s"), r1->GetSubject());
 			progress.SetProgress(i, this->GetSelectedCount());
 		}
 		i++;
