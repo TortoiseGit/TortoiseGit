@@ -78,7 +78,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		}
 
 		CSubmoduleDiffDlg submoduleDiffDlg;
-		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty);
+		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, CSubmoduleDiffDlg::NewSubmodule);
 		submoduleDiffDlg.DoModal();
 
 		return 0;
@@ -225,25 +225,68 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 
 	CGit subgit;
 	subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
+	CSubmoduleDiffDlg::ChangeType changeType = CSubmoduleDiffDlg::Unknown;
 
 	if(pPath->HasAdminDir())
 	{
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
+		int oldTime = 0, newTime = 0;
 
 		if(oldhash != GIT_REV_ZERO)
 		{
-			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),oldhash);
-			oldOK = !subgit.Run(cmd,&oldsub,encode);
+			CString cmdout, cmderr;
+			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), oldhash);
+			oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
+			if (oldOK)
+			{
+				int pos = cmdout.Find(_T(" "));
+				oldTime = _ttoi(cmdout.Left(pos));
+				oldsub = cmdout.Mid(pos + 1);
+			}
+			else
+				oldsub = cmderr;
 		}
 		if(newsub != GIT_REV_ZERO)
 		{
-			cmd.Format(_T("git log -n1  --pretty=format:\"%%s\" %s"),newhash);
-			newOK = !subgit.Run(cmd,&newsub,encode);
+			CString cmdout, cmderr;
+			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), newhash);
+			newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
+			if (newOK)
+			{
+				int pos = cmdout.Find(_T(" "));
+				newTime = _ttoi(cmdout.Left(pos));
+				newsub = cmdout.Mid(pos + 1);
+			}
+			else
+				newsub = cmderr;
+		}
+
+		if (oldhash != newhash)
+		{
+			bool ffNewer = false, ffOlder = false;
+			ffNewer = subgit.IsFastForward(oldhash, newhash);
+			if (!ffNewer)
+			{
+				ffOlder = subgit.IsFastForward(newhash, oldhash);
+				if (!ffOlder)
+				{
+					if (newTime > oldTime)
+						changeType = CSubmoduleDiffDlg::NewerTime;
+					else if (newTime < oldTime)
+						changeType = CSubmoduleDiffDlg::OlderTime;
+					else
+						changeType = CSubmoduleDiffDlg::SameTime;
+				}
+				else
+					changeType = CSubmoduleDiffDlg::Rewind;
+			}
+			else
+				changeType = CSubmoduleDiffDlg::FastForward;
 		}
 	}
 
 	CSubmoduleDiffDlg submoduleDiffDlg;
-	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty);
+	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
 
 	return 0;

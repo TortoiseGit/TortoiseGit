@@ -62,6 +62,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	AddAnchor(IDC_STATIC_REVISION2, TOP_LEFT);
 	AddAnchor(IDC_STATIC_SUBJECT, TOP_LEFT);
 	AddAnchor(IDC_STATIC_SUBJECT2, TOP_LEFT);
+	AddAnchor(IDC_STATIC_CHANGETYPE, TOP_LEFT);
 
 	AddAnchor(IDC_FROMGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TOGROUP, TOP_LEFT, TOP_RIGHT);
@@ -71,6 +72,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	AddAnchor(IDC_FROMHASH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FROMSUBJECT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_CHANGETYPE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TOHASH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TOSUBJECT, TOP_LEFT, TOP_RIGHT);
 
@@ -90,6 +92,18 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	UpdateData(FALSE);
 	if (m_bDirty)
 		GetDlgItem(IDC_TOHASH)->SetWindowText(m_sToHash + _T("-dirty"));
+
+	CString changeTypeTable[] =
+	{
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_UNKNOWN)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWSUBMODULE)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_FASTFORWARD)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_REWIND)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_NEWERTIME)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME)),
+		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME))
+	};
+	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
 
 	return FALSE;
 }
@@ -117,10 +131,49 @@ HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		return CreateSolidBrush(RGB(255, 255, 0));
 	}
 
+	if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && nCtlColor == CTLCOLOR_STATIC)
+	{
+		if (m_nChangeType == FastForward)
+		{
+			// light green
+			pDC->SetBkColor(RGB(211, 249, 154));
+			pDC->SetTextColor(RGB(0, 0, 0));
+			return CreateSolidBrush(RGB(211, 249, 154));
+		}
+		else if (m_nChangeType == Rewind)
+		{
+			// pink
+			pDC->SetBkColor(RGB(249, 199, 229));
+			pDC->SetTextColor(RGB(0, 0, 0));
+			return CreateSolidBrush(RGB(249, 199, 229));
+		}
+		else if (m_nChangeType == NewerTime)
+		{
+			// light blue
+			pDC->SetBkColor(RGB(176, 223, 244));
+			pDC->SetTextColor(RGB(0, 0, 0));
+			return CreateSolidBrush(RGB(176, 223, 244));
+		}
+		else if (m_nChangeType == OlderTime)
+		{
+			// light orange
+			pDC->SetBkColor(RGB(244, 207, 159));
+			pDC->SetTextColor(RGB(0, 0, 0));
+			return CreateSolidBrush(RGB(244, 207, 159));
+		}
+		else
+		{
+			// light gray
+			pDC->SetBkColor(RGB(222, 222, 222));
+			pDC->SetTextColor(RGB(0, 0, 0));
+			return CreateSolidBrush(RGB(222, 222, 222));
+		}
+	}
+
 	return CHorizontalResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty)
+void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType)
 {
 	m_bToIsWorkingCopy = toIsWorkingCopy;
 
@@ -133,6 +186,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString from
 	m_sToSubject = toSubject;
 	m_bToOK = toOK;
 	m_bDirty = dirty;
+	m_nChangeType = changeType;
 }
 
 void CSubmoduleDiffDlg::ShowLog(CString hash)

@@ -5221,6 +5221,14 @@ msgstr ""
 msgid "New name:"
 msgstr ""
 
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
+msgstr ""
+
 #. Resource IDs: (20308)
 msgid "Next"
 msgstr ""
@@ -5502,6 +5510,10 @@ msgstr ""
 
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Older commit time"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6494,6 +6506,10 @@ msgstr ""
 msgid "Revisions"
 msgstr ""
 
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr ""
+
 #. Resource IDs: (3850)
 msgid "Rich Text (RTF)\ntext with font and paragraph formatting"
 msgstr ""
@@ -6586,6 +6602,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Same commit time"
 msgstr ""
 
 #. Resource IDs: (57604)
@@ -7926,6 +7946,10 @@ msgstr ""
 
 #. Resource IDs: (1642)
 msgid "Type"
+msgstr ""
+
+#. Resource IDs: (1720)
+msgid "Type:"
 msgstr ""
 
 #. Resource IDs: (164, 207)
