@@ -33,7 +33,7 @@
 #define _MODE_SD_ONLY_DIR_	(_MODE_FS_START_DIR_|_MODE_ONLY_DIRS)  //Fix 1.2
 
 /////////////////////////////////////////////////////////////////////////////
-// Fenster CACEdit 
+// Fenster CACEdit
 #include "ACListWnd.h"
 
 
@@ -92,7 +92,7 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnCloseList();
 	//}}AFX_MSG
-	
+
 	afx_msg LRESULT OnUpdateFromList(WPARAM lParam, LPARAM wParam);
 	DECLARE_MESSAGE_MAP()
 

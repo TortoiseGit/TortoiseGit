@@ -10,8 +10,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static UINT auIDStatusBar[] = 
-{ 
+static UINT auIDStatusBar[] =
+{
 	ID_SEPARATOR
 };
 
@@ -57,7 +57,7 @@ CACListWnd::~CACListWnd()
 
 /*********************************************************************/
 
-void CACListWnd::OnActivateApp(BOOL bActive, DWORD dwThreadID) 
+void CACListWnd::OnActivateApp(BOOL bActive, DWORD dwThreadID)
 {
 #if (_MSC_VER >= 1300)
 	CWnd::OnActivateApp(bActive, dwThreadID);  //vc7    FIX 1.2
@@ -93,7 +93,7 @@ END_MESSAGE_MAP()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Behandlungsroutinen für Nachrichten CACListWnd 
+// Behandlungsroutinen für Nachrichten CACListWnd
 
 void CACListWnd::DrawItem(CDC* pDC,long m_lItem,long width)
 {
@@ -115,13 +115,13 @@ void CACListWnd::DrawItem(CDC* pDC,long m_lItem,long width)
 	else
 		m_DisplayStr = m_DisplayList.GetAt(m_lItem);
 
-	pDC->DrawText(m_DisplayStr, -1, rcLabel, DT_LEFT | DT_SINGLELINE | 
+	pDC->DrawText(m_DisplayStr, -1, rcLabel, DT_LEFT | DT_SINGLELINE |
 		DT_NOPREFIX | DT_VCENTER | DT_END_ELLIPSIS);
 }
 
 /*********************************************************************/
 
-void CACListWnd::OnPaint() 
+void CACListWnd::OnPaint()
 {
 	CPaintDC dc(this);
 	CRect rcWnd,m_rect, rc;
@@ -147,7 +147,7 @@ void CACListWnd::OnPaint()
 	long width = rcWnd.Width() - ScrollBarWidth();
 
 	MemDC.FillSolidRect(rcWnd,::GetSysColor(COLOR_WINDOW));
-	MemDC.SelectObject(GetStockObject(DEFAULT_GUI_FONT)); 
+	MemDC.SelectObject(GetStockObject(DEFAULT_GUI_FONT));
 	MemDC.SetBkMode(TRANSPARENT);
 
 	for(i = m_lTopIndex; i < m_lCount;i++)
@@ -238,14 +238,14 @@ void CACListWnd::SetScroller()
 		rcBar.top = rcWnd.bottom-20;
 		rcBar.bottom = rcWnd.bottom;
 
-		m_VertBar.SetScrollPos(m_lTopIndex,true);	
-	}	
+		m_VertBar.SetScrollPos(m_lTopIndex,true);
+	}
 
 }
 
 /*********************************************************************/
 
-void CACListWnd::OnSize(UINT nType, int cx, int cy) 
+void CACListWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CWnd::OnSize(nType, cx, cy);
 	SetScroller();
@@ -303,14 +303,14 @@ void CACListWnd::SetProp()
 
 /*********************************************************************/
 
-BOOL CACListWnd::OnEraseBkgnd(CDC* /*pDC*/) 
+BOOL CACListWnd::OnEraseBkgnd(CDC* /*pDC*/)
 {
 	return false;
 }
 
 /*********************************************************************/
 
-void CACListWnd::OnNcPaint() 
+void CACListWnd::OnNcPaint()
 {
 	CWindowDC dc(this);
 	CRect rectClient, rectWindow,rcWnd;
@@ -329,17 +329,17 @@ void CACListWnd::OnNcPaint()
 
 /*********************************************************************/
 
-void CACListWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CACListWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 
-	if (nChar == VK_ESCAPE) 
+	if (nChar == VK_ESCAPE)
 		ShowWindow(false);
 }
 
 /*********************************************************************/
 
-void CACListWnd::OnNcCalcSize(BOOL /*bCalcValidRects*/, NCCALCSIZE_PARAMS FAR* lpncsp) 
+void CACListWnd::OnNcCalcSize(BOOL /*bCalcValidRects*/, NCCALCSIZE_PARAMS FAR* lpncsp)
 {
 	::InflateRect(lpncsp->rgrc,
 		-GetSystemMetrics(SM_CXBORDER), -GetSystemMetrics(SM_CYBORDER));
@@ -369,7 +369,7 @@ int CACListWnd::HitTest(CPoint point)
 
 /*********************************************************************/
 
-LRESULT CACListWnd::OnNcHitTest(CPoint point) 
+LRESULT CACListWnd::OnNcHitTest(CPoint point)
 {
 	CRect rectClient;
 	GetWindowRect(rectClient);
@@ -385,7 +385,7 @@ LRESULT CACListWnd::OnNcHitTest(CPoint point)
 
 /*********************************************************************/
 
-void CACListWnd::OnLButtonDown(UINT nFlags, CPoint point) 
+void CACListWnd::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CWnd::OnLButtonDown(nFlags, point);
 	int sel = HitTest(point);
@@ -411,7 +411,7 @@ void CACListWnd::OnLButtonDown(UINT nFlags, CPoint point)
 
 /*********************************************************************/
 
-void CACListWnd::OnRButtonDown(UINT nFlags, CPoint point) 
+void CACListWnd::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	CWnd::OnRButtonDown(nFlags, point);
 	ShowWindow(false);
@@ -419,7 +419,7 @@ void CACListWnd::OnRButtonDown(UINT nFlags, CPoint point)
 
 /*********************************************************************/
 
-BOOL CACListWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CACListWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	CRect rectClient;
 	CPoint ptCursor;
@@ -440,7 +440,7 @@ BOOL CACListWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	}
 
 	::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
-	return TRUE;		
+	return TRUE;
 }
 
 /*********************************************************************/
@@ -628,22 +628,22 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 
 		if(!m_LastSize.IsRectEmpty())
 		{
-			iWight = m_LastSize.Width(); 
-			iHeight = m_LastSize.Height(); 
+			iWight = m_LastSize.Width();
+			iHeight = m_LastSize.Height();
 			rcWnd.top += rcWnd.Height();
 			rcWnd.right = rcWnd.left+iWight;
 			rcWnd.bottom = rcWnd.top+iHeight;
 
 			SetWindowPos(&CWnd::wndTopMost, rcWnd.left,
 				rcWnd.top,
-				rcWnd.Width(), 
+				rcWnd.Width(),
 				rcWnd.Height(), 0);
 		}
 		else
 		{
 			SetWindowPos(&CWnd::wndTopMost, rcWnd.left,
-				rcWnd.top + rcWnd.Height(), 
-				rcWnd.Width(), 
+				rcWnd.top + rcWnd.Height(),
+				rcWnd.Width(),
 				iHeight, 0);
 		}
 
@@ -657,7 +657,7 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 		ShowWindow(false);
 	}
 
-	return 1;	
+	return 1;
 }
 
 /*********************************************************************/
@@ -681,7 +681,7 @@ bool CACListWnd::GetText(int item, CString& m_Text)
 
 /*********************************************************************/
 
-void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	if(bShow)
 	{
@@ -703,11 +703,11 @@ void CACListWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 
 /*********************************************************************/
 
-void CACListWnd::OnNcLButtonDown(UINT nHitTest, CPoint point) 
+void CACListWnd::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
 
 	if(OnNcHitTest(point) == HTBOTTOMRIGHT)
-		GetWindowRect(m_LastSize);	
+		GetWindowRect(m_LastSize);
 	CWnd::OnNcLButtonDown(nHitTest, point);
 }
 
@@ -729,7 +729,7 @@ CString CACListWnd::GetString()
 
 /*********************************************************************/
 
-void CACListWnd::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CACListWnd::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	CWnd::OnVScroll(nSBCode, nPos, pScrollBar);
 	long m_oldlTopIndex = m_lTopIndex;
@@ -823,7 +823,7 @@ CString CACListWnd::GetNextString(int nChar)
 
 /*********************************************************************/
 
-void CACListWnd::OnMouseMove(UINT nFlags, CPoint point) 
+void CACListWnd::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CWnd::OnMouseMove(nFlags, point);
 	int sel = HitTest(point);
@@ -835,7 +835,7 @@ void CACListWnd::OnMouseMove(UINT nFlags, CPoint point)
 
 /*********************************************************************/
 
-void CACListWnd::OnTimer(UINT_PTR nIDEvent) 
+void CACListWnd::OnTimer(UINT_PTR nIDEvent)
 {
 	CWnd::OnTimer(nIDEvent);
 
@@ -847,7 +847,7 @@ void CACListWnd::OnTimer(UINT_PTR nIDEvent)
 
 /*********************************************************************/
 
-void CACListWnd::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI) 
+void CACListWnd::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
 	if(GetSafeHwnd())
 	{
@@ -865,14 +865,14 @@ void CACListWnd::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 
 
 		// Vers. 1.2
-		if(m_pEditParent != NULL) 
+		if(m_pEditParent != NULL)
 		{
 			RECT rc;
 			m_pEditParent->GetWindowRect (&rc);
 			lpMMI->ptMinTrackSize.x = rc.right - rc.left;
 		}
 	}
-	else	
+	else
 		CWnd::OnGetMinMaxInfo(lpMMI);
 }
 

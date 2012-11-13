@@ -64,7 +64,7 @@ public:
 /**
  * \ingroup TGitCache
  * A structure passed as a request from the shell (or other client) to the external cache
- */ 
+ */
 struct TGITCacheRequest
 {
 	DWORD flags;

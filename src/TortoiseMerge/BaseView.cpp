@@ -99,13 +99,13 @@ CBaseView::CBaseView()
 	{
 		m_apFonts[i] = NULL;
 	}
-	m_hConflictedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDLINE), 
+	m_hConflictedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDLINE),
 									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	m_hConflictedIgnoredIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDIGNOREDLINE), 
+	m_hConflictedIgnoredIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_CONFLICTEDIGNOREDLINE),
 									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	m_hRemovedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_REMOVEDLINE), 
+	m_hRemovedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_REMOVEDLINE),
 									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	m_hAddedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ADDEDLINE), 
+	m_hAddedIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_ADDEDLINE),
 									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	m_hWhitespaceBlockIcon = (HICON)::LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_WHITESPACELINE),
 									IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
@@ -366,14 +366,14 @@ void CBaseView::UpdateStatusBar()
 	}
 }
 
-BOOL CBaseView::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CBaseView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!CView::PreCreateWindow(cs))
 		return FALSE;
 
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
+	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS,
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
 
 	CWnd *pParentWnd = CWnd::FromHandlePermanent(cs.hwndParent);
@@ -448,7 +448,7 @@ int CBaseView::GetScreenChars()
 	return m_nScreenChars;
 }
 
-int CBaseView::GetAllMinScreenChars() const 
+int CBaseView::GetAllMinScreenChars() const
 {
 	int nChars = 0;
 	if (IsLeftViewGood())
@@ -460,7 +460,7 @@ int CBaseView::GetAllMinScreenChars() const
 	return nChars;
 }
 
-int CBaseView::GetAllMaxLineLength() const 
+int CBaseView::GetAllMaxLineLength() const
 {
 	int nLength = 0;
 	if (IsLeftViewGood())
@@ -562,7 +562,7 @@ CString CBaseView::GetWhitespaceBlock(CViewData *viewData, int nLineIndex)
 {
 	enum { MAX_WHITESPACEBLOCK_SIZE	= 8 };
 	ASSERT(viewData);
-	
+
 	DiffStates origstate = viewData->GetState(nLineIndex);
 
 	// Go back and forward at most MAX_WHITESPACEBLOCK_SIZE lines to see where this block ends
@@ -588,7 +588,7 @@ CString CBaseView::GetWhitespaceBlock(CViewData *viewData, int nLineIndex)
 		else
 			break;
 	}
-	
+
 	CString block;
 	for (int i = nStartBlock; i <= nEndBlock; ++i)
 		block += viewData->GetLine(i);
@@ -610,7 +610,7 @@ bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical)
 	CString mine = GetWhitespaceBlock(m_pViewData, nLineIndex);
 	CString other = GetWhitespaceBlock(m_pOtherViewData, min(nLineIndex, m_pOtherViewData->GetCount() - 1));
 	bIdentical = mine == other;
-	
+
 	mine.Remove(' ');
 	mine.Remove('\t');
 	mine.Remove('\r');
@@ -619,7 +619,7 @@ bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical)
 	other.Remove('\t');
 	other.Remove('\r');
 	other.Remove('\n');
-	
+
 	return (mine == other) && (!mine.IsEmpty());
 }
 
@@ -708,7 +708,7 @@ void CBaseView::RecalcVertScrollBar(BOOL bPositionOnly /*= FALSE*/)
 	VERIFY(SetScrollInfo(SB_VERT, &si));
 }
 
-void CBaseView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CBaseView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	CView::OnVScroll(nSBCode, nPos, pScrollBar);
 	if (m_pwndLeft)
@@ -833,7 +833,7 @@ void CBaseView::RecalcHorzScrollBar(BOOL bPositionOnly /*= FALSE*/)
 	VERIFY(SetScrollInfo(SB_HORZ, &si));
 }
 
-void CBaseView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CBaseView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	CView::OnHScroll(nSBCode, nPos, pScrollBar);
 	if (m_pwndLeft)
@@ -846,7 +846,7 @@ void CBaseView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		m_pwndLocator->Invalidate();
 }
 
-void CBaseView::OnDoHScroll(UINT nSBCode, UINT /*nPos*/, CScrollBar* /*pScrollBar*/, CBaseView * master) 
+void CBaseView::OnDoHScroll(UINT nSBCode, UINT /*nPos*/, CScrollBar* /*pScrollBar*/, CBaseView * master)
 {
 	SCROLLINFO si;
 	si.cbSize = sizeof(si);
@@ -1086,7 +1086,7 @@ void CBaseView::DrawHeader(CDC *pdc, const CRect &rect)
 
 		sViewTitle = m_sWindowName.Mid(offset);
 	}
-	pdc->ExtTextOut(max(rect.left + (rect.Width()-nStringLength)/2, 1), 
+	pdc->ExtTextOut(max(rect.left + (rect.Width()-nStringLength)/2, 1),
 		rect.top+(HEADERHEIGHT/2), ETO_CLIPPED, textrect, sViewTitle, NULL);
 	if (this->GetFocus() == this)
 		pdc->DrawEdge(textrect, EDGE_BUMP, BF_RECT);
@@ -1098,7 +1098,7 @@ void CBaseView::OnDraw(CDC * pDC)
 {
 	CRect rcClient;
 	GetClientRect(rcClient);
-	
+
 	int nLineCount = GetLineCount();
 	int nLineHeight = GetLineHeight();
 
@@ -1112,7 +1112,7 @@ void CBaseView::OnDraw(CDC * pDC)
 	CBitmap *pOldBitmap = cacheDC.SelectObject(m_pCacheBitmap);
 
 	DrawHeader(pDC, rcClient);
-	
+
 	CRect rcLine;
 	rcLine = rcClient;
 	rcLine.top += nLineHeight+HEADERHEIGHT;
@@ -1278,7 +1278,7 @@ void CBaseView::DrawLineEnding(CDC *pDC, const CRect &rc, int nLineIndex, const 
 			break;
 		}
 		pDC->SelectObject(oldpen);
-	}	
+	}
 }
 
 void CBaseView::DrawBlockLine(CDC *pDC, const CRect &rc, int nLineIndex)
@@ -1288,7 +1288,7 @@ void CBaseView::DrawBlockLine(CDC *pDC, const CRect &rc, int nLineIndex)
 	if ((nLineIndex == m_nSelBlockStart) && m_bShowSelection)
 	{
 		pDC->FillSolidRect(rc.left, rc.top, rc.Width(), THICKNESS, rectcol);
-	}		
+	}
 	if ((nLineIndex == m_nSelBlockEnd) && m_bShowSelection)
 	{
 		pDC->FillSolidRect(rc.left, rc.bottom - THICKNESS, rc.Width(), THICKNESS, rectcol);
@@ -1300,10 +1300,10 @@ void CBaseView::DrawText(
 {
 	ASSERT(m_pViewData && (nLineIndex < m_pViewData->GetCount()));
 	DiffStates diffState = m_pViewData->GetState(nLineIndex);
-	
+
 	// first suppose the whole line is selected
 	int selectedStart = 0, selectedEnd = textlength;
-	
+
 	if ((m_ptSelectionStartPos.y > nLineIndex) || (m_ptSelectionEndPos.y < nLineIndex)
 		|| ! m_bShowSelection)
 	{
@@ -1937,11 +1937,11 @@ void CBaseView::SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfC
 	if (nCenterPos >= m_pViewData->GetCount())
 		nCenterPos = m_pViewData->GetCount()-1;
 
-	if (bSkipEndOfCurrentBlock) 
+	if (bSkipEndOfCurrentBlock)
 	{
 		// Find end of current block
 		DiffStates state = m_pViewData->GetState(nCenterPos);
-		while ((nCenterPos != nLimit) && 
+		while ((nCenterPos != nLimit) &&
 		       (m_pViewData->GetState(nCenterPos)==state))
 			nCenterPos += nDirection;
 	}
@@ -1967,7 +1967,7 @@ void CBaseView::SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfC
 	// Find end of new block
 	DiffStates state = m_pViewData->GetState(nCenterPos);
 	int nBlockEnd = nCenterPos;
-	while ((nBlockEnd != nLimit) &&  
+	while ((nBlockEnd != nLimit) &&
 			 (state == m_pViewData->GetState(nBlockEnd + nDirection)))
 		nBlockEnd += nDirection;
 
@@ -2017,7 +2017,7 @@ BOOL CBaseView::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else
 		return FALSE;
-	
+
 	*pResult = 0;
 	if (strTipText.IsEmpty())
 		return TRUE;
@@ -2321,7 +2321,7 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	if (!m_bMouseWithin)
-	{ 
+	{
 		m_bMouseWithin = TRUE;
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
@@ -2905,14 +2905,14 @@ void CBaseView::PasteText()
 	{
 		LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 		sClipboardText = CString(lpstr);
-		GlobalUnlock(hglb); 
+		GlobalUnlock(hglb);
 	}
 	hglb = GetClipboardData(CF_UNICODETEXT);
 	if (hglb)
 	{
 		LPCTSTR lpstr = (LPCTSTR)GlobalLock(hglb);
 		sClipboardText = lpstr;
-		GlobalUnlock(hglb); 
+		GlobalUnlock(hglb);
 	}
 	CloseClipboard();
 
@@ -3092,14 +3092,14 @@ void CBaseView::ClearSelection()
 
 void CBaseView::AdjustSelection()
 {
-	if ((m_ptCaretPos.y < m_ptSelectionOrigin.y) || 
+	if ((m_ptCaretPos.y < m_ptSelectionOrigin.y) ||
 		(m_ptCaretPos.y == m_ptSelectionOrigin.y && m_ptCaretPos.x <= m_ptSelectionOrigin.x))
 	{
 		m_ptSelectionStartPos = m_ptCaretPos;
 		m_ptSelectionEndPos = m_ptSelectionOrigin;
 	}
 
-	if ((m_ptCaretPos.y > m_ptSelectionOrigin.y) || 
+	if ((m_ptCaretPos.y > m_ptSelectionOrigin.y) ||
 		(m_ptCaretPos.y == m_ptSelectionOrigin.y && m_ptCaretPos.x >= m_ptSelectionOrigin.x))
 	{
 		m_ptSelectionStartPos = m_ptSelectionOrigin;

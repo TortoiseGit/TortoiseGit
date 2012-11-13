@@ -69,25 +69,25 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 
 	BITMAPINFO bi;
     bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
-    bi.bmiHeader.biWidth         = iWidth; 
-    bi.bmiHeader.biHeight        = iHeight; 
-    bi.bmiHeader.biPlanes        = 1; 
-    bi.bmiHeader.biBitCount      = 32; 
-    bi.bmiHeader.biCompression   = BI_RGB; 
-    bi.bmiHeader.biSizeImage     = 0; 
-    bi.bmiHeader.biXPelsPerMeter = 0; 
-    bi.bmiHeader.biYPelsPerMeter = 0; 
-    bi.bmiHeader.biClrUsed       = 0; 
-    bi.bmiHeader.biClrImportant  = 0; 
-	
-	
+    bi.bmiHeader.biWidth         = iWidth;
+    bi.bmiHeader.biHeight        = iHeight;
+    bi.bmiHeader.biPlanes        = 1;
+    bi.bmiHeader.biBitCount      = 32;
+    bi.bmiHeader.biCompression   = BI_RGB;
+    bi.bmiHeader.biSizeImage     = 0;
+    bi.bmiHeader.biXPelsPerMeter = 0;
+    bi.bmiHeader.biYPelsPerMeter = 0;
+    bi.bmiHeader.biClrUsed       = 0;
+    bi.bmiHeader.biClrImportant  = 0;
+
+
 	SetBitmap(&bi, pBits);
 
 	DWORD* pAr = (DWORD*)GetDIBits();
 
 	// Copy data into the 32 bit dib..
 	for(int i=0;i<iHeight;i++)
-	{	
+	{
 		for(int j=0;j<iWidth;j++)
 		{
 			pAr[(i*iWidth)+j] = FixColorRef(tempDC.GetPixel(j,i));
@@ -111,7 +111,7 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
     memcpy(&m_BMinfo, lpBitmapInfo, dwBitmapInfoSize);
 
     hDC = ::GetDC(NULL);
-    if (!hDC) 
+    if (!hDC)
 	{
 		DeleteObject();
 		return FALSE;
@@ -129,7 +129,7 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
     DWORD dwImageSize = m_BMinfo.bmiHeader.biSizeImage;
     if (dwImageSize == 0)
     {
-        int nBytesPerLine = BytesPerLine(lpBitmapInfo->bmiHeader.biWidth, 
+        int nBytesPerLine = BytesPerLine(lpBitmapInfo->bmiHeader.biWidth,
                                             lpBitmapInfo->bmiHeader.biBitCount);
         dwImageSize = nBytesPerLine * lpBitmapInfo->bmiHeader.biHeight;
     }
@@ -141,8 +141,8 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
     return TRUE;
 }
 
-BOOL CDib::Draw(CDC* pDC, CPoint ptDest) 
-{ 
+BOOL CDib::Draw(CDC* pDC, CPoint ptDest)
+{
     if (!m_hBitmap)
         return FALSE;
 
@@ -151,13 +151,13 @@ BOOL CDib::Draw(CDC* pDC, CPoint ptDest)
 
     BOOL resVal = FALSE;
 
-    resVal = SetDIBitsToDevice(pDC->GetSafeHdc(), 
-                                ptDest.x, ptDest.y, 
+    resVal = SetDIBitsToDevice(pDC->GetSafeHdc(),
+                                ptDest.x, ptDest.y,
                                 size.cx, size.cy,
                                 SrcOrigin.x, SrcOrigin.y,
-                                SrcOrigin.y, size.cy - SrcOrigin.y, 
-                                GetDIBits(), &m_BMinfo, 
-                                DIB_RGB_COLORS); 
+                                SrcOrigin.y, size.cy - SrcOrigin.y,
+                                GetDIBits(), &m_BMinfo,
+                                DIB_RGB_COLORS);
 
     return resVal;
 }

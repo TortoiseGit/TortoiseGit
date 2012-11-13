@@ -100,7 +100,7 @@ public:
 				result = SortStrCmp(pLeft->m_sName, pRight->m_sName);
 		}
 
-		if (m_desc) 
+		if (m_desc)
 			result = -result;
 
 		if (pLeft->m_bFolder != pRight->m_bFolder)
@@ -314,7 +314,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		if (entry == NULL)
 			continue;
 		int mode = git_tree_entry_filemode(entry);
-		
+
 		CString base = CUnicodeUtils::GetUnicode(git_tree_entry_name(entry), CP_UTF8);
 
 		git_object *object = NULL;
@@ -340,7 +340,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 			tvinsert.itemex.iSelectedImage = m_nOpenIconFolder;
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
-				
+
 			ReadTreeRecursive(repo, (git_tree*)object, pNextTree);
 		}
 		else
@@ -351,7 +351,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 			git_blob_lookup(&blob, &repo, oid);
 			if (blob == NULL)
 				continue;
-	
+
 			pNextTree->m_iSize = git_blob_rawsize(blob);
 			git_blob_free(blob);
 		}
@@ -998,7 +998,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
 }
 bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 {
-	CString cmd, out;	
+	CString cmd, out;
 	cmd.Format(_T("git.exe checkout %s -- \"%s\""), m_sRevision, path);
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 	{

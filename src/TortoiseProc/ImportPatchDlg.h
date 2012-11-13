@@ -46,7 +46,7 @@ public:
 
 	volatile LONG		m_bExitThread;
 	volatile LONG 		m_bThreadRunning;
-	
+
 	CWinThread*			m_LoadingThread;
 
 	static UINT ThreadEntry(LPVOID pVoid)
@@ -77,7 +77,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	
+
 	CMFCTabCtrl m_ctrlTabCtrl;
 
 	CSciEdit	m_PatchCtrl;

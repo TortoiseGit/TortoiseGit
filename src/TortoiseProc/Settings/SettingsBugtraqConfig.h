@@ -2,7 +2,7 @@
 
 #include "SettingsPropPage.h"
 #include "RegexEdit.h"
-// CSettingsBugtraqConfig dialog 
+// CSettingsBugtraqConfig dialog
 
 class CSettingsBugtraqConfig : public ISettingsPropPage
 {

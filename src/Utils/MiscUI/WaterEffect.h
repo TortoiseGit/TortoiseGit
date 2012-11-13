@@ -22,7 +22,7 @@
 
 /**
  * \ingroup Utils
- * 
+ *
  * Provides a water effect on a picture. To do that the class needs
  * the picture as an array of pixels. See CDIB class for information
  * of that format.
@@ -61,13 +61,13 @@
  * 	r.top = 20;
  * 	r.right = r.left + m_renderSrc.GetWidth();
  * 	r.bottom = r.top + m_renderSrc.GetHeight();
- * 
+ *
  * 	if(r.PtInRect(point) == TRUE)
  * 	{
  * 		// dibs are drawn upside down...
  * 		point.y -= 20;
  * 		point.y = 167-point.y;
- * 
+ *
  * 		if (nFlags & MK_LBUTTON)
  * 			m_waterEffect.Blob(point.x -15,point.y,5,80,m_waterEffect.m_iHpage);
  * 		else
@@ -77,7 +77,7 @@
  * }
  * \endcode
  */
-class CWaterEffect  
+class CWaterEffect
 {
 public:
 	CWaterEffect();
@@ -103,7 +103,7 @@ public:
 	 * \param y the y coordinate of the blob position
 	 * \param radius the radius in pixels the blob (or drop) should have
 	 * \param height the height of the blob, i.e. how deep it will enter the water
-	 * \param page which of the two buffers to use. 
+	 * \param page which of the two buffers to use.
 	 * \remark since DIB's are drawn upside down the y coordinate has to be 'flipped', i.e. subtract the
 	 * height of the picture from the real y coordinate first.
 	 */

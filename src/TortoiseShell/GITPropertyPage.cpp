@@ -402,7 +402,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 
 				if (git_commit_tree(&tree, commit2))
 					throw "git_commit_tree 2";
-				
+
 				git_commit_free(commit2);
 				memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
 				int ret = git_tree_walk(tree, TreewalkCB_FindFileRecentCommit, GIT_TREEWALK_PRE, &treewalkstruct2);
@@ -433,7 +433,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 			commit2 = NULL;
 		}
 	}
-	
+
 	git_revwalk_free(walk);
 	return commit;
 }

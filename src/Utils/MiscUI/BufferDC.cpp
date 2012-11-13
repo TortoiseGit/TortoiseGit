@@ -47,7 +47,7 @@ void CBufferDC::Flush()
 	::BitBlt(
 		m_hOutputDC,
 		m_ClientRect.left, m_ClientRect.top,
-		m_ClientRect.right  - m_ClientRect.left, 
+		m_ClientRect.right  - m_ClientRect.left,
 		m_ClientRect.bottom - m_ClientRect.top,
 		m_hMemoryDC,
 		0, 0,
@@ -66,18 +66,18 @@ UINT CBufferDC::SetBoundsRect( LPCRECT lpRectBounds, UINT flags )
 
 		HBITMAP bmp =
 			::CreateCompatibleBitmap(
-					m_hOutputDC, 
-					lpRectBounds->right - lpRectBounds->left, 
+					m_hOutputDC,
+					lpRectBounds->right - lpRectBounds->left,
 					lpRectBounds->bottom - lpRectBounds->top);
 
 		HDC tmpDC  = ::CreateCompatibleDC(m_hOutputDC);
-		
+
 		HBITMAP oldBmp = (HBITMAP)::SelectObject(tmpDC, bmp);
 
 		::BitBlt(
 			tmpDC,
 			m_ClientRect.left, m_ClientRect.top,
-			m_ClientRect.right  - m_ClientRect.left, 
+			m_ClientRect.right  - m_ClientRect.left,
 			m_ClientRect.bottom - m_ClientRect.top,
 			m_hMemoryDC,
 			0, 0,

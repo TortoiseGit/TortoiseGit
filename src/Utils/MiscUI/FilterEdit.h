@@ -36,7 +36,7 @@ public:
  * \ingroup Utils
  * Filter edit control.
  * An edit control with a 'close' button on the right which clears the text
- * in the control, and an info button on the left (optional) where a context 
+ * in the control, and an info button on the left (optional) where a context
  * menu or other selection window can be shown.
  * \image html "filterEdit.jpg"
  *
@@ -75,7 +75,7 @@ public:
 	 * the normal state, the second one when the button is pressed.
 	 * if \c bShowAlways is true, then the cancel button is shown even if there
 	 * is no text in the control.
-	 * \note To catch the WM_FILTEREDIT_CANCELCLICKED notification, handle the message directly (or use the 
+	 * \note To catch the WM_FILTEREDIT_CANCELCLICKED notification, handle the message directly (or use the
 	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
 	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
 	 */
@@ -87,7 +87,7 @@ public:
 	 * The notification is either WM_FILTEREDIT_INFOCLICKED or the one
 	 * set with SetButtonClickedMessageId().
 	 *
-	 * To catch the notification, handle the message directly (or use the 
+	 * To catch the notification, handle the message directly (or use the
 	 * WM_MESSAGE() macro). The LPARAM parameter of the message contains the
 	 * rectangle (pointer to RECT) of the info icon in screen coordinates.
 	 */

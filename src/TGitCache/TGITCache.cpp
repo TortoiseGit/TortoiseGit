@@ -48,13 +48,13 @@
 
 CCrashReportTGit crasher(L"TGitCache " _T(APP_X64_STRING));
 
-DWORD WINAPI 		InstanceThread(LPVOID); 
+DWORD WINAPI 		InstanceThread(LPVOID);
 DWORD WINAPI		PipeThread(LPVOID);
 DWORD WINAPI		CommandWaitThread(LPVOID);
 DWORD WINAPI		CommandThread(LPVOID);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 bool				bRun = true;
-NOTIFYICONDATA		niData; 
+NOTIFYICONDATA		niData;
 HWND				hWnd;
 HWND				hTrayWnd;
 TCHAR				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
@@ -68,9 +68,9 @@ volatile LONG		nThreadCount = 0;
 void DebugOutputLastError()
 {
 	LPVOID lpMsgBuf;
-	if (!FormatMessage( 
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-		FORMAT_MESSAGE_FROM_SYSTEM | 
+	if (!FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL,
 		GetLastError(),
@@ -107,14 +107,14 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	CGitStatusCache::Instance().Init();
 
 	SecureZeroMemory(szCurrentCrawledPath, sizeof(szCurrentCrawledPath));
-	
-	DWORD dwThreadId; 
+
+	DWORD dwThreadId;
 	MSG msg;
 	TCHAR szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
 
 	// create a hidden window to receive window messages.
 	WNDCLASSEX wcex;
-	wcex.cbSize = sizeof(WNDCLASSEX); 
+	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= (WNDPROC)WndProc;
 	wcex.cbClsExtra		= 0;
@@ -145,7 +145,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 			niData.cbSize = sizeof(NOTIFYICONDATA);
 		else if (dwVersion >= PACKVERSION(5,0))
 			niData.cbSize = NOTIFYICONDATA_V2_SIZE;
-		else 
+		else
 			niData.cbSize = NOTIFYICONDATA_V1_SIZE;
 
 		niData.uID = TRAY_ID;		// own tray icon ID
@@ -170,15 +170,15 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 		if(niData.hIcon && DestroyIcon(niData.hIcon))
 			niData.hIcon = NULL;
 	}
-	
-	// Create a thread which waits for incoming pipe connections 
-	CAutoGeneralHandle hPipeThread = CreateThread( 
-		NULL,              // no security attribute 
-		0,                 // default stack size 
-		PipeThread, 
-		(LPVOID) &bRun,    // thread parameter 
-		0,                 // not suspended 
-		&dwThreadId);      // returns thread ID 
+
+	// Create a thread which waits for incoming pipe connections
+	CAutoGeneralHandle hPipeThread = CreateThread(
+		NULL,              // no security attribute
+		0,                 // default stack size
+		PipeThread,
+		(LPVOID) &bRun,    // thread parameter
+		0,                 // not suspended
+		&dwThreadId);      // returns thread ID
 
 	if (!hPipeThread)
 	{
@@ -188,14 +188,14 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	}
 	else hPipeThread.CloseHandle();
 
-	// Create a thread which waits for incoming pipe connections 
-	CAutoGeneralHandle hCommandWaitThread = CreateThread( 
-		NULL,              // no security attribute 
-		0,                 // default stack size 
-		CommandWaitThread, 
-		(LPVOID) &bRun,    // thread parameter 
-		0,                 // not suspended 
-		&dwThreadId);      // returns thread ID 
+	// Create a thread which waits for incoming pipe connections
+	CAutoGeneralHandle hCommandWaitThread = CreateThread(
+		NULL,              // no security attribute
+		0,                 // default stack size
+		CommandWaitThread,
+		(LPVOID) &bRun,    // thread parameter
+		0,                 // not suspended
+		&dwThreadId);      // returns thread ID
 
 	if (!hCommandWaitThread)
 	{
@@ -226,7 +226,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message) 
+	switch (message)
 	{
 	case TRAY_CALLBACK:
 	{
@@ -242,7 +242,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				CString sInfoTip;
 				NOTIFYICONDATA SystemTray;
-				sInfoTip.Format(_T("Cached Directories : %ld\nWatched paths : %ld"), 
+				sInfoTip.Format(_T("Cached Directories : %ld\nWatched paths : %ld"),
 					CGitStatusCache::Instance().GetCacheSize(),
 					CGitStatusCache::Instance().GetNumberOfWatchedPaths());
 
@@ -299,12 +299,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)_tcslen(szCurrentCrawledPath[i]));
 				line++;
 			}
-			
-			
+
 			SelectObject(hdc,oldbrush);
-			EndPaint(hWnd, &ps); 
+			EndPaint(hWnd, &ps);
 			DeleteObject(background);
-			return 0L; 
+			return 0L;
 		}
 		break;
 	case WM_COMMAND:
@@ -450,26 +449,26 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 {
 	ATLTRACE("PipeThread started\n");
 	bool * bRun = (bool *)lpvParam;
-	// The main loop creates an instance of the named pipe and 
-	// then waits for a client to connect to it. When the client 
-	// connects, a thread is created to handle communications 
-	// with that client, and the loop is repeated. 
-	DWORD dwThreadId; 
+	// The main loop creates an instance of the named pipe and
+	// then waits for a client to connect to it. When the client
+	// connects, a thread is created to handle communications
+	// with that client, and the loop is repeated.
+	DWORD dwThreadId;
 	BOOL fConnected;
 	CAutoFile hPipe;
 
-	while (*bRun) 
-	{ 
-		hPipe = CreateNamedPipe( 
+	while (*bRun)
+	{
+		hPipe = CreateNamedPipe(
 			GetCachePipeName(),
-			PIPE_ACCESS_DUPLEX,       // read/write access 
-			PIPE_TYPE_MESSAGE |       // message type pipe 
-			PIPE_READMODE_MESSAGE |   // message-read mode 
-			PIPE_WAIT,                // blocking mode 
-			PIPE_UNLIMITED_INSTANCES, // max. instances  
-			BUFSIZE,                  // output buffer size 
-			BUFSIZE,                  // input buffer size 
-			NMPWAIT_USE_DEFAULT_WAIT, // client time-out 
+			PIPE_ACCESS_DUPLEX,       // read/write access
+			PIPE_TYPE_MESSAGE |       // message type pipe
+			PIPE_READMODE_MESSAGE |   // message-read mode
+			PIPE_WAIT,                // blocking mode
+			PIPE_UNLIMITED_INSTANCES, // max. instances
+			BUFSIZE,                  // output buffer size
+			BUFSIZE,                  // input buffer size
+			NMPWAIT_USE_DEFAULT_WAIT, // client time-out
 			NULL);					  // NULL DACL
 
 		if (!hPipe)
@@ -481,20 +480,20 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 			continue; // never leave the thread!
 		}
 
-		// Wait for the client to connect; if it succeeds, 
-		// the function returns a nonzero value. If the function returns 
-		// zero, GetLastError returns ERROR_PIPE_CONNECTED. 
-		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED); 
-		if (fConnected) 
-		{ 
-			// Create a thread for this client. 
-			CAutoGeneralHandle hInstanceThread = CreateThread( 
-				NULL,              // no security attribute 
-				0,                 // default stack size 
-				InstanceThread, 
-				(HANDLE) hPipe,    // thread parameter 
-				0,                 // not suspended 
-				&dwThreadId);      // returns thread ID 
+		// Wait for the client to connect; if it succeeds,
+		// the function returns a nonzero value. If the function returns
+		// zero, GetLastError returns ERROR_PIPE_CONNECTED.
+		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		if (fConnected)
+		{
+			// Create a thread for this client.
+			CAutoGeneralHandle hInstanceThread = CreateThread(
+				NULL,              // no security attribute
+				0,                 // default stack size
+				InstanceThread,
+				(HANDLE) hPipe,    // thread parameter
+				0,                 // not suspended
+				&dwThreadId);      // returns thread ID
 
 			if (!hInstanceThread)
 			{
@@ -512,7 +511,7 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 		}
 		else
 		{
-			// The client could not connect, so close the pipe. 
+			// The client could not connect, so close the pipe.
 			//OutputDebugStringA("TSVNCache: ConnectNamedPipe failed\n");
 			//DebugOutputLastError();
 			hPipe.CloseHandle();
@@ -529,26 +528,26 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 {
 	ATLTRACE("CommandWaitThread started\n");
 	bool * bRun = (bool *)lpvParam;
-	// The main loop creates an instance of the named pipe and 
-	// then waits for a client to connect to it. When the client 
-	// connects, a thread is created to handle communications 
-	// with that client, and the loop is repeated. 
-	DWORD dwThreadId; 
+	// The main loop creates an instance of the named pipe and
+	// then waits for a client to connect to it. When the client
+	// connects, a thread is created to handle communications
+	// with that client, and the loop is repeated.
+	DWORD dwThreadId;
 	BOOL fConnected;
 	CAutoFile hPipe;
 
-	while (*bRun) 
-	{ 
-		hPipe = CreateNamedPipe( 
+	while (*bRun)
+	{
+		hPipe = CreateNamedPipe(
 			GetCacheCommandPipeName(),
-			PIPE_ACCESS_DUPLEX,       // read/write access 
-			PIPE_TYPE_MESSAGE |       // message type pipe 
-			PIPE_READMODE_MESSAGE |   // message-read mode 
-			PIPE_WAIT,                // blocking mode 
-			PIPE_UNLIMITED_INSTANCES, // max. instances  
-			BUFSIZE,                  // output buffer size 
-			BUFSIZE,                  // input buffer size 
-			NMPWAIT_USE_DEFAULT_WAIT, // client time-out 
+			PIPE_ACCESS_DUPLEX,       // read/write access
+			PIPE_TYPE_MESSAGE |       // message type pipe
+			PIPE_READMODE_MESSAGE |   // message-read mode
+			PIPE_WAIT,                // blocking mode
+			PIPE_UNLIMITED_INSTANCES, // max. instances
+			BUFSIZE,                  // output buffer size
+			BUFSIZE,                  // input buffer size
+			NMPWAIT_USE_DEFAULT_WAIT, // client time-out
 			NULL);                // NULL DACL
 
 		if (!hPipe)
@@ -560,20 +559,20 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 			continue; // never leave the thread!
 		}
 
-		// Wait for the client to connect; if it succeeds, 
-		// the function returns a nonzero value. If the function returns 
-		// zero, GetLastError returns ERROR_PIPE_CONNECTED. 
-		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED); 
-		if (fConnected) 
-		{ 
-			// Create a thread for this client. 
-			CAutoGeneralHandle hCommandThread = CreateThread( 
-				NULL,              // no security attribute 
-				0,                 // default stack size 
-				CommandThread, 
-				(HANDLE) hPipe,    // thread parameter 
-				0,                 // not suspended 
-				&dwThreadId);      // returns thread ID 
+		// Wait for the client to connect; if it succeeds,
+		// the function returns a nonzero value. If the function returns
+		// zero, GetLastError returns ERROR_PIPE_CONNECTED.
+		fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		if (fConnected)
+		{
+			// Create a thread for this client.
+			CAutoGeneralHandle hCommandThread = CreateThread(
+				NULL,              // no security attribute
+				0,                 // default stack size
+				CommandThread,
+				(HANDLE) hPipe,    // thread parameter
+				0,                 // not suspended
+				&dwThreadId);      // returns thread ID
 
 			if (!hCommandThread)
 			{
@@ -592,7 +591,7 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 		}
 		else
 		{
-			// The client could not connect, so close the pipe. 
+			// The client could not connect, so close the pipe.
 			//OutputDebugStringA("TSVNCache: ConnectNamedPipe failed\n");
 			//DebugOutputLastError();
 			hPipe.CloseHandle();
@@ -605,32 +604,32 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 	return 0;
 }
 
-DWORD WINAPI InstanceThread(LPVOID lpvParam) 
-{ 
+DWORD WINAPI InstanceThread(LPVOID lpvParam)
+{
 	ATLTRACE("InstanceThread started\n");
-	TGITCacheResponse response; 
-	DWORD cbBytesRead, cbWritten; 
-	BOOL fSuccess; 
+	TGITCacheResponse response;
+	DWORD cbBytesRead, cbWritten;
+	BOOL fSuccess;
 	CAutoFile hPipe;
 
-	// The thread's parameter is a handle to a pipe instance. 
+	// The thread's parameter is a handle to a pipe instance.
 
 	hPipe = lpvParam;
 	InterlockedIncrement(&nThreadCount);
-	while (bRun) 
-	{ 
-		// Read client requests from the pipe. 
+	while (bRun)
+	{
+		// Read client requests from the pipe.
 		TGITCacheRequest request;
-		fSuccess = ReadFile( 
-			hPipe,        // handle to pipe 
-			&request,    // buffer to receive data 
-			sizeof(request), // size of buffer 
-			&cbBytesRead, // number of bytes read 
-			NULL);        // not overlapped I/O 
+		fSuccess = ReadFile(
+			hPipe,        // handle to pipe
+			&request,    // buffer to receive data
+			sizeof(request), // size of buffer
+			&cbBytesRead, // number of bytes read
+			NULL);        // not overlapped I/O
 
 		if (! fSuccess || cbBytesRead == 0)
 		{
-			DisconnectNamedPipe(hPipe); 
+			DisconnectNamedPipe(hPipe);
 			ATLTRACE("Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
@@ -639,33 +638,33 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 		}
 
 		DWORD responseLength;
-		GetAnswerToRequest(&request, &response, &responseLength); 
+		GetAnswerToRequest(&request, &response, &responseLength);
 
-		// Write the reply to the pipe. 
-		fSuccess = WriteFile( 
-			hPipe,        // handle to pipe 
-			&response,      // buffer to write from 
-			responseLength, // number of bytes to write 
-			&cbWritten,   // number of bytes written 
-			NULL);        // not overlapped I/O 
+		// Write the reply to the pipe.
+		fSuccess = WriteFile(
+			hPipe,        // handle to pipe
+			&response,      // buffer to write from
+			responseLength, // number of bytes to write
+			&cbWritten,   // number of bytes written
+			NULL);        // not overlapped I/O
 
 		if (! fSuccess || responseLength != cbWritten)
 		{
-			DisconnectNamedPipe(hPipe); 
+			DisconnectNamedPipe(hPipe);
 			ATLTRACE("Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
 				PostMessage(hWnd, WM_CLOSE, 0, 0);
 			return 1;
 		}
-	} 
+	}
 
-	// Flush the pipe to allow the client to read the pipe's contents 
-	// before disconnecting. Then disconnect the pipe, and close the 
-	// handle to this pipe instance. 
+	// Flush the pipe to allow the client to read the pipe's contents
+	// before disconnecting. Then disconnect the pipe, and close the
+	// handle to this pipe instance.
 
-	FlushFileBuffers(hPipe); 
-	DisconnectNamedPipe(hPipe); 
+	FlushFileBuffers(hPipe);
+	DisconnectNamedPipe(hPipe);
 	ATLTRACE("Instance thread exited\n");
 	InterlockedDecrement(&nThreadCount);
 	if (nThreadCount == 0)
@@ -673,40 +672,40 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	return 0;
 }
 
-DWORD WINAPI CommandThread(LPVOID lpvParam) 
-{ 
+DWORD WINAPI CommandThread(LPVOID lpvParam)
+{
 	ATLTRACE("CommandThread started\n");
-	DWORD cbBytesRead; 
-	BOOL fSuccess; 
+	DWORD cbBytesRead;
+	BOOL fSuccess;
 	CAutoFile hPipe;
 
-	// The thread's parameter is a handle to a pipe instance. 
+	// The thread's parameter is a handle to a pipe instance.
 
 	hPipe = lpvParam;
 
-	while (bRun) 
-	{ 
-		// Read client requests from the pipe. 
+	while (bRun)
+	{
+		// Read client requests from the pipe.
 		TGITCacheCommand command;
-		fSuccess = ReadFile( 
-			hPipe,				// handle to pipe 
-			&command,			// buffer to receive data 
-			sizeof(command),	// size of buffer 
-			&cbBytesRead,		// number of bytes read 
-			NULL);				// not overlapped I/O 
+		fSuccess = ReadFile(
+			hPipe,				// handle to pipe
+			&command,			// buffer to receive data
+			sizeof(command),	// size of buffer
+			&cbBytesRead,		// number of bytes read
+			NULL);				// not overlapped I/O
 
 		if (! fSuccess || cbBytesRead == 0)
 		{
-			DisconnectNamedPipe(hPipe); 
+			DisconnectNamedPipe(hPipe);
 			ATLTRACE("Command thread exited\n");
 			return 1;
 		}
-		
+
 		switch (command.command)
 		{
 			case TGITCACHECOMMAND_END:
-				FlushFileBuffers(hPipe); 
-				DisconnectNamedPipe(hPipe); 
+				FlushFileBuffers(hPipe);
+				DisconnectNamedPipe(hPipe);
 				ATLTRACE("Command thread exited\n");
 				return 0;
 			case TGITCACHECOMMAND_CRAWL:
@@ -756,12 +755,12 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 		}
 	}
 
-	// Flush the pipe to allow the client to read the pipe's contents 
-	// before disconnecting. Then disconnect the pipe, and close the 
-	// handle to this pipe instance. 
+	// Flush the pipe to allow the client to read the pipe's contents
+	// before disconnecting. Then disconnect the pipe, and close the
+	// handle to this pipe instance.
 
-	FlushFileBuffers(hPipe); 
-	DisconnectNamedPipe(hPipe); 
+	FlushFileBuffers(hPipe);
+	DisconnectNamedPipe(hPipe);
 	ATLTRACE("Command thread exited\n");
 	return 0;
 }

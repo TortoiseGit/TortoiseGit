@@ -56,7 +56,7 @@ void CDropFiles::CreateBuffer()
 
 	m_nBufferSize = sizeof(DROPFILES) + (nLength+1)*sizeof(TCHAR);
 	m_pBuffer = new char[m_nBufferSize];
-	
+
 	SecureZeroMemory(m_pBuffer, m_nBufferSize);
 
 	DROPFILES* df = (DROPFILES*)m_pBuffer;
@@ -70,7 +70,7 @@ void CDropFiles::CreateBuffer()
 	{
 		CString str = m_arFiles[i];
 		wcscpy_s(pCurrentFilename,str.GetLength()+1,str.GetBuffer());
-		pCurrentFilename += str.GetLength(); 
+		pCurrentFilename += str.GetLength();
 		*pCurrentFilename = '\0'; // separator between file names
 		pCurrentFilename++;
 	}
@@ -90,9 +90,9 @@ int	CDropFiles::GetBufferSize() const
 void CDropFiles::CreateStructure()
 {
 	CreateBuffer();
-	
+
 	COleDataSource dropData;
-	HGLOBAL hMem = ::GlobalAlloc(GMEM_ZEROINIT|GMEM_MOVEABLE|GMEM_DDESHARE, GetBufferSize()); 
+	HGLOBAL hMem = ::GlobalAlloc(GMEM_ZEROINIT|GMEM_MOVEABLE|GMEM_DDESHARE, GetBufferSize());
 	memcpy( ::GlobalLock(hMem), GetBuffer(), GetBufferSize() );
 	::GlobalUnlock(hMem);
 	dropData.CacheGlobalData( CF_HDROP, hMem );

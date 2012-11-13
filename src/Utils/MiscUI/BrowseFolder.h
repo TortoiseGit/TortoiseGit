@@ -49,9 +49,9 @@ public:
 	void SetCheckBoxText(LPCTSTR checktext);
 	void SetCheckBoxText2(LPCTSTR checktext);
 	/**
-	 * Shows the Dialog. 
+	 * Shows the Dialog.
 	 * \param parent [in] window handle of the parent window.
-	 * \param path [out] the path to the folder which the user has selected 
+	 * \param path [out] the path to the folder which the user has selected
 	 * \return one of CANCEL, NOPATH or OK
 	 */
 	CBrowseFolder::retVal Show(HWND parent, CString& path, const CString& sDefaultPath = CString());
@@ -73,7 +73,7 @@ protected:
 	static int CALLBACK BrowseCallBackProc(HWND  hwnd,UINT  uMsg,LPARAM  lParam,LPARAM  lpData);
 	static LRESULT APIENTRY CheckBoxSubclassProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 	static LRESULT APIENTRY CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
-		
+
 	static WNDPROC CBProc;
 	static HWND checkbox;
 	static HWND checkbox2;

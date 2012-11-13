@@ -892,7 +892,7 @@ bool CTGitPath::IsMergeActive() const
 	}
 
 	CString dotGitPath;
-	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);	
+	g_GitAdminDir.GetAdminDirPath(topdir, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + _T("MERGE_HEAD"));
 }

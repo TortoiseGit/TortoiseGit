@@ -30,8 +30,8 @@
 
 #define TGIT_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
-					   DWORD  ul_reason_for_call, 
+BOOL APIENTRY DllMain( HANDLE hModule,
+					   DWORD  ul_reason_for_call,
 					   LPVOID lpReserved
 					 )
 {

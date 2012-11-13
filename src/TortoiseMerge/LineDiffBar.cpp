@@ -101,7 +101,7 @@ void CLineDiffBar::OnPaint()
 		{
 			BOOL bViewWhiteSpace = m_pMainFrm->m_pwndLeftView->m_bViewWhitespace;
 			BOOL bInlineDiffs = m_pMainFrm->m_pwndLeftView->m_bShowInlineDiff;
-			
+
 			m_pMainFrm->m_pwndLeftView->m_bViewWhitespace = TRUE;
 			m_pMainFrm->m_pwndLeftView->m_bShowInlineDiff = TRUE;
 			m_pMainFrm->m_pwndLeftView->m_bShowSelection = false;
@@ -120,7 +120,7 @@ void CLineDiffBar::OnPaint()
 			m_pMainFrm->m_pwndRightView->m_bShowInlineDiff = bInlineDiffs;
 			m_pMainFrm->m_pwndRightView->m_bShowSelection = true;
 		}
-	} 
+	}
 
 	VERIFY(dc.BitBlt(rect.left, rect.top, width, height, &cacheDC, 0, 0, SRCCOPY));
 

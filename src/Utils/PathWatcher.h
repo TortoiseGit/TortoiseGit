@@ -40,7 +40,7 @@ class CPathWatcher
 public:
 	CPathWatcher(void);
 	~CPathWatcher(void);
-	
+
 	/**
 	 * Adds a new path to be watched. The path \b must point to a directory.
 	 * If the path is already watched because a parent of that path is already
@@ -52,12 +52,12 @@ public:
 	 * Removes a path and all its children from the watched list.
 	 */
 	bool RemovePathAndChildren(const CTGitPath& path);
-	
+
 	/**
 	 * Returns the number of recursively watched paths.
 	 */
 	int GetNumberOfWatchedPaths() {return watchedPaths.GetCount();}
-		
+
 	/**
 	 * Stops the watching thread.
 	 */
@@ -90,14 +90,14 @@ private:
 	CAutoGeneralHandle		m_hThread;
 	CAutoGeneralHandle		m_hCompPort;
 	volatile LONG			m_bRunning;
-	
+
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 	CTGitPathList			m_changedPaths;	///< list of paths which got changed
 
 	/**
 	 * Helper class: provides information about watched directories.
 	 */
-	class CDirWatchInfo 
+	class CDirWatchInfo
 	{
 	private:
 		CDirWatchInfo();	// private & not implemented
@@ -120,7 +120,7 @@ private:
 	};
 
 	std::map<HANDLE, CDirWatchInfo *> watchInfoMap;
-	
+
 	HDEVNOTIFY		m_hdev;
 
 };

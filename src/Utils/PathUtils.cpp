@@ -44,7 +44,7 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 		CreateDirectory(buf, &attribs);
 		pPath = _tcschr(pPath, '\\');
 	} while ((pPath++)&&(_tcschr(pPath, '\\')));
-	
+
 	BOOL bRet = CreateDirectory(internalpathbuf, &attribs);
 	delete[] buf;
 	delete[] internalpathbuf;
@@ -100,7 +100,7 @@ void CPathUtils::Unescape(char * psz)
 				nValue = *pszSource;
 			}
 			*pszDest++ = nValue;
-		} 
+		}
 		else
 			*pszDest++ = *pszSource;
 
@@ -280,7 +280,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 	else if (PathCanonicalize(pathbufcanonicalized, path))
 	{
 		ret = ::GetLongPathName(pathbufcanonicalized, NULL, 0);
-		TCHAR * pathbuf = new TCHAR[ret+2];	
+		TCHAR * pathbuf = new TCHAR[ret+2];
 		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf, ret+1);
 		sRet = CString(pathbuf, ret);
 		delete[] pathbuf;
@@ -444,7 +444,7 @@ CString CPathUtils::GetVersionFromFile(const CString & p_strDateiname)
 			strReturn = (LPCTSTR)lpVersion;
 			free(pBuffer);
 		}
-	} 
+	}
 
 	return strReturn;
 }

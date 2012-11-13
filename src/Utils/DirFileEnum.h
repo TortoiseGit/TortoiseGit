@@ -193,7 +193,7 @@ public:
     * \return TRUE iff the current file is the "." or ".."
     * pseudo-directory.
     */
-   inline BOOL IsDots() const 
+   inline BOOL IsDots() const
    {
       return IsDirectory()
           && m_FindFileData.cFileName[0] == _T('.')

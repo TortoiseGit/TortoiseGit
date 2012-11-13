@@ -52,7 +52,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 		if ((m_nSelBlockStart == -1)||(m_nSelBlockEnd == -1))
 			uFlags |= MF_DISABLED | MF_GRAYED;
 		CString temp;
-		
+
 		bool bImportantBlock = true;
 		switch (state)
 		{
@@ -241,7 +241,7 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 					}
 					m_pwndRight->SetModified();
 				}
-			} 
+			}
 			break;
 		case ID_USEYOURANDTHEIRBLOCK:
 			{
@@ -265,8 +265,8 @@ bool CLeftView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 			break;
 		default:
 			return false;
-		} // switch (cmd) 
+		} // switch (cmd)
 		CUndo::GetInstance().AddState(leftstate, rightstate, bottomstate, m_ptCaretPos);
-	} // if (popup.CreatePopupMenu()) 
+	} // if (popup.CreatePopupMenu())
 	return false;
 }

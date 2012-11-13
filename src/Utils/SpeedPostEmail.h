@@ -68,7 +68,7 @@ int FindFromArray ( IN T1 &Ary, IN T2 Find, IN T3 &AppAry, IN T4 AppFind )
 	int nCount = Ary.GetSize();
 	for ( int i=0; i<nCount; i++ )
 	{
-		if ( Ary.GetAt(i) == Find && 
+		if ( Ary.GetAt(i) == Find &&
 			AppAry.GetAt(i) == AppFind )
 		{
 			return i;

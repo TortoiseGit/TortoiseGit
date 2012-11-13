@@ -33,7 +33,7 @@ public:
 	~CAppUtils(void);
 
 	/**
-	 * Starts an external program to get a file with a specific revision. 
+	 * Starts an external program to get a file with a specific revision.
 	 * \param sPath path to the file for which a specific revision is fetched
 	 * \param sVersion the revision to get
 	 * \param sSavePath the path to where the file version shall be saved
@@ -41,7 +41,7 @@ public:
 	 * \return TRUE if successful
 	 */
 	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd = NULL);
-	
+
 	/**
 	 * Creates a unified diff from two files
 	 */

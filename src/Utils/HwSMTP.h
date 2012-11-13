@@ -6,7 +6,7 @@
 		ËµÃ÷
 	1¡¢ÕâÊÇÎÒ×Ô¼ºÐ´µÄÒ»¸öÀûÓÃSMTP·þÎñÆ÷·¢ËÍÓÊ¼þµÄÀà£¬¿ÉÒÔÊµÏÖ¸½¼þµÄ
 ·¢ËÍ¡£
-	2¡¢ÔÚ InitInstance() º¯Êýµ÷ÓÃ 
+	2¡¢ÔÚ InitInstance() º¯Êýµ÷ÓÃ
 	if (!AfxSocketInit())
 	{
 		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
@@ -47,7 +47,7 @@ Wins¡¢Íø¿¨MACµØÖ·µÈÏà¹ØÐÅÏ¢£»»¹Ìá¹©ÁËSMTPÐ­Òé½âÎöÀà£¬¸ÃÀàÊµÏÖÁËSMTP¿Í»§¶Ë¹¦ÄÜµÄÊ
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CHwSMTP  
+class CHwSMTP
 {
 public:
 	CString GetLastErrorText();

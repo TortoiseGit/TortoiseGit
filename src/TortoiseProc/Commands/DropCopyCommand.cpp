@@ -43,7 +43,7 @@ bool DropCopyCommand::Execute()
 	if ((parser.HasKey(_T("rename")))&&(pathList.GetCount()==1))
 	{
 		// ask for a new name of the source item
-		do 
+		do
 		{
 			CRenameDlg renDlg;
 			renDlg.m_windowtitle.LoadString(IDS_PROC_COPYRENAME);
@@ -92,18 +92,18 @@ bool DropCopyCommand::Execute()
 			// Rebuild the destination path, with the new name
 			fullDropPath.SetFromUnknown(sDroppath);
 			fullDropPath.AppendPathString(dlg.m_name);
-		} 
-		
+		}
+
 		if( CopyFile( sourcePath.GetWinPath(), fullDropPath.GetWinPath(), true))
 		{
 			CString ProjectTopDir;
 			if(fullDropPath.HasAdminDir(&ProjectTopDir))
 			{
-				g_Git.SetCurrentDir(ProjectTopDir);	
+				g_Git.SetCurrentDir(ProjectTopDir);
 				SetCurrentDirectory(ProjectTopDir);
 				CString cmd;
 				cmd = _T("git.exe add \"");
-				
+
 				CString path;
 				path=fullDropPath.GetGitPathString().Mid(ProjectTopDir.GetLength());
 				if(path.GetLength()>0)
@@ -119,7 +119,7 @@ bool DropCopyCommand::Execute()
 				}else
 					CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
 			}
-			
+
 		}else
 		{
 			CString str;
@@ -128,8 +128,7 @@ bool DropCopyCommand::Execute()
 
 			CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		}
-		
-		
+
 		count++;
 		if (progress.IsValid())
 		{

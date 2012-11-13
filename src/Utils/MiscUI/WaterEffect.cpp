@@ -71,10 +71,10 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 	int rquad;
 	int cx, cy, cyq;
 	int left, top, right, bottom;
-	
+
 	int *pNew;
 	int *pOld;
-	
+
 	if (page == 0)
 	{
 		pNew = &m_iBuffer1[0];
@@ -85,29 +85,29 @@ void CWaterEffect::Blob(int x, int y, int radius, int height, int page)
 		pNew = &m_iBuffer2[0];
 		pOld = &m_iBuffer1[0];
 	}
-	
+
 	rquad = radius * radius;
-	
-	if (x<0) 
+
+	if (x<0)
 		x = 1 + radius + rand() % (m_iWidth - 2 * radius - 1);
 	if (y<0)
 		y = 1 + radius + rand() % (m_iHeight - 2 * radius - 1);
-	
+
 	left = -radius;
 	right = radius;
 	top = -radius;
 	bottom = radius;
-	
+
 	// clip edges
 	if (x - radius < 1)
 		left -= (x-radius-1);
-	if (y - radius < 1) 
+	if (y - radius < 1)
 		top  -= (y-radius-1);
-	if (x + radius > m_iWidth-1) 
+	if (x + radius > m_iWidth-1)
 		right -= (x+radius-m_iWidth+1);
-	if (y + radius > m_iHeight-1) 
+	if (y + radius > m_iHeight-1)
 		bottom-= (y+radius-m_iHeight+1);
-	
+
 	for(cy = top; cy < bottom; cy++)
 	{
 		cyq = cy*cy;
@@ -145,7 +145,7 @@ void CWaterEffect::CalcWater(int npage, int density)
 	int count = m_iWidth + 1;
 	int *pNew;
 	int *pOld;
-	
+
 	if (npage == 0)
 	{
 		pNew = &m_iBuffer1[0];
@@ -156,9 +156,9 @@ void CWaterEffect::CalcWater(int npage, int density)
 		pNew = &m_iBuffer2[0];
 		pOld = &m_iBuffer1[0];
 	}
-	
+
 	int x, y;
-	
+
 	// a description of the algorithm and an implementation
 	// in 'pseudocode' can be found here:
 	// http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
@@ -188,10 +188,10 @@ void CWaterEffect::SmoothWater(int npage)
 	//flatten and spread the waves
 	int newh;
 	int count = m_iWidth + 1;
-	
+
 	int *pNew;
 	int *pOld;
-	
+
 	if (npage == 0)
 	{
 		pNew = &m_iBuffer1[0];
@@ -202,9 +202,9 @@ void CWaterEffect::SmoothWater(int npage)
 		pNew = &m_iBuffer2[0];
 		pOld = &m_iBuffer1[0];
 	}
-	
+
 	int x, y;
-	
+
 	// a description of the algorithm and an implementation
 	// in 'pseudocode' can be found here:
 	// http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
@@ -235,21 +235,21 @@ void CWaterEffect::DrawWater(int /*page*/, int /*LightModifier*/, DWORD* pSrcIma
 	int dx, dy;
 	int x, y;
 	DWORD c;
-	
+
 	int offset = m_iWidth + 1;
 	long lIndex;
 	long lBreak = m_iWidth*m_iHeight;
-	
+
 	int *ptr = &m_iBuffer1[0];
-	
-	
+
+
 	for (y = (m_iHeight-1)*m_iWidth; offset < y; offset += 2)
 	{
 		for (x = offset + m_iWidth - 2; offset < x; offset++)
 		{
 			dx = ptr[offset] - ptr[offset+1];
 			dy = ptr[offset] - ptr[offset+m_iWidth];
-			
+
 			lIndex = offset + m_iWidth*(dy>>3) + (dx>>3);
 			if (lIndex < lBreak && lIndex > 0)
 			{
@@ -257,11 +257,11 @@ void CWaterEffect::DrawWater(int /*page*/, int /*LightModifier*/, DWORD* pSrcIma
 				c = GetShiftedColor(c,dx);
 				pTargetImage[offset] = c;
 			}
-			
+
 			offset++;
 			dx = ptr[offset] - ptr[offset+1];
 			dy = ptr[offset] - ptr[offset+m_iWidth];
-			
+
 			lIndex = offset + m_iWidth*(dy>>3) + (dx>>3);
 			if (lIndex < lBreak && lIndex > 0)
 			{

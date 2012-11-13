@@ -96,7 +96,7 @@ void CSetColorPage::SaveData()
 		CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTED_IGNORED, cBk, cFg);
 		CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTADDED, cBk, cFg);
 		CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTEMPTY, adjustedcolor, cFg);
-		
+
 		cBk = m_cBkConflictResolved.GetColor();
 		if (cBk == -1)
 			cBk = m_cBkConflictResolved.GetAutomaticColor();

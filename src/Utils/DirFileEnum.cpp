@@ -36,7 +36,7 @@ CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern) :
       }
    }
 
-   m_hFindFile = ::FindFirstFile((LPCTSTR)(m_sPathPrefix + pPattern), &m_FindFileData); 
+   m_hFindFile = ::FindFirstFile((LPCTSTR)(m_sPathPrefix + pPattern), &m_FindFileData);
    if (m_hFindFile == INVALID_HANDLE_VALUE) {
       m_dError = ::GetLastError();
    }
@@ -163,7 +163,7 @@ BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory)
       PopStack();
    }
 
-   if (m_seStack) 
+   if (m_seStack)
    {
       sResult = m_seStack->GetFilePath();
 	  if(pbIsDirectory != NULL)

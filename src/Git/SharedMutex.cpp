@@ -11,12 +11,10 @@
 
 SharedMutex::SharedMutex(): m_sharedNum(0), m_exclusiveNum(0), m_lockType(LOCK_NONE), m_mutex(0), m_sharedEvent(0),m_exclusiveEvent(0)
 {
-  
 }
 
 SharedMutex::~SharedMutex()
 {
-
 }
 
 void SharedMutex::Release()

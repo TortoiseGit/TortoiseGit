@@ -162,7 +162,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 #endif
 
 	int ids[]={
-	IDM_FORMAT_WIN_1250	        , 
+	IDM_FORMAT_WIN_1250	        ,
 	IDM_FORMAT_WIN_1251        ,
 	IDM_FORMAT_WIN_1252        ,
 	IDM_FORMAT_WIN_1253        ,
@@ -372,7 +372,7 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
 	// base class does the real work
 

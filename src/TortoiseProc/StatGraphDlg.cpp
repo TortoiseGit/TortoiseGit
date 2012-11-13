@@ -138,7 +138,7 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 	m_Skipper.SetRange (1, max_authors_count);
 	m_Skipper.SetPageSize(5);
 
-	if (reloadSkiper) 
+	if (reloadSkiper)
 		m_Skipper.SetPos (max_authors_count);
 }
 

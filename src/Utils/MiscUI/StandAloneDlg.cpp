@@ -49,7 +49,7 @@ void CResizableStandAloneDialog::OnMoving(UINT fwSide, LPRECT pRect)
 	CStandAloneDialogTmpl<CResizableDialog>::OnMoving(fwSide, pRect);
 }
 
-void CResizableStandAloneDialog::OnNcMButtonUp(UINT nHitTest, CPoint point) 
+void CResizableStandAloneDialog::OnNcMButtonUp(UINT nHitTest, CPoint point)
 {
 	WINDOWPLACEMENT windowPlacement;
 	if ((nHitTest == HTMAXBUTTON) && GetWindowPlacement(&windowPlacement) && windowPlacement.showCmd == SW_SHOWNORMAL)
@@ -75,7 +75,7 @@ void CResizableStandAloneDialog::OnNcMButtonUp(UINT nHitTest, CPoint point)
 	CStandAloneDialogTmpl<CResizableDialog>::OnNcMButtonUp(nHitTest, point);
 }
 
-void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point) 
+void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point)
 {
 	WINDOWPLACEMENT windowPlacement;
 	if ((nHitTest == HTMAXBUTTON) && GetWindowPlacement(&windowPlacement) && windowPlacement.showCmd == SW_SHOWNORMAL)

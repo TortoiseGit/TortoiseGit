@@ -22,7 +22,7 @@
 #include <initguid.h>
 
 // {3494FA92-B139-4730-9591-01135D5E7831}
-DEFINE_GUID(CATID_BugTraqProvider, 
+DEFINE_GUID(CATID_BugTraqProvider,
 			0x3494fa92, 0xb139, 0x4730, 0x95, 0x91, 0x1, 0x13, 0x5d, 0x5e, 0x78, 0x31);
 
 #define BUGTRAQ_ASSOCIATIONS_REGPATH _T("Software\\TortoiseGit\\BugTraq Associations")
@@ -116,7 +116,7 @@ bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociati
 			*assoc = *(*it);
 			return true;
 		}
-		
+
 		path = path.GetContainingDirectory();
 	} while(!path.IsEmpty());
 
@@ -131,7 +131,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 
 	TCHAR szSubKey[MAX_PATH];
 	_stprintf_s(szSubKey, _T("CLSID\\%ls"), szClsid);
-	
+
 	CString provider_name = CString(szClsid);
 
 	HKEY hk;
@@ -176,7 +176,7 @@ void CBugTraqAssociations::Save() const
 			RegSetValueFromCString(hk2, _T("Provider"), (*it)->GetProviderClassAsString());
 			RegSetValueFromCString(hk2, _T("WorkingCopy"), (*it)->GetPath().GetWinPath());
 			RegSetValueFromCString(hk2, _T("Parameters"), (*it)->GetParameters());
-			
+
 			RegCloseKey(hk2);
 		}
 

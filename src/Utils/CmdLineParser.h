@@ -61,7 +61,7 @@ typedef std::wstring wide_string;
  * //number has now the value 30
  * \endcode
  */
-class CCmdLineParser 
+class CCmdLineParser
 {
 public:
 	typedef map<stdstring, stdstring> CValsMap;
@@ -84,7 +84,7 @@ public:
 	 * Starts an iteration over all command line parameters.
 	 * \return the first position
 	 */
-	ITERPOS begin() const;	
+	ITERPOS begin() const;
 
 	/**
 	 * Get the next key/value pair. If no more keys are available then
@@ -96,7 +96,7 @@ public:
 	 * \return the next position
 	 */
 	ITERPOS getNext(ITERPOS& pos, stdstring& sKey, stdstring& sValue) const;
-		
+
 	/**
 	 * Checks if the position is the last or if there are more key/value pairs in the command line.
 	 * \param pos the position to check
@@ -124,7 +124,7 @@ public:
 	 * \return the value string of the key
 	 */
 	LPCTSTR GetVal(LPCTSTR sKey) const;
-	
+
 	/**
 	 * Reads the value for a key as a long. If the value is a string which can't be
 	 * converted to a number then 0 is returned.

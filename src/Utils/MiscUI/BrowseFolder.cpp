@@ -26,8 +26,8 @@ WNDPROC CBrowseFolder::CBProc = NULL;
 HWND CBrowseFolder::checkbox = NULL;
 HWND CBrowseFolder::checkbox2 = NULL;
 HWND CBrowseFolder::ListView = NULL;
-TCHAR CBrowseFolder::m_CheckText[200];		
-TCHAR CBrowseFolder::m_CheckText2[200];		
+TCHAR CBrowseFolder::m_CheckText[200];
+TCHAR CBrowseFolder::m_CheckText2[200];
 CString CBrowseFolder::m_sDefaultPath;
 bool CBrowseFolder::m_DisableCheckbox2WhenCheckbox1IsChecked = false;
 
@@ -77,31 +77,31 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 	browseInfo.ulFlags			= m_style;
 	browseInfo.lpfn				= NULL;
 	browseInfo.lParam			= (LPARAM)this;
-	
+
 	if ((_tcslen(m_CheckText) > 0)||(!m_sDefaultPath.IsEmpty()))
 	{
 		browseInfo.lpfn = BrowseCallBackProc;
 	}
-	
+
 	itemIDList = SHBrowseForFolder(&browseInfo);
 
 	//is the dialog canceled?
 	if (!itemIDList)
 		ret = CANCEL;
 
-	if (ret != CANCEL) 
+	if (ret != CANCEL)
 	{
 		if (!SHGetPathFromIDList(itemIDList, path.GetBuffer(MAX_PATH)))		// MAX_PATH ok. Explorer can't handle paths longer than MAX_PATH.
 			ret = NOPATH;
 
 		path.ReleaseBuffer();
-	
+
 		LPMALLOC	shellMalloc;
 		HRESULT		hr;
 
 		hr = SHGetMalloc(&shellMalloc);
 
-		if (SUCCEEDED(hr)) 
+		if (SUCCEEDED(hr))
 		{
 			//free memory
 			shellMalloc->Free(itemIDList);
@@ -115,7 +115,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 void CBrowseFolder::SetInfo(LPCTSTR title)
 {
 	ASSERT(title);
-	
+
 	if (title)
 		_tcscpy_s(m_title, 200, title);
 }
@@ -252,20 +252,20 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 					SetFont(checkbox2,_T("MS Sans Serif"),12);
 			}
 
-			// Subclass the checkbox control. 
-			CBProc = (WNDPROC) SetWindowLongPtr(checkbox,GWLP_WNDPROC, (LONG_PTR) CheckBoxSubclassProc); 
+			// Subclass the checkbox control.
+			CBProc = (WNDPROC) SetWindowLongPtr(checkbox,GWLP_WNDPROC, (LONG_PTR) CheckBoxSubclassProc);
 			//Sets the checkbox to checked position
 			SendMessage(checkbox,BM_SETCHECK,(WPARAM)m_bCheck,0);
 			if (bSecondCheckbox)
 			{
-				CBProc = (WNDPROC) SetWindowLongPtr(checkbox2,GWLP_WNDPROC, (LONG_PTR) CheckBoxSubclassProc2); 
+				CBProc = (WNDPROC) SetWindowLongPtr(checkbox2,GWLP_WNDPROC, (LONG_PTR) CheckBoxSubclassProc2);
 				SendMessage(checkbox2,BM_SETCHECK,(WPARAM)m_bCheck,0);
 			}
 			// send a resize message to the resized list view control. Otherwise it won't show
 			// up properly until the user resizes the window!
 			SendMessage(ListView, WM_SIZE, SIZE_RESTORED, MAKELONG(ListViewRect.right-ListViewRect.left, bSecondCheckbox ? (ListViewRect.bottom - ListViewRect.top)-40 : (ListViewRect.bottom - ListViewRect.top)-20));
 		}
-		
+
 		// now set the default directory
 		SendMessage(hwnd, BFFM_SETSELECTION, TRUE, (LPARAM)(LPCTSTR)m_sDefaultPath);
 	}
@@ -278,7 +278,7 @@ int CBrowseFolder::BrowseCallBackProc(HWND hwnd, UINT uMsg, LPARAM lParam, LPARA
 			SendMessage(hwnd,BFFM_SETSTATUSTEXT, 0, (LPARAM)szDir);
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -295,9 +295,9 @@ LRESULT CBrowseFolder::CheckBoxSubclassProc(HWND hwnd,UINT uMsg,WPARAM wParam,LP
 			::EnableWindow(checkbox2, true);
 	}
 
-	return CallWindowProc(CBProc, hwnd, uMsg, 
-		wParam, lParam); 
-} 
+	return CallWindowProc(CBProc, hwnd, uMsg,
+		wParam, lParam);
+}
 
 LRESULT CBrowseFolder::CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
@@ -306,6 +306,6 @@ LRESULT CBrowseFolder::CheckBoxSubclassProc2(HWND hwnd,UINT uMsg,WPARAM wParam,L
 		m_bCheck2 = (SendMessage(hwnd,BM_GETCHECK,0,0)==BST_UNCHECKED);
 	}
 
-	return CallWindowProc(CBProc, hwnd, uMsg, 
-		wParam, lParam); 
-} 
+	return CallWindowProc(CBProc, hwnd, uMsg,
+		wParam, lParam);
+}

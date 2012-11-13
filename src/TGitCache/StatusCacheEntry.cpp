@@ -183,7 +183,7 @@ bool CStatusCacheEntry::DoesFileTimeMatch(__int64 testTime) const
 
 bool CStatusCacheEntry::ForceStatus(git_wc_status_kind forcedStatus)
 {
-	git_wc_status_kind newStatus = forcedStatus; 
+	git_wc_status_kind newStatus = forcedStatus;
 
 	if(newStatus != m_highestPriorityLocalStatus)
 	{
@@ -197,7 +197,7 @@ bool CStatusCacheEntry::ForceStatus(git_wc_status_kind forcedStatus)
 	return false;
 }
 
-bool 
+bool
 CStatusCacheEntry::HasBeenSet() const
 {
 	return m_bSet;

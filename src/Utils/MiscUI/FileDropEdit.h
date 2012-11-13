@@ -117,12 +117,12 @@ public:
 			{
 				TCHAR szFileName[MAX_PATH];
 
-				UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0); 
+				UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 				for(UINT i = 0; i < cFiles; ++i)
 				{
-					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName)); 
+					DragQueryFile(hDrop, i, szFileName, sizeof(szFileName));
 					::SendMessage(m_hTargetWnd, WM_SETTEXT, 0, (LPARAM)szFileName);
-				}  
+				}
 				//DragFinish(hDrop); // base class calls ReleaseStgMedium
 			}
 			GlobalUnlock(medium.hGlobal);
@@ -148,7 +148,7 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
-	
+
 	CFileDropTarget * m_pDropTarget;
 	virtual void PreSubclassWindow();
 };

@@ -37,5 +37,5 @@ public:
 	void	UseRightBeforeLeft(bool refreshViews = true);
 protected:
 	bool	OnContextMenu(CPoint point, int nLine, DiffStates state);
-	
+
 };

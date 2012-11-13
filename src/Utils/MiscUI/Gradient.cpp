@@ -94,7 +94,7 @@ void CGradient::DrawGDI(CDC * pDC, CRect rect, COLORREF colorStart, COLORREF col
 	vert [0] .Alpha  = 0x0000;
 
 	vert [1] .x      = rect.right;
-	vert [1] .y      = rect.bottom; 
+	vert [1] .y      = rect.bottom;
 	vert [1] .Red    = GetRValue(colorEnd)<<8;
 	vert [1] .Green  = GetGValue(colorEnd)<<8;
 	vert [1] .Blue   = GetBValue(colorEnd)<<8;

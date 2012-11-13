@@ -181,7 +181,7 @@ void CRefLogDlg::Refresh()
 {
 	STRING_VECTOR list;
 	list.push_back(_T("HEAD"));
-	g_Git.GetRefList(list);		
+	g_Git.GetRefList(list);
 
 	m_ChooseRef.AddString(list);
 

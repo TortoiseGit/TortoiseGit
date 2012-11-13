@@ -38,7 +38,7 @@ public:
 	 * \return TRUE if patching was successful
 	 */
 	virtual BOOL PatchFile(const int nIndex, bool bAutoPatch = false, bool bIsReview = true) = 0;
-	
+
 	/**
 	 * Callback function. Called when the user double clicks on a
 	 * specific file to diff. The framework then has to fetch the two

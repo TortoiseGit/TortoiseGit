@@ -31,7 +31,7 @@ bool DropMoveCommand::Execute()
 	CString ProjectTop;
 	if (!CTGitPath(droppath).HasAdminDir(&ProjectTop))
 		return FALSE;
-	
+
 	if (ProjectTop != g_Git.m_CurrentDir )
 	{
 		CMessageBox::Show(NULL,_T("Target and source must be the same git repository"),_T("TortoiseGit"),MB_OK);
@@ -47,7 +47,7 @@ bool DropMoveCommand::Execute()
 	if ((parser.HasKey(_T("rename")))&&(pathList.GetCount()==1))
 	{
 		// ask for a new name of the source item
-		do 
+		do
 		{
 			CRenameDlg renDlg;
 			renDlg.m_windowtitle.LoadString(IDS_PROC_MOVERENAME);
@@ -88,9 +88,9 @@ bool DropMoveCommand::Execute()
 				return FALSE;
 			}
 			destPath.SetFromWin(droppath+_T("\\")+dlg.m_name);
-		} 
+		}
 		CString cmd,out;
-		
+
 		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),pathList[nPath].GetGitPathString(),destPath.GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
@@ -111,7 +111,7 @@ bool DropMoveCommand::Execute()
 				CMessageBox::Show(hwndExplorer, _T("Cancel"), _T("TortoiseGit"), MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
-		} 
+		}
 		else
 			CShellUpdater::Instance().AddPathForUpdate(destPath);
 		count++;

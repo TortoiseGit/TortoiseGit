@@ -17,9 +17,9 @@
 *********************************************************************/
 
 #include <afxtempl.h>		// CArray
-#define ENAC_UPDATE        WM_USER + 1200 
+#define ENAC_UPDATE        WM_USER + 1200
 /////////////////////////////////////////////////////////////////////////////
-// Fenster CACListWnd 
+// Fenster CACListWnd
 #define IDTimerInstall 10
 class CACListWnd : public CWnd
 {

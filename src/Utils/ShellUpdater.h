@@ -34,12 +34,12 @@ public:
 	static CShellUpdater& Instance();
 
 public:
-	/** 
+	/**
 	 * Add a single path for updating.
 	 * The update will happen at some suitable time in the future
 	 */
 	void AddPathForUpdate(const CTGitPath& path);
-	/** 
+	/**
 	 * Add a list of paths for updating.
 	 * The update will happen at some suitable time in the future
 	 */
@@ -48,7 +48,7 @@ public:
 	 * Do the update, and clear the list of items waiting
 	 */
 	void Flush();
-	
+
 	static bool RebuildIcons();
 
 private:

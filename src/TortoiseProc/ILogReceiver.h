@@ -63,7 +63,7 @@ public:
 
 	// default and copy construction
 
-	CAutoArray() 
+	CAutoArray()
 	{
 	}
 

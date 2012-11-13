@@ -122,7 +122,7 @@ bool PasteMoveCommand::Execute()
 					CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
 					return FALSE;		//get out of here
 				}
-			} 
+			}
 			else
 				CShellUpdater::Instance().AddPathForUpdate(destPath);
 		}

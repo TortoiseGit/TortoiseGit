@@ -54,6 +54,6 @@ bool ShowCompareCommand::Execute()
 		bRet = diff.ShowCompare(url1, rev1, url2, rev2, pegrev, ignoreancestry, blame);
 
 	return bRet;
-#endif 
+#endif
 	return 0;
 }

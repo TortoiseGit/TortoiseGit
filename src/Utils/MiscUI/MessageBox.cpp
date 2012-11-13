@@ -113,7 +113,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
 		hWnd = NULL;
-	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);	
+	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
 }
 
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2/* = NULL*/, LPCTSTR lpButton3/* = NULL*/)
@@ -220,7 +220,7 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCT
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath)
 {
 	CMessageBox box;
-	
+
 	if (!IsWindow(hWnd))
 		hWnd = NULL;
 	if (sHelpPath)
@@ -458,7 +458,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 	memset(&ncm,0,sizeof(NONCLIENTMETRICS));
 	ncm.cbSize = cbProperSize;
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0);
-	
+
 	memcpy(&m_LogFont, &(ncm.lfMessageFont), sizeof(LOGFONT));
 
 	//the problem with the LOGFONT lfHeight is that it is not in pixels,
@@ -480,7 +480,7 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 		2 + 3, 62, 56, 13, IDC_MESSAGEBOX_BUTTON3);
 	dialogTemplate.AddButton(_T("Checkbox"), WS_CHILD | WS_TABSTOP | BS_AUTOCHECKBOX, 0,
 		0, 0, 0, 0, IDC_MESSAGEBOX_CHECKBOX);
-	
+
 	m_nDefButton = nDefaultButton;
 	m_sMessage = msg;
 	InitModalIndirect(dialogTemplate, pWnd);
@@ -566,7 +566,7 @@ CSize CMessageBox::GetButtonSize()
 	//GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->SendMessage(BM_SETSTYLE, BS_DEFPUSHBUTTON, 1);
 	SetDlgItemText(IDC_MESSAGEBOX_BUTTON3, m_sButton3);
 	SetDlgItemText(IDC_MESSAGEBOX_CHECKBOX, m_sCheckbox);
-	
+
 	CSize sz1 = GetTextSize(m_sButton1);
 	CSize sz2 = GetTextSize(m_sButton2);
 	CSize sz3 = GetTextSize(m_sButton3);
@@ -586,7 +586,7 @@ CSize CMessageBox::GetButtonSize()
 		sz3.cy += 2*MESSAGEBOX_BUTTONY;
 		nButtons++;
 	}
-	
+
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON1)->MoveWindow(0, 0, sz1.cx, sz1.cy);
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON2)->MoveWindow(0, 0, sz2.cx, sz2.cy);
 	GetDlgItem(IDC_MESSAGEBOX_BUTTON3)->MoveWindow(0, 0, sz3.cx, sz3.cy);
@@ -635,36 +635,36 @@ void CMessageBox::OnPaint()
 	CBitmap bitmap;
 	memDC.CreateCompatibleDC(&dc);
 	bitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-	CBitmap* pOldBitmap = memDC.SelectObject(&bitmap); 
-	
+	CBitmap* pOldBitmap = memDC.SelectObject(&bitmap);
+
 	memDC.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dc, 0,0, SRCCOPY);
 
 	memDC.SetBkMode(TRANSPARENT);
 	memDC.SetBkColor(GetSysColor(COLOR_WINDOW));
-	memDC.SetTextColor(GetSysColor(COLOR_WINDOWTEXT)); 
+	memDC.SetTextColor(GetSysColor(COLOR_WINDOWTEXT));
 
 	//OnDrawBackground();
 	drawrect.DeflateRect(MESSAGEBOX_BORDERMARGINX, MESSAGEBOX_BORDERMARGINY);
 	if (m_hIcon != NULL)
 	{
-		DrawIconEx(memDC.m_hDC, drawrect.left, drawrect.top + 
-			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2), 
+		DrawIconEx(memDC.m_hDC, drawrect.left, drawrect.top +
+			((drawrect.Height() - m_szAllButtons.cy - MESSAGEBOX_TEXTBUTTONMARGIN - m_szIcon.cy) / 2),
 			m_hIcon, m_szIcon.cx, m_szIcon.cy, 0, NULL, DI_NORMAL);
 
-		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN; 
+		drawrect.left += m_szIcon.cx + MESSAGEBOX_ICONMARGIN;
 	}
 
 
 	DrawHTML(&memDC, drawrect, m_sMessage, m_LogFont);
-	
+
 
 	//Copy the memory device context back into the original DC.
 	dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &memDC, 0,0, SRCCOPY);
-	
+
 	//Cleanup resources.
 	memDC.SelectObject(pOldBitmap);
 	memDC.DeleteDC();
-	bitmap.DeleteObject(); 
+	bitmap.DeleteObject();
 
 
 }
@@ -677,7 +677,7 @@ void CMessageBox::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else
 	{
-		m_Cursor.Restore();	
+		m_Cursor.Restore();
 	}
 
 	__super::OnMouseMove(nFlags, point);
@@ -788,9 +788,9 @@ BOOL CMessageBox::OnInitDialog()
 
 	MoveWindow(rect);
 	CenterWindow();
-	
+
 	GetClientRect(rect);
-	
+
 	//now size and position the buttons as we need them
 	ASSERT(!m_sButton1.IsEmpty());		//at least the first button must be there!
 	if (m_sButton2.IsEmpty())

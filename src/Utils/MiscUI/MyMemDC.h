@@ -24,12 +24,12 @@ public:
 	CMyMemDC(CDC* pDC, bool bTempOnly = false, int nOffset = 0) : CDC()
     {
 		ASSERT(pDC != NULL);
-		
+
 		m_pDC = pDC;
 		m_pOldBitmap = NULL;
         m_bMyMemDC = ((!pDC->IsPrinting()) && (!GetSystemMetrics(SM_REMOTESESSION)));
 		m_bTempOnly = bTempOnly;
-		
+
         if (m_bMyMemDC)	// Create a Memory DC
 		{
             pDC->GetClipBox(&m_rect);
@@ -47,10 +47,10 @@ public:
 
 		FillSolidRect(m_rect, pDC->GetBkColor());
 	}
-	
+
 	CMyMemDC(CDC* pDC, const CRect* pRect) : CDC()
 	{
-		ASSERT(pDC != NULL); 
+		ASSERT(pDC != NULL);
 
 		// Some initialization
 		m_pDC = pDC;
@@ -87,19 +87,19 @@ public:
 			m_hAttribDC = pDC->m_hAttribDC;
 		}
 
-		// Fill background 
+		// Fill background
 		FillSolidRect(m_rect, pDC->GetBkColor());
 	}
-	
+
 	// Destructor copies the contents of the mem DC to the original DC
 	~CMyMemDC()
     {
-		if (m_bMyMemDC) {	
+		if (m_bMyMemDC) {
 			// Copy the off screen bitmap onto the screen.
 			if (!m_bTempOnly)
 				m_pDC->BitBlt(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height(),
 								this, m_rect.left, m_rect.top, SRCCOPY);
-			
+
             //Swap back the original bitmap.
             SelectObject(m_pOldBitmap);
 		} else {
@@ -109,10 +109,10 @@ public:
             m_hDC = m_hAttribDC = NULL;
 		}
 	}
-	
+
 	// Allow usage as a pointer
     CMyMemDC* operator->() {return this;}
-	
+
     // Allow usage as a pointer
     operator CMyMemDC*() {return this;}
 
@@ -130,8 +130,8 @@ class CMyMemDC
 public:
 
 	// constructor sets up the memory DC
-	CMyMemDC(HDC hDC, bool bTempOnly = false, int nOffset = 0) 
-	{	
+	CMyMemDC(HDC hDC, bool bTempOnly = false, int nOffset = 0)
+	{
 		m_hDC = hDC;
 		m_hOldBitmap = NULL;
 		m_bTempOnly = bTempOnly;
@@ -146,7 +146,7 @@ public:
 	// Destructor copies the contents of the mem DC to the original DC
 	~CMyMemDC()
 	{
-		if (m_hMyMemDC) {	
+		if (m_hMyMemDC) {
 			// Copy the off screen bitmap onto the screen.
 			if (!m_bTempOnly)
 				BitBlt(m_hDC, m_rect.left, m_rect.top, m_rect.right-m_rect.left, m_rect.bottom-m_rect.top, m_hMyMemDC, m_rect.left, m_rect.top, SRCCOPY);

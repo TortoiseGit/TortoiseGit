@@ -68,7 +68,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
-	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage) 
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 	ON_COMMAND(ID_EDIT_FINDNEXT, OnEditFindnext)
 	ON_COMMAND(ID_EDIT_FINDPREV, OnEditFindprev)
 	ON_COMMAND(ID_EDIT_GOTO, OnEditGoto)
@@ -188,15 +188,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
-	} 
+	}
 
-	if (!m_wndLocatorBar.Create(this, IDD_DIFFLOCATOR, 
+	if (!m_wndLocatorBar.Create(this, IDD_DIFFLOCATOR,
 		CBRS_ALIGN_LEFT | CBRS_SIZE_FIXED, ID_VIEW_LOCATORBAR))
 	{
 		TRACE0("Failed to create dialogbar\n");
 		return -1;		// fail to create
 	}
-	if (!m_wndLineDiffBar.Create(this, IDD_LINEDIFF, 
+	if (!m_wndLineDiffBar.Create(this, IDD_LINEDIFF,
 		CBRS_ALIGN_BOTTOM | CBRS_SIZE_FIXED, ID_VIEW_LINEDIFFBAR))
 	{
 		TRACE0("Failed to create dialogbar\n");
@@ -315,7 +315,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
-	CRect cr; 
+	CRect cr;
 	GetClientRect( &cr);
 
 
@@ -328,31 +328,31 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	//        |           |
 	//        |------------
 
-	// create a splitter with 2 rows, 1 column 
+	// create a splitter with 2 rows, 1 column
 	if (!m_wndSplitter.CreateStatic(this, 2, 1))
-	{ 
-		TRACE0("Failed to CreateStaticSplitter\n"); 
-		return FALSE; 
+	{
+		TRACE0("Failed to CreateStaticSplitter\n");
+		return FALSE;
 	}
 
-	// add the second splitter pane - which is a nested splitter with 2 columns 
-	if (!m_wndSplitter2.CreateStatic( 
-		&m_wndSplitter, // our parent window is the first splitter 
+	// add the second splitter pane - which is a nested splitter with 2 columns
+	if (!m_wndSplitter2.CreateStatic(
+		&m_wndSplitter, // our parent window is the first splitter
 		1, 2, // the new splitter is 1 row, 2 columns
-		WS_CHILD | WS_VISIBLE | WS_BORDER, // style, WS_BORDER is needed 
-		m_wndSplitter.IdFromRowCol(0, 0) 
-		// new splitter is in the first row, 1st column of first splitter 
-		)) 
-	{ 
-		TRACE0("Failed to create nested splitter\n"); 
-		return FALSE; 
+		WS_CHILD | WS_VISIBLE | WS_BORDER, // style, WS_BORDER is needed
+		m_wndSplitter.IdFromRowCol(0, 0)
+		// new splitter is in the first row, 1st column of first splitter
+		))
+	{
+		TRACE0("Failed to create nested splitter\n");
+		return FALSE;
 	}
-	// add the first splitter pane - the default view in row 0 
-	if (!m_wndSplitter.CreateView(1, 0, 
-		RUNTIME_CLASS(CBottomView), CSize(cr.Width(), cr.Height()), pContext)) 
-	{ 
-		TRACE0("Failed to create first pane\n"); 
-		return FALSE; 
+	// add the first splitter pane - the default view in row 0
+	if (!m_wndSplitter.CreateView(1, 0,
+		RUNTIME_CLASS(CBottomView), CSize(cr.Width(), cr.Height()), pContext))
+	{
+		TRACE0("Failed to create first pane\n");
+		return FALSE;
 	}
 	m_pwndBottomView = (CBottomView *)m_wndSplitter.GetPane(1,0);
 	m_pwndBottomView->m_pwndLocator = &m_wndLocatorBar;
@@ -360,13 +360,13 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	m_pwndBottomView->m_pwndStatusBar = &m_wndStatusBar;
 	m_pwndBottomView->m_pMainFrame = this;
 
-	// now create the two views inside the nested splitter 
+	// now create the two views inside the nested splitter
 
-	if (!m_wndSplitter2.CreateView(0, 0, 
-		RUNTIME_CLASS(CLeftView), CSize(cr.Width()/2, cr.Height()/2), pContext)) 
-	{ 
-		TRACE0("Failed to create second pane\n"); 
-		return FALSE; 
+	if (!m_wndSplitter2.CreateView(0, 0,
+		RUNTIME_CLASS(CLeftView), CSize(cr.Width()/2, cr.Height()/2), pContext))
+	{
+		TRACE0("Failed to create second pane\n");
+		return FALSE;
 	}
 	m_pwndLeftView = (CLeftView *)m_wndSplitter2.GetPane(0,0);
 	m_pwndLeftView->m_pwndLocator = &m_wndLocatorBar;
@@ -374,11 +374,11 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	m_pwndLeftView->m_pwndStatusBar = &m_wndStatusBar;
 	m_pwndLeftView->m_pMainFrame = this;
 
-	if (!m_wndSplitter2.CreateView(0, 1, 
-		RUNTIME_CLASS(CRightView), CSize(cr.Width()/2, cr.Height()/2), pContext)) 
-	{ 
-		TRACE0("Failed to create third pane\n"); 
-		return FALSE; 
+	if (!m_wndSplitter2.CreateView(0, 1,
+		RUNTIME_CLASS(CRightView), CSize(cr.Width()/2, cr.Height()/2), pContext))
+	{
+		TRACE0("Failed to create third pane\n");
+		return FALSE;
 	}
 	m_pwndRightView = (CRightView *)m_wndSplitter2.GetPane(0,1);
 	m_pwndRightView->m_pwndLocator = &m_wndLocatorBar;
@@ -484,7 +484,7 @@ BOOL CMainFrame::PatchFile(int nIndex, bool bAutoPatch, bool bIsReview)
 		}
 		TRACE(_T("comparing %s and %s\nagainst the base file %s\n"), (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
 
-	
+
 	}
 	else
 	{
@@ -552,9 +552,9 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 {
 	CString tempfile1 = m_TempFiles.GetTempFilePath();
 	CString tempfile2 = m_TempFiles.GetTempFilePath();
-	
+
 	ASSERT(tempfile1.Compare(tempfile2));
-	
+
 	CString sTemp;
 	CSysProgressDlg progDlg;
 	sTemp.Format(IDS_GETVERSIONOFFILE, (LPCTSTR)sRev1);
@@ -613,7 +613,7 @@ void CMainFrame::OnFileOpen()
 	}
 	m_dlgFilePatches.ShowWindow(SW_HIDE);
 	m_dlgFilePatches.Init(NULL, NULL, CString(), NULL);
-	TRACE(_T("got the files:\n   %s\n   %s\n   %s\n   %s\n   %s\n"), (LPCTSTR)dlg.m_sBaseFile, (LPCTSTR)dlg.m_sTheirFile, (LPCTSTR)dlg.m_sYourFile, 
+	TRACE(_T("got the files:\n   %s\n   %s\n   %s\n   %s\n   %s\n"), (LPCTSTR)dlg.m_sBaseFile, (LPCTSTR)dlg.m_sTheirFile, (LPCTSTR)dlg.m_sYourFile,
 		(LPCTSTR)dlg.m_sUnifiedDiffFile, (LPCTSTR)dlg.m_sPatchDirectory);
 	m_Data.m_baseFile.SetFileName(dlg.m_sBaseFile);
 	m_Data.m_theirFile.SetFileName(dlg.m_sTheirFile);
@@ -625,7 +625,7 @@ void CMainFrame::OnFileOpen()
 	CCrashReport::Instance().AddFile2(dlg.m_sTheirFile, NULL, _T("Theirfile"), CR_AF_MAKE_FILE_COPY);
 	CCrashReport::Instance().AddFile2(dlg.m_sYourFile, NULL, _T("Yourfile"), CR_AF_MAKE_FILE_COPY);
 	CCrashReport::Instance().AddFile2(dlg.m_sUnifiedDiffFile, NULL, _T("Difffile"), CR_AF_MAKE_FILE_COPY);
-	
+
 	if (!m_Data.IsBaseFileInUse() && m_Data.IsTheirFileInUse() && m_Data.IsYourFileInUse())
 	{
 		// a diff between two files means "Yours" against "Base", not "Theirs" against "Yours"
@@ -770,7 +770,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 			m_pwndRightView->lineendings = m_Data.m_arYourFile.GetLineEndings();
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
-		
+
 			m_pwndBottomView->m_pViewData = NULL;
 
 	  		if (!m_wndSplitter.IsRowHidden(1))
@@ -792,21 +792,21 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 		m_pwndLeftView->m_sWindowName.LoadString(IDS_VIEWTITLE_THEIRS);
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
-		
+
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
 		m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
 		m_pwndRightView->lineendings = m_Data.m_arYourFile.GetLineEndings();
 		m_pwndRightView->m_sWindowName.LoadString(IDS_VIEWTITLE_MINE);
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
-		
+
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
 		m_pwndBottomView->texttype = m_Data.m_arTheirFile.GetUnicodeType();
 		m_pwndBottomView->lineendings = m_Data.m_arTheirFile.GetLineEndings();
 		m_pwndBottomView->m_sWindowName.LoadString(IDS_VIEWTITLE_MERGED);
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
-		
+
 		if (m_wndSplitter2.IsColumnHidden(1))
 			m_wndSplitter2.ShowColumn();
 		if (m_wndSplitter.IsRowHidden(1))
@@ -851,7 +851,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 			pwndActiveView->GoToFirstDifference();
 			// Ignore the first few Mouse Move messages, so that the line diff stays on
 			// the first diff line until the user actually moves the mouse
-			m_nMoveMovesToIgnore = 3; 
+			m_nMoveMovesToIgnore = 3;
 		}
 
 	}
@@ -1005,7 +1005,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 		else if (m_Data.IsTheirFileInUse())
 			pOriginFile = &m_Data.m_arTheirFile;
 		Invalidate();
-	} 
+	}
 	else
 	{
 		// nothing to save!
@@ -1026,7 +1026,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 				{
 					int first = i;
 					int last = i;
-					do 
+					do
 					{
 						last++;
 					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
@@ -1128,7 +1128,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 			DeleteFile(m_Data.m_mergedFile.GetFilename());
 		}
 	}
-	
+
 	if (bDoesNotExist)
 	{
 		// call TortoiseProc to add the new file to version control
@@ -1187,7 +1187,7 @@ bool CMainFrame::FileSaveAs(bool bCheckResolved /*=true*/)
 	ofn.lpstrFilter = pszFilters;
 	ofn.nFilterIndex = 1;
 
-	// Display the Open dialog box. 
+	// Display the Open dialog box.
 	CString sFile;
 	if (GetSaveFileName(&ofn)==TRUE)
 	{
@@ -1210,7 +1210,7 @@ void CMainFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 			if ((m_pwndBottomView->IsWindowVisible())&&(m_pwndBottomView->m_pViewData))
 			{
 				bEnable = TRUE;
-			} 
+			}
 		}
 		if (m_pwndRightView)
 		{
@@ -1218,7 +1218,7 @@ void CMainFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 			{
 				if (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right(9).Compare(_T(": patched"))==0))
 					bEnable = TRUE;
-			} 
+			}
 		}
 	}
 	pCmdUI->Enable(bEnable);
@@ -1240,7 +1240,7 @@ void CMainFrame::OnUpdateFileSaveAs(CCmdUI *pCmdUI)
 		{
 			bEnable = TRUE;
 		}
-	} 
+	}
 	pCmdUI->Enable(bEnable);
 }
 
@@ -1360,7 +1360,7 @@ LRESULT CMainFrame::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		m_bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 		m_bLimitToDiff = m_pFindDialog->LimitToDiffs();
 		m_bWholeWord = m_pFindDialog->WholeWord();
-	
+
 		OnEditFindnext();
 	}
 
@@ -1381,7 +1381,7 @@ bool CMainFrame::StringFound(const CString& str)const
 	{
 		if (nSubStringStartIdx)
 			bStringFound = CharIsDelimiter(str.Mid(nSubStringStartIdx-1,1));
-		
+
 		if (bStringFound)
 		{
 			int nEndIndex = nSubStringStartIdx + m_sFindText.GetLength();
@@ -1418,14 +1418,14 @@ void CMainFrame::Search(SearchDirection srchDir)
 		DiffStates rightstate = DIFFSTATE_NORMAL;
 		DiffStates bottomstate = DIFFSTATE_NORMAL;
 		int i = 0;
-		
+
 		m_nSearchIndex = FindSearchStart(m_nSearchIndex);
 		m_nSearchIndex++;
 		if (m_nSearchIndex >= m_pwndLeftView->m_pViewData->GetCount())
 			m_nSearchIndex = 0;
 		if (srchDir == SearchPrevious)
 		{
-			// SearchIndex points 1 past where we found the last match, 
+			// SearchIndex points 1 past where we found the last match,
 			// so if we are searching backwards we need to adjust accordingly
 			m_nSearchIndex -= 2;
 			// if at the top, start again from the end
@@ -1437,7 +1437,7 @@ void CMainFrame::Search(SearchDirection srchDir)
 									  {{m_nSearchIndex, -1},
 									   {m_pwndLeftView->m_pViewData->GetCount()-1, m_nSearchIndex}}};
 		const int offsets[2]={+1, -1};
-		
+
 		for (int j=0; j != 2 && !bFound; ++j)
 		{
 			for (i=idxLimits[srchDir][j][0]; i != idxLimits[srchDir][j][1]; i += offsets[srchDir])
@@ -1469,7 +1469,7 @@ void CMainFrame::Search(SearchDirection srchDir)
 						bFound = TRUE;
 						break;
 					}
-				} 
+				}
 				else if (StringFound(right))
 				{
 					if ((!m_bLimitToDiff)||(rightstate != DIFFSTATE_NORMAL))
@@ -1477,7 +1477,7 @@ void CMainFrame::Search(SearchDirection srchDir)
 						bFound = TRUE;
 						break;
 					}
-				} 
+				}
 				else if (StringFound(bottom))
 				{
 					if ((!m_bLimitToDiff)||(bottomstate != DIFFSTATE_NORMAL))
@@ -1485,7 +1485,7 @@ void CMainFrame::Search(SearchDirection srchDir)
 						bFound = TRUE;
 						break;
 					}
-				} 
+				}
 			}
 		}
 		if (bFound)
@@ -1772,7 +1772,7 @@ void CMainFrame::ActivateFrame(int nCmdShow)
 		}
 		else
 		{
-			if ( nCmdShow != SW_SHOWNORMAL )  
+			if ( nCmdShow != SW_SHOWNORMAL )
 				wp.showCmd = nCmdShow;
 
 			SetWindowPlacement(&wp);
@@ -1796,7 +1796,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 				&pwp->ptMaxPosition.x, &pwp->ptMaxPosition.y,
 				&pwp->rcNormalPosition.left,  &pwp->rcNormalPosition.top,
 				&pwp->rcNormalPosition.right, &pwp->rcNormalPosition.bottom);
-	if ( nRead != 10 )  
+	if ( nRead != 10 )
 		return FALSE;
 	pwp->length = sizeof(WINDOWPLACEMENT);
 
@@ -1830,7 +1830,7 @@ void CMainFrame::OnUpdateMergeMarkasresolved(CCmdUI *pCmdUI)
 			if ((m_pwndBottomView->IsWindowVisible())&&(m_pwndBottomView->m_pViewData))
 			{
 				bEnable = TRUE;
-			} 
+			}
 		}
 	}
 	pCmdUI->Enable(bEnable);
@@ -1858,9 +1858,9 @@ void CMainFrame::OnMergeMarkasresolved()
 			if ((m_pwndBottomView->IsWindowVisible())&&(m_pwndBottomView->m_pViewData))
 			{
 				FileSave(false);
-			} 
+			}
 		}
-	}	
+	}
 	MarkAsResolved();
 }
 
@@ -1904,7 +1904,7 @@ void CMainFrame::OnMoving(UINT fwSide, LPRECT pRect)
 			GetWindowRect(&thisrect);
 			if (patchrect.right == thisrect.left)
 			{
-				m_dlgFilePatches.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top), 
+				m_dlgFilePatches.SetWindowPos(NULL, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
 					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 			}
 		}
@@ -2094,7 +2094,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		ofn.lpstrFilter = pszFilters;
 		ofn.nFilterIndex = 1;
 
-		// Display the Save dialog box. 
+		// Display the Save dialog box.
 		CString sFile;
 		if (GetSaveFileName(&ofn)==TRUE)
 		{

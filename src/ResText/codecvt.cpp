@@ -20,7 +20,7 @@ ucs2_conversion::do_in(mbstate_t&,
 		*to_next = c1 | c2 << 8;
 	}
 	if (to_next == to && from_next == from_end - 1) res = partial;
-	return res; 
+	return res;
 }
 
 ucs2_conversion::result
@@ -43,7 +43,7 @@ ucs2_conversion::do_out(mbstate_t&,
 
 typedef unsigned char uchar;
 
-inline unsigned char 
+inline unsigned char
 take_6_bits(unsigned value, size_t right_position)
 {
 	return uchar((value >> right_position) & 63);
@@ -59,7 +59,7 @@ most_signifant_bit_position(unsigned value)
 	size_t half = 16;
 	for(; half > 0; half >>= 1) {
 		if (1u << (result + half) <= value ) result += half;
-	}	
+	}
 	return result + 1;
 	//return *lower_bound(range(0u, 31u), \x -> (1 << x <= value));
 }
@@ -83,7 +83,7 @@ utf8_conversion::do_in(mbstate_t&,
 			size_t zero_bit_pos = most_signifant_bit_position(~*from_next);
 			size_t extra_bytes  = 7 - zero_bit_pos;
 
-			if (size_t(from_end - from_next) < extra_bytes + 1) 
+			if (size_t(from_end - from_next) < extra_bytes + 1)
 				return partial;
 
 			*to_next = uchar(*from_next++) & (wchar_t)((1 << (zero_bit_pos - 1)) - 1);
@@ -92,7 +92,7 @@ utf8_conversion::do_in(mbstate_t&,
 				*to_next = *to_next << 6  |  uchar(*from_next) & 63;
 			}
 		}
-	}	
+	}
 
 	return ok;
 }

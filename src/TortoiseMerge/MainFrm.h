@@ -37,7 +37,7 @@ class CBottomView;
  */
 class CMainFrame : public CFrameWndEx, public CPatchFilesDlgCallBack //CFrameWndEx
 {
-	
+
 public:
 	CMainFrame();
 	virtual ~CMainFrame();
@@ -46,7 +46,7 @@ public:
 	virtual void	AssertValid() const;
 	virtual void	Dump(CDumpContext& dc) const;
 #endif
-protected: 
+protected:
 	DECLARE_DYNCREATE(CMainFrame)
 
 	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
@@ -130,7 +130,7 @@ protected:
 	bool			FileSave(bool bCheckResolved=true);
 	bool			FileSaveAs(bool bCheckResolved=true);
 	bool 			StringFound(const CString&)const;
-	enum SearchDirection{SearchNext=0, SearchPrevious=1};	
+	enum SearchDirection{SearchNext=0, SearchPrevious=1};
 	void 			Search(SearchDirection);
 	int				FindSearchStart(int nDefault);
 	/// checks if there are modifications and asks the user to save them first
@@ -139,7 +139,7 @@ protected:
 	/// itself.
 	int				CheckForSave();
 
-protected: 
+protected:
 	CMFCMenuBar     m_wndMenuBar;
 	CMFCStatusBar	m_wndStatusBar;
 	CMFCToolBar		m_wndToolBar;

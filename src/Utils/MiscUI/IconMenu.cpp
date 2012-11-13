@@ -58,14 +58,14 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uI
 	info.cbSize = sizeof(info);
 	info.fMask = MIIM_STRING | MIIM_FTYPE | MIIM_ID;
 	info.fType = MFT_STRING;
-	
+
 	if(hsubmenu)
 	{
 		info.fMask |= MIIM_SUBMENU;
 		info.hSubMenu = hsubmenu;
 	}
 
-	
+
 	info.wID = (UINT)nIDNewItem;
 	info.dwTypeData = menutextbuffer;
 	if (SysInfo::Instance().IsVistaOrLater())

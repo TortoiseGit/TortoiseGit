@@ -100,7 +100,7 @@ bool CHooks::Create()
 		{
 			m_pInstance->insert(std::pair<hookkey, hookcmd>(key, cmd));
 		}
-	} 
+	}
 	return true;
 }
 
@@ -367,7 +367,7 @@ hookiterator CHooks::FindItem(hooktype t, const CTGitPathList& pathList)
 	for (int i=0; i<pathList.GetCount(); ++i)
 	{
 		CTGitPath path = pathList[i];
-		do 
+		do
 		{
 			key.htype = t;
 			key.path = path;
@@ -437,7 +437,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	STARTUPINFO si;
 	SecureZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
-	if (hOut  != INVALID_HANDLE_VALUE) 
+	if (hOut  != INVALID_HANDLE_VALUE)
 	{
 		si.dwFlags     = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 		si.hStdOutput  = hOut;
@@ -450,7 +450,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 
 	DWORD dwFlags = 0;
 
-	if (!CreateProcess(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, dwFlags, NULL, currentDir, &si, &pi)) 
+	if (!CreateProcess(NULL, cmd.GetBuffer(), NULL, NULL, TRUE, dwFlags, NULL, currentDir, &si, &pi))
 	{
 			int err = GetLastError();  // preserve the CreateProcess error
 			error = CFormatMessageWrapper(err);
@@ -468,12 +468,12 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	{
 		DWORD dw;
 		char buf[256];
-		do 
+		do
 		{
 			SecureZeroMemory(&buf,sizeof(buf));
-			while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL)) 
+			while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL))
 			{
-				if (dw == 0) 
+				if (dw == 0)
 					break;
 				error += CString(CStringA(buf,dw));
 				SecureZeroMemory(&buf,sizeof(buf));
@@ -481,9 +481,9 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 		} while (WaitForSingleObject(pi.hProcess, 0) != WAIT_OBJECT_0);
 
 		// perform any final flushing
-		while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL)) 
+		while (ReadFile(hRedir, &buf, sizeof(buf)-1, &dw, NULL))
 		{
-			if (dw == 0) 
+			if (dw == 0)
 				break;
 
 			error += CString(CStringA(buf, dw));

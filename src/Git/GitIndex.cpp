@@ -1337,7 +1337,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 			CString wcglobalgitignore = adminDir + _T("info\\exclude");
 			if ((ret = CheckFileAgainstIgnoreList(wcglobalgitignore, patha, base, type)) != -1)
 				break;
-			
+
 			m_SharedMutex.AcquireShared();
 			CString excludesFile = m_CoreExcludesfiles[adminDir];
 			m_SharedMutex.ReleaseShared();

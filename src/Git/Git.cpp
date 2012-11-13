@@ -1132,13 +1132,13 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		gitdir.ReleaseBuffer();
 
 		git_strarray tag_names;
-		
+
 		if (git_tag_list(&tag_names, repo))
 		{
 			git_repository_free(repo);
 			return -1;
 		}
-		
+
 		for (size_t i = 0; i < tag_names.count; i++)
 		{
 			CStringA tagName(tag_names.strings[i]);
@@ -1341,13 +1341,13 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		gitdir.ReleaseBuffer();
 
 		git_strarray remotes;
-		
+
 		if (git_remote_list(&remotes, repo))
 		{
 			git_repository_free(repo);
 			return -1;
 		}
-		
+
 		for (size_t i = 0; i < remotes.count; i++)
 		{
 			CStringA remote(remotes.strings[i]);

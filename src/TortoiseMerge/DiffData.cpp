@@ -301,7 +301,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 					{
 						CString s1 = m_arBaseFile.GetAt(baseline);
 						CString s2 = sCurrentYourLine;
-						
+
 						if ( dwIgnoreWS == 2 )
 						{
 							s1.TrimLeft(_T(" \t"));
@@ -389,7 +389,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 							s1 = s1.TrimRight(_T(" \t"));
 							s2 = s2.TrimRight(_T(" \t"));
 						}
-						
+
 						if (s1 != s2)
 						{
 							m_YourBaseLeft.AddData(sCurrentBaseLine, DIFFSTATE_WHITESPACE, baseline, endingBase);

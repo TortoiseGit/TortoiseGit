@@ -31,5 +31,5 @@ public:
 	~CLeftView(void);
 protected:
 	bool	OnContextMenu(CPoint point, int nLine, DiffStates state);
-	
+
 };

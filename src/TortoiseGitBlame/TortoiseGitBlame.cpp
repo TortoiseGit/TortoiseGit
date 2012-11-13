@@ -158,7 +158,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		else
 			langId = 0;
 	} while (langId);
-	setlocale(LC_ALL, ""); 
+	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings
 	// See the details here: http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=100887

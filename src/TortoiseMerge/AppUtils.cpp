@@ -74,7 +74,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	} while ((ret == WAIT_TIMEOUT) && (!progDlg->HasUserCancelled()));
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
-	
+
 	if (progDlg->HasUserCancelled())
 	{
 		return FALSE;
@@ -102,7 +102,7 @@ bool CAppUtils::HasClipboardFormat(UINT format)
 	if (OpenClipboard(NULL))
 	{
 		UINT enumFormat = 0;
-		do 
+		do
 		{
 			if (enumFormat == format)
 			{

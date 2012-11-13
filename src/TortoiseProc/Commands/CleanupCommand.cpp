@@ -102,7 +102,7 @@ bool CleanupCommand::Execute()
 
 			token = cmdout.Tokenize(_T("\n"), pos);
 		}
-		delList.DeleteAllFiles(true, false);	
+		delList.DeleteAllFiles(true, false);
 	}
 #if 0
 	CProgressDlg progress;

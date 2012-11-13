@@ -39,14 +39,14 @@
 /**
  * \ingroup Utils
  * Implements an enhanced MessageBox().\n
- * It supports limited html formatting of the text (inherited from CHTMLFormatter). 
+ * It supports limited html formatting of the text (inherited from CHTMLFormatter).
  * Also it supports hyperlinks and starts the web browser if you click on a link.
  * \image html "CMessageBox_1.jpg"
  * \image html "CMessageBox_4.jpg"
  * \image html "CMessageBox_5.jpg"
  * and also a checkbox for "Do not show again" functionality.\n
  * \image html "CMessageBox_2.jpg"
- * 
+ *
  * You can use CMessageBox::Show() as a replacement for the Platform SDK version of
  * MessageBox(). Most of the flags are supported (param uType):\n
  * To indicate the buttons displayed in the message box, specify one of the following values:
@@ -55,66 +55,66 @@
  * <TH align=left width=39%>Value</TH>
  * <TH align=left width=61%>Meaning</TH>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_ABORTRETRYIGNORE</TD>
  * <TD width=61%>The message box contains three push buttons: <B>Abort</B>, <B>Retry</B>, and <B>Ignore</B>.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_CANCELTRYCONTINUE</TD>
  * <TD width=61%>The message box contains three push buttons: <B>Cancel</B>, <B>Try Again</B>, <B>Continue</B>. Use this message box type instead of MB_ABORTRETRYIGNORE.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_OK</TD>
  * <TD width=61%>The message box contains one push button: <B>OK</B>. This is the default.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_OKCANCEL</TD>
  * <TD width=61%>The message box contains two push buttons: <B>OK</B> and <B>Cancel</B>.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_RETRYCANCEL</TD>
  * <TD width=61%>The message box contains two push buttons: <B>Retry</B> and <B>Cancel</B>.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_YESNO</TD>
  * <TD width=61%>The message box contains two push buttons: <B>Yes</B> and <B>No</B>.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_YESNOCANCEL</TD>
  * <TD width=61%>The message box contains three push buttons: <B>Yes</B>, <B>No</B>, and <B>Cancel</B>.</TD>
  * </TR>
- * </TABLE> 
+ * </TABLE>
  * To display an icon in the message box, specify one of the following values
  * <TABLE>
- * 
+ *
  * <TR VALIGN="top">
  * <TH align=left width=38%>Value</TH>
  * <TH align=left width=62%>Meaning</TH>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=38%>MB_ICONEXCLAMATION, <BR>
  * MB_ICONWARNING</TD>
  * <TD width=62%>An exclamation-point icon appears in the message box.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=38%>MB_ICONINFORMATION, MB_ICONASTERISK</TD>
  * <TD width=62%>An icon consisting of a lowercase letter <I>i</I> in a circle appears in the message box.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=38%>MB_ICONQUESTION</TD>
  * <TD width=62%>A question-mark icon appears in the message box.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=38%>MB_ICONSTOP, <BR>
  * MB_ICONERROR, <BR>
@@ -124,29 +124,29 @@
  * </TABLE>
  * To indicate the default button, specify one of the following values
  * <TABLE>
- * 
+ *
  * <TR VALIGN="top">
  * <TH align=left width=39%>Value</TH>
  * <TH align=left width=61%>Meaning</TH>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_DEFBUTTON1</TD>
- * <TD width=61%>The first button is the default button. 
+ * <TD width=61%>The first button is the default button.
  * <P>MB_DEFBUTTON1 is the default unless MB_DEFBUTTON2, MB_DEFBUTTON3, or MB_DEFBUTTON4 is specified.</P>
  * </TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_DEFBUTTON2</TD>
  * <TD width=61%>The second button is the default button.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_DEFBUTTON3</TD>
  * <TD width=61%>The third button is the default button.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=39%>MB_DEFBUTTON4</TD>
  * <TD width=61%>The fourth button is the default button.</TD>
@@ -155,59 +155,59 @@
  *
  * <b>return values:</b>\n
  * <TABLE>
- * 
+ *
  * <TR VALIGN="top">
  * <TH align=left width=22%>Value</TH>
  * <TH align=left width=78%>Meaning</TH>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDABORT</TD>
  * <TD width=78%><B>Abort</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDCANCEL</TD>
  * <TD width=78%><B>Cancel</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDCONTINUE</TD>
  * <TD width=78%><B>Continue</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDIGNORE</TD>
  * <TD width=78%><B>Ignore</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDNO</TD>
  * <TD width=78%><B>No</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDOK</TD>
  * <TD width=78%><B>OK</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDRETRY</TD>
  * <TD width=78%><B>Retry</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDTRYAGAIN</TD>
  * <TD width=78%><B>Try Again</B> button was selected.</TD>
  * </TR>
- * 
+ *
  * <TR VALIGN="top">
  * <TD width=22%>IDYES</TD>
  * <TD width=78%><B>Yes</B> button was selected.</TD>
  * </TR>
  * </TABLE>
- * If a message box has a <B>Cancel</B> button, the function returns the IDCANCEL value 
- * if either the ESC key is pressed or the <B>Cancel</B> button is selected. If the 
+ * If a message box has a <B>Cancel</B> button, the function returns the IDCANCEL value
+ * if either the ESC key is pressed or the <B>Cancel</B> button is selected. If the
  * message box has no <B>Cancel</B> button, pressing ESC has no effect.
  *
  * To get I18L you can define the following strings in your resource string table:\n
@@ -251,7 +251,7 @@ public:
 	 */
 	static UINT Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath = NULL);
 	/**
-	 * Shows a message box. 
+	 * Shows a message box.
 	 * \param hWnd handle to the parent window or NULL
 	 * \param nMessage resource ID of the message string
 	 * \param nCaption resource ID of the title string
@@ -261,7 +261,7 @@ public:
 	 */
 	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath = NULL);
 	/**
-	* Shows a message box. 
+	* Shows a message box.
 	* \param hWnd handle to the parent window or NULL
 	* \param nMessage resource ID of the message string
 	* \param nCaption resource ID of the title string
@@ -279,7 +279,7 @@ public:
 	 * \param lpMessage the message string to show on the message box
 	 * \param lpCaption the dialog title
 	 * \param uType see class description for details
-	 * \param lpRegistry a value string to store the return value of this specific message box. 
+	 * \param lpRegistry a value string to store the return value of this specific message box.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
@@ -296,7 +296,7 @@ public:
 	 * \param nMessage resource ID of the message string
 	 * \param nCaption resource ID of the title string
 	 * \param uType see class description for details
-	 * \param lpRegistry a value string to store the return value of this specific message box. 
+	 * \param lpRegistry a value string to store the return value of this specific message box.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
@@ -338,12 +338,12 @@ public:
 	 * \param lpMessage the message string
 	 * \param lpCaption the title string
 	 * \param nDef number of the default button (1,2 or 3)
-	 * \param icon an icon loaded with MAKEINTRESOURCE() or one 
+	 * \param icon an icon loaded with MAKEINTRESOURCE() or one
 	 * of the system default icons
 	 * \param lpButton1 string for the first button
 	 * \param lpButton2 string for the second button
 	 * \param lpButton3 string for the third button
-	 * \param lpRegistry  a value string to store the return value of this specific message box. 
+	 * \param lpRegistry  a value string to store the return value of this specific message box.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
@@ -357,19 +357,19 @@ public:
 	 * \param nMessage resource ID of the message string
 	 * \param nCaption resource ID of the title string
 	 * \param nDef number of the default button (1,2 or 3)
-	 * \param icon an icon loaded with MAKEINTRESOURCE() or one 
+	 * \param icon an icon loaded with MAKEINTRESOURCE() or one
 	 * of the system default icons
 	 * \param nButton1 resource ID of string for the first button
 	 * \param nButton2 resource ID of string for the second button
 	 * \param nButton3 resource ID of string for the third button
-	 * \param lpRegistry  a value string to store the return value of this specific message box. 
+	 * \param lpRegistry  a value string to store the return value of this specific message box.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage = NULL);
-	
+
 protected:
 	/**
 	 * Stores the value in the registry
@@ -378,7 +378,7 @@ protected:
 	 */
 	static void SetRegistryValue(const CString& sValue, DWORD value);
 	/**
-	 * Shows the modal dialog 
+	 * Shows the modal dialog
 	 * \param pWnd handle to the parent window or NULL
 	 * \param title message box title
 	 * \param msg message to show
@@ -395,7 +395,7 @@ protected:
 
 	/**
 	 * Calculates the size of the string in pixels
-	 * \param str the string to check the size 
+	 * \param str the string to check the size
 	 */
 	CSize GetTextSize(const CString& str);
 	/**

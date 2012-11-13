@@ -77,7 +77,7 @@ END_MESSAGE_MAP()
 // CFilterEdit message handlers
 
 void CFilterEdit::PreSubclassWindow( )
-{	
+{
 	// We must have a multi line edit
 	// to be able to set the edit rect
 	ASSERT( GetStyle() & ES_MULTILINE );
@@ -144,7 +144,7 @@ BOOL CFilterEdit::SetCueBanner(LPCWSTR lpcwText)
 
 void CFilterEdit::ResizeWindow()
 {
-	if (!::IsWindow(m_hWnd)) 
+	if (!::IsWindow(m_hWnd))
 		return;
 
 	RECT editrc, rc;
@@ -205,18 +205,18 @@ BOOL CFilterEdit::OnEraseBkgnd(CDC* pDC)
 	{
 		if (!m_bPressed)
 		{
-			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelNormal, 
+			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelNormal,
 				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, NULL, DI_NORMAL);
 		}
 		else
 		{
-			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelPressed, 
+			DrawIconEx(pDC->GetSafeHdc(), m_rcButtonArea.left, m_rcButtonArea.top, m_hIconCancelPressed,
 				m_sizeCancelIcon.cx, m_sizeCancelIcon.cy, 0, NULL, DI_NORMAL);
 		}
 	}
 	if (m_hIconInfo)
 	{
-		DrawIconEx(pDC->GetSafeHdc(), m_rcInfoArea.left, m_rcInfoArea.top, m_hIconInfo, 
+		DrawIconEx(pDC->GetSafeHdc(), m_rcInfoArea.left, m_rcInfoArea.top, m_hIconInfo,
 			m_sizeInfoIcon.cx, m_sizeInfoIcon.cy, 0, NULL, DI_NORMAL);
 	}
 
@@ -277,7 +277,7 @@ LRESULT CFilterEdit::OnSetFont( WPARAM wParam, LPARAM lParam )
 	return 0;
 }
 
-void CFilterEdit::OnSize( UINT nType, int cx, int cy ) 
+void CFilterEdit::OnSize( UINT nType, int cx, int cy )
 {
 	CEdit::OnSize( nType, cx, cy );
 	ResizeWindow();

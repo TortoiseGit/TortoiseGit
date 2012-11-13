@@ -26,7 +26,7 @@
  * Guard class for the system's wait cursor. Works very much like the CWaitCursor
  * class from MFC, but has additional functions to show or hide the wait cursor
  * when needed.
- * 
+ *
  * Simply instantiate an object of this class to make the wait cursor visible.
  * When the objects gets destructed for any reason, the wait cursor is automatically
  * hidden.

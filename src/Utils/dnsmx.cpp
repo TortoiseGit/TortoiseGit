@@ -258,7 +258,7 @@ USHORT _getshort(char *msgp)
 {
 	register UCHAR *p = (UCHAR *) msgp;
 	register USHORT u;
-	
+
 	u = *p++ << 8;
 	return ((USHORT)(u | *p));
 }
@@ -267,7 +267,7 @@ ULONG _getlong(char *msgp)
 {
 	register UCHAR *p = (UCHAR *) msgp;
 	register ULONG u;
-	
+
 	u = *p++; u <<= 8;
 	u |= *p++; u <<= 8;
 	u |= *p++; u <<= 8;
@@ -288,7 +288,7 @@ int dn_expand(char *msg,char  *eomorig,char *comp_dn,char *exp_dn,int length)
 	register int n, c;
 	char *eom;
 	int len = -1, checked = 0;
-	
+
 	dn = exp_dn;
 	cp = comp_dn;
 	eom = exp_dn + length - 1;
@@ -320,7 +320,7 @@ int dn_expand(char *msg,char  *eomorig,char *comp_dn,char *exp_dn,int length)
 					return(-1);
 			}
 			break;
-			
+
 		case INDIR_MASK:
 			if (len < 0)
 				len = cp - comp_dn + 1;
@@ -336,7 +336,7 @@ int dn_expand(char *msg,char  *eomorig,char *comp_dn,char *exp_dn,int length)
 			if (checked >= eomorig - msg)
 				return (-1);
 			break;
-			
+
 		default:
 			return (-1);			/* flag error */
 		}
@@ -354,7 +354,7 @@ int dn_skipname(UCHAR *comp_dn,  UCHAR *eom)
 {
 	register UCHAR *cp;
 	register int n;
-	
+
 	cp = comp_dn;
 	while (cp < eom && (n = *cp++)) {
 	/*
@@ -383,7 +383,7 @@ BOOL SetBlockingMode ( SOCKET hSocket, BOOL bNonblockingEnable )
 	{
 		return FALSE;
 	}
-	
+
 	long cmd = FIONBIO;
 	long zero = 0;
 	u_long* argp = NULL;
@@ -396,7 +396,7 @@ BOOL SetBlockingMode ( SOCKET hSocket, BOOL bNonblockingEnable )
 	{
 		return FALSE;
 	}
-	
+
 	return TRUE;
 }
 
@@ -410,19 +410,19 @@ BOOL GetMX (
 	SOCKET                  hSocket;
 	SOCKADDR_IN             stSockAddr;                     // socket address structures
 	int                             nAddrLen = sizeof( SOCKADDR_IN );
-	
+
 	HOSTENT                 *pHostEnt;
-	
+
 	char                            achBufOut[ BUFSIZE ] = { 0 };
 	char                            achBufIn[ BUFSIZE ] = { 0 };
 	int                             nQueryLen = 0;
 	int                             nRC;
-	
+
 	char *p, *np, name[128], *eom;
 	int count, j, i, n;
-	
+
 	memset( &stSockAddr, ASCII_NULL, sizeof( stSockAddr ) );
-	
+
 	stSockAddr.sin_family      = AF_INET;
 	stSockAddr.sin_port             = htons( 53);
 	stSockAddr.sin_addr.s_addr = inet_addr( pszServer );
@@ -438,14 +438,14 @@ BOOL GetMX (
 			return FALSE;
 		} // end if
 	} // end if
-	
-	
+
+
 	  /*------------------------------------------------------------
 	  *  Get a DGRAM socket
 	*/
-	
+
 	hSocket = socket( AF_INET, SOCK_DGRAM, 0 );
-	
+
 	if ( hSocket == INVALID_SOCKET )
 	{
 		return FALSE;
@@ -454,7 +454,7 @@ BOOL GetMX (
 	  /*-----------------------------------------------------------
 	  * Format DNS Query
 	*/
-	
+
 	pDNShdr = (PDNS_HDR)&( achBufOut[ 0 ] );
 	pDNShdr->dns_id         = htons( 0xDEAD );
 	pDNShdr->dns_flags      = htons( DNS_FLAG_RD ); // do recurse
@@ -462,41 +462,41 @@ BOOL GetMX (
 	pDNShdr->dns_rr_count   = 0;                  // none in query
 	pDNShdr->dns_auth_count = 0;                  // none in query
 	pDNShdr->dns_add_count  = 0;                  // none in query
-	
+
 	nQueryLen = PutQName( pszQuery, &(achBufOut[ DNS_HDR_LEN ] ) );
 	nQueryLen += DNS_HDR_LEN;
-	
+
 	achBufOut[ nQueryLen++ ]        = 0;
-	achBufOut[ nQueryLen++ ]        = 0;	
+	achBufOut[ nQueryLen++ ]        = 0;
 	achBufOut[ nQueryLen ]          = DNS_RRTYPE_MX;
 	achBufOut[ nQueryLen + 1 ]      = 0;
 	achBufOut[ nQueryLen + 2 ]      = DNS_RRCLASS_IN;
 	achBufOut[ nQueryLen + 3 ]      = 0;
-	
+
 	nQueryLen += 4;
-	
+
 	/*-----------------------------------------------------------
 	* Send DNS Query to server
 	*/
-	
+
 	nRC = sendto( hSocket,
 		achBufOut,
 		nQueryLen,
 		0,
 		(LPSOCKADDR)&stSockAddr,
 		sizeof( SOCKADDR_IN ) );
-	
+
 	if ( nRC == SOCKET_ERROR )
 	{
-		
+
 		closesocket( hSocket );
 		return FALSE;
 	}
 	else
 	{
-		
+
 	}
-	
+
 //	VERIFY ( SetBlockingMode ( hSocket, TRUE ) );
 
 	// 用 select 模型实现连接超时
@@ -531,20 +531,20 @@ BOOL GetMX (
 		0,
 		(LPSOCKADDR)&stSockAddr,
 		&nAddrLen );
-	
+
 	if ( nRC == SOCKET_ERROR )
 	{
 		int nWSAErr = WSAGetLastError();
-		
+
 		if ( nWSAErr != WSAETIMEDOUT )
 		{
-			
+
 			closesocket( hSocket );
 			return FALSE;
 		}
 		else
 		{
-			
+
 			closesocket( hSocket );
 			return FALSE;
 		}
@@ -555,51 +555,51 @@ BOOL GetMX (
 		p = (char *)&pDNShdr[0];
 		p+=12;
 		count = (int)*p;
-		
+
 		// Parse the Question...
 		for (i = 0; i< ntohs(pDNShdr->dns_q_count); i++)
 		{
 			np = name;
 			eom = (char *)pDNShdr+nRC;
-			
+
 			if ( (n = dn_expand((char *)pDNShdr, eom, p, name, 127)) < 0 )
 			{
 				return FALSE;
-				
+
 			}
 			p += n + QFIXEDSZ;
-		}		
-		
+		}
+
 		for (i = 0; i< ntohs(pDNShdr->dns_rr_count); i++)
 		{
-			
+
 			// The Question Name appears Again...
 			if ((n = dn_expand((char *)pDNShdr, eom, p, name, 127)) < 0)
 			{
 				return FALSE;
 			}
 			p+=n;
-			
-			
+
+
 			j =  _getshort(p);;  //TYPE
 			p+=2;
 			//printf("%s\tType:%d", name, j);
-			
+
 			j = _getshort(p);  //CLASS
 			p+=2;
 			//	printf("\tClass:%d", j);
-			
+
 			j = _getlong(p);  //TTL
 			p+=4;
 			//	printf("\tTTL:%d", j);
-			
+
 			j = _getshort(p);  //RDLENGTH
 			p+=2;
 			//	printf("\tRDLENGTH:%d", j);
-			
+
 			j = _getshort(p);  //N??
 			p+=2;
-			
+
 			// This should be an MX Name...
 			if ( (n = dn_expand((char *)pDNShdr, eom, p, name, 127)) < 0 )
 			{
@@ -614,11 +614,11 @@ BOOL GetMX (
 			p += n;
 		}
 		return TRUE;
-		
-		
+
+
 	}
-	
-	
+
+
 	closesocket( hSocket );
 	return FALSE;
 }
@@ -626,22 +626,22 @@ BOOL GetMX (
 
 void GetQName( char FAR *pszHostName, char FAR *pQName )
 {
-	
+
 	int i, j, k;
-	
+
 	for ( i = 0; i < BUFSIZE; i++ )
 	{
 		j = *pQName;
-		
+
 		if ( j == 0 )
 			break;
-		
+
 		for ( k = 1; k <= j; k++ )
 		{
 			*pszHostName++ = *( pQName + i + k );
 		} // end for loop
 	} // end for loop
-	
+
 	*pszHostName++ = ASCII_NULL;
 } /* end GetQName() */
 
@@ -649,14 +649,14 @@ void GetQName( char FAR *pszHostName, char FAR *pQName )
 void PrintQName( char FAR *pQName )
 {
 	int i, j, k;
-	
+
 	for ( i = 0; i < BUFSIZE; i++ )
 	{
 		j = *pQName;
-		
+
 		if ( j == 0 )
 			break;
-		
+
 		for ( k = 1; k <= j; k++ )
 		{
 			//printf( "%c", *( pQName + i + k ) );
@@ -670,18 +670,18 @@ int PutQName( char FAR *pszHostName, char FAR *pQName )
 	int     i;
 	int     j = 0;
 	int     k = 0;
-	
-	
+
+
 	for ( i = 0; *( pszHostName + i ); i++ )
 	{
 		char c = *( pszHostName + i );   /* get next character */
-		
-		
+
+
 		if ( c == '.' )
 		{
 			/* dot encountered, fill in previous length */
 			*( pQName + j ) = k;
-			
+
 			k = 0;      /* reset segment length */
 			j = i + 1;    /* set index to next counter */
 		}
@@ -691,10 +691,10 @@ int PutQName( char FAR *pszHostName, char FAR *pQName )
 			k++;                /* inc count of seg chars */
 		} // end if
 	} // end for loop
-	
+
 	*(pQName + j )                  = k;   /* count for final segment */
 	*(pQName + i + 1 )      = 0;   /* count for trailing NULL segment is 0 */
-	
+
 	return ( i + 1 );        /* return total length of QName */
 }
 

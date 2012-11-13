@@ -2039,7 +2039,7 @@ void CLogDlg::OnBnClickedFollowRenames()
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
 		if (m_bAllBranch)
 		{
-			
+
 			m_bAllBranch = FALSE;
 			m_LogList.m_ShowMask &=~ CGit::LOG_INFO_ALL_BRANCH;
 		}

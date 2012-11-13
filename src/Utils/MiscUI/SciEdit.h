@@ -48,11 +48,11 @@ public:
 	 * the handler is responsible to increment the \a nCmd param by one.
 	 */
 	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
-	
+
 	/**
 	 * The handler is called when the user clicks on any context menu entry
 	 * which isn't handled by CSciEdit itself. That means the handler might
-	 * be called for entries it hasn't added itself! 
+	 * be called for entries it hasn't added itself!
 	 * \remark the handler should return \a true if it handled the call, otherwise
 	 * it should return \a false
 	 */
@@ -111,9 +111,9 @@ public:
 	 * Returns the word located under the cursor.
 	 */
 	CString		GetWordUnderCursor(bool bSelectWord = false);
-	
+
 	void		RegisterContextMenuHandler(CSciEditContextMenuInterface * object) {m_arContextHandlers.Add(object);}
-	
+
 	CStringA	StringForControl(const CString& text);
 	CString		StringFromControl(const CStringA& text);
 	int			LoadFromFile(CString &filename);

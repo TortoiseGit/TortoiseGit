@@ -73,7 +73,7 @@ protected:
 	CRegDWORD		m_regCaseInsensitive;
 	BOOL			m_bUTF8Default;
 	CRegDWORD		m_regUTF8Default;
-	
+
 	CRegDWORD		m_regFontSize;
 	DWORD			m_dwFontSize;
 	CRegString		m_regFontName;

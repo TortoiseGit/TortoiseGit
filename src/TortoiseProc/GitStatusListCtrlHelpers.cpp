@@ -605,7 +605,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			{
 				__int64 fileSize1 = entry1->IsDirectory() ? 0 : entry1->GetFileSize();
 				__int64 fileSize2 = entry2->IsDirectory() ? 0 : entry2->GetFileSize();
-				
+
 				result = int(fileSize1 - fileSize2);
 			}
 		}

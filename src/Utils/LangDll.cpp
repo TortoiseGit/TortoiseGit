@@ -123,7 +123,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll)
 				&nFixedLength);
 			lpTransArray = (TRANSARRAY*) lpFixedPointer;
 
-			_stprintf_s(strLangProduktVersion, MAX_PATH, 
+			_stprintf_s(strLangProduktVersion, MAX_PATH,
 						_T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
 						lpTransArray[0].wLanguageID,
 						lpTransArray[0].wCharacterSet);
@@ -136,7 +136,7 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll)
 			bReturn = (_tcscmp(sVer, (LPCTSTR)lpVersion)==0);
 			free(pBuffer);
 		}
-	} 
+	}
 
 	return bReturn;
 }

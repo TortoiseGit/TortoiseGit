@@ -88,7 +88,7 @@ void CACEdit::Init()
 		WS_THICKFRAME | WS_CHILD | WS_BORDER |
 		WS_CLIPSIBLINGS | WS_OVERLAPPED,
 		CRect(rcWnd.left, rcWnd.top +20, rcWnd.left+ 200, rcWnd.top+200),
-		GetDesktopWindow(), 
+		GetDesktopWindow(),
 		0x3E8, NULL));
 
 	CString m_ClassName;
@@ -151,7 +151,7 @@ void CACEdit::AddSearchStrings(LPCTSTR Strings[])
 
 void CACEdit::AddSearchString(LPCTSTR lpszString)
 {
-	if(m_iType == -1) {ASSERT(0); return;} 
+	if(m_iType == -1) {ASSERT(0); return;}
 
 	m_Liste.AddSearchString(lpszString);
 }
@@ -162,12 +162,12 @@ void CACEdit::RemoveSearchAll()
 {
 	if(m_iType == -1) {ASSERT(0); return;}
 
-	m_Liste.RemoveAll();	
+	m_Liste.RemoveAll();
 }
 
 /*********************************************************************/
 
-void CACEdit::OnKillfocus() 
+void CACEdit::OnKillfocus()
 {
 	if(m_Liste.GetSafeHwnd()) // fix Vers 1.1
 		m_Liste.ShowWindow(false);
@@ -191,9 +191,9 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 		return true;
 	}
 
-	if (nChar == VK_DOWN || nChar == VK_UP 
+	if (nChar == VK_DOWN || nChar == VK_UP
 		|| nChar == VK_PRIOR || nChar == VK_NEXT
-		|| nChar == VK_HOME || nChar == VK_END) 
+		|| nChar == VK_HOME || nChar == VK_END)
 	{
 		/*
 		** Vers. 1.1
@@ -206,7 +206,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 			{
 				m_Liste.CopyList();
 				return true;
-			}	
+			}
 		}
 
 		if(m_Liste.IsWindowVisible())
@@ -214,7 +214,7 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 			int pos;
 
 
-			if(m_iMode & _MODE_STANDARD_ 
+			if(m_iMode & _MODE_STANDARD_
 				|| m_iMode & _MODE_FILESYSTEM_
 				|| m_iMode & _MODE_FS_START_DIR_)
 			{
@@ -314,12 +314,12 @@ bool CACEdit::HandleKey(UINT nChar, bool m_bFromChild)
 
 /*********************************************************************/
 
-void CACEdit::OnChange() 
+void CACEdit::OnChange()
 {
 	CString m_Text;
 	int pos=0,len;
 
-	if(m_iType == -1) 
+	if(m_iType == -1)
 	{ASSERT(0); return;}
 
 	GetWindowText(m_EditText);
@@ -345,7 +345,7 @@ void CACEdit::OnChange()
 			else
 			{
 				if(len > 2 && pos == len)
-				{			
+				{
 					if(_taccess(m_EditText,0) == 0)
 					{
 						ReadDirectory(m_EditText);
@@ -357,7 +357,7 @@ void CACEdit::OnChange()
 			}
 		} // m_CursorMode
 	}
-	//----------------------------------------------	
+	//----------------------------------------------
 	if(m_iMode & _MODE_SEPARATION_)
 	{
 		if(!m_CursorMode)
@@ -389,7 +389,7 @@ void CACEdit::OnChange()
 
 int CACEdit::FindSepLeftPos(int pos,bool m_bIncludePrefix)
 {
-	int len = m_EditText.GetLength(); 
+	int len = m_EditText.GetLength();
 	TCHAR ch;
 	int i;
 
@@ -412,7 +412,7 @@ int CACEdit::FindSepLeftPos(int pos,bool m_bIncludePrefix)
 
 int CACEdit::FindSepLeftPos2(int pos)
 {
-	int len = m_EditText.GetLength(); 
+	int len = m_EditText.GetLength();
 	TCHAR ch;
 
 	if(pos >= len && len != 1)
@@ -435,7 +435,7 @@ int CACEdit::FindSepLeftPos2(int pos)
 
 int CACEdit::FindSepRightPos(int pos)
 {
-	int len = m_EditText.GetLength(); 
+	int len = m_EditText.GetLength();
 	TCHAR ch;
 	int i;
 
@@ -470,7 +470,7 @@ void CACEdit::OnCloseList()
 
 /*********************************************************************/
 
-BOOL CACEdit::PreTranslateMessage(MSG* pMsg) 
+BOOL CACEdit::PreTranslateMessage(MSG* pMsg)
 {
 	if(pMsg->message == WM_KEYDOWN)
 	{
@@ -511,7 +511,7 @@ void CACEdit::ReadDirectory(CString m_Dir)
 	ch = (TCHAR)towupper(m_Dir.GetAt(0));
 	m_Dir.SetAt(0,ch);
 
-	CString m_Name,m_File,m_Dir1 = m_Dir;	
+	CString m_Name,m_File,m_Dir1 = m_Dir;
 	if (m_Dir.Right(1) != _T('\\'))
 		m_Dir += _T("\\");
 
@@ -578,7 +578,7 @@ void CACEdit::SetStartDirectory(LPCTSTR lpszString)
 }
 
 /*********************************************************************
-** CComboBox 
+** CComboBox
 ** NEW:V1.1
 *********************************************************************/
 

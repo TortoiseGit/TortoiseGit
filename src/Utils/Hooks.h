@@ -52,11 +52,11 @@ public:
 	hooktype		htype;
 	CTGitPath		path;
 
-	bool operator < (const hookkey& hk) const 
+	bool operator < (const hookkey& hk) const
 	{
-		if (htype == hk.htype) 
-			return (path < hk.path); 
-		else 
+		if (htype == hk.htype)
+			return (path < hk.path);
+		else
 			return htype < hk.htype;
 	}
 };
@@ -109,7 +109,7 @@ public:
 	/**
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
-	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, 
+	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd,
 							bool bWait, bool bShow);
 
 	/// returns the string representation of the hook type.
@@ -123,12 +123,12 @@ public:
 	 * \param pathList a list of paths to look for the hook scripts
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
 	 */
-	bool				StartUpdate(const CTGitPathList& pathList, DWORD& exitcode, 
+	bool				StartUpdate(const CTGitPathList& pathList, DWORD& exitcode,
 									CString& error);
 	/**
 	 * Executes the Pre-Update-Hook that first matches one of the paths in
@@ -138,7 +138,7 @@ public:
 	 * \param rev the revision the update is done to
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
@@ -146,7 +146,7 @@ public:
 	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
 	 * the string representation of \c rev.
 	 */
-	bool				PreUpdate(const CTGitPathList& pathList, git_depth_t depth, 
+	bool				PreUpdate(const CTGitPathList& pathList, git_depth_t depth,
 									GitRev rev, DWORD& exitcode, CString& error);
 	/**
 	 * Executes the Post-Update-Hook that first matches one of the paths in
@@ -156,7 +156,7 @@ public:
 	 * \param rev the revision the update was done to
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
@@ -164,7 +164,7 @@ public:
 	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
 	 * the string representation of \c rev.
 	 */
-	bool				PostUpdate(const CTGitPathList& pathList, git_depth_t depth, 
+	bool				PostUpdate(const CTGitPathList& pathList, git_depth_t depth,
 									GitRev rev, DWORD& exitcode, CString& error);
 
 	/**
@@ -174,7 +174,7 @@ public:
 	 * \param message a commit message
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
@@ -192,7 +192,7 @@ public:
 	 * \param message the commit message
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the update is about to be done on.
@@ -200,8 +200,8 @@ public:
 	 * Git_depth_t parameter. See the Subversion source documentation about the
 	 * values.
 	 */
-	bool				PreCommit(const CTGitPathList& pathList, git_depth_t depth, 
-									const CString& message, DWORD& exitcode, 
+	bool				PreCommit(const CTGitPathList& pathList, git_depth_t depth,
+									const CString& message, DWORD& exitcode,
 									CString& error);
 	/**
 	 * Executes the Post-Commit-Hook that first matches one of the paths in
@@ -212,7 +212,7 @@ public:
 	 * \param rev the revision the commit was done to
 	 * \param exitcode on return, contains the exit code of the hook script
 	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is 
+	 * \remark the string "%PATHS% in the command line of the hook script is
 	 * replaced with the path to a temporary file which contains a list of files
 	 * in \c pathList, separated by newlines. The hook script can parse this
 	 * file to get all the paths the commit is about to be done on.
@@ -220,8 +220,8 @@ public:
 	 * Git_depth_t parameter. See the Subversion source documentation about the
 	 * values.
 	 */
-	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth, 
-									GitRev rev, const CString& message, 
+	bool				PostCommit(const CTGitPathList& pathList, git_depth_t depth,
+									GitRev rev, const CString& message,
 									DWORD& exitcode, CString& error);
 
 	bool	PrePush(const CTGitPathList& pathList,DWORD& exitcode, CString& error);

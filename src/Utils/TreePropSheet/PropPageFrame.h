@@ -31,21 +31,21 @@ namespace TreePropSheet
 
 
 /**
-An object of an CPropertyPageFrame-derived class is used by 
+An object of an CPropertyPageFrame-derived class is used by
 CTreePropSheet to display a frame for the property pages.
 
-Derived classes have to implement at least the Create() and the 
+Derived classes have to implement at least the Create() and the
 GetWnd() method, which
 returns a pointer to the CWnd-obect of the window, that has been
 created by the call to the Create() method. An implementation can
 provide the CWnd-object by using it as a property or by deriving
-from CWnd or a more specialiced class. This way has been choosen 
+from CWnd or a more specialiced class. This way has been choosen
 instead of deriving CPropPageFrame from CWnd, to allow derived class
-to derive from more specialized classes than CWnd 
+to derive from more specialized classes than CWnd
 (i.e. CStatic, etc.). From the WM_PAINT-handler of your derived class
 you have to call the Draw()-method.
 
-Most implementations will also implement the DrawCaption() and 
+Most implementations will also implement the DrawCaption() and
 DrawMsg() methods, to provide custom drawing functionality.
 
 @author Sven Wiegand
@@ -95,7 +95,7 @@ public:
 	BOOL GetShowCaption() const;
 
 	/**
-	Sets the height of the caption in pixels. This value is ignored 
+	Sets the height of the caption in pixels. This value is ignored
 	until the caption is enabled by ShowCaption(TRUE).
 
 	This default implementation calls the SafeUpdateWindow() method
@@ -223,8 +223,8 @@ protected:
 
 	The caption can be enabled or disabled using the ShowCaption()
 	method. This method should return an empty rect, if the caption
-	is disabled. If the caption is enabled the height of the rect 
-	should be as large, as specified by the latest call to the 
+	is disabled. If the caption is enabled the height of the rect
+	should be as large, as specified by the latest call to the
 	SetCaptionHeight() method.
 
 	The rectangle, returned by this method will be passed to the
@@ -233,8 +233,8 @@ protected:
 	If the caption is enabled currently, this default implementation
 	returns a rectangle, that has the width of the client area and
 	the height, specified by the latest call to SetCaptionHeight(),
-	starting and y-position 0. If the caption is disabled at the 
-	moment, this method returns an empty rectangle with the width of 
+	starting and y-position 0. If the caption is disabled at the
+	moment, this method returns an empty rectangle with the width of
 	the client area.
 	*/
 	virtual CRect CalcCaptionArea();
@@ -258,13 +258,13 @@ protected:
 // Implementation helpers
 protected:
 	/**
-	If the m_hWnd property of the CWnd-object returend by GetWnd() 
+	If the m_hWnd property of the CWnd-object returend by GetWnd()
 	specifies a valid window, this method will invalidate the specified
 	rectangle, to schedule it for repaint, otherwise the method will
 	return without doing anything.
 
 	@param lpRect
-		Pointer to the rectangular area, that should be marked for 
+		Pointer to the rectangular area, that should be marked for
 		repainting or NULL, if the whole client area should be marked
 		for repainting.
 	*/
@@ -274,15 +274,15 @@ protected:
 private:
 	/** TRUE if the caption should be drawn, FALSE otherwise. */
 	BOOL m_bShowCaption;
-		
+
 	/** Height of the caption in pixels, if it is enabled. */
 	int m_nCaptionHeight;
 
 	/** Text to display in the caption. */
 	CString m_strCaption;
 
-	/** 
-	Icon to display in the caption or NULL if no icon should be 
+	/**
+	Icon to display in the caption or NULL if no icon should be
 	displayed.
 	*/
 	HICON m_hCaptionIcon;

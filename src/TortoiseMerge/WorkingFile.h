@@ -24,7 +24,7 @@
  * for the various files used in TMerge
  */
 class CWorkingFile
-{ 
+{
 public:
 	CWorkingFile(void);
 	~CWorkingFile(void);
@@ -49,4 +49,4 @@ private:
 	CString m_sFilename;
 	CString m_sDescriptiveName;
 
-}; 
+};

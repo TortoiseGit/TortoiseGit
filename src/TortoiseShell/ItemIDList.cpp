@@ -121,9 +121,9 @@ stdstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 		(_tcsncmp(ret.c_str(), _T("::{"), 3)==0))
 	{
 		CComPtr<IShellLibrary> plib;
-		HRESULT hr = CoCreateInstance(CLSID_ShellLibrary, 
-									  NULL, 
-									  CLSCTX_INPROC_SERVER, 
+		HRESULT hr = CoCreateInstance(CLSID_ShellLibrary,
+									  NULL,
+									  CLSCTX_INPROC_SERVER,
 									  IID_PPV_ARGS(&plib));
 		if (SUCCEEDED(hr))
 		{

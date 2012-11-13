@@ -73,7 +73,7 @@ protected:
 
 protected:
 	CStringArray m_arFiles;
-	
+
 	char* m_pBuffer;
 	int	 m_nBufferSize;
 };

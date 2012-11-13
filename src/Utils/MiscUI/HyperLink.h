@@ -29,10 +29,10 @@ public:
     virtual ~CHyperLink();
 
 public:
-    enum UnderLineOptions 
-	{ 
-		ulHover = -1, 
-		ulNone = 0, 
+    enum UnderLineOptions
+	{
+		ulHover = -1,
+		ulNone = 0,
 		ulAlways = 1
 	};
 

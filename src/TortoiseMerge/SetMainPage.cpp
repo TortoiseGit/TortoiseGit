@@ -46,7 +46,7 @@ CSetMainPage::CSetMainPage()
 	m_regBackup = CRegDWORD(_T("Software\\TortoiseMerge\\Backup"));
 	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseMerge\\FirstDiffOnLoad"), TRUE);
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseMerge\\TabSize"), 4);
-	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreEOL"), TRUE);	
+	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreEOL"), TRUE);
 	m_regOnePane = CRegDWORD(_T("Software\\TortoiseMerge\\OnePane"));
 	m_regIgnoreWS = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreWS"));
 	m_regViewLinenumbers = CRegDWORD(_T("Software\\TortoiseMerge\\ViewLinenumbers"), 1);
@@ -159,9 +159,9 @@ BOOL CSetMainPage::OnInitDialog()
 		break;
 	case 2:
 		uRadio = IDC_WSIGNORECHANGED;
-		break;	
+		break;
 	default:
-		break;	
+		break;
 	}
 
 	CheckRadioButton(IDC_WSCOMPARE, IDC_WSIGNORECHANGED, uRadio);
@@ -243,9 +243,9 @@ void CSetMainPage::OnBnClickedWhitespace()
 		break;
 	case IDC_WSIGNORECHANGED:
 		m_nIgnoreWS = 2;
-		break;	
+		break;
 	default:
-		break;	
+		break;
 	}
 }
 

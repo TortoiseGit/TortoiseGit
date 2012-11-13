@@ -459,7 +459,7 @@ void CPushDlg::OnBnClickedButtonBrowseSourceBranch()
 			{
 				if (dlg.GetSelectedHash().IsEmpty())
 					return;
-				
+
 				m_BranchSource.SetWindowText(dlg.GetSelectedHash());
 				OnCbnSelchangeBranchSource();
 			}

@@ -28,8 +28,8 @@
  * A template which can be used as the base-class of dialogs which form the main dialog
  * of a 'dialog-style application'
  * Just provides the boiler-plate code for dealing with application icons
- * 
- * \remark Replace all references to CDialog or CResizableDialog in your dialog class with 
+ *
+ * \remark Replace all references to CDialog or CResizableDialog in your dialog class with
  * either CResizableStandAloneDialog, CStandAloneDialog or CStateStandAloneDialog, as appropriate
  */
 template <typename BaseType> class CStandAloneDialogTmpl : public BaseType

@@ -1,5 +1,5 @@
 // TortoiseSVN - a Windows shell extension for easy version control
-// 
+//
 // Copyright (C) 2008 - TortoiseSVN
 //
 // IMPORTANT: While the rest of TortoiseSVN is licensed under the GPL,
@@ -56,7 +56,7 @@ interface IBugTraqProvider : IUnknown
 		[in] BSTR originalMessage,				// The text already present in the commit message.
 												// Your provider should include this text in the new message, where appropriate.
 		[out, retval] BSTR *newMessage			// The new text for the commit message. This replaces the original message.
-	);			
+	);
 };
 
 [
@@ -73,7 +73,7 @@ interface IBugTraqProvider2 : IBugTraqProvider
 	HRESULT GetCommitMessage2 (
 		[in] HWND hParentWnd,					// Parent window for your provider's UI.
 		[in] BSTR parameters,					// Parameters for your provider.
-		[in] BSTR commonURL,					// the common url of all items in the commit dialog (checked or unchecked!), 
+		[in] BSTR commonURL,					// the common url of all items in the commit dialog (checked or unchecked!),
 												// with the url of the item that was selected to bring up the commit dialog having precedence.
 		[in] BSTR commonRoot,
 		[in] SAFEARRAY(BSTR) pathList,
@@ -86,7 +86,7 @@ interface IBugTraqProvider2 : IBugTraqProvider
 		[out] SAFEARRAY(BSTR) * revPropNames,	// a list of revision property names which are applied to the commit
 		[out] SAFEARRAY(BSTR) * revPropValues,	// a list of revision property values which are applied to the commit
 		[out, retval] BSTR * newMessage			// The new text for the commit message. This replaces the original message.
-	);			
+	);
 
 	/** Called right before the commit dialog is dismissed. This is the last chance to reject
 	 * a commit. You can check the commit log message here and return an error message if it does not

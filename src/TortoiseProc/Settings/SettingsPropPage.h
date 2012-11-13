@@ -33,9 +33,9 @@ public:
 	explicit ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
 
 	// extended construction
-	ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption, 
+	ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption,
 		UINT nIDHeaderTitle, UINT nIDHeaderSubTitle = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
-	ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption, 
+	ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption,
 		UINT nIDHeaderTitle, UINT nIDHeaderSubTitle = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
 
 	virtual ~ISettingsPropPage();

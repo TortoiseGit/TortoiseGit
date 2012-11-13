@@ -34,7 +34,7 @@
  *    m_ScrollTool.SetText(&thumbpoint, _T("Line: %*ld"), maxchars, nTrackPos);
  *    break;
  * }
- * 
+ *
  */
 class CScrollTool : public CWnd
 {

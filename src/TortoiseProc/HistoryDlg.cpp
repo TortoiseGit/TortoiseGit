@@ -77,7 +77,7 @@ BOOL CHistoryDlg::OnInitDialog()
 		horizExtent = max(horizExtent, itemExtent.cx+5);
 	}
 	m_List.SetHorizontalExtent(horizExtent);
-	ReleaseDC(pDC); 
+	ReleaseDC(pDC);
 
 	AddAnchor(IDC_HISTORYLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);

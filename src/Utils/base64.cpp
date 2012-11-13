@@ -1,4 +1,4 @@
-/* 
+/*
    base64.cpp and base64.h
 
    Copyright (C) 2004-2008 Ren?Nyffenegger
@@ -28,18 +28,18 @@
 #include "base64.h"
 #include <iostream>
 
-static const std::string base64_chars = 
+static const std::string base64_chars =
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
              "0123456789+/";
 
 
-static inline bool is_base64(unsigned char c) 
+static inline bool is_base64(unsigned char c)
 {
   return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) 
+std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len)
 {
   std::string ret;
   int i = 0, j = 0;
@@ -48,7 +48,7 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
   while (in_len--)
 	{
     char_array_3[i++] = *(bytes_to_encode++);
-    if (i == 3) 
+    if (i == 3)
 		{
       char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
       char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
@@ -83,14 +83,14 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
 
 }
 
-std::string base64_decode(std::string const& encoded_string) 
+std::string base64_decode(std::string const& encoded_string)
 {
   int in_len = (int)encoded_string.size();
   int i = 0, j = 0, in_ = 0;
   unsigned char char_array_4[4], char_array_3[3];
   std::string ret;
 
-  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) 
+  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_]))
 	{
     char_array_4[i++] = encoded_string[in_]; in_++;
     if (i ==4) {
@@ -107,7 +107,7 @@ std::string base64_decode(std::string const& encoded_string)
     }
   }
 
-  if (i) 
+  if (i)
 	{
     for (j = i; j <4; j++)
       char_array_4[j] = 0;
@@ -119,7 +119,7 @@ std::string base64_decode(std::string const& encoded_string)
     char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
     char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-    for (j = 0; (j < i - 1); j++) 
+    for (j = 0; (j < i - 1); j++)
 			ret += char_array_3[j];
   }
 

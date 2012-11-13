@@ -68,7 +68,7 @@ private:
 
 public:
 
-    /// construction 
+    /// construction
 
     CProfilingRecord ( const char* name
                      , const char* file
@@ -115,7 +115,7 @@ public:
 
     CRecordProfileEvent (CProfilingRecord* aRecord);
 
-	/// destruction: time interval to profiling record, 
+	/// destruction: time interval to profiling record,
 	/// if Stop() had not been called before
 
 	~CRecordProfileEvent();

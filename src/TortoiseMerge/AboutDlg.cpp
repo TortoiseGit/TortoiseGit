@@ -62,7 +62,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetDlgItemText(IDC_VERSIONBOX, boxtitle);
 	const svn_version_t * diffver = svn_diff_version();
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, _T(TGIT_PLATFORM), _T(TGIT_VERDATE),
-		diffver->major, diffver->minor, diffver->patch, CString(diffver->tag), 
+		diffver->major, diffver->minor, diffver->patch, CString(diffver->tag),
 		APR_MAJOR_VERSION, APR_MINOR_VERSION, APR_PATCH_VERSION,
 		APU_MAJOR_VERSION, APU_MINOR_VERSION, APU_PATCH_VERSION);
 	SetDlgItemText(IDC_VERSIONABOUT, temp);

@@ -185,7 +185,7 @@ void COpenDlg::OnOK()
 	if (OpenClipboard())
 	{
 		UINT enumFormat = 0;
-		do 
+		do
 		{
 			if (enumFormat == m_cFormat)
 			{
@@ -226,10 +226,10 @@ void COpenDlg::OnOK()
 
 	if (bUDiffOnClipboard && m_bFromClipboard)
 	{
-		if (OpenClipboard()) 
-		{ 
-			HGLOBAL hglb = GetClipboardData(m_cFormat); 
-			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb); 
+		if (OpenClipboard())
+		{
+			HGLOBAL hglb = GetClipboardData(m_cFormat);
+			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
 			DWORD len = GetTempPath(0, NULL);
 			auto_buffer<TCHAR> path(len+1);
@@ -254,9 +254,9 @@ void COpenDlg::OnOK()
 				}
 				fclose(outFile);
 			}
-			GlobalUnlock(hglb); 
-			CloseClipboard(); 
-		} 
+			GlobalUnlock(hglb);
+			CloseClipboard();
+		}
 
 	}
 
@@ -286,7 +286,7 @@ bool COpenDlg::CheckAndEnableClipboardChecker()
 		if (OpenClipboard())
 		{
 			UINT enumFormat = 0;
-			do 
+			do
 			{
 				if (enumFormat == m_cFormat)
 				{

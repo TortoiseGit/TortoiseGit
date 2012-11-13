@@ -154,10 +154,10 @@ BOOL CFilePatchesDlg::Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, 
 		m_arFileStates.Add(state);
 		SHFILEINFO    sfi;
 		SHGetFileInfo(
-			m_pPatch->GetFullPath(m_sPath, i), 
+			m_pPatch->GetFullPath(m_sPath, i),
 			FILE_ATTRIBUTE_NORMAL,
-			&sfi, 
-			sizeof(SHFILEINFO), 
+			&sfi,
+			sizeof(SHFILEINFO),
 			SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
 		m_cFileList.InsertItem(i, sFile, m_ImgList.Add(sfi.hIcon));
 
@@ -230,9 +230,9 @@ void CFilePatchesDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	if(temp != temp2)
 	{
 		if(temp == _T("NUL"))
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("New file: ") + temp2, pGetInfoTip->cchTextMax);	
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("New file: ") + temp2, pGetInfoTip->cchTextMax);
 		else if(temp2 == _T("NUL"))
-			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("Delete file: ") + temp, pGetInfoTip->cchTextMax);	
+			_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, _T("Delete file: ") + temp, pGetInfoTip->cchTextMax);
 	}
 	else
 		_tcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, temp, pGetInfoTip->cchTextMax);
@@ -289,12 +289,12 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				crText = RGB(200, 0, 0);
 			}
-		
+
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_DELETE)
 			{
 				crText = RGB(200, 0, 0);
 			}
-		
+
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_RENAME)
 			{
 				crText = RGB(0, 200, 200);
@@ -304,7 +304,7 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			{
 				crText = RGB(0, 0, 200);
 			}
-		
+
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_PATCHED)
 			{
 				crText = ::GetSysColor(COLOR_GRAYTEXT);
@@ -397,7 +397,7 @@ void CFilePatchesDlg::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 		GetWindowRect(&windowrect);
 		GetClientRect(&clientrect);
 		m_nWindowHeight = windowrect.bottom - windowrect.top;
-		MoveWindow(windowrect.left, windowrect.top, 
+		MoveWindow(windowrect.left, windowrect.top,
 			windowrect.right - windowrect.left,
 			m_nWindowHeight - (clientrect.bottom - clientrect.top));
 	}

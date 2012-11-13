@@ -43,12 +43,12 @@ void CSoundUtils::RegisterTGitSounds()
 	eventlabelwarn = CString(MAKEINTRESOURCE(IDS_WARN_WARNING));
 	CRegString eventlabelnote = CRegString(_T("AppEvents\\EventLabels\\TGit_Notification\\"));
 	eventlabelnote = CString(MAKEINTRESOURCE(IDS_WARN_NOTE));
-	
+
 	CRegString appscheme = CRegString(_T("AppEvents\\Schemes\\Apps\\TortoiseProc\\"));
 	appscheme = _T("TortoiseGit");
 
 	CString apppath = CPathUtils::GetAppDirectory();
-	
+
 	CRegistryKey schemenamekey = CRegistryKey(_T("AppEvents\\Schemes\\Names"));
 	CStringList schemenames;
 	schemenamekey.getSubKeys(schemenames);
@@ -80,7 +80,7 @@ void CSoundUtils::RegisterTGitSounds()
 			{
 				notificationkeyval = apppath + _T("TortoiseGit_Notification.wav");
 			}
-		}		
+		}
 	}
 }
 

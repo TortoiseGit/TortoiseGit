@@ -46,7 +46,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 
 	CPoint	pt = rect.TopLeft();
 	CPoint  ptCur = pt;
-	
+
 
 	COLORREF crText = pDC->GetTextColor();
 	COLORREF crBg = pDC->GetBkColor();
@@ -67,13 +67,13 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 	CString strTag = _T("");
 	CString strText = _T("");
 	UINT nParam = 0;
-	
+
 	CRect linkRect;
 	linkRect.SetRectEmpty();
 
 	CUIntArray percent;
 	percent.Add(0);
-	
+
 	int nTemp = 0; //the temporary variable
 	BOOL bFirstOutput = TRUE;
 
@@ -104,7 +104,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 					break;
 				case _T('\r'):
 					break;
-				default: 
+				default:
 					strText += str.GetAt(i);
 					break;
 				}
@@ -310,7 +310,7 @@ CSize CHTMLFormatter::DrawHTML(CDC * pDC, CRect rect, CString str, LOGFONT font,
 				strText = _T("");
 				bFirstOutput = FALSE;
 			}
-			
+
 			//Executes command
 			switch (nCmd)
 			{

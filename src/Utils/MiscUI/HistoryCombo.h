@@ -33,8 +33,8 @@
  *    contains URLs
  * -# in your OnInitDialog() call the LoadHistory() method
  * -# in your OnOK() or somewhere similar call the SaveHistory() method
- * 
- * thats it. 
+ *
+ * thats it.
  */
 #include "git.h"
 class CHistoryCombo : public CComboBoxEx

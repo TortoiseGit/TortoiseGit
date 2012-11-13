@@ -224,7 +224,7 @@ void CPropPageFrameDefault::FillGradientRectH(CDC *pDc, const RECT &rect, COLORR
 		pDc->MoveTo(x, rect.top);
 		pDc->LineTo(x, rect.bottom);
 		pDc->SelectObject(pPrevPen);
-		
+
 		dR+= dRStep;
 		dG+= dGStep;
 		dB+= dBStep;

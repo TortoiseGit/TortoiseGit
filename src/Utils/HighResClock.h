@@ -23,7 +23,7 @@
 // CHighResClock
 //
 //		high resolution clock for performance measurement.
-//		Depending on the hardware it will provide µsec 
+//		Depending on the hardware it will provide µsec
 //		resolution and accuracy.
 //
 //		May not be available on all machines.
@@ -41,7 +41,7 @@ public:
 
 	// construction (starts measurement) / destruction
 
-	CHighResClock() 
+	CHighResClock()
 	{
 		taken.QuadPart = 0;
 		Start();

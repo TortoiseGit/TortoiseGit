@@ -93,5 +93,5 @@ void CURLDlg::OnSizing(UINT fwSide, LPRECT pRect)
 		pRect->top = pRect->bottom - m_height;
 		break;
 	}
-	CResizableStandAloneDialog::OnSizing(fwSide, pRect);	
+	CResizableStandAloneDialog::OnSizing(fwSide, pRect);
 }

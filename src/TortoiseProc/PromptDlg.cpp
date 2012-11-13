@@ -68,7 +68,7 @@ BOOL CPromptDlg::OnInitDialog()
 		m_pass.SetPasswordChar('\0');
 		GetDlgItem(IDC_SAVECHECK)->ShowWindow(SW_HIDE);
 	}
-	
+
 	m_pass.SetFocus();
 	if ((m_hParentWnd==NULL)&&(hWndExplorer))
 		CenterWindow(CWnd::FromHandle(m_hParentWnd));

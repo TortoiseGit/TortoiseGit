@@ -42,7 +42,7 @@ CHistoryCombo::~CHistoryCombo()
 {
 }
 
-BOOL CHistoryCombo::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CHistoryCombo::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if (!m_bAllowSortStyle)  //turn off CBS_SORT style
 		cs.style &= ~CBS_SORT;
@@ -57,7 +57,7 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 	{
 		bool bShift = !!(GetKeyState(VK_SHIFT) & 0x8000);
 		int nVirtKey = (int) pMsg->wParam;
-		
+
 		if (nVirtKey == VK_RETURN)
 			return OnReturnKeyPressed();
 		else if (nVirtKey == VK_DELETE && bShift && GetDroppedState() )
@@ -72,7 +72,7 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 			return TRUE;
 		}
 	}
-	else if (pMsg->message == WM_MOUSEMOVE && this->m_bDyn ) 
+	else if (pMsg->message == WM_MOUSEMOVE && this->m_bDyn )
 	{
 		if ((pMsg->wParam & MK_LBUTTON) == 0)
 		{
@@ -101,7 +101,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 {
 	if (str.IsEmpty())
 		return -1;
-	
+
 	COMBOBOXEXITEM cbei;
 	SecureZeroMemory(&cbei, sizeof cbei);
 	cbei.mask = CBEIF_TEXT;
@@ -351,7 +351,7 @@ CString CHistoryCombo::GetString() const
 	int sel;
 	sel = GetCurSel();
 	DWORD style=GetStyle();
-	
+
 	if (sel == CB_ERR ||(m_bURLHistory)||(m_bPathHistory) || (!(style&CBS_SIMPLE)))
 	{
 		GetWindowText(str);

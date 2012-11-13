@@ -33,7 +33,7 @@ private:
 	~CTempFiles(void);
 public:
 	static CTempFiles& Instance();
-	
+
 	/**
 	 * Returns a path to a temporary file.
 	 * \param bRemoveAtEnd if true, the temp file is removed when this object

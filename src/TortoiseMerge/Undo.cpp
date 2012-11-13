@@ -93,7 +93,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 	}
 
 	if (m_viewstates.size() < m_originalstate)
-		// Can never get back to original state now 
+		// Can never get back to original state now
 		m_originalstate = 1; // size() is always a multiple of 3
 
 	return true;

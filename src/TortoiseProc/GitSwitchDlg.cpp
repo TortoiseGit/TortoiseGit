@@ -48,7 +48,7 @@ void CGitSwitchDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	CHOOSE_VERSION_DDX;
-				
+
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_BRANCH,this->m_bBranch);
@@ -179,7 +179,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 	this->UpdateRevsionName();
 
 	CString version = m_VersionName;
-	
+
 	int start = -1;
 	if (version.Left(7)==_T("origin/"))
 		start = version.Find(_T('/'), 8);
@@ -191,7 +191,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		version = version.Mid(start + 1);
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 		this->m_NewBranch=version;
-		
+
 		if(isUpdateCreateBranch)
 			this->m_bBranch=TRUE;
 

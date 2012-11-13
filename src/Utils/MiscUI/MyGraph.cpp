@@ -41,8 +41,8 @@ static char THIS_FILE[] = __FILE__;
 #define MIN_FONT_SIZE							 70			// The minimum font-size in pt*10.
 #define LEGEND_VISIBILITY_THRESHOLD				300			// The width of the graph in pixels when the legend gets hidden.
 
-#define INTERSERIES_PERCENT_USED				0.85		// How much of the graph is 
-															// used for bars/pies (the 
+#define INTERSERIES_PERCENT_USED				0.85		// How much of the graph is
+															// used for bars/pies (the
 															// rest is for inter-series
 															// spacing).
 
@@ -90,7 +90,7 @@ void MyGraphSeries::SetData(int nGroup, int nValue)
 void MyGraphSeries::SetTipRegion(int nGroup, const CRect& rc)
 {
 	VALIDATE;
-	
+
 	CRgn* prgnNew = new CRgn;
 	ASSERT_VALID(prgnNew);
 
@@ -108,7 +108,7 @@ void MyGraphSeries::SetTipRegion(int nGroup, CRgn* prgn)
 	// If there is an existing region, delete it.
 	CRgn* prgnOld = NULL;
 
-	if (nGroup < m_oaRegions.GetSize()) 
+	if (nGroup < m_oaRegions.GetSize())
 	{
 		prgnOld = m_oaRegions.GetAt(nGroup);
 		ASSERT_NULL_OR_POINTER(prgnOld, CRgn);
@@ -170,7 +170,7 @@ int MyGraphSeries::GetNonZeroElementCount() const
 	int nCount(0);
 
 	for (int nGroup = 0; nGroup < m_dwaValues.GetSize(); ++nGroup) {
-		
+
 		if (m_dwaValues.GetAt(nGroup)) {
 			++nCount;
 		}
@@ -216,12 +216,12 @@ CString MyGraphSeries::GetTipText(int nGroup, const CString &unitString) const
 	VALIDATE;
 	_ASSERTE(0 <= nGroup);
 	_ASSERTE(m_oaRegions.GetSize() <= m_dwaValues.GetSize());
-	
+
 	CString sTip;
 
 	sTip.Format(_T("%d %s (%d%%)"), m_dwaValues.GetAt(nGroup),
 		unitString,
-		GetDataTotal() ? (int) (100.0 * (double) m_dwaValues.GetAt(nGroup) / 
+		GetDataTotal() ? (int) (100.0 * (double) m_dwaValues.GetAt(nGroup) /
 		(double) GetDataTotal()) : 0);
 
 	return sTip;
@@ -258,9 +258,9 @@ BEGIN_MESSAGE_MAP(MyGraph, CStatic)
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnNeedText)
 END_MESSAGE_MAP()
 
-// Called by the framework to allow other necessary sub classing to occur 
+// Called by the framework to allow other necessary sub classing to occur
 // before the window is sub classed.
-void MyGraph::PreSubclassWindow() 
+void MyGraph::PreSubclassWindow()
 {
 	VALIDATE;
 
@@ -274,7 +274,7 @@ void MyGraph::PreSubclassWindow()
 // MyGraph message handlers
 
 // Handle the tooltip messages.  Returns true to mean message was handled.
-BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 {
 	_ASSERTE(pNMHDR  &&  "Bad parameter passed");
 	_ASSERTE(pResult  &&  "Bad parameter passed");
@@ -295,7 +295,7 @@ BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 
 		CString sTipText(GetTipText());
 
-#ifndef _UNICODE	
+#ifndef _UNICODE
 		if (TTN_NEEDTEXTA == pNMHDR->code) {
 			lstrcpyn(pTTTA->szText, sTipText, _countof(pTTTA->szText));
 		}
@@ -310,7 +310,7 @@ BOOL MyGraph::OnNeedText(UINT /*uiId*/, NMHDR* pNMHDR, LRESULT* pResult)
 			lstrcpyn(pTTTW->szText, sTipText, _countof(pTTTA->szText));
 		}
 #endif
- 
+
 		*pResult = 0;
 	}
 
@@ -323,7 +323,7 @@ INT_PTR MyGraph::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 {
 	_ASSERTE(pTI  &&  "Bad parameter passed");
 
-	// This works around the problem of the tip remaining visible when you move 
+	// This works around the problem of the tip remaining visible when you move
 	// the mouse to various positions over this control.
 	INT_PTR nReturn(0);
 	static bool bTipPopped(false);
@@ -404,9 +404,9 @@ CString MyGraph::GetTipText() const
 
 	return sTip;
 }
- 
+
 // Handle WM_PAINT.
-void MyGraph::OnPaint() 
+void MyGraph::OnPaint()
 {
 	VALIDATE;
 
@@ -415,13 +415,13 @@ void MyGraph::OnPaint()
 }
 
 // Handle WM_SIZE.
-void MyGraph::OnSize(UINT nType, int cx, int cy) 
+void MyGraph::OnSize(UINT nType, int cx, int cy)
 {
 	VALIDATE;
 
 	CStatic::OnSize(nType, cx, cy);
-	
-	Invalidate();	
+
+	Invalidate();
 }
 
 // Change the type of the graph; the caller should call Invalidate() on this
@@ -541,7 +541,7 @@ int MyGraph::LookupLabel(const CString& sLabel) const
 {
 	VALIDATE;
 	_ASSERTE(! sLabel.IsEmpty());
-	
+
 	for (int nGroup = 0; nGroup < m_saLegendLabels.GetSize(); ++nGroup) {
 
 		if (0 == sLabel.CompareNoCase(m_saLegendLabels.GetAt(nGroup))) {
@@ -565,7 +565,7 @@ void MyGraph::AddSeries(MyGraphSeries& rMyGraphSeries)
 	VALIDATE;
 	ASSERT_VALID(&rMyGraphSeries);
 	_ASSERTE(m_saLegendLabels.GetSize() == rMyGraphSeries.m_dwaValues.GetSize());
-	
+
 	m_olMyGraphSeries.AddTail(&rMyGraphSeries);
 }
 
@@ -587,7 +587,7 @@ void MyGraph::SetYAxisLabel(const CString& sLabel)
 	m_sYAxisLabel = sLabel;
 }
 
-// Returns the group number added.  Also, makes sure that all the series have 
+// Returns the group number added.  Also, makes sure that all the series have
 // this many elements.
 int MyGraph::AppendGroup(const CString& sLabel)
 {
@@ -666,8 +666,8 @@ void MyGraph::DrawGraph(CDC& dc)
 		}
 
 		// Reduce the graphable area by the frame window and status bar.  We will
-		// leave GAP_PIXELS pixels blank on all sides of the graph.  So top-left 
-		// side of graph is at GAP_PIXELS,GAP_PIXELS and the bottom-right side 
+		// leave GAP_PIXELS pixels blank on all sides of the graph.  So top-left
+		// side of graph is at GAP_PIXELS,GAP_PIXELS and the bottom-right side
 		// of graph is at (m_rcGraph.Height() - GAP_PIXELS), (m_rcGraph.Width() -
 		// GAP_PIXELS).  These settings are altered by axis labels and legends.
 		CRect rcWnd;
@@ -733,7 +733,7 @@ void MyGraph::DrawTitle(CDC& dc)
 
 	m_rcTitle.right = m_rcGraph.Width() + GAP_PIXELS;
 
-	dc.DrawText(m_sTitle, m_rcTitle, DT_CENTER | DT_NOPREFIX | DT_SINGLELINE | 
+	dc.DrawText(m_sTitle, m_rcTitle, DT_CENTER | DT_NOPREFIX | DT_SINGLELINE |
 		DT_TOP);
 
 	VERIFY(dc.SelectObject(pFontOld));
@@ -746,7 +746,7 @@ void MyGraph::SetupAxes(CDC& dc)
 	VALIDATE;
 	ASSERT_VALID(&dc);
 
-	// Since pie has no axis lines, set to full size minus GAP_PIXELS on each 
+	// Since pie has no axis lines, set to full size minus GAP_PIXELS on each
 	// side.  These are needed for legend to plot itself.
 	if (MyGraph::PieChart == m_eGraphType) {
 		m_nXAxisWidth = m_rcGraph.Width() - (GAP_PIXELS * 2);
@@ -777,12 +777,12 @@ void MyGraph::SetupAxes(CDC& dc)
 
 		// Set old font object again and delete temporary font object.
 		VERIFY(dc.SelectObject(pFontOld));
-		fontTickLabels.DeleteObject();		
+		fontTickLabels.DeleteObject();
 
 		// Determine axis specifications.
-		m_ptOrigin.x = m_rcGraph.left + m_nAxisLabelHeight/10 + 2*GAP_PIXELS 
+		m_ptOrigin.x = m_rcGraph.left + m_nAxisLabelHeight/10 + 2*GAP_PIXELS
 			+ sizTickLabel.cx + GAP_PIXELS + TICK_PIXELS;
-		m_ptOrigin.y = m_rcGraph.bottom - m_nAxisLabelHeight/10 - 2*GAP_PIXELS - 
+		m_ptOrigin.y = m_rcGraph.bottom - m_nAxisLabelHeight/10 - 2*GAP_PIXELS -
 			sizTickLabel.cy - GAP_PIXELS - TICK_PIXELS;
 		m_nYAxisHeight = m_ptOrigin.y - m_rcTitle.bottom - (2 * GAP_PIXELS);
 		m_nXAxisWidth = (m_rcGraph.Width() - GAP_PIXELS) - m_ptOrigin.x;
@@ -831,7 +831,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	// Calculate maximum number of authors that can be shown with the current label height
 	int nShownAuthors = (m_rcGraph.Height() - 2*GAP_PIXELS)/nLabelHeight - 1;
 	// Fix rounding errors.
-	if (nShownAuthors+1 == GetMaxSeriesSize()) 
+	if (nShownAuthors+1 == GetMaxSeriesSize())
 		++nShownAuthors;
 
 	// Get number of authors to be shown.
@@ -841,7 +841,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	CFont* pFontOld = dc.SelectObject(&fontLegend);
 	ASSERT_VALID(pFontOld);
 
-	// Determine actual size of legend.  A buffer of (GAP_PIXELS / 2) on each side, 
+	// Determine actual size of legend.  A buffer of (GAP_PIXELS / 2) on each side,
 	// plus the height of each label based on the pint size of the font.
 	int nLegendHeight = (GAP_PIXELS / 2) + (nShownAuthors * nLabelHeight) + (GAP_PIXELS / 2);
 	// Draw the legend border.  Allow LEGEND_COLOR_BAR_PIXELS pixels for
@@ -849,7 +849,7 @@ void MyGraph::DrawLegend(CDC& dc)
 	m_rcLegend.top = (m_rcGraph.Height() - nLegendHeight) / 2;
 	m_rcLegend.bottom = m_rcLegend.top + nLegendHeight;
 	m_rcLegend.right = m_rcGraph.Width() - GAP_PIXELS;
-	m_rcLegend.left = m_rcLegend.right - GetMaxLegendLabelLength(dc) - 
+	m_rcLegend.left = m_rcLegend.right - GetMaxLegendLabelLength(dc) -
 		LEGEND_COLOR_BAR_WIDTH_PIXELS;
 	VERIFY(dc.Rectangle(m_rcLegend));
 
@@ -865,7 +865,7 @@ void MyGraph::DrawLegend(CDC& dc)
 		int nShownGroup = nGroup; // introduce helper variable to avoid code duplication
 
 		// Do we have a skipped row?
-		if (skipped_row != -1) 
+		if (skipped_row != -1)
 		{
 			if (nGroup == skipped_row) {
 				// draw the dots
@@ -917,16 +917,16 @@ void MyGraph::DrawAxes(CDC& dc) const
 	dc.SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
 
 	// Draw y axis.
-	dc.MoveTo(m_ptOrigin);  
+	dc.MoveTo(m_ptOrigin);
 	VERIFY(dc.LineTo(m_ptOrigin.x, m_ptOrigin.y - m_nYAxisHeight));
 
 	// Draw x axis.
-	dc.MoveTo(m_ptOrigin);  
+	dc.MoveTo(m_ptOrigin);
 
 	if (m_saLegendLabels.GetSize()) {
 
-		VERIFY(dc.LineTo(m_ptOrigin.x + 
-			(m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), 
+		VERIFY(dc.LineTo(m_ptOrigin.x +
+			(m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)),
 			m_ptOrigin.y));
 	}
 	else {
@@ -946,20 +946,20 @@ void MyGraph::DrawAxes(CDC& dc) const
 
 	// Create the y-axis label font.
 	CFont fontYAxis;
-	VERIFY(fontYAxis.CreateFont( 
+	VERIFY(fontYAxis.CreateFont(
 		/* nHeight */ fontHeightDC,
-		/* nWidth */ 0, 
-		/* nEscapement */ 90 * 10, 
+		/* nWidth */ 0,
+		/* nEscapement */ 90 * 10,
 		/* nOrientation */ 0,
-		/* nWeight */ FW_DONTCARE,	
-		/* bItalic */ false, 
+		/* nWeight */ FW_DONTCARE,
+		/* bItalic */ false,
 		/* bUnderline */ false,
-		/* cStrikeOut */ 0, 
-		ANSI_CHARSET, 
+		/* cStrikeOut */ 0,
+		ANSI_CHARSET,
 		OUT_DEFAULT_PRECIS,
-		CLIP_DEFAULT_PRECIS, 
-		PROOF_QUALITY, 
-		VARIABLE_PITCH | FF_DONTCARE, 
+		CLIP_DEFAULT_PRECIS,
+		PROOF_QUALITY,
+		VARIABLE_PITCH | FF_DONTCARE,
 		_T("Arial"))
 	);
 
@@ -1006,7 +1006,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 		CString sTickLabel;
 		sTickLabel.Format(_T("%d"), nTickStep * (nTick+1));
 		CSize sizTickLabel(dc.GetTextExtent(sTickLabel));
-		
+
 		VERIFY(dc.TextOut(m_ptOrigin.x - GAP_PIXELS - sizTickLabel.cx - TICK_PIXELS,
 			nTickYLocation - sizTickLabel.cy/2, sTickLabel));
 	}
@@ -1016,12 +1016,12 @@ void MyGraph::DrawAxes(CDC& dc) const
 	int nSeries(0);
 
 	while (pos) {
-		
+
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
 		// Ignore unpopulated series if bar chart.
-		if (m_eGraphType != MyGraph::Bar  || 
+		if (m_eGraphType != MyGraph::Bar  ||
 			0 < pSeries->GetNonZeroElementCount()) {
 
 			// Get the spacing of the series.
@@ -1101,7 +1101,7 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 	int nSeries(0);
 
 	while (pos) {
-		
+
 		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 		ASSERT_VALID(pSeries);
 
@@ -1191,7 +1191,7 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 
 		// Iterate the series.
 		POSITION pos(m_olMyGraphSeries.GetHeadPosition());
-	
+
 		// Build objects.
 		COLORREF crLine(m_dwaColors.GetAt(nGroup));
 		CBrush br(crLine);
@@ -1205,18 +1205,18 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
-			
+
 			// Get x and y location of center of ellipse.
 			CPoint ptLoc(0,0);
-			
-			ptLoc.x = m_ptOrigin.x + (((nSeries + 1) * nSeriesSpace) - 
+
+			ptLoc.x = m_ptOrigin.x + (((nSeries + 1) * nSeriesSpace) -
 				(nSeriesSpace / 2));
-			
+
 			double dLineHeight(pSeries->GetData(nGroup) * m_nYAxisHeight /
 				GetMaxDataValue());
 
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
-			
+
 
 			// Draw line back to last data member.
 			if (nSeries > 0 && (pSeries->GetData(nGroup)!=0 || dataLastLoc != 0)) {
@@ -1277,7 +1277,7 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 
 	// Iterate the groups.
 	for (int nGroup = 0; nGroup < GetMaxSeriesSize(); nGroup++) {
-	
+
 		// Build objects.
 		COLORREF crGroup(m_dwaColors.GetAt(nGroup));
 		CBrush br(crGroup);
@@ -1315,11 +1315,11 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
-			
-			CPoint ptLoc;			
-			ptLoc.x = m_ptOrigin.x + (((nSeries + 1) * nSeriesSpace) - 
+
+			CPoint ptLoc;
+			ptLoc.x = m_ptOrigin.x + (((nSeries + 1) * nSeriesSpace) -
 				(nSeriesSpace / 2));
-			double dLineHeight((pSeries->GetData(nGroup) + stackAccumulator[nSeries]) * dYScaling);			
+			double dLineHeight((pSeries->GetData(nGroup) + stackAccumulator[nSeries]) * dYScaling);
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
 			if (nSeriesCount > 1) {
 				polygon[nSeriesCount+nSeries] = ptLoc;
@@ -1424,14 +1424,14 @@ void MyGraph::DrawSeriesPie(CDC& dc) const
 
 			VERIFY(dc.TextOut(ptCenter.x - (sizPieLabel.cx / 2),
 			  ptCenter.y + nRadius + GAP_PIXELS, pSeries->GetLabel()));
-			
+
 			// How much do the wedges total to?
 			double dPieTotal(pSeries->GetDataTotal());
 
 			// Draw each wedge in this pie.
 			CPoint ptStart(rcPie.left, ptCenter.y);
 			double dRunningWedgeTotal(0.0);
-			
+
 			for (int nGroup = 0; nGroup < m_saLegendLabels.GetSize(); ++nGroup) {
 
 				// Ignore empty wedges.
@@ -1517,7 +1517,7 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 	return pt;
 }
 
-// Spin The Message Loop: C++ version.  See "Advanced Windows Programming", 
+// Spin The Message Loop: C++ version.  See "Advanced Windows Programming",
 // M. Heller, p. 153, and the MS TechNet CD, PSS ID Number: Q99999.
 /* static */ UINT MyGraph::SpinTheMessageLoop(bool bNoDrawing /* = false */ ,
 															 bool bOnlyDrawing /* = false */ ,
@@ -1576,9 +1576,9 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 									// HLSMAX BEST IF DIVISIBLE BY 6
 									// RGBMAX, HLSMAX must each fit in a byte (255).
 
-#define  UNDEFINED  (HLSMAX * 2 / 3)		// Hue is undefined if Saturation is 0 
-														// (grey-scale).  This value determines 
-														// where the Hue scrollbar is initially 
+#define  UNDEFINED  (HLSMAX * 2 / 3)		// Hue is undefined if Saturation is 0
+														// (grey-scale).  This value determines
+														// where the Hue scrollbar is initially
 														// set for achromatic colors.
 
 
@@ -1592,7 +1592,7 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 	WORD wR(0);
 	WORD wG(0);
 	WORD wB(0);
-	
+
 	// Achromatic case.
 	if (0 == wS) {
 		wR = wG = wB = (wL * RGBMAX) / HLSMAX;
@@ -1615,13 +1615,13 @@ CPoint MyGraph::WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 		}
 
 		Magic1 = 2 * wL - Magic2;
-		
+
 		// Get RGB, change units from HLSMAX to RGBMAX.
 		wR = (HueToRGB(Magic1, Magic2, wH + (HLSMAX / 3)) * RGBMAX + (HLSMAX / 2)) / HLSMAX;
 		wG = (HueToRGB(Magic1, Magic2, wH)                * RGBMAX + (HLSMAX / 2)) / HLSMAX;
 		wB = (HueToRGB(Magic1, Magic2, wH - (HLSMAX / 3)) * RGBMAX + (HLSMAX / 2)) / HLSMAX;
 	}
-	
+
 	return RGB(wR,wG,wB);
 }
 

@@ -148,7 +148,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		else
 			langId = 0;
 	} while (langId);
-	setlocale(LC_ALL, ""); 
+	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings
 	// See the details here: http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=100887
@@ -274,7 +274,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			if (OpenClipboard(NULL))
 			{
 				UINT enumFormat = 0;
-				do 
+				do
 				{
 					if (enumFormat == cFormat)
 					{
@@ -305,7 +305,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		ofn.lpstrFilter = pszFilters;
 		ofn.nFilterIndex = 1;
 
-		// Display the Open dialog box. 
+		// Display the Open dialog box.
 		CString tempfile;
 		if (GetOpenFileName(&ofn)==FALSE)
 		{
@@ -384,7 +384,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		else
 		{
 			// we have two very long descriptive texts here, which
-			// means we have to find a way to use them as a window 
+			// means we have to find a way to use them as a window
 			// title in a shorter way.
 			// for simplicity, we just use the one from "yourfile"
 			pFrame->SetWindowText(sYour + _T(" - TortoiseMerge"));
@@ -430,7 +430,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 				ofn.lpstrFilter = pszFilters;
 				ofn.nFilterIndex = 1;
 
-				// Display the Save dialog box. 
+				// Display the Save dialog box.
 				CString sFile;
 				if (GetSaveFileName(&ofn)==TRUE)
 				{
@@ -467,7 +467,7 @@ void CTortoiseMergeApp::OnAppAbout()
 	aboutDlg.DoModal();
 }
 
-UINT_PTR CALLBACK 
+UINT_PTR CALLBACK
 CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM /*lParam*/)
 {
 	if(uiMsg ==	WM_COMMAND && LOWORD(wParam) == IDC_PATCH_TO_CLIPBOARD)
@@ -478,9 +478,9 @@ CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam,
 		// to a temporary file and tell TortoiseMerge to use that one
 		UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
 		if ((cFormat)&&(OpenClipboard(NULL)))
-		{ 
-			HGLOBAL hglb = GetClipboardData(cFormat); 
-			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb); 
+		{
+			HGLOBAL hglb = GetClipboardData(cFormat);
+			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
 			DWORD len = GetTempPath(0, NULL);
 			TCHAR * path = new TCHAR[len+1];
@@ -504,9 +504,9 @@ CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam,
 				}
 				fclose(outFile);
 			}
-			GlobalUnlock(hglb); 
-			CloseClipboard(); 
-		} 
+			GlobalUnlock(hglb);
+			CloseClipboard();
+		}
 	}
 	return 0;
 }
@@ -514,7 +514,7 @@ CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam,
 int CTortoiseMergeApp::ExitInstance()
 {
 	// Look for temporary files left around by TortoiseMerge and
-	// remove them. But only delete 'old' files 
+	// remove them. But only delete 'old' files
 	DWORD len = ::GetTempPath(0, NULL);
 	TCHAR * path = new TCHAR[len + 100];
 	len = ::GetTempPath (len+100, path);
@@ -545,8 +545,8 @@ int CTortoiseMergeApp::ExitInstance()
 					::CloseHandle(hFile);
 			}
 		}
-	}	
-	delete[] path;		
+	}
+	delete[] path;
 
 	return CWinAppEx::ExitInstance();
 }

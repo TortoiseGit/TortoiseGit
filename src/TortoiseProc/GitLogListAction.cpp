@@ -469,7 +469,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						name = branch->Mid(11);
 					else
 						name = *branch;
-					
+
 					CAppUtils::PerformSwitch(name);
 				}
 				ReloadHashMap();

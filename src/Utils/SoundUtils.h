@@ -27,7 +27,7 @@ class CSoundUtils
 public:
 	CSoundUtils(void);
 	~CSoundUtils(void);
-	
+
 	/**
 	 * Registers our own sounds under the available sound schemes
 	 * Users then can customize the TGit sounds in the sounds panel of Windows.

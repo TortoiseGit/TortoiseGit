@@ -55,7 +55,7 @@ CStringA CBase64::Encode( IN const char* szEncoding, IN int nSize )
 		sOutput += m_sBase64Alphabet[ (int)nDigit ];
 		nDigit = read_bits( nNumBits, &nNumBits, lp );
 		count++;
-		
+
 		if(count % 80 == 0)
 			sOutput += '\n';
 	}
@@ -91,15 +91,15 @@ int CBase64::Decode ( IN const char* szDecoding, char* szOutput )
 	// Build Decode Table
 	//
 	int i;
-	for( i = 0; i < 256; i++ ) 
+	for( i = 0; i < 256; i++ )
 		nDecode[i] = -2; // Illegal digit
 	for( i=0; i < 64; i++ )
 	{
 		nDecode[ m_sBase64Alphabet[ i ] ] = i;
 		nDecode[ m_sBase64Alphabet[ i ] | 0x80 ] = i; // Ignore 8th bit
-		nDecode[ '\r' ] = -1; 
-		nDecode[ '\n' ] = -1; 
-		nDecode[ '=' ] = -1; 
+		nDecode[ '\r' ] = -1;
+		nDecode[ '\n' ] = -1;
+		nDecode[ '=' ] = -1;
 		nDecode[ '=' | 0x80 ] = -1; // Ignore MIME padding char
     }
 
@@ -112,35 +112,35 @@ int CBase64::Decode ( IN const char* szDecoding, char* szOutput )
 	{
 		c = sInput[ lp ];
 		nDigit = nDecode[ c & 0x7F ];
-		if( nDigit < -1 ) 
+		if( nDigit < -1 )
 		{
 			return 0;
-		} 
-		else if( nDigit >= 0 ) 
+		}
+		else if( nDigit >= 0 )
 			// i (index into output) is incremented by write_bits()
 			write_bits( nDigit & 0x3F, 6, szOutput, i );
-    }	
+    }
 	return i;
 }
 
 UINT CBase64::read_bits(int nNumBits, int * pBitsRead, int& lp)
 {
     ULONG lScratch;
-    while( ( m_nBitsRemaining < nNumBits ) && 
-		   ( lp < m_nInputSize ) ) 
+    while( ( m_nBitsRemaining < nNumBits ) &&
+		   ( lp < m_nInputSize ) )
 	{
 		int c = m_szInput[ lp++ ];
         m_lBitStorage <<= 8;
         m_lBitStorage |= (c & 0xff);
 		m_nBitsRemaining += 8;
     }
-    if( m_nBitsRemaining < nNumBits ) 
+    if( m_nBitsRemaining < nNumBits )
 	{
 		lScratch = m_lBitStorage << ( nNumBits - m_nBitsRemaining );
 		*pBitsRead = m_nBitsRemaining;
 		m_nBitsRemaining = 0;
-    } 
-	else 
+    }
+	else
 	{
 		lScratch = m_lBitStorage >> ( m_nBitsRemaining - nNumBits );
 		*pBitsRead = nNumBits;
@@ -159,7 +159,7 @@ void CBase64::write_bits(UINT nBits,
 
 	m_lBitStorage = (m_lBitStorage << nNumBits) | nBits;
 	m_nBitsRemaining += nNumBits;
-	while( m_nBitsRemaining > 7 ) 
+	while( m_nBitsRemaining > 7 )
 	{
 		nScratch = m_lBitStorage >> (m_nBitsRemaining - 8);
 		szOutput[ i++ ] = nScratch & 0xFF;

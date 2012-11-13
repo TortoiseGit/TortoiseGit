@@ -166,7 +166,7 @@ protected:
 
 	void			SetupSelection(int start, int end);
 	void			ShowDiffLines(int nLine);
-	
+
 	int				GetTabSize() const {return m_nTabSize;}
 
 	int				GetLineActualLength(int index) const;
@@ -219,7 +219,7 @@ protected:
 	void			RemoveSelectedText();
 	void			PasteText();
 	void			AddUndoLine(int nLine, bool bAddEmptyLine = false);
-	
+
 	bool			MoveCaretLeft();
 	bool			MoveCaretRight();
 	void			UpdateGoalPos();
@@ -286,7 +286,7 @@ protected:
 	CDC *			m_pDC;
 	CScrollTool		m_ScrollTool;
 	CString			m_sWordSeparators;
-	
+
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
 	// These three pointers lead to the three parent

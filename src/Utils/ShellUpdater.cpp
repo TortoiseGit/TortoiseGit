@@ -42,20 +42,20 @@ CShellUpdater& CShellUpdater::Instance()
 	return instance;
 }
 
-/** 
+/**
 * Add a single path for updating.
 * The update will happen at some suitable time in the future
 */
 void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 {
-	// Tell the shell extension to purge its cache - we'll redo this when 
+	// Tell the shell extension to purge its cache - we'll redo this when
 	// we actually do the shell-updates, but sometimes there's an earlier update, which
 	// might benefit from cache invalidation
 	SetEvent(m_hInvalidationEvent);
 
 	m_pathsForUpdating.AddPath(path);
 }
-/** 
+/**
 * Add a list of paths for updating.
 * The update will happen when the list is destroyed, at the end of execution
 */
@@ -93,28 +93,28 @@ void CShellUpdater::UpdateShell()
 
 	// if we use the external cache, we tell the cache directly that something
 	// has changed, without the detour via the shell.
-	CAutoFile hPipe = CreateFile( 
-		GetCacheCommandPipeName(),		// pipe name 
-		GENERIC_READ |					// read and write access 
-		GENERIC_WRITE, 
-		0,								// no sharing 
+	CAutoFile hPipe = CreateFile(
+		GetCacheCommandPipeName(),		// pipe name
+		GENERIC_READ |					// read and write access
+		GENERIC_WRITE,
+		0,								// no sharing
 		NULL,							// default security attributes
-		OPEN_EXISTING,					// opens existing pipe 
-		FILE_FLAG_OVERLAPPED,			// default attributes 
-		NULL);							// no template file 
+		OPEN_EXISTING,					// opens existing pipe
+		FILE_FLAG_OVERLAPPED,			// default attributes
+		NULL);							// no template file
 
 
-	if (!hPipe) 
+	if (!hPipe)
 	{
-		// The pipe connected; change to message-read mode. 
-		DWORD dwMode; 
+		// The pipe connected; change to message-read mode.
+		DWORD dwMode;
 
-		dwMode = PIPE_READMODE_MESSAGE; 
-		if(SetNamedPipeHandleState( 
-			hPipe,    // pipe handle 
-			&dwMode,  // new pipe mode 
-			NULL,     // don't set maximum bytes 
-			NULL))    // don't set maximum time 
+		dwMode = PIPE_READMODE_MESSAGE;
+		if(SetNamedPipeHandleState(
+			hPipe,    // pipe handle
+			&dwMode,  // new pipe mode
+			NULL,     // don't set maximum bytes
+			NULL))    // don't set maximum time
 		{
 			CTGitPath path;
 			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); nPath++)
@@ -126,41 +126,41 @@ void CShellUpdater::UpdateShell()
 					// send notifications to the shell for changed files - folders are updated by the cache itself.
 					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.GetWinPath(), NULL);
 				}
-				DWORD cbWritten; 
+				DWORD cbWritten;
 				TGITCacheCommand cmd;
 				cmd.command = TGITCACHECOMMAND_CRAWL;
 				wcsncpy_s(cmd.path, MAX_PATH+1, path.GetDirectory().GetWinPath(), MAX_PATH);
-				BOOL fSuccess = WriteFile( 
-					hPipe,			// handle to pipe 
-					&cmd,			// buffer to write from 
-					sizeof(cmd),	// number of bytes to write 
-					&cbWritten,		// number of bytes written 
-					NULL);			// not overlapped I/O 
+				BOOL fSuccess = WriteFile(
+					hPipe,			// handle to pipe
+					&cmd,			// buffer to write from
+					sizeof(cmd),	// number of bytes to write
+					&cbWritten,		// number of bytes written
+					NULL);			// not overlapped I/O
 
 				if (! fSuccess || sizeof(cmd) != cbWritten)
 				{
-					DisconnectNamedPipe(hPipe); 
+					DisconnectNamedPipe(hPipe);
 					return;
 				}
 			}
 			if (!hPipe)
 			{
 				// now tell the cache we don't need it's command thread anymore
-				DWORD cbWritten; 
+				DWORD cbWritten;
 				TGITCacheCommand cmd;
 				cmd.command = TGITCACHECOMMAND_END;
-				WriteFile( 
-					hPipe,			// handle to pipe 
-					&cmd,			// buffer to write from 
-					sizeof(cmd),	// number of bytes to write 
-					&cbWritten,		// number of bytes written 
-					NULL);			// not overlapped I/O 
-				DisconnectNamedPipe(hPipe); 
+				WriteFile(
+					hPipe,			// handle to pipe
+					&cmd,			// buffer to write from
+					sizeof(cmd),	// number of bytes to write
+					&cbWritten,		// number of bytes written
+					NULL);			// not overlapped I/O
+				DisconnectNamedPipe(hPipe);
 			}
 		}
 		else
 		{
-			ATLTRACE("SetNamedPipeHandleState failed"); 
+			ATLTRACE("SetNamedPipeHandleState failed");
 		}
 	}
 }
@@ -194,7 +194,7 @@ bool CShellUpdater::RebuildIcons()
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
-	lRegResult = RegQueryValueEx(hRegKey, sRegValueName.c_str(), NULL, NULL, 
+	lRegResult = RegQueryValueEx(hRegKey, sRegValueName.c_str(), NULL, NULL,
 		(LPBYTE) buf, &dwSize);
 	if (lRegResult != ERROR_FILE_NOT_FOUND)
 	{
@@ -202,7 +202,7 @@ bool CShellUpdater::RebuildIcons()
 		iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
 		if (0 == iDefaultIconSize)
 			iDefaultIconSize = 32;
-		_sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), iDefaultIconSize); 
+		_sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), iDefaultIconSize);
 	}
 	else if (lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
@@ -211,26 +211,26 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValue = _ttoi(buf);
 	dwRegValueTemp = dwRegValue-1;
 
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), dwRegValueTemp) + sizeof(TCHAR); 
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ, 
-		(LPBYTE) buf, dwSize); 
+	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), dwRegValueTemp) + sizeof(TCHAR);
+	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ,
+		(LPBYTE) buf, dwSize);
 	if (lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
 
 
 	// Update all windows
-	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, SPI_SETNONCLIENTMETRICS, 
+	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, SPI_SETNONCLIENTMETRICS,
 		0, SMTO_ABORTIFHUNG, 5000, &dwResult);
 
 	// Reset registry value
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), dwRegValue) + sizeof(TCHAR); 
-	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ, 
-		(LPBYTE) buf, dwSize); 
+	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, _T("%d"), dwRegValue) + sizeof(TCHAR);
+	lRegResult = RegSetValueEx(hRegKey, sRegValueName.c_str(), 0, REG_SZ,
+		(LPBYTE) buf, dwSize);
 	if(lRegResult != ERROR_SUCCESS)
 		goto Cleanup;
 
 	// Update all windows
-	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, SPI_SETNONCLIENTMETRICS, 
+	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, SPI_SETNONCLIENTMETRICS,
 		0, SMTO_ABORTIFHUNG, 5000, &dwResult);
 
 	bResult = true;

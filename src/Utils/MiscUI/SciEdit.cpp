@@ -170,7 +170,7 @@ void CSciEdit::Init(const ProjectProperties& props)
 	m_sCommand = CStringA(CUnicodeUtils::GetUTF8(props.sCheckRe));
 	m_sBugID = CStringA(CUnicodeUtils::GetUTF8(props.sBugIDRe));
 	m_sUrl = CStringA(CUnicodeUtils::GetUTF8(props.sUrl));
-	
+
 	if (props.nLogWidthMarker)
 	{
 		Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
@@ -262,7 +262,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 		ATLTRACE(encoding);
 		int n = _countof(enc2locale);
 		m_spellcodepage = 0;
-		for (int i = 0; i < n; i++) 
+		for (int i = 0; i < n; i++)
 		{
 			if (strcmp(encoding,enc2locale[i].def_enc) == 0)
 			{
@@ -288,11 +288,11 @@ CString CSciEdit::StringFromControl(const CStringA& text)
 	CString sText;
 #ifdef UNICODE
 	int codepage = (int)Call(SCI_GETCODEPAGE);
-	int reslen = MultiByteToWideChar(codepage, 0, text, text.GetLength(), 0, 0);	
+	int reslen = MultiByteToWideChar(codepage, 0, text, text.GetLength(), 0, 0);
 	MultiByteToWideChar(codepage, 0, text, text.GetLength(), sText.GetBuffer(reslen+1), reslen+1);
 	sText.ReleaseBuffer(reslen);
 #else
-	sText = text;	
+	sText = text;
 #endif
 	return sText;
 }
@@ -316,7 +316,7 @@ void CSciEdit::SetText(const CString& sText)
 {
 	CStringA sTextA = StringForControl(sText);
 	Call(SCI_SETTEXT, 0, (LPARAM)(LPCSTR)sTextA);
-	
+
 	// Scintilla seems to have problems with strings that
 	// aren't terminated by a newline char. Once that char
 	// is there, it can be removed without problems.
@@ -351,10 +351,10 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord)
 	if ((pos == textrange.chrg.cpMin)||(textrange.chrg.cpMin < 0))
 		return CString();
 	textrange.chrg.cpMax = (LONG)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE);
-	
+
 	char * textbuffer = new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1];
 
-	textrange.lpstrText = textbuffer;	
+	textrange.lpstrText = textbuffer;
 	Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 	if (bSelectWord)
 	{
@@ -395,7 +395,7 @@ void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 void CSciEdit::SetAutoCompletionList(const std::set<CString>& list, const TCHAR separator)
 {
 	//copy the auto completion list.
-	
+
 	//SK: instead of creating a copy of that list, we could accept a pointer
 	//to the list and use that instead. But then the caller would have to make
 	//sure that the list persists over the lifetime of the control!
@@ -465,9 +465,9 @@ void CSciEdit::CheckSpelling()
 {
 	if (pChecker == NULL)
 		return;
-	
+
 	TEXTRANGEA textrange;
-	
+
 	LRESULT firstline = Call(SCI_GETFIRSTVISIBLELINE);
 	LRESULT lastline = firstline + Call(SCI_LINESONSCREEN);
 	textrange.chrg.cpMin = (LONG)Call(SCI_POSITIONFROMLINE, firstline);
@@ -505,7 +505,7 @@ void CSciEdit::CheckSpelling()
 		{
 			// Try to ignore file names from the auto list.
 			// Do do this, for each word ending with '.' we extract next word and check
-			// whether the combined string is present in auto list. 
+			// whether the combined string is present in auto list.
 			TEXTRANGEA twoWords;
 			twoWords.chrg.cpMin = (LONG)textrange.chrg.cpMin;
 			twoWords.chrg.cpMax = (LONG)Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE);
@@ -560,11 +560,11 @@ void CSciEdit::SuggestSpellingAlternatives()
 	if (ns > 0)
 	{
 		CString suggestions;
-		for (int i=0; i < ns; i++) 
+		for (int i=0; i < ns; i++)
 		{
 			suggestions += CString(wlst[i]) + m_separator;
 			free(wlst[i]);
-		} 
+		}
 		free(wlst);
 		suggestions.TrimRight(m_separator);
 		if (suggestions.IsEmpty())
@@ -589,7 +589,7 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 	if (pos != Call(SCI_WORDENDPOSITION, pos, TRUE))
 		return;	//don't auto complete if we're not at the end of a word
 	CString sAutoCompleteList;
-	
+
 	word.MakeUpper();
 	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(word);
 		lowerit != m_autolist.end(); ++lowerit)
@@ -618,10 +618,10 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 {
 	if (message != WM_NOTIFY)
 		return CWnd::OnChildNotify(message, wParam, lParam, pLResult);
-	
+
 	LPNMHDR lpnmhdr = (LPNMHDR) lParam;
 	SCNotification * lpSCN = (SCNotification *)lParam;
-	
+
 	if(lpnmhdr->hwndFrom==m_hWnd)
 	{
 		switch(lpnmhdr->code)
@@ -661,7 +661,7 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 					++textrange.chrg.cpMax;
 				++textrange.chrg.cpMax;
 				char * textbuffer = new char[textrange.chrg.cpMax - textrange.chrg.cpMin + 1];
-				textrange.lpstrText = textbuffer;	
+				textrange.lpstrText = textbuffer;
 				Call(SCI_GETTEXTRANGE, 0, (LPARAM)&textrange);
 				CString url;
 				if (style == STYLE_URL)
@@ -775,7 +775,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		UINT uDisabledMenu = MF_STRING | MF_GRAYED;
 
 		// find the word under the cursor
-		CString sWord;		
+		CString sWord;
 		if (pointpos)
 		{
 			// setting the cursor clears the selection
@@ -801,13 +801,13 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			if (ns > 0)
 			{
 				// add the suggestions to the context menu
-				for (int i=0; i < ns; i++) 
+				for (int i=0; i < ns; i++)
 				{
 					bSpellAdded = true;
 					CString sug = CString(wlst[i]);
 					popup.InsertMenu((UINT)-1, 0, nCorrections++, sug);
 					free(wlst[i]);
-				} 
+				}
 				free(wlst);
 			}
 		}
@@ -831,9 +831,9 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		popup.AppendMenu(bCanUndo ? uEnabledMenu : uDisabledMenu, SCI_UNDO, sMenuItemText);
 		sMenuItemText.LoadString(IDS_SCIEDIT_REDO);
 		popup.AppendMenu(bCanRedo ? uEnabledMenu : uDisabledMenu, SCI_REDO, sMenuItemText);
-		
+
 		popup.AppendMenu(MF_SEPARATOR);
-		
+
 		sMenuItemText.LoadString(IDS_SCIEDIT_CUT);
 		popup.AppendMenu(bHasSelection ? uEnabledMenu : uDisabledMenu, SCI_CUT, sMenuItemText);
 		sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
@@ -842,7 +842,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		popup.AppendMenu(bCanPaste ? uEnabledMenu : uDisabledMenu, SCI_PASTE, sMenuItemText);
 
 		popup.AppendMenu(MF_SEPARATOR);
-		
+
 		sMenuItemText.LoadString(IDS_SCIEDIT_SELECTALL);
 		popup.AppendMenu(uEnabledMenu, SCI_SELECTALL, sMenuItemText);
 
@@ -880,12 +880,12 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 			if (count)
 			{
 				mentry * pm = pmean;
-				for (int  i=0; i < count; i++) 
+				for (int  i=0; i < count; i++)
 				{
 					CMenu * submenu = new CMenu();
 					menuArray.Add(submenu);
 					submenu->CreateMenu();
-					for (int j=0; j < pm->count; j++) 
+					for (int j=0; j < pm->count; j++)
 					{
 						CString sug = CString(pm->psyns[j]);
 						submenu->InsertMenu((UINT)-1, 0, nThesaurs++, sug);
@@ -893,7 +893,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 					thesaurs.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)(submenu->m_hMenu), CString(pm->defn));
 					pm++;
 				}
-			}  
+			}
 			if ((count > 0)&&(point.x >= 0))
 			{
 #ifdef IDS_SPELLEDIT_THESAURUS
@@ -966,7 +966,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 					CSciEditContextMenuInterface * pHandler = m_arContextHandlers.GetAt(handlerindex);
 					if (pHandler->HandleMenuItemClick(cmd, this))
 						break;
-				}		
+				}
 			}
 #if THESAURUS
 			else if (cmd <= (nThesaurs+nCorrections+nCustoms))
@@ -1234,7 +1234,7 @@ bool CSciEdit::IsValidURLChar(unsigned char ch)
 		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+';
 }
 
-void CSciEdit::StyleURLs(int startstylepos, int endstylepos) 
+void CSciEdit::StyleURLs(int startstylepos, int endstylepos)
 {
 	const int line_number = (int)Call(SCI_LINEFROMPOSITION, startstylepos);
 	startstylepos = (int)Call(SCI_POSITIONFROMLINE, (WPARAM)line_number);
@@ -1355,13 +1355,13 @@ bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb)
 	return false;
 }
 
-void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face) 
+void CSciEdit::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)
 {
 	Call(SCI_STYLESETFORE, style, fore);
 	Call(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		Call(SCI_STYLESETSIZE, style, size);
-	if (face) 
+	if (face)
 		Call(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(face));
 }
 
@@ -1397,7 +1397,7 @@ void CSciEdit::SetUDiffStyle()
 
 	Call(SCI_SETUNDOCOLLECTION, 1);
 	Call(SCI_SETWRAPMODE,SC_WRAP_NONE);
-	
+
 	//::SetFocus(m_hWndEdit);
 	Call(EM_EMPTYUNDOBUFFER);
 	Call(SCI_SETSAVEPOINT);
@@ -1424,13 +1424,13 @@ int CSciEdit::LoadFromFile(CString &filename)
 {
 	FILE *fp = NULL;
 	_tfopen_s(&fp, filename, _T("rb"));
-	if (fp) 
+	if (fp)
 	{
 		//SetTitle();
 				char data[4096];
 				size_t lenFile = fread(data, 1, sizeof(data), fp);
 				bool bUTF8 = IsUTF8(data, lenFile);
-				while (lenFile > 0) 
+				while (lenFile > 0)
 				{
 					Call(SCI_ADDTEXT, lenFile,
 						reinterpret_cast<LPARAM>(static_cast<char *>(data)));

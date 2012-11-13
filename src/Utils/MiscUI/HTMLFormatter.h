@@ -34,7 +34,7 @@ public:
 	 * - \c \<u> \e text \c \</u> \t draws the text underlined
 	 * - \c \<i> \e text \c \</u> \t draws the text in italic
 	 * - \c \<s> \e text \c \</u> \t draws the text with strikeout
-	 * 
+	 *
 	 * - \c \<ct=0x123456> \e text \c \</ct> \t draws the text in the given color. The value is in RGB format.
 	 * - \c \<cb=0x123456> \e text \c \</cb> \t draws the background of the text in the given color. The value is in RGB format.
 	 *
@@ -44,11 +44,11 @@ public:
 	 *
 	 * - \c \<hr=50%> \t draws a horizontal line with 50% of the whole width
 	 * - \c \<hr=100> \t draws a horizontal line with 100 pixels length
-	 * 
+	 *
 	 * - \c \<a=http://something.com> \e text \c \</a> \t the text is marked as a link in the internal link list.
 	 *
 	 * also the common control codes \\n, \\t, \\r are recognized.
-	 * 
+	 *
 	 * An example of usage:
 	 * \code
 	 * CHTMLFormatter formatter;
@@ -71,13 +71,13 @@ public:
 	 * \endcode
 	 * this example produces the following picture:
 	 * \image html "htmlformatter.png"
-	 * 
+	 *
 	 * \remarks please be aware that this is a lightweight class and not a real HTML printer. Only very basic
 	 * tags are available and folding tags is also very limited.\n
-	 * The link tag also has restrictions: 
+	 * The link tag also has restrictions:
 	 * - a link must not span more than one line of text
 	 * - inner tags are allowed, but only for the whole link text. I.e. "<a=http://something.com><b>this</b> is my link</a>" is not allowed!
-	 * 
+	 *
 	 * \param pDC the device context to draw the text on
 	 * \param rect the rectangle to draw the text within
 	 * \param str the string to draw

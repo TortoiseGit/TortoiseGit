@@ -699,7 +699,7 @@ CBSCallbackImpl::CBSCallbackImpl(HWND hWnd, HANDLE hEventStop)
 STDMETHODIMP CBSCallbackImpl::QueryInterface(REFIID riid, void **ppvObject)
 {
 	*ppvObject = NULL;
-	
+
 	// IUnknown
 	if (::IsEqualIID(riid, __uuidof(IUnknown)))
 		*ppvObject = this;
@@ -713,7 +713,7 @@ STDMETHODIMP CBSCallbackImpl::QueryInterface(REFIID riid, void **ppvObject)
 		(*reinterpret_cast<LPUNKNOWN *>(ppvObject))->AddRef();
 		return S_OK;
 	}
-	
+
 	return E_NOINTERFACE;
 }
 
@@ -795,9 +795,9 @@ BOOL CCheckForUpdatesDlg::VerifySignature(CString fileName)
 	WINTRUST_DATA data;
 	memset(&data, 0, sizeof(data));
 	data.cbStruct = sizeof(data);
-	
+
 	data.dwUIChoice = WTD_UI_NONE;
-	data.fdwRevocationChecks = WTD_REVOKE_NONE; 
+	data.fdwRevocationChecks = WTD_REVOKE_NONE;
 	data.dwUnionChoice = WTD_CHOICE_FILE;
 	data.pFile = &fileInfo;
 

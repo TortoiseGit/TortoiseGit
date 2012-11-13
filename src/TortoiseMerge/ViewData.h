@@ -30,7 +30,7 @@ typedef struct
 {
 	CString						sLine;
 	DiffStates					state;
-	int							linenumber; 
+	int							linenumber;
 	EOL							ending;
 } viewdata;
 

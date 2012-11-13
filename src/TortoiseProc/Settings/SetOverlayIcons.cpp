@@ -30,7 +30,7 @@
 IMPLEMENT_DYNAMIC(CSetOverlayIcons, ISettingsPropPage)
 CSetOverlayIcons::CSetOverlayIcons()
 	: ISettingsPropPage(CSetOverlayIcons::IDD)
-{ 
+{
 	m_regNormal = CRegString(_T("Software\\TortoiseOverlays\\NormalIcon"));
 	m_regModified = CRegString(_T("Software\\TortoiseOverlays\\ModifiedIcon"));
 	m_regConflicted = CRegString(_T("Software\\TortoiseOverlays\\ConflictIcon"));

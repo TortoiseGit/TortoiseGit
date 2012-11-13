@@ -29,7 +29,7 @@ class CBottomView : public CBaseView
 public:
 	CBottomView(void);
 	~CBottomView(void);
-	
+
 	void UseMyTextBlock();
 	void UseMyThenTheirTextBlock();
 	void UseTheirTextBlock();
@@ -37,5 +37,5 @@ public:
 
 protected:
 	bool	OnContextMenu(CPoint point, int nLine, DiffStates state);
-	
+
 };

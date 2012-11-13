@@ -107,7 +107,7 @@ void CInputLogDlg::OnOK()
 {
 	UpdateData();
 	m_sLogMsg = m_cInput.GetText();
-	
+
 	CString reg;
 	reg.Format(_T("Software\\TortoiseGit\\History\\commit%s"), (LPCTSTR)m_sUUID);
 

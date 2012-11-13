@@ -31,8 +31,8 @@ using namespace ATL;
 #include <string>
 #include <set>
 #include <map>
-#include <vector> 
-#include <algorithm> 
+#include <vector>
+#include <algorithm>
 #pragma warning(pop)
 
 #define USE_GDI_GRADIENT

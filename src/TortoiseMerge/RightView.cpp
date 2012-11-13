@@ -131,12 +131,12 @@ bool CRightView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 		case ID_USEFILE:
 			{
 				UseFile(false);
-			} 
+			}
 			break;
 		case ID_USEBLOCK:
 			{
 				UseBlock(false);
-			} 
+			}
 		break;
 		case ID_USEYOURANDTHEIRBLOCK:
 			{
@@ -164,8 +164,8 @@ bool CRightView::OnContextMenu(CPoint point, int /*nLine*/, DiffStates state)
 			break;
 		default:
 			return false;
-		} // switch (cmd) 
-	} // if (popup.CreatePopupMenu()) 
+		} // switch (cmd)
+	} // if (popup.CreatePopupMenu())
 	return false;
 }
 

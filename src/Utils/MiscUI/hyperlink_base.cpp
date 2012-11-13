@@ -105,7 +105,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 {
     if( !(setURL(strURL)) )
 		return FALSE;
-	
+
 	// Subclass the parent so we can color the controls as we desire.
 
 	HWND hwndParent = GetParent(hwndCtl);
@@ -165,7 +165,7 @@ BOOL CHyperLink::setURL(LPCTSTR strURL)
 	{
 		return FALSE;
 	}
-	
+
     lstrcpy(m_strURL, strURL);
 
 	return TRUE;
@@ -252,7 +252,7 @@ inline void CHyperLink::DrawFocusRect(HWND hwnd)
 		INFLATERECT(&rc,1,1);					 // add one pixel all around
 												 // convert to parent window client coords
 		::ScreenToClient(hwndParent, (LPPOINT)&rc);
-		::ScreenToClient(hwndParent, ((LPPOINT)&rc)+1);		 
+		::ScreenToClient(hwndParent, ((LPPOINT)&rc)+1);		
 		HDC dcParent = GetDC(hwndParent);		 // parent window's DC
 		::DrawFocusRect(dcParent, &rc);			 // draw it!
 		ReleaseDC(hwndParent,dcParent);

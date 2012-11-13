@@ -1,32 +1,32 @@
-/************************************************************************************* 
+/*************************************************************************************
   This file is a part of CrashRpt library.
 
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
- 
-  Redistribution and use in source and binary forms, with or without modification, 
-  are permitted provided that the following conditions are met:
- 
-   * Redistributions of source code must retain the above copyright notice, this 
-     list of conditions and the following disclaimer.
- 
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
-     and/or other materials provided with the distribution.
- 
-   * Neither the name of the author nor the names of its contributors 
-     may be used to endorse or promote products derived from this software without 
-     specific prior written permission.
- 
 
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
-  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
-  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
-  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
-  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
-  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+  Redistribution and use in source and binary forms, with or without modification,
+  are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright notice, this
+     list of conditions and the following disclaimer.
+
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+
+   * Neither the name of the author nor the names of its contributors
+     may be used to endorse or promote products derived from this software without
+     specific prior written permission.
+
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ***************************************************************************************/
 
@@ -68,14 +68,14 @@ public:
     {
       delete [] pBuffer;
       return NULL;
-    }    
+    }
 
     m_ConvertedStrings.push_back(pBuffer);
     return (LPCWSTR)pBuffer;
   }
 
   LPCSTR w2a(LPCWSTR lpsz)
-  { 
+  {
     if(lpsz==NULL)
       return NULL;
 
@@ -89,19 +89,19 @@ public:
     {
       delete [] pBuffer;
       return NULL;
-    }    
+    }
 
     m_ConvertedStrings.push_back(pBuffer);
     return (LPCSTR)pBuffer;
   }
 
-  // Converts UNICODE little endian string to UNICODE big endian 
+  // Converts UNICODE little endian string to UNICODE big endian
   LPCWSTR w2w_be(LPCWSTR lpsz, UINT cch)
   {
     if(lpsz==NULL)
       return NULL;
-    
-    WCHAR* pBuffer = new WCHAR[cch+1];    
+
+    WCHAR* pBuffer = new WCHAR[cch+1];
     UINT i;
     for(i=0; i<cch; i++)
     {
@@ -120,10 +120,10 @@ public:
     if(lpsz==NULL)
       return NULL;
 
-    // 1. Convert input ANSI string to widechar using 
-    // MultiByteToWideChar(CP_ACP, ...) function (CP_ACP 
+    // 1. Convert input ANSI string to widechar using
+    // MultiByteToWideChar(CP_ACP, ...) function (CP_ACP
     // is current Windows system Ansi code page)
-    
+
     // Calculate required buffer size
     int count = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, lpsz, -1, NULL, 0);
     if(count==0)
@@ -136,11 +136,11 @@ public:
     {
       delete [] pBuffer;
       return NULL;
-    }  
+    }
 
-    // 2. Convert output widechar string from previous call to 
+    // 2. Convert output widechar string from previous call to
     // UTF-8 using WideCharToMultiByte(CP_UTF8, ...)  function
-     
+
     LPCSTR pszResult = (LPCSTR)w2utf8(pBuffer);
     delete [] pBuffer;
     return pszResult;
@@ -150,22 +150,22 @@ public:
   {
     if(lpsz==NULL)
       return NULL;
-     
+
     // Calculate required buffer size
     int count = WideCharToMultiByte(CP_UTF8, 0, lpsz, -1, NULL, 0, NULL, NULL);
     if(count==0)
-    {      
+    {
       return NULL;
     }
 
     // Convert UNICODE->UTF8
     LPSTR pBuffer = new char[count];
-    int result = WideCharToMultiByte(CP_UTF8, 0, lpsz, -1, (LPSTR)pBuffer, count, NULL, NULL);    
+    int result = WideCharToMultiByte(CP_UTF8, 0, lpsz, -1, (LPSTR)pBuffer, count, NULL, NULL);
     if(result==0)
-    {      
+    {
       delete [] pBuffer;
       return NULL;
-    }    
+    }
 
     m_ConvertedStrings.push_back(pBuffer);
     return (LPCSTR)pBuffer;
@@ -175,22 +175,22 @@ public:
   {
     if(lpsz==NULL)
       return NULL;
-     
+
     // Calculate required buffer size
     int count = MultiByteToWideChar(CP_UTF8, 0, lpsz, -1, NULL, 0);
     if(count==0)
-    {      
+    {
       return NULL;
     }
 
     // Convert UNICODE->UTF8
     LPWSTR pBuffer = new wchar_t[count];
-    int result = MultiByteToWideChar(CP_UTF8, 0, lpsz, -1, (LPWSTR)pBuffer, count);    
+    int result = MultiByteToWideChar(CP_UTF8, 0, lpsz, -1, (LPWSTR)pBuffer, count);
     if(result==0)
-    {      
+    {
       delete [] pBuffer;
       return NULL;
-    }    
+    }
 
     m_ConvertedStrings.push_back(pBuffer);
     return (LPCWSTR)pBuffer;
@@ -200,22 +200,22 @@ public:
   {
     if(pStr==NULL)
       return NULL;
-     
+
     // Calculate required buffer size
     int count = MultiByteToWideChar(CP_UTF8, 0, pStr, cch, NULL, 0);
     if(count==0)
-    {      
+    {
       return NULL;
     }
 
     // Convert UNICODE->UTF8
     LPWSTR pBuffer = new wchar_t[count+1];
-    int result = MultiByteToWideChar(CP_UTF8, 0, pStr, cch, (LPWSTR)pBuffer, count);    
+    int result = MultiByteToWideChar(CP_UTF8, 0, pStr, cch, (LPWSTR)pBuffer, count);
     if(result==0)
-    {      
+    {
       delete [] pBuffer;
       return NULL;
-    }    
+    }
 
     // Zero-terminate
     pBuffer[count]=0;
@@ -231,7 +231,7 @@ public:
 
   LPCTSTR utf82t(LPCSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return utf82w(lpsz);
 #else
     return utf82a(lpsz);
@@ -240,7 +240,7 @@ public:
 
   LPCSTR t2a(LPCTSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return w2a(lpsz);
 #else
     return lpsz;
@@ -249,7 +249,7 @@ public:
 
 LPCWSTR t2w(LPCTSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return lpsz;
 #else
     return a2w(lpsz);
@@ -258,7 +258,7 @@ LPCWSTR t2w(LPCTSTR lpsz)
 
   LPCTSTR a2t(LPCSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return a2w(lpsz);
 #else
     return lpsz;
@@ -267,7 +267,7 @@ LPCWSTR t2w(LPCTSTR lpsz)
 
 LPCTSTR w2t(LPCWSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return lpsz;
 #else
     return w2a(lpsz);
@@ -276,7 +276,7 @@ LPCTSTR w2t(LPCWSTR lpsz)
 
 LPCSTR t2utf8(LPCTSTR lpsz)
   {
-#ifdef UNICODE    
+#ifdef UNICODE
     return w2utf8(lpsz);
 #else
     return a2utf8(lpsz);
@@ -284,7 +284,7 @@ LPCSTR t2utf8(LPCTSTR lpsz)
   }
 
 private:
-  std::vector<void*> m_ConvertedStrings;  
+  std::vector<void*> m_ConvertedStrings;
 };
 
 #endif  //_STRCONV_H
