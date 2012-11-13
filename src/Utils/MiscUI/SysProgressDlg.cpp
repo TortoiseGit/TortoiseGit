@@ -170,6 +170,18 @@ void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 	va_end(args);
 }
 
+void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, CString FormatText, ...)
+{
+	va_list args;
+	va_start(args, FormatText);
+
+	CString sText;
+	sText.FormatV(FormatText, args);
+	SetLine(dwLine, sText, false);
+
+	va_end(args);
+}
+
 #endif
 HRESULT CSysProgressDlg::ShowModal(HWND hWndParent, BOOL immediately /* = true */)
 {

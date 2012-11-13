@@ -65,6 +65,7 @@ public:
 	void FormatPathLine ( DWORD dwLine, UINT idFormatText, ...);
 	void FormatPathLine ( DWORD dwLine, CString FormatText, ...);
 	void FormatNonPathLine ( DWORD dwLine, UINT idFormatText, ...);
+	void FormatNonPathLine(DWORD dwLine, CString FormatText, ...);
 #endif
 	/**
 	 * Sets a message to be displayed if the user clicks the cancel button.

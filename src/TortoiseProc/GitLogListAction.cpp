@@ -95,9 +95,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 
 		if (progress.IsValid() && (this->GetSelectedCount() > 1) )
 		{
-			CString temp;
-			temp.Format(IDS_PROC_REVERTCOMMIT, r1->m_CommitHash.ToString());
-			progress.FormatNonPathLine(1, temp);
+			progress.FormatNonPathLine(1, IDS_PROC_REVERTCOMMIT, r1->m_CommitHash.ToString());
 			progress.FormatNonPathLine(2, _T("%s"), r1->GetSubject());
 			progress.SetProgress(i, this->GetSelectedCount());
 		}
