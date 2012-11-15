@@ -39,6 +39,7 @@ Released: unreleased
  * Fixed issue #1516: SVN clone strips trailing slashes
  * Fixed issue #1486: Rebase/Cherry-pick Dialog conflict list fail to refresh the status of resolved deleted file
  * Fixed issue #1521: Directories with period at beginning are recognized as file extensions showing *.dir
+ * Fixed issue #1519: Quotes in notes break Merge command
 
 = Release 1.7.14.0 =
 Released: 2012-10-14

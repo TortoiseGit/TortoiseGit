@@ -2593,7 +2593,9 @@ BOOL CAppUtils::Merge(CString *commit)
 
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
-			msg += _T("-m \"")+dlg.m_strLogMesage+_T("\"");
+			CString logmsg = dlg.m_strLogMesage;
+			logmsg.Replace(_T("\""), _T("\\\""));
+			msg += _T("-m \"") + logmsg + _T("\"");
 		}
 		cmd.Format(_T("git.exe merge %s %s %s %s %s"),
 			msg,
