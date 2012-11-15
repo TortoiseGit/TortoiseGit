@@ -207,6 +207,15 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Export this version...</term>
+					<listitem>
+						<para>
+							Export the selected revision to an archive file such as zip. This brings up a dialog for you to confirm the
+							revision, and select a location for the export.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Cherry Pick this commit</term>
 					<listitem>
 						<para>
@@ -216,12 +225,10 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Export this version...</term>
+					<term>Format Patch...</term>
 					<listitem>
 						<para>
-							Export the selected file/folder at the selected
-							revision. This brings up a dialog for you to confirm the
-							URL and revision, and select a location for the export.
+							Create Patchs from this commit.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -253,14 +260,6 @@
 								This allows you to easily search for refs (tags and branches).
 							</para>
 						</tip>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Format Patch...</term>
-					<listitem>
-						<para>
-							Create Patchs from this commit.
-						</para>
 					</listitem>
 				</varlistentry>
 			</variablelist>
@@ -350,6 +349,15 @@
 			The bottom pane of the Log dialog also has a context menu that allows you to
 			<variablelist>
 				<varlistentry>
+					<term>Compare with base</term>
+					<listitem>
+						<para>
+							Compare chosen file with base version.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
 					<term>Show as unified diff</term>
 					<listitem>
 						<para>
@@ -359,22 +367,11 @@
 						</para>
 					</listitem>
 				</varlistentry>
-
 				<varlistentry>
-					<term>Open / Open with...</term>
+					<term>Compare with working tree</term>
 					<listitem>
 						<para>
-							Open the selected file, either with the default viewer for
-							that file type, or with a program you choose.
-						</para>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
-					<term>Blame...</term>
-					<listitem>
-						<para>
-							Opens the Blame dialog, allowing you to blame up to the
-							selected revision.
+							Compare chosen file with working tree.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -387,6 +384,25 @@
 						</para>
 					</listitem>
 				</varlistentry>
+				<varlistentry>
+					<term>Show log</term>
+					<listitem>
+						<para>
+							Show the revision log for the selected single file.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Blame...</term>
+					<listitem>
+						<para>
+							Opens the Blame dialog, allowing you to blame up to the
+							selected revision.
+						</para>
+					</listitem>
+				</varlistentry>
+
 				<varlistentry>
 					<term>Save revision to...</term>
 					<listitem>
@@ -407,37 +423,20 @@
 				</varlistentry>
 
 				<varlistentry>
-					<term>Show log</term>
-					<listitem>
-						<para>
-							Show the revision log for the selected single file.
-						</para>
-					</listitem>
-				</varlistentry>
-
-				<varlistentry>
-					<term>Compare with base</term>
-					<listitem>
-						<para>
-							Compare chosen file with base version.
-						</para>
-					</listitem>
-				</varlistentry>
-
-				<varlistentry>
-					<term>Compare with working tree</term>
-					<listitem>
-						<para>
-							Compare chosen file with working tree.
-						</para>
-					</listitem>
-				</varlistentry>
-
-				<varlistentry>
 					<term>View revision in Notepad2</term>
 					<listitem>
 						<para>
 							Show chosen file with notepad2 with chosen commit.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Open / Open with...</term>
+					<listitem>
+						<para>
+							Open the selected file, either with the default viewer for
+							that file type, or with a program you choose.
 						</para>
 					</listitem>
 				</varlistentry>
