@@ -167,7 +167,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Switch\Checkout to revision</term>
+					<term>Switch / Checkout to revision</term>
 					<listitem>
 						<para>
 							Update your working tree to the selected revision.
@@ -216,6 +216,25 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Revert change by this commit</term>
+					<listitem>
+						<para>
+							Revert changes from which were made in the selected
+							revision. All changes are integrated into your working tree.
+							You may choose to commit immediately or edit and commit later.
+							To abandon the reverted changes, perform a hard reset.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Edit notes</term>
+					<listitem>
+						<para>
+							Edit notes of the selected commit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Cherry Pick this commit</term>
 					<listitem>
 						<para>
@@ -228,7 +247,15 @@
 					<term>Format Patch...</term>
 					<listitem>
 						<para>
-							Create Patchs from this commit.
+							Create Patches from this commit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy SHA-1 to clipboard</term>
+					<listitem>
+						<para>
+							Copy the commit hash of the selected revision to the clipboard.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -239,6 +266,14 @@
 							Copy the log details of the selected revisions to the clipboard.
 							This will copy the revision number, author, date, log message
 							and the list of changed items for each revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy log message to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log message of the selected revision to the clipboard.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -260,6 +295,15 @@
 								This allows you to easily search for refs (tags and branches).
 							</para>
 						</tip>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Shows branches this commit is on</term>
+					<listitem>
+						<para>
+							Shows the branches that the select commit belongs to.
+							It shows both local and remote branches.
+						</para>
 					</listitem>
 				</varlistentry>
 			</variablelist>
@@ -293,6 +337,17 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Revert changes by these commit</term>
+					<listitem>
+						<para>
+							Revert changes from which were made in the selected
+							revisions. All changes are integrated into your working tree.
+							You may choose to commit immediately or edit and commit later.
+							To abandon the reverted changes, perform a hard reset.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Combine to one commit</term>
 					<listitem>
 						<para>
@@ -301,10 +356,18 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Cherry Pick this version</term>
+					<term>Cherry Pick selected commits</term>
 					<listitem>
 						<para>
 							Cherry Pick Chosen Commits.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Bisect start</term>
+					<listitem>
+						<para>
+							Start bisection. Find by binary search the change that introduced a bug. 
 						</para>
 					</listitem>
 				</varlistentry>
@@ -317,10 +380,28 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Copy SHA-1 to clipboard</term>
+					<listitem>
+						<para>
+							Copy the commit hashes of the selected revisions to the clipboard, delimited by CRLF.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Copy to clipboard</term>
 					<listitem>
 						<para>
 							Copy log messages to clipboard as described above.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy log messages to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log messages of the selected revisions to the clipboard.
+							This will copy the log message for each revision.
+							This faciliates the preparation of release notes.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -423,10 +504,10 @@
 				</varlistentry>
 
 				<varlistentry>
-					<term>View revision in Notepad2</term>
+					<term>View revision in alternative editor</term>
 					<listitem>
 						<para>
-							Show chosen file with notepad2 with chosen commit.
+							Show chosen file with an alternative editor such as notepad2 with chosen commit.
 						</para>
 					</listitem>
 				</varlistentry>
