@@ -246,7 +246,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			else
 				oldsub = cmderr;
 		}
-		if(newsub != GIT_REV_ZERO)
+		if (newhash != GIT_REV_ZERO)
 		{
 			CString cmdout, cmderr;
 			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), newhash);
