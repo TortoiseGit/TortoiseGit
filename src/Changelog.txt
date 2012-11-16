@@ -40,6 +40,7 @@ Released: unreleased
  * Fixed issue #1486: Rebase/Cherry-pick Dialog conflict list fail to refresh the status of resolved deleted file
  * Fixed issue #1521: Directories with period at beginning are recognized as file extensions showing *.dir
  * Fixed issue #1519: Quotes in notes break Merge command
+ * Fixed issue #1524: Log dialog failed to view revision in alternative editor of the same file more than once
 
 = Release 1.7.14.0 =
 Released: 2012-10-14

@@ -4192,8 +4192,13 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 	{
 		CString temppath;
 		GetTempPath(temppath);
-		file.Format(_T("%s%s_%s%s"),
-					temppath,
+		TCHAR szTempName[MAX_PATH];
+		GetTempFileName(temppath, filepath->GetBaseFilename(), 0, szTempName);
+		CString temp(szTempName);
+		DeleteFile(szTempName);
+		CreateDirectory(szTempName, NULL);
+		file.Format(_T("%s\\%s_%s%s"),
+					temp,
 					filepath->GetBaseFilename(),
 					m_CurrentVersion.Left(g_Git.GetShortHASHLength()),
 					filepath->GetFileExtension());
