@@ -261,7 +261,17 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 				newsub = cmderr;
 		}
 
-		if (oldhash != newhash)
+		if (oldhash == GIT_REV_ZERO)
+		{
+			oldOK = true;
+			changeType = CSubmoduleDiffDlg::NewSubmodule;
+		}
+		else if (newhash == GIT_REV_ZERO)
+		{
+			newOK = true;
+			changeType = CSubmoduleDiffDlg::Unknown;
+		}
+		else if (oldhash != newhash)
 		{
 			bool ffNewer = false, ffOlder = false;
 			ffNewer = subgit.IsFastForward(oldhash, newhash);
