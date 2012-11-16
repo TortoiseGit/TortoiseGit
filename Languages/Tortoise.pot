@@ -513,6 +513,10 @@ msgstr ""
 msgid "&Delete (keep local)"
 msgstr ""
 
+#. Resource IDs: (605)
+msgid "Delete submodule"
+msgstr ""
+
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
 msgstr ""

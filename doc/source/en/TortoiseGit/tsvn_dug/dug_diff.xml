@@ -394,6 +394,14 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Delete Submodule</term>
+					<listitem>
+						<para>
+							This is for deleted submodule.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Unknown</term>
 					<listitem>
 						<para>

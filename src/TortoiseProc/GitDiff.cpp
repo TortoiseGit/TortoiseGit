@@ -269,7 +269,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		else if (newhash == GIT_REV_ZERO)
 		{
 			newOK = true;
-			changeType = CSubmoduleDiffDlg::Unknown;
+			changeType = CSubmoduleDiffDlg::DeleteSubmodule;
 		}
 		else if (oldhash != newhash)
 		{

@@ -34,6 +34,7 @@ public:
 	{
 		Unknown,
 		NewSubmodule,
+		DeleteSubmodule,
 		FastForward,
 		Rewind,
 		NewerTime,
