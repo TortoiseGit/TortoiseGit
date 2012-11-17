@@ -1448,8 +1448,16 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	CTGitPath mine;
 	CTGitPath base;
 
-	mine.SetFromGit(GetMergeTempFile(_T("LOCAL"),merge));
-	theirs.SetFromGit(GetMergeTempFile(_T("REMOTE"),merge));
+	if (revertTheirMy)
+	{
+		mine.SetFromGit(GetMergeTempFile(_T("REMOTE"), merge));
+		theirs.SetFromGit(GetMergeTempFile(_T("LOCAL"), merge));
+	}
+	else
+	{
+		mine.SetFromGit(GetMergeTempFile(_T("LOCAL"), merge));
+		theirs.SetFromGit(GetMergeTempFile(_T("REMOTE"), merge));
+	}
 	base.SetFromGit(GetMergeTempFile(_T("BASE"),merge));
 
 	CString format;
@@ -1513,9 +1521,9 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	{
 		merge.SetFromWin(g_Git.m_CurrentDir+_T("\\")+merge.GetWinPathString());
 		if( revertTheirMy )
-			bRet = !!CAppUtils::StartExtMerge(base,mine, theirs,  merge,_T("BASE"),_T("LOCAL"),_T("REMOTE"));
+			bRet = !!CAppUtils::StartExtMerge(base, mine, theirs, merge, _T("BASE"), _T("REMOTE"), _T("LOCAL"));
 		else
-			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"),_T("REMOTE"),_T("LOCAL"));
+			bRet = !!CAppUtils::StartExtMerge(base, theirs, mine, merge,_T("BASE"), _T("REMOTE"), _T("LOCAL"));
 
 	}
 	else
