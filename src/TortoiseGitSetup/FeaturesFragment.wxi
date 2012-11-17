@@ -88,6 +88,12 @@
 			<ComponentRef Id="C__iconsstraight" />
 		</Feature>
 
+		<?if $(var.IncludeCrashReportDll) = 1 ?>
+		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="Sends crash dumps to the developers." TypicalDefault="install" InstallDefault="followParent" Absent="allow">
+			<ComponentRef Id="C__crash" />
+		</Feature>
+		<?endif ?>
+
 		<Feature Id="UDiffAssoc" Level="1" Title="Register diff/patch files" Description="Associate .diff and .patch files with TortoiseUDiff" TypicalDefault="install" Absent="allow">
 			<ComponentRef Id="C__TortoiseUDiffAssoc" />
 		</Feature>
@@ -100,12 +106,6 @@
 		<?if $(var.DictionaryENUS) = 1 ?>
 		<Feature Id="DictionaryENUS" Level="1" Title="English (US) dictionary" Description="English (US) spell checker dictionary" TypicalDefault="install" Absent="allow">
 			<ComponentRef Id="C__DictionaryENUS" />
-		</Feature>
-		<?endif ?>
-
-		<?if $(var.IncludeCrashReportDll) = 1 ?>
-		<Feature Id="CrashReporter" Level="1" Title="Crash Reporter" Description="In official builds, sends crash dumps to the developers." TypicalDefault="install" Display="hidden" InstallDefault="followParent">
-			<ComponentRef Id="C__crash" />
 		</Feature>
 		<?endif ?>
 
