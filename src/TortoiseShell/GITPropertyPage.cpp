@@ -389,6 +389,14 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 			if (ret < 0 && ret != GIT_EUSER)
 				throw "git_tree_walk 1";
 
+			// check if file not found
+			if (git_oid_iszero(&treewalkstruct.oid))
+			{
+				git_commit_free(commit);
+				commit = NULL;
+				break;
+			}
+
 			bool diff = true;
 			// for merge point, check if it is different to all parents, if yes then there are real change in the merge point.
 			// if no parent then of course it is different
