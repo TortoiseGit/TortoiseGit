@@ -27,6 +27,7 @@
 #include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "SysProgressDlg.h"
+#include "AppUtils.h"
 
 bool RebaseCommand::Execute()
 {
@@ -65,6 +66,7 @@ bool RebaseCommand::Execute()
 	while(1)
 	{
 		CRebaseDlg dlg;
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
 		INT_PTR ret = dlg.DoModal();
 		if( ret == IDOK)
@@ -76,6 +78,13 @@ bool RebaseCommand::Execute()
 		{
 			bRet=false;
 			return bRet;
+		}
+		if (ret == IDC_REBASE_POST_BUTTON)
+		{
+			CString cmd = _T("/command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::RunTortoiseProc(cmd);
+			return true;
 		}
 	}
 	return bRet;

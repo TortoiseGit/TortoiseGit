@@ -353,6 +353,7 @@ void CSyncDlg::FetchComplete()
 	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
 	{
 		CRebaseDlg dlg;
+		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(_T("Email &Patch..."));
 		INT_PTR response = dlg.DoModal();
 		if(response == IDOK)
@@ -360,7 +361,13 @@ void CSyncDlg::FetchComplete()
 			return ;
 		}
 
-		if(response == IDC_REBASE_POST_BUTTON)
+		if (response == IDC_REBASE_POST_BUTTON)
+		{
+			CString cmd = _T("/command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::RunTortoiseProc(cmd);
+		}
+		if(response == IDC_REBASE_POST_BUTTON + 1)
 		{
 			CString cmd, out, err;
 			cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),

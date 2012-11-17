@@ -27,6 +27,7 @@
 #include "ShellUpdater.h"
 #include "rebasedlg.h"
 #include "SysProgressDlg.h"
+#include "AppUtils.h"
 
 bool SVNRebaseCommand::Execute()
 {
@@ -135,11 +136,19 @@ bool SVNRebaseCommand::Execute()
 		}
 	}
 
+	dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 	//need rebase
-	if(dlg.DoModal() == IDOK)
+	INT_PTR response = dlg.DoModal();
+	if (response == IDOK || response == IDC_REBASE_POST_BUTTON)
 	{
 		if(isStash)
 			askIfUserWantsToStashPop();
+		if (response == IDC_REBASE_POST_BUTTON)
+		{
+			CString cmd = _T("/command:log");
+			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+			CAppUtils::RunTortoiseProc(cmd);
+		}
 		return true;
 	}
 	return false;

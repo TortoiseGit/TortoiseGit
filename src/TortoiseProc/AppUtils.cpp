@@ -2159,6 +2159,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			while(1)
 			{
 				CRebaseDlg dlg;
+				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUDESSENDMAIL)));
 				dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 				INT_PTR response = dlg.DoModal();
@@ -2166,7 +2167,14 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				{
 					return TRUE;
 				}
-				if(response == IDC_REBASE_POST_BUTTON )
+				if (response == IDC_REBASE_POST_BUTTON)
+				{
+					CString cmd = _T("/command:log");
+					cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
+					RunTortoiseProc(cmd);
+					return TRUE;
+				}
+				if (response == IDC_REBASE_POST_BUTTON + 1)
 				{
 					CString cmd, out, err;
 					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
@@ -2183,7 +2191,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 					return TRUE;
 				}
 
-				if(response == IDC_REBASE_POST_BUTTON +1 )
+				if (response == IDC_REBASE_POST_BUTTON + 2)
 					continue;
 
 				if(response == IDCANCEL)
