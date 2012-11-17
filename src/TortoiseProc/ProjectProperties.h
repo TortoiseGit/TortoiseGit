@@ -33,7 +33,7 @@ using namespace std;
 #define BUGTRAQPROPNAME_APPEND		      _T("bugtraq.append")
 
 #define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn.logtemplate")
-#define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tsvn.logwidthmarker")
+#define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tgit.logwidthmarker")
 #define PROJECTPROPNAME_LOGMINSIZE		  _T("tsvn.logminsize")
 #define PROJECTPROPNAME_LOCKMSGMINSIZE	  _T("tsvn.lockmsgminsize")
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")

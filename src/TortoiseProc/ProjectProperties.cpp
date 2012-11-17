@@ -126,6 +126,15 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 	{
 		sCheckRe = sCheckRe.Trim();
 	}
+
+	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGWIDTHLINE))
+	{
+		CString val;
+		val = sPropVal;
+		if (!val.IsEmpty())
+			nLogWidthMarker = _ttoi(val) + 2; // HACK, + 2 needed
+	}
+
 	return TRUE;
 }
 
