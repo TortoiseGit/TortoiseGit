@@ -2167,14 +2167,14 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				{
 					return TRUE;
 				}
-				if (response == IDC_REBASE_POST_BUTTON)
+				else if (response == IDC_REBASE_POST_BUTTON)
 				{
 					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
 					RunTortoiseProc(cmd);
 					return TRUE;
 				}
-				if (response == IDC_REBASE_POST_BUTTON + 1)
+				else if (response == IDC_REBASE_POST_BUTTON + 1)
 				{
 					CString cmd, out, err;
 					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
@@ -2190,11 +2190,9 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 					CAppUtils::SendPatchMail(cmd,out);
 					return TRUE;
 				}
-
-				if (response == IDC_REBASE_POST_BUTTON + 2)
+				else if (response == IDC_REBASE_POST_BUTTON + 2)
 					continue;
-
-				if(response == IDCANCEL)
+				else if(response == IDCANCEL)
 					return FALSE;
 			}
 			return TRUE;
