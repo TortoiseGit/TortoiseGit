@@ -795,7 +795,7 @@ int CRebaseDlg::StartRebase()
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				this->AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 					return -1;
 			}
 			else
@@ -840,7 +840,7 @@ int CRebaseDlg::StartRebase()
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				this->AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 					return -1;
 			}
 			else
@@ -897,7 +897,7 @@ int CRebaseDlg::FinishRebase()
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 				return -1;
 		}
 		else
@@ -913,7 +913,7 @@ int CRebaseDlg::FinishRebase()
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(out);
-			if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+			if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 				return -1;
 		}
 		else
@@ -951,7 +951,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				{
 					this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 					AddLogString(out);
-					if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+					if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 						return;
 				}
 				else
@@ -984,7 +984,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			{
 				AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
 				AddLogString(out);
-				if (CMessageBox::Show(m_hWnd, _T("Retry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+				if (CMessageBox::Show(m_hWnd, out + _T("\nRetry?"), _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
 					return;
 			}
 			else
