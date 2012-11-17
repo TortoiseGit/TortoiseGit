@@ -277,6 +277,7 @@ BOOL CSettings::OnInitDialog()
 	if (this->m_DefaultPage == _T("gitremote"))
 	{
 		this->SetActivePage(this->m_pGitRemote);
+		this->m_pGitRemote->m_bNoFetch = true;
 	}
 	else if (this->m_DefaultPage == _T("gitconfig"))
 	{

@@ -38,6 +38,7 @@ CSettingGitRemote::CSettingGitRemote(CString cmdPath)
 	, m_strUrl(_T(""))
 	, m_strPuttyKeyfile(_T(""))
 	, m_cmdPath(cmdPath)
+	, m_bNoFetch(false)
 {
 
 	m_ChangedMask = 0;
@@ -270,7 +271,7 @@ BOOL CSettingGitRemote::OnApply()
 
 		this->m_ctrlRemoteList.AddString(m_strRemote);
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
-		if (CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
+		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CCommonAppUtils::RunTortoiseProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
 	if(m_ChangedMask & REMOTE_URL)
