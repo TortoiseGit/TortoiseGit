@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter SYSTEM "../../dtd/dblite.dtd">
+<chapter id="tsvn-ibugtraqprovider">
+    <title>IBugtraqProvider interface</title>
+    <simplesect>
+        <indexterm>
+            <primary>plugin</primary>
+        </indexterm>
+        <indexterm>
+            <primary>IBugtraqProvider</primary>
+        </indexterm>
+        <indexterm>
+            <primary>COM</primary>
+        </indexterm>
+        <indexterm>
+            <primary>issue tracker</primary>
+        </indexterm>
+        <para>
+            To get a tighter integration with issue trackers than by simply
+            using the <literal>bugtraq.</literal> config keys, TortoiseGit can make use of COM
+            plugins. With such plugins it is possible to fetch information
+            directly from the issue tracker, interact with the user and provide
+            information back to TortoiseGit about open issues, verify log
+            messages entered by the user and even run actions after a successful
+            commit to e.g, close an issue.
+        </para>
+        <para>
+            We can't provide information and tutorials on how you have
+            to implement a COM object in your preferred programming language, but
+            we have example plugins in C++/ATL and C# in our repository in
+            the <filename>contrib/issue-tracker-plugins</filename> folder.
+            In that folder you can also find the required include files you
+            need to build your plugin.
+            (<xref linkend="tsvn-preface-source"/> explains how to access the repository.)
+        </para>
+        <important>
+            <para>
+                You should provide both a 32-bit and 64-bit version of your
+                plugin. Because the x64-Version of TortoiseGit can not use a 32-bit
+                plugin and vice-versa.
+            </para>
+        </important>
+    </simplesect>
+    <sect1 id="tsvn-bugtraqnaming">
+        <title>Naming conventions</title>
+        <para>
+            If you release an issue tracker plugin for Tortoise*-clients, please do 
+            <emphasis>not</emphasis> name it <emphasis>Tortoise&lt;Something&gt;</emphasis>.
+            We'd like to reserve the <emphasis>Tortoise</emphasis> prefix for a version control
+            client integrated into the windows shell. For example: TortoiseCVS, TortoiseSVN,
+            TortoiseHg, TortoiseGit and TortoiseBzr are all version control clients.
+        </para>
+        <para>
+            Please name your plugin for a Tortoise client <emphasis>Turtle&lt;Something&gt;</emphasis>,
+            where <emphasis>&lt;Something&gt;</emphasis> refers to the issue tracker that you are connecting to. 
+            Alternatively choose a name that sounds like <emphasis>Turtle</emphasis> but has 
+            a different first letter. Nice examples are:
+            <itemizedlist>
+                <listitem>
+                    <para>Gurtle - An issue tracker plugin for Google code</para>
+                </listitem>
+                <listitem>
+                    <para>TurtleMine - An issue tracker plugin for Redmine</para>
+                </listitem>
+                <listitem>
+                    <para>VurtleOne - An issue tracker plugin for VersionOne</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </sect1>
+    <!-- ================================================================= -->
+    <!-- ======================== SECTION 1 ============================== -->
+    <!-- ================================================================= -->
+    <sect1 id="tsvn-ibugtraqprovider-1">
+        <title>The IBugtraqProvider interface</title>
+        <para>
+            TortoiseGit 1.2.1 and later can use plugins which implement the IBugtraqProvider
+            interface. The interface provides a few methods which plugins can
+            use to interact with the issue tracker.
+        </para>
+<programlisting>
+HRESULT ValidateParameters (
+  // Parent window for any UI that needs to be
+  // displayed during validation.
+  [in] HWND hParentWnd,
+
+  // The parameter string that needs to be validated.
+  [in] BSTR parameters,
+
+  // Is the string valid?
+  [out, retval] VARIANT_BOOL *valid
+);
+</programlisting>
+        <para>
+            This method is called from the settings dialog where the user can
+            add and configure the plugin. The <literal>parameters</literal> string
+            can be used by a plugin to get additional required information, e.g., the URL
+            to the issue tracker, login information, etc.
+            The plugin should verify the <literal>parameters</literal> string and
+            show an error dialog if the string is not valid. The <literal>hParentWnd</literal>
+            parameter should be used for any dialog the plugin shows as the parent window.
+            The plugin must return TRUE if the validation of the <literal>parameters</literal>
+            string is successful. If the plugin returns FALSE, the settings dialog won't
+            allow the user to add the plugin to a working copy path.
+        </para>
+<programlisting>
+HRESULT GetLinkText (
+  // Parent window for any (error) UI that needs to be displayed.
+  [in] HWND hParentWnd,
+
+  // The parameter string, just in case you need to talk to your
+  // web service (e.g.) to find out what the correct text is.
+  [in] BSTR parameters,
+
+  // What text do you want to display?
+  // Use the current thread locale.
+  [out, retval] BSTR *linkText
+);
+</programlisting>
+        <para>
+            The plugin can provide a string here which is used in the TortoiseGit
+            commit dialog for the button which invokes the plugin, e.g., "Choose issue"
+            or "Select ticket". Make sure the string is not too long, otherwise it
+            might not fit into the button.
+            If the method returns an error (e.g., <literal>E_NOTIMPL</literal>), a default
+            text is used for the button.
+        </para>
+<programlisting>
+HRESULT GetCommitMessage (
+  // Parent window for your provider's UI.
+  [in] HWND hParentWnd,
+
+  // Parameters for your provider.
+  [in] BSTR parameters,
+  [in] BSTR commonRoot,
+  [in] SAFEARRAY(BSTR) pathList,
+
+  // The text already present in the commit message.
+  // Your provider should include this text in the new message,
+  // where appropriate.
+  [in] BSTR originalMessage,
+
+  // The new text for the commit message.
+  // This replaces the original message.
+  [out, retval] BSTR *newMessage
+);
+</programlisting>
+        <para>
+            This is the main method of the plugin. This method is called from
+            the TortoiseGit commit dialog when the user clicks on the plugin
+            button.
+        </para>
+        <para>
+            The <literal>parameters</literal> string is the string the
+            user has to enter in the settings dialog when he configures
+            the plugin. Usually a plugin would use this to find the URL
+            of the issue tracker and/or login information or more.
+        </para>
+        <para>
+            The <literal>commonRoot</literal> string contains the parent path
+            of all items selected to bring up the commit dialog. Note that this
+            is <emphasis>not</emphasis> the root path of all items which the user has selected in
+            the commit dialog.
+            For the branch/tag dialog, this is the path which is to be copied.
+        </para>
+        <para>
+            The <literal>pathList</literal> parameter contains an array of paths
+            (as strings) which the user has selected for the commit.
+        </para>
+        <para>
+            The <literal>originalMessage</literal> parameter contains the text
+            entered in the log message box in the commit dialog. If the user
+            has not yet entered any text, this string will be empty.
+        </para>
+        <para>
+            The <literal>newMessage</literal> return string is copied into
+            the log message edit box in the commit dialog, replacing whatever
+            is already there. If a plugin does not modify the <literal>originalMessage</literal>
+            string, it must return the same string again here, otherwise
+            any text the user has entered will be lost.
+        </para>
+    </sect1>
+    <!-- ================================================================= -->
+    <!-- ======================== SECTION 2 ============================== -->
+    <!-- ================================================================= -->
+    <sect1 id="tsvn-ibugtraqprovider-2">
+        <title>The IBugtraqProvider2 interface</title>
+        <para>
+            In TortoiseSVN 1.6 a new interface was added which provides
+            more functionality for plugins (also available in TortoiseGit since 1.2.1). This IBugtraqProvider2 interface
+            inherits from IBugtraqProvider.
+        </para>
+<programlisting>
+HRESULT GetCommitMessage2 (
+  // Parent window for your provider's UI.
+  [in] HWND hParentWnd,
+
+  // Parameters for your provider.
+  [in] BSTR parameters,
+  // The common URL of the commit
+  [in] BSTR commonURL,
+  [in] BSTR commonRoot,
+  [in] SAFEARRAY(BSTR) pathList,
+
+  // The text already present in the commit message.
+  // Your provider should include this text in the new message,
+  // where appropriate.
+  [in] BSTR originalMessage,
+
+  // You can assign custom revision properties to a commit
+  // by setting the next two params.
+  // note: Both safearrays must be of the same length.
+  //       For every property name there must be a property value!
+
+  // The content of the bugID field (if shown)
+  [in] BSTR bugID,
+
+  // Modified content of the bugID field
+  [out] BSTR * bugIDOut,
+
+  // The list of revision property names.
+  [out] SAFEARRAY(BSTR) * revPropNames,
+
+  // The list of revision property values.
+  [out] SAFEARRAY(BSTR) * revPropValues,
+
+  // The new text for the commit message.
+  // This replaces the original message
+  [out, retval] BSTR * newMessage
+);
+</programlisting>
+        <para>
+            This method is called from the TortoiseGit commit dialog
+            when the user clicks on the plugin button. This method is called
+            instead of <literal>GetCommitMessage()</literal>. Please refer
+            to the documentation for <literal>GetCommitMessage</literal>
+            for the parameters that are also used there.
+        </para>
+        <para>
+            The parameter <literal>commonURL</literal> is the parent URL
+            of all items selected to bring up the commit dialog. This is basically
+            the URL of the <literal>commonRoot</literal> path.
+        </para>
+        <para>
+            The parameter <literal>bugID</literal> contains the content of
+            the bug-ID field (if it is shown, configured with the property
+            <literal>bugtraq:message</literal>).
+        </para>
+        <para>
+            The return parameter <literal>bugIDOut</literal> is used to fill
+            the bug-ID field when the method returns.
+        </para>
+        <para>
+            The <literal>revPropNames</literal> and <literal>revPropValues</literal>
+            return parameters can contain name/value pairs for revision properties
+            that the commit should set. A plugin must make sure that both arrays
+            have the same size on return! Each property name in <literal>revPropNames</literal>
+            must also have a corresponding value in <literal>revPropValues</literal>.
+            If no revision properties are to be set, the plugin must return empty arrays.
+        </para>
+<programlisting>
+HRESULT CheckCommit (
+  [in] HWND hParentWnd,
+  [in] BSTR parameters,
+  [in] BSTR commonURL,
+  [in] BSTR commonRoot,
+  [in] SAFEARRAY(BSTR) pathList,
+  [in] BSTR commitMessage,
+  [out, retval] BSTR * errorMessage
+);
+</programlisting>
+        <para>
+            This method is called right before the commit dialog is closed
+            and the commit begins. A plugin can use this method to validate
+            the selected files/folders for the commit and/or the commit
+            message entered by the user. The parameters are the same as
+            for <literal>GetCommitMessage2()</literal>, with the difference that
+            <literal>commonURL</literal> is now the common URL of all
+            <emphasis>checked</emphasis> items, and <literal>commonRoot</literal>
+            the root path of all checked items.
+        </para>
+        <para>
+            For the branch/tag dialog, the <literal>commonURL</literal> is the source
+            URL of the copy, and <literal>commonRoot</literal> is set to the
+            target URL of the copy.
+        </para>
+        <para>
+            The return parameter <literal>errorMessage</literal> must
+            either contain an error message which TortoiseGit shows to the
+            user or be empty for the commit to start.
+            If an error message is returned, TortoiseGit shows the error
+            string in a dialog and keeps the commit dialog open so the
+            user can correct whatever is wrong. A plugin should therefore
+            return an error string which informs the user <emphasis>what</emphasis>
+            is wrong and how to correct it.
+        </para>
+<programlisting>
+HRESULT  OnCommitFinished (
+  // Parent window for any (error) UI that needs to be displayed.
+  [in] HWND hParentWnd,
+
+  // The common root of all paths that got committed.
+  [in] BSTR commonRoot,
+
+  // All the paths that got committed.
+  [in] SAFEARRAY(BSTR) pathList,
+
+
+  // The text already present in the commit message.
+  [in] BSTR logMessage,
+
+  // The revision of the commit.
+  [in] ULONG revision,
+
+
+  // An error to show to the user if this function
+  // returns something else than S_OK
+  [out, retval] BSTR * error
+);
+</programlisting>
+        <para>
+            This method is called after a successful commit. A plugin
+            can use this method to e.g., close the selected issue or add
+            information about the commit to the issue.
+            The parameters are the same as for <literal>GetCommitMessage2</literal>.
+        </para>
+<programlisting>
+HRESULT HasOptions(
+  // Whether the provider provides options
+  [out, retval] VARIANT_BOOL *ret
+);
+</programlisting>
+        <para>
+            This method is called from the settings dialog where the user
+            can configure the plugins. If a plugin provides its own
+            configuration dialog with <literal>ShowOptionsDialog</literal>, it must
+            return TRUE here, otherwise it must return FALSE.
+        </para>
+<programlisting>
+HRESULT ShowOptionsDialog(
+  // Parent window for the options dialog
+  [in] HWND hParentWnd,
+
+  // Parameters for your provider.
+  [in] BSTR parameters,
+
+  // The parameters string
+  [out, retval] BSTR * newparameters
+);
+</programlisting>
+        <para>
+            This method is called from the settings dialog when the user
+            clicks on the "Options" button that is shown if <literal>HasOptions</literal>
+            returns TRUE.
+            A plugin can show an options dialog to make it easier for the user
+            to configure the plugin.
+        </para>
+        <para>
+            The <literal>parameters</literal> string contains the plugin
+            parameters string that is already set/entered.
+        </para>
+        <para>
+            The <literal>newparameters</literal> return parameter must contain
+            the parameters string which the plugin constructed from the info
+            it gathered in its options dialog. That <literal>paramameters</literal>
+            string is passed to all other IBugtraqProvider and IBugtraqProvider2
+            methods.
+        </para>
+    </sect1>
+</chapter>

@@ -55,7 +55,7 @@
 			You can integrate a bug tracking tool of your choice in
 			TortoiseGit. To do this, you have to define
 			some configuration, which start with <literal>bugtraq.</literal>.
-			<xref linkend="tsvn-setting-bugtraq"/>)
+			<xref linkend="git-config(1)"/>)
 		</para>
 		<para>
 			There are two ways to integrate TortoiseGit with issue trackers. One is
@@ -80,33 +80,6 @@
 							issue number and not the link to it.
 							e.g the TortoiseGit project is using
 							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
-						</para>
-						<para>
-							You can also use relative URLs instead of absolute ones. This is
-							useful when your issue tracker is on the same domain/server
-							as your source repository. In case the domain name ever changes,
-							you don't have to adjust the <literal>bugtraq.url</literal> configuration.
-							There are two ways to specify a relative URL:
-						</para>
-						<!--
-						<para>
-							If it begins with the string <literal>^/</literal> it is assumed
-							to be relative to the repository root.
-							For example, <literal>^/issues/details?id=%BUGID%</literal>
-							will resolve to
-							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
-							if your repository is located on
-							<systemitem class="url">http://code.google.com/p/tortoisegit/</systemitem>.
-						</para>
-						-->
-						<para>
-							A URL beginning with the string <literal>/</literal> is assumed
-							to be relative to the server's hostname.
-							For example <literal>/issues/details?id=%BUGID%</literal>
-							will resolve to
-							<systemitem class="url">http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%</systemitem>
-							if your repository is located anywhere on
-							<systemitem class="url">http://code.google.com/p/tortoisegit/</systemitem>.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -294,47 +267,9 @@
 			</para>
 		</tip>
 		<para>
-			Some <literal>tsvn:</literal> properties require a
-			<literal>true/false</literal> value. TortoiseGit also understands
-			<literal>yes</literal> as a synonym for <literal>true</literal> and
-			<literal>no</literal> as a synonym for <literal>false</literal>.
-		</para>
-		<important>
-			<title>Set the Properties on Folders</title>
-			<para>
-				These properties must be set on folders for the system to work. 
-				When you commit a file or folder the properties are read from that folder.
-				If the properties are not found there, TortoiseGit will search upwards
-				through the folder tree to find them until it comes to an unversioned
-				folder, or the tree root (eg. <literal>C:\</literal>) is found.
-				If you can be sure that each user checks out only from e.g
-				<filename>trunk/</filename> and not some sub-folder, then it's enough if
-				you set the properties on <filename>trunk/</filename>.
-				If you can't be sure, you should set the properties recursively
-				on each sub-folder.
-				A configuration setting deeper in the project hierarchy overrides settings on
-				higher levels (closer to <filename>trunk/</filename>).
-			</para>
-			<para>
-				For <literal>tsvn:</literal> properties <emphasis>only</emphasis>
-				you can use the <guilabel>Recursive</guilabel> checkbox to set
-				the configuration to all sub-folders in the hierarchy, without also
-				setting it on all files.
-			</para>
-		</important>
-		<tip>
-			<title>No Issue Tracker Information from Repository Browser</title>
-			<para>
-				Because the issue tracker integration depends upon accessing Git
-				properties, you will only see the results when using a checked
-				out working tree. Fetching properties remotely is a slow operation,
-				so you will not see this feature in action from the repo browser.
-			</para>
-		</tip>
-		<para>
 			This issue tracker integration is not restricted to TortoiseGit; it can be used
-			with any Git client. For more information, read the full
-			<ulink url="http://TortoiseSVN.tigris.org/svn/TortoiseSVn/trunk/doc/issuetrackers.txt">
+			with other clients (e.g. TortoiseSVN). For more information, read the full
+			<ulink url="http://tortoisegit.googlecode.com/git/doc/issuetrackers.txt">
 				<citetitle>Issue Tracker Integration Specification</citetitle>
 			</ulink>
 			in the TortoiseGit source repository.
@@ -358,7 +293,7 @@
 			program is beyond the scope of this manual. The interface definition
 			and sample programs can be obtained from the <literal>contrib</literal>
 			folder in the
-			<ulink url="http://TortoiseSVN.tigris.org/svn/TortoiseSVN/trunk/contrib/issue-tracker-plugins">
+			<ulink url="http://code.google.com/p/tortoisegit/source/browse/#git%2Fcontrib%2Fissue-tracker-plugins">
 				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tsvn-preface-source"/> explains how to access the repository).

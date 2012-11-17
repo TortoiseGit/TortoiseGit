@@ -12,7 +12,7 @@ Imagine the following scenario:
     end (i.e. a web-dashboard). He picks something to work on this morning.
  3. Dave fires up Visual Studio; hacks on some code; does some work toward
     the task.
- 4. Dave brings up TSVN's commit dialog. He types in a comment that lists,
+ 4. Dave brings up TGit's commit dialog. He types in a comment that lists,
     depending on coding standards:
      a) The ticket/task number of what he's been working on.
      b) Some comments about what he's changed.
@@ -23,7 +23,7 @@ Imagine the following scenario:
  7. Marvin looks in the task-management software, and can monitor the
     project's progress.
 
-As it stands, TSVN supports (most of) this admirably. For example, with the
+As it stands, TGit supports (most of) this admirably. For example, with the
 Trac integration, I can put "See #43" or "Fixes #99" somewhere in the commit
 message, and Trac's post-commit hook will update the tickets accordingly.
 
@@ -35,12 +35,12 @@ However:
 
 So, the user story looks like this:
 
- "From the TSVN commit dialog, the user should be able to display up a list of
+ "From the TGit commit dialog, the user should be able to display up a list of
   assigned tickets from the issue-tracker associated with that repository. The
   user should be able to pick one or more tasks from this list."
   
  "This will populate the commit message with the information required by the
-  issue-tracker's SVN server-side post-commit hook."
+  issue-tracker's Git server-side post-commit hook."
 
  "This functionality should be available from the commit dialog, because the
   user may wish to choose which files to commit based on which ticket they

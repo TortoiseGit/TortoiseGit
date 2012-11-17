@@ -36,6 +36,7 @@
 	-->
 	<xi:include href="./tsvn_dug/dug.xml"/>
 	<xi:include href="./tsvn_app_faq.xml"/>
+	<xi:include href="./tsvn_bugtraqprovider.xml"/>
 	<xi:include href="./tsvn_app_admins.xml" />
 	<xi:include href="./tsvn_app_automation.xml"/>	
 	
