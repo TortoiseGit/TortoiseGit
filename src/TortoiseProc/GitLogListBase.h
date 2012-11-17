@@ -336,9 +336,11 @@ public:
 	{
 		if (m_LoadingThread!=NULL && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
 		{
-			DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-			if(ret == WAIT_TIMEOUT)
-				::TerminateThread(m_LoadingThread,0);
+			DWORD ret = WAIT_TIMEOUT;
+			for (int i = 0; i < 200 && m_bThreadRunning; i++)
+				ret =::WaitForSingleObject(m_LoadingThread->m_hThread, 100);
+			if (ret == WAIT_TIMEOUT && m_bThreadRunning)
+				::TerminateThread(m_LoadingThread, 0);
 			m_LoadingThread = NULL;
 		}
 	};

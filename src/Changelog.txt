@@ -41,6 +41,7 @@ Released: unreleased
  * Fixed issue #1521: Directories with period at beginning are recognized as file extensions showing *.dir
  * Fixed issue #1519: Quotes in notes break Merge command
  * Fixed issue #1524: Log dialog failed to view revision in alternative editor of the same file more than once
+ * Fixed issue #1459: Refreshing Log Dialog may freeze up to 20 seconds
 
 = Release 1.7.14.0 =
 Released: 2012-10-14
