@@ -112,7 +112,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	ProjectProperties pp;
 	pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
 	pp.SetBugIDRe(_T("(\\d+)"));
-	pp.lProjectLanguage = 0;
+	pp.lProjectLanguage = -1;
 	pp.sUrl = _T("http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
 	m_cLogMessage.Init(pp);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
