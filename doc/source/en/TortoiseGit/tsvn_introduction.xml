@@ -320,7 +320,7 @@
 				install one of TortoiseGit's language packs. This will install
 				the appropriate dictionary files as well as the TortoiseGit local
 				user interface.
-				Next time you restart, the dictionary will be available too.
+				After the installation finishes, the translation will be available.
 -->
 			</para>
 			<para>
@@ -362,15 +362,13 @@
 				If you install multiple dictionaries, TortoiseGit uses these rules
 				to select which one to use.
 				<orderedlist>
-<!--
 					<listitem>
 						<para>
-						Check the <literal>tsvn:projectlanguage</literal> setting.
-						Refer to <xref linkend="tsvn-dug-propertypage"/> for information
-						about setting project properties.
+						Check the <literal>tgit.projectlanguage</literal> setting.
+						Refer to <xref linkend="git-config(1)"/> for information
+						about setting properties (use the <literal>LCID Dec</literal> value as <ulink url="http://msdn.microsoft.com/de-de/goglobal/bb964664.aspx">assigned by Microsoft</ulink>).
 						</para>
 					</listitem>
--->
 					<listitem>
 						<para>
 						If no project language is set, or that language is not

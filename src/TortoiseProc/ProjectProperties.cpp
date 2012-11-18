@@ -135,6 +135,17 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 			nLogWidthMarker = _ttoi(val) + 2; // HACK, + 2 needed
 	}
 
+	if (GetStringProps(sPropVal, PROJECTPROPNAME_PROJECTLANGUAGE))
+	{
+		CString val;
+		val = sPropVal;
+		if (!val.IsEmpty())
+		{
+			LPTSTR strEnd;
+			lProjectLanguage = _tcstol(val, &strEnd, 0);
+		}
+	}
+
 	return TRUE;
 }
 
