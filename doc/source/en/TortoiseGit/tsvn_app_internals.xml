@@ -44,7 +44,7 @@
 			different file with the same name.
 		</para>
 		<para>
-			<graphic fileref="images/DeletedIcon.png"/> 
+			<graphic fileref="images/DeletedIcon.png"/>
 			The <emphasis>Deleted</emphasis> overlay represents the
 			<literal>deleted</literal> state, where an item is scheduled for
 			deletion, or the <literal>missing</literal> state, where an
@@ -53,7 +53,7 @@
 			child items is missing.
 		</para>
 		<para>
-			<graphic fileref="images/AddedIcon.png"/> 
+			<graphic fileref="images/AddedIcon.png"/>
 			The <emphasis>Added</emphasis> overlay is simply used to
 			represent the <literal>added</literal> status when an item
 			has been added to version control.
@@ -67,25 +67,24 @@
 			gather status, it may take a few seconds before the overlay
 			updates.
 		</para>
-		
 		<para>
-			<graphic fileref="images/ReadOnlyIcon.png"/> 
-			The <emphasis>stage</emphasis> overlay is used to file which staged.
-			But it still has not commited. 			
+			<graphic fileref="images/ReadOnlyIcon.png"/>
+			The <emphasis>assume-valid</emphasis> (<emphasis>Needs Lock</emphasis> in TortoiseSVN) overlay is used to
+			indicate if a file has the <literal>assume-valid</literal>
+			flag set.
 		</para>
-		<!--
 		<para>
-			<graphic fileref="images/LockedIcon.png"/> 
-			The <emphasis>Locked</emphasis> overlay is used when the local
-			working tree holds a lock for that file.
+			<graphic fileref="images/LockedIcon.png"/>
+			The <emphasis>skip-worktree</emphasis> (<emphasis>Locked</emphasis> in TortoiseSVN) overlay is used when to
+			indicate if a file has the <literal>skip-worktree</literal>
+			flag set.
 		</para>
-		-->
 		<para>
 			<graphic fileref="images/IgnoredIcon.png"/>
 			The <emphasis>Ignored</emphasis> overlay is used to
 			represent an item which is in the <literal>ignored</literal>
-			state, either due to a global ignore pattern, or the
-			<literal>svn:ignore</literal> property of the parent folder.
+			state, either due to a global ignore pattern, or due to a
+			<filename>.gitignore</filename> file in one of the parent folders.
 			This overlay is optional.
 		</para>
 		<para>
@@ -108,7 +107,7 @@
 			a file could be locally modified and it could be marked for
 			deletion at the same time. Git returns a single status
 			value - in this case <literal>deleted</literal>.
-			Those priorities are defined within Git itself.
+			Those priorities are defined within Git and TortoiseGit itself.
 		</para>
 		<para>
 			When TortoiseGit displays the status recursively (the default
@@ -125,8 +124,20 @@
 			is limited to 15. Windows uses 4 of those, and the remaining 11
 			can be used by other applications. If there are not enough overlay
 			slots available, TortoiseGit tries to be a
-			<quote>Good Citizen (TM)</quote> and limits its use of overlays to
+			<emphasis>Good Citizen (TM)</emphasis> and limits its use of overlays to
 			give other apps a chance.
+		</para>
+		<para>
+			Since there are Tortoise clients available for other version control
+			systems, the TortoiseSVN developers created a shared component which is responsible for
+			showing the overlay icons. The technical details are not important
+			here, all you need to know is that this shared component allows
+			all Tortoise clients to use the same overlays and therefore the
+			limit of 11 available slots isn't used up by installing more than one
+			Tortoise client. Of course there's one small drawback: all Tortoise
+			clients use the same overlay icons, so you can't figure out by
+			the overlay icons what version control system a working copy is
+			using.
 		</para>
 		<itemizedlist>
 			<listitem>
@@ -146,27 +157,23 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis>Stage</emphasis>
+					<emphasis>assume-valid</emphasis>
 					is loaded if possible, but falls back to
-					<emphasis>Modified</emphasis> if there are not enough slots.
+					<emphasis>Normal</emphasis> if there are not enough slots.
 				</para>
 			</listitem>
-			<!--
 			<listitem>
 				<para>
-					<emphasis>Locked</emphasis>
-					is only loaded if there are fewer than 13 overlays already
-					loaded. It falls back to <emphasis>Normal</emphasis>
-					if there are not enough slots.
+					<emphasis>skip-worktree</emphasis>
+					is loaded if possible, but falls back to
+					<emphasis>Normal</emphasis> if there are not enough slots.
 				</para>
 			</listitem>
-			-->
 			<listitem>
 				<para>
 					<emphasis>Added</emphasis>
-					is only loaded if there are fewer than 14 overlays already
-					loaded. It falls back to <emphasis>Modified</emphasis>
-					if there are not enough slots.
+					is loaded if possible, but falls back to
+					<emphasis>Modified</emphasis> if there are not enough slots.
 				</para>
 			</listitem>
 		</itemizedlist>

@@ -181,5 +181,14 @@
                 </para>
             </listitem>
         </varlistentry>
+        <varlistentry>
+            <term condition="pot">VersionCheckPreview</term>
+            <listitem>
+                <para>
+                    Set this to <literal>true</literal> to make TortoiseGit also check for new preview releases.
+                    The default in all stable releases is <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
     </variablelist>
 </sect2>

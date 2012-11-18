@@ -45,11 +45,10 @@
 			need the new CRT and MFC DLLs, which can only be deployed <emphasis>per
 			computer</emphasis> and not <emphasis>per user</emphasis>.
 			If you really must install TortoiseGit on a per user basis, then you must
-			first install the MFC and CRT package version 8 from Microsoft on each
+			first install the MFC and CRT package version 9 from Microsoft on each
 			computer you want to install TortoiseGit as per user.
 		</para>
 	</sect1>
-<!--
 	<sect1 id="tsvn-admins-upgradecheck">
 		<title>Redirect the upgrade check</title>
 		<indexterm>
@@ -62,9 +61,9 @@
 			<primary>version</primary>
 		</indexterm>
 		<para>
-			TortoiseGit checks if there's a new version available every few days.
+			TortoiseGit checks if there's a new version available every week (or daily in a preview release).
 			If there is a newer version available, a dialog shows up informing
-			the user about that.
+			the user about that and allows to download/install a new version.
 		</para>
 		<figure id="tsvn-admins-dia1">
 			<title>The upgrade dialog</title>
@@ -73,34 +72,45 @@
 		<para>
 			If you're responsible for a lot of users in your domain, you might want
 			your users to use only versions you have approved and not have them install
-			always the latest version. You probably don't want that upgrade dialog
+			always the latest version (or to save bandwidth). You probably don't want that upgrade dialog
 			to show up so your users don't go and upgrade immediately.
 		</para>
 		<para>
-			Versions 0.x.0 and later of TortoiseGit allow you to redirect that upgrade
+			TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
-			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> (string value)
-			to an URL pointing to a text file in your intranet. That text file must have
+			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, HKCU overrides HKLM)
+			to an URL pointing to a text file in your intranet (default is <ulink url="http://version.tortoisegit.googlecode.com/git/version.txt">http://version.tortoisegit.googlecode.com/git/version.txt</ulink>). That text file must have
 			the following format:
 <screen>
-X.X.X.6000
+X.X.X.X
 A new version of TortoiseGit is available for you to download!
-http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
+http://192.168.2.1/downloads/TortoiseGit/info.htm
+http://192.168.2.1/downloads/TortoiseGit/TortoiseGit-1.4.1.6000-changelog.txt
+http://192.168.2.1/downloads/TortoiseGit/
+1029;cs
+1031;de
 </screen>
 			The first line in that file is the version string. You must make sure that
 			it matches the exact version string of the TortoiseGit installation package.
 			The second line is a custom text, shown in the upgrade dialog. You can write
-			there whatever you want. Just note that the space in the upgrade dialog is
+			there whatever you want (can also be left empty). Just note that the space in the upgrade dialog is
 			limited. Too long messages will get truncated!
-			The third line is the URL to the new installation package. This URL is opened
-			when the user clicks on the custom message label in the upgrade dialog.
-			You can also just point the user to a web page instead of the MSI file directly.
+			The third line is the URL which is opened when
+			when the user clicks on the (custom) message label in the upgrade dialog.
 			The URL is opened with the default web browser, so if you specify a web page,
-			that page is opened and shown to the user. If you specify the MSI package,
-			the browser will ask the user to save the MSI file locally.
+			that page is opened and shown to the user.
+			The fourth line contains the URL to the Changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="http://tortoisegit.googlecode.com/git/src/Changelog.txt">http://tortoisegit.googlecode.com/git/src/Changelog.txt</ulink>)
+			The fifth line is used to override the base path to the installation packages (if empty it defaults to http://tortoisegit.googlecode.com/files/).
+			The filenames are generated as follows: TortoiseGit-(version)-(32|64)bit.msi for the main installer
+			and TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi for the language packs.
+			Starting from this line, one can advertise language packs (one per line: Four digit country code;ISO Country code).
+		</para>
+		<para>
+			Clicking on <guibutton>Download</guibutton> downloads the selected files to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename> (Vista or later) or
+			<filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx">CSIDL_PERSONAL</ulink>\Downloads</filename> or <filename>CSIDL_PERSONAL</filename>.
+			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
 		</para>
 	</sect1>
--->
 	<sect1 id="tsvn-admins-disablemenus">
 		<title>Disable context menu entries</title>
 		<indexterm>
@@ -113,7 +123,7 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 			<primary>group policies</primary>
 		</indexterm>
 		<para>
-			As of version 0.x.0 and later, TortoiseGit allows you to disable (actually, hide)
+			TortoiseGit allows you to disable (actually, hide)
 			context menu entries. Since this is a feature which should not be used lightly
 			but only if there is a compelling reason, there is no GUI for this and it has
 			to be done directly in the registry.
@@ -146,6 +156,10 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 					</thead>
 					<tbody>
 						<row>
+							<entry condition="pot">0x0000000000000002</entry>
+							<entry>Sync</entry>
+						</row>
+						<row>
 							<entry condition="pot">0x0000000000000004</entry>
 							<entry>Commit</entry>
 						</row>
@@ -167,7 +181,11 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000000080</entry>
-							<entry>Switch</entry>
+							<entry>Switch/Checkout</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000000000100</entry>
+							<entry>Sendmail</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000000200</entry>
@@ -232,15 +250,31 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 						</row>
 						<row>
 							<entry condition="pot">0x0000000001000000</entry>
-							<entry>Create Patch</entry>
+							<entry>Repository Browser</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000002000000</entry>
 							<entry>Apply Patch</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000000080000000</entry>
-							<entry>Delete unversion</entry>
+							<entry condition="pot">0x0000000004000000</entry>
+							<entry>Delete (keep local)</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000008000000</entry>
+							<entry>SVN Rebase</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000010000000</entry>
+							<entry>SVN DCommit</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000040000000</entry>
+							<entry>SVN Ignore</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0000000100000000</entry>
+							<entry>Log of Submodule folder</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000200000000</entry>
@@ -271,10 +305,6 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 							<entry>Import Patch</entry>
 						</row>
 						<row>
-							<entry condition="pot">0x0000020000000000</entry>
-							<entry>Cherry Pick</entry>
-						</row>
-						<row>
 							<entry condition="pot">0x0000040000000000</entry>
 							<entry>Fetch</entry>
 						</row>
@@ -303,6 +333,34 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 							<entry>Submodule Sync</entry>
 						</row>
 						<row>
+							<entry condition="pot">0x0002000000000000</entry>
+							<entry>Stash Pop</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0004000000000000</entry>
+							<entry>Diff two files</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0008000000000000</entry>
+							<entry>Bisect start</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0010000000000000</entry>
+							<entry>Bisect good</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0020000000000000</entry>
+							<entry>Bisect bad</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0040000000000000</entry>
+							<entry>Bisect reset</entry>
+						</row>
+						<row>
+							<entry condition="pot">0x0080000000000000</entry>
+							<entry>SVN Fetch</entry>
+						</row>
+						<row>
 							<entry condition="pot">0x2000000000000000</entry>
 							<entry>Settings</entry>
 						</row>
@@ -319,20 +377,20 @@ http://192.168.2.1/downloads/TortoiseGit-1.4.1.6000-svn-1.4.0.msi
 			</table>
 		</para>
 		<para>
-			Example: to disable the <quote>Relocate</quote> the 
-			<quote>Delete unversioned items</quote>
+			Example: to disable the <quote>Sendmail</quote> the 
+			<quote>Rebase</quote>
 			and the <quote>Settings</quote> menu entries, add the values assigned
 			to the entries like this:
 <screen>
-  0x0000000000080000
-+ 0x0000000080000000
+  0x0000000000000100
++ 0x0000080000000000
 + 0x2000000000000000
-= 0x2000000080080000
+= 0x2000080000000100
 </screen>
-			The lower <literal>DWORD</literal> value (<literal>0x80080000</literal>)
+			The lower <literal>DWORD</literal> value (<literal>0x00000100</literal>)
 			must then be stored in
 			<filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskLow</filename>,
-			the higher <literal>DWORD</literal> value (<literal>0x20000000</literal>) in
+			the higher <literal>DWORD</literal> value (<literal>0x20000800</literal>) in
 			<filename>HKEY_CURRENT_USER\Software\TortoiseGit\ContextMenuEntriesMaskHigh</filename>.
 		</para>
 		<para>

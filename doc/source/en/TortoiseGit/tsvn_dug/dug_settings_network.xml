@@ -26,7 +26,7 @@
 	</para>
 	<para>
 		You can also specify which program TortoiseGit should use to
-		establish a secure connection to a svn+ssh repository.
+		establish a secure connection to a git repository which is access using ssh.
 		We recommend that you use TortoisePlink.exe. This is a version
 		of the popular Plink program, and is included with TortoiseGit,
 		but it is compiled as a Windowless app, so you don't get a DOS
@@ -68,6 +68,7 @@
 		Finally, setting up SSH on clients is a non-trivial process
 		which is beyond the scope of this help file. However, you can find a
 		guide in the TortoiseGit FAQ listed under
+		<xref linkend="tsvn-ssh-howto"/> or the latest version 
 		<ulink url="http://code.google.com/p/tortoisegit/wiki/UsingPuTTY">
 			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
