@@ -9,6 +9,7 @@
 		<primary>unversioned files/folders</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_IGNORE"?>
+	<?dbhh topicname="HIDD_INPUTDLG"?>
 	<para>
 		<figure id="tsvn-dug-ignoring-dia-1">
 			<title>Explorer context menu for unversioned files</title>
@@ -17,7 +18,11 @@
 		In most projects you will have files and folders that should not be subject
 		to version control. These might include files created by the compiler,
 		<filename>*.obj, *.lst</filename>, maybe an output folder used to store
-		the executable. Whenever you commit changes, TortoiseGit shows your unversioned
+		the executable, <filename>bin/, obj/</filename>. 
+		More examples include user-specific workspace settings <filename>*.suo, *.user</filename>(Visual Studio),
+		backup files <filename>*.bak, Backup*/</filename>,
+		Shell metadata files <filename>Thumbs.db, Desktop.ini, .DS_Store/</filename>.
+		Whenever you commit changes, TortoiseGit shows your unversioned
 		files, which fills up the file list in the commit dialog. Of course you
 		can turn off this display, but then you might forget to add a new source
 		file.
@@ -29,26 +34,74 @@
 		be flagged up.
 	</para>
 	<para>
-		If you <action>right click</action> on a single unversioned file,
+		If you <action>right click</action> on one or more unversioned files,
 		and select the command
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Add to Ignore List</guimenuitem>
 		</menuchoice>
-		from the context menu, a submenu appears allowing you to select just that
-		file, or all files with the same extension.
-		If you select multiple files, there is no submenu and you can only add
-		those specific files/folders.
+		from the context menu, a submenu appears allowing you to select ignore by names or by extensions.
+		Ignore dialog shows that allows you to select ignore type and ignore file.
+		<figure id="tsvn-dug-ignoring-dia-2">
+			<title>Ignore dialog</title>
+			<graphic fileref="../images/IgnoreDialog.png"/>
+		</figure>
+
+		Ignore Type
+		<variablelist>
+			<varlistentry>
+				<term>Ignore item(s) only in containing folder(s)</term>
+				<listitem>
+					<para>
+						Only ignore the selected pattern(s) within that folder(s).
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Ignore item(s) recursively</term>
+				<listitem>
+					<para>
+						Ignore items with the selected pattern(s) in that folder(s) and child folder(s).
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+
+		Ignore File
+		<variablelist>
+			<varlistentry>
+				<term>.gitignore in the repository root</term>
+				<listitem>
+					<para>
+						Write the ignore entries in .gitignore in the repository root.
+						This allows you to synchronize the ignore list with remote repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>.gitignore in the containing directories of the items</term>
+				<listitem>
+					<para>
+						Write the ignore entries in .gitignore in the containing directories of the items.
+						This allows you to synchronize the ignore list with remote repository.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>.git/info/exclude</term>
+				<listitem>
+					<para>
+						Write the ignore entries in .git/info/exclude in repository metadata.
+						This allows you to store the ignore list locally, but cannot synchronize with remote repository.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
 	</para>
 	<para>
 		If you want to remove one or more items from the ignore list,
-		<action>right click</action> on those items and select
-		<menuchoice>
-			<guimenu>TortoiseGit</guimenu>
-			<guimenuitem>Remove from Ignore List</guimenuitem>
-		</menuchoice>
-		You can also access a folder's <literal>.gitignore</literal>
-		file directly. That allows you to specify more general
+		in current version of TortoiseGit, you have to manually edit the ignore list file using a text editor that can handle Unix EOL.
+		That allows you to specify more general
 		patterns using filename globbing, described in the section below.
 		Read <xref linkend="gitignore(5)"/> for more information. 
     Please be aware that each ignore pattern 

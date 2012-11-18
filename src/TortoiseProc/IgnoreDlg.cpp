@@ -47,6 +47,7 @@ void CIgnoreDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CIgnoreDlg, CStandAloneDialog)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
 
 
