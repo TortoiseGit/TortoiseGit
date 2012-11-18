@@ -270,11 +270,6 @@
 				<primary>translations</primary>
 			</indexterm>
 			<para>
-				The TortoiseGit user interface has not yet been translated into many
-				different languages.
-			</para>
-<!--
-			<para>
 				The TortoiseGit user interface has been translated into many
 				different languages, so you may be able to download a language
 				pack to suit your needs.
@@ -283,14 +278,13 @@
 					<citetitle>translation status page</citetitle>
 				</ulink>.
 				And if there is no language pack available yet, why not join
-				the team and submit your own translation ;-)
+				the team and <ulink url="http://code.google.com/p/tortoisegit/wiki/Translation">submit your own translation</ulink> ;-)
 			</para>
 			<para>
-				Each language pack is packaged as a <literal>.exe</literal> installer.
+				Each language pack is packaged as a <literal>.msi</literal> installer.
 				Just run the install program and follow the instructions.
-				Next time you restart, the translation will be available.
+				After the installation finishes, the translation will be available.
 			</para>
--->
 		</sect2>
 		<sect2 id="tsvn-intro-instalsl-spell">
 			<title>Spellchecker</title>
