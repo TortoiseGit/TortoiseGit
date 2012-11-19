@@ -76,7 +76,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 	}
 #endif
 
-	if (progress.IsValid() && (this->GetSelectedCount() > 1) )
+	if (this->GetSelectedCount() > 1)
 	{
 		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_REVERTCOMMIT)));
 		progress.SetAnimation(IDR_MOVEANI);
@@ -93,7 +93,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		int index = GetNextSelectedItem(pos);
 		GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(index));
 
-		if (progress.IsValid() && (this->GetSelectedCount() > 1) )
+		if (progress.IsVisible())
 		{
 			progress.FormatNonPathLine(1, IDS_PROC_REVERTCOMMIT, r1->m_CommitHash.ToString());
 			progress.FormatNonPathLine(2, _T("%s"), r1->GetSubject());
@@ -130,7 +130,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			ret =0;
 		}
 
-		if ((progress.IsValid())&&(progress.HasUserCancelled()))
+		if (progress.HasUserCancelled())
 			break;
 	}
 	return ret;
@@ -145,19 +145,16 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		return 0;
 
 	CSysProgressDlg progress;
-	if (progress.IsValid())
-	{
-		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
-		progress.SetAnimation(IDR_MOVEANI);
-		progress.SetTime(true);
-		progress.ShowModeless(this);
-	}
+	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
+	progress.SetAnimation(IDR_MOVEANI);
+	progress.SetTime(true);
+	progress.ShowModeless(this);
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
 	for (int i = (int)logs.size() - 1; i >= 0; i--)
 	{
-		if (progress.IsValid())
+		if (progress.IsVisible())
 		{
 			CString temp;
 			temp.Format(IDS_PROC_PICK, logs.GetGitRevAt(i).m_CommitHash.ToString());
@@ -165,7 +162,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 			progress.FormatPathLine(2, _T("%s"), logs.GetGitRevAt(i).GetSubject());
 			progress.SetProgress(logs.size()-i, logs.size());
 		}
-		if ((progress.IsValid())&&(progress.HasUserCancelled()))
+		if (progress.HasUserCancelled())
 		{
 			throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_SVN_USERCANCELLED))));
 			return -1;

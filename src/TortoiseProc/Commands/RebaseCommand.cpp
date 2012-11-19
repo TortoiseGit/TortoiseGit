@@ -49,13 +49,11 @@ bool RebaseCommand::Execute()
 			cmd=_T("git.exe stash");
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				if (sysProgressDlg.IsValid())
-					sysProgressDlg.Stop();
+				sysProgressDlg.Stop();
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
 			}
-			if (sysProgressDlg.IsValid())
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 		}
 		else
 		{

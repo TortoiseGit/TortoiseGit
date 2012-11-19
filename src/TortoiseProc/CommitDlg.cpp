@@ -557,7 +557,7 @@ void CCommitDlg::OnOK()
 	bool bCloseCommitDlg=false;
 
 	CSysProgressDlg sysProgressDlg;
-	if (nListItems >= 25 && sysProgressDlg.IsValid())
+	if (nListItems >= 25)
 	{
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
@@ -572,7 +572,7 @@ void CCommitDlg::OnOK()
 	for (int j=0; j<nListItems; j++)
 	{
 		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
-		if (sysProgressDlg.IsValid())
+		if (sysProgressDlg.IsVisible())
 		{
 			if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
 			{
@@ -644,7 +644,7 @@ void CCommitDlg::OnOK()
 			}
 		}
 
-		if (sysProgressDlg.IsValid() && sysProgressDlg.HasUserCancelled())
+		if (sysProgressDlg.HasUserCancelled())
 		{
 			bAddSuccess = false;
 			break;
@@ -653,8 +653,7 @@ void CCommitDlg::OnOK()
 		CShellUpdater::Instance().AddPathForUpdate(*entry);
 	}
 
-	if (sysProgressDlg.IsValid())
-		sysProgressDlg.Stop();
+	sysProgressDlg.Stop();
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{

@@ -106,14 +106,12 @@ bool CAppUtils::StashSave()
 
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (sysProgressDlg.IsValid())
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHFAILED)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		}
 		else
 		{
-			if (sysProgressDlg.IsValid())
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 			CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_PROC_STASHSUCCESS)) + _T("\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			return true;
 		}
@@ -141,8 +139,7 @@ bool CAppUtils::StashApply(CString ref, bool showChanges /* true */)
 
 	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
-	if (sysProgressDlg.IsValid())
-		sysProgressDlg.Stop();
+	sysProgressDlg.Stop();
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
@@ -190,8 +187,7 @@ bool CAppUtils::StashPop(bool showChanges /* true */)
 
 	int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
-	if (sysProgressDlg.IsValid())
-		sysProgressDlg.Stop();
+	sysProgressDlg.Stop();
 
 	bool hasConflicts = (out.Find(_T("CONFLICT")) >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
@@ -2521,13 +2517,11 @@ BOOL CAppUtils::SVNDCommit()
 			cmd=_T("git.exe stash");
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				if (sysProgressDlg.IsValid())
-					sysProgressDlg.Stop();
+				sysProgressDlg.Stop();
 				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 				return false;
 			}
-			if (sysProgressDlg.IsValid())
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 
 			IsStash =true;
 		}
@@ -2564,13 +2558,11 @@ BOOL CAppUtils::SVNDCommit()
 				cmd=_T("git.exe stash pop");
 				if (g_Git.Run(cmd, &out, CP_UTF8))
 				{
-					if (sysProgressDlg.IsValid())
-						sysProgressDlg.Stop();
+					sysProgressDlg.Stop();
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					return false;
 				}
-				if (sysProgressDlg.IsValid())
-					sysProgressDlg.Stop();
+				sysProgressDlg.Stop();
 			}
 			else
 			{
@@ -2820,13 +2812,11 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 			cmd = _T("git.exe stash");
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				if (sysProgressDlg.IsValid())
-					sysProgressDlg.Stop();
+				sysProgressDlg.Stop();
 				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
 				return false;
 			}
-			if (sysProgressDlg.IsValid())
-				sysProgressDlg.Stop();
+			sysProgressDlg.Stop();
 		}
 		else
 			return false;
