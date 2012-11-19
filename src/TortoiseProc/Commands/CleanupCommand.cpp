@@ -30,6 +30,7 @@
 #include "CleanTypeDlg.h"
 #include "..\Utils\UnicodeUtils.h"
 #include "ProjectProperties.h"
+#include "SysProgressDlg.h"
 
 static CString UnescapeQuotePath(CString s)
 {
@@ -79,9 +80,23 @@ bool CleanupCommand::Execute()
 			break;
 		}
 
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModeless((HWND)NULL, true);
+
 		CString cmdout, cmdouterr;
 		if (g_Git.Run(cmd, &cmdout, &cmdouterr, CP_UTF8)) {
 			MessageBox(NULL, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+			return FALSE;
+		}
+
+		if (sysProgressDlg.HasUserCancelled())
+		{
+			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
 			return FALSE;
 		}
 
@@ -102,7 +117,16 @@ bool CleanupCommand::Execute()
 
 			token = cmdout.Tokenize(_T("\n"), pos);
 		}
+
+		if (sysProgressDlg.HasUserCancelled())
+		{
+			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+			return FALSE;
+		}
+
 		delList.DeleteAllFiles(true, false);
+
+		sysProgressDlg.Stop();
 	}
 #if 0
 	CProgressDlg progress;

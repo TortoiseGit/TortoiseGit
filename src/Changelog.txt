@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #1527: Rebase Dialog shows Log menu button after rebasing if not launched from log dialog
  * Fixed issue #1252: wrap commit logs per git conventions (set tgit.logwidthmarker using git-config)
  * Added basic support for localized spellcheckers in commit dialog (see help file, keyword "spellchecker")
+ * Fixed issue #1531: Clean up should show progress dialog
 
 == Bug Fix ==
  * Fixed issue #1427: Combine to one commit: Commit-window doesn't show changes from oldest commit
