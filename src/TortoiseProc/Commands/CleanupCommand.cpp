@@ -21,11 +21,6 @@
 #include "CleanupCommand.h"
 
 #include "MessageBox.h"
-#include "ProgressDlg.h"
-#include "Git.h"
-//#include "GitGlobal.h"
-#include "GitAdminDir.h"
-#include "DirFileEnum.h"
 #include "ShellUpdater.h"
 #include "CleanTypeDlg.h"
 #include "..\Utils\UnicodeUtils.h"
