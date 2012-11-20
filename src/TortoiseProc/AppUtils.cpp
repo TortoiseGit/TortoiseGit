@@ -2688,7 +2688,7 @@ void CAppUtils::EditNote(GitRev *rev)
 int CAppUtils::GetMsysgitVersion(CString *versionstr)
 {
 	CString cmd;
-	CString progressarg;
+	CString versiondebug;
 	CString version;
 
 	CRegDWORD regTime		= CRegDWORD(_T("Software\\TortoiseGit\\git_file_time"));
@@ -2721,6 +2721,8 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	int start=0;
 	int ver = 0;
 
+	versiondebug = version;
+
 	try
 	{
 		CString str=version.Tokenize(_T("."), start);
@@ -2746,7 +2748,7 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	{
 		if (!ver)
 		{
-			CMessageBox::Show(NULL, _T("Could not parse git.exe version number."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("Could not parse git.exe version number: \"") + versiondebug + _T("\""), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 	}
