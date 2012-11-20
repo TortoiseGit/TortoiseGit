@@ -18,7 +18,7 @@ CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
 	, m_Message(_T(""))
 	, m_bNAppend(FALSE)
 	, m_Label(_T(""))
-	, m_bNNumber(FALSE)
+	, m_bNNumber(TRUE)
 	, m_Logregex(_T(""))
 {
 	m_ChangeMask=0;
