@@ -1,5 +1,5 @@
 ﻿= Release 1.7.15.0 =
-Released: unreleased
+Released: 2012-11-20
 
 == Features ==
  * Fixed issue #1436: Clone Dialog add --branch and --no-checkout options
