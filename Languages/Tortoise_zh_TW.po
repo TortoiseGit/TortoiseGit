@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-11-11 07:55+0000\n"
+"PO-Revision-Date: 2012-11-16 14:50+0000\n"
 "Last-Translator: 鋰 乙酸 <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -530,6 +530,10 @@ msgstr "刪除(&D)"
 #. Resource IDs: (17)
 msgid "&Delete (keep local)"
 msgstr "刪除並保留檔案(&D)"
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
+msgstr "刪除子模組"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -1267,6 +1271,10 @@ msgstr "- %d"
 #. Resource IDs: (86)
 msgid "- all -"
 msgstr "- 全部 -"
+
+#. Resource IDs: (1131)
+msgid "--&all"
+msgstr "全部 (--&all)"
 
 #. Resource IDs: (1007)
 msgid ""
@@ -3368,6 +3376,10 @@ msgid ""
 "About"
 msgstr "顯示檔案資訊, 版本號碼, 以及版權宣告\n關於"
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr "不要顯示這警告 (如果選擇繼續)"
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "不再顯示這警告(若忽略已選) (&N)"
@@ -5344,6 +5356,10 @@ msgstr "合併版本 %s 至 %s, 併入 %s, %s%s"
 msgid "Message"
 msgstr "訊息"
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr "只輸入訊息(&Y)"
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "訊息"
@@ -5526,6 +5542,14 @@ msgstr "%s 的新名稱"
 #. Resource IDs: (98)
 msgid "New name:"
 msgstr "新名稱:"
+
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr "新的子模組"
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
+msgstr "較新提交時間"
 
 #. Resource IDs: (20308)
 msgid "Next"
@@ -5832,6 +5856,10 @@ msgstr "Office 2007 (銀色樣式)(&S)"
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
 msgstr "Office 2007 (黑色樣式)(&L)"
+
+#. Resource IDs: (605)
+msgid "Older commit time"
+msgstr "較舊提交時間"
 
 #. Resource IDs: (65535)
 msgid "Older lines"
@@ -6883,6 +6911,10 @@ msgstr "版本: "
 msgid "Revisions"
 msgstr "版本"
 
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr "後退"
+
 #. Resource IDs: (3850)
 msgid ""
 "Rich Text (RTF)\n"
@@ -6978,6 +7010,10 @@ msgstr "檢查换行符號(&f)"
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
 msgstr "檢查换行符號"
+
+#. Resource IDs: (605)
+msgid "Same commit time"
+msgstr "相同提交時間"
 
 #. Resource IDs: (57604)
 msgid "Save &As..."
@@ -8517,6 +8553,10 @@ msgstr "調校 TortoiseGit"
 msgid "Type"
 msgstr "類型"
 
+#. Resource IDs: (1720)
+msgid "Type:"
+msgstr "類別："
+
 #. Resource IDs: (164, 207)
 msgid "URL"
 msgstr "URL"
@@ -9108,6 +9148,12 @@ msgid ""
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr "你安裝了舊版的 msysGit (http://code.google.com/p/msysgit/).\n\n你應考慮升級到 1.7.10+ ，能支援 UTF-8 及與 *nix 版本的 git 相容."
+
+#. Resource IDs: (86)
+msgid ""
+"You have checked \"include untracked\".\n"
+"This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr "你選擇了 「包含未追蹤的檔案」，這包含一個 \"git clean -fd\" 命令，因以不會使用資源回收筒來移除這些檔案/目錄。"
 
 #. Resource IDs: (16)
 msgid ""

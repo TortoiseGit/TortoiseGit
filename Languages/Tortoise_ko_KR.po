@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# ks k <kmshts@gmail.com>, 2012.
 #   <omniavinco@gmail.com>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 msgid ""
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-11-11 00:47+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2012-11-20 09:29+0000\n"
+"Last-Translator: ks k <kmshts@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/projects/p/tortoisegit/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -200,7 +201,7 @@ msgstr ""
 #. Resource IDs: (169)
 #, c-format
 msgid "%d files selected, %d files total"
-msgstr ""
+msgstr "총 %d 개의 파일중, %d 파일이 선택되었습니다."
 
 #. Resource IDs: (246)
 #, c-format
@@ -320,7 +321,7 @@ msgstr ""
 
 #. Resource IDs: (1064)
 msgid "&Add or Remove Buttons"
-msgstr ""
+msgstr "버튼 추가 및 제거(&A)"
 
 #. Resource IDs: (8, 1098)
 msgid "&Add..."
@@ -400,7 +401,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Blue:"
-msgstr ""
+msgstr "파랑색(&B):"
 
 #. Resource IDs: (1512)
 msgid "&Branch"
@@ -424,11 +425,11 @@ msgstr ""
 
 #. Resource IDs: (16913)
 msgid "&Button Appearance..."
-msgstr ""
+msgstr "버튼 모양(&B)..."
 
 #. Resource IDs: (65535)
 msgid "&Button text:"
-msgstr ""
+msgstr "버튼 텍스트(&B):"
 
 #. Resource IDs: (1051)
 msgid "&CD-ROM"
@@ -440,11 +441,11 @@ msgstr "취소(&C)"
 
 #. Resource IDs: (65535)
 msgid "&Categories:"
-msgstr ""
+msgstr "카테고리(&C):"
 
 #. Resource IDs: (65535)
 msgid "&Category:"
-msgstr ""
+msgstr "분류(&C):"
 
 #. Resource IDs: (65535)
 msgid "&Choose commands from:"
@@ -472,7 +473,7 @@ msgstr "창 닫기(&C)"
 
 #. Resource IDs: (65535)
 msgid "&Command:"
-msgstr ""
+msgstr "명령(&C):"
 
 #. Resource IDs: (1625)
 msgid "&Commit"
@@ -492,7 +493,7 @@ msgstr "커밋(&C)..."
 
 #. Resource IDs: (1252)
 msgid "&Compare revisions"
-msgstr ""
+msgstr "리비전 비교(&C)"
 
 #. Resource IDs: (1019)
 msgid "&Compare whitespaces"
@@ -508,7 +509,7 @@ msgstr "복사(&C)"
 
 #. Resource IDs: (16911)
 msgid "&Copy Button Image"
-msgstr ""
+msgstr "버튼 이미지 복사하기(&C)"
 
 #. Resource IDs: (57634)
 msgid "&Copy\tCtrl+C"
@@ -520,7 +521,7 @@ msgstr ""
 
 #. Resource IDs: (1269)
 msgid "&Default"
-msgstr ""
+msgstr "기본(&D)"
 
 #. Resource IDs: (11, 70, 16617, 16912)
 msgid "&Delete"
@@ -528,6 +529,10 @@ msgstr "삭제(&D)"
 
 #. Resource IDs: (17)
 msgid "&Delete (keep local)"
+msgstr "삭제(&D) (작업사본은 유지)"
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
 msgstr ""
 
 #. Resource IDs: (70)
@@ -536,11 +541,11 @@ msgstr ""
 
 #. Resource IDs: (12)
 msgid "&Diff"
-msgstr ""
+msgstr "비교(&D)"
 
 #. Resource IDs: (14)
 msgid "&Diff with previous version"
-msgstr ""
+msgstr "이전 버전과 비교(&D)"
 
 #. Resource IDs: (65535)
 msgid "&Directory:"
@@ -552,7 +557,7 @@ msgstr ""
 
 #. Resource IDs: (1066)
 msgid "&Docking"
-msgstr ""
+msgstr "붙이기(&D)"
 
 #. Resource IDs: (1384)
 msgid "&Down"
@@ -576,7 +581,7 @@ msgstr ""
 
 #. Resource IDs: (12)
 msgid "&Edit conflicts"
-msgstr ""
+msgstr "충돌 상황 편집(&E)"
 
 #. Resource IDs: (1099, 16510)
 msgid "&Edit..."
@@ -596,11 +601,11 @@ msgstr "프록시 서버 활성화(&E)"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
-msgstr ""
+msgstr "선택한 것을 내보내기(&E)..."
 
 #. Resource IDs: (1092, 1095)
 msgid "&External"
-msgstr ""
+msgstr "외부(&E)"
 
 #. Resource IDs: (65535)
 msgid "&File"
@@ -620,7 +625,7 @@ msgstr ""
 
 #. Resource IDs: (1050)
 msgid "&Fixed drives"
-msgstr ""
+msgstr "고정된 드라이브(&F)"
 
 #. Resource IDs: (1065)
 msgid "&Floating"
@@ -668,7 +673,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Green:"
-msgstr ""
+msgstr "녹색(&G):"
 
 #. Resource IDs: (1511)
 msgid "&HEAD"
@@ -688,7 +693,7 @@ msgstr "숨기기(&H)"
 
 #. Resource IDs: (1170)
 msgid "&Icon Set:"
-msgstr ""
+msgstr "아이콘 모음(&I):"
 
 #. Resource IDs: (72)
 msgid "&Ignore"
@@ -705,7 +710,7 @@ msgstr ""
 
 #. Resource IDs: (16914)
 msgid "&Image"
-msgstr ""
+msgstr "이미지(&I)"
 
 #. Resource IDs: (32790)
 msgid "&Image info"
@@ -717,11 +722,11 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "&Import..."
-msgstr ""
+msgstr "가져오기(&I)..."
 
 #. Resource IDs: (65535)
 msgid "&Initial directory:"
-msgstr ""
+msgstr "초기 디렉토리(&I):"
 
 #. Resource IDs: (1693)
 msgid "&Initialize submodules (--init)"
@@ -769,7 +774,7 @@ msgstr ""
 
 #. Resource IDs: (1172)
 msgid "&List View"
-msgstr ""
+msgstr "목록 보기(&L)"
 
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
@@ -793,7 +798,7 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "&Merge..."
-msgstr ""
+msgstr "병합(&M)..."
 
 #. Resource IDs: (1012)
 msgid "&Merging"
@@ -809,7 +814,7 @@ msgstr ""
 
 #. Resource IDs: (16925)
 msgid "&Minimize"
-msgstr ""
+msgstr "최소화(&M)"
 
 #. Resource IDs: (1515)
 msgid "&Name"
@@ -829,11 +834,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&New "
-msgstr ""
+msgstr "새로 만들기(&N)..."
 
 #. Resource IDs: (16509, 16615)
 msgid "&New..."
-msgstr ""
+msgstr "새로 만들기(&N)"
 
 #. Resource IDs: (115)
 #, c-format
@@ -846,7 +851,7 @@ msgstr ""
 
 #. Resource IDs: (58114)
 msgid "&Next Page"
-msgstr ""
+msgstr "다음 페이지(&N)"
 
 #. Resource IDs: (16632)
 msgid "&No double-click event"
@@ -938,11 +943,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Red:"
-msgstr ""
+msgstr "빨강색(&R):"
 
 #. Resource IDs: (1253)
 msgid "&Redo"
-msgstr ""
+msgstr "다시 실행(&R)"
 
 #. Resource IDs: (1579)
 msgid "&Ref:"
@@ -970,7 +975,7 @@ msgstr ""
 
 #. Resource IDs: (16613, 16624)
 msgid "&Reset"
-msgstr ""
+msgstr "재 설정(&R)"
 
 #. Resource IDs: (1019)
 msgid "&Reset Toolbar"
@@ -1265,6 +1270,10 @@ msgstr "- %d"
 
 #. Resource IDs: (86)
 msgid "- all -"
+msgstr ""
+
+#. Resource IDs: (1131)
+msgid "--&all"
 msgstr ""
 
 #. Resource IDs: (1007)
@@ -3367,6 +3376,10 @@ msgid ""
 "About"
 msgstr ""
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr ""
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr ""
@@ -5343,6 +5356,10 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr ""
@@ -5524,6 +5541,14 @@ msgstr ""
 
 #. Resource IDs: (98)
 msgid "New name:"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
 msgstr ""
 
 #. Resource IDs: (20308)
@@ -5830,6 +5855,10 @@ msgstr ""
 
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Older commit time"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6882,6 +6911,10 @@ msgstr ""
 msgid "Revisions"
 msgstr ""
 
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr ""
+
 #. Resource IDs: (3850)
 msgid ""
 "Rich Text (RTF)\n"
@@ -6976,6 +7009,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Same commit time"
 msgstr ""
 
 #. Resource IDs: (57604)
@@ -8516,6 +8553,10 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
+#. Resource IDs: (1720)
+msgid "Type:"
+msgstr ""
+
 #. Resource IDs: (164, 207)
 msgid "URL"
 msgstr ""
@@ -9106,6 +9147,12 @@ msgid ""
 "You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n"
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid ""
+"You have checked \"include untracked\".\n"
+"This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
 msgstr ""
 
 #. Resource IDs: (16)

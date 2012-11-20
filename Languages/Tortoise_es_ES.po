@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-11-11 00:47+0000\n"
+"PO-Revision-Date: 2012-11-16 13:50+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/tortoisegit/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -528,6 +528,10 @@ msgstr "&Eliminar"
 #. Resource IDs: (17)
 msgid "&Delete (keep local)"
 msgstr "&Eliminar (mantener local)"
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
+msgstr ""
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -1265,6 +1269,10 @@ msgstr "- %d"
 #. Resource IDs: (86)
 msgid "- all -"
 msgstr "- todo -"
+
+#. Resource IDs: (1131)
+msgid "--&all"
+msgstr ""
 
 #. Resource IDs: (1007)
 msgid ""
@@ -3366,6 +3374,10 @@ msgid ""
 "About"
 msgstr "Mostrar información del programa, número de versión y copyright\nAcerda de"
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr ""
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "&No volver a mostrarme este mensaje de nuevo (si está seleccionado Ignorar)"
@@ -5342,6 +5354,10 @@ msgstr "Combinando revisiones %s de %s dentro de %s, %s%s"
 msgid "Message"
 msgstr "Mensaje"
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "Mensajes"
@@ -5524,6 +5540,14 @@ msgstr "Nuevo nombre para %s"
 #. Resource IDs: (98)
 msgid "New name:"
 msgstr "Nuevo nombre:"
+
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
+msgstr ""
 
 #. Resource IDs: (20308)
 msgid "Next"
@@ -5830,6 +5854,10 @@ msgstr "Office 2007 (&Silver Style)"
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
 msgstr "Office 2007 (B&lack Style)"
+
+#. Resource IDs: (605)
+msgid "Older commit time"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Older lines"
@@ -6881,6 +6909,10 @@ msgstr "Revisión:"
 msgid "Revisions"
 msgstr "Revisiones:"
 
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr ""
+
 #. Resource IDs: (3850)
 msgid ""
 "Rich Text (RTF)\n"
@@ -6976,6 +7008,10 @@ msgstr "Se&guroCrLf:"
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
 msgstr "Seguro CrLf:"
+
+#. Resource IDs: (605)
+msgid "Same commit time"
+msgstr ""
 
 #. Resource IDs: (57604)
 msgid "Save &As..."
@@ -8515,6 +8551,10 @@ msgstr "Modificaciones TortoiseGit"
 msgid "Type"
 msgstr "Teclea"
 
+#. Resource IDs: (1720)
+msgid "Type:"
+msgstr ""
+
 #. Resource IDs: (164, 207)
 msgid "URL"
 msgstr "URL"
@@ -9106,6 +9146,12 @@ msgid ""
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr "Tienes instalada una versión antigua de msysGit (http://code.google.com/p/msysgit/).\n\nDebes considerar actualizarla a la 1.7.10+, con soporte para UTF-8 y compatibilidad con la versión *nix de git."
+
+#. Resource IDs: (86)
+msgid ""
+"You have checked \"include untracked\".\n"
+"This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr ""
 
 #. Resource IDs: (16)
 msgid ""

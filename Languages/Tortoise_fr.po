@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-11-11 00:46+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2012-11-16 23:49+0000\n"
+"Last-Translator: Freddydelanuit Dec <fred.dec@free.fr>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -482,7 +482,7 @@ msgstr "&Livrer"
 
 #. Resource IDs: (355)
 msgid "&Commit submodule..."
-msgstr ""
+msgstr "&Engager le sous module..."
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
@@ -531,6 +531,10 @@ msgstr "E&ffacer"
 #. Resource IDs: (17)
 msgid "&Delete (keep local)"
 msgstr "&Supprimer (conserver localement)"
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
+msgstr "Supprimer le sous module"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -654,7 +658,7 @@ msgstr "&Forcer Rebase"
 
 #. Resource IDs: (1608)
 msgid "&From:"
-msgstr ""
+msgstr "&De:"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -662,7 +666,7 @@ msgstr "&Livraison de style Git (--rmdir)"
 
 #. Resource IDs: (32884)
 msgid "&Go to"
-msgstr ""
+msgstr "&Aller à"
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -1084,7 +1088,7 @@ msgstr "Groupe de &Départ"
 
 #. Resource IDs: (86)
 msgid "&Stash"
-msgstr ""
+msgstr "&Sauvegarde"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -1152,7 +1156,7 @@ msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
 msgid "&Trunk:"
-msgstr ""
+msgstr "&Malle:"
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -1268,6 +1272,10 @@ msgstr "- %d"
 #. Resource IDs: (86)
 msgid "- all -"
 msgstr "- tout -"
+
+#. Resource IDs: (1131)
+msgid "--&all"
+msgstr "--&tous"
 
 #. Resource IDs: (1007)
 msgid ""
@@ -2040,7 +2048,7 @@ msgstr "Parc&ourir..."
 
 #. Resource IDs: (1510)
 msgid "Branc&h:"
-msgstr ""
+msgstr "Branc&he:"
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -3369,6 +3377,10 @@ msgid ""
 "About"
 msgstr "Voir les informations du programme, sa version et son copyright\nÀ propos"
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr "Ne &plus montrer ces alertes (si Continuer est choisi)"
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "&Ne pas montrer à nouveau cet avertissement (si Ignorer est sélectionné)"
@@ -3431,7 +3443,7 @@ msgstr "Voulez-vous vraiment annuler toutes vos modifications dans \n%s\nqui ont
 
 #. Resource IDs: (86)
 msgid "Do you want to fetch remote branches from the newly added remote?"
-msgstr ""
+msgstr "Voulez-vous chercher des branches distantes à partir des branches distantes nouvellement ajoutées ?"
 
 #. Resource IDs: (313)
 msgid ""
@@ -3449,7 +3461,7 @@ msgstr "Voulez-vous voir les modifications ?"
 
 #. Resource IDs: (604)
 msgid "Do you want to stash pop now?"
-msgstr ""
+msgstr "Voulez-vous ouvrir la sauvegarde ?"
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -3574,7 +3586,7 @@ msgstr "Modifier le fichier .gitconfig &global"
 
 #. Resource IDs: (1718)
 msgid "Edit global &XDG config"
-msgstr ""
+msgstr "Editer la configuration globale &XDG"
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3798,7 +3810,7 @@ msgstr "Exporter répertoire :"
 
 #. Resource IDs: (1258)
 msgid "Export selection to..."
-msgstr ""
+msgstr "Exporter la sélection vers..."
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4625,7 +4637,7 @@ msgstr "ID:32883:V C +A"
 
 #. Accelerator Entry for Menu ID:32884; '&Go to'
 msgid "ID:32884:V C +G"
-msgstr ""
+msgstr "ID:32884:V C +G"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5345,6 +5357,10 @@ msgstr "Fusion des révisions %s de %s dans %s, %s%s"
 msgid "Message"
 msgstr "Commentaire"
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr "Seul&ement un message"
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "Commentaires"
@@ -5528,6 +5544,14 @@ msgstr "Nouveau nom pour %s"
 msgid "New name:"
 msgstr "Nouveau nom :"
 
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr "Nouveaux sous modules"
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
+msgstr "Dernier moment d'engagement"
+
 #. Resource IDs: (20308)
 msgid "Next"
 msgstr "Suivant"
@@ -5552,7 +5576,7 @@ msgstr "Pas de transfert &rapide"
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "Pas de vérification"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -5833,6 +5857,10 @@ msgstr "Couleurs Office 2007 (Style &Argent)"
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
 msgstr "Couleurs Office 2007 (Stype &Noir)"
+
+#. Resource IDs: (605)
+msgid "Older commit time"
+msgstr "Ancien moment d'engagement"
 
 #. Resource IDs: (65535)
 msgid "Older lines"
@@ -6819,7 +6847,7 @@ msgstr "Restaurer la livraison %s"
 #. Resource IDs: (323)
 #, c-format
 msgid "Revert to revision %s"
-msgstr ""
+msgstr "Annuler vers la révision %s"
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -6883,6 +6911,10 @@ msgstr "Révision : "
 #. Resource IDs: (116)
 msgid "Revisions"
 msgstr "Révisions"
+
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr "Revenir"
 
 #. Resource IDs: (3850)
 msgid ""
@@ -6979,6 +7011,10 @@ msgstr "&Correction Crlf :"
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
 msgstr "Correction Crlf :"
+
+#. Resource IDs: (605)
+msgid "Same commit time"
+msgstr "Même temps d'engagement"
 
 #. Resource IDs: (57604)
 msgid "Save &As..."
@@ -7678,7 +7714,7 @@ msgstr "Enregistrer la réserve"
 
 #. Resource IDs: (80)
 msgid "Stash operation running..."
-msgstr ""
+msgstr "Opération de sauvegarde en cours..."
 
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
@@ -7880,7 +7916,7 @@ msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
-msgstr ""
+msgstr "Bali&ses:"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -7954,7 +7990,7 @@ msgstr "Le commentaire de livraison ne peut pas être vide."
 msgid ""
 "The current working tree is not clean.\n"
 "Do you want to stash the changes?"
-msgstr ""
+msgstr "L'arborescence de travail n'est pas nette.⏎ Voulez-vous sauver les changements ?"
 
 #. Resource IDs: (68)
 #, c-format
@@ -8194,7 +8230,7 @@ msgid ""
 "The submodule \"%s\" is dirty.\n"
 "Merely committing the superproject cannot track or save such changes to the submodule.\n"
 "Commit the submodule now or ignore dirty changes?"
-msgstr ""
+msgstr "Le sous-module \"%s\" est sale.\nLe simple fait de l'appliquer au super projet ne pourra pas pister ou sauver de tels changements dans le sous module.⏎ On engage le sous module maintenant ou on ignore les changements sales ?"
 
 #. Resource IDs: (88)
 #, c-format
@@ -8517,6 +8553,10 @@ msgstr "Ajuster TortoiseGit"
 #. Resource IDs: (1642)
 msgid "Type"
 msgstr "Type"
+
+#. Resource IDs: (1720)
+msgid "Type:"
+msgstr "Type:"
 
 #. Resource IDs: (164, 207)
 msgid "URL"
@@ -8842,7 +8882,7 @@ msgstr "Le nom et l'email de l'utilisateur doivent être indiqué avant la livra
 
 #. Resource IDs: (1650)
 msgid "User&name:"
-msgstr ""
+msgstr "Nom d'&utilisateur:"
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8922,7 +8962,7 @@ msgstr "Voir la révision dans l'éditeur alternatif"
 
 #. Resource IDs: (1717)
 msgid "View system&wide gitconfig"
-msgstr ""
+msgstr "Voir tout&système gitconfig"
 
 #. Resource IDs: (1084)
 msgid "Visit our website"
@@ -9109,6 +9149,12 @@ msgid ""
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr "Vous avez une ancienne version installée de msysGit (http://code.google.com/p/msysgit/).\n\nVous devriez envisager de mettre à jour vers la version 1.7.10+ qui prend en charge UTF-8 et est compatible avec les version pour *nix de git."
+
+#. Resource IDs: (86)
+msgid ""
+"You have checked \"include untracked\".\n"
+"This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr "Vous avez coché \"inclure les non pistés\".\nCela inclus un appel \"git clean -fd\"l, alors les fichiers ignorés/répertoires seront supprimés sans utiliser la poubelle."
 
 #. Resource IDs: (16)
 msgid ""

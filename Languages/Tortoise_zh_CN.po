@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-11-11 00:46+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2012-11-20 03:13+0000\n"
+"Last-Translator: lznuaa <lznuaa@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -482,7 +482,7 @@ msgstr "提交(&C)"
 
 #. Resource IDs: (355)
 msgid "&Commit submodule..."
-msgstr ""
+msgstr "提交子模块(&C)..."
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
@@ -531,6 +531,10 @@ msgstr "删除(&D)"
 #. Resource IDs: (17)
 msgid "&Delete (keep local)"
 msgstr "删除(保留本地副本，&D)"
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
+msgstr "删除子模块"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
@@ -654,7 +658,7 @@ msgstr "强制变基(rebase)(&F)"
 
 #. Resource IDs: (1608)
 msgid "&From:"
-msgstr ""
+msgstr "从(&F)"
 
 #. Resource IDs: (2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -662,7 +666,7 @@ msgstr "Git风格提交(--rmdir)(&G)"
 
 #. Resource IDs: (32884)
 msgid "&Go to"
-msgstr ""
+msgstr "跳转(&G)"
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
@@ -1084,7 +1088,7 @@ msgstr "启动组(&S)"
 
 #. Resource IDs: (86)
 msgid "&Stash"
-msgstr ""
+msgstr "贮藏(&Stash)"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
@@ -1152,7 +1156,7 @@ msgstr "&TortoiseMerge"
 
 #. Resource IDs: (1605)
 msgid "&Trunk:"
-msgstr ""
+msgstr "主干(&T)"
 
 #. Resource IDs: (3845)
 msgid "&Two Page"
@@ -1268,6 +1272,10 @@ msgstr "- %d"
 #. Resource IDs: (86)
 msgid "- all -"
 msgstr "-全部-"
+
+#. Resource IDs: (1131)
+msgid "--&all"
+msgstr "--&all"
 
 #. Resource IDs: (1007)
 msgid ""
@@ -2040,7 +2048,7 @@ msgstr "浏览(&o)"
 
 #. Resource IDs: (1510)
 msgid "Branc&h:"
-msgstr ""
+msgstr "分支(&h)"
 
 #. Resource IDs: (82, 1500, 1512, 1579, 1586)
 msgid "Branch"
@@ -3369,6 +3377,10 @@ msgid ""
 "About"
 msgstr "显示文件信息, 版本号码, 以及版权声明\n关于"
 
+#. Resource IDs: (86)
+msgid "Do &not show me this warning again (if Continue is selected)"
+msgstr "不再显示这个警告(如果选择继续)"
+
 #. Resource IDs: (84)
 msgid "Do &not show me this warning again (if Ignore is selected)"
 msgstr "不要再显示这个警告消息(如果选择忽略)"
@@ -3431,7 +3443,7 @@ msgstr "你确定要恢复此版本对\n%s\n的所有修改吗？这些修改将
 
 #. Resource IDs: (86)
 msgid "Do you want to fetch remote branches from the newly added remote?"
-msgstr ""
+msgstr "你想从新添加的远程服务器下载远程分支吗？"
 
 #. Resource IDs: (313)
 msgid ""
@@ -3449,7 +3461,7 @@ msgstr "是否浏览改动？"
 
 #. Resource IDs: (604)
 msgid "Do you want to stash pop now?"
-msgstr ""
+msgstr "你想弹出贮藏(Stash)吗?"
 
 #. Resource IDs: (65535)
 msgid "Document :"
@@ -3574,7 +3586,7 @@ msgstr "编辑全局.git/config(&o)"
 
 #. Resource IDs: (1718)
 msgid "Edit global &XDG config"
-msgstr ""
+msgstr "编辑全局(&XDG)配置文件 "
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
@@ -3798,7 +3810,7 @@ msgstr "导出目录: "
 
 #. Resource IDs: (1258)
 msgid "Export selection to..."
-msgstr ""
+msgstr "导出选择项..."
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
@@ -4625,7 +4637,7 @@ msgstr "ID:32883:V C +A"
 
 #. Accelerator Entry for Menu ID:32884; '&Go to'
 msgid "ID:32884:V C +G"
-msgstr ""
+msgstr "ID:32884:V C +G"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5345,6 +5357,10 @@ msgstr "合并版本 %s 于 %s 到 %s，%s%s"
 msgid "Message"
 msgstr "信息"
 
+#. Resource IDs: (1719)
+msgid "Message onl&y"
+msgstr "仅仅消息(&y)"
+
 #. Resource IDs: (116)
 msgid "Messages"
 msgstr "信息"
@@ -5528,6 +5544,14 @@ msgstr "%s 的新名称"
 msgid "New name:"
 msgstr "新名称: "
 
+#. Resource IDs: (605)
+msgid "New submodule"
+msgstr "新建子模块"
+
+#. Resource IDs: (605)
+msgid "Newer commit time"
+msgstr "新的提交时间"
+
 #. Resource IDs: (20308)
 msgid "Next"
 msgstr "下一个"
@@ -5552,7 +5576,7 @@ msgstr "非直接迁移(&F)"
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
-msgstr ""
+msgstr "不检出"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -5833,6 +5857,10 @@ msgstr "Office 2007 (银色风格&S)"
 #. Resource IDs: (216)
 msgid "Office 2007 (B&lack Style)"
 msgstr "Office 2007 (黑色风格&l)"
+
+#. Resource IDs: (605)
+msgid "Older commit time"
+msgstr "老的提交时间"
 
 #. Resource IDs: (65535)
 msgid "Older lines"
@@ -6819,7 +6847,7 @@ msgstr "还原提交%s"
 #. Resource IDs: (323)
 #, c-format
 msgid "Revert to revision %s"
-msgstr ""
+msgstr "复原到版本%s"
 
 #. Resource IDs: (73)
 msgid "Reverted"
@@ -6883,6 +6911,10 @@ msgstr "版本:"
 #. Resource IDs: (116)
 msgid "Revisions"
 msgstr "版本"
+
+#. Resource IDs: (605)
+msgid "Rewind"
+msgstr "回转"
 
 #. Resource IDs: (3850)
 msgid ""
@@ -6979,6 +7011,10 @@ msgstr "检查回车换行符(&f)"
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
 msgstr "检查回车换行符"
+
+#. Resource IDs: (605)
+msgid "Same commit time"
+msgstr "同样的提交时间"
 
 #. Resource IDs: (57604)
 msgid "Save &As..."
@@ -7678,7 +7714,7 @@ msgstr "保存贮藏"
 
 #. Resource IDs: (80)
 msgid "Stash operation running..."
-msgstr ""
+msgstr "贮藏操作进行中..."
 
 #. Resource IDs: (1487, 4572, 4573, 16514)
 msgid "Static"
@@ -7880,7 +7916,7 @@ msgstr "TORTOISEIDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
-msgstr ""
+msgstr "标签(&g)"
 
 #. Resource IDs: (16970)
 msgid "Tab Placeholder"
@@ -7954,7 +7990,7 @@ msgstr "提交消息不能为空"
 msgid ""
 "The current working tree is not clean.\n"
 "Do you want to stash the changes?"
-msgstr ""
+msgstr "当前工作区有改动\n你想储藏(stash)改动吗？"
 
 #. Resource IDs: (68)
 #, c-format
@@ -8194,7 +8230,7 @@ msgid ""
 "The submodule \"%s\" is dirty.\n"
 "Merely committing the superproject cannot track or save such changes to the submodule.\n"
 "Commit the submodule now or ignore dirty changes?"
-msgstr ""
+msgstr "子模块\"%s\"有改动。\n提交父模块的改过不能记录子目录的修改\n现在提交子模块修改或者忽略子模块的改动？"
 
 #. Resource IDs: (88)
 #, c-format
@@ -8516,6 +8552,10 @@ msgstr "调整 TortoiseGit 设置"
 
 #. Resource IDs: (1642)
 msgid "Type"
+msgstr "类型"
+
+#. Resource IDs: (1720)
+msgid "Type:"
 msgstr "类型"
 
 #. Resource IDs: (164, 207)
@@ -8842,7 +8882,7 @@ msgstr "在提交前必须设置用户名和电子邮箱。\n是否现在设置�
 
 #. Resource IDs: (1650)
 msgid "User&name:"
-msgstr ""
+msgstr "用户名(&n): "
 
 #. Resource IDs: (69)
 msgid "Username:"
@@ -8922,7 +8962,7 @@ msgstr "在其他编辑器中查看版本"
 
 #. Resource IDs: (1717)
 msgid "View system&wide gitconfig"
-msgstr ""
+msgstr "编辑系统gitconfig(&w)"
 
 #. Resource IDs: (1084)
 msgid "Visit our website"
@@ -9109,6 +9149,12 @@ msgid ""
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr "版本的msysGit (http://code.google.com/p/msysgit/)安装\n\n你应该考虑升级到 1.7.10+ ，这个版本支持UTF-并且兼任 *nix版本的 git."
+
+#. Resource IDs: (86)
+msgid ""
+"You have checked \"include untracked\".\n"
+"This includes a \"git clean -fd\" call, so ignored files/directories are removed w/o using recycle bin."
+msgstr "你选择“包括非版本文件\"。\n这实际调用\"git clean -fd\", 于是忽略文件将被直接删除，而没有使用回收站。"
 
 #. Resource IDs: (16)
 msgid ""
