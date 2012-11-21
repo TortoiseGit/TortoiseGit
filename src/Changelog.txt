@@ -1,4 +1,10 @@
-﻿= Release 1.7.15.0 =
+﻿= Release 1.7.16.0 =
+Released: unreleased
+
+== Bug Fix ==
+ * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
+
+= Release 1.7.15.0 =
 Released: 2012-11-20
 
 == Features ==
