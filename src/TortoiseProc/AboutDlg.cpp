@@ -93,7 +93,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetTimer(ID_DROPTIMER, 1500, NULL);
 
 	m_cWebLink.SetURL(_T("http://code.google.com/p/tortoisegit/"));
-	m_cSupportLink.SetURL(_T("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=GJGTG75GV5PL6&lc=C2&item_name=TortoiseGit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
+	m_cSupportLink.SetURL(_T("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=GJGTG75GV5PL6&lc=C2&item_name=TortoiseGit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"));
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 	GetDlgItem(IDOK)->SetFocus();
