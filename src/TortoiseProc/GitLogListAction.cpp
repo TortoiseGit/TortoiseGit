@@ -158,7 +158,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		{
 			progress.FormatNonPathLine(1, IDS_PROC_PICK, logs.GetGitRevAt(i).m_CommitHash.ToString());
 			progress.FormatNonPathLine(2, _T("%s"), logs.GetGitRevAt(i).GetSubject());
-			progress.SetProgress(logs.size()-i, logs.size());
+			progress.SetProgress64(logs.size() - i, logs.size());
 		}
 		if (progress.HasUserCancelled())
 		{
