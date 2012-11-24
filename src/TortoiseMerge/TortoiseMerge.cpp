@@ -49,7 +49,7 @@ CTortoiseMergeApp::CTortoiseMergeApp()
 // The one and only CTortoiseMergeApp object
 CTortoiseMergeApp theApp;
 CString sOrigCWD;
-CCrashReportTGit g_crasher(L"TortoiseMerge " _T(APP_X64_STRING));
+CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING));
 
 // CTortoiseMergeApp initialization
 BOOL CTortoiseMergeApp::InitInstance()
@@ -170,7 +170,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	{
 		CString sHelpText;
 		sHelpText.LoadString(IDS_COMMANDLINEHELP);
-		MessageBox(NULL, sHelpText, _T("TortoiseMerge"), MB_ICONINFORMATION);
+		MessageBox(NULL, sHelpText, _T("TortoiseGitMerge"), MB_ICONINFORMATION);
 		return FALSE;
 	}
 
@@ -186,9 +186,9 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// of your final executable, you should remove from the following
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
-	SetRegistryKey(_T("TortoiseMerge"));
+	SetRegistryKey(_T("TortoiseGitMerge"));
 
-	if (CRegDWORD(_T("Software\\TortoiseMerge\\Debug"), FALSE)==TRUE)
+	if (CRegDWORD(_T("Software\\TortoiseGitMerge\\Debug"), FALSE)==TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
 
 	// To create the main window, this code creates a new frame window
@@ -377,23 +377,23 @@ BOOL CTortoiseMergeApp::InitInstance()
 	if (!sYour.IsEmpty() && !sTheir.IsEmpty())
 	{
 		if (sYour.CompareNoCase(sTheir)==0)
-			pFrame->SetWindowText(sYour + _T(" - TortoiseMerge"));
+			pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
 		else if ((sYour.GetLength() < 10) &&
 				(sTheir.GetLength() < 10))
-			pFrame->SetWindowText(sYour + _T(" - ") + sTheir + _T(" - TortoiseMerge"));
+			pFrame->SetWindowText(sYour + _T(" - ") + sTheir + _T(" - TortoiseGitMerge"));
 		else
 		{
 			// we have two very long descriptive texts here, which
 			// means we have to find a way to use them as a window
 			// title in a shorter way.
 			// for simplicity, we just use the one from "yourfile"
-			pFrame->SetWindowText(sYour + _T(" - TortoiseMerge"));
+			pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
 		}
 	}
 	else if (!sYour.IsEmpty())
-		pFrame->SetWindowText(sYour + _T(" - TortoiseMerge"));
+		pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
 	else if (!sTheir.IsEmpty())
-		pFrame->SetWindowText(sTheir + _T(" - TortoiseMerge"));
+		pFrame->SetWindowText(sTheir + _T(" - TortoiseGitMerge"));
 
 	if (parser.HasKey(_T("createunifieddiff")))
 	{

@@ -406,7 +406,7 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 			GetFriendRefName(m_SelectedEntry1),
 			bHead ?  _T("HEAD"): GetFriendRefName(m_SelectedEntry2));
 
-	CAppUtils::RunTortoiseProc(sCmd);
+	CAppUtils::RunTortoiseGitProc(sCmd);
 
 }
 

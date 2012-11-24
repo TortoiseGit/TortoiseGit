@@ -16,6 +16,13 @@ Released: unreleased
  * Fixed issue #1578: Warn author not set when merging
  * Fixed issue #1557: Submodule Diff Dialog should launch diff with working copy if the submodule is dirty
  * Fixed issue #1066: Add 'Revision Graph' Feature
+ * Fixed issue #1435: EXE Name collision with TortoiseSVN
+   Renamed:
+   - TortoiseIDiff.exe to TortoiseGitIDiff.exe
+   - TortoiseMerge.exe to TortoiseGitMerge.exe
+   - TortoiseProc.exe to TortoiseGitProc.exe
+   - TortoisePLink.exe to TortoiseGitPLink.exe (TortoisePLink.exe is still shipped for compatibility reasons)
+   - TortoiseUDiff.exe to TortoiseGitUDiff.exe
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

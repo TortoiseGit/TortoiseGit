@@ -57,7 +57,7 @@
 
 #define USE_GDI_GRADIENT
 
-#define XMESSAGEBOX_APPREGPATH "Software\\TortoiseMerge\\"
+#define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGitMerge\\"
 
 #include "..\Utils\CrashReport.h"
 

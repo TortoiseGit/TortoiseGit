@@ -737,7 +737,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 
 		case ID_STASH_LIST:
-			CAppUtils::RunTortoiseProc(_T("/command:reflog /ref:refs/stash"));
+			CAppUtils::RunTortoiseGitProc(_T("/command:reflog /ref:refs/stash"));
 			break;
 
 		case ID_REFLOG_STASH_APPLY:
@@ -791,7 +791,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\" ");
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				cmd += _T(" /endrev:")+r1->m_CommitHash.ToString();
-				CAppUtils::RunTortoiseProc(cmd);
+				CAppUtils::RunTortoiseGitProc(cmd);
 			}
 			break;
 		case ID_CREATE_PATCH:
@@ -823,7 +823,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 				}
 
-				CAppUtils::RunTortoiseProc(cmd);
+				CAppUtils::RunTortoiseGitProc(cmd);
 			}
 			break;
 		case ID_BISECTSTART:
@@ -847,7 +847,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString sCmd;
 				sCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir, pSelLogEntry->m_CommitHash.ToString());
-				CAppUtils::RunTortoiseProc(sCmd);
+				CAppUtils::RunTortoiseGitProc(sCmd);
 			}
 			break;
 		case ID_PUSH:
@@ -1122,7 +1122,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString sCmd;
 				sCmd.Format(_T("%s /command:export /path:\"%s\" /revision:%ld"),
-					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")),
+					(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseGitProc.exe")),
 					(LPCTSTR)pathURL, (LONG)revSelected);
 				CAppUtils::LaunchApplication(sCmd, NULL, false);
 			}

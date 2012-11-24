@@ -48,7 +48,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	{
 		TCHAR buf[1024];
 		LoadString(hInstance, IDS_COMMANDLINEHELP, buf, sizeof(buf)/sizeof(TCHAR));
-		MessageBox(NULL, buf, _T("TortoiseUDiff"), MB_ICONINFORMATION);
+		MessageBox(NULL, buf, _T("TortoiseGitUDiff"), MB_ICONINFORMATION);
 		return 0;
 	}
 

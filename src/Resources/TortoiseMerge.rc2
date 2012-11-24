@@ -32,12 +32,12 @@ BEGIN
         BLOCK "040004e4"
         BEGIN
             VALUE "CompanyName", "http://tortoisesvn.net\0"
-            VALUE "FileDescription", "TortoiseMerge\0"
+            VALUE "FileDescription", "TortoiseGitMerge\0"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseMerge.exe\0"
+            VALUE "InternalName", "TortoiseGitMerge.exe\0"
             VALUE "LegalCopyright", "Copyright (C) 2011-2012 - TortoiseGit and Copyright (C) 2003-2008,2012 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseMerge.exe\0"
-            VALUE "ProductName", "TortoiseMerge\0"
+            VALUE "OriginalFilename", "TortoiseGitMerge.exe\0"
+            VALUE "ProductName", "TortoiseGitMerge\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END

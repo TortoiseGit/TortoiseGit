@@ -167,7 +167,7 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 	cmd +=_T(" /pathfile:\"");
 	cmd += tempfile;
 	cmd += _T("\" /deletepathfile");
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 	return 0;
 }
 

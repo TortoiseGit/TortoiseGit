@@ -954,7 +954,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		}
 		break;
 	case eCmd_RepoBrowser:
-		CAppUtils::RunTortoiseProc(_T("/command:repobrowser /path:\"") + g_Git.m_CurrentDir + _T("\" /rev:") + selectedLeafs[0]->GetRefName());
+		CAppUtils::RunTortoiseGitProc(_T("/command:repobrowser /path:\"") + g_Git.m_CurrentDir + _T("\" /rev:") + selectedLeafs[0]->GetRefName());
 		break;
 	case eCmd_DeleteBranch:
 	case eCmd_DeleteRemoteBranch:

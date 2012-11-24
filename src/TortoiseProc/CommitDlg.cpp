@@ -528,7 +528,7 @@ void CCommitDlg::OnOK()
 			{
 				CString cmdCommit;
 				cmdCommit.Format(_T("/command:commit /path:\"%s\\%s\""), g_Git.m_CurrentDir, entry->GetWinPathString());
-				CAppUtils::RunTortoiseProc(cmdCommit);
+				CAppUtils::RunTortoiseGitProc(cmdCommit);
 				return;
 			}
 			else if (result == 2)

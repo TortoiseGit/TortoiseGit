@@ -31,9 +31,9 @@ IMPLEMENT_DYNAMIC(CSetColorPage, CPropertyPage)
 CSetColorPage::CSetColorPage()
 	: CPropertyPage(CSetColorPage::IDD)
 	, m_bReloadNeeded(FALSE)
-	, m_regInlineAdded(_T("Software\\TortoiseMerge\\InlineAdded"), INLINEADDED_COLOR)
-	, m_regInlineRemoved(_T("Software\\TortoiseMerge\\InlineRemoved"), INLINEREMOVED_COLOR)
-	, m_regModifiedBackground(_T("Software\\TortoiseMerge\\Colors\\ColorModifiedB"), MODIFIED_COLOR)
+	, m_regInlineAdded(_T("Software\\TortoiseGitMerge\\InlineAdded"), INLINEADDED_COLOR)
+	, m_regInlineRemoved(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR)
+	, m_regModifiedBackground(_T("Software\\TortoiseGitMerge\\Colors\\ColorModifiedB"), MODIFIED_COLOR)
 {
 }
 
@@ -105,7 +105,7 @@ void CSetColorPage::SaveData()
 		cFg = m_cFgWhitespaces.GetColor();
 		if (cFg == -1)
 			cFg = m_cFgWhitespaces.GetAutomaticColor();
-		CRegDWORD regWhitespaceColor(_T("Software\\TortoiseMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
+		CRegDWORD regWhitespaceColor(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
 		regWhitespaceColor = cFg;
 	}
 }
@@ -196,7 +196,7 @@ BOOL CSetColorPage::OnInitDialog()
 	m_cBkConflictResolved.EnableOtherButton(sCustomText);
 
 
-	CRegDWORD regWhitespaceColor(_T("Software\\TortoiseMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
+	CRegDWORD regWhitespaceColor(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
 	m_cFgWhitespaces.SetColor((COLORREF)(DWORD)regWhitespaceColor);
 	m_cFgWhitespaces.EnableAutomaticButton(sDefaultText, GetSysColor(COLOR_GRAYTEXT));
 	m_cFgWhitespaces.EnableOtherButton(sCustomText);

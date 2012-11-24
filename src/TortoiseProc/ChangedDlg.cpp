@@ -367,7 +367,7 @@ void CChangedDlg::OnBnClickedCommit()
 	else
 		cmd += g_Git.m_CurrentDir + _T("\\") + m_pathList.GetCommonRoot().GetDirectory().GetWinPath();
 	cmd += _T("\"");
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
 void CChangedDlg::OnBnClickedStash()

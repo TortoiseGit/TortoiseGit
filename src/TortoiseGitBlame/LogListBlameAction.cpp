@@ -214,5 +214,5 @@ void CGitBlameLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect
 
 		} // switch (cmd)
 
-		CCommonAppUtils::RunTortoiseProc(procCmd);
+		CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }

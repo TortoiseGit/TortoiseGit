@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoisePlink"
+	Name="TortoiseGitPlink"
 	ProjectGUID="{D3AFBFBE-5501-4077-B3B4-3D28BBCA8F20}"
 	RootNamespace="plink"
 	TargetFrameworkVersion="131072"

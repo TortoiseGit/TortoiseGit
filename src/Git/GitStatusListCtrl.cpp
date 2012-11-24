@@ -1923,7 +1923,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CString sCmd;
 						sCmd.Format(_T("/command:diff /path:\"%s\" /path2:\"%s\" /hwnd:%ld"), firstfilepath->GetWinPath(), secondfilepath->GetWinPath(), (unsigned long)m_hWnd);
-						CAppUtils::RunTortoiseProc(sCmd);
+						CAppUtils::RunTortoiseGitProc(sCmd);
 					}
 				}
 				break;
@@ -2062,7 +2062,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
-					CAppUtils::RunTortoiseProc(sCmd);
+					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 				break;
 
@@ -2071,7 +2071,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + oldName.GetWinPath());
-					CAppUtils::RunTortoiseProc(sCmd);
+					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 				break;
 
@@ -2275,7 +2275,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 									{
 										CString sCmd;
 										sCmd.Format(_T("/command:revert /path:\"%s\""), path->GetGitPathString());
-										CCommonAppUtils::RunTortoiseProc(sCmd);
+										CCommonAppUtils::RunTortoiseGitProc(sCmd);
 									}
 								}
 							}
@@ -2364,7 +2364,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CTSVNPath tempFile = CTempFiles::Instance().GetTempFilePath(false);
 					VERIFY(targetList.WriteToFile(tempFile.GetWinPathString()));
 					CString commandline = CPathUtils::GetAppDirectory();
-					commandline += _T("TortoiseProc.exe /command:commit /pathfile:\"");
+					commandline += _T("TortoiseGitProc.exe /command:commit /pathfile:\"");
 					commandline += tempFile.GetWinPathString();
 					commandline += _T("\"");
 					commandline += _T(" /deletepathfile");

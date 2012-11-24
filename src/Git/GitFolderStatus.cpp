@@ -105,7 +105,7 @@ GitFolderStatus::~GitFolderStatus(void)
 
 const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepath, const CString& /*sProjectRoot*/, BOOL bIsFolder, BOOL bDirectFolder)
 {
-	//dont' build the cache if an instance of TortoiseProc is running
+	//dont' build the cache if an instance of TortoiseGitProc is running
 	//since this could interfere with svn commands running (concurrent
 	//access of the .git directory).
 	if (g_ShellCache.BlockStatus())
@@ -293,7 +293,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 		}
 		else if(WaitForSingleObject(m_hInvalidationEvent, 0) == WAIT_OBJECT_0)
 		{
-			// TortoiseProc has just done something which has invalidated the cache
+			// TortoiseGitProc has just done something which has invalidated the cache
 			ATLTRACE("Cache invalidated\n");
 			ClearCache();
 			retVal = NULL;

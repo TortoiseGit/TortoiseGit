@@ -35,8 +35,8 @@ class CTSVNPathList;
 
 /**
  * \ingroup TortoiseProc
- * Main class of the TortoiseProc.exe\n
- * It is the entry point when calling the TortoiseProc.exe and
+ * Main class of the TortoiseGitProc.exe\n
+ * It is the entry point when calling the TortoiseGitProc.exe and
  * handles the command line. Depending on the command line
  * other 'modules' are called, usually dialog boxes which
  * themselves then execute a specific function.\n\n

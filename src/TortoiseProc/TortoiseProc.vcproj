@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoiseProc"
+	Name="TortoiseGitProc"
 	ProjectGUID="{50797F06-39C5-4802-8E2B-7B7A4EF03214}"
 	RootNamespace="TortoiseProc"
 	Keyword="MFCProj"

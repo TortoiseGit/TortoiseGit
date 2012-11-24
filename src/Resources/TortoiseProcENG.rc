@@ -615,7 +615,7 @@ CAPTION "Diff Viewer"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Configure the program used for comparing different revisions of files",IDC_STATIC,7,7,286,87
-    CONTROL         "&TortoiseMerge",IDC_EXTDIFF_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,23,74,10
+    CONTROL         "&TortoiseGitMerge",IDC_EXTDIFF_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,23,74,10
     CONTROL         "&External",IDC_EXTDIFF_ON,"Button",BS_AUTORADIOBUTTON,92,23,71,10
     EDITTEXT        IDC_EXTDIFF,14,41,256,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_EXTDIFFBROWSE,274,41,14,14
@@ -634,7 +634,7 @@ CAPTION "Diff Viewer::Merge Tool"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Configure the program used to resolve conflicted files.",IDC_STATIC,7,7,251,8
-    CONTROL         "&TortoiseMerge",IDC_EXTMERGE_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,70,10
+    CONTROL         "&TortoiseGitMerge",IDC_EXTMERGE_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,70,10
     CONTROL         "&External",IDC_EXTMERGE_ON,"Button",BS_AUTORADIOBUTTON,89,23,76,10
     EDITTEXT        IDC_EXTMERGE,7,41,263,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_EXTMERGEBROWSE,279,41,14,14
@@ -859,7 +859,7 @@ BEGIN
     COMBOBOX        IDC_FONTSIZES,253,112,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Tab size:",IDC_STATIC,14,132,92,8
     EDITTEXT        IDC_TABSIZE,253,130,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Note: the font settings also affect the TortoiseUDiff viewer",IDC_STATIC,15,156,269,21
+    LTEXT           "Note: the font settings also affect the TortoiseGitUDiff viewer",IDC_STATIC,15,156,269,21
     CONTROL         "Follow renames",IDC_FOLLOWRENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,185,148,8
 END
 
@@ -2877,7 +2877,7 @@ BEGIN
                             "Check to show relative times in log messages"
     IDS_PROC_BROWSEREFS_DELETEBRANCHES "Delete %d branches"
     IDS_ERR_EXTDIFFSTART    "Could not start external diff program!\n\n%s"
-    IDS_ERR_NOCOMMAND       "No command specified!\n\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
+    IDS_ERR_NOCOMMAND       "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
     IDS_ERR_NOCOMMANDVALUE  "No command value specified!"
     IDS_ERR_NOSTATUS        "Could not get the status!"
     IDS_LOG_SUBMODULE       "Show log of submodule"
@@ -3643,7 +3643,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_PAGEANT         "Could not start the Putty Agent (pageant)."
     IDS_MENU_VIEWPATCH      "View Patch"
-    IDS_MENU_VIEWWITHMERGE  "Review Patch with TortoiseMerge"
+    IDS_MENU_VIEWWITHMERGE  "Review Patch with TortoiseGitMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"

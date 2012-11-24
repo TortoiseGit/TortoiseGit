@@ -110,9 +110,9 @@ BOOL CDiffData::Load()
 	m_arDiff3LinesTheir.RemoveAll();
 
 	CTempFiles tempfiles;
-	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreWS"));
-	CRegDWORD regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreEOL"), TRUE);
-	CRegDWORD regIgnoreCase = CRegDWORD(_T("Software\\TortoiseMerge\\CaseInsensitive"), FALSE);
+	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	CRegDWORD regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreEOL"), TRUE);
+	CRegDWORD regIgnoreCase = CRegDWORD(_T("Software\\TortoiseGitMerge\\CaseInsensitive"), FALSE);
 	DWORD dwIgnoreWS = regIgnoreWS;
 	bool bIgnoreEOL = ((DWORD)regIgnoreEOL)!=0;
 	BOOL bIgnoreCase = ((DWORD)regIgnoreCase)!=0;

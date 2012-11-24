@@ -262,7 +262,7 @@ msgstr ""
 
 #. Resource IDs: (69)
 #, c-format
-msgid "%s\nis a directory, not a file!\nTortoiseMerge can't diff directories."
+msgid "%s\nis a directory, not a file!\nTortoiseGitMerge can't diff directories."
 msgstr ""
 
 #. Resource IDs: (16923)
@@ -278,7 +278,7 @@ msgid "&About TortoiseGitBlame..."
 msgstr ""
 
 #. Resource IDs: (57664)
-msgid "&About TortoiseMerge..."
+msgid "&About TortoiseGitMerge..."
 msgstr ""
 
 #. Resource IDs: (16920)
@@ -1140,7 +1140,7 @@ msgid "&TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1091, 1094)
-msgid "&TortoiseMerge"
+msgid "&TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (1605)
@@ -1463,7 +1463,7 @@ msgid "About TortoiseGitBlame"
 msgstr ""
 
 #. Resource IDs: (136)
-msgid "About TortoiseMerge"
+msgid "About TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -5302,7 +5302,7 @@ msgid "No HEAD found"
 msgstr ""
 
 #. Resource IDs: (81)
-msgid "No command specified!\n\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
+msgid "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -5415,7 +5415,7 @@ msgid "Note: the folder contains unversioned items"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Note: the font settings also affect the TortoiseUDiff viewer"
+msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6537,11 +6537,11 @@ msgid "Review Patch"
 msgstr ""
 
 #. Resource IDs: (603)
-msgid "Review Patch with TortoiseMerge"
+msgid "Review Patch with TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (14)
-msgid "Review/apply a unified diff file with TortoiseMerge"
+msgid "Review/apply a unified diff file with TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (13)
@@ -7556,7 +7556,7 @@ msgid "TIS-620"
 msgstr ""
 
 #. Resource IDs: (7)
-msgid "TORTOISEIDIFF"
+msgid "TORTOISEGITIDIFF"
 msgstr ""
 
 #. Resource IDs: (1513)
@@ -7771,17 +7771,17 @@ msgstr ""
 
 #. Resource IDs: (314)
 #, c-format
-msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge found the relative path\n<i>%s</i>\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseMerge."
+msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseGitMerge found the relative path\n<i>%s</i>\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
 msgstr ""
 
 #. Resource IDs: (314)
 #, c-format
-msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge tried to apply the patch by stripping prefixes but no matching path could be found."
+msgid "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
 msgstr ""
 
 #. Resource IDs: (314)
 #, c-format
-msgid "The path\n<i>%s</i>\nseems not to match the paths in the patchfile.\nBut TortoiseMerge found the path\n<i>%s</i>\nmatches it better. Do you want to use the suggested path instead?"
+msgid "The path\n<i>%s</i>\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n<i>%s</i>\nmatches it better. Do you want to use the suggested path instead?"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -7994,29 +7994,29 @@ msgid "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTorto
 msgstr ""
 
 #. Resource IDs: (7, 153)
-msgid "TortoiseIDiff"
+msgid "TortoiseGitIDiff"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "TortoiseIDiff - An image diff tool, part of TortoiseGit"
+msgid "TortoiseGitIDiff - An image diff tool, part of TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (7)
-msgid "TortoiseIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:\"path to left picture\"\n/lefttitle:\"title to show for the left picture\"\n/right:\"path to right picture\"\n/righttitle:\"title to show for the right picture\"\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
+msgid "TortoiseGitIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:\"path to left picture\"\n/lefttitle:\"title to show for the left picture\"\n/right:\"path to right picture\"\n/righttitle:\"title to show for the right picture\"\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
 msgstr ""
 
 #. Resource IDs: (7, 130, 3585)
-msgid "TortoiseMerge"
+msgid "TortoiseGitMerge"
 msgstr ""
 
 #. Resource IDs: (107)
 #, c-format
-msgid "TortoiseMerge %d.%d.%d, Build %d - %s, %s"
+msgid "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s"
 msgstr ""
 
 #. Resource IDs: (107)
 #, c-format
-msgid "TortoiseMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+msgid "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
 msgstr ""
 
 #. Resource IDs: (1162)

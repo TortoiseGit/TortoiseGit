@@ -46,7 +46,7 @@ IDI_LINEEDITED          ICON                    "lineedited.ico"
 
 IDD_ABOUT DIALOGEX 0, 0, 333, 249
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About TortoiseMerge"
+CAPTION "About TortoiseGitMerge"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Author:\t\t\t\tStefan Kueng",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,14,68,309,8
@@ -147,7 +147,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_OPENDLG DIALOGEX 0, 0, 325, 209
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "TortoiseMerge"
+CAPTION "TortoiseGitMerge"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "&Merging",IDC_MERGERADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,18,75,10
@@ -462,7 +462,7 @@ BEGIN
     BEGIN
         MENUITEM "&Help Topics",                ID_HELP
         MENUITEM SEPARATOR
-        MENUITEM "&About TortoiseMerge...",     ID_APP_ABOUT
+        MENUITEM "&About TortoiseGitMerge...",     ID_APP_ABOUT
     END
 END
 
@@ -537,12 +537,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "TortoiseMerge"
+    IDR_MAINFRAME           "TortoiseGitMerge"
 END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "TortoiseMerge"
+    AFX_IDS_APP_TITLE       "TortoiseGitMerge"
     AFX_IDS_IDLEMESSAGE     "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
     AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
 END
@@ -726,7 +726,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_FILE_OPEN       "Could not open the file\n%s"
     IDS_ERR_FILE_BINARY     "The file\n%s\nis not a valid text file!\nNote that UTF32 files are treated as binary too."
-    IDS_ERR_FILE_NOTAFILE   "%s\nis a directory, not a file!\nTortoiseMerge can't diff directories."
+    IDS_ERR_FILE_NOTAFILE   "%s\nis a directory, not a file!\nTortoiseGitMerge can't diff directories."
     IDS_ERR_FILE_TOOBIG     "The file is too big"
 END
 
@@ -739,8 +739,8 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTVERSION        "TortoiseMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
-    IDS_ABOUTVERSIONBOX     "TortoiseMerge %d.%d.%d, Build %d - %s, %s"
+    IDS_ABOUTVERSION        "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+    IDS_ABOUTVERSIONBOX     "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s"
     IDS_SETTINGSTITLE       "Settings"
 END
 
@@ -791,12 +791,12 @@ END
 STRINGTABLE 
 BEGIN
     IDS_WARNBETTERPATCHPATHFOUND 
-                            "The path\n<i>%s</i>\nseems not to match the paths in the patchfile.\nBut TortoiseMerge found the path\n<i>%s</i>\nmatches it better. Do you want to use the suggested path instead?"
+                            "The path\n<i>%s</i>\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n<i>%s</i>\nmatches it better. Do you want to use the suggested path instead?"
     IDS_NOTFOUNDVIEWTITLEINDICATOR "(not found)"
     IDS_WARNABSOLUTEPATHFOUND 
-                            "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge found the relative path\n<i>%s</i>\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseMerge."
+                            "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseGitMerge found the relative path\n<i>%s</i>\nwhich seems to match the directory you're applying the patch.\n\nDo you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
     IDS_WARNABSOLUTEPATHNOTFOUND 
-                            "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseMerge tried to apply the patch by stripping prefixes but no matching path could be found."
+                            "The path\n<i>%s</i>\nin the patchfile does not exist.\nTortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
     IDS_DELETEWHENEMPTY     "The file \n%s\nis empty.\nDo you want to remove the file?"
     IDS_EMPTYLINETT         "(no line number)"
 END

@@ -96,58 +96,58 @@
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -179,58 +179,58 @@
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -264,58 +264,58 @@
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidAdded)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidLocked)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDeleted)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidNormal)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidReadonly)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUncontrolled)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidModified)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidDropHandler)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidConflict)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidIgnored)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Action="createKeyAndRemoveKeyOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseStub32.dll" Type="string" />
+					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
 					<Registry Root="HKMU" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\CLSID\{$(var.GuidUnversioned)}\shellex\NoRecentDocs" Action="createAndRemoveOnUninstall" />
 					<Registry Root="HKMU" Key="Software\Classes\lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -328,7 +328,7 @@
 
 				<Component Id="C_SSHCLIENT_PLINK" Guid="$(var.RegSSHPLINK)" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
-					<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoisePLink.exe" Type="string" />
+					<Registry Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPLink.exe" Type="string" />
 				</Component>
 				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="OpenSSH")</Condition>
@@ -337,9 +337,9 @@
 
 				<Component Id="C__machineregistry" Guid="$(var.GuidMachineRegistry)" Win64="$(var.Win64YesNo)">
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
+					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
-					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseMerge.exe" Type="string" />
+					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
 					<Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Action="createKey" />
 					<Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
@@ -363,9 +363,9 @@
 				<?if $(var.Platform) = "x64" ?>
 				<Component Id="C__machineregistry32" Guid="$(var.GuidMachineRegistry32)" Win64="no">
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Action="createKeyAndRemoveKeyOnUninstall" />
-					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseProc.exe" Type="string" />
+					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
-					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseMerge.exe" Type="string" />
+					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
 					<Registry Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
 					<Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Action="createKey" />
 					<Registry Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
@@ -480,77 +480,77 @@
 					<!-- no need to create these on x64 in the Wow6432Node too: these are only used by the explorer, and that one is 64-bit. If
 					     a user really starts the 32-bit explorer on win64 and these buttons aren't there, it won't be that bad -->
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-123" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-122" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-138" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:commit /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-136" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-180" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-181" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:log /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-321" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-339" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-340" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:sync /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-128" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-128" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-143" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:switch /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-129" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-129" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-149" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:merge /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-135" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-176" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-177" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:diff /expaths:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /expaths:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-123" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-122" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-138" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-123" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-122" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-138" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:commit /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\0\$(var.GuidFolderTypeCmd0)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:commit /path:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-136" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-180" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-181" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-136" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-180" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-181" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:log /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\1\$(var.GuidFolderTypeCmd1)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:log /path:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-321" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-339" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-340" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-321" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-339" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-340" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:sync /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\2\$(var.GuidFolderTypeCmd2)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:sync /path:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-128" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-128" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-143" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-128" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-143" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:switch /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\3\$(var.GuidFolderTypeCmd3)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:switch /path:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-129" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-129" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-149" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-129" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-149" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:merge /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\4\$(var.GuidFolderTypeCmd4)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:merge /path:%*" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseProc.exe,-135" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-176" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseProc.exe,-177" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Icon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe,-135" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="Title" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-176" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)" Name="InfoTip" Value="@[INSTALLDIR]bin\TortoiseGitProc.exe,-177" Type="string" />
 					<RegistryKey   Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Action="createAndRemoveOnUninstall" />
-					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseProc.exe&quot; /command:diff /path:%*" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidLibraryFolderGit)\TasksNoItemsSelected\5\$(var.GuidFolderTypeCmd5)\Shell\InvokeTask\Command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:diff /path:%*" Type="string" />
 				</Component>
 
 				<Component Id="C__approveshellcomponents" Guid="$(var.GuidApproveShellComponents)" Win64="$(var.Win64YesNo)">
@@ -635,8 +635,9 @@
 					<?endif ?>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoisePlink" ShortName="TORTPLI.EXE" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoisePlink.exe" />
-						<File Id="F__PuttyGen" ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
+            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPLink.exe" />
+            <File Id="F__TortoisePlink" ShortName="TGITPLI.EXE" Name="TortoiseGitPLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPLink.exe" />
+            <File Id="F__PuttyGen" ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__notepad2x86" ShortName="notepad2.EXE" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x86.exe" />
@@ -653,24 +654,24 @@
 					</Component>
 
 					<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseProc.exe" KeyPath="yes" />
+						<File Id="F__TortoiseProc" ShortName="TORTPROC.EXE" Name="TortoiseGitProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitProc.exe" KeyPath="yes" />
 						<File Id="F__TGITAutolist" ShortName="AUTOLIST.TXT" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
 						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
 					</Component>
 
 					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
 						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__TortoiseStub32" Name="TortoiseStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseStub32.dll" />
+						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
 						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
 						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__TortoiseStub" Name="TortoiseStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseStub.dll" />
+						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
 						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" />
 						<?endif ?>
 					</Component>
 					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseStub32" Name="TortoiseStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseStub32.dll" />
+						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
 						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" />
 					</Component>
 					<?endif ?>
@@ -679,20 +680,20 @@
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
 						<Shortcut Id="S__Website" Directory="D_TortoisePrgMenu" Name="Website" Advertise="no" Target="[INSTALLDIR]bin\website.url" Description="TortoiseGit Website" />
 						<!--
-						<Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TGIT" Name="TortoiseGit" Advertise="no" Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
+						<Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" ShortName="TGIT" Name="TortoiseGit" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
 						-->
-						<Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no" Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
+						<Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
 						<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="Puttygen" Advertise="no" Target="[INSTALLDIR]bin\puttygen.exe" Description="putty key generate" Show="normal" />
 						<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no" Target="[INSTALLDIR]bin\pageant.exe" Description="putty ageant" Show="normal" />
 					</Component>
 
 					<Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseMerge.exe" KeyPath="yes" />
+						<File Id="F__TortoiseMerge" ShortName="TMERGE.EXE" Name="TortoiseGitMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitMerge.exe" KeyPath="yes" />
 					</Component>
 
 					<Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseMerge" Type="string" />
-						<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" ShortName="TMERGE" Name="TortoiseMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
+						<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" ShortName="TMERGE" Name="TortoiseMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
 					</Component>
 
 					<Component Id="C__Sounds" Guid="$(var.GuidSounds)" Win64="$(var.Win64YesNo)">
@@ -713,16 +714,16 @@
 					</Component>
 
 					<Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseIDiff.exe" KeyPath="yes" />
+						<File Id="F__TortoiseIDiff" ShortName="TIDIFF.EXE" Name="TortoiseGitIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitIDiff.exe" KeyPath="yes" />
 					</Component>
 
 					<Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)" Win64="$(var.Win64YesNo)">
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseIDiff" Type="string" />
-						<Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" ShortName="TIDIFF" Name="TortoiseIDiff" Advertise="no" Target="[INSTALLDIR]bin\TortoiseIDiff.exe" Description="View Diff's of image files" Show="normal" />
+						<Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" ShortName="TIDIFF" Name="TortoiseIDiff" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitIDiff.exe" Description="View Diff's of image files" Show="normal" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseUDiff.exe" KeyPath="yes" />
+						<File Id="F__TortoiseUDiff" ShortName="TUDIFF.EXE" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
 					</Component>
 
 					<Component Id="C__TortoiseUDiffAssoc" Guid="$(var.GuidTortoiseUDiffAssoc)" Win64="$(var.Win64YesNo)">
@@ -731,19 +732,19 @@
 						<Registry Root="HKMU" Key="Software\Classes\.patch" Action="createKeyAndRemoveKeyOnUninstall" />
 						<Registry Root="HKMU" Key="Software\Classes\.patch" Value="unified_diff_file" Type="string" />
 						<Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Action="createKeyAndRemoveKeyOnUninstall" />
-						<Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
+						<Registry Root="HKMU" Key="Software\Classes\unified_diff_file\shell\open\command" Value="[INSTALLDIR]bin\TortoiseGitUDiff.exe /patchfile:&quot;%1&quot;" Type="string" />
 					</Component>
 
 					<Component Id="C__PlainSettingsShortcuts" Guid="$(var.GuidPlainSettingsShortcuts)" Win64="$(var.Win64YesNo)">
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
 						<Condition><![CDATA[NOT VersionNT64]]></Condition>
-						<Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
+						<Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
 					</Component>
 
 					<Component Id="C__PlatformSettingsShortcuts" Guid="$(var.GuidPlatformSettingsShortcuts)" Win64="$(var.Win64YesNo)">
 						<Registry Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
 						<Condition>VersionNT64</Condition>
-						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" ShortName="SETTINGS" Name="Settings $(var.PlatformUserVisible)" Advertise="no" Target="[INSTALLDIR]bin\TortoiseProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
+						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" ShortName="SETTINGS" Name="Settings $(var.PlatformUserVisible)" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
 					</Component>
 				</Directory>
 

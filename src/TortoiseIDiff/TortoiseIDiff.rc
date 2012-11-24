@@ -150,12 +150,12 @@ END
 
 IDD_ABOUT DIALOGEX 0, 0, 258, 86
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "TortoiseIDiff"
+CAPTION "TortoiseGitIDiff"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,201,65,50,14
     ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,21,20
-    LTEXT           "TortoiseIDiff - An image diff tool, part of TortoiseGit",IDC_STATIC,53,15,198,21
+    LTEXT           "TortoiseGitIDiff - An image diff tool, part of TortoiseGit",IDC_STATIC,53,15,198,21
     LTEXT           "Version",IDC_ABOUTVERSION,53,42,198,8
     LTEXT           "Based on TortoiseIDiff of TortoiseSVN",IDC_WEBLINK,53,71,140,8
 END
@@ -227,13 +227,13 @@ END
 STRINGTABLE
 BEGIN
     IDS_VERSION             "Version %d.%d.%d.%d"
-    IDS_APP_TITLE           "TortoiseIDiff"
-    IDS_COMMANDLINEHELP     "TortoiseIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:""path to left picture""\n/lefttitle:""title to show for the left picture""\n/right:""path to right picture""\n/righttitle:""title to show for the right picture""\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
+    IDS_APP_TITLE           "TortoiseGitIDiff"
+    IDS_COMMANDLINEHELP     "TortoiseGitIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:""path to left picture""\n/lefttitle:""title to show for the left picture""\n/right:""path to right picture""\n/righttitle:""title to show for the right picture""\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
     IDS_OPENIMAGEFILE       "Open image file..."
     IDS_INVALIDIMAGEINFO    "The image can not be shown."
     IDS_IMAGEINFO           "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
     IDS_DUALIMAGEINFO       "File size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%\n\nFile size:\t\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
-    IDC_TORTOISEIDIFF       "TORTOISEIDIFF"
+    IDC_TORTOISEIDIFF       "TORTOISEGITIDIFF"
     IDS_DIMENSIONSANDFRAMES "%ld of %ld"
     IDS_IMAGEINFOTT         "File size:\t\t%s (%s)\nWidth:\t\t\t%ld pixel\nHeight:\t\t\t%ld pixel\nHorizontal Resolution:\t%.1f dpi\nVertical Resolution:\t%.1f dpi\nDepth:\t\t\t%d bit\nZoom:\t\t\t%d%%"
 END

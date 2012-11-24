@@ -1535,7 +1535,7 @@ BOOL CGit::CheckMsysGitDir()
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
-			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoisePlink.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPLink.exe"));
 			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
 			m_Environment.SetEnv(_T("SVN_SSH"), sPlink);
 		}

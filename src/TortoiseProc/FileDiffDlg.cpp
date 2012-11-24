@@ -594,7 +594,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
 					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
-					CAppUtils::RunTortoiseProc(cmd);
+					CAppUtils::RunTortoiseGitProc(cmd);
 				}
 			}
 			break;

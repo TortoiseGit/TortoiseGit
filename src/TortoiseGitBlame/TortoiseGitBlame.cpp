@@ -291,7 +291,7 @@ void CTortoiseGitBlameApp::OnAppAbout()
 
 void CTortoiseGitBlameApp::OnFileSettings()
 {
-	CCommonAppUtils::RunTortoiseProc(_T(" /command:settings /page:blame"));
+	CCommonAppUtils::RunTortoiseGitProc(_T(" /command:settings /page:blame"));
 }
 
 // CTortoiseGitBlameApp customization load/save methods

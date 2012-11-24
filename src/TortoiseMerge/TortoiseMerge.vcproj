@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoiseMerge"
+	Name="TortoiseGitMerge"
 	ProjectGUID="{8ABB4F84-891A-4748-8507-F5494842173E}"
 	RootNamespace="TortoiseMerge"
 	Keyword="MFCProj"

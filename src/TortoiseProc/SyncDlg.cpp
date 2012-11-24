@@ -365,7 +365,7 @@ void CSyncDlg::FetchComplete()
 		{
 			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::RunTortoiseProc(cmd);
+			CAppUtils::RunTortoiseGitProc(cmd);
 		}
 		if(response == IDC_REBASE_POST_BUTTON + 1)
 		{
@@ -1158,7 +1158,7 @@ void CSyncDlg::OnBnClickedButtonCommit()
 	cmd += g_Git.m_CurrentDir;
 	cmd += _T("\"");
 
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
 void CSyncDlg::OnOK()
@@ -1252,5 +1252,5 @@ void CSyncDlg::OnBnClickedLog()
 	cmd += g_Git.m_CurrentDir;
 	cmd += _T("\"");
 
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 }

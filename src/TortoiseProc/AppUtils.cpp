@@ -274,14 +274,14 @@ BOOL CAppUtils::StartExtMerge(
 
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
 	{
-		// use TortoiseMerge
+		// use TortoiseGitMerge
 		bInternal = true;
 		CRegString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
 		com = tortoiseMergePath;
 		if (com.IsEmpty())
 		{
 			com = CPathUtils::GetAppDirectory();
-			com += _T("TortoiseMerge.exe");
+			com += _T("TortoiseGitMerge.exe");
 		}
 		com = _T("\"") + com + _T("\"");
 		com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
@@ -394,9 +394,9 @@ BOOL CAppUtils::StartExtMerge(
 BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, const CString& sOriginalDescription, const CString& sPatchedDescription, BOOL bReversed, BOOL bWait)
 {
 	CString viewer;
-	// use TortoiseMerge
+	// use TortoiseGitMerge
 	viewer = CPathUtils::GetAppDirectory();
-	viewer += _T("TortoiseMerge.exe");
+	viewer += _T("TortoiseGitMerge.exe");
 
 	viewer = _T("\"") + viewer + _T("\"");
 	viewer = viewer + _T(" /diff:\"") + patchfile.GetWinPathString() + _T("\"");
@@ -446,7 +446,7 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 			(ext == _T(".dib")) || (ext == _T(".emf")))
 		{
 			return
-				_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseIDiff.exe") + _T("\"") +
+				_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
 				_T(" /left:%base /right:%mine /lefttitle:%bname /righttitle:%yname");
 		}
 	}
@@ -469,7 +469,7 @@ bool CAppUtils::StartExtDiff(
 	if (!flags.bBlame || !(DWORD)blamediff)
 	{
 		viewer = PickDiffTool(file1, file2);
-		// If registry entry for a diff program is commented out, use TortoiseMerge.
+		// If registry entry for a diff program is commented out, use TortoiseGitMerge.
 		bool bCommentedOut = viewer.Left(1) == _T("#");
 		if (flags.bAlternativeTool)
 		{
@@ -487,7 +487,7 @@ bool CAppUtils::StartExtDiff(
 	if (bInternal)
 	{
 		viewer =
-			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseMerge.exe") + _T("\"") +
+			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe") + _T("\"") +
 			_T(" /base:%base /mine:%mine /basename:%bname /minename:%yname");
 		if (flags.bBlame)
 			viewer += _T(" /blame");
@@ -536,10 +536,10 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	viewer = v;
 	if (viewer.IsEmpty() || (viewer.Left(1).Compare(_T("#"))==0))
 	{
-		// use TortoiseUDiff
+		// use TortoiseGitUDiff
 		viewer = CPathUtils::GetAppDirectory();
-		viewer += _T("TortoiseUDiff.exe");
-		// enquote the path to TortoiseUDiff
+		viewer += _T("TortoiseGitUDiff.exe");
+		// enquote the path to TortoiseGitUDiff
 		viewer = _T("\"") + viewer + _T("\"");
 		// add the params
 		viewer = viewer + _T(" /patchfile:%1 /title:\"%title\"");
@@ -924,7 +924,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 #if 0
 	CString sCmd;
 	sCmd.Format(_T("%s /command:showcompare /unified"),
-		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseProc.exe")));
+		(LPCTSTR)(CPathUtils::GetAppDirectory()+_T("TortoiseGitProc.exe")));
 	sCmd += _T(" /url1:\"") + url1.GetGitPathString() + _T("\"");
 	if (rev1.IsValid())
 		sCmd += _T(" /revision1:") + rev1.ToString();
@@ -1199,7 +1199,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 		CString sCmd;
 		sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-		RunTortoiseProc(sCmd);
+		RunTortoiseGitProc(sCmd);
 		return TRUE;
 	}
 	else if (ret == IDOK)
@@ -1353,7 +1353,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 				CString sCmd;
 				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-				RunTortoiseProc(sCmd);
+				RunTortoiseGitProc(sCmd);
 				return TRUE;
 			}
 			else if (progress.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
@@ -2155,7 +2155,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		{
 			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			RunTortoiseProc(cmd);
+			RunTortoiseGitProc(cmd);
 			return TRUE;
 		}
 		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 1) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
@@ -2175,7 +2175,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				{
 					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-					RunTortoiseProc(cmd);
+					RunTortoiseGitProc(cmd);
 					return TRUE;
 				}
 				else if (response == IDC_REBASE_POST_BUTTON + 1)
@@ -2923,7 +2923,7 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 			CString sCmd;
 			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			CAppUtils::RunTortoiseProc(sCmd);
+			CAppUtils::RunTortoiseGitProc(sCmd);
 			return true;
 		}
 		else if (ret == IDOK)

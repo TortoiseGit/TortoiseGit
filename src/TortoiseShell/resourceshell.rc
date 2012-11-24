@@ -374,7 +374,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
-    IDS_MENUDESCAPPLYPATCH  "Review/apply a unified diff file with TortoiseMerge"
+    IDS_MENUDESCAPPLYPATCH  "Review/apply a unified diff file with TortoiseGitMerge"
     IDS_MENUDESCSVNFETCH    "Fetch from SVN repository"
     IDS_MENULOGSUBMODULE    "Show log of this folder"
     IDS_MENUUNDOADD         "Undo Add..."

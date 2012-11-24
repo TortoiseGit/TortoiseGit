@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoiseIDiff"
+	Name="TortoiseGitIDiff"
 	ProjectGUID="{6D95829D-AE04-47A7-B66B-DC2F581DDF01}"
 	RootNamespace="TortoiseIDiff"
 	Keyword="Win32Proj"

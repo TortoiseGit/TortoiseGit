@@ -38,7 +38,7 @@ bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
     wcx.cbWndExtra = 0;
     wcx.hInstance = hResource;
     wcx.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcx.lpszClassName = _T("TortoiseIDiffPicWindow");
+    wcx.lpszClassName = _T("TortoiseGitIDiffPicWindow");
     wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEIDIFF));
     wcx.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEIDIFF);

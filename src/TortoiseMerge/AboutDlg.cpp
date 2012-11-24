@@ -66,7 +66,7 @@ BOOL CAboutDlg::OnInitDialog()
 		APR_MAJOR_VERSION, APR_MINOR_VERSION, APR_PATCH_VERSION,
 		APU_MAJOR_VERSION, APU_MINOR_VERSION, APU_PATCH_VERSION);
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
-	this->SetWindowText(_T("TortoiseMerge"));
+	this->SetWindowText(_T("TortoiseGitMerge"));
 
 	CPictureHolder tmpPic;
 	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
