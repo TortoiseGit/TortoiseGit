@@ -756,6 +756,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				if (CMessageBox::Show(NULL, str, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 					return;
 
+				std::vector<CString> refsToDelete;
 				POSITION pos = GetFirstSelectedItemPosition();
 				while (pos)
 				{
@@ -765,7 +766,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					int refpos = ref.ReverseFind('{');
 					if (refpos > 0 && ref.Mid(refpos, 2) != _T("@{"))
 						ref = ref.Left(refpos) + _T("@")+ ref.Mid(refpos);
+					refsToDelete.push_back(ref);
+				}
 
+				for (std::vector<CString>::const_reverse_iterator revIt = refsToDelete.rbegin(); revIt != refsToDelete.rend(); revIt++)
+				{
+					CString ref = *revIt;
 					CString cmd, out;
 					if (ref.Find(_T("stash")) == 0)
 						cmd.Format(_T("git.exe stash drop %s"), ref);
