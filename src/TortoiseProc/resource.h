@@ -151,6 +151,8 @@
 #define IDD_SETTINGS_CONFIG             340
 #define IDI_RESTORE                     341
 #define IDI_RESTOREOVL                  342
+#define IDI_JUMPUP                      343
+#define IDI_JUMPDOWN                    344
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -804,6 +806,7 @@
 #define IDS_SETTINGS_FETCH_ADDEDREMOTE  1372
 #define IDS_STASHSAVE_INCLUDEUNTRACKED  1373
 #define IDS_PROC_NOTSHOWAGAINCONTINUE   1374
+#define IDS_PROC_LOG_JUMPNOTFOUND       1375
 #define IDC_NEWLINESCOLOR               1378
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
@@ -1194,6 +1197,9 @@
 #define IDC_STATIC_CHANGETYPE           1720
 #define IDC_CHANGETYPE                  1721
 #define IDC_GROUP                       1722
+#define IDC_LOG_JUMPTYPE                1723
+#define IDC_LOG_JUMPUP                  1724
+#define IDC_LOG_JUMPDOWN                1725
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1559,6 +1565,11 @@
 #define IDS_SUBMODULEDIFF_SAMETIME      9675
 #define IDS_PROC_CREATINGPULLREUQEST    9676
 #define IDS_PROCEEDBUTTON               9677
+#define IDS_PROC_LOG_AUTHOREMAIL        9678
+#define IDS_PROC_LOG_COMMITTEREMAIL     9679
+#define IDS_PROC_LOG_MERGEPOINT         9680
+#define IDS_PROC_LOG_PARENT1            9681
+#define IDS_PROC_LOG_PARENT2            9682
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
@@ -1580,9 +1591,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        343
+#define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1723
+#define _APS_NEXT_CONTROL_VALUE         1726
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

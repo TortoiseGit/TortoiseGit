@@ -116,6 +116,9 @@ protected:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDtnDatetimechangeDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnCbnSelchangeJumpType();
+	afx_msg void OnBnClickedJumpUp();
+	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
@@ -128,6 +131,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
+	afx_msg void OnBnClickedDownAuthor();
 	afx_msg void OnRefresh();
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
@@ -217,6 +221,9 @@ private:
 	//volatile LONG		m_bNoDispUpdates;
 	CDateTimeCtrl		m_DateFrom;
 	CDateTimeCtrl		m_DateTo;
+	CComboBox			m_JumpType;
+	CButton				m_JumpUp;
+	CButton				m_JumpDown;
 	int					m_limit;
 	int					m_nSortColumn;
 	bool				m_bAscending;

@@ -103,6 +103,9 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SEARCHEDIT, m_LogList.m_sFilterText);
 	DDX_Control(pDX, IDC_DATEFROM, m_DateFrom);
 	DDX_Control(pDX, IDC_DATETO, m_DateTo);
+	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
+	DDX_Control(pDX, IDC_LOG_JUMPUP, m_JumpUp);
+	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
 	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
@@ -130,6 +133,9 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETO, OnDtnDatetimechangeDateto)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATEFROM, OnDtnDatetimechangeDatefrom)
+	ON_CBN_SELCHANGE(IDC_LOG_JUMPTYPE, &CLogDlg::OnCbnSelchangeJumpType)
+	ON_COMMAND(IDC_LOG_JUMPUP, &CLogDlg::OnBnClickedJumpUp)
+	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
 	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
@@ -150,6 +156,15 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_MESSAGE(MSG_REFLOG_CHANGED, OnRefLogChanged)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
+
+enum JumpType
+{
+	AuthorEmail,
+	CommitterEmail,
+	MergePoint,
+	Parent1,
+	Parent2
+};
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
 {
@@ -276,6 +291,9 @@ BOOL CLogDlg::OnInitDialog()
 
 	SetFilterCueText();
 	AddAnchor(IDC_SEARCHEDIT, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPTYPE, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPUP, TOP_RIGHT);
+	AddAnchor(IDC_LOG_JUMPDOWN, TOP_RIGHT);
 
 	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
@@ -302,6 +320,14 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
 //	SetPromptParentWindow(m_hWnd);
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_AUTHOREMAIL)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_COMMITTEREMAIL)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_MERGEPOINT)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT1)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT2)));
+	m_JumpType.SetCurSel(0);
+	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -1693,7 +1719,149 @@ void CLogDlg::OnDtnDatetimechangeDatefrom(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	*pResult = 0;
 }
 
+void CLogDlg::OnCbnSelchangeJumpType()
+{
+	// reserved for future use
+}
 
+void CLogDlg::OnBnClickedJumpUp()
+{
+	int sel = m_JumpType.GetCurSel();
+	if (sel < 0) return;
+	JumpType jumpType = (JumpType)sel;
+
+	CString strValue;
+	CGitHash hashValue;
+	int index = -1;
+	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+	if (pos)
+	{
+		index = m_LogList.GetNextSelectedItem(pos);
+		if (index == 0) return;
+
+		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(index);
+		if (jumpType == AuthorEmail)
+			strValue = data->GetAuthorEmail();
+		else if (jumpType == CommitterEmail)
+			strValue = data->GetCommitterEmail();
+		else if (jumpType == Parent1)
+			hashValue = data->m_CommitHash;
+		else if (jumpType == Parent2)
+			hashValue = data->m_CommitHash;
+
+		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+	}
+
+	while (pos)
+	{
+		index = m_LogList.GetNextSelectedItem(pos);
+		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+	}
+	m_LogList.SetSelectionMark(-1);
+
+	for (int i = index - 1; i >= 0; i--)
+	{
+		bool found = false;
+		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
+		if (jumpType == AuthorEmail)
+			found = strValue == data->GetAuthorEmail();
+		else if (jumpType == CommitterEmail)
+			found = strValue == data->GetCommitterEmail();
+		else if (jumpType == MergePoint)
+			found = data->ParentsCount() > 1;
+		else if (jumpType == Parent1)
+		{
+			if (data->m_ParentHash.size() > 0)
+				found = data->m_ParentHash[0] == hashValue;
+		}
+		else if (jumpType == Parent2)
+		{
+			if (data->m_ParentHash.size() > 1)
+				found = data->m_ParentHash[1] == hashValue;
+		}
+
+		if (found)
+		{
+			m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+			m_LogList.EnsureVisible(i, FALSE);
+			m_LogList.SetSelectionMark(i);
+			return;
+		}
+	}
+
+	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
+}
+
+void CLogDlg::OnBnClickedJumpDown()
+{
+	int jumpType = m_JumpType.GetCurSel();
+	if (jumpType < 0) return;
+
+	CString strValue;
+	CGitHash hashValue;
+	int index = -1;
+	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+	if (pos)
+	{
+		index = m_LogList.GetNextSelectedItem(pos);
+		if (index == 0) return;
+
+		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(index);
+		if (jumpType == AuthorEmail)
+			strValue = data->GetAuthorEmail();
+		else if (jumpType == CommitterEmail)
+			strValue = data->GetCommitterEmail();
+		else if (jumpType == Parent1)
+		{
+			if (data->m_ParentHash.size() > 0)
+				hashValue = data->m_ParentHash.at(0);
+			else
+				return;
+		}
+		else if (jumpType == Parent2)
+		{
+			if (data->m_ParentHash.size() > 1)
+				hashValue = data->m_ParentHash.at(1);
+			else
+				return;
+		}
+		
+		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+	}
+
+	while (pos)
+	{
+		index = m_LogList.GetNextSelectedItem(pos);
+		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+	}
+	m_LogList.SetSelectionMark(-1);
+
+	for (int i = index + 1; i < m_LogList.GetItemCount(); i++)
+	{
+		bool found = false;
+		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
+		if (jumpType == AuthorEmail)
+			found = strValue == data->GetAuthorEmail();
+		else if (jumpType == CommitterEmail)
+			found = strValue == data->GetCommitterEmail();
+		else if (jumpType == MergePoint)
+			found = data->ParentsCount() > 1;
+		else if (jumpType == Parent1)
+			found = data->m_CommitHash == hashValue;
+		else if (jumpType == Parent2)
+			found = data->m_CommitHash == hashValue;
+
+		if (found)
+		{
+			m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+			m_LogList.EnsureVisible(i, FALSE);
+			m_LogList.SetSelectionMark(i);
+			return;
+		}
+	}
+
+	CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
+}
 
 CTGitPathList CLogDlg::GetChangedPathsFromSelectedRevisions(bool /*bRelativePaths*/ /* = false */, bool /*bUseFilter*/ /* = true */)
 {

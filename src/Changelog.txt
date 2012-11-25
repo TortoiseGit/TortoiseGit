@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
  * Fixed issue #1541: Show progress dialog when running git request-pull
+ * Fixed issue #1540: Add jump to previous / next commit in Log Dialog
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

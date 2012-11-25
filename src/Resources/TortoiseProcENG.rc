@@ -94,6 +94,8 @@ IDI_LIBRARY             ICON                    "Library.ico"
 IDI_RESTORE             ICON                    "restore.ico"
 IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
+IDI_JUMPUP              ICON                    "jumpup.ico"
+IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -195,7 +197,10 @@ BEGIN
     CONTROL         "",IDC_DATEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,127,7,57,15
     LTEXT           "To:",IDC_TOLABEL,193,9,19,8
     CONTROL         "",IDC_DATETO,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,212,7,55,15
-    EDITTEXT        IDC_SEARCHEDIT,279,7,135,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_SEARCHEDIT,279,7,40,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    COMBOBOX        IDC_LOG_JUMPTYPE,330,7,55,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_LOG_JUMPUP,390,7,14,14,WS_TABSTOP | BS_ICON
+    PUSHBUTTON      "",IDC_LOG_JUMPDOWN,405,7,14,14,WS_TABSTOP | BS_ICON
     CONTROL         "",IDC_LOGLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,24,407,57
     CONTROL         "",IDC_SPLITTERTOP,"Static",SS_BLACKFRAME,7,81,407,5
     CONTROL         "",IDC_MSGVIEW,"RichEdit20W",ES_MULTILINE | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,86,407,96
@@ -2558,6 +2563,11 @@ BEGIN
     IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
     IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
     IDS_PROC_LOG_NOBRANCH   "<No branch>"
+    IDS_PROC_LOG_AUTHOREMAIL "Author Email"
+    IDS_PROC_LOG_COMMITTEREMAIL "Committer Email"
+    IDS_PROC_LOG_MERGEPOINT "Merge Point"
+    IDS_PROC_LOG_PARENT1    "Parent 1"
+    IDS_PROC_LOG_PARENT2    "Parent 2"
     IDS_SETTINGS_CREATELIB_TT 
                             "Creates a library folder with special settings for Git working trees"
     IDS_STATUSLIST_GROUP_MERGEDFILES "Merged Files"
@@ -3742,6 +3752,7 @@ BEGIN
                             "You have checked ""include untracked"".\nThis includes a ""git clean -fd"" call, so ignored files/directories are removed w/o using recycle bin."
     IDS_PROC_NOTSHOWAGAINCONTINUE 
                             "Do &not show me this warning again (if Continue is selected)"
+    IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found"
 END
 
 #endif    // Englisch (USA) resources

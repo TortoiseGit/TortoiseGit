@@ -722,6 +722,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\jumpdown.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\jumpup.ico"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\Library.ico"
 				>
 			</File>
