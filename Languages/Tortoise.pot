@@ -513,10 +513,6 @@ msgstr ""
 msgid "&Delete (keep local)"
 msgstr ""
 
-#. Resource IDs: (605)
-msgid "Delete submodule"
-msgstr ""
-
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
 msgstr ""
@@ -2873,6 +2869,10 @@ msgstr ""
 msgid "Creates a unified diff file with all changes you made"
 msgstr ""
 
+#. Resource IDs: (605)
+msgid "Creating pull-request..."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Credits:"
 msgstr ""
@@ -3034,6 +3034,10 @@ msgstr ""
 
 #. Resource IDs: (86)
 msgid "Delete remote tags..."
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Delete submodule"
 msgstr ""
 
 #. Resource IDs: (83)

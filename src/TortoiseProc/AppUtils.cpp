@@ -2314,12 +2314,29 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 		CString cmd;
 		cmd.Format(_T("git.exe request-pull %s \"%s\" %s"), dlg.m_StartRevision, dlg.m_RepositoryURL, dlg.m_EndRevision);
 
+		CSysProgressDlg sysProgressDlg;
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CREATINGPULLREUQEST)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+		sysProgressDlg.SetShowProgressBar(false);
+		sysProgressDlg.ShowModeless((HWND)NULL, true);
+
 		CString tempFileName = GetTempFile();
 		if (g_Git.RunLogFile(cmd, tempFileName))
 		{
 			CMessageBox::Show(NULL, IDS_ERR_PULLREUQESTFAILED, IDS_APPNAME, MB_OK);
 			return false;
 		}
+
+		if (sysProgressDlg.HasUserCancelled())
+		{
+			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+			::DeleteFile(tempFileName);
+			return false;
+		}
+
+		sysProgressDlg.Stop();
+
 		CAppUtils::LaunchAlternativeEditor(tempFileName);
 	}
 	return true;

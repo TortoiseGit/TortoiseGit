@@ -3636,6 +3636,7 @@ BEGIN
     IDS_ERR_PAEGENTTIMEOUT  "Failed waiting for pageant to finish loading key."
     IDS_ERR_NOPATCHES       "Not patches generated."
     IDS_PROC_REQUESTPULL    "Create pull &request"
+    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
     IDS_ERR_PULLREUQESTFAILED "Failed to create pull-request."
 END
 
