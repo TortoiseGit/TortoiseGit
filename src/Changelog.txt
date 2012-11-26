@@ -8,6 +8,7 @@ Released: unreleased
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
  * Fixed issue #1538: Deleting multiple stash list entries skips some and delete the wrong ones
+ * Fixed issue #1543: TortoiseGit Comboboxes trim input if longer than their width
 
 = Release 1.7.15.0 =
 Released: 2012-11-20
