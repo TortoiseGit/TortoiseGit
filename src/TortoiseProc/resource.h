@@ -151,8 +151,6 @@
 #define IDD_SETTINGS_CONFIG             340
 #define IDI_RESTORE                     341
 #define IDI_RESTOREOVL                  342
-#define IDD_DIALOG3                     343
-#define IDD_REVISIONGRAPH               343
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1469,6 +1467,7 @@
 #define IDD_IGNORE                      4577
 #define IDD_SUBMODULE_UPDATE            4578
 #define IDD_DELETEREMOTETAG             4579
+#define IDD_REVISIONGRAPH               4580
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001

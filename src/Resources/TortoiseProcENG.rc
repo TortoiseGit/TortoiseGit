@@ -2479,10 +2479,6 @@ BEGIN
 
     IDD_REVISIONGRAPH, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 309
-        TOPMARGIN, 6
-        BOTTOMMARGIN, 176
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -2493,6 +2489,14 @@ END
 // Menu
 //
 
+IDR_REVISIONGRAPH MENU
+BEGIN
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help",                       ID_EDIT_COPY
+    END
+END
+
 IDR_STATGRAPH MENU 
 BEGIN
     POPUP "&File"
@@ -2500,8 +2504,6 @@ BEGIN
         MENUITEM "&Save graph as...",           ID_FILE_SAVESTATGRAPHAS, GRAYED
     END
 END
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator

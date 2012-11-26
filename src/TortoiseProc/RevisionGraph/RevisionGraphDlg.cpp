@@ -228,8 +228,8 @@ BOOL CRevisionGraphDlg::OnInitDialog()
     int strPartDim[2]= {120, -1};
     m_StatusBar.SetParts(2, strPartDim);
 
-    if (InitializeToolbar() != TRUE)
-        return FALSE;
+//    if (InitializeToolbar() != TRUE)
+//        return FALSE;
 
     m_pTaskbarList.Release();
     m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
@@ -241,6 +241,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 //        if ((*options)[i]->CommandID() != 0)
 //            SetOption ((*options)[i]->CommandID());
 
+#if 0
     CMenu * pMenu = GetMenu();
     if (pMenu)
     {
@@ -250,15 +251,17 @@ BOOL CRevisionGraphDlg::OnInitDialog()
         int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
         m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
     }
+#endif
 
 //    m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
+#if 0
     CRect graphrect = GetGraphRect();
     m_Graph.Init(this, &graphrect);
     m_Graph.SetOwner(this);
     m_Graph.UpdateWindow();
     DoZoom (DEFAULT_ZOOM);
-
+#endif
     EnableSaveRestore(_T("RevisionGraphDlg"));
 //    if (GetExplorerHWND())
 //        CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
