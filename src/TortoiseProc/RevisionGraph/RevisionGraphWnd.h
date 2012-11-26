@@ -17,13 +17,16 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "RevisionGraph/RevisionGraphState.h"
-#include "Future.h"
+//#include "RevisionGraph/RevisionGraphState.h"
+//#include "Future.h"
 #include "ProgressDlg.h"
 #include "Colors.h"
-#include "SVNDiff.h"
+//#include "SVNDiff.h"
 #include "AppUtils.h"
-#include "SVG.h"
+//#include "SVG.h"
+
+typedef void CVisibleGraphNode;
+typedef int index_t;
 
 using namespace Gdiplus;
 
@@ -101,8 +104,8 @@ class CRevisionGraphDlg;
 
 // simplify usage of classes from other namespaces
 
-using async::IJob;
-using async::CFuture;
+//using async::IJob;
+//using async::CFuture;
 
 /**
  * \ingroup TortoiseProc
@@ -124,17 +127,17 @@ public:
 
 
     CString         m_sPath;
-    SVNRev          m_pegRev;
+    GitRev          m_pegRev;
 
-    std::unique_ptr<CFuture<bool> > updateJob;
-    CRevisionGraphState m_state;
+//	std::unique_ptr<CFuture<bool> > updateJob;
+//    CRevisionGraphState m_state;
 
     void            InitView();
     void            Init(CWnd * pParent, LPRECT rect);
     void            SaveGraphAs(CString sSavePath);
 
     bool            FetchRevisionData ( const CString& path
-                                      , SVNRev pegRevision
+                                      , GitRev pegRevision
                                       , CProgressDlg* progress
                                       , ITaskbarList3* pTaskbarList
                                       , HWND hWnd);
@@ -144,7 +147,7 @@ public:
     bool            GetShowOverview() const;
     void            SetShowOverview (bool value);
 
-    void            GetSelected (const CVisibleGraphNode* node, bool head, CTSVNPath& path, SVNRev& rev, SVNRev& peg);
+    void            GetSelected (const CVisibleGraphNode* node, bool head, CTGitPath& path, GitRev& rev, GitRev& peg);
     void            CompareRevs(bool bHead);
     void            UnifiedDiffRevs(bool bHead);
 
@@ -191,9 +194,9 @@ protected:
     int             m_previewHeight;
     float           m_previewZoom;
 
-    index_t         m_hoverIndex;   // node the cursor currently hovers over
+//    index_t         m_hoverIndex;   // node the cursor currently hovers over
     DWORD           m_hoverGlyphs;  // the glyphs shown for \ref m_hoverIndex
-    mutable index_t m_tooltipIndex; // the node index we fetched the tooltip for
+//    mutable index_t m_tooltipIndex; // the node index we fetched the tooltip for
     bool            m_showHoverGlyphs;  // if true, show the glyphs we currently hover over
                                     // (will be activated only after some delay)
 
@@ -240,7 +243,7 @@ private:
         Right = 4,
         Below = 8,
     };
-
+/*
     class GraphicsDevice
     {
     public:
@@ -254,7 +257,7 @@ private:
     public:
         CDC *               pDC;
         Graphics *          graphics;
-        SVG *               pSVG;
+//        SVG *               pSVG;
     };
 
     class SVGGrouper
@@ -276,7 +279,7 @@ private:
 
         SVG *   m_pSVG;
     };
-
+*/
     bool            UpdateSelectedEntry (const CVisibleGraphNode * clickedentry);
     void            AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
     void            AddSVNOps (CMenu& popup);
@@ -305,46 +308,46 @@ private:
     CPoint          GetLogCoordinates (CPoint point) const;
     index_t         GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
     DWORD           GetHoverGlyphs (CPoint point) const;
-    const CRevisionGraphState::SVisibleGlyph* GetHitGlyph (CPoint point) const;
+//    const CRevisionGraphState::SVisibleGlyph* GetHitGlyph (CPoint point) const;
 
     void            ClearVisibleGlyphs (const CRect& rect);
 
     typedef PointF TCutRectangle[8];
     void            CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result);
-    void            DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
-    void            DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
-    void            DrawShape (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, NodeShape shape);
-    void            DrawShadow(GraphicsDevice& graphics, const RectF& rect,
-                               Color shadowColor, NodeShape shape);
-    void            DrawNode(GraphicsDevice& graphics, const RectF& rect,
-                             Color contour, Color overlayColor,
-                             const CVisibleGraphNode *node, NodeShape shape);
+//    void            DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
+//    void            DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
+//    void            DrawShape (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, NodeShape shape);
+//    void            DrawShadow(GraphicsDevice& graphics, const RectF& rect,
+//                               Color shadowColor, NodeShape shape);
+//    void            DrawNode(GraphicsDevice& graphics, const RectF& rect,
+//                             Color contour, Color overlayColor,
+//                             const CVisibleGraphNode *node, NodeShape shape);
     RectF           TransformRectToScreen (const CRect& rect, const CSize& offset) const;
-    RectF           GetNodeRect (const ILayoutNodeList::SNode& node, const CSize& offset) const;
-    RectF           GetBranchCover (const ILayoutNodeList* nodeList, index_t nodeIndex, bool upward, const CSize& offset);
+//    RectF           GetNodeRect (const ILayoutNodeList::SNode& node, const CSize& offset) const;
+//    RectF           GetBranchCover (const ILayoutNodeList* nodeList, index_t nodeIndex, bool upward, const CSize& offset);
 
-    void            DrawSquare (GraphicsDevice& graphics, const PointF& leftTop,
-                                const Color& lightColor, const Color& darkColor, const Color& penColor);
-    void            DrawGlyph (GraphicsDevice& graphics, Image* glyphs, const PointF& leftTop,
-                               GlyphType glyph, GlyphPosition position);
-    void            DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const PointF& center,
-                                GlyphType glyph1, GlyphType glyph2, GlyphPosition position, DWORD state1, DWORD state2, bool showAll);
-    void            DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const RectF& nodeRect,
-                                DWORD state, DWORD allowed, bool upsideDown);
-    void            DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
-                               , MarkerPosition position, int relPosition, int colorIndex);
-    void            IndicateGlyphDirection ( GraphicsDevice& graphics, const ILayoutNodeList* nodeList
-                                           , const ILayoutNodeList::SNode& node, const RectF& nodeRect
-                                           , DWORD glyphs, bool upsideDown, const CSize& offset);
+//    void            DrawSquare (GraphicsDevice& graphics, const PointF& leftTop,
+//                                const Color& lightColor, const Color& darkColor, const Color& penColor);
+//    void            DrawGlyph (GraphicsDevice& graphics, Image* glyphs, const PointF& leftTop,
+//                               GlyphType glyph, GlyphPosition position);
+//    void            DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const PointF& center,
+//                                GlyphType glyph1, GlyphType glyph2, GlyphPosition position, DWORD state1, DWORD state2, bool showAll);
+//    void            DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const RectF& nodeRect,
+//                                DWORD state, DWORD allowed, bool upsideDown);
+//    void            DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
+//                               , MarkerPosition position, int relPosition, int colorIndex);
+//    void            IndicateGlyphDirection ( GraphicsDevice& graphics, const ILayoutNodeList* nodeList
+  //                                         , const ILayoutNodeList::SNode& node, const RectF& nodeRect
+    //                                       , DWORD glyphs, bool upsideDown, const CSize& offset);
 
-    void            DrawStripes (GraphicsDevice& graphics, const CSize& offset);
+//    void            DrawStripes (GraphicsDevice& graphics, const CSize& offset);
 
-    void            DrawShadows (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
-    void            DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& logRect, const CSize& offset);
-    void            DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
-    void            DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
-    void            DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* glyphs, const CSize& offset);
-    void            DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
+//    void            DrawShadows (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
+//    void            DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& logRect, const CSize& offset);
+//    void            DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
+//    void            DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset);
+//    void            DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* glyphs, const CSize& offset);
+//    void            DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw);
 
     int             GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
     void            DrawRubberBand();

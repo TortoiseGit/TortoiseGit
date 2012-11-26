@@ -18,6 +18,7 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
 #ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
 #endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,6 +121,7 @@ IDC_PANCURDOWN          CURSOR                  "pandown.cur"
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 #endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
@@ -198,7 +200,7 @@ BEGIN
     EDITTEXT        IDC_SEARCHEDIT,279,7,135,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
     CONTROL         "",IDC_LOGLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,24,407,57
     CONTROL         "",IDC_SPLITTERTOP,"Static",SS_BLACKFRAME,7,81,407,5
-    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",ES_MULTILINE | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,86,407,96
+    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",WS_BORDER | WS_VSCROLL | WS_TABSTOP | 0x1804,7,86,407,96
     CONTROL         "",IDC_SPLITTERBOTTOM,"Static",SS_BLACKFRAME,7,182,407,4
     CONTROL         "",IDC_LOGMSG,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,187,407,58
     EDITTEXT        IDC_LOGINFO,7,248,407,16,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
@@ -1680,6 +1682,14 @@ BEGIN
     PUSHBUTTON      "Close",IDCANCEL,123,81,59,14
 END
 
+IDD_REVISIONGRAPH DIALOGEX 0, 0, 264, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Revision Graph"
+MENU IDR_REVISIONGRAPH
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2465,6 +2475,14 @@ BEGIN
         RIGHTMARGIN, 182
         TOPMARGIN, 7
         BOTTOMMARGIN, 95
+    END
+
+    IDD_REVISIONGRAPH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 176
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -3531,6 +3549,7 @@ BEGIN
     IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
     IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
     IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
+    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
 END
 
 STRINGTABLE 
@@ -3636,7 +3655,6 @@ BEGIN
     IDS_ERR_PAEGENTTIMEOUT  "Failed waiting for pageant to finish loading key."
     IDS_ERR_NOPATCHES       "Not patches generated."
     IDS_PROC_REQUESTPULL    "Create pull &request"
-    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
     IDS_ERR_PULLREUQESTFAILED "Failed to create pull-request."
 END
 
@@ -3742,7 +3760,7 @@ BEGIN
                             "Do &not show me this warning again (if Continue is selected)"
 END
 
-#endif    // Englisch (USA) resources
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -3752,6 +3770,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
 #ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
+#pragma code_page(1252)
 #endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED

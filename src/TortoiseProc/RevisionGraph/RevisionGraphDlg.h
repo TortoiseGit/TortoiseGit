@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "StandAloneDlg.h"
-#include "RevisionGraph/AllGraphOptions.h"
+//#include "RevisionGraph/AllGraphOptions.h"
 #include "ProgressDlg.h"
 #include "Colors.h"
 #include "RevisionGraphWnd.h"
@@ -54,7 +54,7 @@ public:
 
 
     void            SetPath(const CString& sPath) {m_Graph.m_sPath = sPath;}
-    void            SetPegRevision(SVNRev revision) {m_Graph.m_pegRev = revision;}
+//    void            SetPegRevision(SVNRev revision) {m_Graph.m_pegRev = revision;}
     void            DoZoom (float factor);
 
     void            UpdateFullHistory();
@@ -63,7 +63,7 @@ public:
     void            StartHidden() { m_bVisible = false; }
     void            SetOutputFile(const CString& path) { m_outputPath = path; }
     CString         GetOutputFile() const { return m_outputPath; }
-    void            SetOptions(DWORD options) { m_Graph.m_state.GetOptions()->SetRegistryFlags(options, 0x407fbf); }
+//    void            SetOptions(DWORD options) { m_Graph.m_state.GetOptions()->SetRegistryFlags(options, 0x407fbf); }
 
 protected:
     bool            m_bFetchLogs;

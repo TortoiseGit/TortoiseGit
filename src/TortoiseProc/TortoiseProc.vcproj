@@ -2197,6 +2197,30 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="RevisionGraph"
+				>
+				<File
+					RelativePath=".\Commands\RevisionGraphCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlgDraw.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlgFunc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphWnd.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Utility Dialogs"

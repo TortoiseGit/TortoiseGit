@@ -29,7 +29,7 @@ public:
     /**
      * Executes the command.
      */
-    virtual bool            Execute() override;
+    virtual bool            Execute();
 };
 
 

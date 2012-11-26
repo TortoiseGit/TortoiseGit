@@ -21,20 +21,20 @@
 #include <gdiplus.h>
 #include "Revisiongraphdlg.h"
 #include "MessageBox.h"
-#include "SVN.h"
+#include "Git.h"
 #include "TempFile.h"
 #include "UnicodeUtils.h"
-#include "TSVNPath.h"
-#include "SVNInfo.h"
-#include ".\revisiongraphwnd.h"
-#include "CachedLogInfo.h"
-#include "RevisionGraph/IRevisionGraphLayout.h"
-#include "RevisionGraph/FullGraphBuilder.h"
-#include "RevisionGraph/FullGraphFinalizer.h"
-#include "RevisionGraph/VisibleGraphBuilder.h"
-#include "RevisionGraph/StandardLayout.h"
-#include "RevisionGraph/ShowWC.h"
-#include "RevisionGraph/ShowWCModification.h"
+#include "TGitPath.h"
+//#include "SVNInfo.h"
+//#include ".\revisiongraphwnd.h"
+//#include "CachedLogInfo.h"
+//#include "RevisionGraph/IRevisionGraphLayout.h"
+//#include "RevisionGraph/FullGraphBuilder.h"
+//#include "RevisionGraph/FullGraphFinalizer.h"
+//#include "RevisionGraph/VisibleGraphBuilder.h"
+//#include "RevisionGraph/StandardLayout.h"
+//#include "RevisionGraph/ShowWC.h"
+//#include "RevisionGraph/ShowWCModification.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -53,6 +53,7 @@ void CRevisionGraphWnd::InitView()
 
 void CRevisionGraphWnd::BuildPreview()
 {
+#if 0
     m_Preview.DeleteObject();
     if (!m_bShowOverview)
         return;
@@ -100,10 +101,12 @@ void CRevisionGraphWnd::BuildPreview()
     dc.DeleteDC();
 
     DoZoom (origZoom, false);
+#endif
 }
 
 void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int graphMax)
 {
+#if 0
     SCROLLINFO ScrollInfo = {sizeof(SCROLLINFO), SIF_ALL};
     GetScrollInfo (bar, &ScrollInfo);
 
@@ -122,6 +125,7 @@ void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int gr
     ScrollInfo.nTrackPos = pos;
 
     SetScrollInfo(bar, &ScrollInfo);
+#endif
 }
 
 void CRevisionGraphWnd::SetScrollbars (int nVert, int nHorz)
@@ -135,7 +139,8 @@ void CRevisionGraphWnd::SetScrollbars (int nVert, int nHorz)
 
 CRect CRevisionGraphWnd::GetGraphRect()
 {
-    return m_state.GetGraphRect();
+//    return m_state.GetGraphRect();
+	return CRect();
 }
 
 CRect CRevisionGraphWnd::GetClientRect()
@@ -192,14 +197,15 @@ int CRevisionGraphWnd::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
 bool CRevisionGraphWnd::FetchRevisionData
     ( const CString& path
-    , SVNRev pegRevision
+    , GitRev pegRevision
     , CProgressDlg* progress
     , ITaskbarList3 * pTaskbarList
     , HWND hWnd)
 {
+#if 0
     // (re-)fetch the data
     SVN svn;
-    if (svn.GetRepositoryRoot(CTSVNPath(path)) == svn.GetURLFromPath(CTSVNPath(path)))
+    if (svn.GetRepositoryRoot(CTGitPath(path)) == svn.GetURLFromPath(CTGitPath(path)))
     {
         m_state.SetLastErrorMessage(CString(MAKEINTRESOURCE(IDS_REVGRAPH_ERR_NOGRAPHFORROOT)));
         return false;
@@ -237,10 +243,13 @@ bool CRevisionGraphWnd::FetchRevisionData
     }
 
     return result;
+#endif
+	return 0;
 }
 
 bool CRevisionGraphWnd::AnalyzeRevisionData()
 {
+#if 0
     CSyncPointer<const CFullGraph> fullGraph (m_state.GetFullGraph());
     if ((fullGraph.get() != NULL) && (fullGraph->GetNodeCount() > 0))
     {
@@ -275,11 +284,14 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
     }
 
     return m_state.GetNodes().get() != NULL;
+#endif
+	return true;
 }
 
 bool CRevisionGraphWnd::IsUpdateJobRunning() const
 {
-    return (updateJob.get() != NULL) && !updateJob->IsDone();
+//    return (updateJob.get() != NULL) && !updateJob->IsDone();
+	return true;
 }
 
 bool CRevisionGraphWnd::GetShowOverview() const
@@ -297,29 +309,30 @@ void CRevisionGraphWnd::SetShowOverview (bool value)
 void CRevisionGraphWnd::GetSelected
     ( const CVisibleGraphNode* node
     , bool head
-    , CTSVNPath& path
-    , SVNRev& rev
-    , SVNRev& peg)
+    , CTGitPath& path
+    , GitRev& rev
+    , GitRev& peg)
 {
+#if 0
     CString repoRoot = m_state.GetRepositoryRoot();
 
     // get path and revision
 
     path.SetFromSVN (repoRoot + CUnicodeUtils::GetUnicode (node->GetPath().GetPath().c_str()));
-    rev = head ? SVNRev::REV_HEAD : node->GetRevision();
+    rev = head ? GitRev::REV_HEAD : node->GetRevision();
 
     // handle 'modified WC' node
 
     if (node->GetClassification().Is (CNodeClassification::IS_MODIFIED_WC))
     {
         path.SetFromUnknown (m_sPath);
-        rev = SVNRev::REV_WC;
+        rev = GitRev::REV_WC;
 
         // don't set peg, if we aren't the first node
         // (i.e. would not be valid for node1)
 
         if (node == m_SelectedEntry1)
-            peg = SVNRev::REV_WC;
+            peg = GitRev::REV_WC;
     }
     else
     {
@@ -328,20 +341,21 @@ void CRevisionGraphWnd::GetSelected
         if (head && !peg.IsValid())
             peg = node->GetRevision();
     }
+#endif
 }
 
 void CRevisionGraphWnd::CompareRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
     ASSERT(m_SelectedEntry2 != NULL);
-
+#if 0
     CSyncPointer<SVN> svn (m_state.GetSVN());
 
-    CTSVNPath url1;
-    CTSVNPath url2;
-    SVNRev rev1;
-    SVNRev rev2;
-    SVNRev peg;
+    CTGitPath url1;
+    CTGitPath url2;
+    GitRev rev1;
+    GitRev rev2;
+    GitRev peg;
 
     GetSelected (m_SelectedEntry1, bHead, url1, rev1, peg);
     GetSelected (m_SelectedEntry2, bHead, url2, rev2, peg);
@@ -356,22 +370,23 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
     else
     {
         CAppUtils::StartShowCompare (m_hWnd, url1, rev1,
-            url2, rev2, peg, SVNRev(), L"", alternativeTool);
+            url2, rev2, peg, GitRev(), L"", alternativeTool);
     }
+#endif
 }
 
 void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
     ASSERT(m_SelectedEntry2 != NULL);
-
+#if 0
     CSyncPointer<SVN> svn (m_state.GetSVN());
 
-    CTSVNPath url1;
-    CTSVNPath url2;
-    SVNRev rev1;
-    SVNRev rev2;
-    SVNRev peg;
+    CTGitPath url1;
+    CTGitPath url2;
+    GitRev rev1;
+    GitRev rev2;
+    GitRev peg;
 
     GetSelected (m_SelectedEntry1, bHead, url1, rev1, peg);
     GetSelected (m_SelectedEntry2, bHead, url2, rev2, peg);
@@ -387,8 +402,9 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
     {
         CAppUtils::StartShowUnifiedDiff(m_hWnd, url1, rev1,
             url2, rev2, peg,
-            SVNRev(), L"", alternativeTool);
+            GitRev(), L"", alternativeTool);
     }
+#endif
 }
 
 void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)

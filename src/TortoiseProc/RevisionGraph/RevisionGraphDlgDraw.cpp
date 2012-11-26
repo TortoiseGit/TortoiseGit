@@ -21,16 +21,16 @@
 #include "MyMemDC.h"
 #include "Revisiongraphdlg.h"
 #include "MessageBox.h"
-#include "SVN.h"
+#include "Git.h"
 #include "TempFile.h"
 #include "UnicodeUtils.h"
-#include "TSVNPath.h"
-#include "SVNInfo.h"
-#include "SVNDiff.h"
+#include "TGitPath.h"
+//#include "SVNInfo.h"
+//#include "SVNDiff.h"
 #include ".\revisiongraphwnd.h"
-#include "IRevisionGraphLayout.h"
-#include "UpsideDownLayout.h"
-#include "ShowTreeStripes.h"
+//#include "IRevisionGraphLayout.h"
+//#include "UpsideDownLayout.h"
+//#include "ShowTreeStripes.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -79,6 +79,7 @@ BOOL CRevisionGraphWnd::OnEraseBkgnd(CDC* /*pDC*/)
 
 void CRevisionGraphWnd::OnPaint()
 {
+#if 0
     CPaintDC dc(this); // device context for painting
     CRect rect = GetClientRect();
     if (IsUpdateJobRunning())
@@ -99,10 +100,12 @@ void CRevisionGraphWnd::OnPaint()
     GraphicsDevice dev;
     dev.pDC = &dc;
     DrawGraph(dev, rect, GetScrollPos(SB_VERT), GetScrollPos(SB_HORZ), false);
+#endif
 }
 
 void CRevisionGraphWnd::ClearVisibleGlyphs (const CRect& rect)
 {
+#if 0
     float glyphSize = GLYPH_SIZE * m_fZoomFactor;
 
     CSyncPointer<CRevisionGraphState::TVisibleGlyphs>
@@ -122,6 +125,7 @@ void CRevisionGraphWnd::ClearVisibleGlyphs (const CRect& rect)
             visibleGlyphs->pop_back();
         }
     }
+#endif
 }
 
 void CRevisionGraphWnd::CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result)
@@ -135,9 +139,10 @@ void CRevisionGraphWnd::CutawayPoints (const RectF& rect, float cutLen, TCutRect
     result[6] = PointF (rect.X + cutLen, rect.GetBottom());
     result[7] = PointF (rect.X, rect.GetBottom() - cutLen);
 }
-
+#if 0
 void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect)
 {
+#if 0
     enum {POINT_COUNT = 8};
 
     float radius = CORNER_SIZE * m_fZoomFactor;
@@ -166,8 +171,11 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
     {
         graphics.pSVG->RoundedRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, penColor, penWidth, fillColor, (int)radius);
     }
+#endif
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect)
 {
     enum {POINT_COUNT = 8};
@@ -199,7 +207,9 @@ void CRevisionGraphWnd::DrawOctangle (GraphicsDevice& graphics, const Color& pen
         graphics.pSVG->Polygon(points, POINT_COUNT, penColor, penWidth, fillColor);
     }
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawShape (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, NodeShape shape)
 {
     switch( shape )
@@ -239,6 +249,7 @@ void CRevisionGraphWnd::DrawShape (GraphicsDevice& graphics, const Color& penCol
         return;
     }
 }
+#endif
 
 inline BYTE LimitedScaleColor (BYTE c1, BYTE c2, float factor)
 {
@@ -280,6 +291,7 @@ BYTE MaxComponentDiff (const Color& c1, const Color& c2)
     return (BYTE) max (max (rDiff, gDiff), bDiff);
 }
 
+#if 0
 void CRevisionGraphWnd::DrawShadow (GraphicsDevice& graphics, const RectF& rect,
                                     Color shadowColor, NodeShape shape)
 {
@@ -293,7 +305,9 @@ void CRevisionGraphWnd::DrawShadow (GraphicsDevice& graphics, const RectF& rect,
 
     DrawShape (graphics, shadowColor, 1, &pen, shadowColor, &brush, shadow, shape);
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
                                  Color contour, Color overlayColor,
                                  const CVisibleGraphNode *node, NodeShape shape)
@@ -375,6 +389,7 @@ void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
         DrawShape (graphics, penColor, isWorkingCopy ? 3 : 1, &pen, overlayColor, &brush2, rect, shape);
     }
 }
+#endif
 
 RectF CRevisionGraphWnd::TransformRectToScreen (const CRect& rect, const CSize& offset) const
 {
@@ -386,6 +401,7 @@ RectF CRevisionGraphWnd::TransformRectToScreen (const CRect& rect, const CSize& 
                  , rect.bottom * m_fZoomFactor - leftTop.Y);
 }
 
+#if 0
 RectF CRevisionGraphWnd::GetNodeRect (const ILayoutNodeList::SNode& node, const CSize& offset) const
 {
     // get node and position
@@ -402,8 +418,11 @@ RectF CRevisionGraphWnd::GetNodeRect (const ILayoutNodeList::SNode& node, const 
 
     return noderect;
 }
+#endif
 
-RectF CRevisionGraphWnd::GetBranchCover
+#if 0
+RectF CRev
+isionGraphWnd::GetBranchCover
     ( const ILayoutNodeList* nodeList
     , index_t nodeIndex
     , bool upward
@@ -432,7 +451,9 @@ RectF CRevisionGraphWnd::GetBranchCover
 
     return TransformRectToScreen (cover, offset);
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawShadows (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
     // shadow color to use
@@ -476,7 +497,9 @@ void CRevisionGraphWnd::DrawShadows (GraphicsDevice& graphics, const CRect& logR
         }
     }
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawSquare
     ( GraphicsDevice& graphics
     , const PointF& leftTop
@@ -664,7 +687,9 @@ void CRevisionGraphWnd::DrawGlyphs
                , CGraphNodeStates::SPLIT_BELOW
                , (allowed & CGraphNodeStates::COLLAPSED_BELOW) != 0);
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::IndicateGlyphDirection
     ( GraphicsDevice& graphics
     , const ILayoutNodeList* nodeList
@@ -952,7 +977,9 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
     if (graphics.pDC)
     graphics.pDC->SelectObject(pOldPen);
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
     COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
@@ -996,7 +1023,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
         }
     }
 }
+#endif
 
+#if 0
 void CRevisionGraphWnd::DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* glyphs, const CSize& offset)
 {
     CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
@@ -1149,3 +1178,4 @@ void CRevisionGraphWnd::DrawRubberBand()
     ReleaseDC(pDC);
 }
 
+#endif

@@ -20,19 +20,19 @@
 #include "TortoiseProc.h"
 #include "Revisiongraphdlg.h"
 #include "MessageBox.h"
-#include "SVN.h"
+#include "Git.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "TempFile.h"
 #include "UnicodeUtils.h"
-#include "TSVNPath.h"
-#include "SVNInfo.h"
-#include "SVNDiff.h"
-#include "RevGraphFilterDlg.h"
+#include "TGitPath.h"
+//#include "SVNInfo.h"
+//#include "SVNDiff.h"
+//#include "RevGraphFilterDlg.h"
 #include ".\revisiongraphdlg.h"
-#include "RepositoryInfo.h"
-#include "RevisionInRange.h"
-#include "RemovePathsBySubString.h"
+//#include "RepositoryInfo.h"
+//#include "RevisionInRange.h"
+//#include "RemovePathsBySubString.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -58,7 +58,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
     // restore option state
 
     DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 0x1ff199);
-    m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
+//    m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
 
     m_szTip[0]  = 0;
     m_wszTip[0] = 0;
@@ -69,7 +69,7 @@ CRevisionGraphDlg::~CRevisionGraphDlg()
     // save option state
 
     CRegStdDWORD regOpts = CRegStdDWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 1);
-    regOpts = m_Graph.m_state.GetOptions()->GetRegistryFlags();
+//    regOpts = m_Graph.m_state.GetOptions()->GetRegistryFlags();
 
     // GDI+ cleanup
 
@@ -85,6 +85,7 @@ void CRevisionGraphDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_WM_SIZE()
     ON_WM_LBUTTONDOWN()
+#if 0
     ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomin)
     ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomout)
     ON_COMMAND(ID_VIEW_ZOOM100, OnViewZoom100)
@@ -119,6 +120,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
     ON_COMMAND(ID_VIEW_SHOWOVERVIEW, OnViewShowoverview)
     ON_WM_WINDOWPOSCHANGING()
+#endif
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -126,10 +128,10 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
     // set up the toolbar
     // add the tool bar to the dialog
     m_ToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_WRAPABLE | TBSTYLE_TRANSPARENT | CBRS_SIZE_DYNAMIC);
-    m_ToolBar.LoadToolBar(IDR_REVGRAPHBAR);
+//    m_ToolBar.LoadToolBar(IDR_REVGRAPHBAR);
     m_ToolBar.ShowWindow(SW_SHOW);
     m_ToolBar.SetBarStyle(CBRS_ALIGN_TOP | CBRS_TOOLTIPS | CBRS_FLYBY);
-
+#if 0
     // toolbars aren't true-color without some tweaking:
     {
         CImageList  cImageList;
@@ -153,16 +155,17 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
         cBitmap.Detach();
     }
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+#endif
 
 #define SNAP_WIDTH 60 //the width of the combo box
     // set up the ComboBox control as a snap mode select box
     // First get the index of the placeholders position in the toolbar
     int zoomComboIndex = 0;
-    while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) zoomComboIndex++;
+//    while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) zoomComboIndex++;
 
     // next convert that button to a separator and get its position
-    m_ToolBar.SetButtonInfo(zoomComboIndex, ID_REVGRAPH_ZOOMCOMBO, TBBS_SEPARATOR,
-        SNAP_WIDTH);
+//    m_ToolBar.SetButtonInfo(zoomComboIndex, ID_REVGRAPH_ZOOMCOMBO, TBBS_SEPARATOR,
+//        SNAP_WIDTH);
     RECT rect;
     m_ToolBar.GetItemRect(zoomComboIndex, &rect);
 
@@ -171,12 +174,12 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
     rect.bottom += 200;
 
     // then create the combo box and show it
-    if (!m_ToolBar.m_ZoomCombo.CreateEx(WS_EX_RIGHT, WS_CHILD|WS_VISIBLE|CBS_AUTOHSCROLL|CBS_DROPDOWN,
-        rect, &m_ToolBar, ID_REVGRAPH_ZOOMCOMBO))
-    {
-        CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to create combo-box\n");
-        return FALSE;
-    }
+//    if (!m_ToolBar.m_ZoomCombo.CreateEx(WS_EX_RIGHT, WS_CHILD|WS_VISIBLE|CBS_AUTOHSCROLL|CBS_DROPDOWN,
+//        rect, &m_ToolBar, ID_REVGRAPH_ZOOMCOMBO))
+//    {
+//        CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to create combo-box\n");
+//        return FALSE;
+//    }
     m_ToolBar.m_ZoomCombo.ShowWindow(SW_SHOW);
 
     // fill the combo box
@@ -231,12 +234,12 @@ BOOL CRevisionGraphDlg::OnInitDialog()
     m_pTaskbarList.Release();
     m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 
-    CSyncPointer<CAllRevisionGraphOptions>
-        options (m_Graph.m_state.GetOptions());
+//    CSyncPointer<CAllRevisionGraphOptions>
+//        options (m_Graph.m_state.GetOptions());
 
-    for (size_t i = 0; i < options->count(); ++i)
-        if ((*options)[i]->CommandID() != 0)
-            SetOption ((*options)[i]->CommandID());
+//    for (size_t i = 0; i < options->count(); ++i)
+//        if ((*options)[i]->CommandID() != 0)
+//            SetOption ((*options)[i]->CommandID());
 
     CMenu * pMenu = GetMenu();
     if (pMenu)
@@ -248,7 +251,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
         m_ToolBar.GetToolBarCtrl().SetState(ID_VIEW_SHOWOVERVIEW, tbstate | (DWORD(reg) ? TBSTATE_CHECKED : 0));
     }
 
-    m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
+//    m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
     CRect graphrect = GetGraphRect();
     m_Graph.Init(this, &graphrect);
@@ -257,8 +260,8 @@ BOOL CRevisionGraphDlg::OnInitDialog()
     DoZoom (DEFAULT_ZOOM);
 
     EnableSaveRestore(_T("RevisionGraphDlg"));
-    if (GetExplorerHWND())
-        CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
+//    if (GetExplorerHWND())
+//        CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
     return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -266,7 +269,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 bool CRevisionGraphDlg::UpdateData()
 {
     CoInitialize(NULL);
-
+#if 0
     if (m_bFetchLogs)
     {
         CProgressDlg progress;
@@ -315,7 +318,7 @@ bool CRevisionGraphDlg::UpdateData()
 
     CoUninitialize();
     m_Graph.PostMessage (CRevisionGraphWnd::WM_WORKERTHREADDONE, 0, 0);
-
+#endif
     return true;
 }
 
@@ -488,6 +491,7 @@ void CRevisionGraphDlg::OnViewUnifieddiffofheadrevisions()
 
 void CRevisionGraphDlg::UpdateFullHistory()
 {
+#if 0
     m_Graph.SetDlgTitle (false);
 
     SVN svn;
@@ -500,10 +504,12 @@ void CRevisionGraphDlg::UpdateFullHistory()
 
     m_bFetchLogs = true;
     StartWorkerThread();
+#endif
 }
 
 void CRevisionGraphDlg::SetOption (UINT controlID)
 {
+#if 0
     CMenu * pMenu = GetMenu();
     if (pMenu == NULL)
         return;
@@ -522,6 +528,7 @@ void CRevisionGraphDlg::SetOption (UINT controlID)
             m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate & (~TBSTATE_CHECKED));
         }
     }
+#endif
 }
 
 BOOL CRevisionGraphDlg::ToggleOption (UINT controlID)
@@ -561,10 +568,10 @@ BOOL CRevisionGraphDlg::ToggleOption (UINT controlID)
         m_ToolBar.GetToolBarCtrl().SetState(controlID, tbstate | TBSTATE_CHECKED);
     }
 
-    CSyncPointer<CAllRevisionGraphOptions>
-        options (m_Graph.m_state.GetOptions());
-    if (((state & MF_CHECKED) != 0) == options->IsSelected (controlID))
-        options->ToggleSelection (controlID);
+//    CSyncPointer<CAllRevisionGraphOptions>
+//        options (m_Graph.m_state.GetOptions());
+//    if (((state & MF_CHECKED) != 0) == options->IsSelected (controlID))
+//        options->ToggleSelection (controlID);
 
     return TRUE;
 }
@@ -583,9 +590,10 @@ BOOL CRevisionGraphDlg::OnToggleOption (UINT controlID)
 
 BOOL CRevisionGraphDlg::OnToggleReloadOption (UINT controlID)
 {
+#if 0
     if (!m_Graph.m_state.GetFetchedWCState())
         m_bFetchLogs = true;
-
+#endif
     return OnToggleOption (controlID);
 }
 
@@ -602,8 +610,8 @@ BOOL CRevisionGraphDlg::OnToggleRedrawOption (UINT controlID)
 
 void CRevisionGraphDlg::StartWorkerThread()
 {
-    if (!m_Graph.IsUpdateJobRunning())
-        m_Graph.updateJob.reset (new CFuture<bool>(this, &CRevisionGraphDlg::UpdateData));
+//    if (!m_Graph.IsUpdateJobRunning())
+//        m_Graph.updateJob.reset (new CFuture<bool>(this, &CRevisionGraphDlg::UpdateData));
 }
 
 void CRevisionGraphDlg::OnCancel()
@@ -659,11 +667,11 @@ CRect CRevisionGraphDlg::GetGraphRect()
 
 void CRevisionGraphDlg::UpdateStatusBar()
 {
-    CString sFormat;
-    sFormat.Format(IDS_REVGRAPH_STATUSBARURL, (LPCTSTR)m_Graph.m_sPath);
-    m_StatusBar.SetText(sFormat,1,0);
-    sFormat.Format(IDS_REVGRAPH_STATUSBARNUMNODES, m_Graph.m_state.GetNodeCount());
-    m_StatusBar.SetText(sFormat,0,0);
+//    CString sFormat;
+//    sFormat.Format(IDS_REVGRAPH_STATUSBARURL, (LPCTSTR)m_Graph.m_sPath);
+//    m_StatusBar.SetText(sFormat,1,0);
+//    sFormat.Format(IDS_REVGRAPH_STATUSBARNUMNODES, m_Graph.m_state.GetNodeCount());
+//    m_StatusBar.SetText(sFormat,0,0);
 }
 
 void CRevisionGraphDlg::OnChangeZoom()
@@ -672,8 +680,8 @@ void CRevisionGraphDlg::OnChangeZoom()
         return;
     CString strText;
     CString strItem;
-    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
-    pCBox->GetWindowText(strItem);
+//    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
+//    pCBox->GetWindowText(strItem);
     if (strItem.IsEmpty())
         return;
 
@@ -684,11 +692,11 @@ void CRevisionGraphDlg::UpdateZoomBox()
 {
     CString strText;
     CString strItem;
-    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
-    pCBox->GetWindowText(strItem);
-    strText.Format(_T("%.0f%%"), (m_fZoomFactor*100.0));
-    if (strText.Compare(strItem) != 0)
-        pCBox->SetWindowText(strText);
+//    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
+///    pCBox->GetWindowText(strItem);
+//    strText.Format(_T("%.0f%%"), (m_fZoomFactor*100.0));
+//    if (strText.Compare(strItem) != 0)
+//        pCBox->SetWindowText(strText);
 }
 
 BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
@@ -739,6 +747,7 @@ BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 
 void CRevisionGraphDlg::OnViewFilter()
 {
+#if 0
     CSyncPointer<CAllRevisionGraphOptions>
         options (m_Graph.m_state.GetOptions());
 
@@ -800,6 +809,7 @@ void CRevisionGraphDlg::OnViewFilter()
 
         StartWorkerThread();
     }
+#endif
 }
 
 void CRevisionGraphDlg::OnViewShowoverview()
@@ -846,13 +856,15 @@ void CRevisionGraphDlg::UpdateOptionAvailability (UINT id, bool available)
 
 void CRevisionGraphDlg::UpdateOptionAvailability()
 {
+#if 0
     bool multipleTrees = m_Graph.m_state.GetTreeCount() > 1;
-    bool isWCPath = !CTSVNPath (m_Graph.m_sPath).IsUrl();
+    bool isWCPath = !CTGitPath (m_Graph.m_sPath).IsUrl();
 
     UpdateOptionAvailability (ID_VIEW_TOPALIGNTREES, multipleTrees);
     UpdateOptionAvailability (ID_VIEW_SHOWTREESTRIPES, multipleTrees);
     UpdateOptionAvailability (ID_VIEW_SHOWWCREV, isWCPath);
     UpdateOptionAvailability (ID_VIEW_SHOWWCMODIFICATION, isWCPath);
+#endif
 }
 
 
