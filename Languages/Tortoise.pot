@@ -1422,6 +1422,10 @@ msgstr ""
 msgid "A&bort"
 msgstr ""
 
+#. Resource IDs: (66)
+msgid "&Proceed"
+msgstr ""
+
 #. Resource IDs: (9)
 msgid "A&bout"
 msgstr ""
@@ -7696,7 +7700,7 @@ msgstr ""
 
 #. Resource IDs: (88)
 #, c-format
-msgid "The target folder \n%s\nis not empty!\nAre you sure you want to clone/export into that folder?"
+msgid "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
 msgstr ""
 
 #. Resource IDs: (195)
