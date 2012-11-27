@@ -1194,6 +1194,7 @@
 #define IDC_STATIC_CHANGETYPE           1720
 #define IDC_CHANGETYPE                  1721
 #define IDC_GROUP                       1722
+#define IDC_TEMPFILESCLEAR              1723
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1559,6 +1560,7 @@
 #define IDS_SUBMODULEDIFF_SAMETIME      9675
 #define IDS_PROC_CREATINGPULLREUQEST    9676
 #define IDS_PROCEEDBUTTON               9677
+#define IDS_PROC_WARNCLEARTEMP          9678
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
@@ -1582,7 +1584,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        343
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1723
+#define _APS_NEXT_CONTROL_VALUE         1724
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

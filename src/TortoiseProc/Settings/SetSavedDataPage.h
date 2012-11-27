@@ -50,6 +50,7 @@ protected:
 	afx_msg void OnBnClickedRepologclear();
 	afx_msg void OnBnClickedActionlogshow();
 	afx_msg void OnBnClickedActionlogclear();
+	afx_msg void OnBnClickedTempfileclear();
 	afx_msg void OnModified();
 
 	virtual BOOL OnInitDialog();
