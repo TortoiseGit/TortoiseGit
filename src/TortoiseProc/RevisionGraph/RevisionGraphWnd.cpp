@@ -48,6 +48,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
+using namespace ogdf;
 
 #if (_WIN32_WINNT < 0x0600)
 #define WM_MOUSEHWHEEL                  0x020E
@@ -129,6 +130,51 @@ CRevisionGraphWnd::CRevisionGraphWnd()
     m_bTweakTagsColors = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\TweakTagsColors"), TRUE) != FALSE;
     m_szTip[0]  = 0;
     m_wszTip[0] = 0;
+
+	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics |
+        ogdf:: GraphAttributes::nodeLabel | ogdf::GraphAttributes::nodeColor | 
+        ogdf::GraphAttributes::edgeColor | ogdf::GraphAttributes::edgeStyle | 
+        ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
+
+	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
+	m_SugiyamLayout.setCrossMin(::new ogdf::MedianHeuristic());
+
+	ogdf::node one = this->m_Graph.newNode();
+	ogdf::node two = this->m_Graph.newNode();
+
+	m_GraphAttr.width(one)=100;
+	m_GraphAttr.height(one)=20;
+	m_GraphAttr.width(two)=100;
+	m_GraphAttr.height(two)=20;
+
+	m_GraphAttr.labelNode(one)="One";
+	m_GraphAttr.labelNode(two)="Two";	
+
+	this->m_Graph.newEdge(one, two);
+	this->m_OHL.layerDistance(30.0);
+	this->m_OHL.nodeDistance(25.0);
+
+	//this->m_OHL.layerDistance(30.0);
+    //this->m_OHL.nodeDistance(25.0);
+    //this->m_OHL.weightBalancing(0.8);
+    m_SugiyamLayout.setLayout(&m_OHL);
+	m_SugiyamLayout.call(m_GraphAttr);
+
+		
+	node v;
+	forall_nodes(v,m_Graph) {
+
+		TRACE(_T("node  x %f y %f %f %f\n"),/* m_GraphAttr.idNode(v), */
+			m_GraphAttr.x(v),
+			m_GraphAttr.y(v),
+			m_GraphAttr.width(v),
+			m_GraphAttr.height(v)
+		);
+	}
+
+	edge e;
+	forall_edges(e,m_Graph) {
+	}
 }
 
 CRevisionGraphWnd::~CRevisionGraphWnd()

@@ -2821,6 +2821,7 @@ STRINGTABLE
 BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
+	IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
 STRINGTABLE 
