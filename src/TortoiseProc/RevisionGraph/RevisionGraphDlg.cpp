@@ -128,10 +128,10 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
     // set up the toolbar
     // add the tool bar to the dialog
     m_ToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_WRAPABLE | TBSTYLE_TRANSPARENT | CBRS_SIZE_DYNAMIC);
-//    m_ToolBar.LoadToolBar(IDR_REVGRAPHBAR);
+    m_ToolBar.LoadToolBar(IDR_REVGRAPHBAR);
     m_ToolBar.ShowWindow(SW_SHOW);
     m_ToolBar.SetBarStyle(CBRS_ALIGN_TOP | CBRS_TOOLTIPS | CBRS_FLYBY);
-#if 0
+
     // toolbars aren't true-color without some tweaking:
     {
         CImageList  cImageList;
@@ -155,17 +155,17 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
         cBitmap.Detach();
     }
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-#endif
+
 
 #define SNAP_WIDTH 60 //the width of the combo box
     // set up the ComboBox control as a snap mode select box
     // First get the index of the placeholders position in the toolbar
     int zoomComboIndex = 0;
-//    while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) zoomComboIndex++;
+	while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) zoomComboIndex++;
 
     // next convert that button to a separator and get its position
-//    m_ToolBar.SetButtonInfo(zoomComboIndex, ID_REVGRAPH_ZOOMCOMBO, TBBS_SEPARATOR,
-//        SNAP_WIDTH);
+    m_ToolBar.SetButtonInfo(zoomComboIndex, ID_REVGRAPH_ZOOMCOMBO, TBBS_SEPARATOR,
+	        SNAP_WIDTH);
     RECT rect;
     m_ToolBar.GetItemRect(zoomComboIndex, &rect);
 
@@ -174,12 +174,12 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
     rect.bottom += 200;
 
     // then create the combo box and show it
-//    if (!m_ToolBar.m_ZoomCombo.CreateEx(WS_EX_RIGHT, WS_CHILD|WS_VISIBLE|CBS_AUTOHSCROLL|CBS_DROPDOWN,
-//        rect, &m_ToolBar, ID_REVGRAPH_ZOOMCOMBO))
-//    {
-//        CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to create combo-box\n");
-//        return FALSE;
-//    }
+    if (!m_ToolBar.m_ZoomCombo.CreateEx(WS_EX_RIGHT, WS_CHILD|WS_VISIBLE|CBS_AUTOHSCROLL|CBS_DROPDOWN,
+        rect, &m_ToolBar, ID_REVGRAPH_ZOOMCOMBO))
+    {
+		TRACE(_T(": Failed to create combo-box\n"));
+        return FALSE;
+    }
     m_ToolBar.m_ZoomCombo.ShowWindow(SW_SHOW);
 
     // fill the combo box
@@ -228,8 +228,8 @@ BOOL CRevisionGraphDlg::OnInitDialog()
     int strPartDim[2]= {120, -1};
     m_StatusBar.SetParts(2, strPartDim);
 
-//    if (InitializeToolbar() != TRUE)
-//        return FALSE;
+    if (InitializeToolbar() != TRUE)
+		return FALSE;
 
     m_pTaskbarList.Release();
     m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);

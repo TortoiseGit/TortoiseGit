@@ -104,6 +104,9 @@ IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 IDB_LOGOFLIPPED         BITMAP                  "tortoisegit_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
 
+IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
+IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
@@ -2483,6 +2486,42 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_REVGRAPHBAR TOOLBAR 20, 20
+BEGIN
+    BUTTON      ID_VIEW_ZOOMIN
+    BUTTON      ID_VIEW_ZOOMOUT
+    BUTTON      ID_VIEW_ZOOM100
+    BUTTON      ID_VIEW_ZOOMHEIGHT
+    BUTTON      ID_VIEW_ZOOMWIDTH
+    BUTTON      ID_VIEW_ZOOMALL
+    SEPARATOR
+    BUTTON      ID_REVGRAPH_ZOOMCOMBO
+    SEPARATOR
+    BUTTON      ID_VIEW_GROUPBRANCHES
+    BUTTON      ID_VIEW_TOPDOWN
+    BUTTON      ID_VIEW_TOPALIGNTREES
+    BUTTON      ID_VIEW_SHOWDIFFPATHS
+    SEPARATOR
+    BUTTON      ID_VIEW_SHOWALLREVISIONS
+    BUTTON      ID_VIEW_SHOWHEAD
+    BUTTON      ID_VIEW_EXACTCOPYSOURCE
+    BUTTON      ID_VIEW_FOLDTAGS
+    BUTTON      ID_VIEW_REMOVEDELETEDONES
+    BUTTON      ID_VIEW_REMOVEUNCHANGEDBRANCHES
+    BUTTON      ID_VIEW_REMOVETAGS
+    BUTTON      ID_VIEW_SHOWWCREV
+    BUTTON      ID_VIEW_SHOWWCMODIFICATION
+    SEPARATOR
+    BUTTON      ID_VIEW_FILTER
+    SEPARATOR
+    BUTTON      ID_VIEW_SHOWTREESTRIPES
+    BUTTON      ID_VIEW_SHOWOVERVIEW
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
