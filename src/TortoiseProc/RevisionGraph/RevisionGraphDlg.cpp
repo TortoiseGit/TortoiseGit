@@ -255,13 +255,13 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 
 //    m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_REVISIONGRAPH));
 
-#if 0
+
     CRect graphrect = GetGraphRect();
     m_Graph.Init(this, &graphrect);
     m_Graph.SetOwner(this);
     m_Graph.UpdateWindow();
     DoZoom (DEFAULT_ZOOM);
-#endif
+
     EnableSaveRestore(_T("RevisionGraphDlg"));
 //    if (GetExplorerHWND())
 //        CenterWindow(CWnd::FromHandle(GetExplorerHWND()));

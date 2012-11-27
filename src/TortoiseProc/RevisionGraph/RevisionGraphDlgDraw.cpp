@@ -79,7 +79,7 @@ BOOL CRevisionGraphWnd::OnEraseBkgnd(CDC* /*pDC*/)
 
 void CRevisionGraphWnd::OnPaint()
 {
-#if 0
+
     CPaintDC dc(this); // device context for painting
     CRect rect = GetClientRect();
     if (IsUpdateJobRunning())
@@ -88,6 +88,7 @@ void CRevisionGraphWnd::OnPaint()
         CWnd::OnPaint();
         return;
     }
+#if 0
     else if (!m_state.GetNodes())
     {
         CString sNoGraphText;
@@ -96,7 +97,8 @@ void CRevisionGraphWnd::OnPaint()
         dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,sNoGraphText,NULL);
         return;
     }
-
+#endif
+#if 0
     GraphicsDevice dev;
     dev.pDC = &dc;
     DrawGraph(dev, rect, GetScrollPos(SB_VERT), GetScrollPos(SB_HORZ), false);
