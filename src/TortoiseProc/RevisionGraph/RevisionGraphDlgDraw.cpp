@@ -951,10 +951,67 @@ void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, cons
 
 }
 
+PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
+{
+	double x = m_GraphAttr.x(v);
+	double y = m_GraphAttr.y(v);
+	double xmin = x - this->m_GraphAttr.width(v)/2 - lw/2;
+	double xmax = x + this->m_GraphAttr.width(v)/2 + lw/2;
+	double ymin = y - this->m_GraphAttr.height(v)/2 - lw/2;
+	double ymax = y + this->m_GraphAttr.height(v)/2 + lw/2;;
+
+	double dx = pt.X - ps.X;
+	double dy = pt.Y - ps.Y;
+
+	if(dy != 0) {
+		// below
+		if(pt.Y > ymax) {
+			double t = (ymax-ps.Y) / dy;
+			double x = ps.X + t*dx;
+
+			if(xmin <= x && x <= xmax)
+				return PointF(x,ymax);
+
+		// above
+		} else if(pt.Y < ymin) {
+			double t = (ymin-ps.Y) / dy;
+			double x = ps.X + t*dx;
+
+			if(xmin <= x && x <= xmax)
+				return PointF(x,ymin);
+
+		}
+	}
+
+	if(dx != 0) {
+		// right
+		if(pt.X > xmax) {
+			double t = (xmax-ps.X) / dx;
+			double y = ps.Y + t*dy;
+
+			if(ymin <= y && y <= ymax)
+				return PointF(xmax,y);
+
+		// left
+		} else if(pt.X < xmin) {
+			double t = (xmin-ps.X) / dx;
+			double y = ps.Y + t*dy;
+
+			if(ymin <= y && y <= ymax)
+				return PointF(xmin,y);
+
+		}
+	}
+
+	return pt;
+
+}
+
 void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
 
-	CArray<CPoint> points;
+	CArray<PointF> points;
+	CArray<CPoint> pts;
     
     CPen newpen(PS_SOLID, 0, GetSysColor(COLOR_WINDOWTEXT));
     CPen * pOldPen = NULL;
@@ -967,25 +1024,48 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
     {
         // get connection and point position
 		const DPolyline &dpl = this->m_GraphAttr.bends(e);
+		
+		points.RemoveAll();
+		pts.RemoveAll();
+
+		PointF pt;
+		pt.X = m_GraphAttr.x(e->source());
+		pt.Y = m_GraphAttr.y(e->source());
+		
+		points.Add(pt);
 
 		ListConstIterator<DPoint> it;
 		for(it = dpl.begin(); it.valid(); ++it)
 		{
-			CPoint pt;
-			pt.x =  (int)((*it).m_x * m_fZoomFactor - offset.cx);
-			pt.y =  (int)((*it).m_y * m_fZoomFactor - offset.cy);
+			pt.X =  (*it).m_x;
+			pt.Y =  (*it).m_y;
 			points.Add(pt);
 		}
         
+		pt.X = m_GraphAttr.x(e->target());
+		pt.Y = m_GraphAttr.y(e->target());
+		
+		points.Add(pt);
+
+		points[0] = this->cutPoint(e->source(), 1, points[0], points[1]);
+		points[points.GetCount()-1] =  this->cutPoint(e->target(), 1, points[points.GetCount()-1], points[points.GetCount()-2]);
         // draw the connection
 
+		for(int i=0; i < points.GetCount(); i++)
+		{
+			CPoint pt;
+			pt.x = points[i].X * this->m_fZoomFactor - offset.cx;
+			pt.y = points[i].Y * this->m_fZoomFactor - offset.cy;
+			pts.Add(pt);
+		}
+
         if (graphics.pDC)
-			graphics.pDC->PolyBezier (points.GetData(), points.GetCount());
+			graphics.pDC->Polyline(pts.GetData(), pts.GetCount());
         else if (graphics.pSVG)
         {
             Color color;
             color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
-            graphics.pSVG->PolyBezier(points.GetData(), points.GetCount(), color);
+			graphics.pSVG->PolyBezier(pts.GetData(), pts.GetCount(), color);
         }
     }
 

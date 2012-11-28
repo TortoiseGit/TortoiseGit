@@ -319,6 +319,8 @@ private:
     CPoint          GetLogCoordinates (CPoint point) const;
     index_t         GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
     DWORD           GetHoverGlyphs (CPoint point) const;
+	PointF			cutPoint(ogdf::node v,double lw,PointF ps, PointF pt);
+
 //    const CRevisionGraphState::SVisibleGlyph* GetHitGlyph (CPoint point) const;
 
     void            ClearVisibleGlyphs (const CRect& rect);
