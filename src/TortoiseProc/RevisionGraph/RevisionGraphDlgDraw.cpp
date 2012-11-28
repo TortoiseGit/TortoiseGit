@@ -411,8 +411,8 @@ RectF CRevisionGraphWnd::GetNodeRect (const node& node, const CSize& offset) con
     // get node and position
 
 	CRect rect;
-	rect.left = this->m_GraphAttr.x(node);
-	rect.top = this->m_GraphAttr.y(node);
+	rect.left = this->m_GraphAttr.x(node) -  m_GraphAttr.width(node)/2;
+	rect.top = this->m_GraphAttr.y(node) - m_GraphAttr.height(node)/2;
 	rect.bottom = rect.top+ m_GraphAttr.height(node);
 	rect.right = rect.left + m_GraphAttr.width(node);
 
@@ -953,58 +953,52 @@ void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, cons
 
 void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
-#if 0
-    enum {MAX_POINTS = 100};
-    CPoint points[MAX_POINTS];
 
+	CArray<CPoint> points;
+    
     CPen newpen(PS_SOLID, 0, GetSysColor(COLOR_WINDOWTEXT));
     CPen * pOldPen = NULL;
     if (graphics.pDC)
         pOldPen = graphics.pDC->SelectObject(&newpen);
 
     // iterate over all visible lines
-
-    CSyncPointer<const ILayoutConnectionList> connections (m_state.GetConnections());
-    for ( index_t index = connections->GetFirstVisible (logRect)
-        ; index != NO_INDEX
-        ; index = connections->GetNextVisible (index, logRect))
+	edge e;
+	forall_edges(e, m_Graph)
     {
         // get connection and point position
+		const DPolyline &dpl = this->m_GraphAttr.bends(e);
 
-        ILayoutConnectionList::SConnection connection
-            = connections->GetConnection (index);
-
-        if (connection.numberOfPoints > MAX_POINTS)
-            continue;
-
-        for (index_t i = 0; i < connection.numberOfPoints; ++i)
-        {
-            points[i].x = (int)(connection.points[i].x * m_fZoomFactor) - offset.cx;
-            points[i].y = (int)(connection.points[i].y * m_fZoomFactor) - offset.cy;
-        }
-
+		ListConstIterator<DPoint> it;
+		for(it = dpl.begin(); it.valid(); ++it)
+		{
+			CPoint pt;
+			pt.x =  (int)((*it).m_x * m_fZoomFactor - offset.cx);
+			pt.y =  (int)((*it).m_y * m_fZoomFactor - offset.cy);
+			points.Add(pt);
+		}
+        
         // draw the connection
 
         if (graphics.pDC)
-            graphics.pDC->PolyBezier (points, connection.numberOfPoints);
+			graphics.pDC->PolyBezier (points.GetData(), points.GetCount());
         else if (graphics.pSVG)
         {
             Color color;
             color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
-            graphics.pSVG->PolyBezier(points, connection.numberOfPoints, color);
+            graphics.pSVG->PolyBezier(points.GetData(), points.GetCount(), color);
         }
     }
 
     if (graphics.pDC)
     graphics.pDC->SelectObject(pOldPen);
-#endif
+
 }
 
 
 
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
-#if 0
+#if  0
     COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
     if (m_nFontSize <= 0)
         return;
@@ -1013,15 +1007,16 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 
     if (graphics.pDC)
         graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
-    CSyncPointer<const ILayoutTextList> texts (m_state.GetTexts());
-    for ( index_t index = texts->GetFirstVisible (logRect)
-        ; index != NO_INDEX
-        ; index = texts->GetNextVisible (index, logRect))
+
+
+	node v;
+	forall_nodes(v,m_Graph)
     {
         // get node and position
 
-        ILayoutTextList::SText text = texts->GetText (index);
-        CRect textRect ( (int)(text.rect.left * m_fZoomFactor) - offset.cx
+		String label=this->m_GraphAttr.labelNode(v);
+		this->m_GraphAttr.l
+		CRect textRect ( (int)(text.rect.left * m_fZoomFactor) - offset.cx
                        , (int)(text.rect.top * m_fZoomFactor) - offset.cy
                        , (int)(text.rect.right * m_fZoomFactor) - offset.cx
                        , (int)(text.rect.bottom * m_fZoomFactor) - offset.cy);
