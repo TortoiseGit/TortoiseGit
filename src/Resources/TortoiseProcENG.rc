@@ -2752,7 +2752,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
-    IDS_WARN_FOLDERNOTEMPTY "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
+    IDS_WARN_GITINIT_FOLDERNOTEMPTY 
+                            "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
     IDS_WARN_NOVALIDPATH    "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
@@ -3531,6 +3532,8 @@ BEGIN
     IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
     IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
     IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
+    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
+    IDS_PROCEEDBUTTON       "&Proceed"
 END
 
 STRINGTABLE 
@@ -3559,7 +3562,6 @@ BEGIN
     IDS_DONE                "Done"
     IDS_PROC_SKIPPATCH      "Skip Patch: %s"
     IDS_ABORTBUTTON         "A&bort"
-	IDS_PROCEEDBUTTON       "&Proceed"
     IDS_OKBUTTON            "&OK"
     IDS_SKIPBUTTON          "&Skip"
     IDS_RESOLVEDBUTTON      "&Resolved"
@@ -3637,7 +3639,6 @@ BEGIN
     IDS_ERR_PAEGENTTIMEOUT  "Failed waiting for pageant to finish loading key."
     IDS_ERR_NOPATCHES       "Not patches generated."
     IDS_PROC_REQUESTPULL    "Create pull &request"
-    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
     IDS_ERR_PULLREUQESTFAILED "Failed to create pull-request."
 END
 
