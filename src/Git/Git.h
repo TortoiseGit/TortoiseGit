@@ -320,6 +320,6 @@ public:
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
-
+extern DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer);
 
 extern CGit g_Git;

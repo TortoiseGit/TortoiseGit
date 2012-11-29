@@ -22,6 +22,23 @@
 #include "TGitPath.h"
 #include "SmartHandle.h"
 
+static DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
+{
+	int result = ::GetTempPath(nBufferLength, lpBuffer);
+	if (result == 0) return 0;
+	if (lpBuffer == NULL || (result + 13 > nBufferLength))
+	{
+		if (lpBuffer)
+			lpBuffer[0] = '\0';
+		return result + 13;
+	}
+
+	_tcscat(lpBuffer, _T("TortoiseGit\\"));
+	CreateDirectory(lpBuffer, NULL);
+
+	return result + 13;
+}
+
 CTempFiles::CTempFiles(void)
 {
 }
@@ -39,10 +56,10 @@ CTempFiles& CTempFiles::Instance()
 
 CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /* = CTGitPath() */, const GitRev revision /* = GitRev() */)
 {
-	DWORD len = ::GetTempPath(0, NULL);
+	DWORD len = GetTortoiseGitTempPath(0, NULL);
 	TCHAR * temppath = new TCHAR[len+1];
 	TCHAR * tempF = new TCHAR[len+50];
-	::GetTempPath (len+1, temppath);
+	GetTortoiseGitTempPath (len+1, temppath);
 	CTGitPath tempfile;
 	CString possibletempfile;
 	if (path.IsEmpty())

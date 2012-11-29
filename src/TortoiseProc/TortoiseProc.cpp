@@ -365,7 +365,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			}
 		}
 		TCHAR pathbuf[MAX_PATH];
-		GetTempPath(MAX_PATH, pathbuf);
+		GetTortoiseGitTempPath(MAX_PATH, pathbuf);
 		SetCurrentDirectory(pathbuf);
 	}
 
@@ -440,19 +440,20 @@ BOOL CTortoiseProcApp::InitInstance()
 	// remove them. But only delete 'old' files because some
 	// apps might still be needing the recent ones.
 	{
-		DWORD len = ::GetTempPath(0, NULL);
+		DWORD len = GetTortoiseGitTempPath(0, NULL);
 		TCHAR * path = new TCHAR[len + 100];
-		len = ::GetTempPath (len+100, path);
+		len = GetTortoiseGitTempPath (len+100, path);
 		if (len != 0)
 		{
-			CSimpleFileFind finder = CSimpleFileFind(path, _T("*svn*.*"));
+			CDirFileEnum finder(path);
 			FILETIME systime_;
 			::GetSystemTimeAsFileTime(&systime_);
 			__int64 systime = (((_int64)systime_.dwHighDateTime)<<32) | ((__int64)systime_.dwLowDateTime);
-			while (finder.FindNextFileNoDirectories())
+			bool isDir;
+			CString filepath;
+			while (finder.NextFile(filepath, &isDir))
 			{
-				CString filepath = finder.GetFilePath();
-				HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
+				HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : NULL, NULL);
 				if (hFile != INVALID_HANDLE_VALUE)
 				{
 					FILETIME createtime_;
@@ -463,7 +464,10 @@ BOOL CTortoiseProcApp::InitInstance()
 						if ((createtime + 864000000000) < systime)		//only delete files older than a day
 						{
 							::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-							::DeleteFile(filepath);
+							if (isDir)
+								::RemoveDirectory(filepath);
+							else
+								::DeleteFile(filepath);
 						}
 					}
 					else

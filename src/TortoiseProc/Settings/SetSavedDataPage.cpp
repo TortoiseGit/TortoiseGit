@@ -189,6 +189,7 @@ BEGIN_MESSAGE_MAP(CSetSavedDataPage, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_REPOLOGCLEAR, &CSetSavedDataPage::OnBnClickedRepologclear)
 	ON_BN_CLICKED(IDC_ACTIONLOGSHOW, &CSetSavedDataPage::OnBnClickedActionlogshow)
 	ON_BN_CLICKED(IDC_ACTIONLOGCLEAR, &CSetSavedDataPage::OnBnClickedActionlogclear)
+	ON_BN_CLICKED(IDC_TEMPFILESCLEAR, &CSetSavedDataPage::OnBnClickedTempfileclear)
 	ON_EN_CHANGE(IDC_MAXLINES, OnModified)
 END_MESSAGE_MAP()
 
@@ -286,6 +287,48 @@ void CSetSavedDataPage::OnBnClickedActionlogclear()
 	DeleteFile(logfile);
 	m_btnActionLogClear.EnableWindow(FALSE);
 	m_btnActionLogShow.EnableWindow(FALSE);
+}
+
+void CSetSavedDataPage::OnBnClickedTempfileclear()
+{
+	if (CMessageBox::Show(m_hWnd, IDS_PROC_WARNCLEARTEMP, IDS_APPNAME, 1, IDI_ERROR, IDS_ABORTBUTTON, IDS_PROCEEDBUTTON) == 1)
+		return;
+
+	int count = 0;
+	DWORD len = GetTortoiseGitTempPath(0, NULL);
+	TCHAR * path = new TCHAR[len + 100];
+	len = GetTortoiseGitTempPath(len+100, path);
+	if (len != 0)
+	{
+		int lastcount;
+		do
+		{
+			lastcount = count;
+			count = 0;
+			CDirFileEnum finder(path);
+			bool isDir;
+			CString filepath;
+			while (finder.NextFile(filepath, &isDir))
+			{
+				::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
+				if (isDir)
+				{
+					if (!::RemoveDirectory(filepath))
+						count++;
+				}
+				else
+				{
+					if (!::DeleteFile(filepath))
+						count++;
+				}
+			}
+		} while (lastcount != count);
+	}
+
+	delete[] path;
+
+	if (count == 0)
+		GetDlgItem(IDC_TEMPFILESCLEAR)->EnableWindow(FALSE);
 }
 
 void CSetSavedDataPage::OnModified()

@@ -747,11 +747,13 @@ BEGIN
     PUSHBUTTON      "Clear",IDC_RESIZABLEHISTCLEAR,243,93,50,14
     LTEXT           "Authentication data",IDC_AUTHHISTORY,7,120,226,8
     PUSHBUTTON      "Clear",IDC_AUTHHISTCLEAR,243,118,50,14
-    GROUPBOX        "Action log",IDC_STATIC,7,148,286,62
-    LTEXT           "Max. lines in action log",IDC_STATIC,13,169,120,16
-    EDITTEXT        IDC_MAXLINES,139,167,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,166,50,14
-    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,166,50,14
+    LTEXT           "Temp files",IDC_STATIC,7,148,286,30
+    PUSHBUTTON      "Clear",IDC_TEMPFILESCLEAR,243,146,50,14
+    GROUPBOX        "Action log",IDC_STATIC,7,173,286,30
+    LTEXT           "Max. lines in action log",IDC_STATIC,13,185,120,16
+    EDITTEXT        IDC_MAXLINES,139,183,40,14,ES_RIGHT | ES_AUTOHSCROLL
+    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,182,50,14
+    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,182,50,14
 END
 
 IDD_HISTORYDLG DIALOGEX 0, 0, 196, 116
@@ -3534,6 +3536,7 @@ BEGIN
     IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
     IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
     IDS_PROCEEDBUTTON       "&Proceed"
+    IDS_PROC_WARNCLEARTEMP  "To clear temporary files, you should ensure that no other TortoiseGit applications are running. Proceed?"
 END
 
 STRINGTABLE 
