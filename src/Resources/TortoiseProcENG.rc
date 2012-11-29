@@ -2563,11 +2563,6 @@ BEGIN
     IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
     IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
     IDS_PROC_LOG_NOBRANCH   "<No branch>"
-    IDS_PROC_LOG_AUTHOREMAIL "Author Email"
-    IDS_PROC_LOG_COMMITTEREMAIL "Committer Email"
-    IDS_PROC_LOG_MERGEPOINT "Merge Point"
-    IDS_PROC_LOG_PARENT1    "Parent 1"
-    IDS_PROC_LOG_PARENT2    "Parent 2"
     IDS_SETTINGS_CREATELIB_TT 
                             "Creates a library folder with special settings for Git working trees"
     IDS_STATUSLIST_GROUP_MERGEDFILES "Merged Files"
@@ -2582,6 +2577,33 @@ BEGIN
     IDS_PROC_SYNC_CLEANUPSTALEBRANCHES "Cleanup stale remote banches"
     IDS_PROC_SYNC_SUBKODULEUPDATE "Submodule Update"
     IDS_PROC_SYNC_SUBKODULEINIT "Submodule Init"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATGRAPH_FILECHANGESBYUNIT "File changes each %s"
+    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP "Percent of authorship"
+    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY "Percents"
+    IDS_STATGRAPH_COMMITSBYDATEXDAY "day"
+    IDS_SUBMODULEDIFF_UNKNOWN "Unknown"
+    IDS_SUBMODULEDIFF_NEWSUBMODULE "New submodule"
+    IDS_SUBMODULEDIFF_DELETESUBMODULE "Delete submodule"
+    IDS_SUBMODULEDIFF_FASTFORWARD "Fast Forward"
+    IDS_SUBMODULEDIFF_REWIND "Rewind"
+    IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
+    IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
+    IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
+    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
+    IDS_PROCEEDBUTTON       "&Proceed"
+    IDS_PROC_LOG_AUTHOREMAIL "Author Email"
+    IDS_PROC_LOG_COMMITTEREMAIL "Committer Email"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROC_LOG_MERGEPOINT "Merge Point"
+    IDS_PROC_LOG_PARENT1    "Parent 1"
+    IDS_PROC_LOG_PARENT2    "Parent 2"
 END
 
 STRINGTABLE 
@@ -3526,24 +3548,6 @@ BEGIN
     IDS_AM_IGNORE_SPACE_TT  "When applying a patch, ignore changes in whitespace in context lines if necessary"
     IDS_STATGRAPH_NUMBEROFUNIT "Number of %s"
     IDS_STATGRAPH_COMMITSBYUNIT "Commits each %s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_STATGRAPH_FILECHANGESBYUNIT "File changes each %s"
-    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP "Percent of authorship"
-    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY "Percents"
-    IDS_STATGRAPH_COMMITSBYDATEXDAY "day"
-    IDS_SUBMODULEDIFF_UNKNOWN "Unknown"
-    IDS_SUBMODULEDIFF_NEWSUBMODULE "New submodule"
-    IDS_SUBMODULEDIFF_DELETESUBMODULE "Delete submodule"
-    IDS_SUBMODULEDIFF_FASTFORWARD "Fast Forward"
-    IDS_SUBMODULEDIFF_REWIND "Rewind"
-    IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
-    IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
-    IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
-    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
-    IDS_PROCEEDBUTTON       "&Proceed"
 END
 
 STRINGTABLE 
