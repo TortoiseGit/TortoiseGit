@@ -899,6 +899,10 @@ msgstr ""
 msgid "&Print..."
 msgstr ""
 
+#. Resource IDs: (66)
+msgid "&Proceed"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "&Pull"
 msgstr ""
@@ -1422,10 +1426,6 @@ msgstr ""
 msgid "A&bort"
 msgstr ""
 
-#. Resource IDs: (66)
-msgid "&Proceed"
-msgstr ""
-
 #. Resource IDs: (9)
 msgid "A&bout"
 msgstr ""
@@ -1777,6 +1777,10 @@ msgstr ""
 
 #. Resource IDs: (207, 1251)
 msgid "Author"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Author Email"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2484,6 +2488,10 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "Commits your changes to the repository"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Committer Email"
 msgstr ""
 
 #. Resource IDs: (170)
@@ -4999,6 +5007,10 @@ msgstr ""
 msgid "Merge &Message"
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "Merge Point"
+msgstr ""
+
 #. Resource IDs: (221)
 msgid "Merge Reintegrate"
 msgstr ""
@@ -5308,6 +5320,10 @@ msgstr ""
 #. Resource IDs: (273)
 #, c-format
 msgid "No image encoder found for %s."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "No more revisions found."
 msgstr ""
 
 #. Resource IDs: (70)
@@ -5673,6 +5689,14 @@ msgstr ""
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Parent 1"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Parent 2"
 msgstr ""
 
 #. Resource IDs: (1)
@@ -7500,6 +7524,10 @@ msgstr ""
 msgid "Tasks Pane"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Temp files"
+msgstr ""
+
 #. Resource IDs: (219)
 msgid "Test Only"
 msgstr ""
@@ -7801,6 +7829,10 @@ msgstr ""
 
 #. Resource IDs: (1676)
 msgid "To"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
 msgstr ""
 
 #. Resource IDs: (1201, 65535)

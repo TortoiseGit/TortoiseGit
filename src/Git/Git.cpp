@@ -930,7 +930,7 @@ void GetTempPath(CString &path)
 	TCHAR lpPathBuffer[BUFSIZE];
 	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
-	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 	{
@@ -946,7 +946,7 @@ CString GetTempFile()
 	TCHAR szTempName[BUFSIZE];
 	UINT uRetVal;
 
-	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 	{
@@ -966,6 +966,23 @@ CString GetTempFile()
 
 	return CString(szTempName);
 
+}
+
+DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
+{
+	int result = ::GetTempPath(nBufferLength, lpBuffer);
+	if (result == 0) return 0;
+	if (lpBuffer == NULL || (result + 13 > nBufferLength))
+	{
+		if (lpBuffer)
+			lpBuffer[0] = '\0';
+		return result + 13;
+	}
+
+	_tcscat(lpBuffer, _T("TortoiseGit\\"));
+	CreateDirectory(lpBuffer, NULL);
+
+	return result + 13;
 }
 
 int CGit::RunLogFile(CString cmd,const CString &filename)

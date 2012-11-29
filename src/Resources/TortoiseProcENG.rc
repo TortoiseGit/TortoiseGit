@@ -752,11 +752,13 @@ BEGIN
     PUSHBUTTON      "Clear",IDC_RESIZABLEHISTCLEAR,243,93,50,14
     LTEXT           "Authentication data",IDC_AUTHHISTORY,7,120,226,8
     PUSHBUTTON      "Clear",IDC_AUTHHISTCLEAR,243,118,50,14
-    GROUPBOX        "Action log",IDC_STATIC,7,148,286,62
-    LTEXT           "Max. lines in action log",IDC_STATIC,13,169,120,16
-    EDITTEXT        IDC_MAXLINES,139,167,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,166,50,14
-    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,166,50,14
+    LTEXT           "Temp files",IDC_STATIC,7,148,286,30
+    PUSHBUTTON      "Clear",IDC_TEMPFILESCLEAR,243,146,50,14
+    GROUPBOX        "Action log",IDC_STATIC,7,173,286,30
+    LTEXT           "Max. lines in action log",IDC_STATIC,13,185,120,16
+    EDITTEXT        IDC_MAXLINES,139,183,40,14,ES_RIGHT | ES_AUTOHSCROLL
+    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,182,50,14
+    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,182,50,14
 END
 
 IDD_HISTORYDLG DIALOGEX 0, 0, 196, 116
@@ -2604,6 +2606,7 @@ BEGIN
     IDS_PROC_LOG_MERGEPOINT "Merge Point"
     IDS_PROC_LOG_PARENT1    "Parent 1"
     IDS_PROC_LOG_PARENT2    "Parent 2"
+    IDS_PROC_WARNCLEARTEMP  "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
 END
 
 STRINGTABLE 
@@ -3756,7 +3759,7 @@ BEGIN
                             "You have checked ""include untracked"".\nThis includes a ""git clean -fd"" call, so ignored files/directories are removed w/o using recycle bin."
     IDS_PROC_NOTSHOWAGAINCONTINUE 
                             "Do &not show me this warning again (if Continue is selected)"
-    IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found"
+    IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
 END
 
 #endif    // Englisch (USA) resources
