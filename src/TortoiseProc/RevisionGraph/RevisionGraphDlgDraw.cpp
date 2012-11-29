@@ -1012,11 +1012,11 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 	CArray<PointF> points;
 	CArray<CPoint> pts;
-    
-    CPen newpen(PS_SOLID, 0, GetSysColor(COLOR_WINDOWTEXT));
-    CPen * pOldPen = NULL;
-    if (graphics.pDC)
-        pOldPen = graphics.pDC->SelectObject(&newpen);
+
+	if(graphics.graphics)
+		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
+
+	Gdiplus::Pen pen(Color(0,0,0),2);
 
     // iterate over all visible lines
 	edge e;
@@ -1053,25 +1053,24 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 		for(int i=0; i < points.GetCount(); i++)
 		{
-			CPoint pt;
-			pt.x = points[i].X * this->m_fZoomFactor - offset.cx;
-			pt.y = points[i].Y * this->m_fZoomFactor - offset.cy;
-			pts.Add(pt);
+			//CPoint pt;
+			points[i].X = points[i].X * this->m_fZoomFactor - offset.cx;
+			points[i].Y = points[i].Y * this->m_fZoomFactor - offset.cy;
+			//pts.Add(pt);
 		}
 
-        if (graphics.pDC)
-			graphics.pDC->Polyline(pts.GetData(), pts.GetCount());
-        else if (graphics.pSVG)
+		if (graphics.graphics)
+		{
+			graphics.graphics->DrawLines(&pen, points.GetData(), points.GetCount());
+        
+		}
+		else if (graphics.pSVG)
         {
             Color color;
             color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
 			graphics.pSVG->PolyBezier(pts.GetData(), pts.GetCount(), color);
         }
     }
-
-    if (graphics.pDC)
-    graphics.pDC->SelectObject(pOldPen);
-
 }
 
 
