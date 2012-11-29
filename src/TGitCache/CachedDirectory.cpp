@@ -596,11 +596,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 	status2->assumeValid = assumeValid;
 	status2->skipWorktree = skipWorktree;
 
-	CTGitPath gitPath;
-
-	CString lowcasepath = path;
-	lowcasepath.MakeLower();
-	gitPath.SetFromUnknown(lowcasepath);
+	CTGitPath gitPath(path);
 
 	CCachedDirectory *pThis = CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath.GetContainingDirectory());
 
