@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Revision: 2524 $
  *
  * last checkin:
@@ -92,7 +92,7 @@ public:
 
 private:
 
-	double m_angle; //rotate angle to obtain an upward drawing; default is 45�
+	double m_angle; //rotate angle to obtain an upward drawing; default is 45°
 
 	NodeArray<edge> firstout;
 	NodeArray<edge> lastout;
