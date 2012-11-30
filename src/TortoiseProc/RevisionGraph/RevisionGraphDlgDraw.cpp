@@ -83,15 +83,16 @@ void CRevisionGraphWnd::OnPaint()
 
     CPaintDC dc(this); // device context for painting
     CRect rect = GetClientRect();
-/*
+
     if (IsUpdateJobRunning())
     {
+		CString fetch = _T("Fetch...");
         dc.FillSolidRect(rect, ::GetSysColor(COLOR_APPWORKSPACE));
+		dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,fetch,NULL);
         CWnd::OnPaint();
         return;
-    }
 
-	else if (this->m_Graph.empty())
+    }else if (this->m_Graph.empty())
     {
         CString sNoGraphText;
         sNoGraphText.LoadString(IDS_REVGRAPH_ERR_NOGRAPH);
@@ -99,7 +100,7 @@ void CRevisionGraphWnd::OnPaint()
         dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,sNoGraphText,NULL);
         return;
     }
-*/
+
     GraphicsDevice dev;
     dev.pDC = &dc;
     DrawGraph(dev, rect, GetScrollPos(SB_VERT), GetScrollPos(SB_HORZ), false);

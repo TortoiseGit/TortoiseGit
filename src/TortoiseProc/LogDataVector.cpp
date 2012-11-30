@@ -132,7 +132,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
 		}
 
-		if(pRev == NULL || !pRev->m_IsFull)
+		if((pRev == NULL || !pRev->m_IsFull) && infomask& CGit::LOG_INFO_FULL_DIFF)
 		{
 			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);

@@ -235,6 +235,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	m_GraphAttr.writeGML("test.gml");
 
+	this->Invalidate(); 
+
 	return true;
 }
 
@@ -282,7 +284,6 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 bool CRevisionGraphWnd::IsUpdateJobRunning() const
 {
     return (updateJob.get() != NULL) && !updateJob->IsDone();
-	return true;
 }
 
 bool CRevisionGraphWnd::GetShowOverview() const
