@@ -32,55 +32,24 @@
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
+static LPTSTR nextpath(wchar_t *path, wchar_t *buf, size_t buflen)
 {
-	LPCTSTR orgsrc;
+	wchar_t term, *base = path;
 
-	while (*src == _T(';'))
-		src++;
+	if (path == NULL || buf == NULL || buflen == 0)
+		return NULL;
 
-	orgsrc = src;
+	term = (*path == L'"') ? *path++ : L';';
 
-	if (!--maxlen)
-		goto nullterm;
+	for (buflen--; *path && *path != term && buflen; buflen--)
+		*buf++ = *path++;
 
-	while (*src && *src != _T(';'))
-	{
-		if (*src != _T('"'))
-		{
-			*dst++ = *src++;
-			if (!--maxlen)
-			{
-				orgsrc = src;
-				goto nullterm;
-			}
-		}
-		else
-		{
-			src++;
-			while (*src && *src != _T('"'))
-			{
-				*dst++ = *src++;
-				if (!--maxlen)
-				{
-					orgsrc = src;
-					goto nullterm;
-				}
-			}
+	*buf = L'\0'; /* reserved a byte via initial subtract */
 
-			if (*src)
-				src++;
-		}
-	}
+	while (*path == term || *path == L';')
+		path++;
 
-	while (*src == _T(';'))
-		src++;
-
-nullterm:
-
-	*dst = 0;
-
-	return (orgsrc != src) ? (LPTSTR)src : NULL;
+	return (path != base) ? path : NULL;
 }
 
 static inline BOOL FileExists(LPCTSTR lpszFileName)
