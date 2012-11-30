@@ -125,6 +125,7 @@ static BOOL FindGitPath()
 			// dir found
 			pfin[1] = 0;
 			CGit::ms_LastMsysGitDir = buf;
+			CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
 			return TRUE;
 		}
 	}
@@ -1589,9 +1590,10 @@ BOOL CGit::CheckMsysGitDir()
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
+		str.TrimRight(_T("\\"));
 		if ( !str.IsEmpty() )
 		{
-			str += (str[str.GetLength()-1] != '\\') ? "\\bin" : "bin";
+			str += "\\bin";
 			msysdir=str;
 			CGit::ms_LastMsysGitDir = str;
 			msysdir.write();
