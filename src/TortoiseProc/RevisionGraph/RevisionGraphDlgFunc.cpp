@@ -43,6 +43,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace Gdiplus;
+using namespace ogdf;
 
 void CRevisionGraphWnd::InitView()
 {
@@ -205,10 +206,35 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	this->m_logEntries.ParserFromLog(NULL,-1,CGit::LOG_INFO_SIMPILFY_BY_DECORATION);
 	
-	this->m_
+	this->m_Graph.clear();
+	CArray<node> nodes;
 	for(int i=0;i<m_logEntries.size();i++)
 	{
+		node nd;
+		nd = this->m_Graph.newNode();
+		nodes.Add(nd);
+		m_GraphAttr.width(nd)=100;
+		m_GraphAttr.height(nd)=20;
 	}
+
+	for(int i=0; i<m_logEntries.size();i++)
+	{
+		GitRev rev=m_logEntries.GetGitRevAt(i);
+		for(int j=0; j<rev.m_ParentHash.size();j++)
+		{
+			TRACE(_T("edge %d - %d\n"),i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
+			m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
+		}
+	}
+
+	//this->m_OHL.layerDistance(30.0);
+    //this->m_OHL.nodeDistance(25.0);
+    //this->m_OHL.weightBalancing(0.8);
+   
+	m_SugiyamLayout.call(m_GraphAttr);
+
+	m_GraphAttr.writeGML("test.gml");
+
 	return true;
 }
 

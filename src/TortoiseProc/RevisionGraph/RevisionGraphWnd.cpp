@@ -146,6 +146,8 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
 	m_SugiyamLayout.setCrossMin(::new ogdf::MedianHeuristic());
 
+
+#if 0
 	ogdf::node one = this->m_Graph.newNode();
 	ogdf::node two = this->m_Graph.newNode();
 	ogdf::node three = this->m_Graph.newNode();
@@ -170,10 +172,14 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	this->m_Graph.newEdge(two, four);
 	this->m_Graph.newEdge(three, four);
 	
-#if 1
+#endif
+
 	this->m_OHL.layerDistance(30.0);
 	this->m_OHL.nodeDistance(25.0);
 
+	 m_SugiyamLayout.setLayout(&m_OHL);
+
+#if 0
 	//this->m_OHL.layerDistance(30.0);
     //this->m_OHL.nodeDistance(25.0);
     //this->m_OHL.weightBalancing(0.8);
@@ -201,7 +207,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
     pl.setPlanarLayouter(ol);
  
     pl.call(m_GraphAttr);
-#endif		
+	
 	node v;
 	forall_nodes(v,m_Graph) {
 
@@ -226,6 +232,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 		}
 	}
 	m_GraphAttr.writeGML("test.gml");
+#endif	
 }
 
 CRevisionGraphWnd::~CRevisionGraphWnd()
