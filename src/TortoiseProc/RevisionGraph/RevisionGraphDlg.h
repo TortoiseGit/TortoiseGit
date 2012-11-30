@@ -70,6 +70,8 @@ protected:
     char            m_szTip[MAX_TT_LENGTH+1];
     wchar_t         m_wszTip[MAX_TT_LENGTH+1];
 
+	CLogDataVector		m_logEntries;
+
     CString         m_sFilter;
 
     HACCEL          m_hAccel;
