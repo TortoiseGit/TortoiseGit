@@ -7043,6 +7043,10 @@ msgstr ""
 msgid "Show destination folder"
 msgstr ""
 
+#. Resource IDs: (1696)
+msgid "Show diff"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr ""
