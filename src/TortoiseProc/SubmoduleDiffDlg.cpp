@@ -46,6 +46,7 @@ void CSubmoduleDiffDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOG, &CSubmoduleDiffDlg::OnBnClickedLog)
 	ON_BN_CLICKED(IDC_LOG2, &CSubmoduleDiffDlg::OnBnClickedLog2)
+	ON_BN_CLICKED(IDC_SHOW_DIFF, &CSubmoduleDiffDlg::OnBnClickedShowDiff)
 	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
@@ -69,6 +70,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 	AddAnchor(IDC_LOG2, TOP_RIGHT);
+	AddAnchor(IDC_SHOW_DIFF, TOP_RIGHT);
 
 	AddAnchor(IDC_FROMHASH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FROMSUBJECT, TOP_LEFT, TOP_RIGHT);
@@ -105,6 +107,8 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME))
 	};
 	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
+
+	DialogEnableWindow(IDC_SHOW_DIFF, m_bFromOK && m_bToOK);
 
 	return FALSE;
 }
@@ -205,4 +209,11 @@ void CSubmoduleDiffDlg::OnBnClickedLog()
 void CSubmoduleDiffDlg::OnBnClickedLog2()
 {
 	ShowLog(m_sToHash);
+}
+
+void CSubmoduleDiffDlg::OnBnClickedShowDiff()
+{
+	CString sCmd;
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, m_sFromHash, m_sToHash);
+	CAppUtils::RunTortoiseProc(sCmd);
 }
