@@ -840,6 +840,9 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	if(mask& CGit::LOG_INFO_FULL_DIFF)
 		param += _T(" --full-diff ");
 
+	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
+		param += _T(" --simplify-by-decoration ");
+
 	if(from != NULL && to != NULL)
 	{
 		CString range;

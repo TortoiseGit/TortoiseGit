@@ -18,12 +18,13 @@
 //
 #pragma once
 //#include "RevisionGraph/RevisionGraphState.h"
-//#include "Future.h"
+#include "Future.h"
 #include "ProgressDlg.h"
 #include "Colors.h"
 //#include "SVNDiff.h"
 #include "AppUtils.h"
 #include "SVG.h"
+#include "LogDlgHelper.h"
 
 #include <ogdf/layered/SugiyamaLayout.h>
 #include <ogdf/layered/OptimalRanking.h>
@@ -35,6 +36,7 @@ typedef void CVisibleGraphNode;
 typedef int index_t;
 
 using namespace Gdiplus;
+using namespace async;
 
 enum
 {
@@ -134,8 +136,10 @@ public:
 
     CString         m_sPath;
     GitRev          m_pegRev;
-
-//	std::unique_ptr<CFuture<bool> > updateJob;
+	
+	CLogCache			m_LogCache;
+	CLogDataVector		m_logEntries;
+	std::auto_ptr<CFuture<bool>> updateJob;
 //    CRevisionGraphState m_state;
 
     void            InitView();

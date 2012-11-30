@@ -202,49 +202,14 @@ bool CRevisionGraphWnd::FetchRevisionData
     , ITaskbarList3 * pTaskbarList
     , HWND hWnd)
 {
-#if 0
-    // (re-)fetch the data
-    SVN svn;
-    if (svn.GetRepositoryRoot(CTGitPath(path)) == svn.GetURLFromPath(CTGitPath(path)))
-    {
-        m_state.SetLastErrorMessage(CString(MAKEINTRESOURCE(IDS_REVGRAPH_ERR_NOGRAPHFORROOT)));
-        return false;
-    }
 
-    std::unique_ptr<CFullHistory> newFullHistory (new CFullHistory());
-
-    bool showWCRev
-        = m_state.GetOptions()->GetOption<CShowWC>()->IsSelected();
-    bool showWCModification
-        = m_state.GetOptions()->GetOption<CShowWCModification>()->IsSelected();
-    bool result = newFullHistory->FetchRevisionData ( path
-                                                    , pegRevision
-                                                    , showWCRev
-                                                    , showWCModification
-                                                    , progress
-                                                    , pTaskbarList
-                                                    , hWnd);
-
-    m_state.SetLastErrorMessage (newFullHistory->GetLastErrorMessage());
-
-    if (result)
-    {
-        std::unique_ptr<CFullGraph> newFullGraph (new CFullGraph());
-
-        CFullGraphBuilder builder (*newFullHistory, *newFullGraph);
-        builder.Run();
-
-        CFullGraphFinalizer finalizer (*newFullHistory, *newFullGraph);
-        finalizer.Run();
-
-        m_state.SetQueryResult ( newFullHistory
-                               , newFullGraph
-                               , showWCRev || showWCModification);
-    }
-
-    return result;
-#endif
-	return 0;
+	this->m_logEntries.ParserFromLog(NULL,-1,CGit::LOG_INFO_SIMPILFY_BY_DECORATION);
+	
+	this->m_
+	for(int i=0;i<m_logEntries.size();i++)
+	{
+	}
+	return true;
 }
 
 bool CRevisionGraphWnd::AnalyzeRevisionData()
@@ -290,7 +255,7 @@ bool CRevisionGraphWnd::AnalyzeRevisionData()
 
 bool CRevisionGraphWnd::IsUpdateJobRunning() const
 {
-//    return (updateJob.get() != NULL) && !updateJob->IsDone();
+    return (updateJob.get() != NULL) && !updateJob->IsDone();
 	return true;
 }
 

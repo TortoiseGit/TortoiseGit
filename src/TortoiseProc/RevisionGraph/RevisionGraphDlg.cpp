@@ -272,6 +272,19 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 bool CRevisionGraphDlg::UpdateData()
 {
     CoInitialize(NULL);
+
+	if (!m_Graph.FetchRevisionData (m_Graph.m_sPath, GitRev(), NULL, m_pTaskbarList, m_hWnd))
+    {
+		// only show the error dialog if we're not in hidden mode
+        //if (m_bVisible)
+        //{
+		//	TGitMessageBox( m_hWnd
+        //                   , // m_Graph.m_state.GetLastErrorMessage()
+        //                   , _T("TortoiseSVN")
+        //                   , MB_ICONERROR);
+		//}
+    }
+
 #if 0
     if (m_bFetchLogs)
     {
@@ -613,8 +626,8 @@ BOOL CRevisionGraphDlg::OnToggleRedrawOption (UINT controlID)
 
 void CRevisionGraphDlg::StartWorkerThread()
 {
-//    if (!m_Graph.IsUpdateJobRunning())
-//        m_Graph.updateJob.reset (new CFuture<bool>(this, &CRevisionGraphDlg::UpdateData));
+    if (!m_Graph.IsUpdateJobRunning())
+		m_Graph.updateJob.reset (new CFuture<bool>(this, &CRevisionGraphDlg::UpdateData));
 }
 
 void CRevisionGraphDlg::OnCancel()
