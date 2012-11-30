@@ -156,9 +156,9 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		return -1;
 	}
 
-	unsigned int ecount = git_index_entrycount(index);
+	size_t ecount = git_index_entrycount(index);
 	resize(ecount);
-	for (unsigned int i = 0; i < ecount; ++i)
+	for (size_t i = 0; i < ecount; ++i)
 	{
 		const git_index_entry *e = git_index_get_byindex(index, i);
 
@@ -806,8 +806,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
-	unsigned int count = git_tree_entrycount(tree);
-	for (unsigned int i = 0; i < count; i++)
+	size_t count = git_tree_entrycount(tree);
+	for (size_t i = 0; i < count; i++)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
