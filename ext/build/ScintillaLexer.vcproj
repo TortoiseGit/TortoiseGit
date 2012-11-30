@@ -839,6 +839,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\scintilla\lexers\LexPO.cxx"
+				>
+			</File>
+			<File
 				RelativePath="..\scintilla\lexers\LexPOV.cxx"
 				>
 			</File>
