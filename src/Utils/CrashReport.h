@@ -307,3 +307,18 @@ public:
 	int m_nInstallStatus;
 };
 
+class CCrashReportThread
+{
+public:
+
+    /// Installs exception handlers to the caller thread
+    CCrashReportThread(DWORD dwFlags=0)
+    {
+        UNREFERENCED_PARAMETER(dwFlags);
+    }
+
+    /// Deinstalls exception handlers from the caller thread
+    ~CCrashReportThread()
+    {
+    }
+};
