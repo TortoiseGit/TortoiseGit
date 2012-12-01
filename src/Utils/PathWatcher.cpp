@@ -249,7 +249,7 @@ void CPathWatcher::WorkerThread()
 					}
 					if (!ReadDirectoryChangesW(pDirInfo->m_hDir,
 												pDirInfo->m_Buffer,
-												READ_DIR_CHANGE_BUFFER_SIZE,
+												bufferSize,
 												TRUE,
 												FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 												&numBytes,// not used
@@ -283,7 +283,7 @@ void CPathWatcher::WorkerThread()
 						goto continuewatching;
 					}
 					PFILE_NOTIFY_INFORMATION pnotify = (PFILE_NOTIFY_INFORMATION)pdi->m_Buffer;
-					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
+					if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > bufferSize)
 						goto continuewatching;
 					DWORD nOffset = pnotify->NextEntryOffset;
 					do
@@ -291,7 +291,7 @@ void CPathWatcher::WorkerThread()
 						nOffset = pnotify->NextEntryOffset;
 						SecureZeroMemory(buf, MAX_PATH*4*sizeof(TCHAR));
 						_tcsncpy_s(buf, MAX_PATH*4, pdi->m_DirPath, MAX_PATH*4);
-						errno_t err = _tcsncat_s(buf+pdi->m_DirPath.GetLength(), (MAX_PATH*4)-pdi->m_DirPath.GetLength(), pnotify->FileName, _TRUNCATE);
+						errno_t err = _tcsncat_s(buf+pdi->m_DirPath.GetLength(), bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileNameLength/sizeof(TCHAR)));
 						if (err == STRUNCATE)
 						{
 							pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
@@ -301,7 +301,7 @@ void CPathWatcher::WorkerThread()
 						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 						ATLTRACE(_T("change notification: %s\n"), buf);
 						m_changedPaths.AddPath(CTGitPath(buf));
-						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > READ_DIR_CHANGE_BUFFER_SIZE)
+						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > bufferSize)
 							break;
 					} while (nOffset);
 continuewatching:
@@ -309,7 +309,7 @@ continuewatching:
 					SecureZeroMemory(&pdi->m_Overlapped, sizeof(OVERLAPPED));
 					if (!ReadDirectoryChangesW(pdi->m_hDir,
 												pdi->m_Buffer,
-												READ_DIR_CHANGE_BUFFER_SIZE,
+												bufferSize,
 												TRUE,
 												FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
 												&numBytes,// not used
