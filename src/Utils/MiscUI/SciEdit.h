@@ -133,6 +133,7 @@ private:
 	CString		m_sUrl;
 	CArray<CSciEditContextMenuInterface *, CSciEditContextMenuInterface *> m_arContextHandlers;
 	CPersonalDictionary m_personalDict;
+	bool		m_bDoStyle;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult);

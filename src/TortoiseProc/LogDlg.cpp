@@ -670,7 +670,8 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			text.Remove('\r');
 
 			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
-			CAppUtils::FormatTextInRichEditControl(pMsgView);
+			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
+				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
 			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
