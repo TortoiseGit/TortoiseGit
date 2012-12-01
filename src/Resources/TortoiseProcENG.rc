@@ -145,7 +145,7 @@ BEGIN
     LTEXT           "Authors:",IDC_STATIC,13,81,54,8
     LTEXT           "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>",IDC_STATIC,60,81,258,8
     LTEXT           "Credits:",IDC_STATIC,14,94,54,8
-    LTEXT           "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>",IDC_STATIC,61,92,258,33
+    LTEXT           "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>",IDC_STATIC,61,92,258,33
     LTEXT           "Visit our website",IDC_WEBLINK,14,153,312,8
     LTEXT           "and support the developers",IDC_SUPPORTLINK,14,165,312,8
     GROUPBOX        "Version Information",IDC_VERSIONBOX,7,187,319,50

@@ -2385,10 +2385,6 @@ msgstr ""
 msgid "Close the active window and prompts to save the documents"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
-msgstr ""
-
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr ""
@@ -7412,6 +7408,10 @@ msgstr ""
 
 #. Resource IDs: (65)
 msgid "Success"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 msgstr ""
 
 #. Resource IDs: (78)
