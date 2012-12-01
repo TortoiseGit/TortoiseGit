@@ -1202,6 +1202,8 @@
 #define IDC_LOG_JUMPUP                  1724
 #define IDC_LOG_JUMPDOWN                1725
 #define IDC_TEMPFILESCLEAR              1726
+#define IDC_STATIC_TAGOPT               1727
+#define IDC_COMBO_TAGOPT                1728
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1573,6 +1575,10 @@
 #define IDS_PROC_LOG_PARENT1            9681
 #define IDS_PROC_LOG_PARENT2            9682
 #define IDS_PROC_WARNCLEARTEMP          9683
+#define IDS_DEFAULT                     9684
+#define IDS_ALL                         9685
+#define IDS_NONE                        9686
+#define IDS_FETCH_REACHABLE             9687
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
@@ -1596,7 +1602,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1727
+#define _APS_NEXT_CONTROL_VALUE         1729
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

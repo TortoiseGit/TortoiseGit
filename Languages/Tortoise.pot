@@ -1574,6 +1574,10 @@ msgstr ""
 msgid "Advanced merge settings"
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "All"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr ""
@@ -6089,6 +6093,10 @@ msgstr ""
 msgid "Re&vert..."
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "Reachable"
+msgstr ""
+
 #. Resource IDs: (12)
 msgid "Read the 'Daily Use Guide' before you are stuck..."
 msgstr ""
@@ -7518,6 +7526,10 @@ msgstr ""
 
 #. Resource IDs: (1485, 1513, 65535)
 msgid "Tags"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Tags:"
 msgstr ""
 
 #. Resource IDs: (64)

@@ -1006,7 +1006,8 @@ BEGIN
     CONTROL         "No &Fast Forward",IDC_CHECK_NOFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,116,110,10
     CONTROL         "No &Commit",IDC_CHECK_NOCOMMIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,100,161,10
     CONTROL         "Fast Forward o&nly",IDC_CHECK_FFONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,117,160,10
-    CONTROL         "Tags",IDC_CHECK_FETCHTAGS,"Button",BS_AUTO3STATE | WS_TABSTOP,19,133,109,10
+    CONTROL         "Tags",IDC_CHECK_FETCHTAGS,"Button",BS_AUTO3STATE | WS_TABSTOP,19,133,110,10
+    LTEXT           "",IDC_STATIC_TAGOPT,132,133,80,8
     CONTROL         "AutoLoad Putty &Key",IDC_PUTTYKEY_AUTOLOAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,157,113,10
     LTEXT           "Manage Remotes",IDC_REMOTE_MANAGE,171,157,105,8,SS_NOTIFY
     CONTROL         "&Launch Rebase After Fetch",IDC_CHECK_REBASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,172,281,10
@@ -1423,6 +1424,8 @@ BEGIN
     LTEXT           "Putty Key:",IDC_STATIC,101,65,35,8
     EDITTEXT        IDC_EDIT_PUTTY_KEY,138,64,139,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,277,64,16,14
+    LTEXT           "Tags:",IDC_STATIC,101,86,40,8
+    COMBOBOX        IDC_COMBO_TAGOPT,138,85,80,12,CBS_DROPDOWNLIST | WS_TABSTOP
     PUSHBUTTON      "&Add New/Save",IDC_BUTTON_ADD,100,107,58,14
     LTEXT           "Remote:",IDC_STATIC,7,10,76,8
     PUSHBUTTON      "&Remove",IDC_BUTTON_REMOVE,100,129,58,14
@@ -2608,6 +2611,10 @@ BEGIN
     IDS_PROC_LOG_PARENT1    "Parent 1"
     IDS_PROC_LOG_PARENT2    "Parent 2"
     IDS_PROC_WARNCLEARTEMP  "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
+    IDS_DEFAULT             "Default"
+    IDS_ALL                 "All"
+    IDS_NONE                "None"
+    IDS_FETCH_REACHABLE     "Reachable"
 END
 
 STRINGTABLE 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,6 +71,7 @@ protected:
 
 	CHyperLink	m_RemoteManage;
 
+	afx_msg void OnCbnSelchangeRemote();
 	afx_msg void OnBnClickedRd();
 	afx_msg void OnBnClickedOk();
 	void Refresh();

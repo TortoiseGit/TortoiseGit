@@ -6,6 +6,7 @@ Released: unreleased
  * Fixed issue #1541: Show progress dialog when running git request-pull
  * Fixed issue #1513: Easier to clean TortoiseGit temporary files
  * Fixed issue #1540: Add jump to previous / next commit in Log Dialog
+ * Fixed issue #1529: Can show and set tagopt
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
