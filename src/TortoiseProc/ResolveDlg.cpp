@@ -57,7 +57,7 @@ BOOL CResolveDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	m_resolveListCtrl.Init(GITSLC_COLEXT, _T("ResolveDlg"), GITSLC_POPALL ^ (GITSLC_POPIGNORE|GITSLC_POPADD|GITSLC_POPCOMMIT));
+	m_resolveListCtrl.Init(GITSLC_COLEXT, _T("ResolveDlg"), GITSLC_POPALL ^ (GITSLC_POPIGNORE|GITSLC_POPADD|GITSLC_POPCOMMIT|GITSLC_POPEXPORT|GITSLC_POPRESTORE|GITSLC_POPSAVEAS));
 	m_resolveListCtrl.SetConfirmButton((CButton*)GetDlgItem(IDOK));
 	m_resolveListCtrl.SetSelectButton(&m_SelectAll);
 	m_resolveListCtrl.SetCancelBool(&m_bCancelled);
