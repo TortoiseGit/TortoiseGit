@@ -1594,13 +1594,16 @@
 #define ID_VIEW_SHOWWCMODIFICATION		32838
 #define ID_VIEW_FILTER					32839
 #define ID_VIEW_SHOWTREESTRIPES			32840
+#define ID_FILE_SAVEGRAPHAS				32841
+#define ID_MENUEXIT						32842
+#define ID_MENUHELP						32843
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        344
-#define _APS_NEXT_COMMAND_VALUE         32840
+#define _APS_NEXT_COMMAND_VALUE         32850
 #define _APS_NEXT_CONTROL_VALUE         1723
 #define _APS_NEXT_SYMED_VALUE           201
 #endif

@@ -2530,9 +2530,25 @@ END
 
 IDR_REVISIONGRAPH MENU
 BEGIN
-    POPUP "&Help"
+    POPUP "&File"
     BEGIN
-        MENUITEM "&Help",                       ID_EDIT_COPY
+        MENUITEM "&Save graph as...",           ID_FILE_SAVEGRAPHAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       ID_MENUEXIT
+    END
+	POPUP "&View"
+    BEGIN
+        MENUITEM "Zoom &in\tCtrl-+",            ID_VIEW_ZOOMIN
+        MENUITEM "Zoom &out\tCtrl--",           ID_VIEW_ZOOMOUT
+        MENUITEM "Zoom to &100%",               ID_VIEW_ZOOM100
+        MENUITEM "Fit height",                  ID_VIEW_ZOOMHEIGHT
+        MENUITEM "Fit width",                   ID_VIEW_ZOOMWIDTH
+        MENUITEM "Fit graph",                   ID_VIEW_ZOOMALL
+        MENUITEM SEPARATOR
+	END
+	POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help",                       ID_MENUHELP
     END
 END
 
@@ -2590,6 +2606,17 @@ BEGIN
     IDS_SVNACTION_DELETE    "Deleted"
     IDS_SVNACTION_RESTORE   "Restored"
     IDS_SVNACTION_REVERT    "Reverted"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ZOOM100         "Zoom 100%"
+    ID_VIEW_ZOOMHEIGHT      "Zoom to fit in height"
+    ID_VIEW_ZOOMWIDTH       "Zoom to fit in width"
+    ID_VIEW_ZOOMALL         "Zoom to fit"
+    ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
+    ID_VIEW_TOPDOWN         "Show oldest node at top"
+    ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
 END
 
 STRINGTABLE 
