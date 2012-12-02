@@ -252,11 +252,6 @@ bool CRevisionGraphWnd::FetchRevisionData
 			ymax = y;
 	}
 	
-	m_GraphAttr.writeGML("test.gml");
-
-	this->Invalidate(); 
-
-
 	return true;
 }
 

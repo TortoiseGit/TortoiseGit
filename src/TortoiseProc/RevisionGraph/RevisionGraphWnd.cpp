@@ -1648,7 +1648,7 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 {
     // handle potential race condition between PostMessage and leaving job:
     // the background job may not have exited, yet
-#if 0
+
     if (updateJob.get())
         updateJob->GetResult();
 
@@ -1656,6 +1656,7 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
     BuildPreview();
     Invalidate(FALSE);
 
+#if 0
     SVN svn;
     LogCache::CRepositoryInfo& cachedProperties
         = svn.GetLogCachePool()->GetRepositoryInfo();

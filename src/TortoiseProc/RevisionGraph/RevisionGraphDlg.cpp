@@ -119,8 +119,9 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipNotify)
     ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
     ON_COMMAND(ID_VIEW_SHOWOVERVIEW, OnViewShowoverview)
-    ON_WM_WINDOWPOSCHANGING()
 #endif
+    ON_WM_WINDOWPOSCHANGING()
+
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -326,15 +327,17 @@ bool CRevisionGraphDlg::UpdateData()
 
     // standard plus user settings
 
+
     if (m_Graph.AnalyzeRevisionData())
     {
         UpdateStatusBar();
         UpdateOptionAvailability();
     }
+#endif
 
     CoUninitialize();
     m_Graph.PostMessage (CRevisionGraphWnd::WM_WORKERTHREADDONE, 0, 0);
-#endif
+
     return true;
 }
 
