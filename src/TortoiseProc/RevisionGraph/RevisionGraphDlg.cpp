@@ -713,11 +713,11 @@ void CRevisionGraphDlg::UpdateZoomBox()
 {
     CString strText;
     CString strItem;
-//    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
-///    pCBox->GetWindowText(strItem);
-//    strText.Format(_T("%.0f%%"), (m_fZoomFactor*100.0));
-//    if (strText.Compare(strItem) != 0)
-//        pCBox->SetWindowText(strText);
+    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
+    pCBox->GetWindowText(strItem);
+    strText.Format(_T("%.0f%%"), (m_fZoomFactor*100.0));
+    if (strText.Compare(strItem) != 0)
+        pCBox->SetWindowText(strText);
 }
 
 BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
