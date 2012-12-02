@@ -1109,7 +1109,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 		{
 			graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
 				&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
-								Gdiplus::PointF(noderect.X + this->GetLeftRightMargin(),noderect.Y+this->GetTopBottomMargin()),
+				Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
 								&SolidBrush(Color::Black));
 
 
@@ -1139,7 +1139,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
 						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
-						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin(),noderect.Y + this->GetTopBottomMargin()+ hight*i),
+						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor,noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i),
 						&SolidBrush(Color::Black));
 
 					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);

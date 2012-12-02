@@ -85,13 +85,15 @@ void CRevisionGraphDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_WM_SIZE()
     ON_WM_LBUTTONDOWN()
-#if 0
+
     ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomin)
     ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomout)
     ON_COMMAND(ID_VIEW_ZOOM100, OnViewZoom100)
     ON_COMMAND(ID_VIEW_ZOOMHEIGHT, OnViewZoomHeight)
     ON_COMMAND(ID_VIEW_ZOOMWIDTH, OnViewZoomWidth)
     ON_COMMAND(ID_VIEW_ZOOMALL, OnViewZoomAll)
+	ON_CBN_SELCHANGE(ID_REVGRAPH_ZOOMCOMBO, OnChangeZoom)
+#if 0
     ON_COMMAND(ID_MENUEXIT, OnMenuexit)
     ON_COMMAND(ID_MENUHELP, OnMenuhelp)
     ON_COMMAND(ID_VIEW_COMPAREHEADREVISIONS, OnViewCompareheadrevisions)
@@ -114,7 +116,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_COMMAND_EX(ID_VIEW_SHOWWCMODIFICATION, OnToggleReloadOption)
     ON_COMMAND_EX(ID_VIEW_SHOWDIFFPATHS, OnToggleOption)
     ON_COMMAND_EX(ID_VIEW_SHOWTREESTRIPES, OnToggleRedrawOption)
-    ON_CBN_SELCHANGE(ID_REVGRAPH_ZOOMCOMBO, OnChangeZoom)
+   
     ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipNotify)
     ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipNotify)
     ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
@@ -699,8 +701,8 @@ void CRevisionGraphDlg::OnChangeZoom()
         return;
     CString strText;
     CString strItem;
-//    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
-//    pCBox->GetWindowText(strItem);
+    CComboBoxEx* pCBox = (CComboBoxEx*)m_ToolBar.GetDlgItem(ID_REVGRAPH_ZOOMCOMBO);
+    pCBox->GetWindowText(strItem);
     if (strItem.IsEmpty())
         return;
 
