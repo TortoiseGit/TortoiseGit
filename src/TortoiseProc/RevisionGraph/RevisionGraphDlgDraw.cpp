@@ -1119,7 +1119,14 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 				//    : standardTextColor );
 				//graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
 				//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
-				graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_RIGHT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+				//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+				//graphics.pDC->TextOut(rect.left, rect.top, shortname);
+				
+				graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
+					&Gdiplus::Font(L"ºÚÌå",17,FontStyleBold),Gdiplus::PointF(noderect.X,noderect.Y + hight*i),&SolidBrush(Color::Black));
+
+				//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
+				TRACE(_T("TEXT %d %d\n"), rect.left, rect.top);
 				
 			}
 			else if (graphics.pSVG)
@@ -1229,8 +1236,9 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
     Bitmap glyphs (AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHGLYPHS));
 
     DrawNodes (graphics, &glyphs, logRect, offset);
-    DrawConnections (graphics, logRect, offset);
-    DrawTexts (graphics, logRect, offset);
+	DrawTexts (graphics, logRect, offset);
+	DrawConnections (graphics, logRect, offset);
+   
 
     if (m_showHoverGlyphs)
         DrawCurrentNodeGlyphs (graphics, &glyphs, offset);
