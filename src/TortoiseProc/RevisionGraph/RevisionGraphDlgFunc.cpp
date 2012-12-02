@@ -107,7 +107,6 @@ void CRevisionGraphWnd::BuildPreview()
 
 void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int graphMax)
 {
-#if 0
     SCROLLINFO ScrollInfo = {sizeof(SCROLLINFO), SIF_ALL};
     GetScrollInfo (bar, &ScrollInfo);
 
@@ -126,7 +125,7 @@ void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int gr
     ScrollInfo.nTrackPos = pos;
 
     SetScrollInfo(bar, &ScrollInfo);
-#endif
+
 }
 
 void CRevisionGraphWnd::SetScrollbars (int nVert, int nHorz)
@@ -140,8 +139,7 @@ void CRevisionGraphWnd::SetScrollbars (int nVert, int nHorz)
 
 CRect CRevisionGraphWnd::GetGraphRect()
 {
-//    return m_state.GetGraphRect();
-	return CRect();
+	return m_GraphRect;
 }
 
 CRect CRevisionGraphWnd::GetClientRect()
@@ -252,6 +250,10 @@ bool CRevisionGraphWnd::FetchRevisionData
 			ymax = y;
 	}
 	
+	this->m_GraphRect.top=m_GraphRect.left=0;
+	m_GraphRect.bottom = ymax;
+	m_GraphRect.right = xmax;
+
 	return true;
 }
 

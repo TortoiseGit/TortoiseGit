@@ -225,6 +225,7 @@ protected:
 	ogdf::GraphAttributes m_GraphAttr;
 	ogdf::SugiyamaLayout m_SugiyamLayout;
 	ogdf::FastHierarchyLayout m_OHL;
+	CRect	m_GraphRect;
 
 	int	 GetLeftRightMargin() {return 20;};
 	int	 GetTopBottomMargin() {return 5;};
