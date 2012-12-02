@@ -206,8 +206,13 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	this->m_logEntries.ParserFromLog(NULL,-1,CGit::LOG_INFO_SIMPILFY_BY_DECORATION);
 	
+	ReloadHashMap();
 	this->m_Graph.clear();
+
 	CArray<node> nodes;
+	GraphicsDevice dev;
+	dev.pDC = this->GetDC();
+
 	for(int i=0;i<m_logEntries.size();i++)
 	{
 		node nd;
@@ -215,6 +220,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		nodes.Add(nd);
 		m_GraphAttr.width(nd)=100;
 		m_GraphAttr.height(nd)=20;
+		SetNodeRect(dev, &nd, m_logEntries[i], 0);
 	}
 
 	for(int i=0; i<m_logEntries.size();i++)
@@ -233,9 +239,23 @@ bool CRevisionGraphWnd::FetchRevisionData
    
 	m_SugiyamLayout.call(m_GraphAttr);
 
+	node v;
+	double xmax = 0;
+	double ymax = 0;
+	forall_nodes(v,m_Graph)
+	{
+		double x = m_GraphAttr.x(v) + m_GraphAttr.width(v)/2;
+		double y = m_GraphAttr.y(v) + m_GraphAttr.height(v)/2;
+		if(x>xmax)
+			xmax = x;
+		if(y>ymax)
+			ymax = y;
+	}
+	
 	m_GraphAttr.writeGML("test.gml");
 
 	this->Invalidate(); 
+
 
 	return true;
 }

@@ -1078,7 +1078,6 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
-#if  0
     COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
     if (m_nFontSize <= 0)
         return;
@@ -1095,32 +1094,46 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
         // get node and position
 
 		String label=this->m_GraphAttr.labelNode(v);
-		this->m_GraphAttr.l
-		CRect textRect ( (int)(text.rect.left * m_fZoomFactor) - offset.cx
-                       , (int)(text.rect.top * m_fZoomFactor) - offset.cy
-                       , (int)(text.rect.right * m_fZoomFactor) - offset.cx
-                       , (int)(text.rect.bottom * m_fZoomFactor) - offset.cy);
+		
+		RectF noderect (GetNodeRect (v, offset));
 
-        // draw the revision text
+		// draw the revision text
 
-        if (graphics.pDC)
-        {
-            graphics.pDC->SetTextColor (text.style == ILayoutTextList::SText::STYLE_WARNING
-                ? m_Colors.GetColor (CColors::gdpWCNodeBorder).ToCOLORREF()
-                : standardTextColor );
-            graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
-            graphics.pDC->ExtTextOut ((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, text.text, NULL);
-        }
-        else if (graphics.pSVG)
-        {
+		CGitHash hash = this->m_logEntries[v->index()];
+		double hight = noderect.Height / (m_HashMap[hash].size()?m_HashMap[hash].size():1);
+
+		for(int i=0; i < m_HashMap[hash].size(); i++)
+		{
+			CString shortname;
+			shortname = m_HashMap[hash][i];
+			CRect rect;
+			rect.top = noderect.Y + hight*i;
+			rect.left = noderect.X;
+			rect.right = noderect.X + noderect.Width;
+			rect.bottom = rect.top + hight;
+
+			if (graphics.pDC)
+			{
+				//graphics.pDC->SetTextColor (text.style == ILayoutTextList::SText::STYLE_WARNING
+				//    ? m_Colors.GetColor (CColors::gdpWCNodeBorder).ToCOLORREF()
+				//    : standardTextColor );
+				//graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
+				//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
+				graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_RIGHT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+				
+			}
+			else if (graphics.pSVG)
+			{
+#if 0
             graphics.pSVG->CenteredText((textRect.left + textRect.right)/2, textRect.top+m_nFontSize+3, "Arial", m_nFontSize,
                 false, text.style != ILayoutTextList::SText::STYLE_DEFAULT,
                 text.style == ILayoutTextList::SText::STYLE_WARNING
                 ? m_Colors.GetColor (CColors::gdpWCNodeBorder)
                 : standardTextColor, CUnicodeUtils::GetUTF8(text.text));
+#endif		
+			}
         }
     }
-#endif
 }
 
 
@@ -1282,3 +1295,44 @@ void CRevisionGraphWnd::DrawRubberBand()
 }
 
 #endif
+
+void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
+{
+	//multi - line mode. One RefName is one new line
+	if(mode == 0)
+	{
+		if(this->m_HashMap.find(rev) == m_HashMap.end())
+		{	
+			CString shorthash = rev.ToString().Left(g_Git.GetShortHASHLength());
+			SIZE size;
+			if(graphics.pDC)
+			{
+				GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
+			}
+			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + size.cx;
+			m_GraphAttr.height(*pnode) = this->GetTopBottomMargin()*2 + size.cy;
+		}
+		else
+		{
+			SIZE size;
+			SIZE max = {0, 0};
+			int lines =0;
+			for(int i=0;i<m_HashMap[rev].size();i++)
+			{
+				CString shortref = m_HashMap[rev][i];
+				if(graphics.pDC)
+				{
+					GetTextExtentPoint32(graphics.pDC->m_hDC, shortref.GetBuffer(), shortref.GetLength(), &size);
+					if(size.cx > max.cx)
+						max.cx = size.cx;
+					if(size.cy > max.cy)
+						max.cy = size.cy;
+				}
+				lines ++;
+			}
+			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + max.cx;
+			m_GraphAttr.height(*pnode) = (this->GetTopBottomMargin()*2 + max.cy) * lines;
+		}
+
+	}
+}

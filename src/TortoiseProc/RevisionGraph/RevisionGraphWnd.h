@@ -139,6 +139,17 @@ public:
 	
 	CLogCache			m_LogCache;
 	CLogDataVector		m_logEntries;
+	MAP_HASH_NAME		m_HashMap;
+	CString				m_CurrentBranch;
+	CGitHash				m_HeadHash;
+	void ReloadHashMap()
+	{
+		m_HashMap.clear();
+		g_Git.GetMapHashToFriendName(m_HashMap);
+		m_CurrentBranch=g_Git.GetCurrentBranch();
+		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
+	}
+
 	std::auto_ptr<CFuture<bool>> updateJob;
 //    CRevisionGraphState m_state;
 
@@ -215,6 +226,8 @@ protected:
 	ogdf::SugiyamaLayout m_SugiyamLayout;
 	ogdf::FastHierarchyLayout m_OHL;
 
+	int	 GetLeftRightMargin() {return 20;};
+	int	 GetTopBottomMargin() {return 5;};
     virtual void    DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     afx_msg void    OnPaint();
     afx_msg BOOL    OnEraseBkgnd(CDC* pDC);
@@ -368,4 +381,6 @@ private:
 
     int             GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
     void            DrawRubberBand();
+	void	SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode = 0);
+
 };
