@@ -884,7 +884,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				CString shortname;
 				CString cmd;
-				if (this->GetShortName(*branch, shortname, _T("refs/remotes/")))
+				if (CGit::GetShortName(*branch, shortname, _T("refs/remotes/")))
 				{
 					CString msg;
 					msg.Format(IDS_PROC_DELETEREMOTEBRANCH, *branch);
@@ -903,7 +903,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					else
 						return;
 				}
-				else if (this->GetShortName(*branch, shortname, _T("refs/stash")))
+				else if (CGit::GetShortName(*branch, shortname, _T("refs/stash")))
 				{
 					if (CMessageBox::Show(NULL, IDS_PROC_DELETEALLSTASH, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 1)
 						cmd.Format(_T("git.exe stash clear"));
@@ -916,12 +916,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					msg.Format(IDS_PROC_DELETEBRANCHTAG, *branch);
 					if (CMessageBox::Show(NULL, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 					{
-						if(this->GetShortName(*branch,shortname,_T("refs/heads/")))
+						if(CGit::GetShortName(*branch,shortname,_T("refs/heads/")))
 						{
 							cmd.Format(_T("git.exe branch -D -- %s"),shortname);
 						}
 
-						if(this->GetShortName(*branch,shortname,_T("refs/tags/")))
+						if(CGit::GetShortName(*branch,shortname,_T("refs/tags/")))
 						{
 							cmd.Format(_T("git.exe tag -d -- %s"),shortname);
 						}

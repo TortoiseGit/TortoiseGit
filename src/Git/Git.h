@@ -318,6 +318,19 @@ public:
 	}
 
 	int GetShortHASHLength();
+
+	static BOOL GetShortName(CString ref, CString &shortname,CString prefix)
+	{
+		//TRACE(_T("%s %s\r\n"),ref,prefix);
+		if(ref.Left(prefix.GetLength()) ==  prefix)
+		{
+			shortname = ref.Right(ref.GetLength()-prefix.GetLength());
+			if(shortname.Right(3)==_T("^{}"))
+				shortname=shortname.Left(shortname.GetLength()-3);
+			return TRUE;
+		}
+		return FALSE;
+	}
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
