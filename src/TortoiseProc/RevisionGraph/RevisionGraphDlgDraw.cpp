@@ -31,6 +31,7 @@
 //#include "IRevisionGraphLayout.h"
 //#include "UpsideDownLayout.h"
 //#include "ShowTreeStripes.h"
+#include "registry.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1088,6 +1089,8 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
         graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
 
 
+	CString fontname = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
+
 	node v;
 	forall_nodes(v,m_Graph)
     {
@@ -1102,42 +1105,57 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 		CGitHash hash = this->m_logEntries[v->index()];
 		double hight = noderect.Height / (m_HashMap[hash].size()?m_HashMap[hash].size():1);
 
-		for(int i=0; i < m_HashMap[hash].size(); i++)
+		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
 		{
-			CString shortname;
-			shortname = m_HashMap[hash][i];
-			CRect rect;
-			rect.top = noderect.Y + hight*i;
-			rect.left = noderect.X;
-			rect.right = noderect.X + noderect.Width;
-			rect.bottom = rect.top + hight;
+			graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
+				&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+								Gdiplus::PointF(noderect.X + this->GetLeftRightMargin(),noderect.Y+this->GetTopBottomMargin()),
+								&SolidBrush(Color::Black));
 
-			if (graphics.pDC)
-			{
-				//graphics.pDC->SetTextColor (text.style == ILayoutTextList::SText::STYLE_WARNING
-				//    ? m_Colors.GetColor (CColors::gdpWCNodeBorder).ToCOLORREF()
-				//    : standardTextColor );
-				//graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
-				//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
-				//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-				//graphics.pDC->TextOut(rect.left, rect.top, shortname);
-				
-				graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
-					&Gdiplus::Font(L"ºÚÌå",17,FontStyleBold),Gdiplus::PointF(noderect.X,noderect.Y + hight*i),&SolidBrush(Color::Black));
 
-				//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
-				TRACE(_T("TEXT %d %d\n"), rect.left, rect.top);
-				
-			}
-			else if (graphics.pSVG)
+		}else
+		{
+
+			for(int i=0; i < m_HashMap[hash].size(); i++)
 			{
+				CString shortname;
+				shortname = m_HashMap[hash][i];
+				CRect rect;
+				rect.top = noderect.Y + hight*i;
+				rect.left = noderect.X;
+				rect.right = noderect.X + noderect.Width;
+				rect.bottom = rect.top + hight;
+
+				if (graphics.pDC)
+				{
+					//graphics.pDC->SetTextColor (text.style == ILayoutTextList::SText::STYLE_WARNING
+					//    ? m_Colors.GetColor (CColors::gdpWCNodeBorder).ToCOLORREF()
+					//    : standardTextColor );
+					//graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
+					//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
+					//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+					//graphics.pDC->TextOut(rect.left, rect.top, shortname);
+
+
+					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
+						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin(),noderect.Y + this->GetTopBottomMargin()+ hight*i),
+						&SolidBrush(Color::Black));
+
+					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
+					TRACE(_T("TEXT %d %d\n"), rect.left, rect.top);
+
+				}
+				else if (graphics.pSVG)
+				{
 #if 0
-            graphics.pSVG->CenteredText((textRect.left + textRect.right)/2, textRect.top+m_nFontSize+3, "Arial", m_nFontSize,
-                false, text.style != ILayoutTextList::SText::STYLE_DEFAULT,
-                text.style == ILayoutTextList::SText::STYLE_WARNING
-                ? m_Colors.GetColor (CColors::gdpWCNodeBorder)
-                : standardTextColor, CUnicodeUtils::GetUTF8(text.text));
+					graphics.pSVG->CenteredText((textRect.left + textRect.right)/2, textRect.top+m_nFontSize+3, "Arial", m_nFontSize,
+						false, text.style != ILayoutTextList::SText::STYLE_DEFAULT,
+						text.style == ILayoutTextList::SText::STYLE_WARNING
+						? m_Colors.GetColor (CColors::gdpWCNodeBorder)
+						: standardTextColor, CUnicodeUtils::GetUTF8(text.text));
 #endif		
+				}
 			}
         }
     }
@@ -1307,39 +1325,47 @@ void CRevisionGraphWnd::DrawRubberBand()
 void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
 {
 	//multi - line mode. One RefName is one new line
+	CString fontname = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
 	if(mode == 0)
 	{
 		if(this->m_HashMap.find(rev) == m_HashMap.end())
 		{	
 			CString shorthash = rev.ToString().Left(g_Git.GetShortHASHLength());
-			SIZE size;
-			if(graphics.pDC)
+			RectF rect;
+			if(graphics.graphics)
 			{
-				GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
+				//GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
+				graphics.graphics->MeasureString(shorthash.GetBuffer(), shorthash.GetLength(),
+					                  &Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+									  Gdiplus::PointF(0,0), &rect);
+
 			}
-			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + size.cx;
-			m_GraphAttr.height(*pnode) = this->GetTopBottomMargin()*2 + size.cy;
+			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + rect.Width;
+			m_GraphAttr.height(*pnode) = this->GetTopBottomMargin()*2 + rect.Height;
 		}
 		else
 		{
-			SIZE size;
-			SIZE max = {0, 0};
+			double xmax=0;
+			double ymax=0;
 			int lines =0;
 			for(int i=0;i<m_HashMap[rev].size();i++)
 			{
+				RectF rect;
 				CString shortref = m_HashMap[rev][i];
 				if(graphics.pDC)
 				{
-					GetTextExtentPoint32(graphics.pDC->m_hDC, shortref.GetBuffer(), shortref.GetLength(), &size);
-					if(size.cx > max.cx)
-						max.cx = size.cx;
-					if(size.cy > max.cy)
-						max.cy = size.cy;
+					graphics.graphics->MeasureString(shortref.GetBuffer(), shortref.GetLength(),
+					                  &Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+									  Gdiplus::PointF(0,0), &rect);
+					if(rect.Width > xmax)
+						xmax = rect.Width;
+					if(rect.Height > ymax)
+						ymax = rect.Height;
 				}
 				lines ++;
 			}
-			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + max.cx;
-			m_GraphAttr.height(*pnode) = (this->GetTopBottomMargin()*2 + max.cy) * lines;
+			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + xmax;
+			m_GraphAttr.height(*pnode) = (this->GetTopBottomMargin()*2 + ymax) * lines;
 		}
 
 	}

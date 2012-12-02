@@ -210,6 +210,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 	CArray<node> nodes;
 	GraphicsDevice dev;
 	dev.pDC = this->GetDC();
+	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
+	dev.graphics->SetPageUnit (UnitPixel);
 
 	for(int i=0;i<m_logEntries.size();i++)
 	{
