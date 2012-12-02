@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1544: TortoiseGit Init warning message is not appropriate
  * Fixed issue #1268: Paths in Windows Explorer changed to all lower case
  * Fixed issue #1555: Commit dialog fails to warn submodule dirty state
+ * Fixed issue #1556: Narrower treeview when launching Settings Dialog with default page Remote
 
 = Release 1.7.15.0 =
 Released: 2012-11-20
