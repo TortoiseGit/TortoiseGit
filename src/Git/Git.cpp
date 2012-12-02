@@ -2027,3 +2027,48 @@ int CGit::GetShortHASHLength()
 {
 	return 7;
 }
+
+CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
+{
+	CString str=ref;
+	CString shortname;
+	REF_TYPE type;
+
+	if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
+	{
+		type = CGit::LOCAL_BRANCH;
+
+	}
+	else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
+	{
+		type = CGit::REMOTE_BRANCH;
+	}
+	else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
+	{
+		type = CGit::TAG;
+	}
+	else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
+	{
+		type = CGit::STASH;
+		shortname=_T("stash");
+	}
+	else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
+	{
+		if(shortname.Find(_T("good")) == 0)
+		{
+			type = CGit::BISECT_GOOD;
+			shortname = _T("good");
+		}
+
+		if(shortname.Find(_T("bad")) == 0)
+		{
+			type = CGit::BISECT_BAD;
+			shortname = _T("bad");
+		}
+	}
+
+	if(out_type)
+		*out_type = type;
+
+	return shortname;
+}

@@ -1079,29 +1079,28 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
-    COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
-    if (m_nFontSize <= 0)
-        return;
+	COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
+	if (m_nFontSize <= 0)
+		return;
 
-    // iterate over all visible nodes
+	// iterate over all visible nodes
 
-    if (graphics.pDC)
-        graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
+	if (graphics.pDC)
+		graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
 
 
 	CString fontname = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
 
 	node v;
 	forall_nodes(v,m_Graph)
-    {
-        // get node and position
+	{
+		// get node and position
 
 		String label=this->m_GraphAttr.labelNode(v);
-		
+
 		RectF noderect (GetNodeRect (v, offset));
 
 		// draw the revision text
-
 		CGitHash hash = this->m_logEntries[v->index()];
 		double hight = noderect.Height / (m_HashMap[hash].size()?m_HashMap[hash].size():1);
 
@@ -1110,21 +1109,61 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 			graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
 				&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
 				Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
-								&SolidBrush(Color::Black));
+				&SolidBrush(Color::Black));
 
 
 		}else
 		{
-
 			for(int i=0; i < m_HashMap[hash].size(); i++)
 			{
 				CString shortname;
-				shortname = m_HashMap[hash][i];
-				CRect rect;
-				rect.top = noderect.Y + hight*i;
-				rect.left = noderect.X;
-				rect.right = noderect.X + noderect.Width;
-				rect.bottom = rect.top + hight;
+				CString str = m_HashMap[hash][i];
+				RectF rect;
+				
+				rect.X = noderect.X;
+				rect.Y = noderect.Y + hight*i;
+				rect.Width = noderect.Width;
+				rect.Height = hight;
+
+				COLORREF colRef = 0;
+
+
+				if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
+				{
+					if( shortname == m_CurrentBranch )
+						colRef = m_Colors.GetColor(CColors::CurrentBranch);
+					else
+						colRef = m_Colors.GetColor(CColors::LocalBranch);
+
+				}
+				else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
+				{
+					colRef = m_Colors.GetColor(CColors::RemoteBranch);
+				}
+				else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
+				{
+					colRef = m_Colors.GetColor(CColors::Tag);
+				}
+				else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
+				{
+					colRef = m_Colors.GetColor(CColors::Stash);
+					shortname=_T("stash");
+				}
+				else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
+				{
+					if(shortname.Find(_T("good")) == 0)
+					{
+						colRef = m_Colors.GetColor(CColors::BisectGood);
+						shortname = _T("good");
+					}
+
+					if(shortname.Find(_T("bad")) == 0)
+					{
+						colRef = m_Colors.GetColor(CColors::BisectBad);
+						shortname = _T("bad");
+					}
+				}
+
 
 				if (graphics.pDC)
 				{
@@ -1135,15 +1174,15 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 					//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
 					//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 					//graphics.pDC->TextOut(rect.left, rect.top, shortname);
-
-
+					
+					graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
+							rect);
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
 						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
 						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor,noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i),
-						&SolidBrush(Color::Black));
+						&SolidBrush(Gdiplus::Color::Black));
 
 					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
-					TRACE(_T("TEXT %d %d\n"), rect.left, rect.top);
 
 				}
 				else if (graphics.pSVG)
@@ -1157,8 +1196,8 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 #endif		
 				}
 			}
-        }
-    }
+		}
+	}
 }
 
 
@@ -1352,6 +1391,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			{
 				RectF rect;
 				CString shortref = m_HashMap[rev][i];
+				shortref = CGit::GetShortName(shortref,NULL);
 				if(graphics.pDC)
 				{
 					graphics.graphics->MeasureString(shortref.GetBuffer(), shortref.GetLength(),

@@ -244,6 +244,17 @@ public:
 		LOG_INFO_SIMPILFY_BY_DECORATION = 0x4000, 
 	}LOG_INFO_MASK;
 
+	typedef enum
+	{
+		LOCAL_BRANCH,
+		REMOTE_BRANCH,
+		TAG,
+		STASH,
+		BISECT_GOOD,
+		BISECT_BAD
+
+	}REF_TYPE;
+
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
 	int GetTagList(STRING_VECTOR &list);
@@ -331,6 +342,8 @@ public:
 		}
 		return FALSE;
 	}
+
+	static CString GetShortName(CString ref, REF_TYPE *type);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
