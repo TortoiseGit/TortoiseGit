@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2007-2008 - TortoiseSVN
+// External Cache Copyright (C) 2007-2008, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "SmartHandle.h"
 
 #define READ_DIR_CHANGE_BUFFER_SIZE 4096
+#define MAX_CHANGED_PATHS  4000
 
 typedef CComCritSecLock<CComCriticalSection> AutoLocker;
 
@@ -66,18 +67,24 @@ public:
 	/**
 	 * Returns the number of changed paths up to now.
 	 */
-	int GetNumberOfChangedPaths() {return m_changedPaths.GetCount();}
+	int GetNumberOfChangedPaths() { AutoLocker lock(m_critSec); return m_changedPaths.GetCount(); }
 
 	/**
 	 * Returns the list of paths which maybe got changed, i.e., for which
 	 * a change notification was received.
 	 */
-	CTGitPathList GetChangedPaths() {return m_changedPaths;}
+	CTGitPathList GetChangedPaths() { AutoLocker lock(m_critSec); return m_changedPaths; }
 
 	/**
 	 * Clears the list of changed paths
 	 */
-	void ClearChangedPaths() {AutoLocker lock(m_critSec); m_changedPaths.Clear();}
+	void ClearChangedPaths() { AutoLocker lock(m_critSec); m_changedPaths.Clear(); }
+
+	/**
+	 * If the limit of changed paths has been reached, returns true.
+	 * \remark the limit is necessary to avoid memory problems.
+	 */
+	bool LimitReached() const { return m_bLimitReached; }
 
 private:
 	static unsigned int __stdcall ThreadEntry(void* pContext);
@@ -93,6 +100,7 @@ private:
 
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 	CTGitPathList			m_changedPaths;	///< list of paths which got changed
+	bool					m_bLimitReached;
 
 	/**
 	 * Helper class: provides information about watched directories.
@@ -113,7 +121,6 @@ private:
 		CAutoFile	m_hDir;			///< handle to the directory that we're watching
 		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
-		DWORD		m_dwBufLength;	///< length or returned data from ReadDirectoryChangesW -- ignored?...
 		OVERLAPPED  m_Overlapped;
 		CString		m_DirPath;		///< the directory name we're watching with a backslash at the end
 		//HDEVNOTIFY	m_hDevNotify;	///< Notification handle

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2007 - 2007 - Stefan Kueng
+// External Cache Copyright (C) 2007-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,12 +16,13 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Dbt.h"
 #include "PathWatcher.h"
 
 CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 	, m_bRunning(TRUE)
+	, m_bLimitReached(false)
 {
 	// enable the required privileges for this process
 	LPCTSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
@@ -45,14 +46,13 @@ CPathWatcher::CPathWatcher(void) : m_hCompPort(NULL)
 		}
 	}
 
-	unsigned int threadId;
+	unsigned int threadId = 0;
 	m_hThread = (HANDLE)_beginthreadex(NULL,0,ThreadEntry,this,0,&threadId);
 }
 
 CPathWatcher::~CPathWatcher(void)
 {
-	InterlockedExchange(&m_bRunning, FALSE);
-	m_hThread.CloseHandle();
+	Stop();
 	AutoLocker lock(m_critSec);
 	ClearInfoMap();
 }
@@ -68,10 +68,10 @@ void CPathWatcher::Stop()
 
 	if (m_hThread)
 	{
-		if( WaitForSingleObject(m_hThread, 1000) != WAIT_OBJECT_0 )
-		{
-			TerminateThread(m_hThread, (DWORD)-1);
-		}
+		// the background thread sleeps for 200ms,
+		// so lets wait for it to finish for 1000 ms.
+
+		WaitForSingleObject(m_hThread, 1000);
 		m_hThread.CloseHandle();
 	}
 }
@@ -186,7 +186,8 @@ void CPathWatcher::WorkerThread()
 	DWORD numBytes;
 	CDirWatchInfo * pdi = NULL;
 	LPOVERLAPPED lpOverlapped;
-	WCHAR buf[MAX_PATH*4] = {0};
+	const int bufferSize = MAX_PATH * 4;
+	TCHAR buf[bufferSize] = {0};
 	while (m_bRunning)
 	{
 		if (watchedPaths.GetCount())
@@ -210,20 +211,16 @@ void CPathWatcher::WorkerThread()
 				{
 					m_hCompPort.CloseHandle();
 				}
-				// Since we pass m_hCompPort to CreateIoCompletionPort, we
-				// have to set this to NULL to have that API create a new
-				// handle.
-				m_hCompPort = NULL;
 				for (int i=0; i<watchedPaths.GetCount(); ++i)
 				{
 					CAutoFile hDir = CreateFile(watchedPaths[i].GetWinPath(),
-											FILE_LIST_DIRECTORY,
-											FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-											NULL, //security attributes
-											OPEN_EXISTING,
-											FILE_FLAG_BACKUP_SEMANTICS | //required privileges: SE_BACKUP_NAME and SE_RESTORE_NAME.
-											FILE_FLAG_OVERLAPPED,
-											NULL);
+												FILE_LIST_DIRECTORY,
+												FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+												NULL, //security attributes
+												OPEN_EXISTING,
+												FILE_FLAG_BACKUP_SEMANTICS | //required privileges: SE_BACKUP_NAME and SE_RESTORE_NAME.
+												FILE_FLAG_OVERLAPPED,
+												NULL);
 					if (!hDir)
 					{
 						// this could happen if a watched folder has been removed/renamed
@@ -289,22 +286,32 @@ void CPathWatcher::WorkerThread()
 					do
 					{
 						nOffset = pnotify->NextEntryOffset;
-						SecureZeroMemory(buf, MAX_PATH*4*sizeof(TCHAR));
-						_tcsncpy_s(buf, MAX_PATH*4, pdi->m_DirPath, MAX_PATH*4);
+						SecureZeroMemory(buf, bufferSize*sizeof(TCHAR));
+						_tcsncpy_s(buf, bufferSize, pdi->m_DirPath, bufferSize);
 						errno_t err = _tcsncat_s(buf+pdi->m_DirPath.GetLength(), bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize-pdi->m_DirPath.GetLength(), pnotify->FileNameLength/sizeof(TCHAR)));
 						if (err == STRUNCATE)
 						{
 							pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 							continue;
 						}
-						buf[min(MAX_PATH*4-1, pdi->m_DirPath.GetLength()+(pnotify->FileNameLength/sizeof(WCHAR)))] = 0;
+						buf[min(bufferSize-1, pdi->m_DirPath.GetLength()+(pnotify->FileNameLength/sizeof(WCHAR)))] = 0;
 						pnotify = (PFILE_NOTIFY_INFORMATION)((LPBYTE)pnotify + nOffset);
 						ATLTRACE(_T("change notification: %s\n"), buf);
-						m_changedPaths.AddPath(CTGitPath(buf));
+						{
+							AutoLocker lock(m_critSec);
+							if (m_changedPaths.GetCount() < MAX_CHANGED_PATHS)
+								m_changedPaths.AddPath(CTGitPath(buf));
+							else
+								m_bLimitReached = true;
+						}
 						if ((ULONG_PTR)pnotify - (ULONG_PTR)pdi->m_Buffer > bufferSize)
 							break;
 					} while (nOffset);
 continuewatching:
+					{
+						AutoLocker lock(m_critSec);
+						m_changedPaths.RemoveDuplicates();
+					}
 					SecureZeroMemory(pdi->m_Buffer, sizeof(pdi->m_Buffer));
 					SecureZeroMemory(&pdi->m_Overlapped, sizeof(OVERLAPPED));
 					if (!ReadDirectoryChangesW(pdi->m_hDir,
@@ -346,9 +353,9 @@ void CPathWatcher::ClearInfoMap()
 	m_hCompPort.CloseHandle();
 }
 
-CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName) :
-	m_hDir(hDir),
-	m_DirName(DirectoryName)
+CPathWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName)
+	: m_hDir(hDir)
+	, m_DirName(DirectoryName)
 {
 	ATLASSERT( hDir && !DirectoryName.IsEmpty());
 	m_Buffer[0] = 0;
@@ -367,4 +374,3 @@ bool CPathWatcher::CDirWatchInfo::CloseDirectoryHandle()
 {
 	return m_hDir.CloseHandle();
 }
-
