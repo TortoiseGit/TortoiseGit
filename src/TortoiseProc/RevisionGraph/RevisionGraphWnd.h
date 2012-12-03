@@ -251,6 +251,10 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
 
+	double m_ArrowCos;
+	double m_ArrowSin;
+	double m_ArrowSize;
+
     enum MarkerPosition
     {
         mpLeft = 0,

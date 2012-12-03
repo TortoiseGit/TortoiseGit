@@ -1018,7 +1018,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	if(graphics.graphics)
 		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
-	Gdiplus::Pen pen(Color(0,0,0),2);
+	Gdiplus::Pen pen(Color(0,0,0),2*m_fZoomFactor<1? 1:2*m_fZoomFactor);
 
     // iterate over all visible lines
 	edge e;
@@ -1072,6 +1072,46 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
             color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
 			graphics.pSVG->PolyBezier(pts.GetData(), pts.GetCount(), color);
         }
+
+		//draw arrow
+		double dx = points[1].X - points[0].X;
+		double dy = points[1].Y - points[0].Y;
+
+		double len = sqrt(dx*dx + dy*dy);
+		dx = m_ArrowSize * m_fZoomFactor *dx /len;
+		dy = m_ArrowSize * m_fZoomFactor *dy /len;
+
+		double p1_x, p1_y, p2_x, p2_y;
+		p1_x = dx * m_ArrowCos - dy * m_ArrowSin;
+		p1_y = dx * m_ArrowSin + dy * m_ArrowCos;
+
+		p2_x = dx * m_ArrowCos + dy * m_ArrowSin;
+		p2_y = -dx * m_ArrowSin + dy * m_ArrowCos;
+
+		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p1_x,points[0].Y+p1_y);
+		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p2_x,points[0].Y+p2_y);
+		GraphicsPath path;
+		
+		PointF arrows[5];
+		arrows[0].X =  points[0].X;
+		arrows[0].Y =  points[0].Y;
+
+		arrows[1].X =  points[0].X + p1_x;
+		arrows[1].Y =  points[0].Y + p1_y;
+
+		arrows[2].X =  points[0].X + dx*3/5;
+		arrows[2].Y =  points[0].Y + dy*3/5;
+
+		arrows[3].X =  points[0].X + p2_x;
+		arrows[3].Y =  points[0].Y + p2_y;
+
+		arrows[4].X =  points[0].X;
+		arrows[4].Y =  points[0].Y;
+
+		path.AddLines(arrows, 5);
+		path.SetFillMode(FillMode::FillModeAlternate);
+		graphics.graphics->DrawPath(&pen, &path);
+
     }
 }
 
@@ -1177,6 +1217,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 					
 					graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
 							rect);
+					
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
 						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
 						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor,noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i),

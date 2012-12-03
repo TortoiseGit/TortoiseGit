@@ -146,7 +146,10 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
 	m_SugiyamLayout.setCrossMin(::new ogdf::MedianHeuristic());
 
-
+	double pi = 3.1415926;
+	m_ArrowCos = cos(pi/8);
+	m_ArrowSin = sin(pi/8);
+	this->m_ArrowSize = 8;
 #if 0
 	ogdf::node one = this->m_Graph.newNode();
 	ogdf::node two = this->m_Graph.newNode();
