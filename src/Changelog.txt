@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #1540: Add jump to previous / next commit in Log Dialog
  * Fixed issue #1529: Can show and set tagopt
  * Fixed issue #1554: Unwanted text formatting in commit dialogue (styling can be disabled using advanced settings now)
+ * Fixed issue #1563: Show repository dir on Settings Dialog title bar
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

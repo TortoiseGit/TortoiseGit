@@ -271,6 +271,12 @@ BOOL CSettings::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	{
+		CString title;
+		GetWindowText(title);
+		SetWindowText(g_Git.m_CurrentDir + _T(" - ") + title);
+	}
 
 	CenterWindow(CWnd::FromHandle(hWndExplorer));
 
