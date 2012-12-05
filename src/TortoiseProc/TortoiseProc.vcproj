@@ -966,6 +966,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Resources\revgraphglyphs.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\Resources\save.ico"
 				>
 			</File>

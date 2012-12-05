@@ -926,7 +926,7 @@ CString CRevisionGraphWnd::TooltipText(node index)
 
 void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 {
-#if 0
+
     CString extension = CPathUtils::GetFileExtFromPath(sSavePath);
     if (extension.CompareNoCase(_T(".wmf"))==0)
     {
@@ -1002,7 +1002,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
             hbm = CreateDIBSection(ddc.m_hDC, &bmi, DIB_RGB_COLORS,(void **)&pBits, NULL, 0);
             if (hbm==0)
             {
-                TSVNMessageBox(m_hWnd, IDS_REVGRAPH_ERR_NOMEMORY, IDS_APPNAME, MB_ICONERROR);
+				CMessageBox::Show(m_hWnd, IDS_REVGRAPH_ERR_NOMEMORY, IDS_APPNAME, MB_ICONERROR);
                 return;
             }
             HBITMAP oldbm = (HBITMAP)dc.SelectObject(hbm);
@@ -1064,7 +1064,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
             ::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
         }
     }
-#endif
+
 }
 
 BOOL CRevisionGraphWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)

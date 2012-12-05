@@ -103,7 +103,6 @@ IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisegit_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
-
 IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
 IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
 
@@ -2479,19 +2478,16 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 95
     END
-
-    IDD_REVISIONGRAPH, DIALOG
-    BEGIN
-    END
 END
 #endif    // APSTUDIO_INVOKED
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Toolbar
 //
 
-IDR_REVGRAPHBAR TOOLBAR 20, 20
+IDR_REVGRAPHBAR TOOLBAR  20, 20
 BEGIN
     BUTTON      ID_VIEW_ZOOMIN
     BUTTON      ID_VIEW_ZOOMOUT
@@ -2523,12 +2519,13 @@ BEGIN
     BUTTON      ID_VIEW_SHOWOVERVIEW
 END
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_REVISIONGRAPH MENU
+IDR_REVISIONGRAPH MENU 
 BEGIN
     POPUP "&File"
     BEGIN
@@ -2536,7 +2533,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Exit",                       ID_MENUEXIT
     END
-	POPUP "&View"
+    POPUP "&View"
     BEGIN
         MENUITEM "Zoom &in\tCtrl-+",            ID_VIEW_ZOOMIN
         MENUITEM "Zoom &out\tCtrl--",           ID_VIEW_ZOOMOUT
@@ -2545,8 +2542,8 @@ BEGIN
         MENUITEM "Fit width",                   ID_VIEW_ZOOMWIDTH
         MENUITEM "Fit graph",                   ID_VIEW_ZOOMALL
         MENUITEM SEPARATOR
-	END
-	POPUP "&Help"
+    END
+    POPUP "&Help"
     BEGIN
         MENUITEM "&Help",                       ID_MENUHELP
     END
@@ -2559,6 +2556,8 @@ BEGIN
         MENUITEM "&Save graph as...",           ID_FILE_SAVESTATGRAPHAS, GRAYED
     END
 END
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator
@@ -2608,15 +2607,15 @@ BEGIN
     IDS_SVNACTION_REVERT    "Reverted"
 END
 
-STRINGTABLE
+STRINGTABLE 
 BEGIN
     ID_VIEW_ZOOM100         "Zoom 100%"
+    ID_VIEW_ZOOMALL         "Zoom to fit"
     ID_VIEW_ZOOMHEIGHT      "Zoom to fit in height"
     ID_VIEW_ZOOMWIDTH       "Zoom to fit in width"
-    ID_VIEW_ZOOMALL         "Zoom to fit"
     ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
     ID_VIEW_TOPDOWN         "Show oldest node at top"
-    ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
+    ID_VIEW_SHOWHEAD        """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
 END
 
 STRINGTABLE 
@@ -2848,7 +2847,13 @@ STRINGTABLE
 BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
-	IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SETTINGS_EXTMENULAYOUT_TT 
+                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
+    IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
 STRINGTABLE 
@@ -3070,12 +3075,6 @@ BEGIN
                             "Check those menu entries you want to appear in the top context menu instead of the TortoiseGit submenu"
     IDS_SETTINGS_EXCLUDELIST_TT 
                             "A newline separated list of paths for which no icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow overlays on all paths."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_EXTMENULAYOUT_TT 
-                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
 END
 
 STRINGTABLE 
@@ -3619,6 +3618,8 @@ BEGIN
     IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
     IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
     IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
+    IDS_REVGRAPH_ERR_NOMEMORY 
+                            """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
 END
 
 STRINGTABLE 
