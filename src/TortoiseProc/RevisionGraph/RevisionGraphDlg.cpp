@@ -57,7 +57,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
 
     // restore option state
 
-    DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 0x1ff199);
+    DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x1ff199);
 //    m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
 
     m_szTip[0]  = 0;
@@ -68,7 +68,7 @@ CRevisionGraphDlg::~CRevisionGraphDlg()
 {
     // save option state
 
-    CRegStdDWORD regOpts = CRegStdDWORD(_T("Software\\TortoiseSVN\\RevisionGraphOptions"), 1);
+    CRegStdDWORD regOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 1);
 //    regOpts = m_Graph.m_state.GetOptions()->GetRegistryFlags();
 
     // GDI+ cleanup
@@ -250,7 +250,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
     CMenu * pMenu = GetMenu();
     if (pMenu)
     {
-        CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowRevGraphOverview"), FALSE);
+        CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
         m_Graph.SetShowOverview ((DWORD)reg != FALSE);
         pMenu->CheckMenuItem(ID_VIEW_SHOWOVERVIEW, MF_BYCOMMAND | (DWORD(reg) ? MF_CHECKED : 0));
         int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_SHOWOVERVIEW);
@@ -285,7 +285,7 @@ bool CRevisionGraphDlg::UpdateData()
         //{
 		//	TGitMessageBox( m_hWnd
         //                   , // m_Graph.m_state.GetLastErrorMessage()
-        //                   , _T("TortoiseSVN")
+        //                   , _T("TortoiseGit")
         //                   , MB_ICONERROR);
 		//}
     }
@@ -315,7 +315,7 @@ bool CRevisionGraphDlg::UpdateData()
             {
                 TSVNMessageBox( m_hWnd
                               , m_Graph.m_state.GetLastErrorMessage()
-                              , _T("TortoiseSVN")
+                              , _T("TortoiseGit")
                               , MB_ICONERROR);
             }
         }
@@ -855,7 +855,7 @@ void CRevisionGraphDlg::OnViewShowoverview()
         m_Graph.SetShowOverview (true);
     }
 
-    CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseSVN\\ShowRevGraphOverview"), FALSE);
+    CRegDWORD reg = CRegDWORD(_T("Software\\TortoiseGit\\ShowRevGraphOverview"), FALSE);
     reg = m_Graph.GetShowOverview();
     m_Graph.Invalidate(FALSE);
 }

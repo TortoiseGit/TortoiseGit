@@ -1129,7 +1129,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 		graphics.pDC->SetTextAlign (TA_CENTER | TA_TOP);
 
 
-	CString fontname = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
+	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 
 	node v;
 	forall_nodes(v,m_Graph)
@@ -1215,6 +1215,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 					//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 					//graphics.pDC->TextOut(rect.left, rect.top, shortname);
 					
+
 					graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
 							rect);
 					
@@ -1405,7 +1406,7 @@ void CRevisionGraphWnd::DrawRubberBand()
 void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
 {
 	//multi - line mode. One RefName is one new line
-	CString fontname = CRegString(_T("Software\\TortoiseSVN\\LogFontName"), _T("Courier New"));
+	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 	if(mode == 0)
 	{
 		if(this->m_HashMap.find(rev) == m_HashMap.end())

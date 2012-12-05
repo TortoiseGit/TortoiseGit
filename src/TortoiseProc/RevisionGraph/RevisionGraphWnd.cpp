@@ -133,8 +133,8 @@ CRevisionGraphWnd::CRevisionGraphWnd()
         RegisterClass(&wndcls);
     }
 
-    m_bTweakTrunkColors = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\TweakTrunkColors"), TRUE) != FALSE;
-    m_bTweakTagsColors = CRegDWORD(_T("Software\\TortoiseSVN\\RevisionGraph\\TweakTagsColors"), TRUE) != FALSE;
+    m_bTweakTrunkColors = CRegDWORD(_T("Software\\TortoiseGit\\RevisionGraph\\TweakTrunkColors"), TRUE) != FALSE;
+    m_bTweakTagsColors = CRegDWORD(_T("Software\\TortoiseGit\\RevisionGraph\\TweakTagsColors"), TRUE) != FALSE;
     m_szTip[0]  = 0;
     m_wszTip[0] = 0;
 
@@ -912,7 +912,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
     {
         // save the graph as an enhanced metafile
         CMetaFileDC wmfDC;
-        wmfDC.CreateEnhanced(NULL, sSavePath, NULL, _T("TortoiseSVN\0Revision Graph\0\0"));
+        wmfDC.CreateEnhanced(NULL, sSavePath, NULL, _T("TortoiseGit\0Revision Graph\0\0"));
         float fZoom = m_fZoomFactor;
         m_fZoomFactor = DEFAULT_ZOOM;
         DoZoom(m_fZoomFactor);
@@ -1033,7 +1033,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
             dc.DeleteDC();
             if (!sErrormessage.IsEmpty())
             {
-                ::MessageBox(m_hWnd, sErrormessage, _T("TortoiseSVN"), MB_ICONERROR);
+                ::MessageBox(m_hWnd, sErrormessage, _T("TortoiseGit"), MB_ICONERROR);
             }
         }
         catch (CException * pE)
@@ -1041,7 +1041,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
             TCHAR szErrorMsg[2048];
             pE->GetErrorMessage(szErrorMsg, 2048);
             pE->Delete();
-            ::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseSVN"), MB_ICONERROR);
+            ::MessageBox(m_hWnd, szErrorMsg, _T("TortoiseGit"), MB_ICONERROR);
         }
     }
 #endif
