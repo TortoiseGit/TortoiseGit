@@ -152,6 +152,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 		else
 		{
 			ASSERT(pRev->m_CommitHash == hash);
+			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);
 			git_free_commit(&commit);
 		}

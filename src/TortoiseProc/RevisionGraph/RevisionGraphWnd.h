@@ -216,8 +216,9 @@ protected:
     float           m_previewZoom;
 
 //    index_t         m_hoverIndex;   // node the cursor currently hovers over
+	ogdf::node		m_hoverIndex;
     DWORD           m_hoverGlyphs;  // the glyphs shown for \ref m_hoverIndex
-//    mutable index_t m_tooltipIndex; // the node index we fetched the tooltip for
+	mutable ogdf::node m_tooltipIndex; // the node index we fetched the tooltip for
     bool            m_showHoverGlyphs;  // if true, show the glyphs we currently hover over
                                     // (will be activated only after some delay)
 
@@ -336,10 +337,10 @@ private:
 
     CSize           UsableTooltipRect();
     CString         DisplayableText (const CString& wholeText, const CSize& tooltipSize);
-    CString         TooltipText (index_t index);
+	CString         TooltipText (ogdf::node index);
 
     CPoint          GetLogCoordinates (CPoint point) const;
-    index_t         GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
+	ogdf::node      GetHitNode (CPoint point, CSize border = CSize (0, 0)) const;
     DWORD           GetHoverGlyphs (CPoint point) const;
 	PointF			cutPoint(ogdf::node v,double lw,PointF ps, PointF pt);
 

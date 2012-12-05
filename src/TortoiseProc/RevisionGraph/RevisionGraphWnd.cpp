@@ -100,7 +100,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
     , m_ptRubberStart(0,0)
     , m_bShowOverview(false)
     , m_parent (NULL)
-//    , m_hoverIndex ((index_t)NO_INDEX)
+    , m_hoverIndex (NULL)
     , m_hoverGlyphs (0)
 //    , m_tooltipIndex ((index_t)NO_INDEX)
     , m_showHoverGlyphs (false)
@@ -334,7 +334,7 @@ CPoint CRevisionGraphWnd::GetLogCoordinates (CPoint point) const
                   , (int)((point.y + nVScrollPos) / m_fZoomFactor));
 }
 
-index_t CRevisionGraphWnd::GetHitNode (CPoint point, CSize border) const
+node CRevisionGraphWnd::GetHitNode (CPoint point, CSize border) const
 {
 #if 0
     // any nodes at all?
@@ -347,7 +347,18 @@ index_t CRevisionGraphWnd::GetHitNode (CPoint point, CSize border) const
 
     return nodeList->GetAt (GetLogCoordinates (point), border);
 #endif 
-	return 0;
+
+	node v;
+	forall_nodes(v,m_Graph)
+	{
+		 RectF noderect (GetNodeRect (v, CPoint(GetScrollPos(SB_HORZ),  GetScrollPos(SB_VERT))));
+		 if(point.x>noderect.X && point.x <(noderect.X+noderect.Width) &&
+			 point.y>noderect.Y && point.y <(noderect.Y+noderect.Height))
+		 {
+			 return v;
+		 }
+	}
+	return NULL;
 }
 
 DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint point) const
@@ -712,11 +723,11 @@ bool CRevisionGraphWnd::CancelMouseZoom()
 
 INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
 {
-#if 0
+
     if (IsUpdateJobRunning())
         return -1;
 
-    index_t nodeIndex = GetHitNode (point);
+    node nodeIndex = GetHitNode (point);
     if (m_tooltipIndex != nodeIndex)
     {
         // force tooltip to be updated
@@ -725,18 +736,18 @@ INT_PTR CRevisionGraphWnd::OnToolHitTest(CPoint point, TOOLINFO* pTI) const
         return -1;
     }
 
-    if (nodeIndex == NO_INDEX)
+    if (nodeIndex == NULL)
         return -1;
 
-    if ((GetHoverGlyphs (point) != 0) || (GetHitGlyph (point) != NULL))
-        return -1;
+//    if ((GetHoverGlyphs (point) != 0) || (GetHitGlyph (point) != NULL))
+//        return -1;
 
     pTI->hwnd = this->m_hWnd;
     CWnd::GetClientRect(&pTI->rect);
     pTI->uFlags  |= TTF_ALWAYSTIP | TTF_IDISHWND;
     pTI->uId = (UINT_PTR)m_hWnd;
     pTI->lpszText = LPSTR_TEXTCALLBACK;
-#endif
+
     return 1;
 }
 
@@ -892,16 +903,25 @@ CString CRevisionGraphWnd::DisplayableText ( const CString& wholeText
     return result;
 }
 
-CString CRevisionGraphWnd::TooltipText (index_t index)
+CString CRevisionGraphWnd::TooltipText(node index)
 {
-#if 0
-    if (index != NO_INDEX)
-    {
-        CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
-        return nodeList->GetToolTip (index);
-    }
-#endif
-    return CString();
+	if(index)
+	{
+		CString str;
+		CGitHash	hash = m_logEntries[index->index()];
+		GitRev *rev = this->m_LogCache.GetCacheData(hash);
+		str += rev->m_CommitHash.ToString();
+		str += _T("\n");
+		str += rev->GetAuthorName() +_T(" ") + rev->GetAuthorEmail();
+		str += _T(" ");
+		str += rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
+		str += _T("\n\n")+rev->GetSubject();
+		str += _T("\n");
+		str += rev->GetBody();
+		return str;
+
+	}else
+		return CString();
 }
 
 void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
@@ -1524,7 +1544,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 {
-#if 0
+
     if (IsUpdateJobRunning())
     {
         return __super::OnMouseMove(nFlags, point);
@@ -1552,6 +1572,7 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
             GetCursorPos (&clientPoint);
             ScreenToClient (&clientPoint);
 
+#if 0
             const CRevisionGraphState::SVisibleGlyph* hitGlyph
                 = GetHitGlyph (clientPoint);
             const CFullGraphNode* glyphNode
@@ -1565,10 +1586,9 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
                     hoverNode = nodeList->GetNode (m_hoverIndex).node->GetBase();
             }
 
-            bool onHoverNodeGlyph = (hoverNode != NULL) && (glyphNode == hoverNode);
-            if (   !onHoverNodeGlyph
-                && (   (m_hoverIndex != GetHitNode (clientPoint))
-                    || (m_hoverGlyphs != GetHoverGlyphs (clientPoint))))
+            //bool onHoverNodeGlyph = (hoverNode != NULL) && (glyphNode == hoverNode);
+            if (   !m_hoverIndex
+                && (   (m_hoverIndex != GetHitNode (clientPoint))))
             {
                 m_showHoverGlyphs = false;
 
@@ -1577,11 +1597,11 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 
                 Invalidate(FALSE);
             }
-
+#endif
             return __super::OnMouseMove(nFlags, point);
         }
     }
-
+#if 0
     if ((abs(m_ptRubberStart.x - point.x) < 2)&&(abs(m_ptRubberStart.y - point.y) < 2))
     {
         return __super::OnMouseMove(nFlags, point);
