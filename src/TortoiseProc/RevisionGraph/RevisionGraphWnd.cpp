@@ -176,11 +176,13 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	this->m_Graph.newEdge(three, four);
 	
 #endif
+	FastHierarchyLayout *pOHL = ::new FastHierarchyLayout;
+	//It will auto delte when m_SugiyamLayout destory
 
-	this->m_OHL.layerDistance(30.0);
-	this->m_OHL.nodeDistance(25.0);
+	pOHL->layerDistance(30.0);
+	pOHL->nodeDistance(25.0);
 
-	 m_SugiyamLayout.setLayout(&m_OHL);
+	m_SugiyamLayout.setLayout(pOHL);
 
 #if 0
 	//this->m_OHL.layerDistance(30.0);
@@ -250,6 +252,7 @@ CRevisionGraphWnd::~CRevisionGraphWnd()
         m_apFonts[i] = NULL;
     }
     delete m_pDlgTip;
+	m_Graph.clear();
 }
 
 void CRevisionGraphWnd::DoDataExchange(CDataExchange* pDX)
