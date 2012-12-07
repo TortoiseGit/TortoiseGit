@@ -350,7 +350,13 @@ private:
 
     typedef PointF TCutRectangle[8];
     void            CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result);
-    void            DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
+	enum
+	{
+		ROUND_UP = 0x1,
+		ROUND_DOWN = 0x2,
+		ROUND_BOTH = 0x3,
+	};
+    void            DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask=ROUND_BOTH);
     void            DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect);
     void            DrawShape (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, NodeShape shape);
     void            DrawShadow(GraphicsDevice& graphics, const RectF& rect,

@@ -2066,6 +2066,15 @@ CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
 			shortname = _T("bad");
 		}
 	}
+	else if(CGit::GetShortName(str,shortname,_T("refs/notes/")))
+	{
+		type = CGit::NOTES;
+	}
+	else
+	{
+		type = CGit::UNKNOWN;
+		shortname = _T("Unknown");
+	}
 
 	if(out_type)
 		*out_type = type;

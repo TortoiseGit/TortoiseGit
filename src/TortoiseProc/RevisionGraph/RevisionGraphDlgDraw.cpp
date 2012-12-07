@@ -145,7 +145,7 @@ void CRevisionGraphWnd::CutawayPoints (const RectF& rect, float cutLen, TCutRect
     result[7] = PointF (rect.X, rect.GetBottom() - cutLen);
 }
 
-void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect)
+void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask)
 {
 
     enum {POINT_COUNT = 8};
@@ -157,12 +157,27 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
     if (graphics.graphics)
     {
         GraphicsPath path;
-        path.AddArc (points[0].X, points[1].Y, radius, radius, 180, 90);
-        path.AddArc (points[2].X, points[2].Y, radius, radius, 270, 90);
-        path.AddArc (points[5].X, points[4].Y, radius, radius, 0, 90);
-        path.AddArc (points[7].X, points[7].Y, radius, radius, 90, 90);
+        
+		if(mask & ROUND_UP)
+		{
+			path.AddArc (points[0].X, points[1].Y, radius, radius, 180, 90);
+			path.AddArc (points[2].X, points[2].Y, radius, radius, 270, 90);
+		}else
+		{
+			path.AddLine(points[0].X, points[1].Y, points[3].X, points[2].Y);
+		}
 
-        points[0].Y -= radius / 2;
+		if(mask & ROUND_DOWN)
+		{
+			path.AddArc (points[5].X, points[4].Y, radius, radius, 0, 90);
+			path.AddArc (points[7].X, points[7].Y, radius, radius, 90, 90);
+		}else
+		{
+			path.AddLine(points[3].X, points[3].Y, points[4].X, points[5].Y);
+			path.AddLine(points[4].X, points[5].Y, points[7].X, points[6].Y);
+		}
+
+        //points[0].Y -= radius / 2;
         path.AddLine (points[7], points[0]);
 
         if (brush != NULL)
@@ -1202,22 +1217,23 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 						colRef = m_Colors.GetColor(CColors::BisectBad);
 						shortname = _T("bad");
 					}
-				}
-
-
-				if (graphics.pDC)
+				}else if(CGit::GetShortName(str,shortname,_T("refs/notes/")))
 				{
-					//graphics.pDC->SetTextColor (text.style == ILayoutTextList::SText::STYLE_WARNING
-					//    ? m_Colors.GetColor (CColors::gdpWCNodeBorder).ToCOLORREF()
-					//    : standardTextColor );
-					//graphics.pDC->SelectObject (GetFont (FALSE, text.style != ILayoutTextList::SText::STYLE_DEFAULT));
-					//graphics.pDC->ExtTextOut((textRect.left + textRect.right)/2, textRect.top, 0, &textRect, shortname, NULL);
-					//graphics.pDC->DrawText(shortname, &rect, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-					//graphics.pDC->TextOut(rect.left, rect.top, shortname);
-					
+					colRef = m_Colors.GetColor(CColors::AddedNode);
+				}
+			
+				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
+				Gdiplus::Pen pen(color);
+				Gdiplus::SolidBrush brush(color);
+				if (graphics.graphics)
+				{
+					int mask =0;
+					mask |= (i==0)? ROUND_UP:0;
+					mask |= (i== m_HashMap[hash].size()-1)? ROUND_DOWN:0;
+					this->DrawRoundedRect(graphics, color,1,&pen, color,&brush, rect,mask);
 
-					graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
-							rect);
+					//graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
+					//		rect);
 					
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
 						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),

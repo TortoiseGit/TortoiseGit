@@ -1680,6 +1680,13 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 
     InitView();
     BuildPreview();
+	
+	SCROLLINFO sinfo = {0};
+    sinfo.cbSize = sizeof(SCROLLINFO);
+    GetScrollInfo(SB_HORZ, &sinfo);
+	sinfo.nPos = sinfo.nMax;
+	SetScrollInfo(SB_HORZ, &sinfo);
+
     Invalidate(FALSE);
 
 #if 0

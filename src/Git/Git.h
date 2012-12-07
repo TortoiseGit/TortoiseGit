@@ -251,7 +251,9 @@ public:
 		TAG,
 		STASH,
 		BISECT_GOOD,
-		BISECT_BAD
+		BISECT_BAD,
+		NOTES,
+		UNKNOWN,
 
 	}REF_TYPE;
 
