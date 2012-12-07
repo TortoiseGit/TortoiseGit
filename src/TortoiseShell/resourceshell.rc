@@ -78,6 +78,7 @@ IDI_MENUSYNC            ICON                    "..\\resources\\menusync.ico"
 IDI_COPYCLIP            ICON                    "..\\Resources\\copy.ico"
 IDI_THUMB_DOWN          ICON                    "..\\Resources\\thumb_down.ico"
 IDI_THUMB_UP            ICON                    "..\\Resources\\thumb_up.ico"
+IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -237,6 +238,9 @@ BEGIN
     IDS_MENUDESCMERGE       "Merges another branch"
     IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
+	IDS_MENUREVISIONGRAPH   "Revision &graph"
+	IDS_MENUDESCREVISIONGRAPH 
+                            "Shows a graphical representation of copies/tags/branches"
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
     IDS_STATUSNORMAL        "normal"
