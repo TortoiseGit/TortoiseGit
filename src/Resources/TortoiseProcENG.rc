@@ -2544,6 +2544,13 @@ BEGIN
         MENUITEM SEPARATOR
 		MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
     END
+	POPUP "&Git"
+    BEGIN
+        MENUITEM "&Compare revisions",          ID_VIEW_COMPAREREVISIONS, GRAYED
+        MENUITEM "Compare &HEAD revisions",     ID_VIEW_COMPAREHEADREVISIONS, GRAYED
+        MENUITEM "&Unified diff",               ID_VIEW_UNIFIEDDIFF, GRAYED
+        MENUITEM "Unified &diff of HEAD revisions", ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, GRAYED
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "&Help",                       ID_MENUHELP

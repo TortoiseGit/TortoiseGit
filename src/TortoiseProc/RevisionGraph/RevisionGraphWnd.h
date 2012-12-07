@@ -192,8 +192,8 @@ protected:
 
     CRevisionGraphDlg *m_parent;
 
-    const CVisibleGraphNode * m_SelectedEntry1;
-    const CVisibleGraphNode * m_SelectedEntry2;
+    ogdf::node m_SelectedEntry1;
+    ogdf::node m_SelectedEntry2;
     LOGFONT         m_lfBaseFont;
     CFont *         m_apFonts[MAXFONTS];
     int             m_nFontSize;
@@ -314,7 +314,7 @@ private:
         SVG *   m_pSVG;
     };
 
-    bool            UpdateSelectedEntry (const CVisibleGraphNode * clickedentry);
+    bool            UpdateSelectedEntry (ogdf::node clickedentry);
     void            AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
     void            AddSVNOps (CMenu& popup);
     void            AddGraphOps (CMenu& popup, const CVisibleGraphNode * node);

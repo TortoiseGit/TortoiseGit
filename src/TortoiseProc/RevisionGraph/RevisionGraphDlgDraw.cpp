@@ -177,7 +177,7 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 			path.AddLine(points[4].X, points[5].Y, points[7].X, points[6].Y);
 		}
 
-        //points[0].Y -= radius / 2;
+        points[0].Y -= radius / 2;
         path.AddLine (points[7], points[0]);
 
         if (brush != NULL)
@@ -527,7 +527,7 @@ void CRevisionGraphWnd::DrawShadows (GraphicsDevice& graphics, const CRect& logR
 }
 
 
-#if 0
+
 void CRevisionGraphWnd::DrawSquare
     ( GraphicsDevice& graphics
     , const PointF& leftTop
@@ -557,6 +557,7 @@ void CRevisionGraphWnd::DrawSquare
     }
 }
 
+#if 0
 void CRevisionGraphWnd::DrawGlyph
     ( GraphicsDevice& graphics
     , Image* glyphs
@@ -805,6 +806,8 @@ void CRevisionGraphWnd::IndicateGlyphDirection
     }
 }
 
+#endif
+
 void CRevisionGraphWnd::DrawMarker
     ( GraphicsDevice& graphics
     , const RectF& noderect
@@ -812,30 +815,13 @@ void CRevisionGraphWnd::DrawMarker
     , int relPosition
     , int colorIndex )
 {
-    // marker size
-    float squareSize = MARKER_SIZE * m_fZoomFactor;
-    float squareDist = min ( (noderect.Height - squareSize) / 2
-                           , squareSize / 2);
-
-    // position
-
-    REAL offset = squareSize * (0.75f + relPosition);
-    REAL left = position == mpRight
-              ? noderect.GetRight() - offset - squareSize
-              : noderect.GetLeft() + offset;
-    PointF leftTop (left, noderect.Y + squareDist);
-
-    // color
-
-    Color lightColor (m_Colors.GetColor (CColors::ctMarkers, colorIndex));
-    Color darkColor (Darken (lightColor));
-    Color borderColor (0x80000000);
-
-    // draw it
-
-    DrawSquare (graphics, leftTop, lightColor, darkColor, borderColor);
+	int width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
+	Pen pen(Color(0,0,255),width);
+	DrawRoundedRect(graphics, Color(255,255,0), width, &pen, Color(0,0,0), NULL, noderect);
+	
 }
 
+#if 0
 void CRevisionGraphWnd::DrawStripes (GraphicsDevice& graphics, const CSize& offset)
 {
     // we need to fill this visible area of the the screen
@@ -957,9 +943,6 @@ void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, cons
 
         //if (node.node->GetFirstTag() != NULL)
         //    DrawMarker (graphics, noderect, mpRight, 0, 0);
-
-        //if ((m_SelectedEntry1 == node.node) || (m_SelectedEntry2 == node.node))
-        //    DrawMarker (graphics, noderect, mpLeft, 0, 1);
 
         // expansion glypths etc.
 
@@ -1255,6 +1238,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 				}
 			}
 		}
+		if ((m_SelectedEntry1 == v) || (m_SelectedEntry2 == v))
+            DrawMarker (graphics, noderect, mpLeft, 0, 1);
+
 	}
 }
 

@@ -566,11 +566,11 @@ void CRevisionGraphWnd::OnSize(UINT nType, int cx, int cy)
 
 void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 {
-#if 0
+
     if (IsUpdateJobRunning())
         return __super::OnLButtonDown(nFlags, point);
 
-    CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
+//    CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
 
     SetFocus();
     bool bHit = false;
@@ -578,6 +578,7 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
     bool bOverview = m_bShowOverview && m_OverviewRect.PtInRect(point);
     if (! bOverview)
     {
+#if 0
         const CRevisionGraphState::SVisibleGlyph* hitGlyph
             = GetHitGlyph (point);
 
@@ -586,13 +587,13 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
             ToggleNodeFlag (hitGlyph->node, hitGlyph->state);
             return __super::OnLButtonDown(nFlags, point);
         }
-        index_t nodeIndex = GetHitNode (point);
-        if (nodeIndex != NO_INDEX)
+#endif
+        node nodeIndex = GetHitNode (point);
+        if (nodeIndex != NULL)
         {
-            const CVisibleGraphNode* reventry = nodeList->GetNode (nodeIndex).node;
             if (bControl)
             {
-                if (m_SelectedEntry1 == reventry)
+                if (m_SelectedEntry1 == nodeIndex)
                 {
                     if (m_SelectedEntry2)
                     {
@@ -602,19 +603,19 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
                     else
                         m_SelectedEntry1 = NULL;
                 }
-                else if (m_SelectedEntry2 == reventry)
+                else if (m_SelectedEntry2 == nodeIndex)
                     m_SelectedEntry2 = NULL;
                 else if (m_SelectedEntry1)
-                    m_SelectedEntry2 = reventry;
+                    m_SelectedEntry2 = nodeIndex;
                 else
-                    m_SelectedEntry1 = reventry;
+                    m_SelectedEntry1 = nodeIndex;
             }
             else
             {
-                if (m_SelectedEntry1 == reventry)
+                if (m_SelectedEntry1 == nodeIndex)
                     m_SelectedEntry1 = NULL;
                 else
-                    m_SelectedEntry1 = reventry;
+                    m_SelectedEntry1 = nodeIndex;
                 m_SelectedEntry2 = NULL;
             }
             bHit = true;
@@ -643,7 +644,7 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
     EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_COMPAREHEADREVISIONS, uEnable);
     EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_UNIFIEDDIFF, uEnable);
     EnableMenuItem(GetParent()->GetMenu()->m_hMenu, ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, uEnable);
-#endif
+
     __super::OnLButtonDown(nFlags, point);
 }
 
@@ -1105,7 +1106,7 @@ void CRevisionGraphWnd::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
     return __super::OnMouseHWheel(nFlags, zDelta, pt);
 }
 
-bool CRevisionGraphWnd::UpdateSelectedEntry (const CVisibleGraphNode * clickedentry)
+bool CRevisionGraphWnd::UpdateSelectedEntry (node clickedentry)
 {
     if ((m_SelectedEntry1 == NULL)&&(clickedentry == NULL))
         return false;
