@@ -43,6 +43,7 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	m_bFFonly = false;
 	m_bFetchTags = 2;
 	m_bAllRemotes = FALSE;
+	m_bPrune = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
