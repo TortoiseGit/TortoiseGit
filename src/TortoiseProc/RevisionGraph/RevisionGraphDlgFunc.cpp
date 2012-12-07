@@ -54,14 +54,14 @@ void CRevisionGraphWnd::InitView()
 
 void CRevisionGraphWnd::BuildPreview()
 {
-#if 0
+
     m_Preview.DeleteObject();
     if (!m_bShowOverview)
         return;
 
     // is there a point in drawing this at all?
 
-    int nodeCount = m_state.GetNodeCount();
+	int nodeCount = this->m_Graph.numberOfNodes();
     if ((nodeCount > REVGRAPH_PREVIEW_MAX_NODES) || (nodeCount == 0))
         return;
 
@@ -102,7 +102,7 @@ void CRevisionGraphWnd::BuildPreview()
     dc.DeleteDC();
 
     DoZoom (origZoom, false);
-#endif
+
 }
 
 void CRevisionGraphWnd::SetScrollbar (int bar, int newPos, int clientMax, int graphMax)

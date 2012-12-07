@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_MENUEXIT, OnMenuexit)
     ON_COMMAND(ID_MENUHELP, OnMenuhelp)
 	ON_COMMAND(ID_FILE_SAVEGRAPHAS, OnFileSavegraphas)
+	ON_COMMAND(ID_VIEW_SHOWOVERVIEW, OnViewShowoverview)
 #if 0
 
     ON_COMMAND(ID_VIEW_COMPAREHEADREVISIONS, OnViewCompareheadrevisions)
@@ -122,7 +123,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
    
 
     ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
-    ON_COMMAND(ID_VIEW_SHOWOVERVIEW, OnViewShowoverview)
+   
 #endif
     ON_WM_WINDOWPOSCHANGING()
 

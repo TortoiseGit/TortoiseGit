@@ -1559,7 +1559,7 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
             // scrolling
             CRect viewRect = GetViewRect();
             int x = (int)((point.x-m_OverviewRect.left - (m_OverviewPosRect.Width()/2)) / m_previewZoom  * m_fZoomFactor);
-            int y = (int)((point.y - (m_OverviewPosRect.Height()/2)) / m_previewZoom  * m_fZoomFactor);
+			int y = (int)((point.y - m_OverviewRect.top - (m_OverviewPosRect.Height()/2)) / m_previewZoom  * m_fZoomFactor);
             x = max(0, x);
             y = max(0, y);
             SetScrollbars(y, x);

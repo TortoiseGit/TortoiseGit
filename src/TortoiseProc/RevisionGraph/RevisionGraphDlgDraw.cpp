@@ -1366,14 +1366,14 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
         CMyMemDC memDC2(graphics.pDC, true);
         memDC2.SetWindowOrg(0, 0);
         HBITMAP oldhbm = (HBITMAP)memDC2.SelectObject(&m_Preview);
-        graphics.pDC->BitBlt(rect.Width()-m_previewWidth, 0, m_previewWidth, m_previewHeight,
+        graphics.pDC->BitBlt(rect.Width()-m_previewWidth, rect.Height() -  m_previewHeight, m_previewWidth, m_previewHeight,
             &memDC2, 0, 0, SRCCOPY);
         memDC2.SelectObject(oldhbm);
         // draw the border for the overview rectangle
         m_OverviewRect.left = rect.Width()-m_previewWidth;
-        m_OverviewRect.top = 0;
+		m_OverviewRect.top = rect.Height()-  m_previewHeight;
         m_OverviewRect.right = rect.Width();
-        m_OverviewRect.bottom = m_previewHeight;
+		m_OverviewRect.bottom = rect.Height();
         graphics.pDC->DrawEdge(&m_OverviewRect, EDGE_BUMP, BF_RECT);
         // now draw a rectangle where the current view is located in the overview
 
@@ -1384,7 +1384,7 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
         LONG ypos = (long)(nVScrollPos * m_previewZoom / m_fZoomFactor);
         RECT tempRect;
         tempRect.left = rect.Width()-m_previewWidth+xpos;
-        tempRect.top = ypos;
+		tempRect.top = rect.Height() - m_previewHeight + ypos;
         tempRect.right = tempRect.left + width;
         tempRect.bottom = tempRect.top + height;
         // make sure the position rect is not bigger than the preview window itself

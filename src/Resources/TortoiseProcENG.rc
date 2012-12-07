@@ -2542,6 +2542,7 @@ BEGIN
         MENUITEM "Fit width",                   ID_VIEW_ZOOMWIDTH
         MENUITEM "Fit graph",                   ID_VIEW_ZOOMALL
         MENUITEM SEPARATOR
+		MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
     END
     POPUP "&Help"
     BEGIN
