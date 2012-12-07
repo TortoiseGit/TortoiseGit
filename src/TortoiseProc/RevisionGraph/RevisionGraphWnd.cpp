@@ -1154,57 +1154,24 @@ void CRevisionGraphWnd::AppendMenu
     popup.AppendMenu (MF_STRING | flags, command, titleString);
 }
 
-void CRevisionGraphWnd::AddSVNOps (CMenu& popup)
+void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 {
-#if 0
-    bool bothPresent =  (m_SelectedEntry1 != NULL)
-                     && !m_SelectedEntry1->GetClassification().Is (CNodeClassification::IS_DELETED)
-                     && (m_SelectedEntry2 != NULL)
-                     && !m_SelectedEntry2->GetClassification().Is (CNodeClassification::IS_DELETED);
+    bool bothPresent = (m_SelectedEntry2 && m_SelectedEntry1);
 
-    bool bSameURL =   (m_SelectedEntry2 && m_SelectedEntry1
-                   && (m_SelectedEntry1->GetPath() == m_SelectedEntry2->GetPath()));
+	AppendMenu (popup, IDS_REPOBROWSE_SHOWLOG, ID_SHOWLOG);
 
     if (m_SelectedEntry1 && (m_SelectedEntry2 == NULL))
     {
-        AppendMenu (popup, IDS_REPOBROWSE_SHOWLOG, ID_SHOWLOG);
-        if (!m_SelectedEntry1->GetClassification().Is (CNodeClassification::IS_MODIFIED_WC))
-            AppendMenu (popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
-        if (PathIsDirectory(m_sPath))
-            if (m_SelectedEntry1->GetClassification().Is (CNodeClassification::IS_MODIFIED_WC))
-                AppendMenu (popup, IDS_REVGRAPH_POPUP_CFM, ID_CFM);
-            else
-                AppendMenu (popup, IDS_LOG_POPUP_MERGEREV, ID_MERGETO);
-
-        if (!CTGitPath (m_sPath).IsUrl())
-            if (GetWCURL() == GetSelectedURL())
-            {
-                AppendMenu (popup, IDS_REVGRAPH_POPUP_UPDATE, ID_UPDATE);
-            }
-            else
-            {
-                AppendMenu (popup, IDS_REVGRAPH_POPUP_SWITCHTOHEAD, ID_SWITCHTOHEAD);
-                AppendMenu (popup, IDS_REVGRAPH_POPUP_SWITCH, ID_SWITCH);
-            }
-        AppendMenu(popup, IDS_REPOBROWSE_URLTOCLIPBOARD, ID_COPYURL);
+		//AppendMenu (popup, IDS_REVGRAPH_POPUP_SWITCH, ID_SWITCH);
     }
 
     if (bothPresent)
     {
-        if (!m_SelectedEntry2->GetClassification().Is (CNodeClassification::IS_MODIFIED_WC))
-        {
-            // TODO: TSVN currently can't compare URL -> WC, but only vice versa)
-
-            AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_COMPAREREVS);
-            if (!bSameURL)
-                AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
-        }
-
+        AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_COMPAREREVS);
         AppendMenu (popup, IDS_REVGRAPH_POPUP_UNIDIFFREVS, ID_UNIDIFFREVS);
-        if (!bSameURL)
-            AppendMenu (popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS, ID_UNIDIFFHEADS);
+      
     }
-#endif
+
 }
 
 void CRevisionGraphWnd::AddGraphOps (CMenu& popup, const CVisibleGraphNode * node)
@@ -1306,23 +1273,24 @@ CString CRevisionGraphWnd::GetWCURL() const
 
 void CRevisionGraphWnd::DoShowLog()
 {
-#if 0
-    CString URL = GetSelectedURL();
 
-    CString sCmd;
-    sCmd.Format(_T("/command:log /path:\"%s\" /startrev:%ld"),
-        (LPCTSTR)URL,
-        m_SelectedEntry1->GetRevision());
+	if(m_SelectedEntry1 == NULL)
+		return;
 
-    if (!SVN::PathIsURL(CTGitPath(m_sPath)))
-    {
-        sCmd += _T(" /propspath:\"");
-        sCmd += m_sPath;
-        sCmd += _T("\"");
-    }
-
+	CString sCmd;
+	
+	if(m_SelectedEntry2 != NULL)
+		sCmd.Format(_T("/command:log /path:\"%s\" /startrev:%s /endrev:%s"),
+			this->m_sPath,
+			this->m_logEntries[m_SelectedEntry1->index()].ToString(),
+			this->m_logEntries[m_SelectedEntry2->index()].ToString());
+	else
+		sCmd.Format(_T("/command:log /path:\"%s\" /startrev:%s"),
+			this->m_sPath,
+			this->m_logEntries[m_SelectedEntry1->index()].ToString());
+  
     CAppUtils::RunTortoiseProc(sCmd);
-#endif
+
 }
 
 void CRevisionGraphWnd::DoCheckForModification()
@@ -1441,21 +1409,13 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
     if (IsUpdateJobRunning())
         return;
-#if 0
-    CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
 
     CPoint clientpoint = point;
     this->ScreenToClient(&clientpoint);
 
-    index_t nodeIndex = GetHitNode (clientpoint);
-    const CVisibleGraphNode * clickedentry = NULL;
-    if (nodeIndex != NO_INDEX)
-    {
-        clickedentry = nodeList->GetNode (nodeIndex).node;
-    }
-
-    if ( !UpdateSelectedEntry (clickedentry)
-        && !m_state.GetNodeStates()->GetCombinedFlags())
+    node nodeIndex = GetHitNode (clientpoint);
+   
+    if ( !UpdateSelectedEntry (nodeIndex))
     {
         return;
     }
@@ -1464,8 +1424,8 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     if (!popup.CreatePopupMenu())
         return;
 
-    AddSVNOps (popup);
-    AddGraphOps (popup, clickedentry);
+    AddGitOps (popup);
+//    AddGraphOps (popup, clickedentry);
 
     // if the context menu is invoked through the keyboard, we have to use
     // a calculated position on where to anchor the menu on
@@ -1478,6 +1438,21 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this, 0);
     switch (cmd)
     {
+	case ID_COMPAREREVS:
+        if (m_SelectedEntry1 != NULL)
+            CompareRevs(false);
+        break;
+	case ID_UNIDIFFREVS:
+        if (m_SelectedEntry1 != NULL)
+            UnifiedDiffRevs(false);
+    case ID_SHOWLOG:
+        DoShowLog();
+        break;
+    case ID_SWITCH:
+        DoSwitch();
+        break;
+
+#if 0
     case ID_COMPAREREVS:
         if (m_SelectedEntry1 != NULL)
             CompareRevs(false);
@@ -1542,8 +1517,9 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
     case ID_GRAPH_SPLITJOIN_BELOW:
         ToggleNodeFlag (clickedentry, CGraphNodeStates::SPLIT_BELOW);
         break;
-    }
 #endif
+    }
+
 }
 
 void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)

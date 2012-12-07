@@ -28,7 +28,7 @@ bool RevisionGraphCommand::Execute()
 
    // std::unique_ptr<CRevisionGraphDlg> dlg(new CRevisionGraphDlg());
 	CRevisionGraphDlg dlg;
-    dlg.SetPath(cmdLinePath.GetUIPathString());
+	dlg.SetPath(cmdLinePath.GetWinPathString());
 //    dlg.SetPegRevision(pegrev);
     if (parser.HasVal(L"output"))
     {

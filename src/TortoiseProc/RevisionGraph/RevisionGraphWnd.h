@@ -316,7 +316,7 @@ private:
 
     bool            UpdateSelectedEntry (ogdf::node clickedentry);
     void            AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
-    void            AddSVNOps (CMenu& popup);
+    void            AddGitOps (CMenu& popup);
     void            AddGraphOps (CMenu& popup, const CVisibleGraphNode * node);
     CString         GetSelectedURL() const;
     CString         GetWCURL() const;
