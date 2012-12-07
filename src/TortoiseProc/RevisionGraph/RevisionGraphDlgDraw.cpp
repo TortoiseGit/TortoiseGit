@@ -1219,7 +1219,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 					}
 				}else if(CGit::GetShortName(str,shortname,_T("refs/notes/")))
 				{
-					colRef = m_Colors.GetColor(CColors::AddedNode);
+					colRef = m_Colors.GetColor(CColors::NoteNode);
 				}
 			
 				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
