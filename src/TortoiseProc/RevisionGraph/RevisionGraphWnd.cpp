@@ -1163,6 +1163,8 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
     if (m_SelectedEntry1 && (m_SelectedEntry2 == NULL))
     {
 		//AppendMenu (popup, IDS_REVGRAPH_POPUP_SWITCH, ID_SWITCH);
+		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
+		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
     }
 
     if (bothPresent)
@@ -1446,21 +1448,26 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
         if (m_SelectedEntry1 != NULL)
             UnifiedDiffRevs(false);
 		break;
+    case ID_UNIDIFFHEADS:
+        if (m_SelectedEntry1 != NULL)
+            UnifiedDiffRevs(true);
+		break; 
     case ID_SHOWLOG:
         DoShowLog();
         break;
     case ID_SWITCH:
         DoSwitch();
         break;
+    case ID_COMPAREHEADS:
+        if (m_SelectedEntry1 != NULL)
+            CompareRevs(true);
+        break;
+
 
 #if 0
     case ID_COMPAREREVS:
         if (m_SelectedEntry1 != NULL)
             CompareRevs(false);
-        break;
-    case ID_COMPAREHEADS:
-        if (m_SelectedEntry1 != NULL)
-            CompareRevs(true);
         break;
     case ID_UNIDIFFREVS:
         if (m_SelectedEntry1 != NULL)

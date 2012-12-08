@@ -358,7 +358,7 @@ void CRevisionGraphWnd::GetSelected
 void CRevisionGraphWnd::CompareRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
-    ASSERT(m_SelectedEntry2 != NULL);
+    ASSERT(bHead || m_SelectedEntry2 != NULL);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	
@@ -394,11 +394,12 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
-    ASSERT(m_SelectedEntry2 != NULL);
+    ASSERT(bHead || m_SelectedEntry2 != NULL);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(), m_sPath,
-		this->m_logEntries[m_SelectedEntry2->index()].ToString(),alternativeTool);
+		bHead? _T("HEAD"):this->m_logEntries[m_SelectedEntry2->index()].ToString(),
+		alternativeTool);
 
 }
 
