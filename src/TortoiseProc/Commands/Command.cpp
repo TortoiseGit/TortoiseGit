@@ -74,6 +74,8 @@
 #include "BisectCommand.h"
 #include "RepositoryBrowserCommand.h"
 #include "RevisiongraphCommand.h"
+#include "ShowCompareCommand.h"
+
 #if 0
 
 
@@ -92,8 +94,6 @@
 
 #include "RevertCommand.h"
 #include "RTFMCommand.h"
-
-#include "ShowCompareCommand.h"
 
 #include "UnIgnoreCommand.h"
 
@@ -366,6 +366,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RepositoryBrowserCommand;
 	case cmdRevisionGraph:
         return new RevisionGraphCommand;
+	case cmdShowCompare:
+		return new ShowCompareCommand;
 
 #if 0
 
@@ -386,8 +388,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new RTFMCommand;
 	case cmdRebuildIconCache:
 		return new RebuildIconCacheCommand;
-	case cmdShowCompare:
-		return new ShowCompareCommand;
 	case cmdUnIgnore:
 		return new UnIgnoreCommand;
 #endif

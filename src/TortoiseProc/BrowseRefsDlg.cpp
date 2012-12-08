@@ -298,11 +298,11 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 	return CString();//None
 }
 
-static int GetBranchDescriptionsCallback(const char *var_name, const char *value, void *data)
+static int GetBranchDescriptionsCallback(const git_config_entry *entry, void *data)
 {
 	MAP_STRING_STRING *descriptions = (MAP_STRING_STRING *) data;
-	CString key = CUnicodeUtils::GetUnicode(var_name, CP_UTF8);
-	CString val = CUnicodeUtils::GetUnicode(value, CP_UTF8);
+	CString key = CUnicodeUtils::GetUnicode(entry->name, CP_UTF8);
+	CString val = CUnicodeUtils::GetUnicode(entry->value, CP_UTF8);
 	descriptions->insert(make_pair(key.Mid(7, key.GetLength() - 7 - 12), val)); // 7: branch., 12: .description
 	return 0;
 }
@@ -313,7 +313,7 @@ MAP_STRING_STRING GetBranchDescriptions()
 	git_config * config;
 	git_config_new(&config);
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 3, FALSE);
 	projectConfigA.ReleaseBuffer();
 	git_config_foreach_match(config, "branch\\..*\\.description", GetBranchDescriptionsCallback, &descriptions);
 	git_config_free(config);

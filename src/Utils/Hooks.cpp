@@ -410,7 +410,7 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	TCHAR szTempPath[MAX_PATH];
 	TCHAR szOutput[MAX_PATH];
 	TCHAR szErr[MAX_PATH];
-	GetTempPath(_countof(szTempPath), szTempPath);
+	GetTortoiseGitTempPath(_countof(szTempPath), szTempPath);
 	GetTempFileName(szTempPath, _T("git"), 0, szErr);
 
 	// setup redirection handles

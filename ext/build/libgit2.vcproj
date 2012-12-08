@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
-				PreprocessorDefinitions="_DEBUG;GIT_WINHTTP"
+				PreprocessorDefinitions="_DEBUG;GIT_WINHTTP;WIN32_SHA1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -124,7 +124,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
-				PreprocessorDefinitions="_DEBUG;GIT_WINHTTP"
+				PreprocessorDefinitions="_DEBUG;GIT_WINHTTP;WIN32_SHA1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -202,7 +202,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
-				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP"
+				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP;WIN32_SHA1"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -281,7 +281,7 @@
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
-				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP"
+				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP;WIN32_SHA1"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\buf_text.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\buffer.c"
 				>
 			</File>
@@ -372,6 +376,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\commit.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\commit_list.c"
 				>
 			</File>
 			<File
@@ -423,6 +431,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\fetchhead.c"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\filebuf.c"
 				>
 			</File>
@@ -460,6 +472,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\iterator.c"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\merge.c"
 				>
 			</File>
 			<File
@@ -511,7 +527,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\src\pkt.c"
+				RelativePath="..\libgit2\src\pathspec.c"
 				>
 			</File>
 			<File
@@ -524,10 +540,6 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\pqueue.c"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\protocol.c"
 				>
 			</File>
 			<File
@@ -556,10 +568,6 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\revwalk.c"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\sha1.c"
 				>
 			</File>
 			<File
@@ -682,11 +690,23 @@
 					>
 				</File>
 				<File
-					RelativePath="..\libgit2\src\transports\http.c"
+					RelativePath="..\libgit2\src\transports\local.c"
 					>
 				</File>
 				<File
-					RelativePath="..\libgit2\src\transports\local.c"
+					RelativePath="..\libgit2\src\transports\smart.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\transports\smart_pkt.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\transports\smart_protocol.c"
+					>
+				</File>
+				<File
+					RelativePath="..\libgit2\src\transports\winhttp.c"
 					>
 				</File>
 			</Filter>
@@ -722,6 +742,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="hash"
+				>
+				<File
+					RelativePath="..\libgit2\src\hash\hash_win32.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -745,6 +773,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\buf_text.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\buffer.h"
 				>
 			</File>
@@ -758,6 +790,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\commit.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\commit_list.h"
 				>
 			</File>
 			<File
@@ -790,6 +826,10 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\fetch.h"
+				>
+			</File>
+			<File
+				RelativePath="..\libgit2\src\fetchhead.h"
 				>
 			</File>
 			<File
@@ -837,6 +877,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\libgit2\src\merge.h"
+				>
+			</File>
+			<File
 				RelativePath="..\libgit2\src\message.h"
 				>
 			</File>
@@ -869,7 +913,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\libgit2\src\pkt.h"
+				RelativePath="..\libgit2\src\pathspec.h"
 				>
 			</File>
 			<File
@@ -882,10 +926,6 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\pqueue.h"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\protocol.h"
 				>
 			</File>
 			<File
@@ -910,10 +950,6 @@
 			</File>
 			<File
 				RelativePath="..\libgit2\src\repository.h"
-				>
-			</File>
-			<File
-				RelativePath="..\libgit2\src\sha1.h"
 				>
 			</File>
 			<File
@@ -989,6 +1025,22 @@
 				</File>
 				<File
 					RelativePath="..\libgit2\src\win32\utf-conv.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hash"
+				>
+				<File
+					RelativePath="..\libgit2\src\hash\hash_win32.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="smart"
+				>
+				<File
+					RelativePath="..\libgit2\src\transports\smart.h"
 					>
 				</File>
 			</Filter>

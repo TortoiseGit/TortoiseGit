@@ -4,10 +4,18 @@ Released: unreleased
 == Features ==
  * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
  * Fixed issue #1541: Show progress dialog when running git request-pull
+ * Fixed issue #1513: Easier to clean TortoiseGit temporary files
+ * Fixed issue #1540: Add jump to previous / next commit in Log Dialog
+ * Fixed issue #1529: Can show and set tagopt
+ * Fixed issue #1554: Unwanted text formatting in commit dialogue (styling can be disabled using advanced settings now)
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
  * Fixed issue #1538: Deleting multiple stash list entries skips some and delete the wrong ones
+ * Fixed issue #1543: TortoiseGit Comboboxes trim input if longer than their width
+ * Fixed issue #1544: TortoiseGit Init warning message is not appropriate
+ * Fixed issue #1268: Paths in Windows Explorer changed to all lower case
+ * Fixed issue #1555: Commit dialog fails to warn submodule dirty state
 
 = Release 1.7.15.0 =
 Released: 2012-11-20

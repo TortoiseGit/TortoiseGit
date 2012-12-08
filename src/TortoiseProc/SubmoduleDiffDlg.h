@@ -51,6 +51,7 @@ protected:
 
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();
+	afx_msg void OnBnClickedShowDiff();
 	void ShowLog(CString hash);
 
 	DECLARE_MESSAGE_MAP()

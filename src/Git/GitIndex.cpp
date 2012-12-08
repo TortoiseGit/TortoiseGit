@@ -130,19 +130,19 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
 
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4, FALSE);
 	projectConfigA.ReleaseBuffer();
 	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3);
+	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3, FALSE);
 	globalConfigA.ReleaseBuffer();
 	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2);
+	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2, FALSE);
 	globalXDGConfigA.ReleaseBuffer();
 	if (!msysGitBinPath.IsEmpty())
 	{
 		CString systemConfig = msysGitBinPath + _T("\\..\\etc\\gitconfig");
 		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1);
+		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1, FALSE);
 		systemConfigA.ReleaseBuffer();
 	}
 
@@ -156,11 +156,11 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 		return -1;
 	}
 
-	unsigned int ecount = git_index_entrycount(index);
+	size_t ecount = git_index_entrycount(index);
 	resize(ecount);
-	for (unsigned int i = 0; i < ecount; ++i)
+	for (size_t i = 0; i < ecount; ++i)
 	{
-		git_index_entry *e = git_index_get(index, i);
+		const git_index_entry *e = git_index_get_byindex(index, i);
 
 		this->at(i).m_FileName.Empty();
 		g_Git.StringAppend(&this->at(i).m_FileName, (BYTE*)e->path, CP_UTF8);
@@ -806,8 +806,8 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 
 int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
-	unsigned int count = git_tree_entrycount(tree);
-	for (unsigned int i = 0; i < count; i++)
+	size_t count = git_tree_entrycount(tree);
+	for (size_t i = 0; i < count; i++)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
@@ -1195,18 +1195,18 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	git_config * config;
 	git_config_new(&config);
 	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4);
+	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4, FALSE);
 	projectConfigA.ReleaseBuffer();
 	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3);
+	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3, FALSE);
 	globalConfigA.ReleaseBuffer();
 	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2);
+	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2, FALSE);
 	globalXDGConfigA.ReleaseBuffer();
 	if (!m_sMsysGitBinPath.IsEmpty())
 	{
 		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1);
+		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1, FALSE);
 		systemConfigA.ReleaseBuffer();
 	}
 	const char * out = NULL;

@@ -68,6 +68,7 @@ void CPullFetchDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
+	ON_CBN_SELCHANGE(IDC_REMOTE_COMBO, &CPullFetchDlg::OnCbnSelchangeRemote)
 	ON_BN_CLICKED(IDC_REMOTE_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDC_OTHER_RD, &CPullFetchDlg::OnBnClickedRd)
 	ON_BN_CLICKED(IDOK, &CPullFetchDlg::OnBnClickedOk)
@@ -233,8 +234,29 @@ void CPullFetchDlg::Refresh()
 		}
 	}
 	m_Remote.SetCurSel(sel);
+	OnCbnSelchangeRemote();
 }
 // CPullFetchDlg message handlers
+
+void CPullFetchDlg::OnCbnSelchangeRemote()
+{
+	if (m_Remote.GetCurSel() == 0)
+		return;
+
+	CString remote = m_Remote.GetString();
+	CString key;
+	key.Format(_T("remote.%s.tagopt"), remote);
+	CString tagopt = g_Git.GetConfigValue(key);
+	if (tagopt == "--no-tags")
+		tagopt = CString(MAKEINTRESOURCE(IDS_NONE));
+	else if (tagopt == "--tags")
+		tagopt = CString(MAKEINTRESOURCE(IDS_ALL));
+	else
+		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE));
+	CString value;
+	value.Format(_T("%s: %s"), CString(MAKEINTRESOURCE(IDS_DEFAULT)), tagopt);
+	GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(value);
+}
 
 void CPullFetchDlg::OnBnClickedRd()
 {

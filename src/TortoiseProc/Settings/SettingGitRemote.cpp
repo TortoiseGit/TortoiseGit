@@ -55,6 +55,7 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_REMOTE, m_strRemote);
 	DDX_Text(pDX, IDC_EDIT_URL, m_strUrl);
 	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
+	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
 }
 
 
@@ -65,6 +66,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
 	ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
+	ON_EN_CHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnEnChangeComboTagOpt)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 END_MESSAGE_MAP()
 
@@ -86,6 +88,11 @@ BOOL CSettingGitRemote::OnInitDialog()
 	m_ctrlRemoteList.ResetContent();
 	for (size_t i = 0; i < remotes.size(); i++)
 		m_ctrlRemoteList.AddString(remotes[i]);
+
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
+	m_ctrlTagOpt.SetCurSel(0);
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
@@ -126,7 +133,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME	|REMOTE_URL	|REMOTE_PUTTYKEY;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -192,6 +199,16 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	m_ChangedMask=0;
 
+
+	cmd.Format(_T("remote.%s.tagopt"), remote);
+	CString tagopt = g_Git.GetConfigValue(cmd, CP_UTF8);
+	index = 0;
+	if (tagopt == "--no-tags")
+		index = 1;
+	else if (tagopt == "--tags")
+		index = 2;
+	m_ctrlTagOpt.SetCurSel(index);
+
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
@@ -230,11 +247,33 @@ void CSettingGitRemote::OnEnChangeEditPuttyKey()
 	else
 		this->SetModified(0);
 }
+
+void CSettingGitRemote::OnEnChangeComboTagOpt()
+{
+	m_ChangedMask |= REMOTE_TAGOPT;
+
+	this->UpdateData();
+	this->SetModified();
+}
+
 void CSettingGitRemote::Save(CString key,CString value)
 {
 	CString cmd,out;
 
 	cmd.Format(_T("remote.%s.%s"),this->m_strRemote,key);
+	if (value.IsEmpty())
+	{
+		// don't check result code. it fails if the entry not exist
+		g_Git.UnsetConfigValue(cmd, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir);
+		if (!g_Git.GetConfigValue(cmd).IsEmpty())
+		{
+			CString msg;
+			msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
+			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		}
+		return;
+	}
+
 	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir))
 	{
 		CString msg;
@@ -283,6 +322,17 @@ BOOL CSettingGitRemote::OnApply()
 	if(m_ChangedMask & REMOTE_PUTTYKEY)
 	{
 		Save(_T("puttykeyfile"),this->m_strPuttyKeyfile);
+	}
+
+	if (m_ChangedMask & REMOTE_TAGOPT)
+	{
+		CString tagopt;
+		int index = m_ctrlTagOpt.GetCurSel();
+		if (index == 1)
+			tagopt = "--no-tags";
+		else if (index == 2)
+			tagopt = "--tags";
+		Save(_T("tagopt"), tagopt);
 	}
 
 	SetModified(FALSE);

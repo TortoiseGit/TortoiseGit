@@ -384,27 +384,18 @@ Don't touch these lines:
 								the files with the given revisions.
 							</entry>
 						</row>
-						<!--
 						<row>
 							<entry condition="pot">:showcompare</entry>
 							<entry>
 								<para>
-								Depending on the URLs and revisions to compare, this
+								Depending on revisions to compare and the path, this
 								either shows a unified diff (if the option <option>unified</option> is set), 
-								a dialog with a list of files that have changed or if 
-								the URLs point to files starts the diff viewer for 
-								those two files.
-								</para>
-								<para>
-								The options <option>url1</option>, <option>url2</option>,
-								<option>revision1</option> and <option>revision2</option>
-								must be specified. The options <option>pegrevision</option>,
-								<option>ignoreancestry</option>, <option>blame</option> and
-								<option>unified</option> are optional.
+								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if 
+								the path point to a file starts the diff viewer for 
+								those the file in the different revisions.
 								</para>
 							</entry>
 						</row>
-						-->
 						<row>
 							<entry condition="pot">:conflicteditor</entry>
 							<entry>

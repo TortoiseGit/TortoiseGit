@@ -138,8 +138,9 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
 					int idx = git_index_find(index, pathA);
-					if (idx >= 0) {
-						git_index_entry *e = git_index_get(index, idx);
+					if (idx >= 0)
+					{
+						git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(index, idx)); // HACK
 
 						if (SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0) == BST_CHECKED)
 						{
@@ -190,7 +191,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 							}
 						}
 						if (changed)
-							git_index_add2(index, e);
+							git_index_add(index, e);
 					}
 
 					if (changed)
@@ -384,7 +385,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 				throw "git_commit_tree 1";
 
 			memset(&treewalkstruct.oid.id, 0, sizeof(treewalkstruct.oid.id));
-			int ret = git_tree_walk(tree, TreewalkCB_FindFileRecentCommit, GIT_TREEWALK_PRE, &treewalkstruct);
+			int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct);
 			git_tree_free(tree);
 			if (ret < 0 && ret != GIT_EUSER)
 				throw "git_tree_walk 1";
@@ -413,14 +414,14 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 
 				git_commit_free(commit2);
 				memset(&treewalkstruct2.oid.id, 0, sizeof(treewalkstruct2.oid.id));
-				int ret = git_tree_walk(tree, TreewalkCB_FindFileRecentCommit, GIT_TREEWALK_PRE, &treewalkstruct2);
+				int ret = git_tree_walk(tree, GIT_TREEWALK_PRE, TreewalkCB_FindFileRecentCommit, &treewalkstruct2);
 				git_tree_free(tree);
 				if (ret < 0 && ret != GIT_EUSER)
 					throw "git_tree_walk 2";
 
 				if (!git_oid_cmp(&treewalkstruct.oid, &treewalkstruct2.oid))
 					diff = false;
-				else if (git_revwalk_hide(walk, git_commit_parent_oid(commit, i)))
+				else if (git_revwalk_hide(walk, git_commit_parent_id(commit, i)))
 					throw "git_revwalk_hide";
 			}
 
@@ -544,7 +545,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	git_oid oid;
 	git_commit *HEADcommit = NULL;
-	if (!git_reference_name_to_oid(&oid, repository, "HEAD") && !git_commit_lookup(&HEADcommit, repository, &oid) && HEADcommit != NULL)
+	if (!git_reference_name_to_id(&oid, repository, "HEAD") && !git_commit_lookup(&HEADcommit, repository, &oid) && HEADcommit != NULL)
 	{
 		DisplayCommit(HEADcommit, IDC_HEAD_HASH, IDC_HEAD_SUBJECT, IDC_HEAD_AUTHOR, IDC_HEAD_DATE);
 		git_commit_free(HEADcommit);
@@ -587,8 +588,9 @@ void CGitPropertyPage::InitWorkfileView()
 
 					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
 					int idx = git_index_find(index, pathA);
-					if (idx >= 0) {
-						git_index_entry *e = git_index_get(index, idx);
+					if (idx >= 0)
+					{
+						const git_index_entry *e = git_index_get_byindex(index, idx);
 
 						if (e->flags & GIT_IDXENTRY_VALID)
 							assumevalid = true;

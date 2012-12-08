@@ -122,9 +122,9 @@ BOOL CSetMainPage::OnInitDialog()
 		if (filename.Left(12).CompareNoCase(_T("TortoiseProc"))==0)
 		{
 			CString sVer = _T(STRPRODUCTVER);
-			sVer = sVer.Left(sVer.ReverseFind(','));
+			sVer = sVer.Left(sVer.ReverseFind('.'));
 			CString sFileVer = CPathUtils::GetVersionFromFile(file);
-			sFileVer = sFileVer.Left(sFileVer.ReverseFind(','));
+			sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 			if (sFileVer.Compare(sVer)!=0)
 				continue;
 			CString sLoc = filename.Mid(12);

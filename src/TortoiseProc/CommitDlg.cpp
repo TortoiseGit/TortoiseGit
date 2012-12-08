@@ -496,7 +496,7 @@ void CCommitDlg::OnOK()
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
-	for (int i = 0; i < nListItems && m_bCommitMessageOnly; i++)
+	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; i++)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
 		if (!entry->m_Checked || !entry->IsDirectory())
@@ -505,8 +505,10 @@ void CCommitDlg::OnOK()
 		bool dirty = false;
 		if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
 		{
+			CGit subgit;
+			subgit.m_CurrentDir = g_Git.m_CurrentDir + _T("\\") + entry->GetWinPathString();
 			CString subcmdout;
-			g_Git.Run(_T("git.exe status --porcelain"), &subcmdout, CP_UTF8);
+			subgit.Run(_T("git.exe status --porcelain"), &subcmdout, CP_UTF8);
 			dirty = !subcmdout.IsEmpty();
 		}
 		else

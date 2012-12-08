@@ -95,6 +95,8 @@ IDI_LIBRARY             ICON                    "Library.ico"
 IDI_RESTORE             ICON                    "restore.ico"
 IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
+IDI_JUMPUP              ICON                    "jumpup.ico"
+IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -147,7 +149,7 @@ BEGIN
     LTEXT           "Authors:",IDC_STATIC,13,81,54,8
     LTEXT           "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>",IDC_STATIC,60,81,258,8
     LTEXT           "Credits:",IDC_STATIC,14,94,54,8
-    LTEXT           "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>",IDC_STATIC,61,92,258,33
+    LTEXT           "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>",IDC_STATIC,61,92,258,33
     LTEXT           "Visit our website",IDC_WEBLINK,14,153,312,8
     LTEXT           "and support the developers",IDC_SUPPORTLINK,14,165,312,8
     GROUPBOX        "Version Information",IDC_VERSIONBOX,7,187,319,50
@@ -199,7 +201,10 @@ BEGIN
     CONTROL         "",IDC_DATEFROM,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,127,7,57,15
     LTEXT           "To:",IDC_TOLABEL,193,9,19,8
     CONTROL         "",IDC_DATETO,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,212,7,55,15
-    EDITTEXT        IDC_SEARCHEDIT,279,7,135,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_SEARCHEDIT,279,7,40,14,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN
+    COMBOBOX        IDC_LOG_JUMPTYPE,330,7,55,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_LOG_JUMPUP,390,7,14,14,WS_TABSTOP | BS_ICON
+    PUSHBUTTON      "",IDC_LOG_JUMPDOWN,405,7,14,14,WS_TABSTOP | BS_ICON
     CONTROL         "",IDC_LOGLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,24,407,57
     CONTROL         "",IDC_SPLITTERTOP,"Static",SS_BLACKFRAME,7,81,407,5
     CONTROL         "",IDC_MSGVIEW,"RichEdit20W",WS_BORDER | WS_VSCROLL | WS_TABSTOP | 0x1804,7,86,407,96
@@ -751,11 +756,13 @@ BEGIN
     PUSHBUTTON      "Clear",IDC_RESIZABLEHISTCLEAR,243,93,50,14
     LTEXT           "Authentication data",IDC_AUTHHISTORY,7,120,226,8
     PUSHBUTTON      "Clear",IDC_AUTHHISTCLEAR,243,118,50,14
-    GROUPBOX        "Action log",IDC_STATIC,7,148,286,62
-    LTEXT           "Max. lines in action log",IDC_STATIC,13,169,120,16
-    EDITTEXT        IDC_MAXLINES,139,167,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,166,50,14
-    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,166,50,14
+    LTEXT           "Temp files",IDC_STATIC,7,148,286,30
+    PUSHBUTTON      "Clear",IDC_TEMPFILESCLEAR,243,146,50,14
+    GROUPBOX        "Action log",IDC_STATIC,7,173,286,30
+    LTEXT           "Max. lines in action log",IDC_STATIC,13,185,120,16
+    EDITTEXT        IDC_MAXLINES,139,183,40,14,ES_RIGHT | ES_AUTOHSCROLL
+    PUSHBUTTON      "Show",IDC_ACTIONLOGSHOW,183,182,50,14
+    PUSHBUTTON      "Clear",IDC_ACTIONLOGCLEAR,236,182,50,14
 END
 
 IDD_HISTORYDLG DIALOGEX 0, 0, 196, 116
@@ -951,7 +958,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_BRANCH,99,86,67,14,ES_AUTOHSCROLL
     CONTROL         "No Checkout",IDC_CHECK_NOCHECKOUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,175,88,57,10
     CONTROL         "Load Putty &Key",IDC_PUTTYKEY_AUTOLOAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,111,62,10
-    CONTROL         "",IDC_PUTTYKEYFILE,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,83,110,164,59
+    CONTROL         "",IDC_PUTTYKEYFILE,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,83,110,164,59
     PUSHBUTTON      "...",IDC_PUTTYKEYFILE_BROWSE,254,109,16,15
     CONTROL         "From &SVN Repository",IDC_CHECK_SVN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,140,83,10
     CONTROL         "&Trunk:",IDC_CHECK_SVN_TRUNK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,37,157,34,10
@@ -1003,7 +1010,8 @@ BEGIN
     CONTROL         "No &Fast Forward",IDC_CHECK_NOFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,116,110,10
     CONTROL         "No &Commit",IDC_CHECK_NOCOMMIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,100,161,10
     CONTROL         "Fast Forward o&nly",IDC_CHECK_FFONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,117,160,10
-    CONTROL         "Tags",IDC_CHECK_FETCHTAGS,"Button",BS_AUTO3STATE | WS_TABSTOP,19,133,109,10
+    CONTROL         "Tags",IDC_CHECK_FETCHTAGS,"Button",BS_AUTO3STATE | WS_TABSTOP,19,133,110,10
+    LTEXT           "",IDC_STATIC_TAGOPT,132,133,80,8
     CONTROL         "AutoLoad Putty &Key",IDC_PUTTYKEY_AUTOLOAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,157,113,10
     LTEXT           "Manage Remotes",IDC_REMOTE_MANAGE,171,157,105,8,SS_NOTIFY
     CONTROL         "&Launch Rebase After Fetch",IDC_CHECK_REBASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,172,281,10
@@ -1074,10 +1082,10 @@ CAPTION "Request pull"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "&Start",IDC_STATIC_LOCAL_BRANCH,7,8,42,8
-    CONTROL         "",IDC_COMBOBOXEX_LOCAL_BRANCH,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,62,7,216,86
+    CONTROL         "",IDC_COMBOBOXEX_LOCAL_BRANCH,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,62,7,216,86
     PUSHBUTTON      "...",IDC_BUTTON_LOCAL_BRANCH,286,7,18,14
     LTEXT           "Repository &URL",IDC_STATIC_REMOTE_URL,7,27,50,8
-    CONTROL         "",IDC_COMBOBOXEX_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,62,25,242,54
+    CONTROL         "",IDC_COMBOBOXEX_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,62,25,242,54
     LTEXT           "End",IDC_STATIC_REMOTE_BRANCH,7,46,13,8
     EDITTEXT        IDC_REMOTE_BRANCH,62,44,242,13,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,141,70,50,14
@@ -1420,6 +1428,8 @@ BEGIN
     LTEXT           "Putty Key:",IDC_STATIC,101,65,35,8
     EDITTEXT        IDC_EDIT_PUTTY_KEY,138,64,139,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,277,64,16,14
+    LTEXT           "Tags:",IDC_STATIC,101,86,40,8
+    COMBOBOX        IDC_COMBO_TAGOPT,138,85,80,12,CBS_DROPDOWNLIST | WS_TABSTOP
     PUSHBUTTON      "&Add New/Save",IDC_BUTTON_ADD,100,107,58,14
     LTEXT           "Remote:",IDC_STATIC,7,10,76,8
     PUSHBUTTON      "&Remove",IDC_BUTTON_REMOVE,100,129,58,14
@@ -1461,7 +1471,7 @@ BEGIN
     CONTROL         "",IDC_COMBOBOXEX_REMOTE_BRANCH,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,237,18,119,91
     PUSHBUTTON      "...",IDC_BUTTON_REMOTE_BRANCH,362,18,18,14
     LTEXT           "Remote &URL:",IDC_STATIC_REMOTE_URL,13,39,43,8
-    CONTROL         "",IDC_COMBOBOXEX_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,60,36,271,54
+    CONTROL         "",IDC_COMBOBOXEX_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,60,36,271,54
     PUSHBUTTON      "Manage",IDC_BUTTON_MANAGE,333,36,47,14
     CONTROL         "",IDC_PROGRESS_SYNC,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,7,56,381,11
     CONTROL         "Autoload Putty &Key",IDC_CHECK_PUTTY_KEY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,58,56,115,10
@@ -1560,10 +1570,10 @@ CAPTION "Bisect start"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Last known &good:",IDC_STATIC_LOCAL_BRANCH,7,8,92,8
-    CONTROL         "",IDC_COMBOBOXEX_GOOD,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,99,7,178,86
+    CONTROL         "",IDC_COMBOBOXEX_GOOD,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,99,7,178,86
     PUSHBUTTON      "...",IDC_BUTTON_GOOD,287,7,18,14
     LTEXT           "First known &bad:",IDC_STATIC_REMOTE_BRANCH,7,28,92,8
-    CONTROL         "",IDC_COMBOBOXEX_BAD,"ComboBoxEx32",CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP,99,25,178,86
+    CONTROL         "",IDC_COMBOBOXEX_BAD,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,99,25,178,86
     PUSHBUTTON      "...",IDC_BUTTON_BAD,287,25,18,14
     DEFPUSHBUTTON   "OK",IDOK,141,44,50,14,WS_DISABLED
     PUSHBUTTON      "Cancel",IDCANCEL,197,44,50,14
@@ -1600,6 +1610,7 @@ BEGIN
     GROUPBOX        "To",IDC_TOGROUP,7,69,368,65
     LTEXT           "Type:",IDC_STATIC_CHANGETYPE,15,82,33,8
     LTEXT           "",IDC_CHANGETYPE,52,82,100,12
+    PUSHBUTTON      "Show diff",IDC_SHOW_DIFF,306,82,60,12
     LTEXT           "Revision:",IDC_STATIC_REVISION2,15,99,33,8
     EDITTEXT        IDC_TOHASH,52,99,208,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
     PUSHBUTTON      "Show log",IDC_LOG2,306,99,60,12
@@ -2669,6 +2680,38 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_STATGRAPH_FILECHANGESBYUNIT "File changes each %s"
+    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP "Percent of authorship"
+    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY "Percents"
+    IDS_STATGRAPH_COMMITSBYDATEXDAY "day"
+    IDS_SUBMODULEDIFF_UNKNOWN "Unknown"
+    IDS_SUBMODULEDIFF_NEWSUBMODULE "New submodule"
+    IDS_SUBMODULEDIFF_DELETESUBMODULE "Delete submodule"
+    IDS_SUBMODULEDIFF_FASTFORWARD "Fast Forward"
+    IDS_SUBMODULEDIFF_REWIND "Rewind"
+    IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
+    IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
+    IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
+    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
+    IDS_PROCEEDBUTTON       "&Proceed"
+    IDS_PROC_LOG_AUTHOREMAIL "Author Email"
+    IDS_PROC_LOG_COMMITTEREMAIL "Committer Email"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROC_LOG_MERGEPOINT "Merge Point"
+    IDS_PROC_LOG_PARENT1    "Parent 1"
+    IDS_PROC_LOG_PARENT2    "Parent 2"
+    IDS_PROC_WARNCLEARTEMP  "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
+    IDS_DEFAULT             "Default"
+    IDS_ALL                 "All"
+    IDS_NONE                "None"
+    IDS_FETCH_REACHABLE     "Reachable"
+END
+
+STRINGTABLE 
+BEGIN
     IDS_LOG_POPUP_COPY      "C&reate branch/tag from revision"
     IDS_COMMITDLG_FILE      "File"
     IDS_COMMITDLG_STATUS    "Status"
@@ -2850,7 +2893,8 @@ END
 STRINGTABLE 
 BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
-    IDS_WARN_FOLDERNOTEMPTY "The target folder \n%s\nis not empty!\nAre you sure you want to clone/export into that folder?"
+    IDS_WARN_GITINIT_FOLDERNOTEMPTY 
+                            "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
     IDS_WARN_NOVALIDPATH    "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
@@ -3618,19 +3662,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_STATGRAPH_FILECHANGESBYUNIT "File changes each %s"
-    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP "Percent of authorship"
-    IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIPY "Percents"
-    IDS_STATGRAPH_COMMITSBYDATEXDAY "day"
-    IDS_SUBMODULEDIFF_UNKNOWN "Unknown"
-    IDS_SUBMODULEDIFF_NEWSUBMODULE "New submodule"
-    IDS_SUBMODULEDIFF_DELETESUBMODULE "Delete submodule"
-    IDS_SUBMODULEDIFF_FASTFORWARD "Fast Forward"
-    IDS_SUBMODULEDIFF_REWIND "Rewind"
-    IDS_SUBMODULEDIFF_NEWERTIME "Newer commit time"
-    IDS_SUBMODULEDIFF_OLDERTIME "Older commit time"
-    IDS_SUBMODULEDIFF_SAMETIME "Same commit time"
-    IDS_PROC_CREATINGPULLREUQEST "Creating pull-request..."
     IDS_REVGRAPH_ERR_NOMEMORY 
                             """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
 END
@@ -3841,6 +3872,7 @@ BEGIN
                             "You have checked ""include untracked"".\nThis includes a ""git clean -fd"" call, so ignored files/directories are removed w/o using recycle bin."
     IDS_PROC_NOTSHOWAGAINCONTINUE 
                             "Do &not show me this warning again (if Continue is selected)"
+    IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
 END
 
 #endif    // English (U.S.) resources

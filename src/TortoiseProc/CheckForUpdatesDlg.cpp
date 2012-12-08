@@ -346,9 +346,9 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 			if (filename.Left(12).CompareNoCase(_T("TortoiseProc")) == 0)
 			{
 				CString sVer = _T(STRPRODUCTVER);
-				sVer = sVer.Left(sVer.ReverseFind(','));
+				sVer = sVer.Left(sVer.ReverseFind('.'));
 				CString sFileVer = CPathUtils::GetVersionFromFile(file);
-				sFileVer = sFileVer.Left(sFileVer.ReverseFind(','));
+				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));
 				CString sLoc = filename.Mid(12);
 				sLoc = sLoc.Left(sLoc.GetLength() - 4); // cut off ".dll"
 				if ((sLoc.Left(2) == L"32") && (sLoc.GetLength() > 5))

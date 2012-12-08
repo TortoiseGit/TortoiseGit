@@ -32,55 +32,24 @@
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-static LPTSTR nextpath(LPCTSTR src, LPTSTR dst, UINT maxlen)
+static LPTSTR nextpath(wchar_t *path, wchar_t *buf, size_t buflen)
 {
-	LPCTSTR orgsrc;
+	wchar_t term, *base = path;
 
-	while (*src == _T(';'))
-		src++;
+	if (path == NULL || buf == NULL || buflen == 0)
+		return NULL;
 
-	orgsrc = src;
+	term = (*path == L'"') ? *path++ : L';';
 
-	if (!--maxlen)
-		goto nullterm;
+	for (buflen--; *path && *path != term && buflen; buflen--)
+		*buf++ = *path++;
 
-	while (*src && *src != _T(';'))
-	{
-		if (*src != _T('"'))
-		{
-			*dst++ = *src++;
-			if (!--maxlen)
-			{
-				orgsrc = src;
-				goto nullterm;
-			}
-		}
-		else
-		{
-			src++;
-			while (*src && *src != _T('"'))
-			{
-				*dst++ = *src++;
-				if (!--maxlen)
-				{
-					orgsrc = src;
-					goto nullterm;
-				}
-			}
+	*buf = L'\0'; /* reserved a byte via initial subtract */
 
-			if (*src)
-				src++;
-		}
-	}
+	while (*path == term || *path == L';')
+		path++;
 
-	while (*src == _T(';'))
-		src++;
-
-nullterm:
-
-	*dst = 0;
-
-	return (orgsrc != src) ? (LPTSTR)src : NULL;
+	return (path != base) ? path : NULL;
 }
 
 static inline BOOL FileExists(LPCTSTR lpszFileName)
@@ -125,6 +94,7 @@ static BOOL FindGitPath()
 			// dir found
 			pfin[1] = 0;
 			CGit::ms_LastMsysGitDir = buf;
+			CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
 			return TRUE;
 		}
 	}
@@ -933,7 +903,7 @@ void GetTempPath(CString &path)
 	TCHAR lpPathBuffer[BUFSIZE];
 	DWORD dwRetVal;
 	DWORD dwBufSize=BUFSIZE;
-	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 	{
@@ -949,7 +919,7 @@ CString GetTempFile()
 	TCHAR szTempName[BUFSIZE];
 	UINT uRetVal;
 
-	dwRetVal = GetTempPath(dwBufSize,		// length of the buffer
+	dwRetVal = GetTortoiseGitTempPath(dwBufSize,		// length of the buffer
 							lpPathBuffer);	// buffer for path
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 	{
@@ -969,6 +939,23 @@ CString GetTempFile()
 
 	return CString(szTempName);
 
+}
+
+DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
+{
+	int result = ::GetTempPath(nBufferLength, lpBuffer);
+	if (result == 0) return 0;
+	if (lpBuffer == NULL || (result + 13 > nBufferLength))
+	{
+		if (lpBuffer)
+			lpBuffer[0] = '\0';
+		return result + 13;
+	}
+
+	_tcscat(lpBuffer, _T("TortoiseGit\\"));
+	CreateDirectory(lpBuffer, NULL);
+
+	return result + 13;
 }
 
 int CGit::RunLogFile(CString cmd,const CString &filename)
@@ -1575,9 +1562,10 @@ BOOL CGit::CheckMsysGitDir()
 	{
 		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
 		str=msysinstalldir;
+		str.TrimRight(_T("\\"));
 		if ( !str.IsEmpty() )
 		{
-			str += (str[str.GetLength()-1] != '\\') ? "\\bin" : "bin";
+			str += "\\bin";
 			msysdir=str;
 			CGit::ms_LastMsysGitDir = str;
 			msysdir.write();

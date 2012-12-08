@@ -899,6 +899,10 @@ msgstr ""
 msgid "&Print..."
 msgstr ""
 
+#. Resource IDs: (66)
+msgid "&Proceed"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "&Pull"
 msgstr ""
@@ -1570,6 +1574,10 @@ msgstr ""
 msgid "Advanced merge settings"
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "All"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "All Commands"
 msgstr ""
@@ -1773,6 +1781,10 @@ msgstr ""
 
 #. Resource IDs: (207, 1251)
 msgid "Author"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Author Email"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2373,10 +2385,6 @@ msgstr ""
 msgid "Close the active window and prompts to save the documents"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
-msgstr ""
-
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr ""
@@ -2480,6 +2488,10 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "Commits your changes to the repository"
+msgstr ""
+
+#. Resource IDs: (605)
+msgid "Committer Email"
 msgstr ""
 
 #. Resource IDs: (170)
@@ -4995,6 +5007,10 @@ msgstr ""
 msgid "Merge &Message"
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "Merge Point"
+msgstr ""
+
 #. Resource IDs: (221)
 msgid "Merge Reintegrate"
 msgstr ""
@@ -5304,6 +5320,10 @@ msgstr ""
 #. Resource IDs: (273)
 #, c-format
 msgid "No image encoder found for %s."
+msgstr ""
+
+#. Resource IDs: (86)
+msgid "No more revisions found."
 msgstr ""
 
 #. Resource IDs: (70)
@@ -5669,6 +5689,14 @@ msgstr ""
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Parent 1"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Parent 2"
 msgstr ""
 
 #. Resource IDs: (1)
@@ -6059,6 +6087,10 @@ msgstr ""
 
 #. Resource IDs: (8)
 msgid "Re&vert..."
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Reachable"
 msgstr ""
 
 #. Resource IDs: (12)
@@ -7015,6 +7047,10 @@ msgstr ""
 msgid "Show destination folder"
 msgstr ""
 
+#. Resource IDs: (1696)
+msgid "Show diff"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "Show diff to last commit"
 msgstr ""
@@ -7374,6 +7410,10 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
+msgstr ""
+
 #. Resource IDs: (78)
 msgid "Switch"
 msgstr ""
@@ -7488,12 +7528,20 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Tags:"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Tasks"
 msgstr ""
 
 #. Resource IDs: (1064)
 msgid "Tasks Pane"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Temp files"
 msgstr ""
 
 #. Resource IDs: (219)
@@ -7696,7 +7744,7 @@ msgstr ""
 
 #. Resource IDs: (88)
 #, c-format
-msgid "The target folder \n%s\nis not empty!\nAre you sure you want to clone/export into that folder?"
+msgid "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
 msgstr ""
 
 #. Resource IDs: (195)
@@ -7797,6 +7845,10 @@ msgstr ""
 
 #. Resource IDs: (1676)
 msgid "To"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
 msgstr ""
 
 #. Resource IDs: (1201, 65535)
