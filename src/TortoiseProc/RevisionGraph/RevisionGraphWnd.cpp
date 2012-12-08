@@ -1445,6 +1445,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	case ID_UNIDIFFREVS:
         if (m_SelectedEntry1 != NULL)
             UnifiedDiffRevs(false);
+		break;
     case ID_SHOWLOG:
         DoShowLog();
         break;

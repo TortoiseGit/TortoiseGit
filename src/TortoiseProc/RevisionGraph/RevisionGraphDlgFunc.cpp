@@ -359,6 +359,12 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
     ASSERT(m_SelectedEntry2 != NULL);
+
+	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	
+//	CAppUtils::StartShowCompare (m_hWnd, m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(),
+//            m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(), peg, GitRev(), L"", alternativeTool);
+
 #if 0
     CSyncPointer<SVN> svn (m_state.GetSVN());
 
@@ -380,8 +386,7 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
     }
     else
     {
-        CAppUtils::StartShowCompare (m_hWnd, url1, rev1,
-            url2, rev2, peg, GitRev(), L"", alternativeTool);
+
     }
 #endif
 }
@@ -390,32 +395,11 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
     ASSERT(m_SelectedEntry2 != NULL);
-#if 0
-    CSyncPointer<SVN> svn (m_state.GetSVN());
 
-    CTGitPath url1;
-    CTGitPath url2;
-    GitRev rev1;
-    GitRev rev2;
-    GitRev peg;
+	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(), m_sPath,
+		this->m_logEntries[m_SelectedEntry2->index()].ToString(),alternativeTool);
 
-    GetSelected (m_SelectedEntry1, bHead, url1, rev1, peg);
-    GetSelected (m_SelectedEntry2, bHead, url2, rev2, peg);
-
-    bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
-    if (m_state.PromptShown())
-    {
-        SVNDiff diff (svn.get(), this->m_hWnd);
-        diff.SetAlternativeTool (alternativeTool);
-        diff.ShowUnifiedDiff (url1, rev1, url2, rev2, peg, L"");
-    }
-    else
-    {
-        CAppUtils::StartShowUnifiedDiff(m_hWnd, url1, rev1,
-            url2, rev2, peg,
-            GitRev(), L"", alternativeTool);
-    }
-#endif
 }
 
 void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
