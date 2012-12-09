@@ -2396,14 +2396,8 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 	}
 }
 
-BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
-					CTGitPathList &pathList,
-					CTGitPathList &selectedList,
-					bool bSelectFilesForCommit,
-					bool autoClose)
+bool CAppUtils::CheckUserData()
 {
-	bool bFailed = true;
-
 	while(g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
 	{
 		if(CMessageBox::Show(NULL, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO| MB_ICONERROR) == IDYES)
@@ -2421,6 +2415,20 @@ BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 		else
 			return false;
 	}
+
+	return true;
+}
+
+BOOL CAppUtils::Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
+					CTGitPathList &pathList,
+					CTGitPathList &selectedList,
+					bool bSelectFilesForCommit,
+					bool autoClose)
+{
+	bool bFailed = true;
+
+	if (!CheckUserData())
+		return false;
 
 	while (bFailed)
 	{

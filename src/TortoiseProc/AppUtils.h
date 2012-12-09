@@ -192,6 +192,8 @@ public:
 
 	static void RemoveTrailSlash(CString &path);
 
+	static bool CheckUserData();
+
 	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,
 					CTGitPathList &selectedList,
