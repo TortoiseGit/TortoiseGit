@@ -875,7 +875,7 @@ void CRevisionGraphWnd::DrawStripes (GraphicsDevice& graphics, const CSize& offs
     }
 }
 #endif
-void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& /*logRect*/, const CSize& offset)
+void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* /*glyphs*/, const CRect& /*logRect*/, const CSize& offset)
 {
 
 //    CSyncPointer<CGraphNodeStates> nodeStates (m_state.GetNodeStates());
@@ -1118,9 +1118,9 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 
 
-void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
+void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset)
 {
-	COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
+	//COLORREF standardTextColor = GetSysColor(COLOR_WINDOWTEXT);
 	if (m_nFontSize <= 0)
 		return;
 
@@ -1131,6 +1131,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 
 
 	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
+
+	Gdiplus::Font font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular);
+	SolidBrush blackbrush(Color::Black);
 
 	node v;
 	forall_nodes(v,m_Graph)
@@ -1148,9 +1151,9 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
 		{
 			graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
-				&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+				&font,
 				Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
-				&SolidBrush(Color::Black));
+				&blackbrush);
 
 
 		}else
@@ -1161,10 +1164,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 				CString str = m_HashMap[hash][i];
 				RectF rect;
 				
-				rect.X = noderect.X;
-				rect.Y = noderect.Y + hight*i;
-				rect.Width = noderect.Width;
-				rect.Height = hight;
+				rect.X = (REAL)noderect.X;
+				rect.Y = (REAL)(noderect.Y + hight*i);
+				rect.Width = (REAL)noderect.Width;
+				rect.Height = (REAL)hight;
 
 				COLORREF colRef = 0;
 
@@ -1222,9 +1225,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 					//		rect);
 					
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
-						&Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
-						Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor,noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i),
-						&SolidBrush(Gdiplus::Color::Black));
+						&font,
+						Gdiplus::PointF((REAL)(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor),
+										(REAL)(noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i)),
+						&blackbrush);
 
 					//graphics.graphics->DrawString(shortname.GetBuffer(), shortname.GetLength(), ::new Gdiplus::Font(graphics.pDC->m_hDC), PointF(noderect.X, noderect.Y + hight *i),NULL, NULL);
 
@@ -1248,10 +1252,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& logRec
 }
 
 
-
+#if 0
 void CRevisionGraphWnd::DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* glyphs, const CSize& offset)
 {
-#if 0
+
     CSyncPointer<const ILayoutNodeList> nodeList (m_state.GetNodes());
     bool upsideDown
         = m_state.GetOptions()->GetOption<CUpsideDownLayout>()->IsActive();
@@ -1287,9 +1291,9 @@ void CRevisionGraphWnd::DrawCurrentNodeGlyphs (GraphicsDevice& graphics, Image* 
         IndicateGlyphDirection (graphics, nodeList.get(), node, noderect, m_hoverGlyphs, upsideDown, offset);
         DrawGlyphs (graphics, glyphs, node.node, noderect, flags, m_hoverGlyphs, upsideDown);
     }
-#endif
-}
 
+}
+#endif
 
 void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, int nVScrollPos, int nHScrollPos, bool bDirectDraw)
 {
@@ -1344,8 +1348,8 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	DrawConnections (graphics, logRect, offset);
    
 
-    if (m_showHoverGlyphs)
-        DrawCurrentNodeGlyphs (graphics, &glyphs, offset);
+    //if (m_showHoverGlyphs)
+    //    DrawCurrentNodeGlyphs (graphics, &glyphs, offset);
 
     // draw preview
 
@@ -1422,7 +1426,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			{
 				//GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
 				graphics.graphics->MeasureString(shorthash.GetBuffer(), shorthash.GetLength(),
-					                  &Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+					                  &Gdiplus::Font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular),
 									  Gdiplus::PointF(0,0), &rect);
 
 			}
@@ -1442,7 +1446,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 				if(graphics.pDC)
 				{
 					graphics.graphics->MeasureString(shortref.GetBuffer(), shortref.GetLength(),
-					                  &Gdiplus::Font(fontname.GetBuffer(),m_nFontSize,FontStyleRegular),
+					                  &Gdiplus::Font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular),
 									  Gdiplus::PointF(0,0), &rect);
 					if(rect.Width > xmax)
 						xmax = rect.Width;
