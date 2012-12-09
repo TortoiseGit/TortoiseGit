@@ -2239,6 +2239,10 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			arg += _T("--force ");
 		if (dlg.m_bSetUpstream)
 			arg += _T("--set-upstream ");
+		if (dlg.m_RecurseSubmodules == 1)
+			arg += _T("--recurse-submodules=check ");
+		if (dlg.m_RecurseSubmodules == 2)
+			arg += _T("--recurse-submodules=on-demand ");
 
 		int ver = CAppUtils::GetMsysgitVersion();
 

@@ -43,6 +43,7 @@ protected:
 	CHistoryCombo	m_Remote;
 	CHistoryCombo	m_RemoteURL;
 	CMenuButton		m_BrowseLocalRef;
+	CComboBox		m_RecurseSubmodulesCombo;
 	CRegString		m_RemoteReg;
 
 public:
@@ -57,6 +58,7 @@ public:
 	BOOL			m_bPushAllBranches;
 	BOOL			m_bPushAllRemotes;
 	BOOL			m_bSetUpstream;
+	int				m_RecurseSubmodules;
 
 protected:
 	CRegDWORD		m_regAutoLoad;
