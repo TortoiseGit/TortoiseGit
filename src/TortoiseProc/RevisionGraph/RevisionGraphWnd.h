@@ -222,6 +222,8 @@ protected:
     bool            m_showHoverGlyphs;  // if true, show the glyphs we currently hover over
                                     // (will be activated only after some delay)
 
+	CString		GetFriendRefName(ogdf::node);
+
 	ogdf::Graph	m_Graph;
 	ogdf::GraphAttributes m_GraphAttr;
 	ogdf::SugiyamaLayout m_SugiyamLayout;

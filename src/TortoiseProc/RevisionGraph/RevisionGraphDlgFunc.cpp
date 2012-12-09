@@ -355,6 +355,22 @@ void CRevisionGraphWnd::GetSelected
 #endif
 }
 
+CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
+{
+	if(v == NULL)
+		return CString();
+	CGitHash hash = this->m_logEntries[v->index()];
+	if(this->m_HashMap.find(hash) == m_HashMap.end())
+		return hash.ToString();
+	else if(this->m_HashMap[hash].size() == 0)
+		return hash.ToString();
+	else if(this->m_HashMap[hash][0].IsEmpty())
+		return hash.ToString();
+	else
+		return m_HashMap[hash][0];		
+
+}
+
 void CRevisionGraphWnd::CompareRevs(bool bHead)
 {
     ASSERT(m_SelectedEntry1 != NULL);
@@ -366,8 +382,8 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 	
 	sCmd.Format(_T("/command:showcompare %s /revision1:%s /revision2:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
-			this->m_logEntries[m_SelectedEntry1->index()].ToString(),
-			bHead ?  _T("HEAD"): this->m_logEntries[m_SelectedEntry2->index()].ToString());
+			GetFriendRefName(m_SelectedEntry1),
+			bHead ?  _T("HEAD"): GetFriendRefName(m_SelectedEntry2));
 
     CAppUtils::RunTortoiseProc(sCmd);
 
@@ -379,8 +395,8 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
     ASSERT(bHead || m_SelectedEntry2 != NULL);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(), m_sPath,
-		bHead? _T("HEAD"):this->m_logEntries[m_SelectedEntry2->index()].ToString(),
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, m_sPath, GetFriendRefName(m_SelectedEntry1), m_sPath,
+		bHead? _T("HEAD"):GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
 
 }
