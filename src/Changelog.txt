@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1554: Unwanted text formatting in commit dialogue (styling can be disabled using advanced settings now)
  * Fixed issue #1563: Show repository dir on Settings Dialog title bar
  * Fixed issue #1577: Add a retry button on Reset failure
+ * Fixed issue #1571: Warn author not set when editing notes
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

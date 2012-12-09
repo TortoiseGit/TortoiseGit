@@ -2681,6 +2681,9 @@ BOOL CAppUtils::Merge(CString *commit)
 
 void CAppUtils::EditNote(GitRev *rev)
 {
+	if (!CheckUserData())
+		return;
+
 	CInputDlg dlg;
 	dlg.m_sHintText = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_EDITNOTES));
 	dlg.m_sInputText = rev->m_Notes;
