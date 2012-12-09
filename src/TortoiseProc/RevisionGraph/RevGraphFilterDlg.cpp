@@ -66,7 +66,7 @@ void CRevGraphFilterDlg::GetRevisionRange(CString& minrev, CString& maxrev)
 
 void CRevGraphFilterDlg::SetRevisionRange (CString minrev, CString maxrev)
 {
-    m_sToRev = minrev;
+	m_sFromRev = minrev;
     m_sToRev = maxrev;
 }
 

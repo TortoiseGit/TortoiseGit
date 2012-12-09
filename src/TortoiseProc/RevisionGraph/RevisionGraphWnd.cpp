@@ -110,7 +110,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
     , m_previewZoom(1)
     , m_dwTicks(0)
 	, m_logEntries(&m_LogCache)
-	, m_bCurrentBranch(false)
+	, m_bCurrentBranch(true)
 {
     memset(&m_lfBaseFont, 0, sizeof(LOGFONT));
     std::fill_n(m_apFonts, MAXFONTS, (CFont*)NULL);

@@ -202,7 +202,11 @@ bool CRevisionGraphWnd::FetchRevisionData
     , HWND hWnd)
 {
 
-	this->m_logEntries.ParserFromLog(NULL,-1,CGit::LOG_INFO_SIMPILFY_BY_DECORATION|CGit::LOG_INFO_ALL_BRANCH);
+	this->m_logEntries.ClearAll();
+	this->m_logEntries.ParserFromLog(NULL,-1,
+		CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH),
+		this->m_FromRev.IsEmpty() ? NULL : &m_FromRev, 
+		this->m_ToRev.IsEmpty() ? NULL : &m_ToRev);
 	
 	ReloadHashMap();
 	this->m_Graph.clear();
