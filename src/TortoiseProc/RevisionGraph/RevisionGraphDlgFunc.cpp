@@ -232,8 +232,23 @@ bool CRevisionGraphWnd::FetchRevisionData
 		GitRev rev=m_logEntries.GetGitRevAt(i);
 		for(int j=0; j<rev.m_ParentHash.size();j++)
 		{
-			TRACE(_T("edge %d - %d\n"),i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
-			m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
+			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
+			{
+				TRACE(_T("Can't found parent node"));
+				//new parent node as new node
+				node nd;
+				nd = this->m_Graph.newNode();
+				m_Graph.newEdge(nodes[i], nd);
+				m_logEntries.push_back(rev.m_ParentHash[j]);
+				m_logEntries.m_HashMap[rev.m_ParentHash[j]] = m_logEntries.size() -1;
+				nodes.Add(nd);
+				SetNodeRect(dev, &nd, rev.m_ParentHash[j], 0);
+
+			}else
+			{
+				TRACE(_T("edge %d - %d\n"),i, m_logEntries.m_HashMap[rev.m_ParentHash[j]]);
+				m_Graph.newEdge(nodes[i], nodes[m_logEntries.m_HashMap[rev.m_ParentHash[j]]]);
+			}
 		}
 	}
 
