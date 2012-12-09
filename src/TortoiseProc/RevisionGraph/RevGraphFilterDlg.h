@@ -31,13 +31,8 @@ public:
     CRevGraphFilterDlg(CWnd* pParent = NULL);   // standard constructor
     virtual ~CRevGraphFilterDlg();
 
-    void    SetMaxRevision (svn_revnum_t rev) {m_HeadRev = rev;}
-    void    GetRevisionRange (svn_revnum_t& minrev, svn_revnum_t& maxrev);
-    void    SetRevisionRange (svn_revnum_t minrev, svn_revnum_t maxrev);
-    CString GetFilterString() {return m_sFilterPaths;}
-    void    SetFilterString (const CString& str) {m_sFilterPaths = str;}
-    bool    GetRemoveSubTrees() {return m_removeSubTree != FALSE;}
-    void    SetRemoveSubTrees (bool value) {m_removeSubTree = value ? TRUE : FALSE;}
+    void    GetRevisionRange (CString& minrev, CString& maxrev);
+    void    SetRevisionRange (CString minrev, CString maxrev);
 
 // Dialog Data
     enum { IDD = IDD_REVGRAPHFILTER };
@@ -47,18 +42,12 @@ protected:
     virtual BOOL OnInitDialog();
     virtual void OnOK();
 
-    afx_msg void OnDeltaposFromspin(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnDeltaposTospin(NMHDR *pNMHDR, LRESULT *pResult);
-
     DECLARE_MESSAGE_MAP()
 protected:
-    CString             m_sFilterPaths;
-    BOOL                m_removeSubTree;
-    CSpinButtonCtrl     m_cFromSpin;
-    CSpinButtonCtrl     m_cToSpin;
     CString             m_sFromRev;
     CString             m_sToRev;
-    svn_revnum_t        m_HeadRev;
-    svn_revnum_t        m_minrev;
-    svn_revnum_t        m_maxrev;
+public:
+	afx_msg void OnBnClickedRev1btn1();
+	afx_msg void OnBnClickedRev1btn2();
+	BOOL m_bCurrentBranch;
 };

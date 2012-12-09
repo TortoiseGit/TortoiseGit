@@ -2213,6 +2213,14 @@
 				Name="RevisionGraph"
 				>
 				<File
+					RelativePath=".\RevisionGraph\RevGraphFilterDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevGraphFilterDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Commands\RevisionGraphCommand.cpp"
 					>
 				</File>

@@ -142,6 +142,11 @@ public:
 	MAP_HASH_NAME		m_HashMap;
 	CString				m_CurrentBranch;
 	CGitHash				m_HeadHash;
+
+	bool		m_bCurrentBranch;
+	CString		m_FromRev;
+	CString		m_ToRev;
+
 	void ReloadHashMap()
 	{
 		m_HashMap.clear();

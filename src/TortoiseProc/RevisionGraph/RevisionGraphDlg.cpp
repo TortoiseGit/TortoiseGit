@@ -28,7 +28,7 @@
 #include "TGitPath.h"
 //#include "SVNInfo.h"
 //#include "SVNDiff.h"
-//#include "RevGraphFilterDlg.h"
+#include "RevGraphFilterDlg.h"
 #include ".\revisiongraphdlg.h"
 //#include "RepositoryInfo.h"
 //#include "RevisionInRange.h"
@@ -99,6 +99,8 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_COMMAND(ID_MENUHELP, OnMenuhelp)
 	ON_COMMAND(ID_FILE_SAVEGRAPHAS, OnFileSavegraphas)
 	ON_COMMAND(ID_VIEW_SHOWOVERVIEW, OnViewShowoverview)
+	ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
+
 #if 0
 
     ON_COMMAND(ID_VIEW_COMPAREHEADREVISIONS, OnViewCompareheadrevisions)
@@ -122,7 +124,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
     ON_COMMAND_EX(ID_VIEW_SHOWTREESTRIPES, OnToggleRedrawOption)
    
 
-    ON_COMMAND(ID_VIEW_FILTER, OnViewFilter)
+
    
 #endif
     ON_WM_WINDOWPOSCHANGING()
@@ -771,8 +773,8 @@ BOOL CRevisionGraphDlg::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pRe
 
 void CRevisionGraphDlg::OnViewFilter()
 {
-#if 0
-    CSyncPointer<CAllRevisionGraphOptions>
+
+/*    CSyncPointer<CAllRevisionGraphOptions>
         options (m_Graph.m_state.GetOptions());
 
     CRevisionInRange* revisionRange = options->GetOption<CRevisionInRange>();
@@ -781,42 +783,26 @@ void CRevisionGraphDlg::OnViewFilter()
     svn_revnum_t upperLimit = revisionRange->GetUpperLimit();
 
     CRemovePathsBySubString* pathFilter = options->GetOption<CRemovePathsBySubString>();
-
+*/
     CRevGraphFilterDlg dlg;
-    dlg.SetMaxRevision (head);
-    dlg.SetFilterString (m_sFilter);
-    dlg.SetRemoveSubTrees (pathFilter->GetRemoveSubTrees());
-    dlg.SetRevisionRange ( min (head, lowerLimit == -1 ? 1 : lowerLimit)
-                         , min (head, upperLimit == -1 ? head : upperLimit));
+
+	dlg.m_bCurrentBranch = this->m_Graph.m_bCurrentBranch;
+	dlg.SetRevisionRange(m_Graph.m_FromRev, m_Graph.m_ToRev);
 
     if (dlg.DoModal()==IDOK)
     {
+
         // user pressed OK to dismiss the dialog, which means
         // we have to accept the new filter settings and apply them
-        svn_revnum_t minrev, maxrev;
-        dlg.GetRevisionRange(minrev, maxrev);
-        m_sFilter = dlg.GetFilterString();
-
-        revisionRange->SetLowerLimit (minrev);
-        revisionRange->SetUpperLimit (maxrev == head ? revision_t (NO_REVISION) : maxrev);
-
-        pathFilter->SetRemoveSubTrees (dlg.GetRemoveSubTrees());
-        std::set<std::string>& filterPaths = pathFilter->GetFilterPaths();
-        int index = 0;
-        filterPaths.clear();
-
-        CString path = m_sFilter.Tokenize (_T("*"),  index);
-        while (!path.IsEmpty())
-        {
-            filterPaths.insert (CUnicodeUtils::StdGetUTF8 ((LPCTSTR)path));
-            path = m_sFilter.Tokenize (_T("*"),  index);
-        }
-
+        
+        dlg.GetRevisionRange(m_Graph.m_FromRev, m_Graph.m_ToRev);
         // update menu & toolbar
+
+		this->m_Graph.m_bCurrentBranch = dlg.m_bCurrentBranch;
 
         CMenu * pMenu = GetMenu();
         int tbstate = m_ToolBar.GetToolBarCtrl().GetState(ID_VIEW_FILTER);
-        if (revisionRange->IsActive() || pathFilter->IsActive())
+		if (m_Graph.m_bCurrentBranch || !m_Graph.m_FromRev.IsEmpty() || !m_Graph.m_ToRev.IsEmpty())
         {
             if (pMenu != NULL)
                 pMenu->CheckMenuItem(ID_VIEW_FILTER, MF_BYCOMMAND | MF_CHECKED);
@@ -832,8 +818,9 @@ void CRevisionGraphDlg::OnViewFilter()
         // re-run query
 
         StartWorkerThread();
+
     }
-#endif
+
 }
 
 void CRevisionGraphDlg::OnViewShowoverview()
