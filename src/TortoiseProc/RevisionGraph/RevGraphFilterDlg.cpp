@@ -19,7 +19,8 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "RevGraphFilterDlg.h"
-
+#include "gittype.h"
+#include "git.h"
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 
@@ -42,6 +43,8 @@ void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_FROMREV, m_sFromRev);
 	DDX_Text(pDX, IDC_TOREV, m_sToRev);
 	DDX_Check(pDX, IDC_CURRENT_BRANCH, m_bCurrentBranch);
+	DDX_Control(pDX, IDC_FROMREV, m_ctrlFromRev);
+	DDX_Control(pDX, IDC_TOREV, m_ctrlToRev);
 }
 
 
@@ -53,6 +56,47 @@ END_MESSAGE_MAP()
 BOOL CRevGraphFilterDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
+	this->m_ctrlFromRev.Init();
+	this->m_ctrlToRev.Init();
+
+	STRING_VECTOR list;
+	g_Git.GetRefList(list);
+
+	m_ctrlFromRev.AddSearchString(_T("HEAD"));
+	m_ctrlToRev.AddSearchString(_T("HEAD"));
+
+	for(int i=0;i<list.size();i++)
+	{
+		CString str=list[i];
+		
+		m_ctrlFromRev.AddSearchString(list[i]);
+		m_ctrlToRev.AddSearchString(list[i]);
+
+		if(str.Find(_T("refs/")) == 0)
+		{
+			m_ctrlFromRev.AddSearchString(list[i].Mid(5));
+			m_ctrlToRev.AddSearchString(list[i].Mid(5));
+		}
+
+		if(str.Find(_T("refs/heads/")) == 0)
+		{
+			m_ctrlFromRev.AddSearchString(list[i].Mid(11));
+			m_ctrlToRev.AddSearchString(list[i].Mid(11));
+		}
+
+		if(str.Find(_T("refs/remotes/")) == 0)
+		{
+			m_ctrlFromRev.AddSearchString(list[i].Mid(13));
+			m_ctrlToRev.AddSearchString(list[i].Mid(13));
+		}
+
+		if(str.Find(_T("refs/tags/")) == 0)
+		{
+			m_ctrlFromRev.AddSearchString(list[i].Mid(10));
+			m_ctrlToRev.AddSearchString(list[i].Mid(10));
+		}
+	}
+
 
     return TRUE;
 }

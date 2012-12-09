@@ -18,6 +18,8 @@
 //
 #pragma once
 #include "afxcmn.h"
+#include "afxwin.h"
+#include "acedit.h"
 
 /**
  * \ingroup TortoiseProc
@@ -50,4 +52,6 @@ public:
 	afx_msg void OnBnClickedRev1btn1();
 	afx_msg void OnBnClickedRev1btn2();
 	BOOL m_bCurrentBranch;
+	CACEdit m_ctrlFromRev;
+	CACEdit m_ctrlToRev;
 };
