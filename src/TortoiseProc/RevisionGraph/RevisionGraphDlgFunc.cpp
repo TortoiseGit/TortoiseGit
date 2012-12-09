@@ -361,34 +361,16 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
     ASSERT(bHead || m_SelectedEntry2 != NULL);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+
+	CString sCmd;
 	
-//	CAppUtils::StartShowCompare (m_hWnd, m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(),
-//            m_sPath, this->m_logEntries[m_SelectedEntry1->index()].ToString(), peg, GitRev(), L"", alternativeTool);
+	sCmd.Format(_T("/command:showcompare %s /revision1:%s /revision2:%s"),
+			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
+			this->m_logEntries[m_SelectedEntry1->index()].ToString(),
+			bHead ?  _T("HEAD"): this->m_logEntries[m_SelectedEntry2->index()].ToString());
 
-#if 0
-    CSyncPointer<SVN> svn (m_state.GetSVN());
+    CAppUtils::RunTortoiseProc(sCmd);
 
-    CTGitPath url1;
-    CTGitPath url2;
-    GitRev rev1;
-    GitRev rev2;
-    GitRev peg;
-
-    GetSelected (m_SelectedEntry1, bHead, url1, rev1, peg);
-    GetSelected (m_SelectedEntry2, bHead, url2, rev2, peg);
-
-    bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
-    if (m_state.PromptShown())
-    {
-        SVNDiff diff (svn.get(), this->m_hWnd);
-        diff.SetAlternativeTool (alternativeTool);
-        diff.ShowCompare (url1, rev1, url2, rev2, peg, L"");
-    }
-    else
-    {
-
-    }
-#endif
 }
 
 void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
