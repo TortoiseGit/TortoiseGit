@@ -108,7 +108,7 @@ void CRevisionGraphWnd::OnPaint()
 
 }
 
-void CRevisionGraphWnd::ClearVisibleGlyphs (const CRect& rect)
+void CRevisionGraphWnd::ClearVisibleGlyphs (const CRect& /*rect*/)
 {
 #if 0
     float glyphSize = GLYPH_SIZE * m_fZoomFactor;
@@ -330,7 +330,8 @@ void CRevisionGraphWnd::DrawShadow (GraphicsDevice& graphics, const RectF& rect,
 
 void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
                                  Color contour, Color overlayColor,
-                                 const CVisibleGraphNode *node, NodeShape shape)
+                                 const CVisibleGraphNode * /* node */, 
+								 NodeShape shape)
 {
     // special case: line deleted but deletion node removed
     // (don't show as "deleted" if the following node has been folded / split)
@@ -363,8 +364,6 @@ void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
     // Draw the main shape
 
    bool isWorkingCopy=0;
-   //     = nodeClassification.Is (CNodeClassification::IS_WORKINGCOPY);
-   bool isModifiedWC=0;
    //     = nodeClassification.Is (CNodeClassification::IS_MODIFIED_WC);
    bool textAsBorderColor=0;
    //     = nodeClassification.IsAnyOf ( CNodeClassification::IS_LAST
@@ -428,10 +427,10 @@ RectF CRevisionGraphWnd::GetNodeRect (const node& node, const CSize& offset) con
     // get node and position
 
 	CRect rect;
-	rect.left = this->m_GraphAttr.x(node) -  m_GraphAttr.width(node)/2;
-	rect.top = this->m_GraphAttr.y(node) - m_GraphAttr.height(node)/2;
-	rect.bottom = rect.top+ m_GraphAttr.height(node);
-	rect.right = rect.left + m_GraphAttr.width(node);
+	rect.left = (int) (this->m_GraphAttr.x(node) -  m_GraphAttr.width(node)/2);
+	rect.top = (int) (this->m_GraphAttr.y(node) - m_GraphAttr.height(node)/2);
+	rect.bottom = (int)( rect.top+ m_GraphAttr.height(node));
+	rect.right = (int)(rect.left + m_GraphAttr.width(node));
 
     RectF noderect (TransformRectToScreen (rect, offset));
 
@@ -480,10 +479,10 @@ isionGraphWnd::GetBranchCover
 }
 #endif
 
-
+#if 0
 void CRevisionGraphWnd::DrawShadows (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
 {
-#if 0  // shadow color to use
+  // shadow color to use
 
     Color background;
     background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));
@@ -523,9 +522,9 @@ void CRevisionGraphWnd::DrawShadows (GraphicsDevice& graphics, const CRect& logR
             break;
         }
     }
-#endif
-}
 
+}
+#endif
 
 
 void CRevisionGraphWnd::DrawSquare
@@ -604,6 +603,8 @@ void CRevisionGraphWnd::DrawGlyph
     }
 }
 #endif
+
+#if 0
 void CRevisionGraphWnd::DrawGlyphs
     ( GraphicsDevice& graphics
     , Image* glyphs
@@ -617,7 +618,7 @@ void CRevisionGraphWnd::DrawGlyphs
     , bool showAll)
 {
     // don't show collapse and cut glyths by default
-#if 0
+
     if (!showAll && ((glyph1 == CollapseGlyph) || (glyph1 == SplitGlyph)))
         glyph1 = NoGlyph;
     if (!showAll && ((glyph2 == CollapseGlyph) || (glyph2 == SplitGlyph)))
@@ -661,9 +662,11 @@ void CRevisionGraphWnd::DrawGlyphs
         visibleGlyphs->push_back
             (CRevisionGraphState::SVisibleGlyph (state2, leftTop2, node));
     }
-#endif
-}
 
+}
+#endif
+
+#if 0
 void CRevisionGraphWnd::DrawGlyphs
     ( GraphicsDevice& graphics
     , Image* glyphs
@@ -674,7 +677,7 @@ void CRevisionGraphWnd::DrawGlyphs
     , bool upsideDown)
 {
     // shortcut
-#if 0
+
     if ((state == 0) && (allowed == 0))
         return;
 
@@ -716,9 +719,9 @@ void CRevisionGraphWnd::DrawGlyphs
                , CGraphNodeStates::COLLAPSED_BELOW
                , CGraphNodeStates::SPLIT_BELOW
                , (allowed & CGraphNodeStates::COLLAPSED_BELOW) != 0);
-#endif
-}
 
+}
+#endif
 
 #if 0
 void CRevisionGraphWnd::IndicateGlyphDirection
@@ -811,13 +814,13 @@ void CRevisionGraphWnd::IndicateGlyphDirection
 void CRevisionGraphWnd::DrawMarker
     ( GraphicsDevice& graphics
     , const RectF& noderect
-    , MarkerPosition position
-    , int relPosition
-    , int colorIndex )
+    , MarkerPosition /*position*/
+    , int /*relPosition*/
+    , int /*colorIndex*/ )
 {
-	int width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
+	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
 	Pen pen(Color(0,0,255),width);
-	DrawRoundedRect(graphics, Color(255,255,0), width, &pen, Color(0,0,0), NULL, noderect);
+	DrawRoundedRect(graphics, Color(255,255,0), (int)width, &pen, Color(0,0,0), NULL, noderect);
 	
 }
 
@@ -872,7 +875,7 @@ void CRevisionGraphWnd::DrawStripes (GraphicsDevice& graphics, const CSize& offs
     }
 }
 #endif
-void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& logRect, const CSize& offset)
+void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, const CRect& /*logRect*/, const CSize& offset)
 {
 
 //    CSyncPointer<CGraphNodeStates> nodeStates (m_state.GetNodeStates());
@@ -946,7 +949,7 @@ void CRevisionGraphWnd::DrawNodes (GraphicsDevice& graphics, Image* glyphs, cons
 
         // expansion glypths etc.
 
-        DrawGlyphs (graphics, glyphs, v, noderect, 0, 0, 0);
+        //DrawGlyphs (graphics, glyphs, v, noderect, 0, 0, 0);
     }
 
 }
@@ -970,7 +973,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 			double x = ps.X + t*dx;
 
 			if(xmin <= x && x <= xmax)
-				return PointF(x,ymax);
+				return PointF((REAL)x, (REAL)ymax);
 
 		// above
 		} else if(pt.Y < ymin) {
@@ -978,7 +981,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 			double x = ps.X + t*dx;
 
 			if(xmin <= x && x <= xmax)
-				return PointF(x,ymin);
+				return PointF((REAL)x, (REAL)ymin);
 
 		}
 	}
@@ -990,7 +993,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 			double y = ps.Y + t*dy;
 
 			if(ymin <= y && y <= ymax)
-				return PointF(xmax,y);
+				return PointF((REAL)xmax, (REAL)y);
 
 		// left
 		} else if(pt.X < xmin) {
@@ -998,7 +1001,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 			double y = ps.Y + t*dy;
 
 			if(ymin <= y && y <= ymax)
-				return PointF(xmin,y);
+				return PointF((REAL)xmin, (REAL)y);
 
 		}
 	}
@@ -1007,7 +1010,7 @@ PointF CRevisionGraphWnd::cutPoint(node v,double lw,PointF ps, PointF pt)
 
 }
 
-void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& logRect, const CSize& offset)
+void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& /*logRect*/, const CSize& offset)
 {
 
 	CArray<PointF> points;
@@ -1029,21 +1032,21 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		pts.RemoveAll();
 
 		PointF pt;
-		pt.X = m_GraphAttr.x(e->source());
-		pt.Y = m_GraphAttr.y(e->source());
+		pt.X = (REAL)m_GraphAttr.x(e->source());
+		pt.Y = (REAL)m_GraphAttr.y(e->source());
 		
 		points.Add(pt);
 
 		ListConstIterator<DPoint> it;
 		for(it = dpl.begin(); it.valid(); ++it)
 		{
-			pt.X =  (*it).m_x;
-			pt.Y =  (*it).m_y;
+			pt.X =  (REAL)(*it).m_x;
+			pt.Y =  (REAL)(*it).m_y;
 			points.Add(pt);
 		}
         
-		pt.X = m_GraphAttr.x(e->target());
-		pt.Y = m_GraphAttr.y(e->target());
+		pt.X = (REAL)m_GraphAttr.x(e->target());
+		pt.Y = (REAL)m_GraphAttr.y(e->target());
 		
 		points.Add(pt);
 
@@ -1094,14 +1097,14 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		arrows[0].X =  points[0].X;
 		arrows[0].Y =  points[0].Y;
 
-		arrows[1].X =  points[0].X + p1_x;
-		arrows[1].Y =  points[0].Y + p1_y;
+		arrows[1].X =  points[0].X + (REAL)p1_x;
+		arrows[1].Y =  points[0].Y + (REAL)p1_y;
 
-		arrows[2].X =  points[0].X + dx*3/5;
-		arrows[2].Y =  points[0].Y + dy*3/5;
+		arrows[2].X =  points[0].X + (REAL)dx*3/5;
+		arrows[2].Y =  points[0].Y + (REAL)dy*3/5;
 
-		arrows[3].X =  points[0].X + p2_x;
-		arrows[3].Y =  points[0].Y + p2_y;
+		arrows[3].X =  points[0].X + (REAL)p2_x;
+		arrows[3].Y =  points[0].Y + (REAL)p2_y;
 
 		arrows[4].X =  points[0].X;
 		arrows[4].Y =  points[0].Y;
@@ -1331,8 +1334,8 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 //    if (options->GetOption<CShowTreeStripes>()->IsActive())
 //        DrawStripes (graphics, offset);
 
-    if (m_fZoomFactor > SHADOW_ZOOM_THRESHOLD)
-        DrawShadows (graphics, logRect, offset);
+    //if (m_fZoomFactor > SHADOW_ZOOM_THRESHOLD)
+    //    DrawShadows (graphics, logRect, offset);
 
     Bitmap glyphs (AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHGLYPHS));
 

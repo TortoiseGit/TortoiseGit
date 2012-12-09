@@ -143,7 +143,7 @@ public:
 	CString				m_CurrentBranch;
 	CGitHash				m_HeadHash;
 
-	bool		m_bCurrentBranch;
+	BOOL		m_bCurrentBranch;
 	CString		m_FromRev;
 	CString		m_ToRev;
 

@@ -195,11 +195,11 @@ int CRevisionGraphWnd::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 }
 
 bool CRevisionGraphWnd::FetchRevisionData
-    ( const CString& path
-    , GitRev pegRevision
-    , CProgressDlg* progress
-    , ITaskbarList3 * pTaskbarList
-    , HWND hWnd)
+    ( const CString& /*path*/
+    , GitRev /*pegRevision*/
+    , CProgressDlg* /*progress*/
+    , ITaskbarList3 * /*pTaskbarList*/
+    , HWND /*hWnd*/)
 {
 
 	this->m_logEntries.ClearAll();
@@ -272,8 +272,8 @@ bool CRevisionGraphWnd::FetchRevisionData
 	}
 	
 	this->m_GraphRect.top=m_GraphRect.left=0;
-	m_GraphRect.bottom = ymax;
-	m_GraphRect.right = xmax;
+	m_GraphRect.bottom = (LONG)ymax;
+	m_GraphRect.right = (LONG)xmax;
 
 	return true;
 }
@@ -335,7 +335,7 @@ void CRevisionGraphWnd::SetShowOverview (bool value)
     if (m_bShowOverview)
         BuildPreview();
 }
-
+#if 0
 void CRevisionGraphWnd::GetSelected
     ( const CVisibleGraphNode* node
     , bool head
@@ -343,7 +343,7 @@ void CRevisionGraphWnd::GetSelected
     , GitRev& rev
     , GitRev& peg)
 {
-#if 0
+
     CString repoRoot = m_state.GetRepositoryRoot();
 
     // get path and revision
@@ -371,8 +371,9 @@ void CRevisionGraphWnd::GetSelected
         if (head && !peg.IsValid())
             peg = node->GetRevision();
     }
-#endif
+
 }
+#endif
 
 CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 {
@@ -395,7 +396,7 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
     ASSERT(m_SelectedEntry1 != NULL);
     ASSERT(bHead || m_SelectedEntry2 != NULL);
 
-	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+//	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
 	CString sCmd;
 	

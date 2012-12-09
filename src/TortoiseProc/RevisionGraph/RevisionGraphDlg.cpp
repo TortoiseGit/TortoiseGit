@@ -57,7 +57,7 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=NULL*/)
 
     // restore option state
 
-    DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x1ff199);
+//    DWORD dwOpts = CRegStdDWORD(_T("Software\\TortoiseGit\\RevisionGraphOptions"), 0x1ff199);
 //    m_Graph.m_state.GetOptions()->SetRegistryFlags (dwOpts, 0x407fbf);
 
     m_szTip[0]  = 0;

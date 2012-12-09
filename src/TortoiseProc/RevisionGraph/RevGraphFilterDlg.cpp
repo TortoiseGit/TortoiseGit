@@ -97,7 +97,6 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 		}
 	}
 
-
     return TRUE;
 }
 

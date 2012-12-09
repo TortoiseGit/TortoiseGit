@@ -338,7 +338,7 @@ CPoint CRevisionGraphWnd::GetLogCoordinates (CPoint point) const
                   , (int)((point.y + nVScrollPos) / m_fZoomFactor));
 }
 
-node CRevisionGraphWnd::GetHitNode (CPoint point, CSize border) const
+node CRevisionGraphWnd::GetHitNode (CPoint point, CSize /*border*/) const
 {
 #if 0
     // any nodes at all?
@@ -365,7 +365,7 @@ node CRevisionGraphWnd::GetHitNode (CPoint point, CSize border) const
 	return NULL;
 }
 
-DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint point) const
+DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint /*point*/) const
 {
     // if there is no layout, there will be no nodes,
     // hence, no glyphs
@@ -1177,7 +1177,7 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 
 }
 
-void CRevisionGraphWnd::AddGraphOps (CMenu& popup, const CVisibleGraphNode * node)
+void CRevisionGraphWnd::AddGraphOps (CMenu& /*popup*/, const CVisibleGraphNode * /*node*/)
 {
 #if 0
     CSyncPointer<CGraphNodeStates> nodeStates (m_state.GetNodeStates());
@@ -1383,13 +1383,13 @@ void CRevisionGraphWnd::DoBrowseRepo()
 #endif
 }
 
-void CRevisionGraphWnd::ResetNodeFlags (DWORD flags)
+void CRevisionGraphWnd::ResetNodeFlags (DWORD /*flags*/)
 {
 //    m_state.GetNodeStates()->ResetFlags (flags);
 //    m_parent->StartWorkerThread();
 }
 
-void CRevisionGraphWnd::ToggleNodeFlag (const CVisibleGraphNode *node, DWORD flag)
+void CRevisionGraphWnd::ToggleNodeFlag (const CVisibleGraphNode * /*node*/, DWORD /*flag*/)
 {
 #if 0
     CSyncPointer<CGraphNodeStates> nodeStates (m_state.GetNodeStates());
@@ -1699,7 +1699,7 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
     return 0;
 }
 
-void CRevisionGraphWnd::SetDlgTitle (bool offline)
+void CRevisionGraphWnd::SetDlgTitle (bool /*offline*/)
 {
 #if 0
     if (m_sTitle.IsEmpty())
