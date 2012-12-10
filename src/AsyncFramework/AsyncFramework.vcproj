@@ -25,7 +25,7 @@
 			IntermediateDirectory="..\..\obj\AsyncFramework\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
-			ManagedExtensions="1"
+			ManagedExtensions="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -85,7 +85,7 @@
 			IntermediateDirectory="..\..\obj\AsyncFramework\$(ConfigurationName)64"
 			ConfigurationType="4"
 			CharacterSet="1"
-			ManagedExtensions="1"
+			ManagedExtensions="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -146,7 +146,7 @@
 			IntermediateDirectory="..\..\obj\AsyncFramework\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
-			ManagedExtensions="1"
+			ManagedExtensions="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -206,7 +206,7 @@
 			IntermediateDirectory="..\..\obj\AsyncFramework\$(ConfigurationName)64"
 			ConfigurationType="4"
 			CharacterSet="1"
-			ManagedExtensions="1"
+			ManagedExtensions="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
