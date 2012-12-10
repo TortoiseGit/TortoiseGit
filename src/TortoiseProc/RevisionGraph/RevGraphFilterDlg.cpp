@@ -21,6 +21,7 @@
 #include "RevGraphFilterDlg.h"
 #include "gittype.h"
 #include "git.h"
+#include "BrowseRefsDlg.h"
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 
@@ -121,9 +122,19 @@ void CRevGraphFilterDlg::OnOK()
 void CRevGraphFilterDlg::OnBnClickedRev1btn1()
 {
 	// TODO: Add your control notification handler code here
+	CString str = CBrowseRefsDlg::PickRef();
+	if(str.IsEmpty())
+		return;
+
+	m_ctrlFromRev.SetWindowText(str);
 }
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn2()
 {
 	// TODO: Add your control notification handler code here
+	CString str = CBrowseRefsDlg::PickRef();
+	if(str.IsEmpty())
+		return;
+
+	m_ctrlToRev.SetWindowText(str);
 }
