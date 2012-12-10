@@ -23,21 +23,21 @@
 
 bool RevisionGraphCommand::Execute()
 {
-    CString val = parser.GetVal(_T("pegrev"));
-    GitRev pegrev;// = val.IsEmpty() ? GitRev() : GitRev(val);
+	CString val = parser.GetVal(_T("pegrev"));
+	GitRev pegrev;// = val.IsEmpty() ? GitRev() : GitRev(val);
 
    // std::unique_ptr<CRevisionGraphDlg> dlg(new CRevisionGraphDlg());
 	CRevisionGraphDlg dlg;
 	dlg.SetPath(g_Git.m_CurrentDir);
-//    dlg.SetPegRevision(pegrev);
-    if (parser.HasVal(L"output"))
-    {
-        dlg.SetOutputFile(parser.GetVal(L"output"));
-//        if (parser.HasVal(L"options"))
-//            dlg.SetOptions(parser.GetLongVal(L"options"));
-        dlg.StartHidden();
-    }
-    dlg.DoModal();
+//	dlg.SetPegRevision(pegrev);
+	if (parser.HasVal(L"output"))
+	{
+		dlg.SetOutputFile(parser.GetVal(L"output"));
+//		if (parser.HasVal(L"options"))
+//			dlg.SetOptions(parser.GetLongVal(L"options"));
+		dlg.StartHidden();
+	}
+	dlg.DoModal();
 
-    return true;
+	return true;
 }

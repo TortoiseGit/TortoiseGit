@@ -26,9 +26,9 @@
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)
 
 CRevGraphFilterDlg::CRevGraphFilterDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CRevGraphFilterDlg::IDD, pParent)
-    , m_sFromRev(_T(""))
-    , m_sToRev(_T(""))
+	: CDialog(CRevGraphFilterDlg::IDD, pParent)
+	, m_sFromRev(_T(""))
+	, m_sToRev(_T(""))
 	, m_bCurrentBranch(FALSE)
 {
 
@@ -56,7 +56,7 @@ END_MESSAGE_MAP()
 
 BOOL CRevGraphFilterDlg::OnInitDialog()
 {
-    CDialog::OnInitDialog();
+	CDialog::OnInitDialog();
 	this->m_ctrlFromRev.Init();
 	this->m_ctrlToRev.Init();
 
@@ -98,25 +98,25 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 		}
 	}
 
-    return TRUE;
+	return TRUE;
 }
 
 
 void CRevGraphFilterDlg::GetRevisionRange(CString& minrev, CString& maxrev)
 {
-    minrev = m_sFromRev;
-    maxrev = m_sToRev;
+	minrev = m_sFromRev;
+	maxrev = m_sToRev;
 }
 
 void CRevGraphFilterDlg::SetRevisionRange (CString minrev, CString maxrev)
 {
 	m_sFromRev = minrev;
-    m_sToRev = maxrev;
+	m_sToRev = maxrev;
 }
 
 void CRevGraphFilterDlg::OnOK()
 {
-    CDialog::OnOK();
+	CDialog::OnOK();
 }
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn1()

@@ -27,27 +27,27 @@
  */
 class CRevGraphFilterDlg : public CDialog
 {
-    DECLARE_DYNAMIC(CRevGraphFilterDlg)
+	DECLARE_DYNAMIC(CRevGraphFilterDlg)
 
 public:
-    CRevGraphFilterDlg(CWnd* pParent = NULL);   // standard constructor
-    virtual ~CRevGraphFilterDlg();
+	CRevGraphFilterDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CRevGraphFilterDlg();
 
-    void    GetRevisionRange (CString& minrev, CString& maxrev);
-    void    SetRevisionRange (CString minrev, CString maxrev);
+	void	GetRevisionRange (CString& minrev, CString& maxrev);
+	void	SetRevisionRange (CString minrev, CString maxrev);
 
 // Dialog Data
-    enum { IDD = IDD_REVGRAPHFILTER };
+	enum { IDD = IDD_REVGRAPHFILTER };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    virtual BOOL OnInitDialog();
-    virtual void OnOK();
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 protected:
-    CString             m_sFromRev;
-    CString             m_sToRev;
+	CString	m_sFromRev;
+	CString	m_sToRev;
 public:
 	afx_msg void OnBnClickedRev1btn1();
 	afx_msg void OnBnClickedRev1btn2();
