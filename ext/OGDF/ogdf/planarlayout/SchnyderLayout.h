@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Revision: 2566 $
  *
  * last checkin:
