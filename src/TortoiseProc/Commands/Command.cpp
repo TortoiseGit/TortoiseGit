@@ -233,7 +233,7 @@ static const struct CommandInfo
 	{	cmdRequestPull,		_T("requestpull")		},
 	{	cmdBisect,			_T("bisect")			},
 	{	cmdRepoBrowser,		_T("repobrowser")		},
-	{   cmdRevisionGraph,   _T("revisiongraph")     },
+	{	cmdRevisionGraph,	_T("revisiongraph")		},
 };
 
 
@@ -365,7 +365,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
 	case cmdRevisionGraph:
-        return new RevisionGraphCommand;
+		return new RevisionGraphCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 
