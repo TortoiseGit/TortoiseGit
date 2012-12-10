@@ -201,7 +201,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	, ITaskbarList3 * /*pTaskbarList*/
 	, HWND /*hWnd*/)
 {
-
+	this->m_LogCache.ClearAllParent();
 	this->m_logEntries.ClearAll();
 	this->m_logEntries.ParserFromLog(NULL,-1,
 		CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH),
