@@ -2225,7 +2225,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Commands\RevisionGraphCommand.h"
+					>
+				</File>
+				<File
 					RelativePath=".\RevisionGraph\RevisionGraphDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlg.h"
 					>
 				</File>
 				<File
@@ -2238,6 +2246,10 @@
 				</File>
 				<File
 					RelativePath=".\RevisionGraph\RevisionGraphWnd.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphWnd.h"
 					>
 				</File>
 			</Filter>
