@@ -1250,7 +1250,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 255));
 
 		if ((m_SelectedEntry2 == v))
-			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 128));
+			DrawMarker (graphics, noderect, mpLeft, 0, Color(136,0, 21));
 
 	}
 }
