@@ -206,9 +206,9 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_logEntries.ClearAll();
 	this->m_logEntries.ParserFromLog(NULL,-1,
 		CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH),
-		this->m_FromRev.IsEmpty() ? NULL : &m_FromRev, 
+		this->m_FromRev.IsEmpty() ? NULL : &m_FromRev,
 		this->m_ToRev.IsEmpty() ? NULL : &m_ToRev);
-	
+
 	ReloadHashMap();
 	this->m_Graph.clear();
 
@@ -256,7 +256,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	//this->m_OHL.layerDistance(30.0);
 	//this->m_OHL.nodeDistance(25.0);
 	//this->m_OHL.weightBalancing(0.8);
-   
+
 	m_SugiyamLayout.call(m_GraphAttr);
 
 	node v;
@@ -271,7 +271,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		if(y>ymax)
 			ymax = y;
 	}
-	
+
 	this->m_GraphRect.top=m_GraphRect.left=0;
 	m_GraphRect.bottom = (LONG)ymax;
 	m_GraphRect.right = (LONG)xmax;
@@ -388,7 +388,7 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 	else if(this->m_HashMap[hash][0].IsEmpty())
 		return hash.ToString();
 	else
-		return m_HashMap[hash][0];		
+		return m_HashMap[hash][0];
 
 }
 
@@ -400,7 +400,7 @@ void CRevisionGraphWnd::CompareRevs(bool bHead)
 //	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
 	CString sCmd;
-	
+
 	sCmd.Format(_T("/command:showcompare %s /revision1:%s /revision2:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
 			GetFriendRefName(m_SelectedEntry1),

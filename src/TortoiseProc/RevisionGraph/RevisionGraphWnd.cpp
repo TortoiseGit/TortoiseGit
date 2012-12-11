@@ -141,8 +141,8 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_wszTip[0] = 0;
 
 	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics |
-		ogdf:: GraphAttributes::nodeLabel | ogdf::GraphAttributes::nodeColor | 
-		ogdf::GraphAttributes::edgeColor | ogdf::GraphAttributes::edgeStyle | 
+		ogdf:: GraphAttributes::nodeLabel | ogdf::GraphAttributes::nodeColor |
+		ogdf::GraphAttributes::edgeColor | ogdf::GraphAttributes::edgeStyle |
 		ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
 
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
@@ -169,14 +169,14 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_GraphAttr.height(four)=20;
 
 	m_GraphAttr.labelNode(one)="One";
-	m_GraphAttr.labelNode(two)="Two";	
-	m_GraphAttr.labelNode(three)="three";	
+	m_GraphAttr.labelNode(two)="Two";
+	m_GraphAttr.labelNode(three)="three";
 
 	this->m_Graph.newEdge(one, two);
 	this->m_Graph.newEdge(one, three);
 	this->m_Graph.newEdge(two, four);
 	this->m_Graph.newEdge(three, four);
-	
+
 #endif
 	FastHierarchyLayout *pOHL = ::new FastHierarchyLayout;
 	//It will auto delte when m_SugiyamLayout destory
@@ -195,26 +195,26 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 #endif
 #if 0
 	PlanarizationLayout pl;
- 
+
 	FastPlanarSubgraph *ps = ::new FastPlanarSubgraph;
 	ps->runs(100);
 	VariableEmbeddingInserter *ves = ::new VariableEmbeddingInserter;
 	ves->removeReinsert(EdgeInsertionModule::rrAll);
 	pl.setSubgraph(ps);
 	pl.setInserter(ves);
- 
+
 	EmbedderMinDepthMaxFaceLayers *emb = ::new EmbedderMinDepthMaxFaceLayers;
 	pl.setEmbedder(emb);
- 
+
 	OrthoLayout *ol =::new OrthoLayout;
 	ol->separation(20.0);
 	ol->cOverhang(0.4);
 	ol->setOptions(2+4);
 	ol->preferedDir(OrthoDir::odEast);
 	pl.setPlanarLayouter(ol);
- 
+
 	pl.call(m_GraphAttr);
-	
+
 	node v;
 	forall_nodes(v,m_Graph) {
 
@@ -239,7 +239,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 		}
 	}
 	m_GraphAttr.writeGML("test.gml");
-#endif	
+#endif
 }
 
 CRevisionGraphWnd::~CRevisionGraphWnd()
@@ -351,7 +351,7 @@ node CRevisionGraphWnd::GetHitNode (CPoint point, CSize /*border*/) const
 	// search the nodes for one at that grid position
 
 	return nodeList->GetAt (GetLogCoordinates (point), border);
-#endif 
+#endif
 
 	node v;
 	forall_nodes(v,m_Graph)
@@ -412,7 +412,7 @@ DWORD CRevisionGraphWnd::GetHoverGlyphs (CPoint /*point*/) const
 		std::swap (topGlyphArea.bottom, bottomGlyphArea.bottom);
 	}
 
-	
+
 	if (rightGlyphArea.PtInRect (logCoordinates))
 		result = base->GetFirstCopyTarget() != NULL
 			   ? CGraphNodeStates::COLLAPSED_RIGHT | CGraphNodeStates::SPLIT_RIGHT
@@ -1180,7 +1180,6 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 	{
 		AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_COMPAREREVS);
 		AppendMenu (popup, IDS_REVGRAPH_POPUP_UNIDIFFREVS, ID_UNIDIFFREVS);
-	  
 	}
 
 }
@@ -1289,7 +1288,7 @@ void CRevisionGraphWnd::DoShowLog()
 		return;
 
 	CString sCmd;
-	
+
 	if(m_SelectedEntry2 != NULL)
 		sCmd.Format(_T("/command:log %s /endrev:%s /startrev:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
@@ -1299,7 +1298,7 @@ void CRevisionGraphWnd::DoShowLog()
 		sCmd.Format(_T("/command:log %s /endrev:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
 			this->m_logEntries[m_SelectedEntry1->index()].ToString());
-  
+
 	CAppUtils::RunTortoiseProc(sCmd);
 
 }
@@ -1425,7 +1424,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	this->ScreenToClient(&clientpoint);
 
 	node nodeIndex = GetHitNode (clientpoint);
-   
+
 	if ( !UpdateSelectedEntry (nodeIndex))
 	{
 		return;
@@ -1460,7 +1459,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	case ID_UNIDIFFHEADS:
 		if (m_SelectedEntry1 != NULL)
 			UnifiedDiffRevs(true);
-		break; 
+		break;
 	case ID_SHOWLOG:
 		DoShowLog();
 		break;
@@ -1674,7 +1673,7 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 
 	InitView();
 	BuildPreview();
-	
+
 	SCROLLINFO sinfo = {0};
 	sinfo.cbSize = sizeof(SCROLLINFO);
 	GetScrollInfo(SB_HORZ, &sinfo);

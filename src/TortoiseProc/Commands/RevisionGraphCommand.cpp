@@ -27,7 +27,6 @@ bool RevisionGraphCommand::Execute()
 	CString val = parser.GetVal(_T("pegrev"));
 	GitRev pegrev;// = val.IsEmpty() ? GitRev() : GitRev(val);
 
-   // std::unique_ptr<CRevisionGraphDlg> dlg(new CRevisionGraphDlg());
 	CRevisionGraphDlg dlg;
 	dlg.SetPath(g_Git.m_CurrentDir);
 //	dlg.SetPegRevision(pegrev);

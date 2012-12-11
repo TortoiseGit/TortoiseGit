@@ -137,7 +137,7 @@ public:
 
 	CString			m_sPath;
 	GitRev			m_pegRev;
-	
+
 	CLogCache			m_LogCache;
 	CLogDataVector		m_logEntries;
 	MAP_HASH_NAME		m_HashMap;
@@ -233,7 +233,7 @@ protected:
 	ogdf::Graph	m_Graph;
 	ogdf::GraphAttributes m_GraphAttr;
 	ogdf::SugiyamaLayout m_SugiyamLayout;
-	
+
 	CRect	m_GraphRect;
 
 	int	 GetLeftRightMargin() {return 20;};

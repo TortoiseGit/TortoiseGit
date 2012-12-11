@@ -2,13 +2,13 @@
 Released: unreleased
 
 == Features ==
- * Fixed Issue #1066: Add 'Revision Graph' Feature
  * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
  * Fixed issue #1541: Show progress dialog when running git request-pull
  * Fixed issue #1513: Easier to clean TortoiseGit temporary files
  * Fixed issue #1540: Add jump to previous / next commit in Log Dialog
  * Fixed issue #1529: Can show and set tagopt
  * Fixed issue #1554: Unwanted text formatting in commit dialogue (styling can be disabled using advanced settings now)
+ * Fixed issue #1066: Add 'Revision Graph' Feature
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

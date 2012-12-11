@@ -106,9 +106,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFF, OnViewUnifieddiff)
 	ON_COMMAND(ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, OnViewUnifieddiffofheadrevisions)
 
-
 #if 0
-
 	ON_COMMAND_EX(ID_VIEW_SHOWALLREVISIONS, OnToggleOption)
 	ON_COMMAND_EX(ID_VIEW_GROUPBRANCHES, OnToggleOption)
 	ON_COMMAND_EX(ID_VIEW_TOPDOWN, OnToggleOption)
@@ -124,10 +122,6 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND_EX(ID_VIEW_SHOWWCMODIFICATION, OnToggleReloadOption)
 	ON_COMMAND_EX(ID_VIEW_SHOWDIFFPATHS, OnToggleOption)
 	ON_COMMAND_EX(ID_VIEW_SHOWTREESTRIPES, OnToggleRedrawOption)
-   
-
-
-   
 #endif
 	ON_WM_WINDOWPOSCHANGING()
 
@@ -796,7 +790,7 @@ void CRevisionGraphDlg::OnViewFilter()
 
 		// user pressed OK to dismiss the dialog, which means
 		// we have to accept the new filter settings and apply them
-		
+
 		dlg.GetRevisionRange(m_Graph.m_FromRev, m_Graph.m_ToRev);
 		// update menu & toolbar
 

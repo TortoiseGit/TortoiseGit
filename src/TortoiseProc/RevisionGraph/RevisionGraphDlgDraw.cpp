@@ -158,7 +158,7 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 	if (graphics.graphics)
 	{
 		GraphicsPath path;
-		
+
 		if(mask & ROUND_UP)
 		{
 			path.AddArc (points[0].X, points[1].Y, radius, radius, 180, 90);
@@ -194,8 +194,6 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 	}
 
 }
-
-
 
 void CRevisionGraphWnd::DrawOctangle (GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect)
 {
@@ -331,7 +329,7 @@ void CRevisionGraphWnd::DrawShadow (GraphicsDevice& graphics, const RectF& rect,
 
 void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
 								Color contour, Color overlayColor,
-								const CVisibleGraphNode * /* node */, 
+								const CVisibleGraphNode * /* node */,
 								NodeShape shape)
 {
 	// special case: line deleted but deletion node removed
@@ -822,7 +820,6 @@ void CRevisionGraphWnd::DrawMarker
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
 	Pen pen(penColor,width);
 	DrawRoundedRect(graphics, penColor, (int)width, &pen, Color(0,0,0), NULL, noderect);
-	
 }
 
 #if 0
@@ -1028,14 +1025,14 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	{
 		// get connection and point position
 		const DPolyline &dpl = this->m_GraphAttr.bends(e);
-		
+
 		points.RemoveAll();
 		pts.RemoveAll();
 
 		PointF pt;
 		pt.X = (REAL)m_GraphAttr.x(e->source());
 		pt.Y = (REAL)m_GraphAttr.y(e->source());
-		
+
 		points.Add(pt);
 
 		ListConstIterator<DPoint> it;
@@ -1045,10 +1042,10 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 			pt.Y =  (REAL)(*it).m_y;
 			points.Add(pt);
 		}
-		
+
 		pt.X = (REAL)m_GraphAttr.x(e->target());
 		pt.Y = (REAL)m_GraphAttr.y(e->target());
-		
+
 		points.Add(pt);
 
 		points[0] = this->cutPoint(e->source(), 1, points[0], points[1]);
@@ -1066,7 +1063,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		if (graphics.graphics)
 		{
 			graphics.graphics->DrawLines(&pen, points.GetData(), points.GetCount());
-		
+
 		}
 		else if (graphics.pSVG)
 		{
@@ -1093,7 +1090,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p1_x,points[0].Y+p1_y);
 		//graphics.graphics->DrawLine(&pen, points[0].X,points[0].Y, points[0].X +p2_x,points[0].Y+p2_y);
 		GraphicsPath path;
-		
+
 		PointF arrows[5];
 		arrows[0].X =  points[0].X;
 		arrows[0].Y =  points[0].Y;
@@ -1164,7 +1161,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				CString shortname;
 				CString str = m_HashMap[hash][i];
 				RectF rect;
-				
+
 				rect.X = (REAL)noderect.X;
 				rect.Y = (REAL)(noderect.Y + hight*i);
 				rect.Width = (REAL)noderect.Width;
@@ -1211,7 +1208,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				{
 					colRef = m_Colors.GetColor(CColors::NoteNode);
 				}
-			
+
 				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
 				Gdiplus::Pen pen(color);
 				Gdiplus::SolidBrush brush(color);
@@ -1224,7 +1221,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 					//graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
 					//		rect);
-					
+
 					graphics.graphics->DrawString(shortname.GetBuffer(),shortname.GetLength(),
 						&font,
 						Gdiplus::PointF((REAL)(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor),
@@ -1242,7 +1239,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 						text.style == ILayoutTextList::SText::STYLE_WARNING
 						? m_Colors.GetColor (CColors::gdpWCNodeBorder)
 						: standardTextColor, CUnicodeUtils::GetUTF8(text.text));
-#endif		
+#endif
 				}
 			}
 		}
@@ -1350,8 +1347,6 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	DrawNodes (graphics, &glyphs, logRect, offset);
 	DrawTexts (graphics, logRect, offset);
 	DrawConnections (graphics, logRect, offset);
-   
-
 	//if (m_showHoverGlyphs)
 	//	DrawCurrentNodeGlyphs (graphics, &glyphs, offset);
 
@@ -1423,7 +1418,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 	if(mode == 0)
 	{
 		if(this->m_HashMap.find(rev) == m_HashMap.end())
-		{	
+		{
 			CString shorthash = rev.ToString().Left(g_Git.GetShortHASHLength());
 			RectF rect;
 			if(graphics.graphics)

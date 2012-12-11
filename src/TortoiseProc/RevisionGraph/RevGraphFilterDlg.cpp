@@ -70,7 +70,7 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 	for(int i=0;i<list.size();i++)
 	{
 		CString str=list[i];
-		
+
 		m_ctrlFromRev.AddSearchString(list[i]);
 		m_ctrlToRev.AddSearchString(list[i]);
 

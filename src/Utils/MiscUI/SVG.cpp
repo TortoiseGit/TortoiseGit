@@ -1,4 +1,4 @@
-// TortoiseSVN - a Windows shell extension for easy version control
+// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010-2011 - TortoiseSVN
 
@@ -29,7 +29,6 @@ SVG::SVG()
 SVG::~SVG()
 {
 }
-
 
 bool SVG::Save( const CString& path )
 {
