@@ -817,11 +817,11 @@ void CRevisionGraphWnd::DrawMarker
 	, const RectF& noderect
 	, MarkerPosition /*position*/
 	, int /*relPosition*/
-	, int /*colorIndex*/ )
+	, Color &penColor)
 {
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
-	Pen pen(Color(0,0,255),width);
-	DrawRoundedRect(graphics, Color(255,255,0), (int)width, &pen, Color(0,0,0), NULL, noderect);
+	Pen pen(penColor,width);
+	DrawRoundedRect(graphics, penColor, (int)width, &pen, Color(0,0,0), NULL, noderect);
 	
 }
 
@@ -1246,8 +1246,11 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				}
 			}
 		}
-		if ((m_SelectedEntry1 == v) || (m_SelectedEntry2 == v))
-			DrawMarker (graphics, noderect, mpLeft, 0, 1);
+		if ((m_SelectedEntry1 == v))
+			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 255));
+
+		if ((m_SelectedEntry2 == v))
+			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 128));
 
 	}
 }
