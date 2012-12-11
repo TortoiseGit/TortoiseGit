@@ -43,14 +43,14 @@ private:
 	}
 
 public:
-	static CCrashReport&	Instance()
+	static CCrashReport&    Instance()
 	{
 		static CCrashReport instance;
 		return instance;
 	}
 
-	int					 Uninstall(void) { return FALSE; }
-	int					 AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
+	int                     Uninstall(void) { return FALSE; }
+	int                     AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
 	{
 		return AddFileToReport(pszFile, pszDestFile) ? 1 : 0;
 	}
@@ -62,9 +62,9 @@ public:
 	bool InitCrashHandler(
 		ApplicationInfo* applicationInfo,   //!< [in] Pointer to the ApplicationInfo structure that identifies your application.
 		HandlerSettings* handlerSettings,   //!< [in] Pointer to the HandlerSettings structure that customizes crash handling behavior. This paramenter can be \b NULL.
-		BOOL	ownProcess = TRUE		   //!< [in] If you own the process your code running in set this option to \b TRUE. If don't (for example you write
-		//!<	  a plugin to some external application) set this option to \b FALSE. In that case you need to explicitly
-		//!<	  catch exceptions. See \ref SendReport for more information.
+		BOOL    ownProcess = TRUE           //!< [in] If you own the process your code running in set this option to \b TRUE. If don't (for example you write
+		//!<      a plugin to some external application) set this option to \b FALSE. In that case you need to explicitly
+		//!<      catch exceptions. See \ref SendReport for more information.
 		) throw()
 	{
 		if (!m_InitCrashHandler)
@@ -76,8 +76,8 @@ public:
 	//! You may add any key/value pair to crash report.
 	//! \return If the function succeeds, the return value is \b true.
 	bool AddUserInfoToReport(
-		LPCWSTR key,						//!< [in] key string that will be added to the report.
-		LPCWSTR value					   //!< [in] value for the key.
+		LPCWSTR key,                        //!< [in] key string that will be added to the report.
+		LPCWSTR value                       //!< [in] value for the key.
 		) throw()
 	{
 		if (!m_AddUserInfoToReport)
@@ -90,7 +90,7 @@ public:
 	//! Multiple files may be added. Filename of the file in the report may be changed to any name.
 	//! \return If the function succeeds, the return value is \b true.
 	bool AddFileToReport(
-		LPCWSTR path,					   //!< [in] Path to the file, that will be added to the report.
+		LPCWSTR path,                       //!< [in] Path to the file, that will be added to the report.
 		LPCWSTR reportFileName /* = NULL */ //!< [in] Filename that will be used in report for this file. If parameter is \b NULL, original name from path will be used.
 		) throw()
 	{
@@ -103,7 +103,7 @@ public:
 	//! Remove from report the file that was registered earlier to be sent within report.
 	//! \return If the function succeeds, the return value is \b true.
 	bool RemoveFileFromReport(
-		LPCWSTR path	//!< [in] Path to the file, that will be removed from the report.
+		LPCWSTR path    //!< [in] Path to the file, that will be removed from the report.
 		) throw()
 	{
 		if (!m_RemoveFileFromReport)
@@ -127,8 +127,8 @@ public:
 	//! Fill version field (V) of ApplicationInfo with product version found in the file specified.
 	//! \return If the function succeeds, the return value is \b true.
 	bool GetVersionFromFile(
-		LPCWSTR path,			   //!< [in] Path to the file product version will be extracted from.
-		ApplicationInfo* appInfo	//!< [out] Pointer to ApplicationInfo structure. Its version field (V) will be set to product version.
+		LPCWSTR path,               //!< [in] Path to the file product version will be extracted from.
+		ApplicationInfo* appInfo    //!< [out] Pointer to ApplicationInfo structure. Its version field (V) will be set to product version.
 		) throw()
 	{
 		if (!m_GetVersionFromFile)
@@ -143,20 +143,20 @@ public:
 	//! \code
 	//! bool SomeEntryPoint(PARAM p)
 	//! {
-	//!	 __try
-	//!	 {
-	//!		 return YouCode(p);
-	//!	 }
-	//!	 __except (CrashHandler::SendReport(GetExceptionInformation()))
-	//!	 {
-	//!		 ::ExitProcess(0); // It is better to stop the process here or else corrupted data may incomprehensibly crash it later.
-	//!		 return false;
-	//!	 }
+	//!     __try
+	//!     {
+	//!         return YouCode(p);
+	//!     }
+	//!     __except (CrashHandler::SendReport(GetExceptionInformation()))
+	//!     {
+	//!         ::ExitProcess(0); // It is better to stop the process here or else corrupted data may incomprehensibly crash it later.
+	//!         return false;
+	//!     }
 	//! }
 	//! \endcode
 	LONG SendReport(
 		EXCEPTION_POINTERS* exceptionPointers   //!< [in] Pointer to EXCEPTION_POINTERS structure. You should get it using GetExceptionInformation()
-		//!<	  function inside __except keyword.
+		//!<      function inside __except keyword.
 		)
 	{
 		if (!m_SendReport)
@@ -171,8 +171,8 @@ public:
 	//! using: \code RaiseException(CrashHandler::ExceptionAssertionViolated, 0, 0, NULL); \endcode
 	//! Execution will continue after report will be sent (EXCEPTION_CONTINUE_EXECUTION would be used).
 	//! \note If you called CrashHandler constructor and crshhdnl.dll was missing you still may using this exception.
-	//!	   It will be catched, ignored and execution will continue. \ref SendReport function also works safely
-	//!	   when crshhdnl.dll was missing.
+	//!       It will be catched, ignored and execution will continue. \ref SendReport function also works safely
+	//!       when crshhdnl.dll was missing.
 	static const DWORD ExceptionAssertionViolated = ((DWORD)0xCCE17000);
 
 	//! Sends assertion violation report from this point and continue execution.
@@ -307,18 +307,3 @@ public:
 	int m_nInstallStatus;
 };
 
-class CCrashReportThread
-{
-public:
-
-	/// Installs exception handlers to the caller thread
-	CCrashReportThread(DWORD dwFlags=0)
-	{
-		UNREFERENCED_PARAMETER(dwFlags);
-	}
-
-	/// Deinstalls exception handlers from the caller thread
-	~CCrashReportThread()
-	{
-	}
-};
