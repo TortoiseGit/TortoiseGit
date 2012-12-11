@@ -1079,6 +1079,10 @@ msgstr ""
 msgid "&Switch to new branch"
 msgstr ""
 
+#. Resource IDs: (110)
+msgid "&Switch\\Checkout to Revision"
+msgstr ""
+
 #. Resource IDs: (1173)
 msgid "&Symbol View"
 msgstr ""
@@ -1149,6 +1153,10 @@ msgstr ""
 
 #. Resource IDs: (1253, 57643)
 msgid "&Undo"
+msgstr ""
+
+#. Resource IDs: (110)
+msgid "&Unified diff"
 msgstr ""
 
 #. Resource IDs: (1256)
@@ -2496,6 +2504,10 @@ msgstr ""
 
 #. Resource IDs: (170)
 msgid "Committing an unversioned folder will not recursively add its child items!\nYou might want to add these folders recursively by using the 'Add...' context menu item.\n\nAre you sure that you want to continue the commit?"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Compare &HEAD revisions"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -4636,6 +4648,10 @@ msgstr ""
 msgid "Include &ignored files"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Include only the following revision range:"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
 msgstr ""
@@ -5317,6 +5333,10 @@ msgstr ""
 msgid "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here...\nDo you want to see the unversioned files?"
 msgstr ""
 
+#. Resource IDs: (173)
+msgid "No graph available"
+msgstr ""
+
 #. Resource IDs: (273)
 #, c-format
 msgid "No image encoder found for %s."
@@ -5550,6 +5570,10 @@ msgstr ""
 
 #. Resource IDs: (219)
 msgid "One or more files are in a conflicted state."
+msgstr ""
+
+#. Resource IDs: (1542)
+msgid "Only Current Branch"
 msgstr ""
 
 #. Resource IDs: (1256)
@@ -6526,8 +6550,20 @@ msgstr ""
 msgid "Revision %s"
 msgstr ""
 
+#. Resource IDs: (23)
+msgid "Revision &graph"
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Revision Files"
+msgstr ""
+
+#. Resource IDs: (4580)
+msgid "Revision Graph"
+msgstr ""
+
+#. Resource IDs: (4584)
+msgid "Revision Graph Filter"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7031,6 +7067,10 @@ msgstr ""
 msgid "Show Whole Project"
 msgstr ""
 
+#. Resource IDs: (2051)
+msgid "Show an overview of the whole graph"
+msgstr ""
+
 #. Resource IDs: (32775)
 msgid "Show author"
 msgstr ""
@@ -7099,6 +7139,10 @@ msgstr ""
 msgid "Show next change of selected commit\nShow next"
 msgstr ""
 
+#. Resource IDs: (2051)
+msgid "Show oldest node at top"
+msgstr ""
+
 #. Resource IDs: (2054)
 msgid "Show or hide the line diff bar\nToggle LineDiffBar"
 msgstr ""
@@ -7155,6 +7199,10 @@ msgstr ""
 #. Resource IDs: (76)
 #, c-format
 msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
+msgstr ""
+
+#. Resource IDs: (24)
+msgid "Shows a graphical representation of copies/tags/branches"
 msgstr ""
 
 #. Resource IDs: (13)
@@ -8091,6 +8139,10 @@ msgstr ""
 msgid "Unformatted Text\ntext without any formatting"
 msgstr ""
 
+#. Resource IDs: (2054)
+msgid "Unified &diff of HEAD revisions"
+msgstr ""
+
 #. Resource IDs: (1258)
 msgid "Unknown"
 msgstr ""
@@ -8639,6 +8691,11 @@ msgstr ""
 msgid "Zoom &Out"
 msgstr ""
 
+#. Resource IDs: (2051)
+#, c-format
+msgid "Zoom 100%"
+msgstr ""
+
 #. Resource IDs: (3633)
 msgid "Zoom In\nZoom In"
 msgstr ""
@@ -8659,6 +8716,18 @@ msgstr ""
 msgid "Zoom out"
 msgstr ""
 
+#. Resource IDs: (2051)
+msgid "Zoom to fit"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Zoom to fit in height"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Zoom to fit in width"
+msgstr ""
+
 #. Resource IDs: (1001)
 msgid "[Unassigned]"
 msgstr ""
@@ -8671,6 +8740,10 @@ msgstr ""
 #. Resource IDs: (602)
 #, c-format
 msgid "\"%s\" is not git repository"
+msgstr ""
+
+#. Resource IDs: (606, 2051)
+msgid "\"Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor.\""
 msgstr ""
 
 #. Resource IDs: (65)
