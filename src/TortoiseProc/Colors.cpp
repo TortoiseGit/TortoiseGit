@@ -29,7 +29,7 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{Added,_T("Software\\TortoiseGit\\Colors\\Added"), RGB(100, 0, 100)},
 	{LastCommit,_T("Software\\TortoiseGit\\Colors\\LastCommit"), RGB(100, 100, 100)},
 	{DeletedNode,_T("Software\\TortoiseGit\\Colors\\DeletedNode"), RGB(255, 0, 0)},
-	{AddedNode,_T("Software\\TortoiseGit\\Colors\\AddedNode"), RGB(0, 255, 0)},
+	{NoteNode,_T("Software\\TortoiseGit\\Colors\\NoteNode"), RGB(160, 160, 0)},
 	{ReplacedNode,_T("Software\\TortoiseGit\\Colors\\ReplacedNode"), RGB(0, 255, 0)},
 	{RenamedNode,_T("Software\\TortoiseGit\\Colors\\RenamedNode"), RGB(0, 0, 255)},
 	{LastCommitNode,_T("Software\\TortoiseGit\\Colors\\LastCommitNode"), RGB(200, 200, 200)},

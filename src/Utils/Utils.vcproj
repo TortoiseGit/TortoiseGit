@@ -661,6 +661,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MiscUI\SVG.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MiscUI\SysProgressDlg.cpp"
 				>
 			</File>

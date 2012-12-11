@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -226,7 +226,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -319,7 +319,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -971,6 +971,10 @@
 			</File>
 			<File
 				RelativePath="..\Resources\revgraphbar.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\Resources\revgraphglyphs.bmp"
 				>
 			</File>
 			<File
@@ -2202,6 +2206,50 @@
 				</File>
 				<File
 					RelativePath=".\Commands\RepositoryBrowserCommand.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="RevisionGraph"
+				>
+				<File
+					RelativePath=".\RevisionGraph\RevGraphFilterDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevGraphFilterDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RevisionGraphCommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Commands\RevisionGraphCommand.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlgDraw.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphDlgFunc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphWnd.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\RevisionGraph\RevisionGraphWnd.h"
 					>
 				</File>
 			</Filter>

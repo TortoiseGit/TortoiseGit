@@ -241,7 +241,21 @@ public:
 		LOG_INFO_FOLLOW = 0x800,
 		LOG_INFO_SHOW_MERGEDFILE=0x1000,
 		LOG_INFO_FULL_DIFF = 0x2000,
+		LOG_INFO_SIMPILFY_BY_DECORATION = 0x4000, 
 	}LOG_INFO_MASK;
+
+	typedef enum
+	{
+		LOCAL_BRANCH,
+		REMOTE_BRANCH,
+		TAG,
+		STASH,
+		BISECT_GOOD,
+		BISECT_BAD,
+		NOTES,
+		UNKNOWN,
+
+	}REF_TYPE;
 
 	int GetRemoteList(STRING_VECTOR &list);
 	int GetBranchList(STRING_VECTOR &list, int *Current,BRANCH_TYPE type=BRANCH_LOCAL);
@@ -317,6 +331,21 @@ public:
 	}
 
 	int GetShortHASHLength();
+
+	static BOOL GetShortName(CString ref, CString &shortname,CString prefix)
+	{
+		//TRACE(_T("%s %s\r\n"),ref,prefix);
+		if(ref.Left(prefix.GetLength()) ==  prefix)
+		{
+			shortname = ref.Right(ref.GetLength()-prefix.GetLength());
+			if(shortname.Right(3)==_T("^{}"))
+				shortname=shortname.Left(shortname.GetLength()-3);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	static CString GetShortName(CString ref, REF_TYPE *type);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

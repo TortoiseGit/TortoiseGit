@@ -104,6 +104,8 @@ IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisegit_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
+IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
+IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -203,7 +205,7 @@ BEGIN
     PUSHBUTTON      "",IDC_LOG_JUMPDOWN,405,7,14,14,WS_TABSTOP | BS_ICON
     CONTROL         "",IDC_LOGLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,24,407,57
     CONTROL         "",IDC_SPLITTERTOP,"Static",SS_BLACKFRAME,7,81,407,5
-    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",ES_MULTILINE | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,86,407,96
+    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",WS_BORDER | WS_VSCROLL | WS_TABSTOP | 0x1804,7,86,407,96
     CONTROL         "",IDC_SPLITTERBOTTOM,"Static",SS_BLACKFRAME,7,182,407,4
     CONTROL         "",IDC_LOGMSG,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,187,407,58
     EDITTEXT        IDC_LOGINFO,7,248,407,16,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
@@ -1257,7 +1259,7 @@ BEGIN
     LTEXT           "Renamed node",IDC_STATIC,14,159,137,8
     LTEXT           "Replaced node",IDC_STATIC,14,175,137,8
     PUSHBUTTON      "",IDC_DELETEDNODECOLOR,158,122,101,14
-    PUSHBUTTON      "",IDC_ADDEDNODECOLOR,158,139,101,14
+    PUSHBUTTON      "",IDC_NOTENODECOLOR,158,139,101,14
     PUSHBUTTON      "",IDC_RENAMEDNODECOLOR,158,156,101,14
     PUSHBUTTON      "",IDC_REPLACEDNODECOLOR,158,173,101,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
@@ -1591,6 +1593,23 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,210,87,50,14
 END
 
+IDD_REVGRAPHFILTER DIALOGEX 0, 0, 303, 108
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Revision Graph Filter"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Include only the following revision range:",IDC_STATIC,10,7,268,8
+    LTEXT           "From:",IDC_STATIC,12,24,30,8
+    EDITTEXT        IDC_FROMREV,45,21,178,14,ES_AUTOHSCROLL
+    LTEXT           "To:",IDC_STATIC,12,46,30,8
+    EDITTEXT        IDC_TOREV,46,44,177,14,ES_AUTOHSCROLL
+    CONTROL         "Only Current Branch",IDC_CURRENT_BRANCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,70,268,10
+    DEFPUSHBUTTON   "&OK",IDOK,167,87,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,243,87,50,14
+    PUSHBUTTON      "RefBrowse",IDC_REV1BTN1,236,21,57,14
+    PUSHBUTTON      "RefBrowse",IDC_REV1BTN2,236,45,57,14
+END
+
 IDD_DIFFSUBMODULE DIALOGEX 0, 0, 381, 141
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Submodule Diff"
@@ -1689,6 +1708,14 @@ BEGIN
     CONTROL         "",IDC_LIST_TAGS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,53,7,129,67
     DEFPUSHBUTTON   "&Delete",IDOK,54,81,59,14,WS_DISABLED
     PUSHBUTTON      "Close",IDCANCEL,123,81,59,14
+END
+
+IDD_REVISIONGRAPH DIALOGEX 0, 0, 264, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Revision Graph"
+MENU IDR_REVISIONGRAPH
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
 END
 
 
@@ -2423,6 +2450,12 @@ BEGIN
         BOTTOMMARGIN, 101
     END
 
+    IDD_REVGRAPHFILTER, DIALOG
+    BEGIN
+        RIGHTMARGIN, 293
+        BOTTOMMARGIN, 101
+    END
+
     IDD_DIFFSUBMODULE, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -2483,8 +2516,64 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Toolbar
+//
+
+IDR_REVGRAPHBAR TOOLBAR  20, 20
+BEGIN
+    BUTTON      ID_VIEW_ZOOMIN
+    BUTTON      ID_VIEW_ZOOMOUT
+    BUTTON      ID_VIEW_ZOOM100
+    BUTTON      ID_VIEW_ZOOMHEIGHT
+    BUTTON      ID_VIEW_ZOOMWIDTH
+    BUTTON      ID_VIEW_ZOOMALL
+    SEPARATOR
+    BUTTON      ID_REVGRAPH_ZOOMCOMBO
+    SEPARATOR
+    BUTTON      ID_VIEW_FILTER
+    SEPARATOR
+    BUTTON      ID_VIEW_SHOWOVERVIEW
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Menu
 //
+
+IDR_REVISIONGRAPH MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Save graph as...",           ID_FILE_SAVEGRAPHAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       ID_MENUEXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Zoom &in\tCtrl-+",            ID_VIEW_ZOOMIN
+        MENUITEM "Zoom &out\tCtrl--",           ID_VIEW_ZOOMOUT
+        MENUITEM "Zoom to &100%",               ID_VIEW_ZOOM100
+        MENUITEM "Fit height",                  ID_VIEW_ZOOMHEIGHT
+        MENUITEM "Fit width",                   ID_VIEW_ZOOMWIDTH
+        MENUITEM "Fit graph",                   ID_VIEW_ZOOMALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Filter",                     ID_VIEW_FILTER
+        MENUITEM SEPARATOR
+        MENUITEM "Show Ove&rview",              ID_VIEW_SHOWOVERVIEW
+    END
+    POPUP "&Git"
+    BEGIN
+        MENUITEM "&Compare revisions",          ID_VIEW_COMPAREREVISIONS, GRAYED
+        MENUITEM "Compare &HEAD revisions",     ID_VIEW_COMPAREHEADREVISIONS, GRAYED
+        MENUITEM "&Unified diff",               ID_VIEW_UNIFIEDDIFF, GRAYED
+        MENUITEM "Unified &diff of HEAD revisions", ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS, GRAYED
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help",                       ID_MENUHELP
+    END
+END
 
 IDR_STATGRAPH MENU 
 BEGIN
@@ -2542,6 +2631,17 @@ BEGIN
     IDS_SVNACTION_DELETE    "Deleted"
     IDS_SVNACTION_RESTORE   "Restored"
     IDS_SVNACTION_REVERT    "Reverted"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_ZOOM100         "Zoom 100%"
+    ID_VIEW_ZOOMALL         "Zoom to fit"
+    ID_VIEW_ZOOMHEIGHT      "Zoom to fit in height"
+    ID_VIEW_ZOOMWIDTH       "Zoom to fit in width"
+    ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
+    ID_VIEW_TOPDOWN         "Show oldest node at top"
+    ID_VIEW_SHOWHEAD        """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
 END
 
 STRINGTABLE 
@@ -2652,6 +2752,11 @@ BEGIN
     IDS_PROGRESSREVISION    "Revision %d"
     IDS_PROGRESSWAIT        "Please wait..."
     IDS_PROGRESS_UNIFIEDDIFF "Getting unified diff"
+	IDS_REVGRAPH_POPUP_SWITCH "&Switch\Checkout to Revision"
+	IDS_REVGRAPH_POPUP_COMPAREREVS "&Compare revisions"
+    IDS_REVGRAPH_POPUP_UNIDIFFREVS "&Unified diff"
+	IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
+	IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
 END
 
 STRINGTABLE 
@@ -2806,6 +2911,13 @@ STRINGTABLE
 BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SETTINGS_EXTMENULAYOUT_TT 
+                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
+    IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
 STRINGTABLE 
@@ -3027,12 +3139,6 @@ BEGIN
                             "Check those menu entries you want to appear in the top context menu instead of the TortoiseGit submenu"
     IDS_SETTINGS_EXCLUDELIST_TT 
                             "A newline separated list of paths for which no icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow overlays on all paths."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_SETTINGS_EXTMENULAYOUT_TT 
-                            "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
 END
 
 STRINGTABLE 
@@ -3563,6 +3669,12 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_REVGRAPH_ERR_NOMEMORY 
+                            """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
+END
+
+STRINGTABLE 
+BEGIN
     IDS_LOG_FILTER_SUBJECT  "Subject"
     IDS_STATUSLIST_SHOWLOGOLDNAME "Show log &before rename/copy"
     IDS_APPNAME             "TortoiseGit"
@@ -3770,7 +3882,7 @@ BEGIN
     IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
 END
 
-#endif    // Englisch (USA) resources
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -3808,7 +3920,6 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
     "LANGUAGE 9, 1\r\n"
-    "#pragma code_page(1252)\r\n"
     "#include ""TortoiseProc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include ""afxres.rc""         // Standard components\r\n"
     "#include ""afxprint.rc""  // printing/print preview resources\r\n"
@@ -3837,7 +3948,6 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE 9, 1
-#pragma code_page(1252)
 #include "TortoiseProc.rc2"  // non-Microsoft Visual C++ edited resources
 #include "afxres.rc"         // Standard components
 #include "afxprint.rc"  // printing/print preview resources
