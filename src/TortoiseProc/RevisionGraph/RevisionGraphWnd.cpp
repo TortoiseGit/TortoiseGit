@@ -1290,7 +1290,7 @@ void CRevisionGraphWnd::DoShowLog()
 	CString sCmd;
 
 	if(m_SelectedEntry2 != NULL)
-		sCmd.Format(_T("/command:log %s /endrev:%s /startrev:%s"),
+		sCmd.Format(_T("/command:log %s /startrev:%s /endrev:%s"),
 			this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
 			this->m_logEntries[m_SelectedEntry1->index()].ToString(),
 			this->m_logEntries[m_SelectedEntry2->index()].ToString());
