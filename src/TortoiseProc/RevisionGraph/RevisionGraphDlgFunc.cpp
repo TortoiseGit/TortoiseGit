@@ -416,7 +416,7 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 	ASSERT(bHead || m_SelectedEntry2 != NULL);
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
-	CAppUtils::StartShowUnifiedDiff(m_hWnd, m_sPath, GetFriendRefName(m_SelectedEntry1), m_sPath,
+	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
 		bHead? _T("HEAD"):GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
 
