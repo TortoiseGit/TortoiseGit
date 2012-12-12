@@ -241,10 +241,13 @@ void CPullFetchDlg::Refresh()
 
 void CPullFetchDlg::OnCbnSelchangeRemote()
 {
-	if (m_Remote.GetCurSel() == 0)
-		return;
-
 	CString remote = m_Remote.GetString();
+	if (remote.IsEmpty() || remote == _T("- all -"))
+	{
+		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
+		return;
+	}
+
 	CString key;
 	key.Format(_T("remote.%s.tagopt"), remote);
 	CString tagopt = g_Git.GetConfigValue(key);
