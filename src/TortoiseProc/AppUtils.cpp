@@ -1336,25 +1336,33 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 		}
 		cmd.Format(_T("git.exe reset %s %s"),type, *CommitHash);
 
-		CProgressDlg progress;
-		progress.m_GitCmd=cmd;
-
-		CTGitPath gitPath = g_Git.m_CurrentDir;
-		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-
-		INT_PTR ret = progress.DoModal();
-		if (gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
+		while (true)
 		{
-			CString sCmd;
-			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+			CProgressDlg progress;
+			progress.m_GitCmd=cmd;
 
-			RunTortoiseProc(sCmd);
-			return TRUE;
+			CTGitPath gitPath = g_Git.m_CurrentDir;
+			if (gitPath.HasSubmodules() && dlg.m_ResetType == 2)
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+
+			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+
+			INT_PTR ret = progress.DoModal();
+			if (progress.m_GitStatus == 0 && gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+
+				RunTortoiseProc(sCmd);
+				return TRUE;
+			}
+			else if (progress.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
+				continue;	// retry
+			else if (ret == IDOK)
+				return TRUE;
+			else
+				break;
 		}
-		else if (ret == IDOK)
-			return TRUE;
-
 	}
 	return FALSE;
 }
