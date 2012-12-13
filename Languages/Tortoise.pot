@@ -6242,6 +6242,10 @@ msgstr ""
 msgid "Push"
 msgstr ""
 
+#. Resource IDs: (1385)
+msgid "Push notes"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "Push ta&gs"
 msgstr ""
