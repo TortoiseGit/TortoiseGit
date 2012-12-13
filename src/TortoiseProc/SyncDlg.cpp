@@ -440,13 +440,17 @@ void CSyncDlg::OnBnClickedButtonPush()
 		}
 	}
 
+	CString refName = g_Git.FixBranchName(m_strLocalBranch);
 	switch (m_ctrlPush.GetCurrentEntry())
 	{
 	case 1:
 		arg += _T(" --tags ");
 		break;
+#if 0
 	case 2:
 		arg += _T(" --all ");
+#endif
+		refName = _T("refs/notes/commits");	//default ref for notes
 		break;
 	}
 
@@ -459,9 +463,9 @@ void CSyncDlg::OnBnClickedButtonPush()
 	cmd.Format(_T("git.exe push -v %s \"%s\" %s"),
 				arg,
 				m_strURL,
-				g_Git.FixBranchName(m_strLocalBranch));
+				refName);
 
-	if (!m_strRemoteBranch.IsEmpty())
+	if (!m_strRemoteBranch.IsEmpty() && m_ctrlPush.GetCurrentEntry() != 2)
 	{
 		cmd += _T(":") + m_strRemoteBranch;
 	}
@@ -779,6 +783,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	this->m_ctrlPush.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PUSH)));
 	this->m_ctrlPush.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PUSHTAGS)));
+	this->m_ctrlPush.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PUSHNOTES)));
 	///this->m_ctrlPush.AddEntry(CString(_T("Push All")));
 
 	this->m_ctrlPull.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PULL)));
