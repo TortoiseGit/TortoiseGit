@@ -41,6 +41,8 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false), m_startTick(GetTickCount())
 {
 	m_pThread = NULL;
+	m_PostCmdCallback = NULL;
+	m_caller = NULL;
 	m_bAltAbortPress=false;
 	m_bBufferAll=false;
 }
@@ -143,9 +145,6 @@ BOOL CProgressDlg::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
-
-	if(m_PostCmdList.GetCount()>0)
-		m_ctrlPostCmd.AddEntries(m_PostCmdList);
 
 	return TRUE;
 }
@@ -336,6 +335,36 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}
 
+		if (wParam == MSG_PROGRESSDLG_END)
+		{
+			if (m_PostCmdCallback)	// new handling method using callback
+			{
+				m_PostCmdCallback(this, m_caller, m_GitStatus);
+
+				if (m_PostCmdList.GetCount() > 0)
+				{
+					m_ctrlPostCmd.AddEntries(m_PostCmdList);
+					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
+				}
+			}
+			else if (m_GitStatus == 0)	// default old behaviour on success
+			{
+				if (m_PostCmdList.GetCount() > 0)
+				{
+					m_ctrlPostCmd.AddEntries(m_PostCmdList);
+					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
+				}
+			}
+			else	// simple method to show buttons on failed
+			{
+				if (m_PostFailCmdList.GetCount() > 0)
+				{
+					m_ctrlPostCmd.AddEntries(m_PostFailCmdList);
+					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
+				}
+			}
+		}
+
 		if(wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
 			if(m_bAutoCloseOnSuccess)
@@ -343,9 +372,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 				m_Log.GetWindowText(this->m_LogText);
 				EndDialog(IDOK);
 			}
-
-			if(m_PostCmdList.GetCount() > 0)
-				GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 		}
 	}
 

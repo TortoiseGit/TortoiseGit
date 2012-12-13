@@ -35,6 +35,8 @@ class CProgressDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CProgressDlg)
 public:
+	typedef void (*PostCmdCallback)(CProgressDlg *dlg, void *caller, int result);
+
 	CProgressDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CProgressDlg();
 
@@ -48,6 +50,9 @@ public:
 	CString					m_Title;
 	CString					m_GitCmd;
 	CStringArray			m_PostCmdList;
+	CStringArray			m_PostFailCmdList;
+	PostCmdCallback			m_PostCmdCallback;
+	void *					m_caller;
 	std::vector<CString>	m_GitCmdList;
 	CString					m_PreText;		// optional text to show in log window before running command
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
