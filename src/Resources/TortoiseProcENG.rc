@@ -3920,6 +3920,7 @@ BEGIN
     IDS_GITVER_REQUIRED     "%s requires msysgit >= %s"
     IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
+    IDS_PROC_SYNC_PUSHNOTES "Push notes"
 END
 
 #endif    // English (U.S.) resources
