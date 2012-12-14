@@ -2607,6 +2607,23 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
+static void MergeCallback(CProgressDlg *dlg, void *caller, int result)
+{
+	UNREFERENCED_PARAMETER(caller);
+
+	if (result)
+	{
+		dlg->m_PostCmdList.RemoveAll();
+
+		CTGitPathList list;
+		if (!g_Git.ListConflictFile(list) && list.GetCount() > 0)
+		{
+			// there are conflict files
+			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_RESOLVE)));
+		}
+	}
+}
+
 BOOL CAppUtils::Merge(CString *commit)
 {
 	CMergeDlg dlg;
@@ -2651,9 +2668,20 @@ BOOL CAppUtils::Merge(CString *commit)
 		else if (dlg.m_bIsBranch)
 			Prodlg.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REMOVEBRANCH)));
 
-		INT_PTR ret = Prodlg.DoModal();
+		Prodlg.m_PostCmdCallback = MergeCallback;
 
-		if (ret == IDC_PROGRESS_BUTTON1)
+		INT_PTR ret = Prodlg.DoModal();
+		if (Prodlg.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
+		{
+			CTGitPathList pathlist;
+			CTGitPathList selectedlist;
+			pathlist.AddPath(g_Git.m_CurrentDir);
+			bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE));
+			CString str;
+			CAppUtils::Commit(CString(), false, str, pathlist, selectedlist, bSelectFilesForCommit);
+		}
+		else if (ret == IDC_PROGRESS_BUTTON1)
+		{
 			if (dlg.m_bNoCommit)
 			{
 				CString sLogMsg;
@@ -2673,6 +2701,7 @@ BOOL CAppUtils::Merge(CString *commit)
 						MessageBox(NULL, out, _T("TortoiseGit"), MB_OK);
 				}
 			}
+		}
 
 		return !Prodlg.m_GitStatus;
 	}
