@@ -49,10 +49,10 @@ void CRevGraphFilterDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOREV, m_ctrlToRev);
 }
 
-
 BEGIN_MESSAGE_MAP(CRevGraphFilterDlg, CDialog)
 	ON_BN_CLICKED(IDC_REV1BTN1, &CRevGraphFilterDlg::OnBnClickedRev1btn1)
 	ON_BN_CLICKED(IDC_REV1BTN2, &CRevGraphFilterDlg::OnBnClickedRev1btn2)
+	ON_BN_CLICKED(IDC_RESETFILTER, &CRevGraphFilterDlg::OnBnClickedResetfilter)
 END_MESSAGE_MAP()
 
 BOOL CRevGraphFilterDlg::OnInitDialog()
@@ -136,4 +136,13 @@ void CRevGraphFilterDlg::OnBnClickedRev1btn2()
 		return;
 
 	m_ctrlToRev.SetWindowText(str);
+}
+
+void CRevGraphFilterDlg::OnBnClickedResetfilter()
+{
+	m_sFromRev.Empty();
+	m_sToRev.Empty();
+	m_bCurrentBranch = FALSE;
+	UpdateData(FALSE);
+	CDialog::OnOK();
 }

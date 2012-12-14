@@ -44,6 +44,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	afx_msg void OnBnClickedResetfilter();
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 
