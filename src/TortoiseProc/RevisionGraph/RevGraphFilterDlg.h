@@ -40,19 +40,18 @@ public:
 // Dialog Data
 	enum { IDD = IDD_REVGRAPHFILTER };
 
+	BOOL m_bCurrentBranch;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
-protected:
 	CString	m_sFromRev;
 	CString	m_sToRev;
-public:
 	afx_msg void OnBnClickedRev1btn1();
 	afx_msg void OnBnClickedRev1btn2();
-	BOOL m_bCurrentBranch;
 	CACEdit m_ctrlFromRev;
 	CACEdit m_ctrlToRev;
 };

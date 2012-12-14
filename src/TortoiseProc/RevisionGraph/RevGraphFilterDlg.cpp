@@ -122,7 +122,6 @@ void CRevGraphFilterDlg::OnOK()
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn1()
 {
-	// TODO: Add your control notification handler code here
 	CString str = CBrowseRefsDlg::PickRef();
 	if(str.IsEmpty())
 		return;
@@ -132,7 +131,6 @@ void CRevGraphFilterDlg::OnBnClickedRev1btn1()
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn2()
 {
-	// TODO: Add your control notification handler code here
 	CString str = CBrowseRefsDlg::PickRef();
 	if(str.IsEmpty())
 		return;
