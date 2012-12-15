@@ -112,8 +112,6 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 
 	GIT_COMMIT commit;
 
-	GitRev rev;
-
 	while (git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW) == 0)
 	{
 		if (commit.m_ignore == 1)
@@ -123,7 +121,6 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 		}
 
 		CGitHash hash = (char*)commit.m_hash ;
-		rev.Clear();
 
 		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
 
@@ -135,7 +132,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
 		}
 
-		if(pRev == NULL || !pRev->m_IsFull)
+		if((pRev == NULL || !pRev->m_IsFull) && infomask& CGit::LOG_INFO_FULL_DIFF)
 		{
 			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);
@@ -155,13 +152,14 @@ int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CStri
 		else
 		{
 			ASSERT(pRev->m_CommitHash == hash);
+			pRev->ParserFromCommit(&commit);
 			pRev->ParserParentFromCommit(&commit);
 			git_free_commit(&commit);
 		}
 
 		this->push_back(pRev->m_CommitHash);
 
-		m_HashMap[rev.m_CommitHash] = (int)size() - 1;
+		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
 
 	}
 

@@ -73,6 +73,7 @@
 #include "SVNIgnoreCommand.h"
 #include "BisectCommand.h"
 #include "RepositoryBrowserCommand.h"
+#include "RevisiongraphCommand.h"
 #include "ShowCompareCommand.h"
 
 #if 0
@@ -161,6 +162,7 @@ typedef enum
 	cmdRequestPull,
 	cmdBisect,
 	cmdRepoBrowser,
+	cmdRevisionGraph,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -231,6 +233,7 @@ static const struct CommandInfo
 	{	cmdRequestPull,		_T("requestpull")		},
 	{	cmdBisect,			_T("bisect")			},
 	{	cmdRepoBrowser,		_T("repobrowser")		},
+	{	cmdRevisionGraph,	_T("revisiongraph")		},
 };
 
 
@@ -361,6 +364,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new BisectCommand;
 	case cmdRepoBrowser:
 		return new RepositoryBrowserCommand;
+	case cmdRevisionGraph:
+		return new RevisionGraphCommand;
 	case cmdShowCompare:
 		return new ShowCompareCommand;
 

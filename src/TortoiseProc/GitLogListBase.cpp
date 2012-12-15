@@ -477,19 +477,6 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 }
 
 
-BOOL CGitLogListBase::GetShortName(CString ref, CString &shortname,CString prefix)
-{
-	//TRACE(_T("%s %s\r\n"),ref,prefix);
-	if(ref.Left(prefix.GetLength()) ==  prefix)
-	{
-		shortname = ref.Right(ref.GetLength()-prefix.GetLength());
-		if(shortname.Right(3)==_T("^{}"))
-			shortname=shortname.Left(shortname.GetLength()-3);
-		return TRUE;
-	}
-	return FALSE;
-}
-
 void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 {
 	LVITEM rItem;
@@ -556,7 +543,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		COLORREF colRef = 0;
 
 		//Determine label color
-		if(GetShortName(str,shortname,_T("refs/heads/")))
+		if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
 		{
 			if( shortname == m_CurrentBranch )
 				colRef = m_Colors.GetColor(CColors::CurrentBranch);
@@ -564,20 +551,20 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 				colRef = m_Colors.GetColor(CColors::LocalBranch);
 
 		}
-		else if(GetShortName(str,shortname,_T("refs/remotes/")))
+		else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
 		{
 			colRef = m_Colors.GetColor(CColors::RemoteBranch);
 		}
-		else if(GetShortName(str,shortname,_T("refs/tags/")))
+		else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
 		{
 			colRef = m_Colors.GetColor(CColors::Tag);
 		}
-		else if(GetShortName(str,shortname,_T("refs/stash")))
+		else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
 		{
 			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
 		}
-		else if(GetShortName(str,shortname,_T("refs/bisect/")))
+		else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
 		{
 			if(shortname.Find(_T("good")) == 0)
 			{

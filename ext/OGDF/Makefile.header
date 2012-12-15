@@ -1,0 +1,22 @@
+##############################################################################
+## BEGIN Makefile.header
+##############################################################################
+
+LIBS = 
+
+all: release
+
+clean: cleanrelease
+
+# feel free to use "debug" and "cleandebug" for Debug!
+
+doxy:
+	rm -rf doc/html
+	mkdir -p doc/html
+	doxygen ogdf-doxygen.cfg
+	cp -f doc/images/ftv2*.png doc/html
+
+##############################################################################
+## END Makefile.header
+##############################################################################
+

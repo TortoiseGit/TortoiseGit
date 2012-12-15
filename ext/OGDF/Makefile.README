@@ -1,0 +1,20 @@
+CONTENT:     
+  Makefile.README      this file
+  makeMakefile.py      the magical python script
+  makeMakefile.sh      lazy? this file calls python w/ script
+  Makefile.header      epilogue of the new makefile
+
+OVERVIEW
+  Run the python script whenever file dependencies (may) have
+changed, e.g., after adding a new file to the project etc. The
+script will then generate a new makefile ("Makefile") which 
+can be used in any traditional way.
+
+HINTS
+  Sourcefiles and subdirectories can be "hidden" in order to 
+prevent their inclusion into the Makefile: files and sub-
+directories whose name start with a dot ('.') or an under-
+score ('_') are ignored.
+
+-------
+MCh

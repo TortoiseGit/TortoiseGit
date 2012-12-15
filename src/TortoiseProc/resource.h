@@ -611,7 +611,7 @@
 #define IDC_DELETEDNODECOLOR            1255
 #define IDS_PROC_BROWSEREFS_MANAGEREMOTES 1255
 #define IDS_PROC_WARNREVERT             1256
-#define IDC_ADDEDNODECOLOR              1256
+#define IDC_NOTENODECOLOR               1256
 #define IDS_PROC_CLEANUPFINISHED        1257
 #define IDC_RENAMEDNODECOLOR            1257
 #define IDS_PROC_REPOCREATEERR          1258
@@ -771,7 +771,9 @@
 #define IDS_T_EXISTS                    1353
 #define IDC_REV2BTN                     1354
 #define IDS_B_DELETEORDIFFERENTNAME     1354
+#define IDC_REV1BTN2                    1354
 #define IDS_B_T_DIFFERENTNAMEORFORCE    1355
+#define IDC_RESETFILTER                 1355
 #define IDC_ACTIONLABEL                 1356
 #define IDS_B_DIFFERENTNAMEOROVERRIDE   1356
 #define IDS_T_SAMEBRANCHNAMEEXISTS      1357
@@ -1209,12 +1211,16 @@
 #define IDC_TEMPFILESCLEAR              1726
 #define IDC_STATIC_TAGOPT               1727
 #define IDC_COMBO_TAGOPT                1728
+#define IDC_REV1BTN1                    1729
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
 #define IDS_DLGTITLE_EDIT_MERGE_TOOL    1753
 #define IDS_DLGTITLE_ADV_DIFF           1754
 #define IDS_DLGTITLE_ADV_MERGE          1755
+#define IDS_REVGRAPH_POPUP_SWITCH       1756
+#define IDS_REVGRAPH_POPUP_COMPAREREVS  1757
+#define IDS_REVGRAPH_POPUP_UNIDIFFREVS  1758
 #define IDS_LOG_COPY_SUCCESS            1830
 #define IDS_LOG_MESSAGEEDITTITLE        1831
 #define IDS_LOG_AUTHOREDITTITLE         1832
@@ -1293,6 +1299,7 @@
 #define IDS_COMMITDLG_POPUP_PASTELASTMESSAGE 2751
 #define IDC_NOCONTEXTPATHS              2752
 #define IDS_SETTINGS_EXTMENULAYOUT_TT   2753
+#define IDS_REVGRAPH_ERR_NOGRAPH        2754
 #define IDS_SETTINGS_CHECKNEWER_TT      3100
 #define IDS_SETTINGS_ONLYEXPLORER_TT    3101
 #define IDS_SETTINGS_MENULAYOUT_TT      3102
@@ -1482,6 +1489,17 @@
 #define IDD_IGNORE                      4577
 #define IDD_SUBMODULE_UPDATE            4578
 #define IDD_DELETEREMOTETAG             4579
+#define IDD_REVISIONGRAPH               4580
+#define IDR_REVGRAPHBAR                 4581
+#define IDR_REVGRAPHGLYPHS              4582
+#define ID_REVGRAPH_ZOOMCOMBO           4583
+#define IDD_REVGRAPHFILTER              4584
+#define IDC_FROMREV                     4585
+#define IDC_FROMSPIN                    4586
+#define IDC_TOREV                       4587
+#define IDC_TOSPIN                      4588
+#define IDC_PATHFILTER                  4589
+#define IDC_REMOVESUBTREE               4590
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1584,6 +1602,7 @@
 #define IDS_ALL                         9685
 #define IDS_NONE                        9686
 #define IDS_FETCH_REACHABLE             9687
+#define IDS_REVGRAPH_ERR_NOMEMORY       9688
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
@@ -1592,22 +1611,46 @@
 #define ID_FILE_SAVESTATGRAPHAS         32806
 #define ID_FILTER_EXCLUDEPATHS          32807
 #define ID_FILTER_EXCLUDEREVISIONS      32808
+#define ID_VIEW_ZOOMHEIGHT              32809
+#define ID_VIEW_ZOOMWIDTH               32810
+#define ID_VIEW_GROUPBRANCHES           32811
+#define ID_VIEW_TOPALIGNTREES           32812
 #define ID_VIEW_SHOWOVERVIEW            32813
 #define ID_VIEW_TOPDOWN                 32814
 #define ID_URL_FOCUS                    32814
 #define ID_VIEW_SHOWHEAD                32815
+#define ID_VIEW_SHOWDIFFPATHS           32816
+#define ID_VIEW_SHOWALLREVISIONS        32817
+#define ID_VIEW_EXACTCOPYSOURCE         32818
+#define ID_VIEW_FOLDTAGS                32819
+#define ID_VIEW_REMOVEDELETEDONES       32820
 #define ID_LOGDLG_REFRESH               32821
 #define ID_LOGDLG_FIND                  32822
+#define ID_VIEW_REMOVEUNCHANGEDBRANCHES 32823
+#define ID_VIEW_REMOVETAGS              32824
 #define ID_LOGDLG_FOCUSFILTER           32825
+#define ID_VIEW_SHOWWCREV               32826
 #define ID_FOCUS_MESSAGE                32837
+#define ID_VIEW_SHOWWCMODIFICATION      32838
+#define ID_VIEW_FILTER                  32839
+#define ID_VIEW_SHOWTREESTRIPES         32840
+#define ID_FILE_SAVEGRAPHAS             32841
+#define ID_MENUEXIT                     32842
+#define ID_MENUHELP                     32843
+#define ID_VIEW_COMPAREREVISIONS        32844
+#define ID_VIEW_COMPAREHEADREVISIONS    32845
+#define ID_VIEW_UNIFIEDDIFF             32846
+#define ID_VIEW_UNIFIEDDIFFOFHEADREVISIONS 32847
+#define IDS_REVGRAPH_POPUP_COMPAREHEADS 32848
+#define IDS_REVGRAPH_POPUP_UNIDIFFHEADS 32849
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
-#define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1729
+#define _APS_NEXT_COMMAND_VALUE         32860
+#define _APS_NEXT_CONTROL_VALUE         1730
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

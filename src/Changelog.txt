@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1568: Add support for recurse-submodules on push dialog
  * Fixed issue #1578: Warn author not set when merging
  * Fixed issue #1557: Submodule Diff Dialog should launch diff with working copy if the submodule is dirty
+ * Fixed issue #1066: Add 'Revision Graph' Feature
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

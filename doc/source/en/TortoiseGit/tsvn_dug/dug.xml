@@ -75,6 +75,7 @@ and
 	<xi:include href="./dug_changelist.xml"/>
 	-->
 	<xi:include href="./dug_log.xml"/>
+	<xi:include href="./dug_revgraph.xml"/>
 	<xi:include href="./dug_reflog.xml"/>
 	<xi:include href="./dug_repobrowser.xml"/>
 	<xi:include href="./dug_diff.xml"/>
