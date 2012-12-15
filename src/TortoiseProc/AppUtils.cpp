@@ -2630,6 +2630,9 @@ static void MergeCallback(CProgressDlg *dlg, void *caller, int result)
 
 BOOL CAppUtils::Merge(CString *commit)
 {
+	if (!CheckUserData())
+		return FALSE;
+
 	CMergeDlg dlg;
 	if(commit)
 		dlg.m_initialRefName = *commit;

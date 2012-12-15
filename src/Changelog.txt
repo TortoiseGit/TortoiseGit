@@ -13,6 +13,7 @@ Released: unreleased
  * Fixed issue #1571: Warn author not set when editing notes
  * Fixed issue #221: After resolving all merge conflicts, it's not obvious the project needs a commit
  * Fixed issue #1568: Add support for recurse-submodules on push dialog
+ * Fixed issue #1578: Warn author not set when merging
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save
