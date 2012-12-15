@@ -815,11 +815,30 @@ void CRevisionGraphWnd::DrawMarker
 	, const RectF& noderect
 	, MarkerPosition /*position*/
 	, int /*relPosition*/
-	, Color &penColor)
+	, Color &penColor
+	, int num)
 {
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
 	Pen pen(penColor,width);
 	DrawRoundedRect(graphics, penColor, (int)width, &pen, Color(0,0,0), NULL, noderect);
+	if (num == 1)
+	{
+		// Chinese character 1
+		REAL x = max(1, 20 * this->m_fZoomFactor);
+		REAL y = max(1, 13 * this->m_fZoomFactor);
+		graphics.graphics->DrawLine(&pen, noderect.X, noderect.Y - y, noderect.X + x, noderect.Y - y);
+	}
+	else if (num == 2)
+	{
+		// Chinese character 2
+		REAL x1a = max(1, 4 * this->m_fZoomFactor);
+		REAL x1b = max(1, 16 * this->m_fZoomFactor);
+		REAL y1 = max(1, 19 * this->m_fZoomFactor);
+		REAL x2 = max(1, 20 * this->m_fZoomFactor);
+		REAL y2 = max(1, 9 * this->m_fZoomFactor);
+		graphics.graphics->DrawLine(&pen, noderect.X + x1a, noderect.Y - y1, noderect.X + x1b, noderect.Y - y1);
+		graphics.graphics->DrawLine(&pen, noderect.X, noderect.Y - y2, noderect.X + x2, noderect.Y - y2);
+	}
 }
 
 #if 0
@@ -1244,10 +1263,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			}
 		}
 		if ((m_SelectedEntry1 == v))
-			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 255));
+			DrawMarker (graphics, noderect, mpLeft, 0, Color(0,0, 255), 1);
 
 		if ((m_SelectedEntry2 == v))
-			DrawMarker (graphics, noderect, mpLeft, 0, Color(136,0, 21));
+			DrawMarker (graphics, noderect, mpLeft, 0, Color(136,0, 21), 2);
 
 	}
 }

@@ -385,7 +385,7 @@ private:
 	void			DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const RectF& nodeRect,
 								DWORD state, DWORD allowed, bool upsideDown);
 	void			DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
-							   , MarkerPosition position, int relPosition, Color &penColor);
+							   , MarkerPosition position, int relPosition, Color &penColor, int num);
 //	void			IndicateGlyphDirection ( GraphicsDevice& graphics, const ILayoutNodeList* nodeList
 //										 , const ILayoutNodeList::SNode& node, const RectF& nodeRect
 //										 , DWORD glyphs, bool upsideDown, const CSize& offset);
