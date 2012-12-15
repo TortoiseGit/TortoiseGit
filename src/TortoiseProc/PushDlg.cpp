@@ -143,7 +143,6 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
 	AdjustControlSize(IDC_PROC_PUSH_SET_UPSTREAM);
 	AdjustControlSize(IDC_STATIC_RECURSE_SUBMODULES);
-	AdjustControlSize(IDC_COMBOBOX_RECURSE_SUBMODULES);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
