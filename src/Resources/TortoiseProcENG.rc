@@ -3776,6 +3776,7 @@ STRINGTABLE
 BEGIN
     IDS_RECURSE_SUBMODULES_CHECK "Check"
     IDS_RECURSE_SUBMODULES_ONDEMAND "On demand"
+    IDS_PROC_SHOWDIFF       "Show diff"
 END
 
 #endif    // Englisch (USA) resources

@@ -19,6 +19,7 @@
 #pragma once
 #include "HorizontalResizableStandAloneDialog.h"
 #include "resource.h"
+#include "MenuButton.h"
 
 class CSubmoduleDiffDlg : public CHorizontalResizableStandAloneDialog
 {
@@ -53,6 +54,7 @@ protected:
 	afx_msg void OnBnClickedLog2();
 	afx_msg void OnBnClickedShowDiff();
 	void ShowLog(CString hash);
+	CMenuButton	m_ctrlShowDiffBtn;
 
 	DECLARE_MESSAGE_MAP()
 

@@ -810,6 +810,7 @@
 #define IDS_RECURSE_SUBMODULES_CHECK    1376
 #define IDS_RECURSE_SUBMODULES_ONDEMAND 1377
 #define IDC_NEWLINESCOLOR               1378
+#define IDS_PROC_SHOWDIFF               1378
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
 #define IDC_REFRESH                     1382
