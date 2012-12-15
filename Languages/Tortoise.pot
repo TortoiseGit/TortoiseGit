@@ -5548,6 +5548,10 @@ msgstr ""
 msgid "Older lines"
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "On demand"
+msgstr ""
+
 #. Resource IDs: (219)
 msgid "One or more files are in a conflicted state."
 msgstr ""
@@ -6137,6 +6141,10 @@ msgstr ""
 
 #. Resource IDs: (1057)
 msgid "Rectangle Tool\nRectangle"
+msgstr ""
+
+#. Resource IDs: (1487)
+msgid "Recurse submodule"
 msgstr ""
 
 #. Resource IDs: (1654)
