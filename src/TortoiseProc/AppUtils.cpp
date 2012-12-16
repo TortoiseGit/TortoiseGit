@@ -2143,6 +2143,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		progress.m_bAutoCloseOnSuccess = autoClose;
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESET)));
 
 		if(!dlg.m_bRebase && !g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		{
@@ -2159,7 +2160,24 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			RunTortoiseGitProc(cmd);
 			return TRUE;
 		}
-		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 1) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
+		else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
+		{
+			CString currentBranch = g_Git.GetSymbolicRef();
+			CString configName;
+			configName.Format(_T("branch.%s.remote"), currentBranch);
+			CString pullRemote = g_Git.GetConfigValue(configName);
+
+			//Select pull-branch from current branch
+			configName.Format(_T("branch.%s.merge"), currentBranch);
+			CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+
+			CString defaultUpstream;
+			if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+				defaultUpstream.Format(_T("remotes/%s/%s"), pullRemote, pullBranch);
+			GitReset(&defaultUpstream, 2);
+			return TRUE;
+		}
+		else if ((userResponse == IDC_PROGRESS_BUTTON1 + 2) || (progress.m_GitStatus == 0 && dlg.m_bRebase))
 		{
 			while(1)
 			{
