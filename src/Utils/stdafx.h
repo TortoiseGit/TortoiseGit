@@ -33,6 +33,7 @@ using namespace ATL;
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <functional>
 #pragma warning(pop)
 
 #define USE_GDI_GRADIENT

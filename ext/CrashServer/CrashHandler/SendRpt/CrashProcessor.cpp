@@ -577,7 +577,11 @@ public:
             {
                 CString crashInfoFile = m_TempFolder + _T("\\crashinfo.xml");
                 if (m_CrashInfo->GetCrashInfoFile(crashInfoFile))
+#if _MSC_VER >= 1700
+                    g_Config.FilesToAttach.push_back(std::make_pair(crashInfoFile, L"crashinfo.xml"));
+#else
                     g_Config.FilesToAttach.push_back(std::make_pair<CStringW, CStringW>(crashInfoFile, L"crashinfo.xml"));
+#endif
 
                 CString crashUserInfoFile = m_TempFolder + _T("\\crashuserinfo.xml");
                 if (g_Config.UserInfo.size())
@@ -597,7 +601,11 @@ public:
                         }
                         fprintf_s(f, "</UserInfo>");
                         fclose(f);
+#if _MSC_VER >= 1700
+                        g_Config.FilesToAttach.push_back(std::make_pair(crashUserInfoFile, L"crashuserinfo.xml"));
+#else
                         g_Config.FilesToAttach.push_back(std::make_pair<CStringW, CStringW>(crashUserInfoFile, L"crashuserinfo.xml"));
+#endif
                     }
                 }
 
