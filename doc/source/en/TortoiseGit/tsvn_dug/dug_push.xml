@@ -1,59 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tsvn-dug-push">
-  <title>Push</title>
-  <?dbhh topicname="HIDD_PUSH"?>
-  <indexterm>
-    <primary>Push</primary>
-  </indexterm>
-  <para>
-	Push Change to the other repository. You must push change to bare repository. 
-	If you push change to repository with working tree, there are unexpected result.
-  </para>
-  <para>
-	<menuchoice>
-      <guimenu>TortoiseGit
-      </guimenu>
-	  <guimenuitem>Push...
-	  </guimenuitem>
-    </menuchoice>. 
-  </para>
-  <para>
-	Push Dialog will show. <graphic fileref="../images/GitPush.png"/>
-  </para>
-  <sect2>
-	<title>Branch</title>
+	<title>Push</title>
+	<?dbhh topicname="HIDD_PUSH"?>
+	<indexterm>
+		<primary>Push</primary>
+	</indexterm>
 	<para>
-		<guilabel>Local:</guilabel> The source branch which will push to other repository.
+		Push Change to the other repository. You must push change to bare repository. 
+		If you push change to repository with working tree, there are unexpected result.
 	</para>
 	<para>
-		<guilabel>Remote:</guilabel> The remote branch of the other repository. 
+		<menuchoice>
+			<guimenu>TortoiseGit
+			</guimenu>
+			<guimenuitem>Push...
+			</guimenuitem>
+		</menuchoice>. 
 	</para>
-  </sect2>
-  <sect2>
-	<title>Destination</title>
 	<para>
-		<guilabel>Remote:</guilabel> Choose remote repository.
+		Push Dialog will show. <graphic fileref="../images/GitPush.png"/>
 	</para>
+	<sect2>
+		<title>Branch</title>
+		<para>
+			<guilabel>Local:</guilabel> The source branch which will push to other repository.
+		</para>
+		<para>
+			<guilabel>Remote:</guilabel> The remote branch of the other repository. 
+		</para>
+	</sect2>
+	<sect2>
+		<title>Destination</title>
+		<para>
+			<guilabel>Remote:</guilabel> Choose remote repository.
+		</para>
+		<para>
+			<guilabel>Arbitrary URL:</guilabel> The remote repository url. 
+		</para>
+	</sect2>
+	<sect2>
+		<title>Options</title>
+		<para>
+			Force Overwrite Existing Branch(May discard changeds)
+		</para>
+		<para>
+			Use Thin Pack(For slow network connections)
+		</para>
+		<para>
+			Include Tags
+		</para>
+		<para>
+			Autoload Putty Key
+		</para>
+		<tip>
+			<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tsvn-ssh-howto"/>.</para>
+		</tip>
+	</sect2>
 	<para>
-		<guilabel>Arbitrary URL:</guilabel> The remote repository url. 
+		You can find more information at <xref linkend="git-push(1)"/>
 	</para>
-  </sect2>
-  <sect2>
-	<title>Options</title>
-	<para>Force Overwrite Existing Branch(May discard changeds)
-	</para>
-	<para>Use Thin Pack(For slow network connections)
-	</para>
-	<para>Include Tags
-	</para>
-	<para>Autoload Putty Key
-	</para>
-	<tip>
-		<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tsvn-ssh-howto"/>.</para>
-	</tip>
-  </sect2>
-  <para>
-    You can find more information at <xref linkend="git-push(1)"/>
-  </para>
 </sect1>
