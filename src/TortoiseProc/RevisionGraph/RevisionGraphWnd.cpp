@@ -42,11 +42,14 @@
 #include "SysInfo.h"
 #include "FormatMessageWrapper.h"
 
+#pragma warning(push)
+#pragma warning(disable: 4100) // unreferenced formal parameter
 #include <ogdf/planarity/PlanarizationLayout.h>
 #include <ogdf/planarity/VariableEmbeddingInserter.h>
 #include <ogdf/planarity/FastPlanarSubgraph.h>
 #include <ogdf/orthogonal/OrthoLayout.h>
 #include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
+#pragma warning(pop)
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

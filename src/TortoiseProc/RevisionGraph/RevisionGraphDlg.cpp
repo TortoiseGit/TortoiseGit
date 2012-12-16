@@ -529,7 +529,7 @@ void CRevisionGraphDlg::UpdateFullHistory()
 #endif
 }
 
-void CRevisionGraphDlg::SetOption (UINT controlID)
+void CRevisionGraphDlg::SetOption (UINT /*controlID*/)
 {
 #if 0
 	CMenu * pMenu = GetMenu();

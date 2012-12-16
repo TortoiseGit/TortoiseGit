@@ -1108,7 +1108,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		arrows[4].Y =  points[0].Y;
 
 		path.AddLines(arrows, 5);
-		path.SetFillMode(FillMode::FillModeAlternate);
+		path.SetFillMode(FillModeAlternate);
 		graphics.graphics->DrawPath(&pen, &path);
 
 	}
