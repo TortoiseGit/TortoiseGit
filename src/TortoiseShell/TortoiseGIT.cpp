@@ -60,8 +60,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// it.
 
 	bool bInShellTest = false;
-	TCHAR buf[_MAX_PATH + 1];		// MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, _MAX_PATH);
+	TCHAR buf[MAX_PATH + 1];		// MAX_PATH ok, the test really is for debugging anyway.
+	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
 	if(pathLength >= 14)
 	{
 		if ((_tcsicmp(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)

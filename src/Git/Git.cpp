@@ -71,21 +71,21 @@ static BOOL FindGitPath()
 	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
 	_tgetenv_s(&size, env, size, _T("PATH"));
 
-	TCHAR buf[_MAX_PATH];
+	TCHAR buf[MAX_PATH];
 
 	// search in all paths defined in PATH
-	while ((env = nextpath(env, buf, _MAX_PATH-1)) != NULL && *buf)
+	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
 	{
 		TCHAR *pfin = buf + _tcslen(buf)-1;
 
 		// ensure trailing slash
 		if (*pfin != _T('/') && *pfin != _T('\\'))
-			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, _MAX_PATH-1 is used in nextpath above
+			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, MAX_PATH-1 is used in nextpath above
 
 		const size_t len = _tcslen(buf);
 
-		if ((len + 7) < _MAX_PATH)
-			_tcscpy_s(pfin + 1, _MAX_PATH - len, _T("git.exe"));
+		if ((len + 7) < MAX_PATH)
+			_tcscpy_s(pfin + 1, MAX_PATH - len, _T("git.exe"));
 		else
 			break;
 
