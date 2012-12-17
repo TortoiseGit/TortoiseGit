@@ -33,6 +33,7 @@
 #include "..\version.h"
 //#include "svn_dso.h"
 #include "SmartHandle.h"
+#include "DllVersion.h"
 
 #include <ShellAPI.h>
 
@@ -139,7 +140,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 		DWORD dwMajor = 0;
 		DWORD dwMinor = 0;
-		AtlGetShellVersion(&dwMajor, &dwMinor);
+		GetShellVersion(&dwMajor, &dwMinor);
 		DWORD dwVersion = PACKVERSION(dwMajor, dwMinor);
 		if (dwVersion >= PACKVERSION(6,0))
 			niData.cbSize = sizeof(NOTIFYICONDATA);

@@ -461,7 +461,7 @@ static CWndClassInfo& GetWndClassInfo() \
 #endif // (_ATL_VER < 0x0700)
 
 // Forward declaration for ATL3 fix
-#if (_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)
+#if ((_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)) || _ATL_VER > 0x0A00
   namespace ATL { HRESULT AtlGetCommCtrlVersion(LPDWORD pdwMajor, LPDWORD pdwMinor); };
 #endif
 
@@ -1579,7 +1579,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 // General DLL version helpers (excluded from atlbase.h if _ATL_DLL is defined)
 
-#if (_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)
+#if ((_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)) || _ATL_VER > 0x0A00
 
 namespace ATL
 {
@@ -1675,7 +1675,7 @@ inline HRESULT AtlGetShellVersion(LPDWORD pdwMajor, LPDWORD pdwMinor)
 
 }; // namespace ATL
 
-#endif // (_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)
+#endif // ((_ATL_VER < 0x0700) && defined(_ATL_DLL) && !defined(_WIN32_WCE)) || _ATL_VER > 0x0A00
 
 
 // These are always included
