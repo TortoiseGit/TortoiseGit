@@ -2652,7 +2652,7 @@ BEGIN
     ID_VIEW_ZOOMWIDTH       "Zoom to fit in width"
     ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
     ID_VIEW_TOPDOWN         "Show oldest node at top"
-    ID_VIEW_SHOWHEAD        """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
+    ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
 END
 
 STRINGTABLE 
@@ -2727,7 +2727,7 @@ BEGIN
     IDS_NONE                "None"
     IDS_FETCH_REACHABLE     "Reachable"
     IDS_REVGRAPH_ERR_NOMEMORY 
-                            """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
+                            "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
     IDS_PROC_RESET          "Reset"
 END
 

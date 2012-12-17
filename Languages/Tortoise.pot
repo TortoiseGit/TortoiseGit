@@ -5410,6 +5410,10 @@ msgstr ""
 msgid "Not enough memory to complete operation."
 msgstr ""
 
+#. Resource IDs: (606)
+msgid "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
+msgstr ""
+
 #. Resource IDs: (72)
 msgid "Not patches generated."
 msgstr ""
@@ -7053,6 +7057,10 @@ msgstr ""
 
 #. Resource IDs: (32817)
 msgid "Show File List"
+msgstr ""
+
+#. Resource IDs: (2051)
+msgid "Show HEAD revision nodes"
 msgstr ""
 
 #. Resource IDs: (2052)
@@ -8756,10 +8764,6 @@ msgstr ""
 #. Resource IDs: (602)
 #, c-format
 msgid "\"%s\" is not git repository"
-msgstr ""
-
-#. Resource IDs: (606, 2051)
-msgid "\"Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor.\""
 msgstr ""
 
 #. Resource IDs: (65)
