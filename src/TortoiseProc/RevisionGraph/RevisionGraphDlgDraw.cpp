@@ -88,7 +88,7 @@ void CRevisionGraphWnd::OnPaint()
 
 	if (IsUpdateJobRunning())
 	{
-		CString fetch = _T("Fetch...");
+		CString fetch = CString(MAKEINTRESOURCE(IDS_PROC_LOADING));
 		dc.FillSolidRect(rect, ::GetSysColor(COLOR_APPWORKSPACE));
 		dc.ExtTextOut(20,20,ETO_CLIPPED,NULL,fetch,NULL);
 		CWnd::OnPaint();

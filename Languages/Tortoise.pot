@@ -4857,6 +4857,10 @@ msgstr ""
 msgid "Load Putty &Key"
 msgstr ""
 
+#. Resource IDs: (1379)
+msgid "Loading..."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Local Branch"
 msgstr ""
