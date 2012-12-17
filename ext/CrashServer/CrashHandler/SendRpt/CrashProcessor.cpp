@@ -27,7 +27,11 @@
 #include "CrashInfo.h"
 
 Config g_Config;
+#if _MSC_VER >= 1600
+Log g_Log(NULL, _T("sendrpt"));
+#else
 Log g_Log(LogMediaPtr(), _T("sendrpt"));
+#endif
 
 using namespace std;
 
