@@ -3,7 +3,7 @@
 <sect1 id="tmerge-dug-conflicts">
 	<title>Merging / Editing Conflicts</title>
 	<para>
-		TortoiseMerge not only <emphasis>shows</emphasis> you the differences
+		TortoiseGitMerge not only <emphasis>shows</emphasis> you the differences
 		between files but also lets you resolve conflicts or apply changes.
 	</para>
 	<para>
@@ -36,7 +36,7 @@
 		text editor. Such lines are marked using a pencil icon.
 		Please note that if you want to make any of the line/block-based changes
 		described above, it is better to do those first since once you start
-		editing the file yourself it becomes impossible for TortoiseMerge to
+		editing the file yourself it becomes impossible for TortoiseGitMerge to
 		keep track of the relationship to the original files.
 	</para>
 	<para>
@@ -78,7 +78,7 @@
 	</para>
 	<para>
 		Sometimes a file will be marked as conflicted in Git, yet when
-		you view it using TortoiseMerge there are no conflicts shown. This may
+		you view it using TortoiseGitMerge there are no conflicts shown. This may
 		be due to the whitespace handling you have chosen. If you choose to
 		ignore line-endings or whitespace changes, those lines will be marked
 		using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the
@@ -87,14 +87,14 @@
 	<para>
 		Sometimes the conflict is too difficult to resolve by simply picking
 		<literal>Theirs</literal> and <literal>Mine</literal> and it
-		requires hand editing. TortoiseMerge allows you to do all the easy
+		requires hand editing. TortoiseGitMerge allows you to do all the easy
 		changes visually first and then save the file, leaving only the
 		difficult changes to be resolved by hand-editing.
 	</para>
 	<important>
 		<para>
-			Note that if you use TortoiseMerge on the same files again,
-			any changes to your working copy, whether in TortoiseMerge,
+			Note that if you use TortoiseGitMerge on the same files again,
+			any changes to your working copy, whether in TortoiseGitMerge,
 			or by hand-editing, <emphasis>will be discarded</emphasis>
 			and the file will appear as it did when conflict-editing
 			first started.

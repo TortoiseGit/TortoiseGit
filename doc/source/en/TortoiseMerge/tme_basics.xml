@@ -4,7 +4,7 @@
 	<title>Basic Concepts</title>
 	<simplesect>
 		<para>
-			TortoiseMerge has several different uses:
+			TortoiseGitMerge has several different uses:
 			<itemizedlist>
 				<listitem>
 					<para>
@@ -20,7 +20,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Applying patch files. This is the reason TortoiseMerge
+						Applying patch files. This is the reason TortoiseGitMerge
 						was created :)
 					</para>
 				</listitem>
@@ -58,7 +58,7 @@
 			text editor. Such lines are marked using a pencil icon.
 			Please note that if you want to make any of the line/block-based changes
 			described above, it is better to do those first since once you start
-			editing the file yourself it becomes impossible for TortoiseMerge to
+			editing the file yourself it becomes impossible for TortoiseGitMerge to
 			keep track of the relationship to the original files.
 		</para>
 	</sect1>
@@ -106,7 +106,7 @@
 			revisions, or if you compare two different repository paths.
 		</para>
 		<para>
-			In either case TortoiseMerge will show a small window listing the
+			In either case TortoiseGitMerge will show a small window listing the
 			files included in the patch. By double clicking on one of these files
 			you fetch the relevant file and apply the changes. The left pane shows
 			the original file content and the right pane shows it after the patch

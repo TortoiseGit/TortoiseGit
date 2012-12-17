@@ -12,7 +12,7 @@
 	<sect1 id="tmerge-intro-overview">
 		<title>Overview</title>
 		<para>
-			TortoiseMerge is a free/open-source application. It lets you see
+			TortoiseGitMerge is a free/open-source application. It lets you see
 			differences in text files, merge those changes and even review and
 			apply unified diff files, often called <firstterm>patches</firstterm>.
 		</para>
@@ -30,7 +30,7 @@
 			update your working copy. This happens if someone else changed the
 			same parts of the file you're currently working on as you did.
 			Then you have to resolve those conflicts manually. This is where
-			TortoiseMerge can help you.
+			TortoiseGitMerge can help you.
 		</para>
 		<para>
 			The following diagram shows you the relationships between the
@@ -42,14 +42,14 @@
 		</figure>
 		<para>
 			A conflict can also occur if you try to apply an outdated patch file.
-			In such cases, without TortoiseMerge, you would either have to ask
+			In such cases, without TortoiseGitMerge, you would either have to ask
 			the person you got that patch file from for a current version or try
 			to apply that patch file manually.
 		</para>
 		<para>
-			But now with TortoiseMerge this isn't necessary anymore -
+			But now with TortoiseGitMerge this isn't necessary anymore -
 			at least not if you're working with a version control system like
-			Git. TortoiseMerge parses the patch file for the
+			Git. TortoiseGitMerge parses the patch file for the
 			revision/version the patch was created for and automatically tries
 			to fetch that specific version from your source-control.
 			Then it applies the patch and lets you review both your changes
@@ -61,7 +61,7 @@
 	<!-- ======================== SECTION 2 ============================== -->
 	<!-- ================================================================= -->
 	<sect1 id="tmerge-intro-history">
-		<title>TortoiseMerge's History</title>
+		<title>TortoiseGitMerge's History</title>
 		<para>
 			While working on
 			<ulink url="http://TortoiseGit.tigris.org">
@@ -92,7 +92,7 @@
 			which could apply patch files, but all we found was that such a tool
 			didn't exist. So to cut a long story short: We decided that if
 			no-one else could provide such a tool we would have to write our
-			own. That's when TortoiseMerge was born.
+			own. That's when TortoiseGitMerge was born.
 		</para>
 		<para>
 			Since TortoiseGit already uses the Git library, which has a

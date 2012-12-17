@@ -4,7 +4,7 @@
 	<title>Open Files</title>
 	<?dbhh topicname="HIDD_OPENDLG"?>
 	<para>
-		When you start TortoiseMerge without any command line switches then
+		When you start TortoiseGitMerge without any command line switches then
 		you have to open the files manually, using
 		<menuchoice>
 			<guimenu>File</guimenu>
@@ -27,12 +27,12 @@
 			If you want to compare / merge files you have to set at least two 
 			of the three possible paths for <literal>Base</literal>,
 			<literal>Mine</literal> and <literal>Theirs</literal>. 
-			If you select only two files, then TortoiseMerge will show 
+			If you select only two files, then TortoiseGitMerge will show 
 			you the differences between those two files, either in a two 
 			pane view or in a one pane view.
 		</para>
 		<para>
-			If you want to merge three files, TortoiseMerge 
+			If you want to merge three files, TortoiseGitMerge 
 			will show you the differences in a three pane view. This view 
 			is generally used if you need to resolve conflicted files.
 			The output file is not named in this case and you will have to
