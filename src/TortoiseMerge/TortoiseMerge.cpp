@@ -107,10 +107,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	TCHAR buf[6];
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
-	CString sHelppath;
-	sHelppath = this->m_pszHelpFilePath;
-	sHelppath = sHelppath.MakeLower();
-	sHelppath.Replace(_T(".chm"), _T("_en.chm"));
+	CString sHelppath = CPathUtils::GetAppDirectory() + _T("TortoiseMerge_en.chm");
 	free((void*)m_pszHelpFilePath);
 	m_pszHelpFilePath=_tcsdup(sHelppath);
 	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseMerge_en.chm");
