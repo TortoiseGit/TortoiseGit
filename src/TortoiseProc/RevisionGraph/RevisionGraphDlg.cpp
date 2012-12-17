@@ -222,6 +222,10 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 
 	EnableToolTips();
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	// begin background operation
 
 	StartWorkerThread();
