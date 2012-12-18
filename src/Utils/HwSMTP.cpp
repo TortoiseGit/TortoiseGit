@@ -1037,7 +1037,6 @@ int hwGetFileAttr ( LPCTSTR lpFileName, OUT CFileStatus *pFileStatus/*=NULL*/ )
 		pFileStatus->m_atime = fileStatus.m_atime;
 		pFileStatus->m_size = fileStatus.m_size;
 		pFileStatus->m_attribute = fileStatus.m_attribute;
-		pFileStatus->_m_padding = fileStatus._m_padding;
 		lstrcpy ( pFileStatus->m_szFullName, fileStatus.m_szFullName );
 
 	}

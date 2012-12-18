@@ -33,6 +33,7 @@ using namespace ATL;
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <functional>
 #pragma warning(pop)
 
 #define USE_GDI_GRADIENT
@@ -54,5 +55,4 @@ using namespace ATL;
 
 #include <atlbase.h>
 
-#include <xcmc.h>          // CMC function defs
 #include <mapi.h>          // MAPI function defs

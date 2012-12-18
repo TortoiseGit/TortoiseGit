@@ -44,6 +44,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <functional>
 #pragma warning(pop)
 
 #pragma warning(push)
