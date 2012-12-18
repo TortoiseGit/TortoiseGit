@@ -350,7 +350,7 @@ BOOL CLogDlg::OnInitDialog()
 
 		if ((rcLogList.bottom + delta > rcLogList.top)&&(rcLogList.bottom + delta < rcChgMsg.bottom - 30))
 		{
-			m_wndSplitter1.SetWindowPos(NULL, 0, yPos1, 0, 0, SWP_NOSIZE);
+			m_wndSplitter1.SetWindowPos(NULL, rectSplitter.left, yPos1, 0, 0, SWP_NOSIZE);
 			DoSizeV1(delta);
 		}
 	}
@@ -363,11 +363,12 @@ BOOL CLogDlg::OnInitDialog()
 
 		if ((rcChgMsg.top + delta < rcChgMsg.bottom)&&(rcChgMsg.top + delta > rcLogList.top + 30))
 		{
-			m_wndSplitter2.SetWindowPos(NULL, 0, yPos2, 0, 0, SWP_NOSIZE);
+			m_wndSplitter2.SetWindowPos(NULL, rectSplitter.left, yPos2, 0, 0, SWP_NOSIZE);
 			DoSizeV2(delta);
 		}
 	}
 
+	SetSplitterRange();
 
 	if (m_bSelect)
 	{
