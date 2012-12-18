@@ -54,5 +54,4 @@ using namespace ATL;
 
 #include <atlbase.h>
 
-#include <xcmc.h>          // CMC function defs
 #include <mapi.h>          // MAPI function defs
