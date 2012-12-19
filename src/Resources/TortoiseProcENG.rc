@@ -2729,6 +2729,7 @@ BEGIN
     IDS_REVGRAPH_ERR_NOMEMORY 
                             "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
     IDS_PROC_RESET          "Reset"
+    IDS_FETCH_TAGS_ONLY     "All tags only"
 END
 
 STRINGTABLE 

@@ -91,7 +91,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE)));
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
-	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY)));
 	m_ctrlTagOpt.SetCurSel(0);
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);

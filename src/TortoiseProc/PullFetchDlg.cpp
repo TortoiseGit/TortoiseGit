@@ -254,7 +254,7 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	if (tagopt == "--no-tags")
 		tagopt = CString(MAKEINTRESOURCE(IDS_NONE));
 	else if (tagopt == "--tags")
-		tagopt = CString(MAKEINTRESOURCE(IDS_ALL));
+		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY));
 	else
 		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE));
 	CString value;

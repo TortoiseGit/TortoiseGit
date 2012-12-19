@@ -1606,6 +1606,10 @@ msgstr ""
 msgid "All Parents"
 msgstr ""
 
+#. Resource IDs: (9690)
+msgid "All tags only"
+msgstr ""
+
 #. Resource IDs: (1008)
 msgid "All your changes will be lost! Do you really want to reset all toolbars and menus?"
 msgstr ""
