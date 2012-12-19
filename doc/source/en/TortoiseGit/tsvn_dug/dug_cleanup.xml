@@ -35,7 +35,7 @@
 		<title>Attention</title>
 		<para>
 			This command affects the <emphasis>whole</emphasis> working tree and will delete
-			all untracked files <emphasis>without</emphasis> using the recycle bin!
+			all untracked files using the recycle bin (Since TortoiseGit v1.7.11)!
 		</para>
 	</caution>
 	<para>
