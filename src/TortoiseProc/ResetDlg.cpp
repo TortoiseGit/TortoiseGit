@@ -89,6 +89,7 @@ BOOL CResetDlg::OnInitDialog()
 
 	Init();
 	SetDefaultChoose(IDC_RADIO_BRANCH);
+	GetDlgItem(IDC_RADIO_BRANCH)->SetFocus();
 
 	return TRUE;
 }

@@ -109,6 +109,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	Init();
 
 	SetDefaultChoose(IDC_RADIO_BRANCH);
+	GetDlgItem(IDC_RADIO_BRANCH)->SetFocus();
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
