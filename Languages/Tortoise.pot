@@ -7215,6 +7215,10 @@ msgstr ""
 msgid "Show special characters for whitespaces\nShow Whitespaces"
 msgstr ""
 
+#. Resource IDs: (1730)
+msgid "Show ta&gs"
+msgstr ""
+
 #. Resource IDs: (1209)
 msgid "Show un&modified files"
 msgstr ""

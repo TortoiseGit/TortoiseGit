@@ -25,6 +25,7 @@ Released: unreleased
    - TortoiseUDiff.exe to TortoiseGitUDiff.exe
  * Fixed issue #1433: Can reset to remote tracking branch after fetch
  * Fixed issue #763: "Clean up" should show a list of to-be-deleted files
+ * Fixed issue #1581: Show/Hide tags in the log
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

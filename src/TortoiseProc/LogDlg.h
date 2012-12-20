@@ -124,6 +124,7 @@ protected:
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
 	afx_msg void OnBnClickedFollowRenames();
+	afx_msg void OnBnClickedShowTags();
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -147,6 +148,7 @@ protected:
 
 private:
 	CRegDWORD m_regbAllBranch;
+	CRegDWORD m_regbShowTags;
 
 	void Refresh (bool clearfilter = false);
 	void DoSizeV1(int delta);
@@ -203,6 +205,7 @@ private:
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;
+	BOOL				m_bShowTags;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
