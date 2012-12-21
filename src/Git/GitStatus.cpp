@@ -769,7 +769,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			int start=0, end=0;
 			int pos=SearchInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength());
 
-			if(pos>=0 && GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos))
+			if (GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos))
 			{
 				CGitIndexList::iterator it;
 				CString oldstring;
@@ -797,7 +797,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 			start = end =0;
 			pos=SearchInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength());
-			if(pos>=0 && GetRangeInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
+			if (GetRangeInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
 				CGitHeadFileList::iterator it;
 				CString oldstring;

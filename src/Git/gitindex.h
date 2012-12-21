@@ -357,18 +357,13 @@ int SearchInSortVector(T &vector, LPTSTR pstr, int len)
 		else
 			cmp = _tcsnccmp( vector[mid].m_FileName,pstr,len );
 
-		if(cmp ==0)
+		if (cmp == 0)
 			return mid;
+		else if (cmp < 0)
+			start = mid + 1;
+		else // (cmp > 0)
+			end = mid;
 
-		if(cmp < 0)
-		{
-			start = mid+1;
-		}
-
-		if(cmp > 0)
-		{
-			end=mid;
-		}
 		mid=(start +end ) /2;
 
 	}
