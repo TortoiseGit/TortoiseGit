@@ -52,6 +52,7 @@ END_MESSAGE_MAP()
 CTortoiseGitBlameDoc::CTortoiseGitBlameDoc()
 {
 	m_bFirstStartup = true;
+	m_IsGitFile = FALSE;
 }
 
 CTortoiseGitBlameDoc::~CTortoiseGitBlameDoc()

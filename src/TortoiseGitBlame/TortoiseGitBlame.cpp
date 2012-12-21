@@ -59,6 +59,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 
+	m_gdiplusToken = NULL;
 	m_bHiColorIcons = TRUE;
 }
 

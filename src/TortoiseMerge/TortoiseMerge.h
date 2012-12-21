@@ -41,8 +41,6 @@ public:
 
 // Implementation
 	UINT  m_nAppLook;
-	BOOL  m_bHiColorIcons;
-
 protected:
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()

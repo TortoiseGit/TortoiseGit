@@ -73,6 +73,8 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	, m_DirectPointer(NULL)
 	, pChecker(NULL)
 	, pThesaur(NULL)
+	, m_spellcodepage(0)
+	, m_separator(0)
 	, m_bDoStyle(false)
 {
 	m_hModule = ::LoadLibrary(_T("SciLexer.DLL"));

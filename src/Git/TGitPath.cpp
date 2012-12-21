@@ -64,6 +64,8 @@ CTGitPath::CTGitPath(void)
 {
 	m_Action=0;
 	m_ParentNo=0;
+	m_Stage=0;
+	m_Checked = false;
 }
 
 CTGitPath::~CTGitPath(void)
@@ -989,12 +991,13 @@ bool CTGitPath::IsValidOnWindows() const
 
 CTGitPathList::CTGitPathList()
 {
-
+	m_Action = 0;
 }
 
 // A constructor which allows a path list to be easily built which one initial entry in
 CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
+	m_Action = 0;
 	AddPath(firstEntry);
 }
 int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)

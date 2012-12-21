@@ -29,6 +29,10 @@ const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated")
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
+	, m_bMatchCase(false)
+	, m_directFunction(NULL)
+	, m_directPointer(NULL)
+	, m_hWndEdit(NULL)
 {
 	SetWindowTitle(_T("TortoiseGitUDiff"));
 }

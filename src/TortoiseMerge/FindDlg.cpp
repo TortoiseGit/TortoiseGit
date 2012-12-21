@@ -32,6 +32,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bMatchCase(FALSE)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
+	, m_FindMsg(0)
 {
 }
 

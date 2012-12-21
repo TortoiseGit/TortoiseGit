@@ -42,6 +42,7 @@ CSetMainPage::CSetMainPage()
 	, m_bDisplayBinDiff(TRUE)
 	, m_bCaseInsensitive(FALSE)
 	, m_bUTF8Default(FALSE)
+	, m_dwFontSize(0)
 {
 	m_regBackup = CRegDWORD(_T("Software\\TortoiseGitMerge\\Backup"));
 	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstDiffOnLoad"), TRUE);

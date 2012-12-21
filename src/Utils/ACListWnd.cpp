@@ -44,6 +44,7 @@ CACListWnd::CACListWnd()
 	m_LastSize.SetRectEmpty();
 	m_PrefixChar = 0;
 	m_lMode = 0;
+	pFontDC = NULL;
 }
 
 /**********************************************************************/

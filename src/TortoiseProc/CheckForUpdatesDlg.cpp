@@ -49,6 +49,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	, m_bForce(FALSE)
 	, m_bVisible(FALSE)
 	, m_pDownloadThread(NULL)
+	, m_bThreadRunning(FALSE)
 {
 	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/wiki/Download?tm=2");
 }
