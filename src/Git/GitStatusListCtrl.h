@@ -153,7 +153,7 @@ public:
 
 	/// construction / destruction
 
-	ColumnManager (CListCtrl* control) : control (control) {};
+	ColumnManager (CListCtrl* control) : control (control), m_dwDefaultColumns(0) {};
 	~ColumnManager() {};
 
 	DWORD m_dwDefaultColumns;

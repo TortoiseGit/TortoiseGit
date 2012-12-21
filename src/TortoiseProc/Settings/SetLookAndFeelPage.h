@@ -61,7 +61,6 @@ private:
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
-	BOOL				m_bModified;
 	unsigned __int64	m_topmenu;
 	bool				m_bBlock;
 	CRegDWORD			m_regHideMenus;

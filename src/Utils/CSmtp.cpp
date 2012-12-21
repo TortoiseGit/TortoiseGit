@@ -35,6 +35,7 @@ CSmtp::CSmtp()
 	m_pcMsgBody = NULL;
 	m_pcXMailer = NULL;
 	m_pcReplyTo = NULL;
+	m_pcIPAddr = NULL;
 	m_pcLogin = NULL;
 	m_pcPassword = NULL;
 	m_pcSMTPSrvName = NULL;

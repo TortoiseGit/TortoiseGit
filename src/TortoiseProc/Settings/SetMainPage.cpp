@@ -38,6 +38,7 @@ CSetMainPage::CSetMainPage()
 	: ISettingsPropPage(CSetMainPage::IDD)
 	, m_sMsysGitPath(_T(""))
 	, m_bCheckNewer(TRUE)
+	, m_dwLanguage(0)
 {
 	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;

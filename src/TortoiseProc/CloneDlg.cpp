@@ -43,6 +43,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_bSVNTrunk = FALSE;
 	m_bSVNTags = FALSE;
 	m_bSVNBranch = FALSE;
+	m_bSVNFrom = FALSE;
 	m_bSVNUserName = FALSE;
 
 	m_strSVNTrunk = _T("trunk");

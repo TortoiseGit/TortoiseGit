@@ -53,6 +53,7 @@
 
 CMailMsg::CMailMsg()
 {
+	m_hMapi					= NULL;
 	m_lpMapiSendMail		= NULL;
 	m_bReady				= FALSE;
 	m_bShowComposeDialog	= FALSE;

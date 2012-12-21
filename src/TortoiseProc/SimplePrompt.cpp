@@ -27,6 +27,7 @@ CSimplePrompt::CSimplePrompt(CWnd* pParent /*=NULL*/)
 	, m_sPassword(_T(""))
 	, m_bSaveAuthentication(FALSE)
 	, m_sRealm(_T(""))
+	, m_hParentWnd(NULL)
 {
 }
 
