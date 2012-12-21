@@ -87,7 +87,7 @@ public:
 	void Stop();
 
 	void CloseWatcherHandles(HDEVNOTIFY hdev);
-	void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path);
+	void CloseWatcherHandles(const CTGitPath& path);
 
 	bool IsPathAllowed(const CTGitPath& path) {return !!m_shellCache.IsPathAllowed(path.GetWinPath());}
 	bool IsUnversionedAsModified() {return !!m_shellCache.IsUnversionedAsModified();}

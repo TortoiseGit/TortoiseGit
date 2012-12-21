@@ -291,7 +291,7 @@ public:
 		}
 		return (excludedasnormal);
 	}
-	BOOL ShellCache::HideMenusForUnversionedItems()
+	BOOL HideMenusForUnversionedItems()
 	{
 	if ((GetTickCount() - hidemenusforunversioneditemsticker)>REGISTRYTIMEOUT)
 		{

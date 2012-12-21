@@ -39,7 +39,7 @@ public:
 	bool HasAdminDir(const CString& path, bool bDir,CString * ProjectTopDir=NULL) const;
 	CString GetSuperProjectRoot(const CString& path);
 
-	bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDir) const;
+	bool GetAdminDirPath(const CString &projectTopDir, CString &adminDir) const;
 
 	CString GetGitTopDir(const CString& path);
 

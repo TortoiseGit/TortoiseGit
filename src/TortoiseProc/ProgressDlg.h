@@ -88,7 +88,7 @@ private:
 	void					ParserCmdOutput(char ch);
 	void					RemoveLastLine(CString &str);
 
-	LRESULT					CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+	LRESULT					OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 
 	afx_msg LRESULT			OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
