@@ -235,6 +235,7 @@ BOOL CMailMsg::Send()
 		if(!pAttachments)
 		{
 			m_sErrorMsg = _T("Error allocating memory");
+			delete[] pRecipients;
 			return FALSE;
 		}
 	}

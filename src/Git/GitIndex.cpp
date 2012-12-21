@@ -588,7 +588,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				}
 			}
 
-			delete buff;
+			delete[] buff;
 
 		} while(0);
 	}

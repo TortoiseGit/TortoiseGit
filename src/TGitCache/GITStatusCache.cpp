@@ -131,7 +131,8 @@ exit:
 	ATLTRACE("cache loaded from disk successfully!\n");
 	return;
 error:
-	fclose(pFile);
+	if (pFile)
+		fclose(pFile);
 	DeleteFile(path2);
 	m_pInstance->watcher.ClearInfoMap();
 	Destroy();

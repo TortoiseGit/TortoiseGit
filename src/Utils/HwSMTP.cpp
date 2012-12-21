@@ -625,7 +625,10 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	}
 
 	if(!Send ( csAttach ))
+	{	
+		delete[] pBuf;
 		return FALSE;
+	}
 
 	CFile file;
 	CStringA filedata;
@@ -633,7 +636,8 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 	{
 		if ( !file.Open ( lpszFileName, CFile::modeRead ) )
 		{
-			m_csLastError.Format ( _T("Open file [%s] failed"), lpszFileName );
+			m_csLastError.Format ( _T("Open file [%s] failed"), lpszFileName );			
+			delete[] pBuf;
 			return FALSE;
 		}
 		UINT nFileLen = file.Read ( pBuf, dwFileSize );
@@ -641,17 +645,19 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 		filedata = Base64Encode.Encode ( pBuf, nFileLen );
 		filedata += _T("\r\n\r\n");
 	}
-	catch ( CFileException e )
+	catch (CFileException *e)
 	{
-		e.Delete();
+		e->Delete();
 		m_csLastError.Format ( _T("Read file [%s] failed"), lpszFileName );
 		delete[] pBuf;
 		return FALSE;
 	}
 
 	if(!SendBuffer( filedata.GetBuffer() ))
+	{
+		delete[] pBuf;
 		return FALSE;
-
+	}
 
 	delete[] pBuf;
 

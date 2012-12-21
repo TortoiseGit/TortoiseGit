@@ -437,7 +437,8 @@ public:
 							return (*this)[thePath];
 						}
 					}
-					fclose(pFile);
+					else
+						fclose(pFile);
 				}
 				return thePath + _T("\\.git\\"); // in case of an error stick to old behavior
 			}
