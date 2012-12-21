@@ -33,6 +33,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
 	, m_bIsRef(false)
+	, m_FindMsg(0)
 {
 	m_pParent = pParent;
 }

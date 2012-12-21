@@ -38,6 +38,7 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=NULL*/)
 	m_bBranch=FALSE;
 	m_bTrack = 2;
 	m_bForce=FALSE;
+	m_bBranchOverride = FALSE;
 }
 
 CGitSwitchDlg::~CGitSwitchDlg()

@@ -128,6 +128,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_hwndLogicalParent(NULL)
 {
 	m_FileLoaded=0;
+	m_dwDefaultColumns = 0;
 	m_critSec.Init();
 	m_bIsRevertTheirMy = false;
 	this->m_nLineAdded =this->m_nLineDeleted =0;

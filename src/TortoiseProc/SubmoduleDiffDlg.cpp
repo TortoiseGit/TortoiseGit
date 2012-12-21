@@ -25,9 +25,11 @@
 IMPLEMENT_DYNAMIC(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleDiffDlg::IDD, pParent)
+	, m_bToIsWorkingCopy(false)
 	, m_bFromOK(false)
 	, m_bToOK(false)
 	, m_bDirty(false)
+	, m_nChangeType(Unknown)
 {
 }
 

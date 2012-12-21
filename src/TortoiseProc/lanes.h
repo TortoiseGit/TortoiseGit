@@ -62,7 +62,7 @@ public:
 	static inline bool isActive(int x) { return (x == ACTIVE || x == INITIAL || x == BRANCH ||
 	                                      isMerge(x)); }
 
-	Lanes() {} // init() will setup us later, when data is available
+	Lanes() { } // init() will setup us later, when data is available
 	bool isEmpty() { return typeVec.empty(); }
 	void init(const CGitHash& expectedSha);
 	void clear();

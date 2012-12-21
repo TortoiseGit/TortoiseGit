@@ -26,6 +26,7 @@ IMPLEMENT_DYNAMIC(CURLDlg, CResizableStandAloneDialog)
 CURLDlg::CURLDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CURLDlg::IDD, pParent)
 {
+	m_height = 0;
 }
 
 CURLDlg::~CURLDlg()

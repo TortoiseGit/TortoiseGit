@@ -36,6 +36,7 @@ CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 	, m_sExportDirOrig(_T(""))
 	, m_bNoExternals(FALSE)
 	, m_pLogDlg(NULL)
+	, m_bAutoCreateTargetName(false)
 {
 }
 

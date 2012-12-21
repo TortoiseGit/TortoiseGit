@@ -74,6 +74,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
 	:filenames(newFilenames)
 	,m_bChanged(false)
+	, m_hwnd(NULL)
 {
 }
 

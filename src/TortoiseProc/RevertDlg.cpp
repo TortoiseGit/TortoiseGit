@@ -34,6 +34,7 @@ CRevertDlg::CRevertDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelectAll(TRUE)
 	, m_bThreadRunning(FALSE)
 	, m_bCancelled(false)
+	, m_bRecursive(FALSE)
 {
 }
 

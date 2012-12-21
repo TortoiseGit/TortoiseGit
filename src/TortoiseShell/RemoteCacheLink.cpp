@@ -26,6 +26,7 @@
 
 CRemoteCacheLink::CRemoteCacheLink(void)
 	: m_hPipe(INVALID_HANDLE_VALUE)
+	, m_hEvent(INVALID_HANDLE_VALUE)
 	, m_hCommandPipe(INVALID_HANDLE_VALUE)
 {
 	SecureZeroMemory(&m_dummyStatus, sizeof(m_dummyStatus));

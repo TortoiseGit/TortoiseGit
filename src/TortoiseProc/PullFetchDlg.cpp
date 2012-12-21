@@ -34,10 +34,12 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
+	m_bAllowRebase = false;
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
 	m_bNoFF = false;
+	m_bRebase = FALSE;
 	m_bSquash = false;
 	m_bNoCommit = false;
 	m_bFFonly = false;
