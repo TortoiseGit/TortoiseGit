@@ -1497,7 +1497,7 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,338,241,50,14
 END
 
-IDD_CLEAN DIALOGEX 0, 0, 261, 117
+IDD_CLEAN DIALOGEX 0, 0, 261, 157
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Clean"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1510,10 +1510,12 @@ BEGIN
     CONTROL         "Remove ignored files (-fX)",IDC_RADIO_CLEAN_IGNORE,
                     "Button",BS_AUTORADIOBUTTON,15,45,232,10
     CONTROL         "Remove untracked directories (-d)",IDC_CHECK_DIR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,68,232,10
-    DEFPUSHBUTTON   "OK",IDOK,81,96,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,142,96,50,14
-    PUSHBUTTON      "Help",IDHELP,204,96,50,14
-    LTEXT           "Attention: This command affects the whole working tree!",IDC_STATIC,14,83,233,10
+    CONTROL         "Do not use recycle bin",IDC_CHECK_NORECYCLEBIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,81,87,10
+    CONTROL         "Dry run",IDC_CHECK_DRYRUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,95,40,10
+    DEFPUSHBUTTON   "OK",IDOK,81,128,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,142,128,50,14
+    PUSHBUTTON      "Help",IDHELP,204,128,50,14
+    LTEXT           "Attention: This command affects the whole working tree!",IDC_STATIC,14,114,233,10
 END
 
 IDD_PATCH_VIEW DIALOGEX 0, 0, 248, 195
@@ -2395,7 +2397,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 106
+        BOTTOMMARGIN, 146
     END
 
     IDD_PATCH_VIEW, DIALOG

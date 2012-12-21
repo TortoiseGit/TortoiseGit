@@ -3243,6 +3243,10 @@ msgstr ""
 msgid "Do not show the context menu for the following paths:"
 msgstr ""
 
+#. Resource IDs: (1730)
+msgid "Do not use recycle bin"
+msgstr ""
+
 #. Resource IDs: (70)
 #, c-format
 msgid "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
@@ -3340,6 +3344,10 @@ msgstr ""
 
 #. Resource IDs: (1079)
 msgid "Drive Types"
+msgstr ""
+
+#. Resource IDs: (1731)
+msgid "Dry run"
 msgstr ""
 
 #. Resource IDs: (1279)
