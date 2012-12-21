@@ -197,9 +197,12 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	else
 		ret = &m_cache[filepath.GetWinPath()];
 
-	ret->status = status;
-	ret->assumeValid = assumeValid;
-	ret->skipWorktree = skipWorktree;
+	if (ret)
+	{
+		ret->status = status;
+		ret->assumeValid = assumeValid;
+		ret->skipWorktree = skipWorktree;
+	}
 
 	m_mostRecentPath = filepath;
 	m_mostRecentStatus = ret;

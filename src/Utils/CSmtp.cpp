@@ -388,6 +388,7 @@ bool CSmtp::Send()
 	if((FileName = new char[255]) == NULL)
 	{
 		m_oError = CSMTP_LACK_OF_MEMORY;
+		delete[] FileBuf;
 		return false;
 	}
 	TotalSize = 0;
@@ -406,7 +407,11 @@ bool CSmtp::Send()
 		strcat(SendBuf,"\r\n");
 
 		if(!SendData())
+		{
+			delete[] FileBuf;
+			delete[] FileName;
 			return false;
+		}
 
 		// opening the file:
 		hFile = fopen(FileName,"rb");
