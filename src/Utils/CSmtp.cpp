@@ -388,6 +388,7 @@ bool CSmtp::Send()
 	if((FileName = new char[255]) == NULL)
 	{
 		m_oError = CSMTP_LACK_OF_MEMORY;
+		delete[] FileBuf;
 		return false;
 	}
 	TotalSize = 0;
@@ -406,7 +407,11 @@ bool CSmtp::Send()
 		strcat(SendBuf,"\r\n");
 
 		if(!SendData())
+		{
+			delete[] FileBuf;
+			delete[] FileName;			
 			return false;
+		}
 
 		// opening the file:
 		hFile = fopen(FileName,"rb");
@@ -825,7 +830,7 @@ bool CSmtp::SendData()
 	int idx = 0,res,nLeft = (int)strlen(SendBuf);
 	while(nLeft > 0)
 	{
-		if( res = send(hSocket,&SendBuf[idx],nLeft,0) == SOCKET_ERROR)
+		if ((res = send(hSocket, &SendBuf[idx], nLeft, 0)) == SOCKET_ERROR)
 		{
 			m_oError = CSMTP_WSA_SEND;
 			return false;

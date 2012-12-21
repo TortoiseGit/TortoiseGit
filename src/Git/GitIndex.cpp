@@ -588,7 +588,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				}
 			}
 
-			delete buff;
+			delete[] buff;
 
 		} while(0);
 	}
@@ -1389,7 +1389,6 @@ bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
 		this->SafeSet(gitdir, ptr1);
 		return true;
 	}
-	return false;
 }
 
 int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion)

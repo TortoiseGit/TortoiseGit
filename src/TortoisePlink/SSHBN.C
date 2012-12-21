@@ -1835,7 +1835,7 @@ int main(int argc, char **argv)
             Bignum a, b, c, p;
 
             if (ptrnum != 3) {
-                printf("%d: mul with %d parameters, expected 3\n", line);
+                printf("%d: mul with %d parameters, expected 3\n", line, ptrnum);
                 exit(1);
             }
             a = bignum_from_bytes(ptrs[0], ptrs[1]-ptrs[0]);
@@ -1868,7 +1868,7 @@ int main(int argc, char **argv)
             Bignum base, expt, modulus, expected, answer;
 
             if (ptrnum != 4) {
-                printf("%d: mul with %d parameters, expected 3\n", line);
+                printf("%d: mul with %d parameters, expected 4\n", line, ptrnum);
                 exit(1);
             }
 

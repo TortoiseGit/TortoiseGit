@@ -168,7 +168,7 @@ public:
 	int Run(CGitCall* pcall);
 
 private:
-	static DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam);
+	static DWORD WINAPI AsyncReadStdErrThread(LPVOID lpParam);
 	typedef struct AsyncReadStdErrThreadArguments
 	{
 		HANDLE fileHandle;
