@@ -243,6 +243,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	AfxInitRichEdit2();
 	CWinAppEx::InitInstance();
 	SetRegistryKey(_T("TortoiseGit"));
+	AfxGetApp()->m_pszProfileName = _tcsdup(_T("TortoiseProc")); // w/o this ResizableLib will store data under TortoiseGitProc which is not compatible with older versions
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 
