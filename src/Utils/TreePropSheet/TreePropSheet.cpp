@@ -936,7 +936,7 @@ void CTreePropSheet::OnPageTreeSelChanging(NMHDR *pNotifyStruct, LRESULT *plResu
 		m_bPageTreeSelChangedActive = TRUE;
 
 	NMTREEVIEW	*pTvn = reinterpret_cast<NMTREEVIEW*>(pNotifyStruct);
-	DWORD_PTR			nPage = (int)m_pwndPageTree->GetItemData(pTvn->itemNew.hItem);
+	int nPage = (int)m_pwndPageTree->GetItemData(pTvn->itemNew.hItem);
 	if (nPage < 0)
 	{
 		HTREEITEM nextItem = m_pwndPageTree->GetChildItem(pTvn->itemNew.hItem);

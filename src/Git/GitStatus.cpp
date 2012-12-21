@@ -1096,6 +1096,4 @@ bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 
 		sDirName = sDirName.Left(x);
 	}
-
-	return false;
 }

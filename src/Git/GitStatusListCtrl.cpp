@@ -1284,8 +1284,6 @@ bool CGitStatusListCtrl::BuildStatistics()
 //		} // if (entry)
 	} // for (int i=0; i < (int)m_arStatusArray.size(); ++i)
 	return !bRefetchStatus;
-
-	return FALSE;
 }
 
 
@@ -3535,9 +3533,6 @@ bool CGitStatusListCtrl::CopySelectedEntriesToClipboard(DWORD dwCols)
 	}
 
 	return CStringUtils::WriteAsciiStringToClipboard(sClipboard);
-
-	return TRUE;
-
 }
 
 size_t CGitStatusListCtrl::GetNumberOfChangelistsInSelection()
