@@ -830,7 +830,7 @@ bool CSmtp::SendData()
 	int idx = 0,res,nLeft = (int)strlen(SendBuf);
 	while(nLeft > 0)
 	{
-		if( res = send(hSocket,&SendBuf[idx],nLeft,0) == SOCKET_ERROR)
+		if ((res = send(hSocket, &SendBuf[idx], nLeft, 0)) == SOCKET_ERROR)
 		{
 			m_oError = CSMTP_WSA_SEND;
 			return false;
