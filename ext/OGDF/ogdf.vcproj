@@ -6,12 +6,13 @@
 	ProjectGUID="{7801D1BE-E2FE-476B-A4B4-5D27F387F479}"
 	RootNamespace="ogdf"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
 			Name="Win32"
 		/>
-    		<Platform
+		<Platform
 			Name="x64"
 		/>
 	</Platforms>
@@ -44,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="true"
 				Optimization="0"
-				AdditionalIncludeDirectories="./;"
+				AdditionalIncludeDirectories=".\"
 				PreprocessorDefinitions="OGDF_DEBUG;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -53,6 +54,71 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
+			IntermediateDirectory="..\..\obj\ogdf\$(ConfigurationName)64"
+			ConfigurationType="4"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				UseUnicodeResponseFiles="true"
+				Optimization="0"
+				AdditionalIncludeDirectories=".\"
+				PreprocessorDefinitions="OGDF_DEBUG;"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				OpenMP="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -110,7 +176,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="./;"
+				AdditionalIncludeDirectories=".\"
 				PreprocessorDefinitions=""
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -148,72 +214,7 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
-    <Configuration
-			Name="Debug|x64"
-			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
-			IntermediateDirectory="..\..\obj\ogdf\$(ConfigurationName)64"
-			ConfigurationType="4"
-			CharacterSet="1"
-			>
-      <Tool
-				Name="VCPreBuildEventTool"
-			/>
-      <Tool
-				Name="VCCustomBuildTool"
-			/>
-      <Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-      <Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-      <Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-      <Tool
-				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="true"
-				Optimization="0"
-				AdditionalIncludeDirectories="./;"
-				PreprocessorDefinitions="OGDF_DEBUG;"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				OpenMP="true"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-      <Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-      <Tool
-				Name="VCResourceCompilerTool"
-			/>
-      <Tool
-				Name="VCPreLinkEventTool"
-			/>
-      <Tool
-				Name="VCLibrarianTool"
-			/>
-      <Tool
-				Name="VCALinkTool"
-			/>
-      <Tool
-				Name="VCXDCMakeTool"
-			/>
-      <Tool
-				Name="VCBscMakeTool"
-			/>
-      <Tool
-				Name="VCFxCopTool"
-			/>
-      <Tool
-				Name="VCPostBuildEventTool"
-			/>
-    </Configuration>
-    <Configuration
+		<Configuration
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="..\..\obj\ogdf\$(ConfigurationName)64"
@@ -221,28 +222,28 @@
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
-      <Tool
+			<Tool
 				Name="VCPreBuildEventTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCCustomBuildTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCWebServiceProxyGeneratorTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCMIDLTool"
 				TargetEnvironment="3"
 			/>
-      <Tool
+			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="./;"
+				AdditionalIncludeDirectories=".\"
 				PreprocessorDefinitions=""
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -252,35 +253,35 @@
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
-      <Tool
+			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCResourceCompilerTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCPreLinkEventTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCLibrarianTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCALinkTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCXDCMakeTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCBscMakeTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCFxCopTool"
 			/>
-      <Tool
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
-    </Configuration>
-  </Configurations>
+		</Configuration>
+	</Configurations>
 	<References>
 	</References>
 	<Files>
@@ -289,718 +290,2632 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-<Filter Name="augmentation">
-<File RelativePath=".\src\augmentation\DfsMakeBiconnected.cpp"> </File>
-<File RelativePath=".\src\augmentation\PlanarAugmentation.cpp"> </File>
-<File RelativePath=".\src\augmentation\PlanarAugmentationFix.cpp"> </File>
-</Filter>
-<Filter Name="basic">
-<File RelativePath=".\src\basic\CliqueFinder.cpp"> </File>
-<File RelativePath=".\src\basic\CombinatorialEmbedding.cpp"> </File>
-<File RelativePath=".\src\basic\Constraint.cpp"> </File>
-<File RelativePath=".\src\basic\ConstraintManager.cpp"> </File>
-<File RelativePath=".\src\basic\DisjointSets.cpp"> </File>
-<File RelativePath=".\src\basic\DualGraph.cpp"> </File>
-<File RelativePath=".\src\basic\EdgeComparer.cpp"> </File>
-<File RelativePath=".\src\basic\EdgeComparerSimple.cpp"> </File>
-<File RelativePath=".\src\basic\Graph.cpp"> </File>
-<File RelativePath=".\src\basic\GraphAttributes.cpp"> </File>
-<File RelativePath=".\src\basic\GraphConstraints.cpp"> </File>
-<File RelativePath=".\src\basic\GraphCopy.cpp"> </File>
-<File RelativePath=".\src\basic\GridLayout.cpp"> </File>
-<File RelativePath=".\src\basic\GridLayoutModule.cpp"> </File>
-<File RelativePath=".\src\basic\Hashing.cpp"> </File>
-<File RelativePath=".\src\basic\Logger.cpp"> </File>
-<File RelativePath=".\src\basic\Math.cpp"> </File>
-<File RelativePath=".\src\basic\NearestRectangleFinder.cpp"> </File>
-<File RelativePath=".\src\basic\PoolMemoryAllocator.cpp"> </File>
-<File RelativePath=".\src\basic\PreprocessorLayout.cpp"> </File>
-<File RelativePath=".\src\basic\String.cpp"> </File>
-<File RelativePath=".\src\basic\System.cpp"> </File>
-<File RelativePath=".\src\basic\UMLGraph.cpp"> </File>
-<File RelativePath=".\src\basic\basic.cpp"> </File>
-<File RelativePath=".\src\basic\extended_graph_alg.cpp"> </File>
-<File RelativePath=".\src\basic\geometry.cpp"> </File>
-<File RelativePath=".\src\basic\graph_generators.cpp"> </File>
-<File RelativePath=".\src\basic\modules.cpp"> </File>
-<File RelativePath=".\src\basic\random_hierarchy.cpp"> </File>
-<File RelativePath=".\src\basic\simple_graph_alg.cpp"> </File>
-<File RelativePath=".\src\basic\stNumber.cpp"> </File>
-</Filter>
-<Filter Name="cluster">
-<File RelativePath=".\src\cluster\CPlanarEdgeInserter.cpp"> </File>
-<File RelativePath=".\src\cluster\CPlanarSubCLusteredST.cpp"> </File>
-<File RelativePath=".\src\cluster\CPlanarSubClusteredGraph.cpp"> </File>
-<File RelativePath=".\src\cluster\CconnectClusterPlanar.cpp"> </File>
-<File RelativePath=".\src\cluster\CconnectClusterPlanarEmbed.cpp"> </File>
-<File RelativePath=".\src\cluster\ClusterGraph.cpp"> </File>
-<File RelativePath=".\src\cluster\ClusterGraphAttributes.cpp"> </File>
-<File RelativePath=".\src\cluster\ClusterPlanarizationLayout.cpp"> </File>
-<File RelativePath=".\src\cluster\Cluster_ChunkConnection.cpp"> </File>
-<File RelativePath=".\src\cluster\Cluster_CutConstraint.cpp"> </File>
-<File RelativePath=".\src\cluster\Cluster_EdgeVar.cpp"> </File>
-<File RelativePath=".\src\cluster\Cluster_MaxPlanarEdges.cpp"> </File>
-<File RelativePath=".\src\cluster\Clusterer.cpp"> </File>
-<File RelativePath=".\src\cluster\KuratowskiConstraint.cpp"> </File>
-<File RelativePath=".\src\cluster\MaxCPlanar_Master.cpp"> </File>
-<File RelativePath=".\src\cluster\MaxCPlanar_MinimalClusterConnection.cpp"> </File>
-<File RelativePath=".\src\cluster\MaxCPlanar_Sub.cpp"> </File>
-<File RelativePath=".\src\cluster\MaximumCPlanarSubgraph.cpp"> </File>
-</Filter>
-<Filter Name="decomposition">
-<File RelativePath=".\src\decomposition\BCTree.cpp"> </File>
-<File RelativePath=".\src\decomposition\DynamicBCTree.cpp"> </File>
-<File RelativePath=".\src\decomposition\DynamicSPQRForest.cpp"> </File>
-<File RelativePath=".\src\decomposition\DynamicSPQRTree.cpp"> </File>
-<File RelativePath=".\src\decomposition\NonPlanarCore.cpp"> </File>
-<File RelativePath=".\src\decomposition\PlanarSPQRTree.cpp"> </File>
-<File RelativePath=".\src\decomposition\StaticSPQRTree.cpp"> </File>
-<File RelativePath=".\src\decomposition\TricComp.cpp"> </File>
-</Filter>
-<Filter Name="energybased">
-<File RelativePath=".\src\energybased\AdjacencyOracle.cpp"> </File>
-<File RelativePath=".\src\energybased\ArrayGraph.cpp"> </File>
-<File RelativePath=".\src\energybased\Attraction.cpp"> </File>
-<File RelativePath=".\src\energybased\CoinTutteLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\DavidsonHarel.cpp"> </File>
-<File RelativePath=".\src\energybased\DavidsonHarelLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\EdgeAttributes.cpp"> </File>
-<File RelativePath=".\src\energybased\EnergyFunction.cpp"> </File>
-<File RelativePath=".\src\energybased\FMEKernel.cpp"> </File>
-<File RelativePath=".\src\energybased\FMEMultipoleKernel.cpp"> </File>
-<File RelativePath=".\src\energybased\FMEThread.cpp"> </File>
-<File RelativePath=".\src\energybased\FMMMLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\FastMultipoleEmbedder.cpp"> </File>
-<File RelativePath=".\src\energybased\FruchtermanReingold.cpp"> </File>
-<File RelativePath=".\src\energybased\GEMLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\GalaxyMultilevel.cpp"> </File>
-<File RelativePath=".\src\energybased\IntersectionRectangle.cpp"> </File>
-<File RelativePath=".\src\energybased\LinearQuadtree.cpp"> </File>
-<File RelativePath=".\src\energybased\LinearQuadtreeBuilder.cpp"> </File>
-<File RelativePath=".\src\energybased\LinearQuadtreeExpansion.cpp"> </File>
-<File RelativePath=".\src\energybased\MAARPacking.cpp"> </File>
-<File RelativePath=".\src\energybased\Multilevel.cpp"> </File>
-<File RelativePath=".\src\energybased\MultilevelGraph.cpp"> </File>
-<File RelativePath=".\src\energybased\MultilevelLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\NMM.cpp"> </File>
-<File RelativePath=".\src\energybased\NodeAttributes.cpp"> </File>
-<File RelativePath=".\src\energybased\NodePairEnergy.cpp"> </File>
-<File RelativePath=".\src\energybased\Overlap.cpp"> </File>
-<File RelativePath=".\src\energybased\Planarity.cpp"> </File>
-<File RelativePath=".\src\energybased\PlanarityGrid.cpp"> </File>
-<File RelativePath=".\src\energybased\QuadTreeNM.cpp"> </File>
-<File RelativePath=".\src\energybased\QuadTreeNodeNM.cpp"> </File>
-<File RelativePath=".\src\energybased\Repulsion.cpp"> </File>
-<File RelativePath=".\src\energybased\Set.cpp"> </File>
-<File RelativePath=".\src\energybased\SpringEmbedderFR.cpp"> </File>
-<File RelativePath=".\src\energybased\SpringEmbedderFRExact.cpp"> </File>
-<File RelativePath=".\src\energybased\SpringEmbedderKK.cpp"> </File>
-<File RelativePath=".\src\energybased\StressMajorizationSimple.cpp"> </File>
-<File RelativePath=".\src\energybased\UniformGrid.cpp"> </File>
-<File RelativePath=".\src\energybased\WSPD.cpp"> </File>
-<Filter Name="multilevelmixer">
-<File RelativePath=".\src\energybased\multilevelmixer\BarycenterPlacer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\CirclePlacer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\EdgeCoverMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\IndependentSetMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\LocalBiconnectedMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MMMExampleFastLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MMMExampleNiceLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MMMExampleNoTwistLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MatchingMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MedianPlacer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\MixedForceLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\ModularMultilevelMixer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\RandomMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\RandomPlacer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\ScalingLayout.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\SolarMerger.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\SolarPlacer.cpp"> </File>
-<File RelativePath=".\src\energybased\multilevelmixer\ZeroPlacer.cpp"> </File>
-</Filter>
-<File RelativePath=".\src\energybased\numexcept.cpp"> </File>
-</Filter>
-<Filter Name="external">
-<File RelativePath=".\src\external\coin.cpp"> </File>
-</Filter>
-<Filter Name="fileformats">
-<File RelativePath=".\src\fileformats\DinoLineBuffer.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoTools.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoUmlDiagramGraph.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoUmlModelGraph.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoUmlToGraphConverter.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoXmlParser.cpp"> </File>
-<File RelativePath=".\src\fileformats\DinoXmlScanner.cpp"> </File>
-<File RelativePath=".\src\fileformats\GmlParser.cpp"> </File>
-<File RelativePath=".\src\fileformats\Ogml.cpp"> </File>
-<File RelativePath=".\src\fileformats\OgmlParser.cpp"> </File>
-<File RelativePath=".\src\fileformats\XmlParser.cpp"> </File>
-<File RelativePath=".\src\fileformats\simple_graph_load.cpp"> </File>
-</Filter>
-<Filter Name="graphalg">
-<File RelativePath=".\src\graphalg\ConvexHull.cpp"> </File>
-<File RelativePath=".\src\graphalg\MinCostFlowModule.cpp"> </File>
-<File RelativePath=".\src\graphalg\MinCostFlowReinelt.cpp"> </File>
-<File RelativePath=".\src\graphalg\MinimumCut.cpp"> </File>
-<File RelativePath=".\src\graphalg\PageRank.cpp"> </File>
-<File RelativePath=".\src\graphalg\ShortestPathsWithBFM.cpp"> </File>
-<File RelativePath=".\src\graphalg\mcf_front_reinelt.cpp"> </File>
-</Filter>
-<Filter Name="incremental">
-<File RelativePath=".\src\incremental\SimpleIncNodeInserter.cpp"> </File>
-</Filter>
-<Filter Name="labeling">
-<File RelativePath=".\src\labeling\ELabelPosSimple.cpp"> </File>
-</Filter>
-<Filter Name="layered">
-<File RelativePath=".\src\layered\CoffmanGrahamRanking.cpp"> </File>
-<File RelativePath=".\src\layered\CrossingsMatrix.cpp"> </File>
-<File RelativePath=".\src\layered\FastHierarchyLayout.cpp"> </File>
-<File RelativePath=".\src\layered\FastSimpleHierarchyLayout.cpp"> </File>
-<File RelativePath=".\src\layered\HierarchyLayoutModule.cpp"> </File>
-<File RelativePath=".\src\layered\OptimalHierarchyClusterLayout.cpp"> </File>
-<File RelativePath=".\src\layered\OptimalHierarchyLayout.cpp"> </File>
-<File RelativePath=".\src\layered\OptimalRanking.cpp"> </File>
-<File RelativePath=".\src\layered\SplitHeuristic.cpp"> </File>
-<File RelativePath=".\src\layered\acyclic_subgraph.cpp"> </File>
-<File RelativePath=".\src\layered\heuristics.cpp"> </File>
-<File RelativePath=".\src\layered\ranking.cpp"> </File>
-<File RelativePath=".\src\layered\sugiyama-cluster.cpp"> </File>
-<File RelativePath=".\src\layered\sugiyama.cpp"> </File>
-</Filter>
-<Filter Name="lpsolver">
-<File RelativePath=".\src\lpsolver\LPSolver_coin.cpp"> </File>
-</Filter>
-<Filter Name="misclayout">
-<File RelativePath=".\src\misclayout\BalloonLayout.cpp"> </File>
-<File RelativePath=".\src\misclayout\CircularLayout.cpp"> </File>
-<File RelativePath=".\src\misclayout\ProcrustesSubLayout.cpp"> </File>
-</Filter>
-<Filter Name="orthogonal">
-<File RelativePath=".\src\orthogonal\ClusterOrthoLayout.cpp"> </File>
-<File RelativePath=".\src\orthogonal\ClusterOrthoShaper.cpp"> </File>
-<File RelativePath=".\src\orthogonal\CompactionConstraintGraph.cpp"> </File>
-<File RelativePath=".\src\orthogonal\EdgeRouter.cpp"> </File>
-<File RelativePath=".\src\orthogonal\FlowCompaction.cpp"> </File>
-<File RelativePath=".\src\orthogonal\LongestPathCompaction.cpp"> </File>
-<File RelativePath=".\src\orthogonal\NodeInfo.cpp"> </File>
-<File RelativePath=".\src\orthogonal\OrthoLayout.cpp"> </File>
-<File RelativePath=".\src\orthogonal\OrthoRep.cpp"> </File>
-<File RelativePath=".\src\orthogonal\OrthoShaper.cpp"> </File>
-</Filter>
-<Filter Name="packing">
-<File RelativePath=".\src\packing\CCLayoutPackModule.cpp"> </File>
-<File RelativePath=".\src\packing\ComponentSplitterLayout.cpp"> </File>
-<File RelativePath=".\src\packing\TileToRowsCCPacker.cpp"> </File>
-</Filter>
-<Filter Name="planarity">
-<File RelativePath=".\src\planarity\BoothLueker.cpp"> </File>
-<File RelativePath=".\src\planarity\BoyerMyrvold.cpp"> </File>
-<File RelativePath=".\src\planarity\BoyerMyrvoldInit.cpp"> </File>
-<File RelativePath=".\src\planarity\BoyerMyrvoldPlanar.cpp"> </File>
-<File RelativePath=".\src\planarity\ClusterPlanRep.cpp"> </File>
-<File RelativePath=".\src\planarity\EdgeInsertionModule.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedPQTree.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMaxFace.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMaxFaceLayers.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMinDepth.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMinDepthMaxFace.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMinDepthMaxFaceLayers.cpp"> </File>
-<File RelativePath=".\src\planarity\EmbedderMinDepthPiTa.cpp"> </File>
-<File RelativePath=".\src\planarity\ExtractKuratowskis.cpp"> </File>
-<File RelativePath=".\src\planarity\FastPlanarSubgraph.cpp"> </File>
-<File RelativePath=".\src\planarity\FindKuratowskis.cpp"> </File>
-<File RelativePath=".\src\planarity\FixedEmbeddingInserter.cpp"> </File>
-<File RelativePath=".\src\planarity\GraphReduction.cpp"> </File>
-<File RelativePath=".\src\planarity\Layout.cpp"> </File>
-<File RelativePath=".\src\planarity\LayoutPlanRepModule.cpp"> </File>
-<File RelativePath=".\src\planarity\MDMFLengthAttribute.cpp"> </File>
-<File RelativePath=".\src\planarity\MMCrossingMinimizationModule.cpp"> </File>
-<File RelativePath=".\src\planarity\MMFixedEmbeddingInserter.cpp"> </File>
-<File RelativePath=".\src\planarity\MMSubgraphPlanarizer.cpp"> </File>
-<File RelativePath=".\src\planarity\MMVariableEmbeddingInserter.cpp"> </File>
-<File RelativePath=".\src\planarity\MaximalPlanarSubgraphSimple.cpp"> </File>
-<File RelativePath=".\src\planarity\MaximumPlanarSubgraph.cpp"> </File>
-<File RelativePath=".\src\planarity\MultiEdgeApproxInserter.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanRep.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanRepExpansion.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanRepInc.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanRepUML.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarPQTree.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarSubgraphModule.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarSubgraphPQTree.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarizationGridLayout.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarizationLayout.cpp"> </File>
-<File RelativePath=".\src\planarity\PlanarizationLayout_inc.cpp"> </File>
-<File RelativePath=".\src\planarity\SimpleEmbedder.cpp"> </File>
-<File RelativePath=".\src\planarity\SubgraphPlanarizer.cpp"> </File>
-<File RelativePath=".\src\planarity\TopologyModule.cpp"> </File>
-<File RelativePath=".\src\planarity\VariableEmbeddingInserter.cpp"> </File>
-<File RelativePath=".\src\planarity\VariableEmbeddingInserter2.cpp"> </File>
-</Filter>
-<Filter Name="planarlayout">
-<File RelativePath=".\src\planarlayout\BiconnectedShellingOrder.cpp"> </File>
-<File RelativePath=".\src\planarlayout\FPPLayout.cpp"> </File>
-<File RelativePath=".\src\planarlayout\IOPoints.cpp"> </File>
-<File RelativePath=".\src\planarlayout\MMCBBase.cpp"> </File>
-<File RelativePath=".\src\planarlayout\MixedModelBase.cpp"> </File>
-<File RelativePath=".\src\planarlayout\MixedModelCrossingsBeautifierModule.cpp"> </File>
-<File RelativePath=".\src\planarlayout\MixedModelLayout.cpp"> </File>
-<File RelativePath=".\src\planarlayout\PlanarDrawLayout.cpp"> </File>
-<File RelativePath=".\src\planarlayout\PlanarStraightLayout.cpp"> </File>
-<File RelativePath=".\src\planarlayout\SchnyderLayout.cpp"> </File>
-<File RelativePath=".\src\planarlayout\ShellingOrder.cpp"> </File>
-<File RelativePath=".\src\planarlayout\ShellingOrderModule.cpp"> </File>
-<File RelativePath=".\src\planarlayout\TriconnectedShellingOrder.cpp"> </File>
-</Filter>
-<Filter Name="simultaneous">
-<File RelativePath=".\src\simultaneous\SimDraw.cpp"> </File>
-<File RelativePath=".\src\simultaneous\SimDrawCaller.cpp"> </File>
-<File RelativePath=".\src\simultaneous\SimDrawColorizer.cpp"> </File>
-<File RelativePath=".\src\simultaneous\SimDrawCreator.cpp"> </File>
-<File RelativePath=".\src\simultaneous\SimDrawCreatorSimple.cpp"> </File>
-<File RelativePath=".\src\simultaneous\SimDrawManipulatorModule.cpp"> </File>
-</Filter>
-<Filter Name="tree">
-<File RelativePath=".\src\tree\RadialTreeLayout.cpp"> </File>
-<File RelativePath=".\src\tree\TreeLayout.cpp"> </File>
-</Filter>
-<Filter Name="upward">
-<File RelativePath=".\src\upward\DominanceLayout.cpp"> </File>
-<File RelativePath=".\src\upward\ExpansionGraph.cpp"> </File>
-<File RelativePath=".\src\upward\FUPSSimple.cpp"> </File>
-<File RelativePath=".\src\upward\FaceSinkGraph.cpp"> </File>
-<File RelativePath=".\src\upward\FeasibleUpwardPlanarSubgraph.cpp"> </File>
-<File RelativePath=".\src\upward\FixedEmbeddingUpwardEdgeInserter.cpp"> </File>
-<File RelativePath=".\src\upward\LayerBasedUPRLayout.cpp"> </File>
-<File RelativePath=".\src\upward\SubgraphUpwardPlanarizer.cpp"> </File>
-<File RelativePath=".\src\upward\UpwardPlanRep.cpp"> </File>
-<File RelativePath=".\src\upward\UpwardPlanarModule.cpp"> </File>
-<File RelativePath=".\src\upward\UpwardPlanarSubgraphModule.cpp"> </File>
-<File RelativePath=".\src\upward\UpwardPlanarSubgraphSimple.cpp"> </File>
-<File RelativePath=".\src\upward\VisibilityLayout.cpp"> </File>
-</Filter>
+			<Filter
+				Name="augmentation"
+				>
+				<File
+					RelativePath=".\src\augmentation\DfsMakeBiconnected.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\augmentation\PlanarAugmentation.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\augmentation\PlanarAugmentationFix.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="basic"
+				>
+				<File
+					RelativePath=".\src\basic\basic.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\CliqueFinder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\CombinatorialEmbedding.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\Constraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\ConstraintManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\DisjointSets.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\DualGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\EdgeComparer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\EdgeComparerSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\extended_graph_alg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\geometry.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\Graph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\graph_generators.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\GraphAttributes.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\GraphConstraints.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\GraphCopy.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\GridLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\GridLayoutModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\Hashing.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\Logger.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\Math.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\modules.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\NearestRectangleFinder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\PoolMemoryAllocator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\PreprocessorLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\random_hierarchy.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\simple_graph_alg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\stNumber.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\String.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\System.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\basic\UMLGraph.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cluster"
+				>
+				<File
+					RelativePath=".\src\cluster\CconnectClusterPlanar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\CconnectClusterPlanarEmbed.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\Cluster_ChunkConnection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\Cluster_CutConstraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\Cluster_EdgeVar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\Cluster_MaxPlanarEdges.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\Clusterer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\ClusterGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\ClusterGraphAttributes.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\ClusterPlanarizationLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\CPlanarEdgeInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\CPlanarSubClusteredGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\CPlanarSubCLusteredST.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\KuratowskiConstraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\MaxCPlanar_Master.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\MaxCPlanar_MinimalClusterConnection.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\MaxCPlanar_Sub.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\cluster\MaximumCPlanarSubgraph.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="decomposition"
+				>
+				<File
+					RelativePath=".\src\decomposition\BCTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\DynamicBCTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\DynamicSPQRForest.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\DynamicSPQRTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\NonPlanarCore.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\PlanarSPQRTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\StaticSPQRTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\decomposition\TricComp.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="energybased"
+				>
+				<File
+					RelativePath=".\src\energybased\AdjacencyOracle.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\ArrayGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Attraction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\CoinTutteLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\DavidsonHarel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\DavidsonHarelLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\EdgeAttributes.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\EnergyFunction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FastMultipoleEmbedder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FMEKernel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FMEMultipoleKernel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FMEThread.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FMMMLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\FruchtermanReingold.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\GalaxyMultilevel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\GEMLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\IntersectionRectangle.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\LinearQuadtree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\LinearQuadtreeBuilder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\LinearQuadtreeExpansion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\MAARPacking.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Multilevel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\MultilevelGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\MultilevelLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\NMM.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\NodeAttributes.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\NodePairEnergy.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\numexcept.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Overlap.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Planarity.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\PlanarityGrid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\QuadTreeNM.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\QuadTreeNodeNM.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Repulsion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\Set.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\SpringEmbedderFR.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\SpringEmbedderFRExact.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\SpringEmbedderKK.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\StressMajorizationSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\UniformGrid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\energybased\WSPD.cpp"
+					>
+				</File>
+				<Filter
+					Name="multilevelmixer"
+					>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\BarycenterPlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\CirclePlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\EdgeCoverMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\IndependentSetMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\LocalBiconnectedMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MatchingMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MedianPlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MixedForceLayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MMMExampleFastLayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MMMExampleNiceLayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\MMMExampleNoTwistLayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\ModularMultilevelMixer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\RandomMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\RandomPlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\ScalingLayout.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\SolarMerger.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\SolarPlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\energybased\multilevelmixer\ZeroPlacer.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="external"
+				>
+				<File
+					RelativePath=".\src\external\coin.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="fileformats"
+				>
+				<File
+					RelativePath=".\src\fileformats\DinoLineBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoTools.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoUmlDiagramGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoUmlModelGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoUmlToGraphConverter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoXmlParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\DinoXmlScanner.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\GmlParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\Ogml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\OgmlParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\simple_graph_load.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\fileformats\XmlParser.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="graphalg"
+				>
+				<File
+					RelativePath=".\src\graphalg\ConvexHull.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\mcf_front_reinelt.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\MinCostFlowModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\MinCostFlowReinelt.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\MinimumCut.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\PageRank.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\graphalg\ShortestPathsWithBFM.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="incremental"
+				>
+				<File
+					RelativePath=".\src\incremental\SimpleIncNodeInserter.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="labeling"
+				>
+				<File
+					RelativePath=".\src\labeling\ELabelPosSimple.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="layered"
+				>
+				<File
+					RelativePath=".\src\layered\acyclic_subgraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\CoffmanGrahamRanking.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\CrossingsMatrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\FastHierarchyLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\FastSimpleHierarchyLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\heuristics.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\HierarchyLayoutModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\OptimalHierarchyClusterLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\OptimalHierarchyLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\OptimalRanking.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\ranking.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\SplitHeuristic.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\sugiyama-cluster.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\layered\sugiyama.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="lpsolver"
+				>
+				<File
+					RelativePath=".\src\lpsolver\LPSolver_coin.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="misclayout"
+				>
+				<File
+					RelativePath=".\src\misclayout\BalloonLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\misclayout\CircularLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\misclayout\ProcrustesSubLayout.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="orthogonal"
+				>
+				<File
+					RelativePath=".\src\orthogonal\ClusterOrthoLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\ClusterOrthoShaper.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\CompactionConstraintGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\EdgeRouter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\FlowCompaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\LongestPathCompaction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\NodeInfo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\OrthoLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\OrthoRep.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\orthogonal\OrthoShaper.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="packing"
+				>
+				<File
+					RelativePath=".\src\packing\CCLayoutPackModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\packing\ComponentSplitterLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\packing\TileToRowsCCPacker.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="planarity"
+				>
+				<File
+					RelativePath=".\src\planarity\BoothLueker.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\BoyerMyrvold.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\BoyerMyrvoldInit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\BoyerMyrvoldPlanar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\ClusterPlanRep.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EdgeInsertionModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMaxFace.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMaxFaceLayers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMinDepth.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMinDepthMaxFace.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMinDepthMaxFaceLayers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedderMinDepthPiTa.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\EmbedPQTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\ExtractKuratowskis.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\FastPlanarSubgraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\FindKuratowskis.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\FixedEmbeddingInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\GraphReduction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\Layout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\LayoutPlanRepModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MaximalPlanarSubgraphSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MaximumPlanarSubgraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MDMFLengthAttribute.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MMCrossingMinimizationModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MMFixedEmbeddingInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MMSubgraphPlanarizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MMVariableEmbeddingInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\MultiEdgeApproxInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarizationGridLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarizationLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarizationLayout_inc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarPQTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarSubgraphModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanarSubgraphPQTree.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanRep.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanRepExpansion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanRepInc.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\PlanRepUML.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\SimpleEmbedder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\SubgraphPlanarizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\TopologyModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\VariableEmbeddingInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarity\VariableEmbeddingInserter2.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="planarlayout"
+				>
+				<File
+					RelativePath=".\src\planarlayout\BiconnectedShellingOrder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\FPPLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\IOPoints.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\MixedModelBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\MixedModelCrossingsBeautifierModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\MixedModelLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\MMCBBase.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\PlanarDrawLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\PlanarStraightLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\SchnyderLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\ShellingOrder.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\ShellingOrderModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\planarlayout\TriconnectedShellingOrder.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="simultaneous"
+				>
+				<File
+					RelativePath=".\src\simultaneous\SimDraw.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\simultaneous\SimDrawCaller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\simultaneous\SimDrawColorizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\simultaneous\SimDrawCreator.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\simultaneous\SimDrawCreatorSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\simultaneous\SimDrawManipulatorModule.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tree"
+				>
+				<File
+					RelativePath=".\src\tree\RadialTreeLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tree\TreeLayout.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="upward"
+				>
+				<File
+					RelativePath=".\src\upward\DominanceLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\ExpansionGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\FaceSinkGraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\FeasibleUpwardPlanarSubgraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\FixedEmbeddingUpwardEdgeInserter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\FUPSSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\LayerBasedUPRLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\SubgraphUpwardPlanarizer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\UpwardPlanarModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\UpwardPlanarSubgraphModule.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\UpwardPlanarSubgraphSimple.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\UpwardPlanRep.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\upward\VisibilityLayout.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-<Filter Name="augmentation">
-<File RelativePath=".\ogdf\augmentation\DfsMakeBiconnected.h"> </File>
-<File RelativePath=".\ogdf\augmentation\PlanarAugmentation.h"> </File>
-<File RelativePath=".\ogdf\augmentation\PlanarAugmentationFix.h"> </File>
-</Filter>
-<Filter Name="basic">
-<File RelativePath=".\ogdf\basic\AdjEntryArray.h"> </File>
-<File RelativePath=".\ogdf\basic\Array.h"> </File>
-<File RelativePath=".\ogdf\basic\Array2D.h"> </File>
-<File RelativePath=".\ogdf\basic\ArrayBuffer.h"> </File>
-<File RelativePath=".\ogdf\basic\Barrier.h"> </File>
-<File RelativePath=".\ogdf\basic\BinaryHeap.h"> </File>
-<File RelativePath=".\ogdf\basic\BinaryHeap2.h"> </File>
-<File RelativePath=".\ogdf\basic\BoundedQueue.h"> </File>
-<File RelativePath=".\ogdf\basic\BoundedStack.h"> </File>
-<File RelativePath=".\ogdf\basic\CombinatorialEmbedding.h"> </File>
-<File RelativePath=".\ogdf\basic\Constraints.h"> </File>
-<File RelativePath=".\ogdf\basic\CriticalSection.h"> </File>
-<File RelativePath=".\ogdf\basic\DisjointSets.h"> </File>
-<File RelativePath=".\ogdf\basic\DualGraph.h"> </File>
-<File RelativePath=".\ogdf\basic\EFreeList.h"> </File>
-<File RelativePath=".\ogdf\basic\EList.h"> </File>
-<File RelativePath=".\ogdf\basic\EdgeArray.h"> </File>
-<File RelativePath=".\ogdf\basic\EdgeComparer.h"> </File>
-<File RelativePath=".\ogdf\basic\EdgeComparerSimple.h"> </File>
-<File RelativePath=".\ogdf\basic\FaceArray.h"> </File>
-<File RelativePath=".\ogdf\basic\FaceSet.h"> </File>
-<File RelativePath=".\ogdf\basic\Graph.h"> </File>
-<File RelativePath=".\ogdf\basic\GraphAttributes.h"> </File>
-<File RelativePath=".\ogdf\basic\GraphCopy.h"> </File>
-<File RelativePath=".\ogdf\basic\GraphCopyAttributes.h"> </File>
-<File RelativePath=".\ogdf\basic\GraphObserver.h"> </File>
-<File RelativePath=".\ogdf\basic\Graph_d.h"> </File>
-<File RelativePath=".\ogdf\basic\GridLayout.h"> </File>
-<File RelativePath=".\ogdf\basic\GridLayoutMapped.h"> </File>
-<File RelativePath=".\ogdf\basic\HashArray.h"> </File>
-<File RelativePath=".\ogdf\basic\HashArray2D.h"> </File>
-<File RelativePath=".\ogdf\basic\HashIterator2D.h"> </File>
-<File RelativePath=".\ogdf\basic\Hashing.h"> </File>
-<File RelativePath=".\ogdf\basic\HeapBase.h"> </File>
-<File RelativePath=".\ogdf\basic\HyperGraph.h"> </File>
-<File RelativePath=".\ogdf\basic\IncNodeInserter.h"> </File>
-<File RelativePath=".\ogdf\basic\Layout.h"> </File>
-<File RelativePath=".\ogdf\basic\List.h"> </File>
-<File RelativePath=".\ogdf\basic\Logger.h"> </File>
-<File RelativePath=".\ogdf\basic\Math.h"> </File>
-<File RelativePath=".\ogdf\basic\MinHeap.h"> </File>
-<File RelativePath=".\ogdf\basic\MinPriorityQueue.h"> </File>
-<File RelativePath=".\ogdf\basic\Module.h"> </File>
-<File RelativePath=".\ogdf\basic\ModuleOption.h"> </File>
-<File RelativePath=".\ogdf\basic\NearestRectangleFinder.h"> </File>
-<File RelativePath=".\ogdf\basic\NodeArray.h"> </File>
-<File RelativePath=".\ogdf\basic\NodeComparer.h"> </File>
-<File RelativePath=".\ogdf\basic\NodeSet.h"> </File>
-<File RelativePath=".\ogdf\basic\PreprocessorLayout.h"> </File>
-<File RelativePath=".\ogdf\basic\Queue.h"> </File>
-<File RelativePath=".\ogdf\basic\SList.h"> </File>
-<File RelativePath=".\ogdf\basic\Skiplist.h"> </File>
-<File RelativePath=".\ogdf\basic\Stack.h"> </File>
-<File RelativePath=".\ogdf\basic\String.h"> </File>
-<File RelativePath=".\ogdf\basic\System.h"> </File>
-<File RelativePath=".\ogdf\basic\Thread.h"> </File>
-<File RelativePath=".\ogdf\basic\Timeouter.h"> </File>
-<File RelativePath=".\ogdf\basic\TopologyModule.h"> </File>
-<File RelativePath=".\ogdf\basic\UMLGraph.h"> </File>
-<File RelativePath=".\ogdf\basic\basic.h"> </File>
-<File RelativePath=".\ogdf\basic\comparer.h"> </File>
-<File RelativePath=".\ogdf\basic\exceptions.h"> </File>
-<File RelativePath=".\ogdf\basic\extended_graph_alg.h"> </File>
-<File RelativePath=".\ogdf\basic\geometry.h"> </File>
-<File RelativePath=".\ogdf\basic\graph_generators.h"> </File>
-<File RelativePath=".\ogdf\basic\memory.h"> </File>
-<File RelativePath=".\ogdf\basic\precondition.h"> </File>
-<File RelativePath=".\ogdf\basic\simple_graph_alg.h"> </File>
-<File RelativePath=".\ogdf\basic\tuples.h"> </File>
-</Filter>
-<Filter Name="cluster">
-<File RelativePath=".\ogdf\cluster\CPlanarEdgeInserter.h"> </File>
-<File RelativePath=".\ogdf\cluster\CPlanarSubClusteredGraph.h"> </File>
-<File RelativePath=".\ogdf\cluster\CconnectClusterPlanar.h"> </File>
-<File RelativePath=".\ogdf\cluster\CconnectClusterPlanarEmbed.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterArray.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterGraph.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterGraphAttributes.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterGraphCopyAttributes.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterGraphObserver.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterOrthoLayout.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterOrthoShaper.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterPlanRep.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterPlanarizationLayout.h"> </File>
-<File RelativePath=".\ogdf\cluster\ClusterSet.h"> </File>
-<File RelativePath=".\ogdf\cluster\MaximumCPlanarSubgraph.h"> </File>
-</Filter>
-<Filter Name="decomposition">
-<File RelativePath=".\ogdf\decomposition\BCTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\DynamicBCTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\DynamicPlanarSPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\DynamicSPQRForest.h"> </File>
-<File RelativePath=".\ogdf\decomposition\DynamicSPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\DynamicSkeleton.h"> </File>
-<File RelativePath=".\ogdf\decomposition\PertinentGraph.h"> </File>
-<File RelativePath=".\ogdf\decomposition\PlanarSPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\SPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\Skeleton.h"> </File>
-<File RelativePath=".\ogdf\decomposition\StaticPlanarSPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\StaticSPQRTree.h"> </File>
-<File RelativePath=".\ogdf\decomposition\StaticSkeleton.h"> </File>
-</Filter>
-<Filter Name="energybased">
-<File RelativePath=".\ogdf\energybased\CoinTutteLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\DavidsonHarel.h"> </File>
-<File RelativePath=".\ogdf\energybased\DavidsonHarelLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\FMMMLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\FastMultipoleEmbedder.h"> </File>
-<File RelativePath=".\ogdf\energybased\GEMLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\MultilevelLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\SpringEmbedderFR.h"> </File>
-<File RelativePath=".\ogdf\energybased\SpringEmbedderFRExact.h"> </File>
-<File RelativePath=".\ogdf\energybased\SpringEmbedderKK.h"> </File>
-<File RelativePath=".\ogdf\energybased\StressMajorizationSimple.h"> </File>
-<Filter Name="multilevelmixer">
-<File RelativePath=".\ogdf\energybased\multilevelmixer\BarycenterPlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\CirclePlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\EdgeCoverMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\IndependentSetMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\InitialPlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\LocalBiconnectedMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleFastLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleNiceLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleNoTwistLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MatchingMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MedianPlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MixedForceLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\ModularMultilevelMixer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\MultilevelBuilder.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\RandomMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\RandomPlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\ScalingLayout.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\SolarMerger.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\SolarPlacer.h"> </File>
-<File RelativePath=".\ogdf\energybased\multilevelmixer\ZeroPlacer.h"> </File>
-</Filter>
-</Filter>
-<Filter Name="external">
-<File RelativePath=".\ogdf\external\abacus.h"> </File>
-<File RelativePath=".\ogdf\external\coin.h"> </File>
-</Filter>
-<Filter Name="fileformats">
-<File RelativePath=".\ogdf\fileformats\DinoLineBuffer.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoTools.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoUmlDiagramGraph.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoUmlModelGraph.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoUmlToGraphConverter.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoXmlParser.h"> </File>
-<File RelativePath=".\ogdf\fileformats\DinoXmlScanner.h"> </File>
-<File RelativePath=".\ogdf\fileformats\GmlParser.h"> </File>
-<File RelativePath=".\ogdf\fileformats\Ogml.h"> </File>
-<File RelativePath=".\ogdf\fileformats\OgmlParser.h"> </File>
-<File RelativePath=".\ogdf\fileformats\SteinLibParser.h"> </File>
-<File RelativePath=".\ogdf\fileformats\XmlObject.h"> </File>
-<File RelativePath=".\ogdf\fileformats\XmlParser.h"> </File>
-<File RelativePath=".\ogdf\fileformats\simple_graph_load.h"> </File>
-</Filter>
-<Filter Name="graphalg">
-<File RelativePath=".\ogdf\graphalg\CliqueFinder.h"> </File>
-<File RelativePath=".\ogdf\graphalg\Clusterer.h"> </File>
-<File RelativePath=".\ogdf\graphalg\ConvexHull.h"> </File>
-<File RelativePath=".\ogdf\graphalg\Dijkstra.h"> </File>
-<File RelativePath=".\ogdf\graphalg\GraphReduction.h"> </File>
-<File RelativePath=".\ogdf\graphalg\MinCostFlowReinelt.h"> </File>
-<File RelativePath=".\ogdf\graphalg\MinimumCut.h"> </File>
-<File RelativePath=".\ogdf\graphalg\PageRank.h"> </File>
-<File RelativePath=".\ogdf\graphalg\ShortestPathWithBFM.h"> </File>
-</Filter>
-<Filter Name="internal">
-<Filter Name="augmentation">
-<File RelativePath=".\ogdf\internal\augmentation\PALabel.h"> </File>
-</Filter>
-<Filter Name="basic">
-<File RelativePath=".\ogdf\internal\basic\MallocMemoryAllocator.h"> </File>
-<File RelativePath=".\ogdf\internal\basic\PoolMemoryAllocator.h"> </File>
-<File RelativePath=".\ogdf\internal\basic\intrinsics.h"> </File>
-<File RelativePath=".\ogdf\internal\basic\list_templates.h"> </File>
-</Filter>
-<Filter Name="cluster">
-<File RelativePath=".\ogdf\internal\cluster\CPlanarSubClusteredST.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\ClusterPQContainer.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\Cluster_ChunkConnection.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\Cluster_CutConstraint.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\Cluster_EdgeVar.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\Cluster_MaxPlanarEdges.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\KuratowskiConstraint.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\MaxCPlanar_Master.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\MaxCPlanar_MinimalClusterConnection.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\MaxCPlanar_Sub.h"> </File>
-<File RelativePath=".\ogdf\internal\cluster\basics.h"> </File>
-</Filter>
-<Filter Name="energybased">
-<File RelativePath=".\ogdf\internal\energybased\AdjacencyOracle.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\Attraction.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\EdgeAttributes.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\EnergyFunction.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\FruchtermanReingold.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\IntersectionRectangle.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\MultilevelGraph.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\NMM.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\NodeAttributes.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\NodePairEnergy.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\Overlap.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\ParticleInfo.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\Planarity.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\PlanarityGrid.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\QuadTreeNM.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\QuadTreeNodeNM.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\Repulsion.h"> </File>
-<File RelativePath=".\ogdf\internal\energybased\UniformGrid.h"> </File>
-</Filter>
-<Filter Name="lpsolver">
-<File RelativePath=".\ogdf\internal\lpsolver\LPSolver_coin.h"> </File>
-</Filter>
-<Filter Name="orthogonal">
-<File RelativePath=".\ogdf\internal\orthogonal\NodeInfo.h"> </File>
-<File RelativePath=".\ogdf\internal\orthogonal\RoutingChannel.h"> </File>
-</Filter>
-<Filter Name="planarity">
-<File RelativePath=".\ogdf\internal\planarity\BoyerMyrvoldInit.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\BoyerMyrvoldPlanar.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\ConnectedSubgraph.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\EmbedIndicator.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\EmbedPQTree.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphs.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphsLayers.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\FindKuratowskis.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\IndInfo.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\MDMFLengthAttribute.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\MaxSequencePQTree.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQBasicKey.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQBasicKeyRoot.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQInternalKey.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQInternalNode.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQLeaf.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQLeafKey.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQNode.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQNodeKey.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQNodeRoot.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PQTree.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PlanarLeafKey.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PlanarPQTree.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\PlanarSubgraphPQTree.h"> </File>
-<File RelativePath=".\ogdf\internal\planarity\whaInfo.h"> </File>
-</Filter>
-<Filter Name="steinertree">
-<File RelativePath=".\ogdf\internal\steinertree\EdgeWeightedGraph.h"> </File>
-<File RelativePath=".\ogdf\internal\steinertree\EdgeWeightedGraphCopy.h"> </File>
-</Filter>
-</Filter>
-<Filter Name="labeling">
-<File RelativePath=".\ogdf\labeling\ELabelInterface.h"> </File>
-<File RelativePath=".\ogdf\labeling\ELabelPosSimple.h"> </File>
-<File RelativePath=".\ogdf\labeling\EdgeLabel.h"> </File>
-</Filter>
-<Filter Name="layered">
-<File RelativePath=".\ogdf\layered\BarycenterHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\CoffmanGrahamRanking.h"> </File>
-<File RelativePath=".\ogdf\layered\CrossingsMatrix.h"> </File>
-<File RelativePath=".\ogdf\layered\DfsAcyclicSubgraph.h"> </File>
-<File RelativePath=".\ogdf\layered\ExtendedNestingGraph.h"> </File>
-<File RelativePath=".\ogdf\layered\FastHierarchyLayout.h"> </File>
-<File RelativePath=".\ogdf\layered\FastSimpleHierarchyLayout.h"> </File>
-<File RelativePath=".\ogdf\layered\GreedyCycleRemoval.h"> </File>
-<File RelativePath=".\ogdf\layered\GreedyInsertHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\GreedySwitchHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\Hierarchy.h"> </File>
-<File RelativePath=".\ogdf\layered\Level.h"> </File>
-<File RelativePath=".\ogdf\layered\LongestPathRanking.h"> </File>
-<File RelativePath=".\ogdf\layered\MedianHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\OptimalHierarchyClusterLayout.h"> </File>
-<File RelativePath=".\ogdf\layered\OptimalHierarchyLayout.h"> </File>
-<File RelativePath=".\ogdf\layered\OptimalRanking.h"> </File>
-<File RelativePath=".\ogdf\layered\SiftingHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\SplitHeuristic.h"> </File>
-<File RelativePath=".\ogdf\layered\SugiyamaLayout.h"> </File>
-</Filter>
-<Filter Name="lpsolver">
-<File RelativePath=".\ogdf\lpsolver\LPSolver.h"> </File>
-</Filter>
-<Filter Name="misclayout">
-<File RelativePath=".\ogdf\misclayout\BalloonLayout.h"> </File>
-<File RelativePath=".\ogdf\misclayout\CircularLayout.h"> </File>
-<File RelativePath=".\ogdf\misclayout\ProcrustesSubLayout.h"> </File>
-</Filter>
-<Filter Name="module">
-<File RelativePath=".\ogdf\module\AcyclicSubgraphModule.h"> </File>
-<File RelativePath=".\ogdf\module\AugmentationModule.h"> </File>
-<File RelativePath=".\ogdf\module\CCLayoutPackModule.h"> </File>
-<File RelativePath=".\ogdf\module\CPlanarSubgraphModule.h"> </File>
-<File RelativePath=".\ogdf\module\ClustererModule.h"> </File>
-<File RelativePath=".\ogdf\module\CrossingMinimizationModule.h"> </File>
-<File RelativePath=".\ogdf\module\EdgeInsertionModule.h"> </File>
-<File RelativePath=".\ogdf\module\EmbedderModule.h"> </File>
-<File RelativePath=".\ogdf\module\FUPSModule.h"> </File>
-<File RelativePath=".\ogdf\module\ForceLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\GridLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\HierarchyClusterLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\HierarchyLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\LayoutClusterPlanRepModule.h"> </File>
-<File RelativePath=".\ogdf\module\LayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\LayoutPlanRepModule.h"> </File>
-<File RelativePath=".\ogdf\module\MMCrossingMinimizationModule.h"> </File>
-<File RelativePath=".\ogdf\module\MMEdgeInsertionModule.h"> </File>
-<File RelativePath=".\ogdf\module\MinCostFlowModule.h"> </File>
-<File RelativePath=".\ogdf\module\MixedModelCrossingsBeautifierModule.h"> </File>
-<File RelativePath=".\ogdf\module\MultilevelLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\PlanarSubgraphModule.h"> </File>
-<File RelativePath=".\ogdf\module\PlanarityModule.h"> </File>
-<File RelativePath=".\ogdf\module\RankingModule.h"> </File>
-<File RelativePath=".\ogdf\module\ShellingOrderModule.h"> </File>
-<File RelativePath=".\ogdf\module\ShortestPathModule.h"> </File>
-<File RelativePath=".\ogdf\module\TwoLayerCrossMin.h"> </File>
-<File RelativePath=".\ogdf\module\UMLLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\UPRLayoutModule.h"> </File>
-<File RelativePath=".\ogdf\module\UpwardEdgeInserterModule.h"> </File>
-<File RelativePath=".\ogdf\module\UpwardPlanarSubgraphModule.h"> </File>
-<File RelativePath=".\ogdf\module\UpwardPlanarizerModule.h"> </File>
-</Filter>
-<Filter Name="orthogonal">
-<File RelativePath=".\ogdf\orthogonal\CompactionConstraintGraph.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\EdgeRouter.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\FlowCompaction.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\LongestPathCompaction.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\MinimumEdgeDistances.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\OrthoLayout.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\OrthoRep.h"> </File>
-<File RelativePath=".\ogdf\orthogonal\OrthoShaper.h"> </File>
-</Filter>
-<Filter Name="packing">
-<File RelativePath=".\ogdf\packing\ComponentSplitterLayout.h"> </File>
-<File RelativePath=".\ogdf\packing\TileToRowsCCPacker.h"> </File>
-</Filter>
-<Filter Name="planarity">
-<File RelativePath=".\ogdf\planarity\BoothLueker.h"> </File>
-<File RelativePath=".\ogdf\planarity\BoyerMyrvold.h"> </File>
-<File RelativePath=".\ogdf\planarity\EdgeTypePatterns.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMaxFace.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMaxFaceLayers.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMinDepth.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMinDepthMaxFace.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMinDepthMaxFaceLayers.h"> </File>
-<File RelativePath=".\ogdf\planarity\EmbedderMinDepthPiTa.h"> </File>
-<File RelativePath=".\ogdf\planarity\ExtractKuratowskis.h"> </File>
-<File RelativePath=".\ogdf\planarity\FastPlanarSubgraph.h"> </File>
-<File RelativePath=".\ogdf\planarity\FixedEmbeddingInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\KuratowskiSubdivision.h"> </File>
-<File RelativePath=".\ogdf\planarity\MMFixedEmbeddingInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\MMSubgraphPlanarizer.h"> </File>
-<File RelativePath=".\ogdf\planarity\MMVariableEmbeddingInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\MaximalPlanarSubgraphSimple.h"> </File>
-<File RelativePath=".\ogdf\planarity\MaximumPlanarSubgraph.h"> </File>
-<File RelativePath=".\ogdf\planarity\MultiEdgeApproxInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\NodeTypePatterns.h"> </File>
-<File RelativePath=".\ogdf\planarity\NonPlanarCore.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanRep.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanRepExpansion.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanRepInc.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanRepUML.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanarizationGridLayout.h"> </File>
-<File RelativePath=".\ogdf\planarity\PlanarizationLayout.h"> </File>
-<File RelativePath=".\ogdf\planarity\SimpleEmbedder.h"> </File>
-<File RelativePath=".\ogdf\planarity\SimpleIncNodeInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\SubgraphPlanarizer.h"> </File>
-<File RelativePath=".\ogdf\planarity\VariableEmbeddingInserter.h"> </File>
-<File RelativePath=".\ogdf\planarity\VariableEmbeddingInserter2.h"> </File>
-</Filter>
-<Filter Name="planarlayout">
-<File RelativePath=".\ogdf\planarlayout\BiconnectedShellingOrder.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\FPPLayout.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\MMCBBase.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\MMCBDoubleGrid.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\MMCBLocalStretch.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\MixedModelLayout.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\PlanarDrawLayout.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\PlanarStraightLayout.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\SchnyderLayout.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\ShellingOrder.h"> </File>
-<File RelativePath=".\ogdf\planarlayout\TriconnectedShellingOrder.h"> </File>
-</Filter>
-<Filter Name="simultaneous">
-<File RelativePath=".\ogdf\simultaneous\SimDraw.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\SimDrawCaller.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\SimDrawColorizer.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\SimDrawCreator.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\SimDrawCreatorSimple.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\SimDrawManipulatorModule.h"> </File>
-<File RelativePath=".\ogdf\simultaneous\TwoLayerCrossMinSimDraw.h"> </File>
-</Filter>
-<Filter Name="tree">
-<File RelativePath=".\ogdf\tree\RadialTreeLayout.h"> </File>
-<File RelativePath=".\ogdf\tree\TreeLayout.h"> </File>
-</Filter>
-<Filter Name="upward">
-<File RelativePath=".\ogdf\upward\DominanceLayout.h"> </File>
-<File RelativePath=".\ogdf\upward\ExpansionGraph.h"> </File>
-<File RelativePath=".\ogdf\upward\FUPSSimple.h"> </File>
-<File RelativePath=".\ogdf\upward\FaceSinkGraph.h"> </File>
-<File RelativePath=".\ogdf\upward\FeasibleUpwardPlanarSubgraph.h"> </File>
-<File RelativePath=".\ogdf\upward\FixedEmbeddingUpwardEdgeInserter.h"> </File>
-<File RelativePath=".\ogdf\upward\FixedUpwardEmbeddingInserter.h"> </File>
-<File RelativePath=".\ogdf\upward\LayerBasedUPRLayout.h"> </File>
-<File RelativePath=".\ogdf\upward\SubgraphUpwardPlanarizer.h"> </File>
-<File RelativePath=".\ogdf\upward\UpwardPlanRep.h"> </File>
-<File RelativePath=".\ogdf\upward\UpwardPlanarModule.h"> </File>
-<File RelativePath=".\ogdf\upward\UpwardPlanarSubgraphSimple.h"> </File>
-<File RelativePath=".\ogdf\upward\UpwardPlanarizationLayout.h"> </File>
-<File RelativePath=".\ogdf\upward\VisibilityLayout.h"> </File>
-</Filter>
+			<Filter
+				Name="augmentation"
+				>
+				<File
+					RelativePath=".\ogdf\augmentation\DfsMakeBiconnected.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\augmentation\PlanarAugmentation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\augmentation\PlanarAugmentationFix.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="basic"
+				>
+				<File
+					RelativePath=".\ogdf\basic\AdjEntryArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Array.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Array2D.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\ArrayBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Barrier.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\basic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\BinaryHeap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\BinaryHeap2.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\BoundedQueue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\BoundedStack.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\CombinatorialEmbedding.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\comparer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Constraints.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\CriticalSection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\DisjointSets.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\DualGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\EdgeArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\EdgeComparer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\EdgeComparerSimple.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\EFreeList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\EList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\exceptions.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\extended_graph_alg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\FaceArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\FaceSet.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\geometry.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Graph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Graph_d.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\graph_generators.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GraphAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GraphCopy.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GraphCopyAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GraphObserver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GridLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\GridLayoutMapped.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\HashArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\HashArray2D.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Hashing.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\HashIterator2D.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\HeapBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\HyperGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\IncNodeInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Layout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\List.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Logger.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Math.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\memory.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\MinHeap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\MinPriorityQueue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Module.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\ModuleOption.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\NearestRectangleFinder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\NodeArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\NodeComparer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\NodeSet.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\precondition.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\PreprocessorLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Queue.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\simple_graph_alg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Skiplist.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\SList.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Stack.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\String.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\System.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Thread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\Timeouter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\TopologyModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\tuples.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\basic\UMLGraph.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cluster"
+				>
+				<File
+					RelativePath=".\ogdf\cluster\CconnectClusterPlanar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\CconnectClusterPlanarEmbed.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterArray.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterGraphAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterGraphCopyAttributes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterGraphObserver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterOrthoLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterOrthoShaper.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterPlanarizationLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterPlanRep.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\ClusterSet.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\CPlanarEdgeInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\CPlanarSubClusteredGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\cluster\MaximumCPlanarSubgraph.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="decomposition"
+				>
+				<File
+					RelativePath=".\ogdf\decomposition\BCTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\DynamicBCTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\DynamicPlanarSPQRTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\DynamicSkeleton.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\DynamicSPQRForest.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\DynamicSPQRTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\PertinentGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\PlanarSPQRTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\Skeleton.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\SPQRTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\StaticPlanarSPQRTree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\StaticSkeleton.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\decomposition\StaticSPQRTree.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="energybased"
+				>
+				<File
+					RelativePath=".\ogdf\energybased\CoinTutteLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\DavidsonHarel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\DavidsonHarelLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\FastMultipoleEmbedder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\FMMMLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\GEMLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\MultilevelLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\SpringEmbedderFR.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\SpringEmbedderFRExact.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\SpringEmbedderKK.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\energybased\StressMajorizationSimple.h"
+					>
+				</File>
+				<Filter
+					Name="multilevelmixer"
+					>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\BarycenterPlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\CirclePlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\EdgeCoverMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\IndependentSetMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\InitialPlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\LocalBiconnectedMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MatchingMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MedianPlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MixedForceLayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleFastLayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleNiceLayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MMMExampleNoTwistLayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\ModularMultilevelMixer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\MultilevelBuilder.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\RandomMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\RandomPlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\ScalingLayout.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\SolarMerger.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\SolarPlacer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\energybased\multilevelmixer\ZeroPlacer.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="external"
+				>
+				<File
+					RelativePath=".\ogdf\external\abacus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\external\coin.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="fileformats"
+				>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoLineBuffer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoTools.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoUmlDiagramGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoUmlModelGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoUmlToGraphConverter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoXmlParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\DinoXmlScanner.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\GmlParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\Ogml.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\OgmlParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\simple_graph_load.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\SteinLibParser.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\XmlObject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\fileformats\XmlParser.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="graphalg"
+				>
+				<File
+					RelativePath=".\ogdf\graphalg\CliqueFinder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\Clusterer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\ConvexHull.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\Dijkstra.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\GraphReduction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\MinCostFlowReinelt.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\MinimumCut.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\PageRank.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\graphalg\ShortestPathWithBFM.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="internal"
+				>
+				<Filter
+					Name="augmentation"
+					>
+					<File
+						RelativePath=".\ogdf\internal\augmentation\PALabel.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="basic"
+					>
+					<File
+						RelativePath=".\ogdf\internal\basic\intrinsics.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\basic\list_templates.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\basic\MallocMemoryAllocator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\basic\PoolMemoryAllocator.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="cluster"
+					>
+					<File
+						RelativePath=".\ogdf\internal\cluster\basics.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\Cluster_ChunkConnection.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\Cluster_CutConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\Cluster_EdgeVar.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\Cluster_MaxPlanarEdges.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\ClusterPQContainer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\CPlanarSubClusteredST.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\KuratowskiConstraint.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\MaxCPlanar_Master.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\MaxCPlanar_MinimalClusterConnection.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\cluster\MaxCPlanar_Sub.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="energybased"
+					>
+					<File
+						RelativePath=".\ogdf\internal\energybased\AdjacencyOracle.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\Attraction.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\EdgeAttributes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\EnergyFunction.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\FruchtermanReingold.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\IntersectionRectangle.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\MultilevelGraph.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\NMM.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\NodeAttributes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\NodePairEnergy.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\Overlap.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\ParticleInfo.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\Planarity.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\PlanarityGrid.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\QuadTreeNM.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\QuadTreeNodeNM.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\Repulsion.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\energybased\UniformGrid.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="lpsolver"
+					>
+					<File
+						RelativePath=".\ogdf\internal\lpsolver\LPSolver_coin.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="orthogonal"
+					>
+					<File
+						RelativePath=".\ogdf\internal\orthogonal\NodeInfo.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\orthogonal\RoutingChannel.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="planarity"
+					>
+					<File
+						RelativePath=".\ogdf\internal\planarity\BoyerMyrvoldInit.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\BoyerMyrvoldPlanar.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\ConnectedSubgraph.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphs.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphsLayers.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\EmbedIndicator.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\EmbedPQTree.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\FindKuratowskis.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\IndInfo.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\MaxSequencePQTree.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\MDMFLengthAttribute.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PlanarLeafKey.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PlanarPQTree.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PlanarSubgraphPQTree.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQBasicKey.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQBasicKeyRoot.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQInternalKey.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQInternalNode.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQLeaf.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQLeafKey.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQNode.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQNodeKey.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQNodeRoot.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\PQTree.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\planarity\whaInfo.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="steinertree"
+					>
+					<File
+						RelativePath=".\ogdf\internal\steinertree\EdgeWeightedGraph.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogdf\internal\steinertree\EdgeWeightedGraphCopy.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="labeling"
+				>
+				<File
+					RelativePath=".\ogdf\labeling\EdgeLabel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\labeling\ELabelInterface.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\labeling\ELabelPosSimple.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="layered"
+				>
+				<File
+					RelativePath=".\ogdf\layered\BarycenterHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\CoffmanGrahamRanking.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\CrossingsMatrix.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\DfsAcyclicSubgraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\ExtendedNestingGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\FastHierarchyLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\FastSimpleHierarchyLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\GreedyCycleRemoval.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\GreedyInsertHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\GreedySwitchHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\Hierarchy.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\Level.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\LongestPathRanking.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\MedianHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\OptimalHierarchyClusterLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\OptimalHierarchyLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\OptimalRanking.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\SiftingHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\SplitHeuristic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\layered\SugiyamaLayout.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="lpsolver"
+				>
+				<File
+					RelativePath=".\ogdf\lpsolver\LPSolver.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="misclayout"
+				>
+				<File
+					RelativePath=".\ogdf\misclayout\BalloonLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\misclayout\CircularLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\misclayout\ProcrustesSubLayout.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="module"
+				>
+				<File
+					RelativePath=".\ogdf\module\AcyclicSubgraphModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\AugmentationModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\CCLayoutPackModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\ClustererModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\CPlanarSubgraphModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\CrossingMinimizationModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\EdgeInsertionModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\EmbedderModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\ForceLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\FUPSModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\GridLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\HierarchyClusterLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\HierarchyLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\LayoutClusterPlanRepModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\LayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\LayoutPlanRepModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\MinCostFlowModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\MixedModelCrossingsBeautifierModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\MMCrossingMinimizationModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\MMEdgeInsertionModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\MultilevelLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\PlanarityModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\PlanarSubgraphModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\RankingModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\ShellingOrderModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\ShortestPathModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\TwoLayerCrossMin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\UMLLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\UPRLayoutModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\UpwardEdgeInserterModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\UpwardPlanarizerModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\module\UpwardPlanarSubgraphModule.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="orthogonal"
+				>
+				<File
+					RelativePath=".\ogdf\orthogonal\CompactionConstraintGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\EdgeRouter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\FlowCompaction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\LongestPathCompaction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\MinimumEdgeDistances.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\OrthoLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\OrthoRep.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\orthogonal\OrthoShaper.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="packing"
+				>
+				<File
+					RelativePath=".\ogdf\packing\ComponentSplitterLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\packing\TileToRowsCCPacker.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="planarity"
+				>
+				<File
+					RelativePath=".\ogdf\planarity\BoothLueker.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\BoyerMyrvold.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EdgeTypePatterns.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMaxFace.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMaxFaceLayers.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMinDepth.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMinDepthMaxFace.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMinDepthMaxFaceLayers.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\EmbedderMinDepthPiTa.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\ExtractKuratowskis.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\FastPlanarSubgraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\FixedEmbeddingInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\KuratowskiSubdivision.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MaximalPlanarSubgraphSimple.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MaximumPlanarSubgraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MMFixedEmbeddingInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MMSubgraphPlanarizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MMVariableEmbeddingInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\MultiEdgeApproxInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\NodeTypePatterns.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\NonPlanarCore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanarizationGridLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanarizationLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanRep.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanRepExpansion.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanRepInc.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\PlanRepUML.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\SimpleEmbedder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\SimpleIncNodeInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\SubgraphPlanarizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\VariableEmbeddingInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarity\VariableEmbeddingInserter2.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="planarlayout"
+				>
+				<File
+					RelativePath=".\ogdf\planarlayout\BiconnectedShellingOrder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\FPPLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\MixedModelLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\MMCBBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\MMCBDoubleGrid.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\MMCBLocalStretch.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\PlanarDrawLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\PlanarStraightLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\SchnyderLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\ShellingOrder.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\planarlayout\TriconnectedShellingOrder.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="simultaneous"
+				>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDraw.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDrawCaller.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDrawColorizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDrawCreator.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDrawCreatorSimple.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\SimDrawManipulatorModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\simultaneous\TwoLayerCrossMinSimDraw.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tree"
+				>
+				<File
+					RelativePath=".\ogdf\tree\RadialTreeLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\tree\TreeLayout.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="upward"
+				>
+				<File
+					RelativePath=".\ogdf\upward\DominanceLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\ExpansionGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\FaceSinkGraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\FeasibleUpwardPlanarSubgraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\FixedEmbeddingUpwardEdgeInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\FixedUpwardEmbeddingInserter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\FUPSSimple.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\LayerBasedUPRLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\SubgraphUpwardPlanarizer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\UpwardPlanarizationLayout.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\UpwardPlanarModule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\UpwardPlanarSubgraphSimple.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\UpwardPlanRep.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogdf\upward\VisibilityLayout.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
