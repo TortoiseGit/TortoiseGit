@@ -46,18 +46,18 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/libaprutil.tlb"
+				TypeLibraryName=".\Debug\libaprutil.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHsc "
 				Optimization="0"
-				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
+				AdditionalIncludeDirectories="..\apr-util\include,..\apr\include,..\apr-util\include\private,..\apr-iconv\include,..\apr-util\dbm\sdbm,..\apr-util\xml\expat\lib"
 				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/libaprutil.pch"
-				AssemblerListingLocation=".\Debug/"
+				PrecompiledHeaderFile=".\Debug\libaprutil.pch"
+				AssemblerListingLocation=".\Debug\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libaprutil_src"
 				WarningLevel="3"
@@ -71,7 +71,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG,APU_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr-util/include;../apr/include"
+				AdditionalIncludeDirectories="..\apr-util\include;..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -103,7 +103,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/libaprutil.bsc"
+				OutputFile=".\Debug\libaprutil.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -146,7 +146,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/libaprutil.tlb"
+				TypeLibraryName=".\Release\libaprutil.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -154,13 +154,13 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
+				AdditionalIncludeDirectories="..\apr-util\include,..\apr\include,..\apr-util\include\private,..\apr-iconv\include,..\apr-util\dbm\sdbm,..\apr-util\xml\expat\lib"
 				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/libaprutil.pch"
-				AssemblerListingLocation=".\Release/"
+				PrecompiledHeaderFile=".\Release\libaprutil.pch"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libaprutil_src"
 				WarningLevel="3"
@@ -174,7 +174,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,APU_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr-util/include;../apr/include"
+				AdditionalIncludeDirectories="..\apr-util\include;..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -208,7 +208,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/libaprutil.bsc"
+				OutputFile=".\Release\libaprutil.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -250,18 +250,18 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/libaprutil.tlb"
+				TypeLibraryName=".\Debug\libaprutil.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHsc "
 				Optimization="0"
-				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
+				AdditionalIncludeDirectories="..\apr-util\include,..\apr\include,..\apr-util\include\private,..\apr-iconv\include,..\apr-util\dbm\sdbm,..\apr-util\xml\expat\lib"
 				PreprocessorDefinitions="_DEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/libaprutil.pch"
-				AssemblerListingLocation=".\Debug/"
+				PrecompiledHeaderFile=".\Debug\libaprutil.pch"
+				AssemblerListingLocation=".\Debug\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libaprutil_src"
 				WarningLevel="3"
@@ -275,7 +275,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG,APU_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr-util/include;../apr/include"
+				AdditionalIncludeDirectories="..\apr-util\include;..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -307,7 +307,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/libaprutil.bsc"
+				OutputFile=".\Debug\libaprutil.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -358,13 +358,13 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
+				AdditionalIncludeDirectories="..\apr-util\include,..\apr\include,..\apr-util\include\private,..\apr-iconv\include,..\apr-util\dbm\sdbm,..\apr-util\xml\expat\lib"
 				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/libaprutil.pch"
-				AssemblerListingLocation=".\Release/"
+				PrecompiledHeaderFile=".\Release\libaprutil.pch"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libaprutil_src"
 				WarningLevel="3"
@@ -378,7 +378,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,APU_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr-util/include;../apr/include"
+				AdditionalIncludeDirectories="..\apr-util\include;..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -412,7 +412,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/libaprutil.bsc"
+				OutputFile=".\Release\libaprutil.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

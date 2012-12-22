@@ -46,7 +46,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Win32_DLL_Release/zlib.tlb"
+				TypeLibraryName=".\Release\zlib.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -143,7 +143,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Win32_DLL_Release/zlib.tlb"
+				TypeLibraryName=".\Release64\zlib.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -239,7 +239,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Win32_DLL_Debug/zlib.tlb"
+				TypeLibraryName=".\Debug\zlib.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -333,7 +333,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Win32_DLL_Debug/zlib.tlb"
+				TypeLibraryName=".\Debug64\zlib.tlb"
 				HeaderFileName=""
 			/>
 			<Tool

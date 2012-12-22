@@ -50,8 +50,8 @@
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\LibD/xml.pch"
-				AssemblerListingLocation=".\LibD/"
+				PrecompiledHeaderFile=".\Debug\xml.pch"
+				AssemblerListingLocation=".\Debug\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(OUTDIR)\xml"
 				WarningLevel="3"
@@ -82,7 +82,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\LibD/xml.bsc"
+				OutputFile=".\Debug\xml.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -127,8 +127,8 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\LibR/xml.pch"
-				AssemblerListingLocation=".\LibR/"
+				PrecompiledHeaderFile=".\Release\xml.pch"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(OUTDIR)\xml"
 				WarningLevel="3"
@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/xml.lib"
+				OutputFile="$(OutDir)\xml.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -159,7 +159,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\LibR/xml.bsc"
+				OutputFile=".\Release\xml.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -201,8 +201,8 @@
 				AdditionalIncludeDirectories="&quot;..\apr-util\xml\expat\lib&quot;;."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COMPILED_FROM_DSP;XML_STATIC"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\LibD/xml.pch"
-				AssemblerListingLocation=".\LibD/"
+				PrecompiledHeaderFile=".\Debug64\xml.pch"
+				AssemblerListingLocation=".\Debug64\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(OUTDIR)\xml"
 				WarningLevel="3"
@@ -221,7 +221,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/xml.lib"
+				OutputFile="$(OutDir)\xml.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -279,8 +279,8 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\LibR/xml.pch"
-				AssemblerListingLocation=".\LibR/"
+				PrecompiledHeaderFile=".\Release64\xml.pch"
+				AssemblerListingLocation=".\Release64\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(OUTDIR)\xml"
 				WarningLevel="3"
@@ -299,7 +299,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/xml.lib"
+				OutputFile="$(OutDir)\xml.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

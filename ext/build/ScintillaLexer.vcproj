@@ -46,7 +46,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\../bin/SciLexer.tlb"
+				TypeLibraryName=".\..\bin\SciLexer.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -136,7 +136,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\../bin/SciLexer.tlb"
+				TypeLibraryName=".\..\bin\SciLexer.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -227,7 +227,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\../bin/SciLexer.tlb"
+				TypeLibraryName=".\..\bin\SciLexer.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -323,7 +323,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\../bin/SciLexer.tlb"
+				TypeLibraryName=".\..\bin\SciLexer.tlb"
 				HeaderFileName=""
 			/>
 			<Tool

@@ -47,7 +47,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\DLL-Release/vc6libcurl.tlb"
+				TypeLibraryName=".\Release\vc6libcurl.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -60,7 +60,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\DLL-Release/vc6libcurl.pch"
+				PrecompiledHeaderFile=".\Release\vc6libcurl.pch"
 				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Release\bin\libcurl.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\DLL-Release/vc6libcurl.bsc"
+				OutputFile=".\Release\vc6libcurl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -141,7 +141,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\DLL-Release/vc6libcurl.tlb"
+				TypeLibraryName=".\Release64\vc6libcurl.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -196,7 +196,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\DLL-Release/vc6libcurl.bsc"
+				OutputFile=".\Release64\vc6libcurl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -236,7 +236,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\DLL-Debug/vc6libcurl.tlb"
+				TypeLibraryName=".\Debug\vc6libcurl.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -247,7 +247,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\DLL-Debug/vc6libcurl.pch"
+				PrecompiledHeaderFile=".\Debug\vc6libcurl.pch"
 				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -291,7 +291,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\DLL-Debug/vc6libcurl.bsc"
+				OutputFile=".\Debug\vc6libcurl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -331,7 +331,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\DLL-Debug/vc6libcurl.tlb"
+				TypeLibraryName=".\Debug64\vc6libcurl.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -342,7 +342,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\DLL-Debug/vc6libcurl.pch"
+				PrecompiledHeaderFile=".\Debug64\vc6libcurl.pch"
 				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug64\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -386,7 +386,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\DLL-Debug/vc6libcurl.bsc"
+				OutputFile=".\Debug64\vc6libcurl.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
