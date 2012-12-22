@@ -164,7 +164,7 @@
 				Name="VCLinkerTool"
 				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				ModuleDefinitionFile=".\ExampleAtlPlugin.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"

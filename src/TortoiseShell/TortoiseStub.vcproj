@@ -269,7 +269,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\TortoiseGitStub32.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
 				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
@@ -367,7 +367,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
 				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
