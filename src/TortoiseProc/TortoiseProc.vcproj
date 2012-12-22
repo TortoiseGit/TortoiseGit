@@ -258,7 +258,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib gdiplus.lib shfolder.lib shell32.lib comctl32.lib ws2_32.lib rpcrt4.lib shlwapi.lib wininet.lib version.lib Dnsapi.lib UxTheme.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../ext/wingit"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
