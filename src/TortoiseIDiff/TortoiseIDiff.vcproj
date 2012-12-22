@@ -200,14 +200,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				FavorSizeOrSpeed="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="true"
-				EnableEnhancedInstructionSet="0"
+				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -232,6 +231,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -282,11 +282,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				FavorSizeOrSpeed="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -310,6 +311,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

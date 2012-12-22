@@ -216,8 +216,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="./;../../ext/gitdll;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;../TortoiseMerge"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -248,6 +250,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -303,8 +306,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="./;../../ext/gitdll;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;../TortoiseMerge"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -333,6 +338,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

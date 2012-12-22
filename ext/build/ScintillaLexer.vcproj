@@ -207,6 +207,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -231,6 +232,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\scintilla\include;..\scintilla\src;..\scintilla\lexlib"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER;USE_D2D;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
@@ -261,7 +264,11 @@
 				GenerateDebugInformation="true"
 				GenerateMapFile="true"
 				MapFileName="$(IntDir)\scilexer.map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -296,6 +303,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -320,6 +328,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\scintilla\include;..\scintilla\src;..\scintilla\lexlib"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER;USE_D2D;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
@@ -349,6 +359,10 @@
 				GenerateDebugInformation="true"
 				GenerateMapFile="true"
 				MapFileName="$(IntDir)\scilexer.map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

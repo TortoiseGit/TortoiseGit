@@ -197,6 +197,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\tgit;..\tgit\compat;..\tgit\compat\vcbuild;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;..\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GITDLL_EXPORTS"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -221,6 +222,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -275,6 +277,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\tgit;..\tgit\compat;..\tgit\compat\vcbuild;;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;..\zlib;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GITDLL_EXPORTS;WIN64"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -298,6 +301,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

@@ -105,8 +105,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="$(ProjectDir)..\..\external\zlib123"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
@@ -231,8 +232,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="$(ProjectDir)..\..\external\zlib123"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"

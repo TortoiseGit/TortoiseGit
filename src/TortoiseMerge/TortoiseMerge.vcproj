@@ -216,12 +216,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				FavorSizeOrSpeed="2"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\TortoiseMerge;..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI;../../ext/ResizableLib"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
+				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				ForceConformanceInForLoopScope="true"
 				UsePrecompiledHeader="2"
@@ -249,6 +251,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -303,12 +306,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				FavorSizeOrSpeed="2"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\TortoiseMerge;..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;&quot;..\..\ext\apr-util\include&quot;;.\libsvn_diff;..\Utils;..\crashrpt;..\;..\Utils\MiscUI;../../ext/ResizableLib"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;APR_DECLARE_STATIC;APU_DECLARE_STATIC"
+				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				ForceConformanceInForLoopScope="true"
 				UsePrecompiledHeader="2"
@@ -335,6 +340,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

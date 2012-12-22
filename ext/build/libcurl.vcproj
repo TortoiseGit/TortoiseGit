@@ -178,6 +178,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -203,7 +204,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\libcurl\lib,..\libcurl\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;BUILDING_LIBCURL"
 				StringPooling="true"
@@ -230,7 +232,10 @@
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
 				OutputFile="$(SolutionDir)\..\bin\Release\bin\libcurl32.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\libcurl32.lib"
 				TargetMachine="1"
 			/>
@@ -267,6 +272,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -292,7 +298,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\libcurl\lib,..\libcurl\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;BUILDING_LIBCURL;WIN64"
 				StringPooling="true"
@@ -321,7 +328,10 @@
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
 				OutputFile="$(SolutionDir)\..\bin\Release64\bin\libcurl.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\libcurl.lib"
 				TargetMachine="17"
 			/>
@@ -6022,7 +6032,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6032,7 +6042,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6042,7 +6052,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6052,7 +6062,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6062,7 +6072,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6072,7 +6082,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6082,7 +6092,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>
@@ -6092,7 +6102,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Creating curlbuild.h from curlbuild.h.dist"
-						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h"
+						CommandLine="type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h&#x0D;&#x0A;"
 						Outputs="..\libcurl\include\curl\curlbuild.h"
 					/>
 				</FileConfiguration>

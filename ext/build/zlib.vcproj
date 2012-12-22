@@ -214,6 +214,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -239,7 +240,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -270,8 +272,10 @@
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release\bin\zlib132.pdb"
-				RandomizedBaseAddress="2"
-				DataExecutionPrevention="0"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\zlib132.lib"
 				TargetMachine="1"
 			/>
@@ -307,6 +311,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -332,7 +337,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;WIN64"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -363,8 +369,10 @@
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release64\bin\zlib1.pdb"
-				RandomizedBaseAddress="2"
-				DataExecutionPrevention="0"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\zlib1.lib"
 				TargetMachine="17"
 			/>

@@ -62,7 +62,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				IgnoreAllDefaultLibraries="true"
 				GenerateDebugInformation="false"
@@ -70,8 +69,8 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ResourceOnlyDLL="true"
+				SetChecksum="true"
 				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"
 			/>
@@ -142,7 +141,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				IgnoreAllDefaultLibraries="true"
 				GenerateDebugInformation="false"
@@ -150,8 +148,8 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ResourceOnlyDLL="true"
+				SetChecksum="true"
 				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="17"
 			/>
@@ -591,11 +589,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\TortoiseProcENG.rc"
+				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\Resources\tortoisegit_logoflipped.bmp"
+				RelativePath="..\Resources\TortoiseProcENG.rc"
 				>
 			</File>
 			<File
@@ -616,19 +614,19 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\Resources\bin167.avi"
-			>
-		</File>
-		<File
 			RelativePath="..\Languages\res\bin167.avi"
 			>
 		</File>
 		<File
-			RelativePath="..\Resources\bin168.avi"
+			RelativePath="..\Resources\bin167.avi"
 			>
 		</File>
 		<File
 			RelativePath="..\Languages\res\bin168.avi"
+			>
+		</File>
+		<File
+			RelativePath="..\Resources\bin168.avi"
 			>
 		</File>
 		<File
@@ -644,7 +642,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\Languages\res\TortoiseProc.manifest"
+			RelativePath="..\Resources\TortoiseProc.manifest"
 			>
 			<FileConfiguration
 				Name="Release|Win32"
@@ -680,7 +678,7 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\Resources\TortoiseProc.manifest"
+			RelativePath="..\Languages\res\TortoiseProc.manifest"
 			>
 			<FileConfiguration
 				Name="Release|Win32"

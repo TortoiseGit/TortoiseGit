@@ -203,6 +203,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
 				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP;WIN32_SHA1"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -226,7 +227,10 @@
 				OutputFile="$(OutDir)\$(ProjectName)32.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -279,9 +283,9 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex"
 				PreprocessorDefinitions="NDEBUG;GIT_WINHTTP;WIN32_SHA1"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -304,7 +308,10 @@
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

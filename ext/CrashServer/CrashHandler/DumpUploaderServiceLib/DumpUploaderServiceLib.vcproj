@@ -168,8 +168,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\..\external\gsoap-win32-2.8.0"
 				PreprocessorDefinitions="WIN32;NDEBUG;SOAP_NDEBUG"
 				RuntimeLibrary="0"
@@ -231,8 +232,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\..\external\gsoap-win32-2.8.0"
 				PreprocessorDefinitions="WIN32;NDEBUG;SOAP_NDEBUG"
 				RuntimeLibrary="0"

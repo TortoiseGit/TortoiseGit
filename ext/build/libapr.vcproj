@@ -26,6 +26,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -51,7 +52,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
 				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS"
 				StringPooling="true"
@@ -88,6 +90,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EEC0000"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 			/>
@@ -125,6 +130,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -150,7 +156,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
 				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;WIN64"
 				StringPooling="true"
@@ -186,6 +193,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EEC0000"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 				TargetMachine="17"

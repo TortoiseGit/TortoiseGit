@@ -125,6 +125,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -151,7 +152,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
 				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
@@ -188,6 +190,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EE60000"
 				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 			/>
@@ -324,6 +329,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -350,7 +356,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../apr-util/include,../apr/include,../apr-util/include/private,../apr-iconv/include,../apr-util/dbm/sdbm,../apr-util/xml/expat/lib"
 				PreprocessorDefinitions="NDEBUG;APU_DECLARE_EXPORT;APU_USE_SDBM;XML_STATIC;WIN32;_WINDOWS"
 				StringPooling="true"
@@ -386,6 +393,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EE60000"
 				ImportLibrary="$(OutDir)\libaprutil_tsvn.lib"
 				TargetMachine="17"

@@ -198,9 +198,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -223,7 +226,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="0"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -275,9 +278,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -299,6 +305,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool
