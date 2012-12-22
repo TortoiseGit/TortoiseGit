@@ -53,13 +53,13 @@
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset/,..\..\..\windows/,..\..\..\unix/,..\..\..\mac/,..\..\..\macosx/"
+				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset\,..\..\..\windows\,..\..\..\unix\,..\..\..\mac\,..\..\..\macosx\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation=".\Release/"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
 				WarningLevel="3"
@@ -82,7 +82,6 @@
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="1"
 				EnableCOMDATFolding="1"
@@ -102,7 +101,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/PLINK.bsc"
+				OutputFile=".\Release\PLINK.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -142,20 +141,20 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Release/PLINK.tlb"
+				TypeLibraryName=".\Release\PLINK.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset/,..\..\..\windows/,..\..\..\unix/,..\..\..\mac/,..\..\..\macosx/"
+				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset\,..\..\..\windows\,..\..\..\unix\,..\..\..\mac\,..\..\..\macosx\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation=".\Release/"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
 				WarningLevel="3"
@@ -177,7 +176,6 @@
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -197,7 +195,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/PLINK.bsc"
+				OutputFile=".\Release\PLINK.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -236,13 +234,13 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/PLINK.tlb"
+				TypeLibraryName=".\Debug\PLINK.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset/,..\..\..\windows/,..\..\..\unix/,..\..\..\mac/,..\..\..\macosx/"
+				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset\,..\..\..\windows\,..\..\..\unix\,..\..\..\mac\,..\..\..\macosx\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32;SECURITY_WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -270,12 +268,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -293,7 +289,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/PLINK.bsc"
+				OutputFile=".\Debug\PLINK.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -332,13 +328,13 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/PLINK.tlb"
+				TypeLibraryName=".\Debug\PLINK.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset/,..\..\..\windows/,..\..\..\unix/,..\..\..\mac/,..\..\..\macosx/"
+				AdditionalIncludeDirectories="..\..\..\,..\..\..\charset\,..\..\..\windows\,..\..\..\unix\,..\..\..\mac\,..\..\..\macosx\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -365,12 +361,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
-				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -388,7 +382,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/PLINK.bsc"
+				OutputFile=".\Debug\PLINK.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

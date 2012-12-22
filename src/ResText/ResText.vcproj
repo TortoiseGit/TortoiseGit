@@ -66,10 +66,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/ResText.pdb"
+				ProgramDatabaseFile="$(OutDir)\ResText.pdb"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -145,10 +145,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/ResText.pdb"
+				ProgramDatabaseFile="$(OutDir)\ResText.pdb"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -382,7 +382,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -464,7 +464,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -545,7 +545,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -627,7 +627,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib"
-				OutputFile="$(OutDir)/ResText.exe"
+				OutputFile="$(OutDir)\ResText.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
