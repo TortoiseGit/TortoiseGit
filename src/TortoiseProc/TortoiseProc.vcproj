@@ -48,7 +48,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;..\..\ext\ResizableLib;..\Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;..\..\ext\ResizableLib;..\Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN64;_WINDOWS;_DEBUG;ENABLE_NLS;THESAURUS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -227,7 +227,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;..\..\ext\ResizableLib;..\Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -321,7 +321,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;../../ext/ResizableLib;../Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
+				AdditionalIncludeDirectories="..\TortoiseProc;..\Resources;&quot;$InputDir&quot;;..\..\ext\ResizableLib;..\Git;..\Utils;..\crashrpt;..\..\ext\hunspell;..\..\ext\scintilla\include;..\Utils\TreePropSheet;..\Utils\MiscUI;..\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\OGDF;..\AsyncFramework"
 				PreprocessorDefinitions="WIN64;_WINDOWS;NDEBUG;THESAURUS"
 				StringPooling="true"
 				MinimalRebuild="false"
