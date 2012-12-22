@@ -19,7 +19,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="DLL Release|Win32"
+			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)"
 			ConfigurationType="2"
@@ -113,7 +113,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Release|x64"
+			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)64"
 			ConfigurationType="2"
@@ -209,7 +209,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Debug|Win32"
+			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)"
 			ConfigurationType="2"
@@ -304,7 +304,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Debug|x64"
+			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="..\..\obj\libcurl\$(ConfigurationName)64"
 			ConfigurationType="2"
@@ -417,7 +417,7 @@
 				RelativePath="..\libcurl\lib\base64.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -426,7 +426,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -435,7 +435,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -444,7 +444,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -457,7 +457,7 @@
 				RelativePath="..\libcurl\lib\connect.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -466,7 +466,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -475,7 +475,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -484,7 +484,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -497,7 +497,7 @@
 				RelativePath="..\libcurl\lib\content_encoding.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -506,7 +506,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -515,7 +515,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -524,7 +524,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -537,7 +537,7 @@
 				RelativePath="..\libcurl\lib\cookie.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -546,7 +546,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -555,7 +555,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -564,7 +564,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -577,7 +577,7 @@
 				RelativePath="..\libcurl\lib\curl_addrinfo.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -586,7 +586,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -595,7 +595,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -604,7 +604,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -633,7 +633,7 @@
 				RelativePath="..\libcurl\lib\curl_sspi.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -642,7 +642,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -651,7 +651,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -660,7 +660,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -677,7 +677,7 @@
 				RelativePath="..\libcurl\lib\dict.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -686,7 +686,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -695,7 +695,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -704,7 +704,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -717,7 +717,7 @@
 				RelativePath="..\libcurl\lib\easy.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -726,7 +726,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -735,7 +735,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -744,7 +744,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -757,7 +757,7 @@
 				RelativePath="..\libcurl\lib\escape.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -766,7 +766,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -775,7 +775,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -784,7 +784,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -797,7 +797,7 @@
 				RelativePath="..\libcurl\lib\file.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -806,7 +806,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -815,7 +815,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -824,7 +824,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -841,7 +841,7 @@
 				RelativePath="..\libcurl\lib\formdata.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -850,7 +850,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -859,7 +859,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -868,7 +868,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -881,7 +881,7 @@
 				RelativePath="..\libcurl\lib\ftp.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -890,7 +890,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -899,7 +899,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -908,7 +908,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -925,7 +925,7 @@
 				RelativePath="..\libcurl\lib\getenv.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -934,7 +934,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -943,7 +943,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -952,7 +952,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -965,7 +965,7 @@
 				RelativePath="..\libcurl\lib\getinfo.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -974,7 +974,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -983,7 +983,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -992,7 +992,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1009,7 +1009,7 @@
 				RelativePath="..\libcurl\lib\gtls.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1018,7 +1018,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1027,7 +1027,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1036,7 +1036,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1049,7 +1049,7 @@
 				RelativePath="..\libcurl\lib\hash.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1058,7 +1058,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1067,7 +1067,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1076,7 +1076,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1093,7 +1093,7 @@
 				RelativePath="..\libcurl\lib\hostasyn.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1102,7 +1102,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1111,7 +1111,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1120,7 +1120,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1133,7 +1133,7 @@
 				RelativePath="..\libcurl\lib\hostip.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1142,7 +1142,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1151,7 +1151,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1160,7 +1160,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1173,7 +1173,7 @@
 				RelativePath="..\libcurl\lib\hostip4.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1182,7 +1182,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1191,7 +1191,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1200,7 +1200,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1213,7 +1213,7 @@
 				RelativePath="..\libcurl\lib\hostip6.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1222,7 +1222,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1231,7 +1231,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1240,7 +1240,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1253,7 +1253,7 @@
 				RelativePath="..\libcurl\lib\hostsyn.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1262,7 +1262,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1271,7 +1271,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1280,7 +1280,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1293,7 +1293,7 @@
 				RelativePath="..\libcurl\lib\http.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1302,7 +1302,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1311,7 +1311,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1320,7 +1320,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1333,7 +1333,7 @@
 				RelativePath="..\libcurl\lib\http_chunks.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1342,7 +1342,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1351,7 +1351,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1360,7 +1360,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1373,7 +1373,7 @@
 				RelativePath="..\libcurl\lib\http_digest.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1382,7 +1382,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1391,7 +1391,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1400,7 +1400,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1413,7 +1413,7 @@
 				RelativePath="..\libcurl\lib\http_negotiate.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1422,7 +1422,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1431,7 +1431,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1440,7 +1440,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1453,7 +1453,7 @@
 				RelativePath="..\libcurl\lib\http_ntlm.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1462,7 +1462,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1471,7 +1471,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1480,7 +1480,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1497,7 +1497,7 @@
 				RelativePath="..\libcurl\lib\if2ip.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1506,7 +1506,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1515,7 +1515,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1524,7 +1524,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1541,7 +1541,7 @@
 				RelativePath="..\libcurl\lib\inet_ntop.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1550,7 +1550,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1559,7 +1559,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1568,7 +1568,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1581,7 +1581,7 @@
 				RelativePath="..\libcurl\lib\inet_pton.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1590,7 +1590,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1599,7 +1599,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1608,7 +1608,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1621,7 +1621,7 @@
 				RelativePath="..\libcurl\lib\krb4.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1630,7 +1630,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1639,7 +1639,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1648,7 +1648,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1661,7 +1661,7 @@
 				RelativePath="..\libcurl\lib\krb5.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1670,7 +1670,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1679,7 +1679,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1688,7 +1688,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1701,7 +1701,7 @@
 				RelativePath="..\libcurl\lib\ldap.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1710,7 +1710,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1719,7 +1719,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1728,7 +1728,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1741,7 +1741,7 @@
 				RelativePath="..\libcurl\lib\llist.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1750,7 +1750,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1759,7 +1759,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1768,7 +1768,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1781,7 +1781,7 @@
 				RelativePath="..\libcurl\lib\md5.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1790,7 +1790,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1799,7 +1799,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1808,7 +1808,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1821,7 +1821,7 @@
 				RelativePath="..\libcurl\lib\memdebug.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1830,7 +1830,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1839,7 +1839,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1848,7 +1848,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1861,7 +1861,7 @@
 				RelativePath="..\libcurl\lib\mprintf.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1870,7 +1870,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1879,7 +1879,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1888,7 +1888,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1901,7 +1901,7 @@
 				RelativePath="..\libcurl\lib\multi.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1910,7 +1910,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1919,7 +1919,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1928,7 +1928,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1941,7 +1941,7 @@
 				RelativePath="..\libcurl\lib\netrc.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1950,7 +1950,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1959,7 +1959,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1968,7 +1968,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1981,7 +1981,7 @@
 				RelativePath="..\libcurl\lib\nonblock.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1990,7 +1990,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1999,7 +1999,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2008,7 +2008,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2021,7 +2021,7 @@
 				RelativePath="..\libcurl\lib\nss.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2030,7 +2030,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2039,7 +2039,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2048,7 +2048,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2061,7 +2061,7 @@
 				RelativePath="..\libcurl\lib\parsedate.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2070,7 +2070,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2079,7 +2079,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2088,7 +2088,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2109,7 +2109,7 @@
 				RelativePath="..\libcurl\lib\progress.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2118,7 +2118,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2127,7 +2127,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2136,7 +2136,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2149,7 +2149,7 @@
 				RelativePath="..\libcurl\lib\qssl.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2158,7 +2158,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2167,7 +2167,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2176,7 +2176,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2189,7 +2189,7 @@
 				RelativePath="..\libcurl\lib\rawstr.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2198,7 +2198,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2207,7 +2207,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2216,7 +2216,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2233,7 +2233,7 @@
 				RelativePath="..\libcurl\lib\security.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2242,7 +2242,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2251,7 +2251,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2260,7 +2260,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2273,7 +2273,7 @@
 				RelativePath="..\libcurl\lib\select.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2282,7 +2282,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2291,7 +2291,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2300,7 +2300,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2313,7 +2313,7 @@
 				RelativePath="..\libcurl\lib\sendf.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2322,7 +2322,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2331,7 +2331,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2340,7 +2340,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2353,7 +2353,7 @@
 				RelativePath="..\libcurl\lib\share.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2362,7 +2362,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2371,7 +2371,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2380,7 +2380,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2393,7 +2393,7 @@
 				RelativePath="..\libcurl\lib\slist.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2402,7 +2402,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2411,7 +2411,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2420,7 +2420,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2437,7 +2437,7 @@
 				RelativePath="..\libcurl\lib\socks.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2446,7 +2446,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2455,7 +2455,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2464,7 +2464,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2477,7 +2477,7 @@
 				RelativePath="..\libcurl\lib\socks_gssapi.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2486,7 +2486,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2495,7 +2495,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2504,7 +2504,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2517,7 +2517,7 @@
 				RelativePath="..\libcurl\lib\socks_sspi.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2526,7 +2526,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2535,7 +2535,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2544,7 +2544,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2557,7 +2557,7 @@
 				RelativePath="..\libcurl\lib\speedcheck.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2566,7 +2566,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2575,7 +2575,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2584,7 +2584,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2597,7 +2597,7 @@
 				RelativePath="..\libcurl\lib\splay.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2606,7 +2606,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2615,7 +2615,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2624,7 +2624,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2637,7 +2637,7 @@
 				RelativePath="..\libcurl\lib\ssh.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2646,7 +2646,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2655,7 +2655,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2664,7 +2664,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2677,7 +2677,7 @@
 				RelativePath="..\libcurl\lib\sslgen.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2686,7 +2686,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2695,7 +2695,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2704,7 +2704,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2717,7 +2717,7 @@
 				RelativePath="..\libcurl\lib\ssluse.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2726,7 +2726,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2735,7 +2735,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2744,7 +2744,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2757,7 +2757,7 @@
 				RelativePath="..\libcurl\lib\strdup.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2766,7 +2766,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2775,7 +2775,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2784,7 +2784,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2797,7 +2797,7 @@
 				RelativePath="..\libcurl\lib\strequal.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2806,7 +2806,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2815,7 +2815,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2824,7 +2824,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2837,7 +2837,7 @@
 				RelativePath="..\libcurl\lib\strerror.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2846,7 +2846,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2855,7 +2855,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2864,7 +2864,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2877,7 +2877,7 @@
 				RelativePath="..\libcurl\lib\strtok.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2886,7 +2886,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2895,7 +2895,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2904,7 +2904,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2917,7 +2917,7 @@
 				RelativePath="..\libcurl\lib\strtoofft.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2926,7 +2926,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2935,7 +2935,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2944,7 +2944,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2957,7 +2957,7 @@
 				RelativePath="..\libcurl\lib\telnet.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2966,7 +2966,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2975,7 +2975,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2984,7 +2984,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2997,7 +2997,7 @@
 				RelativePath="..\libcurl\lib\tftp.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3006,7 +3006,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3015,7 +3015,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3024,7 +3024,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3037,7 +3037,7 @@
 				RelativePath="..\libcurl\lib\timeval.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3046,7 +3046,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3055,7 +3055,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3064,7 +3064,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3077,7 +3077,7 @@
 				RelativePath="..\libcurl\lib\transfer.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3086,7 +3086,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3095,7 +3095,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3104,7 +3104,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3117,7 +3117,7 @@
 				RelativePath="..\libcurl\lib\url.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3126,7 +3126,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3135,7 +3135,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3144,7 +3144,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3157,7 +3157,7 @@
 				RelativePath="..\libcurl\lib\version.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3166,7 +3166,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3175,7 +3175,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3184,7 +3184,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3277,7 +3277,7 @@
 				RelativePath="..\libcurl\include\curl\curlbuild.h.dist"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -3287,7 +3287,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -3297,7 +3297,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -3307,7 +3307,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -3585,7 +3585,7 @@
 				RelativePath="..\libcurl\lib\libcurl.rc"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -3593,7 +3593,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -3601,7 +3601,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -3609,7 +3609,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"

@@ -19,7 +19,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="DLL Release|Win32"
+			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\zlib\$(ConfigurationName)"
 			ConfigurationType="2"
@@ -116,7 +116,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Release|x64"
+			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="..\..\obj\zlib\$(ConfigurationName)64"
 			ConfigurationType="2"
@@ -213,7 +213,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Debug|Win32"
+			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(ConfigurationName)\bin"
 			IntermediateDirectory="..\..\obj\zlib\$(ConfigurationName)"
 			ConfigurationType="2"
@@ -307,7 +307,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="DLL Debug|x64"
+			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(ConfigurationName)64\bin"
 			IntermediateDirectory="..\..\obj\zlib\$(ConfigurationName)64"
 			ConfigurationType="2"
@@ -412,7 +412,7 @@
 				RelativePath="..\zlib\adler32.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -420,7 +420,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -428,7 +428,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -436,7 +436,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -448,7 +448,7 @@
 				RelativePath="..\zlib\compress.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -456,7 +456,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -464,7 +464,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -472,7 +472,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -484,7 +484,7 @@
 				RelativePath="..\zlib\crc32.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -492,7 +492,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -500,7 +500,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -508,7 +508,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -520,7 +520,7 @@
 				RelativePath="..\zlib\deflate.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -528,7 +528,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -536,7 +536,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -544,7 +544,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -572,7 +572,7 @@
 				RelativePath="..\zlib\infback.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -580,7 +580,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -588,7 +588,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -596,7 +596,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -608,7 +608,7 @@
 				RelativePath="..\zlib\inffast.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -616,7 +616,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -624,7 +624,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -632,7 +632,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -644,7 +644,7 @@
 				RelativePath="..\zlib\inflate.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -652,7 +652,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -660,7 +660,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -668,7 +668,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -680,7 +680,7 @@
 				RelativePath="..\zlib\inftrees.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -688,7 +688,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -696,7 +696,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -704,7 +704,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -716,7 +716,7 @@
 				RelativePath="..\zlib\trees.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -724,7 +724,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -732,7 +732,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -740,7 +740,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -752,7 +752,7 @@
 				RelativePath="..\zlib\uncompr.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -760,7 +760,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -768,7 +768,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -776,7 +776,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -792,7 +792,7 @@
 				RelativePath="..\zlib\zutil.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -800,7 +800,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -808,7 +808,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -816,7 +816,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -882,7 +882,7 @@
 				RelativePath="..\zlib\win32\zlib1.rc"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -891,7 +891,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -900,7 +900,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -909,7 +909,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -927,7 +927,7 @@
 				RelativePath="..\zlib\contrib\masmx86\gvmat32.asm"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -935,7 +935,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -943,7 +943,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -951,7 +951,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -963,7 +963,7 @@
 				RelativePath="..\zlib\contrib\masmx86\gvmat32c.c"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -973,7 +973,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -983,7 +983,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -993,7 +993,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1007,7 +1007,7 @@
 				RelativePath="..\zlib\contrib\masmx86\inffas32.asm"
 				>
 				<FileConfiguration
-					Name="DLL Release|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1015,7 +1015,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Release|x64"
+					Name="Release|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1023,7 +1023,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1031,7 +1031,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="DLL Debug|x64"
+					Name="Debug|x64"
 					ExcludedFromBuild="true"
 					>
 					<Tool
