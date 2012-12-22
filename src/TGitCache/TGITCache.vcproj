@@ -602,10 +602,6 @@
 				RelativePath="..\Resources\Tortoise.ico"
 				>
 			</File>
-			<File
-				RelativePath="..\Resources\TortoiseCache.ico"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
