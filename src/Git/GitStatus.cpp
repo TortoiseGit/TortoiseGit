@@ -711,7 +711,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			int start=0, end=0;
 			int pos=SearchInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength());
 
-			if (GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos))
+			if (GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
 				CGitIndexList::iterator it;
 				CString oldstring;
