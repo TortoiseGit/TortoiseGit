@@ -882,6 +882,9 @@ int CGitHeadFileList::ReadTree()
 	if (repository)
 		git_repository_free(repository);
 
+	if (ret)
+		m_LastModifyTimeHead = 0;
+
 	return ret;
 
 }
@@ -1425,7 +1428,6 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 			}
 			else if (treeptr->ReadTree())
 			{
-				treeptr->m_LastModifyTimeHead = 0;
 				*isVersion = false;
 				return 1;
 			}

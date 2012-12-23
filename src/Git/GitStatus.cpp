@@ -439,7 +439,6 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						}
 						if(treeptr->ReadTree())
 						{
-							treeptr->m_LastModifyTimeHead = 0;
 							//Check if init repository
 							*status = treeptr->m_Head.IsEmpty()? git_wc_status_added: st;
 							if(callback)
