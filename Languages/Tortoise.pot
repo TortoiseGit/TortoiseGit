@@ -5326,7 +5326,7 @@ msgid "No command value specified!"
 msgstr ""
 
 #. Resource IDs: (82)
-msgid "No differences found!"
+msgid "No differences found! Submodule may not be updated. Update submodule now?"
 msgstr ""
 
 #. Resource IDs: (3843)
