@@ -658,7 +658,7 @@ void CPicWindow::SetupScrollBars()
 
     double width = double(picture.m_Width)*picscale;
     double height = double(picture.m_Height)*picscale;
-    if (pSecondPic)
+    if (pSecondPic && pTheOtherPic)
     {
         width = max(width, double(pSecondPic->m_Width)*pTheOtherPic->GetZoom());
         height = max(height, double(pSecondPic->m_Height)*pTheOtherPic->GetZoom());
