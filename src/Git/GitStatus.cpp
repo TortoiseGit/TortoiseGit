@@ -424,6 +424,8 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 
 					if (!treeptr->HeadHashEqualsTreeHash())
 					{
+						treeptr = SHARED_TREE_PTR(new CGitHeadFileList());
+
 						treeptr->ReadHeadHash(gitdir);
 
 						// Init Repository
@@ -608,7 +610,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 			if(g_HeadFileMap.CheckHeadUpdate(gitdir) || g_HeadFileMap.IsHashChanged(gitdir))
 			{
-				SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+				SHARED_TREE_PTR treeptr(new CGitHeadFileList());
 				treeptr->ReadHeadHash(gitdir);
 				if(!treeptr->ReadTree())
 				{
@@ -926,7 +928,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 					if(g_HeadFileMap.CheckHeadUpdate(gitdir))
 					{
-						SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+						SHARED_TREE_PTR treeptr(new CGitHeadFileList());
 
 						treeptr->ReadHeadHash(gitdir);
 

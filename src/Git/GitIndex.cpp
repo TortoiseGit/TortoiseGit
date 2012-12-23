@@ -859,6 +859,7 @@ int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int 
 	return 0;
 }
 
+// ReadTree is/must only be executed on an empty list
 int CGitHeadFileList::ReadTree()
 {
 	CAutoWriteLock lock(&m_SharedMutex);
@@ -867,7 +868,7 @@ int CGitHeadFileList::ReadTree()
 	git_commit *commit = NULL;
 	git_tree * tree = NULL;
 	int ret = 0;
-	this->clear(); // hack to avoid duplicates in the head list, which are introduced in GitStatus::GetFileStatus when this method is called
+	ATLASSERT(this->empty());
 	do
 	{
 		ret = git_repository_open(&repository, gitdir.GetBuffer());
@@ -1436,6 +1437,7 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 
 		if (!treeptr->HeadHashEqualsTreeHash())
 		{
+			SHARED_TREE_PTR treeptr(new CGitHeadFileList());
 			treeptr->ReadHeadHash(gitdir);
 
 			// Init Repository
