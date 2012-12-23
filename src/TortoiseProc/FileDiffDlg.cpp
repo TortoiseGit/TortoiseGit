@@ -202,13 +202,15 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	temp.LoadString(IDS_FILEDIFF_FILE);
 	m_cFileList.InsertColumn(0, temp);
-	temp.LoadString(IDS_FILEDIFF_ACTION);
+	temp.LoadString(IDS_FILEDIFF_EXT);
 	m_cFileList.InsertColumn(1, temp);
+	temp.LoadString(IDS_FILEDIFF_ACTION);
+	m_cFileList.InsertColumn(2, temp);
 
 	temp.LoadString(IDS_FILEDIFF_STATADD);
-	m_cFileList.InsertColumn(2, temp);
-	temp.LoadString(IDS_FILEDIFF_STATDEL);
 	m_cFileList.InsertColumn(3, temp);
+	temp.LoadString(IDS_FILEDIFF_STATDEL);
+	m_cFileList.InsertColumn(4, temp);
 
 	int mincol = 0;
 	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
@@ -391,9 +393,10 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 			icon_idx = SYS_IMAGE_LIST().GetPathIconIndex(fd->GetGitPathString());
 
 		ret = m_cFileList.InsertItem(index, fd->GetGitPathString(), icon_idx);
-		m_cFileList.SetItemText(index, 1, ((CTGitPath*)fd)->GetActionName());
-		m_cFileList.SetItemText(index, 2, ((CTGitPath*)fd)->m_StatAdd);
-		m_cFileList.SetItemText(index, 3, ((CTGitPath*)fd)->m_StatDel);
+		m_cFileList.SetItemText(index, 1, ((CTGitPath*)fd)->GetFileExtension());
+		m_cFileList.SetItemText(index, 2, ((CTGitPath*)fd)->GetActionName());
+		m_cFileList.SetItemText(index, 3, ((CTGitPath*)fd)->m_StatAdd);
+		m_cFileList.SetItemText(index, 4, ((CTGitPath*)fd)->m_StatDel);
 	}
 	return ret;
 }
@@ -594,7 +597,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString cmd = _T("/command:log");
 					cmd += _T(" /path:\"")+m_arFilteredList[index]->GetWinPathString()+_T("\" ");
 					cmd += _T(" /endrev:")+m_rev1.m_CommitHash.ToString();
-					CAppUtils::RunTortoiseProc(cmd);
+					CAppUtils::RunTortoiseGitProc(cmd);
 				}
 			}
 			break;
@@ -923,15 +926,18 @@ bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 	case 0:		//path column
 		result = Data1.GetWinPathString().Compare(Data2.GetWinPathString());
 		break;
-	case 1:		//action column
+	case 1:		//extension column
+		result = Data1.GetFileExtension().Compare(Data2.GetFileExtension());
+		break;
+	case 2:		//action column
 		result = Data1.m_Action - Data2.m_Action;
 		break;
-	case 2:
+	case 3:
 		d1 = CSorter::A2L(Data1.m_StatAdd);
 		d2 = CSorter::A2L(Data2.m_StatAdd);
 		result = d1 - d2;
 		break;
-	case 3:
+	case 4:
 		d1 = CSorter::A2L(Data1.m_StatDel);;
 		d2 = CSorter::A2L(Data2.m_StatDel);
 		result = d1 - d2;
@@ -1146,6 +1152,8 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 			sTextForClipboard += m_cFileList.GetItemText(index, 2);
 			sTextForClipboard += _T("\t");
 			sTextForClipboard += m_cFileList.GetItemText(index, 3);
+			sTextForClipboard += _T("\t");
+			sTextForClipboard += m_cFileList.GetItemText(index, 4);
 			sTextForClipboard += _T("\r\n");
 		}
 	}

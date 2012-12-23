@@ -59,6 +59,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 
+	m_gdiplusToken = NULL;
 	m_bHiColorIcons = TRUE;
 }
 
@@ -291,7 +292,7 @@ void CTortoiseGitBlameApp::OnAppAbout()
 
 void CTortoiseGitBlameApp::OnFileSettings()
 {
-	CCommonAppUtils::RunTortoiseProc(_T(" /command:settings /page:blame"));
+	CCommonAppUtils::RunTortoiseGitProc(_T(" /command:settings /page:blame"));
 }
 
 // CTortoiseGitBlameApp customization load/save methods

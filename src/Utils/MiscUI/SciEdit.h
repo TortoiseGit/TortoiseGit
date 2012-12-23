@@ -119,7 +119,7 @@ public:
 	int			LoadFromFile(CString &filename);
 
 private:
-	bool CSciEdit::IsUTF8(LPVOID pBuffer, size_t cb);
+	bool IsUTF8(LPVOID pBuffer, size_t cb);
 	HMODULE		m_hModule;
 	LRESULT		m_DirectFunction;
 	LRESULT		m_DirectPointer;

@@ -80,7 +80,7 @@ BOOL COpenDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
 
-	CRegDWORD lastRadioButton(_T("Software\\TortoiseMerge\\OpenRadio"), IDC_MERGERADIO);
+	CRegDWORD lastRadioButton(_T("Software\\TortoiseGitMerge\\OpenRadio"), IDC_MERGERADIO);
 	if (((DWORD)lastRadioButton != IDC_MERGERADIO)&&((DWORD)lastRadioButton != IDC_APPLYRADIO))
 		lastRadioButton = IDC_MERGERADIO;
 	GroupRadio((DWORD)lastRadioButton);
@@ -267,7 +267,7 @@ void COpenDlg::OnOK()
 		MessageBox(sErr, NULL, MB_ICONERROR);
 		return;
 	}
-	CRegDWORD lastRadioButton(_T("Software\\TortoiseMerge\\OpenRadio"), IDC_MERGERADIO);
+	CRegDWORD lastRadioButton(_T("Software\\TortoiseGitMerge\\OpenRadio"), IDC_MERGERADIO);
 	lastRadioButton = GetCheckedRadioButton(IDC_MERGERADIO, IDC_APPLYRADIO);
 	CStandAloneDialog::OnOK();
 }

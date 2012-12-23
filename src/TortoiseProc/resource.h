@@ -697,7 +697,7 @@
 #define IDC_SECONDURL                   1303
 #define IDS_ERR_INVALIDREV              1304
 #define IDC_DIFFSTATIC2                 1304
-#define IDS_ERR_EMPTYDIFF               1305
+#define IDS_SUBMODULE_EMPTYDIFF         1305
 #define IDS_ERR_NOTHINGTOADD            1306
 #define IDS_ERR_ERROR                   1307
 #define IDC_SWITCHLEFTRIGHT             1307
@@ -809,7 +809,12 @@
 #define IDS_STASHSAVE_INCLUDEUNTRACKED  1373
 #define IDS_PROC_NOTSHOWAGAINCONTINUE   1374
 #define IDS_PROC_LOG_JUMPNOTFOUND       1375
+#define IDS_RECURSE_SUBMODULES_CHECK    1376
+#define IDS_RECURSE_SUBMODULES_ONDEMAND 1377
 #define IDC_NEWLINESCOLOR               1378
+#define IDS_PROC_SHOWDIFF               1378
+#define IDS_PROC_LOADING                1379
+#define IDS_FILEDIFF_EXT                1380
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
 #define IDC_REFRESH                     1382
@@ -825,8 +830,8 @@
 #define IDC_PROGRESS_BUTTON1            1382
 #define IDC_BUTTON_LOCAL_BRANCH         1382
 #define IDC_EDITGLOBALGITCONFIG         1382
-#define IDC_SHOW_MODIFIED_FILES         1382
 #define IDC_BUTTON_SHOW_ENV             1382
+#define IDC_SHOW_MODIFIED_FILES         1383
 #define IDC_REPOGROUP                   1383
 #define IDC_CLONE_DIR_BROWSE            1383
 #define IDC_BUTTON_TO                   1383
@@ -922,6 +927,8 @@
 #define IDC_RUN_PROGRESS                1486
 #define IDC_PROC_PUSH_SET_UPSTREAM      1486
 #define IDC_CURRENT                     1487
+#define IDC_STATIC_RECURSE_SUBMODULES   1487
+#define IDC_COMBOBOX_RECURSE_SUBMODULES 1488
 #define IDC_COMBOBOXEX1                 1489
 #define IDC_REMOTE_COMBO                1489
 #define IDC_BRANCH_REMOTE               1489
@@ -1207,6 +1214,8 @@
 #define IDC_STATIC_TAGOPT               1727
 #define IDC_COMBO_TAGOPT                1728
 #define IDC_REV1BTN1                    1729
+#define IDC_CHECK_NORECYCLEBIN          1730
+#define IDC_CHECK_DRYRUN                1731
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1598,6 +1607,8 @@
 #define IDS_NONE                        9686
 #define IDS_FETCH_REACHABLE             9687
 #define IDS_REVGRAPH_ERR_NOMEMORY       9688
+#define IDS_PROC_RESET                  9689
+#define IDS_FETCH_TAGS_ONLY             9690
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
@@ -1645,7 +1656,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1730
+#define _APS_NEXT_CONTROL_VALUE         1732
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

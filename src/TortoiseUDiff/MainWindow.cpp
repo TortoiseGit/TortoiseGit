@@ -29,8 +29,12 @@ const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated")
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
+	, m_bMatchCase(false)
+	, m_directFunction(NULL)
+	, m_directPointer(NULL)
+	, m_hWndEdit(NULL)
 {
-	SetWindowTitle(_T("TortoiseUDiff"));
+	SetWindowTitle(_T("TortoiseGitUDiff"));
 }
 
 CMainWindow::~CMainWindow(void)
@@ -276,7 +280,7 @@ std::wstring CMainWindow::GetAppDirectory()
 
 void CMainWindow::RunCommand(const std::wstring& command)
 {
-	tstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseProc.exe");
+	tstring tortoiseProcPath = GetAppDirectory() + _T("TortoiseGitProc.exe");
 	CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str()));
 }
 
@@ -446,7 +450,7 @@ void CMainWindow::SetTitle(LPCTSTR title)
 {
 	size_t len = _tcslen(title);
 	TCHAR * pBuf = new TCHAR[len+40];
-	_stprintf_s(pBuf, len+40, _T("%s - TortoiseUDiff"), title);
+	_stprintf_s(pBuf, len+40, _T("%s - TortoiseGitUDiff"), title);
 	SetWindowTitle(std::wstring(pBuf));
 	delete [] pBuf;
 }

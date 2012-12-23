@@ -34,15 +34,18 @@ CPullFetchDlg::CPullFetchDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CPullFetchDlg::IDD, pParent)
 {
 	m_IsPull=TRUE;
+	m_bAllowRebase = false;
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 	m_bAutoLoadEnable=CAppUtils::IsSSHPutty();;
 	m_regRebase = false;
 	m_bNoFF = false;
+	m_bRebase = FALSE;
 	m_bSquash = false;
 	m_bNoCommit = false;
 	m_bFFonly = false;
 	m_bFetchTags = 2;
 	m_bAllRemotes = FALSE;
+	m_bPrune = false;
 }
 
 CPullFetchDlg::~CPullFetchDlg()
@@ -240,17 +243,20 @@ void CPullFetchDlg::Refresh()
 
 void CPullFetchDlg::OnCbnSelchangeRemote()
 {
-	if (m_Remote.GetCurSel() == 0)
-		return;
-
 	CString remote = m_Remote.GetString();
+	if (remote.IsEmpty() || remote == _T("- all -"))
+	{
+		GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(_T(""));
+		return;
+	}
+
 	CString key;
 	key.Format(_T("remote.%s.tagopt"), remote);
 	CString tagopt = g_Git.GetConfigValue(key);
 	if (tagopt == "--no-tags")
 		tagopt = CString(MAKEINTRESOURCE(IDS_NONE));
 	else if (tagopt == "--tags")
-		tagopt = CString(MAKEINTRESOURCE(IDS_ALL));
+		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY));
 	else
 		tagopt = CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE));
 	CString value;

@@ -74,6 +74,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
 	:filenames(newFilenames)
 	,m_bChanged(false)
+	, m_hwnd(NULL)
 {
 }
 
@@ -257,7 +258,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 
 void CGitPropertyPage::RunCommand(const tstring& command)
 {
-	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
+	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
 	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), const_cast<TCHAR*>(command.c_str())))
 	{
 		// process started - exit

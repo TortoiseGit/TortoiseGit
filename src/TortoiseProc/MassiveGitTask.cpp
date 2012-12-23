@@ -26,6 +26,7 @@ CMassiveGitTask::CMassiveGitTask(CString gitParameters)
 	: m_bUnused(true)
 	, m_NotifyCallbackInstance(NULL)
 	, m_NotifyCallbackMethod(NULL)
+	, m_NotifyCallbackAction(git_wc_notify_add)
 {
 	m_sParams = gitParameters;
 }

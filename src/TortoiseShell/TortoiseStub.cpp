@@ -232,8 +232,8 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
 	// it.
 
 	BOOL bInShellTest = FALSE;
-	TCHAR buf[_MAX_PATH + 1];       // MAX_PATH ok, the test really is for debugging anyway.
-	DWORD pathLength = GetModuleFileName(NULL, buf, _MAX_PATH);
+	TCHAR buf[MAX_PATH + 1];       // MAX_PATH ok, the test really is for debugging anyway.
+	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
 
 	UNREFERENCED_PARAMETER(Reserved);
 

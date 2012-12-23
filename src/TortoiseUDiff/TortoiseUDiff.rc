@@ -114,12 +114,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APP_TITLE           "TortoiseUDiff"
-    IDS_COMMANDLINEHELP     "TortoiseUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer""\n/?  - this help dialog\n/p  - read diff input from console pipe"
+    IDS_APP_TITLE           "TortoiseGitUDiff"
+    IDS_COMMANDLINEHELP     "TortoiseGitUDiff: the unified diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/patchfile:""path to unified diff file""\n/title:""title to show for the viewer""\n/?  - this help dialog\n/p  - read diff input from console pipe"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
     IDS_OPENPATCH           "Open patch file"
     IDS_SAVEPATCH           "Save patch file"
-    IDC_TORTOISEUDIFF       "TORTOISEUDIFF"
+    IDC_TORTOISEUDIFF       "TORTOISEGITUDIFF"
 END
 
 #endif    // English (United States) resources

@@ -72,6 +72,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
+	m_gdiplusToken = NULL;
 
 }
 
@@ -149,12 +150,9 @@ BOOL CTortoiseProcApp::InitInstance()
 	TCHAR buf[6];
 	_tcscpy_s(buf, _T("en"));
 	langId = loc;
-	CString sHelppath;
-	sHelppath = this->m_pszHelpFilePath;
-	sHelppath = sHelppath.MakeLower();
 	// MFC uses a help file with the same name as the application by default,
 	// which means we have to change that default to our language specific help files
-	sHelppath.Replace(_T("tortoiseproc.chm"), _T("TortoiseGit_en.chm"));
+	CString sHelppath = CPathUtils::GetAppDirectory() + _T("TortoiseGit_en.chm");
 	free((void*)m_pszHelpFilePath);
 	m_pszHelpFilePath=_tcsdup(sHelppath);
 	sHelppath = CPathUtils::GetAppParentDirectory() + _T("Languages\\TortoiseGit_en.chm");
@@ -246,6 +244,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	AfxInitRichEdit2();
 	CWinAppEx::InitInstance();
 	SetRegistryKey(_T("TortoiseGit"));
+	AfxGetApp()->m_pszProfileName = _tcsdup(_T("TortoiseProc")); // w/o this ResizableLib will store data under TortoiseGitProc which is not compatible with older versions
 
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
 

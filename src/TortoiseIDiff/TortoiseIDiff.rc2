@@ -32,11 +32,11 @@ BEGIN
         BLOCK "040004e4"
         BEGIN
             VALUE "CompanyName", "http://tortoisesvn.net\0"
-            VALUE "FileDescription", "TortoiseIDiff\0"
+            VALUE "FileDescription", "TortoiseGitIDiff\0"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseIDiff.exe\0"
+            VALUE "InternalName", "TortoiseGitIDiff.exe\0"
             VALUE "LegalCopyright", "Copyright (C) 2006-2012 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseIDiff.exe\0"
+            VALUE "OriginalFilename", "TortoiseGitIDiff.exe\0"
             VALUE "ProductName", "TortoiseIDiff\0"
             VALUE "ProductVersion", STRPRODUCTVER
         END

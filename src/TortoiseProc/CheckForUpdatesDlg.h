@@ -70,6 +70,7 @@ private:
 
 public:
 	BOOL		m_bShowInfo;
+	BOOL		m_bForce;
 
 private:
 	BOOL		m_bVisible;

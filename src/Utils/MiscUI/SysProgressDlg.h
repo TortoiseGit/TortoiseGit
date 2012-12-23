@@ -174,7 +174,7 @@ public:
 	bool EnsureValid();
 
 private:
-	static LRESULT CSysProgressDlg::fnSubclass(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+	static LRESULT fnSubclass(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 
 protected:
 	ATL::CComPtr<IProgressDialog> m_pIDlg;

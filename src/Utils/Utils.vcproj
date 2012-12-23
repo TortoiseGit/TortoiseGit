@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;..\;..\ext\scintilla\include;..\ext\hunspell;.\;.\MiscUi"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -54,7 +54,6 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4996,4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -112,7 +111,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;..\;..\ext\scintilla\include;..\ext\hunspell;.\;.\MiscUi"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -156,7 +155,7 @@
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -175,14 +174,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;..\;..\ext\scintilla\include;..\ext\hunspell;.\;.\MiscUi"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4996,4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -219,7 +220,7 @@
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="1"
-			WholeProgramOptimization="0"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -239,8 +240,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../ext/gitdll;../git;../;../ext/scintilla/include;../ext/hunspell;./;./MiscUi"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="..\..\ext\gitdll;..\git;..\;..\ext\scintilla\include;..\ext\hunspell;.\;.\MiscUi"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
+				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"

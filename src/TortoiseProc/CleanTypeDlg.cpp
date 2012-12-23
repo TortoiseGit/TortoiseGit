@@ -40,6 +40,8 @@ CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
 
 	this->m_bDir = this->m_regDir;
 	this->m_CleanType = this->m_regType;
+	m_bNoRecycleBin = FALSE;
+	m_bDryRun = FALSE;
 }
 
 CCleanTypeDlg::~CCleanTypeDlg()
@@ -50,6 +52,8 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Check(pDX, IDC_CHECK_DIR, m_bDir);
+	DDX_Check(pDX, IDC_CHECK_NORECYCLEBIN, m_bNoRecycleBin);
+	DDX_Check(pDX, IDC_CHECK_DRYRUN, m_bDryRun);
 	DDX_Radio(pDX, IDC_RADIO_CLEAN_ALL,m_CleanType);
 }
 
@@ -70,6 +74,8 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_CLEAN_NO);
 	AdjustControlSize(IDC_RADIO_CLEAN_IGNORE);
 	AdjustControlSize(IDC_CHECK_DIR);
+	AdjustControlSize(IDC_CHECK_NORECYCLEBIN);
+	AdjustControlSize(IDC_CHECK_DRYRUN);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

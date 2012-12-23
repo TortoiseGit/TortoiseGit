@@ -119,8 +119,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\gsoap-win32-2.8.0;..\zlib123;..\wtl\include;..\;..\..\"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -273,8 +274,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="..\gsoap-win32-2.8.0;..\zlib123;..\wtl\include;..\;..\..\"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"

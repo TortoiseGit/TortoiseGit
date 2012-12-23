@@ -24,6 +24,7 @@ IMPLEMENT_DYNAMIC(CHorizontalResizableStandAloneDialog, CResizableStandAloneDial
 CHorizontalResizableStandAloneDialog::CHorizontalResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= NULL*/)
 	: CResizableStandAloneDialog(nIDTemplate, pParentWnd)
 {
+	m_height = 0;
 }
 
 BEGIN_MESSAGE_MAP(CHorizontalResizableStandAloneDialog, CResizableStandAloneDialog)

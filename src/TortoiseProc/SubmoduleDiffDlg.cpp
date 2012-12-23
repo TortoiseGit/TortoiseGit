@@ -20,13 +20,16 @@
 #include "TortoiseProc.h"
 #include "AppUtils.h"
 #include "SubmoduleDiffDlg.h"
+#include "LoglistCommonResource.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleDiffDlg::IDD, pParent)
+	, m_bToIsWorkingCopy(false)
 	, m_bFromOK(false)
 	, m_bToOK(false)
 	, m_bDirty(false)
+	, m_nChangeType(Unknown)
 {
 }
 
@@ -41,6 +44,7 @@ void CSubmoduleDiffDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_FROMSUBJECT, m_sFromSubject);
 	DDX_Text(pDX, IDC_TOHASH, m_sToHash);
 	DDX_Text(pDX, IDC_TOSUBJECT, m_sToSubject);
+	DDX_Control(pDX, IDC_SHOW_DIFF, m_ctrlShowDiffBtn);
 }
 
 BEGIN_MESSAGE_MAP(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
@@ -109,6 +113,11 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
 
 	DialogEnableWindow(IDC_SHOW_DIFF, m_bFromOK && m_bToOK);
+	if (m_bDirty && m_nChangeType != Unknown)
+	{
+		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_PROC_SHOWDIFF));
+		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
+	}
 
 	return FALSE;
 }
@@ -198,7 +207,7 @@ void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
 	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, hash);
-	CAppUtils::RunTortoiseProc(sCmd);
+	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
 void CSubmoduleDiffDlg::OnBnClickedLog()
@@ -214,6 +223,6 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, m_sFromHash, m_sToHash);
-	CAppUtils::RunTortoiseProc(sCmd);
+	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, m_sFromHash, ((m_bDirty && m_nChangeType == Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
+	CAppUtils::RunTortoiseGitProc(sCmd);
 }

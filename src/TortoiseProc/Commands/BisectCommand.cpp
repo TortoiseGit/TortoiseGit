@@ -77,12 +77,12 @@ bool BisectCommand::Execute()
 			CString sCmd;
 			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			CAppUtils::RunTortoiseProc(sCmd);
+			CAppUtils::RunTortoiseGitProc(sCmd);
 			return true;
 		}
 		else if (reset >= 0 && ret == IDC_PROGRESS_BUTTON1 + reset)
 		{
-			CAppUtils::RunTortoiseProc(_T("/command:bisect /reset"));
+			CAppUtils::RunTortoiseGitProc(_T("/command:bisect /reset"));
 			return true;
 		}
 		else if (ret == IDOK)

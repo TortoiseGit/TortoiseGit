@@ -652,7 +652,7 @@ void CTortoiseGitBlameView::BlamePreviousRevision()
 	procCmd += _T(" /command:blame");
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
 
-	CCommonAppUtils::RunTortoiseProc(procCmd);
+	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
 void CTortoiseGitBlameView::DiffPreviousRevision()
@@ -664,7 +664,7 @@ void CTortoiseGitBlameView::DiffPreviousRevision()
 	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
-	CCommonAppUtils::RunTortoiseProc(procCmd);
+	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
 void CTortoiseGitBlameView::ShowLog()
@@ -675,7 +675,7 @@ void CTortoiseGitBlameView::ShowLog()
 	procCmd += _T(" /command:log");
 	procCmd += _T(" /rev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 
-	CCommonAppUtils::RunTortoiseProc(procCmd);
+	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
 LONG CTortoiseGitBlameView::GetBlameWidth()

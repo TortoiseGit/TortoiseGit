@@ -49,5 +49,7 @@ protected:
 public:
 	BOOL	m_bDir;
 	int		m_CleanType;
+	BOOL	m_bNoRecycleBin;
+	BOOL	m_bDryRun;
 	afx_msg void OnBnClickedHelp();
 };

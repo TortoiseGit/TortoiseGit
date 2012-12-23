@@ -1053,7 +1053,7 @@ void CGitProgressDlg::OnBnClickedLogbutton()
 			CString cmd = _T(" /command:commit");
 			cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\"");
 
-			CAppUtils::RunTortoiseProc(cmd);
+			CAppUtils::RunTortoiseGitProc(cmd);
 			this->EndDialog(IDOK);
 			break;
 		}

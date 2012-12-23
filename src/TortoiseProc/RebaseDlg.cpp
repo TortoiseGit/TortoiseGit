@@ -761,21 +761,8 @@ int CRebaseDlg::CheckRebaseCondition()
 	//Todo Check $REBASE_ROOT
 	//Todo Check $DOTEST
 
-	while (g_Git.GetUserName().IsEmpty() || g_Git.GetUserEmail().IsEmpty())
-	{
-		if (CMessageBox::Show(NULL, IDS_PROC_NOUSERDATA, IDS_APPNAME, MB_YESNO | MB_ICONERROR) == IDYES)
-		{
-			CTGitPath path(g_Git.m_CurrentDir);
-			CSettings dlg(IDS_PROC_SETTINGS_TITLE, &path);
-			dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-			dlg.SetTreeWidth(220);
-			dlg.m_DefaultPage = _T("gitconfig");
-			dlg.DoModal();
-			dlg.HandleRestart();
-		}
-		else
-			return -1;
-	}
+	if (!CAppUtils::CheckUserData())
+		return -1;
 
 	//Todo call pre_rebase_hook
 	return 0;

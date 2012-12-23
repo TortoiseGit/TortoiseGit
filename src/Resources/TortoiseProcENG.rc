@@ -205,7 +205,7 @@ BEGIN
     PUSHBUTTON      "",IDC_LOG_JUMPDOWN,405,7,14,14,WS_TABSTOP | BS_ICON
     CONTROL         "",IDC_LOGLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,24,407,57
     CONTROL         "",IDC_SPLITTERTOP,"Static",SS_BLACKFRAME,7,81,407,5
-    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",WS_BORDER | WS_VSCROLL | WS_TABSTOP | 0x1804,7,86,407,96
+    CONTROL         "",IDC_MSGVIEW,"RichEdit20W",ES_MULTILINE | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,86,407,96
     CONTROL         "",IDC_SPLITTERBOTTOM,"Static",SS_BLACKFRAME,7,182,407,4
     CONTROL         "",IDC_LOGMSG,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,187,407,58
     EDITTEXT        IDC_LOGINFO,7,248,407,16,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
@@ -241,7 +241,7 @@ BEGIN
     CONTROL         "",IDC_COMMIT_DATEPICKER,"SysDateTimePick32",DTS_RIGHTALIGN | NOT WS_VISIBLE | WS_TABSTOP,123,123,66,13,WS_EX_RIGHT
     CONTROL         "",IDC_COMMIT_TIMEPICKER,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_UPDOWN | NOT WS_VISIBLE | WS_TABSTOP | 0x8,195,123,48,13
     PUSHBUTTON      "Add &Signed-off-by",IDC_SIGNOFF,258,123,86,14
-    CONTROL         "",IDC_SPLITTER,"Static",SS_OWNERDRAW,65,143,287,5,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_SPLITTER,"Static",SS_OWNERDRAW,6,145,346,5,WS_EX_TRANSPARENT
     LTEXT           "Check:",IDC_SELECTLABEL,14,160,41,8
     LTEXT           "&All",IDC_CHECKALL,55,160,14,8
     LTEXT           "&None",IDC_CHECKNONE,72,160,18,8
@@ -615,7 +615,7 @@ CAPTION "Diff Viewer"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Configure the program used for comparing different revisions of files",IDC_STATIC,7,7,286,87
-    CONTROL         "&TortoiseMerge",IDC_EXTDIFF_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,23,74,10
+    CONTROL         "&TortoiseGitMerge",IDC_EXTDIFF_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,23,74,10
     CONTROL         "&External",IDC_EXTDIFF_ON,"Button",BS_AUTORADIOBUTTON,92,23,71,10
     EDITTEXT        IDC_EXTDIFF,14,41,256,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_EXTDIFFBROWSE,274,41,14,14
@@ -634,7 +634,7 @@ CAPTION "Diff Viewer::Merge Tool"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Configure the program used to resolve conflicted files.",IDC_STATIC,7,7,251,8
-    CONTROL         "&TortoiseMerge",IDC_EXTMERGE_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,70,10
+    CONTROL         "&TortoiseGitMerge",IDC_EXTMERGE_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,7,23,70,10
     CONTROL         "&External",IDC_EXTMERGE_ON,"Button",BS_AUTORADIOBUTTON,89,23,76,10
     EDITTEXT        IDC_EXTMERGE,7,41,263,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_EXTMERGEBROWSE,279,41,14,14
@@ -859,7 +859,7 @@ BEGIN
     COMBOBOX        IDC_FONTSIZES,253,112,31,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Tab size:",IDC_STATIC,14,132,92,8
     EDITTEXT        IDC_TABSIZE,253,130,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Note: the font settings also affect the TortoiseUDiff viewer",IDC_STATIC,15,156,269,21
+    LTEXT           "Note: the font settings also affect the TortoiseGitUDiff viewer",IDC_STATIC,15,156,269,21
     CONTROL         "Follow renames",IDC_FOLLOWRENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,185,148,8
 END
 
@@ -1021,7 +1021,7 @@ BEGIN
     GROUPBOX        "Options",IDC_GROUP_OPTION,7,89,293,61
 END
 
-IDD_PUSH DIALOGEX 0, 0, 317, 265
+IDD_PUSH DIALOGEX 0, 0, 317, 280
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Push"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1040,7 +1040,7 @@ BEGIN
     PUSHBUTTON      "Mana&ge",IDC_REMOTE_MANAGE,254,91,40,16
     CONTROL         "Arbitrary &URL:",IDC_RD_URL,"Button",BS_AUTORADIOBUTTON,15,113,57,10
     CONTROL         "",IDC_URL,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,76,111,218,64
-    GROUPBOX        "Options",IDC_OPTION_GROUP,7,142,295,96
+    GROUPBOX        "Options",IDC_OPTION_GROUP,7,142,295,111
     CONTROL         "&Force Overwrite Existing Branch (May discard changes)",IDC_FORCE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,154,279,10
     CONTROL         "Use Thin &Pack (For slow network connections)",IDC_PACK,
@@ -1053,9 +1053,11 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,212,279,10
     CONTROL         "Always push to the selected remote branch for this local branch",IDC_PROC_PUSH_SET_PUSHBRANCH,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,223,279,10
-    DEFPUSHBUTTON   "OK",IDOK,143,244,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,201,244,50,14
-    PUSHBUTTON      "Help",IDHELP,258,244,50,14
+    LTEXT           "Recurse submodule",IDC_STATIC_RECURSE_SUBMODULES,15,234,100,10
+    COMBOBOX        IDC_COMBOBOX_RECURSE_SUBMODULES,125,234,100,65,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,143,259,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,201,259,50,14
+    PUSHBUTTON      "Help",IDHELP,258,259,50,14
 END
 
 IDD_SVNDCOMMITTYPE DIALOGEX 0, 0, 242, 90
@@ -1290,23 +1292,31 @@ BEGIN
     PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
 END
 
-IDD_RESET DIALOGEX 0, 0, 261, 133
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_RESET DIALOGEX 0, 0, 299, 181
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Reset"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,95,112,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,149,112,50,14
-    PUSHBUTTON      "Help",IDHELP,204,112,50,14
-    GROUPBOX        "Reset Type",IDC_GROUP_RESET_TYPE,7,25,247,60
+    GROUPBOX        "Reset active branch",IDC_GROUP_BASEON,7,7,285,64
+    CONTROL         "Branch",IDC_RADIO_BRANCH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,22,64,10
+    CONTROL         "",IDC_COMBOBOXEX_BRANCH,"ComboBoxEx32",CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,86,20,180,90
+    PUSHBUTTON      "...",IDC_BUTTON_BROWSE_REF,271,20,14,14
+    CONTROL         "Tags",IDC_RADIO_TAGS,"Button",BS_AUTORADIOBUTTON,15,36,64,10
+    CONTROL         "",IDC_COMBOBOXEX_TAGS,"ComboBoxEx32",CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,86,36,180,85
+    CONTROL         "Commit",IDC_RADIO_VERSION,"Button",BS_AUTORADIOBUTTON,15,52,64,10
+    CONTROL         "",IDC_COMBOBOXEX_VERSION,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,86,52,180,79
+    PUSHBUTTON      "...",IDC_BUTTON_SHOW,271,51,14,14
+    GROUPBOX        "Reset Type",IDC_GROUP_RESET_TYPE,7,75,285,60
     CONTROL         "Soft: Leave working tree and index untouched",IDC_RADIO_RESET_SOFT,
-                    "Button",BS_AUTORADIOBUTTON,15,39,231,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,15,89,270,10
     CONTROL         "Mixed: Leave working tree untouched, reset index",IDC_RADIO_RESET_MIXED,
-                    "Button",BS_AUTORADIOBUTTON,15,52,231,10
+                    "Button",BS_AUTORADIOBUTTON,15,102,270,10
     CONTROL         "Hard: Reset working tree and index (discard all local changes)",IDC_RADIO_RESET_HARD,
-                    "Button",BS_AUTORADIOBUTTON,15,65,231,10
-    LTEXT           "Reset active branch",IDC_RESET_BRANCH_NAME,8,6,244,18
-    PUSHBUTTON      "Show modified files in working tree",IDC_SHOW_MODIFIED_FILES,7,90,247,14
+                    "Button",BS_AUTORADIOBUTTON,15,115,270,10
+    PUSHBUTTON      "Show modified files in working tree",IDC_SHOW_MODIFIED_FILES,7,140,285,14
+    DEFPUSHBUTTON   "OK",IDOK,125,160,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,184,160,50,14
+    PUSHBUTTON      "Help",IDHELP,242,160,50,14
 END
 
 IDD_REBASE DIALOGEX 0, 0, 417, 237
@@ -1487,7 +1497,7 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,338,241,50,14
 END
 
-IDD_CLEAN DIALOGEX 0, 0, 261, 117
+IDD_CLEAN DIALOGEX 0, 0, 261, 157
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Clean"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1500,10 +1510,12 @@ BEGIN
     CONTROL         "Remove ignored files (-fX)",IDC_RADIO_CLEAN_IGNORE,
                     "Button",BS_AUTORADIOBUTTON,15,45,232,10
     CONTROL         "Remove untracked directories (-d)",IDC_CHECK_DIR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,68,232,10
-    DEFPUSHBUTTON   "OK",IDOK,81,96,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,142,96,50,14
-    PUSHBUTTON      "Help",IDHELP,204,96,50,14
-    LTEXT           "Attention: This command affects the whole working tree!",IDC_STATIC,14,83,233,10
+    CONTROL         "Do not use recycle bin",IDC_CHECK_NORECYCLEBIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,81,87,10
+    CONTROL         "Dry run",IDC_CHECK_DRYRUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,95,40,10
+    DEFPUSHBUTTON   "OK",IDOK,81,128,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,142,128,50,14
+    PUSHBUTTON      "Help",IDHELP,204,128,50,14
+    LTEXT           "Attention: This command affects the whole working tree!",IDC_STATIC,14,114,233,10
 END
 
 IDD_PATCH_VIEW DIALOGEX 0, 0, 248, 195
@@ -2309,9 +2321,9 @@ BEGIN
     IDD_RESET, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 254
+        RIGHTMARGIN, 292
         TOPMARGIN, 7
-        BOTTOMMARGIN, 126
+        BOTTOMMARGIN, 174
     END
 
     IDD_REBASE, DIALOG
@@ -2385,7 +2397,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 106
+        BOTTOMMARGIN, 146
     END
 
     IDD_PATCH_VIEW, DIALOG
@@ -2642,7 +2654,7 @@ BEGIN
     ID_VIEW_ZOOMWIDTH       "Zoom to fit in width"
     ID_VIEW_SHOWOVERVIEW    "Show an overview of the whole graph"
     ID_VIEW_TOPDOWN         "Show oldest node at top"
-    ID_VIEW_SHOWHEAD        """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
+    ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
 END
 
 STRINGTABLE 
@@ -2717,7 +2729,9 @@ BEGIN
     IDS_NONE                "None"
     IDS_FETCH_REACHABLE     "Reachable"
     IDS_REVGRAPH_ERR_NOMEMORY 
-                            """Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."""
+                            "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
+    IDS_PROC_RESET          "Reset"
+    IDS_FETCH_TAGS_ONLY     "All tags only"
 END
 
 STRINGTABLE 
@@ -2875,7 +2889,7 @@ BEGIN
                             "Check to show relative times in log messages"
     IDS_PROC_BROWSEREFS_DELETEBRANCHES "Delete %d branches"
     IDS_ERR_EXTDIFFSTART    "Could not start external diff program!\n\n%s"
-    IDS_ERR_NOCOMMAND       "No command specified!\n\nTortoiseProc.exe is used by the Shell extension and should not be called directly!"
+    IDS_ERR_NOCOMMAND       "No command specified!\n\nTortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
     IDS_ERR_NOCOMMANDVALUE  "No command value specified!"
     IDS_ERR_NOSTATUS        "Could not get the status!"
     IDS_LOG_SUBMODULE       "Show log of submodule"
@@ -2904,7 +2918,7 @@ BEGIN
                             "The file ""%s"" does not exist in your working tree.\nDo you want to select another file to diff?"
     IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
-    IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to ""%s"""
+    IDS_PROC_RESETBRANCH    "Reset current branch ""%s"" to"
     IDS_LOG_PUSH            "Push..."
     IDS_FILEDIFF_LOG        "Show log"
     IDS_PROC_TASKS          "Tasks"
@@ -3017,7 +3031,7 @@ BEGIN
     IDS_PROC_NEWBRANCHTAG_SIGN_TT "Requires GPG and a key without passphrase."
     IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
     IDS_ERR_INVALIDREV      "Invalid revision number!"
-    IDS_ERR_EMPTYDIFF       "No differences found!"
+    IDS_SUBMODULE_EMPTYDIFF "No differences found! Submodule may not be updated. Update submodule now?"
     IDS_ERR_NOTHINGTOADD    "There is nothing to add. All the files and folders are either under version control, have been ignored or the global ignore configuration setting."
     IDS_ERR_ERROR           "Error"
     IDS_ERR_NOVALIDPATH     "This is not a valid path!\nA valid path must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
@@ -3641,7 +3655,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_PAGEANT         "Could not start the Putty Agent (pageant)."
     IDS_MENU_VIEWPATCH      "View Patch"
-    IDS_MENU_VIEWWITHMERGE  "Review Patch with TortoiseMerge"
+    IDS_MENU_VIEWWITHMERGE  "Review Patch with TortoiseGitMerge"
     IDS_MENU_APPLY          "Apply Patch..."
     IDS_MENU_SENDMAIL       "Send Mail..."
     IDS_ERROR_NOREF         "No reference found"
@@ -3883,6 +3897,15 @@ BEGIN
     IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_RECURSE_SUBMODULES_CHECK "Check"
+    IDS_RECURSE_SUBMODULES_ONDEMAND "On demand"
+    IDS_PROC_SHOWDIFF       "Show diff"
+    IDS_PROC_LOADING        "Loading..."
+    IDS_FILEDIFF_EXT        "Extension"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -3921,6 +3944,7 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
     "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
     "#include ""TortoiseProc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
     "#include ""afxres.rc""         // Standard components\r\n"
     "#include ""afxprint.rc""  // printing/print preview resources\r\n"
@@ -3949,6 +3973,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE 9, 1
+#pragma code_page(1252)
 #include "TortoiseProc.rc2"  // non-Microsoft Visual C++ edited resources
 #include "afxres.rc"         // Standard components
 #include "afxprint.rc"  // printing/print preview resources

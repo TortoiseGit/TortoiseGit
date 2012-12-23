@@ -38,12 +38,17 @@ IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
 {
+	m_CurrentCmd = 0;
 	m_pTooltip=&this->m_tooltips;
 	m_bInited=false;
 	m_CmdOutCurrentPos=0;
 	m_bAutoLoadPuttyKey = CAppUtils::IsSSHPutty();
 	m_bForce=false;
+	m_Gitverion = 0;
 	m_bBlock = false;
+	m_pThread = NULL;
+	m_bAbort = false;
+	m_GitCmdStatus = -1;
 	m_startTick = GetTickCount();
 }
 
@@ -365,7 +370,7 @@ void CSyncDlg::FetchComplete()
 		{
 			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::RunTortoiseProc(cmd);
+			CAppUtils::RunTortoiseGitProc(cmd);
 		}
 		if(response == IDC_REBASE_POST_BUTTON + 1)
 		{
@@ -1158,7 +1163,7 @@ void CSyncDlg::OnBnClickedButtonCommit()
 	cmd += g_Git.m_CurrentDir;
 	cmd += _T("\"");
 
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
 void CSyncDlg::OnOK()
@@ -1252,5 +1257,5 @@ void CSyncDlg::OnBnClickedLog()
 	cmd += g_Git.m_CurrentDir;
 	cmd += _T("\"");
 
-	CAppUtils::RunTortoiseProc(cmd);
+	CAppUtils::RunTortoiseGitProc(cmd);
 }

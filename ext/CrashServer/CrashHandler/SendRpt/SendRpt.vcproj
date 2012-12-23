@@ -114,8 +114,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;..\..\external\gsoap-win32-2.8.0&quot;;..\..\external\wtl\include;..\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"
@@ -260,8 +261,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
+				OmitFramePointers="true"
 				AdditionalIncludeDirectories="&quot;..\..\external\gsoap-win32-2.8.0&quot;;..\..\external\wtl\include;..\"
 				PreprocessorDefinitions="USE64;WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="0"

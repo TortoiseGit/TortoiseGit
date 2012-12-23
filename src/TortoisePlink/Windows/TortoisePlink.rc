@@ -37,7 +37,7 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 
 IDD_LOGIN DIALOG  0, 0, 200, 70
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "TortoisePlink"
+CAPTION "TortoiseGitPLink"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,40,50,50,14
@@ -71,12 +71,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "Adapted from PuTTY plink (http://www.chiark.greenend.org.uk/~sgtatham/putty/)"
             VALUE "CompanyName", "TortoiseGit team and TortoiseSVN team"
-            VALUE "FileDescription", "TortoisePlink"
+            VALUE "FileDescription", "TortoiseGitPLink"
             VALUE "FileVersion", "Release 0.62"
-            VALUE "InternalName", "TortoisePlink"
+            VALUE "InternalName", "TortoiseGitPLink"
             VALUE "LegalCopyright", "Copyright © 2003-2011"
-            VALUE "OriginalFilename", "TortoisePlink.exe"
-            VALUE "ProductName", "TortoiseGit TortoisePlink"
+            VALUE "OriginalFilename", "TortoiseGitPLink.exe"
+            VALUE "ProductName", "TortoiseGit TortoiseGitPLink"
             VALUE "ProductVersion", "Release 0.62"
         END
     END

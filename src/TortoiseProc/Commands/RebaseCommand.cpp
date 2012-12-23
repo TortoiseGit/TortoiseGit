@@ -81,7 +81,7 @@ bool RebaseCommand::Execute()
 		{
 			CString cmd = _T("/command:log");
 			cmd += _T(" /path:\"") + g_Git.m_CurrentDir + _T("\"");
-			CAppUtils::RunTortoiseProc(cmd);
+			CAppUtils::RunTortoiseGitProc(cmd);
 			return true;
 		}
 	}

@@ -91,7 +91,7 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_REACHABLE)));
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
-	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
+	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_FETCH_TAGS_ONLY)));
 	m_ctrlTagOpt.SetCurSel(0);
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
@@ -311,7 +311,7 @@ BOOL CSettingGitRemote::OnApply()
 		this->m_ctrlRemoteList.AddString(m_strRemote);
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
-			CCommonAppUtils::RunTortoiseProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
+			CCommonAppUtils::RunTortoiseGitProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
 	if(m_ChangedMask & REMOTE_URL)
 	{

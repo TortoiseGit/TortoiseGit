@@ -3,7 +3,7 @@
 <preface id="tme-preface" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Preface</title>
 	<simplesect>
-		<graphic srccredit="TortoiseMerge Logo" fileref="images/tortoisemerge_logo_hor468x64.png"/>
+		<graphic srccredit="TortoiseGitMerge Logo" fileref="images/tortoisemerge_logo_hor468x64.png"/>
 	</simplesect>
 	<simplesect>
 		<para>
@@ -15,7 +15,7 @@
 			and decide if you want to apply them.
 		</para>
 		<para>
-			TortoiseMerge helps you with both those tasks:
+			TortoiseGitMerge helps you with both those tasks:
 			<itemizedlist>
 				<listitem>
 					<para>
@@ -30,7 +30,7 @@
 			</itemizedlist>
 		</para>
 		<para>
-			TortoiseMerge also helps you to sort out conflicted files which can
+			TortoiseGitMerge also helps you to sort out conflicted files which can
 			occur if you're working with a source control system and others
 			are working on the same files as you.
 		</para>
@@ -39,24 +39,18 @@
 	<!-- ========================	SECTION	1 ============================ -->
 	<!-- ================================================================= -->
 	<sect1 id="tme-preface-source">
-		<title>TortoiseMerge is free!</title>
+		<title>TortoiseGitMerge is free!</title>
 		<para>
-			TortoiseMerge is free. You don't have to pay for it, you can use it
+			TortoiseGitMerge is free. You don't have to pay for it, you can use it
 			any way you want. It is developed under the GP license (GPL).
 		</para>
 		<para>
-			TortoiseMerge is an Open Source project. That means you have full
+			TortoiseGitMerge is an Open Source project. It is a part of TortoiseGit project. That means you have full
 			read access to the source code of this program. You can browse it
 			on this link
-			<ulink url="http://TortoiseGit.tigris.org/svn/TortoiseGit/">
-				<citetitle>http://TortoiseGit.tigris.org/svn/TortoiseGit/</citetitle>
+			<ulink url="http://code.google.com/p/tortoisegit/source/browse/">
+				<citetitle>http://code.google.com/p/tortoisegit/source/browse/</citetitle>
 			</ulink>.
-			You will be prompted to enter username and password.
-			The username is <literal>guest</literal>, and the password must be left blank.
-			The most recent version (where we're currently working) is located under
-			<filename>/trunk/</filename>,
-			and the released versions are located under
-			<filename>/tags/</filename>.
 		</para>
 		<xi:include href="../wishlist.xml"/>
 	</sect1>
@@ -73,7 +67,7 @@
 					</term>
 					<listitem>
 						<para>
-							for the hard work on TortoiseMerge
+							for the hard work on TortoiseGitMerge
 						</para>
 					</listitem>
 				</varlistentry>

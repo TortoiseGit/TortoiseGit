@@ -38,6 +38,7 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=NULL*/)
 	m_bBranch=FALSE;
 	m_bTrack = 2;
 	m_bForce=FALSE;
+	m_bBranchOverride = FALSE;
 }
 
 CGitSwitchDlg::~CGitSwitchDlg()
@@ -109,6 +110,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	Init();
 
 	SetDefaultChoose(IDC_RADIO_BRANCH);
+	GetDlgItem(IDC_RADIO_BRANCH)->SetFocus();
 
 	this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 

@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoiseUDiff"
+	Name="TortoiseGitUDiff"
 	ProjectGUID="{BC5A5F3B-E41A-4C56-B16F-263D2C6D6475}"
 	RootNamespace="TortoiseUDiff"
 	Keyword="Win32Proj"
@@ -52,7 +52,6 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -198,13 +197,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4018"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -217,13 +218,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="0"
+				SetChecksum="true"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -275,9 +276,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI"
 				PreprocessorDefinitions="WIN64;NDEBUG;_WINDOWS"
+				StringPooling="true"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -293,12 +297,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				SetChecksum="true"
 				TargetMachine="17"
 			/>
 			<Tool

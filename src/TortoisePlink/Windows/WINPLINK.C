@@ -210,13 +210,13 @@ static void usage(void)
     j += sprintf(buf+j, "  -N        don't start a shell/command (SSH-2 only)\n");
     j += sprintf(buf+j, "  -nc host:port\n");
     j += sprintf(buf+j, "            open tunnel in place of session (SSH-2 only)\n");
-	MessageBox(NULL, buf, "TortoisePlink", MB_ICONINFORMATION);
+	MessageBox(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
 	exit(1);
 }
 
 static void version(void)
 {
-	printf("TortoisePlink: %s\n", ver);
+	printf("TortoiseGitPlink: %s\n", ver);
 	exit(1);
 }
 

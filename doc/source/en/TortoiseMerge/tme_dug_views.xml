@@ -3,7 +3,7 @@
 <sect1 id="tmerge-dug-views">
 	<title>Viewing Modes</title>
 	<para>
-		TortoiseMerge has three main viewing modes: one-pane, two-pane
+		TortoiseGitMerge has three main viewing modes: one-pane, two-pane
 		and three-pane view. One/two-pane view is used to view changes
 		and three-pane view is used to resolve conflicts.
 	</para>
@@ -54,7 +54,7 @@
 			</itemizedlist>
 		</para>
 		<para>
-			If you want to compare/merge three files, TortoiseMerge 
+			If you want to compare/merge three files, TortoiseGitMerge 
 			will show you the differences in a three pane view. This view 
 			is also used if you need to resolve conflicted files.
 		</para>
@@ -79,7 +79,7 @@
 	<sect2 id="tmerge-dug-view-patch">
 		<title>Applying Patches</title>
 		<para>
-			After TortoiseMerge parses the patch file it will show
+			After TortoiseGitMerge parses the patch file it will show
 			you a small window with all the files which have changes
 			according to the patch file.
 			<figure id="tmerge-dug-dia-patch">
@@ -95,7 +95,7 @@
 		<para>
 			But don't worry. If you're working with Git you can
 			retrieve an older version of the file and resolve the conflict.
-			In fact, TortoiseMerge automatically tries to get that older
+			In fact, TortoiseGitMerge automatically tries to get that older
 			version of the file and then shows you the diff between
 			<emphasis>Base</emphasis> (the older version of the file),
 			<emphasis>Mine</emphasis> (the file as it is currently in your
@@ -112,7 +112,7 @@
 			The double-click action is to preview.
 		</para>
 		<para>
-			Depending on whether TortoiseMerge can apply the patch directly
+			Depending on whether TortoiseGitMerge can apply the patch directly
 			or by fetching an older version of the file first, it shows you
 			a two pane view (patch can be applied directly) or a three pane
 			view (older version of file fetched).

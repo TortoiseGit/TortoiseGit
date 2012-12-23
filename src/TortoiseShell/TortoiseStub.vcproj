@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TortoiseStub"
+	Name="TortoiseGitStub"
 	ProjectGUID="{DB98402B-2CF6-4EC6-89F9-D19365EE8DE3}"
 	RootNamespace="TortoiseStub"
 	TargetFrameworkVersion="131072"
@@ -45,21 +45,21 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/TortoiseStub.tlb"
+				TypeLibraryName=".\Debug\TortoiseStub.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../Utils"
+				AdditionalIncludeDirectories="..\Utils"
 				PreprocessorDefinitions="WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;_BIND_TO_CURRENT_CRT_VERSION"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation="..\..\obj\TortoiseStub\Debug/"
+				AssemblerListingLocation="..\..\obj\TortoiseStub\Debug\"
 				ObjectFile="..\..\obj\TortoiseStub\Debug/"
-				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Debug/"
+				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Debug\"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -77,15 +77,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/TortoiseStub.dll"
+				OutputFile="$(OutDir)\TortoiseGitStub.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TortoiseStub.pdb"
+				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseStub\Debug/TortoiseStub.lib"
+				ImportLibrary="..\..\obj\TortoiseStub\Debug\TortoiseStub.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -100,7 +100,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/TortoiseStub.bsc"
+				OutputFile=".\Debug\TortoiseStub.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -139,21 +139,21 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/TortoiseStub.tlb"
+				TypeLibraryName=".\Debug\TortoiseStub.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../Utils"
+				AdditionalIncludeDirectories="..\Utils"
 				PreprocessorDefinitions="WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;_BIND_TO_CURRENT_CRT_VERSION"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation="..\..\obj\TortoiseStub\Debug64/"
-				ObjectFile="..\..\obj\TortoiseStub\Debug64/"
-				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Debug64/"
+				AssemblerListingLocation="..\..\obj\TortoiseStub\Debug64\"
+				ObjectFile="..\..\obj\TortoiseStub\Debug64\"
+				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Debug64\"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -171,15 +171,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/TortoiseStub.dll"
+				OutputFile="$(OutDir)\TortoiseGitStub.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TortoiseStub.pdb"
+				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseStub\Debug64/TortoiseStub.lib"
+				ImportLibrary="..\..\obj\TortoiseStub\Debug64\TortoiseStub.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -194,7 +194,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/TortoiseStub.bsc"
+				OutputFile=".\Debug\TortoiseStub.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -234,29 +234,26 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/TortoiseStub.tlb"
+				TypeLibraryName=".\Release\TortoiseStub.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="0"
-				FavorSizeOrSpeed="2"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../Utils"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\Utils"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_BIND_TO_CURRENT_CRT_VERSION"
 				StringPooling="true"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				StructMemberAlignment="0"
-				EnableFunctionLevelLinking="false"
+				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation="..\..\obj\TortoiseStub\Release/"
-				ObjectFile="..\..\obj\TortoiseStub\Release/"
-				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Release/"
+				AssemblerListingLocation="..\..\obj\TortoiseStub\Release\"
+				ObjectFile="..\..\obj\TortoiseStub\Release\"
+				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Release\"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -271,18 +268,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/TortoiseStub32.dll"
-				LinkIncremental="1"
+				OutputFile="$(OutDir)\TortoiseGitStub32.dll"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
-				ProgramDatabaseFile="$(OutDir)/TortoiseStub.pdb"
+				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
 				SubSystem="2"
+				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="0"
+				SetChecksum="true"
 				BaseAddress="0x5940000"
-				RandomizedBaseAddress="2"
-				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseStub\Release/TortoiseStub.lib"
+				ImportLibrary="..\..\obj\TortoiseStub\Release\TortoiseStub.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -297,7 +293,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/TortoiseStub.bsc"
+				OutputFile=".\Release\TortoiseStub.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -337,29 +333,26 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Release/TortoiseStub.tlb"
+				TypeLibraryName=".\Release\TortoiseStub.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="0"
-				FavorSizeOrSpeed="2"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../Utils"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="..\Utils"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_BIND_TO_CURRENT_CRT_VERSION"
 				StringPooling="true"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				StructMemberAlignment="0"
-				EnableFunctionLevelLinking="false"
+				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
-				AssemblerListingLocation="..\..\obj\TortoiseStub\Release64/"
-				ObjectFile="..\..\obj\TortoiseStub\Release64/"
-				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Release64/"
+				AssemblerListingLocation="..\..\obj\TortoiseStub\Release64\"
+				ObjectFile="..\..\obj\TortoiseStub\Release64\"
+				ProgramDataBaseFileName="..\..\obj\TortoiseStub\Release64\"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -374,18 +367,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/TortoiseStub.dll"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\TortoiseStub.def"
-				ProgramDatabaseFile="$(OutDir)/TortoiseStub.pdb"
+				ProgramDatabaseFile="$(OutDir)\TortoiseStub.pdb"
 				SubSystem="2"
+				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				OptimizeForWindows98="0"
+				SetChecksum="true"
 				BaseAddress="0x5940000"
-				RandomizedBaseAddress="2"
 				DataExecutionPrevention="0"
-				ImportLibrary="..\..\obj\TortoiseStub\Release64/TortoiseStub.lib"
+				ImportLibrary="..\..\obj\TortoiseStub\Release64\TortoiseStub.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -400,7 +392,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/TortoiseStub.bsc"
+				OutputFile=".\Release\TortoiseStub.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -421,11 +413,11 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\Utils\Debug.c"
+				RelativePath="..\Utils\Debug.cpp"
 				>
 			</File>
 			<File
-				RelativePath="TortoiseStub.c"
+				RelativePath="TortoiseStub.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"

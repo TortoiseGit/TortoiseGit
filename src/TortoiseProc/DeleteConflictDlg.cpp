@@ -34,6 +34,7 @@ CDeleteConflictDlg::CDeleteConflictDlg(CWnd* pParent /*=NULL*/)
 	, m_LocalStatus(_T(""))
 	, m_RemoteStatus(_T(""))
 {
+	m_bShowModifiedButton = FALSE;
 	m_bIsDelete =FALSE;
 }
 

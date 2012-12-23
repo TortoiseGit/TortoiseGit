@@ -26,6 +26,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -51,13 +52,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories="..\apr\include,..\apr\include\arch,..\apr\include\arch\win32,..\apr\include\arch\unix"
 				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/libapr.pch"
+				PrecompiledHeaderFile=".\Release\libapr.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libapr_src"
@@ -72,7 +74,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr/include"
+				AdditionalIncludeDirectories="..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -88,6 +90,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EEC0000"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 			/>
@@ -103,7 +108,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/libapr.bsc"
+				OutputFile=".\Release\libapr.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -125,6 +130,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -144,20 +150,21 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Release/libapr.tlb"
+				TypeLibraryName=".\Release\libapr.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
+				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories="..\apr\include,..\apr\include\arch,..\apr\include\arch\win32,..\apr\include\arch\unix"
 				PreprocessorDefinitions="NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;WIN64"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release64/libapr.pch"
-				AssemblerListingLocation=".\Release/"
+				PrecompiledHeaderFile=".\Release64\libapr.pch"
+				AssemblerListingLocation=".\Release\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libapr_src"
 				WarningLevel="3"
@@ -171,7 +178,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,APR_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr/include"
+				AdditionalIncludeDirectories="..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -186,6 +193,9 @@
 				ProgramDatabaseFile="$(OutDir)\libapr_tsvn.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="1"
+				SetChecksum="true"
 				BaseAddress="0x6EEC0000"
 				ImportLibrary="$(OutDir)\libapr_tsvn.lib"
 				TargetMachine="17"
@@ -202,7 +212,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/libapr.bsc"
+				OutputFile=".\Release\libapr.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -243,18 +253,18 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/libapr.tlb"
+				TypeLibraryName=".\Debug\libapr.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHsc "
 				Optimization="0"
-				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
+				AdditionalIncludeDirectories="..\apr\include,..\apr\include\arch,..\apr\include\arch\win32,..\apr\include\arch\unix"
 				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/libapr.pch"
-				AssemblerListingLocation=".\Debug/"
+				PrecompiledHeaderFile=".\Debug\libapr.pch"
+				AssemblerListingLocation=".\Debug\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libapr_src"
 				WarningLevel="3"
@@ -268,7 +278,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr/include"
+				AdditionalIncludeDirectories="..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -300,7 +310,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/libapr.bsc"
+				OutputFile=".\Debug\libapr.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -341,18 +351,18 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/libapr.tlb"
+				TypeLibraryName=".\Debug\libapr.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHsc "
 				Optimization="0"
-				AdditionalIncludeDirectories="../apr/include,../apr/include/arch,../apr/include/arch/win32,../apr/include/arch/unix"
+				AdditionalIncludeDirectories="..\apr\include,..\apr\include\arch,..\apr\include\arch\win32,..\apr\include\arch\unix"
 				PreprocessorDefinitions="_DEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;WIN64"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/libapr.pch"
-				AssemblerListingLocation=".\Debug/"
+				PrecompiledHeaderFile=".\Debug\libapr.pch"
+				AssemblerListingLocation=".\Debug\"
 				ObjectFile="$(INTDIR)\"
 				ProgramDataBaseFileName="$(INTDIR)\libapr_src"
 				WarningLevel="3"
@@ -366,7 +376,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG,APR_VERSION_ONLY"
 				Culture="1033"
-				AdditionalIncludeDirectories="../apr/include"
+				AdditionalIncludeDirectories="..\apr\include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -398,7 +408,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/libapr.bsc"
+				OutputFile=".\Debug\libapr.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

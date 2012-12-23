@@ -161,7 +161,7 @@ bool PullCommand::Execute()
 			CString sCmd;
 			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
-			CAppUtils::RunTortoiseProc(sCmd);
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 	}
 

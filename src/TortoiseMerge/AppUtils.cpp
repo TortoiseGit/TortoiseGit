@@ -46,11 +46,11 @@ CAppUtils::~CAppUtils(void)
 
 BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg * progDlg, HWND hWnd /*=NULL*/)
 {
-	CString sSCMPath = CRegString(_T("Software\\TortoiseMerge\\SCMPath"), _T(""));
+	CString sSCMPath = CRegString(_T("Software\\TortoiseGitMerge\\SCMPath"), _T(""));
 	if (sSCMPath.IsEmpty())
 	{
 		// no path set, so use TortoiseSVN as default
-		sSCMPath = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+		sSCMPath = CPathUtils::GetAppDirectory() + _T("TortoiseGitProc.exe");
 		sSCMPath += _T(" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4");
 	}
 	CString sTemp;
@@ -64,7 +64,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	if (!CCreateProcessHelper::CreateProcess(NULL, (LPTSTR)(LPCTSTR)sSCMPath, &process))
 	{
 		CFormatMessageWrapper errorDetails;
-		MessageBox(NULL, errorDetails, _T("TortoiseMerge"), MB_OK | MB_ICONERROR);
+		MessageBox(NULL, errorDetails, _T("TortoiseGitMerge"), MB_OK | MB_ICONERROR);
 		return FALSE;
 	}
 	DWORD ret = 0;

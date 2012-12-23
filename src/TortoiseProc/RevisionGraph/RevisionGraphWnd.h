@@ -19,7 +19,10 @@
 //
 #pragma once
 //#include "RevisionGraph/RevisionGraphState.h"
+#pragma warning(push)
+#pragma warning(disable: 4481) // nonstandard extension used: override specifier 'override'
 #include "Future.h"
+#pragma warning(pop)
 #include "ProgressDlg.h"
 #include "Colors.h"
 //#include "SVNDiff.h"
@@ -27,11 +30,14 @@
 #include "SVG.h"
 #include "LogDlgHelper.h"
 
+#pragma warning(push)
+#pragma warning(disable: 4100) // unreferenced formal parameter
 #include <ogdf/layered/SugiyamaLayout.h>
 #include <ogdf/layered/OptimalRanking.h>
 #include <ogdf/layered/MedianHeuristic.h>
 #include <ogdf/layered/OptimalHierarchyLayout.h>
 #include <ogdf/layered/FastHierarchyLayout.h>
+#pragma warning(pop)
 
 typedef void CVisibleGraphNode;
 typedef int index_t;
@@ -385,7 +391,7 @@ private:
 	void			DrawGlyphs (GraphicsDevice& graphics, Image* glyphs, const CVisibleGraphNode* node, const RectF& nodeRect,
 								DWORD state, DWORD allowed, bool upsideDown);
 	void			DrawMarker ( GraphicsDevice& graphics, const RectF& noderect
-							   , MarkerPosition position, int relPosition, Color &penColor);
+							   , MarkerPosition position, int relPosition, Color &penColor, int num);
 //	void			IndicateGlyphDirection ( GraphicsDevice& graphics, const ILayoutNodeList* nodeList
 //										 , const ILayoutNodeList::SNode& node, const RectF& nodeRect
 //										 , DWORD glyphs, bool upsideDown, const CSize& offset);

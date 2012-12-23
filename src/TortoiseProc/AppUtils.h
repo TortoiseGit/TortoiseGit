@@ -44,7 +44,7 @@ public:
 		bool bWait;
 		bool bBlame;
 		bool bReadOnly;
-		bool bAlternativeTool; // If true, invert selection of TortoiseMerge vs. external diff tool
+		bool bAlternativeTool; // If true, invert selection of TortoiseGitMerge vs. external diff tool
 
 		DiffFlags(): bWait(false), bBlame(false), bReadOnly(false), bAlternativeTool(false)	{}
 		DiffFlags& Wait(bool b = true) { bWait = b; return *this; }
@@ -66,7 +66,7 @@ public:
 		const CString& mergedname = CString(), bool bReadOnly = false);
 
 	/**
-	 * Starts the external patch program (currently always TortoiseMerge)
+	 * Starts the external patch program (currently always TortoiseGitMerge)
 	 */
 	static BOOL StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir,
 			const CString& sOriginalDescription = CString(), const CString& sPatchedDescription = CString(),
@@ -191,6 +191,8 @@ public:
 	static bool CreateMultipleDirectory(const CString &dir);
 
 	static void RemoveTrailSlash(CString &path);
+
+	static bool CheckUserData();
 
 	static BOOL Commit(CString bugid,BOOL bWholeProject,CString &sLogMsg,
 					CTGitPathList &pathList,

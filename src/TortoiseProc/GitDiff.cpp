@@ -182,6 +182,18 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 			CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return -1;
 		}
+
+		if (output.IsEmpty())
+		{
+			if (CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_SUBMODULE_EMPTYDIFF)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1)
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			}
+			return -1;
+		}
+
 		int start =0;
 		int oldstart = output.Find(_T("-Subproject commit"),start);
 		if(oldstart<0)

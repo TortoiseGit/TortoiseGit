@@ -131,9 +131,9 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	return true;
 }
 
-bool CCommonAppUtils::RunTortoiseProc(const CString& sCommandLine)
+bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine)
 {
-	CString pathToExecutable = CPathUtils::GetAppDirectory() + _T("TortoiseProc.exe");
+	CString pathToExecutable = CPathUtils::GetAppDirectory() + _T("TortoiseGitProc.exe");
 	CString sCmd;
 	sCmd.Format(_T("\"%s\" %s"), (LPCTSTR)pathToExecutable, (LPCTSTR)sCommandLine);
 	if (AfxGetMainWnd()->GetSafeHwnd() && (sCommandLine.Find(L"/hwnd:") < 0))

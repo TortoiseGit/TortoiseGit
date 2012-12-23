@@ -27,19 +27,19 @@
 	<para>
 		You can also specify which program TortoiseGit should use to
 		establish a secure connection to a git repository which is access using ssh.
-		We recommend that you use TortoisePlink.exe. This is a version
+		We recommend that you use TortoiseGitPLink.exe. This is a version
 		of the popular Plink program, and is included with TortoiseGit,
 		but it is compiled as a Windowless app, so you don't get a DOS
 		box popping up every time you authenticate.
 	</para>
 	<para>
-		You must specify the full path to the executable. For TortoisePlink.exe
+		You must specify the full path to the executable. For TortoiseGitPLink.exe
 		this is the standard TortoiseGit bin directory. Use the
 		<guibutton>Browse</guibutton> button to help locate it.
 		Note that if the path contains spaces, you must enclose it in quotes,
 		e.g.
 <screen>
-"C:\Program Files\TortoiseGit\bin\TortoisePlink.exe"
+"C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe"
 </screen>
 	</para>
 	<para>
@@ -49,10 +49,10 @@
 		<quote>Unable to write to standard output</quote>.
 		For this reason we recommend that you first set up using
 		standard Plink. When everything is working, you can use
-		TortoisePlink with exactly the same parameters.
+		TortoiseGitPlink with exactly the same parameters.
 	</para>
 	<para>
-		TortoisePlink does not have any documentation of its own because it
+		TortoiseGitPlink does not have any documentation of its own because it
 		is just a minor variant of Plink. Find out about command line
 		parameters from the
 		<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">

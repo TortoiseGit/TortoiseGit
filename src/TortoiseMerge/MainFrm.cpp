@@ -148,7 +148,7 @@ CMainFrame::CMainFrame()
 	, m_bReadOnly(false)
 	, m_bBlame(false)
 {
-	m_bOneWay = (0 != ((DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\OnePane"))));
+	m_bOneWay = (0 != ((DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\OnePane"))));
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
 }
 
@@ -660,7 +660,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 		m_pwndLeftView->m_pViewData->GetLineNumber(m_pwndLeftView->m_nTopLine) : -1;
 	if (!m_Data.Load())
 	{
-		::MessageBox(NULL, m_Data.GetError(), _T("TortoiseMerge"), MB_ICONERROR);
+		::MessageBox(NULL, m_Data.GetError(), _T("TortoiseGitMerge"), MB_ICONERROR);
 		m_Data.m_mergedFile.SetOutOfUse();
 		return false;
 	}
@@ -695,14 +695,14 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 				{
 					CString msg;
 					msg.Format(IDS_WARNABSOLUTEPATHFOUND, (LPCTSTR)firstpath, (LPCTSTR)strippedpath);
-					if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseMerge"), MB_ICONQUESTION | MB_YESNO)==IDNO)
+					if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseGitMerge"), MB_ICONQUESTION | MB_YESNO)==IDNO)
 						return false;
 				}
 				else
 				{
 					CString msg;
 					msg.Format(IDS_WARNABSOLUTEPATHNOTFOUND, (LPCTSTR)firstpath);
-					CMessageBox::Show(m_hWnd, msg, _T("TortoiseMerge"), MB_ICONEXCLAMATION);
+					CMessageBox::Show(m_hWnd, msg, _T("TortoiseGitMerge"), MB_ICONEXCLAMATION);
 					return false;
 				}
 			}
@@ -711,7 +711,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 			{
 				CString msg;
 				msg.Format(IDS_WARNBETTERPATCHPATHFOUND, (LPCTSTR)m_Data.m_sPatchPath, (LPCTSTR)betterpatchpath);
-				if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseMerge"), MB_ICONQUESTION | MB_YESNO)==IDYES)
+				if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseGitMerge"), MB_ICONQUESTION | MB_YESNO)==IDYES)
 					m_Data.m_sPatchPath = betterpatchpath;
 			}
 			m_dlgFilePatches.Init(&m_Patch, this, m_Data.m_sPatchPath, this);
@@ -846,7 +846,7 @@ bool CMainFrame::LoadViews(bool bRetainPosition)
 	}
 	else
 	{
-		bool bGoFirstDiff = (0 != (DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\FirstDiffOnLoad"), TRUE));
+		bool bGoFirstDiff = (0 != (DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstDiffOnLoad"), TRUE));
 		if (bGoFirstDiff) {
 			pwndActiveView->GoToFirstDifference();
 			// Ignore the first few Mouse Move messages, so that the line diff stays on
@@ -898,7 +898,7 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 
 void CMainFrame::OnViewWhitespaces()
 {
-	CRegDWORD regViewWhitespaces = CRegDWORD(_T("Software\\TortoiseMerge\\ViewWhitespaces"), 1);
+	CRegDWORD regViewWhitespaces = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewWhitespaces"), 1);
 	BOOL bViewWhitespaces = regViewWhitespaces;
 	if (m_pwndLeftView)
 		bViewWhitespaces = m_pwndLeftView->m_bViewWhitespace;
@@ -1066,7 +1066,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 		}
 		if (!file.Save(sFilePath, false))
 		{
-			CMessageBox::Show(m_hWnd, file.GetErrorString(), _T("TortoiseMerge"), MB_ICONERROR);
+			CMessageBox::Show(m_hWnd, file.GetErrorString(), _T("TortoiseGitMerge"), MB_ICONERROR);
 			return -1;
 		}
 		m_dlgFilePatches.SetFileStatusAsPatched(sFilePath);
@@ -1113,7 +1113,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 			}
 		}
 	}
-	if (((DWORD)CRegDWORD(_T("Software\\TortoiseMerge\\Backup"))) != 0)
+	if (((DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\Backup"))) != 0)
 	{
 		MoveFileEx(m_Data.m_mergedFile.GetFilename(), m_Data.m_mergedFile.GetFilename() + _T(".bak"), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 	}
@@ -1123,7 +1123,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 		// ask the user if the file should be deleted
 		CString sTemp;
 		sTemp.Format(IDS_DELETEWHENEMPTY, (LPCTSTR)m_Data.m_mergedFile.GetFilename());
-		if (CMessageBox::ShowCheck(m_hWnd, sTemp, _T("TortoiseMerge"), MB_YESNO, _T("DeleteFileWhenEmpty")) == IDYES)
+		if (CMessageBox::ShowCheck(m_hWnd, sTemp, _T("TortoiseGitMerge"), MB_YESNO, _T("DeleteFileWhenEmpty")) == IDYES)
 		{
 			DeleteFile(m_Data.m_mergedFile.GetFilename());
 		}
@@ -1131,10 +1131,10 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 
 	if (bDoesNotExist)
 	{
-		// call TortoiseProc to add the new file to version control
+		// call TortoiseGitProc to add the new file to version control
 		CString cmd = _T("/command:add /noui /path:\"");
 		cmd += m_Data.m_mergedFile.GetFilename() + _T("\"");
-		CAppUtils::RunTortoiseProc(cmd);
+		CAppUtils::RunTortoiseGitProc(cmd);
 	}
 	return true;
 }
@@ -1786,7 +1786,7 @@ void CMainFrame::ActivateFrame(int nCmdShow)
 
 BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 {
-	CRegString placement = CRegString(_T("Software\\TortoiseMerge\\WindowPos"));
+	CRegString placement = CRegString(_T("Software\\TortoiseGitMerge\\WindowPos"));
 	CString sPlacement = placement;
 	if (sPlacement.IsEmpty())
 		return FALSE;
@@ -1805,7 +1805,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 
 void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
-	CRegString placement = CRegString(_T("Software\\TortoiseMerge\\WindowPos"));
+	CRegString placement = CRegString(_T("Software\\TortoiseGitMerge\\WindowPos"));
 	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
 	CString s;
 
@@ -1874,7 +1874,7 @@ BOOL CMainFrame::MarkAsResolved()
 	CString cmd = _T("/command:resolve /path:\"");
 	cmd += m_Data.m_mergedFile.GetFilename();
 	cmd += _T("\" /closeonend:1 /noquestion /skipcheck /silent");
-	if (!CAppUtils::RunTortoiseProc(cmd))
+	if (!CAppUtils::RunTortoiseGitProc(cmd))
 		return FALSE;
 
 	return TRUE;

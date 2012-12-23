@@ -21,6 +21,7 @@
 #include "CleanupCommand.h"
 
 #include "MessageBox.h"
+#include "ProgressDlg.h"
 #include "ShellUpdater.h"
 #include "CleanTypeDlg.h"
 #include "..\Utils\UnicodeUtils.h"
@@ -59,7 +60,9 @@ bool CleanupCommand::Execute()
 		pp.GetBOOLProps(quotepath, _T("core.quotepath"));
 
 		CString cmd;
-		cmd.Format(_T("git clean -n"));
+		cmd.Format(_T("git clean"));
+		if (dlg.m_bDryRun || !dlg.m_bNoRecycleBin)
+			cmd += _T(" -n ");
 		if(dlg.m_bDir)
 			cmd += _T(" -d ");
 		switch(dlg.m_CleanType)
@@ -75,53 +78,72 @@ bool CleanupCommand::Execute()
 			break;
 		}
 
-		CSysProgressDlg sysProgressDlg;
-		sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
-		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
-		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-		CString cmdout, cmdouterr;
-		if (g_Git.Run(cmd, &cmdout, &cmdouterr, CP_UTF8)) {
-			MessageBox(NULL, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
-			return FALSE;
-		}
-
-		if (sysProgressDlg.HasUserCancelled())
+		if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
 		{
-			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-			return FALSE;
-		}
-
-		int pos = 0;
-		CString token = cmdout.Tokenize(_T("\n"), pos);
-		CTGitPathList delList;
-		while (!token.IsEmpty())
-		{
-			if (token.Mid(0, 13) == _T("Would remove "))
+			CProgressDlg progress;
+			for (int i = 0; i < this->pathList.GetCount(); i++)
 			{
-				CString tempPath = token.Mid(13).TrimRight();
-				if (quotepath)
-				{
-					tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
-				}
-				delList.AddPath(CTGitPath(tempPath));
+				CString path;
+				if (this->pathList[i].IsDirectory())
+					path = pathList[i].GetGitPathString();
+				else
+					path = pathList[i].GetContainingDirectory().GetGitPathString();
+
+				progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
+			}
+			if (progress.DoModal()==IDOK)
+				return TRUE;
+		}
+		else
+		{
+			CSysProgressDlg sysProgressDlg;
+			sysProgressDlg.SetAnimation(IDR_CLEANUPANI);
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_CLEANUP_INFO1)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.ShowModeless((HWND)NULL, true);
+
+			CString cmdout, cmdouterr;
+			if (g_Git.Run(cmd, &cmdout, &cmdouterr, CP_UTF8)) {
+				MessageBox(NULL, cmdouterr, _T("TortoiseGit"), MB_ICONERROR);
+				return FALSE;
 			}
 
-			token = cmdout.Tokenize(_T("\n"), pos);
+			if (sysProgressDlg.HasUserCancelled())
+			{
+				CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+				return FALSE;
+			}
+
+			int pos = 0;
+			CString token = cmdout.Tokenize(_T("\n"), pos);
+			CTGitPathList delList;
+			while (!token.IsEmpty())
+			{
+				if (token.Mid(0, 13) == _T("Would remove "))
+				{
+					CString tempPath = token.Mid(13).TrimRight();
+					if (quotepath)
+					{
+						tempPath = UnescapeQuotePath(tempPath.Trim(_T('"')));
+					}
+					delList.AddPath(CTGitPath(tempPath));
+				}
+
+				token = cmdout.Tokenize(_T("\n"), pos);
+			}
+
+			if (sysProgressDlg.HasUserCancelled())
+			{
+				CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
+				return FALSE;
+			}
+
+			delList.DeleteAllFiles(true, false);
+
+			sysProgressDlg.Stop();
 		}
-
-		if (sysProgressDlg.HasUserCancelled())
-		{
-			CMessageBox::Show(NULL, IDS_SVN_USERCANCELLED, IDS_APPNAME, MB_OK);
-			return FALSE;
-		}
-
-		delList.DeleteAllFiles(true, false);
-
-		sysProgressDlg.Stop();
 	}
 #if 0
 	CProgressDlg progress;

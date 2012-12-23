@@ -47,6 +47,7 @@ CPushDlg::CPushDlg(CWnd* pParent /*=NULL*/)
 	, m_bSetPushBranch(FALSE)
 	, m_bSetPushRemote(FALSE)
 	, m_bSetUpstream(FALSE)
+	, m_RecurseSubmodules(0)
 {
 	m_bAutoLoad = CAppUtils::IsSSHPutty();
 }
@@ -63,6 +64,7 @@ void CPushDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REMOTE, this->m_Remote);
 	DDX_Control(pDX, IDC_URL, this->m_RemoteURL);
 	DDX_Control(pDX, IDC_BUTTON_BROWSE_SOURCE_BRANCH, m_BrowseLocalRef);
+	DDX_Control(pDX, IDC_COMBOBOX_RECURSE_SUBMODULES, m_RecurseSubmodulesCombo);
 	DDX_Check(pDX,IDC_FORCE,this->m_bForce);
 	DDX_Check(pDX,IDC_PUSHALL,this->m_bPushAllBranches);
 	DDX_Check(pDX,IDC_PACK,this->m_bPack);
@@ -122,6 +124,8 @@ BOOL CPushDlg::OnInitDialog()
 	AddAnchor(IDC_PROC_PUSH_SET_PUSHBRANCH, TOP_LEFT);
 	AddAnchor(IDC_PROC_PUSH_SET_PUSHREMOTE, TOP_LEFT);
 	AddAnchor(IDC_PROC_PUSH_SET_UPSTREAM, TOP_LEFT);
+	AddAnchor(IDC_STATIC_RECURSE_SUBMODULES, TOP_LEFT);
+	AddAnchor(IDC_COMBOBOX_RECURSE_SUBMODULES, TOP_LEFT);
 
 	AddAnchor(IDC_REMOTE_MANAGE,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -138,6 +142,7 @@ BOOL CPushDlg::OnInitDialog()
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHBRANCH);
 	AdjustControlSize(IDC_PROC_PUSH_SET_PUSHREMOTE);
 	AdjustControlSize(IDC_PROC_PUSH_SET_UPSTREAM);
+	AdjustControlSize(IDC_STATIC_RECURSE_SUBMODULES);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -178,6 +183,11 @@ BOOL CPushDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHBRANCH, IDS_PUSHDLG_PUSHBRANCH_TT);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHREMOTE, IDS_PUSHDLG_PUSHREMOTE_TT);
+
+	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
+	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_CHECK)));
+	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_ONDEMAND)));
+	m_RecurseSubmodulesCombo.SetCurSel(m_RecurseSubmodules);
 
 	Refresh();
 
@@ -430,6 +440,7 @@ void CPushDlg::OnBnClickedOk()
 	}
 
 	this->m_regAutoLoad = m_bAutoLoad ;
+	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }

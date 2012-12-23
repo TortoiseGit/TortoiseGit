@@ -592,7 +592,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		{
 			CString sCmd;
 			sCmd.Format(_T("/command:log /path:\"%s\\%s\""), g_Git.m_CurrentDir, selectedLeafs.at(0)->GetFullName());
-			CAppUtils::RunTortoiseProc(sCmd);
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 		break;
 	case eCmd_Blame:

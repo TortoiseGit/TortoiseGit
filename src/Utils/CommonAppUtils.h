@@ -32,7 +32,7 @@ public:
 	*/
 	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd = NULL, bool uac = false);
 
-	static bool RunTortoiseProc(const CString& sCommandLine);
+	static bool RunTortoiseGitProc(const CString& sCommandLine);
 
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 

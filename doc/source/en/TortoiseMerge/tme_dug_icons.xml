@@ -26,7 +26,7 @@
 	</para>
 	<para>
 		<graphic fileref="images/TMerge_lineedited.png"/>
-		A line has been edited by hand, using TortoiseMerge as a text editor.
+		A line has been edited by hand, using TortoiseGitMerge as a text editor.
 	</para>
 	<para>
 		<graphic fileref="images/TMerge_lineconflicted.png"/>

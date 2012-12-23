@@ -71,21 +71,21 @@ static BOOL FindGitPath()
 	TCHAR *env = (TCHAR*)alloca(size * sizeof(TCHAR));
 	_tgetenv_s(&size, env, size, _T("PATH"));
 
-	TCHAR buf[_MAX_PATH];
+	TCHAR buf[MAX_PATH];
 
 	// search in all paths defined in PATH
-	while ((env = nextpath(env, buf, _MAX_PATH-1)) != NULL && *buf)
+	while ((env = nextpath(env, buf, MAX_PATH - 1)) != NULL && *buf)
 	{
 		TCHAR *pfin = buf + _tcslen(buf)-1;
 
 		// ensure trailing slash
 		if (*pfin != _T('/') && *pfin != _T('\\'))
-			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, _MAX_PATH-1 is used in nextpath above
+			_tcscpy_s(++pfin, 2, _T("\\")); // we have enough space left, MAX_PATH-1 is used in nextpath above
 
 		const size_t len = _tcslen(buf);
 
-		if ((len + 7) < _MAX_PATH)
-			_tcscpy_s(pfin + 1, _MAX_PATH - len, _T("git.exe"));
+		if ((len + 7) < MAX_PATH)
+			_tcscpy_s(pfin + 1, MAX_PATH - len, _T("git.exe"));
 		else
 			break;
 
@@ -943,7 +943,7 @@ CString GetTempFile()
 
 DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 {
-	int result = ::GetTempPath(nBufferLength, lpBuffer);
+	DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
 	if (result == 0) return 0;
 	if (lpBuffer == NULL || (result + 13 > nBufferLength))
 	{
@@ -1068,7 +1068,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 
 	outputlist.ParserFromLsFile(cmdout);
 	for(int i=0;i<outputlist.GetCount();i++)
-		((unsigned int)outputlist[i].m_Action) = CTGitPath::LOGACTIONS_ADDED;
+		const_cast<CTGitPath&>(outputlist[i]).m_Action = CTGitPath::LOGACTIONS_ADDED;
 
 	return 0;
 }
@@ -1535,7 +1535,7 @@ BOOL CGit::CheckMsysGitDir()
 		GetModuleFileName(NULL, sPlink, _countof(sPlink));
 		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
 		if (ptr) {
-			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoisePlink.exe"));
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPLink.exe"));
 			m_Environment.SetEnv(_T("GIT_SSH"), sPlink);
 			m_Environment.SetEnv(_T("SVN_SSH"), sPlink);
 		}

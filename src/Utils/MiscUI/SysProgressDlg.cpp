@@ -25,6 +25,7 @@ CSysProgressDlg::CSysProgressDlg()
 	, m_isVisible(false)
 	, m_dwDlgFlags(PROGDLG_NORMAL)
 	, m_hWndProgDlg(NULL)
+	, m_hWndParent(NULL)
 {
 	EnsureValid();
 }

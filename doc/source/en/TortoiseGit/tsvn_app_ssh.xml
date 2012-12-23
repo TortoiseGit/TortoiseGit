@@ -23,7 +23,7 @@
 				different servers; in that case you would have to edit the
 				PuTTY session over and over again, depending on the server you are 
 				trying to connect with. In this situation Pageant makes perfect sense,
-				because when PuTTY, Plink, TortoisePlink or any other PuTTY-based tool
+				because when PuTTY, Plink, TortoiseGitPlink or any other PuTTY-based tool
 				is trying to connect to an SSH server, it checks all private keys that
 				Pageant holds to initiate the connection.
 			</para>

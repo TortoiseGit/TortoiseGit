@@ -39,6 +39,7 @@ static char THIS_FILE[]=__FILE__;
 
 CPropertiesWnd::CPropertiesWnd()
 {
+	m_CommitHash = NULL;
 }
 
 CPropertiesWnd::~CPropertiesWnd()

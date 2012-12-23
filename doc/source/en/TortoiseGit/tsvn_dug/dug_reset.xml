@@ -10,6 +10,13 @@
 		 Reset current HEAD to the specified state.
 		Sets the current head to the specified commit and optionally resets the
 index and working tree to match.
+		<figure id="tsvn-dug-reset-dia-1">
+			<title>The Reset dialog</title>
+			<graphic fileref="../images/GitReset.png"/>
+		</figure>
+	</para>
+	<para>
+		You can click <guibutton>...</guibutton> to browse git log and choose a specific version. 
 	</para>
 	<para>
 		<guilabel>Soft: Leave working tree and index untouched</guilabel>

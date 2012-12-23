@@ -691,7 +691,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	bool bRet = true;
 	tempfile = stdstring();
 	//write all selected files and paths to a temporary file
-	//for TortoiseProc.exe to read out again.
+	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
 	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
 	TCHAR * path = new TCHAR[pathlength+1];
@@ -745,7 +745,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 stdstring CShellExt::WriteFileListToTempFile()
 {
 	//write all selected files and paths to a temporary file
-	//for TortoiseProc.exe to read out again.
+	//for TortoiseGitProc.exe to read out again.
 	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
 	TCHAR * path = new TCHAR[pathlength+1];
 	TCHAR * tempFile = new TCHAR[pathlength + 100];
@@ -1227,8 +1227,8 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseProc.exe");
-			tstring tortoiseMergePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseMerge.exe");
+			tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitProc.exe");
+			tstring tortoiseMergePath = CPathUtils::GetAppDirectory(g_hmodThisDll) + _T("TortoiseGitMerge.exe");
 
 			//TortoiseProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
@@ -1472,7 +1472,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
 				{
 					// if there's a patch file in the clipboard, we save it
-					// to a temporary file and tell TortoiseMerge to use that one
+					// to a temporary file and tell TortoiseGitMerge to use that one
 					UINT cFormat = RegisterClipboardFormat(_T("TGIT_UNIFIEDDIFF"));
 					if ((cFormat)&&(OpenClipboard(NULL)))
 					{
@@ -1537,7 +1537,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				myIDMap.clear();
 				myVerbsIDMap.clear();
 				myVerbsMap.clear();
-				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseMerge launch failed"));
+				RunCommand(tortoiseMergePath, gitCmd, _T("TortoiseGitMerge launch failed"));
 				return S_OK;
 				break;
 			case ShellMenuClipPaste:

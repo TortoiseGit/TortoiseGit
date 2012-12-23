@@ -224,7 +224,7 @@
 		</Dialog>
 
 		<RadioButtonGroup Property="SSHTOOL">
-			<RadioButton Text="{\DlgFont8}TortoisePLink, coming from Putty, integrates with Windows better." Value="Plink" X="5" Y="0" Width="300" Height="30" />
+			<RadioButton Text="{\DlgFont8}TortoiseGitPLink, coming from Putty, integrates with Windows better." Value="Plink" X="5" Y="0" Width="300" Height="30" />
 			<RadioButton Text="{\DlgFont8}OpenSSH, Git default SSH Client" Value="OpenSSH" X="5" Y="60" Width="300" Height="30" />
 		</RadioButtonGroup>
 		<Dialog Id="BrowseDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">

@@ -344,15 +344,18 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_TreeRoot.m_hTree=m_RefTreeCtrl.InsertItem(L"Refs",NULL,NULL);
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
-	CString allRefs;
-	g_Git.Run(L"git for-each-ref --format="
+	CString allRefs, error;
+	if (g_Git.Run(L"git for-each-ref --format="
 			  L"%(refname)%04"
 			  L"%(objectname)%04"
 			  L"%(authordate:relative)%04"
 			  L"%(subject)%04"
 			  L"%(authorname)%04"
 			  L"%(authordate:iso8601)%03",
-			  &allRefs, NULL, CP_UTF8);
+			  &allRefs, &error, CP_UTF8))
+	{
+		CMessageBox::Show(NULL, CString(_T("Get refs failed\n")) + error, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+	}
 
 	int linePos=0;
 	CString singleRef;
@@ -954,7 +957,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		}
 		break;
 	case eCmd_RepoBrowser:
-		CAppUtils::RunTortoiseProc(_T("/command:repobrowser /path:\"") + g_Git.m_CurrentDir + _T("\" /rev:") + selectedLeafs[0]->GetRefName());
+		CAppUtils::RunTortoiseGitProc(_T("/command:repobrowser /path:\"") + g_Git.m_CurrentDir + _T("\" /rev:") + selectedLeafs[0]->GetRefName());
 		break;
 	case eCmd_DeleteBranch:
 	case eCmd_DeleteRemoteBranch:

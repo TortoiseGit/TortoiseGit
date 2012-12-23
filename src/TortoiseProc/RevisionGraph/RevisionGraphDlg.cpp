@@ -222,6 +222,10 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 
 	EnableToolTips();
 
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
 	// begin background operation
 
 	StartWorkerThread();
@@ -529,7 +533,7 @@ void CRevisionGraphDlg::UpdateFullHistory()
 #endif
 }
 
-void CRevisionGraphDlg::SetOption (UINT controlID)
+void CRevisionGraphDlg::SetOption (UINT /*controlID*/)
 {
 #if 0
 	CMenu * pMenu = GetMenu();

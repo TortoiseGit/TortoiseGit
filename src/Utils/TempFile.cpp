@@ -24,7 +24,7 @@
 
 static DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 {
-	int result = ::GetTempPath(nBufferLength, lpBuffer);
+	DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
 	if (result == 0) return 0;
 	if (lpBuffer == NULL || (result + 13 > nBufferLength))
 	{

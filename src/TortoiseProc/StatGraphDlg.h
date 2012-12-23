@@ -35,7 +35,7 @@
 class CMyMetaFileDC : public CMetaFileDC
 {
 public:
-	HGDIOBJ CMyMetaFileDC::SelectObject(HGDIOBJ hObject)
+	HGDIOBJ SelectObject(HGDIOBJ hObject)
 	{
 		return (hObject != NULL) ? ::SelectObject(m_hDC, hObject) : NULL;
 	}

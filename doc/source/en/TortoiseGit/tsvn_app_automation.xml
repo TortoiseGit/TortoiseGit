@@ -29,7 +29,7 @@
 			<primary>command line</primary>
 		</indexterm>
 		<para>
-			The TortoiseGit GUI program is called <literal>TortoiseProc.exe</literal>.
+			The TortoiseGit GUI program is called <literal>TortoiseGitProc.exe</literal>.
 			All commands are specified with the parameter <option>/command:abcd</option>
 			where <literal>abcd</literal> is the required command name. Most of these
 			commands need at least one path argument, which is given with 
@@ -98,7 +98,7 @@
 -->
 		<para>
 			The table below lists all the commands which can be accessed
-			using the TortoiseProc.exe command line. As described above,
+			using the TortoiseGitProc.exe command line. As described above,
 			these should be used in the form <literal>/command:abcd</literal>.
 			In the table, the <literal>/command</literal> prefix is omitted
 			to save space.
@@ -553,6 +553,17 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:updatecheck</entry>
+							<entry>
+								Shows the dialog even if no newer TortoiseGit version is available.
+								<option>/visible</option>.
+							</entry>
+							<entry>
+								Shows file list for download even if the latest TortoiseGit has been installed.
+								<option>/force</option>.
+							</entry>
+						</row>
 						<!--
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
@@ -581,13 +592,13 @@ Don't touch these lines:
 		<para>
 			Examples (which should be entered on one line):
 <screen>
-TortoiseProc.exe /command:commit
+TortoiseGitProc.exe /command:commit
                  /path:"c:\svn_wc\file1.txt*c:\svn_wc\file2.txt"
                  /logmsg:"test log message" /closeonend:0
 
-TortoiseProc.exe /command:update /path:"c:\svn_wc\" /closeonend:0
+TortoiseGitProc.exe /command:update /path:"c:\svn_wc\" /closeonend:0
 
-TortoiseProc.exe /command:log /path:"c:\svn_wc\file1.txt"
+TortoiseGitProc.exe /command:log /path:"c:\svn_wc\file1.txt"
                  /startrev:50 /endrev:60 /closeonend:0
 </screen>
 		</para>
@@ -604,7 +615,7 @@ TortoiseProc.exe /command:log /path:"c:\svn_wc\file1.txt"
 		<para>
 			The image diff tool has a few command line options which you
 			can use to control how the tool is started.
-			The program is called <literal>TortoiseIDiff.exe</literal>.
+			The program is called <literal>TortoiseGitIDiff.exe</literal>.
 		</para>
 		<para>
 			The table below lists all the options which can be passed
@@ -686,7 +697,7 @@ Don't touch these lines:
 		<para>
 			Example (which should be entered on one line):
 <screen>
-TortoiseIDiff.exe /left:"c:\images\img1.jpg" /lefttitle:"image 1"
+TortoiseGitIDiff.exe /left:"c:\images\img1.jpg" /lefttitle:"image 1"
                   /right:"c:\images\img2.jpg" /righttitle:"image 2"
                   /fit /overlay
 </screen>

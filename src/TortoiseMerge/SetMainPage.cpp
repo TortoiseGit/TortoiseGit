@@ -42,20 +42,21 @@ CSetMainPage::CSetMainPage()
 	, m_bDisplayBinDiff(TRUE)
 	, m_bCaseInsensitive(FALSE)
 	, m_bUTF8Default(FALSE)
+	, m_dwFontSize(0)
 {
-	m_regBackup = CRegDWORD(_T("Software\\TortoiseMerge\\Backup"));
-	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseMerge\\FirstDiffOnLoad"), TRUE);
-	m_regTabSize = CRegDWORD(_T("Software\\TortoiseMerge\\TabSize"), 4);
-	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreEOL"), TRUE);
-	m_regOnePane = CRegDWORD(_T("Software\\TortoiseMerge\\OnePane"));
-	m_regIgnoreWS = CRegDWORD(_T("Software\\TortoiseMerge\\IgnoreWS"));
-	m_regViewLinenumbers = CRegDWORD(_T("Software\\TortoiseMerge\\ViewLinenumbers"), 1);
-	m_regStrikeout = CRegDWORD(_T("Software\\TortoiseMerge\\StrikeOut"), TRUE);
-	m_regFontName = CRegString(_T("Software\\TortoiseMerge\\LogFontName"), _T("Courier New"));
-	m_regFontSize = CRegDWORD(_T("Software\\TortoiseMerge\\LogFontSize"), 10);
-	m_regDisplayBinDiff = CRegDWORD(_T("Software\\TortoiseMerge\\DisplayBinDiff"), TRUE);
-	m_regCaseInsensitive = CRegDWORD(_T("Software\\TortoiseMerge\\CaseInsensitive"), FALSE);
-	m_regUTF8Default = CRegDWORD(_T("Software\\TortoiseMerge\\UseUTF8"), FALSE);
+	m_regBackup = CRegDWORD(_T("Software\\TortoiseGitMerge\\Backup"));
+	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstDiffOnLoad"), TRUE);
+	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
+	m_regIgnoreEOL = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreEOL"), TRUE);
+	m_regOnePane = CRegDWORD(_T("Software\\TortoiseGitMerge\\OnePane"));
+	m_regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	m_regViewLinenumbers = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewLinenumbers"), 1);
+	m_regStrikeout = CRegDWORD(_T("Software\\TortoiseGitMerge\\StrikeOut"), TRUE);
+	m_regFontName = CRegString(_T("Software\\TortoiseGitMerge\\LogFontName"), _T("Courier New"));
+	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGitMerge\\LogFontSize"), 10);
+	m_regDisplayBinDiff = CRegDWORD(_T("Software\\TortoiseGitMerge\\DisplayBinDiff"), TRUE);
+	m_regCaseInsensitive = CRegDWORD(_T("Software\\TortoiseGitMerge\\CaseInsensitive"), FALSE);
+	m_regUTF8Default = CRegDWORD(_T("Software\\TortoiseGitMerge\\UseUTF8"), FALSE);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;

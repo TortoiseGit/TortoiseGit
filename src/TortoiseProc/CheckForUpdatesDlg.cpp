@@ -46,8 +46,10 @@ IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CStandAloneDialog)
 CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
 	, m_bShowInfo(FALSE)
+	, m_bForce(FALSE)
 	, m_bVisible(FALSE)
 	, m_pDownloadThread(NULL)
+	, m_bThreadRunning(FALSE)
 {
 	m_sUpdateDownloadLink = _T("http://code.google.com/p/tortoisegit/wiki/Download?tm=2");
 }
@@ -218,6 +220,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 
 			{
 				BOOL bNewer = FALSE;
+				if (m_bForce)
+					bNewer = TRUE;
 				if (major > TGIT_VERMAJOR)
 					bNewer = TRUE;
 				else if ((minor > TGIT_VERMINOR)&&(major == TGIT_VERMAJOR))

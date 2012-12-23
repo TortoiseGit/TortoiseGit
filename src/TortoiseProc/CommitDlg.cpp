@@ -369,10 +369,12 @@ BOOL CCommitDlg::OnInitDialog()
 		int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top)&&(rcLogMsg.bottom + delta < rcFileList.bottom - 30))
 		{
-			m_wndSplitter.SetWindowPos(NULL, 0, yPos, 0, 0, SWP_NOSIZE);
+			m_wndSplitter.SetWindowPos(NULL, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
 		}
 	}
+
+	SetSplitterRange();
 
 	// add all directories to the watcher
 	/*
@@ -528,7 +530,7 @@ void CCommitDlg::OnOK()
 			{
 				CString cmdCommit;
 				cmdCommit.Format(_T("/command:commit /path:\"%s\\%s\""), g_Git.m_CurrentDir, entry->GetWinPathString());
-				CAppUtils::RunTortoiseProc(cmdCommit);
+				CAppUtils::RunTortoiseGitProc(cmdCommit);
 				return;
 			}
 			else if (result == 2)
@@ -1912,7 +1914,7 @@ void CCommitDlg::SetSplitterRange()
 		m_ListCtrl.GetWindowRect(rcMiddle);
 		ScreenToClient(rcMiddle);
 		if (rcMiddle.Height() && rcMiddle.Width())
-			m_wndSplitter.SetRange(rcTop.top+60, rcMiddle.bottom-80);
+			m_wndSplitter.SetRange(rcTop.top + 100, rcMiddle.bottom - 80);
 	}
 }
 

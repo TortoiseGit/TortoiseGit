@@ -25,7 +25,7 @@
 			<listitem>
 				<para>
 					<guibutton>Reload</guibutton>
-					discards any changes you have made in TortoiseMerge and
+					discards any changes you have made in TortoiseGitMerge and
 					reloads the files from disk.
 				</para>
 			</listitem>
@@ -33,7 +33,7 @@
 				<para>
 					<guibutton>Undo</guibutton>
 					implements a multi-level undo, allowing you to reverse
-					any changes you have made within TortoiseMerge.
+					any changes you have made within TortoiseGitMerge.
 				</para>
 			</listitem>
 			<listitem>
@@ -78,7 +78,7 @@
 					<guibutton>Mark as Resolved</guibutton>
 					When you have resolved all the conflicts in a file and
 					saved the changes, you can mark it as resolved from
-					within TortoiseMerge, rather than going back to
+					within TortoiseGitMerge, rather than going back to
 					explorer and marking as resolved from there.
 				</para>
 			</listitem>
@@ -128,7 +128,7 @@
 			<listitem>
 				<para>
 					<guibutton>Show/Hide Patch List</guibutton>
-					When TortoiseMerge has a patch list, this button allows
+					When TortoiseGitMerge has a patch list, this button allows
 					you to hide it (so you can see both windows), or show it
 					(so you can review the file list).
 				</para>
@@ -136,7 +136,7 @@
 			<listitem>
 				<para>
 					<guibutton>Settings</guibutton>
-					takes you to TortoiseMerge's settings dialog.
+					takes you to TortoiseGitMerge's settings dialog.
 				</para>
 			</listitem>
 		</itemizedlist>
@@ -156,7 +156,7 @@
 		<literal>Mine</literal>, and the number of unresolved
 		conflicts remaining.
 		You can also see which line-ending style is in use, what
-		encoding (ASCII, UTF-8, etc) is assumed by TortoiseMerge, and whether
+		encoding (ASCII, UTF-8, etc) is assumed by TortoiseGitMerge, and whether
 		there is a byte-order-mark (BOM) present in UTF-8 files.
 		The left side of the status bar is used to display hints when you
 		hover the mouse over a control.

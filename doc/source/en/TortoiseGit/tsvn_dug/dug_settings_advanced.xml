@@ -67,7 +67,7 @@
                 <para>
                     Set this to <literal>true</literal> if you want a dialog to
                     pop up for every command showing the command line used to
-                    start TortoiseProc.exe.
+                    start TortoiseGitProc.exe.
                 </para>
             </listitem>
         </varlistentry>
