@@ -814,6 +814,7 @@
 #define IDC_NEWLINESCOLOR               1378
 #define IDS_PROC_SHOWDIFF               1378
 #define IDS_PROC_LOADING                1379
+#define IDS_FILEDIFF_EXT                1380
 #define IDC_OLDLINESCOLOR               1380
 #define IDC_TABSIZE                     1381
 #define IDC_REFRESH                     1382
