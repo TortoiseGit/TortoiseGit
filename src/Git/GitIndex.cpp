@@ -902,7 +902,10 @@ int CGitHeadFileList::ReadTree()
 		git_repository_free(repository);
 
 	if (ret)
+	{
+		clear();
 		m_LastModifyTimeHead = 0;
+	}
 
 	return ret;
 
@@ -1394,23 +1397,22 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 	return ret;
 }
 
-bool CGitHeadFileMap::CheckHeadUpdate(const CString &gitdir)
+bool CGitHeadFileMap::CheckHeadAndUpdate(const CString &gitdir, bool readTree /* = true */)
 {
 	SHARED_TREE_PTR ptr;
 	ptr = this->SafeGet(gitdir);
 
-	if( ptr.get())
-	{
-		return ptr->CheckHeadUpdate();
-	}
-	else
-	{
-		SHARED_TREE_PTR ptr1(new CGitHeadFileList);
-		ptr1->ReadHeadHash(gitdir);
+	if (ptr.get() && !ptr->CheckHeadUpdate() && (!readTree || ptr->HeadHashEqualsTreeHash()))
+		return false;
 
-		this->SafeSet(gitdir, ptr1);
-		return true;
-	}
+	ptr = SHARED_TREE_PTR(new CGitHeadFileList);
+	ptr->ReadHeadHash(gitdir);
+	if (readTree)
+		ptr->ReadTree();
+
+	this->SafeSet(gitdir, ptr);
+
+	return true;
 }
 
 int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion)
@@ -1430,28 +1432,20 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 
 		subpath.MakeLower();
 
-		CheckHeadUpdate(gitdir);
+		CheckHeadAndUpdate(gitdir);
 
-		SHARED_TREE_PTR treeptr;
-		treeptr = SafeGet(gitdir);
+		SHARED_TREE_PTR treeptr = SafeGet(gitdir);
 
-		if (!treeptr->HeadHashEqualsTreeHash())
+		// Init Repository
+		if (treeptr->HeadFileIsEmpty())
 		{
-			SHARED_TREE_PTR treeptr(new CGitHeadFileList());
-			treeptr->ReadHeadHash(gitdir);
-
-			// Init Repository
-			if (treeptr->HeadFileIsEmpty())
-			{
-				*isVersion = false;
-				return 0;
-			}
-			else if (treeptr->ReadTree())
-			{
-				*isVersion = false;
-				return 1;
-			}
-			SafeSet(gitdir, treeptr);
+			*isVersion = false;
+			return 0;
+		}
+		else if (treeptr->empty())
+		{
+			*isVersion = false;
+			return 1;
 		}
 
 		if(isDir)

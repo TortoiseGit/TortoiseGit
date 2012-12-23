@@ -416,37 +416,10 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 			if( st == git_wc_status_normal && IsFull)
 			{
 				{
-					g_HeadFileMap.CheckHeadUpdate(gitdir);
+					g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
-					SHARED_TREE_PTR treeptr;
+					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-					treeptr=g_HeadFileMap.SafeGet(gitdir);
-
-					if (!treeptr->HeadHashEqualsTreeHash())
-					{
-						treeptr = SHARED_TREE_PTR(new CGitHeadFileList());
-
-						treeptr->ReadHeadHash(gitdir);
-
-						// Init Repository
-						if (treeptr->HeadFileIsEmpty())
-						{
-							*status =st=git_wc_status_added;
-							if(callback)
-								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
-							return 0;
-						}
-						if(treeptr->ReadTree())
-						{
-							//Check if init repository
-							*status = treeptr->HeadIsEmpty() ? git_wc_status_added : st;
-							if(callback)
-								callback(gitdir + _T("/") + path, *status, false, pData, *assumeValid, *skipWorktree);
-							return 0;
-						}
-						g_HeadFileMap.SafeSet(gitdir, treeptr);
-
-					}
 					// Check Head Tree Hash;
 					{
 						//add item
@@ -500,7 +473,7 @@ bool GitStatus::IsGitReposChanged(const CString &gitdir,const CString &subpaths,
 
 	if( mode & GIT_MODE_HEAD)
 	{
-		if(g_HeadFileMap.CheckHeadUpdate(gitdir))
+		if(g_HeadFileMap.CheckHeadAndUpdate(gitdir))
 			return true;
 	}
 
@@ -608,15 +581,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 		{
 			g_IndexFileMap.CheckAndUpdate(gitdir,true);
 
-			if(g_HeadFileMap.CheckHeadUpdate(gitdir) || g_HeadFileMap.IsHashChanged(gitdir))
-			{
-				SHARED_TREE_PTR treeptr(new CGitHeadFileList());
-				treeptr->ReadHeadHash(gitdir);
-				if (treeptr->ReadTree())
-				{
-					g_HeadFileMap.SafeSet(gitdir, treeptr);
-				}
-			}
+			g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
 			SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
 			SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
@@ -877,7 +842,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 					else
 						*status = git_wc_status_unversioned;
 
-					g_HeadFileMap.CheckHeadUpdate(gitdir);
+					g_HeadFileMap.CheckHeadAndUpdate(gitdir, false);
 
 					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 					//Check init repository
@@ -926,17 +891,8 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 				{
 					*status = git_wc_status_normal;
 
-					if(g_HeadFileMap.CheckHeadUpdate(gitdir))
-					{
-						SHARED_TREE_PTR treeptr(new CGitHeadFileList());
+					g_HeadFileMap.CheckHeadAndUpdate(gitdir);
 
-						treeptr->ReadHeadHash(gitdir);
-
-						if(treeptr->ReadTree())
-						{
-							g_HeadFileMap.SafeSet(gitdir, treeptr);
-						}
-					}
 					//Check Add
 					it = indexptr->begin()+start;
 

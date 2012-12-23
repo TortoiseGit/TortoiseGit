@@ -201,18 +201,8 @@ public:
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
 						FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,
 						bool isLoaded=false);
-	bool CheckHeadUpdate(const CString &gitdir);
+	bool CheckHeadAndUpdate(const CString &gitdir, bool readTree = true);
 	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion);
-
-	bool IsHashChanged(const CString &gitdir)
-	{
-		SHARED_TREE_PTR ptr = SafeGet(gitdir);
-
-		if( ptr.get() == NULL)
-			return false;
-
-		return !ptr->HeadHashEqualsTreeHash();
-	}
 };
 
 class CGitFileName
