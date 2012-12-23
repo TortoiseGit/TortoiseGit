@@ -1553,18 +1553,18 @@ int CMainFrame::FindSearchStart(int nDefault)
 	return nLine;
 }
 
-void CMainFrame::OnEditGoto()
+bool CMainFrame::GetCurrentLineNum(CBaseView *&view, CBaseView *&view2, CBaseView *&view3, int &lineNum)
 {
+	view = view2 = view3 = NULL;
+	lineNum = 1;
 	CWnd *wnd = this->GetFocus();
 	if (wnd != m_pwndLeftView && wnd != m_pwndRightView && wnd != m_pwndBottomView)
-		return;
+		return false;
 
-	CBaseView *view = (CBaseView *)wnd;
-	CBaseView *view2 = view == m_pwndBottomView || view == m_pwndRightView ? (CBaseView *)m_pwndLeftView : m_pwndRightView;
-	CBaseView *view3 = view == m_pwndBottomView || view == m_pwndLeftView ? (CBaseView *)m_pwndRightView : m_Data.IsTheirFileInUse() ? m_pwndBottomView : NULL;
+	view = (CBaseView *)wnd;
+	view2 = view == m_pwndBottomView || view == m_pwndRightView ? (CBaseView *)m_pwndLeftView : m_pwndRightView;
+	view3 = view == m_pwndBottomView || view == m_pwndLeftView ? (CBaseView *)m_pwndRightView : m_Data.IsTheirFileInUse() ? m_pwndBottomView : NULL;
 
-
-	CEditGotoDlg dlg;
 	int start, end;
 	int count = view->m_pViewData->GetCount();
 	if (view->GetSelection(start, end))
@@ -1576,20 +1576,40 @@ void CMainFrame::OnEditGoto()
 			if (line != DIFF_EMPTYLINENUMBER)
 				break;
 		}
-		dlg.m_LineNumber = line == DIFF_EMPTYLINENUMBER ? 1 : (line + 1);
+
+		lineNum = line == DIFF_EMPTYLINENUMBER ? 1 : (line + 1);
 	}
 
-	if (dlg.DoModal() == IDOK)
-	{
-		int index = view->m_pViewData->FindLineNumber(dlg.m_LineNumber - 1);
-		if (index < 0)
-			index = 0;
-		view->HiglightLines(index);
-		view->GoToLine(index, FALSE);
+	return true;
+}
+
+void CMainFrame::SetCurrentLineNum(CBaseView *view, CBaseView *view2, CBaseView *view3, int lineNum)
+{
+	if (view == NULL)
+		return;
+	int index = view->m_pViewData->FindLineNumber(lineNum - 1);
+	if (index < 0)
+		index = 0;
+	view->HiglightLines(index);
+	view->GoToLine(index, FALSE);
+	if (view2)
 		view2->GoToLine(index, FALSE);
-		if (view3)
-			view3->GoToLine(index, FALSE);
-	}
+	if (view3)
+		view3->GoToLine(index, FALSE);
+}
+
+void CMainFrame::OnEditGoto()
+{
+	CBaseView *view, *view2, *view3;
+	int lineNum;
+	if (!GetCurrentLineNum(view, view2, view3, lineNum))
+		return;
+
+	CEditGotoDlg dlg;
+	dlg.m_LineNumber = lineNum;
+
+	if (dlg.DoModal() == IDOK)
+		SetCurrentLineNum(view, view2, view3, dlg.m_LineNumber);
 }
 
 void CMainFrame::OnViewLinedown()

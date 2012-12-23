@@ -26,6 +26,7 @@
 #include "XSplitter.h"
 #include "Patch.h"
 #include "FindDlg.h"
+#include "BaseView.h"
 
 class CLeftView;
 class CRightView;
@@ -54,6 +55,8 @@ protected:
 	virtual void	ActivateFrame(int nCmdShow = -1);
 	bool			LoadViews(bool bRetainPosition = false);
 	void			ClearViewNamesAndPaths();
+	bool			GetCurrentLineNum(CBaseView *&view, CBaseView *&view2, CBaseView *&view3, int &lineNum);
+	void			SetCurrentLineNum(CBaseView *view, CBaseView *view2, CBaseView *view3, int lineNum);
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void	OnApplicationLook(UINT id);
 	afx_msg void	OnUpdateApplicationLook(CCmdUI* pCmdUI);
