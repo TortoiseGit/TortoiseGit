@@ -612,7 +612,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			{
 				SHARED_TREE_PTR treeptr(new CGitHeadFileList());
 				treeptr->ReadHeadHash(gitdir);
-				if(!treeptr->ReadTree())
+				if (treeptr->ReadTree())
 				{
 					g_HeadFileMap.SafeSet(gitdir, treeptr);
 				}
