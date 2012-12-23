@@ -464,25 +464,9 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 
 }
 
-bool GitStatus::IsGitReposChanged(const CString &gitdir,const CString &subpaths, int mode)
+bool GitStatus::HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths)
 {
-	if( mode & GIT_MODE_INDEX)
-	{
-		return g_IndexFileMap.CheckAndUpdate(gitdir, true);
-	}
-
-	if( mode & GIT_MODE_HEAD)
-	{
-		if(g_HeadFileMap.CheckHeadAndUpdate(gitdir))
-			return true;
-	}
-
-	if( mode & GIT_MODE_IGNORE)
-	{
-		if(g_IgnoreList.CheckIgnoreChanged(gitdir,subpaths))
-			return true;
-	}
-	return false;
+	return g_IgnoreList.CheckIgnoreChanged(gitdir, subpaths);
 }
 
 int GitStatus::LoadIgnoreFile(const CString &gitdir,const CString &subpaths)
