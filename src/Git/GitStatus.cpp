@@ -943,7 +943,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						//Check if new init repository
 						SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-						if (treeptr->size() > 0 || treeptr->HeadIsEmpty())
+						if (!treeptr->empty() || treeptr->HeadIsEmpty())
 						{
 							for(int i=start;i<=end;i++)
 							{
