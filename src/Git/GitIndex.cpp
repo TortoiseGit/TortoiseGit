@@ -770,6 +770,24 @@ bool CGitHeadFileList::CheckHeadUpdate()
 	return false;
 }
 
+bool CGitHeadFileList::HeadHashEqualsTreeHash()
+{
+	CAutoReadLock lock(&this->m_SharedMutex);
+	return (m_Head == m_TreeHash);
+}
+
+bool CGitHeadFileList::HeadFileIsEmpty()
+{
+	CAutoReadLock lock(&this->m_SharedMutex);
+	return m_HeadFile.IsEmpty();
+}
+
+bool CGitHeadFileList::HeadIsEmpty()
+{
+	CAutoReadLock lock(&this->m_SharedMutex);
+	return m_Head.IsEmpty();
+}
+
 int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int /*stage*/, void *context)
 {
@@ -1416,12 +1434,12 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 		SHARED_TREE_PTR treeptr;
 		treeptr = SafeGet(gitdir);
 
-		if (treeptr->m_Head != treeptr->m_TreeHash)
+		if (!treeptr->HeadHashEqualsTreeHash())
 		{
 			treeptr->ReadHeadHash(gitdir);
 
 			// Init Repository
-			if (treeptr->m_HeadFile.IsEmpty())
+			if (treeptr->HeadFileIsEmpty())
 			{
 				*isVersion = false;
 				return 0;

@@ -417,20 +417,17 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 			{
 				{
 					g_HeadFileMap.CheckHeadUpdate(gitdir);
-					bool b=false;
 
 					SHARED_TREE_PTR treeptr;
 
 					treeptr=g_HeadFileMap.SafeGet(gitdir);
 
-					b = treeptr->m_Head != treeptr->m_TreeHash;
-
-					if(b)
+					if (!treeptr->HeadHashEqualsTreeHash())
 					{
 						treeptr->ReadHeadHash(gitdir);
 
 						// Init Repository
-						if( treeptr->m_HeadFile.IsEmpty() )
+						if (treeptr->HeadFileIsEmpty())
 						{
 							*status =st=git_wc_status_added;
 							if(callback)
@@ -440,7 +437,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						if(treeptr->ReadTree())
 						{
 							//Check if init repository
-							*status = treeptr->m_Head.IsEmpty()? git_wc_status_added: st;
+							*status = treeptr->HeadIsEmpty() ? git_wc_status_added : st;
 							if(callback)
 								callback(gitdir + _T("/") + path, *status, false, pData, *assumeValid, *skipWorktree);
 							return 0;
@@ -882,7 +879,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 					SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 					//Check init repository
-					if(treeptr->m_Head.IsEmpty() && path.IsEmpty())
+					if (treeptr->HeadIsEmpty() && path.IsEmpty())
 						*status = git_wc_status_normal;
 				}
 
@@ -946,7 +943,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						//Check if new init repository
 						SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
 
-						if( treeptr->size() > 0 || treeptr->m_Head.IsEmpty() )
+						if (treeptr->size() > 0 || treeptr->HeadIsEmpty())
 						{
 							for(int i=start;i<=end;i++)
 							{
