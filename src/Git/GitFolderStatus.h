@@ -23,62 +23,9 @@
 #include "TGitPath.h"
 #include "SmartHandle.h"
 
-/**
- * \ingroup TortoiseShell
- * a simple utility class:
- * stores unique copies of given string values,
- * i.e. for a given value, always the same const char*
- * will be returned.
- *
- * The strings returned are owned by the pool!
- */
-class StringPool
-{
-public:
-
-	StringPool() {emptyString[0] = 0;}
-	~StringPool() {clear();}
-
-	/**
-	 * Return a string equal to value from the internal pool.
-	 * If no such string is available, a new one is allocated.
-	 * NULL is valid for value.
-	 */
-	const char* GetString (const char* value);
-
-	/**
-	 * invalidates all strings returned by GetString()
-	 * frees all internal data
-	 */
-	void clear();
-
-private:
-
-	// comparator: compare C-style strings
-
-	struct LessString
-	{
-		bool operator()(const char* lhs, const char* rhs) const
-		{
-			return strcmp (lhs, rhs) < 0;
-		}
-	};
-
-	// store the strings in a map
-	// caution: modifying the map must not modify the string pointers
-
-	typedef std::set<const char*, LessString> pool_type;
-	pool_type pool;
-	char emptyString[1];
-};
-
-
 typedef struct FileStatusCacheEntry
 {
 	git_wc_status_kind		status;
-	const char*				author;		///< points to a (possibly) shared value
-	const char*				url;		///< points to a (possibly) shared value
-	git_revnum_t			rev;
 	int						askedcounter;
 	bool					assumeValid;
 	bool					skipWorktree;
@@ -127,13 +74,6 @@ private:
 	FileStatusCacheEntry	dirstat;
 	FileStatusCacheEntry	filestat;
 	git_wc_status2_t *		dirstatus;
-
-	// merging these pools won't save memory
-	// but access will become slower
-
-	StringPool		authors;
-	StringPool		urls;
-	char			emptyString[1];
 
 	stdstring		sCacheKey;
 

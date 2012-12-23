@@ -27,70 +27,13 @@
 
 extern ShellCache g_ShellCache;
 
-//extern CGitIndexFileMap g_IndexFileMap;
-
-// get / auto-alloc a string "copy"
-
-const char* StringPool::GetString (const char* value)
-{
-	// special case: NULL pointer
-
-	if (value == NULL)
-	{
-		return emptyString;
-	}
-
-	// do we already have a string with the desired value?
-
-	pool_type::const_iterator iter = pool.find (value);
-	if (iter != pool.end())
-	{
-		// yes -> return it
-		return *iter;
-	}
-
-	// no -> add one
-
-	const char* newString =  _strdup (value);
-	if (newString)
-	{
-		pool.insert (newString);
-	}
-	else
-		return emptyString;
-
-	// .. and return it
-
-	return newString;
-}
-
-// clear internal pool
-
-void StringPool::clear()
-{
-	// delete all strings
-
-	for (pool_type::iterator iter = pool.begin(), end = pool.end(); iter != end; ++iter)
-	{
-		free((void*)*iter);
-	}
-
-	// remove pointers from pool
-
-	pool.clear();
-}
-
 GitFolderStatus::GitFolderStatus(void)
 {
 	m_TimeStamp = 0;
-	emptyString[0] = 0;
-	invalidstatus.author = emptyString;
 	invalidstatus.askedcounter = -1;
 	invalidstatus.status = git_wc_status_none;
-	invalidstatus.url = emptyString;
 	invalidstatus.assumeValid = FALSE;
 	invalidstatus.skipWorktree = FALSE;
-//	invalidstatus.rev = -1;
 	m_nCounter = 0;
 	dirstatus = NULL;
 	sCacheKey.reserve(MAX_PATH);
@@ -121,8 +64,6 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	}
 
 	ClearCache();
-	authors.clear();
-	urls.clear();
 
 	if (bIsFolder)
 	{
@@ -132,17 +73,12 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 			//       that occurs, and this is not correctly handled yet
 
 			// initialize record members
-//			dirstat.rev = -1;
 			dirstat.status = git_wc_status_none;
-			dirstat.author = authors.GetString(NULL);
-			dirstat.url = urls.GetString(NULL);
 			dirstat.askedcounter = GITFOLDERSTATUS_CACHETIMES;
 			dirstat.assumeValid = FALSE;
 			dirstat.skipWorktree = FALSE;
 
 			dirstatus = NULL;
-//			git_revnum_t youngest = GIT_INVALID_REVNUM;
-//			git_opt_revision_t rev;
 //			rev.kind = git_opt_revision_unspecified;
 
 
