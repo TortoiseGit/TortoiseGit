@@ -111,8 +111,6 @@ public:
 	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
 
-	static int GetHeadHash(const CString &gitdir, CGitHash &hash);
-
 public:
 	GitStatus();
 	~GitStatus(void);

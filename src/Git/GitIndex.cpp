@@ -1447,34 +1447,3 @@ int CGitHeadFileMap::IsUnderVersionControl(const CString &gitdir, const CString 
 
 	return 0;
 }
-
-int CGitHeadFileMap::GetHeadHash(const CString &gitdir, CGitHash &hash)
-{
-	SHARED_TREE_PTR ptr;
-	ptr = this->SafeGet(gitdir);
-
-	if(ptr.get() == NULL)
-	{
-		SHARED_TREE_PTR ptr1(new CGitHeadFileList());
-		ptr1->ReadHeadHash(gitdir);
-
-		hash = ptr1->m_Head;
-
-		this->SafeSet(gitdir, ptr1);
-
-	}
-	else
-	{
-		if(ptr->CheckHeadUpdate())
-		{
-			SHARED_TREE_PTR ptr1(new CGitHeadFileList());
-			ptr1->ReadHeadHash(gitdir);
-
-			hash = ptr1->m_Head;
-			this->SafeSet(gitdir, ptr1);
-	}
-
-		hash = ptr->m_Head;
-	}
-	return 0;
-}

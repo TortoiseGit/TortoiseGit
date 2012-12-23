@@ -200,7 +200,6 @@ public:
 						FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,
 						bool isLoaded=false);
 	bool CheckHeadUpdate(const CString &gitdir);
-	int GetHeadHash(const CString &gitdir, CGitHash &hash);
 	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion);
 
 	bool IsHashChanged(const CString &gitdir)

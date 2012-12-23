@@ -492,11 +492,6 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 
 }
 
-int GitStatus::GetHeadHash(const CString &gitdir, CGitHash &hash)
-{
-	return g_HeadFileMap.GetHeadHash(gitdir, hash);
-}
-
 bool GitStatus::IsGitReposChanged(const CString &gitdir,const CString &subpaths, int mode)
 {
 	if( mode & GIT_MODE_INDEX)

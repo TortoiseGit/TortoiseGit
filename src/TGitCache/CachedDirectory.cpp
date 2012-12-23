@@ -269,10 +269,6 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	GitStatus *pGitStatus = &CGitStatusCache::Instance().m_GitStatus;
 	UNREFERENCED_PARAMETER(pGitStatus);
 
-	CGitHash head;
-
-	pGitStatus->GetHeadHash(sProjectRoot,head);
-
 	bool isVersion =true;
 	pGitStatus->IsUnderVersionControl(sProjectRoot, subpaths, path.IsDirectory(), &isVersion);
 	if(!isVersion)
