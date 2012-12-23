@@ -697,7 +697,7 @@
 #define IDC_SECONDURL                   1303
 #define IDS_ERR_INVALIDREV              1304
 #define IDC_DIFFSTATIC2                 1304
-#define IDS_ERR_EMPTYDIFF               1305
+#define IDS_SUBMODULE_EMPTYDIFF         1305
 #define IDS_ERR_NOTHINGTOADD            1306
 #define IDS_ERR_ERROR                   1307
 #define IDC_SWITCHLEFTRIGHT             1307

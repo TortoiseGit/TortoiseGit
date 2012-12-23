@@ -3031,7 +3031,7 @@ BEGIN
     IDS_PROC_NEWBRANCHTAG_SIGN_TT "Requires GPG and a key without passphrase."
     IDS_ERR_COPYITSELF      "Can't copy \n%s\nto\n%s"
     IDS_ERR_INVALIDREV      "Invalid revision number!"
-    IDS_ERR_EMPTYDIFF       "No differences found!"
+    IDS_SUBMODULE_EMPTYDIFF "No differences found! Submodule may not be updated. Update submodule now?"
     IDS_ERR_NOTHINGTOADD    "There is nothing to add. All the files and folders are either under version control, have been ignored or the global ignore configuration setting."
     IDS_ERR_ERROR           "Error"
     IDS_ERR_NOVALIDPATH     "This is not a valid path!\nA valid path must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$"
