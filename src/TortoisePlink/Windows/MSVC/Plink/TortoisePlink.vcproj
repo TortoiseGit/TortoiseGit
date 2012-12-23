@@ -79,7 +79,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
 				SubSystem="2"
 				OptimizeReferences="1"
@@ -173,7 +173,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib imm32.lib winmm.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
 				SubSystem="2"
 				OptimizeReferences="2"

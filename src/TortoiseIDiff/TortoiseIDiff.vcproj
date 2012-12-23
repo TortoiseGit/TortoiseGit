@@ -225,7 +225,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="gdiplus.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -305,7 +305,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="gdiplus.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				DelayLoadDLLs="gdiplus.dll"
 				GenerateDebugInformation="true"
 				SubSystem="2"

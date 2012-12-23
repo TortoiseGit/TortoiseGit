@@ -236,7 +236,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs=""
@@ -320,7 +320,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Crypt32.lib"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
