@@ -375,6 +375,7 @@ BEGIN
     BUTTON      ID_VIEW_SHOWFILELIST
     SEPARATOR
     BUTTON      ID_VIEW_OPTIONS
+    BUTTON      ID_VIEW_IGNOREWHITESPACECHANGE
     SEPARATOR
     BUTTON      ID_HELP
 END
@@ -439,6 +440,7 @@ BEGIN
         MENUITEM "Switch Left<->Right",         ID_VIEW_SWITCHLEFT
         MENUITEM SEPARATOR
         MENUITEM "S&ettings",                   ID_VIEW_OPTIONS
+        MENUITEM "Ignore whitespace changes",   ID_VIEW_IGNOREWHITESPACECHANGE
         MENUITEM SEPARATOR
         MENUITEM "Show File List",              ID_VIEW_SHOWFILELIST
         MENUITEM SEPARATOR
@@ -630,6 +632,8 @@ BEGIN
     ID_NAVIGATE_PREVIOUSDIFFERENCE 
                             "Go to the previous difference\nPrevious difference"
     ID_VIEW_OPTIONS         "Adjust the settings\nSettings"
+    ID_VIEW_IGNOREWHITESPACECHANGE
+                            "Toggle ignore whitespace changes\nIgnore whitespace changes"
 END
 
 STRINGTABLE 

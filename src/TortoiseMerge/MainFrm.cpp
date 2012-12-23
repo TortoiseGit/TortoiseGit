@@ -66,6 +66,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ONEWAYDIFF, OnUpdateViewOnewaydiff)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WHITESPACES, OnUpdateViewWhitespaces)
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
+	ON_COMMAND(ID_VIEW_IGNOREWHITESPACECHANGE, OnViewIgnoreWhitespaceChange)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNOREWHITESPACECHANGE, OnUpdateViewIgnoreWhitespaceChange)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
@@ -1278,6 +1280,24 @@ void CMainFrame::OnViewOptions()
 		m_pwndLeftView->Invalidate();
 	if (m_pwndRightView)
 		m_pwndRightView->Invalidate();
+}
+
+void CMainFrame::OnViewIgnoreWhitespaceChange()
+{
+	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	DWORD ignoreWS = regIgnoreWS;
+	regIgnoreWS = ignoreWS == 0 ? 2 : 0;
+	if (CheckForSave() == IDCANCEL)
+		return;
+	CDiffColors::GetInstance().LoadRegistry();
+	LoadViews(true);
+}
+
+void CMainFrame::OnUpdateViewIgnoreWhitespaceChange(CCmdUI *pCmdUI)
+{
+	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
+	DWORD ignoreWS = regIgnoreWS;
+	pCmdUI->SetCheck(ignoreWS == 0 ? 0 : 1);
 }
 
 void CMainFrame::OnClose()

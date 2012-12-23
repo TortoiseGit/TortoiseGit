@@ -79,6 +79,8 @@ protected:
 	afx_msg void	OnUpdateViewOnewaydiff(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateViewWhitespaces(CCmdUI *pCmdUI);
 	afx_msg void	OnViewOptions();
+	afx_msg void	OnViewIgnoreWhitespaceChange();
+	afx_msg void	OnUpdateViewIgnoreWhitespaceChange(CCmdUI *pCmdUI);
 	afx_msg void	OnViewLinedown();
 	afx_msg void	OnViewLineup();
 	afx_msg void	OnViewLineleft();
