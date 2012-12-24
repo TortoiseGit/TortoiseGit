@@ -53,6 +53,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSortColumn(0)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
+	, m_bShowTags(TRUE)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -77,6 +78,12 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	m_bAllBranch=m_regbAllBranch;
 
+	str = g_Git.m_CurrentDir;
+	str.Replace(_T(":"),_T("_"));
+	str = CString(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\")) + str;
+	m_regbShowTags = CRegDWORD(str, TRUE);
+	m_bShowTags = m_regbShowTags;
+
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
 
@@ -87,6 +94,7 @@ CLogDlg::~CLogDlg()
 {
 
 	m_regbAllBranch=m_bAllBranch;
+	m_regbShowTags = m_bShowTags;
 
 	m_CurrentFilteredChangedArray.RemoveAll();
 
@@ -112,6 +120,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_LOG_FOLLOWRENAMES, m_bFollowRenames);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
+	DDX_Check(pDX, IDC_LOG_SHOWTAGS, m_bShowTags);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 }
@@ -142,6 +151,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
 	ON_BN_CLICKED(IDC_LOG_FOLLOWRENAMES, OnBnClickedFollowRenames)
+	ON_BN_CLICKED(IDC_LOG_SHOWTAGS, OnBnClickedShowTags)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
@@ -270,6 +280,7 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
 	AdjustControlSize(IDC_LOG_FOLLOWRENAMES);
+	AdjustControlSize(IDC_LOG_SHOWTAGS);
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
@@ -307,6 +318,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOG_FOLLOWRENAMES, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
+	AddAnchor(IDC_LOG_SHOWTAGS, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -318,6 +330,11 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
+
+	if (m_bShowTags)
+		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
+	else
+		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
 
 //	SetPromptParentWindow(m_hWnd);
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_AUTHOREMAIL)));
@@ -2232,6 +2249,18 @@ void CLogDlg::OnBnClickedFollowRenames()
 	OnRefresh();
 
 	FillLogMessageCtrl(false);
+}
+
+void CLogDlg::OnBnClickedShowTags()
+{
+	this->UpdateData();
+
+	if (m_bShowTags)
+		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
+	else
+		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
+
+	m_LogList.Invalidate();
 }
 
 void CLogDlg::OnBnClickedBrowseRef()

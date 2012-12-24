@@ -81,6 +81,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_arShownList(&m_critSec)
 	, m_hasWC(true)
 	, m_bNoHightlightHead(FALSE)
+	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -545,6 +546,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		//Determine label color
 		if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
 		{
+			if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
+				continue;
 			if( shortname == m_CurrentBranch )
 				colRef = m_Colors.GetColor(CColors::CurrentBranch);
 			else
@@ -553,19 +556,27 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 		}
 		else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
 		{
+			if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
+				continue;
 			colRef = m_Colors.GetColor(CColors::RemoteBranch);
 		}
 		else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
 		{
+			if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
+				continue;
 			colRef = m_Colors.GetColor(CColors::Tag);
 		}
 		else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
 		{
+			if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
+				continue;
 			colRef = m_Colors.GetColor(CColors::Stash);
 			shortname=_T("stash");
 		}
 		else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
 		{
+			if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
+				continue;
 			if(shortname.Find(_T("good")) == 0)
 			{
 				colRef = m_Colors.GetColor(CColors::BisectGood);
@@ -1154,6 +1165,46 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
 						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
+						int displayedRefs = 0;
+						for (unsigned int i = 0; i < m_HashMap[data->m_CommitHash].size(); i++)
+						{
+							CString str = m_HashMap[data->m_CommitHash][i];
+
+							CString shortname;
+							if (CGit::GetShortName(str, shortname, _T("refs/heads/")))
+							{
+								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
+									continue;
+							}
+							else if (CGit::GetShortName(str, shortname, _T("refs/remotes/")))
+							{
+								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
+									continue;
+							}
+							else if (CGit::GetShortName(str, shortname, _T("refs/tags/")))
+							{
+								if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
+									continue;
+							}
+							else if (CGit::GetShortName(str, shortname, _T("refs/stash")))
+							{
+								if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
+									continue;
+							}
+							else if (CGit::GetShortName(str, shortname, _T("refs/bisect/")))
+							{
+								if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
+									continue;
+							}
+							displayedRefs++;
+						}
+
+						if (displayedRefs == 0)
+						{
+							*pResult = CDRF_DODEFAULT;
+							return;
+						}
+
 						DrawTagBranch(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
 
 						*pResult = CDRF_SKIPDEFAULT;
