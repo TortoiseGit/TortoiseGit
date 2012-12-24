@@ -78,6 +78,14 @@ enum LISTITEMSTATES_MINE {
 #define LOGFILTER_SUBJECT		0x0040
 #define LOGFILTER_REFNAME		0x0080 // only used in RefBrowser so far
 
+#define LOGLIST_SHOWNOREFS			0x0000
+#define LOGLIST_SHOWLOCALBRANCHES	0x0001
+#define LOGLIST_SHOWREMOTEBRANCHES	0x0002
+#define LOGLIST_SHOWTAGS			0x0004
+#define LOGLIST_SHOWSTASH			0x0008
+#define LOGLIST_SHOWBISECT			0x0010
+#define LOGLIST_SHOWALLREFS			0xFFFF
+
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
 #define MSG_LOAD_PERCENTAGE		(WM_USER+111)
@@ -320,6 +328,7 @@ public:
 	CTGitPath			m_Path;
 	int					m_ShowMask;
 	CGitHash			m_lastSelectedHash;
+	int					m_ShowRefMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
