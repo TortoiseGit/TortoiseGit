@@ -43,7 +43,7 @@
 			<MergeRef Id="CRT Policy" />
 		</Feature>
 
-		<Feature Id="F_MFC" Level="1" Title="MFC 8.0" Description="The MFC 8.0 libs" TypicalDefault="install" Display="hidden">
+		<Feature Id="F_MFC" Level="1" Title="MFC 9.0" Description="The MFC 9.0 libs" TypicalDefault="install" Display="hidden">
 			<MergeRef Id="MFC" />
 			<MergeRef Id="MFC Policy" />
 			<MergeRef Id="MFCLOC" />
@@ -72,7 +72,7 @@
 				<MergeRef Id="CRT32" />
 			</Feature>
 
-			<Feature Id="F_MFC32" Level="1" Title="MFC 8.0" Description="The MFC 8.0 libs" TypicalDefault="install" Display="hidden">
+			<Feature Id="F_MFC32" Level="1" Title="MFC 9.0" Description="The MFC 9.0 libs" TypicalDefault="install" Display="hidden">
 				<MergeRef Id="ATL32" />
 				<MergeRef Id="ATL32 Policy" />
 				<MergeRef Id="MFC32" />
