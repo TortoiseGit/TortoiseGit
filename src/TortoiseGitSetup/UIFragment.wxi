@@ -58,8 +58,6 @@
 		<Property Id="ErrorDialog">ErrorPopup</Property>
 		<Property Id="INSTALLLEVEL">3</Property>
 		<!-- http://msdn2.microsoft.com/en-us/library/aa369536.aspx -->
-		<Property Id="ProductID">none</Property>
-		<!-- http://msdn2.microsoft.com/en-us/library/aa370855.aspx -->
 		<Property Id="PROMPTROLLBACKCOST">P</Property>
 		<!-- http://msdn2.microsoft.com/en-us/library/aa370887.aspx -->
 
@@ -183,7 +181,7 @@
 			<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Next]">
 				<Publish Property="InstallMode" Value="Server Image">1</Publish>
 				<Publish Event="ValidateProductID" Value="0">0</Publish>
-				<Publish Event="NewDialog" Value="AdminInstallPointDlg">ProductID</Publish>
+				<Publish Event="NewDialog" Value="AdminInstallPointDlg">1</Publish>
 			</Control>
 			<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="[ButtonText_Cancel]">
 				<Publish Event="SpawnDialog" Value="CancelPopup">1</Publish>
