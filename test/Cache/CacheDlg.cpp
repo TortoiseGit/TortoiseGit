@@ -277,7 +277,7 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	}
 	wcsncpy(request.path, Path.GetWinPath(), MAX_PATH);
-	ZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
+	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
 	// Do the transaction in overlapped mode.
 	// That way, if anything happens which might block this call
