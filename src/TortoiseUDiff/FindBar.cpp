@@ -16,8 +16,8 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
-#include "Resource.h"
+#include "stdafx.h"
+#include "resource.h"
 #include "FindBar.h"
 #include "Registry.h"
 #include <string>
@@ -26,9 +26,9 @@
 using namespace std;
 
 CFindBar::CFindBar()
+	: m_hParent(NULL)
+	, m_hIcon(NULL)
 {
-	m_hParent = NULL;
-	m_hIcon = NULL;
 }
 
 CFindBar::~CFindBar(void)

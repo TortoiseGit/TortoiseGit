@@ -16,23 +16,23 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "MainWindow.h"
 #include "UnicodeUtils.h"
-#include "SysInfo.h"
 #include "StringUtils.h"
 #include "TaskbarUUID.h"
 #include "CreateProcessHelper.h"
+#include "SysInfo.h"
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = NULL*/)
 	: CWindow(hInst, wcx)
 	, m_bShowFindBar(false)
-	, m_bMatchCase(false)
-	, m_directFunction(NULL)
-	, m_directPointer(NULL)
+	, m_directFunction(0)
+	, m_directPointer(0)
 	, m_hWndEdit(NULL)
+	, m_bMatchCase(false)
 {
 	SetWindowTitle(_T("TortoiseGitUDiff"));
 }
@@ -273,8 +273,8 @@ std::wstring CMainWindow::GetAppDirectory()
 		path = pBuf;
 		delete [] pBuf;
 	} while(len == bufferlen);
-
 	path = path.substr(0, path.rfind('\\') + 1);
+
 	return path;
 }
 
@@ -343,7 +343,7 @@ bool CMainWindow::Initialize()
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
-	SendEditor(SCI_SETFONTQUALITY, SC_EFF_QUALITY_DEFAULT);
+	SendEditor(SCI_SETFONTQUALITY, SC_EFF_QUALITY_LCD_OPTIMIZED);
 
 	return true;
 }
