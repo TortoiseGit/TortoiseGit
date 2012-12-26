@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2009-2010 - TortoiseSVN
+// Copyright (C) 2003-2006,2009-2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@ CScrollTool::CScrollTool()
 	: m_bInitCalled(false)
 	, m_bRightAligned(false)
 {
+	SecureZeroMemory(&ti, sizeof(ti));
 }
 
 CScrollTool::~CScrollTool()

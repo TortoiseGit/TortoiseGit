@@ -235,6 +235,8 @@ CString MyGraphSeries::GetTipText(int nGroup, const CString &unitString) const
 MyGraph::MyGraph(GraphType eGraphType /* = MyGraph::Pie */ , bool bStackedGraph /* = false */)
 	: m_nXAxisWidth(0)
 	, m_nYAxisHeight(0)
+	, m_nAxisLabelHeight(0)
+	, m_nAxisTickLabelHeight(0)
 	, m_eGraphType(eGraphType)
 	, m_bStackedGraph(bStackedGraph)
 {
