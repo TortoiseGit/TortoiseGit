@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,8 +20,8 @@
 
 /**
  * \ingroup Utils
- * A simple wrapper class for the SHBrowseForFolder API.
- * Help-Link: ms-help://MS.VSCC/MS.MSDNVS/shellcc/platform/Shell/Functions/SHBrowseForFolder.htm
+ * A simple wrapper class for the SHBrowseForFolder API on XP.
+ * On Vista and later, the IFileDialog is used with the FOS_PICKFOLDERS flag.
  */
 class CBrowseFolder
 {
