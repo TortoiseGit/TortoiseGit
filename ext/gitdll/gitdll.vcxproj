@@ -216,7 +216,7 @@
       <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\tgit\compat\vcbuild\libgit\libgit.vcxproj">
+    <ProjectReference Include="..\build\libgit.vcxproj">
       <Project>{f6dec8c3-b803-4a86-8848-430f08b499e3}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

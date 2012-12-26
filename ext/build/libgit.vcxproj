@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F6DEC8C3-B803-4A86-8848-430F08B499E3}</ProjectGuid>
+    <RootNamespace>libgit</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)64\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)64\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\tgit\compat\msvc.c" />
+    <ClCompile Include="..\tgit\block-sha1\sha1.c" />
+    <ClCompile Include="..\tgit\compat\basename.c" />
+    <ClCompile Include="..\tgit\compat\win32\dirent.c" />
+    <ClCompile Include="..\tgit\compat\fnmatch\fnmatch.c" />
+    <ClCompile Include="..\tgit\compat\fopen.c" />
+    <ClCompile Include="..\tgit\compat\memmem.c" />
+    <ClCompile Include="..\tgit\compat\mkdtemp.c" />
+    <ClCompile Include="..\tgit\compat\obstack.c" />
+    <ClCompile Include="..\tgit\compat\poll\poll.c" />
+    <ClCompile Include="..\tgit\compat\pread.c" />
+    <ClCompile Include="..\tgit\compat\qsort.c" />
+    <ClCompile Include="..\tgit\compat\regex\regex.c">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\setenv.c" />
+    <ClCompile Include="..\tgit\compat\snprintf.c" />
+    <ClCompile Include="..\tgit\compat\strcasestr.c" />
+    <ClCompile Include="..\tgit\compat\strlcpy.c" />
+    <ClCompile Include="..\tgit\compat\strtoimax.c" />
+    <ClCompile Include="..\tgit\compat\strtoumax.c" />
+    <ClCompile Include="..\tgit\compat\win32mmap.c" />
+    <ClCompile Include="..\tgit\compat\winansi.c" />
+    <ClCompile Include="..\tgit\abspath.c" />
+    <ClCompile Include="..\tgit\advice.c" />
+    <ClCompile Include="..\tgit\alias.c" />
+    <ClCompile Include="..\tgit\alloc.c" />
+    <ClCompile Include="..\tgit\archive-tar.c" />
+    <ClCompile Include="..\tgit\archive-zip.c" />
+    <ClCompile Include="..\tgit\archive.c" />
+    <ClCompile Include="..\tgit\argv-array.c" />
+    <ClCompile Include="..\tgit\attr.c" />
+    <ClCompile Include="..\tgit\base85.c" />
+    <ClCompile Include="..\tgit\bisect.c" />
+    <ClCompile Include="..\tgit\blob.c" />
+    <ClCompile Include="..\tgit\branch.c" />
+    <ClCompile Include="..\tgit\bulk-checkin.c" />
+    <ClCompile Include="..\tgit\bundle.c" />
+    <ClCompile Include="..\tgit\cache-tree.c" />
+    <ClCompile Include="..\tgit\color.c" />
+    <ClCompile Include="..\tgit\column.c" />
+    <ClCompile Include="..\tgit\combine-diff.c" />
+    <ClCompile Include="..\tgit\commit.c" />
+    <ClCompile Include="..\tgit\config.c" />
+    <ClCompile Include="..\tgit\connect.c" />
+    <ClCompile Include="..\tgit\connected.c" />
+    <ClCompile Include="..\tgit\convert.c" />
+    <ClCompile Include="..\tgit\copy.c" />
+    <ClCompile Include="..\tgit\csum-file.c" />
+    <ClCompile Include="..\tgit\ctype.c" />
+    <ClCompile Include="..\tgit\date.c" />
+    <ClCompile Include="..\tgit\decorate.c" />
+    <ClCompile Include="..\tgit\diff-delta.c" />
+    <ClCompile Include="..\tgit\diff-lib.c" />
+    <ClCompile Include="..\tgit\diff-no-index.c" />
+    <ClCompile Include="..\tgit\diff.c" />
+    <ClCompile Include="..\tgit\diffcore-break.c" />
+    <ClCompile Include="..\tgit\diffcore-delta.c" />
+    <ClCompile Include="..\tgit\diffcore-order.c" />
+    <ClCompile Include="..\tgit\diffcore-pickaxe.c" />
+    <ClCompile Include="..\tgit\diffcore-rename.c" />
+    <ClCompile Include="..\tgit\dir.c" />
+    <ClCompile Include="..\tgit\editor.c" />
+    <ClCompile Include="..\tgit\entry.c" />
+    <ClCompile Include="..\tgit\environment.c" />
+    <ClCompile Include="..\tgit\exec_cmd.c" />
+    <ClCompile Include="..\tgit\fsck.c" />
+    <ClCompile Include="..\tgit\gpg-interface.c" />
+    <ClCompile Include="..\tgit\graph.c" />
+    <ClCompile Include="..\tgit\grep.c" />
+    <ClCompile Include="..\tgit\hash.c" />
+    <ClCompile Include="..\tgit\help.c" />
+    <ClCompile Include="..\tgit\hex.c" />
+    <ClCompile Include="..\tgit\http-walker.c" />
+    <ClCompile Include="..\tgit\http.c" />
+    <ClCompile Include="..\tgit\ident.c" />
+    <ClCompile Include="..\tgit\kwset.c" />
+    <ClCompile Include="..\tgit\levenshtein.c" />
+    <ClCompile Include="..\tgit\list-objects.c" />
+    <ClCompile Include="..\tgit\ll-merge.c" />
+    <ClCompile Include="..\tgit\lockfile.c" />
+    <ClCompile Include="..\tgit\log-tree.c" />
+    <ClCompile Include="..\tgit\mailmap.c" />
+    <ClCompile Include="..\tgit\match-trees.c" />
+    <ClCompile Include="..\tgit\merge-file.c" />
+    <ClCompile Include="..\tgit\merge-recursive.c" />
+    <ClCompile Include="..\tgit\mergesort.c" />
+    <ClCompile Include="..\tgit\name-hash.c" />
+    <ClCompile Include="..\tgit\notes-cache.c" />
+    <ClCompile Include="..\tgit\notes-merge.c" />
+    <ClCompile Include="..\tgit\notes.c" />
+    <ClCompile Include="..\tgit\object.c" />
+    <ClCompile Include="..\tgit\pack-check.c" />
+    <ClCompile Include="..\tgit\pack-refs.c" />
+    <ClCompile Include="..\tgit\pack-revindex.c" />
+    <ClCompile Include="..\tgit\pack-write.c" />
+    <ClCompile Include="..\tgit\pager.c" />
+    <ClCompile Include="..\tgit\parse-options-cb.c" />
+    <ClCompile Include="..\tgit\parse-options.c" />
+    <ClCompile Include="..\tgit\patch-delta.c" />
+    <ClCompile Include="..\tgit\patch-ids.c" />
+    <ClCompile Include="..\tgit\path.c" />
+    <ClCompile Include="..\tgit\pkt-line.c" />
+    <ClCompile Include="..\tgit\preload-index.c" />
+    <ClCompile Include="..\tgit\pretty.c" />
+    <ClCompile Include="..\tgit\progress.c" />
+    <ClCompile Include="..\tgit\quote.c" />
+    <ClCompile Include="..\tgit\reachable.c" />
+    <ClCompile Include="..\tgit\read-cache.c" />
+    <ClCompile Include="..\tgit\reflog-walk.c" />
+    <ClCompile Include="..\tgit\refs.c" />
+    <ClCompile Include="..\tgit\remote.c" />
+    <ClCompile Include="..\tgit\replace_object.c" />
+    <ClCompile Include="..\tgit\rerere.c" />
+    <ClCompile Include="..\tgit\resolve-undo.c" />
+    <ClCompile Include="..\tgit\revision.c" />
+    <ClCompile Include="..\tgit\run-command.c" />
+    <ClCompile Include="..\tgit\sequencer.c" />
+    <ClCompile Include="..\tgit\server-info.c" />
+    <ClCompile Include="..\tgit\setup.c" />
+    <ClCompile Include="..\tgit\sha1-array.c" />
+    <ClCompile Include="..\tgit\sha1-lookup.c" />
+    <ClCompile Include="..\tgit\sha1_file.c" />
+    <ClCompile Include="..\tgit\sha1_name.c" />
+    <ClCompile Include="..\tgit\shallow.c" />
+    <ClCompile Include="..\tgit\builtin\shortlog.c" />
+    <ClCompile Include="..\tgit\sideband.c" />
+    <ClCompile Include="..\tgit\sigchain.c" />
+    <ClCompile Include="..\tgit\strbuf.c" />
+    <ClCompile Include="..\tgit\streaming.c" />
+    <ClCompile Include="..\tgit\string-list.c" />
+    <ClCompile Include="..\tgit\submodule.c" />
+    <ClCompile Include="..\tgit\symlinks.c" />
+    <ClCompile Include="..\tgit\tag.c" />
+    <ClCompile Include="..\tgit\trace.c" />
+    <ClCompile Include="..\tgit\transport-helper.c" />
+    <ClCompile Include="..\tgit\transport.c" />
+    <ClCompile Include="..\tgit\tree-diff.c" />
+    <ClCompile Include="..\tgit\tree-walk.c" />
+    <ClCompile Include="..\tgit\tree.c" />
+    <ClCompile Include="..\tgit\unpack-trees.c" />
+    <ClCompile Include="..\tgit\upload-pack.c" />
+    <ClCompile Include="..\tgit\url.c" />
+    <ClCompile Include="..\tgit\usage.c" />
+    <ClCompile Include="..\tgit\userdiff.c" />
+    <ClCompile Include="..\tgit\utf8.c" />
+    <ClCompile Include="..\tgit\varint.c" />
+    <ClCompile Include="..\tgit\version.c" />
+    <ClCompile Include="..\tgit\walker.c" />
+    <ClCompile Include="..\tgit\wrapper.c" />
+    <ClCompile Include="..\tgit\write_or_die.c" />
+    <ClCompile Include="..\tgit\ws.c" />
+    <ClCompile Include="..\tgit\wt-status.c" />
+    <ClCompile Include="..\tgit\xdiff-interface.c" />
+    <ClCompile Include="..\tgit\zlib.c" />
+    <ClCompile Include="..\tgit\xdiff\xdiffi.c" />
+    <ClCompile Include="..\tgit\xdiff\xemit.c" />
+    <ClCompile Include="..\tgit\xdiff\xhistogram.c" />
+    <ClCompile Include="..\tgit\xdiff\xmerge.c" />
+    <ClCompile Include="..\tgit\xdiff\xpatience.c" />
+    <ClCompile Include="..\tgit\xdiff\xprepare.c" />
+    <ClCompile Include="..\tgit\xdiff\xutils.c" />
+    <ClCompile Include="..\tgit\builtin\add.c" />
+    <ClCompile Include="..\tgit\builtin\annotate.c" />
+    <ClCompile Include="..\tgit\builtin\apply.c" />
+    <ClCompile Include="..\tgit\builtin\archive.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInArchive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInArchive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInArchive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInArchive.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\bisect--helper.c" />
+    <ClCompile Include="..\tgit\builtin\blame.c" />
+    <ClCompile Include="..\tgit\builtin\branch.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInBranch.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInBranch.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInBranch.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInBranch.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\bundle.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInBundle.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInBundle.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInBundle.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInBundle.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\cat-file.c" />
+    <ClCompile Include="..\tgit\builtin\check-attr.c" />
+    <ClCompile Include="..\tgit\builtin\check-ref-format.c" />
+    <ClCompile Include="..\tgit\builtin\checkout-index.c" />
+    <ClCompile Include="..\tgit\builtin\checkout.c" />
+    <ClCompile Include="..\tgit\builtin\clean.c" />
+    <ClCompile Include="..\tgit\builtin\clone.c" />
+    <ClCompile Include="..\tgit\builtin\commit-tree.c" />
+    <ClCompile Include="..\tgit\builtin\commit.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInCommit.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInCommit.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInCommit.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInCommit.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\config.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInConfig.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInConfig.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInConfig.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInConfig.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\count-objects.c" />
+    <ClCompile Include="..\tgit\builtin\describe.c" />
+    <ClCompile Include="..\tgit\builtin\diff-files.c" />
+    <ClCompile Include="..\tgit\builtin\diff-index.c" />
+    <ClCompile Include="..\tgit\builtin\diff-tree.c" />
+    <ClCompile Include="..\tgit\builtin\diff.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInDiff.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInDiff.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInDiff.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInDiff.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\fast-export.c" />
+    <ClCompile Include="..\tgit\builtin\fetch-pack.c" />
+    <ClCompile Include="..\tgit\builtin\fetch.c" />
+    <ClCompile Include="..\tgit\builtin\fmt-merge-msg.c" />
+    <ClCompile Include="..\tgit\builtin\for-each-ref.c" />
+    <ClCompile Include="..\tgit\builtin\fsck.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)buildInfsck.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)buildInfsck.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)buildInfsck.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)buildInfsck.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\gc.c" />
+    <ClCompile Include="..\tgit\builtin\grep.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInGrep.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInGrep.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInGrep.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInGrep.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\hash-object.c" />
+    <ClCompile Include="..\tgit\builtin\help.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInHelp.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInHelp.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInHelp.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInHelp.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\index-pack.c" />
+    <ClCompile Include="..\tgit\builtin\init-db.c" />
+    <ClCompile Include="..\tgit\builtin\log.c" />
+    <ClCompile Include="..\tgit\builtin\ls-files.c" />
+    <ClCompile Include="..\tgit\builtin\ls-remote.c" />
+    <ClCompile Include="..\tgit\builtin\ls-tree.c" />
+    <ClCompile Include="..\tgit\builtin\mailinfo.c" />
+    <ClCompile Include="..\tgit\builtin\mailsplit.c" />
+    <ClCompile Include="..\tgit\builtin\merge-base.c" />
+    <ClCompile Include="..\tgit\builtin\merge-file.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\merge-index.c" />
+    <ClCompile Include="..\tgit\builtin\merge-ours.c" />
+    <ClCompile Include="..\tgit\builtin\merge-recursive.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\merge-tree.c" />
+    <ClCompile Include="..\tgit\builtin\merge.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMerge.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMerge.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMerge.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMerge.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\mktag.c" />
+    <ClCompile Include="..\tgit\builtin\mktree.c" />
+    <ClCompile Include="..\tgit\builtin\mv.c" />
+    <ClCompile Include="..\tgit\builtin\name-rev.c" />
+    <ClCompile Include="..\tgit\builtin\notes.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInNotes.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInNotes.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInNotes.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInNotes.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\pack-objects.c" />
+    <ClCompile Include="..\tgit\builtin\pack-redundant.c" />
+    <ClCompile Include="..\tgit\builtin\pack-refs.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\patch-id.c" />
+    <ClCompile Include="..\tgit\builtin\prune-packed.c" />
+    <ClCompile Include="..\tgit\builtin\prune.c" />
+    <ClCompile Include="..\tgit\builtin\push.c" />
+    <ClCompile Include="..\tgit\builtin\read-tree.c" />
+    <ClCompile Include="..\tgit\builtin\receive-pack.c" />
+    <ClCompile Include="..\tgit\builtin\reflog.c" />
+    <ClCompile Include="..\tgit\builtin\remote-ext.c" />
+    <ClCompile Include="..\tgit\builtin\remote-fd.c" />
+    <ClCompile Include="..\tgit\builtin\remote.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInRemote.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInRemote.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInRemote.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInRemote.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\replace.c" />
+    <ClCompile Include="..\tgit\builtin\rerere.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInRerer.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInRerer.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInRerer.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInRerer.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\reset.c" />
+    <ClCompile Include="..\tgit\builtin\rev-list.c" />
+    <ClCompile Include="..\tgit\builtin\rev-parse.c" />
+    <ClCompile Include="..\tgit\builtin\revert.c" />
+    <ClCompile Include="..\tgit\builtin\rm.c" />
+    <ClCompile Include="..\tgit\builtin\send-pack.c" />
+    <ClCompile Include="..\tgit\builtin\show-branch.c" />
+    <ClCompile Include="..\tgit\builtin\show-ref.c" />
+    <ClCompile Include="..\tgit\builtin\stripspace.c" />
+    <ClCompile Include="..\tgit\builtin\symbolic-ref.c" />
+    <ClCompile Include="..\tgit\builtin\tag.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInTag.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInTag.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInTag.obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInTag.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\tgit\builtin\tar-tree.c" />
+    <ClCompile Include="..\tgit\builtin\unpack-file.c" />
+    <ClCompile Include="..\tgit\builtin\unpack-objects.c" />
+    <ClCompile Include="..\tgit\builtin\update-index.c" />
+    <ClCompile Include="..\tgit\builtin\update-ref.c" />
+    <ClCompile Include="..\tgit\builtin\update-server-info.c" />
+    <ClCompile Include="..\tgit\builtin\upload-archive.c" />
+    <ClCompile Include="..\tgit\builtin\var.c" />
+    <ClCompile Include="..\tgit\builtin\verify-pack.c" />
+    <ClCompile Include="..\tgit\builtin\verify-tag.c" />
+    <ClCompile Include="..\tgit\builtin\write-tree.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\tgit\compat\msvc.h" />
+    <ClInclude Include="..\tgit\archive.h" />
+    <ClInclude Include="..\tgit\argv-array.h" />
+    <ClInclude Include="..\tgit\attr.h" />
+    <ClInclude Include="..\tgit\blob.h" />
+    <ClInclude Include="..\tgit\branch.h" />
+    <ClInclude Include="..\tgit\builtin.h" />
+    <ClInclude Include="..\tgit\bulk-checkin.h" />
+    <ClInclude Include="..\tgit\bundle.h" />
+    <ClInclude Include="..\tgit\cache-tree.h" />
+    <ClInclude Include="..\tgit\cache.h" />
+    <ClInclude Include="..\tgit\color.h" />
+    <ClInclude Include="..\tgit\column.h" />
+    <ClInclude Include="..\tgit\commit.h" />
+    <ClInclude Include="..\tgit\connected.h" />
+    <ClInclude Include="..\tgit\csum-file.h" />
+    <ClInclude Include="..\tgit\decorate.h" />
+    <ClInclude Include="..\tgit\delta.h" />
+    <ClInclude Include="..\tgit\diff.h" />
+    <ClInclude Include="..\tgit\diffcore.h" />
+    <ClInclude Include="..\tgit\dir.h" />
+    <ClInclude Include="..\tgit\exec_cmd.h" />
+    <ClInclude Include="..\tgit\fetch-pack.h" />
+    <ClInclude Include="..\tgit\fsck.h" />
+    <ClInclude Include="..\tgit\git-compat-util.h" />
+    <ClInclude Include="..\tgit\gpg-interface.h" />
+    <ClInclude Include="..\tgit\graph.h" />
+    <ClInclude Include="..\tgit\grep.h" />
+    <ClInclude Include="..\tgit\hash.h" />
+    <ClInclude Include="..\tgit\help.h" />
+    <ClInclude Include="..\tgit\http.h" />
+    <ClInclude Include="..\tgit\kwset.h" />
+    <ClInclude Include="..\tgit\levenshtein.h" />
+    <ClInclude Include="..\tgit\list-objects.h" />
+    <ClInclude Include="..\tgit\ll-merge.h" />
+    <ClInclude Include="..\tgit\log-tree.h" />
+    <ClInclude Include="..\tgit\mailmap.h" />
+    <ClInclude Include="..\tgit\merge-recursive.h" />
+    <ClInclude Include="..\tgit\mergesort.h" />
+    <ClInclude Include="..\tgit\notes-merge.h" />
+    <ClInclude Include="..\tgit\notes.h" />
+    <ClInclude Include="..\tgit\object.h" />
+    <ClInclude Include="..\tgit\pack-refs.h" />
+    <ClInclude Include="..\tgit\pack-revindex.h" />
+    <ClInclude Include="..\tgit\pack.h" />
+    <ClInclude Include="..\tgit\parse-options.h" />
+    <ClInclude Include="..\tgit\patch-ids.h" />
+    <ClInclude Include="..\tgit\pkt-line.h" />
+    <ClInclude Include="..\tgit\progress.h" />
+    <ClInclude Include="..\tgit\quote.h" />
+    <ClInclude Include="..\tgit\reachable.h" />
+    <ClInclude Include="..\tgit\reflog-walk.h" />
+    <ClInclude Include="..\tgit\refs.h" />
+    <ClInclude Include="..\tgit\remote.h" />
+    <ClInclude Include="..\tgit\rerere.h" />
+    <ClInclude Include="..\tgit\revision.h" />
+    <ClInclude Include="..\tgit\run-command.h" />
+    <ClInclude Include="..\tgit\send-pack.h" />
+    <ClInclude Include="..\tgit\sequencer.h" />
+    <ClInclude Include="..\tgit\sha1-array.h" />
+    <ClInclude Include="..\tgit\sha1-lookup.h" />
+    <ClInclude Include="..\tgit\shortlog.h" />
+    <ClInclude Include="..\tgit\sideband.h" />
+    <ClInclude Include="..\tgit\sigchain.h" />
+    <ClInclude Include="..\tgit\strbuf.h" />
+    <ClInclude Include="..\tgit\streaming.h" />
+    <ClInclude Include="..\tgit\string-list.h" />
+    <ClInclude Include="..\tgit\tag.h" />
+    <ClInclude Include="..\tgit\tar.h" />
+    <ClInclude Include="..\tgit\thread-utils.h" />
+    <ClInclude Include="..\tgit\transport.h" />
+    <ClInclude Include="..\tgit\tree-walk.h" />
+    <ClInclude Include="..\tgit\tree.h" />
+    <ClInclude Include="..\tgit\unpack-trees.h" />
+    <ClInclude Include="..\tgit\userdiff.h" />
+    <ClInclude Include="..\tgit\utf8.h" />
+    <ClInclude Include="..\tgit\varint.h" />
+    <ClInclude Include="..\tgit\version.h" />
+    <ClInclude Include="..\tgit\walker.h" />
+    <ClInclude Include="..\tgit\wt-status.h" />
+    <ClInclude Include="..\tgit\xdiff-interface.h" />
+    <ClInclude Include="..\tgit\compat\cygwin.h" />
+    <ClInclude Include="..\tgit\compat\fnmatch\fnmatch.h" />
+    <ClInclude Include="..\tgit\compat\mingw.h" />
+    <ClInclude Include="..\tgit\compat\obstack.h" />
+    <ClInclude Include="..\tgit\compat\poll\poll.h" />
+    <ClInclude Include="..\tgit\compat\regex\regex.h" />
+    <ClInclude Include="..\tgit\compat\win32.h" />
+    <ClInclude Include="..\tgit\xdiff\xdiff.h" />
+    <ClInclude Include="..\tgit\xdiff\xdiffi.h" />
+    <ClInclude Include="..\tgit\xdiff\xemit.h" />
+    <ClInclude Include="..\tgit\xdiff\xinclude.h" />
+    <ClInclude Include="..\tgit\xdiff\xmacros.h" />
+    <ClInclude Include="..\tgit\xdiff\xprepare.h" />
+    <ClInclude Include="..\tgit\xdiff\xtypes.h" />
+    <ClInclude Include="..\tgit\xdiff\xutils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ABC="Test" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

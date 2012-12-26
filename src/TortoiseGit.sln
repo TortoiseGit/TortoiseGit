@@ -91,7 +91,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\ext\build\zlib.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcurl", "..\ext\build\libcurl.vcxproj", "{AD0E960B-5DE9-4AC3-8AE0-8ED0FB5F1396}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit", "..\ext\tgit\compat\vcbuild\libgit\libgit.vcxproj", "{F6DEC8C3-B803-4A86-8848-430F08B499E3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit", "..\ext\build\libgit.vcxproj", "{F6DEC8C3-B803-4A86-8848-430F08B499E3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gitdll", "..\ext\gitdll\gitdll.vcxproj", "{4F0A55DE-DAFD-4A0B-A03D-2C14CB77E08F}"
 EndProject
