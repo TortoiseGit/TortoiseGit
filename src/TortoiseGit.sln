@@ -182,7 +182,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_sv", "..\Languages\Lan
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogdf", "..\ext\OGDF\ogdf.vcxproj", "{7801D1BE-E2FE-476B-A4B4-5D27F387F479}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogdf", "..\ext\build\ogdf.vcxproj", "{7801D1BE-E2FE-476B-A4B4-5D27F387F479}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsyncFramework", "AsyncFramework\AsyncFramework.vcxproj", "{98E4E6D3-0EF6-4570-A29E-274DACF3B784}"
 EndProject

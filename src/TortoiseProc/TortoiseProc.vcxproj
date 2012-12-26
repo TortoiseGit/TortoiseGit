@@ -730,7 +730,7 @@
       <Project>{12e5b4ae-d7ef-4a57-a22d-6f9f9d8ce1fb}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\ext\OGDF\ogdf.vcxproj">
+    <ProjectReference Include="..\..\ext\build\ogdf.vcxproj">
       <Project>{7801d1be-e2fe-476b-a4b4-5d27f387f479}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
