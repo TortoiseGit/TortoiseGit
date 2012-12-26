@@ -18,7 +18,7 @@
 //
 #include "stdafx.h"
 #include "BaseWindow.h"
-#include "shlwapi.h"
+#include <shlwapi.h>
 
 #pragma comment(lib, "shlwapi.lib")
 

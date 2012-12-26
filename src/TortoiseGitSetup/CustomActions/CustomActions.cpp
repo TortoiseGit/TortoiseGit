@@ -23,8 +23,8 @@
 */
 
 #include "stdafx.h"
-#include "shlwapi.h"
-#include "shellapi.h"
+#include <shlwapi.h>
+#include <shellapi.h>
 #pragma comment(lib, "shlwapi")
 #pragma comment(lib, "shell32")
 

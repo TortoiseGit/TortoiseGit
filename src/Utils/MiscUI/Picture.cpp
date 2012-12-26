@@ -18,7 +18,7 @@
 
 #include "stdafx.h"
 #include <olectl.h>
-#include "shlwapi.h"
+#include <shlwapi.h>
 #include <locale>
 #include <algorithm>
 #include "Picture.h"

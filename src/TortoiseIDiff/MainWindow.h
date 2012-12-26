@@ -19,7 +19,7 @@
 #pragma once
 #include "BaseWindow.h"
 #include "PicWindow.h"
-#include "commctrl.h"
+#include <CommCtrl.h>
 #include "TortoiseIDiff.h"
 
 #define SPLITTER_BORDER 2

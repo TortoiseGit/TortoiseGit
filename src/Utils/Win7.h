@@ -97,16 +97,16 @@ typedef struct tagCHANGEFILTERSTRUCT {
 #define __REQUIRED_RPCSAL_H_VERSION__ 100
 #endif
 
-#include "rpc.h"
-#include "rpcndr.h"
+#include <rpc.h>
+#include <rpcndr.h>
 
 #ifndef __RPCNDR_H_VERSION__
 #error this stub requires an updated version of <rpcndr.h>
 #endif // __RPCNDR_H_VERSION__
 
 #ifndef COM_NO_WINDOWS_H
-#include "windows.h"
-#include "ole2.h"
+#include <Windows.h>
+#include <ole2.h>
 #endif /*COM_NO_WINDOWS_H*/
 
 #ifndef __objectarray_h__
@@ -131,8 +131,8 @@ typedef interface IObjectCollection IObjectCollection;
 
 
 /* header files for imported files */
-#include "oaidl.h"
-#include "ocidl.h"
+#include <oaidl.h>
+#include <ocidl.h>
 
 #ifdef __cplusplus
 extern "C"{

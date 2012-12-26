@@ -19,7 +19,7 @@
 //
 
 #include "stdafx.h"
-#include "shellapi.h"
+#include <shellapi.h>
 #include "TGITCache.h"
 #include "GitStatusCache.h"
 #include "CacheInterface.h"

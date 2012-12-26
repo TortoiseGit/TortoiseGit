@@ -19,7 +19,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "shlwapi.h"
+#include <shlwapi.h>
 #include "tstring.h"
 #include "auto_buffer.h"
 #include "FormatMessageWrapper.h"

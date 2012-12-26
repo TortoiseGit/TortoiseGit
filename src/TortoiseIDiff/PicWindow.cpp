@@ -17,10 +17,10 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "shellapi.h"
-#include "commctrl.h"
+#include <shellapi.h>
+#include <CommCtrl.h>
 #include "PicWindow.h"
-#include "math.h"
+#include <math.h>
 #include "SysInfo.h"
 
 #pragma comment(lib, "Msimg32.lib")
