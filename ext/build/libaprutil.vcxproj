@@ -72,11 +72,13 @@
     <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
     <IntDir>..\..\obj\libaprutil\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>libaprutil_tsvn32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
     <IntDir>..\..\obj\libaprutil\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>libaprutil_tsvn32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>

@@ -76,6 +76,7 @@
     <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
     <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(TargetName)32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
@@ -86,6 +87,7 @@
     <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
     <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>libcurld32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>

@@ -73,6 +73,7 @@
     <OutDir>..\..\bin\Debug\bin\</OutDir>
     <IntDir>..\..\obj\TortoiseStub\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\..\bin\Debug64\bin\</OutDir>
@@ -83,6 +84,7 @@
     <OutDir>..\..\bin\Release\bin\</OutDir>
     <IntDir>..\..\obj\TortoiseStub\Release\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\..\bin\Release64\bin\</OutDir>
@@ -118,7 +120,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <OutputFile>$(OutDir)TortoiseGitStub.dll</OutputFile>
+      <OutputFile>$(OutDir)TortoiseGitStub32.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\TortoiseStub.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
