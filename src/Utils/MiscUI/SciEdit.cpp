@@ -874,53 +874,55 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 #if THESAURUS
 		// add found thesauri to sub menu's
 		CMenu thesaurs;
-		thesaurs.CreatePopupMenu();
 		int nThesaurs = 0;
 		CPtrArray menuArray;
-		if ((pThesaur)&&(!worda.IsEmpty()))
+		if (thesaurs.CreatePopupMenu())
 		{
-			mentry * pmean;
-			worda.MakeLower();
-			int count = pThesaur->Lookup(worda, worda.GetLength(),&pmean);
-			if (count)
+			if ((pThesaur)&&(!worda.IsEmpty()))
 			{
-				mentry * pm = pmean;
-				for (int  i=0; i < count; i++)
+				mentry * pmean;
+				worda.MakeLower();
+				int count = pThesaur->Lookup(worda, worda.GetLength(),&pmean);
+				if (count)
 				{
-					CMenu * submenu = new CMenu();
-					menuArray.Add(submenu);
-					submenu->CreateMenu();
-					for (int j=0; j < pm->count; j++)
+					mentry * pm = pmean;
+					for (int  i=0; i < count; i++)
 					{
-						CString sug = CString(pm->psyns[j]);
-						submenu->InsertMenu((UINT)-1, 0, nThesaurs++, sug);
+						CMenu * submenu = new CMenu();
+						menuArray.Add(submenu);
+						submenu->CreateMenu();
+						for (int j=0; j < pm->count; j++)
+						{
+							CString sug = CString(pm->psyns[j]);
+							submenu->InsertMenu((UINT)-1, 0, nThesaurs++, sug);
+						}
+						thesaurs.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)(submenu->m_hMenu), CString(pm->defn));
+						pm++;
 					}
-					thesaurs.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)(submenu->m_hMenu), CString(pm->defn));
-					pm++;
 				}
-			}
-			if ((count > 0)&&(point.x >= 0))
-			{
+				if ((count > 0)&&(point.x >= 0))
+				{
 #ifdef IDS_SPELLEDIT_THESAURUS
-				sMenuItemText.LoadString(IDS_SPELLEDIT_THESAURUS);
-				popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, sMenuItemText);
+					sMenuItemText.LoadString(IDS_SPELLEDIT_THESAURUS);
+					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, sMenuItemText);
 #else
-				popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, _T("Thesaurus"));
+					popup.InsertMenu((UINT)-1, MF_POPUP, (UINT_PTR)thesaurs.m_hMenu, _T("Thesaurus"));
 #endif
-				nThesaurs = nCustoms;
+					nThesaurs = nCustoms;
+				}
+				else
+				{
+					sMenuItemText.LoadString(IDS_SPELLEDIT_NOTHESAURUS);
+					popup.AppendMenu(MF_DISABLED | MF_GRAYED | MF_STRING, 0, sMenuItemText);
+				}
+
+				pThesaur->CleanUpAfterLookup(&pmean, count);
 			}
 			else
 			{
 				sMenuItemText.LoadString(IDS_SPELLEDIT_NOTHESAURUS);
 				popup.AppendMenu(MF_DISABLED | MF_GRAYED | MF_STRING, 0, sMenuItemText);
 			}
-
-			pThesaur->CleanUpAfterLookup(&pmean, count);
-		}
-		else
-		{
-			sMenuItemText.LoadString(IDS_SPELLEDIT_NOTHESAURUS);
-			popup.AppendMenu(MF_DISABLED | MF_GRAYED | MF_STRING, 0, sMenuItemText);
 		}
 #endif
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
