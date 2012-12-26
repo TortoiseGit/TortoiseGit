@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007,2009 - TortoiseSVN
+// Copyright (C) 2003-2007,2009, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -165,7 +165,7 @@ public:
 
 	LONG		m_Height;	///< Height (in pixels)
 	LONG		m_Width;	///< Width (in pixels)
-	BYTE		m_ColorDepth;///< the color depth
+	UINT		m_ColorDepth;///< the color depth
 	LONG		m_Weight;	///< Size Of The Image Object In Bytes (File OR Resource)
 	tstring m_Name;			///< The FileName of the Picture as used in Load()
 
