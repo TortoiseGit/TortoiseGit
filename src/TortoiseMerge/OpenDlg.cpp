@@ -235,7 +235,7 @@ void COpenDlg::OnOK()
 			auto_buffer<TCHAR> path(len+1);
 			auto_buffer<TCHAR> tempF(len+100);
 			GetTempPath (len+1, path);
-			GetTempFileName (path, TEXT("tsm"), 0, tempF);
+			GetTempFileName (path, _T("tsm"), 0, tempF);
 			CString sTempFile = CString(tempF);
 
 			FILE * outFile;
