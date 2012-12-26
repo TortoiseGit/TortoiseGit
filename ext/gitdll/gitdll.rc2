@@ -12,6 +12,7 @@
 // Version
 //
 #include "..\..\src\version.h"
+#define __MSVC__HEAD
 #include "..\tgit\compat\msvc.h"
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION FILEVER
