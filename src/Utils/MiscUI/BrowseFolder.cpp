@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 #include "StdAfx.h"
 #include <windowsx.h>
 #include "BrowseFolder.h"
+#include <strsafe.h>
 
 BOOL CBrowseFolder::m_bCheck = FALSE;
 BOOL CBrowseFolder::m_bCheck2 = FALSE;
@@ -146,7 +147,7 @@ void CBrowseFolder::SetFont(HWND hwnd,LPTSTR FontName,int FontSize)
 	GetObject(GetWindowFont(hwnd),sizeof(lf),&lf);
 	lf.lfWeight = FW_REGULAR;
 	lf.lfHeight = (LONG)FontSize;
-	lstrcpy( lf.lfFaceName, FontName );
+	StringCchCopy( lf.lfFaceName, _countof(lf.lfFaceName), FontName );
 	hf=CreateFontIndirect(&lf);
 	SetBkMode(hdc,OPAQUE);
 	SendMessage(hwnd,WM_SETFONT,(WPARAM)hf,TRUE);
