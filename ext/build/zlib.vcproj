@@ -80,16 +80,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Release\bin\zlib132.dll"
+				OutputFile="$(SolutionDir)..\bin\Release\bin\zlib132.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release\bin\zlib132.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Release\bin\zlib132.pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				LinkTimeCodeGeneration="1"
 				SetChecksum="true"
-				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\zlib132.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Release\bin\zlib132.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -178,16 +178,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Release64\bin\zlib1.dll"
+				OutputFile="$(SolutionDir)..\bin\Release64\bin\zlib1.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Release64\bin\zlib1.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Release64\bin\zlib1.pdb"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				LinkTimeCodeGeneration="1"
 				SetChecksum="true"
-				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\zlib1.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Release64\bin\zlib1.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -274,15 +274,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Debug\bin\zlib1d32.dll"
+				OutputFile="$(SolutionDir)..\bin\Debug\bin\zlib1d32.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug\bin\zlib1d32.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Debug\bin\zlib1d32.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)\..\bin\Debug\bin\zlib1d32.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Debug\bin\zlib1d32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -369,15 +369,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Debug64\bin\zlib1d.dll"
+				OutputFile="$(SolutionDir)..\bin\Debug64\bin\zlib1d.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile="..\zlib\win32\zlib.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug64\bin\zlib1d.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Debug64\bin\zlib1d.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)\..\bin\Debug64\bin\zlib1d.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Debug64\bin\zlib1d.lib"
 				TargetMachine="17"
 			/>
 			<Tool

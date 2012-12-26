@@ -61,7 +61,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release\vc6libcurl.pch"
-				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Release\bin\libcurl.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)..\bin\Release\bin\libcurl.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -79,13 +79,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Release\bin\libcurl32.dll"
+				OutputFile="$(SolutionDir)..\bin\Release\bin\libcurl32.dll"
 				LinkIncremental="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				LinkTimeCodeGeneration="1"
 				SetChecksum="true"
-				ImportLibrary="$(SolutionDir)\..\bin\Release\bin\libcurl32.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Release\bin\libcurl32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -175,13 +175,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Release64\bin\libcurl.dll"
+				OutputFile="$(SolutionDir)..\bin\Release64\bin\libcurl.dll"
 				LinkIncremental="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				LinkTimeCodeGeneration="1"
 				SetChecksum="true"
-				ImportLibrary="$(SolutionDir)\..\bin\Release64\bin\libcurl.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Release64\bin\libcurl.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -248,7 +248,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug\vc6libcurl.pch"
-				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug\bin\libcurld.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)..\bin\Debug\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -267,16 +267,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Debug\bin\libcurld32.dll"
+				OutputFile="$(SolutionDir)..\bin\Debug\bin\libcurld32.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug\bin\libcurld32.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Debug\bin\libcurld32.pdb"
 				GenerateMapFile="true"
 				MapFileName="$(IntDir)\libcurld32.map"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)\..\bin\Debug\bin\libcurld32.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Debug\bin\libcurld32.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -343,7 +343,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug64\vc6libcurl.pch"
-				ProgramDataBaseFileName="$(SolutionDir)\..\bin\Debug64\bin\libcurld.pdb"
+				ProgramDataBaseFileName="$(SolutionDir)..\bin\Debug64\bin\libcurld.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -362,16 +362,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib wldap32.lib"
-				OutputFile="$(SolutionDir)\..\bin\Debug64\bin\libcurld.dll"
+				OutputFile="$(SolutionDir)..\bin\Debug64\bin\libcurld.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(SolutionDir)\..\bin\Debug64\bin\libcurl.pdb"
+				ProgramDatabaseFile="$(SolutionDir)..\bin\Debug64\bin\libcurl.pdb"
 				GenerateMapFile="true"
 				MapFileName="$(IntDir)\libcurld.map"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)\..\bin\Debug64\bin\libcurld.lib"
+				ImportLibrary="$(SolutionDir)..\bin\Debug64\bin\libcurld.lib"
 				TargetMachine="17"
 			/>
 			<Tool
