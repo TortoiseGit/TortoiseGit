@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AD0E960B-5DE9-4AC3-8AE0-8ED0FB5F1396}</ProjectGuid>
+    <RootNamespace>libcurl</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
+    <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
+    <IntDir>..\..\obj\libcurl\$(Configuration)64\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
+    <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
+    <IntDir>..\..\obj\libcurl\$(Configuration)64\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release\vc6libcurl.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release\vc6libcurl.pch</PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Release\bin\libcurl.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)..\bin\Release\bin\libcurl32.dll</OutputFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SetChecksum>true</SetChecksum>
+      <ImportLibrary>$(SolutionDir)..\bin\Release\bin\libcurl32.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\vc6libcurl.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Release64\vc6libcurl.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;BUILDING_LIBCURL;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>$(IntDir)vc6libcurl.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)..\bin\Release64\bin\libcurl.dll</OutputFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <SetChecksum>true</SetChecksum>
+      <ImportLibrary>$(SolutionDir)..\bin\Release64\bin\libcurl.lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release64\vc6libcurl.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug\vc6libcurl.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug\vc6libcurl.pch</PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Debug\bin\libcurld.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)..\bin\Debug\bin\libcurld32.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(SolutionDir)..\bin\Debug\bin\libcurld32.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(IntDir)libcurld32.map</MapFileName>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)..\bin\Debug\bin\libcurld32.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\vc6libcurl.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Debug64\vc6libcurl.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug64\vc6libcurl.pch</PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Debug64\bin\libcurld.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)..\bin\Debug64\bin\libcurld.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(SolutionDir)..\bin\Debug64\bin\libcurl.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(IntDir)libcurld.map</MapFileName>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)..\bin\Debug64\bin\libcurld.lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug64\vc6libcurl.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libcurl\lib\asyn-ares.c" />
+    <ClCompile Include="..\libcurl\lib\asyn-thread.c" />
+    <ClCompile Include="..\libcurl\lib\base64.c" />
+    <ClCompile Include="..\libcurl\lib\connect.c" />
+    <ClCompile Include="..\libcurl\lib\content_encoding.c" />
+    <ClCompile Include="..\libcurl\lib\cookie.c" />
+    <ClCompile Include="..\libcurl\lib\curl_addrinfo.c" />
+    <ClCompile Include="..\libcurl\lib\curl_fnmatch.c" />
+    <ClCompile Include="..\libcurl\lib\curl_gethostname.c" />
+    <ClCompile Include="..\libcurl\lib\curl_memrchr.c" />
+    <ClCompile Include="..\libcurl\lib\curl_rand.c" />
+    <ClCompile Include="..\libcurl\lib\curl_sspi.c" />
+    <ClCompile Include="..\libcurl\lib\curl_threads.c" />
+    <ClCompile Include="..\libcurl\lib\dict.c" />
+    <ClCompile Include="..\libcurl\lib\easy.c" />
+    <ClCompile Include="..\libcurl\lib\escape.c" />
+    <ClCompile Include="..\libcurl\lib\file.c" />
+    <ClCompile Include="..\libcurl\lib\fileinfo.c" />
+    <ClCompile Include="..\libcurl\lib\formdata.c" />
+    <ClCompile Include="..\libcurl\lib\ftp.c" />
+    <ClCompile Include="..\libcurl\lib\ftplistparser.c" />
+    <ClCompile Include="..\libcurl\lib\getenv.c" />
+    <ClCompile Include="..\libcurl\lib\getinfo.c" />
+    <ClCompile Include="..\libcurl\lib\gopher.c" />
+    <ClCompile Include="..\libcurl\lib\gtls.c" />
+    <ClCompile Include="..\libcurl\lib\hash.c" />
+    <ClCompile Include="..\libcurl\lib\hmac.c" />
+    <ClCompile Include="..\libcurl\lib\hostasyn.c" />
+    <ClCompile Include="..\libcurl\lib\hostip.c" />
+    <ClCompile Include="..\libcurl\lib\hostip4.c" />
+    <ClCompile Include="..\libcurl\lib\hostip6.c" />
+    <ClCompile Include="..\libcurl\lib\hostsyn.c" />
+    <ClCompile Include="..\libcurl\lib\http.c" />
+    <ClCompile Include="..\libcurl\lib\http_chunks.c" />
+    <ClCompile Include="..\libcurl\lib\http_digest.c" />
+    <ClCompile Include="..\libcurl\lib\http_negotiate.c" />
+    <ClCompile Include="..\libcurl\lib\http_ntlm.c" />
+    <ClCompile Include="..\libcurl\lib\http_proxy.c" />
+    <ClCompile Include="..\libcurl\lib\if2ip.c" />
+    <ClCompile Include="..\libcurl\lib\imap.c" />
+    <ClCompile Include="..\libcurl\lib\inet_ntop.c" />
+    <ClCompile Include="..\libcurl\lib\inet_pton.c" />
+    <ClCompile Include="..\libcurl\lib\krb4.c" />
+    <ClCompile Include="..\libcurl\lib\krb5.c" />
+    <ClCompile Include="..\libcurl\lib\ldap.c" />
+    <ClCompile Include="..\libcurl\lib\llist.c" />
+    <ClCompile Include="..\libcurl\lib\md5.c" />
+    <ClCompile Include="..\libcurl\lib\memdebug.c" />
+    <ClCompile Include="..\libcurl\lib\mprintf.c" />
+    <ClCompile Include="..\libcurl\lib\multi.c" />
+    <ClCompile Include="..\libcurl\lib\netrc.c" />
+    <ClCompile Include="..\libcurl\lib\nonblock.c" />
+    <ClCompile Include="..\libcurl\lib\nss.c" />
+    <ClCompile Include="..\libcurl\lib\parsedate.c" />
+    <ClCompile Include="..\libcurl\lib\pingpong.c" />
+    <ClCompile Include="..\libcurl\lib\pop3.c" />
+    <ClCompile Include="..\libcurl\lib\progress.c" />
+    <ClCompile Include="..\libcurl\lib\qssl.c" />
+    <ClCompile Include="..\libcurl\lib\rawstr.c" />
+    <ClCompile Include="..\libcurl\lib\rtsp.c" />
+    <ClCompile Include="..\libcurl\lib\security.c" />
+    <ClCompile Include="..\libcurl\lib\select.c" />
+    <ClCompile Include="..\libcurl\lib\sendf.c" />
+    <ClCompile Include="..\libcurl\lib\share.c" />
+    <ClCompile Include="..\libcurl\lib\slist.c" />
+    <ClCompile Include="..\libcurl\lib\smtp.c" />
+    <ClCompile Include="..\libcurl\lib\socks.c" />
+    <ClCompile Include="..\libcurl\lib\socks_gssapi.c" />
+    <ClCompile Include="..\libcurl\lib\socks_sspi.c" />
+    <ClCompile Include="..\libcurl\lib\speedcheck.c" />
+    <ClCompile Include="..\libcurl\lib\splay.c" />
+    <ClCompile Include="..\libcurl\lib\ssh.c" />
+    <ClCompile Include="..\libcurl\lib\sslgen.c" />
+    <ClCompile Include="..\libcurl\lib\ssluse.c" />
+    <ClCompile Include="..\libcurl\lib\strdup.c" />
+    <ClCompile Include="..\libcurl\lib\strequal.c" />
+    <ClCompile Include="..\libcurl\lib\strerror.c" />
+    <ClCompile Include="..\libcurl\lib\strtok.c" />
+    <ClCompile Include="..\libcurl\lib\strtoofft.c" />
+    <ClCompile Include="..\libcurl\lib\telnet.c" />
+    <ClCompile Include="..\libcurl\lib\tftp.c" />
+    <ClCompile Include="..\libcurl\lib\timeval.c" />
+    <ClCompile Include="..\libcurl\lib\transfer.c" />
+    <ClCompile Include="..\libcurl\lib\url.c" />
+    <ClCompile Include="..\libcurl\lib\version.c" />
+    <ClCompile Include="..\libcurl\lib\warnless.c" />
+    <ClCompile Include="..\libcurl\lib\wildcard.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libcurl\lib\arpa_telnet.h" />
+    <ClInclude Include="..\libcurl\lib\asyn.h" />
+    <ClInclude Include="..\libcurl\lib\config-win32.h" />
+    <ClInclude Include="..\libcurl\lib\connect.h" />
+    <ClInclude Include="..\libcurl\lib\content_encoding.h" />
+    <ClInclude Include="..\libcurl\lib\cookie.h" />
+    <ClInclude Include="..\libcurl\lib\curl_addrinfo.h" />
+    <ClInclude Include="..\libcurl\lib\curl_base64.h" />
+    <ClInclude Include="..\libcurl\lib\curl_fnmatch.h" />
+    <ClInclude Include="..\libcurl\lib\curl_gethostname.h" />
+    <ClInclude Include="..\libcurl\lib\curl_ldap.h" />
+    <ClInclude Include="..\libcurl\lib\curl_md5.h" />
+    <ClInclude Include="..\libcurl\lib\curl_memory.h" />
+    <ClInclude Include="..\libcurl\lib\curl_memrchr.h" />
+    <ClInclude Include="..\libcurl\lib\curl_rand.h" />
+    <ClInclude Include="..\libcurl\lib\curl_sspi.h" />
+    <ClInclude Include="..\libcurl\lib\curl_threads.h" />
+    <ClInclude Include="..\libcurl\lib\curlx.h" />
+    <ClInclude Include="..\libcurl\lib\dict.h" />
+    <ClInclude Include="..\libcurl\lib\easyif.h" />
+    <ClInclude Include="..\libcurl\lib\escape.h" />
+    <ClInclude Include="..\libcurl\lib\file.h" />
+    <ClInclude Include="..\libcurl\lib\fileinfo.h" />
+    <ClInclude Include="..\libcurl\lib\formdata.h" />
+    <ClInclude Include="..\libcurl\lib\ftp.h" />
+    <ClInclude Include="..\libcurl\lib\ftplistparser.h" />
+    <ClInclude Include="..\libcurl\lib\getinfo.h" />
+    <ClInclude Include="..\libcurl\lib\gopher.h" />
+    <ClInclude Include="..\libcurl\lib\gtls.h" />
+    <ClInclude Include="..\libcurl\lib\hash.h" />
+    <ClInclude Include="..\libcurl\lib\hostip.h" />
+    <ClInclude Include="..\libcurl\lib\http.h" />
+    <ClInclude Include="..\libcurl\lib\http_chunks.h" />
+    <ClInclude Include="..\libcurl\lib\http_digest.h" />
+    <ClInclude Include="..\libcurl\lib\http_negotiate.h" />
+    <ClInclude Include="..\libcurl\lib\http_ntlm.h" />
+    <ClInclude Include="..\libcurl\lib\http_proxy.h" />
+    <ClInclude Include="..\libcurl\lib\if2ip.h" />
+    <ClInclude Include="..\libcurl\lib\imap.h" />
+    <ClInclude Include="..\libcurl\lib\inet_ntop.h" />
+    <ClInclude Include="..\libcurl\lib\inet_pton.h" />
+    <ClInclude Include="..\libcurl\lib\krb4.h" />
+    <ClInclude Include="..\libcurl\lib\llist.h" />
+    <ClInclude Include="..\libcurl\lib\memdebug.h" />
+    <ClInclude Include="..\libcurl\lib\multiif.h" />
+    <ClInclude Include="..\libcurl\lib\netrc.h" />
+    <ClInclude Include="..\libcurl\lib\nonblock.h" />
+    <ClInclude Include="..\libcurl\lib\nssg.h" />
+    <ClInclude Include="..\libcurl\lib\parsedate.h" />
+    <ClInclude Include="..\libcurl\lib\pingpong.h" />
+    <ClInclude Include="..\libcurl\lib\pop3.h" />
+    <ClInclude Include="..\libcurl\lib\progress.h" />
+    <ClInclude Include="..\libcurl\lib\qssl.h" />
+    <ClInclude Include="..\libcurl\lib\rawstr.h" />
+    <ClInclude Include="..\libcurl\lib\rtsp.h" />
+    <ClInclude Include="..\libcurl\lib\select.h" />
+    <ClInclude Include="..\libcurl\lib\sendf.h" />
+    <ClInclude Include="..\libcurl\lib\setup.h" />
+    <ClInclude Include="..\libcurl\lib\setup_once.h" />
+    <ClInclude Include="..\libcurl\lib\share.h" />
+    <ClInclude Include="..\libcurl\lib\slist.h" />
+    <ClInclude Include="..\libcurl\lib\smtp.h" />
+    <ClInclude Include="..\libcurl\lib\sockaddr.h" />
+    <ClInclude Include="..\libcurl\lib\socks.h" />
+    <ClInclude Include="..\libcurl\lib\speedcheck.h" />
+    <ClInclude Include="..\libcurl\lib\splay.h" />
+    <ClInclude Include="..\libcurl\lib\ssh.h" />
+    <ClInclude Include="..\libcurl\lib\sslgen.h" />
+    <ClInclude Include="..\libcurl\lib\ssluse.h" />
+    <ClInclude Include="..\libcurl\lib\strdup.h" />
+    <ClInclude Include="..\libcurl\lib\strequal.h" />
+    <ClInclude Include="..\libcurl\lib\strerror.h" />
+    <ClInclude Include="..\libcurl\lib\strtok.h" />
+    <ClInclude Include="..\libcurl\lib\strtoofft.h" />
+    <ClInclude Include="..\libcurl\lib\telnet.h" />
+    <ClInclude Include="..\libcurl\lib\tftp.h" />
+    <ClInclude Include="..\libcurl\lib\timeval.h" />
+    <ClInclude Include="..\libcurl\lib\transfer.h" />
+    <ClInclude Include="..\libcurl\lib\url.h" />
+    <ClInclude Include="..\libcurl\lib\urldata.h" />
+    <ClInclude Include="..\libcurl\lib\warnless.h" />
+    <ClInclude Include="..\libcurl\lib\wildcard.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\libcurl\include\curl\curlbuild.h.dist">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating curlbuild.h from curlbuild.h.dist</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Creating curlbuild.h from curlbuild.h.dist</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating curlbuild.h from curlbuild.h.dist</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Creating curlbuild.h from curlbuild.h.dist</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\libcurl\lib\libcurl.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

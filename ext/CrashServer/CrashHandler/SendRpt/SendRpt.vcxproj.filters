@@ -15,10 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CrashInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CrashProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DumpWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\CommonLibs\Log\log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SendReportDlg.cpp">
@@ -33,18 +39,18 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\CommonLibs\Log\log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CrashInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CrashInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="DumpWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="projectinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -62,32 +68,19 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\log_media.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\synchro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="projectinfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CrashInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SendRpt.ico">
+    <Image Include="SendRpt.ico">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="dbghelp_x64.dll" />
-    <None Include="dbghelp_x86.dll" />
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SendRpt.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbghelp_x64.dll" />
+    <None Include="dbghelp_x86.dll" />
   </ItemGroup>
 </Project>

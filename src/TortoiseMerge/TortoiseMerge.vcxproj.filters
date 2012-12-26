@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{95777dab-da10-49af-990c-44113399a0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Source Files">
+      <UniqueIdentifier>{56d7b4e7-a4f5-4ab3-9c24-3441aaba4a55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Header Files">
+      <UniqueIdentifier>{b0d20cec-bc6f-4db4-be33-8c85f80c0950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libdiff">
+      <UniqueIdentifier>{6963f9fb-04ac-4303-8b76-5b03773aa40e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BottomView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffColors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditGotoDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilePatchesDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTextLines.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitAdminDir.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineDiffBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LocatorBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Patch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RightView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetColorPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetMainPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TortoiseMerge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Undo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkingFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CmdLineParser.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CommonAppUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\DIB.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DirFileEnum.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\DragDropImpl.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\PathUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Registry.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\ScrollTool.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\StringUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TempFiles.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\UnicodeUtils.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XSplitter.cpp">
+      <Filter>Utils\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\adler32.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\checksum.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\cmdline.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\compress.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\crc32.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\ctype.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\deflate.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\diff.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\diff3.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\diff4.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\diff_file.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\diff_memory.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\dirent_uri.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\dso.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\error.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\gzio.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\infblock.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\infcodes.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\inffast.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\inflate.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\inftrees.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\infutil.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\io.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\lcs.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\maketree.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\md5.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\path.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\pool.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\sha1.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\stream.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\svn_string.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\SVNLineDiff.cpp">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\token.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\trees.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\uncompr.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\unzip.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\utf.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\utf_validate.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\util.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\win32_xlate.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\zip.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\zutil.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BottomView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffColors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditGotoDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EOL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilePatchesDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileTextLines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FindDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LeftView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LineDiffBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LocatorBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ProgressDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RightView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetColorPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SetMainPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Svn\SVNAdminDir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SVN\SVNLineDiff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TortoiseMerge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Undo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkingFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppUtils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CmdLineParser.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\CommonAppUtils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\DIB.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DirFileEnum.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DragDropImpl.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HyperLink.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\MessageBox.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\PathUtils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\registry.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ScrollTool.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SmartHandle.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\StringUtils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TempFiles.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\UnicodeUtils.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\WaterEffect.h">
+      <Filter>Utils\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libsvn_diff\diff.h">
+      <Filter>Libdiff</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\download.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\TortoiseMerge.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\lineadded.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineconflicted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineconflictedignored.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineedited.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingCR.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingCRLF.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LineEndingLF.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineequal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineremoved.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\linewhitespace.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tortoisegit_logoflipped.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\TortoiseMerge.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tortoisemerge_logoflipped.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ttf_glyph.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

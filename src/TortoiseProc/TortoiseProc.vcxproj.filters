@@ -1,0 +1,1520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{f12669fe-31e7-4a5c-a102-2bcdfa87b55e}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Utils\General">
+      <UniqueIdentifier>{de003b35-fab6-4c15-9e1f-f8c0748dd5fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\UI">
+      <UniqueIdentifier>{a80023ec-988c-4322-bf9d-e2745f2e459c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4278caf6-0bed-40af-9408-7b51181a9fd5}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{a6550359-b4a3-44b2-8aa1-91df7582e8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Commit">
+      <UniqueIdentifier>{49903e6a-b193-487f-b4d2-4c193d485e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\About">
+      <UniqueIdentifier>{c31c032e-32d7-4552-a763-4f4926dbcf46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Blame">
+      <UniqueIdentifier>{0b26535c-0706-4c64-8c89-2929851a8640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Log">
+      <UniqueIdentifier>{bde9039e-bbb7-4da8-99aa-4a9774dfc906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\RefLog">
+      <UniqueIdentifier>{f7656fb1-a6f0-41a3-881d-38221b393367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Submodule">
+      <UniqueIdentifier>{7d4eaef8-90e1-444c-98ed-8746a9872a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Rename">
+      <UniqueIdentifier>{2a984f22-9477-4a8b-bf6d-48ee25d70e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Remove">
+      <UniqueIdentifier>{0f625840-a62e-4c15-9d97-ec4e38db5b49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Revert">
+      <UniqueIdentifier>{0a0cd923-2a12-4458-9aa9-a4921f6581d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Clean">
+      <UniqueIdentifier>{e6240fbd-4df8-4577-8b16-b2a5ead1a765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Clone">
+      <UniqueIdentifier>{de5b5256-1ecb-492d-a5d8-29799cfe330d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\PullFetch">
+      <UniqueIdentifier>{ef8a081d-2a1e-48d5-b926-de4bf1711579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\push">
+      <UniqueIdentifier>{bfbe5f63-6294-42f3-8cfe-8b61b643602f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\branch%255ctag">
+      <UniqueIdentifier>{295ea7b9-86ee-4b71-aa2d-d461c4a1b9d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Export">
+      <UniqueIdentifier>{83356be3-ec90-4ddb-879d-eae742963aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Add">
+      <UniqueIdentifier>{0933a950-54b6-491d-a6f9-6617f364ef3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Ignore">
+      <UniqueIdentifier>{bc84f1d3-a462-4849-a601-5869801ffea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Patch">
+      <UniqueIdentifier>{ff0dffc3-0bf1-4056-962e-c73523271e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\cat">
+      <UniqueIdentifier>{c805ed7d-0cfc-4fce-a8ba-f0261bf1662a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\setting">
+      <UniqueIdentifier>{d39d062e-8f6b-45bd-a7da-d8f81c3f2777}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Switch">
+      <UniqueIdentifier>{ce75bcc4-09c1-43a9-9b51-84abd38e889a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\PrevDiff">
+      <UniqueIdentifier>{900e1865-e9ab-4555-afc1-4085cf7a4437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Diff">
+      <UniqueIdentifier>{237bf655-f900-4e6e-8616-d25bfc348353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Compare">
+      <UniqueIdentifier>{497931d6-b007-494c-b030-e958cf6ba77e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Conflict">
+      <UniqueIdentifier>{46541a10-9441-46e9-94a9-d360e93a8af9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Rebase">
+      <UniqueIdentifier>{a8a8148d-b7e4-47e6-83f5-3d714199e262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\merge">
+      <UniqueIdentifier>{0f4b5efa-1483-4f1a-8de7-731392e67043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\ReposStatus">
+      <UniqueIdentifier>{18178785-aa47-41e2-b7e9-96a60a5c446a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Copy">
+      <UniqueIdentifier>{233c5ed2-26e3-42f4-8d89-5ba9d5c7ad22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\SendMail">
+      <UniqueIdentifier>{f5393fb2-8396-4eec-ba0f-55bd6f452f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Stash">
+      <UniqueIdentifier>{2b65b0fe-f970-45f5-9361-46d97266bff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\RefBrowse">
+      <UniqueIdentifier>{09eb640a-fb16-49ff-8e56-0d44df1a462d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\SVN">
+      <UniqueIdentifier>{61eab796-7c1a-46b2-a320-a645c9284f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Sync">
+      <UniqueIdentifier>{741cd9ca-4068-4381-801e-8a89cde7ab6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\UpdateCheck">
+      <UniqueIdentifier>{903291df-e635-4812-b157-28ad11a07dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\Paste">
+      <UniqueIdentifier>{9679009e-2b44-44ec-92b8-c7c69421815e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\requestpull">
+      <UniqueIdentifier>{10b73aa5-8cb6-4175-a056-9b56e3508ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\CreateRepository">
+      <UniqueIdentifier>{f759e66d-8c86-46a9-9faa-836062a5357e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\bisect">
+      <UniqueIdentifier>{9758ea42-86b2-4700-9bed-054db2307e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\RepositoryBrowser">
+      <UniqueIdentifier>{0457cac1-5961-4995-a7c6-2aa165913aeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands\RevisionGraph">
+      <UniqueIdentifier>{4f0b4331-3c71-498d-aa3e-97400c152ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility Dialogs">
+      <UniqueIdentifier>{8d51c0b8-ad6e-4e78-b789-cfca122780e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Git">
+      <UniqueIdentifier>{39afaa06-d8ee-454d-8484-9ee27c5cee21}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AddRemoteDlg.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TGitCache\CacheInterface.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="FindDlg.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Libraries.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="LogFile.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MassiveGitTask.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Patch.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectProperties.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SinglePropSheetDlg.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AppUtils.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteConflictDlg.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryDlg.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="Colors.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\LinkControl.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\SciEdit.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Command.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CommitCommand.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="CommitDlg.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchViewDlg.cpp">
+      <Filter>Commands\Commit</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\AboutCommand.cpp">
+      <Filter>Commands\About</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Commands\About</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\BlameCommand.cpp">
+      <Filter>Commands\Blame</Filter>
+    </ClCompile>
+    <ClCompile Include="GitLogCache.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="GitLogListAction.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="GitLogListBase.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="lanes.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\LogCommand.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="LogDataVector.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="LogDlg.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="LogDlgHelper.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="LoglistUtils.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="StatGraphDlg.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RefLogCommand.cpp">
+      <Filter>Commands\RefLog</Filter>
+    </ClCompile>
+    <ClCompile Include="RefLogDlg.cpp">
+      <Filter>Commands\RefLog</Filter>
+    </ClCompile>
+    <ClCompile Include="RefLoglist.cpp">
+      <Filter>Commands\RefLog</Filter>
+    </ClCompile>
+    <ClCompile Include="SubmoduleAddDlg.cpp">
+      <Filter>Commands\Submodule</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SubmoduleCommand.cpp">
+      <Filter>Commands\Submodule</Filter>
+    </ClCompile>
+    <ClCompile Include="SubmoduleUpdateDlg.cpp">
+      <Filter>Commands\Submodule</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\DropMoveCommand.cpp">
+      <Filter>Commands\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RenameCommand.cpp">
+      <Filter>Commands\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="RenameDlg.cpp">
+      <Filter>Commands\Rename</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RemoveCommand.cpp">
+      <Filter>Commands\Remove</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RevertCommand.cpp">
+      <Filter>Commands\Revert</Filter>
+    </ClCompile>
+    <ClCompile Include="RevertDlg.cpp">
+      <Filter>Commands\Revert</Filter>
+    </ClCompile>
+    <ClCompile Include="CleanTypeDlg.cpp">
+      <Filter>Commands\Clean</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CleanupCommand.cpp">
+      <Filter>Commands\Clean</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CloneCommand.cpp">
+      <Filter>Commands\Clone</Filter>
+    </ClCompile>
+    <ClCompile Include="CloneDlg.cpp">
+      <Filter>Commands\Clone</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\FetchCommand.cpp">
+      <Filter>Commands\PullFetch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\PullCommand.cpp">
+      <Filter>Commands\PullFetch</Filter>
+    </ClCompile>
+    <ClCompile Include="PullFetchDlg.cpp">
+      <Filter>Commands\PullFetch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\PushCommand.cpp">
+      <Filter>Commands\push</Filter>
+    </ClCompile>
+    <ClCompile Include="PushDlg.cpp">
+      <Filter>Commands\push</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\BranchCommand.cpp">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateBranchTagDlg.cpp">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\TagCommand.cpp">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ExportCommand.cpp">
+      <Filter>Commands\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportDlg.cpp">
+      <Filter>Commands\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\AddCommand.cpp">
+      <Filter>Commands\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="AddDlg.cpp">
+      <Filter>Commands\Add</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\IgnoreCommand.cpp">
+      <Filter>Commands\Ignore</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\FormatPatchCommand.cpp">
+      <Filter>Commands\Patch</Filter>
+    </ClCompile>
+    <ClCompile Include="FormatPatchDlg.cpp">
+      <Filter>Commands\Patch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ImportPatchCommand.cpp">
+      <Filter>Commands\Patch</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportPatchDlg.cpp">
+      <Filter>Commands\Patch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CatCommand.cpp">
+      <Filter>Commands\cat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TortoiseShell\MenuInfo.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetBugTraq.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetBugTraqAdv.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetDialogs.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetHooks.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetHooksAdv.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetLookAndFeelPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetMainPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetOverlayHandlers.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetOverlayIcons.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetOverlayPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetProgsAdvDlg.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetProxyPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SetSavedDataPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingGitConfig.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingGitRemote.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsAdvanced.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsBugtraqConfig.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsColors.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsColors2.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsColors3.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SettingsCommand.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingSMTP.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsProgsAlternativeEditor.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsProgsDiff.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsProgsMerge.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsPropPage.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsTBlame.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\ToolAssocDlg.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
+    <ClCompile Include="GitSwitchDlg.cpp">
+      <Filter>Commands\Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SwitchCommand.cpp">
+      <Filter>Commands\Switch</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\PrevDiffCommand.cpp">
+      <Filter>Commands\PrevDiff</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\DiffCommand.cpp">
+      <Filter>Commands\Diff</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ShowCompareCommand.cpp">
+      <Filter>Commands\Compare</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ConflictEditorCommand.cpp">
+      <Filter>Commands\Conflict</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\ResolveCommand.cpp">
+      <Filter>Commands\Conflict</Filter>
+    </ClCompile>
+    <ClCompile Include="ResolveDlg.cpp">
+      <Filter>Commands\Conflict</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RebaseCommand.cpp">
+      <Filter>Commands\Rebase</Filter>
+    </ClCompile>
+    <ClCompile Include="RebaseDlg.cpp">
+      <Filter>Commands\Rebase</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\MergeCommand.cpp">
+      <Filter>Commands\merge</Filter>
+    </ClCompile>
+    <ClCompile Include="MergeDlg.cpp">
+      <Filter>Commands\merge</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RepoStatusCommand.cpp">
+      <Filter>Commands\ReposStatus</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\DropCopyAddCommand.cpp">
+      <Filter>Commands\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\DropCopyCommand.cpp">
+      <Filter>Commands\Copy</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SendMailCommand.cpp">
+      <Filter>Commands\SendMail</Filter>
+    </ClCompile>
+    <ClCompile Include="SendMailDlg.cpp">
+      <Filter>Commands\SendMail</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\StashCommand.cpp">
+      <Filter>Commands\Stash</Filter>
+    </ClCompile>
+    <ClCompile Include="StashSave.cpp">
+      <Filter>Commands\Stash</Filter>
+    </ClCompile>
+    <ClCompile Include="BrowseRefsDlg.cpp">
+      <Filter>Commands\RefBrowse</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SVNDCommitCommand.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="SVNDCommitDlg.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SVNFetchCommand.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SVNIgnoreCommand.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="SVNIgnoreTypeDlg.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SVNRebaseCommand.cpp">
+      <Filter>Commands\SVN</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\SyncCommand.cpp">
+      <Filter>Commands\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncDlg.cpp">
+      <Filter>Commands\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckForUpdatesDlg.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\UpdateCheckCommand.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateListCtrl.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\PasteCopyCommand.cpp">
+      <Filter>Commands\Paste</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\PasteMoveCommand.cpp">
+      <Filter>Commands\Paste</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RequestPullCommand.cpp">
+      <Filter>Commands\requestpull</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestPullDlg.cpp">
+      <Filter>Commands\requestpull</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateRepoDlg.cpp">
+      <Filter>Commands\CreateRepository</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\CreateRepositoryCommand.cpp">
+      <Filter>Commands\CreateRepository</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\BisectCommand.cpp">
+      <Filter>Commands\bisect</Filter>
+    </ClCompile>
+    <ClCompile Include="BisectStartDlg.cpp">
+      <Filter>Commands\bisect</Filter>
+    </ClCompile>
+    <ClCompile Include="RepositoryBrowser.cpp">
+      <Filter>Commands\RepositoryBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RepositoryBrowserCommand.cpp">
+      <Filter>Commands\RepositoryBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="RevisionGraph\RevGraphFilterDlg.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RevisionGraphCommand.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RevisionGraph\RevisionGraphDlg.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RevisionGraph\RevisionGraphDlgDraw.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RevisionGraph\RevisionGraphDlgFunc.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RevisionGraph\RevisionGraphWnd.cpp">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangedDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="DeleteRemoteTagDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="FileDiffDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GitProgressDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="IgnoreDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="SubmoduleDiffDlg.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GitDiff.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Git\GitStatusListCtrl.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="GitStatusListCtrlHelpers.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchListCtrl.cpp">
+      <Filter>Git</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TortoiseProc.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AddRemoteDlg.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FindDlg.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="LogFile.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MassiveGitTask.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Patch.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectProperties.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TortoiseShell\resource.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePropSheetDlg.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteConflictDlg.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryDlg.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\HorizontalResizableStandAloneDialog.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\LinkControl.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\SciEdit.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Command.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CommitCommand.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="CommitDlg.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchViewDlg.h">
+      <Filter>Commands\Commit</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\AboutCommand.h">
+      <Filter>Commands\About</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutDlg.h">
+      <Filter>Commands\About</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\BlameCommand.h">
+      <Filter>Commands\Blame</Filter>
+    </ClInclude>
+    <ClInclude Include="gitlogcache.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="GitLogList.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="GitLogListBase.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="lanes.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\LogCommand.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="LogDlg.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="LogDlgHelper.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="LoglistUtils.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="StatGraphDlg.h">
+      <Filter>Commands\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RefLogCommand.h">
+      <Filter>Commands\RefLog</Filter>
+    </ClInclude>
+    <ClInclude Include="RefLogDlg.h">
+      <Filter>Commands\RefLog</Filter>
+    </ClInclude>
+    <ClInclude Include="RefLoglist.h">
+      <Filter>Commands\RefLog</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmoduleAddDlg.h">
+      <Filter>Commands\Submodule</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SubmoduleCommand.h">
+      <Filter>Commands\Submodule</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmoduleUpdateDlg.h">
+      <Filter>Commands\Submodule</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\DropMoveCommand.h">
+      <Filter>Commands\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RenameCommand.h">
+      <Filter>Commands\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="RenameDlg.h">
+      <Filter>Commands\Rename</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RemoveCommand.h">
+      <Filter>Commands\Remove</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RevertCommand.h">
+      <Filter>Commands\Revert</Filter>
+    </ClInclude>
+    <ClInclude Include="RevertDlg.h">
+      <Filter>Commands\Revert</Filter>
+    </ClInclude>
+    <ClInclude Include="CleanTypeDlg.h">
+      <Filter>Commands\Clean</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CleanupCommand.h">
+      <Filter>Commands\Clean</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CloneCommand.h">
+      <Filter>Commands\Clone</Filter>
+    </ClInclude>
+    <ClInclude Include="CloneDlg.h">
+      <Filter>Commands\Clone</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\FetchCommand.h">
+      <Filter>Commands\PullFetch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\PullCommand.h">
+      <Filter>Commands\PullFetch</Filter>
+    </ClInclude>
+    <ClInclude Include="PullFetchDlg.h">
+      <Filter>Commands\PullFetch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\PushCommand.h">
+      <Filter>Commands\push</Filter>
+    </ClInclude>
+    <ClInclude Include="PushDlg.h">
+      <Filter>Commands\push</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\BranchCommand.h">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateBranchTagDlg.h">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\TagCommand.h">
+      <Filter>Commands\branch%255ctag</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ExportCommand.h">
+      <Filter>Commands\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportDlg.h">
+      <Filter>Commands\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\AddCommand.h">
+      <Filter>Commands\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="AddDlg.h">
+      <Filter>Commands\Add</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\IgnoreCommand.h">
+      <Filter>Commands\Ignore</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\FormatPatchCommand.h">
+      <Filter>Commands\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="FormatPatchDlg.h">
+      <Filter>Commands\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ImportPatchCommand.h">
+      <Filter>Commands\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportPatchDlg.h">
+      <Filter>Commands\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CatCommand.h">
+      <Filter>Commands\cat</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetBugTraq.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetBugTraqAdv.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetDialogs.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetExtMenu.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetHooks.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetHooksAdv.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetLookAndFeelPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetMainPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetOverlayHandlers.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetOverlayIcons.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetOverlayPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetProgsAdvDlg.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetProxyPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetSavedDataPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingGitConfig.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingGitRemote.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsAdvanced.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsBugtraqConfig.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsColors.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsColors2.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsColors3.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SettingsCommand.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingSMTP.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsProgsAlternativeEditor.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsPropPage.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsTBlame.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\ToolAssocDlg.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="GitSwitchDlg.h">
+      <Filter>Commands\Switch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SwitchCommand.h">
+      <Filter>Commands\Switch</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\PrevDiffCommand.h">
+      <Filter>Commands\PrevDiff</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\DiffCommand.h">
+      <Filter>Commands\Diff</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ShowCompareCommand.h">
+      <Filter>Commands\Compare</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ConflictEditorCommand.h">
+      <Filter>Commands\Conflict</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ResolveCommand.h">
+      <Filter>Commands\Conflict</Filter>
+    </ClInclude>
+    <ClInclude Include="ResolveDlg.h">
+      <Filter>Commands\Conflict</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RebaseCommand.h">
+      <Filter>Commands\Rebase</Filter>
+    </ClInclude>
+    <ClInclude Include="RebaseDlg.h">
+      <Filter>Commands\Rebase</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\MergeCommand.h">
+      <Filter>Commands\merge</Filter>
+    </ClInclude>
+    <ClInclude Include="MergeDlg.h">
+      <Filter>Commands\merge</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RepoStatusCommand.h">
+      <Filter>Commands\ReposStatus</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\DropCopyAddCommand.h">
+      <Filter>Commands\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\DropCopyCommand.h">
+      <Filter>Commands\Copy</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SendMailCommand.h">
+      <Filter>Commands\SendMail</Filter>
+    </ClInclude>
+    <ClInclude Include="SendMailDlg.h">
+      <Filter>Commands\SendMail</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\StashCommand.h">
+      <Filter>Commands\Stash</Filter>
+    </ClInclude>
+    <ClInclude Include="StashSave.h">
+      <Filter>Commands\Stash</Filter>
+    </ClInclude>
+    <ClInclude Include="BrowseRefsDlg.h">
+      <Filter>Commands\RefBrowse</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RefBrowseCommand.h">
+      <Filter>Commands\RefBrowse</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SVNDCommitCommand.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="SVNDCommitDlg.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SVNFetchCommand.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SVNIgnoreCommand.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="SVNIgnoreTypeDlg.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SVNRebaseCommand.h">
+      <Filter>Commands\SVN</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\SyncCommand.h">
+      <Filter>Commands\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncDlg.h">
+      <Filter>Commands\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckForUpdatesDlg.h">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\UpdateCheckCommand.h">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateListCtrl.h">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RequestPullCommand.h">
+      <Filter>Commands\requestpull</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestPullDlg.h">
+      <Filter>Commands\requestpull</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateRepoDlg.h">
+      <Filter>Commands\CreateRepository</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CreateRepositoryCommand.h">
+      <Filter>Commands\CreateRepository</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\BisectCommand.h">
+      <Filter>Commands\bisect</Filter>
+    </ClInclude>
+    <ClInclude Include="BisectStartDlg.h">
+      <Filter>Commands\bisect</Filter>
+    </ClInclude>
+    <ClInclude Include="RepositoryBrowser.h">
+      <Filter>Commands\RepositoryBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RepositoryBrowserCommand.h">
+      <Filter>Commands\RepositoryBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="RevisionGraph\RevGraphFilterDlg.h">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RevisionGraphCommand.h">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RevisionGraph\RevisionGraphDlg.h">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RevisionGraph\RevisionGraphWnd.h">
+      <Filter>Commands\RevisionGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="BranchCombox.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangedDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ChooseVersion.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DeleteRemoteTagDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="FileDiffDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="GitProgressDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="IgnoreDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="SubmoduleDiffDlg.h">
+      <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="GitDiff.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Git\GitStatusListCtrl.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchListCtrl.h">
+      <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TortoiseProc.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\actionad.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionadded.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actiondeleted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionfetching.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionmodified.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionreplaced.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\AddBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\AddedIcon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\bitmap2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\bugtraq.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cache.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CacheList.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-highlight.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-normal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-pressed.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CFMBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\checkout.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\clippaste.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CommitBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ConflictIcon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\copy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CopyBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\DeletedIcon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\DelunversionedBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\dialogs.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Drives.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\explorer.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ExportBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\extwarning.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\filteredit.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\general.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\git.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\gitconfig.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\gitremote.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-bar-stacked.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-bar.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-line-stacked.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-line.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-pie.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\hook.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\iconset.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ImportBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ImportPatchesBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\InSubVersionIcon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\jumpdown.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\jumpup.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Library.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineadded.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineconflicted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lineremoved.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\logfilter.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lookandfeel.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuabout.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuadd.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menublame.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucheckout.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucleanup.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucommit.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucompare.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuconflict.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucopy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucreaterepos.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menudelete.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menudelunversioned.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menudiff.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuexport.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuhelp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuignore.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuimport.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menulog.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menumerge.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menupatch.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuproperties.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menurelocate.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menurename.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuresolve.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menurevert.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menusettings.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menushowchanged.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuswitch.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menuupdate.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\MergeBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\misc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ModifiedIcon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\newfolder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\open.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Overlays.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\proxy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\pull1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\refresh.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\reftype.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RenameBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RepoBrowserBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ResolveBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\restore.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\restoreovl.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RevertBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_added.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_addedplus.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_deleted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_lastcommit.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_renamed.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_replaced.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_tag.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraphbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraphglyphs.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\save.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\saveas.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\saveddata.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\showbranches.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\TortoiseBlame\small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ssh.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\switch.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\SwitchBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Tortoise.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Tortoise13by13.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Tortoise16by16.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Tortoise20by16.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\TortoiseBlame.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tortoisegit_logoflipped.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\TortoiseMerge.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\TortoiseSmall.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tsvnmenufile.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tsvnmenufolder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tsvnmenulink.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tsvnmenumultiple.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ttf_glyph.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\up.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\update1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\warning-general.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\bin167.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\bin168.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\cleananim.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\download.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\pan.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\pandown.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\search.avi">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Resources\TortoiseProcENG.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

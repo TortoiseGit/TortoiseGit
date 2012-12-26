@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\actionadded.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actiondeleted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionmodified.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\actionreplaced.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\AddBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cache.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-normal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-normal.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-pressed.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\cancel-pressed.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CFMBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CheckoutBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CommitBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\CopyBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\DelunversionedBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\dialogs.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Drives.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ExportBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\extwarning.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\filteredit.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\general.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-bar-stacked.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-bar.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-line-stacked.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-line.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\graph-pie.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\hook.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\iconset.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ImportBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\LockBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\logfilter.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\logfilter.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\lookandfeel.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\MergeBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\misc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Overlays.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\proxy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RenameBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RepoBrowserBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ResolveBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\RevertBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_added.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_addedplus.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_deleted.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_lastcommit.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_renamed.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_replaced.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraph_tag.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\revgraphbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\saveddata.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\TortoiseBlame\small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ssh.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\switch.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\SwitchBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\Tortoise.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\tortoisegit_logoflipped.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\ttf_glyph.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\UnlockBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\UpdateBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\warning-general.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\pan.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\pandown.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Languages\res\bin167.avi" />
+    <None Include="..\Resources\bin167.avi" />
+    <None Include="..\Languages\res\bin168.avi" />
+    <None Include="..\Resources\bin168.avi" />
+    <None Include="..\Resources\cleananim.avi" />
+    <None Include="..\Resources\download.avi" />
+    <None Include="..\Resources\search.avi" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Resources\TortoiseProcENG.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Resources\TortoiseProc.manifest" />
+    <CustomBuild Include="..\Languages\res\TortoiseProc.manifest" />
+  </ItemGroup>
+</Project>

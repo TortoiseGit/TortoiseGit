@@ -1,0 +1,1982 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\augmentation">
+      <UniqueIdentifier>{27369690-4b2f-40e6-af8c-2a808c45fb9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\basic">
+      <UniqueIdentifier>{2582eba2-9739-4c1f-b4b2-f67cac50b1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cluster">
+      <UniqueIdentifier>{4ee473e2-a677-4f3c-b6a1-80b023900834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decomposition">
+      <UniqueIdentifier>{5c94e53f-b019-495b-9825-cecf4dac144d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\energybased">
+      <UniqueIdentifier>{94f9a6e5-0bdc-4c86-9d4d-e8fbd2bba94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\energybased\multilevelmixer">
+      <UniqueIdentifier>{e3526bbf-bc1b-4304-8bf6-22c56b12cdd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{6e8451fa-3164-486d-97d4-8e8b70d31d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fileformats">
+      <UniqueIdentifier>{302ecb75-adea-495c-b121-746d67387ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphalg">
+      <UniqueIdentifier>{8f569f80-b6a1-449f-bd13-6340a91310bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\incremental">
+      <UniqueIdentifier>{9ec8ed34-3961-44d6-8cc0-2df171a4237c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\labeling">
+      <UniqueIdentifier>{000e3bfd-58c0-4f84-a0d1-5409687d7121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\layered">
+      <UniqueIdentifier>{e127ff18-8142-4cdd-b623-ac416ee70782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lpsolver">
+      <UniqueIdentifier>{5f3441f7-ab64-455c-af66-3a5050b73ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\misclayout">
+      <UniqueIdentifier>{5f5b20a8-d249-4ba3-a0d1-2ea59e91b762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\orthogonal">
+      <UniqueIdentifier>{2659dc35-0b66-439d-ba7e-5589971ef841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\packing">
+      <UniqueIdentifier>{028c6f3a-6fe0-454d-99d1-5877301b993b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\planarity">
+      <UniqueIdentifier>{a49efc64-5d9a-43ec-a4a6-a48f8a640834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\planarlayout">
+      <UniqueIdentifier>{81e456d7-671c-4b22-bbd9-5936ed2c9f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simultaneous">
+      <UniqueIdentifier>{051cf649-dcd2-4e57-8290-a6cf74d5e931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree">
+      <UniqueIdentifier>{b70ab90d-be1d-46d9-86e5-909be9ba1944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\upward">
+      <UniqueIdentifier>{1116075f-b64c-4532-b827-ad9c47d0e11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\augmentation">
+      <UniqueIdentifier>{8ea3dd80-d800-4830-a521-404944031ad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\basic">
+      <UniqueIdentifier>{4a6a528e-6f3d-44ca-84f1-f06de017e20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cluster">
+      <UniqueIdentifier>{965febc6-5273-49f7-a5a6-89d33c80cd64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\decomposition">
+      <UniqueIdentifier>{d0f98f04-4602-4af0-bc63-e886b1223953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\energybased">
+      <UniqueIdentifier>{a7117f1e-b3af-4eea-9df6-ddc360643df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\energybased\multilevelmixer">
+      <UniqueIdentifier>{4e6af30e-262e-4785-8e16-ae71f61bd383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external">
+      <UniqueIdentifier>{0dca9963-22b0-4fb9-8d53-0fa4353961ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\fileformats">
+      <UniqueIdentifier>{b4f47de7-e4ed-4c2b-bbd5-07b638aaffd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphalg">
+      <UniqueIdentifier>{9c7a7aa3-d462-4d89-ba31-60313b2b5c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal">
+      <UniqueIdentifier>{bd322c20-2e91-4c8f-b617-e51c31ce3b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\augmentation">
+      <UniqueIdentifier>{0a5ee3aa-6211-47f3-9e6d-4ad5e0d5bfc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\basic">
+      <UniqueIdentifier>{6596d97e-9224-4211-9251-1cbfe78558e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\cluster">
+      <UniqueIdentifier>{b9e27d32-5da3-425b-b9ab-37ca9df7f73e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\energybased">
+      <UniqueIdentifier>{bf334725-da6c-480b-b519-941f2ade1056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\lpsolver">
+      <UniqueIdentifier>{cb45c427-6bd7-4fb0-be10-884120ce4940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\orthogonal">
+      <UniqueIdentifier>{3f09a7be-e2c5-480e-a4c7-e055c624d1ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\planarity">
+      <UniqueIdentifier>{e85aecb2-b6a8-4b58-8d1a-2ad5932ebd33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\internal\steinertree">
+      <UniqueIdentifier>{4a685b42-8ced-4c62-ada6-a6de5a6342dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\labeling">
+      <UniqueIdentifier>{e3732fb3-51f0-4f05-82a0-7ad858f27fcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\layered">
+      <UniqueIdentifier>{6453ae8f-e491-412b-bfca-e02915d687a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\lpsolver">
+      <UniqueIdentifier>{2f16ad2c-ca68-46e7-a310-d74342ecbf9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\misclayout">
+      <UniqueIdentifier>{4dcb6213-b74a-478e-b94d-3bb3bea837d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\module">
+      <UniqueIdentifier>{9eb67022-f96f-4868-a165-3c80fc88d181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\orthogonal">
+      <UniqueIdentifier>{23ddcecc-621e-4767-a6c8-e2f0c2b8983f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\packing">
+      <UniqueIdentifier>{147b6559-0400-4cc6-9fe6-b6ba06266b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\planarity">
+      <UniqueIdentifier>{6dd6fca2-61c7-466f-9a22-ca9d19764b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\planarlayout">
+      <UniqueIdentifier>{6356e6c4-b0f5-4891-8e40-3f7119772c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\simultaneous">
+      <UniqueIdentifier>{eb176d64-56d3-4ce6-b54a-7b9ab3c06688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tree">
+      <UniqueIdentifier>{d0905031-8a80-4f79-9c7d-582d36b3700b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\upward">
+      <UniqueIdentifier>{a9acb946-6446-431a-bb91-103a4d236918}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\augmentation\DfsMakeBiconnected.cpp">
+      <Filter>Source Files\augmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\augmentation\PlanarAugmentation.cpp">
+      <Filter>Source Files\augmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\augmentation\PlanarAugmentationFix.cpp">
+      <Filter>Source Files\augmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\basic.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\CliqueFinder.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\CombinatorialEmbedding.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\Constraint.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\ConstraintManager.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\DisjointSets.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\DualGraph.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\EdgeComparer.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\EdgeComparerSimple.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\extended_graph_alg.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\geometry.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\Graph.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\graph_generators.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\GraphAttributes.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\GraphConstraints.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\GraphCopy.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\GridLayout.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\GridLayoutModule.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\Hashing.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\Logger.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\Math.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\modules.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\NearestRectangleFinder.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\PoolMemoryAllocator.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\PreprocessorLayout.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\random_hierarchy.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\simple_graph_alg.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\stNumber.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\String.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\System.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic\UMLGraph.cpp">
+      <Filter>Source Files\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\CconnectClusterPlanar.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\CconnectClusterPlanarEmbed.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\Cluster_ChunkConnection.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\Cluster_CutConstraint.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\Cluster_EdgeVar.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\Cluster_MaxPlanarEdges.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\Clusterer.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\ClusterGraph.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\ClusterGraphAttributes.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\ClusterPlanarizationLayout.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\CPlanarEdgeInserter.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\CPlanarSubClusteredGraph.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\CPlanarSubCLusteredST.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\KuratowskiConstraint.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\MaxCPlanar_Master.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\MaxCPlanar_MinimalClusterConnection.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\MaxCPlanar_Sub.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cluster\MaximumCPlanarSubgraph.cpp">
+      <Filter>Source Files\cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\BCTree.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\DynamicBCTree.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\DynamicSPQRForest.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\DynamicSPQRTree.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\NonPlanarCore.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\PlanarSPQRTree.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\StaticSPQRTree.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decomposition\TricComp.cpp">
+      <Filter>Source Files\decomposition</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\AdjacencyOracle.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\ArrayGraph.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Attraction.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\CoinTutteLayout.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\DavidsonHarel.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\DavidsonHarelLayout.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\EdgeAttributes.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\EnergyFunction.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FastMultipoleEmbedder.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FMEKernel.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FMEMultipoleKernel.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FMEThread.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FMMMLayout.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\FruchtermanReingold.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\GalaxyMultilevel.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\GEMLayout.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\IntersectionRectangle.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\LinearQuadtree.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\LinearQuadtreeBuilder.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\LinearQuadtreeExpansion.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\MAARPacking.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Multilevel.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\MultilevelGraph.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\MultilevelLayout.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\NMM.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\NodeAttributes.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\NodePairEnergy.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\numexcept.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Overlap.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Planarity.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\PlanarityGrid.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\QuadTreeNM.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\QuadTreeNodeNM.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Repulsion.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\Set.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\SpringEmbedderFR.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\SpringEmbedderFRExact.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\SpringEmbedderKK.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\StressMajorizationSimple.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\UniformGrid.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\WSPD.cpp">
+      <Filter>Source Files\energybased</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\BarycenterPlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\CirclePlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\EdgeCoverMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\IndependentSetMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\LocalBiconnectedMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MatchingMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MedianPlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MixedForceLayout.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MMMExampleFastLayout.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MMMExampleNiceLayout.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\MMMExampleNoTwistLayout.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\ModularMultilevelMixer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\RandomMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\RandomPlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\ScalingLayout.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\SolarMerger.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\SolarPlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\energybased\multilevelmixer\ZeroPlacer.cpp">
+      <Filter>Source Files\energybased\multilevelmixer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\external\coin.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoLineBuffer.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoTools.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoUmlDiagramGraph.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoUmlModelGraph.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoUmlToGraphConverter.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoXmlParser.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\DinoXmlScanner.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\GmlParser.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\Ogml.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\OgmlParser.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\simple_graph_load.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fileformats\XmlParser.cpp">
+      <Filter>Source Files\fileformats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\ConvexHull.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\mcf_front_reinelt.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\MinCostFlowModule.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\MinCostFlowReinelt.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\MinimumCut.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\PageRank.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphalg\ShortestPathsWithBFM.cpp">
+      <Filter>Source Files\graphalg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\incremental\SimpleIncNodeInserter.cpp">
+      <Filter>Source Files\incremental</Filter>
+    </ClCompile>
+    <ClCompile Include="src\labeling\ELabelPosSimple.cpp">
+      <Filter>Source Files\labeling</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\acyclic_subgraph.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\CoffmanGrahamRanking.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\CrossingsMatrix.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\FastHierarchyLayout.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\FastSimpleHierarchyLayout.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\heuristics.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\HierarchyLayoutModule.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\OptimalHierarchyClusterLayout.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\OptimalHierarchyLayout.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\OptimalRanking.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\ranking.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\SplitHeuristic.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\sugiyama-cluster.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layered\sugiyama.cpp">
+      <Filter>Source Files\layered</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lpsolver\LPSolver_coin.cpp">
+      <Filter>Source Files\lpsolver</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misclayout\BalloonLayout.cpp">
+      <Filter>Source Files\misclayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misclayout\CircularLayout.cpp">
+      <Filter>Source Files\misclayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misclayout\ProcrustesSubLayout.cpp">
+      <Filter>Source Files\misclayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\ClusterOrthoLayout.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\ClusterOrthoShaper.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\CompactionConstraintGraph.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\EdgeRouter.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\FlowCompaction.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\LongestPathCompaction.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\NodeInfo.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\OrthoLayout.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\OrthoRep.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthogonal\OrthoShaper.cpp">
+      <Filter>Source Files\orthogonal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packing\CCLayoutPackModule.cpp">
+      <Filter>Source Files\packing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packing\ComponentSplitterLayout.cpp">
+      <Filter>Source Files\packing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packing\TileToRowsCCPacker.cpp">
+      <Filter>Source Files\packing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\BoothLueker.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\BoyerMyrvold.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\BoyerMyrvoldInit.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\BoyerMyrvoldPlanar.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\ClusterPlanRep.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EdgeInsertionModule.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMaxFace.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMaxFaceLayers.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMinDepth.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMinDepthMaxFace.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMinDepthMaxFaceLayers.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedderMinDepthPiTa.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\EmbedPQTree.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\ExtractKuratowskis.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\FastPlanarSubgraph.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\FindKuratowskis.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\FixedEmbeddingInserter.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\GraphReduction.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\Layout.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\LayoutPlanRepModule.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MaximalPlanarSubgraphSimple.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MaximumPlanarSubgraph.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MDMFLengthAttribute.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MMCrossingMinimizationModule.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MMFixedEmbeddingInserter.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MMSubgraphPlanarizer.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MMVariableEmbeddingInserter.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\MultiEdgeApproxInserter.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarizationGridLayout.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarizationLayout.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarizationLayout_inc.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarPQTree.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarSubgraphModule.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanarSubgraphPQTree.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanRep.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanRepExpansion.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanRepInc.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\PlanRepUML.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\SimpleEmbedder.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\SubgraphPlanarizer.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\TopologyModule.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\VariableEmbeddingInserter.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarity\VariableEmbeddingInserter2.cpp">
+      <Filter>Source Files\planarity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\BiconnectedShellingOrder.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\FPPLayout.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\IOPoints.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\MixedModelBase.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\MixedModelCrossingsBeautifierModule.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\MixedModelLayout.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\MMCBBase.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\PlanarDrawLayout.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\PlanarStraightLayout.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\SchnyderLayout.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\ShellingOrder.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\ShellingOrderModule.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\planarlayout\TriconnectedShellingOrder.cpp">
+      <Filter>Source Files\planarlayout</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDraw.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDrawCaller.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDrawColorizer.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDrawCreator.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDrawCreatorSimple.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simultaneous\SimDrawManipulatorModule.cpp">
+      <Filter>Source Files\simultaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\RadialTreeLayout.cpp">
+      <Filter>Source Files\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tree\TreeLayout.cpp">
+      <Filter>Source Files\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\DominanceLayout.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\ExpansionGraph.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\FaceSinkGraph.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\FeasibleUpwardPlanarSubgraph.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\FixedEmbeddingUpwardEdgeInserter.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\FUPSSimple.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\LayerBasedUPRLayout.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\SubgraphUpwardPlanarizer.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\UpwardPlanarModule.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\UpwardPlanarSubgraphModule.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\UpwardPlanarSubgraphSimple.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\UpwardPlanRep.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+    <ClCompile Include="src\upward\VisibilityLayout.cpp">
+      <Filter>Source Files\upward</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ogdf\augmentation\DfsMakeBiconnected.h">
+      <Filter>Header Files\augmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\augmentation\PlanarAugmentation.h">
+      <Filter>Header Files\augmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\augmentation\PlanarAugmentationFix.h">
+      <Filter>Header Files\augmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\AdjEntryArray.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Array.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Array2D.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\ArrayBuffer.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Barrier.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\basic.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\BinaryHeap.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\BinaryHeap2.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\BoundedQueue.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\BoundedStack.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\CombinatorialEmbedding.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\comparer.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Constraints.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\CriticalSection.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\DisjointSets.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\DualGraph.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\EdgeArray.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\EdgeComparer.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\EdgeComparerSimple.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\EFreeList.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\EList.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\exceptions.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\extended_graph_alg.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\FaceArray.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\FaceSet.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\geometry.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Graph.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Graph_d.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\graph_generators.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GraphAttributes.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GraphCopy.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GraphCopyAttributes.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GraphObserver.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GridLayout.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\GridLayoutMapped.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\HashArray.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\HashArray2D.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Hashing.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\HashIterator2D.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\HeapBase.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\HyperGraph.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\IncNodeInserter.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Layout.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\List.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Logger.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Math.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\memory.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\MinHeap.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\MinPriorityQueue.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Module.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\ModuleOption.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\NearestRectangleFinder.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\NodeArray.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\NodeComparer.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\NodeSet.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\precondition.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\PreprocessorLayout.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Queue.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\simple_graph_alg.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Skiplist.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\SList.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Stack.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\String.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\System.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Thread.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\Timeouter.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\TopologyModule.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\tuples.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\basic\UMLGraph.h">
+      <Filter>Header Files\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\CconnectClusterPlanar.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\CconnectClusterPlanarEmbed.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterArray.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterGraph.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterGraphAttributes.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterGraphCopyAttributes.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterGraphObserver.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterOrthoLayout.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterOrthoShaper.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterPlanarizationLayout.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterPlanRep.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\ClusterSet.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\CPlanarEdgeInserter.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\CPlanarSubClusteredGraph.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\cluster\MaximumCPlanarSubgraph.h">
+      <Filter>Header Files\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\BCTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\DynamicBCTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\DynamicPlanarSPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\DynamicSkeleton.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\DynamicSPQRForest.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\DynamicSPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\PertinentGraph.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\PlanarSPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\Skeleton.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\SPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\StaticPlanarSPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\StaticSkeleton.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\decomposition\StaticSPQRTree.h">
+      <Filter>Header Files\decomposition</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\CoinTutteLayout.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\DavidsonHarel.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\DavidsonHarelLayout.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\FastMultipoleEmbedder.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\FMMMLayout.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\GEMLayout.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\MultilevelLayout.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\SpringEmbedderFR.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\SpringEmbedderFRExact.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\SpringEmbedderKK.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\StressMajorizationSimple.h">
+      <Filter>Header Files\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\BarycenterPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\CirclePlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\EdgeCoverMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\IndependentSetMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\InitialPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\LocalBiconnectedMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MatchingMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MedianPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MixedForceLayout.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MMMExampleFastLayout.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MMMExampleNiceLayout.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MMMExampleNoTwistLayout.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\ModularMultilevelMixer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\MultilevelBuilder.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\RandomMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\RandomPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\ScalingLayout.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\SolarMerger.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\SolarPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\energybased\multilevelmixer\ZeroPlacer.h">
+      <Filter>Header Files\energybased\multilevelmixer</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\external\abacus.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\external\coin.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoLineBuffer.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoTools.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoUmlDiagramGraph.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoUmlModelGraph.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoUmlToGraphConverter.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoXmlParser.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\DinoXmlScanner.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\GmlParser.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\Ogml.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\OgmlParser.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\simple_graph_load.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\SteinLibParser.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\XmlObject.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\fileformats\XmlParser.h">
+      <Filter>Header Files\fileformats</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\CliqueFinder.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\Clusterer.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\ConvexHull.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\Dijkstra.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\GraphReduction.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\MinCostFlowReinelt.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\MinimumCut.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\PageRank.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\graphalg\ShortestPathWithBFM.h">
+      <Filter>Header Files\graphalg</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\augmentation\PALabel.h">
+      <Filter>Header Files\internal\augmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\basic\intrinsics.h">
+      <Filter>Header Files\internal\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\basic\list_templates.h">
+      <Filter>Header Files\internal\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\basic\MallocMemoryAllocator.h">
+      <Filter>Header Files\internal\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\basic\PoolMemoryAllocator.h">
+      <Filter>Header Files\internal\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\basics.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\Cluster_ChunkConnection.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\Cluster_CutConstraint.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\Cluster_EdgeVar.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\Cluster_MaxPlanarEdges.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\ClusterPQContainer.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\CPlanarSubClusteredST.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\KuratowskiConstraint.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\MaxCPlanar_Master.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\MaxCPlanar_MinimalClusterConnection.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\cluster\MaxCPlanar_Sub.h">
+      <Filter>Header Files\internal\cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\AdjacencyOracle.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\Attraction.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\EdgeAttributes.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\EnergyFunction.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\FruchtermanReingold.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\IntersectionRectangle.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\MultilevelGraph.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\NMM.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\NodeAttributes.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\NodePairEnergy.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\Overlap.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\ParticleInfo.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\Planarity.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\PlanarityGrid.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\QuadTreeNM.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\QuadTreeNodeNM.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\Repulsion.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\energybased\UniformGrid.h">
+      <Filter>Header Files\internal\energybased</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\lpsolver\LPSolver_coin.h">
+      <Filter>Header Files\internal\lpsolver</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\orthogonal\NodeInfo.h">
+      <Filter>Header Files\internal\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\orthogonal\RoutingChannel.h">
+      <Filter>Header Files\internal\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\BoyerMyrvoldInit.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\BoyerMyrvoldPlanar.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\ConnectedSubgraph.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphs.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\EmbedderMaxFaceBiconnectedGraphsLayers.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\EmbedIndicator.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\EmbedPQTree.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\FindKuratowskis.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\IndInfo.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\MaxSequencePQTree.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\MDMFLengthAttribute.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PlanarLeafKey.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PlanarPQTree.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PlanarSubgraphPQTree.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQBasicKey.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQBasicKeyRoot.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQInternalKey.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQInternalNode.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQLeaf.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQLeafKey.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQNode.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQNodeKey.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQNodeRoot.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\PQTree.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\planarity\whaInfo.h">
+      <Filter>Header Files\internal\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\steinertree\EdgeWeightedGraph.h">
+      <Filter>Header Files\internal\steinertree</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\internal\steinertree\EdgeWeightedGraphCopy.h">
+      <Filter>Header Files\internal\steinertree</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\labeling\EdgeLabel.h">
+      <Filter>Header Files\labeling</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\labeling\ELabelInterface.h">
+      <Filter>Header Files\labeling</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\labeling\ELabelPosSimple.h">
+      <Filter>Header Files\labeling</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\BarycenterHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\CoffmanGrahamRanking.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\CrossingsMatrix.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\DfsAcyclicSubgraph.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\ExtendedNestingGraph.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\FastHierarchyLayout.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\FastSimpleHierarchyLayout.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\GreedyCycleRemoval.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\GreedyInsertHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\GreedySwitchHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\Hierarchy.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\Level.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\LongestPathRanking.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\MedianHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\OptimalHierarchyClusterLayout.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\OptimalHierarchyLayout.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\OptimalRanking.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\SiftingHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\SplitHeuristic.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\layered\SugiyamaLayout.h">
+      <Filter>Header Files\layered</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\lpsolver\LPSolver.h">
+      <Filter>Header Files\lpsolver</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\misclayout\BalloonLayout.h">
+      <Filter>Header Files\misclayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\misclayout\CircularLayout.h">
+      <Filter>Header Files\misclayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\misclayout\ProcrustesSubLayout.h">
+      <Filter>Header Files\misclayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\AcyclicSubgraphModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\AugmentationModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\CCLayoutPackModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\ClustererModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\CPlanarSubgraphModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\CrossingMinimizationModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\EdgeInsertionModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\EmbedderModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\ForceLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\FUPSModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\GridLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\HierarchyClusterLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\HierarchyLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\LayoutClusterPlanRepModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\LayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\LayoutPlanRepModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\MinCostFlowModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\MixedModelCrossingsBeautifierModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\MMCrossingMinimizationModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\MMEdgeInsertionModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\MultilevelLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\PlanarityModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\PlanarSubgraphModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\RankingModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\ShellingOrderModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\ShortestPathModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\TwoLayerCrossMin.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\UMLLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\UPRLayoutModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\UpwardEdgeInserterModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\UpwardPlanarizerModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\module\UpwardPlanarSubgraphModule.h">
+      <Filter>Header Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\CompactionConstraintGraph.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\EdgeRouter.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\FlowCompaction.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\LongestPathCompaction.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\MinimumEdgeDistances.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\OrthoLayout.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\OrthoRep.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\orthogonal\OrthoShaper.h">
+      <Filter>Header Files\orthogonal</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\packing\ComponentSplitterLayout.h">
+      <Filter>Header Files\packing</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\packing\TileToRowsCCPacker.h">
+      <Filter>Header Files\packing</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\BoothLueker.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\BoyerMyrvold.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EdgeTypePatterns.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMaxFace.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMaxFaceLayers.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMinDepth.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMinDepthMaxFace.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMinDepthMaxFaceLayers.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\EmbedderMinDepthPiTa.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\ExtractKuratowskis.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\FastPlanarSubgraph.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\FixedEmbeddingInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\KuratowskiSubdivision.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MaximalPlanarSubgraphSimple.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MaximumPlanarSubgraph.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MMFixedEmbeddingInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MMSubgraphPlanarizer.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MMVariableEmbeddingInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\MultiEdgeApproxInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\NodeTypePatterns.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\NonPlanarCore.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanarizationGridLayout.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanarizationLayout.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanRep.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanRepExpansion.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanRepInc.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\PlanRepUML.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\SimpleEmbedder.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\SimpleIncNodeInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\SubgraphPlanarizer.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\VariableEmbeddingInserter.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarity\VariableEmbeddingInserter2.h">
+      <Filter>Header Files\planarity</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\BiconnectedShellingOrder.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\FPPLayout.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\MixedModelLayout.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\MMCBBase.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\MMCBDoubleGrid.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\MMCBLocalStretch.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\PlanarDrawLayout.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\PlanarStraightLayout.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\SchnyderLayout.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\ShellingOrder.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\planarlayout\TriconnectedShellingOrder.h">
+      <Filter>Header Files\planarlayout</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDraw.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDrawCaller.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDrawColorizer.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDrawCreator.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDrawCreatorSimple.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\SimDrawManipulatorModule.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\simultaneous\TwoLayerCrossMinSimDraw.h">
+      <Filter>Header Files\simultaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\tree\RadialTreeLayout.h">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\tree\TreeLayout.h">
+      <Filter>Header Files\tree</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\DominanceLayout.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\ExpansionGraph.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\FaceSinkGraph.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\FeasibleUpwardPlanarSubgraph.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\FixedEmbeddingUpwardEdgeInserter.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\FixedUpwardEmbeddingInserter.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\FUPSSimple.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\LayerBasedUPRLayout.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\SubgraphUpwardPlanarizer.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\UpwardPlanarizationLayout.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\UpwardPlanarModule.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\UpwardPlanarSubgraphSimple.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\UpwardPlanRep.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+    <ClInclude Include="ogdf\upward\VisibilityLayout.h">
+      <Filter>Header Files\upward</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
