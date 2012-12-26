@@ -120,5 +120,3 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	FreeLibrary(hSciLexerDll);
 	return (int) msg.wParam;
 }
-
-
