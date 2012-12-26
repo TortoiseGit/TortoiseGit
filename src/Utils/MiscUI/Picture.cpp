@@ -266,12 +266,12 @@ bool CPicture::Load(tstring sFilePathName)
 			typedef unsigned	(__stdcall *FreeImage_GetHeight_t)(void* dib);
 			typedef void		(__stdcall *FreeImage_ConvertToRawBits_t)(BYTE *bits, void *dib, int pitch, unsigned bpp, unsigned red_mask, unsigned green_mask, unsigned blue_mask, BOOL topdown);
 
-			FreeImage_GetVersion_t FreeImage_GetVersion = NULL;
+			//FreeImage_GetVersion_t FreeImage_GetVersion = NULL;
 			FreeImage_GetFileType_t FreeImage_GetFileType = NULL;
 			FreeImage_GetFIFFromFilename_t FreeImage_GetFIFFromFilename = NULL;
 			FreeImage_Load_t FreeImage_Load = NULL;
 			FreeImage_Unload_t FreeImage_Unload = NULL;
-			FreeImage_GetColorType_t FreeImage_GetColorType = NULL;
+			//FreeImage_GetColorType_t FreeImage_GetColorType = NULL;
 			FreeImage_GetWidth_t FreeImage_GetWidth = NULL;
 			FreeImage_GetHeight_t FreeImage_GetHeight = NULL;
 			FreeImage_ConvertToRawBits_t  FreeImage_ConvertToRawBits = NULL;

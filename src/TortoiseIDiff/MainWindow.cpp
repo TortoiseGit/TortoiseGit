@@ -604,7 +604,7 @@ void CMainWindow::DrawXorBar(HDC hdc, int x1, int y1, int width, int height)
     DeleteObject(hbm);
 }
 
-LRESULT CMainWindow::Splitter_OnLButtonDown(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CMainWindow::Splitter_OnLButtonDown(HWND hwnd, UINT /*iMsg*/, WPARAM /*wParam*/, LPARAM lParam)
 {
     POINT pt;
     HDC hdc;
@@ -660,7 +660,7 @@ void CMainWindow::Splitter_CaptureChanged()
     bDragMode = false;
 }
 
-LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wParam*/, LPARAM lParam)
 {
     HDC hdc;
     RECT rect;
@@ -726,7 +726,7 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT iMsg, WPARAM wParam, L
     return 0;
 }
 
-LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wParam, LPARAM lParam)
 {
     HDC hdc;
     RECT rect;
@@ -793,7 +793,7 @@ bool CMainWindow::OpenDialog()
     return (DialogBox(hResource, MAKEINTRESOURCE(IDD_OPEN), *this, (DLGPROC)OpenDlgProc)==IDOK);
 }
 
-BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam)
+BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
     switch (message)
     {

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,15 +30,15 @@
 
 #define TGIT_CACHE_WINDOW_NAME _T("TGitCacheWindow")
 
-BOOL APIENTRY DllMain( HANDLE hModule,
-					   DWORD  ul_reason_for_call,
-					   LPVOID lpReserved
+BOOL APIENTRY DllMain( HANDLE /*hModule*/,
+					   DWORD  /*ul_reason_for_call*/,
+					   LPVOID /*lpReserved*/
 					 )
 {
 	return TRUE;
 }
 
-UINT __stdcall TerminateCache(MSIHANDLE hModule)
+UINT __stdcall TerminateCache(MSIHANDLE /*hModule*/)
 {
 	HWND hWnd = FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME);
 	if (hWnd)
@@ -62,13 +62,13 @@ UINT __stdcall TerminateCache(MSIHANDLE hModule)
 	return ERROR_SUCCESS;
 }
 
-UINT __stdcall OpenDonatePage(MSIHANDLE hModule)
+UINT __stdcall OpenDonatePage(MSIHANDLE /*hModule*/)
 {
 	ShellExecute(NULL, _T("open"), _T("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=GJGTG75GV5PL6&lc=C2&item_name=Donate%20To%20The%20TortoiseGit%20Project&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"), NULL,NULL, SW_SHOW);
 	return ERROR_SUCCESS;
 }
 
-UINT __stdcall MsgBox(MSIHANDLE hModule)
+UINT __stdcall MsgBox(MSIHANDLE /*hModule*/)
 {
 	MessageBox(NULL, _T("CustomAction \"MsgBox\" running"), _T("Installer"), MB_ICONINFORMATION);
 	return ERROR_SUCCESS;
