@@ -267,8 +267,8 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 m_lastTTPos.y = 0;
             }
             if ((wParam & MK_LBUTTON) &&
-                 (ptPanStart.x >= 0) &&
-                 (ptPanStart.y >= 0))
+                (ptPanStart.x >= 0) &&
+                (ptPanStart.y >= 0))
             {
                 // pan the image
                 int xPos = GET_X_LPARAM(lParam);

@@ -275,7 +275,3 @@ protected:
     bool                bPlaying;
     RECT                m_inforect;
 };
-
-
-
-
