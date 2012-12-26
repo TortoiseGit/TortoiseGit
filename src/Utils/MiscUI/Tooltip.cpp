@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2008-2011 - TortoiseSVN
+// Copyright (C) 2008-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -93,7 +93,7 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 	const HWND hwndTT = CreateWindow
 		(
 		TOOLTIPS_CLASS,
-		TEXT(""),
+		_T(""),
 		TTS_NOPREFIX|TTS_BALLOON|TTS_ALWAYSTIP|TTS_CLOSE,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		CW_USEDEFAULT, CW_USEDEFAULT,

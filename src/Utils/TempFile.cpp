@@ -64,7 +64,7 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 	CString possibletempfile;
 	if (path.IsEmpty())
 	{
-		::GetTempFileName (temppath, TEXT("git"), 0, tempF);
+		::GetTempFileName (temppath, _T("git"), 0, tempF);
 		tempfile = CTGitPath(tempF);
 	}
 	else

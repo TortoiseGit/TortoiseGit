@@ -27,8 +27,8 @@ class CGlobalAtom
 {
 public:
 	CGlobalAtom(void)
-	{ atom = GlobalAddAtom(TEXT("_LinkControl_Object_Pointer_")
-			 TEXT("\\{62671D58-E5E8-46e0-A818-FD6547EC60B8}")); }
+	{ atom = GlobalAddAtom(_T("_LinkControl_Object_Pointer_")
+			 _T("\\{62671D58-E5E8-46e0-A818-FD6547EC60B8}")); }
 	~CGlobalAtom(void)
 	{ DeleteAtom(atom); }
 
