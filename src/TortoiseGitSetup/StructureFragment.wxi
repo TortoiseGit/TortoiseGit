@@ -26,8 +26,6 @@
 			<Directory Id="INSTALLDIR" ShortName="TGIT" Name="TortoiseGit">
 
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id='ATL' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_ATL_x86.msm' DiskId='1'/>
-				<Merge Id='ATL Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86.msm' DiskId='1'/>
 				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1'/>
 				<Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86.msm' DiskId='1'/>
 				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86.msm' DiskId='1'/>
@@ -37,8 +35,6 @@
 				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
-				<Merge Id='ATL' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_ATL_x86_x64.msm' DiskId='1'/>
-				<Merge Id='ATL Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86_x64.msm' DiskId='1'/>
 				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_CRT_x86_x64.msm' DiskId='1'/>
 				<Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86_x64.msm' DiskId='1'/>
 				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86_x64.msm' DiskId='1'/>
@@ -48,8 +44,6 @@
 				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1'/>
 				<Merge Id='MFC32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86.msm' DiskId='1'/>
 				<Merge Id='MFCLOC32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86.msm' DiskId='1'/>
-				<Merge Id='ATL32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_ATL_x86.msm' DiskId='1'/>
-				<Merge Id='ATL32 Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_ATL_x86.msm' DiskId='1'/>
 				<?endif ?>
 
 				<?if $(var.Platform) = "x86" ?>

@@ -25,6 +25,7 @@
 			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
+			UseOfATL="0"
 			CharacterSet="1"
 			>
 			<Tool
@@ -109,6 +110,7 @@
 			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)64"
 			ConfigurationType="1"
 			UseOfMFC="2"
+			UseOfATL="0"
 			CharacterSet="1"
 			>
 			<Tool
@@ -192,6 +194,7 @@
 			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
+			UseOfATL="0"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -280,7 +283,7 @@
 			IntermediateDirectory="..\..\obj\TortoiseGitBlame\$(ConfigurationName)64"
 			ConfigurationType="1"
 			UseOfMFC="2"
-			UseOfATL="2"
+			UseOfATL="0"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
