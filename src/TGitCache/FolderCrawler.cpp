@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "foldercrawler.h"
 #include "GitStatusCache.h"
 #include "registry.h"

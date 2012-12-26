@@ -19,7 +19,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "resource.h"
 #include "..\\TortoiseShell\resource.h"
 #include "GitStatusListCtrl.h"

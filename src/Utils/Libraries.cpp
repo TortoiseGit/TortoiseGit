@@ -37,7 +37,7 @@ DEFINE_GUID(FOLDERTYPEID_GITWC,       0xb118c031, 0xa977, 0x4a67, 0x93, 0x44, 0x
 
 #endif /* (NTDDI_VERSION < NTDDI_WIN7) */
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Libraries.h"
 #include "win7.h"
 #include "SmartHandle.h"

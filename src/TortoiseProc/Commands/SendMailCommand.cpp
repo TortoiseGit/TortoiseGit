@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SendMailCommand.h"
 #include "SendMailDlg.h"
 #include "GITProgressDlg.h"

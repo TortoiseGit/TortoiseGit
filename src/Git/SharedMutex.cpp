@@ -5,7 +5,7 @@
 * @Modified 2008-11-17
 * @Version  0.1
 */
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SharedMutex.h"
 
 

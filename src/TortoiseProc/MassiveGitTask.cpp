@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "TortoiseProc.h"
 #include "MassiveGitTask.h"
 #include "MessageBox.h"
