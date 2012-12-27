@@ -69,11 +69,6 @@
 			<Feature Id="F_CRT32" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
 				<MergeRef Id="CRT32" />
 			</Feature>
-
-			<Feature Id="F_MFC32" Level="1" Title="MFC 9.0" Description="The MFC 9.0 libs" TypicalDefault="install" Display="hidden">
-				<MergeRef Id="MFC32" />
-				<MergeRef Id="MFCLOC32" />
-			</Feature>
 		</Feature>
 		<?endif ?>
 
