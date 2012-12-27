@@ -61,7 +61,6 @@ public:
 
 			AppendData(&fontSize, sizeof(WORD));
 			AppendString(font);
-
 		}
 	}
 
