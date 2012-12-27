@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011 - TortoiseGit
+// Copyright (C) 2010-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,13 +38,11 @@ INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
 TCHAR longname[MAX_PATH +1];
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-						HINSTANCE hPrevInstance,
+int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
+						HINSTANCE /*hPrevInstance*/,
 						LPTSTR lpCmdLine,
-						int nCmdShow)
+						int /*nCmdShow*/)
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-
 	SetDllDirectory(L"");
 
 	if(_tcslen(lpCmdLine) == 0)
@@ -185,9 +183,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 // Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
-	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
 	case WM_INITDIALOG:

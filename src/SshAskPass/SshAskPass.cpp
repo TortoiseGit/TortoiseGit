@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2012 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,13 +41,11 @@ TCHAR *g_Prompt = NULL;
 
 TCHAR g_PassWord[MAX_LOADSTRING];
 
-int APIENTRY _tWinMain(HINSTANCE	hInstance,
-					 HINSTANCE		hPrevInstance,
+int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
+					 HINSTANCE		/*hPrevInstance*/,
 					 LPTSTR			lpCmdLine,
-					 int			nCmdShow)
+					 int			/*nCmdShow*/)
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-
 	SetDllDirectory(L"");
 
 	if( _tcslen(lpCmdLine) == 0 )
@@ -96,7 +94,6 @@ int APIENTRY _tWinMain(HINSTANCE	hInstance,
 		_tprintf(_T("\n"));
 		return -1;
 	}
-	return (int) 0;
 }
 
 void MarkWindowAsUnpinnable(HWND hWnd)
@@ -123,9 +120,8 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 }
 
 // Message handler for password box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/)
 {
-	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
 	case WM_INITDIALOG:
