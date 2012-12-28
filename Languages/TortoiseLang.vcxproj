@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>TortoiseLangs</ProjectName>
+    <ProjectGuid>{EC88E7EC-3074-4841-BA45-B938D098EFF6}</ProjectGuid>
+    <RootNamespace>TortoiseLangs</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake /f Makefile clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Tortoise_bg.po" />
+    <None Include="Tortoise_ca_ES.po" />
+    <None Include="Tortoise_cs.po" />
+    <None Include="Tortoise_da.po" />
+    <None Include="Tortoise_de.po" />
+    <None Include="Tortoise_el.po" />
+    <None Include="Tortoise_es.po" />
+    <None Include="Tortoise_fa.po" />
+    <None Include="Tortoise_fi.po" />
+    <None Include="Tortoise_fr.po" />
+    <None Include="Tortoise_hr.po" />
+    <None Include="Tortoise_hu.po" />
+    <None Include="Tortoise_id.po" />
+    <None Include="Tortoise_it.po" />
+    <None Include="Tortoise_ja.po" />
+    <None Include="Tortoise_ka.po" />
+    <None Include="Tortoise_ko.po" />
+    <None Include="Tortoise_mk.po" />
+    <None Include="Tortoise_nb.po" />
+    <None Include="Tortoise_nl.po" />
+    <None Include="Tortoise_pl.po" />
+    <None Include="Tortoise_pt_BR.po" />
+    <None Include="Tortoise_pt_PT.po" />
+    <None Include="Tortoise_ro.po" />
+    <None Include="Tortoise_ru.po" />
+    <None Include="Tortoise_sk.po" />
+    <None Include="Tortoise_sl.po" />
+    <None Include="Tortoise_sr_spc.po" />
+    <None Include="Tortoise_sr_spl.po" />
+    <None Include="Tortoise_sv.po" />
+    <None Include="Tortoise_tr.po" />
+    <None Include="Tortoise_uk.po" />
+    <None Include="Tortoise_zh_CN.po" />
+    <None Include="Tortoise_zh_TW.po" />
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\ResText\ResText.vcxproj">
+      <Project>{72efb681-1397-4193-bbf9-ca05ac52b75d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\src\TortoiseGitBlame\TortoiseGitBlameLang.vcxproj">
+      <Project>{4c8c72be-fe20-4a92-a592-0d44ed849b1c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\src\TortoiseIDiff\TortoiseIDiffLang.vcxproj">
+      <Project>{56016512-d578-46fd-85e0-9edcd37433ac}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\src\TortoiseMerge\TortoiseMergeLang.vcxproj">
+      <Project>{1b3c273e-6ddf-4fbe-ba31-fcf39c6dbcf9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\src\TortoiseProc\TortoiseProcLang.vcxproj">
+      <Project>{1b3c273e-6ddf-4fbe-ba31-f9f39c6dac99}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

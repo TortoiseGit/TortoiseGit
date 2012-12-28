@@ -24,7 +24,7 @@
     <ClCompile Include="JobScheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
@@ -35,9 +35,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AsyncCall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CriticalSection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,16 +50,16 @@
     <ClInclude Include="JobScheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="SchedulerSuspension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Thread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WaitableEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SchedulerSuspension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

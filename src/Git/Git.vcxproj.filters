@@ -15,77 +15,73 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CrashProcessor.cpp">
+    <ClCompile Include="Git.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DumpWriter.cpp">
+    <ClCompile Include="GitAdminDir.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SendReportDlg.cpp">
+    <ClCompile Include="GitConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SendRpt.cpp">
+    <ClCompile Include="GitFolderStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Serializer.cpp">
+    <ClCompile Include="GitIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GitRev.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GitStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SharedMutex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\CommonLibs\Log\log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CrashInfo.cpp">
+    <ClCompile Include="TGitPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Config.h">
+    <ClInclude Include="TGitPath.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Git.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DumpWriter.h">
+    <ClInclude Include="GitAdminDir.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="GitConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SendReportDlg.h">
+    <ClInclude Include="GitFolderStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Serializer.h">
+    <ClInclude Include="GitHash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gitindex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GitRev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GitStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gittype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedMutex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\log_media.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CommonLibs\Log\synchro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="projectinfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CrashInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SendRpt.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SendRpt.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

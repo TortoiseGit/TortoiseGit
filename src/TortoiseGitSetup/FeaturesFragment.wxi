@@ -40,14 +40,11 @@
 
 		<Feature Id="F_CRT" Level="1" Title="C-Runtime" Description="The Visual-C Runtime libs" TypicalDefault="install" Display="hidden">
 			<MergeRef Id="CRT" />
-			<MergeRef Id="CRT Policy" />
 		</Feature>
 
-		<Feature Id="F_MFC" Level="1" Title="MFC 9.0" Description="The MFC 9.0 libs" TypicalDefault="install" Display="hidden">
+		<Feature Id="F_MFC" Level="1" Title="MFC 11.0" Description="The MFC 11.0 libs" TypicalDefault="install" Display="hidden">
 			<MergeRef Id="MFC" />
-			<MergeRef Id="MFC Policy" />
 			<MergeRef Id="MFCLOC" />
-			<MergeRef Id="MFCLOC Policy" />
 		</Feature>
 
 		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">

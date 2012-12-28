@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tortoise_bg.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ca_ES.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_cs.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_da.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_de.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_el.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_es.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_fa.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_fi.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_fr.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_hr.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_hu.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_id.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_it.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ja.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ka.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ko.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_mk.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_nb.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_nl.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_pl.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_pt_BR.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_pt_PT.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ro.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_ru.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_sk.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_sl.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_sr_spc.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_sr_spl.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_sv.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_tr.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_uk.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_zh_CN.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Tortoise_zh_TW.po">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Makefile" />
+  </ItemGroup>
+</Project>

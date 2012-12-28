@@ -26,22 +26,16 @@
 			<Directory Id="INSTALLDIR" ShortName="TGIT" Name="TortoiseGit">
 
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1'/>
-				<Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86.msm' DiskId='1'/>
-				<Merge Id='MFC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFC_x86.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86.msm' DiskId='1'/>
-				<Merge Id='MFCLOC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFCLOC_x86.msm' DiskId='1'/>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x86.msm' DiskId='1'/>
+				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFC_x86.msm' DiskId='1'/>
+				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFCLOC_x86.msm' DiskId='1'/>
 				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_CRT_x86_x64.msm' DiskId='1'/>
-				<Merge Id='CRT Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_CRT_x86_x64.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFC_x86_x64.msm' DiskId='1'/>
-				<Merge Id='MFC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFC_x86_x64.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1'/>
-				<Merge Id='MFCLOC Policy' Language='0' SourceFile='$(var.MergeModules)\policy_9_0_Microsoft_VC90_MFCLOC_x86_x64.msm' DiskId='1'/>
-				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\microsoft_vc90_crt_x86.msm' DiskId='1'/>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x64.msm' DiskId='1'/>
+				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFC_x64.msm' DiskId='1'/>
+				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFCLOC_x64.msm' DiskId='1'/>
+				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x86.msm' DiskId='1'/>
 				<?endif ?>
 
 				<?if $(var.Platform) = "x86" ?>
@@ -577,14 +571,8 @@
 				<Directory Id="D__Bin" ShortName="BIN" Name="bin">
 					<Component Id="C__apr" Guid="$(var.GuidAPR)" Win64="$(var.Win64YesNo)">
 						<!-- only needed for TortoiseMerge which is shipped 32 or 64 bit-->
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__libapr32" ShortName="LIBAPR.DLL" Name="libapr_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libapr_tsvn32.dll" KeyPath="yes" />
-						<File Id="F__libaprutil32" ShortName="LIBAPRUT.DLL" Name="libaprutil_tsvn32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libaprutil_tsvn32.dll" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__libapr" Name="libapr_tsvn.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libapr_tsvn.dll" />
-						<File Id="F__libaprutil" Name="libaprutil_tsvn.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libaprutil_tsvn.dll" />
-						<?endif ?>
+						<File Id="F__libapr" Name="libapr_tgitmerge.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libapr_tgitmerge.dll" />
+						<File Id="F__libaprutil" Name="libaprutil_tgitmerge.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libaprutil_tgitmerge.dll" />
 					</Component>
 
 					<Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
