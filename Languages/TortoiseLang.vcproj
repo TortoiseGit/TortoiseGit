@@ -27,9 +27,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				CleanCommandLine="nmake /f Makefile clean "
+				BuildCommandLine="build-lang.cmd $(OutDir)"
+				ReBuildCommandLine="build-lang.cmd $(OutDir)"
+				CleanCommandLine="build-lang.cmd $(OutDir) clean"
 				Output=""
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				IncludeSearchPath=""
@@ -47,10 +47,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
-				CleanCommandLine="nmake /f Makefile clean "
-				Output="TortoiseLangs.exe"
+				BuildCommandLine="build-lang.cmd $(OutDir)"
+				ReBuildCommandLine="build-lang.cmd $(OutDir)"
+				CleanCommandLine="build-lang.cmd $(OutDir) clean"
+				Output=""
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -67,10 +67,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)"
-				CleanCommandLine="nmake /f Makefile clean "
-				Output="TortoiseLangs.exe"
+				BuildCommandLine="build-lang.cmd $(OutDir)"
+				ReBuildCommandLine="build-lang.cmd $(OutDir)"
+				CleanCommandLine="build-lang.cmd $(OutDir) clean"
+				Output=""
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -87,10 +87,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
-				ReBuildCommandLine="nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(ConfigurationName)64"
-				CleanCommandLine="nmake /f Makefile clean "
-				Output="TortoiseLangs.exe"
+				BuildCommandLine="build-lang.cmd $(OutDir)"
+				ReBuildCommandLine="build-lang.cmd $(OutDir)"
+				CleanCommandLine="build-lang.cmd $(OutDir) clean"
+				Output=""
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""

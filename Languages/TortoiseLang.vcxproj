@@ -65,45 +65,27 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake /f Makefile clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>build-lang.cmd $(OutDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>build-lang.cmd $(OutDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>build-lang.cmd $(OutDir) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Tortoise_bg.po" />
-    <None Include="Tortoise_ca_ES.po" />
+    <None Include="build-lang.cmd" />
     <None Include="Tortoise_cs.po" />
-    <None Include="Tortoise_da.po" />
     <None Include="Tortoise_de.po" />
-    <None Include="Tortoise_el.po" />
-    <None Include="Tortoise_es.po" />
-    <None Include="Tortoise_fa.po" />
-    <None Include="Tortoise_fi.po" />
+    <None Include="Tortoise_es_ES.po" />
     <None Include="Tortoise_fr.po" />
-    <None Include="Tortoise_hr.po" />
-    <None Include="Tortoise_hu.po" />
-    <None Include="Tortoise_id.po" />
-    <None Include="Tortoise_it.po" />
+    <None Include="Tortoise_it_IT.po" />
     <None Include="Tortoise_ja.po" />
-    <None Include="Tortoise_ka.po" />
-    <None Include="Tortoise_ko.po" />
-    <None Include="Tortoise_mk.po" />
-    <None Include="Tortoise_nb.po" />
-    <None Include="Tortoise_nl.po" />
-    <None Include="Tortoise_pl.po" />
+    <None Include="Tortoise_ko_KR.po" />
+    <None Include="Tortoise_lt_LT.po" />
+    <None Include="Tortoise_pl_PL.po" />
     <None Include="Tortoise_pt_BR.po" />
-    <None Include="Tortoise_pt_PT.po" />
-    <None Include="Tortoise_ro.po" />
     <None Include="Tortoise_ru.po" />
-    <None Include="Tortoise_sk.po" />
-    <None Include="Tortoise_sl.po" />
-    <None Include="Tortoise_sr_spc.po" />
-    <None Include="Tortoise_sr_spl.po" />
     <None Include="Tortoise_sv.po" />
     <None Include="Tortoise_tr.po" />
-    <None Include="Tortoise_uk.po" />
     <None Include="Tortoise_zh_CN.po" />
     <None Include="Tortoise_zh_TW.po" />
     <None Include="Makefile" />
