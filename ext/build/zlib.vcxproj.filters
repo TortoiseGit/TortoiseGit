@@ -13,10 +13,6 @@
       <UniqueIdentifier>{c8c5699c-9ad7-4efe-acc5-7adf452c898c}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="Assembler Files %28Unsupported%29">
-      <UniqueIdentifier>{3b5c446e-a212-40e7-86fb-7a6ea1e43b80}</UniqueIdentifier>
-      <Extensions>asm;obj;c;cpp;cxx;h;hpp;hxx</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\zlib\adler32.c">
@@ -64,14 +60,6 @@
     <ClCompile Include="..\zlib\zutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\zlib\contrib\masmx86\gvmat32c.c">
-      <Filter>Assembler Files %28Unsupported%29</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\zlib\win32\zlib.def">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\zlib\crc32.h">
@@ -114,11 +102,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\zlib\contrib\masmx86\gvmat32.asm">
-      <Filter>Assembler Files %28Unsupported%29</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\zlib\contrib\masmx86\inffas32.asm">
-      <Filter>Assembler Files %28Unsupported%29</Filter>
-    </CustomBuild>
+    <None Include="..\zlib\win32\zlib.def" />
   </ItemGroup>
 </Project>

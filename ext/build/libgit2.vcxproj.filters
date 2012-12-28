@@ -36,9 +36,6 @@
     <Filter Include="deps">
       <UniqueIdentifier>{cbf536ec-3a80-4f49-ac19-fc89222aedff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="deps\http-parser">
-      <UniqueIdentifier>{db53eeb4-b84c-4812-b337-c17867a1745b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="deps\regex">
       <UniqueIdentifier>{3befca28-4256-4931-8c11-42ab4d7a69bc}</UniqueIdentifier>
     </Filter>
@@ -319,9 +316,6 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\hash\hash_win32.c">
       <Filter>Source Files\hash</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c">
-      <Filter>deps\http-parser</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\deps\regex\regex.c">
       <Filter>deps\regex</Filter>
@@ -642,9 +636,6 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\windows.h">
       <Filter>Public Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\deps\http-parser\http_parser.h">
-      <Filter>deps\http-parser</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\deps\regex\config.h">
       <Filter>deps\regex</Filter>

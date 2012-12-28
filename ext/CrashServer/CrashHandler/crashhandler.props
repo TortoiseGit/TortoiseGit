@@ -2,26 +2,27 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <ExternalDir>$(SolutionDir)..\external\</ExternalDir>
-    <GsoapDir>$(ExternalDir)gsoap-win32-2.8.0</GsoapDir>
+    <ZlibDir>zlib123</ZlibDir>
+    <GsoapDir>gsoap-win32-2.8.0</GsoapDir>
   </PropertyGroup>
   <PropertyGroup>
-    <OutDir>$(SolutionDir)out\$(Platform)\$(Configuration)\</OutDir>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <IntDir>$(SolutionDir)out\$(Platform)\$(Configuration)\temp\$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <ItemDefinitionGroup>
-    <ResourceCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <OmitFramePointers>true</OmitFramePointers>
+    </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <BuildMacro Include="ExternalDir">
-      <Value>$(ExternalDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="GsoapDir">
-      <Value>$(GsoapDir)</Value>
-    </BuildMacro>
-  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+  <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+  </ItemDefinitionGroup>
 </Project>

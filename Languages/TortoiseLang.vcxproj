@@ -46,55 +46,28 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>../bin/$(Configuration)/bin\</OutDir>
-    <IntDir>../obj/lang/$(Configuration)/\</IntDir>
-    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake /f Makefile clean </NMakeCleanCommandLine>
-    <NMakeOutput />
-    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>../bin/$(Configuration)64/bin\</OutDir>
-    <IntDir>../obj/lang/$(Configuration)64/\</IntDir>
-    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)64</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)64</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake /f Makefile clean </NMakeCleanCommandLine>
-    <NMakeOutput>TortoiseLangs.exe</NMakeOutput>
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>../bin/$(Configuration)/bin\</OutDir>
-    <IntDir>../obj/lang/$(Configuration)/\</IntDir>
-    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake /f Makefile clean </NMakeCleanCommandLine>
-    <NMakeOutput>TortoiseLangs.exe</NMakeOutput>
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>../bin/$(Configuration)64/bin\</OutDir>
-    <IntDir>../obj/lang/$(Configuration)64/\</IntDir>
-    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)64</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)  ConfigurationName=$(Configuration)64</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake /f Makefile clean </NMakeCleanCommandLine>
-    <NMakeOutput>TortoiseLangs.exe</NMakeOutput>
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  <PropertyGroup>
+    <NMakeBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake /f Makefile outdir=$(OutDir)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake /f Makefile clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

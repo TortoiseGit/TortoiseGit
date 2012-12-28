@@ -4,163 +4,163 @@
 #
 ###########################
 
-RESTEXT		= ..\bin\$(ConfigurationName)\bin\ResText.exe
+RESTEXT		= $(outdir)ResText.exe
 APPLY		= apply
-LANGDLLS	=	$(outdir)/TortoiseProc2052.dll \
-				$(outdir)/TortoiseMerge2052.dll \
-				$(outdir)/TortoiseIdiff2052.dll \
-				$(outdir)/TortoiseGitBlame2052.dll \
-				$(outdir)/TortoiseProc1031.dll \
-				$(outdir)/TortoiseMerge1031.dll \
-				$(outdir)/TortoiseIdiff1031.dll \
-				$(outdir)/TortoiseGitBlame1031.dll \
-				$(outdir)/TortoiseProc1036.dll \
-				$(outdir)/TortoiseMerge1036.dll \
-				$(outdir)/TortoiseIdiff1036.dll \
-				$(outdir)/TortoiseGitBlame1036.dll \
-				$(outdir)/TortoiseProc1049.dll \
-				$(outdir)/TortoiseMerge1049.dll \
-				$(outdir)/TortoiseIdiff1049.dll \
-				$(outdir)/TortoiseGitBlame1049.dll \
-				$(outdir)/TortoiseProc1028.dll \
-				$(outdir)/TortoiseMerge1028.dll \
-				$(outdir)/TortoiseIdiff1028.dll \
-				$(outdir)/TortoiseGitBlame1028.dll \
-				$(outdir)/TortoiseProc1046.dll \
-				$(outdir)/TortoiseMerge1046.dll \
-				$(outdir)/TortoiseIdiff1046.dll \
-				$(outdir)/TortoiseGitBlame1046.dll \
-				$(outdir)/TortoiseProc1034.dll \
-				$(outdir)/TortoiseMerge1034.dll \
-				$(outdir)/TortoiseIdiff1034.dll \
-				$(outdir)/TortoiseGitBlame1034.dll \
-				$(outdir)/TortoiseProc1041.dll \
-				$(outdir)/TortoiseMerge1041.dll \
-				$(outdir)/TortoiseIdiff1041.dll \
-				$(outdir)/TortoiseGitBlame1041.dll \
-				$(outdir)/TortoiseProc1055.dll \
-				$(outdir)/TortoiseMerge1055.dll \
-				$(outdir)/TortoiseIdiff1055.dll \
-				$(outdir)/TortoiseGitBlame1055.dll \
-				$(outdir)/TortoiseProc1029.dll \
-				$(outdir)/TortoiseMerge1029.dll \
-				$(outdir)/TortoiseIdiff1029.dll \
-				$(outdir)/TortoiseGitBlame1029.dll \
-				$(outdir)/TortoiseProc1045.dll \
-				$(outdir)/TortoiseMerge1045.dll \
-				$(outdir)/TortoiseIdiff1045.dll \
-				$(outdir)/TortoiseGitBlame1045.dll \
-				$(outdir)/TortoiseProc1053.dll \
-				$(outdir)/TortoiseMerge1053.dll \
-				$(outdir)/TortoiseIdiff1053.dll \
-				$(outdir)/TortoiseGitBlame1053.dll \
+LANGDLLS	=	$(outdir)TortoiseProc2052.dll \
+				$(outdir)TortoiseMerge2052.dll \
+				$(outdir)TortoiseIdiff2052.dll \
+				$(outdir)TortoiseGitBlame2052.dll \
+				$(outdir)TortoiseProc1031.dll \
+				$(outdir)TortoiseMerge1031.dll \
+				$(outdir)TortoiseIdiff1031.dll \
+				$(outdir)TortoiseGitBlame1031.dll \
+				$(outdir)TortoiseProc1036.dll \
+				$(outdir)TortoiseMerge1036.dll \
+				$(outdir)TortoiseIdiff1036.dll \
+				$(outdir)TortoiseGitBlame1036.dll \
+				$(outdir)TortoiseProc1049.dll \
+				$(outdir)TortoiseMerge1049.dll \
+				$(outdir)TortoiseIdiff1049.dll \
+				$(outdir)TortoiseGitBlame1049.dll \
+				$(outdir)TortoiseProc1028.dll \
+				$(outdir)TortoiseMerge1028.dll \
+				$(outdir)TortoiseIdiff1028.dll \
+				$(outdir)TortoiseGitBlame1028.dll \
+				$(outdir)TortoiseProc1046.dll \
+				$(outdir)TortoiseMerge1046.dll \
+				$(outdir)TortoiseIdiff1046.dll \
+				$(outdir)TortoiseGitBlame1046.dll \
+				$(outdir)TortoiseProc1034.dll \
+				$(outdir)TortoiseMerge1034.dll \
+				$(outdir)TortoiseIdiff1034.dll \
+				$(outdir)TortoiseGitBlame1034.dll \
+				$(outdir)TortoiseProc1041.dll \
+				$(outdir)TortoiseMerge1041.dll \
+				$(outdir)TortoiseIdiff1041.dll \
+				$(outdir)TortoiseGitBlame1041.dll \
+				$(outdir)TortoiseProc1055.dll \
+				$(outdir)TortoiseMerge1055.dll \
+				$(outdir)TortoiseIdiff1055.dll \
+				$(outdir)TortoiseGitBlame1055.dll \
+				$(outdir)TortoiseProc1029.dll \
+				$(outdir)TortoiseMerge1029.dll \
+				$(outdir)TortoiseIdiff1029.dll \
+				$(outdir)TortoiseGitBlame1029.dll \
+				$(outdir)TortoiseProc1045.dll \
+				$(outdir)TortoiseMerge1045.dll \
+				$(outdir)TortoiseIdiff1045.dll \
+				$(outdir)TortoiseGitBlame1045.dll \
+				$(outdir)TortoiseProc1053.dll \
+				$(outdir)TortoiseMerge1053.dll \
+				$(outdir)TortoiseIdiff1053.dll \
+				$(outdir)TortoiseGitBlame1053.dll \
 
 all:$(LANGDLLS)
 
-$(outdir)/TortoiseProc2052.dll:Tortoise_zh_CN.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_zh_CN.po
-$(outdir)/TortoiseMerge2052.dll:Tortoise_zh_CN.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_zh_CN.po
-$(outdir)/TortoiseIdiff2052.dll:Tortoise_zh_CN.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_zh_CN.po
-$(outdir)/TortoiseGitBlame2052.dll:Tortoise_zh_CN.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_zh_CN.po
+$(outdir)TortoiseProc2052.dll:Tortoise_zh_CN.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_zh_CN.po
+$(outdir)TortoiseMerge2052.dll:Tortoise_zh_CN.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_zh_CN.po
+$(outdir)TortoiseIdiff2052.dll:Tortoise_zh_CN.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_zh_CN.po
+$(outdir)TortoiseGitBlame2052.dll:Tortoise_zh_CN.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_zh_CN.po
 
-$(outdir)/TortoiseProc1031.dll:Tortoise_de.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_de.po
-$(outdir)/TortoiseMerge1031.dll:Tortoise_de.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_de.po
-$(outdir)/TortoiseIdiff1031.dll:Tortoise_de.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_de.po
-$(outdir)/TortoiseGitBlame1031.dll:Tortoise_de.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_de.po
+$(outdir)TortoiseProc1031.dll:Tortoise_de.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_de.po
+$(outdir)TortoiseMerge1031.dll:Tortoise_de.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_de.po
+$(outdir)TortoiseIdiff1031.dll:Tortoise_de.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_de.po
+$(outdir)TortoiseGitBlame1031.dll:Tortoise_de.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_de.po
 
-$(outdir)/TortoiseProc1036.dll:Tortoise_fr.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_fr.po
-$(outdir)/TortoiseMerge1036.dll:Tortoise_fr.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_fr.po
-$(outdir)/TortoiseIdiff1036.dll:Tortoise_fr.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_fr.po
-$(outdir)/TortoiseGitBlame1036.dll:Tortoise_fr.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_fr.po
+$(outdir)TortoiseProc1036.dll:Tortoise_fr.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_fr.po
+$(outdir)TortoiseMerge1036.dll:Tortoise_fr.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_fr.po
+$(outdir)TortoiseIdiff1036.dll:Tortoise_fr.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_fr.po
+$(outdir)TortoiseGitBlame1036.dll:Tortoise_fr.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_fr.po
 
-$(outdir)/TortoiseProc1049.dll:Tortoise_ru.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_ru.po
-$(outdir)/TortoiseMerge1049.dll:Tortoise_ru.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_ru.po
-$(outdir)/TortoiseIdiff1049.dll:Tortoise_ru.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_ru.po
-$(outdir)/TortoiseGitBlame1049.dll:Tortoise_ru.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_ru.po
+$(outdir)TortoiseProc1049.dll:Tortoise_ru.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_ru.po
+$(outdir)TortoiseMerge1049.dll:Tortoise_ru.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_ru.po
+$(outdir)TortoiseIdiff1049.dll:Tortoise_ru.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_ru.po
+$(outdir)TortoiseGitBlame1049.dll:Tortoise_ru.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_ru.po
 
-$(outdir)/TortoiseProc1028.dll:Tortoise_zh_TW.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_zh_TW.po
-$(outdir)/TortoiseMerge1028.dll:Tortoise_zh_TW.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_zh_TW.po
-$(outdir)/TortoiseIdiff1028.dll:Tortoise_zh_TW.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_zh_TW.po
-$(outdir)/TortoiseGitBlame1028.dll:Tortoise_zh_TW.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_zh_TW.po
+$(outdir)TortoiseProc1028.dll:Tortoise_zh_TW.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_zh_TW.po
+$(outdir)TortoiseMerge1028.dll:Tortoise_zh_TW.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_zh_TW.po
+$(outdir)TortoiseIdiff1028.dll:Tortoise_zh_TW.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_zh_TW.po
+$(outdir)TortoiseGitBlame1028.dll:Tortoise_zh_TW.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_zh_TW.po
 
-$(outdir)/TortoiseProc1046.dll:Tortoise_pt_BR.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_pt_BR.po
-$(outdir)/TortoiseMerge1046.dll:Tortoise_pt_BR.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_pt_BR.po
-$(outdir)/TortoiseIdiff1046.dll:Tortoise_pt_BR.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_pt_BR.po
-$(outdir)/TortoiseGitBlame1046.dll:Tortoise_pt_BR.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_pt_BR.po
+$(outdir)TortoiseProc1046.dll:Tortoise_pt_BR.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_pt_BR.po
+$(outdir)TortoiseMerge1046.dll:Tortoise_pt_BR.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_pt_BR.po
+$(outdir)TortoiseIdiff1046.dll:Tortoise_pt_BR.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_pt_BR.po
+$(outdir)TortoiseGitBlame1046.dll:Tortoise_pt_BR.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_pt_BR.po
 
-$(outdir)/TortoiseProc1034.dll:Tortoise_es_ES.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_es_ES.po
-$(outdir)/TortoiseMerge1034.dll:Tortoise_es_ES.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_es_ES.po
-$(outdir)/TortoiseIdiff1034.dll:Tortoise_es_ES.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_es_ES.po
-$(outdir)/TortoiseGitBlame1034.dll:Tortoise_es_ES.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_es_ES.po
+$(outdir)TortoiseProc1034.dll:Tortoise_es_ES.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_es_ES.po
+$(outdir)TortoiseMerge1034.dll:Tortoise_es_ES.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_es_ES.po
+$(outdir)TortoiseIdiff1034.dll:Tortoise_es_ES.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_es_ES.po
+$(outdir)TortoiseGitBlame1034.dll:Tortoise_es_ES.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_es_ES.po
 
-$(outdir)/TortoiseProc1041.dll:Tortoise_ja.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_ja.po
-$(outdir)/TortoiseMerge1041.dll:Tortoise_ja.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_ja.po
-$(outdir)/TortoiseIdiff1041.dll:Tortoise_ja.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_ja.po
-$(outdir)/TortoiseGitBlame1041.dll:Tortoise_ja.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_ja.po
+$(outdir)TortoiseProc1041.dll:Tortoise_ja.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_ja.po
+$(outdir)TortoiseMerge1041.dll:Tortoise_ja.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_ja.po
+$(outdir)TortoiseIdiff1041.dll:Tortoise_ja.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_ja.po
+$(outdir)TortoiseGitBlame1041.dll:Tortoise_ja.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_ja.po
 
-$(outdir)/TortoiseProc1055.dll:Tortoise_tr.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_tr.po
-$(outdir)/TortoiseMerge1055.dll:Tortoise_tr.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_tr.po
-$(outdir)/TortoiseIdiff1055.dll:Tortoise_tr.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_tr.po
-$(outdir)/TortoiseGitBlame1055.dll:Tortoise_tr.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_tr.po
+$(outdir)TortoiseProc1055.dll:Tortoise_tr.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_tr.po
+$(outdir)TortoiseMerge1055.dll:Tortoise_tr.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_tr.po
+$(outdir)TortoiseIdiff1055.dll:Tortoise_tr.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_tr.po
+$(outdir)TortoiseGitBlame1055.dll:Tortoise_tr.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_tr.po
 
-$(outdir)/TortoiseProc1029.dll:Tortoise_cs.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_cs.po
-$(outdir)/TortoiseMerge1029.dll:Tortoise_cs.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_cs.po
-$(outdir)/TortoiseIdiff1029.dll:Tortoise_cs.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_cs.po
-$(outdir)/TortoiseGitBlame1029.dll:Tortoise_cs.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_cs.po
+$(outdir)TortoiseProc1029.dll:Tortoise_cs.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_cs.po
+$(outdir)TortoiseMerge1029.dll:Tortoise_cs.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_cs.po
+$(outdir)TortoiseIdiff1029.dll:Tortoise_cs.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_cs.po
+$(outdir)TortoiseGitBlame1029.dll:Tortoise_cs.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_cs.po
 
-$(outdir)/TortoiseProc1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_pl_PL.po
-$(outdir)/TortoiseMerge1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_pl_PL.po
-$(outdir)/TortoiseIdiff1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_pl_PL.po
-$(outdir)/TortoiseGitBlame1045.dll:Tortoise_pl_PL.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_pl_PL.po
+$(outdir)TortoiseProc1045.dll:Tortoise_pl_PL.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_pl_PL.po
+$(outdir)TortoiseMerge1045.dll:Tortoise_pl_PL.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_pl_PL.po
+$(outdir)TortoiseIdiff1045.dll:Tortoise_pl_PL.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_pl_PL.po
+$(outdir)TortoiseGitBlame1045.dll:Tortoise_pl_PL.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_pl_PL.po
 
-$(outdir)/TortoiseProc1053.dll:Tortoise_sv.po $(outdir)\TortoiseProcLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseProcLang.dll $@ Tortoise_sv.po
-$(outdir)/TortoiseMerge1053.dll:Tortoise_sv.po $(outdir)\TortoiseMergeLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseMergeLang.dll $@ Tortoise_sv.po
-$(outdir)/TortoiseIdiff1053.dll:Tortoise_sv.po $(outdir)\TortoiseIdiffLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseIdiffLang.dll $@ Tortoise_sv.po
-$(outdir)/TortoiseGitBlame1053.dll:Tortoise_sv.po $(outdir)\TortoiseGitBlameLang.dll
-  $(RESTEXT) $(APPLY) $(outdir)\TortoiseGitBlameLang.dll $@ Tortoise_sv.po
+$(outdir)TortoiseProc1053.dll:Tortoise_sv.po $(outdir)TortoiseProcLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseProcLang.dll $@ Tortoise_sv.po
+$(outdir)TortoiseMerge1053.dll:Tortoise_sv.po $(outdir)TortoiseMergeLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseMergeLang.dll $@ Tortoise_sv.po
+$(outdir)TortoiseIdiff1053.dll:Tortoise_sv.po $(outdir)TortoiseIdiffLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseIdiffLang.dll $@ Tortoise_sv.po
+$(outdir)TortoiseGitBlame1053.dll:Tortoise_sv.po $(outdir)TortoiseGitBlameLang.dll
+  $(RESTEXT) $(APPLY) $(outdir)TortoiseGitBlameLang.dll $@ Tortoise_sv.po

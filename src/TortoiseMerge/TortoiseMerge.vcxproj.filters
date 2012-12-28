@@ -368,12 +368,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Svn\SVNAdminDir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SVN\SVNLineDiff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TortoiseMerge.h">
       <Filter>Header Files</Filter>
     </ClInclude>

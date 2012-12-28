@@ -26,26 +26,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -54,219 +50,77 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
     <TargetName>$(TargetName)32</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libcurl\$(Configuration)64\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libcurl\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>libcurld32</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libcurl\$(Configuration)64\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(TargetName)32</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release\vc6libcurl.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>.\Release\vc6libcurl.pch</PrecompiledHeaderOutputFile>
-      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Release\bin\libcurl.pdb</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)..\bin\Release\bin\libcurl32.dll</OutputFile>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
-      <ImportLibrary>$(SolutionDir)..\bin\Release\bin\libcurl32.lib</ImportLibrary>
-      <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\vc6libcurl.bsc</OutputFile>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Release64\vc6libcurl.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;BUILDING_LIBCURL;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>$(IntDir)vc6libcurl.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)..\bin\Release64\bin\libcurl.dll</OutputFile>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
-      <ImportLibrary>$(SolutionDir)..\bin\Release64\bin\libcurl.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release64\vc6libcurl.bsc</OutputFile>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug\vc6libcurl.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>.\Debug\vc6libcurl.pch</PrecompiledHeaderOutputFile>
-      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Debug\bin\libcurld.pdb</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)..\bin\Debug\bin\libcurld32.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)..\bin\Debug\bin\libcurld32.pdb</ProgramDatabaseFile>
-      <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>$(IntDir)libcurld32.map</MapFileName>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary>$(SolutionDir)..\bin\Debug\bin\libcurld32.lib</ImportLibrary>
-      <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\vc6libcurl.bsc</OutputFile>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Debug64\vc6libcurl.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\libcurl\lib;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>.\Debug64\vc6libcurl.pch</PrecompiledHeaderOutputFile>
-      <ProgramDataBaseFileName>$(SolutionDir)..\bin\Debug64\bin\libcurld.pdb</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
-    </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(SolutionDir)..\bin\Debug64\bin\libcurld.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)..\bin\Debug64\bin\libcurl.pdb</ProgramDatabaseFile>
-      <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>$(IntDir)libcurld.map</MapFileName>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary>$(SolutionDir)..\bin\Debug64\bin\libcurld.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug64\vc6libcurl.bsc</OutputFile>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\libcurl\lib\asyn-ares.c" />
@@ -443,22 +297,10 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\libcurl\include\curl\curlbuild.h.dist">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating curlbuild.h from curlbuild.h.dist</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
+      <Message>Creating curlbuild.h from curlbuild.h.dist</Message>
+      <Command>type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Creating curlbuild.h from curlbuild.h.dist</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating curlbuild.h from curlbuild.h.dist</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Creating curlbuild.h from curlbuild.h.dist</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">type ..\libcurl\include\curl\curlbuild.h.dist &gt; ..\libcurl\include\curl\curlbuild.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
+      <Outputs>..\libcurl\include\curl\curlbuild.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

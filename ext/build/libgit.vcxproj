@@ -51,101 +51,58 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)64\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>$(SolutionDir)..\obj\libgit\$(Configuration)64\</IntDir>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader />
+      <PreprocessorDefinitions>HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader />
+      <PreprocessorDefinitions>WIN32;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader />
+      <PreprocessorDefinitions>HAVE_STRING_H;USE_WIN32_MMAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\tgit;..\zlib;..\include;..\tgit\compat;..\tgit\compat\vcbuild\include;..\tgit\compat\fnmatch;..\tgit\compat\regex;..\tgit\compat\win32;.\;..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader />
+      <PreprocessorDefinitions>WIN32;HAVE_STRING_H;USE_WIN32_MMAP;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings> 4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,10 +119,7 @@
     <ClCompile Include="..\tgit\compat\pread.c" />
     <ClCompile Include="..\tgit\compat\qsort.c" />
     <ClCompile Include="..\tgit\compat\regex\regex.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>REGEX_MALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\setenv.c" />
     <ClCompile Include="..\tgit\compat\snprintf.c" />
@@ -318,24 +272,15 @@
     <ClCompile Include="..\tgit\builtin\annotate.c" />
     <ClCompile Include="..\tgit\builtin\apply.c" />
     <ClCompile Include="..\tgit\builtin\archive.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInArchive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInArchive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInArchive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInArchive.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInArchive.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\bisect--helper.c" />
     <ClCompile Include="..\tgit\builtin\blame.c" />
     <ClCompile Include="..\tgit\builtin\branch.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInBranch.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInBranch.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInBranch.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInBranch.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInBranch.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\bundle.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInBundle.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInBundle.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInBundle.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInBundle.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInBundle.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\cat-file.c" />
     <ClCompile Include="..\tgit\builtin\check-attr.c" />
@@ -346,16 +291,10 @@
     <ClCompile Include="..\tgit\builtin\clone.c" />
     <ClCompile Include="..\tgit\builtin\commit-tree.c" />
     <ClCompile Include="..\tgit\builtin\commit.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInCommit.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInCommit.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInCommit.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInCommit.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInCommit.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\config.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInConfig.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInConfig.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInConfig.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInConfig.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInConfig.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\count-objects.c" />
     <ClCompile Include="..\tgit\builtin\describe.c" />
@@ -363,10 +302,7 @@
     <ClCompile Include="..\tgit\builtin\diff-index.c" />
     <ClCompile Include="..\tgit\builtin\diff-tree.c" />
     <ClCompile Include="..\tgit\builtin\diff.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInDiff.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInDiff.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInDiff.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInDiff.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInDiff.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\fast-export.c" />
     <ClCompile Include="..\tgit\builtin\fetch-pack.c" />
@@ -374,24 +310,15 @@
     <ClCompile Include="..\tgit\builtin\fmt-merge-msg.c" />
     <ClCompile Include="..\tgit\builtin\for-each-ref.c" />
     <ClCompile Include="..\tgit\builtin\fsck.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)buildInfsck.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)buildInfsck.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)buildInfsck.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)buildInfsck.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)buildInfsck.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\gc.c" />
     <ClCompile Include="..\tgit\builtin\grep.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInGrep.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInGrep.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInGrep.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInGrep.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInGrep.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\hash-object.c" />
     <ClCompile Include="..\tgit\builtin\help.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInHelp.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInHelp.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInHelp.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInHelp.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInHelp.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\index-pack.c" />
     <ClCompile Include="..\tgit\builtin\init-db.c" />
@@ -403,43 +330,28 @@
     <ClCompile Include="..\tgit\builtin\mailsplit.c" />
     <ClCompile Include="..\tgit\builtin\merge-base.c" />
     <ClCompile Include="..\tgit\builtin\merge-file.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMergeFile.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInMergeFile.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\merge-index.c" />
     <ClCompile Include="..\tgit\builtin\merge-ours.c" />
     <ClCompile Include="..\tgit\builtin\merge-recursive.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInMergeRecursive.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\merge-tree.c" />
     <ClCompile Include="..\tgit\builtin\merge.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInMerge.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInMerge.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInMerge.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInMerge.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInMerge.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\mktag.c" />
     <ClCompile Include="..\tgit\builtin\mktree.c" />
     <ClCompile Include="..\tgit\builtin\mv.c" />
     <ClCompile Include="..\tgit\builtin\name-rev.c" />
     <ClCompile Include="..\tgit\builtin\notes.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInNotes.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInNotes.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInNotes.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInNotes.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInNotes.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\pack-objects.c" />
     <ClCompile Include="..\tgit\builtin\pack-redundant.c" />
     <ClCompile Include="..\tgit\builtin\pack-refs.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInPackRefs.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInPackRefs.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\patch-id.c" />
     <ClCompile Include="..\tgit\builtin\prune-packed.c" />
@@ -451,17 +363,11 @@
     <ClCompile Include="..\tgit\builtin\remote-ext.c" />
     <ClCompile Include="..\tgit\builtin\remote-fd.c" />
     <ClCompile Include="..\tgit\builtin\remote.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInRemote.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInRemote.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInRemote.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInRemote.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInRemote.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\replace.c" />
     <ClCompile Include="..\tgit\builtin\rerere.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInRerer.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInRerer.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInRerer.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInRerer.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInRerer.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\reset.c" />
     <ClCompile Include="..\tgit\builtin\rev-list.c" />
@@ -474,10 +380,7 @@
     <ClCompile Include="..\tgit\builtin\stripspace.c" />
     <ClCompile Include="..\tgit\builtin\symbolic-ref.c" />
     <ClCompile Include="..\tgit\builtin\tag.c">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)BuildInTag.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)BuildInTag.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)BuildInTag.obj</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)BuildInTag.obj</ObjectFileName>
+      <ObjectFileName>$(IntDir)BuildInTag.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\tgit\builtin\tar-tree.c" />
     <ClCompile Include="..\tgit\builtin\unpack-file.c" />
@@ -592,9 +495,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties ABC="Test" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

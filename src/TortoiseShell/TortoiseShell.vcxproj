@@ -26,7 +26,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -34,14 +33,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -49,7 +46,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -58,229 +54,90 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\TortoiseShell\$(Configuration)\</IntDir>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-    <LinkIncremental>true</LinkIncremental>
     <TargetName>TortoiseGit32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\bin\Debug64\bin\</OutDir>
-    <IntDir>..\..\obj\TortoiseShell\Debug64\</IntDir>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-    <LinkIncremental>true</LinkIncremental>
     <TargetName>TortoiseGit</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\TortoiseShell\$(Configuration)\</IntDir>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-    <LinkIncremental>false</LinkIncremental>
     <TargetName>TortoiseGit32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\bin\Release64\bin\</OutDir>
-    <IntDir>..\..\obj\TortoiseShell\Release64\</IntDir>
-    <IgnoreImportLibrary>true</IgnoreImportLibrary>
-    <LinkIncremental>false</LinkIncremental>
     <TargetName>TortoiseGit</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug\TortoiseShell.tlb</TypeLibraryName>
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <AssemblerListingLocation>..\..\obj\TortoiseShell\Debug\</AssemblerListingLocation>
-      <ObjectFileName>..\..\obj\TortoiseShell\Debug\</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\obj\TortoiseShell\Debug\</ProgramDataBaseFileName>
-      <WarningLevel>Level4</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Crypt32.lib;shfolder.lib;shell32.lib;comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;wininet.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)TortoiseGit32.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>.\ShellExt.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)TortoiseGit.pdb</ProgramDatabaseFile>
-      <OptimizeReferences>false</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ModuleDefinitionFile>ShellExt.def</ModuleDefinitionFile>
       <BaseAddress>0x5960000</BaseAddress>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary />
-      <TargetMachine>MachineX86</TargetMachine>
-      <CLRUnmanagedCodeCheck>false</CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Debug\TortoiseShell.tlb</TypeLibraryName>
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN64;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <AssemblerListingLocation>..\..\obj\TortoiseShell\Debug64\</AssemblerListingLocation>
-      <ObjectFileName>..\..\obj\TortoiseShell\Debug64\</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\obj\TortoiseShell\Debug64\</ProgramDataBaseFileName>
-      <WarningLevel>Level4</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>Crypt32.lib;shfolder.lib;shell32.lib;comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;wininet.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)TortoiseGit.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>.\ShellExt.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)TortoiseGit.pdb</ProgramDatabaseFile>
+      <ModuleDefinitionFile>ShellExt.def</ModuleDefinitionFile>
       <BaseAddress>0x5960000</BaseAddress>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary>..\..\obj\TortoiseShell\Debug64\TortoiseGit.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release\TortoiseShell.tlb</TypeLibraryName>
-    </Midl>
     <ClCompile>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <AssemblerListingLocation>..\..\obj\TortoiseShell\Release\</AssemblerListingLocation>
-      <ObjectFileName>..\..\obj\TortoiseShell\Release\</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\obj\TortoiseShell\Release\</ProgramDataBaseFileName>
-      <WarningLevel>Level4</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CompileAs>Default</CompileAs>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>Crypt32.lib;shfolder.lib;shell32.lib;comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;wininet.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)TortoiseGit32.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>.\ShellExt.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <SetChecksum>true</SetChecksum>
+      <ModuleDefinitionFile>ShellExt.def</ModuleDefinitionFile>
       <BaseAddress>0x5960000</BaseAddress>
-      <ImportLibrary>..\..\obj\TortoiseShell\Release\TortoiseGit.lib</ImportLibrary>
-      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Release\TortoiseShell.tlb</TypeLibraryName>
-    </Midl>
     <ClCompile>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>..\..\ext\gitdll;..\Git;..\Utils;..\TortoiseShell;..\Utils\MiscUI;..\..\ext\libgit2\include;..\..\ext\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN64;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <AssemblerListingLocation>..\..\obj\TortoiseShell\Release64\</AssemblerListingLocation>
-      <ObjectFileName>..\..\obj\TortoiseShell\Release64\</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\obj\TortoiseShell\Release64\</ProgramDataBaseFileName>
-      <WarningLevel>Level4</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>TSVNSHELL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>Crypt32.lib;shfolder.lib;shell32.lib;comctl32.lib;ws2_32.lib;rpcrt4.lib;shlwapi.lib;wininet.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)TortoiseGit.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ModuleDefinitionFile>.\ShellExt.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <SetChecksum>true</SetChecksum>
+      <ModuleDefinitionFile>ShellExt.def</ModuleDefinitionFile>
       <BaseAddress>0x5960000</BaseAddress>
-      <ImportLibrary>..\..\obj\TortoiseShell\Release64\TortoiseGit.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -307,10 +164,7 @@
     <ClCompile Include="ShellExtClassFactory.cpp" />
     <ClCompile Include="ShellObjects.cpp" />
     <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Utils\StringUtils.cpp" />
     <ClCompile Include="..\Utils\SysInfo.cpp" />
@@ -419,9 +273,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties DevPartner_IsInstrumented="0" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

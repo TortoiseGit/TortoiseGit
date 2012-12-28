@@ -26,23 +26,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110_xp</PlatformToolset>
-    <UseOfMfc>false</UseOfMfc>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -50,253 +46,118 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libapr\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>libapr_tsvn32</TargetName>
+    <TargetName>$(ProjectName)_tsvn32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libapr\$(Configuration)64\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>libapr_tsvn</TargetName>
+    <TargetName>$(ProjectName)_tsvn</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libapr\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>libapr_tsvn32</TargetName>
+    <TargetName>$(ProjectName)_tsvn32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libapr\$(Configuration)64\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>libapr_tsvn</TargetName>
+    <TargetName>$(ProjectName)_tsvn</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Release/libapr.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>.\Release\libapr.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)libapr_src</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\apr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/MACHINE:X86 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)libapr_tsvn32.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)libapr_tsvn.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
       <BaseAddress>0x6EEC0000</BaseAddress>
-      <ImportLibrary>$(OutDir)libapr_tsvn.lib</ImportLibrary>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\libapr.bsc</OutputFile>
-    </Bscmake>
     <PostBuildEvent>
       <Message>Embed .manifest</Message>
       <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Release\libapr.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>.\Release64\libapr.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)libapr_src</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\apr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)libapr_tsvn.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)libapr_tsvn.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
       <BaseAddress>0x6EEC0000</BaseAddress>
-      <ImportLibrary>$(OutDir)libapr_tsvn.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\libapr.bsc</OutputFile>
-    </Bscmake>
+    <Bscmake />
     <PostBuildEvent>
       <Message>Embed .manifest</Message>
       <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>Win32</TargetEnvironment>
-      <TypeLibraryName>.\Debug\libapr.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>.\Debug\libapr.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)libapr_src</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\apr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/MACHINE:X86 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)libapr_tsvn32.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)libapr_tsvn.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
       <BaseAddress>0x6EEC0000</BaseAddress>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary>$(OutDir)libapr_tsvn.lib</ImportLibrary>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\libapr.bsc</OutputFile>
-    </Bscmake>
+    <Bscmake />
     <PostBuildEvent>
       <Message>Embed .manifest</Message>
       <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Debug\libapr.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
     <ClCompile>
-      <AdditionalOptions>/EHsc  %(AdditionalOptions)</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;APR_DECLARE_EXPORT;WIN32;_WINDOWS;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeaderOutputFile>.\Debug\libapr.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <ProgramDataBaseFileName>$(IntDir)libapr_src</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;APR_DECLARE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>_DEBUG;APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>APR_VERSION_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\apr\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;mswsock.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)libapr_tsvn.dll</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)libapr_tsvn.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
       <BaseAddress>0x6EEC0000</BaseAddress>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <ImportLibrary>$(OutDir)libapr_tsvn.lib</ImportLibrary>
-      <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\libapr.bsc</OutputFile>
-    </Bscmake>
+    <Bscmake />
     <PostBuildEvent>
       <Message>Embed .manifest</Message>
       <Command>if exist $(TargetPath).manifest mt.exe -manifest $(TargetPath).manifest -outputresource:$(TargetPath)%3b2</Command>
@@ -328,10 +189,7 @@
     <ClCompile Include="..\apr\locks\win32\thread_rwlock.c" />
     <ClCompile Include="..\apr\memory\unix\apr_pools.c" />
     <ClCompile Include="..\apr\misc\win32\apr_app.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\apr\misc\win32\charset.c" />
     <ClCompile Include="..\apr\misc\win32\env.c" />
@@ -431,47 +289,21 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\apr\include\apr.h.in">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </CustomBuild>
     <CustomBuild Include="..\apr\include\apr.hnw">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </CustomBuild>
     <CustomBuild Include="..\apr\include\apr.hw">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating apr.h from apr.hw</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
+      <Message>Creating apr.h from apr.hw</Message>
+      <Command>fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
 if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\apr\include\apr.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Creating apr.h from apr.hw</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\apr\include\apr.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating apr.h from apr.hw</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\apr\include\apr.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Creating apr.h from apr.hw</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\apr\include\apr.h;%(Outputs)</Outputs>
+      <Outputs>..\apr\include\apr.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\apr\libapr.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">\TortoiseGit\ext\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">\TortoiseGit\ext\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">\TortoiseGit\ext\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">\TortoiseGit\ext\apr;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
+    <ResourceCompile Include="..\apr\libapr.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

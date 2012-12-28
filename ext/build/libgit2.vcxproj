@@ -51,144 +51,67 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+    <Import Project="$(SolutionDir)TortoiseGit.common-dll.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libgit2\$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)32d</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libgit2\$(Configuration)64\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\bin\$(Configuration)\bin\</OutDir>
-    <IntDir>..\..\obj\libgit2\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\bin\$(Configuration)64\bin\</OutDir>
-    <IntDir>..\..\obj\libgit2\$(Configuration)64\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
-    <Link>
-      <OutputFile>$(OutDir)$(ProjectName)32d.dll</OutputFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <GenerateMapFile>false</GenerateMapFile>
-      <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <TargetMachine>MachineX64</TargetMachine>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
-    <Link>
-      <OutputFile>$(OutDir)$(ProjectName)32.dll</OutputFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-    </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <SetChecksum>true</SetChecksum>
-      <TargetMachine>MachineX64</TargetMachine>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\libgit2\src\attr.c" />
@@ -266,10 +189,7 @@
     <ClCompile Include="..\libgit2\src\win32\map.c" />
     <ClCompile Include="..\libgit2\src\win32\posix_w32.c" />
     <ClCompile Include="..\libgit2\src\win32\precompiled.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\pthread.c" />
     <ClCompile Include="..\libgit2\src\win32\utf-conv.c" />
@@ -287,7 +207,6 @@
     <ClCompile Include="..\libgit2\src\xdiff\xprepare.c" />
     <ClCompile Include="..\libgit2\src\xdiff\xutils.c" />
     <ClCompile Include="..\libgit2\src\hash\hash_win32.c" />
-    <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
     <ClCompile Include="..\libgit2\deps\regex\regex.c" />
   </ItemGroup>
   <ItemGroup>
@@ -396,14 +315,11 @@
     <ClInclude Include="..\libgit2\include\git2\types.h" />
     <ClInclude Include="..\libgit2\include\git2\version.h" />
     <ClInclude Include="..\libgit2\include\git2\windows.h" />
-    <ClInclude Include="..\libgit2\deps\http-parser\http_parser.h" />
     <ClInclude Include="..\libgit2\deps\regex\config.h" />
     <ClInclude Include="..\libgit2\deps\regex\regex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\libgit2\src\win32\git2.rc">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">INCLUDE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
+    <ResourceCompile Include="..\libgit2\src\win32\git2.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="zlib.vcxproj">

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
+    <IntDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
+    <IntDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)64\</IntDir>
+    <OutDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_WINDOWS;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">_WIN64;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Lib>
+    <Link>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Link>
+    <Midl>
+      <TargetEnvironment Condition="'$(Platform)'=='Win32'">Win32</TargetEnvironment>
+      <TargetEnvironment Condition="'$(Platform)'=='x64'">X64</TargetEnvironment>
+      <WarningLevel>3</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">_WIN64;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat Condition="'$(Platform)'=='Win32'">EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat Condition="'$(Platform)'=='x64'">ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+    </Lib>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SetChecksum>true</SetChecksum>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+</Project>
