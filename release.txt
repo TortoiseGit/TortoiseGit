@@ -6,4 +6,31 @@ Upgrade numbers in:
 -# src/version.h
 -# src/TortoiseGitSetup/VersionNumberInclude.wxi
 
-Uploads symbols to crash-server.com
+Upload symbols to crash-server.com
+
+Upload (signed) msi-files to googlecode (do not forget to upload debug symbols and language packs for stable releases). Upload 32bit files before 64bit files, language packs before TortoiseGit, language packs in reverse order and debug symbols last.
+Naming-convention:
+- stable release (for the Summary field use the filename w/o .msi and spaces instead of dashes)
+  - TortoiseGit-VERSION-XXbit.msi
+  - TortoiseGit-LanguagePack-VERSION-XXbit-ISOLANG.msi
+  - TortoiseGit-DebugSymbols-VERSION.7z (exactly the same w/o .7z for the Summary and with "Deprecated" tag, no "x86" or "x64" tag)
+- preview release (for the Summary field use the filename w/o .msi)
+  - TortoiseGit-YYYY-MM-DD-(SHA1-7chars)-XXbit
+
+Google code tasks:
+- for a stable release
+  - set "Features" tag for TortoiseGit-VERSION-XXbit.msi files
+  - set "vVERSION" tag for all files belonging to this release
+  - set "Languagepack" for all language pack msi files
+  - remove "Features" tag from old releases
+  - update "Downloads" and "ReleaseNotes" (make sure it contains no unweanted links) wiki pages
+  - delete old preview releases after the release of the following stable release after some time
+- for a preview release
+  - add "Preview" tag
+- for all releases
+  - set either "x86" or "x64"
+  - add "Deprecated" to old files
+
+Update version.txt (http://code.google.com/p/tortoisegit/source/checkout?repo=version) for auto updater (for a stable release make sure version-preview.txt has the same content as version.txt)
+
+Send annoucement mail (for stable releases)
