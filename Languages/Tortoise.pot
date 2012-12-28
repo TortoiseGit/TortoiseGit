@@ -1088,10 +1088,6 @@ msgstr ""
 msgid "&Switch to new branch"
 msgstr ""
 
-#. Resource IDs: (110)
-msgid "&Switch\\Checkout to Revision"
-msgstr ""
-
 #. Resource IDs: (1173)
 msgid "&Symbol View"
 msgstr ""

@@ -1174,7 +1174,7 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 
 	if (m_SelectedEntry1 && (m_SelectedEntry2 == NULL))
 	{
-		//AppendMenu (popup, IDS_REVGRAPH_POPUP_SWITCH, ID_SWITCH);
+		//AppendMenu (popup, IDS_SWITCH_TO_THIS, ID_SWITCH);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
 	}

@@ -2780,7 +2780,6 @@ BEGIN
     IDS_DLGTITLE_EDIT_MERGE_TOOL "Edit extension specific merge program"
     IDS_DLGTITLE_ADV_DIFF   "Advanced diff settings"
     IDS_DLGTITLE_ADV_MERGE  "Advanced merge settings"
-    IDS_REVGRAPH_POPUP_SWITCH "&Switch\\Checkout to Revision"
     IDS_REVGRAPH_POPUP_COMPAREREVS "&Compare revisions"
     IDS_REVGRAPH_POPUP_UNIDIFFREVS "&Unified diff"
 END
