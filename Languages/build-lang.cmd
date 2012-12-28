@@ -10,6 +10,7 @@ call :nmake 1031 de
 call :nmake 1034 es_ES
 call :nmake 1036 fr
 call :nmake 1041 ja
+call :nmake 1043 nl_NL
 call :nmake 1045 pl_PL
 call :nmake 1046 pt_BR
 call :nmake 1049 ru
