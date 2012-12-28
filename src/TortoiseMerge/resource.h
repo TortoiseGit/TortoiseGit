@@ -252,13 +252,14 @@
 #define ID_EDIT_TEST                    32862
 #define ID_EDIT_SELECTALL               32883
 #define ID_EDIT_GOTO                    32884
+#define ID_VIEW_IGNOREWHITESPACECHANGE  32885
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        147
-#define _APS_NEXT_COMMAND_VALUE         32885
+#define _APS_NEXT_COMMAND_VALUE         32886
 #define _APS_NEXT_CONTROL_VALUE         1072
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
