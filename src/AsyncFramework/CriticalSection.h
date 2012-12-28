@@ -77,6 +77,8 @@ private:
 
     CCriticalSection& section;
 
+	// dummy assignement operator to silence the C4512 compiler warning
+	CCriticalSectionLock & operator=( const CCriticalSectionLock & ) {}
 public:
 
     __forceinline CCriticalSectionLock (CCriticalSection& section)

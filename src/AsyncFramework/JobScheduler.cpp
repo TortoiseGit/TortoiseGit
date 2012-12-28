@@ -518,7 +518,7 @@ void CJobScheduler::WaitForEmptyQueue()
 
 bool CJobScheduler::WaitForEmptyQueueOrTimeout(DWORD milliSeconds)
 {
-    while (true)
+    for (;;)
     {
         {
             CCriticalSectionLock lock (mutex);
