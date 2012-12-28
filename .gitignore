@@ -23,6 +23,7 @@ Thumbs.db
 /sign-x64.bat
 /sign-x86.bat
 /Languages/.tx
+/Languages/obj
 /src/TortoiseGit.opensdf
 /src/TortoiseGit.sdf
 /src/ipch
