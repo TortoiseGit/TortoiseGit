@@ -225,6 +225,11 @@ msgstr ""
 msgid "%s - at revision: %d"
 msgstr ""
 
+#. Resource IDs: (3887)
+#, c-format
+msgid "%s [Recovered]"
+msgstr ""
+
 #. Resource IDs: (226)
 #, c-format
 msgid "%s in %s"
@@ -763,7 +768,7 @@ msgid "&Local:"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "&Lum:"
+msgid "&Luminence:"
 msgstr ""
 
 #. Resource IDs: (16543)
@@ -1000,7 +1005,7 @@ msgid "&SSH client:"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "&Sat:"
+msgid "&Saturation:"
 msgstr ""
 
 #. Resource IDs: (71, 16921, 57603)
@@ -2110,7 +2115,7 @@ msgid "Can't create a new image!"
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Can't customize menues!"
+msgid "Can't customize menus!"
 msgstr ""
 
 #. Resource IDs: (1001)
@@ -2135,7 +2140,7 @@ msgid "Cannot show diff because of inconsistent newlines in the file."
 msgstr ""
 
 #. Resource IDs: (16926)
-msgid "Cascade"
+msgid "Casca&de"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3289,6 +3294,10 @@ msgstr ""
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "Do you want to recover these auto-saved documents?"
+msgstr ""
+
 #. Resource IDs: (313)
 msgid "Do you want to reload the documents to reflect the settings changes?\nNote: you will lose all changes you've made!"
 msgstr ""
@@ -3316,6 +3325,10 @@ msgstr ""
 
 #. Resource IDs: (75)
 msgid "Don't know what will push because you enter URL"
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
 msgstr ""
 
 #. Resource IDs: (73, 80)
@@ -3691,6 +3704,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "External Program:"
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "Fade"
 msgstr ""
 
 #. Resource IDs: (65)
@@ -5232,6 +5249,10 @@ msgstr ""
 msgid "NUM"
 msgstr ""
 
+#. Resource IDs: (1071)
+msgid "Name"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Name:"
 msgstr ""
@@ -5430,6 +5451,10 @@ msgstr ""
 msgid "Not patches generated."
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
+msgstr ""
+
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
 msgstr ""
@@ -5594,6 +5619,10 @@ msgstr ""
 
 #. Resource IDs: (87)
 msgid "On demand"
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "One or more auto-saved documents were found."
 msgstr ""
 
 #. Resource IDs: (219)
@@ -6183,6 +6212,10 @@ msgstr ""
 msgid "Record Only"
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr ""
+
 #. Resource IDs: (603)
 msgid "Recover to the status before rebase"
 msgstr ""
@@ -6638,6 +6671,14 @@ msgstr ""
 #. Resource IDs: (1070)
 #, c-format
 msgid "Row %d-%d of %d"
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "Row Down"
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "Row Up"
 msgstr ""
 
 #. Resource IDs: (17045)
@@ -7306,6 +7347,10 @@ msgstr ""
 msgid "Skipped missing target"
 msgstr ""
 
+#. Resource IDs: (1070)
+msgid "Slide"
+msgstr ""
+
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
 msgstr ""
@@ -7885,6 +7930,10 @@ msgstr ""
 msgid "Thesaurus"
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
+msgstr ""
+
 #. Resource IDs: (78)
 msgid "This field is required and must not be empty."
 msgstr ""
@@ -7923,12 +7972,12 @@ msgstr ""
 msgid "Three way diff"
 msgstr ""
 
-#. Resource IDs: (16924)
-msgid "Tile &Horizontally"
-msgstr ""
-
 #. Resource IDs: (16928)
 msgid "Tile &Vertically"
+msgstr ""
+
+#. Resource IDs: (16924)
+msgid "Tile Hori&zontally"
 msgstr ""
 
 #. Resource IDs: (1676)
@@ -8173,6 +8222,10 @@ msgstr ""
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "Unfold"
 msgstr ""
 
 #. Resource IDs: (3850)
@@ -8766,6 +8819,10 @@ msgstr ""
 
 #. Resource IDs: (2051)
 msgid "Zoom to fit in width"
+msgstr ""
+
+#. Resource IDs: (1070)
+msgid "[Default]"
 msgstr ""
 
 #. Resource IDs: (1001)
