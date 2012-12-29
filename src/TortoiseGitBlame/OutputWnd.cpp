@@ -43,18 +43,6 @@ COutputWnd::~COutputWnd()
 {
 }
 
-IMPLEMENT_DYNCREATE(CGitMFCTabCtrl, CMFCTabCtrl)
-
-BEGIN_MESSAGE_MAP(CGitMFCTabCtrl, CMFCTabCtrl)
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOG, OnLvnItemchangedLoglist)
-END_MESSAGE_MAP()
-
-void CGitMFCTabCtrl::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	COutputWnd *pWnd=DYNAMIC_DOWNCAST(COutputWnd,this->GetParent());
-	pWnd->OnLvnItemchangedLoglist(pNMHDR,pResult);
-}
-
 IMPLEMENT_DYNAMIC(COutputWnd, CDockablePane)
 
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
@@ -74,17 +62,10 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// Create tabs window:
-	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 0))
-	{
-		TRACE0("Failed to create output tab window\n");
-		return -1;      // fail to create
-	}
-
 	// Create output panes:
 	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
-	if (!m_LogList.Create(dwStyle, rectDummy, &m_wndTabs, IDC_LOG))
+	if (!m_LogList.Create(dwStyle, rectDummy, this, IDC_LOG))
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
@@ -98,8 +79,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Attach list windows to tab:
 	bNameValid = strTabName.LoadString(IDS_GIT_LOG_TAB);
 	ASSERT(bNameValid);
-
-	m_wndTabs.AddTab(&m_LogList, strTabName, (UINT)0);
 
 	m_LogList.m_IsIDReplaceAction=TRUE;
 	m_LogList.DeleteAllItems();
@@ -117,7 +96,7 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 	CDockablePane::OnSize(nType, cx, cy);
 
 	// Tab control should cover the whole client area:
-	m_wndTabs.SetWindowPos (NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+	m_LogList.SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)

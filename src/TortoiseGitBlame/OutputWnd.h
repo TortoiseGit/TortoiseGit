@@ -44,15 +44,6 @@ protected:
 
 class COutputWnd;
 
-class CGitMFCTabCtrl: public CMFCTabCtrl
-{
-protected:
-	DECLARE_MESSAGE_MAP()
-	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-
-	DECLARE_DYNCREATE(CGitMFCTabCtrl);
-};
-
 class COutputWnd : public CDockablePane
 {
 	DECLARE_DYNAMIC(COutputWnd)
@@ -63,8 +54,6 @@ public:
 // Attributes
 public:
 	CFont m_Font;
-
-	CGitMFCTabCtrl	m_wndTabs;
 
 	CGitBlameLogList m_LogList;
 
