@@ -85,8 +85,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
-	ON_NOTIFY(SCN_PAINTED,0,OnSciPainted)
-	ON_NOTIFY(SCN_GETBKCOLOR,0,OnSciGetBkColor)
+	ON_NOTIFY(SCN_PAINTED, IDC_SCINTILLA, OnSciPainted)
+	ON_NOTIFY(SCN_GETBKCOLOR, IDC_SCINTILLA, OnSciGetBkColor)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 END_MESSAGE_MAP()
 
@@ -244,7 +244,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 	rect.right=rect.Width();
 	rect.top=0;
 	rect.bottom=rect.Height();
-	BOOL b=m_TextView.Create(_T("Scintilla"),_T("source"),0,rect,this,0,0);
+	BOOL b=m_TextView.Create(_T("Scintilla"),_T("source"), 0, rect, this, IDC_SCINTILLA, 0);
 	m_TextView.Init(0,FALSE);
 	m_TextView.ShowWindow( SW_SHOW);
 	//m_TextView.InsertText(_T("Abdadfasdf"));
