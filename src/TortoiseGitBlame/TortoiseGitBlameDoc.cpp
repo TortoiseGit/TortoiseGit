@@ -206,29 +206,8 @@ void CTortoiseGitBlameDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
 {
 	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == _T("HEAD")));
 
-	CString title;
-	if(m_Rev.IsEmpty())
-		title=CString(lpszPathName)+_T(":HEAD");
-	else
-		title=CString(lpszPathName)+_T(":")+m_Rev;
-
-	this->SetTitle(title);
+	this->SetTitle(CString(lpszPathName) + _T(":") + m_Rev);
 }
-
-// CTortoiseGitBlameDoc serialization
-
-void CTortoiseGitBlameDoc::Serialize(CArchive& ar)
-{
-	if (ar.IsStoring())
-	{
-		// TODO: add storing code here
-	}
-	else
-	{
-		// TODO: add loading code here
-	}
-}
-
 
 // CTortoiseGitBlameDoc diagnostics
 
