@@ -356,7 +356,9 @@ void CGitLogListBase::InsertGitColumn()
 		exStyle |= LVS_EX_FULLROWSELECT;
 	SetExtendedStyle(exStyle);
 
-	UpdateProjectProperties();
+	// only load properties if we have a repository
+	if (GitAdminDir().HasAdminDir(g_Git.m_CurrentDir) || GitAdminDir().IsBareRepo(g_Git.m_CurrentDir))
+		UpdateProjectProperties();
 
 	static UINT normal[] =
 	{
