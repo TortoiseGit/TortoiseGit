@@ -533,12 +533,13 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 		CString oneline=this->m_TextView.StringFromControl(linebuf);
 		if (!bCaseSensitive)
 		{
-			oneline=oneline.MakeLower();
+			CString lcAuthor = m_Authors[i];
+			if (lcAuthor.MakeLower().Find(what) >= 0)
+				bFound = true;
+			else if (oneline.MakeLower().Find(what) >=0)
+				bFound = true;
 		}
-		//_stprintf_s(buf, 20, _T("%ld"), revs[i]);
-		if (this->m_Authors[i].Find(what)>=0)
-			bFound = true;
-		else if ((!bCaseSensitive)&&(this->m_Authors[i].MakeLower().Find(what)>=0))
+		else if (m_Authors[i].Find(what) >= 0)
 			bFound = true;
 		else if (oneline.Find(what) >=0)
 			bFound = true;
