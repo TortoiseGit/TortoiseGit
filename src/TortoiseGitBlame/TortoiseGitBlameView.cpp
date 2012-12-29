@@ -524,6 +524,8 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	//char buf[20];
 	//int i=0;
 	int i=line;
+	if(i >= (signed int)m_CommitHash.size())
+		i = 0;
 	do
 	{
 		int bufsize = (int)SendEditor(SCI_GETLINE, i);
@@ -547,7 +549,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 		delete [] linebuf;
 
 		i++;
-		if(i>=(signed int)m_CommitHash.size())
+		if(!bFound && i >= (signed int)m_CommitHash.size())
 			i=0;
 	}while(i!=line &&(!bFound));
 
