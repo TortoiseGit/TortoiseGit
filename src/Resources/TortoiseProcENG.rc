@@ -3904,6 +3904,7 @@ BEGIN
     IDS_PROC_SHOWDIFF       "Show diff"
     IDS_PROC_LOADING        "Loading..."
     IDS_FILEDIFF_EXT        "Extension"
+    IDS_ERR_EMPTYDIFF       "No differences found!"
 END
 
 #endif    // English (U.S.) resources

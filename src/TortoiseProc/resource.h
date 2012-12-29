@@ -816,6 +816,7 @@
 #define IDS_PROC_LOADING                1379
 #define IDS_FILEDIFF_EXT                1380
 #define IDC_OLDLINESCOLOR               1380
+#define IDS_ERR_EMPTYDIFF               1381
 #define IDC_TABSIZE                     1381
 #define IDC_REFRESH                     1382
 #define IDC_ACTIONLOGSHOW               1382

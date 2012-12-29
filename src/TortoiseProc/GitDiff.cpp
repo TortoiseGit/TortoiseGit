@@ -185,7 +185,22 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 
 		if (output.IsEmpty())
 		{
-			if (CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_SUBMODULE_EMPTYDIFF)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1)
+			output.Empty();
+			err.Empty();
+			// also compare against index
+			cmd.Format(_T("git.exe diff \"%s\""), pPath->GetGitPathString());
+			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
+			{
+				CMessageBox::Show(NULL, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return -1;
+			}
+
+			if (output.IsEmpty())
+			{
+				CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_ERR_EMPTYDIFF)), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				return -1;
+			}
+			else if (CMessageBox::Show(NULL, CString(MAKEINTRESOURCE(IDS_SUBMODULE_EMPTYDIFF)), _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_MSGBOX_YES)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1)
 			{
 				CString sCmd;
 				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
