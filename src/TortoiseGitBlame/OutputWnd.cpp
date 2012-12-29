@@ -46,7 +46,7 @@ COutputWnd::~COutputWnd()
 IMPLEMENT_DYNCREATE(CGitMFCTabCtrl, CMFCTabCtrl)
 
 BEGIN_MESSAGE_MAP(CGitMFCTabCtrl, CMFCTabCtrl)
-	ON_NOTIFY(LVN_ITEMCHANGED, 0, OnLvnItemchangedLoglist)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOG, OnLvnItemchangedLoglist)
 END_MESSAGE_MAP()
 
 void CGitMFCTabCtrl::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
@@ -60,7 +60,7 @@ IMPLEMENT_DYNAMIC(COutputWnd, CDockablePane)
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_NOTIFY(LVN_ITEMCHANGED, 0, OnLvnItemchangedLoglist)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOG, OnLvnItemchangedLoglist)
 END_MESSAGE_MAP()
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -84,7 +84,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Create output panes:
 	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
-	if (! m_LogList.Create(dwStyle,rectDummy,&m_wndTabs,0) )
+	if (!m_LogList.Create(dwStyle, rectDummy, &m_wndTabs, IDC_LOG))
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create

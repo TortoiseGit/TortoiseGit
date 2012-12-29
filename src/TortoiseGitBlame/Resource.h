@@ -49,6 +49,7 @@
 #define IDC_VERSION                     1000
 #define IDC_COPYRIGHT                   1001
 #define IDC_SCINTILLA                   1002
+#define IDC_LOG                         1003
 #define IDS_STATUS_PANE1                20122
 #define IDS_STATUS_PANE2                20123
 #define IDS_TOOLBAR_STANDARD            20124
@@ -78,7 +79,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32784
-#define _APS_NEXT_CONTROL_VALUE         1003
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
