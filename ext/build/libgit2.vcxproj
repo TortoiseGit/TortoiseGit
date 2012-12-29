@@ -83,6 +83,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
@@ -91,6 +92,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\zlib;..\libgit2\src;..\libgit2\include;..\libgit2\deps\regex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GIT_WINHTTP;WIN32_SHA1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsC</CompileAs>
       <ForcedIncludeFiles>precompiled.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
