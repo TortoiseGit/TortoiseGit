@@ -78,9 +78,6 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// Create combo:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-
 	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
 	{
 		TRACE0("Failed to create Properties Grid \n");
@@ -307,7 +304,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 	m_wndPropList.Invalidate();
 }
 
-void CPropertiesWnd::OnContextMenu(CWnd* pWnd, CPoint point)
+void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	CMFCPropertyGridProperty * pProtery = m_wndPropList.GetCurSel();
 

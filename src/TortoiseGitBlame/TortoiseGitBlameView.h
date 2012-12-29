@@ -189,7 +189,6 @@ public:
 	LONG GetBlameWidth();
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
-	void StartSearch();
 	void CopyToClipboard();
 	void CopySelectedLogToClipboard();
 	void BlamePreviousRevision();
