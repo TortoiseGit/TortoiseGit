@@ -204,7 +204,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 void CTortoiseGitBlameDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
 {
-	CDocument::SetPathName(lpszPathName,bAddToMRU);
+	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == _T("HEAD")));
 
 	CString title;
 	if(m_Rev.IsEmpty())
