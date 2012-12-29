@@ -1748,6 +1748,9 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM wParam, LPARAM lParam)
 {
 	ASSERT(m_pFindDialog != NULL);
 
+	if (m_CommitHash.empty())
+		return 0;
+
 	// If the FR_DIALOGTERM flag is set,
 	// invalidate the handle identifying the dialog box.
 	if (m_pFindDialog->IsTerminating())
