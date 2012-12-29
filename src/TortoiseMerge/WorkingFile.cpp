@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007,2011 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 
 CWorkingFile::CWorkingFile(void)
 {
+	ClearStoredAttributes();
 }
 
 CWorkingFile::~CWorkingFile(void)
@@ -36,6 +37,7 @@ void CWorkingFile::SetFileName(const CString& newFilename)
 	m_sFilename = newFilename;
 	m_sFilename.Replace('/', '\\');
 	m_sDescriptiveName.Empty();
+	ClearStoredAttributes();
 }
 
 void CWorkingFile::SetDescriptiveName(const CString& newDescName)
@@ -48,8 +50,10 @@ CString CWorkingFile::GetDescriptiveName()
 	if (m_sDescriptiveName.IsEmpty())
 	{
 		CString sDescriptiveName = CPathUtils::GetFileNameFromPath(m_sFilename);
-		if (sDescriptiveName.GetLength() < 20)
-			return sDescriptiveName;
+		WCHAR pathbuf[MAX_PATH] = {0};
+		PathCompactPathEx(pathbuf, sDescriptiveName, 50, 0);
+		sDescriptiveName = pathbuf;
+		return sDescriptiveName;
 	}
 	return m_sDescriptiveName;
 }
@@ -70,6 +74,7 @@ void CWorkingFile::TransferDetailsFrom(CWorkingFile& rightHandFile)
 	m_sFilename = rightHandFile.m_sFilename;
 	m_sDescriptiveName = rightHandFile.m_sDescriptiveName;
 	rightHandFile.SetOutOfUse();
+	m_attribs = rightHandFile.m_attribs;
 }
 
 CString CWorkingFile::GetWindowName() const
@@ -98,4 +103,51 @@ CString CWorkingFile::GetWindowName() const
 bool CWorkingFile::Exists() const
 {
 	return (!!PathFileExists(m_sFilename));
+}
+
+void CWorkingFile::SetOutOfUse()
+{
+	m_sFilename.Empty();
+	m_sDescriptiveName.Empty();
+	ClearStoredAttributes();
+}
+
+
+bool CWorkingFile::HasSourceFileChanged() const
+{
+	if (!InUse())
+	{
+		return false;
+	}
+	WIN32_FILE_ATTRIBUTE_DATA attribs = {0};
+	if (PathFileExists(m_sFilename))
+	{
+		if (GetFileAttributesEx(m_sFilename, GetFileExInfoStandard, &attribs))
+		{
+			if ( (m_attribs.nFileSizeHigh != attribs.nFileSizeHigh) ||
+				(m_attribs.nFileSizeLow != attribs.nFileSizeLow) )
+				return true;
+			return ( (CompareFileTime(&m_attribs.ftCreationTime, &attribs.ftCreationTime)!=0) ||
+				(CompareFileTime(&m_attribs.ftLastWriteTime, &attribs.ftLastWriteTime)!=0) );
+		}
+	}
+
+	return false;
+}
+
+void CWorkingFile::StoreFileAttributes()
+{
+	ClearStoredAttributes();
+
+	WIN32_FILE_ATTRIBUTE_DATA attribs = {0};
+	if (GetFileAttributesEx(m_sFilename, GetFileExInfoStandard, &attribs))
+	{
+		m_attribs = attribs;
+	}
+}
+
+void CWorkingFile::ClearStoredAttributes()
+{
+	static const WIN32_FILE_ATTRIBUTE_DATA attribsEmpty = {0};
+	m_attribs = attribsEmpty;
 }

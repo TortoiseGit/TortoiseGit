@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -49,30 +49,36 @@ protected:
 	virtual BOOL OnApply();
 	virtual BOOL OnInitDialog();
 
+	afx_msg void OnModified();
+	afx_msg void OnModifiedWithReload();
+	afx_msg void OnBnClickedWhitespace();
+
 	DECLARE_MESSAGE_MAP()
+
+	BOOL DialogEnableWindow(UINT nID, BOOL bEnable);
 
 	BOOL			m_bBackup;
 	CRegDWORD		m_regBackup;
 	BOOL			m_bFirstDiffOnLoad;
 	CRegDWORD		m_regFirstDiffOnLoad;
+	BOOL			m_bFirstConflictOnLoad;
+	CRegDWORD		m_regFirstConflictOnLoad;
 	int				m_nTabSize;
 	CRegDWORD		m_regTabSize;
 	BOOL			m_bIgnoreEOL;
 	CRegDWORD		m_regIgnoreEOL;
 	BOOL			m_bOnePane;
 	CRegDWORD		m_regOnePane;
-	DWORD			m_nIgnoreWS;
-	CRegDWORD		m_regIgnoreWS;
 	BOOL			m_bViewLinenumbers;
 	CRegDWORD		m_regViewLinenumbers;
-	BOOL			m_bStrikeout;
-	CRegDWORD		m_regStrikeout;
-	BOOL			m_bDisplayBinDiff;
-	CRegDWORD		m_regDisplayBinDiff;
 	BOOL			m_bCaseInsensitive;
 	CRegDWORD		m_regCaseInsensitive;
 	BOOL			m_bUTF8Default;
 	CRegDWORD		m_regUTF8Default;
+	BOOL			m_bAutoAdd;
+	CRegDWORD		m_regAutoAdd;
+	int				m_nMaxInline;
+	CRegDWORD		m_regMaxInline;
 
 	CRegDWORD		m_regFontSize;
 	DWORD			m_dwFontSize;
@@ -81,8 +87,4 @@ protected:
 
 	CMFCFontComboBox m_cFontNames;
 	CComboBox		m_cFontSizes;
-protected:
-	afx_msg void OnModified();
-	afx_msg void OnModifiedWithReload();
-	afx_msg void OnBnClickedWhitespace();
 };

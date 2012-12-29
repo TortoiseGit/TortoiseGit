@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2009 - TortoiseSVN
+// Copyright (C) 2006-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,10 @@
 #include "PathUtils.h"
 #include "BrowseFolder.h"
 #include "DirFileEnum.h"
+#include "SelectFileFilter.h"
+#include "FileDlgEventHandler.h"
+#include "TempFile.h"
+#include "TaskbarUUID.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,12 +42,32 @@ BEGIN_MESSAGE_MAP(CTortoiseMergeApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 END_MESSAGE_MAP()
 
+class PatchOpenDlgEventHandler : public CFileDlgEventHandler
+{
+public:
+	PatchOpenDlgEventHandler() {}
+	~PatchOpenDlgEventHandler() {}
+
+	virtual STDMETHODIMP OnButtonClicked(IFileDialogCustomize* pfdc, DWORD dwIDCtl)
+	{
+		if (dwIDCtl == 101)
+		{
+			CComQIPtr<IFileOpenDialog> pDlg = pfdc;
+			if (pDlg)
+			{
+				pDlg->Close(S_OK);
+			}
+		}
+		return S_OK;
+	}
+};
+
 
 CTortoiseMergeApp::CTortoiseMergeApp()
+	: m_nAppLook(0)
 {
 	EnableHtmlHelp();
-	m_bLoadUserToolbars = FALSE;
-	m_bSaveState = FALSE;
+	m_bHiColorIcons = TRUE;
 }
 
 // The one and only CTortoiseMergeApp object
@@ -51,23 +75,23 @@ CTortoiseMergeApp theApp;
 CString sOrigCWD;
 CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING));
 
+CString g_sGroupingUUID;
+
 // CTortoiseMergeApp initialization
 BOOL CTortoiseMergeApp::InitInstance()
 {
 	SetDllDirectory(L"");
+	SetTaskIDPerUUID();
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
-
-	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
-	CMFCButton::EnableWindowsTheming();
 
 	{
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
 		{
-			auto_buffer<TCHAR> originalCurrentDirectory(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory))
+			std::unique_ptr<TCHAR[]> originalCurrentDirectory(new TCHAR[len]);
+			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
-				sOrigCWD = originalCurrentDirectory;
+				sOrigCWD = originalCurrentDirectory.get();
 				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 		}
@@ -156,12 +180,26 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// visual styles.  Otherwise, any window creation will fail.
 	InitCommonControls();
 
+	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+	CMFCButton::EnableWindowsTheming();
+	EnableTaskbarInteraction(FALSE);
+
 	// Initialize all Managers for usage. They are automatically constructed
 	// if not yet present
 	InitContextMenuManager();
 	InitKeyboardManager();
+	InitTooltipManager ();
+	CMFCToolTipInfo params;
+	params.m_bVislManagerTheme = TRUE;
+
+	GetTooltipManager ()->SetTooltipParams (
+		AFX_TOOLTIP_TYPE_ALL,
+		RUNTIME_CLASS (CMFCToolTipCtrl),
+		&params);
 
 	CCmdLineParser parser = CCmdLineParser(this->m_lpCmdLine);
+
+	g_sGroupingUUID = parser.GetVal(L"groupuuid");
 
 	if (parser.HasKey(_T("?")) || parser.HasKey(_T("help")))
 	{
@@ -222,6 +260,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 		pFrame->m_bOneWay = FALSE;
 	if (parser.HasKey(_T("reversedpatch")))
 		pFrame->m_bReversedPatch = TRUE;
+	if (parser.HasKey(_T("saverequired")))
+		pFrame->m_bSaveRequired = true;
 	if (pFrame->m_Data.IsBaseFileInUse() && !pFrame->m_Data.IsYourFileInUse() && pFrame->m_Data.IsTheirFileInUse())
 	{
 		pFrame->m_Data.m_yourFile.TransferDetailsFrom(pFrame->m_Data.m_theirFile);
@@ -249,76 +289,129 @@ BOOL CTortoiseMergeApp::InitInstance()
 		// the patchfile itself was not.
 		// So ask the user for that patchfile
 
-		OPENFILENAME ofn = {0};			// common dialog box structure
-		TCHAR szFile[MAX_PATH] = {0};	// buffer for file name
-		// Initialize OPENFILENAME
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = pFrame->m_hWnd;
-		ofn.lpstrFile = szFile;
-		ofn.nMaxFile = _countof(szFile);
-		CString temp;
-		temp.LoadString(IDS_OPENDIFFFILETITLE);
-		if (temp.IsEmpty())
-			ofn.lpstrTitle = NULL;
-		else
-			ofn.lpstrTitle = temp;
-
-		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
-		// check if there's a patchfile in the clipboard
-		UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
-		if (cFormat)
+		HRESULT hr;
+		// Create a new common save file dialog
+		CComPtr<IFileOpenDialog> pfd = NULL;
+		hr = pfd.CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER);
+		if (SUCCEEDED(hr))
 		{
-			if (OpenClipboard(NULL))
+			// Set the dialog options
+			DWORD dwOptions;
+			if (SUCCEEDED(hr = pfd->GetOptions(&dwOptions)))
 			{
-				UINT enumFormat = 0;
-				do
-				{
-					if (enumFormat == cFormat)
-					{
-						// yes, there's a patchfile in the clipboard
-						ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_ENABLETEMPLATE | OFN_ENABLEHOOK | OFN_EXPLORER;
+				hr = pfd->SetOptions(dwOptions | FOS_FILEMUSTEXIST | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST);
+			}
 
-						ofn.hInstance = AfxGetResourceHandle();
-						ofn.lpTemplateName = MAKEINTRESOURCE(IDD_PATCH_FILE_OPEN_CUSTOM);
-						ofn.lpfnHook = CreatePatchFileOpenHook;
+			// Set a title
+			if (SUCCEEDED(hr))
+			{
+				CString temp;
+				temp.LoadString(IDS_OPENDIFFFILETITLE);
+				pfd->SetTitle(temp);
+			}
+			CSelectFileFilter fileFilter(IDS_PATCHFILEFILTER);
+			hr = pfd->SetFileTypes(fileFilter.GetCount(), fileFilter);
+			bool bAdvised = false;
+			DWORD dwCookie = 0;
+			CComObjectStackEx<PatchOpenDlgEventHandler> cbk;
+			CComQIPtr<IFileDialogEvents> pEvents = cbk.GetUnknown();
+
+			{
+				CComPtr<IFileDialogCustomize> pfdCustomize;
+				hr = pfd->QueryInterface(IID_PPV_ARGS(&pfdCustomize));
+				if (SUCCEEDED(hr))
+				{
+					// check if there's a unified diff on the clipboard and
+					// add a button to the fileopen dialog if there is.
+					UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+					if ((cFormat)&&(OpenClipboard(NULL)))
+					{
+						HGLOBAL hglb = GetClipboardData(cFormat);
+						if (hglb)
+						{
+							pfdCustomize->AddPushButton(101, CString(MAKEINTRESOURCE(IDS_PATCH_COPYFROMCLIPBOARD)));
+							hr = pfd->Advise(pEvents, &dwCookie);
+							bAdvised = SUCCEEDED(hr);
+						}
+						CloseClipboard();
 					}
-				} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
-				CloseClipboard();
+				}
+			}
+
+			// Show the save file dialog
+			if (SUCCEEDED(hr) && SUCCEEDED(hr = pfd->Show(pFrame->m_hWnd)))
+			{
+				// Get the selection from the user
+				CComPtr<IShellItem> psiResult = NULL;
+				hr = pfd->GetResult(&psiResult);
+				if (bAdvised)
+					pfd->Unadvise(dwCookie);
+				if (SUCCEEDED(hr))
+				{
+					PWSTR pszPath = NULL;
+					hr = psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath);
+					if (SUCCEEDED(hr))
+					{
+						pFrame->m_Data.m_sDiffFile = pszPath;
+						CoTaskMemFree(pszPath);
+					}
+				}
+				else
+				{
+					// no result, which means we closed the dialog in our button handler
+					std::wstring sTempFile;
+					if (TrySavePatchFromClipboard(sTempFile))
+						pFrame->m_Data.m_sDiffFile = sTempFile.c_str();
+				}
+			}
+			else
+			{
+				if (bAdvised)
+					pfd->Unadvise(dwCookie);
+				return FALSE;
 			}
 		}
-
-		CString sFilter;
-		sFilter.LoadString(IDS_PATCHFILEFILTER);
-		TCHAR * pszFilters = new TCHAR[sFilter.GetLength()+4];
-		_tcscpy_s (pszFilters, sFilter.GetLength()+4, sFilter);
-		// Replace '|' delimiters with '\0's
-		TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-		while (ptr != pszFilters)
+		else
 		{
-			if (*ptr == '|')
-				*ptr = '\0';
-			ptr--;
-		}
-		ofn.lpstrFilter = pszFilters;
-		ofn.nFilterIndex = 1;
+			OPENFILENAME ofn = {0};         // common dialog box structure
+			TCHAR szFile[MAX_PATH] = {0};   // buffer for file name
+			// Initialize OPENFILENAME
+			ofn.lStructSize = sizeof(OPENFILENAME);
+			ofn.hwndOwner = pFrame->m_hWnd;
+			ofn.lpstrFile = szFile;
+			ofn.nMaxFile = _countof(szFile);
+			CString temp;
+			temp.LoadString(IDS_OPENDIFFFILETITLE);
+			if (temp.IsEmpty())
+				ofn.lpstrTitle = NULL;
+			else
+				ofn.lpstrTitle = temp;
 
-		// Display the Open dialog box.
-		CString tempfile;
-		if (GetOpenFileName(&ofn)==FALSE)
-		{
-			delete [] pszFilters;
-			return FALSE;
+			ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
+			if( HasClipboardPatch() ) {
+				ofn.Flags |= ( OFN_ENABLETEMPLATE | OFN_ENABLEHOOK );
+				ofn.hInstance = AfxGetResourceHandle();
+				ofn.lpTemplateName = MAKEINTRESOURCE(IDD_PATCH_FILE_OPEN_CUSTOM);
+				ofn.lpfnHook = CreatePatchFileOpenHook;
+			}
+
+			CSelectFileFilter fileFilter(IDS_PATCHFILEFILTER);
+			ofn.lpstrFilter = fileFilter;
+			ofn.nFilterIndex = 1;
+
+			// Display the Open dialog box.
+			if (GetOpenFileName(&ofn)==FALSE)
+			{
+				return FALSE;
+			}
+			pFrame->m_Data.m_sDiffFile = ofn.lpstrFile;
 		}
-		delete [] pszFilters;
-		pFrame->m_Data.m_sDiffFile = ofn.lpstrFile;
 	}
 
 	if ( pFrame->m_Data.m_baseFile.GetFilename().IsEmpty() && pFrame->m_Data.m_yourFile.GetFilename().IsEmpty() )
 	{
-		LPWSTR *szArglist;
 		int nArgs;
-
-		szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
+		LPWSTR *szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
 		if( NULL == szArglist )
 		{
 			TRACE("CommandLineToArgvW failed\n");
@@ -359,38 +452,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	if (pFrame->m_bBlame)
 		pFrame->m_bReadOnly = true;
 
-	// try to find a suitable window title
-	CString sYour = pFrame->m_Data.m_yourFile.GetDescriptiveName();
-	if (sYour.Find(_T(" - "))>=0)
-		sYour = sYour.Left(sYour.Find(_T(" - ")));
-	if (sYour.Find(_T(" : "))>=0)
-		sYour = sYour.Left(sYour.Find(_T(" : ")));
-	CString sTheir = pFrame->m_Data.m_theirFile.GetDescriptiveName();
-	if (sTheir.Find(_T(" - "))>=0)
-		sTheir = sTheir.Left(sTheir.Find(_T(" - ")));
-	if (sTheir.Find(_T(" : "))>=0)
-		sTheir = sTheir.Left(sTheir.Find(_T(" : ")));
-
-	if (!sYour.IsEmpty() && !sTheir.IsEmpty())
-	{
-		if (sYour.CompareNoCase(sTheir)==0)
-			pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
-		else if ((sYour.GetLength() < 10) &&
-				(sTheir.GetLength() < 10))
-			pFrame->SetWindowText(sYour + _T(" - ") + sTheir + _T(" - TortoiseGitMerge"));
-		else
-		{
-			// we have two very long descriptive texts here, which
-			// means we have to find a way to use them as a window
-			// title in a shorter way.
-			// for simplicity, we just use the one from "yourfile"
-			pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
-		}
-	}
-	else if (!sYour.IsEmpty())
-		pFrame->SetWindowText(sYour + _T(" - TortoiseGitMerge"));
-	else if (!sTheir.IsEmpty())
-		pFrame->SetWindowText(sTheir + _T(" - TortoiseGitMerge"));
+	pFrame->SetWindowTitle();
 
 	if (parser.HasKey(_T("createunifieddiff")))
 	{
@@ -402,38 +464,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 			CString outfile = parser.GetVal(_T("outfile"));
 			if (outfile.IsEmpty())
 			{
-				OPENFILENAME ofn = {0};			// common dialog box structure
-				TCHAR szFile[MAX_PATH] = {0};	// buffer for file name
-				ofn.lStructSize = sizeof(OPENFILENAME);
-				ofn.lpstrFile = szFile;
-				ofn.nMaxFile = _countof(szFile);
-				CString temp;
-				temp.LoadString(IDS_SAVEASTITLE);
-				if (!temp.IsEmpty())
-					ofn.lpstrTitle = temp;
-				ofn.Flags = OFN_OVERWRITEPROMPT;
-				CString sFilter;
-				sFilter.LoadString(IDS_COMMONFILEFILTER);
-				TCHAR * pszFilters = new TCHAR[sFilter.GetLength()+4];
-				_tcscpy_s (pszFilters, sFilter.GetLength()+4, sFilter);
-				// Replace '|' delimiters with '\0's
-				TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-				while (ptr != pszFilters)
-				{
-					if (*ptr == '|')
-						*ptr = '\0';
-					ptr--;
-				}
-				ofn.lpstrFilter = pszFilters;
-				ofn.nFilterIndex = 1;
-
-				// Display the Save dialog box.
-				CString sFile;
-				if (GetSaveFileName(&ofn)==TRUE)
-				{
-					outfile = CString(ofn.lpstrFile);
-				}
-				delete [] pszFilters;
+				CCommonAppUtils::FileOpenSave(outfile, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false, NULL);
 			}
 			if (!outfile.IsEmpty())
 			{
@@ -442,6 +473,13 @@ BOOL CTortoiseMergeApp::InitInstance()
 			}
 		}
 	}
+
+#if 0
+	pFrame->resolveMsgWnd    = parser.HasVal(L"resolvemsghwnd")   ? (HWND)parser.GetLongLongVal(L"resolvemsghwnd")     : 0;
+	pFrame->resolveMsgWParam = parser.HasVal(L"resolvemsgwparam") ? (WPARAM)parser.GetLongLongVal(L"resolvemsgwparam") : 0;
+	pFrame->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? (LPARAM)parser.GetLongLongVal(L"resolvemsglparam") : 0;
+#endif
+
 	// The one and only window has been initialized, so show and update it
 	pFrame->ActivateFrame();
 	pFrame->ShowWindow(SW_SHOW);
@@ -453,7 +491,14 @@ BOOL CTortoiseMergeApp::InitInstance()
 		return TRUE;
 	}
 
-	return pFrame->LoadViews();
+	int line = -2;
+	if (parser.HasVal(_T("line")))
+	{
+		line = parser.GetLongVal(_T("line"));
+		line--; // we need the index
+	}
+
+	return pFrame->LoadViews(line);
 }
 
 // CTortoiseMergeApp message handlers
@@ -467,42 +512,17 @@ void CTortoiseMergeApp::OnAppAbout()
 UINT_PTR CALLBACK
 CTortoiseMergeApp::CreatePatchFileOpenHook(HWND hDlg, UINT uiMsg, WPARAM wParam, LPARAM /*lParam*/)
 {
-	if(uiMsg ==	WM_COMMAND && LOWORD(wParam) == IDC_PATCH_TO_CLIPBOARD)
+	if(uiMsg == WM_COMMAND && LOWORD(wParam) == IDC_PATCH_TO_CLIPBOARD)
 	{
 		HWND hFileDialog = GetParent(hDlg);
 
 		// if there's a patchfile in the clipboard, we save it
 		// to a temporary file and tell TortoiseMerge to use that one
-		UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
-		if ((cFormat)&&(OpenClipboard(NULL)))
+		std::wstring sTempFile;
+		if (TrySavePatchFromClipboard(sTempFile))
 		{
-			HGLOBAL hglb = GetClipboardData(cFormat);
-			LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
-
-			DWORD len = GetTempPath(0, NULL);
-			TCHAR * path = new TCHAR[len+1];
-			TCHAR * tempF = new TCHAR[len+100];
-			GetTempPath (len+1, path);
-			GetTempFileName (path, _T("tsm"), 0, tempF);
-			std::wstring sTempFile = std::wstring(tempF);
-			delete [] path;
-			delete [] tempF;
-
-			FILE * outFile;
-			size_t patchlen = strlen(lpstr);
-			_tfopen_s(&outFile, sTempFile.c_str(), _T("wb"));
-			if(outFile)
-			{
-				size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
-				if (size == patchlen)
-				{
-					CommDlg_OpenSave_SetControlText(hFileDialog, edt1, sTempFile.c_str());
-					PostMessage(hFileDialog, WM_COMMAND, MAKEWPARAM(IDOK, BM_CLICK), (LPARAM)(GetDlgItem(hDlg, IDOK)));
-				}
-				fclose(outFile);
-			}
-			GlobalUnlock(hglb);
-			CloseClipboard();
+			CommDlg_OpenSave_SetControlText(hFileDialog, edt1, sTempFile.c_str());
+			PostMessage(hFileDialog, WM_COMMAND, MAKEWPARAM(IDOK, BM_CLICK), (LPARAM)(GetDlgItem(hDlg, IDOK)));
 		}
 	}
 	return 0;
@@ -512,38 +532,68 @@ int CTortoiseMergeApp::ExitInstance()
 {
 	// Look for temporary files left around by TortoiseMerge and
 	// remove them. But only delete 'old' files
-	DWORD len = ::GetTempPath(0, NULL);
-	TCHAR * path = new TCHAR[len + 100];
-	len = ::GetTempPath (len+100, path);
-	if (len != 0)
-	{
-		CSimpleFileFind finder = CSimpleFileFind(path, _T("*tsm*.*"));
-		FILETIME systime_;
-		::GetSystemTimeAsFileTime(&systime_);
-		__int64 systime = (((_int64)systime_.dwHighDateTime)<<32) | ((__int64)systime_.dwLowDateTime);
-		while (finder.FindNextFileNoDirectories())
-		{
-			CString filepath = finder.GetFilePath();
-			HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
-			if (hFile != INVALID_HANDLE_VALUE)
-			{
-				FILETIME createtime_;
-				if (::GetFileTime(hFile, &createtime_, NULL, NULL))
-				{
-					::CloseHandle(hFile);
-					__int64 createtime = (((_int64)createtime_.dwHighDateTime)<<32) | ((__int64)createtime_.dwLowDateTime);
-					if ((createtime + 864000000000) < systime)		//only delete files older than a day
-					{
-						::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-						::DeleteFile(filepath);
-					}
-				}
-				else
-					::CloseHandle(hFile);
-			}
-		}
-	}
-	delete[] path;
+	CTempFiles::DeleteOldTempFiles(_T("*tsm*.*"));
 
 	return CWinAppEx::ExitInstance();
+}
+
+bool CTortoiseMergeApp::HasClipboardPatch()
+{
+	// check if there's a patchfile in the clipboard
+	const UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	if (cFormat == 0)
+		return false;
+
+	if (OpenClipboard(NULL) == 0)
+		return false;
+
+	bool containsPatch = false;
+	UINT enumFormat = 0;
+	do
+	{
+		if (enumFormat == cFormat)
+		{
+			containsPatch = true;   // yes, there's a patchfile in the clipboard
+		}
+	} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
+	CloseClipboard();
+
+	return containsPatch;
+}
+
+bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
+{
+	resultFile.clear();
+
+	UINT cFormat = RegisterClipboardFormat(_T("TSVN_UNIFIEDDIFF"));
+	if (cFormat == 0)
+		return false;
+	if (OpenClipboard(NULL) == 0)
+		return false;
+
+	HGLOBAL hglb = GetClipboardData(cFormat);
+	LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
+
+	DWORD len = GetTempPath(0, NULL);
+	std::unique_ptr<TCHAR[]> path(new TCHAR[len+1]);
+	std::unique_ptr<TCHAR[]> tempF(new TCHAR[len+100]);
+	GetTempPath (len+1, path.get());
+	GetTempFileName (path.get(), _T("tsm"), 0, tempF.get());
+	std::wstring sTempFile = std::wstring(tempF.get());
+
+	FILE* outFile = 0;
+	_tfopen_s(&outFile, sTempFile.c_str(), _T("wb"));
+	if (outFile != 0)
+	{
+		size_t patchlen = strlen(lpstr);
+		size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
+		if (size == patchlen)
+			 resultFile = sTempFile;
+
+		fclose(outFile);
+	}
+	GlobalUnlock(hglb);
+	CloseClipboard();
+
+	return !resultFile.empty();
 }

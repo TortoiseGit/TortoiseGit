@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007,2009-2012 - TortoiseSVN
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -37,9 +37,26 @@ typedef struct viewstate
 	std::list<int> addedlines;
 
 	std::map<int, viewdata> removedlines;
+	std::map<int, viewdata> replacedlines;
 
-	void	AddLineFormView(CBaseView *pView, int nLine, bool bAddEmptyLine);
+	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
+	void	Clear();
+	bool	IsEmpty() { return difflines.empty() && linestates.empty() && linelines.empty() && linesEOL.empty() && addedlines.empty() && removedlines.empty() && replacedlines.empty(); }
 } viewstate;
+
+/**
+ * \ingroup TortoiseMerge
+ * this struct holds all the information of a single change in TortoiseMerge for all(3) views.
+ */
+struct allviewstate
+{
+	viewstate right;
+	viewstate bottom;
+	viewstate left;
+
+	void	Clear() { right.Clear(); bottom.Clear(); left.Clear(); }
+	bool	IsEmpty() { return right.IsEmpty() && bottom.IsEmpty() && left.IsEmpty(); }
+};
 
 /**
  * \ingroup TortoiseMerge
@@ -52,21 +69,22 @@ public:
 	static CUndo& GetInstance();
 
 	bool Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
-	void AddState(const viewstate& leftstate, const viewstate& rightstate, const viewstate& bottomstate, POINT pt);
-	bool CanUndo() { return (!m_viewstates.empty()); }
+	void AddState(const allviewstate& allstate, POINT pt);
+	bool CanUndo() {return !m_viewstates.empty();}
 
 	bool IsGrouping() { return m_groups.size() % 2 == 1; }
-	void BeginGrouping() { ASSERT(!IsGrouping()); m_groups.push_back(m_caretpoints.size()); }
-	void EndGrouping(){ ASSERT(IsGrouping()); m_groups.push_back(m_caretpoints.size()); }
+	void BeginGrouping() { if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); m_groupCount++; }
+	void EndGrouping(){ m_groupCount--; if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); }
 	void Clear();
-	void MarkAsOriginalState() { m_originalstate = (unsigned int)m_viewstates.size(); }
+	void MarkAsOriginalState() { m_originalstate = m_viewstates.size(); }
 protected:
-	void Undo(const viewstate& state, CBaseView * pView);
+	void Undo(const viewstate& state, CBaseView * pView, const POINT& pt);
 	void UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
-	std::list<viewstate> m_viewstates;
+	std::list<allviewstate> m_viewstates;
 	std::list<POINT> m_caretpoints;
 	std::list< std::list<int>::size_type > m_groups;
-	unsigned int m_originalstate;
+	size_t m_originalstate;
+	int m_groupCount;
 private:
 	CUndo();
 	~CUndo();

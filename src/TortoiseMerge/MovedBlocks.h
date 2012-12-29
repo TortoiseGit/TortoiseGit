@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006 - Stefan Kueng
+// Copyright (C) 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,18 +18,13 @@
 //
 #pragma once
 
-/**
- * \ingroup TortoiseMerge
- *
- * Keeps track of all used temporary files and destroys (deletes)
- * them when this object is destroyed.
- */
-class CTempFiles
+#include "diff.h"
+
+// Inheritance emulation (adding extra fields)
+struct tsvn_svn_diff_t_extension
 {
-public:
-	CTempFiles(void);
-	~CTempFiles(void);
-	CString GetTempFilePath();
-protected:
-	CStringArray		m_arTempFileList;
+	svn_diff_t * base;
+	tsvn_svn_diff_t_extension * next;
+	int moved_from;
+	int moved_to;
 };

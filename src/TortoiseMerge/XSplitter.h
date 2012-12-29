@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006 - Stefan Kueng
+// Copyright (C) 2006, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,48 +53,66 @@ public:
 	 * Replaces a view in the Splitter with another view.
 	 */
 	BOOL		ReplaceView(int row, int col,CRuntimeClass * pViewClass, SIZE size);
-    /**
-     * Shows a splitter column which was previously hidden. Don't call
+	/**
+	 * Shows a splitter column which was previously hidden. Don't call
 	 * this method if the column is already visible! Check it first
 	 * with IsColumnHidden()
-     */
-    void		ShowColumn();
-    /**
-     * Hides the given splitter column. Don't call this method on already hidden columns!
+	 */
+	void		ShowColumn();
+	/**
+	 * Hides the given splitter column. Don't call this method on already hidden columns!
 	 * Check it first with IsColumnHidden()
-     * \param nColHide The column to hide
-     */
-    void		HideColumn(int nColHide);
+	 * \param nColHide The column to hide
+	 */
+	void		HideColumn(int nColHide);
 	/**
 	 * Checks if a given column is hidden.
 	 */
 	BOOL		IsColumnHidden(int nCol) const {return (m_nHiddenCol == nCol);}
-    /**
-     * Shows a splitter row which was previously hidden. Don't call
+	/**
+	 * Shows a splitter row which was previously hidden. Don't call
 	 * this method if the row is already visible! Check it first
 	 * with IsRowHidden()
-     */
-    void		ShowRow();
-    /**
-     * Hides the given splitter row. Don't call this method on already hidden rows!
+	 */
+	void		ShowRow();
+	/**
+	 * Hides the given splitter row. Don't call this method on already hidden rows!
 	 * Check it first with IsRowHidden()
-     * \param nRowHide The row to hide
-     */
-    void		HideRow(int nRowHide);
+	 * \param nRowHide The row to hide
+	 */
+	void		HideRow(int nRowHide);
 	/**
 	 * Checks if a given row is hidden.
 	 */
 	BOOL		IsRowHidden(int nRow) const  {return (m_nHiddenRow == nRow);}
 
+	/**
+	 * Centers the splitter in the middle of the views
+	 */
+	void		CenterSplitter();
+
+	int			GetOldRowCount() { return m_nOldRows; }
+	int			GetOldColCount() { return m_nOldCols; }
+	bool		HasOldRowSize() { return m_pRowOldSize != nullptr; }
+	bool		HasOldColSize() { return m_pColOldSize != nullptr; }
+	int			GetOldRowSize(int index) { return m_pRowOldSize[index]; }
+	int			GetOldColSize(int index) { return m_pColOldSize[index]; }
+
 protected:
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	DECLARE_MESSAGE_MAP()
 
+	void		CopyRowAndColInfo();
 private:
 	BOOL		m_bBarLocked;	///< is the splitter bar locked?
-    int			m_nHiddenCol;   ///< Index of the hidden column.
-    int			m_nHiddenRow;   ///< Index of the hidden row.
-
+	int			m_nHiddenCol;	///< Index of the hidden column.
+	int			m_nHiddenRow;	///< Index of the hidden row
+	int *		m_pColOldSize;	///< the current size of the last splitter positioning
+	int *		m_pRowOldSize;	///< the current size of the last splitter positioning
+	int			m_nOldCols;
+	int			m_nOldRows;
 };

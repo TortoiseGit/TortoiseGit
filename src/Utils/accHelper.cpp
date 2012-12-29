@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2006,2008 - Stefan Kueng
+// Copyright (C) 2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,31 +16,14 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "stdafx.h"
-#include "tempfiles.h"
 
-CTempFiles::CTempFiles(void)
-{
-}
 
-CTempFiles::~CTempFiles(void)
-{
-	for (int i=0; i<m_arTempFileList.GetCount(); i++)
-	{
-		DeleteFile(m_arTempFileList.GetAt(i));
-	}
-}
+/*
+To avoid linker errors with CLSIDs from oleacc.h, this file is needed
+and has to be added to the project with the option "use precompiled headers" to "no".
+Without this, oleacc.h is included already in stdafx.h by MFC and ATL headers without
+the <initguid.h> header included first.
+*/
 
-CString CTempFiles::GetTempFilePath()
-{
-	DWORD len = GetTempPath(0, NULL);
-	TCHAR * path = new TCHAR[len+1];
-	TCHAR * tempF = new TCHAR[len+100];
-	GetTempPath (len+1, path);
-	GetTempFileName (path, TEXT("tsm"), 0, tempF);
-	CString tempfile = CString(tempF);
-	delete [] path;
-	delete [] tempF;
-	m_arTempFileList.Add(tempfile);
-	return tempfile;
-}
+#include <initguid.h>
+#include <oleacc.h>

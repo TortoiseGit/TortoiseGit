@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,17 @@
 #include "ScrollTool.h"
 #include "Undo.h"
 #include "LocatorBar.h"
+#include "LineColors.h"
+#include "TripleClick.h"
+#include "IconMenu.h"
+#include "FindDlg.h"
+
+typedef struct inlineDiffPos
+{
+	apr_off_t		start;
+	apr_off_t		end;
+} inlineDiffPos;
+
 
 /**
  * \ingroup TortoiseMerge
@@ -30,7 +41,7 @@
  * showing diffs. Has three parent classes which inherit
  * from this base class: CLeftView, CRightView and CBottomView.
  */
-class CBaseView : public CView
+class CBaseView : public CView, public CTripleClick
 {
 	DECLARE_DYNCREATE(CBaseView)
 friend class CLineDiffBar;
@@ -38,12 +49,12 @@ public:
 	CBaseView();
 	virtual ~CBaseView();
 
-public:
+public: // methods
 	/**
 	 * Indicates that the underlying document has been updated. Reloads all
 	 * data and redraws the view.
 	 */
-	virtual void	DocumentUpdated();
+	virtual void    DocumentUpdated();
 	/**
 	 * Returns the number of lines visible on the view.
 	 */
@@ -56,33 +67,142 @@ public:
 	void			ScrollToLine(int nNewTopLine, BOOL bTrackScrollBar = TRUE);
 	void			ScrollAllToLine(int nNewTopLine, BOOL bTrackScrollBar = TRUE);
 	void			ScrollSide(int delta);
+	void			ScrollAllSide(int delta);
+	void			ScrollVertical(short delta);
+	static void		RecalcAllVertScrollBars(BOOL bPositionOnly = FALSE);
+	static void		RecalcAllHorzScrollBars(BOOL bPositionOnly = FALSE);
 	void			GoToLine(int nNewLine, BOOL bAll = TRUE);
 	void			ScrollToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
-	void			UseCaret(bool bUse = true) {m_bCaretHidden = !bUse;}
-	bool			HasCaret() {return !m_bCaretHidden;}
-	void			SetCaretPosition(POINT pt) {m_ptCaretPos = pt ; m_nCaretGoalPos = pt.x; UpdateCaret();}
+	void			ScrollAllToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
+	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly;}
+	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable;}
+	void			SetTarget(bool bTarget = true) {m_bTarget = bTarget;}
+	bool			IsReadonly() const {return m_bReadonly;}
+	bool			IsWritable() const {return !m_bReadonly && m_pViewData;}
+	bool			IsTarget() const {return m_bTarget;}
+	void			SetCaretAndGoalPosition(const POINT& pt) {UpdateCaretPosition(pt); UpdateGoalPos(); }
+	void			SetCaretAndGoalViewPosition(const POINT& pt) {UpdateCaretViewPosition(pt); UpdateGoalPos(); }
+	void			SetCaretPosition(const POINT& pt) { SetCaretViewPosition(ConvertScreenPosToView(pt)); }
+	POINT			GetCaretPosition() { return ConvertViewPosToScreen(GetCaretViewPosition()); }
+	void			SetCaretViewPosition(const POINT & pt) { m_ptCaretViewPos = pt; }
+	POINT			GetCaretViewPosition() { return m_ptCaretViewPos; }
+	void			UpdateCaretPosition(const POINT& pt) { SetCaretPosition(pt); UpdateCaret(); }
+	void			UpdateCaretViewPosition(const POINT& pt) { SetCaretViewPosition(pt); UpdateCaret(); EnsureCaretVisible(); }
+	void			SetCaretToViewStart() { SetCaretToFirstViewLine(); SetCaretToViewLineStart(); }
+	void			SetCaretToFirstViewLine() { m_ptCaretViewPos.y=0; }
+	void			SetCaretToViewLineStart() { m_ptCaretViewPos.x=0; }
+	void			SetCaretToLineStart() { SetCaretAndGoalPosition(SetupPoint(0, GetCaretPosition().y)); }
 	void			EnsureCaretVisible();
 	void			UpdateCaret();
-	void			ClearSelection();
-	void			RefreshViews();
 
-	void			SelectLines(int nLine1, int nLine2 = -1);
-	void			HiglightLines(int start, int end = -1);
+	bool			ArePointsSame(const POINT &pt1, const POINT &pt2) {return (pt1.x == pt2.x) && (pt1.y == pt2.y); };
+	POINT			SetupPoint(int x, int y) {POINT ptRet={x, y}; return ptRet; };
+	POINT			ConvertScreenPosToView(const POINT& pt);
+	POINT			ConvertViewPosToScreen(const POINT& pt);
+
+	void			RefreshViews();
+	static void		BuildAllScreen2ViewVector();                               ///< schedule full screen2view rebuild
+	static void		BuildAllScreen2ViewVector(int ViewLine);                   ///< schedule rebuild screen2view for single line
+	static void		BuildAllScreen2ViewVector(int FirstViewLine, int LastViewLine); ///< schedule rebuild screen2view for line range (first and last inclusive)
+	void			UpdateViewLineNumbers();
+	int				CleanEmptyLines();                                         ///< remove line empty in all views
+	int				GetLineCount() const;
+	static int		GetViewLineForScreen(int screenLine) { return m_Screen2View.GetViewLineForScreen(screenLine); }
+	int				FindScreenLineForViewLine(int viewLine);
+	// TODO: find better consistent names for Multiline(line with sublines) and Subline, Count.. or Get..Count ?
+	int				CountMultiLines(int nViewLine);
+	int				GetSubLineOffset(int index);
+	LineColors &	GetLineColors(int nViewLine);
+	static void		UpdateLocator() { if (m_pwndLocator) m_pwndLocator->DocumentUpdated(); }
+	void			WrapChanged();
+
+	void			HighlightLines(int start, int end = -1);
+	void			HighlightViewLines(int start, int end = -1);
 	inline BOOL		IsHidden() const  {return m_bIsHidden;}
 	inline void		SetHidden(BOOL bHidden) {m_bIsHidden = bHidden;}
-	inline BOOL		IsModified() const  {return m_bModified;}
-	void			SetModified(BOOL bModified = TRUE) {m_bModified = bModified;}
-	BOOL			HasSelection() {return (!((m_nSelBlockEnd < 0)||(m_nSelBlockStart < 0)||(m_nSelBlockStart > m_nSelBlockEnd)));}
-	BOOL			HasTextSelection() {return ((m_ptSelectionStartPos.x != m_ptSelectionEndPos.x)||(m_ptSelectionStartPos.y != m_ptSelectionEndPos.y));}
-	BOOL			GetSelection(int& start, int& end) {start=m_nSelBlockStart; end=m_nSelBlockEnd; return HasSelection();}
+	inline bool		IsModified() const  {return m_bModified;}
+	void			SetModified(bool bModified = true) {m_bModified = bModified; Invalidate();}
 	void			SetInlineWordDiff(bool bWord) {m_bInlineWordDiff = bWord;}
+	void			SetInlineDiff(bool bDiff) {m_bShowInlineDiff = bDiff;}
+	void			SetMarkedWord(const CString& word) {m_sMarkedWord = word; BuildMarkedWordArray();}
+	LPCTSTR			GetMarkedWord() {return (LPCTSTR)m_sMarkedWord;}
+	LPCTSTR			GetFindString() {return (LPCTSTR)m_sFindText;}
 
-	BOOL			IsLineRemoved(int nLineIndex);
+	// Selection methods; all public methods dealing with selection go here
+	static void		ClearSelection();
+	BOOL			GetViewSelection(int& start, int& end) const;
+	BOOL			HasSelection() const { return (!((m_nSelViewBlockEnd < 0)||(m_nSelViewBlockStart < 0)||(m_nSelViewBlockStart > m_nSelViewBlockEnd))); }
+	BOOL			HasTextSelection() const { return ((m_ptSelectionViewPosStart.x != m_ptSelectionViewPosEnd.x) || (m_ptSelectionViewPosStart.y != m_ptSelectionViewPosEnd.y)); }
+	static void		SetupAllViewSelection(int start, int end);
+	static void		SetupAllSelection(int start, int end);
+	void			SetupSelection(int start, int end);
+	static void		SetupViewSelection(CBaseView* view, int start, int end);
+	void			SetupViewSelection(int start, int end);
+	CString			GetSelectedText() const;
+
+	// state classifying methods; note: state may belong to more classes
+	static bool		IsStateConflicted(DiffStates state);
+	static bool		IsStateEmpty(DiffStates state);
+	static bool		IsStateRemoved(DiffStates state);
+	static DiffStates	ResolveState(DiffStates state);
+
+	bool			IsLineEmpty(int nLineIndex);
+	bool			IsViewLineEmpty(int nViewLine);
+	bool			IsLineRemoved(int nLineIndex);
+	bool			IsViewLineRemoved(int nViewLine);
 	bool			IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical);
-	bool			IsLineConflicted(int nLineIndex);
+	bool			IsViewLineConflicted(int nLineIndex);
+	bool			HasNextConflict();
+	bool			HasPrevConflict();
+	bool			HasNextDiff();
+	bool			HasPrevDiff();
+	bool			GetNextInlineDiff(int & nPos);
+	bool			GetPrevInlineDiff(int & nPos);
+	bool			HasNextInlineDiff();
+	bool			HasPrevInlineDiff();
 
+	static const viewdata& GetEmptyLineData();
+	void			InsertViewEmptyLines(int nFirstView, int nCount);
+
+	virtual void	UseBothLeftFirst() {return UseBothBlocks(m_pwndLeft, m_pwndRight); }
+	virtual void	UseBothRightFirst() {return UseBothBlocks(m_pwndRight, m_pwndLeft); }
+	void			UseTheirAndYourBlock() {return UseBothLeftFirst(); } ///< ! for backward compatibility
+	void			UseYourAndTheirBlock() {return UseBothRightFirst(); } ///< ! for backward compatibility
+
+	virtual void	UseLeftBlock() {return UseViewBlock(m_pwndLeft); }
+	virtual void	UseLeftFile() {return UseViewFile(m_pwndLeft); }
+	virtual void	UseRightBlock() {return UseViewBlock(m_pwndRight); }
+	virtual void	UseRightFile() {return UseViewFile(m_pwndRight); }
+
+	// ViewData methods
+	void			InsertViewData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
+	void			InsertViewData(int index, const viewdata& data);
+	void			RemoveViewData(int index);
+
+	const viewdata&	GetViewData(int index) const {return m_pViewData->GetData(index); }
+	const CString&	GetViewLine(int index) const {return m_pViewData->GetLine(index); }
+	DiffStates		GetViewState(int index) const {return m_pViewData->GetState(index); }
+	HIDESTATE		GetViewHideState(int index) {return m_pViewData->GetHideState(index); }
+	int				GetViewLineNumber(int index) {return m_pViewData->GetLineNumber(index); }
+	int				GetViewMovedIndex(int index) {return m_pViewData->GetMovedIndex(index); }
+	int				FindViewLineNumber(int number) {return m_pViewData->FindLineNumber(number); }
+	EOL				GetViewLineEnding(int index) const {return m_pViewData->GetLineEnding(index); }
+
+	int				GetViewCount() const {return m_pViewData ? m_pViewData->GetCount() : -1; }
+
+	void			SetViewData(int index, const viewdata& data);
+	void			SetViewState(int index, DiffStates state);
+	void			SetViewLine(int index, const CString& sLine);
+	void			SetViewLineNumber(int index, int linenumber);
+	void			SetViewLineEnding(int index, EOL ending);
+
+	static bool     IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
+	static CBaseView * GetFirstGoodView();
+
+public: // variables
 	CViewData *		m_pViewData;
 	CViewData *		m_pOtherViewData;
+	CBaseView *		m_pOtherView;
 
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
@@ -92,7 +212,10 @@ public:
 	BOOL			m_bViewWhitespace;	///< If TRUE, then SPACE and TAB are shown as special characters
 	BOOL			m_bShowInlineDiff;	///< If TRUE, diffs in lines are marked colored
 	bool			m_bShowSelection;	///< If true, selection bars are shown and selected text darkened
+	bool			m_bWhitespaceInlineDiffs; ///< if true, inline diffs are shown for identical lines only differing in whitespace
 	int				m_nTopLine;			///< The topmost text line in the view
+	std::vector<int> m_arMarkedWordLines;	///< which lines contain a marked word
+	std::vector<int> m_arFindStringLines;	///< which lines contain a found string
 
 	static CLocatorBar * m_pwndLocator;	///< Pointer to the locator bar on the left
 	static CLineDiffBar * m_pwndLineDiffBar;	///< Pointer to the line diff bar at the bottom
@@ -100,19 +223,28 @@ public:
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
 
 	void			GoToFirstDifference();
-	void			AddEmptyLine(int nLineIndex);
-protected:
+	void			GoToFirstConflict();
+	void			AddEmptyViewLine(int nLineIndex);
+
+protected:  // methods
+	enum {
+		MOVERIGHT =0,
+		MOVELEFT = 1,
+	};
+
 	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
 	virtual void	OnDraw(CDC * pDC);
-	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
+	virtual INT_PTR	OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
+	virtual BOOL	PreTranslateMessage(MSG* pMsg);
 	BOOL			OnToolTipNotify(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void	OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
-	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int 	OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void	OnDestroy();
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL	OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void	OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void	OnKillFocus(CWnd* pNewWnd);
 	afx_msg void	OnSetFocus(CWnd* pOldWnd);
@@ -121,12 +253,16 @@ protected:
 	afx_msg void	OnMergePreviousdifference();
 	afx_msg void	OnMergePreviousconflict();
 	afx_msg void	OnMergeNextconflict();
+	afx_msg void	OnNavigateNextinlinediff();
+	afx_msg void	OnNavigatePrevinlinediff();
 	afx_msg void	OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void	OnLButtonDblClk(UINT nFlags, CPoint point);
+	virtual void	OnLButtonTrippleClick(UINT nFlags, CPoint point) override;
 	afx_msg void	OnEditCopy();
 	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);
-	afx_msg void	OnMouseLeave();
 	afx_msg void	OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void	OnCaretDown();
 	afx_msg void	OnCaretLeft();
@@ -137,14 +273,19 @@ protected:
 	afx_msg void	OnEditCut();
 	afx_msg void	OnEditPaste();
 	afx_msg void	OnEditSelectall();
+	afx_msg LRESULT	OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
+	afx_msg void	OnEditFind();
+	afx_msg void	OnEditFindnext();
+	afx_msg void	OnEditFindprev();
+	afx_msg void	OnEditFindnextStart();
+	afx_msg void	OnEditFindprevStart();
+	afx_msg void	OnEditGotoline();
 
 	DECLARE_MESSAGE_MAP()
 
-protected:
 	void			DrawHeader(CDC *pdc, const CRect &rect);
 	void			DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex);
 	void			DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex);
-	bool			DrawInlineDiff(CDC *pDC, const CRect &rc, int nLineIndex, const CString &line, CPoint &origin);
 	/**
 	 * Draws the horizontal lines around current diff block or selection block.
 	 */
@@ -153,81 +294,107 @@ protected:
 	 * Draws the line ending 'char'.
 	 */
 	void			DrawLineEnding(CDC *pDC, const CRect &rc, int nLineIndex, const CPoint& origin);
-	void			ExpandChars(LPCTSTR pszChars, int nOffset, int nCount, CString &line);
+	void			ExpandChars(const CString &sLine, int nOffset, int nCount, CString &line);
+	CString			ExpandChars(const CString &sLine, int nOffset = 0);
+	int				CountExpandedChars(const CString &sLine, int nLength);
 
 	void			RecalcVertScrollBar(BOOL bPositionOnly = FALSE);
-	void			RecalcAllVertScrollBars(BOOL bPositionOnly = FALSE);
 	void			RecalcHorzScrollBar(BOOL bPositionOnly = FALSE);
-	void			RecalcAllHorzScrollBars(BOOL bPositionOnly = FALSE);
 
 	void			OnDoMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	void			OnDoMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 	void			OnDoHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar, CBaseView * master);
 	void			OnDoVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar, CBaseView * master);
 
-	void			SetupSelection(int start, int end);
 	void			ShowDiffLines(int nLine);
 
 	int				GetTabSize() const {return m_nTabSize;}
+	void			DeleteFonts();
 
-	int				GetLineActualLength(int index) const;
-	int				GetLineCount() const;
 	void			CalcLineCharDim();
 	int				GetLineHeight();
 	int				GetCharWidth();
 	int				GetMaxLineLength();
-	int				GetLineLength(int index) const;
+	int				GetLineLength(int index);
+	int				GetViewLineLength(int index) const;
 	int				GetScreenChars();
 	int				GetAllMinScreenChars() const;
 	int				GetAllMaxLineLength() const;
 	int				GetAllLineCount() const;
 	int				GetAllMinScreenLines() const;
-	LPCTSTR			GetLineChars(int index) const;
+	CString			GetViewLineChars(int index) const;
+	CString			GetLineChars(int index);
 	int				GetLineNumber(int index) const;
-	CFont *			GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE, BOOL bStrikeOut = FALSE);
+	CFont *			GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE);
 	int				GetLineFromPoint(CPoint point);
 	int				GetMarginWidth();
-	COLORREF		IntenseColor(long scale, COLORREF col);
 	COLORREF		InlineDiffColor(int nLineIndex);
+	COLORREF		InlineViewLineDiffColor(int nLineIndex);
+	bool			GetInlineDiffPositions(int lineIndex, std::vector<inlineDiffPos>& positions);
 	void			CheckOtherView();
-	static CString	GetWhitespaceBlock(CViewData *viewData, int nLineIndex);
+	static void		GetWhitespaceBlock(CViewData *viewData, int nLineIndex, int & nStartBlock, int & nEndBlock);
+	static CString	GetWhitespaceString(CViewData *viewData, int nStartBlock, int nEndBlock);
+	bool			IsViewLineHidden(int nViewLine);
+	static bool		IsViewLineHidden(CViewData * pViewData, int nViewLine);
 
-	/// Returns true if selection should be kept
-	virtual	bool	OnContextMenu(CPoint point, int nLine, DiffStates state);
+	void			OnContextMenu(CPoint point, DiffStates state);
 	/**
 	 * Updates the status bar pane. Call this if the document changed.
 	 */
 	void			UpdateStatusBar();
 
-	void			UseTheirAndYourBlock(viewstate &rightstate, viewstate &bottomstate, viewstate &leftstate);
-	void			UseYourAndTheirBlock(viewstate &rightstate, viewstate &bottomstate, viewstate &leftstate);
-	void			UseBothLeftFirst(viewstate &rightstate, viewstate &leftstate);
-	void			UseBothRightFirst(viewstate &rightstate, viewstate &leftstate);
+	static bool		IsLeftViewGood() {return IsViewGood(m_pwndLeft);}
+	static bool		IsRightViewGood() {return IsViewGood(m_pwndRight);}
+	static bool		IsBottomViewGood() {return IsViewGood(m_pwndBottom);}
 
-	bool			IsLeftViewGood() const {return ((m_pwndLeft)&&(m_pwndLeft->IsWindowVisible()));}
-	bool			IsRightViewGood() const {return ((m_pwndRight)&&(m_pwndRight->IsWindowVisible()));}
-	bool			IsBottomViewGood() const {return ((m_pwndBottom)&&(m_pwndBottom->IsWindowVisible()));}
-
-	int				CalculateActualOffset(int nLineIndex, int nCharIndex) const;
-	int				CalculateCharIndex(int nLineIndex, int nActualOffset) const;
+	int				CalculateActualOffset(const POINT& point);
+	int				CalculateCharIndex(int nLineIndex, int nActualOffset);
 	POINT			TextToClient(const POINT& point);
-	void			DrawText(CDC * pDC, const CRect &rc, LPCTSTR text, int textlength, int nLineIndex, POINT coords, bool bModified, bool bInlineDiff);
+	void			DrawTextLine(CDC * pDC, const CRect &rc, int nLineIndex, POINT& coords);
 	void			ClearCurrentSelection();
-	void			AdjustSelection();
-	void			SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfCurrentBlock = true);
+	void			AdjustSelection(bool bMoveLeft);
+	bool			SelectNextBlock(int nDirection, bool bConflict, bool bSkipEndOfCurrentBlock = true, bool dryrun = false);
+
+	enum			SearchDirection{SearchNext=0, SearchPrevious=1};
+	bool			StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const;
+	void			Search(SearchDirection srchDir);
+	void			BuildFindStringArray();
 
 	void			RemoveLine(int nLineIndex);
 	void			RemoveSelectedText();
 	void			PasteText();
-	void			AddUndoLine(int nLine, bool bAddEmptyLine = false);
+	void			AddUndoViewLine(int nViewLine, bool bAddEmptyLine = false);
 
 	bool			MoveCaretLeft();
 	bool			MoveCaretRight();
+	void			MoveCaretWordLeft();
+	void			MoveCaretWordRight();
+	void			OnCaretMove(bool bMoveLeft);
+	void			OnCaretMove(bool bMoveLeft, bool isShiftPressed);
 	void			UpdateGoalPos();
 
-	bool			IsWordSeparator(wchar_t ch) const;
-	bool			IsCaretAtWordBoundary() const;
+	bool			IsWordSeparator(const wchar_t ch) const;
+	bool			IsCaretAtWordBoundary();
+	void			UpdateViewsCaretPosition();
+	void			BuildMarkedWordArray();
 
-protected:
+	virtual void	UseBothBlocks(CBaseView * /*pwndFirst*/, CBaseView * /*pwndLast*/) {};
+	virtual void	UseViewBlock(CBaseView * /*pwndView*/) {}
+	virtual void	UseViewFile(CBaseView * /*pwndView*/) {}
+
+	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
+	void			AddCutCopyAndPaste(CIconMenu& popup);
+	void			CompensateForKeyboard(CPoint& point);
+	static HICON	LoadIcon(WORD iconId);
+	void			ReleaseBitmap();
+	static bool		LinesInOneChange( int direction, DiffStates firstLineState, DiffStates currentLineState );
+	static void		FilterWhitespaces(CString& first, CString& second);
+	static void		FilterWhitespaces(CString& line);
+	int				GetButtonEventLineIndex(const POINT& point);
+
+	static void		ResetUndoStep();
+	void			SaveUndoStep();
+protected:  // variables
 	COLORREF		m_InlineRemovedBk;
 	COLORREF		m_InlineAddedBk;
 	COLORREF		m_ModifiedBk;
@@ -235,34 +402,49 @@ protected:
 	UINT			m_nStatusBarID;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
 
 	SVNLineDiff		m_svnlinediff;
+	DWORD			m_nInlineDiffMaxLineLength;
 	BOOL			m_bOtherDiffChecked;
-	BOOL			m_bModified;
+	bool			m_bModified;
 	BOOL			m_bFocused;
 	BOOL			m_bViewLinenumbers;
 	BOOL			m_bIsHidden;
-	BOOL			m_bMouseWithin;
 	BOOL			m_bIconLFs;
 	int				m_nLineHeight;
 	int				m_nCharWidth;
 	int				m_nMaxLineLength;
 	int				m_nScreenLines;
 	int				m_nScreenChars;
+	int				m_nLastScreenChars;
 	int				m_nOffsetChar;
 	int				m_nTabSize;
 	int				m_nDigits;
 	bool			m_bInlineWordDiff;
 
-	int				m_nSelBlockStart;
-	int				m_nSelBlockEnd;
+	// Block selection attributes
+	int				m_nSelViewBlockStart;
+	int				m_nSelViewBlockEnd;
 
 	int				m_nMouseLine;
+	bool			m_mouseInMargin;
+	HCURSOR			m_margincursor;
 
-	bool			m_bCaretHidden;
-	POINT			m_ptCaretPos;
+	// caret
+	bool			m_bReadonly;
+	bool			m_bTarget;                     ///< view intended as result
+	POINT			m_ptCaretViewPos;
 	int				m_nCaretGoalPos;
-	POINT			m_ptSelectionStartPos;
-	POINT			m_ptSelectionEndPos;
-	POINT			m_ptSelectionOrigin;
+
+	// Text selection attributes
+	POINT			m_ptSelectionViewPosStart;
+	POINT			m_ptSelectionViewPosEnd;
+	POINT			m_ptSelectionViewPosOrigin;
+
+	static const UINT m_FindDialogMessage;
+	CFindDlg *      m_pFindDialog;
+	CString			m_sFindText;
+	BOOL			m_bMatchCase;
+	bool			m_bLimitToDiff;
+	bool			m_bWholeWord;
 
 
 	HICON			m_hAddedIcon;
@@ -277,10 +459,15 @@ protected:
 	HICON			m_hLineEndingCRLF;
 	HICON			m_hLineEndingLF;
 
+	HICON			m_hMovedIcon;
+
 	LOGFONT			m_lfBaseFont;
-	CFont *			m_apFonts[8];
+	static const int fontsCount = 4;
+	CFont *			m_apFonts[fontsCount];
 	CString			m_sConflictedText;
 	CString			m_sNoLineNr;
+	CString			m_sMarkedWord;
+	CString			m_sPreviousMarkedWord;
 
 	CBitmap *		m_pCacheBitmap;
 	CDC *			m_pDC;
@@ -298,6 +485,103 @@ protected:
 	static CBaseView * m_pwndLeft;		///< Pointer to the left view. Must be set by the CLeftView parent class.
 	static CBaseView * m_pwndRight;		///< Pointer to the right view. Must be set by the CRightView parent class.
 	static CBaseView * m_pwndBottom;	///< Pointer to the bottom view. Must be set by the CBottomView parent class.
+
+	struct TScreenLineInfo
+	{
+		int nViewLine;
+		int nViewSubLine;
+	};
+	class TScreenedViewLine
+	{
+	 public:
+		TScreenedViewLine()
+		{
+			Clear();
+		}
+
+		void Clear()
+		{
+			bSublinesSet = false;
+			eIcon = ICN_UNKNOWN;
+			bLineColorsSet = false;
+			bLineColorsSetWhiteSpace = false;
+		}
+
+		bool bSublinesSet;
+		std::vector<CString> SubLines;
+
+		enum EIcon
+		{
+			ICN_UNKNOWN,
+			ICN_NONE,
+			ICN_EDIT,
+			ICN_SAME,
+			ICN_WHITESPACEDIFF,
+			ICN_ADD,
+			ICN_REMOVED,
+			ICN_MOVED,
+			ICN_CONFLICT,
+			ICN_CONFLICTIGNORED,
+		} eIcon;
+
+		bool bLineColorsSetWhiteSpace;
+		LineColors lineColorsWhiteSpace;
+		bool bLineColorsSet;
+		LineColors lineColors;
+	};
+	std::vector<TScreenedViewLine> m_ScreenedViewLine; ///< cached data for screening
+
+	static allviewstate m_AllState;
+	viewstate *     m_pState;
+
+	enum PopupCommands
+	{
+		// 2-pane view commands
+		POPUPCOMMAND_USELEFTBLOCK = 1,      // 0 means the context menu was dismissed
+		POPUPCOMMAND_USELEFTFILE,
+		POPUPCOMMAND_USEBOTHLEFTFIRST,
+		POPUPCOMMAND_USEBOTHRIGHTFIRST,
+		// 3-pane view commands
+		POPUPCOMMAND_USEYOURANDTHEIRBLOCK,
+		POPUPCOMMAND_USETHEIRANDYOURBLOCK,
+		POPUPCOMMAND_USEYOURBLOCK,
+		POPUPCOMMAND_USEYOURFILE,
+		POPUPCOMMAND_USETHEIRBLOCK,
+		POPUPCOMMAND_USETHEIRFILE,
+	};
+
+	class Screen2View
+	{
+	public:
+		Screen2View()
+			: m_pViewData(NULL)
+		{m_bFull=false; }
+
+		int				GetViewLineForScreen(int screenLine);
+		int				GetSubLineOffset(int screenLine);
+		TScreenLineInfo GetScreenLineInfo(int screenLine);
+		int				FindScreenLineForViewLine(int viewLine);
+		void			ScheduleFullRebuild(CViewData * ViewData);
+		void			ScheduleRangeRebuild(CViewData * ViewData, int FirstViewLine, int LastViewLine);
+		int				size();
+
+	private:
+		struct TRebuildRange
+		{
+			int FirstViewLine;
+			int LastViewLine;
+		};
+
+		bool			FixScreenedCacheSize(CBaseView* View);
+		void			RebuildIfNecessary();
+		bool			ResetScreenedViewLineCache(CBaseView* View);
+		bool			ResetScreenedViewLineCache(CBaseView* View, const TRebuildRange& Range);
+
+		CViewData *						m_pViewData;
+		bool							m_bFull;
+		std::vector<TScreenLineInfo>	m_Screen2View;
+		std::vector<TRebuildRange>		m_RebuildRanges;
+	};
+
+	static Screen2View m_Screen2View;
 };
-
-

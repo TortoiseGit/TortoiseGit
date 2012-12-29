@@ -1336,14 +1336,13 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 	if(type == CFileTextLines::UTF8)
 		return CP_UTF8;
 
-	if(type == CFileTextLines::UNICODE_LE)
+	if(type == CFileTextLines::UTF16_LE)
 	{
 		*bomoffset = 2;
 		return 1200;
 	}
 
-	// check for UNICODE_BE does not work, because git blame produces two NUL chars in a row
-	if(type == CFileTextLines::BINARY && size > 2 && buff[0] == 0xFE && buff[1] == 0xFF)
+	if(type == CFileTextLines::UTF16_BE)
 	{
 		*bomoffset = 2;
 		return 1201;

@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2009-2012 - TortoiseGit
 // Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
@@ -23,7 +23,6 @@
 #include "UnicodeUtils.h"
 #include "DirFileEnum.h"
 #include "TortoiseMerge.h"
-#include "svn_wc.h"
 #include "GitAdminDir.h"
 #include "Patch.h"
 

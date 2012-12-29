@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008 - TortoiseSVN
 // Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
@@ -73,7 +73,7 @@ protected:
 		LONG					lRemoveLength;
 		LONG					lAddStart;
 		LONG					lAddLength;
-		CStdCStringArray		arLines;
+		CStringArray			arLines;
 		CStdDWORDArray			arLinesStates;
 		std::vector<EOL>		arEOLs;
 	};
@@ -84,10 +84,10 @@ protected:
 		CString					sRevision;
 		CString					sFilePath2;
 		CString					sRevision2;
-		CStdArray<Chunk*>		chunks;
+		CStdArrayV<Chunk*>		chunks;
 	};
 
-	CStdArray<Chunks*>			m_arFileDiffs;
+	CStdArrayV<Chunks*>			m_arFileDiffs;
 	CString						m_sErrorMessage;
 	CFileTextLines::UnicodeType m_UnicodeType;
 

@@ -23,8 +23,6 @@
 #include <afxcoll.h>		// MFC Collection templates and classes
 #include <shlwapi.h>		// Shell API
 
-#include <afxstr.h>
-
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
@@ -55,11 +53,22 @@
 #include <vector>
 #pragma warning(pop)
 
+#pragma warning(push)
+#include "apr_general.h"
+#include "svn_pools.h"
+#include "svn_path.h"
+#include "svn_wc.h"
+#include "svn_utf.h"
+#include "svn_config.h"
+#include "svn_error_codes.h"
+#pragma warning(pop)
+
 #define USE_GDI_GRADIENT
 
 #define XMESSAGEBOX_APPREGPATH "Software\\TortoiseGitMerge\\"
 
-#include "..\Utils\CrashReport.h"
+#include "ProfilingInfo.h"
+#include "CrashReport.h"
 
 #ifdef _WIN64
 #	define APP_X64_STRING	"x64"
