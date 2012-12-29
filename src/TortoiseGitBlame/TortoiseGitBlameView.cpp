@@ -1732,7 +1732,7 @@ void CTortoiseGitBlameView::OnEditFind()
 {
 	m_pFindDialog=new CFindReplaceDialog();
 
-	m_pFindDialog->Create(TRUE,_T(""),NULL,FR_DOWN,this);
+	m_pFindDialog->Create(TRUE, _T(""), NULL, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
