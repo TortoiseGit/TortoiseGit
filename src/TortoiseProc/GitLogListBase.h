@@ -335,7 +335,17 @@ public:
 	void ReloadHashMap()
 	{
 		m_HashMap.clear();
-		g_Git.GetMapHashToFriendName(m_HashMap);
+
+		try
+		{
+			g_Git.GetMapHashToFriendName(m_HashMap);
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(_T("Could not get all refs.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+		}
+
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
 		m_wcRev.m_ParentHash.clear();

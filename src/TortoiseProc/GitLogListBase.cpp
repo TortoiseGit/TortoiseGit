@@ -112,7 +112,16 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
-	g_Git.GetMapHashToFriendName(m_HashMap);
+	try
+	{
+		g_Git.GetMapHashToFriendName(m_HashMap);
+	}
+	catch (char* msg)
+	{
+		CString err(msg);
+		MessageBox(_T("Could not get all refs. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+		ExitProcess(1);
+	}
 	if (CTGitPath(g_Git.m_CurrentDir).HasAdminDir())
 	{
 		m_CurrentBranch=g_Git.GetCurrentBranch();
