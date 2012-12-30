@@ -33,8 +33,8 @@ void CJobScheduler::CQueue::Grow (size_t newSize)
     TJob* newData = new TJob[newSize];
 
     size_t count = size();
-	if (first)
-		memmove (newData, first, count * sizeof (TJob[1]));
+    if (first)
+        memmove (newData, first, count * sizeof (TJob[1]));
     delete[] data;
 
     data = newData;
