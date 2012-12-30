@@ -54,10 +54,10 @@
     <ClCompile Include="..\Utils\SysInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
+    <ClCompile Include="TortoiseIDiff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TortoiseIDiff.cpp">
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClInclude Include="..\Utils\registry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -108,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TortoiseIDiff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TaskbarUUID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -162,16 +165,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="TortoiseIDiff.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\Resources\pan.cur">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\pandown.cur">
       <Filter>Resource Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="TortoiseIDiff.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

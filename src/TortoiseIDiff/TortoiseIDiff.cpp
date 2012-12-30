@@ -33,12 +33,10 @@ HCURSOR   curHand;
 HCURSOR   curHandDown;
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       /*nCmdShow*/)
+                       HINSTANCE /*hPrevInstance*/,
+                       LPTSTR    lpCmdLine,
+                       int       /*nCmdShow*/)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-
     SetDllDirectory(L"");
     SetTaskIDPerUUID();
     CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
@@ -76,38 +74,38 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     curHand = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
     curHandDown = (HCURSOR)LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE);
 
-    CMainWindow mainWindow(hResource);
-    mainWindow.SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
+    std::unique_ptr<CMainWindow> mainWindow(new CMainWindow(hResource));
+    mainWindow->SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
     std::wstring leftfile = parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T("");
-    if (leftfile.empty() && (lpCmdLine[0] != 0))
+    if ((leftfile.empty()) && (lpCmdLine[0] != 0))
     {
         leftfile = lpCmdLine;
     }
-    mainWindow.SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
-    mainWindow.SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
-    if (mainWindow.RegisterAndCreateWindow())
+    mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
+    mainWindow->SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
+    if (mainWindow->RegisterAndCreateWindow())
     {
         hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDR_TORTOISEIDIFF));
         if (!parser.HasVal(_T("left")))
         {
-            PostMessage(mainWindow, WM_COMMAND, ID_FILE_OPEN, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_FILE_OPEN, 0);
         }
         if (parser.HasKey(_T("overlay")))
         {
-            PostMessage(mainWindow, WM_COMMAND, ID_VIEW_OVERLAPIMAGES, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_OVERLAPIMAGES, 0);
         }
         if (parser.HasKey(_T("fit")))
         {
-            PostMessage(mainWindow, WM_COMMAND, ID_VIEW_FITTOGETHER, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITTOGETHER, 0);
         }
         if (parser.HasKey(_T("showinfo")))
         {
-            PostMessage(mainWindow, WM_COMMAND, ID_VIEW_IMAGEINFO, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_IMAGEINFO, 0);
         }
         // Main message loop:
         while (GetMessage(&msg, NULL, 0, 0))
         {
-            if (!TranslateAccelerator(mainWindow, hAccelTable, &msg))
+            if (!TranslateAccelerator(*mainWindow, hAccelTable, &msg))
             {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);

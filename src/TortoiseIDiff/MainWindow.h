@@ -51,6 +51,7 @@ public:
         , transparentColor(::GetSysColor(COLOR_WINDOW))
         , m_BlendType(CPicWindow::BLEND_ALPHA)
         , hwndTB(0)
+        , hToolbarImgList(NULL)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
     };
