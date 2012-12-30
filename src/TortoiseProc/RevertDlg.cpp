@@ -22,7 +22,7 @@
 #include "messagebox.h"
 #include "Revertdlg.h"
 #include "Git.h"
-#include "Registry.h"
+#include "registry.h"
 #include ".\revertdlg.h"
 #include "AppUtils.h"
 

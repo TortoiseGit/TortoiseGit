@@ -25,7 +25,7 @@
 //#include "GitProperties.h"
 #include "StringUtils.h"
 #include "MessageBox.h"
-#include "Registry.h"
+#include "registry.h"
 #include "TGitPath.h"
 #include "Git.h"
 //#include "RepositoryBrowser.h"

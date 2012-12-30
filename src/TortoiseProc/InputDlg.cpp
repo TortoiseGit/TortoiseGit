@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "InputDlg.h"
-#include "Registry.h"
+#include "registry.h"
 
 
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)

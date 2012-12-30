@@ -23,7 +23,7 @@
 #include "GITProgressDlg.h"
 #include "LogDlg.h"
 #include "TGitPath.h"
-#include "Registry.h"
+#include "registry.h"
 #include "GitStatus.h"
 #include "AppUtils.h"
 #include "PathUtils.h"

@@ -25,7 +25,7 @@
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include "MessageBox.h"
-#include "Registry.h"
+#include "registry.h"
 #include "FormatMessageWrapper.h"
 
 #include <iterator>

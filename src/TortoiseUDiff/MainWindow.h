@@ -20,7 +20,7 @@
 #include "BaseWindow.h"
 #include "SciLexer.h"
 #include "Scintilla.h"
-#include "Registry.h"
+#include "registry.h"
 #include "resource.h"
 #include "FindBar.h"
 #include <string>

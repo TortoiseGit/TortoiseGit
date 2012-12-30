@@ -21,7 +21,7 @@
 #include <math.h>
 #include "..\Resources\LoglistCommonResource.h"
 #include "LoglistUtils.h"
-#include "Registry.h"
+#include "registry.h"
 
 CLoglistUtils::CLoglistUtils(void)
 {

@@ -21,7 +21,7 @@
 
 #include "HorizontalResizableStandAloneDialog.h"
 #include "HistoryCombo.h"
-#include "Registry.h"
+#include "registry.h"
 
 // CFormatPatchDlg dialog
 

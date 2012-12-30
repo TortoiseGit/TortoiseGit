@@ -27,7 +27,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "Git.h"
-#include "Registry.h"
+#include "registry.h"
 #include "GitStatus.h"
 #include "HistoryDlg.h"
 #include "Hooks.h"

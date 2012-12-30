@@ -41,7 +41,7 @@
 #include "SysImageList.h"
 //#include "Svnstatuslistctrl.h"
 #include "TGitPath.h"
-#include "Registry.h"
+#include "registry.h"
 #include "GitStatus.h"
 //#include "SVNHelpers.h"
 #include "InputDlg.h"

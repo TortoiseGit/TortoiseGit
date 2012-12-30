@@ -18,7 +18,7 @@
 //
 #pragma once
 
-#include "Registry.h"
+#include "registry.h"
 #include "StandAloneDlg.h"
 
 /**

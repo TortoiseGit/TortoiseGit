@@ -23,7 +23,7 @@
 #include "..\version.h"
 #include "MessageBox.h"
 #include ".\checkforupdatesdlg.h"
-#include "Registry.h"
+#include "registry.h"
 #include "AppUtils.h"
 #include "TempFile.h"
 #include <wintrust.h>

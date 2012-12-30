@@ -18,7 +18,7 @@
 //
 
 #include "stdafx.h"
-#include "Registry.h"
+#include "registry.h"
 #include "RegHistory.h"
 
 

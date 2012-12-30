@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "AboutDlg.h"
-#include "Registry.h"
+#include "registry.h"
 #include "..\version.h"
 #include <string>
 #include <Commdlg.h>

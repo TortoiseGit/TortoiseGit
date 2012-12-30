@@ -22,7 +22,7 @@
 #include "StashSave.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
-#include "Registry.h"
+#include "registry.h"
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 

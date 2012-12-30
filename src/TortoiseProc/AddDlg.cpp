@@ -23,7 +23,7 @@
 #include "DirFileEnum.h"
 #include "AddDlg.h"
 //#include "SVNConfig.h"
-#include "Registry.h"
+#include "registry.h"
 #include "AppUtils.h"
 
 #define REFRESHTIMER   100

@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "InputLogDlg.h"
-#include "Registry.h"
+#include "registry.h"
 #include "HistoryDlg.h"
 #include "RegHistory.h"
 

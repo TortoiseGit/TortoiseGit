@@ -24,7 +24,7 @@
 #include "StringUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
-#include "Registry.h"
+#include "registry.h"
 
 extern CString sOrigCWD;
 

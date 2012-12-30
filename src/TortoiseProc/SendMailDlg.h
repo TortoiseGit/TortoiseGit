@@ -25,7 +25,7 @@
 #include "RegHistory.h"
 #include "TGitPath.h"
 #include "patch.h"
-#include "Registry.h"
+#include "registry.h"
 #include "PatchListCtrl.h"
 
 class CSendMailDlg : public CResizableStandAloneDialog

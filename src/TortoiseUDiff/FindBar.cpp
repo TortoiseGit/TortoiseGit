@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "FindBar.h"
-#include "Registry.h"
+#include "registry.h"
 #include <string>
 #include <Commdlg.h>
 

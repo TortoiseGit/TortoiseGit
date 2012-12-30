@@ -36,7 +36,7 @@
 //#include "StatGraphDlg.h"
 #include "Logdlg.h"
 #include "MessageBox.h"
-#include "Registry.h"
+#include "registry.h"
 #include "LoglistUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"

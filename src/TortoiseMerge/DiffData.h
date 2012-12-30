@@ -21,7 +21,7 @@
 #include "svn_diff.h"
 #include "apr_pools.h"
 #include "FileTextLines.h"
-#include "Registry.h"
+#include "registry.h"
 #include "WorkingFile.h"
 #include "ViewData.h"
 

@@ -20,7 +20,7 @@
 
 #include "StandAloneDlg.h"
 #include "Git.h"
-#include "Registry.h"
+#include "registry.h"
 #include "Tooltip.h"
 
 #include "GitStatusListCtrl.h"

@@ -23,7 +23,7 @@
 #include "DirFileEnum.h"
 #include "SyncDlg.h"
 //#include "SVNConfig.h"
-#include "Registry.h"
+#include "registry.h"
 #include "SyncCommand.h"
 
 bool SyncCommand::Execute()

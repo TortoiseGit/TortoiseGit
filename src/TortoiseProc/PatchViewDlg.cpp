@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "PatchViewDlg.h"
-#include "Registry.h"
+#include "registry.h"
 #include "CommitDlg.h"
 #include "UnicodeUtils.h"
 // CPatchViewDlg dialog
