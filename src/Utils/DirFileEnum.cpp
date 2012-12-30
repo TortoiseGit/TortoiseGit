@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2005 - 2006 - Jon Foster
+// Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,23 +24,25 @@ CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern) :
    m_bFirst(TRUE),
    m_sPathPrefix(sPath)
 {
-   // Add a trailing \ to m_sPathPrefix if it is missing.
-   // Do not add one to "C:" since "C:" and "C:\" are different.
-   {
-      int len = m_sPathPrefix.GetLength();
-      if (len != 0) {
-         TCHAR ch = sPath[len-1];
-         if (ch != '\\' && (ch != ':' || len != 2)) {
+    // Add a trailing \ to m_sPathPrefix if it is missing.
+    // Do not add one to "C:" since "C:" and "C:\" are different.
+    int len = m_sPathPrefix.GetLength();
+    if (len != 0)
+    {
+        TCHAR ch = sPath[len-1];
+        if (ch != '\\' && (ch != ':' || len != 2))
+        {
             m_sPathPrefix += "\\";
-         }
-      }
+        }
+    }
+    if ((len >= 248)&&(m_sPathPrefix.Left(4).Compare(_T("\\\\?\\"))))
+        m_hFindFile = ::FindFirstFile((LPCTSTR)(_T("\\\\?\\") + m_sPathPrefix + pPattern), &m_FindFileData);
+    else
+        m_hFindFile = ::FindFirstFile((LPCTSTR)(m_sPathPrefix + pPattern), &m_FindFileData);
+    if (m_hFindFile == INVALID_HANDLE_VALUE) {
+        m_dError = ::GetLastError();
+    }
    }
-
-   m_hFindFile = ::FindFirstFile((LPCTSTR)(m_sPathPrefix + pPattern), &m_FindFileData);
-   if (m_hFindFile == INVALID_HANDLE_VALUE) {
-      m_dError = ::GetLastError();
-   }
-}
 
 CSimpleFileFind::~CSimpleFileFind()
 {
@@ -148,13 +150,13 @@ CDirFileEnum::~CDirFileEnum()
    }
 }
 
-BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory)
+BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory, bool bRecurse /* = true */)
 {
    if (m_bIsNew) {
       // Special-case first time - haven't found anything yet,
       // so don't do recurse-into-directory check.
       m_bIsNew = FALSE;
-   } else if (m_seStack && m_seStack->IsDirectory()) {
+   } else if (m_seStack && m_seStack->IsDirectory() && bRecurse) {
       PushStack(m_seStack->GetFilePath());
    }
 
@@ -166,10 +168,10 @@ BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory)
    if (m_seStack)
    {
       sResult = m_seStack->GetFilePath();
-	  if(pbIsDirectory != NULL)
-	  {
-		  *pbIsDirectory = m_seStack->IsDirectory();
-	  }
+      if(pbIsDirectory != NULL)
+      {
+          *pbIsDirectory = m_seStack->IsDirectory();
+      }
       return TRUE;
    } else {
       return FALSE;

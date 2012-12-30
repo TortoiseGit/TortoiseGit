@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2005 - 2006 - Jon Foster
+// Copyright (C) 2005 - 2006, 2010-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -187,6 +187,18 @@ public:
    }
 
    /**
+    * Returns the last write time of the path
+    */
+   FILETIME GetLastWriteTime() const
+   {
+       return m_FindFileData.ftLastWriteTime;
+   }
+   FILETIME GetCreateTime() const
+   {
+       return m_FindFileData.ftCreationTime;
+   }
+
+   /**
     * Check if the current file is the "." or ".."
     * pseudo-directory.
     *
@@ -263,11 +275,13 @@ public:
     * \param  result On successful return, holds the full path to the found
     *                file. (If this function returns FALSE, the value of
     *                result is unspecified).
-	* \param  pbIsDirectory Pointer to a bool variable which will hold
-	*                TRUE if the \c result path is a directory, FALSE
-	*				 if it's a file. Pass NULL if you don't need that information.
+    * \param  pbIsDirectory Pointer to a bool variable which will hold
+    *                TRUE if the \c result path is a directory, FALSE
+    *                if it's a file. Pass NULL if you don't need that information.
+    * \param  bRecurse if the last result was a directory, specifies whether to
+    *                recurse into that directory or skip it.
     * \return TRUE iff a file was found, false at end of the iteration.
     */
-   BOOL NextFile(CString &result, bool* pbIsDirectory);
+   BOOL NextFile(CString &result, bool* pbIsDirectory, bool bRecurse = true);
 };
 
