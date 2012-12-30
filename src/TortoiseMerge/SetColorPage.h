@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008 - TortoiseSVN
 
@@ -66,6 +66,8 @@ protected:
 	CMFCColorButton m_cBkEmpty;
 	CMFCColorButton m_cBkConflict;
 	CMFCColorButton m_cBkConflictResolved;
+	CMFCColorButton m_cBkMovedFrom;
+	CMFCColorButton m_cBkMovedTo;
 	CMFCColorButton m_cBkModified;
 	CMFCColorButton m_cFgWhitespaces;
 };

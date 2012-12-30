@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2008, 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,6 +32,8 @@ enum DiffStates
 	DIFFSTATE_ADDEDWHITESPACE,			///< line was added (whitespace diff)
 	DIFFSTATE_WHITESPACE,				///< line differs in whitespaces only
 	DIFFSTATE_WHITESPACE_DIFF,			///< the in-line diffs of whitespaces
+	DIFFSTATE_MOVED_TO,					///< line was moved here
+	DIFFSTATE_MOVED_FROM,				///< line was moved from here
 	DIFFSTATE_EMPTY,					///< empty line
 	DIFFSTATE_CONFLICTED,				///< conflicted line
 	DIFFSTATE_CONFLICTED_IGNORED,		///< a conflict which isn't conflicted due to ignore settings

@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2008, 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,30 +95,36 @@ void CLineDiffBar::OnPaint()
 	CRect upperrect = CRect(rect.left, rect.top, rect.right, rect.bottom/2);
 	CRect lowerrect = CRect(rect.left, rect.bottom/2, rect.right, rect.bottom);
 
-	if ((m_pMainFrm)&&(m_pMainFrm->m_pwndLeftView)&&(m_pMainFrm->m_pwndRightView))
+	if (m_pMainFrm!=0)
 	{
-		if ((m_pMainFrm->m_pwndLeftView->IsWindowVisible())&&(m_pMainFrm->m_pwndRightView->IsWindowVisible()))
+		CLeftView* leftView = m_pMainFrm->m_pwndLeftView;
+		CRightView* rightView = m_pMainFrm->m_pwndRightView;
+		if (CBaseView::IsViewGood(leftView)&&CBaseView::IsViewGood(rightView))
 		{
-			BOOL bViewWhiteSpace = m_pMainFrm->m_pwndLeftView->m_bViewWhitespace;
-			BOOL bInlineDiffs = m_pMainFrm->m_pwndLeftView->m_bShowInlineDiff;
+			BOOL bViewWhiteSpace = leftView->m_bViewWhitespace;
+			BOOL bInlineDiffs = leftView->m_bShowInlineDiff;
 
-			m_pMainFrm->m_pwndLeftView->m_bViewWhitespace = TRUE;
-			m_pMainFrm->m_pwndLeftView->m_bShowInlineDiff = TRUE;
-			m_pMainFrm->m_pwndLeftView->m_bShowSelection = false;
-			m_pMainFrm->m_pwndRightView->m_bViewWhitespace = TRUE;
-			m_pMainFrm->m_pwndRightView->m_bShowInlineDiff = TRUE;
-			m_pMainFrm->m_pwndRightView->m_bShowSelection = false;
+			leftView->m_bViewWhitespace = TRUE;
+			leftView->m_bShowInlineDiff = TRUE;
+			leftView->m_bWhitespaceInlineDiffs = true;
+			leftView->m_bShowSelection = false;
+			rightView->m_bViewWhitespace = TRUE;
+			rightView->m_bShowInlineDiff = TRUE;
+			rightView->m_bWhitespaceInlineDiffs = true;
+			rightView->m_bShowSelection = false;
 
 			// Use left and right view to display lines next to each other
-			m_pMainFrm->m_pwndLeftView->DrawSingleLine(&cacheDC, &upperrect, m_nLineIndex);
-			m_pMainFrm->m_pwndRightView->DrawSingleLine(&cacheDC, &lowerrect, m_nLineIndex);
+			leftView->DrawSingleLine(&cacheDC, &upperrect, m_nLineIndex);
+			rightView->DrawSingleLine(&cacheDC, &lowerrect, m_nLineIndex);
 
-			m_pMainFrm->m_pwndLeftView->m_bViewWhitespace = bViewWhiteSpace;
-			m_pMainFrm->m_pwndLeftView->m_bShowInlineDiff = bInlineDiffs;
-			m_pMainFrm->m_pwndLeftView->m_bShowSelection = true;
-			m_pMainFrm->m_pwndRightView->m_bViewWhitespace = bViewWhiteSpace;
-			m_pMainFrm->m_pwndRightView->m_bShowInlineDiff = bInlineDiffs;
-			m_pMainFrm->m_pwndRightView->m_bShowSelection = true;
+			leftView->m_bViewWhitespace = bViewWhiteSpace;
+			leftView->m_bShowInlineDiff = bInlineDiffs;
+			leftView->m_bWhitespaceInlineDiffs = false;
+			leftView->m_bShowSelection = true;
+			rightView->m_bViewWhitespace = bViewWhiteSpace;
+			rightView->m_bShowInlineDiff = bInlineDiffs;
+			rightView->m_bWhitespaceInlineDiffs = false;
+			rightView->m_bShowSelection = true;
 		}
 	}
 
@@ -146,5 +152,3 @@ BOOL CLineDiffBar::OnEraseBkgnd(CDC* /*pDC*/)
 {
 	return TRUE;
 }
-
-

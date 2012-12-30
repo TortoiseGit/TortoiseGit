@@ -123,23 +123,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\accHelper.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\IconMenu.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
+    <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="Patch.cpp" />
+    <ClCompile Include="TempFile.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="BaseView.cpp" />
     <ClCompile Include="BottomView.cpp" />
     <ClCompile Include="DiffColors.cpp" />
     <ClCompile Include="DiffData.cpp" />
-    <ClCompile Include="EditGotoDlg.cpp" />
     <ClCompile Include="FilePatchesDlg.cpp" />
     <ClCompile Include="FileTextLines.cpp" />
     <ClCompile Include="FindDlg.cpp" />
-    <ClCompile Include="..\Git\GitAdminDir.cpp" />
+    <ClCompile Include="GotoLineDlg.cpp" />
+    <ClCompile Include="K:\TortoiseGit\src\Git\GitPatch.cpp" />
+    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\HTMLFormatter.cpp" />
+    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\MessageBox.cpp" />
     <ClCompile Include="LeftView.cpp" />
     <ClCompile Include="LineDiffBar.cpp" />
     <ClCompile Include="LocatorBar.cpp" />
     <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp" />
+    <ClCompile Include="MovedBlocks.cpp" />
     <ClCompile Include="OpenDlg.cpp" />
-    <ClCompile Include="Patch.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp" />
     <ClCompile Include="RightView.cpp" />
     <ClCompile Include="SetColorPage.cpp" />
     <ClCompile Include="SetMainPage.cpp" />
@@ -147,7 +160,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\SysProgressDlg.cpp" />
+    <ClCompile Include="..\Git\GitAdminDir.cpp" />
     <ClCompile Include="TortoiseMerge.cpp" />
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="ViewData.cpp" />
@@ -155,7 +168,6 @@
     <ClCompile Include="AppUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp" />
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
-    <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DIB.cpp" />
     <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\Utils\DragDropImpl.cpp">
@@ -163,14 +175,12 @@
     </ClCompile>
     <ClCompile Include="..\Utils\MiscUI\FileDropEdit.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HistoryCombo.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp" />
     <ClCompile Include="..\Utils\MiscUI\HyperLink.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\MiscUI\ScrollTool.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
     <ClCompile Include="..\Utils\StringUtils.cpp" />
-    <ClCompile Include="TempFiles.cpp" />
+    <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp" />
     <ClCompile Include="XSplitter.cpp" />
@@ -343,30 +353,43 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\CommonAppUtils.h" />
+    <ClInclude Include="..\Utils\MiscUI\FileDlgEventHandler.h" />
+    <ClInclude Include="..\Utils\MiscUI\IconMenu.h" />
+    <ClInclude Include="..\Utils\MiscUI\LineColors.h" />
+    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
+    <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
+    <ClInclude Include="..\Utils\ProfilingInfo.h" />
+    <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="Patch.h" />
+    <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="BaseView.h" />
     <ClInclude Include="BottomView.h" />
     <ClInclude Include="DiffColors.h" />
     <ClInclude Include="DiffData.h" />
     <ClInclude Include="DiffStates.h" />
-    <ClInclude Include="EditGotoDlg.h" />
     <ClInclude Include="EOL.h" />
     <ClInclude Include="FilePatchesDlg.h" />
     <ClInclude Include="FileTextLines.h" />
     <ClInclude Include="FindDlg.h" />
+    <ClInclude Include="GotoLineDlg.h" />
+    <ClInclude Include="..\Git\GitPatch.h" />
+    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h" />
     <ClInclude Include="LeftView.h" />
     <ClInclude Include="LineDiffBar.h" />
     <ClInclude Include="LocatorBar.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MovedBlocks.h" />
     <ClInclude Include="OpenDlg.h" />
-    <ClInclude Include="Patch.h" />
-    <ClInclude Include="..\Utils\MiscUI\ProgressDlg.h" />
+    <ClInclude Include="..\Utils\MiscUI\SysProgressDlg.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RightView.h" />
     <ClInclude Include="SetColorPage.h" />
     <ClInclude Include="SetMainPage.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="..\Gut\GitAdminDir.h" />
     <ClInclude Include="TortoiseMerge.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="ViewData.h" />
@@ -374,46 +397,45 @@
     <ClInclude Include="AppUtils.h" />
     <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h" />
     <ClInclude Include="..\Utils\CmdLineParser.h" />
-    <ClInclude Include="..\Utils\CommonAppUtils.h" />
     <ClInclude Include="..\Utils\MiscUI\DIB.h" />
     <ClInclude Include="..\Utils\DirFileEnum.h" />
     <ClInclude Include="..\Utils\DragDropImpl.h" />
     <ClInclude Include="..\Utils\MiscUI\FileDropEdit.h" />
     <ClInclude Include="..\Utils\MiscUI\HistoryCombo.h" />
-    <ClInclude Include="..\Utils\MiscUI\HTMLFormatter.h" />
     <ClInclude Include="..\Utils\MiscUI\HyperLink.h" />
     <ClInclude Include="..\Utils\MiscUI\MessageBox.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\MiscUI\ScrollTool.h" />
-    <ClInclude Include="..\Utils\SmartHandle.h" />
-    <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
     <ClInclude Include="..\Utils\StringUtils.h" />
-    <ClInclude Include="TempFiles.h" />
+    <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\Utils\MiscUI\WaterEffect.h" />
-    <ClInclude Include="libsvn_diff\diff.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi" />
+    <None Include="..\Resources\lineadded.ico" />
+    <None Include="..\Resources\lineconflicted.ico" />
+    <None Include="..\Resources\lineconflictedignored.ico" />
+    <None Include="..\Resources\lineedited.ico" />
+    <None Include="..\Resources\LineEndingCR.ico" />
+    <None Include="..\Resources\LineEndingCRLF.ico" />
+    <None Include="..\Resources\LineEndingLF.ico" />
+    <None Include="..\Resources\lineequal.ico" />
+    <None Include="..\Resources\lineremoved.ico" />
+    <None Include="..\Resources\linewhitespace.ico" />
+    <None Include="..\Resources\Margin.cur" />
+    <None Include="..\Resources\moved.ico" />
+    <None Include="..\Resources\ribbon.mfcribbon-ms" />
+    <None Include="..\Resources\ribbon\ribbonlarge.png" />
+    <None Include="..\Resources\ribbon\ribbonsmall.png" />
+    <None Include="..\Resources\ribbon\TortoiseMerge.png" />
+    <None Include="..\Resources\Toolbar.bmp" />
+    <None Include="..\Resources\TortoiseMerge.ico" />
     <None Include="..\Resources\TortoiseMerge.rc2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resources\lineadded.ico" />
-    <Image Include="..\Resources\lineconflicted.ico" />
-    <Image Include="..\Resources\lineconflictedignored.ico" />
-    <Image Include="..\Resources\lineedited.ico" />
-    <Image Include="..\Resources\LineEndingCR.ico" />
-    <Image Include="..\Resources\LineEndingCRLF.ico" />
-    <Image Include="..\Resources\LineEndingLF.ico" />
-    <Image Include="..\Resources\lineequal.ico" />
-    <Image Include="..\Resources\lineremoved.ico" />
-    <Image Include="..\Resources\linewhitespace.ico" />
-    <Image Include="..\Resources\Toolbar.bmp" />
-    <Image Include="..\Resources\tortoisegit_logoflipped.bmp" />
-    <Image Include="..\Resources\TortoiseMerge.ico" />
-    <Image Include="..\Resources\tortoisemerge_logoflipped.bmp" />
-    <Image Include="..\Resources\ttf_glyph.bmp" />
+    <None Include="..\Resources\tortoisemerge_logoflipped.bmp" />
+    <None Include="..\Resources\tortoisesvn_logoflipped.bmp" />
+    <None Include="..\Resources\ttf_glyph.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc" />

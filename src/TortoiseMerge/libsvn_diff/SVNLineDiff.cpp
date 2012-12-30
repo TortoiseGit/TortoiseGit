@@ -1,6 +1,6 @@
 // TortoiseMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008 - TortoiseSVN
+// Copyright (C) 2006-2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include <tchar.h>
-#include <vector>
 #include "SVNLineDiff.h"
 
 const svn_diff_fns_t SVNLineDiff::SVNLineDiff_vtable =
@@ -36,16 +34,17 @@ const svn_diff_fns_t SVNLineDiff::SVNLineDiff_vtable =
 #define SVNLINEDIFF_CHARTYPE_SPACE			2
 #define SVNLINEDIFF_CHARTYPE_OTHER			3
 
-typedef void (*LineParser)(LPCTSTR line, unsigned long lineLength, std::vector<std::wstring> &tokens);
+typedef void (*LineParser)(LPCTSTR line, apr_size_t lineLength, std::vector<std::wstring> &tokens);
 
 void SVNLineDiff::ParseLineWords(
-	LPCTSTR line, unsigned long lineLength, std::vector<std::wstring> &tokens)
+	LPCTSTR line, apr_size_t lineLength, std::vector<std::wstring> &tokens)
 {
 	std::wstring token;
 	int prevCharType = SVNLINEDIFF_CHARTYPE_NONE;
-	for (unsigned long i = 0; i < lineLength; ++i)
+	tokens.reserve(lineLength/2);
+	for (apr_size_t i = 0; i < lineLength; ++i)
 	{
-		int charType = 
+		int charType =
 			IsCharAlphaNumeric(line[i]) ? SVNLINEDIFF_CHARTYPE_ALPHANUMERIC :
 			IsCharWhiteSpace(line[i]) ? SVNLINEDIFF_CHARTYPE_SPACE :
 			SVNLINEDIFF_CHARTYPE_OTHER;
@@ -67,10 +66,10 @@ void SVNLineDiff::ParseLineWords(
 }
 
 void SVNLineDiff::ParseLineChars(
-	LPCTSTR line, unsigned long lineLength, std::vector<std::wstring> &tokens)
+	LPCTSTR line, apr_size_t lineLength, std::vector<std::wstring> &tokens)
 {
 	std::wstring token;
-	for (unsigned long i = 0; i < lineLength; ++i)
+	for (apr_size_t i = 0; i < lineLength; ++i)
 	{
 		token = line[i];
 		tokens.push_back(token);
@@ -99,7 +98,7 @@ svn_error_t * SVNLineDiff::datasource_close(void * /*baton*/, svn_diff_datasourc
 }
 
 void SVNLineDiff::NextTokenWords(
-	apr_uint32_t* hash, void** token, unsigned long& linePos, const std::vector<std::wstring>& tokens)
+	apr_uint32_t* hash, void** token, apr_size_t& linePos, const std::vector<std::wstring>& tokens)
 {
 	if (linePos < tokens.size())
 	{
@@ -110,7 +109,7 @@ void SVNLineDiff::NextTokenWords(
 }
 
 void SVNLineDiff::NextTokenChars(
-	apr_uint32_t* hash, void** token, unsigned long& linePos, LPCTSTR line, unsigned long lineLength)
+	apr_uint32_t* hash, void** token, apr_size_t& linePos, LPCTSTR line, apr_size_t lineLength)
 {
 	if (linePos < lineLength)
 	{
@@ -199,7 +198,7 @@ SVNLineDiff::~SVNLineDiff()
 	svn_pool_destroy(m_pool);
 };
 
-bool SVNLineDiff::Diff(svn_diff_t **diff, LPCTSTR line1, int len1, LPCTSTR line2, int len2, bool bWordDiff)
+bool SVNLineDiff::Diff(svn_diff_t **diff, LPCTSTR line1, apr_size_t len1, LPCTSTR line2, apr_size_t len2, bool bWordDiff)
 {
 	if (m_subpool)
 		svn_pool_clear(m_subpool);
@@ -275,15 +274,13 @@ bool SVNLineDiff::IsCharWhiteSpace(TCHAR c)
 bool SVNLineDiff::ShowInlineDiff(svn_diff_t* diff)
 {
 	svn_diff_t* tempdiff = diff;
-	int diffcounts = 0;
-	int origcounts = 0;
+	apr_size_t diffcounts = 0;
 	apr_off_t origsize = 0;
 	apr_off_t diffsize = 0;
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)
 		{
-			origcounts++;
 			origsize += tempdiff->original_length;
 		}
 		else
@@ -294,5 +291,5 @@ bool SVNLineDiff::ShowInlineDiff(svn_diff_t* diff)
 		}
 		tempdiff = tempdiff->next;
 	}
-	return (origcounts >= diffcounts) && (origsize > diffsize);
+	return (origsize > 0.5 * diffsize + 1.0 * diffcounts); // Multiplier values may be subject to individual preferences
 }

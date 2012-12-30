@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007, 2009-2010 - TortoiseSVN
 
@@ -77,7 +77,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetTimer(ID_EFFECTTIMER, 40, NULL);
 	SetTimer(ID_DROPTIMER, 300, NULL);
 
-	m_cWebLink.SetURL(_T("http://tortoisesvn.net"));
+	m_cWebLink.SetURL(_T("http://code.google.com/p/tortoisegit/"));
 	m_cSupportLink.SetURL(_T("http://tortoisesvn.tigris.org/contributors.html"));
 
 	return TRUE;  // return TRUE unless you set the focus to a control

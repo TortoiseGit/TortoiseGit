@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008,2010 - TortoiseSVN
 
@@ -48,4 +48,5 @@ public:
 	static bool CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError);
 
 	static bool HasClipboardFormat(UINT format);
+	static COLORREF IntenseColor(long scale, COLORREF col);
 };

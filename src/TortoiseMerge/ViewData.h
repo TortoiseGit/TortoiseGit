@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,17 +22,52 @@
 
 #include <vector>
 
+enum HIDESTATE
+{
+	HIDESTATE_SHOWN,
+	HIDESTATE_HIDDEN,
+	HIDESTATE_MARKER,
+};
+
 /**
  * \ingroup TortoiseMerge
  * Holds the information which is required to define a single line of text.
  */
-typedef struct
+class viewdata
 {
-	CString						sLine;
-	DiffStates					state;
-	int							linenumber;
-	EOL							ending;
-} viewdata;
+public:
+	viewdata()
+		: state(DIFFSTATE_UNKNOWN)
+		, linenumber(-1)
+		, movedIndex(-1)
+		, ending(EOL_AUTOLINE)
+		, hidestate(HIDESTATE_HIDDEN)
+	{
+	}
+
+	viewdata(
+			const CString& sLineInit,
+			DiffStates stateInit,
+			int linenumberInit,
+			EOL endingInit,
+			HIDESTATE hideInit,
+			int movedIndexInit)
+		: state(stateInit)
+		, linenumber(linenumberInit)
+		, movedIndex(movedIndexInit)
+		, ending(endingInit)
+		, hidestate(hideInit)
+	{
+		sLine=sLineInit;
+	}
+
+	CString			sLine;
+	DiffStates		state;
+	int				linenumber;
+	int				movedIndex;
+	EOL				ending;
+	HIDESTATE 		hidestate;
+};
 
 /**
  * \ingroup TortoiseMerge
@@ -44,25 +79,31 @@ public:
 	CViewData(void);
 	~CViewData(void);
 
-	void			AddData(const CString& sLine, DiffStates state, int linenumber, EOL ending);
+	void			AddData(const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
 	void			AddData(const viewdata& data);
-	void			InsertData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending);
+	void			AddEmpty() {AddData(CString(), DIFFSTATE_EMPTY, -1, EOL_NOENDING, HIDESTATE_SHOWN, -1);}
+	void			InsertData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
 	void			InsertData(int index, const viewdata& data);
 	void			RemoveData(int index) {m_data.erase(m_data.begin() + index);}
 
 	const viewdata&	GetData(int index) {return m_data[index];}
-	const CString&	GetLine(int index) {return m_data[index].sLine;}
-	DiffStates		GetState(int index) {return m_data[index].state;}
-	int				GetLineNumber(int index) { return (!m_data.empty()) ? m_data[index].linenumber : 0; }
+	const CString&	GetLine(int index) const {return m_data[index].sLine;}
+	DiffStates		GetState(int index) const {return m_data[index].state;}
+	HIDESTATE		GetHideState(int index) {return m_data[index].hidestate;}
+	int				GetLineNumber(int index) {return m_data.size() ? m_data[index].linenumber : 0;}
+	int				GetMovedIndex(int index) {return m_data.size() ? m_data[index].movedIndex: 0;}
 	int				FindLineNumber(int number);
-	EOL				GetLineEnding(int index) {return m_data[index].ending;}
+	EOL				GetLineEnding(int index) const {return m_data[index].ending;}
 
 	int				GetCount() { return (int)m_data.size(); }
 
+	void			SetData(int index, const viewdata& data) {m_data[index] = data;};
 	void			SetState(int index, DiffStates state) {m_data[index].state = state;}
 	void			SetLine(int index, const CString& sLine) {m_data[index].sLine = sLine;}
 	void			SetLineNumber(int index, int linenumber) {m_data[index].linenumber = linenumber;}
 	void			SetLineEnding(int index, EOL ending) {m_data[index].ending = ending;}
+	void			SetMovedIndex(int index, int movedIndex) {m_data[index].movedIndex = movedIndex;}
+	void			SetLineHideState(int index, HIDESTATE state) {m_data[index].hidestate = state;}
 
 	void			Clear() {m_data.clear();}
 	void			Reserve(int length) {m_data.reserve(length);}

@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "resource.h"
 #include "afxcmn.h"
 #include "HistoryCombo.h"
 
@@ -38,6 +39,7 @@ public:
 	bool LimitToDiffs() {return !!m_bLimitToDiffs;}
 	bool WholeWord() {return !!m_bWholeWord;}
 	CString GetFindString() {return m_FindCombo.GetString();}
+	void SetFindString(const CString& str) { m_FindCombo.SetWindowText(str); }
 // Dialog Data
 	enum { IDD = IDD_FIND };
 
@@ -58,4 +60,5 @@ private:
 	BOOL			m_bLimitToDiffs;
 	BOOL			m_bWholeWord;
 	CHistoryCombo	m_FindCombo;
+	CWnd *			m_pParent;
 };

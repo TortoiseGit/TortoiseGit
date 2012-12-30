@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,27 +16,37 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
 #pragma once
+#include "afxwin.h"
 
 
-// CEditGotoDlg dialog
+// CGotoLineDlg dialog
 
-class CEditGotoDlg : public CDialog
+class CGotoLineDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CEditGotoDlg)
+	DECLARE_DYNAMIC(CGotoLineDlg)
 
 public:
-	CEditGotoDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CEditGotoDlg();
+	CGotoLineDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CGotoLineDlg();
 
-// Dialog Data
-	enum { IDD = IDD_GOTODLG };
+	int			GetLineNumber() const {return m_nLine;}
+	void		SetLabel(const CString& label) { m_sLabel = label; }
+	void		SetLimits(int low, int high) { m_nLow = low; m_nHigh = high; }
+
+	// Dialog Data
+	enum { IDD = IDD_GOTO };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
 
 	DECLARE_MESSAGE_MAP()
-public:
-	DWORD m_LineNumber;
+private:
+	int			m_nLine;
+	int			m_nLow;
+	int			m_nHigh;
+	CString		m_sLabel;
+	CEdit		m_cNumber;
 };

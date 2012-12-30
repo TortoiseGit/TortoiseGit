@@ -1,5 +1,5 @@
 //
-// TortoiseMerge.RC2 - resources Microsoft Visual C++ does not edit directly
+// TortoiseMerge.rc2 - resources Microsoft Visual C++ does not edit directly
 //
 
 #ifdef APSTUDIO_INVOKED
@@ -31,13 +31,13 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://tortoisesvn.net\0"
-            VALUE "FileDescription", "TortoiseGitMerge\0"
+            VALUE "CompanyName", "http://code.google.com/p/tortoisegit/"
+            VALUE "FileDescription", "TortoiseGitMerge"
             VALUE "FileVersion", STRFILEVER
-            VALUE "InternalName", "TortoiseGitMerge.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2011-2012 - TortoiseGit and Copyright (C) 2003-2008,2012 - TortoiseSVN\0"
-            VALUE "OriginalFilename", "TortoiseGitMerge.exe\0"
-            VALUE "ProductName", "TortoiseGitMerge\0"
+            VALUE "InternalName", "TortoiseGitMerge.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2011-2012 - TortoiseGit and Copyright (C) 2003-2012 - TortoiseSVN"
+            VALUE "OriginalFilename", "TortoiseGitMerge.exe"
+            VALUE "ProductName", "TortoiseGitMerge"
             VALUE "ProductVersion", STRPRODUCTVER
         END
     END

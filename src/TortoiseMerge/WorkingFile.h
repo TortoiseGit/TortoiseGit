@@ -1,6 +1,6 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007 - TortoiseSVN
+// Copyright (C) 2006-2007, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,14 +39,19 @@ public:
 	void CreateEmptyFile();
 	CString GetWindowName() const;
 	CString GetFilename() const		{ return m_sFilename; }
-	void SetOutOfUse()				{ m_sFilename.Empty(); m_sDescriptiveName.Empty(); }
+	void SetOutOfUse();
+
+	bool HasSourceFileChanged() const;
+	void StoreFileAttributes();
 
 	// Move the details of the specified file to the current one, and then mark the specified file
 	// as out of use
 	void TransferDetailsFrom(CWorkingFile& rightHandFile);
 
 private:
+	void ClearStoredAttributes();
+
 	CString m_sFilename;
 	CString m_sDescriptiveName;
-
+	WIN32_FILE_ATTRIBUTE_DATA m_attribs;
 };

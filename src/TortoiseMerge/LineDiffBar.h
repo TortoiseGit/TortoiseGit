@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008 - TortoiseSVN
 

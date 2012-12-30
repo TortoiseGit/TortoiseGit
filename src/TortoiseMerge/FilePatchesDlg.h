@@ -1,4 +1,4 @@
-// TortoiseMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2011 - TortoiseSVN
 
@@ -19,7 +19,7 @@
 #pragma once
 #include "StandAloneDlg.h"
 
-class CPatch;
+class GitPatch;
 
 /**
  * \ingroup TortoiseMerge
@@ -37,7 +37,7 @@ public:
 	 * \param sVersion the revision number of the file to patch
 	 * \return TRUE if patching was successful
 	 */
-	virtual BOOL PatchFile(const int nIndex, bool bAutoPatch = false, bool bIsReview = true) = 0;
+	virtual BOOL PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch = FALSE) = 0;
 
 	/**
 	 * Callback function. Called when the user double clicks on a
@@ -52,17 +52,13 @@ public:
 	virtual BOOL DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2) = 0;
 };
 
-#define	FPDLG_FILESTATE_GOOD		0x0000
-#define	FPDLG_FILESTATE_CONFLICTED	0x0001
-#define FPDLG_FILESTATE_PATCHED		0x0002
-#define FPDLG_FILESTATE_NEW			0x0003
-#define FPDLG_FILESTATE_DELETE		0x0004
-#define FPDLG_FILESTATE_RENAME		0x0005
+#define FPDLG_FILESTATE_GOOD		0
+#define FPDLG_FILESTATE_ERROR		(-1)
+#define FPDLG_FILESTATE_PATCHED		(-2)
 
 #define ID_PATCHALL					1
 #define ID_PATCHSELECTED			2
 #define ID_PATCHPREVIEW				3
-#define ID_PATCH_REVIEW				4
 /**
  * \ingroup TortoiseMerge
  *
@@ -83,13 +79,13 @@ public:
 	 * \param sPath The path to the "parent" folder where the patch gets applied to
 	 * \return TRUE if successful
 	 */
-	BOOL	Init(CPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent);
+	BOOL	Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent);
 
 	BOOL	SetFileStatusAsPatched(CString sPath);
 	bool	HasFiles() {return m_cFileList.GetItemCount()>0;}
 	enum { IDD = IDD_FILEPATCHES };
 protected:
-	CPatch *					m_pPatch;
+	GitPatch *					m_pPatch;
 	CPatchFilesDlgCallBack *	m_pCallBack;
 	CString						m_sPath;
 	CListCtrl					m_cFileList;
@@ -98,6 +94,8 @@ protected:
 	BOOL						m_bMinimized;
 	int							m_nWindowHeight;
 	CWnd *						m_pMainFrame;
+	int							m_ShownIndex;
+	HFONT						m_boldFont;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual void OnOK();
@@ -115,6 +113,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	CString GetFullPath(int nIndex);
 	void SetTitleWithPath(int width);
 	void PatchAll();
 	void PatchSelected();
