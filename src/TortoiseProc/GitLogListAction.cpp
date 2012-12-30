@@ -163,7 +163,6 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		if (progress.HasUserCancelled())
 		{
 			throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_SVN_USERCANCELLED))));
-			return -1;
 		}
 		CString cmd,out;
 		cmd.Format(_T("git.exe cherry-pick %s"),logs.GetGitRevAt(i).m_CommitHash.ToString());
@@ -171,7 +170,6 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_CHERRYPICKFAILED)) + _T(":\r\n\r\n") + out));
-			return -1;
 		}
 	}
 
