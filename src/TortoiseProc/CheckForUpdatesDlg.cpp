@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "LoglistCommonResource.h"
-#include "..\version.h"
 #include "MessageBox.h"
 #include ".\checkforupdatesdlg.h"
 #include "registry.h"
@@ -349,7 +348,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 			CString filename = finder.GetFileName();
 			if (filename.Left(12).CompareNoCase(_T("TortoiseProc")) == 0)
 			{
-				CString sVer = _T(STRPRODUCTVER);
+				CString sVer = WCSPRODUCTVER;
 				sVer = sVer.Left(sVer.ReverseFind('.'));
 				CString sFileVer = CPathUtils::GetVersionFromFile(file);
 				sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));

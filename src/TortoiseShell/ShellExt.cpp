@@ -26,7 +26,7 @@
 
 #include "ShellExt.h"
 #include "ShellObjects.h"
-//#include "..\version.h"
+#include "..\version.h"
 //#include "libintl.h"
 #undef swprintf
 
@@ -153,7 +153,7 @@ void LoadLangDll()
 								(LPVOID *)&lpVersion,
 								&nInfoSize))
 							{
-								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
+								versionmatch = (_tcscmp((LPCTSTR)lpVersion, WCSPRODUCTVER) == 0);
 							}
 
 						}

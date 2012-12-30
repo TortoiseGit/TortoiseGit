@@ -19,7 +19,6 @@
 #include "stdafx.h"
 #include <assert.h>
 #include "LangDll.h"
-#include "..\version.h"
 
 #pragma comment(lib, "Version.lib")
 
@@ -38,7 +37,7 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 	TCHAR langpath[MAX_PATH];
 	TCHAR langdllpath[MAX_PATH];
 	TCHAR sVer[MAX_PATH];
-	_tcscpy_s(sVer, MAX_PATH, _T(STRPRODUCTVER));
+	_tcscpy_s(sVer, MAX_PATH, WCSPRODUCTVER);
 	GetModuleFileName(NULL, langpath, MAX_PATH);
 	TCHAR * pSlash = _tcsrchr(langpath, '\\');
 	if (pSlash)

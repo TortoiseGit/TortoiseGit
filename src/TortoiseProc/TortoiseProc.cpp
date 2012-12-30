@@ -124,7 +124,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		hInst = LoadLibrary(langDll);
 
-		CString sVer = _T(STRPRODUCTVER);
+		CString sVer = WCSPRODUCTVER;
 		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
 		if (sFileVer.Compare(sVer)!=0)
 		{
@@ -486,7 +486,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(_T("Software\\TortoiseGit\\CurrentVersion"));
 	CString sVersion = regVersion;
-	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
+	if (sVersion.Compare(WCSPRODUCTVER)==0)
 		return;
 	// we're starting the first time with a new version!
 
@@ -543,7 +543,7 @@ void CTortoiseProcApp::CheckUpgrade()
 	CAppUtils::SetupDiffScripts(false, CString());
 
 	// set the current version so we don't come here again until the next update!
-	regVersion = _T(STRPRODUCTVER);
+	regVersion = WCSPRODUCTVER;
 }
 
 void CTortoiseProcApp::InitializeJumpList()

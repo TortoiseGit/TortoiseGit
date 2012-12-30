@@ -24,7 +24,6 @@
 #include "PathUtils.h"
 #include "DirFileEnum.h"
 #include "GITProgressDlg.h"
-#include "..\version.h"
 #include ".\setmainpage.h"
 #include "Git.h"
 #include "MessageBox.h"
@@ -122,7 +121,7 @@ BOOL CSetMainPage::OnInitDialog()
 		CString filename = finder.GetFileName();
 		if (filename.Left(12).CompareNoCase(_T("TortoiseProc"))==0)
 		{
-			CString sVer = _T(STRPRODUCTVER);
+			CString sVer = WCSPRODUCTVER;
 			sVer = sVer.Left(sVer.ReverseFind('.'));
 			CString sFileVer = CPathUtils::GetVersionFromFile(file);
 			sFileVer = sFileVer.Left(sFileVer.ReverseFind('.'));

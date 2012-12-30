@@ -22,7 +22,6 @@
 #include "MainFrm.h"
 #include "AboutDlg.h"
 #include "CmdLineParser.h"
-#include "version.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
@@ -83,7 +82,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 		langDll.Format(_T("%sLanguages\\TortoiseMerge%d.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
 
 		hInst = LoadLibrary(langDll);
-		CString sVer = _T(STRPRODUCTVER);
+		CString sVer = WCSPRODUCTVER;
 		CString sFileVer = CPathUtils::GetVersionFromFile(langDll);
 		if (sFileVer.Compare(sVer)!=0)
 		{

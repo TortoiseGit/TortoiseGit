@@ -18,8 +18,6 @@
 //
 #pragma once
 
-#include "..\version.h"
-
 #define BUFSIZE 4096
 #define MAX_CRAWLEDPATHS 15
 #define MAX_CRAWLEDPATHSLEN (MAX_PATH * 2)

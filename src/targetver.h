@@ -24,3 +24,22 @@
 #ifndef _WIN32_IE               // Specifies that the minimum required platform is Internet Explorer 7.0.
 #define _WIN32_IE 0x0700        // Change this to the appropriate value to target other versions of IE.
 #endif
+
+extern const char *STRFILEVER;
+extern const char *STRPRODUCTVER;
+extern const wchar_t *WCSFILEVER;
+extern const wchar_t *WCSPRODUCTVER;
+
+extern int TGIT_VERMAJOR;
+extern int TGIT_VERMINOR;
+extern int TGIT_VERMICRO;
+extern int TGIT_VERBUILD;
+extern const char *TGIT_VERDATE;
+
+#ifndef TGIT_PLATFORM
+#ifdef _WIN64
+#define TGIT_PLATFORM		"64 Bit"
+#else
+#define TGIT_PLATFORM		"32 Bit"
+#endif
+#endif

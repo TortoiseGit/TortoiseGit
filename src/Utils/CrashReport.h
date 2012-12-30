@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "../../ext/CrashServer/CrashHandler/CrashHandler/CrashHandler.h"
-#include "../version.h"
 #include <time.h>
 #include <string>
 #include <tchar.h>
