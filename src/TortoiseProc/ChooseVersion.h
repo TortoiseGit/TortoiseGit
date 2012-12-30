@@ -22,6 +22,8 @@
 #include "BrowseRefsDlg.h"
 #include "MessageBox.h"
 
+static UINT WM_GUIUPDATES = RegisterWindowMessage(_T("TORTOISEGIT_CHOOSEVERSION_GUIUPDATES"));
+
 class CChooseVersion
 {
 public:
@@ -184,22 +186,25 @@ protected:
 		m_ChooseVersioinBranch.AddString(list, false);
 		m_ChooseVersioinBranch.SetCurSel(current);
 
-		m_RadioBranch.EnableWindow(TRUE);
-
 		list.clear();
 		g_Git.GetTagList(list);
 		m_ChooseVersioinTags.AddString(list, false);
 		m_ChooseVersioinTags.SetCurSel(0);
 
-		m_RadioTag.EnableWindow(TRUE);
-
-		if(m_initialRefName.IsEmpty())
-			OnVersionChanged();
-		else
-			SelectRef(m_initialRefName);
+		m_pWin->SendMessage(WM_GUIUPDATES);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
 		return 0;
+	}
+	void UpdateGUI()
+	{
+		m_RadioBranch.EnableWindow(TRUE);
+		m_RadioTag.EnableWindow(TRUE);
+
+		if (m_initialRefName.IsEmpty())
+			OnVersionChanged();
+		else
+			SelectRef(m_initialRefName);
 	}
 	void Init()
 	{
@@ -237,7 +242,6 @@ public:
 
 };
 
-
 #define CHOOSE_VERSION_DDX \
 	DDX_Control(pDX, IDC_COMBOBOXEX_BRANCH,		m_ChooseVersioinBranch); \
 	DDX_Control(pDX, IDC_COMBOBOXEX_TAGS,		m_ChooseVersioinTags); \
@@ -246,6 +250,7 @@ public:
 	DDX_Control(pDX, IDC_RADIO_TAGS, m_RadioTag);
 
 #define CHOOSE_VERSION_EVENT\
+	ON_REGISTERED_MESSAGE(WM_GUIUPDATES,	OnUpdateGUIHost)\
 	ON_BN_CLICKED(IDC_RADIO_HEAD,			OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_RADIO_BRANCH,			OnBnClickedChooseRadioHost)\
 	ON_BN_CLICKED(IDC_RADIO_TAGS,			OnBnClickedChooseRadioHost)\
@@ -264,6 +269,7 @@ public:
 	}
 
 #define CHOOSE_EVENT_RADIO() \
+	LRESULT OnUpdateGUIHost(WPARAM, LPARAM) { UpdateGUI(); return 0; } \
 	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}\
 	afx_msg void OnBnClickedShow(){OnBnClickedChooseVersion();}\
 	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
