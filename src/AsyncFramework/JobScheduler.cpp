@@ -549,7 +549,7 @@ bool CJobScheduler::WaitForEmptyQueueOrTimeout(DWORD milliSeconds)
         if (!emptyEvent.WaitForEndOrTimeout(milliSeconds))
             return false;
     }
-    return true;
+    //return true;
 }
 
 // wait for some jobs to be finished.
