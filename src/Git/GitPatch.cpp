@@ -26,6 +26,8 @@
 #include "GitAdminDir.h"
 #include "StringUtils.h"
 
+#include "AppUtils.h"
+
 #define STRIP_LIMIT 10
 
 GitPatch::GitPatch()
@@ -33,6 +35,7 @@ GitPatch::GitPatch()
 	, m_bSuccessfullyPatched(false)
 	, m_nRejected(0)
 	, m_pProgDlg(NULL)
+	, m_patch()
 {
 }
 
@@ -70,7 +73,18 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 	m_nRejected = 0;
 	m_nStrip = 0;
 
-	// TODO: Read and try to apply patch
+	// Read and try to apply patch
+	if (m_patch.OpenUnifiedDiffFile(m_patchfile) == FALSE)
+	{
+		m_errorStr = m_patch.GetErrorMessage();
+		m_filePaths.clear();
+		return 0;
+	}
+	if (!ApplyPatches())
+	{
+		m_filePaths.clear();
+		return 0;
+	}
 
 	m_pProgDlg = NULL;
 
@@ -101,16 +115,118 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 		m_filePaths.clear();
 		m_nRejected = 0;
 
-		// apply patch
-#if 0
-		if (err)
+		if (!ApplyPatches())
 		{
 			m_filePaths.clear();
 		}
-#endif
 	}
 	return (int)m_filePaths.size();
 }
+
+bool GitPatch::ApplyPatches()
+{
+	
+	for (int i = 0; i < m_patch.GetNumberOfFiles(); i++)
+	{
+		if (!PatchFile(i, m_targetpath))
+			return false;
+	}
+
+	return true;
+}
+
+bool GitPatch::PatchFile(int nIndex, CString &datapath)
+{
+	CString sFilePath = m_patch.GetFullPath(datapath, nIndex);
+	CString sTempFile = CTempFiles::Instance().GetTempFilePathString();
+
+	PathRejects pr;
+	m_testPath = m_patch.GetFilename2(nIndex);
+	pr.path = m_patch.GetFilename2(nIndex);
+	if (pr.path == _T("NUL"))
+		pr.path = m_patch.GetFilename(nIndex);
+
+	if (m_pProgDlg)
+		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, pr.path);
+
+	//first, do a "dry run" of patching against the file in place...
+	if (!m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile))
+	{
+		//patching not successful, so retrieve the
+		//base file from version control and try
+		//again...
+		CString sVersion = m_patch.GetRevision(nIndex);
+
+		CString sBaseFile;
+		if (sVersion == _T("0000000") || sFilePath == _T("NUL"))
+			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
+		else
+		{
+			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
+			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
+			{
+				m_errorStr.Empty();
+				m_errorStr.Format(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, (LPCTSTR)sVersion, (LPCTSTR)sFilePath);
+
+				return false;
+			}
+		}
+
+		if (m_pProgDlg)
+			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, pr.path);
+
+		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
+
+		if (patchtry == TRUE)
+			pr.rejects = 0;
+		else
+		{
+			pr.rejects = 1;
+			// rejectsPath should hold the absolute path to the reject files, but we do not support reject files ATM; also see changes FilePatchesDlg
+			pr.rejectsPath = m_patch.GetErrorMessage();
+		}
+
+		TRACE(_T("comparing %s and %s\nagainst the base file %s\n"), (LPCTSTR)sTempFile, (LPCTSTR)sFilePath, (LPCTSTR)sBaseFile);
+	}
+	else
+	{
+		//"dry run" was successful, so save the patched file somewhere...
+		pr.rejects = 0;
+		TRACE(_T("comparing %s\nwith the patched result %s\n"), (LPCTSTR)sFilePath, (LPCTSTR)sTempFile);
+	}
+
+	pr.resultPath = sTempFile;
+	pr.content = true;
+	pr.props = false;
+	// only add this entry if it hasn't been added already
+	bool bExists = false;
+	for (auto it = m_filePaths.rbegin(); it != m_filePaths.rend(); ++it)
+	{
+		if (it->path.Compare(pr.path) == 0)
+		{
+			bExists = true;
+			break;
+		}
+	}
+	if (!bExists)
+		m_filePaths.push_back(pr);
+	m_nRejected += pr.rejects;
+
+	return true;
+}
+
+CString GitPatch::GetPatchRejects(int nIndex) const
+{
+	if (nIndex < 0)
+		return _T("");
+	if (nIndex < (int)m_filePaths.size())
+	{
+		return m_filePaths[nIndex].rejectsPath;
+	}
+
+	return _T("");
+}
+
 bool GitPatch::PatchPath(const CString& path)
 {
 	m_errorStr.Empty();

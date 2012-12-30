@@ -35,6 +35,7 @@ bool CatCommand::Execute()
 
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
+		::DeleteFile(savepath);
 		CMessageBox::Show(NULL, output + L"\n" + err, _T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}
@@ -50,6 +51,7 @@ bool CatCommand::Execute()
 
 	if(g_Git.RunLogFile(cmd,savepath))
 	{
+		::DeleteFile(savepath);
 		CMessageBox::Show(NULL,_T("Cat file fail"),_T("TortoiseGit"), MB_ICONERROR);
 		return false;
 	}

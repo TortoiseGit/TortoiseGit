@@ -782,8 +782,9 @@ CString CPatch::GetRevision2(int nIndex)
 	return 0;
 }
 
-int CPatch::PatchFile(int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
+int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, const CString& sSavePath, const CString& sBaseFile, const bool force)
 {
+	m_nStrip = strip;
 	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
 	{

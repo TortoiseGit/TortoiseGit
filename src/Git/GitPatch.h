@@ -23,6 +23,8 @@
 #include "TempFile.h"
 #include "SysProgressDlg.h"
 
+#include "Patch.h"
+
 class GitPatch
 {
 public:
@@ -104,6 +106,8 @@ public:
 	 */
 	bool					RemoveFile(const CString& path);
 
+	CString					GetPatchRejects(int nIndex) const;
+
 private:
 	int						CountMatches(const CString& path) const;
 	int						CountDirMatches(const CString& path) const;
@@ -131,4 +135,8 @@ private:
 	CString					m_filetopatch;
 	CString					m_errorStr;
 	CSysProgressDlg *		m_pProgDlg;
+
+	CPatch					m_patch;
+	bool					ApplyPatches();
+	bool					PatchFile(int nIndex, CString &datapath);
 };

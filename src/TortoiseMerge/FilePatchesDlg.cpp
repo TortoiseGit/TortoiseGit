@@ -24,7 +24,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "SysProgressDlg.h"
-
+#include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
 CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=NULL*/)
@@ -149,6 +149,8 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		{
 			state = m_pPatch->GetFailedHunks(i);
 		}
+		if (state > 0)
+			state = FPDLG_FILESTATE_ERROR;
 		m_arFileStates.Add(state);
 		SHFILEINFO    sfi;
 		SHGetFileInfo(
@@ -245,6 +247,13 @@ void CFilePatchesDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (m_pCallBack==NULL)
 		return;
+
+	if (m_arFileStates.GetAt(pNMLV->iItem) == FPDLG_FILESTATE_ERROR)
+	{
+		MessageBox(m_pPatch->GetPatchRejects(pNMLV->iItem), NULL, MB_ICONERROR);
+		return;
+	}
+
 	if (m_sPath.IsEmpty())
 	{
 		m_pCallBack->DiffFiles(GetFullPath(pNMLV->iItem), _T(""),
@@ -354,7 +363,11 @@ void CFilePatchesDlg::OnNMRclickFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		if (m_pCallBack)
 		{
 			int nIndex = m_cFileList.GetSelectionMark();
-			if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
+			if (m_arFileStates.GetAt(nIndex) == FPDLG_FILESTATE_ERROR)
+			{
+				MessageBox(m_pPatch->GetPatchRejects(nIndex), NULL, MB_ICONERROR);
+			}
+			else if ( m_arFileStates.GetAt(nIndex)!=FPDLG_FILESTATE_PATCHED)
 			{
 				m_pCallBack->PatchFile(m_pPatch->GetStrippedPath(nIndex), m_pPatch->GetContentMods(nIndex), m_pPatch->GetPropMods(nIndex), _T(""));
 				m_ShownIndex = nIndex;
@@ -452,7 +465,9 @@ void CFilePatchesDlg::PatchAll()
 		progDlg.ShowModeless(m_hWnd);
 		for (int i=0; i<m_arFileStates.GetCount() && !progDlg.HasUserCancelled(); i++)
 		{
-			if (m_arFileStates.GetAt(i)!= FPDLG_FILESTATE_PATCHED)
+			if (m_arFileStates.GetAt(i) == FPDLG_FILESTATE_ERROR)
+				MessageBox(m_pPatch->GetPatchRejects(i), NULL, MB_ICONERROR);
+			else if (m_arFileStates.GetAt(i) != FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(i), true);
 				m_pCallBack->PatchFile(m_pPatch->GetStrippedPath(i), m_pPatch->GetContentMods(i), m_pPatch->GetPropMods(i), _T(""), TRUE);
@@ -483,7 +498,9 @@ void CFilePatchesDlg::PatchSelected()
 		int index;
 		while (((index = m_cFileList.GetNextSelectedItem(pos)) >= 0) && (!progDlg.HasUserCancelled()))
 		{
-			if (m_arFileStates.GetAt(index)!= FPDLG_FILESTATE_PATCHED)
+			if (m_arFileStates.GetAt(index) == FPDLG_FILESTATE_ERROR)
+				MessageBox(m_pPatch->GetPatchRejects(index), NULL, MB_ICONERROR);
+			else if (m_arFileStates.GetAt(index) != FPDLG_FILESTATE_PATCHED)
 			{
 				progDlg.SetLine(2, GetFullPath(index), true);
 				m_pCallBack->PatchFile(m_pPatch->GetStrippedPath(index), m_pPatch->GetContentMods(index), m_pPatch->GetPropMods(index), _T(""), TRUE);

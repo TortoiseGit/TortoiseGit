@@ -661,12 +661,12 @@ bool CMainFrame::LoadViews(int line)
 			m_bSaveRequired = false;
 			return false;
 		}
+		progDlg.Stop();
 		if (m_Patch.GetNumberOfFiles() > 0)
 		{
 			CString betterpatchpath = m_Patch.CheckPatchPath(m_Data.m_sPatchPath);
 			if (betterpatchpath.CompareNoCase(m_Data.m_sPatchPath)!=0)
 			{
-				progDlg.Stop();
 				CString msg;
 				msg.Format(IDS_WARNBETTERPATCHPATHFOUND, (LPCTSTR)m_Data.m_sPatchPath, (LPCTSTR)betterpatchpath);
 				if (CMessageBox::Show(m_hWnd, msg, _T("TortoiseGitMerge"), MB_ICONQUESTION | MB_YESNO)==IDYES)
