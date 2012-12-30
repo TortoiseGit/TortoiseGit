@@ -17,16 +17,23 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #include <fstream>
 #include "codecvt.h"
 #include "Utils.h"
 #include "ResModule.h"
-#include ".\pofile.h"
+#include "pofile.h"
 
-#define MYERROR	{CUtils::Error(); return FALSE;}
+#include <algorithm>
+#include <cctype>
+#include <memory>
+#include <functional>
+
+#define MYERROR {CUtils::Error(); return FALSE;}
 
 CPOFile::CPOFile()
+	: m_bQuiet(false)
+	, m_bAdjustEOLs(false)
 {
 }
 
@@ -61,12 +68,12 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 		_ftprintf(stderr, _T("can't open input file %s\n"), szPath);
 		return FALSE;
 	}
-	TCHAR line[2*MAX_STRING_LENGTH];
+	std::unique_ptr<TCHAR[]> line(new TCHAR[2*MAX_STRING_LENGTH]);
 	std::vector<std::wstring> entry;
 	do
 	{
-		File.getline(line, _countof(line));
-		if (line[0]==0)
+		File.getline(line.get(), 2*MAX_STRING_LENGTH);
+		if (line.get()[0]==0)
 		{
 			//empty line means end of entry!
 			RESOURCEENTRY resEntry;
@@ -98,18 +105,10 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 					msgid = I->c_str();
 					msgid = std::wstring(msgid.substr(7, msgid.size() - 8));
 
-					bool foundNonSpace = false;
-					for (std::wstring::iterator it = msgid.begin(); it < msgid.end(); it++)
-					{
-						if (*it != _T(' ') && *it != _T('\n') && *it != _T('\r'))
-						{
-							foundNonSpace = true;
-							break;
-						}
-					}
-					if (foundNonSpace)
+					std::wstring s = msgid;
+					s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+					if (s.size())
 						nEntries++;
-
 					type = 1;
 				}
 				if (_tcsncmp(I->c_str(), _T("msgstr"), 6)==0)
@@ -154,12 +153,13 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 		}
 		else
 		{
-			entry.push_back(line);
+			entry.push_back(line.get());
 		}
 	} while (File.gcount() > 0);
 	printf(File.getloc().name().c_str());
 	File.close();
 	RESOURCEENTRY emptyentry;
+	emptyentry.menuID = 0;
 	(*this)[std::wstring(_T(""))] = emptyentry;
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("%d Entries found, %d were already translated and %d got deleted\n"), nEntries, nTranslated, nDeleted);
@@ -209,7 +209,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 		File << _T("\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n");
 		File << _T("\"MIME-Version: 1.0\\n\"\n");
 		File << _T("\"Content-Type: text/plain; charset=UTF-8\\n\"\n");
-		File << _T("\"Content-Transfer-Encoding: 8bit\\n\"\n");
+		File << _T("\"Content-Transfer-Encoding: 8bit\\n\"\n\n");
 	}
 	File << _T("\n");
 	File << _T("# msgid/msgstr fields for Accelerator keys\n");
@@ -231,21 +231,9 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 
 	for (std::map<std::wstring, RESOURCEENTRY>::iterator I = this->begin(); I != this->end(); ++I)
 	{
-		if (I->first.empty())
-			continue;
-
 		std::wstring s = I->first;
-		bool foundNonSpace = false;
-		for (std::wstring::iterator it = s.begin(); it < s.end(); it++)
-		{
-			if (*it != _T(' ') && *it != _T('\n') && *it != _T('\r'))
-			{
-				foundNonSpace = true;
-				break;
-			}
-		}
-
-		if (!foundNonSpace)
+		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+		if (s.empty())
 			continue;
 
 		RESOURCEENTRY entry = I->second;

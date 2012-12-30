@@ -98,11 +98,13 @@ private:
 	BOOL	ExtractString(LPCTSTR lpszType);
 	BOOL	ExtractDialog(LPCTSTR lpszType);
 	BOOL	ExtractMenu(LPCTSTR lpszType);
+	BOOL	ExtractRibbon(LPCTSTR lpszType);
 	BOOL	ReplaceString(LPCTSTR lpszType, WORD wLanguage);
 	BOOL	ReplaceDialog(LPCTSTR lpszType, WORD wLanguage);
 	BOOL	ReplaceMenu(LPCTSTR lpszType, WORD wLanguage);
 	BOOL	ExtractAccelerator(LPCTSTR lpszType);
 	BOOL	ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage);
+	BOOL	ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage);
 
 	const WORD*	ParseMenuResource(const WORD * res);
 	const WORD*	CountMemReplaceMenuResource(const WORD * res, size_t * wordcount, WORD * newMenu);
@@ -134,6 +136,8 @@ private:
 	int				m_bDefaultMenuStrings;
 	int				m_bTranslatedAcceleratorStrings;
 	int				m_bDefaultAcceleratorStrings;
+	int				m_bTranslatedRibbonTexts;
+	int				m_bDefaultRibbonTexts;
 
 	WORD			m_wTargetLang;
 };

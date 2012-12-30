@@ -17,9 +17,15 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
 #include "Utils.h"
-#include ".\resmodule.h"
-#include <memory>
+#include "resmodule.h"
 #include "..\Utils\SysInfo.h"
+#include <regex>
+#include <memory>
+
+#ifndef RT_RIBBON
+#define RT_RIBBON MAKEINTRESOURCE(28)
+#endif
+
 
 #define MYERROR {CUtils::Error(); return FALSE;}
 
@@ -32,6 +38,8 @@ CResModule::CResModule(void)
 	, m_bDefaultMenuStrings(0)
 	, m_bTranslatedAcceleratorStrings(0)
 	, m_bDefaultAcceleratorStrings(0)
+	, m_bTranslatedRibbonTexts(0)
+	, m_bDefaultRibbonTexts(0)
 	, m_wTargetLang(0)
 	, m_hResDll(NULL)
 	, m_hUpdateRes(NULL)
@@ -81,6 +89,12 @@ BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lp
 		EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
 			_ftprintf(stdout, _T("%4d Accelerators\n"), m_StringEntries.size()-nEntries);
+		nEntries = m_StringEntries.size();
+		if (!m_bQuiet)
+			_ftprintf(stdout, _T("Extracting Ribbons........"));
+		EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameCallback, (LONG_PTR)this);
+		if (!m_bQuiet)
+			_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		// parse a probably existing file and update the translations which are
@@ -220,6 +234,11 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
 
+	if (!m_bQuiet)
+		_ftprintf(stdout, _T("Translating Ribbons......."));
+	bRes = EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, (LONG_PTR)this);
+	if (!m_bQuiet)
+		_ftprintf(stdout, _T("%4d translated, %4d not translated\n"), m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
 	bRes = TRUE;
 	if (!EndUpdateResource(m_hUpdateRes, !bRes))
 		MYERROR;
@@ -647,7 +666,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 			entry.resourceIDs.insert(id);
 
 			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: MenuEntry; ID:%d"), id);
+			_stprintf(szTempBuf, _T("#: MenuEntry; ID:%u"), id);
 			MENUENTRY menu_entry;
 			menu_entry.wID = id;
 			menu_entry.reference = szTempBuf;
@@ -772,7 +791,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 			entry.resourceIDs.insert(menuId);
 			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%d"), menuId);
+			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%u"), menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -795,7 +814,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			entry.resourceIDs.insert(menuId);
 
 			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%d"), menuId);
+			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%u"), menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -936,8 +955,10 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 			(wAnsi >= 0x3A && wAnsi <= 0x40))
 			continue;
 
-		TCHAR * pBuf = new TCHAR[1024];
-		SecureZeroMemory(pBuf, 1024 * sizeof(TCHAR));
+		std::unique_ptr<WCHAR[]> pBuf(new WCHAR[1024]);
+		std::unique_ptr<WCHAR[]> pBuf2(new WCHAR[1024]);
+		SecureZeroMemory(pBuf.get(), 1024 * sizeof(WCHAR));
+		SecureZeroMemory(pBuf2.get(), 1024 * sizeof(WCHAR));
 
 		// include the menu ID in the msgid to make sure that 'duplicate'
 		// accelerator keys are listed in the po-file.
@@ -951,7 +972,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		// Since "filter" and "find" are most likely translated to words starting
 		// with different letters, we need to have a separate accelerator entry
 		// for each of those
-		_stprintf(pBuf, _T("ID:%d:"), wID);
+		_stprintf(pBuf.get(), _T("ID:%u:"), wID);
 
 		// EXACTLY 5 characters long "ACS+X"
 		// V = Virtual key (or blank if not used)
@@ -961,28 +982,28 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		// X = upper case character
 		// e.g. "V CS+Q" == Ctrl + Shift + 'Q'
 		if ((fFlags & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf, _T("V"));
+			_tcscat(pBuf.get(), _T("V"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((fFlags & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf, _T("A"));
+			_tcscat(pBuf.get(), _T("A"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((fFlags & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf, _T("C"));
+			_tcscat(pBuf.get(), _T("C"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((fFlags & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf, _T("S"));
+			_tcscat(pBuf.get(), _T("S"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
-		_stprintf(pBuf, _T("%s+%c"), pBuf, wAnsi);
+		_stprintf(pBuf2.get(), _T("%s+%c"), pBuf.get(), wAnsi);
 
-		std::wstring wstr = std::wstring(pBuf);
+		std::wstring wstr = std::wstring(pBuf2.get());
 		RESOURCEENTRY AKey_entry = m_StringEntries[wstr];
 
 		TCHAR szTempBuf[1024];
@@ -993,11 +1014,10 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		{
 			wmenu = pME_iter->second.msgstr;
 		}
-		_stprintf(szTempBuf, _T("#. Accelerator Entry for Menu ID:%d; '%s'"), wID, wmenu.c_str());
+		_stprintf(szTempBuf, _T("#. Accelerator Entry for Menu ID:%u; '%s'"), wID, wmenu.c_str());
 		AKey_entry.automaticcomments.push_back(std::wstring(szTempBuf));
 
 		m_StringEntries[wstr] = AKey_entry;
-		delete [] pBuf;
 	} while (!bEnd);
 
 	UnlockResource(hglAccTable);
@@ -1040,7 +1060,8 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 	BYTE xfVirt;
 	WORD xkey;
 	static const size_t BufferSize = 1024;
-	TCHAR * pBuf = new TCHAR[BufferSize];
+	std::unique_ptr<WCHAR[]> pBuf(new WCHAR[BufferSize]);
+	std::unique_ptr<WCHAR[]> pBuf2(new WCHAR[BufferSize]);
 	for (i = 0; i < cAccelerators; i++)
 	{
 		if ((lpaccelNew[i].key < 0x30) ||
@@ -1048,35 +1069,36 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 			(lpaccelNew[i].key >= 0x3A && lpaccelNew[i].key <= 0x40))
 			continue;
 
-		SecureZeroMemory(pBuf, BufferSize * sizeof(TCHAR));
+		SecureZeroMemory(pBuf.get(), 1024 * sizeof(WCHAR));
+		SecureZeroMemory(pBuf2.get(), 1024 * sizeof(WCHAR));
 
-		_stprintf(pBuf, _T("ID:%d:"), lpaccelNew[i].cmd);
+		_stprintf(pBuf.get(), _T("ID:%d:"), lpaccelNew[i].cmd);
 
 		// get original key combination
 		if ((lpaccelNew[i].fVirt & FVIRTKEY) == FVIRTKEY) 		// 0x01
-			_tcscat(pBuf, _T("V"));
+			_tcscat(pBuf.get(), _T("V"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FALT) == FALT) 				// 0x10
-			_tcscat(pBuf, _T("A"));
+			_tcscat(pBuf.get(), _T("A"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FCONTROL) == FCONTROL) 		// 0x08
-			_tcscat(pBuf, _T("C"));
+			_tcscat(pBuf.get(), _T("C"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
 		if ((lpaccelNew[i].fVirt & FSHIFT) == FSHIFT) 			// 0x04
-			_tcscat(pBuf, _T("S"));
+			_tcscat(pBuf.get(), _T("S"));
 		else
-			_tcscat(pBuf, _T(" "));
+			_tcscat(pBuf.get(), _T(" "));
 
-		_stprintf(pBuf, _T("%s+%c"), pBuf, lpaccelNew[i].key);
+		_stprintf(pBuf2.get(), _T("%s+%c"), pBuf.get(), lpaccelNew[i].key);
 
 		// Is it there?
-		std::map<std::wstring, RESOURCEENTRY>::iterator pAK_iter = m_StringEntries.find(pBuf);
+		std::map<std::wstring, RESOURCEENTRY>::iterator pAK_iter = m_StringEntries.find(pBuf2.get());
 		if (pAK_iter != m_StringEntries.end())
 		{
 			m_bTranslatedAcceleratorStrings++;
@@ -1113,7 +1135,6 @@ BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
 			m_bDefaultAcceleratorStrings++;
 	}
 
-	delete [] pBuf;
 
 	// Create the new accelerator table
 	hglAccTableNew = LocalAlloc(LPTR, cAccelerators * 4 * sizeof(WORD));
@@ -1796,6 +1817,174 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	return res;
 }
 
+BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
+{
+	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_RIBBON);
+	HGLOBAL     hglRibbonTemplate;
+	const BYTE *p;
+
+	if (!hrsrc)
+		MYERROR;
+
+	hglRibbonTemplate = LoadResource(m_hResDll, hrsrc);
+
+	DWORD sizeres = SizeofResource(m_hResDll, hrsrc);
+
+	if (!hglRibbonTemplate)
+		MYERROR;
+
+	p = (const BYTE*)LockResource(hglRibbonTemplate);
+
+	if (p == NULL)
+		MYERROR;
+
+	// Resource consists of one single string
+	// that is XML.
+
+	// extract all <text>blah</text> elements
+
+	const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
+	std::string ss = std::string((const char*)p, sizeres);
+	const std::sregex_iterator end;
+	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
+	{
+		std::string str = (*it)[1];
+		size_t len = str.size();
+		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
+		std::wstring ret = bufw.get();
+		RESOURCEENTRY entry = m_StringEntries[ret];
+		entry.resourceIDs.insert((DWORD)lpszType);
+		if (wcschr(ret.c_str(), '%'))
+			entry.flag = _T("#, c-format");
+		m_StringEntries[ret] = entry;
+		m_bDefaultRibbonTexts++;
+	}
+
+	// extract all </ELEMENT_NAME><NAME>blahblah</NAME> elements
+
+	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
+	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
+	{
+		std::string str = (*it)[1];
+		size_t len = str.size();
+		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
+		std::wstring ret = bufw.get();
+		RESOURCEENTRY entry = m_StringEntries[ret];
+		entry.resourceIDs.insert((DWORD)lpszType);
+		if (wcschr(ret.c_str(), '%'))
+			entry.flag = _T("#, c-format");
+		m_StringEntries[ret] = entry;
+		m_bDefaultRibbonTexts++;
+	}
+
+	UnlockResource(hglRibbonTemplate);
+	FreeResource(hglRibbonTemplate);
+	return TRUE;
+}
+
+BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
+{
+	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_RIBBON);
+	HGLOBAL     hglRibbonTemplate;
+	const BYTE *p;
+
+	if (!hrsrc)
+		MYERROR;
+
+	hglRibbonTemplate = LoadResource(m_hResDll, hrsrc);
+
+	DWORD sizeres = SizeofResource(m_hResDll, hrsrc);
+
+	if (!hglRibbonTemplate)
+		MYERROR;
+
+	p = (const BYTE*)LockResource(hglRibbonTemplate);
+
+	if (p == NULL)
+		MYERROR;
+
+	std::string ss = std::string((const char*)p, sizeres);
+	size_t len = ss.size();
+	std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+	SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
+	MultiByteToWideChar(CP_UTF8, 0, ss.c_str(), -1, bufw.get(), (int)len*4);
+	std::wstring ssw = bufw.get();
+
+
+	const std::regex regRevMatch("<TEXT>([^<]+)</TEXT>");
+	const std::sregex_iterator end;
+	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatch); it != end; ++it)
+	{
+		std::string str = (*it)[1];
+		size_t len = str.size();
+		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
+		std::wstring ret = bufw.get();
+
+		RESOURCEENTRY entry = m_StringEntries[ret];
+		ret = L"<TEXT>" + ret + L"</TEXT>";
+
+		if (entry.msgstr.size())
+		{
+			CUtils::SearchReplace(ssw, ret, L"<TEXT>" + entry.msgstr + L"</TEXT>");
+			m_bTranslatedRibbonTexts++;
+		}
+		else
+			m_bDefaultRibbonTexts++;
+	}
+
+	const std::regex regRevMatchName("</ELEMENT_NAME><NAME>([^<]+)</NAME>");
+	for (std::sregex_iterator it(ss.begin(), ss.end(), regRevMatchName); it != end; ++it)
+	{
+		std::string str = (*it)[1];
+		size_t len = str.size();
+		std::unique_ptr<wchar_t[]> bufw(new wchar_t[len*4 + 1]);
+		SecureZeroMemory(bufw.get(), (len*4 + 1)*sizeof(wchar_t));
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, bufw.get(), (int)len*4);
+		std::wstring ret = bufw.get();
+
+		RESOURCEENTRY entry = m_StringEntries[ret];
+		ret = L"</ELEMENT_NAME><NAME>" + ret + L"</NAME>";
+
+		if (entry.msgstr.size())
+		{
+			CUtils::SearchReplace(ssw, ret, L"</ELEMENT_NAME><NAME>" + entry.msgstr + L"</NAME>");
+			m_bTranslatedRibbonTexts++;
+		}
+		else
+			m_bDefaultRibbonTexts++;
+	}
+
+	std::unique_ptr<char[]> buf(new char[ssw.size()*4 + 1]);
+	int lengthIncTerminator = WideCharToMultiByte(CP_UTF8, 0, ssw.c_str(), -1, buf.get(), (int)len*4, NULL, NULL);
+
+
+	if (!UpdateResource(m_hUpdateRes, RT_RIBBON, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), buf.get(), lengthIncTerminator-1))
+	{
+		goto DONE_ERROR;
+	}
+
+	if ((m_wTargetLang)&&(!UpdateResource(m_hUpdateRes, RT_RIBBON, lpszType, wLanguage, NULL, 0)))
+	{
+		goto DONE_ERROR;
+	}
+
+
+	UnlockResource(hglRibbonTemplate);
+	FreeResource(hglRibbonTemplate);
+	return TRUE;
+
+DONE_ERROR:
+	UnlockResource(hglRibbonTemplate);
+	FreeResource(hglRibbonTemplate);
+	MYERROR;
+}
+
 BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
 {
 	CResModule* lpResModule = (CResModule*)lParam;
@@ -1832,6 +2021,14 @@ BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszT
 				return FALSE;
 		}
 	}
+	else if (lpszType == RT_RIBBON)
+	{
+		if (IS_INTRESOURCE(lpszName))
+		{
+			if (!lpResModule->ExtractRibbon(lpszName))
+				return FALSE;
+		}
+	}
 
 	return TRUE;
 }
@@ -1865,6 +2062,10 @@ BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCTSTR 
 	else if (lpszType == RT_ACCELERATOR)
 	{
 		bRes = lpResModule->ReplaceAccelerator(lpszName, wLanguage);
+	}
+	else if (lpszType == RT_RIBBON)
+	{
+		bRes = lpResModule->ReplaceRibbon(lpszName, wLanguage);
 	}
 
 	return bRes;

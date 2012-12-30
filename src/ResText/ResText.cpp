@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2009-2011 - TortoiseSVN
+// Copyright (C) 2003-2006, 2009-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 
 #include <string>
 #include <vector>
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 
 typedef std::basic_string<TCHAR> tstring;
@@ -73,7 +73,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		if (_tcscmp(arg->c_str(), _T("extract"))==0)
 		{
-			tstring sDllFile;
 			tstring sPoFile;
 			tstring sHeaderFile;
 			++arg;
