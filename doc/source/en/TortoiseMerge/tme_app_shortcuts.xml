@@ -1,127 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE appendix SYSTEM "../../dtd/dblite.dtd">
 <appendix id="tme-keyboard">
-	<title>keyboard shortcuts</title>
-	<simplesect>
-		<para>
-			List of keyboard shortcuts and commands.
-		</para>
-	</simplesect>
-	<sect1 id="tme-keyboard-shortcuts">
-		<title>Keyboard shortcuts</title>
-		<variablelist>
-			<varlistentry>
-				<term>Ctrl-Q</term>
-				<listitem>
-					<para>
-						Quit the program
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-C</term>
-				<listitem>
-					<para>
-						Copy the selected text to the clipboard
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-F</term>
-				<listitem>
-					<para>
-						Open the Find dialog for text searches
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-O</term>
-				<listitem>
-					<para>
-						Open files to diff/merge
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-S</term>
-				<listitem>
-					<para>
-						Save the changes
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-Shift-S</term>
-				<listitem>
-					<para>
-						Save as...
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>F7</term>
-				<listitem>
-					<para>
-						Go to next difference
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Shift-F7</term>
-				<listitem>
-					<para>
-						Go to previous difference
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>F8</term>
-				<listitem>
-					<para>
-						Go to next conflict
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Shift-F8</term>
-				<listitem>
-					<para>
-						Go to previous conflict
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-D</term>
-				<listitem>
-					<para>
-						Toggle between one-pane diff and two-pane diff
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-R</term>
-				<listitem>
-					<para>
-						Reload the files and revert all changes made
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-T</term>
-				<listitem>
-					<para>
-						Toggles between showing whitespaces or not
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Ctrl-mousewheel</term>
-				<listitem>
-					<para>
-						Scroll the display left/right
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-	</sect1>
+    <title>keyboard shortcuts</title>
+    <simplesect>
+        <para>
+            List of keyboard shortcuts and commands.
+        </para>
+    </simplesect>
+    <sect1 id="tme-keyboard-shortcuts">
+        <title>Keyboard shortcuts</title>
+        <variablelist>
+            <varlistentry>
+                <term>Ctrl-Q, Ctrl-W, Escape</term>
+                <listitem>
+                    <para>
+                        Quit the program
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-C</term>
+                <listitem>
+                    <para>
+                        Copy the selected text to the clipboard
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-X, Shift-Del</term>
+                <listitem>
+                    <para>
+                        Cut the selected text to the clipboard
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-V, Shift-Insert</term>
+                <listitem>
+                    <para>
+                        Paste the selected text from the clipboard
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-Z, Alt-Backspace</term>
+                <listitem>
+                    <para>
+                        Undo the last edits
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-F</term>
+                <listitem>
+                    <para>
+                        Open the Find dialog for text searches
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-O</term>
+                <listitem>
+                    <para>
+                        Open files to diff/merge
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-S</term>
+                <listitem>
+                    <para>
+                        Save the changes
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-Shift-S</term>
+                <listitem>
+                    <para>
+                        Save as...
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>F7</term>
+                <listitem>
+                    <para>
+                        Go to next difference
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Shift-F7</term>
+                <listitem>
+                    <para>
+                        Go to previous difference
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>F8</term>
+                <listitem>
+                    <para>
+                        Go to next conflict
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Shift-F8</term>
+                <listitem>
+                    <para>
+                        Go to previous conflict
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-D</term>
+                <listitem>
+                    <para>
+                        Toggle between one-pane diff and two-pane diff
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-R</term>
+                <listitem>
+                    <para>
+                        Reload the files and revert all changes made
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-T</term>
+                <listitem>
+                    <para>
+                        Toggles between showing whitespaces or not
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-L</term>
+                <listitem>
+                    <para>
+                        Toggles between collapsing unchanged sections or not
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-P</term>
+                <listitem>
+                    <para>
+                        Toggles between line wrapping
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-G</term>
+                <listitem>
+                    <para>
+                        Go to line
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-A</term>
+                <listitem>
+                    <para>
+                        Select all text
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-P</term>
+                <listitem>
+                    <para>
+                        Toggles between line wrapping
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-U</term>
+                <listitem>
+                    <para>
+                        Switches views
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Ctrl-mousewheel</term>
+                <listitem>
+                    <para>
+                        Scroll the display left/right
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </sect1>
 </appendix>
