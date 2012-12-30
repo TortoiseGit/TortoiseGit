@@ -36,6 +36,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	m_ttShown = FALSE;
 	m_bDyn = FALSE;
 	m_bWantReturn = FALSE;
+	m_bTrim = TRUE;
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
 
@@ -112,11 +113,13 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	else
 		cbei.iItem = pos;
 
-	str.Trim(_T(" "));
+	if (m_bTrim)
+		str.Trim(_T(" "));
 	CString combostring = str;
 	combostring.Replace('\r', ' ');
 	combostring.Replace('\n', ' ');
-	str=combostring=combostring.Trim();
+	if (m_bTrim)
+		combostring.Trim();
 	cbei.pszText = const_cast<LPTSTR>(combostring.GetString());
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
@@ -229,7 +232,8 @@ void CHistoryCombo::SaveHistory()
 	//add the current item to the history
 	CString sCurItem;
 	GetWindowText(sCurItem);
-	sCurItem.Trim();
+	if (m_bTrim)
+		sCurItem.Trim();
 	if (!sCurItem.IsEmpty())
 		AddString(sCurItem, 0);
 	//save history to registry/inifile
