@@ -25,6 +25,7 @@
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 #include "registry.h"
+#include "SelectFileFilter.h"
 
 extern CString sOrigCWD;
 
@@ -216,24 +217,15 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = _countof(szFile);
-	CString sFilter;
-	TCHAR * pszFilters = NULL;
+
+	CSelectFileFilter fileFilter;
 	if (filter)
 	{
-		sFilter.LoadString(filter);
-		pszFilters = new TCHAR[sFilter.GetLength()+4];
-		_tcscpy_s (pszFilters, sFilter.GetLength()+4, sFilter);
-		// Replace '|' delimiters with '\0's
-		TCHAR *ptr = pszFilters + _tcslen(pszFilters);  //set ptr at the NULL
-		while (ptr != pszFilters)
-		{
-			if (*ptr == '|')
-				*ptr = '\0';
-			ptr--;
-		}
-		ofn.lpstrFilter = pszFilters;
+		fileFilter.Load(filter);
+		ofn.lpstrFilter = fileFilter;
 	}
 	ofn.nFilterIndex = 1;
+
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = NULL;
@@ -264,15 +256,11 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	sOrigCWD.ReleaseBuffer();
 	if (bRet)
 	{
-		if (pszFilters)
-			delete [] pszFilters;
 		path = CString(ofn.lpstrFile);
 		if (filterindex)
 			*filterindex = ofn.nFilterIndex;
 		return true;
 	}
-	if (pszFilters)
-		delete [] pszFilters;
 	return false;
 }
 
