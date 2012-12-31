@@ -142,7 +142,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 		CBitmap		cBitmap;
 		BITMAP		bmBitmap;
 
-		cBitmap.Attach(LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHBAR),
+		cBitmap.Attach(LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_REVGRAPHBAR),
 			IMAGE_BITMAP, 0, 0,
 			LR_DEFAULTSIZE|LR_CREATEDIBSECTION));
 		cBitmap.GetBitmap(&bmBitmap);
@@ -226,9 +226,6 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	// begin background operation
-
-	StartWorkerThread();
 
 	// set up the status bar
 	m_StatusBar.Create(WS_CHILD|WS_VISIBLE|SBT_OWNERDRAW,
@@ -269,6 +266,9 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	m_Graph.SetOwner(this);
 	m_Graph.UpdateWindow();
 	DoZoom (DEFAULT_ZOOM);
+
+	// begin background operation
+	StartWorkerThread();
 
 	EnableSaveRestore(_T("RevisionGraphDlg"));
 //	if (GetExplorerHWND())

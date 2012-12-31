@@ -104,7 +104,7 @@ IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 
 IDB_LOGOFLIPPED         BITMAP                  "tortoisegit_logoflipped.bmp"
 IDB_TTF_BMP             BITMAP                  "ttf_glyph.bmp"
-IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
+IDI_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
 IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
