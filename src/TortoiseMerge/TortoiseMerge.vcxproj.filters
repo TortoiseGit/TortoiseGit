@@ -312,13 +312,13 @@
     <ClCompile Include="..\Git\GitAdminDir.cpp">
       <Filter>Git\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="K:\TortoiseGit\src\Git\GitPatch.cpp">
+    <ClCompile Include="..\Git\GitPatch.cpp">
       <Filter>Git\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\HTMLFormatter.cpp">
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\MessageBox.cpp">
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp">
       <Filter>Utils\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppUtils.cpp">

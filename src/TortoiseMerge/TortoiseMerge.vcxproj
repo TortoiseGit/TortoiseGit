@@ -143,9 +143,9 @@
     <ClCompile Include="FileTextLines.cpp" />
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="GotoLineDlg.cpp" />
-    <ClCompile Include="K:\TortoiseGit\src\Git\GitPatch.cpp" />
-    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\HTMLFormatter.cpp" />
-    <ClCompile Include="K:\TortoiseGit\src\Utils\MiscUI\MessageBox.cpp" />
+    <ClCompile Include="..\Git\GitPatch.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\HTMLFormatter.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\MessageBox.cpp" />
     <ClCompile Include="LeftView.cpp" />
     <ClCompile Include="LineDiffBar.cpp" />
     <ClCompile Include="LocatorBar.cpp" />
