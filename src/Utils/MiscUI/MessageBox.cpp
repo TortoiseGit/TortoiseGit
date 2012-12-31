@@ -709,7 +709,7 @@ void CMessageBox::OnButton2()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp=NULL; // Function pointer
-		HINSTANCE hInstHtmlHelp = LoadLibrary(_T("HHCtrl.ocx"));
+		HINSTANCE hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
 		HWND hHelp = NULL;
 		if (hInstHtmlHelp != NULL)
 		{
@@ -736,7 +736,7 @@ void CMessageBox::OnButton3()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp=NULL; // Function pointer
-		HINSTANCE hInstHtmlHelp = LoadLibrary(_T("HHCtrl.ocx"));
+		HINSTANCE hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
 		HWND hHelp = NULL;
 		if (hInstHtmlHelp != NULL)
 		{

@@ -177,7 +177,7 @@ BOOL CMailMsg::MAPIInitialize()
 
 	// Load MAPI.dll
 
-	m_hMapi = ::LoadLibrary(_T("mapi32.dll"));
+	m_hMapi = AtlLoadSystemLibraryUsingFullPath(_T("mapi32.dll"));
 	if (!m_hMapi)
 	{
 		m_sErrorMsg = _T("Error loading mapi32.dll");

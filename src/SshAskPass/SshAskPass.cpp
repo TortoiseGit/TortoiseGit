@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include "propsys.h"
 #include "PropKey.h"
+#include <atlbase.h>
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -102,7 +103,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 {
 	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
 
-	HMODULE hShell = LoadLibrary(_T("Shell32.dll"));
+	HMODULE hShell = AtlLoadSystemLibraryUsingFullPath(_T("Shell32.dll"));
 
 	if (hShell) {
 		SHGPSFW pfnSHGPSFW = (SHGPSFW)::GetProcAddress(hShell, "SHGetPropertyStoreForWindow");

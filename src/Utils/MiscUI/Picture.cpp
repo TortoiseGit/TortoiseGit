@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "Picture.h"
 #include "SmartHandle.h"
+#include <atlbase.h>
 
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "gdiplus.lib")
@@ -126,7 +127,7 @@ bool CPicture::Load(tstring sFilePathName)
 		return true;
 
 	// Load & initialize the GDI+ library if available
-	HMODULE hGdiPlusLib = LoadLibrary(_T("gdiplus.dll"));
+	HMODULE hGdiPlusLib = AtlLoadSystemLibraryUsingFullPath(_T("gdiplus.dll"));
 	if (hGdiPlusLib && GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL) == Ok)
 	{
 		bHaveGDIPlus = true;

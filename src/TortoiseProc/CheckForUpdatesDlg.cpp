@@ -667,7 +667,7 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 
 	if (SysInfo::Instance().IsVistaOrLater())
 	{
-		CAutoLibrary hShell = ::LoadLibrary(_T("shell32.dll"));
+		CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(_T("shell32.dll"));
 		if (hShell)
 		{
 			typedef HRESULT STDAPICALLTYPE SHGetKnownFolderPathFN(__in REFKNOWNFOLDERID rfid, __in DWORD dwFlags, __in_opt HANDLE hToken, __deref_out PWSTR *ppszPath);
