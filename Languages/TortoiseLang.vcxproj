@@ -73,6 +73,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="build-lang.cmd" />
+    <None Include="Tortoise_bg_BG.po" />
     <None Include="Tortoise_cs.po" />
     <None Include="Tortoise_de.po" />
     <None Include="Tortoise_es_ES.po" />

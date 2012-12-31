@@ -4,6 +4,7 @@ set OUTDIR=%1
 set CLEAN=""
 if "%2"=="clean" set CLEAN="clean"
 
+call :nmake 1026 bg_BG
 call :nmake 1028 zh_TW
 call :nmake 1029 cs
 call :nmake 1031 de

@@ -54,5 +54,8 @@
       <Filter>Translation Files</Filter>
     </None>
     <None Include="build-lang.cmd" />
+    <None Include="Tortoise_bg_BG.po">
+      <Filter>Translation Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
