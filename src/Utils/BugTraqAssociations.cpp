@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "BugTraqAssociations.h"
-
+#include <memory>
 #include <initguid.h>
 
 // {3494FA92-B139-4730-9591-01135D5E7831}
@@ -63,11 +64,10 @@ void CBugTraqAssociations::Load()
 
 			DWORD cbParameters = 0;
 			RegQueryValueEx(hk2, _T("Parameters"), NULL, NULL, (LPBYTE)NULL, &cbParameters);
-			TCHAR * szParameters = new TCHAR[cbParameters+1];
-			RegQueryValueEx(hk2, _T("Parameters"), NULL, NULL, (LPBYTE)szParameters, &cbParameters);
-			szParameters[cbParameters] = 0;
-			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters));
-			delete [] szParameters;
+			std::unique_ptr<TCHAR[]> szParameters(new TCHAR[cbParameters + 1]);
+			RegQueryValueEx(hk2, _T("Parameters"), NULL, NULL, (LPBYTE)szParameters.get(), &cbParameters);
+			szParameters.get()[cbParameters] = 0;
+			m_inner.push_back(new CBugTraqAssociation(szWorkingCopy, provider_clsid, LookupProviderName(provider_clsid), szParameters.get()));
 
 			RegCloseKey(hk2);
 		}

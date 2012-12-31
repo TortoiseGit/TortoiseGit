@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include <memory>
 
 #define WM_FILTEREDIT_INFOCLICKED	(WM_USER + 102)
 #define WM_FILTEREDIT_CANCELCLICKED	(WM_USER + 101)
@@ -146,7 +146,7 @@ protected:
 	COLORREF				m_backColor;
 	HBRUSH					m_brBack;
 	IFilterEditValidator *	m_pValidator;
-	TCHAR *					m_pCueBanner;
+	std::unique_ptr<TCHAR[]>	m_pCueBanner;
 };
 
 

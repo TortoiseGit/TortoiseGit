@@ -28,6 +28,7 @@
 #include "Globals.h"
 #include "StringUtils.h"
 #include "../Resources/LoglistCommonResource.h"
+#include <memory>
 
 #if defined(_MFC_VER)
 //#include "MessageBox.h"
@@ -351,12 +352,11 @@ bool CTGitPath::Delete(bool bTrash) const
 	{
 		if ((bTrash)||(IsDirectory()))
 		{
-			TCHAR * buf = new TCHAR[m_sBackslashPath.GetLength()+2];
-			_tcscpy_s(buf, m_sBackslashPath.GetLength()+2, m_sBackslashPath);
+			std::unique_ptr<TCHAR[]> buf(new TCHAR[m_sBackslashPath.GetLength() + 2]);
+			_tcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
 			buf[m_sBackslashPath.GetLength()] = 0;
 			buf[m_sBackslashPath.GetLength()+1] = 0;
-			bRet = CTGitPathList::DeleteViaShell(buf, bTrash);
-			delete [] buf;
+			bRet = CTGitPathList::DeleteViaShell(buf.get(), bTrash);
 		}
 		else
 		{

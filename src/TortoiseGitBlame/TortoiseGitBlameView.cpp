@@ -392,10 +392,9 @@ CString CTortoiseGitBlameView::GetAppDirectory()
 	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		TCHAR * pBuf = new TCHAR[bufferlen];
-		len = GetModuleFileName(NULL, pBuf, bufferlen);
-		path = CString(pBuf, len);
-		delete [] pBuf;
+		std::unique_ptr<TCHAR[]> pBuf(new TCHAR[bufferlen]);
+		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
+		path = CString(pBuf.get(), len);
 	} while(len == bufferlen);
 
 	path = path.Left(path.ReverseFind(_T('\\')));

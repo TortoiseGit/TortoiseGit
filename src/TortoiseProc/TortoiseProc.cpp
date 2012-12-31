@@ -440,11 +440,11 @@ BOOL CTortoiseProcApp::InitInstance()
 	// apps might still be needing the recent ones.
 	{
 		DWORD len = GetTortoiseGitTempPath(0, NULL);
-		TCHAR * path = new TCHAR[len + 100];
-		len = GetTortoiseGitTempPath (len+100, path);
+		std::unique_ptr<TCHAR[]> path(new TCHAR[len + 100]);
+		len = GetTortoiseGitTempPath (len + 100, path.get());
 		if (len != 0)
 		{
-			CDirFileEnum finder(path);
+			CDirFileEnum finder(path.get());
 			FILETIME systime_;
 			::GetSystemTimeAsFileTime(&systime_);
 			__int64 systime = (((_int64)systime_.dwHighDateTime)<<32) | ((__int64)systime_.dwLowDateTime);
@@ -474,7 +474,6 @@ BOOL CTortoiseProcApp::InitInstance()
 				}
 			}
 		}
-		delete[] path;
 	}
 
 	// Since the dialog has been closed, return FALSE so that we exit the

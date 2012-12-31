@@ -576,15 +576,13 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	viewer = txtexe;
 
 	DWORD len = ExpandEnvironmentStrings(viewer, NULL, 0);
-	TCHAR * buf = new TCHAR[len+1];
-	ExpandEnvironmentStrings(viewer, buf, len);
-	viewer = buf;
-	delete [] buf;
+	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
+	ExpandEnvironmentStrings(viewer, buf.get(), len);
+	viewer = buf.get();
 	len = ExpandEnvironmentStrings(file, NULL, 0);
-	buf = new TCHAR[len+1];
-	ExpandEnvironmentStrings(file, buf, len);
-	file = buf;
-	delete [] buf;
+	std::unique_ptr<TCHAR[]> buf2(new TCHAR[len + 1]);
+	ExpandEnvironmentStrings(file, buf2.get(), len);
+	file = buf2.get();
 	file = _T("\"")+file+_T("\"");
 	if (viewer.IsEmpty())
 	{

@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007 - TortoiseSVN
+// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2007,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,7 +32,6 @@ CFilterEdit::CFilterEdit() : m_hIconCancelNormal(NULL)
 	, m_pValidator(NULL)
 	, m_backColor(GetSysColor(COLOR_WINDOW))
 	, m_brBack(NULL)
-	, m_pCueBanner(NULL)
 {
 	m_rcEditArea.SetRect(0, 0, 0, 0);
 	m_rcButtonArea.SetRect(0, 0, 0, 0);
@@ -50,8 +50,6 @@ CFilterEdit::~CFilterEdit()
 		DestroyIcon(m_hIconInfo);
 	if (m_brBack)
 		DeleteObject(m_brBack);
-	if (m_pCueBanner)
-		delete [] m_pCueBanner;
 }
 
 BEGIN_MESSAGE_MAP(CFilterEdit, CEdit)
@@ -131,11 +129,9 @@ BOOL CFilterEdit::SetCueBanner(LPCWSTR lpcwText)
 {
 	if (lpcwText)
 	{
-		if (m_pCueBanner)
-			delete [] m_pCueBanner;
 		size_t len = _tcslen(lpcwText);
-		m_pCueBanner = new TCHAR[len+1];
-		_tcscpy_s(m_pCueBanner, len+1, lpcwText);
+		m_pCueBanner.reset(new TCHAR[len + 1]);
+		_tcscpy_s(m_pCueBanner.get(), len + 1, lpcwText);
 		InvalidateRect(NULL, TRUE);
 		return TRUE;
 	}
@@ -358,11 +354,11 @@ void CFilterEdit::OnPaint()
 
 void CFilterEdit::DrawDimText()
 {
-	if (m_pCueBanner == NULL)
+	if (m_pCueBanner.get() == NULL)
 		return;
 	if (GetWindowTextLength())
 		return;
-	if (_tcslen(m_pCueBanner) == 0)
+	if (m_pCueBanner.get()[0] == 0)
 		return;
 	if (GetFocus() == this)
 		return;
@@ -377,7 +373,7 @@ void CFilterEdit::DrawDimText()
 	dcDraw.SelectObject((*GetFont()));
 	dcDraw.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
 	dcDraw.SetBkColor(GetSysColor(COLOR_WINDOW));
-	dcDraw.DrawText(m_pCueBanner, (int)_tcslen(m_pCueBanner), &rRect, DT_CENTER | DT_VCENTER);
+	dcDraw.DrawText(m_pCueBanner.get(), (int)_tcslen(m_pCueBanner.get()), &rRect, DT_CENTER | DT_VCENTER);
 	dcDraw.RestoreDC(iState);
 	return;
 }

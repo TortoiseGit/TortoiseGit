@@ -107,15 +107,11 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					UINT len = DragQueryFile(drop, i, NULL, 0);
 					if (len == 0)
 						continue;
-					TCHAR * szFileName = new TCHAR[len+1];
-					if (0 == DragQueryFile(drop, i, szFileName, len+1))
-					{
-						delete [] szFileName;
+					std::unique_ptr<TCHAR[]> szFileName(new TCHAR[len + 1]);
+					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
-					}
-					stdstring str = stdstring(szFileName);
-					delete [] szFileName;
-					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(szFileName)))
+					stdstring str = stdstring(szFileName.get());
+					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
 					{
 						if (itemStates & ITEMIS_ONLYONE)
 						{
@@ -694,13 +690,13 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
 	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
-	TCHAR * path = new TCHAR[pathlength+1];
-	TCHAR * tempFile = new TCHAR[pathlength + 100];
-	GetTortoiseGitTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("git"), 0, tempFile);
-	tempfile = stdstring(tempFile);
+	std::unique_ptr<TCHAR[]> path(new TCHAR[pathlength + 1]);
+	std::unique_ptr<TCHAR[]> tempFile(new TCHAR[pathlength + 100]);
+	GetTortoiseGitTempPath(pathlength+1, path.get());
+	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
+	tempfile = stdstring(tempFile.get());
 
-	CAutoFile file = ::CreateFile (tempFile,
+	CAutoFile file = ::CreateFile(tempFile.get(),
 		GENERIC_WRITE,
 		FILE_SHARE_READ,
 		0,
@@ -708,8 +704,6 @@ bool CShellExt::WriteClipboardPathsToTempFile(stdstring& tempfile)
 		FILE_ATTRIBUTE_TEMPORARY,
 		0);
 
-	delete [] path;
-	delete [] tempFile;
 	if (!file)
 		return false;
 
@@ -747,13 +741,13 @@ stdstring CShellExt::WriteFileListToTempFile()
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
 	DWORD pathlength = GetTortoiseGitTempPath(0, NULL);
-	TCHAR * path = new TCHAR[pathlength+1];
-	TCHAR * tempFile = new TCHAR[pathlength + 100];
-	GetTortoiseGitTempPath (pathlength+1, path);
-	GetTempFileName (path, _T("git"), 0, tempFile);
-	stdstring retFilePath = stdstring(tempFile);
+	std::unique_ptr<TCHAR[]> path(new TCHAR[pathlength + 1]);
+	std::unique_ptr<TCHAR[]> tempFile(new TCHAR[pathlength + 100]);
+	GetTortoiseGitTempPath(pathlength + 1, path.get());
+	GetTempFileName(path.get(), _T("git"), 0, tempFile.get());
+	stdstring retFilePath = stdstring(tempFile.get());
 
-	CAutoFile file = ::CreateFile (tempFile,
+	CAutoFile file = ::CreateFile (tempFile.get(),
 								GENERIC_WRITE,
 								FILE_SHARE_READ,
 								0,
@@ -761,8 +755,6 @@ stdstring CShellExt::WriteFileListToTempFile()
 								FILE_ATTRIBUTE_TEMPORARY,
 								0);
 
-	delete [] path;
-	delete [] tempFile;
 	if (!file)
 		return stdstring();
 
@@ -1480,13 +1472,11 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 						LPCSTR lpstr = (LPCSTR)GlobalLock(hglb);
 
 						DWORD len = GetTortoiseGitTempPath(0, NULL);
-						TCHAR * path = new TCHAR[len+1];
-						TCHAR * tempF = new TCHAR[len+100];
-						GetTortoiseGitTempPath (len+1, path);
-						GetTempFileName (path, TEXT("git"), 0, tempF);
-						std::wstring sTempFile = std::wstring(tempF);
-						delete [] path;
-						delete [] tempF;
+						std::unique_ptr<TCHAR[]> path(new TCHAR[len + 1]);
+						std::unique_ptr<TCHAR[]> tempF(new TCHAR[len + 100]);
+						GetTortoiseGitTempPath(len + 1, path.get());
+						GetTempFileName(path.get(), TEXT("git"), 0, tempF.get());
+						std::wstring sTempFile = std::wstring(tempF.get());
 
 						FILE * outFile;
 						size_t patchlen = strlen(lpstr);

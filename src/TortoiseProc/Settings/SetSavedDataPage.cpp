@@ -297,8 +297,8 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 
 	int count = 0;
 	DWORD len = GetTortoiseGitTempPath(0, NULL);
-	TCHAR * path = new TCHAR[len + 100];
-	len = GetTortoiseGitTempPath(len + 100, path);
+	std::unique_ptr<TCHAR[]> path(new TCHAR[len + 100]);
+	len = GetTortoiseGitTempPath(len + 100, path.get());
 	if (len != 0)
 	{
 		int lastcount;
@@ -306,7 +306,7 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 		{
 			lastcount = count;
 			count = 0;
-			CDirFileEnum finder(path);
+			CDirFileEnum finder(path.get());
 			bool isDir;
 			CString filepath;
 			while (finder.NextFile(filepath, &isDir))
@@ -325,8 +325,6 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 			}
 		} while (lastcount != count);
 	}
-
-	delete[] path;
 
 	if (count == 0)
 		GetDlgItem(IDC_TEMPFILESCLEAR)->EnableWindow(FALSE);

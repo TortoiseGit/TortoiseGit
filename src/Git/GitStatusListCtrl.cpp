@@ -2015,20 +2015,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 					filelist += _T("|");
 					int len = filelist.GetLength();
-					TCHAR * buf = new TCHAR[len+2];
-					_tcscpy_s(buf, len+2, filelist);
+					std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
+					_tcscpy_s(buf.get(), len + 2, filelist);
 					for (int i=0; i<len; ++i)
-						if (buf[i] == '|')
-							buf[i] = 0;
+						if (buf.get()[i] == '|')
+							buf.get()[i] = 0;
 					SHFILEOPSTRUCT fileop;
 					fileop.hwnd = this->m_hWnd;
 					fileop.wFunc = FO_DELETE;
-					fileop.pFrom = buf;
+					fileop.pFrom = buf.get();
 					fileop.pTo = NULL;
 					fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | ((GetAsyncKeyState(VK_SHIFT) & 0x8000) ? 0 : FOF_ALLOWUNDO);
 					fileop.lpszProgressTitle = _T("deleting file");
 					int result = SHFileOperation(&fileop);
-					delete [] buf;
 
 					if ( (result==0) && (!fileop.fAnyOperationsAborted) )
 					{

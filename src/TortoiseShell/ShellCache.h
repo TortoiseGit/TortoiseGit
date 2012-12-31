@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -476,11 +477,11 @@ public:
 	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
-		TCHAR * buf = new TCHAR[len+1];
-		_tcscpy_s(buf, len+1, path);
+		std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 1]);
+		_tcscpy_s(buf.get(), len + 1, path);
 		if (! bIsDir)
 		{
-			TCHAR * ptr = _tcsrchr(buf, '\\');
+			TCHAR * ptr = _tcsrchr(buf.get(), '\\');
 			if (ptr != 0)
 			{
 				*ptr = 0;
@@ -489,21 +490,20 @@ public:
 		if ((GetTickCount() - ADMINDIRTIMEOUT) < admindirticker)
 		{
 			std::map<stdstring, AdminDir_s>::iterator iter;
-			sAdminDirCacheKey.assign(buf);
+			sAdminDirCacheKey.assign(buf.get());
 			if ((iter = admindircache.find(sAdminDirCacheKey)) != admindircache.end())
 			{
-				delete [] buf;
 				if (ProjectTopDir && iter->second.bHasAdminDir)
 					*ProjectTopDir = iter->second.sProjectRoot.c_str();
 				return iter->second.bHasAdminDir;
 			}
 		}
 		CString sProjectRoot;
-		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf, true, &sProjectRoot);
+		BOOL hasAdminDir = g_GitAdminDir.HasAdminDir(buf.get(), true, &sProjectRoot);
 		admindirticker = GetTickCount();
 		Locker lock(m_critSec);
 
-		AdminDir_s &ad = admindircache[buf];
+		AdminDir_s &ad = admindircache[buf.get()];
 		ad.bHasAdminDir = hasAdminDir;
 		if (hasAdminDir)
 		{
@@ -513,7 +513,6 @@ public:
 				*ProjectTopDir = sProjectRoot;
 		}
 
-		delete [] buf;
 		return hasAdminDir;
 	}
 	bool IsColumnsEveryWhere()

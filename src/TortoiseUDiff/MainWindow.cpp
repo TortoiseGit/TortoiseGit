@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -268,10 +269,9 @@ std::wstring CMainWindow::GetAppDirectory()
 	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		TCHAR * pBuf = new TCHAR[bufferlen];
-		len = GetModuleFileName(NULL, pBuf, bufferlen);
-		path = pBuf;
-		delete [] pBuf;
+		std::unique_ptr<TCHAR[]> pBuf(new TCHAR[bufferlen]);
+		len = GetModuleFileName(NULL, pBuf.get(), bufferlen);
+		path = pBuf.get();
 	} while(len == bufferlen);
 	path = path.substr(0, path.rfind('\\') + 1);
 
@@ -449,10 +449,9 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 void CMainWindow::SetTitle(LPCTSTR title)
 {
 	size_t len = _tcslen(title);
-	TCHAR * pBuf = new TCHAR[len+40];
-	_stprintf_s(pBuf, len+40, _T("%s - TortoiseGitUDiff"), title);
-	SetWindowTitle(std::wstring(pBuf));
-	delete [] pBuf;
+	std::unique_ptr<TCHAR[]> pBuf(new TCHAR[len + 40]);
+	_stprintf_s(pBuf.get(), len + 40, _T("%s - TortoiseGitUDiff"), title);
+	SetWindowTitle(std::wstring(pBuf.get()));
 }
 
 void CMainWindow::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char *face)

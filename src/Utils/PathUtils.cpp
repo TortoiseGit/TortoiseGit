@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,13 +19,14 @@
 //
 #include "stdafx.h"
 #include "PathUtils.h"
+#include <memory>
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 {
-	size_t len = _tcslen(path);
-	TCHAR * buf = new TCHAR[len+10];
-	TCHAR * internalpathbuf = new TCHAR[len+10];
-	TCHAR * pPath = internalpathbuf;
+	size_t len = _tcslen(path) + 10;
+	std::unique_ptr<TCHAR[]> buf(new TCHAR[len]);
+	std::unique_ptr<TCHAR[]> internalpathbuf(new TCHAR[len]);
+	TCHAR * pPath = internalpathbuf.get();
 	SECURITY_ATTRIBUTES attribs;
 
 	SecureZeroMemory(&attribs, sizeof(SECURITY_ATTRIBUTES));
@@ -32,23 +34,20 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 	attribs.nLength = sizeof(SECURITY_ATTRIBUTES);
 	attribs.bInheritHandle = FALSE;
 
-	ConvertToBackslash(internalpathbuf, path, len+10);
+	ConvertToBackslash(internalpathbuf.get(), path, len);
 	do
 	{
-		SecureZeroMemory(buf, (len+10)*sizeof(TCHAR));
+		SecureZeroMemory(buf.get(), (len)*sizeof(TCHAR));
 		TCHAR * slashpos = _tcschr(pPath, '\\');
 		if (slashpos)
-			_tcsncpy_s(buf, len+10, internalpathbuf, slashpos - internalpathbuf);
+			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
 		else
-			_tcsncpy_s(buf, len+10, internalpathbuf, len+10);
-		CreateDirectory(buf, &attribs);
+			_tcsncpy_s(buf.get(), len, internalpathbuf.get(), len);
+		CreateDirectory(buf.get(), &attribs);
 		pPath = _tcschr(pPath, '\\');
 	} while ((pPath++)&&(_tcschr(pPath, '\\')));
 
-	BOOL bRet = CreateDirectory(internalpathbuf, &attribs);
-	delete[] buf;
-	delete[] internalpathbuf;
-	return bRet;
+	return CreateDirectory(internalpathbuf.get(), &attribs);
 }
 
 void CPathUtils::Unescape(char * psz)
@@ -269,29 +268,24 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = GetFullPathName(path, 0, NULL, NULL);
 		if (ret)
 		{
-			TCHAR * pathbuf = new TCHAR[ret+1];
-			if ((ret = GetFullPathName(path, ret, pathbuf, NULL))!=0)
-			{
-				sRet = CString(pathbuf, ret);
-			}
-			delete [] pathbuf;
+			std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 1]);
+			if ((ret = GetFullPathName(path, ret, pathbuf.get(), NULL)) != 0)
+				sRet = CString(pathbuf.get(), ret);
 		}
 	}
 	else if (PathCanonicalize(pathbufcanonicalized, path))
 	{
 		ret = ::GetLongPathName(pathbufcanonicalized, NULL, 0);
-		TCHAR * pathbuf = new TCHAR[ret+2];
-		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf, ret+1);
-		sRet = CString(pathbuf, ret);
-		delete[] pathbuf;
+		std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 2]);
+		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf.get(), ret + 1);
+		sRet = CString(pathbuf.get(), ret);
 	}
 	else
 	{
 		ret = ::GetLongPathName(path, NULL, 0);
-		TCHAR * pathbuf = new TCHAR[ret+2];
-		ret = ::GetLongPathName(path, pathbuf, ret+1);
-		sRet = CString(pathbuf, ret);
-		delete[] pathbuf;
+		std::unique_ptr<TCHAR[]> pathbuf(new TCHAR[ret + 2]);
+		ret = ::GetLongPathName(path, pathbuf.get(), ret + 1);
+		sRet = CString(pathbuf.get(), ret);
 	}
 	if (ret == 0)
 		return path;

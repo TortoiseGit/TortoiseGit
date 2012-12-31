@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,15 +41,16 @@ CTempFiles& CTempFiles::Instance()
 CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /* = CTGitPath() */, const GitRev revision /* = GitRev() */)
 {
 	DWORD len = GetTortoiseGitTempPath(0, NULL);
-	TCHAR * temppath = new TCHAR[len+1];
-	TCHAR * tempF = new TCHAR[len+50];
-	GetTortoiseGitTempPath (len+1, temppath);
+
+	std::unique_ptr<TCHAR[]> temppath(new TCHAR[len + 1]);
+	std::unique_ptr<TCHAR[]> tempF(new TCHAR[len + 50]);
+	GetTortoiseGitTempPath(len + 1, temppath.get());
 	CTGitPath tempfile;
 	CString possibletempfile;
 	if (path.IsEmpty())
 	{
-		::GetTempFileName (temppath, _T("git"), 0, tempF);
-		tempfile = CTGitPath(tempF);
+		::GetTempFileName (temppath.get(), _T("git"), 0, tempF.get());
+		tempfile = CTGitPath(tempF.get());
 	}
 	else
 	{
@@ -57,11 +59,11 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 		{
 			if (!((GitRev&)revision).m_CommitHash.IsEmpty())
 			{
-				possibletempfile.Format(_T("%s%s-rev%s.git%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), (LPCTSTR)((GitRev&)revision).m_CommitHash.ToString().Left(7), i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(_T("%s%s-rev%s.git%3.3x.tmp%s"), temppath.get(), (LPCTSTR)path.GetFileOrDirectoryName(), (LPCTSTR)((GitRev&)revision).m_CommitHash.ToString().Left(7), i, (LPCTSTR)path.GetFileExtension());
 			}
 			else
 			{
-				possibletempfile.Format(_T("%s%s.git%3.3x.tmp%s"), temppath, (LPCTSTR)path.GetFileOrDirectoryName(), i, (LPCTSTR)path.GetFileExtension());
+				possibletempfile.Format(_T("%s%s.git%3.3x.tmp%s"), temppath.get(), (LPCTSTR)path.GetFileOrDirectoryName(), i, (LPCTSTR)path.GetFileExtension());
 			}
 			tempfile.SetFromWin(possibletempfile);
 			i++;
@@ -70,8 +72,6 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 	//now create the temp file, so that subsequent calls to GetTempFile() return
 	//different filenames.
 	CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, NULL);
-	delete [] temppath;
-	delete [] tempF;
 	if (bRemoveAtEnd)
 		m_TempFileList.AddPath(tempfile);
 	return tempfile;

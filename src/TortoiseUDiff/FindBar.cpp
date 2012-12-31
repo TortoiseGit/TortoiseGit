@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012 - TortoiseGit
 // Copyright (C) 2003-2007, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -88,10 +89,9 @@ LRESULT CFindBar::DoCommand(int id, int msg)
 void CFindBar::DoFind(bool bFindPrev)
 {
 	int len = ::GetWindowTextLength(GetDlgItem(*this, IDC_FINDTEXT));
-	TCHAR * findtext = new TCHAR[len+1];
-	::GetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findtext, len+1);
-	wstring ft = wstring(findtext);
-	delete [] findtext;
+	std::unique_ptr<TCHAR[]> findtext(new TCHAR[len + 1]);
+	::GetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findtext.get(), len + 1);
+	wstring ft = wstring(findtext.get());
 	const bool bCaseSensitive = !!SendMessage(GetDlgItem(*this, IDC_MATCHCASECHECK), BM_GETCHECK, 0, NULL);
 	const UINT message = bFindPrev ? COMMITMONITOR_FINDMSGPREV : COMMITMONITOR_FINDMSGNEXT;
 	::SendMessage(m_hParent, message, (WPARAM)bCaseSensitive, (LPARAM)ft.c_str());
