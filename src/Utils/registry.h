@@ -21,7 +21,6 @@
 #include <memory>
 #include <shlwapi.h>
 #include "tstring.h"
-#include "auto_buffer.h"
 #include "FormatMessageWrapper.h"
 
 #ifndef ASSERT
@@ -423,7 +422,6 @@ void CRegTypedBase<T, Base>::read()
     HKEY hKey = NULL;
     if ((LastError = RegOpenKeyEx (m_base, GetPlainString (m_path), 0, STANDARD_RIGHTS_READ|KEY_QUERY_VALUE|m_sam, &hKey))==ERROR_SUCCESS)
     {
-        m_read = true;
 
         T value = m_defaultvalue;
         InternalRead (hKey, value);
@@ -437,6 +435,7 @@ void CRegTypedBase<T, Base>::read()
         LastError = RegCloseKey(hKey);
     }
 
+    m_read = true;
     lastRead = GetTickCount();
 }
 
@@ -723,7 +722,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 
     if (LastError == ERROR_SUCCESS)
     {
-        auto_buffer<TCHAR> pStr (size);
+        std::unique_ptr<TCHAR[]> pStr (new TCHAR[size]);
         if ((LastError = RegQueryValueEx(hKey, GetPlainString (m_key), NULL, &type, (BYTE*) pStr.get(), &size))==ERROR_SUCCESS)
         {
             ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);

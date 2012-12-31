@@ -253,8 +253,8 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 					OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT|OFN_ALLOWMULTISELECT,
 					CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
-	auto_buffer<TCHAR> path(dlg.m_ofn.nMaxFile);
-	dlg.m_ofn.lpstrFile = path;
+	std::unique_ptr<TCHAR[]> path(new TCHAR[dlg.m_ofn.nMaxFile]);
+	dlg.m_ofn.lpstrFile = path.get();
 	INT_PTR ret = dlg.DoModal();
 	SetCurrentDirectory(g_Git.m_CurrentDir);
 	if (ret == IDOK)

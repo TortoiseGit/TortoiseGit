@@ -1219,10 +1219,10 @@ bool CAppUtils::OpenIgnoreFile(CStdioFile &file, const CString& filename)
 	if (file.GetLength() > 0)
 	{
 		file.Seek(file.GetLength() - 1, 0);
-		auto_buffer<TCHAR> buf(1);
-		file.Read(buf, 1);
+		std::unique_ptr<TCHAR[]> buf(new TCHAR[1]);
+		file.Read(buf.get(), 1);
 		file.SeekToEnd();
-		if (buf[0] != _T('\n'))
+		if (buf.get()[0] != _T('\n'))
 			file.WriteString(_T("\n"));
 	}
 	else

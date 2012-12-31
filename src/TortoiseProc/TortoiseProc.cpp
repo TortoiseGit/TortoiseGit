@@ -356,10 +356,10 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, NULL);
 		if (len)
 		{
-			auto_buffer<TCHAR> originalCurrentDirectory(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory))
+			std::unique_ptr<TCHAR[]> originalCurrentDirectory(new TCHAR[len]);
+			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
-				sOrigCWD = originalCurrentDirectory;
+				sOrigCWD = originalCurrentDirectory.get();
 				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 		}

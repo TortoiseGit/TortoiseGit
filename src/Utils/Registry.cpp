@@ -74,7 +74,7 @@ void CRegRect::InternalRead (HKEY hKey, CRect& value)
 
     if (LastError == ERROR_SUCCESS)
     {
-        auto_buffer<char> buffer (size);
+        std::unique_ptr<char[]> buffer (new char[size]);
         if ((LastError = RegQueryValueEx(hKey, m_key, NULL, &type, (BYTE*) buffer.get(), &size))==ERROR_SUCCESS)
         {
             ASSERT(type==REG_BINARY);
@@ -112,7 +112,7 @@ void CRegPoint::InternalRead (HKEY hKey, CPoint& value)
 
     if (LastError == ERROR_SUCCESS)
     {
-        auto_buffer<char> buffer(size);
+        std::unique_ptr<char[]> buffer(new char[size]);
         if ((LastError = RegQueryValueEx(hKey, m_key, NULL, &type, (BYTE*) buffer.get(), &size))==ERROR_SUCCESS)
         {
             ASSERT(type==REG_BINARY);

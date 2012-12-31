@@ -399,11 +399,11 @@ public:
 				if (pFile)
 				{
 					int size = 65536;
-					auto_buffer<char> buffer(size);
-					if (fread(buffer, sizeof(char), size, pFile))
+					std::unique_ptr<TCHAR[]> buffer(new TCHAR[size]);
+					if (fread(buffer.get(), sizeof(char), size, pFile))
 					{
 						fclose(pFile);
-						CString str = CString(buffer);
+						CString str = CString(buffer.get());
 						if (str.Left(8) == _T("gitdir: "))
 						{
 							str = str.TrimRight().Mid(8);
