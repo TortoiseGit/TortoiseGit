@@ -1178,6 +1178,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
 
 						std::vector<REFLABEL> refsToShow;
+						STRING_VECTOR remoteTrackingList;
 						STRING_VECTOR refList = m_HashMap[data->m_CommitHash];
 						for (unsigned int i = 0; i < refList.size(); i++)
 						{
@@ -1208,12 +1209,50 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									CString defaultUpstream;
 									defaultUpstream.Format(_T("refs/remotes/%s/%s"), pullRemote, pullBranch);
 									refLabel.hasTracking = true;
+									if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
+									{
+										bool found = false;
+										for (int j = i + 1; j < refList.size(); j++)
+										{
+											if (refList[j] == defaultUpstream)
+											{
+												found = true;
+												break;
+											}
+										}
+
+										if (found)
+										{
+											refsToShow.push_back(refLabel);
+											CGit::GetShortName(defaultUpstream, refLabel.name, _T("refs/remotes/"));
+											refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+											if (!m_SingleRemote.IsEmpty())
+												refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+											refLabel.singleRemote = !m_SingleRemote.IsEmpty();
+											refsToShow.push_back(refLabel);
+											remoteTrackingList.push_back(defaultUpstream);
+											continue;
+										}
+									}
 								}
 							}
 							else if (CGit::GetShortName(str, refLabel.name, _T("refs/remotes/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
 									continue;
+
+								bool found = false;
+								for (int j = 0; j < remoteTrackingList.size(); j++)
+								{
+									if (remoteTrackingList[j] == str)
+									{
+										found = true;
+										break;
+									}
+								}
+								if (found)
+									continue;
+
 								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 								if (!m_SingleRemote.IsEmpty())
 									refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
