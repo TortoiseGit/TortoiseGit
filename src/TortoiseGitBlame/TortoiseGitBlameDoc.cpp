@@ -182,9 +182,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		m_TempFileName=GetTempFile();
 
-		if(Rev.IsEmpty())
-			Rev=_T("HEAD");
-
 		cmd.Format(_T("git.exe cat-file blob %s:\"%s\""),Rev,path.GetGitPathString());
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
