@@ -113,6 +113,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		CString temp;
 		temp.Format(IDS_CANNOTBLAMENOGIT, CString(m_CurrentFileName));
 		CMessageBox::Show(NULL, temp, _T("TortoiseGitBlame"), MB_OK);
+		return FALSE;
 	}
 	else
 	{
@@ -189,6 +190,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			CString str;
 			str.Format(IDS_CHECKOUTFAILED, path.GetGitPathString());
 			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
+			return FALSE;
 		}
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
