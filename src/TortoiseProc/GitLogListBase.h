@@ -352,6 +352,7 @@ public:
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 
 		FetchRemoteList();
+		FetchTrackingBranchList();
 	}
 	void SafeTerminateThread()
 	{
@@ -383,6 +384,7 @@ public:
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 	MAP_HASH_NAME		m_HashMap;
+	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
 public:
 	CString				m_ColumnRegKey;
@@ -393,6 +395,7 @@ protected:
 		COLORREF color;
 		CString simplifiedName;
 		bool singleRemote;
+		bool hasTracking;
 	} REFLABEL;
 
 	DECLARE_MESSAGE_MAP()
@@ -415,6 +418,7 @@ protected:
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
 	void FetchRemoteList();
+	void FetchTrackingBranchList();
 	void FetchLastLogInfo();
 	void FetchFullLogInfo(CString &from, CString &to);
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);

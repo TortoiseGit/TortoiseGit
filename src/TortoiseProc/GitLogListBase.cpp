@@ -528,6 +528,28 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 	}
 }
 
+void DrawTrackingRoundRect(HDC hdc, CRect rect, HBRUSH brush, COLORREF darkColor)
+{
+	POINT point = { 4, 4 };
+	CRect rt2 = rect;
+	rt2.DeflateRect(1, 1);
+	rt2.OffsetRect(2, 2);
+
+	HPEN nullPen = ::CreatePen(PS_NULL, 0, 0);
+	HPEN oldpen = (HPEN)::SelectObject(hdc, nullPen);
+	HBRUSH darkBrush = (HBRUSH)::CreateSolidBrush(darkColor);
+	HBRUSH oldbrush = (HBRUSH)::SelectObject(hdc, darkBrush);
+	::RoundRect(hdc, rt2.left, rt2.top, rt2.right, rt2.bottom, point.x, point.y);
+
+	::SelectObject(hdc, brush);
+	rt2.OffsetRect(-2, -2);
+	::RoundRect(hdc, rt2.left, rt2.top, rt2.right, rt2.bottom, point.x, point.y);
+	::SelectObject(hdc, oldbrush);
+	::SelectObject(hdc, oldpen);
+	::DeleteObject(nullPen);
+	::DeleteObject(darkBrush);
+}
+
 void DrawLightning(HDC hdc, CRect rect, COLORREF color, int bold)
 {
 	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
@@ -564,6 +586,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 		HBRUSH brush = 0;
 		COLORREF colRef = refList[i].color;
 		bool singleRemote = refList[i].singleRemote;
+		bool hasTracking = refList[i].hasTracking;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -597,16 +620,26 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				textRect.OffsetRect(8, 0);
 			}
 
-			//Fill interior of ref label
-			::FillRect(hdc, &rt, brush);
+			if (hasTracking)
+			{
+				DrawTrackingRoundRect(hdc, rt, brush, m_Colors.Darken(colRef, 100));
+			}
+			else
+			{
+				//Fill interior of ref label
+				::FillRect(hdc, &rt, brush);
+			}
 
 			//Draw edge of label
 
 			CRect rectEdge = rt;
 
-			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,100), m_Colors.Darken(colRef,100));
-			rectEdge.DeflateRect(1,1);
-			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
+			if (!hasTracking)
+			{
+				W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef, 100), m_Colors.Darken(colRef, 100));
+				rectEdge.DeflateRect(1, 1);
+				W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef, 50), m_Colors.Darken(colRef, 50));
+			}
 
 			//Draw text inside label
 			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
@@ -1168,6 +1201,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							REFLABEL refLabel;
 							refLabel.color = RGB(255, 255, 255);
 							refLabel.singleRemote = false;
+							refLabel.hasTracking = false;
 							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
@@ -1176,6 +1210,16 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
 								else
 									refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
+
+								std::pair<CString, CString> trackingEntry = m_TrackingMap[refLabel.name];
+								CString pullRemote = trackingEntry.first;
+								CString pullBranch = trackingEntry.second;
+								if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+								{
+									CString defaultUpstream;
+									defaultUpstream.Format(_T("refs/remotes/%s/%s"), pullRemote, pullBranch);
+									refLabel.hasTracking = true;
+								}
 							}
 							else if (CGit::GetShortName(str, refLabel.name, _T("refs/remotes/")))
 							{
@@ -2388,6 +2432,7 @@ int CGitLogListBase::FetchLogAsync(void * data)
 	m_ProcData=data;
 	m_bExitThread=FALSE;
 	FetchRemoteList();
+	FetchTrackingBranchList();
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
@@ -2630,6 +2675,31 @@ void CGitLogListBase::FetchRemoteList()
 		m_SingleRemote = remoteList.size() == 1 ? remoteList[0] : _T("");
 	else
 		m_SingleRemote = _T("");
+}
+
+void CGitLogListBase::FetchTrackingBranchList()
+{
+	for (MAP_HASH_NAME::iterator it = m_HashMap.begin(); it != m_HashMap.end(); ++it)
+	{
+		for (int j = 0; j < it->second.size(); j++)
+		{
+			CString branchName;
+			if (CGit::GetShortName(it->second[j], branchName, _T("refs/heads/")))
+			{
+				CString configName;
+				configName.Format(_T("branch.%s.remote"), branchName);
+				CString pullRemote = g_Git.GetConfigValue(configName);
+
+				configName.Format(_T("branch.%s.merge"), branchName);
+				CString pullBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+
+				if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
+				{
+					m_TrackingMap[branchName] = std::make_pair(pullRemote, pullBranch);
+				}
+			}
+		}
+	}
 }
 
 void CGitLogListBase::Refresh(BOOL IsCleanFilter)
