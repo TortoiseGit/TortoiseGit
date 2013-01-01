@@ -586,7 +586,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 			W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef,50), m_Colors.Darken(colRef,50));
 
 			//Draw text inside label
-			if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
+			if (!customColor && IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 			{
 				int txtState = LISS_NORMAL;
 				if (rItem.state & LVIS_SELECTED)
@@ -597,9 +598,11 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 			else
 			{
 				W_Dc.SetBkMode(TRANSPARENT);
-				if (rItem.state & LVIS_SELECTED)
+				if (customColor || (rItem.state & LVIS_SELECTED))
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+					if (customColor)
+						clrNew = RGB(255, 255, 255);
 					COLORREF clrOld = ::SetTextColor(hdc,clrNew);
 					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
