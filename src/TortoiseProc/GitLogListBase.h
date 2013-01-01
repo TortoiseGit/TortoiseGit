@@ -393,6 +393,7 @@ protected:
 		COLORREF color;
 		CString simplifiedName;
 		bool singleRemote;
+		bool hasTracking;
 	} REFLABEL;
 
 	DECLARE_MESSAGE_MAP()
