@@ -526,7 +526,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 	}
 }
 
-void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
+void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> refList)
 {
 	GitRev* data = (GitRev*)m_arShownList.SafeGetAt(index);
 	CRect rt=rect;
@@ -544,62 +544,11 @@ void CGitLogListBase::DrawTagBranch(HDC hdc,CRect &rect,INT_PTR index)
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-	for(unsigned int i=0;i<m_HashMap[data->m_CommitHash].size();i++)
+	for (unsigned int i = 0; i < refList.size(); i++)
 	{
-		CString str;
-		str=m_HashMap[data->m_CommitHash][i];
-
-		CString shortname;
+		CString shortname = refList[i].name;
 		HBRUSH brush = 0;
-		shortname = _T("");
-		COLORREF colRef = 0;
-
-		//Determine label color
-		if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
-		{
-			if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
-				continue;
-			if( shortname == m_CurrentBranch )
-				colRef = m_Colors.GetColor(CColors::CurrentBranch);
-			else
-				colRef = m_Colors.GetColor(CColors::LocalBranch);
-
-		}
-		else if(CGit::GetShortName(str,shortname,_T("refs/remotes/")))
-		{
-			if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
-				continue;
-			colRef = m_Colors.GetColor(CColors::RemoteBranch);
-		}
-		else if(CGit::GetShortName(str,shortname,_T("refs/tags/")))
-		{
-			if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
-				continue;
-			colRef = m_Colors.GetColor(CColors::Tag);
-		}
-		else if(CGit::GetShortName(str,shortname,_T("refs/stash")))
-		{
-			if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
-				continue;
-			colRef = m_Colors.GetColor(CColors::Stash);
-			shortname=_T("stash");
-		}
-		else if(CGit::GetShortName(str,shortname,_T("refs/bisect/")))
-		{
-			if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
-				continue;
-			if(shortname.Find(_T("good")) == 0)
-			{
-				colRef = m_Colors.GetColor(CColors::BisectGood);
-				shortname = _T("good");
-			}
-
-			if(shortname.Find(_T("bad")) == 0)
-			{
-				colRef = m_Colors.GetColor(CColors::BisectBad);
-				shortname = _T("bad");
-			}
-		}
+		COLORREF colRef = refList[i].color;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -1176,47 +1125,70 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
 						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
-						int displayedRefs = 0;
-						for (unsigned int i = 0; i < m_HashMap[data->m_CommitHash].size(); i++)
+						std::vector<REFLABEL> refsToShow;
+						STRING_VECTOR refList = m_HashMap[data->m_CommitHash];
+						for (unsigned int i = 0; i < refList.size(); i++)
 						{
-							CString str = m_HashMap[data->m_CommitHash][i];
+							CString str = refList[i];
 
-							CString shortname;
-							if (CGit::GetShortName(str, shortname, _T("refs/heads/")))
+							REFLABEL refLabel;
+							refLabel.color = RGB(255, 255, 255);
+							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
 									continue;
+								if (refLabel.name == m_CurrentBranch )
+									refLabel.color = m_Colors.GetColor(CColors::CurrentBranch);
+								else
+									refLabel.color = m_Colors.GetColor(CColors::LocalBranch);
 							}
-							else if (CGit::GetShortName(str, shortname, _T("refs/remotes/")))
+							else if (CGit::GetShortName(str, refLabel.name, _T("refs/remotes/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
 									continue;
+								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 							}
-							else if (CGit::GetShortName(str, shortname, _T("refs/tags/")))
+							else if (CGit::GetShortName(str, refLabel.name, _T("refs/tags/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
 									continue;
+								refLabel.color = m_Colors.GetColor(CColors::Tag);
 							}
-							else if (CGit::GetShortName(str, shortname, _T("refs/stash")))
+							else if (CGit::GetShortName(str, refLabel.name, _T("refs/stash")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWSTASH))
 									continue;
+								refLabel.color = m_Colors.GetColor(CColors::Stash);
+								refLabel.name = _T("stash");
 							}
-							else if (CGit::GetShortName(str, shortname, _T("refs/bisect/")))
+							else if (CGit::GetShortName(str, refLabel.name, _T("refs/bisect/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWBISECT))
 									continue;
+								if (refLabel.name.Find(_T("good")) == 0)
+								{
+									refLabel.color = m_Colors.GetColor(CColors::BisectGood);
+									refLabel.name = _T("good");
+								}
+								if (refLabel.name.Find(_T("bad")) == 0)
+								{
+									refLabel.color = m_Colors.GetColor(CColors::BisectBad);
+									refLabel.name = _T("bad");
+								}
 							}
-							displayedRefs++;
+							else
+								continue;
+
+							refsToShow.push_back(refLabel);
 						}
 
-						if (displayedRefs == 0)
+						if (refsToShow.empty())
 						{
 							*pResult = CDRF_DODEFAULT;
 							return;
 						}
 
-						DrawTagBranch(pLVCD->nmcd.hdc,rect,pLVCD->nmcd.dwItemSpec);
+						DrawTagBranch(pLVCD->nmcd.hdc, rect, pLVCD->nmcd.dwItemSpec, refsToShow);
 
 						*pResult = CDRF_SKIPDEFAULT;
 						return;
