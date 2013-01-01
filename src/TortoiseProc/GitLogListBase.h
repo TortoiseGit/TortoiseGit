@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -386,6 +386,11 @@ public:
 	CString				m_ColumnRegKey;
 
 protected:
+	typedef struct {
+		CString name;
+		COLORREF color;
+	} REFLABEL;
+
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
 	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -408,7 +413,7 @@ protected:
 	void FetchLastLogInfo();
 	void FetchFullLogInfo(CString &from, CString &to);
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
-	void DrawTagBranch(HDC,CRect &rect,INT_PTR index);
+	void DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> refList);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);
 
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
