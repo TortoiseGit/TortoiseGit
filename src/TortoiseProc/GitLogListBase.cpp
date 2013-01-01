@@ -551,6 +551,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 		COLORREF colRef = refList[i].color;
 		bool singleRemote = refList[i].singleRemote;
 		bool hasTracking = refList[i].hasTracking;
+		bool sameName = refList[i].sameName;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -578,6 +579,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 
 			if (singleRemote)
 				rt.right += 4;
+
+			if (sameName)
+				rt.right += 6;
 
 			if (hasTracking)
 			{
@@ -620,6 +624,9 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 			if (singleRemote)
 				rt.left += 4;
 
+			if (sameName)
+				rt.right -= 6;
+
 			//Draw text inside label
 			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
 			if (!customColor && IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
@@ -657,6 +664,19 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				W_Dc.LineTo(rt.left + 3, (rt.top + rt.bottom) / 2);
 				W_Dc.LineTo(rt.left + 8, (rt.top + rt.bottom) / 2);
 				W_Dc.LineTo(rt.left + 2, rt.bottom - 3);
+				::SelectObject(hdc, oldpen);
+				::DeleteObject(pen);
+			}
+
+			if (sameName)
+			{
+				rt.right += 6;
+				HPEN pen = ::CreatePen(PS_SOLID, data->m_CommitHash == m_HeadHash ? 2 : 1, RGB(0, 0, 0));
+				HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
+				W_Dc.MoveTo(rt.right - 8, rt.top + 4);
+				W_Dc.LineTo(rt.right - 12, rt.bottom - 4);
+				W_Dc.LineTo(rt.right - 4, rt.bottom - 4);
+				W_Dc.LineTo(rt.right - 8, rt.top + 4);
 				::SelectObject(hdc, oldpen);
 				::DeleteObject(pen);
 			}
@@ -1188,6 +1208,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							refLabel.color = RGB(255, 255, 255);
 							refLabel.singleRemote = false;
 							refLabel.hasTracking = false;
+							refLabel.sameName = false;
 							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
@@ -1223,12 +1244,16 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 										if (found)
 										{
+											bool sameName = pullBranch == refLabel.name;
 											refsToShow.push_back(refLabel);
 											CGit::GetShortName(defaultUpstream, refLabel.name, _T("refs/remotes/"));
 											refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 											if (!m_SingleRemote.IsEmpty())
-												refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+												refLabel.simplifiedName = _T("/") + (sameName ? CString() : pullBranch);
+											else if (sameName)
+												refLabel.simplifiedName = pullRemote + _T("/");
 											refLabel.singleRemote = !m_SingleRemote.IsEmpty();
+											refLabel.sameName = sameName;
 											refsToShow.push_back(refLabel);
 											remoteTrackingList.push_back(defaultUpstream);
 											continue;

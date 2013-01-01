@@ -394,6 +394,7 @@ protected:
 		CString simplifiedName;
 		bool singleRemote;
 		bool hasTracking;
+		bool sameName;
 	} REFLABEL;
 
 	DECLARE_MESSAGE_MAP()
