@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1017,7 +1017,7 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size, char *git_path)
 {
-	char *local, *global;
+	char *local, *global, *globalxdg;
 	const char *home, *system;
 	struct config_buf buf;
 	buf.buf=buffer;
@@ -1025,11 +1025,17 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 	buf.seen = 0;
 	buf.key = key;
 
-	local=global=system=NULL;
-
 	home = get_windows_home_directory();
 	if (home)
+	{
 		global = xstrdup(mkpath("%s/.gitconfig", home));
+		globalxdg = xstrdup(mkpath("%s/.config/git/config", home));
+	}
+	else
+	{
+		global = NULL;
+		globalxdg = NULL;
+	}
 
 	system = git_etc_gitconfig();
 
@@ -1039,6 +1045,8 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 		git_config_from_file(get_config, local, &buf);
 	if (!buf.seen && global)
 		git_config_from_file(get_config, global, &buf);
+	if (!buf.seen && globalxdg)
+		git_config_from_file(get_config, globalxdg, &buf);
 	if (!buf.seen && system)
 		git_config_from_file(get_config, system, &buf);
 
@@ -1046,6 +1054,8 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 		free(local);
 	if(global)
 		free(global);
+	if (globalxdg)
+		free(globalxdg);
 
 	return !buf.seen;
 }
@@ -1095,11 +1105,15 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 		config_exclusive_filename  = git_pathdup("config");
 		break;
 	case CONFIG_GLOBAL:
+	case CONFIG_XDGGLOBAL:
 		{
 			const char *home = get_windows_home_directory();
 			if (home)
 			{
-				config_exclusive_filename = xstrdup(mkpath("%s/.gitconfig", home));
+				if (type == CONFIG_GLOBAL)
+					config_exclusive_filename = xstrdup(mkpath("%s/.gitconfig", home));
+				else
+					config_exclusive_filename = xstrdup(mkpath("%s/.config/git/config", home));
 			}
 		}
 		break;
