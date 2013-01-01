@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -398,6 +398,9 @@ BOOL CTortoiseProcApp::InitInstance()
 		{
 			// requires CWD to be set
 			CGit::m_LogEncode = CAppUtils::GetLogOutputEncode();
+
+			// make sure all config files are read in order to check that none contains an error
+			g_Git.GetConfigValue(_T("doesnot.exist"));
 		}
 		catch (char* msg)
 		{

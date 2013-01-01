@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -150,7 +150,14 @@ public:
 
 	void UpdateProjectProperties()
 	{
-		m_ProjectProperties.ReadProps(this->m_Path);
+		// do not crash if config file is broken; needed for TortoiseGitBlame
+		try
+		{
+			m_ProjectProperties.ReadProps(this->m_Path);
+		}
+		catch (char *)
+		{
+		}
 
 		if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
 			m_bShowBugtraqColumn = true;

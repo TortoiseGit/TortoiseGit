@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -141,6 +141,17 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 
 		if(!g_Git.m_CurrentDir.IsEmpty())
 			SetCurrentDirectory(g_Git.m_CurrentDir);
+
+		try
+		{
+			// make sure all config files are read in order to check that none contains an error
+			g_Git.GetConfigValue(_T("doesnot.exist"));
+		}
+		catch (char * libgiterr)
+		{
+			MessageBox(NULL, CString(libgiterr), _T("TortoiseGitBlame"), MB_ICONERROR);
+			return FALSE;
+		}
 
 		m_GitPath = path;
 		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
