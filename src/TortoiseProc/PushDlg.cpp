@@ -441,6 +441,16 @@ void CPushDlg::OnBnClickedOk()
 
 	this->m_regAutoLoad = m_bAutoLoad ;
 	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
+	if (m_RecurseSubmodules == 2)
+	{
+		if (CAppUtils::GetMsysgitVersion() < 0x01070b00)
+		{
+			CString gitver;
+			gitver.Format(CString(MAKEINTRESOURCE(IDS_GITVER_REQUIRED)), _T("--recurse-submodules=on-demand"), _T("1.7.11"));
+			CMessageBox::Show(m_hWnd, gitver, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+	}
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }

@@ -842,6 +842,7 @@
 #define IDC_BUTTON_REMOTE_BRANCH        1383
 #define IDC_EDITLOCALGITCONFIG          1383
 #define IDC_COMMIT                      1383
+#define IDS_GITVER_REQUIRED             1383
 #define IDC_BUTTON_BAD                  1383
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384

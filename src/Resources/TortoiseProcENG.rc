@@ -3906,6 +3906,7 @@ BEGIN
     IDS_FILEDIFF_EXT        "Extension"
     IDS_ERR_EMPTYDIFF       "No differences found!"
     IDS_PROC_TAG_FF         "Tag (FF)"
+    IDS_GITVER_REQUIRED     "%s requires msysgit >= %s"
 END
 
 #endif    // English (U.S.) resources

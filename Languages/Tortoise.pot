@@ -235,6 +235,11 @@ msgstr ""
 msgid "%s in %s"
 msgstr ""
 
+#. Resource IDs: (1383)
+#, c-format
+msgid "%s requires msysgit >= %s"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%s, at %s"
