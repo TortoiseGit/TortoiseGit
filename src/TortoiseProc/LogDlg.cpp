@@ -1770,6 +1770,8 @@ void CLogDlg::OnBnClickedJumpUp()
 
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
+	else
+		return;
 
 	while (pos)
 	{
@@ -1847,6 +1849,8 @@ void CLogDlg::OnBnClickedJumpDown()
 		
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
+	else
+		return;
 
 	while (pos)
 	{
