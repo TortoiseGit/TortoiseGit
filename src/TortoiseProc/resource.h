@@ -832,6 +832,7 @@
 #define IDC_BUTTON_LOCAL_BRANCH         1382
 #define IDC_EDITGLOBALGITCONFIG         1382
 #define IDC_BUTTON_SHOW_ENV             1382
+#define IDS_PROC_TAG_FF                 1382
 #define IDC_SHOW_MODIFIED_FILES         1383
 #define IDC_REPOGROUP                   1383
 #define IDC_CLONE_DIR_BROWSE            1383

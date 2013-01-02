@@ -3905,6 +3905,7 @@ BEGIN
     IDS_PROC_LOADING        "Loading..."
     IDS_FILEDIFF_EXT        "Extension"
     IDS_ERR_EMPTYDIFF       "No differences found!"
+    IDS_PROC_TAG_FF         "Tag (FF)"
 END
 
 #endif    // English (U.S.) resources

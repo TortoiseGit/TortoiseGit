@@ -174,7 +174,8 @@ enum JumpType
 	JumpType_MergePoint,
 	JumpType_Parent1,
 	JumpType_Parent2,
-	JumpType_Tag
+	JumpType_Tag,
+	JumpType_TagFF
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -344,6 +345,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT1)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT2)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG_FF)));
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
@@ -1769,6 +1771,8 @@ void CLogDlg::OnBnClickedJumpUp()
 			hashValue = data->m_CommitHash;
 		else if (jumpType == JumpType_Parent2)
 			hashValue = data->m_CommitHash;
+		else if (jumpType == JumpType_TagFF)
+			hashValue = data->m_CommitHash;
 
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
@@ -1802,7 +1806,7 @@ void CLogDlg::OnBnClickedJumpUp()
 			if (data->m_ParentHash.size() > 1)
 				found = data->m_ParentHash[1] == hashValue;
 		}
-		else if (jumpType == JumpType_Tag)
+		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (int j = 0; j < refList.size(); j++)
@@ -1813,6 +1817,9 @@ void CLogDlg::OnBnClickedJumpUp()
 					break;
 				}
 			}
+
+			if (found && jumpType == JumpType_TagFF)
+				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
 		}
 
 		if (found)
@@ -1860,6 +1867,8 @@ void CLogDlg::OnBnClickedJumpDown()
 			else
 				return;
 		}
+		else if (jumpType == JumpType_TagFF)
+			hashValue = data->m_CommitHash;
 		
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
@@ -1886,8 +1895,8 @@ void CLogDlg::OnBnClickedJumpDown()
 		else if (jumpType == JumpType_Parent1)
 			found = data->m_CommitHash == hashValue;
 		else if (jumpType == JumpType_Parent2)
-			found = data->m_CommitHash == hashValue;		
-		else if (jumpType == JumpType_Tag)
+			found = data->m_CommitHash == hashValue;
+		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
 			for (int j = 0; j < refList.size(); j++)
@@ -1898,6 +1907,9 @@ void CLogDlg::OnBnClickedJumpDown()
 					break;
 				}
 			}
+
+			if (found && jumpType == JumpType_TagFF)
+				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
 		}
 
 		if (found)
