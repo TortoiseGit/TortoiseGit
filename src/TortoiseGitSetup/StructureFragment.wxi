@@ -685,7 +685,6 @@
 
 					<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoiseBlame" ShortName="TBLAME.EXE" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
-						<File Id="F__TortoiseBlame_help" ShortName="TBLAME_H.CHM" Name="TortoiseGitBlame_en.chm" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame_en.chm" />
 						<File Id="F__SciLexer" ShortName="SCILEX.DLL" Name="SciLexer.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer.dll" />
 					</Component>
 

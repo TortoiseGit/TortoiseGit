@@ -275,7 +275,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Help Topics",                ID_HELP_FINDER
+        MENUITEM "&Help Topics",                ID_HELP_FINDER, INACTIVE
         MENUITEM SEPARATOR
         MENUITEM "&About TortoiseGitBlame...",  ID_APP_ABOUT
     END
