@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,6 +86,9 @@ protected:
 
 	HWND m_hwnd;
 	std::vector<stdstring> filenames;
+	/**
+	 * Were executable, assumeValid or skip-worktree flags changes
+	 */
 	bool m_bChanged;
 };
 

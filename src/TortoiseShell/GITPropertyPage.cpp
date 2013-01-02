@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,7 +103,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			//
 			// Respond to notifications.
 			//
-			if (code == PSN_APPLY && filenames.size() == 1 && m_bChanged)
+			if (code == PSN_APPLY && m_bChanged)
 			{
 				do
 				{
@@ -112,13 +112,9 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 					if(!path.HasAdminDir(&projectTopDir) || path.IsDirectory())
 						break;
 
-					CTGitPath relatepath;
-					CString strpath=path.GetWinPathString();
-
-					if(projectTopDir[projectTopDir.GetLength() - 1] == _T('\\'))
-						relatepath.SetFromWin(strpath.Right(strpath.GetLength() - projectTopDir.GetLength()));
-					else
-						relatepath.SetFromWin(strpath.Right(strpath.GetLength() - projectTopDir.GetLength() - 1));
+					int stripLength = projectTopDir.GetLength();
+					if (projectTopDir[stripLength - 1] != _T('\\'))
+						stripLength++;
 
 					CStringA gitdir = CUnicodeUtils::GetMulti(projectTopDir, CP_UTF8);
 					git_repository *repository = NULL;
@@ -135,64 +131,73 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						break;
 					}
 
+					BOOL assumeValid = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0);
+					BOOL skipWorktree = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0);
+					BOOL executable = (BOOL)SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0);
+
 					bool changed = false;
 
-					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
-					int idx = git_index_find(index, pathA);
-					if (idx >= 0)
+					for (auto it = filenames.cbegin(); it < filenames.cend(); it++)
 					{
-						git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(index, idx)); // HACK
+						CTGitPath file;
+						file.SetFromWin(CString(it->c_str()).Mid(stripLength));
+						CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
+						int idx = git_index_find(index, pathA);
+						if (idx >= 0)
+						{
+							git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(index, idx)); // HACK
 
-						if (SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_GETCHECK, 0, 0) == BST_CHECKED)
-						{
-							if (!(e->flags & GIT_IDXENTRY_VALID))
+							if (assumeValid == BST_CHECKED)
 							{
-								e->flags |= GIT_IDXENTRY_VALID;
-								changed = true;
+								if (!(e->flags & GIT_IDXENTRY_VALID))
+								{
+									e->flags |= GIT_IDXENTRY_VALID;
+									changed = true;
+								}
 							}
-						}
-						else
-						{
-							if (e->flags & GIT_IDXENTRY_VALID)
+							else if (assumeValid != BST_INDETERMINATE)
 							{
-								e->flags &= ~GIT_IDXENTRY_VALID;
-								changed = true;
+								if (e->flags & GIT_IDXENTRY_VALID)
+								{
+									e->flags &= ~GIT_IDXENTRY_VALID;
+									changed = true;
+								}
 							}
-						}
-						if (SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_GETCHECK, 0, 0) == BST_CHECKED)
-						{
-							if (!(e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE))
+							if (skipWorktree == BST_CHECKED)
 							{
-								e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
-								changed = true;
+								if (!(e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE))
+								{
+									e->flags_extended |= GIT_IDXENTRY_SKIP_WORKTREE;
+									changed = true;
+								}
 							}
-						}
-						else
-						{
-							if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+							else if (skipWorktree != BST_INDETERMINATE)
 							{
-								e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
-								changed = true;
+								if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
+								{
+									e->flags_extended &= ~GIT_IDXENTRY_SKIP_WORKTREE;
+									changed = true;
+								}
 							}
-						}
-						if (SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_GETCHECK, 0, 0) == BST_CHECKED)
-						{
-							if (!(e->mode & 0111))
+							if (executable == BST_CHECKED)
 							{
-								e->mode |= 0111;
-								changed = true;
+								if (!(e->mode & 0111))
+								{
+									e->mode |= 0111;
+									changed = true;
+								}
 							}
-						}
-						else
-						{
-							if (e->mode & 0111)
+							else if (executable != BST_INDETERMINATE)
 							{
-								e->mode &= ~0111;
-								changed = true;
+								if (e->mode & 0111)
+								{
+									e->mode &= ~0111;
+									changed = true;
+								}
 							}
+							if (changed)
+								git_index_add(index, e);
 						}
-						if (changed)
-							git_index_add(index, e);
 					}
 
 					if (changed)
@@ -206,8 +211,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 			}
 			SetWindowLongPtr (m_hwnd, DWLP_MSGRESULT, FALSE);
 			return TRUE;
-
-			}
+		}
 		case WM_DESTROY:
 			return TRUE;
 
@@ -553,19 +557,14 @@ void CGitPropertyPage::InitWorkfileView()
 	}
 
 	{
+		int stripLength = ProjectTopDir.GetLength();
+		if (ProjectTopDir[stripLength - 1] != _T('\\'))
+			stripLength++;
+
 		if (filenames.size() == 1)
 		{
 			CTGitPath relatepath;
-			CString strpath=path.GetWinPathString();
-
-			if(ProjectTopDir[ProjectTopDir.GetLength()-1] == _T('\\'))
-			{
-				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()));
-			}
-			else
-			{
-				relatepath.SetFromWin( strpath.Right(strpath.GetLength()-ProjectTopDir.GetLength()-1));
-			}
+			relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
 
 			git_commit *commit = FindFileRecentCommit(repository, relatepath.GetGitPathString());
 			if (commit != NULL)
@@ -573,34 +572,47 @@ void CGitPropertyPage::InitWorkfileView()
 				DisplayCommit(commit, IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
 				git_commit_free(commit);
 			}
+		}
 
-			if (!path.IsDirectory())
+		bool allAreFiles = true;
+		for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
+		{
+			if (PathIsDirectory(it->c_str()))
 			{
-				// get assume valid flag
-				bool assumevalid = false;
-				bool skipworktree = false;
-				bool executable = false;
-				do
+				allAreFiles = false;
+				break;
+			}
+		}
+		if (allAreFiles)
+		{
+			int assumevalid = 0;
+			int skipworktree = 0;
+			int executable = 0;
+			do
+			{
+				git_index *index = NULL;
+
+				if (git_repository_index(&index, repository))
+					break;
+
+				for (auto it = filenames.cbegin(); it < filenames.cend(); it++)
 				{
-					git_index *index = NULL;
-
-					if (git_repository_index(&index, repository))
-						break;
-
-					CStringA pathA = CUnicodeUtils::GetMulti(relatepath.GetGitPathString(), CP_UTF8);
+					CTGitPath file;
+					file.SetFromWin(CString(it->c_str()).Mid(stripLength));
+					CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
 					int idx = git_index_find(index, pathA);
 					if (idx >= 0)
 					{
 						const git_index_entry *e = git_index_get_byindex(index, idx);
 
 						if (e->flags & GIT_IDXENTRY_VALID)
-							assumevalid = true;
+							++assumevalid;
 
 						if (e->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE)
-							skipworktree = true;
+							++skipworktree;
 
 						if (e->mode & 0111)
-							executable = true;
+							++executable;
 					}
 					else
 					{
@@ -608,20 +620,35 @@ void CGitPropertyPage::InitWorkfileView()
 						ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
 						ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 						ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+						break;
 					}
+				}
+				git_index_free(index);
+			} while (0);
 
-					git_index_free(index);
-				} while (0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, assumevalid ? BST_CHECKED : BST_UNCHECKED, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, skipworktree ? BST_CHECKED : BST_UNCHECKED, 0);
-				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, executable ? BST_CHECKED : BST_UNCHECKED, 0);
+			if (assumevalid != 0 && assumevalid != filenames.size())
+			{
+				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, BST_INDETERMINATE, 0);
 			}
 			else
+				SendMessage(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), BM_SETCHECK, (assumevalid == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+
+			if (skipworktree != 0 && skipworktree != filenames.size())
 			{
-				ShowWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), SW_HIDE);
-				ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
-				ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
+				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, BST_INDETERMINATE, 0);
 			}
+			else
+				SendMessage(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), BM_SETCHECK, (skipworktree == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
+
+			if (executable != 0 && executable != filenames.size())
+			{
+				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETSTYLE, (DWORD)GetWindowLong(GetDlgItem(m_hwnd, IDC_EXECUTABLE), GWL_STYLE) & ~BS_AUTOCHECKBOX | BS_AUTO3STATE, 0);
+				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, BST_INDETERMINATE, 0);
+			}
+			else
+				SendMessage(GetDlgItem(m_hwnd, IDC_EXECUTABLE), BM_SETCHECK, (executable == 0) ? BST_UNCHECKED : BST_CHECKED, 0);
 		}
 		else
 		{
