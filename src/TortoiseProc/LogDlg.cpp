@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -169,11 +169,11 @@ END_MESSAGE_MAP()
 
 enum JumpType
 {
-	AuthorEmail,
-	CommitterEmail,
-	MergePoint,
-	Parent1,
-	Parent2
+	JumpType_AuthorEmail,
+	JumpType_CommitterEmail,
+	JumpType_MergePoint,
+	JumpType_Parent1,
+	JumpType_Parent2
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -1759,13 +1759,13 @@ void CLogDlg::OnBnClickedJumpUp()
 		if (index == 0) return;
 
 		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(index);
-		if (jumpType == AuthorEmail)
+		if (jumpType == JumpType_AuthorEmail)
 			strValue = data->GetAuthorEmail();
-		else if (jumpType == CommitterEmail)
+		else if (jumpType == JumpType_CommitterEmail)
 			strValue = data->GetCommitterEmail();
-		else if (jumpType == Parent1)
+		else if (jumpType == JumpType_Parent1)
 			hashValue = data->m_CommitHash;
-		else if (jumpType == Parent2)
+		else if (jumpType == JumpType_Parent2)
 			hashValue = data->m_CommitHash;
 
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
@@ -1782,18 +1782,18 @@ void CLogDlg::OnBnClickedJumpUp()
 	{
 		bool found = false;
 		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
-		if (jumpType == AuthorEmail)
+		if (jumpType == JumpType_AuthorEmail)
 			found = strValue == data->GetAuthorEmail();
-		else if (jumpType == CommitterEmail)
+		else if (jumpType == JumpType_CommitterEmail)
 			found = strValue == data->GetCommitterEmail();
-		else if (jumpType == MergePoint)
+		else if (jumpType == JumpType_MergePoint)
 			found = data->ParentsCount() > 1;
-		else if (jumpType == Parent1)
+		else if (jumpType == JumpType_Parent1)
 		{
 			if (data->m_ParentHash.size() > 0)
 				found = data->m_ParentHash[0] == hashValue;
 		}
-		else if (jumpType == Parent2)
+		else if (jumpType == JumpType_Parent2)
 		{
 			if (data->m_ParentHash.size() > 1)
 				found = data->m_ParentHash[1] == hashValue;
@@ -1826,18 +1826,18 @@ void CLogDlg::OnBnClickedJumpDown()
 		if (index == 0) return;
 
 		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(index);
-		if (jumpType == AuthorEmail)
+		if (jumpType == JumpType_AuthorEmail)
 			strValue = data->GetAuthorEmail();
-		else if (jumpType == CommitterEmail)
+		else if (jumpType == JumpType_CommitterEmail)
 			strValue = data->GetCommitterEmail();
-		else if (jumpType == Parent1)
+		else if (jumpType == JumpType_Parent1)
 		{
 			if (data->m_ParentHash.size() > 0)
 				hashValue = data->m_ParentHash.at(0);
 			else
 				return;
 		}
-		else if (jumpType == Parent2)
+		else if (jumpType == JumpType_Parent2)
 		{
 			if (data->m_ParentHash.size() > 1)
 				hashValue = data->m_ParentHash.at(1);
@@ -1859,15 +1859,15 @@ void CLogDlg::OnBnClickedJumpDown()
 	{
 		bool found = false;
 		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
-		if (jumpType == AuthorEmail)
+		if (jumpType == JumpType_AuthorEmail)
 			found = strValue == data->GetAuthorEmail();
-		else if (jumpType == CommitterEmail)
+		else if (jumpType == JumpType_CommitterEmail)
 			found = strValue == data->GetCommitterEmail();
-		else if (jumpType == MergePoint)
+		else if (jumpType == JumpType_MergePoint)
 			found = data->ParentsCount() > 1;
-		else if (jumpType == Parent1)
+		else if (jumpType == JumpType_Parent1)
 			found = data->m_CommitHash == hashValue;
-		else if (jumpType == Parent2)
+		else if (jumpType == JumpType_Parent2)
 			found = data->m_CommitHash == hashValue;
 
 		if (found)
