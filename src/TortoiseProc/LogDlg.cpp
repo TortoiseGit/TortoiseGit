@@ -173,7 +173,8 @@ enum JumpType
 	JumpType_CommitterEmail,
 	JumpType_MergePoint,
 	JumpType_Parent1,
-	JumpType_Parent2
+	JumpType_Parent2,
+	JumpType_Tag
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
@@ -342,6 +343,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_MERGEPOINT)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT1)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT2)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG)));
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
@@ -1800,6 +1802,18 @@ void CLogDlg::OnBnClickedJumpUp()
 			if (data->m_ParentHash.size() > 1)
 				found = data->m_ParentHash[1] == hashValue;
 		}
+		else if (jumpType == JumpType_Tag)
+		{
+			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
+			for (int j = 0; j < refList.size(); j++)
+			{
+				if (refList[j].Left(10) == _T("refs/tags/"))
+				{
+					found = true;
+					break;
+				}
+			}
+		}
 
 		if (found)
 		{
@@ -1872,7 +1886,19 @@ void CLogDlg::OnBnClickedJumpDown()
 		else if (jumpType == JumpType_Parent1)
 			found = data->m_CommitHash == hashValue;
 		else if (jumpType == JumpType_Parent2)
-			found = data->m_CommitHash == hashValue;
+			found = data->m_CommitHash == hashValue;		
+		else if (jumpType == JumpType_Tag)
+		{
+			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
+			for (int j = 0; j < refList.size(); j++)
+			{
+				if (refList[j].Left(10) == _T("refs/tags/"))
+				{
+					found = true;
+					break;
+				}
+			}
+		}
 
 		if (found)
 		{
