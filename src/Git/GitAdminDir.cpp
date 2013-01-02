@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,8 @@
 #include "UnicodeUtils.h"
 #include "GitAdminDir.h"
 #include "Git.h"
+#include <memory>
+
 GitAdminDir g_GitAdminDir;
 
 GitAdminDir::GitAdminDir()
@@ -152,14 +154,15 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 		if (!pFile)
 			return false;
 
-		char s[MAX_PATH + 8] = {0};
-		fgets(s, sizeof(s), pFile);
-
+		int size = 65536;
+		std::unique_ptr<char[]> buffer(new char[size]);
+		SecureZeroMemory(buffer.get(), size);
+		fread(buffer.get(), sizeof(char), size, pFile);
 		fclose(pFile);
-		CString gitPath(s);
-		if (gitPath.Find(L"gitdir: ") != 0)
+		CStringA gitPathA(buffer.get());
+		if (gitPathA.Left(8) != "gitdir: ")
 			return false;
-		gitPath = gitPath.Trim().Mid(8); // 8 = len("gitdir: ")
+		CString gitPath = CUnicodeUtils::GetUnicode(gitPathA.Trim().Mid(8)); // 8 = len("gitdir: ")
 		gitPath.Replace('/', '\\');
 		gitPath.TrimRight('\\');
 		gitPath.Append(_T("\\"));

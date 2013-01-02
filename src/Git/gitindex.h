@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "gitstatus.h"
 #include "SharedMutex.h"
 #include "git2.h"
+#include "UnicodeUtils.h"
 
 class CGitIndex
 {
@@ -405,14 +406,15 @@ public:
 				if (pFile)
 				{
 					int size = 65536;
-					std::unique_ptr<TCHAR[]> buffer(new TCHAR[size]);
+					std::unique_ptr<char[]> buffer(new char[size]);
+					SecureZeroMemory(buffer.get(), size);
 					if (fread(buffer.get(), sizeof(char), size, pFile))
 					{
 						fclose(pFile);
-						CString str = CString(buffer.get());
-						if (str.Left(8) == _T("gitdir: "))
+						CStringA strA(buffer.get());
+						if (strA.Left(8) == "gitdir: ")
 						{
-							str = str.TrimRight().Mid(8);
+							CString str = CUnicodeUtils::GetUnicode(strA.Trim().Mid(8)); // 8 = len("gitdir: ")
 							str.Replace(_T("/"), _T("\\"));
 							str.TrimRight(_T("\\"));
 							if (str.GetLength() > 0 && str[0] == _T('.'))
