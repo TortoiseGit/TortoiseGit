@@ -221,16 +221,22 @@ public:
 	{
 		m_LastModifyTime =0;
 		m_pExcludeList =NULL;
+		m_buffer = NULL;
 	}
 	~CGitIgnoreItem()
 	{
 		if(m_pExcludeList)
 			git_free_exclude_list(m_pExcludeList);
+		if (m_buffer)
+			free(m_buffer);
 		m_pExcludeList=NULL;
+		m_buffer = NULL;
 	}
 	__time64_t  m_LastModifyTime;
 	CStringA m_BaseDir;
+	BYTE *m_buffer;
 	EXCLUDE_LIST m_pExcludeList;
+
 	int FetchIgnoreList(const CString &projectroot, const CString &file, bool isGlobal);
 };
 

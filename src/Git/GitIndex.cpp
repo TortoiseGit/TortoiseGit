@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -916,8 +916,13 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 
 	if (this->m_pExcludeList)
 	{
-		free(m_pExcludeList);
+		git_free_exclude_list(m_pExcludeList);
 		m_pExcludeList=NULL;
+	}
+	if (m_buffer)
+	{
+		free(m_buffer);
+		m_buffer = NULL;
 	}
 
 	this->m_BaseDir.Empty();
@@ -961,23 +966,23 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 		if(filesize == INVALID_FILE_SIZE)
 			return -1;
 
-		BYTE *buffer = new BYTE[filesize + 1];
+		m_buffer = new BYTE[filesize + 1];
 
-		if(buffer == NULL)
+		if (m_buffer == NULL)
 			return -1;
 
-		if(! ReadFile(hfile, buffer,filesize,&size,NULL))
+		if (!ReadFile(hfile, m_buffer, filesize, &size, NULL))
 			return GetLastError();
 
-		BYTE *p = buffer;
+		BYTE *p = m_buffer;
 		for (DWORD i = 0; i < size; i++)
 		{
-			if (buffer[i] == '\n' || buffer[i] == '\r' || i == (size - 1))
+			if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
 			{
-				if (buffer[i] == '\n' || buffer[i] == '\r')
-					buffer[i] = 0;
+				if (m_buffer[i] == '\n' || m_buffer[i] == '\r')
+					m_buffer[i] = 0;
 				if (i == size - 1)
-					buffer[size] = 0;
+					m_buffer[size] = 0;
 
 				if(p[0] != '#' && p[0] != 0)
 					git_add_exclude((const char*)p,
@@ -985,12 +990,9 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 										m_BaseDir.GetLength(),
 										this->m_pExcludeList);
 
-				p=buffer+i+1;
+				p = m_buffer + i + 1;
 			}
 		}
-		/* Can't free buffer, exluced list will use this buffer*/
-		//delete buffer;
-		//buffer = NULL;
 	}
 	return 0;
 }
