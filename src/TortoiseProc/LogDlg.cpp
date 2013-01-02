@@ -1869,7 +1869,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		}
 		else if (jumpType == JumpType_TagFF)
 			hashValue = data->m_CommitHash;
-		
+
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
 	else
