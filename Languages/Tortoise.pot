@@ -7885,6 +7885,10 @@ msgstr ""
 msgid "Tag Info"
 msgstr ""
 
+#. Resource IDs: (1382)
+msgid "Tag (FF)"
+msgstr ""
+
 #. Resource IDs: (79)
 #, c-format
 msgid "Tagged the working tree to %s"
