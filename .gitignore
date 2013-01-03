@@ -28,3 +28,5 @@ Thumbs.db
 /src/TortoiseGit.sdf
 /src/ipch
 /Languages/bin
+/src/TortoiseGitSetup/bin
+/src/TortoiseGitSetup/obj
