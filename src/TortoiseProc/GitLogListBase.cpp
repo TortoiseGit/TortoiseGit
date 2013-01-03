@@ -175,6 +175,8 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_ColumnRegKey=_T("log");
 
+	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
+
 	m_AsyncThreadExit = FALSE;
 	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
 	m_AsynDiffListLock.Init();
@@ -526,6 +528,18 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 	}
 }
 
+void DrawLightning(HDC hdc, CRect rect, COLORREF color, int bold)
+{
+	HPEN pen = ::CreatePen(PS_SOLID, bold, color);
+	HPEN oldpen = (HPEN)::SelectObject(hdc, pen);
+	::MoveToEx(hdc, rect.left + 7, rect.top, NULL);
+	::LineTo(hdc, rect.left + 1, (rect.top + rect.bottom) / 2);
+	::LineTo(hdc, rect.left + 6, (rect.top + rect.bottom) / 2);
+	::LineTo(hdc, rect.left, rect.bottom);
+	::SelectObject(hdc, oldpen);
+	::DeleteObject(pen);
+}
+
 void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> refList)
 {
 	GitRev* data = (GitRev*)m_arShownList.SafeGetAt(index);
@@ -546,9 +560,10 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 
 	for (unsigned int i = 0; i < refList.size(); i++)
 	{
-		CString shortname = refList[i].name;
+		CString shortname = !refList[i].simplifiedName.IsEmpty() ? refList[i].simplifiedName : refList[i].name;
 		HBRUSH brush = 0;
 		COLORREF colRef = refList[i].color;
+		bool singleRemote = refList[i].singleRemote;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -574,6 +589,14 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				textpos =0;
 			}
 
+			CRect textRect = rt;
+
+			if (singleRemote)
+			{
+				rt.right += 8;
+				textRect.OffsetRect(8, 0);
+			}
+
 			//Fill interior of ref label
 			::FillRect(hdc, &rt, brush);
 
@@ -593,7 +616,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				if (rItem.state & LVIS_SELECTED)
 					txtState = LISS_SELECTED;
 
-				DrawThemeText(hTheme,hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &rt);
+				DrawThemeText(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, 0, &textRect);
 			}
 			else
 			{
@@ -602,13 +625,22 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
 					COLORREF clrOld = ::SetTextColor(hdc,clrNew);
-					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
 				}
 				else
 				{
-					::DrawText(hdc,shortname,shortname.GetLength(),&rt,textpos | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
 				}
+			}
+
+			if (singleRemote)
+			{
+				COLORREF color = ::GetSysColor(customColor ? COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT);
+				int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
+				CRect newRect;
+				newRect.SetRect(rt.left + 4, rt.top + 4, rt.left + 8, rt.bottom - 4);
+				DrawLightning(hdc, newRect, color, bold);
 			}
 
 			//::MoveToEx(hdc,rt.left,rt.top,NULL);
@@ -1126,6 +1158,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
 						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
+
 						std::vector<REFLABEL> refsToShow;
 						STRING_VECTOR refList = m_HashMap[data->m_CommitHash];
 						for (unsigned int i = 0; i < refList.size(); i++)
@@ -1134,6 +1167,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 							REFLABEL refLabel;
 							refLabel.color = RGB(255, 255, 255);
+							refLabel.singleRemote = false;
 							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
@@ -1148,6 +1182,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								if (!(m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES))
 									continue;
 								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
+								if (m_bSymbolizeRefNames)
+								{
+									if (!m_SingleRemote.IsEmpty())
+										refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
+									refLabel.singleRemote = !m_SingleRemote.IsEmpty();
+								}
 							}
 							else if (CGit::GetShortName(str, refLabel.name, _T("refs/tags/")))
 							{
@@ -2347,6 +2387,7 @@ int CGitLogListBase::FetchLogAsync(void * data)
 {
 	m_ProcData=data;
 	m_bExitThread=FALSE;
+	FetchRemoteList();
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	m_LoadingThread = AfxBeginThread(LogThreadEntry, this, THREAD_PRIORITY_LOWEST);
@@ -2580,6 +2621,15 @@ UINT CGitLogListBase::LogThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 
 	return 0;
+}
+
+void CGitLogListBase::FetchRemoteList()
+{
+	STRING_VECTOR remoteList;
+	if (!g_Git.GetRemoteList(remoteList))
+		m_SingleRemote = remoteList.size() == 1 ? remoteList[0] : _T("");
+	else
+		m_SingleRemote = _T("");
 }
 
 void CGitLogListBase::Refresh(BOOL IsCleanFilter)
