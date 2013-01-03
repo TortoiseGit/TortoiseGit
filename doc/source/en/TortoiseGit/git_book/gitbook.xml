@@ -86,7 +86,7 @@ the book, you can send me an email at
 you can clone the source of this book at
 <ulink url="http://github.com/schacon/gitbook">http://github.com/schacon/gitbook</ulink>
 and send me a patch or a pull-request.</para>
-</sect3><sect3 id="Reference"><title>References</title>
+</sect3><sect3 id="Reference1"><title>References</title>
 <para>Much of this book is pulled together from different sources
 and then added to.If you would like to read some of the original
 articles or resources, please visit them and thank the
@@ -412,7 +412,7 @@ directory are often removed or replaced by Git as you switch
 branches - this is normal. All your history is stored in the Git
 Directory; the working directory is simply a temporary checkout
 place where you can modify the files until your next commit.</para>
-</sect3></sect2><sect2 id="The_Git_Inde"><title>The Git
+</sect3></sect2><sect2 id="The_Git_Inde1"><title>The Git
 Index</title>
 <para>The Git index is used as a staging area between your working
 directory and your repository. You can use the index to build up a
@@ -502,7 +502,7 @@ Debs</ulink></para>
 article may be helpful:</para>
 <para><ulink url="http://chrisolsen.org/2008/03/10/installing-git-on-ubuntu/">Article:
 Installing Git on Ubuntu</ulink></para>
-</sect3><sect3 id="Mac_10."><title>Mac 10.4</title>
+</sect3><sect3 id="Mac_10.4"><title>Mac 10.4</title>
 <para>In both Mac 10.4 and 10.5, you can install Git via
 <ulink url="http://www.macports.org/">MacPorts</ulink>, if you have
 that installed. If not, you can install it from
@@ -520,7 +520,7 @@ helpful:</para>
 Installing Git on Tiger</ulink></para>
 <para><ulink url="http://larrytheliquid.com/2007/12/29/compiling-git-and-git-svn-on-osx-tiger/">Article:
 Installing Git and git-svn on Tiger from source</ulink></para>
-</sect3><sect3 id="Mac_10."><title>Mac 10.5</title>
+</sect3><sect3 id="Mac_10.5"><title>Mac 10.5</title>
 <para>With Leopard, you can also install via MacPorts, but here you
 have the additional option of using a nice installer, which you can
 download from here:
@@ -3359,7 +3359,7 @@ to 'git-send-pack' on the other end, so you can simply
 <para>This hook is invoked by 'git-gc --auto'. It takes no
 parameter, and exiting with non-zero status from this script causes
 the 'git-gc --auto' to abort.</para>
-</sect3><sect3 id="Reference"><title>References</title>
+</sect3><sect3 id="Reference2"><title>References</title>
 <para><ulink url="http://www.kernel.org/pub/software/scm/git/docs/githooks.html">Git
 Hooks</ulink> *
 http://probablycorey.wordpress.com/2008/03/07/git-hooks-make-me-giddy/</para>
@@ -4036,7 +4036,7 @@ the repository:</para>
 rev-parse</ulink> for explanations of commit-selecting syntax such
 as <literal>--not</literal>.)</para>
 <para>(!!update-ref!!)</para>
-</sect3></sect2><sect2 id="The_Git_Inde"><title>The Git
+</sect3></sect2><sect2 id="The_Git_Inde2"><title>The Git
 Index</title>
 <para>The index is a binary file (generally kept in .git/index)
 containing a sorted list of path names, each with permissions and

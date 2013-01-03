@@ -29,7 +29,7 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Merge...</guimenuitem>
 		</menuchoice>.
-		<figure id="tsvn-dug-checkout-dia-1">
+		<figure id="tsvn-dug-merge-dia-1">
 			<title>Merge dialog</title>
 			<graphic fileref="../images/Merge.png"/>
 		</figure>
