@@ -16,13 +16,8 @@
 	</para>
 	<para>
 		If you need to set up per-repository proxy settings, you will
-		need to use the Git <filename>servers</filename> file to
-		configure this. Use <guibutton>Edit</guibutton> to get there
-		directly. Consult the
-		<ulink url="http://svnbook.red-bean.com/en/1.5/svn.advanced.confarea.html">
-			<citetitle>Runtime Configuration Area</citetitle>
-		</ulink>
-		for details on how to use this file.
+		need to use the Git <filename>config</filename> file to
+		configure this. Consult <xref linkend="git-config(1)"/> for more details.
 	</para>
 	<para>
 		You can also specify which program TortoiseGit should use to
@@ -35,13 +30,16 @@
 	<para>
 		You must specify the full path to the executable. For TortoiseGitPLink.exe
 		this is the standard TortoiseGit bin directory. Use the
-		<guibutton>Browse</guibutton> button to help locate it.
-		Note that if the path contains spaces, you must enclose it in quotes,
-		e.g.
+		<guibutton>Browse</guibutton> button to help locate it, e.g.:
 <screen>
 "C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe"
 </screen>
 	</para>
+	<tip>
+		<para>
+			If you want to use OpenSSH shipped by msysGit just enter <filename>ssh.exe</filename>.
+		</para>
+	</tip>
 	<para>
 		One side-effect of not having a window is that there is
 		nowhere for any error messages to go, so if authentication
