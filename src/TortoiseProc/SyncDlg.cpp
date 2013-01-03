@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -135,7 +135,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		return;
 	}
 
-	if(this->m_bAutoLoadPuttyKey)
+	if (m_bAutoLoadPuttyKey && CurrentEntry != 3) // CurrentEntry (Remote Update) handles this on its own)
 	{
 		CAppUtils::LaunchPAgent(NULL,&this->m_strURL);
 	}
@@ -245,6 +245,16 @@ void CSyncDlg::OnBnClickedButtonPull()
 	///Remote Update
 	if(CurrentEntry == 3)
 	{
+		if (m_bAutoLoadPuttyKey)
+		{
+			STRING_VECTOR list;
+			if (!g_Git.GetRemoteList(list))
+			{
+				for (size_t i = 0; i < list.size(); ++i)
+					CAppUtils::LaunchPAgent(NULL, &list[i]);
+			}
+		}
+
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
 		cmd=_T("git.exe remote update");
 		m_GitCmdList.push_back(cmd);
