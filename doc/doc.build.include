@@ -21,12 +21,12 @@ This will only build the english HTML help file for TortoiseGit
 -->
 
 <project name="customize">
-	<description>Customization layer for build file</description>
+  <description>Customization layer for build file</description>
 
-	<include buildfile="doc.build.user" if="${file::exists('doc.build.user')}"/>
+  <include buildfile="doc.build.user" if="${file::exists('doc.build.user')}"/>
 
-	<!-- ============================================================ -->
-	<!-- List of applications, languages and output formats in which  -->
+  <!-- ============================================================ -->
+  <!-- List of applications, languages and output formats in which  -->
 	<!-- the documentation will be created by default                 -->
 
 	<property name="applications" 
@@ -252,9 +252,9 @@ This will only build the english HTML help file for TortoiseGit
 			<echo file="${headerfile}" message="${header}" />
 			<echo message="header file ${help.resource}" />
 			
-			<echo message="// Generated Help Map file." file="${help.context}" />
+			<echo message="// Generated Help Map file.&#13;&#10;" file="${help.context}" />
 			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Commands (ID_* and IDM_*)" file="${help.context}" append="true"/>
+			<echo message="// Commands (ID_* and IDM_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
 						commandline="/h ID_,HID_,0x10000 IDM_,HIDM_,0x10000 ${headerfile}"
 						output="${help.context}"
@@ -262,7 +262,7 @@ This will only build the english HTML help file for TortoiseGit
 						verbose="false" />
 
 			<echo message="" file="${help.context}" append="true"/>
-			<echo message="echo // Prompts (IDP_*)" file="${help.context}" append="true"/>
+			<echo message="// Prompts (IDP_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
 						commandline="/h IDP_,HIDP_,0x30000 ${headerfile}"
 						output="${help.context}"
@@ -270,7 +270,7 @@ This will only build the english HTML help file for TortoiseGit
 						verbose="false" />
 
 			<echo message="" file="${help.context}" append="true"/>
-			<echo message="echo // Resources (IDR_*)" file="${help.context}" append="true"/>
+			<echo message="// Resources (IDR_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
 						commandline="/h IDR_,HIDR_,0x20000 ${headerfile}"
 						output="${help.context}"
@@ -278,7 +278,7 @@ This will only build the english HTML help file for TortoiseGit
 						verbose="false" />
 
 			<echo message="" file="${help.context}" append="true"/>
-			<echo message="echo // Dialogs (IDD_*)" file="${help.context}" append="true"/>
+			<echo message="// Dialogs (IDD_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
 						commandline="/h IDD_,HIDD_,0x20000 ${headerfile}"
 						output="${help.context}"
@@ -286,7 +286,7 @@ This will only build the english HTML help file for TortoiseGit
 						verbose="false" />
 
 			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Frame Controls xyxzy(IDW_*)" file="${help.context}" append="true"/>
+			<echo message="// Frame Controls xyxzy(IDW_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
 						commandline="/h /a afxhh.h IDW_,HIDW_,0x50000 ${headerfile}"
 						output="${help.context}"
