@@ -51,7 +51,7 @@
     <guilabel>Manage Remotes</guilabel> to add or modify remote configuration.
   </para>
   <para>
-    <guilabel>Tags</guilabel> has three states: Checked: Only all tags are downloaded but no branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <name>.tagopt setting).
+    <guilabel>Tags</guilabel> has three states: Checked: Only all tags are downloaded but no branches are downloaded (--tags is passed to git), unchecked: No tags are downloaded (--no-tags is passed to git), and third state: use default behavior (based on remote <option>name</option>.tagopt setting).
   </para>
   <tip>
     <para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tsvn-ssh-howto"/>.</para>
