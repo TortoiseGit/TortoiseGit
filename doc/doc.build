@@ -404,9 +404,18 @@ All user/site specific configuration is stored in doc.build.user.
 		<if test="${not file.target.uptodate}">
 			<property name="xslt.params" value="${xsl.pdf.params}"/>
 			<property name="xslt.file" value="${xsl.pdf.file}"/>
-			<property name="xslt.target" value="${doc.target.work}/${doc.target.name}.fo"/>
+			<property name="xslt.final" value="${doc.target.work}/${doc.target.name}"/>
+			<!-- set xslt.target to the name of the temp file -->
+			<property name="xslt.target" value="${xslt.final}.tmp"/>
 
 			<call target="xsltproc" />
+
+			<!-- Removes the span="inherit" attribute added by xsltproc, which causes a warning -->
+			<move file="${xslt.target}" tofile="${xslt.final}.fo" overwrite="true">
+				<filterchain>
+					<replacestring from="span=&quot;inherit&quot; " to="" />
+				</filterchain>
+			</move>
 
 			<property name="userconfig.langtemplate" value="${path.user.xsl}/${lang.target}/userconfig.template.xml" />
 			<property name="userconfig.lang" value="${path.user.xsl}/${lang.target}/userconfig.xml" />
@@ -421,7 +430,7 @@ All user/site specific configuration is stored in doc.build.user.
 				</loadfile>
 				<echo file="${userconfig.lang}" message="${configfile}" />
 			</if>
-			<property name="commandline" value="-q -fo ${xslt.target} -pdf ${file.target}"/>
+			<property name="commandline" value="-q -fo ${xslt.final}.fo -pdf ${file.target}"/>
 			<property name="commandline" value="-c ${userconfig.lang} ${commandline}" if="${file::exists(userconfig.lang)}"/>
 			
 			<exec program="fop.bat"
@@ -547,5 +556,3 @@ All user/site specific configuration is stored in doc.build.user.
 	</target>
 
 </project>
-
-
