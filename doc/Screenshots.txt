@@ -15,13 +15,11 @@ specific languages or images using a single parameter, eg.
 adjustimages en\*.png
 adjustimages en\Rev*.png
 
-Also run PNGGauntlet after that.
-
 
 General rules for all screenshots
 =================================
 Use PNG format
-8 bit colour depth (256 colours)
+8 bit colour depth (256 colours, done by adjustimages.bat)
 Windows 7 style preferred, white background, English Windows (especially for Context Menus)
 Use the D:\TortoiseGit repository
 If you update a Screenshot please make sure it looks quite similar to the existing one

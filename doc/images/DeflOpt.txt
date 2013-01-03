@@ -1,0 +1,241 @@
+DeflOpt 2.07 of 05-Sep-2007
+Copyright (C) 2003-2007 by Ben Jos Walbeehm
+
+
+Some additional information regarding DeflOpt. I chose to put this in a text
+file, because I did not want to make the built-in help multiple pages long.
+
+First of all, for those who wish to contact me through e-mail: I get well over
+100 spam e-mails every day and because of that my own SpamKill program uses
+VERY aggressive settings. To circumvent that, make sure to put "DeflOpt" in
+the subject line when sending me an e-mail. The address is:
+walbeehm AT walbeehm DOT com.
+
+
+(From the built-in help)
+
+***                 DeflOpt V2.07                 ***
+***       Built on Wed Sep  5 18:56:30 2007       ***
+***  Copyright (C) 2003-2007 by Ben Jos Walbeehm  ***
+
+
+Description:
+  DeflOpt tries to reduce the size of GZIP (extensions .gz and .tgz), PNG, and
+  ZIP files. Regardless of which programs/settings were used to create them,
+  DeflOpt will usually be able to reduce these files by at least a few bytes.
+
+Parameters:
+  [options] <filespec> [<filespec> [<filespec> ...]]
+
+Available options:
+  /a: Scans all files that match the specifications to determine whether they
+      are in a supported format (GZIP, PNG, ZIP), regardless of extensions.
+  /b: Replaces files also when no bytes, but more than zero bits were saved.
+  /d: Preserves the date and time of files it rewrites.
+  /c: Comments in GZIP and ZIP files are kept. By default, these are removed.
+  /f: Forces every file to be rewritten, even when no bits/bytes were saved.
+  /k: Keeps all chunks/structures within files, even the mostly useless ones.
+  /r: Recursively go through all subdirectories.
+  /s: Silent mode. Nothing is displayed except in case of errors.
+  /v: Verbose output.
+
+Notes (for more detailed information, see DeflOpt.txt):
+- Options may be specified using both slashes ("/") and dashes ("-").
+- Wildcards * and ? are allowed, including in directory names.
+- For directories, all GZIP, PNG, and ZIP files in those directories are
+  processed.
+- If <filespec> has no extension, .gz, .tgz, .png, and .zip are used, unless
+  the /a option is specified -- in that case, DeflOpt will scan every file to
+  determine the format and process every file accordingly.
+- DeflOpt will NOT process GZIP, PNG, and ZIP files WITHIN (G)ZIP files.
+- By default, DeflOpt rewrites a file only when it can reduce the number of
+  bytes of that file. It is possible that DeflOpt makes the deflated data
+  one or more bits shorter but that this does not make the size in bytes less.
+  Use the /b option to have DeflOpt rewrite files also when it can only
+  save one or more bits but no actual bytes.
+
+Examples:
+  DeflOpt /r *.zip abc*.png
+  DeflOpt -K "C:\Documents and Settings\Ben Jos\My Documents\My Pictures"
+  DeflOpt ..\..\stuff -b/c/k /FrS
+  DeflOpt /adr C:\Prog* /f
+
+(End of From the built-in help)
+
+
+As its name implies (DeflOpt -- Deflate Optimisation), DeflOpt will not try to
+optimise files that use a type of compression different from LZ77 ("Deflate").
+It will also not process files compressed with the "Deflate64" type. Unlike
+the 1.XX versions of DeflOpt, versions 2.XX and above will not exit with an
+error message, but simply copy the compressed data of the types it does not
+"understand".
+
+
+As the examples show, options are case-insensitive and do not have to be
+separated by spaces, nor does the slash ("/") or dash ("-") even have to be
+repeated. For instance: "/b /c /f", "/b/c/f", and "/bcf" all mean the same.
+
+
+Regarding /a: By default, DeflOpt will only process files that have one of
+the extensions .gz, .png, .tgz, and .zip, and will assume that those files
+are valid. So if a ZIP file has the extension .png, DeflOpt will most likely
+fail with an error message. However, if /a is specified, then DeflOpt will
+scan all files that match the specifications to see if they are in any of
+the supported formats (GZIP, PNG, ZIP). This of course makes DeflOpt slower,
+but also smarter. Since there are many other extensions that are really just
+GZIP, PNG, or ZIP files, using /a will process those files too. In addition,
+if a file has the wrong extension (for instance a ZIP file that has the
+extension .png), then DeflOpt will still treat it correctly.
+
+
+Regarding /b: Bit gain vs. byte gain: In a zip file, technically it is
+possible to gain one bit per file for 8 files and save a total of 8 BYTEs.
+At the same time, it is possible to save 7 bits per file for 8 files, but not
+save a single byte.
+
+
+Regarding /f: The resulting file will never be larger than the input file.
+However, the resulting file may be slightly different, because DeflOpt always
+does certain things to make sure that certain fields do not have invalid
+values (CRCs, for instance).
+
+
+Regarding /k: Several structures within files are optional. By default,
+DeflOpt does not keep structures that are optional or mostly useless.
+What is optional or mostly useless depends on the file type:
+- For GZIP files: By default, only the original filename (if any) is kept
+  (yes, I know it is optional, but it is "important enough to be kept"). The
+  extra-text, comment, and 16-bit-CRC fields are only kept if /k is specified.
+  Note that the comment is also kept if /c is specified.
+- For PNG files: By default, only IDAT, IEND, IHDR, PLTE, and tRNS chunks are
+  kept. Specify /k to keep all other chunk types as well. If /k is specified,
+  then DeflOpt will try to improve deflated data in iCCP, iTXt, and zTXt
+  chunks as well. Note that when a PNG file contains multiple IDAT chunks,
+  these will always be combined into one because there is absolutely no need
+  to divide the compressed data over multiple IDAT chunks.
+- For ZIP files: By default, no optional fields are kept, so unless /k is
+  specified, the optional fields zip-comment, file-comment, digital-signature,
+  central-extra-field, and local-extra-field are not kept. Note that both
+  types of comment fields will still be kept if /c is specified. Note that
+  stored directory names within ZIP files as well as "Data Descriptors" will
+  ALWAYS be removed, REGARDLESS of whether /k is specified or not. Both are
+  ALWAYS redundant: The first because those directory names are also part of
+  the filenames and every unzip program these days will create the necessary
+  directories. The second because DeflOpt will store the necessary information
+  directly in the local and central directory entries inside the ZIP file.
+  "Data Descriptors" are only useful when the actual uncompressed size,
+  compressed size, and 32-bit CRC are not yet known while compressing data;
+  in other words, while piping/streaming data.
+
+
+Regarding /s and /v: These two options are mutually exclusive. If both are
+specified, then the one specified last will count.
+
+
+Regarding wildcards:
+Wildcards * and ? are allowed in directory names as well. However, unless /r
+("recursive") is specified, wildcards will not match subdirectories of the
+directory that has the wildcards. So the file C:\TEMP\EXAMPLE\test.zip will
+only be processed by "C:\TEM*\*.zip" in case /r is specified. If /r is not
+specified, then it will only look for anything matching *.zip in the C:\TEMP
+directory and (if any) other directories that have a name starting with
+"C:\TEM", but not subdirectories of those directories. Because of the very
+powerful wildcards, DeflOpt will ONLY look at files that have one of the
+extensions .gz, .png, .tgz, and .zip, UNLESS /a is specified. So if there is
+a file called "c:\temp.txt", running "DeflOpt c:\temp.txt" will NOT process
+that file. Note, however, that if there were a "c:\temp.txt" DIRECTORY, then
+DeflOpt would look at all .gz, .png, .tgz and .zip files in that directory.
+If all the .gz and .tgz files in the current directory should be processed,
+but not the .png and .zip files, then use something like "DeflOpt *.gz *.tgz".
+
+Since wildcards can be used for both directories and files, this means that
+the "*" in "DeflOpt C:\TEST\*" will match both files and directories. Some
+examples of this:
+
+"DeflOpt C:\TEST\*"
+  This will process all the files in the C:\TEST directory as well as all the
+  files in any of its subdirectories (but not THEIR subdirectories unless /r
+  is specified). So the file C:\TEST\EXAMPLE\test.zip would be processed.
+
+"DeflOpt C:\TEST" (or "DeflOpt C:\TEST\.")
+  This will process only the files in the C:\TEST directory.
+
+"DeflOpt C:\TEST\*\"
+  This will process only the files in any of the subdirectories of the C:\TEST
+  directory (but not THEIR subdirectories unless /r is specified).
+
+"DeflOpt *"
+  This will process all the files in the current directory as well as all the
+  files in any of its subdirectories (but not THEIR subdirectories unless /r
+  is specified).
+
+"DeflOpt ." (or "DeflOpt .\")
+  This will process only the files in the current directory.
+
+"DeflOpt *\"
+  This will process only the files in any of the subdirectories of the current
+  directory (but not THEIR subdirectories unless /r is specified).
+
+By default, DeflOpt will only look at the extension to decide what kind of file
+it is dealing with, so if, for example, a GZIP file has the extension .zip, then
+DeflOpt will mostly likely exit with an error message. However, in case /a is
+specified, then DeflOpt will scan every file matching the specifications to see
+if they are in a supported format and process the ones that are.
+
+
+Short history:
+
+The first version of DeflOpt (V1.00) dates back to 04-Apr-2003. In short
+succession, many more versions followed until V1.16, which was created on
+22-Apr-2003. V1.16 was the first public version, although it was not publicly
+released until 27-Jun-2003. 
+
+After that, development slowed down: V1.17 was created on 07-Sep-2003, V1.18
+on 15-Dec-2003, and V1.19 on 23-Feb-2004. I stopped development on DeflOpt
+very soon after having created V1.19, and that was part of the reason that
+V1.19 was not actually released publicly until more than 2 years afterwards.
+
+V2.00 of 10-Jul-2006:
+- Added GZIP (.gz and .tgz) and PNG support, in addition to ZIP support.
+- Even better optimisation. V2.00 gets a few more extra bytes out of a
+  deflated file than V1.19 did, both because of better optimisation and
+  because of additional removals of optional/useless structures.
+- No more exiting with an error message on unsupported ZIP compression methods
+  (like Implode, Shrink, Reduce, Deflate64, etc.). Unsupported methods are
+  simply copied without any attempt at optimisation.
+- More flexible wildcard matching, allowing wildcards to not just be part of
+  the actual filenames, but also of directory names.
+- More options/switches.
+- By default, all "optional" and "mostly useless" structures/chunks are thrown
+  away now, but /k can be specified to keep everything.
+- Stored directory names within ZIP files as well as "Data Descriptors" are
+  always removed.
+- The /n option ("do not actually write any files") is gone.
+
+V2.01 of 15-Jul-2006:
+- Fixed the occasional "Compressed size is larger than it was!?!?!?" error.
+- Fixed a problem with stored blocks.
+- Added the /s option ("silent mode").
+
+V2.02 of 17-Jul-2006:
+- Significantly faster (2-6 times or more, depending on the input).
+
+V2.03 of 16-Nov-2006:
+- Fixed a very rare Access Violation.
+- Fixed a problem with zip files containing data descriptors.
+
+V2.04 of 20-Nov-2006:
+- Safer handling of zip files containing data descriptors.
+- Fixed a problem with zero-length files that have a compression method
+  differing from "stored".
+
+V2.05 of 10-Mar-2007:
+- Fixed a problem of temporary files not always being deleted.
+
+V2.06 of 28-Apr-2007:
+- In very rare cases, DeflOpt would stop parsing compressed data before
+  encountering the "End Of Block" marker. Fixed.
+
+V2.07 of 05-Sep-2007:
+- Added the /a option ("scan all files").
+- Added the /d option ("preserve date and time").
