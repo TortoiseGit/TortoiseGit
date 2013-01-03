@@ -9,12 +9,6 @@ as a TortoiseGitProc.exe command line. These assume that the TGit
 bin directory is in the PATH and that you have a doc folder checked
 out at D:\TortoiseGit\Doc. Adjust the path according to your location.
 
-You will also need to ensure that the screenshots are at the correct
-DPI setting and size to fit the page. Fortunately this is easy as you
-can use the AdjustImages.bat script which does the conversion for you.
-This script requires NConvert.exe which you can download from
-http://www.xnview.com
-
 From the images directory you can simply run adjustimages to check all
 images in all languages - it could take a long time. You can check
 specific languages or images using a single parameter, eg.

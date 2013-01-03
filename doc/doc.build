@@ -414,6 +414,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<move file="${xslt.target}" tofile="${xslt.final}.fo" overwrite="true">
 				<filterchain>
 					<replacestring from="span=&quot;inherit&quot; " to="" />
+					<replacestring from="width=&quot;auto&quot; height=&quot;auto&quot; content-width=&quot;auto&quot; content-height=&quot;auto&quot;" to="inline-progression-dimension.maximum=&quot;100%&quot; content-width=&quot;scale-down-to-fit&quot; content-height=&quot;scale-down-to-fit&quot;" />
 				</filterchain>
 			</move>
 
