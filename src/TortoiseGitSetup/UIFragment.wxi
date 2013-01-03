@@ -218,6 +218,9 @@
 				<Text>Choose a kind of SSH Client</Text>
 			</Control>
 			<Control Id="Buttons" Type="RadioButtonGroup" X="10" Y="60" Width="330" Height="150" Property="SSHTOOL" />
+			<Control Id="SSHToolChangeInfo" Type="Text" X="10" Y="200" Width="330" Height="15" Transparent="yes" NoPrefix="yes">
+				<Text>This setting can be changed in TortoiseGit settings on the &quot;Network&quot; page lateron.</Text>
+			</Control>
 			<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 		</Dialog>
 
