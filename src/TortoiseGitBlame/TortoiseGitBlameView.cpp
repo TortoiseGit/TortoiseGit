@@ -1,7 +1,7 @@
 // TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -1630,14 +1630,16 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 
 	if (m_SelectedHash != pRev->m_CommitHash) {
 		m_SelectedHash = pRev->m_CommitHash;
-		int i;
-		for(i=0;i<m_CommitHash.size();i++)
+		for (int i = 0; i < m_CommitHash.size(); ++i)
 		{
-			if( pRev->m_CommitHash == m_CommitHash[i] )
-				break;
+			if (pRev->m_CommitHash == m_CommitHash[i])
+			{
+				GotoLine(i + 1);
+				m_TextView.Invalidate();
+				return;
+			}
 		}
-		this->GotoLine(i + 1);
-		this->m_TextView.Invalidate();
+		SendEditor(SCI_SETSEL, LONG_MAX, -1);
 	}
 }
 
