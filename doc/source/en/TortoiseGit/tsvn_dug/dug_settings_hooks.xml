@@ -22,11 +22,6 @@
 		these scripts are executed locally on the client. 
 	</para>
 	<para>
-		One application for such hooks might be to call a program like
-		<literal>SubWCRev.exe</literal> to update version numbers after a commit,
-		and perhaps to trigger a rebuild.
-	</para>
-	<para>
 		For various security and implementation reasons, hook scripts are defined
 		locally on a machine, rather than as project properties. You define what
 		happens, no matter what someone else commits to the repository. Of course

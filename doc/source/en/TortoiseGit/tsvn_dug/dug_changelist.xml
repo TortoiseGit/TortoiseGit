@@ -15,14 +15,6 @@
 		the changes do not overlap. If two different tasks affect the same file, there
 		is no way to separate the changes.
 	</para>
-	<important>
-		<para>
-			The changelist feature in TortoiseGit is only available in Windows XP 
-			and later, as it depends on a shell capability which is not present
-			in Windows 2000.
-			Sorry, but Win2K is really quite old now, so please don't complain.
-		</para>
-	</important>
 	<para>
 		You can see changelists in several places, but the most important ones are
 		the commit dialog and the check-for-modifications dialog. Let's start

@@ -27,7 +27,6 @@
                 <surname>Strickroth</surname>
             </author>
         </authorgroup>
-        <xi:include href="../pubdate.xml"/>
     </bookinfo>
     <!-- include external files -->
     <xi:include href="./tme_preface.xml"/>

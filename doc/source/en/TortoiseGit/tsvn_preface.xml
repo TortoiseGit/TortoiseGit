@@ -101,13 +101,6 @@ and
 		</para>
 		<!--
 		<para>
-			<xref linkend="tsvn-subwcrev"/> is a separate program included with TortoiseGit
-			which can extract the information from your working tree and write it into a
-			file. This is useful for including build information in your projects.
-		</para>
-		-->
-		<!--
-		<para>
 			The <xref linkend="tsvn-howto"/> section answers some common questions
 			about performing tasks which are not explicitly covered elsewhere.
 		</para>

@@ -30,7 +30,7 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- the documentation will be created by default                 -->
 
 	<property name="applications" 
-		value="TortoiseGit" 
+		value="TortoiseGit,TortoiseMerge" 
 		unless="${property::exists('applications')}"
 	/>
 	
@@ -88,27 +88,18 @@ This will only build the english HTML help file for TortoiseGit
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseMerge}" />
 	</target>
-	<target name="help.prepare.Git">
-	<echo message="help.prepare.Git"/>
-		<property name="help.resource.TortoiseGit"
-		  value="../src/TortoiseProc/resource.h"
-			unless="${property::exists('help.resource.TortoiseGit')}"
-		/>
-		<property name="help.resource" value="${help.resource.TortoiseGit}" />
-	</target>
+
 	<!-- Fileset to exclude from translation and .pot creation        -->
 	<!-- Duplicate these files in the "sourcefiles" fileset           -->
 <!--
 	<fileset id="files.exclude">
 		<include name="source/${lang.base}/**/version.xml"/>
-		<include name="source/${lang.base}/**/pubdate.xml"/>
 	</fileset>
 	
 	<fileset id="files.filtered">
 		<include name="source/${lang.base}/TortoiseGit/**/*.xml"/>
 		<include name="source/${lang.base}/**/wishlist.xml"/>
 		<exclude name="source/${lang.base}/**/version.xml"/>
-		<exclude name="source/${lang.base}/**/pubdate.xml"/>
 	</fileset>
 -->
 
@@ -133,16 +124,6 @@ This will only build the english HTML help file for TortoiseGit
 	<property name="path.gettext" 
 		value="${path::get-full-path('../Tools')}"
 		unless="${property::exists('path.gettext')}"
-	/>
-
-	<!-- Choose between 32/64 Bit executable of SubWCRev -->
-	<property name="bindirextension" 
-	  value=""
-		unless="${property::exists('bindirextension')}"
-	/>
-	<property name="path.subwcrev" 
-		value="../bin/release${bindirextension}/bin/"
-		unless="${property::exists('path.subwcrev')}"
 	/>
 
 	<!-- ============================================================ -->
@@ -171,15 +152,6 @@ This will only build the english HTML help file for TortoiseGit
 	<target name="prepare.custom" 
 		description="Prepare XSL files, create help context file"
 		depends="PrepareVersionInfo">
-
-		<exec program="SubWCRev.exe"
-			commandline="source/${lang.base} source/pubdate.tmpl source/${lang.base}/pubdate.xml"
-			basedir="${path.subwcrev}"
-			failonerror="false"
-			resultproperty="result.subwcrev"
-			verbose="false"
-		/>
-		<copy file="source/Pubdate.none" tofile="source/${lang.base}/pubdate.xml" overwrite="true" unless="${result.subwcrev=='0'}"/>
 
 		<!-- Delete CHM help context files to force re-creation -->
 		<delete file="source/TortoiseGit.h" if="${file::exists('source/TortoiseGit.h')}"/>
@@ -213,13 +185,6 @@ This will only build the english HTML help file for TortoiseGit
 		<if test="${not environment::variable-exists('MajorVersion')}">
 
 		        <if test="${file::exists('../versioninfo.build')}">
-				<!-- try to get version info even if full build environment is not available -->
-				<property name="SubWCRevFileName" value="${path.subwcrev}/subwcrev.exe" unless="${property::exists('configuration')}"/>
-					<nant target="versioninfo">
-						<buildfiles>
-							<include name="../versioninfo.build" />
-						</buildfiles>
-					</nant>
 <!--				<echo>Note: version information set!</echo> -->
 			</if>
 		        <if test="${not file::exists('../versioninfo.build')}">
@@ -285,6 +250,7 @@ This will only build the english HTML help file for TortoiseGit
 						append="true"
 						verbose="false" />
 
+<!--
 			<echo message="" file="${help.context}" append="true"/>
 			<echo message="// Frame Controls xyxzy(IDW_*)&#13;&#10;" file="${help.context}" append="true"/>
 			<exec program="makehm"
@@ -292,6 +258,7 @@ This will only build the english HTML help file for TortoiseGit
 						output="${help.context}"
 						append="true"
 						verbose="false" />
+-->
 		</if>
 
 		<!-- Copy help context to target location -->

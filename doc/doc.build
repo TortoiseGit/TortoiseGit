@@ -152,7 +152,6 @@ All user/site specific configuration is stored in doc.build.user.
 		<uptodate property="file.target.uptodate">
 			<sourcefiles>
 				<include name="source/${lang.target}/${app}/**/*.xml"/>
-				<include name="source/${lang.target}/pubdate.xml"/>
 				<include name="source/${lang.target}/glossary.xml"/>
 				<include name="source/${lang.target}/wishlist.xml"/>
 				<include name="source/${lang.target}/version.in"/>
@@ -269,7 +268,6 @@ All user/site specific configuration is stored in doc.build.user.
 			<in>
 				<items>
 					<include name="source/${lang.base}/${app}/**/*.xml"/>
-					<include name="source/${lang.base}/pubdate.xml"/>
 					<include name="source/${lang.base}/glossary.xml"/>
 					<include name="source/${lang.base}/wishlist.xml"/>
 					<include name="source/${lang.base}/version.in"/>
@@ -332,9 +330,6 @@ All user/site specific configuration is stored in doc.build.user.
 					<token key="MajorVersion" value="${environment::get-variable('MajorVersion')}"/>
 					<token key="MinorVersion" value="${environment::get-variable('MinorVersion')}"/>
 					<token key="MicroVersion" value="${environment::get-variable('Microversion')}"/>
-<!--
-					<token key="WCREV" value="${environment::get-variable('WCREV')}"/>
--->
 				</replacetokens>
 			</filterchain>
 		</copy>
