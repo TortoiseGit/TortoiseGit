@@ -674,7 +674,8 @@ BEGIN
     CONTROL         "apply --topo-order",IDC_TOPOORDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,44,120,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,55,270,10
-    CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,270,10
+    CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,150,10
+    CONTROL         "Symbolize ref names",IDC_SYMBOLIZEREFNAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,66,120,10
     GROUPBOX        "Misc",IDC_STATIC,7,86,286,47
     LTEXT           "&Autoclose:",IDC_STATIC,14,95,85,16,SS_CENTERIMAGE | NOT WS_VISIBLE
     COMBOBOX        IDC_AUTOCLOSECOMBO,107,98,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
@@ -3905,6 +3906,8 @@ BEGIN
     IDS_PROC_LOADING        "Loading..."
     IDS_FILEDIFF_EXT        "Extension"
     IDS_ERR_EMPTYDIFF       "No differences found!"
+    IDS_SETTINGS_SYMBOLIZEREFNAMES_TT
+                            "Show symbols on ref labels to substitute part of the ref names"
 END
 
 #endif    // English (U.S.) resources

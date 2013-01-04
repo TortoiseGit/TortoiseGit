@@ -78,6 +78,8 @@ private:
 	BOOL				m_bUseRecycleBin;
 	CRegDWORD			m_regAbbreviateRenamings;
 	BOOL				m_bAbbreviateRenamings;
+	CRegDWORD			m_regSymbolizeRefNames;
+	BOOL				m_bSymbolizeRefNames;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;
