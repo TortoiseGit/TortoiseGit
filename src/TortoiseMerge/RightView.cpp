@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2012 - TortoiseSVN
+// Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -232,7 +232,8 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata line = m_pwndLeft->GetViewData(viewLine);
-		line.ending = lineendings;
+		if ((line.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
+			line.ending = lineendings;
 		switch (line.state)
 		{
 		case DIFFSTATE_CONFLICTEMPTY:

@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2012 - TortoiseSVN
+// Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,7 +60,8 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndView->GetViewData(viewLine);
-		lineData.ending = lineendings;
+		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
+			lineData.ending = lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
 	}
@@ -98,7 +99,8 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndFirst->GetViewData(viewLine);
-		lineData.ending = lineendings;
+		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
+			lineData.ending = lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
 		if (!IsStateEmpty(pwndFirst->GetViewState(viewLine)))
