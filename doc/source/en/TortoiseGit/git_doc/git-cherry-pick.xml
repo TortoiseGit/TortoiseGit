@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cherry-pick(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cherry-pick(1)">
     <title>git-cherry-pick(1)</title>
 <indexterm>
 <primary>git-cherry-pick(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cherry-pick(1)__name">
 <title>NAME</title>
 <simpara>git-cherry-pick - Apply the changes introduced by some existing commits</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cherry-pick(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m parent-number] [-s] [-x] [--ff] &lt;commit&gt;&#8230;
@@ -21,7 +19,7 @@
 <emphasis>git cherry-pick</emphasis> --abort</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cherry-pick(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Given one or more existing commits, apply the change each one
 introduces, recording a new commit for each.  This requires your
@@ -65,7 +63,7 @@ No other modifications are made.
 <simpara>See <xref linkend="git-merge(1)" /> for some hints on resolving such
 conflicts.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cherry-pick(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -79,7 +77,9 @@ conflicts.</simpara>
         <xref linkend="gitrevisions(7)" />.
         Sets of commits can be passed but no traversal is done by
         default, as if the <emphasis>--no-walk</emphasis> option was specified, see
-        <xref linkend="git-rev-list(1)" />.
+        <xref linkend="git-rev-list(1)" />. Note that specifying a range will
+        feed all &lt;commit&gt;&#8230; arguments to a single revision walk
+        (see a later example that uses <emphasis>maint master..next</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -195,6 +195,51 @@ effect to your index in a row.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--allow-empty
+</term>
+<listitem>
+<simpara>
+        By default, cherry-picking an empty commit will fail,
+        indicating that an explicit invocation of <emphasis>git commit
+        --allow-empty</emphasis> is required. This option overrides that
+        behavior, allowing empty commits to be preserved automatically
+        in a cherry-pick. Note that when "--ff" is in effect, empty
+        commits that meet the "fast-forward" requirement will be kept
+        even without this option.  Note also, that use of this option only
+        keeps commits that were initially empty (i.e. the commit recorded the
+        same tree as its parent).  Commits which are made empty due to a
+        previous commit are dropped.  To force the inclusion of those commits
+        use <emphasis>--keep-redundant-commits</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--allow-empty-message
+</term>
+<listitem>
+<simpara>
+        By default, cherry-picking a commit with an empty message will fail.
+        This option overrides that behaviour, allowing commits with empty
+        messages to be cherry picked.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep-redundant-commits
+</term>
+<listitem>
+<simpara>
+        If a commit being cherry picked duplicates a commit already in the
+        current history, it will become empty.  By default these
+        redundant commits are ignored.  This option overrides that behavior and
+        creates an empty commit object.  Implies <emphasis>--allow-empty</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --strategy=&lt;strategy&gt;
 </term>
 <listitem>
@@ -221,7 +266,7 @@ effect to your index in a row.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_sequencer_subcommands">
+<simplesect id="git-cherry-pick(1)__sequencer_subcommands">
 <title>SEQUENCER SUBCOMMANDS</title>
 <variablelist>
 <varlistentry>
@@ -260,7 +305,7 @@ effect to your index in a row.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-cherry-pick(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -285,6 +330,23 @@ effect to your index in a row.</simpara>
 <simpara>
         Apply the changes introduced by all commits that are ancestors
         of master but not of HEAD to produce new commits.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git cherry-pick maint next ^master</emphasis>
+</term>
+<term>
+<emphasis>git cherry-pick maint master..next</emphasis>
+</term>
+<listitem>
+<simpara>
+        Apply the changes introduced by all commits that are
+        ancestors of maint or next, but not master or any of its
+        ancestors.  Note that the latter does not mean <emphasis>maint</emphasis> and
+        everything between <emphasis>master</emphasis> and <emphasis>next</emphasis>; specifically,
+        <emphasis>maint</emphasis> will not be used if it is included in <emphasis>master</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -344,12 +406,12 @@ effect to your index in a row.</simpara>
 <simpara>The following sequence attempts to backport a patch, bails out because
 the code the patch applies to has changed too much, and then tries
 again, this time exercising more care about matching up context lines.</simpara>
-<screen>$ git cherry-pick topic^             <co id="CO1-1"/>
-$ git diff                           <co id="CO1-2"/>
-$ git reset --merge ORIG_HEAD        <co id="CO1-3"/>
-$ git cherry-pick -Xpatience topic^  <co id="CO1-4"/></screen>
+<screen>$ git cherry-pick topic^             <co id="git-cherry-pick_CO1-1"/>
+$ git diff                           <co id="git-cherry-pick_CO1-2"/>
+$ git reset --merge ORIG_HEAD        <co id="git-cherry-pick_CO1-3"/>
+$ git cherry-pick -Xpatience topic^  <co id="git-cherry-pick_CO1-4"/></screen>
 <calloutlist>
-<callout arearefs="CO1-1">
+<callout arearefs="git-cherry-pick_CO1-1">
 <para>
 apply the change that would be shown by <emphasis>git show topic^</emphasis>.
 In this example, the patch does not apply cleanly, so
@@ -357,19 +419,19 @@ information about the conflict is written to the index and
 working tree and no new commit results.
 </para>
 </callout>
-<callout arearefs="CO1-2">
+<callout arearefs="git-cherry-pick_CO1-2">
 <para>
 summarize changes to be reconciled
 </para>
 </callout>
-<callout arearefs="CO1-3">
+<callout arearefs="git-cherry-pick_CO1-3">
 <para>
 cancel the cherry-pick.  In other words, return to the
 pre-cherry-pick state, preserving any local modifications you had in
 the working tree.
 </para>
 </callout>
-<callout arearefs="CO1-4">
+<callout arearefs="git-cherry-pick_CO1-4">
 <para>
 try to apply the change introduced by <emphasis>topic^</emphasis> again,
 spending extra time to avoid mistakes based on incorrectly matching
@@ -378,12 +440,12 @@ context lines.
 </callout>
 </calloutlist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-cherry-pick(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-revert(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cherry-pick(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

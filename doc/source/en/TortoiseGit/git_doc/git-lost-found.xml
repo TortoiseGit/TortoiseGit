@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-lost-found(1)">
-<articleinfo>
+<sect2 lang="en" id="git-lost-found(1)">
     <title>git-lost-found(1)</title>
 <indexterm>
 <primary>git-lost-found(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-lost-found(1)__name">
 <title>NAME</title>
 <simpara>git-lost-found - Recover lost refs that luckily have not yet been pruned</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-lost-found(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git lost-found</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-lost-found(1)__description">
 <title>DESCRIPTION</title>
 <simpara><emphasis role="strong">NOTE</emphasis>: this command is deprecated.  Use <xref linkend="git-fsck(1)" /> with
 the option <emphasis>--lost-found</emphasis> instead.</simpara>
@@ -27,12 +25,12 @@ creates refs to them in the .git/lost-found/ directory.  Commits and
 tags that dereference to commits are stored in .git/lost-found/commit,
 and other objects are stored in .git/lost-found/other.</simpara>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-lost-found(1)__output">
 <title>OUTPUT</title>
 <simpara>Prints to standard output the object names and one-line descriptions
 of any commits or tags found.</simpara>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-lost-found(1)__example">
 <title>EXAMPLE</title>
 <simpara>Suppose you run <emphasis>git tag -f</emphasis> and mistype the tag to overwrite.
 The ref to your tag is overwritten, but until you run <emphasis>git
@@ -44,7 +42,8 @@ prune</emphasis>, the tag itself is still there.</simpara>
 other.</simpara>
 <screen>$ gitk $(cd .git/lost-found/commit &amp;&amp; echo ??*)</screen>
 <simpara>After making sure you know which the object is the tag you are looking
-for, you can reconnect it to your regular .git/refs hierarchy.</simpara>
+for, you can reconnect it to your regular <emphasis>refs</emphasis> hierarchy by using
+the <emphasis>update-ref</emphasis> command.</simpara>
 <screen>$ git cat-file -t 1ef2b196
 tag
 $ git cat-file tag 1ef2b196
@@ -61,8 +60,8 @@ $ git update-ref refs/tags/not-lost-anymore 1ef2b196
 $ git rev-parse not-lost-anymore
 1ef2b196d909eed523d4f3c9bf54b78cdd6843c6</screen>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-lost-found(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

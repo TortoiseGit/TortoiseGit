@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitk(1)">
-<articleinfo>
+<sect2 lang="en" id="gitk(1)">
     <title>gitk(1)</title>
 <indexterm>
 <primary>gitk(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitk(1)__name">
 <title>NAME</title>
 <simpara>gitk - The git repository browser</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitk(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>gitk</emphasis> [&lt;option&gt;&#8230;] [&lt;revs&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitk(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Displays changes in a repository or a selected set of commits. This includes
 visualizing the commit graph, showing information related to each commit, and
@@ -27,7 +25,7 @@ the files in the trees of each revision.</simpara>
 and started off in a separate repository but was later merged into the main
 git repository.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="gitk(1)__options">
 <title>OPTIONS</title>
 <simpara>To control which revisions to show, the command takes options applicable to
 the <emphasis>git rev-list</emphasis> command (see <xref linkend="git-rev-list(1)" />).
@@ -144,7 +142,7 @@ frequently used options.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="gitk(1)__examples">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -183,12 +181,12 @@ gitk --max-count=100 --all -- Makefile
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_files">
+<simplesect id="gitk(1)__files">
 <title>Files</title>
 <simpara>Gitk creates the .gitk file in your $HOME directory to store preferences
 such as display options, font, and colors.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitk(1)__see_also">
 <title>SEE ALSO</title>
 <variablelist>
 <varlistentry>
@@ -225,8 +223,8 @@ such as display options, font, and colors.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitk(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

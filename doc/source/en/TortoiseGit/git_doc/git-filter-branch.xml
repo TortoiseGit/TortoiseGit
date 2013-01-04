@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-filter-branch(1)">
-<articleinfo>
+<sect2 lang="en" id="git-filter-branch(1)">
     <title>git-filter-branch(1)</title>
 <indexterm>
 <primary>git-filter-branch(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-filter-branch(1)__name">
 <title>NAME</title>
 <simpara>git-filter-branch - Rewrite branches</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-filter-branch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git filter-branch</emphasis> [--env-filter &lt;command&gt;] [--tree-filter &lt;command&gt;]
@@ -24,7 +22,7 @@
         [--] [&lt;rev-list options&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-filter-branch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Lets you rewrite git revision history by rewriting the branches mentioned
 in the &lt;rev-list options&gt;, applying custom filters on each revision.
@@ -38,7 +36,8 @@ If you specify no filters, the commits will be recommitted without any
 changes, which would normally have no effect.  Nevertheless, this may be
 useful in the future for compensating for some git bugs or such,
 therefore such a usage is permitted.</simpara>
-<simpara><emphasis role="strong">NOTE</emphasis>: This command honors <emphasis>.git/info/grafts</emphasis> and <emphasis>.git/refs/replace/</emphasis>.
+<simpara><emphasis role="strong">NOTE</emphasis>: This command honors <emphasis>.git/info/grafts</emphasis> file and refs in
+the <emphasis>refs/replace/</emphasis> namespace.
 If you have any grafts or replacement refs defined, running this command
 will make them permanent.</simpara>
 <simpara><emphasis role="strong">WARNING</emphasis>! The rewritten history will have different object names for all
@@ -55,7 +54,7 @@ if different from the rewritten ones, will be stored in the namespace
 <simpara>Note that since this operation is very I/O expensive, it might
 be a good idea to redirect the temporary directory off-disk with the
 <emphasis>-d</emphasis> option, e.g. on tmpfs.  Reportedly the speedup is very noticeable.</simpara>
-<section id="_filters">
+<section id="git-filter-branch(1)__filters">
 <title>Filters</title>
 <simpara>The filters are applied in the order as listed below.  The &lt;command&gt;
 argument is always evaluated in the shell context using the <emphasis>eval</emphasis> command
@@ -74,7 +73,7 @@ return several ids on separate lines if your commit filter emitted
 multiple commits.</simpara>
 </section>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-filter-branch(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -208,7 +207,7 @@ to other tags will be rewritten to point to the underlying commit.</simpara>
 <simpara>
         Only look at the history which touches the given subdirectory.
         The result will contain that directory (and only that) as its
-        project root. Implies <xref linkend="Remap_to_ancestor"/>.
+        project root. Implies <xref linkend="git-filter-branch(1)_Remap_to_ancestor"/>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -279,12 +278,12 @@ to other tags will be rewritten to point to the underlying commit.</simpara>
         Arguments for <emphasis>git rev-list</emphasis>.  All positive refs included by
         these options are rewritten.  You may also specify options
         such as <emphasis>--all</emphasis>, but you must use <emphasis>--</emphasis> to separate them from
-        the <emphasis>git filter-branch</emphasis> options. Implies <xref linkend="Remap_to_ancestor"/>.
+        the <emphasis>git filter-branch</emphasis> options. Implies <xref linkend="git-filter-branch(1)_Remap_to_ancestor"/>.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
-<section id="Remap_to_ancestor">
+<section id="git-filter-branch(1)_Remap_to_ancestor">
 <title>Remap to ancestor</title>
 <simpara>By using <xref linkend="rev-list(1)" /> arguments, e.g., path limiters, you can limit the
 set of revisions which get rewritten. However, positive refs on the command
@@ -293,7 +292,7 @@ this purpose, they are instead rewritten to point at the nearest ancestor that
 was not excluded.</simpara>
 </section>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-filter-branch(1)__examples">
 <title>Examples</title>
 <simpara>Suppose you want to remove a file (containing confidential information
 or copyright violation) from all commits:</simpara>
@@ -351,26 +350,26 @@ parameters.  Note that this handles merges properly! In case Darl
 committed a merge between P1 and P2, it will be propagated properly
 and all children of the merge will become merge commits with P1,P2
 as their parents instead of the merge commit.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis> the changes introduced by the commits, and which are not reverted
+by subsequent commits, will still be in the rewritten branch. If you want
+to throw out <emphasis>changes</emphasis> together with the commits, you should use the
+interactive mode of <emphasis>git rebase</emphasis>.</simpara>
 <simpara>You can rewrite the commit log messages using <emphasis>--msg-filter</emphasis>.  For
 example, <emphasis>git svn-id</emphasis> strings in a repository created by <emphasis>git svn</emphasis> can
 be removed this way:</simpara>
 <screen>git filter-branch --msg-filter '
         sed -e "/^git-svn-id:/d"
 '</screen>
-<simpara>To restrict rewriting to only part of the history, specify a revision
-range in addition to the new branch name.  The new branch name will
-point to the top-most revision that a <emphasis>git rev-list</emphasis> of this range
-will print.</simpara>
 <simpara>If you need to add <emphasis>Acked-by</emphasis> lines to, say, the last 10 commits (none
 of which is a merge), use this command:</simpara>
 <screen>git filter-branch --msg-filter '
         cat &amp;&amp;
         echo "Acked-by: Bugs Bunny &lt;bunny@bugzilla.org&gt;"
 ' HEAD~10..HEAD</screen>
-<simpara><emphasis role="strong">NOTE</emphasis> the changes introduced by the commits, and which are not reverted
-by subsequent commits, will still be in the rewritten branch. If you want
-to throw out <emphasis>changes</emphasis> together with the commits, you should use the
-interactive mode of <emphasis>git rebase</emphasis>.</simpara>
+<simpara>To restrict rewriting to only part of the history, specify a revision
+range in addition to the new branch name.  The new branch name will
+point to the top-most revision that a <emphasis>git rev-list</emphasis> of this range
+will print.</simpara>
 <simpara>Consider this history:</simpara>
 <screen>     D--E--F--G--H
     /     /
@@ -387,7 +386,7 @@ git filter-branch ... D..H --not C</screen>
                         git update-index --index-info &amp;&amp;
          mv "$GIT_INDEX_FILE.new" "$GIT_INDEX_FILE"' HEAD</screen>
 </simplesect>
-<simplesect id="_checklist_for_shrinking_a_repository">
+<simplesect id="git-filter-branch(1)__checklist_for_shrinking_a_repository">
 <title>Checklist for Shrinking a Repository</title>
 <simpara>git-filter-branch is often used to get rid of a subset of files,
 usually with some combination of <emphasis>--index-filter</emphasis> and
@@ -447,8 +446,8 @@ Garbage collect all unreferenced objects with <emphasis>git gc --prune=now</emph
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-filter-branch(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

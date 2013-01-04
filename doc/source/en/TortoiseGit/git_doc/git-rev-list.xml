@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-rev-list(1)">
-<articleinfo>
+<sect2 lang="en" id="git-rev-list(1)">
     <title>git-rev-list(1)</title>
 <indexterm>
 <primary>git-rev-list(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-rev-list(1)__name">
 <title>NAME</title>
 <simpara>git-rev-list - Lists commit objects in reverse chronological order</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-rev-list(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git rev-list</emphasis> [ --max-count=&lt;number&gt; ]
@@ -64,7 +62,7 @@
              &lt;commit&gt;&#8230; [ -- &lt;paths&gt;&#8230; ]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-rev-list(1)__description">
 <title>DESCRIPTION</title>
 <simpara>List commits that are reachable by following the <emphasis>parent</emphasis> links from the
 given commit(s), but exclude commits that are reachable from the one(s)
@@ -96,18 +94,26 @@ this reason, it has a lot of different options that enables it to be
 used by commands as different as <emphasis>git bisect</emphasis> and
 <emphasis>git repack</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-rev-list(1)__options">
 <title>OPTIONS</title>
-<section id="_commit_limiting">
+<section id="git-rev-list(1)__commit_limiting">
 <title>Commit Limiting</title>
 <simpara>Besides specifying a range of commits that should be listed using the
 special notations explained in the description, additional commit
-limiting may be applied. Note that they are applied before commit
+limiting may be applied.</simpara>
+<simpara>Using more options generally further limits the output (e.g.
+<emphasis>--since=&lt;date1&gt;</emphasis> limits to commits newer than <emphasis>&lt;date1&gt;</emphasis>, and using it
+with <emphasis>--grep=&lt;pattern&gt;</emphasis> further limits to commits whose log message
+has a line that matches <emphasis>&lt;pattern&gt;</emphasis>), unless otherwise noted.</simpara>
+<simpara>Note that these are applied before commit
 ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--n <emphasis>number</emphasis>
+-&lt;number&gt;
+</term>
+<term>
+-n &lt;number&gt;
 </term>
 <term>
 --max-count=&lt;number&gt;
@@ -177,7 +183,24 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <listitem>
 <simpara>
         Limit the commits output to ones with author/committer
-        header lines that match the specified pattern (regular expression).
+        header lines that match the specified pattern (regular
+        expression).  With more than one <emphasis>--author=&lt;pattern&gt;</emphasis>,
+        commits whose author matches any of the given patterns are
+        chosen (similarly for multiple <emphasis>--committer=&lt;pattern&gt;</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--grep-reflog=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        Limit the commits output to ones with reflog entries that
+        match the specified pattern (regular expression). With
+        more than one <emphasis>--grep-reflog</emphasis>, commits whose reflog message
+        matches any of the given patterns are chosen.  It is an
+        error to use this option unless <emphasis>--walk-reflogs</emphasis> is in use.
 </simpara>
 </listitem>
 </varlistentry>
@@ -188,8 +211,13 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <listitem>
 <simpara>
         Limit the commits output to ones with log message that
-        matches the specified pattern (regular expression).
+        matches the specified pattern (regular expression).  With
+        more than one <emphasis>--grep=&lt;pattern&gt;</emphasis>, commits whose message
+        matches any of the given patterns are chosen (but see
+        <emphasis>--all-match</emphasis>).
 </simpara>
+<simpara>When <emphasis>--show-notes</emphasis> is in effect, the message from the notes as
+if it is part of the log message.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -199,7 +227,7 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <listitem>
 <simpara>
         Limit the commits output to ones that match all given --grep,
-        --author and --committer instead of ones that match at least one.
+        instead of ones that match at least one.
 </simpara>
 </listitem>
 </varlistentry>
@@ -213,6 +241,17 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <listitem>
 <simpara>
         Match the regexp limiting patterns without regard to letters case.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--basic-regexp
+</term>
+<listitem>
+<simpara>
+        Consider the limiting patterns to be basic regular expressions;
+        this is the default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -241,6 +280,17 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <simpara>
         Consider the limiting patterns to be fixed strings (don't interpret
         pattern as a regular expression).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--perl-regexp
+</term>
+<listitem>
+<simpara>
+        Consider the limiting patterns to be Perl-compatible regexp.
+        Requires libpcre to be compiled in.
 </simpara>
 </listitem>
 </varlistentry>
@@ -542,7 +592,7 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_history_simplification">
+<section id="git-rev-list(1)__history_simplification">
 <title>History Simplification</title>
 <simpara>Sometimes you are only interested in parts of the history, for example the
 commits modifying a particular &lt;path&gt;. But there are two parts of
@@ -904,7 +954,7 @@ above) if (1) they are referenced by tags, or (2) they change the
 contents of the paths given on the command line.  All other
 commits are marked as TREESAME (subject to be simplified away).</simpara>
 </section>
-<section id="_bisection_helpers">
+<section id="git-rev-list(1)__bisection_helpers">
 <title>Bisection Helpers</title>
 <variablelist>
 <varlistentry>
@@ -973,31 +1023,42 @@ after all the sorted commit objects, there will be the same text as if
 </varlistentry>
 </variablelist>
 </section>
-<section id="_commit_ordering">
+<section id="git-rev-list(1)__commit_ordering">
 <title>Commit Ordering</title>
 <simpara>By default, the commits are shown in reverse chronological order.</simpara>
 <variablelist>
-<varlistentry>
-<term>
---topo-order
-</term>
-<listitem>
-<simpara>
-        This option makes them appear in topological order (i.e.
-        descendant commits are shown before their parents).
-</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 --date-order
 </term>
 <listitem>
 <simpara>
-        This option is similar to <emphasis>--topo-order</emphasis> in the sense that no
-        parent comes before all of its children, but otherwise things
-        are still ordered in the commit timestamp order.
+        Show no parents before all of its children are shown, but
+        otherwise show commits in the commit timestamp order.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--topo-order
+</term>
+<listitem>
+<simpara>
+        Show no parents before all of its children are shown, and
+        avoid showing commits on multiple lines of history
+        intermixed.
+</simpara>
+<simpara>For example, in a commit history like this:</simpara>
+<screen>    ---1----2----4----7
+        \              \
+         3----5----6----8---</screen>
+<simpara>where the numbers denote the order of commit timestamps, <emphasis>git
+rev-list</emphasis> and friends with <emphasis>--date-order</emphasis> show the commits in the
+timestamp order: 8 7 6 5 4 3 2 1.</simpara>
+<simpara>With <emphasis>--topo-order</emphasis>, they would show 8 6 5 3 7 4 2 1 (or 8 7 4 2 6 5
+3 1); some older commits are shown before newer ones in order to
+avoid showing the commits from two parallel development track mixed
+together.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1013,7 +1074,7 @@ after all the sorted commit objects, there will be the same text as if
 </varlistentry>
 </variablelist>
 </section>
-<section id="_object_traversal">
+<section id="git-rev-list(1)__object_traversal">
 <title>Object Traversal</title>
 <simpara>These options are mostly targeted for packing of git repositories.</simpara>
 <variablelist>
@@ -1057,11 +1118,16 @@ after all the sorted commit objects, there will be the same text as if
 </varlistentry>
 <varlistentry>
 <term>
---no-walk
+--no-walk[=(sorted|unsorted)]
 </term>
 <listitem>
 <simpara>
-        Only show the given revs, but do not traverse their ancestors.
+        Only show the given commits, but do not traverse their ancestors.
+        This has no effect if a range is specified. If the argument
+        "unsorted" is given, the commits are show in the order they were
+        given on the command line. Otherwise (if "sorted" or no argument
+        was given), the commits are show in reverse chronological order
+        by commit time.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1077,7 +1143,7 @@ after all the sorted commit objects, there will be the same text as if
 </varlistentry>
 </variablelist>
 </section>
-<section id="_commit_formatting">
+<section id="git-rev-list(1)__commit_formatting">
 <title>Commit Formatting</title>
 <simpara>Using these options, <xref linkend="git-rev-list(1)" /> will act similar to the
 more specialized family of commit log tools: <xref linkend="git-log(1)" />,
@@ -1203,6 +1269,17 @@ being displayed. Examples: "--notes=foo" will show only notes from
 <simpara>
         These options are deprecated. Use the above --notes/--no-notes
         options instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-signature
+</term>
+<listitem>
+<simpara>
+        Check the validity of a signed commit object by passing the signature
+        to <emphasis>gpg --verify</emphasis> and show the output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1344,7 +1421,7 @@ format, often found in E-mail messages.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_pretty_formats">
+<simplesect id="git-rev-list(1)__pretty_formats">
 <title>PRETTY FORMATS</title>
 <simpara>If the commit is a merge, and if the pretty-format
 is not <emphasis>oneline</emphasis>, <emphasis>email</emphasis> or <emphasis>raw</emphasis>, an additional line is
@@ -1601,6 +1678,21 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
+<emphasis>%GG</emphasis>: raw verification message from GPG for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%G?</emphasis>: show either "G" for Good or "B" for Bad for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%GS</emphasis>: show the name of the signer for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>%gD</emphasis>: reflog selector, e.g., <emphasis>refs/stash@{1}</emphasis>
 </simpara>
 </listitem>
@@ -1731,8 +1823,8 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-rev-list(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

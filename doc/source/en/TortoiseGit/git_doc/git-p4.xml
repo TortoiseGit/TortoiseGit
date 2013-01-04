@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-p4(1)">
-<articleinfo>
+<sect2 lang="en" id="git-p4(1)">
     <title>git-p4(1)</title>
 <indexterm>
 <primary>git-p4(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-p4(1)__name">
 <title>NAME</title>
 <simpara>git-p4 - Import from and submit to Perforce repositories</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-p4(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git p4 clone</emphasis> [&lt;sync options&gt;] [&lt;clone options&gt;] &lt;p4 depot path&gt;&#8230;
@@ -21,7 +19,7 @@
 <emphasis>git p4 submit</emphasis> [&lt;submit options&gt;] [&lt;master branch name&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-p4(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This command provides a way to interact with p4 repositories
 using git.</simpara>
@@ -33,16 +31,9 @@ Submit git changes back to p4 using <emphasis>git p4 submit</emphasis>.  The com
 <emphasis>git p4 rebase</emphasis> does a sync plus rebases the current branch onto
 the updated p4 remote branch.</simpara>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-p4(1)__example">
 <title>EXAMPLE</title>
 <itemizedlist>
-<listitem>
-<simpara>
-Create an alias for <emphasis>git p4</emphasis>, using the full path to the <emphasis>git-p4</emphasis>
-  script if needed:
-</simpara>
-<screen>$ git config --global alias.p4 '!git-p4'</screen>
-</listitem>
 <listitem>
 <simpara>
 Clone a repository:
@@ -72,9 +63,9 @@ Submit your commits back to p4:
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_commands">
+<simplesect id="git-p4(1)__commands">
 <title>COMMANDS</title>
-<section id="_clone">
+<section id="git-p4(1)__clone">
 <title>Clone</title>
 <simpara>Generally, <emphasis>git p4 clone</emphasis> is used to create a new git directory
 from an existing p4 repository:</simpara>
@@ -102,7 +93,7 @@ Creates a local branch, <emphasis>master</emphasis> from this remote and checks 
 the depot path:</simpara>
 <screen>$ git p4 clone //depot/path/project@all</screen>
 </section>
-<section id="_sync">
+<section id="git-p4(1)__sync">
 <title>Sync</title>
 <simpara>As development continues in the p4 repository, those changes can
 be included in the git repository using:</simpara>
@@ -123,7 +114,7 @@ will be fetched and consulted first during a <emphasis>git p4 sync</emphasis>.  
 importing directly from p4 is considerably slower than pulling changes
 from a git remote, this can be useful in a multi-developer environment.</simpara>
 </section>
-<section id="_rebase">
+<section id="git-p4(1)__rebase">
 <title>Rebase</title>
 <simpara>A common working pattern is to fetch the latest changes from the p4 depot
 and merge them with local uncommitted changes.  Often, the p4 repository
@@ -132,7 +123,7 @@ sense.  This command does <emphasis>git p4 sync</emphasis> followed by <emphasis
 local commits on top of updated p4 changes.</simpara>
 <screen>$ git p4 rebase</screen>
 </section>
-<section id="_submit">
+<section id="git-p4(1)__submit">
 <title>Submit</title>
 <simpara>Submitting changes from a git repository back to the p4 repository
 requires a separate p4 client workspace.  This should be specified
@@ -152,11 +143,11 @@ according to the author of the git commit.  This option requires admin
 privileges in p4, which can be granted using <emphasis>p4 protect</emphasis>.</simpara>
 </section>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-p4(1)__options">
 <title>OPTIONS</title>
-<section id="_general_options">
+<section id="git-p4(1)__general_options">
 <title>General options</title>
-<simpara>All commands except clone accept this option.</simpara>
+<simpara>All commands except clone accept these options.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -168,9 +159,19 @@ privileges in p4, which can be granted using <emphasis>p4 protect</emphasis>.</s
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--verbose, -v
+</term>
+<listitem>
+<simpara>
+        Provide more progress information.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
-<section id="_sync_options">
+<section id="git-p4(1)__sync_options">
 <title>Sync options</title>
 <simpara>These options can be used in the initial <emphasis>clone</emphasis> as well as in
 subsequent <emphasis>sync</emphasis> operations.</simpara>
@@ -227,22 +228,23 @@ git repository:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---verbose
-</term>
-<listitem>
-<simpara>
-        Provide more progress information.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 --detect-labels
 </term>
 <listitem>
 <simpara>
         Query p4 for labels associated with the depot paths, and add
-        them as tags in git.
+        them as tags in git. Limited usefulness as only imports labels
+        associated with new changelists. Deprecated.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--import-labels
+</term>
+<listitem>
+<simpara>
+        Import labels from p4 into git.
 </simpara>
 </listitem>
 </varlistentry>
@@ -301,7 +303,7 @@ git repository:</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_clone_options">
+<section id="git-p4(1)__clone_options">
 <title>Clone options</title>
 <simpara>These options can be used in an initial <emphasis>clone</emphasis>, along with the <emphasis>sync</emphasis>
 options described above.</simpara>
@@ -340,20 +342,10 @@ options described above.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_submit_options">
+<section id="git-p4(1)__submit_options">
 <title>Submit options</title>
 <simpara>These options can be used to modify <emphasis>git p4 submit</emphasis> behavior.</simpara>
 <variablelist>
-<varlistentry>
-<term>
---verbose
-</term>
-<listitem>
-<simpara>
-        Provide more progress information.
-</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 --origin &lt;commit&gt;
@@ -368,7 +360,7 @@ options described above.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--M[&lt;n&gt;]
+-M
 </term>
 <listitem>
 <simpara>
@@ -390,10 +382,76 @@ options described above.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--export-labels
+</term>
+<listitem>
+<simpara>
+        Export tags from git as p4 labels. Tags found in git are applied
+        to the perforce working directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dry-run, -n
+</term>
+<listitem>
+<simpara>
+        Show just what commits would be submitted to p4; do not change
+        state in git or p4.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prepare-p4-only
+</term>
+<listitem>
+<simpara>
+        Apply a commit to the p4 workspace, opening, adding and deleting
+        files in p4 as for a normal submit operation.  Do not issue the
+        final "p4 submit", but instead print a message about how to
+        submit manually or revert.  This option always stops after the
+        first (oldest) commit.  Git tags are not exported to p4.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--conflict=(ask|skip|quit)
+</term>
+<listitem>
+<simpara>
+        Conflicts can occur when applying a commit to p4.  When this
+        happens, the default behavior ("ask") is to prompt whether to
+        skip this commit and continue, or quit.  This option can be used
+        to bypass the prompt, causing conflicting commits to be automatically
+        skipped, or to quit trying to apply commits, without prompting.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="git-p4(1)__rebase_options">
+<title>Rebase options</title>
+<simpara>These options can be used to modify <emphasis>git p4 rebase</emphasis> behavior.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--import-labels
+</term>
+<listitem>
+<simpara>
+        Import p4 labels.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_depot_path_syntax">
+<simplesect id="git-p4(1)__depot_path_syntax">
 <title>DEPOT PATH SYNTAX</title>
 <simpara>The p4 depot path argument to <emphasis>git p4 sync</emphasis> and <emphasis>git p4 clone</emphasis> can
 be one or more space-separated p4 depot paths, with an optional
@@ -449,7 +507,7 @@ p4 revision specifier on the end:</simpara>
 </variablelist>
 <simpara>See <emphasis>p4 help revisions</emphasis> for the full syntax of p4 revision specifiers.</simpara>
 </simplesect>
-<simplesect id="_client_spec">
+<simplesect id="git-p4(1)__client_spec">
 <title>CLIENT SPEC</title>
 <simpara>The p4 client specification is maintained with the <emphasis>p4 client</emphasis> command
 and contains among other fields, a View that specifies how the depot
@@ -460,22 +518,22 @@ useClientSpec variable is automatically set in the repository
 configuration file.  This allows future <emphasis>git p4 submit</emphasis> commands to
 work properly; the submit command looks only at the variable and does
 not have a command-line option.</simpara>
-<simpara>The full syntax for a p4 view is documented in <emphasis>p4 help views</emphasis>.  Git-p4
+<simpara>The full syntax for a p4 view is documented in <emphasis>p4 help views</emphasis>.  <emphasis>Git p4</emphasis>
 knows only a subset of the view syntax.  It understands multi-line
 mappings, overlays with <emphasis>+</emphasis>, exclusions with <emphasis>-</emphasis> and double-quotes
-around whitespace.  Of the possible wildcards, git-p4 only handles
-<emphasis>&#8230;</emphasis>, and only when it is at the end of the path.  Git-p4 will complain
+around whitespace.  Of the possible wildcards, <emphasis>git p4</emphasis> only handles
+<emphasis>&#8230;</emphasis>, and only when it is at the end of the path.  <emphasis>Git p4</emphasis> will complain
 if it encounters an unhandled wildcard.</simpara>
 <simpara>Bugs in the implementation of overlap mappings exist.  If multiple depot
 paths map through overlays to the same location in the repository,
-git-p4 can choose the wrong one.  This is hard to solve without
-dedicating a client spec just for git-p4.</simpara>
-<simpara>The name of the client can be given to git-p4 in multiple ways.  The
+<emphasis>git p4</emphasis> can choose the wrong one.  This is hard to solve without
+dedicating a client spec just for <emphasis>git p4</emphasis>.</simpara>
+<simpara>The name of the client can be given to <emphasis>git p4</emphasis> in multiple ways.  The
 variable <emphasis>git-p4.client</emphasis> takes precedence if it exists.  Otherwise,
 normal p4 mechanisms of determining the client are used:  environment
 variable P4CLIENT, a file referenced by P4CONFIG, or the local host name.</simpara>
 </simplesect>
-<simplesect id="_branch_detection">
+<simplesect id="git-p4(1)__branch_detection">
 <title>BRANCH DETECTION</title>
 <simpara>P4 does not have the same concept of a branch as git.  Instead,
 p4 organizes its content as a directory tree, where by convention
@@ -508,18 +566,18 @@ occur with:</simpara>
 <screen>git config git-p4.branchList main:branch1
 git p4 clone --detect-branches //depot@all</screen>
 </simplesect>
-<simplesect id="_performance">
+<simplesect id="git-p4(1)__performance">
 <title>PERFORMANCE</title>
 <simpara>The fast-import mechanism used by <emphasis>git p4</emphasis> creates one pack file for
 each invocation of <emphasis>git p4 sync</emphasis>.  Normally, git garbage compression
 (<xref linkend="git-gc(1)" />) automatically compresses these to fewer pack files,
 but explicit invocation of <emphasis>git repack -adf</emphasis> may improve performance.</simpara>
 </simplesect>
-<simplesect id="_configuration_variables">
+<simplesect id="git-p4(1)__configuration_variables">
 <title>CONFIGURATION VARIABLES</title>
 <simpara>The following config settings can be used to modify <emphasis>git p4</emphasis> behavior.
 They all are in the <emphasis>git-p4</emphasis> section.</simpara>
-<section id="_general_variables">
+<section id="git-p4(1)__general_variables">
 <title>General variables</title>
 <variablelist>
 <varlistentry>
@@ -582,7 +640,7 @@ git-p4.client
 </varlistentry>
 </variablelist>
 </section>
-<section id="_clone_and_sync_variables">
+<section id="git-p4(1)__clone_and_sync_variables">
 <title>Clone and sync variables</title>
 <variablelist>
 <varlistentry>
@@ -629,6 +687,38 @@ git config --add git-p4.branchList main:branchB</screen>
 </varlistentry>
 <varlistentry>
 <term>
+git-p4.ignoredP4Labels
+</term>
+<listitem>
+<simpara>
+        List of p4 labels to ignore. This is built automatically as
+        unimportable labels are discovered.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.importLabels
+</term>
+<listitem>
+<simpara>
+        Import p4 labels into git, as per --import-labels.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.labelImportRegexp
+</term>
+<listitem>
+<simpara>
+        Only p4 labels matching this regular expression will be imported. The
+        default value is <emphasis>[a-zA-Z0-9_\-.]+$</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 git-p4.useClientSpec
 </term>
 <listitem>
@@ -642,7 +732,7 @@ git-p4.useClientSpec
 </varlistentry>
 </variablelist>
 </section>
-<section id="_submit_variables">
+<section id="git-p4(1)__submit_variables">
 <title>Submit variables</title>
 <variablelist>
 <varlistentry>
@@ -651,7 +741,8 @@ git-p4.detectRenames
 </term>
 <listitem>
 <simpara>
-        Detect renames.  See <xref linkend="git-diff(1)" />.
+        Detect renames.  See <xref linkend="git-diff(1)" />.  This can be true,
+        false, or a score as expected by <emphasis>git diff -M</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -661,7 +752,8 @@ git-p4.detectCopies
 </term>
 <listitem>
 <simpara>
-        Detect copies.  See <xref linkend="git-diff(1)" />.
+        Detect copies.  See <xref linkend="git-diff(1)" />.  This can be true,
+        false, or a score as expected by <emphasis>git diff -C</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -671,7 +763,7 @@ git-p4.detectCopiesHarder
 </term>
 <listitem>
 <simpara>
-        Detect copies harder.  See <xref linkend="git-diff(1)" />.
+        Detect copies harder.  See <xref linkend="git-diff(1)" />.  A boolean.
 </simpara>
 </listitem>
 </varlistentry>
@@ -754,17 +846,49 @@ git-p4.attemptRCSCleanup
 </term>
 <listitem>
 <simpara>
-    If enabled, <emphasis>git p4 submit</emphasis> will attempt to cleanup RCS keywords
-    ($Header$, etc). These would otherwise cause merge conflicts and prevent
-    the submit going ahead. This option should be considered experimental at
-    present.
+        If enabled, <emphasis>git p4 submit</emphasis> will attempt to cleanup RCS keywords
+        ($Header$, etc). These would otherwise cause merge conflicts and prevent
+        the submit going ahead. This option should be considered experimental at
+        present.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.exportLabels
+</term>
+<listitem>
+<simpara>
+        Export git tags to p4 labels, as per --export-labels.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.labelExportRegexp
+</term>
+<listitem>
+<simpara>
+        Only p4 labels matching this regular expression will be exported. The
+        default value is <emphasis>[a-zA-Z0-9_\-.]+$</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+git-p4.conflict
+</term>
+<listitem>
+<simpara>
+        Specify submit behavior when a conflict with p4 is found, as per
+        --conflict.  The default behavior is <emphasis>ask</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_implementation_details">
+<simplesect id="git-p4(1)__implementation_details">
 <title>IMPLEMENTATION DETAILS</title>
 <itemizedlist>
 <listitem>
@@ -795,4 +919,4 @@ Each commit imported by <emphasis>git p4</emphasis> has a line at the end of the
 </listitem>
 </itemizedlist>
 </simplesect>
-</article>
+</sect2>

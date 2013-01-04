@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-send-email(1)">
-<articleinfo>
+<sect2 lang="en" id="git-send-email(1)">
     <title>git-send-email(1)</title>
 <indexterm>
 <primary>git-send-email(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-send-email(1)__name">
 <title>NAME</title>
 <simpara>git-send-email - Send a collection of patches as emails</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-send-email(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git send-email</emphasis> [options] &lt;file|directory|rev-list options&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-send-email(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Takes the patches given on the command line and emails them out.
 Patches can be specified as files, directories (which will send all
@@ -47,9 +45,9 @@ and the "Subject:" of the message as the second line.</simpara>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-send-email(1)__options">
 <title>OPTIONS</title>
-<section id="_composing">
+<section id="git-send-email(1)__composing">
 <title>Composing</title>
 <variablelist>
 <varlistentry>
@@ -187,9 +185,20 @@ is not set, this will be prompted for.</simpara>
 <simpara>Note that no attempts whatsoever are made to validate the encoding.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--compose-encoding=&lt;encoding&gt;
+</term>
+<listitem>
+<simpara>
+        Specify encoding of compose message. Default is the value of the
+        <emphasis>sendemail.composeencoding</emphasis>; if that is unspecified, UTF-8 is assumed.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
-<section id="_sending">
+<section id="git-send-email(1)__sending">
 <title>Sending</title>
 <variablelist>
 <varlistentry>
@@ -335,7 +344,7 @@ must be used for each option.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_automating">
+<section id="git-send-email(1)__automating">
 <title>Automating</title>
 <variablelist>
 <varlistentry>
@@ -500,7 +509,7 @@ recipient's MUA.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_administering">
+<section id="git-send-email(1)__administering">
 <title>Administering</title>
 <variablelist>
 <varlistentry>
@@ -612,7 +621,7 @@ default to <emphasis>--validate</emphasis>.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-send-email(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -664,9 +673,9 @@ sendemail.confirm
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-send-email(1)__example">
 <title>EXAMPLE</title>
-<section id="_use_gmail_as_the_smtp_server">
+<section id="git-send-email(1)__use_gmail_as_the_smtp_server">
 <title>Use gmail as the smtp server</title>
 <simpara>To use <emphasis>git send-email</emphasis> to send your patches through the GMail SMTP server,
 edit ~/.gitconfig to specify your account settings:</simpara>
@@ -684,12 +693,12 @@ $ git send-email outgoing/*</literallayout>
       Net::SMTP::SSL, MIME::Base64 and Authen::SASL</simpara>
 </section>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-send-email(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-format-patch(1)" />, <xref linkend="git-imap-send(1)" />, mbox(5)</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-send-email(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

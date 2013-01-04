@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-prune-packed(1)">
-<articleinfo>
+<sect2 lang="en" id="git-prune-packed(1)">
     <title>git-prune-packed(1)</title>
 <indexterm>
 <primary>git-prune-packed(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-prune-packed(1)__name">
 <title>NAME</title>
 <simpara>git-prune-packed - Remove extra objects that are already in pack files</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-prune-packed(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git prune-packed</emphasis> [-n|--dry-run] [-q|--quiet]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-prune-packed(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This program searches the <emphasis>$GIT_OBJECT_DIR</emphasis> for all objects that currently
 exist in a pack file as well as the independent object directories.</simpara>
@@ -28,7 +26,7 @@ compression applied, stored in a single file, with an associated index file.</si
 <simpara>Packs are used to reduce the load on mirror systems, backup engines,
 disk storage, etc.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-prune-packed(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -60,13 +58,13 @@ disk storage, etc.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-prune-packed(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-pack-objects(1)" />
 <xref linkend="git-repack(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-prune-packed(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

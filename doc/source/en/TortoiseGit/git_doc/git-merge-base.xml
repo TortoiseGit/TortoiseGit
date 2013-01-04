@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-merge-base(1)">
-<articleinfo>
+<sect2 lang="en" id="git-merge-base(1)">
     <title>git-merge-base(1)</title>
 <indexterm>
 <primary>git-merge-base(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-merge-base(1)__name">
 <title>NAME</title>
 <simpara>git-merge-base - Find as good common ancestors as possible for a merge</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-merge-base(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git merge-base</emphasis> [-a|--all] &lt;commit&gt; &lt;commit&gt;&#8230;
 <emphasis>git merge-base</emphasis> [-a|--all] --octopus &lt;commit&gt;&#8230;
+<emphasis>git merge-base</emphasis> --is-ancestor &lt;commit&gt; &lt;commit&gt;
 <emphasis>git merge-base</emphasis> --independent &lt;commit&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-merge-base(1)__description">
 <title>DESCRIPTION</title>
 <simpara><emphasis>git merge-base</emphasis> finds best common ancestor(s) between two commits to use
 in a three-way merge.  One common ancestor is <emphasis>better</emphasis> than another common
@@ -29,7 +28,7 @@ that does not have any better common ancestor is a <emphasis>best common
 ancestor</emphasis>, i.e. a <emphasis>merge base</emphasis>.  Note that there can be more than one
 merge base for a pair of commits.</simpara>
 </simplesect>
-<simplesect id="_operation_mode">
+<simplesect id="git-merge-base(1)__operation_mode">
 <title>OPERATION MODE</title>
 <simpara>As the most common special case, specifying only two commits on the
 command line means computing the merge base between the given two commits.</simpara>
@@ -67,9 +66,21 @@ from <xref linkend="git-show-branch(1)" /> when used with the <emphasis>--merge-
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--is-ancestor
+</term>
+<listitem>
+<simpara>
+        Check if the first &lt;commit&gt; is an ancestor of the second &lt;commit&gt;,
+        and exit with status 0 if true, or with status 1 if not.
+        Errors are signaled by a non-zero status that is not 1.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-merge-base(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -87,7 +98,7 @@ from <xref linkend="git-show-branch(1)" /> when used with the <emphasis>--merge-
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-merge-base(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>Given two commits <emphasis>A</emphasis> and <emphasis>B</emphasis>, <emphasis>git merge-base A B</emphasis> will output a commit
 which is reachable from both <emphasis>A</emphasis> and <emphasis>B</emphasis> through the parent relationship.</simpara>
@@ -126,15 +137,30 @@ the best common ancestor of all commits.</simpara>
 <simpara>both <emphasis>1</emphasis> and <emphasis>2</emphasis> are merge-bases of A and B.  Neither one is better than
 the other (both are <emphasis>best</emphasis> merge bases).  When the <emphasis>--all</emphasis> option is not given,
 it is unspecified which best one is output.</simpara>
+<simpara>A common idiom to check "fast-forward-ness" between two commits A
+and B is (or at least used to be) to compute the merge base between
+A and B, and check if it is the same as A, in which case, A is an
+ancestor of B.  You will see this idiom used often in older scripts.</simpara>
+<literallayout class="monospaced">A=$(git rev-parse --verify A)
+if test "$A" = "$(git merge-base A B)"
+then
+        ... A is an ancestor of B ...
+fi</literallayout>
+<simpara>In modern git, you can say this in a more direct way:</simpara>
+<literallayout class="monospaced">if git merge-base --is-ancestor A B
+then
+        ... A is an ancestor of B ...
+fi</literallayout>
+<simpara>instead.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-merge-base(1)__see_also">
 <title>See also</title>
 <simpara><xref linkend="git-rev-list(1)" />,
 <xref linkend="git-show-branch(1)" />,
 <xref linkend="git-merge(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-merge-base(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

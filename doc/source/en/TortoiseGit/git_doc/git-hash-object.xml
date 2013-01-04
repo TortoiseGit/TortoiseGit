@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-hash-object(1)">
-<articleinfo>
+<sect2 lang="en" id="git-hash-object(1)">
     <title>git-hash-object(1)</title>
 <indexterm>
 <primary>git-hash-object(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-hash-object(1)__name">
 <title>NAME</title>
 <simpara>git-hash-object - Compute object ID and optionally creates a blob from a file</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-hash-object(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git hash-object</emphasis> [-t &lt;type&gt;] [-w] [--path=&lt;file&gt;|--no-filters] [--stdin] [--] &lt;file&gt;&#8230;
 <emphasis>git hash-object</emphasis> [-t &lt;type&gt;] [-w] --stdin-paths [--no-filters] &lt; &lt;list-of-paths&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-hash-object(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Computes the object ID value for an object with specified type
 with the contents of the named file (which can be outside of the
@@ -29,7 +27,7 @@ This is used by <emphasis>git cvsimport</emphasis> to update the index
 without modifying files in the work tree.  When &lt;type&gt; is not
 specified, it defaults to "blob".</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-hash-object(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -104,8 +102,8 @@ specified, it defaults to "blob".</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-hash-object(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

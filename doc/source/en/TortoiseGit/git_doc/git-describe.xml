@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-describe(1)">
-<articleinfo>
+<sect2 lang="en" id="git-describe(1)">
     <title>git-describe(1)</title>
 <indexterm>
 <primary>git-describe(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-describe(1)__name">
 <title>NAME</title>
 <simpara>git-describe - Show the most recent tag that is reachable from a commit</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-describe(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git describe</emphasis> [--all] [--tags] [--contains] [--abbrev=&lt;n&gt;] &lt;committish&gt;&#8230;
 <emphasis>git describe</emphasis> [--all] [--tags] [--contains] [--abbrev=&lt;n&gt;] --dirty[=&lt;mark&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-describe(1)__description">
 <title>DESCRIPTION</title>
 <simpara>The command finds the most recent tag that is reachable from a
 commit.  If the tag points to the commit, then only the tag is
@@ -30,7 +28,7 @@ abbreviated object name of the most recent commit.</simpara>
 annotated tags.  For more information about creating annotated tags
 see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-describe(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -62,7 +60,7 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 <listitem>
 <simpara>
         Instead of using only the annotated tags, use any ref
-        found in <emphasis>.git/refs/</emphasis>.  This option enables matching
+        found in <emphasis>refs/</emphasis> namespace.  This option enables matching
         any known branch, remote-tracking branch, or lightweight tag.
 </simpara>
 </listitem>
@@ -74,7 +72,7 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 <listitem>
 <simpara>
         Instead of using only the annotated tags, use any tag
-        found in <emphasis>.git/refs/tags</emphasis>.  This option enables matching
+        found in <emphasis>refs/tags</emphasis> namespace.  This option enables matching
         a lightweight (non-annotated) tag.
 </simpara>
 </listitem>
@@ -180,7 +178,7 @@ see the -a and -s options to <xref linkend="git-tag(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-describe(1)__examples">
 <title>EXAMPLES</title>
 <simpara>With something like git.git current tree, I get:</simpara>
 <literallayout class="monospaced">[torvalds@g5 git]$ git describe parent
@@ -216,7 +214,7 @@ git repository may have new commits whose object names begin with
 975b that did not exist back then, and "-g975b" suffix alone may not
 be sufficient to disambiguate these commits.</simpara>
 </simplesect>
-<simplesect id="_search_strategy">
+<simplesect id="git-describe(1)__search_strategy">
 <title>SEARCH STRATEGY</title>
 <simpara>For each committish supplied, <emphasis>git describe</emphasis> will first look for
 a tag which tags exactly that commit.  Annotated tags will always
@@ -233,8 +231,8 @@ selected and output.  Here fewest commits different is defined as
 the number of commits which would be shown by <emphasis>git log tag..input</emphasis>
 will be the smallest number of commits possible.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-describe(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

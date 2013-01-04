@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-status(1)">
-<articleinfo>
+<sect2 lang="en" id="git-status(1)">
     <title>git-status(1)</title>
 <indexterm>
 <primary>git-status(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-status(1)__name">
 <title>NAME</title>
 <simpara>git-status - Show the working tree status</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-status(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git status</emphasis> [&lt;options&gt;&#8230;] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-status(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Displays paths that have differences between the index file and the
 current HEAD commit, paths that have differences between the working
@@ -28,7 +26,7 @@ are what you <emphasis>would</emphasis> commit by running <emphasis>git commit</
 third are what you <emphasis>could</emphasis> commit by running <emphasis>git add</emphasis> before running
 <emphasis>git commit</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-status(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -67,6 +65,16 @@ third are what you <emphasis>could</emphasis> commit by running <emphasis>git ad
         This is similar to the short output, but will remain stable
         across git versions and regardless of user configuration. See
         below for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--long
+</term>
+<listitem>
+<simpara>
+        Give the output in the long-format. This is the default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -149,9 +157,25 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--column[=&lt;options&gt;]
+</term>
+<term>
+--no-column
+</term>
+<listitem>
+<simpara>
+        Display untracked files in columns. See configuration variable
+        column.status for option syntax.<emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
+        without options are equivalent to <emphasis>always</emphasis> and <emphasis>never</emphasis>
+        respectively.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-status(1)__output">
 <title>OUTPUT</title>
 <simpara>The output from this command is designed to be used as a commit
 template comment, and all the output lines are prefixed with <emphasis>#</emphasis>.
@@ -162,7 +186,7 @@ at any time.</simpara>
 made relative to the current directory if you are working in a
 subdirectory (this is on purpose, to help cutting and pasting). See
 the status.relativePaths config option below.</simpara>
-<section id="_short_format">
+<section id="git-status(1)__short_format">
 <title>Short Format</title>
 <simpara>In the short-format, the status of each path is shown as</simpara>
 <literallayout class="monospaced">XY PATH1 -&gt; PATH2</literallayout>
@@ -245,7 +269,7 @@ U           U    unmerged, both modified
 <simpara>If -b is used the short-format status is preceded by a line</simpara>
 <simpara>## branchname tracking info</simpara>
 </section>
-<section id="_porcelain_format">
+<section id="git-status(1)__porcelain_format">
 <title>Porcelain Format</title>
 <simpara>The porcelain format is similar to the short format, but is guaranteed
 not to change in a backwards-incompatible way between git versions or
@@ -277,7 +301,7 @@ characters are not specially formatted; no quoting or
 backslash-escaping is performed.</simpara>
 </section>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-status(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>The command honors <emphasis>color.status</emphasis> (or <emphasis>status.color</emphasis> -- they
 mean the same thing and the latter is kept for backward
@@ -291,12 +315,12 @@ to -1 or an unlimited number), the submodule summary will be enabled for
 the long format and a summary of commits for modified submodules will be
 shown (see --summary-limit option of <xref linkend="git-submodule(1)" />).</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-status(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gitignore(5)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-status(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

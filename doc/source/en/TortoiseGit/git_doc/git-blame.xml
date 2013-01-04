@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-blame(1)">
-<articleinfo>
+<sect2 lang="en" id="git-blame(1)">
     <title>git-blame(1)</title>
 <indexterm>
 <primary>git-blame(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-blame(1)__name">
 <title>NAME</title>
 <simpara>git-blame - Show what revision and author last modified each line of a file</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-blame(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git blame</emphasis> [-c] [-b] [-l] [--root] [-t] [-f] [-n] [-s] [-e] [-p] [-w] [--incremental] [-L n,m]
@@ -20,11 +18,16 @@
             [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;] [--] &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-blame(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Annotates each line in the given file with information from the revision which
 last modified the line. Optionally, start annotating from the given revision.</simpara>
 <simpara>The command can also limit the range of lines annotated.</simpara>
+<simpara>The origin of lines is automatically followed across whole-file
+renames (currently there is no option to turn the rename-following
+off). To follow lines moved from one file to another, or to follow
+lines that were copied and pasted from another file, etc., see the
+<emphasis>-C</emphasis> and <emphasis>-M</emphasis> options.</simpara>
 <simpara>The report does not tell you anything about lines which have been deleted or
 replaced; you need to use a tool such as <emphasis>git diff</emphasis> or the "pickaxe"
 interface briefly mentioned in the following paragraph.</simpara>
@@ -37,7 +40,7 @@ a text string in the diff. A small example:</simpara>
 5040f17eba15504bad66b14a645bddd9b015ebb7 blame -S &lt;ancestry-file&gt;
 ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-blame(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -387,7 +390,7 @@ take effect.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_the_porcelain_format">
+<simplesect id="git-blame(1)__the_porcelain_format">
 <title>THE PORCELAIN FORMAT</title>
 <simpara>In this format, each line is output after a header; the
 header at the minimum has the first line which has:</simpara>
@@ -451,7 +454,7 @@ git blame --line-porcelain file |
 sed -n 's/^author //p' |
 sort | uniq -c | sort -rn</literallayout>
 </simplesect>
-<simplesect id="_specifying_ranges">
+<simplesect id="git-blame(1)__specifying_ranges">
 <title>SPECIFYING RANGES</title>
 <simpara>Unlike <emphasis>git blame</emphasis> and <emphasis>git annotate</emphasis> in older versions of git, the extent
 of the annotation can be limited to both line ranges and revision
@@ -484,7 +487,7 @@ introduced the file with:</simpara>
 parents, using <emphasis>commit^!</emphasis> notation:</simpara>
 <literallayout class="monospaced">git blame -C -C -f $commit^! -- foo</literallayout>
 </simplesect>
-<simplesect id="_incremental_output">
+<simplesect id="git-blame(1)__incremental_output">
 <title>INCREMENTAL OUTPUT</title>
 <simpara>When called with <emphasis>--incremental</emphasis> option, the command outputs the
 result as it is built.  The output generally will talk about
@@ -527,7 +530,7 @@ commit commentary), a blame viewer will not care.</simpara></note>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_mapping_authors">
+<simplesect id="git-blame(1)__mapping_authors">
 <title>MAPPING AUTHORS</title>
 <simpara>If the file <emphasis>.mailmap</emphasis> exists at the toplevel of the repository, or at
 the location pointed to by the mailmap.file configuration option, it
@@ -558,7 +561,7 @@ prefers her family name fully spelled out. A proper <emphasis>.mailmap</emphasis
 would look like:</simpara>
 <screen>Jane Doe         &lt;jane@desktop.(none)&gt;
 Joe R. Developer &lt;joe@example.com&gt;</screen>
-<simpara>Note how there is no need for an entry for &lt;<ulink url="mailto:jane@laptop">jane@laptop</ulink>.(none)&gt;, because the
+<simpara>Note how there is no need for an entry for <emphasis>&lt;jane@laptop.(none)&gt;</emphasis>, because the
 real name of that author is already correct.</simpara>
 <simpara>Example 2: Your repository contains commits from the following
 authors:</simpara>
@@ -577,12 +580,12 @@ Santa Claus &lt;santa.claus@northpole.xx&gt; &lt;me@company.xx&gt;</screen>
 <simpara>Use hash <emphasis>#</emphasis> for comments that are either on their own line, or after
 the email address.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-blame(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-annotate(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-blame(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

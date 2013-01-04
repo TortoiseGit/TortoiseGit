@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-merge-index(1)">
-<articleinfo>
+<sect2 lang="en" id="git-merge-index(1)">
     <title>git-merge-index(1)</title>
 <indexterm>
 <primary>git-merge-index(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-merge-index(1)__name">
 <title>NAME</title>
 <simpara>git-merge-index - Run a merge for files needing merging</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-merge-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git merge-index</emphasis> [-o] [-q] &lt;merge-program&gt; (-a | [--] &lt;file&gt;*)</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-merge-index(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This looks up the &lt;file&gt;(s) in the index and, if there are any merge
 entries, passes the SHA1 hash for those files as arguments 1, 2, 3 (empty
 argument if no file), and &lt;file&gt; as argument 4.  File modes for the three
 files are passed as arguments 5, 6 and 7.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-merge-index(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -103,8 +101,8 @@ merge once anything has returned an error (i.e., <emphasis>cat</emphasis> return
 for the AA file, because it didn't exist in the original, and thus
 <emphasis>git merge-index</emphasis> didn't even try to merge the MM thing).</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-merge-index(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

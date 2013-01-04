@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-stash(1)">
-<articleinfo>
+<sect2 lang="en" id="git-stash(1)">
     <title>git-stash(1)</title>
 <indexterm>
 <primary>git-stash(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-stash(1)__name">
 <title>NAME</title>
 <simpara>git-stash - Stash the changes in a dirty working directory away</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-stash(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git stash</emphasis> list [&lt;options&gt;]
@@ -26,7 +24,7 @@
 <emphasis>git stash</emphasis> create</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-stash(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Use <emphasis>git stash</emphasis> when you want to record the current state of the
 working directory and the index, but want to go back to a clean
@@ -45,7 +43,7 @@ the usual reflog syntax (e.g. <emphasis>stash@{0}</emphasis> is the most recentl
 created stash, <emphasis>stash@{1}</emphasis> is the one before it, <emphasis>stash@{2.hours.ago}</emphasis>
 is also possible).</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-stash(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -184,7 +182,7 @@ drop [-q|--quiet] [&lt;stash&gt;]
 <simpara>
         Remove a single stashed state from the stash list. When no <emphasis>&lt;stash&gt;</emphasis>
         is given, it removes the latest one. i.e. <emphasis>stash@{0}</emphasis>, otherwise
-        <emphasis>&lt;stash&gt;</emphasis> must a valid stash log reference of the form
+        <emphasis>&lt;stash&gt;</emphasis> must be a valid stash log reference of the form
         <emphasis>stash@{&lt;revision&gt;}</emphasis>.
 </simpara>
 </listitem>
@@ -202,7 +200,7 @@ create
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-stash(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>A stash is represented as a commit whose tree records the state of the
 working directory, and its first parent is the commit at <emphasis>HEAD</emphasis> when
@@ -216,7 +214,7 @@ the <emphasis>HEAD</emphasis> commit.  The ancestry graph looks like this:</simp
 of the index, and <emphasis>W</emphasis> is a commit that records the state of the working
 tree.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-stash(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -310,15 +308,15 @@ xargs git log --merges --no-walk --grep=WIP</screen>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-stash(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-checkout(1)" />,
 <xref linkend="git-commit(1)" />,
 <xref linkend="git-reflog(1)" />,
 <xref linkend="git-reset(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-stash(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

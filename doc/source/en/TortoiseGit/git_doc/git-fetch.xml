@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-fetch(1)">
-<articleinfo>
+<sect2 lang="en" id="git-fetch(1)">
     <title>git-fetch(1)</title>
 <indexterm>
 <primary>git-fetch(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-fetch(1)__name">
 <title>NAME</title>
 <simpara>git-fetch - Download objects and refs from another repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-fetch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git fetch</emphasis> [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]
@@ -21,7 +19,7 @@
 <emphasis>git fetch</emphasis> --all [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-fetch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Fetches named heads or tags from one or more other repositories,
 along with the objects necessary to complete them.</simpara>
@@ -40,7 +38,7 @@ or from several repositories at once if &lt;group&gt; is given and
 there is a remotes.&lt;group&gt; entry in the configuration file.
 (See <xref linkend="git-config(1)" />).</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-fetch(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -76,7 +74,8 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
 <simpara>
         Deepen the history of a <emphasis>shallow</emphasis> repository created by
         <emphasis>git clone</emphasis> with <emphasis>--depth=&lt;depth&gt;</emphasis> option (see <xref linkend="git-clone(1)" />)
-        by the specified number of commits.
+        to the specified number of commits from the tip of each remote
+        branch history. Tags for the deepened commits are not fetched.
 </simpara>
 </listitem>
 </varlistentry>
@@ -171,14 +170,11 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
 </term>
 <listitem>
 <simpara>
-        Most of the tags are fetched automatically as branch
-        heads are downloaded, but tags that do not point at
-        objects reachable from the branch heads that are being
-        tracked will not be fetched by this mechanism.  This
-        flag lets all tags and their associated objects be
-        downloaded. The default behavior for a remote may be
-        specified with the remote.&lt;name&gt;.tagopt setting. See
-        <xref linkend="git-config(1)" />.
+        This is a short-hand for giving "refs/tags/<emphasis role="strong">:refs/tags/</emphasis>"
+        refspec from the command line, to ask all tags to be fetched
+        and stored locally.  Because this acts as an explicit
+        refspec, the default refspecs (configured with the
+        remote.$name.fetch variable) are overridden and not used.
 </simpara>
 </listitem>
 </varlistentry>
@@ -318,8 +314,8 @@ there is a remotes.&lt;group&gt; entry in the configuration file.
 <simpara>
         The "remote" repository that is the source of a fetch
         or pull operation.  This parameter can be either a URL
-        (see the section <link linkend="URLS">GIT URLS</link> below) or the name
-        of a remote (see the section <link linkend="REMOTES">REMOTES</link> below).
+        (see the section <link linkend="git-fetch(1)_URLS">GIT URLS</link> below) or the name
+        of a remote (see the section <link linkend="git-fetch(1)_REMOTES">REMOTES</link> below).
 </simpara>
 </listitem>
 </varlistentry>
@@ -406,14 +402,17 @@ A parameter &lt;ref&gt; without a colon is equivalent to
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
-<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simplesect id="git-fetch(1)__git_urls_anchor_id_git_fetch_1__urls_xreflabel_urls">
+<title>GIT URLS<anchor id="git-fetch(1)_URLS" xreflabel="[URLS]"/></title>
 <simpara>In general, URLs contain information about the transport protocol, the
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
-protocols. The following syntaxes may be used with them:</simpara>
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+and ftps can be used for fetching and rsync can be used for fetching
+and pushing, but these are inefficient and deprecated; do not use
+them).</simpara>
+<simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -521,8 +520,8 @@ configuration section of the form:</simpara>
 "ssh://example.org/path/to/repo.git" for pushes, but pulls will still
 use the original URL.</simpara>
 </simplesect>
-<simplesect id="_remotes_anchor_id_remotes_xreflabel_remotes">
-<title>REMOTES<anchor id="REMOTES" xreflabel="[REMOTES]"/></title>
+<simplesect id="git-fetch(1)__remotes_anchor_id_git_fetch_1__remotes_xreflabel_remotes">
+<title>REMOTES<anchor id="git-fetch(1)_REMOTES" xreflabel="[REMOTES]"/></title>
 <simpara>The name of one of the following can be used instead
 of a URL as <emphasis>&lt;repository&gt;</emphasis> argument:</simpara>
 <itemizedlist>
@@ -544,7 +543,7 @@ a file in the <emphasis>$GIT_DIR/branches</emphasis> directory.
 </itemizedlist>
 <simpara>All of these also allow you to omit the refspec from the command line
 because they each contain a refspec which git will use by default.</simpara>
-<section id="_named_remote_in_configuration_file">
+<section id="git-fetch(1)__named_remote_in_configuration_file">
 <title>Named remote in configuration file</title>
 <simpara>You can choose to provide the name of a remote which you had previously
 configured using <xref linkend="git-remote(1)" />, <xref linkend="git-config(1)" />
@@ -561,7 +560,7 @@ config file would appear like this:</simpara>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
 to <emphasis>&lt;url&gt;</emphasis>.</simpara>
 </section>
-<section id="_named_file_in_emphasis_git_dir_remotes_emphasis">
+<section id="git-fetch(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
 <simpara>You can choose to provide the name of a
 file in <emphasis>$GIT_DIR/remotes</emphasis>.  The URL
@@ -577,7 +576,7 @@ following format:</simpara>
 Multiple <emphasis>Push:</emphasis> and <emphasis>Pull:</emphasis> lines may
 be specified for additional branch mappings.</simpara>
 </section>
-<section id="_named_file_in_emphasis_git_dir_branches_emphasis">
+<section id="git-fetch(1)__named_file_in_emphasis_git_dir_branches_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/branches</emphasis></title>
 <simpara>You can choose to provide the name of a
 file in <emphasis>$GIT_DIR/branches</emphasis>.
@@ -595,7 +594,7 @@ refspecs, if you don't provide one on the command line.
 <screen>        HEAD:refs/heads/&lt;head&gt;</screen>
 </section>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-fetch(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
@@ -621,7 +620,7 @@ because it is prefixed with a plus sign; <emphasis>tmp</emphasis> will not be.</
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_bugs">
+<simplesect id="git-fetch(1)__bugs">
 <title>BUGS</title>
 <simpara>Using --recurse-submodules can only fetch new commits in already checked
 out submodules right now. When e.g. upstream added a new submodule in the
@@ -630,12 +629,12 @@ fetched, making it impossible to check out that submodule later without
 having to do a fetch again. This is expected to be fixed in a future git
 version.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-fetch(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-pull(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-fetch(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

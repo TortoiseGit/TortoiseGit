@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-tar-tree(1)">
-<articleinfo>
+<sect2 lang="en" id="git-tar-tree(1)">
     <title>git-tar-tree(1)</title>
 <indexterm>
 <primary>git-tar-tree(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-tar-tree(1)__name">
 <title>NAME</title>
 <simpara>git-tar-tree - Create a tar archive of the files in the named tree object</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-tar-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git tar-tree</emphasis> [--remote=&lt;repo&gt;] &lt;tree-ish&gt; [ &lt;base&gt; ]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-tar-tree(1)__description">
 <title>DESCRIPTION</title>
 <simpara>THIS COMMAND IS DEPRECATED.  Use <emphasis>git archive</emphasis> with <emphasis>--format=tar</emphasis>
 option instead (and move the &lt;base&gt; argument to <emphasis>--prefix=base/</emphasis>).</simpara>
@@ -32,7 +30,7 @@ commit time as recorded in the referenced commit object is used instead.
 Additionally the commit ID is stored in a global extended pax header.
 It can be extracted using <emphasis>git get-tar-commit-id</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-tar-tree(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -69,7 +67,7 @@ It can be extracted using <emphasis>git get-tar-commit-id</emphasis>.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-tar-tree(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -88,7 +86,7 @@ tar.umask
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-tar-tree(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -147,8 +145,8 @@ tar.umask
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-tar-tree(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

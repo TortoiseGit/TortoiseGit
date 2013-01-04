@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-bisect(1)">
-<articleinfo>
+<sect2 lang="en" id="git-bisect(1)">
     <title>git-bisect(1)</title>
 <indexterm>
 <primary>git-bisect(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-bisect(1)__name">
 <title>NAME</title>
 <simpara>git-bisect - Find by binary search the change that introduced a bug</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-bisect(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git bisect</emphasis> &lt;subcommand&gt; &lt;options&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-bisect(1)__description">
 <title>DESCRIPTION</title>
 <simpara>The command takes various subcommands, and different options depending
 on the subcommand:</simpara>
@@ -35,12 +33,12 @@ git bisect run &lt;cmd&gt;...</literallayout>
 <simpara>This command uses <emphasis>git rev-list --bisect</emphasis> to help drive the
 binary search process to find which change introduced a bug, given an
 old "good" commit object name and a later "bad" commit object name.</simpara>
-<section id="_getting_help">
+<section id="git-bisect(1)__getting_help">
 <title>Getting help</title>
 <simpara>Use "git bisect" to get a short usage description, and "git bisect
 help" or "git bisect -h" to get a long usage description.</simpara>
 </section>
-<section id="_basic_bisect_commands_start_bad_good">
+<section id="git-bisect(1)__basic_bisect_commands_start_bad_good">
 <title>Basic bisect commands: start, bad, good</title>
 <simpara>Using the Linux kernel tree as an example, basic use of the bisect
 command is as follows:</simpara>
@@ -64,7 +62,7 @@ or "git bisect bad" to ask for the next bisection.</simpara>
 <simpara>Eventually there will be no more revisions left to bisect, and you
 will have been left with the first bad kernel revision in "refs/bisect/bad".</simpara>
 </section>
-<section id="_bisect_reset">
+<section id="git-bisect(1)__bisect_reset">
 <title>Bisect reset</title>
 <simpara>After a bisect session, to clean up the bisection state and return to
 the original HEAD, issue the following command:</simpara>
@@ -79,7 +77,7 @@ instead:</simpara>
 bisection commit and avoid switching commits at all, while <emphasis>git bisect
 reset bisect/bad</emphasis> will check out the first bad revision.</simpara>
 </section>
-<section id="_bisect_visualize">
+<section id="git-bisect(1)__bisect_visualize">
 <title>Bisect visualize</title>
 <simpara>To see the currently remaining suspects in <emphasis>gitk</emphasis>, issue the following
 command during the bisection process:</simpara>
@@ -90,7 +88,7 @@ instead.  You can also give command line options such as <emphasis>-p</emphasis>
 <emphasis>--stat</emphasis>.</simpara>
 <screen>$ git bisect view --stat</screen>
 </section>
-<section id="_bisect_log_and_bisect_replay">
+<section id="git-bisect(1)__bisect_log_and_bisect_replay">
 <title>Bisect log and bisect replay</title>
 <simpara>After having marked revisions as good or bad, issue the following
 command to show what has been done so far:</simpara>
@@ -102,7 +100,7 @@ return to a corrected state:</simpara>
 <screen>$ git bisect reset
 $ git bisect replay that-file</screen>
 </section>
-<section id="_avoiding_testing_a_commit">
+<section id="git-bisect(1)__avoiding_testing_a_commit">
 <title>Avoiding testing a commit</title>
 <simpara>If, in the middle of a bisect session, you know that the next suggested
 revision is not a good one to test (e.g. the change the commit
@@ -118,7 +116,7 @@ $ git reset --hard HEAD~3               # try 3 revisions before what
 <simpara>Then compile and test the chosen revision, and afterwards mark
 the revision as good or bad in the usual manner.</simpara>
 </section>
-<section id="_bisect_skip">
+<section id="git-bisect(1)__bisect_skip">
 <title>Bisect skip</title>
 <simpara>Instead of choosing by yourself a nearby commit, you can ask git
 to do it for you by issuing the command:</simpara>
@@ -136,7 +134,7 @@ would issue the command:</simpara>
 <simpara>This tells the bisect process that the commits between <emphasis>v2.5</emphasis> included
 and <emphasis>v2.6</emphasis> included should be skipped.</simpara>
 </section>
-<section id="_cutting_down_bisection_by_giving_more_parameters_to_bisect_start">
+<section id="git-bisect(1)__cutting_down_bisection_by_giving_more_parameters_to_bisect_start">
 <title>Cutting down bisection by giving more parameters to bisect start</title>
 <simpara>You can further cut down the number of trials, if you know what part of
 the tree is involved in the problem you are tracking down, by specifying
@@ -149,7 +147,7 @@ the bad commit when issuing the <emphasis>bisect start</emphasis> command:</simp
                    # v2.6.20-rc6 is bad
                    # v2.6.20-rc4 and v2.6.20-rc1 are good</screen>
 </section>
-<section id="_bisect_run">
+<section id="git-bisect(1)__bisect_run">
 <title>Bisect run</title>
 <simpara>If you have a script that can tell if the current source code is good
 or bad, you can bisect by issuing the command:</simpara>
@@ -183,7 +181,7 @@ with the status of the real test to let the "git bisect run" command loop
 determine the eventual outcome of the bisect session.</simpara>
 </section>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-bisect(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -201,7 +199,7 @@ does not require a checked out tree.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-bisect(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
@@ -295,13 +293,13 @@ required by <emphasis>git pack objects</emphasis>.</simpara>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-bisect(1)__see_also">
 <title>SEE ALSO</title>
 <simpara>link:git-bisect-lk2009.html[Fighting regressions with git bisect],
 <xref linkend="git-blame(1)" />.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-bisect(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

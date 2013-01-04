@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-tag(1)">
-<articleinfo>
+<sect2 lang="en" id="git-tag(1)">
     <title>git-tag(1)</title>
 <indexterm>
 <primary>git-tag(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-tag(1)__name">
 <title>NAME</title>
 <simpara>git-tag - Create, list, delete or verify a tag object signed with GPG</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-tag(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;key-id&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;]
         &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
 <emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
 <emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--points-at &lt;object&gt;]
+        [--column[=&lt;options&gt;] | --no-column] [&lt;pattern&gt;&#8230;]
         [&lt;pattern&gt;&#8230;]
 <emphasis>git tag</emphasis> -v &lt;tagname&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-tag(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Add a tag reference in <emphasis>.git/refs/tags/</emphasis>, unless <emphasis>-d/-l/-v</emphasis> is given
+<simpara>Add a tag reference in <emphasis>refs/tags/</emphasis>, unless <emphasis>-d/-l/-v</emphasis> is given
 to delete, list or verify tags.</simpara>
-<simpara>Unless <emphasis>-f</emphasis> is given, the tag to be created must not yet exist in the
-<emphasis>.git/refs/tags/</emphasis> directory.</simpara>
+<simpara>Unless <emphasis>-f</emphasis> is given, the named tag must not yet exist.</simpara>
 <simpara>If one of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis> is passed, the command
 creates a <emphasis>tag</emphasis> object, and requires a tag message.  Unless
 <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given, an editor is started for the user to type
@@ -43,7 +41,7 @@ committer identity for the current user is used to find the
 GnuPG key for signing.  The configuration variable <emphasis>gpg.program</emphasis>
 is used to specify custom GnuPG binary.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-tag(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -157,6 +155,22 @@ is used to specify custom GnuPG binary.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--column[=&lt;options&gt;]
+</term>
+<term>
+--no-column
+</term>
+<listitem>
+<simpara>
+        Display tag listing in columns. See configuration variable
+        column.tag for option syntax.<emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
+        without options are equivalent to <emphasis>always</emphasis> and <emphasis>never</emphasis> respectively.
+</simpara>
+<simpara>This option is only applicable when listing tags without annotation lines.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --contains &lt;commit&gt;
 </term>
 <listitem>
@@ -237,18 +251,18 @@ is used to specify custom GnuPG binary.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-tag(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>By default, <emphasis>git tag</emphasis> in sign-with-default mode (-s) will use your
-committer identity (of the form "Your Name &lt;<ulink url="mailto:your@email.address">your@email.address</ulink>&gt;") to
+committer identity (of the form "Your Name &lt;your@email.address&gt;") to
 find a key.  If you want to use a different default key, you can specify
 it in the repository configuration as follows:</simpara>
 <screen>[user]
     signingkey = &lt;gpg-key-id&gt;</screen>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-tag(1)__discussion">
 <title>DISCUSSION</title>
-<section id="_on_re_tagging">
+<section id="git-tag(1)__on_re_tagging">
 <title>On Re-tagging</title>
 <simpara>What should you do when you tag a wrong commit and you would
 want to re-tag?</simpara>
@@ -309,7 +323,7 @@ Sorry for the inconvenience.</screen>
 way that it would be correct to just "fix" it automatically.
 People need to know that their tags might have been changed.</simpara>
 </section>
-<section id="_on_automatic_following">
+<section id="git-tag(1)__on_automatic_following">
 <title>On Automatic following</title>
 <simpara>If you are following somebody else's tree, you are most likely
 using remote-tracking branches (<emphasis>refs/heads/origin</emphasis> in traditional
@@ -358,7 +372,7 @@ they are most likely tracking each other's progress by
 having remote-tracking branches.  Again, the heuristic to automatically
 follow such tags is a good thing.</simpara>
 </section>
-<section id="_on_backdating_tags">
+<section id="git-tag(1)__on_backdating_tags">
 <title>On Backdating Tags</title>
 <simpara>If you have imported some changes from another VCS and would like
 to add tags for major releases of your work, it is useful to be able
@@ -372,7 +386,7 @@ values; the most common form is "YYYY-MM-DD HH:MM").</simpara>
 <screen>$ GIT_COMMITTER_DATE="2006-10-02 10:31" git tag -s v1.0.1</screen>
 </section>
 </simplesect>
-<simplesect id="_date_formats">
+<simplesect id="git-tag(1)__date_formats">
 <title>DATE FORMATS</title>
 <simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
 support the following date formats:</simpara>
@@ -417,12 +431,12 @@ ISO 8601
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-tag(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-check-ref-format(1)" />.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-tag(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

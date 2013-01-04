@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-update-ref(1)">
-<articleinfo>
+<sect2 lang="en" id="git-update-ref(1)">
     <title>git-update-ref(1)</title>
 <indexterm>
 <primary>git-update-ref(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-update-ref(1)__name">
 <title>NAME</title>
 <simpara>git-update-ref - Update the object name stored in a ref safely</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-update-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--no-deref] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;])</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-update-ref(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Given two arguments, stores the &lt;newvalue&gt; in the &lt;ref&gt;, possibly
 dereferencing the symbolic refs.  E.g. <emphasis>git update-ref HEAD
@@ -56,7 +54,7 @@ archive by creating a symlink tree).</simpara>
 <simpara>With <emphasis>-d</emphasis> flag, it deletes the named &lt;ref&gt; after verifying it
 still contains &lt;oldvalue&gt;.</simpara>
 </simplesect>
-<simplesect id="_logging_updates">
+<simplesect id="git-update-ref(1)__logging_updates">
 <title>Logging Updates</title>
 <simpara>If config parameter "core.logAllRefUpdates" is true and the ref is one under
 "refs/heads/", "refs/remotes/", "refs/notes/", or the symbolic ref HEAD; or
@@ -89,8 +87,8 @@ value supplied to the -m option.</simpara>
 unable to create a new log file, append to the existing log file
 or does not have committer information available.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-update-ref(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

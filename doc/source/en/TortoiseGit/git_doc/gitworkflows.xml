@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitworkflows(7)">
-<articleinfo>
+<sect2 lang="en" id="gitworkflows(7)">
     <title>gitworkflows(7)</title>
 <indexterm>
 <primary>gitworkflows(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitworkflows(7)__name">
 <title>NAME</title>
 <simpara>gitworkflows - An overview of recommended workflows with git</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitworkflows(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>git *</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitworkflows(7)__description">
 <title>DESCRIPTION</title>
 <simpara>This document attempts to write down and motivate some of the workflow
 elements used for <emphasis>git.git</emphasis> itself.  Many ideas apply in general,
@@ -29,7 +27,7 @@ tries to motivate each of them.  Do not always take them literally;
 you should value good reasons for your actions higher than manpages
 such as this one.</simpara>
 </simplesect>
-<simplesect id="_separate_changes">
+<simplesect id="gitworkflows(7)__separate_changes">
 <title>SEPARATE CHANGES</title>
 <simpara>As a general rule, you should try to split your changes into small
 logical steps, and commit each of them.  They should be consistent,
@@ -46,7 +44,7 @@ publish them.  You can use <emphasis>git stash save --keep-index</emphasis> to r
 test suite independent of other uncommitted changes; see the EXAMPLES
 section of <xref linkend="git-stash(1)" />.</simpara>
 </simplesect>
-<simplesect id="_managing_branches">
+<simplesect id="gitworkflows(7)__managing_branches">
 <title>MANAGING BRANCHES</title>
 <simpara>There are two main tools that can be used to include changes from one
 branch on another: <xref linkend="git-merge(1)" /> and
@@ -63,7 +61,7 @@ understand because a merge commit is a "promise" that all changes from
 all its parents are now included.</simpara>
 <simpara>There is a tradeoff of course: merges require a more careful branch
 management.  The following subsections discuss the important points.</simpara>
-<section id="_graduation">
+<section id="gitworkflows(7)__graduation">
 <title>Graduation</title>
 <simpara>As a given feature goes from experimental to stable, it also
 "graduates" between the corresponding branches of the software.
@@ -103,7 +101,7 @@ above it.</simpara>
 or <emphasis>pu</emphasis>), and "graduates" to <emphasis>master</emphasis> for the next release once it is
 considered stable enough.</simpara>
 </section>
-<section id="_merging_upwards">
+<section id="gitworkflows(7)__merging_upwards">
 <title>Merging upwards</title>
 <simpara>The "downwards graduation" discussed above cannot be done by actually
 merging downwards, however, since that would merge <emphasis>all</emphasis> changes on
@@ -120,7 +118,7 @@ you will need to cherry-pick it (using <xref linkend="git-cherry-pick(1)" />)
 downwards.  This will happen a few times and is nothing to worry about
 unless you do it very frequently.</simpara>
 </section>
-<section id="_topic_branches">
+<section id="gitworkflows(7)__topic_branches">
 <title>Topic branches</title>
 <simpara>Any nontrivial feature will require several patches to implement, and
 may get extra bugfixes or improvements during its lifetime.</simpara>
@@ -184,7 +182,7 @@ of a file will have to find out whether that merge affected the topic
 in development.  An upstream might even inadvertently be merged into a
 "more stable" branch.  And so on.</simpara>
 </section>
-<section id="_throw_away_integration">
+<section id="gitworkflows(7)__throw_away_integration">
 <title>Throw-away integration</title>
 <simpara>If you followed the last paragraph, you will now have many small topic
 branches, and occasionally wonder how they interact.  Perhaps the
@@ -204,7 +202,7 @@ to give the testers a chance to work with it, or other developers a
 chance to see if their in-progress work will be compatible.  <emphasis>git.git</emphasis>
 has such an official throw-away integration branch called <emphasis>pu</emphasis>.</simpara>
 </section>
-<section id="_branch_management_for_a_release">
+<section id="gitworkflows(7)__branch_management_for_a_release">
 <title>Branch management for a release</title>
 <simpara>Assuming you are using the merge approach discussed above, when you
 are releasing your project you will need to do some additional branch
@@ -237,7 +235,7 @@ release tarballs and preformatted documentation pages.</simpara>
 to be released. Therefore, in the steps above simply tag and push
 <emphasis>maint</emphasis> rather than <emphasis>master</emphasis>.</simpara>
 </section>
-<section id="_maintenance_branch_management_after_a_feature_release">
+<section id="gitworkflows(7)__maintenance_branch_management_after_a_feature_release">
 <title>Maintenance branch management after a feature release</title>
 <simpara>After a feature release, you need to manage your maintenance branches.</simpara>
 <simpara>First, if you wish to continue to release maintenance fixes for the
@@ -272,7 +270,7 @@ possible some fixes on <emphasis>maint</emphasis> were missed in the feature rel
 This will not happen if the content of the branches was verified as
 described in the previous section.</simpara>
 </section>
-<section id="_branch_management_for_next_and_pu_after_a_feature_release">
+<section id="gitworkflows(7)__branch_management_for_next_and_pu_after_a_feature_release">
 <title>Branch management for next and pu after a feature release</title>
 <simpara>After a feature release, the integration branch <emphasis>next</emphasis> may optionally be
 rewound and rebuilt from the tip of <emphasis>master</emphasis> using the surviving
@@ -322,7 +320,7 @@ announcement is not necessary since <emphasis>pu</emphasis> is a throw-away bran
 described above.</simpara>
 </section>
 </simplesect>
-<simplesect id="_distributed_workflows">
+<simplesect id="gitworkflows(7)__distributed_workflows">
 <title>DISTRIBUTED WORKFLOWS</title>
 <simpara>After the last section, you should know how to manage topics.  In
 general, you will not be the only person working on the project, so
@@ -336,7 +334,7 @@ the merge workflow, while everyone else sends patches.</simpara>
 "Signed-off-by" requirements, that all commits/patches submitted for
 inclusion must adhere to.  Consult your project's documentation for
 more information.</simpara>
-<section id="_merge_workflow">
+<section id="gitworkflows(7)__merge_workflow">
 <title>Merge workflow</title>
 <simpara>The merge workflow works by copying branches between upstream and
 downstream.  Upstream can merge contributions into the official
@@ -397,7 +395,7 @@ do the merge and resolve the conflicts themselves (perhaps they will
 know better how to resolve them).  It is one of the rare cases where
 downstream <emphasis>should</emphasis> merge from upstream.</simpara>
 </section>
-<section id="_patch_workflow">
+<section id="gitworkflows(7)__patch_workflow">
 <title>Patch workflow</title>
 <simpara>If you are a contributor that sends changes upstream in the form of
 emails, you should use topic branches as usual (see above).  Then use
@@ -445,7 +443,7 @@ in patches to figure out the merge base.  See <xref linkend="git-am(1)" /> for
 other options.</simpara>
 </section>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitworkflows(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial(7)" />,
 <xref linkend="git-push(1)" />,
@@ -456,8 +454,8 @@ other options.</simpara>
 <xref linkend="git-send-email(1)" />,
 <xref linkend="git-am(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitworkflows(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

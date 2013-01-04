@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitcore-tutorial(7)">
-<articleinfo>
+<sect2 lang="en" id="gitcore-tutorial(7)">
     <title>gitcore-tutorial(7)</title>
 <indexterm>
 <primary>gitcore-tutorial(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitcore-tutorial(7)__name">
 <title>NAME</title>
 <simpara>gitcore-tutorial - A git core tutorial for developers</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitcore-tutorial(7)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>git *</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitcore-tutorial(7)__description">
 <title>DESCRIPTION</title>
 <simpara>This tutorial explains how to use the "core" git commands to set up and
 work with a git repository.</simpara>
@@ -39,7 +37,7 @@ commands do is still valid.</simpara>
 <note><simpara>Deeper technical details are often marked as Notes, which you can
 skip on your first reading.</simpara></note>
 </simplesect>
-<simplesect id="_creating_a_git_repository">
+<simplesect id="gitcore-tutorial(7)__creating_a_git_repository">
 <title>Creating a git repository</title>
 <simpara>Creating a new git repository couldn't be easier: all git repositories start
 out empty, and the only thing you need to do is find yourself a
@@ -113,7 +111,7 @@ after finishing this tutorial.</simpara></note>
 <simpara>You have now created your first git repository. Of course, since it's
 empty, that's not very useful, so let's start populating it with data.</simpara>
 </simplesect>
-<simplesect id="_populating_a_git_repository">
+<simplesect id="gitcore-tutorial(7)__populating_a_git_repository">
 <title>Populating a git repository</title>
 <simpara>We'll keep this simple and stupid, so we'll start off with populating a
 few trivial files just to get a feel for it.</simpara>
@@ -222,7 +220,7 @@ index 557db03..263414f 100644
  Hello World
 +It's a new day for git</screen>
 </simplesect>
-<simplesect id="_committing_git_state">
+<simplesect id="gitcore-tutorial(7)__committing_git_state">
 <title>Committing git state</title>
 <simpara>Now, we want to go to the next stage in git, which is to take the files
 that git knows about in the index, and commit them as a real tree. We do
@@ -271,7 +269,7 @@ helpful script called <emphasis>git commit</emphasis> that will do all of this f
 you could have just written <emphasis>git commit</emphasis>
 instead, and it would have done the above magic scripting for you.</simpara>
 </simplesect>
-<simplesect id="_making_a_change">
+<simplesect id="gitcore-tutorial(7)__making_a_change">
 <title>Making a change</title>
 <simpara>Remember how we did the <emphasis>git update-index</emphasis> on file <emphasis>hello</emphasis> and then we
 changed <emphasis>hello</emphasis> afterward, and could compare the new state of <emphasis>hello</emphasis> with the
@@ -360,7 +358,7 @@ it's a few very simple shell scripts to generate the helpful (?) commit
 message headers, and a few one-liners that actually do the
 commit itself (<emphasis>git commit</emphasis>).</simpara>
 </simplesect>
-<simplesect id="_inspecting_changes">
+<simplesect id="gitcore-tutorial(7)__inspecting_changes">
 <title>Inspecting Changes</title>
 <simpara>While creating changes is useful, it's even more useful if you can tell
 later what changed. The most useful command for this is another of the
@@ -435,7 +433,7 @@ can explore on your own.</simpara>
 git Plumbing commands, but using Porcelain such as <emphasis>git add</emphasis>, git-rm
 and git-commit.</simpara></note>
 </simplesect>
-<simplesect id="_tagging_a_version">
+<simplesect id="gitcore-tutorial(7)__tagging_a_version">
 <title>Tagging a version</title>
 <simpara>In git, there are two kinds of tags, a "light" one, and an "annotated tag".</simpara>
 <simpara>A "light" tag is technically nothing more than a branch, except we put
@@ -466,7 +464,7 @@ want to do -- any time you decide that you want to remember a certain
 point, just create a private tag for it, and you have a nice symbolic
 name for the state at that point.</simpara>
 </simplesect>
-<simplesect id="_copying_repositories">
+<simplesect id="gitcore-tutorial(7)__copying_repositories">
 <title>Copying repositories</title>
 <simpara>git repositories are normally totally self-sufficient and relocatable.
 Unlike CVS, for example, there is no separate notion of
@@ -563,7 +561,7 @@ $ git checkout</screen>
 <simpara>You have now successfully copied somebody else's (mine) remote
 repository, and checked it out.</simpara>
 </simplesect>
-<simplesect id="_creating_a_new_branch">
+<simplesect id="gitcore-tutorial(7)__creating_a_new_branch">
 <title>Creating a new branch</title>
 <simpara>Branches in git are really nothing more than pointers into the git
 object database from within the <emphasis>.git/refs/</emphasis> subdirectory, and as we
@@ -608,7 +606,7 @@ You can then later -- once you decide that you want to actually develop
 on that branch -- switch to that branch with a regular <emphasis>git checkout</emphasis>
 with the branchname as the argument.</simpara>
 </simplesect>
-<simplesect id="_merging_two_branches">
+<simplesect id="gitcore-tutorial(7)__merging_two_branches">
 <title>Merging two branches</title>
 <simpara>One of the ideas of having a branch is that you do some (possibly
 experimental) work in it, and eventually merge it back to the main
@@ -689,12 +687,11 @@ environment, is <emphasis>git show-branch</emphasis>.</simpara>
 *+ [mybranch] Some work.
 *  [master^] Some fun.</screen>
 <simpara>The first two lines indicate that it is showing the two branches
-and the first line of the commit log message from their
-top-of-the-tree commits, you are currently on <emphasis>master</emphasis> branch
-(notice the asterisk <emphasis>*</emphasis> character), and the first column for
-the later output lines is used to show commits contained in the
+with the titles of their top-of-the-tree commits, you are currently on
+<emphasis>master</emphasis> branch (notice the asterisk <emphasis>*</emphasis> character), and the first
+column for the later output lines is used to show commits contained in the
 <emphasis>master</emphasis> branch, and the second column for the <emphasis>mybranch</emphasis>
-branch. Three commits are shown along with their log messages.
+branch. Three commits are shown along with their titles.
 All of them have non blank characters in the first column (<emphasis>*</emphasis>
 shows an ordinary commit on the current branch, <emphasis>-</emphasis> is a merge commit), which
 means they are now part of the <emphasis>master</emphasis> branch. Only the "Some
@@ -724,8 +721,8 @@ $ git merge -m "Merge upstream changes." master</screen>
 would be different)</simpara>
 <screen>Updating from ae3a2da... to a80b4aa....
 Fast-forward (no commit created; -m option ignored)
- example |    1 +
- hello   |    1 +
+ example | 1 +
+ hello   | 1 +
  2 files changed, 2 insertions(+)</screen>
 <simpara>Because your branch did not contain anything more than what had
 already been merged into the <emphasis>master</emphasis> branch, the merge operation did
@@ -740,7 +737,7 @@ looks like, or run <emphasis>show-branch</emphasis>, which tells you this.</simp
 --
 -- [master] Merge work in mybranch</screen>
 </simplesect>
-<simplesect id="_merging_external_work">
+<simplesect id="gitcore-tutorial(7)__merging_external_work">
 <title>Merging external work</title>
 <simpara>It's usually much more common that you merge with somebody else than
 merging with your own branches, so it's worth pointing out that git
@@ -894,7 +891,7 @@ like this:</simpara>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_how_does_the_merge_work">
+<simplesect id="gitcore-tutorial(7)__how_does_the_merge_work">
 <title>How does the merge work?</title>
 <simpara>We said this tutorial shows what plumbing does to help you cope
 with the porcelain that isn't flushing, but we so far did not
@@ -998,7 +995,7 @@ merge for you to resolve.  Notice that the path <emphasis>hello</emphasis> is st
 unmerged, and what you see with <emphasis>git diff</emphasis> at this point is
 differences since stage 2 (i.e. your version).</simpara>
 </simplesect>
-<simplesect id="_publishing_your_work">
+<simplesect id="gitcore-tutorial(7)__publishing_your_work">
 <title>Publishing your work</title>
 <simpara>So, we can use somebody else's work from a remote repository, but
 how can <emphasis role="strong">you</emphasis> prepare a repository to let other people pull from
@@ -1063,7 +1060,7 @@ repository. Kernel.org mirror network takes care of the
 propagation to other publicly visible machines:</simpara>
 <screen>$ git push master.kernel.org:/pub/scm/git/git.git/</screen>
 </simplesect>
-<simplesect id="_packing_your_repository">
+<simplesect id="gitcore-tutorial(7)__packing_your_repository">
 <title>Packing your repository</title>
 <simpara>Earlier, we saw that one file under <emphasis>.git/objects/??/</emphasis> directory
 is stored for each git object you create. This representation
@@ -1115,7 +1112,7 @@ While this allows you to use different packing strategies on
 both ends, it also means you may need to repack both
 repositories every once in a while.</simpara>
 </simplesect>
-<simplesect id="_working_with_others">
+<simplesect id="gitcore-tutorial(7)__working_with_others">
 <title>Working with Others</title>
 <simpara>Although git is a truly distributed system, it is often
 convenient to organize your project with an informal hierarchy
@@ -1285,7 +1282,7 @@ Use <emphasis>git format-patch origin</emphasis> to prepare patches for e-mail
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_working_with_others_shared_repository_style">
+<simplesect id="gitcore-tutorial(7)__working_with_others_shared_repository_style">
 <title>Working with Others, Shared Repository Style</title>
 <simpara>If you are coming from CVS background, the style of cooperation
 suggested in the previous section may be new to you. You do not
@@ -1293,7 +1290,7 @@ have to worry. git supports "shared public repository" style of
 cooperation you are probably more familiar with as well.</simpara>
 <simpara>See <xref linkend="gitcvs-migration(7)" /> for the details.</simpara>
 </simplesect>
-<simplesect id="_bundling_your_work_together">
+<simplesect id="gitcore-tutorial(7)__bundling_your_work_together">
 <title>Bundling your work together</title>
 <simpara>It is likely that you will be working on more than one thing at
 a time.  It is easy to manage those more-or-less independent tasks
@@ -1368,7 +1365,7 @@ and the reason why you preferred changes made in one side over
 the other.  Otherwise it would make the project history harder
 to follow, not easier.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitcore-tutorial(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial(7)" />,
 <xref linkend="gittutorial-2(7)" />,
@@ -1377,8 +1374,8 @@ to follow, not easier.</simpara>
 link:everyday.html[Everyday git],
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitcore-tutorial(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

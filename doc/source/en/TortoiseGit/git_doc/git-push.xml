@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-push(1)">
-<articleinfo>
+<sect2 lang="en" id="git-push(1)">
     <title>git-push(1)</title>
 <indexterm>
 <primary>git-push(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-push(1)__name">
 <title>NAME</title>
 <simpara>git-push - Update remote refs along with associated objects</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-push(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git push</emphasis> [--all | --mirror | --tags] [-n | --dry-run] [--receive-pack=&lt;git-receive-pack&gt;]
@@ -20,7 +18,7 @@
            [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-push(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Updates remote refs using local refs, while sending objects
 necessary to complete the given refs.</simpara>
@@ -28,8 +26,8 @@ necessary to complete the given refs.</simpara>
 every time you push into it, by setting up <emphasis>hooks</emphasis> there.  See
 documentation for <xref linkend="git-receive-pack(1)" />.</simpara>
 </simplesect>
-<simplesect id="_options_anchor_id_options_xreflabel_options">
-<title>OPTIONS<anchor id="OPTIONS" xreflabel="[OPTIONS]"/></title>
+<simplesect id="git-push(1)__options_anchor_id_git_push_1__options_xreflabel_options">
+<title>OPTIONS<anchor id="git-push(1)_OPTIONS" xreflabel="[OPTIONS]"/></title>
 <variablelist>
 <varlistentry>
 <term>
@@ -39,8 +37,8 @@ documentation for <xref linkend="git-receive-pack(1)" />.</simpara>
 <simpara>
         The "remote" repository that is destination of a push
         operation.  This parameter can be either a URL
-        (see the section <link linkend="URLS">GIT URLS</link> below) or the name
-        of a remote (see the section <link linkend="REMOTES">REMOTES</link> below).
+        (see the section <link linkend="git-push(1)_URLS">GIT URLS</link> below) or the name
+        of a remote (see the section <link linkend="git-push(1)_REMOTES">REMOTES</link> below).
 </simpara>
 </listitem>
 </varlistentry>
@@ -54,7 +52,9 @@ documentation for <xref linkend="git-receive-pack(1)" />.</simpara>
         <emphasis>+</emphasis>, followed by the source ref &lt;src&gt;, followed
         by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
         It is used to specify with what &lt;src&gt; object the &lt;dst&gt; ref
-        in the remote repository is to be updated.
+        in the remote repository is to be updated.  If not specified,
+        the behavior of the command is controlled by the <emphasis>push.default</emphasis>
+        configuration variable.
 </simpara>
 <simpara>The &lt;src&gt; is often the name of the branch you would want to push, but
 it can be any arbitrary "SHA-1 expression", such as <emphasis>master~4</emphasis> or
@@ -77,7 +77,8 @@ directs git to push "matching" branches: for every branch that exists on
 the local side, the remote side is updated if a branch of the same name
 already exists on the remote side.  This is the default operation mode
 if no explicit refspec is found (that is neither on the command line
-nor in any Push line of the corresponding remotes file---see below).</simpara>
+nor in any Push line of the corresponding remotes file---see below) and
+no <emphasis>push.default</emphasis> configuration variable is set.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -300,26 +301,35 @@ useful if you write an alias or script around <emphasis>git push</emphasis>.</si
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules=check
+--recurse-submodules=check|on-demand
 </term>
 <listitem>
 <simpara>
-        Check whether all submodule commits used by the revisions to be
-        pushed are available on a remote tracking branch. Otherwise the
-        push will be aborted and the command will exit with non-zero status.
+        Make sure all submodule commits used by the revisions to be
+        pushed are available on a remote-tracking branch. If <emphasis>check</emphasis> is
+        used git will verify that all submodule commits that changed in
+        the revisions to be pushed are available on at least one remote
+        of the submodule. If any commits are missing the push will be
+        aborted and exit with non-zero status. If <emphasis>on-demand</emphasis> is used
+        all submodules that changed in the revisions to be pushed will
+        be pushed. If on-demand was not able to push all necessary
+        revisions it will also be aborted and exit with non-zero status.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
-<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simplesect id="git-push(1)__git_urls_anchor_id_git_push_1__urls_xreflabel_urls">
+<title>GIT URLS<anchor id="git-push(1)_URLS" xreflabel="[URLS]"/></title>
 <simpara>In general, URLs contain information about the transport protocol, the
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
-protocols. The following syntaxes may be used with them:</simpara>
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+and ftps can be used for fetching and rsync can be used for fetching
+and pushing, but these are inefficient and deprecated; do not use
+them).</simpara>
+<simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -427,8 +437,8 @@ configuration section of the form:</simpara>
 "ssh://example.org/path/to/repo.git" for pushes, but pulls will still
 use the original URL.</simpara>
 </simplesect>
-<simplesect id="_remotes_anchor_id_remotes_xreflabel_remotes">
-<title>REMOTES<anchor id="REMOTES" xreflabel="[REMOTES]"/></title>
+<simplesect id="git-push(1)__remotes_anchor_id_git_push_1__remotes_xreflabel_remotes">
+<title>REMOTES<anchor id="git-push(1)_REMOTES" xreflabel="[REMOTES]"/></title>
 <simpara>The name of one of the following can be used instead
 of a URL as <emphasis>&lt;repository&gt;</emphasis> argument:</simpara>
 <itemizedlist>
@@ -450,7 +460,7 @@ a file in the <emphasis>$GIT_DIR/branches</emphasis> directory.
 </itemizedlist>
 <simpara>All of these also allow you to omit the refspec from the command line
 because they each contain a refspec which git will use by default.</simpara>
-<section id="_named_remote_in_configuration_file">
+<section id="git-push(1)__named_remote_in_configuration_file">
 <title>Named remote in configuration file</title>
 <simpara>You can choose to provide the name of a remote which you had previously
 configured using <xref linkend="git-remote(1)" />, <xref linkend="git-config(1)" />
@@ -467,7 +477,7 @@ config file would appear like this:</simpara>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
 to <emphasis>&lt;url&gt;</emphasis>.</simpara>
 </section>
-<section id="_named_file_in_emphasis_git_dir_remotes_emphasis">
+<section id="git-push(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
 <simpara>You can choose to provide the name of a
 file in <emphasis>$GIT_DIR/remotes</emphasis>.  The URL
@@ -483,7 +493,7 @@ following format:</simpara>
 Multiple <emphasis>Push:</emphasis> and <emphasis>Pull:</emphasis> lines may
 be specified for additional branch mappings.</simpara>
 </section>
-<section id="_named_file_in_emphasis_git_dir_branches_emphasis">
+<section id="git-push(1)__named_file_in_emphasis_git_dir_branches_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/branches</emphasis></title>
 <simpara>You can choose to provide the name of a
 file in <emphasis>$GIT_DIR/branches</emphasis>.
@@ -501,7 +511,7 @@ refspecs, if you don't provide one on the command line.
 <screen>        HEAD:refs/heads/&lt;head&gt;</screen>
 </section>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-push(1)__output">
 <title>OUTPUT</title>
 <simpara>The output of "git push" depends on the transport method used; this
 section describes the output when pushing over the git protocol (either
@@ -678,7 +688,7 @@ reason
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_note_about_fast_forwards">
+<simplesect id="git-push(1)__note_about_fast_forwards">
 <title>Note about fast-forwards</title>
 <simpara>When an update changes a branch (or more in general, a ref) that used to
 point at commit A to point at another commit B, it is called a
@@ -694,7 +704,8 @@ leading to commit A.  The history looks like this:</simpara>
      /
  ---X---A</screen>
 <simpara>Further suppose that the other person already pushed changes leading to A
-back to the original repository you two obtained the original commit X.</simpara>
+back to the original repository from which you two obtained the original
+commit X.</simpara>
 <simpara>The push done by the other person updated the branch that used to point at
 commit X to point at commit A.  It is a fast-forward.</simpara>
 <simpara>But if you try to push, you will attempt to update the branch (that
@@ -735,7 +746,7 @@ you are certain that nobody in the meantime fetched your earlier commit A
 overwrite it. In other words, "git push --force" is a method reserved for
 a case where you do mean to lose history.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-push(1)__examples">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -760,7 +771,8 @@ a case where you do mean to lose history.</simpara>
         <emphasis>git push origin :</emphasis>.
 </simpara>
 <simpara>The default behavior of this command when no &lt;refspec&gt; is given can be
-configured by setting the <emphasis>push</emphasis> option of the remote.</simpara>
+configured by setting the <emphasis>push</emphasis> option of the remote, or the <emphasis>push.default</emphasis>
+configuration variable.</simpara>
 <simpara>For example, to default to pushing only the current branch to <emphasis>origin</emphasis>
 use <emphasis>git config remote.origin.push HEAD</emphasis>.  Any valid &lt;refspec&gt; (like
 the ones in the examples below) can be configured as the default for
@@ -774,7 +786,7 @@ the ones in the examples below) can be configured as the default for
 <listitem>
 <simpara>
         Push "matching" branches to <emphasis>origin</emphasis>. See
-        &lt;refspec&gt; in the <link linkend="OPTIONS">OPTIONS</link> section above for a
+        &lt;refspec&gt; in the <link linkend="git-push(1)_OPTIONS">OPTIONS</link> section above for a
         description of "matching" branches.
 </simpara>
 </listitem>
@@ -806,15 +818,25 @@ the ones in the examples below) can be configured as the default for
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git push origin master:satellite/master dev:satellite/dev</emphasis>
+<emphasis>git push mothership master:satellite/master dev:satellite/dev</emphasis>
 </term>
 <listitem>
 <simpara>
         Use the source ref that matches <emphasis>master</emphasis> (e.g. <emphasis>refs/heads/master</emphasis>)
         to update the ref that matches <emphasis>satellite/master</emphasis> (most probably
-        <emphasis>refs/remotes/satellite/master</emphasis>) in the <emphasis>origin</emphasis> repository, then
+        <emphasis>refs/remotes/satellite/master</emphasis>) in the <emphasis>mothership</emphasis> repository;
         do the same for <emphasis>dev</emphasis> and <emphasis>satellite/dev</emphasis>.
 </simpara>
+<simpara>This is to emulate <emphasis>git fetch</emphasis> run on the <emphasis>mothership</emphasis> using <emphasis>git
+push</emphasis> that is run in the opposite direction in order to integrate
+the work done on <emphasis>satellite</emphasis>, and is often necessary when you can
+only make connection in one way (i.e. satellite can ssh into
+mothership but mothership cannot initiate connection to satellite
+because the latter is behind a firewall or does not run sshd).</simpara>
+<simpara>After running this <emphasis>git push</emphasis> on the <emphasis>satellite</emphasis> machine, you would
+ssh into the <emphasis>mothership</emphasis> and run <emphasis>git merge</emphasis> there to complete the
+emulation of <emphasis>git pull</emphasis> that were run on <emphasis>mothership</emphasis> to pull changes
+made on <emphasis>satellite</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -879,8 +901,8 @@ a <emphasis>git gc</emphasis> command on the origin repository.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-push(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

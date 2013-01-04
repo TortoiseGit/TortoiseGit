@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-archive(1)">
-<articleinfo>
+<sect2 lang="en" id="git-archive(1)">
     <title>git-archive(1)</title>
 <indexterm>
 <primary>git-archive(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-archive(1)__name">
 <title>NAME</title>
 <simpara>git-archive - Create an archive of files from a named tree</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-archive(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git archive</emphasis> [--format=&lt;fmt&gt;] [--list] [--prefix=&lt;prefix&gt;/] [&lt;extra&gt;]
@@ -21,7 +19,7 @@
               [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-archive(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Creates an archive of the specified format containing the tree
 structure for the named tree, and writes it out to the standard
@@ -36,7 +34,7 @@ extended pax header if the tar format is used; it can be extracted
 using <emphasis>git get-tar-commit-id</emphasis>. In ZIP files it is stored as a file
 comment.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-archive(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -169,9 +167,9 @@ comment.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_backend_extra_options">
+<simplesect id="git-archive(1)__backend_extra_options">
 <title>BACKEND EXTRA OPTIONS</title>
-<section id="_zip">
+<section id="git-archive(1)__zip">
 <title>zip</title>
 <variablelist>
 <varlistentry>
@@ -198,7 +196,7 @@ comment.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-archive(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -250,7 +248,7 @@ tar.&lt;format&gt;.remote
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_attributes">
+<simplesect id="git-archive(1)__attributes">
 <title>ATTRIBUTES</title>
 <variablelist>
 <varlistentry>
@@ -285,7 +283,7 @@ appropriate export-ignore in its <emphasis>.gitattributes</emphasis>), adjust th
 option.  Alternatively you can keep necessary attributes that should apply
 while archiving any tree in your <emphasis>$GIT_DIR/info/attributes</emphasis> file.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-archive(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -378,12 +376,12 @@ while archiving any tree in your <emphasis>$GIT_DIR/info/attributes</emphasis> f
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-archive(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gitattributes(5)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-archive(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

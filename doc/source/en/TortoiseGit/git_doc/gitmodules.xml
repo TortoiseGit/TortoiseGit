@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitmodules(5)">
-<articleinfo>
+<sect2 lang="en" id="gitmodules(5)">
     <title>gitmodules(5)</title>
 <indexterm>
 <primary>gitmodules(5)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitmodules(5)__name">
 <title>NAME</title>
 <simpara>gitmodules - defining submodule properties</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitmodules(5)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>$GIT_WORK_DIR/.gitmodules</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitmodules(5)__description">
 <title>DESCRIPTION</title>
 <simpara>The <emphasis>.gitmodules</emphasis> file, located in the top-level directory of a git
 working tree, is a text file with a syntax matching the requirements
 of <xref linkend="git-config(1)" />.</simpara>
 <simpara>The file contains one subsection per submodule, and the subsection value
-is the name of the submodule. Each submodule section also contains the
+is the name of the submodule. The name is set to the path where the
+submodule has been added unless it was customized with the <emphasis>--name</emphasis>
+option of <emphasis>git submodule add</emphasis>. Each submodule section also contains the
 following required keys:</simpara>
 <variablelist>
 <varlistentry>
@@ -110,7 +110,7 @@ submodule.&lt;name&gt;.ignore
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="gitmodules(5)__examples">
 <title>EXAMPLES</title>
 <simpara>Consider the following .gitmodules file:</simpara>
 <literallayout class="monospaced">[submodule "libfoo"]
@@ -123,12 +123,12 @@ submodule.&lt;name&gt;.ignore
 be checked out in the paths <emphasis>include/foo</emphasis> and <emphasis>include/bar</emphasis>, and for both
 submodules a URL is specified which can be used for cloning the submodules.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitmodules(5)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-submodule(1)" /> <xref linkend="git-config(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitmodules(5)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

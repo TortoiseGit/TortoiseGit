@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="githooks(5)">
-<articleinfo>
+<sect2 lang="en" id="githooks(5)">
     <title>githooks(5)</title>
 <indexterm>
 <primary>githooks(5)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="githooks(5)__name">
 <title>NAME</title>
 <simpara>githooks - Hooks used by git</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="githooks(5)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>$GIT_DIR/hooks/*</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="githooks(5)__description">
 <title>DESCRIPTION</title>
 <simpara>Hooks are little scripts you can place in <emphasis>$GIT_DIR/hooks</emphasis>
 directory to trigger action at certain points.  When
@@ -29,9 +27,9 @@ However - in a freshly initialized repository - the <emphasis>.sample</emphasis>
 executable by default.</simpara></note>
 <simpara>This document describes the currently defined hooks.</simpara>
 </simplesect>
-<simplesect id="_hooks">
+<simplesect id="githooks(5)__hooks">
 <title>HOOKS</title>
-<section id="_applypatch_msg">
+<section id="githooks(5)__applypatch_msg">
 <title>applypatch-msg</title>
 <simpara>This hook is invoked by <emphasis>git am</emphasis> script.  It takes a single
 parameter, the name of the file that holds the proposed commit
@@ -44,7 +42,7 @@ the commit after inspecting the message file.</simpara>
 <simpara>The default <emphasis>applypatch-msg</emphasis> hook, when enabled, runs the
 <emphasis>commit-msg</emphasis> hook, if the latter is enabled.</simpara>
 </section>
-<section id="_pre_applypatch">
+<section id="githooks(5)__pre_applypatch">
 <title>pre-applypatch</title>
 <simpara>This hook is invoked by <emphasis>git am</emphasis>.  It takes no parameter, and is
 invoked after the patch is applied, but before a commit is made.</simpara>
@@ -55,14 +53,14 @@ make a commit if it does not pass certain test.</simpara>
 <simpara>The default <emphasis>pre-applypatch</emphasis> hook, when enabled, runs the
 <emphasis>pre-commit</emphasis> hook, if the latter is enabled.</simpara>
 </section>
-<section id="_post_applypatch">
+<section id="githooks(5)__post_applypatch">
 <title>post-applypatch</title>
 <simpara>This hook is invoked by <emphasis>git am</emphasis>.  It takes no parameter,
 and is invoked after the patch is applied and a commit is made.</simpara>
 <simpara>This hook is meant primarily for notification, and cannot affect
 the outcome of <emphasis>git am</emphasis>.</simpara>
 </section>
-<section id="_pre_commit">
+<section id="githooks(5)__pre_commit">
 <title>pre-commit</title>
 <simpara>This hook is invoked by <emphasis>git commit</emphasis>, and can be bypassed
 with <emphasis>--no-verify</emphasis> option.  It takes no parameter, and is
@@ -76,7 +74,7 @@ such a line is found.</simpara>
 variable <emphasis>GIT_EDITOR=:</emphasis> if the command will not bring up an editor
 to modify the commit message.</simpara>
 </section>
-<section id="_prepare_commit_msg">
+<section id="githooks(5)__prepare_commit_msg">
 <title>prepare-commit-msg</title>
 <simpara>This hook is invoked by <emphasis>git commit</emphasis> right after preparing the
 default log message, and before the editor is started.</simpara>
@@ -96,7 +94,7 @@ be used as replacement for pre-commit hook.</simpara>
 <simpara>The sample <emphasis>prepare-commit-msg</emphasis> hook that comes with git comments
 out the <emphasis>Conflicts:</emphasis> part of a merge's commit message.</simpara>
 </section>
-<section id="_commit_msg">
+<section id="githooks(5)__commit_msg">
 <title>commit-msg</title>
 <simpara>This hook is invoked by <emphasis>git commit</emphasis>, and can be bypassed
 with <emphasis>--no-verify</emphasis> option.  It takes a single parameter, the
@@ -110,19 +108,19 @@ the commit after inspecting the message file.</simpara>
 <simpara>The default <emphasis>commit-msg</emphasis> hook, when enabled, detects duplicate
 "Signed-off-by" lines, and aborts the commit if one is found.</simpara>
 </section>
-<section id="_post_commit">
+<section id="githooks(5)__post_commit">
 <title>post-commit</title>
 <simpara>This hook is invoked by <emphasis>git commit</emphasis>.  It takes no
 parameter, and is invoked after a commit is made.</simpara>
 <simpara>This hook is meant primarily for notification, and cannot affect
 the outcome of <emphasis>git commit</emphasis>.</simpara>
 </section>
-<section id="_pre_rebase">
+<section id="githooks(5)__pre_rebase">
 <title>pre-rebase</title>
 <simpara>This hook is called by <emphasis>git rebase</emphasis> and can be used to prevent a branch
 from getting rebased.</simpara>
 </section>
-<section id="_post_checkout">
+<section id="githooks(5)__post_checkout">
 <title>post-checkout</title>
 <simpara>This hook is invoked when a <emphasis>git checkout</emphasis> is run after having updated the
 worktree.  The hook is given three parameters: the ref of the previous HEAD,
@@ -137,7 +135,7 @@ ref of the new HEAD and the flag is always 1.</simpara>
 differences from the previous HEAD if different, or set working dir metadata
 properties.</simpara>
 </section>
-<section id="_post_merge">
+<section id="githooks(5)__post_merge">
 <title>post-merge</title>
 <simpara>This hook is invoked by <emphasis>git merge</emphasis>, which happens when a <emphasis>git pull</emphasis>
 is done on a local repository.  The hook takes a single parameter, a status
@@ -149,7 +147,7 @@ save and restore any form of metadata associated with the working tree
 (eg: permissions/ownership, ACLS, etc).  See contrib/hooks/setgitperms.perl
 for an example of how to do this.</simpara>
 </section>
-<section id="pre-receive">
+<section id="githooks(5)_pre-receive">
 <title>pre-receive</title>
 <simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
 which happens when a <emphasis>git push</emphasis> is done on a local repository.
@@ -166,12 +164,12 @@ input a line of the format:</simpara>
 When creating a new ref, <emphasis>&lt;old-value&gt;</emphasis> is 40 <emphasis>0</emphasis>.</simpara>
 <simpara>If the hook exits with non-zero status, none of the refs will be
 updated. If the hook exits with zero, updating of individual refs can
-still be prevented by the <link linkend="update"><emphasis>update</emphasis></link> hook.</simpara>
+still be prevented by the <link linkend="githooks(5)_update"><emphasis>update</emphasis></link> hook.</simpara>
 <simpara>Both standard output and standard error output are forwarded to
 <emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
 for the user.</simpara>
 </section>
-<section id="update">
+<section id="githooks(5)_update">
 <title>update</title>
 <simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
 which happens when a <emphasis>git push</emphasis> is done on a local repository.
@@ -207,7 +205,7 @@ That is, to enforce a "fast-forward only" policy.</simpara>
 <simpara>It could also be used to log the old..new status.  However, it
 does not know the entire set of branches, so it would end up
 firing one e-mail per ref when used naively, though.  The
-<link linkend="post-receive"><emphasis>post-receive</emphasis></link> hook is more suited to that.</simpara>
+<link linkend="githooks(5)_post-receive"><emphasis>post-receive</emphasis></link> hook is more suited to that.</simpara>
 <simpara>Another use suggested on the mailing list is to use this hook to
 implement access control which is finer grained than the one
 based on filesystem group.</simpara>
@@ -218,7 +216,7 @@ for the user.</simpara>
 <emphasis>hooks.allowunannotated</emphasis> config option unset or set to false--prevents
 unannotated tags to be pushed.</simpara>
 </section>
-<section id="post-receive">
+<section id="githooks(5)_post-receive">
 <title>post-receive</title>
 <simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
 which happens when a <emphasis>git push</emphasis> is done on a local repository.
@@ -226,11 +224,11 @@ It executes on the remote repository once after all the refs have
 been updated.</simpara>
 <simpara>This hook executes once for the receive operation.  It takes no
 arguments, but gets the same information as the
-<link linkend="pre-receive"><emphasis>pre-receive</emphasis></link>
+<link linkend="githooks(5)_pre-receive"><emphasis>pre-receive</emphasis></link>
 hook does on its standard input.</simpara>
 <simpara>This hook does not affect the outcome of <emphasis>git-receive-pack</emphasis>, as it
 is called after the real work is done.</simpara>
-<simpara>This supersedes the <link linkend="post-update"><emphasis>post-update</emphasis></link> hook in that it gets
+<simpara>This supersedes the <link linkend="githooks(5)_post-update"><emphasis>post-update</emphasis></link> hook in that it gets
 both old and new values of all the refs in addition to their
 names.</simpara>
 <simpara>Both standard output and standard error output are forwarded to
@@ -241,7 +239,7 @@ a sample script <emphasis>post-receive-email</emphasis> provided in the <emphasi
 directory in git distribution, which implements sending commit
 emails.</simpara>
 </section>
-<section id="post-update">
+<section id="githooks(5)_post-update">
 <title>post-update</title>
 <simpara>This hook is invoked by <emphasis>git-receive-pack</emphasis> on the remote repository,
 which happens when a <emphasis>git push</emphasis> is done on a local repository.
@@ -254,7 +252,7 @@ the outcome of <emphasis>git-receive-pack</emphasis>.</simpara>
 <simpara>The <emphasis>post-update</emphasis> hook can tell what are the heads that were pushed,
 but it does not know what their original and updated values are,
 so it is a poor place to do log old..new. The
-<link linkend="post-receive"><emphasis>post-receive</emphasis></link> hook does get both original and
+<link linkend="githooks(5)_post-receive"><emphasis>post-receive</emphasis></link> hook does get both original and
 updated values of the refs. You might consider it instead if you need
 them.</simpara>
 <simpara>When enabled, the default <emphasis>post-update</emphasis> hook runs
@@ -266,13 +264,13 @@ probably enable this hook.</simpara>
 <emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
 for the user.</simpara>
 </section>
-<section id="_pre_auto_gc">
+<section id="githooks(5)__pre_auto_gc">
 <title>pre-auto-gc</title>
 <simpara>This hook is invoked by <emphasis>git gc --auto</emphasis>. It takes no parameter, and
 exiting with non-zero status from this script causes the <emphasis>git gc --auto</emphasis>
 to abort.</simpara>
 </section>
-<section id="_post_rewrite">
+<section id="githooks(5)__post_rewrite">
 <title>post-rewrite</title>
 <simpara>This hook is invoked by commands that rewrite commits (<emphasis>git commit
 --amend</emphasis>, <emphasis>git-rebase</emphasis>; currently <emphasis>git-filter-branch</emphasis> does <emphasis>not</emphasis> call
@@ -308,8 +306,8 @@ processed by rebase.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="githooks(5)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

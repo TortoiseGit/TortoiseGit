@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-merge(1)">
-<articleinfo>
+<sect2 lang="en" id="git-merge(1)">
     <title>git-merge(1)</title>
 <indexterm>
 <primary>git-merge(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-merge(1)__name">
 <title>NAME</title>
 <simpara>git-merge - Join two or more development histories together</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-merge(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git merge</emphasis> [-n] [--stat] [--no-commit] [--squash] [--[no-]edit]
@@ -22,7 +20,7 @@
 <emphasis>git merge</emphasis> --abort</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-merge(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Incorporates changes from the named commits (since the time their
 histories diverged from the current branch) into the current
@@ -56,7 +54,7 @@ reconstruct the original (pre-merge) changes. Therefore:</simpara>
 discouraged: while possible, it leaves you in a state that is hard to
 back out of in the case of a conflict.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-merge(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -338,14 +336,14 @@ commit or stash your changes before running <emphasis>git merge</emphasis>.</sim
         more than two parents (affectionately called an Octopus merge).
 </simpara>
 <simpara>If no commit is given from the command line, and if <emphasis>merge.defaultToUpstream</emphasis>
-configuration variable is set, merge the remote tracking branches
+configuration variable is set, merge the remote-tracking branches
 that the current branch is configured to use as its upstream.
 See also the configuration section of this manual page.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_pre_merge_checks">
+<simplesect id="git-merge(1)__pre_merge_checks">
 <title>PRE-MERGE CHECKS</title>
 <simpara>Before applying outside changes, you should get your own work in
 good shape and committed locally, so it will not be clobbered if
@@ -361,7 +359,7 @@ would result from the merge already.)</simpara>
 <simpara>If all named commits are already ancestors of <emphasis>HEAD</emphasis>, <emphasis>git merge</emphasis>
 will exit early with the message "Already up-to-date."</simpara>
 </simplesect>
-<simplesect id="_fast_forward_merge">
+<simplesect id="git-merge(1)__fast_forward_merge">
 <title>FAST-FORWARD MERGE</title>
 <simpara>Often the current branch head is an ancestor of the named commit.
 This is the most common case especially when invoked from <emphasis>git
@@ -373,7 +371,7 @@ updated to point at the named commit, without creating an extra
 merge commit.</simpara>
 <simpara>This behavior can be suppressed with the <emphasis>--no-ff</emphasis> option.</simpara>
 </simplesect>
-<simplesect id="_true_merge">
+<simplesect id="git-merge(1)__true_merge">
 <title>TRUE MERGE</title>
 <simpara>Except in a fast-forward merge (see above), the branches to be
 merged must be tied together by a merge commit that has both of them
@@ -423,7 +421,7 @@ No other changes are made.  In particular, the local
 <simpara>If you tried a merge which resulted in complex conflicts and
 want to start over, you can recover with <emphasis>git merge --abort</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_how_conflicts_are_presented">
+<simplesect id="git-merge(1)__how_conflicts_are_presented">
 <title>HOW CONFLICTS ARE PRESENTED</title>
 <simpara>During a merge, the working tree files are updated to reflect the result
 of the merge.  Among the changes made to the common ancestor's version,
@@ -432,7 +430,7 @@ other side left that area intact, or vice versa) are incorporated in the
 final result verbatim.  When both sides made changes to the same area,
 however, git cannot randomly pick one side over the other, and asks you to
 resolve it by leaving what both sides did to that area.</simpara>
-<simpara>By default, git uses the same style as that is used by "merge" program
+<simpara>By default, git uses the same style as the one used by the "merge" program
 from the RCS suite to present such a conflicted hunk, like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
 ancestor, or cleanly resolved because only one side changed.
@@ -472,7 +470,7 @@ that statement and gave up, while the other side tried to have a more
 positive attitude.  You can sometimes come up with a better resolution by
 viewing the original.</simpara>
 </simplesect>
-<simplesect id="_how_to_resolve_conflicts">
+<simplesect id="git-merge(1)__how_to_resolve_conflicts">
 <title>HOW TO RESOLVE CONFLICTS</title>
 <simpara>After seeing a conflict, you can do two things:</simpara>
 <itemizedlist>
@@ -524,7 +522,7 @@ Look at the originals.  <emphasis>git show :1:filename</emphasis> shows the
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-merge(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
@@ -555,7 +553,7 @@ release/version name would be acceptable.</simpara>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_merge_strategies">
+<simplesect id="git-merge(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
 <simpara>The merge mechanism (<emphasis>git-merge</emphasis> and <emphasis>git-pull</emphasis> commands) allows the
 backend <emphasis>merge strategies</emphasis> to be chosen with <emphasis>-s</emphasis> option.  Some strategies
@@ -605,6 +603,7 @@ ours
         This option forces conflicting hunks to be auto-resolved cleanly by
         favoring <emphasis>our</emphasis> version.  Changes from the other tree that do not
         conflict with our side are reflected to the merge result.
+        For a binary file, the entire contents are taken from our side.
 </simpara>
 <simpara>This should not be confused with the <emphasis>ours</emphasis> merge strategy, which does not
 even look at what the other tree contains at all.  It discards everything
@@ -617,7 +616,7 @@ theirs
 </term>
 <listitem>
 <simpara>
-        This is opposite of <emphasis>ours</emphasis>.
+        This is the opposite of <emphasis>ours</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -773,7 +772,7 @@ subtree
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-merge(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -799,11 +798,11 @@ merge.defaultToUpstream
 <simpara>
         If merge is called without any commit argument, merge the upstream
         branches configured for the current branch by using their last
-        observed values stored in their remote tracking branches.
+        observed values stored in their remote-tracking branches.
         The values of the <emphasis>branch.&lt;current branch&gt;.merge</emphasis> that name the
         branches at the remote named by <emphasis>branch.&lt;current branch&gt;.remote</emphasis>
         are consulted, and then they are mapped via <emphasis>remote.&lt;remote&gt;.fetch</emphasis>
-        to their corresponding remote tracking branches, and the tips of
+        to their corresponding remote-tracking branches, and the tips of
         these tracking branches are merged.
 </simpara>
 </listitem>
@@ -956,7 +955,7 @@ branch.&lt;name&gt;.mergeoptions
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-merge(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-fmt-merge-msg(1)" />, <xref linkend="git-pull(1)" />,
 <xref linkend="gitattributes(5)" />,
@@ -965,8 +964,8 @@ branch.&lt;name&gt;.mergeoptions
 <xref linkend="git-add(1)" />, <xref linkend="git-rm(1)" />,
 <xref linkend="git-mergetool(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-merge(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

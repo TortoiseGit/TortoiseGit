@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gittutorial-2(7)">
-<articleinfo>
+<sect2 lang="en" id="gittutorial-2(7)">
     <title>gittutorial-2(7)</title>
 <indexterm>
 <primary>gittutorial-2(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gittutorial-2(7)__name">
 <title>NAME</title>
 <simpara>gittutorial-2 - A tutorial introduction to git: part two</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gittutorial-2(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>git *</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gittutorial-2(7)__description">
 <title>DESCRIPTION</title>
 <simpara>You should work through <xref linkend="gittutorial(7)" /> before reading this tutorial.</simpara>
 <simpara>The goal of this tutorial is to introduce two fundamental pieces of
@@ -26,7 +24,7 @@ git's architecture--the object database and the index file--and to
 provide the reader with everything necessary to understand the rest
 of the git documentation.</simpara>
 </simplesect>
-<simplesect id="_the_git_object_database">
+<simplesect id="gittutorial-2(7)__the_git_object_database">
 <title>The git object database</title>
 <simpara>Let's start a new project and create a small amount of history:</simpara>
 <screen>$ mkdir test-project
@@ -191,7 +189,7 @@ tree, etc.--and most such commands can accept any of these names.</simpara>
 <simpara>In command synopses, the word "tree-ish" is sometimes used to
 designate such an argument.</simpara>
 </simplesect>
-<simplesect id="_the_index_file">
+<simplesect id="gittutorial-2(7)__the_index_file">
 <title>The index file</title>
 <simpara>The primary tool we've been using to create commits is <emphasis>git-commit
 -a</emphasis>, which creates a commit including every change you've made to
@@ -324,7 +322,7 @@ branch, and is used to hold the trees involved in a merge operation.
 See <xref linkend="gitcore-tutorial(7)" /> and the relevant man
 pages for details.</simpara>
 </simplesect>
-<simplesect id="_what_next">
+<simplesect id="gittutorial-2(7)__what_next">
 <title>What next?</title>
 <simpara>At this point you should know everything necessary to read the man
 pages for any of the git commands; one good place to start would be
@@ -341,7 +339,7 @@ link:howto-index.html[howtos].</simpara>
 into detail on the lower-level git mechanisms involved in, for
 example, creating a new commit.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gittutorial-2(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial(7)" />,
 <xref linkend="gitcvs-migration(7)" />,
@@ -351,8 +349,8 @@ example, creating a new commit.</simpara>
 link:everyday.html[Everyday git],
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gittutorial-2(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

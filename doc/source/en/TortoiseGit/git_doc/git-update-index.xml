@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-update-index(1)">
-<articleinfo>
+<sect2 lang="en" id="git-update-index(1)">
     <title>git-update-index(1)</title>
 <indexterm>
 <primary>git-update-index(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-update-index(1)__name">
 <title>NAME</title>
 <simpara>git-update-index - Register file contents in the working tree to the index</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-update-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git update-index</emphasis>
@@ -25,12 +23,12 @@
              [--ignore-submodules]
              [--really-refresh] [--unresolve] [--again | -g]
              [--info-only] [--index-info]
-             [-z] [--stdin]
+             [-z] [--stdin] [--index-version &lt;n&gt;]
              [--verbose]
              [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-update-index(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Modifies the index or directory cache. Each file mentioned is updated
 into the index and any <emphasis>unmerged</emphasis> or <emphasis>needs updating</emphasis> state is
@@ -40,7 +38,7 @@ the most common operations on the index.</simpara>
 <simpara>The way <emphasis>git update-index</emphasis> handles files it is told about can be modified
 using the various options:</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-update-index(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -296,6 +294,17 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--index-version &lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Write the resulting index out in the named on-disk format version.
+        The current default version is 2.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -z
 </term>
 <listitem>
@@ -331,7 +340,7 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_using_refresh">
+<simplesect id="git-update-index(1)__using_refresh">
 <title>Using --refresh</title>
 <simpara><emphasis>--refresh</emphasis> does not calculate a new sha1 file or bring the index
 up-to-date for mode/content changes. But what it <emphasis role="strong">does</emphasis> do is to
@@ -341,7 +350,7 @@ the stat entry is out of date.</simpara>
 <simpara>For example, you'd want to do this after doing a <emphasis>git read-tree</emphasis>, to link
 up the stat index details with the proper files.</simpara>
 </simplesect>
-<simplesect id="_using_cacheinfo_or_info_only">
+<simplesect id="git-update-index(1)__using_cacheinfo_or_info_only">
 <title>Using --cacheinfo or --info-only</title>
 <simpara><emphasis>--cacheinfo</emphasis> is used to register a file that is not in the
 current working directory.  This is useful for minimum-checkout
@@ -356,7 +365,7 @@ in the database but the file isn't available locally.  <emphasis>--info-only</em
 useful when the file is available, but you do not wish to update the
 object database.</simpara>
 </simplesect>
-<simplesect id="_using_index_info">
+<simplesect id="git-update-index(1)__using_index_info">
 <title>Using --index-info</title>
 <simpara><emphasis>--index-info</emphasis> is a more powerful mechanism that lets you feed
 multiple entry definitions from the standard input, and designed
@@ -405,7 +414,7 @@ for that path.  After the above, we would end up with this:</simpara>
 100644 8a1218a1024a212bb3db30becd860315f9f3ac52 1       frotz
 100755 8a1218a1024a212bb3db30becd860315f9f3ac52 2       frotz</screen>
 </simplesect>
-<simplesect id="_using_assume_unchanged_bit">
+<simplesect id="git-update-index(1)__using_assume_unchanged_bit">
 <title>Using assume unchanged bit</title>
 <simpara>Many operations in git depend on your filesystem to have an
 efficient <emphasis>lstat(2)</emphasis> implementation, so that <emphasis>st_mtime</emphasis>
@@ -434,7 +443,7 @@ unchanged".  Note that "assume unchanged" bit is <emphasis role="strong">not</em
 the index (use <emphasis>git update-index --really-refresh</emphasis> if you want
 to mark them as "assume unchanged").</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-update-index(1)__examples">
 <title>Examples</title>
 <simpara>To update and refresh only the files already checked out:</simpara>
 <screen>$ git checkout-index -n -f -a &amp;&amp; git update-index --ignore-missing --refresh</screen>
@@ -444,61 +453,61 @@ to mark them as "assume unchanged").</simpara>
 On an inefficient filesystem with <emphasis>core.ignorestat</emphasis> set
 </term>
 <listitem>
-<screen>$ git update-index --really-refresh              <co id="CO1-1"/>
-$ git update-index --no-assume-unchanged foo.c   <co id="CO1-2"/>
-$ git diff --name-only                           <co id="CO1-3"/>
+<screen>$ git update-index --really-refresh              <co id="git-update-index_CO1-1"/>
+$ git update-index --no-assume-unchanged foo.c   <co id="git-update-index_CO1-2"/>
+$ git diff --name-only                           <co id="git-update-index_CO1-3"/>
 $ edit foo.c
-$ git diff --name-only                           <co id="CO1-4"/>
+$ git diff --name-only                           <co id="git-update-index_CO1-4"/>
 M foo.c
-$ git update-index foo.c                         <co id="CO1-5"/>
-$ git diff --name-only                           <co id="CO1-6"/>
+$ git update-index foo.c                         <co id="git-update-index_CO1-5"/>
+$ git diff --name-only                           <co id="git-update-index_CO1-6"/>
 $ edit foo.c
-$ git diff --name-only                           <co id="CO1-7"/>
-$ git update-index --no-assume-unchanged foo.c   <co id="CO1-8"/>
-$ git diff --name-only                           <co id="CO1-9"/>
+$ git diff --name-only                           <co id="git-update-index_CO1-7"/>
+$ git update-index --no-assume-unchanged foo.c   <co id="git-update-index_CO1-8"/>
+$ git diff --name-only                           <co id="git-update-index_CO1-9"/>
 M foo.c</screen>
 <calloutlist>
-<callout arearefs="CO1-1">
+<callout arearefs="git-update-index_CO1-1">
 <para>
 forces lstat(2) to set "assume unchanged" bits for paths that match index.
 </para>
 </callout>
-<callout arearefs="CO1-2">
+<callout arearefs="git-update-index_CO1-2">
 <para>
 mark the path to be edited.
 </para>
 </callout>
-<callout arearefs="CO1-3">
+<callout arearefs="git-update-index_CO1-3">
 <para>
 this does lstat(2) and finds index matches the path.
 </para>
 </callout>
-<callout arearefs="CO1-4">
+<callout arearefs="git-update-index_CO1-4">
 <para>
 this does lstat(2) and finds index does <emphasis role="strong">not</emphasis> match the path.
 </para>
 </callout>
-<callout arearefs="CO1-5">
+<callout arearefs="git-update-index_CO1-5">
 <para>
 registering the new version to index sets "assume unchanged" bit.
 </para>
 </callout>
-<callout arearefs="CO1-6">
+<callout arearefs="git-update-index_CO1-6">
 <para>
 and it is assumed unchanged.
 </para>
 </callout>
-<callout arearefs="CO1-7">
+<callout arearefs="git-update-index_CO1-7">
 <para>
 even after you edit it.
 </para>
 </callout>
-<callout arearefs="CO1-8">
+<callout arearefs="git-update-index_CO1-8">
 <para>
 you can tell about the change after the fact.
 </para>
 </callout>
-<callout arearefs="CO1-9">
+<callout arearefs="git-update-index_CO1-9">
 <para>
 now it checks with lstat(2) and finds it has been changed.
 </para>
@@ -508,7 +517,7 @@ now it checks with lstat(2) and finds it has been changed.
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_skip_worktree_bit">
+<simplesect id="git-update-index(1)__skip_worktree_bit">
 <title>Skip-worktree bit</title>
 <simpara>Skip-worktree bit can be defined in one (long) sentence: When reading
 an entry, if it is marked as skip-worktree, then Git pretends its
@@ -525,7 +534,7 @@ working directory version matches index version)</simpara>
 different from assume-unchanged bit's. Skip-worktree also takes
 precedence over assume-unchanged bit when both are set.</simpara>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-update-index(1)__configuration">
 <title>Configuration</title>
 <simpara>The command honors <emphasis>core.filemode</emphasis> configuration variable.  If
 your repository is on a filesystem whose executable bits are
@@ -545,14 +554,14 @@ It can be useful when the inode change time is regularly modified by
 something outside Git (file system crawlers and backup systems use
 ctime for marking files processed) (see <xref linkend="git-config(1)" />).</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-update-index(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-config(1)" />,
 <xref linkend="git-add(1)" />,
 <xref linkend="git-ls-files(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-update-index(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

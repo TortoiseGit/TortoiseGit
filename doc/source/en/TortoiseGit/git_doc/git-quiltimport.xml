@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-quiltimport(1)">
-<articleinfo>
+<sect2 lang="en" id="git-quiltimport(1)">
     <title>git-quiltimport(1)</title>
 <indexterm>
 <primary>git-quiltimport(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-quiltimport(1)__name">
 <title>NAME</title>
 <simpara>git-quiltimport - Applies a quilt patchset onto the current branch</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-quiltimport(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git quiltimport</emphasis> [--dry-run | -n] [--author &lt;author&gt;] [--patches &lt;dir&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-quiltimport(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Applies a quilt patchset onto the current git branch, preserving
 the patch boundaries, patch order, and patch descriptions present
@@ -31,7 +29,7 @@ interactively enter the author of the patch.</simpara>
 <simpara>If a subject is not found in the patch description the patch name is
 preserved as the 1 line subject in the git description.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-quiltimport(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -77,8 +75,8 @@ variable.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-quiltimport(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

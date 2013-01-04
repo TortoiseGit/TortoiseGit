@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitcvs-migration(7)">
-<articleinfo>
+<sect2 lang="en" id="gitcvs-migration(7)">
     <title>gitcvs-migration(7)</title>
 <indexterm>
 <primary>gitcvs-migration(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitcvs-migration(7)__name">
 <title>NAME</title>
 <simpara>gitcvs-migration - git for CVS users</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitcvs-migration(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cvsimport</emphasis> *</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitcvs-migration(7)__description">
 <title>DESCRIPTION</title>
 <simpara>Git differs from CVS in that every working tree contains a repository with
 a full copy of the project history, and no repository is inherently more
@@ -29,7 +27,7 @@ this document explains how to do that.</simpara>
 <xref linkend="gittutorial(7)" /> and
 <xref linkend="gitglossary(7)" /> should be sufficient.</simpara>
 </simplesect>
-<simplesect id="_developing_against_a_shared_repository">
+<simplesect id="gitcvs-migration(7)__developing_against_a_shared_repository">
 <title>Developing against a shared repository</title>
 <simpara>Suppose a shared repository is set up in /pub/repo.git on the host
 foo.com.  Then as an individual committer you can clone the shared
@@ -63,7 +61,7 @@ $ git push foo.com:/pub/project.git/</screen>
 <simpara>as long as the shared repository does not have any branches
 other than <emphasis>master</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_setting_up_a_shared_repository">
+<simplesect id="gitcvs-migration(7)__setting_up_a_shared_repository">
 <title>Setting Up a Shared Repository</title>
 <simpara>We assume you have already created a git repository for your project,
 possibly created from scratch or from a tarball (see
@@ -87,7 +85,7 @@ writable by that group:</simpara>
 <simpara>Make sure committers have a umask of at most 027, so that the directories
 they create are writable and searchable by other group members.</simpara>
 </simplesect>
-<simplesect id="_importing_a_cvs_archive">
+<simplesect id="gitcvs-migration(7)__importing_a_cvs_archive">
 <title>Importing a CVS archive</title>
 <simpara>First, install version 2.1 or higher of cvsps from
 link:http://www.cobite.com/cvsps/[<ulink url="http://www.cobite.com/cvsps/">http://www.cobite.com/cvsps/</ulink>] and make
@@ -114,7 +112,7 @@ of the imported directory, as described above. Then treat the imported
 directory as another development clone for purposes of merging
 incremental imports.</simpara>
 </simplesect>
-<simplesect id="_advanced_shared_repository_management">
+<simplesect id="gitcvs-migration(7)__advanced_shared_repository_management">
 <title>Advanced Shared Repository Management</title>
 <simpara>Git allows you to specify scripts called "hooks" to be run at certain
 points.  You can use these, for example, to send all commits to the shared
@@ -123,13 +121,13 @@ repository to a mailing list.  See <xref linkend="githooks(5)" />.</simpara>
 link:howto/update-hook-example.txt[Controlling access to branches using
 update hooks].</simpara>
 </simplesect>
-<simplesect id="_providing_cvs_access_to_a_git_repository">
+<simplesect id="gitcvs-migration(7)__providing_cvs_access_to_a_git_repository">
 <title>Providing CVS Access to a git Repository</title>
 <simpara>It is also possible to provide true CVS access to a git repository, so
 that developers can still use CVS; see <xref linkend="git-cvsserver(1)" /> for
 details.</simpara>
 </simplesect>
-<simplesect id="_alternative_development_models">
+<simplesect id="gitcvs-migration(7)__alternative_development_models">
 <title>Alternative Development Models</title>
 <simpara>CVS users are accustomed to giving a group of developers commit access to
 a common repository.  As we've seen, this is also possible with git.
@@ -147,7 +145,7 @@ variants of this model.</simpara>
 <simpara>With a small group, developers may just pull changes from each other's
 repositories without the need for a central maintainer.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitcvs-migration(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial(7)" />,
 <xref linkend="gittutorial-2(7)" />,
@@ -156,8 +154,8 @@ repositories without the need for a central maintainer.</simpara>
 link:everyday.html[Everyday Git],
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitcvs-migration(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-update-server-info(1)">
-<articleinfo>
+<sect2 lang="en" id="git-update-server-info(1)">
     <title>git-update-server-info(1)</title>
 <indexterm>
 <primary>git-update-server-info(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-update-server-info(1)__name">
 <title>NAME</title>
 <simpara>git-update-server-info - Update auxiliary info file to help dumb servers</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-update-server-info(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git update-server-info</emphasis> [--force]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-update-server-info(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A dumb server that does not do on-the-fly pack generations must
 have some auxiliary information files in $GIT_DIR/info and
@@ -26,7 +24,7 @@ $GIT_OBJECT_DIRECTORY/info directories to help clients discover
 what references and packs the server has.  This command
 generates such auxiliary files.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-update-server-info(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -44,7 +42,7 @@ generates such auxiliary files.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-update-server-info(1)__output">
 <title>OUTPUT</title>
 <simpara>Currently the command updates the following files.  Please see
 <xref linkend="gitrepository-layout(5)" /> for description of
@@ -62,8 +60,8 @@ info/refs
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-update-server-info(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cvsserver(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cvsserver(1)">
     <title>git-cvsserver(1)</title>
 <indexterm>
 <primary>git-cvsserver(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cvsserver(1)__name">
 <title>NAME</title>
 <simpara>git-cvsserver - A CVS server emulator for git</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cvsserver(1)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>SSH:</simpara>
 <blockquote>
@@ -28,7 +26,7 @@
 <literallayout><emphasis>git-cvsserver</emphasis> [options] [pserver|server] [&lt;directory&gt; &#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cvsserver(1)__options">
 <title>OPTIONS</title>
 <simpara>All these options obviously only make sense if enforced by the server side.
 They have been implemented to resemble the <xref linkend="git-daemon(1)" /> options as
@@ -109,7 +107,7 @@ unless <emphasis>--export-all</emphasis> was given, too.
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cvsserver(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This application is a CVS emulation layer for git.</simpara>
 <simpara>It is highly functional. However, not all methods are implemented,
@@ -118,14 +116,14 @@ not all switches are implemented.</simpara>
 <simpara>Testing has been done using both the CLI CVS client, and the Eclipse CVS
 plugin. Most functionality works fine with both of these clients.</simpara>
 </simplesect>
-<simplesect id="_limitations">
+<simplesect id="git-cvsserver(1)__limitations">
 <title>LIMITATIONS</title>
 <simpara>CVS clients cannot tag, branch or perform GIT merges.</simpara>
 <simpara><emphasis>git-cvsserver</emphasis> maps GIT branches to CVS modules. This is very different
 from what most CVS users would expect since in CVS modules usually represent
 one or more directories.</simpara>
 </simplesect>
-<simplesect id="_installation">
+<simplesect id="git-cvsserver(1)__installation">
 <title>INSTALLATION</title>
 <orderedlist numeration="arabic">
 <listitem>
@@ -179,7 +177,7 @@ For each repo that you want accessible from CVS you need to edit config in
         logfile=/path/to/logfile</screen>
 <simpara>Note: you need to ensure each user that is going to invoke <emphasis>git-cvsserver</emphasis> has
 write access to the log file and to the database (see
-<link linkend="dbbackend">Database Backend</link>. If you want to offer write access over
+<link linkend="git-cvsserver(1)_dbbackend">Database Backend</link>. If you want to offer write access over
 SSH, the users of course also need write access to the git repository itself.</simpara>
 <simpara>You also need to ensure that each repository is "bare" (without a git index
 file) for <emphasis>cvs commit</emphasis> to work. See <xref linkend="gitcvs-migration(7)" />.</simpara>
@@ -225,7 +223,7 @@ Clients should now be able to check out the project. Use the CVS <emphasis>modul
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="dbbackend">
+<simplesect id="git-cvsserver(1)_dbbackend">
 <title>Database Backend</title>
 <simpara><emphasis>git-cvsserver</emphasis> uses one database per git head (i.e. CVS module) to
 store information about the repository to maintain consistent
@@ -258,7 +256,7 @@ backup) regenerate the database, you should be suspicious
 of pre-existing CVS sandboxes.</simpara>
 <simpara>You can configure the database backend with the following
 configuration variables:</simpara>
-<section id="_configuring_database_backend">
+<section id="git-cvsserver(1)__configuring_database_backend">
 <title>Configuring database backend</title>
 <simpara><emphasis>git-cvsserver</emphasis> uses the Perl DBI module. Please also read
 its documentation if changing these variables, especially
@@ -330,8 +328,8 @@ gitcvs.dbTableNamePrefix
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>All variables can also be set per access method, see <link linkend="configaccessmethod">above</link>.</simpara>
-<section id="_variable_substitution">
+<simpara>All variables can also be set per access method, see <link linkend="git-cvsserver(1)_configaccessmethod">above</link>.</simpara>
+<section id="git-cvsserver(1)__variable_substitution">
 <title>Variable substitution</title>
 <simpara>In <emphasis>dbdriver</emphasis> and <emphasis>dbuser</emphasis> you can use the following variables:</simpara>
 <variablelist>
@@ -394,7 +392,7 @@ gitcvs.dbTableNamePrefix
 </section>
 </section>
 </simplesect>
-<simplesect id="_environment">
+<simplesect id="git-cvsserver(1)__environment">
 <title>ENVIRONMENT</title>
 <simpara>These variables obviate the need for command-line options in some
 circumstances, allowing easier restricted usage through git-shell.</simpara>
@@ -405,7 +403,7 @@ git-cvsserver, as described above.</simpara>
 <simpara>When these environment variables are set, the corresponding
 command-line arguments may not be used.</simpara>
 </simplesect>
-<simplesect id="_eclipse_cvs_client_notes">
+<simplesect id="git-cvsserver(1)__eclipse_cvs_client_notes">
 <title>Eclipse CVS Client Notes</title>
 <simpara>To get a checkout with the Eclipse CVS client:</simpara>
 <orderedlist numeration="arabic">
@@ -444,7 +442,7 @@ offer. In that case CVS_SERVER is ignored, and you will have to replace
 the cvs utility on the server with <emphasis>git-cvsserver</emphasis> or manipulate your <emphasis>.bashrc</emphasis>
 so that calling <emphasis>cvs</emphasis> effectively calls <emphasis>git-cvsserver</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_clients_known_to_work">
+<simplesect id="git-cvsserver(1)__clients_known_to_work">
 <title>Clients known to work</title>
 <itemizedlist>
 <listitem>
@@ -469,13 +467,13 @@ TortoiseCVS
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_operations_supported">
+<simplesect id="git-cvsserver(1)__operations_supported">
 <title>Operations supported</title>
 <simpara>All the operations required for normal use are supported, including
 checkout, diff, status, update, log, add, remove, commit.
 Legacy monitoring operations are not supported (edit, watch and related).
 Exports and tagging (tags and branches) are not supported at this stage.</simpara>
-<section id="_crlf_line_ending_conversions">
+<section id="git-cvsserver(1)__crlf_line_ending_conversions">
 <title>CRLF Line Ending Conversions</title>
 <simpara>By default the server leaves the <emphasis>-k</emphasis> mode blank for all files,
 which causes the CVS client to treat them as a text files, subject
@@ -497,12 +495,12 @@ defaults by setting <emphasis>gitcvs.usecrlfattr</emphasis> to true,
 and <emphasis>gitcvs.allbinary</emphasis> to "guess".</simpara>
 </section>
 </simplesect>
-<simplesect id="_dependencies">
+<simplesect id="git-cvsserver(1)__dependencies">
 <title>Dependencies</title>
 <simpara><emphasis>git-cvsserver</emphasis> depends on DBD::SQLite.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cvsserver(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

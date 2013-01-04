@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cvsexportcommit(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cvsexportcommit(1)">
     <title>git-cvsexportcommit(1)</title>
 <indexterm>
 <primary>git-cvsexportcommit(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cvsexportcommit(1)__name">
 <title>NAME</title>
 <simpara>git-cvsexportcommit - Export a single commit to a CVS checkout</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cvsexportcommit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cvsexportcommit</emphasis> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d cvsroot]
         [-w cvsworkdir] [-W] [-f] [-m msgprefix] [PARENTCOMMIT] COMMITID</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cvsexportcommit(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Exports a commit from GIT to a CVS checkout, making it easier
 to merge patches from a git repository into a CVS repository.</simpara>
@@ -33,7 +31,7 @@ by default.</simpara>
 <simpara>If the commit is a merge commit, you must tell <emphasis>git cvsexportcommit</emphasis> what
 parent the changeset should be done against.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cvsexportcommit(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -170,7 +168,7 @@ parent the changeset should be done against.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-cvsexportcommit(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -185,7 +183,7 @@ cvsexportcommit.cvsdir
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-cvsexportcommit(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -219,8 +217,8 @@ $ git cherry cvshead myhead | sed -n 's/^+ //p' | xargs -l1 git cvsexportcommit 
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cvsexportcommit(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

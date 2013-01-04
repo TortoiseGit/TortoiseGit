@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-notes(1)">
-<articleinfo>
+<sect2 lang="en" id="git-notes(1)">
     <title>git-notes(1)</title>
 <indexterm>
 <primary>git-notes(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-notes(1)__name">
 <title>NAME</title>
 <simpara>git-notes - Add or inspect object notes</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-notes(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git notes</emphasis> [list [&lt;object&gt;]]
@@ -29,7 +27,7 @@
 <emphasis>git notes</emphasis> get-ref</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-notes(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Adds, removes, or reads notes attached to objects, without touching
 the objects themselves.</simpara>
@@ -43,12 +41,15 @@ the original commit message. To distinguish these notes from the
 message stored in the commit object, the notes are indented like the
 message, after an unindented line saying "Notes (&lt;refname&gt;):" (or
 "Notes:" for <emphasis>refs/notes/commits</emphasis>).</simpara>
+<simpara>Notes can also be added to patches prepared with <emphasis>git format-patch</emphasis> by
+using the <emphasis>--notes</emphasis> option. Such notes are added as a patch commentary
+after a three dash separator line.</simpara>
 <simpara>To change which notes are shown by <emphasis>git log</emphasis>, see the
 "notes.displayRef" configuration in <xref linkend="git-log(1)" />.</simpara>
 <simpara>See the "notes.rewrite.&lt;command&gt;" configuration for a way to carry
 notes across commands that rewrite commits.</simpara>
 </simplesect>
-<simplesect id="_subcommands">
+<simplesect id="git-notes(1)__subcommands">
 <title>SUBCOMMANDS</title>
 <variablelist>
 <varlistentry>
@@ -186,7 +187,7 @@ get-ref
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-notes(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -389,7 +390,7 @@ get-ref
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-notes(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>Commit notes are blobs containing extra information about an object
 (usually information to supplement a commit's message).  These blobs
@@ -410,7 +411,7 @@ These details may change in the future.</simpara>
 object, in which case the history of the notes can be read with
 <emphasis>git log -p -g &lt;refname&gt;</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_notes_merge_strategies">
+<simplesect id="git-notes(1)__notes_merge_strategies">
 <title>NOTES MERGE STRATEGIES</title>
 <simpara>The default notes merge strategy is "manual", which checks out
 conflicting notes in a special work tree for resolving notes conflicts
@@ -436,7 +437,7 @@ Note that if either the local or remote version contain duplicate lines
 prior to the merge, these will also be removed by this notes merge
 strategy.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-notes(1)__examples">
 <title>EXAMPLES</title>
 <simpara>You can use notes to add annotations with information that was not
 available at the time a commit was written.</simpara>
@@ -459,7 +460,7 @@ Of course, it doesn't make much sense to display non-text-format notes
 with <emphasis>git log</emphasis>, so if you use such notes, you'll probably need to write
 some special-purpose tools to do something useful with them.</simpara>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-notes(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -538,7 +539,7 @@ enable note rewriting.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment">
+<simplesect id="git-notes(1)__environment">
 <title>ENVIRONMENT</title>
 <variablelist>
 <varlistentry>
@@ -597,17 +598,17 @@ on the <emphasis>notes.rewrite.&lt;command&gt;</emphasis> and <emphasis>notes.re
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_author">
+<simplesect id="git-notes(1)__author">
 <title>Author</title>
 <simpara>Written by Johannes Schindelin &lt;<ulink url="mailto:johannes.schindelin@gmx.de">johannes.schindelin@gmx.de</ulink>&gt; and
 Johan Herland &lt;<ulink url="mailto:johan@herland.net">johan@herland.net</ulink>&gt;</simpara>
 </simplesect>
-<simplesect id="_documentation">
+<simplesect id="git-notes(1)__documentation">
 <title>Documentation</title>
 <simpara>Documentation by Johannes Schindelin and Johan Herland</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-notes(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(7)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-whatchanged(1)">
-<articleinfo>
+<sect2 lang="en" id="git-whatchanged(1)">
     <title>git-whatchanged(1)</title>
 <indexterm>
 <primary>git-whatchanged(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-whatchanged(1)__name">
 <title>NAME</title>
 <simpara>git-whatchanged - Show logs with difference each commit introduces</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-whatchanged(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git whatchanged</emphasis> &lt;option&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-whatchanged(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Shows commit logs and diff output each commit introduces.  The
 command internally invokes <emphasis>git rev-list</emphasis> piped to
@@ -26,7 +24,7 @@ command internally invokes <emphasis>git rev-list</emphasis> piped to
 these commands.</simpara>
 <simpara>This manual page describes only the most frequently used options.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-whatchanged(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -210,9 +208,20 @@ being displayed. Examples: "--notes=foo" will show only notes from
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--show-signature
+</term>
+<listitem>
+<simpara>
+        Check the validity of a signed commit object by passing the signature
+        to <emphasis>gpg --verify</emphasis> and show the output.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_pretty_formats">
+<simplesect id="git-whatchanged(1)__pretty_formats">
 <title>PRETTY FORMATS</title>
 <simpara>If the commit is a merge, and if the pretty-format
 is not <emphasis>oneline</emphasis>, <emphasis>email</emphasis> or <emphasis>raw</emphasis>, an additional line is
@@ -469,6 +478,21 @@ The title was &gt;&gt;t4119: test autocomputing -p&lt;n&gt; for traditional diff
 </listitem>
 <listitem>
 <simpara>
+<emphasis>%GG</emphasis>: raw verification message from GPG for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%G?</emphasis>: show either "G" for Good or "B" for Bad for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>%GS</emphasis>: show the name of the signer for a signed commit
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>%gD</emphasis>: reflog selector, e.g., <emphasis>refs/stash@{1}</emphasis>
 </simpara>
 </listitem>
@@ -599,7 +623,7 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-whatchanged(1)__examples">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -627,8 +651,8 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-whatchanged(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

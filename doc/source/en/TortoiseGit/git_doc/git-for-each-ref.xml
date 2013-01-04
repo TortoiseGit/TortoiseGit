@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-for-each-ref(1)">
-<articleinfo>
+<sect2 lang="en" id="git-for-each-ref(1)">
     <title>git-for-each-ref(1)</title>
 <indexterm>
 <primary>git-for-each-ref(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-for-each-ref(1)__name">
 <title>NAME</title>
 <simpara>git-for-each-ref - Output information on each ref</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-for-each-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
                    [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-for-each-ref(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Iterate over all refs that match <emphasis>&lt;pattern&gt;</emphasis> and show them
 according to the given <emphasis>&lt;format&gt;</emphasis>, after sorting them according
@@ -28,7 +26,7 @@ showing that many refs.  The interpolated values in <emphasis>&lt;format&gt;</em
 can optionally be quoted as string literals in the specified
 host language allowing their direct evaluation in that language.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-for-each-ref(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -113,7 +111,7 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_field_names">
+<simplesect id="git-for-each-ref(1)__field_names">
 <title>FIELD NAMES</title>
 <simpara>Various values from structured fields in referenced objects can
 be used to interpolate into the resulting output, or as sort
@@ -184,9 +182,10 @@ be used to specify the value in the header field.</simpara>
 <emphasis>committer</emphasis>, and <emphasis>tagger</emphasis>) can be suffixed with <emphasis>name</emphasis>, <emphasis>email</emphasis>,
 and <emphasis>date</emphasis> to extract the named component.</simpara>
 <simpara>The complete message in a commit and tag object is <emphasis>contents</emphasis>.
-Its first line is <emphasis>contents:subject</emphasis>, the remaining lines
-are <emphasis>contents:body</emphasis> and the optional GPG signature
-is <emphasis>contents:signature</emphasis>.</simpara>
+Its first line is <emphasis>contents:subject</emphasis>, where subject is the concatenation
+of all lines of the commit message up to the first blank line.  The next
+line is <emphasis>contents:body</emphasis>, where body is all of the lines after the first
+blank line.  Finally, the optional GPG signature is <emphasis>contents:signature</emphasis>.</simpara>
 <simpara>For sorting purposes, fields with numeric values sort in numeric
 order (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>taggerdate</emphasis>).
 All other fields are used to sort in their byte-value order.</simpara>
@@ -198,7 +197,7 @@ the date by adding one of <emphasis>:default</emphasis>, <emphasis>:relative</em
 <emphasis>:iso8601</emphasis> or <emphasis>:rfc2822</emphasis> to the end of the fieldname; e.g.
 <emphasis>%(taggerdate:relative)</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-for-each-ref(1)__examples">
 <title>EXAMPLES</title>
 <simpara>An example directly producing formatted text.  Show the most recent
 3 tagged commits:</simpara>
@@ -272,16 +271,16 @@ eval=`git for-each-ref --shell --format="$fmt" \
         refs/tags`
 eval "$eval"</screen>
 </simplesect>
-<simplesect id="_author">
+<simplesect id="git-for-each-ref(1)__author">
 <title>Author</title>
 <simpara>Written by Junio C Hamano &lt;<ulink url="mailto:gitster@pobox.com">gitster@pobox.com</ulink>&gt;.</simpara>
 </simplesect>
-<simplesect id="_documentation">
+<simplesect id="git-for-each-ref(1)__documentation">
 <title>Documentation</title>
 <simpara>Documentation by Junio C Hamano and the git-list &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-for-each-ref(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-read-tree(1)">
-<articleinfo>
+<sect2 lang="en" id="git-read-tree(1)">
     <title>git-read-tree(1)</title>
 <indexterm>
 <primary>git-read-tree(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-read-tree(1)__name">
 <title>NAME</title>
 <simpara>git-read-tree - Reads tree information into the index</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-read-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git read-tree</emphasis> [[-m [--trivial] [--aggressive] | --reset | --prefix=&lt;prefix&gt;]
@@ -21,7 +19,7 @@
                 (--empty | &lt;tree-ish1&gt; [&lt;tree-ish2&gt; [&lt;tree-ish3&gt;]])</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-read-tree(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Reads the tree information given by &lt;tree-ish&gt; into the index,
 but does not actually <emphasis role="strong">update</emphasis> any of the files it "caches". (see:
@@ -33,7 +31,7 @@ the files in the work tree with the result of the merge.</simpara>
 <simpara>Trivial merges are done by <emphasis>git read-tree</emphasis> itself.  Only conflicting paths
 will be in unmerged state when <emphasis>git read-tree</emphasis> returns.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-read-tree(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -246,13 +244,13 @@ when both sides add a path identically.  The resolution
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_merging">
+<simplesect id="git-read-tree(1)__merging">
 <title>Merging</title>
 <simpara>If <emphasis>-m</emphasis> is specified, <emphasis>git read-tree</emphasis> can perform 3 kinds of
 merge, a single tree merge if only 1 tree is given, a
 fast-forward merge with 2 trees, or a 3-way merge if 3 trees are
 provided.</simpara>
-<section id="_single_tree_merge">
+<section id="git-read-tree(1)__single_tree_merge">
 <title>Single Tree Merge</title>
 <simpara>If only 1 tree is specified, <emphasis>git read-tree</emphasis> operates as if the user did not
 specify <emphasis>-m</emphasis>, except that if the original index has an entry for a
@@ -265,7 +263,7 @@ the stuff that really changed.</simpara>
 <simpara>This is used to avoid unnecessary false hits when <emphasis>git diff-files</emphasis> is
 run after <emphasis>git read-tree</emphasis>.</simpara>
 </section>
-<section id="_two_tree_merge">
+<section id="git-read-tree(1)__two_tree_merge">
 <title>Two Tree Merge</title>
 <simpara>Typically, this is invoked as <emphasis>git read-tree -m $H $M</emphasis>, where $H
 is the head commit of the current repository, and $M is the head
@@ -345,7 +343,7 @@ the initial checkout from happening, so the rule is modified to use M (new
 tree) only when the content of the index is empty.  Otherwise the removal
 of the path is kept as long as $H and $M are the same.</simpara>
 </section>
-<section id="_3_way_merge">
+<section id="git-read-tree(1)__3_way_merge">
 <title>3-Way Merge</title>
 <simpara>Each "index" entry has two bits worth of "stage" state. stage 0 is the
 normal one, and is the only one you'd see in any kind of normal use.</simpara>
@@ -491,7 +489,7 @@ middle of doing, and when your working tree is ready (i.e. you
 have finished your work-in-progress), attempt the merge again.</simpara>
 </section>
 </simplesect>
-<simplesect id="_sparse_checkout">
+<simplesect id="git-read-tree(1)__sparse_checkout">
 <title>Sparse checkout</title>
 <simpara>"Sparse checkout" allows populating the working directory sparsely.
 It uses the skip-worktree bit (see <xref linkend="git-update-index(1)" />) to tell
@@ -524,13 +522,13 @@ read-tree</emphasis> and similar commands is disabled by default. You need to
 turn <emphasis>core.sparseCheckout</emphasis> on in order to have sparse checkout
 support.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-read-tree(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-write-tree(1)" />; <xref linkend="git-ls-files(1)" />;
 <xref linkend="gitignore(5)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-read-tree(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cherry(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cherry(1)">
     <title>git-cherry(1)</title>
 <indexterm>
 <primary>git-cherry(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cherry(1)__name">
 <title>NAME</title>
 <simpara>git-cherry - Find commits not merged upstream</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cherry(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cherry</emphasis> [-v] [&lt;upstream&gt; [&lt;head&gt; [&lt;limit&gt;]]]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cherry(1)__description">
 <title>DESCRIPTION</title>
 <simpara>The changeset (or "diff") of each commit between the fork-point and &lt;head&gt;
 is compared against each commit between the fork-point and &lt;upstream&gt;.
@@ -45,7 +43,7 @@ has been applied &lt;upstream&gt; under a different commit id.  For example,
 this will happen if you're feeding patches &lt;upstream&gt; via email rather
 than pushing or pulling commits directly.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cherry(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -91,12 +89,12 @@ than pushing or pulling commits directly.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-cherry(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-patch-id(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cherry(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

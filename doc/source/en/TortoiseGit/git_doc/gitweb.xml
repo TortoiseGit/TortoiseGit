@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitweb(1)">
-<articleinfo>
+<sect2 lang="en" id="gitweb(1)">
     <title>gitweb(1)</title>
 <indexterm>
 <primary>gitweb(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitweb(1)__name">
 <title>NAME</title>
 <simpara>gitweb - Git web interface (web frontend to Git repositories)</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitweb(1)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>To get started with gitweb, run <xref linkend="git-instaweb(1)" /> from a git repository.
 This would configure and start your web server, and run web browser pointing to
 gitweb.</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitweb(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Gitweb provides a web interface to git repositories.  Its features include:</simpara>
 <itemizedlist>
@@ -70,12 +68,12 @@ Finding commits which commit messages matches given search term.
 <ulink url="http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/">http://repo.or.cz/w/git.git/tree/HEAD:/gitweb/</ulink>[] for gitweb source code,
 browsed using gitweb itself.</simpara>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="gitweb(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>Various aspects of gitweb's behavior can be controlled through the configuration
 file <emphasis>gitweb_config.perl</emphasis> or <emphasis>/etc/gitweb.conf</emphasis>.  See the <xref linkend="gitweb.conf(5)" />
 for details.</simpara>
-<section id="_repositories">
+<section id="gitweb(1)__repositories">
 <title>Repositories</title>
 <simpara>Gitweb can show information from one or more Git repositories.  These
 repositories have to be all on local filesystem, and have to share common
@@ -94,7 +92,7 @@ to showing "bare" repositories).</simpara>
 database) relative to <emphasis>$projectroot</emphasis>.  Therefore the repository $repo can be
 found at "$projectroot/$repo".</simpara>
 </section>
-<section id="_projects_list_file_format">
+<section id="gitweb(1)__projects_list_file_format">
 <title>Projects list file format</title>
 <simpara>Instead of having gitweb find repositories by scanning filesystem
 starting from $projectroot, you can provide a pre-generated list of
@@ -175,7 +173,7 @@ a gitweb URL.  By setting <emphasis>$strict_export</emphasis> configuration vari
 repositories also shown on the overview page (i.e. only projects explicitly
 listed in projects list file will be accessible).</simpara>
 </section>
-<section id="_generating_projects_list_using_gitweb">
+<section id="gitweb(1)__generating_projects_list_using_gitweb">
 <title>Generating projects list using gitweb</title>
 <simpara>We assume that GITWEB_CONFIG has its default Makefile value, namely
 <emphasis>gitweb_config.perl</emphasis>. Put the following in <emphasis>gitweb_make_index.perl</emphasis> file:</simpara>
@@ -197,7 +195,7 @@ perl -- /var/www/cgi-bin/gitweb.cgi</screen>
 as projects list file, which means that you can set <emphasis>$projects_list</emphasis> to its
 filename.</simpara>
 </section>
-<section id="_controlling_access_to_git_repositories">
+<section id="gitweb(1)__controlling_access_to_git_repositories">
 <title>Controlling access to git repositories</title>
 <simpara>By default all git repositories under <emphasis>$projectroot</emphasis> are visible and
 available to gitweb.  You can however configure how gitweb controls access
@@ -250,7 +248,7 @@ authorized to read the files:</simpara>
 </listitem>
 </itemizedlist>
 </section>
-<section id="_per_repository_gitweb_configuration">
+<section id="gitweb(1)__per_repository_gitweb_configuration">
 <title>Per-repository gitweb configuration</title>
 <simpara>You can configure individual repositories shown in gitweb by creating file
 in the <emphasis>GIT_DIR</emphasis> of git repository, or by setting some repo configuration
@@ -354,7 +352,7 @@ various <emphasis>gitweb.*</emphasis> config variables (in config)
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_actions_and_urls">
+<simplesect id="gitweb(1)__actions_and_urls">
 <title>ACTIONS, AND URLS</title>
 <simpara>Gitweb can use path_info (component) based URLs, or it can pass all necessary
 information via query parameters.  The typical gitweb URLs are broken down in to
@@ -425,7 +423,7 @@ hash.  Some actions are disabled by default, and must be turned on via feature
 mechanism.  For example to enable <emphasis>blame</emphasis> view add the following to gitweb
 configuration file:</simpara>
 <screen>$feature{'blame'}{'default'} = [1];</screen>
-<section id="_actions">
+<section id="gitweb(1)__actions">
 <title>Actions:</title>
 <simpara>The standard actions are:</simpara>
 <variablelist>
@@ -608,14 +606,14 @@ atom
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_webserver_configuration">
+<simplesect id="gitweb(1)__webserver_configuration">
 <title>WEBSERVER CONFIGURATION</title>
 <simpara>This section explains how to configure some common webservers to run gitweb. In
 all cases, <emphasis>/path/to/gitweb</emphasis> in the examples is the directory you ran installed
 gitweb in, and contains <emphasis>gitweb_config.perl</emphasis>.</simpara>
 <simpara>If you've configured a web server that isn't listed here for gitweb, please send
 in the instructions so they can be included in a future release.</simpara>
-<section id="_apache_as_cgi">
+<section id="gitweb(1)__apache_as_cgi">
 <title>Apache as CGI</title>
 <simpara>Apache must be configured to support CGI scripts in the directory in
 which gitweb is installed.  Let's assume that it is <emphasis>/var/www/cgi-bin</emphasis>
@@ -631,7 +629,7 @@ directory.</simpara>
 <simpara>With that configuration the full path to browse repositories would be:</simpara>
 <literallayout class="monospaced">http://server/cgi-bin/gitweb.cgi</literallayout>
 </section>
-<section id="_apache_with_mod_perl_via_modperl_registry">
+<section id="gitweb(1)__apache_with_mod_perl_via_modperl_registry">
 <title>Apache with mod_perl, via ModPerl::Registry</title>
 <simpara>You can use mod_perl with gitweb.  You must install Apache::Registry
 (for mod_perl 1.x) or ModPerl::Registry (for mod_perl 2.x) to enable
@@ -652,7 +650,7 @@ Apache configuration (for mod_perl 2.x) is suitable.</simpara>
 <simpara>With that configuration the full path to browse repositories would be:</simpara>
 <literallayout class="monospaced">http://server/perl/gitweb.cgi</literallayout>
 </section>
-<section id="_apache_with_fastcgi">
+<section id="gitweb(1)__apache_with_fastcgi">
 <title>Apache with FastCGI</title>
 <simpara>Gitweb works with Apache and FastCGI.  First you need to rename, copy
 or symlink gitweb.cgi to gitweb.fcgi.  Let's assume that gitweb is
@@ -669,11 +667,11 @@ Alias /gitweb/static /usr/share/gitweb/static
 <literallayout class="monospaced">http://server/gitweb</literallayout>
 </section>
 </simplesect>
-<simplesect id="_advanced_web_server_setup">
+<simplesect id="gitweb(1)__advanced_web_server_setup">
 <title>ADVANCED WEB SERVER SETUP</title>
 <simpara>All of those examples use request rewriting, and need <emphasis>mod_rewrite</emphasis>
 (or equivalent; examples below are written for Apache).</simpara>
-<section id="_single_url_for_gitweb_and_for_fetching">
+<section id="gitweb(1)__single_url_for_gitweb_and_for_fetching">
 <title>Single URL for gitweb and for fetching</title>
 <simpara>If you want to have one URL for both gitweb and your <emphasis>http://</emphasis>
 repositories, you can configure Apache like this:</simpara>
@@ -714,7 +712,7 @@ $per_request_config = 1;</screen>
 <simpara>Nowadays though gitweb should create HTML base tag when needed (to set base
 URI for relative links), so it should work automatically.</simpara>
 </section>
-<section id="_webserver_configuration_with_multiple_projects_root">
+<section id="gitweb(1)__webserver_configuration_with_multiple_projects_root">
 <title>Webserver configuration with multiple projects' root</title>
 <simpara>If you want to use gitweb with several project roots you can edit your
 Apache virtual host and gitweb configuration files in the following way.</simpara>
@@ -775,7 +773,7 @@ through <emphasis>http://git.example.org/scm/</emphasis> and <emphasis>http://gi
 You can add as many project roots as you want by adding rewrite rules like
 the third and the fourth.</simpara>
 </section>
-<section id="_path_info_usage">
+<section id="gitweb(1)__path_info_usage">
 <title>PATH_INFO usage</title>
 <simpara>If you enable PATH_INFO usage in gitweb by putting</simpara>
 <screen>$feature{'pathinfo'}{'default'} = [1];</screen>
@@ -843,18 +841,18 @@ a named ref (branch, tag) starting with <emphasis>git/</emphasis>, then paths su
 <simpara>will fail with a 404 error.</simpara>
 </section>
 </simplesect>
-<simplesect id="_bugs">
+<simplesect id="gitweb(1)__bugs">
 <title>BUGS</title>
 <simpara>Please report any bugs or feature requests to <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>,
 putting "gitweb" in the subject of email.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitweb(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gitweb.conf(5)" />, <xref linkend="git-instaweb(1)" /></simpara>
 <simpara><emphasis>gitweb/README</emphasis>, <emphasis>gitweb/INSTALL</emphasis></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitweb(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

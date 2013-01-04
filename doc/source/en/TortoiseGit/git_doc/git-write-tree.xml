@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-write-tree(1)">
-<articleinfo>
+<sect2 lang="en" id="git-write-tree(1)">
     <title>git-write-tree(1)</title>
 <indexterm>
 <primary>git-write-tree(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-write-tree(1)__name">
 <title>NAME</title>
 <simpara>git-write-tree - Create a tree object from the current index</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-write-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git write-tree</emphasis> [--missing-ok] [--prefix=&lt;prefix&gt;/]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-write-tree(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Creates a tree object using the current index. The name of the new
 tree object is printed to standard output.</simpara>
@@ -29,7 +27,7 @@ In order to have that match what is actually in your directory right
 now, you need to have done a <emphasis>git update-index</emphasis> phase before you did the
 <emphasis>git write-tree</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-write-tree(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -58,8 +56,8 @@ now, you need to have done a <emphasis>git update-index</emphasis> phase before 
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-write-tree(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

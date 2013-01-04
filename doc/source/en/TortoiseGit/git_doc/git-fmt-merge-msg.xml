@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-fmt-merge-msg(1)">
-<articleinfo>
+<sect2 lang="en" id="git-fmt-merge-msg(1)">
     <title>git-fmt-merge-msg(1)</title>
 <indexterm>
 <primary>git-fmt-merge-msg(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-fmt-merge-msg(1)__name">
 <title>NAME</title>
 <simpara>git-fmt-merge-msg - Produce a merge commit message</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-fmt-merge-msg(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] &lt;$GIT_DIR/FETCH_HEAD
 <emphasis>git fmt-merge-msg</emphasis> [-m &lt;message&gt;] [--log[=&lt;n&gt;] | --no-log] -F &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-fmt-merge-msg(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Takes the list of merged objects on stdin and produces a suitable
 commit message to be used for the merge commit, usually to be
@@ -27,7 +25,7 @@ passed as the <emphasis>&lt;merge-message&gt;</emphasis> argument of <emphasis>g
 <simpara>This command is intended mostly for internal use by scripts
 automatically invoking <emphasis>git merge</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-fmt-merge-msg(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -99,7 +97,7 @@ automatically invoking <emphasis>git merge</emphasis>.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-fmt-merge-msg(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -140,12 +138,12 @@ merge.summary
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-fmt-merge-msg(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-merge(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-fmt-merge-msg(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

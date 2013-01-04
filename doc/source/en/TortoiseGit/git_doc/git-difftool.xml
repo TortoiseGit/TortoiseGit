@@ -1,33 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-difftool(1)">
-<articleinfo>
+<sect2 lang="en" id="git-difftool(1)">
     <title>git-difftool(1)</title>
 <indexterm>
 <primary>git-difftool(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-difftool(1)__name">
 <title>NAME</title>
 <simpara>git-difftool - Show changes using common diff tools</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-difftool(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git difftool</emphasis> [&lt;options&gt;] [&lt;commit&gt; [&lt;commit&gt;]] [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-difftool(1)__description">
 <title>DESCRIPTION</title>
 <simpara><emphasis>git difftool</emphasis> is a git command that allows you to compare and edit files
 between revisions using common diff tools.  <emphasis>git difftool</emphasis> is a frontend
 to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
 <xref linkend="git-diff(1)" />.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-difftool(1)__options">
 <title>OPTIONS</title>
 <variablelist>
+<varlistentry>
+<term>
+-d
+</term>
+<term>
+--dir-diff
+</term>
+<listitem>
+<simpara>
+        Copy the modified files to a temporary location and perform
+        a directory diff on them. This mode never prompts before
+        launching the diff tool.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 -y
@@ -62,11 +75,9 @@ to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
 </term>
 <listitem>
 <simpara>
-        Use the diff tool specified by &lt;tool&gt;.
-        Valid diff tools are:
-        araxis, bc3, deltawalker, diffuse, emerge, ecmerge, gvimdiff,
-        kdiff3, kompare, meld, opendiff, p4merge, tkdiff, vimdiff and
-        xxdiff.
+        Use the diff tool specified by &lt;tool&gt;.  Valid values include
+        emerge, kompare, meld, and vimdiff. Run <emphasis>git difftool --tool-help</emphasis>
+        for the list of valid &lt;tool&gt; settings.
 </simpara>
 <simpara>If a diff tool is not specified, <emphasis>git difftool</emphasis>
 will use the configuration variable <emphasis>diff.tool</emphasis>.  If the
@@ -90,6 +101,32 @@ is set to the name of the temporary file containing the contents
 of the diff post-image.  <emphasis>$MERGED</emphasis> is the name of the file which is
 being compared. <emphasis>$BASE</emphasis> is provided for compatibility
 with custom merge tool commands and has the same value as <emphasis>$MERGED</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--tool-help
+</term>
+<listitem>
+<simpara>
+        Print a list of diff tools that may be used with <emphasis>--tool</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--symlinks
+</term>
+<term>
+--no-symlinks
+</term>
+<listitem>
+<simpara>
+        <emphasis>git difftool</emphasis>'s default behavior is create symlinks to the
+        working tree when run in <emphasis>--dir-diff</emphasis> mode.
+</simpara>
+<literallayout class="monospaced">Specifying `--no-symlinks` instructs 'git difftool' to create
+copies instead.  `--no-symlinks` is the default on Windows.</literallayout>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -126,7 +163,7 @@ with custom merge tool commands and has the same value as <emphasis>$MERGED</emp
 </variablelist>
 <simpara>See <xref linkend="git-diff(1)" /> for the full list of supported options.</simpara>
 </simplesect>
-<simplesect id="_config_variables">
+<simplesect id="git-difftool(1)__config_variables">
 <title>CONFIG VARIABLES</title>
 <simpara><emphasis>git difftool</emphasis> falls back to <emphasis>git mergetool</emphasis> config variables when the
 difftool equivalents have not been defined.</simpara>
@@ -185,7 +222,7 @@ difftool.prompt
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-difftool(1)__see_also">
 <title>SEE ALSO</title>
 <variablelist>
 <varlistentry>
@@ -220,8 +257,8 @@ difftool.prompt
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-difftool(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-commit-tree(1)">
-<articleinfo>
+<sect2 lang="en" id="git-commit-tree(1)">
     <title>git-commit-tree(1)</title>
 <indexterm>
 <primary>git-commit-tree(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-commit-tree(1)__name">
 <title>NAME</title>
 <simpara>git-commit-tree - Create a new commit object</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-commit-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git commit-tree</emphasis> &lt;tree&gt; [(-p &lt;parent&gt;)&#8230;] &lt; changelog
 <emphasis>git commit-tree</emphasis> [(-p &lt;parent&gt;)&#8230;] [(-m &lt;message&gt;)&#8230;] [(-F &lt;file&gt;)&#8230;] &lt;tree&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-commit-tree(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This is usually not what an end user wants to run directly.  See
 <xref linkend="git-commit(1)" /> instead.</simpara>
@@ -39,7 +37,7 @@ tend to just write the result to the file that is pointed at by
 <emphasis>.git/HEAD</emphasis>, so that we can always see what the last committed
 state was.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-commit-tree(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -68,7 +66,7 @@ state was.</simpara>
 </term>
 <listitem>
 <simpara>
-        A paragraph in the commig log message. This can be given more than
+        A paragraph in the commit log message. This can be given more than
         once and each &lt;message&gt; becomes its own paragraph.
 </simpara>
 </listitem>
@@ -86,7 +84,7 @@ state was.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_commit_information">
+<simplesect id="git-commit-tree(1)__commit_information">
 <title>Commit Information</title>
 <simpara>A commit encapsulates:</simpara>
 <itemizedlist>
@@ -126,7 +124,7 @@ that file does not exist).</simpara>
 entry is not provided via "&lt;" redirection, <emphasis>git commit-tree</emphasis> will just wait
 for one to be entered and terminated with ^D.</simpara>
 </simplesect>
-<simplesect id="_date_formats">
+<simplesect id="git-commit-tree(1)__date_formats">
 <title>DATE FORMATS</title>
 <simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
 support the following date formats:</simpara>
@@ -171,42 +169,7 @@ ISO 8601
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_diagnostics">
-<title>Diagnostics</title>
-<variablelist>
-<varlistentry>
-<term>
-You don't exist. Go away!
-</term>
-<listitem>
-<simpara>
-    The passwd(5) gecos field couldn't be read
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-Your parents must have hated you!
-</term>
-<listitem>
-<simpara>
-    The passwd(5) gecos field is longer than a giant static buffer.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-Your sysadmin must hate you!
-</term>
-<listitem>
-<simpara>
-    The passwd(5) name field is longer than a giant static buffer.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-commit-tree(1)__discussion">
 <title>Discussion</title>
 <simpara>At the core level, git is character encoding agnostic.</simpara>
 <itemizedlist>
@@ -275,16 +238,16 @@ message when a commit is made to force UTF-8 at the commit
 object level, because re-coding to UTF-8 is not necessarily a
 reversible operation.</simpara>
 </simplesect>
-<simplesect id="_files">
+<simplesect id="git-commit-tree(1)__files">
 <title>FILES</title>
 <simpara>/etc/mailname</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-commit-tree(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-write-tree(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-commit-tree(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

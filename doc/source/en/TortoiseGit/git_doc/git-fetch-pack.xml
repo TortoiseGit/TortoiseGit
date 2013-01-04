@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-fetch-pack(1)">
-<articleinfo>
+<sect2 lang="en" id="git-fetch-pack(1)">
     <title>git-fetch-pack(1)</title>
 <indexterm>
 <primary>git-fetch-pack(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-fetch-pack(1)__name">
 <title>NAME</title>
 <simpara>git-fetch-pack - Receive missing objects from another repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-fetch-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git fetch-pack</emphasis> [--all] [--quiet|-q] [--keep|-k] [--thin] [--include-tag] [--upload-pack=&lt;git-upload-pack&gt;] [--depth=&lt;n&gt;] [--no-progress] [-v] [&lt;host&gt;:]&lt;directory&gt; [&lt;refs&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git fetch-pack</emphasis> [--all] [--quiet|-q] [--keep|-k] [--thin] [--include-tag]
+                                [--upload-pack=&lt;git-upload-pack&gt;]
+                                [--depth=&lt;n&gt;] [--no-progress]
+                                [-v] [&lt;host&gt;:]&lt;directory&gt; [&lt;refs&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-fetch-pack(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Usually you would want to use <emphasis>git fetch</emphasis>, which is a
 higher level wrapper of this command, instead.</simpara>
@@ -31,7 +32,7 @@ is found out by scanning the local refs/ hierarchy and sent to
 asked refs from the remote side when the local side does not
 have a common ancestor commit.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-fetch-pack(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -209,8 +210,8 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-fetch-pack(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

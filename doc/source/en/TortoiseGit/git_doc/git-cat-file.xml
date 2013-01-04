@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cat-file(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cat-file(1)">
     <title>git-cat-file(1)</title>
 <indexterm>
 <primary>git-cat-file(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cat-file(1)__name">
 <title>NAME</title>
 <simpara>git-cat-file - Provide content or type and size information for repository objects</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cat-file(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cat-file</emphasis> (-t | -s | -e | -p | &lt;type&gt; | --textconv ) &lt;object&gt;
 <emphasis>git cat-file</emphasis> (--batch | --batch-check) &lt; &lt;list-of-objects&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cat-file(1)__description">
 <title>DESCRIPTION</title>
 <simpara>In its first form, the command provides the content or the type of an object in
 the repository. The type is required unless <emphasis>-t</emphasis> or <emphasis>-p</emphasis> is used to find the
@@ -28,7 +26,7 @@ object type, or <emphasis>-s</emphasis> is used to find the object size, or <emp
 <simpara>In the second form, a list of objects (separated by linefeeds) is provided on
 stdin, and the SHA1, type, and size of each object is printed on stdout.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cat-file(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -137,7 +135,7 @@ stdin, and the SHA1, type, and size of each object is printed on stdout.</simpar
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-cat-file(1)__output">
 <title>OUTPUT</title>
 <simpara>If <emphasis>-t</emphasis> is specified, one of the &lt;type&gt;.</simpara>
 <simpara>If <emphasis>-s</emphasis> is specified, the size of the &lt;object&gt; in bytes.</simpara>
@@ -156,8 +154,8 @@ each object specified on stdin:</simpara>
 for each object specified on stdin that does not exist in the repository:</simpara>
 <screen>&lt;object&gt; SP missing LF</screen>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cat-file(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

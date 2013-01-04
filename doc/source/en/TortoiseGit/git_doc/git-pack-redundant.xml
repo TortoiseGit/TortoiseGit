@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-pack-redundant(1)">
-<articleinfo>
+<sect2 lang="en" id="git-pack-redundant(1)">
     <title>git-pack-redundant(1)</title>
 <indexterm>
 <primary>git-pack-redundant(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-pack-redundant(1)__name">
 <title>NAME</title>
 <simpara>git-pack-redundant - Find redundant pack files</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-pack-redundant(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git pack-redundant</emphasis> [ --verbose ] [ --alt-odb ] &lt; --all | .pack filename &#8230; &gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-pack-redundant(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This program computes which packs in your repository
 are redundant. The output is suitable for piping to
@@ -30,7 +28,7 @@ objects.</simpara>
 <simpara>git fsck --full --unreachable | cut -d ' ' -f3 | \
 git pack-redundant --all | xargs rm</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-pack-redundant(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -66,14 +64,14 @@ git pack-redundant --all | xargs rm</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-pack-redundant(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-pack-objects(1)" />
 <xref linkend="git-repack(1)" />
 <xref linkend="git-prune-packed(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-pack-redundant(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

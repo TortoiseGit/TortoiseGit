@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-sh-setup(1)">
-<articleinfo>
+<sect2 lang="en" id="git-sh-setup(1)">
     <title>git-sh-setup(1)</title>
 <indexterm>
 <primary>git-sh-setup(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-sh-setup(1)__name">
 <title>NAME</title>
 <simpara>git-sh-setup - Common git shell script setup code</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-sh-setup(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>. "$(git --exec-path)/git-sh-setup"</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-sh-setup(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This is not a command the end user would want to run.  Ever.
 This documentation is meant for people who are studying the
@@ -34,7 +32,7 @@ if the script can run from a subdirectory of the working tree
 <simpara>The scriptlet sets <emphasis>GIT_DIR</emphasis> and <emphasis>GIT_OBJECT_DIRECTORY</emphasis> shell
 variables, but does <emphasis role="strong">not</emphasis> export them to the environment.</simpara>
 </simplesect>
-<simplesect id="_functions">
+<simplesect id="git-sh-setup(1)__functions">
 <title>FUNCTIONS</title>
 <variablelist>
 <varlistentry>
@@ -155,8 +153,8 @@ get_author_ident_from_commit
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-sh-setup(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

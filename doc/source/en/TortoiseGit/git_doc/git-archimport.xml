@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-archimport(1)">
-<articleinfo>
+<sect2 lang="en" id="git-archimport(1)">
     <title>git-archimport(1)</title>
 <indexterm>
 <primary>git-archimport(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-archimport(1)__name">
 <title>NAME</title>
 <simpara>git-archimport - Import an Arch repository into git</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-archimport(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git archimport</emphasis> [-h] [-v] [-o] [-a] [-f] [-T] [-D depth] [-t tempdir]
                &lt;archive/branch&gt;[:&lt;git-branch&gt;] &#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-archimport(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Imports a project from one or more Arch repositories. It will follow branches
 and repositories within the namespaces defined by the &lt;archive/branch&gt;
@@ -52,7 +50,7 @@ result will make the most sense only if no commits are made to the first
 branch, after the second branch is created.  Still, this is useful to
 convert Arch repositories that had been rotated periodically.</simpara>
 </simplesect>
-<simplesect id="_merges">
+<simplesect id="git-archimport(1)__merges">
 <title>MERGES</title>
 <simpara>Patch merge data from Arch is used to mark merges in git as well. git
 does not care much about tracking patches, and only considers a merge when a
@@ -63,7 +61,7 @@ import process does lose some patch-trading metadata.</simpara>
 git will find a good merge base, and it has a good chance of identifying
 patches that have been traded out-of-sequence between the branches.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-archimport(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -169,8 +167,8 @@ patches that have been traded out-of-sequence between the branches.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-archimport(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

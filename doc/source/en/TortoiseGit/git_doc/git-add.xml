@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-add(1)">
-<articleinfo>
+<sect2 lang="en" id="git-add(1)">
     <title>git-add(1)</title>
 <indexterm>
 <primary>git-add(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-add(1)__name">
 <title>NAME</title>
 <simpara>git-add - Add file contents to the index</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-add(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git add</emphasis> [-n] [-v] [--force | -f] [--interactive | -i] [--patch | -p]
@@ -21,7 +19,7 @@
           [&lt;filepattern&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-add(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This command updates the index using the current content found in
 the working tree, to prepare the content staged for the next commit.
@@ -49,7 +47,7 @@ be used to add ignored files with the <emphasis>-f</emphasis> (force) option.</s
 <simpara>Please see <xref linkend="git-commit(1)" /> for alternative ways to add content to a
 commit.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-add(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -264,14 +262,14 @@ subdirectories.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-add(1)__configuration">
 <title>Configuration</title>
 <simpara>The optional configuration variable <emphasis>core.excludesfile</emphasis> indicates a path to a
 file containing patterns of file names to exclude from git-add, similar to
 $GIT_DIR/info/exclude.  Patterns in the exclude file are used in addition to
-those in info/exclude.  See <xref linkend="gitrepository-layout(5)" />.</simpara>
+those in info/exclude.  See <xref linkend="gitignore(5)" />.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-add(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
@@ -295,7 +293,7 @@ listing the files explicitly), it does not consider
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_interactive_mode">
+<simplesect id="git-add(1)__interactive_mode">
 <title>Interactive mode</title>
 <simpara>When the command enters the interactive mode, it shows the
 output of the <emphasis>status</emphasis> subcommand, and then goes into its
@@ -432,7 +430,7 @@ diff
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_editing_patches">
+<simplesect id="git-add(1)__editing_patches">
 <title>EDITING PATCHES</title>
 <simpara>Invoking <emphasis>git add -e</emphasis> or selecting <emphasis>e</emphasis> from the interactive hunk
 selector will open a patch in your editor; after the editor exits, the
@@ -548,7 +546,7 @@ modifying the contents of context or removal lines
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-add(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-status(1)" />
 <xref linkend="git-rm(1)" />
@@ -557,8 +555,8 @@ modifying the contents of context or removal lines
 <xref linkend="git-commit(1)" />
 <xref linkend="git-update-index(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-add(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

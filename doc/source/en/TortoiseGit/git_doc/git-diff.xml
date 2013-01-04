@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-diff(1)">
-<articleinfo>
+<sect2 lang="en" id="git-diff(1)">
     <title>git-diff(1)</title>
 <indexterm>
 <primary>git-diff(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-diff(1)__name">
 <title>NAME</title>
 <simpara>git-diff - Show changes between commits, commit and working tree, etc</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-diff(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git diff</emphasis> [options] [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [options] --cached [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [options] &lt;commit&gt; &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [options] &lt;blob&gt; &lt;blob&gt;
 <emphasis>git diff</emphasis> [options] [--no-index] [--] &lt;path&gt; &lt;path&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-diff(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Show changes between the working tree and the index or a tree, changes
 between the index and a tree, changes between two trees, or changes
@@ -87,6 +86,17 @@ directories. This behavior can be forced by --no-index.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>git diff</emphasis> [options] &lt;blob&gt; &lt;blob&gt;
+</term>
+<listitem>
+<simpara>
+        This form is to view the differences between the raw
+        contents of two blob objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>git diff</emphasis> [--options] &lt;commit&gt;..&lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 </term>
 <listitem>
@@ -115,8 +125,7 @@ directories. This behavior can be forced by --no-index.</simpara>
 <simpara>Just in case if you are doing something exotic, it should be
 noted that all of the &lt;commit&gt; in the above description, except
 in the last two forms that use ".." notations, can be any
-&lt;tree&gt;.  The third form (<emphasis>git diff &lt;commit&gt; &lt;commit&gt;</emphasis>) can also
-be used to compare two &lt;blob&gt; objects.</simpara>
+&lt;tree&gt;.</simpara>
 <simpara>For a more complete list of ways to spell &lt;commit&gt;, see
 "SPECIFYING REVISIONS" section in <xref linkend="gitrevisions(7)" />.
 However, "diff" is about comparing two <emphasis>endpoints</emphasis>, not ranges,
@@ -124,7 +133,7 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 "&lt;commit&gt;...&lt;commit&gt;") do not mean a range as defined in the
 "SPECIFYING RANGES" section in <xref linkend="gitrevisions(7)" />.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-diff(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -220,7 +229,7 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
         Generate a diffstat. By default, as much space as necessary
         will be used for the filename part, and the rest for the graph
         part. Maximum width defaults to terminal width, or 80 columns
-        if not connected to a terminal, and can be overriden by
+        if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
         giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
         of the graph part can be limited by using
@@ -418,7 +427,8 @@ any of those replacements occurred.</simpara>
         the commits in the range like <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis> does.
         Omitting the <emphasis>--submodule</emphasis> option or specifying <emphasis>--submodule=short</emphasis>,
         uses the <emphasis>short</emphasis> format. This format just shows the names of the commits
-        at the beginning and end of the range.
+        at the beginning and end of the range.  Can be tweaked via the
+        <emphasis>diff.submodule</emphasis> configuration variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -656,7 +666,11 @@ another file.</simpara>
         index (i.e. amount of addition/deletions compared to the
         file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
         delete/add pair to be a rename if more than 90% of the file
-        hasn't changed.
+        hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
+        a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
+        0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
+        the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
+        <emphasis>-M100%</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1037,7 +1051,7 @@ of a delete/create pair.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_raw_output_format">
+<simplesect id="git-diff(1)__raw_output_format">
 <title>Raw output format</title>
 <simpara>The raw output format from "git-diff-index", "git-diff-tree",
 "git-diff-files" and "git diff --raw" are very similar.</simpara>
@@ -1228,7 +1242,7 @@ and it is out of sync with the index.</simpara>
 in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>,
 respectively.</simpara>
 </simplesect>
-<simplesect id="_diff_format_for_merges">
+<simplesect id="git-diff(1)__diff_format_for_merges">
 <title>diff format for merges</title>
 <simpara>"git-diff-tree", "git-diff-files" and "git-diff --raw"
 can take <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option
@@ -1266,7 +1280,7 @@ single path, only for "dst"
 <simpara>Note that <emphasis>combined diff</emphasis> lists only files which were modified from
 all parents.</simpara>
 </simplesect>
-<simplesect id="_generating_patches_with_p">
+<simplesect id="git-diff(1)__generating_patches_with_p">
 <title>Generating patches with -p</title>
 <simpara>When "git-diff-index", "git-diff-tree", or "git-diff-files" are run
 with a <emphasis>-p</emphasis> option, "git diff" without the <emphasis>--raw</emphasis> option, or
@@ -1341,7 +1355,7 @@ rename to a</literallayout>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_combined_diff_format">
+<simplesect id="git-diff(1)__combined_diff_format">
 <title>combined diff format</title>
 <simpara>Any diff-generating command can take the -c` or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
@@ -1450,7 +1464,7 @@ two unresolved merge parents with the working tree file
 (i.e. file1 is stage 2 aka "our version", file2 is stage 3 aka
 "their version").</simpara>
 </simplesect>
-<simplesect id="_other_diff_formats">
+<simplesect id="git-diff(1)__other_diff_formats">
 <title>other diff formats</title>
 <simpara>The <emphasis>--summary</emphasis> option describes newly added, deleted, renamed and
 copied files.  The <emphasis>--stat</emphasis> option adds diffstat(1) graph to the
@@ -1556,7 +1570,7 @@ a single-path record or a rename/copy record without reading ahead.
 After reading added and deleted lines, reading up to <emphasis>NUL</emphasis> would yield
 the pathname, but if that is <emphasis>NUL</emphasis>, the record will show two paths.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-diff(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -1564,22 +1578,22 @@ the pathname, but if that is <emphasis>NUL</emphasis>, the record will show two 
 Various ways to check your working tree
 </term>
 <listitem>
-<screen>$ git diff            <co id="CO1-1"/>
-$ git diff --cached   <co id="CO1-2"/>
-$ git diff HEAD       <co id="CO1-3"/></screen>
+<screen>$ git diff            <co id="git-diff_CO1-1"/>
+$ git diff --cached   <co id="git-diff_CO1-2"/>
+$ git diff HEAD       <co id="git-diff_CO1-3"/></screen>
 <calloutlist>
-<callout arearefs="CO1-1">
+<callout arearefs="git-diff_CO1-1">
 <para>
 Changes in the working tree not yet staged for the next commit.
 </para>
 </callout>
-<callout arearefs="CO1-2">
+<callout arearefs="git-diff_CO1-2">
 <para>
 Changes between the index and your last commit; what you
 would be committing if you run "git commit" without "-a" option.
 </para>
 </callout>
-<callout arearefs="CO1-3">
+<callout arearefs="git-diff_CO1-3">
 <para>
 Changes in the working tree since your last commit; what you
 would be committing if you run "git commit -a"
@@ -1593,24 +1607,24 @@ would be committing if you run "git commit -a"
 Comparing with arbitrary commits
 </term>
 <listitem>
-<screen>$ git diff test            <co id="CO2-1"/>
-$ git diff HEAD -- ./test  <co id="CO2-2"/>
-$ git diff HEAD^ HEAD      <co id="CO2-3"/></screen>
+<screen>$ git diff test            <co id="git-diff_CO2-1"/>
+$ git diff HEAD -- ./test  <co id="git-diff_CO2-2"/>
+$ git diff HEAD^ HEAD      <co id="git-diff_CO2-3"/></screen>
 <calloutlist>
-<callout arearefs="CO2-1">
+<callout arearefs="git-diff_CO2-1">
 <para>
 Instead of using the tip of the current branch, compare with the
 tip of "test" branch.
 </para>
 </callout>
-<callout arearefs="CO2-2">
+<callout arearefs="git-diff_CO2-2">
 <para>
 Instead of comparing with the tip of "test" branch, compare with
 the tip of the current branch, but limit the comparison to the
 file "test".
 </para>
 </callout>
-<callout arearefs="CO2-3">
+<callout arearefs="git-diff_CO2-3">
 <para>
 Compare the version before the last commit and the last commit.
 </para>
@@ -1623,21 +1637,21 @@ Compare the version before the last commit and the last commit.
 Comparing branches
 </term>
 <listitem>
-<screen>$ git diff topic master    <co id="CO3-1"/>
-$ git diff topic..master   <co id="CO3-2"/>
-$ git diff topic...master  <co id="CO3-3"/></screen>
+<screen>$ git diff topic master    <co id="git-diff_CO3-1"/>
+$ git diff topic..master   <co id="git-diff_CO3-2"/>
+$ git diff topic...master  <co id="git-diff_CO3-3"/></screen>
 <calloutlist>
-<callout arearefs="CO3-1">
+<callout arearefs="git-diff_CO3-1">
 <para>
 Changes between the tips of the topic and the master branches.
 </para>
 </callout>
-<callout arearefs="CO3-2">
+<callout arearefs="git-diff_CO3-2">
 <para>
 Same as above.
 </para>
 </callout>
-<callout arearefs="CO3-3">
+<callout arearefs="git-diff_CO3-3">
 <para>
 Changes that occurred on the master branch since when the topic
 branch was started off it.
@@ -1651,23 +1665,23 @@ branch was started off it.
 Limiting the diff output
 </term>
 <listitem>
-<screen>$ git diff --diff-filter=MRC            <co id="CO4-1"/>
-$ git diff --name-status                <co id="CO4-2"/>
-$ git diff arch/i386 include/asm-i386   <co id="CO4-3"/></screen>
+<screen>$ git diff --diff-filter=MRC            <co id="git-diff_CO4-1"/>
+$ git diff --name-status                <co id="git-diff_CO4-2"/>
+$ git diff arch/i386 include/asm-i386   <co id="git-diff_CO4-3"/></screen>
 <calloutlist>
-<callout arearefs="CO4-1">
+<callout arearefs="git-diff_CO4-1">
 <para>
 Show only modification, rename and copy, but not addition
 nor deletion.
 </para>
 </callout>
-<callout arearefs="CO4-2">
+<callout arearefs="git-diff_CO4-2">
 <para>
 Show only names and the nature of change, but not actual
 diff output.
 </para>
 </callout>
-<callout arearefs="CO4-3">
+<callout arearefs="git-diff_CO4-3">
 <para>
 Limit diff output to named subtrees.
 </para>
@@ -1680,16 +1694,16 @@ Limit diff output to named subtrees.
 Munging the diff output
 </term>
 <listitem>
-<screen>$ git diff --find-copies-harder -B -C  <co id="CO5-1"/>
-$ git diff -R                          <co id="CO5-2"/></screen>
+<screen>$ git diff --find-copies-harder -B -C  <co id="git-diff_CO5-1"/>
+$ git diff -R                          <co id="git-diff_CO5-2"/></screen>
 <calloutlist>
-<callout arearefs="CO5-1">
+<callout arearefs="git-diff_CO5-1">
 <para>
 Spend extra cycles to find renames, copies and complete
 rewrites (very expensive).
 </para>
 </callout>
-<callout arearefs="CO5-2">
+<callout arearefs="git-diff_CO5-2">
 <para>
 Output diff in reverse.
 </para>
@@ -1699,7 +1713,7 @@ Output diff in reverse.
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-diff(1)__see_also">
 <title>SEE ALSO</title>
 <simpara>diff(1),
 <xref linkend="git-difftool(1)" />,
@@ -1708,8 +1722,8 @@ Output diff in reverse.
 <xref linkend="git-format-patch(1)" />,
 <xref linkend="git-apply(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-diff(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

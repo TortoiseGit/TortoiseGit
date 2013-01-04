@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-shell(1)">
-<articleinfo>
+<sect2 lang="en" id="git-shell(1)">
     <title>git-shell(1)</title>
 <indexterm>
 <primary>git-shell(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-shell(1)__name">
 <title>NAME</title>
 <simpara>git-shell - Restricted login shell for Git-only SSH access</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-shell(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git shell</emphasis> [-c &lt;command&gt; &lt;argument&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-shell(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A login shell for SSH accounts to provide restricted Git access. When
 <emphasis>-c</emphasis> is given, the program executes &lt;command&gt; non-interactively;
@@ -33,8 +31,8 @@ read and execute permissions to the directory in order to execute the
 programs in it. The programs are executed with a cwd of $HOME, and
 &lt;argument&gt; is parsed as a command-line string.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-shell(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

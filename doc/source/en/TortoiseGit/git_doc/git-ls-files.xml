@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-ls-files(1)">
-<articleinfo>
+<sect2 lang="en" id="git-ls-files(1)">
     <title>git-ls-files(1)</title>
 <indexterm>
 <primary>git-ls-files(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-ls-files(1)__name">
 <title>NAME</title>
 <simpara>git-ls-files - Show information about files in the index and the working tree</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-ls-files(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v]
@@ -26,7 +24,7 @@
                 [--full-name] [--abbrev] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-ls-files(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This merges the file listing in the directory cache index with the
 actual working directory list, and shows different combinations of the
@@ -34,7 +32,7 @@ two.</simpara>
 <simpara>One or more of the options below may be used to determine the files
 shown:</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-ls-files(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -412,7 +410,7 @@ other
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-ls-files(1)__output">
 <title>Output</title>
 <simpara><emphasis>git ls-files</emphasis> just outputs the filenames unless <emphasis>--stage</emphasis> is specified in
 which case it outputs:</simpara>
@@ -428,7 +426,7 @@ path. (see <xref linkend="git-read-tree(1)" /> for more information on state)</s
 in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>,
 respectively.</simpara>
 </simplesect>
-<simplesect id="_exclude_patterns">
+<simplesect id="git-ls-files(1)__exclude_patterns">
 <title>Exclude Patterns</title>
 <simpara><emphasis>git ls-files</emphasis> can use a list of "exclude patterns" when
 traversing the directory tree and finding files to show when the
@@ -466,12 +464,12 @@ top of the directory tree.  A pattern read from a file specified
 by --exclude-per-directory is relative to the directory that the
 pattern file appears in.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-ls-files(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-read-tree(1)" />, <xref linkend="gitignore(5)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-ls-files(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

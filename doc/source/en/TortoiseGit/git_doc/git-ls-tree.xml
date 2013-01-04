@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-ls-tree(1)">
-<articleinfo>
+<sect2 lang="en" id="git-ls-tree(1)">
     <title>git-ls-tree(1)</title>
 <indexterm>
 <primary>git-ls-tree(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-ls-tree(1)__name">
 <title>NAME</title>
 <simpara>git-ls-tree - List the contents of a tree object</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-ls-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-tree</emphasis> [-d] [-r] [-t] [-l] [-z]
@@ -20,7 +18,7 @@
             &lt;tree-ish&gt; [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-ls-tree(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Lists the contents of a given tree object, like what "/bin/ls -a" does
 in the current working directory.  Note that:</simpara>
@@ -48,7 +46,7 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-ls-tree(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -176,7 +174,7 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output_format">
+<simplesect id="git-ls-tree(1)__output_format">
 <title>Output Format</title>
 <literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; TAB &lt;file&gt;</literallayout>
 <simpara>Unless the <emphasis>-z</emphasis> option is used, TAB, LF, and backslash characters
@@ -189,8 +187,8 @@ This output format is compatible with what <emphasis>--index-info --stdin</empha
 with minimum width of 7 characters.  Object size is given only for blobs
 (file) entries; for other entries <emphasis>-</emphasis> character is used in place of size.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-ls-tree(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

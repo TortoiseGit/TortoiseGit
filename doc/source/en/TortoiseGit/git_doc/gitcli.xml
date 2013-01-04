@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitcli(7)">
-<articleinfo>
+<sect2 lang="en" id="gitcli(7)">
     <title>gitcli(7)</title>
 <indexterm>
 <primary>gitcli(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitcli(7)__name">
 <title>NAME</title>
 <simpara>gitcli - git command line interface and conventions</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitcli(7)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>gitcli</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitcli(7)__description">
 <title>DESCRIPTION</title>
 <simpara>This manual describes the convention used throughout git CLI.</simpara>
 <simpara>Many commands take revisions (most often "commits", but sometimes
@@ -50,11 +48,27 @@ Without disambiguating <emphasis>--</emphasis>, git makes a reasonable guess, bu
    you have to say either <emphasis>git diff HEAD --</emphasis> or <emphasis>git diff -- HEAD</emphasis> to
    disambiguate.
 </simpara>
-</listitem>
-</itemizedlist>
 <simpara>When writing a script that is expected to handle random user-input, it is
 a good practice to make it explicit which arguments are which by placing
 disambiguating <emphasis>--</emphasis> at appropriate places.</simpara>
+</listitem>
+<listitem>
+<simpara>
+Many commands allow wildcards in paths, but you need to protect
+   them from getting globbed by the shell.  These two mean different
+   things:
+</simpara>
+<screen>$ git checkout -- *.c
+$ git checkout -- \*.c</screen>
+<simpara>The former lets your shell expand the fileglob, and you are asking
+the dot-C files in your working tree to be overwritten with the version
+in the index.  The latter passes the <emphasis>*.c</emphasis> to Git, and you are asking
+the paths in the index that match the pattern to be checked out to your
+working tree.  After running <emphasis>git add hello.c; rm hello.c</emphasis>, you will <emphasis>not</emphasis>
+see <emphasis>hello.c</emphasis> in your working tree with the former, but with the latter
+you will.</simpara>
+</listitem>
+</itemizedlist>
 <simpara>Here are the rules regarding the "flags" that you should follow when you are
 scripting git:</simpara>
 <itemizedlist>
@@ -87,14 +101,25 @@ when you give a revision parameter to a command, make sure the parameter is
    if you happen to have a file called <emphasis>HEAD</emphasis> in the work tree.
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+many commands allow a long option "--option" to be abbreviated
+   only to their unique prefix (e.g. if there is no other option
+   whose name begins with "opt", you may be able to spell "--opt" to
+   invoke the "--option" flag), but you should fully spell them out
+   when writing your scripts; later versions of Git may introduce a
+   new option whose name shares the same prefix, e.g. "--optimize",
+   to make a short prefix that used to be unique no longer unique.
+</simpara>
+</listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_enhanced_option_parser">
+<simplesect id="gitcli(7)__enhanced_option_parser">
 <title>ENHANCED OPTION PARSER</title>
 <simpara>From the git 1.5.4 series and further, many git commands (not all of them at the
 time of the writing though) come with an enhanced option parser.</simpara>
-<simpara>Here is an exhaustive list of the facilities provided by this option parser.</simpara>
-<section id="_magic_options">
+<simpara>Here is a list of the facilities provided by this option parser.</simpara>
+<section id="gitcli(7)__magic_options">
 <title>Magic Options</title>
 <simpara>Commands which have the enhanced option parser activated all understand a
 couple of magic command line options:</simpara>
@@ -132,20 +157,29 @@ usage: git describe [options] &lt;committish&gt;*
 </varlistentry>
 </variablelist>
 </section>
-<section id="_negating_options">
+<section id="gitcli(7)__negating_options">
 <title>Negating options</title>
 <simpara>Options with long option names can be negated by prefixing <emphasis>--no-</emphasis>. For
 example, <emphasis>git branch</emphasis> has the option <emphasis>--track</emphasis> which is <emphasis>on</emphasis> by default. You
 can use <emphasis>--no-track</emphasis> to override that behaviour. The same goes for <emphasis>--color</emphasis>
 and <emphasis>--no-color</emphasis>.</simpara>
 </section>
-<section id="_aggregating_short_options">
+<section id="gitcli(7)__aggregating_short_options">
 <title>Aggregating short options</title>
 <simpara>Commands that support the enhanced option parser allow you to aggregate short
 options. This means that you can for example use <emphasis>git rm -rf</emphasis> or
 <emphasis>git clean -fdx</emphasis>.</simpara>
 </section>
-<section id="_separating_argument_from_the_option">
+<section id="gitcli(7)__abbreviating_long_options">
+<title>Abbreviating long options</title>
+<simpara>Commands that support the enhanced option parser accepts unique
+prefix of a long option as if it is fully spelled out, but use this
+with a caution.  For example, <emphasis>git commit --amen</emphasis> behaves as if you
+typed <emphasis>git commit --amend</emphasis>, but that is true only until a later version
+of Git introduces another option that shares the same prefix,
+e.g `git commit --amenity" option.</simpara>
+</section>
+<section id="gitcli(7)__separating_argument_from_the_option">
 <title>Separating argument from the option</title>
 <simpara>You can write the mandatory option parameter to an option as a separate
 word on the command line.  That means that all the following uses work:</simpara>
@@ -160,7 +194,7 @@ $ git describe --abbrev=10 HEAD  # correct
 $ git describe --abbrev 10 HEAD  # NOT WHAT YOU MEANT</screen>
 </section>
 </simplesect>
-<simplesect id="_notes_on_frequently_confused_options">
+<simplesect id="gitcli(7)__notes_on_frequently_confused_options">
 <title>NOTES ON FREQUENTLY CONFUSED OPTIONS</title>
 <simpara>Many commands that can work on files in the working tree
 and/or in the index can take <emphasis>--cached</emphasis> and/or <emphasis>--index</emphasis>
@@ -201,8 +235,8 @@ entries.</simpara>
 <ulink url="http://marc.info/?l=git&amp;m=119150393620273">http://marc.info/?l=git&amp;m=119150393620273</ulink> for further
 information.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitcli(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

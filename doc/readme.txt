@@ -12,14 +12,13 @@ Scripts and dtd are included, but the executables (formatting processor, microso
 help compiler, translation tools) have to be installed separately.
 You will also need to have a Java Runtime Environment version 1.3.x or above.
 
-tools\fop\		- the fop processor
+tools\fop\		- the fop processor (for PDF generation)
 tools\xsl\		- the docbook xsl files from sourceforge
 tools\			- xsl processor, hhc.exe, ...
 
 you can download all the required tools as a zip package from our website:
 http://code.google.com/p/tortoisesvn/downloads/list
 tools-*.7z. Use 7-zip extract to \TortotiseGit\Tools
-
 
 Please note that having spaces in your directory path will (for the time being)
 cause the documentation build process to fail.
@@ -29,6 +28,8 @@ To build only the english docs, that's all you need.
 For Chm docs you need:
 - Microsofts makehm.exe, Part of visual studio, sources available on msdn
 - Microsofts html workshop, Binaries available on msdn
+
+If you want to update the git-man pages see source\en\TortoiseGit\git_doc.patch.
 
 
 Structure:

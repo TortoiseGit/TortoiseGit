@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-prune(1)">
-<articleinfo>
+<sect2 lang="en" id="git-prune(1)">
     <title>git-prune(1)</title>
 <indexterm>
 <primary>git-prune(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-prune(1)__name">
 <title>NAME</title>
 <simpara>git-prune - Prune all unreachable objects from the object database</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-prune(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git prune</emphasis> [-n] [-v] [--expire &lt;expire&gt;] [--] [&lt;head&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-prune(1)__description">
 <title>DESCRIPTION</title>
 <note><simpara>In most cases, users should run <emphasis>git gc</emphasis>, which calls
 <emphasis>git prune</emphasis>. See the section "NOTES", below.</simpara></note>
@@ -32,7 +30,7 @@ running <emphasis>git prune-packed</emphasis>.</simpara>
 <simpara>Note that unreachable, packed objects will remain.  If this is
 not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-prune(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -96,14 +94,14 @@ not desired, see <xref linkend="git-repack(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-prune(1)__example">
 <title>EXAMPLE</title>
 <simpara>To prune objects not used by your repository nor another that
 borrows from your repository via its
 <emphasis>.git/objects/info/alternates</emphasis>:</simpara>
 <screen>$ git prune $(cd ../another &amp;&amp; $(git rev-parse --all))</screen>
 </simplesect>
-<simplesect id="_notes">
+<simplesect id="git-prune(1)__notes">
 <title>Notes</title>
 <simpara>In most cases, users will not need to call <emphasis>git prune</emphasis> directly, but
 should instead call <emphasis>git gc</emphasis>, which handles pruning along with
@@ -111,14 +109,14 @@ many other housekeeping tasks.</simpara>
 <simpara>For a description of which objects are considered for pruning, see
 <emphasis>git fsck</emphasis>'s --unreachable option.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-prune(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-fsck(1)" />,
 <xref linkend="git-gc(1)" />,
 <xref linkend="git-reflog(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-prune(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-count-objects(1)">
-<articleinfo>
+<sect2 lang="en" id="git-count-objects(1)">
     <title>git-count-objects(1)</title>
 <indexterm>
 <primary>git-count-objects(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-count-objects(1)__name">
 <title>NAME</title>
 <simpara>git-count-objects - Count unpacked number of objects and their disk consumption</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-count-objects(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git count-objects</emphasis> [-v]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-count-objects(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This counts the number of unpacked object files and disk space consumed by
 them, to help you decide when it is a good time to repack.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-count-objects(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -45,8 +43,8 @@ them, to help you decide when it is a good time to repack.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-count-objects(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

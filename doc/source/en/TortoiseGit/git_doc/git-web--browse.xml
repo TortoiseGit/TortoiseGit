@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-web&#45;&#45;browse(1)">
-<articleinfo>
+<sect2 lang="en" id="git-web&#45;&#45;browse(1)">
     <title>git-web&#45;&#45;browse(1)</title>
 <indexterm>
 <primary>git-web&#45;&#45;browse(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-web&#45;&#45;browse(1)__name">
 <title>NAME</title>
 <simpara>git-web--browse - git helper script to launch a web browser</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-web&#45;&#45;browse(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git web&#45;&#45;browse</emphasis> [OPTIONS] URL/FILE &#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-web&#45;&#45;browse(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This script tries, as much as possible, to display the URLs and FILEs
 that are passed as arguments, as HTML pages in new tabs on an already
@@ -103,7 +101,7 @@ start (this is the default under MinGW)
 </itemizedlist>
 <simpara>Custom commands may also be specified.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-web&#45;&#45;browse(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -149,15 +147,15 @@ start (this is the default under MinGW)
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration_variables">
+<simplesect id="git-web&#45;&#45;browse(1)__configuration_variables">
 <title>CONFIGURATION VARIABLES</title>
-<section id="_conf_var_from_c_option_and_web_browser">
+<section id="git-web&#45;&#45;browse(1)__conf_var_from_c_option_and_web_browser">
 <title>CONF.VAR (from -c option) and web.browser</title>
 <simpara>The web browser can be specified using a configuration variable passed
 with the -c (or --config) command line option, or the <emphasis>web.browser</emphasis>
 configuration variable if the former is not used.</simpara>
 </section>
-<section id="_browser_lt_tool_gt_path">
+<section id="git-web&#45;&#45;browse(1)__browser_lt_tool_gt_path">
 <title>browser.&lt;tool&gt;.path</title>
 <simpara>You can explicitly provide a full path to your preferred browser by
 setting the configuration variable <emphasis>browser.&lt;tool&gt;.path</emphasis>. For example,
@@ -165,7 +163,7 @@ you can configure the absolute path to firefox by setting
 <emphasis>browser.firefox.path</emphasis>. Otherwise, <emphasis>git web&#45;&#45;browse</emphasis> assumes the tool
 is available in PATH.</simpara>
 </section>
-<section id="_browser_lt_tool_gt_cmd">
+<section id="git-web&#45;&#45;browse(1)__browser_lt_tool_gt_cmd">
 <title>browser.&lt;tool&gt;.cmd</title>
 <simpara>When the browser, specified by options or configuration variables, is
 not among the supported ones, then the corresponding
@@ -175,7 +173,7 @@ as a custom command and will use a shell eval to run the command with
 the URLs passed as arguments.</simpara>
 </section>
 </simplesect>
-<simplesect id="_note_about_konqueror">
+<simplesect id="git-web&#45;&#45;browse(1)__note_about_konqueror">
 <title>Note about konqueror</title>
 <simpara>When <emphasis>konqueror</emphasis> is specified by a command line option or a
 configuration variable, we launch <emphasis>kfmclient</emphasis> to try to open the HTML
@@ -190,7 +188,7 @@ the following:</simpara>
 
         [browser "konq"]
                 cmd = A_PATH_TO/konqueror</screen>
-<section id="_note_about_git_config_global">
+<section id="git-web&#45;&#45;browse(1)__note_about_git_config_global">
 <title>Note about git-config --global</title>
 <simpara>Note that these configuration variables should probably be set using
 the <emphasis>--global</emphasis> flag, for example like this:</simpara>
@@ -199,8 +197,8 @@ the <emphasis>--global</emphasis> flag, for example like this:</simpara>
 See <xref linkend="git-config(1)" /> for more information about this.</simpara>
 </section>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-web&#45;&#45;browse(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

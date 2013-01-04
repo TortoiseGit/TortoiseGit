@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-send-pack(1)">
-<articleinfo>
+<sect2 lang="en" id="git-send-pack(1)">
     <title>git-send-pack(1)</title>
 <indexterm>
 <primary>git-send-pack(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-send-pack(1)__name">
 <title>NAME</title>
 <simpara>git-send-pack - Push objects over git protocol to another repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-send-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git send-pack</emphasis> [--all] [--dry-run] [--force] [--receive-pack=&lt;git-receive-pack&gt;] [--verbose] [--thin] [&lt;host&gt;:]&lt;directory&gt; [&lt;ref&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-send-pack(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Usually you would want to use <emphasis>git push</emphasis>, which is a
 higher-level wrapper of this command, instead. See <xref linkend="git-push(1)" />.</simpara>
 <simpara>Invokes <emphasis>git-receive-pack</emphasis> on a possibly remote repository, and
 updates it from the current repository, sending named refs.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-send-pack(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -141,7 +139,7 @@ updates it from the current repository, sending named refs.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_specifying_the_refs">
+<simplesect id="git-send-pack(1)__specifying_the_refs">
 <title>Specifying the Refs</title>
 <simpara>There are three ways to specify which refs to update on the
 remote end.</simpara>
@@ -203,8 +201,8 @@ remote ref and lose other peoples' commits from there.</simpara>
 <simpara>Optionally, a &lt;ref&gt; parameter can be prefixed with a plus <emphasis>+</emphasis> sign
 to disable the fast-forward check only on that ref.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-send-pack(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

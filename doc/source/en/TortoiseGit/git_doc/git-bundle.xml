@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-bundle(1)">
-<articleinfo>
+<sect2 lang="en" id="git-bundle(1)">
     <title>git-bundle(1)</title>
 <indexterm>
 <primary>git-bundle(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-bundle(1)__name">
 <title>NAME</title>
 <simpara>git-bundle - Move objects and refs by archive</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-bundle(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git bundle</emphasis> create &lt;file&gt; &lt;git-rev-list-args&gt;
@@ -21,7 +19,7 @@
 <emphasis>git bundle</emphasis> unbundle &lt;file&gt; [&lt;refname&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-bundle(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Some workflows require that one or more branches of development on one
 machine be replicated on another machine, but the two machines cannot
@@ -36,7 +34,7 @@ basis for the bundle that is held by the destination repository: the
 bundle assumes that all objects in the basis are already in the
 destination repository.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-bundle(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -124,7 +122,7 @@ unbundle &lt;file&gt;
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_specifying_references">
+<simplesect id="git-bundle(1)__specifying_references">
 <title>SPECIFYING REFERENCES</title>
 <simpara><emphasis>git bundle</emphasis> will only package references that are shown by
 <emphasis>git show-ref</emphasis>: this includes heads, tags, and remote heads.  References
@@ -139,7 +137,7 @@ It is okay to err on the side of caution, causing the bundle file
 to contain objects already in the destination, as these are ignored
 when unpacking at the destination.</simpara>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-bundle(1)__example">
 <title>EXAMPLE</title>
 <simpara>Assume you want to transfer the history from a repository R1 on machine A
 to another repository R2 on machine B.
@@ -200,8 +198,8 @@ references when fetching:</simpara>
 <simpara>You can also see what references it offers:</simpara>
 <screen>$ git ls-remote mybundle</screen>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-bundle(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

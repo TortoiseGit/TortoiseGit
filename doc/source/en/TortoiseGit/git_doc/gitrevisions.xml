@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitrevisions(7)">
-<articleinfo>
+<sect2 lang="en" id="gitrevisions(7)">
     <title>gitrevisions(7)</title>
 <indexterm>
 <primary>gitrevisions(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitrevisions(7)__name">
 <title>NAME</title>
 <simpara>gitrevisions - specifying revisions and ranges for git</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitrevisions(7)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>gitrevisions</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitrevisions(7)__description">
 <title>DESCRIPTION</title>
 <simpara>Many Git commands take revision parameters as arguments. Depending on
 the command, they denote a specific commit or, for commands which
@@ -27,7 +25,7 @@ range of revisions explicitly.</simpara>
 revision parameters which denote other objects than commits, e.g. blobs
 ("files") or trees ("directories of files").</simpara>
 </simplesect>
-<simplesect id="_specifying_revisions">
+<simplesect id="gitrevisions(7)__specifying_revisions">
 <title>SPECIFYING REVISIONS</title>
 <simpara>A revision parameter <emphasis>&lt;rev&gt;</emphasis> typically, but not necessarily, names a
 commit object.  It uses what is called an <emphasis>extended SHA1</emphasis>
@@ -71,20 +69,20 @@ blobs contained in a commit.</simpara>
   object referenced by <emphasis>refs/heads/master</emphasis>.  If you
   happen to have both <emphasis>heads/master</emphasis> and <emphasis>tags/master</emphasis>, you can
   explicitly say <emphasis>heads/master</emphasis> to tell git which one you mean.
-  When ambiguous, a <emphasis>&lt;name&gt;</emphasis> is disambiguated by taking the
+  When ambiguous, a <emphasis>&lt;refname&gt;</emphasis> is disambiguated by taking the
   first match in the following rules:
 </simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-If <emphasis>$GIT_DIR/&lt;name&gt;</emphasis> exists, that is what you mean (this is usually
+If <emphasis>$GIT_DIR/&lt;refname&gt;</emphasis> exists, that is what you mean (this is usually
     useful only for <emphasis>HEAD</emphasis>, <emphasis>FETCH_HEAD</emphasis>, <emphasis>ORIG_HEAD</emphasis>, <emphasis>MERGE_HEAD</emphasis>
     and <emphasis>CHERRY_PICK_HEAD</emphasis>);
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-otherwise, <emphasis>refs/&lt;name&gt;</emphasis> if it exists;
+otherwise, <emphasis>refs/&lt;refname&gt;</emphasis> if it exists;
 </simpara>
 </listitem>
 <listitem>
@@ -94,17 +92,17 @@ otherwise, <emphasis>refs/tags/&lt;refname&gt;</emphasis> if it exists;
 </listitem>
 <listitem>
 <simpara>
-otherwise, <emphasis>refs/heads/&lt;name&gt;</emphasis> if it exists;
+otherwise, <emphasis>refs/heads/&lt;refname&gt;</emphasis> if it exists;
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-otherwise, <emphasis>refs/remotes/&lt;name&gt;</emphasis> if it exists;
+otherwise, <emphasis>refs/remotes/&lt;refname&gt;</emphasis> if it exists;
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-otherwise, <emphasis>refs/remotes/&lt;name&gt;/HEAD</emphasis> if it exists.
+otherwise, <emphasis>refs/remotes/&lt;refname&gt;/HEAD</emphasis> if it exists.
 </simpara>
 <simpara><emphasis>HEAD</emphasis> names the commit on which you based the changes in the working tree.
 <emphasis>FETCH_HEAD</emphasis> records the branch which you fetched from a remote repository
@@ -118,7 +116,9 @@ when you run <emphasis>git merge</emphasis>.
 <emphasis>CHERRY_PICK_HEAD</emphasis> records the commit which you are cherry-picking
 when you run <emphasis>git cherry-pick</emphasis>.</simpara>
 <simpara>Note that any of the <emphasis>refs/*</emphasis> cases above may come either from
-the <emphasis>$GIT_DIR/refs</emphasis> directory or from the <emphasis>$GIT_DIR/packed-refs</emphasis> file.</simpara>
+the <emphasis>$GIT_DIR/refs</emphasis> directory or from the <emphasis>$GIT_DIR/packed-refs</emphasis> file.
+While the ref name encoding is unspecified, UTF-8 is prefered as
+some output processing may assume ref names in UTF-8.</simpara>
 </listitem>
 </orderedlist>
 </listitem>
@@ -342,7 +342,7 @@ H = D^2  = B^^2    = A^^^2  = A~2^2
 I = F^   = B^3^    = A^^3^
 J = F^2  = B^3^2   = A^^3^2</literallayout>
 </simplesect>
-<simplesect id="_specifying_ranges">
+<simplesect id="gitrevisions(7)__specifying_ranges">
 <title>SPECIFYING RANGES</title>
 <simpara>History traversing commands such as <emphasis>git log</emphasis> operate on a set
 of commits, not just a single commit.  To these commands,
@@ -362,26 +362,106 @@ of <emphasis>r1</emphasis> and <emphasis>r2</emphasis> and is defined as
 <emphasis>r1 r2 --not $(git merge-base --all r1 r2)</emphasis>.
 It is the set of commits that are reachable from either one of
 <emphasis>r1</emphasis> or <emphasis>r2</emphasis> but not from both.</simpara>
+<simpara>In these two shorthands, you can omit one end and let it default to HEAD.
+For example, <emphasis>origin..</emphasis> is a shorthand for <emphasis>origin..HEAD</emphasis> and asks "What
+did I do since I forked from the origin branch?"  Similarly, <emphasis>..origin</emphasis>
+is a shorthand for <emphasis>HEAD..origin</emphasis> and asks "What did the origin do since
+I forked from them?"  Note that <emphasis>..</emphasis> would mean <emphasis>HEAD..HEAD</emphasis> which is an
+empty range that is both reachable and unreachable from HEAD.</simpara>
 <simpara>Two other shorthands for naming a set that is formed by a commit
 and its parent commits exist.  The <emphasis>r1&#94;@</emphasis> notation means all
 parents of <emphasis>r1</emphasis>.  <emphasis>r1&#94;!</emphasis> includes commit <emphasis>r1</emphasis> but excludes
 all of its parents.</simpara>
+<simpara>To summarize:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>&lt;rev&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Include commits that are reachable from (i.e. ancestors of)
+        &lt;rev&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&#94;&lt;rev&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Exclude commits that are reachable from (i.e. ancestors of)
+        &lt;rev&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;rev1&gt;..&lt;rev2&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Include commits that are reachable from &lt;rev2&gt; but exclude
+        those that are reachable from &lt;rev1&gt;.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;rev1&gt;...&lt;rev2&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Include commits that are reachable from either &lt;rev1&gt; or
+        &lt;rev2&gt; but exclude those that are reachable from both.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;rev&gt;&#94;@</emphasis>, e.g. <emphasis>HEAD&#94;@</emphasis>
+</term>
+<listitem>
+<simpara>
+  A suffix <emphasis>&#94;</emphasis> followed by an at sign is the same as listing
+  all parents of <emphasis>&lt;rev&gt;</emphasis> (meaning, include anything reachable from
+  its parents, but not the commit itself).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;rev&gt;&#94;!</emphasis>, e.g. <emphasis>HEAD&#94;!</emphasis>
+</term>
+<listitem>
+<simpara>
+  A suffix <emphasis>&#94;</emphasis> followed by an exclamation mark is the same
+  as giving commit <emphasis>&lt;rev&gt;</emphasis> and then all its parents prefixed with
+  <emphasis>&#94;</emphasis> to exclude them (and their ancestors).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <simpara>Here are a handful of examples:</simpara>
 <literallayout class="monospaced">D                G H D
 D F              G H I J D F
 ^G D             H D
 ^D B             E I J F B
+B..C             C
 B...C            G H D E B C
 ^D B C           E I J F B C
+C                I J F C
 C^@              I J F
+C^!              C
 F^! D            G H D F</literallayout>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitrevisions(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-rev-parse(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitrevisions(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

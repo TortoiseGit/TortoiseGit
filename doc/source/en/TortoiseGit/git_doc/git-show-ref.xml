@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-show-ref(1)">
-<articleinfo>
+<sect2 lang="en" id="git-show-ref(1)">
     <title>git-show-ref(1)</title>
 <indexterm>
 <primary>git-show-ref(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-show-ref(1)__name">
 <title>NAME</title>
 <simpara>git-show-ref - List references in a local repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-show-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git show-ref</emphasis> [-q|--quiet] [--verify] [--head] [-d|--dereference]
@@ -21,7 +19,7 @@
 <emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;] &lt; ref-list</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-show-ref(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Displays references available in a local repository along with the associated
 commit IDs. Results can be filtered using a pattern and tags can be
@@ -32,7 +30,7 @@ refs from stdin that don't exist in the local repository.</simpara>
 <simpara>Use of this utility is encouraged in favor of directly accessing files under
 the <emphasis>.git</emphasis> directory.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-show-ref(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -158,7 +156,7 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-show-ref(1)__output">
 <title>OUTPUT</title>
 <simpara>The output is in the format: <emphasis>&lt;SHA-1 ID&gt;</emphasis> <emphasis>&lt;space&gt;</emphasis> <emphasis>&lt;reference name&gt;</emphasis>.</simpara>
 <screen>$ git show-ref --head --dereference
@@ -177,7 +175,7 @@ the <emphasis>.git</emphasis> directory.</simpara>
 03adf42c988195b50e1a1935ba5fcbc39b2b029b
 ...</screen>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-show-ref(1)__example">
 <title>EXAMPLE</title>
 <simpara>To show all references called "master", whether tags or heads or anything
 else, and regardless of how deep in the reference naming hierarchy they are,
@@ -205,18 +203,18 @@ flag, so you can do</simpara>
 <screen>        git show-ref --tags --dereference</screen>
 <simpara>to get a listing of all tags together with what they dereference.</simpara>
 </simplesect>
-<simplesect id="_files">
+<simplesect id="git-show-ref(1)__files">
 <title>FILES</title>
 <simpara><emphasis>.git/refs/*</emphasis>, <emphasis>.git/packed-refs</emphasis></simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-show-ref(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-ls-remote(1)" />,
 <xref linkend="git-update-ref(1)" />,
 <xref linkend="gitrepository-layout(5)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-show-ref(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

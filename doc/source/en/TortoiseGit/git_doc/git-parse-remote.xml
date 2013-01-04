@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-parse-remote(1)">
-<articleinfo>
+<sect2 lang="en" id="git-parse-remote(1)">
     <title>git-parse-remote(1)</title>
 <indexterm>
 <primary>git-parse-remote(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-parse-remote(1)__name">
 <title>NAME</title>
 <simpara>git-parse-remote - Routines to help parsing remote repository access parameters</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-parse-remote(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>. "$(git --exec-path)/git-parse-remote"</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-parse-remote(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This script is included in various scripts to supply
 routines to parse files under $GIT_DIR/remotes/ and
 $GIT_DIR/branches/ and configuration variables that are related
 to fetching, pulling and pushing.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-parse-remote(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

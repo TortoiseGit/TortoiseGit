@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-mergetool(1)">
-<articleinfo>
+<sect2 lang="en" id="git-mergetool(1)">
     <title>git-mergetool(1)</title>
 <indexterm>
 <primary>git-mergetool(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-mergetool(1)__name">
 <title>NAME</title>
 <simpara>git-mergetool - Run merge conflict resolution tools to resolve merge conflicts</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-mergetool(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git mergetool</emphasis> [--tool=&lt;tool&gt;] [-y|--no-prompt|--prompt] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-mergetool(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Use <emphasis>git mergetool</emphasis> to run one of several merge utilities to resolve
 merge conflicts.  It is typically run after <emphasis>git merge</emphasis>.</simpara>
@@ -28,7 +26,7 @@ conflicts).  Specifying a directory will include all unresolved files in
 that path.  If no &lt;file&gt; names are specified, <emphasis>git mergetool</emphasis> will run
 the merge tool program on every file with merge conflicts.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-mergetool(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -41,9 +39,9 @@ the merge tool program on every file with merge conflicts.</simpara>
 <listitem>
 <simpara>
         Use the merge resolution program specified by &lt;tool&gt;.
-        Valid merge tools are:
-        araxis, bc3, diffuse, ecmerge, emerge, gvimdiff, kdiff3,
-        meld, opendiff, p4merge, tkdiff, tortoisemerge, vimdiff and xxdiff.
+        Valid values include emerge, gvimdiff, kdiff3,
+        meld, vimdiff, and tortoisemerge. Run <emphasis>git mergetool --tool-help</emphasis>
+        for the list of valid &lt;tool&gt; settings.
 </simpara>
 <simpara>If a merge resolution program is not specified, <emphasis>git mergetool</emphasis>
 will use the configuration variable <emphasis>merge.tool</emphasis>.  If the
@@ -77,6 +75,16 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--tool-help
+</term>
+<listitem>
+<simpara>
+        Print a list of merge tools that may be used with <emphasis>--tool</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -y
 </term>
 <term>
@@ -103,7 +111,7 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_temporary_files">
+<simplesect id="git-mergetool(1)__temporary_files">
 <title>TEMPORARY FILES</title>
 <simpara><emphasis>git mergetool</emphasis> creates <emphasis>*.orig</emphasis> backup files while resolving merges.
 These are safe to remove once a file has been merged and its
@@ -112,8 +120,8 @@ These are safe to remove once a file has been merged and its
 causes <emphasis>git mergetool</emphasis> to automatically remove the backup as files
 are successfully merged.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-mergetool(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

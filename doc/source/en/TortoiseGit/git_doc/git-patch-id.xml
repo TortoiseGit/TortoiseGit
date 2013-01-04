@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-patch-id(1)">
-<articleinfo>
+<sect2 lang="en" id="git-patch-id(1)">
     <title>git-patch-id(1)</title>
 <indexterm>
 <primary>git-patch-id(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-patch-id(1)__name">
 <title>NAME</title>
 <simpara>git-patch-id - Compute unique ID for a patch</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-patch-id(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git patch-id</emphasis> &lt; &lt;patch&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-patch-id(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A "patch ID" is nothing but a SHA1 of the diff associated with a patch, with
 whitespace and line numbers ignored.  As such, it's "reasonably stable", but at
@@ -31,7 +29,7 @@ commit, and outputs two 40-byte hexadecimal strings.  The first
 string is the patch ID, and the second string is the commit ID.
 This can be used to make a mapping from patch ID to commit ID.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-patch-id(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -46,8 +44,8 @@ This can be used to make a mapping from patch ID to commit ID.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-patch-id(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

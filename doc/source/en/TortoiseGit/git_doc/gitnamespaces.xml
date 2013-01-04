@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitnamespaces(7)">
-<articleinfo>
+<sect2 lang="en" id="gitnamespaces(7)">
     <title>gitnamespaces(7)</title>
 <indexterm>
 <primary>gitnamespaces(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitnamespaces(7)__name">
 <title>NAME</title>
 <simpara>gitnamespaces - Git namespaces</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitnamespaces(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>GIT_NAMESPACE=&lt;namespace&gt; <emphasis>git upload-pack</emphasis>
 GIT_NAMESPACE=&lt;namespace&gt; <emphasis>git receive-pack</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitnamespaces(7)__description">
 <title>DESCRIPTION</title>
 <simpara>Git supports dividing the refs of a single repository into multiple
 namespaces, each of which has its own branches, tags, and HEAD.  Git can
@@ -58,7 +56,7 @@ repository namespaces as repositories.</simpara>
 <simpara>For a simple local test, you can use <xref linkend="git-remote-ext(1)" />:</simpara>
 <screen>git clone ext::'git --namespace=foo %s /tmp/prefixed.git'</screen>
 </simplesect>
-<simplesect id="_security">
+<simplesect id="gitnamespaces(7)__security">
 <title>SECURITY</title>
 <simpara>Anyone with access to any namespace within a repository can potentially
 access objects from any other namespace stored in the same repository.
@@ -84,4 +82,4 @@ if everyone who may read one namespace may also read everything in every
 other namespace (for instance, if everyone in an organization has read
 permission to every repository).</simpara>
 </simplesect>
-</article>
+</sect2>

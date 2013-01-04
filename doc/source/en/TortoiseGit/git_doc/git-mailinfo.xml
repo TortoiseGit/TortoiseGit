@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-mailinfo(1)">
-<articleinfo>
+<sect2 lang="en" id="git-mailinfo(1)">
     <title>git-mailinfo(1)</title>
 <indexterm>
 <primary>git-mailinfo(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-mailinfo(1)__name">
 <title>NAME</title>
 <simpara>git-mailinfo - Extracts patch and authorship from a single e-mail message</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-mailinfo(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n] [--scissors] &lt;msg&gt; &lt;patch&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-mailinfo(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Reads a single e-mail message from the standard input, and
 writes the commit log message in &lt;msg&gt; file, and the patches in
@@ -27,7 +25,7 @@ written out to the standard output to be used by <emphasis>git am</emphasis>
 to create a commit.  It is usually not necessary to use this
 command directly.  See <xref linkend="git-am(1)" /> instead.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-mailinfo(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -167,8 +165,8 @@ beginning of the proposed commit log message with a scissors line.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-mailinfo(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-format-patch(1)">
-<articleinfo>
+<sect2 lang="en" id="git-format-patch(1)">
     <title>git-format-patch(1)</title>
 <indexterm>
 <primary>git-format-patch(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-format-patch(1)__name">
 <title>NAME</title>
 <simpara>git-format-patch - Prepare patches for e-mail submission</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-format-patch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git format-patch</emphasis> [-k] [(-o|--output-directory) &lt;dir&gt; | --stdout]
@@ -26,12 +24,12 @@
                    [--ignore-if-in-upstream]
                    [--subject-prefix=Subject-Prefix]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
-                   [--cover-letter] [--quiet]
+                   [--cover-letter] [--quiet] [--notes[=&lt;ref&gt;]]
                    [&lt;common diff options&gt;]
                    [ &lt;since&gt; | &lt;revision range&gt; ]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-format-patch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Prepare each commit with its patch in
 one file per commit, formatted to resemble UNIX mailbox format.
@@ -67,16 +65,18 @@ The names of the output files are printed to standard
 output, unless the <emphasis>--stdout</emphasis> option is specified.</simpara>
 <simpara>If <emphasis>-o</emphasis> is specified, output files are created in &lt;dir&gt;.  Otherwise
 they are created in the current working directory.</simpara>
-<simpara>By default, the subject of a single patch is "[PATCH] First Line" and
-the subject when multiple patches are output is "[PATCH n/m] First
-Line". To force 1/1 to be added for a single patch, use <emphasis>-n</emphasis>.  To omit
-patch numbers from the subject, use <emphasis>-N</emphasis>.</simpara>
+<simpara>By default, the subject of a single patch is "[PATCH] " followed by
+the concatenation of lines from the commit message up to the first blank
+line (see the DISCUSSION section of <xref linkend="git-commit(1)" />).</simpara>
+<simpara>When multiple patches are output, the subject prefix will instead be
+"[PATCH n/m] ".  To force 1/1 to be added for a single patch, use <emphasis>-n</emphasis>.
+To omit patch numbers from the subject, use <emphasis>-N</emphasis>.</simpara>
 <simpara>If given <emphasis>--thread</emphasis>, <emphasis>git-format-patch</emphasis> will generate <emphasis>In-Reply-To</emphasis> and
 <emphasis>References</emphasis> headers to make the second and subsequent patch mails appear
 as replies to the first mail; this also generates a <emphasis>Message-Id</emphasis> header to
 reference.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-format-patch(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -146,7 +146,7 @@ reference.</simpara>
         Generate a diffstat. By default, as much space as necessary
         will be used for the filename part, and the rest for the graph
         part. Maximum width defaults to terminal width, or 80 columns
-        if not connected to a terminal, and can be overriden by
+        if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
         giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
         of the graph part can be limited by using
@@ -380,7 +380,11 @@ another file.</simpara>
         index (i.e. amount of addition/deletions compared to the
         file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
         delete/add pair to be a rename if more than 90% of the file
-        hasn't changed.
+        hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
+        a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
+        0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
+        the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
+        <emphasis>-M100%</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -899,6 +903,24 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
+--notes[=&lt;ref&gt;]
+</term>
+<listitem>
+<simpara>
+        Append the notes (see <xref linkend="git-notes(1)" />) for the commit
+        after the three-dash line.
+</simpara>
+<simpara>The expected use case of this is to write supporting explanation for
+the commit that does not belong to the commit log message proper,
+and include it with the patch submission. While one can simply write
+these explanations after <emphasis>format-patch</emphasis> has run but before sending,
+keeping them as git notes allows them to be maintained between versions
+of the patch series (but see the discussion of the <emphasis>notes.rewrite</emphasis>
+configuration options in <xref linkend="git-notes(1)" /> to use this workflow).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --[no]-signature=&lt;signature&gt;
 </term>
 <listitem>
@@ -964,7 +986,7 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-format-patch(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>You can specify extra mail header lines to be added to each message,
 defaults for the subject prefix and file suffix, number patches when
@@ -980,7 +1002,7 @@ attachments, and sign off patches with configuration variables.</simpara>
         attach [ = mime-boundary-string ]
         signoff = true</screen>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-format-patch(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>The patch produced by <emphasis>git format-patch</emphasis> is in UNIX mailbox format,
 with a fixed "magic" time stamp to indicate that the file is output
@@ -1026,7 +1048,7 @@ should omit <emphasis>From:</emphasis> and <emphasis>Date:</emphasis> lines from
 title is likely to be different from the subject of the discussion the
 patch is in response to, so it is likely that you would want to keep
 the Subject: line, like the example above.</simpara>
-<section id="_checking_for_patch_corruption">
+<section id="git-format-patch(1)__checking_for_patch_corruption">
 <title>Checking for patch corruption</title>
 <simpara>Many mailers if not set up properly will corrupt whitespace.  Here are
 two common types of corruption:</simpara>
@@ -1100,11 +1122,11 @@ While at it, check the <emphasis>info</emphasis> and <emphasis>final-commit</emp
 </itemizedlist>
 </section>
 </simplesect>
-<simplesect id="_mua_specific_hints">
+<simplesect id="git-format-patch(1)__mua_specific_hints">
 <title>MUA-SPECIFIC HINTS</title>
 <simpara>Here are some hints on how to successfully submit patches inline using
 various mailers.</simpara>
-<section id="_gmail">
+<section id="git-format-patch(1)__gmail">
 <title>GMail</title>
 <simpara>GMail does not have any way to turn off line wrapping in the web
 interface, so it will mangle any emails that you send.  You can however
@@ -1116,7 +1138,7 @@ GMail SMTP server, see the EXAMPLE section of <xref linkend="git-send-email(1)" 
 <simpara>For hints on submission using the IMAP interface, see the EXAMPLE
 section of <xref linkend="git-imap-send(1)" />.</simpara>
 </section>
-<section id="_thunderbird">
+<section id="git-format-patch(1)__thunderbird">
 <title>Thunderbird</title>
 <simpara>By default, Thunderbird will both wrap emails as well as flag
 them as being <emphasis>format=flowed</emphasis>, both of which will make the
@@ -1124,7 +1146,7 @@ resulting email unusable by git.</simpara>
 <simpara>There are three different approaches: use an add-on to turn off line wraps,
 configure Thunderbird to not mangle patches, or use
 an external editor to keep Thunderbird from mangling the patches.</simpara>
-<section id="_approach_1_add_on">
+<section id="git-format-patch(1)__approach_1_add_on">
 <title>Approach #1 (add-on)</title>
 <simpara>Install the Toggle Word Wrap add-on that is available from
 <ulink url="https://addons.mozilla.org/thunderbird/addon/toggle-word-wrap/">https://addons.mozilla.org/thunderbird/addon/toggle-word-wrap/</ulink>
@@ -1133,7 +1155,7 @@ that you can tick off. Now you can compose the message as you otherwise do
 (cut + paste, <emphasis>git format-patch</emphasis> | <emphasis>git imap-send</emphasis>, etc), but you have to
 insert line breaks manually in any text that you type.</simpara>
 </section>
-<section id="_approach_2_configuration">
+<section id="git-format-patch(1)__approach_2_configuration">
 <title>Approach #2 (configuration)</title>
 <simpara>Three steps:</simpara>
 <orderedlist numeration="arabic">
@@ -1168,7 +1190,7 @@ Toggle it to make sure it is set to <emphasis>false</emphasis>.
 otherwise would (cut + paste, <emphasis>git format-patch</emphasis> | <emphasis>git imap-send</emphasis>, etc),
 and the patches will not be mangled.</simpara>
 </section>
-<section id="_approach_3_external_editor">
+<section id="git-format-patch(1)__approach_3_external_editor">
 <title>Approach #3 (external editor)</title>
 <simpara>The following Thunderbird extensions are needed:
 AboutConfig from <ulink url="http://aboutconfig.mozdev.org/">http://aboutconfig.mozdev.org/</ulink> and
@@ -1218,7 +1240,7 @@ you include patches with Thunderbird in an easy way. To use it, do the
 steps above and then use the script as the external editor.</simpara>
 </section>
 </section>
-<section id="_kmail">
+<section id="git-format-patch(1)__kmail">
 <title>KMail</title>
 <simpara>This should help you to submit patches inline using KMail.</simpara>
 <orderedlist numeration="arabic">
@@ -1252,7 +1274,7 @@ Back in the compose window: add whatever other text you wish to the
 </orderedlist>
 </section>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-format-patch(1)__examples">
 <title>EXAMPLES</title>
 <itemizedlist>
 <listitem>
@@ -1297,12 +1319,12 @@ as e-mailable patches:
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-format-patch(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-am(1)" />, <xref linkend="git-send-email(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-format-patch(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

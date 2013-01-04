@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-clone(1)">
-<articleinfo>
+<sect2 lang="en" id="git-clone(1)">
     <title>git-clone(1)</title>
 <indexterm>
 <primary>git-clone(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-clone(1)__name">
 <title>NAME</title>
 <simpara>git-clone - Clone a repository into a new directory</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-clone(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git clone</emphasis> [--template=&lt;template_directory&gt;]
@@ -24,7 +22,7 @@
           [&lt;directory&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-clone(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Clones a repository into a newly created directory, creates
 remote-tracking branches for each branch in the cloned repository
@@ -34,13 +32,14 @@ currently active branch.</simpara>
 <simpara>After the clone, a plain <emphasis>git fetch</emphasis> without arguments will update
 all the remote-tracking branches, and a <emphasis>git pull</emphasis> without
 arguments will in addition merge the remote master branch into the
-current master branch, if any.</simpara>
+current master branch, if any (this is untrue when "--single-branch"
+is given; see below).</simpara>
 <simpara>This default configuration is achieved by creating references to
 the remote branch heads under <emphasis>refs/remotes/origin</emphasis> and
 by initializing <emphasis>remote.origin.url</emphasis> and <emphasis>remote.origin.fetch</emphasis>
 configuration variables.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-clone(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -57,14 +56,17 @@ configuration variables.</simpara>
         mechanism and clones the repository by making a copy of
         HEAD and everything under objects and refs directories.
         The files under <emphasis>.git/objects/</emphasis> directory are hardlinked
-        to save space when possible.  This is now the default when
-        the source repository is specified with <emphasis>/path/to/repo</emphasis>
-        syntax, so it essentially is a no-op option.  To force
-        copying instead of hardlinking (which may be desirable
-        if you are trying to make a back-up of your repository),
-        but still avoid the usual "git aware" transport
-        mechanism, <emphasis>--no-hardlinks</emphasis> can be used.
+        to save space when possible.
 </simpara>
+<simpara>If the repository is specified as a local path (e.g., <emphasis>/path/to/repo</emphasis>),
+this is the default, and --local is essentially a no-op.  If the
+repository is specified as a URL, then this flag is ignored (and we
+never use the local optimizations).  Specifying <emphasis>--no-local</emphasis> will
+override the default when <emphasis>/path/to/repo</emphasis> is given, using the regular
+git transport instead.</simpara>
+<simpara>To force copying instead of hardlinking (which may be desirable if you
+are trying to make a back-up of your repository), but still avoid the
+usual "git aware" transport mechanism, <emphasis>--no-hardlinks</emphasis> can be used.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -243,9 +245,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 <simpara>
         Instead of pointing the newly created HEAD to the branch pointed
         to by the cloned repository's HEAD, point to <emphasis>&lt;name&gt;</emphasis> branch
-        instead. <emphasis>--branch</emphasis> can also take tags and treat them like
-        detached HEAD. In a non-bare repository, this is the branch
-        that will be checked out.
+        instead. In a non-bare repository, this is the branch that will
+        be checked out.
+        <emphasis>--branch</emphasis> can also take tags and detaches the HEAD at that commit
+        in the resulting repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -323,6 +326,11 @@ objects from the source repository into a pack in the cloned repository.</simpar
         clone with the <emphasis>--depth</emphasis> option, this is the default, unless
         <emphasis>--no-single-branch</emphasis> is given to fetch the histories near the
         tips of all branches.
+        Further fetches into the resulting repository will only update the
+        remote-tracking branch for the branch this option was used for the
+        initial cloning.  If the HEAD at the remote did not point at any
+        branch when <emphasis>--single-branch</emphasis> clone was made, no remote-tracking
+        branch is created.
 </simpara>
 </listitem>
 </varlistentry>
@@ -365,7 +373,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 <listitem>
 <simpara>
         The (possibly remote) repository to clone from.  See the
-        <link linkend="URLS">URLS</link> section below for more information on specifying
+        <link linkend="git-clone(1)_URLS">URLS</link> section below for more information on specifying
         repositories.
 </simpara>
 </listitem>
@@ -386,14 +394,17 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git_urls_anchor_id_urls_xreflabel_urls">
-<title>GIT URLS<anchor id="URLS" xreflabel="[URLS]"/></title>
+<simplesect id="git-clone(1)__git_urls_anchor_id_git_clone_1__urls_xreflabel_urls">
+<title>GIT URLS<anchor id="git-clone(1)_URLS" xreflabel="[URLS]"/></title>
 <simpara>In general, URLs contain information about the transport protocol, the
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git natively supports ssh, git, http, https, ftp, ftps, and rsync
-protocols. The following syntaxes may be used with them:</simpara>
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+and ftps can be used for fetching and rsync can be used for fetching
+and pushing, but these are inefficient and deprecated; do not use
+them).</simpara>
+<simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -500,7 +511,7 @@ configuration section of the form:</simpara>
 "ssh://example.org/path/to/repo.git" for pushes, but pulls will still
 use the original URL.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-clone(1)__examples">
 <title>Examples</title>
 <itemizedlist>
 <listitem>
@@ -543,8 +554,8 @@ Create a repository on the kernel.org machine that borrows from Linus:
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-clone(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

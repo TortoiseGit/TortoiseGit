@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-cvsimport(1)">
-<articleinfo>
+<sect2 lang="en" id="git-cvsimport(1)">
     <title>git-cvsimport(1)</title>
 <indexterm>
 <primary>git-cvsimport(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-cvsimport(1)__name">
 <title>NAME</title>
 <simpara>git-cvsimport - Salvage your data out of another SCM people love to hate</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-cvsimport(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cvsimport</emphasis> [-o &lt;branch-for-HEAD&gt;] [-h] [-v] [-d &lt;CVSROOT&gt;]
@@ -22,14 +20,14 @@
               [-r &lt;remote&gt;] [-R] [&lt;CVS_module&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-cvsimport(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Imports a CVS repository into git. It will either create a new
 repository, or incrementally import into an existing one.</simpara>
 <simpara>Splitting the CVS log into patch sets is done by <emphasis>cvsps</emphasis>.
 At least version 2.1 is required.</simpara>
 <simpara><emphasis role="strong">WARNING:</emphasis> for certain situations the import leads to incorrect results.
-Please see the section <link linkend="issues">ISSUES</link> for further reference.</simpara>
+Please see the section <link linkend="git-cvsimport(1)_issues">ISSUES</link> for further reference.</simpara>
 <simpara>You should <emphasis role="strong">never</emphasis> do any work of your own on the branches that are
 created by <emphasis>git cvsimport</emphasis>.  By default initial import will create and populate a
 "master" branch from the CVS repository's main branch which you're free
@@ -42,7 +40,7 @@ probably want to make a bare clone of the imported repository,
 and use the clone as the shared repository.
 See <xref linkend="gitcvs-migration(7)" />.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-cvsimport(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -266,13 +264,15 @@ the old cvs2git tool.</simpara>
 <simpara>
         CVS by default uses the Unix username when writing its
         commit logs. Using this option and an author-conv-file
-        in this format
+        maps the name recorded in CVS to author name, e-mail and
+        optional timezone:
 </simpara>
 <screen>        exon=Andreas Ericsson &lt;ae@op5.se&gt;
-        spawn=Simon Pawn &lt;spawn@frog-pond.org&gt;</screen>
+        spawn=Simon Pawn &lt;spawn@frog-pond.org&gt; America/Chicago</screen>
 <simpara><emphasis>git cvsimport</emphasis> will make it appear as those authors had
 their GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL set properly
-all along.</simpara>
+all along.  If a timezone is specified, GIT_AUTHOR_DATE will
+have the corresponding offset applied.</simpara>
 <simpara>For convenience, this data is saved to <emphasis>$GIT_DIR/cvs-authors</emphasis>
 each time the <emphasis>-A</emphasis> option is provided and read from that same
 file each time <emphasis>git cvsimport</emphasis> is run.</simpara>
@@ -311,13 +311,13 @@ messages, bug-tracking systems, email archives, and the like.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-cvsimport(1)__output">
 <title>OUTPUT</title>
 <simpara>If <emphasis>-v</emphasis> is specified, the script reports what it is doing.</simpara>
 <simpara>Otherwise, success is indicated the Unix way, i.e. by simply exiting with
 a zero exit status.</simpara>
 </simplesect>
-<simplesect id="issues">
+<simplesect id="git-cvsimport(1)_issues">
 <title>ISSUES</title>
 <simpara>Problems related to timestamps:</simpara>
 <itemizedlist>
@@ -387,8 +387,8 @@ parsecvs, <emphasis>http://cgit.freedesktop.org/~keithp/parsecvs</emphasis>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-cvsimport(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

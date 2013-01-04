@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-rerere(1)">
-<articleinfo>
+<sect2 lang="en" id="git-rerere(1)">
     <title>git-rerere(1)</title>
 <indexterm>
 <primary>git-rerere(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-rerere(1)__name">
 <title>NAME</title>
 <simpara>git-rerere - Reuse recorded resolution of conflicted merges</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-rerere(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git rerere</emphasis> [<emphasis>clear</emphasis>|<emphasis>forget</emphasis> &lt;pathspec&gt;|<emphasis>diff</emphasis>|<emphasis>remaining</emphasis>|<emphasis>status</emphasis>|<emphasis>gc</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-rerere(1)__description">
 <title>DESCRIPTION</title>
 <simpara>In a workflow employing relatively long lived topic branches,
 the developer sometimes needs to resolve the same conflicts over
@@ -31,7 +29,7 @@ hand resolutions to their corresponding automerge results.</simpara>
 <note><simpara>You need to set the configuration variable rerere.enabled in order to
 enable this command.</simpara></note>
 </simplesect>
-<simplesect id="_commands">
+<simplesect id="git-rerere(1)__commands">
 <title>COMMANDS</title>
 <simpara>Normally, <emphasis>git rerere</emphasis> is run without arguments or user-intervention.
 However, it has several commands that allow it to interact with
@@ -112,7 +110,7 @@ variables respectively.
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-rerere(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>When your topic branch modifies an overlapping area that your
 master branch (or upstream) touched since your topic branch
@@ -222,8 +220,8 @@ would conflict the same way as the test merge you resolved earlier.
 <emphasis>git rerere</emphasis> will be run by <emphasis>git rebase</emphasis> to help you resolve this
 conflict.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-rerere(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

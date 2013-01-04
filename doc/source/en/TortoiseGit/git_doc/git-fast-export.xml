@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-fast-export(1)">
-<articleinfo>
+<sect2 lang="en" id="git-fast-export(1)">
     <title>git-fast-export(1)</title>
 <indexterm>
 <primary>git-fast-export(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-fast-export(1)__name">
 <title>NAME</title>
 <simpara>git-fast-export - Git data exporter</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-fast-export(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git fast-export [options]</emphasis> | <emphasis>git fast-import</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-fast-export(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This program dumps the given revisions in a form suitable to be piped
 into <emphasis>git fast-import</emphasis>.</simpara>
@@ -26,7 +24,7 @@ into <emphasis>git fast-import</emphasis>.</simpara>
 <xref linkend="git-bundle(1)" />), or as a kind of an interactive
 <emphasis>git filter-branch</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-fast-export(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -191,7 +189,7 @@ marks the same across runs.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-fast-export(1)__examples">
 <title>EXAMPLES</title>
 <screen>$ git fast-export --all | (cd /empty/repository &amp;&amp; git fast-import)</screen>
 <simpara>This will export the whole repository and import it into the existing
@@ -206,14 +204,14 @@ UTF-8, it would be a one-to-one mirror.</simpara>
 referenced by that revision range contains the string
 <emphasis>refs/heads/master</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_limitations">
+<simplesect id="git-fast-export(1)__limitations">
 <title>Limitations</title>
 <simpara>Since <emphasis>git fast-import</emphasis> cannot tag trees, you will not be
 able to export the linux-2.6.git repository completely, as it contains
 a tag referencing a tree instead of a commit.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-fast-export(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-index-pack(1)">
-<articleinfo>
+<sect2 lang="en" id="git-index-pack(1)">
     <title>git-index-pack(1)</title>
 <indexterm>
 <primary>git-index-pack(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-index-pack(1)__name">
 <title>NAME</title>
 <simpara>git-index-pack - Build pack index file for an existing packed archive</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-index-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git index-pack</emphasis> [-v] [-o &lt;index-file&gt;] &lt;pack-file&gt;
@@ -20,14 +18,14 @@
                  [&lt;pack-file&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-index-pack(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Reads a packed archive (.pack) from the specified file, and
 builds a pack index file (.idx) for it.  The packed archive
 together with the pack index can then be placed in the
 objects/pack/ directory of a git repository.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-index-pack(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -136,9 +134,26 @@ objects/pack/ directory of a git repository.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--threads=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Specifies the number of threads to spawn when resolving
+        deltas. This requires that index-pack be compiled with
+        pthreads otherwise this option is ignored with a warning.
+        This is meant to reduce packing time on multiprocessor
+        machines. The required amount of memory for the delta search
+        window is however multiplied by the number of threads.
+        Specifying 0 will cause git to auto-detect the number of CPU's
+        and use maximum 3 threads.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_note">
+<simplesect id="git-index-pack(1)__note">
 <title>Note</title>
 <simpara>Once the index has been created, the list of object names is sorted
 and the SHA1 hash of that list is printed to stdout. If --stdin was
@@ -147,8 +162,8 @@ new .keep file was successfully created. This is useful to remove a
 .keep file used as a lock to prevent the race with <emphasis>git repack</emphasis>
 mentioned above.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-index-pack(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

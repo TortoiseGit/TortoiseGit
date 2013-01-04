@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-unpack-file(1)">
-<articleinfo>
+<sect2 lang="en" id="git-unpack-file(1)">
     <title>git-unpack-file(1)</title>
 <indexterm>
 <primary>git-unpack-file(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-unpack-file(1)__name">
 <title>NAME</title>
 <simpara>git-unpack-file - Creates a temporary file with a blob's contents</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-unpack-file(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git unpack-file</emphasis> &lt;blob&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-unpack-file(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Creates a file holding the contents of the blob specified by sha1. It
 returns the name of the temporary file in the following format:
         .merge_file_XXXXX</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-unpack-file(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -39,8 +37,8 @@ returns the name of the temporary file in the following format:
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-unpack-file(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

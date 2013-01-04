@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-remote-ext(1)">
-<articleinfo>
+<sect2 lang="en" id="git-remote-ext(1)">
     <title>git-remote-ext(1)</title>
 <indexterm>
 <primary>git-remote-ext(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-remote-ext(1)__name">
 <title>NAME</title>
 <simpara>git-remote-ext - Bridge smart transport to external command.</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-remote-ext(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>git remote add &lt;nick&gt; "ext::&lt;command&gt;[ &lt;arguments&gt;&#8230;]"</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-remote-ext(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This remote helper uses the specified <emphasis>&lt;command&gt;</emphasis> to connect
 to a remote git server.</simpara>
@@ -103,7 +101,7 @@ some tunnel.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment_variables">
+<simplesect id="git-remote-ext(1)__environment_variables">
 <title>ENVIRONMENT VARIABLES:</title>
 <variablelist>
 <varlistentry>
@@ -118,7 +116,7 @@ GIT_TRANSLOOP_DEBUG
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment_variables_passed_to_command">
+<simplesect id="git-remote-ext(1)__environment_variables_passed_to_command">
 <title>ENVIRONMENT VARIABLES PASSED TO COMMAND:</title>
 <variablelist>
 <varlistentry>
@@ -145,7 +143,7 @@ GIT_EXT_SERVICE_NOPREFIX
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-remote-ext(1)__examples">
 <title>EXAMPLES:</title>
 <simpara>This remote helper is transparently used by git when
 you use commands such as "git fetch &lt;URL&gt;", "git clone &lt;URL&gt;",
@@ -232,13 +230,13 @@ begins with <emphasis>ext::</emphasis>.  Examples:</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_documentation">
+<simplesect id="git-remote-ext(1)__documentation">
 <title>Documentation</title>
 <simpara>Documentation by Ilari Liusvaara, Jonathan Nieder and the git list
 &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-remote-ext(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

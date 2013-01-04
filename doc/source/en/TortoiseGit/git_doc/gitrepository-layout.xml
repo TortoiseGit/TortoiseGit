@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitrepository-layout(5)">
-<articleinfo>
+<sect2 lang="en" id="gitrepository-layout(5)">
     <title>gitrepository-layout(5)</title>
 <indexterm>
 <primary>gitrepository-layout(5)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitrepository-layout(5)__name">
 <title>NAME</title>
 <simpara>gitrepository-layout - Git Repository Layout</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitrepository-layout(5)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>$GIT_DIR/*</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitrepository-layout(5)__description">
 <title>DESCRIPTION</title>
 <simpara>You may find these things in your git repository (<emphasis>.git</emphasis>
 directory for a repository associated with your working tree, or
@@ -182,6 +180,19 @@ refs/remotes/<emphasis>name</emphasis>
 <simpara>
         records tip-of-the-tree commit objects of branches copied
         from a remote repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+refs/replace/<emphasis>&lt;obj-sha1&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        records the SHA1 of the object that replaces <emphasis>&lt;obj-sha1&gt;</emphasis>.
+        This is similar to info/grafts and is internally used and
+        maintained by <xref linkend="git-replace(1)" />. Such refs can be exchanged
+        between repositories while grafts are not.
 </simpara>
 </listitem>
 </varlistentry>
@@ -380,7 +391,7 @@ shallow
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitrepository-layout(5)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-init(1)" />,
 <xref linkend="git-clone(1)" />,
@@ -391,8 +402,8 @@ shallow
 <xref linkend="gitglossary(7)" />,
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitrepository-layout(5)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

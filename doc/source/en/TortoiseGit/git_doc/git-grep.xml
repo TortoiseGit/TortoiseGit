@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-grep(1)">
-<articleinfo>
+<sect2 lang="en" id="git-grep(1)">
     <title>git-grep(1)</title>
 <indexterm>
 <primary>git-grep(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-grep(1)__name">
 <title>NAME</title>
 <simpara>git-grep - Print lines matching a pattern</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-grep(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git grep</emphasis> [-a | --text] [-I] [-i | --ignore-case] [-w | --word-regexp]
@@ -35,12 +33,14 @@
            [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-grep(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Look for specified patterns in the tracked files in the work tree, blobs
-registered in the index file, or blobs in given tree objects.</simpara>
+registered in the index file, or blobs in given tree objects.  Patterns
+are lists of one or more search expressions separated by newline
+characters.  An empty string as search expression matches all lines.</simpara>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-grep(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -55,17 +55,32 @@ grep.lineNumber
 </varlistentry>
 <varlistentry>
 <term>
+grep.patternType
+</term>
+<listitem>
+<simpara>
+        Set the default matching behavior. Using a value of <emphasis>basic</emphasis>, <emphasis>extended</emphasis>,
+        <emphasis>fixed</emphasis>, or <emphasis>perl</emphasis> will enable the <emphasis>--basic-regexp</emphasis>, <emphasis>--extended-regexp</emphasis>,
+        <emphasis>--fixed-strings</emphasis>, or <emphasis>--perl-regexp</emphasis> option accordingly, while the
+        value <emphasis>default</emphasis> will return to the default matching behavior.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 grep.extendedRegexp
 </term>
 <listitem>
 <simpara>
-        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default.
+        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default. This
+        option is ignored when the <emphasis>grep.patternType</emphasis> option is set to a value
+        other than <emphasis>default</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-grep(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -590,7 +605,7 @@ grep.extendedRegexp
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-grep(1)__examples">
 <title>Examples</title>
 <variablelist>
 <varlistentry>
@@ -628,8 +643,8 @@ grep.extendedRegexp
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-grep(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-gc(1)">
-<articleinfo>
+<sect2 lang="en" id="git-gc(1)">
     <title>git-gc(1)</title>
 <indexterm>
 <primary>git-gc(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-gc(1)__name">
 <title>NAME</title>
 <simpara>git-gc - Cleanup unnecessary files and optimize the local repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-gc(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git gc</emphasis> [--aggressive] [--auto] [--quiet] [--prune=&lt;date&gt; | --no-prune]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-gc(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Runs a number of housekeeping tasks within the current repository,
 such as compressing file revisions (to reduce disk space and increase
@@ -32,7 +30,7 @@ below for details. If you know what you're doing and all you want is to
 disable this behavior permanently without further considerations, just do:</simpara>
 <screen>$ git config --global gc.auto 0</screen>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-gc(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -108,7 +106,7 @@ automatic consolidation of packs.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-gc(1)__configuration">
 <title>Configuration</title>
 <simpara>The optional configuration variable <emphasis>gc.reflogExpire</emphasis> can be
 set to indicate how long historical entries within each branch's
@@ -149,7 +147,7 @@ more details.  This defaults to 250.</simpara>
 the unreferenced loose objects have to be before they are pruned.  The
 default is "2 weeks ago".</simpara>
 </simplesect>
-<simplesect id="_notes">
+<simplesect id="git-gc(1)__notes">
 <title>Notes</title>
 <simpara><emphasis>git gc</emphasis> tries very hard to be safe about the garbage it collects. In
 particular, it will keep not only objects referenced by your current set
@@ -161,20 +159,20 @@ that were later amended or rewound).</simpara>
 all of those locations and decide whether it makes sense in your case to
 remove those references.</simpara>
 </simplesect>
-<simplesect id="_hooks">
+<simplesect id="git-gc(1)__hooks">
 <title>HOOKS</title>
 <simpara>The <emphasis>git gc --auto</emphasis> command will run the <emphasis>pre-auto-gc</emphasis> hook.  See
 <xref linkend="githooks(5)" /> for more information.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-gc(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-prune(1)" />
 <xref linkend="git-reflog(1)" />
 <xref linkend="git-repack(1)" />
 <xref linkend="git-rerere(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-gc(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

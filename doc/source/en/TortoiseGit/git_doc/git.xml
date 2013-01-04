@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git(1)">
-<articleinfo>
+<sect2 lang="en" id="git(1)">
     <title>git(1)</title>
 <indexterm>
 <primary>git(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git(1)__name">
 <title>NAME</title>
 <simpara>git - the stupid content tracker</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git</emphasis> [--version] [--help] [-c &lt;name&gt;=&lt;value&gt;]
@@ -22,24 +20,23 @@
     &lt;command&gt; [&lt;args&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Git is a fast, scalable, distributed revision control system with an
 unusually rich command set that provides both high-level operations
 and full access to internals.</simpara>
 <simpara>See <xref linkend="gittutorial(7)" /> to get started, then see
-link:everyday.html[Everyday Git] for a useful minimum set of commands, and
-"man git-commandname" for documentation of each command.  CVS users may
-also want to read <xref linkend="gitcvs-migration(7)" />.  See
-the link:user-manual.html[Git User's Manual] for a more in-depth
-introduction.</simpara>
-<simpara>The <emphasis>&lt;command&gt;</emphasis> is either a name of a Git command (see below) or an alias
-as defined in the configuration file (see <xref linkend="git-config(1)" />).</simpara>
-<simpara>Formatted and hyperlinked version of the latest git
-documentation can be viewed at
-<emphasis>http://www.kernel.org/pub/software/scm/git/docs/</emphasis>.</simpara>
+link:everyday.html[Everyday Git] for a useful minimum set of
+commands.  The link:user-manual.html[Git User's Manual] has a more
+in-depth introduction.</simpara>
+<simpara>After you mastered the basic concepts, you can come back to this
+page to learn what commands git offers.  You can learn more about
+individual git commands with "git help command".  <xref linkend="gitcli(7)" />
+manual page gives you an overview of the command line command syntax.</simpara>
+<simpara>Formatted and hyperlinked version of the latest git documentation
+can be viewed at <emphasis>http://git-htmldocs.googlecode.com/git/git.html</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -218,29 +215,16 @@ help ...</emphasis>.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_further_documentation">
-<title>FURTHER DOCUMENTATION</title>
-<simpara>See the references above to get started using git.  The following is
-probably more detail than necessary for a first-time user.</simpara>
-<simpara>The <link linkend="git-concepts">git concepts chapter of the
-user-manual</link> and <xref linkend="gitcore-tutorial(7)" /> both provide
-introductions to the underlying git architecture.</simpara>
-<simpara>See <xref linkend="gitworkflows(7)" /> for an overview of recommended workflows.</simpara>
-<simpara>See also the link:howto-index.html[howto] documents for some useful
-examples.</simpara>
-<simpara>The internals are documented in the
-link:technical/api-index.html[GIT API documentation].</simpara>
-</simplesect>
-<simplesect id="_git_commands">
+<simplesect id="git(1)__git_commands">
 <title>GIT COMMANDS</title>
 <simpara>We divide git into high level ("porcelain") commands and low level
 ("plumbing") commands.</simpara>
 </simplesect>
-<simplesect id="_high_level_commands_porcelain">
+<simplesect id="git(1)__high_level_commands_porcelain">
 <title>High-level commands (porcelain)</title>
 <simpara>We separate the porcelain commands into the main commands and some
 ancillary user utilities.</simpara>
-<section id="_main_porcelain_commands">
+<section id="git(1)__main_porcelain_commands">
 <title>Main porcelain commands</title>
 <variablelist>
 <varlistentry>
@@ -615,7 +599,7 @@ ancillary user utilities.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_ancillary_commands">
+<section id="git(1)__ancillary_commands">
 <title>Ancillary Commands</title>
 <simpara>Manipulators:</simpara>
 <variablelist>
@@ -924,7 +908,7 @@ ancillary user utilities.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_interacting_with_others">
+<section id="git(1)__interacting_with_others">
 <title>Interacting with Others</title>
 <simpara>These commands are to interact with foreign SCM and with other
 people via patch over e-mail.</simpara>
@@ -981,6 +965,16 @@ people via patch over e-mail.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-p4(1)" />
+</term>
+<listitem>
+<simpara>
+        Import from and submit to Perforce repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-quiltimport(1)" />
 </term>
 <listitem>
@@ -1022,7 +1016,7 @@ people via patch over e-mail.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_low_level_commands_plumbing">
+<simplesect id="git(1)__low_level_commands_plumbing">
 <title>Low-level commands (plumbing)</title>
 <simpara>Although git includes its
 own porcelain layer, its low-level commands are sufficient to support
@@ -1040,7 +1034,7 @@ the low-level commands into commands that manipulate objects (in
 the repository, index, and working tree), commands that interrogate and
 compare objects, and commands that move objects and references between
 repositories.</simpara>
-<section id="_manipulation_commands">
+<section id="git(1)__manipulation_commands">
 <title>Manipulation commands</title>
 <variablelist>
 <varlistentry>
@@ -1169,7 +1163,7 @@ repositories.</simpara>
 </term>
 <listitem>
 <simpara>
-        Read and modify symbolic refs.
+        Read, modify and delete symbolic refs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1215,7 +1209,7 @@ repositories.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_interrogation_commands">
+<section id="git(1)__interrogation_commands">
 <title>Interrogation commands</title>
 <variablelist>
 <varlistentry>
@@ -1402,7 +1396,7 @@ repositories.</simpara>
 <simpara>In general, the interrogate commands do not touch the files in
 the working tree.</simpara>
 </section>
-<section id="_synching_repositories">
+<section id="git(1)__synching_repositories">
 <title>Synching repositories</title>
 <variablelist>
 <varlistentry>
@@ -1531,7 +1525,7 @@ typically do not use them directly.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_internal_helper_commands">
+<section id="git(1)__internal_helper_commands">
 <title>Internal helper commands</title>
 <simpara>These are internal helper commands used by other commands; end
 users typically do not use them directly.</simpara>
@@ -1553,6 +1547,46 @@ users typically do not use them directly.</simpara>
 <listitem>
 <simpara>
         Ensures that a reference name is well formed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-column(1)" />
+</term>
+<listitem>
+<simpara>
+        Display data in columns.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-credential(1)" />
+</term>
+<listitem>
+<simpara>
+        Retrieve and store user credentials.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-credential-cache(1)" />
+</term>
+<listitem>
+<simpara>
+        Helper to temporarily store passwords in memory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-credential-store(1)" />
+</term>
+<listitem>
+<simpara>
+        Helper to store credentials on disk.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1618,6 +1652,16 @@ users typically do not use them directly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-sh-i18n(1)" />
+</term>
+<listitem>
+<simpara>
+        Git's i18n setup code for shell scripts.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-sh-setup(1)" />
 </term>
 <listitem>
@@ -1639,7 +1683,7 @@ users typically do not use them directly.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_configuration_mechanism">
+<simplesect id="git(1)__configuration_mechanism">
 <title>Configuration Mechanism</title>
 <simpara>Starting from 0.99.9 (actually mid 0.99.8.GIT), <emphasis>.git/config</emphasis> file
 is used to hold per-repository configuration options.  It is a
@@ -1662,7 +1706,7 @@ people.  Here is an example:</simpara>
 their operation accordingly.  See <xref linkend="git-config(1)" /> for a
 list.</simpara>
 </simplesect>
-<simplesect id="_identifier_terminology">
+<simplesect id="git(1)__identifier_terminology">
 <title>Identifier Terminology</title>
 <variablelist>
 <varlistentry>
@@ -1755,7 +1799,7 @@ list.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_symbolic_identifiers">
+<simplesect id="git(1)__symbolic_identifiers">
 <title>Symbolic Identifiers</title>
 <simpara>Any git command accepting any &lt;object&gt; can also use the following
 symbolic notation:</simpara>
@@ -1796,21 +1840,21 @@ HEAD
 <simpara>For a more complete list of ways to spell object names, see
 "SPECIFYING REVISIONS" section in <xref linkend="gitrevisions(7)" />.</simpara>
 </simplesect>
-<simplesect id="_file_directory_structure">
+<simplesect id="git(1)__file_directory_structure">
 <title>File/Directory Structure</title>
 <simpara>Please see the <xref linkend="gitrepository-layout(5)" /> document.</simpara>
 <simpara>Read <xref linkend="githooks(5)" /> for more details about each hook.</simpara>
 <simpara>Higher level SCMs may provide and manage additional information in the
 <emphasis>$GIT_DIR</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_terminology">
+<simplesect id="git(1)__terminology">
 <title>Terminology</title>
 <simpara>Please see <xref linkend="gitglossary(7)" />.</simpara>
 </simplesect>
-<simplesect id="_environment_variables">
+<simplesect id="git(1)__environment_variables">
 <title>Environment Variables</title>
 <simpara>Various git commands use the following environment variables:</simpara>
-<section id="_the_git_repository">
+<section id="git(1)__the_git_repository">
 <title>The git Repository</title>
 <simpara>These environment variables apply to <emphasis>all</emphasis> core git commands. Nb: it
 is worth noting that they may be used/overridden by SCMS sitting above
@@ -1864,6 +1908,7 @@ git so take care if using Cogito etc.</simpara>
         If the <emphasis>GIT_DIR</emphasis> environment variable is set then it
         specifies a path to use instead of the default <emphasis>.git</emphasis>
         for the base of the repository.
+        The <emphasis>--git-dir</emphasis> command-line option also sets this value.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1926,7 +1971,7 @@ git so take care if using Cogito etc.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_git_commits">
+<section id="git(1)__git_commits">
 <title>git Commits</title>
 <variablelist>
 <varlistentry>
@@ -1959,7 +2004,7 @@ git so take care if using Cogito etc.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_git_diffs">
+<section id="git(1)__git_diffs">
 <title>git Diffs</title>
 <variablelist>
 <varlistentry>
@@ -2030,7 +2075,7 @@ parameter, &lt;path&gt;.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="_other">
+<section id="git(1)__other">
 <title>other</title>
 <variablelist>
 <varlistentry>
@@ -2065,7 +2110,7 @@ parameter, &lt;path&gt;.</simpara>
 <listitem>
 <simpara>
         This environment variable overrides <emphasis>$EDITOR</emphasis> and <emphasis>$VISUAL</emphasis>.
-        It is used by several git comands when, on interactive mode,
+        It is used by several git commands when, on interactive mode,
         an editor is to be launched. See also <xref linkend="git-var(1)" />
         and the <emphasis>core.editor</emphasis> option in <xref linkend="git-config(1)" />.
 </simpara>
@@ -2147,8 +2192,8 @@ for further details.</simpara>
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_discussion_anchor_id_discussion_xreflabel_discussion">
-<title>Discussion<anchor id="Discussion" xreflabel="[Discussion]"/></title>
+<simplesect id="git(1)__discussion_anchor_id_git_1__discussion_xreflabel_discussion">
+<title>Discussion<anchor id="git(1)_Discussion" xreflabel="[Discussion]"/></title>
 <simpara>More detail on the following is available from the
 <link linkend="git-concepts">git concepts chapter of the
 user-manual</link> and <xref linkend="gitcore-tutorial(7)" />.</simpara>
@@ -2191,22 +2236,39 @@ content stored in the index.</simpara>
 for a given pathname.  These stages are used to hold the various
 unmerged version of a file when a merge is in progress.</simpara>
 </simplesect>
-<simplesect id="_authors">
+<simplesect id="git(1)__further_documentation">
+<title>FURTHER DOCUMENTATION</title>
+<simpara>See the references in the "description" section to get started
+using git.  The following is probably more detail than necessary
+for a first-time user.</simpara>
+<simpara>The <link linkend="git-concepts">git concepts chapter of the
+user-manual</link> and <xref linkend="gitcore-tutorial(7)" /> both provide
+introductions to the underlying git architecture.</simpara>
+<simpara>See <xref linkend="gitworkflows(7)" /> for an overview of recommended workflows.</simpara>
+<simpara>See also the link:howto-index.html[howto] documents for some useful
+examples.</simpara>
+<simpara>The internals are documented in the
+link:technical/api-index.html[GIT API documentation].</simpara>
+<simpara>Users migrating from CVS may also want to
+read <xref linkend="gitcvs-migration(7)" />.</simpara>
+</simplesect>
+<simplesect id="git(1)__authors">
 <title>Authors</title>
 <simpara>Git was started by Linus Torvalds, and is currently maintained by Junio
 C Hamano. Numerous contributions have come from the git mailing list
-&lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;. For a more complete list of contributors, see
-<ulink url="http://git-scm.com/about">http://git-scm.com/about</ulink>. If you have a clone of git.git itself, the
+&lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.  <ulink url="http://www.ohloh.net/p/git/contributors/summary">http://www.ohloh.net/p/git/contributors/summary</ulink>
+gives you a more complete list of contributors.</simpara>
+<simpara>If you have a clone of git.git itself, the
 output of <xref linkend="git-shortlog(1)" /> and <xref linkend="git-blame(1)" /> can show you
 the authors for specific parts of the project.</simpara>
 </simplesect>
-<simplesect id="_reporting_bugs">
+<simplesect id="git(1)__reporting_bugs">
 <title>Reporting Bugs</title>
 <simpara>Report bugs to the Git mailing list &lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt; where the
 development and maintenance is primarily done.  You do not have to be
 subscribed to the list to send a message there.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial(7)" />, <xref linkend="gittutorial-2(7)" />,
 link:everyday.html[Everyday Git], <xref linkend="gitcvs-migration(7)" />,
@@ -2214,8 +2276,8 @@ link:everyday.html[Everyday Git], <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="gitcli(7)" />, link:user-manual.html[The Git User's Manual],
 <xref linkend="gitworkflows(7)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

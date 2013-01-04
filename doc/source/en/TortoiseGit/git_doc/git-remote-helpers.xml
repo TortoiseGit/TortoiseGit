@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-remote-helpers(1)">
-<articleinfo>
+<sect2 lang="en" id="git-remote-helpers(1)">
     <title>git-remote-helpers(1)</title>
 <indexterm>
 <primary>git-remote-helpers(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-remote-helpers(1)__name">
 <title>NAME</title>
 <simpara>git-remote-helpers - Helper programs to interact with remote repositories</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-remote-helpers(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git remote-&lt;transport&gt;</emphasis> &lt;repository&gt; [&lt;URL&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-remote-helpers(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Remote helper programs are normally not used directly by end users,
 but they are invoked by git when it needs to interact with remote
@@ -40,7 +38,34 @@ transport protocols, such as <emphasis>git-remote-http</emphasis>, <emphasis>git
 <emphasis>git-remote-ftp</emphasis> and <emphasis>git-remote-ftps</emphasis>. They implement the capabilities
 <emphasis>fetch</emphasis>, <emphasis>option</emphasis>, and <emphasis>push</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_input_format">
+<simplesect id="git-remote-helpers(1)__invocation">
+<title>INVOCATION</title>
+<simpara>Remote helper programs are invoked with one or (optionally) two
+arguments. The first argument specifies a remote repository as in git;
+it is either the name of a configured remote or a URL. The second
+argument specifies a URL; it is usually of the form
+<emphasis>&lt;transport&gt;://&lt;address&gt;</emphasis>, but any arbitrary string is possible.
+The <emphasis>GIT_DIR</emphasis> environment variable is set up for the remote helper
+and can be used to determine where to store additional data or from
+which directory to invoke auxiliary git commands.</simpara>
+<simpara>When git encounters a URL of the form <emphasis>&lt;transport&gt;://&lt;address&gt;</emphasis>, where
+<emphasis>&lt;transport&gt;</emphasis> is a protocol that it cannot handle natively, it
+automatically invokes <emphasis>git remote-&lt;transport&gt;</emphasis> with the full URL as
+the second argument. If such a URL is encountered directly on the
+command line, the first argument is the same as the second, and if it
+is encountered in a configured remote, the first argument is the name
+of that remote.</simpara>
+<simpara>A URL of the form <emphasis>&lt;transport&gt;::&lt;address&gt;</emphasis> explicitly instructs git to
+invoke <emphasis>git remote-&lt;transport&gt;</emphasis> with <emphasis>&lt;address&gt;</emphasis> as the second
+argument. If such a URL is encountered directly on the command line,
+the first argument is <emphasis>&lt;address&gt;</emphasis>, and if it is encountered in a
+configured remote, the first argument is the name of that remote.</simpara>
+<simpara>Additionally, when a configured remote has <emphasis>remote.&lt;name&gt;.vcs</emphasis> set to
+<emphasis>&lt;transport&gt;</emphasis>, git explicitly invokes <emphasis>git remote-&lt;transport&gt;</emphasis> with
+<emphasis>&lt;name&gt;</emphasis> as the first argument. If set, the second argument is
+<emphasis>remote.&lt;name&gt;.url</emphasis>; otherwise, the second argument is omitted.</simpara>
+</simplesect>
+<simplesect id="git-remote-helpers(1)__input_format">
 <title>INPUT FORMAT</title>
 <simpara>Git sends the remote helper a list of commands on standard input, one
 per line.  The first command is always the <emphasis>capabilities</emphasis> command, in
@@ -52,96 +77,15 @@ in the remainder of the command stream.</simpara>
 (indicated in the documentation of the relevant commands), this blank
 line is followed by a payload in some other protocol (e.g., the pack
 protocol), while in others it indicates the end of input.</simpara>
-<section id="_capabilities">
+<section id="git-remote-helpers(1)__capabilities">
 <title>Capabilities</title>
 <simpara>Each remote helper is expected to support only a subset of commands.
 The operations a helper supports are declared to git in the response
 to the <emphasis>capabilities</emphasis> command (see COMMANDS, below).</simpara>
-<variablelist>
-<varlistentry>
-<term>
-<emphasis>option</emphasis>
-</term>
-<listitem>
-<simpara>
-        For specifying settings like <emphasis>verbosity</emphasis> (how much output to
-        write to stderr) and <emphasis>depth</emphasis> (how much history is wanted in the
-        case of a shallow clone) that affect how other commands are
-        carried out.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>connect</emphasis>
-</term>
-<listitem>
-<simpara>
-        For fetching and pushing using git's native packfile protocol
-        that requires a bidirectional, full-duplex connection.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>push</emphasis>
-</term>
-<listitem>
-<simpara>
-        For listing remote refs and pushing specified objects from the
-        local object store to remote refs.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>fetch</emphasis>
-</term>
-<listitem>
-<simpara>
-        For listing remote refs and fetching the associated history to
-        the local object store.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>import</emphasis>
-</term>
-<listitem>
-<simpara>
-        For listing remote refs and fetching the associated history as
-        a fast-import stream.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>refspec</emphasis> &lt;refspec&gt;
-</term>
-<listitem>
-<simpara>
-        This modifies the <emphasis>import</emphasis> capability, allowing the produced
-        fast-import stream to modify refs in a private namespace
-        instead of writing to refs/heads or refs/remotes directly.
-        It is recommended that all importers providing the <emphasis>import</emphasis>
-        capability use this.
-</simpara>
-<simpara>A helper advertising the capability
-<emphasis>refspec refs/heads/*:refs/svn/origin/branches/*</emphasis>
-is saying that, when it is asked to <emphasis>import refs/heads/topic</emphasis>, the
-stream it outputs will update the <emphasis>refs/svn/origin/branches/topic</emphasis>
-ref.</simpara>
-<simpara>This capability can be advertised multiple times.  The first
-applicable refspec takes precedence.  The left-hand of refspecs
-advertised with this capability must cover all refs reported by
-the list command.  If no <emphasis>refspec</emphasis> capability is advertised,
-there is an implied <emphasis>refspec *:*</emphasis>.</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</section>
-<section id="_capabilities_for_pushing">
+<simpara>In the following, we list all defined capabilities and for
+each we list which commands a helper with that capability
+must provide.</simpara>
+<section id="git-remote-helpers(1)__capabilities_for_pushing">
 <title>Capabilities for Pushing</title>
 <variablelist>
 <varlistentry>
@@ -151,8 +95,9 @@ there is an implied <emphasis>refspec *:*</emphasis>.</simpara>
 <listitem>
 <simpara>
         Can attempt to connect to <emphasis>git receive-pack</emphasis> (for pushing),
-        <emphasis>git upload-pack</emphasis>, etc for communication using the
-        packfile protocol.
+        <emphasis>git upload-pack</emphasis>, etc for communication using
+        git's native packfile protocol. This
+        requires a bidirectional, full-duplex connection.
 </simpara>
 <simpara>Supported commands: <emphasis>connect</emphasis>.</simpara>
 </listitem>
@@ -169,12 +114,26 @@ there is an implied <emphasis>refspec *:*</emphasis>.</simpara>
 <simpara>Supported commands: <emphasis>list for-push</emphasis>, <emphasis>push</emphasis>.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>export</emphasis>
+</term>
+<listitem>
+<simpara>
+        Can discover remote refs and push specified objects from a
+        fast-import stream to remote refs.
+</simpara>
+<simpara>Supported commands: <emphasis>list for-push</emphasis>, <emphasis>export</emphasis>.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
-<simpara>If a helper advertises both <emphasis>connect</emphasis> and <emphasis>push</emphasis>, git will use
-<emphasis>connect</emphasis> if possible and fall back to <emphasis>push</emphasis> if the helper requests
-so when connecting (see the <emphasis>connect</emphasis> command under COMMANDS).</simpara>
+<simpara>If a helper advertises <emphasis>connect</emphasis>, git will use it if possible and
+fall back to another capability if the helper requests so when
+connecting (see the <emphasis>connect</emphasis> command under COMMANDS).
+When choosing between <emphasis>push</emphasis> and <emphasis>export</emphasis>, git prefers <emphasis>push</emphasis>.
+Other frontends may have some other order of preference.</simpara>
 </section>
-<section id="_capabilities_for_fetching">
+<section id="git-remote-helpers(1)__capabilities_for_fetching">
 <title>Capabilities for Fetching</title>
 <variablelist>
 <varlistentry>
@@ -185,7 +144,8 @@ so when connecting (see the <emphasis>connect</emphasis> command under COMMANDS)
 <simpara>
         Can try to connect to <emphasis>git upload-pack</emphasis> (for fetching),
         <emphasis>git receive-pack</emphasis>, etc for communication using the
-        packfile protocol.
+        git's native packfile protocol. This
+        requires a bidirectional, full-duplex connection.
 </simpara>
 <simpara>Supported commands: <emphasis>connect</emphasis>.</simpara>
 </listitem>
@@ -220,20 +180,40 @@ fall back to another capability if the helper requests so when
 connecting (see the <emphasis>connect</emphasis> command under COMMANDS).
 When choosing between <emphasis>fetch</emphasis> and <emphasis>import</emphasis>, git prefers <emphasis>fetch</emphasis>.
 Other frontends may have some other order of preference.</simpara>
+</section>
+<section id="git-remote-helpers(1)__miscellaneous_capabilities">
+<title>Miscellaneous capabilities</title>
 <variablelist>
+<varlistentry>
+<term>
+<emphasis>option</emphasis>
+</term>
+<listitem>
+<simpara>
+        For specifying settings like <emphasis>verbosity</emphasis> (how much output to
+        write to stderr) and <emphasis>depth</emphasis> (how much history is wanted in the
+        case of a shallow clone) that affect how other commands are
+        carried out.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 <emphasis>refspec</emphasis> &lt;refspec&gt;
 </term>
 <listitem>
 <simpara>
-        This modifies the <emphasis>import</emphasis> capability.
+        This modifies the <emphasis>import</emphasis> capability, allowing the produced
+        fast-import stream to modify refs in a private namespace
+        instead of writing to refs/heads or refs/remotes directly.
+        It is recommended that all importers providing the <emphasis>import</emphasis>
+        capability use this.
 </simpara>
-<simpara>A helper advertising
+<simpara>A helper advertising the capability
 <emphasis>refspec refs/heads/*:refs/svn/origin/branches/*</emphasis>
-in its capabilities is saying that, when it handles
-<emphasis>import refs/heads/topic</emphasis>, the stream it outputs will update the
-<emphasis>refs/svn/origin/branches/topic</emphasis> ref.</simpara>
+is saying that, when it is asked to <emphasis>import refs/heads/topic</emphasis>, the
+stream it outputs will update the <emphasis>refs/svn/origin/branches/topic</emphasis>
+ref.</simpara>
 <simpara>This capability can be advertised multiple times.  The first
 applicable refspec takes precedence.  The left-hand of refspecs
 advertised with this capability must cover all refs reported by
@@ -241,37 +221,57 @@ the list command.  If no <emphasis>refspec</emphasis> capability is advertised,
 there is an implied <emphasis>refspec *:*</emphasis>.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>bidi-import</emphasis>
+</term>
+<listitem>
+<simpara>
+        This modifies the <emphasis>import</emphasis> capability.
+        The fast-import commands <emphasis>cat-blob</emphasis> and <emphasis>ls</emphasis> can be used by remote-helpers
+        to retrieve information about blobs and trees that already exist in
+        fast-import's memory. This requires a channel from fast-import to the
+        remote-helper.
+        If it is advertised in addition to "import", git establishes a pipe from
+        fast-import to the remote-helper's stdin.
+        It follows that git and fast-import are both connected to the
+        remote-helper's stdin. Because git can send multiple commands to
+        the remote-helper it is required that helpers that use <emphasis>bidi-import</emphasis>
+        buffer all <emphasis>import</emphasis> commands of a batch before sending data to fast-import.
+        This is to prevent mixing commands and fast-import responses on the
+        helper's stdin.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>export-marks</emphasis> &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        This modifies the <emphasis>export</emphasis> capability, instructing git to dump the
+        internal marks table to &lt;file&gt; when complete. For details,
+        read up on <emphasis>--export-marks=&lt;file&gt;</emphasis> in <xref linkend="git-fast-export(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>import-marks</emphasis> &lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        This modifies the <emphasis>export</emphasis> capability, instructing git to load the
+        marks specified in &lt;file&gt; before processing any input. For details,
+        read up on <emphasis>--import-marks=&lt;file&gt;</emphasis> in <xref linkend="git-fast-export(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
+</section>
 </simplesect>
-<simplesect id="_invocation">
-<title>INVOCATION</title>
-<simpara>Remote helper programs are invoked with one or (optionally) two
-arguments. The first argument specifies a remote repository as in git;
-it is either the name of a configured remote or a URL. The second
-argument specifies a URL; it is usually of the form
-<emphasis>&lt;transport&gt;://&lt;address&gt;</emphasis>, but any arbitrary string is possible.
-The <emphasis>GIT_DIR</emphasis> environment variable is set up for the remote helper
-and can be used to determine where to store additional data or from
-which directory to invoke auxiliary git commands.</simpara>
-<simpara>When git encounters a URL of the form <emphasis>&lt;transport&gt;://&lt;address&gt;</emphasis>, where
-<emphasis>&lt;transport&gt;</emphasis> is a protocol that it cannot handle natively, it
-automatically invokes <emphasis>git remote-&lt;transport&gt;</emphasis> with the full URL as
-the second argument. If such a URL is encountered directly on the
-command line, the first argument is the same as the second, and if it
-is encountered in a configured remote, the first argument is the name
-of that remote.</simpara>
-<simpara>A URL of the form <emphasis>&lt;transport&gt;::&lt;address&gt;</emphasis> explicitly instructs git to
-invoke <emphasis>git remote-&lt;transport&gt;</emphasis> with <emphasis>&lt;address&gt;</emphasis> as the second
-argument. If such a URL is encountered directly on the command line,
-the first argument is <emphasis>&lt;address&gt;</emphasis>, and if it is encountered in a
-configured remote, the first argument is the name of that remote.</simpara>
-<simpara>Additionally, when a configured remote has <emphasis>remote.&lt;name&gt;.vcs</emphasis> set to
-<emphasis>&lt;transport&gt;</emphasis>, git explicitly invokes <emphasis>git remote-&lt;transport&gt;</emphasis> with
-<emphasis>&lt;name&gt;</emphasis> as the first argument. If set, the second argument is
-<emphasis>remote.&lt;name&gt;.url</emphasis>; otherwise, the second argument is omitted.</simpara>
-</simplesect>
-<simplesect id="_commands">
+<simplesect id="git-remote-helpers(1)__commands">
 <title>COMMANDS</title>
 <simpara>Commands are given by the caller on the helper's standard input, one per line.</simpara>
 <variablelist>
@@ -283,10 +283,11 @@ configured remote, the first argument is the name of that remote.</simpara>
 <simpara>
         Lists the capabilities of the helper, one per line, ending
         with a blank line. Each capability may be preceded with <emphasis>*</emphasis>,
-        which marks them mandatory for git version using the remote
-        helper to understand (unknown mandatory capability is fatal
-        error).
+        which marks them mandatory for git versions using the remote
+        helper to understand. Any unknown mandatory capability is a
+        fatal error.
 </simpara>
+<simpara>Support for this command is mandatory.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -302,9 +303,25 @@ configured remote, the first argument is the name of that remote.</simpara>
         the name; unrecognized attributes are ignored. The list ends
         with a blank line.
 </simpara>
-<simpara>If <emphasis>push</emphasis> is supported this may be called as <emphasis>list for-push</emphasis>
-to obtain the current refs prior to sending one or more <emphasis>push</emphasis>
-commands to the helper.</simpara>
+<simpara>See REF LIST ATTRIBUTES for a list of currently defined attributes.</simpara>
+<simpara>Supported if the helper has the "fetch" or "import" capability.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>list for-push</emphasis>
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>list</emphasis>, except that it is used if and only if
+        the caller wants to the resulting ref list to prepare
+        push commands.
+        A helper supporting both push and fetch can use this
+        to distinguish for which operation the output of <emphasis>list</emphasis>
+        is going to be used, possibly reducing the amount
+        of work that needs to be performed.
+</simpara>
+<simpara>Supported if the helper has the "push" or "export" capability.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -320,6 +337,7 @@ commands to the helper.</simpara>
         for it).  Options should be set before other commands,
         and may influence the behavior of those commands.
 </simpara>
+<simpara>See OPTIONS for a list of currently defined options.</simpara>
 <simpara>Supported if the helper has the "option" capability.</simpara>
 </listitem>
 </varlistentry>
@@ -334,7 +352,7 @@ commands to the helper.</simpara>
         per line, terminated with a blank line.
         Outputs a single blank line when all fetch commands in the
         same batch are complete. Only objects which were reported
-        in the ref list with a sha1 may be fetched this way.
+        in the output of <emphasis>list</emphasis> with a sha1 may be fetched this way.
 </simpara>
 <simpara>Optionally may output a <emphasis>lock &lt;file&gt;</emphasis> line indicating a file under
 GIT_DIR/objects/pack which is keeping a pack until refs can be
@@ -394,7 +412,31 @@ system.</simpara>
 terminated with a blank line. For each batch of <emphasis>import</emphasis>, the remote
 helper should produce a fast-import stream terminated by a <emphasis>done</emphasis>
 command.</simpara>
+<simpara>Note that if the <emphasis>bidi-import</emphasis> capability is used the complete batch
+sequence has to be buffered before starting to send data to fast-import
+to prevent mixing of commands and fast-import responses on the helper's
+stdin.</simpara>
 <simpara>Supported if the helper has the "import" capability.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>export</emphasis>
+</term>
+<listitem>
+<simpara>
+        Instructs the remote helper that any subsequent input is
+        part of a fast-import stream (generated by <emphasis>git fast-export</emphasis>)
+        containing objects which should be pushed to the remote.
+</simpara>
+<simpara>Especially useful for interoperability with a foreign versioning
+system.</simpara>
+<simpara>The <emphasis>export-marks</emphasis> and <emphasis>import-marks</emphasis> capabilities, if specified,
+affect this command in so far as they are passed on to <emphasis>git
+fast-export</emphasis>, which then will load/store a table of marks for
+local objects. This can be used to implement for incremental
+operations.</simpara>
+<simpara>Supported if the helper has the "export" capability.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -425,21 +467,12 @@ completing a valid response for the current command.</simpara>
 <simpara>Additional commands may be supported, as may be determined from
 capabilities reported by the helper.</simpara>
 </simplesect>
-<simplesect id="_ref_list_attributes">
+<simplesect id="git-remote-helpers(1)__ref_list_attributes">
 <title>REF LIST ATTRIBUTES</title>
+<simpara>The <emphasis>list</emphasis> command produces a list of refs in which each ref
+may be followed by a list of attributes. The following ref list
+attributes are defined.</simpara>
 <variablelist>
-<varlistentry>
-<term>
-<emphasis>for-push</emphasis>
-</term>
-<listitem>
-<simpara>
-        The caller wants to use the ref list to prepare push
-        commands.  A helper might chose to acquire the ref list by
-        opening a different type of connection to the destination.
-</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 <emphasis>unchanged</emphasis>
@@ -453,8 +486,10 @@ capabilities reported by the helper.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-remote-helpers(1)__options">
 <title>OPTIONS</title>
+<simpara>The following options are defined and (under suitable circumstances)
+set by git if the remote helper has the <emphasis>option</emphasis> capability.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -528,13 +563,13 @@ capabilities reported by the helper.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-remote-helpers(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-remote(1)" /></simpara>
 <simpara><xref linkend="git-remote-testgit(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-remote-helpers(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

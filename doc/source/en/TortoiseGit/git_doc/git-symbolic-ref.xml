@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-symbolic-ref(1)">
-<articleinfo>
+<sect2 lang="en" id="git-symbolic-ref(1)">
     <title>git-symbolic-ref(1)</title>
 <indexterm>
 <primary>git-symbolic-ref(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-symbolic-ref(1)__name">
 <title>NAME</title>
-<simpara>git-symbolic-ref - Read and modify symbolic refs</simpara>
+<simpara>git-symbolic-ref - Read, modify and delete symbolic refs</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-symbolic-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git symbolic-ref</emphasis> [-m &lt;reason&gt;] &lt;name&gt; &lt;ref&gt;
-<emphasis>git symbolic-ref</emphasis> [-q] [--short] &lt;name&gt;</literallayout>
+<emphasis>git symbolic-ref</emphasis> [-q] [--short] &lt;name&gt;
+<emphasis>git symbolic-ref</emphasis> --delete [-q] &lt;name&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-symbolic-ref(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Given one argument, reads which branch head the given symbolic
 ref refers to and outputs its path, relative to the <emphasis>.git/</emphasis>
@@ -27,13 +26,28 @@ directory.  Typically you would give <emphasis>HEAD</emphasis> as the &lt;name&g
 argument to see which branch your working tree is on.</simpara>
 <simpara>Given two arguments, creates or updates a symbolic ref &lt;name&gt; to
 point at the given branch &lt;ref&gt;.</simpara>
+<simpara>Given <emphasis>--delete</emphasis> and an additional argument, deletes the given
+symbolic ref.</simpara>
 <simpara>A symbolic ref is a regular file that stores a string that
 begins with <emphasis>ref: refs/</emphasis>.  For example, your <emphasis>.git/HEAD</emphasis> is
 a regular file whose contents is <emphasis>ref: refs/heads/master</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-symbolic-ref(1)__options">
 <title>OPTIONS</title>
 <variablelist>
+<varlistentry>
+<term>
+-d
+</term>
+<term>
+--delete
+</term>
+<listitem>
+<simpara>
+        Delete the symbolic ref &lt;name&gt;.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 -q
@@ -73,7 +87,7 @@ a regular file whose contents is <emphasis>ref: refs/heads/master</emphasis>.</s
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_notes">
+<simplesect id="git-symbolic-ref(1)__notes">
 <title>NOTES</title>
 <simpara>In the past, <emphasis>.git/HEAD</emphasis> was a symbolic link pointing at
 <emphasis>refs/heads/master</emphasis>.  When we wanted to switch to another branch,
@@ -86,8 +100,8 @@ default.</simpara>
 symbolic ref were printed correctly, with status 1 if the requested
 name is not a symbolic ref, or 128 if another error occurs.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-symbolic-ref(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

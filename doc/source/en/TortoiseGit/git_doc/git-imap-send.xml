@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-imap-send(1)">
-<articleinfo>
+<sect2 lang="en" id="git-imap-send(1)">
     <title>git-imap-send(1)</title>
 <indexterm>
 <primary>git-imap-send(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-imap-send(1)__name">
 <title>NAME</title>
 <simpara>git-imap-send - Send a collection of patches from stdin to an IMAP folder</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-imap-send(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git imap-send</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-imap-send(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This command uploads a mailbox generated with <emphasis>git format-patch</emphasis>
 into an IMAP drafts folder.  This allows patches to be sent as
@@ -29,11 +27,11 @@ that order.</simpara>
 <simpara>Typical usage is something like:</simpara>
 <simpara>git format-patch --signoff --stdout --attach origin | git imap-send</simpara>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-imap-send(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara>To use the tool, imap.folder and either imap.tunnel or imap.host must be set
 to appropriate values.</simpara>
-<section id="_variables">
+<section id="git-imap-send(1)__variables">
 <title>Variables</title>
 <variablelist>
 <varlistentry>
@@ -144,7 +142,7 @@ imap.authMethod
 </varlistentry>
 </variablelist>
 </section>
-<section id="_examples">
+<section id="git-imap-send(1)__examples">
 <title>Examples</title>
 <simpara>Using tunnel mode:</simpara>
 <literallayout class="monospaced">[imap]
@@ -166,7 +164,7 @@ imap.authMethod
     sslverify = false</literallayout>
 </section>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-imap-send(1)__example">
 <title>EXAMPLE</title>
 <simpara>To submit patches using GMail's IMAP interface, first, edit your ~/.gitconfig
 to specify your account settings:</simpara>
@@ -184,7 +182,7 @@ that the "Folder doesn't exist".</simpara>
 interface will wrap lines no matter what, so you need to use a real
 IMAP client).</simpara>
 </simplesect>
-<simplesect id="_caution">
+<simplesect id="git-imap-send(1)__caution">
 <title>CAUTION</title>
 <simpara>It is still your responsibility to make sure that the email message
 sent by your email program meets the standards of your project.
@@ -196,12 +194,12 @@ flames ridiculing you if you don't check this.</simpara>
 users may wish to visit this web page for more information:
   <ulink url="http://kb.mozillazine.org/Plain_text_e-mail_-_Thunderbird#Completely_plain_email">http://kb.mozillazine.org/Plain_text_e-mail_-_Thunderbird#Completely_plain_email</ulink></simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-imap-send(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-format-patch(1)" />, <xref linkend="git-send-email(1)" />, mbox(5)</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-imap-send(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

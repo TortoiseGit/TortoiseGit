@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gittutorial(7)">
-<articleinfo>
+<sect2 lang="en" id="gittutorial(7)">
     <title>gittutorial(7)</title>
 <indexterm>
 <primary>gittutorial(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gittutorial(7)__name">
 <title>NAME</title>
 <simpara>gittutorial - A tutorial introduction to git (for version 1.5.1 or newer)</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gittutorial(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>git *</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gittutorial(7)__description">
 <title>DESCRIPTION</title>
 <simpara>This tutorial explains how to import a new project into git, make
 changes to it, and share changes with other developers.</simpara>
@@ -38,7 +36,7 @@ way to do so is:</simpara>
 <screen>$ git config --global user.name "Your Name Comes Here"
 $ git config --global user.email you@yourdomain.example.com</screen>
 </simplesect>
-<simplesect id="_importing_a_new_project">
+<simplesect id="gittutorial(7)__importing_a_new_project">
 <title>Importing a new project</title>
 <simpara>Assume you have a tarball project.tar.gz with your initial work.  You
 can place it under git revision control as follows.</simpara>
@@ -59,7 +57,7 @@ repository with <emphasis>git commit</emphasis>:</simpara>
 <simpara>This will prompt you for a commit message.  You've now stored the first
 version of your project in git.</simpara>
 </simplesect>
-<simplesect id="_making_changes">
+<simplesect id="gittutorial(7)__making_changes">
 <title>Making changes</title>
 <simpara>Modify some files, then add their updated contents to the index:</simpara>
 <screen>$ git add file1 file2 file3</screen>
@@ -90,11 +88,13 @@ them to the index, and commit, all in one step.</simpara>
 <simpara>A note on commit messages: Though not required, it's a good idea to
 begin the commit message with a single short (less than 50 character)
 line summarizing the change, followed by a blank line and then a more
-thorough description.  Tools that turn commits into email, for
-example, use the first line on the Subject: line and the rest of the
-commit in the body.</simpara>
+thorough description. The text up to the first blank line in a commit
+message is treated as the commit title, and that title is used
+throughout git.  For example, <xref linkend="git-format-patch(1)" /> turns a
+commit into email, and it uses the title on the Subject line and the
+rest of the commit in the body.</simpara>
 </simplesect>
-<simplesect id="_git_tracks_content_not_files">
+<simplesect id="gittutorial(7)__git_tracks_content_not_files">
 <title>Git tracks content not files</title>
 <simpara>Many revision control systems provide an <emphasis>add</emphasis> command that tells the
 system to start tracking changes to a new file.  Git's <emphasis>add</emphasis> command
@@ -103,7 +103,7 @@ and newly modified files, and in both cases it takes a snapshot of the
 given files and stages that content in the index, ready for inclusion in
 the next commit.</simpara>
 </simplesect>
-<simplesect id="_viewing_project_history">
+<simplesect id="gittutorial(7)__viewing_project_history">
 <title>Viewing project history</title>
 <simpara>At any point you can view the history of your changes using</simpara>
 <screen>$ git log</screen>
@@ -113,7 +113,7 @@ the next commit.</simpara>
 each step</simpara>
 <screen>$ git log --stat --summary</screen>
 </simplesect>
-<simplesect id="_managing_branches">
+<simplesect id="gittutorial(7)__managing_branches">
 <title>Managing branches</title>
 <simpara>A single git repository can maintain multiple branches of
 development.  To create a new branch named "experimental", use</simpara>
@@ -160,7 +160,7 @@ delete the branch with</simpara>
 <simpara>Branches are cheap and easy, so this is a good way to try something
 out.</simpara>
 </simplesect>
-<simplesect id="_using_git_for_collaboration">
+<simplesect id="gittutorial(7)__using_git_for_collaboration">
 <title>Using git for collaboration</title>
 <simpara>Suppose that Alice has started a new project with a git repository in
 /home/alice/project, and that Bob, who has a home directory on the
@@ -266,7 +266,7 @@ see <xref linkend="git-pull(1)" /> for details.</simpara>
 that various users push changes to; see <xref linkend="git-push(1)" /> and
 <xref linkend="gitcvs-migration(7)" />.</simpara>
 </simplesect>
-<simplesect id="_exploring_history">
+<simplesect id="gittutorial(7)__exploring_history">
 <title>Exploring history</title>
 <simpara>Git history is represented as a series of interrelated commits.  We
 have already seen that the <emphasis>git log</emphasis> command can list those commits.
@@ -360,7 +360,7 @@ of the file:</simpara>
 <simpara>You can also use <emphasis>git show</emphasis> to see any such file:</simpara>
 <screen>$ git show v2.5:Makefile</screen>
 </simplesect>
-<simplesect id="_next_steps">
+<simplesect id="gittutorial(7)__next_steps">
 <title>Next Steps</title>
 <simpara>This tutorial should be enough to perform basic distributed revision
 control for your projects.  However, to fully understand the depth
@@ -424,7 +424,7 @@ link:everyday.html[Everyday GIT with 20 Commands Or So]
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gittutorial(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gittutorial-2(7)" />,
 <xref linkend="gitcvs-migration(7)" />,
@@ -435,8 +435,8 @@ link:everyday.html[Everyday GIT with 20 Commands Or So]
 link:everyday.html[Everyday git],
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gittutorial(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

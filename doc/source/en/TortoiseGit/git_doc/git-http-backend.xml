@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-http-backend(1)">
-<articleinfo>
+<sect2 lang="en" id="git-http-backend(1)">
     <title>git-http-backend(1)</title>
 <indexterm>
 <primary>git-http-backend(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-http-backend(1)__name">
 <title>NAME</title>
 <simpara>git-http-backend - Server side implementation of Git over HTTP</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-http-backend(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git http-backend</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-http-backend(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A simple CGI program to serve the contents of a Git repository to Git
 clients accessing the repository over http:// and https:// protocols.
@@ -35,7 +33,7 @@ GIT_HTTP_EXPORT_ALL environmental variable is set).</simpara>
 the <emphasis>receive-pack</emphasis> service is enabled, which serves <emphasis>git send-pack</emphasis>
 clients, which is invoked from <emphasis>git push</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_services">
+<simplesect id="git-http-backend(1)__services">
 <title>SERVICES</title>
 <simpara>These services can be enabled/disabled using the per-repository
 configuration file:</simpara>
@@ -83,7 +81,7 @@ http.receivepack
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_url_translation">
+<simplesect id="git-http-backend(1)__url_translation">
 <title>URL TRANSLATION</title>
 <simpara>To determine the location of the repository on disk, <emphasis>git http-backend</emphasis>
 concatenates the environment variables PATH_INFO, which is set
@@ -92,7 +90,7 @@ manually in the web server configuration.  If GIT_PROJECT_ROOT is not
 set, <emphasis>git http-backend</emphasis> reads PATH_TRANSLATED, which is also set
 automatically by the web server.</simpara>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-http-backend(1)__examples">
 <title>EXAMPLES</title>
 <simpara>All of the following examples map <emphasis>http://$hostname/git/foo/bar.git</emphasis>
 to <emphasis>/var/www/git/foo/bar.git</emphasis>.</simpara>
@@ -177,7 +175,7 @@ ScriptAlias /git/ /var/www/cgi-bin/gitweb.cgi/</screen>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment">
+<simplesect id="git-http-backend(1)__environment">
 <title>ENVIRONMENT</title>
 <simpara><emphasis>git http-backend</emphasis> relies upon the CGI environment variables set
 by the invoking web server, including:</simpara>
@@ -223,16 +221,16 @@ identifying information of the remote user who performed the push.</simpara>
 <simpara>All CGI environment variables are available to each of the hooks
 invoked by the <emphasis>git-receive-pack</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_author">
+<simplesect id="git-http-backend(1)__author">
 <title>Author</title>
 <simpara>Written by Shawn O. Pearce &lt;<ulink url="mailto:spearce@spearce.org">spearce@spearce.org</ulink>&gt;.</simpara>
 </simplesect>
-<simplesect id="_documentation">
+<simplesect id="git-http-backend(1)__documentation">
 <title>Documentation</title>
 <simpara>Documentation by Shawn O. Pearce &lt;<ulink url="mailto:spearce@spearce.org">spearce@spearce.org</ulink>&gt;.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-http-backend(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-am(1)">
-<articleinfo>
+<sect2 lang="en" id="git-am(1)">
     <title>git-am(1)</title>
 <indexterm>
 <primary>git-am(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-am(1)__name">
 <title>NAME</title>
 <simpara>git-am - Apply a series of patches from a mailbox</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-am(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git am</emphasis> [--signoff] [--keep] [--keep-cr | --no-keep-cr] [--utf8 | --no-utf8]
          [--3way] [--interactive] [--committer-date-is-author-date]
          [--ignore-date] [--ignore-space-change | --ignore-whitespace]
          [--whitespace=&lt;option&gt;] [-C&lt;n&gt;] [-p&lt;n&gt;] [--directory=&lt;dir&gt;]
-         [--exclude=&lt;path&gt;] [--reject] [-q | --quiet]
+         [--exclude=&lt;path&gt;] [--include=&lt;path&gt;] [--reject] [-q | --quiet]
          [--scissors | --no-scissors]
          [(&lt;mbox&gt; | &lt;Maildir&gt;)&#8230;]
 <emphasis>git am</emphasis> (--continue | --skip | --abort)</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-am(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Splits mail messages in a mailbox into commit log message,
 authorship information and patches, and applies them to the
 current branch.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-am(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -208,6 +206,9 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 --exclude=&lt;path&gt;
 </term>
 <term>
+--include=&lt;path&gt;
+</term>
+<term>
 --reject
 </term>
 <listitem>
@@ -317,7 +318,7 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-am(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>The commit author name is taken from the "From: " line of the
 message, and commit author date is taken from the "Date: " line
@@ -380,12 +381,12 @@ commits, like running <emphasis>git am</emphasis> on the wrong branch or an erro
 commits that is more easily fixed by changing the mailbox (e.g.
 errors in the "From:" lines).</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-am(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-apply(1)" />.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-am(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

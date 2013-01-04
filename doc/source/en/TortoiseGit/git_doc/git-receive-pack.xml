@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-receive-pack(1)">
-<articleinfo>
+<sect2 lang="en" id="git-receive-pack(1)">
     <title>git-receive-pack(1)</title>
 <indexterm>
 <primary>git-receive-pack(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-receive-pack(1)__name">
 <title>NAME</title>
 <simpara>git-receive-pack - Receive what is pushed into the repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-receive-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git-receive-pack</emphasis> &lt;directory&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-receive-pack(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Invoked by <emphasis>git send-pack</emphasis> and updates the repository with the
 information fed from the remote end.</simpara>
@@ -36,7 +34,7 @@ post-update hooks found in the Documentation/howto directory.</simpara>
 option, which tells it if updates to a ref should be denied if they
 are not fast-forwards.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-receive-pack(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -51,7 +49,7 @@ are not fast-forwards.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_pre_receive_hook">
+<simplesect id="git-receive-pack(1)__pre_receive_hook">
 <title>pre-receive Hook</title>
 <simpara>Before any ref is updated, if $GIT_DIR/hooks/pre-receive file exists
 and is executable, it will be invoked once with no parameters.  The
@@ -70,7 +68,7 @@ will be performed, and the update, post-receive and post-update
 hooks will not be invoked either.  This can be useful to quickly
 bail out if the update is not to be supported.</simpara>
 </simplesect>
-<simplesect id="_update_hook">
+<simplesect id="git-receive-pack(1)__update_hook">
 <title>update Hook</title>
 <simpara>Before each ref is updated, if $GIT_DIR/hooks/update file exists
 and is executable, it is invoked once per ref, with three parameters:</simpara>
@@ -88,7 +86,7 @@ ensure the ref will actually be updated, it is only a prerequisite.
 As such it is not a good idea to send notices (e.g. email) from
 this hook.  Consider using the post-receive hook instead.</simpara>
 </simplesect>
-<simplesect id="_post_receive_hook">
+<simplesect id="git-receive-pack(1)__post_receive_hook">
 <title>post-receive Hook</title>
 <simpara>After all refs were updated (or attempted to be updated), if any
 ref update was successful, and if $GIT_DIR/hooks/post-receive
@@ -129,7 +127,7 @@ after it was updated by <emphasis>git-receive-pack</emphasis>, but before the ho
 to evaluate it.  It is recommended that hooks rely on sha1-new
 rather than the current value of refname.</simpara>
 </simplesect>
-<simplesect id="_post_update_hook">
+<simplesect id="git-receive-pack(1)__post_update_hook">
 <title>post-update Hook</title>
 <simpara>After all other processing, if at least one ref was updated, and
 if $GIT_DIR/hooks/post-update file exists and is executable, then
@@ -143,12 +141,12 @@ if the repository is packed and is served via a dumb transport.</simpara>
 <literallayout class="monospaced">#!/bin/sh
 exec git update-server-info</literallayout>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-receive-pack(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-send-pack(1)" />, <xref linkend="gitnamespaces(7)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-receive-pack(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

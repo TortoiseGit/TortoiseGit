@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitdiffcore(7)">
-<articleinfo>
+<sect2 lang="en" id="gitdiffcore(7)">
     <title>gitdiffcore(7)</title>
 <indexterm>
 <primary>gitdiffcore(7)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitdiffcore(7)__name">
 <title>NAME</title>
 <simpara>gitdiffcore - Tweaking diff output</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitdiffcore(7)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git diff</emphasis> *</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitdiffcore(7)__description">
 <title>DESCRIPTION</title>
 <simpara>The diff commands <emphasis>git diff-index</emphasis>, <emphasis>git diff-files</emphasis>, and <emphasis>git diff-tree</emphasis>
 can be told to manipulate differences they find in
@@ -27,7 +25,7 @@ is collectively called "diffcore transformation".  This short note
 describes what they are and how to use them to produce <emphasis>diff</emphasis> output
 that is easier to understand than the conventional kind.</simpara>
 </simplesect>
-<simplesect id="_the_chain_of_operation">
+<simplesect id="gitdiffcore(7)__the_chain_of_operation">
 <title>The chain of operation</title>
 <simpara>The <emphasis>git diff-&#42;</emphasis> family works by first comparing two sets of
 files:</simpara>
@@ -108,7 +106,7 @@ output routine and generates either diff-raw format (see Output
 format sections of the manual for <emphasis>git diff-&#42;</emphasis> commands) or
 diff-patch format.</simpara>
 </simplesect>
-<simplesect id="_diffcore_break_for_splitting_up_complete_rewrites">
+<simplesect id="gitdiffcore(7)__diffcore_break_for_splitting_up_complete_rewrites">
 <title>diffcore-break: For Splitting Up "Complete Rewrites"</title>
 <simpara>The second transformation in the chain is diffcore-break, and is
 controlled by the -B option to the <emphasis>git diff-&#42;</emphasis> commands.  This is
@@ -133,7 +131,7 @@ the result is used; if the edit lengthens the file, the size of
 the original is used), and can be customized by giving a number
 after "-B" option (e.g. "-B75" to tell it to use 75%).</simpara>
 </simplesect>
-<simplesect id="_diffcore_rename_for_detection_renames_and_copies">
+<simplesect id="gitdiffcore(7)__diffcore_rename_for_detection_renames_and_copies">
 <title>diffcore-rename: For Detection Renames and Copies</title>
 <simpara>This transformation is used to detect renames and copies, and is
 controlled by the -M option (to detect renames) and the -C option
@@ -172,7 +170,7 @@ the expense of making it slower.  Without <emphasis>--find-copies-harder</emphas
 <emphasis>git diff-&#42;</emphasis> commands can detect copies only if the file that was
 copied happened to have been modified in the same changeset.</simpara>
 </simplesect>
-<simplesect id="_diffcore_merge_broken_for_putting_complete_rewrites_back_together">
+<simplesect id="gitdiffcore(7)__diffcore_merge_broken_for_putting_complete_rewrites_back_together">
 <title>diffcore-merge-broken: For Putting "Complete Rewrites" Back Together</title>
 <simpara>This transformation is used to merge filepairs broken by
 diffcore-break, and not transformed into rename/copy by
@@ -217,7 +215,7 @@ a complete rewrite by showing the entire contents of old version
 prefixed with <emphasis>-</emphasis>, followed by the entire contents of new
 version prefixed with <emphasis>+</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_diffcore_pickaxe_for_detecting_addition_deletion_of_specified_string">
+<simplesect id="gitdiffcore(7)__diffcore_pickaxe_for_detecting_addition_deletion_of_specified_string">
 <title>diffcore-pickaxe: For Detecting Addition/Deletion of Specified String</title>
 <simpara>This transformation is used to find filepairs that represent
 changes that touch a specified string, and is controlled by the
@@ -236,7 +234,7 @@ output empty otherwise.  The latter behaviour is designed to
 make reviewing of the changes in the context of the whole
 changeset easier.</simpara>
 </simplesect>
-<simplesect id="_diffcore_order_for_sorting_the_output_based_on_filenames">
+<simplesect id="gitdiffcore(7)__diffcore_order_for_sorting_the_output_based_on_filenames">
 <title>diffcore-order: For Sorting the Output Based on Filenames</title>
 <simpara>This is used to reorder the filepairs according to the user's
 (or project's) taste, and is controlled by the -O option to the
@@ -254,7 +252,7 @@ Documentation
 *.c
 t</screen>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitdiffcore(7)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-diff(1)" />,
 <xref linkend="git-diff-files(1)" />,
@@ -265,8 +263,8 @@ t</screen>
 <xref linkend="gitglossary(7)" />,
 link:user-manual.html[The Git User's Manual]</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitdiffcore(7)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite.</simpara>
 </simplesect>
-</article>
+</sect2>

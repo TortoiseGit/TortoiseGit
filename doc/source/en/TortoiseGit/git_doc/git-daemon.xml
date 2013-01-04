@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-daemon(1)">
-<articleinfo>
+<sect2 lang="en" id="git-daemon(1)">
     <title>git-daemon(1)</title>
 <indexterm>
 <primary>git-daemon(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-daemon(1)__name">
 <title>NAME</title>
 <simpara>git-daemon - A really simple server for git repositories</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-daemon(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git daemon</emphasis> [--verbose] [--syslog] [--export-all]
@@ -23,11 +21,12 @@
              [--reuseaddr] [--detach] [--pid-file=&lt;file&gt;]
              [--enable=&lt;service&gt;] [--disable=&lt;service&gt;]
              [--allow-override=&lt;service&gt;] [--forbid-override=&lt;service&gt;]
+             [--access-hook=&lt;path&gt;]
              [--inetd | [--listen=&lt;host_or_ipaddr&gt;] [--port=&lt;n&gt;] [--user=&lt;user&gt; [--group=&lt;group&gt;]]
              [&lt;directory&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-daemon(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A really simple TCP git daemon that normally listens on port "DEFAULT_GIT_PORT"
 aka 9418.  It waits for a connection asking for a service, and will serve
@@ -44,7 +43,7 @@ from <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis>, and <emphasi
 git repositories.</simpara>
 <simpara>An <emphasis>upload-archive</emphasis> also exists to serve <emphasis>git archive</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-daemon(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -334,6 +333,27 @@ the facility of inet daemon to achieve the same before spawning
 </varlistentry>
 <varlistentry>
 <term>
+--access-hook=&lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        Every time a client connects, first run an external command
+        specified by the &lt;path&gt; with service name (e.g. "upload-pack"),
+        path to the repository, hostname (%H), canonical hostname
+        (%CH), ip address (%IP), and tcp port (%P) as its command line
+        arguments. The external command can decide to decline the
+        service by exiting with a non-zero status (or to allow it by
+        exiting with a zero status).  It can also look at the $REMOTE_ADDR
+        and $REMOTE_PORT environment variables to learn about the
+        requestor when making this decision.
+</simpara>
+<simpara>The external command can optionally write a single line to its
+standard output to be sent to the requestor as an error message when
+it declines the service.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;directory&gt;
 </term>
 <listitem>
@@ -346,7 +366,7 @@ the facility of inet daemon to achieve the same before spawning
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_services">
+<simplesect id="git-daemon(1)__services">
 <title>SERVICES</title>
 <simpara>These services can be globally enabled/disabled using the
 command line options of this command.  If a finer-grained
@@ -392,14 +412,14 @@ receive-pack
         can push anything into the repository, including removal
         of refs).  This is solely meant for a closed LAN setting
         where everybody is friendly.  This service can be
-        enabled by <emphasis>daemon.receivepack</emphasis> configuration item to
+        enabled by setting <emphasis>daemon.receivepack</emphasis> configuration item to
         <emphasis>true</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-daemon(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -490,15 +510,15 @@ selectively enable/disable services per repository
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment">
+<simplesect id="git-daemon(1)__environment">
 <title>ENVIRONMENT</title>
 <simpara><emphasis>git daemon</emphasis> will set REMOTE_ADDR to the IP address of the client
 that connected to it, if the IP address is available. REMOTE_ADDR will
 be available in the environment of hooks called when
 services are performed.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-daemon(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

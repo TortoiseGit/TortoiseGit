@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-sh-i18n(1)">
-<articleinfo>
+<sect2 lang="en" id="git-sh-i18n(1)">
     <title>git-sh-i18n(1)</title>
 <indexterm>
 <primary>git-sh-i18n(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-sh-i18n(1)__name">
 <title>NAME</title>
 <simpara>git-sh-i18n - Git's i18n setup code for shell scripts</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-sh-i18n(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>. "$(git --exec-path)/git-sh-i18n"</emphasis></literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-sh-i18n(1)__description">
 <title>DESCRIPTION</title>
 <simpara>This is not a command the end user would want to run.  Ever.
 This documentation is meant for people who are studying the
@@ -30,7 +28,7 @@ script. It provides wrappers for the GNU <emphasis>gettext</emphasis> and
 script, and provides pass-through fallbacks on systems
 without GNU gettext.</simpara>
 </simplesect>
-<simplesect id="_functions">
+<simplesect id="git-sh-i18n(1)__functions">
 <title>FUNCTIONS</title>
 <variablelist>
 <varlistentry>
@@ -60,8 +58,8 @@ eval_gettext
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-sh-i18n(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

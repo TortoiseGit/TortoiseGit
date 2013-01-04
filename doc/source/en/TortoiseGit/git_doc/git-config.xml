@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-config(1)">
-<articleinfo>
+<sect2 lang="en" id="git-config(1)">
     <title>git-config(1)</title>
 <indexterm>
 <primary>git-config(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-config(1)__name">
 <title>NAME</title>
 <simpara>git-config - Get and set repository or global options</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-config(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git config</emphasis> [&lt;file-option&gt;] [type] [-z|--null] name [value [value_regex]]
@@ -31,7 +29,7 @@
 <emphasis>git config</emphasis> [&lt;file-option&gt;] -e | --edit</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-config(1)__description">
 <title>DESCRIPTION</title>
 <simpara>You can query/set/replace/unset options with this command. The name is
 actually the section and the key separated by a dot, and the value will be
@@ -41,7 +39,7 @@ If you want to update or unset an option which can occur on multiple
 lines, a POSIX regexp <emphasis>value_regex</emphasis> needs to be given.  Only the
 existing values that match the regexp are updated or unset.  If
 you want to handle the lines that do <emphasis role="strong">not</emphasis> match the regex, just
-prepend a single exclamation mark in front (see also <xref linkend="EXAMPLES"/>).</simpara>
+prepend a single exclamation mark in front (see also <xref linkend="git-config(1)_EXAMPLES"/>).</simpara>
 <simpara>The type specifier can be either <emphasis>--int</emphasis> or <emphasis>--bool</emphasis>, to make
 <emphasis>git config</emphasis> ensure that the variable(s) are of the given type and
 convert the value to the canonical form (simple decimal number for int,
@@ -51,12 +49,13 @@ checks or transformations are performed on the value.</simpara>
 <simpara>When reading, the values are read from the system, global and
 repository local configuration files by default, and options
 <emphasis>--system</emphasis>, <emphasis>--global</emphasis>, <emphasis>--local</emphasis> and <emphasis>--file &lt;filename&gt;</emphasis> can be
-used to tell the command to read from only that location (see <xref linkend="FILES"/>).</simpara>
+used to tell the command to read from only that location (see <xref linkend="git-config(1)_FILES"/>).</simpara>
 <simpara>When writing, the new value is written to the repository local
 configuration file by default, and options <emphasis>--system</emphasis>, <emphasis>--global</emphasis>,
 <emphasis>--file &lt;filename&gt;</emphasis> can be used to tell the command to write to
 that location (you can say <emphasis>--local</emphasis> but that is the default).</simpara>
-<simpara>This command will fail (with exit code ret) if:</simpara>
+<simpara>This command will fail with non-zero status upon error.  Some exit
+codes are:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
@@ -85,23 +84,18 @@ you try to unset an option which does not exist (ret=5),
 </listitem>
 <listitem>
 <simpara>
-you try to unset/set an option for which multiple lines match (ret=5),
+you try to unset/set an option for which multiple lines match (ret=5), or
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-you try to use an invalid regexp (ret=6), or
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-you use <emphasis>--global</emphasis> option without $HOME being properly set (ret=128).
+you try to use an invalid regexp (ret=6).
 </simpara>
 </listitem>
 </orderedlist>
 <simpara>On success, the command returns the exit code 0.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-config(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -170,12 +164,13 @@ you use <emphasis>--global</emphasis> option without $HOME being properly set (r
 </term>
 <listitem>
 <simpara>
-        For writing options: write to global ~/.gitconfig file rather than
-        the repository .git/config.
+        For writing options: write to global <subscript>/.gitconfig file rather than
+        the repository .git/config, write to $XDG_CONFIG_HOME/git/config file
+        if this file exists and the </subscript>/.gitconfig file doesn't.
 </simpara>
-<simpara>For reading options: read only from global ~/.gitconfig rather than
-from all available files.</simpara>
-<simpara>See also <xref linkend="FILES"/>.</simpara>
+<simpara>For reading options: read only from global ~/.gitconfig and from
+$XDG_CONFIG_HOME/git/config rather than from all available files.</simpara>
+<simpara>See also <xref linkend="git-config(1)_FILES"/>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -189,7 +184,7 @@ from all available files.</simpara>
 </simpara>
 <simpara>For reading options: read only from system-wide $(prefix)/etc/gitconfig
 rather than from all available files.</simpara>
-<simpara>See also <xref linkend="FILES"/>.</simpara>
+<simpara>See also <xref linkend="git-config(1)_FILES"/>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -384,9 +379,9 @@ rather than from all available files.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="FILES">
+<simplesect id="git-config(1)_FILES">
 <title>FILES</title>
-<simpara>If not set explicitly with <emphasis>--file</emphasis>, there are three files where
+<simpara>If not set explicitly with <emphasis>--file</emphasis>, there are four files where
 <emphasis>git config</emphasis> will search for configuration options:</simpara>
 <variablelist>
 <varlistentry>
@@ -407,6 +402,21 @@ $GIT_DIR/config
 <simpara>
         User-specific configuration file. Also called "global"
         configuration file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+$XDG_CONFIG_HOME/git/config
+</term>
+<listitem>
+<simpara>
+        Second user-specific configuration file. If $XDG_CONFIG_HOME is not set
+        or empty, $HOME/.config/git/config will be used. Any single-valued
+        variable set in this file will be overwritten by whatever is in
+        ~/.gitconfig.  It is a good idea not to create this file if
+        you sometimes use older versions of Git, as support for this
+        file was added fairly recently.
 </simpara>
 </listitem>
 </varlistentry>
@@ -434,7 +444,7 @@ variables. The <emphasis>--global</emphasis> and the <emphasis>--system</emphasi
 to the global or system-wide file respectively. The GIT_CONFIG environment
 variable has a similar effect, but you can specify any filename you want.</simpara>
 </simplesect>
-<simplesect id="_environment">
+<simplesect id="git-config(1)__environment">
 <title>ENVIRONMENT</title>
 <variablelist>
 <varlistentry>
@@ -450,9 +460,9 @@ GIT_CONFIG
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>See also <xref linkend="FILES"/>.</simpara>
+<simpara>See also <xref linkend="git-config(1)_FILES"/>.</simpara>
 </simplesect>
-<simplesect id="EXAMPLES">
+<simplesect id="git-config(1)_EXAMPLES">
 <title>EXAMPLES</title>
 <simpara>Given a .git/config like this:</simpara>
 <literallayout class="monospaced">#
@@ -470,7 +480,7 @@ GIT_CONFIG
         renames = true</literallayout>
 <literallayout class="monospaced">; Proxy settings
 [core]
-        gitproxy="proxy-command" for kernel.org
+        gitproxy=proxy-command for kernel.org
         gitproxy=default-proxy ; for all the rest</literallayout>
 <simpara>you can set the filemode to true with</simpara>
 <screen>% git config core.filemode true</screen>
@@ -500,7 +510,7 @@ i.e. the one without a "for &#8230;" postfix, do something like this:</simpara>
 <simpara>To actually match only values with an exclamation mark, you have to</simpara>
 <screen>% git config section.key value '[!]'</screen>
 <simpara>To add a new proxy, without altering any of the existing ones, use</simpara>
-<screen>% git config core.gitproxy '"proxy-command" for example.com'</screen>
+<screen>% git config --add core.gitproxy '"proxy-command" for example.com'</screen>
 <simpara>An example to use customized color from the configuration in your
 script:</simpara>
 <screen>#!/bin/sh
@@ -508,7 +518,7 @@ WS=$(git config --get-color color.diff.whitespace "blue reverse")
 RESET=$(git config --get-color "" "reset")
 echo "${WS}your whitespace color or blue reverse${RESET}"</screen>
 </simplesect>
-<simplesect id="_configuration_file">
+<simplesect id="git-config(1)__configuration_file">
 <title>CONFIGURATION FILE</title>
 <simpara>The git configuration file contains a number of variables that affect
 the git command's behavior. The <emphasis>.git/config</emphasis> file in each repository
@@ -523,7 +533,7 @@ dot-separated segment and the section name is everything before the last
 dot. The variable names are case-insensitive, allow only alphanumeric
 characters and <emphasis>-</emphasis>, and must start with an alphabetic character.  Some
 variables may appear multiple times.</simpara>
-<section id="_syntax">
+<section id="git-config(1)__syntax">
 <title>Syntax</title>
 <simpara>The syntax is fairly flexible and permissive; whitespaces are mostly
 ignored.  The <emphasis>#</emphasis> and <emphasis>;</emphasis> characters begin comments to the end of line,
@@ -577,7 +587,7 @@ char sequences are valid.</simpara>
 customary UNIX fashion.</simpara>
 <simpara>Some variables may require a special value format.</simpara>
 </section>
-<section id="_includes">
+<section id="git-config(1)__includes">
 <title>Includes</title>
 <simpara>You can include one config file from another by setting the special
 <emphasis>include.path</emphasis> variable to the name of the file to be included. The
@@ -585,11 +595,11 @@ included file is expanded immediately, as if its contents had been
 found at the location of the include directive. If the value of the
 <emphasis>include.path</emphasis> variable is a relative path, the path is considered to be
 relative to the configuration file in which the include directive was
-found. The value of <emphasis>include.path</emphasis> is subject to tilde expansion: <emphasis>{tilde}/</emphasis>
-is expanded to the value of <emphasis>$HOME</emphasis>, and <emphasis>{tilde}user/</emphasis> to the specified
+found. The value of <emphasis>include.path</emphasis> is subject to tilde expansion: <emphasis>~/</emphasis>
+is expanded to the value of <emphasis>$HOME</emphasis>, and <emphasis>~user/</emphasis> to the specified
 user's home directory. See below for examples.</simpara>
 </section>
-<section id="_example">
+<section id="git-config(1)__example">
 <title>Example</title>
 <literallayout class="monospaced"># Core variables
 [core]
@@ -611,7 +621,7 @@ user's home directory. See below for examples.</simpara>
         path = foo ; expand "foo" relative to the current file
         path = ~/foo ; expand "foo" in your $HOME directory</literallayout>
 </section>
-<section id="_variables">
+<section id="git-config(1)__variables">
 <title>Variables</title>
 <simpara>Note that this list is non-comprehensive and not necessarily complete.
 For command-specific variables, you will find a more detailed description
@@ -685,9 +695,11 @@ statusHints
 </term>
 <listitem>
 <simpara>
-                Directions on how to stage/unstage/add shown in the
-                output of <xref linkend="git-status(1)" /> and the template shown
-                when writing commit messages.
+                Show directions on how to proceed from the current
+                state in the output of <xref linkend="git-status(1)" />, in
+                the template shown when writing commit messages in
+                <xref linkend="git-commit(1)" />, and in the help message shown
+                by <xref linkend="git-checkout(1)" /> when switching branch.
 </simpara>
 </listitem>
 </varlistentry>
@@ -734,6 +746,17 @@ detachedHead
                 Advice shown when you used <xref linkend="git-checkout(1)" /> to
                 move to the detach HEAD state, to instruct how to create
                 a local branch after the fact.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+amWorkDir
+</term>
+<listitem>
+<simpara>
+                Advice that shows the location of the patch file when
+                <xref linkend="git-am(1)" /> fails to apply it.
 </simpara>
 </listitem>
 </varlistentry>
@@ -789,6 +812,22 @@ core.ignorecase
 <simpara>The default is false, except <xref linkend="git-clone(1)" /> or <xref linkend="git-init(1)" />
 will probe and set core.ignorecase true if appropriate when the repository
 is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.precomposeunicode
+</term>
+<listitem>
+<simpara>
+        This option is only used by Mac OS implementation of git.
+        When core.precomposeunicode=true, git reverts the unicode decomposition
+        of filenames done by Mac OS. This is useful when sharing a repository
+        between Mac OS and Linux or Windows.
+        (Git for Windows 1.7.10 or higher is needed, or git under cygwin 1.7).
+        When false, file names are handled fully transparent by git,
+        which is backward compatible with older versions of git.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1197,7 +1236,9 @@ core.excludesfile
         <emphasis>.git/info/exclude</emphasis>, git looks into this file for patterns
         of files which are not meant to be tracked.  "<emphasis>~/</emphasis>" is expanded
         to the value of <emphasis>$HOME</emphasis> and "<emphasis>~user/</emphasis>" to the specified user's
-        home directory.  See <xref linkend="gitignore(5)" />.
+        home directory. Its default value is $XDG_CONFIG_HOME/git/ignore.
+        If $XDG_CONFIG_HOME is either not set or empty, $HOME/.config/git/ignore
+        is used instead. See <xref linkend="gitignore(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1226,7 +1267,9 @@ core.attributesfile
         In addition to <emphasis>.gitattributes</emphasis> (per-directory) and
         <emphasis>.git/info/attributes</emphasis>, git looks into this file for attributes
         (see <xref linkend="gitattributes(5)" />). Path expansions are made the same
-        way as for <emphasis>core.excludesfile</emphasis>.
+        way as for <emphasis>core.excludesfile</emphasis>. Its default value is
+        $XDG_CONFIG_HOME/git/attributes. If $XDG_CONFIG_HOME is either not
+        set or empty, $HOME/.config/git/attributes is used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1270,14 +1313,14 @@ core.pager
         <emphasis>LESS</emphasis> variable to some other value.  Alternately,
         these settings can be overridden on a project or
         global basis by setting the <emphasis>core.pager</emphasis> option.
-        Setting <emphasis>core.pager</emphasis> has no affect on the <emphasis>LESS</emphasis>
+        Setting <emphasis>core.pager</emphasis> has no effect on the <emphasis>LESS</emphasis>
         environment variable behaviour above, so if you want
         to override git's default settings this way, you need
         to be explicit.  For example, to disable the S option
         in a backward compatible manner, set <emphasis>core.pager</emphasis>
-        to <emphasis>less -+$LESS -FRX</emphasis>.  This will be passed to the
-        shell by git, which will translate the final command to
-        <emphasis>LESS=FRSX less -+FRSX -FRX</emphasis>.
+        to <emphasis>less -+S</emphasis>.  This will be passed to the shell by
+        git, which will translate the final command to
+        <emphasis>LESS=FRSX less -+S</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1309,8 +1352,9 @@ core.whitespace
 </listitem>
 <listitem>
 <simpara>
-<emphasis>indent-with-non-tab</emphasis> treats a line that is indented with 8 or more
-  space characters as an error (not enabled by default).
+<emphasis>indent-with-non-tab</emphasis> treats a line that is indented with space
+  characters instead of the equivalent tabs as an error (not enabled by
+  default).
 </simpara>
 </listitem>
 <listitem>
@@ -1935,6 +1979,134 @@ color.ui
 </varlistentry>
 <varlistentry>
 <term>
+column.ui
+</term>
+<listitem>
+<simpara>
+        Specify whether supported commands should output in columns.
+        This variable consists of a list of tokens separated by spaces
+        or commas:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+        always show in columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>never</emphasis>
+</term>
+<listitem>
+<simpara>
+        never show in columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>auto</emphasis>
+</term>
+<listitem>
+<simpara>
+        show in columns if the output is to the terminal
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>column</emphasis>
+</term>
+<listitem>
+<simpara>
+        fill columns before rows (default)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>row</emphasis>
+</term>
+<listitem>
+<simpara>
+        fill rows before columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>plain</emphasis>
+</term>
+<listitem>
+<simpara>
+        show in one column
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>dense</emphasis>
+</term>
+<listitem>
+<simpara>
+        make unequal size columns to utilize more space
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nodense</emphasis>
+</term>
+<listitem>
+<simpara>
+        make equal size columns
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>This option defaults to <emphasis>never</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.branch
+</term>
+<listitem>
+<simpara>
+        Specify whether to output branch listing in <emphasis>git branch</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.status
+</term>
+<listitem>
+<simpara>
+        Specify whether to output untracked files in <emphasis>git status</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.tag
+</term>
+<listitem>
+<simpara>
+        Specify whether to output tag listing in <emphasis>git tag</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 commit.status
 </term>
 <listitem>
@@ -2121,7 +2293,18 @@ diff.statGraphWidth
 <listitem>
 <simpara>
         Limit the width of the graph part in --stat output. If set, applies
-        to all commands generating --stat outuput except format-patch.
+        to all commands generating --stat output except format-patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.context
+</term>
+<listitem>
+<simpara>
+        Generate diffs with &lt;n&gt; lines of context instead of the default
+        of 3. This value is overridden by the -U option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2265,6 +2448,33 @@ diff.suppressBlankEmpty
 </varlistentry>
 <varlistentry>
 <term>
+diff.submodule
+</term>
+<listitem>
+<simpara>
+        Specify the format in which differences in submodules are
+        shown.  The "log" format lists the commits in the range like
+        <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis> does.  The "short" format
+        format just shows the names of the commits at the beginning
+        and end of the range.  Defaults to short.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.wordRegex
+</term>
+<listitem>
+<simpara>
+        A POSIX Extended Regular Expression used to determine what is a "word"
+        when performing word-by-word difference calculations.  Character
+        sequences that match the regular expression are "words", all other
+        characters are <emphasis role="strong">ignorable</emphasis> whitespace.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 diff.&lt;driver&gt;.command
 </term>
 <listitem>
@@ -2381,19 +2591,6 @@ difftool.prompt
 <listitem>
 <simpara>
         Prompt before each invocation of the diff tool.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-diff.wordRegex
-</term>
-<listitem>
-<simpara>
-        A POSIX Extended Regular Expression used to determine what is a "word"
-        when performing word-by-word difference calculations.  Character
-        sequences that match the regular expression are "words", all other
-        characters are <emphasis role="strong">ignorable</emphasis> whitespace.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2923,11 +3120,26 @@ grep.lineNumber
 </varlistentry>
 <varlistentry>
 <term>
+grep.patternType
+</term>
+<listitem>
+<simpara>
+        Set the default matching behavior. Using a value of <emphasis>basic</emphasis>, <emphasis>extended</emphasis>,
+        <emphasis>fixed</emphasis>, or <emphasis>perl</emphasis> will enable the <emphasis>--basic-regexp</emphasis>, <emphasis>--extended-regexp</emphasis>,
+        <emphasis>--fixed-strings</emphasis>, or <emphasis>--perl-regexp</emphasis> option accordingly, while the
+        value <emphasis>default</emphasis> will return to the default matching behavior.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 grep.extendedRegexp
 </term>
 <listitem>
 <simpara>
-        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default.
+        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default. This
+        option is ignored when the <emphasis>grep.patternType</emphasis> option is set to a value
+        other than <emphasis>default</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3666,11 +3878,11 @@ merge.defaultToUpstream
 <simpara>
         If merge is called without any commit argument, merge the upstream
         branches configured for the current branch by using their last
-        observed values stored in their remote tracking branches.
+        observed values stored in their remote-tracking branches.
         The values of the <emphasis>branch.&lt;current branch&gt;.merge</emphasis> that name the
         branches at the remote named by <emphasis>branch.&lt;current branch&gt;.remote</emphasis>
         are consulted, and then they are mapped via <emphasis>remote.&lt;remote&gt;.fetch</emphasis>
-        to their corresponding remote tracking branches, and the tips of
+        to their corresponding remote-tracking branches, and the tips of
         these tracking branches are merged.
 </simpara>
 </listitem>
@@ -4191,19 +4403,31 @@ push.default
 </listitem>
 <listitem>
 <simpara>
-<emphasis>matching</emphasis> - push all matching branches.
-  All branches having the same name in both ends are considered to be
-  matching. This is the default.
+<emphasis>matching</emphasis> - push all branches having the same name in both ends.
+  This is for those who prepare all the branches into a publishable
+  shape and then push them out with a single command.  It is not
+  appropriate for pushing into a repository shared by multiple users,
+  since locally stalled branches will attempt a non-fast forward push
+  if other users updated the branch.
+ <?asciidoc-br?>
+  This is currently the default, but Git 2.0 will change the default
+  to <emphasis>simple</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>upstream</emphasis> - push the current branch to its upstream branch.
+  With this, <emphasis>git push</emphasis> will update the same remote ref as the one which
+  is merged by <emphasis>git pull</emphasis>, making <emphasis>push</emphasis> and <emphasis>pull</emphasis> symmetrical.
+  See "branch.&lt;name&gt;.merge" for how to configure the upstream branch.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>tracking</emphasis> - deprecated synonym for <emphasis>upstream</emphasis>.
+<emphasis>simple</emphasis> - like <emphasis>upstream</emphasis>, but refuses to push if the upstream
+  branch's name is different from the local one. This is the safest
+  option and is well-suited for beginners. It will become the default
+  in Git 2.0.
 </simpara>
 </listitem>
 <listitem>
@@ -4212,6 +4436,11 @@ push.default
 </simpara>
 </listitem>
 </itemizedlist>
+<simpara>The <emphasis>simple</emphasis>, <emphasis>current</emphasis> and <emphasis>upstream</emphasis> modes are for those who want to
+push out a single branch after finishing work, even when the other
+branches are not yet ready to be pushed out. If you are working with
+other people to push into the same shared repository, you would want
+to use one of these.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -4918,8 +5147,8 @@ web.browser
 </variablelist>
 </section>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-config(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

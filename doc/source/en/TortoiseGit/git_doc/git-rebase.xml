@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-rebase(1)">
-<articleinfo>
+<sect2 lang="en" id="git-rebase(1)">
     <title>git-rebase(1)</title>
 <indexterm>
 <primary>git-rebase(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-rebase(1)__name">
 <title>NAME</title>
 <simpara>git-rebase - Forward-port local commits to the updated upstream head</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-rebase(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rebase</emphasis> [-i | --interactive] [options] [--onto &lt;newbase&gt;]
+<literallayout><emphasis>git rebase</emphasis> [-i | --interactive] [options] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
         [&lt;upstream&gt;] [&lt;branch&gt;]
-<emphasis>git rebase</emphasis> [-i | --interactive] [options] --onto &lt;newbase&gt;
+<emphasis>git rebase</emphasis> [-i | --interactive] [options] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
         --root [&lt;branch&gt;]
-<emphasis>git rebase</emphasis> --continue | --skip | --abort</literallayout>
+<emphasis>git rebase</emphasis> --continue | --skip | --abort | --edit-todo</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-rebase(1)__description">
 <title>DESCRIPTION</title>
 <simpara>If &lt;branch&gt; is specified, <emphasis>git rebase</emphasis> will perform an automatic
 <emphasis>git checkout &lt;branch&gt;</emphasis> before doing anything else.  Otherwise
@@ -136,7 +134,7 @@ desired resolution, you can continue the rebasing process with</simpara>
 <simpara>Alternatively, you can undo the <emphasis>git rebase</emphasis> with</simpara>
 <literallayout class="monospaced">git rebase --abort</literallayout>
 </simplesect>
-<simplesect id="_configuration">
+<simplesect id="git-rebase(1)__configuration">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -162,12 +160,12 @@ rebase.autosquash
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-rebase(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
-&lt;newbase&gt;
+--onto &lt;newbase&gt;
 </term>
 <listitem>
 <simpara>
@@ -229,11 +227,32 @@ leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--keep-empty
+</term>
+<listitem>
+<simpara>
+        Keep the commits that do not change anything from its
+        parents in the result.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --skip
 </term>
 <listitem>
 <simpara>
         Restart the rebasing process by skipping the current patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--edit-todo
+</term>
+<listitem>
+<simpara>
+        Edit the todo list during an interactive rebase.
 </simpara>
 </listitem>
 </varlistentry>
@@ -288,7 +307,7 @@ which makes little sense.</simpara>
         Pass the &lt;strategy-option&gt; through to the merge strategy.
         This implies <emphasis>--merge</emphasis> and, if no strategy has been
         specified, <emphasis>-s recursive</emphasis>.  Note the reversal of <emphasis>ours</emphasis> and
-        <emphasis>theirs</emphasis> as noted in above for the <emphasis>-m</emphasis> option.
+        <emphasis>theirs</emphasis> as noted above for the <emphasis>-m</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -461,16 +480,42 @@ idea unless you know what you are doing (see BUGS below).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-x &lt;cmd&gt;
+</term>
+<term>
+--exec &lt;cmd&gt;
+</term>
+<listitem>
+<simpara>
+        Append "exec &lt;cmd&gt;" after each line creating a commit in the
+        final history. &lt;cmd&gt; will be interpreted as one or more shell
+        commands.
+</simpara>
+<simpara>This option can only be used with the <emphasis>--interactive</emphasis> option
+(see INTERACTIVE MODE below).</simpara>
+<simpara>You may execute several commands by either using one instance of <emphasis>--exec</emphasis>
+with several commands:</simpara>
+<literallayout class="monospaced">git rebase -i --exec "cmd1 &amp;&amp; cmd2 &amp;&amp; ..."</literallayout>
+<simpara>or by giving more than one <emphasis>--exec</emphasis>:</simpara>
+<literallayout class="monospaced">git rebase -i --exec "cmd1" --exec "cmd2" --exec ...</literallayout>
+<simpara>If <emphasis>--autosquash</emphasis> is used, "exec" lines will not be appended for
+the intermediate commits, and will only appear at the end of each
+squash/fixup series.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --root
 </term>
 <listitem>
 <simpara>
         Rebase all commits reachable from &lt;branch&gt;, instead of
         limiting them with an &lt;upstream&gt;.  This allows you to rebase
-        the root commit(s) on a branch.  Must be used with --onto, and
+        the root commit(s) on a branch.  When used with --onto, it
         will skip changes already contained in &lt;newbase&gt; (instead of
-        &lt;upstream&gt;).  When used together with --preserve-merges, <emphasis>all</emphasis>
-        root commits will be rewritten to have &lt;newbase&gt; as parent
+        &lt;upstream&gt;) whereas without --onto it will operate on every change.
+        When used together with both --onto and --preserve-merges,
+        <emphasis>all</emphasis> root commits will be rewritten to have &lt;newbase&gt; as parent
         instead.
 </simpara>
 </listitem>
@@ -516,7 +561,7 @@ link:howto/revert-a-faulty-merge.txt[revert-a-faulty-merge How-To] for details).
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_merge_strategies">
+<simplesect id="git-rebase(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
 <simpara>The merge mechanism (<emphasis>git-merge</emphasis> and <emphasis>git-pull</emphasis> commands) allows the
 backend <emphasis>merge strategies</emphasis> to be chosen with <emphasis>-s</emphasis> option.  Some strategies
@@ -566,6 +611,7 @@ ours
         This option forces conflicting hunks to be auto-resolved cleanly by
         favoring <emphasis>our</emphasis> version.  Changes from the other tree that do not
         conflict with our side are reflected to the merge result.
+        For a binary file, the entire contents are taken from our side.
 </simpara>
 <simpara>This should not be confused with the <emphasis>ours</emphasis> merge strategy, which does not
 even look at what the other tree contains at all.  It discards everything
@@ -578,7 +624,7 @@ theirs
 </term>
 <listitem>
 <simpara>
-        This is opposite of <emphasis>ours</emphasis>.
+        This is the opposite of <emphasis>ours</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -734,7 +780,7 @@ subtree
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_notes">
+<simplesect id="git-rebase(1)__notes">
 <title>NOTES</title>
 <simpara>You should understand the implications of using <emphasis>git rebase</emphasis> on a
 repository that you share.  See also RECOVERING FROM UPSTREAM REBASE
@@ -745,7 +791,7 @@ reject the rebase if it isn't appropriate.  Please see the template
 pre-rebase hook script for an example.</simpara>
 <simpara>Upon completion, &lt;branch&gt; will be the current branch.</simpara>
 </simplesect>
-<simplesect id="_interactive_mode">
+<simplesect id="git-rebase(1)__interactive_mode">
 <title>INTERACTIVE MODE</title>
 <simpara>Rebasing interactively means that you have a chance to edit the commits
 which are rebased.  You can reorder the commits, and you can
@@ -871,8 +917,19 @@ continue with <emphasis>git rebase --continue</emphasis>.</simpara>
 in <emphasis>$SHELL</emphasis>, or the default shell if <emphasis>$SHELL</emphasis> is not set), so you can
 use shell features (like "cd", "&gt;", ";" &#8230;). The command is run from
 the root of the working tree.</simpara>
+<screen>$ git rebase -i --exec "make test"</screen>
+<simpara>This command lets you check that intermediate commits are compilable.
+The todo list becomes like that:</simpara>
+<screen>pick 5928aea one
+exec make test
+pick 04d0fda two
+exec make test
+pick ba46169 three
+exec make test
+pick f4593f9 four
+exec make test</screen>
 </simplesect>
-<simplesect id="_splitting_commits">
+<simplesect id="git-rebase(1)__splitting_commits">
 <title>SPLITTING COMMITS</title>
 <simpara>In interactive mode, you can mark commits with the action "edit".  However,
 this does not necessarily mean that <emphasis>git rebase</emphasis> expects the result of this
@@ -927,7 +984,7 @@ consistent (they compile, pass the testsuite, etc.) you should use
 <emphasis>git stash</emphasis> to stash away the not-yet-committed changes
 after each commit, test, and amend the commit if fixes are necessary.</simpara>
 </simplesect>
-<simplesect id="_recovering_from_upstream_rebase">
+<simplesect id="git-rebase(1)__recovering_from_upstream_rebase">
 <title>RECOVERING FROM UPSTREAM REBASE</title>
 <simpara>Rebasing (or any other form of rewriting) a branch that others have
 based work on is a bad idea: anyone downstream of it is forced to
@@ -988,7 +1045,7 @@ Hard case: The changes are not the same.
 </listitem>
 </varlistentry>
 </variablelist>
-<section id="_the_easy_case">
+<section id="git-rebase(1)__the_easy_case">
 <title>The easy case</title>
 <simpara>Only works if the changes (patch IDs based on the diff contents) on
 <emphasis>subsystem</emphasis> are literally the same before and after the rebase
@@ -1004,7 +1061,7 @@ changes that are already present in the new upstream.  So if you say
                                                    \
                                                     *---*---*  topic</screen>
 </section>
-<section id="_the_hard_case">
+<section id="git-rebase(1)__the_hard_case">
 <title>The hard case</title>
 <simpara>Things get more complicated if the <emphasis>subsystem</emphasis> changes do not exactly
 correspond to the ones before the rebase.</simpara>
@@ -1039,7 +1096,7 @@ saying (for the reflog case, and assuming you are on <emphasis>topic</emphasis> 
 case" recovery too!</simpara>
 </section>
 </simplesect>
-<simplesect id="_bugs">
+<simplesect id="git-rebase(1)__bugs">
 <title>BUGS</title>
 <simpara>The todo list presented by <emphasis>--preserve-merges --interactive</emphasis> does not
 represent the topology of the revision graph.  Editing commits and
@@ -1054,8 +1111,8 @@ reorder commits tend to produce counterintuitive results.</simpara>
        /
 1 --- 2 --- 4 --- 5</screen>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-rebase(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

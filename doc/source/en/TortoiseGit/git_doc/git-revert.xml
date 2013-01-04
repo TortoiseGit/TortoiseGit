@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-revert(1)">
-<articleinfo>
+<sect2 lang="en" id="git-revert(1)">
     <title>git-revert(1)</title>
 <indexterm>
 <primary>git-revert(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-revert(1)__name">
 <title>NAME</title>
 <simpara>git-revert - Revert some existing commits</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-revert(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git revert</emphasis> [--edit | --no-edit] [-n] [-m parent-number] [-s] &lt;commit&gt;&#8230;
@@ -21,7 +19,7 @@
 <emphasis>git revert</emphasis> --abort</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-revert(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Given one or more existing commits, revert the changes that the
 related patches introduce, and record some new commits that record
@@ -36,7 +34,7 @@ should see <xref linkend="git-checkout(1)" />, specifically the <emphasis>git ch
 &lt;commit&gt; -- &lt;filename&gt;</emphasis> syntax.  Take care with these alternatives as
 both will discard uncommitted changes in your working directory.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-revert(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -166,7 +164,7 @@ effect to your index in a row.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_sequencer_subcommands">
+<simplesect id="git-revert(1)__sequencer_subcommands">
 <title>SEQUENCER SUBCOMMANDS</title>
 <variablelist>
 <varlistentry>
@@ -205,7 +203,7 @@ effect to your index in a row.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-revert(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -235,12 +233,12 @@ effect to your index in a row.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-revert(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-cherry-pick(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-revert(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

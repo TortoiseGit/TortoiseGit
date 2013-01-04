@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-show-branch(1)">
-<articleinfo>
+<sect2 lang="en" id="git-show-branch(1)">
     <title>git-show-branch(1)</title>
 <indexterm>
 <primary>git-show-branch(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-show-branch(1)__name">
 <title>NAME</title>
 <simpara>git-show-branch - Show branches and their commits</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-show-branch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git show-branch</emphasis> [-a|--all] [-r|--remotes] [--topo-order | --date-order]
@@ -23,7 +21,7 @@
 <emphasis>git show-branch</emphasis> (-g|--reflog)[=&lt;n&gt;[,&lt;base&gt;]] [--list] [&lt;ref&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-show-branch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Shows the commit ancestry graph starting from the commits named
 with &lt;rev&gt;s or &lt;globs&gt;s (or all refs under refs/heads
@@ -32,7 +30,7 @@ and/or refs/tags) semi-visually.</simpara>
 <simpara>It uses <emphasis>showbranch.default</emphasis> multi-valued configuration items if
 no &lt;rev&gt; nor &lt;glob&gt; is given on the command line.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-show-branch(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -267,7 +265,7 @@ no &lt;rev&gt; nor &lt;glob&gt; is given on the command line.</simpara>
 <simpara>Note that --more, --list, --independent and --merge-base options
 are mutually exclusive.</simpara>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-show-branch(1)__output">
 <title>OUTPUT</title>
 <simpara>Given N &lt;references&gt;, the first N lines are the one-line
 description from their commit message.  The branch head that is
@@ -303,7 +301,7 @@ The "fixes" branch adds one commit "Introduce "reset type" flag to
 "git reset"". The "mhf" branch adds many other commits.
 The current branch is "master".</simpara>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="git-show-branch(1)__example">
 <title>EXAMPLE</title>
 <simpara>If you keep your primary branches immediately under
 <emphasis>refs/heads</emphasis>, and topic branches in subdirectories of
@@ -319,8 +317,8 @@ your topic branch, it is shown as well.</simpara>
 Without <emphasis>--list</emphasis>, the output also shows how these tips are
 topologically related with each other.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-show-branch(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-diff-files(1)">
-<articleinfo>
+<sect2 lang="en" id="git-diff-files(1)">
     <title>git-diff-files(1)</title>
 <indexterm>
 <primary>git-diff-files(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-diff-files(1)__name">
 <title>NAME</title>
 <simpara>git-diff-files - Compares files in the working tree and the index</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-diff-files(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git diff-files</emphasis> [-q] [-0|-1|-2|-3|-c|--cc] [&lt;common diff options&gt;] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-diff-files(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Compares the files in the working tree and the index.  When paths
 are specified, compares only those named paths.  Otherwise all
 entries in the index are compared.  The output format is the
 same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-diff-files(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -121,7 +119,7 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
         Generate a diffstat. By default, as much space as necessary
         will be used for the filename part, and the rest for the graph
         part. Maximum width defaults to terminal width, or 80 columns
-        if not connected to a terminal, and can be overriden by
+        if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
         giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
         of the graph part can be limited by using
@@ -319,7 +317,8 @@ any of those replacements occurred.</simpara>
         the commits in the range like <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis> does.
         Omitting the <emphasis>--submodule</emphasis> option or specifying <emphasis>--submodule=short</emphasis>,
         uses the <emphasis>short</emphasis> format. This format just shows the names of the commits
-        at the beginning and end of the range.
+        at the beginning and end of the range.  Can be tweaked via the
+        <emphasis>diff.submodule</emphasis> configuration variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -554,7 +553,11 @@ another file.</simpara>
         index (i.e. amount of addition/deletions compared to the
         file's size). For example, <emphasis>-M90%</emphasis> means git should consider a
         delete/add pair to be a rename if more than 90% of the file
-        hasn't changed.
+        hasn't changed.  Without a <emphasis>%</emphasis> sign, the number is to be read as
+        a fraction, with a decimal point before it.  I.e., <emphasis>-M5</emphasis> becomes
+        0.5, and is thus the same as <emphasis>-M50%</emphasis>.  Similarly, <emphasis>-M05</emphasis> is
+        the same as <emphasis>-M5%</emphasis>.  To limit detection to exact renames, use
+        <emphasis>-M100%</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -973,7 +976,7 @@ omit diff output for unmerged entries and just show "Unmerged".</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_raw_output_format">
+<simplesect id="git-diff-files(1)__raw_output_format">
 <title>Raw output format</title>
 <simpara>The raw output format from "git-diff-index", "git-diff-tree",
 "git-diff-files" and "git diff --raw" are very similar.</simpara>
@@ -1164,7 +1167,7 @@ and it is out of sync with the index.</simpara>
 in pathnames are represented as <emphasis>\t</emphasis>, <emphasis>\n</emphasis>, and <emphasis>\\</emphasis>,
 respectively.</simpara>
 </simplesect>
-<simplesect id="_diff_format_for_merges">
+<simplesect id="git-diff-files(1)__diff_format_for_merges">
 <title>diff format for merges</title>
 <simpara>"git-diff-tree", "git-diff-files" and "git-diff --raw"
 can take <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option
@@ -1202,7 +1205,7 @@ single path, only for "dst"
 <simpara>Note that <emphasis>combined diff</emphasis> lists only files which were modified from
 all parents.</simpara>
 </simplesect>
-<simplesect id="_generating_patches_with_p">
+<simplesect id="git-diff-files(1)__generating_patches_with_p">
 <title>Generating patches with -p</title>
 <simpara>When "git-diff-index", "git-diff-tree", or "git-diff-files" are run
 with a <emphasis>-p</emphasis> option, "git diff" without the <emphasis>--raw</emphasis> option, or
@@ -1277,7 +1280,7 @@ rename to a</literallayout>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_combined_diff_format">
+<simplesect id="git-diff-files(1)__combined_diff_format">
 <title>combined diff format</title>
 <simpara>Any diff-generating command can take the -c` or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
@@ -1386,7 +1389,7 @@ two unresolved merge parents with the working tree file
 (i.e. file1 is stage 2 aka "our version", file2 is stage 3 aka
 "their version").</simpara>
 </simplesect>
-<simplesect id="_other_diff_formats">
+<simplesect id="git-diff-files(1)__other_diff_formats">
 <title>other diff formats</title>
 <simpara>The <emphasis>--summary</emphasis> option describes newly added, deleted, renamed and
 copied files.  The <emphasis>--stat</emphasis> option adds diffstat(1) graph to the
@@ -1492,8 +1495,8 @@ a single-path record or a rename/copy record without reading ahead.
 After reading added and deleted lines, reading up to <emphasis>NUL</emphasis> would yield
 the pathname, but if that is <emphasis>NUL</emphasis>, the record will show two paths.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-diff-files(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

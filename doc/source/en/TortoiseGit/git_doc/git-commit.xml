@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-commit(1)">
-<articleinfo>
+<sect2 lang="en" id="git-commit(1)">
     <title>git-commit(1)</title>
 <indexterm>
 <primary>git-commit(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-commit(1)__name">
 <title>NAME</title>
 <simpara>git-commit - Record changes to the repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-commit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git commit</emphasis> [-a | --interactive | --patch] [-s] [-v] [-u&lt;mode&gt;] [--amend]
@@ -20,10 +18,10 @@
            [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author] [--allow-empty]
            [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
            [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--status | --no-status]
-           [-i | -o] [--] [&lt;file&gt;&#8230;]</literallayout>
+           [-i | -o] [-S[&lt;keyid&gt;]] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-commit(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Stores the current contents of the index in a new commit along
 with a log message from the user describing the changes.</simpara>
@@ -74,7 +72,7 @@ commit by giving the same set of parameters (options and paths).</simpara>
 <simpara>If you make a commit and then find a mistake immediately after
 that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-commit(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -189,6 +187,16 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--branch
+</term>
+<listitem>
+<simpara>
+        Show the branch and tracking info even in short-format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --porcelain
 </term>
 <listitem>
@@ -201,7 +209,21 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--long
+</term>
+<listitem>
+<simpara>
+        When doing a dry-run, give the output in a the long-format.
+        Implies <emphasis>--dry-run</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -z
+</term>
+<term>
+--null
 </term>
 <listitem>
 <simpara>
@@ -371,6 +393,18 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--no-edit
+</term>
+<listitem>
+<simpara>
+        Use the selected commit message without launching an editor.
+        For example, <emphasis>git commit --amend --no-edit</emphasis> amends a commit
+        without changing its commit message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --amend
 </term>
 <listitem>
@@ -392,6 +426,16 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <simpara>You should understand the implications of rewriting history if you
 amend a commit that has already been published.  (See the "RECOVERING
 FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-post-rewrite
+</term>
+<listitem>
+<simpara>
+        Bypass the post-rewrite hook.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -535,6 +579,19 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-S[&lt;keyid&gt;]
+</term>
+<term>
+--gpg-sign[=&lt;keyid&gt;]
+</term>
+<listitem>
+<simpara>
+        GPG-sign commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --
 </term>
 <listitem>
@@ -559,7 +616,7 @@ configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_date_formats">
+<simplesect id="git-commit(1)__date_formats">
 <title>DATE FORMATS</title>
 <simpara>The GIT_AUTHOR_DATE, GIT_COMMITTER_DATE environment variables
 and the <emphasis>--date</emphasis> option
@@ -605,7 +662,7 @@ ISO 8601
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-commit(1)__examples">
 <title>EXAMPLES</title>
 <simpara>When recording your own work, the contents of modified files in
 your working tree are temporarily stored to a staging area
@@ -672,13 +729,15 @@ alter the order the changes are committed, because the merge
 should be recorded as a single commit.  In fact, the command
 refuses to run when given pathnames (but see <emphasis>-i</emphasis> option).</simpara>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-commit(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>Though not required, it's a good idea to begin the commit message
 with a single short (less than 50 character) line summarizing the
 change, followed by a blank line and then a more thorough description.
-Tools that turn commits into email, for example, use the first line
-on the Subject: line and the rest of the commit in the body.</simpara>
+The text up to the first blank line in a commit message is treated
+as the commit title, and that title is used throughout git.
+For example, <xref linkend="git-format-patch(1)" /> turns a commit into email, and it uses
+the title on the Subject line and the rest of the commit in the body.</simpara>
 <simpara>At the core level, git is character encoding agnostic.</simpara>
 <itemizedlist>
 <listitem>
@@ -746,20 +805,39 @@ message when a commit is made to force UTF-8 at the commit
 object level, because re-coding to UTF-8 is not necessarily a
 reversible operation.</simpara>
 </simplesect>
-<simplesect id="_environment_and_configuration_variables">
+<simplesect id="git-commit(1)__environment_and_configuration_variables">
 <title>ENVIRONMENT AND CONFIGURATION VARIABLES</title>
 <simpara>The editor used to edit the commit log message will be chosen from the
 GIT_EDITOR environment variable, the core.editor configuration variable, the
 VISUAL environment variable, or the EDITOR environment variable (in that
 order).  See <xref linkend="git-var(1)" /> for details.</simpara>
 </simplesect>
-<simplesect id="_hooks">
+<simplesect id="git-commit(1)__hooks">
 <title>HOOKS</title>
 <simpara>This command can run <emphasis>commit-msg</emphasis>, <emphasis>prepare-commit-msg</emphasis>, <emphasis>pre-commit</emphasis>,
 and <emphasis>post-commit</emphasis> hooks.  See <xref linkend="githooks(5)" /> for more
 information.</simpara>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-commit(1)__files">
+<title>FILES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>$GIT_DIR/COMMIT_EDITMSG</emphasis>
+</term>
+<listitem>
+<simpara>
+        This file contains the commit message of a commit in progress.
+        If <emphasis>git commit</emphasis> exits due to an error before creating a commit,
+        any commit message that has been provided by the user (e.g., in
+        an editor session) will be available in this file, but will be
+        overwritten by the next invocation of <emphasis>git commit</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-commit(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-add(1)" />,
 <xref linkend="git-rm(1)" />,
@@ -767,8 +845,8 @@ information.</simpara>
 <xref linkend="git-merge(1)" />,
 <xref linkend="git-commit-tree(1)" /></simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-commit(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

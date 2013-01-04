@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-reset(1)">
-<articleinfo>
+<sect2 lang="en" id="git-reset(1)">
     <title>git-reset(1)</title>
 <indexterm>
 <primary>git-reset(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-reset(1)__name">
 <title>NAME</title>
 <simpara>git-reset - Reset current HEAD to the specified state</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-reset(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git reset</emphasis> [-q] [&lt;commit&gt;] [--] &lt;paths&gt;&#8230;
 <emphasis>git reset</emphasis> (--patch | -p) [&lt;commit&gt;] [--] [&lt;paths&gt;&#8230;]
-<emphasis>git reset</emphasis> (--soft | --mixed | --hard | --merge | --keep) [-q] [&lt;commit&gt;]</literallayout>
+<emphasis>git reset</emphasis> [--soft | --mixed | --hard | --merge | --keep] [-q] [&lt;commit&gt;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-reset(1)__description">
 <title>DESCRIPTION</title>
 <simpara>In the first and second form, copy entries from &lt;commit&gt; to the index.
 In the third form, set the current branch head (HEAD) to &lt;commit&gt;, optionally
@@ -64,14 +62,14 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> --&lt;mode&gt; [&lt;commit&gt;]
+<emphasis>git reset</emphasis> [&lt;mode&gt;] [&lt;commit&gt;]
 </term>
 <listitem>
 <simpara>
         This form resets the current branch head to &lt;commit&gt; and
         possibly updates the index (resetting it to the tree of &lt;commit&gt;) and
-        the working tree depending on &lt;mode&gt;, which
-        must be one of the following:
+        the working tree depending on &lt;mode&gt;. If &lt;mode&gt; is omitted,
+        defaults to "--mixed". The &lt;mode&gt; must be one of the following:
 </simpara>
 <variablelist>
 <varlistentry>
@@ -147,7 +145,7 @@ but carries forward unmerged index entries.</simpara>
 <simpara>If you want to undo a commit other than the latest on a branch,
 <xref linkend="git-revert(1)" /> is your friend.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-reset(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -165,7 +163,7 @@ but carries forward unmerged index entries.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-reset(1)__examples">
 <title>EXAMPLES</title>
 <variablelist>
 <varlistentry>
@@ -173,13 +171,13 @@ but carries forward unmerged index entries.</simpara>
 Undo add
 </term>
 <listitem>
-<screen>$ edit                                     <co id="CO1-1"/>
+<screen>$ edit                                     <co id="git-reset_CO1-1"/>
 $ git add frotz.c filfre.c
-$ mailx                                    <co id="CO1-2"/>
-$ git reset                                <co id="CO1-3"/>
-$ git pull git://info.example.com/ nitfol  <co id="CO1-4"/></screen>
+$ mailx                                    <co id="git-reset_CO1-2"/>
+$ git reset                                <co id="git-reset_CO1-3"/>
+$ git pull git://info.example.com/ nitfol  <co id="git-reset_CO1-4"/></screen>
 <calloutlist>
-<callout arearefs="CO1-1">
+<callout arearefs="git-reset_CO1-1">
 <para>
 You are happily working on something, and find the changes
 in these files are in good order.  You do not want to see them
@@ -187,12 +185,12 @@ when you run "git diff", because you plan to work on other files
 and changes with these files are distracting.
 </para>
 </callout>
-<callout arearefs="CO1-2">
+<callout arearefs="git-reset_CO1-2">
 <para>
 Somebody asks you to pull, and the changes sounds worthy of merging.
 </para>
 </callout>
-<callout arearefs="CO1-3">
+<callout arearefs="git-reset_CO1-3">
 <para>
 However, you already dirtied the index (i.e. your index does
 not match the HEAD commit).  But you know the pull you are going
@@ -201,7 +199,7 @@ index changes for these two files.  Your changes in working tree
 remain there.
 </para>
 </callout>
-<callout arearefs="CO1-4">
+<callout arearefs="git-reset_CO1-4">
 <para>
 Then you can pull and merge, leaving frotz.c and filfre.c
 changes still in the working tree.
@@ -216,23 +214,23 @@ Undo a commit and redo
 </term>
 <listitem>
 <screen>$ git commit ...
-$ git reset --soft HEAD^      <co id="CO2-1"/>
-$ edit                        <co id="CO2-2"/>
-$ git commit -a -c ORIG_HEAD  <co id="CO2-3"/></screen>
+$ git reset --soft HEAD^      <co id="git-reset_CO2-1"/>
+$ edit                        <co id="git-reset_CO2-2"/>
+$ git commit -a -c ORIG_HEAD  <co id="git-reset_CO2-3"/></screen>
 <calloutlist>
-<callout arearefs="CO2-1">
+<callout arearefs="git-reset_CO2-1">
 <para>
 This is most often done when you remembered what you
 just committed is incomplete, or you misspelled your commit
 message, or both.  Leaves working tree as it was before "reset".
 </para>
 </callout>
-<callout arearefs="CO2-2">
+<callout arearefs="git-reset_CO2-2">
 <para>
 Make corrections to working tree files.
 </para>
 </callout>
-<callout arearefs="CO2-3">
+<callout arearefs="git-reset_CO2-3">
 <para>
 "reset" copies the old head to .git/ORIG_HEAD; redo the
 commit by starting with its log message.  If you do not need to
@@ -248,11 +246,11 @@ edit the message further, you can give -C option instead.
 Undo a commit, making it a topic branch
 </term>
 <listitem>
-<screen>$ git branch topic/wip     <co id="CO3-1"/>
-$ git reset --hard HEAD~3  <co id="CO3-2"/>
-$ git checkout topic/wip   <co id="CO3-3"/></screen>
+<screen>$ git branch topic/wip     <co id="git-reset_CO3-1"/>
+$ git reset --hard HEAD~3  <co id="git-reset_CO3-2"/>
+$ git checkout topic/wip   <co id="git-reset_CO3-3"/></screen>
 <calloutlist>
-<callout arearefs="CO3-1">
+<callout arearefs="git-reset_CO3-1">
 <para>
 You have made some commits, but realize they were premature
 to be in the "master" branch.  You want to continue polishing
@@ -260,12 +258,12 @@ them in a topic branch, so create "topic/wip" branch off of the
 current HEAD.
 </para>
 </callout>
-<callout arearefs="CO3-2">
+<callout arearefs="git-reset_CO3-2">
 <para>
 Rewind the master branch to get rid of those three commits.
 </para>
 </callout>
-<callout arearefs="CO3-3">
+<callout arearefs="git-reset_CO3-3">
 <para>
 Switch to "topic/wip" branch and keep working.
 </para>
@@ -279,9 +277,9 @@ Undo commits permanently
 </term>
 <listitem>
 <screen>$ git commit ...
-$ git reset --hard HEAD~3   <co id="CO4-1"/></screen>
+$ git reset --hard HEAD~3   <co id="git-reset_CO4-1"/></screen>
 <calloutlist>
-<callout arearefs="CO4-1">
+<callout arearefs="git-reset_CO4-1">
 <para>
 The last three commits (HEAD, HEAD^, and HEAD~2) were bad
 and you do not want to ever see them again.  Do <emphasis role="strong">not</emphasis> do this if
@@ -298,37 +296,37 @@ the implications of doing so.)
 Undo a merge or pull
 </term>
 <listitem>
-<screen>$ git pull                         <co id="CO5-1"/>
+<screen>$ git pull                         <co id="git-reset_CO5-1"/>
 Auto-merging nitfol
 CONFLICT (content): Merge conflict in nitfol
 Automatic merge failed; fix conflicts and then commit the result.
-$ git reset --hard                 <co id="CO5-2"/>
-$ git pull . topic/branch          <co id="CO5-3"/>
+$ git reset --hard                 <co id="git-reset_CO5-2"/>
+$ git pull . topic/branch          <co id="git-reset_CO5-3"/>
 Updating from 41223... to 13134...
 Fast-forward
-$ git reset --hard ORIG_HEAD       <co id="CO5-4"/></screen>
+$ git reset --hard ORIG_HEAD       <co id="git-reset_CO5-4"/></screen>
 <calloutlist>
-<callout arearefs="CO5-1">
+<callout arearefs="git-reset_CO5-1">
 <para>
 Try to update from the upstream resulted in a lot of
 conflicts; you were not ready to spend a lot of time merging
 right now, so you decide to do that later.
 </para>
 </callout>
-<callout arearefs="CO5-2">
+<callout arearefs="git-reset_CO5-2">
 <para>
 "pull" has not made merge commit, so "git reset --hard"
 which is a synonym for "git reset --hard HEAD" clears the mess
 from the index file and the working tree.
 </para>
 </callout>
-<callout arearefs="CO5-3">
+<callout arearefs="git-reset_CO5-3">
 <para>
 Merge a topic branch into the current branch, which resulted
 in a fast-forward.
 </para>
 </callout>
-<callout arearefs="CO5-4">
+<callout arearefs="git-reset_CO5-4">
 <para>
 But you decided that the topic branch is not ready for public
 consumption yet.  "pull" or "merge" always leaves the original
@@ -345,14 +343,14 @@ and resets the tip of the branch to that commit.
 Undo a merge or pull inside a dirty working tree
 </term>
 <listitem>
-<screen>$ git pull                         <co id="CO6-1"/>
+<screen>$ git pull                         <co id="git-reset_CO6-1"/>
 Auto-merging nitfol
 Merge made by recursive.
  nitfol                |   20 +++++----
  ...
-$ git reset --merge ORIG_HEAD      <co id="CO6-2"/></screen>
+$ git reset --merge ORIG_HEAD      <co id="git-reset_CO6-2"/></screen>
 <calloutlist>
-<callout arearefs="CO6-1">
+<callout arearefs="git-reset_CO6-1">
 <para>
 Even if you may have local modifications in your
 working tree, you can safely say "git pull" when you know
@@ -360,7 +358,7 @@ that the change in the other branch does not overlap with
 them.
 </para>
 </callout>
-<callout arearefs="CO6-2">
+<callout arearefs="git-reset_CO6-2">
 <para>
 After inspecting the result of the merge, you may find
 that the change in the other branch is unsatisfactory.  Running
@@ -383,26 +381,26 @@ working tree are not in any shape to be committed yet, but you
 need to get to the other branch for a quick bugfix.</simpara>
 <screen>$ git checkout feature ;# you were working in "feature" branch and
 $ work work work       ;# got interrupted
-$ git commit -a -m "snapshot WIP"                 <co id="CO7-1"/>
+$ git commit -a -m "snapshot WIP"                 <co id="git-reset_CO7-1"/>
 $ git checkout master
 $ fix fix fix
 $ git commit ;# commit with real log
 $ git checkout feature
-$ git reset --soft HEAD^ ;# go back to WIP state  <co id="CO7-2"/>
-$ git reset                                       <co id="CO7-3"/></screen>
+$ git reset --soft HEAD^ ;# go back to WIP state  <co id="git-reset_CO7-2"/>
+$ git reset                                       <co id="git-reset_CO7-3"/></screen>
 <calloutlist>
-<callout arearefs="CO7-1">
+<callout arearefs="git-reset_CO7-1">
 <para>
 This commit will get blown away so a throw-away log message is OK.
 </para>
 </callout>
-<callout arearefs="CO7-2">
+<callout arearefs="git-reset_CO7-2">
 <para>
 This removes the <emphasis>WIP</emphasis> commit from the commit history, and sets
     your working tree to the state just before you made that snapshot.
 </para>
 </callout>
-<callout arearefs="CO7-3">
+<callout arearefs="git-reset_CO7-3">
 <para>
 At this point the index file still has all the WIP changes you
     committed as <emphasis>snapshot WIP</emphasis>.  This updates the index to show your
@@ -421,22 +419,22 @@ Reset a single file in the index
 <simpara>Suppose you have added a file to your index, but later decide you do not
 want to add it to your commit. You can remove the file from the index
 while keeping your changes with git reset.</simpara>
-<screen>$ git reset -- frotz.c                      <co id="CO8-1"/>
-$ git commit -m "Commit files in index"     <co id="CO8-2"/>
-$ git add frotz.c                           <co id="CO8-3"/></screen>
+<screen>$ git reset -- frotz.c                      <co id="git-reset_CO8-1"/>
+$ git commit -m "Commit files in index"     <co id="git-reset_CO8-2"/>
+$ git add frotz.c                           <co id="git-reset_CO8-3"/></screen>
 <calloutlist>
-<callout arearefs="CO8-1">
+<callout arearefs="git-reset_CO8-1">
 <para>
 This removes the file from the index while keeping it in the working
     directory.
 </para>
 </callout>
-<callout arearefs="CO8-2">
+<callout arearefs="git-reset_CO8-2">
 <para>
 This commits all other changes in the index.
 </para>
 </callout>
-<callout arearefs="CO8-3">
+<callout arearefs="git-reset_CO8-3">
 <para>
 Adds the file to the index again.
 </para>
@@ -457,17 +455,17 @@ reset it while keeping the changes in your working tree.</simpara>
 <screen>$ git tag start
 $ git checkout -b branch1
 $ edit
-$ git commit ...                            <co id="CO9-1"/>
+$ git commit ...                            <co id="git-reset_CO9-1"/>
 $ edit
-$ git checkout -b branch2                   <co id="CO9-2"/>
-$ git reset --keep start                    <co id="CO9-3"/></screen>
+$ git checkout -b branch2                   <co id="git-reset_CO9-2"/>
+$ git reset --keep start                    <co id="git-reset_CO9-3"/></screen>
 <calloutlist>
-<callout arearefs="CO9-1">
+<callout arearefs="git-reset_CO9-1">
 <para>
 This commits your first edits in branch1.
 </para>
 </callout>
-<callout arearefs="CO9-2">
+<callout arearefs="git-reset_CO9-2">
 <para>
 In the ideal world, you could have realized that the earlier
     commit did not belong to the new topic when you created and switched
@@ -475,7 +473,7 @@ In the ideal world, you could have realized that the earlier
     perfect.
 </para>
 </callout>
-<callout arearefs="CO9-3">
+<callout arearefs="git-reset_CO9-3">
 <para>
 But you can use "reset --keep" to remove the unwanted commit after
     you switched to "branch2".
@@ -486,7 +484,7 @@ But you can use "reset --keep" to remove the unwanted commit after
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-reset(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>The tables below show what happens when running:</simpara>
 <screen>git reset --option target</screen>
@@ -576,8 +574,8 @@ entries:</simpara>
                           --keep  (disallowed)</literallayout>
 <simpara>X means any state and U means an unmerged index.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-reset(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

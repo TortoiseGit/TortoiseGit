@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-ls-remote(1)">
-<articleinfo>
+<sect2 lang="en" id="git-ls-remote(1)">
     <title>git-ls-remote(1)</title>
 <indexterm>
 <primary>git-ls-remote(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-ls-remote(1)__name">
 <title>NAME</title>
 <simpara>git-ls-remote - List references in a remote repository</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-ls-remote(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-remote</emphasis> [--heads] [--tags]  [-u &lt;exec&gt; | --upload-pack &lt;exec&gt;]
               [--exit-code] &lt;repository&gt; [&lt;refs&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-ls-remote(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Displays references available in a remote repository along with the associated
 commit IDs.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-ls-remote(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -80,6 +78,18 @@ commit IDs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--get-url
+</term>
+<listitem>
+<simpara>
+        Expand the URL of the given remote repository taking into account any
+        "url.&lt;base&gt;.insteadOf" config setting (See <xref linkend="git-config(1)" />) and
+        exit without talking to the remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 &lt;repository&gt;
 </term>
 <listitem>
@@ -105,7 +115,7 @@ commit IDs.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-ls-remote(1)__examples">
 <title>EXAMPLES</title>
 <literallayout class="monospaced">$ git ls-remote --tags ./.
 d6602ec5194c87b0fc87103ca4d67251c76f233a        refs/tags/v0.99
@@ -124,8 +134,8 @@ f25a265a342aed6041ab0cc484224d9ca54b6f41        refs/tags/v0.99.1
 c5db5456ae3b0873fc659c19fafdde22313cc441        refs/tags/v0.99.2
 7ceca275d047c90c0c7d5afb13ab97efdf51bd6e        refs/tags/v0.99.3</literallayout>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-ls-remote(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

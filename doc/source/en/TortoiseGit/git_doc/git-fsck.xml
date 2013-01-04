@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-fsck(1)">
-<articleinfo>
+<sect2 lang="en" id="git-fsck(1)">
     <title>git-fsck(1)</title>
 <indexterm>
 <primary>git-fsck(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-fsck(1)__name">
 <title>NAME</title>
 <simpara>git-fsck - Verifies the connectivity and validity of the objects in the database</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-fsck(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git fsck</emphasis> [--tags] [--root] [--unreachable] [--cache] [--no-reflogs]
@@ -20,11 +18,11 @@
          [--[no-]dangling] [--[no-]progress] [&lt;object&gt;*]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-fsck(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Verifies the connectivity and validity of the objects in the database.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-fsck(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -36,8 +34,8 @@
         An object to treat as the head of an unreachability trace.
 </simpara>
 <simpara>If no objects are given, <emphasis>git fsck</emphasis> defaults to using the
-index file, all SHA1 references in .git/refs/*, and all reflogs (unless
---no-reflogs is given) as heads.</simpara>
+index file, all SHA1 references in <emphasis>refs</emphasis> namespace, and all reflogs
+(unless --no-reflogs is given) as heads.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -183,7 +181,7 @@ index file, all SHA1 references in .git/refs/*, and all reflogs (unless
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_discussion">
+<simplesect id="git-fsck(1)__discussion">
 <title>DISCUSSION</title>
 <simpara>git-fsck tests SHA1 and general object sanity, and it does full tracking
 of the resulting reachability and everything else. It prints out any
@@ -195,7 +193,7 @@ set, as mentioned above).</simpara>
 (i.e., you can just remove them and do an <emphasis>rsync</emphasis> with some other site in
 the hopes that somebody else has the object you have corrupted).</simpara>
 </simplesect>
-<simplesect id="_extracted_diagnostics">
+<simplesect id="git-fsck(1)__extracted_diagnostics">
 <title>Extracted Diagnostics</title>
 <variablelist>
 <varlistentry>
@@ -271,7 +269,7 @@ sha1 mismatch &lt;object&gt;
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_environment_variables">
+<simplesect id="git-fsck(1)__environment_variables">
 <title>Environment Variables</title>
 <variablelist>
 <varlistentry>
@@ -306,8 +304,8 @@ GIT_ALTERNATE_OBJECT_DIRECTORIES
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-fsck(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

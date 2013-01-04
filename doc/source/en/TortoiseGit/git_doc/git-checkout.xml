@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-checkout(1)">
-<articleinfo>
+<sect2 lang="en" id="git-checkout(1)">
     <title>git-checkout(1)</title>
 <indexterm>
 <primary>git-checkout(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-checkout(1)__name">
 <title>NAME</title>
 <simpara>git-checkout - Checkout a branch or paths to the working tree</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-checkout(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git checkout</emphasis> [-q] [-f] [-m] [&lt;branch&gt;]
@@ -22,7 +20,7 @@
 <emphasis>git checkout</emphasis> [-p|--patch] [&lt;tree-ish&gt;] [--] [&lt;paths&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-checkout(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Updates files in the working tree to match the version in the index
 or the specified tree.  If no paths are given, <emphasis>git checkout</emphasis> will
@@ -31,30 +29,67 @@ branch.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> [&lt;branch&gt;]
-</term>
-<term>
-<emphasis>git checkout</emphasis> -b|-B &lt;new_branch&gt; [&lt;start point&gt;]
-</term>
-<term>
-<emphasis>git checkout</emphasis> [--detach] [&lt;commit&gt;]
+<emphasis>git checkout</emphasis> &lt;branch&gt;
 </term>
 <listitem>
 <simpara>
-        This form switches branches by updating the index, working
-        tree, and HEAD to reflect the specified branch or commit.
+        To prepare for working on &lt;branch&gt;, switch to it by updating
+        the index and the files in the working tree, and by pointing
+        HEAD at the branch. Local modifications to the files in the
+        working tree are kept, so that they can be committed to the
+        &lt;branch&gt;.
 </simpara>
-<simpara>If <emphasis>-b</emphasis> is given, a new branch is created as if <xref linkend="git-branch(1)" />
-were called and then checked out; in this case you can
-use the <emphasis>--track</emphasis> or <emphasis>--no-track</emphasis> options, which will be passed to
-<emphasis>git branch</emphasis>.  As a convenience, <emphasis>--track</emphasis> without <emphasis>-b</emphasis> implies branch
-creation; see the description of <emphasis>--track</emphasis> below.</simpara>
+<simpara>If &lt;branch&gt; is not found but there does exist a tracking branch in
+exactly one remote (call it &lt;remote&gt;) with a matching name, treat as
+equivalent to</simpara>
+<screen>$ git checkout -b &lt;branch&gt; --track &lt;remote&gt;/&lt;branch&gt;</screen>
+<simpara>You could omit &lt;branch&gt;, in which case the command degenerates to
+"check out the current branch", which is a glorified no-op with a
+rather expensive side-effects to show only the tracking information,
+if exists, for the current branch.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git checkout</emphasis> -b|-B &lt;new_branch&gt; [&lt;start point&gt;]
+</term>
+<listitem>
+<simpara>
+        Specifying <emphasis>-b</emphasis> causes a new branch to be created as if
+        <xref linkend="git-branch(1)" /> were called and then checked out.  In
+        this case you can use the <emphasis>--track</emphasis> or <emphasis>--no-track</emphasis> options,
+        which will be passed to <emphasis>git branch</emphasis>.  As a convenience,
+        <emphasis>--track</emphasis> without <emphasis>-b</emphasis> implies branch creation; see the
+        description of <emphasis>--track</emphasis> below.
+</simpara>
 <simpara>If <emphasis>-B</emphasis> is given, &lt;new_branch&gt; is created if it doesn't exist; otherwise, it
 is reset. This is the transactional equivalent of</simpara>
 <screen>$ git branch -f &lt;branch&gt; [&lt;start point&gt;]
 $ git checkout &lt;branch&gt;</screen>
 <simpara>that is to say, the branch is not reset/created unless "git checkout" is
 successful.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git checkout</emphasis> --detach [&lt;branch&gt;]
+</term>
+<term>
+<emphasis>git checkout</emphasis> &lt;commit&gt;
+</term>
+<listitem>
+<simpara>
+        Prepare to work on top of &lt;commit&gt;, by detaching HEAD at it
+        (see "DETACHED HEAD" section), and updating the index and the
+        files in the working tree.  Local modifications to the files
+        in the working tree are kept, so that the resulting working
+        tree will be the state recorded in the commit plus the local
+        modifications.
+</simpara>
+<simpara>Passing <emphasis>--detach</emphasis> forces this behavior in the case of a &lt;branch&gt; (without
+the option, giving a branch name to the command would check out the branch,
+instead of detaching HEAD at it), or the current commit,
+if no &lt;branch&gt; is specified.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -83,7 +118,7 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-checkout(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -132,7 +167,7 @@ entries; instead, unmerged entries are ignored.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--b
+-b &lt;new_branch&gt;
 </term>
 <listitem>
 <simpara>
@@ -143,7 +178,7 @@ entries; instead, unmerged entries are ignored.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--B
+-B &lt;new_branch&gt;
 </term>
 <listitem>
 <simpara>
@@ -215,7 +250,7 @@ explicitly give a name with <emphasis>-b</emphasis> in such a case.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---orphan
+--orphan &lt;new_branch&gt;
 </term>
 <listitem>
 <simpara>
@@ -355,7 +390,7 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_detached_head">
+<simplesect id="git-checkout(1)__detached_head">
 <title>DETACHED HEAD</title>
 <simpara>HEAD normally refers to a named branch (e.g. <emphasis>master</emphasis>). Meanwhile, each
 branch refers to a specific commit. Let's look at a repo with three
@@ -439,24 +474,24 @@ a---b---c---d  branch 'master' (refers to commit 'd')
 by the routine git garbage collection process, unless we create a reference
 before that happens. If we have not yet moved away from commit <emphasis>f</emphasis>,
 any of these will create a reference to it:</simpara>
-<screen>$ git checkout -b foo   <co id="CO1-1"/>
-$ git branch foo        <co id="CO1-2"/>
-$ git tag foo           <co id="CO1-3"/></screen>
+<screen>$ git checkout -b foo   <co id="git-checkout_CO1-1"/>
+$ git branch foo        <co id="git-checkout_CO1-2"/>
+$ git tag foo           <co id="git-checkout_CO1-3"/></screen>
 <calloutlist>
-<callout arearefs="CO1-1">
+<callout arearefs="git-checkout_CO1-1">
 <para>
 creates a new branch <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>, and then
 updates HEAD to refer to branch <emphasis>foo</emphasis>. In other words, we'll no longer
 be in detached HEAD state after this command.
 </para>
 </callout>
-<callout arearefs="CO1-2">
+<callout arearefs="git-checkout_CO1-2">
 <para>
 similarly creates a new branch <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>,
 but leaves HEAD detached.
 </para>
 </callout>
-<callout arearefs="CO1-3">
+<callout arearefs="git-checkout_CO1-3">
 <para>
 creates a new tag <emphasis>foo</emphasis>, which refers to commit <emphasis>f</emphasis>,
 leaving HEAD detached.
@@ -470,7 +505,7 @@ can use either of these commands:</simpara>
 <screen>$ git reflog -2 HEAD # or
 $ git log -g -2 HEAD</screen>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-checkout(1)__examples">
 <title>EXAMPLES</title>
 <orderedlist numeration="arabic">
 <listitem>
@@ -479,25 +514,32 @@ The following sequence checks out the <emphasis>master</emphasis> branch, revert
 the <emphasis>Makefile</emphasis> to two revisions back, deletes hello.c by
 mistake, and gets it back from the index.
 </simpara>
-<screen>$ git checkout master             <co id="CO2-1"/>
-$ git checkout master~2 Makefile  <co id="CO2-2"/>
+<screen>$ git checkout master             <co id="git-checkout_CO2-1"/>
+$ git checkout master~2 Makefile  <co id="git-checkout_CO2-2"/>
 $ rm -f hello.c
-$ git checkout hello.c            <co id="CO2-3"/></screen>
+$ git checkout hello.c            <co id="git-checkout_CO2-3"/></screen>
 <calloutlist>
-<callout arearefs="CO2-1">
+<callout arearefs="git-checkout_CO2-1">
 <para>
 switch branch
 </para>
 </callout>
-<callout arearefs="CO2-2">
+<callout arearefs="git-checkout_CO2-2">
 <para>
 take a file out of another commit
 </para>
 </callout>
-<callout arearefs="CO2-3">
+<callout arearefs="git-checkout_CO2-3">
 <para>
 restore hello.c from the index
 </para>
+<simpara>If you want to check out <emphasis>all</emphasis> C source files out of the index,
+you can say</simpara>
+<screen>$ git checkout -- '*.c'</screen>
+<simpara>Note the quotes around <emphasis>*.c</emphasis>.  The file <emphasis>hello.c</emphasis> will also be
+checked out, even though it is no longer in the working tree,
+because the file globbing is used to match entries in the index
+(not in the working tree by the shell).</simpara>
 <simpara>If you have an unfortunate branch that is named <emphasis>hello.c</emphasis>, this
 step would be confused as an instruction to switch to that branch.
 You should instead write:</simpara>
@@ -542,8 +584,8 @@ $ git add frotz</screen>
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-checkout(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

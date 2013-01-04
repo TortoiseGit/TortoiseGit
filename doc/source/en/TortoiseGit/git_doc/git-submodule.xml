@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-submodule(1)">
-<articleinfo>
+<sect2 lang="en" id="git-submodule(1)">
     <title>git-submodule(1)</title>
 <indexterm>
 <primary>git-submodule(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-submodule(1)__name">
 <title>NAME</title>
 <simpara>git-submodule - Initialize, update or inspect submodules</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-submodule(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git submodule</emphasis> [--quiet] add [-b branch] [-f|--force]
+<literallayout><emphasis>git submodule</emphasis> [--quiet] add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;]
               [--reference &lt;repository&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
 <emphasis>git submodule</emphasis> [--quiet] status [--cached] [--recursive] [--] [&lt;path&gt;&#8230;]
 <emphasis>git submodule</emphasis> [--quiet] init [--] [&lt;path&gt;&#8230;]
@@ -27,7 +25,7 @@
 <emphasis>git submodule</emphasis> [--quiet] sync [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-submodule(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Submodules allow foreign repositories to be embedded within
 a dedicated subdirectory of the source tree, always pointed
@@ -65,7 +63,7 @@ using the <emphasis>status</emphasis> subcommand and get a detailed overview of 
 difference between the index and checkouts using the <emphasis>summary</emphasis>
 subcommand.</simpara>
 </simplesect>
-<simplesect id="_commands">
+<simplesect id="git-submodule(1)__commands">
 <title>COMMANDS</title>
 <variablelist>
 <varlistentry>
@@ -123,7 +121,6 @@ status
         initialized, <emphasis>+</emphasis> if the currently checked out submodule commit
         does not match the SHA-1 found in the index of the containing
         repository and <emphasis>U</emphasis> if the submodule has merge conflicts.
-        This command is the default command for <emphasis>git submodule</emphasis>.
 </simpara>
 <simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into nested
 submodules, and show their status as well.</simpara>
@@ -163,7 +160,7 @@ update
         checkout the commit specified in the index of the containing repository.
         This will make the submodules HEAD be detached unless <emphasis>--rebase</emphasis> or
         <emphasis>--merge</emphasis> is specified or the key <emphasis>submodule.$name.update</emphasis> is set to
-        <emphasis>rebase</emphasis>, <emphasis>merge</emphasis> or <emphasis>none</emphasis>. <emphasis>none</emphasis> can be overriden by specifying
+        <emphasis>rebase</emphasis>, <emphasis>merge</emphasis> or <emphasis>none</emphasis>. <emphasis>none</emphasis> can be overridden by specifying
         <emphasis>--checkout</emphasis>.
 </simpara>
 <simpara>If the submodule is not yet initialized, and you just want to use the
@@ -171,6 +168,10 @@ setting as stored in .gitmodules, you can automatically initialize the
 submodule with the <emphasis>--init</emphasis> option.</simpara>
 <simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into the
 registered submodules, and update any nested submodules within.</simpara>
+<simpara>If <emphasis>--force</emphasis> is specified, the submodule will be checked out (using
+<emphasis>git checkout --force</emphasis> if appropriate), even if the commit specified in the
+index of the containing repository already matches the commit checked out in
+the submodule.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -238,7 +239,7 @@ sync
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-submodule(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -279,7 +280,9 @@ sync
         This option is only valid for add and update commands.
         When running add, allow adding an otherwise ignored submodule path.
         When running update, throw away local changes in submodules when
-        switching to a different commit.
+        switching to a different commit; and always run a checkout operation
+        in the submodule, even if the commit listed in the index of the
+        containing repository matches the commit checked out in the submodule.
 </simpara>
 </listitem>
 </varlistentry>
@@ -385,6 +388,18 @@ sync
 </varlistentry>
 <varlistentry>
 <term>
+--name
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the add command. It sets the submodule's
+        name to the given string instead of defaulting to its path. The name
+        must be valid as a directory name and may not end with a <emphasis>/</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --reference &lt;repository&gt;
 </term>
 <listitem>
@@ -424,7 +439,7 @@ for <xref linkend="git-clone(1)" />'s <emphasis>--reference</emphasis> and <emph
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_files">
+<simplesect id="git-submodule(1)__files">
 <title>FILES</title>
 <simpara>When initializing submodules, a .gitmodules file in the top-level directory
 of the containing repository is used to find the url of each submodule.
@@ -432,8 +447,8 @@ This file should be formatted in the same way as <emphasis>$GIT_DIR/config</emph
 to each submodule url is "submodule.$name.url".  See <xref linkend="gitmodules(5)" />
 for details.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-submodule(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

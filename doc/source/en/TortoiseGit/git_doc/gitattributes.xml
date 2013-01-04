@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="gitattributes(5)">
-<articleinfo>
+<sect2 lang="en" id="gitattributes(5)">
     <title>gitattributes(5)</title>
 <indexterm>
 <primary>gitattributes(5)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="gitattributes(5)__name">
 <title>NAME</title>
 <simpara>gitattributes - defining attributes per path</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="gitattributes(5)__synopsis">
 <title>SYNOPSIS</title>
 <simpara>$GIT_DIR/info/attributes, .gitattributes</simpara>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="gitattributes(5)__description">
 <title>DESCRIPTION</title>
 <simpara>A <emphasis>gitattributes</emphasis> file is a simple text file that gives
 <emphasis>attributes</emphasis> to pathnames.</simpara>
@@ -81,7 +79,8 @@ Unspecified
 <simpara>When more than one pattern matches the path, a later line
 overrides an earlier line.  This overriding is done per
 attribute.  The rules how the pattern matches paths are the
-same as in <emphasis>.gitignore</emphasis> files; see <xref linkend="gitignore(5)" />.</simpara>
+same as in <emphasis>.gitignore</emphasis> files; see <xref linkend="gitignore(5)" />.
+Unlike <emphasis>.gitignore</emphasis>, negative patterns are forbidden.</simpara>
 <simpara>When deciding what attributes are assigned to a path, git
 consults <emphasis>$GIT_DIR/info/attributes</emphasis> file (which has the highest
 precedence), <emphasis>.gitattributes</emphasis> file in the same directory as the
@@ -90,6 +89,10 @@ work tree (the further the directory that contains <emphasis>.gitattributes</emp
 is from the path in question, the lower its precedence). Finally
 global and system-wide files are considered (they have the lowest
 precedence).</simpara>
+<simpara>When the <emphasis>.gitattributes</emphasis> file is missing from the work tree, the
+path in the index is used as a fall-back.  During checkout process,
+<emphasis>.gitattributes</emphasis> in the index is used and then the file in the
+working tree is used as a fall-back.</simpara>
 <simpara>If you wish to affect only a single repository (i.e., to assign
 attributes to files that are particular to
 one user's workflow for that repository), then
@@ -99,25 +102,27 @@ repositories (i.e., attributes of interest to all users) should go into
 <emphasis>.gitattributes</emphasis> files. Attributes that should affect all repositories
 for a single user should be placed in a file specified by the
 <emphasis>core.attributesfile</emphasis> configuration option (see <xref linkend="git-config(1)" />).
+Its default value is $XDG_CONFIG_HOME/git/attributes. If $XDG_CONFIG_HOME
+is either not set or empty, $HOME/.config/git/attributes is used instead.
 Attributes for all users on a system should be placed in the
 <emphasis>$(prefix)/etc/gitattributes</emphasis> file.</simpara>
 <simpara>Sometimes you would need to override an setting of an attribute
 for a path to <emphasis>Unspecified</emphasis> state.  This can be done by listing
 the name of the attribute prefixed with an exclamation point <emphasis>!</emphasis>.</simpara>
 </simplesect>
-<simplesect id="_effects">
+<simplesect id="gitattributes(5)__effects">
 <title>EFFECTS</title>
 <simpara>Certain operations by git can be influenced by assigning
 particular attributes to a path.  Currently, the following
 operations are attributes-aware.</simpara>
-<section id="_checking_out_and_checking_in">
+<section id="gitattributes(5)__checking_out_and_checking_in">
 <title>Checking-out and checking-in</title>
 <simpara>These attributes affect how the contents stored in the
 repository are copied to the working tree files when commands
 such as <emphasis>git checkout</emphasis> and <emphasis>git merge</emphasis> run.  They also affect how
 git stores the contents you prepare in the working tree in the
 repository upon <emphasis>git add</emphasis> and <emphasis>git commit</emphasis>.</simpara>
-<section id="_emphasis_text_emphasis">
+<section id="gitattributes(5)__emphasis_text_emphasis">
 <title><emphasis>text</emphasis></title>
 <simpara>This attribute enables and controls end-of-line normalization.  When a
 text file is normalized, its line endings are converted to LF in the
@@ -176,7 +181,7 @@ Unspecified
 <simpara>Any other value causes git to act as if <emphasis>text</emphasis> has been left
 unspecified.</simpara>
 </section>
-<section id="_emphasis_eol_emphasis">
+<section id="gitattributes(5)__emphasis_eol_emphasis">
 <title><emphasis>eol</emphasis></title>
 <simpara>This attribute sets a specific line-ending style to be used in the
 working directory.  It enables end-of-line normalization without any
@@ -208,7 +213,7 @@ Set to string value "lf"
 </varlistentry>
 </variablelist>
 </section>
-<section id="_backwards_compatibility_with_emphasis_crlf_emphasis_attribute">
+<section id="gitattributes(5)__backwards_compatibility_with_emphasis_crlf_emphasis_attribute">
 <title>Backwards compatibility with <emphasis>crlf</emphasis> attribute</title>
 <simpara>For backwards compatibility, the <emphasis>crlf</emphasis> attribute is interpreted as
 follows:</simpara>
@@ -216,7 +221,7 @@ follows:</simpara>
 -crlf           -text
 crlf=input      eol=lf</screen>
 </section>
-<section id="_end_of_line_conversion">
+<section id="gitattributes(5)__end_of_line_conversion">
 <title>End-of-line conversion</title>
 <simpara>While git normally leaves file contents alone, it can be configured to
 normalize line endings to LF in the repository and, optionally, to
@@ -301,7 +306,7 @@ few exceptions.  Even though&#8230;</simpara>
 </listitem>
 </itemizedlist>
 </section>
-<section id="_emphasis_ident_emphasis">
+<section id="gitattributes(5)__emphasis_ident_emphasis">
 <title><emphasis>ident</emphasis></title>
 <simpara>When the attribute <emphasis>ident</emphasis> is set for a path, git replaces
 <emphasis>$Id$</emphasis> in the blob object with <emphasis>$Id:</emphasis>, followed by the
@@ -310,7 +315,7 @@ sign <emphasis>$</emphasis> upon checkout.  Any byte sequence that begins with
 <emphasis>$Id:</emphasis> and ends with <emphasis>$</emphasis> in the worktree file is replaced
 with <emphasis>$Id$</emphasis> upon check-in.</simpara>
 </section>
-<section id="_emphasis_filter_emphasis">
+<section id="gitattributes(5)__emphasis_filter_emphasis">
 <title><emphasis>filter</emphasis></title>
 <simpara>A <emphasis>filter</emphasis> attribute can be set to a string value that names a
 filter driver specified in the configuration.</simpara>
@@ -372,7 +377,7 @@ substitution.  For example:</simpara>
         clean = git-p4-filter --clean %f
         smudge = git-p4-filter --smudge %f</screen>
 </section>
-<section id="_interaction_between_checkin_checkout_attributes">
+<section id="gitattributes(5)__interaction_between_checkin_checkout_attributes">
 <title>Interaction between checkin/checkout attributes</title>
 <simpara>In the check-in codepath, the worktree file is first converted
 with <emphasis>filter</emphasis> driver (if specified and corresponding driver
@@ -382,7 +387,7 @@ and applicable).</simpara>
 <simpara>In the check-out codepath, the blob content is first converted
 with <emphasis>text</emphasis>, and then <emphasis>ident</emphasis> and fed to <emphasis>filter</emphasis>.</simpara>
 </section>
-<section id="_merging_branches_with_differing_checkin_checkout_attributes">
+<section id="gitattributes(5)__merging_branches_with_differing_checkin_checkout_attributes">
 <title>Merging branches with differing checkin/checkout attributes</title>
 <simpara>If you have added attributes to a file that cause the canonical
 repository format for that file to change, such as adding a
@@ -402,9 +407,9 @@ not act in this way may cause additional merge conflicts that must be
 resolved manually.</simpara>
 </section>
 </section>
-<section id="_generating_diff_text">
+<section id="gitattributes(5)__generating_diff_text">
 <title>Generating diff text</title>
-<section id="_emphasis_diff_emphasis">
+<section id="gitattributes(5)__emphasis_diff_emphasis">
 <title><emphasis>diff</emphasis></title>
 <simpara>The attribute <emphasis>diff</emphasis> affects how <emphasis>git</emphasis> generates diffs for particular
 files. It can tell git whether to generate a textual patch for the path
@@ -466,7 +471,7 @@ String
 </varlistentry>
 </variablelist>
 </section>
-<section id="_defining_an_external_diff_driver">
+<section id="gitattributes(5)__defining_an_external_diff_driver">
 <title>Defining an external diff driver</title>
 <simpara>The definition of a diff driver is done in <emphasis>gitconfig</emphasis>, not
 <emphasis>gitattributes</emphasis> file, so strictly speaking this manual page is a
@@ -481,7 +486,7 @@ with the above configuration, i.e. <emphasis>j-c-diff</emphasis>, with 7
 parameters, just like <emphasis>GIT_EXTERNAL_DIFF</emphasis> program is called.
 See <xref linkend="git(1)" /> for details.</simpara>
 </section>
-<section id="_defining_a_custom_hunk_header">
+<section id="gitattributes(5)__defining_a_custom_hunk_header">
 <title>Defining a custom hunk-header</title>
 <simpara>Each group of changes (called a "hunk") in the textual diff output
 is prefixed with a line of the form:</simpara>
@@ -511,6 +516,11 @@ configuration file (you still need to enable this with the
 attribute mechanism, via <emphasis>.gitattributes</emphasis>).  The following built in
 patterns are available:</simpara>
 <itemizedlist>
+<listitem>
+<simpara>
+<emphasis>ada</emphasis> suitable for source code in the Ada language.
+</simpara>
+</listitem>
 <listitem>
 <simpara>
 <emphasis>bibtex</emphasis> suitable for files with BibTeX coded references.
@@ -583,7 +593,7 @@ patterns are available:</simpara>
 </listitem>
 </itemizedlist>
 </section>
-<section id="_customizing_word_diff">
+<section id="gitattributes(5)__customizing_word_diff">
 <title>Customizing word diff</title>
 <simpara>You can customize the rules that <emphasis>git diff --word-diff</emphasis> uses to
 split words in a line, by specifying an appropriate regular expression
@@ -597,7 +607,7 @@ whitespace.  To separate them, use a regular expression in your
 <simpara>A built-in pattern is provided for all languages listed in the
 previous section.</simpara>
 </section>
-<section id="_performing_text_diffs_of_binary_files">
+<section id="gitattributes(5)__performing_text_diffs_of_binary_files">
 <title>Performing text diffs of binary files</title>
 <simpara>Sometimes it is desirable to see the diff of a text-converted
 version of some binary files. For example, a word processor
@@ -643,7 +653,7 @@ and now produces better output), you can remove the cache
 manually with <emphasis>git update-ref -d refs/notes/textconv/jpg</emphasis> (where
 "jpg" is the name of the diff driver, as in the example above).</simpara>
 </section>
-<section id="_choosing_textconv_versus_external_diff">
+<section id="gitattributes(5)__choosing_textconv_versus_external_diff">
 <title>Choosing textconv versus external diff</title>
 <simpara>If you want to show differences between binary or specially-formatted
 blobs in your repository, you can choose to use either an external diff
@@ -681,7 +691,7 @@ Caching. Textconv caching can speed up repeated diffs, such as those
 </listitem>
 </orderedlist>
 </section>
-<section id="_marking_files_as_binary">
+<section id="gitattributes(5)__marking_files_as_binary">
 <title>Marking files as binary</title>
 <simpara>Git usually guesses correctly whether a blob contains text or binary
 data by examining the beginning of the contents. However, sometimes you
@@ -705,9 +715,9 @@ The solution is to use the <emphasis>diff.*.binary</emphasis> config option:</si
   binary = true</screen>
 </section>
 </section>
-<section id="_performing_a_three_way_merge">
+<section id="gitattributes(5)__performing_a_three_way_merge">
 <title>Performing a three-way merge</title>
-<section id="_emphasis_merge_emphasis">
+<section id="gitattributes(5)__emphasis_merge_emphasis">
 <title><emphasis>merge</emphasis></title>
 <simpara>The attribute <emphasis>merge</emphasis> affects how three versions of a file are
 merged when a file-level merge is necessary during <emphasis>git merge</emphasis>,
@@ -768,7 +778,7 @@ String
 </varlistentry>
 </variablelist>
 </section>
-<section id="_built_in_merge_drivers">
+<section id="gitattributes(5)__built_in_merge_drivers">
 <title>Built-in merge drivers</title>
 <simpara>There are a few built-in low-level merge drivers defined that
 can be asked for via the <emphasis>merge</emphasis> attribute.</simpara>
@@ -817,7 +827,7 @@ union
 </varlistentry>
 </variablelist>
 </section>
-<section id="_defining_a_custom_merge_driver">
+<section id="gitattributes(5)__defining_a_custom_merge_driver">
 <title>Defining a custom merge driver</title>
 <simpara>The definition of a merge driver is done in the <emphasis>.git/config</emphasis>
 file, not in the <emphasis>gitattributes</emphasis> file, so strictly speaking this
@@ -847,7 +857,7 @@ merge between common ancestors, when there are more than one.
 When left unspecified, the driver itself is used for both
 internal merge and the final merge.</simpara>
 </section>
-<section id="_emphasis_conflict_marker_size_emphasis">
+<section id="gitattributes(5)__emphasis_conflict_marker_size_emphasis">
 <title><emphasis>conflict-marker-size</emphasis></title>
 <simpara>This attribute controls the length of conflict markers left in
 the work tree file during a conflicted merge.  Only setting to
@@ -859,9 +869,9 @@ results in a conflict.</simpara>
 <screen>Documentation/git-merge.txt     conflict-marker-size=32</screen>
 </section>
 </section>
-<section id="_checking_whitespace_errors">
+<section id="gitattributes(5)__checking_whitespace_errors">
 <title>Checking whitespace errors</title>
-<section id="_emphasis_whitespace_emphasis">
+<section id="gitattributes(5)__emphasis_whitespace_emphasis">
 <title><emphasis>whitespace</emphasis></title>
 <simpara>The <emphasis>core.whitespace</emphasis> configuration variable allows you to define what
 <emphasis>diff</emphasis> and <emphasis>apply</emphasis> should consider whitespace errors for all paths in
@@ -916,14 +926,14 @@ String
 </variablelist>
 </section>
 </section>
-<section id="_creating_an_archive">
+<section id="gitattributes(5)__creating_an_archive">
 <title>Creating an archive</title>
-<section id="_emphasis_export_ignore_emphasis">
+<section id="gitattributes(5)__emphasis_export_ignore_emphasis">
 <title><emphasis>export-ignore</emphasis></title>
 <simpara>Files and directories with the attribute <emphasis>export-ignore</emphasis> won't be added to
 archive files.</simpara>
 </section>
-<section id="_emphasis_export_subst_emphasis">
+<section id="gitattributes(5)__emphasis_export_subst_emphasis">
 <title><emphasis>export-subst</emphasis></title>
 <simpara>If the attribute <emphasis>export-subst</emphasis> is set for a file then git will expand
 several placeholders when adding this file to an archive.  The
@@ -936,17 +946,17 @@ in the file.  E.g. the string <emphasis>$Format:%H$</emphasis> will be replaced 
 commit hash.</simpara>
 </section>
 </section>
-<section id="_packing_objects">
+<section id="gitattributes(5)__packing_objects">
 <title>Packing objects</title>
-<section id="_emphasis_delta_emphasis">
+<section id="gitattributes(5)__emphasis_delta_emphasis">
 <title><emphasis>delta</emphasis></title>
 <simpara>Delta compression will not be attempted for blobs for paths with the
 attribute <emphasis>delta</emphasis> set to false.</simpara>
 </section>
 </section>
-<section id="_viewing_files_in_gui_tools">
+<section id="gitattributes(5)__viewing_files_in_gui_tools">
 <title>Viewing files in GUI tools</title>
-<section id="_emphasis_encoding_emphasis">
+<section id="gitattributes(5)__emphasis_encoding_emphasis">
 <title><emphasis>encoding</emphasis></title>
 <simpara>The value of this attribute specifies the character encoding that should
 be used by GUI tools (e.g. <xref linkend="gitk(1)" /> and <xref linkend="git-gui(1)" />) to
@@ -959,7 +969,7 @@ manually enable per-file encodings in its options.</simpara>
 </section>
 </section>
 </simplesect>
-<simplesect id="_using_macro_attributes">
+<simplesect id="gitattributes(5)__using_macro_attributes">
 <title>USING MACRO ATTRIBUTES</title>
 <simpara>You do not want any end-of-line conversions applied to, nor textual diffs
 produced for, any binary file you track.  You would need to specify e.g.</simpara>
@@ -975,14 +985,14 @@ though setting one might have the effect of setting or unsetting other
 attributes or even returning other attributes to the "Unspecified"
 state.</simpara>
 </simplesect>
-<simplesect id="_defining_macro_attributes">
+<simplesect id="gitattributes(5)__defining_macro_attributes">
 <title>DEFINING MACRO ATTRIBUTES</title>
 <simpara>Custom macro attributes can be defined only in the <emphasis>.gitattributes</emphasis>
 file at the toplevel (i.e. not in any subdirectory).  The built-in
 macro attribute "binary" is equivalent to:</simpara>
-<screen>[attr]binary -diff -text</screen>
+<screen>[attr]binary -diff -merge -text</screen>
 </simplesect>
-<simplesect id="_example">
+<simplesect id="gitattributes(5)__example">
 <title>EXAMPLE</title>
 <simpara>If you have these three <emphasis>gitattributes</emphasis> file:</simpara>
 <screen>(in $GIT_DIR/info/attributes)
@@ -1032,12 +1042,12 @@ baz     set to false
 merge   set to string value "filfre"
 frotz   unspecified</screen>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="gitattributes(5)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-check-attr(1)" />.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="gitattributes(5)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

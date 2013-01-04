@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-shortlog(1)">
-<articleinfo>
+<sect2 lang="en" id="git-shortlog(1)">
     <title>git-shortlog(1)</title>
 <indexterm>
 <primary>git-shortlog(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-shortlog(1)__name">
 <title>NAME</title>
 <simpara>git-shortlog - Summarize <emphasis>git log</emphasis> output</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-shortlog(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>git log --pretty=short | <emphasis>git shortlog</emphasis> [-h] [-n] [-s] [-e] [-w]
 <emphasis>git shortlog</emphasis> [-n|--numbered] [-s|--summary] [-e|--email] [-w[&lt;width&gt;[,&lt;indent1&gt;[,&lt;indent2&gt;]]]] &lt;commit&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-shortlog(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Summarizes <emphasis>git log</emphasis> output in a format suitable for inclusion
-in release announcements. Each commit will be grouped by author and
-the first line of the commit message will be shown.</simpara>
+in release announcements. Each commit will be grouped by author and title.</simpara>
 <simpara>Additionally, "[PATCH]" will be stripped from the commit description.</simpara>
 <simpara>If no revisions are passed on the command line and either standard input
 is not a terminal or there is no current branch, <emphasis>git shortlog</emphasis> will
 output a summary of the log read from standard input, without
 reference to the current repository.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-shortlog(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -115,7 +112,7 @@ reference to the current repository.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_mapping_authors">
+<simplesect id="git-shortlog(1)__mapping_authors">
 <title>MAPPING AUTHORS</title>
 <simpara>The <emphasis>.mailmap</emphasis> feature is used to coalesce together commits by the same
 person in the shortlog, where their name and/or email address was
@@ -149,7 +146,7 @@ prefers her family name fully spelled out. A proper <emphasis>.mailmap</emphasis
 would look like:</simpara>
 <screen>Jane Doe         &lt;jane@desktop.(none)&gt;
 Joe R. Developer &lt;joe@example.com&gt;</screen>
-<simpara>Note how there is no need for an entry for &lt;<ulink url="mailto:jane@laptop">jane@laptop</ulink>.(none)&gt;, because the
+<simpara>Note how there is no need for an entry for <emphasis>&lt;jane@laptop.(none)&gt;</emphasis>, because the
 real name of that author is already correct.</simpara>
 <simpara>Example 2: Your repository contains commits from the following
 authors:</simpara>
@@ -168,8 +165,8 @@ Santa Claus &lt;santa.claus@northpole.xx&gt; &lt;me@company.xx&gt;</screen>
 <simpara>Use hash <emphasis>#</emphasis> for comments that are either on their own line, or after
 the email address.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-shortlog(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

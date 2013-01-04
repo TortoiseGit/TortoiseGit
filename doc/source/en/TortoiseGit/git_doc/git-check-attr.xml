@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
-<article lang="en" id="git-check-attr(1)">
-<articleinfo>
+<sect2 lang="en" id="git-check-attr(1)">
     <title>git-check-attr(1)</title>
 <indexterm>
 <primary>git-check-attr(1)</primary>
 </indexterm>
-</articleinfo>
-<simplesect id="_name">
+<simplesect id="git-check-attr(1)__name">
 <title>NAME</title>
 <simpara>git-check-attr - Display gitattributes information</simpara>
 </simplesect>
-<simplesect id="_synopsis">
+<simplesect id="git-check-attr(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git check-attr</emphasis> [-a | --all | attr&#8230;] [--] pathname&#8230;
 <emphasis>git check-attr</emphasis> --stdin [-z] [-a | --all | attr&#8230;] &lt; &lt;list-of-paths&gt;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="_description">
+<simplesect id="git-check-attr(1)__description">
 <title>DESCRIPTION</title>
 <simpara>For every pathname, this command will list if each attribute is <emphasis>unspecified</emphasis>,
 <emphasis>set</emphasis>, or <emphasis>unset</emphasis> as a gitattribute on that pathname.</simpara>
 </simplesect>
-<simplesect id="_options">
+<simplesect id="git-check-attr(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
@@ -86,7 +84,7 @@
 will be treated as an attribute and the rest of the arguments as
 pathnames.</simpara>
 </simplesect>
-<simplesect id="_output">
+<simplesect id="git-check-attr(1)__output">
 <title>OUTPUT</title>
 <simpara>The output is of the form:
 &lt;path&gt; COLON SP &lt;attribute&gt; COLON SP &lt;info&gt; LF</simpara>
@@ -135,7 +133,7 @@ when a value has been assigned to the attribute.
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="_examples">
+<simplesect id="git-check-attr(1)__examples">
 <title>EXAMPLES</title>
 <simpara>In the examples, the following <emphasis>.gitattributes</emphasis> file is used:</simpara>
 <screen>*.java diff=java -crlf myAttr
@@ -191,12 +189,12 @@ Not all values are equally unambiguous:
 <screen>$ git check-attr caveat README
 README: caveat: unspecified</screen>
 </simplesect>
-<simplesect id="_see_also">
+<simplesect id="git-check-attr(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="gitattributes(5)" />.</simpara>
 </simplesect>
-<simplesect id="_git">
+<simplesect id="git-check-attr(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
-</article>
+</sect2>

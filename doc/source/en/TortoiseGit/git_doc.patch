@@ -1,4 +1,4 @@
-Generating git docbook documentation:
+Generating git docbook documentation: (done on Debian SID)
 - Clone git
 - apply patch
 - change (system/global) asciidoc.conf
@@ -13,7 +13,7 @@ Generating git docbook documentation:
     (\w)--(\w)=\1&#8212;\2
     (\w)'(\w)=\1&#8217;\2
 - make xml
-- take *.xml files
+- take *.xml files (skip git-tools.xml)
 - after generation change everyday.xml: article-id to everyday
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
@@ -46,7 +46,7 @@ index 9ad6a6a..adfe07a 100644
  
  technical/api-index.txt: technical/api-index-skel.txt \
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
-index aea8627..5a920b6 100644
+index 1273a85..5223c99
 --- a/Documentation/asciidoc.conf
 +++ b/Documentation/asciidoc.conf
 @@ -9,6 +9,7 @@
@@ -57,25 +57,52 @@ index aea8627..5a920b6 100644
  
  [attributes]
  asterisk=&#42;
-@@ -31,6 +32,49 @@ ifdef::backend-docbook[]
+@@ -31,12 +32,94 @@ ifdef::backend-docbook[]
  endif::backend-docbook[]
  
  ifdef::backend-docbook[]
 +[header-declarations]
 +<?xml version="1.0" encoding="{encoding}"?>
-+<!DOCTYPE {doctype-article?article}{doctype-book?book}{doctype-manpage?refentry} PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
++<!DOCTYPE {doctype-article?sect2}{doctype-book?book}{doctype-manpage?refentry} PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 +
 +ifdef::doctype-article[]
 +[header]
 +template::[header-declarations]
 +
-+<article lang="{lang=en}" id="{doctitle}">
-+<articleinfo>
++<sect2 lang="{lang=en}" id="{doctitle}">
 +template::[docinfo]
 +<indexterm>
 +<primary>{doctitle}</primary>
 +</indexterm>
-+</articleinfo>
++
++[footer]
++</sect2>
++
++[callout-inlinemacro]
++# Callout.
++<co id="{docname}_{coid}"/>
++
++[listtags-callout]
++list=<calloutlist{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>{title?<title>{title}</title>}|</calloutlist>
++item=<callout arearefs="{docname}_{coids}">|</callout>
++text=<para>|</para>
++
++# [[id,text]]
++[anchor2-inlinemacro]
++<anchor id="{doctitle}_{1}" xreflabel="{2=[{1}]}"/>
++# [[[id]]]
++[anchor3-inlinemacro]
++<anchor id="{doctitle}_{1}" xreflabel="[{1}]"/>[{1}]
++# <<id,text>>
++[xref2-inlinemacro]
++<link linkend="{doctitle}_{1}">{2}</link>
++{2%}<xref linkend="{doctitle}_{1}"/>
++
++[appendix]
++<sect3{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</sect3>
 +
 +[linkgit-inlinemacro]
 +{0%{target}}
@@ -86,10 +113,22 @@ index aea8627..5a920b6 100644
 +<link linkend="{target}">{0}</link>
 +
 +[sect1]
-+<simplesect{id? id="{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<simplesect{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
 +<title>{title}</title>
 +|
 +</simplesect>
++
++[sect2]
++<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
++
++[sect3]
++<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
 +
 +[literal-inlinemacro]
 +# Inline literal.
@@ -107,28 +146,53 @@ index aea8627..5a920b6 100644
  ifndef::git-asciidoc-no-roff[]
  # "unbreak" docbook-xsl v1.68 for manpages. v1.69 works with or without this.
  # v1.72 breaks with this because it replaces dots not in roff requests.
+ [listingblock]
+ <example><title>{title}</title>
+-<literallayout class="monospaced">
++<literallayout>
+ ifdef::doctype-manpage[]
+ &#10;.ft C&#10;
+ endif::doctype-manpage[]
+@@ -53,7 +136,7 @@ ifdef::doctype-manpage[]
+ # The following two small workarounds insert a simple paragraph after screen
+ [listingblock]
+ <example><title>{title}</title>
+-<literallayout class="monospaced">
++<literallayout>
+ |
+ </literallayout><simpara></simpara>
+ {title#}</example>
 diff --git a/Documentation/user-manual.conf b/Documentation/user-manual.conf
-index 339b309..d422ae4 100644
+index d87294d..704f2cc
 --- a/Documentation/user-manual.conf
 +++ b/Documentation/user-manual.conf
-@@ -7,15 +7,44 @@ startsb=&#91;
+@@ -7,15 +7,53 @@ startsb=&#91;
  endsb=&#93;
  tilde=&#126;
  
 +[header]
 +template::[header-declarations]
 +
-+<article lang="{lang=en}">
-+<articleinfo>
++<sect2 lang="{lang=en}" id="git_user-manual">
 +template::[docinfo]
-+</articleinfo>
 +
  [linkgit-inlinemacro]
 -<ulink url="{target}.html">{target}{0?({0})}</ulink>
 +<xref linkend="{target}{0?({0})}" />
 +
++# [[id,text]]
++[anchor2-inlinemacro]
++<anchor id="{doctitle}_{1}" xreflabel="{2=[{1}]}"/>
++# [[[id]]]
++[anchor3-inlinemacro]
++<anchor id="{doctitle}_{1}" xreflabel="[{1}]"/>[{1}]
++# <<id,text>>
++[xref2-inlinemacro]
++<link linkend="{doctitle}_{1}">{2}</link>
++{2%}<xref linkend="{doctitle}_{1}"/>
++
 +[sect1]
-+<section{id? id="{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
 +<title>{title}</title>
 +|
 +</section>
@@ -137,7 +201,8 @@ index 339b309..d422ae4 100644
 -# "unbreak" docbook-xsl v1.68 for manpages. v1.69 works with or without this.
  [listingblock]
  <example><title>{title}</title>
- <literallayout>
+-<literallayout class="monospaced">
++<literallayout>
 +ifdef::doctype-manpage[]
 +&#10;.ft C&#10;
 +endif::doctype-manpage[]
