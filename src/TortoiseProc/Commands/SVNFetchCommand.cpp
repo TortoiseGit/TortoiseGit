@@ -70,13 +70,13 @@ bool SVNFetchCommand::Execute()
 		{
 			if (progress.m_GitStatus == 0)
 				CMessageBox::Show(NULL, L"No new revisions fetched.", L"TortoiseGit Fetch", MB_OK | MB_ICONINFORMATION);
-			return TRUE;
+			return true;
 		}
 
 		CLogDlg dlg;
 		dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash, upstreamNewHash, 0);
 		dlg.DoModal();
-		return TRUE;
+		return true;
 	}
 	else if (userResponse == IDC_PROGRESS_BUTTON1 + 1)
 	{
@@ -84,13 +84,13 @@ bool SVNFetchCommand::Execute()
 		{
 			if (progress.m_GitStatus == 0)
 				CMessageBox::Show(NULL, L"No new revisions fetched.", L"TortoiseGit Fetch", MB_OK | MB_ICONINFORMATION);
-			return TRUE;
+			return true;
 		}
 
 		CFileDiffDlg dlg;
 		dlg.SetDiff(NULL, upstreamNewHash, upstreamOldHash);
 		dlg.DoModal();
-		return TRUE;
+		return true;
 	}
 	else
 		return false;
