@@ -85,6 +85,24 @@ void SVG::Polygon( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color
 	objects.push_back(sObj);
 }
 
+void SVG::DrawPath( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth,  Gdiplus::Color fill )
+{
+	CStringA pointstring;
+	CStringA sTemp;
+	for (int i = 0; i < numPoints; ++i)
+	{
+		sTemp.Format("%c %d %d ", i==0? 'M':'L', (int)points[i].X, (int)points[i].Y);
+		pointstring += sTemp;
+	}
+	pointstring.TrimRight();
+
+	CStringA sObj;
+	sObj.Format("<path d=\"%s\" style=\"stroke:#%06lx; stroke-width:%d; fill:#%06lx;\"/>",
+		(LPCSTR)pointstring, GetColor(stroke), penWidth, GetColor(fill));
+
+	objects.push_back(sObj);
+}
+
 void SVG::Polyline( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth)
 {
 	CStringA pointstring;

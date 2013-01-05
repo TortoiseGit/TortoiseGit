@@ -1041,7 +1041,8 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	if(graphics.graphics)
 		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
-	Gdiplus::Pen pen(Color(0,0,0),2*m_fZoomFactor<1? 1:2*m_fZoomFactor);
+	double penwidth = 2*m_fZoomFactor<1? 1:2*m_fZoomFactor;
+	Gdiplus::Pen pen(Color(0,0,0),penwidth);
 
 	// iterate over all visible lines
 	edge e;
@@ -1093,7 +1094,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		{
 			Color color;
 			color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
-			graphics.pSVG->Polyline(points.GetData(), points.GetCount(), Color(0,0,0), 2*m_fZoomFactor<1? 1:2*m_fZoomFactor);
+			graphics.pSVG->Polyline(points.GetData(), points.GetCount(), Color(0,0,0), penwidth);
 		}
 
 		//draw arrow
@@ -1136,6 +1137,9 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		if(graphics.graphics)
 		{
 			graphics.graphics->DrawPath(&pen, &path);
+		}else if(graphics.pSVG)
+		{
+			graphics.pSVG->DrawPath(arrows, 5, Color(0,0,0), penwidth, Color(0,0,0));
 		}
 	}
 }
