@@ -198,6 +198,21 @@
 						however, this abbreviated format might be harder to understand.
 					</para>
 				</listitem>
+			</varlistentry>			
+			<varlistentry>
+				<term>Symbolize ref names</term>
+				<listitem>
+					<para>
+						Show symbols on ref labels to substitute part of the ref names.
+						If this option is enabled, the following description and example will apply.
+						If there is only a single remote, a lightning symbol will substitute the remote name part of each remote branch.
+						If the remote branch is the upstream of a local branch, an up triangle symbol will substitute the branch name part of the remote branch.
+						<figure id="tsvn-dug-settings-symbolizerefname-example">
+							<title>Example of Symbolize ref names</title>
+							<graphic fileref="../images/SymbolizeRefNamesExample.png"/>
+						</figure>
+					</para>
+				</listitem>
 			</varlistentry>
 <!--
 			<varlistentry>
