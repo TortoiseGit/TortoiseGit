@@ -94,6 +94,4 @@ bool SVNFetchCommand::Execute()
 	}
 	else
 		return false;
-
-	return true;
 }
