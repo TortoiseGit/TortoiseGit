@@ -263,6 +263,18 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		}
 		SetViewData(viewLine, line);
 	}
+	// make sure previous (non empty) line have EOL set
+	for (int nCheckViewLine = nFirstViewLine-1; nCheckViewLine > 0; nCheckViewLine--)
+	{
+		if (!IsViewLineEmpty(nCheckViewLine))
+		{
+			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
+			{
+				SetViewLineEnding(nCheckViewLine, lineendings);
+			}
+			break;
+		}
+	}
 	SaveUndoStep();
 
 	int nRemovedLines = CleanEmptyLines();
