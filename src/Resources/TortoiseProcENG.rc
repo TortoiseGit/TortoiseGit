@@ -3073,7 +3073,7 @@ BEGIN
     IDS_COMMONFILEFILTER    "All Files (*.*)|*.*||"
     IDS_PROGRAMSFILEFILTER  "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
     IDS_PATCHFILEFILTER     "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
-    IDS_PICTUREFILEFILTER   "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
+    IDS_PICTUREFILEFILTER   "Pictures (*.wmf, *.svg, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.svg;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
 END
 
 STRINGTABLE 
@@ -3986,4 +3986,5 @@ LANGUAGE 9, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
 

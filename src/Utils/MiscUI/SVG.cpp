@@ -85,6 +85,23 @@ void SVG::Polygon( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color
 	objects.push_back(sObj);
 }
 
+void SVG::Polyline( const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth)
+{
+	CStringA pointstring;
+	CStringA sTemp;
+	for (int i = 0; i < numPoints; ++i)
+	{
+		sTemp.Format("%d,%d ", (int)points[i].X, (int)points[i].Y);
+		pointstring += sTemp;
+	}
+	pointstring.TrimRight();
+
+	CStringA sObj;
+	sObj.Format("<polyline points=\"%s\" style=\"stroke:#%06lx; stroke-width:%d; fill:none;\"/>",
+		(LPCSTR)pointstring, GetColor(stroke), penWidth);
+
+	objects.push_back(sObj);
+}
 void SVG::GradientRectangle( int x, int y, int width, int height, Gdiplus::Color topColor, Gdiplus::Color bottomColor, Gdiplus::Color stroke )
 {
 	CStringA sObj;
@@ -143,7 +160,7 @@ void SVG::Ellipse( int x, int y, int width, int height, Gdiplus::Color stroke, i
 	objects.push_back(sObj);
 }
 
-void SVG::CenteredText( int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text )
+void SVG::Text( int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text , int al)
 {
 	CStringA sObj;
 	sObj.Format("<text x=\"%d\"  y=\"%d\" \
@@ -152,9 +169,11 @@ font-size:%dpt;\
 font-style:%s;\
 font-weight:%s;\
 stroke:none;\
-text-anchor: middle;\
+text-anchor: %s;\
 fill:#%06lx;\">%s</text>",
-		x, y, font, fontsize, italic ? "italic" : "none", bold ? "bold" : "none", GetColor(color), text);
+		x, y, font, fontsize, italic ? "italic" : "none", bold ? "bold" : "none",
+		al==SVG::left? "left": al==SVG::middle? "middle": "right",
+		GetColor(color),text);
 
 	objects.push_back(sObj);
 }

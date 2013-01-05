@@ -36,16 +36,18 @@ public:
 	virtual ~SVG();
 
 	bool Save(const CString& path);
+	enum {left, middle, right} align;
 
 	void StartGroup() { objects.push_back("<g>"); }
 	void EndGroup() { objects.push_back("</g>"); }
 	void SetViewSize(int w, int h) { viewportWidth = w; viewportHeight = h; }
 	void RoundedRectangle(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill, int radius = 0);
 	void Polygon(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
+	void Polyline(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth);
 	void GradientRectangle(int x, int y, int width, int height, Gdiplus::Color topColor, Gdiplus::Color bottomColor, Gdiplus::Color stroke);
 	void PolyBezier(const POINT * points, int numPoints, Gdiplus::Color stroke);
 	void Ellipse(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
-	void CenteredText(int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text);
+	void Text(int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text, int al=SVG::left);
 private:
 	DWORD GetColor(Gdiplus::Color c);
 

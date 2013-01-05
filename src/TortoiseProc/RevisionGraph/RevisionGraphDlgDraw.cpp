@@ -33,6 +33,7 @@
 //#include "UpsideDownLayout.h"
 //#include "ShowTreeStripes.h"
 #include "registry.h"
+#include "UnicodeUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -827,7 +828,8 @@ void CRevisionGraphWnd::DrawMarker
 		REAL x = max(1, 10 * this->m_fZoomFactor);
 		REAL y1 = max(1, 25 * this->m_fZoomFactor);
 		REAL y2 = max(1, 5 * this->m_fZoomFactor);
-		graphics.graphics->DrawLine(&pen, noderect.X + x, noderect.Y - y1, noderect.X + x, noderect.Y - y2);
+		if(graphics.graphics)
+			graphics.graphics->DrawLine(&pen, noderect.X + x, noderect.Y - y1, noderect.X + x, noderect.Y - y2);
 	}
 	else if (num == 2)
 	{
@@ -836,8 +838,11 @@ void CRevisionGraphWnd::DrawMarker
 		REAL x2 = max(1, 15 * this->m_fZoomFactor);
 		REAL y1 = max(1, 25 * this->m_fZoomFactor);
 		REAL y2 = max(1, 5 * this->m_fZoomFactor);
-		graphics.graphics->DrawLine(&pen, noderect.X + x1, noderect.Y - y1, noderect.X + x1, noderect.Y - y2);
-		graphics.graphics->DrawLine(&pen, noderect.X + x2, noderect.Y - y1, noderect.X + x2, noderect.Y - y2);
+		if(graphics.graphics)
+		{
+			graphics.graphics->DrawLine(&pen, noderect.X + x1, noderect.Y - y1, noderect.X + x1, noderect.Y - y2);
+			graphics.graphics->DrawLine(&pen, noderect.X + x2, noderect.Y - y1, noderect.X + x2, noderect.Y - y2);
+		}
 	}
 }
 
@@ -1088,7 +1093,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		{
 			Color color;
 			color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
-			graphics.pSVG->PolyBezier(pts.GetData(), pts.GetCount(), color);
+			graphics.pSVG->Polyline(points.GetData(), points.GetCount(), Color(0,0,0), 2*m_fZoomFactor<1? 1:2*m_fZoomFactor);
 		}
 
 		//draw arrow
@@ -1128,8 +1133,10 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 		path.AddLines(arrows, 5);
 		path.SetFillMode(FillModeAlternate);
-		graphics.graphics->DrawPath(&pen, &path);
-
+		if(graphics.graphics)
+		{
+			graphics.graphics->DrawPath(&pen, &path);
+		}
 	}
 }
 
@@ -1167,10 +1174,20 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
 		{
-			graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
-				&font,
-				Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
-				&blackbrush);
+			if(graphics.graphics)
+			{
+				graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
+					&font,
+					Gdiplus::PointF(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor),
+					&blackbrush);
+			}
+			if(graphics.pSVG)
+			{
+				graphics.pSVG->Text(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,
+											noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor + m_nFontSize,
+											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, Color::Black,
+											CUnicodeUtils::GetUTF8(hash.ToString().Left(g_Git.GetShortHASHLength())));
+			}
 
 
 		}else
@@ -1252,13 +1269,12 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				}
 				else if (graphics.pSVG)
 				{
-#if 0
-					graphics.pSVG->CenteredText((textRect.left + textRect.right)/2, textRect.top+m_nFontSize+3, "Arial", m_nFontSize,
-						false, text.style != ILayoutTextList::SText::STYLE_DEFAULT,
-						text.style == ILayoutTextList::SText::STYLE_WARNING
-						? m_Colors.GetColor (CColors::gdpWCNodeBorder)
-						: standardTextColor, CUnicodeUtils::GetUTF8(text.text));
-#endif
+
+					graphics.pSVG->Text(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor, 
+										noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i+m_nFontSize,
+										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
+										false, false, Color::Black, CUnicodeUtils::GetUTF8(shortname));
+
 				}
 			}
 		}
