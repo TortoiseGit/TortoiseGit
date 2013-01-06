@@ -354,7 +354,18 @@ public:
 		}
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
+
+		try
+		{
+			m_HeadHash = g_Git.GetHash(_T("HEAD"));
+		}
+		catch (char* msg)
+		{
+			CString err(msg);
+			MessageBox(_T("Could not get HEAD hash. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			ExitProcess(1);
+		}
+
 		m_wcRev.m_ParentHash.clear();
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 

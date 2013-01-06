@@ -112,30 +112,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_bFilterWithRegex = !!CRegDWORD(_T("Software\\TortoiseGit\\UseRegexFilter"), TRUE);
 
-	try
-	{
-		g_Git.GetMapHashToFriendName(m_HashMap);
-	}
-	catch (char* msg)
-	{
-		CString err(msg);
-		MessageBox(_T("Could not get all refs. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-		ExitProcess(1);
-	}
-	if (CTGitPath(g_Git.m_CurrentDir).HasAdminDir())
-	{
-		m_CurrentBranch=g_Git.GetCurrentBranch();
-		try {
-			m_HeadHash=g_Git.GetHash(_T("HEAD"));
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-			ExitProcess(1);
-		}
-	}
-
 	m_From = -1;
 	m_To = -1;
 
@@ -145,7 +121,6 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	InterlockedExchange(&m_bExitThread,FALSE);
 	m_IsOldFirst = FALSE;
 	m_IsRebaseReplaceGraph = FALSE;
-
 
 	for(int i=0;i<Lanes::COLORS_NUM;i++)
 	{
@@ -441,7 +416,6 @@ void CGitLogListBase::InsertGitColumn()
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey+_T("loglist"), _countof(normal), with);
 
 	SetRedraw(true);
-
 }
 
 /**
@@ -2501,6 +2475,7 @@ void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 int CGitLogListBase::FetchLogAsync(void * data)
 {
+	ReloadHashMap();
 	m_ProcData=data;
 	m_bExitThread=FALSE;
 	InterlockedExchange(&m_bThreadRunning, TRUE);
@@ -2550,9 +2525,6 @@ UINT CGitLogListBase::LogThread()
 
 	InterlockedExchange(&m_bThreadRunning, TRUE);
 	InterlockedExchange(&m_bNoDispUpdates, TRUE);
-
-	FetchRemoteList();
-	FetchTrackingBranchList();
 
 	ULONGLONG  t1,t2;
 
