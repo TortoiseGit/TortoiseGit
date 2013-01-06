@@ -257,18 +257,20 @@ BEGIN
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
         POPUP "&Application Look"
         BEGIN
-            MENUITEM "Windows &2000",               ID_VIEW_APPLOOK_WIN_2000
-            MENUITEM "Office &XP",                  ID_VIEW_APPLOOK_OFF_XP
-            MENUITEM "&Windows XP",                 ID_VIEW_APPLOOK_WIN_XP
-            MENUITEM "Office 200&3",                ID_VIEW_APPLOOK_OFF_2003
-            MENUITEM "Visual Studio.NET 200&5",     ID_VIEW_APPLOOK_VS_2005
-            POPUP "Office 200&7"
+            MENUITEM "Windows 2000",                ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP",                   ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP",                  ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003",                 ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 2005",          ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 2007"
             BEGIN
-                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
-                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
-                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
-                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
+                MENUITEM "Blue Style",                  ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "Black Style",                 ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "Silver Style",                ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "Aqua Style",                  ID_VIEW_APPLOOK_OFF_2007_AQUA
             END
+            MENUITEM "Visual Studio 2008",          ID_VIEW_APPLOOK_VS_2008
+            MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
         END
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
@@ -290,14 +292,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Hide",                       ID_VIEW_OUTPUTWND
     END
-END
-
-IDR_THEME_MENU MENU 
-BEGIN
-    MENUITEM "Office 2007 (&Blue Style)",   ID_VIEW_APPLOOK_OFF_2007_BLUE
-    MENUITEM "Office 2007 (B&lack Style)",  ID_VIEW_APPLOOK_OFF_2007_BLACK
-    MENUITEM "Office 2007 (&Silver Style)", ID_VIEW_APPLOOK_OFF_2007_SILVER
-    MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
 END
 
 IDR_BLAME_POPUP MENU 

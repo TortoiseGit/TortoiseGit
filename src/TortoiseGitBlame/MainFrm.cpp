@@ -274,6 +274,16 @@ void CMainFrame::OnApplicationLook(UINT id)
 		CDockingManager::SetDockingMode(DT_SMART);
 		break;
 
+	case ID_VIEW_APPLOOK_VS_2008:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+
+	case ID_VIEW_APPLOOK_WIN7:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+
 	default:
 		switch (theApp.m_nAppLook)
 		{
@@ -305,6 +315,7 @@ void CMainFrame::OnApplicationLook(UINT id)
 
 void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 {
+	pCmdUI->Enable();
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 

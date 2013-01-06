@@ -29,9 +29,10 @@
 #define IDI_PROPERTIES_WND              167
 #define IDI_PROPERTIES_WND_HC           168
 #define IDR_OUTPUT_POPUP                182
-#define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
-#define ID_VIEW_APPLOOK_WIN_2000        210
+#define ID_VIEW_APPLOOK_WIN_2000        208
+#define ID_VIEW_APPLOOK_VS_2008         209
+#define ID_VIEW_APPLOOK_WIN7            210
 #define ID_VIEW_APPLOOK_OFF_XP          211
 #define ID_VIEW_APPLOOK_WIN_XP          212
 #define ID_VIEW_APPLOOK_OFF_2003        213
