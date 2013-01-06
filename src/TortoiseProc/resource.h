@@ -851,6 +851,7 @@
 #define IDC_BUTTON_UP2                  1384
 #define IDC_BUTTON_STASH                1384
 #define IDC_EDITSYSTEMGITCONFIG         1384
+#define IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 1384
 #define IDC_FROMGROUP                   1385
 #define IDC_BUTTON_REMOVE               1385
 #define IDC_BUTTON_DOWN2                1385
@@ -1220,6 +1221,7 @@
 #define IDC_CHECK_NORECYCLEBIN          1730
 #define IDC_CHECK_DRYRUN                1731
 #define IDC_LOG_SHOWTAGS                1732
+#define IDC_SYMBOLIZEREFNAMES           1733
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1660,7 +1662,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1733
+#define _APS_NEXT_CONTROL_VALUE         1734
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

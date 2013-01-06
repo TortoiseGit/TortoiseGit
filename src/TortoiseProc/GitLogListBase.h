@@ -357,6 +357,9 @@ public:
 		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
 		m_wcRev.m_ParentHash.clear();
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
+
+		FetchRemoteList();
+		FetchTrackingBranchList();
 	}
 	void SafeTerminateThread()
 	{
@@ -388,11 +391,21 @@ public:
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 	MAP_HASH_NAME		m_HashMap;
+	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
 public:
 	CString				m_ColumnRegKey;
 
 protected:
+	typedef struct {
+		CString name;
+		COLORREF color;
+		CString simplifiedName;
+		bool singleRemote;
+		bool hasTracking;
+		bool sameName;
+	} REFLABEL;
+
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
 	virtual afx_msg void OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -412,10 +425,12 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
+	void FetchRemoteList();
+	void FetchTrackingBranchList();
 	void FetchLastLogInfo();
 	void FetchFullLogInfo(CString &from, CString &to);
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
-	void DrawTagBranch(HDC,CRect &rect,INT_PTR index);
+	void DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> refList);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);
 
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
@@ -515,6 +530,8 @@ protected:
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool				m_bRelativeTimes;	// Show relative times
 	GIT_LOG				m_DllGitLog;
+	CString				m_SingleRemote;
+	bool				m_bSymbolizeRefNames;
 
 	ColumnManager		m_ColumnManager;
 	DWORD				m_dwDefaultColumns;
