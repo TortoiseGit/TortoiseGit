@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2012 the TortoiseGit team
+# Copyright (C) 2008-2013 the TortoiseGit team
 #
 # This file is distributed under the same license as TortoiseGit
 #
@@ -344,10 +344,6 @@ msgstr ""
 msgid "&Apply unified diff"
 msgstr ""
 
-#. Resource IDs: (218, 32852)
-msgid "&Aqua Style"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "&Arguments:"
 msgstr ""
@@ -386,10 +382,6 @@ msgstr ""
 
 #. Resource IDs: (322, 1252)
 msgid "&Blame revisions"
-msgstr ""
-
-#. Resource IDs: (215, 32849)
-msgid "&Blue Style"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1043,10 +1035,6 @@ msgstr ""
 msgid "&Signing key ID:"
 msgstr ""
 
-#. Resource IDs: (217, 32851)
-msgid "&Silver Style"
-msgstr ""
-
 #. Resource IDs: (66)
 msgid "&Skip"
 msgstr ""
@@ -1201,10 +1189,6 @@ msgstr ""
 
 #. Resource IDs: (1066, 20085)
 msgid "&Whole word"
-msgstr ""
-
-#. Resource IDs: (212, 32846)
-msgid "&Windows XP"
 msgstr ""
 
 #. Resource IDs: (1657)
@@ -1885,10 +1869,6 @@ msgstr ""
 
 #. Resource IDs: (1157)
 msgid "Average"
-msgstr ""
-
-#. Resource IDs: (216, 32850)
-msgid "B&lack Style"
 msgstr ""
 
 #. Resource IDs: (1003, 1011)
@@ -5745,40 +5725,12 @@ msgstr ""
 msgid "OVR"
 msgstr ""
 
-#. Resource IDs: (211, 32845)
-msgid "Office &XP"
-msgstr ""
-
-#. Resource IDs: (213, 32847)
-msgid "Office 200&3"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Office 200&7"
-msgstr ""
-
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
 msgstr ""
 
 #. Resource IDs: (156)
 msgid "Office 2007"
-msgstr ""
-
-#. Resource IDs: (218)
-msgid "Office 2007 (&Aqua Style)"
-msgstr ""
-
-#. Resource IDs: (215)
-msgid "Office 2007 (&Blue Style)"
-msgstr ""
-
-#. Resource IDs: (217)
-msgid "Office 2007 (&Silver Style)"
-msgstr ""
-
-#. Resource IDs: (216)
-msgid "Office 2007 (B&lack Style)"
 msgstr ""
 
 #. Resource IDs: (626)
@@ -6075,7 +6027,7 @@ msgid "Picture:"
 msgstr ""
 
 #. Resource IDs: (157)
-msgid "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
+msgid "Pictures (*.wmf, *.svg, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.svg;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (246)
@@ -7474,6 +7426,10 @@ msgstr ""
 msgid "Show special characters for whitespaces and newlines\nShow Whitespaces"
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Show symbols on ref labels to substitute part of the ref names"
+msgstr ""
+
 #. Resource IDs: (1730)
 msgid "Show ta&gs"
 msgstr ""
@@ -7846,6 +7802,10 @@ msgstr ""
 msgid "Switches the comparison left<<->right"
 msgstr ""
 
+#. Resource IDs: (1733)
+msgid "Symbolize ref names"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
@@ -7886,12 +7846,12 @@ msgstr ""
 msgid "Tag"
 msgstr ""
 
-#. Resource IDs: (82)
-msgid "Tag Info"
-msgstr ""
-
 #. Resource IDs: (1382)
 msgid "Tag (FF)"
+msgstr ""
+
+#. Resource IDs: (82)
+msgid "Tag Info"
 msgstr ""
 
 #. Resource IDs: (79)
@@ -8805,10 +8765,6 @@ msgstr ""
 msgid "Visual Studio 2008"
 msgstr ""
 
-#. Resource IDs: (214, 32848)
-msgid "Visual Studio.NET 200&5"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "WARNING:\r\nOnly change these settings if you are absolutely sure what you are doing!\r\nTo set the values to their default, delete the value text."
 msgstr ""
@@ -8872,10 +8828,6 @@ msgstr ""
 
 #. Resource IDs: (16927)
 msgid "Windows"
-msgstr ""
-
-#. Resource IDs: (210, 32844)
-msgid "Windows &2000"
 msgstr ""
 
 #. Resource IDs: (156, 626)
