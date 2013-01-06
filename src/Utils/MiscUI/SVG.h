@@ -41,7 +41,7 @@ public:
 	void StartGroup() { objects.push_back("<g>"); }
 	void EndGroup() { objects.push_back("</g>"); }
 	void SetViewSize(int w, int h) { viewportWidth = w; viewportHeight = h; }
-	void RoundedRectangle(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill, int radius = 0);
+	void RoundedRectangle(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill, int radius = 0, int mode = 0x3);
 	void Polygon(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
 	void DrawPath(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
 	void Polyline(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth);

@@ -191,7 +191,7 @@ void CRevisionGraphWnd::DrawRoundedRect (GraphicsDevice& graphics, const Color& 
 	}
 	else if (graphics.pSVG)
 	{
-		graphics.pSVG->RoundedRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, penColor, penWidth, fillColor, (int)radius);
+		graphics.pSVG->RoundedRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, penColor, penWidth, fillColor, (int)radius, mask);
 	}
 
 }
@@ -1252,12 +1252,14 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
 				Gdiplus::Pen pen(color);
 				Gdiplus::SolidBrush brush(color);
+
+				int mask =0;
+				mask |= (i==0)? ROUND_UP:0;
+				mask |= (i== m_HashMap[hash].size()-1)? ROUND_DOWN:0;
+				this->DrawRoundedRect(graphics, color,1,&pen, color,&brush, rect,mask);
+
 				if (graphics.graphics)
 				{
-					int mask =0;
-					mask |= (i==0)? ROUND_UP:0;
-					mask |= (i== m_HashMap[hash].size()-1)? ROUND_DOWN:0;
-					this->DrawRoundedRect(graphics, color,1,&pen, color,&brush, rect,mask);
 
 					//graphics.graphics->FillRectangle(&SolidBrush(Gdiplus::Color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef))),
 					//		rect);

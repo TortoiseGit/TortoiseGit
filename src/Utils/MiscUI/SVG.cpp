@@ -58,12 +58,46 @@ bool SVG::Save( const CString& path )
 }
 
 
-void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill, int radius /*= 0*/ )
+void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill, int radius /*= 0*/, int mode )
 {
-	CStringA sObj;
-	sObj.Format("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" rx=\"%d\" ry=\"%d\" style=\"stroke:#%06lx; stroke-width:%d; fill: #%06lx\"/>",
-		x, y, height, width, radius, radius, GetColor(stroke), penWidth, GetColor(fill));
+	CStringA sObj,tmp;
+	if(mode == 3)
+	{
+		sObj.Format("<rect x=\"%d\" y=\"%d\" height=\"%d\" width=\"%d\" rx=\"%d\" ry=\"%d\" style=\"stroke:#%06lx; stroke-width:%d; fill: #%06lx\"/>",
+			x, y, height, width, radius, radius, GetColor(stroke), penWidth, GetColor(fill));
+	}else
+	{
+		sObj += "<path d=\"";
+		if(mode & 0x1)
+		{
+			tmp.Format("M %d %d a %d %d 0 0 1 %d %d ", x, y+radius, radius, radius, radius, -radius); 
+			sObj += tmp;
+			tmp.Format("h %d ", width - 2*radius);
+			sObj += tmp;
+			tmp.Format("a %d %d 0 0 1 %d %d ", radius, radius, radius, radius);
+			sObj += tmp;
+		}else
+		{
+			tmp.Format("M %d %d h %d ",x, y, width); 
+			sObj += tmp;
+		}
 
+		if(mode & 0x2)
+		{
+			tmp.Format("V %d a %d %d 0 0 1 %d %d ", y+height-radius, radius,radius, -radius, radius);
+			sObj += tmp;
+			tmp.Format("h %d a %d %d 0 0 1 %d %d z ", - width + 2* radius, radius,radius, -radius, -radius);
+			sObj += tmp;
+
+		}else
+		{
+			tmp.Format("V %d h %d z ", y+height, -width); 
+			sObj += tmp;
+		}
+		sObj +=_T("\" ");
+		tmp.Format("style=\"stroke:#%06lx; stroke-width:%d; fill: #%06lx\"/>", GetColor(stroke), penWidth, GetColor(fill));
+		sObj += tmp;
+	}
 	objects.push_back(sObj);
 }
 
