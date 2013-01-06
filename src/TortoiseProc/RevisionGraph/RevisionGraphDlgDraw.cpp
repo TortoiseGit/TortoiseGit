@@ -397,7 +397,7 @@ void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
 
 		pen.SetDashStyle (style);
 	}
-#endif
+
 	SolidBrush brush (brightColor);
 	DrawShape (graphics, penColor, isWorkingCopy ? 3 : 1, &pen, brightColor, &brush, rect, shape);
 
@@ -408,6 +408,7 @@ void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, const RectF& rect,
 		SolidBrush brush2 (overlayColor);
 		DrawShape (graphics, penColor, isWorkingCopy ? 3 : 1, &pen, overlayColor, &brush2, rect, shape);
 	}
+#endif
 }
 
 
@@ -1178,6 +1179,14 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 		if(m_HashMap.find(hash) == m_HashMap.end() || m_HashMap[hash].size() == 0)
 		{
+			Color background;
+			background.SetFromCOLORREF (GetSysColor(COLOR_WINDOW));
+			Gdiplus::Pen pen(background,1.0F);
+			Color brightColor = LimitedScaleColor (background, RGB(255,0,0), 0.9f);
+			Gdiplus::SolidBrush brush(brightColor);
+
+			DrawRoundedRect(graphics, background,1, &pen, brightColor, &brush, noderect);
+
 			if(graphics.graphics)
 			{
 				graphics.graphics->DrawString(hash.ToString().Left(g_Git.GetShortHASHLength()),-1,
@@ -1385,7 +1394,6 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 
 	Bitmap glyphs (AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHGLYPHS));
 
-	DrawNodes (graphics, &glyphs, logRect, offset);
 	DrawTexts (graphics, logRect, offset);
 	DrawConnections (graphics, logRect, offset);
 	//if (m_showHoverGlyphs)
