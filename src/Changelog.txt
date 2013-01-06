@@ -28,6 +28,7 @@ Released: unreleased
  * Fixed issue #1581: Show/Hide tags in the log
  * Synced TortoiseGitMerge code with TortoiseMerge of TortoiseSVN code (trunk)
  * Log Dialog specially highlights branches that have a remote tracking branch
+ * Added search mechanism to reflog dialog
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

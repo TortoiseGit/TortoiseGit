@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,8 +30,11 @@
 
 IMPLEMENT_DYNAMIC(CRefLogDlg, CResizableStandAloneDialog)
 
+UINT CRefLogDlg::m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
+
 CRefLogDlg::CRefLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CRefLogDlg::IDD, pParent)
+	, m_pFindDialog(NULL)
 {
 
 }
@@ -53,6 +56,7 @@ BEGIN_MESSAGE_MAP(CRefLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFLOG_BUTTONCLEARSTASH, &CRefLogDlg::OnBnClickedClearStash)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_REF,   &CRefLogDlg::OnCbnSelchangeRef)
 	ON_MESSAGE(MSG_REFLOG_CHANGED,OnRefLogChanged)
+	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
 END_MESSAGE_MAP()
 
 LRESULT CRefLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
@@ -173,6 +177,8 @@ BOOL CRefLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F5)
 		Refresh();
+	else if (pMsg->message == WM_KEYDOWN && (pMsg->wParam == VK_F3 || (pMsg->wParam == 'F' && (GetAsyncKeyState(VK_CONTROL) & 0x8000))))
+		OnFind();
 
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
@@ -209,4 +215,84 @@ void CRefLogDlg::Refresh()
 	m_RefList.m_RefMap.clear();
 
 	OnCbnSelchangeRef();
+}
+
+void CRefLogDlg::OnFind()
+{
+	m_nSearchLine = 0;
+	m_pFindDialog = new CFindReplaceDialog();
+	m_pFindDialog->Create(TRUE, _T(""), NULL, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
+}
+
+LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	ASSERT(m_pFindDialog != NULL);
+
+	if (m_RefList.m_arShownList.IsEmpty())
+		return 0;
+
+	// If the FR_DIALOGTERM flag is set,
+	// invalidate the handle identifying the dialog box.
+	if (m_pFindDialog->IsTerminating())
+	{
+			m_pFindDialog = NULL;
+			return 0;
+	}
+
+	// If the FR_FINDNEXT flag is set,
+	// call the application-defined search routine
+	// to search for the requested string.
+	if (m_pFindDialog->FindNext())
+	{
+		//read data from dialog
+		CString findString = m_pFindDialog->GetFindString();
+
+		bool bFound = false;
+		bool bCaseSensitive = !!(m_pFindDialog->m_nFlags & FR_MATCHCASE);
+
+		if (!bCaseSensitive)
+			findString.MakeLower();
+
+		int i = m_nSearchLine;
+		if (i < 0 || i >= m_RefList.m_arShownList.GetCount())
+			i = 0;
+
+		do
+		{
+			GitRev * data = (GitRev*)m_RefList.m_arShownList.SafeGetAt(i);
+
+			CString str;
+			str += data->m_Ref;
+			str += _T("\n");
+			str += data->m_RefAction;
+			str += _T("\n");
+			str += data->m_CommitHash.ToString();
+			str += _T("\n");
+			str += data->GetSubject();
+			str += _T("\n");
+			str += data->GetBody();
+			str += _T("\n");
+
+			if (!bCaseSensitive)
+				str.MakeLower();
+
+			if (str.Find(findString) >= 0)
+				bFound = true;
+
+			i++;
+			if(!bFound && i >= m_RefList.m_arShownList.GetCount())
+				i=0;
+		} while (i != m_nSearchLine && (!bFound));
+
+		if (bFound)
+		{
+			m_RefList.SetHotItem(i - 1);
+			m_RefList.EnsureVisible(i - 1, FALSE);
+			m_nSearchLine = i;
+		}
+		else
+			MessageBox(_T("\"") + findString + _T("\" ") + CString(MAKEINTRESOURCE(IDS_NOTFOUND)), _T("TortoiseGit"), MB_ICONINFORMATION);
+	}
+
+	return 0;
 }
