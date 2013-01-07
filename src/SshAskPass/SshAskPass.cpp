@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,8 @@
 #include "PropKey.h"
 #include <atlbase.h>
 
+#include <commctrl.h>
+#pragma comment(lib, "comctl32.lib")
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #define MAX_LOADSTRING 100
@@ -50,6 +52,8 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 					 int			/*nCmdShow*/)
 {
 	SetDllDirectory(L"");
+
+	InitCommonControls();
 
 	if( _tcslen(lpCmdLine) == 0 )
 	{
