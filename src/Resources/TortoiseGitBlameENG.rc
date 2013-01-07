@@ -546,6 +546,11 @@ BEGIN
     IDS_PROPERTIES_WND      "Commit Info"
 END
 
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_ENCODING   " "
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

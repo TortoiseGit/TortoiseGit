@@ -178,10 +178,7 @@ struct EncodingUnit
 	char *name;
 };
 
-void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
-{
-
-	static EncodingUnit	encodings[]	= {
+static EncodingUnit	encodings[]	= {
 		{1250,	"windows-1250"},																	//IDM_FORMAT_WIN_1250
 		{1251,	"windows-1251"},																	//IDM_FORMAT_WIN_1251
 		{1252,	"windows-1252"},																	//IDM_FORMAT_WIN_1252
@@ -235,6 +232,8 @@ void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 		{1200,	"UTF-16 LE"},																		//IDM_FORMAT_UTF16LE
 		{1201,	"UTF-16 BE"},																		//IDM_FORMAT_UTF16BE
 };
+void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
+{
 	if(nId >= IDM_FORMAT_ENCODE && nId <= IDM_FORMAT_ENCODE_END)
 		this->UpdateInfo(encodings[nId - IDM_FORMAT_ENCODE].id);
 }
@@ -1487,6 +1486,31 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 		m_CommitHash.push_back(hash);
 		pos = current+1;
+	}
+	{
+		UINT nID;
+		UINT nStyle;
+		int cxWidth;
+		int nIndex = ((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.CommandToIndex(ID_INDICATOR_ENCODING);
+		((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.GetPaneInfo(nIndex, nID, nStyle, cxWidth);
+		CString sBarText = L"";
+		for (int i = 0; i < _countof(encodings); ++i)
+		{
+			if (encodings[i].id == encoding)
+			{
+				sBarText = CString(encodings[i].name);
+				break;
+			}
+		}
+		//calculate the width of the text
+		CDC * pDC = ((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.GetDC();
+		if (pDC)
+		{
+			CSize size = pDC->GetTextExtent(sBarText);
+			((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.SetPaneInfo(nIndex, nID, nStyle, size.cx+2);
+			ReleaseDC(pDC);
+		}
+		((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.SetPaneText(nIndex, sBarText);
 	}
 
 #if 0
