@@ -658,7 +658,7 @@ void CRevisionGraphDlg::OnFileSavegraphas()
 	if (CAppUtils::FileOpenSave(tempfile, &filterindex, IDS_REVGRAPH_SAVEPIC, IDS_PICTUREFILEFILTER, false, m_hWnd))
 	{
 		// if the user doesn't specify a file extension, default to
-		// wmf and add that extension to the filename. But only if the
+		// svg and add that extension to the filename. But only if the
 		// user chose the 'pictures' filter. The filename isn't changed
 		// if the 'All files' filter was chosen.
 		CString extension;
@@ -668,7 +668,7 @@ void CRevisionGraphDlg::OnFileSavegraphas()
 			extension = tempfile.Mid(dotPos);
 		if ((filterindex == 1)&&(extension.IsEmpty()))
 		{
-			extension = _T(".wmf");
+			extension = _T(".svg");
 			tempfile += extension;
 		}
 		m_Graph.SaveGraphAs(tempfile);
