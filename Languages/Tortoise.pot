@@ -8380,6 +8380,18 @@ msgstr ""
 msgid "URL:"
 msgstr ""
 
+#. Resource IDs: (5071)
+msgid "UTF-16 BE"
+msgstr ""
+
+#. Resource IDs: (5070)
+msgid "UTF-16 LE"
+msgstr ""
+
+#. Resource IDs: (5069)
+msgid "UTF-8"
+msgstr ""
+
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
 msgstr ""

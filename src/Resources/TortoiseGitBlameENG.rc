@@ -148,6 +148,9 @@ BEGIN
         MENUITEM SEPARATOR
         POPUP "Encode"
         BEGIN
+            MENUITEM "UTF-8",                       IDM_FORMAT_UTF8
+            MENUITEM "UTF-16 LE",                   IDM_FORMAT_UTF16LE
+            MENUITEM "UTF-16 BE",                   IDM_FORMAT_UTF16BE
             POPUP "Arabic"
             BEGIN
                 MENUITEM "ISO 8859-6",                  IDM_FORMAT_ISO_8859_6

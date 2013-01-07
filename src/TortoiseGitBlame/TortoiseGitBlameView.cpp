@@ -230,7 +230,10 @@ void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 		{874,	"tis-620"},																			//IDM_FORMAT_TIS_620
 		{10007,	"x-mac-cyrillic	xmaccyrillic"},														//IDM_FORMAT_MAC_CYRILLIC
 		{21866,	"koi8_u"},																			//IDM_FORMAT_KOI8U_CYRILLIC
-		{20866,	"koi8_r	csKOI8R"}																	//IDM_FORMAT_KOI8R_CYRILLIC
+		{20866,	"koi8_r	csKOI8R"},																	//IDM_FORMAT_KOI8R_CYRILLIC
+		{65001,	"UTF-8"},																			//IDM_FORMAT_UTF8
+		{1200,	"UTF-16 LE"},																		//IDM_FORMAT_UTF16LE
+		{1201,	"UTF-16 BE"},																		//IDM_FORMAT_UTF16BE
 };
 	if(nId >= IDM_FORMAT_ENCODE && nId <= IDM_FORMAT_ENCODE_END)
 		this->UpdateInfo(encodings[nId - IDM_FORMAT_ENCODE].id);
@@ -1445,7 +1448,8 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 				{
 					CString strw;
 					// the first bomoffset is 2, after that it's 1 (see issue #920)
-					if (bomoffset == 0)
+					// also: don't set bomoffset if called from Encodings menu (i.e. start == 42 and bomoffset == 0); bomoffset gets only set if autodetected
+					if (bomoffset == 0 && start != 42)
 						bomoffset = 1;
 					int size = ((current - start -2 - bomoffset)/2);
 					TCHAR *buffer = strw.GetBuffer(size);
