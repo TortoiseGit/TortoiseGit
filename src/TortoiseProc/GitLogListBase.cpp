@@ -1240,11 +1240,13 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 											refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 											if (m_bSymbolizeRefNames)
 											{
-												if (!m_SingleRemote.IsEmpty())
+												if (!m_SingleRemote.IsEmpty() && m_SingleRemote == pullRemote)
+												{
 													refLabel.simplifiedName = _T("/") + (sameName ? CString() : pullBranch);
+													refLabel.singleRemote = true;
+												}
 												else if (sameName)
 													refLabel.simplifiedName = pullRemote + _T("/");
-												refLabel.singleRemote = !m_SingleRemote.IsEmpty();
 												refLabel.sameName = sameName;
 											}
 											refsToShow.push_back(refLabel);
@@ -1274,9 +1276,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								refLabel.color = m_Colors.GetColor(CColors::RemoteBranch);
 								if (m_bSymbolizeRefNames)
 								{
-									if (!m_SingleRemote.IsEmpty())
+									if (!m_SingleRemote.IsEmpty() && refLabel.name.Left(m_SingleRemote.GetLength() + 1) == m_SingleRemote + _T("/"))
+									{
 										refLabel.simplifiedName = _T("/") + refLabel.name.Mid(m_SingleRemote.GetLength() + 1);
-									refLabel.singleRemote = !m_SingleRemote.IsEmpty();
+										refLabel.singleRemote = true;
+									}
 								}
 							}
 							else if (CGit::GetShortName(str, refLabel.name, _T("refs/tags/")))
