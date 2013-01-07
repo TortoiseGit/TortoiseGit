@@ -3433,10 +3433,6 @@ msgstr ""
 msgid "EUC-KR"
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "EXT"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Eastern European"
 msgstr ""
@@ -4018,10 +4014,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Font"
-msgstr ""
-
-#. Resource IDs: (3585)
-msgid "For Help, press F1"
 msgstr ""
 
 #. Resource IDs: (3585)
@@ -5721,10 +5713,6 @@ msgstr ""
 msgid "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "OVR"
-msgstr ""
-
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
 msgstr ""
@@ -6285,10 +6273,6 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "REBASE"
-msgstr ""
-
-#. Resource IDs: (3697)
-msgid "REC"
 msgstr ""
 
 #. Resource IDs: (1535)
@@ -6861,10 +6845,6 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "S&witch/Checkout..."
-msgstr ""
-
-#. Resource IDs: (3697)
-msgid "SCRL"
 msgstr ""
 
 #. Resource IDs: (604, 1251)

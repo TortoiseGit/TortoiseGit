@@ -412,18 +412,13 @@ END
 STRINGTABLE 
 BEGIN
     AFX_IDS_APP_TITLE       "TortoiseGitBlame"
-    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_IDLEMESSAGE     " "
     AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_INDICATOR_EXT        "EXT"
-    ID_INDICATOR_CAPS       "CAP"
     ID_INDICATOR_NUM        "NUM"
-    ID_INDICATOR_SCRL       "SCRL"
-    ID_INDICATOR_OVR        "OVR"
-    ID_INDICATOR_REC        "REC"
 END
 
 STRINGTABLE 
