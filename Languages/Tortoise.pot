@@ -774,6 +774,10 @@ msgstr ""
 msgid "&Menu contents:"
 msgstr ""
 
+#. Resource IDs: (1735)
+msgid "&Merge"
+msgstr ""
+
 #. Resource IDs: (9)
 msgid "&Merge..."
 msgstr ""
@@ -825,6 +829,10 @@ msgstr ""
 
 #. Resource IDs: (16632)
 msgid "&No double-click event"
+msgstr ""
+
+#. Resource IDs: (1734)
+msgid "&No fetch"
 msgstr ""
 
 #. Resource IDs: (1702)
@@ -6277,6 +6285,10 @@ msgstr ""
 
 #. Resource IDs: (1535)
 msgid "Range"
+msgstr ""
+
+#. Resource IDs: (1736)
+msgid "Re&base"
 msgstr ""
 
 #. Resource IDs: (1494)

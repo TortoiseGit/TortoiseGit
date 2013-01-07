@@ -45,4 +45,7 @@ public:
 	BOOL m_bInit;
 	BOOL m_bRecursive;
 	BOOL m_bForce;
+	BOOL m_bNoFetch;
+	BOOL m_bMerge;
+	BOOL m_bRebase;
 };

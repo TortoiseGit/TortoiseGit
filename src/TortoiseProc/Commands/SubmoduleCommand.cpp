@@ -97,6 +97,12 @@ bool SubmoduleUpdateCommand::Execute()
 		params += _T(" --recursive");
 	if (submoduleUpdateDlg.m_bForce)
 		params += _T(" --force");
+	if (submoduleUpdateDlg.m_bNoFetch)
+		params += _T(" --no-fetch");
+	if (submoduleUpdateDlg.m_bMerge)
+		params += _T(" --merge");
+	if (submoduleUpdateDlg.m_bRebase)
+		params += _T(" --rebase");
 
 	for (int i = 0; i < this->orgPathList.GetCount(); i++)
 	{

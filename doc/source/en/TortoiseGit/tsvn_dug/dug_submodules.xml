@@ -33,7 +33,12 @@
 		</figure>
 	</para>
 	<para>
-		<guimenuitem>Submodule Update</guimenuitem>: Initialize the submodules and/or update the registered submodules, i.e. clone missing submodules and checkout the commit specified in the index of the containing repository.
+		<guimenuitem>Submodule Update</guimenuitem>: 
+		<figure id="tsvn-dug-submodules-update">
+			<title>The update submodule dialog</title>
+			<graphic fileref="../images/SubmoduleUpdate.png"/>
+		</figure>
+		Initialize the submodules and/or update the registered submodules, i.e. clone missing submodules and checkout the commit specified in the index of the containing repository.
 	</para>
 	<para>
 		<guimenuitem>Submodule Sync</guimenuitem>: Synchronizes submodules' remote URL configuration setting to the value specified in .gitmodules. This is useful when submodule URLs change upstream and you need to update your local repositories accordingly. 

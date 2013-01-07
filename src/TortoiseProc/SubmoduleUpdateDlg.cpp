@@ -29,6 +29,9 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	, m_bInit(true)
 	, m_bRecursive(FALSE)
 	, m_bForce(FALSE)
+	, m_bNoFetch(FALSE)
+	, m_bMerge(FALSE)
+	, m_bRebase(FALSE)
 {
 }
 
@@ -42,6 +45,9 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_INIT, m_bInit);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_RECURSIVE, m_bRecursive);
 	DDX_Check(pDX, IDC_FORCE, m_bForce);
+	DDX_Check(pDX, IDC_CHECK_SUBMODULE_NOFETCH, m_bNoFetch);
+	DDX_Check(pDX, IDC_CHECK_SUBMODULE_MERGE, m_bMerge);
+	DDX_Check(pDX, IDC_CHECK_SUBMODULE_REBASE, m_bRebase);
 }
 
 
@@ -61,6 +67,9 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 
 	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_NOFETCH);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
+	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
 
 	UpdateData(FALSE);
 
