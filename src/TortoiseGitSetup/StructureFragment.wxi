@@ -673,7 +673,7 @@
 					</Component>
 
 					<Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseMerge" Type="string" />
+						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseGitMerge" Type="string" />
 						<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" ShortName="TMERGE" Name="TortoiseGitMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
 					</Component>
 
@@ -698,7 +698,7 @@
 					</Component>
 
 					<Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseIDiff" Type="string" />
+						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseGitIDiff" Type="string" />
 						<Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" ShortName="TIDIFF" Name="TortoiseGitIDiff" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitIDiff.exe" Description="View Diff's of image files" Show="normal" />
 					</Component>
 
