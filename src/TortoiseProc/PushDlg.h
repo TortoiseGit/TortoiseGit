@@ -62,6 +62,7 @@ public:
 
 protected:
 	CRegDWORD		m_regAutoLoad;
+	CRegDWORD		m_regRecurseSubmodules;
 
 	BOOL			m_bSetPushRemote;
 	BOOL			m_bSetPushBranch;

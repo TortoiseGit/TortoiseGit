@@ -183,7 +183,10 @@ BOOL CPushDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHBRANCH, IDS_PUSHDLG_PUSHBRANCH_TT);
 	m_tooltips.AddTool(IDC_PROC_PUSH_SET_PUSHREMOTE, IDS_PUSHDLG_PUSHREMOTE_TT);
-
+	
+	m_regRecurseSubmodules = CRegDWORD(
+		CString(_T("Software\\TortoiseGit\\History\\PushRecurseSubmodules\\")) + WorkingDir, m_RecurseSubmodules);
+	m_RecurseSubmodules = m_regRecurseSubmodules;
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_NONE)));
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_CHECK)));
 	m_RecurseSubmodulesCombo.AddString(CString(MAKEINTRESOURCE(IDS_RECURSE_SUBMODULES_ONDEMAND)));
@@ -448,6 +451,7 @@ void CPushDlg::OnBnClickedOk()
 		CMessageBox::Show(m_hWnd, gitver, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return;
 	}
+	m_regRecurseSubmodules = m_RecurseSubmodules;
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }
