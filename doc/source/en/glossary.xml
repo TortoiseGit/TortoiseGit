@@ -50,7 +50,7 @@
 				the main line unstable. Or you can branch a stable release to which
 				you make only bug fixes, while new developments take place on the
 				unstable trunk. In Git a branch is implemented as a
-				<quote>cheap copy</quote>.
+				<quote>pointer to a revision</quote>.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -151,15 +151,6 @@
 		</glossdef>
 	</glossentry>
 	<glossentry>
-		<glossterm>Import</glossterm>
-		<glossdef>
-			<para>
-				Git command to import an entire folder hierarchy into the repository
-				in a single revision.
-			</para>
-		</glossdef>
-	</glossentry>
-	<glossentry>
 		<glossterm>Log</glossterm>
 		<glossdef>
 			<para>
@@ -216,6 +207,9 @@
 				A repository can be a place where multiple databases or files are located for 
 				distribution over a network, or a repository can be a location that is 
 				directly accessible to the user without having to travel across a network.
+				Git is a distributed version control system.
+				A Git repository does not require network to work with most operations.
+				Network is required only when you need to synchronize changes with remote repositories.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -225,7 +219,7 @@
 			<para>
 				When files in a working tree are left in a conflicted state following
 				a merge, those conflicts must be sorted out by a human using an editor
-				(or perhaps TortoiseMerge). This process is referred to as
+				(or perhaps TortoiseGitMerge). This process is referred to as
 				<quote>Resolving Conflicts</quote>. When this is complete you can mark
 				the conflicted files as being resolved, which allows them to be committed.
 			</para>
@@ -235,10 +229,9 @@
 		<glossterm>Revert</glossterm>
 		<glossdef>
 			<para>
-				Git keeps a local <quote>pristine</quote> copy of each file as
-				it was when you last updated your working tree. If you have made changes
+				If you have made changes
 				and decide you want to undo them, you can use the <quote>revert</quote>
-				command to go back to the pristine copy.
+				command to go back to the version from HEAD.
 			</para>
 		</glossdef>
 	</glossentry>
@@ -265,8 +258,10 @@
 				A frequently-used abbreviation for Subversion.
 			</para>
 			<para>
-				The name of the Git custom protocol used by the
-				<quote>svnserve</quote> repository server.
+				TortoiseGit provides git-svn interoperability.
+				You can fetch partial or whole history from an SVN remote and store as a local git repository.
+				This allows you to browse the history and create commits locally.
+				You can finally commit your changes to an SVN remote.
 			</para>
 		</glossdef>
 	</glossentry>
