@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	// Global help commands
 	ON_COMMAND(ID_HELP_FINDER, &CFrameWndEx::OnHelpFinder)
+	ON_UPDATE_COMMAND_UI(ID_HELP_FINDER, &CMainFrame::OnUpdateHelpFinder)
 	ON_COMMAND(ID_HELP, &CFrameWndEx::OnHelp)
 	ON_COMMAND(ID_CONTEXT_HELP, &CFrameWndEx::OnContextHelp)
 	ON_COMMAND(ID_DEFAULT_HELP, &CFrameWndEx::OnHelpFinder)
@@ -214,6 +215,11 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 
 // CMainFrame message handlers
+
+void CMainFrame::OnUpdateHelpFinder(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(FALSE);
+}
 
 void CMainFrame::OnViewCustomize()
 {
