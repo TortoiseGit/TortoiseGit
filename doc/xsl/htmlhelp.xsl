@@ -12,9 +12,5 @@
 <xsl:param name="htmlhelp.hhc.folders.instead.books" select="1"></xsl:param>
 <xsl:param name="htmlhelp.hhc.binary" select="0"></xsl:param>
 <xsl:param name="htmlhelp.use.hhk" select="1"></xsl:param>
-<xsl:param name="htmlhelp.hhp.tail">
-[FILES]
-images\svn_move.swf
-</xsl:param>
 
 </xsl:stylesheet> 
