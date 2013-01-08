@@ -51,5 +51,7 @@ public:
 	int		m_CleanType;
 	BOOL	m_bNoRecycleBin;
 	BOOL	m_bDryRun;
+	BOOL	m_bSubmodules;
 	afx_msg void OnBnClickedHelp();
+	afx_msg void OnBnClickedCheckNoRecycleBin();
 };

@@ -7,6 +7,7 @@ Released: Unreleased
  * Allow to send (patch)mails over relay servers (e.g. the one from your ISP)
  * When adding second and more remotes, prompt user to disable tag fetching to avoid fetching wrong tags
  * Fixed issue #1845: Add "pull" button on "git switch" window
+ * Cleanup can also cleanup files inside submodules
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
