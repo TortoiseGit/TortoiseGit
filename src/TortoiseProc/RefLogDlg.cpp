@@ -78,6 +78,7 @@ BOOL CRefLogDlg::OnInitDialog()
 	AddAnchor(IDC_REFLOG_BUTTONCLEARSTASH, BOTTOM_LEFT);
 	AddAnchor(IDC_REFLOG_LIST,TOP_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_COMBOBOXEX_REF, TOP_LEFT, TOP_RIGHT);
 
 	AddOthersToAnchor();
 	this->EnableSaveRestore(_T("RefLogDlg"));
