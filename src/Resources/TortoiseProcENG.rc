@@ -3977,6 +3977,8 @@ BEGIN
                             "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
     IDS_LOG_FILTER_EMAILS   "Emails"
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
+    IDS_SYNC_SUBMODULES_RECURSIVE
+                            "You are going to synchronize submodules' remote URLs. Recursively?"
 END
 
 #endif    // English (U.S.) resources

@@ -1245,6 +1245,11 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 		break;
 	case 2:
 		cmd=_T("git.exe submodule sync");
+		if (CAppUtils::GetMsysgitVersion() >= 0x01080100)
+		{
+			if (CMessageBox::Show(m_hWnd, IDS_SYNC_SUBMODULES_RECURSIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
+				cmd += _T(" --recursive");
+		}
 		break;
 	}
 
