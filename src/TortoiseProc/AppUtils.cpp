@@ -2068,15 +2068,13 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 
 	int len=message.GetLength();
 
-	char * buf;
-	buf = new char[len*4 + 4];
-	SecureZeroMemory(buf, (len*4 + 4));
+	std::unique_ptr<char[]> buf(new char[len * 4 + 4]);
+	SecureZeroMemory(buf.get(), len * 4 + 4);
 
-	int lengthIncTerminator = WideCharToMultiByte(cp, 0, message, -1, buf, len*4, NULL, NULL);
+	int lengthIncTerminator = WideCharToMultiByte(cp, 0, message, -1, buf.get(), len * 4, NULL, NULL);
 
-	file.Write(buf,lengthIncTerminator-1);
+	file.Write(buf.get(), lengthIncTerminator - 1);
 	file.Close();
-	delete buf;
 	return 0;
 }
 
