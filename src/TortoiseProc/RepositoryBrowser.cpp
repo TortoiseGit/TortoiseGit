@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
-// Copyright (C) 2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2012-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -402,7 +402,8 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		if (m_sRevision == hash.ToString())
 		{
 			MAP_HASH_NAME map;
-			g_Git.GetMapHashToFriendName(map);
+			if (g_Git.GetMapHashToFriendName(map))
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 			if (!map[hash].empty())
 				m_sRevision = map[hash].at(0);
 		}

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2013 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -130,7 +131,8 @@ BOOL CFindDlg::OnInitDialog()
 	m_ctrlRefList.GetClientRect(&rect);
 
 	this->m_ctrlRefList.InsertColumn(0,_T("Ref"),0, rect.Width()-50);
-	g_Git.GetRefList(m_RefList);
+	if (g_Git.GetRefList(m_RefList))
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 	AddToList();
 	return FALSE;
 }

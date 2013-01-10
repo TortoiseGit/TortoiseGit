@@ -343,15 +343,8 @@ public:
 	{
 		m_HashMap.clear();
 
-		try
-		{
-			g_Git.GetMapHashToFriendName(m_HashMap);
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get all refs.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (g_Git.GetMapHashToFriendName(m_HashMap))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 

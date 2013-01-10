@@ -187,7 +187,8 @@ void CRefLogDlg::Refresh()
 {
 	STRING_VECTOR list;
 	list.push_back(_T("HEAD"));
-	g_Git.GetRefList(list);
+	if (g_Git.GetRefList(list))
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
 	m_ChooseRef.AddString(list);
 

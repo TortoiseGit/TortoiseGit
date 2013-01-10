@@ -1164,6 +1164,26 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 }
 
+CString CGit::GetGitLastErr(CString msg)
+{
+	if (this->m_IsUseLibGit2)
+	{
+		const git_error *libgit2err = giterr_last();
+		if (libgit2err)
+		{
+			return msg + _T("\nlibgit2 returned: ") + CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+		}
+		else
+		{
+			return msg + _T("\nUnknown libgit2 error.");
+		}
+	}
+	else if (gitLastErr.IsEmpty())
+		return msg + _T("\nUnknown git.exe error.");
+	else
+		return msg + _T("\n") + gitLastErr;
+}
+
 CString CGit::FixBranchName_Mod(CString& branchName)
 {
 	if(branchName == "FETCH_HEAD")

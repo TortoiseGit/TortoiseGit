@@ -2,7 +2,7 @@
 
 // Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
-// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2402,7 +2402,8 @@ int CGitLogListBase::BeginFetchLog()
 
 		// if show all branches, pick any ref as dummy entry ref
 		STRING_VECTOR list;
-		g_Git.GetRefList(list);
+		if (g_Git.GetRefList(list))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 		if (list.size() == 0)
 			return 0;
 
@@ -2571,7 +2572,8 @@ UINT CGitLogListBase::LogThread()
 		else
 		{
 			STRING_VECTOR list;
-			g_Git.GetRefList(list);
+			if (g_Git.GetRefList(list))
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 			if (list.size() == 0)
 				shouldWalk = false;
 		}
