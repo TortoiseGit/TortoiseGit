@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -372,7 +372,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		{
 			CString sMsg;
 			sMsg.Format(IDS_PROC_DIFFERROR_FILENOTINWORKINGTREE, file1);
-			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
+			if (MessageBox(NULL, sMsg, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_YESNO) == IDNO)
 				return 1;
 			if (!CCommonAppUtils::FileOpenSave(file1, NULL, IDS_DIFF_WCNAME, IDS_COMMONFILEFILTER, true))
 				return 1;
