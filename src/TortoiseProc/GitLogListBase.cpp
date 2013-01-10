@@ -1915,7 +1915,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if(headindex>=0)
 					{
 						head.Format(_T("HEAD~%d"),LastSelect-headindex);
-						CGitHash hash=g_Git.GetHash(head);
+						CGitHash hash;
+						if (g_Git.GetHash(hash, head))
+							MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + head + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
 						GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
 						if(pLastEntry->m_CommitHash == hash) {
 							popup.AppendMenuIcon(ID_COMBINE_COMMIT,IDS_COMBINE_TO_ONE,IDI_COMBINE);
@@ -3385,7 +3387,10 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		CGitHash hash;
 
 		if(!str.IsEmpty())
-			hash = g_Git.GetHash(str + _T("^{}")); // add ^{} in order to get the correct SHA-1 (especially for signed tags)
+		{
+			if (g_Git.GetHash(hash, str + _T("^{}"))) // add ^{} in order to get the correct SHA-1 (especially for signed tags)
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ref \"") + str + _T("^{}\".")), _T("TortoiseGit"), MB_ICONERROR);
+		}
 
 		if(!hash.IsEmpty())
 		{

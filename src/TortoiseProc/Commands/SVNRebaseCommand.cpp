@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,8 +90,16 @@ bool SVNRebaseCommand::Execute()
 	dlg.m_Upstream=out;
 
 	CGitHash UpStreamOldHash,HeadHash,UpStreamNewHash;
-	UpStreamOldHash=g_Git.GetHash(out);
-	HeadHash = g_Git.GetHash(_T("HEAD"));
+	if (g_Git.GetHash(UpStreamOldHash, out))
+	{
+		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get hash of SVN branch.")), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
+	if (g_Git.GetHash(HeadHash, _T("HEAD")))
+	{
+		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
 	progress.m_bAutoCloseOnSuccess = true;
@@ -102,7 +110,11 @@ bool SVNRebaseCommand::Execute()
 	if(progress.m_GitStatus)
 		return false;
 
-	UpStreamNewHash=g_Git.GetHash(out);
+	if (g_Git.GetHash(UpStreamNewHash, out))
+	{
+		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
 
 	//everything updated
 	if(UpStreamNewHash==HeadHash)

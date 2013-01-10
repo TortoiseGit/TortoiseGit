@@ -348,14 +348,9 @@ public:
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
-		try
+		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
 		{
-			m_HeadHash = g_Git.GetHash(_T("HEAD"));
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
 			ExitProcess(1);
 		}
 

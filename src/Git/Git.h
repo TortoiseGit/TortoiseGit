@@ -284,8 +284,8 @@ public:
 					  CString *from=NULL,CString *to=NULL, bool paramonly=false,
 					  CFilterData * filter =NULL);
 
-	CGitHash GetHash(TCHAR* friendname);
-	CGitHash GetHash(CString ref){return GetHash(ref.GetBuffer());}
+	int GetHash(CGitHash &hash, TCHAR* friendname);
+	int GetHash(CGitHash &hash, CString ref) { return GetHash(hash, ref.GetBuffer()); }
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);

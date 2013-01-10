@@ -118,11 +118,21 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->UpdateData();
 	UpdateCombox();
 
-	m_oldHash = g_Git.GetHash(_T("HEAD"));
+	if (g_Git.GetHash(m_oldHash, _T("HEAD")))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
 
 	if( CurrentEntry == 0)
 	{
-		if( g_Git.GetHash(this->m_strLocalBranch) != m_oldHash)
+		CGitHash localBranchHash;
+		if (g_Git.GetHash(localBranchHash, m_strLocalBranch))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_strLocalBranch + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
+		if (localBranchHash != m_oldHash)
 		{
 			CMessageBox::Show(NULL, IDS_PROC_SYNC_PULLWRONGBRANCH, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
@@ -210,7 +220,9 @@ void CSyncDlg::OnBnClickedButtonPull()
 		{
 			remotebranch.Format(_T("remotes/%s/%s"),
 								m_strURL,m_strRemoteBranch);
-			if(g_Git.GetHash(remotebranch).IsEmpty())
+			CGitHash remoteBranchHash;
+			g_Git.GetHash(remoteBranchHash, remotebranch);
+			if (remoteBranchHash.IsEmpty())
 				remotebranch=m_strRemoteBranch;
 			else
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
@@ -303,8 +315,9 @@ void CSyncDlg::PullComplete()
 	SwitchToInput();
 	this->FetchOutList(true);
 
-	CString newhash;
-	newhash = g_Git.GetHash(_T("HEAD"));
+	CGitHash newhash;
+	if (g_Git.GetHash(newhash, _T("HEAD")))
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
 
 	if( this ->m_GitCmdStatus )
 	{
@@ -348,11 +361,10 @@ void CSyncDlg::PullComplete()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-			CString oldhash=m_oldHash.ToString();
-			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
+			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), m_oldHash.ToString());
 
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&oldhash,&newhash);
+				&m_oldHash.ToString(), &newhash.ToString());
 		}
 		this->ShowTab(IDC_IN_LOGLIST);
 	}
@@ -489,8 +501,12 @@ void CSyncDlg::OnBnClickedButtonPush()
 
 void CSyncDlg::OnBnClickedButtonApply()
 {
-	CString oldhash;
-	oldhash=g_Git.GetHash(_T("HEAD"));
+	CGitHash oldhash;
+	if (g_Git.GetHash(oldhash, _T("HEAD")))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
 
 	CImportPatchDlg dlg;
 	CString cmd,output;
@@ -515,7 +531,12 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlCmdOut.ReplaceSel(output);
 		}
 
-		CString newhash=g_Git.GetHash(_T("HEAD"));
+		CGitHash newhash;
+		if (g_Git.GetHash(newhash, _T("HEAD")))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after applying patches.")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
 
 		this->m_InLogList.Clear();
 		this->m_InChangeFileList.Clear();
@@ -532,9 +553,9 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-			this->AddDiffFileList(&m_InChangeFileList,&m_arInChangeList,newhash,oldhash);
+			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), oldhash.ToString());
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&oldhash,&newhash);
+				&oldhash.ToString(), &newhash.ToString());
 
 			this->FetchOutList(true);
 		}
@@ -949,6 +970,8 @@ void CSyncDlg::FetchOutList(bool force)
 	CString remotebranch;
 	this->m_ctrlRemoteBranch.GetWindowText(remotebranch);
 	remotebranch=remote+_T("/")+remotebranch;
+	CGitHash remotebranchHash;
+	g_Git.GetHash(remotebranchHash, remotebranch);
 
 	if(IsURL())
 	{
@@ -963,7 +986,7 @@ void CSyncDlg::FetchOutList(bool force)
 		return ;
 
 	}
-	else if(g_Git.GetHash(remotebranch).IsEmpty())
+	else if(remotebranchHash.IsEmpty())
 	{
 		CString str;
 		str.Format(IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH, remotebranch);
@@ -984,11 +1007,15 @@ void CSyncDlg::FetchOutList(bool force)
 		{
 			m_OutLogList.ClearText();
 
-			CGitHash base, remotehash;
+			CGitHash base, localBranchHash;
 			bool isFastForward = g_Git.IsFastForward(remotebranch, localbranch, &base);
 
-			remotehash = g_Git.GetHash(remotebranch);
-			if (remotehash == g_Git.GetHash(localbranch))
+			if (g_Git.GetHash(localBranchHash, localbranch))
+			{
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + localbranch + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+				return;
+			}
+			if (remotebranchHash == localBranchHash)
 			{
 				CString str;
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, 0, remotebranch);

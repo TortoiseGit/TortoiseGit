@@ -374,25 +374,27 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		ret = git_repository_open(&repository, gitdir.GetBuffer());
 		if (ret)
 		{
-			const git_error * err = giterr_last();
-			MessageBox(_T("Could not open repository.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
-		CGitHash hash = g_Git.GetHash(m_sRevision);
+		CGitHash hash;
+		if (g_Git.GetHash(hash, m_sRevision))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+			break;
+		}
 		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
 		if (ret)
 		{
-			const git_error * err = giterr_last();
-			MessageBox(_T("Could not lookup commit.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
 		ret = git_commit_tree(&tree, commit);
 		if (ret)
 		{
-			const git_error * err = giterr_last();
-			MessageBox(_T("Could get tree of commit.\nlibgit2 reports: ") + CString(err->message), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 

@@ -1000,13 +1000,14 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 //	return 0;
 }
 
-CGitHash CGit::GetHash(TCHAR* friendname)
+int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
 	{
 		CString sHash(friendname);
-		return CGitHash(sHash);
+		hash = CGitHash(sHash);
+		return 0;
 	}
 
 	if (m_IsUseLibGit2)
@@ -1016,7 +1017,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		if (git_repository_open(&repo, gitdirA.GetBuffer()))
 		{
 			gitdirA.ReleaseBuffer();
-			return CGitHash();
+			return -1;
 		}
 		gitdirA.ReleaseBuffer();
 
@@ -1027,7 +1028,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		{
 			refnameA.ReleaseBuffer();
 			git_repository_free(repo);
-			return CGitHash();
+			return -1;
 		}
 		refnameA.ReleaseBuffer();
 
@@ -1036,23 +1037,23 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		{
 			git_object_free(gitObject);
 			git_repository_free(repo);
-			return CGitHash();
+			return -1;
 		}
 
-		CGitHash hash((char *)oid->id);
+		hash = CGitHash((char *)oid->id);
 
 		git_object_free(gitObject); // also frees oid
 		git_repository_free(repo);
 
-		return hash;
+		return 0;
 	}
 	else
 	{
 		CString cmd;
-		CString out;
 		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
-		Run(cmd, &out, NULL, CP_UTF8);
-		return CGitHash(out.Trim());
+		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
+		hash = CGitHash(gitLastErr.Trim());
+		return ret;
 	}
 }
 
@@ -1864,7 +1865,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	}
 	basehash = base.Trim();
 
-	hash = GetHash(from);
+	GetHash(hash, from);
 
 	if (commonAncestor)
 		*commonAncestor = basehash;

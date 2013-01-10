@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -501,10 +501,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			if(headindex>=0) //incase show all branch, head is not the first commits.
 			{
 				head.Format(_T("HEAD~%d"),FirstSelect-headindex);
-				hashFirst=g_Git.GetHash(head);
+				if (g_Git.GetHash(hashFirst, head))
+				{
+					MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of first selected revision.")), _T("TortoiseGit"), MB_ICONERROR);
+					break;
+				}
 
 				head.Format(_T("HEAD~%d"),LastSelect-headindex);
-				hashLast=g_Git.GetHash(head);
+				if (g_Git.GetHash(hashLast, head))
+				{
+					MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of last selected revision.")), _T("TortoiseGit"), MB_ICONERROR);
+					break;
+				}
 			}
 
 			GitRev* pFirstEntry = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
@@ -527,7 +535,11 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				break;
 			}
 
-			headhash=g_Git.GetHash(_T("HEAD"));
+			if (g_Git.GetHash(headhash, _T("HEAD")))
+			{
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
 
 			if(!g_Git.CheckCleanWorkTree())
 			{
