@@ -1555,6 +1555,11 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 		git_repository_free(repo);
 
+		for (auto it = map.begin(); it != map.end(); ++it)
+		{
+			std::sort(it->second.begin(), it->second.end());
+		}
+
 		return 0;
 	}
 	else
