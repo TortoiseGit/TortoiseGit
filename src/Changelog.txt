@@ -30,6 +30,7 @@ Released: unreleased
  * Log Dialog specially highlights branches that have a remote tracking branch
  * Added search mechanism to reflog dialog
  * Add No fetch, Merge and Rebase options in Submodule Update Dialog
+ * Fixed issue #1467: put remote branches at the bottom in "branches" dropdowns (can be disabled using advanced settings)
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

@@ -99,6 +99,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">NoSortLocalBranchesFirst</term>
+            <listitem>
+                <para>
+                    This option toggles if the branches are sorted fully by name (<literal>true</literal>) or if local branches should appear above remote ones (git default, <literal>false</literal>).
+                    The default value is <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
             <listitem>
                 <para>

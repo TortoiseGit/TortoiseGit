@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2009-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,6 +57,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].sName	= L"FullRowSelect";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
+
+	settings[i].sName	= L"NoSortLocalBranchesFirst";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
 
 	settings[i].sName	= L"ReaddUnselectedAddedFilesAfterCommit";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;

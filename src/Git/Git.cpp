@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,16 +103,37 @@ static BOOL FindGitPath()
 }
 
 static bool g_bSortLogical;
+static bool g_bSortLocalBranchesFirst;
 
-static void GetSortLogicalEnabled()
+static void GetSortOptions()
 {
 	g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (g_bSortLogical)
 		g_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
+	g_bSortLocalBranchesFirst = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoSortLocalBranchesFirst", 0, false, HKEY_CURRENT_USER);
+	if (g_bSortLocalBranchesFirst)
+		g_bSortLocalBranchesFirst = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoSortLocalBranchesFirst", 0, false, HKEY_LOCAL_MACHINE);
 }
 
 static int LogicalComparePredicate(CString &left, CString &right)
 {
+	if (g_bSortLogical)
+		return StrCmpLogicalW(left, right) < 0;
+	return StrCmpI(left, right) < 0;
+}
+
+static int LogicalCompareBranchesPredicate(CString &left, CString &right)
+{
+	if (g_bSortLocalBranchesFirst)
+	{
+		int leftIsRemote = left.Find(_T("remotes/"));
+		int rightIsRemote = right.Find(_T("remotes/"));
+
+		if (leftIsRemote == 0 && rightIsRemote < 0)
+			return false;
+		else if (leftIsRemote < 0 && rightIsRemote == 0)
+			return true;
+	}
 	if (g_bSortLogical)
 		return StrCmpLogicalW(left, right) < 0;
 	return StrCmpI(left, right) < 0;
@@ -134,7 +155,7 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
-	GetSortLogicalEnabled();
+	GetSortOptions();
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
 	m_critGitDllSec.Init();
@@ -1299,7 +1320,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 	if(type & BRANCH_FETCH_HEAD && !DerefFetchHead().IsEmpty())
 		list.push_back(L"FETCH_HEAD");
 
-	std::sort(list.begin(), list.end(), LogicalComparePredicate);
+	std::sort(list.begin(), list.end(), LogicalCompareBranchesPredicate);
 
 	if (current && cur != _T("(no branch)"))
 	{
