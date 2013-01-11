@@ -1,4 +1,4 @@
-# List of Languages for Make_Check and Make_Install
+﻿# List of Languages for Make_Check and Make_Install
 # columns are separated by semicolons AND Tab characters
 # Don't convert Tabs to Spaces or you'll break the scripts!
 # The separators '; and Tab' must NOT be part of a value, even if quoted!
@@ -24,6 +24,7 @@ nl;	1043;	1;	Dutch;		Dutch;			Nederlands
 fi;	1035;	0;	Finnish;	Finnish;		Finnish
 fr;	1036;	1;	French;		French;			French
 ka;	1079;	0;	English;	Georgian;		Georgian
+ko_KR;	1042;	0;	Korean;		Koran;			Korea
 de;	1031;	1;	German;		German;			German
 el;	1032;	0;	Greek;		Greek;			Greek
 hu;	1038;	0;	Hungarian;	Hungarian;		Hungarian
