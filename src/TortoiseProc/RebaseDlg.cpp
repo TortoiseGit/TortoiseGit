@@ -900,7 +900,7 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
-	cmd.Format(_T("git.exe reset --hard %s"),head);
+	cmd.Format(_T("git.exe reset --hard %s"), head.ToString());
 	AddLogString(cmd);
 	while (true)
 	{
