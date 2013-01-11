@@ -822,7 +822,6 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_regSubmoduleButton = CRegDWORD(regkey+_T("\\Submodule"));
 	this->m_regAutoLoadPutty = CRegDWORD(regkey + _T("\\AutoLoadPutty"), CAppUtils::IsSSHPutty());
 
-	m_tooltips.Create(this);
 	this->UpdateData();
 	this->m_bAutoLoadPuttyKey  = m_regAutoLoadPutty;
 	if(!CAppUtils::IsSSHPutty())
