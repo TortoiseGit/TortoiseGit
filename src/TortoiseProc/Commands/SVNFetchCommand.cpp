@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,8 +53,12 @@ bool SVNFetchCommand::Execute()
 		return false;
 	}
 
-	CString upstreamOldHash, upstreamNewHash;
-	upstreamOldHash = g_Git.GetHash(out);
+	CGitHash upstreamOldHash, upstreamNewHash;
+	if (g_Git.GetHash(upstreamOldHash, out))
+	{
+		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
 
 	CProgressDlg progress;
 	progress.m_GitCmd=_T("git.exe svn fetch");
@@ -63,7 +67,11 @@ bool SVNFetchCommand::Execute()
 	progress.m_bAutoCloseOnSuccess = autoClose;
 
 	INT_PTR userResponse = progress.DoModal();
-	upstreamNewHash = g_Git.GetHash(out);
+	if (g_Git.GetHash(upstreamNewHash, out))
+	{
+		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
+		return false;
+	}
 	if (userResponse == IDC_PROGRESS_BUTTON1)
 	{
 		if (upstreamOldHash == upstreamNewHash)
@@ -88,7 +96,7 @@ bool SVNFetchCommand::Execute()
 		}
 
 		CFileDiffDlg dlg;
-		dlg.SetDiff(NULL, upstreamNewHash, upstreamOldHash);
+		dlg.SetDiff(NULL, upstreamNewHash.ToString(), upstreamOldHash.ToString());
 		dlg.DoModal();
 		return true;
 	}

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,16 +52,11 @@ bool PullCommand::Execute()
 		}
 
 		CString cmd;
-		CString hashOld;
-		try
+		CGitHash hashOld;
+		if (g_Git.GetHash(hashOld, _T("HEAD")))
 		{
-			hashOld = g_Git.GetHash(_T("HEAD"));
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(NULL, _T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-			ExitProcess(1);
+			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+			return false;
 		}
 		CString cmdRebase;
 		if(dlg.m_bRebase)
@@ -117,7 +112,12 @@ bool PullCommand::Execute()
 			return FALSE;
 		}
 
-		CString hashNew = g_Git.GetHash(L"HEAD");
+		CGitHash hashNew;
+		if (g_Git.GetHash(hashNew, L"HEAD"))
+		{
+			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
+			return FALSE;
+		}
 
 		if( ret == IDC_PROGRESS_BUTTON1)
 		{
@@ -129,7 +129,7 @@ bool PullCommand::Execute()
 			}
 
 			CFileDiffDlg dlg;
-			dlg.SetDiff(NULL, hashNew, hashOld);
+			dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
 			dlg.DoModal();
 
 			return TRUE;

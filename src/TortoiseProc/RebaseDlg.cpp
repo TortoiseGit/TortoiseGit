@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -496,12 +496,23 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 
 void CRebaseDlg::FetchLogList()
 {
-	CGitHash base,hash;
+	CGitHash base,hash,upstream;
 	m_IsFastForward=FALSE;
 
-	hash=g_Git.GetHash(m_BranchCtrl.GetString());
+	if (g_Git.GetHash(hash, m_BranchCtrl.GetString()))
+	{
+		m_CommitList.ShowText(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")));
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
+	if (g_Git.GetHash(upstream, m_UpstreamCtrl.GetString()))
+	{
+		m_CommitList.ShowText(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_UpstreamCtrl.GetString() + _T("\".")));
+		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+		return;
+	}
 
-	if(hash == g_Git.GetHash(this->m_UpstreamCtrl.GetString()))
+	if (hash == upstream)
 	{
 		m_CommitList.Clear();
 		CString text,fmt;
@@ -531,13 +542,9 @@ void CRebaseDlg::FetchLogList()
 		return ;
 	}
 
-	hash.Empty();
-
 	if(!this->m_bForce)
 	{
-		hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
-
-		if( base == hash )
+		if (base == upstream)
 		{
 			m_CommitList.Clear();
 			CString text,fmt;
@@ -559,12 +566,10 @@ void CRebaseDlg::FetchLogList()
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_NOTHINGTOREBASE)));
 
-	hash=g_Git.GetHash(m_UpstreamCtrl.GetString());
-
 #if 0
 	if(m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash.size() >=0 )
 	{
-		if(hash ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
+		if(upstream ==  m_CommitList.m_logEntries[m_CommitList.m_logEntries.size()-1].m_ParentHash[0])
 		{
 			m_CommitList.Clear();
 			m_CommitList.ShowText(_T("Nothing Rebase"));
@@ -810,10 +815,9 @@ int CRebaseDlg::StartRebase()
 	}
 
 	m_OrigUpstreamHash.Empty();
-	m_OrigUpstreamHash= g_Git.GetHash(this->m_UpstreamCtrl.GetString());
-	if(m_OrigUpstreamHash.IsEmpty())
+	if (g_Git.GetHash(m_OrigUpstreamHash, m_UpstreamCtrl.GetString()))
 	{
-		this->AddLogString(m_OrigUpstreamHash);
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_UpstreamCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
 
@@ -838,10 +842,9 @@ int CRebaseDlg::StartRebase()
 	CString log;
 	if( !this->m_IsCherryPick )
 	{
-		m_OrigBranchHash = g_Git.GetHash(this->m_BranchCtrl.GetString());
-		if(m_OrigBranchHash.IsEmpty())
+		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
 		{
-			this->AddLogString(m_OrigBranchHash.ToString());
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
 			return -1;
 		}
 		log.Format(_T("%s\r\n"), CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTREBASE)));
@@ -873,7 +876,12 @@ int CRebaseDlg::FinishRebase()
 	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
 		return 0;
 
-	git_revnum_t head = g_Git.GetHash(_T("HEAD"));
+	CGitHash head;
+	if (g_Git.GetHash(head, _T("HEAD")))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 	CString out,cmd;
 
 	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
@@ -947,8 +955,16 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 		AddLogString(out);
 		out.Empty();
-		m_OrigBranchHash = g_Git.GetHash(m_BranchCtrl.GetString());
-		m_OrigUpstreamHash = g_Git.GetHash(this->m_UpstreamCtrl.GetString());
+		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_BranchCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
+		if (g_Git.GetHash(m_OrigUpstreamHash, m_UpstreamCtrl.GetString()))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + m_UpstreamCtrl.GetString() + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return;
+		}
 
 		if(!g_Git.IsFastForward(this->m_BranchCtrl.GetString(),this->m_UpstreamCtrl.GetString()))
 		{

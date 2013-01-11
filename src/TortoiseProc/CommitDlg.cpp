@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -822,7 +822,9 @@ void CCommitDlg::OnOK()
 
 				BSTR logMessage = m_sLogMessage.AllocSysString();
 
-				CGitHash hash=g_Git.GetHash(_T("HEAD"));
+				CGitHash hash;
+				if (g_Git.GetHash(hash, _T("HEAD")))
+					MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				LONG version = g_Git.Hash2int(hash);
 
 				BSTR temp = NULL;
@@ -1054,14 +1056,9 @@ UINT CCommitDlg::StatusThread()
 				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
 
 			CGitHash hash;
-			try
+			if (g_Git.GetHash(hash, _T("HEAD")))
 			{
-				hash = g_Git.GetHash(_T("HEAD"));
-			}
-			catch (char* msg)
-			{
-				CString err(msg);
-				MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 			}
 			if (!hash.IsEmpty())
 			{

@@ -343,26 +343,14 @@ public:
 	{
 		m_HashMap.clear();
 
-		try
-		{
-			g_Git.GetMapHashToFriendName(m_HashMap);
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get all refs.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (g_Git.GetMapHashToFriendName(m_HashMap))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
-		try
+		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
 		{
-			m_HeadHash = g_Git.GetHash(_T("HEAD"));
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash. Quitting...\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash. Quitting...")), _T("TortoiseGit"), MB_ICONERROR);
 			ExitProcess(1);
 		}
 

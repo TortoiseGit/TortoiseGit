@@ -1021,13 +1021,14 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 //	return 0;
 }
 
-CGitHash CGit::GetHash(TCHAR* friendname)
+int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 {
 	// no need to parse a ref if it's already a 40-byte hash
 	if (CGitHash::IsValidSHA1(friendname))
 	{
 		CString sHash(friendname);
-		return CGitHash(sHash);
+		hash = CGitHash(sHash);
+		return 0;
 	}
 
 	if (m_IsUseLibGit2)
@@ -1037,7 +1038,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		if (git_repository_open(&repo, gitdirA.GetBuffer()))
 		{
 			gitdirA.ReleaseBuffer();
-			return CGitHash();
+			return -1;
 		}
 		gitdirA.ReleaseBuffer();
 
@@ -1048,7 +1049,7 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		{
 			refnameA.ReleaseBuffer();
 			git_repository_free(repo);
-			return CGitHash();
+			return -1;
 		}
 		refnameA.ReleaseBuffer();
 
@@ -1057,23 +1058,23 @@ CGitHash CGit::GetHash(TCHAR* friendname)
 		{
 			git_object_free(gitObject);
 			git_repository_free(repo);
-			return CGitHash();
+			return -1;
 		}
 
-		CGitHash hash((char *)oid->id);
+		hash = CGitHash((char *)oid->id);
 
 		git_object_free(gitObject); // also frees oid
 		git_repository_free(repo);
 
-		return hash;
+		return 0;
 	}
 	else
 	{
 		CString cmd;
-		CString out;
 		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
-		Run(cmd, &out, NULL, CP_UTF8);
-		return CGitHash(out.Trim());
+		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
+		hash = CGitHash(gitLastErr.Trim());
+		return ret;
 	}
 }
 
@@ -1183,6 +1184,26 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		}
 		return ret;
 	}
+}
+
+CString CGit::GetGitLastErr(CString msg)
+{
+	if (this->m_IsUseLibGit2)
+	{
+		const git_error *libgit2err = giterr_last();
+		if (libgit2err)
+		{
+			return msg + _T("\nlibgit2 returned: ") + CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+		}
+		else
+		{
+			return msg + _T("\nUnknown libgit2 error.");
+		}
+	}
+	else if (gitLastErr.IsEmpty())
+		return msg + _T("\nUnknown git.exe error.");
+	else
+		return msg + _T("\n") + gitLastErr;
 }
 
 CString CGit::FixBranchName_Mod(CString& branchName)
@@ -1418,20 +1439,46 @@ int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
 	return 0;
 }
 
+int libgit2_addto_list_each_ref_fn(const char *refname, void *payload)
+{
+	STRING_VECTOR *list = (STRING_VECTOR*)payload;
+	CString str;
+	g_Git.StringAppend(&str, (BYTE*)refname, CP_UTF8);
+	list->push_back(str);
+	return 0;
+}
+
 int CGit::GetRefList(STRING_VECTOR &list)
 {
-	int ret;
-	if(this->m_IsUseGitDLL)
+	if (this->m_IsUseLibGit2)
 	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		ret = git_for_each_ref_in("",addto_list_each_ref_fn, &list);
+		git_repository *repo = NULL;
+
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			return -1;
+		}
+		gitdir.ReleaseBuffer();
+
+		if (git_reference_foreach(repo, GIT_REF_LISTALL, libgit2_addto_list_each_ref_fn, &list))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_repository_free(repo);
+
 		std::sort(list.begin(), list.end(), LogicalComparePredicate);
+
+		return 0;
 	}
 	else
 	{
 		CString cmd, output;
 		cmd=_T("git.exe show-ref -d");
-		ret = Run(cmd, &output, NULL, CP_UTF8);
+		int ret = Run(cmd, &output, NULL, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1449,52 +1496,98 @@ int CGit::GetRefList(STRING_VECTOR &list)
 			}
 			std::sort(list.begin(), list.end(), LogicalComparePredicate);
 		}
+		return ret;
 	}
-	return ret;
 }
 
-int addto_map_each_ref_fn(const char *refname, const unsigned char *sha1, int /*flags*/, void *cb_data)
+typedef struct map_each_ref_payload {
+	git_repository * repo;
+	MAP_HASH_NAME * map;
+} map_each_ref_payload;
+
+int libgit2_addto_map_each_ref_fn(const char *refname, void *payload)
 {
-	MAP_HASH_NAME *map = (MAP_HASH_NAME*)cb_data;
+	map_each_ref_payload *payloadContent = (map_each_ref_payload*)payload;
+
 	CString str;
 	g_Git.StringAppend(&str, (BYTE*)refname, CP_UTF8);
-	CGitHash hash((char*)sha1);
 
-	(*map)[hash].push_back(str);
+	git_object * gitObject = NULL;
 
-	if(strncmp(refname, "refs/tags", 9) == 0)
+	do
 	{
-		try
+		if (git_revparse_single(&gitObject, payloadContent->repo, refname))
 		{
-			GIT_HASH refhash;
-			if(!git_deref_tag(sha1, refhash))
+			break;
+		}
+
+		if (git_object_type(gitObject) == GIT_OBJ_TAG)
+		{
+			str += _T("^{}"); // deref tag
+			git_object * derefedTag = NULL;
+			if (git_object_peel(&derefedTag, gitObject, GIT_OBJ_ANY))
 			{
-				(*map)[(char*)refhash].push_back(str+_T("^{}"));
+				break;
 			}
+			git_object_free(gitObject);
+			gitObject = derefedTag;
 		}
-		catch (char* msg)
+
+		const git_oid * oid = git_object_id(gitObject);
+		if (oid == NULL)
 		{
-			CString err(msg);
-			::MessageBox(NULL, _T("Could not get (readable) reference for hash ") + hash.ToString() + _T(".\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+			break;
 		}
+
+		CGitHash hash((char *)oid->id);
+		(*payloadContent->map)[hash].push_back(str);
+	} while (false);
+
+	if (gitObject)
+	{
+		git_object_free(gitObject);
+		return 0;
 	}
-	return 0;
+
+	return 1;
 }
 
 int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 {
-	int ret;
-	if(this->m_IsUseGitDLL)
+	if (this->m_IsUseLibGit2)
 	{
-		CAutoLocker lock(g_Git.m_critGitDllSec);
-		return git_for_each_ref_in("",addto_map_each_ref_fn, &map);
+		git_repository *repo = NULL;
 
+		CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			return -1;
+		}
+		gitdir.ReleaseBuffer();
+
+		map_each_ref_payload payloadContent = { repo, &map };
+
+		if (git_reference_foreach(repo, GIT_REF_LISTALL, libgit2_addto_map_each_ref_fn, &payloadContent))
+		{
+			git_repository_free(repo);
+			return -1;
+		}
+
+		git_repository_free(repo);
+
+		for (auto it = map.begin(); it != map.end(); ++it)
+		{
+			std::sort(it->second.begin(), it->second.end());
+		}
+
+		return 0;
 	}
 	else
 	{
 		CString cmd, output;
 		cmd=_T("git.exe show-ref -d");
-		ret = Run(cmd, &output, NULL, CP_UTF8);
+		int ret = Run(cmd, &output, NULL, CP_UTF8);
 		if(!ret)
 		{
 			int pos=0;
@@ -1515,8 +1608,8 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 				}
 			}
 		}
+		return ret;
 	}
-	return ret;
 }
 
 BOOL CGit::CheckMsysGitDir()
@@ -1798,7 +1891,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	}
 	basehash = base.Trim();
 
-	hash = GetHash(from);
+	GetHash(hash, from);
 
 	if (commonAncestor)
 		*commonAncestor = basehash;

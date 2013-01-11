@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -220,7 +220,11 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 
 			rev.Clear();
 
-			rev.m_CommitHash=g_Git.GetHash(one.Left(ref));
+			if (g_Git.GetHash(rev.m_CommitHash, one.Left(ref)))
+			{
+				MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of ") + one.Left(ref) + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
 			int action=one.Find(_T(' '),ref+1);
 			int message;
 			if(action>0)
