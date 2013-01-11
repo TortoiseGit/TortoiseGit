@@ -3899,6 +3899,7 @@ BEGIN
     IDS_PROC_NOTSHOWAGAINCONTINUE 
                             "Do &not show me this warning again (if Continue is selected)"
     IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
+    IDS_PROC_SYNC_PUSHNOTES "Push notes"
 END
 
 STRINGTABLE 
