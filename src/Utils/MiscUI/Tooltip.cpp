@@ -143,6 +143,7 @@ CString CToolTips::LoadTooltip( UINT nIDText )
 
 void CToolTips::RelayEvent(LPMSG lpMsg, CWnd * dlgWnd)
 {
+	if (lpMsg->message == WM_NULL) return;
 	if(dlgWnd && ((lpMsg->message == WM_MOUSEMOVE) || (lpMsg->message == WM_NCMOUSEMOVE)) && (lpMsg->hwnd == dlgWnd->m_hWnd))
 	{
 		// allow tooltips for disabled controls
