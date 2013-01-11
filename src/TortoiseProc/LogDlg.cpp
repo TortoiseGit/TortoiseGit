@@ -418,15 +418,8 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 	else
 	{
-		try
-		{
-			m_LogList.m_lastSelectedHash = g_Git.GetHash(_T("HEAD"));
-		}
-		catch (char* msg)
-		{
-			CString err(msg);
-			MessageBox(_T("Could not get HEAD hash.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
-		}
+		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, _T("HEAD")))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 	}
 
 	if (m_path.IsEmpty() || m_path.IsDirectory())
@@ -2354,8 +2347,11 @@ void CLogDlg::SetStartRef(const CString& StartRef)
 
 	if (m_hightlightRevision.IsEmpty())
 	{
-		m_hightlightRevision = g_Git.GetHash(StartRef);
-		m_LogList.m_lastSelectedHash = m_hightlightRevision;
+		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, StartRef))
+		{
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + StartRef + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+		}
+		m_hightlightRevision = m_LogList.m_lastSelectedHash;
 	}
 
 	ShowStartRef();

@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -157,9 +157,11 @@ public:
 	void ReloadHashMap()
 	{
 		m_HashMap.clear();
-		g_Git.GetMapHashToFriendName(m_HashMap);
+		if (g_Git.GetMapHashToFriendName(m_HashMap))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		this->m_HeadHash=g_Git.GetHash(_T("HEAD"));
+		if (g_Git.GetHash(m_HeadHash, _T("HEAD")))
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 	}
 
 	std::auto_ptr<CFuture<bool>> updateJob;

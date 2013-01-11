@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,6 +73,7 @@ class CGit
 {
 private:
 	GitAdminDir m_GitDir;
+	CString		gitLastErr;
 protected:
 	bool m_IsGitDllInited;
 	GIT_DIFF m_GitDiff;
@@ -198,7 +199,7 @@ public:
 	BOOL CheckCleanWorkTree();
 	int Revert(CString commit, CTGitPathList &list, bool keep=true);
 	int Revert(CString commit, CTGitPath &path);
-
+	CString GetGitLastErr(CString msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
 	{
 		bool b = m_GitDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);
@@ -283,8 +284,8 @@ public:
 					  CString *from=NULL,CString *to=NULL, bool paramonly=false,
 					  CFilterData * filter =NULL);
 
-	CGitHash GetHash(TCHAR* friendname);
-	CGitHash GetHash(CString ref){return GetHash(ref.GetBuffer());}
+	int GetHash(CGitHash &hash, TCHAR* friendname);
+	int GetHash(CGitHash &hash, CString ref) { return GetHash(hash, ref.GetBuffer()); }
 
 	int BuildOutputFormat(CString &format,bool IsFull=TRUE);
 	//int GetShortLog(const CString &log,CTGitPath * path=NULL, int count =-1);

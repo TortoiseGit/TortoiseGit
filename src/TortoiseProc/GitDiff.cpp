@@ -95,7 +95,16 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 {
 	CString temppath;
 	GetTempPath(temppath);
-	rev1 = g_Git.GetHash(rev1); // make sure we have a HASH here, otherwise filenames might be invalid
+	if (rev1 != GIT_REV_ZERO)
+	{
+		CGitHash rev1Hash;
+		if (g_Git.GetHash(rev1Hash, rev1)) // make sure we have a HASH here, otherwise filenames might be invalid
+		{
+			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+		rev1 = rev1Hash.ToString();
+	}
 	CString file1;
 	CString nullfile;
 	CString cmd;
@@ -335,8 +344,26 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 	GetTempPath(temppath);
 
 	// make sure we have HASHes here, otherwise filenames might be invalid
-	rev1 = g_Git.GetHash(rev1);
-	rev2 = g_Git.GetHash(rev2);
+	if (rev1 != GIT_REV_ZERO)
+	{
+		CGitHash rev1Hash;
+		if (g_Git.GetHash(rev1Hash, rev1))
+		{
+			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev1 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+		rev1 = rev1Hash.ToString();
+	}
+	if (rev2 != GIT_REV_ZERO)
+	{
+		CGitHash rev2Hash;
+		if (g_Git.GetHash(rev2Hash, rev2))
+		{
+			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of \"") + rev2 + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+		rev2 = rev2Hash.ToString();
+	}
 
 	CString file1;
 	CString title1;
