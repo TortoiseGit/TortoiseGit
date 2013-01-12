@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -248,14 +249,14 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, bool bOwnProcess = true)
+	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char * buildDate, bool bOwnProcess = true)
 	: m_nInstallStatus(0)
 	{
 		char s_month[6];
 		int month, day, year;
 		struct tm t = {0};
 		static const char month_names[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
-		sscanf_s(__DATE__, "%s %d %d", s_month, _countof(s_month)-1, &day, &year);
+		sscanf_s(buildDate, "%s %d %d", s_month, _countof(s_month) - 1, &day, &year);
 		month = (int)((strstr(month_names, s_month)-month_names))/3;
 
 		t.tm_mon = month;
