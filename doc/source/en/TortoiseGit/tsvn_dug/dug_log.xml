@@ -461,7 +461,7 @@
 					<term>Revert changes to this revision</term>
 					<listitem>
 						<para>
-							Revert chosen file to this revision.
+							Revert chosen files to this revision.
 						</para>
 					</listitem>
 				</varlistentry>
