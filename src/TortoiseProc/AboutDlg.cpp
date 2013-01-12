@@ -21,7 +21,6 @@
 #include "TortoiseProc.h"
 #include "AboutDlg.h"
 //#include "svn_version.h"
-#include "..\version.h"
 #include "AppUtils.h"
 #include "git.h"
 

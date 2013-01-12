@@ -154,7 +154,7 @@ void LoadLangDll()
 								(LPVOID *)&lpVersion,
 								&nInfoSize))
 							{
-								versionmatch = (_tcscmp((LPCTSTR)lpVersion, _T(STRPRODUCTVER)) == 0);
+								versionmatch = (_tcscmp((LPCTSTR)lpVersion, WCSPRODUCTVER) == 0);
 							}
 
 						}
