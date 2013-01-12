@@ -257,7 +257,6 @@ void CRepositoryBrowser::OnCancel()
 
 void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 
 	LPNMITEMACTIVATE pNmItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);

@@ -30,13 +30,10 @@
 
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
-					 HINSTANCE hPrevInstance,
+					 HINSTANCE /*hPrevInstance*/,
 					 LPTSTR    lpCmdLine,
-					 int       nCmdShow)
+					 int       /*nCmdShow*/)
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(nCmdShow);
-
 	SetDllDirectory(L"");
 	SetTaskIDPerUUID();
 	MSG msg;

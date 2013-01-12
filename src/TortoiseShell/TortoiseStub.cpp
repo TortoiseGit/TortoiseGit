@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2007, 2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -224,7 +224,7 @@ static void UnloadRealLibrary(void)
 	pDllCanUnloadNow = NULL;
 }
 
-BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
+BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 {
 #ifdef _DEBUG
 	// if no debugger is present, then don't load the dll.
@@ -234,8 +234,6 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
 	BOOL bInShellTest = FALSE;
 	TCHAR buf[MAX_PATH + 1];       // MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
-
-	UNREFERENCED_PARAMETER(Reserved);
 
 	if (pathLength >= 14)
 	{
@@ -254,8 +252,6 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID Reserved)
 		TRACE(_T("In debug load preventer\n"));
 		return FALSE;
 	}
-#else
-	UNREFERENCED_PARAMETER(Reserved);
 #endif
 
 	switch(Reason)

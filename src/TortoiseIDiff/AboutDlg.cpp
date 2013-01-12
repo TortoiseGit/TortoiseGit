@@ -36,9 +36,8 @@ CAboutDlg::~CAboutDlg(void)
 {
 }
 
-LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
 {
-    UNREFERENCED_PARAMETER(lParam);
     switch (uMsg)
     {
     case WM_INITDIALOG:

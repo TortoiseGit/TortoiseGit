@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2626,10 +2626,8 @@ BOOL CAppUtils::SVNDCommit()
 	return FALSE;
 }
 
-static void MergeCallback(CProgressDlg *dlg, void *caller, int result)
+static void MergeCallback(CProgressDlg *dlg, void * /*caller*/, int result)
 {
-	UNREFERENCED_PARAMETER(caller);
-
 	if (result)
 	{
 		dlg->m_PostCmdList.RemoveAll();

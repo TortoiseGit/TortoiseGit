@@ -2397,10 +2397,8 @@ void CLogDlg::OnBnClickShowWholeProject()
 
 }
 
-LRESULT CLogDlg::OnRefLogChanged(WPARAM wParam, LPARAM lParam)
+LRESULT CLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	UNREFERENCED_PARAMETER(wParam);
-	UNREFERENCED_PARAMETER(lParam);
 	ShowStartRef();
 	return 0;
 }

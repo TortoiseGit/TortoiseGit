@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1161,10 +1161,8 @@ void CFileDiffDlg::CopySelectionToClipboard(BOOL isFull)
 }
 
 
-LRESULT CFileDiffDlg::OnRefLoad(WPARAM wParam, LPARAM lParam)
+LRESULT CFileDiffDlg::OnRefLoad(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	UNREFERENCED_PARAMETER(wParam);
-	UNREFERENCED_PARAMETER(lParam);
 	for(int i=0;i<m_Reflist.size();i++)
 	{
 		CString str=m_Reflist[i];

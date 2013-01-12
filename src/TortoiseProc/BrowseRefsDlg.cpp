@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1144,9 +1144,8 @@ void CBrowseRefsDlg::OnDestroy()
 	CResizableStandAloneDialog::OnDestroy();
 }
 
-void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 
 	EndDialog(IDOK);

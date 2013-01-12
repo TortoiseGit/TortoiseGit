@@ -2198,9 +2198,8 @@ void CCommitDlg::OnSizing(UINT fwSide, LPRECT pRect)
 	}
 }
 
-void CCommitDlg::OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult)
+void CCommitDlg::OnHdnItemchangedFilelist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
 	*pResult = 0;
 	TRACE("Item Changed\r\n");
 }

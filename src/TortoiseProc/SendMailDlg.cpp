@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -239,9 +239,8 @@ void CSendMailDlg::UpdateSubject()
 	}
 }
 
-void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
+void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
 	UpdateSubject();
 
 	*pResult = 0;

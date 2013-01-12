@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011 - TortoiseGit
+// Copyright (C) 2009-2011,2013 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,9 +121,8 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
-void CRefLogList::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
+void CRefLogList::OnNMCustomdrawLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UNREFERENCED_PARAMETER(pNMHDR);
 	// Take the default processing unless we set this to something else below.
 	*pResult = CDRF_DODEFAULT;
 }
