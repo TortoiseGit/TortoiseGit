@@ -31,6 +31,7 @@ Released: unreleased
  * Added search mechanism to reflog dialog
  * Add No fetch, Merge and Rebase options in Submodule Update Dialog
  * Fixed issue #1467: put remote branches at the bottom in "branches" dropdowns (can be disabled using advanced settings)
+ * Fixed issue #1285: Show Log Filter on Tags
 
 == Bug Fix ==
  * Fixed issue #1535: Unclear UI in prompt dialog of Stash Save

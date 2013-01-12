@@ -2871,6 +2871,18 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
+		if (m_SelectedFilters & LOGFILTER_REFNAME)
+		{
+			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
+			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
+			{
+				if (regex_search(wstring((LPCTSTR)*it), pat, flags))
+				{
+					return TRUE;
+				}
+			}
+		}
+
 		if (m_SelectedFilters & LOGFILTER_PATHS)
 		{
 			CTGitPathList *pathList=NULL;
@@ -2961,6 +2973,18 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			if ((sRev.Find(find) >= 0))
 			{
 				return TRUE;
+			}
+		}
+
+		if (m_SelectedFilters & LOGFILTER_REFNAME)
+		{
+			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
+			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
+			{
+				if (it->Find(find) >= 0)
+				{
+					return TRUE;
+				}
 			}
 		}
 
@@ -3097,6 +3121,18 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
+			if (m_SelectedFilters & LOGFILTER_REFNAME)
+			{
+				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
+				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
+				{
+					if (regex_search(wstring((LPCTSTR)*it), pat, flags) && IsEntryInDateRange(i))
+					{
+						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
+						continue;
+					}
+				}
+			}
 		} // if (bRegex)
 		else
 		{
@@ -3188,6 +3224,18 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
+				}
+			}
+			if (m_SelectedFilters & LOGFILTER_REFNAME)
+			{
+				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
+				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
+				{
+					if (it->Find(find) >= 0 && IsEntryInDateRange(i))
+					{
+						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
+						continue;
+					}
 				}
 			}
 		} // else (from if (bRegex))

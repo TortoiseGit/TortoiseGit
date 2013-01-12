@@ -1505,6 +1505,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
 
+		temp.LoadString(IDS_LOG_FILTER_REFNAME);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REFNAME), LOGFILTER_REFNAME, temp);
+
 		if (m_LogList.m_bShowBugtraqColumn == TRUE) {
 			temp.LoadString(IDS_LOG_FILTER_BUGIDS);
 			popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_BUGID), LOGFILTER_BUGID, temp);
