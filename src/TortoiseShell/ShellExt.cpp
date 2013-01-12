@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2013 - TortoiseSVN
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +27,7 @@
 
 #include "ShellExt.h"
 #include "ShellObjects.h"
-//#include "..\version.h"
+#include "..\version.h"
 //#include "libintl.h"
 #undef swprintf
 
@@ -34,7 +35,7 @@ extern ShellObjects g_shellObjects;
 
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
-	: m_crasher(L"TortoiseGit", false)
+	: m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, false)
 {
 	m_State = state;
 

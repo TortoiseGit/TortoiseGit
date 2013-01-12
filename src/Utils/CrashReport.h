@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "../../ext/CrashServer/CrashHandler/CrashHandler/CrashHandler.h"
-#include "../version.h"
 #include <time.h>
 #include <string>
 #include <tchar.h>
@@ -249,7 +248,7 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname, bool bOwnProcess = true)
+	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, bool bOwnProcess = true)
 	: m_nInstallStatus(0)
 	{
 		char s_month[6];
@@ -279,10 +278,10 @@ public:
 			appInfo.Company = L"TortoiseGit";
 
 			appInfo.Hotfix = 0;
-			appInfo.V[0] = TGIT_VERMAJOR;
-			appInfo.V[1] = TGIT_VERMINOR;
-			appInfo.V[2] = TGIT_VERMICRO;
-			appInfo.V[3] = TGIT_VERBUILD;
+			appInfo.V[0] = versionMajor;
+			appInfo.V[1] = versionMinor;
+			appInfo.V[2] = versionMicro;
+			appInfo.V[3] = versionBuild;
 
 			HandlerSettings handlerSettings;
 			memset(&handlerSettings, 0, sizeof(handlerSettings));

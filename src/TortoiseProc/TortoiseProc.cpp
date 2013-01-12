@@ -96,7 +96,7 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
 	return g_Git.CheckMsysGitDir();
 }
-CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING));
+CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 
 // CTortoiseProcApp initialization
 

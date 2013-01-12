@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -73,7 +74,7 @@ CTortoiseMergeApp::CTortoiseMergeApp()
 // The one and only CTortoiseMergeApp object
 CTortoiseMergeApp theApp;
 CString sOrigCWD;
-CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING));
+CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 
 CString g_sGroupingUUID;
 
