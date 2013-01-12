@@ -41,6 +41,7 @@ Released: unreleased
  * Fixed issue #1555: Commit dialog fails to warn submodule dirty state
  * Fixed issue #1556: Narrower treeview when launching Settings Dialog with default page Remote
  * Fixed issue #1383: Pageant is not always auto-loaded if using sync remote update (some without keys)
+ * Fixed issue #1536: Committing via log causes hidden progress dialog
 
 = Release 1.7.15.0 =
 Released: 2012-11-20
