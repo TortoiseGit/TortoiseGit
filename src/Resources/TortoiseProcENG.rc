@@ -3349,7 +3349,7 @@ BEGIN
     IDS_LOG_FILTER_PATHS    "Paths"
     IDS_LOG_FILTER_AUTHORS  "Authors"
     IDS_LOG_FILTER_MESSAGES "Messages"
-    IDS_LOG_FILTER_REVS     "Revisions"
+    IDS_LOG_FILTER_REVS     "SHA-1"
     IDS_LOG_FILTER_REGEX    "Use regular expression"
 END
 
