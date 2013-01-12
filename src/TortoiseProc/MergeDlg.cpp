@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2012 - TortoiseGit
+// Copyright (C) 2007-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,8 +108,9 @@ BOOL CMergeDlg::OnInitDialog()
 	m_cLogMessage.SetText(m_pDefaultText);
 
 	EnableSaveRestore(_T("MergeDlg"));
+	GetDlgItem(IDOK)->SetFocus();
 
-	return TRUE;
+	return FALSE;
 }
 
 // CMergeDlg message handlers
