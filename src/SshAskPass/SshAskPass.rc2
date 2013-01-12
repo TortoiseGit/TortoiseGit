@@ -42,7 +42,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGit - git CLI stdin wrapper\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "SshAskPass.exe\0"
-            VALUE "LegalCopyright", "Copyright (C) 2009-2011 - TortoiseGit\0"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2013 - TortoiseGit\0"
             VALUE "OriginalFilename", "SshAskPass.exe\0"
             VALUE "ProductName", "SSHAskPass\0"
             VALUE "ProductVersion", STRPRODUCTVER
