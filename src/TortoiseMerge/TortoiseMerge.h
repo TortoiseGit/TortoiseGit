@@ -23,7 +23,6 @@
 #endif
 
 #include "resource.h"       // main symbols
-#include "CrashReport.h"
 
 /**
  * \ingroup TortoiseMerge
