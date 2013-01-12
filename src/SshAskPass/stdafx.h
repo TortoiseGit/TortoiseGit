@@ -17,3 +17,4 @@
 #include <memory.h>
 #include <tchar.h>
 
+#include <atlbase.h>

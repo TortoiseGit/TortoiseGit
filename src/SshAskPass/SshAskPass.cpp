@@ -21,11 +21,9 @@
 //
 
 #include "stdafx.h"
-#include "SshAskPass.h"
-#include <stdio.h>
-#include "propsys.h"
-#include "PropKey.h"
-#include <atlbase.h>
+#include "resource.h"
+#include <propsys.h>
+#include <PropKey.h>
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
