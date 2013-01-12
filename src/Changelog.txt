@@ -1,4 +1,10 @@
-﻿= Release 1.7.16.0 =
+﻿= Release 1.8.1.0 =
+Released: unreleased
+
+== Features ==
+ * Log dialog can revert selected files to parent revision
+
+= Release 1.8.0.0 =
 Released: unreleased
 
 == Features ==

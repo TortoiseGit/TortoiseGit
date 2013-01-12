@@ -6750,6 +6750,10 @@ msgstr ""
 msgid "Revert commit %s"
 msgstr ""
 
+#. Resource IDs: (1252)
+msgid "Revert to parent revision"
+msgstr ""
+
 #. Resource IDs: (323)
 #, c-format
 msgid "Revert to revision %s"

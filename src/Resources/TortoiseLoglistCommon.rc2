@@ -43,6 +43,7 @@ BEGIN
     IDS_LOG_POPUP_COPYTOCLIPBOARD "Copy to clipboard"
     IDS_LOG_POPUP_COPYTOCLIPBOARDMESSAGES "Copy log messages to clipboard"
     IDS_LOG_POPUP_REVERTTOREV "R&evert to this revision"
+    IDS_LOG_POPUP_REVERTTOPARENT "Revert to parent revision"
     IDS_LOG_POPUP_EXPORT "Export selection to..."
     IDS_LOG_POPUP_BLAMEREVS "&Blame revisions"
     IDS_LOG_POPUP_BLAMEDIFF "&Blame changes"

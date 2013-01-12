@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 // Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
 
@@ -494,6 +494,7 @@ public:
 		IDGITLC_BLAME			,
 		IDGITLC_SAVEAS			,
 		IDGITLC_REVERTTOREV		,
+		IDGITLC_REVERTTOPARENT	,
 		IDGITLC_VIEWREV			,
 		IDGITLC_FINDENTRY       ,
 		IDGITLC_COMPARETWO		,
@@ -1046,7 +1047,7 @@ private:
 
 	void FilesExport();
 	void FileSaveAs(CTGitPath *path);
-	int RevertSelectedItemToVersion();
+	int RevertSelectedItemToVersion(bool parent = false);
 
 private:
 	bool *						m_pbCanceled;

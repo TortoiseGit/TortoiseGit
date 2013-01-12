@@ -466,6 +466,14 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Revert changes to parent revision</term>
+					<listitem>
+						<para>
+							Revert chosen files to parent revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Show log</term>
 					<listitem>
 						<para>

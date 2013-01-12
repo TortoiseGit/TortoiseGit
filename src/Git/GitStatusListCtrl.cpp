@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 // Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
 
@@ -1625,6 +1625,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					popup.AppendMenuIcon(IDGITLC_REVERTTOREV, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 				}
+
+				if ((m_dwContextMenus & GetContextMenuBit(IDGITLC_REVERTTOPARENT)) && ( !this->m_CurrentVersion.IsEmpty() )
+					&& this->m_CurrentVersion != GIT_REV_ZERO && !(wcStatus & CTGitPath::LOGACTIONS_ADDED))
+				{
+					popup.AppendMenuIcon(IDGITLC_REVERTTOPARENT, IDS_LOG_POPUP_REVERTTOPARENT, IDI_REVERT);
+				}
 			}
 
 			if ((GetSelectedCount() == 1)&&(!(wcStatus & CTGitPath::LOGACTIONS_UNVER))
@@ -2353,6 +2359,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_REVERTTOREV:
 				RevertSelectedItemToVersion();
+				break;
+			case IDGITLC_REVERTTOPARENT:
+				RevertSelectedItemToVersion(true);
 				break;
 #if 0
 			case IDSVNLC_COMMIT:
@@ -4161,7 +4170,7 @@ void CGitStatusListCtrl::FileSaveAs(CTGitPath *path)
 
 }
 
-int CGitStatusListCtrl::RevertSelectedItemToVersion()
+int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 {
 	if(this->m_CurrentVersion.IsEmpty())
 		return 0;
@@ -4171,22 +4180,46 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion()
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	CString cmd,out;
-	int count =0;
+	std::map<CString, int> versionMap;
 	while ((index = GetNextSelectedItem(pos)) >= 0)
 	{
 		CTGitPath *fentry=(CTGitPath*)GetItemData(index);
-		cmd.Format(_T("git.exe checkout %s -- \"%s\""),m_CurrentVersion,fentry->GetGitPathString());
+		CString version;
+		if (parent)
+		{
+			int parentNo = fentry->m_ParentNo & PARENT_MASK;
+			CString ref;
+			ref.Format(_T("%s^%d"), m_CurrentVersion, parentNo + 1);
+			CGitHash hash;
+			if (g_Git.GetHash(hash, ref))
+			{
+				MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ref \"") + ref + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+				continue;
+			}
+
+			version = hash.ToString();
+		}
+		else
+			version = m_CurrentVersion;
+
+		cmd.Format(_T("git.exe checkout %s -- \"%s\""), version, fentry->GetGitPathString());
 		out.Empty();
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (MessageBox(out, _T("TortoiseGit"), MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
-				break;
+				continue;
 		}
 		else
-			count++;
+			versionMap[version]++;
 	}
 
-	out.Format(IDS_STATUSLIST_FILESREVERTED, count, m_CurrentVersion);
+	out.Empty();
+	for (auto it = versionMap.begin(); it != versionMap.end(); ++it)
+	{
+		CString versionEntry;
+		versionEntry.Format(IDS_STATUSLIST_FILESREVERTED, it->second, it->first);
+		out += versionEntry + _T("\r\n");
+	}
 	CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 	return 0;
 }
