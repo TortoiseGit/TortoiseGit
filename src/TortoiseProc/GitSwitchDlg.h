@@ -61,4 +61,5 @@ protected:
 	afx_msg void OnCbnSelchangeComboboxexBranch();
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditchangeComboboxexVersion();
+	afx_msg void OnEnChangeEditBranch();
 };

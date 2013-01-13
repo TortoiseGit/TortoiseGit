@@ -58,6 +58,7 @@ protected:
 	afx_msg void OnBnClickedRadio();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnCbnSelchangeComboboxexBranch();
+	afx_msg void OnEnChangeBranchTag();
 
 	virtual void OnVersionChanged();
 	afx_msg void OnDestroy();

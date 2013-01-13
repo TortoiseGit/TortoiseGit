@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(CCreateBranchTagDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CCreateBranchTagDlg::OnBnClickedOk)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, &CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch)
+	ON_EN_CHANGE(IDC_BRANCH_TAG, &CCreateBranchTagDlg::OnEnChangeBranchTag)
 //	ON_BN_CLICKED(IDC_BUTTON_BROWSE_REF, &CCreateBranchTagDlg::OnBnClickedButtonBrowseRef)
 ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -225,6 +226,19 @@ void CCreateBranchTagDlg::OnCbnSelchangeComboboxexBranch()
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
 	m_OldSelectBranch = m_ChooseVersioinBranch.GetString();
+}
+
+void CCreateBranchTagDlg::OnEnChangeBranchTag()
+{
+	if (!((CButton *)GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
+		return;
+
+	CString name;
+	GetDlgItem(IDC_BRANCH_TAG)->GetWindowText(name);
+	name = _T("/") + name;
+	CString remoteName = m_ChooseVersioinBranch.GetString();
+	if (remoteName.Left(8) == _T("remotes/") && remoteName.Right(name.GetLength()) != name)		
+		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
 }
 
 void CCreateBranchTagDlg::OnVersionChanged()

@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CGitSwitchDlg, CHorizontalResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
 	ON_WM_DESTROY()
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_VERSION, &CGitSwitchDlg::OnCbnEditchangeComboboxexVersion)
+	ON_EN_CHANGE(IDC_EDIT_BRANCH, &CGitSwitchDlg::OnEnChangeEditBranch)
 END_MESSAGE_MAP()
 
 BOOL CGitSwitchDlg::PreTranslateMessage(MSG* pMsg)
@@ -239,6 +240,19 @@ void CGitSwitchDlg::OnDestroy()
 void CGitSwitchDlg::OnCbnEditchangeComboboxexVersion()
 {
 	OnVersionChanged();
+}
+
+void CGitSwitchDlg::OnEnChangeEditBranch()
+{
+	if (!((CButton *)GetDlgItem(IDC_RADIO_BRANCH))->GetCheck())
+		return;
+
+	CString name;
+	GetDlgItem(IDC_EDIT_BRANCH)->GetWindowText(name);
+	name = _T("/") + name;
+	CString remoteName = m_ChooseVersioinBranch.GetString();
+	if (remoteName.Left(8) == _T("remotes/") && remoteName.Right(name.GetLength()) != name)		
+		((CButton *)GetDlgItem(IDC_CHECK_TRACK))->SetCheck(FALSE);
 }
 
 void CGitSwitchDlg::OnVersionChanged()
