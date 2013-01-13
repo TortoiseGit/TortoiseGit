@@ -393,7 +393,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		ret = git_commit_tree(&tree, commit);
 		if (ret)
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(g_Git.GetGitLastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
