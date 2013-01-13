@@ -45,11 +45,15 @@ bool SubmoduleAddCommand::Execute()
 		if(dlg.m_bBranch)
 			branch.Format(_T(" -b %s "), dlg.m_strBranch);
 
+		CString force;
+		if (dlg.m_bForce)
+			force = _T("--force");
+
 		dlg.m_strPath.Replace(_T('\\'),_T('/'));
 		dlg.m_strRepos.Replace(_T('\\'),_T('/'));
 
-		cmd.Format(_T("git.exe submodule add %s -- \"%s\"  \"%s\""),
-						branch,
+		cmd.Format(_T("git.exe submodule add %s %s -- \"%s\"  \"%s\""),
+						branch, force,
 						dlg.m_strRepos, dlg.m_strPath);
 
 		CProgressDlg progress;

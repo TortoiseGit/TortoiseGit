@@ -50,6 +50,7 @@ void CSubmoduleAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBOBOXEX_PATH, m_PathCtrl);
 	DDX_Check(pDX, IDC_BRANCH_CHECK, m_bBranch);
 	DDX_Text(pDX, IDC_SUBMODULE_BRANCH, m_strBranch);
+	DDX_Check(pDX, IDC_FORCE, m_bForce);
 }
 
 
@@ -76,6 +77,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_PATH_BROWSE,TOP_RIGHT);
 	AddAnchor(IDC_BRANCH_CHECK,BOTTOM_LEFT);
 	AddAnchor(IDC_SUBMODULE_BRANCH,BOTTOM_LEFT,BOTTOM_RIGHT);
+	AddAnchor(IDC_FORCE,BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddOthersToAnchor();
 

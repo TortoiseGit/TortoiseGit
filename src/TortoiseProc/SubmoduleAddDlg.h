@@ -47,6 +47,7 @@ public:
 	CHistoryCombo m_Repository;
 	CHistoryCombo m_PathCtrl;
 	BOOL m_bBranch;
+	BOOL m_bForce;
 	CString m_strBranch;
 	CString m_strPath;
 	CString m_strRepos;
