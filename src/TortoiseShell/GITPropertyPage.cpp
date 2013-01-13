@@ -26,6 +26,7 @@
 #include "UnicodeUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
+#include "DirFileEnum.h"
 
 #define MAX_STRING_LENGTH	4096	//should be big enough
 
@@ -710,7 +711,16 @@ void CGitPropertyPage::InitWorkfileView()
 	if (filenames.size() == 1)
 	{
 		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, _T("Loading ..."));
-		_beginthread(LogThreadEntry, 0, this);
+		CString adminDir;
+		g_GitAdminDir.GetAdminDirPath(ProjectTopDir, adminDir);
+		CDirFileEnum dir(adminDir);
+		UINT64 size = dir.GetSize();
+		// Suppose there is one commit for every 2000 bytes of git metadata
+		// Suppose for each commit, it takes 4 units of local variables and stack pointer
+		// Provide a minimum of 1MB stack size
+		// Maximum stack size: 256MB for 32-bit, 512MB for 64-bit
+		UINT stack = 1024 * 1024 + min(64 * 1024 * 1024 * sizeof(void*), (UINT)(size / 2000) * 4 * sizeof(void*));
+		_beginthread(LogThreadEntry, stack, this);
 	}
 }
 
