@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,3 +178,41 @@ BOOL CDirFileEnum::NextFile(CString &sResult, bool* pbIsDirectory, bool bRecurse
       return FALSE;
    }
 }
+
+BOOL CDirFileEnum::NextFileGetSize(UINT64 &iSize, bool* pbIsDirectory, bool bRecurse /* = true */)
+{
+   if (m_bIsNew) {
+      // Special-case first time - haven't found anything yet,
+      // so don't do recurse-into-directory check.
+      m_bIsNew = FALSE;
+   } else if (m_seStack && m_seStack->IsDirectory() && bRecurse) {
+      PushStack(m_seStack->GetFilePath());
+   }
+
+   while (m_seStack && !m_seStack->FindNextFileNoDots()) {
+      // No more files in this directory, try parent.
+      PopStack();
+   }
+
+   if (m_seStack)
+   {
+      iSize = m_seStack->GetSize();
+      if(pbIsDirectory != NULL)
+      {
+          *pbIsDirectory = m_seStack->IsDirectory();
+      }
+      return TRUE;
+   } else {
+      return FALSE;
+   }
+}
+
+UINT64 CDirFileEnum::GetSize()
+{
+    bool dir;
+    UINT64 iSize = 0, iSize2 = 0;
+    while (NextFileGetSize(iSize2, &dir, true))
+        iSize += iSize2;
+    return iSize;
+}
+

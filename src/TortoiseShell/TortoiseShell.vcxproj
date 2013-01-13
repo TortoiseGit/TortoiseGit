@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
+    <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="ColumnProvider.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
     <ClCompile Include="..\Git\Git.cpp" />
@@ -177,6 +178,7 @@
     <None Include="resourceshell.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\DirFileEnum.h" />
     <ClInclude Include="GITPropertyPage.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guids.h" />

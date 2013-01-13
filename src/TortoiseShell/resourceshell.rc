@@ -244,6 +244,7 @@ BEGIN
     IDS_MENUDESCMERGE       "Merges another branch"
     IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
+    IDS_LOADING             "Loading..."
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
     IDS_STATUSNORMAL        "normal"
