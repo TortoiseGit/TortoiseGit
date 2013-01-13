@@ -1,5 +1,6 @@
 /*
 	Author: Marco Costalba (C) 2005-2007
+	Author: TortoiseGit (C) 2013
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -62,7 +63,13 @@ public:
 	static inline bool isActive(int x) { return (x == ACTIVE || x == INITIAL || x == BRANCH ||
 	                                      isMerge(x)); }
 
-	Lanes() { } // init() will setup us later, when data is available
+	Lanes() // init() will setup us later, when data is available
+		: activeLane(0)
+		, boundary(false)
+		, NODE(0)
+		, NODE_L(0)
+		, NODE_R(0)
+	{}
 	bool isEmpty() { return typeVec.empty(); }
 	void init(const CGitHash& expectedSha);
 	void clear();

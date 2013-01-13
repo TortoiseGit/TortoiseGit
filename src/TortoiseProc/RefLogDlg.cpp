@@ -35,6 +35,7 @@ UINT CRefLogDlg::m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 CRefLogDlg::CRefLogDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CRefLogDlg::IDD, pParent)
 	, m_pFindDialog(NULL)
+	, m_nSearchLine(0)
 {
 
 }

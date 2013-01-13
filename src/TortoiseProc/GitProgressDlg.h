@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -155,6 +155,9 @@ private:
 	public:
 		NotificationData()
 		: color(::GetSysColor(COLOR_WINDOWTEXT))
+		, action((git_wc_notify_action_t)-1)
+		, bConflictedActionItem(false)
+		, bAuxItem(false)
 		{};
 	    git_wc_notify_action_t action;
 #if 0
