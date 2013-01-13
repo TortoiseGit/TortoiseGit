@@ -372,6 +372,8 @@ int git_open_log(GIT_LOG * handle, char * arg)
 	if(p_Rev == NULL)
 		return -1;
 
+	invalidate_ref_cache(NULL);
+
 	init_revisions(p_Rev, g_prefix);
 	p_Rev->diff = 1;
 
