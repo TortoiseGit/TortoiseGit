@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2005 - 2006, 2010-2011 - TortoiseSVN
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -186,6 +187,11 @@ public:
       return m_sPathPrefix + m_FindFileData.cFileName;
    }
 
+   UINT64 GetSize() const
+   {
+	   return ((UINT64)m_FindFileData.nFileSizeHigh << 32) | m_FindFileData.nFileSizeLow;
+   }
+
    /**
     * Returns the last write time of the path
     */
@@ -283,5 +289,9 @@ public:
     * \return TRUE iff a file was found, false at end of the iteration.
     */
    BOOL NextFile(CString &result, bool* pbIsDirectory, bool bRecurse = true);
+
+   BOOL CDirFileEnum::NextFileGetSize(UINT64 &iSize, bool* pbIsDirectory, bool bRecurse = true);
+
+   UINT64 GetSize();
 };
 
