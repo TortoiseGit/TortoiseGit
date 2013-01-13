@@ -710,7 +710,7 @@ void CGitPropertyPage::InitWorkfileView()
 
 	if (filenames.size() == 1)
 	{
-		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, _T("Loading ..."));
+		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, CString(MAKEINTRESOURCE(IDC_LOADING)));
 		CString adminDir;
 		g_GitAdminDir.GetAdminDirPath(ProjectTopDir, adminDir);
 		CDirFileEnum dir(adminDir);

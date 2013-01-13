@@ -241,6 +241,7 @@ BEGIN
     IDS_MENUREVISIONGRAPH   "Revision &graph"
     IDS_MENUDESCREVISIONGRAPH 
                             "Shows a graphical representation of copies/tags/branches"
+    IDS_LOADING             "Loading..."
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
     IDS_STATUSNORMAL        "normal"

@@ -5002,7 +5002,7 @@ msgstr ""
 msgid "Load Putty &Key"
 msgstr ""
 
-#. Resource IDs: (1379)
+#. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr ""
 
