@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CSubmoduleAddDlg::IDD, pParent)
 	, m_bBranch(FALSE)
 	, m_strBranch(_T(""))
+	, m_bForce(FALSE)
 {
 
 }
@@ -82,6 +83,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddOthersToAnchor();
 
 	AdjustControlSize(IDC_BRANCH_CHECK);
+	AdjustControlSize(IDC_FORCE);
 
 	EnableSaveRestore(_T("SubmoduleAddDlg"));
 
