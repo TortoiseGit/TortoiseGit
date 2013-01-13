@@ -1042,6 +1042,17 @@ int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 		}
 		gitdirA.ReleaseBuffer();
 
+		int isHeadOrphan = git_repository_head_orphan(repo);
+		if (isHeadOrphan != 0)
+		{
+			git_repository_free(repo);
+			hash.Empty();
+			if (isHeadOrphan == 1)
+				return 0;
+			else
+				return -1;
+		}
+
 		CStringA refnameA = CUnicodeUtils::GetMulti(friendname, CP_UTF8);
 
 		git_object * gitObject = NULL;
