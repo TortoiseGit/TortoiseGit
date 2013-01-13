@@ -90,10 +90,6 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico" />
-    <Image Include="touch.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="touch.rc" />
   </ItemGroup>
   <ItemGroup>
