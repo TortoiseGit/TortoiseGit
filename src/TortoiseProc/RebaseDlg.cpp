@@ -144,7 +144,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		}
 	}
 	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	CRect rectDummy;
 	//IDC_REBASE_DUMY_TAB

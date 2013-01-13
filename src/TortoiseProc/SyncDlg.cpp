@@ -643,7 +643,8 @@ BOOL CSyncDlg::OnInitDialog()
 		}
 	}
 	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->EnableWindow(CAppUtils::IsSSHPutty());
 

@@ -768,7 +768,8 @@ BOOL CGitProgressDlg::OnInitDialog()
 		}
 	}
 	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	m_ProgList.SetExtendedStyle (LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 

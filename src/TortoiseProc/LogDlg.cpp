@@ -231,7 +231,8 @@ BOOL CLogDlg::OnInitDialog()
 		}
 	}
 	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	m_hAccel = LoadAccelerators(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_ACC_LOGDLG));
 

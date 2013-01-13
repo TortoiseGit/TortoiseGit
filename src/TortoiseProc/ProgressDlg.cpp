@@ -94,7 +94,8 @@ BOOL CProgressDlg::OnInitDialog()
 		}
 	}
 	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	AddAnchor(IDC_TITLE_ANIMATE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_RUN_PROGRESS, TOP_LEFT,TOP_RIGHT);
