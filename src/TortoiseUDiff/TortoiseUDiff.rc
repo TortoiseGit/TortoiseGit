@@ -8,7 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include <Windows.h>
+#include <windows.h>
 #ifndef APSTUDIO_INVOKED
 #include "TortoiseUDiff.rc2"
 #endif
@@ -147,7 +147,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include ""windows.h""\r\n"
+    "#include <windows.h>\r\n"
     "#ifndef APSTUDIO_INVOKED\r\n"
     "#include ""TortoiseUDiff.rc2""\r\n"
     "#endif\r\n"

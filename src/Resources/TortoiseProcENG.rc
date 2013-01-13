@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include <afxres.h>
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -16,9 +16,8 @@
 // Neutral resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
-#ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-#endif //_WIN32
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -122,9 +121,8 @@ IDC_PANCURDOWN          CURSOR                  "pandown.cur"
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#endif //_WIN32
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1500,7 +1498,7 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,338,241,50,14
 END
 
-IDD_CLEAN DIALOGEX 0, 0, 261, 157
+IDD_CLEAN DIALOGEX 0, 0, 261, 150
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Clean"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1744,7 +1742,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
@@ -2411,7 +2409,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 254
         TOPMARGIN, 7
-        BOTTOMMARGIN, 146
+        BOTTOMMARGIN, 142
     END
 
     IDD_PATCH_VIEW, DIALOG
@@ -2546,7 +2544,7 @@ END
 // Toolbar
 //
 
-IDR_REVGRAPHBAR TOOLBAR  20, 20
+IDR_REVGRAPHBAR TOOLBAR 20, 20
 BEGIN
     BUTTON      ID_VIEW_ZOOMIN
     BUTTON      ID_VIEW_ZOOMOUT
@@ -2568,7 +2566,7 @@ END
 // Menu
 //
 
-IDR_REVISIONGRAPH MENU 
+IDR_REVISIONGRAPH MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -2602,7 +2600,7 @@ BEGIN
     END
 END
 
-IDR_STATGRAPH MENU 
+IDR_STATGRAPH MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -2616,7 +2614,7 @@ END
 // Accelerator
 //
 
-IDR_ACC_LOGDLG ACCELERATORS 
+IDR_ACC_LOGDLG ACCELERATORS
 BEGIN
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
@@ -2629,7 +2627,7 @@ BEGIN
     VK_F5,          ID_LOGDLG_REFRESH,      VIRTKEY, SHIFT, NOINVERT
 END
 
-IDR_ACC_COMMITDLG ACCELERATORS 
+IDR_ACC_COMMITDLG ACCELERATORS
 BEGIN
     "M",            ID_FOCUS_MESSAGE,       VIRTKEY, ALT, NOINVERT
 END
@@ -2640,7 +2638,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MSGBOX_HELP         "Help"
     IDS_MSGBOX_DONOTSHOWAGAIN "Don't show this message again"
@@ -2660,7 +2658,7 @@ BEGIN
     IDS_SVNACTION_REVERT    "Reverted"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_ZOOM100         "Zoom 100%"
     ID_VIEW_ZOOMALL         "Zoom to fit"
@@ -2671,7 +2669,7 @@ BEGIN
     ID_VIEW_SHOWHEAD        "Show HEAD revision nodes"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNACTION_RESOLVE   "Resolved"
     IDS_SVNACTION_UPDATE    "Updated"
@@ -2691,7 +2689,7 @@ BEGIN
     IDS_ERR_INVALIDPATH     "The parameters '/path' and '/pathfile' are mutually exclusive.\nYou must only specify one of them."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_LOG_STATS      "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
     IDS_PROC_LOG_ALLBRANCHES "<All Branches>"
@@ -2712,7 +2710,7 @@ BEGIN
     IDS_PROC_SYNC_SUBKODULEINIT "Submodule Init"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATGRAPH_FILECHANGESBYUNIT "File changes each %s"
     IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP "Percent of authorship"
@@ -2732,7 +2730,7 @@ BEGIN
     IDS_PROC_LOG_COMMITTEREMAIL "Committer Email"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_LOG_MERGEPOINT "Merge Point"
     IDS_PROC_LOG_PARENT1    "Parent 1"
@@ -2748,7 +2746,7 @@ BEGIN
     IDS_FETCH_TAGS_ONLY     "All tags only"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_POPUP_COPY      "C&reate branch/tag from revision"
     IDS_COMMITDLG_FILE      "File"
@@ -2769,7 +2767,7 @@ BEGIN
     IDS_PROGRS_TITLE_RESOLVE "Resolve"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_REVERTTOREV_CONFIRM 
                             "Do you really want to revert all changes in\n%s\nand go back to this revision? These changes will be reverted by reverse-merging the revisions into your working tree."
@@ -2785,7 +2783,7 @@ BEGIN
     IDS_PROGRESS_UNIFIEDDIFF "Getting unified diff"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DLGTITLE_ADD_DIFF_TOOL "Add extension specific diff program"
     IDS_DLGTITLE_ADD_MERGE_TOOL "Add extension specific merge program"
@@ -2797,13 +2795,13 @@ BEGIN
     IDS_REVGRAPH_POPUP_UNIDIFFREVS "&Unified diff"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
     IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_TITLE_SWITCH "Switch"
     IDS_PROGRS_TITLE_EXPORT "Export"
@@ -2824,7 +2822,7 @@ BEGIN
     IDS_PROC_BROWSEREFS_FETCHFROM "Fetch from ""%s"""
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MSYSGIT_PATH_TT     "MsysGit Install Path"
     IDS_PROC_BROWSEREFS_COMPAREREFS "Compare selected refs"
@@ -2848,7 +2846,7 @@ BEGIN
     IDS_PROC_COPY_SUCCESS   "Tagged the working tree to %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_REFNAME  "Refname"
     IDS_ERR_NOTENOUGHMEMORY "Not enough memory to complete operation."
@@ -2873,7 +2871,7 @@ BEGIN
                             "Failed to start the issue tracker COM provider '%s'.\n%s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_SETTINGS_TITLE "Settings - TortoiseGit"
     IDS_SETTINGS_ALTERNATIVEEDITOR_TT 
@@ -2896,7 +2894,7 @@ BEGIN
                             "Check to use a less verbose date and time format in log messages"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_RELATIVETIMES_TT 
                             "Check to show relative times in log messages"
@@ -2917,7 +2915,7 @@ BEGIN
     IDS_PROC_LOG_FETCHINGFILES "Fetching changed files..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERR_PROVIDER_VALIDATE_FAILED 
                             "The issue-tracker provider was unable to validate the parameter string"
@@ -2941,7 +2939,7 @@ BEGIN
     IDS_B_T_BOTHEMPTY       "The local branch name and the remote branch name are empty.\nContinue?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_GITINIT_FOLDERNOTEMPTY 
@@ -2951,33 +2949,33 @@ BEGIN
     IDS_WARN_NOVALIDPATH    "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_EXTMENULAYOUT_TT 
                             "Check those menu entries you want to appear only in the extended context menu (SHIFT + left click)"
     IDS_REVGRAPH_ERR_NOGRAPH "No graph available"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REPOBROWSE_SAVEAS   "Save &as..."
     IDS_REPOBROWSE_SHOWLOG  "Show &log"
     IDS_REPOBROWSE_OPEN     "&Open"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUTVERSION        "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
     IDS_ABOUTVERSIONBOX     "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHSTAT_FILECOL      "File"
     IDS_CHSTAT_WCCOL        "Local status"
@@ -2990,12 +2988,12 @@ BEGIN
                             "The issue-tracker provider could not be created. Please check that it is installed correctly."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERR_NOTFOUND_SUPER_PRJECT "Could not find Super-project"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_COPY_SUCCESS    "Branch/tag created successfully!"
     IDS_LOG_MESSAGEEDITTITLE "Edit log message"
@@ -3007,7 +3005,7 @@ BEGIN
     IDS_LOG_SHOW_WHOLE      "Show Whole Project"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_SENDMAIL_WRAPTOOLTIP 
                             "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
@@ -3032,7 +3030,7 @@ BEGIN
     IDS_PROC_PICK           "Pick up %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_NOTES               "Notes"
     IDS_PROC_LOG_TAGINFO    "Tag Info"
@@ -3054,34 +3052,34 @@ BEGIN
                             "The two selected URL's are not created from the same root.\nIt's not possible to show the log messages between them!"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_INPUT_REMOVEONE     "Remove %s"
     IDS_INPUT_REMOVEMORE    "Remove %ld items"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_COMPAREWITHBASE "Compare with b&ase"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUREFRESH         "Refresh"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DIFF_WCNAME         "%s: Working Tree"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_RENAME         "Rename %s"
     IDS_PROC_NEWNAME        "New name for %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMMONFILEFILTER    "All Files (*.*)|*.*||"
     IDS_PROGRAMSFILEFILTER  "Programs (*.exe)|*.exe|All Files (*.*)|*.*||"
@@ -3089,7 +3087,7 @@ BEGIN
     IDS_PICTUREFILEFILTER   "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PUTTYKEYFILEFILTER  "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
     IDS_PROC_GITCONFIG_REMOTEEMPTY "Remote name must not be empty."
@@ -3114,12 +3112,12 @@ BEGIN
     IDS_PROC_COMMIT_HIDEPATCH "Hide Patch<<"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKUPDATE_SUMMARY "Changed files: %d"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMMITDLG_EXTERNALS "There are changes or unversioned items inside one or more submodule.\nThose files are not listed for commit. You need to commit those files in submodule"
     IDS_COMMITDLG_STATISTICSFORMAT "%d files selected, %d files total"
@@ -3129,7 +3127,7 @@ BEGIN
                             "You haven't entered an issue number!\nAre you sure you want to commit without an issue number?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED 
                             "No files were changed or added since\nthe last commit. There's nothing\nfor TortoiseGit to do here...\nDo you want to see the unversioned files?"
@@ -3143,7 +3141,7 @@ BEGIN
                             "The submodule ""%s"" is dirty.\nMerely committing the superproject cannot track or save such changes to the submodule.\nCommit the submodule now or ignore dirty changes?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_CLEANUP        "Cleaning up"
     IDS_PROC_REMOVEFORCE    "%s\nDo you want to remove it anyway?"
@@ -3163,7 +3161,7 @@ BEGIN
                             "The folder %s\ncontains unversioned and/or modified file(s). Do you want to remove it anyway?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_CHECKNEWER_TT 
                             "If enabled, TortoiseGit checks once a week if a newer version is available"
@@ -3175,7 +3173,7 @@ BEGIN
                             "A newline separated list of paths for which no icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\nAn empty list will allow overlays on all paths."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVN_PROGRESS_SPEED  "Transferring at %s"
     IDS_SVN_PROGRESS_TOTALTRANSFERRED "%I64d kBytes transferred"
@@ -3188,7 +3186,7 @@ BEGIN
     IDS_SETTINGS_CONF_VALUECOL "Value"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKNEWER_YOURVERSION "Your version is: %d.%d.%d.%d"
     IDS_CHECKNEWER_CURRENTVERSION "Current version is: %s"
@@ -3199,7 +3197,7 @@ BEGIN
     IDS_CHECKNEWER_NETERROR "Could not check for a newer version!"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_COLFILE  "Path"
     IDS_STATUSLIST_COLSTATUS "Status"
@@ -3208,7 +3206,7 @@ BEGIN
     IDS_STATUSLIST_COLAUTHOR "Author"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_COLDATE  "Date"
     IDS_STATUSLIST_COLREVISION "Revision"
@@ -3218,20 +3216,20 @@ BEGIN
     IDS_STATUSLIST_SWITCHEDTO "switched to\r\n%s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_COLADD   "Lines added"
     IDS_STATUSLIST_COLDEL   "Lines removed"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNERR_CHECKPATHORURL "Check the path and/or URL you've entered."
     IDS_SVNERR_CLEANUPORFRESHCHECKOUT 
                             "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_INCLUDELIST_TT 
                             "A newline separated list of paths for which icon overlays are shown.\r\nIf you add an '*' char at the end of a path, then all files and subdirs inside that path are included too."
@@ -3249,7 +3247,7 @@ BEGIN
                             "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_CONFLICTSOCCURED_WARNING "Warning!"
     IDS_PROGRS_CONFLICTSOCCURED "One or more files are in a conflicted state."
@@ -3257,27 +3255,27 @@ BEGIN
     IDS_PROGRS_FINISHED     "Finished!"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_PATHATREV    "%s - at revision: %d"
     IDS_PROGRS_TIME         "%ld minute(s) and %ld second(s)"
     IDS_PROGRS_FINALINFO    "%s in %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REPOSTATUS_HEADREV  "Lowest shown revision: %ld - Highest shown revision: %ld - HEAD revision: %ld"
     IDS_REPOSTATUS_WCINFO   "Lowest shown revision: %ld - Highest shown revision: %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATGRAPH_COMMITSBYAUTHOR "Commits by author"
     IDS_STATGRAPH_COMMITSBYDATE "Commits by date"
     IDS_STATGRAPH_COMMITSBYDATEY "commits"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATGRAPH_COMMITSBYAUTHORX "author"
     IDS_STATGRAPH_COMMITSBYAUTHORY "commits"
@@ -3290,12 +3288,12 @@ BEGIN
     IDS_STATGRAPH_COMMITSBYDATEXYEAR "year"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CLIPBOARD_PROGRESS_DEST "Clipboard"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNACTION_SKIPMISSING "Skipped missing target"
     IDS_SVNACTION_ADDING    "Adding"
@@ -3304,12 +3302,12 @@ BEGIN
     IDS_SVNACTION_CONFLICTED "Conflicted"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REVGRAPH_SAVEPIC    "&Save graph as..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_CONTEXT_ADD "Add"
     IDS_STATUSLIST_CONTEXT_EXPLORE "Explore to"
@@ -3323,7 +3321,7 @@ BEGIN
     IDS_STATUSLIST_CONTEXT_ADD_RECURSIVE "Add..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REVGRAPH_ERR_GDIINIT "GDI+ couldn't be initialized!"
     IDS_REVGRAPH_ERR_NOBITMAP 
@@ -3331,13 +3329,13 @@ BEGIN
     IDS_REVGRAPH_ERR_NOENCODER "No image encoder found for %s."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_TITLE_RENAME "Rename/move"
     IDS_PROGRS_TITLE_MERGEREINTEGRATE "Merge Reintegrate"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_CLOSE_MANUAL "Close manually"
     IDS_PROGRS_CLOSE_NOERROR "Auto-close if no errors"
@@ -3346,13 +3344,13 @@ BEGIN
     IDS_PROGRS_CLOSE_LOCAL  "Auto-close for local operations"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMMITDLG_POPUP_PASTEFILELIST "Paste filename list"
     IDS_COMMITDLG_POPUP_PASTELASTMESSAGE "Paste last commit message"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_BY       "Filter by"
     IDS_LOG_FILTER_PATHS    "Paths"
@@ -3362,7 +3360,7 @@ BEGIN
     IDS_LOG_FILTER_REGEX    "Use regular expression"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNACTION_EXISTS    "Versioned"
     IDS_SVNACTION_CHANGELISTSET "Assigned to changelist '%s'"
@@ -3375,19 +3373,19 @@ BEGIN
     IDS_SVN_SUMMARIZEDELETED "Deleted"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_FILE       "File"
     IDS_FILEDIFF_ACTION     "Action"
     IDS_FILEDIFF_WAIT       "Please wait while differences are obtained..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MERGE_RECORDONLY    "Record Only"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNPROGRESS_MENUUSETHEIRS "Resolve conflict using 'theirs'"
     IDS_SVNPROGRESS_MENUUSEMINE "Resolve conflict using 'mine'"
@@ -3396,7 +3394,7 @@ BEGIN
     IDS_SVNPROGRESS_RESOLVED "Resolved:\n%s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_NEWNAMECOPY    "Copy: New name for %s"
     IDS_PROC_NEWNAMEMOVE    "Move: New name for %s"
@@ -3404,7 +3402,7 @@ BEGIN
     IDS_PROC_MULTIRENAME    "TortoiseGit has detected similar filenames. Do you want the files:%s\nto be renamed too?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_UNVERSIONEDRECURSE_TT 
                             "If set, files inside unversioned folders can be shown in the status control.\r\nThe status control is used for example in the commit dialog."
@@ -3432,7 +3430,7 @@ BEGIN
                             "If checked, the commit dialog will be started again automatically after an error,\r\nwhile preserving your last selection and log message."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRESS_COMPARE    "Comparing %s to %s"
     IDS_PROGRESS_INFO       "Getting information..."
@@ -3441,19 +3439,19 @@ BEGIN
     IDS_PROGRESSREVISIONTEXT "Revision %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLOURPICKER_CUSTOMTEXT "More..."
     IDS_COLOURPICKER_DEFAULTTEXT "Automatic"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_BUGIDS   "Bug-IDs"
     IDS_LOG_FILTER_REGEX_TT "Regular expressions filter:\r\n.   : any character\r\nc+   : match character c one or more times\r\nc*   : match character c zero or more times\r\n^   : start of line\r\n$   : end of line\r\n(string){n} : match string n times\r\n(abcd)   : subexpression\r\n[aei0-9]   : match a,e,i and 0..9\r\n[^aei0-9] : anything but a,e,i and 0..9\r\n\r\n\\w   : matches a-z,A-Z,0-9 and _\r\n\\W   : any non-alphanumeric character\r\n\\d   : digits 0-9\r\n\\s   : whitespaces"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_CHERRYPICKFAILED "Cherry Pick failed"
     IDS_PROC_NOPARENT       "Parent %d does not exist"
@@ -3477,25 +3475,25 @@ BEGIN
                             "Do you really want to <ct=0x0000FF>delete</ct> <b>%s</b>?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_POPBLAME   "&Blame revisions"
     IDS_FILEDIFF_POPSAVELIST "&Save list of selected files to..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_CLEANUP_INFO1  "Cleaning up."
     IDS_PROC_CLEANUP_INFO2  "Please wait..."
     IDS_PROC_COPYRENAME     "Copy and rename"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_SWITCHLEFTRIGHT_TT "Switches the comparison left<<->right"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATGRAPH_QUARTERLABEL "Q%d/%.2d"
     IDS_STATGRAPH_PIEBUTTON_TT "Pie Graph"
@@ -3507,19 +3505,19 @@ BEGIN
                             "%d most active author(s) with at least %d commits each (%d %%)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_CHANGEDLISTINTRO "Changed files between %s, %s and %s, %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_POPEXPORT  "&Export selection to..."
     IDS_FILEDIFF_POPCLIPBOARD "Copy selection to cli&pboard"
     IDS_FILEDIFF_POPREVERTTOREV "Revert to revision %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HOOKTYPE_STARTCOMMIT "Start Commit Hook"
     IDS_HOOKTYPE_PRECOMMIT  "Pre-Commit Hook"
@@ -3527,13 +3525,13 @@ BEGIN
     IDS_HOOKTYPE_STARTUPDATE "Start Update Hook"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HOOKTYPE_PREUPDATE  "Pre-Update Hook"
     IDS_HOOKTYPE_POSTUPDATE "Post-Update Hook"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_SHOWEXCLUDEDASNORMAL_TT 
                             "If enabled, working tree folders which are excluded from\nshowing overlays still show the overlay for status 'normal'"
@@ -3555,7 +3553,7 @@ BEGIN
     IDS_SETTINGS_HOOKS_SELECTSCRIPTFILE "Select hook script file"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SETTINGS_HOOKS_TYPECOL "Hook Type"
     IDS_SETTINGS_HOOKS_PATHCOL "Path"
@@ -3575,7 +3573,7 @@ BEGIN
                             "TortoiseGit will not show the following overlays: %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_TITLEFAILED  "Failed!"
     IDS_PROGRS_INFOFAILED   "The operation failed."
@@ -3583,14 +3581,14 @@ BEGIN
     IDS_PROGRS_INFOGETTINGINFO "Getting required information..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNPROGRESS_EXPORTING "Exporting %s"
     IDS_SVNPROGRESS_EXPORTINGTO "to %s"
     IDS_SVNPROGRESS_EXPORTINGWAIT "Gathering information. Please wait..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_NESTED   "Nested"
     IDS_STATUSLIST_BUSYMSG  "Please wait..."
@@ -3600,13 +3598,13 @@ BEGIN
     IDS_STATUSLIST_UNCHECKGROUP "Deselect changelist"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSLIST_KEEPLOCAL "item kept locally"
     IDS_STATUSLIST_NOPROPVALUE "(no value)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGRS_CMD_CHECKOUT "Checkout from %s, revision %s, %s, %s"
     IDS_PROGRS_CMD_IMPORT   "Import %s to %s%s"
@@ -3622,34 +3620,34 @@ BEGIN
     IDS_PROGRS_CMD_REVERT   "Revert"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_ZOOMIN          "Zoom in"
     ID_VIEW_ZOOMOUT         "Zoom out"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SVNPROGRESS_UNVERSION "Unversioning %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILEDIFF_FILTERCUE  "Filter paths"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REPOSTATUS_EMPTYFILELIST 
                             "No files to show with the current setting.\nCheck one or more settings below to see unversioned, ignored and/or unmodified files.\nTo see remote changes, click on 'Check Repository'"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_MOVERENAME     "Move and rename"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_B_T_NOTEMPTY        "Branch/Tag name must not be empty or is invalid."
     IDS_CHOOSE_REPOSITORY   "Choose Repository"
@@ -3664,7 +3662,7 @@ BEGIN
     IDS_SVNACTION_SENDMAIL_RETRY "Retrying..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERR_PAGEANT         "Could not start the Putty Agent (pageant)."
     IDS_MENU_VIEWPATCH      "View Patch"
@@ -3681,7 +3679,7 @@ BEGIN
     IDS_REBASE_ABORT_TT     "Recover to the status before rebase"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REBASE_FASTFORWARD_FMT 
                             "Branch %s behind %s\r\n%s will fastforward to %s"
@@ -3701,7 +3699,7 @@ BEGIN
     IDS_STATGRAPH_COMMITSBYUNIT "Commits each %s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_FILTER_SUBJECT  "Subject"
     IDS_STATUSLIST_SHOWLOGOLDNAME "Show log &before rename/copy"
@@ -3722,7 +3720,7 @@ BEGIN
     IDS_FAIL                "Fail"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DONE                "Done"
     IDS_PROC_SKIPPATCH      "Skip Patch: %s"
@@ -3743,7 +3741,7 @@ BEGIN
     IDS_PROC_COMMITMESSAGE  "Commit Message"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROGS_TITLE_CHERRYPICK "Cherry Pick"
     IDS_PROC_REVISIONFILES  "Revision Files"
@@ -3763,7 +3761,7 @@ BEGIN
     IDS_FINISHBUTTON        "Finish"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_STARTREBASEBUTTON "Start Rebase"
     IDS_PROC_STARTREBASEFFBUTTON "Start (FastFwd)"
@@ -3787,7 +3785,7 @@ BEGIN
     IDS_PROC_COMMIT_RESTOREFILES_KEEP "&Keep current state"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_COMMIT_RECOMMIT "&ReCommit"
     IDS_PROC_STASHFAILED    "<ct=0x0000FF>Stash failed!!!</ct>"
@@ -3807,7 +3805,7 @@ BEGIN
     IDS_ERR_PULLREUQESTFAILED "Failed to create pull-request."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_REMOVEBRANCH   "Remove &branch"
     IDS_PROGS_TITLE_EDITNOTES "Edit Notes"
@@ -3830,7 +3828,7 @@ BEGIN
     IDS_PROC_SYNC_PUSH      "Pus&h"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_BROWSEREFS_DELETETAGS "Delete %d tags"
     IDS_PROCS_TITLE_GITREMOTESETTINGS "Git Remote Settings"
@@ -3856,7 +3854,7 @@ BEGIN
     IDS_PROC_STASHAPPLYSUCCESS "<ct=0xff0000>Stash Apply successful</ct>"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_STASHPOPFAILED "<ct=0x0000FF>Stash POP failed!!!</ct>"
     IDS_PROC_STASHPOPFAILEDCONFLICTS 
@@ -3884,7 +3882,7 @@ BEGIN
                             "List a renamed file as ""long/path/{to => for}/file.txt"" instead of ""long/path/for/file.txt (from long/path/to/file.txt)""."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PROC_PUSHFETCH_ALLREMOTES "- all -"
     IDS_PROC_SYNC_NOFASTFORWARD 
@@ -3910,7 +3908,7 @@ BEGIN
     IDS_PROC_LOG_JUMPNOTFOUND "No more revisions found."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECURSE_SUBMODULES_CHECK "Check"
     IDS_RECURSE_SUBMODULES_ONDEMAND "On demand"
@@ -3920,7 +3918,7 @@ BEGIN
     IDS_ERR_EMPTYDIFF       "No differences found!"
     IDS_PROC_TAG_FF         "Tag (FF)"
     IDS_GITVER_REQUIRED     "%s requires msysgit >= %s"
-    IDS_SETTINGS_SYMBOLIZEREFNAMES_TT
+    IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
 END
 
@@ -3932,9 +3930,8 @@ END
 // German (Switzerland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
-#ifdef _WIN32
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
-#endif //_WIN32
+#pragma code_page(1252)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -3949,7 +3946,7 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""afxres.h""\r\n"
+    "#include <afxres.h>\r\n"
     "\0"
 END
 
@@ -3964,10 +3961,10 @@ BEGIN
     "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
     "#include ""TortoiseProc.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-    "#include ""afxres.rc""         // Standard components\r\n"
-    "#include ""afxprint.rc""  // printing/print preview resources\r\n"
-    "#include ""afxribbon.rc"" // ribbon and control bar resources\r\n"
-    "#include ""afxolecl.rc""  // OLE container resources\r\n"
+    "#include <afxres.rc>         // Standard components\r\n"
+    "#include <afxprint.rc>  // printing/print preview resources\r\n"
+    "#include <afxribbon.rc> // ribbon and control bar resources\r\n"
+    "#include <afxolecl.rc>  // OLE container resources\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -3993,13 +3990,12 @@ END
 LANGUAGE 9, 1
 #pragma code_page(1252)
 #include "TortoiseProc.rc2"  // non-Microsoft Visual C++ edited resources
-#include "afxres.rc"         // Standard components
-#include "afxprint.rc"  // printing/print preview resources
-#include "afxribbon.rc" // ribbon and control bar resources
-#include "afxolecl.rc"  // OLE container resources
+#include <afxres.rc>         // Standard components
+#include <afxprint.rc>  // printing/print preview resources
+#include <afxribbon.rc> // ribbon and control bar resources
+#include <afxolecl.rc>  // OLE container resources
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-
 

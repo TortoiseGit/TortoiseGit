@@ -10,7 +10,7 @@
 #ifndef APSTUDIO_INVOKED
 #include "..\targetver.h"
 #endif
-#include "afxres.h"
+#include <afxres.h>
 #include "..\TortoiseGitBlame\MenuEncode.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -20,10 +20,8 @@
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +39,7 @@ BEGIN
     "#ifndef APSTUDIO_INVOKED\r\n"
     "#include ""..\\targetver.h""\r\n"
     "#endif\r\n"
-    "#include ""afxres.h""\r\n"
+    "#include <afxres.h>\r\n"
     "#include ""..\\TortoiseGitBlame\\MenuEncode.h""\r\n"
     "\0"
 END
@@ -56,10 +54,10 @@ BEGIN
     "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
     "#include ""res\\TortoiseGitBlame.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-    "#include ""afxres.rc""         // Standard components\r\n"
-    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#include <afxres.rc>         // Standard components\r\n"
+    "#include <afxprint.rc>       // printing/print preview resources\r\n"
     "#if !defined(_AFXDLL)\r\n"
-    "#include ""afxribbon.rc""              // MFC ribbon and control bar resources\r\n"
+    "#include <afxribbon.rc>              // MFC ribbon and control bar resources\r\n"
     "#endif\r\n"
     "#endif\r\n"
     "\0"
@@ -96,7 +94,7 @@ IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 BITMAP                  "..\\Resources\\bla
 // Toolbar
 //
 
-IDR_TORTOISE_GIT_BLAME_MAINFRAME TOOLBAR  16, 16
+IDR_TORTOISE_GIT_BLAME_MAINFRAME TOOLBAR 16, 16
 BEGIN
     BUTTON      ID_FILE_OPEN
     SEPARATOR
@@ -108,7 +106,7 @@ BEGIN
     BUTTON      ID_APP_ABOUT
 END
 
-IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 TOOLBAR  16, 16
+IDR_TORTOISE_GIT_BLAME_MAINFRAME_256 TOOLBAR 16, 16
 BEGIN
     BUTTON      ID_FILE_OPEN
     SEPARATOR
@@ -126,7 +124,7 @@ END
 // Menu
 //
 
-IDR_TORTOISE_GIT_BLAME_MAINFRAME MENU 
+IDR_TORTOISE_GIT_BLAME_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -286,7 +284,7 @@ BEGIN
     END
 END
 
-IDR_OUTPUT_POPUP MENU 
+IDR_OUTPUT_POPUP MENU
 BEGIN
     POPUP "Popup"
     BEGIN
@@ -297,7 +295,7 @@ BEGIN
     END
 END
 
-IDR_BLAME_POPUP MENU 
+IDR_BLAME_POPUP MENU
 BEGIN
     POPUP "BlAMEPOPUP"
     BEGIN
@@ -316,7 +314,7 @@ END
 // Accelerator
 //
 
-IDR_TORTOISE_GIT_BLAME_MAINFRAME ACCELERATORS 
+IDR_TORTOISE_GIT_BLAME_MAINFRAME ACCELERATORS
 BEGIN
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
@@ -344,7 +342,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About TortoiseGitBlame"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    ICON            IDR_TORTOISE_GIT_BLAME_MAINFRAME,IDC_STATIC,14,14,21,20
+    ICON            IDR_TORTOISE_GIT_BLAME_MAINFRAME,IDC_STATIC,14,14,20,20
     LTEXT           "TortoiseGitBlame",IDC_VERSION,42,14,138,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2009-2013 TortoiseGit",IDC_COPYRIGHT,42,26,156,8
     DEFPUSHBUTTON   "OK",IDOK,173,69,50,14,WS_GROUP
@@ -370,7 +368,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -388,12 +386,12 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_TORTOISE_GIT_BLAME_MAINFRAME 
                             "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
@@ -409,19 +407,19 @@ BEGIN
     IDS_PARENTS             "Parent(s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_APP_TITLE       "TortoiseGitBlame"
     AFX_IDS_IDLEMESSAGE     " "
     AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_INDICATOR_NUM        "NUM"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_NEW             "Create a new document\nNew"
     ID_FILE_OPEN            "Open an existing document\nOpen"
@@ -435,7 +433,7 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
@@ -446,7 +444,7 @@ BEGIN
     ID_HELP                 "Display help for current task or command\nHelp"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EDIT_MENU           "Edit"
     IDS_GIT_LOG_TAB         "Git Log"
@@ -454,7 +452,7 @@ BEGIN
     ID_VIEW_PREV            "Show previous change of selected commit\nShow previous"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_MRU_FILE1       "Open this document"
     ID_FILE_MRU_FILE2       "Open this document"
@@ -474,18 +472,18 @@ BEGIN
     ID_FILE_MRU_FILE16      "Open this document"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
     ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
@@ -500,12 +498,12 @@ BEGIN
     ID_EDIT_REDO            "Redo the previously undone action\nRedo"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCSIZE          "Change the window size"
     AFX_IDS_SCMOVE          "Change the window position"
@@ -516,18 +514,18 @@ BEGIN
     AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "Restore the window to normal size"
     AFX_IDS_SCTASKLIST      "Activate Task List"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUS_PANE1        "Pane 1"
     IDS_STATUS_PANE2        "Pane 2"
@@ -535,7 +533,7 @@ BEGIN
     IDS_TOOLBAR_CUSTOMIZE   "Customize..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_OUTPUT_WND          "Git Revision List"
     IDS_PROPERTIES_WND      "Commit Info"
@@ -564,10 +562,10 @@ END
 LANGUAGE 9, 1
 #pragma code_page(1252)
 #include "res\TortoiseGitBlame.rc2"  // non-Microsoft Visual C++ edited resources
-#include "afxres.rc"         // Standard components
-#include "afxprint.rc"       // printing/print preview resources
+#include <afxres.rc>         // Standard components
+#include <afxprint.rc>       // printing/print preview resources
 #if !defined(_AFXDLL)
-#include "afxribbon.rc"              // MFC ribbon and control bar resources
+#include <afxribbon.rc>              // MFC ribbon and control bar resources
 #endif
 #endif
 

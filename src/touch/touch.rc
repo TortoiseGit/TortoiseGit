@@ -1,4 +1,4 @@
-//Microsoft Visual C++ generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -11,8 +11,9 @@
 #include "targetver.h"
 #endif
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include <Windows.h>
+#include <windows.h>
 #undef APSTUDIO_HIDDEN_SYMBOLS
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -100,30 +101,32 @@ END
 //
 // TEXTINCLUDE
 //
-1 TEXTINCLUDE
+
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE
+2 TEXTINCLUDE 
 BEGIN
-	"#ifndef APSTUDIO_INVOKED\r\n"
+    "#ifndef APSTUDIO_INVOKED\r\n"
     "#include ""targetver.h""\r\n"
     "#endif\r\n"
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include ""windows.h""\r\n"
+    "#include <windows.h>\r\n"
     "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
-    "#include ""touch.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""touch.rc2""  // non-Microsoft Visual C++ edited resources\r\0"
 END
 
 #endif    // APSTUDIO_INVOKED
 
+#endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -150,3 +153,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

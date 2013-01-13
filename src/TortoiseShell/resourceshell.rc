@@ -16,10 +16,8 @@
 // Neutral resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
-#ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -87,10 +85,8 @@ IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongrap
 // Englisch (USA) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -176,7 +172,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_PROPPAGE, DIALOG
     BEGIN
@@ -196,11 +192,10 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUUPDATE          "Submodule &Update"
     IDS_MENUCOMMIT          "&Commit..."
-    IDS_MENUCOMMITSUBMODULE "&Commit submodule..."
     IDS_MENUCREATEREPOS     "Create repositor&y here..."
     IDS_MENUADD             "&Add..."
     IDS_MENUREVERT          "Re&vert..."
@@ -208,7 +203,18 @@ BEGIN
     IDS_MENURESOLVE         "Res&olve..."
 END
 
-STRINGTABLE 
+STRINGTABLE
+BEGIN
+    IDS_MENUDELETEIGNOREMULTIPLEMASK 
+                            "Delete and ignore %d items by &extension"
+    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
+    IDS_MENUDESCDELETEIGNORE 
+                            "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
+    IDS_MENUCOMMITSUBMODULE "&Commit submodule..."
+    IDS_MENUREVISIONGRAPH   "Revision &graph"
+END
+
+STRINGTABLE
 BEGIN
     IDS_MENUSWITCH          "S&witch/Checkout..."
     IDS_MENUMERGE           "&Merge..."
@@ -228,7 +234,7 @@ BEGIN
     IDS_MENUDESCSWITCH      "Switch/Checkout working tree to another branch/tag"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUASSUMEVALID     "Assume Unchanged"
     IDS_MENUDESCEXPORT      "Exports a revision to a zip file"
@@ -238,9 +244,6 @@ BEGIN
     IDS_MENUDESCMERGE       "Merges another branch"
     IDS_MENUDESCSETTINGS    "Tweak TortoiseGit"
     IDS_MENUDESCDEFAULT     "no description for this command is available"
-    IDS_MENUREVISIONGRAPH   "Revision &graph"
-    IDS_MENUDESCREVISIONGRAPH 
-                            "Shows a graphical representation of copies/tags/branches"
     IDS_STATUSNONE          " "
     IDS_STATUSUNVERSIONED   "non-versioned"
     IDS_STATUSNORMAL        "normal"
@@ -251,7 +254,13 @@ BEGIN
     IDS_STATUSMODIFIED      "modified"
 END
 
-STRINGTABLE 
+STRINGTABLE
+BEGIN
+    IDS_MENUDESCREVISIONGRAPH 
+                            "Shows a graphical representation of copies/tags/branches"
+END
+
+STRINGTABLE
 BEGIN
     IDS_git_DEPTH_UNKNOWN   "Unknown depth"
     IDS_git_DEPTH_WORKING   "Working Tree"
@@ -269,7 +278,7 @@ BEGIN
     IDS_MENUSTASHLIST       "Stash List"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUSVNREBASE_DESC  "Git SVN Rebase"
     IDS_MENUSVNDCOMMIT      "SVN DCommit..."
@@ -289,7 +298,7 @@ BEGIN
     IDS_MENUDELETEIGNOREMULTIPLE "Delete and &ignore %d items by name"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REFLOG_DEL          "Delete Ref..."
     IDS_MENUSENDMAIL        "Send Mail..."
@@ -299,7 +308,7 @@ BEGIN
     IDS_MENUSVNREBASE       "SVN Rebase..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STATUSMERGED        "merged"
     IDS_STATUSCONFLICTED    "conflicted"
@@ -319,7 +328,7 @@ BEGIN
     IDS_COLDESCREV          "Last saved revision of item"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUSHOWCHANGED     "Check for modi&fications"
     IDS_MENUDESCSHOWCHANGED "Shows all files which were changed since the last update, locally and in the repository"
@@ -339,7 +348,7 @@ BEGIN
     IDS_MENUAPPLYPATCH      "Review/apply single &patch..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUCLIPPASTE       "&Paste"
     IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
@@ -351,7 +360,7 @@ BEGIN
     IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUDIFF            "&Diff"
     IDS_MENUDESCDIFF        "Compares the file with the last committed revision to show you the changes you made"
@@ -371,7 +380,7 @@ BEGIN
     IDS_MENUDESCHELP        "Read the 'Daily Use Guide' before you are stuck..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUDESCCREATEPATCH "Creates a unified diff file with all changes you made"
     IDS_MENUDESCAPPLYPATCH  "Review/apply a unified diff file with TortoiseGitMerge"
@@ -389,22 +398,13 @@ BEGIN
     IDS_MENUCLONE           "Clone..."
 END
 
-STRINGTABLE 
-BEGIN
-    IDS_MENUDELETEIGNOREMULTIPLEMASK 
-                            "Delete and ignore %d items by &extension"
-    IDS_MENUDELETEIGNORE    "Delete and add to &ignore list"
-    IDS_MENUDESCDELETEIGNORE 
-                            "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
-END
-
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DROPMOVERENAMEMENU  "Git Move and rename versioned item here"
     IDS_MENUREMOVEKEEP      "&Delete (keep local)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DROPCOPYRENAMEMENU  "Git Copy and rename versioned item here"
     IDS_COLTITLEAUTHOR      "Git Author"
@@ -413,14 +413,14 @@ BEGIN
     IDS_PROPSNOTSAVED       "You have modified properties without saving them first.\nDo you want to save them now?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MENUDESCREMOVEKEEP  "Deletes files/folders from version control but keeps the file"
     IDS_YES                 "yes"
     IDS_NO                  "no"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_git_DEPTH_INFINITE  "Fully recursive"
     IDS_git_DEPTH_IMMEDIATE "Immediate children, including folders"

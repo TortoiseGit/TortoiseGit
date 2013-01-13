@@ -8,7 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include <Windows.h>
+#include <windows.h>
 #undef APSTUDIO_HIDDEN_SYMBOLS
 #ifndef APSTUDIO_INVOKED
 #include "TortoiseIDiff.rc2"
@@ -69,7 +69,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include ""windows.h""\r\n"
+    "#include <windows.h>\r\n"
     "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
     "#ifndef APSTUDIO_INVOKED\r\n"
     "#include ""TortoiseIDiff.rc2""\r\n"
@@ -154,7 +154,7 @@ CAPTION "TortoiseGitIDiff"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,201,65,50,14
-    ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,21,20
+    ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,20,20
     LTEXT           "TortoiseGitIDiff - An image diff tool, part of TortoiseGit",IDC_STATIC,53,15,198,21
     LTEXT           "Version",IDC_ABOUTVERSION,53,42,198,8
     LTEXT           "Based on TortoiseIDiff of TortoiseSVN",IDC_WEBLINK,53,71,140,8

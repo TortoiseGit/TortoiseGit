@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include <afxres.h>
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -17,6 +17,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -132,6 +133,7 @@ IDB_LOGO                PNG                     "ribbon\\TortoiseMerge.png"
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -888,6 +890,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -938,7 +941,7 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
-    "#include ""afxres.h""\r\n"
+    "#include <afxres.h>\r\n"
     "\0"
 END
 
@@ -953,10 +956,10 @@ BEGIN
     "LANGUAGE 9, 1\r\n"
     "#pragma code_page(1252)\r\n"
     "#include ""TortoiseMerge.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-    "#include ""afxres.rc""         // Standard components\r\n"
-    "#include ""afxprint.rc""  // printing/print preview resources\r\n"
-    "#include ""afxribbon.rc"" // ribbon and control bar resources\r\n"
-    "#include ""afxolecl.rc""  // OLE container resources\r\n"
+    "#include <afxres.rc>         // Standard components\r\n"
+    "#include <afxprint.rc>  // printing/print preview resources\r\n"
+    "#include <afxribbon.rc> // ribbon and control bar resources\r\n"
+    "#include <afxolecl.rc>  // OLE container resources\r\n"
     "#endif\r\n"
     "\0"
 END
@@ -982,10 +985,10 @@ END
 LANGUAGE 9, 1
 #pragma code_page(1252)
 #include "TortoiseMerge.rc2"  // non-Microsoft Visual C++ edited resources
-#include "afxres.rc"         // Standard components
-#include "afxprint.rc"  // printing/print preview resources
-#include "afxribbon.rc" // ribbon and control bar resources
-#include "afxolecl.rc"  // OLE container resources
+#include <afxres.rc>         // Standard components
+#include <afxprint.rc>  // printing/print preview resources
+#include <afxribbon.rc> // ribbon and control bar resources
+#include <afxolecl.rc>  // OLE container resources
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
