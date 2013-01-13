@@ -2720,7 +2720,7 @@ msgid "Copying..."
 msgstr ""
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2012 TortoiseGit"
+msgid "Copyright (C) 2009-2013 TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (1254)
@@ -6023,7 +6023,7 @@ msgid "Picture:"
 msgstr ""
 
 #. Resource IDs: (157)
-msgid "Pictures (*.wmf, *.svg, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.svg;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
+msgid "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (246)
@@ -6799,10 +6799,6 @@ msgstr ""
 
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
-msgstr ""
-
-#. Resource IDs: (116)
-msgid "Revisions"
 msgstr ""
 
 #. Resource IDs: (605)
