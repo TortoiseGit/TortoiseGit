@@ -1100,7 +1100,7 @@ const wchar_t *wget_windows_home_directory(void)
 
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
-	char * config_exclusive_filename;
+	char * config_exclusive_filename = NULL;
 	switch(type)
 	{
 	case CONFIG_LOCAL:
@@ -1118,9 +1118,6 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 					config_exclusive_filename = xstrdup(mkpath("%s/.config/git/config", home));
 			}
 		}
-		break;
-	default:
-		config_exclusive_filename = NULL;
 		break;
 	}
 
