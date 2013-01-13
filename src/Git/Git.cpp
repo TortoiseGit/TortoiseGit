@@ -2151,7 +2151,7 @@ CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
 {
 	CString str=ref;
 	CString shortname;
-	REF_TYPE type;
+	REF_TYPE type = CGit::UNKNOWN;
 
 	if (CGit::GetShortName(str, shortname, _T("refs/heads/")))
 	{
