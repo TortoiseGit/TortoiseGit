@@ -1204,7 +1204,9 @@ CString CGit::GetGitLastErr(CString msg)
 		const git_error *libgit2err = giterr_last();
 		if (libgit2err)
 		{
-			return msg + _T("\nlibgit2 returned: ") + CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+			CString lastError = CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+			giterr_clear();
+			return msg + _T("\nlibgit2 returned: ") + lastError;
 		}
 		else
 		{
@@ -1214,7 +1216,11 @@ CString CGit::GetGitLastErr(CString msg)
 	else if (gitLastErr.IsEmpty())
 		return msg + _T("\nUnknown git.exe error.");
 	else
-		return msg + _T("\n") + gitLastErr;
+	{
+		CString lastError = gitLastErr;
+		gitLastErr.Empty();
+		return msg + _T("\n") + lastError;
+	}
 }
 
 CString CGit::FixBranchName_Mod(CString& branchName)
