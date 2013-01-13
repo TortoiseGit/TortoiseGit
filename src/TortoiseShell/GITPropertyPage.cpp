@@ -70,6 +70,7 @@ UINT CALLBACK PropPageCallbackProc ( HWND /*hwnd*/, UINT uMsg, LPPROPSHEETPAGE p
 }
 
 // *********************** CGitPropertyPage *************************
+const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(_T("TORTOISEGIT_PROP_UPDATELASTCOMMIT"));
 
 CGitPropertyPage::CGitPropertyPage(const std::vector<stdstring> &newFilenames)
 	:filenames(newFilenames)
@@ -219,6 +220,13 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 		PageProcOnCommand(wParam);
 		break;
 	} // switch (uMessage)
+
+	if (uMessage == m_UpdateLastCommit)
+	{
+		DisplayCommit((git_commit *)lParam, IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
+		return TRUE;
+	}
+
 	return FALSE;
 }
 void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
@@ -454,6 +462,15 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 
 void CGitPropertyPage::DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel)
 {
+	if (commit == NULL)
+	{
+		SetDlgItemText(m_hwnd, hashLabel, _T(""));
+		SetDlgItemText(m_hwnd, subjectLabel, _T(""));
+		SetDlgItemText(m_hwnd, authorLabel, _T(""));
+		SetDlgItemText(m_hwnd, dateLabel, _T(""));
+		return;
+	}
+
 	int encode = CP_UTF8;
 	const char * encodingString = git_commit_message_encoding(commit);
 	if (encodingString != NULL)
@@ -480,6 +497,50 @@ void CGitPropertyPage::DisplayCommit(git_commit * commit, UINT hashLabel, UINT s
 	CString authorDate;
 	Time64ToTimeString(author->when.time, authorDate.GetBufferSetLength(200), 200);
 	SetDlgItemText(m_hwnd, dateLabel, authorDate);
+}
+
+int CGitPropertyPage::LogThread()
+{
+	CTGitPath path(filenames.front().c_str());
+
+	CString ProjectTopDir;
+	if(!path.HasAdminDir(&ProjectTopDir))
+		return 0;
+
+	CStringA gitdir = CUnicodeUtils::GetMulti(ProjectTopDir, CP_UTF8);
+	git_repository *repository = NULL;
+
+	int ret = git_repository_open(&repository, gitdir.GetBuffer());
+	gitdir.ReleaseBuffer();
+	if (ret)
+		return 0;
+
+	int stripLength = ProjectTopDir.GetLength();
+	if (ProjectTopDir[stripLength - 1] != _T('\\'))
+		stripLength++;
+
+	CTGitPath relatepath;
+	relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
+
+	git_commit *commit = FindFileRecentCommit(repository, relatepath.GetGitPathString());
+	if (commit != NULL)
+	{
+		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, (LPARAM)commit);
+		git_commit_free(commit);
+	}
+	else
+	{
+		SendMessage(m_hwnd, m_UpdateLastCommit, NULL, NULL);
+	}
+
+	git_repository_free(repository);
+
+	return 0;
+}
+
+void CGitPropertyPage::LogThreadEntry(void *param)
+{
+	((CGitPropertyPage*)param)->LogThread();
 }
 
 void CGitPropertyPage::InitWorkfileView()
@@ -560,19 +621,6 @@ void CGitPropertyPage::InitWorkfileView()
 		int stripLength = ProjectTopDir.GetLength();
 		if (ProjectTopDir[stripLength - 1] != _T('\\'))
 			stripLength++;
-
-		if (filenames.size() == 1)
-		{
-			CTGitPath relatepath;
-			relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
-
-			git_commit *commit = FindFileRecentCommit(repository, relatepath.GetGitPathString());
-			if (commit != NULL)
-			{
-				DisplayCommit(commit, IDC_LAST_HASH, IDC_LAST_SUBJECT, IDC_LAST_AUTHOR, IDC_LAST_DATE);
-				git_commit_free(commit);
-			}
-		}
 
 		bool allAreFiles = true;
 		for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
@@ -658,6 +706,12 @@ void CGitPropertyPage::InitWorkfileView()
 		}
 	}
 	git_repository_free(repository);
+
+	if (filenames.size() == 1)
+	{
+		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, _T("Loading ..."));
+		_beginthread(LogThreadEntry, 0, this);
+	}
 }
 
 

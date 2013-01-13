@@ -74,12 +74,16 @@ public:
 	 */
 	virtual BOOL PageProc(HWND hwnd, UINT uMessage, WPARAM wParam, LPARAM lParam);
 
+	const static UINT m_UpdateLastCommit;
+
 protected:
 	/**
 	 * Initializes the property page.
 	 */
 	virtual void InitWorkfileView();
 	void DisplayCommit(git_commit * commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel);
+	static void LogThreadEntry(void *param);
+	int LogThread();
 	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen);
 	void PageProcOnCommand(WPARAM wParam);
 	void RunCommand(const tstring& command);
