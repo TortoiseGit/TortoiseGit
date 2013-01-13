@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -732,7 +732,7 @@ void CRevisionGraphWnd::DrawMarker
 	, const RectF& noderect
 	, MarkerPosition /*position*/
 	, int /*relPosition*/
-	, Color &penColor
+	, const Color& penColor
 	, int num)
 {
 	REAL width = 4*this->m_fZoomFactor<1? 1: 4*this->m_fZoomFactor;
@@ -879,7 +879,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 	if(graphics.graphics)
 		graphics.graphics->SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 
-	double penwidth = 2*m_fZoomFactor<1? 1:2*m_fZoomFactor;
+	float penwidth = 2*m_fZoomFactor<1? 1:2*m_fZoomFactor;
 	Gdiplus::Pen pen(Color(0,0,0),penwidth);
 
 	// iterate over all visible lines
@@ -925,14 +925,14 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 
 		if (graphics.graphics)
 		{
-			graphics.graphics->DrawLines(&pen, points.GetData(), points.GetCount());
+			graphics.graphics->DrawLines(&pen, points.GetData(), (INT)points.GetCount());
 
 		}
 		else if (graphics.pSVG)
 		{
 			Color color;
 			color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
-			graphics.pSVG->Polyline(points.GetData(), points.GetCount(), Color(0,0,0), penwidth);
+			graphics.pSVG->Polyline(points.GetData(), (int)points.GetCount(), Color(0,0,0), (int)penwidth);
 		}
 
 		//draw arrow
@@ -977,7 +977,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 			graphics.graphics->DrawPath(&pen, &path);
 		}else if(graphics.pSVG)
 		{
-			graphics.pSVG->DrawPath(arrows, 5, Color(0,0,0), penwidth, Color(0,0,0));
+			graphics.pSVG->DrawPath(arrows, 5, Color(0,0,0), (int)penwidth, Color(0,0,0));
 		}
 	}
 }
@@ -1033,8 +1033,8 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			}
 			if(graphics.pSVG)
 			{
-				graphics.pSVG->Text(noderect.X + this->GetLeftRightMargin()*this->m_fZoomFactor,
-											noderect.Y+this->GetTopBottomMargin()*m_fZoomFactor + m_nFontSize,
+				graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * this->m_fZoomFactor),
+											(int)(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + m_nFontSize),
 											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, Color::Black,
 											CUnicodeUtils::GetUTF8(hash.ToString().Left(g_Git.GetShortHASHLength())));
 			}
@@ -1122,8 +1122,8 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				else if (graphics.pSVG)
 				{
 
-					graphics.pSVG->Text(noderect.X + this->GetLeftRightMargin()*m_fZoomFactor, 
-										noderect.Y + this->GetTopBottomMargin()*m_fZoomFactor+ hight*i+m_nFontSize,
+					graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor), 
+										(int)(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + hight * i + m_nFontSize),
 										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
 										false, false, Color::Black, CUnicodeUtils::GetUTF8(shortname));
 
@@ -1310,8 +1310,9 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			if(graphics.graphics)
 			{
 				//GetTextExtentPoint32(graphics.pDC->m_hDC, shorthash.GetBuffer(), shorthash.GetLength(), &size);
+				Gdiplus::Font font(fontname.GetBuffer(), (REAL)m_nFontSize, FontStyleRegular);
 				graphics.graphics->MeasureString(shorthash.GetBuffer(), shorthash.GetLength(),
-										&Gdiplus::Font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular),
+										&font,
 										Gdiplus::PointF(0,0), &rect);
 
 			}
@@ -1330,8 +1331,9 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 				shortref = CGit::GetShortName(shortref,NULL);
 				if(graphics.pDC)
 				{
+					Gdiplus::Font font(fontname.GetBuffer(), (REAL)m_nFontSize, FontStyleRegular);
 					graphics.graphics->MeasureString(shortref.GetBuffer(), shortref.GetLength(),
-										&Gdiplus::Font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular),
+										&font,
 										Gdiplus::PointF(0,0), &rect);
 					if(rect.Width > xmax)
 						xmax = rect.Width;
