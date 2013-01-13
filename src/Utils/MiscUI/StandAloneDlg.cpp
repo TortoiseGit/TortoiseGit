@@ -69,7 +69,6 @@ void CResizableStandAloneDialog::OnNcMButtonUp(UINT nHitTest, CPoint point)
 			rcWindowRect.bottom = rcWorkArea.bottom;
 		}
 		m_bVertical = !m_bVertical;
-		m_bHorizontal = m_bHorizontal;
 		MoveWindow(&rcWindowRect);
 	}
 	CStandAloneDialogTmpl<CResizableDialog>::OnNcMButtonUp(nHitTest, point);
@@ -94,7 +93,6 @@ void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point)
 			rcWindowRect.left = rcWorkArea.left;
 			rcWindowRect.right = rcWorkArea.right;
 		}
-		m_bVertical = m_bVertical;
 		m_bHorizontal = !m_bHorizontal;
 		MoveWindow(&rcWindowRect);
 		// WORKAROUND
