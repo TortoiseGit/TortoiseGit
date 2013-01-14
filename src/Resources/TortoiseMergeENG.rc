@@ -822,8 +822,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROPMODS            "(properties only)"
-    IDS_PROPANDCONTENTMODS  "(props and content)"
     IDS_MOVED_FROM_TT       "Line moved from line %ld"
     IDS_MOVED_TO_TT         "Line moved to line %ld"
 END

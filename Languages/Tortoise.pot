@@ -1224,14 +1224,6 @@ msgstr ""
 msgid "(not found)"
 msgstr ""
 
-#. Resource IDs: (176)
-msgid "(properties only)"
-msgstr ""
-
-#. Resource IDs: (176)
-msgid "(props and content)"
-msgstr ""
-
 #. Resource IDs: (245)
 msgid "(unknown)"
 msgstr ""
