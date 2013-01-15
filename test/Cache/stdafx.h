@@ -63,6 +63,7 @@ using namespace ATL;
 #include <map>
 #include <algorithm>
 #include <deque>
+#include <functional>
 #pragma warning(pop)
 
 
