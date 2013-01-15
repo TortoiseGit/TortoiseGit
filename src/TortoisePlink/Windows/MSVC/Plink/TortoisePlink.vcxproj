@@ -128,7 +128,9 @@
     <ClCompile Include="..\..\..\raw.c" />
     <ClCompile Include="..\..\..\rlogin.c" />
     <ClCompile Include="..\..\..\settings.c" />
-    <ClCompile Include="..\..\..\ssh.c" />
+    <ClCompile Include="..\..\..\ssh.c">
+      <DebugInformationFormat Condition="'$(Configuration))'=='Debug'">ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
     <ClCompile Include="..\..\..\sshaes.c" />
     <ClCompile Include="..\..\..\ssharcf.c" />
     <ClCompile Include="..\..\..\sshblowf.c" />
