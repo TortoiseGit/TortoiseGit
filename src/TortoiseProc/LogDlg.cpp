@@ -1230,12 +1230,20 @@ public:
 				(*m_cont->m_parDates)[m_place]			= P_Right.GetDate();
 				(*m_cont->m_parFileChanges)[m_place]	= P_Right.GetChanges();
 				(*m_cont->m_parAuthors)[m_place]		= P_Right.GetAuthor();
+				(*m_cont->m_lineInc)[m_place]			= P_Right.GetLineInc();
+				(*m_cont->m_lineDec)[m_place]			= P_Right.GetLineDec();
+				(*m_cont->m_lineNew)[m_place]			= P_Right.GetLineNew();
+				(*m_cont->m_lineDel)[m_place]			= P_Right.GetLineDel();
 			}
 			else
 			{
 				m_Date								= P_Right.GetDate();
 				m_Changes							= P_Right.GetChanges();
 				m_csAuthor							= P_Right.GetAuthor();
+				m_lineInc							= P_Right.GetLineInc();
+				m_lineDec							= P_Right.GetLineDec();
+				m_lineNew							= P_Right.GetLineNew();
+				m_lineDel							= P_Right.GetLineDel();
 			}
 			return *this;
 		}
@@ -1251,6 +1259,10 @@ public:
 
 		DWORD		 GetDate()		const {return IsPointer() ? (*m_cont->m_parDates)[m_place] : m_Date;}
 		DWORD		 GetChanges()	const {return IsPointer() ? (*m_cont->m_parFileChanges)[m_place] : m_Changes;}
+		DWORD		 GetLineInc()	const {return IsPointer() ? (*m_cont->m_lineInc)[m_place] : m_lineInc;}
+		DWORD		 GetLineDec()	const {return IsPointer() ? (*m_cont->m_lineDec)[m_place] : m_lineDec;}
+		DWORD		 GetLineNew()	const {return IsPointer() ? (*m_cont->m_lineNew)[m_place] : m_lineNew;}
+		DWORD		 GetLineDel()	const {return IsPointer() ? (*m_cont->m_lineDel)[m_place] : m_lineDel;}
 		CString		 GetAuthor()	const {return IsPointer() ? (*m_cont->m_parAuthors)[m_place] : m_csAuthor;}
 
 		bool		IsPointer() const {return m_cont != NULL;}
@@ -1261,6 +1273,10 @@ public:
 		//When element
 		DWORD		 m_Date;
 		DWORD		 m_Changes;
+		DWORD		 m_lineInc;
+		DWORD		 m_lineDec;
+		DWORD		 m_lineNew;
+		DWORD		 m_lineDel;
 		CString		 m_csAuthor;
 
 	};
@@ -1316,6 +1332,10 @@ public:
 
 	CDWordArray	*	m_parDates;
 	CDWordArray	*	m_parFileChanges;
+	CDWordArray *	m_lineInc;
+	CDWordArray *	m_lineDec;
+	CDWordArray *	m_lineNew;
+	CDWordArray *	m_lineDel;
 	CStringArray *	m_parAuthors;
 };
 
@@ -1343,6 +1363,11 @@ void CLogDlg::OnBnClickedStatbutton()
 	CStringArray arAuthorsFiltered;
 	CDWordArray arDatesFiltered;
 	CDWordArray arFileChangesFiltered;
+	CDWordArray arIncLines;
+	CDWordArray arNewLines;
+	CDWordArray arDelLines;
+	CDWordArray arDecLines;
+
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.SafeGetAt(i));
@@ -1360,12 +1385,37 @@ void CLogDlg::OnBnClickedStatbutton()
 		arAuthorsFiltered.Add(strAuthor);
 		arDatesFiltered.Add(pLogEntry->GetCommitterDate().GetTime());
 		arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
+
+		int inc, dec, newline,del;
+		inc = dec = newline = del = 0;
+		CTGitPathList &list = pLogEntry->GetFiles(&m_LogList);
+		for (int j=0; j< list.GetCount(); j++)
+		{
+			if (list[j].m_Action & CTGitPath::LOGACTIONS_DELETED)
+				del += _tstol(list[j].m_StatDel);
+			else if(list[j].m_Action & CTGitPath::LOGACTIONS_ADDED)
+				newline += _tstol(list[j].m_StatAdd);
+			else
+			{
+				inc += _tstol(list[j].m_StatAdd);
+				dec += _tstol(list[j].m_StatDel);
+			}
+		}
+		arIncLines.Add(inc);
+		arDecLines.Add(dec);
+		arDelLines.Add(del);
+		arNewLines.Add(newline);
 	}
 
 	CDateSorter W_Sorter;
 	W_Sorter.m_parAuthors		= &arAuthorsFiltered;
 	W_Sorter.m_parDates			= &arDatesFiltered;
 	W_Sorter.m_parFileChanges	= &arFileChangesFiltered;
+	W_Sorter.m_lineNew			= &arNewLines;
+	W_Sorter.m_lineDel			= &arDelLines;
+	W_Sorter.m_lineInc			= &arIncLines;
+	W_Sorter.m_lineDec			= &arDecLines;
+
 	std::sort(W_Sorter.begin(), W_Sorter.end(), CDateSorterLess());
 
 	CStatGraphDlg dlg;
