@@ -1340,9 +1340,9 @@ void CLogDlg::OnBnClickedStatbutton()
 	CThreadSafePtrArray shownlist(NULL);
 	m_LogList.RecalculateShownList(&shownlist);
 	// create arrays which are aware of the current filter
-	CStringArray m_arAuthorsFiltered;
-	CDWordArray m_arDatesFiltered;
-	CDWordArray m_arFileChangesFiltered;
+	CStringArray arAuthorsFiltered;
+	CDWordArray arDatesFiltered;
+	CDWordArray arFileChangesFiltered;
 	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.SafeGetAt(i));
@@ -1357,21 +1357,21 @@ void CLogDlg::OnBnClickedStatbutton()
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
-		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(pLogEntry->GetCommitterDate().GetTime());
-		m_arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
+		arAuthorsFiltered.Add(strAuthor);
+		arDatesFiltered.Add(pLogEntry->GetCommitterDate().GetTime());
+		arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
 	}
 
 	CDateSorter W_Sorter;
-	W_Sorter.m_parAuthors		= &m_arAuthorsFiltered;
-	W_Sorter.m_parDates			= &m_arDatesFiltered;
-	W_Sorter.m_parFileChanges	= &m_arFileChangesFiltered;
+	W_Sorter.m_parAuthors		= &arAuthorsFiltered;
+	W_Sorter.m_parDates			= &arDatesFiltered;
+	W_Sorter.m_parFileChanges	= &arFileChangesFiltered;
 	std::sort(W_Sorter.begin(), W_Sorter.end(), CDateSorterLess());
 
 	CStatGraphDlg dlg;
-	dlg.m_parAuthors = &m_arAuthorsFiltered;
-	dlg.m_parDates = &m_arDatesFiltered;
-	dlg.m_parFileChanges = &m_arFileChangesFiltered;
+	dlg.m_parAuthors = &arAuthorsFiltered;
+	dlg.m_parDates = &arDatesFiltered;
+	dlg.m_parFileChanges = &arFileChangesFiltered;
 	dlg.m_path = m_orgPath;
 	dlg.DoModal();
 	// restore the previous sorting
