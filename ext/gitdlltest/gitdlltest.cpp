@@ -74,7 +74,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	ret=git_get_log_firstcommit(handle);
 	output(ret,"git_get_log_firstcommit");
 	count = 0;
-	while( git_get_log_nextcommit(handle,&commit) == 0)
+	while( git_get_log_nextcommit(handle,&commit,0) == 0)
 	{
 		//printf("%s\r\n",commit.m_Subject);
 		count ++;
