@@ -69,10 +69,9 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_nTotalLinesDec(0)
 , m_nTotalLinesNew(0)
 , m_nTotalLinesDel(0)
+, m_bDiffFetched(FALSE)
+, m_ShowList(NULL)
 {
-	m_parDates = NULL;
-	m_parFileChanges = NULL;
-	m_parAuthors = NULL;
 	m_pToolTip = NULL;
 }
 
@@ -120,6 +119,7 @@ BEGIN_MESSAGE_MAP(CStatGraphDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_GRAPHLINESTACKEDBUTTON, &CStatGraphDlg::OnBnClickedGraphlinestackedbutton)
 	ON_BN_CLICKED(IDC_GRAPHPIEBUTTON, &CStatGraphDlg::OnBnClickedGraphpiebutton)
 	ON_COMMAND(ID_FILE_SAVESTATGRAPHAS, &CStatGraphDlg::OnFileSavestatgraphas)
+	ON_BN_CLICKED(IDC_FETCH_DIFF, &CStatGraphDlg::OnBnClickedFetchDiff)
 END_MESSAGE_MAP()
 
 void CStatGraphDlg::LoadStatQueries (__in UINT curStr, Metrics loadMetric, bool setDef /* = false */)
@@ -150,6 +150,10 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 BOOL CStatGraphDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
+	
+	// gather statistics data, only needs to be updated when the checkbox with
+	// the case sensitivity of author names is changed
+	GatherData();
 
 	m_pToolTip = new CToolTipCtrl;
 	if (m_pToolTip->Create(this))
@@ -212,6 +216,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL, TOP_LEFT);
 	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, TOP_RIGHT);
 
+	AddAnchor(IDC_FETCH_DIFF, TOP_RIGHT);
 
 	AddAnchor(IDC_AVG, TOP_RIGHT);
 	AddAnchor(IDC_MIN, TOP_RIGHT);
@@ -247,10 +252,6 @@ BOOL CStatGraphDlg::OnInitDialog()
 	AddAnchor(IDC_SKIPPERLABEL, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	EnableSaveRestore(_T("StatGraphDlg"));
-
-	// gather statistics data, only needs to be updated when the checkbox with
-	// the case sensitivity of author names is changed
-	GatherData();
 
 	// set the min/max values on the skipper
 	SetSkipper (true);
@@ -313,7 +314,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 void CStatGraphDlg::ShowLabels(BOOL bShow)
 {
-	if ((m_parAuthors==NULL)||(m_parDates==NULL)||(m_parFileChanges==NULL))
+	if ((m_parAuthors.IsEmpty())||(m_parDates.IsEmpty())||(m_parFileChanges.IsEmpty()))
 		return;
 
 	int nCmdShow = bShow ? SW_SHOW : SW_HIDE;
@@ -331,7 +332,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
-
+	GetDlgItem(IDC_FETCH_DIFF)->ShowWindow(nCmdShow && !m_bDiffFetched);
 
 	GetDlgItem(IDC_AVG)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_MIN)->ShowWindow(nCmdShow);
@@ -368,7 +369,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 void CStatGraphDlg::UpdateWeekCount()
 {
 	// Sanity check
-	if ((!m_parDates)||(m_parDates->GetCount()==0))
+	if (m_parDates.IsEmpty())
 		return;
 
 	// Already updated? No need to do it again.
@@ -376,12 +377,12 @@ void CStatGraphDlg::UpdateWeekCount()
 		return;
 
 	// Determine first and last date in dates array
-	__time64_t min_date = (__time64_t)m_parDates->GetAt(0);
+	__time64_t min_date = (__time64_t)m_parDates.GetAt(0);
 	__time64_t max_date = min_date;
-	INT_PTR count = m_parDates->GetCount();
+	INT_PTR count = m_parDates.GetCount();
 	for (INT_PTR i=0; i<count; ++i)
 	{
-		__time64_t d = (__time64_t)m_parDates->GetAt(i);
+		__time64_t d = (__time64_t)m_parDates.GetAt(i);
 		if (d < min_date)		min_date = d;
 		else if (d > max_date)	max_date = d;
 	}
@@ -548,12 +549,212 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 	return iWeekOfYear;
 }
 
+class CDateSorter
+{
+public:
+	class CCommitPointer
+	{
+	public:
+		CCommitPointer():m_cont(NULL){}
+		CCommitPointer(const CCommitPointer& P_Right)
+		: m_cont(NULL)
+		{
+			*this = P_Right;
+		}
+
+		CCommitPointer& operator = (const CCommitPointer& P_Right)
+		{
+			if(IsPointer())
+			{
+				(*m_cont->m_parDates)[m_place]			= P_Right.GetDate();
+				(*m_cont->m_parFileChanges)[m_place]	= P_Right.GetChanges();
+				(*m_cont->m_parAuthors)[m_place]		= P_Right.GetAuthor();
+				(*m_cont->m_lineInc)[m_place]			= P_Right.GetLineInc();
+				(*m_cont->m_lineDec)[m_place]			= P_Right.GetLineDec();
+				(*m_cont->m_lineNew)[m_place]			= P_Right.GetLineNew();
+				(*m_cont->m_lineDel)[m_place]			= P_Right.GetLineDel();
+			}
+			else
+			{
+				m_Date								= P_Right.GetDate();
+				m_Changes							= P_Right.GetChanges();
+				m_csAuthor							= P_Right.GetAuthor();
+				m_lineInc							= P_Right.GetLineInc();
+				m_lineDec							= P_Right.GetLineDec();
+				m_lineNew							= P_Right.GetLineNew();
+				m_lineDel							= P_Right.GetLineDel();
+			}
+			return *this;
+		}
+
+		void Clone(const CCommitPointer& P_Right)
+		{
+			m_cont = P_Right.m_cont;
+			m_place = P_Right.m_place;
+			m_Date = P_Right.m_Date;
+			m_Changes = P_Right.m_Changes;
+			m_csAuthor = P_Right.m_csAuthor;
+		}
+
+		DWORD		 GetDate()		const {return IsPointer() ? (*m_cont->m_parDates)[m_place] : m_Date;}
+		DWORD		 GetChanges()	const {return IsPointer() ? (*m_cont->m_parFileChanges)[m_place] : m_Changes;}
+		DWORD		 GetLineInc()	const {return IsPointer() ? (*m_cont->m_lineInc)[m_place] : m_lineInc;}
+		DWORD		 GetLineDec()	const {return IsPointer() ? (*m_cont->m_lineDec)[m_place] : m_lineDec;}
+		DWORD		 GetLineNew()	const {return IsPointer() ? (*m_cont->m_lineNew)[m_place] : m_lineNew;}
+		DWORD		 GetLineDel()	const {return IsPointer() ? (*m_cont->m_lineDel)[m_place] : m_lineDel;}
+		CString		 GetAuthor()	const {return IsPointer() ? (*m_cont->m_parAuthors)[m_place] : m_csAuthor;}
+
+		bool		IsPointer() const {return m_cont != NULL;}
+		//When pointer
+		CDateSorter* m_cont;
+		int			 m_place;
+
+		//When element
+		DWORD		 m_Date;
+		DWORD		 m_Changes;
+		DWORD		 m_lineInc;
+		DWORD		 m_lineDec;
+		DWORD		 m_lineNew;
+		DWORD		 m_lineDel;
+		CString		 m_csAuthor;
+
+	};
+	class iterator : public std::iterator<std::random_access_iterator_tag, CCommitPointer>
+	{
+	public:
+		CCommitPointer m_ptr;
+
+		iterator(){}
+		iterator(const iterator& P_Right){*this = P_Right;}
+		iterator& operator=(const iterator& P_Right)
+		{
+			m_ptr.Clone(P_Right.m_ptr);
+			return *this;
+		}
+
+		CCommitPointer& operator*(){return m_ptr;}
+		CCommitPointer* operator->(){return &m_ptr;}
+		const CCommitPointer& operator*()const{return m_ptr;}
+		const CCommitPointer* operator->()const{return &m_ptr;}
+
+		iterator& operator+=(size_t P_iOffset){m_ptr.m_place += (int)P_iOffset;return *this;}
+		iterator& operator-=(size_t P_iOffset){m_ptr.m_place -= (int)P_iOffset;return *this;}
+		iterator operator+(size_t P_iOffset)const{iterator it(*this); it += P_iOffset;return it;}
+		iterator operator-(size_t P_iOffset)const{iterator it(*this); it -= P_iOffset;return it;}
+
+		iterator& operator++(){++m_ptr.m_place;return *this;}
+		iterator& operator--(){--m_ptr.m_place;return *this;}
+		iterator operator++(int){iterator it(*this);++*this;return it;}
+		iterator operator--(int){iterator it(*this);--*this;return it;}
+
+		size_t operator-(const iterator& P_itRight)const{return m_ptr.m_place - P_itRight->m_place;}
+
+		bool operator<(const iterator& P_itRight)const{return m_ptr.m_place < P_itRight->m_place;}
+		bool operator!=(const iterator& P_itRight)const{return m_ptr.m_place != P_itRight->m_place;}
+		bool operator==(const iterator& P_itRight)const{return m_ptr.m_place == P_itRight->m_place;}
+		bool operator>(const iterator& P_itRight)const{return m_ptr.m_place > P_itRight->m_place;}
+	};
+	iterator begin()
+	{
+		iterator it;
+		it->m_place = 0;
+		it->m_cont = this;
+		return it;
+	}
+	iterator end()
+	{
+		iterator it;
+		it->m_place = (int)m_parDates->GetCount();
+		it->m_cont = this;
+		return it;
+	}
+
+	CDWordArray	*	m_parDates;
+	CDWordArray	*	m_parFileChanges;
+	CDWordArray *	m_lineInc;
+	CDWordArray *	m_lineDec;
+	CDWordArray *	m_lineNew;
+	CDWordArray *	m_lineDel;
+	CStringArray *	m_parAuthors;
+};
+
+class CDateSorterLess
+{
+public:
+	bool operator () (const CDateSorter::CCommitPointer& P_Left, const CDateSorter::CCommitPointer& P_Right) const
+	{
+		return P_Left.GetDate() > P_Right.GetDate(); //Last date first
+	}
+
+};
+
 void CStatGraphDlg::GatherData()
 {
-	// Sanity check
-	if ((m_parAuthors==NULL)||(m_parDates==NULL)||(m_parFileChanges==NULL))
-		return;
-	m_nTotalCommits = m_parAuthors->GetCount();
+	m_parAuthors.RemoveAll();
+	m_parDates.RemoveAll();
+	m_parFileChanges.RemoveAll();
+	m_lineInc.RemoveAll();
+	m_lineDec.RemoveAll();
+	m_lineDel.RemoveAll();
+	m_lineNew.RemoveAll();
+
+	// create arrays which are aware of the current filter
+	for (INT_PTR i=0; i<m_ShowList.GetCount(); ++i)
+	{
+		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
+		int inc, dec, newline,del, files;
+		inc = dec = newline = del = files= 0;
+
+		// do not take working dir changes into statistics
+		if (pLogEntry->m_CommitHash.IsEmpty()) {
+			continue;
+		}
+
+		CString strAuthor = pLogEntry->GetAuthorName();
+		if ( strAuthor.IsEmpty() )
+		{
+			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
+		}
+		m_parAuthors.Add(strAuthor);
+		m_parDates.Add(pLogEntry->GetCommitterDate().GetTime());
+
+		if (this->m_bDiffFetched)
+		{
+			CTGitPathList &list = pLogEntry->GetFiles(NULL);
+			files = list.GetCount();
+
+			for (int j=0; j< files; j++)
+			{
+				if (list[j].m_Action & CTGitPath::LOGACTIONS_DELETED)
+					del += _tstol(list[j].m_StatDel);
+				else if(list[j].m_Action & CTGitPath::LOGACTIONS_ADDED)
+					newline += _tstol(list[j].m_StatAdd);
+				else
+				{
+					inc += _tstol(list[j].m_StatAdd);
+					dec += _tstol(list[j].m_StatDel);
+				}
+			}
+		}
+		m_parFileChanges.Add(files);
+		m_lineInc.Add(inc);
+		m_lineDec.Add(dec);
+		m_lineDel.Add(del);
+		m_lineNew.Add(newline);
+	}
+
+	CDateSorter W_Sorter;
+	W_Sorter.m_parAuthors		= &m_parAuthors;
+	W_Sorter.m_parDates			= &m_parDates;
+	W_Sorter.m_parFileChanges	= &m_parFileChanges;
+	W_Sorter.m_lineNew			= &m_lineNew;
+	W_Sorter.m_lineDel			= &m_lineDel;
+	W_Sorter.m_lineInc			= &m_lineInc;
+	W_Sorter.m_lineDec			= &m_lineDec;
+
+	std::sort(W_Sorter.begin(), W_Sorter.end(), CDateSorterLess());
+
+	m_nTotalCommits = m_parAuthors.GetCount();
 	m_nTotalFileChanges = 0;
 
 	// Update m_nWeeks and m_minDate
@@ -566,7 +767,7 @@ void CStatGraphDlg::GatherData()
 	m_PercentageOfAuthorship.clear();
 
 	int interval = 0;
-	__time64_t d = (__time64_t)m_parDates->GetAt(0);
+	__time64_t d = (__time64_t)m_parDates.GetAt(0);
 	int nLastUnit = GetUnit(d);
 	double AllContributionAuthor = 0;
 
@@ -576,13 +777,13 @@ void CStatGraphDlg::GatherData()
 	for (LONG i=0; i<m_nTotalCommits; ++i)
 	{
 		// Find the interval number
-		__time64_t commitDate = (__time64_t)m_parDates->GetAt(i);
+		__time64_t commitDate = (__time64_t)m_parDates.GetAt(i);
 		int u = GetUnit(commitDate);
 		if (nLastUnit != u)
 			interval++;
 		nLastUnit = u;
 		// Find the authors name
-		CString sAuth = m_parAuthors->GetAt(i);
+		CString sAuth = m_parAuthors.GetAt(i);
 		if (!m_bAuthorsCaseSensitive)
 			sAuth = sAuth.MakeLower();
 		tstring author = tstring(sAuth);
@@ -590,22 +791,22 @@ void CStatGraphDlg::GatherData()
 		m_commitsPerAuthor[author]++;
 		// Increase the commit count for this author in this week
 		m_commitsPerUnitAndAuthor[interval][author]++;
-		CTime t = m_parDates->GetAt(i);
+		CTime t = m_parDates.GetAt(i);
 		m_unitNames[interval] = GetUnitLabel(nLastUnit, t);
 		// Increase the file change count for this author in this week
-		int fileChanges = m_parFileChanges->GetAt(i);
+		int fileChanges = m_parFileChanges.GetAt(i);
 		m_filechangesPerUnitAndAuthor[interval][author] += fileChanges;
 		m_nTotalFileChanges += fileChanges;
 
 		//calculate Contribution Author
-		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * fileChanges;
+		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1);
 		AllContributionAuthor += contributionAuthor;
 		m_PercentageOfAuthorship[author] += contributionAuthor;
 
-		m_nTotalLinesInc += m_lineInc->GetAt(i);
-		m_nTotalLinesDec += m_lineDec->GetAt(i);
-		m_nTotalLinesNew += m_lineNew->GetAt(i);
-		m_nTotalLinesDel += m_lineDel->GetAt(i);
+		m_nTotalLinesInc += m_lineInc.GetAt(i);
+		m_nTotalLinesDec += m_lineDec.GetAt(i);
+		m_nTotalLinesNew += m_lineNew.GetAt(i);
+		m_nTotalLinesDel += m_lineDel.GetAt(i);
 	}
 
 	// Find first and last interval number.
@@ -671,7 +872,7 @@ void CStatGraphDlg::FilterSkippedAuthors(std::list<tstring>& included_authors,
 
 bool  CStatGraphDlg::PreViewStat(bool fShowLabels)
 {
-	if ((m_parAuthors==NULL)||(m_parDates==NULL)||(m_parFileChanges==NULL))
+	if ((m_parAuthors.IsEmpty())||(m_parDates.IsEmpty())||(m_parFileChanges.IsEmpty()))
 		return false;
 	ShowLabels(fShowLabels);
 
@@ -986,9 +1187,10 @@ void CStatGraphDlg::ShowStats()
 	number.Format(_T("%ld"), m_nTotalCommits);
 	SetDlgItemText(IDC_NUMCOMMITSVALUE, number);
 	number.Format(_T("%ld"), m_nTotalFileChanges);
-	SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
+	if (m_bDiffFetched)
+		SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
 
-	number.Format(_T("%ld"), m_parAuthors->GetCount() / nWeeks);
+	number.Format(_T("%ld"), m_parAuthors.GetCount() / nWeeks);
 	SetDlgItemText(IDC_COMMITSEACHWEEKAVG, number);
 	number.Format(_T("%ld"), nCommitsMax);
 	SetDlgItemText(IDC_COMMITSEACHWEEKMAX, number);
@@ -1003,10 +1205,12 @@ void CStatGraphDlg::ShowStats()
 	//SetDlgItemText(IDC_FILECHANGESEACHWEEKMIN, number);
 
 	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec, m_nTotalLinesInc, m_nTotalLinesDec);
-	SetDlgItemText(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE, number);
+	if (m_bDiffFetched)
+		SetDlgItemText(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE, number);
 	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec + m_nTotalLinesNew + m_nTotalLinesDel,
 												m_nTotalLinesInc + m_nTotalLinesNew, m_nTotalLinesDec + m_nTotalLinesDel);
-	SetDlgItemText(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, number);
+	if (m_bDiffFetched)
+		SetDlgItemText(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, number);
 
 	if (nAuthors == 0)
 	{
@@ -1617,3 +1821,8 @@ void CStatGraphDlg::LoadListOfAuthors (MAP &map, bool reloadSkiper/*= false*/,  
 	SetSkipper(reloadSkiper);
 }
 
+
+void CStatGraphDlg::OnBnClickedFetchDiff()
+{
+	// TODO: Add your control notification handler code here
+}

@@ -24,6 +24,7 @@
 #include "UnicodeUtils.h"
 
 #include "tstring.h"
+#include "GitLogListBase.h"
 
 #include <map>
 #include <list>
@@ -65,15 +66,17 @@ public:
 
 	enum { IDD = IDD_STATGRAPH };
 
-	// Data	passed from	the	caller of the dialog.
-	CDWordArray	*	m_parDates;
-	CDWordArray	*	m_parFileChanges;
-	CDWordArray	*	m_lineInc;
-	CDWordArray *	m_lineDec;
-	CDWordArray	*	m_lineNew;
-	CDWordArray *	m_lineDel;
+	CThreadSafePtrArray m_ShowList;
 
-	CStringArray *	m_parAuthors;
+	// Data	passed from	the	caller of the dialog.
+	CDWordArray		m_parDates;
+	CDWordArray		m_parFileChanges;
+	CDWordArray		m_lineInc;
+	CDWordArray		m_lineDec;
+	CDWordArray		m_lineNew;
+	CDWordArray		m_lineDel;
+
+	CStringArray	m_parAuthors;
 	CTGitPath		m_path;
 
 protected:
@@ -216,6 +219,7 @@ protected:
 	CSliderCtrl		m_Skipper;
 	BOOL			m_bAuthorsCaseSensitive;
 	BOOL			m_bSortByCommitCount;
+	BOOL			m_bDiffFetched;
 
 	CMFCButton		m_btnGraphBar;
 	CMFCButton		m_btnGraphBarStacked;
@@ -267,4 +271,6 @@ protected:
 	std::list<tstring>	m_authorNames;
 	///	unit names by week/month/quarter
 	std::map<LONG, tstring>	m_unitNames;
+public:
+	afx_msg void OnBnClickedFetchDiff();
 };

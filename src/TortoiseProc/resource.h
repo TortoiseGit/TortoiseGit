@@ -1663,6 +1663,7 @@
 #define IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE 32851
 #define IDC_TOTAL_LINE_WITH_NEW_DEL     32852
 #define IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE 32853
+#define IDC_FETCH_DIFF                  32854
 
 // Next default values for new objects
 // 
@@ -1670,7 +1671,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1737
+#define _APS_NEXT_CONTROL_VALUE         50000
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
