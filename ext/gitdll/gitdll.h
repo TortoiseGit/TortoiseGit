@@ -115,6 +115,7 @@ GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
  *	Get Next Commit
  *  @param handle	[IN]handle  Get handle from git_open_log
  *	@param commit	[OUT]commit	Caller need prepare buffer for this call
+ *	@param follow	[IN]follow	Follow history beyond renames (see --follow)
  *  @return			0	success
  *	@remark			Caller need call git_free_commit to free internal buffer after use it;
  */
