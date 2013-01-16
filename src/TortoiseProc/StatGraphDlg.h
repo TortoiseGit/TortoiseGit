@@ -108,6 +108,8 @@ protected:
 			PercentageOfAuthorship,
 			CommitsByAuthor,
 			CommitsByDate,
+			LinesWByDate,
+			LinesWOByDate,
 		GraphicStatEnd,
 	};
 
@@ -156,7 +158,7 @@ protected:
 	/// Shows the graph with commit counts per author.
 	void ShowCommitsByAuthor();
 	/// Shows the graph with commit counts per author and date.
-	void ShowCommitsByDate();
+	void ShowByDate(int StringY, int title, IntervalDataMap &data);
 	/// Shows the initial statistics page.
 	void ShowStats();
 
@@ -250,6 +252,10 @@ protected:
 	LONG					m_nTotalFileChanges;
 	///	Holds the number of	commits	per	unit and author.
 	IntervalDataMap			m_commitsPerUnitAndAuthor;
+
+	IntervalDataMap			m_LinesWPerUnitAndAuthor;
+	IntervalDataMap			m_LinesWOPerUnitAndAuthor;
+
 	///	Holds the number of	file changes per unit and author.
 	IntervalDataMap			m_filechangesPerUnitAndAuthor;
 	///	First interval number (key)	in the mappings.

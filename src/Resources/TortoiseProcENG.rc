@@ -3652,6 +3652,10 @@ BEGIN
     IDS_PROC_MOVERENAME     "Move and rename"
     IDS_PROC_DIFF           "Start Diff - %s"
     IDS_PROGS_TITLE_DIFF    "Fetch Diff Stat information"
+    IDS_STATGRAPH_LINES_BYDATE_W    "Change Lines with new/del by Date"
+    IDS_STATGRAPH_LINES_BYDATE_W_Y  "Lines with new/del file"
+    IDS_STATGRAPH_LINES_BYDATE_WO   "Change Lines without new/del by Date"
+    IDS_STATGRAPH_LINES_BYDATE_WO_Y "Lines without new/del file"
 END
 
 STRINGTABLE

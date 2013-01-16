@@ -1666,6 +1666,10 @@
 #define IDC_FETCH_DIFF                  32854
 #define IDS_PROC_DIFF                   32855
 #define IDS_PROGS_TITLE_DIFF            32856
+#define IDS_STATGRAPH_LINES_BYDATE_W    32857
+#define IDS_STATGRAPH_LINES_BYDATE_WO   32858
+#define IDS_STATGRAPH_LINES_BYDATE_W_Y  32859
+#define IDS_STATGRAPH_LINES_BYDATE_WO_Y 32860
 
 // Next default values for new objects
 // 

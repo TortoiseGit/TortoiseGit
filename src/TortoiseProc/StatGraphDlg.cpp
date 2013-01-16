@@ -177,6 +177,8 @@ BOOL CStatGraphDlg::OnInitDialog()
 	LoadStatQueries(IDS_STATGRAPH_COMMITSBYDATE, CommitsByDate);
 	LoadStatQueries(IDS_STATGRAPH_COMMITSBYAUTHOR, CommitsByAuthor);
 	LoadStatQueries(IDS_STATGRAPH_PERCENTAGE_OF_AUTHORSHIP, PercentageOfAuthorship);
+	LoadStatQueries(IDS_STATGRAPH_LINES_BYDATE_W, LinesWByDate);
+	LoadStatQueries(IDS_STATGRAPH_LINES_BYDATE_WO, LinesWOByDate);
 
 	// set the dialog title to "Statistics - path/to/whatever/we/show/the/statistics/for"
 	CString sTitle;
@@ -790,6 +792,8 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 	m_filechangesPerUnitAndAuthor.clear();
 	m_commitsPerAuthor.clear();
 	m_PercentageOfAuthorship.clear();
+	m_LinesWPerUnitAndAuthor.clear();
+	m_LinesWOPerUnitAndAuthor.clear();
 
 	int interval = 0;
 	__time64_t d = (__time64_t)m_parDates.GetAt(0);
@@ -816,6 +820,10 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_commitsPerAuthor[author]++;
 		// Increase the commit count for this author in this week
 		m_commitsPerUnitAndAuthor[interval][author]++;
+
+		m_LinesWPerUnitAndAuthor[interval][author] += m_lineInc.GetAt(i) + m_lineDec.GetAt(i) + m_lineNew.GetAt(i) + + m_lineDel.GetAt(i);
+		m_LinesWOPerUnitAndAuthor[interval][author] += m_lineInc.GetAt(i) + m_lineDec.GetAt(i);
+
 		CTime t = m_parDates.GetAt(i);
 		m_unitNames[interval] = GetUnitLabel(nLastUnit, t);
 		// Increase the file change count for this author in this week
@@ -824,7 +832,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_nTotalFileChanges += fileChanges;
 
 		//calculate Contribution Author
-		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1);
+		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * (fileChanges ? fileChanges : 1);
 		AllContributionAuthor += contributionAuthor;
 		m_PercentageOfAuthorship[author] += contributionAuthor;
 
@@ -1014,7 +1022,7 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 	m_graph.Invalidate();
 }
 
-void CStatGraphDlg::ShowCommitsByDate()
+void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 {
 	if(!PreViewStat(false)) return;
 
@@ -1025,9 +1033,9 @@ void CStatGraphDlg::ShowCommitsByDate()
 	CString temp;
 	UpdateData();
 	m_graph.SetGraphType(m_GraphType, m_bStacked);
-	temp.LoadString(IDS_STATGRAPH_COMMITSBYDATEY);
+	temp.LoadString(stringx);
 	m_graph.SetYAxisLabel(temp);
-	temp.LoadString(IDS_STATGRAPH_COMMITSBYDATE);
+	temp.LoadString(title);
 	m_graph.SetGraphTitle(temp);
 
 	m_graph.SetXAxisLabel(GetUnitString());
@@ -1065,8 +1073,8 @@ void CStatGraphDlg::ShowCommitsByDate()
 			for (std::list<tstring>::iterator it = authors.begin(); it != authors.end(); ++it)
 			{
 				// Do we have some data for the current author in the current interval?
-				AuthorDataMap::const_iterator data_it = m_commitsPerUnitAndAuthor[i].find(*it);
-				if (data_it == m_commitsPerUnitAndAuthor[i].end())
+				AuthorDataMap::const_iterator data_it = data[i].find(*it);
+				if (data_it == data[i].end())
 					continue;
 				commitCount[*it] += data_it->second;
 			}
@@ -1077,8 +1085,8 @@ void CStatGraphDlg::ShowCommitsByDate()
 			for (std::list<tstring>::iterator it = others.begin(); it != others.end(); ++it)
 			{
 				// Do we have some data for the author in the current interval?
-				AuthorDataMap::const_iterator data_it = m_commitsPerUnitAndAuthor[i].find(*it);
-				if (data_it == m_commitsPerUnitAndAuthor[i].end())
+				AuthorDataMap::const_iterator data_it = data[i].find(*it);
+				if (data_it == data[i].end())
 					continue;
 				commitCount[othersName] += data_it->second;
 			}
@@ -1791,13 +1799,24 @@ void CStatGraphDlg::ShowSelectStat(Metrics SelectedMetric, bool reloadSkiper /* 
 			break;
 		case CommitsByDate:
 			LoadListOfAuthors(m_commitsPerAuthor, reloadSkiper);
-			ShowCommitsByDate();
+			ShowByDate(IDS_STATGRAPH_COMMITSBYDATEY, IDS_STATGRAPH_COMMITSBYDATE, m_commitsPerUnitAndAuthor);
+			break;
+		case LinesWByDate:
+			OnBnClickedFetchDiff();
+			LoadListOfAuthors(m_commitsPerAuthor, reloadSkiper);
+			ShowByDate(IDS_STATGRAPH_LINES_BYDATE_W_Y, IDS_STATGRAPH_LINES_BYDATE_W, m_LinesWPerUnitAndAuthor);
+			break;
+		case LinesWOByDate:
+			OnBnClickedFetchDiff();
+			LoadListOfAuthors(m_commitsPerAuthor, reloadSkiper);
+			ShowByDate(IDS_STATGRAPH_LINES_BYDATE_WO_Y, IDS_STATGRAPH_LINES_BYDATE_WO, m_LinesWOPerUnitAndAuthor);
 			break;
 		case CommitsByAuthor:
 			LoadListOfAuthors(m_commitsPerAuthor, reloadSkiper);
 			ShowCommitsByAuthor();
 			break;
 		case PercentageOfAuthorship:
+			OnBnClickedFetchDiff();
 			LoadListOfAuthors(m_PercentageOfAuthorship, reloadSkiper, true);
 			ShowPercentageOfAuthorship();
 			break;
