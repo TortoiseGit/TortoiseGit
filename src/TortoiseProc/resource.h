@@ -1664,6 +1664,8 @@
 #define IDC_TOTAL_LINE_WITH_NEW_DEL     32852
 #define IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE 32853
 #define IDC_FETCH_DIFF                  32854
+#define IDS_PROC_DIFF                   32855
+#define IDS_PROGS_TITLE_DIFF            32856
 
 // Next default values for new objects
 // 

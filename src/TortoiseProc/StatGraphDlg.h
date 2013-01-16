@@ -148,7 +148,7 @@ protected:
 	/// Returns the week-of-the-year for the given time.
 	int GetCalendarWeek(const CTime& time);
 	/// Parses the data given to the dialog and generates mappings with statistical data.
-	void GatherData();
+	int GatherData(BOOL fetchdiff = FALSE);
 	/// Populates the lists passed as arguments based on the commit threshold set with the skipper.
 	void FilterSkippedAuthors(std::list<tstring>& included_authors, std::list<tstring>& skipped_authors);
 	/// Shows the graph Percentage Of Authorship

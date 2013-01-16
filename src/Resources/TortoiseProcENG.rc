@@ -3650,6 +3650,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROC_MOVERENAME     "Move and rename"
+    IDS_PROC_DIFF           "Start Diff - %s"
+    IDS_PROGS_TITLE_DIFF    "Fetch Diff Stat information"
 END
 
 STRINGTABLE

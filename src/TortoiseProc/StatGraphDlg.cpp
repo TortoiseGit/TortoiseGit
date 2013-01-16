@@ -27,6 +27,7 @@
 #include "MessageBox.h"
 #include "registry.h"
 #include "FormatMessageWrapper.h"
+#include "SysProgressDlg.h"
 
 #include <iterator>
 #include <cmath>
@@ -688,7 +689,7 @@ public:
 
 };
 
-void CStatGraphDlg::GatherData()
+int CStatGraphDlg::GatherData(BOOL fetchdiff)
 {
 	m_parAuthors.RemoveAll();
 	m_parDates.RemoveAll();
@@ -698,7 +699,17 @@ void CStatGraphDlg::GatherData()
 	m_lineDel.RemoveAll();
 	m_lineNew.RemoveAll();
 
+	CSysProgressDlg progress;
+	if(fetchdiff)
+	{
+		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_DIFF)));
+		progress.SetAnimation(IDR_MOVEANI);
+		progress.SetTime(true);
+		progress.ShowModeless(this);
+	}
+
 	// create arrays which are aware of the current filter
+	ULONGLONG  starttime = GetTickCount64();
 	for (INT_PTR i=0; i<m_ShowList.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
@@ -718,7 +729,7 @@ void CStatGraphDlg::GatherData()
 		m_parAuthors.Add(strAuthor);
 		m_parDates.Add(pLogEntry->GetCommitterDate().GetTime());
 
-		if (this->m_bDiffFetched)
+		if (fetchdiff)
 		{
 			CTGitPathList &list = pLogEntry->GetFiles(NULL);
 			files = list.GetCount();
@@ -734,6 +745,11 @@ void CStatGraphDlg::GatherData()
 					inc += _tstol(list[j].m_StatAdd);
 					dec += _tstol(list[j].m_StatDel);
 				}
+
+				if (progress.HasUserCancelled())
+				{
+					return -1;
+				}
 			}
 		}
 		m_parFileChanges.Add(files);
@@ -741,6 +757,15 @@ void CStatGraphDlg::GatherData()
 		m_lineDec.Add(dec);
 		m_lineDel.Add(del);
 		m_lineNew.Add(newline);
+
+		if (progress.IsVisible() && (GetTickCount64() - starttime > 100))
+		{
+			progress.FormatNonPathLine(1, IDS_PROC_DIFF, pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
+			progress.FormatNonPathLine(2, _T("%s"), pLogEntry->GetSubject());
+			progress.SetProgress64(i, m_ShowList.GetCount());
+			starttime = GetTickCount64();
+		}
+		
 	}
 
 	CDateSorter W_Sorter;
@@ -837,6 +862,8 @@ void CStatGraphDlg::GatherData()
 
 	// All done, now the statistics pages can retrieve the data and
 	// extract the information to be shown.
+
+	return 0;
 
 }
 
@@ -1825,4 +1852,12 @@ void CStatGraphDlg::LoadListOfAuthors (MAP &map, bool reloadSkiper/*= false*/,  
 void CStatGraphDlg::OnBnClickedFetchDiff()
 {
 	// TODO: Add your control notification handler code here
+	if (m_bDiffFetched)
+		return;
+	if (GatherData(TRUE))
+		return;
+	this->m_bDiffFetched = TRUE;
+	GetDlgItem(IDC_FETCH_DIFF)->ShowWindow(!m_bDiffFetched);
+
+	ShowStats();
 }
