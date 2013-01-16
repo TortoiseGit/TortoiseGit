@@ -21,7 +21,7 @@
 //
 
 #include "stdafx.h"
-#include "gitstatus.h"
+#include "GitStatus.h"
 #include "gitindex.h"
 #include "gitdll.h"
 #include "TGitPath.h"
