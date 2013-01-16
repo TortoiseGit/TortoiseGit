@@ -3170,7 +3170,10 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		}
 		else
 		{
-			StartDiff(index);
+			if( (!m_Rev1.IsEmpty()) || (!m_Rev1.IsEmpty())) // m_Rev1 twice???
+				StartDiffTwo(index);
+			else
+				StartDiff(index);
 		}
 	}
 }
