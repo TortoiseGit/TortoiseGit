@@ -325,7 +325,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_NUMAUTHORVALUE)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMCOMMITS)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMCOMMITSVALUE)->ShowWindow(nCmdShow);
-	//GetDlgItem(IDC_NUMFILECHANGES)->ShowWindow(nCmdShow);
+	GetDlgItem(IDC_NUMFILECHANGES)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMFILECHANGESVALUE)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
@@ -986,7 +986,7 @@ void CStatGraphDlg::ShowStats()
 	number.Format(_T("%ld"), m_nTotalCommits);
 	SetDlgItemText(IDC_NUMCOMMITSVALUE, number);
 	number.Format(_T("%ld"), m_nTotalFileChanges);
-	//SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
+	SetDlgItemText(IDC_NUMFILECHANGESVALUE, number);
 
 	number.Format(_T("%ld"), m_parAuthors->GetCount() / nWeeks);
 	SetDlgItemText(IDC_COMMITSEACHWEEKAVG, number);
