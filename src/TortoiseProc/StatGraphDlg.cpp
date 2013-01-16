@@ -65,6 +65,10 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_firstInterval(0)
 , m_lastInterval(0)
 , m_nTotalCommits(0)
+, m_nTotalLinesInc(0)
+, m_nTotalLinesDec(0)
+, m_nTotalLinesNew(0)
+, m_nTotalLinesDel(0)
 {
 	m_parDates = NULL;
 	m_parFileChanges = NULL;
@@ -203,6 +207,12 @@ BOOL CStatGraphDlg::OnInitDialog()
 	AddAnchor(IDC_NUMFILECHANGES, TOP_LEFT);
 	AddAnchor(IDC_NUMFILECHANGESVALUE, TOP_RIGHT);
 
+	AddAnchor(IDC_TOTAL_LINE_WITHOUT_NEW_DEL, TOP_LEFT);
+	AddAnchor(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE, TOP_RIGHT);
+	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL, TOP_LEFT);
+	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, TOP_RIGHT);
+
+
 	AddAnchor(IDC_AVG, TOP_RIGHT);
 	AddAnchor(IDC_MIN, TOP_RIGHT);
 	AddAnchor(IDC_MAX, TOP_RIGHT);
@@ -317,6 +327,11 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_NUMCOMMITSVALUE)->ShowWindow(nCmdShow);
 	//GetDlgItem(IDC_NUMFILECHANGES)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_NUMFILECHANGESVALUE)->ShowWindow(nCmdShow);
+	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL)->ShowWindow(nCmdShow);
+	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
+	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL)->ShowWindow(nCmdShow);
+	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
+
 
 	GetDlgItem(IDC_AVG)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_MIN)->ShowWindow(nCmdShow);
@@ -555,6 +570,8 @@ void CStatGraphDlg::GatherData()
 	int nLastUnit = GetUnit(d);
 	double AllContributionAuthor = 0;
 
+	m_nTotalLinesInc = m_nTotalLinesDec = m_nTotalLinesNew = m_nTotalLinesDel =0;
+
 	// Now loop over all weeks and gather the info
 	for (LONG i=0; i<m_nTotalCommits; ++i)
 	{
@@ -584,6 +601,11 @@ void CStatGraphDlg::GatherData()
 		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * fileChanges;
 		AllContributionAuthor += contributionAuthor;
 		m_PercentageOfAuthorship[author] += contributionAuthor;
+
+		m_nTotalLinesInc += m_lineInc->GetAt(i);
+		m_nTotalLinesDec += m_lineDec->GetAt(i);
+		m_nTotalLinesNew += m_lineNew->GetAt(i);
+		m_nTotalLinesDel += m_lineDel->GetAt(i);
 	}
 
 	// Find first and last interval number.
@@ -979,6 +1001,12 @@ void CStatGraphDlg::ShowStats()
 	//SetDlgItemText(IDC_FILECHANGESEACHWEEKMAX, number);
 	number.Format(_T("%ld"), nFileChangesMin);
 	//SetDlgItemText(IDC_FILECHANGESEACHWEEKMIN, number);
+
+	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec, m_nTotalLinesInc, m_nTotalLinesDec);
+	SetDlgItemText(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE, number);
+	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec + m_nTotalLinesNew + m_nTotalLinesDel,
+												m_nTotalLinesInc + m_nTotalLinesNew, m_nTotalLinesDec + m_nTotalLinesDel);
+	SetDlgItemText(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, number);
 
 	if (nAuthors == 0)
 	{

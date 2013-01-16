@@ -1422,6 +1422,11 @@ void CLogDlg::OnBnClickedStatbutton()
 	dlg.m_parAuthors = &arAuthorsFiltered;
 	dlg.m_parDates = &arDatesFiltered;
 	dlg.m_parFileChanges = &arFileChangesFiltered;
+	dlg.m_lineInc = &arIncLines;
+	dlg.m_lineDec = &arDecLines;
+	dlg.m_lineNew = &arNewLines;
+	dlg.m_lineDel = &arDelLines;
+
 	dlg.m_path = m_orgPath;
 	dlg.DoModal();
 	// restore the previous sorting

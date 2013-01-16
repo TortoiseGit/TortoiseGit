@@ -68,6 +68,11 @@ public:
 	// Data	passed from	the	caller of the dialog.
 	CDWordArray	*	m_parDates;
 	CDWordArray	*	m_parFileChanges;
+	CDWordArray	*	m_lineInc;
+	CDWordArray *	m_lineDec;
+	CDWordArray	*	m_lineNew;
+	CDWordArray *	m_lineDel;
+
 	CStringArray *	m_parAuthors;
 	CTGitPath		m_path;
 
@@ -251,6 +256,11 @@ protected:
 	AuthorDataMap			m_commitsPerAuthor;
 	///	Mapping	of Percentage Of Authorship	per	author
 	AuthorshipDataMap		   m_PercentageOfAuthorship;
+
+	LONG					m_nTotalLinesInc;
+	LONG					m_nTotalLinesDec;
+	LONG					m_nTotalLinesNew;
+	LONG					m_nTotalLinesDel;
 
 	///	The	list of	author names sorted	based on commit	count
 	///	(author	with most commits is first in list).
