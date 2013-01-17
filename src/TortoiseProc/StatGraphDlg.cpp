@@ -120,7 +120,7 @@ BEGIN_MESSAGE_MAP(CStatGraphDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_GRAPHLINESTACKEDBUTTON, &CStatGraphDlg::OnBnClickedGraphlinestackedbutton)
 	ON_BN_CLICKED(IDC_GRAPHPIEBUTTON, &CStatGraphDlg::OnBnClickedGraphpiebutton)
 	ON_COMMAND(ID_FILE_SAVESTATGRAPHAS, &CStatGraphDlg::OnFileSavestatgraphas)
-	ON_BN_CLICKED(IDC_FETCH_DIFF, &CStatGraphDlg::OnBnClickedFetchDiff)
+	ON_BN_CLICKED(IDC_CALC_DIFF, &CStatGraphDlg::OnBnClickedFetchDiff)
 END_MESSAGE_MAP()
 
 void CStatGraphDlg::LoadStatQueries (__in UINT curStr, Metrics loadMetric, bool setDef /* = false */)
@@ -219,7 +219,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL, TOP_LEFT);
 	AddAnchor(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, TOP_RIGHT);
 
-	AddAnchor(IDC_FETCH_DIFF, TOP_RIGHT);
+	AddAnchor(IDC_CALC_DIFF, TOP_RIGHT);
 
 	AddAnchor(IDC_AVG, TOP_RIGHT);
 	AddAnchor(IDC_MIN, TOP_RIGHT);
@@ -335,7 +335,7 @@ void CStatGraphDlg::ShowLabels(BOOL bShow)
 	GetDlgItem(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE)->ShowWindow(nCmdShow);
-	GetDlgItem(IDC_FETCH_DIFF)->ShowWindow(nCmdShow && !m_bDiffFetched);
+	GetDlgItem(IDC_CALC_DIFF)->ShowWindow(nCmdShow && !m_bDiffFetched);
 
 	GetDlgItem(IDC_AVG)->ShowWindow(nCmdShow);
 	GetDlgItem(IDC_MIN)->ShowWindow(nCmdShow);
@@ -1876,7 +1876,7 @@ void CStatGraphDlg::OnBnClickedFetchDiff()
 	if (GatherData(TRUE))
 		return;
 	this->m_bDiffFetched = TRUE;
-	GetDlgItem(IDC_FETCH_DIFF)->ShowWindow(!m_bDiffFetched);
+	GetDlgItem(IDC_CALC_DIFF)->ShowWindow(!m_bDiffFetched);
 
 	ShowStats();
 }
