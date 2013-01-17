@@ -1912,7 +1912,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString head;
 					int headindex;
 					headindex = this->GetHeadIndex();
-					if(headindex>=0)
+					if(headindex>=0 && LastSelect >= headindex)
 					{
 						head.Format(_T("HEAD~%d"),LastSelect-headindex);
 						CGitHash hash;
