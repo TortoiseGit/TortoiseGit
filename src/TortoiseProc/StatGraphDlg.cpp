@@ -310,8 +310,6 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 	m_langOrder = (l > 0) ? l - '0' : -1;
 
-	RedrawGraph();
-
 	return TRUE;
 }
 
