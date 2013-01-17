@@ -711,7 +711,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 	}
 
 	// create arrays which are aware of the current filter
-	ULONGLONG  starttime = GetTickCount64();
+	DWORD  starttime = GetTickCount();
 	for (INT_PTR i=0; i<m_ShowList.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
@@ -760,12 +760,12 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_lineDel.Add(del);
 		m_lineNew.Add(newline);
 
-		if (progress.IsVisible() && (GetTickCount64() - starttime > 100))
+		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
 		{
 			progress.FormatNonPathLine(1, IDS_PROC_DIFF, pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
 			progress.FormatNonPathLine(2, _T("%s"), pLogEntry->GetSubject());
 			progress.SetProgress64(i, m_ShowList.GetCount());
-			starttime = GetTickCount64();
+			starttime = GetTickCount();
 		}
 		
 	}
