@@ -731,7 +731,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_parAuthors.Add(strAuthor);
 		m_parDates.Add(pLogEntry->GetCommitterDate().GetTime());
 
-		if (fetchdiff)
+		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
 			CTGitPathList &list = pLogEntry->GetFiles(NULL);
 			files = list.GetCount();
