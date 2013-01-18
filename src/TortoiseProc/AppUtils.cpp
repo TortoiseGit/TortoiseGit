@@ -947,33 +947,12 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 {
 
 	CString tempfile=GetTempFile();
-	CString cmd;
-	if(rev2 == GitRev::GetWorkingCopy())
+	if(g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge))
 	{
-		cmd.Format(_T("git.exe diff --stat -p %s "), rev1);
+		TRACE("Fail get unified diff\n");
+		return false;
 	}
-	else if (rev1 == GitRev::GetWorkingCopy())
-	{
-		cmd.Format(_T("git.exe diff -R --stat -p %s "), rev2);
-	}
-	else
-	{
-		CString merge;
-		if(bMerge)
-				merge = _T("-c");
-
-		cmd.Format(_T("git.exe diff-tree -r -p %s --stat %s %s"),merge, rev1,rev2);
-	}
-
-	if( !url1.IsEmpty() )
-	{
-		cmd += _T(" -- \"");
-		cmd += url1.GetGitPathString();
-		cmd += _T("\" ");
-	}
-	g_Git.RunLogFile(cmd,tempfile);
 	CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);
-
 
 #if 0
 	CString sCmd;

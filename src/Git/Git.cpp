@@ -2242,3 +2242,203 @@ bool CGit::UsingLibGit2(int cmd)
 		return ((1 << cmd) & m_IsUseLibGit2_mask) ? true : false;
 	return false;
 }
+
+CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge)
+{
+	CString cmd;
+	if(rev2 == GitRev::GetWorkingCopy())
+	{
+		cmd.Format(_T("git.exe diff --stat -p %s "), rev1);
+	}
+	else if (rev1 == GitRev::GetWorkingCopy())
+	{
+		cmd.Format(_T("git.exe diff -R --stat -p %s "), rev2);
+	}
+	else
+	{
+		CString merge;
+		if(bMerge)
+				merge = _T("-c");
+
+		cmd.Format(_T("git.exe diff-tree -r -p %s --stat %s %s"),merge, rev1,rev2);
+	}
+
+	if( !path.IsEmpty() )
+	{
+		cmd += _T(" -- \"");
+		cmd += path.GetGitPathString();
+		cmd += _T("\" ");
+	}
+
+	return cmd;
+}
+
+static int UnifiedDiffToFile(const git_diff_delta *delta,
+							 const git_diff_range *range,
+							 char line_origin,
+							 const char *content,
+							 size_t content_len,
+							 void *payload)
+{
+	CFile *file = (CFile*)payload;
+	file->Write(content, content_len);
+	return 0;
+}
+
+static int resolve_to_tree(
+	git_repository *repo, const char *identifier, git_tree **tree)
+{
+	int err = 0;
+	size_t len = strlen(identifier);
+	git_oid oid;
+	git_object *obj = NULL;
+
+	/* try to resolve as OID */
+	if (git_oid_fromstrn(&oid, identifier, len) == 0)
+		git_object_lookup_prefix(&obj, repo, &oid, len, GIT_OBJ_ANY);
+
+	/* try to resolve as reference */
+	if (obj == NULL) {
+		git_reference *ref, *resolved;
+		if (git_reference_lookup(&ref, repo, identifier) == 0) {
+			git_reference_resolve(&resolved, ref);
+			git_reference_free(ref);
+			if (resolved) {
+				git_object_lookup(&obj, repo, git_reference_target(resolved), GIT_OBJ_ANY);
+				git_reference_free(resolved);
+			}
+		}
+	}
+
+	if (obj == NULL)
+		return GIT_ENOTFOUND;
+
+	switch (git_object_type(obj)) {
+	case GIT_OBJ_TREE:
+		*tree = (git_tree *)obj;
+		break;
+	case GIT_OBJ_COMMIT:
+		err = git_commit_tree(tree, (git_commit *)obj);
+		git_object_free(obj);
+		break;
+	default:
+		err = GIT_ENOTFOUND;
+	}
+
+	return err;
+}
+
+/* use libgit2 get unified diff */
+static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_data_cb callback, void *data, bool bMerge)
+{
+	git_repository *repo = NULL;
+	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+	CStringA tree1 = CUnicodeUtils::GetMulti(rev1, CP_UTF8);
+	CStringA tree2 = CUnicodeUtils::GetMulti(rev2, CP_UTF8);
+
+	if (git_repository_open(&repo, gitdirA.GetBuffer()))
+	{
+		gitdirA.ReleaseBuffer();
+		return -1;
+	}
+	gitdirA.ReleaseBuffer();
+
+	int isHeadOrphan = git_repository_head_orphan(repo);
+	if (isHeadOrphan != 0)
+	{
+		git_repository_free(repo);
+		if (isHeadOrphan == 1)
+			return 0;
+		else
+			return -1;
+	}
+
+	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
+
+	if(rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
+	{
+
+	}else
+	{
+		git_tree *t1, *t2;
+		t1 = t2 = NULL;
+		int ret = 0;
+		git_diff_list *diff=NULL;
+		do
+		{
+			if (resolve_to_tree(repo, tree1, &t1))
+			{
+				ret = -1;
+				break;
+			}
+			if (resolve_to_tree(repo, tree2, &t2))
+			{
+				ret = -1;
+				break;
+			}			
+			if (git_diff_tree_to_tree(&diff, repo, t1, t2, &opts))
+			{
+				ret = -1;
+				break;
+			}
+			if(git_diff_print_patch(diff, callback, data))
+			{
+				ret = -1;
+				break;
+			}
+		}while(0);
+
+		git_diff_list_free(diff);
+		git_tree_free(t1);
+		git_tree_free(t2);
+	
+	}
+	git_repository_free(repo);
+}
+
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge)
+{
+	if (m_IsUseLibGit2)
+	{
+		CFile file;
+		if(!file.Open(patchfile, CFile::modeCreate|CFile::modeWrite))
+			return -1;
+		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, &file, bMerge);
+		file.Close();
+		return ret;
+
+	}else
+	{
+		CString cmd;
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge);
+		return g_Git.RunLogFile(cmd, patchfile);
+	}
+}
+
+static int UnifiedDiffToStringA(const git_diff_delta *delta,
+								const git_diff_range *range,
+								char line_origin,
+								const char *content,
+								size_t content_len,
+								void *payload)
+{
+	CStringA *str = (CStringA*) payload;
+	str->Append(content, content_len);
+	return 0;
+}
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge)
+{
+	if (m_IsUseLibGit2)
+	{
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToStringA, buffer, bMerge);
+	}else
+	{
+		CString cmd;
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge);
+		BYTE_VECTOR vector;
+		int ret = Run(cmd, &vector);
+		if(!vector.empty())
+			buffer->Append((char *)&vector[0]);
+		return ret;
+	}
+}

@@ -248,25 +248,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 
 			case ID_GNUDIFF2: // compare two revisions, unified
 			{
-				CString tempfile=GetTempFile();
-				CString cmd;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-
-				if( r1->m_CommitHash.IsEmpty()) {
-					cmd.Format(_T("git.exe diff -r -p --stat %s"),r2->m_CommitHash.ToString());
-				}
-				else if( r2->m_CommitHash.IsEmpty()) {
-					cmd.Format(_T("git.exe diff -r -p --stat %s"),r1->m_CommitHash.ToString());
-				}
-				else
-				{
-					cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"),r2->m_CommitHash.ToString(),r1->m_CommitHash.ToString());
-				}
-
-				g_Git.RunLogFile(cmd,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile, r2->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + _T(":") + r1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-
+				CAppUtils::StartShowUnifiedDiff(NULL, CTGitPath(), r1->m_CommitHash.ToString(), CTGitPath(), r2->m_CommitHash.ToString());
 			}
 			break;
 
