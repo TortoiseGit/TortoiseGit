@@ -2317,11 +2317,14 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 
 	if(rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
 	{
+		//opts.flags |= GIT_DIFF_IGNORE_WHITESPACE_EOL;
+
 		if (rev1 == GitRev::GetWorkingCopy())
 		{
-			opts.flags |= GIT_DIFF_REVERSE;
+			//opts.flags |= GIT_DIFF_REVERSE;
 		}
 		git_tree *t1 = NULL;
+		git_diff_list *diff2 = NULL;
 
 		do
 		{
@@ -2338,7 +2341,15 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 					break;
 				}
 
-			ret = git_diff_tree_to_workdir(&diff, repo, t1, &opts);
+			ret = git_diff_tree_to_index(&diff, repo, t1, NULL, &opts);
+			if (ret) 
+				break;
+
+			ret =  git_diff_index_to_workdir(&diff2, repo, NULL, &opts);
+			if (ret) 
+				break;
+
+			ret = git_diff_merge(diff, diff2);
 			if (ret) 
 				break;
 
