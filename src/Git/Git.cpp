@@ -2335,6 +2335,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 	CStringA tree1 = CUnicodeUtils::GetMulti(rev1, CP_UTF8);
 	CStringA tree2 = CUnicodeUtils::GetMulti(rev2, CP_UTF8);
+	int ret = 0;
 
 	if (git_repository_open(&repo, gitdirA.GetBuffer()))
 	{
@@ -2354,16 +2355,46 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 	}
 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
+	git_diff_list *diff=NULL;
 
 	if(rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
 	{
+		if (rev1 == GitRev::GetWorkingCopy())
+		{
+			opts.flags |= GIT_DIFF_REVERSE;
+		}
+		git_tree *t1 = NULL;
 
+		do
+		{
+			if (rev1 !=  GitRev::GetWorkingCopy())
+				if (resolve_to_tree(repo, tree1, &t1))
+				{
+					ret = -1;
+					break;
+				}
+			if (rev2 != GitRev::GetWorkingCopy())
+				if (resolve_to_tree(repo, tree2, &t1))
+				{
+					ret = -1;
+					break;
+				}
+
+			ret = git_diff_tree_to_workdir(&diff, repo, t1, &opts);
+			if (ret) 
+				break;
+
+			ret = git_diff_print_patch(diff, callback, data);
+			if (ret) 
+				break;
+			git_diff_list_free(diff);
+			git_tree_free(t1);
+
+		}while(0);
 	}else
 	{
 		git_tree *t1, *t2;
 		t1 = t2 = NULL;
-		int ret = 0;
-		git_diff_list *diff=NULL;
 		do
 		{
 			if (resolve_to_tree(repo, tree1, &t1))
@@ -2394,6 +2425,8 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 	
 	}
 	git_repository_free(repo);
+
+	return ret;
 }
 
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge)
