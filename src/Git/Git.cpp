@@ -2243,7 +2243,7 @@ bool CGit::UsingLibGit2(int cmd)
 	return false;
 }
 
-CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge)
+CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine)
 {
 	CString cmd;
 	if(rev2 == GitRev::GetWorkingCopy())
@@ -2258,7 +2258,10 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	{
 		CString merge;
 		if(bMerge)
-				merge = _T("-c");
+				merge += _T("-m ");
+
+		if(bCombine)
+				merge += _T("-c ");
 
 		cmd.Format(_T("git.exe diff-tree -r -p %s --stat %s %s"),merge, rev1,rev2);
 	}
@@ -2440,8 +2443,9 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 	return ret;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine)
 {
+/*
 	if (m_IsUseLibGit2)
 	{
 		CFile file;
@@ -2452,9 +2456,10 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		return ret;
 
 	}else
+*/
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge);
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);
 		return g_Git.RunLogFile(cmd, patchfile);
 	}
 }
@@ -2470,7 +2475,7 @@ static int UnifiedDiffToStringA(const git_diff_delta *delta,
 	str->Append(content, content_len);
 	return 0;
 }
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine)
 {
 	if (m_IsUseLibGit2)
 	{
@@ -2478,7 +2483,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	}else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge);
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);
 		BYTE_VECTOR vector;
 		int ret = Run(cmd, &vector);
 		if(!vector.empty())

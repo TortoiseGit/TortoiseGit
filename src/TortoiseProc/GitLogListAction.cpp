@@ -205,21 +205,20 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 			case ID_GNUDIFF1: // compare with WC, unified
 			{
-				CString tempfile=GetTempFile();
-				CString command;
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
+				bool bMerge = false, bCombine=false;
+				CString hash2;
 				if(!r1->m_CommitHash.IsEmpty())
 				{
 					CString merge;
-					CString hash2;
 					cmd >>= 16;
 					if( (cmd&0xFFFF) == 0xFFFF)
 					{
-						merge=_T("-m");
+						bMerge = true;
 					}
 					else if((cmd&0xFFFF) == 0xFFFE)
 					{
-						merge=_T("-c");
+						bCombine = true;
 					}
 					else
 					{
@@ -236,13 +235,9 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
-					command.Format(_T("git.exe diff-tree %s -r -p --stat %s %s"), merge, hash2, r1->m_CommitHash.ToString());
 				}
-				else
-					command.Format(_T("git.exe diff -r -p --stat"));
-
-				g_Git.RunLogFile(command,tempfile);
-				CAppUtils::StartUnifiedDiffViewer(tempfile, r1->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()) + _T(":") + r1->GetSubject());
+				CAppUtils::StartShowUnifiedDiff(NULL, CTGitPath(),  r1->m_CommitHash.ToString(), CTGitPath(),
+												hash2, false,false,false, bMerge, bCombine);
 			}
 			break;
 

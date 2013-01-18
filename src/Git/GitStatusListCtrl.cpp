@@ -1979,7 +1979,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
 									str.Format(_T("%s^%d"), m_CurrentVersion, (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion, false, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
 							}
 						}
 					}

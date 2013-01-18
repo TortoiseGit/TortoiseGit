@@ -943,11 +943,14 @@ CString CAppUtils::GetProjectNameFromURL(CString url)
 bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const git_revnum_t& rev1,
 												const CTGitPath& /*url2*/, const git_revnum_t& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
-												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */, bool /* blame = false */, bool bMerge)
+												bool /*bAlternateDiff*/ /* = false */, bool /*bIgnoreAncestry*/ /* = false */, 
+												bool /* blame = false */, 
+												bool bMerge,
+												bool bCombine)
 {
 
 	CString tempfile=GetTempFile();
-	if(g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge))
+	if(g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine))
 	{
 		TRACE("Fail get unified diff\n");
 		return false;
