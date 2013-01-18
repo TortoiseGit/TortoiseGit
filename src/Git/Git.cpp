@@ -2206,13 +2206,20 @@ CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine)
 {
 	CString cmd;
+	CString output;
+/*
+	if(!Patchfile.IsEmpty())
+	{
+		output.Format(_T("--output=\"%s\""), Patchfile);
+	}
+*/
 	if(rev2 == GitRev::GetWorkingCopy())
 	{
-		cmd.Format(_T("git.exe diff --stat -p %s "), rev1);
+		cmd.Format(_T("git.exe diff --no-color --stat -p %s %s "), output, rev1);
 	}
 	else if (rev1 == GitRev::GetWorkingCopy())
 	{
-		cmd.Format(_T("git.exe diff -R --stat -p %s "), rev2);
+		cmd.Format(_T("git.exe diff --no-color -R --stat -p %s %s "), output, rev2);
 	}
 	else
 	{
@@ -2405,8 +2412,10 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1
 
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine)
 {
-/*
-	if (m_IsUseLibGit2)
+
+	/* The submodule of LibGit2 output is little difference with git core
+	*/
+	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
 		CFile file;
 		if(!file.Open(patchfile, CFile::modeCreate|CFile::modeWrite))
@@ -2414,9 +2423,26 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, &file, bMerge);
 		file.Close();
 		return ret;
-
-	}else
-*/
+	}
+/*	//git will launch git status command to get submodule status.
+	else if (m_IsUseGitDLL)
+	{
+		CStringA cmd = CUnicodeUtils::GetMulti(GetUnifiedDiffCmd(path, rev1, rev2, bMerge, patchfile), CP_UTF8);
+		CStringA arg;
+		arg = cmd = cmd.Mid(13); // cut "git.exe diff"
+		if (cmd.Find("-tree") == 0)
+		{
+			cmd = "diff-tree";
+			arg = arg.Mid(6); // cut "-tree ";
+		}
+		else
+		{
+			cmd = "diff";
+		}
+		return git_run_cmd(cmd.GetBuffer(), arg.GetBuffer());
+	}
+	*/
+	else
 	{
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);

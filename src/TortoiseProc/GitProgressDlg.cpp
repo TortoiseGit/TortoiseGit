@@ -1933,7 +1933,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 		for(int i=0;i<m_targetPathList.GetCount();i++)
 		{
-			if (git_index_add_from_workdir(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8)).GetBuffer()))
+			if (git_index_add_bypath(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8)).GetBuffer()))
 			{
 				ReportGitError();
 				git_index_free(index);

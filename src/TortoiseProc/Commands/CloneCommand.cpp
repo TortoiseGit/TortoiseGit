@@ -40,28 +40,30 @@ static bool clone_libgit2(const CString URL, const CString PATH, bool bBare)
 
 	git_repository *cloned_repo = NULL;
 	git_remote *origin = NULL;
-
-	int error = 0;
-	error = git_remote_new(&origin, NULL, "origin", url, GIT_REMOTE_DEFAULT_FETCH);
-	git_remote_set_cred_acquire_cb(origin, CAppUtils::Git2GetUserPassword, NULL);
-
-	git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
 	git_checkout_opts checkout_opts = GIT_CHECKOUT_OPTS_INIT;
 
-	checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
-	checkout_opts.progress_cb = CAppUtils::Git2CheckoutProgress;;
-	checkout_opts.progress_payload = &progress;
+	int error = 0;
+	
+	git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
+	
+	clone_opts.checkout_opts = checkout_opts;
 
-	clone_opts.checkout_opts = &checkout_opts;
+	clone_opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
+	clone_opts.checkout_opts.progress_cb = CAppUtils::Git2CheckoutProgress;;
+	clone_opts.checkout_opts.progress_payload = &progress;
+
 	clone_opts.fetch_progress_cb = CAppUtils::Git2FetchProgress;
 	clone_opts.fetch_progress_payload = &progress;
+	clone_opts.cred_acquire_cb = CAppUtils::Git2GetUserPassword;
+
+	clone_opts.bare = bBare;
 
 	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
 	progress.SetAnimation(IDR_DOWNLOAD);
 	progress.SetTime(true);
 	progress.ShowModeless((CWnd*)NULL);
 
-	error = git_clone(&cloned_repo, origin, path, &clone_opts);
+	error = git_clone(&cloned_repo, url, path, &clone_opts);
 	git_remote_free(origin);
 	if (error != 0) {
 		const git_error *err = giterr_last();
@@ -215,3 +217,4 @@ bool CloneCommand::Execute()
 
 	}
 	return FALSE;
+}
