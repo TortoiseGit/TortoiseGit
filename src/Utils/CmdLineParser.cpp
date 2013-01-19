@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -23,7 +24,7 @@
 
 const TCHAR CCmdLineParser::m_sDelims[] = _T("-/");
 const TCHAR CCmdLineParser::m_sQuotes[] = _T("\"");
-const TCHAR CCmdLineParser::m_sValueSep[] = _T(" :"); // don't forget space!!
+const TCHAR CCmdLineParser::m_sValueSep[] = _T(" :="); // don't forget space!!
 
 
 CCmdLineParser::CCmdLineParser(LPCTSTR sCmdLine)
