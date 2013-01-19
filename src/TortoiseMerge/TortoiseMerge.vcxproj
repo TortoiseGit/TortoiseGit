@@ -495,10 +495,6 @@
       <Project>{ae6aafba-9992-452a-9eb8-dd69402a4ace}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
-      <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\..\ext\ResizableLib\ResizableLib.vcxproj">
       <Project>{4be529fb-c2f2-49f7-a897-054b955564cf}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
