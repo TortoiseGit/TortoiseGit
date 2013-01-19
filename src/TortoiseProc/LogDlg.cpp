@@ -1210,125 +1210,6 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-class CDateSorter
-{
-public:
-	class CCommitPointer
-	{
-	public:
-		CCommitPointer():m_cont(NULL){}
-		CCommitPointer(const CCommitPointer& P_Right)
-		: m_cont(NULL)
-		{
-			*this = P_Right;
-		}
-
-		CCommitPointer& operator = (const CCommitPointer& P_Right)
-		{
-			if(IsPointer())
-			{
-				(*m_cont->m_parDates)[m_place]			= P_Right.GetDate();
-				(*m_cont->m_parFileChanges)[m_place]	= P_Right.GetChanges();
-				(*m_cont->m_parAuthors)[m_place]		= P_Right.GetAuthor();
-			}
-			else
-			{
-				m_Date								= P_Right.GetDate();
-				m_Changes							= P_Right.GetChanges();
-				m_csAuthor							= P_Right.GetAuthor();
-			}
-			return *this;
-		}
-
-		void Clone(const CCommitPointer& P_Right)
-		{
-			m_cont = P_Right.m_cont;
-			m_place = P_Right.m_place;
-			m_Date = P_Right.m_Date;
-			m_Changes = P_Right.m_Changes;
-			m_csAuthor = P_Right.m_csAuthor;
-		}
-
-		DWORD		 GetDate()		const {return IsPointer() ? (*m_cont->m_parDates)[m_place] : m_Date;}
-		DWORD		 GetChanges()	const {return IsPointer() ? (*m_cont->m_parFileChanges)[m_place] : m_Changes;}
-		CString		 GetAuthor()	const {return IsPointer() ? (*m_cont->m_parAuthors)[m_place] : m_csAuthor;}
-
-		bool		IsPointer() const {return m_cont != NULL;}
-		//When pointer
-		CDateSorter* m_cont;
-		int			 m_place;
-
-		//When element
-		DWORD		 m_Date;
-		DWORD		 m_Changes;
-		CString		 m_csAuthor;
-
-	};
-	class iterator : public std::iterator<std::random_access_iterator_tag, CCommitPointer>
-	{
-	public:
-		CCommitPointer m_ptr;
-
-		iterator(){}
-		iterator(const iterator& P_Right){*this = P_Right;}
-		iterator& operator=(const iterator& P_Right)
-		{
-			m_ptr.Clone(P_Right.m_ptr);
-			return *this;
-		}
-
-		CCommitPointer& operator*(){return m_ptr;}
-		CCommitPointer* operator->(){return &m_ptr;}
-		const CCommitPointer& operator*()const{return m_ptr;}
-		const CCommitPointer* operator->()const{return &m_ptr;}
-
-		iterator& operator+=(size_t P_iOffset){m_ptr.m_place += (int)P_iOffset;return *this;}
-		iterator& operator-=(size_t P_iOffset){m_ptr.m_place -= (int)P_iOffset;return *this;}
-		iterator operator+(size_t P_iOffset)const{iterator it(*this); it += P_iOffset;return it;}
-		iterator operator-(size_t P_iOffset)const{iterator it(*this); it -= P_iOffset;return it;}
-
-		iterator& operator++(){++m_ptr.m_place;return *this;}
-		iterator& operator--(){--m_ptr.m_place;return *this;}
-		iterator operator++(int){iterator it(*this);++*this;return it;}
-		iterator operator--(int){iterator it(*this);--*this;return it;}
-
-		size_t operator-(const iterator& P_itRight)const{return m_ptr.m_place - P_itRight->m_place;}
-
-		bool operator<(const iterator& P_itRight)const{return m_ptr.m_place < P_itRight->m_place;}
-		bool operator!=(const iterator& P_itRight)const{return m_ptr.m_place != P_itRight->m_place;}
-		bool operator==(const iterator& P_itRight)const{return m_ptr.m_place == P_itRight->m_place;}
-		bool operator>(const iterator& P_itRight)const{return m_ptr.m_place > P_itRight->m_place;}
-	};
-	iterator begin()
-	{
-		iterator it;
-		it->m_place = 0;
-		it->m_cont = this;
-		return it;
-	}
-	iterator end()
-	{
-		iterator it;
-		it->m_place = (int)m_parDates->GetCount();
-		it->m_cont = this;
-		return it;
-	}
-
-	CDWordArray	*	m_parDates;
-	CDWordArray	*	m_parFileChanges;
-	CStringArray *	m_parAuthors;
-};
-
-class CDateSorterLess
-{
-public:
-	bool operator () (const CDateSorter::CCommitPointer& P_Left, const CDateSorter::CCommitPointer& P_Right) const
-	{
-		return P_Left.GetDate() > P_Right.GetDate(); //Last date first
-	}
-
-};
-
 void CLogDlg::OnBnClickedStatbutton()
 {
 	if (this->IsThreadRunning())
@@ -1337,41 +1218,10 @@ void CLogDlg::OnBnClickedStatbutton()
 		return;		// nothing or just the working copy changes are shown, so no statistics.
 	// the statistics dialog expects the log entries to be sorted by date
 	SortByColumn(3, false);
-	CThreadSafePtrArray shownlist(NULL);
-	m_LogList.RecalculateShownList(&shownlist);
-	// create arrays which are aware of the current filter
-	CStringArray m_arAuthorsFiltered;
-	CDWordArray m_arDatesFiltered;
-	CDWordArray m_arFileChangesFiltered;
-	for (INT_PTR i=0; i<shownlist.GetCount(); ++i)
-	{
-		GitRev* pLogEntry = reinterpret_cast<GitRev*>(shownlist.SafeGetAt(i));
-
-		// do not take working dir changes into statistics
-		if (pLogEntry->m_CommitHash.IsEmpty()) {
-			continue;
-		}
-
-		CString strAuthor = pLogEntry->GetAuthorName();
-		if ( strAuthor.IsEmpty() )
-		{
-			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
-		}
-		m_arAuthorsFiltered.Add(strAuthor);
-		m_arDatesFiltered.Add(pLogEntry->GetCommitterDate().GetTime());
-		m_arFileChangesFiltered.Add(pLogEntry->GetFiles(&m_LogList).GetCount());
-	}
-
-	CDateSorter W_Sorter;
-	W_Sorter.m_parAuthors		= &m_arAuthorsFiltered;
-	W_Sorter.m_parDates			= &m_arDatesFiltered;
-	W_Sorter.m_parFileChanges	= &m_arFileChangesFiltered;
-	std::sort(W_Sorter.begin(), W_Sorter.end(), CDateSorterLess());
 
 	CStatGraphDlg dlg;
-	dlg.m_parAuthors = &m_arAuthorsFiltered;
-	dlg.m_parDates = &m_arDatesFiltered;
-	dlg.m_parFileChanges = &m_arFileChangesFiltered;
+	m_LogList.RecalculateShownList(&dlg.m_ShowList);
+
 	dlg.m_path = m_orgPath;
 	dlg.DoModal();
 	// restore the previous sorting

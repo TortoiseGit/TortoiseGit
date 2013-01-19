@@ -2084,6 +2084,10 @@ msgstr ""
 msgid "CC:"
 msgstr ""
 
+#. Resource IDs: (1741)
+msgid "Calculate"
+msgstr ""
+
 #. Resource IDs: (1127)
 msgid "Can double-click in log list to compare with previous revision"
 msgstr ""
@@ -2186,6 +2190,22 @@ msgstr ""
 #. Resource IDs: (163)
 #, c-format
 msgid "Changed files: %d"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files by date"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files by date"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files"
 msgstr ""
 
 #. Resource IDs: (264)
@@ -3207,6 +3227,10 @@ msgstr ""
 msgid "Diffing"
 msgstr ""
 
+#. Resource IDs: (2054)
+msgid "Diffing commits"
+msgstr ""
+
 #. Resource IDs: (14)
 msgid "Diffs the working tree file with the one before the last commit"
 msgstr ""
@@ -4098,6 +4122,10 @@ msgstr ""
 
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Gathering statistics"
 msgstr ""
 
 #. Resource IDs: (107, 143)
@@ -8289,6 +8317,14 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "TortoiseMerge"
+msgstr ""
+
+#. Resource IDs: (1739)
+msgid "Total changed lines including added/deleted files:"
+msgstr ""
+
+#. Resource IDs: (1737)
+msgid "Total changed lines not including added/deleted files:"
 msgstr ""
 
 #. Resource IDs: (1162)
