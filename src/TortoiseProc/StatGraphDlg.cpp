@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -151,7 +151,7 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 BOOL CStatGraphDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
-	
+
 	// gather statistics data, only needs to be updated when the checkbox with
 	// the case sensitivity of author names is changed
 	GatherData();
@@ -315,7 +315,7 @@ BOOL CStatGraphDlg::OnInitDialog()
 
 void CStatGraphDlg::ShowLabels(BOOL bShow)
 {
-	if ((m_parAuthors.IsEmpty())||(m_parDates.IsEmpty())||(m_parFileChanges.IsEmpty()))
+	if (m_parAuthors.IsEmpty() || m_parDates.IsEmpty() || m_parFileChanges.IsEmpty())
 		return;
 
 	int nCmdShow = bShow ? SW_SHOW : SW_HIDE;
@@ -700,7 +700,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 	m_lineNew.RemoveAll();
 
 	CSysProgressDlg progress;
-	if(fetchdiff)
+	if (fetchdiff)
 	{
 		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_DIFF)));
 		progress.SetAnimation(IDR_MOVEANI);
@@ -710,11 +710,11 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 
 	// create arrays which are aware of the current filter
 	DWORD  starttime = GetTickCount();
-	for (INT_PTR i=0; i<m_ShowList.GetCount(); ++i)
+	for (INT_PTR i = 0; i < m_ShowList.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
-		int inc, dec, newline,del, files;
-		inc = dec = newline = del = files= 0;
+		int inc, dec, incnewfile, decdeletedfile, files;
+		inc = dec = incnewfile = decdeletedfile = files= 0;
 
 		// do not take working dir changes into statistics
 		if (pLogEntry->m_CommitHash.IsEmpty()) {
@@ -722,7 +722,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		}
 
 		CString strAuthor = pLogEntry->GetAuthorName();
-		if ( strAuthor.IsEmpty() )
+		if (strAuthor.IsEmpty())
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
@@ -734,12 +734,12 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 			CTGitPathList &list = pLogEntry->GetFiles(NULL);
 			files = list.GetCount();
 
-			for (int j=0; j< files; j++)
+			for (int j = 0; j < files; j++)
 			{
 				if (list[j].m_Action & CTGitPath::LOGACTIONS_DELETED)
-					del += _tstol(list[j].m_StatDel);
+					decdeletedfile += _tstol(list[j].m_StatDel);
 				else if(list[j].m_Action & CTGitPath::LOGACTIONS_ADDED)
-					newline += _tstol(list[j].m_StatAdd);
+					incnewfile += _tstol(list[j].m_StatAdd);
 				else
 				{
 					inc += _tstol(list[j].m_StatAdd);
@@ -755,8 +755,8 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_parFileChanges.Add(files);
 		m_lineInc.Add(inc);
 		m_lineDec.Add(dec);
-		m_lineDel.Add(del);
-		m_lineNew.Add(newline);
+		m_lineDel.Add(decdeletedfile);
+		m_lineNew.Add(incnewfile);
 
 		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
 		{
@@ -830,7 +830,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		m_nTotalFileChanges += fileChanges;
 
 		//calculate Contribution Author
-		double  contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * (fileChanges ? fileChanges : 1);
+		double contributionAuthor = CoeffContribution((int)m_nTotalCommits - i -1) * (fileChanges ? fileChanges : 1);
 		AllContributionAuthor += contributionAuthor;
 		m_PercentageOfAuthorship[author] += contributionAuthor;
 
@@ -905,7 +905,7 @@ void CStatGraphDlg::FilterSkippedAuthors(std::list<tstring>& included_authors,
 
 bool  CStatGraphDlg::PreViewStat(bool fShowLabels)
 {
-	if ((m_parAuthors.IsEmpty())||(m_parDates.IsEmpty())||(m_parFileChanges.IsEmpty()))
+	if (m_parAuthors.IsEmpty() || m_parDates.IsEmpty() || m_parFileChanges.IsEmpty())
 		return false;
 	ShowLabels(fShowLabels);
 
@@ -1237,10 +1237,10 @@ void CStatGraphDlg::ShowStats()
 	number.Format(_T("%ld"), nFileChangesMin);
 	//SetDlgItemText(IDC_FILECHANGESEACHWEEKMIN, number);
 
-	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec, m_nTotalLinesInc, m_nTotalLinesDec);
+	number.Format(_T("%ld (%ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec, m_nTotalLinesInc, m_nTotalLinesDec);
 	if (m_bDiffFetched)
 		SetDlgItemText(IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE, number);
-	number.Format(_T("%ld ( %ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec + m_nTotalLinesNew + m_nTotalLinesDel,
+	number.Format(_T("%ld (%ld (+) %ld (-))"), m_nTotalLinesInc + m_nTotalLinesDec + m_nTotalLinesNew + m_nTotalLinesDel,
 												m_nTotalLinesInc + m_nTotalLinesNew, m_nTotalLinesDec + m_nTotalLinesDel);
 	if (m_bDiffFetched)
 		SetDlgItemText(IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE, number);
@@ -1868,7 +1868,6 @@ void CStatGraphDlg::LoadListOfAuthors (MAP &map, bool reloadSkiper/*= false*/,  
 
 void CStatGraphDlg::OnBnClickedFetchDiff()
 {
-	// TODO: Add your control notification handler code here
 	if (m_bDiffFetched)
 		return;
 	if (GatherData(TRUE))

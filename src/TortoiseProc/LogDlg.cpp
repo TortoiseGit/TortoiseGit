@@ -1218,7 +1218,7 @@ void CLogDlg::OnBnClickedStatbutton()
 		return;		// nothing or just the working copy changes are shown, so no statistics.
 	// the statistics dialog expects the log entries to be sorted by date
 	SortByColumn(3, false);
-	
+
 	CStatGraphDlg dlg;
 	m_LogList.RecalculateShownList(&dlg.m_ShowList);
 
