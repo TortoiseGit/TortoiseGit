@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ using namespace std;
 
 #define ENDDIALOGTIMER	100
 #define REFRESHTIMER	101
+#define FILLPATCHVTIMER	102
 
 /**
  * \ingroup TortoiseProc
@@ -71,7 +72,7 @@ public:
 private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
-	void FillPatchView();
+	void FillPatchView(bool onlySetTimer = false);
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
 	CString m_sTitle;
