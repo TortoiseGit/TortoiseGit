@@ -556,9 +556,9 @@ BEGIN
     LTEXT           "",IDC_NUMCOMMITSVALUE,183,53,169,8,0,WS_EX_RIGHT
     LTEXT           "Total file changes:",IDC_NUMFILECHANGES,7,66,128,8
     LTEXT           "",IDC_NUMFILECHANGESVALUE,190,65,162,8,0,WS_EX_RIGHT
-    LTEXT           "Total changed lines without new/del files:",IDC_TOTAL_LINE_WITHOUT_NEW_DEL,7,78,195,8,NOT WS_VISIBLE
+    LTEXT           "Total changed lines not including added/deleted files:",IDC_TOTAL_LINE_WITHOUT_NEW_DEL,7,78,195,8,NOT WS_VISIBLE
     LTEXT           "",IDC_TOTAL_LINE_WITHOUT_NEW_DEL_VALUE,202,78,150,8,0,WS_EX_RIGHT
-    LTEXT           "Total changed lines with new/del files:",IDC_TOTAL_LINE_WITH_NEW_DEL,7,90,195,8,NOT WS_VISIBLE
+    LTEXT           "Total changed lines including added/deleted files:",IDC_TOTAL_LINE_WITH_NEW_DEL,7,90,195,8,NOT WS_VISIBLE
     LTEXT           "",IDC_TOTAL_LINE_WITH_NEW_DEL_VALUE,202,89,149,8,0,WS_EX_RIGHT
     PUSHBUTTON      "Calculate",IDC_CALC_DIFF,304,62,52,39
     LTEXT           "Average",IDC_AVG,250,112,38,8,0,WS_EX_RIGHT
@@ -2804,6 +2804,16 @@ STRINGTABLE
 BEGIN
     IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
     IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
+    IDS_PROC_STATISTICS_DIFF "Diffing commits"
+    IDS_PROGS_TITLE_GATHERSTATISTICS "Gathering statistics"
+    IDS_STATGRAPH_LINES_BYDATE_W 
+                            "Changed lines including added/deleted files by date"
+    IDS_STATGRAPH_LINES_BYDATE_WO 
+                            "Changed lines not including added/deleted files by date"
+    IDS_STATGRAPH_LINES_BYDATE_W_Y 
+                            "Changed lines including added/deleted files"
+    IDS_STATGRAPH_LINES_BYDATE_WO_Y 
+                            "Changed lines not including added/deleted files"
 END
 
 STRINGTABLE
@@ -3650,12 +3660,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROC_MOVERENAME     "Move and rename"
-    IDS_PROC_DIFF           "Start Diff - %s"
-    IDS_PROGS_TITLE_DIFF    "Calculate Diff Stat information"
-    IDS_STATGRAPH_LINES_BYDATE_W    "Change Lines with new/del by Date"
-    IDS_STATGRAPH_LINES_BYDATE_W_Y  "Lines with new/del file"
-    IDS_STATGRAPH_LINES_BYDATE_WO   "Change Lines without new/del by Date"
-    IDS_STATGRAPH_LINES_BYDATE_WO_Y "Lines without new/del file"
 END
 
 STRINGTABLE

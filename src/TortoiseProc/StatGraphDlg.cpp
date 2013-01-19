@@ -702,7 +702,8 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 	CSysProgressDlg progress;
 	if (fetchdiff)
 	{
-		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_DIFF)));
+		progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_GATHERSTATISTICS)));
+		progress.FormatNonPathLine(1, IDS_PROC_STATISTICS_DIFF);
 		progress.SetAnimation(IDR_MOVEANI);
 		progress.SetTime(true);
 		progress.ShowModeless(this);
@@ -760,8 +761,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 
 		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
 		{
-			progress.FormatNonPathLine(1, IDS_PROC_DIFF, pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()));
-			progress.FormatNonPathLine(2, _T("%s"), pLogEntry->GetSubject());
+			progress.FormatNonPathLine(2, _T("%s: %s"), pLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength()), pLogEntry->GetSubject());
 			progress.SetProgress64(i, m_ShowList.GetCount());
 			starttime = GetTickCount();
 		}
