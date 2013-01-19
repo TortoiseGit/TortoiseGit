@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -448,6 +448,12 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	}
 	else
 	{
+		{
+			AutoLocker lock(m_critSec);
+			// clear subdirectory status cache
+			m_childDirectories.clear();
+		}
+
 		m_mostImportantFileStatus = git_wc_status_none;
 		pStatus->EnumDirStatus(sProjectRoot, sSubPath, &status, IsFull, false, true, GetStatusCallback,this);
 
