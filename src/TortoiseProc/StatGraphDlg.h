@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -141,6 +142,7 @@ protected:
 	afx_msg void OnBnClickedGraphlinestackedbutton();
 	afx_msg void OnBnClickedGraphpiebutton();
 	afx_msg void OnFileSavestatgraphas();
+	afx_msg void OnBnClickedFetchDiff();
 	DECLARE_MESSAGE_MAP()
 
 	// ** Member functions **
@@ -277,6 +279,4 @@ protected:
 	std::list<tstring>	m_authorNames;
 	///	unit names by week/month/quarter
 	std::map<LONG, tstring>	m_unitNames;
-public:
-	afx_msg void OnBnClickedFetchDiff();
 };
