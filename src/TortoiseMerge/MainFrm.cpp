@@ -1,8 +1,8 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2004-2012 - TortoiseSVN
-// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@
 #include "SelectFileFilter.h"
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
+#include "git2.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1226,37 +1227,55 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	// and if there aren't, ask to mark the file as resolved
 	if (IsViewGood(m_pwndBottomView) && !m_bHasConflicts)
 	{
-#if 0 // TGIT TODO
-		CTGitPath svnpath = CTGitPath(m_Data.m_mergedFile.GetFilename());
-		if (SVNHelper::IsVersioned(svnpath, true))
+		CString projectRoot;
+		if (g_GitAdminDir.HasAdminDir(m_Data.m_mergedFile.GetFilename(), false, &projectRoot))
 		{
-			SVNPool pool;
-			svn_opt_revision_t rev;
-			rev.kind = svn_opt_revision_unspecified;
-			svn_wc_status_kind statuskind = svn_wc_status_none;
-			svn_client_ctx_t * ctx = NULL;
-			svn_error_clear(svn_client_create_context2(&ctx, SVNConfig::Instance().GetConfig(pool), pool));
-			svn_error_t * err = svn_client_status5(NULL, ctx, svnpath.GetSVNApiPath(pool), &rev,
-												   svn_depth_empty,
-												   true,
-												   false,
-												   true,
-												   true,
-												   false,
-												   NULL,
-												   getallstatus,
-												   &statuskind,
-												   pool);
-			if ((err == NULL) && (statuskind == svn_wc_status_conflicted))
+			CString subpath = m_Data.m_mergedFile.GetFilename();
+			subpath.Replace(_T('\\'), _T('/'));
+			if (subpath.GetLength() >= projectRoot.GetLength())
+			{
+				if (subpath[projectRoot.GetLength()] == _T('/'))
+					subpath = subpath.Right(subpath.GetLength() - projectRoot.GetLength() - 1);
+				else
+					subpath = subpath.Right(subpath.GetLength() - projectRoot.GetLength());
+			}
+			
+			CStringA gitdir = CUnicodeUtils::GetMulti(projectRoot, CP_UTF8);
+			git_repository *repository = NULL;
+			git_index *index = NULL;
+			bool hasConflictInIndex = false;
+			do
+			{
+				if (git_repository_open(&repository, gitdir.GetBuffer()))
+				{
+					gitdir.ReleaseBuffer();
+					break;
+				}
+				gitdir.ReleaseBuffer();
+
+				if (git_repository_index(&index, repository))
+					break;
+
+				CStringA path = CUnicodeUtils::GetMulti(subpath, CP_UTF8);
+				const git_index_entry * entry = git_index_get_bypath(index, path.GetBuffer(), 1);
+				path.ReleaseBuffer();
+				hasConflictInIndex = entry != nullptr;
+			} while(0);
+
+			if (index)
+				git_index_free(index);
+
+			if (repository)
+				git_repository_free(repository);
+
+			if (hasConflictInIndex)
 			{
 				CString sTemp;
 				sTemp.Format(IDS_MARKASRESOLVED, (LPCTSTR)CPathUtils::GetFileNameFromPath(m_Data.m_mergedFile.GetFilename()));
-				if (CMessageBox::Show(m_hWnd, sTemp, _T("TortoiseGitMerge"), MB_YESNO) == IDYES))
+				if (CMessageBox::Show(m_hWnd, sTemp, _T("TortoiseGitMerge"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 					MarkAsResolved();
 			}
-			svn_error_clear(err);
 		}
-#endif
 	}
 
 	m_bSaveRequired = false;
