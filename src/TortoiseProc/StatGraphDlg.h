@@ -24,6 +24,7 @@
 #include "UnicodeUtils.h"
 
 #include "tstring.h"
+#include "GitLogListBase.h"
 
 #include <map>
 #include <list>
@@ -65,10 +66,17 @@ public:
 
 	enum { IDD = IDD_STATGRAPH };
 
+	CThreadSafePtrArray m_ShowList;
+
 	// Data	passed from	the	caller of the dialog.
-	CDWordArray	*	m_parDates;
-	CDWordArray	*	m_parFileChanges;
-	CStringArray *	m_parAuthors;
+	CDWordArray		m_parDates;
+	CDWordArray		m_parFileChanges;
+	CDWordArray		m_lineInc;
+	CDWordArray		m_lineDec;
+	CDWordArray		m_lineNew;
+	CDWordArray		m_lineDel;
+
+	CStringArray	m_parAuthors;
 	CTGitPath		m_path;
 
 protected:
@@ -100,6 +108,8 @@ protected:
 			PercentageOfAuthorship,
 			CommitsByAuthor,
 			CommitsByDate,
+			LinesWByDate,
+			LinesWOByDate,
 		GraphicStatEnd,
 	};
 
@@ -140,7 +150,7 @@ protected:
 	/// Returns the week-of-the-year for the given time.
 	int GetCalendarWeek(const CTime& time);
 	/// Parses the data given to the dialog and generates mappings with statistical data.
-	void GatherData();
+	int GatherData(BOOL fetchdiff = FALSE);
 	/// Populates the lists passed as arguments based on the commit threshold set with the skipper.
 	void FilterSkippedAuthors(std::list<tstring>& included_authors, std::list<tstring>& skipped_authors);
 	/// Shows the graph Percentage Of Authorship
@@ -148,7 +158,7 @@ protected:
 	/// Shows the graph with commit counts per author.
 	void ShowCommitsByAuthor();
 	/// Shows the graph with commit counts per author and date.
-	void ShowCommitsByDate();
+	void ShowByDate(int StringY, int title, IntervalDataMap &data);
 	/// Shows the initial statistics page.
 	void ShowStats();
 
@@ -211,6 +221,7 @@ protected:
 	CSliderCtrl		m_Skipper;
 	BOOL			m_bAuthorsCaseSensitive;
 	BOOL			m_bSortByCommitCount;
+	BOOL			m_bDiffFetched;
 
 	CMFCButton		m_btnGraphBar;
 	CMFCButton		m_btnGraphBarStacked;
@@ -241,6 +252,10 @@ protected:
 	LONG					m_nTotalFileChanges;
 	///	Holds the number of	commits	per	unit and author.
 	IntervalDataMap			m_commitsPerUnitAndAuthor;
+
+	IntervalDataMap			m_LinesWPerUnitAndAuthor;
+	IntervalDataMap			m_LinesWOPerUnitAndAuthor;
+
 	///	Holds the number of	file changes per unit and author.
 	IntervalDataMap			m_filechangesPerUnitAndAuthor;
 	///	First interval number (key)	in the mappings.
@@ -252,9 +267,16 @@ protected:
 	///	Mapping	of Percentage Of Authorship	per	author
 	AuthorshipDataMap		   m_PercentageOfAuthorship;
 
+	LONG					m_nTotalLinesInc;
+	LONG					m_nTotalLinesDec;
+	LONG					m_nTotalLinesNew;
+	LONG					m_nTotalLinesDel;
+
 	///	The	list of	author names sorted	based on commit	count
 	///	(author	with most commits is first in list).
 	std::list<tstring>	m_authorNames;
 	///	unit names by week/month/quarter
 	std::map<LONG, tstring>	m_unitNames;
+public:
+	afx_msg void OnBnClickedFetchDiff();
 };
