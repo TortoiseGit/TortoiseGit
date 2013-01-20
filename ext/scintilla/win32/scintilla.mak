@@ -21,8 +21,7 @@ CC=cl
 RC=rc
 LD=link
 
-CXXFLAGS=-Zi -TP -W0 -EHsc -Zc:forScope -Zc:wchar_t -D_CRT_SECURE_NO_DEPRECATE=1
-# For something scary:-Wp64
+CXXFLAGS=-Zi -TP -MP -W4 -EHsc -Zc:forScope -Zc:wchar_t -D_CRT_SECURE_NO_DEPRECATE=1
 CXXDEBUG=-Od -MTd -DDEBUG
 CXXNDEBUG=-O1 -MT -DNDEBUG -GL
 NAME=-Fo
@@ -126,6 +125,7 @@ LEXOBJS=\
 	$(DIR_O)\LexHTML.obj \
 	$(DIR_O)\LexInno.obj \
 	$(DIR_O)\LexKix.obj \
+	$(DIR_O)\LexLaTeX.obj \
 	$(DIR_O)\LexLisp.obj \
 	$(DIR_O)\LexLout.obj \
 	$(DIR_O)\LexLua.obj \
@@ -367,6 +367,8 @@ $(DIR_O)\LexHTML.obj: ..\lexers\LexHTML.cxx $(LEX_HEADERS)
 $(DIR_O)\LexInno.obj: ..\lexers\LexInno.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexKix.obj: ..\lexers\LexKix.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexLaTeX.obj: ..\lexers\LexLaTeX.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexLisp.obj: ..\lexers\LexLisp.cxx $(LEX_HEADERS)
 

@@ -79,7 +79,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 21/July/2012 NH</p>
+    <p>Last edited 3/January/2013 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -2603,6 +2603,8 @@ struct Sci_TextToFind {
     <a class="message" href="#SCI_GETCARETLINEBACK">SCI_GETCARETLINEBACK</a><br />
     <a class="message" href="#SCI_SETCARETLINEBACKALPHA">SCI_SETCARETLINEBACKALPHA(int alpha)</a><br />
     <a class="message" href="#SCI_GETCARETLINEBACKALPHA">SCI_GETCARETLINEBACKALPHA</a><br />
+    <a class="message" href="#SCI_SETCARETLINEVISIBLEALWAYS">SCI_SETCARETLINEVISIBLEALWAYS(bool alwaysVisible)</a><br />
+    <a class="message" href="#SCI_GETCARETLINEVISIBLEALWAYS">SCI_GETCARETLINEVISIBLEALWAYS</a><br />
     <a class="message" href="#SCI_SETCARETPERIOD">SCI_SETCARETPERIOD(int milliseconds)</a><br />
     <a class="message" href="#SCI_GETCARETPERIOD">SCI_GETCARETPERIOD</a><br />
     <a class="message" href="#SCI_SETCARETSTYLE">SCI_SETCARETSTYLE(int style)</a><br />
@@ -2665,6 +2667,12 @@ struct Sci_TextToFind {
            through. This is done by setting the alpha (translucency) value by calling
            SCI_SETCARETLINEBACKALPHA. When the alpha is not SC_ALPHA_NOALPHA,
            the caret line is drawn after all other features so will affect the colour of all other features.
+          </p>
+
+    <p><b id="SCI_SETCARETLINEVISIBLEALWAYS">SCI_SETCARETLINEVISIBLEALWAYS(bool alwaysVisible)</b><br />
+     <b id="SCI_GETCARETLINEVISIBLEALWAYS">SCI_GETCARETLINEVISIBLEALWAYS</b><br />
+     Choose to make the caret line always visible even when the window is not in focus.
+     Default behaviour <code>SCI_SETCARETLINEVISIBLEALWAYS(false)</code> the caret line is only visible when the window is in focus.
           </p>
 
     <p><b id="SCI_SETCARETPERIOD">SCI_SETCARETPERIOD(int milliseconds)</b><br />
@@ -2930,6 +2938,9 @@ struct Sci_TextToFind {
     An annotation may consist of multiple lines separated by '\n'.
     Annotations can be used to display an assembler version of code for debugging or to show diagnostic messages inline or to
     line up different versions of text in a merge tool.</p>
+    <p>Annotations count as display lines for the methods
+    <a class="message" href="#SCI_VISIBLEFROMDOCLINE"><code>SCI_VISIBLEFROMDOCLINE</code></a> and
+    <a class="message" href="#SCI_DOCLINEFROMVISIBLE"><code>SCI_DOCLINEFROMVISIBLE</code></a></p>
     <p>Annotations used for inline diagnostics:</p>
     <p><img src="annotations.png" alt="Annotations used for inline diagnostics" /></p>
 
@@ -3672,6 +3683,21 @@ struct Sci_TextToFind {
      <a class="message" href="#SCI_INDICGETOUTLINEALPHA">SCI_INDICGETOUTLINEALPHA(int indicatorNumber)</a><br />
      <a class="message" href="#SCI_INDICSETUNDER">SCI_INDICSETUNDER(int indicatorNumber, bool under)</a><br />
      <a class="message" href="#SCI_INDICGETUNDER">SCI_INDICGETUNDER(int indicatorNumber)</a><br />
+
+     <a class="message" href="#SCI_SETINDICATORCURRENT">SCI_SETINDICATORCURRENT(int indicator)</a><br />
+     <a class="message" href="#SCI_GETINDICATORCURRENT">SCI_GETINDICATORCURRENT</a><br />
+     <a class="message" href="#SCI_SETINDICATORVALUE">SCI_SETINDICATORVALUE(int value)</a><br />
+     <a class="message" href="#SCI_GETINDICATORVALUE">SCI_GETINDICATORVALUE</a><br />
+     <a class="message" href="#SCI_INDICATORFILLRANGE">SCI_INDICATORFILLRANGE(int position, int fillLength)</a><br />
+     <a class="message" href="#SCI_INDICATORCLEARRANGE">SCI_INDICATORCLEARRANGE(int position, int clearLength)</a><br />
+     <a class="message" href="#SCI_INDICATORALLONFOR">SCI_INDICATORALLONFOR(int position)</a><br />
+     <a class="message" href="#SCI_INDICATORVALUEAT">SCI_INDICATORVALUEAT(int indicator, int position)</a><br />
+     <a class="message" href="#SCI_INDICATORSTART">SCI_INDICATORSTART(int indicator, int position)</a><br />
+     <a class="message" href="#SCI_INDICATOREND">SCI_INDICATOREND(int indicator, int position)</a><br />
+
+     <a class="message" href="#SCI_FINDINDICATORSHOW">SCI_FINDINDICATORSHOW(int start, int end)</a><br />
+     <a class="message" href="#SCI_FINDINDICATORFLASH">SCI_FINDINDICATORFLASH(int start, int end)</a><br />
+     <a class="message" href="#SCI_FINDINDICATORHIDE">SCI_FINDINDICATORHIDE</a><br />
     </code>
 
     <p><b id="SCI_INDICSETSTYLE">SCI_INDICSETSTYLE(int indicatorNumber, int
@@ -5057,16 +5083,19 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     </code>
 
     <p><b id="SCI_VISIBLEFROMDOCLINE">SCI_VISIBLEFROMDOCLINE(int docLine)</b><br />
-     When some lines are folded, then a particular line in the document may be displayed at a
-    different position to its document position. If no lines are folded, this message returns
+     When some lines are hidden and/or annotations are displayed, then a particular line in the
+     document may be displayed at a
+    different position to its document position. If no lines are hidden and there are no annotations,
+    this message returns
     <code>docLine</code>. Otherwise, this returns the display line (counting the very first visible
     line as 0). The display line of an invisible line is the same as the previous visible line. The
-    display line number of the first line in the document is 0. If there is folding and
+    display line number of the first line in the document is 0. If lines are hidden and
     <code>docLine</code> is outside the range of lines in the document, the return value is -1.
     Lines can occupy more than one display line if they wrap.</p>
 
     <p><b id="SCI_DOCLINEFROMVISIBLE">SCI_DOCLINEFROMVISIBLE(int displayLine)</b><br />
-     When some lines are hidden, then a particular line in the document may be displayed at a
+     When some lines are hidden and/or annotations are displayed, then a particular line in the
+     document may be displayed at a
     different position to its document position. This message returns the document line number that
     corresponds to a display line (counting the display line of the first line in the document as
     0). If <code>displayLine</code> is less than or equal to 0, the result is 0. If

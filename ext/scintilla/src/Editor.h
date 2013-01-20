@@ -95,6 +95,7 @@ public:
 		characterSet = characterSet_;
 		rectangular = rectangular_;
 		lineCopy = lineCopy_;
+		FixSelectionForClipboard();
 	}
 	void Copy(const char *s_, int len_, int codePage_, int characterSet_, bool rectangular_, bool lineCopy_) {
 		delete []s;
@@ -108,9 +109,21 @@ public:
 		characterSet = characterSet_;
 		rectangular = rectangular_;
 		lineCopy = lineCopy_;
+		FixSelectionForClipboard();
 	}
 	void Copy(const SelectionText &other) {
 		Copy(other.s, other.len, other.codePage, other.characterSet, other.rectangular, other.lineCopy);
+	}
+	
+private:
+	void FixSelectionForClipboard() {
+		// Replace null characters by spaces.
+		// To avoid that the content of the clipboard is truncated in the paste operation 
+		// when the clipboard contains null characters.
+		for (int i = 0; i < len - 1; ++i) {
+			if (s[i] == '\0')
+				s[i] = ' ';
+		}
 	}
 };
 
@@ -431,7 +444,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	virtual void SetCtrlID(int identifier);
 	virtual int GetCtrlID() { return ctrlID; }
 	virtual void NotifyParent(SCNotification scn) = 0;
-	virtual void NotifyParent(SCNotification * scn) = 0;
 	virtual void NotifyStyleToNeeded(int endStyleNeeded);
 	void NotifyChar(int ch);
 	void NotifySavePoint(bool isSavePoint);
