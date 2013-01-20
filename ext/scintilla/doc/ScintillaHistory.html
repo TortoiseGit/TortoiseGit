@@ -413,6 +413,10 @@
       </tr><tr>
 	<td>Sakshi Verma</td>
 	<td>Joel B. Mohler</td>
+	<td>Isiledhel</td>
+	<td>Vidya Wasi</td>
+      </tr><tr>
+	<td>G. Hu</td>
     </tr>
     </table>
     <p>
@@ -423,6 +427,90 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite324.zip?download">Release 3.2.4</a>
+    </h3>
+    <ul>
+	<li>
+	Released 17 January 2013.
+	</li>
+	<li>
+	Caret line highlight can optionally remain visible when window does not have focus.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/964/">Feature #964.</a>
+	</li>
+	<li>
+	Delegate mechanism for notifications added on Cocoa.
+	</li>
+	<li>
+	NUL characters in selection are copied to clipboard as spaces to avoid truncating
+	at the NUL.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1289/">Bug #1289.</a>
+	</li>
+	<li>
+	C++ lexer fixes problem with showing inactive sections when preprocessor lines contain trailing comment.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1413/">Bug #1413.</a>
+	</li>
+	<li>
+	C++ lexer fixes problem with JavaScript regular expressions with '/' in character ranges.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1415/">Bug #1415.</a>
+	</li>
+	<li>
+	LaTeX folder added.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/970/">Feature #970.</a>
+	</li>
+	<li>
+	LaTeX lexer improves styling of math environments.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/970/">Feature #970.</a>
+	</li>
+	<li>
+	MySQL lexer implements hidden commands.
+	</li>
+	<li>
+	Only produce a single undo step when autocompleting a single word.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1421/">Bug #1421.</a>
+	</li>
+	<li>
+	Fixed crash when printing lines longer than 8000 characters.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1430/">Bug #1430.</a>
+	</li>
+	<li>
+	Fixed problem in character movement extends selection mode where reversing
+	direction collapsed the selection.
+	</li>
+	<li>
+	Memory issues fixed on Cocoa, involving object ownership,
+	lifetime of timers, and images held by the info bar.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1436/">Bug #1436.</a>
+	</li>
+	<li>
+	Cocoa key binding for Alt+Delete changed to delete previous word to be more compatible with
+	platform standards.
+	</li>
+	<li>
+	Fixed crash on Cocoa with scrollbar when there is no scrolling possible.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1416/">Bug #1416.</a>
+	</li>
+	<li>
+	On Cocoa with retina display fixed positioning of autocompletion lists.
+	</li>
+	<li>
+	Fixed SciTE on Windows failure to run a batch file with a name containing a space by
+	quoting the path in the properties file.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1423/">Bug #1423.</a>
+	</li>
+	<li>
+	Fixed scaling bug when printing on GTK+.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1427/">Bug #1427.</a>
+	</li>
+	<li>
+	SciTE on GTK toolbar.detachable feature removed.
+	</li>
+	<li>
+	Fixed some background saving bugs in SciTE.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1366/">Bug #1366.</a>
+	<a href="http://sourceforge.net/p/scintilla/bugs/1339/">Bug #1339.</a>
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite323.zip?download">Release 3.2.3</a>
