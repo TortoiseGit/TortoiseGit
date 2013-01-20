@@ -970,11 +970,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_MERGEREV:
 			{
-				CString str = pSelLogEntry->m_CommitHash.ToString();
-				if (!m_HashMap[pSelLogEntry->m_CommitHash].empty())
-					str = m_HashMap[pSelLogEntry->m_CommitHash].at(0);
-				// we need an URL to complete this command, so error out if we can't get an URL
-				if(CAppUtils::Merge(&str))
+				STRING_VECTOR revList;
+				POSITION pos = GetFirstSelectedItemPosition();
+				while (pos)
+				{
+					GitRev * rev = ((GitRev *)m_arShownList[GetNextSelectedItem(pos)]);
+					CString str = rev->m_CommitHash.ToString();
+					if (!m_HashMap[rev->m_CommitHash].empty())
+						str = m_HashMap[rev->m_CommitHash].at(0);
+					revList.push_back(str);
+				}
+
+				if (CAppUtils::Merge(revList))
 				{
 					this->Refresh();
 				}

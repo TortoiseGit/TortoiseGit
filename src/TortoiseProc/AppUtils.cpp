@@ -2714,14 +2714,16 @@ static void MergeCallback(CProgressDlg *dlg, void * /*caller*/, int result)
 	}
 }
 
-BOOL CAppUtils::Merge(CString *commit)
+BOOL CAppUtils::Merge(STRING_VECTOR &revList)
 {
 	if (!CheckUserData())
 		return FALSE;
 
 	CMergeDlg dlg;
-	if(commit)
-		dlg.m_initialRefName = *commit;
+	if (revList.size() == 1)
+		dlg.m_initialRefName = revList[0];
+	else
+		dlg.m_Versions = revList;
 
 	if(dlg.DoModal()==IDOK)
 	{
