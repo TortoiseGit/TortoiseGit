@@ -5043,6 +5043,11 @@ msgstr ""
 msgid "Lines removed"
 msgstr ""
 
+#. Resource IDs: (1386)
+#, c-format
+msgid "List (%d)"
+msgstr ""
+
 #. Resource IDs: (3605)
 msgid "List Help topics\nHelp Topics"
 msgstr ""

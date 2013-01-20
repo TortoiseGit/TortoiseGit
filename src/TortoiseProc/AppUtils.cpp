@@ -2761,7 +2761,12 @@ BOOL CAppUtils::Merge(CString *commit)
 			logmsg.Replace(_T("\""), _T("\\\""));
 			args += _T(" -m \"") + logmsg + _T("\"");
 		}
-		cmd.Format(_T("git.exe merge %s %s"), args, g_Git.FixBranchName(dlg.m_VersionName));
+		cmd.Format(_T("git.exe merge %s"), args);
+		for (size_t i = 0; i < dlg.m_Versions.size(); i++)
+		{
+			cmd.AppendChar(_T(' '));
+			cmd.Append(g_Git.FixBranchName(dlg.m_Versions[i]));
+		}
 
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
