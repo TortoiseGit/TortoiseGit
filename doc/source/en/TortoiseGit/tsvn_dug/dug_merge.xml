@@ -33,6 +33,10 @@
 			<title>Merge dialog</title>
 			<graphic fileref="../images/Merge.png"/>
 		</figure>
+		<figure id="tsvn-dug-merge-dia-2">
+			<title>Merge dialog parent list</title>
+			<graphic fileref="../images/MergeParentList.png"/>
+		</figure>
 	</para>
 	<para>
 		In general it is a good idea to perform a merge into an unmodified
@@ -42,7 +46,10 @@
 		<emphasis>all</emphasis> changes including any you made before the merge.
 	</para>
 	<para>
-		You can choose one commit that you want to merge from. 
+		You can choose one or more commits that you want to merge from. 
+		If you want to add more commits, click the button with <guibutton>'Plus'</guibutton> icon.
+		You can view a list of commits by clicking the <guibutton>List</guibutton> button.
+		To change the ref name to use for a particular commit, click the button with <guibutton>'Branch'</guibutton> icon until you find the desired name.
 		<xi:include href="./dug_chooseversion.xml"/> 
 	</para>
 	<para>
