@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006,2008 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -132,8 +132,8 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll)
 				(LPTSTR)strLangProduktVersion,
 				(LPVOID *)&lpVersion,
 				&nInfoSize);
-
-			bReturn = (_tcscmp(sVer, (LPCTSTR)lpVersion)==0);
+			if (lpVersion && nInfoSize)
+				bReturn = (_tcscmp(sVer, (LPCTSTR)lpVersion)==0);
 			free(pBuffer);
 		}
 	}
