@@ -59,10 +59,6 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, m_folder, sWindowTitle);
 
 	m_tooltips.Create(this);
-	CString tt;
-	tt.LoadString(IDS_CLONE_DEPTH_TT);
-	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
-	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
