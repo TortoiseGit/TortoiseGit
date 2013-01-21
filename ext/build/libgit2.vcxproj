@@ -182,6 +182,7 @@
     <ClCompile Include="..\libgit2\src\tag.c" />
     <ClCompile Include="..\libgit2\src\thread-utils.c" />
     <ClCompile Include="..\libgit2\src\transport.c" />
+    <ClCompile Include="..\libgit2\src\transports\cred.c" />
     <ClCompile Include="..\libgit2\src\tree-cache.c" />
     <ClCompile Include="..\libgit2\src\tree.c" />
     <ClCompile Include="..\libgit2\src\tsort.c" />

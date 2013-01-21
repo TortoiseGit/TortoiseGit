@@ -23,6 +23,8 @@
 #include "CommonAppUtils.h"
 
 class CTGitPath;
+struct git_cred;
+struct git_transfer_progress;
 
 enum GIT_POST_CMD
 {
@@ -211,7 +213,9 @@ public:
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
-
+	static int  Git2GetUserPassword(git_cred **out, const char *url, unsigned int allowed_types, void *payload);
+	static void Git2FetchProgress(const git_transfer_progress *stats, void *payload);
+	static void Git2CheckoutProgress(const char *path, size_t cur, size_t tot, void *payload);
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);

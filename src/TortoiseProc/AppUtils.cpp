@@ -63,6 +63,8 @@
 #include "SmartHandle.h"
 #include "BisectStartDlg.h"
 #include "SysProgressDlg.h"
+#include "UserPassword.h"
+#include "git2.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2926,4 +2928,58 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 	}
 
 	return false;
+}
+
+int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, unsigned int /*allowed_types*/, void * /*payload*/)
+{
+	CUserPassword dlg;
+	dlg.m_URL = CUnicodeUtils::GetUnicode(url, CP_UTF8);
+	CStringA username, password;
+	if (dlg.DoModal() == IDOK)
+	{
+		username = CUnicodeUtils::GetMulti(dlg.m_UserName, CP_UTF8);
+		password = CUnicodeUtils::GetMulti(dlg.m_Password, CP_UTF8);
+		return git_cred_userpass_plaintext_new(out, username, password);
+	}
+	return -1;
+}
+
+void CAppUtils::Git2FetchProgress(const git_transfer_progress *stats, void *payload)
+{
+	CSysProgressDlg *pDlg = (CSysProgressDlg*)payload;
+	if (pDlg == NULL)
+		return;
+	static unsigned int start = 0;
+	if (GetCurrentTime()-start > 100)
+		start = GetCurrentTime();
+	else
+		return;
+
+	pDlg->FormatPathLine(1, _T("net %3d%% (%4d kb, %5d/%5d)  /  idx %3d%% (%5d/%5d)"),
+		   (100 * stats->received_objects) / stats->total_objects,
+		   stats->received_bytes / 1024,
+		   stats->received_objects, 
+		   stats->total_objects,
+		   (100 * stats->indexed_objects) / stats->total_objects,
+		   stats->indexed_objects,
+		   stats->total_objects);
+	pDlg->SetProgress(stats->received_objects, stats->total_objects);
+
+}
+void CAppUtils::Git2CheckoutProgress(const char *path, size_t cur, size_t tot, void *payload)
+{
+	CSysProgressDlg *pDlg = (CSysProgressDlg*)payload;
+	CString str; 
+	if (pDlg == NULL)
+		return;
+
+	static unsigned int start = 0;
+	if (GetCurrentTime()-start > 100)
+		start = GetCurrentTime();
+	else
+		return;
+
+	pDlg->FormatPathLine(0, _T("Check Out"));
+	pDlg->FormatPathLine(1, _T("%s"), CUnicodeUtils::GetUnicode(path, CP_ACP));
+	pDlg->SetProgress(cur, tot);
 }

@@ -629,6 +629,9 @@
     <ClCompile Include="TortoiseProc.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="UserPassword.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1088,6 +1091,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="TortoiseProc.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UserPassword.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

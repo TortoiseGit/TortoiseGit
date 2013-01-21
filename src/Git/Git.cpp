@@ -155,6 +155,8 @@ CGit::CGit(void)
 	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(_T("Software\\TortoiseGit\\UsingGitDLL"),1);
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
+	m_IsUseLibGit2_Mask1 = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask1"), 0);
+
 	GetSortOptions();
 	this->m_bInitialized =false;
 	CheckMsysGitDir();
@@ -2450,4 +2452,8 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	}
 }
 
-
+BOOL CGit::UsingLibGit2(int cmd)
+{
+	if (cmd>=0 && cmd<32)
+		return !!((1<<cmd) & m_IsUseLibGit2_Mask1);
+ }

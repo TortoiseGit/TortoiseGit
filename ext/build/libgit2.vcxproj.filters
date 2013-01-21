@@ -323,6 +323,9 @@
     <ClCompile Include="..\libgit2\src\diff_tform.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\transports\cred.c">
+      <Filter>Source Files\transports</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">

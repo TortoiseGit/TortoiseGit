@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\TortoiseGit\src\Resources\TortoiseProcENG.rc
+// Used by C:\TortoiseGit\src\Resources\TortoiseProcENG.rc
 //
 #define IDR_MAINFRAME                   1
 #define IDD_SETTINGSPROXY               102
@@ -296,6 +296,7 @@
 #define IDC_BUGID                       1077
 #define IDC_EXCLUDEPATHS                1077
 #define IDS_BRANCHNAME                  1077
+#define IDC_LABEL2                      1077
 #define IDS_DATELASTCOMMIT              1078
 #define IDC_DRIVEGROUP                  1079
 #define IDS_PROC_COMMIT_ADDSIGNOFFBUTTON 1079
@@ -1508,6 +1509,7 @@
 #define ID_REVGRAPH_ZOOMCOMBO           4583
 #define IDD_REVGRAPHFILTER              4584
 #define IDC_FROMREV                     4585
+#define IDD_USER_PASSWD                 4585
 #define IDC_FROMSPIN                    4586
 #define IDC_TOREV                       4587
 #define IDC_TOSPIN                      4588
@@ -1670,6 +1672,8 @@
 #define IDS_STATGRAPH_LINES_BYDATE_WO   32858
 #define IDS_STATGRAPH_LINES_BYDATE_W_Y  32859
 #define IDS_STATGRAPH_LINES_BYDATE_WO_Y 32860
+#define IDS_PROG_CLONE                  32861
+#define IDC_USER_NAME                   32862
 
 // Next default values for new objects
 // 
@@ -1677,7 +1681,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         50000
+#define _APS_NEXT_CONTROL_VALUE         50001
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

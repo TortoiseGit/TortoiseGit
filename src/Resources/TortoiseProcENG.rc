@@ -1740,6 +1740,18 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
 END
 
+IDD_USER_PASSWD DIALOGEX 0, 0, 241, 82
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Password"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "&User Name:",IDC_LABEL,7,22,51,8
+    DEFPUSHBUTTON   "OK",IDOK,120,61,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,184,61,50,14
+    LTEXT           "&Password:",IDC_LABEL2,7,38,57,8
+    EDITTEXT        IDC_USER_NAME,77,18,157,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD,77,36,157,14,ES_PASSWORD | ES_AUTOHSCROLL
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2540,6 +2552,16 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 95
     END
+
+    IDD_USER_PASSWD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        VERTGUIDE, 42
+        VERTGUIDE, 170
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 75
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2804,6 +2826,7 @@ STRINGTABLE
 BEGIN
     IDS_REVGRAPH_POPUP_COMPAREHEADS "Compare &HEAD revisions"
     IDS_REVGRAPH_POPUP_UNIDIFFHEADS "Unified &diff of HEAD revisions"
+    IDS_PROG_CLONE          "Clone"
 END
 
 STRINGTABLE

@@ -82,6 +82,7 @@ public:
 	CComCriticalSection			m_critGitDllSec;
 	bool	m_IsUseGitDLL;
 	bool	m_IsUseLibGit2;
+	DWORD	m_IsUseLibGit2_Mask1;
 
 	CEnvironment m_Environment;
 
@@ -351,6 +352,15 @@ public:
 
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine);
 	int GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine);
+
+	enum
+	{
+		GIT_CMD_INIT,
+		GIT_CMD_CLONE,
+		GIT_CMD_DIFF,
+	};
+	BOOL UsingLibGit2(int cmd);
+
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
