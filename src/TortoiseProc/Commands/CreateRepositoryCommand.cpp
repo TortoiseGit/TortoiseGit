@@ -22,6 +22,8 @@
 #include "ShellUpdater.h"
 #include "MessageBox.h"
 #include "git.h"
+#include "git2.h"
+#include "UnicodeUtils.h"
 
 #include "CreateRepoDlg.h"
 
@@ -44,10 +46,35 @@ bool CreateRepositoryCommand::Execute()
 		CString output;
 		int ret;
 
-		if (dlg.m_bBare)
-			ret = git.Run(_T("git.exe init-db --bare"), &output, CP_UTF8);
-		else
-			ret = git.Run(_T("git.exe init-db"), &output, CP_UTF8);
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_INIT))
+		{
+			git_repository *out = NULL;
+			ret = git_repository_init(&out, CUnicodeUtils::GetMulti(git.m_CurrentDir, CP_UTF8), dlg.m_bBare);
+			if (!ret)
+			{
+				git_repository_free(out);
+				output.Format(_T("Success Create Git Repository at %s"), git.m_CurrentDir);
+			}
+			else
+			{
+				const git_error *err = giterr_last();
+				CStringA str;
+				if (err)
+				{
+					str.Format("ERROR %d: %s\n", err->klass, err->message);
+				}
+				else
+					str.Format("ERROR: no detailed info\n");
+				
+				output = CUnicodeUtils::GetUnicode(str, CP_UTF8);
+			}
+		}else
+		{
+			if (dlg.m_bBare)
+				ret = git.Run(_T("git.exe init-db --bare"), &output, CP_UTF8);
+			else
+				ret = git.Run(_T("git.exe init-db"), &output, CP_UTF8);
+		}
 
 		if (output.IsEmpty()) output = _T("git.Run() had no output");
 
