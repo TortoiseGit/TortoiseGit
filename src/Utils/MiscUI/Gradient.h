@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2003-2007, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ public:
 	 * \param rect the rectangle to fill
 	 * \param colorStart the starting color. This is either the color used on the left (if bHorz == TRUE) or top
 	 * \param colorMid the middle color.
-	 * \param colorEnd the ending color. This is either the color used on the right (if bHorz == TRUE) or bottom
+	 * \param colorFinish the ending color. This is either the color used on the right (if bHorz == TRUE) or bottom
 	 * \param bHorz if TRUE then the gradient is drawn from left to right, otherwise from top to bottom
 	 * \param nSteps the steps the gradient shall have. The more the smoother the gradient will be but also slower.
 	 */

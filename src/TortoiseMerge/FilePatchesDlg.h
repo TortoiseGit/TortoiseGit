@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2008, 2010-2011 - TortoiseSVN
+// Copyright (C) 2006, 2008, 2010-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,10 @@ public:
 	 * specific file to patch. The framework then has to process
 	 * the patching/viewing.
 	 * \param sFilePath the full path to the file to patch
+	 * \param bContentMods
+	 * \param bPropMods
 	 * \param sVersion the revision number of the file to patch
+	 * \param bAutoPatch
 	 * \return TRUE if patching was successful
 	 */
 	virtual BOOL PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch = FALSE) = 0;
@@ -77,6 +80,7 @@ public:
 	 * \param pPatch The CPatch object used to get the filenames from the unified diff file
 	 * \param pCallBack The Object providing the callback interface (CPatchFilesDlgCallBack)
 	 * \param sPath The path to the "parent" folder where the patch gets applied to
+	 * \param pParent
 	 * \return TRUE if successful
 	 */
 	BOOL	Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent);

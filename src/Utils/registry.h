@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,6 +58,7 @@ public: //methods
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegBaseCommon(const S& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 
@@ -236,6 +237,7 @@ public: //methods
      * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegStdBase(const tstring& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 };
@@ -336,6 +338,7 @@ public:
      * \param def the default value used when the key does not exist or a read error occurred
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegTypedBase(const typename Base::StringT& key, const T& def, bool force = FALSE, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 
@@ -346,6 +349,7 @@ public:
      * \param def the default value used when the key does not exist or a read error occurred
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegTypedBase(DWORD updateInterval, const typename Base::StringT& key, const T& def, bool force = FALSE, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 
@@ -565,6 +569,7 @@ public:
      * \param def the default value used when the key does not exist or a read error occurred
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegDWORDCommon(const typename Base::StringT& key, DWORD def = 0, bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
     CRegDWORDCommon(DWORD lookupInterval, const typename Base::StringT& key, DWORD def = 0, bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
@@ -685,6 +690,7 @@ public:
      * \param def the default value used when the key does not exist or a read error occurred
      * \param force set to TRUE if no cache should be used, i.e. always read and write directly from/to registry
      * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
+     * \param sam
      */
     CRegStringCommon(const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
     CRegStringCommon(DWORD lookupInterval, const typename Base::StringT& key, const typename Base::StringT& def = _T(""), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
