@@ -1750,7 +1750,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,184,61,50,14
     LTEXT           "&Password:",IDC_LABEL2,7,38,57,8
     EDITTEXT        IDC_USER_NAME,77,18,157,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_PASSWORD,77,36,157,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER_PASSWORD,77,36,157,14,ES_PASSWORD | ES_AUTOHSCROLL
 END
 
 /////////////////////////////////////////////////////////////////////////////

@@ -1515,6 +1515,8 @@
 #define IDC_TOSPIN                      4588
 #define IDC_PATHFILTER                  4589
 #define IDC_REMOVESUBTREE               4590
+#define IDC_USER_NAME                   4591
+#define IDC_USER_PASSWORD               4592
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1673,7 +1675,7 @@
 #define IDS_STATGRAPH_LINES_BYDATE_W_Y  32859
 #define IDS_STATGRAPH_LINES_BYDATE_WO_Y 32860
 #define IDS_PROG_CLONE                  32861
-#define IDC_USER_NAME                   32862
+
 
 // Next default values for new objects
 // 
