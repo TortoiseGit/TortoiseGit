@@ -168,6 +168,7 @@
     <ClCompile Include="..\libgit2\src\pool.c" />
     <ClCompile Include="..\libgit2\src\posix.c" />
     <ClCompile Include="..\libgit2\src\pqueue.c" />
+    <ClCompile Include="..\libgit2\src\push.c" />
     <ClCompile Include="..\libgit2\src\reflog.c" />
     <ClCompile Include="..\libgit2\src\refs.c" />
     <ClCompile Include="..\libgit2\src\refspec.c" />

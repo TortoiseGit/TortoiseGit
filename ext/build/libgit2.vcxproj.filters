@@ -326,6 +326,9 @@
     <ClCompile Include="..\libgit2\src\transports\cred.c">
       <Filter>Source Files\transports</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\push.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">

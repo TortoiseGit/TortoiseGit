@@ -2068,7 +2068,10 @@ static int update_cb(const char *refname, const git_oid *a, const git_oid *b, vo
 static void progress_cb(const char *str, int len, void *data)
 {
 }
-
+static int push_cb(const char *ref, const char *msg, void *data)
+{
+	return 0;
+}
 static int Git2Fetch(CString remoteName, BOOL bTags, BOOL m_bPrune, CString Branch)
 {
 	CStringA url = CUnicodeUtils::GetMulti(remoteName, CP_UTF8);
@@ -2298,6 +2301,71 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 	return FALSE;
 }
 
+static int Git2Push(CString remoteName, BOOL bTags, BOOL m_bPrune, CString Spec)
+{
+	CStringA url = CUnicodeUtils::GetMulti(remoteName, CP_UTF8);
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+	CStringA remotebranch = CUnicodeUtils::GetMulti(Spec, CP_UTF8);
+	
+	git_remote *remote = NULL;
+	git_repository *repo = NULL;
+	git_push *push = NULL;
+
+	int ret = 0;
+
+	CSysProgressDlg progress;
+	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
+	progress.SetAnimation(IDR_DOWNLOAD);
+	progress.SetTime(true);
+	progress.ShowModeless((CWnd*)NULL);
+
+	do
+	{
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			ret = -1;
+			break;
+		}
+
+		if (git_remote_load(&remote, repo, url) < 0) 
+		{
+			if (git_remote_create_inmemory(&remote, repo, NULL, url) < 0)
+			{
+				ret = -1;
+				break;
+			}
+		}
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+		callbacks.update_tips = &update_cb;
+		callbacks.progress = &progress_cb;
+
+		git_remote_set_callbacks(remote, &callbacks);
+		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
+		git_remote_set_autotag(remote, bTags? GIT_REMOTE_DOWNLOAD_TAGS_ALL:GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+
+		ret = git_push_new(&push, remote);
+		if (ret) break;
+
+		if (!remotebranch.IsEmpty())
+			git_push_add_refspec(push, remotebranch);
+
+		ret = git_push_finish(push);
+		if (ret) break;
+
+		git_push_status_foreach(push, push_cb, NULL);
+
+	}while(0);
+
+	git_push_free(push);
+	git_remote_free(remote);
+	git_repository_free(repo);
+
+	return ret;
+}
+
 bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 {
 	CPushDlg dlg;
@@ -2373,11 +2441,20 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 				}
 			}
 			progress.m_GitCmdList.push_back(cmd);
+
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_PUSH))
+			{
+				progress.m_GitStatus += Git2Push(remotesList[i], dlg.m_bTags, FALSE, 
+					dlg.m_BranchRemoteName.IsEmpty()? dlg.m_BranchSourceName: dlg.m_BranchSourceName + _T(":") + dlg.m_BranchRemoteName);
+			}
 		}
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-		INT_PTR ret = progress.DoModal();
+		
+		INT_PTR ret;
+		if(!g_Git.UsingLibGit2(CGit::GIT_CMD_PUSH))
+			ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
 		{
