@@ -1347,7 +1347,7 @@ BEGIN
     CONTROL         "",IDC_REBASE_SPLIT,"Static",SS_OWNERDRAW,7,129,402,6,WS_EX_TRANSPARENT
     PUSHBUTTON      "Dumy Group For locat TabCtr",IDC_REBASE_DUMY_TAB,7,137,402,64,NOT WS_VISIBLE
     CONTROL         "",IDC_REBASE_PROGRESS,"msctls_progress32",WS_BORDER,7,204,402,7
-    LTEXT           "",IDC_STATUS_STATIC,7,215,101,8
+    LTEXT           "",IDC_STATUS_STATIC,7,215,201,8
     DEFPUSHBUTTON   "Continue",IDC_REBASE_CONTINUE,213,217,63,14
     PUSHBUTTON      "Abort",IDC_REBASE_ABORT,285,217,57,14
     PUSHBUTTON      "Help",IDHELP,351,217,58,14
@@ -3938,6 +3938,7 @@ BEGIN
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
     IDS_PROC_REPOCREATED    "Initialized empty Git repository in %s."
+    IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
 END
 
 #endif    // English (U.S.) resources

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,6 +70,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	DECLARE_MESSAGE_MAP()
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	LRESULT OnRebaseUpdateUI(WPARAM wParam, LPARAM lParam);
 	void DoSize(int delta);
 	void AddRebaseAnchor();
@@ -85,6 +86,8 @@ protected:
 
 	CRect m_DlgOrigRect;
 	CRect m_CommitListOrigRect;
+	CString m_sStatusText;
+	bool m_bStatusWarning;
 	BOOL PreTranslateMessage(MSG* pMsg);
 	bool LogListHasFocus(HWND hwnd);
 

@@ -33,6 +33,7 @@
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"
 #include "Settings\Settings.h"
+#include "MassiveGitTask.h"
 
 // CRebaseDlg dialog
 
@@ -44,6 +45,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bSquashAll(FALSE)
 	, m_bEditAll(FALSE)
 	, m_bAddCherryPickedFrom(FALSE)
+	, m_bStatusWarning(false)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -95,6 +97,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -307,6 +310,18 @@ BOOL CRebaseDlg::OnInitDialog()
 	return TRUE;
 }
 // CRebaseDlg message handlers
+
+HBRUSH CRebaseDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	if (pWnd->GetDlgCtrlID() == IDC_STATUS_STATIC && nCtlColor == CTLCOLOR_STATIC && m_bStatusWarning)
+	{
+		pDC->SetBkColor(RGB(255, 0, 0));
+		pDC->SetTextColor(RGB(255, 255, 255));
+		return CreateSolidBrush(RGB(255, 0, 0));
+	}
+
+	return CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+}
 
 void CRebaseDlg::OnBnClickedPickAll()
 {
@@ -921,6 +936,9 @@ int CRebaseDlg::FinishRebase()
 	m_ctrlTabCtrl.RemoveTab(0);
 	m_LogMessageCtrl.ShowWindow(SW_HIDE);
 	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
+	m_sStatusText = CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED));
+	m_bStatusWarning = false;
+	m_CtrlStatusText.Invalidate();
 
 	return 0;
 }
@@ -1007,6 +1025,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return ;
 		m_RebaseStage = REBASE_START;
 		m_FileListCtrl.Clear();
+		m_FileListCtrl.SetHasCheckboxes(false);
 		m_FileListCtrl.m_CurrentVersion = L"";
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, CString(MAKEINTRESOURCE(IDS_PROC_CONFLICTFILES)));
 		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase, CString(MAKEINTRESOURCE(IDS_LOG)), 2);
@@ -1045,10 +1064,60 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
+		for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
+		{
+			CString cmd, out;
+			CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+			if (entry->m_Checked)
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+					cmd.Format(_T("git.exe add -f -- \"%s\""), entry->GetGitPathString());
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""), entry->GetGitPathString());
+				else
+					cmd.Format(_T("git.exe update-index -- \"%s\""), entry->GetGitPathString());
+
+				if (g_Git.Run(cmd, &out, CP_UTF8))
+				{
+					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					return;
+				}
+
+				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
+
+				g_Git.Run(cmd, &out, CP_UTF8);
+			}
+			else
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{
+					cmd.Format(_T("git.exe rm -f --cache -- \"%s\""), entry->GetGitPathString());
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+					{
+						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK| MB_ICONERROR);
+						return;
+					}
+					mgtReAddAfterCommit.AddFile(*entry);
+
+					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
+						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
+						g_Git.Run(cmd, &out, CP_UTF8);
+					}
+				}
+				else if(!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+				{
+					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
+					g_Git.Run(cmd, &out, CP_UTF8);
+				}
+			}
+		}
 
 		CString out =_T("");
 		CString cmd;
-		cmd.Format(_T("git.exe commit -a -C %s"), curRev->m_CommitHash.ToString());
+		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
 
 		AddLogString(cmd);
 
@@ -1063,6 +1132,13 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		AddLogString(out);
+
+		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
+		{
+			BOOL cancel;
+			mgtReAddAfterCommit.Execute(cancel);
+		}
+
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		if( curRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_EDIT)
 		{
@@ -1322,8 +1398,10 @@ void CRebaseDlg::UpdateProgress()
 	{
 		CString text;
 		text.Format(IDS_PROC_REBASING_PROGRESS, index, m_CommitList.GetItemCount());
+		m_sStatusText = text;
 		m_CtrlStatusText.SetWindowText(text);
-
+		m_bStatusWarning = false;
+		m_CtrlStatusText.Invalidate();
 	}
 
 	GitRev *prevRev=NULL, *curRev=NULL;
@@ -1570,6 +1648,7 @@ int CRebaseDlg::RebaseThread()
 void CRebaseDlg::ListConflictFile()
 {
 	this->m_FileListCtrl.Clear();
+	m_FileListCtrl.SetHasCheckboxes(true);
 	CTGitPathList list;
 	CTGitPath path;
 	list.AddPath(path);
@@ -1579,6 +1658,31 @@ void CRebaseDlg::ListConflictFile()
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
 							   CTGitPath::LOGACTIONS_UNMERGED);
+
+	m_FileListCtrl.Check(GITSLC_SHOWFILES);
+	bool hasSubmoduleChange = false;
+	for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
+	{
+		CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+		if (entry->IsDirectory())
+		{
+			hasSubmoduleChange = true;
+			break;
+		}
+	}
+
+	if (hasSubmoduleChange)
+	{
+		m_CtrlStatusText.SetWindowText(m_sStatusText + _T(", ") + CString(MAKEINTRESOURCE(IDS_CARE_SUBMODULE_CHANGES)));
+		m_bStatusWarning = true;
+		m_CtrlStatusText.Invalidate();
+	}
+	else
+	{
+		m_CtrlStatusText.SetWindowText(m_sStatusText);
+		m_bStatusWarning = false;
+		m_CtrlStatusText.Invalidate();
+	}
 }
 
 LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)

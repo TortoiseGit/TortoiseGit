@@ -7883,6 +7883,10 @@ msgstr ""
 msgid "Tags:"
 msgstr ""
 
+#. Resource IDs: (1386)
+msgid "take care of submodule changes"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Tasks"
 msgstr ""
