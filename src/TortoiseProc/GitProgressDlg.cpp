@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -824,7 +824,11 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 
 void CGitProgressDlg::ReportGitError()
 {
-	ReportError(CString(giterr_last()->message));
+	const git_error *err = giterr_last();
+	if (err == nullptr)
+		ReportError(_T("An error occoured in libgit2, but no message is available."));
+	else
+		ReportError(CUnicodeUtils::GetUnicode(giterr_last()->message));
 }
 
 void CGitProgressDlg::ReportError(const CString& sError)
