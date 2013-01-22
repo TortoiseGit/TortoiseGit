@@ -858,6 +858,7 @@
 #define IDC_CONFIG                      1385
 #define IDC_BUTTON_UNIFIEDDIFF          1385
 #define IDS_PROC_SYNC_PUSHNOTES         1385
+#define IDS_PROC_REPOCREATED            1386
 #define IDC_FILTER                      1387
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394

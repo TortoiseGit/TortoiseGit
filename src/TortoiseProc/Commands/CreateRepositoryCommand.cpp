@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,8 @@
 #include "CreateRepositoryCommand.h"
 #include "ShellUpdater.h"
 #include "MessageBox.h"
-#include "git.h"
+#include "git2.h"
+#include "UnicodeUtils.h"
 
 #include "CreateRepoDlg.h"
 
@@ -39,29 +40,26 @@ bool CreateRepositoryCommand::Execute()
 			return false;
 		}
 
-		CGit git;
-		git.m_CurrentDir = this->orgCmdLinePath.GetWinPath();
-		CString output;
-		int ret;
-
-		if (dlg.m_bBare)
-			ret = git.Run(_T("git.exe init-db --bare"), &output, CP_UTF8);
-		else
-			ret = git.Run(_T("git.exe init-db"), &output, CP_UTF8);
-
-		if (output.IsEmpty()) output = _T("git.Run() had no output");
-
-		if (ret)
+		git_repository *repo;
+		CStringA path(CUnicodeUtils::GetMulti(folder, CP_UTF8));
+		if (git_repository_init(&repo, path.GetBuffer(), dlg.m_bBare))
 		{
-			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR);
+			path.ReleaseBuffer();
+			const git_error *err = giterr_last();
+			if (err == nullptr)
+				CMessageBox::Show(hwndExplorer, _T("An error occoured in libgit2 without providing a message."), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			else
+				CMessageBox::Show(hwndExplorer, CUnicodeUtils::GetUnicode(giterr_last()->message), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
-		else
-		{
-			if (!dlg.m_bBare)
-				CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);
-			CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
-		}
+		path.ReleaseBuffer();
+		git_repository_free(repo);
+
+		if (!dlg.m_bBare)
+			CShellUpdater::Instance().AddPathForUpdate(orgCmdLinePath);
+		CString str;
+		str.Format(IDS_PROC_REPOCREATED, folder);
+		CMessageBox::Show(hwndExplorer, str, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 		return true;
 	}
 	return false;

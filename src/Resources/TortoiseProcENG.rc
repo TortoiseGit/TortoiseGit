@@ -3936,6 +3936,7 @@ BEGIN
     IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
+    IDS_PROC_REPOCREATED    "Initialized empty Git repository in %s."
 END
 
 #endif    // English (U.S.) resources
