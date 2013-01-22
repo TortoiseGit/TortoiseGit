@@ -573,6 +573,10 @@ void CCommitDlg::OnOK()
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 	DWORD currentTicks = GetTickCount();
 
+	// ***************************************************
+	// ATTENTION: Similar code in RebaseDlg.cpp!!!
+	// ***************************************************
+
 	for (int j = 0; j < nListItems; ++j)
 	{
 		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
