@@ -331,6 +331,9 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 		}
 	}
 
+	if (!oldOK || !newOK)
+		changeType = CSubmoduleDiffDlg::Unknown;
+
 	CSubmoduleDiffDlg submoduleDiffDlg;
 	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
