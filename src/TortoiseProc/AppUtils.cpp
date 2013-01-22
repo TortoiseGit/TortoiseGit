@@ -2350,8 +2350,11 @@ static int Git2Push(CString remoteName, BOOL bTags, BOOL m_bPrune, CString Spec)
 		if (ret) break;
 
 		if (!remotebranch.IsEmpty())
-			git_push_add_refspec(push, remotebranch);
-
+		{
+			ret = git_push_add_refspec(push, remotebranch);
+			if (ret) 
+				break;
+		}
 		ret = git_push_finish(push);
 		if (ret) break;
 
