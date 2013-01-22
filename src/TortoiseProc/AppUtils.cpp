@@ -2061,6 +2061,93 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	file.Close();
 	return 0;
 }
+static int update_cb(const char *refname, const git_oid *a, const git_oid *b, void *data)
+{
+	return 0;
+}
+static void progress_cb(const char *str, int len, void *data)
+{
+}
+
+static int Git2Fetch(CString remoteName, BOOL bTags, BOOL m_bPrune, CString Branch)
+{
+	CStringA url = CUnicodeUtils::GetMulti(remoteName, CP_UTF8);
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+	CStringA remotebranch = CUnicodeUtils::GetMulti(Branch, CP_UTF8);
+	
+	git_remote *remote = NULL;
+	git_repository *repo = NULL;
+	int ret = 0;
+
+	CSysProgressDlg progress;
+	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
+	progress.SetAnimation(IDR_DOWNLOAD);
+	progress.SetTime(true);
+	progress.ShowModeless((CWnd*)NULL);
+
+	do
+	{
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			ret = -1;
+			break;
+		}
+
+		if (git_remote_load(&remote, repo, url) < 0) 
+		{
+			if (git_remote_create_inmemory(&remote, repo, NULL, url) < 0)
+			{
+				ret = -1;
+				break;
+			}
+		}
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+		callbacks.update_tips = &update_cb;
+		callbacks.progress = &progress_cb;
+
+		git_remote_set_callbacks(remote, &callbacks);
+		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
+		git_remote_set_autotag(remote, bTags? GIT_REMOTE_DOWNLOAD_TAGS_ALL:GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+
+		if (!remotebranch.IsEmpty())
+			git_remote_set_fetchspec(remote, remotebranch);
+
+		// Connect to the remote end specifying that we want to fetch
+		// information from it.
+		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0) {
+			ret = -1;
+			break;
+		}
+
+		// Download the packfile and index it. This function updates the
+		// amount of received data and the indexer stats which lets you
+		// inform the user about progress.
+		if (git_remote_download(remote, CAppUtils::Git2FetchProgress, &progress) < 0) {
+			ret = -1;
+			break;
+		}
+
+		git_remote_disconnect(remote);
+
+		// Update the references in the remote's namespace to point to the
+		// right commits. This may be needed even if there was no packfile
+		// to download, which can happen e.g. when the branches have been
+		// changed but all the neede objects are available locally.
+		if (git_remote_update_tips(remote) < 0)
+		{
+			ret = -1;
+			break;
+		}
+	}while(0);
+
+	git_remote_free(remote);
+	git_repository_free(repo);
+
+	return ret;
+}
 
 bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 {
@@ -2131,6 +2218,11 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		}
 
 		progress.m_GitCmd=cmd;
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
+		{
+			Git2Fetch(url, dlg.m_bFetchTags, dlg.m_bPrune, dlg.m_RemoteBranchName);
+			return TRUE;
+		}
 		INT_PTR userResponse = progress.DoModal();
 
 		if (userResponse == IDC_PROGRESS_BUTTON1)
