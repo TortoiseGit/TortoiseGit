@@ -33,6 +33,7 @@
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"
 #include "Settings\Settings.h"
+#include "MassiveGitTask.h"
 
 // CRebaseDlg dialog
 
@@ -1007,6 +1008,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return ;
 		m_RebaseStage = REBASE_START;
 		m_FileListCtrl.Clear();
+		m_FileListCtrl.SetHasCheckboxes(false);
 		m_FileListCtrl.m_CurrentVersion = L"";
 		m_ctrlTabCtrl.SetTabLabel(REBASE_TAB_CONFLICT, CString(MAKEINTRESOURCE(IDS_PROC_CONFLICTFILES)));
 		m_ctrlTabCtrl.AddTab(&m_wndOutputRebase, CString(MAKEINTRESOURCE(IDS_LOG)), 2);
@@ -1045,10 +1047,60 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 
 		GitRev *curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
+		for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
+		{
+			CString cmd, out;
+			CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+			if (entry->m_Checked)
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+					cmd.Format(_T("git.exe add -f -- \"%s\""), entry->GetGitPathString());
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""), entry->GetGitPathString());
+				else
+					cmd.Format(_T("git.exe update-index -- \"%s\""), entry->GetGitPathString());
+
+				if (g_Git.Run(cmd, &out, CP_UTF8))
+				{
+					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					return;
+				}
+
+				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
+
+				g_Git.Run(cmd, &out, CP_UTF8);
+			}
+			else
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{
+					cmd.Format(_T("git.exe rm -f --cache -- \"%s\""), entry->GetGitPathString());
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+					{
+						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK| MB_ICONERROR);
+						return;
+					}
+					mgtReAddAfterCommit.AddFile(*entry);
+
+					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
+						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
+						g_Git.Run(cmd, &out, CP_UTF8);
+					}
+				}
+				else if(!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+				{
+					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
+					g_Git.Run(cmd, &out, CP_UTF8);
+				}
+			}
+		}
 
 		CString out =_T("");
 		CString cmd;
-		cmd.Format(_T("git.exe commit -a -C %s"), curRev->m_CommitHash.ToString());
+		cmd.Format(_T("git.exe commit -C %s"), curRev->m_CommitHash.ToString());
 
 		AddLogString(cmd);
 
@@ -1063,6 +1115,13 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		AddLogString(out);
+
+		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
+		{
+			BOOL cancel;
+			mgtReAddAfterCommit.Execute(cancel);
+		}
+
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		if( curRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_EDIT)
 		{
@@ -1570,6 +1629,7 @@ int CRebaseDlg::RebaseThread()
 void CRebaseDlg::ListConflictFile()
 {
 	this->m_FileListCtrl.Clear();
+	m_FileListCtrl.SetHasCheckboxes(true);
 	CTGitPathList list;
 	CTGitPath path;
 	list.AddPath(path);
@@ -1579,6 +1639,8 @@ void CRebaseDlg::ListConflictFile()
 	this->m_FileListCtrl.GetStatus(&list,true);
 	this->m_FileListCtrl.Show(CTGitPath::LOGACTIONS_UNMERGED|CTGitPath::LOGACTIONS_MODIFIED|CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_DELETED,
 							   CTGitPath::LOGACTIONS_UNMERGED);
+
+	m_FileListCtrl.Check(GITSLC_SHOWFILES);
 }
 
 LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
