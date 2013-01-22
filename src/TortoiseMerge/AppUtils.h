@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008,2010 - TortoiseSVN
+// Copyright (C) 2006-2008, 2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,6 +37,7 @@ public:
 	 * \param sPath path to the file for which a specific revision is fetched
 	 * \param sVersion the revision to get
 	 * \param sSavePath the path to where the file version shall be saved
+	 * \param progDlg
 	 * \param hWnd the window handle of the calling app
 	 * \return TRUE if successful
 	 */

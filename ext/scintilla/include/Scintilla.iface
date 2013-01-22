@@ -2267,6 +2267,12 @@ fun void VCHomeDisplay=2652(,)
 # Like VCHomeDisplay but extending selection to new caret position.
 fun void VCHomeDisplayExtend=2653(,)
 
+# Is the caret line always visible?
+get bool GetCaretLineVisibleAlways=2654(,)
+
+# Sets the caret line to always visible.
+set void SetCaretLineVisibleAlways=2655(bool alwaysVisible,)
+
 # Start notifying the container of all key presses and commands.
 fun void StartRecord=3001(,)
 
@@ -3405,6 +3411,7 @@ val SCE_KIX_FUNCTIONS=8
 val SCE_KIX_OPERATOR=9
 val SCE_KIX_IDENTIFIER=31
 # Lexical states for SCLEX_GUI4CLI
+lex Gui4Cli=SCLEX_GUI4CLI SCE_GC_
 val SCE_GC_DEFAULT=0
 val SCE_GC_COMMENTLINE=1
 val SCE_GC_COMMENTBLOCK=2
@@ -3913,6 +3920,7 @@ val SCE_MYSQL_USER1=18
 val SCE_MYSQL_USER2=19
 val SCE_MYSQL_USER3=20
 val SCE_MYSQL_HIDDENCOMMAND=21
+val SCE_MYSQL_PLACEHOLDER=22
 # Lexical state for SCLEX_PO
 lex Po=SCLEX_PO SCE_PO_
 val SCE_PO_DEFAULT=0

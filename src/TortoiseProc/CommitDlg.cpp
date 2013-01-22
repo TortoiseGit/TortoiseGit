@@ -1650,6 +1650,9 @@ void CCommitDlg::OnTimer(UINT_PTR nIDEvent)
 			Refresh();
 		}
 		break;
+	case FILLPATCHVTIMER:
+		FillPatchView();
+		break;
 	}
 	__super::OnTimer(nIDEvent);
 }
@@ -1801,10 +1804,16 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 	SysFreeString(temp);
 }
 
-void CCommitDlg::FillPatchView()
+void CCommitDlg::FillPatchView(bool onlySetTimer)
 {
 	if(::IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
+		KillTimer(FILLPATCHVTIMER);
+		if (onlySetTimer)
+		{
+			SetTimer(FILLPATCHVTIMER, 100, NULL);
+			return;
+		}
 		m_patchViewdlg.m_ctrlPatchView.SetText(CString());
 
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
@@ -1835,7 +1844,7 @@ void CCommitDlg::FillPatchView()
 }
 LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
 {
-	this->FillPatchView();
+	this->FillPatchView(true);
 	return 0;
 }
 

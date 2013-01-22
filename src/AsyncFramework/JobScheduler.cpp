@@ -183,7 +183,7 @@ void CJobScheduler::CThreadPool::SetThreadCount (size_t count)
     }
 }
 
-size_t CJobScheduler::CThreadPool::GetThreadCount()
+size_t CJobScheduler::CThreadPool::GetThreadCount() const
 {
     return maxCount;
 }

@@ -126,6 +126,7 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CListCtrl()
 	, m_bDoNotAutoselectSubmodules(false)
 	, m_bHasWC(true)
 	, m_hwndLogicalParent(NULL)
+	, m_bHasUnversionedItems(FALSE)
 {
 	m_FileLoaded=0;
 	m_dwDefaultColumns = 0;

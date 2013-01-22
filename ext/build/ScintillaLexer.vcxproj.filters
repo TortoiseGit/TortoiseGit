@@ -388,6 +388,9 @@
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx">
       <Filter>win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">

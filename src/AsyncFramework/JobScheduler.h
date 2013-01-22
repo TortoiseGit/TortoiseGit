@@ -304,7 +304,7 @@ private:
 
         /// get maximum number of shared threads
 
-        size_t GetThreadCount();
+        size_t GetThreadCount() const;
 
         /// manage starving schedulers
         /// (must be notified as soon as there is an idle thread)

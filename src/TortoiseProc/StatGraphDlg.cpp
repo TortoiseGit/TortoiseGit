@@ -305,10 +305,11 @@ BOOL CStatGraphDlg::OnInitDialog()
 	bool bUseSystemLocale = !!(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE);
 	LCID locale = bUseSystemLocale ? MAKELCID(MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), SORT_DEFAULT) : m_locale;
 
-	TCHAR l = 0;
-	GetLocaleInfo(locale, LOCALE_IDATE, &l, sizeof(TCHAR));
+	TCHAR langBuf[11];
+	memset(langBuf, 0, sizeof(langBuf));
+	GetLocaleInfo(locale, LOCALE_IDATE, langBuf, _countof(langBuf));
 
-	m_langOrder = (l > 0) ? l - '0' : -1;
+	m_langOrder = _ttoi(langBuf);
 
 	return TRUE;
 }
@@ -1585,7 +1586,7 @@ void CStatGraphDlg::OnFileSavestatgraphas()
 {
 	CString tempfile;
 	int filterindex = 0;
-	if (CAppUtils::FileOpenSave(tempfile, &filterindex, IDS_REVGRAPH_SAVEPIC, IDS_PICTUREFILEFILTER, false, m_hWnd))
+	if (CAppUtils::FileOpenSave(tempfile, &filterindex, IDS_REVGRAPH_SAVEPIC, IDS_STATPICFILEFILTER, false, m_hWnd))
 	{
 		// if the user doesn't specify a file extension, default to
 		// wmf and add that extension to the filename. But only if the

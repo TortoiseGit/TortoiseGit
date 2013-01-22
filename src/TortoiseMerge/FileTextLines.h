@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2012 - TortoiseSVN
+// Copyright (C) 2006-2007, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,6 +100,7 @@ public:
 	/**
 	 * Loads the text file and adds each line to the array
 	 * \param sFilePath the path to the file
+	 * \param lengthHint hint to create line array
 	 */
 	BOOL		Load(const CString& sFilePath, int lengthHint = 0);
 	/**
@@ -148,7 +149,7 @@ public:
 	 * Checks the Unicode type in a text buffer
 	 * Must be public for TortoiseGitBlame
 	 * \param pBuffer pointer to the buffer containing text
-	 * \param cd size of the text buffer in bytes
+	 * \param cb size of the text buffer in bytes
 	 */
 	CFileTextLines::UnicodeType CheckUnicodeType(LPVOID pBuffer, int cb);
 

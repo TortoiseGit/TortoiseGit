@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2012 - TortoiseSVN
+// Copyright (C) 2012 - 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -178,7 +178,7 @@ public:
 	//! Sends assertion violation report from this point and continue execution.
 	//! \sa ExceptionAssertionViolated
 	//! \note Functions prefixed with "CrashServer_" will be ignored in stack parsing.
-	void CrashServer_SendAssertionViolated()
+	void CrashServer_SendAssertionViolated() const
 	{
 		if (!m_InitCrashHandler)
 			return;
