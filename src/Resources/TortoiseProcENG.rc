@@ -3938,6 +3938,7 @@ BEGIN
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
     IDS_PROC_REPOCREATED    "Initialized empty Git repository in %s."
+    IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
 END
 
 #endif    // English (U.S.) resources

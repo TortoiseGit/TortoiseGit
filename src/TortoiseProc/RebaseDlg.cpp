@@ -45,6 +45,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bSquashAll(FALSE)
 	, m_bEditAll(FALSE)
 	, m_bAddCherryPickedFrom(FALSE)
+	, m_bStatusWarning(false)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -96,6 +97,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 void CRebaseDlg::AddRebaseAnchor()
@@ -308,6 +310,18 @@ BOOL CRebaseDlg::OnInitDialog()
 	return TRUE;
 }
 // CRebaseDlg message handlers
+
+HBRUSH CRebaseDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	if (pWnd->GetDlgCtrlID() == IDC_STATUS_STATIC && nCtlColor == CTLCOLOR_STATIC && m_bStatusWarning)
+	{
+		pDC->SetBkColor(RGB(255, 0, 0));
+		pDC->SetTextColor(RGB(255, 255, 255));
+		return CreateSolidBrush(RGB(255, 0, 0));
+	}
+
+	return CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+}
 
 void CRebaseDlg::OnBnClickedPickAll()
 {
@@ -922,6 +936,9 @@ int CRebaseDlg::FinishRebase()
 	m_ctrlTabCtrl.RemoveTab(0);
 	m_LogMessageCtrl.ShowWindow(SW_HIDE);
 	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
+	m_sStatusText = CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED));
+	m_bStatusWarning = false;
+	m_CtrlStatusText.Invalidate();
 
 	return 0;
 }
@@ -1381,8 +1398,10 @@ void CRebaseDlg::UpdateProgress()
 	{
 		CString text;
 		text.Format(IDS_PROC_REBASING_PROGRESS, index, m_CommitList.GetItemCount());
+		m_sStatusText = text;
 		m_CtrlStatusText.SetWindowText(text);
-
+		m_bStatusWarning = false;
+		m_CtrlStatusText.Invalidate();
 	}
 
 	GitRev *prevRev=NULL, *curRev=NULL;
@@ -1641,6 +1660,29 @@ void CRebaseDlg::ListConflictFile()
 							   CTGitPath::LOGACTIONS_UNMERGED);
 
 	m_FileListCtrl.Check(GITSLC_SHOWFILES);
+	bool hasSubmoduleChange = false;
+	for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
+	{
+		CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
+		if (entry->IsDirectory())
+		{
+			hasSubmoduleChange = true;
+			break;
+		}
+	}
+
+	if (hasSubmoduleChange)
+	{
+		m_CtrlStatusText.SetWindowText(m_sStatusText + _T(", ") + CString(MAKEINTRESOURCE(IDS_CARE_SUBMODULE_CHANGES)));
+		m_bStatusWarning = true;
+		m_CtrlStatusText.Invalidate();
+	}
+	else
+	{
+		m_CtrlStatusText.SetWindowText(m_sStatusText);
+		m_bStatusWarning = false;
+		m_CtrlStatusText.Invalidate();
+	}
 }
 
 LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
