@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -162,6 +162,12 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 		else
 		{
+			if (sVersion.IsEmpty())
+			{
+				m_errorStr.Empty();
+				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, (LPCTSTR)sFilePath);
+				return false; // cannot apply patch which does not apply cleanly w/o git information in patch file.
+			}
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
 			{

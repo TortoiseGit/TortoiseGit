@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008 - TortoiseSVN
-// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ protected:
 	int			CountDirMatches(const CString& path);
 	CString		RemoveUnicodeBOM(const CString& str);
 
-	BOOL		ParserGitPatch(CFileTextLines &PatchLines,int nIndex);
+	BOOL		ParsePatchFile(CFileTextLines &PatchLines);
 
 	/**
 	 * Strips the filename by removing m_nStrip prefixes.
@@ -99,6 +99,4 @@ protected:
 	 * stripped by 4 prefixes is interpreted as "dir/file.txt"
 	 */
 	int							m_nStrip;
-public:
-	bool						m_IsGitPatch;
 };

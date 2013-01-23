@@ -445,6 +445,10 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "TortoiseGitMerge"
     IDS_TITLE_REJECTEDHUNKS "Rejected patch hunks for '%s'"
+    IDS_ERR_PATCH_FILENAMENOTUNIQUE 
+                            "TortoiseGitMerge cannot process this patch file. The filename ""%s"" appears more than once."
+    IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 
+                            "The patch does not apply cleanly to %s and no version information is given.\nPatching is not possible!"
 END
 
 STRINGTABLE
