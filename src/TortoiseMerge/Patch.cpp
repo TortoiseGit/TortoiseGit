@@ -548,8 +548,29 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if (lAddLine == 0)
 						lAddLine = 1;
-					PatchLines.InsertAt(lAddLine-1, sPatchLine, ending);
-					lAddLine++;
+					// check context after insertions in order to avoid double insertions
+					bool insertOk = !(lAddLine < PatchLines.GetCount());
+					int k = j;
+					for (; k < chunk->arLines.GetCount(); ++k)
+					{
+						if ((int)chunk->arLinesStates.GetAt(k) == PATCHSTATE_ADDED)
+							continue;
+						if (chunk->arLines.GetAt(k).Compare(PatchLines.GetAt(lAddLine - 1)) == 0)
+							insertOk = true;
+						else
+							break;
+					}
+					
+					if (insertOk)
+					{
+						PatchLines.InsertAt(lAddLine-1, sPatchLine, ending);
+						lAddLine++;
+					}
+					else
+					{
+						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), chunk->arLines.GetAt(k));
+						return FALSE;
+					}
 				}
 				break;
 			case PATCHSTATE_CONTEXT:
