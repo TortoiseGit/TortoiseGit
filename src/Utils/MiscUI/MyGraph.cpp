@@ -969,7 +969,7 @@ void MyGraph::DrawAxes(CDC& dc) const
 	CFont* pFontOld = dc.SelectObject(&fontYAxis);
 	ASSERT_VALID(pFontOld);
 	CSize sizYLabel(dc.GetTextExtent(m_sYAxisLabel));
-	VERIFY(dc.TextOut(GAP_PIXELS, (m_rcGraph.Height() - sizYLabel.cy) / 2,
+	VERIFY(dc.TextOut(GAP_PIXELS, (m_rcGraph.Height() + sizYLabel.cx) / 2,
 		m_sYAxisLabel));
 
 	// Set the x-axis label font and draw the label.
