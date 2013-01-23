@@ -1417,6 +1417,43 @@ CString CAppUtils::GetMergeTempFile(CString type,CTGitPath &merge)
 	return file;
 }
 
+bool ParseHashesFromLsFile(BYTE_VECTOR &out, CString &hash1, CString &hash2, CString &hash3)
+{
+	unsigned int pos = 0;
+	CString one;
+	CString part;
+
+	while (pos >= 0 && pos < out.size())
+	{
+		one.Empty();
+
+		g_Git.StringAppend(&one, &out[pos], CP_UTF8);
+		int tabstart = 0;
+		one.Tokenize(_T("\t"), tabstart);
+
+		tabstart = 0;
+		part = one.Tokenize(_T(" "), tabstart); //Tag
+		part = one.Tokenize(_T(" "), tabstart); //Mode
+		part = one.Tokenize(_T(" "), tabstart); //Hash
+		CString hash = part;
+		part = one.Tokenize(_T("\t"), tabstart); //Stage
+		int stage = _ttol(part);
+		if (stage == 1)
+			hash1 = hash;
+		else if (stage == 2)
+			hash2 = hash;
+		else if (stage == 3)
+		{
+			hash3 = hash;
+			return true;
+		}
+
+		pos = out.findNextString(pos);
+	}
+
+	return false;
+}
+
 bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool revertTheirMy)
 {
 	bool bRet = false;
@@ -1439,6 +1476,18 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	if (g_Git.Run(cmd, &vector))
 	{
 		return FALSE;
+	}
+
+	if (merge.IsDirectory())
+	{
+		CString baseHash, localHash, remoteHash;
+		if (!ParseHashesFromLsFile(vector, baseHash, localHash, remoteHash))
+			return FALSE;
+
+		CString msg;
+		msg.Format(_T("BASE: %s\nLOCAL: %s\nREMOTE: %s"), baseHash, localHash, remoteHash);
+		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK);
+		return TRUE;
 	}
 
 	CTGitPathList list;
