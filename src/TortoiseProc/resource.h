@@ -1622,6 +1622,7 @@
 #define IDS_REVGRAPH_ERR_NOMEMORY       9688
 #define IDS_PROC_RESET                  9689
 #define IDS_FETCH_TAGS_ONLY             9690
+#define IDS_PROGRS_TITLE_CLONE			9691
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803

@@ -316,6 +316,12 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		data->sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
 		break;
 
+	case git_wc_notify_checkout:
+		data->sActionColumnText.LoadString(IDS_PROGRS_CMD_CHECKOUT);
+		data->color = m_Colors.GetColor(CColors::Added);
+		data->bAuxItem = false;
+		break;
+
 #if 0
 	case svn_wc_notify_commit_added:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_ADDING);
@@ -532,8 +538,6 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			AddItemToList();
 			if ((!data->bAuxItem) && (m_itemCount > 0))
 			{
-				m_itemCount--;
-
 				CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 				progControl->ShowWindow(SW_SHOW);
 				progControl->SetPos(m_itemCountTotal - m_itemCount);
@@ -937,6 +941,9 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_SendMail:
 		bSuccess = CmdSendMail(sWindowTitle, localoperation);
 		break;
+	case GitProgress_Clone:
+		bSuccess = CmdClone(sWindowTitle, localoperation);
+		break;
 	}
 	if (!bSuccess)
 		temp.LoadString(IDS_PROGRS_TITLEFAILED);
@@ -1262,6 +1269,69 @@ void CGitProgressDlg::OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult)
 bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 {
 	return pData->bAuxItem;
+}
+
+BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat)
+{
+	static unsigned int start = 0;
+	unsigned int dt = GetCurrentTime() - start;
+	size_t ds;
+	double speed = 0;
+	if (dt > 100)
+	{
+		start = GetCurrentTime();
+		ds = stat->received_bytes - m_TotalBytesTransferred;
+		speed = ds*1000.0/dt;
+		m_TotalBytesTransferred = stat->received_bytes;
+	}
+	else
+	{
+		return TRUE;
+	}
+
+	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
+
+	int progress; 
+	if (stat->received_objects < stat->total_objects)
+		progress = stat->received_objects;
+	else
+		progress = stat->indexed_objects;
+
+	if ((stat->total_objects > 1000)&&(!progControl->IsWindowVisible()))
+	{
+		progControl->ShowWindow(SW_SHOW);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+	}
+	if (!GetDlgItem(IDC_PROGRESSLABEL)->IsWindowVisible())
+		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
+
+	progControl->SetPos(progress);
+	progControl->SetRange32(0, stat->total_objects);
+	if (m_pTaskbarList)
+	{
+		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+		m_pTaskbarList->SetProgressValue(m_hWnd, progress, stat->total_objects);
+	}
+
+	CString progText;
+	if (stat->received_bytes < 1024)
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED, (int64_t)stat->received_bytes);
+	else if (stat->received_bytes < 1200000)
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALTRANSFERRED, (int64_t)stat->received_bytes / 1024);
+	else
+		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)stat->received_bytes / 1024000.0));
+
+	CString str;
+	if(speed < 1024)
+		str.Format(_T("%fB/s"), speed);
+	else if(speed <1024*1024)
+		str.Format(_T("%.2fKB/s"), speed/1024);
+	else
+		str.Format(_T("%.2fMB/s"), speed/1024000.0);
+
+	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
+	SetDlgItemText(IDC_PROGRESSLABEL, progText);
 }
 
 LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -2218,6 +2288,58 @@ bool CGitProgressDlg::CmdSwitch(CString& /*sWindowTitle*/, bool& /*localoperatio
 		GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 	}
 #endif
+	return true;
+}
+bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& localoperation)
+{
+	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+	{
+		// should never run to here
+		ASSERT(0);
+		return false;
+	}
+	this->m_TotalBytesTransferred = 0;
+
+	sWindowTitle.LoadString(IDS_PROGRS_TITLE_CLONE);
+	CAppUtils::SetWindowTitle(m_hWnd, m_url.GetGitPathString(), sWindowTitle);
+	SetBackgroundImage(IDI_SWITCH_BKG);
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
+
+	if (m_url.IsEmpty() || m_targetPathList.GetCount() == 0)
+		return false;
+
+	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
+	CStringA path = CUnicodeUtils::GetMulti(m_targetPathList[0].GetWinPathString(),CP_UTF8);
+	
+	git_repository *cloned_repo = NULL;
+	git_remote *origin = NULL;
+	git_checkout_opts checkout_opts = GIT_CHECKOUT_OPTS_INIT;
+
+	int error = 0;
+	
+	git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
+	
+	clone_opts.checkout_opts = checkout_opts;
+
+	clone_opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
+	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
+	clone_opts.checkout_opts.progress_payload = this;
+
+	clone_opts.fetch_progress_cb = FetchCallback;
+	clone_opts.fetch_progress_payload = this;
+
+	clone_opts.cred_acquire_cb = CAppUtils::Git2GetUserPassword;
+
+	clone_opts.bare = m_bBare;
+
+	error = git_clone(&cloned_repo, url, path, &clone_opts);
+	git_remote_free(origin);
+	if (error != 0) {
+		ReportGitError();
+		return false;
+	}
+	else if (cloned_repo) 
+		git_repository_free(cloned_repo);
 	return true;
 }
 

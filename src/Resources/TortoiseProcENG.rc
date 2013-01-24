@@ -3634,7 +3634,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROGRS_CMD_CHECKOUT "Checkout from %s, revision %s, %s, %s"
+    IDS_PROGRS_CMD_CHECKOUT "Checkout"
     IDS_PROGRS_CMD_IMPORT   "Import %s to %s%s"
     IDS_PROGRS_CMD_SWITCH   "Switch %s to %s, Revision %s"
     IDS_PROGRS_CMD_MERGEPEG "Merging revisions %s of %s into %s, %s%s"
@@ -3694,6 +3694,7 @@ BEGIN
     IDS_SVNACTION_SENDMAIL_ERROR "Error"
     IDS_SVNACTION_SENDMAIL_DONE "Done"
     IDS_SVNACTION_SENDMAIL_RETRY "Retrying..."
+    IDS_PROGRS_TITLE_CLONE  "Clone"
 END
 
 STRINGTABLE
