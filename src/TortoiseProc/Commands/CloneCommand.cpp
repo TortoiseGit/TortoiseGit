@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "CloneCommand.h"
 
-//#include "SVNProgressDlg.h"
+#include "GitProgressDlg.h"
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "MessageBox.h"
@@ -30,50 +30,6 @@
 #include "git2.h"
 #include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
-
-static bool clone_libgit2(const CString URL, const CString PATH, bool bBare)
-{
-	CStringA url = CUnicodeUtils::GetMulti(URL, CP_UTF8);
-	CStringA path = CUnicodeUtils::GetMulti(PATH,CP_UTF8);
-	
-	CSysProgressDlg progress;
-
-	git_repository *cloned_repo = NULL;
-	git_remote *origin = NULL;
-
-	int error = 0;
-	error = git_remote_new(&origin, NULL, "origin", url, GIT_REMOTE_DEFAULT_FETCH);
-	git_remote_set_cred_acquire_cb(origin, CAppUtils::Git2GetUserPassword, NULL);
-
-	git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
-	git_checkout_opts checkout_opts = GIT_CHECKOUT_OPTS_INIT;
-
-	checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
-	checkout_opts.progress_cb = CAppUtils::Git2CheckoutProgress;;
-	checkout_opts.progress_payload = &progress;
-
-	clone_opts.checkout_opts = &checkout_opts;
-	clone_opts.fetch_progress_cb = CAppUtils::Git2FetchProgress;
-	clone_opts.fetch_progress_payload = &progress;
-
-	progress.SetTitle(CString(MAKEINTRESOURCE(IDS_PROG_CLONE)));
-	progress.SetAnimation(IDR_DOWNLOAD);
-	progress.SetTime(true);
-	progress.ShowModeless((CWnd*)NULL);
-
-	error = git_clone(&cloned_repo, origin, path, &clone_opts);
-	git_remote_free(origin);
-	if (error != 0) {
-		const git_error *err = giterr_last();
-		if (err) printf("ERROR %d: %s\n", err->klass, err->message);
-		else printf("ERROR %d: no detailed info\n", error);
-		return false;
-	}
-	else if (cloned_repo) 
-		git_repository_free(cloned_repo);
-
-	return true;
-}
 
 bool CloneCommand::Execute()
 {
@@ -190,7 +146,18 @@ bool CloneCommand::Execute()
 		}else
 		{
 			if (g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
-				return clone_libgit2(url, dir, dlg.m_bBare);
+			{
+				CGitProgressDlg GitDlg;
+				CTGitPathList list;
+				list.AddPath(CTGitPath(dir));
+				GitDlg.SetCommand(CGitProgressDlg::GitProgress_Clone);
+				GitDlg.SetUrl(url);
+				GitDlg.SetPathList(list);
+				GitDlg.SetIsBare(dlg.m_bBare);
+				GitDlg.DoModal();
+				return !GitDlg.DidErrorsOccur();
+
+			}
 		}
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
