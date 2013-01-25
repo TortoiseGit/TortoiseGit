@@ -262,6 +262,7 @@ protected:
 	afx_msg void	OnLvnBegindragSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnCtlColorStatic(WPARAM wParam, LPARAM lParam);
 	LRESULT			OnShowConflictResolver(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
@@ -314,7 +315,7 @@ private:
 
 	CString					m_mergedfile;
 	NotificationDataVect	m_arData;
-
+	CAnimateCtrl			m_Animate;
 	CWinThread*				m_pThread;
 	volatile LONG			m_bThreadRunning;
 
@@ -381,4 +382,7 @@ private:
 	bool					m_bBare;
 	bool					m_bNoCheckout;
 	CString					m_RefSpec;
+	CBrush					m_background_brush;
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
