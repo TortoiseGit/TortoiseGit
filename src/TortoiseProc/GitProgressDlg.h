@@ -131,6 +131,9 @@ public:
 	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
 	void SetIsBare(bool b) {m_bBare = b;}
+	void SetNoCheckout(bool b){m_bNoCheckout = b;}
+	void SetRefSpec(CString &spec){m_RefSpec = spec;}
+
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 
@@ -376,4 +379,6 @@ private:
 	CString					sRecordOnly;
 
 	bool					m_bBare;
+	bool					m_bNoCheckout;
+	CString					m_RefSpec;
 };

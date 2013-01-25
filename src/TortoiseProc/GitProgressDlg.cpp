@@ -75,6 +75,8 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bCancelled(FALSE)
 	, m_pThread(NULL)
 	, m_bErrorsOccurred(false)
+	, m_bBare(false)
+	, m_bNoCheckout(false)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
@@ -2321,9 +2323,12 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& localoperation)
 	
 	clone_opts.checkout_opts = checkout_opts;
 
-	clone_opts.checkout_opts.checkout_strategy = GIT_CHECKOUT_SAFE;
+	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE:GIT_CHECKOUT_SAFE;
 	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
 	clone_opts.checkout_opts.progress_payload = this;
+
+	if (!m_RefSpec.IsEmpty())
+		clone_opts.checkout_branch = CUnicodeUtils::GetMulti(m_RefSpec,CP_UTF8).GetBuffer();
 
 	clone_opts.fetch_progress_cb = FetchCallback;
 	clone_opts.fetch_progress_payload = this;
