@@ -117,6 +117,7 @@ void CGitProgressDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SVNPROGRESS, m_ProgList);
+	DDX_Control(pDX, IDC_TITLE_ANIMATE, m_Animate);
 }
 
 BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
@@ -136,6 +137,8 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CGitProgressDlg::OnBnClickedNoninteractive)
 	ON_MESSAGE(WM_SHOWCONFLICTRESOLVER, OnShowConflictResolver)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
+	ON_WM_CTLCOLOR()
+//	ON_MESSAGE(WM_CTLCOLORSTATIC, OnCtlColorStatic)
 END_MESSAGE_MAP()
 
 BOOL CGitProgressDlg::Cancel()
@@ -809,6 +812,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	SetTimer(VISIBLETIMER, 300, NULL);
 
 	AddAnchor(IDC_SVNPROGRESS, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_TITLE_ANIMATE, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESSLABEL, BOTTOM_LEFT, BOTTOM_CENTER);
 	AddAnchor(IDC_PROGRESSBAR, BOTTOM_CENTER, BOTTOM_RIGHT);
 	AddAnchor(IDC_INFOTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -817,9 +821,14 @@ BOOL CGitProgressDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGBUTTON, BOTTOM_RIGHT);
 	//SetPromptParentWindow(this->m_hWnd);
+
+	m_Animate.Open(IDR_DOWNLOAD);
+
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("GITProgressDlg"));
+
+	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 	return TRUE;
 }
 
@@ -2337,7 +2346,12 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& localoperation)
 
 	clone_opts.bare = m_bBare;
 
+	m_Animate.ShowWindow(SW_SHOW);
+	m_Animate.Play(0, INT_MAX, INT_MAX);
 	error = git_clone(&cloned_repo, url, path, &clone_opts);
+	m_Animate.Stop();
+	m_Animate.ShowWindow(SW_HIDE);
+
 	git_remote_free(origin);
 	if (error != 0) {
 		ReportGitError();
@@ -2452,4 +2466,36 @@ LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
+}
+
+
+HBRUSH CGitProgressDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr;
+	if (pWnd->GetDlgCtrlID() == IDC_TITLE_ANIMATE)
+	{
+		pDC->SetBkColor(GetSysColor(COLOR_WINDOW));  // add this
+        pDC->SetBkMode(TRANSPARENT);
+        return (HBRUSH)m_background_brush.GetSafeHandle();
+	}else
+	{
+		hbr = CResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	}
+
+	// TODO:  Return a different brush if the default is not desired
+	return hbr;
+}
+LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
+{
+    HDC hDC = (HDC)wParam;
+    HWND hwndCtl = (HWND)lParam;
+
+    if (::GetDlgCtrlID(hwndCtl) == IDC_TITLE_ANIMATE)
+    {
+        CDC *pDC = CDC::FromHandle(hDC);
+        pDC->SetBkColor(GetSysColor(COLOR_WINDOW));
+        pDC->SetBkMode(TRANSPARENT);
+        return (LRESULT)(HBRUSH)m_background_brush.GetSafeHandle();
+    }
+	return FALSE;
 }
