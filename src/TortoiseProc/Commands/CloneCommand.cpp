@@ -154,6 +154,8 @@ bool CloneCommand::Execute()
 				GitDlg.SetUrl(url);
 				GitDlg.SetPathList(list);
 				GitDlg.SetIsBare(dlg.m_bBare);
+				GitDlg.SetRefSpec(dlg.m_bBranch? dlg.m_strBranch: CString());
+				GitDlg.SetNoCheckout(dlg.m_bNoCheckout);
 				GitDlg.DoModal();
 				return !GitDlg.DidErrorsOccur();
 
