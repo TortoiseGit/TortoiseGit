@@ -28,8 +28,9 @@
 
 static int maxCommandLineLength = SysInfo::Instance().IsWin7OrLater() ? MAX_COMMANDLINE_LENGTH_WIN7 : MAX_COMMANDLINE_LENGTH_WINXP;
 
-CMassiveGitTask::CMassiveGitTask(CString gitParameters)
+CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath)
 	: m_bUnused(true)
+	, m_bIsPath(isPath)
 	, m_NotifyCallbackInstance(NULL)
 	, m_NotifyCallbackMethod(NULL)
 	, m_NotifyCallbackAction(git_wc_notify_add)
@@ -88,7 +89,7 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 				add += _T(" \"") + m_pathList[j].GetGitPathString() + _T("\"");
 
 			CString cmd, out;
-			cmd.Format(_T("git.exe %s --%s"), m_sParams, add);
+			cmd.Format(_T("git.exe %s %s%s"), m_sParams, m_bIsPath ? _T("--") : _T(""), add);
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);

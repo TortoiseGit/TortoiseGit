@@ -26,7 +26,7 @@ typedef BOOL (CGitProgressDlg::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_n
 class CMassiveGitTask
 {
 public:
-	CMassiveGitTask(CString params);
+	CMassiveGitTask(CString params, BOOL isPath = TRUE);
 	~CMassiveGitTask(void);
 
 	void					AddFile(CString filename);
@@ -37,6 +37,7 @@ public:
 private:
 	bool					ExecuteCommands(BOOL &cancel);
 	bool					m_bUnused;
+	BOOL					m_bIsPath;
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
 	CGitProgressDlg *		m_NotifyCallbackInstance;
