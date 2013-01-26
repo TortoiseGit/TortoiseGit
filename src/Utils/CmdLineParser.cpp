@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -75,37 +76,53 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			m_valueMap.insert(CValsMap::value_type(Key, sEmpty));
 			break;
 		}
-		else if (sVal[0] == _T(' ') || _tcslen(sVal) == 1 )
-		{
-			// cmdline ends with /Key: or a key with no value
-			stdstring Key(sArg, (int)(sVal - sArg));
-			if(!Key.empty())
-			{
-				std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
-				m_valueMap.insert(CValsMap::value_type(Key, sEmpty));
-			}
-			sCurrent = _tcsinc(sVal);
-			continue;
-		}
 		else
 		{
-			// key has value
 			stdstring Key(sArg, (int)(sVal - sArg));
 			std::transform(Key.begin(), Key.end(), Key.begin(), ::tolower);
 
-			sVal = _tcsinc(sVal);
+			LPCTSTR sQuote(NULL), sEndQuote(NULL);
+			if (_tcslen(sVal) > 0)
+			{
+				if (sVal[0] != _T(' '))
+					sVal = _tcsinc(sVal);
+				else
+				{
+					while (_tcslen(sVal) > 0 && sVal[0] == _T(' '))
+						sVal = _tcsinc(sVal);
+				}
+				
+				LPCTSTR nextArg = _tcspbrk(sVal, m_sDelims);
 
-			LPCTSTR sQuote = _tcspbrk(sVal, m_sQuotes), sEndQuote(NULL);
-			if(sQuote == sVal)
-			{
-				// string with quotes (defined in m_sQuotes, e.g. '")
-				sQuote = _tcsinc(sVal);
-				sEndQuote = _tcspbrk(sQuote, m_sQuotes);
-			}
-			else
-			{
-				sQuote = sVal;
-				sEndQuote = _tcschr(sQuote, _T(' '));
+				sQuote = _tcspbrk(sVal, m_sQuotes);
+
+				if (nextArg == sVal)
+				{
+					// current key has no value, but a next key exist - so don't use next key as value of current one
+					--sVal;
+					sQuote = sVal;
+					sEndQuote = sVal;
+				}
+				else if (nextArg != NULL && nextArg < sQuote)
+				{
+					// current key has a value w/o quotes, but next key one has value in quotes
+					sQuote = sVal;
+					sEndQuote = _tcschr(sQuote, _T(' '));
+				}
+				else
+				{
+					if(sQuote == sVal)
+					{
+						// string with quotes (defined in m_sQuotes, e.g. '")
+						sQuote = _tcsinc(sVal);
+						sEndQuote = _tcspbrk(sQuote, m_sQuotes);
+					}
+					else
+					{
+						sQuote = sVal;
+						sEndQuote = _tcschr(sQuote, _T(' '));
+					}
+				}
 			}
 
 			if(sEndQuote == NULL)

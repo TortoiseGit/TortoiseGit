@@ -21,6 +21,12 @@
 #include "TortoiseProc.h"
 #include "MassiveGitTask.h"
 #include "MessageBox.h"
+#include "SysInfo.h"
+
+#define MAX_COMMANDLINE_LENGTH_WINXP 1700
+#define MAX_COMMANDLINE_LENGTH_WIN7 30000
+
+static int maxCommandLineLength = SysInfo::Instance().IsWin7OrLater() ? MAX_COMMANDLINE_LENGTH_WIN7 : MAX_COMMANDLINE_LENGTH_WINXP;
 
 CMassiveGitTask::CMassiveGitTask(CString gitParameters)
 	: m_bUnused(true)
@@ -75,7 +81,7 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 	int firstCombine = 0;
 	for(int i = 0; i < m_pathList.GetCount(); i++)
 	{
-		if (maxLength + m_pathList[i].GetGitPathString().GetLength() > MAX_COMMANDLINE_LENGTH || i == m_pathList.GetCount() - 1 || cancel)
+		if (maxLength + m_pathList[i].GetGitPathString().GetLength() > maxCommandLineLength || i == m_pathList.GetCount() - 1 || cancel)
 		{
 			CString add;
 			for (int j = firstCombine; j <= i; j++)

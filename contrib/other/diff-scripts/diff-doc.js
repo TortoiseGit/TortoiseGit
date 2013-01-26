@@ -2,7 +2,7 @@
 //
 // TortoiseSVN Diff script for Word Doc files
 //
-// Copyright (C) 2004-2008 the TortoiseSVN team
+// Copyright (C) 2004-2008, 2011, 2013 the TortoiseSVN team
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
@@ -11,7 +11,7 @@
 // $Rev: 23366 $
 //
 // Authors:
-// Stefan Kueng, 2011
+// Stefan Kueng, 2011, 2013
 // Jared Silva, 2008
 // Davide Orlandi and Hans-Emil Skogh, 2005
 //
@@ -22,6 +22,7 @@ var vOffice2000 = 9;
 var vOffice2002 = 10;
 var vOffice2003 = 11;
 var vOffice2007 = 12;
+var vOffice2013 = 15;
 // WdCompareTarget
 var wdCompareTargetSelected = 0;
 var wdCompareTargetCurrent = 1;
@@ -133,7 +134,7 @@ word.visible = true;
 // Open the new document
 try
 {
-    destination = word.Documents.Open(sNewDoc, true, true);
+    destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version) < vOffice2013));
 }
 catch(e)
 {
@@ -141,7 +142,7 @@ catch(e)
     {
         // open empty document to prevent bug where first Open() call fails
         word.Documents.Add();
-        destination = word.Documents.Open(sNewDoc, true, true);
+        destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version) < vOffice2013));
     }
     catch(e)
     {
