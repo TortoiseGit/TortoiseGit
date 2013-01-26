@@ -24,6 +24,7 @@
 #include "TortoiseProc.h"
 #include "DeleteRemoteTagDlg.h"
 #include "Messagebox.h"
+#include "SysInfo.h"
 
 IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CHorizontalResizableStandAloneDialog)
 
@@ -131,20 +132,31 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 			return;
 	}
 
-	CString cmd, out;
-	cmd.Format(_T("git.exe push %s"), m_sRemote);
-
+	int maxLength = (SysInfo::Instance().IsWin7OrLater() ? 32768 : 2048) - MAX_PATH * 3;
+	bool finish = true;
 	POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
-	int index;
-	while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
+	do
 	{
-		cmd += _T(" :refs/tags/") + m_taglist[index];
-	}
+		finish = true;
+		CString cmd, out;
+		cmd.Format(_T("git.exe push %s"), m_sRemote);
 
-	if (g_Git.Run(cmd, &out, CP_UTF8))
-	{
-		MessageBox(out, _T("TortoiseGit"), MB_ICONERROR);
-	}
+		int index;
+		while ((index = m_ctrlTags.GetNextSelectedItem(pos)) >= 0)
+		{
+			cmd += _T(" :refs/tags/") + m_taglist[index];
+			if (cmd.GetLength() >= maxLength)
+			{
+				finish = false;
+				break;
+			}
+		}
+
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			MessageBox(out, _T("TortoiseGit"), MB_ICONERROR);
+		}
+	} while (!finish);
 	Refresh();
 }
 
