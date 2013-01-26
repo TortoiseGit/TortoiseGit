@@ -79,6 +79,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 void CDeleteRemoteTagDlg::Refresh()
 {
 	m_ctrlTags.DeleteAllItems();
+	m_SelectAll.SetCheck(BST_UNCHECKED);
 	m_taglist.clear();
 
 	g_Git.GetRemoteTags(m_sRemote, m_taglist);
