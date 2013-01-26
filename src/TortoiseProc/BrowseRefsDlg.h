@@ -83,6 +83,7 @@ public:
 		eCmd_ManageRemotes,
 		eCmd_CreateBranch,
 		eCmd_CreateTag,
+		eCmd_DeleteAllTags,
 		eCmd_DeleteBranch,
 		eCmd_DeleteRemoteBranch,
 		eCmd_DeleteTag,

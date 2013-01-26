@@ -942,6 +942,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CString temp;
 			temp.LoadString(IDS_MENUTAG);
 			popupMenu.AppendMenuIcon(eCmd_CreateTag, temp, IDI_TAG);
+			temp.LoadString(IDS_PROC_BROWSEREFS_DELETEALLTAGS);
+			popupMenu.AppendMenuIcon(eCmd_DeleteAllTags, temp, IDI_DELETE);
 		}
 	}
 
@@ -1032,6 +1034,18 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_CreateTag:
 		{
 			CAppUtils::CreateBranchTag(true);
+			Refresh();
+		}
+		break;
+	case eCmd_DeleteAllTags:
+		{
+			for (int i = 0; i < m_ListRefLeafs.GetItemCount(); i++)
+			{
+				m_ListRefLeafs.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(i));
+			}
+			if (ConfirmDeleteRef(selectedLeafs))
+				DoDeleteRefs(selectedLeafs, true);
 			Refresh();
 		}
 		break;

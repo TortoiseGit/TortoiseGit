@@ -860,6 +860,7 @@
 #define IDS_PROC_SYNC_PUSHNOTES         1385
 #define IDS_PROC_REPOCREATED            1386
 #define IDC_FILTER                      1387
+#define IDS_PROC_BROWSEREFS_DELETEALLTAGS 1387
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
 #define IDS_WARN_FOLDERNOTEXIST         1400
