@@ -39,10 +39,12 @@ CDeleteRemoteTagDlg::~CDeleteRemoteTagDlg()
 void CDeleteRemoteTagDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Control(pDX, IDC_LIST_TAGS, m_ctrlTags);
 }
 
 BEGIN_MESSAGE_MAP(CDeleteRemoteTagDlg, CHorizontalResizableStandAloneDialog)
+	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TAGS, OnSelchangeTags)
 END_MESSAGE_MAP()
@@ -53,6 +55,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_LIST_TAGS, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_SELECTALL, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
@@ -86,6 +89,27 @@ void CDeleteRemoteTagDlg::Refresh()
 	}
 
 	DialogEnableWindow(IDOK, FALSE);
+}
+
+void CDeleteRemoteTagDlg::OnBnClickedSelectall()
+{
+	UINT state = (m_SelectAll.GetState() & 0x0003);
+	if (state == BST_INDETERMINATE)
+	{
+		// It is not at all useful to manually place the checkbox into the indeterminate state...
+		// We will force this on to the unchecked state
+		state = BST_UNCHECKED;
+		m_SelectAll.SetCheck(state);
+	}
+	if (state == BST_UNCHECKED)
+	{
+		m_ctrlTags.SetItemState(-1, 0, LVIS_SELECTED);
+	}
+	else
+	{
+		for (int i = 0; i < m_ctrlTags.GetItemCount(); i++)
+			m_ctrlTags.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+	}
 }
 
 void CDeleteRemoteTagDlg::OnBnClickedOk()
@@ -126,6 +150,12 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 void CDeleteRemoteTagDlg::OnSelchangeTags(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
 {
 	DialogEnableWindow(IDOK, m_ctrlTags.GetSelectedCount() > 0);
+	if (m_ctrlTags.GetSelectedCount() == 0)
+		m_SelectAll.SetCheck(BST_UNCHECKED);
+	else if ((int)m_ctrlTags.GetSelectedCount() < m_ctrlTags.GetItemCount())
+		m_SelectAll.SetCheck(BST_INDETERMINATE);
+	else
+		m_SelectAll.SetCheck(BST_CHECKED);
 }
 
 BOOL CDeleteRemoteTagDlg::PreTranslateMessage(MSG* pMsg)

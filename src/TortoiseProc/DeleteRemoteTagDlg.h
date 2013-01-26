@@ -41,12 +41,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	CListCtrl m_ctrlTags;
+	CButton	m_SelectAll;
 	STRING_VECTOR m_taglist;
 
 	void Refresh();
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
+	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnSelchangeTags(NMHDR* pNMHDR, LRESULT* pResult);
 };
