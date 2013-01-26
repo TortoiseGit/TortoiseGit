@@ -21,8 +21,6 @@
 #include "GitProgressDlg.h"
 #include "TGitPath.h"
 
-#define MAX_COMMANDLINE_LENGTH 30000
-
 typedef BOOL (CGitProgressDlg::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_notify_action_t action, int status, CString *strErr);
 
 class CMassiveGitTask
