@@ -55,6 +55,9 @@
 		merge resolved as a fast-forward.
 	</para>
 	<para>
+		<guilabel>No Commit</guilabel> Do not automatically create a commit after merge.
+	</para>
+	<para>
 		You can see more information at <xref linkend="git-merge(1)"/>
 	</para>
 	<para>
