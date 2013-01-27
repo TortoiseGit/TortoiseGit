@@ -39,10 +39,13 @@ public:
 
 private:
 	bool					ExecuteCommands(BOOL &cancel);
+	int						GetListCount();
+	CString					GetListItem(int index);
 	bool					m_bUnused;
 	BOOL					m_bIsPath;
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
+	STRING_VECTOR			m_itemList;
 	CGitProgressDlg *		m_NotifyCallbackInstance;
 	NOTIFY_CALLBACK			m_NotifyCallbackMethod;
 	git_wc_notify_action_t	m_NotifyCallbackAction;

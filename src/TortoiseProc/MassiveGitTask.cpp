@@ -40,13 +40,19 @@ CMassiveGitTask::~CMassiveGitTask(void)
 void CMassiveGitTask::AddFile(CString filename)
 {
 	assert(m_bUnused);
-	m_pathList.AddPath(filename);
+	if (m_bIsPath)
+		m_pathList.AddPath(filename);
+	else
+		m_itemList.push_back(filename);
 }
 
 void CMassiveGitTask::AddFile(CTGitPath filename)
 {
 	assert(m_bUnused);
-	m_pathList.AddPath(filename);
+	if (m_bIsPath)
+		m_pathList.AddPath(filename);
+	else
+		m_itemList.push_back(filename.GetGitPathString());
 }
 
 bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, BOOL &cancel, git_wc_notify_action_t action, CGitProgressDlg * instance, NOTIFY_CALLBACK notifyMethod)
@@ -75,13 +81,13 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 	bool bErrorsOccurred = false;
 	int maxLength = 0;
 	int firstCombine = 0;
-	for(int i = 0; i < m_pathList.GetCount(); i++)
+	for(int i = 0; i < GetListCount(); i++)
 	{
-		if (maxLength + m_pathList[i].GetGitPathString().GetLength() > MAX_COMMANDLINE_LENGTH || i == m_pathList.GetCount() - 1 || cancel)
+		if (maxLength + GetListItem(i).GetLength() > MAX_COMMANDLINE_LENGTH || i == GetListCount() - 1 || cancel)
 		{
 			CString add;
 			for (int j = firstCombine; j <= i; j++)
-				add += _T(" \"") + m_pathList[j].GetGitPathString() + _T("\"");
+				add += _T(" \"") + GetListItem(j) + _T("\"");
 
 			CString cmd, out;
 			cmd.Format(_T("git.exe %s %s%s"), m_sParams, m_bIsPath ? _T("--") : _T(""), add);
@@ -92,9 +98,10 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 				return false;
 			}
 
-			if (m_NotifyCallbackInstance && m_NotifyCallbackMethod)
-				for (int j = firstCombine; j <= i; j++)
-					(*m_NotifyCallbackInstance.*m_NotifyCallbackMethod)(m_pathList[j], m_NotifyCallbackAction, 0, NULL);
+			if (m_bIsPath)
+				if (m_NotifyCallbackInstance && m_NotifyCallbackMethod)
+					for (int j = firstCombine; j <= i; j++)
+						(*m_NotifyCallbackInstance.*m_NotifyCallbackMethod)(m_pathList[j], m_NotifyCallbackAction, 0, NULL);
 
 			maxLength = 0;
 			firstCombine = i+1;
@@ -104,8 +111,18 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 		}
 		else
 		{
-			maxLength += 3 + m_pathList[i].GetGitPathString().GetLength();
+			maxLength += 3 + GetListItem(i).GetLength();
 		}
 	}
 	return !bErrorsOccurred;
+}
+
+int CMassiveGitTask::GetListCount()
+{
+	return m_bIsPath ? m_pathList.GetCount() : (int)m_itemList.size();
+}
+
+CString CMassiveGitTask::GetListItem(int index)
+{
+	return m_bIsPath ? m_pathList[index].GetGitPathString() : m_itemList[index];
 }
