@@ -115,8 +115,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 		if (pfnOrigProc != _HyperlinkParentProc)
 		{
 			SetProp( hwndParent, PROP_ORIGINAL_PROC, (HANDLE)pfnOrigProc );
-			SetWindowLongPtr( hwndParent, GWLP_WNDPROC,
-				           (LONG) (WNDPROC) _HyperlinkParentProc );
+			SetWindowLongPtr( hwndParent, GWLP_WNDPROC, (LONG_PTR)(WNDPROC) _HyperlinkParentProc );
 		}
 	}
 
@@ -138,7 +137,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
 
 	m_pfnOrigCtlProc = (WNDPROC) GetWindowLongPtr(hwndCtl, GWLP_WNDPROC);
 	SetProp(hwndCtl, PROP_OBJECT_PTR, (HANDLE) this);
-	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG) (WNDPROC) _HyperlinkProc);
+	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG_PTR)(WNDPROC) _HyperlinkProc);
 
 	return TRUE;
 }
@@ -212,7 +211,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG) pfnOrigProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR) pfnOrigProc);
 			RemoveProp(hwnd, PROP_ORIGINAL_PROC);
 			break;
 		}
@@ -347,8 +346,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 		}
 	case WM_DESTROY:
 		{
-			SetWindowLongPtr(hwnd, GWLP_WNDPROC,
-				          (LONG) pHyperLink->m_pfnOrigCtlProc);
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR) pHyperLink->m_pfnOrigCtlProc);
 
 			SendMessage(hwnd, WM_SETFONT, (WPARAM) pHyperLink->m_StdFont, 0);
 

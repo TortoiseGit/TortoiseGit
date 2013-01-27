@@ -638,9 +638,9 @@ void CGitPropertyPage::InitWorkfileView()
 		}
 		if (allAreFiles)
 		{
-			int assumevalid = 0;
-			int skipworktree = 0;
-			int executable = 0;
+			size_t assumevalid = 0;
+			size_t skipworktree = 0;
+			size_t executable = 0;
 			do
 			{
 				git_index *index = NULL;

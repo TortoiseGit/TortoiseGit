@@ -6,7 +6,7 @@ Released: unreleased
  * Fixed issue #1500: Support git merge --log option
 
 = Release 1.8.0.0 =
-Released: unreleased
+Released: 2013-01-27
 
 == Features ==
  * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
