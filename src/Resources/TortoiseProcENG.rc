@@ -2775,6 +2775,7 @@ BEGIN
                             "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
     IDS_PROC_RESET          "Reset"
     IDS_FETCH_TAGS_ONLY     "All tags only"
+    IDS_LIBGIT2_NO_DETAIL_INFO "No Detail Error Informatin"
 END
 
 STRINGTABLE
