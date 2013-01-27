@@ -3,6 +3,7 @@ Released: unreleased
 
 == Features ==
  * Log dialog can revert selected files to parent revision
+ * Fixed issue #1500: Support git merge --log option
 
 = Release 1.8.0.0 =
 Released: unreleased

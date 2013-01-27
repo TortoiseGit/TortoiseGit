@@ -40,6 +40,10 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=NULL*/)
 	m_bNoFF=false;
 	m_bSquash=false;
 	m_bNoCommit=false;
+	m_bLog = FALSE;
+	CString mergeLog = g_Git.GetConfigValue(_T("merge.log"));
+	int nLog = _ttoi(mergeLog);
+	m_nLog = nLog > 0 ? nLog : 20;
 }
 
 CMergeDlg::~CMergeDlg()
@@ -55,6 +59,8 @@ void CMergeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_NOFF,this->m_bNoFF);
 	DDX_Check(pDX,IDC_CHECK_SQUASH,this->m_bSquash);
 	DDX_Check(pDX,IDC_CHECK_NOCOMMIT,this->m_bNoCommit);
+	DDX_Check(pDX, IDC_CHECK_MERGE_LOG, m_bLog);
+	DDX_Text(pDX, IDC_EDIT_MERGE_LOGNUM, m_nLog);
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 }
 
@@ -63,6 +69,7 @@ BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CMergeDlg::OnBnClickedOk)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_CHECK_MERGE_LOG, &CMergeDlg::OnBnClickedCheckMergeLog)
 END_MESSAGE_MAP()
 
 
@@ -89,6 +96,7 @@ BOOL CMergeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SQUASH);
 	AdjustControlSize(IDC_CHECK_NOFF);
 	AdjustControlSize(IDC_CHECK_NOCOMMIT);
+	AdjustControlSize(IDC_CHECK_MERGE_LOG);
 
 	CheckRadioButton(IDC_RADIO_BRANCH,IDC_RADIO_VERSION,IDC_RADIO_BRANCH);
 	this->SetDefaultChoose(IDC_RADIO_BRANCH);
@@ -135,4 +143,10 @@ void CMergeDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
+}
+
+void CMergeDlg::OnBnClickedCheckMergeLog()
+{
+	UpdateData(TRUE);
+	GetDlgItem(IDC_EDIT_MERGE_LOGNUM)->EnableWindow(m_bLog);
 }

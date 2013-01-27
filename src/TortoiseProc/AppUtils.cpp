@@ -2713,6 +2713,13 @@ BOOL CAppUtils::Merge(CString *commit)
 		if(dlg.m_bNoCommit)
 			args += _T(" --no-commit");
 
+		if (dlg.m_bLog)
+		{
+			CString fmt;
+			fmt.Format(_T(" --log=%d"), dlg.m_nLog);
+			args += fmt;
+		}
+
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
 			CString logmsg = dlg.m_strLogMesage;

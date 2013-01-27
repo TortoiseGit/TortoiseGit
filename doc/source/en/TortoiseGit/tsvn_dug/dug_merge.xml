@@ -58,6 +58,11 @@
 		<guilabel>No Commit</guilabel> Do not automatically create a commit after merge.
 	</para>
 	<para>
+		<guilabel>Messages</guilabel> Populate the log message with one-line descriptions 
+		from the actual commits that are being merged. Can specify the number of commits 
+		to be included in the merge message.
+	</para>
+	<para>
 		You can see more information at <xref linkend="git-merge(1)"/>
 	</para>
 	<para>

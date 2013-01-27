@@ -40,6 +40,8 @@ public:
 	BOOL m_bSquash;
 	BOOL m_bNoFF;
 	BOOL m_bNoCommit;
+	BOOL m_bLog;
+	int m_nLog;
 	//CString m_Base;
 
 
@@ -59,4 +61,5 @@ public:
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedCheckMergeLog();
 };
