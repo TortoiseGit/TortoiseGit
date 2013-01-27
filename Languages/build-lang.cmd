@@ -15,6 +15,7 @@ call :nmake 1042 ko_KR
 call :nmake 1043 nl_NL
 call :nmake 1045 pl_PL
 call :nmake 1046 pt_BR
+call :nmake 1048 ro
 call :nmake 1049 ru
 call :nmake 1053 sv
 call :nmake 1055 tr
