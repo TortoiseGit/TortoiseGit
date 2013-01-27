@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2009, 2012 - TortoiseSVN
+// Copyright (C) 2003-2009, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,12 +72,12 @@ bool CWindow::RegisterWindow(CONST WNDCLASSEX* wcx)
 
 LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    CWindow* pWnd;
+    CWindow * pWnd = nullptr;
 
     if (uMsg == WM_NCCREATE)
     {
         // get the pointer to the window from lpCreateParams which was set in CreateWindow
-        SetWindowLongPtr(hwnd, GWLP_USERDATA, (long)((LPCREATESTRUCT(lParam))->lpCreateParams));
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)((LPCREATESTRUCT(lParam))->lpCreateParams));
     }
 
     // get the pointer to the window
