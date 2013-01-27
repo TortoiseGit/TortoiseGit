@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2012 the TortoiseGit team
+# Copyright (C) 2008-2013 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-12-31 00:35+0000\n"
+"PO-Revision-Date: 2013-01-14 11:01+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/tortoisegit/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -246,6 +246,11 @@ msgstr "%s [Възстановени]"
 msgid "%s in %s"
 msgstr "%s в %s"
 
+#. Resource IDs: (1383)
+#, c-format
+msgid "%s requires msysgit >= %s"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%s, at %s"
@@ -293,7 +298,7 @@ msgid ""
 "%s\n"
 "is a directory, not a file!\n"
 "TortoiseGitMerge can't diff directories."
-msgstr ""
+msgstr "%s\nе директория, а не файл!\nTortoiseGitMerge не може да сравнява директории."
 
 #. Resource IDs: (16923)
 msgid "&..."
@@ -359,10 +364,6 @@ msgstr ""
 msgid "&Apply unified diff"
 msgstr "&Кърпене с Unified Diff"
 
-#. Resource IDs: (218, 32852)
-msgid "&Aqua Style"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "&Arguments:"
 msgstr "&Аргументи:"
@@ -402,10 +403,6 @@ msgstr "&Авторство на промените"
 #. Resource IDs: (322, 1252)
 msgid "&Blame revisions"
 msgstr "&Авторство на редакции"
-
-#. Resource IDs: (215, 32849)
-msgid "&Blue Style"
-msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Blue:"
@@ -797,6 +794,10 @@ msgstr "&Анимации на менюто:"
 msgid "&Menu contents:"
 msgstr "&Съдържание на меню:"
 
+#. Resource IDs: (1735)
+msgid "&Merge"
+msgstr "&Сливане"
+
 #. Resource IDs: (9)
 msgid "&Merge..."
 msgstr "&Сливане..."
@@ -849,6 +850,10 @@ msgstr "&Следваща страница"
 #. Resource IDs: (16632)
 msgid "&No double-click event"
 msgstr "&Без двойно щракване"
+
+#. Resource IDs: (1734)
+msgid "&No fetch"
+msgstr ""
 
 #. Resource IDs: (1702)
 msgid "&None"
@@ -1058,10 +1063,6 @@ msgstr "&Показване на текстови етикети"
 msgid "&Signing key ID:"
 msgstr ""
 
-#. Resource IDs: (217, 32851)
-msgid "&Silver Style"
-msgstr "&Сребърен стил"
-
 #. Resource IDs: (66)
 msgid "&Skip"
 msgstr ""
@@ -1218,10 +1219,6 @@ msgstr "&Целият проект"
 msgid "&Whole word"
 msgstr "&Цяла дума"
 
-#. Resource IDs: (212, 32846)
-msgid "&Windows XP"
-msgstr "&Windows XP"
-
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr ""
@@ -1246,14 +1243,6 @@ msgstr "(без стойност)"
 #. Resource IDs: (314)
 msgid "(not found)"
 msgstr "(не е намерено)"
-
-#. Resource IDs: (176)
-msgid "(properties only)"
-msgstr "(само свойства)"
-
-#. Resource IDs: (176)
-msgid "(props and content)"
-msgstr "(свойства и съдържание)"
 
 #. Resource IDs: (245)
 msgid "(unknown)"
@@ -1503,7 +1492,7 @@ msgstr ""
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
-msgstr ""
+msgstr "Относно TortoiseGitMerge"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1963,10 +1952,6 @@ msgstr "Автоматична проверка за &нова версия вс
 #. Resource IDs: (1157)
 msgid "Average"
 msgstr "Средно"
-
-#. Resource IDs: (216, 32850)
-msgid "B&lack Style"
-msgstr ""
 
 #. Resource IDs: (1003, 1011)
 msgid "B&rowse..."
@@ -2871,8 +2856,8 @@ msgid "Copying..."
 msgstr "Копиране..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2012 TortoiseGit"
-msgstr "Copyright (C) 2009-2012 TortoiseGit"
+msgid "Copyright (C) 2009-2013 TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3663,10 +3648,6 @@ msgstr ""
 msgid "EUC-KR"
 msgstr "EUC-KR"
 
-#. Resource IDs: (3697)
-msgid "EXT"
-msgstr "EXT"
-
 #. Resource IDs: (65535)
 msgid "Eastern European"
 msgstr "Източно европейски"
@@ -4313,10 +4294,6 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Font"
 msgstr "Шрифт"
-
-#. Resource IDs: (3585)
-msgid "For Help, press F1"
-msgstr "За помощ, натиснете F1"
 
 #. Resource IDs: (3585)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
@@ -5352,7 +5329,7 @@ msgstr "Зареждане на изображенията"
 msgid "Load Putty &Key"
 msgstr ""
 
-#. Resource IDs: (1379)
+#. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr ""
 
@@ -5992,7 +5969,7 @@ msgstr "Забележка: папката съдържа неконтролир
 
 #. Resource IDs: (65535)
 msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
+msgstr "Забележка: настройките на шрифта се отразяват и на TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6112,22 +6089,6 @@ msgid ""
 " version."
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "OVR"
-msgstr "OVR"
-
-#. Resource IDs: (211, 32845)
-msgid "Office &XP"
-msgstr "Office &XP"
-
-#. Resource IDs: (213, 32847)
-msgid "Office 200&3"
-msgstr "Office 200&3"
-
-#. Resource IDs: (65535)
-msgid "Office 200&7"
-msgstr "Office 200&7"
-
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
 msgstr ""
@@ -6135,22 +6096,6 @@ msgstr ""
 #. Resource IDs: (156)
 msgid "Office 2007"
 msgstr ""
-
-#. Resource IDs: (218)
-msgid "Office 2007 (&Aqua Style)"
-msgstr "Office 2007 (&Aqua Style)"
-
-#. Resource IDs: (215)
-msgid "Office 2007 (&Blue Style)"
-msgstr "Office 2007 (&Blue Style)"
-
-#. Resource IDs: (217)
-msgid "Office 2007 (&Silver Style)"
-msgstr "Office 2007 (&Silver Style)"
-
-#. Resource IDs: (216)
-msgid "Office 2007 (B&lack Style)"
-msgstr "Office 2007 (B&lack Style)"
 
 #. Resource IDs: (626)
 msgid "Office 2007 colors"
@@ -6465,9 +6410,9 @@ msgstr "Картинка:"
 
 #. Resource IDs: (157)
 msgid ""
-"Pictures (*.wmf, *.jpg, *.png, *.bmp, "
-"*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
-msgstr "Снимки (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Всички (*.*)|*.*||"
+"Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
+"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (246)
 msgid "Pie Graph"
@@ -6694,6 +6639,10 @@ msgstr ""
 msgid "Push"
 msgstr "Бутане"
 
+#. Resource IDs: (1385)
+msgid "Push notes"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "Push ta&gs"
 msgstr ""
@@ -6737,13 +6686,13 @@ msgstr "От&мяна до тази редакция"
 msgid "REBASE"
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "REC"
-msgstr "REC"
-
 #. Resource IDs: (1535)
 msgid "Range"
 msgstr "Диапазон"
+
+#. Resource IDs: (1736)
+msgid "Re&base"
+msgstr ""
 
 #. Resource IDs: (1494)
 msgid "Re&mote:"
@@ -7284,10 +7233,6 @@ msgstr ""
 msgid "Revision:"
 msgstr "Редакция:"
 
-#. Resource IDs: (116)
-msgid "Revisions"
-msgstr "Редакции"
-
 #. Resource IDs: (605)
 msgid "Rewind"
 msgstr ""
@@ -7347,10 +7292,6 @@ msgstr "С&татистика"
 #. Resource IDs: (9)
 msgid "S&witch/Checkout..."
 msgstr ""
-
-#. Resource IDs: (3697)
-msgid "SCRL"
-msgstr "SCRL"
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
@@ -7945,6 +7886,10 @@ msgid ""
 "Show Whitespaces"
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Show symbols on ref labels to substitute part of the ref names"
+msgstr ""
+
 #. Resource IDs: (1730)
 msgid "Show ta&gs"
 msgstr ""
@@ -8345,6 +8290,10 @@ msgstr ""
 msgid "Switches the comparison left<<->right"
 msgstr ""
 
+#. Resource IDs: (1733)
+msgid "Symbolize ref names"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
@@ -8386,6 +8335,10 @@ msgstr "Размер на табулатора:"
 #. Resource IDs: (82)
 msgid "Tag"
 msgstr "Етикет"
+
+#. Resource IDs: (1382)
+msgid "Tag (FF)"
+msgstr ""
 
 #. Resource IDs: (82)
 msgid "Tag Info"
@@ -8663,7 +8616,7 @@ msgid ""
 "%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr ""
+msgstr "Пътят\n%s\nвъв файла със кръпки не съществува.\nTortoiseGitMerge се опита да приложи кръпката чрез премахване на представките, но не откри съвпадащ път."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8966,7 +8919,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: програма за сравняване на изображения за TortoiseSVN\n\nНаличните параметри на командния ред са:\n/left:'път до лявото изображение'\n/lefttitle:'заглавие за лявото изображение'\n/right:'път до дясното изображение'\n/righttitle:'заглавие за дясното изображение'\n/overlay\t\tза включване не режим с припокриване\n/fit\t\tза напасване на размера на изображенията\n/showinfo\t\tза показване на полетата с информация за изображенията"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
@@ -9062,6 +9015,18 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "URL:"
 msgstr "URL:"
+
+#. Resource IDs: (5071)
+msgid "UTF-16 BE"
+msgstr ""
+
+#. Resource IDs: (5070)
+msgid "UTF-16 LE"
+msgstr ""
+
+#. Resource IDs: (5069)
+msgid "UTF-8"
+msgstr ""
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -9483,10 +9448,6 @@ msgstr ""
 msgid "Visual Studio 2008"
 msgstr ""
 
-#. Resource IDs: (214, 32848)
-msgid "Visual Studio.NET 200&5"
-msgstr "Visual Studio.NET 200&5"
-
 #. Resource IDs: (65535)
 msgid ""
 "WARNING:\r\n"
@@ -9566,10 +9527,6 @@ msgstr "Позицията на прозореца"
 #. Resource IDs: (16927)
 msgid "Windows"
 msgstr "Windows"
-
-#. Resource IDs: (210, 32844)
-msgid "Windows &2000"
-msgstr "Windows &2000"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 2000"

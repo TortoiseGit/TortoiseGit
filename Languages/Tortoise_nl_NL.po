@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2012 the TortoiseGit team
+# Copyright (C) 2008-2013 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-12-28 21:50+0000\n"
+"PO-Revision-Date: 2013-01-14 11:01+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/tortoisegit/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -251,6 +251,11 @@ msgstr "%s [Herstelt]"
 msgid "%s in %s"
 msgstr "%s in %s"
 
+#. Resource IDs: (1383)
+#, c-format
+msgid "%s requires msysgit >= %s"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%s, at %s"
@@ -278,6 +283,13 @@ msgid ""
 "%s"
 msgstr "%s\n%s"
 
+#. Resource IDs: (376)
+#, c-format
+msgid ""
+"%s\n"
+"Could not be cleanly patched."
+msgstr ""
+
 #. Resource IDs: (145)
 #, c-format
 msgid ""
@@ -291,7 +303,7 @@ msgid ""
 "%s\n"
 "is a directory, not a file!\n"
 "TortoiseGitMerge can't diff directories."
-msgstr ""
+msgstr "%s\nis geen bestand maar een map!\nTortoiseGitMerge kan geen verschillen in mappen tonen."
 
 #. Resource IDs: (16923)
 msgid "&..."
@@ -303,10 +315,6 @@ msgstr ""
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
-msgstr ""
-
-#. Resource IDs: (57664)
-msgid "&About TortoiseGitMerge..."
 msgstr ""
 
 #. Resource IDs: (16920)
@@ -361,10 +369,6 @@ msgstr ""
 msgid "&Apply unified diff"
 msgstr "&Voer unified diff uit"
 
-#. Resource IDs: (218, 32852)
-msgid "&Aqua Style"
-msgstr "&Aqua stijl"
-
 #. Resource IDs: (65535)
 msgid "&Arguments:"
 msgstr "&Argumenten:"
@@ -404,10 +408,6 @@ msgstr "&Verklaar wijzigingen"
 #. Resource IDs: (322, 1252)
 msgid "&Blame revisions"
 msgstr "Ver&klaar revisies"
-
-#. Resource IDs: (215, 32849)
-msgid "&Blue Style"
-msgstr "&Blauwe stijl"
 
 #. Resource IDs: (65535)
 msgid "&Blue:"
@@ -504,10 +504,6 @@ msgstr "&Vastleggen..."
 #. Resource IDs: (1252)
 msgid "&Compare revisions"
 msgstr "Ver&gelijk revisies"
-
-#. Resource IDs: (1019)
-msgid "&Compare whitespaces"
-msgstr "&Vergelijk spaties en witregels"
 
 #. Resource IDs: (1239)
 msgid "&Configure"
@@ -669,10 +665,6 @@ msgstr ""
 msgid "&Git Style Commit (--rmdir)"
 msgstr ""
 
-#. Resource IDs: (32884)
-msgid "&Go to"
-msgstr ""
-
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
 msgstr ""
@@ -710,10 +702,6 @@ msgstr ""
 msgid "&Ignore %d items by name"
 msgstr "%d zaken &negeren op naam"
 
-#. Resource IDs: (1021)
-msgid "&Ignore whitespace changes"
-msgstr "Negeer wijzigingen in &spaties en lege regels"
-
 #. Resource IDs: (16914)
 msgid "&Image"
 msgstr "&Afbeelding"
@@ -737,10 +725,6 @@ msgstr "&Start-map:"
 #. Resource IDs: (1693)
 msgid "&Initialize submodules (--init)"
 msgstr ""
-
-#. Resource IDs: (32825)
-msgid "&Inline diff word-wise"
-msgstr "&Woordelijke verschillen binnen een regel"
 
 #. Resource IDs: (81)
 msgid "&Install"
@@ -774,6 +758,15 @@ msgstr ""
 msgid "&Limit search to modified lines"
 msgstr "&Alleen zoeken in gewijzigde regels"
 
+#. Resource IDs: (1078)
+msgid "&Line number"
+msgstr "&Regelnummer"
+
+#. Resource IDs: (88)
+#, c-format
+msgid "&Line number (%d - %d)"
+msgstr "&Regelnummer (%d - %d)"
+
 #. Resource IDs: (32797)
 msgid "&Link image positions"
 msgstr "&Koppel afbeeldingsposities"
@@ -794,6 +787,10 @@ msgstr ""
 msgid "&Luminence:"
 msgstr "&Verlichting:"
 
+#. Resource IDs: (65535)
+msgid "&Max line length for inline diffs"
+msgstr "&Maximale lengte voor inline-verschillen"
+
 #. Resource IDs: (16543)
 msgid "&Menu animations:"
 msgstr "&Menu-animaties:"
@@ -801,6 +798,10 @@ msgstr "&Menu-animaties:"
 #. Resource IDs: (16921)
 msgid "&Menu contents:"
 msgstr "&Menu-inhoud:"
+
+#. Resource IDs: (1735)
+msgid "&Merge"
+msgstr "&Samenvoegen"
 
 #. Resource IDs: (9)
 msgid "&Merge..."
@@ -830,10 +831,6 @@ msgstr ""
 msgid "&Name:"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "&Navigate"
-msgstr "&Navigeer"
-
 #. Resource IDs: (1049)
 msgid "&Network drives"
 msgstr "&Netwerkstations"
@@ -851,10 +848,6 @@ msgstr "&Nieuw..."
 msgid "&Next %ld"
 msgstr "&Volgende %ld"
 
-#. Resource IDs: (32779)
-msgid "&Next Difference"
-msgstr "&Volgend verschil"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Volgende pagina"
@@ -862,6 +855,10 @@ msgstr "&Volgende pagina"
 #. Resource IDs: (16632)
 msgid "&No double-click event"
 msgstr "&Geen dubbelklik event"
+
+#. Resource IDs: (1734)
+msgid "&No fetch"
+msgstr ""
 
 #. Resource IDs: (1702)
 msgid "&None"
@@ -914,10 +911,6 @@ msgstr ""
 #. Resource IDs: (1414)
 msgid "&Port:"
 msgstr "&Poort:"
-
-#. Resource IDs: (32780)
-msgid "&Previous Difference"
-msgstr "V&orig verschil"
 
 #. Resource IDs: (1069)
 msgid "&Print Preview"
@@ -1075,10 +1068,6 @@ msgstr "&Toon tekstlabels"
 msgid "&Signing key ID:"
 msgstr ""
 
-#. Resource IDs: (217, 32851)
-msgid "&Silver Style"
-msgstr "&Zilveren stijl"
-
 #. Resource IDs: (66)
 msgid "&Skip"
 msgstr ""
@@ -1142,10 +1131,6 @@ msgstr "&Alleen tekst"
 #. Resource IDs: (1222)
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr "&Maximale tijd voor het zoeken naar automatische aanvullingen"
-
-#. Resource IDs: (59392)
-msgid "&Toolbar"
-msgstr "&Werkbalk"
 
 #. Resource IDs: (65535)
 msgid "&Toolbar Name:"
@@ -1231,10 +1216,6 @@ msgstr "B&eeld:"
 msgid "&Warn on missing Signed-Off-By on commit"
 msgstr ""
 
-#. Resource IDs: (32774)
-msgid "&Whitespaces"
-msgstr "&Spaties en lege regels"
-
 #. Resource IDs: (1203)
 msgid "&Whole Project"
 msgstr ""
@@ -1242,10 +1223,6 @@ msgstr ""
 #. Resource IDs: (1066, 20085)
 msgid "&Whole word"
 msgstr "&Heel woord"
-
-#. Resource IDs: (212, 32846)
-msgid "&Windows XP"
-msgstr "&Windows XP"
 
 #. Resource IDs: (1657)
 msgid "&ignore space change"
@@ -1506,6 +1483,10 @@ msgstr ""
 msgid "Abort"
 msgstr "Afbreken"
 
+#. Resource IDs: (156)
+msgid "About"
+msgstr "Over"
+
 #. Resource IDs: (129)
 msgid "About TortoiseGit"
 msgstr "Over TortoiseGit"
@@ -1516,7 +1497,7 @@ msgstr ""
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
-msgstr ""
+msgstr "Over TortoiseGitMerge"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1578,6 +1559,10 @@ msgstr "Voeg een extensie-specifiek diff-programma toe"
 #. Resource IDs: (110)
 msgid "Add extension specific merge program"
 msgstr "Voeg een extensie-specifiek merge-programma toe"
+
+#. Resource IDs: (1065)
+msgid "Add new files automatically to Git"
+msgstr ""
 
 #. Resource IDs: (13)
 msgid "Add to &ignore list"
@@ -1789,6 +1774,10 @@ msgstr ""
 msgid "Apply unified diff"
 msgstr "Voer unified diff uit"
 
+#. Resource IDs: (156, 626)
+msgid "Aqua Style"
+msgstr "Aqua stijl"
+
 #. Resource IDs: (65535)
 msgid "Arabic"
 msgstr ""
@@ -1969,10 +1958,6 @@ msgstr "Elke week controleren of een &nieuwe versie beschikbaar is"
 msgid "Average"
 msgstr "Gemiddelde"
 
-#. Resource IDs: (216, 32850)
-msgid "B&lack Style"
-msgstr "Z&warte stijl"
-
 #. Resource IDs: (1003, 1011)
 msgid "B&rowse..."
 msgstr "&Bladeren..."
@@ -2041,6 +2026,10 @@ msgstr "Bitmap\neen bitmap"
 msgid "BlAMEPOPUP"
 msgstr ""
 
+#. Resource IDs: (156, 626)
+msgid "Black Style"
+msgstr "Zwarte stijl"
+
 #. Resource IDs: (1252)
 msgid "Blame"
 msgstr "Verklaren"
@@ -2061,6 +2050,10 @@ msgstr "Geeft van een bestand de auteur per regel"
 msgid "Blend alpha"
 msgstr "Alpha mixen"
 
+#. Resource IDs: (156, 626)
+msgid "Blue Style"
+msgstr "Blauwe stijl"
+
 #. Resource IDs: (1)
 msgid "Body"
 msgstr ""
@@ -2070,6 +2063,11 @@ msgid ""
 "Both /logmsg and /logmsgfile were specified!\n"
 "Only one of those can be specified."
 msgstr "Zowel /logmsg als /logmsgfile zijn opgegeven!\nU kunt slechts één van deze twee gebruiken."
+
+#. Resource IDs: (70)
+msgid ""
+"Both the path to the patch file and the target path must be absolute paths!"
+msgstr "Zowel het pad naar het patch-bestand als het doel-pad moeten absolute paden zijn!"
 
 #. Resource IDs: (1007)
 msgid "Br&owse..."
@@ -2270,6 +2268,12 @@ msgid ""
 "Page Setup"
 msgstr ""
 
+#. Resource IDs: (626)
+msgid ""
+"Change the style of the application\n"
+"Change Style"
+msgstr "Wijzig de stijl van de applicatie\nWijzig stijl"
+
 #. Resource IDs: (3825)
 msgid "Change the window position"
 msgstr "Verplaats het venster"
@@ -2300,6 +2304,10 @@ msgstr "Werkset %s verplaatst"
 #. Resource IDs: (1242)
 msgid "Changes made (double-click on file for diff):"
 msgstr "Gemaakte wijzigingen (dubbelklik op het bestand voor details):"
+
+#. Resource IDs: (2060)
+msgid "Changes the style of the application"
+msgstr "Wijzigt de stijl van de applicatie"
 
 #. Resource IDs: (3887)
 msgid "Check"
@@ -2474,6 +2482,12 @@ msgid ""
 "extension"
 msgstr "Klik op 'Geavanceerd' om Merge-programma's per extensie op te geven"
 
+#. Resource IDs: (2058)
+msgid ""
+"Click to see commands to move blocks of text\n"
+"Use text blocks"
+msgstr "Klik om opdrachten te zien voor het verplaatsen van blokken tekst\nGebruik tekstblokken"
+
 #. Resource IDs: (257)
 msgid "Clipboard"
 msgstr "Klembord"
@@ -2528,13 +2542,19 @@ msgstr ""
 msgid "Close the active window and prompts to save the documents"
 msgstr "Sluit het actieve venster en vraagt om de bestanden op te slaan"
 
+#. Resource IDs: (156)
+msgid "Collapse"
+msgstr "Inklappen"
+
+#. Resource IDs: (2055)
+msgid ""
+"Collapse unchanged sections\n"
+"Collapse"
+msgstr "Ongewijzigde secties inklappen\nInklappen"
+
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Kleur"
-
-#. Resource IDs: (1068)
-msgid "Color co&de in-line changes"
-msgstr "&Kleurcoderen van in-line wijzigingen"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -2661,6 +2681,10 @@ msgstr ""
 msgid "Compare two files"
 msgstr "Vergelijk twee bestanden"
 
+#. Resource IDs: (156)
+msgid "Compare whitespaces"
+msgstr "Vergelijk spaties en witregels"
+
 #. Resource IDs: (1251)
 msgid "Compare with &working tree"
 msgstr ""
@@ -2672,6 +2696,12 @@ msgstr "Vergelijk met &basis"
 #. Resource IDs: (1251)
 msgid "Compare with previous revision"
 msgstr "Vergelijk met vorige revisie"
+
+#. Resource IDs: (2055)
+msgid ""
+"Compares all whitespaces when diffing\n"
+"Compare whitespaces"
+msgstr "Vergelijk alle spaties en lege regels bij\nhet vergelijken\nVergelijk spaties en lege regels"
 
 #. Resource IDs: (12)
 msgid ""
@@ -2831,8 +2861,8 @@ msgid "Copying..."
 msgstr "Kopiëren..."
 
 #. Resource IDs: (1001)
-msgid "Copyright (C) 2009-2012 TortoiseGit"
-msgstr "Copyright (C) 2009-2012 TortoiseGit"
+msgid "Copyright (C) 2009-2013 TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -2929,6 +2959,13 @@ msgstr "Kon bestand %s niet opslaan!"
 msgid "Could not start TortoiseGitBlame"
 msgstr ""
 
+#. Resource IDs: (70)
+#, c-format
+msgid ""
+"Could not start diff viewer!\n"
+"%s"
+msgstr "Kon de Diff-viewer niet starten!\n%s"
+
 #. Resource IDs: (81)
 #, c-format
 msgid ""
@@ -2956,6 +2993,13 @@ msgstr ""
 #. Resource IDs: (3857)
 msgid "Could not start print job."
 msgstr "Afdrukopdracht kan niet gestart worden."
+
+#. Resource IDs: (83)
+#, c-format
+msgid ""
+"Could not start text viewer!\n"
+"%s"
+msgstr "Kon de tekst-viewer niet starten!\n%s"
 
 #. Resource IDs: (83)
 #, c-format
@@ -3032,6 +3076,10 @@ msgid ""
 "history, and would want to send in fixes as patches."
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Create patch file"
+msgstr "Maak patch-bestand"
+
 #. Resource IDs: (72)
 msgid "Create pull &request"
 msgstr ""
@@ -3039,10 +3087,6 @@ msgstr ""
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
 msgstr ""
-
-#. Resource IDs: (32828)
-msgid "Create unified diff file"
-msgstr "Maak unified diff bestand"
 
 #. Resource IDs: (85)
 msgid "Created"
@@ -3307,6 +3351,10 @@ msgstr ""
 msgid "Destination disk drive is full."
 msgstr "De doelschijf is vol."
 
+#. Resource IDs: (2056)
+msgid "Detect and highlight moved blocks"
+msgstr "Detecteer en toon verplaatste blokken"
+
 #. Resource IDs: (3849)
 msgid ""
 "Device Independent Bitmap\n"
@@ -3488,6 +3536,14 @@ msgstr ""
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr ""
 
+#. Resource IDs: (319)
+#, c-format
+msgid ""
+"Do you want to mark the file\n"
+"%s\n"
+"as resolved?"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Do you want to recover these auto-saved documents?"
 msgstr "Wilt u deze automatisch opgeslagen documenten herstellen?"
@@ -3514,6 +3570,10 @@ msgstr ""
 msgid "Document :"
 msgstr "Document :"
 
+#. Resource IDs: (564)
+msgid "Don't ask me again"
+msgstr "Vraag dit niet nogmaals"
+
 #. Resource IDs: (75)
 #, c-format
 msgid "Don't know what will push because unknown branch \"%s\""
@@ -3532,6 +3592,10 @@ msgstr "De automatisch opgeslagen documenten niet herstellen\nGebruik dat laatst
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
 msgstr "Deze boodschap niet meer tonen"
+
+#. Resource IDs: (564)
+msgid "Don't tell me again"
+msgstr "Vertel dit niet nogmaals"
 
 #. Resource IDs: (66, 602)
 msgid "Done"
@@ -3588,10 +3652,6 @@ msgstr ""
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr "EUC-KR"
-
-#. Resource IDs: (3697)
-msgid "EXT"
-msgstr "EXT"
 
 #. Resource IDs: (65535)
 msgid "Eastern European"
@@ -3839,6 +3899,10 @@ msgstr ""
 #. Resource IDs: (1002)
 msgid "Existing"
 msgstr "Bestaand"
+
+#. Resource IDs: (156)
+msgid "Exit"
+msgstr "Afsluiten"
 
 #. Resource IDs: (1002)
 #, c-format
@@ -4237,10 +4301,6 @@ msgid "Font"
 msgstr "Lettertype"
 
 #. Resource IDs: (3585)
-msgid "For Help, press F1"
-msgstr ""
-
-#. Resource IDs: (3585)
 msgid "For Help, press F1. Scroll horizontally with Ctrl-Scrollwheel"
 msgstr "Druk op F1 voor hulp. Horizontaal scrollen gaat met Ctrl-Scrollwiel"
 
@@ -4488,6 +4548,10 @@ msgstr ""
 msgid "Git::Remote"
 msgstr ""
 
+#. Resource IDs: (155)
+msgid "Go To Line"
+msgstr "Ga naar regel"
+
 #. Resource IDs: (221)
 msgid "Go to line"
 msgstr "Ga naar regel"
@@ -4504,6 +4568,12 @@ msgid ""
 "Next difference"
 msgstr "Ga naar volgende verschil\nVolgend verschil"
 
+#. Resource IDs: (2055)
+msgid ""
+"Go to the next inline difference\n"
+"Next inline difference"
+msgstr "Ga naar het volgende inline-verschil\nVolgend inline-verschil"
+
 #. Resource IDs: (2051)
 msgid ""
 "Go to the previous conflict\n"
@@ -4515,6 +4585,16 @@ msgid ""
 "Go to the previous difference\n"
 "Previous difference"
 msgstr "Ga naar vorig verschil\nVorig verschil"
+
+#. Resource IDs: (2055)
+msgid ""
+"Go to the previous inline difference\n"
+"Previous inline difference"
+msgstr "Ga naar het vorige inline-verschil\nVorig inline-verschil"
+
+#. Resource IDs: (156)
+msgid "Goto Line"
+msgstr "Ga naar regel"
 
 #. Resource IDs: (1251)
 msgid "Graph"
@@ -4587,6 +4667,10 @@ msgstr "Verberg geparkeerd venster"
 #. Resource IDs: (1326)
 msgid "Hide the script while running"
 msgstr "Verberg script bij uitvoeren"
+
+#. Resource IDs: (156)
+msgid "Hide/Show the patch file list"
+msgstr "Verberg/toon bestandslijst uit patch"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -4676,6 +4760,10 @@ msgstr "ID:32794:V C +R"
 msgid "ID:32810:V   +T"
 msgstr "ID:32810:V   +T"
 
+#. Accelerator Entry for Menu ID:32811; ''
+msgid "ID:32811:V C +U"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
 msgstr "ID:32822:V C +F"
@@ -4692,13 +4780,21 @@ msgstr "ID:32825:VA  +D"
 msgid "ID:32837:VA  +M"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32870; ''
+msgid "ID:32870:V C +L"
+msgstr "ID:32870:V C +L"
+
+#. Accelerator Entry for Menu ID:32881; ''
+msgid "ID:32881:V C +P"
+msgstr "ID:32881:V C +P"
+
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
 msgstr "ID:32883:V C +A"
 
-#. Accelerator Entry for Menu ID:32884; '&Go to'
-msgid "ID:32884:V C +G"
-msgstr ""
+#. Accelerator Entry for Menu ID:32893; ''
+msgid "ID:32893:V C +G"
+msgstr "ID:32893:V C +G"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -4741,6 +4837,10 @@ msgstr "ID:57643:V C +Z"
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
 msgstr "ID:57665:V C +Q"
+
+#. Accelerator Entry for Menu ID:57665; ''
+msgid "ID:57665:V C +W"
+msgstr "ID:57665:V C +W"
 
 #. Resource IDs: (5029)
 msgid "ISO 8859-1"
@@ -4885,14 +4985,6 @@ msgstr "Negeren"
 msgid "Ignore %d items by &extension"
 msgstr "Negeer %d zaken op &extensie"
 
-#. Resource IDs: (1020)
-msgid "Ignore &all whitespaces"
-msgstr "&Alle spaties en witregels negeren"
-
-#. Resource IDs: (1067)
-msgid "Ignore &case changes"
-msgstr "Negeer wijzigingen in &hoofd- en kleine letters"
-
 #. Resource IDs: (1692)
 msgid "Ignore File"
 msgstr ""
@@ -4900,6 +4992,18 @@ msgstr ""
 #. Resource IDs: (1686)
 msgid "Ignore Type"
 msgstr ""
+
+#. Resource IDs: (564)
+msgid "Ignore all"
+msgstr "Alles negeren"
+
+#. Resource IDs: (156)
+msgid "Ignore all whitespace changes"
+msgstr "Negeer alle wijzigingen in spaties en witregels"
+
+#. Resource IDs: (1067)
+msgid "Ignore case cha&nges"
+msgstr "Negeer wijzigingen in &hoofd- en kleine letters"
 
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
@@ -4913,6 +5017,10 @@ msgstr ""
 msgid "Ignore line &endings (recommended)"
 msgstr "Negeer &regeleinden (aanbevolen)"
 
+#. Resource IDs: (156)
+msgid "Ignore whitespace changes"
+msgstr "Negeer wijzigingen in spaties en witregels"
+
 #. Resource IDs: (1432)
 msgid "Ignored"
 msgstr "Genegeerd"
@@ -4920,6 +5028,18 @@ msgstr "Genegeerd"
 #. Resource IDs: (78)
 msgid "Ignored Files"
 msgstr ""
+
+#. Resource IDs: (2055)
+msgid ""
+"Ignores all whitespace changes when diffing\n"
+"Ignore all whitespace changes"
+msgstr "Negeert alle wijzigingen in spaties en lege regels bij het vergelijken\nNegeert alle spaties en lege regels"
+
+#. Resource IDs: (2055)
+msgid ""
+"Ignores changes in whitespaces when diffing\n"
+"Ignore whitespace changes"
+msgstr "Negeert wijzigingen in spaties en lege regels bij het vergelijken\nNegeer spaties en lege regels"
 
 #. Resource IDs: (16916)
 msgid "Image &and Text"
@@ -4992,6 +5112,14 @@ msgstr "Ongeldige bestandsnaam."
 msgid "Initial import"
 msgstr "Initiële import"
 
+#. Resource IDs: (156)
+msgid "Inline diff"
+msgstr "Inline-verschil"
+
+#. Resource IDs: (156)
+msgid "Inline diff word-wise"
+msgstr "Inline-verschil per woord"
+
 #. Resource IDs: (65535)
 msgid "Inline differences"
 msgstr "Verschillen binnen een regel"
@@ -5028,6 +5156,10 @@ msgid ""
 "For example, you can't make MyFile.txt become MYFILE.txt.\n"
 "Please consult the documentation for a way to work around this limitation."
 msgstr "Het is niet mogelijk om een bestand te hernoemen door alleen hoofd- en kleine letters te wijzigen.\nMyFile.txt kan bijvoorbeeld niet hernoemd worden in MYFILE.TXT.\nRaadpleeg de documentatie voor een oplossing om deze beperking heen."
+
+#. Resource IDs: (1074)
+msgid "J&ump to first conflict when loading"
+msgstr "&Spring naar eerste verschil bij het laden"
 
 #. Resource IDs: (65535)
 msgid "Japanese"
@@ -5147,13 +5279,19 @@ msgid ""
 "Line"
 msgstr "Lijn-gereedschap\nLijn"
 
-#. Resource IDs: (32853)
-msgid "Line diff bar"
-msgstr "Verschillen-regel"
-
 #. Resource IDs: (65535)
 msgid "Line differences"
 msgstr "Regelverschillen"
+
+#. Resource IDs: (176)
+#, c-format
+msgid "Line moved from line %ld"
+msgstr "Regel verplaatst vanaf regel %ld"
+
+#. Resource IDs: (176)
+#, c-format
+msgid "Line moved to line %ld"
+msgstr "Regel verplaatst naar regel %ld"
 
 #. Resource IDs: (65535)
 msgid "Line:"
@@ -5196,7 +5334,7 @@ msgstr "Afbeeldingen laden"
 msgid "Load Putty &Key"
 msgstr ""
 
-#. Resource IDs: (1379)
+#. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr ""
 
@@ -5219,10 +5357,6 @@ msgid ""
 "Location where the contents of the\n"
 "repository URL will be saved to."
 msgstr "Plaats waar de inhoud van de\narchief-URL opgeslagen zal worden."
-
-#. Resource IDs: (32854)
-msgid "Locator Bar"
-msgstr "Zoekbalk"
 
 #. Resource IDs: (65)
 msgid "Log"
@@ -5300,6 +5434,10 @@ msgstr ""
 msgid "Mail system DLL is invalid."
 msgstr "De DLL van het mailsysteem is ongeldig."
 
+#. Resource IDs: (156)
+msgid "Main"
+msgstr "Hoofd"
+
 #. Resource IDs: (1653)
 msgid "Make it Bare (No working directories)"
 msgstr ""
@@ -5315,10 +5453,6 @@ msgstr ""
 #. Resource IDs: (79, 1382)
 msgid "Manage Remotes"
 msgstr ""
-
-#. Resource IDs: (32808)
-msgid "Mark as &resolved"
-msgstr "Markeer als &opgelost"
 
 #. Resource IDs: (282)
 msgid "Mark as resolved"
@@ -5539,6 +5673,14 @@ msgstr "Verplaats/hernoemen"
 msgid "Move: New name for %s"
 msgstr "Verplaatsen: Nieuwe naam voor %s"
 
+#. Resource IDs: (65535)
+msgid "Moved from"
+msgstr "Verplaatst van"
+
+#. Resource IDs: (65535)
+msgid "Moved to"
+msgstr "Verplaatst naar"
+
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
 msgstr "Plaatst gewijzigde bestanden in de prullenbak voor wijzigingen ongedaan gemaakt worden"
@@ -5560,10 +5702,6 @@ msgstr ""
 msgid "My file:"
 msgstr "Mijn bestand:"
 
-#. Resource IDs: (32804)
-msgid "N&ext Conflict"
-msgstr "&Volgend conflict"
-
 #. Resource IDs: (3697)
 msgid "NUM"
 msgstr "NUM"
@@ -5575,6 +5713,16 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Name:"
 msgstr ""
+
+#. Resource IDs: (156)
+msgid "Navigate"
+msgstr "Navigeer"
+
+#. Resource IDs: (2056)
+msgid ""
+"Navigate to a specific line in the view\n"
+"Goto Line"
+msgstr "Ga naar een specifieke regel\nGa naar regel"
 
 #. Resource IDs: (17004)
 msgid "Navigation Pane Options"
@@ -5639,6 +5787,18 @@ msgid ""
 "Next Page"
 msgstr "Volgende pagina\nVolgende pagina"
 
+#. Resource IDs: (156)
+msgid "Next conflict"
+msgstr "Volgend conflict"
+
+#. Resource IDs: (156)
+msgid "Next difference"
+msgstr "Volgend verschil"
+
+#. Resource IDs: (156)
+msgid "Next inline difference"
+msgstr "Volgend inline-verschil"
+
 #. Resource IDs: (73)
 msgid "No"
 msgstr "Nee"
@@ -5669,6 +5829,10 @@ msgstr ""
 #. Resource IDs: (81)
 msgid "No command value specified!"
 msgstr "Geen commando opdracht gegeven!"
+
+#. Resource IDs: (87)
+msgid "No differences found!"
+msgstr "Geen verschillen gevonden!"
 
 #. Resource IDs: (82)
 msgid ""
@@ -5746,6 +5910,10 @@ msgstr "Geen status cache. Alleen mappen onder versiebeheer krijgen een overlay;
 msgid "No thesaurus suggestions"
 msgstr "Geen suggesties"
 
+#. Resource IDs: (564)
+msgid "No to all"
+msgstr "Nee op alles"
+
 #. Resource IDs: (65)
 msgid "No working directory found."
 msgstr ""
@@ -5806,7 +5974,7 @@ msgstr "Let op: de map bevat bestanden zonder versiebeheer"
 
 #. Resource IDs: (65535)
 msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
+msgstr "N.B.: de lettertype instellingen gelden ook voor TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -5926,37 +6094,21 @@ msgid ""
 " version."
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "OVR"
-msgstr "OVR"
+#. Resource IDs: (156, 626)
+msgid "Office 2003"
+msgstr "Office 2003"
 
-#. Resource IDs: (211, 32845)
-msgid "Office &XP"
-msgstr "Office &XP"
+#. Resource IDs: (156)
+msgid "Office 2007"
+msgstr "Office 2007"
 
-#. Resource IDs: (213, 32847)
-msgid "Office 200&3"
-msgstr "Office 200&3"
+#. Resource IDs: (626)
+msgid "Office 2007 colors"
+msgstr "Office 2007 kleuren"
 
-#. Resource IDs: (65535)
-msgid "Office 200&7"
-msgstr "Office 200&7"
-
-#. Resource IDs: (218)
-msgid "Office 2007 (&Aqua Style)"
-msgstr ""
-
-#. Resource IDs: (215)
-msgid "Office 2007 (&Blue Style)"
-msgstr ""
-
-#. Resource IDs: (217)
-msgid "Office 2007 (&Silver Style)"
-msgstr ""
-
-#. Resource IDs: (216)
-msgid "Office 2007 (B&lack Style)"
-msgstr ""
+#. Resource IDs: (156, 626)
+msgid "Office XP"
+msgstr "Office XP"
 
 #. Resource IDs: (605)
 msgid "Older commit time"
@@ -6011,8 +6163,10 @@ msgid ""
 msgstr ""
 
 #. Resource IDs: (3601)
-msgid "Open file"
-msgstr "Open bestand"
+msgid ""
+"Open files for diff or to apply a patch\n"
+"Open files"
+msgstr "Open bestanden om verschillen te tonen of patch uit te voeren\nOpen bestanden"
 
 #. Resource IDs: (1132)
 msgid "Open from clipboard"
@@ -6088,10 +6242,6 @@ msgstr "Output.prn"
 msgid "Override branch if exists"
 msgstr ""
 
-#. Resource IDs: (32802)
-msgid "P&revious Conflict"
-msgstr "V&orig conflict"
-
 #. Resource IDs: (3845)
 #, c-format
 msgid "Page %u"
@@ -6149,6 +6299,10 @@ msgstr ""
 msgid "Password:"
 msgstr "Wachtwoord:"
 
+#. Resource IDs: (156)
+msgid "Paste"
+msgstr "Plakken"
+
 #. Resource IDs: (603)
 msgid "Paste Recent Message..."
 msgstr ""
@@ -6190,15 +6344,24 @@ msgid "Patch As Attachment"
 msgstr ""
 
 #. Resource IDs: (376)
-msgid "Patch all"
-msgstr "Alles patchen"
+msgid "Patch all files"
+msgstr "Alle bestanden patchen"
 
 #. Resource IDs: (376)
-msgid "Patch selected"
-msgstr "Patch geselecteerd"
+msgid "Patch selected files"
+msgstr "Patch geselecteerde bestanden"
 
 #. Resource IDs: (157)
 msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (169)
+msgid "Patching"
+msgstr "Patchen"
+
+#. Resource IDs: (169)
+#, c-format
+msgid "Patching file '%s'"
 msgstr ""
 
 #. Resource IDs: (63, 77, 198, 207)
@@ -6252,9 +6415,9 @@ msgstr "Afbeelding:"
 
 #. Resource IDs: (157)
 msgid ""
-"Pictures (*.wmf, *.jpg, *.png, *.bmp, "
-"*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
-msgstr "Plaatjes (*.wmf,*.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All (*.*)|*.*||"
+"Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
+"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (246)
 msgid "Pie Graph"
@@ -6361,6 +6524,18 @@ msgstr "Vorige pagina\nVorige pagina"
 #. Resource IDs: (72)
 msgid "Previous Version"
 msgstr ""
+
+#. Resource IDs: (156)
+msgid "Previous conflict"
+msgstr "Vorig conflict"
+
+#. Resource IDs: (156)
+msgid "Previous difference"
+msgstr "Vorig verschil"
+
+#. Resource IDs: (156)
+msgid "Previous inline difference"
+msgstr "Vorig inline-verschil"
 
 #. Resource IDs: (1069, 16990)
 msgid "Print"
@@ -6469,6 +6644,10 @@ msgstr ""
 msgid "Push"
 msgstr ""
 
+#. Resource IDs: (1385)
+msgid "Push notes"
+msgstr ""
+
 #. Resource IDs: (76)
 msgid "Push ta&gs"
 msgstr ""
@@ -6512,12 +6691,12 @@ msgstr "&Ongedaan maken tot deze revisie"
 msgid "REBASE"
 msgstr ""
 
-#. Resource IDs: (3697)
-msgid "REC"
-msgstr "REC"
-
 #. Resource IDs: (1535)
 msgid "Range"
+msgstr ""
+
+#. Resource IDs: (1736)
+msgid "Re&base"
 msgstr ""
 
 #. Resource IDs: (1494)
@@ -6670,6 +6849,11 @@ msgid ""
 "\\d   : digits 0-9\r\n"
 "\\s   : whitespaces"
 msgstr "Filter voor reguliere expressies:\r\n.   : willekeurig teken\r\nc+   : één of meer 'c' karakters\r\nc*   : nul of meer 'c' karakters\r\n^   : begin van de regel\r\n$   : einde van de regel\r\n(string){n} : n maal tekenreeks string\r\n(abcd)   : subexpressie\r\n[aei0-9]   : tekens a,e,i of 0..9\r\n[^aei0-9] : alle tekens behalve a,e,i and 0..9\r\n\r\n\\w   : tekens a-z,A-Z,0-9 and _\r\n\\W   : alle niet alfanumerieke tekens\r\n\\d   : cijfers 0-9\r\n\\s   : spaties en tabs"
+
+#. Resource IDs: (7)
+#, c-format
+msgid "Rejected patch hunks for '%s'"
+msgstr "Patch-brokken voor '%s' geweigerd"
 
 #. Resource IDs: (1072)
 msgid "Relative Times in log"
@@ -6848,6 +7032,10 @@ msgstr "Knoop vervangen"
 msgid "Replacing"
 msgstr "Vervangen"
 
+#. Resource IDs: (564)
+msgid "Report"
+msgstr "Rapporteer"
+
 #. Resource IDs: (1618)
 msgid "Repository &URL"
 msgstr ""
@@ -6995,10 +7183,6 @@ msgstr "Maakt al uw wijzigingen sinds de laatste verversing ongedaan"
 msgid "Reverts an addition to version control"
 msgstr "Maakt een toevoeging aan versiebeheer ongedaan"
 
-#. Resource IDs: (376)
-msgid "Review Patch"
-msgstr ""
-
 #. Resource IDs: (603)
 msgid "Review Patch with TortoiseGitMerge"
 msgstr ""
@@ -7054,10 +7238,6 @@ msgstr ""
 msgid "Revision:"
 msgstr ""
 
-#. Resource IDs: (116)
-msgid "Revisions"
-msgstr "Revisies"
-
 #. Resource IDs: (605)
 msgid "Rewind"
 msgstr ""
@@ -7098,10 +7278,6 @@ msgstr "Rij naar boven"
 msgid "S&elect..."
 msgstr "&Selecteer..."
 
-#. Resource IDs: (32782)
-msgid "S&ettings"
-msgstr "&Instellingen"
-
 #. Resource IDs: (1065)
 msgid "S&how Buttons on One Row"
 msgstr "&Toon knoppen op één regel"
@@ -7121,10 +7297,6 @@ msgstr "&Statistieken"
 #. Resource IDs: (9)
 msgid "S&witch/Checkout..."
 msgstr ""
-
-#. Resource IDs: (3697)
-msgid "SCRL"
-msgstr "SCRL"
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
@@ -7170,9 +7342,9 @@ msgstr "Safe Crlf:"
 msgid "Same commit time"
 msgstr ""
 
-#. Resource IDs: (57604)
-msgid "Save &As..."
-msgstr "Opslaan &als..."
+#. Resource IDs: (156)
+msgid "Save"
+msgstr "Opslaan"
 
 #. Resource IDs: (101)
 msgid "Save &as..."
@@ -7180,6 +7352,10 @@ msgstr "Opslaan &als..."
 
 #. Resource IDs: (3841)
 msgid "Save As"
+msgstr "Opslaan als"
+
+#. Resource IDs: (156)
+msgid "Save as"
 msgstr "Opslaan als"
 
 #. Resource IDs: (1567)
@@ -7262,6 +7438,10 @@ msgstr "Doorzoek &logboekberichten..."
 msgid "Search for:"
 msgstr "Zoeken naar:"
 
+#. Resource IDs: (169)
+msgid "Searching for better path to apply patch..."
+msgstr "Zoekt een beter pad om de patch toe te passen..."
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "Seek failed on %1"
@@ -7313,10 +7493,6 @@ msgstr "Selecteer werkset"
 msgid "Select diff application"
 msgstr "Selecteer diff-applicatie"
 
-#. Resource IDs: (313)
-msgid "Select diff file..."
-msgstr "Selecteer Diff-bestand..."
-
 #. Resource IDs: (64)
 msgid "Select folder to associate with this issue tracker"
 msgstr "Selecteer map om met deze issue-tracker te associeren"
@@ -7350,6 +7526,14 @@ msgstr "Selecteer een samenvoeg-applicatie"
 #. Resource IDs: (119)
 msgid "Select merge target"
 msgstr "Selecteer een samenvoeg doel"
+
+#. Resource IDs: (13)
+msgid "Select patch file..."
+msgstr "Selecteer patchbestand..."
+
+#. Resource IDs: (79)
+msgid "Select text editor application"
+msgstr "Kies een tekstbewerker"
 
 #. Resource IDs: (79)
 msgid ""
@@ -7535,10 +7719,6 @@ msgstr ""
 msgid "Show Fewer Buttons"
 msgstr "Toon minder knoppen"
 
-#. Resource IDs: (32817)
-msgid "Show File List"
-msgstr "Toon lijst met bestanden"
-
 #. Resource IDs: (2051)
 msgid "Show HEAD revision nodes"
 msgstr "Toon HEAD revisie knooppunten"
@@ -7548,6 +7728,12 @@ msgid ""
 "Show Inline-Diff word by word\n"
 "Inline diff word-wise"
 msgstr "Toon verschillen in een regel per woord\nWoordelijke verschillen in een regel"
+
+#. Resource IDs: (2056)
+msgid ""
+"Show Inline-Diff\n"
+"Inline diff"
+msgstr "Toon inline-verschil\nInline-verschil"
 
 #. Resource IDs: (32781)
 msgid "Show Log"
@@ -7568,6 +7754,10 @@ msgstr "Toon snelle toegang-balk onder het lint"
 #. Resource IDs: (16651)
 msgid "Show Screen&Tips on toolbars"
 msgstr "Toon scherm&tips op werkbalken"
+
+#. Resource IDs: (156)
+msgid "Show Whitespaces"
+msgstr "Toon witregels, tabs en spaties"
 
 #. Resource IDs: (115)
 msgid "Show Whole Project"
@@ -7697,9 +7887,13 @@ msgstr "Toon &sneltoetsen in schermtips"
 
 #. Resource IDs: (2049)
 msgid ""
-"Show special characters for whitespaces\n"
+"Show special characters for whitespaces and newlines\n"
 "Show Whitespaces"
-msgstr "Toon speciale tekens voor spaties en witregels\nToon witregels"
+msgstr "Toon tekens voor witregels, tabs en spaties\nToon witregels, tabs en spaties"
+
+#. Resource IDs: (87)
+msgid "Show symbols on ref labels to substitute part of the ref names"
+msgstr ""
 
 #. Resource IDs: (1730)
 msgid "Show ta&gs"
@@ -7761,13 +7955,13 @@ msgstr ""
 msgid "Si&gn"
 msgstr ""
 
+#. Resource IDs: (156, 626)
+msgid "Silver Style"
+msgstr "Zilveren stijl"
+
 #. Resource IDs: (1532)
 msgid "Since"
 msgstr ""
-
-#. Resource IDs: (32775)
-msgid "Single/&double-pane view"
-msgstr "Enkel/&dubbel venster"
 
 #. Resource IDs: (74)
 msgid "Size"
@@ -7781,6 +7975,10 @@ msgstr "Overslaan"
 #, c-format
 msgid "Skip Patch: %s"
 msgstr ""
+
+#. Resource IDs: (564)
+msgid "Skip all"
+msgstr "Alles overslaan"
 
 #. Resource IDs: (11029)
 msgid "Skip worktree"
@@ -7804,6 +8002,18 @@ msgstr "Verschuiven"
 
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid ""
+"Some file(s) have been changed outside TortoiseGitMerge.\n"
+"Do you want to load the changes?"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid ""
+"Some file(s) have been changed outside TortoiseGitMerge.\n"
+"Would you like to reload and lose your changes?"
 msgstr ""
 
 #. Resource IDs: (1126)
@@ -7945,6 +8155,10 @@ msgstr ""
 msgid "Stops bisect mode"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Style"
+msgstr "Stijl"
+
 #. Resource IDs: (1639)
 msgid "SubModule"
 msgstr ""
@@ -8017,10 +8231,6 @@ msgstr "Wissel"
 msgid "Switch %s to %s, Revision %s"
 msgstr "Wissel %s naar %s, revisie %s"
 
-#. Resource IDs: (32811)
-msgid "Switch Left<->Right"
-msgstr "Wissel links <-> rechts"
-
 #. Resource IDs: (1522)
 msgid "Switch To"
 msgstr ""
@@ -8031,11 +8241,19 @@ msgid ""
 "Previous Pane"
 msgstr "Ga naar het vorige venster\nVorig venster"
 
+#. Resource IDs: (156)
+msgid "Switch between single and double pane view"
+msgstr "Wissel tussen enkel en dubbel venster"
+
 #. Resource IDs: (2049)
 msgid ""
 "Switch between single and double pane view\n"
 "Switch between single and double pane view"
 msgstr "Wissel tussen enkelvoudig en dubbel venster\nWissel tussen enkelvoudig en dubbel venster"
+
+#. Resource IDs: (156)
+msgid "Switch left and right view"
+msgstr "Wissel linker en rechter venster"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -8077,6 +8295,10 @@ msgstr ""
 msgid "Switches the comparison left<<->right"
 msgstr "Wisselt links <<-> rechts"
 
+#. Resource IDs: (1733)
+msgid "Symbolize ref names"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
 msgstr ""
@@ -8117,6 +8339,10 @@ msgstr "Tabstop:"
 
 #. Resource IDs: (82)
 msgid "Tag"
+msgstr ""
+
+#. Resource IDs: (1382)
+msgid "Tag (FF)"
 msgstr ""
 
 #. Resource IDs: (82)
@@ -8249,9 +8475,8 @@ msgstr "Bestand\n%s\nbestaat al! Wilt u het overschrijven?"
 msgid ""
 "The file\n"
 "%s\n"
-"is not a valid text file!\n"
-"Note that UTF32 files are treated as binary too."
-msgstr "Het bestand\n%s\nis geen geldig tekstbestand!\nN.B.: UTF32-bestanden worden ook als binair beschouwd."
+"is not a valid text file!"
+msgstr ""
 
 #. Resource IDs: (145)
 #, c-format
@@ -8310,6 +8535,11 @@ msgstr "De regel met de indicatie voor het nieuwe bestand is niet aangetroffen o
 #, c-format
 msgid "The line indicating the old file was expected in line %d !"
 msgstr "De regel met de indicatie voor het oude bestand is niet aangetroffen op regel %d !"
+
+#. Resource IDs: (88)
+#, c-format
+msgid "The line number must be in between %d and %d"
+msgstr "Het regelnummer moet tussen %d en %d liggen"
 
 #. Resource IDs: (86)
 #, c-format
@@ -8375,10 +8605,10 @@ msgstr "Het opgegeven pad/URL is niet toegestaan onder Windows!\nU kunt het prob
 #, c-format
 msgid ""
 "The path\n"
-"<i>%s</i>\n"
+"%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge found the relative path\n"
-"<i>%s</i>\n"
+"%s\n"
 "which seems to match the directory you're applying the patch.\n"
 "\n"
 "Do you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
@@ -8388,19 +8618,19 @@ msgstr ""
 #, c-format
 msgid ""
 "The path\n"
-"<i>%s</i>\n"
+"%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr ""
+msgstr "Het pad\n%s\nuit het patchbestand bestaat niet.\nTortoiseGitMerge heeft geprobeerd de patch toe te passen door prefixes te negeren, maar er is geen passend pad gevonden."
 
 #. Resource IDs: (314)
 #, c-format
 msgid ""
 "The path\n"
-"<i>%s</i>\n"
+"%s\n"
 "seems not to match the paths in the patchfile.\n"
 "But TortoiseGitMerge found the path\n"
-"<i>%s</i>\n"
+"%s\n"
 "matches it better. Do you want to use the suggested path instead?"
 msgstr ""
 
@@ -8694,7 +8924,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: de afbeelding vergelijker voor TortoiseSVN\n\nBeschikbare parameters zijn:\n/left:\"pad naar linker afbeelding\"\n/lefttitle:\"titel voor linker afbeelding\"\n/right:\"pad naar rechter afbeelding\"\n/righttitle:\"titel voor rechter afbeelding\"\n/overlay\t\tactiveert overlay modus\n/fit\t\t\tpast afbeeldingen op elkaar\n/showinfo\t\ttoont afbeeldingsinformatie"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
@@ -8702,17 +8932,21 @@ msgstr "TortoiseGitMerge"
 
 #. Resource IDs: (107)
 #, c-format
-msgid "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s"
-msgstr "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s"
+msgid "TortoiseGitMerge %d.%d.%d.%d - %s, %s"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s"
 
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGitMerge %d.%d.%d, Build %d - %s, %s\r\n"
+"TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
 "apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d, Build %d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+
+#. Resource IDs: (156)
+msgid "TortoiseMerge"
+msgstr "TortoiseMerge"
 
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
@@ -8787,6 +9021,18 @@ msgstr ""
 msgid "URL:"
 msgstr "URL:"
 
+#. Resource IDs: (5071)
+msgid "UTF-16 BE"
+msgstr ""
+
+#. Resource IDs: (5070)
+msgid "UTF-16 LE"
+msgstr ""
+
+#. Resource IDs: (5069)
+msgid "UTF-8"
+msgstr ""
+
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
 msgstr "Mailsysteemondersteuning kan niet geladen worden."
@@ -8825,6 +9071,10 @@ msgstr "Kan niet schrijven naar %1, het is geopend door iemand anders of als all
 msgid "Uncheck"
 msgstr "Niet markeren"
 
+#. Resource IDs: (156)
+msgid "Undo"
+msgstr "Ongedaan maken"
+
 #. Resource IDs: (1069)
 #, c-format
 msgid "Undo %d Actions"
@@ -8843,6 +9093,12 @@ msgid ""
 "Undo the last action\n"
 "Undo"
 msgstr "Maak laatste actie ongedaan\nOngedaan maken"
+
+#. Resource IDs: (3603)
+msgid ""
+"Undo the last modifications\n"
+"Undo"
+msgstr "De laatste wijzigingen ongedaan maken\nOngedaan maken"
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
@@ -8911,10 +9167,6 @@ msgstr ""
 msgid "Use &Default Image: "
 msgstr "Gebruik &standaardbeeld:"
 
-#. Resource IDs: (32855)
-msgid "Use &left block"
-msgstr "Gebruik &linker stuk"
-
 #. Resource IDs: (1024)
 msgid "Use &one-pane view as default for 2-file diff"
 msgstr "&Enkel-venster als standaard instellen voor 2-weg Diff"
@@ -8922,6 +9174,26 @@ msgstr "&Enkel-venster als standaard instellen voor 2-weg Diff"
 #. Resource IDs: (251)
 msgid "Use &other text block"
 msgstr "Gebruik &ander tekstgedeelte"
+
+#. Resource IDs: (156)
+msgid "Use 'mine' text block"
+msgstr "Gebruik 'mijn' tekstblok"
+
+#. Resource IDs: (156)
+msgid "Use 'mine' text block then 'theirs'"
+msgstr "Gebruik 'mijn' tekstblok en dan 'hun' tekstblok"
+
+#. Resource IDs: (156)
+msgid "Use 'theirs' text block"
+msgstr "Gebruik 'hun' tekstblok"
+
+#. Resource IDs: (156)
+msgid "Use 'theirs' text block then 'mine'"
+msgstr "Gebruik 'hun' tekstblok en dan 'mijn' tekstblok"
+
+#. Resource IDs: (156)
+msgid "Use Blocks"
+msgstr "Gebruik blokken"
 
 #. Resource IDs: (1482)
 msgid "Use MAPI"
@@ -8977,6 +9249,10 @@ msgstr "Gebruik beide tekstgedeeltes (deze eerst)"
 msgid "Use both text blocks (this one last)"
 msgstr "Gebruik beide tekstgedeeltes (deze laatst)"
 
+#. Resource IDs: (156)
+msgid "Use left block"
+msgstr "Gebruik linker blok"
+
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Gebruik het linker bestand"
@@ -8988,10 +9264,6 @@ msgstr "Gebruik prullenbak bij herstellen"
 #. Resource IDs: (116)
 msgid "Use regular expression"
 msgstr "Gebruik reguliere expressie"
-
-#. Resource IDs: (1066)
-msgid "Use stri&keout for removed lines"
-msgstr "Gebruik &doorhalen voor verwijderde regels"
 
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
@@ -9022,7 +9294,7 @@ msgid ""
 msgstr "Gebruik tekstgedeelte uit 'mijn'\nGebruik 'mijn' tekstgedeelte"
 
 #. Resource IDs: (251)
-msgid "Use text block from 't&heirs' before 'mine"
+msgid "Use text block from 't&heirs' before 'mine'"
 msgstr "Gebruik tekstgedeelte uit '&hun' vóór  'mijn'"
 
 #. Resource IDs: (2052)
@@ -9036,22 +9308,6 @@ msgid ""
 "Use text block from 'theirs'\n"
 "Use 'theirs' text block"
 msgstr "Gebruik tekstgedeelte uit 'hun'\nGebruik 'hun' tekstgedeelte"
-
-#. Resource IDs: (32820)
-msgid "Use text block from \"&mine\""
-msgstr "Gebruik tekstgedeelte uit \"&mijn\""
-
-#. Resource IDs: (32819)
-msgid "Use text block from \"&theirs\""
-msgstr "Gebruik tekstgedeelte van \"h&un\""
-
-#. Resource IDs: (32822)
-msgid "Use text block from \"m&ine\" before \"theirs\""
-msgstr "Gebruik tekstgedeelte uit \"m&ijn\" vóór \"hun\""
-
-#. Resource IDs: (32821)
-msgid "Use text block from \"t&heirs\" before \"mine\""
-msgstr "Gebruik tekstgedeelte uit \"&hun\" vóór  \"mijn\""
 
 #. Resource IDs: (2054)
 msgid ""
@@ -9161,6 +9417,10 @@ msgstr "Onder beheer"
 msgid "Vietnamese"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "View"
+msgstr "Bekijk"
+
 #. Resource IDs: (328, 603)
 msgid "View Patch"
 msgstr ""
@@ -9185,9 +9445,13 @@ msgstr ""
 msgid "Visit our website"
 msgstr "Bezoek onze website"
 
-#. Resource IDs: (214, 32848)
-msgid "Visual Studio.NET 200&5"
-msgstr "Visual Studio.NET 200&5"
+#. Resource IDs: (156, 626)
+msgid "Visual Studio 2005"
+msgstr "Visual Studio 2005"
+
+#. Resource IDs: (156, 626)
+msgid "Visual Studio 2008"
+msgstr "Visual Studio 2008"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -9269,9 +9533,17 @@ msgstr "Vensterpositie"
 msgid "Windows"
 msgstr "Windows"
 
-#. Resource IDs: (210, 32844)
-msgid "Windows &2000"
-msgstr "Windows &2000"
+#. Resource IDs: (156, 626)
+msgid "Windows 2000"
+msgstr "Windows 2000"
+
+#. Resource IDs: (156, 626)
+msgid "Windows 7"
+msgstr "Windows 7"
+
+#. Resource IDs: (156, 626)
+msgid "Windows XP"
+msgstr "Windows XP"
 
 #. Resource IDs: (5020)
 msgid "Windows-1250"
@@ -9320,6 +9592,16 @@ msgstr ""
 #. Resource IDs: (1253)
 msgid "Working dir changes"
 msgstr ""
+
+#. Resource IDs: (156)
+msgid "Wrap long lines"
+msgstr "Terugloop bij lange regels"
+
+#. Resource IDs: (2056)
+msgid ""
+"Wrap long lines at the right border of the view\n"
+"Wrap long lines"
+msgstr "Laat lange regels afbreken aan het einde van het venster\nTerugloop bij lange regels"
 
 #. Resource IDs: (73)
 msgid "Yes"
@@ -9776,6 +10058,10 @@ msgstr "kwartaal"
 #. Resource IDs: (10)
 msgid "replaced"
 msgstr "vervangen"
+
+#. Resource IDs: (169)
+msgid "scanning path:"
+msgstr "scan pad:"
 
 #. Resource IDs: (195)
 msgid "skip-worktree"
