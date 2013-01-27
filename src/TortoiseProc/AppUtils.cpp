@@ -2702,32 +2702,24 @@ BOOL CAppUtils::Merge(CString *commit)
 	if(dlg.DoModal()==IDOK)
 	{
 		CString cmd;
-		CString noff;
-		CString squash;
-		CString nocommit;
-		CString msg;
+		CString args;
 
 		if(dlg.m_bNoFF)
-			noff=_T("--no-ff");
+			args += _T(" --no-ff");
 
 		if(dlg.m_bSquash)
-			squash=_T("--squash");
+			args += _T(" --squash");
 
 		if(dlg.m_bNoCommit)
-			nocommit=_T("--no-commit");
+			args += _T(" --no-commit");
 
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
 			CString logmsg = dlg.m_strLogMesage;
 			logmsg.Replace(_T("\""), _T("\\\""));
-			msg += _T("-m \"") + logmsg + _T("\"");
+			args += _T(" -m \"") + logmsg + _T("\"");
 		}
-		cmd.Format(_T("git.exe merge %s %s %s %s %s"),
-			msg,
-			noff,
-			squash,
-			nocommit,
-			g_Git.FixBranchName(dlg.m_VersionName));
+		cmd.Format(_T("git.exe merge %s %s"), args, g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;
