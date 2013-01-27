@@ -1,5 +1,5 @@
-﻿= Release 1.7.16.0 =
-Released: unreleased
+﻿= Release 1.8.0.0 =
+Released: 2013-01-27
 
 == Features ==
  * Fixed issue #1377: Log Dialog Working dir changes should include untracked files
