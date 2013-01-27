@@ -547,12 +547,13 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			{
 				CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 				progControl->ShowWindow(SW_SHOW);
-				progControl->SetPos(m_itemCountTotal - m_itemCount);
+				progControl->SetPos(m_itemCount);
 				progControl->SetRange32(0, m_itemCountTotal);
 				if (m_pTaskbarList)
 				{
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCountTotal-m_itemCount, m_itemCountTotal);
+					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCountTotal - m_itemCount, m_itemCountTotal);
+					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCount, m_itemCountTotal);
 				}
 			}
 		}
@@ -1309,10 +1310,7 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t /*action*/, const git_
 	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 
 	int progress;
-	if (stat->received_objects < stat->total_objects)
-		progress = stat->received_objects;
-	else
-		progress = stat->indexed_objects;
+	progress = stat->received_objects + stat->indexed_objects;
 
 	if ((stat->total_objects > 1000) && (!progControl->IsWindowVisible()))
 	{
@@ -1324,7 +1322,7 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t /*action*/, const git_
 		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
 
 	progControl->SetPos(progress);
-	progControl->SetRange32(0, stat->total_objects);
+	progControl->SetRange32(0, 2 * stat->total_objects);
 	if (m_pTaskbarList)
 	{
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
@@ -2340,7 +2338,7 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 
 	clone_opts.checkout_opts = checkout_opts;
 
-	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE;
+	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE_CREATE;
 	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
 	clone_opts.checkout_opts.progress_payload = this;
 
