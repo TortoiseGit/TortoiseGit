@@ -249,6 +249,9 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 	data->action = action;
 	data->sPathColumnText=path.GetGitPathString();
 	data->bAuxItem = false;
+
+	this->m_Animate.ShowWindow(SW_HIDE);
+
 #if 0
 	data->kind = kind;
 	data->mime_type = mime_type;
@@ -545,12 +548,12 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 			{
 				CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 				progControl->ShowWindow(SW_SHOW);
-				progControl->SetPos(m_itemCountTotal - m_itemCount);
+				progControl->SetPos(m_itemCount);
 				progControl->SetRange32(0, m_itemCountTotal);
 				if (m_pTaskbarList)
 				{
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCountTotal-m_itemCount, m_itemCountTotal);
+					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCount, m_itemCountTotal);
 				}
 			}
 		}
@@ -839,7 +842,22 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 
 void CGitProgressDlg::ReportGitError()
 {
-	ReportError(CString(giterr_last()->message));
+	const git_error * err;
+	err = giterr_last();
+	CStringA str;
+	if (err)
+	{
+		str.Format("libgit2 error %d: %s", err->klass, err->message);
+		/* libgit2 combine some windows native message to error message, so we use CP_ACP, not CP_UTF8
+		 * But it is possible problem when use UTF8 path. libgit2 message should use unified encode.
+		 */
+		ReportError(CString(CUnicodeUtils::GetUnicode(str, CP_ACP)));
+	}else
+	{
+		CString no;
+		no.LoadString(IDS_LIBGIT2_NO_DETAIL_INFO);
+		ReportError(no);
+	}
 }
 
 void CGitProgressDlg::ReportError(const CString& sError)
@@ -1303,10 +1321,7 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_tran
 	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
 
 	int progress; 
-	if (stat->received_objects < stat->total_objects)
-		progress = stat->received_objects;
-	else
-		progress = stat->indexed_objects;
+	progress = stat->received_objects + stat->indexed_objects;
 
 	if ((stat->total_objects > 1000)&&(!progControl->IsWindowVisible()))
 	{
@@ -1318,7 +1333,7 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_tran
 		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
 
 	progControl->SetPos(progress);
-	progControl->SetRange32(0, stat->total_objects);
+	progControl->SetRange32(0, 2*stat->total_objects);
 	if (m_pTaskbarList)
 	{
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
@@ -2332,7 +2347,7 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& localoperation)
 	
 	clone_opts.checkout_opts = checkout_opts;
 
-	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE:GIT_CHECKOUT_SAFE;
+	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE:GIT_CHECKOUT_SAFE_CREATE;
 	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
 	clone_opts.checkout_opts.progress_payload = this;
 
