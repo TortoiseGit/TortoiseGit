@@ -2243,15 +2243,15 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	return cmd;
 }
 
-static int UnifiedDiffToFile(const git_diff_delta *delta,
-							 const git_diff_range *range,
-							 char line_origin,
+static int UnifiedDiffToFile(const git_diff_delta * /* delta */,
+							 const git_diff_range * /* range */,
+							 char /* line_origin */,
 							 const char *content,
 							 size_t content_len,
 							 void *payload)
 {
-	CFile *file = (CFile*)payload;
-	file->Write(content, content_len);
+	FILE *file = (FILE *)payload;
+	fwrite(content, 1, content_len, file);
 	return 0;
 }
 
@@ -2299,7 +2299,7 @@ static int resolve_to_tree(
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_data_cb callback, void *data, bool bMerge)
+static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_data_cb callback, void *data, bool /* bMerge */)
 {
 	git_repository *repo = NULL;
 	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
@@ -2417,11 +2417,12 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	*/
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
-		CFile file;
-		if(!file.Open(patchfile, CFile::modeCreate|CFile::modeWrite))
+		FILE *file = NULL;
+		_tfopen_s(&file, patchfile, _T("w"));
+		if (file == NULL)
 			return -1;
 		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, &file, bMerge);
-		file.Close();
+		fclose(file);
 		return ret;
 	}
 /*	//git will launch git status command to get submodule status.
@@ -2450,9 +2451,9 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	}
 }
 
-static int UnifiedDiffToStringA(const git_diff_delta *delta,
-								const git_diff_range *range,
-								char line_origin,
+static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/,
+								const git_diff_range * /*range*/,
+								char /*line_origin*/,
 								const char *content,
 								size_t content_len,
 								void *payload)
@@ -2482,4 +2483,6 @@ BOOL CGit::UsingLibGit2(int cmd)
 {
 	if (cmd>=0 && cmd<32)
 		return !!((1<<cmd) & m_IsUseLibGit2_Mask1);
+
+	return 0;
  }
