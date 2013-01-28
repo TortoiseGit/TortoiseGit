@@ -32,7 +32,8 @@
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
 struct git_transfer_progress;
-
+enum git_remote_completion_type;
+struct git_oid;
 /**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
@@ -110,6 +111,8 @@ public:
 		GitProgress_Switch,
 		GitProgress_SendMail,
 		GitProgress_Clone,
+		GitProgress_Fetch,
+		GitProgress_Push,
 	} Command;
 
 
@@ -131,6 +134,7 @@ public:
 	void SetIsBare(bool b) { m_bBare = b; }
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
 	void SetRefSpec(CString &spec){ m_RefSpec = spec; }
+	void SetAutoTag(int tag){m_AutoTag = tag;}
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
@@ -225,7 +229,6 @@ protected:
 
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 
-	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
 	static void FetchCallback(const git_transfer_progress *stats, void *payload)
 	{
 		((CGitProgressDlg*)payload) -> Notify(git_wc_notify_fetch, stats);
@@ -237,6 +240,18 @@ protected:
 		((CGitProgressDlg*)payload) -> m_itemCountTotal = tot;
 		((CGitProgressDlg*)payload) -> m_itemCount = cur;
 		((CGitProgressDlg*)payload) -> Notify(tpath, git_wc_notify_checkout);
+	}
+
+	static void RemoteProgressCallback(const char *str, int len, void *data)
+	{
+	}
+	static int RemoteCompletionCallback(git_remote_completion_type type, void *data)
+	{
+		return 0;
+	}
+	static int RemoteUpdatetipsCallback(const char *refname, const git_oid *a, const git_oid *b, void *data)
+	{
+		return 0;
 	}
 
 	virtual BOOL						OnInitDialog();
@@ -307,6 +322,8 @@ private:
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
+	bool		CmdFetch(CString& sWindowTitle, bool& localoperation);
+	bool		CmdPush(CString& sWindowTitle, bool& localoperation);
 
 private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
@@ -383,4 +400,6 @@ private:
 	bool					m_bNoCheckout;
 	CString					m_RefSpec;
 	CBrush					m_background_brush;
+	int						m_AutoTag;
+public:
 };

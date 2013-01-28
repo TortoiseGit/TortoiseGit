@@ -2222,7 +2222,19 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 		}
 
 		progress.m_GitCmd=cmd;
-		INT_PTR userResponse = progress.DoModal();
+		INT_PTR userResponse;
+
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
+		{
+			CGitProgressDlg gitdlg;
+			if (!dlg.m_bAllRemotes)
+				gitdlg.SetUrl(url);
+			gitdlg.SetCommand(CGitProgressDlg::GitProgress_Fetch);
+			gitdlg.SetAutoTag(dlg.m_bFetchTags ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+			userResponse = gitdlg.DoModal();
+
+		}else
+			userResponse = progress.DoModal();
 
 		if (userResponse == IDC_PROGRESS_BUTTON1)
 		{
