@@ -82,6 +82,7 @@ public:
 	CComCriticalSection			m_critGitDllSec;
 	bool	m_IsUseGitDLL;
 	bool	m_IsUseLibGit2;
+	DWORD	m_IsUseLibGit2_Mask1;
 
 	CEnvironment m_Environment;
 
@@ -347,6 +348,16 @@ public:
 	}
 
 	static CString GetShortName(CString ref, REF_TYPE *type);
+
+	enum
+	{
+		GIT_CMD_INIT,
+		GIT_CMD_CLONE,
+		GIT_CMD_DIFF,
+		GIT_CMD_FETCH,
+		GIT_CMD_PUSH,
+	};
+	BOOL UsingLibGit2(int cmd);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

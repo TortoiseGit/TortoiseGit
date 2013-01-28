@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by d:\TortoiseGit\src\Resources\TortoiseProcENG.rc
+// Used by C:\TortoiseGit\src\Resources\TortoiseProcENG.rc
 //
 #define IDR_MAINFRAME                   1
 #define IDD_SETTINGSPROXY               102
@@ -296,6 +296,7 @@
 #define IDC_BUGID                       1077
 #define IDC_EXCLUDEPATHS                1077
 #define IDS_BRANCHNAME                  1077
+#define IDC_LABEL2                      1077
 #define IDS_DATELASTCOMMIT              1078
 #define IDC_DRIVEGROUP                  1079
 #define IDS_PROC_COMMIT_ADDSIGNOFFBUTTON 1079
@@ -1518,6 +1519,7 @@
 #define ID_REVGRAPH_ZOOMCOMBO           4583
 #define IDD_REVGRAPHFILTER              4584
 #define IDC_FROMREV                     4585
+#define IDD_USER_PASSWD                 4585
 #define IDC_FROMSPIN                    4586
 #define IDC_TOREV                       4587
 #define IDC_TOSPIN                      4588
@@ -1628,6 +1630,11 @@
 #define IDS_REVGRAPH_ERR_NOMEMORY       9688
 #define IDS_PROC_RESET                  9689
 #define IDS_FETCH_TAGS_ONLY             9690
+#define IDS_PROC_DIFF                   9691
+#define IDS_PROGS_TITLE_DIFF            9692
+#define IDS_PROG_CLONE                  9693
+#define IDC_USER_NAME                   9694
+#define IDC_USER_PASSWORD               9695
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
