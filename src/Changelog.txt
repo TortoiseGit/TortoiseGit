@@ -5,6 +5,9 @@ Released: unreleased
  * Log dialog can revert selected files to parent revision
  * Fixed issue #1500: Support git merge --log option
 
+== Bug Fix ==
+ * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content
+
 = Release 1.8.0.0 =
 Released: 2013-01-27
 

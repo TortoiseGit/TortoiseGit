@@ -1388,7 +1388,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 				m_LogList.m_SelectedFilters ^= selection;
 				SetFilterCueText();
 			}
-			SetTimer(LOGFILTER_TIMER, 1000, NULL);
+			// Reload only if a search text is entered
+			if (!m_LogList.m_sFilterText.IsEmpty())
+				SetTimer(LOGFILTER_TIMER, 1000, NULL);
 		}
 	}
 	return 0L;
