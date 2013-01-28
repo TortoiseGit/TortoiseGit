@@ -77,6 +77,7 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bErrorsOccurred(false)
 	, m_bBare(false)
 	, m_bNoCheckout(false)
+	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
@@ -973,6 +974,12 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Clone:
 		bSuccess = CmdClone(sWindowTitle, localoperation);
 		break;
+	case GitProgress_Fetch:
+		bSuccess = CmdFetch(sWindowTitle, localoperation);
+		break;
+	case GitProgress_Push:
+		bSuccess = CmdPush(sWindowTitle, localoperation);
+		break;
 	}
 	if (!bSuccess)
 		temp.LoadString(IDS_PROGRS_TITLEFAILED);
@@ -1358,6 +1365,8 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_tran
 
 	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
 	SetDlgItemText(IDC_PROGRESSLABEL, progText);
+
+	return TRUE;
 }
 
 LRESULT CGitProgressDlg::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -2514,3 +2523,108 @@ LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
     }
 	return FALSE;
 }
+
+bool CGitProgressDlg::CmdFetch(CString& sWindowTitle, bool& localoperation)
+{
+	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+	{
+		// should never run to here
+		ASSERT(0);
+		return false;
+	}
+	this->m_TotalBytesTransferred = 0;
+
+	sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	SetBackgroundImage(IDI_UPDATE_BKG);
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)));
+
+	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+	CStringA remotebranch = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
+	
+	git_remote *remote = NULL;
+	git_repository *repo = NULL;
+	int ret = 0;
+
+	do
+	{
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		if (git_remote_load(&remote, repo, url) < 0) 
+		{
+			if (git_remote_create_inmemory(&remote, repo, NULL, url) < 0)
+			{
+				ReportGitError();
+				ret = -1;
+				break;
+			}
+		}
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+		callbacks.update_tips = RemoteUpdatetipsCallback;
+		callbacks.progress = RemoteProgressCallback;
+		callbacks.completion = RemoteCompletionCallback;
+		callbacks.payload = this;
+
+		git_remote_set_callbacks(remote, &callbacks);
+		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
+		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
+
+		if (!remotebranch.IsEmpty())
+			git_remote_set_fetchspec(remote, remotebranch);
+
+		m_Animate.ShowWindow(SW_SHOW);
+		m_Animate.Play(0, INT_MAX, INT_MAX);
+
+		// Connect to the remote end specifying that we want to fetch
+		// information from it.
+		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0) {
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		// Download the packfile and index it. This function updates the
+		// amount of received data and the indexer stats which lets you
+		// inform the user about progress.
+		if (git_remote_download(remote, CAppUtils::Git2FetchProgress, FetchCallback) < 0) {
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		m_Animate.ShowWindow(SW_HIDE);
+		// Update the references in the remote's namespace to point to the
+		// right commits. This may be needed even if there was no packfile
+		// to download, which can happen e.g. when the branches have been
+		// changed but all the neede objects are available locally.
+		if (git_remote_update_tips(remote) < 0)
+		{
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		git_remote_disconnect(remote);
+
+	}while(0);
+
+	git_remote_free(remote);
+	git_repository_free(repo);
+	m_Animate.ShowWindow(SW_HIDE);
+	return true;
+}
+
+bool CGitProgressDlg::CmdPush(CString& sWindowTitle, bool& localoperation)
+{
+	return true;
+}
+

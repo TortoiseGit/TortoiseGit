@@ -95,6 +95,7 @@ IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 IDI_JUMPUP              ICON                    "jumpup.ico"
 IDI_JUMPDOWN            ICON                    "jumpdown.ico"
+IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
