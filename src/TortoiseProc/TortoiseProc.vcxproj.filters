@@ -632,6 +632,9 @@
     <ClCompile Include="..\Utils\Graphviz.cpp">
       <Filter>Utils\UI</Filter>
     </ClCompile>
+    <ClCompile Include="UserPassword.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1095,6 +1098,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\Graphviz.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UserPassword.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

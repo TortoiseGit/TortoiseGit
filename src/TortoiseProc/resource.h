@@ -1524,6 +1524,7 @@
 #define ID_REVGRAPH_ZOOMCOMBO           4583
 #define IDD_REVGRAPHFILTER              4584
 #define IDC_FROMREV                     4585
+#define IDD_USER_PASSWD                 4585
 #define IDC_FROMSPIN                    4586
 #define IDC_TOREV                       4587
 #define IDC_TOSPIN                      4588
@@ -1532,6 +1533,7 @@
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
+#define IDC_LABEL2                      5002
 #define IDS_FILEDIFF_FILE               5100
 #define IDS_FILEDIFF_COMMENT            5101
 #define IDS_FILEDIFF_ACTION             5101
@@ -1634,6 +1636,9 @@
 #define IDS_REVGRAPH_ERR_NOMEMORY       9688
 #define IDS_PROC_RESET                  9689
 #define IDS_FETCH_TAGS_ONLY             9690
+#define IDS_PROG_CLONE                  9691
+#define IDC_USER_NAME                   9692
+#define IDC_USER_PASSWORD               9693
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803
