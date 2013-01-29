@@ -2579,7 +2579,12 @@ bool CGitProgressDlg::CmdFetch(CString& sWindowTitle, bool& localoperation)
 		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
 
 		if (!remotebranch.IsEmpty())
-			git_remote_set_fetchspec(remote, remotebranch);
+			if (ret = git_remote_set_fetchspec(remote, remotebranch))
+			{
+				ReportGitError();
+				ret = -1;
+				break;
+			}
 
 		m_Animate.ShowWindow(SW_SHOW);
 		m_Animate.Play(0, INT_MAX, INT_MAX);
@@ -2595,7 +2600,7 @@ bool CGitProgressDlg::CmdFetch(CString& sWindowTitle, bool& localoperation)
 		// Download the packfile and index it. This function updates the
 		// amount of received data and the indexer stats which lets you
 		// inform the user about progress.
-		if (git_remote_download(remote, CAppUtils::Git2FetchProgress, FetchCallback) < 0) {
+		if (git_remote_download(remote, FetchCallback, this) < 0) {
 			ReportGitError();
 			ret = -1;
 			break;
@@ -2620,7 +2625,7 @@ bool CGitProgressDlg::CmdFetch(CString& sWindowTitle, bool& localoperation)
 	git_remote_free(remote);
 	git_repository_free(repo);
 	m_Animate.ShowWindow(SW_HIDE);
-	return true;
+	return !ret;
 }
 
 bool CGitProgressDlg::CmdPush(CString& sWindowTitle, bool& localoperation)

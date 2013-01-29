@@ -244,6 +244,9 @@ protected:
 
 	static void RemoteProgressCallback(const char *str, int len, void *data)
 	{
+		CString progText;
+		progText = CUnicodeUtils::GetUnicode(CStringA(str, len));
+		((CGitProgressDlg*)data) -> SetDlgItemText(IDC_PROGRESSLABEL, progText);
 	}
 	static int RemoteCompletionCallback(git_remote_completion_type type, void *data)
 	{
