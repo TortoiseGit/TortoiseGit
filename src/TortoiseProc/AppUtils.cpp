@@ -2231,6 +2231,8 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				gitdlg.SetUrl(url);
 			gitdlg.SetCommand(CGitProgressDlg::GitProgress_Fetch);
 			gitdlg.SetAutoTag(dlg.m_bFetchTags ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
+			if (!dlg.m_bAllRemotes)
+				gitdlg.SetRefSpec(dlg.m_RemoteBranchName);
 			userResponse = gitdlg.DoModal();
 
 		}else
