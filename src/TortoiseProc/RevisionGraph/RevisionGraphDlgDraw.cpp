@@ -934,6 +934,12 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 			color.SetFromCOLORREF(GetSysColor(COLOR_WINDOWTEXT));
 			graphics.pSVG->Polyline(points.GetData(), (int)points.GetCount(), Color(0,0,0), (int)penwidth);
 		}
+		else if (graphics.pGraphviz)
+		{
+			CString hash1 = _T("g") + m_logEntries[e->target()->index()].ToString().Left(g_Git.GetShortHASHLength());
+			CString hash2 = _T("g") + m_logEntries[e->source()->index()].ToString().Left(g_Git.GetShortHASHLength());
+			graphics.pGraphviz->DrawEdge(hash1, hash2);
+		}
 
 		//draw arrow
 		double dx = points[1].X - points[0].X;
@@ -1038,10 +1044,19 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, Color::Black,
 											CUnicodeUtils::GetUTF8(hash.ToString().Left(g_Git.GetShortHASHLength())));
 			}
-
-
+			if (graphics.pGraphviz)
+			{
+				CString shortHash = hash.ToString().Left(g_Git.GetShortHASHLength());
+				graphics.pGraphviz->DrawNode(_T("g") + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, noderect.Height);
+			}
 		}else
 		{
+			if (graphics.pGraphviz)
+			{
+				CString id = _T("g") + hash.ToString().Left(g_Git.GetShortHASHLength());
+				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, noderect.Height);
+			}
+
 			for(int i=0; i < m_HashMap[hash].size(); i++)
 			{
 				CString shortname;
@@ -1127,7 +1142,16 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
 										false, false, Color::Black, CUnicodeUtils::GetUTF8(shortname));
 
+				}				
+				else if (graphics.pGraphviz)
+				{
+					graphics.pGraphviz->DrawTableNode(shortname, color);
 				}
+			}
+			
+			if (graphics.pGraphviz)
+			{
+				graphics.pGraphviz->EndDrawTableNode();
 			}
 		}
 		if ((m_SelectedEntry1 == v))
