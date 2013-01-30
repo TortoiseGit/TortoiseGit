@@ -255,6 +255,7 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 					CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
 	std::unique_ptr<TCHAR[]> path(new TCHAR[dlg.m_ofn.nMaxFile]);
+	SecureZeroMemory(path.get(), dlg.m_ofn.nMaxFile);
 	dlg.m_ofn.lpstrFile = path.get();
 	INT_PTR ret = dlg.DoModal();
 	SetCurrentDirectory(g_Git.m_CurrentDir);
