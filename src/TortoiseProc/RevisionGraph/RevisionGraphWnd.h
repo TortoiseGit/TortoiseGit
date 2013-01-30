@@ -29,6 +29,7 @@
 #include "AppUtils.h"
 #include "SVG.h"
 #include "LogDlgHelper.h"
+#include "Graphviz.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
@@ -301,6 +302,7 @@ private:
 			: pDC(NULL)
 			, graphics(NULL)
 			, pSVG(NULL)
+			, pGraphviz(NULL)
 		{
 		}
 		~GraphicsDevice() {}
@@ -308,6 +310,7 @@ private:
 		CDC *				pDC;
 		Graphics *			graphics;
 		SVG *				pSVG;
+		Graphviz *			pGraphviz;
 	};
 
 	class SVGGrouper

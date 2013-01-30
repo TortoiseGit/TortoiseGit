@@ -629,6 +629,9 @@
     <ClCompile Include="TortoiseProc.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Graphviz.cpp">
+      <Filter>Utils\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1089,6 +1092,9 @@
     </ClInclude>
     <ClInclude Include="TortoiseProc.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Graphviz.h">
+      <Filter>Utils\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

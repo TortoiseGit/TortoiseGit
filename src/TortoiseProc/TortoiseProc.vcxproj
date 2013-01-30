@@ -139,6 +139,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\Graphviz.cpp" />
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="FindDlg.cpp" />
@@ -303,6 +304,7 @@
     <ClCompile Include="TortoiseProc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="LogFile.h" />
