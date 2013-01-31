@@ -293,7 +293,7 @@ msgid "&About TortoiseGitBlame..."
 msgstr ""
 
 #. Resource IDs: (57664)
-msgid "&About TortoiseMerge..."
+msgid "&About TortoiseGitMerge..."
 msgstr ""
 
 #. Resource IDs: (16920)

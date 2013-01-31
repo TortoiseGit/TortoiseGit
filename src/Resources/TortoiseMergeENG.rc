@@ -492,7 +492,7 @@ BEGIN
     BEGIN
         MENUITEM "&Help Topics",                ID_HELP
         MENUITEM SEPARATOR
-        MENUITEM "&About TortoiseMerge...",     ID_APP_ABOUT
+        MENUITEM "&About TortoiseGitMerge...",  ID_APP_ABOUT
     END
 END
 
