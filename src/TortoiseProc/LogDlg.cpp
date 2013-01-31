@@ -1503,6 +1503,9 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_AUTHORS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_AUTHORS), LOGFILTER_AUTHORS, temp);
 
+		temp.LoadString(IDS_LOG_FILTER_EMAILS);
+		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_EMAILS), LOGFILTER_EMAILS, temp);
+
 		temp.LoadString(IDS_LOG_FILTER_REVS);
 		popup.AppendMenu(LOGMENUFLAGS(LOGFILTER_REVS), LOGFILTER_REVS, temp);
 

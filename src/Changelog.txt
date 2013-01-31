@@ -1,6 +1,9 @@
 ﻿= Release 1.8.1.0 =
 Released: unreleased
 
+== Features ==
+ * Fixed issue #1623: Search by email in Log window
+
 == Bug Fix ==
  * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content
  * Fixed issue #1620: Apply Patch serial can't open file dialog on WinXP

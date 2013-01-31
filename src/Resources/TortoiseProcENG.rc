@@ -3922,6 +3922,7 @@ BEGIN
     IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
+    IDS_LOG_FILTER_EMAILS   "Emails"
 END
 
 #endif    // English (U.S.) resources

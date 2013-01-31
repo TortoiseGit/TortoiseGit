@@ -859,6 +859,7 @@
 #define IDC_BUTTON_UNIFIEDDIFF          1385
 #define IDS_PROC_SYNC_PUSHNOTES         1385
 #define IDC_FILTER                      1387
+#define IDS_LOG_FILTER_EMAILS           1389
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
 #define IDS_WARN_FOLDERNOTEXIST         1400
