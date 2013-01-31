@@ -2862,6 +2862,19 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			}
 		}
 
+		if (m_SelectedFilters & LOGFILTER_EMAILS)
+		{
+			if (regex_search(wstring(pRev->GetAuthorEmail()), pat, flags))
+			{
+				return TRUE;
+			}
+
+			if (regex_search(wstring(pRev->GetCommitterEmail()), pat, flags))
+			{
+				return TRUE;
+			}
+		}
+
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
@@ -2960,6 +2973,16 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
 			CString msg = pRev->GetAuthorName();
+			msg = msg.MakeLower();
+			if ((msg.Find(find) >= 0))
+			{
+				return TRUE;
+			}
+		}
+
+		if (m_SelectedFilters & LOGFILTER_EMAILS)
+		{
+			CString msg = pRev->GetAuthorEmail();
 			msg = msg.MakeLower();
 			if ((msg.Find(find) >= 0))
 			{
@@ -3112,6 +3135,14 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 					continue;
 				}
 			}
+			if (m_SelectedFilters & LOGFILTER_EMAILS)
+			{
+				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorEmail()), pat, flags) && IsEntryInDateRange(i))
+				{
+					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
+					continue;
+				}
+			}
 			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
 				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
@@ -3212,6 +3243,16 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				CString msg = m_logEntries.GetGitRevAt(i).GetAuthorName();
 				msg = msg.MakeLower();
 				if ((msg.Find(find) >= 0)&&(IsEntryInDateRange(i)))
+				{
+					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
+					continue;
+				}
+			}
+			if (m_SelectedFilters & LOGFILTER_EMAILS)
+			{
+				CString msg = m_logEntries.GetGitRevAt(i).GetAuthorEmail();
+				msg = msg.MakeLower();
+				if ((msg.Find(find) >= 0) && (IsEntryInDateRange(i)))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;

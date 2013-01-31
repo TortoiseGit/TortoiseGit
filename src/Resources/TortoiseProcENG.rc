@@ -3945,6 +3945,7 @@ BEGIN
     IDS_PROC_BROWSEREFS_DELETEALLTAGS "Delete all tags"
     IDS_SETTINGS_ENABLELOGCACHE_TT 
                             "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
+    IDS_LOG_FILTER_EMAILS   "Emails"
 END
 
 #endif    // English (U.S.) resources
