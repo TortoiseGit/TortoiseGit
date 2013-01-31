@@ -9,6 +9,7 @@ Released: unreleased
 == Bug Fix ==
  * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content
  * Fixed issue #1620: Apply Patch serial can't open file dialog on WinXP
+ * Fixed issue #1533: Could not parse git.exe version number
 
 = Release 1.8.0.0 =
 Released: 2013-01-27

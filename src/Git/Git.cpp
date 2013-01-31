@@ -95,6 +95,14 @@ static BOOL FindGitPath()
 			pfin[1] = 0;
 			CGit::ms_LastMsysGitDir = buf;
 			CGit::ms_LastMsysGitDir.TrimRight(_T("\\"));
+			if (CGit::ms_LastMsysGitDir.GetLength() > 4)
+			{
+				// often the msysgit\cmd folder is on the %PATH%, but
+				// that git.exe does not work, so try to guess the bin folder
+				CString binDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin\\git.exe");
+				if (FileExists(binDir))
+					CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Mid(0, CGit::ms_LastMsysGitDir.GetLength() - 4) + _T("\\bin");
+			}
 			return TRUE;
 		}
 	}
@@ -1691,9 +1699,15 @@ BOOL CGit::CheckMsysGitDir()
 	str=msysdir;
 	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
 	{
-		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
-		str=msysinstalldir;
+		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL32, _T(""), FALSE, HKEY_CURRENT_USER);
+		str = msyslocalinstalldir;
 		str.TrimRight(_T("\\"));
+		if (str.IsEmpty())
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
 		if ( !str.IsEmpty() )
 		{
 			str += "\\bin";
