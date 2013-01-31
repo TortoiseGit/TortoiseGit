@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,12 +43,12 @@ void CLogCache::CloseDataHandles()
 		UnmapViewOfFile(m_pCacheData);
 		m_pCacheData=NULL;
 	}
-	if(m_DataFileMap)
+	if (m_DataFileMap != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_DataFileMap);
 		m_DataFileMap=INVALID_HANDLE_VALUE;
 	}
-	if(m_DataFile)
+	if (m_DataFile != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_DataFile);
 		m_DataFile = INVALID_HANDLE_VALUE;
@@ -63,7 +63,7 @@ void CLogCache::CloseIndexHandles()
 		m_pCacheIndex = NULL;
 	}
 
-	if(m_IndexFileMap)
+	if (m_IndexFileMap != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_IndexFileMap);
 		m_IndexFileMap = INVALID_HANDLE_VALUE;
@@ -71,7 +71,7 @@ void CLogCache::CloseIndexHandles()
 
 	//this->m_IndexFile.Close();
 	//this->m_DataFile.Close();
-	if(m_IndexFile)
+	if (m_IndexFile != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_IndexFile);
 		m_IndexFile=INVALID_HANDLE_VALUE;
