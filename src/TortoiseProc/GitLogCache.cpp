@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "GitLogCache.h"
+#include "registry.h"
 
 int static Compare(const void *p1, const void*p2)
 {
@@ -34,6 +35,7 @@ CLogCache::CLogCache()
 	m_DataFileMap = INVALID_HANDLE_VALUE;
 	m_pCacheData = NULL;
 	m_DataFileLength = 0;
+	m_bEnabled = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
 }
 
 void CLogCache::CloseDataHandles()
@@ -118,6 +120,9 @@ ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 
 int CLogCache::FetchCacheIndex(CString GitDir)
 {
+	if (!m_bEnabled)
+		return 0;
+
 	int ret=0;
 	if (!g_GitAdminDir.GetAdminDirPath(GitDir, m_GitDir))
 		return -1;
@@ -368,6 +373,9 @@ int CLogCache::RebuildCacheFile()
 }
 int CLogCache::SaveCache()
 {
+	if (!m_bEnabled)
+		return 0;
+
 	int ret =0;
 	BOOL bIsRebuild=false;
 
