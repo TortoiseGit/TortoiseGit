@@ -214,6 +214,16 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>Enable log cache</term>
+				<listitem>
+					<para>
+						Load/saves log cache in .git folder (tortoisegit.data, tortoisegit.index) to boost performance of subsequent use of log list.
+						If this option is disabled, the cache files are not read or written.
+						Default is enabled.
+					</para>
+				</listitem>
+			</varlistentry>
 <!--
 			<varlistentry>
 				<term>Progress Dialog</term>

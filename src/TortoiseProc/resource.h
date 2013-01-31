@@ -861,6 +861,7 @@
 #define IDS_PROC_REPOCREATED            1386
 #define IDC_FILTER                      1387
 #define IDS_PROC_BROWSEREFS_DELETEALLTAGS 1387
+#define IDS_SETTINGS_ENABLELOGCACHE_TT  1388
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
 #define IDS_WARN_FOLDERNOTEXIST         1400
@@ -1235,6 +1236,7 @@
 #define IDC_CALC_DIFF                   1741
 #define IDC_CHECK_MERGE_LOG             1742
 #define IDC_EDIT_MERGE_LOGNUM           1743
+#define IDC_ENABLELOGCACHE              1744
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1682,7 +1684,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1744
+#define _APS_NEXT_CONTROL_VALUE         1745
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
