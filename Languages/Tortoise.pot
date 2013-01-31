@@ -292,6 +292,10 @@ msgstr ""
 msgid "&About TortoiseGitBlame..."
 msgstr ""
 
+#. Resource IDs: (57664)
+msgid "&About TortoiseMerge..."
+msgstr ""
+
 #. Resource IDs: (16920)
 msgid "&Activate"
 msgstr ""
@@ -798,12 +802,20 @@ msgstr ""
 msgid "&Minimize"
 msgstr ""
 
+#. Resource IDs: (32880)
+msgid "&Moved blocks"
+msgstr ""
+
 #. Resource IDs: (1515)
 msgid "&Name"
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Name:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Navigate"
 msgstr ""
 
 #. Resource IDs: (1049)
@@ -1105,6 +1117,10 @@ msgstr ""
 
 #. Resource IDs: (1222)
 msgid "&Timeout in seconds to stop the auto-completion parsing"
+msgstr ""
+
+#. Resource IDs: (59392)
+msgid "&Toolbar"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2201,11 +2217,11 @@ msgid "Changed lines including added/deleted files by date"
 msgstr ""
 
 #. Resource IDs: (2054)
-msgid "Changed lines not including added/deleted files by date"
+msgid "Changed lines not including added/deleted files"
 msgstr ""
 
 #. Resource IDs: (2054)
-msgid "Changed lines not including added/deleted files"
+msgid "Changed lines not including added/deleted files by date"
 msgstr ""
 
 #. Resource IDs: (264)
@@ -3084,6 +3100,10 @@ msgstr ""
 msgid "Delete Ref..."
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Delete all tags"
+msgstr ""
+
 #. Resource IDs: (22)
 #, c-format
 msgid "Delete and &ignore %d items by name"
@@ -3541,8 +3561,20 @@ msgstr ""
 msgid "Email Address To and CC can't empty at the same time."
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Emails"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Empty"
+msgstr ""
+
+#. Resource IDs: (87)
+msgid "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
+msgstr ""
+
+#. Resource IDs: (1744)
+msgid "Enable log cache"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -4811,6 +4843,11 @@ msgstr ""
 msgid "Initial import"
 msgstr ""
 
+#. Resource IDs: (87)
+#, c-format
+msgid "Initialized empty Git repository in %s."
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Inline diff"
 msgstr ""
@@ -4971,6 +5008,10 @@ msgstr ""
 msgid "Line Tool\nLine"
 msgstr ""
 
+#. Resource IDs: (32853)
+msgid "Line diff bar"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Line differences"
 msgstr ""
@@ -5040,6 +5081,10 @@ msgstr ""
 
 #. Resource IDs: (94)
 msgid "Location where the contents of the\nrepository URL will be saved to."
+msgstr ""
+
+#. Resource IDs: (32854)
+msgid "Locator Bar"
 msgstr ""
 
 #. Resource IDs: (65)
@@ -6046,6 +6091,10 @@ msgstr ""
 msgid "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
 msgstr ""
 
+#. Resource IDs: (157)
+msgid "Pictures (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (246)
 msgid "Pie Graph"
 msgstr ""
@@ -6750,7 +6799,7 @@ msgstr ""
 msgid "Revert commit %s"
 msgstr ""
 
-#. Resource IDs: (1252)
+#. Resource IDs: (1258)
 msgid "Revert to parent revision"
 msgstr ""
 
@@ -8056,6 +8105,11 @@ msgstr ""
 msgid "The parameters '/path' and '/pathfile' are mutually exclusive.\nYou must only specify one of them."
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid "The patch does not apply cleanly to %s and no version information is given.\nPatching is not possible!"
+msgstr ""
+
 #. Resource IDs: (64)
 #, c-format
 msgid "The patch seems outdated! The file line\n%s\nand the patchline\n%s\ndo not match!"
@@ -8319,6 +8373,11 @@ msgstr ""
 msgid "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears more than once."
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "TortoiseMerge"
 msgstr ""
@@ -8570,6 +8629,10 @@ msgstr ""
 
 #. Resource IDs: (1482)
 msgid "Use MAPI"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "Use Ribbons"
 msgstr ""
 
 #. Resource IDs: (1497)
