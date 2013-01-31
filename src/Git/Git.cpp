@@ -1691,9 +1691,15 @@ BOOL CGit::CheckMsysGitDir()
 	str=msysdir;
 	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
 	{
-		CRegString msysinstalldir=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);
-		str=msysinstalldir;
+		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL32, _T(""), FALSE, HKEY_CURRENT_USER);
+		str = msyslocalinstalldir;
 		str.TrimRight(_T("\\"));
+		if (str.IsEmpty())
+		{
+			CRegString msysinstalldir = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
+			str = msysinstalldir;
+			str.TrimRight(_T("\\"));
+		}
 		if ( !str.IsEmpty() )
 		{
 			str += "\\bin";
