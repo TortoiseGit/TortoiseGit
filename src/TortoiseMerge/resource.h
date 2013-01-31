@@ -132,6 +132,7 @@
 #define IDC_LIMITTODIFFS                1065
 #define IDC_AUTOADD                     1065
 #define IDC_WHOLEWORD                   1066
+#define IDC_USERIBBONS                  1066
 #define IDC_RESOLVE                     1067
 #define IDC_CASEINSENSITIVE             1067
 #define IDC_USEBDIFF                    1068

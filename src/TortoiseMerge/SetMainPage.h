@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -79,6 +80,8 @@ protected:
 	CRegDWORD		m_regAutoAdd;
 	int				m_nMaxInline;
 	CRegDWORD		m_regMaxInline;
+	BOOL			m_bUseRibbons;
+	CRegDWORD		m_regUseRibbons;
 
 	CRegDWORD		m_regFontSize;
 	DWORD			m_dwFontSize;

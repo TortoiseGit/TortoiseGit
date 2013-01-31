@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2006-2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,6 +58,7 @@ CSetMainPage::CSetMainPage()
 	m_regUTF8Default = CRegDWORD(_T("Software\\TortoiseGitMerge\\UseUTF8"), FALSE);
 	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
+	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
@@ -69,6 +71,7 @@ CSetMainPage::CSetMainPage()
 	m_bUTF8Default = m_regUTF8Default;
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
+	m_bUseRibbons = m_regUseRibbons;
 }
 
 CSetMainPage::~CSetMainPage()
@@ -99,6 +102,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_UTF8DEFAULT, m_bUTF8Default);
 	DDX_Check(pDX, IDC_AUTOADD, m_bAutoAdd);
 	DDX_Text(pDX, IDC_MAXINLINE, m_nMaxInline);
+	DDX_Check(pDX, IDC_USERIBBONS, m_bUseRibbons);
 }
 
 void CSetMainPage::SaveData()
@@ -116,6 +120,7 @@ void CSetMainPage::SaveData()
 	m_regUTF8Default = m_bUTF8Default;
 	m_regAutoAdd = m_bAutoAdd;
 	m_regMaxInline = m_nMaxInline;
+	m_regUseRibbons = m_bUseRibbons;
 }
 
 BOOL CSetMainPage::OnApply()
@@ -149,6 +154,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bUTF8Default = m_regUTF8Default;
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
+	m_bUseRibbons = m_regUseRibbons;
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);
 
@@ -196,6 +202,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_UTF8DEFAULT, &CSetMainPage::OnModified)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_MAXINLINE, &CSetMainPage::OnModifiedWithReload)
+	ON_BN_CLICKED(IDC_USERIBBONS, &CSetMainPage::OnModified)
 END_MESSAGE_MAP()
 
 
