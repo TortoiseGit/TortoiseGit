@@ -199,6 +199,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,56,236,10
     CONTROL         "Show linenumber&s",IDC_LINENUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,67,236,10
     CONTROL         "Add new files automatically to Git",IDC_AUTOADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,236,10
+    CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,236,10
     LTEXT           "&Tab size:",IDC_STATIC,15,118,54,8
     EDITTEXT        IDC_TABSIZE,80,115,41,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "&Font:",IDC_STATIC,15,135,52,8
@@ -344,6 +345,160 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_FILE_RELOAD
+    BUTTON      ID_EDIT_UNDO
+    SEPARATOR
+    BUTTON      ID_NAVIGATE_PREVIOUSDIFFERENCE
+    BUTTON      ID_NAVIGATE_NEXTDIFFERENCE
+    BUTTON      ID_NAVIGATE_PREVIOUSCONFLICT
+    BUTTON      ID_NAVIGATE_NEXTCONFLICT
+    SEPARATOR
+    BUTTON      ID_EDIT_USELEFTBLOCK
+    SEPARATOR
+    BUTTON      ID_EDIT_USETHEIRBLOCK
+    BUTTON      ID_EDIT_USEMYBLOCK
+    BUTTON      ID_EDIT_USETHEIRTHENMYBLOCK
+    BUTTON      ID_EDIT_USEMINETHENTHEIRBLOCK
+    SEPARATOR
+    BUTTON      ID_EDIT_MARKASRESOLVED
+    SEPARATOR
+    BUTTON      ID_VIEW_WHITESPACES
+    BUTTON      ID_VIEW_WRAPLONGLINES
+    SEPARATOR
+    BUTTON      ID_VIEW_INLINEDIFF
+    BUTTON      ID_VIEW_INLINEDIFFWORD
+    BUTTON      ID_VIEW_COMPAREWHITESPACES
+    BUTTON      ID_VIEW_IGNOREWHITESPACECHANGES
+    BUTTON      ID_VIEW_IGNOREALLWHITESPACECHANGES
+    SEPARATOR
+    BUTTON      ID_VIEW_ONEWAYDIFF
+    BUTTON      ID_VIEW_SWITCHLEFT
+    BUTTON      ID_VIEW_COLLAPSED
+    BUTTON      ID_VIEW_SHOWFILELIST
+    SEPARATOR
+    BUTTON      ID_VIEW_OPTIONS
+    SEPARATOR
+    BUTTON      ID_HELP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Open",                        ID_FILE_OPEN
+        MENUITEM "Save",                        ID_FILE_SAVE
+        MENUITEM "Save &as...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Reload",                      ID_FILE_RELOAD
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo",                       ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Copy",                       ID_EDIT_COPY
+        MENUITEM "&Paste",                      ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Use left block",              ID_EDIT_USELEFTBLOCK
+        MENUITEM "Use left file",               ID_EDIT_USELEFTFILE
+        MENUITEM "Use block from left before right", ID_EDIT_USEBLOCKFROMLEFTBEFORERIGHT
+        MENUITEM "Use block from right before left", ID_EDIT_USEBLOCKFROMRIGHTBEFORELEFT
+        MENUITEM SEPARATOR
+        MENUITEM "Use 'theirs' text block",     ID_EDIT_USETHEIRBLOCK
+        MENUITEM "Use 'mine' text block",       ID_EDIT_USEMYBLOCK
+        MENUITEM "Use 'theirs' text block then 'mine'", ID_EDIT_USETHEIRTHENMYBLOCK
+        MENUITEM "Use 'mine' text block then 'theirs'", ID_EDIT_USEMINETHENTHEIRBLOCK
+        MENUITEM SEPARATOR
+        MENUITEM "Find",                        ID_EDIT_FIND
+        MENUITEM "Goto Line",                   ID_EDIT_GOTOLINE
+        MENUITEM "Mark as resolved",            ID_EDIT_MARKASRESOLVED
+        MENUITEM SEPARATOR
+        MENUITEM "Create patch file",           ID_EDIT_CREATEUNIFIEDDIFFFILE
+    END
+    POPUP "&Navigate"
+    BEGIN
+        MENUITEM "Next difference",             ID_NAVIGATE_NEXTDIFFERENCE
+        MENUITEM "Previous difference",         ID_NAVIGATE_PREVIOUSDIFFERENCE
+        MENUITEM "Next conflict",               ID_NAVIGATE_NEXTCONFLICT
+        MENUITEM "Previous conflict",           ID_NAVIGATE_PREVIOUSCONFLICT
+        MENUITEM "Next inline difference",      ID_NAVIGATE_NEXTINLINEDIFF
+        MENUITEM "Previous inline difference",  ID_NAVIGATE_PREVINLINEDIFF
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Line diff bar",               ID_VIEW_LINEDIFFBAR, CHECKED
+        MENUITEM "Locator Bar",                 ID_VIEW_LOCATORBAR
+        MENUITEM SEPARATOR
+        MENUITEM "Wrap long lines",             ID_VIEW_WRAPLONGLINES
+        MENUITEM "&Moved blocks",               ID_VIEW_MOVEDBLOCKS
+        MENUITEM "Inline diff",                 ID_VIEW_INLINEDIFF
+        MENUITEM "Inline diff word-wise",       ID_VIEW_INLINEDIFFWORD
+        MENUITEM "Compare whitespaces",         ID_VIEW_COMPAREWHITESPACES
+        MENUITEM "Ignore whitespace changes",   ID_VIEW_IGNOREWHITESPACECHANGES
+        MENUITEM "Ignore all whitespace changes", ID_VIEW_IGNOREALLWHITESPACECHANGES
+        MENUITEM SEPARATOR
+        MENUITEM "Show Whitespaces",            ID_VIEW_WHITESPACES
+        MENUITEM "Switch between single and double pane view", ID_VIEW_ONEWAYDIFF
+        MENUITEM "Switch left and right view",  ID_VIEW_SWITCHLEFT
+        MENUITEM "Collapse",                    ID_VIEW_COLLAPSED
+        MENUITEM SEPARATOR
+        MENUITEM "Settings",                    ID_VIEW_OPTIONS
+        MENUITEM SEPARATOR
+        MENUITEM "Hide/Show the patch file list", ID_VIEW_SHOWFILELIST
+        MENUITEM SEPARATOR
+        POPUP "Style"
+        BEGIN
+            MENUITEM "Windows 2000",                ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office XP",                   ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "Windows XP",                  ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 2003",                 ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 2005",          ID_VIEW_APPLOOK_VS_2005
+            MENUITEM "Visual Studio 2008",          ID_VIEW_APPLOOK_VS_2008
+            MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
+            POPUP "Office 2007 colors"
+            BEGIN
+                MENUITEM "Blue Style",                  ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "Black Style",                 ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "Silver Style",                ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "Aqua Style",                  ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help Topics",                ID_HELP
+        MENUITEM SEPARATOR
+        MENUITEM "&About TortoiseMerge...",     ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Accelerator
 //
 
@@ -423,17 +578,6 @@ END
 //
 
 IDR_RIBBON              RT_RIBBON_XML           "ribbon.mfcribbon-ms"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDR_MAINFRAME MENU
-BEGIN
-    MENUITEM "&File",                       0
-END
 
 
 /////////////////////////////////////////////////////////////////////////////

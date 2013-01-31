@@ -169,6 +169,7 @@ CMainFrame::CMainFrame()
 	, m_regOneWay(L"Software\\TortoiseGitMerge\\OnePane")
 	, m_regCollapsed(L"Software\\TortoiseGitMerge\\Collapsed", 0)
 	, m_regInlineDiff(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE)
+	, m_regUseRibbons(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
@@ -176,6 +177,7 @@ CMainFrame::CMainFrame()
 	m_bViewMovedBlocks = !!(DWORD)m_regViewModedBlocks;
 	m_bWrapLines = !!(DWORD)m_regWrapLines;
 	m_bInlineDiff = !!m_regInlineDiff;
+	m_bUseRibbons = !!m_regUseRibbons;
 	CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
 }
 
@@ -197,18 +199,38 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	OnApplicationLook(theApp.m_nAppLook);
 
-	m_wndRibbonBar.Create (this);
-	m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
-
-	// enable the dialog launch button on the view panel
-	CMFCRibbonCategory * pMainCat = m_wndRibbonBar.GetCategory(1);
-	if (pMainCat)
+	if (m_bUseRibbons)
 	{
-		CMFCRibbonPanel * pPanel = pMainCat->GetPanel(3);
-		if (pPanel)
-			pPanel->EnableLaunchButton(ID_VIEW_OPTIONS);
-	}
+		m_wndRibbonBar.Create(this);
+		m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
 
+		// enable the dialog launch button on the view panel
+		CMFCRibbonCategory * pMainCat = m_wndRibbonBar.GetCategory(1);
+		if (pMainCat)
+		{
+			CMFCRibbonPanel * pPanel = pMainCat->GetPanel(3);
+			if (pPanel)
+				pPanel->EnableLaunchButton(ID_VIEW_OPTIONS);
+		}
+	}
+	else
+	{
+		if (!m_wndMenuBar.Create(this))
+		{
+			TRACE0("Failed to create menubar\n");
+			return -1; // fail to create
+		}
+		m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
+
+		// prevent the menu bar from taking the focus on activation
+		CMFCPopupMenu::SetForceMenuFocus(FALSE);
+		if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_ALIGN_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY) || !m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
+		{
+			TRACE0("Failed to create toolbar\n");
+			return -1; // fail to create
+		}
+		m_wndToolBar.SetWindowText(_T("Main"));
+	}
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
 		  _countof(indicators)))
@@ -233,6 +255,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndLineDiffBar.m_pMainFrm = this;
 
 	EnableDocking(CBRS_ALIGN_ANY);
+	if (!m_bUseRibbons)
+	{
+		m_wndMenuBar.EnableDocking(CBRS_ALIGN_TOP);
+		m_wndToolBar.EnableDocking(CBRS_ALIGN_TOP);
+		DockPane(&m_wndMenuBar);
+		DockPane(&m_wndToolBar);
+	}
 	DockPane(&m_wndLocatorBar);
 	DockPane(&m_wndLineDiffBar);
 	ShowPane(&m_wndLocatorBar, true, false, true);
