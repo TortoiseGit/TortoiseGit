@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Log dialog can revert selected files to parent revision
  * Fixed issue #1500: Support git merge --log option
+ * Can disable log cache (tortoisegit.data, tortoisegit.index)
 
 == Bug Fix ==
  * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content

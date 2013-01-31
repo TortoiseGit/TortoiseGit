@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "GitLogCache.h"
+#include "registry.h"
 
 int static Compare(const void *p1, const void*p2)
 {
@@ -34,6 +35,7 @@ CLogCache::CLogCache()
 	m_DataFileMap = INVALID_HANDLE_VALUE;
 	m_pCacheData = NULL;
 	m_DataFileLength = 0;
+	m_bEnabled = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
 }
 
 void CLogCache::CloseDataHandles()
@@ -43,12 +45,12 @@ void CLogCache::CloseDataHandles()
 		UnmapViewOfFile(m_pCacheData);
 		m_pCacheData=NULL;
 	}
-	if(m_DataFileMap)
+	if (m_DataFileMap != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_DataFileMap);
 		m_DataFileMap=INVALID_HANDLE_VALUE;
 	}
-	if(m_DataFile)
+	if (m_DataFile != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_DataFile);
 		m_DataFile = INVALID_HANDLE_VALUE;
@@ -63,7 +65,7 @@ void CLogCache::CloseIndexHandles()
 		m_pCacheIndex = NULL;
 	}
 
-	if(m_IndexFileMap)
+	if (m_IndexFileMap != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_IndexFileMap);
 		m_IndexFileMap = INVALID_HANDLE_VALUE;
@@ -71,7 +73,7 @@ void CLogCache::CloseIndexHandles()
 
 	//this->m_IndexFile.Close();
 	//this->m_DataFile.Close();
-	if(m_IndexFile)
+	if (m_IndexFile != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(m_IndexFile);
 		m_IndexFile=INVALID_HANDLE_VALUE;
@@ -118,6 +120,9 @@ ULONGLONG CLogCache::GetOffset(CGitHash &hash,SLogCacheIndexFile *pData)
 
 int CLogCache::FetchCacheIndex(CString GitDir)
 {
+	if (!m_bEnabled)
+		return 0;
+
 	int ret=0;
 	if (!g_GitAdminDir.GetAdminDirPath(GitDir, m_GitDir))
 		return -1;
@@ -368,6 +373,9 @@ int CLogCache::RebuildCacheFile()
 }
 int CLogCache::SaveCache()
 {
+	if (!m_bEnabled)
+		return 0;
+
 	int ret =0;
 	BOOL bIsRebuild=false;
 
