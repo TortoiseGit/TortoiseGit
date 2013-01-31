@@ -855,6 +855,11 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			break;
+		case VK_F5:
+			{
+				OnTimer(IDT_INPUT);
+			}
+			break;
 		}
 	}
 	return __super::PreTranslateMessage(pMsg);
