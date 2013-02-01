@@ -2732,6 +2732,7 @@ void CGitLogListBase::FetchRemoteList()
 
 void CGitLogListBase::FetchTrackingBranchList()
 {
+	m_TrackingMap.clear();
 	for (MAP_HASH_NAME::iterator it = m_HashMap.begin(); it != m_HashMap.end(); ++it)
 	{
 		for (int j = 0; j < it->second.size(); j++)
