@@ -301,6 +301,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TortoiseProc.cpp" />
+    <ClCompile Include="UserPassword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h" />
@@ -456,6 +457,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TortoiseProc.h" />
+    <ClInclude Include="UserPassword.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionad.ico" />

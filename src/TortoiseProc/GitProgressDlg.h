@@ -28,8 +28,10 @@
 //#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "afxwin.h"
 #include "Win7.h"
+#include "UnicodeUtils.h"
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
+struct git_transfer_progress;
 
 /**
  * \ingroup TortoiseProc
@@ -77,6 +79,8 @@ typedef enum
 	git_wc_notify_sendmail_done,
 	git_wc_notify_resolved,
 	git_wc_notify_revert,
+	git_wc_notify_fetch,
+	git_wc_notify_checkout,
 
 }git_wc_notify_action_t;
 typedef enum
@@ -105,6 +109,9 @@ public:
 		GitProgress_Revert,
 		GitProgress_Switch,
 		GitProgress_SendMail,
+		GitProgress_Clone,
+		GitProgress_Fetch,
+		GitProgress_Push,
 	} Command;
 
 
@@ -123,6 +130,9 @@ public:
 	void SetUrl(const CString& url) {m_url.SetFromUnknown(url);}
 	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
+	void SetIsBare(bool b) {m_bBare = b;}
+	void SetNoCheckout(bool b){m_bNoCheckout = b;}
+	void SetRefSpec(CString &spec){m_RefSpec = spec;}
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
@@ -214,8 +224,22 @@ protected:
 		git_merge_range_t * range,
 		git_error_t * err, apr_pool_t * pool*/
 		);
-
+	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
+
+	static void FetchCallback(const git_transfer_progress *stats, void *payload)
+	{
+		((CGitProgressDlg*)payload) -> Notify(git_wc_notify_fetch, stats);
+	}
+
+	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
+	{
+		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
+		((CGitProgressDlg*)payload) -> m_itemCountTotal = tot;
+		((CGitProgressDlg*)payload) -> m_itemCount = cur;
+		((CGitProgressDlg*)payload) -> Notify(tpath, git_wc_notify_checkout);
+	}
+
 	virtual BOOL						OnInitDialog();
 	virtual BOOL						Cancel();
 	virtual void						OnCancel();
@@ -238,6 +262,7 @@ protected:
 	afx_msg void	OnLvnBegindragSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnCtlColorStatic(WPARAM wParam, LPARAM lParam);
 	LRESULT			OnShowConflictResolver(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
@@ -281,6 +306,7 @@ private:
 	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
+	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
 
 private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
@@ -289,7 +315,7 @@ private:
 
 	CString					m_mergedfile;
 	NotificationDataVect	m_arData;
-
+	CAnimateCtrl			m_Animate;
 	CWinThread*				m_pThread;
 	volatile LONG			m_bThreadRunning;
 
@@ -329,6 +355,7 @@ private:
 	int						nEnsureVisibleCount;
 
 	CString					m_sTotalBytesTransferred;
+	size_t					m_TotalBytesTransferred;
 
 	CColors					m_Colors;
 
@@ -351,4 +378,11 @@ private:
 	// some strings different methods can use
 	CString					sDryRun;
 	CString					sRecordOnly;
+
+	bool					m_bBare;
+	bool					m_bNoCheckout;
+	CString					m_RefSpec;
+	CBrush					m_background_brush;
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
