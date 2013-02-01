@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -979,7 +979,21 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 		m_fZoomFactor = fZoom;
 		DoZoom(m_fZoomFactor);
 	}
-
+	else if (extension.CompareNoCase(_T(".gv")) == 0)
+	{
+		Graphviz graphviz;
+		float fZoom = m_fZoomFactor;
+		m_fZoomFactor = DEFAULT_ZOOM;
+		DoZoom(m_fZoomFactor);
+		CRect rect;
+		rect = GetViewRect();
+		GraphicsDevice dev;
+		dev.pGraphviz = &graphviz;
+		DrawGraph(dev, rect, 0, 0, true);
+		graphviz.Save(sSavePath);
+		m_fZoomFactor = fZoom;
+		DoZoom(m_fZoomFactor);
+	}
 	else
 	{
 		// save the graph as a pixel picture instead of a vector picture

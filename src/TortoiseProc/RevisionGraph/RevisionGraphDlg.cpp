@@ -672,6 +672,11 @@ void CRevisionGraphDlg::OnFileSavegraphas()
 			extension = _T(".svg");
 			tempfile += extension;
 		}
+		if ((filterindex == 2)&&(extension.IsEmpty()))
+		{
+			extension = _T(".gv");
+			tempfile += extension;
+		}
 		m_Graph.SaveGraphAs(tempfile);
 	}
 }
