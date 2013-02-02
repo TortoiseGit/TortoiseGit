@@ -40,6 +40,7 @@
 #include "TreePropSheet/TreePropSheet.h"
 #include "SettingGitConfig.h"
 #include "SettingGitRemote.h"
+#include "SettingGitCredential.h"
 #include "SettingsBugtraqConfig.h"
 #include "SetExtMenu.h"
 #include "SettingsAdvanced.h"
@@ -89,6 +90,7 @@ private:
 	CSettingsTBlame *					m_pTBlamePage;
 	CSettingGitConfig *					m_pGitConfig;
 	CSettingGitRemote *					m_pGitRemote;
+	CSettingGitCredential *				m_pGitCredential;
 	CSettingsBugtraqConfig *			m_pBugtraqConfig;
 
 	CSetExtMenu	*						m_pExtMenu;
