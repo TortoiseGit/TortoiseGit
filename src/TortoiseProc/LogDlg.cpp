@@ -1460,11 +1460,25 @@ void CLogDlg::SetFilterCueText()
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_AUTHORS));
 	}
 
+	if (m_LogList.m_SelectedFilters & LOGFILTER_EMAILS)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_EMAILS));
+	}
+
 	if (m_LogList.m_SelectedFilters & LOGFILTER_REVS)
 	{
 		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
 			temp += _T(", ");
 		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REVS));
+	}
+
+	if (m_LogList.m_SelectedFilters & LOGFILTER_REFNAME)
+	{
+		if (temp.ReverseFind(_T(' ')) != temp.GetLength() - 1)
+			temp += _T(", ");
+		temp += CString(MAKEINTRESOURCE(IDS_LOG_FILTER_REFNAME));
 	}
 
 	if (m_LogList.m_SelectedFilters & LOGFILTER_BUGID)
