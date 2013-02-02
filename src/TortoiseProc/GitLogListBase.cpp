@@ -3450,6 +3450,8 @@ void CGitLogListBase::OnHdnItemchanging(NMHDR *pNMHDR, LRESULT *pResult)
 }
 LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*/)
 {
+	if (GetSelectedCount() != 0)
+		return 0;
 	SetItemState((int)itemToSelect, LVIS_SELECTED, LVIS_SELECTED);
 	EnsureVisible((int)itemToSelect, FALSE);
 	return 0;
