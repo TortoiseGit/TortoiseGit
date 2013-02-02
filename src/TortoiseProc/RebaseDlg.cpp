@@ -917,9 +917,8 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
-	m_ctrlTabCtrl.RemoveTab(0);
-	m_ctrlTabCtrl.RemoveTab(0);
-	m_LogMessageCtrl.ShowWindow(SW_HIDE);
+	while (m_ctrlTabCtrl.GetTabsNum() > 1)
+		m_ctrlTabCtrl.RemoveTab(0);
 	m_CtrlStatusText.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_REBASEFINISHED)));
 
 	return 0;
@@ -1516,9 +1515,7 @@ int CRebaseDlg::RebaseThread()
 		{
 			if( this->StartRebase() )
 			{
-				InterlockedExchange(&m_bThreadRunning, FALSE);
 				ret = -1;
-				this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 				break;
 			}
 			m_RebaseStage = REBASE_CONTINUE;
@@ -1527,7 +1524,7 @@ int CRebaseDlg::RebaseThread()
 		else if( m_RebaseStage == REBASE_CONTINUE )
 		{
 			this->GoNext();
-			UpdateCurrentStatus();
+			SendMessage(MSG_REBASE_UPDATE_UI);
 			if(IsEnd())
 			{
 				ret = 0;
@@ -1547,10 +1544,8 @@ int CRebaseDlg::RebaseThread()
 		}
 		else if( m_RebaseStage == REBASE_FINISH )
 		{
-			FinishRebase();
+			SendMessage(MSG_REBASE_UPDATE_UI);
 			m_RebaseStage = REBASE_DONE;
-			if (m_pTaskbarList)
-				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 			break;
 
 		}
@@ -1559,7 +1554,6 @@ int CRebaseDlg::RebaseThread()
 			break;
 		}
 		this->PostMessage(MSG_REBASE_UPDATE_UI);
-		//this->UpdateCurrentStatus();
 	}
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
@@ -1583,6 +1577,13 @@ void CRebaseDlg::ListConflictFile()
 
 LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 {
+	if (m_RebaseStage == REBASE_FINISH)
+	{
+		FinishRebase();
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+		return 0;
+	}
 	UpdateCurrentStatus();
 	if(m_CurrentRebaseIndex <0)
 		return 0;
