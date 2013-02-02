@@ -1201,6 +1201,7 @@ void CRebaseDlg::SetContinueButtonText()
 		break;
 
 	case REBASE_START:
+	case REBASE_ERROR:
 	case REBASE_CONTINUE:
 	case REBASE_SQUASH_CONFLICT:
 		Text.LoadString(IDS_CONTINUEBUTTON);
@@ -1258,6 +1259,7 @@ void CRebaseDlg::SetControlEnable()
 	case REBASE_START:
 	case REBASE_CONTINUE:
 	case REBASE_ABORT:
+	case REBASE_ERROR:
 	case REBASE_FINISH:
 	case REBASE_CONFLICT:
 	case REBASE_EDIT:
@@ -1293,7 +1295,7 @@ void CRebaseDlg::SetControlEnable()
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 
 	}
-	else
+	else if (m_RebaseStage != REBASE_ERROR)
 	{
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(TRUE);
 	}
@@ -1445,8 +1447,9 @@ int CRebaseDlg::DoRebase()
 		{
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
-				pRev->GetAction(&m_CommitList)|= CTGitPath::LOGACTIONS_REBASE_DONE;
-				return 0;
+				m_RebaseStage = REBASE_ERROR;
+				AddLogString(_T("An unrecoverable error occoured."));
+				return -1;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
 			{
