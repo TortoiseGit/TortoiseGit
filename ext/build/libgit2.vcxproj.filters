@@ -320,6 +320,15 @@
     <ClCompile Include="..\libgit2\deps\regex\regex.c">
       <Filter>deps\regex</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\transports\cred.c">
+      <Filter>Source Files\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\transports\cred_helpers.c">
+      <Filter>Source Files\transports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\win32\error.c">
+      <Filter>Source Files\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -642,6 +651,21 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\deps\regex\regex.h">
       <Filter>deps\regex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\cred_helpers.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\branch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\offmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\checkout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\win32\error.h">
+      <Filter>Header Files\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
