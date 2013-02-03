@@ -59,7 +59,6 @@ bool CPersonalDictionary::Load()
 	{
 		return false;
 	}
-	std::vector<std::wstring> entry;
 	do
 	{
 		File.getline(line, _countof(line));

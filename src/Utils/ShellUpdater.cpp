@@ -176,7 +176,6 @@ bool CShellUpdater::RebuildIcons()
 	DWORD_PTR dwResult;
 	LONG lRegResult;
 	std::wstring sRegValueName;
-	std::wstring sDefaultIconSize;
 	int iDefaultIconSize;
 	bool bResult = false;
 

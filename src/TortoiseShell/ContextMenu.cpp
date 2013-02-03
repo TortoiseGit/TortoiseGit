@@ -1197,10 +1197,6 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 	if (lpcmi == NULL)
 		return hr;
 
-	std::string command;
-	std::string parent;
-	std::string file;
-
 	if (!files_.empty() || !folder_.empty())
 	{
 		UINT_PTR idCmd = LOWORD(lpcmi->lpVerb);

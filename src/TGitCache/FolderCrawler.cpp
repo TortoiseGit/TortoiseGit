@@ -77,7 +77,7 @@ void CFolderCrawler::Initialise()
 
 void CFolderCrawler::RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path)
 {
-	std::deque<CTGitPath>::iterator it, lastit;
+	std::deque<CTGitPath>::iterator it;
 	for(it = list.begin(); it != list.end(); ++it)
 	{
 		if(*it == path)
