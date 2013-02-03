@@ -770,7 +770,7 @@ bool CSmtp::FormatHeader(char* header)
 
 	// MIME-Version: <SP> 1.0 <CRLF>
 	strcat(header,"MIME-Version: 1.0\r\n");
-	if(!Attachments.size())
+	if(Attachments.empty())
 	{ // no attachments
 		strcat(header,"Content-type: text/plain; charset=US-ASCII\r\n");
 		strcat(header,"Content-Transfer-Encoding: 7bit\r\n");
