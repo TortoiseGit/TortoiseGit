@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #1620: Apply Patch serial can't open file dialog on WinXP
  * Fixed issue #1533: Could not parse git.exe version number
  * Fixed issue #1619: TortoiseGitMerge: Ribbon UI/toolbars can be toggled
+ * Fixed issue #1627: TortoiseGit gets the wrong revision if the branch name looks like git-describe format
 
 = Release 1.8.0.0 =
 Released: 2013-01-27
