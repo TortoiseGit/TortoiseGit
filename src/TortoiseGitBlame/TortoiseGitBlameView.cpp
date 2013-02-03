@@ -437,14 +437,14 @@ LRESULT CTortoiseGitBlameView::SendEditor(UINT Msg, WPARAM wParam, LPARAM lParam
 	return ::SendMessage(m_wEditor, Msg, wParam, lParam);
 }
 
-void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, CString *face)
+void CTortoiseGitBlameView::SetAStyle(int style, COLORREF fore, COLORREF back, int size, CString face)
 {
 	SendEditor(SCI_STYLESETFORE, style, fore);
 	SendEditor(SCI_STYLESETBACK, style, back);
 	if (size >= 1)
 		SendEditor(SCI_STYLESETSIZE, style, size);
 	if (face)
-		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(this->m_TextView.StringForControl(*face).GetBuffer()));
+		SendEditor(SCI_STYLESETFONT, style, reinterpret_cast<LPARAM>(this->m_TextView.StringForControl(face).GetBuffer()));
 }
 
 void CTortoiseGitBlameView::InitialiseEditor()
@@ -457,7 +457,7 @@ void CTortoiseGitBlameView::InitialiseEditor()
 			  black,
 			  white,
 			(DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10),
-			&CString(((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str())
+			CString(((stdstring)CRegStdString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"))).c_str())
 			);
 	SendEditor(SCI_SETTABWIDTH, (DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4));
 	SendEditor(SCI_SETREADONLY, TRUE);

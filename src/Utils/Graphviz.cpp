@@ -21,7 +21,7 @@
 #include "UnicodeUtils.h"
 #include "SmartHandle.h"
 
-void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize, Gdiplus::Color borderColor, Gdiplus::Color backColor, int height)
+void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize, Gdiplus::Color /*borderColor*/, Gdiplus::Color backColor, int /*height*/)
 {
 	content.Append(_T("\t"));
 	content.Append(id);
@@ -50,7 +50,7 @@ void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize
 	content.Append(_T("];\r\n"));
 }
 
-void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, int height)
+void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, int /*height*/)
 {
 	m_tableNodeNum = 0;
 	content.Append(_T("\t"));

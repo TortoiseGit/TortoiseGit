@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011,2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ public:
 
 	void SetDiff(CTGitPath * path, GitRev rev1,GitRev rev2);
 	void SetDiff(CTGitPath * path, GitRev rev1);
-	void SetDiff(CTGitPath * path, CString &hash1, CString &hash2);
+	void SetDiff(CTGitPath * path, CString hash1, CString hash2);
 
 	void	DoBlame(bool blame = true) {m_bBlame = blame;}
 

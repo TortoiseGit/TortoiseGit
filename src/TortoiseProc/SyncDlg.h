@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009,2012 - TortoiseGit
+// Copyright (C) 2008-2009,2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -165,7 +165,7 @@ protected:
 	}
 
 	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
-							CString &rev1,CString &rev2)
+							CString rev1, CString rev2)
 	{
 		g_Git.GetCommitDiffList(rev1,rev2,*pGitList);
 		pCtrlList->m_Rev1=rev1;

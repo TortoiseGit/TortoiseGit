@@ -113,7 +113,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	m_rev2 = rev2;
 }
 
-void CFileDiffDlg::SetDiff(CTGitPath * path, CString &hash1, CString &hash2)
+void CFileDiffDlg::SetDiff(CTGitPath * path, CString hash1, CString hash2)
 {
 	if(path!=NULL)
 	{

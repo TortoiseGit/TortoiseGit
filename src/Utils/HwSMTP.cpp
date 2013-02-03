@@ -151,7 +151,7 @@ BOOL CHwSMTP::SendSpeedEmail
 			LPCTSTR	lpszCharSet,
 			CStringArray *pStrAryAttach,
 			LPCTSTR	pStrAryCC,
-			UINT	nSmtpSrvPort,
+			UINT	/*nSmtpSrvPort*/,
 			LPCTSTR	pSend
 		)
 {
@@ -946,7 +946,7 @@ CString GetCompatibleString ( LPVOID lpszOrg, BOOL bOrgIsUnicode, int nOrgLength
 	return _T("");
 }
 
-CString FormatDateTime ( COleDateTime &DateTime, LPCTSTR pFormat )
+CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 {
 	// If null, return empty string
 	if ( DateTime.GetStatus() == COleDateTime::null || DateTime.GetStatus() == COleDateTime::invalid )

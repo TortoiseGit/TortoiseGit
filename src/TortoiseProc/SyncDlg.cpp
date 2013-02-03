@@ -363,8 +363,10 @@ void CSyncDlg::PullComplete()
 
 			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), m_oldHash.ToString());
 
+			CString sOldHash(m_oldHash.ToString());
+			CString sNewHash(newhash.ToString());
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&m_oldHash.ToString(), &newhash.ToString());
+				&sOldHash, &sNewHash);
 		}
 		this->ShowTab(IDC_IN_LOGLIST);
 	}
@@ -554,9 +556,11 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
+			CString sOldHash(oldhash.ToString());
+			CString sNewHash(newhash.ToString());
 			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), oldhash.ToString());
 			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&oldhash.ToString(), &newhash.ToString());
+				&sOldHash, &sNewHash);
 
 			this->FetchOutList(true);
 		}
@@ -1037,8 +1041,7 @@ void CSyncDlg::FetchOutList(bool force)
 					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, remotebranch);
 				else
 				{
-					CString baseString = base.ToString();
-					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, baseString);
+					AddDiffFileList(&m_OutChangeFileList, &m_arOutChangeList, localbranch, base.ToString());
 				}
 
 				this->m_ctrlTabCtrl.ShowTab(m_OutChangeFileList.GetDlgCtrlID()-1,TRUE);
