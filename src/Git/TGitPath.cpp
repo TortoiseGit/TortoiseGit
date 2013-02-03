@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2010-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2010-2013 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1050,7 +1050,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 		count=1;
 	else
 		count=list->GetCount();
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		CString cmd;
 		pos=0;
@@ -1107,7 +1107,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 		//one=log.Tokenize(_T("\n"),pos);
 		path.Reset();
 		if(log[pos]=='\n')
-			pos++;
+			++pos;
 
 		if(log[pos]==':')
 		{
@@ -1127,12 +1127,12 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			}
 			if( actionstart>0 )
 			{
-				actionstart++;
+				++actionstart;
 
 				file1 = log.find(0,actionstart);
 				if( file1>=0 )
 				{
-					file1++;
+					++file1;
 					pos=file1;
 				}
 				if( log[actionstart] == 'C' || log[actionstart] == 'R' )
@@ -1142,7 +1142,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 					file1 = log.find(0,file1);
 					if(file1>=0 )
 					{
-						file1++;
+						++file1;
 						pos=file1;
 					}
 
@@ -1214,12 +1214,12 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 
 			if(log[pos] == 0) //rename
 			{
-				pos++;
+				++pos;
 				g_Git.StringAppend(&file2, &log[pos], CP_UTF8);
 				int sec=log.find(0,pos);
 				if(sec>=0)
 				{
-					sec++;
+					++sec;
 					g_Git.StringAppend(&file1, &log[sec], CP_UTF8);
 				}
 				pos=sec;
@@ -1594,7 +1594,7 @@ apr_array_header_t * CTGitPathList::MakePathArray (apr_pool_t *pool) const
 {
 	apr_array_header_t *targets = apr_array_make (pool, GetCount(), sizeof(const char *));
 
-	for(int nItem = 0; nItem < GetCount(); nItem++)
+	for (int nItem = 0; nItem < GetCount(); ++nItem)
 	{
 		const char * target = m_paths[nItem].GetGitApiPath(pool);
 		(*((const char **) apr_array_push (targets))) = target;
@@ -2010,7 +2010,7 @@ private:
 CTGitPath * CTGitPathList::LookForGitPath(CString path)
 {
 	int i=0;
-	for(i=0;i<this->GetCount();i++)
+	for (i = 0; i < this->GetCount(); ++i)
 	{
 		if((*this)[i].GetGitPathString() == path )
 			return (CTGitPath*)&(*this)[i];

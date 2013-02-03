@@ -90,7 +90,7 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 
 	if ((m_nRejected > ((int)m_filePaths.size() / 3)) && !m_testPath.IsEmpty())
 	{
-		m_nStrip++;
+		++m_nStrip;
 		bool found = false;
 		for (m_nStrip = 0; m_nStrip < STRIP_LIMIT; ++m_nStrip)
 		{
@@ -126,7 +126,7 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 bool GitPatch::ApplyPatches()
 {
 	
-	for (int i = 0; i < m_patch.GetNumberOfFiles(); i++)
+	for (int i = 0; i < m_patch.GetNumberOfFiles(); ++i)
 	{
 		if (!PatchFile(i, m_targetpath))
 			return false;
@@ -338,7 +338,7 @@ int GitPatch::CountMatches(const CString& path) const
 			((temp.GetLength() > 1) && (temp[0]=='\\') && (temp[1]!='\\')) )
 			temp = path + _T("\\")+ temp;
 		if (PathFileExists(temp))
-			matches++;
+			++matches;
 	}
 	return matches;
 }
@@ -355,7 +355,7 @@ int GitPatch::CountDirMatches(const CString& path) const
 		// remove the filename
 		temp = temp.Left(temp.ReverseFind('\\'));
 		if (PathFileExists(temp))
-			matches++;
+			++matches;
 	}
 	return matches;
 }
@@ -384,7 +384,7 @@ CString GitPatch::Strip(const CString& filename) const
 			s = s.Mid(2);
 		}
 
-		for (int nStrip=1;nStrip<=m_nStrip;nStrip++)
+		for (int nStrip = 1; nStrip <= m_nStrip; ++nStrip)
 		{
 			// "/home/ts/my-working-copy/dir/file.txt"
 			//  "home/ts/my-working-copy/dir/file.txt"

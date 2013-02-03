@@ -37,7 +37,7 @@ bool ResolveCommand::Execute()
 		{
 			if (parser.HasKey(L"silent"))
 			{
-				for (int i = 0; i < dlg.m_pathList.GetCount(); i++)
+				for (int i = 0; i < dlg.m_pathList.GetCount(); ++i)
 				{
 					CString cmd, out;
 					cmd.Format(_T("git.exe add -f -- \"%s\""), dlg.m_pathList[i].GetGitPathString());

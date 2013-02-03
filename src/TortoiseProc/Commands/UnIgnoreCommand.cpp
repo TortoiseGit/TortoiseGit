@@ -27,7 +27,7 @@ bool UnIgnoreCommand::Execute()
 {
 	CString filelist;
 	BOOL err = FALSE;
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		CString name = CPathUtils::PathPatternEscape(pathList[nPath].GetFileOrDirectoryName());
 		if (parser.HasKey(_T("onlymask")))
@@ -38,7 +38,7 @@ bool UnIgnoreCommand::Execute()
 		CTSVNPath parentfolder = pathList[nPath].GetContainingDirectory();
 		SVNProperties props(parentfolder, SVNRev::REV_WC, false);
 		CStringA value;
-		for (int i=0; i<props.GetCount(); i++)
+		for (int i = 0; i < props.GetCount(); ++i)
 		{
 			CString propname(props.GetItemName(i).c_str());
 			if (propname.CompareNoCase(_T("svn:ignore"))==0)

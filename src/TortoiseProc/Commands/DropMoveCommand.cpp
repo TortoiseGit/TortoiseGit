@@ -67,7 +67,7 @@ bool DropMoveCommand::Execute()
 		progress.SetTime(true);
 		progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
 	}
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		CTGitPath destPath;
 		if (sNewName.IsEmpty())
@@ -114,7 +114,7 @@ bool DropMoveCommand::Execute()
 		}
 		else
 			CShellUpdater::Instance().AddPathForUpdate(destPath);
-		count++;
+		++count;
 		if (progress.IsValid())
 		{
 			progress.FormatPathLine(1, IDS_PROC_MOVINGPROG, pathList[nPath].GetWinPath());

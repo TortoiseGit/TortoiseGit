@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
-// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2011,2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CSt
 {
 	CStringArray attachments;
 	CString body;
-	for(int i=0;i<list.GetCount();i++)
+	for (int i = 0; i < list.GetCount(); ++i)
 	{
 		CPatch patch;
 		patch.Parser((CString&)list[i].GetWinPathString());
@@ -115,7 +115,7 @@ int CPatch::SendMail(CString &To, CString &CC, CString &subject, CString &body, 
 			mapiSender.AddCC(CC);
 		mapiSender.SetSubject(subject);
 		mapiSender.SetMessage(body);
-		for(int i=0; i < attachments.GetSize(); i++)
+		for (int i = 0; i < attachments.GetSize(); ++i)
 		{
 			mapiSender.AddAttachment(attachments[i]);
 		}
@@ -166,7 +166,7 @@ int CPatch::Parser(CString &pathfile)
 		if(i==3)
 			this->m_Subject = str.Right( str.GetLength() - 8 );
 
-		i++;
+		++i;
 	}
 
 	LONGLONG offset=PatchFile.GetPosition();

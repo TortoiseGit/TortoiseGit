@@ -74,7 +74,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 			bYesNo = TRUE;
 			break;
 		}
-		p++;
+		++p;
 	}
 
 	if(bYesNo)
@@ -156,7 +156,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lParam*/
 					password = true;
 					break;
 				}
-				p++;
+				++p;
 			}
 			if (!password)
 				SendMessage(::GetDlgItem(hDlg, IDC_PASSWORD), EM_SETPASSWORDCHAR, 0, 0);

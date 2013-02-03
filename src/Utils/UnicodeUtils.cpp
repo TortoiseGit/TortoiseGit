@@ -206,7 +206,7 @@ int CUnicodeUtils::GetCPCode(CString &codename)
 
 		if( str == codename)
 			return p->m_Code;
-		p++;
+		++p;
 	}
 
 	return CP_UTF8;

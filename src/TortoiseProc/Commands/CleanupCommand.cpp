@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009,2011-2012 - TortoiseGit
+// Copyright (C) 2009,2011-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 static CString UnescapeQuotePath(CString s)
 {
 	CStringA t;
-	for (int i = 0; i < s.GetLength(); i++)
+	for (int i = 0; i < s.GetLength(); ++i)
 	{
 		if (s[i] == '\\' && i + 3 < s.GetLength())
 		{
@@ -81,7 +81,7 @@ bool CleanupCommand::Execute()
 		if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
 		{
 			CProgressDlg progress;
-			for (int i = 0; i < this->pathList.GetCount(); i++)
+			for (int i = 0; i < this->pathList.GetCount(); ++i)
 			{
 				CString path;
 				if (this->pathList[i].IsDirectory())

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ public:
 
 	int find(BYTE data,int start=0)
 	{
-		for(unsigned int i=start;i<size();i++)
+		for (unsigned int i = start; i < size(); ++i)
 			if( at(i) == data )
 				return i;
 		return -1;
@@ -61,7 +61,7 @@ public:
 		{
 			pos=find(0,pos);
 			if(pos >= 0)
-				pos++;
+				++pos;
 			else
 				break;
 
@@ -108,7 +108,7 @@ public:
 	{
 		if(end<0)
 			end = (int)v.size();
-		for(int i=start;i<end;i++)
+		for (int i = start; i < end; ++i)
 			this->push_back(v[i]);
 		return 0;
 	}

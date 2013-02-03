@@ -101,7 +101,7 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 
 CGitProgressDlg::~CGitProgressDlg()
 {
-	for (size_t i=0; i<m_arData.size(); i++)
+	for (size_t i = 0; i < m_arData.size(); ++i)
 	{
 		delete m_arData[i];
 	}
@@ -204,7 +204,7 @@ void CGitProgressDlg::AddItemToList()
 		// expensive function call and the columns will be sized
 		// close enough already.
 		ResizeColumns();
-		iFirstResized++;
+		++iFirstResized;
 	}
 
 	// Make sure the item is *entirely* visible even if the horizontal
@@ -212,7 +212,7 @@ void CGitProgressDlg::AddItemToList()
 	int count = m_ProgList.GetCountPerPage();
 	if (totalcount <= (m_ProgList.GetTopIndex() + count + nEnsureVisibleCount + 2))
 	{
-		nEnsureVisibleCount++;
+		++nEnsureVisibleCount;
 		m_bLastVisible = true;
 	}
 	else
@@ -269,7 +269,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 	//		data->color = m_Colors.GetColor(CColors::Conflict);
 	//		data->bConflictedActionItem = true;
 	//		data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
-	//		m_nConflicts++;
+	//		++m_nConflicts;
 	//	}
 	//	else
 	//	{
@@ -352,7 +352,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		{
 			data->color = m_Colors.GetColor(CColors::Conflict);
 			data->bConflictedActionItem = true;
-			m_nConflicts++;
+			++m_nConflicts;
 			data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
 		}
 		else if ((data->content_state == svn_wc_notify_state_merged) || (data->prop_state == svn_wc_notify_state_merged))
@@ -380,7 +380,7 @@ BOOL CGitProgressDlg::Notify(const CTGitPath& path, git_wc_notify_action_t actio
 		{
 			data->color = m_Colors.GetColor(CColors::Conflict);
 			data->bConflictedActionItem = true;
-			m_nConflicts++;
+			++m_nConflicts;
 			data->sActionColumnText.LoadString(IDS_SVNACTION_CONFLICTED);
 		}
 		else if ((data->content_state == svn_wc_notify_state_merged) || (data->prop_state == svn_wc_notify_state_merged))
@@ -586,43 +586,43 @@ CString CGitProgressDlg::BuildInfoString()
 		case svn_wc_notify_update_add:
 		case svn_wc_notify_commit_added:
 			if (dat->bConflictedActionItem)
-				conflicted++;
+				++conflicted;
 			else
-				added++;
+				++added;
 			break;
 		case svn_wc_notify_copy:
-			copied++;
+			++copied;
 			break;
 		case svn_wc_notify_delete:
 		case svn_wc_notify_update_delete:
 		case svn_wc_notify_commit_deleted:
-			deleted++;
+			++deleted;
 			break;
 		case svn_wc_notify_restore:
-			restored++;
+			++restored;
 			break;
 		case svn_wc_notify_revert:
-			reverted++;
+			++reverted;
 			break;
 		case svn_wc_notify_resolved:
-			resolved++;
+			++resolved;
 			break;
 		case svn_wc_notify_update_update:
 			if (dat->bConflictedActionItem)
-				conflicted++;
+				++conflicted;
 			else if ((dat->content_state == svn_wc_notify_state_merged) || (dat->prop_state == svn_wc_notify_state_merged))
-				merged++;
+				++merged;
 			else
-				updated++;
+				++updated;
 			break;
 		case svn_wc_notify_commit_modified:
-			modified++;
+			++modified;
 			break;
 		case svn_wc_notify_skip:
-			skipped++;
+			++skipped;
 			break;
 		case svn_wc_notify_commit_replaced:
-			replaced++;
+			++replaced;
 			break;
 		}
 	}
@@ -715,7 +715,7 @@ void CGitProgressDlg::ResizeColumns()
 	TCHAR textbuf[MAX_PATH];
 
 	int maxcol = ((CHeaderCtrl*)(m_ProgList.GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; col++)
+	for (int col = 0; col <= maxcol; ++col)
 	{
 		// find the longest width of all items
 		int count = m_ProgList.GetItemCount();
@@ -1010,7 +1010,7 @@ UINT CGitProgressDlg::ProgressThread()
 	if (logfile.Open())
 	{
 		logfile.AddTimeLine();
-		for (size_t i=0; i<m_arData.size(); i++)
+		for (size_t i = 0; i < m_arData.size(); ++i)
 		{
 			NotificationData * data = m_arData[i];
 			temp.Format(_T("%-20s : %s"), (LPCTSTR)data->sActionColumnText, (LPCTSTR)data->sPathColumnText);
@@ -1935,7 +1935,7 @@ bool CGitProgressDlg::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 
-		for(int i=0;i<m_targetPathList.GetCount();i++)
+		for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 		{
 			if (git_index_add_from_workdir(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8)).GetBuffer()))
 			{
@@ -2072,7 +2072,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	// check if the file may still have conflict markers in it.
 	//BOOL bMarkers = FALSE;
 
-	for(int i=0;i<m_targetPathList.GetCount();i++)
+	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
 		CString cmd,out,tempmergefile;
 		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
@@ -2153,7 +2153,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_REVERT_BKG);
 
 	CTGitPathList delList;
-	for(int i=0;i<m_selectedPaths.GetCount();i++)
+	for (int i = 0; i < m_selectedPaths.GetCount(); ++i)
 	{
 		CTGitPath path;
 		int action;
@@ -2168,7 +2168,7 @@ bool CGitProgressDlg::CmdRevert(CString& sWindowTitle, bool& localoperation)
 		delList.DeleteAllFiles(true);
 
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
-	for(int i=0;i<m_selectedPaths.GetCount();i++)
+	for (int i = 0; i < m_selectedPaths.GetCount(); ++i)
 	{
 		if(g_Git.Revert(_T("HEAD"), (CTGitPath&)m_selectedPaths[i]))
 		{
@@ -2270,7 +2270,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				break;
 			}
 
-			retry++;
+			++retry;
 			if (retry < 3)
 				Notify(path,git_wc_notify_sendmail_retry,ret,&err);
 			Sleep(2000);
@@ -2286,7 +2286,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 	}
 	else
 	{
-		for(int i=0;ret && i<m_targetPathList.GetCount();i++)
+		for (int i = 0; ret && i < m_targetPathList.GetCount(); ++i)
 		{
 			CPatch patch;
 			Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
@@ -2306,7 +2306,7 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 					ret = true;
 					break;
 				}
-				retry++;
+				++retry;
 				if (retry < 3)
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
 				Sleep(2000);

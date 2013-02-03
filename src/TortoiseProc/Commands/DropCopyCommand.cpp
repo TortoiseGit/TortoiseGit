@@ -60,7 +60,7 @@ bool DropCopyCommand::Execute()
 	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		const CTGitPath& sourcePath = orgPathList[nPath];
 
@@ -129,7 +129,7 @@ bool DropCopyCommand::Execute()
 			CMessageBox::Show(NULL, str, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 		}
 
-		count++;
+		++count;
 		if (progress.IsValid())
 		{
 			progress.FormatPathLine(1, IDS_PROC_COPYINGPROG, sourcePath.GetWinPath());

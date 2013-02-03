@@ -122,7 +122,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_IsOldFirst = FALSE;
 	m_IsRebaseReplaceGraph = FALSE;
 
-	for(int i=0;i<Lanes::COLORS_NUM;i++)
+	for (int i = 0; i < Lanes::COLORS_NUM; ++i)
 	{
 		m_LineColors[i] = m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i));
 	}
@@ -199,7 +199,7 @@ int CGitLogListBase::AsyncDiffThread()
 				}
 				pRev->GetAction(this) = 0;
 
-				for(int j=0;j< pRev->GetFiles(this).GetCount();j++)
+				for (int j = 0; j < pRev->GetFiles(this).GetCount(); ++j)
 					pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
 
 				pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER);
@@ -214,7 +214,7 @@ int CGitLogListBase::AsyncDiffThread()
 
 			if(!pRev->CheckAndDiff())
 			{	// fetch change file list
-				for(int i=GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex()+GetCountPerPage(); i++)
+				for (int i = GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex() + GetCountPerPage(); ++i)
 				{
 					if(i < m_arShownList.GetCount())
 					{
@@ -430,7 +430,7 @@ void CGitLogListBase::ResizeAllListCtrlCols()
 	if (pHdrCtrl)
 	{
 		int numcols = pHdrCtrl->GetItemCount();
-		for (int col = 0; col < numcols; col++)
+		for (int col = 0; col < numcols; ++col)
 		{
 			// get width for this col last time from registry
 			CString regentry;
@@ -566,7 +566,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-	for (unsigned int i = 0; i < refList.size(); i++)
+	for (unsigned int i = 0; i < refList.size(); ++i)
 	{
 		CString shortname = !refList[i].simplifiedName.IsEmpty() ? refList[i].simplifiedName : refList[i].name;
 		HBRUSH brush = 0;
@@ -1014,7 +1014,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	std::vector<int>& lanes=data->m_Lanes;
 	size_t laneNum = lanes.size();
 	UINT activeLane = 0;
-	for (UINT i = 0; i < laneNum; i++)
+	for (UINT i = 0; i < laneNum; ++i)
 		if (Lanes::isMerge(lanes[i])) {
 			activeLane = i;
 			break;
@@ -1028,7 +1028,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	//if (opt.state & QStyle::State_Selected)
 	//	activeColor = blend(activeColor, opt.palette.highlightedText().color(), 208);
 
-	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; i++)
+	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; ++i)
 	{
 
 		x1 = x2;
@@ -1043,7 +1043,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	}
 
 #if 0
-	for (UINT i = 0; i < laneNum && x2 < maxWidth; i++) {
+	for (UINT i = 0; i < laneNum && x2 < maxWidth; ++i) {
 
 		x1 = x2;
 		x2 += lw;
@@ -1194,7 +1194,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						std::vector<REFLABEL> refsToShow;
 						STRING_VECTOR remoteTrackingList;
 						STRING_VECTOR refList = m_HashMap[data->m_CommitHash];
-						for (unsigned int i = 0; i < refList.size(); i++)
+						for (unsigned int i = 0; i < refList.size(); ++i)
 						{
 							CString str = refList[i];
 
@@ -1223,7 +1223,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 									{
 										bool found = false;
-										for (int j = i + 1; j < refList.size(); j++)
+										for (int j = i + 1; j < refList.size(); ++j)
 										{
 											if (refList[j] == defaultUpstream)
 											{
@@ -1262,7 +1262,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									continue;
 
 								bool found = false;
-								for (int j = 0; j < remoteTrackingList.size(); j++)
+								for (int j = 0; j < remoteTrackingList.size(); ++j)
 								{
 									if (remoteTrackingList[j] == str)
 									{
@@ -1367,19 +1367,19 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
+				++nIcons;
 
 				if (pLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY) )
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
+				++nIcons;
 
 				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_DELETED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
+				++nIcons;
 
 				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
-				nIcons++;
+				++nIcons;
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
@@ -1648,7 +1648,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFF << 16)), CString(MAKEINTRESOURCE(IDS_ALLPARENTS)));
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFE << 16)), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
 
-						for(int i=0;i<pRev->m_ParentHash.size();i++)
+						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -1675,7 +1675,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						diffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF, diffmenu.m_hMenu);
-						for(int i=0;i<pRev->m_ParentHash.size();i++)
+						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -1683,7 +1683,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							if (i == 0 && CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 							{
 								popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
-								diffmenu.SetDefaultItem(ID_COMPAREWITHPREVIOUS +((i+1)<<16), FALSE);
+								diffmenu.SetDefaultItem((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)), FALSE);
 							}
 						}
 					}
@@ -1702,7 +1702,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 
 				bool isStash = false;
-				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i] == _T("refs/stash"))
 					{
@@ -1777,7 +1777,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					)
 				{
 					std::vector<CString *> branchs;
-					for(int i=0;i<m_HashMap[pSelLogEntry->m_CommitHash].size();i++)
+					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 					{
 						CString ref = m_HashMap[pSelLogEntry->m_CommitHash][i];
 						if(ref.Find(_T("refs/heads/")) == 0 && ref != currentBranch)
@@ -1801,7 +1801,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					else if(branchs.size() > 1)
 					{
 						subbranchmenu.CreatePopupMenu();
-						for(int i=0;i<branchs.size();i++)
+						for (size_t i = 0 ; i < branchs.size(); ++i)
 						{
 							if (*branchs[i] != currentBranch)
 							{
@@ -1849,7 +1849,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						revertmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
 
-						for (int i = 0; i < pRev->m_ParentHash.size(); i++)
+						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -1957,7 +1957,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				// show the push-option only if the log entry has an associated local branch
 				bool isLocal = false;
-				for(int i=0; isLocal == false && i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				for (size_t i = 0; isLocal == false && i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/heads/")) == 0)
 						isLocal = true;
@@ -1974,7 +1974,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end() )
 				{
 					std::vector<CString *> branchs;
-					for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+					for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 					{
 						if(m_HashMap[pSelLogEntry->m_CommitHash][i] != currentBranch)
 							branchs.push_back(&m_HashMap[pSelLogEntry->m_CommitHash][i]);
@@ -1993,7 +1993,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						str.LoadString(IDS_DELETE_BRANCHTAG);
 						submenu.CreatePopupMenu();
-						for (int i = 0; i < branchs.size(); i++)
+						for (size_t i = 0; i < branchs.size(); ++i)
 						{
 							submenu.AppendMenuIcon(ID_DELETE + (i << 16), *branchs[i]);
 							submenu.SetMenuItemData(ID_DELETE + (i << 16), (ULONG_PTR)branchs[i]);
@@ -2287,7 +2287,7 @@ int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *
 	//this->m_logEntries.ParserFromLog();
 	SetItemCountEx((int)m_logEntries.size());
 
-	for(unsigned int i=0;i<m_logEntries.size();i++)
+	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
 	{
 		if(m_IsOldFirst)
 		{
@@ -2509,7 +2509,7 @@ void CGitLogListBase::GetTimeRange(CTime &oldest, CTime &latest)
 	//CTime time;
 	oldest=CTime::GetCurrentTime();
 	latest=CTime(1971,1,2,0,0,0);
-	for(unsigned int i=0;i<m_logEntries.size();i++)
+	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
 	{
 		if(m_logEntries[i].IsEmpty())
 			continue;
@@ -2735,7 +2735,7 @@ void CGitLogListBase::FetchTrackingBranchList()
 	m_TrackingMap.clear();
 	for (MAP_HASH_NAME::iterator it = m_HashMap.begin(); it != m_HashMap.end(); ++it)
 	{
-		for (int j = 0; j < it->second.size(); j++)
+		for (int j = 0; j < it->second.size(); ++j)
 		{
 			CString branchName;
 			if (CGit::GetShortName(it->second[j], branchName, _T("refs/heads/")))
@@ -2921,7 +2921,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					}
 				}
 
-			for(size_t i = 0; i < pRev->m_SimpleFileList.size(); i++)
+			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
 			{
 				if (regex_search(wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
 				{
@@ -3040,7 +3040,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 					}
 				}
 
-			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); i++)
+			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
 			{
 				CString path = pRev->m_SimpleFileList[i];
 				path.MakeLower();
@@ -3378,7 +3378,7 @@ void CGitLogListBase::OnDestroy()
 			break;
 		Sleep(1000);
 
-		retry++;
+		++retry;
 
 		//if(CMessageBox::Show(NULL,_T("Cannot Save Log Cache to Disk. To retry click yes. To give up click no."),_T("TortoiseGit"),
 		//					MB_YESNO) == IDNO)
@@ -3408,7 +3408,7 @@ void CGitLogListBase::SaveColumnWidths()
 	// HACK that graph column is always shown
 	SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
-	for (int col = 0; col < maxcol; col++)
+	for (int col = 0; col < maxcol; ++col)
 		if (m_ColumnManager.IsVisible (col))
 			m_ColumnManager.ColumnResized (col);
 
@@ -3420,7 +3420,7 @@ int CGitLogListBase::GetHeadIndex()
 	if(m_HeadHash.IsEmpty())
 		return -1;
 
-	for(int i=0;i<m_arShownList.GetCount();i++)
+	for (int i = 0; i < m_arShownList.GetCount(); ++i)
 	{
 		GitRev *pRev = (GitRev*)m_arShownList[i];
 		if(pRev)
@@ -3485,7 +3485,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 		if(!hash.IsEmpty())
 		{
-			for (i = 0; i<m_arShownList.GetCount(); i++)
+			for (i = 0; i<m_arShownList.GetCount(); ++i)
 			{
 				GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
 				if(pLogEntry && pLogEntry->m_CommitHash == hash)
@@ -3510,7 +3510,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_not_null;
 
 
-		for (i = this->m_nSearchIndex; i<m_arShownList.GetCount()&&!bFound; i++)
+		for (i = this->m_nSearchIndex; i < m_arShownList.GetCount() && !bFound; ++i)
 		{
 			GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
 
@@ -3518,7 +3518,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			str+=pLogEntry->m_CommitHash.ToString();
 			str+=_T("\n");
 
-			for(int j=0;j<this->m_HashMap[pLogEntry->m_CommitHash].size();j++)
+			for (size_t j = 0; j < this->m_HashMap[pLogEntry->m_CommitHash].size(); ++j)
 			{
 				str+=m_HashMap[pLogEntry->m_CommitHash][j];
 				str+=_T("\n");
@@ -3546,7 +3546,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 			*/
 			if(pLogEntry->m_IsFull)
 			{
-				for(int i=0;i<pLogEntry->GetFiles(this).GetCount();i++)
+				for (int i = 0; i < pLogEntry->GetFiles(this).GetCount(); ++i)
 				{
 					str+=pLogEntry->GetFiles(this)[i].GetWinPath();
 					str+=_T("\n");
@@ -3559,7 +3559,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				if(!pLogEntry->m_IsSimpleListReady)
 					pLogEntry->SafeGetSimpleList(&g_Git);
 
-				for(int i=0;i<pLogEntry->m_SimpleFileList.size();i++)
+				for (size_t i = 0; i < pLogEntry->m_SimpleFileList.size(); ++i)
 				{
 					str+=pLogEntry->m_SimpleFileList[i];
 					str+=_T("\n");
@@ -3599,7 +3599,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 					}
 				}
 			}
-		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; i++)
+		} // for (i = this->m_nSearchIndex; i<m_arShownList.GetItemCount()&&!bFound; ++i)
 
 	} // if(m_pFindDialog->FindNext())
 	//UpdateLogInfoLabel();
@@ -3613,7 +3613,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		SetSelectionMark(i);
 		//FillLogMessageCtrl();
 		UpdateData(FALSE);
-		m_nSearchIndex++;
+		++m_nSearchIndex;
 		if (m_nSearchIndex >= m_arShownList.GetCount())
 			m_nSearchIndex = (int)m_arShownList.GetCount()-1;
 	}

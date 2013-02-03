@@ -293,12 +293,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			for (int i=nCurrentCrawledpathIndex; i<MAX_CRAWLEDPATHS; ++i)
 			{
 				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)_tcslen(szCurrentCrawledPath[i]));
-				line++;
+				++line;
 			}
 			for (int i=0; i<nCurrentCrawledpathIndex; ++i)
 			{
 				TextOut(hdc, 0, line*fontsize.cy, szCurrentCrawledPath[i], (int)_tcslen(szCurrentCrawledPath[i]));
-				line++;
+				++line;
 			}
 
 			SelectObject(hdc,oldbrush);

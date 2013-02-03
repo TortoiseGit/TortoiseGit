@@ -47,7 +47,7 @@ public:
   ~strconv_t()
   {
     unsigned i;
-    for(i=0; i<m_ConvertedStrings.size(); i++)
+    for (i = 0; i < m_ConvertedStrings.size(); ++i)
     {
       delete [] m_ConvertedStrings[i];
     }
@@ -102,8 +102,7 @@ public:
       return NULL;
 
     WCHAR* pBuffer = new WCHAR[cch+1];
-    UINT i;
-    for(i=0; i<cch; i++)
+    for (UINT i = 0; i < cch; ++i)
     {
       // Swap bytes
       pBuffer[i] = (WCHAR)MAKEWORD((lpsz[i]>>8), (lpsz[i]&0xFF));

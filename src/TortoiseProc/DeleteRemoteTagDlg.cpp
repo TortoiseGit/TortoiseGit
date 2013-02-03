@@ -85,7 +85,7 @@ void CDeleteRemoteTagDlg::Refresh()
 
 	g_Git.GetRemoteTags(m_sRemote, m_taglist);
 
-	for (int i = 0; i < (int)m_taglist.size(); i++)
+	for (int i = 0; i < (int)m_taglist.size(); ++i)
 	{
 		m_ctrlTags.InsertItem(i, m_taglist[i]);
 	}
@@ -109,7 +109,7 @@ void CDeleteRemoteTagDlg::OnBnClickedSelectall()
 	}
 	else
 	{
-		for (int i = 0; i < m_ctrlTags.GetItemCount(); i++)
+		for (int i = 0; i < m_ctrlTags.GetItemCount(); ++i)
 			m_ctrlTags.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
 	}
 }

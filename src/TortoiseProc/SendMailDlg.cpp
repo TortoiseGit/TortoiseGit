@@ -129,7 +129,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	m_AddressReg.SetMaxHistoryItems(0xFFFF);
 
 	m_AddressReg.Load(_T("Software\\TortoiseGit\\TortoiseProc\\EmailAddress\\"),_T("email"));
-	for(int i=0;i<m_AddressReg.GetCount();i++)
+	for (int i = 0; i < m_AddressReg.GetCount(); ++i)
 	{
 		m_ctrlCC.AddSearchString(m_AddressReg.GetEntry(i));
 		m_ctrlTO.AddSearchString(m_AddressReg.GetEntry(i));
@@ -137,7 +137,7 @@ BOOL CSendMailDlg::OnInitDialog()
 
 	m_ctrlList.SetExtendedStyle( m_ctrlList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
 
-	for(int i=0;i<m_PathList.GetCount();i++)
+	for (int i = 0; i < m_PathList.GetCount(); ++i)
 	{
 		m_ctrlList.InsertItem(i,m_PathList[i].GetWinPathString());
 		m_ctrlList.SetCheck(i,true);
@@ -198,7 +198,7 @@ void CSendMailDlg::OnBnClickedOk()
 	}
 
 	this->m_PathList.Clear();
-	for(int i=0;i<m_ctrlList.GetItemCount();i++)
+	for (int i = 0; i < m_ctrlList.GetItemCount(); ++i)
 	{
 		CTGitPath path;
 		if(m_ctrlList.GetCheck(i))

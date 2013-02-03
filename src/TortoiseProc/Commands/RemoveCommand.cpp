@@ -63,7 +63,7 @@ bool RemoveCommand::Execute()
 	}
 	else
 	{
-		for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+		for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
 			TRACE(_T("remove file %s\n"), (LPCTSTR)pathList[nPath].GetUIPathString());
 			// even though SVN::Remove takes a list of paths to delete at once
@@ -146,7 +146,7 @@ bool RemoveCommand::Execute()
 	CString output;
 	CString cmd;
 	int nPath;
-	for(nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		cmd.Format(format,pathList[nPath].GetGitPathString());
 		if (g_Git.Run(cmd, &output, CP_UTF8))

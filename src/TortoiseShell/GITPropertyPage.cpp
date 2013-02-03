@@ -118,7 +118,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 					int stripLength = projectTopDir.GetLength();
 					if (projectTopDir[stripLength - 1] != _T('\\'))
-						stripLength++;
+						++stripLength;
 
 					CStringA gitdir = CUnicodeUtils::GetMulti(projectTopDir, CP_UTF8);
 					git_repository *repository = NULL;
@@ -141,7 +141,7 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 
 					bool changed = false;
 
-					for (auto it = filenames.cbegin(); it < filenames.cend(); it++)
+					for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
 					{
 						CTGitPath file;
 						file.SetFromWin(CString(it->c_str()).Mid(stripLength));
@@ -417,7 +417,7 @@ static git_commit * FindFileRecentCommit(git_repository *repository, CString pat
 			bool diff = true;
 			// for merge point, check if it is different to all parents, if yes then there are real change in the merge point.
 			// if no parent then of course it is different
-			for (unsigned int i = 0; i < git_commit_parentcount(commit); i++)
+			for (unsigned int i = 0; i < git_commit_parentcount(commit); ++i)
 			{
 				if (git_commit_parent(&commit2, commit, i))
 				{
@@ -522,7 +522,7 @@ int CGitPropertyPage::LogThread()
 
 	int stripLength = ProjectTopDir.GetLength();
 	if (ProjectTopDir[stripLength - 1] != _T('\\'))
-		stripLength++;
+		++stripLength;
 
 	CTGitPath relatepath;
 	relatepath.SetFromWin(path.GetWinPathString().Mid(stripLength));
@@ -625,7 +625,7 @@ void CGitPropertyPage::InitWorkfileView()
 	{
 		int stripLength = ProjectTopDir.GetLength();
 		if (ProjectTopDir[stripLength - 1] != _T('\\'))
-			stripLength++;
+			++stripLength;
 
 		bool allAreFiles = true;
 		for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
@@ -648,7 +648,7 @@ void CGitPropertyPage::InitWorkfileView()
 				if (git_repository_index(&index, repository))
 					break;
 
-				for (auto it = filenames.cbegin(); it < filenames.cend(); it++)
+				for (auto it = filenames.cbegin(); it < filenames.cend(); ++it)
 				{
 					CTGitPath file;
 					file.SetFromWin(CString(it->c_str()).Mid(stripLength));

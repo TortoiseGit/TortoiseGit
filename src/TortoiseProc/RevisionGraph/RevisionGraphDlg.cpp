@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -165,7 +165,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 	// set up the ComboBox control as a snap mode select box
 	// First get the index of the placeholders position in the toolbar
 	int zoomComboIndex = 0;
-	while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) zoomComboIndex++;
+	while (m_ToolBar.GetItemID(zoomComboIndex) != ID_REVGRAPH_ZOOMCOMBO) ++zoomComboIndex;
 
 	// next convert that button to a separator and get its position
 	m_ToolBar.SetButtonInfo(zoomComboIndex, ID_REVGRAPH_ZOOMCOMBO, TBBS_SEPARATOR,

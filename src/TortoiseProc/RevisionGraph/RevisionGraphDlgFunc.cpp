@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -218,7 +218,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
 	dev.graphics->SetPageUnit (UnitPixel);
 
-	for(int i=0;i<m_logEntries.size();i++)
+	for (int i = 0; i < m_logEntries.size(); ++i)
 	{
 		node nd;
 		nd = this->m_Graph.newNode();
@@ -228,10 +228,10 @@ bool CRevisionGraphWnd::FetchRevisionData
 		SetNodeRect(dev, &nd, m_logEntries[i], 0);
 	}
 
-	for(int i=0; i<m_logEntries.size();i++)
+	for (int i = 0; i < m_logEntries.size(); ++i)
 	{
 		GitRev rev=m_logEntries.GetGitRevAt(i);
-		for(int j=0; j<rev.m_ParentHash.size();j++)
+		for (int j = 0; j < rev.m_ParentHash.size(); ++j)
 		{
 			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
 			{
@@ -431,7 +431,7 @@ void CRevisionGraphWnd::DoZoom (float fZoomFactor, bool updateScrollbars)
 	if (m_nFontSize < SMALL_ZOOM_FONT_THRESHOLD)
 		m_nFontSize = min (SMALL_ZOOM_FONT_THRESHOLD, int(SMALL_ZOOM_FONT * fZoomFactor));
 
-	for (int i=0; i<MAXFONTS; i++)
+	for (int i = 0; i < MAXFONTS; ++i)
 	{
 		if (m_apFonts[i] != NULL)
 		{

@@ -150,7 +150,7 @@ void CFindDlg::AddToList()
 	this->m_ctrlFilter.GetWindowText(filter);
 
 	int item =0;
-	for(int i=0;i< m_RefList.size();i++)
+	for (size_t i = 0; i < m_RefList.size(); ++i)
 	{
 		int nImage = -1;
 		CString ref = m_RefList[i];

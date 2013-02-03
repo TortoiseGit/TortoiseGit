@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -81,12 +81,12 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 	bool bErrorsOccurred = false;
 	int maxLength = 0;
 	int firstCombine = 0;
-	for(int i = 0; i < GetListCount(); i++)
+	for (int i = 0; i < GetListCount(); ++i)
 	{
 		if (maxLength + GetListItem(i).GetLength() > MAX_COMMANDLINE_LENGTH || i == GetListCount() - 1 || cancel)
 		{
 			CString add;
-			for (int j = firstCombine; j <= i; j++)
+			for (int j = firstCombine; j <= i; ++j)
 				add += _T(" \"") + GetListItem(j) + _T("\"");
 
 			CString cmd, out;
@@ -100,7 +100,7 @@ bool CMassiveGitTask::ExecuteCommands(BOOL &cancel)
 
 			if (m_bIsPath)
 				if (m_NotifyCallbackInstance && m_NotifyCallbackMethod)
-					for (int j = firstCombine; j <= i; j++)
+					for (int j = firstCombine; j <= i; ++j)
 						(*m_NotifyCallbackInstance.*m_NotifyCallbackMethod)(m_pathList[j], m_NotifyCallbackAction, 0, NULL);
 
 			maxLength = 0;

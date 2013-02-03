@@ -307,7 +307,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 {
 	size_t count = git_tree_entrycount(tree);
 
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; ++i)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
@@ -629,7 +629,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			for (TShadowFilesTreeList::iterator itShadowTree = selectedLeafs.begin(); itShadowTree != selectedLeafs.end(); ++itShadowTree)
 			{
 				if (RevertItemToVersion((*itShadowTree)->GetFullName()))
-					count++;
+					++count;
 				else
 					break;
 			}

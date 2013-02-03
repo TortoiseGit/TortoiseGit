@@ -216,7 +216,7 @@ void CPushDlg::Refresh()
 		if (list.size() <= 2)
 			list.erase(list.begin());
 
-		for(unsigned int i=0;i<list.size();i++)
+		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_Remote.AddString(list[i]);
 			if(list[i] == remote)
@@ -235,9 +235,9 @@ void CPushDlg::Refresh()
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
 	if(!g_Git.GetBranchList(list,&current))
 	{
-		for(unsigned int i=0;i<list.size();i++)
+		for (unsigned int i = 0; i < list.size(); ++i)
 			m_BranchSource.AddString(list[i]);
-		current++; // shift for " "
+		++current; // shift for " "
 	}
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
@@ -283,7 +283,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 	{
 		remote = pushRemote;
 		// if a pushRemote exists, select it
-		for (int i = 0; i < m_Remote.GetCount(); i++)
+		for (int i = 0; i < m_Remote.GetCount(); ++i)
 		{
 			CString str;
 			int n = m_Remote.GetLBTextLen(i);

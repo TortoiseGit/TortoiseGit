@@ -80,7 +80,7 @@ COLORREF CColors::GetColor(Colors col, bool bDefault /*=true*/)
 			}
 		}
 
-		i++;
+		++i;
 	}
 }
 
@@ -98,7 +98,7 @@ void CColors::SetColor(Colors col, COLORREF cr)
 			reg=cr;
 
 		}
-		i++;
+		++i;
 	}
 }
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -106,7 +106,7 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 
 	int cxExtentMax = 0;
 
-	for (int i = 0; i < wndListBox.GetCount(); i ++)
+	for (int i = 0; i < wndListBox.GetCount(); ++i)
 	{
 		CString strItem;
 		wndListBox.GetText(i, strItem);

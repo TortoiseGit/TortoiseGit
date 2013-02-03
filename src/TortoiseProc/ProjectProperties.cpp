@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2011 - TortoiseGit
+// Copyright (C) 2003-2011,2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ ProjectProperties::~ProjectProperties(void)
 
 BOOL ProjectProperties::ReadPropsPathList(const CTGitPathList& pathList)
 {
-	for(int nPath = 0; nPath < pathList.GetCount(); nPath++)
+	for(int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		if (ReadProps(pathList[nPath]))
 		{

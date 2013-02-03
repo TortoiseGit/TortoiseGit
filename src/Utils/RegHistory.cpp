@@ -93,7 +93,7 @@ bool CRegHistory::Save() const
 
 	// save history to registry
 	int nMax = min((int)m_arEntries.size(), m_nMaxHistoryItems + 1);
-	for (int n = 0; n < (int)m_arEntries.size(); n++)
+	for (int n = 0; n < (int)m_arEntries.size(); ++n)
 	{
 		TCHAR sKey[4096] = {0};
 		_stprintf_s(sKey, 4096, _T("%s\\%s%d"), m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
@@ -101,7 +101,7 @@ bool CRegHistory::Save() const
 		regkey = m_arEntries[n];
 	}
 	// remove items exceeding the max number of history items
-	for (int n = nMax; ; n++)
+	for (int n = nMax; ; ++n)
 	{
 		TCHAR sKey[4096] = {0};
 		_stprintf_s(sKey, 4096, _T("%s\\%s%d"), m_sSection.c_str(), m_sKeyPrefix.c_str(), n);

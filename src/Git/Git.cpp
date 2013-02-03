@@ -47,7 +47,7 @@ static LPTSTR nextpath(wchar_t *path, wchar_t *buf, size_t buflen)
 	*buf = L'\0'; /* reserved a byte via initial subtract */
 
 	while (*path == term || *path == L';')
-		path++;
+		++path;
 
 	return (path != base) ? path : NULL;
 }
@@ -188,7 +188,7 @@ bool CGit::IsBranchNameValid(CString branchname)
 	if (branchname.IsEmpty())
 		return false;
 
-	for(int i=0; i < branchname.GetLength(); i++)
+	for (int i = 0; i < branchname.GetLength(); ++i)
 	{
 		TCHAR c = branchname.GetAt(i);
 		if (c <= ' ' || c == '~' || c == '^' || c == ':' || c == '\\' || c == '?' || c == '[')
@@ -1108,7 +1108,7 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 		return -1;
 
 	outputlist.ParserFromLsFile(cmdout);
-	for(int i=0;i<outputlist.GetCount();i++)
+	for(int i = 0; i < outputlist.GetCount(); ++i)
 		const_cast<CTGitPath&>(outputlist[i]).m_Action = CTGitPath::LOGACTIONS_ADDED;
 
 	return 0;
@@ -1170,7 +1170,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 			return -1;
 		}
 
-		for (size_t i = 0; i < tag_names.count; i++)
+		for (size_t i = 0; i < tag_names.count; ++i)
 		{
 			CStringA tagName(tag_names.strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(tagName));
@@ -1258,7 +1258,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 		while (pos >= 0)
 		{
 			if (!output.Tokenize(_T("\n"), pos).IsEmpty())
-				i++;
+				++i;
 		}
 		if (i >= 2)
 			return false;
@@ -1370,7 +1370,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 	if (current && cur != _T("(no branch)"))
 	{
-		for (unsigned int i = 0; i < list.size(); i++)
+		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			if (list[i] == cur)
 			{
@@ -1405,7 +1405,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 			return -1;
 		}
 
-		for (size_t i = 0; i < remotes.count; i++)
+		for (size_t i = 0; i < remotes.count; ++i)
 		{
 			CStringA remote(remotes.strings[i]);
 			list.push_back(CUnicodeUtils::GetUnicode(remote));
@@ -1816,7 +1816,7 @@ BOOL CGit::CheckCleanWorkTree()
 int CGit::Revert(CString commit, CTGitPathList &list, bool)
 {
 	int ret;
-	for(int i=0;i<list.GetCount();i++)
+	for (int i = 0; i < list.GetCount(); ++i)
 	{
 		ret = Revert(commit, (CTGitPath&)list[i]);
 		if(ret)
@@ -1933,7 +1933,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 unsigned int CGit::Hash2int(CGitHash &hash)
 {
 	int ret=0;
-	for(int i=0;i<4;i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		ret = ret << 8;
 		ret |= hash.m_hash[i];
@@ -2004,7 +2004,7 @@ void CEnvironment::CopyProcessEnvironment()
 CString CEnvironment::GetEnv(TCHAR *name)
 {
 	CString str;
-	for (size_t i = 0; i < size(); i++)
+	for (size_t i = 0; i < size(); ++i)
 	{
 		str = &(*this)[i];
 		int start =0;
@@ -2021,7 +2021,7 @@ CString CEnvironment::GetEnv(TCHAR *name)
 void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
 {
 	unsigned int i;
-	for( i=0;i<size();i++)
+	for (i = 0; i < size(); ++i)
 	{
 		CString str = &(*this)[i];
 		int start =0;
@@ -2053,18 +2053,18 @@ void CEnvironment::SetEnv(TCHAR *name, TCHAR* value)
 	while(*name)
 	{
 		this->insert(it,*name++);
-		i++;
+		++i;
 		it= begin()+i;
 	}
 
 	this->insert(it, _T('='));
-	i++;
+	++i;
 	it= begin()+i;
 
 	while(*value)
 	{
 		this->insert(it,*value++);
-		i++;
+		++i;
 		it= begin()+i;
 	}
 
@@ -2117,7 +2117,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 	CString strnewname;
 	CString stroldname;
 
-	for(int j=0;j<count;j++)
+	for (int j = 0; j < count; ++j)
 	{
 		path.Reset();
 		char *newname;

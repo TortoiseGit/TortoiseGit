@@ -247,7 +247,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 
 CRevisionGraphWnd::~CRevisionGraphWnd()
 {
-	for (int i=0; i<MAXFONTS; i++)
+	for (int i = 0; i < MAXFONTS; ++i)
 	{
 		if (m_apFonts[i] != NULL)
 		{
@@ -487,7 +487,7 @@ void CRevisionGraphWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 		break;
 	case SB_LINERIGHT:   // Scroll right.
 		if (sinfo.nPos < sinfo.nMax)
-			sinfo.nPos++;
+			++sinfo.nPos;
 		break;
 	case SB_PAGELEFT:	// Scroll one page left.
 		{
@@ -536,7 +536,7 @@ void CRevisionGraphWnd::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 		break;
 	case SB_LINERIGHT:   // Scroll right.
 		if (sinfo.nPos < sinfo.nMax)
-			sinfo.nPos++;
+			++sinfo.nPos;
 		break;
 	case SB_PAGELEFT:	// Scroll one page left.
 		{

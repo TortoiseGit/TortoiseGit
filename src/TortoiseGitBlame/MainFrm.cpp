@@ -339,7 +339,7 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
 	ASSERT(bNameValid);
 
-	for (int i = 0; i < iMaxUserToolbars; i ++)
+	for (int i = 0; i < iMaxUserToolbars; ++i)
 	{
 		CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
 		if (pUserToolbar != NULL)

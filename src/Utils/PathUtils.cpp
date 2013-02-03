@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -76,14 +76,14 @@ void CPathUtils::Unescape(char * psz)
 			char nValue = '?';
 			const char * pszLow = NULL;
 			const char * pszHigh = NULL;
-			pszSource++;
+			++pszSource;
 
 			*pszSource = (char) toupper(*pszSource);
 			pszHigh = strchr(szHex, *pszSource);
 
 			if (pszHigh != NULL)
 			{
-				pszSource++;
+				++pszSource;
 				*pszSource = (char) toupper(*pszSource);
 				pszLow = strchr(szHex, *pszSource);
 
@@ -103,7 +103,7 @@ void CPathUtils::Unescape(char * psz)
 		else
 			*pszDest++ = *pszSource;
 
-		pszSource++;
+		++pszSource;
 	}
 
 	*pszDest = '\0';

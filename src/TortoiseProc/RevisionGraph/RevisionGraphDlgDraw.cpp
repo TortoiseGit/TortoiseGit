@@ -915,7 +915,7 @@ void CRevisionGraphWnd::DrawConnections (GraphicsDevice& graphics, const CRect& 
 		points[points.GetCount()-1] =  this->cutPoint(e->target(), 1, points[points.GetCount()-1], points[points.GetCount()-2]);
 		// draw the connection
 
-		for(int i=0; i < points.GetCount(); i++)
+		for (int i = 0; i < points.GetCount(); ++i)
 		{
 			//CPoint pt;
 			points[i].X = points[i].X * this->m_fZoomFactor - offset.cx;
@@ -1057,7 +1057,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, noderect.Height);
 			}
 
-			for(int i=0; i < m_HashMap[hash].size(); i++)
+			for (int i = 0; i < m_HashMap[hash].size(); ++i)
 			{
 				CString shortname;
 				CString str = m_HashMap[hash][i];
@@ -1348,7 +1348,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			double xmax=0;
 			double ymax=0;
 			int lines =0;
-			for(int i=0;i<m_HashMap[rev].size();i++)
+			for (int i = 0; i < m_HashMap[rev].size(); ++i)
 			{
 				RectF rect;
 				CString shortref = m_HashMap[rev][i];
@@ -1364,7 +1364,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 					if(rect.Height > ymax)
 						ymax = rect.Height;
 				}
-				lines ++;
+				++lines;
 			}
 			m_GraphAttr.width(*pnode) = this->GetLeftRightMargin()*2 + xmax;
 			m_GraphAttr.height(*pnode) = (this->GetTopBottomMargin()*2 + ymax) * lines;

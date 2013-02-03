@@ -249,7 +249,7 @@ int CLogCache::SaveOneItem(GitRev &Rev, LONG offset)
 
 	CString stat;
 	CString name,oldname;
-	for(int i=0;i<Rev.m_Files.GetCount();i++)
+	for (int i = 0; i < Rev.m_Files.GetCount(); ++i)
 	{
 		SLogCacheRevFileHeader header;
 		header.m_Magic=LOG_DATA_FILE_MAGIC;
@@ -305,7 +305,7 @@ int CLogCache::LoadOneItem(GitRev &Rev,ULONGLONG offset)
 	offset += sizeof(SLogCacheRevItemHeader);
 	fileheader =(SLogCacheRevFileHeader *)(this->m_pCacheData + offset);
 
-	for (DWORD i = 0; i < header->m_FileCount; i++)
+	for (DWORD i = 0; i < header->m_FileCount; ++i)
 	{
 		CTGitPath path;
 		CString oldfile;
@@ -469,8 +469,7 @@ int CLogCache::SaveCache()
 		SetFilePointer(m_DataFile,0,0,2);
 		SetFilePointer(m_IndexFile,0,0,2);
 
-		CGitHashMap::iterator i;
-		for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
+		for (auto i = m_HashMap.begin(); i != m_HashMap.end(); ++i)
 		{
 			if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
 			{
@@ -495,7 +494,7 @@ int CLogCache::SaveCache()
 
 					DWORD num;
 					WriteFile(m_IndexFile,&item,sizeof(SLogCacheIndexItem),&num,0);
-					header.m_ItemCount ++;
+					++header.m_ItemCount;
 				}
 			}
 		}
@@ -541,8 +540,7 @@ void CLogCache::Sort()
 
 int CLogCache::ClearAllParent()
 {
-	CGitHashMap::iterator i;
-	for(i=m_HashMap.begin();i!=m_HashMap.end();i++)
+	for (auto i = m_HashMap.begin(); i != m_HashMap.end(); ++i)
 	{
 		(*i).second.m_ParentHash.clear();
 		(*i).second.m_Lanes.clear();

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -171,7 +171,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 			lpszSubPath = sSubPath;
 			// skip initial slash if necessary
 			if (*lpszSubPath == _T('\\'))
-				lpszSubPath++;
+				++lpszSubPath;
 		}
 
 		m_status.prop_status = m_status.text_status = git_wc_status_none;
@@ -575,7 +575,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			// new git working tree has no index file
 			if (indexptr.get() == NULL)
 			{
-				for(it = filelist.begin(); it < filelist.end(); it++)
+				for (it = filelist.begin(); it < filelist.end(); ++it)
 				{
 					CString casepath = path + it->m_CaseFileName;
 
@@ -619,7 +619,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 			CString onepath;
 			CString casepath;
-			for(it = filelist.begin(); it<filelist.end();it++)
+			for (it = filelist.begin(); it < filelist.end(); ++it)
 			{
 				casepath=onepath = path;
 				onepath.MakeLower();
@@ -716,7 +716,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				CGitIndexList::iterator it;
 				CString oldstring;
 
-				for(it = indexptr->begin()+start; it <= indexptr->begin()+end; it++)
+				for (it = indexptr->begin() + start; it <= indexptr->begin() + end; ++it)
 				{
 					int start = lowcasepath.GetLength();
 					int index = (*it).m_FileName.Find(_T('/'), start);
@@ -744,7 +744,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				CGitHeadFileList::iterator it;
 				CString oldstring;
 
-				for(it = treeptr->begin()+start; it <= treeptr->begin()+end; it++)
+				for (it = treeptr->begin() + start; it <= treeptr->begin() + end; ++it)
 				{
 					int start = lowcasepath.GetLength();
 					int index = (*it).m_FileName.Find(_T('/'), start);
@@ -854,7 +854,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 				it = indexptr->begin()+start;
 
 				// Check Conflict;
-				for(int i=start;i<=end;i++)
+				for (int i = start; i <= end; ++i)
 				{
 					if (((*it).m_Flags & GIT_IDXENTRY_STAGEMASK) !=0)
 					{
@@ -868,7 +868,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 						else
 							break;
 					}
-					it++;
+					++it;
 				}
 
 				if( IsFul && (*status != git_wc_status_conflicted))
@@ -887,7 +887,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 
 						if (!treeptr->empty() || treeptr->HeadIsEmpty())
 						{
-							for(int i=start;i<=end;i++)
+							for (int i = start; i<= end; ++i)
 							{
 								pos =SearchInSortVector(*treeptr, (*it).m_FileName.GetBuffer(), -1);
 								(*it).m_FileName.ReleaseBuffer();
@@ -920,7 +920,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 										break;
 								}
 
-								it++;
+								++it;
 							}
 
 							//Check Delete
@@ -939,7 +939,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									CGitHeadFileList::iterator hit;
 									hit = treeptr->begin() + hstart;
 									CGitHeadFileList::iterator lastElement = treeptr->end();
-									for(int i=hstart; i <= hend && hit != lastElement; i++)
+									for (int i = hstart; i <= hend && hit != lastElement; ++i)
 									{
 										if( SearchInSortVector(*indexptr,(*hit).m_FileName.GetBuffer(),-1) < 0)
 										{
@@ -948,7 +948,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 											break;
 										}
 										(*hit).m_FileName.ReleaseBuffer();
-										hit++;
+										++hit;
 									}
 								}
 							}
@@ -966,7 +966,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 					{
 						CString sub, currentPath;
 						it = indexptr->begin()+start;
-						for(int i=start;i<=end;i++,it++)
+						for (int i = start; i <= end; ++i, ++it)
 						{
 							if( !IsRecursive )
 							{

@@ -291,7 +291,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 			}
 			int len = path.GetLength();
 
-				for (size_t i = 0; i < size(); i++)
+				for (size_t i = 0; i < size(); ++i)
 				{
 					if (at(i).m_FileName.GetLength() > len)
 					{
@@ -545,11 +545,11 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				{
 					while (buff[i] != '\n')
 					{
-						i++;
+						++i;
 						if (i == filesize)
 							break;
 					}
-					i++;
+					++i;
 				}
 
 				if (i >= filesize)
@@ -558,19 +558,19 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				while (buff[i] != ' ')
 				{
 					hash.AppendChar(buff[i]);
-					i++;
+					++i;
 					if (i == filesize)
 						break;
 				}
 
-				i++;
+				++i;
 				if (i >= filesize)
 					break;
 
 				while (buff[i] != '\n')
 				{
 					ref.AppendChar(buff[i]);
-					i++;
+					++i;
 					if (i == filesize)
 						break;
 				}
@@ -582,7 +582,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 
 				while (buff[i] == '\n')
 				{
-					i++;
+					++i;
 					if (i == filesize)
 						break;
 				}
@@ -825,7 +825,7 @@ int CGitHeadFileList::CallBack(const unsigned char *sha1, const char *base, int 
 int ReadTreeRecursive(git_repository &repo, git_tree * tree, CStringA base, int (*CallBack) (const unsigned char *, const char *, int, const char *, unsigned int, int, void *),void *data)
 {
 	size_t count = git_tree_entrycount(tree);
-	for (size_t i = 0; i < count; i++)
+	for (size_t i = 0; i < count; ++i)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
@@ -975,7 +975,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			return GetLastError();
 
 		BYTE *p = m_buffer;
-		for (DWORD i = 0; i < size; i++)
+		for (DWORD i = 0; i < size; ++i)
 		{
 			if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
 			{
@@ -1079,7 +1079,7 @@ bool CGitIgnoreList::CheckIgnoreChanged(const CString &gitdir,const CString &pat
 		for (i = temp.GetLength() - 1; i >= 0; i--)
 		{
 			if(temp[i] == _T('\\'))
-				found ++;
+				++found;
 
 			if(found == 2)
 				break;
@@ -1167,7 +1167,7 @@ int CGitIgnoreList::LoadAllIgnoreFile(const CString &gitdir,const CString &path)
 		for (i = temp.GetLength() - 1; i >= 0; i--)
 		{
 			if(temp[i] == _T('\\'))
-				found ++;
+				++found;
 
 			if(found == 2)
 				break;
@@ -1385,7 +1385,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path,const CString &projectroot)
 		for (i = temp.GetLength() - 1; i >= 0; i--)
 		{
 			if (temp[i] == _T('\\'))
-				found++;
+				++found;
 
 			if (found == 2)
 				break;

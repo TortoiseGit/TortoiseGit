@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ public:
 		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
 		columnseverywhere = CRegStdDWORD(_T("Software\\TortoiseGit\\ColumnsEveryWhere"), FALSE);
-		for (int i=0; i<27; i++)
+		for (int i = 0; i < 27; ++i)
 		{
 			drivetypecache[i] = (UINT)-1;
 		}

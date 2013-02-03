@@ -517,7 +517,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 	if(dlg.DoModal() == IDOK)
 	{
 		int err=0;
-		for(int i=0;i<dlg.m_PathList.GetCount();i++)
+		for (int i = 0; i < dlg.m_PathList.GetCount(); ++i)
 		{
 			cmd.Format(_T("git.exe am \"%s\""),dlg.m_PathList[i].GetGitPathString());
 
@@ -850,7 +850,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	if(!g_Git.GetRemoteList(list))
 	{
-		for(unsigned int i=0;i<list.size();i++)
+		for (unsigned int i = 0; i < list.size(); ++i)
 		{
 			m_ctrlURL.AddString(list[i]);
 		}
@@ -901,7 +901,7 @@ void CSyncDlg::Refresh()
 	bool found = false;
 	if (!g_Git.GetRemoteList(list))
 	{
-		for (int i = 0; i < list.size(); i++)
+		for (int i = 0; i < list.size(); ++i)
 		{
 			m_ctrlURL.AddString(list[i]);
 			if (list[i] == url)

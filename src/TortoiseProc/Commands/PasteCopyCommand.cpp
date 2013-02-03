@@ -49,7 +49,7 @@ bool PasteCopyCommand::Execute()
 	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
-	for(int nPath = 0; nPath < orgPathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
 		const CTGitPath& sourcePath = orgPathList[nPath];
 
@@ -109,7 +109,7 @@ bool PasteCopyCommand::Execute()
 		//	else
 		//		CShellUpdater::Instance().AddPathForUpdate(fullDropPath);
 		//}
-		count++;
+		++count;
 		if (progress.IsValid())
 		{
 			progress.FormatPathLine(1, IDS_PROC_COPYINGPROG, sourcePath.GetWinPath());

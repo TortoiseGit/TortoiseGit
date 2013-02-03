@@ -211,7 +211,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 			CString strnewname;
 			CString stroldname;
 
-			for(int j=0;j<count;j++)
+			for (int j = 0; j < count; ++j)
 			{
 				path.Reset();
 				char *newname;
@@ -236,7 +236,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 
 			}
 			git_diff_flush(git->GetGitSimpleListDiff());
-			i++;
+			++i;
 		}
 
 		InterlockedExchange(&m_IsUpdateing,FALSE);
@@ -297,7 +297,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 			CString strnewname;
 			CString stroldname;
 
-			for(int j=0;j<count;j++)
+			for (int j = 0; j < count; ++j)
 			{
 				path.Reset();
 				char *newname;
@@ -332,7 +332,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				m_Files.AddPath(path);
 			}
 			git_diff_flush(git->GetGitDiff());
-			i++;
+			++i;
 		}
 
 
@@ -398,7 +398,7 @@ int GitRev::ParserFromCommit(GIT_COMMIT *commit)
 void GitRev::DbgPrint()
 {
 	ATLTRACE(_T("Commit %s\r\n"), this->m_CommitHash.ToString());
-	for(unsigned int i=0;i<this->m_ParentHash.size();i++)
+	for (unsigned int i = 0; i < this->m_ParentHash.size(); ++i)
 	{
 		ATLTRACE(_T("Parent %i %s"), i, m_ParentHash[i].ToString());
 	}
@@ -474,7 +474,7 @@ int GitRev::AddMergeFiles()
 	std::map<CString, int> map;
 	std::map<CString, int>::iterator it;
 
-	for(int i=0;i<m_Files.GetCount();i++)
+	for (int i = 0; i < m_Files.GetCount(); ++i)
 	{
 		if(map.find(m_Files[i].GetGitPathString()) == map.end())
 		{
@@ -482,11 +482,11 @@ int GitRev::AddMergeFiles()
 		}
 		else
 		{
-			map[m_Files[i].GetGitPathString()]++;
+			++map[m_Files[i].GetGitPathString()];
 		}
 	}
 
-	for(it=map.begin();it!=map.end();it++)
+	for (it = map.begin(); it != map.end(); ++it)
 	{
 		if(it->second)
 		{

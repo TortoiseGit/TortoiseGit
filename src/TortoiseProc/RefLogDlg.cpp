@@ -153,7 +153,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 
 	this->m_RefList.m_arShownList.RemoveAll();
 
-	for(unsigned int i=0;i<m_RefList.m_RefMap[ref].size();i++)
+	for (unsigned int i = 0; i < m_RefList.m_RefMap[ref].size(); ++i)
 	{
 		plog->GetGitRevAt(i).m_IsFull=TRUE;
 		this->m_RefList.m_arShownList.Add(&(plog->GetGitRevAt(i)));
@@ -200,7 +200,7 @@ void CRefLogDlg::Refresh()
 	else
 	{
 		bool found = false;
-		for (int i = 0; i < list.size(); i++)
+		for (int i = 0; i < list.size(); ++i)
 		{
 			if(list[i] == m_CurrentBranch)
 			{
@@ -280,7 +280,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			if (str.Find(findString) >= 0)
 				bFound = true;
 
-			i++;
+			++i;
 			if(!bFound && i >= m_RefList.m_arShownList.GetCount())
 				i=0;
 		} while (i != m_nSearchLine && (!bFound));

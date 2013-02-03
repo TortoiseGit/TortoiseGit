@@ -563,7 +563,7 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 	if(m_LogList.m_HashMap.find(pLogEntry->m_CommitHash) != m_LogList.m_HashMap.end())
 	{
 		STRING_VECTOR &vector = m_LogList.m_HashMap[pLogEntry->m_CommitHash];
-		for(int i=0;i<vector.size();i++)
+		for (int i = 0; i < vector.size(); ++i)
 		{
 			if(vector[i].Find(_T("refs/tags/")) == 0 )
 			{
@@ -693,7 +693,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
-			for(int i=0;i<count && (!matchpath.IsEmpty());i++)
+			for (int i = 0 ; i < count && (!matchpath.IsEmpty()); ++i)
 			{
 				if( m_bWholeProject )
 					break;
@@ -860,7 +860,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 				for (INT_PTR hiddenindex=0; hiddenindex<pLogEntry->pArChangedPaths->GetCount(); ++hiddenindex)
 				{
 					if (pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex)->sPath.Left(m_sRelativeRoot.GetLength()).Compare(m_sRelativeRoot)==0)
-						selRealIndex++;
+						++selRealIndex;
 					if (selRealIndex == nItem)
 					{
 						changedlogpath = pLogEntry->pArChangedPaths->SafeGetAt(hiddenindex);
@@ -1675,7 +1675,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (int j = 0; j < refList.size(); j++)
+			for (int j = 0; j < refList.size(); ++j)
 			{
 				if (refList[j].Left(10) == _T("refs/tags/"))
 				{
@@ -1748,7 +1748,7 @@ void CLogDlg::OnBnClickedJumpDown()
 	}
 	m_LogList.SetSelectionMark(-1);
 
-	for (int i = index + 1; i < m_LogList.GetItemCount(); i++)
+	for (int i = index + 1; i < m_LogList.GetItemCount(); ++i)
 	{
 		bool found = false;
 		GitRev* data = (GitRev*)m_LogList.m_arShownList.SafeGetAt(i);
@@ -1765,7 +1765,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (int j = 0; j < refList.size(); j++)
+			for (int j = 0; j < refList.size(); ++j)
 			{
 				if (refList[j].Left(10) == _T("refs/tags/"))
 				{

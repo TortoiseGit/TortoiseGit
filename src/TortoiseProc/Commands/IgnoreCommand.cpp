@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ bool IgnoreCommand::Execute()
 		CString output;
 		CString cmd;
 		int nPath;
-		for(nPath = 0; nPath < pathList.GetCount(); nPath++)
+		for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
 
 			cmd.Format(format,pathList[nPath].GetGitPathString());

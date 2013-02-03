@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -176,7 +176,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_PathList.SortByPathname(true);
 	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
 
-	for(int i=0;i<m_PathList.GetCount();i++)
+	for (int i = 0; i < m_PathList.GetCount(); ++i)
 	{
 		m_cList.InsertItem(0,m_PathList[i].GetWinPath());
 		m_cList.SetCheck(0,true);
@@ -361,7 +361,7 @@ UINT CImportPatchDlg::PatchThread()
 
 	int i=0;
 	UpdateOkCancelText();
-	for(i=m_CurrentItem;i<m_cList.GetItemCount();i++)
+	for (i = m_CurrentItem; i < m_cList.GetItemCount(); ++i)
 	{
 		if (m_pTaskbarList)
 		{
@@ -398,7 +398,7 @@ UINT CImportPatchDlg::PatchThread()
 					break;
 				case 2:
 					cmd = _T("git.exe am --skip");
-					i++;
+					++i;
 					break;
 				case 3:
 					cmd = _T("git.exe am --resolved");
@@ -475,7 +475,7 @@ UINT CImportPatchDlg::PatchThread()
 		}
 
 		m_cList.SetItemData(m_CurrentItem, (~CPatchListCtrl::STATUS_APPLYING)&m_cList.GetItemData(i));
-		m_CurrentItem++;
+		++m_CurrentItem;
 
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);

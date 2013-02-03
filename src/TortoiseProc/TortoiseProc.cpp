@@ -318,7 +318,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			if (szArglist)
 			{
 				// argument 0 is the process path, so start with 1
-				for (int i=1; i<nArgs; i++)
+				for (int i = 1; i < nArgs; ++i)
 				{
 					if (szArglist[i][0] != '/')
 					{
@@ -380,8 +380,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(_T("submodule")) == TRUE))
 	{
-		int i=0;
-		for(i=0;i<pathList.GetCount();i++)
+		for (int i = 0; i < pathList.GetCount(); ++i)
 			if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
 				break;
 	}

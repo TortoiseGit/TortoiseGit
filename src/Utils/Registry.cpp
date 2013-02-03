@@ -168,7 +168,7 @@ bool CRegistryKey::getValues(CStringList& values)
 
     if (RegOpenKeyEx(m_base, m_path, 0, KEY_EXECUTE|m_sam, &m_hKey)==ERROR_SUCCESS)
     {
-        for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; i++)
+        for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; ++i)
         {
             TCHAR value[255];
             DWORD size = _countof(value);
@@ -189,7 +189,7 @@ bool CRegistryKey::getSubKeys(CStringList& subkeys)
 
     if (RegOpenKeyEx(m_base, m_path, 0, KEY_EXECUTE|m_sam, &m_hKey)==ERROR_SUCCESS)
     {
-        for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; i++)
+        for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; ++i)
         {
             TCHAR value[1024];
             DWORD size = _countof(value);

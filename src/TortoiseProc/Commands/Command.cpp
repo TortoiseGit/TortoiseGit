@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -241,7 +241,7 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 {
 	// Look up the command
 	TGitCommand command = cmdAbout;		// Something harmless as a default
-	for (int nCommand = 0; nCommand < _countof(commandInfo); nCommand++)
+	for (int nCommand = 0; nCommand < _countof(commandInfo); ++nCommand)
 	{
 		if (sCmd.Compare(commandInfo[nCommand].pCommandName) == 0)
 		{

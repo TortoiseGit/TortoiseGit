@@ -35,8 +35,8 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
 
 	if(lpCmdLine[0] == '\"')
 	{
-		lpCmdLine ++;
-		for(size_t i=0;i<_tcslen(lpCmdLine);i++)
+		++lpCmdLine;
+		for (size_t i = 0; i < _tcslen(lpCmdLine); ++i)
 			if(lpCmdLine[i]== '\"')
 			{
 				lpCmdLine[i]=0;

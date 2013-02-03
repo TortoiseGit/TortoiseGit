@@ -53,7 +53,7 @@ public:
 									}
 								}
 								orgPathList = plist;
-								for(int i=0;i<plist.GetCount();i++)
+								for (int i = 0; i < plist.GetCount(); ++i)
 								{
 									WinPath=plist[i].GetWinPath();
 									CTGitPath p;

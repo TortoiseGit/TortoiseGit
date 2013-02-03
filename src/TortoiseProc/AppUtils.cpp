@@ -693,7 +693,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	while(!::PathFileExists(tempfile))
 	{
 		Sleep(100);
-		i++;
+		++i;
 		if(i>10*60*5)
 			break; //timeout 5 minutes
 	}
@@ -830,12 +830,12 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 				(((i>0)&&(!IsCharAlphaNumeric(sText[i-1])))||(i==0)))
 			{
 				start = i+1;
-				i++;
+				++i;
 				bFoundMarker = true;
 				break;
 			}
 		}
-		i++;
+		++i;
 	}
 	if (!bFoundMarker)
 		return false;
@@ -849,12 +849,12 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 				((((i+1)<sText.GetLength())&&(!IsCharAlphaNumeric(sText[i+1])))||(i+1)==sText.GetLength()))
 			{
 				end = i;
-				i++;
+				++i;
 				bFoundMarker = true;
 				break;
 			}
 		}
-		i++;
+		++i;
 	}
 	return bFoundMarker;
 }
@@ -1254,7 +1254,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 			if (ignoreDlg.m_IgnoreFile != 1 && !OpenIgnoreFile(file, ignorefile))
 				return false;
 
-			for (int i = 0; i < path.GetCount(); i++)
+			for (int i = 0; i < path.GetCount(); ++i)
 			{
 				if (ignoreDlg.m_IgnoreFile == 1)
 				{
@@ -1527,7 +1527,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 
 	bool b_base=false, b_local=false, b_remote=false;
 
-	for(int i=0;i<list.GetCount();i++)
+	for (int i = 0; i< list.GetCount(); ++i)
 	{
 		CString cmd;
 		CString outfile;
@@ -2148,7 +2148,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				{
 					CString remote(*it);
 					CAppUtils::LaunchPAgent(NULL, &remote);
-					it++;
+					++it;
 				}
 			}
 			else
@@ -2322,7 +2322,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 		else
 			remotesList.push_back(dlg.m_URL);
 
-		for (unsigned int i = 0; i < remotesList.size(); i++)
+		for (unsigned int i = 0; i < remotesList.size(); ++i)
 		{
 			if (dlg.m_bAutoLoad)
 				CAppUtils::LaunchPAgent(NULL, &remotesList[i]);
@@ -2442,8 +2442,7 @@ bool CAppUtils::CreateMultipleDirectory(const CString& szPath)
 		}
 	}
 
-	std::vector<CString>::const_iterator vIter;
-	for (vIter = vPath.begin(); vIter != vPath.end(); vIter++)
+	for (auto vIter = vPath.begin(); vIter != vPath.end(); ++vIter)
 	{
 		bSuccess = CreateDirectory(*vIter, NULL) ? true : false;
 	}

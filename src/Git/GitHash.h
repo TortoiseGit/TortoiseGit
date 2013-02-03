@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,11 +53,11 @@ public:
 			return;
 		}
 
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			unsigned char a;
 			a=0;
-			for(int j=2*i;j<=2*i+1;j++)
+			for (int j = 2 * i; j <= 2 * i + 1; ++j)
 			{
 				a =a<<4;
 
@@ -76,11 +76,11 @@ public:
 
 	void ConvertFromStrA(char *str)
 	{
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			unsigned char a;
 			a=0;
-			for(int j=2*i;j<=2*i+1;j++)
+			for (int j = 2 * i; j <= 2 * i + 1; ++j)
 			{
 				a =a<<4;
 
@@ -102,7 +102,7 @@ public:
 	}
 	bool IsEmpty()
 	{
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			if(m_hash[i] != 0)
 				return false;
@@ -114,7 +114,7 @@ public:
 	{
 		CString str;
 		CString a;
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			a.Format(_T("%02x"),m_hash[i]);
 			str+=a;
@@ -149,13 +149,13 @@ public:
 #if defined(_MFC_VER)
 	friend CArchive& AFXAPI operator<<(CArchive& ar, CGitHash& hash)
 	{
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 			ar<<hash.m_hash[i];
 		return ar;
 	}
 	friend CArchive& AFXAPI operator>>(CArchive& ar, CGitHash& hash)
 	{
-		for(int i=0;i<GIT_HASH_SIZE;i++)
+		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 			ar>>hash.m_hash[i];
 		return ar;
 	}
@@ -164,7 +164,7 @@ public:
 	{
 		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)
 			return false;
-		for (int i = 0; i < possibleSHA1.GetLength(); i++)
+		for (int i = 0; i < possibleSHA1.GetLength(); ++i)
 		{
 			if (!((possibleSHA1[i] >= '0' && possibleSHA1[i] <= '9') || (possibleSHA1[i] >= 'a' && possibleSHA1[i] <= 'f') || (possibleSHA1[i] >= 'A' && possibleSHA1[i] <= 'F')))
 				return false;

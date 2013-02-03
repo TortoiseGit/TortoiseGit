@@ -45,10 +45,10 @@ CPatch::~CPatch(void)
 
 void CPatch::FreeMemory()
 {
-	for (int i=0; i<m_arFileDiffs.GetCount(); i++)
+	for (int i=0; i<m_arFileDiffs.GetCount(); ++i)
 	{
 		Chunks * chunks = m_arFileDiffs.GetAt(i);
-		for (int j=0; j<chunks->chunks.GetCount(); j++)
+		for (int j=0; j<chunks->chunks.GetCount(); ++j)
 		{
 			delete chunks->chunks.GetAt(j);
 		}
@@ -71,7 +71,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 	int nRemoveLineCount = 0;
 	int nContextLineCount = 0;
 	std::map<CString, int> filenamesToPatch;
-	for ( ;nIndex<PatchLines.GetCount(); nIndex++)
+	for ( ; nIndex < PatchLines.GetCount(); ++nIndex)
 	{
 		sLine = PatchLines.GetAt(nIndex);
 		ending = PatchLines.GetLineEnding(nIndex);
@@ -240,7 +240,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 						chunk = nullptr;
 						if (chunks)
 						{
-							for (int i=0; i<chunks->chunks.GetCount(); i++)
+							for (int i = 0; i < chunks->chunks.GetCount(); ++i)
 							{
 								delete chunks->chunks.GetAt(i);
 							}
@@ -280,7 +280,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					chunk->lAddStart = 1;
 					chunk->lAddLength = _ttol(sAdd);
 				}
-				state++;
+				++state;
 			}
 			break;
 
@@ -303,7 +303,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
 					chunk->arLinesStates.Add(PATCHSTATE_CONTEXT);
 					chunk->arEOLs.push_back(ending);
-					nContextLineCount++;
+					++nContextLineCount;
 				}
 				else if (type == '\\')
 				{
@@ -317,7 +317,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
 					chunk->arLinesStates.Add(PATCHSTATE_REMOVED);
 					chunk->arEOLs.push_back(ending);
-					nRemoveLineCount++;
+					++nRemoveLineCount;
 				}
 				else if (type == '+')
 				{
@@ -325,7 +325,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(1)));
 					chunk->arLinesStates.Add(PATCHSTATE_ADDED);
 					chunk->arEOLs.push_back(ending);
-					nAddLineCount++;
+					++nAddLineCount;
 				}
 				else
 				{
@@ -389,7 +389,7 @@ errorcleanup:
 		delete chunk;
 	if (chunks)
 	{
-		for (int i=0; i<chunks->chunks.GetCount(); i++)
+		for (int i = 0; i < chunks->chunks.GetCount(); ++i)
 		{
 			delete chunks->chunks.GetAt(i);
 		}
@@ -502,12 +502,12 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 
 	Chunks * chunks = m_arFileDiffs.GetAt(nIndex);
 
-	for (int i=0; i<chunks->chunks.GetCount(); i++)
+	for (int i = 0; i < chunks->chunks.GetCount(); ++i)
 	{
 		Chunk * chunk = chunks->chunks.GetAt(i);
 		LONG lRemoveLine = chunk->lRemoveStart;
 		LONG lAddLine = chunk->lAddStart;
-		for (int j=0; j<chunk->arLines.GetCount(); j++)
+		for (int j = 0; j < chunk->arLines.GetCount(); ++j)
 		{
 			CString sPatchLine = chunk->arLines.GetAt(j);
 			EOL ending = chunk->arEOLs[j];
@@ -564,7 +564,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					if (insertOk)
 					{
 						PatchLines.InsertAt(lAddLine-1, sPatchLine, ending);
-						lAddLine++;
+						++lAddLine;
 					}
 					else
 					{
@@ -581,28 +581,28 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 						return FALSE;
 					}
 					if (lAddLine == 0)
-						lAddLine++;
+						++lAddLine;
 					if (lRemoveLine == 0)
-						lRemoveLine++;
+						++lRemoveLine;
 					if ((sPatchLine.Compare(PatchLines.GetAt(lAddLine-1))!=0) &&
 						(!HasExpandedKeyWords(sPatchLine)) &&
 						(lRemoveLine <= PatchLines.GetCount()) &&
 						(sPatchLine.Compare(PatchLines.GetAt(lRemoveLine-1))!=0))
 					{
 						if ((lAddLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine))==0))
-							lAddLine++;
+							++lAddLine;
 						else if (((lAddLine + 1) < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lAddLine+1))==0))
 							lAddLine += 2;
 						else if ((lRemoveLine < PatchLines.GetCount())&&(sPatchLine.Compare(PatchLines.GetAt(lRemoveLine))==0))
-							lRemoveLine++;
+							++lRemoveLine;
 						else
 						{
 							m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)sPatchLine, (LPCTSTR)PatchLines.GetAt(lAddLine-1));
 							return FALSE;
 						}
 					}
-					lAddLine++;
-					lRemoveLine++;
+					++lAddLine;
+					++lRemoveLine;
 				}
 				break;
 			default:
@@ -693,7 +693,7 @@ int CPatch::CountMatches(const CString& path)
 		if (PathIsRelative(temp))
 			temp = path + _T("\\")+ temp;
 		if (PathFileExists(temp))
-			matches++;
+			++matches;
 	}
 	return matches;
 }
@@ -710,7 +710,7 @@ int CPatch::CountDirMatches(const CString& path)
 		// remove the filename
 		temp = temp.Left(temp.ReverseFind('\\'));
 		if (PathFileExists(temp))
-			matches++;
+			++matches;
 	}
 	return matches;
 }
@@ -718,7 +718,7 @@ int CPatch::CountDirMatches(const CString& path)
 BOOL CPatch::StripPrefixes(const CString& path)
 {
 	int nSlashesMax = 0;
-	for (int i=0; i<GetNumberOfFiles(); i++)
+	for (int i = 0; i < GetNumberOfFiles(); ++i)
 	{
 		CString filename = GetFilename(i);
 		filename.Replace('/','\\');
@@ -726,7 +726,7 @@ BOOL CPatch::StripPrefixes(const CString& path)
 		nSlashesMax = max(nSlashesMax,nSlashes);
 	}
 
-	for (int nStrip=1;nStrip<nSlashesMax;nStrip++)
+	for (int nStrip = 1; nStrip < nSlashesMax; ++nStrip)
 	{
 		m_nStrip = nStrip;
 		if ( CountMatches(path) > GetNumberOfFiles()/3 )
@@ -752,7 +752,7 @@ CString	CPatch::Strip(const CString& filename)
 			s = s.Mid(2);
 		}
 
-		for (int nStrip=1;nStrip<=m_nStrip;nStrip++)
+		for (int nStrip = 1; nStrip <= m_nStrip; ++nStrip)
 		{
 			// "/home/ts/my-working-copy/dir/file.txt"
 			//  "home/ts/my-working-copy/dir/file.txt"

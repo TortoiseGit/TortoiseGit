@@ -48,7 +48,7 @@ bool PasteMoveCommand::Execute()
 	progress.SetAnimation(IDR_MOVEANI);
 	progress.SetTime(true);
 	progress.ShowModeless(CWnd::FromHandle(hwndExplorer));
-	for(int nPath = 0; nPath < orgPathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
 		CTGitPath destPath;
 		if (sNewName.IsEmpty())
@@ -126,7 +126,7 @@ bool PasteMoveCommand::Execute()
 			else
 				CShellUpdater::Instance().AddPathForUpdate(destPath);
 		}
-		count++;
+		++count;
 		if (progress.IsValid())
 		{
 			progress.FormatPathLine(1, IDS_PROC_MOVINGPROG, orgPathList[nPath].GetWinPath());

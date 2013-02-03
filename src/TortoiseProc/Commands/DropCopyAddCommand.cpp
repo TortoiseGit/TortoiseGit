@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2011,2013 - TortoiseGit
 // Copyright (C) 2007-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ bool DropCopyAddCommand::Execute()
 
 	orgPathList.RemoveAdminPaths();
 	CTGitPathList copiedFiles;
-	for(int nPath = 0; nPath < orgPathList.GetCount(); nPath++)
+	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
 		if (!orgPathList[nPath].IsEquivalentTo(CTGitPath(droppath)))
 		{

@@ -85,7 +85,7 @@ void Lanes::setFork(const CGitHash& sha) {
 	if (endT == TAIL)
 		endT = TAIL_R;
 
-	for (int i = rangeStart + 1; i < rangeEnd; i++) {
+	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
 
 		int& t = typeVec[i];
 
@@ -156,7 +156,7 @@ void Lanes::setMerge(const CGitHashList& parents) {
 	if (endT == HEAD)
 		endT = HEAD_R;
 
-	for (int i = rangeStart + 1; i < rangeEnd; i++) {
+	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
 
 		int& t = typeVec[i];
 
@@ -206,7 +206,7 @@ void Lanes::afterMerge() {
 	if (boundary)
 		return; // will be reset by changeActiveLane()
 
-	for (unsigned int i = 0; i < typeVec.size(); i++) {
+	for (unsigned int i = 0; i < typeVec.size(); ++i) {
 
 		int& t = typeVec[i];
 
@@ -223,7 +223,7 @@ void Lanes::afterMerge() {
 
 void Lanes::afterFork() {
 
-	for (unsigned int i = 0; i < typeVec.size(); i++) {
+	for (unsigned int i = 0; i < typeVec.size(); ++i) {
 
 		int& t = typeVec[i];
 
@@ -267,7 +267,7 @@ void Lanes::nextParent(const CGitHash& sha) {
 
 int Lanes::findNextSha(const CGitHash& next, int pos) {
 
-	for (unsigned int i = pos; i < nextShaVec.size(); i++)
+	for (unsigned int i = pos; i < nextShaVec.size(); ++i)
 		if (nextShaVec[i] == next)
 			return i;
 	return -1;
@@ -275,7 +275,7 @@ int Lanes::findNextSha(const CGitHash& next, int pos) {
 
 int Lanes::findType(int type, int pos) {
 
-	for (unsigned int i = pos; i < typeVec.size(); i++)
+	for (unsigned int i = pos; i < typeVec.size(); ++i)
 		if (typeVec[i] == type)
 			return i;
 	return -1;

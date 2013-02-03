@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -491,7 +491,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 	if (m_pDownloadThread == NULL && title == CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)))
 	{
 		bool isOneSelected = false;
-		for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+		for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
 		{
 			if (m_ctrlFiles.GetCheck(i))
 			{
@@ -527,7 +527,7 @@ void CCheckForUpdatesDlg::OnBnClickedButtonUpdate()
 		CString folder = GetDownloadsDirectory();
 		if (m_ctrlUpdate.GetCurrentEntry() == 0)
 		{
-			for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+			for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
 			{
 				CUpdateListCtrl::Entry *data = (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
 				if (m_ctrlFiles.GetCheck(i) == TRUE)
@@ -588,7 +588,7 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
 
 	BOOL result = TRUE;
-	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); i++)
+	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
 	{
 		m_ctrlFiles.EnsureVisible(i, FALSE);
 		CRect rect;

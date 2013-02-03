@@ -32,8 +32,8 @@ int strwildcmp(const char *wild, const char *string)
 		{
 			return 0;
 		}
-		wild++;
-		string++;
+		++wild;
+		++string;
 	}
 	while (*string)
 	{
@@ -48,8 +48,8 @@ int strwildcmp(const char *wild, const char *string)
 		}
 		else if ((*wild == *string) || (*wild == '?'))
 		{
-			wild++;
-			string++;
+			++wild;
+			++string;
 		}
 		else
 		{
@@ -60,7 +60,7 @@ int strwildcmp(const char *wild, const char *string)
 
 	while (*wild == '*')
 	{
-		wild++;
+		++wild;
 	}
 	return !*wild;
 }
@@ -75,8 +75,8 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 		{
 			return 0;
 		}
-		wild++;
-		string++;
+		++wild;
+		++string;
 	}
 	while (*string)
 	{
@@ -91,8 +91,8 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 		}
 		else if ((*wild == *string) || (*wild == '?'))
 		{
-			wild++;
-			string++;
+			++wild;
+			++string;
 		}
 		else
 		{
@@ -103,7 +103,7 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 
 	while (*wild == '*')
 	{
-		wild++;
+		++wild;
 	}
 	return !*wild;
 }
@@ -120,7 +120,7 @@ void CStringUtils::RemoveAccelerators(CString& text)
 			if (text.GetAt(pos+1)!=' ')
 				text.Delete(pos);
 		}
-		pos++;
+		++pos;
 	}
 }
 
@@ -263,7 +263,7 @@ CString CStringUtils::LinesWrap(const CString& longstring, int limit /* = 80 */,
 	{
 		temp = longstring.Mid(lineposold, linepos-lineposold);
 		if ((linepos+1)<longstring.GetLength())
-			linepos++;
+			++linepos;
 		else
 			break;
 		lineposold = linepos;
@@ -462,7 +462,7 @@ void CStringUtils::PipesToNulls(TCHAR* buffer)
 	while (*ptr != 0)
 	{
 		PipeToNull(ptr);
-		ptr++;
+		++ptr;
 	}
 }
 

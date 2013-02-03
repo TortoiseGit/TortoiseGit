@@ -99,7 +99,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			progress.FormatNonPathLine(2, _T("%s"), r1->GetSubject());
 			progress.SetProgress(i, this->GetSelectedCount());
 		}
-		i++;
+		++i;
 
 		if(r1->m_CommitHash.IsEmpty())
 			continue;
@@ -278,7 +278,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString path1 = m_Path.GetGitPathString();
 					// start with 1 (0 = working copy changes)
-					for (int i = 1; i < FirstSelect; i++)
+					for (int i = 1; i < FirstSelect; ++i)
 					{
 						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
@@ -287,7 +287,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							path1 = file->GetGitOldPathString();
 					}
 					CString path2 = path1;
-					for (int i = FirstSelect; i < LastSelect; i++)
+					for (int i = FirstSelect; i < LastSelect; ++i)
 					{
 						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
@@ -312,7 +312,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				{
 					CString path1 = m_Path.GetGitPathString();
 					// start with 1 (0 = working copy changes)
-					for (int i = 1; i < FirstSelect; i++)
+					for (int i = 1; i < FirstSelect; ++i)
 					{
 						GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 						CTGitPathList list = first->GetFiles(NULL);
@@ -355,7 +355,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					{
 						CString path1 = m_Path.GetGitPathString();
 						// start with 1 (0 = working copy changes)
-						for (int i = 1; i < indexNext; i++)
+						for (int i = 1; i < indexNext; ++i)
 						{
 							GitRev * first = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 							CTGitPathList list = first->GetFiles(NULL);
@@ -417,7 +417,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				// try to guess remote branch in order to enable tracking
-				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
 					{
@@ -435,7 +435,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				// try to guess remote branch in order to recommend good branch name and tracking
-				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); i++)
+				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
 					{
@@ -573,7 +573,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not get changed file list aborting...\r\n\r\n")+out));
 				}
 
-				for(int i=0;i<PathList.GetCount();i++)
+				for (int i = 0; i < PathList.GetCount(); ++i)
 				{
 					if(PathList[i].m_Action & CTGitPath::LOGACTIONS_ADDED)
 					{
@@ -597,7 +597,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 
 				CCommitDlg dlg;
-				for(int i=FirstSelect;i<=LastSelect;i++)
+				for (int i = FirstSelect; i <= LastSelect; ++i)
 				{
 					GitRev* pRev = reinterpret_cast<GitRev*>(m_arShownList.GetAt(i));
 					dlg.m_sLogMessage+=pRev->GetSubject()+_T("\n")+pRev->GetBody();
@@ -779,7 +779,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					refsToDelete.push_back(ref);
 				}
 
-				for (std::vector<CString>::const_reverse_iterator revIt = refsToDelete.rbegin(); revIt != refsToDelete.rend(); revIt++)
+				for (auto revIt = refsToDelete.rbegin(); revIt != refsToDelete.rend(); ++revIt)
 				{
 					CString ref = *revIt;
 					CString cmd, out;

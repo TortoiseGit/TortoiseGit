@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -171,7 +171,7 @@ void CPropertiesWnd::InitPropList()
 				);;;;
 	pGroup1->AddSubItem(m_Body);
 
-	for(int i=0;i<pGroup1->GetSubItemsCount();i++)
+	for (int i = 0; i < pGroup1->GetSubItemsCount(); ++i)
 	{
 		pGroup1->GetSubItem(i)->AllowEdit(FALSE);
 	}
@@ -219,7 +219,7 @@ void CPropertiesWnd::SetPropListFont()
 void CPropertiesWnd::RemoveParent()
 {
 	m_ParentGroup->Expand(false);
-	for(int i=0;i<m_ParentGroup->GetSubItemsCount();i++)
+	for (int i = 0; i < m_ParentGroup->GetSubItemsCount(); ++i)
 	{
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
 		m_ParentGroup->RemoveSubItem(p);
@@ -248,7 +248,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
-		for(unsigned int i=0;i<rev->m_ParentHash.size();i++)
+		for (unsigned int i = 0; i < rev->m_ParentHash.size(); ++i)
 		{
 			CString str;
 			CString parentsubject;
@@ -277,7 +277,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 			m_ParentGroup->AddSubItem(pProtery);
 		}
 		m_ParentGroup->Expand();
-		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
+		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(m_BaseInfoGroup->GetSubItem(i)->GetValue());
 
 	}
@@ -297,7 +297,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 		RemoveParent();
 
-		for(int i=0;i<m_BaseInfoGroup->GetSubItemsCount();i++)
+		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(_T(""));
 	}
 	this->Invalidate();

@@ -498,7 +498,7 @@ void CCommitDlg::OnOK()
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
-	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; i++)
+	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
 		if (!entry->m_Checked || !entry->IsDirectory())
@@ -573,7 +573,7 @@ void CCommitDlg::OnOK()
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 	DWORD currentTicks = GetTickCount();
 
-	for (int j=0; j<nListItems; j++)
+	for (int j = 0; j < nListItems; ++j)
 	{
 		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
 		if (sysProgressDlg.IsVisible())
@@ -607,7 +607,7 @@ void CCommitDlg::OnOK()
 
 			g_Git.Run(cmd, &out, CP_UTF8);
 
-			nchecked++;
+			++nchecked;
 		}
 		else
 		{
@@ -1450,7 +1450,7 @@ void CCommitDlg::GetAutocompletionList()
 		int lastPos = 0;
 		while ((pos = sPartPath.Find('/', pos)) >= 0)
 		{
-			pos++;
+			++pos;
 			lastPos = pos;
 			m_autolist.insert(sPartPath.Mid(pos));
 		}
@@ -1748,7 +1748,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 				{
 					if (revPropNames->rgsabound->cElements == revPropValues->rgsabound->cElements)
 					{
-						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; i++)
+						for (ULONG i = 0; i < revPropNames->rgsabound->cElements; ++i)
 						{
 //							m_revProps[pbRevNames[i]] = pbRevValues[i];
 						}

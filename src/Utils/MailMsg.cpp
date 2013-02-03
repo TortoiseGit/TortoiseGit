@@ -259,7 +259,7 @@ BOOL CMailMsg::Send()
 
 	// add cc receipients
 	nIndex = 2;
-	for(int i=0; i < m_cc.size(); i++)
+	for (size_t i = 0; i < m_cc.size(); ++i)
 	{
 		pRecipients[nIndex].ulReserved = 0;
 		pRecipients[nIndex].ulRecipClass = MAPI_CC;

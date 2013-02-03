@@ -343,7 +343,7 @@ void CRebaseDlg::OnBnClickedEditAll()
 
 void CRebaseDlg::SetAllRebaseAction(int action)
 {
-	for(int i=0;i<this->m_CommitList.m_logEntries.size();i++)
+	for (int i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
 	{
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList)=action;
 	}
@@ -582,7 +582,7 @@ void CRebaseDlg::FetchLogList()
 	AddBranchToolTips(&this->m_BranchCtrl);
 	AddBranchToolTips(&this->m_UpstreamCtrl);
 
-	for(int i=0;i<m_CommitList.m_logEntries.size();i++)
+	for (int i = 0; i < m_CommitList.m_logEntries.size(); ++i)
 	{
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
 	}
@@ -1151,9 +1151,9 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 		if( curRev->GetAction(&m_CommitList)&CTGitPath::LOGACTIONS_REBASE_SKIP)
 		{
 			if(m_CommitList.m_IsOldFirst)
-				index++;
+				++index;
 			else
-				index--;
+				--index;
 		}
 		else
 			return -1;
@@ -1166,9 +1166,9 @@ int CRebaseDlg::CheckNextCommitIsSquash()
 int CRebaseDlg::GoNext()
 {
 	if(m_CommitList.m_IsOldFirst)
-		m_CurrentRebaseIndex++;
+		++m_CurrentRebaseIndex;
 	else
-		m_CurrentRebaseIndex--;
+		--m_CurrentRebaseIndex;
 	return 0;
 
 }
@@ -1334,7 +1334,7 @@ void CRebaseDlg::UpdateProgress()
 		curRev=(GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
 	}
 
-	for(int i=0;i<m_CommitList.m_arShownList.GetSize();i++)
+	for (int i = 0; i < m_CommitList.m_arShownList.GetSize(); ++i)
 	{
 		prevRev=(GitRev*)m_CommitList.m_arShownList[i];
 		if(prevRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_CURRENT)

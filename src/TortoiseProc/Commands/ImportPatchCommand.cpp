@@ -55,7 +55,7 @@ bool ImportPatchCommand::Execute()
 		g_Git.m_CurrentDir=str;
 	}
 
-	for(int i=0;i<this->orgPathList.GetCount();i++)
+	for(int i = 0 ; i < this->orgPathList.GetCount(); ++i)
 	{
 		if(!orgPathList[i].IsDirectory())
 		{

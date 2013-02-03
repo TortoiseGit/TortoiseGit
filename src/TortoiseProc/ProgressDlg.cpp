@@ -176,7 +176,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 	if(pdata)
 		pdata->clear();
 
-	for(int i=0;i<cmdlist.size();i++)
+	for (int i = 0; i < cmdlist.size(); ++i)
 	{
 		if(cmdlist[i].IsEmpty())
 			continue;
@@ -184,7 +184,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		if (bShowCommand)
 		{
 			CStringA str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\n\n"), CP_UTF8);
-			for(int j=0;j<str.GetLength();j++)
+			for (int j = 0; j < str.GetLength(); ++j)
 			{
 				if(pdata)
 				{
@@ -385,10 +385,10 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		if(lParam == 0)
 		{
 			m_Databuf.m_critSec.Lock();
-			for(int i=this->m_BufStart;i<this->m_Databuf.size();i++)
+			for (int i = this->m_BufStart; i < this->m_Databuf.size(); ++i)
 			{
 				char c = this->m_Databuf[m_BufStart];
-				m_BufStart++;
+				++m_BufStart;
 				m_Databuf.m_critSec.Unlock();
 				ParserCmdOutput(c);
 
@@ -448,7 +448,7 @@ void CProgressDlg::ClearESC(CString &str)
 				if (colorEnd > 0)
 				{
 					bool found = true;
-					for (int i = escapePosition + 2; i < colorEnd; i++)
+					for (int i = escapePosition + 2; i < colorEnd; ++i)
 					{
 						if (str[i] != _T(';') && (str[i] < _T('0') && str[i] > _T('9')))
 						{
@@ -624,14 +624,14 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 void CProgressDlg::InsertCRLF()
 {
 	m_Databuf.m_critSec.Lock();
-	for(int i=0;i<m_Databuf.size();i++)
+	for (int i = 0; i < m_Databuf.size(); ++i)
 	{
 		if(m_Databuf[i]==('\n'))
 		{
 			if(i==0 || m_Databuf[i-1]!= ('\r'))
 			{
 				m_Databuf.insert(m_Databuf.begin()+i,('\r'));
-				i++;
+				++i;
 			}
 		}
 	}
@@ -675,7 +675,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	if(size == -1)
 		size = (int)strlen(buff);
 
-	for(int i=0;i<size;i++)
+	for (int i = 0; i < size; ++i)
 	{
 		if(buff[i] == ']')
 			start = i;

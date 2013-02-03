@@ -522,7 +522,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 		else if (oneline.Find(what) >=0)
 			bFound = true;
 
-		i++;
+		++i;
 		if(!bFound && i >= (signed int)m_CommitHash.size())
 			i=0;
 	}while(i!=line &&(!bFound));
@@ -681,7 +681,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		for (unsigned int i=0;i<this->m_Authors.size();i++)
+		for (unsigned int i = 0; i < this->m_Authors.size(); ++i)
 		{
 			::GetTextExtentPoint32(hDC,m_Authors[i] , m_Authors[i].GetLength(), &width);
 			if (width.cx > maxwidth.cx)
@@ -852,7 +852,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	// draw the colored bar
 	for (std::vector<LONG>::const_iterator it = m_ID.begin(); it != m_ID.end(); ++it)
 	{
-		currentLine++;
+		++currentLine;
 		// get the line color
 		COLORREF cr = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (*it - m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
 		if ((currentLine > line)&&(currentLine <= (line + linesonscreen)))
@@ -890,8 +890,8 @@ void CTortoiseGitBlameView::StringExpand(LPSTR str)
 		{
 			memmove(cPos+1, cPos, strlen(cPos)*sizeof(char));
 			*cPos = '\r';
-			cPos++;
-			cPos++;
+			++cPos;
+			++cPos;
 		}
 	} while (cPos != NULL);
 }
@@ -905,8 +905,8 @@ void CTortoiseGitBlameView::StringExpand(LPWSTR str)
 		{
 			memmove(cPos+1, cPos, wcslen(cPos)*sizeof(wchar_t));
 			*cPos = '\r';
-			cPos++;
-			cPos++;
+			++cPos;
+			++cPos;
 		}
 	} while (cPos != NULL);
 }
@@ -1206,7 +1206,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 
 			// This light blue is found in the windows system palette so is safe to use even in 256 colour modes.
 			// Show the whole section of VBScript with light blue background
-			for (int bstyle=SCE_HB_DEFAULT; bstyle<=SCE_HB_STRINGEOL; bstyle++) {
+			for (int bstyle = SCE_HB_DEFAULT; bstyle <= SCE_HB_STRINGEOL; ++bstyle) {
 				SendEditor(SCI_STYLESETFONT, bstyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bstyle, lightBlue);
@@ -1226,7 +1226,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 			SetAStyle(SCE_HBA_IDENTIFIER, black);
 
 			// Show the whole section of ASP VBScript with bright yellow background
-			for (int bastyle=SCE_HBA_DEFAULT; bastyle<=SCE_HBA_STRINGEOL; bastyle++) {
+			for (int bastyle = SCE_HBA_DEFAULT; bastyle <= SCE_HBA_STRINGEOL; ++bastyle) {
 				SendEditor(SCI_STYLESETFONT, bastyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, bastyle, RGB(0xFF, 0xFF, 0));
@@ -1277,7 +1277,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 			SetAStyle(SCE_HPHP_OPERATOR, darkBlue);
 
 			// Show the whole section of Javascript with off white background
-			for (int jstyle=SCE_HJ_DEFAULT; jstyle<=SCE_HJ_SYMBOLS; jstyle++) {
+			for (int jstyle = SCE_HJ_DEFAULT; jstyle <= SCE_HJ_SYMBOLS; ++jstyle) {
 				SendEditor(SCI_STYLESETFONT, jstyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jstyle, offWhite);
@@ -1287,7 +1287,7 @@ xor virtual while __file__ __line__ __sleep __wakeup")).GetBuffer()));
 			SendEditor(SCI_STYLESETEOLFILLED, SCE_HJ_STRINGEOL, 1);
 
 			// Show the whole section of Javascript with brown background
-			for (int jastyle=SCE_HJA_DEFAULT; jastyle<=SCE_HJA_SYMBOLS; jastyle++) {
+			for (int jastyle = SCE_HJA_DEFAULT; jastyle <= SCE_HJA_SYMBOLS; ++jastyle) {
 				SendEditor(SCI_STYLESETFONT, jastyle,
 					reinterpret_cast<LPARAM>(m_TextView.StringForControl(_T("Lucida Console")).GetBuffer()));
 				SendEditor(SCI_STYLESETBACK, jastyle, RGB(0xDF, 0xDF, 0x7F));
@@ -1386,7 +1386,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		bool isbound = ( data[pos] == _T('^') );
 
 		if( (data.size() - pos) >1 && data[pos] == _T('^'))
-			pos ++;
+			++pos;
 
 		if( data[pos] == 0)
 			continue;
@@ -1596,7 +1596,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 			if (m_ID[line] == -1)
 			{
 				m_ID[line] = -2; // don't do this lazy calculation again and again for unfindable hashes
-				for(int i = 0; i<this->GetLogData()->size(); i++)
+				for (size_t i = 0; i < this->GetLogData()->size(); ++i)
 				{
 					if(m_SelectedHash == this->GetLogData()->at(i))
 					{
@@ -1658,7 +1658,7 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 
 	if (m_SelectedHash != pRev->m_CommitHash) {
 		m_SelectedHash = pRev->m_CommitHash;
-		for (int i = 0; i < m_CommitHash.size(); ++i)
+		for (size_t i = 0; i < m_CommitHash.size(); ++i)
 		{
 			if (pRev->m_CommitHash == m_CommitHash[i])
 			{
@@ -1875,9 +1875,9 @@ int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
 			}
 		}
 		if(bUpOrDown)
-			line--;
+			--line;
 		else
-			line++;
+			++line;
 	}
 	return -1;
 }

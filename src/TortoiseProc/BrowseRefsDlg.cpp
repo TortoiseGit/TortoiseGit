@@ -1039,7 +1039,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_DeleteAllTags:
 		{
-			for (int i = 0; i < m_ListRefLeafs.GetItemCount(); i++)
+			for (int i = 0; i < m_ListRefLeafs.GetItemCount(); ++i)
 			{
 				m_ListRefLeafs.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
 				selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(i));

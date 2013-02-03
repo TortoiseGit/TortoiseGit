@@ -147,7 +147,7 @@ protected:
 			{
 				return line++;
 			}
-			line--;
+			--line;
 		}
 		return line;
 	}

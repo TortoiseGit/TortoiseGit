@@ -195,7 +195,7 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 	if(g_Git.m_IsUseGitDLL)
 	{
 		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref),AddTolist,this);
-		for(int i=0;i<size();i++)
+		for (size_t i = 0; i < size(); ++i)
 		{
 			m_pLogCache->m_HashMap[at(i)].m_Ref.Format(_T("%s{%d}"), ref,i);
 		}

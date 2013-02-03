@@ -211,8 +211,7 @@ CCmdLineParser::ITERPOS CCmdLineParser::getNext(ITERPOS& pos, stdstring& sKey, s
 	{
 		sKey = pos->first;
 		sValue = pos->second;
-		pos ++;
-		return pos;
+		return ++pos;
 	}
 }
 

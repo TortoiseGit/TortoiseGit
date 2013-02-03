@@ -196,7 +196,7 @@ BOOL CHwSMTP::SendSpeedEmail
 
 		CString to;
 		to.Empty();
-		for(int i=0;i<itr1->second.size();i++)
+		for (size_t i = 0; i < itr1->second.size(); ++i)
 		{
 			to+=itr1->second[i];
 			to+=_T(";");
