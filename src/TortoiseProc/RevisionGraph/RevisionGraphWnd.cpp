@@ -662,9 +662,6 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CRevisionGraphWnd::OnCaptureChanged(CWnd *pWnd)
 {
-	m_bIsRubberBand = false;
-	m_ptRubberEnd = CPoint(0,0);
-
 	__super::OnCaptureChanged(pWnd);
 }
 
@@ -1614,6 +1611,19 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 			return __super::OnMouseMove(nFlags, point);
 		}
 	}
+	SetCapture();
+	
+	int pos_h = GetScrollPos(SB_HORZ);
+	pos_h -= point.x - m_ptRubberStart.x;
+	SetScrollPos(SB_HORZ, pos_h);
+
+	int pos_v = GetScrollPos(SB_VERT);
+	pos_v -= point.y - m_ptRubberStart.y;
+	SetScrollPos(SB_VERT, pos_v);
+
+	m_ptRubberStart = point;
+
+	this->Invalidate();
 #if 0
 	if ((abs(m_ptRubberStart.x - point.x) < 2)&&(abs(m_ptRubberStart.y - point.y) < 2))
 	{
@@ -1655,6 +1665,8 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 						 ? MAKEINTRESOURCE(IDC_PANCURDOWN)
 						 : MAKEINTRESOURCE(IDC_PANCUR);
 			}
+			if (m_bIsRubberBand)
+				cursorID = IDC_HAND;
 		}
 	}
 
