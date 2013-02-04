@@ -221,8 +221,8 @@ protected:
 	CColors			m_Colors;
 	bool			m_bTweakTrunkColors;
 	bool			m_bTweakTagsColors;
-	bool			m_bIsRubberBand;
-	CPoint			m_ptRubberStart;
+	bool			m_bIsCanvasMove;
+	CPoint			m_ptMoveCanvas;
 	CPoint			m_ptRubberEnd;
 
 	CBitmap			m_Preview;

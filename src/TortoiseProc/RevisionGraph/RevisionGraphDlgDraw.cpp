@@ -1308,19 +1308,6 @@ void CRevisionGraphWnd::DrawGraph(GraphicsDevice& graphics, const CRect& rect, i
 	delete memDC;
 }
 
-#if 0
-void CRevisionGraphWnd::DrawRubberBand()
-{
-	CDC * pDC = GetDC();
-	pDC->SetROP2(R2_NOT);
-	pDC->SelectObject(GetStockObject(NULL_BRUSH));
-	pDC->Rectangle(min(m_ptRubberStart.x, m_ptRubberEnd.x), min(m_ptRubberStart.y, m_ptRubberEnd.y),
-		max(m_ptRubberStart.x, m_ptRubberEnd.x), max(m_ptRubberStart.y, m_ptRubberEnd.y));
-	ReleaseDC(pDC);
-}
-
-#endif
-
 void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode, CGitHash rev, int mode )
 {
 	//multi - line mode. One RefName is one new line
