@@ -101,14 +101,14 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	, m_bTweakTagsColors(true)
 	, m_fZoomFactor(DEFAULT_ZOOM)
 	, m_ptRubberEnd(0,0)
-	, m_ptRubberStart(0,0)
+	, m_ptMoveCanvas(0,0)
 	, m_bShowOverview(false)
 	, m_parent (NULL)
 	, m_hoverIndex (NULL)
 	, m_hoverGlyphs (0)
 //	, m_tooltipIndex ((index_t)NO_INDEX)
 	, m_showHoverGlyphs (false)
-	, m_bIsRubberBand(false)
+	, m_bIsCanvasMove(false)
 	, m_previewWidth(0)
 	, m_previewHeight(0)
 	, m_previewZoom(1)
@@ -632,12 +632,12 @@ void CRevisionGraphWnd::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		m_SelectedEntry1 = NULL;
 		m_SelectedEntry2 = NULL;
-		m_bIsRubberBand = true;
+		m_bIsCanvasMove = true;
 		Invalidate(FALSE);
 		if (m_bShowOverview && m_OverviewRect.PtInRect(point))
-			m_bIsRubberBand = false;
+			m_bIsCanvasMove = false;
 	}
-	m_ptRubberStart = point;
+	m_ptMoveCanvas = point;
 
 	UINT uEnable = MF_BYCOMMAND;
 	if ((m_SelectedEntry1 != NULL)&&(m_SelectedEntry2 != NULL))
@@ -667,10 +667,10 @@ void CRevisionGraphWnd::OnCaptureChanged(CWnd *pWnd)
 
 void CRevisionGraphWnd::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	if (!m_bIsRubberBand)
+	if (!m_bIsCanvasMove)
 		return;	 // we don't have a rubberband, so no zooming necessary
 
-	m_bIsRubberBand = false;
+	m_bIsCanvasMove = false;
 	ReleaseCapture();
 	if (IsUpdateJobRunning())
 		return __super::OnLButtonUp(nFlags, point);
@@ -678,8 +678,8 @@ void CRevisionGraphWnd::OnLButtonUp(UINT nFlags, CPoint point)
 	// zooming is finished
 	m_ptRubberEnd = CPoint(0,0);
 	CRect rect = GetClientRect();
-	int x = abs(m_ptRubberStart.x - point.x);
-	int y = abs(m_ptRubberStart.y - point.y);
+	int x = abs(m_ptMoveCanvas.x - point.x);
+	int y = abs(m_ptMoveCanvas.y - point.y);
 
 	if ((x < 20)&&(y < 20))
 	{
@@ -695,8 +695,8 @@ void CRevisionGraphWnd::OnLButtonUp(UINT nFlags, CPoint point)
 	float fact = max(yfact, xfact);
 
 	// find out where to scroll to
-	x = min(m_ptRubberStart.x, point.x) + GetScrollPos(SB_HORZ);
-	y = min(m_ptRubberStart.y, point.y) + GetScrollPos(SB_VERT);
+	x = min(m_ptMoveCanvas.x, point.x) + GetScrollPos(SB_HORZ);
+	y = min(m_ptMoveCanvas.y, point.y) + GetScrollPos(SB_VERT);
 
 	float fZoomfactor = m_fZoomFactor*fact;
 	if (fZoomfactor > 10 * MAX_ZOOM)
@@ -725,11 +725,11 @@ void CRevisionGraphWnd::OnLButtonUp(UINT nFlags, CPoint point)
 
 bool CRevisionGraphWnd::CancelMouseZoom()
 {
-	bool bRet = m_bIsRubberBand;
+	bool bRet = m_bIsCanvasMove;
 	ReleaseCapture();
-	if (m_bIsRubberBand)
+	if (m_bIsCanvasMove)
 		Invalidate(FALSE);
-	m_bIsRubberBand = false;
+	m_bIsCanvasMove = false;
 	m_ptRubberEnd = CPoint(0,0);
 	return bRet;
 }
@@ -1545,7 +1545,7 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		return __super::OnMouseMove(nFlags, point);
 	}
-	if (!m_bIsRubberBand)
+	if (!m_bIsCanvasMove)
 	{
 		if (m_bShowOverview && (m_OverviewRect.PtInRect(point))&&(nFlags & MK_LBUTTON))
 		{
@@ -1600,34 +1600,17 @@ void CRevisionGraphWnd::OnMouseMove(UINT nFlags, CPoint point)
 	SetCapture();
 	
 	int pos_h = GetScrollPos(SB_HORZ);
-	pos_h -= point.x - m_ptRubberStart.x;
+	pos_h -= point.x - m_ptMoveCanvas.x;
 	SetScrollPos(SB_HORZ, pos_h);
 
 	int pos_v = GetScrollPos(SB_VERT);
-	pos_v -= point.y - m_ptRubberStart.y;
+	pos_v -= point.y - m_ptMoveCanvas.y;
 	SetScrollPos(SB_VERT, pos_v);
 
-	m_ptRubberStart = point;
+	m_ptMoveCanvas = point;
 
 	this->Invalidate();
-#if 0
-	if ((abs(m_ptRubberStart.x - point.x) < 2)&&(abs(m_ptRubberStart.y - point.y) < 2))
-	{
-		return __super::OnMouseMove(nFlags, point);
-	}
 
-	SetCapture();
-
-	if ((m_ptRubberEnd.x != 0)||(m_ptRubberEnd.y != 0))
-		DrawRubberBand();
-	m_ptRubberEnd = point;
-	CRect rect = GetClientRect();
-	m_ptRubberEnd.x = max(m_ptRubberEnd.x, rect.left);
-	m_ptRubberEnd.x = min(m_ptRubberEnd.x, rect.right);
-	m_ptRubberEnd.y = max(m_ptRubberEnd.y, rect.top);
-	m_ptRubberEnd.y = min(m_ptRubberEnd.y, rect.bottom);
-	DrawRubberBand();
-#endif
 	__super::OnMouseMove(nFlags, point);
 }
 
@@ -1651,7 +1634,7 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 						 ? MAKEINTRESOURCE(IDC_PANCURDOWN)
 						 : MAKEINTRESOURCE(IDC_PANCUR);
 			}
-			if (m_bIsRubberBand)
+			if (m_bIsCanvasMove)
 				cursorID = IDC_HAND;
 		}
 	}

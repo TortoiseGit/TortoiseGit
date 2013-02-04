@@ -48,7 +48,7 @@ using namespace ogdf;
 
 void CRevisionGraphWnd::InitView()
 {
-	m_bIsRubberBand = false;
+	m_bIsCanvasMove = false;
 
 	SetScrollbars();
 }
