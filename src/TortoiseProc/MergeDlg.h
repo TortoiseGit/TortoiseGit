@@ -42,6 +42,9 @@ public:
 	BOOL m_bNoCommit;
 	BOOL m_bLog;
 	int m_nLog;
+	CString m_MergeStrategy;
+	CString m_StrategyOption;
+	CString m_StrategyParam;
 	//CString m_Base;
 
 
@@ -62,4 +65,6 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckMergeLog();
+	afx_msg void OnCbnSelchangeComboMergestrategy();
+	afx_msg void OnCbnSelchangeComboStrategyoption();
 };

@@ -7734,6 +7734,10 @@ msgstr ""
 msgid "Status of item in Git"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Strategy"
+msgstr ""
+
 #. Resource IDs: (13)
 msgid "Stops bisect mode"
 msgstr ""

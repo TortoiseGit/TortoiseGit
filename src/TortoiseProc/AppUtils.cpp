@@ -2743,6 +2743,17 @@ BOOL CAppUtils::Merge(CString *commit)
 			args += fmt;
 		}
 
+		if (!dlg.m_MergeStrategy.IsEmpty())
+		{
+			args += _T(" --strategy=") + dlg.m_MergeStrategy;
+			if (!dlg.m_StrategyOption.IsEmpty())
+			{
+				args += _T(" --strategy-option=") + dlg.m_StrategyOption;
+				if (!dlg.m_StrategyParam.IsEmpty())
+					args += _T("=") + dlg.m_StrategyParam;
+			}
+		}
+
 		if(!dlg.m_strLogMesage.IsEmpty())
 		{
 			CString logmsg = dlg.m_strLogMesage;

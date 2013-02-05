@@ -7,6 +7,7 @@ Released: unreleased
  * Can disable log cache (tortoisegit.data, tortoisegit.index)
  * Fixed issue #1623: Search by email in Log window
  * Revision Graph can save as graphviz dot language (*.gv)
+ * Support merge strategies except octopus
 
 == Bug Fix ==
  * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content
