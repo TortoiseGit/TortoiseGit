@@ -42,6 +42,11 @@ public:
 		*this = hash;
 		return *this;
 	}
+	CGitHash & operator = (const unsigned char *p)
+	{
+		memcpy(m_hash,p,GIT_HASH_SIZE);
+		return *this;
+	}
 	CGitHash(CString &str)
 	{
 		if (!IsValidSHA1(str))

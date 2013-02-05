@@ -1306,7 +1306,28 @@ bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 {
 	return pData->bAuxItem;
 }
+BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b)
+{
+	NotificationData * data = new NotificationData();
+	data->action = action;
+	data->bAuxItem = false;
 
+	if (action == git_wc_notify_update_ref)
+	{
+		data->m_NewHash = b->id;
+		data->m_OldHash = a->id;
+		data->sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
+		data->sPathColumnText.Format(_T("%s\t %s -> %s"), str, 
+				data->m_OldHash.ToString().Left(g_Git.GetShortHASHLength()),
+				data->m_NewHash.ToString().Left(g_Git.GetShortHASHLength()));
+
+	}
+
+	m_arData.push_back(data);
+	AddItemToList();
+
+	return TRUE;
+}
 BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat)
 {
 	static unsigned int start = 0;
@@ -2359,6 +2380,15 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& localoperation)
 	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE:GIT_CHECKOUT_SAFE_CREATE;
 	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
 	clone_opts.checkout_opts.progress_payload = this;
+
+	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+	callbacks.update_tips = RemoteUpdatetipsCallback;
+	callbacks.progress = RemoteProgressCallback;
+	callbacks.completion = RemoteCompletionCallback;
+	callbacks.payload = this;
+
+	clone_opts.remote_callbacks = &callbacks;
 
 	if (!m_RefSpec.IsEmpty())
 		clone_opts.checkout_branch = CUnicodeUtils::GetMulti(m_RefSpec,CP_UTF8).GetBuffer();
