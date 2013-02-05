@@ -82,6 +82,7 @@ typedef enum
 	git_wc_notify_revert,
 	git_wc_notify_fetch,
 	git_wc_notify_checkout,
+	git_wc_notify_update_ref,
 
 }git_wc_notify_action_t;
 typedef enum
@@ -195,7 +196,6 @@ private:
 		CTGitPath				basepath;
 //		CString					changelistname;
 
-///		git_wc_notify_action_t	action;
 //		git_node_kind_t			kind;
 //		CString					mime_type;
 //		git_wc_notify_state_t	content_state;
@@ -208,6 +208,8 @@ private:
 		bool					bConflictedActionItem;		// Is this item a conflict?
 		bool					bAuxItem;					// Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
+		CGitHash				m_OldHash;
+		CGitHash				m_NewHash;
 
 	};
 protected:
@@ -226,6 +228,8 @@ protected:
 		git_merge_range_t * range,
 		git_error_t * err, apr_pool_t * pool*/
 		);
+	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
+	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
 
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 
@@ -254,6 +258,9 @@ protected:
 	}
 	static int RemoteUpdatetipsCallback(const char *refname, const git_oid *a, const git_oid *b, void *data)
 	{
+		CString str;
+		str = CUnicodeUtils::GetUnicode(refname);
+		((CGitProgressDlg*)data) -> Notify(git_wc_notify_update_ref, str, a, b);
 		return 0;
 	}
 
