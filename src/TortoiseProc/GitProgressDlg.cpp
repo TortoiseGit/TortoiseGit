@@ -78,6 +78,7 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bBare(false)
 	, m_bNoCheckout(false)
 	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
+	, m_options(0)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
@@ -86,8 +87,6 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bThreadRunning(FALSE)
 	, m_nConflicts(0)
 	, m_bMergesAddsDeletesOccurred(FALSE)
-
-	, m_options(ProgOptNone)
 	, m_dwCloseOnEnd((DWORD)-1)
 	, m_bFinishedItemAdded(false)
 	, m_bLastVisible(false)
@@ -1326,6 +1325,8 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, CString str, c
 	m_arData.push_back(data);
 	AddItemToList();
 
+	m_Animate.Stop();
+	m_Animate.ShowWindow(SW_HIDE);
 	return TRUE;
 }
 BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat)
@@ -1586,9 +1587,9 @@ BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
+void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-#if 0
+
 	if (m_options & ProgOptDryRun)
 		return;	// don't do anything in a dry-run.
 
@@ -1614,6 +1615,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 				NotificationData * data = m_arData[selIndex];
 				if ((data)&&(!data->path.IsDirectory()))
 				{
+/*
 					if (data->action == svn_wc_notify_update_update || data->action == svn_wc_notify_resolved)
 					{
 						if (m_ProgList.GetSelectedCount() == 1)
@@ -1622,6 +1624,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 							bAdded = true;
 						}
 					}
+
 						if (data->bConflictedActionItem)
 						{
 							if (m_ProgList.GetSelectedCount() == 1)
@@ -1635,24 +1638,17 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 						}
 						else if ((data->content_state == svn_wc_notify_state_merged)||(GitProgress_Merge == m_Command)||(data->action == svn_wc_notify_resolved))
 							popup.SetDefaultItem(ID_COMPARE, FALSE);
-
+*/
 					if (m_ProgList.GetSelectedCount() == 1)
 					{
-						if ((data->action == svn_wc_notify_add)||
-							(data->action == svn_wc_notify_update_add)||
-							(data->action == svn_wc_notify_commit_added)||
-							(data->action == svn_wc_notify_commit_modified)||
-							(data->action == svn_wc_notify_restore)||
-							(data->action == svn_wc_notify_revert)||
-							(data->action == svn_wc_notify_resolved)||
-							(data->action == svn_wc_notify_commit_replaced)||
-							(data->action == svn_wc_notify_commit_modified)||
-							(data->action == svn_wc_notify_commit_postfix_txdelta)||
-							(data->action == svn_wc_notify_update_update))
+						if ((data->action == git_wc_notify_add)||
+							(data->action == git_wc_notify_revert)||
+							(data->action == git_wc_notify_resolved)||
+							(data->action == git_wc_notify_checkout)||
+							(data->action == git_wc_notify_update_ref))
 						{
 							popup.AppendMenuIcon(ID_LOG, IDS_MENULOG,IDI_LOG);
-							if (data->action == svn_wc_notify_update_update)
-								popup.AppendMenu(MF_SEPARATOR, NULL);
+							popup.AppendMenu(MF_SEPARATOR, NULL);
 							popup.AppendMenuIcon(ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
 							popup.AppendMenuIcon(ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 							bAdded = true;
@@ -1664,9 +1660,9 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 					if (data)
 					{
 						CString sPath = GetPathFromColumnText(data->sPathColumnText);
-						if ((!sPath.IsEmpty())&&(!SVN::PathIsURL(CTGitPath(sPath))))
+						CTGitPath path = CTGitPath(sPath);
+						if (!sPath.IsEmpty())
 						{
-							CTGitPath path = CTGitPath(sPath);
 							if (path.GetDirectory().Exists())
 							{
 								popup.AppendMenuIcon(ID_EXPLORE, IDS_SVNPROGRESS_MENUOPENPARENT, IDI_EXPLORER);
@@ -1686,7 +1682,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 				{
 					int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 					DialogEnableWindow(IDOK, FALSE);
-					this->SetPromptApp(&theApp);
+					//this->SetPromptApp(&theApp);
 					theApp.DoWaitCursor(1);
 					bool bOpenWith = false;
 					switch (cmd)
@@ -1714,12 +1710,13 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 						break;
 					case ID_EXPLORE:
 						{
-							CString sPath = GetPathFromColumnText(data->sPathColumnText);
+							CString sPath =  GetPathFromColumnText(data->sPathColumnText);
 
 							CTGitPath path = CTGitPath(sPath);
 							ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
 						}
 						break;
+#if 0
 					case ID_COMPARE:
 						{
 							svn_revnum_t rev = -1;
@@ -1863,22 +1860,23 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 							}
 						}
 						break;
+#endif
 					case ID_LOG:
 						{
-							svn_revnum_t rev = m_RevisionEnd;
-							if (!data->basepath.IsEmpty())
-							{
-								StringRevMap::iterator it = m_FinishedRevMap.find(data->basepath.GetSVNApiPath(pool));
-								if (it != m_FinishedRevMap.end())
-									rev = it->second;
-							}
-							CLogDlg dlg;
-							// fetch the log from HEAD, not the revision we updated to:
-							// the path might be inside an external folder which has its own
-							// revisions.
+							CString cmd = _T("/command:log");
+			
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
-							dlg.SetParams(CTGitPath(sPath), SVNRev(), SVNRev::REV_HEAD, 1, -1, TRUE);
-							dlg.DoModal();
+							if(data->action == git_wc_notify_update_ref)
+							{
+								cmd += _T(" /path:\"") + GetPathFromColumnText(CString()) + _T("\"");
+								if (!data->m_OldHash.IsEmpty())
+									cmd += _T(" /startrev:") + data->m_OldHash.ToString();
+								if (!data->m_NewHash.IsEmpty())
+									cmd += _T(" /endrev:") + data->m_NewHash.ToString();
+							}
+							else
+								cmd += _T(" /path:\"") + sPath + _T("\"");
+							CAppUtils::RunTortoiseGitProc(cmd);
 						}
 						break;
 					case ID_OPENWITH:
@@ -1886,7 +1884,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 					case ID_OPEN:
 						{
 							int ret = 0;
-							CString sWinPath = GetPathFromColumnText(data->sPathColumnText);
+							CString sWinPath =  GetPathFromColumnText(data->sPathColumnText);
 							if (!bOpenWith)
 								ret = (int)ShellExecute(this->m_hWnd, NULL, (LPCTSTR)sWinPath, NULL, NULL, SW_SHOWNORMAL);
 							if ((ret <= HINSTANCE_ERROR)||bOpenWith)
@@ -1903,7 +1901,6 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 			}
 		}
 	}
-#endif
 }
 
 void CGitProgressDlg::OnEnSetfocusInfotext()
@@ -2426,11 +2423,11 @@ void CGitProgressDlg::OnBnClickedNoninteractive()
 
 CString CGitProgressDlg::GetPathFromColumnText(const CString& sColumnText)
 {
-	CString sPath = CPathUtils::ParsePathInString(sColumnText);
+	CString sPath = sColumnText;
 	if (sPath.Find(':')<0)
 	{
 		// the path is not absolute: add the common root of all paths to it
-		sPath = m_targetPathList.GetCommonRoot().GetDirectory().GetWinPathString() + _T("\\") + CPathUtils::ParsePathInString(sColumnText);
+		sPath = g_Git.m_CurrentDir + _T("\\") + sColumnText;
 	}
 	return sPath;
 }

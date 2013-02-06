@@ -149,6 +149,7 @@ bool CloneCommand::Execute()
 			{
 				CGitProgressDlg GitDlg;
 				CTGitPathList list;
+				g_Git.m_CurrentDir = dir;
 				list.AddPath(CTGitPath(dir));
 				GitDlg.SetCommand(CGitProgressDlg::GitProgress_Clone);
 				GitDlg.SetUrl(url);
