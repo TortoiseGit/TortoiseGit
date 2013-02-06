@@ -914,6 +914,7 @@ UINT CCommitDlg::StatusThread()
 
 	m_pathwatcher.Stop();
 
+	m_ListCtrl.SetBusy(true);
 	g_Git.RefreshGitIndex();
 
 	m_bCancelled = false;
