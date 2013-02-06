@@ -1663,7 +1663,7 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 		{
 			if (pRev->m_CommitHash == m_CommitHash[i])
 			{
-				GotoLine(i + 1);
+				GotoLine((long)(i + 1));
 				m_TextView.Invalidate();
 				return;
 			}
