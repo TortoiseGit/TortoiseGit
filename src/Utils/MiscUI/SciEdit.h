@@ -135,6 +135,7 @@ private:
 	CArray<CSciEditContextMenuInterface *, CSciEditContextMenuInterface *> m_arContextHandlers;
 	CPersonalDictionary m_personalDict;
 	bool		m_bDoStyle;
+	int			m_nAutoCompleteMinChars;
 	static bool IsValidURLChar(unsigned char ch);
 protected:
 	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult);

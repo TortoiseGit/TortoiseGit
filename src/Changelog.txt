@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #1619: TortoiseGitMerge: Ribbon UI/toolbars can be toggled
  * Fixed issue #1627: TortoiseGit gets the wrong revision if the branch name looks like git-describe format
  * Fixed issue #1617: TortoiseGitPLink does not work with interactive ssh logins
+ * Fixed issue #1384: Commit Dialog autocompletion does not work for some pattern
 
 = Release 1.8.0.0 =
 Released: 2013-01-27
