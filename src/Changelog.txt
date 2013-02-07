@@ -7,6 +7,7 @@ Released: unreleased
  * Can disable log cache (tortoisegit.data, tortoisegit.index)
  * Revision Graph can save as graphviz dot language (*.gv)
  * Support merge strategies except octopus
+ * Fixed issue #1597: Reduce chance of committing old submodule revision on cherry-pick / rebase conflicts
 
 = Release 1.8.1.0 =
 Released: 2013-02-07

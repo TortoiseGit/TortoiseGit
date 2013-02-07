@@ -946,6 +946,16 @@ public:
 
 public:
 	void SetBusy(bool b) {m_bBusy = b; Invalidate();}
+	void SetHasCheckboxes(bool bHasCheckboxes)
+	{
+		m_bHasCheckboxes = bHasCheckboxes;
+		DWORD exStyle = GetExtendedStyle();
+		if (bHasCheckboxes)
+			exStyle |= LVS_EX_CHECKBOXES;
+		else
+			exStyle &= ~LVS_EX_CHECKBOXES;
+		SetExtendedStyle(exStyle);
+	}
 
 private:
 	void SaveColumnWidths(bool bSaveToRegistry = false);
