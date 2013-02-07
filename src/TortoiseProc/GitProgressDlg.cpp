@@ -2221,7 +2221,7 @@ bool CGitProgressDlg::CmdResolve(CString& sWindowTitle, bool& localoperation)
 #endif
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
-	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
+	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
 	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 
 	return true;
@@ -2420,7 +2420,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 			Sleep(2000);
 			if(m_bCancelled)
 			{
-				CString str(_T("User Canceled"));
+				CString str;
+				str.LoadString(IDS_SVN_USERCANCELLED);
 				Notify(path,git_wc_notify_sendmail_error,ret,&str);
 				return false;
 			}
@@ -2456,7 +2457,8 @@ bool CGitProgressDlg::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*
 				Sleep(2000);
 				if(m_bCancelled)
 				{
-					CString str(_T("User Canceled"));
+					CString str;
+					str.LoadString(IDS_SVN_USERCANCELLED);
 					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&str);
 					return false;
 				}
