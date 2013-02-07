@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2009-2011 - TortoiseSVN
+// Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	: ISettingsPropPage(CSettingsAdvanced::IDD)
 {
 	int i = 0;
+	settings[i].sName	= L"AutoCompleteMinChars";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= 3;
+
 	settings[i].sName	= L"AutocompleteRemovesExtensions";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
