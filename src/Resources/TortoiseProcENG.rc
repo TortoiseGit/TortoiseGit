@@ -437,6 +437,7 @@ BEGIN
     EDITTEXT        IDC_INFOTEXT,7,135,227,22,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
     CONTROL         "",IDC_PROGRESSBAR,"msctls_progress32",NOT WS_VISIBLE | WS_BORDER,237,123,190,9
     LTEXT           "",IDC_PROGRESSLABEL,7,123,225,8,NOT WS_VISIBLE
+    CONTROL         "",IDC_TITLE_ANIMATE,"SysAnimate32",ACS_CENTER | ACS_TRANSPARENT | ACS_AUTOPLAY | NOT WS_VISIBLE | WS_TABSTOP,100,50,208,31,WS_EX_TRANSPARENT
 END
 
 IDD_SIMPLEPROMPT DIALOGEX 0, 0, 220, 126
@@ -1748,6 +1749,19 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
 END
 
+IDD_USER_PASSWD DIALOGEX 0, 0, 241, 82
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Password"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "&Username:",IDC_LABEL,7,22,51,8
+    DEFPUSHBUTTON   "OK",IDOK,120,61,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,184,61,50,14
+    LTEXT           "&Password:",IDC_LABEL2,7,38,57,8
+    EDITTEXT        IDC_USER_NAME,77,18,157,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER_PASSWORD,77,36,157,14,ES_PASSWORD | ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2548,6 +2562,16 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 95
     END
+
+    IDD_USER_PASSWD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        VERTGUIDE, 42
+        VERTGUIDE, 170
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 75
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2757,6 +2781,7 @@ BEGIN
                             "Not enough memory!\nTry reducing the size of the revision graph by either\ncollapsing nodes or reducing the zoom factor."
     IDS_PROC_RESET          "Reset"
     IDS_FETCH_TAGS_ONLY     "All tags only"
+    IDS_PROG_CLONE          "Clone"
 END
 
 STRINGTABLE
@@ -3630,7 +3655,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROGRS_CMD_CHECKOUT "Checkout from %s, revision %s, %s, %s"
+    IDS_PROGRS_CMD_CHECKOUT "Checkout"
     IDS_PROGRS_CMD_IMPORT   "Import %s to %s%s"
     IDS_PROGRS_CMD_SWITCH   "Switch %s to %s, Revision %s"
     IDS_PROGRS_CMD_MERGEPEG "Merging revisions %s of %s into %s, %s%s"
@@ -3684,6 +3709,7 @@ BEGIN
     IDS_SVNACTION_SENDMAIL_ERROR "Error"
     IDS_SVNACTION_SENDMAIL_DONE "Done"
     IDS_SVNACTION_SENDMAIL_RETRY "Retrying..."
+    IDS_PROGRS_TITLE_CLONE  "Clone"
 END
 
 STRINGTABLE

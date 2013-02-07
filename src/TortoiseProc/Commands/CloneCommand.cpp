@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "CloneCommand.h"
 
-//#include "SVNProgressDlg.h"
+#include "GitProgressDlg.h"
 #include "StringUtils.h"
 #include "Hooks.h"
 #include "MessageBox.h"
@@ -27,6 +27,9 @@
 #include "CloneDlg.h"
 #include "ProgressDlg.h"
 #include "AppUtils.h"
+#include "git2.h"
+#include "UnicodeUtils.h"
+#include "SysProgressDlg.h"
 
 bool CloneCommand::Execute()
 {
@@ -139,6 +142,23 @@ bool CloneCommand::Execute()
 			{
 				cmd+= _T(" --username ");
 				cmd+=dlg.m_strUserName;
+			}
+		}
+		else
+		{
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+			{
+				CGitProgressDlg GitDlg;
+				CTGitPathList list;
+				list.AddPath(CTGitPath(dir));
+				GitDlg.SetCommand(CGitProgressDlg::GitProgress_Clone);
+				GitDlg.SetUrl(url);
+				GitDlg.SetPathList(list);
+				GitDlg.SetIsBare(!!dlg.m_bBare);
+				GitDlg.SetRefSpec(dlg.m_bBranch ? dlg.m_strBranch : CString());
+				GitDlg.SetNoCheckout(!!dlg.m_bNoCheckout);
+				GitDlg.DoModal();
+				return !GitDlg.DidErrorsOccur();
 			}
 		}
 		CProgressDlg progress;
