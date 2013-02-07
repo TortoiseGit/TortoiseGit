@@ -615,7 +615,12 @@
 					<?endif ?>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPLink.exe" />
+            <?if $(var.Platform) = "x86" ?>
+            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePLink-x86.exe" />
+            <?endif ?>
+            <?if $(var.Platform) = "x64" ?>
+            <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePLink-x64.exe" />
+            <?endif ?>
             <File Id="F__TortoisePlink" ShortName="TGITPLI.EXE" Name="TortoiseGitPLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPLink.exe" />
             <File Id="F__PuttyGen" ShortName="puttygen.EXE" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen.exe" />
 						<File Id="F__pageant" ShortName="pageant.EXE" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant.exe" />
