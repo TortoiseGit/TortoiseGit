@@ -187,7 +187,6 @@ static void usage(void)
     j += sprintf(buf+j, "            force use of a particular protocol\n");
     j += sprintf(buf+j, "  -P port   connect to specified port\n");
     j += sprintf(buf+j, "  -l user   connect with specified username\n");
-    j += sprintf(buf+j, "  -batch    disable all interactive prompts\n");
     j += sprintf(buf+j, "The following options only apply to SSH connections:\n");
     j += sprintf(buf+j, "  -pw passw login with specified password\n");
     j += sprintf(buf+j, "  -D [listen-IP:]listen-port\n");
@@ -346,7 +345,7 @@ int main(int argc, char **argv)
 	    } else if (ret == 1) {
 		continue;
 	    } else if (!strcmp(p, "-batch")) {
-		console_batch_mode = 1;
+			// ignore and do not print an error message
 	    } else if (!strcmp(p, "-s")) {
 		/* Save status to write to cfg later. */
 		use_subsystem = 1;
