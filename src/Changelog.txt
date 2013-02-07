@@ -1,8 +1,9 @@
 ﻿= Release 1.8.1.0 =
-Released: unreleased
+Released: 2013-02-07
 
 == Features ==
  * Fixed issue #1623: Search by email in Log window
+ * Fixed issue #1624: Easier navigation in revision graph with mouse
 
 == Bug Fix ==
  * Fixed issue #1611: Changing Search criteria with empty search field refreshes log content
