@@ -1137,7 +1137,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
 		{
-			BOOL cancel;
+			BOOL cancel = FALSE;
 			mgtReAddAfterCommit.Execute(cancel);
 		}
 
