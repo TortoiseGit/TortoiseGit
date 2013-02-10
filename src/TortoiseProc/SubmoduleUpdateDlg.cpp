@@ -23,7 +23,6 @@
 #include "AppUtils.h"
 #include "git2.h"
 #include "UnicodeUtils.h"
-#include <Shlwapi.h>
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CStandAloneDialog)
 
