@@ -45,11 +45,7 @@ bool CreateRepositoryCommand::Execute()
 		if (git_repository_init(&repo, path.GetBuffer(), dlg.m_bBare))
 		{
 			path.ReleaseBuffer();
-			const git_error *err = giterr_last();
-			if (err == nullptr)
-				CMessageBox::Show(hwndExplorer, _T("An error occoured in libgit2 without providing a message."), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			else
-				CMessageBox::Show(hwndExplorer, CUnicodeUtils::GetUnicode(giterr_last()->message), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, CGit::GetGitLastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 		path.ReleaseBuffer();

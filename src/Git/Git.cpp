@@ -1207,22 +1207,14 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 }
 
+/**
+Use this method only if m_IsUseLibGit2 is used for fallbacks.
+If you directly use libgit2 methods, use GetLibGit2LastErr instead.
+*/
 CString CGit::GetGitLastErr(CString msg)
 {
 	if (this->m_IsUseLibGit2)
-	{
-		const git_error *libgit2err = giterr_last();
-		if (libgit2err)
-		{
-			CString lastError = CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
-			giterr_clear();
-			return msg + _T("\nlibgit2 returned: ") + lastError;
-		}
-		else
-		{
-			return msg + _T("\nUnknown libgit2 error.");
-		}
-	}
+		return GetLibGit2LastErr(msg);
 	else if (gitLastErr.IsEmpty())
 		return msg + _T("\nUnknown git.exe error.");
 	else
@@ -1231,6 +1223,26 @@ CString CGit::GetGitLastErr(CString msg)
 		gitLastErr.Empty();
 		return msg + _T("\n") + lastError;
 	}
+}
+
+CString CGit::GetLibGit2LastErr()
+{
+	const git_error *libgit2err = giterr_last();
+	if (libgit2err)
+	{
+		CString lastError = CUnicodeUtils::GetUnicode(CStringA(libgit2err->message));
+		giterr_clear();
+		return _T("libgit2 returned: ") + lastError;
+	}
+	else
+		return _T("An error occoured in libgit2, but no message is available.");
+}
+
+CString CGit::GetLibGit2LastErr(CString msg)
+{
+	if (!msg.IsEmpty())
+		return msg + _T("\n") + GetLibGit2LastErr();
+	return GetLibGit2LastErr();
 }
 
 CString CGit::FixBranchName_Mod(CString& branchName)

@@ -201,6 +201,8 @@ public:
 	int Revert(CString commit, CTGitPathList &list, bool keep=true);
 	int Revert(CString commit, CTGitPath &path);
 	CString GetGitLastErr(CString msg);
+	static CString GetLibGit2LastErr();
+	static CString GetLibGit2LastErr(CString msg);
 	bool SetCurrentDir(CString path, bool submodule = false)
 	{
 		bool b = m_GitDir.HasAdminDir(path, submodule ? false : !!PathIsDirectory(path), &m_CurrentDir);

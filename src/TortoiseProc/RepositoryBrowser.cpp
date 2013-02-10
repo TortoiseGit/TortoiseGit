@@ -373,7 +373,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		ret = git_repository_open(&repository, gitdir.GetBuffer());
 		if (ret)
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
@@ -386,14 +386,14 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 		ret = git_commit_lookup(&commit, repository, (git_oid *) hash.m_hash);
 		if (ret)
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not lookup commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 
 		ret = git_commit_tree(&tree, commit);
 		if (ret)
 		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
+			MessageBox(CGit::GetLibGit2LastErr(_T("Could not get tree of commit.")), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
 

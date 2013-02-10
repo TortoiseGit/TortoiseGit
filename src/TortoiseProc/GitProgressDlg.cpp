@@ -842,11 +842,7 @@ bool CGitProgressDlg::SetBackgroundImage(UINT nID)
 
 void CGitProgressDlg::ReportGitError()
 {
-	const git_error *err = giterr_last();
-	if (err == nullptr)
-		ReportError(_T("An error occoured in libgit2, but no message is available."));
-	else
-		ReportError(CUnicodeUtils::GetUnicode(giterr_last()->message));
+	ReportError(CGit::GetLibGit2LastErr());
 }
 
 void CGitProgressDlg::ReportError(const CString& sError)
