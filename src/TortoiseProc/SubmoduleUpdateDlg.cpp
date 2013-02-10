@@ -86,14 +86,14 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 	git_repository *repo;
 	if (git_repository_open(&repo, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir)))
 	{
-		MessageBox(NULL, g_Git.GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(NULL, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}
 
 	STRING_VECTOR *listParams[] = { &list, &prefixList };
 	if (git_submodule_foreach(repo, SubmoduleCallback, &listParams))
 	{
-		MessageBox(NULL, g_Git.GetLibGit2LastErr(_T("Could not get submodule list.")), _T("TortoiseGit"), MB_ICONERROR);
+		MessageBox(NULL, CGit::GetLibGit2LastErr(_T("Could not get submodule list.")), _T("TortoiseGit"), MB_ICONERROR);
 		return;
 	}
 
