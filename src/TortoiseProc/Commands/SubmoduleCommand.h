@@ -50,7 +50,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() {return SubmoduleCommand::Execute(_T("sync"));};
+	virtual bool			Execute();
 };
 
 

@@ -28,6 +28,7 @@
 #include "SubmoduleAddDlg.h"
 #include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool SubmoduleAddCommand::Execute()
 {
@@ -121,6 +122,16 @@ bool SubmoduleUpdateCommand::Execute()
 	progress.DoModal();
 
 	return !progress.m_GitStatus;
+}
+
+bool SubmoduleSyncCommand::Execute()
+{
+	if (CAppUtils::GetMsysgitVersion() >= 0x01080100)
+	{
+		if (CMessageBox::Show(NULL, IDS_SYNC_SUBMODULES_RECURSIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
+			return SubmoduleCommand::Execute(_T("sync"), _T("--recursive"));
+	}
+	return SubmoduleCommand::Execute(_T("sync"));
 }
 
 bool SubmoduleCommand::Execute(CString cmd,  CString arg)

@@ -9017,6 +9017,10 @@ msgstr ""
 msgid "You already have the latest version installed."
 msgstr ""
 
+#. Resource IDs: (1385)
+msgid "You are going to synchronize submodules' remote URLs. Recursively?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr ""
