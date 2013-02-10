@@ -21,7 +21,6 @@
 #include "CreateRepositoryCommand.h"
 #include "ShellUpdater.h"
 #include "MessageBox.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 
 #include "CreateRepoDlg.h"

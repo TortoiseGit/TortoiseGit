@@ -35,6 +35,9 @@
 #define LVS_EX_DOUBLEBUFFER     0x00010000
 #endif
 
+#pragma warning(push)
+#include "git2.h"
+#pragma warning(pop)
 
 #pragma warning(push)
 #pragma warning(disable: 4702)	// Unreachable code warnings in xtree

@@ -19,7 +19,6 @@
 //
 #pragma once
 
-#include "git2.h"
 #include <map>
 #include "StandAloneDlg.h"
 

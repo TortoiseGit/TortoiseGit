@@ -37,6 +37,9 @@ using namespace ATL;
 #include <functional>
 #pragma warning(pop)
 
+#pragma warning(push)
+#include "git2.h"
+#pragma warning(pop)
 
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;
 

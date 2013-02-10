@@ -34,7 +34,6 @@
 //#	include "PathUtils.h"
 #endif
 #include "git.h"
-#include "git2.h"
 #include "gitindex.h"
 #include "shellcache.h"
 

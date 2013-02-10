@@ -64,7 +64,6 @@
 #include "BisectStartDlg.h"
 #include "SysProgressDlg.h"
 #include "UserPassword.h"
-#include "git2.h"
 
 CAppUtils::CAppUtils(void)
 {

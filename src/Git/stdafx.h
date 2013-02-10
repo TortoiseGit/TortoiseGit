@@ -47,3 +47,7 @@
 
 #include <atlbase.h>
 #include <afxstr.h>
+
+#pragma warning(push)
+#include "git2.h"
+#pragma warning(pop)

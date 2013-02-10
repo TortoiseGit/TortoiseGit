@@ -27,7 +27,6 @@
 #include "UnicodeUtils.h"
 #include "gitdll.h"
 #include <fstream>
-#include "git2.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;

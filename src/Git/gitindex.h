@@ -21,7 +21,6 @@
 #include "gitdll.h"
 #include "gitstatus.h"
 #include "SharedMutex.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 
 class CGitIndex

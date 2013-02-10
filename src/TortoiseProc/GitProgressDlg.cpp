@@ -43,7 +43,6 @@
 #include "BugTraqAssociations.h"
 #include "patch.h"
 #include "MassiveGitTask.h"
-#include "git2.h"
 #include "SmartHandle.h"
 
 static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));

@@ -21,7 +21,6 @@
 #include "TortoiseProc.h"
 #include "SubmoduleUpdateDlg.h"
 #include "AppUtils.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CStandAloneDialog)

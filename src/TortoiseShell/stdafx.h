@@ -35,6 +35,7 @@
 #pragma warning(pop)
 
 #pragma warning(push)
+#include "git2.h"
 //#include "apr_general.h"
 //#include "git_pools.h"
 //#include "git_client.h"

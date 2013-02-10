@@ -32,7 +32,6 @@
 #include "IconMenu.h"
 #include "FileDiffDlg.h"
 #include "DeleteRemoteTagDlg.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 #include "InputDlg.h"
 

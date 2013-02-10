@@ -27,7 +27,6 @@
 #include "CloneDlg.h"
 #include "ProgressDlg.h"
 #include "AppUtils.h"
-#include "git2.h"
 #include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
 

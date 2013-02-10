@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "ShellUpdater.h"
-#include "git2.h"
 
 #define ListView_GetItemTextEx(hwndLV, i, iSubItem_, __buf) \
 { \
