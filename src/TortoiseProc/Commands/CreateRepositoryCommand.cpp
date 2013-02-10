@@ -45,7 +45,7 @@ bool CreateRepositoryCommand::Execute()
 		if (git_repository_init(&repo, path.GetBuffer(), dlg.m_bBare))
 		{
 			path.ReleaseBuffer();
-			CMessageBox::Show(hwndExplorer, CGit::GetGitLastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			CMessageBox::Show(hwndExplorer, CGit::GetLibGit2LastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
 		path.ReleaseBuffer();
