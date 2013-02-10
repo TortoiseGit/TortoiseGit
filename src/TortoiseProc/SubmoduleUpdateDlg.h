@@ -20,6 +20,8 @@
 #pragma once
 
 #include "StandAloneDlg.h"
+#include "registry.h"
+#include "HistoryCombo.h"
 
 class CSubmoduleUpdateDlg : public CStandAloneDialog
 {
@@ -40,6 +42,7 @@ protected:
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedHelp();
+	afx_msg void OnLbnSelchangeListPath();
 
 public:
 	BOOL m_bInit;
@@ -48,4 +51,10 @@ public:
 	BOOL m_bNoFetch;
 	BOOL m_bMerge;
 	BOOL m_bRebase;
+	STRING_VECTOR m_PathFilterList;
+	STRING_VECTOR m_PathList;
+
+protected:
+	CListBox	m_PathListBox;
+	CRegString		m_regPath;
 };

@@ -86,7 +86,19 @@ bool SubmoduleUpdateCommand::Execute()
 		return false;
 	}
 
+	STRING_VECTOR pathFilterList;
+	for (size_t i = 0; i < orgPathList.GetCount(); i++)
+	{
+		if (orgPathList[i].IsDirectory())
+		{
+			CString path = ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString();
+			if (!path.IsEmpty())
+				pathFilterList.push_back(path);
+		}
+	}
+
 	CSubmoduleUpdateDlg submoduleUpdateDlg;
+	submoduleUpdateDlg.m_PathFilterList = pathFilterList;
 	if (submoduleUpdateDlg.DoModal() != IDOK)
 		return false;
 
@@ -108,14 +120,11 @@ bool SubmoduleUpdateCommand::Execute()
 	if (submoduleUpdateDlg.m_bRebase)
 		params += _T(" --rebase");
 
-	for (int i = 0; i < this->orgPathList.GetCount(); ++i)
+	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
-		if (orgPathList[i].IsDirectory())
-		{
-			CString str;
-			str.Format(_T("git.exe submodule update%s \"%s\""), params, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
-			progress.m_GitCmdList.push_back(str);
-		}
+		CString str;
+		str.Format(_T("git.exe submodule update%s \"%s\""), params, submoduleUpdateDlg.m_PathList[i]);
+		progress.m_GitCmdList.push_back(str);
 	}
 
 	progress.DoModal();
