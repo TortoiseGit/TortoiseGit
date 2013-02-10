@@ -111,6 +111,7 @@ public:
 		GitProgress_Switch,
 		GitProgress_SendMail,
 		GitProgress_Clone,
+		GitProgress_Fetch,
 	} Command;
 
 
@@ -132,6 +133,7 @@ public:
 	void SetIsBare(bool b) { m_bBare = b; }
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
 	void SetRefSpec(CString &spec){ m_RefSpec = spec; }
+	void SetAutoTag(int tag){ m_AutoTag = tag; }
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
@@ -328,6 +330,7 @@ private:
 	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
+	bool		CmdFetch(CString& sWindowTitle, bool& localoperation);
 
 private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
@@ -404,4 +407,5 @@ private:
 	bool					m_bNoCheckout;
 	CString					m_RefSpec;
 	CBrush					m_background_brush;
+	int						m_AutoTag;
 };
