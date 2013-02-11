@@ -53,18 +53,30 @@ protected:
 	virtual BOOL OnInitDialog();
 
 	CSciEdit			m_cLogMessage;
+	CListBox			m_versionList;
 	ProjectProperties	m_ProjectProperties;
 
 	TCHAR				* m_pDefaultText;
 	DECLARE_MESSAGE_MAP()
 	CHOOSE_EVENT_RADIO() ;
 
+	void UpdateVersionListBox();
+	void ShowVersionListBox(BOOL show = TRUE);
+	void UpdateListCount();
+
 public:
 	CString m_strLogMesage;
+	STRING_VECTOR m_Versions;
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckMergeLog();
 	afx_msg void OnCbnSelchangeComboMergestrategy();
 	afx_msg void OnCbnSelchangeComboStrategyoption();
+	afx_msg void OnBnClickedAddversion();
+	afx_msg void OnBnClickedListversions();
+	afx_msg void OnBnClickedRemoveversion();
+	afx_msg void OnLbnSelchangeListVersions();
+	afx_msg void OnBnClickedMoveversionup();
+	afx_msg void OnBnClickedShiftversionref();
 };

@@ -2714,14 +2714,16 @@ static void MergeCallback(CProgressDlg *dlg, void * /*caller*/, int result)
 	}
 }
 
-BOOL CAppUtils::Merge(CString *commit)
+BOOL CAppUtils::Merge(STRING_VECTOR &revList)
 {
 	if (!CheckUserData())
 		return FALSE;
 
 	CMergeDlg dlg;
-	if(commit)
-		dlg.m_initialRefName = *commit;
+	if (revList.size() == 1)
+		dlg.m_initialRefName = revList[0];
+	else
+		dlg.m_Versions = revList;
 
 	if(dlg.DoModal()==IDOK)
 	{
@@ -2761,7 +2763,12 @@ BOOL CAppUtils::Merge(CString *commit)
 			logmsg.Replace(_T("\""), _T("\\\""));
 			args += _T(" -m \"") + logmsg + _T("\"");
 		}
-		cmd.Format(_T("git.exe merge %s %s"), args, g_Git.FixBranchName(dlg.m_VersionName));
+		cmd.Format(_T("git.exe merge %s"), args);
+		for (size_t i = 0; i < dlg.m_Versions.size(); i++)
+		{
+			cmd.AppendChar(_T(' '));
+			cmd.Append(g_Git.FixBranchName(dlg.m_Versions[i]));
+		}
 
 		CProgressDlg Prodlg;
 		Prodlg.m_GitCmd = cmd;

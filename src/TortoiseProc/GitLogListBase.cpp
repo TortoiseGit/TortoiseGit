@@ -1758,12 +1758,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
 					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 
-				format.LoadString(IDS_LOG_POPUP_MERGEREV);
-				str.Format(format,g_Git.GetCurrentBranch());
-
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC)
-					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
-
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
@@ -1926,6 +1920,15 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 			}
+
+			if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC)
+			{
+				CString strM;
+				strM.Format(IDS_LOG_POPUP_MERGEREV, g_Git.GetCurrentBranch());
+				popup.AppendMenuIcon(ID_MERGEREV, strM, IDI_MERGE);
+				bAddSeparator = true;
+			}
+
 			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC) {
 				if (GetSelectedCount() >= 2)
 					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_EXPORT);

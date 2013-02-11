@@ -65,6 +65,7 @@ void CMergeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBO_STRATEGYOPTION, m_StrategyOption);
 	DDX_Text(pDX, IDC_EDIT_STRATEGYPARAM, m_StrategyParam);
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
+	DDX_Control(pDX, IDC_LIST_VERSIONS, m_versionList);
 }
 
 
@@ -75,6 +76,12 @@ BEGIN_MESSAGE_MAP(CMergeDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CHECK_MERGE_LOG, &CMergeDlg::OnBnClickedCheckMergeLog)
 	ON_CBN_SELCHANGE(IDC_COMBO_MERGESTRATEGY, &CMergeDlg::OnCbnSelchangeComboMergestrategy)
 	ON_CBN_SELCHANGE(IDC_COMBO_STRATEGYOPTION, &CMergeDlg::OnCbnSelchangeComboStrategyoption)
+	ON_BN_CLICKED(IDC_ADDVERSION, &CMergeDlg::OnBnClickedAddversion)
+	ON_BN_CLICKED(IDC_LISTVERSIONS, &CMergeDlg::OnBnClickedListversions)
+	ON_BN_CLICKED(IDC_REMOVEVERSION, &CMergeDlg::OnBnClickedRemoveversion)
+	ON_LBN_SELCHANGE(IDC_LIST_VERSIONS, &CMergeDlg::OnLbnSelchangeListVersions)
+	ON_BN_CLICKED(IDC_MOVEVERSIONUP, &CMergeDlg::OnBnClickedMoveversionup)
+	ON_BN_CLICKED(IDC_SHIFTVERSIONREF, &CMergeDlg::OnBnClickedShiftversionref)
 END_MESSAGE_MAP()
 
 
@@ -135,10 +142,71 @@ BOOL CMergeDlg::OnInitDialog()
 	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("rename-threshold"));
 	((CComboBox *)GetDlgItem(IDC_COMBO_STRATEGYOPTION))->AddString(_T("subtree"));
 
+	for (size_t i = 0; i < m_Versions.size(); i++)
+		m_versionList.AddString(m_Versions[i]);
+	if (m_Versions.size() > 1)
+	{
+		ShowVersionListBox();
+	}
+	else
+	{
+		m_versionList.AddString(_T(""));
+		m_versionList.SetCurSel(0);
+	}
+	UpdateListCount();
+
+	((CButton *)GetDlgItem(IDC_ADDVERSION))->SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_REVGRAPHADDED), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	((CButton *)GetDlgItem(IDC_REMOVEVERSION))->SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_REVGRAPHDELETED), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	((CButton *)GetDlgItem(IDC_MOVEVERSIONUP))->SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+	((CButton *)GetDlgItem(IDC_SHIFTVERSIONREF))->SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_REVISIONGRAPH2), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+
 	EnableSaveRestore(_T("MergeDlg"));
 	GetDlgItem(IDOK)->SetFocus();
 
 	return FALSE;
+}
+
+void CMergeDlg::UpdateVersionListBox()
+{
+	int index = m_versionList.GetCurSel();
+	if (index < 0)
+		return;
+
+	m_versionList.DeleteString(index);
+	if (m_VersionName.IsEmpty())
+	{
+		m_versionList.SetCurSel(-1);
+		UpdateListCount();
+	}
+	else
+	{
+		m_versionList.InsertString(index, m_VersionName);
+		m_versionList.SetCurSel(index);
+	}
+}
+
+void CMergeDlg::ShowVersionListBox(BOOL show)
+{
+	m_versionList.ShowWindow(show ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_LISTVERSIONS)->EnableWindow(show ? FALSE : TRUE);
+	GetDlgItem(IDC_REMOVEVERSION)->EnableWindow(show && m_versionList.GetCurSel() >= 0 ? TRUE : FALSE);
+	GetDlgItem(IDC_MOVEVERSIONUP)->EnableWindow(show && m_versionList.GetCurSel() > 0 ? TRUE : FALSE);
+	GetDlgItem(IDC_SHIFTVERSIONREF)->EnableWindow(show && m_versionList.GetCurSel() >= 0 ? TRUE : FALSE);
+	GetDlgItem(IDC_RADIO_BRANCH)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_COMBOBOXEX_BRANCH)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_BUTTON_BROWSE_REF)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_RADIO_TAGS)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_COMBOBOXEX_TAGS)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_RADIO_VERSION)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_COMBOBOXEX_VERSION)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+	GetDlgItem(IDC_BUTTON_SHOW)->ShowWindow(show ? SW_HIDE : SW_SHOW);
+}
+
+void CMergeDlg::UpdateListCount()
+{
+	CString count;
+	count.Format(IDS_LISTN, m_versionList.GetCount());
+	GetDlgItem(IDC_LISTVERSIONS)->SetWindowText(count);
 }
 
 // CMergeDlg message handlers
@@ -159,6 +227,17 @@ void CMergeDlg::OnBnClickedOk()
 		m_StrategyOption = _T("");
 	if (m_StrategyOption != _T("rename-threshold") && m_StrategyOption != _T("subtree"))
 		m_StrategyParam = _T("");
+
+	if (!m_versionList.IsWindowVisible())
+		UpdateVersionListBox();
+
+	m_Versions.clear();
+	for (int i = 0; i < m_versionList.GetCount(); i++)
+	{
+		CString version;
+		m_versionList.GetText(i, version);
+		m_Versions.push_back(version);
+	}
 
 	OnOK();
 }
@@ -186,4 +265,124 @@ void CMergeDlg::OnCbnSelchangeComboStrategyoption()
 {
 	UpdateData(TRUE);
 	GetDlgItem(IDC_EDIT_STRATEGYPARAM)->EnableWindow(m_StrategyOption == _T("rename-threshold") || m_StrategyOption == _T("subtree"));
+}
+
+void CMergeDlg::OnBnClickedAddversion()
+{
+	if (m_versionList.IsWindowVisible())
+	{
+		ShowVersionListBox(FALSE);
+	}
+	else
+	{
+		UpdateData();
+		UpdateRevsionName();
+		UpdateVersionListBox();
+	}
+
+	int count = m_versionList.GetCount();
+	m_versionList.InsertString(count, _T(""));
+	m_versionList.SetCurSel(count);
+	UpdateListCount();
+
+	int radio = GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
+	switch (radio)
+	{
+		case IDC_RADIO_BRANCH:
+			m_ChooseVersioinBranch.SetCurSel(-1);
+			break;
+		case IDC_RADIO_TAGS:
+			m_ChooseVersioinTags.SetCurSel(-1);
+			break;
+		case IDC_RADIO_VERSION:
+			m_ChooseVersioinVersion.SetCurSel(-1);
+			break;
+	}
+}
+
+void CMergeDlg::OnBnClickedListversions()
+{
+	UpdateData();
+	UpdateRevsionName();
+	UpdateVersionListBox();
+	ShowVersionListBox();
+}
+
+void CMergeDlg::OnBnClickedRemoveversion()
+{
+	int index = m_versionList.GetCurSel();
+	if (index < 0) return;
+	m_versionList.SetSel(index, FALSE);
+	m_versionList.DeleteString(index);
+	UpdateListCount();
+}
+
+void CMergeDlg::OnLbnSelchangeListVersions()
+{
+	GetDlgItem(IDC_REMOVEVERSION)->EnableWindow(m_versionList.GetCurSel() >= 0 ? TRUE : FALSE);
+	GetDlgItem(IDC_MOVEVERSIONUP)->EnableWindow(m_versionList.GetCurSel() > 0 ? TRUE : FALSE);
+	GetDlgItem(IDC_SHIFTVERSIONREF)->EnableWindow(m_versionList.GetCurSel() >= 0 ? TRUE : FALSE);
+}
+
+void CMergeDlg::OnBnClickedMoveversionup()
+{
+	int index = m_versionList.GetCurSel();
+	if (index <= 0) return;
+	CString text;
+	m_versionList.GetText(index, text);
+	m_versionList.DeleteString(index);
+	m_versionList.InsertString(index - 1, text);
+	m_versionList.SetCurSel(index - 1);
+	if (index == 1)
+		GetDlgItem(IDC_MOVEVERSIONUP)->EnableWindow(FALSE);
+}
+
+void CMergeDlg::OnBnClickedShiftversionref()
+{
+	int index = m_versionList.GetCurSel();
+	if (index < 0) return;
+
+	CString text;
+	m_versionList.GetText(index, text);
+	CGitHash hash;
+	if (g_Git.GetHash(hash, text + _T("^{}")))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ref \"") + text + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+
+	MAP_HASH_NAME map;
+	if (g_Git.GetMapHashToFriendName(map))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+
+	STRING_VECTOR list = map[hash];
+	if (list.size() == 0)
+	{
+		MessageBox(CString(MAKEINTRESOURCE(IDS_PROC_LOG_NOBRANCH)), _T("TortoiseGit"), MB_ICONINFORMATION);
+		return;
+	}
+
+	CString result = hash;
+	if (hash.ToString() == text)
+	{
+		result = list[0];
+	}
+	else
+	{
+		for (size_t i = 0; i < list.size(); i++)
+		{
+			if (list[i] == text)
+			{
+				result = i < list.size() - 1 ? list[i + 1] : hash;
+				break;
+			}
+		}
+	}
+
+	m_versionList.DeleteString(index);
+	m_versionList.InsertString(index, result);
+	m_versionList.SetCurSel(index);
 }

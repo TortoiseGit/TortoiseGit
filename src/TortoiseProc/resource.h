@@ -153,6 +153,9 @@
 #define IDI_RESTOREOVL                  342
 #define IDI_JUMPUP                      343
 #define IDI_JUMPDOWN                    344
+#define IDI_REVGRAPHADDED               345
+#define IDI_REVGRAPHDELETED             346
+#define IDI_REVISIONGRAPH2              347
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -806,6 +809,7 @@
 #define IDC_LIST_REMOTE                 1372
 #define IDC_LIST_REF_LEAFS              1372
 #define IDS_SETTINGS_FETCH_ADDEDREMOTE  1372
+#define IDC_LIST_VERSIONS               1373
 #define IDS_STASHSAVE_INCLUDEUNTRACKED  1373
 #define IDS_PROC_NOTSHOWAGAINCONTINUE   1374
 #define IDS_PROC_LOG_JUMPNOTFOUND       1375
@@ -864,6 +868,7 @@
 #define IDS_SETTINGS_ENABLELOGCACHE_TT  1388
 #define IDS_LOG_FILTER_EMAILS           1389
 #define IDS_CARE_SUBMODULE_CHANGES      1390
+#define IDS_LISTN                       1391
 #define IDC_REVISIONGROUP               1393
 #define IDC_REPOLABEL                   1394
 #define IDS_WARN_FOLDERNOTEXIST         1400
@@ -1243,6 +1248,11 @@
 #define IDC_COMBO_STRATEGYOPTION        1746
 #define IDC_EDIT_STRATEGYPARAM          1747
 #define IDC_LIST_PATH                   1748
+#define IDC_ADDVERSION                  1749
+#define IDC_LISTVERSIONS                1750
+#define IDC_REMOVEVERSION               1751
+#define IDC_MOVEVERSIONUP               1752
+#define IDC_SHIFTVERSIONREF             1753
 #define IDS_DLGTITLE_ADD_DIFF_TOOL      1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
@@ -1696,7 +1706,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        345
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1749
+#define _APS_NEXT_CONTROL_VALUE         1754
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

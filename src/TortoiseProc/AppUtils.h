@@ -205,7 +205,8 @@ public:
 	static int GetCommitTemplate(CString &temp);
 
 	static BOOL SVNDCommit();
-	static BOOL Merge(CString *commit =NULL);
+	static BOOL Merge(STRING_VECTOR &revList);
+	static BOOL Merge() { STRING_VECTOR list; return Merge(list); }
 	static void RemoveTempMergeFile(CTGitPath &path);
 	static void EditNote(GitRev *hash);
 	static int GetMsysgitVersion(CString *versionstring=NULL);
