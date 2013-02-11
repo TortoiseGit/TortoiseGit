@@ -77,6 +77,9 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 	CString sDirName = path;
 	if (!bDir)
 	{
+		// e.g "C:\"
+		if (path.GetLength() <= 3)
+			return false;
 		sDirName = path.Left(path.ReverseFind(_T('\\')));
 	}
 
