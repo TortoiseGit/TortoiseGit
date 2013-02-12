@@ -2297,21 +2297,8 @@ static int resolve_to_tree(
 	git_object *obj = NULL;
 
 	/* try to resolve as OID */
-	if (git_oid_fromstrn(&oid, identifier, len) == 0)
-		git_object_lookup_prefix(&obj, repo, &oid, len, GIT_OBJ_ANY);
-
-	/* try to resolve as reference */
-	if (obj == NULL) {
-		git_reference *ref, *resolved;
-		if (git_reference_lookup(&ref, repo, identifier) == 0) {
-			git_reference_resolve(&resolved, ref);
-			git_reference_free(ref);
-			if (resolved) {
-				git_object_lookup(&obj, repo, git_reference_target(resolved), GIT_OBJ_ANY);
-				git_reference_free(resolved);
-			}
-		}
-	}
+	if (git_revparse_single(&obj, repo, identifier))
+		return -1;
 
 	if (obj == NULL)
 		return GIT_ENOTFOUND;
@@ -2411,17 +2398,35 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 		t1 = t2 = NULL;
 		do
 		{
-			if (resolve_to_tree(repo, tree1, &t1))
+			if (tree1.IsEmpty() && tree2.IsEmpty())
 			{
 				ret = -1;
 				break;
 			}
-			if (resolve_to_tree(repo, tree2, &t2))
+			
+			if (tree1.IsEmpty())
+			{
+				tree1 = tree2;
+				tree2.Empty();
+			}
+
+			if (!tree1.IsEmpty() && resolve_to_tree(repo, tree1, &t1))
 			{
 				ret = -1;
 				break;
-			}			
-			if (git_diff_tree_to_tree(&diff, repo, t1, t2, &opts))
+			}
+			
+			if (tree2.IsEmpty())
+			{
+				/* don't check return value, there are not parent commit at first commit*/
+				resolve_to_tree(repo, tree1 + _T("~1"), &t2);
+			}
+			else if (resolve_to_tree(repo, tree2, &t2))
+			{
+				ret = -1;
+				break;
+			}		
+			if (git_diff_tree_to_tree(&diff, repo, t2, t1, &opts))
 			{
 				ret = -1;
 				break;
@@ -2445,19 +2450,18 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine)
 {
-/*
-	if (m_IsUseLibGit2)
+
+	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
 		FILE *file = NULL;
 		_tfopen_s(&file, patchfile, _T("w"));
 		if (file == NULL)
 			return -1;
-		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, &file, bMerge);
+		int ret = GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToFile, file, bMerge);
 		fclose(file);
 		return ret;
 
 	}else
-*/
 	{
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);
@@ -2478,7 +2482,7 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/,
 }
 int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine)
 {
-	if (m_IsUseLibGit2)
+	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
 		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToStringA, buffer, bMerge);
 	}else

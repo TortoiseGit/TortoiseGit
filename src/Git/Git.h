@@ -355,6 +355,7 @@ public:
 		GIT_CMD_CLONE,
 		GIT_CMD_FETCH,
 		GIT_CMD_COMMIT_UPDATE_INDEX,
+		GIT_CMD_DIFF,
 	};
 	bool UsingLibGit2(int cmd);
 
