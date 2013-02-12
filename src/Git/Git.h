@@ -355,7 +355,7 @@ public:
 	{
 		GIT_CMD_CLONE,
 	};
-	BOOL UsingLibGit2(int cmd);
+	bool UsingLibGit2(int cmd);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

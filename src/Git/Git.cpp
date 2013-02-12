@@ -2228,9 +2228,9 @@ CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
 	return shortname;
 }
 
-BOOL CGit::UsingLibGit2(int cmd)
+bool CGit::UsingLibGit2(int cmd)
 {
 	if (cmd >= 0 && cmd < 32)
-		return ((1 << cmd) & m_IsUseLibGit2_mask) ? FALSE : TRUE;
+		return ((1 << cmd) & m_IsUseLibGit2_mask) ? false : true;
 	return FALSE;
 }
