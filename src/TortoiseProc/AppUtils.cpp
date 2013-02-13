@@ -3029,10 +3029,13 @@ bool CAppUtils::BisectStart(CString lastGood, CString firstBad, bool autoClose)
 	return false;
 }
 
-int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, unsigned int /*allowed_types*/, void * /*payload*/)
+int CAppUtils::Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
 {
 	CUserPassword dlg;
 	dlg.m_URL = CUnicodeUtils::GetUnicode(url, CP_UTF8);
+	if (username_from_url)
+		dlg.m_UserName = CUnicodeUtils::GetUnicode(username_from_url, CP_UTF8);
+
 	CStringA username, password;
 	if (dlg.DoModal() == IDOK)
 	{

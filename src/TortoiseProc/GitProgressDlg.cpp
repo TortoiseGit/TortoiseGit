@@ -1290,6 +1290,10 @@ BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t /*action*/, const git_
 	unsigned int dt = GetCurrentTime() - start;
 	size_t ds;
 	double speed = 0;
+	
+	if (m_bCancelled)
+		return FALSE;
+
 	if (dt > 100)
 	{
 		start = GetCurrentTime();

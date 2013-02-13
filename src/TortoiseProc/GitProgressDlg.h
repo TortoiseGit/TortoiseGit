@@ -226,9 +226,9 @@ protected:
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 
 	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
-	static void FetchCallback(const git_transfer_progress *stats, void *payload)
+	static int FetchCallback(const git_transfer_progress *stats, void *payload)
 	{
-		((CGitProgressDlg*)payload) -> Notify(git_wc_notify_fetch, stats);
+		return !((CGitProgressDlg*)payload) -> Notify(git_wc_notify_fetch, stats);
 	}
 
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)

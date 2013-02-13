@@ -213,7 +213,7 @@ public:
 
 	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
 
-	static int	Git2GetUserPassword(git_cred **out, const char *url, unsigned int allowed_types, void *payload);
+	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
 	static void	Git2FetchProgress(const git_transfer_progress *stats, void *payload);
 	static void	Git2CheckoutProgress(const char *path, size_t cur, size_t tot, void *payload);
 
