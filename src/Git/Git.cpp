@@ -2232,5 +2232,5 @@ bool CGit::UsingLibGit2(int cmd)
 {
 	if (cmd >= 0 && cmd < 32)
 		return ((1 << cmd) & m_IsUseLibGit2_mask) ? false : true;
-	return FALSE;
+	return false;
 }
