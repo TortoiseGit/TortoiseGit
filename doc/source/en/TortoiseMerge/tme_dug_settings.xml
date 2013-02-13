@@ -24,6 +24,12 @@
             such when edited.
         </para>
         <para>
+            <guilabel>Use ribbons</guilabel>
+            when set, ribbons interface is used (looks like Office 2007).
+            When unset, traditional toolbar interface is used.
+            Default is set.
+        </para>
+        <para>
             <guilabel>Max line length for inline diffs</guilabel>
             TortoiseGitMerge can get slow when showing inline diffs for
             very long lines. Because of that only lines that are shorter
