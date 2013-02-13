@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,7 +32,9 @@ public:
 	*/
 	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd = NULL, bool uac = false);
 
-	static bool RunTortoiseGitProc(const CString& sCommandLine);
+	static bool RunTortoiseGitProc(const CString& sCommandLine, bool uac = false);
+
+	static bool IsAdminLogin();
 
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width = 128, int height = 128);
 

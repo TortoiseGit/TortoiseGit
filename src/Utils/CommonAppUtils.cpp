@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -132,7 +132,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 	return true;
 }
 
-bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine)
+bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac)
 {
 	CString pathToExecutable = CPathUtils::GetAppDirectory() + _T("TortoiseGitProc.exe");
 	CString sCmd;
@@ -144,7 +144,25 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine)
 		sCmd.Format(_T("\"%s\" %s"), (LPCTSTR)pathToExecutable, (LPCTSTR)sCmdLine);
 	}
 
-	return LaunchApplication(sCmd, NULL, false);
+	return LaunchApplication(sCmd, NULL, false, NULL, uac);
+}
+
+bool CCommonAppUtils::IsAdminLogin()
+{
+	SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
+	PSID administratorsGroup;
+	// Initialize SID.
+	if (!AllocateAndInitializeSid(&ntAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &administratorsGroup))
+		return false;
+
+	// Check whether the token is present in admin group.
+	BOOL isInAdminGroup = FALSE;
+	if (!CheckTokenMembership(NULL, administratorsGroup, &isInAdminGroup))
+		isInAdminGroup = FALSE;
+
+	// Free SID and return.
+	FreeSid(administratorsGroup);
+	return !!isInAdminGroup;
 }
 
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width /* = 128 */, int height /* = 128 */)
