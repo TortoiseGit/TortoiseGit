@@ -111,6 +111,7 @@
 #define IDI_SAVEAS                      292
 #define IDI_EXPLORER                    293
 #define IDI_OPEN                        294
+#define IDI_UPDATE_BKG					295
 #define IDD_CLONE                       297
 #define IDB_GIT                         299
 #define IDD_GITPROGRESS                 300
@@ -1642,6 +1643,7 @@
 #define IDC_USER_NAME                   9692
 #define IDC_USER_PASSWORD               9693
 #define IDS_PROGRS_TITLE_CLONE          9694
+#define IDS_GITACTION_UPDATE_REF        9697
 #define ID_VIEW_ZOOMIN                  32772
 #define ID_VIEW_ZOOMOUT                 32773
 #define ID_VIEW_ZOOM100                 32803

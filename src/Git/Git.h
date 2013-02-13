@@ -354,6 +354,8 @@ public:
 	enum
 	{
 		GIT_CMD_CLONE,
+		GIT_CMD_FETCH,
+		GIT_CMD_PUSH,
 	};
 	bool UsingLibGit2(int cmd);
 };

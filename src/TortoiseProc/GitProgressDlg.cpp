@@ -76,6 +76,8 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bErrorsOccurred(false)
 	, m_bBare(false)
 	, m_bNoCheckout(false)
+	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
+	, m_options(0)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
@@ -84,8 +86,6 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	, m_bThreadRunning(FALSE)
 	, m_nConflicts(0)
 	, m_bMergesAddsDeletesOccurred(FALSE)
-
-	, m_options(ProgOptNone)
 	, m_dwCloseOnEnd((DWORD)-1)
 	, m_bFinishedItemAdded(false)
 	, m_bLastVisible(false)
@@ -957,6 +957,12 @@ UINT CGitProgressDlg::ProgressThread()
 	case GitProgress_Clone:
 		bSuccess = CmdClone(sWindowTitle, localoperation);
 		break;
+	case GitProgress_Fetch:
+		bSuccess = CmdFetch(sWindowTitle, localoperation);
+		break;
+	case GitProgress_Push:
+		bSuccess = CmdPush(sWindowTitle, localoperation);
+		break;
 	}
 	if (!bSuccess)
 		temp.LoadString(IDS_PROGRS_TITLEFAILED);
@@ -1283,8 +1289,31 @@ bool CGitProgressDlg::NotificationDataIsAux(const NotificationData* pData)
 {
 	return pData->bAuxItem;
 }
+BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b)
+{
+	NotificationData * data = new NotificationData();
+	data->action = action;
+	data->bAuxItem = false;
 
-BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t /*action*/, const git_transfer_progress *stat)
+	if (action == git_wc_notify_update_ref)
+	{
+		data->m_NewHash = b->id;
+		data->m_OldHash = a->id;
+		data->sActionColumnText.LoadString(IDS_GITACTION_UPDATE_REF);
+		data->sPathColumnText.Format(_T("%s\t %s -> %s"), str, 
+				data->m_OldHash.ToString().Left(g_Git.GetShortHASHLength()),
+				data->m_NewHash.ToString().Left(g_Git.GetShortHASHLength()));
+
+	}
+
+	m_arData.push_back(data);
+	AddItemToList();
+
+	m_Animate.Stop();
+	m_Animate.ShowWindow(SW_HIDE);
+	return TRUE;
+}
+BOOL CGitProgressDlg::Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat)
 {
 	static unsigned int start = 0;
 	unsigned int dt = GetCurrentTime() - start;
@@ -1542,9 +1571,9 @@ BOOL CGitProgressDlg::PreTranslateMessage(MSG* pMsg)
 	return __super::PreTranslateMessage(pMsg);
 }
 
-void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
+void CGitProgressDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-#if 0
+
 	if (m_options & ProgOptDryRun)
 		return;	// don't do anything in a dry-run.
 
@@ -1570,6 +1599,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 				NotificationData * data = m_arData[selIndex];
 				if ((data)&&(!data->path.IsDirectory()))
 				{
+/*
 					if (data->action == svn_wc_notify_update_update || data->action == svn_wc_notify_resolved)
 					{
 						if (m_ProgList.GetSelectedCount() == 1)
@@ -1578,6 +1608,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 							bAdded = true;
 						}
 					}
+
 						if (data->bConflictedActionItem)
 						{
 							if (m_ProgList.GetSelectedCount() == 1)
@@ -1591,24 +1622,17 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 						}
 						else if ((data->content_state == svn_wc_notify_state_merged)||(GitProgress_Merge == m_Command)||(data->action == svn_wc_notify_resolved))
 							popup.SetDefaultItem(ID_COMPARE, FALSE);
-
+*/
 					if (m_ProgList.GetSelectedCount() == 1)
 					{
-						if ((data->action == svn_wc_notify_add)||
-							(data->action == svn_wc_notify_update_add)||
-							(data->action == svn_wc_notify_commit_added)||
-							(data->action == svn_wc_notify_commit_modified)||
-							(data->action == svn_wc_notify_restore)||
-							(data->action == svn_wc_notify_revert)||
-							(data->action == svn_wc_notify_resolved)||
-							(data->action == svn_wc_notify_commit_replaced)||
-							(data->action == svn_wc_notify_commit_modified)||
-							(data->action == svn_wc_notify_commit_postfix_txdelta)||
-							(data->action == svn_wc_notify_update_update))
+						if ((data->action == git_wc_notify_add)||
+							(data->action == git_wc_notify_revert)||
+							(data->action == git_wc_notify_resolved)||
+							(data->action == git_wc_notify_checkout)||
+							(data->action == git_wc_notify_update_ref))
 						{
 							popup.AppendMenuIcon(ID_LOG, IDS_MENULOG,IDI_LOG);
-							if (data->action == svn_wc_notify_update_update)
-								popup.AppendMenu(MF_SEPARATOR, NULL);
+							popup.AppendMenu(MF_SEPARATOR, NULL);
 							popup.AppendMenuIcon(ID_OPEN, IDS_LOG_POPUP_OPEN, IDI_OPEN);
 							popup.AppendMenuIcon(ID_OPENWITH, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 							bAdded = true;
@@ -1620,9 +1644,9 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 					if (data)
 					{
 						CString sPath = GetPathFromColumnText(data->sPathColumnText);
-						if ((!sPath.IsEmpty())&&(!SVN::PathIsURL(CTGitPath(sPath))))
+						CTGitPath path = CTGitPath(sPath);
+						if (!sPath.IsEmpty())
 						{
-							CTGitPath path = CTGitPath(sPath);
 							if (path.GetDirectory().Exists())
 							{
 								popup.AppendMenuIcon(ID_EXPLORE, IDS_SVNPROGRESS_MENUOPENPARENT, IDI_EXPLORER);
@@ -1642,7 +1666,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 				{
 					int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 					DialogEnableWindow(IDOK, FALSE);
-					this->SetPromptApp(&theApp);
+					//this->SetPromptApp(&theApp);
 					theApp.DoWaitCursor(1);
 					bool bOpenWith = false;
 					switch (cmd)
@@ -1676,6 +1700,7 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 							ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
 						}
 						break;
+#if 0
 					case ID_COMPARE:
 						{
 							svn_revnum_t rev = -1;
@@ -1819,22 +1844,23 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 							}
 						}
 						break;
+#endif
 					case ID_LOG:
 						{
-							svn_revnum_t rev = m_RevisionEnd;
-							if (!data->basepath.IsEmpty())
-							{
-								StringRevMap::iterator it = m_FinishedRevMap.find(data->basepath.GetSVNApiPath(pool));
-								if (it != m_FinishedRevMap.end())
-									rev = it->second;
-							}
-							CLogDlg dlg;
-							// fetch the log from HEAD, not the revision we updated to:
-							// the path might be inside an external folder which has its own
-							// revisions.
+							CString cmd = _T("/command:log");
+			
 							CString sPath = GetPathFromColumnText(data->sPathColumnText);
-							dlg.SetParams(CTGitPath(sPath), SVNRev(), SVNRev::REV_HEAD, 1, -1, TRUE);
-							dlg.DoModal();
+							if(data->action == git_wc_notify_update_ref)
+							{
+								cmd += _T(" /path:\"") + GetPathFromColumnText(CString()) + _T("\"");
+								if (!data->m_OldHash.IsEmpty())
+									cmd += _T(" /startrev:") + data->m_OldHash.ToString();
+								if (!data->m_NewHash.IsEmpty())
+									cmd += _T(" /endrev:") + data->m_NewHash.ToString();
+							}
+							else
+								cmd += _T(" /path:\"") + sPath + _T("\"");
+							CAppUtils::RunTortoiseGitProc(cmd);
 						}
 						break;
 					case ID_OPENWITH:
@@ -1859,7 +1885,6 @@ void CGitProgressDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
 			}
 		}
 	}
-#endif
 }
 
 void CGitProgressDlg::OnEnSetfocusInfotext()
@@ -2337,6 +2362,15 @@ bool CGitProgressDlg::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
 	clone_opts.checkout_opts.progress_payload = this;
 
+	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+	callbacks.update_tips = RemoteUpdatetipsCallback;
+	callbacks.progress = RemoteProgressCallback;
+	callbacks.completion = RemoteCompletionCallback;
+	callbacks.payload = this;
+
+	clone_opts.remote_callbacks = &callbacks;
+
 	if (!m_RefSpec.IsEmpty())
 		clone_opts.checkout_branch = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8).GetBuffer();
 
@@ -2374,11 +2408,11 @@ void CGitProgressDlg::OnBnClickedNoninteractive()
 
 CString CGitProgressDlg::GetPathFromColumnText(const CString& sColumnText)
 {
-	CString sPath = CPathUtils::ParsePathInString(sColumnText);
+	CString sPath = sColumnText;
 	if (sPath.Find(':')<0)
 	{
 		// the path is not absolute: add the common root of all paths to it
-		sPath = m_targetPathList.GetCommonRoot().GetDirectory().GetWinPathString() + _T("\\") + CPathUtils::ParsePathInString(sColumnText);
+		sPath = g_Git.m_CurrentDir + _T("\\") + sColumnText;
 	}
 	return sPath;
 }
@@ -2501,3 +2535,113 @@ LRESULT CGitProgressDlg::OnCtlColorStatic(WPARAM wParam, LPARAM lParam)
 	}
 	return FALSE;
 }
+
+bool CGitProgressDlg::CmdFetch(CString& sWindowTitle, bool& localoperation)
+{
+	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+	{
+		// should never run to here
+		ASSERT(0);
+		return false;
+	}
+	this->m_TotalBytesTransferred = 0;
+
+	sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	SetBackgroundImage(IDI_UPDATE_BKG);
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)));
+
+	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+	CStringA remotebranch = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
+	
+	git_remote *remote = NULL;
+	git_repository *repo = NULL;
+	int ret = 0;
+
+	do
+	{
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		if (git_remote_load(&remote, repo, url) < 0) 
+		{
+			if (git_remote_create_inmemory(&remote, repo, NULL, url) < 0)
+			{
+				ReportGitError();
+				ret = -1;
+				break;
+			}
+		}
+
+		git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+
+		callbacks.update_tips = RemoteUpdatetipsCallback;
+		callbacks.progress = RemoteProgressCallback;
+		callbacks.completion = RemoteCompletionCallback;
+		callbacks.payload = this;
+
+		git_remote_set_callbacks(remote, &callbacks);
+		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
+		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
+
+		if (!remotebranch.IsEmpty())
+			if (ret = git_remote_set_fetchspec(remote, remotebranch))
+			{
+				ReportGitError();
+				ret = -1;
+				break;
+			}
+
+		m_Animate.ShowWindow(SW_SHOW);
+		m_Animate.Play(0, INT_MAX, INT_MAX);
+
+		// Connect to the remote end specifying that we want to fetch
+		// information from it.
+		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0) {
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		// Download the packfile and index it. This function updates the
+		// amount of received data and the indexer stats which lets you
+		// inform the user about progress.
+		if (git_remote_download(remote, FetchCallback, this) < 0) {
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		m_Animate.ShowWindow(SW_HIDE);
+		// Update the references in the remote's namespace to point to the
+		// right commits. This may be needed even if there was no packfile
+		// to download, which can happen e.g. when the branches have been
+		// changed but all the neede objects are available locally.
+		if (git_remote_update_tips(remote) < 0)
+		{
+			ReportGitError();
+			ret = -1;
+			break;
+		}
+
+		git_remote_disconnect(remote);
+
+	}while(0);
+
+	git_remote_free(remote);
+	git_repository_free(repo);
+	m_Animate.ShowWindow(SW_HIDE);
+	return !ret;
+}
+
+bool CGitProgressDlg::CmdPush(CString& sWindowTitle, bool& localoperation)
+{
+	return true;
+}
+

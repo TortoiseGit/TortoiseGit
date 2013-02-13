@@ -95,6 +95,7 @@ IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 IDI_JUMPUP              ICON                    "jumpup.ico"
 IDI_JUMPDOWN            ICON                    "jumpdown.ico"
+IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2695,6 +2696,7 @@ BEGIN
     IDS_SVNACTION_DELETE    "Deleted"
     IDS_SVNACTION_RESTORE   "Restored"
     IDS_SVNACTION_REVERT    "Reverted"
+    IDS_GITACTION_UPDATE_REF "Update Ref"
 END
 
 STRINGTABLE
