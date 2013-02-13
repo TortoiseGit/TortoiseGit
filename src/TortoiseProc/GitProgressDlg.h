@@ -132,7 +132,7 @@ public:
 	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
 	void SetIsBare(bool b) { m_bBare = b; }
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
-	void SetRefSpec(CString &spec){ m_RefSpec = spec; }
+	void SetRefSpec(CString spec){ m_RefSpec = spec; }
 	void SetAutoTag(int tag){ m_AutoTag = tag; }
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
