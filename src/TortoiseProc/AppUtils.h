@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -214,8 +214,6 @@ public:
 	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
 
 	static int	Git2GetUserPassword(git_cred **out, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
-	static void	Git2FetchProgress(const git_transfer_progress *stats, void *payload);
-	static void	Git2CheckoutProgress(const char *path, size_t cur, size_t tot, void *payload);
 
 private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
