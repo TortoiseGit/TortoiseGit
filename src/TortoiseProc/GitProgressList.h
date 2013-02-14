@@ -155,6 +155,7 @@ public:
 	volatile LONG IsRunning()	{return m_bThreadRunning;}
 	CWinThread*				m_pThread;
 	bool					m_AlwaysConflicted;
+	CWnd			*m_pPostWnd;
 private:
 	class NotificationData
 	{

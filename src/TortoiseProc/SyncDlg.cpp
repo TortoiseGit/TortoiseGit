@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_URL, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_REMOTE_BRANCH, &CSyncDlg::OnCbnEditchangeComboboxex)
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
+	ON_MESSAGE(WM_PROG_CMD_FINISH, OnProgCmdFinish)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_IN_LOGLIST, OnLvnInLogListColumnClick)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
@@ -228,29 +229,40 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch=m_strRemoteBranch+_T(":")+remotebranch;
 		}
 
-		if(m_Gitverion >= 0x01070203) //above 1.7.0.2
-			force += _T("--progress ");
-
-		cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),
-				force,
-				m_strURL,
-				remotebranch);
-
 		if(CurrentEntry == 1)
 			m_CurrentCmd = GIT_COMMAND_FETCH;
 		else
 			m_CurrentCmd = GIT_COMMAND_FETCHANDREBASE;
-		m_GitCmdList.push_back(cmd);
 
-		m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
-		if (m_pThread==NULL)
+		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 		{
-		//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
-		}
-		else
+			m_GitProgressList.SetUrl(m_strURL);
+			m_GitProgressList.SetRefSpec(remotebranch);
+			m_GitProgressList.SetCommand(CGitProgressList::GitProgress_Fetch);
+			m_GitProgressList.Init();
+			ShowTab(IDC_CMD_GIT_PROG);
+		}else
 		{
-			m_pThread->m_bAutoDelete = TRUE;
-			m_pThread->ResumeThread();
+			if(m_Gitverion >= 0x01070203) //above 1.7.0.2
+				force += _T("--progress ");
+
+			cmd.Format(_T("git.exe fetch -v %s \"%s\" %s"),
+					force,
+					m_strURL,
+					remotebranch);
+
+			m_GitCmdList.push_back(cmd);
+
+			m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL,0,CREATE_SUSPENDED);
+			if (m_pThread==NULL)
+			{
+			//		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+			}
+			else
+			{
+				m_pThread->m_bAutoDelete = TRUE;
+				m_pThread->ResumeThread();
+			}
 		}
 	}
 
@@ -767,6 +779,16 @@ BOOL CSyncDlg::OnInitDialog()
 							(CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_COMPARETWO)|
 							CGitStatusListCtrl::GetContextMenuBit(CGitStatusListCtrl::IDGITLC_GNUDIFF2)), false, true, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD| GITSLC_COLDEL);
 
+	
+	if (!m_GitProgressList.Create(dwStyle | LVS_OWNERDATA, rectDummy, &m_ctrlTabCtrl, IDC_CMD_GIT_PROG))
+	{
+		TRACE0("Failed to create Git Progress List Window\n");
+		return FALSE;      // fail to create
+	}
+	m_ctrlTabCtrl.InsertTab(&m_GitProgressList, CString(MAKEINTRESOURCE(IDS_LOG)), -1);
+	m_GitProgressList.m_pAnimate = &m_ctrlAnimate;
+	m_GitProgressList.m_pPostWnd = this;
+
 	this->m_tooltips.Create(this);
 
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -868,6 +890,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
+	m_ctrlTabCtrl.ShowTab(IDC_CMD_GIT_PROG-1, false);
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
@@ -1137,53 +1160,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		}
 
 		//if(wParam == MSG_PROGRESSDLG_END)
-		if(this->m_CurrentCmd == GIT_COMMAND_PUSH )
-		{
-			if(!m_GitCmdStatus)
-			{
-				CTGitPathList list;
-				list.AddPath(CTGitPath(g_Git.m_CurrentDir));
-				DWORD exitcode;
-				CString error;
-				if (CHooks::Instance().PostPush(list,exitcode, error))
-				{
-					if (exitcode)
-					{
-						CString temp;
-						temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
-						//ReportError(temp);
-						CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-						return false;
-					}
-				}
-
-			}
-			EnableControlButton(true);
-			SwitchToInput();
-			this->FetchOutList(true);
-		}
-		if(this->m_CurrentCmd == GIT_COMMAND_PULL )
-		{
-			PullComplete();
-		}
-		if(this->m_CurrentCmd == GIT_COMMAND_FETCH || this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
-		{
-			FetchComplete();
-		}
-		if(this->m_CurrentCmd == GIT_COMMAND_SUBMODULE)
-		{
-			//this->m_ctrlCmdOut.SetSel(-1,-1);
-			//this->m_ctrlCmdOut.ReplaceSel(_T("Done\r\n"));
-			//this->m_ctrlCmdOut.SetSel(-1,-1);
-			EnableControlButton(true);
-			SwitchToInput();
-		}
-		if(this->m_CurrentCmd == GIT_COMMAND_REMOTE)
-		{
-			this->FetchOutList(true);
-			EnableControlButton(true);
-			SwitchToInput();
-		}
+		RunPostAction();
 	}
 
 	if(lParam != 0)
@@ -1192,7 +1169,56 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	return 0;
 }
 
+void CSyncDlg::RunPostAction()
+{
+	if(this->m_CurrentCmd == GIT_COMMAND_PUSH )
+	{
+		if(!m_GitCmdStatus)
+		{
+			CTGitPathList list;
+			list.AddPath(CTGitPath(g_Git.m_CurrentDir));
+			DWORD exitcode;
+			CString error;
+			if (CHooks::Instance().PostPush(list,exitcode, error))
+			{
+				if (exitcode)
+				{
+					CString temp;
+					temp.Format(IDS_ERR_HOOKFAILED, (LPCTSTR)error);
+					//ReportError(temp);
+					CMessageBox::Show(NULL,temp,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+					return;
+				}
+			}
 
+		}
+		EnableControlButton(true);
+		SwitchToInput();
+		this->FetchOutList(true);
+	}
+	if(this->m_CurrentCmd == GIT_COMMAND_PULL )
+	{
+		PullComplete();
+	}
+	if(this->m_CurrentCmd == GIT_COMMAND_FETCH || this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
+	{
+		FetchComplete();
+	}
+	if(this->m_CurrentCmd == GIT_COMMAND_SUBMODULE)
+	{
+		//this->m_ctrlCmdOut.SetSel(-1,-1);
+		//this->m_ctrlCmdOut.ReplaceSel(_T("Done\r\n"));
+		//this->m_ctrlCmdOut.SetSel(-1,-1);
+		EnableControlButton(true);
+		SwitchToInput();
+	}
+	if(this->m_CurrentCmd == GIT_COMMAND_REMOTE)
+	{
+		this->FetchOutList(true);
+		EnableControlButton(true);
+		SwitchToInput();
+	}
+}
 void CSyncDlg::ParserCmdOutput(char ch)
 {
 	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_hWnd,m_pTaskbarList,m_LogText,ch);
@@ -1299,4 +1325,10 @@ void CSyncDlg::OnBnClickedLog()
 	cmd += _T("\"");
 
 	CAppUtils::RunTortoiseGitProc(cmd);
+}
+
+LRESULT CSyncDlg::OnProgCmdFinish(WPARAM wParam, LPARAM lParam)
+{
+	RunPostAction();
+	return 0;
 }
