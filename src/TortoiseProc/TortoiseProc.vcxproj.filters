@@ -635,6 +635,9 @@
     <ClCompile Include="UserPassword.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="GitProgressList.cpp">
+      <Filter>Utility Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1101,6 +1104,9 @@
     </ClInclude>
     <ClInclude Include="UserPassword.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="GitProgressList.h">
+      <Filter>Utility Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

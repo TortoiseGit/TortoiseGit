@@ -19,12 +19,12 @@
 //
 
 #pragma once
-#include "GitProgressDlg.h"
+#include "GitProgressList.h"
 #include "TGitPath.h"
 
 #define MAX_COMMANDLINE_LENGTH 30000
 
-typedef BOOL (CGitProgressDlg::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_notify_action_t action, int status, CString *strErr);
+typedef BOOL (CGitProgressList::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_notify_action_t action, int status, CString *strErr);
 
 class CMassiveGitTask
 {
@@ -34,7 +34,7 @@ public:
 
 	void					AddFile(CString filename);
 	void					AddFile(CTGitPath filename);
-	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressDlg * instance, NOTIFY_CALLBACK m_NotifyCallbackMethod);
+	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance, NOTIFY_CALLBACK m_NotifyCallbackMethod);
 	bool					Execute(BOOL &cancel);
 
 private:
@@ -46,7 +46,7 @@ private:
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;
-	CGitProgressDlg *		m_NotifyCallbackInstance;
+	CGitProgressList *		m_NotifyCallbackInstance;
 	NOTIFY_CALLBACK			m_NotifyCallbackMethod;
 	git_wc_notify_action_t	m_NotifyCallbackAction;
 };
