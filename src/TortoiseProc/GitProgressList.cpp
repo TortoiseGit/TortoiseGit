@@ -2289,6 +2289,12 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 	do
 	{
+		if (m_pAnimate)
+		{
+			m_pAnimate->ShowWindow(SW_SHOW);
+			m_pAnimate->Play(0, INT_MAX, INT_MAX);
+		}
+
 		if (git_repository_open(&repo, gitdir.GetBuffer()))
 		{
 			gitdir.ReleaseBuffer();
@@ -2327,11 +2333,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 			break;
 		}
 
-		if (m_pAnimate)
-		{
-			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
-		}
 		// Connect to the remote end specifying that we want to fetch
 		// information from it.
 		if (git_remote_connect(remote, GIT_DIRECTION_FETCH) < 0) {
