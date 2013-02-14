@@ -69,6 +69,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	m_pAnimate = NULL;
 	m_pProgControl = NULL;
 	m_pProgressLabelCtrl = NULL;
+	m_pPostWnd = NULL;
 }
 
 CGitProgressList::~CGitProgressList()
@@ -807,9 +808,8 @@ UINT CGitProgressList::ProgressThread()
 	bool bSuccess = false;
 	m_AlwaysConflicted = false;
 
-	CWnd *wnd = GetParent();
-	if(wnd)
-		wnd->PostMessage(WM_PROG_CMD_START, m_Command);
+	if(m_pPostWnd)
+		m_pPostWnd->PostMessage(WM_PROG_CMD_START, m_Command);
 
 	if(m_pProgressLabelCtrl)
 	{
@@ -945,9 +945,8 @@ UINT CGitProgressList::ProgressThread()
 	RefreshCursor();
 #endif
 
-	CWnd *pwd = this->GetParent();
-	if (pwd)
-		pwd->PostMessage(WM_PROG_CMD_FINISH, this->m_Command, 0L);
+	if (m_pPostWnd)
+		m_pPostWnd->PostMessage(WM_PROG_CMD_FINISH, this->m_Command, 0L);
 
 #if 0
 	DWORD dwAutoClose = CRegStdDWORD(_T("Software\\TortoiseGit\\AutoClose"), CLOSE_MANUAL);
