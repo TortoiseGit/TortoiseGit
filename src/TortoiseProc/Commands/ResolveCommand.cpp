@@ -55,7 +55,7 @@ bool ResolveCommand::Execute()
 			{
 				CGitProgressDlg progDlg(CWnd::FromHandle(hWndExplorer));
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CGitProgressDlg::GitProgress_Resolve);
+				progDlg.SetCommand(CGitProgressList::GitProgress_Resolve);
 				if (parser.HasVal(_T("closeonend")))
 					progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 				progDlg.SetOptions(parser.HasKey(_T("skipcheck")) ? ProgOptSkipConflictCheck : ProgOptNone);

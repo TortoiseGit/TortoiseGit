@@ -73,7 +73,7 @@ bool DropCopyAddCommand::Execute()
 	//now add all the newly copied files to the working copy
 	CGitProgressDlg progDlg;
 	theApp.m_pMainWnd = &progDlg;
-	progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
+	progDlg.SetCommand(CGitProgressList::GitProgress_Add);
 	if (parser.HasVal(_T("closeonend")))
 		progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 	progDlg.SetPathList(copiedFiles);

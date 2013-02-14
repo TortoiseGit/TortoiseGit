@@ -144,6 +144,7 @@
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="..\Utils\Libraries.cpp" />
+    <ClCompile Include="GitProgressList.cpp" />
     <ClCompile Include="LogFile.cpp" />
     <ClCompile Include="MassiveGitTask.cpp" />
     <ClCompile Include="Patch.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="FindDlg.h" />
+    <ClInclude Include="GitProgressList.h" />
     <ClInclude Include="LogFile.h" />
     <ClInclude Include="MassiveGitTask.h" />
     <ClInclude Include="Patch.h" />
@@ -652,4 +654,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="\TortoiseGit\src\Resources\TortoiseProcENG.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
