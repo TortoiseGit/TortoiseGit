@@ -81,7 +81,10 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
 	, m_options(ProgOptNone)
 {
-
+	m_pInfoCtrl = nullptr;
+	m_pAnimate = nullptr;
+	m_pProgControl = nullptr;
+	m_pProgressLabelCtrl = nullptr;
 }
 
 CGitProgressList::~CGitProgressList()
@@ -109,7 +112,6 @@ BEGIN_MESSAGE_MAP(CGitProgressList, CListCtrl)
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_CONTEXTMENU()
-	ON_WM_CREATE()
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -524,10 +526,12 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 			AddItemToList();
 			if ((!data->bAuxItem) && (m_itemCount > 0))
 			{
-				CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
-				progControl->ShowWindow(SW_SHOW);
-				progControl->SetPos(m_itemCount);
-				progControl->SetRange32(0, m_itemCountTotal);
+				if (m_pProgControl)
+				{
+					m_pProgControl->ShowWindow(SW_SHOW);
+					m_pProgControl->SetPos(m_itemCount);
+					m_pProgControl->SetRange32(0, m_itemCountTotal);
+				}
 				if (m_pTaskbarList)
 				{
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
@@ -819,10 +823,16 @@ UINT CGitProgressList::ProgressThread()
 	bool bSuccess = false;
 	m_AlwaysConflicted = false;
 
-#if 0 //need
-	DialogEnableWindow(IDOK, FALSE);
-	DialogEnableWindow(IDCANCEL, TRUE);
-#endif
+	CWnd *wnd = GetParent();
+	if(wnd)
+		wnd->PostMessage(WM_PROG_CMD_START, m_Command);
+
+	if(m_pProgressLabelCtrl)
+	{
+		m_pProgressLabelCtrl->ShowWindow(SW_SHOW);
+		m_pProgressLabelCtrl->SetWindowText(_T(""));
+	}
+
 //	SetAndClearProgressInfo(m_hWnd);
 	m_itemCount = m_itemCountTotal;
 
@@ -889,22 +899,13 @@ UINT CGitProgressList::ProgressThread()
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}
 
-#if 0//need
-	DialogEnableWindow(IDCANCEL, FALSE);
-	DialogEnableWindow(IDOK, TRUE);
-#endif
-
 	CString info = BuildInfoString();
 	if (!bSuccess)
 		info.LoadString(IDS_PROGRS_INFOFAILED);
-	SetDlgItemText(IDC_INFOTEXT, info);
+	if (m_pInfoCtrl)
+		m_pInfoCtrl->SetWindowText(info);
+	
 	ResizeColumns();
-	CWnd * pWndOk = GetDlgItem(IDOK);
-	if (pWndOk && ::IsWindow(pWndOk->GetSafeHwnd()))
-	{
-		SendMessage(DM_SETDEFID, IDOK);
-		GetDlgItem(IDOK)->SetFocus();
-	}
 
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
@@ -912,12 +913,17 @@ UINT CGitProgressList::ProgressThread()
 		CTimeSpan time = CTime::GetCurrentTime() - startTime;
 		temp.Format(IDS_PROGRS_TIME, (LONG)time.GetTotalMinutes(), (LONG)time.GetSeconds());
 		sFinalInfo.Format(IDS_PROGRS_FINALINFO, m_sTotalBytesTransferred, (LPCTSTR)temp);
-		SetDlgItemText(IDC_PROGRESSLABEL, sFinalInfo);
+		if (m_pProgressLabelCtrl)
+			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
 	}
 	else
-		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_HIDE);
+	{
+		if (m_pProgressLabelCtrl)
+			m_pProgressLabelCtrl->ShowWindow(SW_HIDE);
+	}
 
-	GetDlgItem(IDC_PROGRESSBAR)->ShowWindow(SW_HIDE);
+	if (m_pProgControl)
+		m_pProgControl->ShowWindow(SW_HIDE);
 
 	if (!m_bFinishedItemAdded)
 	{
@@ -954,6 +960,10 @@ UINT CGitProgressList::ProgressThread()
 #if 0 //need
 	RefreshCursor();
 #endif
+
+	CWnd *pwd = this->GetParent();
+	if (pwd)
+		pwd->PostMessage(WM_PROG_CMD_FINISH, this->m_Command, 0L);
 
 #if 0
 	DWORD dwAutoClose = CRegStdDWORD(_T("Software\\TortoiseGit\\AutoClose"), CLOSE_MANUAL);
@@ -1176,22 +1186,25 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 		return TRUE;
 	}
 
-	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
-
 	int progress;
 	progress = stat->received_objects + stat->indexed_objects;
 
-	if ((stat->total_objects > 1000) && (!progControl->IsWindowVisible()))
+	if ((stat->total_objects > 1000) && m_pProgControl && (!m_pProgControl->IsWindowVisible()))
 	{
-		progControl->ShowWindow(SW_SHOW);
+		if (m_pProgControl)
+			m_pProgControl->ShowWindow(SW_SHOW);
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 	}
-	if (!GetDlgItem(IDC_PROGRESSLABEL)->IsWindowVisible())
-		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
 
-	progControl->SetPos(progress);
-	progControl->SetRange32(0, 2 * stat->total_objects);
+	if (m_pProgressLabelCtrl && m_pProgressLabelCtrl->IsWindowVisible())
+		m_pProgressLabelCtrl->ShowWindow(SW_SHOW);
+
+	if (m_pProgControl)
+	{
+		m_pProgControl->SetPos(progress);
+		m_pProgControl->SetRange32(0, 2 * stat->total_objects);
+	}
 	if (m_pTaskbarList)
 	{
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
@@ -1215,7 +1228,8 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 		str.Format(_T("%.2fMB/s"), speed / 1024000.0);
 
 	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)str);
-	SetDlgItemText(IDC_PROGRESSLABEL, progText);
+	if (m_pProgressLabelCtrl)
+		m_pProgressLabelCtrl->SetWindowText(progText);
 
 	return TRUE;
 }
@@ -1271,7 +1285,9 @@ void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
 		CString progSpeed;
 		progSpeed.Format(IDS_SVN_PROGRESS_BYTES_SEC, 0);
 		progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)progSpeed);
-		SetDlgItemText(IDC_PROGRESSLABEL, progText);
+		if (m_pProgressLabelCtrl)
+			m_pProgressLabelCtrl->SetWindowText(progText);
+
 		KillTimer(TRANSFERTIMER);
 	}
 	if (nIDEvent == VISIBLETIMER)
@@ -1828,8 +1844,6 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
-	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(_T("Commit ..."));
-	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 	return true;
 }
 
@@ -1999,9 +2013,6 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	}
 #endif
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
-
-	this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
-	this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 
 	return true;
 }
@@ -2364,10 +2375,8 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 }
 
 
-int CGitProgressList::OnCreate(LPCREATESTRUCT lpCreateStruct)
+void CGitProgressList::Init()
 {
-	if (CListCtrl::OnCreate(lpCreateStruct) == -1)
-		return -1;
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
 	// do this, Explorer would be unable to send that message to our window if we
@@ -2417,8 +2426,6 @@ int CGitProgressList::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ResizeColumns();
 
 	SetTimer(VISIBLETIMER, 300, NULL);
-
-	return 0;
 }
 
 

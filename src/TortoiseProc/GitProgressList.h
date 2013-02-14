@@ -87,6 +87,8 @@ typedef enum
 // CGitProgressList
 struct git_transfer_progress;
 #define WM_SHOWCONFLICTRESOLVER (WM_APP + 100)
+#define WM_PROG_CMD_FINISH		(WM_APP + 200)
+#define WM_PROG_CMD_START		(WM_APP + 201)
 
 class CGitProgressList : public CListCtrl
 {
@@ -143,8 +145,10 @@ public:
 	bool SetBackgroundImage(UINT nID);
 	bool DidErrorsOccur() {return m_bErrorsOccurred;}
 	bool			m_bErrorsOccurred;
-	CWnd			*m_pTextCtrl;
+	CWnd			*m_pProgressLabelCtrl;
+	CWnd			*m_pInfoCtrl;
 	CAnimateCtrl	*m_pAnimate;
+	CProgressCtrl	*m_pProgControl;
 	Command			m_Command;
 	virtual BOOL	Cancel();
 	volatile BOOL IsCancelled()	{return m_bCancelled;}
@@ -376,7 +380,7 @@ private:
 	CString					m_RefSpec;
 	int						m_AutoTag;
 public:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	void Init();
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

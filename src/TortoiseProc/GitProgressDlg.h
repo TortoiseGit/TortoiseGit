@@ -102,15 +102,20 @@ protected:
 	afx_msg void	OnEnSetfocusInfotext();
 	afx_msg LRESULT	OnCtlColorStatic(WPARAM wParam, LPARAM lParam);
 	afx_msg HBRUSH	OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	
+	LRESULT			OnCmdEnd(WPARAM wParam, LPARAM lParam);
+	LRESULT			OnCmdStart(WPARAM wParam, LPARAM lParam);
+
 	DECLARE_MESSAGE_MAP()
 
 private:
 	virtual void OnOK();
 
 	CAnimateCtrl			m_Animate;
+	CProgressCtrl			m_ProgCtrl;
 	CGitProgressList		m_ProgList;
+	CEdit					m_InfoCtrl;
+	CStatic					m_ProgLableCtrl;
+
 	CBrush					m_background_brush;
 	DWORD					m_dwCloseOnEnd;
-
 };
