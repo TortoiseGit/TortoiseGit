@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -59,7 +60,7 @@ bool AddCommand::Execute()
 					return FALSE;
 				CGitProgressDlg progDlg;
 				theApp.m_pMainWnd = &progDlg;
-				progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
+				progDlg.SetCommand(CGitProgressList::GitProgress_Add);
 				if (parser.HasVal(_T("closeonend")))
 					progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 				progDlg.SetPathList(dlg.m_pathList);

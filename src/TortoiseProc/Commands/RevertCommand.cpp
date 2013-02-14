@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,7 +35,7 @@ bool RevertCommand::Execute()
 
 		CGitProgressDlg progDlg;
 		theApp.m_pMainWnd = &progDlg;
-		progDlg.SetCommand(CGitProgressDlg::GitProgress_Revert);
+		progDlg.SetCommand(CGitProgressList::GitProgress_Revert);
 		if (parser.HasVal(_T("closeonend")))
 			progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 		progDlg.SetOptions(dlg.m_bRecursive ? ProgOptRecursive : ProgOptNonRecursive);
