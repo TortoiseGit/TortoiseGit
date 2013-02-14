@@ -81,6 +81,9 @@ void CGitProgressDlg::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SVNPROGRESS, m_ProgList);
 	DDX_Control(pDX, IDC_TITLE_ANIMATE, m_Animate);
+	DDX_Control(pDX, IDC_PROGRESSBAR, m_ProgCtrl);
+	DDX_Control(pDX, IDC_INFOTEXT, m_InfoCtrl);
+	DDX_Control(pDX, IDC_PROGRESSLABEL, m_ProgLableCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
@@ -90,8 +93,9 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_EN_SETFOCUS(IDC_INFOTEXT, &CGitProgressDlg::OnEnSetfocusInfotext)
 	ON_BN_CLICKED(IDC_NONINTERACTIVE, &CGitProgressDlg::OnBnClickedNoninteractive)
 	ON_WM_CTLCOLOR()
+	ON_MESSAGE(WM_PROG_CMD_FINISH, OnCmdEnd)
+	ON_MESSAGE(WM_PROG_CMD_START, OnCmdStart)
 END_MESSAGE_MAP()
-
 
 
 
@@ -115,12 +119,17 @@ BOOL CGitProgressDlg::OnInitDialog()
 
 	m_Animate.Open(IDR_DOWNLOAD);
 	m_ProgList.m_pAnimate = &m_Animate;
+	m_ProgList.m_pProgControl = &m_ProgCtrl;
+	m_ProgList.m_pProgressLabelCtrl = &m_ProgLableCtrl;
+	m_ProgList.m_pInfoCtrl = &m_InfoCtrl;
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
 	EnableSaveRestore(_T("GITProgressDlg"));
 
 	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));
+	m_ProgList.Init();
+
 	return TRUE;
 }
 
@@ -274,4 +283,36 @@ HBRUSH CGitProgressDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	// TODO:  Return a different brush if the default is not desired
 	return hbr;
+}
+
+LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM wParam, LPARAM /*lParam*/)
+{
+	DialogEnableWindow(IDCANCEL, FALSE);
+	DialogEnableWindow(IDOK, TRUE);
+
+	switch(wParam)
+	{
+	case CGitProgressList::GitProgress_Add:
+	case CGitProgressList::GitProgress_Revert:
+		this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
+		this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
+		break;
+	}
+	
+	CWnd * pWndOk = GetDlgItem(IDOK);
+	if (pWndOk && ::IsWindow(pWndOk->GetSafeHwnd()))
+	{
+		SendMessage(DM_SETDEFID, IDOK);
+		GetDlgItem(IDOK)->SetFocus();
+	}
+
+
+	return 0;
+}
+LRESULT	CGitProgressDlg::OnCmdStart(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	DialogEnableWindow(IDOK, FALSE);
+	DialogEnableWindow(IDCANCEL, TRUE);
+
+	return 0;
 }
