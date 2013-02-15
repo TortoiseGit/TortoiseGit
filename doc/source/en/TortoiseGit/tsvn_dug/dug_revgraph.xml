@@ -154,9 +154,9 @@
         </para>
 -->
     </sect2>
+<!--
     <sect2 id="tsvn-dug-revgraph-views">
         <?dbhh topicname="HIDD_REVGRAPHFILTER"?>
-<!--
         <title>Changing the View</title>
         <para>
             Because a revision graph is often quite complex, there are a number
@@ -396,8 +396,8 @@
                 </varlistentry>
             </variablelist>
         </para>
+	</sect2>
 -->
-		</sect2>
     <sect2 id="tsvn-dug-revgraph-use">
         <title>Using the Graph</title>
         <para>
