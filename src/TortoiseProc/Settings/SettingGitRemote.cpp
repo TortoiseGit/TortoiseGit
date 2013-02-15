@@ -66,7 +66,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_REMOTE, &CSettingGitRemote::OnEnChangeEditRemote)
 	ON_EN_CHANGE(IDC_EDIT_URL, &CSettingGitRemote::OnEnChangeEditUrl)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
-	ON_EN_CHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnEnChangeComboTagOpt)
+	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 END_MESSAGE_MAP()
 
@@ -248,12 +248,15 @@ void CSettingGitRemote::OnEnChangeEditPuttyKey()
 		this->SetModified(0);
 }
 
-void CSettingGitRemote::OnEnChangeComboTagOpt()
+void CSettingGitRemote::OnCbnSelchangeComboTagOpt()
 {
 	m_ChangedMask |= REMOTE_TAGOPT;
 
 	this->UpdateData();
-	this->SetModified();
+	if (this->m_ctrlTagOpt.GetCurSel() > 0)
+		this->SetModified();
+	else
+		this->SetModified(0);
 }
 
 void CSettingGitRemote::Save(CString key,CString value)

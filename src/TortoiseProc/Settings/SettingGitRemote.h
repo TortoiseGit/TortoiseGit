@@ -55,7 +55,7 @@ protected:
 	afx_msg void OnEnChangeEditRemote();
 	afx_msg void OnEnChangeEditUrl();
 	afx_msg void OnEnChangeEditPuttyKey();
-	afx_msg void OnEnChangeComboTagOpt();
+	afx_msg void OnCbnSelchangeComboTagOpt();
 	afx_msg void OnBnClickedButtonRemove();
 
 	BOOL OnInitDialog();
