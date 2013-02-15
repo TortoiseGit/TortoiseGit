@@ -236,8 +236,11 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 		if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 		{
+			CString refspec;
+			// current libgit2 only supports well formated refspec
+			refspec.Format(_T("refs/heads/%s:refs/remotes/%s/%s"), m_strRemoteBranch, m_strURL, m_strRemoteBranch);
 			m_GitProgressList.SetUrl(m_strURL);
-			m_GitProgressList.SetRefSpec(remotebranch);
+			m_GitProgressList.SetRefSpec(refspec);
 			m_GitProgressList.SetCommand(CGitProgressList::GitProgress_Fetch);
 			m_GitProgressList.Init();
 			ShowTab(IDC_CMD_GIT_PROG);
