@@ -29,6 +29,7 @@
 #include "patch.h"
 #include "MassiveGitTask.h"
 #include "SmartHandle.h"
+#include "LoglistUtils.h"
 
 static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));
 
@@ -824,7 +825,7 @@ UINT CGitProgressList::ProgressThread()
 	iFirstResized = 0;
 	bSecondResized = FALSE;
 	m_bFinishedItemAdded = false;
-	CTime startTime = CTime::GetCurrentTime();
+	DWORD startTime = GetCurrentTime();
 
 	if (m_pTaskbarList)
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
@@ -891,11 +892,12 @@ UINT CGitProgressList::ProgressThread()
 	
 	ResizeColumns();
 
+	DWORD time = GetCurrentTime() - startTime;
+
 	CString sFinalInfo;
 	if (!m_sTotalBytesTransferred.IsEmpty())
 	{
-		CTimeSpan time = CTime::GetCurrentTime() - startTime;
-		temp.Format(IDS_PROGRS_TIME, (LONG)time.GetTotalMinutes(), (LONG)time.GetSeconds());
+		temp.Format(IDS_PROGRS_TIME, (time / 1000) / 60, (time / 1000) % 60 );
 		sFinalInfo.Format(IDS_PROGRS_FINALINFO, m_sTotalBytesTransferred, (LPCTSTR)temp);
 		if (m_pProgressLabelCtrl)
 			m_pProgressLabelCtrl->SetWindowText(sFinalInfo);
@@ -911,13 +913,20 @@ UINT CGitProgressList::ProgressThread()
 
 	if (!m_bFinishedItemAdded)
 	{
+		CString log, str;
+		if (bSuccess)
+		{
+			str.LoadString(IDS_SUCCESS);
+		}
+		else
+		{
+			str.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, !bSuccess);		
+		}
+		log.Format(_T("%s (%d ms @ %s)"), str, time,  CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false));
+
 		// there's no "finished: xxx" line at the end. We add one here to make
 		// sure the user sees that the command is actually finished.
-		NotificationData * data = new NotificationData();
-		data->bAuxItem = true;
-		data->sActionColumnText.LoadString(IDS_PROGRS_FINISHED);
-		m_arData.push_back(data);
-		AddItemToList();
+		ReportString(log, CString(MAKEINTRESOURCE(IDS_PROGRS_FINISHED)), bSuccess? RGB(0,0,255) : RGB(255,0,0));
 	}
 
 	int count = GetItemCount();
