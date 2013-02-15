@@ -2277,7 +2277,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 	sWindowTitle.LoadString(IDS_PROGRS_TITLE_FETCH);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 	SetBackgroundImage(IDI_UPDATE_BKG);
-	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)));
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_FETCH)) + _T(" ") + m_url.GetGitPathString() + _T(" ") + m_RefSpec);
 
 	CStringA url = CUnicodeUtils::GetMulti(m_url.GetGitPathString(), CP_UTF8);
 	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
