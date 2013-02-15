@@ -203,7 +203,7 @@ protected:
 	CMenuButton		m_ctrlSubmodule;
 	CProgressCtrl	m_ctrlProgress;
 	CAnimateCtrl	m_ctrlAnimate;
-
+	CStatic			m_ctrlProgLabel;
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
 
