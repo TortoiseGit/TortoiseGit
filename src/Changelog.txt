@@ -13,6 +13,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
  * Fixed issue #1643: TortoiseGitMerge window do not maximize correctly on screeen with right-side docked start bar
+ * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
@@ -143,7 +144,6 @@ Released: 2012-10-14
 == Bug Fixes ==
  * Fixed issue #1426: Pull Dialog: Unknown option 'no-ff' when using no-tags
  * Fixed issue #1423: Update Dialog downloads the wrong language pack
- * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
  * Fixed issue #1439: In Show log, long messages don't have the triple dots appended, when a Tag/Branch lable is visible
  * Fixed issue #1444: Cannot launch settings dialog from shell context menu when selecting a file
  * Fixed issue #1265: MSVC crashing unloading TortoiseGit32.dll (faulting module TortoiseGit32.dll_unloaded)

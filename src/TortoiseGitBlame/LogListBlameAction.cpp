@@ -78,7 +78,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			return;
 		case ID_COPYHASH:
 			{
-				CopySelectionToClipBoard(TRUE);
+				CopySelectionToClipBoard(ID_COPY_HASH);
 			}
 			return;
 		case ID_EXPORT:
