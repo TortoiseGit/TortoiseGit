@@ -2876,7 +2876,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_MSYSGIT_PATH_TT     "MsysGit Install Path"
+    IDS_MSYSGIT_PATH_TT     "MSysGit Install Path"
     IDS_PROC_BROWSEREFS_COMPAREREFS "Compare selected refs"
     IDS_SETTINGS_EXTMERGE_TT 
                             "An external merge program used\r\nto resolve conflicted files.\r\n\r\nYou can specify the following parameters to the path:\r\n%merged: the conflicted file, where to save\r\n%theirs: the file as it is in the repository\r\n%mine: your own file, with your changes\r\n%base: the original file without your changes"
@@ -3896,10 +3896,10 @@ BEGIN
                             "<b>Warning:</b> It has not been checked if these branches have been fully merged into HEAD."
     IDS_PROC_BROWSEREFS_WARNINGDELETEREMOTEBRANCHES 
                             "<b>Warning:</b> This action will remove the branches on the remote."
-    IDS_PROC_NOMSYSGIT      "MSysGit (http://code.google.com/p/msysgit/) not found."
+    IDS_PROC_NOMSYSGIT      "MSysGit (http://msysgit.github.com/) not found."
     IDS_PROC_SETMSYSGITPATH "&Set MSysGit path"
-    IDS_PROC_GOTOMSYSGITWEBSITE "&Open msysGit WebSite"
-    IDS_PROC_OLDMSYSGIT     "You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+    IDS_PROC_GOTOMSYSGITWEBSITE "&Open MSysGit Website"
+    IDS_PROC_OLDMSYSGIT     "You have an old version of MSysGit (http://msysgit.github.com/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
     IDS_PROC_NOTSHOWAGAINIGNORE 
                             "Do &not show me this warning again (if Ignore is selected)"
     IDS_PROC_EDITLOCALGITCONFIG "&Edit .git/config"
@@ -3971,7 +3971,7 @@ BEGIN
     IDS_FILEDIFF_EXT        "Extension"
     IDS_ERR_EMPTYDIFF       "No differences found!"
     IDS_PROC_TAG_FF         "Tag (FF)"
-    IDS_GITVER_REQUIRED     "%s requires msysgit >= %s"
+    IDS_GITVER_REQUIRED     "%s requires MSysGit >= %s"
     IDS_SETTINGS_SYMBOLIZEREFNAMES_TT 
                             "Show symbols on ref labels to substitute part of the ref names"
     IDS_PROC_SYNC_PUSHNOTES "Push notes"
