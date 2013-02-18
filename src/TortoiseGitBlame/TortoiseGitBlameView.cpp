@@ -1694,12 +1694,26 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
 			}
 
+			CString body = pRev->GetBody();
+			int maxLine = 15;
+			int line = 0;
+			int pos = 0;
+			while (line++ < maxLine)
+			{
+				int pos2 = body.Find(_T("\n"), pos);
+				if (pos2 < 0)
+					break;
+				int lineLength = pos2 - pos - 1;
+				pos = pos2 + 1;
+				line += lineLength / 70;
+			}
+
 			CString str;
 			str.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
 																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
 																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
-																	pRev->GetBody());
+																	line <= maxLine ? body : (body.Left(pos) + _T("\n....................")));
 
 			m_ToolTip.Pop();
 			m_ToolTip.AddTool(this, str);

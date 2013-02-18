@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
  * Fixed issue #1643: TortoiseGitMerge window do not maximize correctly on screeen with right-side docked start bar
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
+ * Fixed issue #1654: Git blame commit message tooltip flashes when tooltip window is tall
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
