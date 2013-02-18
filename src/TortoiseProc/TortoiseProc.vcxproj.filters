@@ -1500,6 +1500,9 @@
     <Image Include="..\Resources\warning-general.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\UpdateBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\bin167.avi">
