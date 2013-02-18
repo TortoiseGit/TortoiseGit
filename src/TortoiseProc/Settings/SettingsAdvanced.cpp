@@ -66,6 +66,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+	settings[i].sName	= L"NumDiffWarning";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= 10;
+
 	settings[i].sName	= L"ReaddUnselectedAddedFilesAfterCommit";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;

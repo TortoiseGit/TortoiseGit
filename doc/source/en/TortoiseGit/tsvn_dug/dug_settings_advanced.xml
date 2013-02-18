@@ -118,6 +118,16 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">NumDiffWarning</term>
+            <listitem>
+                <para>
+                    If you want to show the diff at once for more items
+                    than specified with this settings, a warning dialog
+                    is shown first. The default is 10.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ReaddUnselectedAddedFilesAfterCommit</term>
             <listitem>
                 <para>

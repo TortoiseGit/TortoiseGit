@@ -1027,6 +1027,7 @@ private:
 	void OnContextMenuList(CWnd * pWnd, CPoint point);
 	void OnContextMenuGroup(CWnd * pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd * pWnd, CPoint point);
+	bool CheckMultipleDiffs();
 
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

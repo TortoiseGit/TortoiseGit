@@ -1882,6 +1882,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			// Compare current version and work copy.
 			case IDGITLC_COMPAREWC:
 				{
+					if (!CheckMultipleDiffs())
+						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
 					{
@@ -1893,6 +1895,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			// Compare with base version. when current version is zero, compare workcopy and HEAD.
 			case IDGITLC_COMPARE:
 				{
+					if (!CheckMultipleDiffs())
+						break;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while ( pos )
 					{
@@ -3169,6 +3173,8 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	*pResult = 0;
 	if (m_bBlock)
 		return;
+	if (!CheckMultipleDiffs())
+		return;
 	POSITION pos = GetFirstSelectedItemPosition();
 	while ( pos )
 	{
@@ -3951,6 +3957,18 @@ void CGitStatusListCtrl::Clear()
 	this->m_arListArray.clear();
 	this->m_arStatusArray.clear();
 	this->m_changelists.clear();
+}
+
+bool CGitStatusListCtrl::CheckMultipleDiffs()
+{
+	UINT selCount = GetSelectedCount();
+	if (selCount > max(3, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\NumDiffWarning"), 10)))
+	{
+		CString message;
+		message.Format(CString(MAKEINTRESOURCE(IDS_STATUSLIST_WARN_MAXDIFF)), selCount);
+		return ::MessageBox(GetSafeHwnd(), message, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION) == IDYES;
+	}
+	return true;
 }
 //////////////////////////////////////////////////////////////////////////
 #if 0

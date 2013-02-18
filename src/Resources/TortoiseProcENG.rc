@@ -3981,6 +3981,8 @@ BEGIN
                             "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
     IDS_LOG_FILTER_EMAILS   "Emails"
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
+    IDS_STATUSLIST_WARN_MAXDIFF 
+                            "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
 END
 
 #endif    // English (U.S.) resources
