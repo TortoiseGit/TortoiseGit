@@ -8579,6 +8579,10 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#. Resource IDs: (1422)
+msgid "To avoid fetching wrong tags, if this is not an official remote,\nyou are advised to disable tag fetching for this remote.\nDisable tag fetching?"
+msgstr ""
+
 #. Resource IDs: (606)
 msgid "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
 msgstr ""

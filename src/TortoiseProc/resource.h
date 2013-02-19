@@ -918,6 +918,7 @@
 #define IDS_SMTP_MAPI                   1427
 #define IDC_MAXLINES                    1428
 #define IDS_SMTP_DIRECTLY               1428
+#define IDS_PROC_GITCONFIG_ASKTAGOPT    1429
 #define IDC_DEFAULTOFFLINE              1431
 #define IDC_SHOWIGNOREDOVERLAY          1432
 #define IDC_NONINTERACTIVE              1432
