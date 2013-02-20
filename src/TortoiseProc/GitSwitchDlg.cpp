@@ -108,7 +108,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
-	Init();
+	Init(true);
 
 	SetDefaultChoose(IDC_RADIO_BRANCH);
 	GetDlgItem(IDC_CHECK_BRANCH)->SetFocus();

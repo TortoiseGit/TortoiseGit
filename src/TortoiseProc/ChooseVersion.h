@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -205,8 +205,12 @@ protected:
 			OnVersionChanged();
 		else
 			SelectRef(m_initialRefName);
+
+		if (m_bIsFirstTimeToSetFocus && m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
+			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
+		m_bIsFirstTimeToSetFocus = false;
 	}
-	void Init()
+	void Init(bool setFocusToBranchComboBox = false)
 	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
@@ -214,6 +218,8 @@ protected:
 		m_bIsBranch = false;
 		m_RadioBranch.EnableWindow(FALSE);
 		m_RadioTag.EnableWindow(FALSE);
+
+		m_bIsFirstTimeToSetFocus = setFocusToBranchComboBox;
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 
@@ -235,6 +241,7 @@ protected:
 public:
 	CString m_VersionName;
 	bool	m_bIsBranch;
+	bool	m_bIsFirstTimeToSetFocus;
 	CChooseVersion(CWnd *win)
 	{
 		m_pWin=win;
