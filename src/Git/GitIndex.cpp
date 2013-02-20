@@ -477,6 +477,7 @@ int CGitIndexFileMap::IsUnderVersionControl(const CString &gitdir, const CString
 	return 0;
 }
 
+// This method is assumed to be called with m_SharedMutex locked.
 int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
 	CString PackRef = g_AdminDirMap.GetAdminDir(gitdir) + _T("packed-refs");
@@ -484,7 +485,6 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	__int64 mtime;
 	if (g_Git.GetFileModifyTime(PackRef, &mtime))
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
 		//packed refs is not existed
 		this->m_PackRefFile.Empty();
 		this->m_PackRefMap.clear();
@@ -496,14 +496,12 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	}
 	else
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
 		this->m_PackRefFile = PackRef;
 		this->m_LastModifyTimePackRef = mtime;
 	}
 
 	int ret = 0;
 	{
-		CAutoWriteLock lock(&this->m_SharedMutex);
 		this->m_PackRefMap.clear();
 
 		CAutoFile hfile = CreateFile(PackRef,
