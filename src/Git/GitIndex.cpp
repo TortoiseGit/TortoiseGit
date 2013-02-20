@@ -528,6 +528,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 
 			if (size != filesize)
 			{
+				delete[] buff;
 				ret = -1;
 				break;
 			}
