@@ -520,6 +520,11 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			}
 
 			DWORD filesize = GetFileSize(hfile, NULL);
+			if (filesize == 0)
+			{
+				ret = -1;
+				break;
+			}
 			DWORD size =0;
 			char *buff;
 			buff = new char[filesize];
@@ -635,6 +640,12 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 			if (strcmp((const char*)buffer,"ref:") == 0)
 			{
 				filesize = GetFileSize(hfile, NULL);
+				if (filesize < 5)
+				{
+					m_HeadRefFile.Empty();
+					ret = -1;
+					break;
+				}
 
 				unsigned char *p = (unsigned char*)malloc(filesize -4);
 
