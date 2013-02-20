@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
  * Fixed issue #1654: Git blame commit message tooltip flashes when tooltip window is tall
  * Fixed issue #1658: Checkbox 'add "cherry picked from"' has wrong anchor
+ * Fixed issue #1657: Dirty submodule commit does not open the underling submodule commit dialog
 
 = Release 1.8.1.0 =
 Released: 2013-02-07

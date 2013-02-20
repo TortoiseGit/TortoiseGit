@@ -55,6 +55,9 @@ END_MESSAGE_MAP()
 CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 {
 	SetDllDirectory(L"");
+	// prevent from inheriting %GIT_DIR% from parent process by resetting it,
+	// use MSVC function instead of Windows API because MSVC runtime caches environment variables
+	_tputenv(_T("GIT_DIR="));
 	CCrashReportTGit crasher(L"TortoiseGitBlame " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();

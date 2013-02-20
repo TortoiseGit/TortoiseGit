@@ -63,6 +63,9 @@ END_MESSAGE_MAP()
 CTortoiseProcApp::CTortoiseProcApp()
 {
 	SetDllDirectory(L"");
+	// prevent from inheriting %GIT_DIR% from parent process by resetting it,
+	// use MSVC function instead of Windows API because MSVC runtime caches environment variables
+	_tputenv(_T("GIT_DIR="));
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
 //	int argc = 0;
