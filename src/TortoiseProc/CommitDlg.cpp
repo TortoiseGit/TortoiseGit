@@ -573,92 +573,308 @@ void CCommitDlg::OnOK()
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 	DWORD currentTicks = GetTickCount();
 
-	// ***************************************************
-	// ATTENTION: Similar code in RebaseDlg.cpp!!!
-	// ***************************************************
-
-	for (int j = 0; j < nListItems; ++j)
+	if (g_Git.m_IsUseLibGit2)
 	{
-		CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
-		if (sysProgressDlg.IsVisible())
-		{
-			if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
+		bAddSuccess = false;
+		do {
+			git_repository *repository = nullptr;
+			CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+			if (git_repository_open(&repository, gitdir.GetBuffer()))
 			{
-				sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
-				sysProgressDlg.SetProgress(j, nListItems);
-				AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
-				currentTicks = GetTickCount();
+				gitdir.ReleaseBuffer();
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
 			}
-		}
-		if (entry->m_Checked && !m_bCommitMessageOnly)
-		{
-			if( entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
-				cmd.Format(_T("git.exe add -f -- \"%s\""),entry->GetGitPathString());
-			else if ( entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-				cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""),entry->GetGitPathString());
-			else
-				cmd.Format(_T("git.exe update-index  -- \"%s\""),entry->GetGitPathString());
+			gitdir.ReleaseBuffer();
 
-			if (g_Git.Run(cmd, &out, CP_UTF8))
+			git_config *config;
+			git_config_new(&config);
+
+			CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8);
+			if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4, FALSE))
 			{
-				CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-				bAddSuccess = false ;
+				projectConfigA.ReleaseBuffer();
+				git_config_free(config);
+				git_repository_free(repository);
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open project config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
+			}
+			projectConfigA.ReleaseBuffer();
+			CString globalConfig = g_Git.GetGitGlobalConfig();
+			if (PathFileExists(globalConfig))
+			{
+				CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
+				if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3, FALSE))
+				{
+					globalConfigA.ReleaseBuffer();
+					git_config_free(config);
+					git_repository_free(repository);
+					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open global config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					break;
+				}
+				globalConfigA.ReleaseBuffer();
+			}
+			CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
+			if (PathFileExists(globalXDGConfig))
+			{
+				CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
+				if (git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2, FALSE))
+				{
+					globalXDGConfigA.ReleaseBuffer();
+					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open xdg config config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					git_config_free(config);
+					git_repository_free(repository);
+					break;
+				}
+				globalXDGConfigA.ReleaseBuffer();
+			}
+			CString systemConfig = g_Git.GetGitSystemConfig();
+			if (!systemConfig.IsEmpty())
+			{
+				CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
+				if (git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1, FALSE))
+				{
+					systemConfigA.ReleaseBuffer();
+					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open system config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					git_config_free(config);
+					git_repository_free(repository);
+					break;
+				}
+				systemConfigA.ReleaseBuffer();
+			}
+
+			git_repository_set_config(repository, config);
+
+			CGitHash revHash;
+			CString revRef = _T("HEAD");
+			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+				revRef = _T("HEAD~1");
+			if (g_Git.GetHash(revHash, revRef))
+			{
+				git_repository_free(repository);
+				git_config_free(config);
+				MessageBox(g_Git.GetLibGit2LastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
 
-			if( entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-				cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
+			git_commit *commit = nullptr;
+			if (git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
+			{
+				git_repository_free(repository);
+				git_config_free(config);
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get last commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
+			}
 
-			g_Git.Run(cmd, &out, CP_UTF8);
+			git_tree *tree = nullptr;
+			if (git_commit_tree(&tree, commit))
+			{
+				git_commit_free(commit);
+				git_repository_free(repository);
+				git_config_free(config);
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read tree of commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
+			}
+			git_commit_free(commit);
+			commit = nullptr;
 
-			++nchecked;
-		}
-		else
+			git_index *index = nullptr;
+			if (git_repository_index(&index, repository))
+			{
+				git_tree_free(tree);
+				git_repository_free(repository);
+				git_config_free(config);
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get the repository index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			// reset index to the one of the reference commit (HEAD or HEAD~1)
+			if (git_index_read_tree(index, tree))
+			{
+				git_index_free(index);
+				git_tree_free(tree);
+				git_repository_free(repository);
+				git_config_free(config);
+				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read the tree into the index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				break;
+			}
+			git_tree_free(tree);
+			tree = nullptr;
+
+			bAddSuccess = true;
+
+			// ***************************************************
+			// ATTENTION: Similar code in RebaseDlg.cpp!!! TODO to update it there!
+			// ***************************************************
+			for (int j = 0; j < nListItems; ++j)
+			{
+				CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+
+				if (sysProgressDlg.IsVisible())
+				{
+					if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
+					{
+						sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
+						sysProgressDlg.SetProgress(j, nListItems);
+						AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
+						currentTicks = GetTickCount();
+					}
+				}
+
+				CStringA filePathA = CUnicodeUtils::GetMulti(entry->GetGitPathString(), CP_UTF8);
+
+				if (entry->m_Checked && !m_bCommitMessageOnly)
+				{
+					if (entry->IsDirectory())
+					{
+						git_submodule *submodule = nullptr;
+						if (git_submodule_lookup(&submodule, repository, filePathA.GetBuffer()))
+						{
+							filePathA.ReleaseBuffer();
+							bAddSuccess = false;
+							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open submodule \"") + entry->GetGitPathString() + _T("\".")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							break;
+						}
+						filePathA.ReleaseBuffer();
+						if (git_submodule_add_to_index(submodule, FALSE))
+						{
+							bAddSuccess = false;
+							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not add submodule \"") + entry->GetGitPathString() + _T("\" to index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							break;
+						}
+					}
+					else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					{
+						git_index_remove_bypath(index, filePathA.GetBuffer()); // ignore error
+						filePathA.ReleaseBuffer();
+					}
+					else
+					{
+						if (git_index_add_bypath(index, filePathA.GetBuffer()))
+						{
+							filePathA.ReleaseBuffer();
+							bAddSuccess = false;
+							CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not add \"") + entry->GetGitPathString() + _T("\" to index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+							break;
+						}
+						filePathA.ReleaseBuffer();
+					}
+
+					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					{
+						git_index_remove_bypath(index, filePathA.GetBuffer()); // ignore error
+						filePathA.ReleaseBuffer();
+					}
+
+					++nchecked;
+				}
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					mgtReAddAfterCommit.AddFile(*entry);
+
+				if (sysProgressDlg.HasUserCancelled())
+				{
+					bAddSuccess = false;
+					break;
+				}
+
+				CShellUpdater::Instance().AddPathForUpdate(*entry);
+			}
+			if (bAddSuccess && git_index_write(index))
+				bAddSuccess = false;
+
+			git_index_free(index);
+			git_repository_free(repository);
+			git_config_free(config);
+		} while (0);
+	}
+	else
+	{
+		// ***************************************************
+		// ATTENTION: Similar code in RebaseDlg.cpp!!!
+		// ***************************************************
+		for (int j = 0; j < nListItems; ++j)
 		{
-			if(entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-			{	//To init git repository, there are not HEAD, so we can use git reset command
-				cmd.Format(_T("git.exe rm -f --cache -- \"%s\""),entry->GetGitPathString());
+			CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
+			if (sysProgressDlg.IsVisible())
+			{
+				if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
+				{
+					sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
+					sysProgressDlg.SetProgress(j, nListItems);
+					AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
+					currentTicks = GetTickCount();
+				}
+			}
+			if (entry->m_Checked && !m_bCommitMessageOnly)
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
+					cmd.Format(_T("git.exe add -f -- \"%s\""), entry->GetGitPathString());
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""), entry->GetGitPathString());
+				else
+					cmd.Format(_T("git.exe update-index  -- \"%s\""), entry->GetGitPathString());
+
 				if (g_Git.Run(cmd, &out, CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					bAddSuccess = false ;
-					bCloseCommitDlg=false;
 					break;
 				}
-				mgtReAddAfterCommit.AddFile(*entry);
 
-				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
+
+				g_Git.Run(cmd, &out, CP_UTF8);
+
+				++nchecked;
+			}
+			else
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{	//To init git repository, there are not HEAD, so we can use git reset command
+					cmd.Format(_T("git.exe rm -f --cache -- \"%s\""), entry->GetGitPathString());
+					if (g_Git.Run(cmd, &out, CP_UTF8))
+					{
+						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+						bAddSuccess = false ;
+						bCloseCommitDlg=false;
+						break;
+					}
+					mgtReAddAfterCommit.AddFile(*entry);
+
+					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
+						if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+							cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitOldPathString());
+						else
+							cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
+						g_Git.Run(cmd, &out, CP_UTF8);
+					}
+				}
+				else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
 				{
 					if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-						cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitOldPathString());
+					{
+						cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitPathString());
+					}
 					else
-						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
+					{
+						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
+					}
 					g_Git.Run(cmd, &out, CP_UTF8);
+					if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+						continue;
 				}
 			}
-			else if(!( entry->m_Action & CTGitPath::LOGACTIONS_UNVER ) )
+
+			if (sysProgressDlg.HasUserCancelled())
 			{
-				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-				{
-					cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitPathString());
-				}
-				else
-				{
-					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
-				}
-				g_Git.Run(cmd, &out, CP_UTF8);
-				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-					continue;
+				bAddSuccess = false;
+				break;
 			}
-		}
 
-		if (sysProgressDlg.HasUserCancelled())
-		{
-			bAddSuccess = false;
-			break;
+			CShellUpdater::Instance().AddPathForUpdate(*entry);
 		}
-
-		CShellUpdater::Instance().AddPathForUpdate(*entry);
 	}
 
 	sysProgressDlg.Stop();
