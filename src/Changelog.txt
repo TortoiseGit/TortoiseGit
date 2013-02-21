@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #1552: TGitCache prevents a git clone from performing successfully
  * Fixed issue #1631: Set focus to branch menu in Switch/Checkout window
  * Fixed issue #1646: TortoiseGit Log gives undeterministic results (log does not apply --boundary any more by default)
+ * Fixed issue #1085: Small commit with lots of unversioned and not ignored files takes very long
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
