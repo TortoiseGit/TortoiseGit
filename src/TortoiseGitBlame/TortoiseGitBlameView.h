@@ -131,6 +131,8 @@ protected:
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewToggleAuthor();
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleDate();
+	afx_msg void OnUpdateViewToggleDate(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleFollowRenames();
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void CopyHashToClipboard();

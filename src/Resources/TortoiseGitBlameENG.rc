@@ -274,6 +274,7 @@ BEGIN
             MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
         END
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
+        MENUITEM "Show date",                   ID_VIEW_SHOWDATE
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
     END
     POPUP "&Help"

@@ -67,6 +67,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_COMMAND(ID_VIEW_PREV,OnViewPrev)
 	ON_COMMAND(ID_VIEW_SHOWAUTHOR, OnViewToggleAuthor)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
+	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWDATE, OnUpdateViewToggleDate)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
@@ -132,7 +134,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bShowLine=true;
 
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
-	m_bShowDate=false;
+	m_bShowDate = (theApp.GetInt(_T("ShowDate"), 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
@@ -673,9 +675,15 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 
 	if (m_bShowDate)
 	{
-		_stprintf_s(buf, MAX_PATH, _T("%30s"), _T("31.08.2001 06:24:14"));
-		::GetTextExtentPoint32(hDC, buf, (int)_tcslen(buf), &width);
-		m_datewidth = width.cx + BLAMESPACE;
+		SIZE maxwidth = {0};
+
+		for (size_t i = 0; i < this->m_Dates.size(); ++i)
+		{
+			::GetTextExtentPoint32(hDC, m_Dates[i] , m_Dates[i].GetLength(), &width);
+			if (width.cx > maxwidth.cx)
+				maxwidth = width;
+		}
+		m_datewidth = maxwidth.cx + BLAMESPACE;
 		blamewidth += m_datewidth;
 	}
 	if ( m_bShowAuthor)
@@ -787,16 +795,12 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
 				Left += m_authorwidth;
 			}
-#if 0
-			if (ShowDate)
+			if (m_bShowDate)
 			{
 				rc.right = rc.left + Left + m_datewidth;
-				_stprintf_s(buf, MAX_PATH, _T("%30s            "), dates[i].c_str());
-				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, buf, _tcslen(buf), 0);
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Dates[i], m_Dates[i].GetLength(), 0);
 				Left += m_datewidth;
 			}
-
-#endif
 			if ((i==m_SelectedLine)&&(m_pFindDialog))
 			{
 				LOGBRUSH brush;
@@ -1363,6 +1367,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	this->m_CommitHash.clear();
 	this->m_Authors.clear();
+	this->m_Dates.clear();
 	this->m_ID.clear();
 	CString line;
 
@@ -1484,6 +1489,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		}
 		m_ID.push_back(-1); // m_ID is calculated lazy on demand
 		m_Authors.push_back(m_NoListCommit[hash].GetAuthorName());
+		m_Dates.push_back(CLoglistUtils::FormatDateAndTime(m_NoListCommit[hash].GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes));
 
 		m_CommitHash.push_back(hash);
 		pos = current+1;
@@ -1815,6 +1821,24 @@ void CTortoiseGitBlameView::OnViewToggleAuthor()
 void CTortoiseGitBlameView::OnUpdateViewToggleAuthor(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bShowAuthor);
+}
+
+void CTortoiseGitBlameView::OnViewToggleDate()
+{
+	m_bShowDate = ! m_bShowDate;
+
+	theApp.WriteInt(_T("ShowDate"), m_bShowDate);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left=GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleDate(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowDate);
 }
 
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()

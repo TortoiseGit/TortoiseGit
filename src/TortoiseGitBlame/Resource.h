@@ -74,13 +74,14 @@
 #define ID_BLAMEPOPUP_SHOWLOG           32781
 #define ID_VIEW_FOLLOWRENAMES           32782
 #define ID_FILE_SETTINGS                32783
+#define ID_VIEW_SHOWDATE                32784
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32784
+#define _APS_NEXT_COMMAND_VALUE         32785
 #define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

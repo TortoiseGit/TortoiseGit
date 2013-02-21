@@ -9,6 +9,7 @@ Released: unreleased
  * Support merge strategies except octopus
  * Fixed issue #1597: Reduce chance of committing old submodule revision on cherry-pick / rebase conflicts
  * Can specify specific paths of submodules to update
+ * Fixed issue #1661: TortoiseGitBlame: show line date time
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
