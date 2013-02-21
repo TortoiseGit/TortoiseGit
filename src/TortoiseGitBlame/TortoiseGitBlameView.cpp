@@ -666,8 +666,6 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	HDC hDC = this->GetDC()->m_hDC;
 	HFONT oldfont = (HFONT)::SelectObject(hDC, m_font);
 
-	TCHAR buf[MAX_PATH];
-
 	CString shortHash('f', g_Git.GetShortHASHLength() + 1);
 	::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength() + 1, &width);
 	m_revwidth = width.cx + BLAMESPACE;
@@ -791,7 +789,6 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
-				//_stprintf_s(buf, MAX_PATH, _T("%-30s            "), authors[i].c_str());
 				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
 				Left += m_authorwidth;
 			}
