@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #1597: Reduce chance of committing old submodule revision on cherry-pick / rebase conflicts
  * Can specify specific paths of submodules to update
  * Fixed issue #1661: TortoiseGitBlame: show line date time
+ * Fixed issue #1662: skip-worktree should not be exposed via context menus or anything without confirmation
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

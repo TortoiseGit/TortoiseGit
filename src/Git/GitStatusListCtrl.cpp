@@ -2299,6 +2299,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_ASSUMEVALID:
 				{
+					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_ASSUMEVALID, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
+						break;
 					CString cmdTemplate;
 					cmdTemplate = _T("git.exe update-index --assume-unchanged \"%s\"");
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -2325,6 +2327,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDGITLC_SKIPWORKTREE:
 				{
+					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_SKIPWORKTREE, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
+						break;
 					CString cmdTemplate;
 					cmdTemplate = _T("git.exe update-index --skip-worktree \"%s\"");
 					POSITION pos = GetFirstSelectedItemPosition();
