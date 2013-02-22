@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -151,7 +151,7 @@ bool CloneCommand::Execute()
 				CTGitPathList list;
 				g_Git.m_CurrentDir = dir;
 				list.AddPath(CTGitPath(dir));
-				GitDlg.SetCommand(CGitProgressDlg::GitProgress_Clone);
+				GitDlg.SetCommand(CGitProgressList::GitProgress_Clone);
 				GitDlg.SetUrl(url);
 				GitDlg.SetPathList(list);
 				GitDlg.SetIsBare(!!dlg.m_bBare);

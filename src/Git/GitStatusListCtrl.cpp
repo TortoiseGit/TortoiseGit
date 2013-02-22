@@ -1978,7 +1978,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					FillListOfSelectedItemPaths(paths, true);
 
 					CGitProgressDlg progDlg;
-					progDlg.SetCommand(CGitProgressDlg::GitProgress_Add);
+					progDlg.SetCommand(CGitProgressList::GitProgress_Add);
 					progDlg.SetPathList(paths);
 					progDlg.SetItemCount(paths.GetCount());
 					progDlg.DoModal();

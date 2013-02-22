@@ -55,7 +55,7 @@ void CMassiveGitTask::AddFile(CTGitPath filename)
 		m_itemList.push_back(filename.GetGitPathString());
 }
 
-bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressDlg * instance, NOTIFY_CALLBACK notifyMethod)
+bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance, NOTIFY_CALLBACK notifyMethod)
 {
 	assert(m_bUnused);
 	m_bUnused = false;
