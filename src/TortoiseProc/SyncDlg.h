@@ -28,6 +28,7 @@
 #include "BranchCombox.h"
 #include "GitLoglist.h"
 #include "Win7.h"
+#include "GitProgressList.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -38,6 +39,7 @@
 #define IDC_IN_CONFLICT		0x4
 #define IDC_OUT_LOGLIST		0x5
 #define IDC_OUT_CHANGELIST	0x6
+#define IDC_CMD_GIT_PROG	0x7
 
 #define IDT_INPUT		108
 
@@ -91,6 +93,7 @@ protected:
 
 	CGitLogList			m_OutLogList;
 	CGitLogList			m_InLogList;
+	CGitProgressList	m_GitProgressList;
 
 	CGitStatusListCtrl	m_OutChangeFileList;
 	CGitStatusListCtrl	m_InChangeFileList;
@@ -155,7 +158,8 @@ protected:
 	void SwitchToInput(){ShowProgressCtrl(false);ShowInputCtrl(true);}
 
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
-
+	LRESULT OnProgCmdFinish(WPARAM wParam, LPARAM lParam);
+	void RunPostAction();
 	void UpdateCombox()
 	{
 		this->m_strLocalBranch = this->m_ctrlLocalBranch.GetString();
@@ -199,7 +203,7 @@ protected:
 	CMenuButton		m_ctrlSubmodule;
 	CProgressCtrl	m_ctrlProgress;
 	CAnimateCtrl	m_ctrlAnimate;
-
+	CStatic			m_ctrlProgLabel;
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
 
