@@ -369,7 +369,7 @@ private:
 
 	TCHAR					m_columnbuf[MAX_PATH];
 
-	BOOL					m_bCancelled;
+	volatile BOOL			m_bCancelled;
 	int						m_nConflicts;
 	bool					m_bErrorsOccurred;
 	bool					m_bMergesAddsDeletesOccurred;
