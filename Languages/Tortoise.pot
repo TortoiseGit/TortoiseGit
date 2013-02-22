@@ -2281,11 +2281,6 @@ msgstr ""
 msgid "Checkout"
 msgstr ""
 
-#. Resource IDs: (229)
-#, c-format
-msgid "Checkout from %s, revision %s, %s, %s"
-msgstr ""
-
 #. Resource IDs: (67)
 msgid "Cherry Pick"
 msgstr ""
@@ -2399,6 +2394,10 @@ msgstr ""
 
 #. Resource IDs: (257)
 msgid "Clipboard"
+msgstr ""
+
+#. Resource IDs: (606)
+msgid "Clone"
 msgstr ""
 
 #. Resource IDs: (1572)
@@ -3333,6 +3332,14 @@ msgstr ""
 #. Resource IDs: (1007)
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as assume-valid?"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as skip-worktree?"
 msgstr ""
 
 #. Resource IDs: (145)
@@ -5977,6 +5984,10 @@ msgstr ""
 msgid "Part of code come from TortoiseSVN Blame"
 msgstr ""
 
+#. Resource IDs: (4585)
+msgid "Password"
+msgstr ""
+
 #. Resource IDs: (69, 65535)
 msgid "Password:"
 msgstr ""
@@ -7395,6 +7406,10 @@ msgstr ""
 msgid "Show changes as &unified diff"
 msgstr ""
 
+#. Resource IDs: (32784)
+msgid "Show date"
+msgstr ""
+
 #. Resource IDs: (83)
 msgid "Show destination folder"
 msgstr ""
@@ -7734,12 +7749,12 @@ msgstr ""
 msgid "Status of item in Git"
 msgstr ""
 
-#. Resource IDs: (1)
-msgid "Strategy"
-msgstr ""
-
 #. Resource IDs: (13)
 msgid "Stops bisect mode"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "Strategy"
 msgstr ""
 
 #. Resource IDs: (156)
@@ -7934,10 +7949,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Tags:"
-msgstr ""
-
-#. Resource IDs: (1386)
-msgid "take care of submodule changes"
 msgstr ""
 
 #. Resource IDs: (64)
@@ -8587,6 +8598,10 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
+#. Resource IDs: (607)
+msgid "Update Ref"
+msgstr ""
+
 #. Resource IDs: (65)
 msgid "Update Submodules"
 msgstr ""
@@ -9051,6 +9066,11 @@ msgstr ""
 msgid "You have modified properties without saving them first.\nDo you want to save them now?"
 msgstr ""
 
+#. Resource IDs: (87)
+#, c-format
+msgid "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
+msgstr ""
+
 #. Resource IDs: (169)
 msgid "You haven't entered an issue number!\nAre you sure you want to commit without an issue number?"
 msgstr ""
@@ -9426,6 +9446,10 @@ msgstr ""
 #. Resource IDs: (208)
 #, c-format
 msgid "switched to\r\n%s"
+msgstr ""
+
+#. Resource IDs: (1386)
+msgid "take care of submodule changes"
 msgstr ""
 
 #. Resource IDs: (3845)
