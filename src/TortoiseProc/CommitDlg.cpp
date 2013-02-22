@@ -50,6 +50,7 @@ static char THIS_FILE[] = __FILE__;
 
 UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(_T("TORTOISEGIT_AUTOLISTREADY_MSG"));
 UINT CCommitDlg::WM_UPDATEOKBUTTON = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEOKBUTTON"));
+UINT CCommitDlg::WM_UPDATEDATAFALSE = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEDATAFALSE"));
 
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
 CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
@@ -123,6 +124,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(CLinkControl::LK_LINKITEMCLICKED, &CCommitDlg::OnCheck)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady)
 	ON_REGISTERED_MESSAGE(WM_UPDATEOKBUTTON, OnUpdateOKButton)
+	ON_REGISTERED_MESSAGE(WM_UPDATEDATAFALSE, OnUpdateDataFalse)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_STN_CLICKED(IDC_EXTERNALWARNING, &CCommitDlg::OnStnClickedExternalwarning)
@@ -1047,7 +1049,7 @@ UINT CCommitDlg::StatusThread()
 		if (g_Git.IsInitRepos())
 		{
 			m_bCommitAmend = FALSE;
-			UpdateData(FALSE);
+			SendMessage(WM_UPDATEDATAFALSE);
 		}
 		else
 		{
@@ -1055,7 +1057,7 @@ UINT CCommitDlg::StatusThread()
 			{
 				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 				m_bCommitAmend = TRUE;
-				UpdateData(FALSE);
+				SendMessage(WM_UPDATEDATAFALSE);
 			}
 			else
 				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(TRUE);
@@ -1081,7 +1083,7 @@ UINT CCommitDlg::StatusThread()
 				if (headRevision.ParentsCount() != 1)
 				{
 					m_bAmendDiffToLastCommit = true;
-					UpdateData(FALSE);
+					SendMessage(WM_UPDATEDATAFALSE);
 				}
 				else
 					GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(TRUE);
@@ -1896,6 +1898,12 @@ LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 
 	DialogEnableWindow(IDOK, bValidLogSize && (m_bCommitMessageOnly || bAmendOrSelectFilesOrMerge));
 
+	return 0;
+}
+
+LRESULT CCommitDlg::OnUpdateDataFalse(WPARAM, LPARAM)
+{
+	UpdateData(FALSE);
 	return 0;
 }
 
