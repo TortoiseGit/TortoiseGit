@@ -2002,7 +2002,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 		CGitProgressDlg progDlg;
 
 		theApp.m_pMainWnd = &progDlg;
-		progDlg.SetCommand(CGitProgressDlg::GitProgress_SendMail);
+		progDlg.SetCommand(CGitProgressList::GitProgress_SendMail);
 
 		progDlg.SetAutoClose(autoclose);
 
@@ -2228,7 +2228,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 			CGitProgressDlg gitdlg;
 			if (!dlg.m_bAllRemotes)
 				gitdlg.SetUrl(url);
-			gitdlg.SetCommand(CGitProgressDlg::GitProgress_Fetch);
+			gitdlg.SetCommand(CGitProgressList::GitProgress_Fetch);
 			gitdlg.SetAutoTag(dlg.m_bFetchTags ? GIT_REMOTE_DOWNLOAD_TAGS_ALL : GIT_REMOTE_DOWNLOAD_TAGS_NONE);
 			if (!dlg.m_bAllRemotes)
 				gitdlg.SetRefSpec(dlg.m_RemoteBranchName);

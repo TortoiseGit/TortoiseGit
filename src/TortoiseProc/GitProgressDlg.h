@@ -29,67 +29,10 @@
 #include "afxwin.h"
 #include "Win7.h"
 #include "UnicodeUtils.h"
+#include "GitProgressList.h"
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
-struct git_transfer_progress;
 
-/**
- * \ingroup TortoiseProc
- * Options which can be used to configure the way the dialog box works
- */
-typedef enum
-{
-	ProgOptNone = 0,
-	ProgOptRecursive = 0x01,
-	ProgOptNonRecursive = 0x00,
-	/// Don't actually do the merge - just practice it
-	ProgOptDryRun = 0x04,
-	ProgOptIgnoreExternals = 0x08,
-	ProgOptKeeplocks = 0x10,
-	/// for locking this means steal the lock, for unlocking it means breaking the lock
-	ProgOptLockForce = 0x20,
-	ProgOptSwitchAfterCopy = 0x40,
-	ProgOptIncludeIgnored = 0x80,
-	ProgOptIgnoreAncestry = 0x100,
-	ProgOptEolDefault = 0x200,
-	ProgOptEolCRLF = 0x400,
-	ProgOptEolLF = 0x800,
-	ProgOptEolCR = 0x1000,
-	ProgOptSkipConflictCheck = 0x2000,
-	ProgOptRecordOnly = 0x4000
-} ProgressOptions;
-
-typedef enum
-{
-	CLOSE_MANUAL = 0,
-	CLOSE_NOERRORS,
-	CLOSE_NOCONFLICTS,
-	CLOSE_NOMERGES,
-	CLOSE_LOCAL
-} ProgressCloseOptions;
-
-#define WM_SHOWCONFLICTRESOLVER (WM_APP + 100)
-
-typedef enum
-{
-	git_wc_notify_add,
-	git_wc_notify_sendmail_start,
-	git_wc_notify_sendmail_error,
-	git_wc_notify_sendmail_retry,
-	git_wc_notify_sendmail_done,
-	git_wc_notify_resolved,
-	git_wc_notify_revert,
-	git_wc_notify_fetch,
-	git_wc_notify_checkout,
-	git_wc_notify_update_ref,
-
-}git_wc_notify_action_t;
-typedef enum
-{
-	SENDMAIL_ATTACHMENT	=0x1,
-	SENDMAIL_COMBINED	=0x2,
-	SENDMAIL_MAPI		=0x4
-};
 /**
  * \ingroup TortoiseProc
  * Handles different Subversion commands and shows the notify messages
@@ -99,21 +42,6 @@ typedef enum
 class CGitProgressDlg : public CResizableStandAloneDialog
 {
 public:
-	typedef enum
-	{
-		GitProgress_Add,
-		GitProgress_Checkout,
-		GitProgress_Copy,
-		GitProgress_Export,
-		GitProgress_Rename,
-		GitProgress_Resolve,
-		GitProgress_Revert,
-		GitProgress_Switch,
-		GitProgress_SendMail,
-		GitProgress_Clone,
-		GitProgress_Fetch,
-	} Command;
-
 
 	DECLARE_DYNAMIC(CGitProgressDlg)
 
@@ -123,28 +51,28 @@ public:
 	virtual ~CGitProgressDlg();
 
 
-	void SetCommand(Command cmd) {m_Command = cmd;}
+	void SetCommand(CGitProgressList::Command cmd) {m_ProgList.SetCommand(cmd);}
 	void SetAutoClose(DWORD ac) {m_dwCloseOnEnd = ac;}
-	void SetOptions(DWORD opts) {m_options = opts;}
-	void SetPathList(const CTGitPathList& pathList) {m_targetPathList = pathList;}
-	void SetUrl(const CString& url) {m_url.SetFromUnknown(url);}
-	void SetSecondUrl(const CString& url) {m_url2.SetFromUnknown(url);}
-	void SetCommitMessage(const CString& msg) {m_sMessage = msg;}
-	void SetIsBare(bool b) { m_bBare = b; }
-	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
-	void SetRefSpec(CString spec){ m_RefSpec = spec; }
-	void SetAutoTag(int tag){ m_AutoTag = tag; }
+	void SetOptions(DWORD opts) {m_ProgList.SetOptions(opts);}
+	void SetPathList(const CTGitPathList& pathList) {m_ProgList.SetPathList(pathList);}
+	void SetUrl(const CString& url) {m_ProgList.SetUrl(url);}
+	void SetSecondUrl(const CString& url) {m_ProgList.SetSecondUrl(url);}
+	void SetCommitMessage(const CString& msg) {m_ProgList.SetCommitMessage(msg);}
+	void SetIsBare(bool b) { m_ProgList.SetIsBare(b); }
+	void SetNoCheckout(bool b){ m_ProgList.SetNoCheckout(b); }
+	void SetRefSpec(CString spec){ m_ProgList.SetRefSpec(spec); }
+	void SetAutoTag(int tag){ m_ProgList.SetAutoTag(tag); }
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 
-	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
-	void SetSendMailOption(CString &TO, CString &CC,CString &Subject,DWORD flags){m_SendMailTO=TO;m_SendMailSubject=Subject; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
-	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
-	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
-	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
-	void SetChangeList(const CString& changelist, bool keepchangelist) {m_changelist = changelist; m_keepchangelist = keepchangelist;}
-	void SetSelectedList(const CTGitPathList& selPaths);
+	void SetDiffOptions(const CString& opts) {m_ProgList.SetDiffOptions(opts);}
+	void SetSendMailOption(CString &TO, CString &CC,CString &Subject,DWORD flags){m_ProgList.SetSendMailOption(TO, CC, Subject, flags);}
+	void SetDepth(git_depth_t depth = git_depth_unknown) {m_ProgList.SetDepth(depth);}
+	void SetPegRevision(GitRev pegrev = GitRev()) {m_ProgList.SetPegRevision(pegrev);}
+	void SetProjectProperties(ProjectProperties props) {m_ProgList.SetProjectProperties(props);}
+	void SetChangeList(const CString& changelist, bool keepchangelist) {m_ProgList.SetChangeList(changelist, keepchangelist);}
+	void SetSelectedList(const CTGitPathList& selPaths) {m_ProgList.SetSelectedList(selPaths);};
 //	void SetRevisionRanges(const GitRevRangeArray& revArray) {m_revisionArray = revArray;}
 //	void SetBugTraqProvider(const CComPtr<IBugTraqProvider> pBugtraqProvider) { m_BugTraqProvider = pBugtraqProvider;}
 	/**
@@ -152,260 +80,42 @@ public:
 	 * beforehand, that number can be set here. It is then used to show a more
 	 * accurate progress bar during the operation.
 	 */
-	void SetItemCount(long count) {if(count) m_itemCountTotal = count;}
+	void SetItemCount(long count) {if(count) m_ProgList.SetItemCount(count);}
 
-	bool SetBackgroundImage(UINT nID);
-
-	bool DidErrorsOccur() {return m_bErrorsOccurred;}
+	bool DidErrorsOccur() {return m_ProgList.m_bErrorsOccurred;}
 
 	enum { IDD = IDD_SVNPROGRESS };
 
-private:
-	class NotificationData
-	{
-	public:
-		NotificationData()
-		: color(::GetSysColor(COLOR_WINDOWTEXT))
-		, action((git_wc_notify_action_t)-1)
-		, bConflictedActionItem(false)
-		, bAuxItem(false)
-		{};
-	    git_wc_notify_action_t action;
-#if 0
-		  action((git_wc_notify_action_t)-1),
-			  kind(git_node_none),
-			  content_state(git_wc_notify_state_inapplicable),
-			  prop_state(git_wc_notify_state_inapplicable),
-			  rev(0),
 
-			  bConflictedActionItem(false),
-			  bAuxItem(false)
-			  //,
-//			  lock_state(git_wc_notify_lock_state_unchanged)
-		  {
-//			  merge_range.end = 0;
-//			  merge_range.start = 0;
-		  }
-#endif
-	public:
-		// The text we put into the first column (the Git action for normal items, just text for aux items)
-		CString					sActionColumnText;
-		CTGitPath				path;
-		CTGitPath				basepath;
-//		CString					changelistname;
-
-//		git_node_kind_t			kind;
-//		CString					mime_type;
-//		git_wc_notify_state_t	content_state;
-//		git_wc_notify_state_t	prop_state;
-//		git_wc_notify_lock_state_t lock_state;
-//		git_merge_range_t		merge_range;
-		git_revnum_t			rev;
-		COLORREF				color;
-//		CString					owner;						///< lock owner
-		bool					bConflictedActionItem;		// Is this item a conflict?
-		bool					bAuxItem;					// Set if this item is not a true 'Git action'
-		CString					sPathColumnText;
-		CGitHash				m_OldHash;
-		CGitHash				m_NewHash;
-
-	};
 protected:
 
-	//Need update in the future implement the virtual methods from Git base class
-	virtual BOOL Notify(const CTGitPath& path,
-								git_wc_notify_action_t action,
-								int status = 0,
-								CString *strErr =NULL
-		/*
-		git_node_kind_t kind, const CString& mime_type,
-		git_wc_notify_state_t content_state,
-		git_wc_notify_state_t prop_state, LONG rev,
-		const git_lock_t * lock, git_wc_notify_lock_state_t lock_state,
-		const CString& changelistname,
-		git_merge_range_t * range,
-		git_error_t * err, apr_pool_t * pool*/
-		);
-	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
-	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
-
-//	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
-
-	static int FetchCallback(const git_transfer_progress *stats, void *payload)
-	{
-		return !((CGitProgressDlg*)payload) -> Notify(git_wc_notify_fetch, stats);
-	}
-
-	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
-	{
-		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
-		((CGitProgressDlg*)payload) -> m_itemCountTotal = tot;
-		((CGitProgressDlg*)payload) -> m_itemCount = cur;
-		((CGitProgressDlg*)payload) -> Notify(tpath, git_wc_notify_checkout);
-	}
-
-	static void RemoteProgressCallback(const char *str, int len, void *data)
-	{
-		CString progText;
-		progText = CUnicodeUtils::GetUnicode(CStringA(str, len));
-		((CGitProgressDlg*)data) -> SetDlgItemText(IDC_PROGRESSLABEL, progText);
-	}
-	static int RemoteCompletionCallback(git_remote_completion_type /*type*/, void * /*data*/)
-	{
-		return 0;
-	}
-	static int RemoteUpdatetipsCallback(const char *refname, const git_oid *a, const git_oid *b, void *data)
-	{
-		CString str;
-		str = CUnicodeUtils::GetUnicode(refname);
-		((CGitProgressDlg*)data) -> Notify(git_wc_notify_update_ref, str, a, b);
-		return 0;
-	}
-
 	virtual BOOL						OnInitDialog();
-	virtual BOOL						Cancel();
 	virtual void						OnCancel();
 	virtual BOOL						PreTranslateMessage(MSG* pMsg);
 	virtual void						DoDataExchange(CDataExchange* pDX);
 
-	afx_msg void	OnNMCustomdrawSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void	OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void	OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnBnClickedLogbutton();
 	afx_msg void	OnBnClickedOk();
 	afx_msg void	OnBnClickedNoninteractive();
-	afx_msg void	OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void	OnClose();
-	afx_msg void	OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg LRESULT OnGitProgress(WPARAM wParam, LPARAM lParam);
-	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg void	OnEnSetfocusInfotext();
-	afx_msg void	OnLvnBegindragSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void	OnSize(UINT nType, int cx, int cy);
-	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT	OnCtlColorStatic(WPARAM wParam, LPARAM lParam);
 	afx_msg HBRUSH	OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	LRESULT			OnShowConflictResolver(WPARAM, LPARAM);
+	LRESULT			OnCmdEnd(WPARAM wParam, LPARAM lParam);
+	LRESULT			OnCmdStart(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
 
-	void			Sort();
-	static bool		SortCompare(const NotificationData* pElem1, const NotificationData* pElem2);
-
-	static BOOL		m_bAscending;
-	static int		m_nSortedColumn;
-	CStringList		m_ExtStack;
-
 private:
-	static UINT ProgressThreadEntry(LPVOID pVoid);
-	UINT		ProgressThread();
 	virtual void OnOK();
-	void		ReportGitError();
-	void		ReportError(const CString& sError);
-	void		ReportWarning(const CString& sWarning);
-	void		ReportNotification(const CString& sNotification);
-	void		ReportCmd(const CString& sCmd);
-	void		ReportString(CString sMessage, const CString& sMsgKind, COLORREF color = ::GetSysColor(COLOR_WINDOWTEXT));
-	void		AddItemToList();
-	CString		BuildInfoString();
-	CString		GetPathFromColumnText(const CString& sColumnText);
 
-	/**
-	 * Resizes the columns of the progress list so that the headings are visible.
-	 */
-	void		ResizeColumns();
-
-	/// Predicate function to tell us if a notification data item is auxiliary or not
-	static bool NotificationDataIsAux(const NotificationData* pData);
-
-	// the commands to execute
-	bool		CmdAdd(CString& sWindowTitle, bool& localoperation);
-	bool		CmdCheckout(CString& sWindowTitle, bool& localoperation);
-	bool		CmdCopy(CString& sWindowTitle, bool& localoperation);
-	bool		CmdExport(CString& sWindowTitle, bool& localoperation);
-	bool		CmdRename(CString& sWindowTitle, bool& localoperation);
-	bool		CmdResolve(CString& sWindowTitle, bool& localoperation);
-	bool		CmdRevert(CString& sWindowTitle, bool& localoperation);
-	bool		CmdSwitch(CString& sWindowTitle, bool& localoperation);
-	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
-	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
-	bool		CmdFetch(CString& sWindowTitle, bool& localoperation);
-
-private:
-	typedef std::map<CStringA, git_revnum_t> StringRevMap;
-	typedef std::vector<NotificationData *> NotificationDataVect;
-
-
-	CString					m_mergedfile;
-	NotificationDataVect	m_arData;
 	CAnimateCtrl			m_Animate;
-	CWinThread*				m_pThread;
-	volatile LONG			m_bThreadRunning;
+	CProgressCtrl			m_ProgCtrl;
+	CGitProgressList		m_ProgList;
+	CEdit					m_InfoCtrl;
+	CStatic					m_ProgLableCtrl;
 
-	ProjectProperties		m_ProjectProperties;
-	CListCtrl				m_ProgList;
-	Command					m_Command;
-	int						m_options;	// Use values from the ProgressOptions enum
-	git_depth_t				m_depth;
-	CTGitPathList			m_targetPathList;
-	CTGitPathList			m_selectedPaths;
-	CTGitPath				m_url;
-	CTGitPath				m_url2;
-	CString					m_sMessage;
-	CString					m_diffoptions;
-	GitRev					m_Revision;
-	GitRev					m_RevisionEnd;
-	GitRev					m_pegRev;
-//	GitRevRangeArray		m_revisionArray;
-	CString					m_changelist;
-	bool					m_keepchangelist;
-
-	DWORD					m_dwCloseOnEnd;
-
-	CTGitPath				m_basePath;
-	StringRevMap			m_UpdateStartRevMap;
-	StringRevMap			m_FinishedRevMap;
-
-	TCHAR					m_columnbuf[MAX_PATH];
-
-	BOOL					m_bCancelled;
-	int						m_nConflicts;
-	bool					m_bErrorsOccurred;
-	bool					m_bMergesAddsDeletesOccurred;
-
-	int						iFirstResized;
-	BOOL					bSecondResized;
-	int						nEnsureVisibleCount;
-
-	CString					m_sTotalBytesTransferred;
-	size_t					m_TotalBytesTransferred;
-
-	CColors					m_Colors;
-
-	bool					m_bFinishedItemAdded;
-	bool					m_bLastVisible;
-
-	int						m_itemCount;
-	int						m_itemCountTotal;
-
-	bool					m_AlwaysConflicted;
-
-	DWORD					m_SendMailFlags;
-	CString					m_SendMailTO;
-	CString					m_SendMailCC;
-	CString					m_SendMailSubject;
-
-///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
-	CComPtr<ITaskbarList3>	m_pTaskbarList;
-
-	// some strings different methods can use
-	CString					sDryRun;
-	CString					sRecordOnly;
-
-	bool					m_bBare;
-	bool					m_bNoCheckout;
-	CString					m_RefSpec;
 	CBrush					m_background_brush;
-	int						m_AutoTag;
+	DWORD					m_dwCloseOnEnd;
 };
