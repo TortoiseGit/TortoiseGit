@@ -647,7 +647,7 @@ void CCommitDlg::OnOK()
 					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
 				}
 				g_Git.Run(cmd, &out, CP_UTF8);
-				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+				if (m_bCommitAmend && !m_bAmendDiffToLastCommit && !sysProgressDlg.HasUserCancelled())
 					continue;
 			}
 		}
