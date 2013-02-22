@@ -11,6 +11,7 @@ Released: unreleased
  * Can specify specific paths of submodules to update
  * Fixed issue #1661: TortoiseGitBlame: show line date time
  * Fixed issue #1662: skip-worktree should not be exposed via context menus or anything without confirmation
+ * Fixed issue #330: Implement --author option gui interface in the commit dialog
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

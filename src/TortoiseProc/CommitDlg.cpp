@@ -73,6 +73,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bCreateTagAfterCommit(FALSE)
 	, m_bForceCommitAmend(false)
 	, m_bCommitMessageOnly(FALSE)
+	, m_bSetAuthor(FALSE)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;
@@ -96,6 +97,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_NEWBRANCH, m_bCreateNewBranch);
 	DDX_Text(pDX, IDC_NEWBRANCH, m_sCreateNewBranch);
 	DDX_Text(pDX, IDC_BUGID, m_sBugID);
+	DDX_Text(pDX, IDC_COMMIT_AUTHORDATA, m_sAuthor);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
 	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
@@ -103,6 +105,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
 	DDX_Check(pDX, IDC_COMMIT_MESSAGEONLY, m_bCommitMessageOnly);
 	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
+	DDX_Check(pDX, IDC_COMMIT_SETAUTHOR, m_bSetAuthor);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
@@ -142,6 +145,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
+	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
 
 BOOL CCommitDlg::OnInitDialog()
@@ -280,6 +284,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_COMMIT_MESSAGEONLY);
 	AdjustControlSize(IDC_COMMIT_AMENDDIFF);
 	AdjustControlSize(IDC_COMMIT_SETDATETIME);
+	AdjustControlSize(IDC_COMMIT_SETAUTHOR);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
 	AdjustControlSize(IDC_KEEPLISTS);
 
@@ -341,6 +346,8 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 
 	AddAnchor(IDC_SELECTLABEL, TOP_LEFT);
 	AddAnchor(IDC_CHECKALL, TOP_LEFT);
@@ -761,8 +768,11 @@ void CCommitDlg::OnOK()
 			m_CommitTime.GetTime(time);
 			dateTime.Format(_T("--date=%sT%s"), date.Format(_T("%Y-%m-%d")), time.Format(_T("%H:%M:%S")));
 		}
+		CString author;
+		if (m_bSetAuthor)
+			author.Format(_T("--author=\"%s\""), m_sAuthor);
 		CString allowEmpty = m_bCommitMessageOnly ? _T("--allow-empty") : _T("");
-		cmd.Format(_T("git.exe commit %s %s %s -F \"%s\""), dateTime, amend, allowEmpty, tempfile);
+		cmd.Format(_T("git.exe commit %s %s %s %s -F \"%s\""), author, dateTime, amend, allowEmpty, tempfile);
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -1948,6 +1958,8 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
 	RemoveAnchor(IDC_COMMIT_TIMEPICKER);
+	RemoveAnchor(IDC_COMMIT_SETAUTHOR);
+	RemoveAnchor(IDC_COMMIT_AUTHORDATA);
 	RemoveAnchor(IDC_LISTGROUP);
 	RemoveAnchor(IDC_FILELIST);
 	RemoveAnchor(IDC_TEXT_INFO);
@@ -1972,6 +1984,8 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETDATETIME),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_DATEPICKER),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_TIMEPICKER),0,delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_SETAUTHOR), 0, delta);
+	CSplitterControl::ChangePos(GetDlgItem(IDC_COMMIT_AUTHORDATA), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_TEXT_INFO),0,delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_SELECTLABEL), 0, delta);
 	CSplitterControl::ChangePos(GetDlgItem(IDC_CHECKALL), 0, delta);
@@ -1995,6 +2009,8 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_TEXT_INFO,TOP_RIGHT);
 	AddAnchor(IDC_SELECTLABEL, TOP_LEFT);
 	AddAnchor(IDC_CHECKALL, TOP_LEFT);
@@ -2083,6 +2099,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	}
 
 	OnBnClickedCommitSetDateTime(); // to update the commit date and time
+	OnBnClickedCommitSetauthor(); // to update the commit author
 
 	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	Refresh();
@@ -2318,4 +2335,26 @@ void CCommitDlg::UpdateCheckLinks()
 	DialogEnableWindow(IDC_CHECKMODIFIED, m_ListCtrl.GetModifiedCount() > 0);
 	DialogEnableWindow(IDC_CHECKFILES, m_ListCtrl.GetFileCount() > 0);
 	DialogEnableWindow(IDC_CHECKSUBMODULES, m_ListCtrl.GetSubmoduleCount() > 0);
+}
+
+void CCommitDlg::OnBnClickedCommitSetauthor()
+{
+	UpdateData();
+
+	if (m_bSetAuthor)
+	{
+		m_sAuthor.Format(_T("%s <%s>"), g_Git.GetUserName(), g_Git.GetUserEmail());
+		if (m_bCommitAmend)
+		{
+			GitRev headRevision;
+			headRevision.GetCommit(_T("HEAD"));
+			m_sAuthor.Format(_T("%s <%s>"), headRevision.GetAuthorName(), headRevision.GetAuthorEmail());
+		}
+
+		UpdateData(FALSE);
+
+		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
+	}
+	else
+		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
 }

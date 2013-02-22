@@ -149,6 +149,8 @@ protected:
 	CString				m_NoAmendStr;
 	BOOL				m_bCreateNewBranch;
 	CString				m_sCreateNewBranch;
+	BOOL				m_bSetAuthor;
+	CString				m_sAuthor;
 
 	int					CheckHeadDetach();
 
@@ -203,4 +205,5 @@ protected:
 	afx_msg void OnBnClickedNoautoselectsubmodules();
 	afx_msg void OnBnClickedCommitSetDateTime();
 	afx_msg void OnBnClickedCheckNewBranch();
+	afx_msg void OnBnClickedCommitSetauthor();
 };

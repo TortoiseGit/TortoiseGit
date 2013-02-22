@@ -242,6 +242,7 @@
 #define IDS_PROC_PROGRESS_GITUNCLEANEXIT 1047
 #define IDC_REMOVABLE                   1048
 #define IDS_UPTODATE                    1048
+#define IDC_COMMIT_AUTHORDATA           1048
 #define IDC_NETWORK                     1049
 #define IDS_SEECHANGES                  1049
 #define IDC_FIXED                       1050
@@ -1041,6 +1042,7 @@
 #define IDC_REBASE_PROGRESS             1557
 #define IDC_COMMIT_SETDATETIME          1557
 #define IDC_REBASE_SHEET                1558
+#define IDC_COMMIT_SETAUTHOR            1558
 #define IDC_EDIT_ALL                    1559
 #define IDS_PROC_MULTIRENAME            1560
 #define IDC_PICK_ALL                    1560

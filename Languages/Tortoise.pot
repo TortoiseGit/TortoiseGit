@@ -7234,6 +7234,10 @@ msgstr ""
 msgid "Set Accelerator &for:"
 msgstr ""
 
+#. Resource IDs: (1558)
+msgid "Set au&thor"
+msgstr ""
+
 #. Resource IDs: (1557)
 msgid "Set commit &date"
 msgstr ""
