@@ -855,7 +855,8 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 		range.Format(_T(" %s "), FixBranchName(*to));
 		param += range;
 	}
-	param+=hash;
+	else
+		param += hash;
 
 	CString st1,st2;
 
@@ -902,7 +903,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	}
 
 	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE))
-		param += _T(" --topo-order");
+		param += _T(" --date-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
 		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), num, param);
