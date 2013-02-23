@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,38 +27,23 @@ bool LogCommand::Execute()
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
 
-	CString val = parser.GetVal(_T("startrev"));
-	if ( val.IsEmpty() )
+	CString revstart = parser.GetVal(_T("startrev"));
+	if (revstart.IsEmpty())
 	{
 		// support deprecated parameter prior 1.5.0
-		val = parser.GetVal(_T("revstart"));
+		revstart = parser.GetVal(_T("revstart"));
 	}
-	CString revstart =val;
-	val = parser.GetVal(_T("endrev"));
-	if ( val.IsEmpty() )
+
+	CString revend = parser.GetVal(_T("endrev"));
+	if (revend.IsEmpty())
 	{
 		// support deprecated parameter prior 1.5.0
-		val = parser.GetVal(_T("revend"));
+		revend = parser.GetVal(_T("revend"));
 	}
-	CString revend =val;
-	val = parser.GetVal(_T("limit"));
+
+	CString val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
-	val = parser.GetVal(_T("rev"));
-	if ( val.IsEmpty() )
-	{
-		// support deprecated parameter prior 1.5.0
-		val = parser.GetVal(_T("rev"));
-	}
-
-	CString rev = val;
-
-#if 0
-	SVNRev pegrev = val.IsEmpty() ? SVNRev() : SVNRev(val);
-	if (!revstart.IsValid())
-		revstart = SVNRev::REV_HEAD;
-	if (!revend.IsValid())
-		revend = 0;
-#endif
+	CString rev = parser.GetVal(_T("rev"));
 
 	if (limit == 0)
 	{
@@ -76,13 +61,8 @@ bool LogCommand::Execute()
 
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
-	//dlg.SetParams(cmdLinePath);
 	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, revstart, revend, limit);
 	dlg.SetFilter(findStr, findType, findRegex);
-//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
-//	val = parser.GetVal(_T("propspath"));
-//	if (!val.IsEmpty())
-//		dlg.SetProjectPropertiesPath(CTSVNPath(val));
 	dlg.DoModal();
 	if (parser.HasVal(_T("outfile")))
 	{
