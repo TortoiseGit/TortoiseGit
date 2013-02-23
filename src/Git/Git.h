@@ -276,13 +276,6 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	//hash is empty means all. -1 means all
-
-	int GetLog(CGitCall* pgitCall, const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
-								CString *from=NULL,CString *to=NULL);
-	int GetLog(BYTE_VECTOR& logOut,const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
-								CString *from=NULL,CString *to=NULL);
-
 	CString GetLogCmd(const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
 					  CString *from=NULL,CString *to=NULL, bool paramonly=false,
 					  CFilterData * filter =NULL);

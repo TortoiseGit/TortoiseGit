@@ -782,12 +782,6 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-int CGit::GetLog(BYTE_VECTOR& logOut, const CString &hash,  CTGitPath *path ,int count,int mask,CString *from,CString *to)
-{
-	CGitCall_ByteVector gitCall(CString(), &logOut, NULL);
-	return GetLog(&gitCall,hash,path,count,mask,from,to);
-}
-
 CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
 						CFilterData *Filter)
 {
@@ -919,15 +913,6 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 
 	return cmd;
 }
-//int CGit::GetLog(CGitCall* pgitCall, const CString &hash,  CTGitPath *path ,int count,int mask)
-int CGit::GetLog(CGitCall* pgitCall, const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to)
-{
-	pgitCall->SetCmd( GetLogCmd(hash,path,count,mask,from,to) );
-
-	return Run(pgitCall);
-//	return Run(cmd,&logOut);
-}
-
 #define BUFSIZE 512
 void GetTempPath(CString &path)
 {
