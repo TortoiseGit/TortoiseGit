@@ -719,6 +719,7 @@ const char git_more_info_string[] =
 /* returns 0 for "no pager", 1 for "use pager", and -1 for "not specified" */
 int check_pager_config(const char *cmd)
 {
+	UNREFERENCED_PARAMETER(cmd);
 	return 0;
 }
 
@@ -910,6 +911,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 		const char *pathname, unsigned mode, int stage, void *context)
 {
 	struct cache_entry *ce;
+	UNREFERENCED_PARAMETER(stage);
 
 	ce = (struct cache_entry *)context;
 
@@ -1024,6 +1026,7 @@ int git_get_config(const char *key, char *buffer, int size, char *git_path)
 	char *local, *global, *globalxdg;
 	const char *home, *system;
 	struct config_buf buf;
+	UNREFERENCED_PARAMETER(git_path);
 	buf.buf=buffer;
 	buf.size=size;
 	buf.seen = 0;
@@ -1103,6 +1106,7 @@ const wchar_t *wget_windows_home_directory(void)
 int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
 {
 	char * config_exclusive_filename = NULL;
+	UNREFERENCED_PARAMETER(git_path);
 	switch(type)
 	{
 	case CONFIG_LOCAL:
