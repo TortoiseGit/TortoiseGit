@@ -151,6 +151,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnColumnclickListRefLeafs)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnItemChangedListRefLeafs)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
 	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
@@ -775,6 +776,16 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 	ShowContextMenu(point,m_RefTreeCtrl.GetSelectedItem(),selectedLeafs);
 }
 
+CString GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator)
+{
+	ASSERT(selectedLeafs.size() == 2);
+
+	if (selectedLeafs.at(0)->GetRefName() == lastSelected)
+		return g_Git.StripRefName(selectedLeafs.at(1)->GetRefName()) + separator + g_Git.StripRefName(lastSelected);
+	else
+		return g_Git.StripRefName(selectedLeafs.at(0)->GetRefName()) + separator + g_Git.StripRefName(lastSelected);
+}
+
 void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs)
 {
 	CIconMenu popupMenu;
@@ -870,6 +881,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		bAddSeparator = true;
 		popupMenu.AppendMenuIcon(eCmd_Diff, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_COMPAREREFS)), IDI_DIFF);
+		CString menu;
+		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
+		popupMenu.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
 	}
 
 	if(!selectedLeafs.empty())
@@ -970,6 +984,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CLogDlg dlg;
 			dlg.SetRange(g_Git.FixBranchName(selectedLeafs[0]->GetRefName()));
+			dlg.DoModal();
+		}
+		break;
+	case eCmd_ViewLogRange:
+		{
+			CLogDlg dlg;
+			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
 			dlg.DoModal();
 		}
 		break;
@@ -1171,6 +1192,16 @@ void CBrowseRefsDlg::OnDestroy()
 	m_pickedRef = GetSelectedRef(true, false);
 
 	CResizableStandAloneDialog::OnDestroy();
+}
+
+void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+
+	CShadowTree *item = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMListView->iItem);
+	if (item && pNMListView->uNewState == 2)
+		m_sLastSelected = item->GetRefName();
 }
 
 void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult)

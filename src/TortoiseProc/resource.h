@@ -871,6 +871,7 @@
 #define IDC_REVISIONGROUP               1393
 #define IDS_PROC_MARK_SKIPWORKTREE      1393
 #define IDC_REPOLABEL                   1394
+#define IDS_SHOWLOG_OF                  1394
 #define IDS_WARN_FOLDERNOTEXIST         1400
 #define IDS_WARN_GITINIT_FOLDERNOTEMPTY 1404
 #define IDS_WARN_WARNING                1405

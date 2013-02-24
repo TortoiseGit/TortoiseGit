@@ -95,6 +95,7 @@ public:
 		eCmd_RepoBrowser,
 		eCmd_DeleteRemoteTag,
 		eCmd_EditBranchDescription,
+		eCmd_ViewLogRange,
 	};
 
 	enum eCol
@@ -169,9 +170,11 @@ private:
 	afx_msg void OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDestroy();
 	afx_msg void OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 
+	CString	m_sLastSelected;
 	CString m_initialRef;
 	int		m_pickRef_Kind;
 	CString m_pickedRef;

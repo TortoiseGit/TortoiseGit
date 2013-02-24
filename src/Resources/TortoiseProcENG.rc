@@ -3005,6 +3005,7 @@ BEGIN
                             "Do you really want to mark the selected file(s) as assume-valid?"
     IDS_PROC_MARK_SKIPWORKTREE 
                             "Do you really want to mark the selected file(s) as skip-worktree?"
+    IDS_SHOWLOG_OF          "Show log of %s"
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_GITINIT_FOLDERNOTEMPTY 
                             "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"

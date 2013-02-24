@@ -7450,6 +7450,11 @@ msgstr ""
 msgid "Show log &before rename/copy"
 msgstr ""
 
+#. Resource IDs: (88)
+#, c-format
+msgid "Show log of %s"
+msgstr ""
+
 #. Resource IDs: (81)
 msgid "Show log of submodule"
 msgstr ""
