@@ -884,6 +884,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		CString menu;
 		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
 		popupMenu.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
+		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
+		popupMenu.AppendMenuIcon(eCmd_ViewLogRangeReachableFromOnlyOne, menu, IDI_LOG);
 	}
 
 	if(!selectedLeafs.empty())
@@ -991,6 +993,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CLogDlg dlg;
 			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
+			dlg.DoModal();
+		}
+		break;
+	case eCmd_ViewLogRangeReachableFromOnlyOne:
+		{
+			CLogDlg dlg;
+			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
 			dlg.DoModal();
 		}
 		break;

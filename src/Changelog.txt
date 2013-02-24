@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #330: Implement --author option gui interface in the commit dialog
  * Fixed issue #1147: Ability to filter out branches in Log dialog
  * Fixed issue #1628: Support commit ranges in log list (from Reference Browser)
+ * Fixed issue #832: Compare commits between branches (branch1...branch2, from Reference Browser)
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

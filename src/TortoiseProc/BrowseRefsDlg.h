@@ -96,6 +96,7 @@ public:
 		eCmd_DeleteRemoteTag,
 		eCmd_EditBranchDescription,
 		eCmd_ViewLogRange,
+		eCmd_ViewLogRangeReachableFromOnlyOne,
 	};
 
 	enum eCol
