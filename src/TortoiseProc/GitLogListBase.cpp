@@ -151,6 +151,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ColumnRegKey=_T("log");
 
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
+	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
 
 	m_AsyncThreadExit = FALSE;
 	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
@@ -2329,7 +2330,9 @@ int CGitLogListBase::BeginFetchLog()
 		path=&this->m_Path;
 
 	int mask;
-	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
+	mask = CGit::LOG_INFO_ONLY_HASH;
+	if (m_bIncludeBoundaryCommits)
+		mask |= CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
 	mask |= m_ShowMask ;
 

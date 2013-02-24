@@ -528,6 +528,7 @@ protected:
 	GIT_LOG				m_DllGitLog;
 	CString				m_SingleRemote;
 	bool				m_bSymbolizeRefNames;
+	bool				m_bIncludeBoundaryCommits;
 
 	ColumnManager		m_ColumnManager;
 	DWORD				m_dwDefaultColumns;
