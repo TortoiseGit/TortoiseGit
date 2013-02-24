@@ -336,7 +336,11 @@ BOOL CGit::CanParseRev(CString ref)
 // Checks if we have an orphaned HEAD
 BOOL CGit::IsInitRepos()
 {
-	return !CanParseRev(_T("HEAD"));
+	CGitHash hash;
+	// handle error on reading HEAD hash as init repo
+	if (GetHash(hash, _T("HEAD")) != 0)
+		return TRUE;
+	return hash.IsEmpty() ? TRUE : FALSE;
 }
 
 DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
