@@ -51,6 +51,9 @@ bool LogCommand::Execute()
 	if (!revend.IsEmpty())
 		range += g_Git.FixBranchName(revend);
 
+	if (parser.HasVal(_T("range")))
+		range = parser.GetVal(_T("range"));
+
 	CString val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
 	CString rev = parser.GetVal(_T("rev"));
