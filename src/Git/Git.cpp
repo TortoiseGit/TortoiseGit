@@ -316,7 +316,8 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	//delete buf;
 }
 
-BOOL CGit::IsOrphanBranch(CString ref)
+// This method was originally used to check for orphaned branches
+BOOL CGit::CanParseRev(CString ref)
 {
 	if (ref.IsEmpty())
 		ref = _T("HEAD");
@@ -324,17 +325,18 @@ BOOL CGit::IsOrphanBranch(CString ref)
 	CString cmdout;
 	if (Run(_T("git.exe rev-parse --revs-only ") + ref, &cmdout, CP_UTF8))
 	{
-		return TRUE;
+		return FALSE;
 	}
 	if(cmdout.IsEmpty())
-		return TRUE;
+		return FALSE;
 
-	return FALSE;
+	return TRUE;
 }
 
+// Checks if we have an orphaned HEAD
 BOOL CGit::IsInitRepos()
 {
-	return IsOrphanBranch(_T("HEAD"));
+	return !CanParseRev(_T("HEAD"));
 }
 
 DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)

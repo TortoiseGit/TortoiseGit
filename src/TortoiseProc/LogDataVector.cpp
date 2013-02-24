@@ -91,7 +91,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 		gitrange = *range;
 	CString cmd = g_Git.GetLogCmd(gitrange, path, count, infomask, true);
 
-	if (g_Git.IsOrphanBranch(gitrange))
+	if (!g_Git.CanParseRev(gitrange))
 		return 0;
 
 	git_init();

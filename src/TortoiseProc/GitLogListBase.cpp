@@ -2387,7 +2387,7 @@ int CGitLogListBase::BeginFetchLog()
 		return -1;
 	}
 
-	if (g_Git.IsOrphanBranch(m_sRange))
+	if (!g_Git.CanParseRev(m_sRange))
 	{
 		if (!(mask & CGit::LOG_INFO_ALL_BRANCH))
 			return 0;
@@ -2556,7 +2556,7 @@ UINT CGitLogListBase::LogThread()
 	int ret = 0;
 
 	bool shouldWalk = true;
-	if (g_Git.IsOrphanBranch(m_sRange))
+	if (!g_Git.CanParseRev(m_sRange))
 	{
 		// walk revisions if show all branches and there exists any ref
 		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH))
