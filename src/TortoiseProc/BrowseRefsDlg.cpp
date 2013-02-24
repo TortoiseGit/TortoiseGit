@@ -953,7 +953,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_ViewLog:
 		{
 			CLogDlg dlg;
-			dlg.SetStartRef(selectedLeafs[0]->GetRefName());
+			dlg.SetRange(g_Git.FixBranchName(selectedLeafs[0]->GetRefName()));
 			dlg.DoModal();
 		}
 		break;

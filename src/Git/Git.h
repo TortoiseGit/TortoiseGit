@@ -276,9 +276,7 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	CString GetLogCmd(const CString &hash, CTGitPath *path = NULL,int count=-1,int InfoMask=LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE,
-					  CString *from=NULL,CString *to=NULL, bool paramonly=false,
-					  CFilterData * filter =NULL);
+	CString GetLogCmd(CString &range, CTGitPath *path = NULL, int count=-1, int InfoMask = LOG_INFO_FULL_DIFF|LOG_INFO_STAT|LOG_INFO_FILESTATE|LOG_INFO_BOUNDARY|LOG_INFO_DETECT_COPYRENAME|LOG_INFO_SHOW_MERGEDFILE, bool paramonly=false, CFilterData * filter =NULL);
 
 	int GetHash(CGitHash &hash, TCHAR* friendname);
 	int GetHash(CGitHash &hash, CString ref) { return GetHash(hash, ref.GetBuffer()); }

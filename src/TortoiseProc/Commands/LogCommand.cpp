@@ -27,12 +27,18 @@ bool LogCommand::Execute()
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
 
+	CString range;
+
 	CString revstart = parser.GetVal(_T("startrev"));
 	if (revstart.IsEmpty())
 	{
 		// support deprecated parameter prior 1.5.0
 		revstart = parser.GetVal(_T("revstart"));
 	}
+	if (revstart == GIT_REV_ZERO)
+		revstart.Empty();
+	if (!revstart.IsEmpty())
+		range.Format(_T("%s.."), g_Git.FixBranchName(revstart));
 
 	CString revend = parser.GetVal(_T("endrev"));
 	if (revend.IsEmpty())
@@ -40,6 +46,10 @@ bool LogCommand::Execute()
 		// support deprecated parameter prior 1.5.0
 		revend = parser.GetVal(_T("revend"));
 	}
+	if (revend == GIT_REV_ZERO)
+		revend.Empty();
+	if (!revend.IsEmpty())
+		range += g_Git.FixBranchName(revend);
 
 	CString val = parser.GetVal(_T("limit"));
 	int limit = _tstoi(val);
@@ -61,7 +71,7 @@ bool LogCommand::Execute()
 
 	CLogDlg dlg;
 	theApp.m_pMainWnd = &dlg;
-	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, revstart, revend, limit);
+	dlg.SetParams(orgCmdLinePath, cmdLinePath, rev, range, limit);
 	dlg.SetFilter(findStr, findType, findRegex);
 	dlg.DoModal();
 	if (parser.HasVal(_T("outfile")))

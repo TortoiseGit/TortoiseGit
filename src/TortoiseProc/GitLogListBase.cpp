@@ -2274,14 +2274,14 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogListBase::FillGitLog(CTGitPath *path,int info,CString *from,CString *to)
+int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 {
 	ClearText();
 
 	this->m_arShownList.SafeRemoveAll();
 
 	this->m_logEntries.ClearAll();
-	if (this->m_logEntries.ParserFromLog(path,-1,info,from,to))
+	if (this->m_logEntries.ParserFromLog(path, -1, info, range))
 		return -1;
 
 	//this->m_logEntries.ParserFromLog();
@@ -2328,7 +2328,6 @@ int CGitLogListBase::BeginFetchLog()
 	else
 		path=&this->m_Path;
 
-	CString hash;
 	int mask;
 	mask = CGit::LOG_INFO_ONLY_HASH | CGit::LOG_INFO_BOUNDARY;
 //	if(this->m_bAllBranch)
@@ -2341,17 +2340,8 @@ int CGitLogListBase::BeginFetchLog()
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
 
-	CString *pFrom, *pTo;
-	pFrom = pTo = NULL;
-	CString head(_T("HEAD"));
-	if(!this->m_startrev.IsEmpty())
-	{
-		pFrom = &this->m_startrev;
-		if(!this->m_endrev.IsEmpty())
-			pTo = &this->m_endrev;
-		else
-			pTo = &head;
-	}
+	if (m_sRange.IsEmpty())
+		m_sRange = _T("HEAD");
 
 	CFilterData data;
 	data.m_From = m_From;
@@ -2374,7 +2364,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~CGit::LOG_INFO_ALL_BRANCH;
 
-	CString cmd=g_Git.GetLogCmd(m_StartRef,path,-1,mask,pFrom,pTo,true,&data);
+	CString cmd = g_Git.GetLogCmd(m_sRange, path, -1, mask, true, &data);
 
 	//this->m_logEntries.ParserFromLog();
 	if(IsInWorkingThread())
@@ -2397,7 +2387,7 @@ int CGitLogListBase::BeginFetchLog()
 		return -1;
 	}
 
-	if (g_Git.IsOrphanBranch(m_StartRef))
+	if (g_Git.IsOrphanBranch(m_sRange))
 	{
 		if (!(mask & CGit::LOG_INFO_ALL_BRANCH))
 			return 0;
@@ -2409,7 +2399,7 @@ int CGitLogListBase::BeginFetchLog()
 		if (list.size() == 0)
 			return 0;
 
-		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, pFrom, pTo, true, &data);
+		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &data);
 	}
 
 	try {
@@ -2566,7 +2556,7 @@ UINT CGitLogListBase::LogThread()
 	int ret = 0;
 
 	bool shouldWalk = true;
-	if (g_Git.IsOrphanBranch(m_StartRef))
+	if (g_Git.IsOrphanBranch(m_sRange))
 	{
 		// walk revisions if show all branches and there exists any ref
 		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH))

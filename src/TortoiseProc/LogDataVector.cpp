@@ -80,16 +80,18 @@ void CLogDataVector::ClearAll()
 }
 
 //CLogDataVector Class
-int CLogDataVector::ParserFromLog(CTGitPath *path ,int count ,int infomask,CString *from,CString *to)
+int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CString *range)
 {
 	// only enable --follow on files
 	if ((path == NULL || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
 
-	CString hash;
-	CString cmd=g_Git.GetLogCmd(hash,path,count,infomask,from,to,true);
+	CString gitrange = _T("HEAD");
+	if (range != nullptr)
+		gitrange = *range;
+	CString cmd = g_Git.GetLogCmd(gitrange, path, count, infomask, true);
 
-	if (g_Git.IsOrphanBranch(hash))
+	if (g_Git.IsOrphanBranch(gitrange))
 		return 0;
 
 	git_init();

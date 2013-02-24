@@ -200,9 +200,7 @@ public:
 	volatile LONG 		m_bThreadRunning;
 	CLogCache			m_LogCache;
 
-	CString m_startrev;
-	CString m_endrev;
-
+	CString	m_sRange;
 	// don't forget to bump BLAME_COLUMN_VERSION in GitStatusListCtrlHelpers.cpp if you change columns
 	enum
 	{
@@ -306,7 +304,7 @@ public:
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
-	int  FillGitLog(CTGitPath *path,int infomask=CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,CString *from=NULL,CString *to=NULL);
+	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat);
 
 	CFindDlg *m_pFindDialog;
@@ -379,12 +377,12 @@ public:
 		return (AfxGetThread() == m_LoadingThread);
 	}
 
-	void SetStartRef(const CString& StartRef)
+	void SetRange(const CString& range)
 	{
-		m_StartRef=StartRef;
+		m_sRange = range;
 	}
 
-	CString GetStartRef() const {return m_StartRef;}
+	CString GetRange() const { return m_sRange; }
 
 	int					m_nSearchIndex;
 
@@ -523,8 +521,6 @@ protected:
 
 	CString				m_CurrentBranch;
 	CGitHash			m_HeadHash;
-
-	CString				m_StartRef; //Ref of the top-commit
 
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE

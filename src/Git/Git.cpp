@@ -782,7 +782,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
+CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -837,20 +837,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
 		param += _T(" --simplify-by-decoration ");
 
-	if(from != NULL && to != NULL)
-	{
-		CString range;
-		range.Format(_T(" %s..%s "),FixBranchName(*from),FixBranchName(*to));
-		param += range;
-	}
-	else if(to != NULL && hash.IsEmpty())
-	{
-		CString range;
-		range.Format(_T(" %s "), FixBranchName(*to));
-		param += range;
-	}
-	else
-		param += hash;
+	param += range;
 
 	CString st1,st2;
 
