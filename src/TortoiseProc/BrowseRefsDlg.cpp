@@ -284,6 +284,22 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 				m_ListRefLeafs.GetNextSelectedItem(pos));
 		return pTree->GetRefName();
 	}
+	else if (pos && !pickFirstSelIfMultiSel)
+	{
+		// at least one leaf is selected
+		CString refs;
+		int index;
+		while ((index = m_ListRefLeafs.GetNextSelectedItem(pos)) >= 0)
+		{
+			CString ref = ((CShadowTree*)m_ListRefLeafs.GetItemData(index))->GetRefName();
+			if(wcsncmp(ref, L"refs/", 5) == 0)
+				ref = ref.Mid(5);
+			if(wcsncmp(ref, L"heads/", 6) == 0)
+				ref = ref.Mid(6);
+			refs += ref + _T(" ");
+		}
+		return refs.Trim();
+	}
 	else if(!onlyIfLeaf)
 	{
 		//Tree ctrl selection?
@@ -1164,7 +1180,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 	EndDialog(IDOK);
 }
 
-CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind)
+CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefs)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 
@@ -1172,7 +1188,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
-	dlg.m_bPickOne = true;
+	dlg.m_bPickOne = !pickMultipleRefs;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();

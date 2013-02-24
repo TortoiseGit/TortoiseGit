@@ -2161,7 +2161,7 @@ void CLogDlg::OnBnClickedShowTags()
 
 void CLogDlg::OnBnClickedBrowseRef()
 {
-	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange());
+	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange(), gPickRef_All, true);
 	if(newRef.IsEmpty())
 		return;
 
