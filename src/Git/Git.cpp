@@ -889,8 +889,11 @@ CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bo
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
 
-	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE))
+	DWORD logOrderBy = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), LOG_ORDER_TOPOORDER);
+	if (logOrderBy == LOG_ORDER_TOPOORDER)
 		param += _T(" --topo-order");
+	else if (logOrderBy == LOG_ORDER_DATEORDER)
+		param += _T(" --date-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
 		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), num, param);

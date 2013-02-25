@@ -219,6 +219,13 @@ public:
 	}
 	CString m_CurrentDir;
 
+	enum
+	{
+		LOG_ORDER_CHRONOLOGIALREVERSED,
+		LOG_ORDER_TOPOORDER,
+		LOG_ORDER_DATEORDER,
+	};
+
 	typedef enum
 	{
 		BRANCH_LOCAL		= 0x1,

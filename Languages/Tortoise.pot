@@ -1219,6 +1219,10 @@ msgstr ""
 msgid "&ignore space change"
 msgstr ""
 
+#. Resource IDs: (88)
+msgid "(TortoiseGit default)"
+msgstr ""
+
 #. Resource IDs: (85)
 #, c-format
 msgid "(from %s)"
@@ -2305,6 +2309,10 @@ msgstr ""
 msgid "Choose Repository"
 msgstr ""
 
+#. Resource IDs: (88)
+msgid "Chronological reversed (git default)"
+msgstr ""
+
 #. Resource IDs: (4572)
 msgid "Clean"
 msgstr ""
@@ -2522,6 +2530,10 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Name"
+msgstr ""
+
+#. Resource IDs: (1750)
+msgid "Commit Ordering:"
 msgstr ""
 
 #. Resource IDs: (1110)
@@ -5112,6 +5124,10 @@ msgstr ""
 
 #. Resource IDs: (130)
 msgid "Log Messages"
+msgstr ""
+
+#. Resource IDs: (345)
+msgid "Log commit ordering"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -9244,10 +9260,6 @@ msgstr ""
 
 #. Resource IDs: (1085)
 msgid "and support the developers"
-msgstr ""
-
-#. Resource IDs: (1073)
-msgid "apply --topo-order"
 msgstr ""
 
 #. Resource IDs: (195)

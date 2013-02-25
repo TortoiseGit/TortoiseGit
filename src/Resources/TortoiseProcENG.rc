@@ -678,7 +678,6 @@ BEGIN
     CONTROL         "Relative Times in log",IDC_RELATIVETIMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,33,120,10
     CONTROL         "Use system locale for date/time",IDC_SYSTEMLOCALEFORDATES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,44,150,10
-    CONTROL         "apply --topo-order",IDC_TOPOORDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,170,44,120,10
     CONTROL         "Can double-click in log list to compare with previous revision",IDC_DIFFBYDOUBLECLICK,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,55,270,10
     CONTROL         "Abbreviate renamings",IDC_ABBREVIATERENAMINGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,150,10
@@ -1768,6 +1767,17 @@ BEGIN
     EDITTEXT        IDC_USER_PASSWORD,77,36,157,14,ES_PASSWORD | ES_AUTOHSCROLL
 END
 
+IDD_LOGORDERING DIALOGEX 0, 0, 285, 46
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Log commit ordering"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Commit Ordering:",IDC_STATIC_ORDER,7,8,92,8
+    COMBOBOX        IDC_COMBOBOXEX_ORDERING,99,7,178,86,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,171,25,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,228,25,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2578,6 +2588,14 @@ BEGIN
         TOPMARGIN, 6
         BOTTOMMARGIN, 75
     END
+
+    IDD_LOGORDERING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 278
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 39
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -3006,6 +3024,8 @@ BEGIN
     IDS_PROC_MARK_SKIPWORKTREE 
                             "Do you really want to mark the selected file(s) as skip-worktree?"
     IDS_SHOWLOG_OF          "Show log of %s"
+    IDS_LOG_CHRONOLOGICALREVERSEDORDER "Chronological reversed (git default)"
+    IDS_TORTOISEGITDEFAULT  "(TortoiseGit default)"
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_GITINIT_FOLDERNOTEMPTY 
                             "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"

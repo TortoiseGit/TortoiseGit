@@ -44,6 +44,7 @@
 #include "FileDiffDlg.h"
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
+#include "LogOrdering.h"
 
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
@@ -1902,6 +1903,10 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 	UNREFERENCED_PARAMETER(pNMHDR);
 #endif
 	*pResult = 0;
+
+	CLogOrdering orderDlg;
+	if (orderDlg.DoModal() == IDOK)
+		Refresh();
 }
 
 void CLogDlg::SortShownListArray()
