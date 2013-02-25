@@ -2199,10 +2199,7 @@ void CLogDlg::ShowStartRef()
 	}
 
 
-	if(wcsncmp(showStartRef,L"refs/",5) == 0)
-		showStartRef = showStartRef.Mid(5);
-	if(wcsncmp(showStartRef,L"heads/",6) == 0)
-		showStartRef = showStartRef.Mid(6);
+	showStartRef = g_Git.StripRefName(showStartRef);
 
 	m_staticRef.SetWindowText(showStartRef);
 	m_staticRef.Invalidate(TRUE);
