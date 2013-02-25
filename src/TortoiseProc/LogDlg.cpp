@@ -2202,6 +2202,8 @@ void CLogDlg::ShowStartRef()
 	showStartRef = g_Git.StripRefName(showStartRef);
 
 	m_staticRef.SetWindowText(showStartRef);
+	CWnd *pWnd = GetDlgItem(IDC_STATIC_REF);
+	m_tooltips.AddTool(pWnd, showStartRef);
 	m_staticRef.Invalidate(TRUE);
 }
 
