@@ -638,6 +638,9 @@
     <ClCompile Include="GitProgressList.cpp">
       <Filter>Utility Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="LogOrdering.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1107,6 +1110,9 @@
     </ClInclude>
     <ClInclude Include="GitProgressList.h">
       <Filter>Utility Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="LogOrdering.h">
+      <Filter>Commands\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

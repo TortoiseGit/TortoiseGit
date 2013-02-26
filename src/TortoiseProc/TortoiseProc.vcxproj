@@ -146,6 +146,7 @@
     <ClCompile Include="..\Utils\Libraries.cpp" />
     <ClCompile Include="GitProgressList.cpp" />
     <ClCompile Include="LogFile.cpp" />
+    <ClCompile Include="LogOrdering.cpp" />
     <ClCompile Include="MassiveGitTask.cpp" />
     <ClCompile Include="Patch.cpp" />
     <ClCompile Include="ProjectProperties.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />
     <ClInclude Include="LogFile.h" />
+    <ClInclude Include="LogOrdering.h" />
     <ClInclude Include="MassiveGitTask.h" />
     <ClInclude Include="Patch.h" />
     <ClInclude Include="ProjectProperties.h" />

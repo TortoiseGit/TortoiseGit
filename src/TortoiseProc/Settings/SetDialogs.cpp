@@ -42,7 +42,6 @@ CSetDialogs::CSetDialogs()
 	, m_dwAutocompletionTimeout(0)
 	, m_dwMaxHistory(25)
 	, m_bAutoSelect(TRUE)
-	, m_bTopoOrder(FALSE)
 {
 	m_regAutoClose = CRegDWORD(_T("Software\\TortoiseGit\\AutoClose"));
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
@@ -63,8 +62,6 @@ CSetDialogs::CSetDialogs()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
-	m_regTopoOrder = CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE);
-	m_bTopoOrder = (BOOL)(DWORD)m_regTopoOrder;
 }
 
 CSetDialogs::~CSetDialogs()
@@ -93,7 +90,6 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SYMBOLIZEREFNAMES, m_bSymbolizeRefNames);
 	DDX_Check(pDX, IDC_ENABLELOGCACHE, m_bEnableLogCache);
 	DDX_Check(pDX, IDC_AUTOCOMPLETION, m_bAutocompletion);
-	DDX_Check(pDX, IDC_TOPOORDER, m_bTopoOrder);
 	DDX_Text(pDX, IDC_AUTOCOMPLETIONTIMEOUT, m_dwAutocompletionTimeout);
 	DDV_MinMaxUInt(pDX, m_dwAutocompletionTimeout, 1, 100);
 	DDX_Text(pDX, IDC_MAXHISTORY, m_dwMaxHistory);
@@ -114,7 +110,6 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_SYMBOLIZEREFNAMES, OnChange)
 	ON_BN_CLICKED(IDC_ENABLELOGCACHE, OnChange)
 	ON_BN_CLICKED(IDC_AUTOCOMPLETION, OnChange)
-	ON_BN_CLICKED(IDC_TOPOORDER, OnChange)
 	ON_EN_CHANGE(IDC_AUTOCOMPLETIONTIMEOUT, OnChange)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
 	ON_BN_CLICKED(IDC_SELECTFILESONCOMMIT, OnChange)
@@ -151,7 +146,6 @@ BOOL CSetDialogs::OnInitDialog()
 	m_bAbbreviateRenamings = m_regAbbreviateRenamings;
 	m_bSymbolizeRefNames = m_regSymbolizeRefNames;
 	m_bEnableLogCache = m_regEnableLogCache;
-	m_bTopoOrder = m_regTopoOrder;
 
 	for (int i=0; i<m_cAutoClose.GetCount(); ++i)
 		if (m_cAutoClose.GetItemData(i)==m_dwAutoClose)
@@ -242,7 +236,6 @@ BOOL CSetDialogs::OnApply()
 	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);
 	Store (m_dwMaxHistory, m_regMaxHistory);
 	Store (m_bAutoSelect, m_regAutoSelect);
-	Store (m_bTopoOrder, m_regTopoOrder);
 
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

@@ -316,7 +316,8 @@ void CGit::StringAppend(CString *str,BYTE *p,int code,int length)
 	//delete buf;
 }
 
-BOOL CGit::IsOrphanBranch(CString ref)
+// This method was originally used to check for orphaned branches
+BOOL CGit::CanParseRev(CString ref)
 {
 	if (ref.IsEmpty())
 		ref = _T("HEAD");
@@ -324,17 +325,22 @@ BOOL CGit::IsOrphanBranch(CString ref)
 	CString cmdout;
 	if (Run(_T("git.exe rev-parse --revs-only ") + ref, &cmdout, CP_UTF8))
 	{
-		return TRUE;
+		return FALSE;
 	}
 	if(cmdout.IsEmpty())
-		return TRUE;
+		return FALSE;
 
-	return FALSE;
+	return TRUE;
 }
 
+// Checks if we have an orphaned HEAD
 BOOL CGit::IsInitRepos()
 {
-	return IsOrphanBranch(_T("HEAD"));
+	CGitHash hash;
+	// handle error on reading HEAD hash as init repo
+	if (GetHash(hash, _T("HEAD")) != 0)
+		return TRUE;
+	return hash.IsEmpty() ? TRUE : FALSE;
 }
 
 DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
@@ -782,7 +788,7 @@ int CGit::BuildOutputFormat(CString &format,bool IsFull)
 	return 0;
 }
 
-CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int mask,CString *from,CString *to,bool paramonly,
+CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bool paramonly,
 						CFilterData *Filter)
 {
 	CString cmd;
@@ -837,20 +843,7 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
 		param += _T(" --simplify-by-decoration ");
 
-	if(from != NULL && to != NULL)
-	{
-		CString range;
-		range.Format(_T(" %s..%s "),FixBranchName(*from),FixBranchName(*to));
-		param += range;
-	}
-	else if(to != NULL && hash.IsEmpty())
-	{
-		CString range;
-		range.Format(_T(" %s "), FixBranchName(*to));
-		param += range;
-	}
-	else
-		param += hash;
+	param += range;
 
 	CString st1,st2;
 
@@ -896,8 +889,11 @@ CString CGit::GetLogCmd( const CString &hash, CTGitPath *path, int count, int ma
 		param += _T(" --regexp-ignore-case --extended-regexp ");
 	}
 
-	if (CRegDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE))
+	DWORD logOrderBy = CRegDWORD(_T("Software\\TortoiseGit\\LogOrderBy"), LOG_ORDER_TOPOORDER);
+	if (logOrderBy == LOG_ORDER_TOPOORDER)
 		param += _T(" --topo-order");
+	else if (logOrderBy == LOG_ORDER_DATEORDER)
+		param += _T(" --date-order");
 
 	if(paramonly) //tgit.dll.Git.cpp:setup_revisions() only looks at args[1] and greater.  To account for this, pass a dummy parameter in the 0th place
 		cmd.Format(_T("--ignore-this-parameter %s -z %s --parents "), num, param);

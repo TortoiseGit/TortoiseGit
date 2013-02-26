@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,14 +60,14 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator
 public:
 	CLogDlg(CWnd* pParent = NULL); // standard constructor
 	virtual ~CLogDlg();
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
 	bool IsThreadRunning() {return !!m_LogList.m_bThreadRunning;}
 	void SetDialogTitle(const CString& sTitle) {m_sTitle = sTitle;}
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}
 	void ContinuousSelection(bool bCont = true) {m_bSelectionMustBeContinuous = bCont;}
 	void SingleSelection(bool bSingle = true) {m_bSelectionMustBeSingle = bSingle;}
-	void SetStartRef(const CString& StartRef);
+	void SetRange(const CString& range);
 	void ShowStartRef();
 	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
 	/**
@@ -192,8 +192,6 @@ private:
 	CTGitPath			m_path;
 	CTGitPath			m_orgPath;
 	CString				m_hightlightRevision;
-
-	CString				m_LogRevision;
 
 	CString				m_sSelectedHash;	// set to selected commit hash on OK if appropriate
 	bool				m_bSelectionMustBeContinuous;

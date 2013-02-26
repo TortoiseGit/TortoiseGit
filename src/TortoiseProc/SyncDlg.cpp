@@ -380,10 +380,9 @@ void CSyncDlg::PullComplete()
 
 			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), m_oldHash.ToString());
 
-			CString sOldHash(m_oldHash.ToString());
-			CString sNewHash(newhash.ToString());
-			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&sOldHash, &sNewHash);
+			CString range;
+			range.Format(_T("%s..%s"), m_oldHash.ToString(), newhash.ToString());
+			m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 		}
 		this->ShowTab(IDC_IN_LOGLIST);
 	}
@@ -573,11 +572,10 @@ void CSyncDlg::OnBnClickedButtonApply()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,true);
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
 
-			CString sOldHash(oldhash.ToString());
-			CString sNewHash(newhash.ToString());
+			CString range;
+			range.Format(_T("%s..%s"), m_oldHash.ToString(), newhash.ToString());
 			this->AddDiffFileList(&m_InChangeFileList, &m_arInChangeList, newhash.ToString(), oldhash.ToString());
-			m_InLogList.FillGitLog(NULL,CGit::	LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE,
-				&sOldHash, &sNewHash);
+			m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 
 			this->FetchOutList(true);
 		}
@@ -1061,8 +1059,10 @@ void CSyncDlg::FetchOutList(bool force)
 			}
 			else if (isFastForward || m_bForce)
 			{
+				CString range;
+				range.Format(_T("%s..%s"), g_Git.FixBranchName(remotebranch), g_Git.FixBranchName(localbranch));
 				//fast forward
-				m_OutLogList.FillGitLog(NULL, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, &remotebranch, &localbranch);
+				m_OutLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 				CString str;
 				str.Format(IDS_PROC_SYNC_COMMITSAHEAD, m_OutLogList.GetItemCount(), remotebranch);
 				this->m_ctrlStatus.SetWindowText(str);

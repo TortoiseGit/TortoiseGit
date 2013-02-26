@@ -204,10 +204,14 @@ bool CRevisionGraphWnd::FetchRevisionData
 {
 	this->m_LogCache.ClearAllParent();
 	this->m_logEntries.ClearAll();
-	this->m_logEntries.ParserFromLog(NULL,-1,
-		CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH),
-		this->m_FromRev.IsEmpty() ? NULL : &m_FromRev,
-		this->m_ToRev.IsEmpty() ? NULL : &m_ToRev);
+	CString range;
+	if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
+		range.Format(_T("%s..%s"), g_Git.FixBranchName(m_FromRev), g_Git.FixBranchName(m_ToRev));
+	else if (!m_ToRev.IsEmpty())
+		range = m_ToRev;
+	else if (!m_FromRev.IsEmpty())
+		range = m_FromRev;
+	this->m_logEntries.ParserFromLog(nullptr, -1, CGit::LOG_INFO_SIMPILFY_BY_DECORATION|(this->m_bCurrentBranch? 0: CGit::LOG_INFO_ALL_BRANCH), &range);
 
 	ReloadHashMap();
 	this->m_Graph.clear();

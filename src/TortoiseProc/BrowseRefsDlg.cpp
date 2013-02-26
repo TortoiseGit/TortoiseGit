@@ -151,6 +151,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnColumnclickListRefLeafs)
 	ON_WM_DESTROY()
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnNMDblclkListRefLeafs)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnItemChangedListRefLeafs)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_LIST_REF_LEAFS, &CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs)
 	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
@@ -283,6 +284,22 @@ CString CBrowseRefsDlg::GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMulti
 		CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(
 				m_ListRefLeafs.GetNextSelectedItem(pos));
 		return pTree->GetRefName();
+	}
+	else if (pos && !pickFirstSelIfMultiSel)
+	{
+		// at least one leaf is selected
+		CString refs;
+		int index;
+		while ((index = m_ListRefLeafs.GetNextSelectedItem(pos)) >= 0)
+		{
+			CString ref = ((CShadowTree*)m_ListRefLeafs.GetItemData(index))->GetRefName();
+			if(wcsncmp(ref, L"refs/", 5) == 0)
+				ref = ref.Mid(5);
+			if(wcsncmp(ref, L"heads/", 6) == 0)
+				ref = ref.Mid(6);
+			refs += ref + _T(" ");
+		}
+		return refs.Trim();
 	}
 	else if(!onlyIfLeaf)
 	{
@@ -759,6 +776,16 @@ void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 	ShowContextMenu(point,m_RefTreeCtrl.GetSelectedItem(),selectedLeafs);
 }
 
+CString GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator)
+{
+	ASSERT(selectedLeafs.size() == 2);
+
+	if (selectedLeafs.at(0)->GetRefName() == lastSelected)
+		return g_Git.StripRefName(selectedLeafs.at(1)->GetRefName()) + separator + g_Git.StripRefName(lastSelected);
+	else
+		return g_Git.StripRefName(selectedLeafs.at(0)->GetRefName()) + separator + g_Git.StripRefName(lastSelected);
+}
+
 void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs)
 {
 	CIconMenu popupMenu;
@@ -854,6 +881,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		bAddSeparator = true;
 		popupMenu.AppendMenuIcon(eCmd_Diff, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_COMPAREREFS)), IDI_DIFF);
+		CString menu;
+		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
+		popupMenu.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
+		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
+		popupMenu.AppendMenuIcon(eCmd_ViewLogRangeReachableFromOnlyOne, menu, IDI_LOG);
 	}
 
 	if(!selectedLeafs.empty())
@@ -953,7 +985,21 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_ViewLog:
 		{
 			CLogDlg dlg;
-			dlg.SetStartRef(selectedLeafs[0]->GetRefName());
+			dlg.SetRange(g_Git.FixBranchName(selectedLeafs[0]->GetRefName()));
+			dlg.DoModal();
+		}
+		break;
+	case eCmd_ViewLogRange:
+		{
+			CLogDlg dlg;
+			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
+			dlg.DoModal();
+		}
+		break;
+	case eCmd_ViewLogRangeReachableFromOnlyOne:
+		{
+			CLogDlg dlg;
+			dlg.SetRange(GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")));
 			dlg.DoModal();
 		}
 		break;
@@ -1157,6 +1203,16 @@ void CBrowseRefsDlg::OnDestroy()
 	CResizableStandAloneDialog::OnDestroy();
 }
 
+void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	*pResult = 0;
+
+	CShadowTree *item = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMListView->iItem);
+	if (item && pNMListView->uNewState == 2)
+		m_sLastSelected = item->GetRefName();
+}
+
 void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	*pResult = 0;
@@ -1164,7 +1220,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 	EndDialog(IDOK);
 }
 
-CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind)
+CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefs)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 
@@ -1172,7 +1228,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
-	dlg.m_bPickOne = true;
+	dlg.m_bPickOne = !pickMultipleRefs;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();

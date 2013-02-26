@@ -138,7 +138,9 @@ int CGitLogList::RevertSelectedCommits(int parent)
 int CGitLogList::CherryPickFrom(CString from, CString to)
 {
 	CLogDataVector logs(&m_LogCache);
-	if(logs.ParserFromLog(NULL,-1,0,&from,&to))
+	CString range;
+	range.Format(_T("%s..%s"), from, to);
+	if (logs.ParserFromLog(nullptr, -1, 0, &range))
 		return -1;
 
 	if (logs.empty())

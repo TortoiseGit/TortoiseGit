@@ -12,6 +12,10 @@ Released: unreleased
  * Fixed issue #1661: TortoiseGitBlame: show line date time
  * Fixed issue #1662: skip-worktree should not be exposed via context menus or anything without confirmation
  * Fixed issue #330: Implement --author option gui interface in the commit dialog
+ * Fixed issue #1147: Ability to filter out branches in Log dialog
+ * Fixed issue #1628: Support commit ranges in log list (from Reference Browser)
+ * Fixed issue #832: Compare commits between branches (branch1...branch2, from Reference Browser)
+ * Fixed issue #515: Sort the log window by date
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
@@ -22,6 +26,7 @@ Released: unreleased
  * Fixed issue #1657: Dirty submodule commit does not open the underling submodule commit dialog
  * Fixed issue #1552: TGitCache prevents a git clone from performing successfully
  * Fixed issue #1631: Set focus to branch menu in Switch/Checkout window
+ * Fixed issue #1646: TortoiseGit Log gives undeterministic results (log does not apply --boundary any more by default)
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
