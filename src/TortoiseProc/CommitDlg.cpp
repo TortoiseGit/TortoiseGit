@@ -721,7 +721,7 @@ void CCommitDlg::OnOK()
 					{
 						sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
 						sysProgressDlg.SetProgress(j, nListItems);
-						AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
+						AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
 						currentTicks = GetTickCount();
 					}
 				}
@@ -808,7 +808,7 @@ void CCommitDlg::OnOK()
 				{
 					sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
 					sysProgressDlg.SetProgress(j, nListItems);
-					AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too: this takes time!
+					AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
 					currentTicks = GetTickCount();
 				}
 			}
