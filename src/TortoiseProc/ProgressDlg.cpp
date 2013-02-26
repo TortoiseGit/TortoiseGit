@@ -202,6 +202,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		g_Git.RunAsync(cmdlist[i].Trim(),&pi, &hRead, NULL, pfilename);
 
 		DWORD readnumber;
+		char lastByte = '\0';
 		char byte;
 		CString output;
 		while(ReadFile(hRead,&byte,1,&readnumber,NULL))
@@ -212,7 +213,10 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 					byte = '\n';
 
 				pdata->m_critSec.Lock();
+				if (byte == '\n' && lastByte != '\r')
+					pdata->push_back('\r');
 				pdata->push_back( byte);
+				lastByte = byte;
 				pdata->m_critSec.Unlock();
 
 				if(byte == '\r' || byte == '\n')
@@ -288,9 +292,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		{
 			m_Databuf.m_critSec.Lock();
 			m_Databuf.push_back(0);
-			m_Databuf.m_critSec.Unlock();
-			InsertCRLF();
-			m_Databuf.m_critSec.Lock();
 			m_Log.SetWindowText(Convert2UnionCode((char*)&m_Databuf[0]));
 			m_Databuf.m_critSec.Unlock();
 			m_Log.LineScroll(m_Log.GetLineCount() - m_Log.GetFirstVisibleLine() - 4);
@@ -619,23 +620,6 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 		if (hProc)
 			::TerminateProcess(hProc, 1);
 	}
-}
-
-void CProgressDlg::InsertCRLF()
-{
-	m_Databuf.m_critSec.Lock();
-	for (int i = 0; i < m_Databuf.size(); ++i)
-	{
-		if(m_Databuf[i]==('\n'))
-		{
-			if(i==0 || m_Databuf[i-1]!= ('\r'))
-			{
-				m_Databuf.insert(m_Databuf.begin()+i,('\r'));
-				++i;
-			}
-		}
-	}
-	m_Databuf.m_critSec.Unlock();
 }
 
 void CProgressDlg::InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb)

@@ -95,7 +95,6 @@ private:
 
 	void					OnCancel();
 	afx_msg void			OnClose();
-	void					InsertCRLF(); //Insert \r before \n
 	void					KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
 	CGitByteArray			m_Databuf;
