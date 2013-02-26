@@ -137,6 +137,7 @@
     <ClCompile Include="..\libgit2\src\delta.c" />
     <ClCompile Include="..\libgit2\src\diff.c" />
     <ClCompile Include="..\libgit2\src\diff_output.c" />
+    <ClCompile Include="..\libgit2\src\diff_tform.c" />
     <ClCompile Include="..\libgit2\src\errors.c" />
     <ClCompile Include="..\libgit2\src\fetch.c" />
     <ClCompile Include="..\libgit2\src\fetchhead.c" />
