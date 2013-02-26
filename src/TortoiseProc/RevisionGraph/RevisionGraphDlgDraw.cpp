@@ -1005,7 +1005,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	CString fontname = CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New"));
 
 	Gdiplus::Font font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular);
-	SolidBrush blackbrush(Color::Black);
+	SolidBrush blackbrush((ARGB)Color::Black);
 
 	node v;
 	forall_nodes(v,m_Graph)
@@ -1041,20 +1041,20 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			{
 				graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * this->m_fZoomFactor),
 											(int)(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + m_nFontSize),
-											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, Color::Black,
+											CUnicodeUtils::GetUTF8(fontname), m_nFontSize, false, false, (ARGB)Color::Black,
 											CUnicodeUtils::GetUTF8(hash.ToString().Left(g_Git.GetShortHASHLength())));
 			}
 			if (graphics.pGraphviz)
 			{
 				CString shortHash = hash.ToString().Left(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->DrawNode(_T("g") + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, noderect.Height);
+				graphics.pGraphviz->DrawNode(_T("g") + shortHash, shortHash, fontname, m_nFontSize, background, brightColor, (int)noderect.Height);
 			}
 		}else
 		{
 			if (graphics.pGraphviz)
 			{
 				CString id = _T("g") + hash.ToString().Left(g_Git.GetShortHASHLength());
-				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, noderect.Height);
+				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, (int)noderect.Height);
 			}
 
 			for (int i = 0; i < m_HashMap[hash].size(); ++i)
@@ -1140,7 +1140,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 					graphics.pSVG->Text((int)(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor), 
 										(int)(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + hight * i + m_nFontSize),
 										CUnicodeUtils::GetUTF8(fontname), m_nFontSize,
-										false, false, Color::Black, CUnicodeUtils::GetUTF8(shortname));
+										false, false, (ARGB)Color::Black, CUnicodeUtils::GetUTF8(shortname));
 
 				}				
 				else if (graphics.pGraphviz)

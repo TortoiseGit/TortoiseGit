@@ -230,14 +230,17 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 {
 	if(rev)
 	{
-		m_CommitHash->SetValue(rev->m_CommitHash.ToString());
+		CString hash = rev->m_CommitHash.ToString();
+		m_CommitHash->SetValue(hash);
 		m_AuthorName->SetValue(rev->GetAuthorName());
-		m_AuthorDate->SetValue(rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M")));
+		CString authorDate = rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
+		m_AuthorDate->SetValue(authorDate);
 		m_AuthorEmail->SetValue(rev->GetAuthorEmail());
 
 		m_CommitterName->SetValue(rev->GetAuthorName());
 		m_CommitterEmail->SetValue(rev->GetCommitterEmail());
-		m_CommitterDate->SetValue(rev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M")));
+		CString committerDate = rev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M"));
+		m_CommitterDate->SetValue(committerDate);
 
 		m_Subject->SetValue(rev->GetSubject());
 		m_Body->SetValue(rev->GetBody().Trim());

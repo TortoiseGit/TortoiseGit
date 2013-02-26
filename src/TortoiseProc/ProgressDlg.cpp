@@ -45,7 +45,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	m_caller = NULL;
 	m_bAltAbortPress=false;
 	m_bBufferAll=false;
-	m_GitStatus = -1;
+	m_GitStatus = (DWORD)-1;
 }
 
 CProgressDlg::~CProgressDlg()

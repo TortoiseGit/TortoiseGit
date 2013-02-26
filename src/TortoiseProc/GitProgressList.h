@@ -236,8 +236,8 @@ protected:
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
 		CTGitPath tpath = CUnicodeUtils::GetUnicode(CStringA(path), CP_UTF8);
-		((CGitProgressList*)payload) -> m_itemCountTotal = tot;
-		((CGitProgressList*)payload) -> m_itemCount = cur;
+		((CGitProgressList*)payload) -> m_itemCountTotal = (int)tot;
+		((CGitProgressList*)payload) -> m_itemCount = (int)cur;
 		((CGitProgressList*)payload) -> Notify(tpath, git_wc_notify_checkout);
 	}
 

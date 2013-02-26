@@ -2381,7 +2381,7 @@ int CGitLogListBase::BeginFetchLog()
 
 	try
 	{
-		git_init();
+		[] { git_init(); } ();
 	}
 	catch (char* msg)
 	{
@@ -2580,7 +2580,7 @@ UINT CGitLogListBase::LogThread()
 		int total = 0;
 		try
 		{
-			git_get_log_firstcommit(m_DllGitLog);
+			[&] {git_get_log_firstcommit(m_DllGitLog);}();
 			total = git_get_log_estimate_commit_count(m_DllGitLog);
 		}
 		catch (char* msg)
@@ -2600,7 +2600,7 @@ UINT CGitLogListBase::LogThread()
 			g_Git.m_critGitDllSec.Lock();
 			try
 			{
-				ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW);
+				[&] { ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW); } ();
 			}
 			catch (char* msg)
 			{
