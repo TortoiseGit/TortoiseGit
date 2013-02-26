@@ -668,7 +668,7 @@ void CCommitDlg::OnOK()
 			}
 
 			git_commit *commit = nullptr;
-			if (git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
+			if (!revHash.IsEmpty() && git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
 			{
 				git_repository_free(repository);
 				git_config_free(config);
@@ -677,7 +677,7 @@ void CCommitDlg::OnOK()
 			}
 
 			git_tree *tree = nullptr;
-			if (git_commit_tree(&tree, commit))
+			if (!revHash.IsEmpty() && git_commit_tree(&tree, commit))
 			{
 				git_commit_free(commit);
 				git_repository_free(repository);
@@ -689,8 +689,10 @@ void CCommitDlg::OnOK()
 			git_index *index = nullptr;
 			if (git_repository_index(&index, repository))
 			{
-				git_tree_free(tree);
-				git_commit_free(commit);
+				if (tree != nullptr)
+					git_tree_free(tree);
+				if (commit != nullptr)
+					git_commit_free(commit);
 				git_repository_free(repository);
 				git_config_free(config);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get the repository index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -698,7 +700,7 @@ void CCommitDlg::OnOK()
 			}
 
 			// reset index to the one of the reference commit (HEAD or HEAD~1)
-			if (git_index_read_tree(index, tree))
+			if (!revHash.IsEmpty() && git_index_read_tree(index, tree))
 			{
 				git_index_free(index);
 				git_tree_free(tree);
@@ -788,8 +790,10 @@ void CCommitDlg::OnOK()
 				bAddSuccess = false;
 
 			git_index_free(index);
-			git_tree_free(tree);
-			git_commit_free(commit);
+			if (tree != nullptr)
+				git_tree_free(tree);
+			if (commit != nullptr)
+				git_commit_free(commit);
 			git_repository_free(repository);
 			git_config_free(config);
 		} while (0);
