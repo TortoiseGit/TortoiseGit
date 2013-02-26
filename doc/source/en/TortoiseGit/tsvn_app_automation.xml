@@ -155,6 +155,9 @@ Don't touch these lines:
 								file or folder for which the log should be shown.
 								Additional options can be set:
 								<option>/rev:"SHA1"</option> highlights and automatically scrolls to the specified revision,
+								<option>/endrev:"SHA1/branch"</option>, shows the log of the specified revision,
+								<option>/startrev:"SHA1/branch"</option> (only in combination with endrev), shows the log of the revision range startrev..endrev,
+								<option>/range:"gitrevision"</option>, shows the log of the entered gitrevision (e.g. "branch1...branch2"),
 								<option>/findstring:"filterstring"</option> fills in the filter text,
 								<option>/findtext</option> forces the filter to use text, not regex, or
 								<option>/findregex</option> forces the filter to use regex, not simple text search, and

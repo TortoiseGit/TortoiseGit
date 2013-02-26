@@ -44,6 +44,7 @@
 #include "FileDiffDlg.h"
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
+#include "LogOrdering.h"
 
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
@@ -178,23 +179,13 @@ enum JumpType
 	JumpType_TagFF
 };
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString startrev, CString endrev, int limit /* = FALSE */)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
 {
 	m_orgPath = orgPath;
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
 
-	if (startrev == GIT_REV_ZERO)
-		startrev.Empty();
-	if (endrev == GIT_REV_ZERO)
-		endrev.Empty();
-
-	this->m_LogList.m_startrev = startrev;
-	m_LogRevision = startrev;
-	this->m_LogList.m_endrev = endrev;
-
-	if(!endrev.IsEmpty())
-		this->SetStartRef(endrev);
+	SetRange(range);
 
 	m_limit = limit;
 	if (::IsWindow(m_hWnd))
@@ -414,8 +405,6 @@ BOOL CLogDlg::OnInitDialog()
 
 	// scroll to user selected or current revision
 	if (!m_hightlightRevision.IsEmpty() && m_hightlightRevision.GetLength() >= GIT_HASH_SIZE)
-		m_LogList.m_lastSelectedHash = m_hightlightRevision;
-	else if (!m_LogList.m_endrev.IsEmpty() && m_LogList.m_endrev.GetLength() >= GIT_HASH_SIZE)
 		m_LogList.m_lastSelectedHash = m_hightlightRevision;
 	else
 	{
@@ -1914,6 +1903,10 @@ void CLogDlg::OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult)
 	UNREFERENCED_PARAMETER(pNMHDR);
 #endif
 	*pResult = 0;
+
+	CLogOrdering orderDlg;
+	if (orderDlg.DoModal() == IDOK)
+		Refresh();
 }
 
 void CLogDlg::SortShownListArray()
@@ -2173,11 +2166,11 @@ void CLogDlg::OnBnClickedShowTags()
 
 void CLogDlg::OnBnClickedBrowseRef()
 {
-	CString newRef = CBrowseRefsDlg::PickRef(false,m_LogList.GetStartRef());
+	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange(), gPickRef_All, true);
 	if(newRef.IsEmpty())
 		return;
 
-	SetStartRef(newRef);
+	SetRange(newRef);
 	((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(0);
 
 	OnBnClickedAllBranch();
@@ -2195,9 +2188,10 @@ void CLogDlg::ShowStartRef()
 		return;
 	}
 
-	CString showStartRef = m_LogList.GetStartRef();
-	if(showStartRef.IsEmpty())
+	CString showStartRef = m_LogList.GetRange();
+	if (showStartRef.IsEmpty() || showStartRef == _T("HEAD"))
 	{
+		showStartRef.Empty();
 		//Ref name is HEAD
 		if (g_Git.Run(L"git symbolic-ref HEAD", &showStartRef, NULL, CP_UTF8))
 			showStartRef = CString(MAKEINTRESOURCE(IDS_PROC_LOG_NOBRANCH));
@@ -2205,27 +2199,17 @@ void CLogDlg::ShowStartRef()
 	}
 
 
-	if(wcsncmp(showStartRef,L"refs/",5) == 0)
-		showStartRef = showStartRef.Mid(5);
-	if(wcsncmp(showStartRef,L"heads/",6) == 0)
-		showStartRef = showStartRef.Mid(6);
+	showStartRef = g_Git.StripRefName(showStartRef);
 
 	m_staticRef.SetWindowText(showStartRef);
+	CWnd *pWnd = GetDlgItem(IDC_STATIC_REF);
+	m_tooltips.AddTool(pWnd, showStartRef);
 	m_staticRef.Invalidate(TRUE);
 }
 
-void CLogDlg::SetStartRef(const CString& StartRef)
+void CLogDlg::SetRange(const CString& range)
 {
-	m_LogList.SetStartRef(StartRef);
-
-	if (m_hightlightRevision.IsEmpty())
-	{
-		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, StartRef))
-		{
-			MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of \"") + StartRef + _T("\".")), _T("TortoiseGit"), MB_ICONERROR);
-		}
-		m_hightlightRevision = m_LogList.m_lastSelectedHash;
-	}
+	m_LogList.SetRange(range);
 
 	ShowStartRef();
 }

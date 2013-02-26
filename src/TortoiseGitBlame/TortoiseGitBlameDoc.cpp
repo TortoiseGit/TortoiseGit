@@ -154,12 +154,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			return FALSE;
 		}
 
-		m_GitPath = path;
-		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
-			return FALSE;
-
 		CString cmd;
-
 		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
@@ -192,6 +187,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
 			return FALSE;
 		}
+
+		m_GitPath = path;
+		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
+			return FALSE;
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if(pView == NULL)

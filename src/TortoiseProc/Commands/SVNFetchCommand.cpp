@@ -82,7 +82,7 @@ bool SVNFetchCommand::Execute()
 		}
 
 		CLogDlg dlg;
-		dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash, upstreamNewHash, 0);
+		dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), upstreamOldHash.ToString() + _T("..") + upstreamNewHash.ToString(), 0);
 		dlg.DoModal();
 		return true;
 	}

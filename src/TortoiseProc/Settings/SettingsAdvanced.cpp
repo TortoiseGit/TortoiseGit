@@ -62,6 +62,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
 
+	settings[i].sName	= L"LogIncludeBoundaryCommits";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= false;
+
 	settings[i].sName	= L"NoSortLocalBranchesFirst";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

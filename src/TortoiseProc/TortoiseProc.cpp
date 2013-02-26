@@ -522,6 +522,12 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 #endif
 
+	if (lVersion <= 0x01080100)
+	{
+		if (CRegStdDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE) == FALSE)
+			CRegStdDWORD(_T("Software\\TortoiseGit\\LogOrderBy")) = 0;
+	}
+
 	if (lVersion <= 0x01040000)
 	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\OwnerdrawnMenus")).removeValue();

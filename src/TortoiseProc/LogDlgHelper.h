@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,8 +76,7 @@ public:
 		return 	m_pLogCache->m_HashMap[(*this)[i]];
 	}
 	void ClearAll();
-	int  ParserFromLog(CTGitPath *path =NULL,int count = -1,int infomask=CGit::LOG_INFO_STAT|CGit::LOG_INFO_FILESTATE|CGit::LOG_INFO_SHOW_MERGEDFILE,
-											 CString *from=NULL,CString *to=NULL);
+	int  ParserFromLog(CTGitPath *path =NULL, int count = -1, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString *range = NULL);
 
 	int  FetchShortLog(CTGitPath *path , CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH, int showWC=0 );
 	int  ParserShortLog(CTGitPath *path ,CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH );

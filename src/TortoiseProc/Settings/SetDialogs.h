@@ -90,6 +90,4 @@ private:
 	DWORD			m_dwMaxHistory;
 	CRegDWORD		m_regAutoSelect;
 	BOOL			m_bAutoSelect;
-	CRegDWORD		m_regTopoOrder;
-	BOOL			m_bTopoOrder;
 };

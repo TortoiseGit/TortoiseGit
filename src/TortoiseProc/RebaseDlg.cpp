@@ -575,10 +575,9 @@ void CRebaseDlg::FetchLogList()
 	}
 
 	m_CommitList.Clear();
-	CString from,to;
-	from = m_UpstreamCtrl.GetString();
-	to = m_BranchCtrl.GetString();
-	this->m_CommitList.FillGitLog(NULL,0,&from,&to);
+	CString range;
+	range.Format(_T("%s..%s"), g_Git.FixBranchName(m_UpstreamCtrl.GetString()), g_Git.FixBranchName(m_BranchCtrl.GetString()));
+	this->m_CommitList.FillGitLog(nullptr, &range, 0);
 
 	if( m_CommitList.GetItemCount() == 0 )
 		m_CommitList.ShowText(CString(MAKEINTRESOURCE(IDS_PROC_NOTHINGTOREBASE)));
