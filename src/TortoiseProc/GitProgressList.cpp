@@ -1802,6 +1802,8 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		}
 
 		git_repository_set_config(repo, config);
+		git_config_free(config);
+		config = nullptr;
 
 		if (git_repository_index(&index, repo))
 		{

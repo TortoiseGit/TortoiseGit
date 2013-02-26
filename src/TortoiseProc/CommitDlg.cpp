@@ -654,6 +654,8 @@ void CCommitDlg::OnOK()
 			}
 
 			git_repository_set_config(repository, config);
+			git_config_free(config);
+			config = nullptr;
 
 			CGitHash revHash;
 			CString revRef = _T("HEAD");

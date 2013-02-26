@@ -147,6 +147,8 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	}
 
 	git_repository_set_config(repository, config);
+	git_config_free(config);
+	config = nullptr;
 
 	// load index in order to enumerate files
 	if (git_repository_index(&index, repository))
