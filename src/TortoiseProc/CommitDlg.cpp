@@ -662,7 +662,6 @@ void CCommitDlg::OnOK()
 			if (g_Git.GetHash(revHash, revRef))
 			{
 				git_repository_free(repository);
-				git_config_free(config);
 				MessageBox(g_Git.GetLibGit2LastErr(_T("Could not get HEAD hash after committing.")), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
@@ -671,7 +670,6 @@ void CCommitDlg::OnOK()
 			if (!revHash.IsEmpty() && git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
 			{
 				git_repository_free(repository);
-				git_config_free(config);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get last commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
@@ -681,7 +679,6 @@ void CCommitDlg::OnOK()
 			{
 				git_commit_free(commit);
 				git_repository_free(repository);
-				git_config_free(config);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read tree of commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
@@ -694,7 +691,6 @@ void CCommitDlg::OnOK()
 				if (commit != nullptr)
 					git_commit_free(commit);
 				git_repository_free(repository);
-				git_config_free(config);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get the repository index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
@@ -706,7 +702,6 @@ void CCommitDlg::OnOK()
 				git_tree_free(tree);
 				git_commit_free(commit);
 				git_repository_free(repository);
-				git_config_free(config);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read the tree into the index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
 			}
@@ -795,7 +790,6 @@ void CCommitDlg::OnOK()
 			if (commit != nullptr)
 				git_commit_free(commit);
 			git_repository_free(repository);
-			git_config_free(config);
 		} while (0);
 	}
 	else
