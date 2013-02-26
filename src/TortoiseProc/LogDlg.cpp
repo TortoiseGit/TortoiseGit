@@ -2185,6 +2185,7 @@ void CLogDlg::ShowStartRef()
 	{
 		m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_ALLBRANCHES)));
 		m_staticRef.Invalidate(TRUE);
+		m_tooltips.DelTool(GetDlgItem(IDC_STATIC_REF));
 		return;
 	}
 
