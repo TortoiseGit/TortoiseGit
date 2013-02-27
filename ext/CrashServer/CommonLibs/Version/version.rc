@@ -11,7 +11,7 @@
 
 
 #ifndef VERSION_FILEOS
-#	define VERSION_FILEOS        VOS__WINDOWS32
+#	define VERSION_FILEOS        VOS_NT_WINDOWS32
 #endif
 
 

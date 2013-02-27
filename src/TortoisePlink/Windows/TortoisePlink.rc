@@ -53,17 +53,17 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,61,0,9078
- PRODUCTVERSION 0,61,0,9078
- FILEFLAGSMASK 0x3fL
+ FILEVERSION 0,62,0,0
+ PRODUCTVERSION 0,62,0,0
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
- FILEFLAGS 0x1L
+ FILEFLAGS VS_FF_DEBUG
 #else
  FILEFLAGS 0x0L
 #endif
- FILEOS 0x40004L
- FILETYPE 0x1L
- FILESUBTYPE 0x0L
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
@@ -74,7 +74,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGitPLink"
             VALUE "FileVersion", "Release 0.62"
             VALUE "InternalName", "TortoiseGitPLink"
-            VALUE "LegalCopyright", "Copyright © 2003-2011"
+            VALUE "LegalCopyright", "Copyright © 2003-2013"
             VALUE "OriginalFilename", "TortoiseGitPLink.exe"
             VALUE "ProductName", "TortoiseGit TortoiseGitPLink"
             VALUE "ProductVersion", "Release 0.62"
