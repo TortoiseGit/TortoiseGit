@@ -56,7 +56,7 @@ Cgitdll::Cgitdll()
 #endif
 
 extern char g_last_error[];
-void * g_prefix;
+const char * g_prefix;
 
 char * get_git_last_error()
 {
@@ -89,7 +89,6 @@ static int convert_slash(char * path)
 int git_init()
 {
 	char path[MAX_PATH+1];
-	char *prefix;
 	int ret;
 	size_t homesize;
 
@@ -108,7 +107,7 @@ int git_init()
 	convert_slash(path);
 
 	git_extract_argv0_path(path);
-	g_prefix = prefix = setup_git_directory();
+	g_prefix = setup_git_directory();
 	ret = git_config(git_default_config, NULL);
 
 	if (!homesize)
@@ -977,8 +976,8 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 struct config_buf
 {
 	char *buf;
-	char *key;
-	char *size;
+	const char *key;
+	size_t size;
 	int seen;
 };
 
@@ -1156,10 +1155,10 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 		return -1;
 
 	*mailmap = NULL;
-	if (!(map = (struct string_list *)calloc(1, sizeof(struct string_list))))
+	if ((map = (struct string_list *)calloc(1, sizeof(struct string_list))) == NULL)
 		return -1;
 
-	if ((result = read_mailmap(map, NULL)))
+	if ((result = read_mailmap(map, NULL)) != 0)
 		return result;
 
 	*mailmap = map;
@@ -1188,7 +1187,7 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 			if (me->namemap.nr)
 			{
 				const char *author2 = author2_cb(payload);
-				int j;
+				unsigned int j;
 				for (j = 0; j < me->namemap.nr; ++j)
 				{
 					struct string_list_item *sj = (struct string_list_item *)&me->namemap.items[j];
