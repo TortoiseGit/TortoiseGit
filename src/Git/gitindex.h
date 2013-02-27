@@ -393,15 +393,15 @@ public:
 		CAutoLocker lock(m_critIndexSec);
 		if(this->find(thePath) == end())
 		{
-			if (PathIsDirectory(thePath + _T("\\.git")))
+			if (PathIsDirectory(path + _T("\\.git")))
 			{
-				(*this)[thePath] = thePath + _T("\\.git\\");
-				m_reverseLookup[thePath + _T("\\.git")] = thePath;
+				(*this)[thePath] = path + _T("\\.git\\");
+				m_reverseLookup[thePath + _T("\\.git")] = path;
 				return (*this)[thePath];
 			}
 			else
 			{
-				FILE * pFile = _tfsopen(thePath + _T("\\.git"), _T("r"), SH_DENYWR);
+				FILE * pFile = _tfsopen(path + _T("\\.git"), _T("r"), SH_DENYWR);
 				if (pFile)
 				{
 					int size = 65536;
@@ -418,7 +418,7 @@ public:
 							str.TrimRight(_T("\\"));
 							if (str.GetLength() > 0 && str[0] == _T('.'))
 							{
-								str = thePath + _T("\\") + str;
+								str = path + _T("\\") + str;
 								CString newPath;
 								PathCanonicalize(newPath.GetBuffer(MAX_PATH), str.GetBuffer());
 								newPath.ReleaseBuffer();
@@ -433,7 +433,7 @@ public:
 					else
 						fclose(pFile);
 				}
-				return thePath + _T("\\.git\\"); // in case of an error stick to old behavior
+				return path + _T("\\.git\\"); // in case of an error stick to old behavior
 			}
 		}
 		else
