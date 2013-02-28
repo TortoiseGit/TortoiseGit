@@ -518,6 +518,11 @@ void CRevisionGraphDlg::OnViewUnifieddiffofheadrevisions()
 
 void CRevisionGraphDlg::UpdateFullHistory()
 {
+	m_Graph.SetDlgTitle (false);
+	m_bFetchLogs = true;
+	Invalidate();
+	StartWorkerThread();
+
 #if 0
 	m_Graph.SetDlgTitle (false);
 
