@@ -60,6 +60,7 @@
 		</para>
 		<para>
 			<guilabel>Tag</guilabel>
+			This sets remote.name.tagopt config, which controls the default tag fetching behaviour of the specified remote.
 			Reachable: Download tags that are reachable from remote branch heads (default behaviour).
 			None: No tags are downloaded (--no-tags).
 			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
