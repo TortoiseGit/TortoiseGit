@@ -43,5 +43,26 @@
 				<graphic fileref="../images/SettingsGitRemote.png"/>
 			</figure>
 		</para>
+		<para> Set git remote configuration </para>
+		<para>
+			<guilabel>Remote</guilabel>
+			The name of the remote, usually the default one is called 'origin'.
+		</para>
+		<para>
+			<guilabel>URL</guilabel>
+			The URL of the remote. It can be http / https / ssh / git protocol or local file system.
+			Note that for local file system, the path should use forward slash '/'; and
+			for absolute path, use /C/Project1 for C:\Project1.
+		</para>
+		<para>
+			<guilabel>Putty Key</guilabel>
+			The putty key file to load when performing network operations.
+		</para>
+		<para>
+			<guilabel>Tag</guilabel>
+			Reachable: Download tags that are reachable from remote branch heads (default behaviour).
+			None: No tags are downloaded (--no-tags).
+			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
+		</para>
 	</sect3>
 </sect2>
