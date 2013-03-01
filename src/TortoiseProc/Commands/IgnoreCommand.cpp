@@ -44,7 +44,7 @@ bool IgnoreCommand::Execute()
 
 		if(CMessageBox::Show(hwndExplorer, IDS_PROC_KEEPFILELOCAL, IDS_APPNAME, MB_ICONERROR|MB_YESNO) == IDYES)
 		{
-			format= _T("git.exe update-index --force-remove -- \"%s\"");
+			format = _T("git.exe rm --cache -r -f -- \"%s\"");
 		}
 		else
 		{
