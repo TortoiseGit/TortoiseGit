@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2012 - TortoiseGit
+// Copyright (C) 2010-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,6 +63,13 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	tt.LoadString(IDS_CLONE_DEPTH_TT);
 	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
 	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
+
+	// Check if the folder ends with .git this indicates the use probably want this to be a bare repository
+	if (m_folder.Right(4) == _T(".git"))
+	{
+		m_bBare = TRUE;
+		UpdateData(FALSE);
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

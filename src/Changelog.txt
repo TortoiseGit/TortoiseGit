@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #1628: Support commit ranges in log list (from Reference Browser)
  * Fixed issue #832: Compare commits between branches (branch1...branch2, from Reference Browser)
  * Fixed issue #515: Sort the log window by date
+ * Fixed issue #1676: Automatically check "Make it Bare" when repository path ends in ".git"
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
