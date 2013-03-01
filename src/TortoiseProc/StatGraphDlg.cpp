@@ -729,7 +729,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
 		}
 		m_parAuthors.Add(strAuthor);
-		m_parDates.Add(pLogEntry->GetCommitterDate().GetTime());
+		m_parDates.Add((DWORD)pLogEntry->GetCommitterDate().GetTime());
 
 		if (fetchdiff && (pLogEntry->m_ParentHash.size() <= 1))
 		{
