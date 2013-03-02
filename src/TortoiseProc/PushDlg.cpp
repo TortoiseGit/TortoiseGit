@@ -551,12 +551,6 @@ void CPushDlg::OnBnClickedPushall()
 	this->GetDlgItem(IDC_BRANCH_SOURCE)->EnableWindow(!m_bPushAllBranches);
 	this->GetDlgItem(IDC_BUTTON_BROWSE_SOURCE_BRANCH)->EnableWindow(!m_bPushAllBranches);
 	this->GetDlgItem(IDC_BUTTON_BROWSE_DEST_BRANCH)->EnableWindow(!m_bPushAllBranches);
-	this->GetDlgItem(IDC_TAGS)->EnableWindow(!m_bPushAllBranches);
-	if (m_bTags && m_bPushAllBranches)
-	{
-		m_bTags = FALSE;
-		UpdateData(FALSE);
-	}
 	EnDisablePushRemoteArchiveBranch();
 }
 

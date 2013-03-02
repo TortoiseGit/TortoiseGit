@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #1676: Automatically check "Make it Bare" when repository path ends in ".git"
  * Fixed issue #1677: Clicking "revert" on a file should automatically check the file in the revert dialog
  * Fixed issue #1667: Ability to ignore a folder in commit dialog
+ * Fixed issue #1674: Option "Push all branches" leaves out tags on pushed changes
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

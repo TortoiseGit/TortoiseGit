@@ -2373,6 +2373,12 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 				cmd.Format(_T("git.exe push --all %s \"%s\""),
 						arg,
 						remotesList[i]);
+
+				if (dlg.m_bTags)
+				{
+					progress.m_GitCmdList.push_back(cmd);
+					cmd.Format(_T("git.exe push --tags %s \"%s\""), arg, remotesList[i]);
+				}
 			}
 			else
 			{
