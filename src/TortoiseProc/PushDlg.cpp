@@ -307,7 +307,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 
 	//Select pull-branch from current branch
 	configName.Format(L"branch.%s.pushbranch", currentBranch);
-	CString pushBranch = CGit::StripRefName(g_Git.GetConfigValue(configName));
+	CString pushBranch = g_Git.GetConfigValue(configName); // do not strip branch name (for gerrit), see issue #1609)
 	if( pushBranch.IsEmpty() )
 	{
 		configName.Format(L"branch.%s.merge", currentBranch);
