@@ -113,6 +113,8 @@ void CResetDlg::OnVersionChanged()
 
 void CResetDlg::OnOK()
 {
+	this->UpdateData(TRUE);
+	UpdateRevsionName();
 	m_ResetToVersion = m_VersionName;
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
 	return CHorizontalResizableStandAloneDialog::OnOK();

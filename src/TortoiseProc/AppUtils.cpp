@@ -1358,7 +1358,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 			type=_T("--mixed");
 			break;
 		}
-		cmd.Format(_T("git.exe reset %s %s"),type, *CommitHash);
+		cmd.Format(_T("git.exe reset %s %s"),type, dlg.m_ResetToVersion);
 
 		while (true)
 		{
