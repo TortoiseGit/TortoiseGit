@@ -1825,17 +1825,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_VIEWREV:
 				OpenFile(filepath, ALTERNATIVEEDITOR);
 				break;
+
 			case IDGITLC_OPEN:
 				OpenFile(filepath,OPEN);
 				break;
+
 			case IDGITLC_OPENWITH:
 				OpenFile(filepath,OPEN_WITH);
 				break;
+
 			case IDGITLC_EXPLORE:
 				{
 					ShellExecute(this->m_hWnd, _T("explore"), filepath->GetDirectory().GetWinPath(), NULL, NULL, SW_SHOW);
 				}
 				break;
+
 			case IDGITLC_CREATERESTORE:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -1858,6 +1862,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					Invalidate();
 				}
 				break;
+
 			case IDGITLC_RESTOREPATH:
 				{
 					if (CMessageBox::Show(m_hWnd, IDS_STATUSLIST_RESTOREPATH, IDS_APPNAME, 2, IDI_QUESTION, IDS_RESTOREBUTTON, IDS_ABORTBUTTON) == 2)
@@ -1881,6 +1886,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					Invalidate();
 				}
 				break;
+
 			// Compare current version and work copy.
 			case IDGITLC_COMPAREWC:
 				{
@@ -1894,6 +1900,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+
 			// Compare with base version. when current version is zero, compare workcopy and HEAD.
 			case IDGITLC_COMPARE:
 				{
@@ -1907,6 +1914,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+
 			case IDGITLC_COMPARETWO:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -1917,6 +1925,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+
 			case IDGITLC_COMPARETWOFILES:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -1939,6 +1948,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+
 			case IDGITLC_GNUDIFF1:
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
@@ -1968,6 +1978,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 				}
 				break;
+
 			case IDGITLC_GNUDIFF2:
 				{
 					CAppUtils::StartShowUnifiedDiff(m_hWnd, *filepath, m_Rev2, *filepath, m_Rev1);
@@ -2086,97 +2097,98 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-
 			case IDGITLC_EDITCONFLICT:
-			{
-				if (CAppUtils::ConflictEdit(*filepath, false, this->m_bIsRevertTheirMy))
 				{
-					CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
-					if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
-						GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					if (CAppUtils::ConflictEdit(*filepath, false, this->m_bIsRevertTheirMy))
+					{
+						CString conflictedFile = g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPathString();
+						if (!PathFileExists(conflictedFile) && NULL != GetLogicalParent() && NULL != GetLogicalParent()->GetSafeHwnd())
+							GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+					}
 				}
 				break;
-			}
+
 			case IDGITLC_RESOLVETHEIRS: //follow up
 			case IDGITLC_RESOLVEMINE:   //follow up
 			case IDGITLC_RESOLVECONFLICT:
-			{
-				if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
 				{
-					POSITION pos = GetFirstSelectedItemPosition();
-					while (pos != 0)
+					if (CMessageBox::Show(m_hWnd, IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO)==IDYES)
 					{
-						int index;
-						index = GetNextSelectedItem(pos);
-						CTGitPath * fentry =(CTGitPath*) this->GetItemData(index);
-						if(fentry == NULL)
-							continue;
-						CString gitcmd,output;
-						output.Empty();
-
-						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) ||
-							 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) )
+						POSITION pos = GetFirstSelectedItemPosition();
+						while (pos != 0)
 						{
-							gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""),fentry->GetGitPathString());
-							if (g_Git.Run(gitcmd, &output,CP_UTF8))
-							{
-								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+							int index;
+							index = GetNextSelectedItem(pos);
+							CTGitPath * fentry =(CTGitPath*) this->GetItemData(index);
+							if(fentry == NULL)
 								continue;
-							}
-						}
-						output.Empty();
-						if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) ||
-							 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) )
-						{
-							gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""),fentry->GetGitPathString());
-							if (g_Git.Run(gitcmd, &output,CP_UTF8))
+							CString gitcmd,output;
+							output.Empty();
+
+							if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) ||
+								 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) )
 							{
-								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-								continue;
+								gitcmd.Format(_T("git.exe checkout-index -f --stage=3 -- \"%s\""),fentry->GetGitPathString());
+								if (g_Git.Run(gitcmd, &output,CP_UTF8))
+								{
+									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+									continue;
+								}
+							}
+							output.Empty();
+							if ( ((!this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVEMINE) ||
+								 ((this->m_bIsRevertTheirMy)&&cmd == IDGITLC_RESOLVETHEIRS) )
+							{
+								gitcmd.Format(_T("git.exe checkout-index -f --stage=2 -- \"%s\""),fentry->GetGitPathString());
+								if (g_Git.Run(gitcmd, &output,CP_UTF8))
+								{
+									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+									continue;
+								}
+
+							}
+							output.Empty();
+							if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+							{
+								gitcmd.Format(_T("git.exe add -f -- \"%s\""),fentry->GetGitPathString());
+								if (g_Git.Run(gitcmd, &output,CP_UTF8))
+								{
+									CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
+								}
+								else
+								{
+									fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
+									fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
+								}
 							}
 
-						}
-						output.Empty();
-						if ( fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
-						{
-							gitcmd.Format(_T("git.exe add -f -- \"%s\""),fentry->GetGitPathString());
-							if (g_Git.Run(gitcmd, &output,CP_UTF8))
-							{
-								CMessageBox::Show(m_hWnd, output, _T("TortoiseGit"), MB_ICONERROR);
-							}
-							else
-							{
-								fentry->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
-								fentry->m_Action &=~CTGitPath::LOGACTIONS_UNMERGED;
-							}
-						}
+							CAppUtils::RemoveTempMergeFile(*fentry);
 
-						CAppUtils::RemoveTempMergeFile(*fentry);
-
+						}
+						Show(m_dwShow, 0, m_bShowFolders,0,true);
 					}
-					Show(m_dwShow, 0, m_bShowFolders,0,true);
 				}
-			}
-			break;
+				break;
 
 			case IDGITLC_IGNORE:
-			{
-				CTGitPathList ignorelist;
-				//std::vector<CString> toremove;
-				FillListOfSelectedItemPaths(ignorelist, true);
-				SetRedraw(FALSE);
-
-				if(!CAppUtils::IgnoreFile(ignorelist,false))
-					break;
-
-				CWnd* pParent = GetLogicalParent();
-				if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 				{
-					pParent->SendMessage(GITSLNM_NEEDSREFRESH);
+					CTGitPathList ignorelist;
+					//std::vector<CString> toremove;
+					FillListOfSelectedItemPaths(ignorelist, true);
+					SetRedraw(FALSE);
+
+					if(!CAppUtils::IgnoreFile(ignorelist,false))
+						break;
+
+					CWnd* pParent = GetLogicalParent();
+					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+					{
+						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
+					}
+					SetRedraw(TRUE);
 				}
-				SetRedraw(TRUE);
-			}
-			break;
+				break;
+
 			case IDGITLC_IGNOREMASK:
 				{
 					CString common;
@@ -2197,6 +2209,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					SetRedraw(TRUE);
 				}
 				break;
+
 			case IDGITLC_IGNOREFOLDER:
 				{
 					CTGitPathList ignorelist;
@@ -2214,7 +2227,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 				break;
 
-				case IDGITLC_REVERT:
+			case IDGITLC_REVERT:
 				{
 					// If at least one item is not in the status "added"
 					// we ask for a confirmation
