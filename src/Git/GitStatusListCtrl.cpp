@@ -1734,6 +1734,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNORE, ignorepath);
 								ignorepath = _T("*")+sExt;
 								ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREMASK, ignorepath);
+								if (ignorelist.GetCount() == 1)
+									ignoreSubMenu.AppendMenu(MF_STRING | MF_ENABLED, IDGITLC_IGNOREFOLDER, ignorelist[0].GetContainingDirectory().GetGitPathString());
 								CString temp;
 								temp.LoadString(IDS_MENUIGNORE);
 								popup.InsertMenu((UINT)-1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)ignoreSubMenu.m_hMenu, temp);
@@ -2191,6 +2193,22 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					{
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 					}
+
+					SetRedraw(TRUE);
+				}
+				break;
+			case IDGITLC_IGNOREFOLDER:
+				{
+					CTGitPathList ignorelist;
+					ignorelist.AddPath(filepath->GetContainingDirectory());
+					SetRedraw(FALSE);
+
+					if (!CAppUtils::IgnoreFile(ignorelist, false))
+						break;
+
+					CWnd *pParent = GetLogicalParent();
+					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
+						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
 
 					SetRedraw(TRUE);
 				}
