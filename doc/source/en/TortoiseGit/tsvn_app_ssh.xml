@@ -61,7 +61,7 @@
 				</para>
 			</sect3>
 			<sect3 id="tsvn-ssh-faq-differentport-onesession">
-				<title>One a special connection should use a different port</title>
+				<title>One special connection should use a different port</title>
 				<para>
 					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Change the port number to the number you need and click on <guibutton>Save</guibutton>.
 				</para>
