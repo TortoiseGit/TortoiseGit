@@ -1753,11 +1753,22 @@ void CTortoiseGitBlameView::OnEditFind()
 {
 	m_pFindDialog=new CFindReplaceDialog();
 
+	CString oneline;
+	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
+	{
+		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
+		char * linebuf = new char[bufsize + 1];
+		SecureZeroMemory(linebuf, bufsize + 1);
+		SendEditor(SCI_GETSELTEXT, 0, (LPARAM)linebuf);
+		oneline = m_TextView.StringFromControl(linebuf);
+		delete [] linebuf;
+	}
+
 	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN;
 	if (theApp.GetInt(_T("FindMatchCase")))
 		flags |= FR_MATCHCASE;
 
-	m_pFindDialog->Create(TRUE, _T(""), NULL, flags, this);
+	m_pFindDialog->Create(TRUE, oneline, NULL, flags, this);
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
