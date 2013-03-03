@@ -5,6 +5,8 @@
 #include "afxwin.h"
 #include "StandAloneDlg.h"
 #include "LoglistCommonResource.h"
+#include "registry.h"
+
 // CFindDlg dialog
 
 #define IDT_FILTER		101
@@ -24,6 +26,7 @@ public:
 	bool WholeWord() {return !!m_bWholeWord;}
 	bool IsRef()	{return !!m_bIsRef;}
 	CString GetFindString() {return m_FindString;}
+	void SetFindString(const CString& str) { if (!str.IsEmpty()) { m_FindCombo.SetWindowText(str); } }
 
 // Dialog Data
 	enum { IDD = IDD_FIND };
@@ -49,6 +52,8 @@ protected:
 	CString			m_FindString;
 	CWnd			*m_pParent;
 	STRING_VECTOR	m_RefList;
+	CRegDWORD		m_regMatchCase;
+	CRegDWORD		m_regWholeWord;
 
 	void AddToList();
 

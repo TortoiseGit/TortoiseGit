@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "FindDlg.h"
+#include "registry.h"
 
 
 // CFindDlg dialog
@@ -35,6 +36,8 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bWholeWord(FALSE)
 	, m_bIsRef(false)
 	, m_FindMsg(0)
+	, m_regMatchCase(L"Software\\TortoiseGit\\LogDialog\\FindMatchCase", FALSE)
+	, m_regWholeWord(L"Software\\TortoiseGit\\LogDialog\\FindWholeWord", FALSE)
 {
 	m_pParent = pParent;
 }
@@ -88,6 +91,9 @@ void CFindDlg::OnOK()
 	UpdateData();
 	m_FindCombo.SaveHistory();
 
+	m_regMatchCase = m_bMatchCase;
+	m_regWholeWord = m_bWholeWord;
+
 	if (m_FindCombo.GetString().IsEmpty())
 		return;
 	m_bFindNext = true;
@@ -107,8 +113,12 @@ BOOL CFindDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
-	m_FindCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\Find"), _T("Search"));
+	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
+	m_bWholeWord = (BOOL)(DWORD)m_regWholeWord;
+	UpdateData(FALSE);
 
+	m_FindCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\Find"), _T("Search"));
+	m_FindCombo.SetCurSel(0);
 	m_FindCombo.SetFocus();
 
 	this->AddAnchor(IDC_STATIC_FIND, TOP_LEFT, TOP_RIGHT);
