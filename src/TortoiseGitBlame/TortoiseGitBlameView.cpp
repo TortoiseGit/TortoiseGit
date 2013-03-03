@@ -498,6 +498,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	bool bFound = false;
 	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
 	theApp.WriteInt(_T("FindMatchCase"), bCaseSensitive ? 1 : 0);
+	theApp.WriteString(_T("FindString"), what);
 
 	if(!bCaseSensitive)
 		what.MakeLower();
@@ -1753,7 +1754,7 @@ void CTortoiseGitBlameView::OnEditFind()
 {
 	m_pFindDialog=new CFindReplaceDialog();
 
-	CString oneline;
+	CString oneline = theApp.GetString(_T("FindString"));
 	if (m_TextView.Call(SCI_GETSELECTIONSTART) != m_TextView.Call(SCI_GETSELECTIONEND))
 	{
 		LRESULT bufsize = m_TextView.Call(SCI_GETSELECTIONEND) - m_TextView.Call(SCI_GETSELECTIONSTART);
