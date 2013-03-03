@@ -185,6 +185,9 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
 
+	if (!(range.IsEmpty() || range == _T("HEAD")))
+		m_bAllBranch = false;
+
 	SetRange(range);
 
 	m_limit = limit;
