@@ -1660,7 +1660,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRev *pRev=pSelLogEntry;
 					if (pSelLogEntry->m_ParentHash.empty())
 					{
-						pRev->GetParentFromHash(pRev->m_CommitHash);
+						try
+						{
+							pRev->GetParentFromHash(pRev->m_CommitHash);
+						}
+						catch (const char* msg)
+						{
+							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+						}
 					}
 					if(pRev->m_ParentHash.size()<=1)
 					{
@@ -1690,7 +1697,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRev *pRev=pSelLogEntry;
 					if (pSelLogEntry->m_ParentHash.empty())
 					{
-						pRev->GetParentFromHash(pRev->m_CommitHash);
+						try
+						{
+							pRev->GetParentFromHash(pRev->m_CommitHash);
+						}
+						catch (const char* msg)
+						{
+							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+						}
 					}
 					if(pRev->m_ParentHash.size()<=1)
 					{
@@ -1865,7 +1879,14 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRev *pRev = pSelLogEntry;
 					if (pSelLogEntry->m_ParentHash.empty())
 					{
-						pRev->GetParentFromHash(pRev->m_CommitHash);
+						try
+						{
+							pRev->GetParentFromHash(pRev->m_CommitHash);
+						}
+						catch (const char* msg)
+						{
+							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+						}
 					}
 					if (pRev->m_ParentHash.size() == 1)
 					{
