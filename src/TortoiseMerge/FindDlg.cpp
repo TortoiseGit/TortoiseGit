@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011-2012 - TortoiseSVN
+// Copyright (C) 2006, 2011-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,6 +34,9 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
 	, m_FindMsg(0)
+	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
+	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
+	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
 {
 }
 
@@ -77,6 +80,9 @@ void CFindDlg::OnOK()
 {
 	UpdateData();
 	m_FindCombo.SaveHistory();
+	m_regMatchCase = m_bMatchCase;
+	m_regLimitToDiffs = m_bLimitToDiffs;
+	m_regWholeWord = m_bWholeWord;
 
 	if (m_FindCombo.GetString().IsEmpty())
 		return;
@@ -93,8 +99,14 @@ BOOL CFindDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
+	m_bMatchCase = (BOOL)(DWORD)m_regMatchCase;
+	m_bLimitToDiffs = (BOOL)(DWORD)m_regLimitToDiffs;
+	m_bWholeWord = (BOOL)(DWORD)m_regWholeWord;
+	UpdateData(FALSE);
+
 	m_FindCombo.DisableTrimming();
 	m_FindCombo.LoadHistory(_T("Software\\TortoiseGitMerge\\History\\Find"), _T("Search"));
+	m_FindCombo.SetCurSel(0);
 
 	m_FindCombo.SetFocus();
 
