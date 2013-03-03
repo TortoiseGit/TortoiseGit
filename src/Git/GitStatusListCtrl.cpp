@@ -232,6 +232,13 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 		mask|= CGitStatusListCtrl::FILELIST_UNVER;
 	this->UpdateFileList(mask,bUpdate,(CTGitPathList*)pathList);
 
+	if (pathList && m_mapDirectFiles.empty())
+	{
+		// remember files which are selected by users so that those can be preselected
+		for (int i = 0; i < pathList->GetCount(); ++i)
+			if (!(*pathList)[i].IsDirectory())
+				m_mapDirectFiles[(*pathList)[i].GetGitPathString()] = true;
+	}
 
 #if 0
 	int refetchcounter = 0;
@@ -497,7 +504,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 		else if (!UseStoredCheckStatus)
 		{
 			bool autoSelectSubmodules = !(entry->IsDirectory() && m_bDoNotAutoselectSubmodules);
-			if(entry->m_Action & dwCheck && autoSelectSubmodules)
+			if ((entry->m_Action & dwCheck || dwShow & GITSLC_SHOWDIRECTFILES && m_mapDirectFiles.find(path) != m_mapDirectFiles.end()) && autoSelectSubmodules)
 				entry->m_Checked=true;
 			else
 				entry->m_Checked=false;

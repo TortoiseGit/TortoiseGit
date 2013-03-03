@@ -61,7 +61,7 @@
 #define GITSLC_SHOWINEXTERNALS	0x00000000
 #define GITSLC_SHOWREMOVEDANDPRESENT 0x00000000
 #define GITSLC_SHOWLOCKS		0x00000000
-#define GITSLC_SHOWDIRECTFILES	0x00000000
+#define GITSLC_SHOWDIRECTFILES	0x04000000
 #define GITSLC_SHOWDIRECTFOLDER 0x00000000
 #define GITSLC_SHOWEXTERNALFROMDIFFERENTREPO 0x00000000
 #define GITSLC_SHOWSWITCHED		0x00000000
@@ -1139,6 +1139,7 @@ private:
     ColumnManager               m_ColumnManager;
 
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
+	std::map<CString,bool>		m_mapDirectFiles;
 	CComCriticalSection			m_critSec;
 
 	friend class CGitStatusListCtrlDropTarget;

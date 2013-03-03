@@ -126,14 +126,6 @@ UINT CRevertDlg::RevertThread()
 						// do not select all files, only the ones the user has selected directly
 						GITSLC_SHOWDIRECTFILES|GITSLC_SHOWADDED);
 
-	for (int i = 0; i < m_RevertList.GetItemCount(); ++i)
-	{
-		CTGitPath *path = (CTGitPath *)m_RevertList.GetItemData(i);
-		for (int j = 0; j < m_pathList.GetCount(); ++j)
-			if (m_pathList[j].GetGitPathString() == path->GetGitPathString())
-				m_RevertList.SetCheck(i, TRUE);
-	}
-
 	if (m_RevertList.HasUnversionedItems())
 	{
 		if (DWORD(CRegStdDWORD(_T("Software\\TortoiseGit\\UnversionedAsModified"), FALSE)))
