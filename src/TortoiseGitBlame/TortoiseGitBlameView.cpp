@@ -497,6 +497,7 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
 	bool bFound = false;
 	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
+	theApp.WriteInt(_T("FindMatchCase"), bCaseSensitive ? 1 : 0);
 
 	if(!bCaseSensitive)
 		what.MakeLower();
@@ -1752,7 +1753,11 @@ void CTortoiseGitBlameView::OnEditFind()
 {
 	m_pFindDialog=new CFindReplaceDialog();
 
-	m_pFindDialog->Create(TRUE, _T(""), NULL, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
+	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN;
+	if (theApp.GetInt(_T("FindMatchCase")))
+		flags |= FR_MATCHCASE;
+
+	m_pFindDialog->Create(TRUE, _T(""), NULL, flags, this);
 }
 
 void CTortoiseGitBlameView::OnEditGoto()
