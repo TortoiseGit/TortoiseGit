@@ -544,7 +544,6 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 				if (m_pTaskbarList && m_pPostWnd)
 				{
 					m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
-					m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), m_itemCountTotal - m_itemCount, m_itemCountTotal);
 					m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), m_itemCount, m_itemCountTotal);
 				}
 			}
@@ -1826,23 +1825,24 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 
-		for (int i = 0; i < m_targetPathList.GetCount(); ++i)
+		m_itemCountTotal = m_targetPathList.GetCount();
+		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
-			if (git_index_add_bypath(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[i].GetGitPathString(), CP_UTF8)).GetBuffer()))
+			if (git_index_add_bypath(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)).GetBuffer()))
 			{
 				ReportGitError();
 				git_index_free(index);
 				git_repository_free(repo);
 				return false;
 			}
-			Notify(m_targetPathList[i],git_wc_notify_add);
+			Notify(m_targetPathList[m_itemCount], git_wc_notify_add);
 
 			if (IsCancelled() == TRUE)
 			{
 				git_index_free(index);
 				git_repository_free(repo);
 
-				Notify(m_targetPathList[i], git_wc_notify_cancelled);
+				Notify(m_targetPathList[m_itemCount], git_wc_notify_cancelled);
 				return false;
 			}
 		}
@@ -1969,10 +1969,11 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 	// check if the file may still have conflict markers in it.
 	//BOOL bMarkers = FALSE;
 
-	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
+	m_itemCountTotal = m_targetPathList.GetCount();
+	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 	{
 		CString cmd,out,tempmergefile;
-		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[i].GetGitPathString());
+		cmd.Format(_T("git.exe add -f -- \"%s\""),m_targetPathList[m_itemCount].GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
@@ -1980,9 +1981,9 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 
-		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[i]);
+		CAppUtils::RemoveTempMergeFile((CTGitPath &)m_targetPathList[m_itemCount]);
 
-		Notify(m_targetPathList[i],git_wc_notify_resolved);
+		Notify(m_targetPathList[m_itemCount], git_wc_notify_resolved);
 	}
 #if 0
 	if ((m_options & ProgOptSkipConflictCheck) == 0)
@@ -2045,13 +2046,14 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
+	m_itemCountTotal = 2 * m_selectedPaths.GetCount();
 	CTGitPathList delList;
-	for (int i = 0; i < m_selectedPaths.GetCount(); ++i)
+	for (m_itemCount = 0; m_itemCount < m_selectedPaths.GetCount(); ++m_itemCount)
 	{
 		CTGitPath path;
 		int action;
-		path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_selectedPaths[i].GetWinPath());
-		action = m_selectedPaths[i].m_Action;
+		path.SetFromWin(g_Git.m_CurrentDir + _T("\\") + m_selectedPaths[m_itemCount].GetWinPath());
+		action = m_selectedPaths[m_itemCount].m_Action;
 		/* rename file can't delete because it needs original file*/
 		if((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
 			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
@@ -2069,7 +2071,8 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 			m_bErrorsOccurred=true;
 			return false;
 		}
-		Notify(m_selectedPaths[i],git_wc_notify_revert);
+		Notify(m_selectedPaths[i], git_wc_notify_revert);
+		++m_itemCount;
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_selectedPaths);
@@ -2235,18 +2238,19 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 	}
 	else
 	{
-		for (int i = 0; ret && i < m_targetPathList.GetCount(); ++i)
+		m_itemCountTotal = m_targetPathList.GetCount();
+		for (m_itemCount = 0; ret && m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
 			CPatch patch;
-			Notify(m_targetPathList[i],git_wc_notify_sendmail_start);
+			Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_start);
 
 			int retry=0;
 			while(retry<3)
 			{
-				if(!!patch.Send((CString&)m_targetPathList[i].GetWinPathString(),this->m_SendMailTO,
+				if(!!patch.Send((CString&)m_targetPathList[m_itemCount].GetWinPathString(),this->m_SendMailTO,
 								this->m_SendMailCC,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI)))
 				{
-					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&patch.m_LastError);
+					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_error, ret, &patch.m_LastError);
 					ret = false;
 
 				}
@@ -2257,18 +2261,18 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 				}
 				++retry;
 				if (retry < 3)
-					Notify(m_targetPathList[i],git_wc_notify_sendmail_retry,ret,&patch.m_LastError);
+					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_retry, ret, &patch.m_LastError);
 				Sleep(2000);
 				if(m_bCancelled)
 				{
 					CString str;
 					str.LoadString(IDS_SVN_USERCANCELLED);
-					Notify(m_targetPathList[i],git_wc_notify_sendmail_error,ret,&str);
+					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_error, ret, &str);
 					return false;
 				}
 			}
 			if (ret)
-				Notify(m_targetPathList[i],git_wc_notify_sendmail_done,ret);
+				Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_done, ret);
 		}
 	}
 	return ret;
