@@ -1285,14 +1285,6 @@
 #define IDC_COMBO_CONFIGTYPE            1759
 #define IDC_COMBO_HELPER                1760
 #define IDC_CHECK_USEHTTPPATH           1761
-#define IDS_LOG_COPY_SUCCESS            1830
-#define IDS_LOG_MESSAGEEDITTITLE        1831
-#define IDS_LOG_AUTHOREDITTITLE         1832
-#define IDS_LOG_SHOWALL                 1833
-#define IDS_LOG_SHOWRANGE               1834
-#define IDS_LOG_LOGINFOSTRING           1835
-#define IDS_LOG_SHOWNEXT                1836
-#define IDS_LOG_SHOW_WHOLE              1838
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852

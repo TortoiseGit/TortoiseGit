@@ -3141,18 +3141,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_LOG_COPY_SUCCESS    "Branch/tag created successfully!"
-    IDS_LOG_MESSAGEEDITTITLE "Edit log message"
-    IDS_LOG_AUTHOREDITTITLE "Edit author name"
-    IDS_LOG_SHOWALL         "Show &All Branch"
-    IDS_LOG_SHOWRANGE       "Show &Range..."
-    IDS_LOG_LOGINFOSTRING   "Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s) selected."
-    IDS_LOG_SHOWNEXT        "&Next %ld"
-    IDS_LOG_SHOW_WHOLE      "Show Whole Project"
-END
-
-STRINGTABLE
-BEGIN
     IDS_PROC_SENDMAIL_WRAPTOOLTIP 
                             "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
     IDS_STATUSLIST_RESTOREPATH 

@@ -830,11 +830,6 @@ msgstr ""
 msgid "&New..."
 msgstr ""
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr ""
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr ""
@@ -2018,10 +2013,6 @@ msgstr ""
 
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
 msgstr ""
 
 #. Resource IDs: (1518)
@@ -3544,10 +3535,6 @@ msgstr ""
 msgid "Edit author"
 msgstr ""
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr ""
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr ""
@@ -3570,10 +3557,6 @@ msgstr ""
 
 #. Resource IDs: (71)
 msgid "Edit local git config"
-msgstr ""
-
-#. Resource IDs: (115, 1254)
-msgid "Edit log message"
 msgstr ""
 
 #. Resource IDs: (1384)
@@ -7350,14 +7333,6 @@ msgstr ""
 msgid "Show &Accelerator for:"
 msgstr ""
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr ""
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr ""
@@ -7436,10 +7411,6 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -7581,11 +7552,6 @@ msgstr ""
 
 #. Resource IDs: (198)
 msgid "Show/Hide"
-msgstr ""
-
-#. Resource IDs: (115)
-#, c-format
-msgid "Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s) selected."
 msgstr ""
 
 #. Resource IDs: (76)
