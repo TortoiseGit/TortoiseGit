@@ -269,6 +269,12 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
 		break;
+	case git_wc_notify_cancelled:
+		data->bAuxItem = true;
+		data->sActionColumnText = _T("");
+		data->sPathColumnText.LoadString(IDS_SVN_USERCANCELLED);
+		data->color = m_Colors.GetColor(CColors::Modified);
+		break;
 	case git_wc_notify_sendmail_start:
 		data->bAuxItem = true;
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
@@ -1830,6 +1836,15 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 				return false;
 			}
 			Notify(m_targetPathList[i],git_wc_notify_add);
+
+			if (IsCancelled() == TRUE)
+			{
+				git_index_free(index);
+				git_repository_free(repo);
+
+				Notify(m_targetPathList[i], git_wc_notify_cancelled);
+				return false;
+			}
 		}
 
 		if (git_index_write(index))

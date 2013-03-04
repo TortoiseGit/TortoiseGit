@@ -75,6 +75,7 @@ typedef enum
 	git_wc_notify_fetch,
 	git_wc_notify_checkout,
 	git_wc_notify_update_ref,
+	git_wc_notify_cancelled,
 
 }git_wc_notify_action_t;
 
