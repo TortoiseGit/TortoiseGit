@@ -1734,7 +1734,7 @@ void CGitProgressList::OnSize(UINT nType, int cx, int cy)
 bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 {
 	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_ADD, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_ADD, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
@@ -1964,7 +1964,7 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 
 	localoperation = true;
 	ASSERT(m_targetPathList.GetCount() == 1);
-	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_RESOLVE_BKG);
 	// check if the file may still have conflict markers in it.
 	//BOOL bMarkers = FALSE;
@@ -2042,7 +2042,7 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 {
 
 	localoperation = true;
-	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_REVERT, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	SetBackgroundImage(IDI_REVERT_BKG);
 
 	CTGitPathList delList;
@@ -2195,7 +2195,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 }
 bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
 {
-	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
 	bool ret=true;
