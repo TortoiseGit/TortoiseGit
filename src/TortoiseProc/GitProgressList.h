@@ -150,7 +150,7 @@ public:
 	CAnimateCtrl	*m_pAnimate;
 	CProgressCtrl	*m_pProgControl;
 	Command			m_Command;
-	virtual BOOL	Cancel();
+	void			Cancel();
 	volatile BOOL IsCancelled()	{return m_bCancelled;}
 	volatile LONG IsRunning()	{return m_bThreadRunning;}
 	CWinThread*				m_pThread;

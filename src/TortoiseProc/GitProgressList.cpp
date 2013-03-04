@@ -117,9 +117,9 @@ BEGIN_MESSAGE_MAP(CGitProgressList, CListCtrl)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
-BOOL CGitProgressList::Cancel()
+void CGitProgressList::Cancel()
 {
-	return m_bCancelled;
+	m_bCancelled = TRUE;
 }
 
 
