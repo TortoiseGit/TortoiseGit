@@ -36,17 +36,6 @@ CPatch::~CPatch()
 {
 }
 
-void CPatch::ConvertToArray(CString &to,CStringArray &Array)
-{
-	int start=0;
-	while(start>=0)
-	{
-		CString str=to.Tokenize(_T(";"),start);
-		if(!str.IsEmpty())
-			Array.Add(str);
-	}
-}
-
 int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, bool useMAPI)
 {
 	if(this->Parser(pathfile))
@@ -197,19 +186,3 @@ int CPatch::Parser(CString &pathfile)
 
 	return 0;
 }
-
-void CPatch::GetNameAddress(CString &in, CString &name,CString &address)
-{
-	int start,end;
-	start=in.Find(_T('<'));
-	end=in.Find(_T('>'));
-
-	if(start >=0 && end >=0)
-	{
-		name=in.Left(start);
-		address=in.Mid(start+1,end-start-1);
-	}
-	else
-		address=in;
-}
-

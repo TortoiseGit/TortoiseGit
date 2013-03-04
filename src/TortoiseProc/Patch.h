@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011,2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,17 +22,8 @@
 #include "hwsmtp.h"
 #include "TGitPath.h"
 
-#define REG_SMTP_SERVER _T("Software\\TortoiseGit\\EMAIL\\SMTPSERVER")
-#define REG_SMTP_PORT _T("Software\\TortoiseGit\\EMAIL\\PORT")
-#define REG_SMTP_ISAUTH _T("Software\\TortoiseGit\\EMAIL\\ISAUTH")
-#define REG_SMTP_USER _T("Software\\TortoiseGit\\EMAIL\\USER")
-#define REG_SMTP_PASSWORD _T("Software\\TortoiseGit\\EMAIL\\PASSWORD")
-
 class CPatch
 {
-protected:
-	void GetNameAddress(CString &in, CString &name,CString &address);
-
 public:
 	CPatch();
 	~CPatch(void);
@@ -50,6 +41,5 @@ public:
 	CString		m_strBody;
 
 private:
-	void ConvertToArray(CString &to, CStringArray &Array);
 	static int SendMail(CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext);
 };
