@@ -271,7 +271,6 @@ protected:
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	LRESULT			OnShowConflictResolver(WPARAM, LPARAM);
 	afx_msg void	OnLvnBegindragSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 
 	void			Sort();
 	static bool		SortCompare(const NotificationData* pElem1, const NotificationData* pElem2);
@@ -372,7 +371,6 @@ private:
 	CString					m_SendMailSubject;
 
 ///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
-	CComPtr<ITaskbarList3>	m_pTaskbarList;
 
 	// some strings different methods can use
 	CString					sDryRun;
@@ -383,6 +381,7 @@ private:
 	CString					m_RefSpec;
 	int						m_AutoTag;
 public:
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	void Init();
 	afx_msg void OnClose();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

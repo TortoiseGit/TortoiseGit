@@ -95,6 +95,7 @@ BEGIN_MESSAGE_MAP(CGitProgressDlg, CResizableStandAloneDialog)
 	ON_WM_CTLCOLOR()
 	ON_MESSAGE(WM_PROG_CMD_FINISH, OnCmdEnd)
 	ON_MESSAGE(WM_PROG_CMD_START, OnCmdStart)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 
@@ -103,6 +104,24 @@ BOOL CGitProgressDlg::OnInitDialog()
 {
 	__super::OnInitDialog();
 
+	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
+	// do this, Explorer would be unable to send that message to our window if we
+	// were running elevated. It's OK to make the call all the time, since if we're
+	// not elevated, this is a no-op.
+	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
+	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(_T("user32.dll"));
+	if (hUser)
+	{
+		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+		if (pfnChangeWindowMessageFilterEx)
+		{
+			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
+		}
+	}
+	m_ProgList.m_pTaskbarList.Release();
+	if (FAILED(m_ProgList.m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_ProgList.m_pTaskbarList = nullptr;
 
 	UpdateData(FALSE);
 
@@ -135,7 +154,12 @@ BOOL CGitProgressDlg::OnInitDialog()
 	return TRUE;
 }
 
-
+LRESULT CGitProgressDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_ProgList.m_pTaskbarList.Release();
+	m_ProgList.m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	return 0;
+}
 
 void CGitProgressDlg::OnBnClickedLogbutton()
 {

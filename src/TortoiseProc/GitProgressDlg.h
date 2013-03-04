@@ -102,6 +102,7 @@ protected:
 	afx_msg void	OnEnSetfocusInfotext();
 	afx_msg LRESULT	OnCtlColorStatic(WPARAM wParam, LPARAM lParam);
 	afx_msg HBRUSH	OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	LRESULT			OnCmdEnd(WPARAM wParam, LPARAM lParam);
 	LRESULT			OnCmdStart(WPARAM wParam, LPARAM lParam);
 

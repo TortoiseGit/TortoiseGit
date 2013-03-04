@@ -82,6 +82,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
 	, m_options(ProgOptNone)
 	, m_bSetTitle(false)
+	, m_pTaskbarList(nullptr)
 {
 	m_pInfoCtrl = nullptr;
 	m_pAnimate = nullptr;
@@ -111,7 +112,6 @@ BEGIN_MESSAGE_MAP(CGitProgressList, CListCtrl)
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnLvnBegindragSvnprogress)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoSvnprogress)
 	ON_MESSAGE(WM_SHOWCONFLICTRESOLVER, OnShowConflictResolver)
-	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_CONTEXTMENU()
@@ -535,11 +535,11 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 					m_pProgControl->SetPos(m_itemCount);
 					m_pProgControl->SetRange32(0, m_itemCountTotal);
 				}
-				if (m_pTaskbarList)
+				if (m_pTaskbarList && m_pPostWnd)
 				{
-					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCountTotal - m_itemCount, m_itemCountTotal);
-					m_pTaskbarList->SetProgressValue(m_hWnd, m_itemCount, m_itemCountTotal);
+					m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
+					m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), m_itemCountTotal - m_itemCount, m_itemCountTotal);
+					m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), m_itemCount, m_itemCountTotal);
 				}
 			}
 		}
@@ -844,8 +844,8 @@ UINT CGitProgressList::ProgressThread()
 	m_bFinishedItemAdded = false;
 	DWORD startTime = GetCurrentTime();
 
-	if (m_pTaskbarList)
-		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
+	if (m_pTaskbarList && m_pPostWnd)
+		m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_INDETERMINATE);
 
 	switch (m_Command)
 	{
@@ -891,15 +891,15 @@ UINT CGitProgressList::ProgressThread()
 	KillTimer(TRANSFERTIMER);
 	KillTimer(VISIBLETIMER);
 
-	if (m_pTaskbarList)
+	if (m_pTaskbarList && m_pPostWnd)
 	{
 		if (DidErrorsOccur())
 		{
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
-			m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
+			m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_ERROR);
+			m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), 100, 100);
 		}
 		else
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+			m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NOPROGRESS);
 	}
 
 	CString info = BuildInfoString();
@@ -1199,8 +1199,8 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	{
 		if (m_pProgControl)
 			m_pProgControl->ShowWindow(SW_SHOW);
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+		if (m_pTaskbarList && m_pPostWnd)
+			m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
 	}
 
 	if (m_pProgressLabelCtrl && m_pProgressLabelCtrl->IsWindowVisible())
@@ -1211,10 +1211,10 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 		m_pProgControl->SetPos(progress);
 		m_pProgControl->SetRange32(0, 2 * stat->total_objects);
 	}
-	if (m_pTaskbarList)
+	if (m_pTaskbarList && m_pPostWnd)
 	{
-		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-		m_pTaskbarList->SetProgressValue(m_hWnd, progress, stat->total_objects);
+		m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
+		m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), progress, stat->total_objects);
 	}
 
 	CString progText;
@@ -2259,13 +2259,6 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 	return ret;
 }
 
-LRESULT CGitProgressList::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
-{
-	m_pTaskbarList.Release();
-	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
-	return 0;
-}
-
 bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 {
 	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
@@ -2380,26 +2373,6 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 void CGitProgressList::Init()
 {
-
-	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
-	// do this, Explorer would be unable to send that message to our window if we
-	// were running elevated. It's OK to make the call all the time, since if we're
-	// not elevated, this is a no-op.
-	CHANGEFILTERSTRUCT cfs = { sizeof(CHANGEFILTERSTRUCT) };
-	typedef BOOL STDAPICALLTYPE ChangeWindowMessageFilterExDFN(HWND hWnd, UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
-	CAutoLibrary hUser = AtlLoadSystemLibraryUsingFullPath(_T("user32.dll"));
-	if (hUser)
-	{
-		ChangeWindowMessageFilterExDFN *pfnChangeWindowMessageFilterEx = (ChangeWindowMessageFilterExDFN*)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
-		if (pfnChangeWindowMessageFilterEx)
-		{
-			pfnChangeWindowMessageFilterEx(m_hWnd, WM_TASKBARBTNCREATED, MSGFLT_ALLOW, &cfs);
-		}
-	}
-	m_pTaskbarList.Release();
-	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
-		m_pTaskbarList = nullptr;
-
 	SetExtendedStyle (LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 
 	DeleteAllItems();
