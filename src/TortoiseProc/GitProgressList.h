@@ -156,6 +156,7 @@ public:
 	CWinThread*				m_pThread;
 	bool					m_AlwaysConflicted;
 	CWnd			*m_pPostWnd;
+	bool					m_bSetTitle;
 private:
 	class NotificationData
 	{
@@ -204,7 +205,6 @@ private:
 		CString					sPathColumnText;
 		CGitHash				m_OldHash;
 		CGitHash				m_NewHash;
-
 	};
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -225,6 +225,8 @@ protected:
 		);
 	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
 	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
+
+	void SetWindowTitle(UINT id, const CString& urlorpath, CString& dialogname);
 
 //	virtual git_wc_conflict_choice_t	ConflictResolveCallback(const git_wc_conflict_description_t *description, CString& mergedfile);
 

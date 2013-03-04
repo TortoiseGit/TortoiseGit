@@ -123,6 +123,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	m_ProgList.m_pProgressLabelCtrl = &m_ProgLableCtrl;
 	m_ProgList.m_pInfoCtrl = &m_InfoCtrl;
 	m_ProgList.m_pPostWnd = this;
+	m_ProgList.m_bSetTitle = true;
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
