@@ -34,6 +34,7 @@
 #include "DeleteRemoteTagDlg.h"
 #include "UnicodeUtils.h"
 #include "InputDlg.h"
+#include "SysProgressDlg.h"
 
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
@@ -710,12 +711,25 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 		}
 		else
 			cmd.Format(L"git.exe branch -%c -- %s",bForce?L'D':L'd',branchToDelete);
+		CSysProgressDlg sysProgressDlg;
+		if (bIsRemoteBranch)
+		{
+			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+			sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+			sysProgressDlg.SetShowProgressBar(false);
+			sysProgressDlg.ShowModal(this, true);
+		}
 		CString errorMsg;
 		if(g_Git.Run(cmd,&errorMsg,CP_UTF8)!=0)
 		{
 			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			if (bIsRemoteBranch)
+				sysProgressDlg.Stop();
 			return false;
 		}
+		if (bIsRemoteBranch)
+			sysProgressDlg.Stop();
 	}
 	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
 	{

@@ -888,6 +888,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 		case ID_DELETE:
 			{
+				bool showProgress = false;
 				CString *branch = (CString*)((CIconMenu*)popmenu)->GetMenuItemData(cmd);
 				if (!branch)
 				{
@@ -909,6 +910,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 							CAppUtils::LaunchPAgent(NULL, &remoteName);
 
 						cmd.Format(L"git.exe push \"%s\" :refs/heads/%s", remoteName, shortname);
+						showProgress = true;
 					}
 					else if (result == 2)
 						cmd.Format(_T("git.exe branch -r -D -- %s"), shortname);
@@ -941,11 +943,22 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				}
 				if (!cmd.IsEmpty())
 				{
+					CSysProgressDlg sysProgressDlg;
+					if (showProgress)
+					{
+						sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+						sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+						sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+						sysProgressDlg.SetShowProgressBar(false);
+						sysProgressDlg.ShowModal(this, true);
+					}
 					CString out;
 					if(g_Git.Run(cmd,&out,CP_UTF8))
 					{
 						CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					}
+					if (showProgress)
+						sysProgressDlg.Stop();
 					this->ReloadHashMap();
 					CRect rect;
 					this->GetItemRect(FirstSelect,&rect,LVIR_BOUNDS);

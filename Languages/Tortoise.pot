@@ -3193,6 +3193,10 @@ msgstr ""
 msgid "Deleting"
 msgstr ""
 
+#. Resource IDs: (1397)
+msgid "Deleting remote refs..."
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr ""

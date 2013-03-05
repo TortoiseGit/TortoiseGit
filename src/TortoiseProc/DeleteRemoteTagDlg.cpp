@@ -25,6 +25,7 @@
 #include "DeleteRemoteTagDlg.h"
 #include "Messagebox.h"
 #include "MassiveGitTask.h"
+#include "SysProgressDlg.h"
 
 IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CHorizontalResizableStandAloneDialog)
 
@@ -83,7 +84,14 @@ void CDeleteRemoteTagDlg::Refresh()
 	m_SelectAll.SetCheck(BST_UNCHECKED);
 	m_taglist.clear();
 
+	CSysProgressDlg sysProgressDlg;
+	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+	sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_LOADING)));
+	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+	sysProgressDlg.SetShowProgressBar(false);
+	sysProgressDlg.ShowModal(this, true);
 	g_Git.GetRemoteTags(m_sRemote, m_taglist);
+	sysProgressDlg.Stop();
 
 	for (int i = 0; i < (int)m_taglist.size(); ++i)
 	{
@@ -141,8 +149,15 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 		mgtPush.AddFile(_T(":refs/tags/") + m_taglist[index]);
 	}
 
+	CSysProgressDlg sysProgressDlg;
+	sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
+	sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_DELETING_REMOTE_REFS)));
+	sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
+	sysProgressDlg.SetShowProgressBar(false);
+	sysProgressDlg.ShowModal(this, true);
 	BOOL cancel = FALSE;
 	mgtPush.Execute(cancel);
+	sysProgressDlg.Stop();
 	Refresh();
 }
 
