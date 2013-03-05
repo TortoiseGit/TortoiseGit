@@ -792,6 +792,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_GitProgressList.m_pAnimate = &m_ctrlAnimate;
 	m_GitProgressList.m_pPostWnd = this;
 	m_GitProgressList.m_pProgressLabelCtrl = &m_ctrlProgLabel;
+	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 
 	this->m_tooltips.Create(this);
 
@@ -1316,6 +1317,7 @@ LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 	return 0;
 }
 
