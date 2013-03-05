@@ -62,5 +62,6 @@ BOOL CUserPassword::OnInitDialog()
 		title += m_URL;
 		this->SetWindowText(title);
 	}
-	return TRUE;  // return TRUE unless you set the focus to a control
+	GetDlgItem(IDC_USER_NAME)->SetFocus();
+	return FALSE; // we set focus to the username textfield
 }
