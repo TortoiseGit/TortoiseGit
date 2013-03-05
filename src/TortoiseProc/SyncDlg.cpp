@@ -792,6 +792,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_GitProgressList.m_pAnimate = &m_ctrlAnimate;
 	m_GitProgressList.m_pPostWnd = this;
 	m_GitProgressList.m_pProgressLabelCtrl = &m_ctrlProgLabel;
+	m_GitProgressList.m_pProgControl = &m_ctrlProgress;
 	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 
 	this->m_tooltips.Create(this);
