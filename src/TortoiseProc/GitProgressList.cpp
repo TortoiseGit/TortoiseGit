@@ -1204,8 +1204,6 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	{
 		if (m_pProgControl)
 			m_pProgControl->ShowWindow(SW_SHOW);
-		if (m_pTaskbarList && m_pPostWnd)
-			m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
 	}
 
 	if (m_pProgressLabelCtrl && m_pProgressLabelCtrl->IsWindowVisible())
@@ -1219,7 +1217,7 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	if (m_pTaskbarList && m_pPostWnd)
 	{
 		m_pTaskbarList->SetProgressState(m_pPostWnd->GetSafeHwnd(), TBPF_NORMAL);
-		m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), progress, stat->total_objects);
+		m_pTaskbarList->SetProgressValue(m_pPostWnd->GetSafeHwnd(), progress, 2 * stat->total_objects);
 	}
 
 	CString progText;
