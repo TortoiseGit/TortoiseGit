@@ -312,7 +312,7 @@ BOOL CSettingGitRemote::OnApply()
 		}
 		m_ChangedMask &= ~REMOTE_URL;
 
-		this->m_ctrlRemoteList.AddString(m_strRemote);
+		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(m_strRemote));
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CCommonAppUtils::RunTortoiseGitProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
