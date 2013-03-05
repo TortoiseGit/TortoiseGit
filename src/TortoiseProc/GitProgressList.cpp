@@ -940,7 +940,7 @@ UINT CGitProgressList::ProgressThread()
 		if (bSuccess)
 			str.LoadString(IDS_SUCCESS);
 		else
-			str.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, !bSuccess);
+			str.LoadString(IDS_FAIL);
 		log.Format(_T("%s (%d ms @ %s)"), str, time,  CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false));
 
 		// there's no "finished: xxx" line at the end. We add one here to make
