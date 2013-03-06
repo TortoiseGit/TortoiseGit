@@ -753,8 +753,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 
 		case ID_REFLOG_STASH_APPLY:
-			if (CAppUtils::StashApply(pSelLogEntry->m_Ref))
-				Refresh();
+			CAppUtils::StashApply(pSelLogEntry->m_Ref);
 			break;
 
 		case ID_REFLOG_DEL:

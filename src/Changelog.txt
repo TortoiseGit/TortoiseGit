@@ -38,6 +38,7 @@ Released: unreleased
  * Fixed issue #1609: remember my remote branch choice precisely
  * Fixed issue #1681: High screen DPI breaks TortoiseGitMerge's ribbon UI sprites
  * Fixed issue #1685: Deleting remote branch blocks UI
+ * Fixed issue #1686: Wrong stash list after "Stash Apply" in RefLog
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
