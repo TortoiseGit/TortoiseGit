@@ -21,6 +21,7 @@
 			<graphic fileref="../images/stash.png"/>
 		</figure>
 		You can also select <guilabel>include untracked</guilabel>, to stash untracked files away, too.
+		To stash all files away, including ignored files in addition to the untracked files, select <guilabel>--all</guilabel>.
 	</para>
 	<para>
 		When TortoiseGit detects that a stashed changes exist, the context menu will be extended:
