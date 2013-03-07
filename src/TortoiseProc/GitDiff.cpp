@@ -115,7 +115,11 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	{
 		int result;
 		// refresh if result = 1
-		while ((result = SubmoduleDiffNull(pPath, rev1)) == 1) ;
+		while ((result = SubmoduleDiffNull(pPath, rev1)) == 1)
+		{
+			CString sPath = pPath->GetGitPathString();
+			pPath->SetFromGit(sPath);	// pass by reference
+		}
 		return result;
 	}
 
@@ -382,7 +386,13 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 	{
 		int result;
 		// refresh if result = 1
-		while ((result = SubmoduleDiff(pPath, pPath2, rev1, rev2)) == 1) ;
+		while ((result = SubmoduleDiff(pPath, pPath2, rev1, rev2)) == 1)
+		{
+			CString sPath = pPath->GetGitPathString();
+			pPath->SetFromGit(sPath);	// pass by reference
+			CString sPath2 = pPath2->GetGitPathString();
+			pPath2->SetFromGit(sPath2);	// pass by reference
+		}
 		return result;
 	}
 
