@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #1667: Ability to ignore a folder in commit dialog
  * Fixed issue #1674: Option "Push all branches" leaves out tags on pushed changes
  * Fixed Issue #1663: F5 does not refresh the revision graph
+ * Fixed issue #522: Store password for HTTP
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
