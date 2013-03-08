@@ -3062,7 +3062,7 @@ BEGIN
     IDS_SHOWLOG_OF          "Show log of %s"
     IDS_LOG_CHRONOLOGICALREVERSEDORDER "Chronological reversed (git default)"
     IDS_TORTOISEGITDEFAULT  "(TortoiseGit default)"
-    IDS_DELETING_REMOTE_REFS "Deleting remote refs ..."
+    IDS_DELETING_REMOTE_REFS "Deleting remote refs..."
     IDS_WARN_FOLDERNOTEXIST "The folder \n%s\ndoes not exist.\nWould you like to create it first?"
     IDS_WARN_GITINIT_FOLDERNOTEMPTY 
                             "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"

@@ -3206,7 +3206,7 @@ msgid "Deleting"
 msgstr ""
 
 #. Resource IDs: (88)
-msgid "Deleting remote refs ..."
+msgid "Deleting remote refs..."
 msgstr ""
 
 #. Resource IDs: (1002)
