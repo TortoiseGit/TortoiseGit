@@ -1784,6 +1784,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Git::Credential"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
+    LTEXT           "Credential helper:",IDC_STATIC,7,7,58,8
+    COMBOBOX        IDC_COMBO_SIMPLECREDENTIAL,91,7,150,12,CBS_DROPDOWNLIST | WS_TABSTOP
     LTEXT           "Helpers:",IDC_STATIC,7,24,76,8
     LISTBOX         IDC_LIST_REMOTE,7,37,83,173,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Config type:",IDC_STATIC,97,38,40,8
@@ -3080,6 +3082,11 @@ BEGIN
     IDS_GITCREDENTIAL_SAVEHELPER 
                             "The credential helper was changed.\nDo you want to save now or discard changes?"
     IDS_GITCREDENTIAL_DELETEHELPER "Do you really want to remove """"%s""""?"
+    IDS_ADVANCED            "Advanced"
+    IDS_LOCAL_WINCRED       "wincred - this repository only"
+    IDS_LOCAL_WINSTORE      "winstore - this repository only"
+    IDS_GLOBAL_WINCRED      "wincred - current Windows user"
+    IDS_GLOBAL_WINSTORE     "winstore - current Windows user"
 END
 
 STRINGTABLE
@@ -4063,6 +4070,11 @@ BEGIN
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
     IDS_STATUSLIST_WARN_MAXDIFF 
                             "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SYSTEM_WINCRED      "wincred - all Windows users"
 END
 
 #endif    // English (U.S.) resources
