@@ -877,12 +877,18 @@
 #define IDS_LOG_CHRONOLOGICALREVERSEDORDER 1395
 #define IDS_TORTOISEGITDEFAULT          1396
 #define IDS_DELETING_REMOTE_REFS        1397
+#define IDS_ADVANCED                    1398
+#define IDS_LOCAL_WINCRED               1399
 #define IDS_WARN_FOLDERNOTEXIST         1400
+#define IDS_LOCAL_WINSTORE              1401
+#define IDS_GLOBAL_WINCRED              1402
+#define IDS_GLOBAL_WINSTORE             1403
 #define IDS_WARN_GITINIT_FOLDERNOTEMPTY 1404
 #define IDS_WARN_WARNING                1405
 #define IDC_SELECTFILESONCOMMIT         1405
 #define IDS_WARN_NOTE                   1406
 #define IDS_WARN_NOVALIDPATH            1407
+#define IDS_SYSTEM_WINCRED              1408
 #define IDC_PROXYLABEL1                 1409
 #define IDC_PROXYLABEL2                 1410
 #define IDC_PROXYLABEL3                 1411
@@ -1267,6 +1273,7 @@
 #define IDC_STATIC_ORDER                1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDC_COMBOBOXEX_ORDERING         1751
+#define IDC_COMBO_SIMPLECREDENTIAL      1752
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
 #define IDS_DLGTITLE_EDIT_MERGE_TOOL    1753
 #define IDS_DLGTITLE_ADV_DIFF           1754
@@ -1723,7 +1730,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        347
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1752
+#define _APS_NEXT_CONTROL_VALUE         1753
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

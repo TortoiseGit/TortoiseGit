@@ -2626,6 +2626,10 @@ msgstr ""
 msgid "Config"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Config type:"
+msgstr ""
+
 #. Resource IDs: (236)
 msgid "Configure Hook Scripts"
 msgstr ""
@@ -2982,6 +2986,14 @@ msgstr ""
 msgid "Creating pull-request..."
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "Credential helper must not be empty."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Credential helper:"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Credits:"
 msgstr ""
@@ -3193,8 +3205,8 @@ msgstr ""
 msgid "Deleting"
 msgstr ""
 
-#. Resource IDs: (1397)
-msgid "Deleting remote refs..."
+#. Resource IDs: (88)
+msgid "Deleting remote refs ..."
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -4337,8 +4349,16 @@ msgstr ""
 msgid "Git.exe Path:"
 msgstr ""
 
+#. Resource IDs: (4591)
+msgid "Git::Credential"
+msgstr ""
+
 #. Resource IDs: (4570)
 msgid "Git::Remote"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Global"
 msgstr ""
 
 #. Resource IDs: (155)
@@ -4427,6 +4447,14 @@ msgstr ""
 
 #. Resource IDs: (16982)
 msgid "Help Keyboard"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Helper:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Helpers:"
 msgstr ""
 
 #. Resource IDs: (16974)
@@ -5088,6 +5116,10 @@ msgstr ""
 
 #. Resource IDs: (369,1379)
 msgid "Loading..."
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Local"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7927,6 +7959,10 @@ msgstr ""
 msgid "Sync..."
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "System"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "System &sounds"
 msgstr ""
@@ -8020,6 +8056,15 @@ msgstr ""
 
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
+msgstr ""
+
+#. Resource IDs: (89)
+#, c-format
+msgid "The credential helper URL \"%s\" already exists.\nDo you want to overwrite it?"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "The credential helper was changed.\nDo you want to save now or discard changes?"
 msgstr ""
 
 #. Resource IDs: (603)
@@ -8677,6 +8722,10 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "Use Blocks"
+msgstr ""
+
+#. Resource IDs: (1761)
+msgid "Use HTTP path component"
 msgstr ""
 
 #. Resource IDs: (1482)
@@ -9493,6 +9542,26 @@ msgstr ""
 
 #. Resource IDs: (245)
 msgid "week"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "wincred - all Windows users"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "wincred - current Windows user"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "wincred - this repository only"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "winstore - current Windows user"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "winstore - this repository only"
 msgstr ""
 
 #. Resource IDs: (245)

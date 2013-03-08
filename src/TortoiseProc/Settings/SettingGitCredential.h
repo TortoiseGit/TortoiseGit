@@ -46,6 +46,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	afx_msg void OnCbnSelchangeComboSimplecredential();
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnLbnSelchangeListUrl();
 	afx_msg void OnCbnSelchangeComboConfigType();
@@ -58,9 +59,11 @@ protected:
 	BOOL OnInitDialog();
 	BOOL OnApply();
 
+	void EnableAdvancedOptions();
 	BOOL IsUrlExist(CString &text);
 
 	void AddConfigType(int &index, CString text, bool add = true);
+	void AddSimpleCredential(int &index, CString text, bool add = true);
 	void LoadList();
 	CString Load(CString key);
 	void Save(CString key, CString value);
@@ -69,6 +72,7 @@ protected:
 
 	CString		m_cmdPath;
 
+	CComboBox	m_ctrlSimpleCredential;
 	CListBox	m_ctrlUrlList;
 	CComboBox	m_ctrlConfigType;
 	CString		m_strUrl;
