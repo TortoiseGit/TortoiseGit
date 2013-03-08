@@ -138,6 +138,7 @@
     <ClCompile Include="MassiveGitTask.cpp" />
     <ClCompile Include="Patch.cpp" />
     <ClCompile Include="ProjectProperties.cpp" />
+    <ClCompile Include="Settings\SettingGitCredential.cpp" />
     <ClCompile Include="SinglePropSheetDlg.cpp" />
     <ClCompile Include="AppUtils.cpp" />
     <ClCompile Include="DeleteConflictDlg.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="Patch.h" />
     <ClInclude Include="ProjectProperties.h" />
     <ClInclude Include="..\TortoiseShell\resource.h" />
+    <ClInclude Include="Settings\SettingGitCredential.h" />
     <ClInclude Include="SinglePropSheetDlg.h" />
     <ClInclude Include="DeleteConflictDlg.h" />
     <ClInclude Include="HistoryDlg.h" />
@@ -487,6 +489,7 @@
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\git.bmp" />
     <Image Include="..\Resources\gitconfig.ico" />
+    <Image Include="..\Resources\gitcredential.ico" />
     <Image Include="..\Resources\gitremote.ico" />
     <Image Include="..\Resources\graph-bar-stacked.ico" />
     <Image Include="..\Resources\graph-bar.ico" />

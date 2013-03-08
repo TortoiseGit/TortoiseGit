@@ -96,6 +96,7 @@ IDI_SHOWBRANCHES        ICON                    "showbranches.ico"
 IDI_JUMPUP              ICON                    "jumpup.ico"
 IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
+IDI_GITCREDENTIAL       ICON                    "gitcredential.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1778,6 +1779,28 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,228,25,50,14
 END
 
+IDD_SETTINGSCREDENTIAL DIALOGEX 0, 0, 300, 217
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Git::Credential"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Credential helper:",IDC_STATIC,7,7,58,8
+    COMBOBOX        IDC_COMBO_SIMPLECREDENTIAL,91,7,150,12,CBS_DROPDOWNLIST | WS_TABSTOP
+    LTEXT           "Helpers:",IDC_STATIC,7,24,76,8
+    LISTBOX         IDC_LIST_REMOTE,7,37,83,173,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Config type:",IDC_STATIC,97,38,40,8
+    COMBOBOX        IDC_COMBO_CONFIGTYPE,158,36,80,12,CBS_DROPDOWNLIST | WS_TABSTOP
+    LTEXT           "URL:",IDC_STATIC,97,58,16,8
+    EDITTEXT        IDC_EDIT_URL,138,56,155,12,ES_AUTOHSCROLL
+    LTEXT           "Helper:",IDC_STATIC,97,74,40,8
+    COMBOBOX        IDC_COMBO_HELPER,138,73,155,164,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Username:",IDC_STATIC,97,92,36,8
+    EDITTEXT        IDC_EDIT_USERNAME,138,91,155,12,ES_AUTOHSCROLL
+    CONTROL         "Use HTTP path component",IDC_CHECK_USEHTTPPATH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,98,112,101,10
+    PUSHBUTTON      "&Add New/Save",IDC_BUTTON_ADD,100,140,58,14
+    PUSHBUTTON      "&Remove",IDC_BUTTON_REMOVE,100,162,58,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2597,6 +2620,18 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 39
     END
+
+    IDD_SETTINGSCREDENTIAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        VERTGUIDE, 14
+        VERTGUIDE, 150
+        VERTGUIDE, 158
+        VERTGUIDE, 259
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -3034,6 +3069,24 @@ BEGIN
     IDS_WARN_WARNING        "Warning"
     IDS_WARN_NOTE           "Notice"
     IDS_WARN_NOVALIDPATH    "The path/URL you've entered seems to be illegal on Windows!\nYou can try it anyway, but you might get an error later.\n\nA valid path on windows must not contain '<<>|""?*:' or one of the following device names:\ncom1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n\nDo you want to proceed anyway?"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SETTINGS_LOCAL      "Local"
+    IDS_SETTINGS_GLOBAL     "Global"
+    IDS_SETTINGS_SYSTEM     "System"
+    IDS_GITCREDENTIAL_HELPEREMPTY "Credential helper must not be empty."
+    IDS_GITCREDENTIAL_OVERWRITEHELPER 
+                            "The credential helper URL """"%s"""" already exists.\nDo you want to overwrite it?"
+    IDS_GITCREDENTIAL_SAVEHELPER 
+                            "The credential helper was changed.\nDo you want to save now or discard changes?"
+    IDS_GITCREDENTIAL_DELETEHELPER "Do you really want to remove """"%s""""?"
+    IDS_ADVANCED            "Advanced"
+    IDS_LOCAL_WINCRED       "wincred - this repository only"
+    IDS_LOCAL_WINSTORE      "winstore - this repository only"
+    IDS_GLOBAL_WINCRED      "wincred - current Windows user"
+    IDS_GLOBAL_WINSTORE     "winstore - current Windows user"
 END
 
 STRINGTABLE
@@ -4017,6 +4070,11 @@ BEGIN
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
     IDS_STATUSLIST_WARN_MAXDIFF 
                             "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SYSTEM_WINCRED      "wincred - all Windows users"
 END
 
 #endif    // English (U.S.) resources

@@ -65,6 +65,7 @@ void CSettings::AddPropPages()
 	m_pTBlamePage = new CSettingsTBlame();
 	m_pGitConfig = new CSettingGitConfig();
 	m_pGitRemote = new CSettingGitRemote(m_CmdPath.GetWinPath());
+	m_pGitCredential = new CSettingGitCredential(m_CmdPath.GetWinPath());
 	m_pBugtraqConfig = new CSettingsBugtraqConfig(m_CmdPath.GetWinPath());
 	m_pAdvanced = new CSettingsAdvanced();
 
@@ -89,6 +90,7 @@ void CSettings::AddPropPages()
 
 	SetPageIcon(m_pGitConfig, m_pGitConfig->GetIconID());
 	SetPageIcon(m_pGitRemote, m_pGitRemote->GetIconID());
+	SetPageIcon(m_pGitCredential, m_pGitCredential->GetIconID());
 	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
 	SetPageIcon(m_pBugtraqConfig, m_pBugtraqConfig->GetIconID());
 	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
@@ -116,6 +118,7 @@ void CSettings::AddPropPages()
 	{
 		AddPage(m_pGitRemote);
 	}
+	AddPage(m_pGitCredential);
 	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
 	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
@@ -148,6 +151,7 @@ void CSettings::RemovePropPages()
 
 	delete m_pGitConfig;
 	delete m_pGitRemote;
+	delete m_pGitCredential;
 	delete m_pBugtraqConfig;
 	delete m_pExtMenu;
 	delete m_pAdvanced;
@@ -177,6 +181,7 @@ void CSettings::HandleRestart()
 
 	restart |= m_pGitConfig->GetRestart();
 	restart |= m_pGitRemote->GetRestart();
+	restart |= m_pGitCredential->GetRestart();
 	restart |= m_pBugTraqPage->GetRestart();
 	restart |= m_pExtMenu->GetRestart();
 	restart |= m_pAdvanced->GetRestart();
@@ -288,6 +293,10 @@ BOOL CSettings::OnInitDialog()
 	else if (this->m_DefaultPage == _T("gitconfig"))
 	{
 		this->SetActivePage(this->m_pGitConfig);
+	}
+	else if (this->m_DefaultPage == _T("gitcredential"))
+	{
+		this->SetActivePage(this->m_pGitCredential);
 	}
 	else if (this->m_DefaultPage == _T("main"))
 	{
