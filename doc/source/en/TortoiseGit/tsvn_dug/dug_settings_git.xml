@@ -66,4 +66,75 @@
 			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
 		</para>
 	</sect3>
+	<sect3 id="tsvn-dug-settings-credential">
+		<title>Credential</title>
+		<?dbhh topicname="HIDD_SETTINCREDENTIAL"?>
+		<para>
+			<figure id="tsvn-dug-settings-git-credential">
+				<title>The Settings Dialog, Credential</title>
+				<graphic fileref="../images/SettingsGitCredential.png"/>
+			</figure>
+		</para>
+		<para>Set simple credential helper configuration</para>
+		<para>
+			<guilabel>Advanced</guilabel>
+			This is used if the credential helper configuration does not match any simple settings.
+			If you choose other than Advanced, except the corrsponding credential.helper, all other config keys credential.* or credential.*.* are removed.
+		</para>
+		<para>
+			<guilabel>None</guilabel>
+			No credential config keys are in all config levels.
+		</para>
+		<para>
+			<guilabel>wincred - this repository only</guilabel>
+			wincred is enabled in local config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>
+			<guilabel>winstore - this repository only</guilabel>
+			winstore is enabled in local config.
+			This option is visible only if winstore is installed for current Windows user.
+		</para>
+		<para>
+			<guilabel>wincred - current Windows user</guilabel>
+			wincred is enabled in global config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>
+			<guilabel>winstore - current Windows user</guilabel>
+			winstore is enabled in global config.
+			This option is visible only if winstore is installed for current Windows user.
+		</para>
+		<para>
+			<guilabel>wincred - all Windows users</guilabel>
+			wincred is enabled in system config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>Advanced credential helper configuration</para>
+		<para>
+			<guilabel>Config type</guilabel>
+			Either Local, Global or System config.
+		</para>
+		<para>
+			<guilabel>URL</guilabel>
+			Define a context-specific configuration based on URL pattern. By default, the path component is not considered as a different context.
+		</para>
+		<para>
+			<guilabel>Helper</guilabel>
+			Select a credential helper program.
+			wincred and winstore are predefined in TortoiseGit.
+			It is possible to use other credential helpers or with extra options.
+		</para>
+		<para>
+			<guilabel>Username</guilabel>
+			A default username, if one is not provided in the URL. 
+		</para>
+		<para>
+			<guilabel>Use HTTP path component</guilabel>
+			Also considers the path component of URL to match the configuration context.
+		</para>
+		<para>
+			You can find more information at <xref linkend="gitcredentials(7)"/>.
+		</para>
+	</sect3>
 </sect2>

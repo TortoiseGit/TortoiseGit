@@ -155,6 +155,7 @@
 #define IDI_JUMPUP                      343
 #define IDI_JUMPDOWN                    344
 #define IDD_LOGORDERING                 345
+#define IDI_GITCREDENTIAL               346
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -876,18 +877,31 @@
 #define IDS_LOG_CHRONOLOGICALREVERSEDORDER 1395
 #define IDS_TORTOISEGITDEFAULT          1396
 #define IDS_DELETING_REMOTE_REFS        1397
+#define IDS_ADVANCED                    1398
+#define IDS_LOCAL_WINCRED               1399
 #define IDS_WARN_FOLDERNOTEXIST         1400
+#define IDS_LOCAL_WINSTORE              1401
+#define IDS_GLOBAL_WINCRED              1402
+#define IDS_GLOBAL_WINSTORE             1403
 #define IDS_WARN_GITINIT_FOLDERNOTEMPTY 1404
 #define IDS_WARN_WARNING                1405
 #define IDC_SELECTFILESONCOMMIT         1405
 #define IDS_WARN_NOTE                   1406
 #define IDS_WARN_NOVALIDPATH            1407
+#define IDS_SYSTEM_WINCRED              1408
 #define IDC_PROXYLABEL1                 1409
 #define IDC_PROXYLABEL2                 1410
 #define IDC_PROXYLABEL3                 1411
 #define IDC_PROXYLABEL4                 1412
 #define IDC_PROXYLABEL5                 1413
 #define IDC_PROXYLABEL6                 1414
+#define IDS_SETTINGS_LOCAL              1415
+#define IDS_SETTINGS_GLOBAL             1416
+#define IDS_SETTINGS_SYSTEM             1417
+#define IDS_GITCREDENTIAL_HELPEREMPTY   1418
+#define IDS_GITCREDENTIAL_OVERWRITEHELPER 1419
+#define IDS_GITCREDENTIAL_SAVEHELPER    1420
+#define IDS_GITCREDENTIAL_DELETEHELPER  1421
 #define IDC_SYSTEMLOCALEFORDATES        1426
 #define IDC_ACTIONLOGCLEAR              1427
 #define IDC_MAXLINES                    1428
@@ -1259,12 +1273,16 @@
 #define IDC_STATIC_ORDER                1750
 #define IDS_DLGTITLE_ADD_MERGE_TOOL     1751
 #define IDC_COMBOBOXEX_ORDERING         1751
+#define IDC_COMBO_SIMPLECREDENTIAL      1752
 #define IDS_DLGTITLE_EDIT_DIFF_TOOL     1752
 #define IDS_DLGTITLE_EDIT_MERGE_TOOL    1753
 #define IDS_DLGTITLE_ADV_DIFF           1754
 #define IDS_DLGTITLE_ADV_MERGE          1755
 #define IDS_REVGRAPH_POPUP_COMPAREREVS  1757
 #define IDS_REVGRAPH_POPUP_UNIDIFFREVS  1758
+#define IDC_COMBO_CONFIGTYPE            1759
+#define IDC_COMBO_HELPER                1760
+#define IDC_CHECK_USEHTTPPATH           1761
 #define IDS_LOG_COPY_SUCCESS            1830
 #define IDS_LOG_MESSAGEEDITTITLE        1831
 #define IDS_LOG_AUTHOREDITTITLE         1832
@@ -1546,6 +1564,7 @@
 #define IDC_TOSPIN                      4588
 #define IDC_PATHFILTER                  4589
 #define IDC_REMOVESUBTREE               4590
+#define IDD_SETTINGSCREDENTIAL          4591
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1709,9 +1728,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        346
+#define _APS_NEXT_RESOURCE_VALUE        347
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1752
+#define _APS_NEXT_CONTROL_VALUE         1753
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

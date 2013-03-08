@@ -641,6 +641,9 @@
     <ClCompile Include="LogOrdering.cpp">
       <Filter>Commands\Log</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\SettingGitCredential.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1114,6 +1117,9 @@
     <ClInclude Include="LogOrdering.h">
       <Filter>Commands\Log</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\SettingGitCredential.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionad.ico">
@@ -1513,6 +1519,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\UpdateBackground.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\gitcredential.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
