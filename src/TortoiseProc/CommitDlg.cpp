@@ -507,9 +507,12 @@ void CCommitDlg::OnOK()
 	}
 
 	int nListItems = m_ListCtrl.GetItemCount();
+	bool needResetIndex = false;
 	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
 		CTGitPath *entry = (CTGitPath *)m_ListCtrl.GetItemData(i);
+		if (!entry->m_Checked && !(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+			needResetIndex = true;
 		if (!entry->m_Checked || !entry->IsDirectory())
 			continue;
 
@@ -669,7 +672,7 @@ void CCommitDlg::OnOK()
 			}
 
 			git_commit *commit = nullptr;
-			if (!revHash.IsEmpty() && git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
+			if (!revHash.IsEmpty() && needResetIndex && git_commit_lookup(&commit, repository, (const git_oid*)revHash.m_hash))
 			{
 				git_repository_free(repository);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not get last commit.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -677,7 +680,7 @@ void CCommitDlg::OnOK()
 			}
 
 			git_tree *tree = nullptr;
-			if (!revHash.IsEmpty() && git_commit_tree(&tree, commit))
+			if (!revHash.IsEmpty() && needResetIndex && git_commit_tree(&tree, commit))
 			{
 				git_commit_free(commit);
 				git_repository_free(repository);
@@ -698,7 +701,7 @@ void CCommitDlg::OnOK()
 			}
 
 			// reset index to the one of the reference commit (HEAD or HEAD~1)
-			if (!revHash.IsEmpty() && git_index_read_tree(index, tree))
+			if (!revHash.IsEmpty() && needResetIndex && git_index_read_tree(index, tree))
 			{
 				git_index_free(index);
 				git_tree_free(tree);
@@ -706,6 +709,10 @@ void CCommitDlg::OnOK()
 				git_repository_free(repository);
 				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not read the tree into the index.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				break;
+			}
+			else if (!revHash.IsEmpty() && !needResetIndex)
+			{
+				git_index_read(index);
 			}
 
 			bAddSuccess = true;
