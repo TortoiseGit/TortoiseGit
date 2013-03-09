@@ -267,7 +267,6 @@ protected:
 	afx_msg void	OnNMDblclkSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnHdnItemclickSvnprogress(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg LRESULT OnGitProgress(WPARAM wParam, LPARAM lParam);
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	LRESULT			OnShowConflictResolver(WPARAM, LPARAM);

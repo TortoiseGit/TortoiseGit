@@ -47,8 +47,6 @@
 #include "SmartHandle.h"
 #include "LoglistUtils.h"
 
-static UINT WM_GITPROGRESS = RegisterWindowMessage(_T("TORTOISEGIT_GITPROGRESS_MSG"));
-
 BOOL	CGitProgressList::m_bAscending = FALSE;
 int		CGitProgressList::m_nSortedColumn = -1;
 
@@ -108,7 +106,6 @@ BEGIN_MESSAGE_MAP(CGitProgressList, CListCtrl)
 	ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdrawSvnprogress)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclkSvnprogress)
 	ON_NOTIFY_REFLECT(HDN_ITEMCLICK, OnHdnItemclickSvnprogress)
-	ON_REGISTERED_MESSAGE(WM_GITPROGRESS, OnGitProgress)
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnLvnBegindragSvnprogress)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnLvnGetdispinfoSvnprogress)
 	ON_MESSAGE(WM_SHOWCONFLICTRESOLVER, OnShowConflictResolver)
@@ -1241,49 +1238,6 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 		m_pProgressLabelCtrl->SetWindowText(progText);
 
 	return TRUE;
-}
-
-LRESULT CGitProgressList::OnGitProgress(WPARAM /*wParam*/, LPARAM /*lParam*/)
-{
-#if 0
-	SVNProgress * pProgressData = (SVNProgress *)lParam;
-	CProgressCtrl * progControl = (CProgressCtrl *)GetDlgItem(IDC_PROGRESSBAR);
-	if ((pProgressData->total > 1000)&&(!progControl->IsWindowVisible()))
-	{
-		progControl->ShowWindow(SW_SHOW);
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-	}
-	if (((pProgressData->total < 0)&&(pProgressData->progress > 1000)&&(progControl->IsWindowVisible()))&&(m_itemCountTotal<0))
-	{
-		progControl->ShowWindow(SW_HIDE);
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
-	}
-	if (!GetDlgItem(IDC_PROGRESSLABEL)->IsWindowVisible())
-		GetDlgItem(IDC_PROGRESSLABEL)->ShowWindow(SW_SHOW);
-	SetTimer(TRANSFERTIMER, 2000, NULL);
-	if ((pProgressData->total > 0)&&(pProgressData->progress > 1000))
-	{
-		progControl->SetPos((int)pProgressData->progress);
-		progControl->SetRange32(0, (int)pProgressData->total);
-		if (m_pTaskbarList)
-		{
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-			m_pTaskbarList->SetProgressValue(m_hWnd, pProgressData->progress, pProgressData->total);
-		}
-	}
-	CString progText;
-	if (pProgressData->overall_total < 1024)
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED, pProgressData->overall_total);
-	else if (pProgressData->overall_total < 1200000)
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALTRANSFERRED, pProgressData->overall_total / 1024);
-	else
-		m_sTotalBytesTransferred.Format(IDS_SVN_PROGRESS_TOTALMBTRANSFERRED, (double)((double)pProgressData->overall_total / 1024000.0));
-	progText.Format(IDS_SVN_PROGRESS_TOTALANDSPEED, (LPCTSTR)m_sTotalBytesTransferred, (LPCTSTR)pProgressData->SpeedString);
-	SetDlgItemText(IDC_PROGRESSLABEL, progText);
-#endif
-	return 0;
 }
 
 void CGitProgressList::OnTimer(UINT_PTR nIDEvent)
