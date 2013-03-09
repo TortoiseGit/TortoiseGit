@@ -30,6 +30,7 @@ CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=NULL*/)
 	, m_bToOK(false)
 	, m_bDirty(false)
 	, m_nChangeType(Unknown)
+	, m_bRefresh(false)
 {
 }
 
@@ -185,6 +186,17 @@ HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	}
 
 	return CHorizontalResizableStandAloneDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+}
+
+BOOL CSubmoduleDiffDlg::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F5)
+	{
+		m_bRefresh = true;
+		EndDialog(0);
+	}
+
+	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType)

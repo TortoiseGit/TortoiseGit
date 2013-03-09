@@ -44,11 +44,13 @@ public:
 	};
 
 	void SetDiff(CString path, bool toIsWorkingCopy, CString fromHash, CString fromSubject, bool fromOK, CString toHash, CString toSubject, bool toOK, bool dirty, ChangeType changeType);
+	bool IsRefresh() { return m_bRefresh; }
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();
@@ -69,4 +71,5 @@ protected:
 	bool	m_bToOK;
 	bool	m_bDirty;
 	ChangeType m_nChangeType;
+	bool	m_bRefresh;
 };

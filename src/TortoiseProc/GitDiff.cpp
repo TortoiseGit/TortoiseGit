@@ -80,6 +80,8 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 		CSubmoduleDiffDlg submoduleDiffDlg;
 		submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, oldhash, oldsub, true, newhash, newsub, toOK, dirty, CSubmoduleDiffDlg::NewSubmodule);
 		submoduleDiffDlg.DoModal();
+		if (submoduleDiffDlg.IsRefresh())
+			return 1;
 
 		return 0;
 	}
@@ -111,8 +113,10 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 
 	if(pPath->IsDirectory())
 	{
-		git_revnum_t rev2;
-		return SubmoduleDiffNull(pPath,rev1);
+		int result;
+		// refresh if result = 1
+		while ((result = SubmoduleDiffNull(pPath, rev1)) == 1) ;
+		return result;
 	}
 
 	if(rev1 != GIT_REV_ZERO )
@@ -337,6 +341,8 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 	CSubmoduleDiffDlg submoduleDiffDlg;
 	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
+	if (submoduleDiffDlg.IsRefresh())
+		return 1;
 
 	return 0;
 }
@@ -374,7 +380,10 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 
 	if(pPath->IsDirectory() || pPath2->IsDirectory())
 	{
-		return SubmoduleDiff(pPath,pPath2,rev1,rev2);
+		int result;
+		// refresh if result = 1
+		while ((result = SubmoduleDiff(pPath, pPath2, rev1, rev2)) == 1) ;
+		return result;
 	}
 
 	if(rev1 != GIT_REV_ZERO )
