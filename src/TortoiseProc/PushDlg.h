@@ -61,6 +61,8 @@ public:
 	int				m_RecurseSubmodules;
 
 protected:
+	CRegDWORD		m_regPushAllBranches;
+	CRegDWORD		m_regThinPack;
 	CRegDWORD		m_regAutoLoad;
 	CRegDWORD		m_regRecurseSubmodules;
 

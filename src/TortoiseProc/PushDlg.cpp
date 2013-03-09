@@ -156,6 +156,8 @@ BOOL CPushDlg::OnInitDialog()
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
+	m_regPushAllBranches = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushAllBranches\\")) + WorkingDir, 0);
+	m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
 	CString clippath=CAppUtils::GetClipboardLink();
 	if(clippath.IsEmpty())
@@ -167,6 +169,8 @@ BOOL CPushDlg::OnInitDialog()
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 
+	m_regThinPack = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushThinPack\\")) + WorkingDir, 0);
+	m_bPack = m_regThinPack;
 	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir,
 									m_bAutoLoad);
 	m_bAutoLoad = this->m_regAutoLoad;
@@ -195,6 +199,8 @@ BOOL CPushDlg::OnInitDialog()
 	Refresh();
 
 	this->UpdateData(false);
+
+	OnBnClickedPushall();
 	return TRUE;
 }
 
@@ -442,6 +448,8 @@ void CPushDlg::OnBnClickedOk()
 		}
 	}
 
+	m_regPushAllBranches = m_bPushAllBranches;
+	m_regThinPack = m_bPack;
 	this->m_regAutoLoad = m_bAutoLoad ;
 	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
 	if (m_RecurseSubmodules == 2 && CAppUtils::GetMsysgitVersion() < 0x01070b00)
