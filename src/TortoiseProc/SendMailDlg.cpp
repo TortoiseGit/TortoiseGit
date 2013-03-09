@@ -35,6 +35,7 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 	, m_To(_T(""))
 	, m_CC(_T(""))
 	, m_Subject(_T(""))
+	, m_bCustomSubject(FALSE)
 
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
@@ -143,6 +144,9 @@ BOOL CSendMailDlg::OnInitDialog()
 		m_ctrlList.SetCheck(i,true);
 	}
 
+	if (m_PathList.GetCount() == 1)
+		m_ctrlList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
+
 //	m_ctrlCC.AddSearchString(_T("Tortoisegit-dev@google.com"));
 //	m_ctrlTO.AddSearchString(_T("Tortoisegit-dev@google.com"));
 	this->UpdateData(FALSE);
@@ -165,6 +169,10 @@ BOOL CSendMailDlg::OnInitDialog()
 void CSendMailDlg::OnBnClickedSendmailCombine()
 {
 	this->UpdateData();
+
+	if (m_bCustomSubject)
+		return;
+
 	this->GetDlgItem(IDC_SENDMAIL_SUBJECT)->EnableWindow(this->m_bCombine);
 	if(m_bCombine)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(this->m_Subject);
@@ -241,7 +249,8 @@ void CSendMailDlg::UpdateSubject()
 
 void CSendMailDlg::OnLvnItemchangedSendmailPatchs(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
-	UpdateSubject();
+	if (!m_bCustomSubject)
+		UpdateSubject();
 
 	*pResult = 0;
 }
@@ -262,7 +271,7 @@ void CSendMailDlg::OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult)
 void CSendMailDlg::OnEnChangeSendmailSubject()
 {
 	this->UpdateData();
-	if(this->m_bCombine)
+	if (m_bCombine || m_bCustomSubject)
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
 }
 

@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #1663: F5 does not refresh the revision graph
  * Fixed issue #522: Store password for HTTP
  * Fixed issue #1660: Save Push Dialog "Push all branches" and "Use Thin Pack" options
+ * Fixed issue #1542: Can send pull request email
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

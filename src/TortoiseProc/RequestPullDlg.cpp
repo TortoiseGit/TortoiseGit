@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2013 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth, <email@cs-ware.de>
 
 // with code of PullFetchDlg.cpp
@@ -31,7 +32,9 @@ IMPLEMENT_DYNAMIC(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 
 CRequestPullDlg::CRequestPullDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CRequestPullDlg::IDD, pParent)
+	, m_regSendMail(_T("Software\\TortoiseGit\\TortoiseProc\\RequestPull\\SendMail"), FALSE)
 {
+	m_bSendMail = m_regSendMail;
 }
 
 CRequestPullDlg::~CRequestPullDlg()
@@ -44,6 +47,7 @@ void CRequestPullDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBOBOXEX_LOCAL_BRANCH, m_cStartRevision);
 	DDX_Control(pDX, IDC_COMBOBOXEX_URL, m_cRepositoryURL);
 	DDX_Control(pDX, IDC_REMOTE_BRANCH, m_cEndRevision);
+	DDX_Check(pDX, IDC_CHECK_SENDMAIL, m_bSendMail);
 }
 
 
@@ -133,6 +137,8 @@ void CRequestPullDlg::OnBnClickedOk()
 
 	if(m_StartRevision.Find(_T("remotes/")) == 0)
 		m_StartRevision = m_StartRevision.Mid(8);
+
+	m_regSendMail = m_bSendMail;
 
 	CHorizontalResizableStandAloneDialog::OnOK();
 }

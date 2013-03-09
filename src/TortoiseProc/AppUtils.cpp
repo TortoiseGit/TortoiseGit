@@ -2453,6 +2453,35 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 
 		sysProgressDlg.Stop();
 
+		if (dlg.m_bSendMail)
+		{
+			CSendMailDlg dlg;
+			dlg.m_PathList = CTGitPathList(CTGitPath(tempFileName));
+			dlg.m_bCustomSubject = true;
+
+			if (dlg.DoModal() == IDOK)
+			{
+				if(dlg.m_PathList.GetCount() == 0)
+					return FALSE;
+
+				CGitProgressDlg progDlg;
+
+				theApp.m_pMainWnd = &progDlg;
+				progDlg.SetCommand(CGitProgressList::GitProgress_SendMail);
+
+				progDlg.SetPathList(dlg.m_PathList);
+				progDlg.SetItemCount(dlg.m_PathList.GetCount());
+
+				CSendMailCombineable sendMailCombineable(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine, !!dlg.m_bUseMAPI);
+				progDlg.SetSendMailOption(&sendMailCombineable);
+
+				progDlg.DoModal();
+
+				return true;
+			}
+			return false;
+		}
+
 		CAppUtils::LaunchAlternativeEditor(tempFileName);
 	}
 	return true;
