@@ -644,6 +644,9 @@
     <ClCompile Include="Settings\SettingGitCredential.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="SendMail.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1119,6 +1122,9 @@
     </ClInclude>
     <ClInclude Include="Settings\SettingGitCredential.h">
       <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SendMail.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

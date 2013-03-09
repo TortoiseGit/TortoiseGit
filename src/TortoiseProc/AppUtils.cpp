@@ -64,6 +64,7 @@
 #include "BisectStartDlg.h"
 #include "SysProgressDlg.h"
 #include "UserPassword.h"
+#include "Patch.h"
 
 CAppUtils::CAppUtils(void)
 {
@@ -2012,15 +2013,8 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 				//progDlg.SetProjectProperties(props);
 		progDlg.SetItemCount(dlg.m_PathList.GetCount());
 
-		DWORD flags =0;
-		if(dlg.m_bAttachment)
-			flags |= SENDMAIL_ATTACHMENT;
-		if(dlg.m_bCombine)
-			flags |= SENDMAIL_COMBINED;
-		if(dlg.m_bUseMAPI)
-			flags |= SENDMAIL_MAPI;
-
-		progDlg.SetSendMailOption(dlg.m_To,dlg.m_CC,dlg.m_Subject,flags);
+		CSendMailPatch sendMailPatch(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine, !!dlg.m_bUseMAPI);
+		progDlg.SetSendMailOption(&sendMailPatch);
 
 		progDlg.DoModal();
 

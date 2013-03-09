@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,27 +19,32 @@
 
 #pragma once
 
-#include "hwsmtp.h"
-#include "TGitPath.h"
+#include "SendMail.h"
+
+class CSendMailPatch : public CSendMailCombineable
+{
+public:
+	CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI);
+	~CSendMailPatch(void);
+
+protected:
+	virtual int SendAsSingleMail(CTGitPath &path, CGitProgressList * instance);
+	virtual int SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance);
+};
 
 class CPatch
 {
 public:
 	CPatch();
 	~CPatch(void);
-	int Parser(CString &pathfile);
-	int Send(CString &pathfile,CString &To, CString &CC,bool bAttachment, bool useMAPI);
 
-	static int SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext);
-
-	CString		m_LastError;
+	int			Parse(CString &pathfile);
 	CString		m_Author;
 	CString		m_Date;
 	CString		m_Subject;
-	CString		m_PathFile;
 	CStringA	m_Body;
 	CString		m_strBody;
 
 private:
-	static int SendMail(CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext);
+	CString		m_PathFile;
 };

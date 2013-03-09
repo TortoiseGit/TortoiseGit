@@ -228,7 +228,7 @@ void CSendMailDlg::UpdateSubject()
 			if(this->m_MapPatch.find(index) == m_MapPatch.end() )
 			{
 				CString pathfile=m_ctrlList.GetItemText(index,0);
-				m_MapPatch[index].Parser(pathfile);
+				m_MapPatch[index].Parse(pathfile);
 			}
 			GetDlgItem(IDC_SENDMAIL_SUBJECT)->SetWindowText(m_MapPatch[index].m_Subject);
 		}

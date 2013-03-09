@@ -75,17 +75,13 @@ typedef enum
 
 }git_wc_notify_action_t;
 
-typedef enum
-{
-	SENDMAIL_ATTACHMENT	=0x1,
-	SENDMAIL_COMBINED	=0x2,
-	SENDMAIL_MAPI		=0x4
-};
 // CGitProgressList
 struct git_transfer_progress;
 #define WM_SHOWCONFLICTRESOLVER (WM_APP + 100)
 #define WM_PROG_CMD_FINISH		(WM_APP + 200)
 #define WM_PROG_CMD_START		(WM_APP + 201)
+
+class CSendMail;
 
 class CGitProgressList : public CListCtrl
 {
@@ -125,7 +121,7 @@ public:
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
 
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
-	void SetSendMailOption(CString &TO, CString &CC,CString &Subject,DWORD flags){m_SendMailTO=TO;m_SendMailSubject=Subject; m_SendMailCC=CC;this->m_SendMailFlags = flags;}
+	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
 	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
 	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
 	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
@@ -365,10 +361,7 @@ private:
 	int						m_itemCount;
 	int						m_itemCountTotal;
 
-	DWORD					m_SendMailFlags;
-	CString					m_SendMailTO;
-	CString					m_SendMailCC;
-	CString					m_SendMailSubject;
+	CSendMail *				m_SendMail;
 
 ///	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 

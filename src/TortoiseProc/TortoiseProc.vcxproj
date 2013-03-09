@@ -130,6 +130,7 @@
     <ClCompile Include="..\Utils\Graphviz.cpp" />
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
+    <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="..\Utils\Libraries.cpp" />
     <ClCompile Include="GitProgressList.cpp" />
@@ -298,6 +299,7 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="AddRemoteDlg.h" />
+    <ClInclude Include="SendMail.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />
     <ClInclude Include="LogFile.h" />

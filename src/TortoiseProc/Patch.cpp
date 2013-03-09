@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
-// Copyright (C) 2011,2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,13 +20,63 @@
 
 #include "stdafx.h"
 #include "Patch.h"
-#include "csmtp.h"
-#include "registry.h"
-#include "unicodeutils.h"
-#include "hwsmtp.h"
-#include "mailmsg.h"
-#include "Windns.h"
-#include "Git.h"
+
+CSendMailPatch::CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI)
+	: CSendMailCombineable(To, CC, subject, bAttachment, bCombine, useMAPI)
+{
+}
+
+CSendMailPatch::~CSendMailPatch()
+{
+}
+
+int CSendMailPatch::SendAsSingleMail(CTGitPath &path, CGitProgressList * instance)
+{
+	ASSERT(instance);
+
+	CString pathfile(path.GetWinPathString());
+	CPatch patch;
+	if (patch.Parse(pathfile))
+	{
+		instance->ReportError(_T("Could not open/parse ") + pathfile);
+		return -2;
+	}
+
+	CString body;
+	CStringArray attachments;
+	if (m_bAttachment)
+		attachments.Add(pathfile);
+	else
+		body = patch.m_strBody;
+
+	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, patch.m_Subject, body, attachments, m_bUseMAPI);
+}
+
+int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance)
+{
+	ASSERT(instance);
+
+	CStringArray attachments;
+	CString body;
+	for (int i = 0; i < list.GetCount(); ++i)
+	{
+		CPatch patch;
+		if (patch.Parse((CString &)list[i].GetWinPathString()))
+		{
+			instance->ReportError(_T("Could not open/parse ") + list[i].GetWinPathString());
+			return -2;
+		}
+		if (m_bAttachment)
+		{
+			attachments.Add(list[i].GetWinPathString());
+			body += patch.m_Subject;
+			body += _T("\r\n");
+		}
+		else
+			g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
+	}
+	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments, m_bUseMAPI);
+}
 
 CPatch::CPatch()
 {
@@ -36,111 +86,15 @@ CPatch::~CPatch()
 {
 }
 
-int CPatch::Send(CString &pathfile,CString &TO,CString &CC,bool bAttachment, bool useMAPI)
-{
-	if(this->Parser(pathfile))
-		return -1;
-
-	CString body;
-	CStringArray attachments;
-	if(bAttachment)
-	{
-		attachments.Add(pathfile);
-	}
-	else
-	{
-		body = this->m_strBody;
-	}
-
-	CString errortext = _T("");
-	int ret = SendMail(TO, CC, this->m_Subject, body, attachments, useMAPI, &errortext);
-	this->m_LastError=errortext;
-	return ret;
-}
-
-int CPatch::SendPatchesCombined(CTGitPathList &list,CString &To,CString &CC, CString &subject,bool bAttachment, bool useMAPI,CString *errortext)
-{
-	CStringArray attachments;
-	CString body;
-	for (int i = 0; i < list.GetCount(); ++i)
-	{
-		CPatch patch;
-		patch.Parser((CString&)list[i].GetWinPathString());
-		if(bAttachment)
-		{
-			attachments.Add(list[i].GetWinPathString());
-			body+=patch.m_Subject;
-			body+=_T("\r\n");
-		}
-		else
-		{
-			g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
-		}
-
-	}
-	return SendMail(To, CC, subject, body, attachments, useMAPI, errortext);
-}
-
-int CPatch::SendMail(CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext)
-{
-	CString sender;
-	sender.Format(_T("%s <%s>"), g_Git.GetUserName(), g_Git.GetUserEmail());
-
-	if (useMAPI)
-	{
-		CMailMsg mapiSender;
-		BOOL bMAPIInit = mapiSender.MAPIInitialize();
-		if(!bMAPIInit)
-		{
-			if(errortext)
-				*errortext = mapiSender.GetLastErrorMsg();
-			return -1;
-		}
-
-		mapiSender.SetShowComposeDialog(TRUE);
-		mapiSender.SetFrom(g_Git.GetUserEmail());
-		mapiSender.SetTo(To);
-		if(!CC.IsEmpty())
-			mapiSender.AddCC(CC);
-		mapiSender.SetSubject(subject);
-		mapiSender.SetMessage(body);
-		for (int i = 0; i < attachments.GetSize(); ++i)
-		{
-			mapiSender.AddAttachment(attachments[i]);
-		}
-
-		BOOL bSend = mapiSender.Send();
-		if (bSend==TRUE)
-			return 0;
-		else
-		{
-			if(errortext)
-				*errortext = mapiSender.GetLastErrorMsg();
-			return -1;
-		}
-	}
-	else
-	{
-		CHwSMTP mail;
-		if(mail.SendSpeedEmail(sender,To,subject,body,NULL,&attachments,CC,25,sender))
-			return 0;
-		else
-		{
-			if(errortext)
-				*errortext=mail.GetLastErrorText();
-			return -1;
-		}
-	}
-}
-
-int CPatch::Parser(CString &pathfile)
+int CPatch::Parse(CString &pathfile)
 {
 	CString str;
 
+	m_PathFile = pathfile;
+
 	CFile PatchFile;
 
-	m_PathFile=pathfile;
-	if( ! PatchFile.Open(pathfile,CFile::modeRead) )
+	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
 		return -1;
 
 #if 0

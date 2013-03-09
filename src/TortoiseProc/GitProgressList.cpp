@@ -81,6 +81,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_options(ProgOptNone)
 	, m_bSetTitle(false)
 	, m_pTaskbarList(nullptr)
+	, m_SendMail(nullptr)
 {
 	m_pInfoCtrl = nullptr;
 	m_pAnimate = nullptr;
@@ -265,7 +266,6 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 	//	}
 		break;
 	case git_wc_notify_sendmail:
-		data->bAuxItem = true;
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
 		data->color = m_Colors.GetColor(CColors::Modified);
 		break;
@@ -2125,83 +2125,12 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 }
 bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation*/)
 {
+	ASSERT(m_SendMail);
 	SetWindowTitle(IDS_PROGRS_TITLE_SENDMAIL, g_Git.m_CurrentDir + _T("\\") + m_targetPathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
 	//SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_SENDMAIL)));
-	bool ret=true;
-	if(this->m_SendMailFlags&SENDMAIL_COMBINED)
-	{
-		CString error;
-		CTGitPath path;
-		Notify(path, git_wc_notify_sendmail);
-		CString err;
-		int retry=0;
-		while(retry <3)
-		{
-			if(!!CPatch::SendPatchesCombined(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI),&err))
-			{
-				ReportError(err);
-				ret = false;
-			}
-			else
-			{
-				break;
-			}
 
-			++retry;
-			if (retry < 3)
-			{
-				CString retry;
-				retry.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
-				ReportNotification(retry);
-				Sleep(2000);
-			}
-			if(m_bCancelled)
-			{
-				ReportUserCanceled();
-				return false;
-			}
-		}
-	}
-	else
-	{
-		m_itemCountTotal = m_targetPathList.GetCount();
-		for (m_itemCount = 0; ret && m_itemCount < m_itemCountTotal; ++m_itemCount)
-		{
-			CPatch patch;
-			Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail);
-
-			int retry=0;
-			while(retry<3)
-			{
-				if(!!patch.Send((CString&)m_targetPathList[m_itemCount].GetWinPathString(),this->m_SendMailTO,
-								this->m_SendMailCC,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI)))
-				{
-					ReportError(patch.m_LastError);
-					ret = false;
-				}
-				else
-				{
-					ret = true;
-					break;
-				}
-				++retry;
-				if (retry < 3)
-				{
-					CString retry;
-					retry.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
-					ReportNotification(retry);
-					Sleep(2000);
-				}
-				if(m_bCancelled)
-				{
-					ReportUserCanceled();
-					return false;
-				}
-			}
-		}
-	}
-	return ret;
+	return m_SendMail->Send(m_targetPathList, this) == 0;
 }
 
 bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
