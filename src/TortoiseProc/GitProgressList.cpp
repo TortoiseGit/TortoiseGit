@@ -266,12 +266,6 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
 		break;
-	case git_wc_notify_cancelled:
-		data->bAuxItem = true;
-		data->sActionColumnText = _T("");
-		data->sPathColumnText.LoadString(IDS_SVN_USERCANCELLED);
-		data->color = m_Colors.GetColor(CColors::Modified);
-		break;
 	case git_wc_notify_sendmail_start:
 		data->bAuxItem = true;
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
@@ -756,6 +750,11 @@ bool CGitProgressList::SetBackgroundImage(UINT nID)
 void CGitProgressList::ReportGitError()
 {
 	ReportError(CGit::GetLibGit2LastErr());
+}
+
+void CGitProgressList::ReportUserCanceled()
+{
+	ReportError(CString(MAKEINTRESOURCE(IDS_SVN_USERCANCELLED)));
 }
 
 void CGitProgressList::ReportError(const CString& sError)
@@ -1794,7 +1793,7 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 				git_index_free(index);
 				git_repository_free(repo);
 
-				Notify(m_targetPathList[m_itemCount], git_wc_notify_cancelled);
+				ReportUserCanceled();
 				return false;
 			}
 		}
@@ -2179,9 +2178,7 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 			Sleep(2000);
 			if(m_bCancelled)
 			{
-				CString str;
-				str.LoadString(IDS_SVN_USERCANCELLED);
-				Notify(path,git_wc_notify_sendmail_error,ret,&str);
+				ReportUserCanceled();
 				return false;
 			}
 		}
@@ -2217,9 +2214,7 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 				Sleep(2000);
 				if(m_bCancelled)
 				{
-					CString str;
-					str.LoadString(IDS_SVN_USERCANCELLED);
-					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_error, ret, &str);
+					ReportUserCanceled();
 					return false;
 				}
 			}

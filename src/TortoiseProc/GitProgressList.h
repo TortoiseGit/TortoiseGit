@@ -75,7 +75,6 @@ typedef enum
 	git_wc_notify_fetch,
 	git_wc_notify_checkout,
 	git_wc_notify_update_ref,
-	git_wc_notify_cancelled,
 
 }git_wc_notify_action_t;
 
@@ -284,6 +283,7 @@ private:
 	UINT		ProgressThread();
 
 	void		ReportGitError();
+	void		ReportUserCanceled();
 	void		ReportError(const CString& sError);
 	void		ReportWarning(const CString& sWarning);
 	void		ReportNotification(const CString& sNotification);
