@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -24,8 +24,6 @@
 
 #define MAX_COMMANDLINE_LENGTH 30000
 
-typedef BOOL (CGitProgressList::*NOTIFY_CALLBACK)(const CTGitPath& path, git_wc_notify_action_t action, int status, CString *strErr);
-
 class CMassiveGitTask
 {
 public:
@@ -34,7 +32,7 @@ public:
 
 	void					AddFile(CString filename);
 	void					AddFile(CTGitPath filename);
-	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance, NOTIFY_CALLBACK m_NotifyCallbackMethod);
+	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance);
 	bool					Execute(BOOL &cancel);
 
 private:
@@ -47,6 +45,5 @@ private:
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;
 	CGitProgressList *		m_NotifyCallbackInstance;
-	NOTIFY_CALLBACK			m_NotifyCallbackMethod;
 	git_wc_notify_action_t	m_NotifyCallbackAction;
 };

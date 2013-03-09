@@ -27,7 +27,6 @@ CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath)
 	: m_bUnused(true)
 	, m_bIsPath(isPath)
 	, m_NotifyCallbackInstance(NULL)
-	, m_NotifyCallbackMethod(NULL)
 	, m_NotifyCallbackAction(git_wc_notify_add)
 {
 	m_sParams = gitParameters;
@@ -55,14 +54,13 @@ void CMassiveGitTask::AddFile(CTGitPath filename)
 		m_itemList.push_back(filename.GetGitPathString());
 }
 
-bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance, NOTIFY_CALLBACK notifyMethod)
+bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance)
 {
 	assert(m_bUnused);
 	m_bUnused = false;
 
 	m_pathList = *pathList;
 	m_NotifyCallbackInstance = instance;
-	m_NotifyCallbackMethod = notifyMethod;
 	m_NotifyCallbackAction = action;
 	return ExecuteCommands(cancel);
 }
@@ -97,9 +95,9 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			}
 
 			if (m_bIsPath)
-				if (m_NotifyCallbackInstance && m_NotifyCallbackMethod)
+				if (m_NotifyCallbackInstance)
 					for (int j = firstCombine; j <= i; ++j)
-						(*m_NotifyCallbackInstance.*m_NotifyCallbackMethod)(m_pathList[j], m_NotifyCallbackAction, 0, NULL);
+						m_NotifyCallbackInstance->Notify(m_pathList[j], m_NotifyCallbackAction);
 
 			maxLength = 0;
 			firstCombine = i+1;

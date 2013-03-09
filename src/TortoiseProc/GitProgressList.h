@@ -209,6 +209,7 @@ private:
 protected:
 	DECLARE_MESSAGE_MAP()
 
+public:
 	//Need update in the future implement the virtual methods from Git base class
 	virtual BOOL Notify(const CTGitPath& path,
 								git_wc_notify_action_t action,
@@ -223,6 +224,7 @@ protected:
 		git_merge_range_t * range,
 		git_error_t * err, apr_pool_t * pool*/
 		);
+protected:
 	virtual BOOL Notify(const git_wc_notify_action_t action, const git_transfer_progress *stat);
 	virtual BOOL Notify(const git_wc_notify_action_t action, CString str, const git_oid *a, const git_oid *b);
 
@@ -282,6 +284,7 @@ private:
 	static UINT ProgressThreadEntry(LPVOID pVoid);
 	UINT		ProgressThread();
 
+public:
 	void		ReportGitError();
 	void		ReportUserCanceled();
 	void		ReportError(const CString& sError);
@@ -289,6 +292,7 @@ private:
 	void		ReportNotification(const CString& sNotification);
 	void		ReportCmd(const CString& sCmd);
 	void		ReportString(CString sMessage, const CString& sMsgKind, COLORREF color = ::GetSysColor(COLOR_WINDOWTEXT));
+private:
 	void		AddItemToList();
 	CString		BuildInfoString();
 	CString		GetPathFromColumnText(const CString& sColumnText);
