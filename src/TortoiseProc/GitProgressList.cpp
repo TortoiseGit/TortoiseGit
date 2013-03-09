@@ -1662,6 +1662,8 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	SetBackgroundImage(IDI_ADD_BKG);
 	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_ADD)));
 
+	m_itemCountTotal = m_targetPathList.GetCount();
+
 	if (CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE) == TRUE)
 	{
 		git_repository *repo = NULL;
@@ -1750,7 +1752,6 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			return false;
 		}
 
-		m_itemCountTotal = m_targetPathList.GetCount();
 		for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
 			if (git_index_add_bypath(index, CStringA(CUnicodeUtils::GetMulti(m_targetPathList[m_itemCount].GetGitPathString(), CP_UTF8)).GetBuffer()))

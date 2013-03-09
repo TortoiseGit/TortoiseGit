@@ -138,7 +138,8 @@ public:
 	 * beforehand, that number can be set here. It is then used to show a more
 	 * accurate progress bar during the operation.
 	 */
-	void SetItemCount(long count) {if(count) m_itemCountTotal = count;}
+	void SetItemCountTotal(long count) { if(count) m_itemCountTotal = count; }
+	void SetItemProgress(long count) { m_itemCount = count;} // do not use SetItemCount here as this overrides the ListBox method
 	bool SetBackgroundImage(UINT nID);
 	bool DidErrorsOccur() {return m_bErrorsOccurred;}
 	bool			m_bErrorsOccurred;

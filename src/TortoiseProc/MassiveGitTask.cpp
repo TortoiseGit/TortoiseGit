@@ -100,7 +100,10 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			if (m_bIsPath)
 				if (m_NotifyCallbackInstance)
 					for (int j = firstCombine; j <= i; ++j)
+					{
 						m_NotifyCallbackInstance->Notify(m_pathList[j], m_NotifyCallbackAction);
+						m_NotifyCallbackInstance->SetItemProgress(j);
+					}
 
 			maxLength = 0;
 			firstCombine = i+1;
