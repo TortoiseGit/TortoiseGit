@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_LOG2, &CSubmoduleDiffDlg::OnBnClickedLog2)
 	ON_BN_CLICKED(IDC_SHOW_DIFF, &CSubmoduleDiffDlg::OnBnClickedShowDiff)
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_BUTTON_UPDATE, &CSubmoduleDiffDlg::OnBnClickedButtonUpdate)
 END_MESSAGE_MAP()
 
 BOOL CSubmoduleDiffDlg::OnInitDialog()
@@ -75,6 +76,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOG, TOP_RIGHT);
 	AddAnchor(IDC_LOG2, TOP_RIGHT);
+	AddAnchor(IDC_BUTTON_UPDATE, TOP_RIGHT);
 	AddAnchor(IDC_SHOW_DIFF, TOP_RIGHT);
 
 	AddAnchor(IDC_FROMHASH, TOP_LEFT, TOP_RIGHT);
@@ -119,6 +121,8 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_PROC_SHOWDIFF));
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
 	}
+
+	GetDlgItem(IDC_BUTTON_UPDATE)->ShowWindow(!m_bFromOK || !m_bToOK || m_bToIsWorkingCopy ? SW_SHOW : SW_HIDE);
 
 	return FALSE;
 }
@@ -236,5 +240,12 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
 	sCmd.Format(_T("/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s"), g_Git.m_CurrentDir + _T("\\") + m_sPath, m_sFromHash, ((m_bDirty && m_nChangeType == Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : m_sToHash);
+	CAppUtils::RunTortoiseGitProc(sCmd);
+}
+
+void CSubmoduleDiffDlg::OnBnClickedButtonUpdate()
+{
+	CString sCmd;
+	sCmd.Format(_T("/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\""), g_Git.m_CurrentDir, m_sPath);
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

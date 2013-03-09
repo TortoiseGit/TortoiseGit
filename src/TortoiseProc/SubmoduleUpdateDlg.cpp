@@ -123,13 +123,22 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	STRING_VECTOR list;
 	GetSubmodulePathList(list, m_PathFilterList);
 	STRING_VECTOR selected;
-	int pos = 0;
-	while (pos >= 0)
+	if (m_PathList.empty())
 	{
-		CString part = path.Tokenize(_T("|"), pos);
-		if (!part.IsEmpty())
-			selected.push_back(part);
+		int pos = 0;
+		while (pos >= 0)
+		{
+			CString part = path.Tokenize(_T("|"), pos);
+			if (!part.IsEmpty())
+				selected.push_back(part);
+		}
 	}
+	else
+	{
+		for (size_t i = 0; i < m_PathList.size(); ++i)
+			selected.push_back(m_PathList[i]);
+	}
+
 	for (size_t i = 0; i < list.size(); ++i)
 	{
 		m_PathListBox.AddString(list[i]);

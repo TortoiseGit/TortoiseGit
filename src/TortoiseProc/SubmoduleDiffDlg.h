@@ -55,6 +55,7 @@ protected:
 	afx_msg void OnBnClickedLog();
 	afx_msg void OnBnClickedLog2();
 	afx_msg void OnBnClickedShowDiff();
+	afx_msg void OnBnClickedButtonUpdate();
 	void ShowLog(CString hash);
 	CMenuButton	m_ctrlShowDiffBtn;
 

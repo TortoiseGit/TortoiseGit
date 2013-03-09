@@ -99,6 +99,12 @@ bool SubmoduleUpdateCommand::Execute()
 
 	CSubmoduleUpdateDlg submoduleUpdateDlg;
 	submoduleUpdateDlg.m_PathFilterList = pathFilterList;
+	if (parser.HasKey(_T("selectedpath")))
+	{
+		CString selectedPath = parser.GetVal(_T("selectedpath"));
+		selectedPath.Replace(_T('\\'), _T('/'));
+		submoduleUpdateDlg.m_PathList.push_back(selectedPath);
+	}
 	if (submoduleUpdateDlg.DoModal() != IDOK)
 		return false;
 
