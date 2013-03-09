@@ -90,7 +90,10 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			cmd.Format(_T("git.exe %s %s%s"), m_sParams, m_bIsPath ? _T("--") : _T(""), add);
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
-				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+				if (m_NotifyCallbackInstance)
+					m_NotifyCallbackInstance->ReportError(out);
+				else
+					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 				return false;
 			}
 
@@ -103,7 +106,11 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			firstCombine = i+1;
 
 			if (cancel)
+			{
+				if (m_NotifyCallbackInstance)
+					m_NotifyCallbackInstance->ReportUserCanceled();
 				return false;
+			}
 		}
 		else
 		{

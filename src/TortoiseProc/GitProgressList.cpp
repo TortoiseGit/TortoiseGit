@@ -1812,7 +1812,8 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 	else
 	{
 		CMassiveGitTask mgt(L"add -f");
-		mgt.ExecuteWithNotify(&m_targetPathList, m_bCancelled, git_wc_notify_add, this);
+		if (!mgt.ExecuteWithNotify(&m_targetPathList, m_bCancelled, git_wc_notify_add, this))
+			return false;
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
