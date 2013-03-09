@@ -20,7 +20,7 @@ Released: unreleased
  * Fixed issue #1677: Clicking "revert" on a file should automatically check the file in the revert dialog
  * Fixed issue #1667: Ability to ignore a folder in commit dialog
  * Fixed issue #1674: Option "Push all branches" leaves out tags on pushed changes
- * Fixed Issue #1663: F5 does not refresh the revision graph
+ * Fixed issue #1663: F5 does not refresh the revision graph
  * Fixed issue #522: Store password for HTTP
  * Fixed issue #1660: Save Push Dialog "Push all branches" and "Use Thin Pack" options
 
@@ -1297,7 +1297,7 @@ Released: 2009-08-29
  * Fixed issue #140: Incorrect treatment of "Cancel" action on "Apply patch serial" command
  * Fixed issue #135: Taskbar text says "TortoiseSVN"
  * Fixed issue #142: TortoiseGit Clone of SVN repo does not use PuTTY session for non-standard SSH port
- * Fixed Issue #138: "Format patch" in "Show log" dialog doesn't work
+ * Fixed issue #138: "Format patch" in "Show log" dialog doesn't work
  * Fixed issue #141: Bizarre ordering in commit dialog
  * Fixed issue #137: Proxy Authentification fails
  * Fixed issue #131: Missing SVN DCommit Command
@@ -1645,7 +1645,7 @@ Released: 2009-01-04
 == Bug Fixes ==
  * A2W cause stack overwrite bug when git output is long.
 
-== Known Issue ==
+== Known Issues ==
  * ProgressDlg will wait for ever when clone remote repository(ssh, http,git).
  * push fetch and pull don't support password mode. Just support public key problem.
  * Just fetch first 100 log item.
