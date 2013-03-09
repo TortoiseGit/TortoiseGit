@@ -78,7 +78,6 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 {
 	m_bUnused = false;
 
-	bool bErrorsOccurred = false;
 	int maxLength = 0;
 	int firstCombine = 0;
 	for (int i = 0; i < GetListCount(); ++i)
@@ -94,7 +93,6 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-				bErrorsOccurred = true;
 				return false;
 			}
 
@@ -107,14 +105,14 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 			firstCombine = i+1;
 
 			if (cancel)
-				break;
+				return false;
 		}
 		else
 		{
 			maxLength += 3 + GetListItem(i).GetLength();
 		}
 	}
-	return !bErrorsOccurred;
+	return true;
 }
 
 int CMassiveGitTask::GetListCount()
