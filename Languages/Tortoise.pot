@@ -6846,7 +6846,7 @@ msgid "Retry"
 msgstr ""
 
 #. Resource IDs: (602)
-msgid "Retrying..."
+msgid "Retrying in 2 seconds..."
 msgstr ""
 
 #. Resource IDs: (77, 175, 229)
@@ -8670,6 +8670,10 @@ msgstr ""
 
 #. Resource IDs: (1384)
 msgid "Up"
+msgstr ""
+
+#. Resource IDs: (1710)
+msgid "Update"
 msgstr ""
 
 #. Resource IDs: (607)

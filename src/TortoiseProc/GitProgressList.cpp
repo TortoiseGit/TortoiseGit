@@ -208,9 +208,7 @@ void CGitProgressList::AddItemToList()
 }
 
 
-BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t action,
-							 int /*status*/ ,
-							 CString *strErr
+BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t action
 							 /*
 							 svn_node_kind_t kind, const CString& mime_type,
 							 svn_wc_notify_state_t content_state,
@@ -266,35 +264,11 @@ BOOL CGitProgressList::Notify(const CTGitPath& path, git_wc_notify_action_t acti
 			data->color = m_Colors.GetColor(CColors::Added);
 	//	}
 		break;
-	case git_wc_notify_sendmail_start:
+	case git_wc_notify_sendmail:
 		data->bAuxItem = true;
 		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_START);
 		data->color = m_Colors.GetColor(CColors::Modified);
 		break;
-
-	case git_wc_notify_sendmail_error:
-		data->bAuxItem = true;
-		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_ERROR);
-		if(strErr)
-			data->sPathColumnText = *strErr;
-		else
-			data->sPathColumnText.Empty();
-		data->color = m_Colors.GetColor(CColors::Modified);
-		break;
-
-	case git_wc_notify_sendmail_done:
-
-		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_DONE);
-		data->sPathColumnText.Empty();
-		data->color = m_Colors.GetColor(CColors::Modified);
-		break;
-
-	case git_wc_notify_sendmail_retry:
-		data->sActionColumnText.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
-		data->sPathColumnText.Empty();
-		data->color = m_Colors.GetColor(CColors::Modified);
-		break;
-
 
 	case git_wc_notify_resolved:
 		data->sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
@@ -2158,14 +2132,14 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 	{
 		CString error;
 		CTGitPath path;
-		Notify(path,git_wc_notify_sendmail_start);
+		Notify(path, git_wc_notify_sendmail);
 		CString err;
 		int retry=0;
 		while(retry <3)
 		{
 			if(!!CPatch::SendPatchesCombined(m_targetPathList,m_SendMailTO,m_SendMailCC,m_SendMailSubject,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI),&err))
 			{
-				Notify(path,git_wc_notify_sendmail_error,ret,&err);
+				ReportError(err);
 				ret = false;
 			}
 			else
@@ -2175,16 +2149,18 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 
 			++retry;
 			if (retry < 3)
-				Notify(path,git_wc_notify_sendmail_retry,ret,&err);
-			Sleep(2000);
+			{
+				CString retry;
+				retry.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
+				ReportNotification(retry);
+				Sleep(2000);
+			}
 			if(m_bCancelled)
 			{
 				ReportUserCanceled();
 				return false;
 			}
 		}
-		if (ret)
-			Notify(path,git_wc_notify_sendmail_done,ret);
 	}
 	else
 	{
@@ -2192,7 +2168,7 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 		for (m_itemCount = 0; ret && m_itemCount < m_itemCountTotal; ++m_itemCount)
 		{
 			CPatch patch;
-			Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_start);
+			Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail);
 
 			int retry=0;
 			while(retry<3)
@@ -2200,9 +2176,8 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 				if(!!patch.Send((CString&)m_targetPathList[m_itemCount].GetWinPathString(),this->m_SendMailTO,
 								this->m_SendMailCC,!!(this->m_SendMailFlags&SENDMAIL_ATTACHMENT),!!(this->m_SendMailFlags&SENDMAIL_MAPI)))
 				{
-					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_error, ret, &patch.m_LastError);
+					ReportError(patch.m_LastError);
 					ret = false;
-
 				}
 				else
 				{
@@ -2211,16 +2186,18 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 				}
 				++retry;
 				if (retry < 3)
-					Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_retry, ret, &patch.m_LastError);
-				Sleep(2000);
+				{
+					CString retry;
+					retry.LoadString(IDS_SVNACTION_SENDMAIL_RETRY);
+					ReportNotification(retry);
+					Sleep(2000);
+				}
 				if(m_bCancelled)
 				{
 					ReportUserCanceled();
 					return false;
 				}
 			}
-			if (ret)
-				Notify(m_targetPathList[m_itemCount], git_wc_notify_sendmail_done, ret);
 		}
 	}
 	return ret;
