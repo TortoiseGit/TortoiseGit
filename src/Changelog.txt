@@ -2,7 +2,7 @@
 Released: unreleased
 
 == Features ==
- * Log dialog can revert selected files to parent revision
+ * Fixed issue #1270: Log dialog can revert selected files to parent revision
  * Fixed issue #1500: Support git merge --log option
  * Can disable log cache (tortoisegit.data, tortoisegit.index)
  * Revision Graph can save as graphviz dot language (*.gv)
@@ -38,6 +38,7 @@ Released: unreleased
  * Fixed issue #1675: delete/ignore does not delete folder from repo when local copy is kept
  * Fixed issue #1679: Reset dialog pick another revision has no effect
  * Fixed issue #1609: remember my remote branch choice precisely
+ * Fixed issue #1268: Paths in Windows Explorer changed to all lower case
  * Fixed issue #1681: High screen DPI breaks TortoiseGitMerge's ribbon UI sprites
  * Fixed issue #1685: Deleting remote branch blocks UI
  * Fixed issue #1686: Wrong stash list after "Stash Apply" in RefLog
@@ -100,7 +101,6 @@ Released: 2013-01-27
  * Fixed issue #1538: Deleting multiple stash list entries skips some and delete the wrong ones
  * Fixed issue #1543: TortoiseGit Comboboxes trim input if longer than their width
  * Fixed issue #1544: TortoiseGit Init warning message is not appropriate
- * Fixed issue #1268: Paths in Windows Explorer changed to all lower case
  * Fixed issue #1555: Commit dialog fails to warn submodule dirty state
  * Fixed issue #1556: Narrower treeview when launching Settings Dialog with default page Remote
  * Fixed issue #1383: Pageant is not always auto-loaded if using sync remote update (some without keys)
