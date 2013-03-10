@@ -6206,10 +6206,6 @@ msgstr ""
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr ""
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr ""
@@ -6220,10 +6216,6 @@ msgstr ""
 
 #. Resource IDs: (604)
 msgid "Pre-Push Hook"
-msgstr ""
-
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
 msgstr ""
 
 #. Resource IDs: (68)
@@ -7732,10 +7724,6 @@ msgstr ""
 
 #. Resource IDs: (67, 68)
 msgid "Start Rebase"
-msgstr ""
-
-#. Resource IDs: (569)
-msgid "Start Update Hook"
 msgstr ""
 
 #. Resource IDs: (12)

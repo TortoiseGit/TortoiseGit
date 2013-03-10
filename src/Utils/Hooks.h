@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2006-2008 - TortoiseGit
+// Copyright (C) 2011-2013 - TortoiseGit
+// Copyright (C) 2006-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,9 +34,6 @@ typedef enum hooktype
 	start_commit_hook,
 	pre_commit_hook,
 	post_commit_hook,
-	start_update_hook,
-	pre_update_hook,
-	post_update_hook,
 	issue_tracker_hook,
 	pre_push_hook,
 	post_push_hook,
@@ -116,56 +114,6 @@ public:
 	static CString		GetHookTypeString(hooktype t);
 	/// returns the hooktype from a string representation of the same.
 	static hooktype		GetHookType(const CString& s);
-
-	/**
-	 * Executes the Start-Update-Hook that first matches one of the paths in
-	 * \c pathList.
-	 * \param pathList a list of paths to look for the hook scripts
-	 * \param exitcode on return, contains the exit code of the hook script
-	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is
-	 * replaced with the path to a temporary file which contains a list of files
-	 * in \c pathList, separated by newlines. The hook script can parse this
-	 * file to get all the paths the update is about to be done on.
-	 */
-	bool				StartUpdate(const CTGitPathList& pathList, DWORD& exitcode,
-									CString& error);
-	/**
-	 * Executes the Pre-Update-Hook that first matches one of the paths in
-	 * \c pathList.
-	 * \param pathList a list of paths to look for the hook scripts
-	 * \param depth the depth of the commit
-	 * \param rev the revision the update is done to
-	 * \param exitcode on return, contains the exit code of the hook script
-	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is
-	 * replaced with the path to a temporary file which contains a list of files
-	 * in \c pathList, separated by newlines. The hook script can parse this
-	 * file to get all the paths the update is about to be done on.
-	 * The string "%RECURSIVE%" is replaced with either "recursive" or "nonrecursive" according
-	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
-	 * the string representation of \c rev.
-	 */
-	bool				PreUpdate(const CTGitPathList& pathList, git_depth_t depth,
-									GitRev rev, DWORD& exitcode, CString& error);
-	/**
-	 * Executes the Post-Update-Hook that first matches one of the paths in
-	 * \c pathList.
-	 * \param pathList a list of paths to look for the hook scripts
-	 * \param depth the depth of the commit
-	 * \param rev the revision the update was done to
-	 * \param exitcode on return, contains the exit code of the hook script
-	 * \param error the data the hook script outputs to stderr
-	 * \remark the string "%PATHS% in the command line of the hook script is
-	 * replaced with the path to a temporary file which contains a list of files
-	 * in \c pathList, separated by newlines. The hook script can parse this
-	 * file to get all the paths the update is about to be done on.
-	 * The string "%RECURSIVE%" is replaced with either "recursive" or "nonrecursive" according
-	 * to the \c bRecursive parameter. And the string "%REVISION%" is replaced with
-	 * the string representation of \c rev.
-	 */
-	bool				PostUpdate(const CTGitPathList& pathList, git_depth_t depth,
-									GitRev rev, DWORD& exitcode, CString& error);
 
 	/**
 	 * Executes the Start-Commit-Hook that first matches one of the paths in

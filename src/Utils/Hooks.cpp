@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2011-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -168,12 +169,6 @@ CString CHooks::GetHookTypeString(hooktype t)
 		return _T("pre_commit_hook");
 	case post_commit_hook:
 		return _T("post_commit_hook");
-	case start_update_hook:
-		return _T("start_update_hook");
-	case pre_update_hook:
-		return _T("pre_update_hook");
-	case post_update_hook:
-		return _T("post_update_hook");
 	case pre_push_hook:
 		return _T("pre_push_hook");
 	case post_push_hook:
@@ -190,12 +185,6 @@ hooktype CHooks::GetHookType(const CString& s)
 		return pre_commit_hook;
 	if (s.Compare(_T("post_commit_hook"))==0)
 		return post_commit_hook;
-	if (s.Compare(_T("start_update_hook"))==0)
-		return start_update_hook;
-	if (s.Compare(_T("pre_update_hook"))==0)
-		return pre_update_hook;
-	if (s.Compare(_T("post_update_hook"))==0)
-		return post_update_hook;
 	if (s.Compare(_T("pre_push_hook"))==0)
 		return pre_push_hook;
 	if (s.Compare(_T("post_push_hook"))==0)
@@ -287,47 +276,6 @@ bool CHooks::PostCommit(const CTGitPathList& pathList, git_depth_t depth, GitRev
 	AddPathParam(sCmd, pathList);
 	AddDepthParam(sCmd, depth);
 	AddMessageFileParam(sCmd, message);
-	AddParam(sCmd, rev.m_CommitHash.ToString());
-	AddErrorParam(sCmd, error);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
-	return true;
-}
-
-bool CHooks::StartUpdate(const CTGitPathList& pathList, DWORD& exitcode, CString& error)
-{
-	hookiterator it = FindItem(start_update_hook, pathList);
-	if (it == end())
-		return false;
-	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
-	return true;
-}
-
-bool CHooks::PreUpdate(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, DWORD& exitcode, CString& error)
-{
-	hookiterator it = FindItem(pre_update_hook, pathList);
-	if (it == end())
-		return false;
-	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
-	AddDepthParam(sCmd, depth);
-	AddParam(sCmd, rev.m_CommitHash.ToString());
-	AddCWDParam(sCmd, pathList);
-	exitcode = RunScript(sCmd, pathList.GetCommonRoot().GetDirectory().GetWinPath(), error, it->second.bWait, it->second.bShow);
-	return true;
-}
-
-bool CHooks::PostUpdate(const CTGitPathList& pathList, git_depth_t depth, GitRev rev, DWORD& exitcode, CString& error)
-{
-	hookiterator it = FindItem(post_update_hook, pathList);
-	if (it == end())
-		return false;
-	CString sCmd = it->second.commandline;
-	AddPathParam(sCmd, pathList);
-	AddDepthParam(sCmd, depth);
 	AddParam(sCmd, rev.m_CommitHash.ToString());
 	AddErrorParam(sCmd, error);
 	AddCWDParam(sCmd, pathList);
