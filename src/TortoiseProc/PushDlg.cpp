@@ -156,6 +156,8 @@ BOOL CPushDlg::OnInitDialog()
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
+	m_regPushAllRemotes = CRegDWORD(_T("Software\\TortoiseGit\\History\\PushAllRemotes\\") + WorkingDir, FALSE);
+	m_bPushAllRemotes = m_regPushAllRemotes;
 	m_regPushAllBranches = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushAllBranches\\")) + WorkingDir, 0);
 	m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
@@ -260,6 +262,10 @@ void CPushDlg::Refresh()
 	GetRemoteBranch(m_BranchSource.GetString());
 
 	this->GetDlgItem(IDOK)->EnableWindow(m_BranchSource.GetCount() != 0);
+
+	if (list.size() > 1 && m_bPushAllRemotes)
+		m_Remote.SetCurSel(0);
+	m_bPushAllRemotes = FALSE; // reset to FALSE, so that a refresh does not reselect all even if it was already deselected by user; correct value will be set in OnBnClickedOk method
 }
 
 void CPushDlg::GetRemoteBranch(CString currentBranch)
@@ -449,6 +455,7 @@ void CPushDlg::OnBnClickedOk()
 	}
 
 	m_regPushAllBranches = m_bPushAllBranches;
+	m_regPushAllRemotes = m_bPushAllRemotes;
 	m_regThinPack = m_bPack;
 	this->m_regAutoLoad = m_bAutoLoad ;
 	m_RecurseSubmodules = m_RecurseSubmodulesCombo.GetCurSel();
