@@ -103,37 +103,6 @@ CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT
 
 // CTortoiseProcApp initialization
 
-static void GetGroupingUUID(CString path)
-{
-	if (path.IsEmpty())
-		return;
-	CRegStdDWORD groupSetting = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
-	switch (DWORD(groupSetting))
-	{
-	case 1:
-	case 2:
-		// implemented differently to TortoiseSVN atm
-		break;
-	case 3:
-	case 4:
-		{
-			CString wcroot;
-			if (g_GitAdminDir.HasAdminDir(path, true, &wcroot))
-			{
-				git_oid oid;
-				CStringA wcRootA(wcroot);
-				if (!git_odb_hash(&oid, wcRootA.GetBuffer(), wcRootA.GetLength(), GIT_OBJ_BLOB))
-				{
-					CStringA hash;
-					git_oid_tostr(hash.GetBufferSetLength(GIT_OID_HEXSZ + 1), GIT_OID_HEXSZ + 1, &oid);
-					hash.ReleaseBuffer();
-					g_sGroupingUUID = hash;
-				}
-			}
-		}
-	}
-}
-
 BOOL CTortoiseProcApp::InitInstance()
 {
 	CheckUpgrade();
@@ -375,29 +344,11 @@ BOOL CTortoiseProcApp::InitInstance()
 		int asterisk = sPathArgument.Find('*');
 		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
-
-		if (g_sGroupingUUID.IsEmpty() && (!cmdLinePath.IsEmpty() || !g_Git.m_CurrentDir.IsEmpty()))
-		{
-			// when started from the win7 library buttons, we don't get the /groupuuid:xxx parameter
-			// passed to us. In that case we have to fetch the uuid (or try to) here,
-			// otherwise the grouping wouldn't work.
-			CString path = cmdLinePath.GetWinPathString();
-			if (path.IsEmpty())
-				path = g_Git.m_CurrentDir;
-			GetGroupingUUID(path);
-		}
 	}
 
 	if (pathList.GetCount() == 0) {
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
-
-	if (g_sGroupingUUID.IsEmpty())
-		GetGroupingUUID(pathList.GetCommonRoot().GetWinPathString());
-
-	CString sAppID = GetTaskIDPerUUID(g_sGroupingUUID).c_str();
-	InitializeJumpList(sAppID);
-	EnsureGitLibrary(false);
 
 	// Subversion sometimes writes temp files to the current directory!
 	// Since TSVN doesn't need a specific CWD anyway, we just set it
@@ -441,6 +392,39 @@ BOOL CTortoiseProcApp::InitInstance()
 		sOrigCWD = g_Git.m_CurrentDir;
 		SetCurrentDirectory(g_Git.m_CurrentDir);
 	}
+
+	if (g_sGroupingUUID.IsEmpty())
+	{
+		CRegStdDWORD groupSetting = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
+		switch (DWORD(groupSetting))
+		{
+		case 1:
+		case 2:
+			// implemented differently to TortoiseSVN atm
+			break;
+		case 3:
+		case 4:
+			{
+				CString wcroot;
+				if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
+				{
+					git_oid oid;
+					CStringA wcRootA(wcroot);
+					if (!git_odb_hash(&oid, wcRootA.GetBuffer(), wcRootA.GetLength(), GIT_OBJ_BLOB))
+					{
+						CStringA hash;
+						git_oid_tostr(hash.GetBufferSetLength(GIT_OID_HEXSZ + 1), GIT_OID_HEXSZ + 1, &oid);
+						hash.ReleaseBuffer();
+						g_sGroupingUUID = hash;
+					}
+				}
+			}
+		}
+	}
+
+	CString sAppID = GetTaskIDPerUUID(g_sGroupingUUID).c_str();
+	InitializeJumpList(sAppID);
+	EnsureGitLibrary(false);
 
 	{
 		CString err;
