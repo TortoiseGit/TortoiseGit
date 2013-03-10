@@ -3097,8 +3097,19 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CBaseView::OnLButtonTrippleClick( UINT /*nFlags*/, CPoint point )
 {
 	const int nClickedLine = GetButtonEventLineIndex(point);
-	if (nClickedLine < 0)
+	if (((point.y - HEADERHEIGHT) / GetLineHeight()) <= 0)
+	{
+		if (!m_sConvertedFilePath.IsEmpty() && (GetKeyState(VK_CONTROL)&0x8000))
+		{
+			PCIDLIST_ABSOLUTE __unaligned pidl = ILCreateFromPath((LPCTSTR)m_sConvertedFilePath);
+			if (pidl)
+			{
+				SHOpenFolderAndSelectItems(pidl,0,0,0);
+				CoTaskMemFree((LPVOID)pidl);
+			}
+		}
 		return;
+	}
 	POINT ptCaretPos;
 	ptCaretPos.y = nClickedLine;
 	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());

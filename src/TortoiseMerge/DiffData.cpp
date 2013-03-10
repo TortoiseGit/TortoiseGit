@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2012 - TortoiseSVN
+// Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -276,18 +276,21 @@ BOOL CDiffData::Load()
 	if (bBaseNeedConvert)
 	{
 		sConvertedBaseFilename = CTempFiles::Instance().GetTempFilePathString();
+		m_baseFile.SetConvertedFileName(sConvertedBaseFilename);
 		m_arBaseFile.Save(sConvertedBaseFilename, true, true, 0, bIgnoreCase, m_bBlame);
 	}
 	bYourNeedConvert |= (IsYourFileInUse() && !bYourIsUtf8 && bIsUtf8);
 	if (bYourNeedConvert)
 	{
 		sConvertedYourFilename = CTempFiles::Instance().GetTempFilePathString();
+		m_yourFile.SetConvertedFileName(sConvertedYourFilename);
 		m_arYourFile.Save(sConvertedYourFilename, true, true, 0, bIgnoreCase, m_bBlame);
 	}
 	bTheirNeedConvert |= (IsTheirFileInUse() && !bTheirIsUtf8 && bIsUtf8);
 	if (bTheirNeedConvert)
 	{
 		sConvertedTheirFilename = CTempFiles::Instance().GetTempFilePathString();
+		m_theirFile.SetConvertedFileName(sConvertedTheirFilename);
 		m_arTheirFile.Save(sConvertedTheirFilename, true, true, 0, bIgnoreCase, m_bBlame);
 	}
 

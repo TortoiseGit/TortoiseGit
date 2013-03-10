@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -206,6 +206,7 @@ public: // variables
 
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
+	CString			m_sConvertedFilePath;   ///< the path to the converted file that's shown in the view
 	CFileTextLines::UnicodeType texttype;	///< the text encoding this view uses
 	EOL lineendings; ///< the line endings the view uses
 

@@ -755,12 +755,14 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->lineendings = m_Data.m_arBaseFile.GetLineEndings();
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
+			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
 
 			m_pwndRightView->m_pViewData = &m_Data.m_YourBaseRight;
 			m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
 			m_pwndRightView->lineendings = m_Data.m_arYourFile.GetLineEndings();
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
+			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
 
 			m_pwndBottomView->m_pViewData = NULL;
 
@@ -784,6 +786,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndLeftView->m_sWindowName.LoadString(IDS_VIEWTITLE_THEIRS);
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
+		m_pwndLeftView->m_sConvertedFilePath = m_Data.m_theirFile.GetConvertedFileName();
 
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
 		m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
@@ -791,6 +794,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndRightView->m_sWindowName.LoadString(IDS_VIEWTITLE_MINE);
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
+		m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
 
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
 		m_pwndBottomView->texttype = m_Data.m_arTheirFile.GetUnicodeType();
@@ -798,6 +802,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndBottomView->m_sWindowName.LoadString(IDS_VIEWTITLE_MERGED);
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
+		m_pwndBottomView->m_sConvertedFilePath = m_Data.m_mergedFile.GetConvertedFileName();
 
 		if (m_wndSplitter2.IsColumnHidden(1))
 			m_wndSplitter2.ShowColumn();
