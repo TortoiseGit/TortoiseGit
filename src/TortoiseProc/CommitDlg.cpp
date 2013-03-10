@@ -585,8 +585,15 @@ void CCommitDlg::OnOK()
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 	DWORD currentTicks = GetTickCount();
 
-	if (g_Git.m_IsUseLibGit2)
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
 	{
+		/*
+			Do not use the libgit2 implementation right now, since it has several flaws:
+			* https://github.com/libgit2/libgit2/issues/1397: crlf issue
+			* http://code.google.com/p/tortoisegit/issues/detail?id=1690: possible access denied problem
+			* https://github.com/libgit2/libgit2/pull/1291: git.exe path is searched again and again
+			* changes to x-bit are not correctly committed
+		*/
 		bAddSuccess = false;
 		do
 		{
