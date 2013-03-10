@@ -27,7 +27,7 @@
 class CMassiveGitTask
 {
 public:
-	CMassiveGitTask(CString params, BOOL isPath = TRUE);
+	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
 	~CMassiveGitTask(void);
 
 	void					AddFile(CString filename);
@@ -41,6 +41,7 @@ private:
 	CString					GetListItem(int index);
 	bool					m_bUnused;
 	BOOL					m_bIsPath;
+	bool					m_bIgnoreErrors;
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;
