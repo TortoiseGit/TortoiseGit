@@ -631,7 +631,7 @@ BEGIN
     LTEXT           "Click on ""Advanced"" to specify alternate diff programs based on file extension",IDC_STATIC,16,65,160,25
     PUSHBUTTON      "&Advanced...",IDC_EXTDIFFADVANCED,201,65,87,14
     GROUPBOX        "Configure viewer program for GNU diff files (patch files)",IDC_STATIC,7,104,286,63
-    CONTROL         "Tortoise&UDiff",IDC_DIFFVIEWER_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,120,74,10
+    CONTROL         "TortoiseGit&UDiff",IDC_DIFFVIEWER_OFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,120,74,10
     CONTROL         "E&xternal",IDC_DIFFVIEWER_ON,"Button",BS_AUTORADIOBUTTON,92,120,71,10
     EDITTEXT        IDC_DIFFVIEWER,14,139,256,14,ES_AUTOHSCROLL | WS_GROUP
     PUSHBUTTON      "...",IDC_DIFFVIEWERBROWSE,274,139,14,14

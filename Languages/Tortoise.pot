@@ -8394,10 +8394,6 @@ msgstr ""
 msgid "Tools:"
 msgstr ""
 
-#. Resource IDs: (1096)
-msgid "Tortoise&UDiff"
-msgstr ""
-
 #. Resource IDs: (65, 65535)
 msgid "TortoiseGit"
 msgstr ""
@@ -8420,6 +8416,10 @@ msgstr ""
 #. Resource IDs: (198)
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
+msgstr ""
+
+#. Resource IDs: (1096)
+msgid "TortoiseGit&UDiff"
 msgstr ""
 
 #. Resource IDs: (1, 244, 1000, 3585)
