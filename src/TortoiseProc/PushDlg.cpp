@@ -156,9 +156,9 @@ BOOL CPushDlg::OnInitDialog()
 
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'),_T('_'));
-	m_regPushAllRemotes = CRegDWORD(_T("Software\\TortoiseGit\\History\\PushAllRemotes\\") + WorkingDir, FALSE);
+	m_regPushAllRemotes = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\AllRemotes"), FALSE);
 	m_bPushAllRemotes = m_regPushAllRemotes;
-	m_regPushAllBranches = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushAllBranches\\")) + WorkingDir, 0);
+	m_regPushAllBranches = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\AllBranches"), FALSE);
 	m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
 	CString clippath=CAppUtils::GetClipboardLink();
@@ -171,7 +171,7 @@ BOOL CPushDlg::OnInitDialog()
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
 
-	m_regThinPack = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushThinPack\\")) + WorkingDir, 0);
+	m_regThinPack = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\ThinPack"), FALSE);
 	m_bPack = m_regThinPack;
 	this->m_regAutoLoad = CRegDWORD(CString(_T("Software\\TortoiseGit\\History\\PushDlgAutoLoad\\"))+WorkingDir,
 									m_bAutoLoad);
