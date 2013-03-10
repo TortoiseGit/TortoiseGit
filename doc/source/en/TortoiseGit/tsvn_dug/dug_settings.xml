@@ -21,4 +21,5 @@
 	<xi:include href="./dug_settings_hooks.xml"/>
 	<xi:include href="./dug_settings_blame.xml"/>
 	<xi:include href="./dug_settings_advanced.xml"/>
+	<xi:include href="./dug_settings_export.xml"/>
 </sect1>

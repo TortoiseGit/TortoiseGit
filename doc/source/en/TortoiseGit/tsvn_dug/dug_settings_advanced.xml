@@ -157,6 +157,20 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ShellMenuAccelerators</term>
+            <listitem>
+                <para>
+                    TortoiseGit uses accelerators for its explorer context menu
+                    entries. Since this can lead to doubled accelerators (e.g.
+                    the <literal>Git Commit</literal> has the <keycap>Alt-C</keycap>
+                    accelerator, but so does the <literal>Copy</literal> entry
+                    of explorer).
+                    If you don't want or need the accelerators of the TortoiseGit
+                    entries, set this value to <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ShowContextMenuIcons</term>
             <listitem>
                 <para>
