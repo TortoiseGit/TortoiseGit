@@ -84,6 +84,9 @@
     <ClCompile Include="TortoiseGitBlameView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GitBlameLogList.h">
@@ -141,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TortoiseGitBlameView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TaskbarUUID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

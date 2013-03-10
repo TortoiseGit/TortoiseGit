@@ -1971,6 +1971,7 @@ LRESULT CRebaseDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
+	SetUUIDOverlayIcon(m_hWnd);
 	return 0;
 }
 

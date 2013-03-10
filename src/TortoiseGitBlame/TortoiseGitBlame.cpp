@@ -32,6 +32,7 @@
 #include "CmdLineParser.h"
 #include "PathUtils.h"
 #include "CommonAppUtils.h"
+#include "TaskbarUUID.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,6 +56,7 @@ END_MESSAGE_MAP()
 CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 {
 	SetDllDirectory(L"");
+	SetTaskIDPerUUID();
 	// prevent from inheriting %GIT_DIR% from parent process by resetting it,
 	// use MSVC function instead of Windows API because MSVC runtime caches environment variables
 	_tputenv(_T("GIT_DIR="));
@@ -69,6 +71,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 // The one and only CTortoiseGitBlameApp object
 CTortoiseGitBlameApp theApp;
 CString sOrigCWD;
+CString g_sGroupingUUID;
 
 // CTortoiseGitBlameApp initialization
 
@@ -221,7 +224,8 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-
+	CCmdLineParser parser = CCmdLineParser(this->m_lpCmdLine);
+	g_sGroupingUUID = parser.GetVal(L"groupuuid");
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;

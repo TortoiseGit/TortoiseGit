@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="EditGotoDlg.cpp" />
     <ClCompile Include="..\TortoiseMerge\FileTextLines.cpp" />
     <ClCompile Include="..\TortoiseProc\FindDlg.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="TortoiseGitBlameView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="GitBlameLogList.h" />
     <ClInclude Include="..\TortoiseProc\gitlogcache.h" />
     <ClInclude Include="..\TortoiseProc\GitLogListBase.h" />

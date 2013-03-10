@@ -1322,6 +1322,7 @@ LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	m_pTaskbarList.Release();
 	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
+	SetUUIDOverlayIcon(m_hWnd);
 	return 0;
 }
 

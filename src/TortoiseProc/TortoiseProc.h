@@ -61,8 +61,8 @@ public:
 	void CheckUpgrade();
 	void CheckForNewerVersion();
 	void EnableCrashHandler();
-	void InitializeJumpList();
-	void DoInitializeJumpList();
+	void InitializeJumpList(const CString& appid);
+	void DoInitializeJumpList(const CString& appid);
 
 	ULONG_PTR m_gdiplusToken;
 // Implementation
@@ -76,6 +76,7 @@ private:
 };
 
 extern CTortoiseProcApp theApp;
+extern CString g_sGroupingUUID;
 extern HWND hWndExplorer;
 extern CString sOrigCWD;
 

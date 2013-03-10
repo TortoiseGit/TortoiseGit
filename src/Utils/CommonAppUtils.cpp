@@ -28,6 +28,7 @@
 #include "SelectFileFilter.h"
 
 extern CString sOrigCWD;
+extern CString g_sGroupingUUID;
 
 bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd, bool uac)
 {
@@ -142,6 +143,12 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac)
 		CString sCmdLine;
 		sCmdLine.Format(L"%s /hwnd:%ld", (LPCTSTR)sCommandLine, AfxGetMainWnd()->GetSafeHwnd());
 		sCmd.Format(_T("\"%s\" %s"), (LPCTSTR)pathToExecutable, (LPCTSTR)sCmdLine);
+	}
+	if (!g_sGroupingUUID.IsEmpty())
+	{
+		sCmd += L" /groupuuid:\"";
+		sCmd += g_sGroupingUUID;
+		sCmd += L"\"";
 	}
 
 	return LaunchApplication(sCmd, NULL, false, NULL, uac);
