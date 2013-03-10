@@ -2438,6 +2438,9 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 		sysProgressDlg.ShowModeless((HWND)NULL, true);
 
 		CString tempFileName = GetTempFile();
+		DeleteFile(tempFileName);
+		CreateDirectory(tempFileName, NULL);
+		tempFileName += _T("\\pullrequest.txt");
 		if (g_Git.RunLogFile(cmd, tempFileName))
 		{
 			CMessageBox::Show(NULL, IDS_ERR_PULLREUQESTFAILED, IDS_APPNAME, MB_OK);
