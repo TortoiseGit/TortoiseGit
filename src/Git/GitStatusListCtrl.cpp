@@ -2182,11 +2182,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CTGitPathList ignorelist;
 					//std::vector<CString> toremove;
 					FillListOfSelectedItemPaths(ignorelist, true);
-					SetRedraw(FALSE);
 
 					if(!CAppUtils::IgnoreFile(ignorelist,false))
 						break;
 
+					SetRedraw(FALSE);
 					CWnd* pParent = GetLogicalParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 					{
@@ -2202,11 +2202,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CString ext=filepath->GetFileExtension();
 					CTGitPathList ignorelist;
 					FillListOfSelectedItemPaths(ignorelist, true);
-					SetRedraw(FALSE);
 
 					if (!CAppUtils::IgnoreFile(ignorelist,true))
 						break;
 
+					SetRedraw(FALSE);
 					CWnd* pParent = GetLogicalParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 					{
@@ -2221,11 +2221,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CTGitPathList ignorelist;
 					ignorelist.AddPath(filepath->GetContainingDirectory());
-					SetRedraw(FALSE);
 
 					if (!CAppUtils::IgnoreFile(ignorelist, false))
 						break;
 
+					SetRedraw(FALSE);
 					CWnd *pParent = GetLogicalParent();
 					if (NULL != pParent && NULL != pParent->GetSafeHwnd())
 						pParent->SendMessage(GITSLNM_NEEDSREFRESH);
