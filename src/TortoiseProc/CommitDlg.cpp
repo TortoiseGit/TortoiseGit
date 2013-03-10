@@ -429,6 +429,24 @@ BOOL CCommitDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
+static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int cnt)
+{
+	if (sysProgressDlg.HasUserCancelled())
+		return false;
+
+	if (sysProgressDlg.IsVisible())
+	{
+		sysProgressDlg.SetTitle(IDS_APPNAME);
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
+		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
+		sysProgressDlg.SetProgress(cnt, 6); // 6 = count of massive git tasks
+		AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing
+	}
+
+	BOOL cancel = FALSE;
+	return mgt.Execute(cancel);
+}
+
 void CCommitDlg::OnOK()
 {
 	if (m_bBlock)
@@ -813,39 +831,30 @@ void CCommitDlg::OnOK()
 		// ***************************************************
 		// ATTENTION: Similar code in RebaseDlg.cpp!!!
 		// ***************************************************
+		CMassiveGitTask mgtAdd(_T("add -f"));
+		CMassiveGitTask mgtUpdateIndexForceRemove(_T("update-index --force-remove"));
+		CMassiveGitTask mgtUpdateIndex(_T("update-index"));
+		CMassiveGitTask mgtRm(_T("rm --ignore-unmatch"));
+		CMassiveGitTask mgtRmFCache(_T("rm -f --cache"));
+		CString resetCmd = _T("reset");
+		if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+			resetCmd += _T(" HEAD~1");;
+		CMassiveGitTask mgtReset(resetCmd, TRUE, true);
 		for (int j = 0; j < nListItems; ++j)
 		{
 			CTGitPath *entry = (CTGitPath*)m_ListCtrl.GetItemData(j);
-			if (sysProgressDlg.IsVisible())
-			{
-				if (GetTickCount() - currentTicks > 1000 || j == nListItems - 1 || j == 0)
-				{
-					sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
-					sysProgressDlg.SetProgress(j, nListItems);
-					AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
-					currentTicks = GetTickCount();
-				}
-			}
+
 			if (entry->m_Checked && !m_bCommitMessageOnly)
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
-					cmd.Format(_T("git.exe add -f -- \"%s\""), entry->GetGitPathString());
+					mgtAdd.AddFile(entry->GetGitPathString());
 				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-					cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""), entry->GetGitPathString());
+					mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());
 				else
-					cmd.Format(_T("git.exe update-index  -- \"%s\""), entry->GetGitPathString());
-
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
-					bAddSuccess = false ;
-					break;
-				}
+					mgtUpdateIndex.AddFile(entry->GetGitPathString());
 
 				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
-
-				g_Git.Run(cmd, &out, CP_UTF8);
+					mgtRm.AddFile(entry->GetGitOldPathString());
 
 				++nchecked;
 			}
@@ -853,39 +862,14 @@ void CCommitDlg::OnOK()
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{	//To init git repository, there are not HEAD, so we can use git reset command
-					cmd.Format(_T("git.exe rm -f --cache -- \"%s\""), entry->GetGitPathString());
-					if (g_Git.Run(cmd, &out, CP_UTF8))
-					{
-						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-						bAddSuccess = false ;
-						bCloseCommitDlg=false;
-						break;
-					}
+					mgtRmFCache.AddFile(entry->GetGitPathString());
 					mgtReAddAfterCommit.AddFile(*entry);
 
 					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
-					{
-						if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-							cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitOldPathString());
-						else
-							cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
-						g_Git.Run(cmd, &out, CP_UTF8);
-					}
+						mgtReset.AddFile(entry->GetGitOldPathString());
 				}
 				else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
-				{
-					if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-					{
-						cmd.Format(_T("git.exe reset HEAD~1 -- \"%s\""), entry->GetGitPathString());
-					}
-					else
-					{
-						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
-					}
-					g_Git.Run(cmd, &out, CP_UTF8);
-					if (m_bCommitAmend && !m_bAmendDiffToLastCommit && !sysProgressDlg.HasUserCancelled())
-						continue;
-				}
+					mgtReset.AddFile(entry->GetGitPathString());
 			}
 
 			if (sysProgressDlg.HasUserCancelled())
@@ -893,10 +877,25 @@ void CCommitDlg::OnOK()
 				bAddSuccess = false;
 				break;
 			}
-
-			CShellUpdater::Instance().AddPathForUpdate(*entry);
 		}
+
+		int j = -1;
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtAdd, sysProgressDlg, ++j);
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtUpdateIndexForceRemove, sysProgressDlg, ++j);
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtUpdateIndex, sysProgressDlg, ++j);
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtRm, sysProgressDlg, ++j);
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtRmFCache, sysProgressDlg, ++j);
+		bAddSuccess = bAddSuccess && UpdateIndex(mgtReset, sysProgressDlg, ++j);
+
+		if (sysProgressDlg.HasUserCancelled())
+			bAddSuccess = false;
+
+		for (int j = 0; bAddSuccess && j < nListItems; ++j)
+			CShellUpdater::Instance().AddPathForUpdate(*(CTGitPath*)m_ListCtrl.GetItemData(j));
 	}
+
+	if (sysProgressDlg.HasUserCancelled())
+		bAddSuccess = false;
 
 	sysProgressDlg.Stop();
 
