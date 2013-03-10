@@ -80,7 +80,7 @@ public:
 	 * beforehand, that number can be set here. It is then used to show a more
 	 * accurate progress bar during the operation.
 	 */
-	void SetItemCount(long count) {if(count) m_ProgList.SetItemCount(count);}
+	void SetItemCount(long count) {if(count) m_ProgList.SetItemCountTotal(count);}
 
 	bool DidErrorsOccur() {return m_ProgList.m_bErrorsOccurred;}
 
