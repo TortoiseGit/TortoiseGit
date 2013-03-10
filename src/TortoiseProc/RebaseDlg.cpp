@@ -1104,12 +1104,19 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		BOOL cancel = FALSE;
-		mgtAdd.Execute(cancel);
-		mgtUpdateIndexForceRemove.Execute(cancel);
-		mgtUpdateIndex.Execute(cancel);
-		mgtRm.Execute(cancel);
-		mgtRmFCache.Execute(cancel);
-		mgtReset.Execute(cancel);
+		bool successful = true;
+		successful = successful && mgtAdd.Execute(cancel);
+		successful = successful && mgtUpdateIndexForceRemove.Execute(cancel);
+		successful = successful && mgtUpdateIndex.Execute(cancel);
+		successful = successful && mgtRm.Execute(cancel);
+		successful = successful && mgtRmFCache.Execute(cancel);
+		successful = successful && mgtReset.Execute(cancel);
+
+		if (!successful)
+		{
+			AddLogString(_T("An error occurred while updating the index."));
+			return;
+		}
 
 		CString out =_T("");
 		CString cmd;
