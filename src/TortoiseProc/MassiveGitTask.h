@@ -27,20 +27,21 @@
 class CMassiveGitTask
 {
 public:
-	CMassiveGitTask(CString params, BOOL isPath = TRUE);
+	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
 	~CMassiveGitTask(void);
 
 	void					AddFile(CString filename);
 	void					AddFile(CTGitPath filename);
 	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance);
 	bool					Execute(BOOL &cancel);
+	int						GetListCount();
 
 private:
 	bool					ExecuteCommands(volatile BOOL &cancel);
-	int						GetListCount();
 	CString					GetListItem(int index);
 	bool					m_bUnused;
 	BOOL					m_bIsPath;
+	bool					m_bIgnoreErrors;
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;

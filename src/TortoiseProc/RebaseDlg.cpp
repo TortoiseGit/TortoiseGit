@@ -1073,54 +1073,55 @@ void CRebaseDlg::OnBnClickedContinue()
 		// ATTENTION: Similar code in CommitDlg.cpp!!!
 		// ***************************************************
 		CMassiveGitTask mgtReAddAfterCommit(_T("add --ignore-errors -f"));
+		CMassiveGitTask mgtAdd(_T("add -f"));
+		CMassiveGitTask mgtUpdateIndexForceRemove(_T("update-index --force-remove"));
+		CMassiveGitTask mgtUpdateIndex(_T("update-index"));
+		CMassiveGitTask mgtRm(_T("rm  --ignore-unmatch"));
+		CMassiveGitTask mgtRmFCache(_T("rm -f --cache"));
+		CMassiveGitTask mgtReset(_T("reset"), TRUE, true);
 		for (int i = 0; i < m_FileListCtrl.GetItemCount(); i++)
 		{
-			CString cmd, out;
 			CTGitPath *entry = (CTGitPath *)m_FileListCtrl.GetItemData(i);
 			if (entry->m_Checked)
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_UNVER)
-					cmd.Format(_T("git.exe add -f -- \"%s\""), entry->GetGitPathString());
+					mgtAdd.AddFile(entry->GetGitPathString());
 				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-					cmd.Format(_T("git.exe update-index --force-remove -- \"%s\""), entry->GetGitPathString());
+					mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());
 				else
-					cmd.Format(_T("git.exe update-index -- \"%s\""), entry->GetGitPathString());
-
-				if (g_Git.Run(cmd, &out, CP_UTF8))
-				{
-					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-					return;
-				}
+					mgtUpdateIndex.AddFile(entry->GetGitPathString());
 
 				if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					cmd.Format(_T("git.exe rm -- \"%s\""), entry->GetGitOldPathString());
-
-				g_Git.Run(cmd, &out, CP_UTF8);
+					mgtRm.AddFile(entry->GetGitOldPathString());
 			}
 			else
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{
-					cmd.Format(_T("git.exe rm -f --cache -- \"%s\""), entry->GetGitPathString());
-					if (g_Git.Run(cmd, &out, CP_UTF8))
-					{
-						CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK| MB_ICONERROR);
-						return;
-					}
+					mgtRmFCache.AddFile(entry->GetGitPathString());
 					mgtReAddAfterCommit.AddFile(*entry);
 
 					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
-					{
-						cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitOldPathString());
-						g_Git.Run(cmd, &out, CP_UTF8);
-					}
+						mgtReset.AddFile(entry->GetGitOldPathString());
 				}
 				else if(!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
-				{
-					cmd.Format(_T("git.exe reset -- \"%s\""), entry->GetGitPathString());
-					g_Git.Run(cmd, &out, CP_UTF8);
-				}
+					mgtReset.AddFile(entry->GetGitPathString());
 			}
+		}
+
+		BOOL cancel = FALSE;
+		bool successful = true;
+		successful = successful && mgtAdd.Execute(cancel);
+		successful = successful && mgtUpdateIndexForceRemove.Execute(cancel);
+		successful = successful && mgtUpdateIndex.Execute(cancel);
+		successful = successful && mgtRm.Execute(cancel);
+		successful = successful && mgtRmFCache.Execute(cancel);
+		successful = successful && mgtReset.Execute(cancel);
+
+		if (!successful)
+		{
+			AddLogString(_T("An error occurred while updating the index."));
+			return;
 		}
 
 		CString out =_T("");

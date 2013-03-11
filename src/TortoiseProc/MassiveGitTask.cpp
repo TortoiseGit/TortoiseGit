@@ -23,9 +23,10 @@
 #include "MassiveGitTask.h"
 #include "MessageBox.h"
 
-CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath)
+CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignoreErrors)
 	: m_bUnused(true)
 	, m_bIsPath(isPath)
+	, m_bIgnoreErrors(ignoreErrors)
 	, m_NotifyCallbackInstance(NULL)
 	, m_NotifyCallbackAction(git_wc_notify_add)
 {
@@ -88,7 +89,7 @@ bool CMassiveGitTask::ExecuteCommands(volatile BOOL &cancel)
 
 			CString cmd, out;
 			cmd.Format(_T("git.exe %s %s%s"), m_sParams, m_bIsPath ? _T("--") : _T(""), add);
-			if (g_Git.Run(cmd, &out, CP_UTF8))
+			if (g_Git.Run(cmd, &out, CP_UTF8) && !m_bIgnoreErrors)
 			{
 				if (m_NotifyCallbackInstance)
 					m_NotifyCallbackInstance->ReportError(out);
