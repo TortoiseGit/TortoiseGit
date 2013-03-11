@@ -41,6 +41,7 @@
 #include "..\Settings\Settings.h"
 #include "gitindex.h"
 #include "Libraries.h"
+#include "TaskbarUUID.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -49,8 +50,6 @@
 #endif
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-
-#define APPID (_T("TGIT.TGIT.1") _T(TGIT_PLATFORM))
 
 BEGIN_MESSAGE_MAP(CTortoiseProcApp, CWinAppEx)
 	ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)
@@ -88,6 +87,7 @@ CTortoiseProcApp::~CTortoiseProcApp()
 // The one and only CTortoiseProcApp object
 CTortoiseProcApp theApp;
 CString sOrigCWD;
+CString g_sGroupingUUID;
 HWND hWndExplorer;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
@@ -276,6 +276,8 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	CTGitPath cmdLinePath;
 	CTGitPathList pathList;
+	if (g_sGroupingUUID.IsEmpty())
+		g_sGroupingUUID = parser.GetVal(L"groupuuid");
 	if ( parser.HasKey(_T("pathfile")) )
 	{
 
@@ -348,9 +350,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 
-	InitializeJumpList();
-	EnsureGitLibrary(false);
-
 	// Subversion sometimes writes temp files to the current directory!
 	// Since TSVN doesn't need a specific CWD anyway, we just set it
 	// to the users temp folder: that way, Subversion is guaranteed to
@@ -393,6 +392,39 @@ BOOL CTortoiseProcApp::InitInstance()
 		sOrigCWD = g_Git.m_CurrentDir;
 		SetCurrentDirectory(g_Git.m_CurrentDir);
 	}
+
+	if (g_sGroupingUUID.IsEmpty())
+	{
+		CRegStdDWORD groupSetting = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
+		switch (DWORD(groupSetting))
+		{
+		case 1:
+		case 2:
+			// implemented differently to TortoiseSVN atm
+			break;
+		case 3:
+		case 4:
+			{
+				CString wcroot;
+				if (g_GitAdminDir.HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
+				{
+					git_oid oid;
+					CStringA wcRootA(wcroot);
+					if (!git_odb_hash(&oid, wcRootA.GetBuffer(), wcRootA.GetLength(), GIT_OBJ_BLOB))
+					{
+						CStringA hash;
+						git_oid_tostr(hash.GetBufferSetLength(GIT_OID_HEXSZ + 1), GIT_OID_HEXSZ + 1, &oid);
+						hash.ReleaseBuffer();
+						g_sGroupingUUID = hash;
+					}
+				}
+			}
+		}
+	}
+
+	CString sAppID = GetTaskIDPerUUID(g_sGroupingUUID).c_str();
+	InitializeJumpList(sAppID);
+	EnsureGitLibrary(false);
 
 	{
 		CString err;
@@ -556,24 +588,24 @@ void CTortoiseProcApp::CheckUpgrade()
 	regVersion = _T(STRPRODUCTVER);
 }
 
-void CTortoiseProcApp::InitializeJumpList()
+void CTortoiseProcApp::InitializeJumpList(const CString& appid)
 {
 	// for Win7 : use a custom jump list
 	CoInitialize(NULL);
-	SetAppID(APPID);
-	DeleteJumpList(APPID);
-	DoInitializeJumpList();
+	SetAppID(appid);
+	DeleteJumpList(appid);
+	DoInitializeJumpList(appid);
 	CoUninitialize();
 }
 
-void CTortoiseProcApp::DoInitializeJumpList()
+void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 {
 	ATL::CComPtr<ICustomDestinationList> pcdl;
 	HRESULT hr = pcdl.CoCreateInstance(CLSID_DestinationList, NULL, CLSCTX_INPROC_SERVER);
 	if (FAILED(hr))
 		return;
 
-	hr = pcdl->SetAppID(APPID);
+	hr = pcdl->SetAppID(appid);
 	if (FAILED(hr))
 		return;
 

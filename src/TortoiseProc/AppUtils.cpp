@@ -299,6 +299,12 @@ BOOL CAppUtils::StartExtMerge(
 			com += _T("TortoiseGitMerge.exe");
 		}
 		com = _T("\"") + com + _T("\"");
+		if (!g_sGroupingUUID.IsEmpty())
+		{
+			com += L" /groupuuid:\"";
+			com += g_sGroupingUUID;
+			com += L"\"";
+		}
 		com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
 		com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
 	}
@@ -433,6 +439,12 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 		viewer = viewer + _T(" /patchoriginal:\"") + sOriginalDescription + _T("\"");
 	if (!sPatchedDescription.IsEmpty())
 		viewer = viewer + _T(" /patchpatched:\"") + sPatchedDescription + _T("\"");
+	if (!g_sGroupingUUID.IsEmpty())
+	{
+		viewer += L" /groupuuid:\"";
+		viewer += g_sGroupingUUID;
+		viewer += L"\"";
+	}
 	if(!LaunchApplication(viewer, IDS_ERR_DIFFVIEWSTART, !!bWait))
 	{
 		return FALSE;
@@ -473,7 +485,8 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 		{
 			return
 				_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
-				_T(" /left:%base /right:%mine /lefttitle:%bname /righttitle:%yname");
+				_T(" /left:%base /right:%mine /lefttitle:%bname /righttitle:%yname") +
+				L" /groupuuid:\"" + g_sGroupingUUID + L"\"";
 		}
 	}
 
@@ -515,6 +528,12 @@ bool CAppUtils::StartExtDiff(
 		viewer =
 			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe") + _T("\"") +
 			_T(" /base:%base /mine:%mine /basename:%bname /minename:%yname");
+		if (!g_sGroupingUUID.IsEmpty())
+		{
+			viewer += L" /groupuuid:\"";
+			viewer += g_sGroupingUUID;
+			viewer += L"\"";
+		}
 		if (flags.bBlame)
 			viewer += _T(" /blame");
 	}
@@ -569,7 +588,12 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 		viewer = _T("\"") + viewer + _T("\"");
 		// add the params
 		viewer = viewer + _T(" /patchfile:%1 /title:\"%title\"");
-
+		if (!g_sGroupingUUID.IsEmpty())
+		{
+			viewer += L" /groupuuid:\"";
+			viewer += g_sGroupingUUID;
+			viewer += L"\"";
+		}
 	}
 	if (viewer.Find(_T("%1"))>=0)
 	{
@@ -768,6 +792,12 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile,CString Rev,const 
 	//viewer += _T(" \"") + sOriginalFile + _T("\"");
 	if(!Rev.IsEmpty() && Rev != GIT_REV_ZERO)
 		viewer += CString(_T(" /rev:"))+Rev;
+	if (!g_sGroupingUUID.IsEmpty())
+	{
+		viewer += L" /groupuuid:\"";
+		viewer += g_sGroupingUUID;
+		viewer += L"\"";
+	}
 	viewer += _T(" ")+sParams;
 
 	return LaunchApplication(viewer, IDS_ERR_TGITBLAME, false);

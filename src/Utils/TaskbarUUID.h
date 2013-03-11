@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,16 +29,17 @@
  * taskbar to determine how the app icons on the taskbar are grouped
  * together.
  *
- * GroupTaskbarIconsPerRepo = 0 : this is the default. Icons are
- *                                grouped by application.
- * GroupTaskbarIconsPerRepo = 1 : Icons are grouped by repository uuid, so
- *                                each TSVN dialog gets grouped according
- *                                to the repository/wc it is used for.
- *                                Each TSVN app is grouped separately, i.e.,
- *                                TortoiseMerge icons won't get grouped together
- *                                with TortoiseProc icons.
- * GroupTaskbarIconsPerRepo = 2 : The same as 1, but all TSVN apps are treated
- *                                as one, e.g., a TortoiseMerge instance showing
+ * GroupTaskbarIconsPerRepo = 0 : Icons are grouped by application.
+ * GroupTaskbarIconsPerRepo = 1 : same as 0, one icon per application (regardless of working tree)
+ * GroupTaskbarIconsPerRepo = 2 : All TGit icons are grouped to one icon (regardless of working tree)
+ * GroupTaskbarIconsPerRepo = 3 : Icons are grouped by working tree path, so
+ *                                each TGit dialog gets grouped according
+ *                                to the working tree it is used for.
+ *                                Each TGit app is grouped separately, i.e.,
+ *                                TortoiseGitMerge icons won't get grouped together
+ *                                with TortoiseGitProc icons.
+ * GroupTaskbarIconsPerRepo = 4 : The same as 1, but all TGit apps are treated
+ *                                as one, e.g., a TortoiseGitMerge instance showing
  *                                a diff from repo X is grouped together with
  *                                a log dialog instance for repo X.
  *

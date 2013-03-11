@@ -2091,7 +2091,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					sCmd.Format(_T("/command:log /path:\"%s\""), g_Git.m_CurrentDir + _T("\\") + filepath->GetWinPath());
 					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
 						sCmd += _T(" /submodule");
-					CAppUtils::RunTortoiseGitProc(sCmd);
+					CAppUtils::RunTortoiseGitProc(sCmd, false, !(cmd == IDGITLC_LOGSUBMODULE));
 				}
 				break;
 

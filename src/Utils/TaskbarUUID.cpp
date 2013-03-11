@@ -29,7 +29,6 @@
 
 #define APPID (_T("TGIT.TGIT.1"))
 
-
 void SetTaskIDPerUUID()
 {
     typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
@@ -47,7 +46,7 @@ void SetTaskIDPerUUID()
 
 std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= NULL */)
 {
-    CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 0);
+    CRegStdDWORD r = CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3);
     std::wstring id = APPID;
     if ((r < 2)||(r == 3))
     {
@@ -58,7 +57,7 @@ std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= NULL */)
         id += n;
     }
 
-    if (r)
+    if (r >= 3)
     {
         if (uuid)
         {
@@ -82,9 +81,9 @@ extern CString g_sGroupingUUID;
 
 void SetUUIDOverlayIcon( HWND hWnd )
 {
-    if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 0))
+    if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepo"), 3))
     {
-        if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), FALSE))
+        if (CRegStdDWORD(_T("Software\\TortoiseGit\\GroupTaskbarIconsPerRepoOverlay"), TRUE))
         {
             std::wstring uuid;
 #ifdef _MFC_VER
