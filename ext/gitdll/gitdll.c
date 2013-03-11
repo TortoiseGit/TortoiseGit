@@ -34,6 +34,7 @@
 #include "cache.h"
 #include "quote.h"
 #include "run-command.h"
+#include "mailmap.h"
 
 #if 0
 
@@ -1126,3 +1127,89 @@ int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path
 
 	return git_config_set_multivar_in_file(config_exclusive_filename, key, value, NULL, 0);
 }
+
+struct mailmap_info {
+	char *name;
+	char *email;
+};
+
+struct mailmap_entry {
+	/* name and email for the simple mail-only case */
+	char *name;
+	char *email;
+
+	/* name and email for the complex mail and name matching case */
+	struct string_list namemap;
+};
+
+int git_read_mailmap(GIT_MAILMAP *mailmap)
+{
+	struct string_list *map;
+	int result;
+
+	if (!mailmap)
+		return -1;
+
+	*mailmap = NULL;
+	if (!(map = (struct string_list *)calloc(1, sizeof(struct string_list))))
+		return -1;
+
+	if ((result = read_mailmap(map, NULL)))
+		return result;
+
+	*mailmap = map;
+	return 0;
+}
+
+const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, void *payload, const char *(*author2_cb)(void *))
+{
+	struct string_list *map;
+	int imax, imin = 0;
+
+	if (!mailmap)
+		return NULL;
+
+	map = (struct string_list *)mailmap;
+	imax = map->nr - 1;
+	while (imax >= imin)
+	{
+		int i = imin + ((imax - imin) / 2);
+		struct string_list_item *si = (struct string_list_item *)&map->items[i];
+		struct mailmap_entry *me = (struct mailmap_entry *)si->util;
+		int comp = strcmp(si->string, email2);
+
+		if (!comp)
+		{
+			if (me->namemap.nr)
+			{
+				const char *author2 = author2_cb(payload);
+				int j;
+				for (j = 0; j < me->namemap.nr; ++j)
+				{
+					struct string_list_item *sj = (struct string_list_item *)&me->namemap.items[j];
+					struct mailmap_info *mi = (struct mailmap_info *)sj->util;
+					
+					if (!strcmp(sj->string, author2))
+						return mi->name;
+				}
+			}
+
+			return me->name;
+		}
+		else if (comp < 0)
+			imin = i + 1;
+		else
+			imax = i - 1;
+	}
+
+	return NULL;
+}
+
+void git_clear_mailmap(GIT_MAILMAP mailmap)
+{
+	if (!mailmap)
+		return;
+
+	clear_mailmap((struct string_list *)mailmap);
+}
+
