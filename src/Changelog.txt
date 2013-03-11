@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #1542: Can send pull request email
  * Fixed issue #1493: Remember Push Dialog "Push to all remotes" option state
  * Enhanced Windows 7 taskbar grouping and highlighting of windows belonging to the same working tree
+ * .mailmap is now used for Log-Dialog Statistics
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
