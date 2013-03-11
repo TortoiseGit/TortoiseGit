@@ -1539,7 +1539,7 @@ int CRebaseDlg::DoRebase()
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
 				m_RebaseStage = REBASE_ERROR;
-				AddLogString(_T("An unrecoverable error occoured."));
+				AddLogString(_T("An unrecoverable error occurred."));
 				return -1;
 			}
 			if(mode == CTGitPath::LOGACTIONS_REBASE_EDIT)
