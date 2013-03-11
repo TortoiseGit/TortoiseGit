@@ -34,10 +34,10 @@ public:
 	void					AddFile(CTGitPath filename);
 	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance);
 	bool					Execute(BOOL &cancel);
+	int						GetListCount();
 
 private:
 	bool					ExecuteCommands(volatile BOOL &cancel);
-	int						GetListCount();
 	CString					GetListItem(int index);
 	bool					m_bUnused;
 	BOOL					m_bIsPath;

@@ -429,7 +429,7 @@ BOOL CCommitDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int cnt)
+static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, int progress, int maxProgress)
 {
 	if (sysProgressDlg.HasUserCancelled())
 		return false;
@@ -439,7 +439,7 @@ static bool UpdateIndex(CMassiveGitTask &mgt, CSysProgressDlg &sysProgressDlg, i
 		sysProgressDlg.SetTitle(IDS_APPNAME);
 		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
 		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
-		sysProgressDlg.SetProgress(cnt, 6); // 6 = count of massive git tasks
+		sysProgressDlg.SetProgress(progress, maxProgress);
 		AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing
 	}
 
@@ -879,13 +879,12 @@ void CCommitDlg::OnOK()
 			}
 		}
 
-		int j = -1;
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtAdd, sysProgressDlg, ++j);
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtUpdateIndexForceRemove, sysProgressDlg, ++j);
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtUpdateIndex, sysProgressDlg, ++j);
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtRm, sysProgressDlg, ++j);
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtRmFCache, sysProgressDlg, ++j);
-		bAddSuccess = bAddSuccess && UpdateIndex(mgtReset, sysProgressDlg, ++j);
+		CMassiveGitTask tasks[] = { mgtAdd, mgtUpdateIndexForceRemove, mgtUpdateIndex, mgtRm, mgtRmFCache, mgtReset };
+		int progress = 0, maxProgress = 0;
+		for (int j = 0; j < _countof(tasks); ++j)
+			maxProgress += tasks[j].GetListCount();
+		for (int j = 0; j < _countof(tasks); ++j)
+			bAddSuccess = bAddSuccess && UpdateIndex(tasks[j], sysProgressDlg, progress += tasks[j].GetListCount(), maxProgress);
 
 		if (sysProgressDlg.HasUserCancelled())
 			bAddSuccess = false;
