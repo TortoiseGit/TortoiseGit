@@ -647,9 +647,6 @@
     <ClCompile Include="SendMail.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\TaskbarUUID.cpp">
-      <Filter>Utils\UI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
