@@ -712,6 +712,9 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 
 	// create arrays which are aware of the current filter
 	DWORD  starttime = GetTickCount();
+
+	GIT_MAILMAP mailmap = NULL;
+	git_read_mailmap(&mailmap);
 	for (INT_PTR i = 0; i < m_ShowList.GetCount(); ++i)
 	{
 		GitRev* pLogEntry = reinterpret_cast<GitRev*>(m_ShowList.SafeGetAt(i));
@@ -727,6 +730,18 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		if (strAuthor.IsEmpty())
 		{
 			strAuthor.LoadString(IDS_STATGRAPH_EMPTYAUTHOR);
+		}
+		if (mailmap)
+		{
+			CStringA email2A = CUnicodeUtils::GetUTF8(pLogEntry->GetAuthorEmail());
+			struct payload_struct { GitRev* rev; const char *authorName; };
+			payload_struct payload = { pLogEntry, NULL };
+			const char *author1 = git_get_mailmap_author(mailmap, email2A, &payload, 
+				[] (void *payload) -> const char * { return ((payload_struct *)payload)->authorName = _strdup(CUnicodeUtils::GetUTF8(((payload_struct *)payload)->rev->GetAuthorName())); });
+			if (payload.authorName)
+				free((void *)payload.authorName);
+			if (author1)
+				strAuthor = CUnicodeUtils::GetUnicode(author1);
 		}
 		m_parAuthors.Add(strAuthor);
 		m_parDates.Add((DWORD)pLogEntry->GetCommitterDate().GetTime());
@@ -750,6 +765,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 
 				if (progress.HasUserCancelled())
 				{
+					git_clear_mailmap(mailmap);
 					return -1;
 				}
 			}
@@ -768,6 +784,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		}
 		
 	}
+	git_clear_mailmap(mailmap);
 
 	CDateSorter W_Sorter;
 	W_Sorter.m_parAuthors		= &m_parAuthors;
