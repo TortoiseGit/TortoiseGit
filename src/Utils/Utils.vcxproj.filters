@@ -195,6 +195,9 @@
     <ClCompile Include="TreePropSheet\TreePropSheet.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
+    <ClCompile Include="TaskbarUUID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACEdit.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="TreePropSheet\TreePropSheet.h">
       <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskbarUUID.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

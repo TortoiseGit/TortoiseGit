@@ -19,6 +19,7 @@
 #pragma once
 
 #include "ResizableDialog.h"
+#include "TaskbarUUID.h"
 
 #pragma comment(lib, "htmlhelp.lib")
 
@@ -235,6 +236,10 @@ protected:
 		GetCursorPos(&pt);
 		SetCursorPos(pt.x, pt.y);
 	}
+
+protected:
+	DECLARE_MESSAGE_MAP()
+
 private:
 	HCURSOR OnQueryDragIcon()
 	{
@@ -260,6 +265,11 @@ private:
 		}
 	}
 
+	afx_msg LRESULT OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+	{
+		SetUUIDOverlayIcon(m_hWnd);
+		return 0;
+	}
 
 	HICON m_hIcon;
 };
@@ -279,7 +289,7 @@ public:
 	: m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
-	virtual ~CStateDialog();
+	virtual ~CStateDialog() {};
 
 private:
 	// flags
@@ -341,5 +351,22 @@ private:
 	CRect		m_rcOrgWindowRect;
 };
 
-typedef CStandAloneDialogTmpl<CDialog> CStandAloneDialog;
-typedef CStandAloneDialogTmpl<CStateDialog> CStateStandAloneDialog;
+class CStandAloneDialog : public CStandAloneDialogTmpl<CDialog>
+{
+public:
+	CStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+protected:
+	DECLARE_MESSAGE_MAP()
+private:
+	DECLARE_DYNAMIC(CStandAloneDialog)
+};
+
+class CStateStandAloneDialog : public CStandAloneDialogTmpl<CStateDialog>
+{
+public:
+	CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
+protected:
+	DECLARE_MESSAGE_MAP()
+private:
+	DECLARE_DYNAMIC(CStateStandAloneDialog)
+};

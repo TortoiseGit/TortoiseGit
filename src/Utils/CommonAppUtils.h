@@ -32,7 +32,7 @@ public:
 	*/
 	static bool LaunchApplication(const CString& sCommandLine, UINT idErrMessageFormat, bool bWaitForStartup, CString *cwd = NULL, bool uac = false);
 
-	static bool RunTortoiseGitProc(const CString& sCommandLine, bool uac = false);
+	static bool RunTortoiseGitProc(const CString& sCommandLine, bool uac = false, bool includeGroupingUUID = true);
 
 	static bool IsAdminLogin();
 

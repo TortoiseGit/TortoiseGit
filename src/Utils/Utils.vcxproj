@@ -138,6 +138,7 @@
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="SysImageList.cpp" />
     <ClCompile Include="SysInfo.cpp" />
+    <ClCompile Include="TaskbarUUID.cpp" />
     <ClCompile Include="TempFile.cpp" />
     <ClCompile Include="UnicodeUtils.cpp" />
     <ClCompile Include="MiscUI\BaseWindow.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="SoundUtils.h" />
     <ClInclude Include="strconv.h" />
     <ClInclude Include="SysInfo.h" />
+    <ClInclude Include="TaskbarUUID.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TreePropSheet\PropPageFrame.h" />
