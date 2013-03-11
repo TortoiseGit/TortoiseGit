@@ -890,7 +890,13 @@ int CRebaseDlg::VerifyNoConflict()
 int CRebaseDlg::FinishRebase()
 {
 	if(this->m_IsCherryPick) //cherry pick mode no "branch", working at upstream branch
+	{
+		m_sStatusText.LoadString(IDS_DONE);
+		m_CtrlStatusText.SetWindowText(m_sStatusText);
+		m_bStatusWarning = false;
+		m_CtrlStatusText.Invalidate();
 		return 0;
+	}
 
 	CGitHash head;
 	if (g_Git.GetHash(head, _T("HEAD")))
@@ -1390,12 +1396,22 @@ void CRebaseDlg::UpdateProgress()
 	else
 		index = m_CommitList.GetItemCount()-m_CurrentRebaseIndex;
 
-	m_ProgressBar.SetRange32(1, m_CommitList.GetItemCount());
-	m_ProgressBar.SetPos(index);
+	// introduced an offset so that only handled revisions are shown in the progress bars
+	int finishedCommits = index - 1;
+	if (m_RebaseStage == REBASE_FINISH || finishedCommits == -1)
+		finishedCommits = index;
+
+	m_ProgressBar.SetRange32(0, m_CommitList.GetItemCount());
+	m_ProgressBar.SetPos(finishedCommits);
 	if (m_pTaskbarList)
 	{
-		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-		m_pTaskbarList->SetProgressValue(m_hWnd, index, m_CommitList.GetItemCount());
+		if (finishedCommits == m_CommitList.GetItemCount())
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS); // when we finished all commits, do not show a progress any more on the taskbar to show we finished
+		else
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, finishedCommits, m_CommitList.GetItemCount());
+		}
 	}
 
 	if(m_CurrentRebaseIndex>=0 && m_CurrentRebaseIndex< m_CommitList.GetItemCount())
@@ -1690,8 +1706,6 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 	if (m_RebaseStage == REBASE_FINISH)
 	{
 		FinishRebase();
-		if (m_pTaskbarList)
-			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 		return 0;
 	}
 	UpdateCurrentStatus();
