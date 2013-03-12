@@ -36,6 +36,37 @@
 #include "InputDlg.h"
 #include "SysProgressDlg.h"
 
+static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
+{
+	if (ref.Left(13) == _T("refs/remotes/"))
+		ref = ref.Mid(13);
+	else if (ref.Left(8) == _T("remotes/"))
+		ref = ref.Mid(8);
+
+	STRING_VECTOR list;
+	int result = g_Git.GetRemoteList(list);
+	if (result != 0)
+		return result;
+
+	for (size_t i = 0; i < list.size(); ++i)
+	{
+		if (ref.Left(list[i].GetLength() + 1) == list[i] + _T("/"))
+		{
+			remote = list[i];
+			branch = ref.Mid(list[i].GetLength() + 1);
+			return 0;
+		}
+		if (ref == list[i])
+		{
+			remote = list[i];
+			branch = _T("");
+			return 0;
+		}
+	}
+
+	return -1;
+}
+
 void SetSortArrow(CListCtrl * control, int nColumn, bool bAscending)
 {
 	if (control == NULL)
@@ -696,11 +727,9 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 		CString cmd;
 		if(bIsRemoteBranch)
 		{
-			int slash = branchToDelete.Find(L'/');
-			if(slash < 0)
+			CString remoteName, remoteBranchToDelete;
+			if (SplitRemoteBranchName(branchToDelete, remoteName, remoteBranchToDelete))
 				return false;
-			CString remoteName = branchToDelete.Left(slash);
-			CString remoteBranchToDelete = branchToDelete.Mid(slash + 1);
 
 			if(CAppUtils::IsSSHPutty())
 			{
@@ -834,11 +863,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			bShowFetchOption  = true;
 			bShowCreateBranchOption = true;
 
-			int dummy = 0;//Needed for tokenize
-			remoteName = selectedLeafs[0]->GetRefName();
-			remoteName = remoteName.Mid(13);
-			remoteName = remoteName.Tokenize(L"/", dummy);
-			fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
+			CString remoteBranch;
+			if (SplitRemoteBranchName(selectedLeafs[0]->GetRefName(), remoteName, remoteBranch))
+				bShowFetchOption = false;
+			else
+				fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
 		{
@@ -957,10 +986,9 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			bAddSeparator = true;
 			if(selectedLeafs.empty())
 			{
-				int dummy = 0;//Needed for tokenize
-				remoteName = pTree->GetRefName();
-				remoteName = remoteName.Mid(13);
-				remoteName = remoteName.Tokenize(L"/", dummy);
+				CString remoteBranch;
+				if (SplitRemoteBranchName(pTree->GetRefName(), remoteName, remoteBranch))
+					remoteName = _T("");
 				if(!remoteName.IsEmpty())
 				{
 					CString temp;
