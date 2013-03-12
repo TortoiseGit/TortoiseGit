@@ -313,7 +313,6 @@ private:
 	mutable CString m_sProjectRoot;
 
 	//used for rename case
-	mutable CString m_sOldBackslashPath;
 	mutable CString m_sOldFwdslashPath;
 
 	// Have we yet determined if this is a directory or not?
