@@ -55,9 +55,34 @@ bool DiffCommand::Execute()
 				git_wc_status_kind status = git_wc_status_none;
 				CString topDir;
 				if (orgCmdLinePath.HasAdminDir(&topDir))
+				{
+					g_Git.Run(_T("git.exe update-index -- ") + cmdLinePath.GetGitPathString(), nullptr); // make sure we get the right status
 					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
+				}
 				if (status == git_wc_status_added)
+				{
+					if (!g_Git.IsInitRepos())
+					{
+						// this might be a rename, try to find original name
+						BYTE_VECTOR cmdout;
+						g_Git.Run(_T("git.exe diff-index --raw HEAD -M -C -z"), &cmdout);
+						CTGitPathList changedFiles;
+						changedFiles.ParserFromLog(cmdout);
+						for (int i = 0; i < changedFiles.GetCount(); ++i)
+						{
+							if (changedFiles[i].GetGitPathString() == cmdLinePath.GetGitPathString())
+							{
+								if (!changedFiles[i].GetGitOldPathString().IsEmpty())
+								{
+									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
+									return !!diff.Diff(&cmdLinePath, &oldPath, git_revnum_t(GIT_REV_ZERO), git_revnum_t(_T("HEAD")));
+								}
+								break;
+							}
+						}
+					}
 					cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
+				}
 
 				bRet = !!diff.Diff(&cmdLinePath,&cmdLinePath,git_revnum_t(GIT_REV_ZERO),git_revnum_t(_T("HEAD")));
 			}
