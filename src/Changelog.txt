@@ -48,6 +48,7 @@ Released: unreleased
  * Fixed issue #1686: Wrong stash list after "Stash Apply" in RefLog
  * Fixed issue #1689: Option to make Git Commit GUI look different from TortoiseSVN equivalent
  * Fixed issue #1693: Cherry pick progress bar doesn't stay green
+ * Fixed issue #1276: Cannot show diff of renamed file
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
