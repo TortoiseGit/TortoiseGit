@@ -44,6 +44,9 @@ protected:
 	CHistoryCombo	m_ChooseVersioinVersion;
 	CButton			m_RadioBranch;
 	CButton			m_RadioTag;
+	CString			m_pendingRefName;
+	bool			m_bNotFullName;
+	bool			m_bSelectRef;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -132,8 +135,13 @@ protected:
 		UpdateRevsionName();
 		CString resultRef = CBrowseRefsDlg::PickRef(false, m_VersionName, gPickRef_All);
 		if(resultRef.IsEmpty())
+		{
+			Init(false, true, false);
 			return;
-		SelectRef(resultRef, false);
+		}
+		m_pendingRefName = resultRef;
+		m_bNotFullName = false;
+		Init(false, true, true);
 	}
 
 	void SelectRef(CString refName, bool bRefNameIsPossiblyNotFullName = true)
@@ -183,11 +191,15 @@ protected:
 
 		int current;
 		g_Git.GetBranchList(list,&current,CGit::BRANCH_ALL_F);
+		for (int i = m_ChooseVersioinBranch.GetCount(); i >= 0; --i)
+			m_ChooseVersioinBranch.DeleteString(i);
 		m_ChooseVersioinBranch.AddString(list, false);
 		m_ChooseVersioinBranch.SetCurSel(current);
 
 		list.clear();
 		g_Git.GetTagList(list);
+		for (int i = m_ChooseVersioinTags.GetCount(); i >= 0; --i)
+			m_ChooseVersioinTags.DeleteString(i);
 		m_ChooseVersioinTags.AddString(list, false);
 		m_ChooseVersioinTags.SetCurSel(0);
 
@@ -201,16 +213,19 @@ protected:
 		m_RadioBranch.EnableWindow(TRUE);
 		m_RadioTag.EnableWindow(TRUE);
 
-		if (m_initialRefName.IsEmpty())
-			OnVersionChanged();
-		else
-			SelectRef(m_initialRefName);
+		if (m_bSelectRef)
+		{
+			if (m_pendingRefName.IsEmpty())
+				OnVersionChanged();
+			else
+				SelectRef(m_pendingRefName, m_bNotFullName);
+		}
 
 		if (m_bIsFirstTimeToSetFocus && m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
 			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
 		m_bIsFirstTimeToSetFocus = false;
 	}
-	void Init(bool setFocusToBranchComboBox = false)
+	void Init(bool setFocusToBranchComboBox = false, bool bReInit = false, bool bSelectRef = true)
 	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
@@ -220,6 +235,12 @@ protected:
 		m_RadioTag.EnableWindow(FALSE);
 
 		m_bIsFirstTimeToSetFocus = setFocusToBranchComboBox;
+		m_bSelectRef = bSelectRef;
+		if (!bReInit)
+		{
+			m_pendingRefName = m_initialRefName;
+			m_bNotFullName = true;
+		}
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 

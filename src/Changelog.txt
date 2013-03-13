@@ -49,6 +49,7 @@ Released: unreleased
  * Fixed issue #1689: Option to make Git Commit GUI look different from TortoiseSVN equivalent
  * Fixed issue #1693: Cherry pick progress bar doesn't stay green
  * Fixed issue #1276: Cannot show diff of renamed file
+ * Fixed issue #1696: Fetch from switch dialog does not refresh branches list
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
