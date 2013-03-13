@@ -2902,8 +2902,9 @@ void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
-		LONG xpos = m_nOffsetChar + (point.x - GetMarginWidth());
+		LONG xpos = point.x - GetMarginWidth();
 		LONG xpos2 = xpos / GetCharWidth();
+		xpos2 += m_nOffsetChar;
 		if ((xpos % GetCharWidth()) >= (GetCharWidth()/2))
 			xpos2++;
 		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, xpos2);
