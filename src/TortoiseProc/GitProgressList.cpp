@@ -2135,7 +2135,7 @@ bool CGitProgressList::CmdSendMail(CString& sWindowTitle, bool& /*localoperation
 
 bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 {
-	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_CLONE))
+	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 	{
 		// should never run to here
 		ASSERT(0);
