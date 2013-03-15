@@ -691,11 +691,7 @@ void CTortoiseProcApp::CheckForNewerVersion()
 				{
 					oldweek = week;
 #endif
-					TCHAR com[MAX_PATH+100];
-					GetModuleFileName(NULL, com, MAX_PATH);
-					_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck"));
-
-					CAppUtils::LaunchApplication(com, 0, false);
+					CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck"), false, false);
 				}
 			}
 		}
