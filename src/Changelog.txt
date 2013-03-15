@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #1493: Remember Push Dialog "Push to all remotes" option state
  * Enhanced Windows 7 taskbar grouping and highlighting of windows belonging to the same working tree
  * .mailmap is now used for Log-Dialog Statistics
+ * Fixed issue #1610: Average values on statistics dialog graph
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

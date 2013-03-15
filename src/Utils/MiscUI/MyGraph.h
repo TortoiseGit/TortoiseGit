@@ -33,6 +33,7 @@ public:
 // Implementation.
 private:
 	int		GetMaxDataValue(bool bStackedGraph) const;
+ 	int		GetAverageDataValue() const;
 	int		GetNonZeroElementCount() const;
 	int		GetDataTotal() const;
 	void	SetTipRegion(int nGroup, const CRect& rc);
@@ -95,6 +96,7 @@ private:
 	int		GetMaxSeriesSize() const;
 	int		GetMaxNonZeroSeriesSize() const;
 	int		GetMaxDataValue() const;
+	int		GetAverageDataValue() const;
 	int		GetNonZeroSeriesCount() const;
 
 	CString	GetTipText() const;

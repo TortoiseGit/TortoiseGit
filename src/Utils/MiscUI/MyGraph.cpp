@@ -162,6 +162,20 @@ int MyGraphSeries::GetMaxDataValue(bool bStackedGraph) const
 	return nMax;
 }
 
+// Returns the average data value in this series.
+int MyGraphSeries::GetAverageDataValue() const
+{
+	VALIDATE;
+
+	int nTotal = 0;
+
+	for (int nGroup = 0; nGroup < m_dwaValues.GetSize(); ++nGroup) {
+		nTotal += static_cast<int> (m_dwaValues.GetAt(nGroup));
+	}
+
+	return nTotal / m_dwaValues.GetSize();
+}
+
 // Returns the number of data points that are not zero.
 int MyGraphSeries::GetNonZeroElementCount() const
 {
@@ -382,6 +396,18 @@ CString MyGraph::GetTipText() const
 		sTip = "Title";
 	}
 	else {
+		int maxXAxis = m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2));
+		if (pt.x >= m_ptOrigin.x && pt.x <= maxXAxis) {
+			int average = GetAverageDataValue();
+			int nMaxDataValue = max(GetMaxDataValue(), 1);
+			double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
+				(average / (double)nMaxDataValue);
+			if (pt.y >= barTop - 2 && pt.y <= barTop + 2) {
+				sTip.Format(_T("Average: %d %s (%d%%)"), average, m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
+				return sTip;
+			}
+		}
+
 		POSITION pos(m_olMyGraphSeries.GetHeadPosition());
 
 		while (pos && sTip=="") {
@@ -516,6 +542,25 @@ int MyGraph::GetMaxDataValue() const
 	}
 
 	return nMax;
+}
+
+// Get the average data value in all series.
+int MyGraph::GetAverageDataValue() const
+{
+	VALIDATE;
+
+	int nTotal = 0, nCount = 0;
+	POSITION pos(m_olMyGraphSeries.GetHeadPosition());
+
+	while (pos) {
+		MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
+		ASSERT_VALID(pSeries);
+
+		nTotal += pSeries->GetAverageDataValue();
+		++nCount;
+	}
+
+	return nTotal / nCount;
 }
 
 // How many series are populated?
@@ -1156,6 +1201,14 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 			++nSeries;
 		}
 	}
+	
+	if (!m_bStackedGraph) {
+		int nMaxDataValue = max(GetMaxDataValue(), 1);
+		double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
+			(GetAverageDataValue() / (double)nMaxDataValue);
+		dc.MoveTo(m_ptOrigin.x, barTop);
+		VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
+	}
 }
 
 //
@@ -1252,6 +1305,12 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 		VERIFY(dc.SelectObject(pBrushOld));
 		br.DeleteObject();
 	}
+
+	int nMaxDataValue = max(GetMaxDataValue(), 1);
+	double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
+		(GetAverageDataValue() / (double)nMaxDataValue);
+	dc.MoveTo(m_ptOrigin.x, barTop);
+	VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
 }
 
 //
