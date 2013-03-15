@@ -6,9 +6,9 @@
 // This file is distributed under the same license as TortoiseSVN
 //
 // Last commit by:
-// $Author: tortoisesvn $
-// $Date: 2010-08-07 16:09:56 +0200 (Sa, 07. Aug 2010) $
-// $Rev: 19994 $
+// $Author$
+// $Date$
+// $Rev$
 //
 // Authors:
 // Arne Moor, 2006
@@ -26,43 +26,45 @@ function PptAppMajorVersion(PowerPoint)
     try
     {
         pptVersion = PowerPoint.Version.toString();
-        if (pptVersion.indexOf(".") > 0) 
+        if (pptVersion.indexOf(".") > 0)
         {
             pptVersion = pptVersion.substr(0, pptVersion.indexOf("."));
         }
-        if (pptVersion == "")
+        if (pptVersion === "")
             return 0;
         else
             return parseInt(pptVersion);
     }
-    catch(e)
+    catch (e)
     {
         return 0;
-    }    
+    }
 }
 
-var objArgs,num,sBasePpt,sNewPpt,objScript,powerpoint,source;
+var objArgs, num, sBasePpt, sNewPpt, objScript, powerpoint, source;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
 if (num < 2)
 {
-   WScript.Echo("Usage: [CScript | WScript] diff-ppt.js base.ppt new.ppt");
-   WScript.Quit(1);
+    WScript.Echo("Usage: [CScript | WScript] diff-ppt.js base.ppt new.ppt");
+    WScript.Quit(1);
 }
 
 sBasePpt = objArgs(0);
 sNewPpt = objArgs(1);
 
 objScript = new ActiveXObject("Scripting.FileSystemObject");
-if ( ! objScript.FileExists(sBasePpt))
+
+if (!objScript.FileExists(sBasePpt))
 {
     WScript.Echo("File " + sBasePpt + " does not exist.  Cannot compare the presentations.");
     WScript.Quit(1);
 }
-if ( ! objScript.FileExists(sNewPpt))
+
+if (!objScript.FileExists(sNewPpt))
 {
-    WScript.Echo("File " + sNewPpt +" does not exist.  Cannot compare the presentations.");
+    WScript.Echo("File " + sNewPpt + " does not exist.  Cannot compare the presentations.");
     WScript.Quit(1);
 }
 
@@ -70,20 +72,20 @@ objScript = null;
 
 try
 {
-   powerpoint = WScript.CreateObject("Powerpoint.Application");
+    powerpoint = WScript.CreateObject("Powerpoint.Application");
 }
-catch(e)
+catch (e)
 {
-   WScript.Echo("You must have Microsoft Powerpoint installed to perform this operation.");
-   WScript.Quit(1);
+    WScript.Echo("You must have Microsoft Powerpoint installed to perform this operation.");
+    WScript.Quit(1);
 }
 
-if (PptAppMajorVersion(powerpoint) == 12) 
+if (PptAppMajorVersion(powerpoint) === 12)
 {
     WScript.Echo("Microsoft Powerpoint 2007 doesn't provide the DIFF features any more. Sorry!");
     WScript.Quit(1);
 }
-else 
+else
 {
     powerpoint.visible = true;
 

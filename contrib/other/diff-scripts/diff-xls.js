@@ -29,7 +29,7 @@ var vbExclamation = 0x30;
 var xlNone = -4142;
 var xlMaximized = -4137;
 var xlArrangeStyleHorizontal = -4128;
-var xlCellValue  = 1;
+var xlCellValue = 1;
 //var xlExpression = 2;
 //var xlEqual = 3;
 var xlNotEqual = 4;
@@ -48,7 +48,8 @@ var vOffice2003 = 11;
 var aWarningMessages = Array();
 
 var objArgs = WScript.Arguments;
-if (objArgs.length < 2) {
+if (objArgs.length < 2)
+{
     Abort("Usage: [CScript | WScript] diff-xls.js base.xls new.xls", "Invalid arguments");
 }
 
@@ -56,40 +57,56 @@ var sBaseDoc = objArgs(0);
 var sNewDoc = objArgs(1);
 
 var objScript = new ActiveXObject("Scripting.FileSystemObject");
-if (objScript.GetBaseName(sBaseDoc) === objScript.GetBaseName(sNewDoc)) {
-    Abort("File '" + sBaseDoc +"' and '" + sNewDoc + "' is same file name.\nCannot compare the documents.", "Same file name");
+
+if (objScript.GetBaseName(sBaseDoc) === objScript.GetBaseName(sNewDoc))
+{
+    Abort("File '" + sBaseDoc + "' and '" + sNewDoc + "' is same file name.\nCannot compare the documents.", "Same file name");
 }
-if (!objScript.FileExists(sBaseDoc)) {
-    Abort("File '" + sBaseDoc +"' does not exist.\nCannot compare the documents.", "File not found");
+
+if (!objScript.FileExists(sBaseDoc))
+{
+    Abort("File '" + sBaseDoc + "' does not exist.\nCannot compare the documents.", "File not found");
 }
-if (!objScript.FileExists(sNewDoc)) {
-    Abort("File '" + sNewDoc +"' does not exist.\nCannot compare the documents.", "File not found");
+
+if (!objScript.FileExists(sNewDoc))
+{
+    Abort("File '" + sNewDoc + "' does not exist.\nCannot compare the documents.", "File not found");
 }
+
 sBaseDoc = objScript.GetAbsolutePathName(sBaseDoc);
 sNewDoc = objScript.GetAbsolutePathName(sNewDoc);
 objScript = null;
 
 var objExcelApp;
-try {
+try
+{
     objExcelApp = WScript.CreateObject("Excel.Application");
-} catch (e) {
+}
+catch (e)
+{
     Abort("You must have Excel installed to perform this operation.", "Excel Instantiation Failed");
 }
 var fExcelVersion = parseInt(objExcelApp.Version);
 
 // Open base Excel book
 var objBaseWorkbook;
-try {
+try
+{
     objBaseWorkbook = objExcelApp.Workbooks.Open(sBaseDoc, null, true);
-} catch(e) {
+}
+catch (e)
+{
     Abort("Failed to open '" + sBaseDoc + "'\nIt might not be a valid Excel file.", "File open error");
 }
 
 // Open new Excel book
 var objNewWorkbook;
-try {
+try
+{
     objNewWorkbook = objExcelApp.Workbooks.Open(sNewDoc, null, true);
-} catch(e) {
+}
+catch (e)
+{
     Abort("Failed to open '" + sNewDoc + "'\nIt might not be a valid Excel file.", "File open error");
 }
 
@@ -97,51 +114,65 @@ try {
 objExcelApp.Visible = true;
 
 // Arrange windows
-if (objBaseWorkbook.ProtectWindows || objNewWorkbook.ProtectWindows) {
+if (objBaseWorkbook.ProtectWindows || objNewWorkbook.ProtectWindows)
+{
     StoreWarning("Unable to arrange windows because one or both workbooks are protected.");
-} else {
+}
+else
+{
     // Make windows a compare side by side view
-    if (fExcelVersion >= vOffice2003) {
+    if (fExcelVersion >= vOffice2003)
+    {
         objExcelApp.Windows.CompareSideBySideWith(objExcelApp.Windows(2).Caption);
     }
     objExcelApp.Application.WindowState = xlMaximized;
     objExcelApp.Windows.Arrange(xlArrangeStyleHorizontal);
 }
 
-if (!bFastMode && objNewWorkbook.ProtectWindows) {
+if (!bFastMode && objNewWorkbook.ProtectWindows)
+{
     StoreWarning("Fallback to fast mode bacause " + objNewWorkbook.Name + " is protected.");
     bFastMode = true;
 }
 
 // Mark differences in sNewDoc red
 var length = objNewWorkbook.Worksheets.Count;
-for (var i = 1; i <= length; i++) {
+for (var i = 1; i <= length; i++)
+{
     var objBaseWorksheet = objBaseWorkbook.Worksheets(i);
     var objNewWorksheet = objNewWorkbook.Worksheets(i);
 
     UnhideWorksheet(objBaseWorksheet);
     UnhideWorksheet(objNewWorksheet);
 
-    if (!bFastMode) {
+    if (!bFastMode)
+    {
         objBaseWorkbook.Sheets(i).Copy(null, objNewWorkbook.Sheets(objNewWorkbook.Sheets.Count));
         var objDummyWorksheet = objNewWorkbook.Sheets(objNewWorkbook.Sheets.Count);
         objDummyWorksheet.Name = "Dummy_for_Comparison" + i;
         objDummyWorksheet.Visible = true;
-        if (fExcelVersion >= vOffice2003) {
+        if (fExcelVersion >= vOffice2003)
+        {
             objDummyWorksheet.Tab.ColorIndex = 16;  // 16:Dark gray RGB(128,128,128)
         }
     }
 
-    if (objNewWorksheet.ProtectContents) {
+    if (objNewWorksheet.ProtectContents)
+    {
         StoreWarning("Unable to mark differences to " +
             ToAbsoluteReference(objNewWorksheet) +
             " because the Worksheet is protected.");
-    } else {
+    }
+    else
+    {
         objNewWorksheet.Cells.FormatConditions.Delete();
         var sFormula;
-        if (bFastMode) {
+        if (bFastMode)
+        {
             sFormula = "=INDIRECT(\"" + ToAbsoluteReference(objBaseWorksheet) + "!\"&ADDRESS(ROW(),COLUMN()))";
-        } else {
+        }
+        else
+        {
             sFormula = "=INDIRECT(\"Dummy_for_Comparison" + i + "!\"&ADDRESS(ROW(),COLUMN()))";
         }
         objNewWorksheet.Cells.FormatConditions.Add(xlCellValue, xlNotEqual, sFormula);
@@ -163,19 +194,23 @@ ShowWarning();
 
 WScript.Quit(0);
 
+
 // ----- functions -----
 
 // Show Message Dialog
 // VBcript's MsgBox emulation
-function MsgBox(sMessage, iButtons, sTitle) {
+function MsgBox(sMessage, iButtons, sTitle)
+{
     var objShell = new ActiveXObject("WScript.Shell");
     objShell.popup(sMessage, 0, sTitle, iButtons);
 }
 
 // Show an error message and quit script with cleanup Excel Application Object.
-function Abort(sMessage, sTitle) {
+function Abort(sMessage, sTitle)
+{
     MsgBox(sMessage, vbCritical, sTitle);
-    if (objExcelApp !== null) {
+    if (objExcelApp !== null)
+    {
         objExcelApp.Quit();
     }
     WScript.Quit(1);
@@ -185,27 +220,40 @@ function Abort(sMessage, sTitle) {
 // This also sets color to the tab, if Office2003 or later.
 //  - 46(Orange)      : Hidden Worksheet
 //  - xlNone(default) : Not hidden Worksheet
-function UnhideWorksheet(objWorksheet) {
-    if (objWorksheet.Visible) {
-        if (fExcelVersion >= vOffice2003) {
-            if (objWorksheet.Tab.ColorIndex !== xlNone) {
-                if (objWorksheet.Parent.ProtectStructure) {
+function UnhideWorksheet(objWorksheet)
+{
+    if (objWorksheet.Visible)
+    {
+        if (fExcelVersion >= vOffice2003)
+        {
+            if (objWorksheet.Tab.ColorIndex !== xlNone)
+            {
+                if (objWorksheet.Parent.ProtectStructure)
+                {
                     StoreWarning("Unable to set tab color to " +
                         ToAbsoluteReference(objWorksheet) +
                         " because the Workbook's structure is protected.");
-                } else {
+                }
+                else
+                {
                     objWorksheet.Tab.ColorIndex = xlNone;
                 }
             }
         }
-    } else {
-        if (objWorksheet.Parent.ProtectStructure) {
+    }
+    else
+    {
+        if (objWorksheet.Parent.ProtectStructure)
+        {
             StoreWarning("Unable to unhide " +
                 ToAbsoluteReference(objWorksheet) +
                 " because the Workbook's structure is protected.");
-        } else {
+        }
+        else
+        {
             objWorksheet.Visible = true;
-            if (fExcelVersion >= vOffice2003) {
+            if (fExcelVersion >= vOffice2003)
+            {
                 objWorksheet.Tab.ColorIndex = 10;   // 10:Green RGB(0,128,0)
             }
         }
@@ -213,24 +261,33 @@ function UnhideWorksheet(objWorksheet) {
 }
 
 // Generate Aubolute Reference Formula of Worksheet.
-function ToAbsoluteReference(objWorksheet) {
+
+function ToAbsoluteReference(objWorksheet)
+{
     return "[" + objWorksheet.Parent.Name + "]" + objWorksheet.Name;
 }
 
 // Accumulate a warning message.
-function StoreWarning(sMessage) {
+
+function StoreWarning(sMessage)
+{
     aWarningMessages[aWarningMessages.length] = sMessage;
 }
 
 // Show accumulated warning messages if exist.
 // To avoid make huge message dialog, this limits message count to show.
-function ShowWarning() {
-    if (aWarningMessages.length === 0) {
+
+function ShowWarning()
+{
+    if (aWarningMessages.length === 0)
+    {
         return;
     }
     var sMessage = "The following warnings occurred while processing.\n";
-    for(var i = 0; i < aWarningMessages.length; i++) {
-        if (i >= 10) {
+    for (var i = 0; i < aWarningMessages.length; i++)
+    {
+        if (i >= 10)
+        {
             sMessage += "... And more " + (aWarningMessages.length - i) + " messages";
             break;
         }
