@@ -1,7 +1,7 @@
 ﻿/******************************************************************************
     MakeUTF8.c
 
-Copyright (C) 2002 - 2006 Simon Large
+Copyright (C) 2002 - 2006, 2013 Simon Large
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -41,6 +41,10 @@ changed in other environments.
 No special compiler options were used. CL MakeUTF8.c works OK.
 ******************************************************************************/
 
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -58,12 +62,12 @@ char *help =
 "Add UTF-8 byte-order-mark and XML-tag to start of text file.\n\n"
 "Use: MakeUTF8 [ -b ] [ -x ] file [ file ... ]\n"
 "     -b option adds/corrects BOM in file if not already present\n"
-"     -x option adds/corrects XML tag if not already present\n" 
+"     -x option adds/corrects XML tag if not already present\n"
 "     With no options, just report current state\n\n";
 
 int ProcessFile(const char *FName, const char *TName, int Action);
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int n, Action = 0, Result = 0;
     char Path[_MAX_PATH], Temp[_MAX_PATH];
@@ -79,12 +83,12 @@ main(int argc, char *argv[])
 
     for (n = 1; n < argc; n++)
     {
-        if (stricmp(argv[n], "-b") == 0)
+        if (_stricmp(argv[n], "-b") == 0)
         {
             Action |= ADD_BOM | DOUBLE_BOM;
             continue;
         }
-        if (stricmp(argv[n], "-x") == 0)
+        if (_stricmp(argv[n], "-x") == 0)
         {
             Action |= XML_TAG;
             continue;
@@ -102,7 +106,7 @@ main(int argc, char *argv[])
             if (FName == NULL) FName = strrchr(Path, ':');
             if (FName == NULL) FName = Path;
             else ++FName;
-            
+
             // Process all matching files.
             do
             {
@@ -168,16 +172,16 @@ int ProcessFile(const char *FName, const char *TName, int Action)
 {
     FILE *fp, *fpout;
     char Buffer[BUFSIZE + 1024];
-    int Len;
+    size_t Len;
     size_t NumRead;
     int Changed = 0, Checked = 0;
-    int UTFtaglen;
+    size_t UTFtaglen;
     char *TagStart, *TagStop;
     char *AfterBOM = Buffer;
-    
+
     if ((fp = fopen(FName, "r")) == NULL)
         return -1;
-        
+
     // Check if output file exists already
     if ((fpout = fopen(TName, "r")) != NULL) {
         fprintf(stderr, "%s:\tTemp file already exists\n", TName);
@@ -185,7 +189,7 @@ int ProcessFile(const char *FName, const char *TName, int Action)
         fclose(fp);
         return -1;
     }
-    
+
     while ((NumRead = fread(Buffer, 1, BUFSIZE, fp)) > 0)
     {
         if (!Checked)
@@ -224,7 +228,7 @@ int ProcessFile(const char *FName, const char *TName, int Action)
                     NumRead += 3;
                 }
             }
-            
+
             // Check for XML tag <?xml version="1.0" encoding="UTF-8"?>
             Buffer[NumRead] = '\0';     // Add null terminator for string search.
             UTFtaglen = strlen(UTFtag);
