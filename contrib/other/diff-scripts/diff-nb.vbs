@@ -17,8 +17,8 @@ dim objArgs, objScript, objDiffNotebook
 Set objArgs = WScript.Arguments
 num = objArgs.Count
 if num < 2 then
-   MsgBox "Usage: [CScript | WScript] compare.vbs base.nb new.nb", vbExclamation, "Invalid arguments"
-   WScript.Quit 1
+    MsgBox "Usage: [CScript | WScript] compare.vbs base.nb new.nb", vbExclamation, "Invalid arguments"
+    WScript.Quit 1
 end if
 
 sBaseDoc = objArgs(0)
