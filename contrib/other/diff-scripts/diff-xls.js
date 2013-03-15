@@ -260,15 +260,13 @@ function UnhideWorksheet(objWorksheet)
     }
 }
 
-// Generate Aubolute Reference Formula of Worksheet.
-
+// Generate Absolute Reference Formula of Worksheet.
 function ToAbsoluteReference(objWorksheet)
 {
     return "[" + objWorksheet.Parent.Name + "]" + objWorksheet.Name;
 }
 
 // Accumulate a warning message.
-
 function StoreWarning(sMessage)
 {
     aWarningMessages[aWarningMessages.length] = sMessage;
@@ -276,7 +274,6 @@ function StoreWarning(sMessage)
 
 // Show accumulated warning messages if exist.
 // To avoid make huge message dialog, this limits message count to show.
-
 function ShowWarning()
 {
     if (aWarningMessages.length === 0)
