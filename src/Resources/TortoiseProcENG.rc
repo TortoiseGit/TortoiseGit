@@ -3081,6 +3081,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_SYSTEM_WINCRED      "wincred - all Windows users"
+    IDS_CHECKNEWER_YOURVERSIONSTR "Your version is: %s"
+    IDS_CHECKFORUPDATE_MSYSGITTITLE "Check For Updates (MsysGit) - TortoiseGit"
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"

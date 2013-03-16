@@ -2245,6 +2245,10 @@ msgstr ""
 msgid "Check"
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "Check For Updates (MsysGit) - TortoiseGit"
+msgstr ""
+
 #. Resource IDs: (174)
 msgid "Check For Updates - TortoiseGit"
 msgstr ""
@@ -9202,6 +9206,11 @@ msgstr ""
 #. Resource IDs: (201)
 #, c-format
 msgid "Your version is: %d.%d.%d.%d"
+msgstr ""
+
+#. Resource IDs: (89)
+#, c-format
+msgid "Your version is: %s"
 msgstr ""
 
 #. Resource IDs: (1074)

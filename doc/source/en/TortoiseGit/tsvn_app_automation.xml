@@ -561,6 +561,7 @@ Don't touch these lines:
 							<entry>
 								<option>/visible</option>: Shows the dialog even if no newer TortoiseGit version is available.
 								<option>/force</option>: Shows file list for download even if the latest TortoiseGit has been installed.
+								<option>/msysgit</option>: Checks update information of MsysGit instead of TortoiseGit.
 							</entry>
 						</row>
 						<!--

@@ -64,13 +64,16 @@ protected:
 
 private:
 	static UINT CheckThreadEntry(LPVOID pVoid);
+	static UINT CheckMsysgitThreadEntry(LPVOID pVoid);
 	UINT		CheckThread();
+	UINT		CheckMsysgitThread();
 
 	BOOL		m_bThreadRunning;
 
 public:
 	BOOL		m_bShowInfo;
 	BOOL		m_bForce;
+	BOOL		m_bMsysgit;
 
 private:
 	BOOL		m_bVisible;
@@ -81,7 +84,7 @@ private:
 
 	static UINT	DownloadThreadEntry(LPVOID pParam);
 	UINT		DownloadThread();
-	bool		Download(CString filename);
+	bool		Download(CString filename, CString checksum);
 
 	CUpdateListCtrl	m_ctrlFiles;
 
@@ -90,8 +93,9 @@ private:
 	CHyperLink	m_link;
 	CString		GetDownloadsDirectory();
 	CMenuButton	m_ctrlUpdate;
-	BOOL		VerifySignature(CString fileName);
+	BOOL		VerifySignature(CString fileName, CString checksum);
 	void		FillDownloads(CStdioFile &file, CString version);
+	void		FillMsysgitDownloads(CStdioFile &file, CString version);
 	CSciEdit	m_cLogMessage;
 	void		FillChangelog(CStdioFile &file);
 };

@@ -28,6 +28,8 @@ bool UpdateCheckCommand::Execute()
 		dlg.m_bShowInfo = TRUE;
 	if (parser.HasKey(_T("force")))
 		dlg.m_bForce = TRUE;
+	if (parser.HasKey(_T("msysgit")))
+		dlg.m_bMsysgit = TRUE;
 	dlg.DoModal();
 	return true;
 }
