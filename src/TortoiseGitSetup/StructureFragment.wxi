@@ -751,15 +751,15 @@
 
 				<Directory Id="D__DiffScripts" ShortName="Diff" Name="Diff-Scripts">
 					<Component Id="C__DiffScripts" Guid="$(var.GuidDiffScripts)" Win64="$(var.Win64YesNo)">
-						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\other\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes"/>
-						<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\other\diff-scripts\diff-ppt.js" DiskId="1" />
-						<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\other\diff-scripts\diff-doc.js" DiskId="1" />
-						<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\other\diff-scripts\merge-doc.js" DiskId="1" />
-						<File Id="F__diffsxw" Name="diff-sxw.vbs" Source="..\..\contrib\other\diff-scripts\diff-sxw.vbs" DiskId="1" />
-						<File Id="F__diffodt" Name="diff-odt.vbs" Source="..\..\contrib\other\diff-scripts\diff-odt.vbs" DiskId="1" />
-						<File Id="F__mergeods" Name="merge-ods.vbs" Source="..\..\contrib\other\diff-scripts\merge-ods.vbs" DiskId="1" />
-						<File Id="F__diffnb" Name="diff-nb.vbs" Source="..\..\contrib\other\diff-scripts\diff-nb.vbs" DiskId="1" />
-						<File Id="F__diffdll" Name="diff-dll.vbs" Source="..\..\contrib\other\diff-scripts\diff-dll.vbs" DiskId="1" />
+						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes"/>
+						<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\diff-scripts\diff-ppt.js" DiskId="1" />
+						<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\diff-scripts\diff-doc.js" DiskId="1" />
+						<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\diff-scripts\merge-doc.js" DiskId="1" />
+						<File Id="F__diffsxw" Name="diff-sxw.vbs" Source="..\..\contrib\diff-scripts\diff-sxw.vbs" DiskId="1" />
+						<File Id="F__diffodt" Name="diff-odt.vbs" Source="..\..\contrib\diff-scripts\diff-odt.vbs" DiskId="1" />
+						<File Id="F__mergeods" Name="merge-ods.vbs" Source="..\..\contrib\diff-scripts\merge-ods.vbs" DiskId="1" />
+						<File Id="F__diffnb" Name="diff-nb.vbs" Source="..\..\contrib\diff-scripts\diff-nb.vbs" DiskId="1" />
+						<File Id="F__diffdll" Name="diff-dll.vbs" Source="..\..\contrib\diff-scripts\diff-dll.vbs" DiskId="1" />
 					</Component>
 				</Directory>
 
