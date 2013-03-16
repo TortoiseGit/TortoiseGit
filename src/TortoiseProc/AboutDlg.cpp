@@ -148,9 +148,5 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 
 void CAboutDlg::OnBnClickedUpdate()
 {
-	TCHAR com[MAX_PATH+100];
-	GetModuleFileName(NULL, com, MAX_PATH);
-	_tcscat_s(com, MAX_PATH+100, _T(" /command:updatecheck /visible"));
-
-	CAppUtils::LaunchApplication(com, 0, false);
+	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible"), false, false);
 }
