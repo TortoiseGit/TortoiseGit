@@ -42,11 +42,13 @@ public:
 	public:
 		CString m_filename;
 		int m_status;
+		CString m_checksum;
 
-		Entry(CString filename, int status)
+		Entry(CString filename, int status, CString checksum = _T(""))
 		{
 			m_filename = filename;
 			m_status = status;
+			m_checksum = checksum;
 		}
 	};
 

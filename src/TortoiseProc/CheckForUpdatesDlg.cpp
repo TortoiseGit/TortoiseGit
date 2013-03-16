@@ -47,6 +47,7 @@ CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=NULL*/)
 	: CStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
 	, m_bShowInfo(FALSE)
 	, m_bForce(FALSE)
+	, m_bMsysgit(FALSE)
 	, m_bVisible(FALSE)
 	, m_pDownloadThread(NULL)
 	, m_bThreadRunning(FALSE)
@@ -85,7 +86,18 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CString temp;
-	temp.Format(IDS_CHECKNEWER_YOURVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
+	if (m_bMsysgit)
+	{
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_CHECKFORUPDATE_MSYSGITTITLE)));
+		CString out, err;
+		if (g_Git.Run(_T("git.exe --version"), &out, &err, CP_UTF8))
+			out = _T("git not found (") + err + _T(")");
+		int start = 0;
+		out = out.Tokenize(_T("\n"), start);
+		temp.Format(IDS_CHECKNEWER_YOURVERSIONSTR, out);
+	}
+	else
+		temp.Format(IDS_CHECKNEWER_YOURVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_YOURVERSION, temp);
 
 	DialogEnableWindow(IDOK, FALSE);
@@ -112,15 +124,18 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_ctrlFiles.SetColumnWidth(1, 200);
 
 	ProjectProperties pp;
-	pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
-	pp.SetBugIDRe(_T("(\\d+)"));
-	pp.lProjectLanguage = -1;
-	pp.sUrl = _T("http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
+	if (!m_bMsysgit)
+	{
+		pp.SetCheckRe(_T("[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+"));
+		pp.SetBugIDRe(_T("(\\d+)"));
+		pp.lProjectLanguage = -1;
+		pp.sUrl = _T("http://code.google.com/p/tortoisegit/issues/detail?id=%BUGID%");
+	}
 	m_cLogMessage.Init(pp);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));
 	m_cLogMessage.Call(SCI_SETREADONLY, TRUE);
 
-	if (AfxBeginThread(CheckThreadEntry, this)==NULL)
+	if (AfxBeginThread(m_bMsysgit ? CheckMsysgitThreadEntry : CheckThreadEntry, this)==NULL)
 	{
 		CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 	}
@@ -147,6 +162,11 @@ void CCheckForUpdatesDlg::OnCancel()
 UINT CCheckForUpdatesDlg::CheckThreadEntry(LPVOID pVoid)
 {
 	return ((CCheckForUpdatesDlg*)pVoid)->CheckThread();
+}
+
+UINT CCheckForUpdatesDlg::CheckMsysgitThreadEntry(LPVOID pVoid)
+{
+	return ((CCheckForUpdatesDlg*)pVoid)->CheckMsysgitThread();
 }
 
 UINT CCheckForUpdatesDlg::CheckThread()
@@ -320,6 +340,168 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	return 0;
 }
 
+UINT CCheckForUpdatesDlg::CheckMsysgitThread()
+{
+	m_bThreadRunning = TRUE;
+
+	CString temp;
+	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+
+	CRegString checkurluser = CRegString(_T("Software\\TortoiseGit\\UpdateCheckMsysgitURL"), _T(""));
+	CRegString checkurlmachine = CRegString(_T("Software\\TortoiseGit\\UpdateCheckMsysgitURL"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
+	CString sCheckURL = checkurluser;
+	if (sCheckURL.IsEmpty())
+	{
+		sCheckURL = checkurlmachine;
+		if (sCheckURL.IsEmpty())
+		{
+			sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/msysgit-version.txt");
+		}
+	}
+	CoInitialize(NULL);
+	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
+	if (res == S_OK)
+	{
+		try
+		{
+			CStdioFile file(tempfile, CFile::modeRead | CFile::shareDenyWrite);
+			CString ver, verstr;
+			unsigned int major = 0, minor = 0, micro = 0, build = 0;
+			unsigned int version = 0;
+
+			if (file.ReadString(ver))
+			{
+				verstr = ver;
+				CString vertemp = ver;
+				// another versionstring for the filename can be provided after a semicolon
+				// this is needed for preview releases
+				int differentFilenamePos = vertemp.Find(_T(";"));
+				if (differentFilenamePos > 0)
+				{
+					verstr = vertemp = vertemp.Left(differentFilenamePos);
+					ver = ver.Mid(differentFilenamePos + 1);
+				}
+
+				major = _ttoi(vertemp);
+				vertemp = vertemp.Mid(vertemp.Find('.')+1);
+				minor = _ttoi(vertemp);
+				vertemp = vertemp.Mid(vertemp.Find('.')+1);
+				micro = _ttoi(vertemp);
+				vertemp = vertemp.Mid(vertemp.Find('.')+1);
+				build = _ttoi(vertemp);
+				version = major;
+				version <<= 8;
+				version += minor;
+				version <<= 8;
+				version += micro;
+				version <<= 8;
+				version += build;
+			}
+
+			{
+				int msysgitVer = CAppUtils::GetMsysgitVersion();
+				unsigned int msysgitMajor = (msysgitVer >> 24) & 0xFF;
+				unsigned int msysgitMinor = (msysgitVer >> 16) & 0xFF;
+				unsigned int msysgitMicro = (msysgitVer >> 8) & 0xFF;
+				unsigned int msysgitBuild = msysgitVer & 0xFF;
+				BOOL bNewer = FALSE;
+				if (m_bForce)
+					bNewer = TRUE;
+				if (major > msysgitMajor)
+					bNewer = TRUE;
+				else if ((minor > msysgitMinor) && (major == msysgitMajor))
+					bNewer = TRUE;
+				else if ((micro > msysgitMicro) && (minor == msysgitMinor) && (major == msysgitMajor))
+					bNewer = TRUE;
+				else if ((build > msysgitBuild) && (micro == msysgitMicro) && (minor == msysgitMinor) && (major == msysgitMajor))
+					bNewer = TRUE;
+
+				if (version != 0)
+				{
+					CString version = verstr + _T(" (") + ver + _T(")");
+					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)version);
+					SetDlgItemText(IDC_CURRENTVERSION, temp);
+				}
+
+				if (version == 0)
+				{
+					temp.LoadString(IDS_CHECKNEWER_NETERROR);
+					SetDlgItemText(IDC_CHECKRESULT, temp);
+				}
+				else if (bNewer)
+				{
+					if(file.ReadString(temp) && !temp.IsEmpty())
+					{	// Read the next line, it could contain a message for the user
+						CString tempLink;
+						if(file.ReadString(tempLink) && !tempLink.IsEmpty())
+						{	// Read another line to find out the download link-URL, if any
+							m_sUpdateDownloadLink = tempLink;
+						}
+					}
+					else
+					{
+						temp.LoadString(IDS_CHECKNEWER_NEWERVERSIONAVAILABLE);
+						CString tempLink;
+						file.ReadString(tempLink);
+					}
+					SetDlgItemText(IDC_CHECKRESULT, temp);
+					m_bShowInfo = TRUE;
+
+					FillChangelog(file);
+					FillMsysgitDownloads(file, ver);
+
+					// Show download controls
+					RECT rectWindow, rectProgress, rectGroupDownloads, rectOKButton;
+					GetWindowRect(&rectWindow);
+					m_progress.GetWindowRect(&rectProgress);
+					GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+					GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+					LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+					OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
+					rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+					MoveWindow(&rectWindow);
+					::MapWindowPoints(NULL, GetSafeHwnd(), (LPPOINT)&rectOKButton, 2);
+					GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+					m_ctrlFiles.ShowWindow(SW_SHOW);
+					GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
+					CenterWindow();
+				}
+				else
+				{
+					temp.LoadString(IDS_CHECKNEWER_YOURUPTODATE);
+					SetDlgItemText(IDC_CHECKRESULT, temp);
+					file.ReadString(temp);
+					file.ReadString(temp);
+					FillChangelog(file);
+				}
+			}
+		}
+		catch (CException * e)
+		{
+			e->Delete();
+			temp.LoadString(IDS_CHECKNEWER_NETERROR);
+			SetDlgItemText(IDC_CHECKRESULT, temp);
+		}
+	}
+	else
+	{
+		// Try to cache web page;
+
+		temp.LoadString(IDS_CHECKNEWER_NETERROR);
+		SetDlgItemText(IDC_CHECKRESULT, temp);
+	}
+	if (!m_sUpdateDownloadLink.IsEmpty())
+	{
+		m_link.ShowWindow(SW_SHOW);
+		m_link.SetURL(m_sUpdateDownloadLink);
+	}
+
+	DeleteFile(tempfile);
+	m_bThreadRunning = FALSE;
+	DialogEnableWindow(IDOK, TRUE);
+	return 0;
+}
+
 void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 {
 #if WIN64
@@ -393,11 +575,36 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
 }
 
+void CCheckForUpdatesDlg::FillMsysgitDownloads(CStdioFile &file, CString version)
+{
+	if (!file.ReadString(m_sFilesURL) || m_sFilesURL.IsEmpty())
+		m_sFilesURL = _T("http://msysgit.googlecode.com/files/");
+
+	CString packs;
+	while (file.ReadString(packs) && !packs.IsEmpty())
+	{
+		int start = 0;
+		CString filename = packs.Tokenize(_T(";"), start);
+		CString description = packs.Tokenize(_T(";"), start);
+		CString checksum = packs.Tokenize(_T(";"), start);
+
+		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), description);
+		m_ctrlFiles.SetItemText(pos, 1, filename);
+		m_ctrlFiles.SetItemData(pos, (DWORD_PTR)(new CUpdateListCtrl::Entry(filename, CUpdateListCtrl::STATUS_NONE, checksum)));
+	}
+
+	m_ctrlFiles.SetCheck(0 , TRUE);
+	DialogEnableWindow(IDC_BUTTON_UPDATE, TRUE);
+}
+
 void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 {
 	CString sChangelogURL;
 	if (!file.ReadString(sChangelogURL) || sChangelogURL.IsEmpty())
-		sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
+		if (m_bMsysgit)
+			sChangelogURL = _T("http://version.tortoisegit.googlecode.com/git/msysgit-releasenotes.txt");
+		else
+			sChangelogURL = _T("http://tortoisegit.googlecode.com/git/src/Changelog.txt");
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	HRESULT res = URLDownloadToFile(NULL, sChangelogURL, tempchangelogfile, 0, NULL);
@@ -549,12 +756,12 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 	return ((CCheckForUpdatesDlg*)pVoid)->DownloadThread();
 }
 
-bool CCheckForUpdatesDlg::Download(CString filename)
+bool CCheckForUpdatesDlg::Download(CString filename, CString checksum)
 {
 	CString destFilename = GetDownloadsDirectory() + filename;
 	if (PathFileExists(destFilename))
 	{
-		if (VerifySignature(destFilename))
+		if (VerifySignature(destFilename, checksum))
 			return true;
 		else
 			DeleteFile(destFilename);
@@ -572,7 +779,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
 	if (res == S_OK)
 	{
-		if (VerifySignature(tempfile))
+		if (VerifySignature(tempfile, checksum))
 		{
 			if (PathFileExists(destFilename))
 				DeleteFile(destFilename);
@@ -598,7 +805,7 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 		{
 			data->m_status = CUpdateListCtrl::STATUS_DOWNLOADING;
 			m_ctrlFiles.InvalidateRect(rect);
-			if (Download(data->m_filename))
+			if (Download(data->m_filename, data->m_checksum))
 				data->m_status = CUpdateListCtrl::STATUS_SUCCESS;
 			else
 			{
@@ -807,8 +1014,53 @@ STDMETHODIMP CBSCallbackImpl::OnObjectAvailable(REFIID, IUnknown *)
 	return S_OK;
 }
 
-BOOL CCheckForUpdatesDlg::VerifySignature(CString fileName)
+CString CalcFileSHA1(CString filename)
 {
+	CString outData;
+	HCRYPTPROV hProv = 0;
+	HCRYPTHASH hHash = 0;
+
+	BYTE bHash[32];
+	DWORD dwHashLen = 20; // The SHA1 algorithm always returns 20 bytes.
+
+	if (!CryptAcquireContext(&hProv, NULL, MS_DEF_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+		return _T("");
+	if (!CryptCreateHash(hProv, CALG_SHA1, 0, 0, &hHash))
+		return _T("");
+
+	CStdioFile file(filename, CFile::modeRead | CFile::shareDenyWrite | CFile::typeBinary);
+	BYTE buf[4096];
+	DWORD length = 0;
+	while ((length = file.Read(buf, sizeof(buf))) > 0)
+	{
+		if (!CryptHashData(hHash, buf, length, 0))
+			return _T("");
+	}
+	file.Close();
+
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, bHash, &dwHashLen, 0))
+		return _T("");
+
+	CString tmp;
+	for (DWORD i = 0; i < dwHashLen; ++i)
+	{
+		tmp.Format(_T("%02x"), bHash[i]);
+		outData += tmp;
+	}
+
+	if(hHash)
+		CryptDestroyHash(hHash);
+	if(hProv)
+		CryptReleaseContext(hProv, 0);
+
+	return outData;
+}
+
+BOOL CCheckForUpdatesDlg::VerifySignature(CString fileName, CString checksum)
+{
+	if (m_bMsysgit)
+		return CalcFileSHA1(fileName) == checksum ? TRUE : FALSE;
+
 	WINTRUST_FILE_INFO fileInfo;
 	memset(&fileInfo, 0, sizeof(fileInfo));
 	fileInfo.cbStruct = sizeof(WINTRUST_FILE_INFO);
