@@ -58,12 +58,12 @@ No special compiler options were used. CL MakeUTF8.c works OK.
 #define FIXED_TAG   128     // XML tag has been added or fixed
 
 char *help =
-"MakeUTF8     Version 1.1\n"
-"Add UTF-8 byte-order-mark and XML-tag to start of text file.\n\n"
-"Use: MakeUTF8 [ -b ] [ -x ] file [ file ... ]\n"
-"     -b option adds/corrects BOM in file if not already present\n"
-"     -x option adds/corrects XML tag if not already present\n"
-"     With no options, just report current state\n\n";
+    "MakeUTF8     Version 1.1\n"
+    "Add UTF-8 byte-order-mark and XML-tag to start of text file.\n\n"
+    "Use: MakeUTF8 [ -b ] [ -x ] file [ file ... ]\n"
+    "     -b option adds/corrects BOM in file if not already present\n"
+    "     -x option adds/corrects XML tag if not already present\n"
+    "     With no options, just report current state\n\n";
 
 int ProcessFile(const char *FName, const char *TName, int Action);
 
@@ -102,10 +102,22 @@ int main(int argc, char *argv[])
             strcpy(Path, argv[n]);
             // Set FName to point to filename portion of path
             FName = strrchr(Path, '\\');
-            if (FName == NULL) FName = strrchr(Path, '/');
-            if (FName == NULL) FName = strrchr(Path, ':');
-            if (FName == NULL) FName = Path;
-            else ++FName;
+            if (FName == NULL)
+            {
+                FName = strrchr(Path, '/');
+            }
+            if (FName == NULL)
+            {
+                FName = strrchr(Path, ':');
+            }
+            if (FName == NULL)
+            {
+                FName = Path;
+            }
+            else
+            {
+                ++FName;
+            }
 
             // Process all matching files.
             do
@@ -118,37 +130,59 @@ int main(int argc, char *argv[])
                     // Create temp filename by replacing extension with $$$
                     strcpy(Temp, Path);
                     p = strrchr(Temp, '.');
-                    if (p != NULL) *p = '\0';       // Trim off extension
+                    if (p != NULL)
+                    {
+                        *p = '\0';      // Trim off extension
+                    }
                     strcat(Temp, ".$$$");
                     Result = ProcessFile(Path, Temp, Action);
-                    if (Result < 0) break;          // Failed.
+                    if (Result < 0)
+                    {
+                        break;          // Failed.
+                    }
                     // Show results of analysis / repair
                     if (Result & ADD_BOM)
                     {
                         if (Result & FIXED_BOM)
+                        {
                             p = "Added";
+                        }
                         else
+                        {
                             p = "None";
+                        }
                     }
                     else if (Result & DOUBLE_BOM)
                     {
                         if (Result & FIXED_BOM)
+                        {
                             p = "Fixed";
+                        }
                         else
+                        {
                             p = "Multi";
+                        }
                     }
                     else
+                    {
                         p = "OK";
+                    }
                     printf("%s\t", p);
                     if (Result & XML_TAG)
                     {
                         if (Result & FIXED_TAG)
+                        {
                             p = "Fixed";
+                        }
                         else
+                        {
                             p = "None";
+                        }
                     }
                     else
+                    {
                         p = "OK";
+                    }
                     printf("%s\t%s\n", p, FileInfo.name);
                 }
             }
@@ -180,7 +214,9 @@ int ProcessFile(const char *FName, const char *TName, int Action)
     char *AfterBOM = Buffer;
 
     if ((fp = fopen(FName, "r")) == NULL)
+    {
         return -1;
+    }
 
     // Check if output file exists already
     if ((fpout = fopen(TName, "r")) != NULL) {
@@ -212,7 +248,9 @@ int ProcessFile(const char *FName, const char *TName, int Action)
                         Buffer[NumRead] = '\0';
                     }
                     else
+                    {
                         break;
+                    }
                 }
             }
             else
@@ -312,9 +350,13 @@ int ProcessFile(const char *FName, const char *TName, int Action)
         }
         // Add flags to indicate what we have actually fixed
         if (Changed & Action & (DOUBLE_BOM | ADD_BOM))
+        {
             Changed |= FIXED_BOM;
+        }
         if (Changed & Action & XML_TAG)
+        {
             Changed |= FIXED_TAG;
+        }
     }
 
     return Changed;
