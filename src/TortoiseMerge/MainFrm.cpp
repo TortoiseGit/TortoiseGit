@@ -20,6 +20,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseMerge.h"
+#include "CustomMFCRibbonButton.h"
 #include "OpenDlg.h"
 #include "SysProgressDlg.h"
 #include "Settings.h"
@@ -40,6 +41,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+CCustomMFCRibbonButton button1;
 
 // CMainFrame
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
@@ -211,6 +214,28 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			CMFCRibbonPanel * pPanel = pMainCat->GetPanel(3);
 			if (pPanel)
 				pPanel->EnableLaunchButton(ID_VIEW_OPTIONS);
+		}
+		// now replace all buttons with our custom button class
+		for (int i = 0; i < m_wndRibbonBar.GetCategoryCount(); ++i)
+		{
+			CMFCRibbonCategory * pCat = m_wndRibbonBar.GetCategory(i);
+			for (int j = 0; j < pCat->GetPanelCount(); ++j)
+			{
+				CMFCRibbonPanel * pPanel = pCat->GetPanel(j);
+				CList<UINT, UINT> lstItems;
+				pPanel->GetItemIDsList(lstItems);
+				while (!lstItems.IsEmpty())
+				{
+					UINT id = lstItems.GetHead();
+					lstItems.RemoveHead();
+					CMFCRibbonButton * pButton = dynamic_cast<CMFCRibbonButton*>(pPanel->FindByID(id));
+					if (pButton)
+					{
+						CCustomMFCRibbonButton * c = new CCustomMFCRibbonButton(id, pButton->GetText());
+						pPanel->ReplaceByID(id, c);
+					}
+				}
+			}
 		}
 	}
 	else

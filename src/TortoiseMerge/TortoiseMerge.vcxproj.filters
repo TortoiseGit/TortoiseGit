@@ -503,6 +503,9 @@
     <ClInclude Include="Patch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomMFCRibbonButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">
