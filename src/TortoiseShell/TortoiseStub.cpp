@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2007, 2009 - TortoiseSVN
+// Copyright (C) 2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -260,14 +260,14 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 		hInst = hInstance;
 		break;
 
-		//case DLL_THREAD_ATTACH:
-		//  break;
+	/*case DLL_THREAD_ATTACH:
+		break;
 
-		//case DLL_THREAD_DETACH:
-		//  break;
+	case DLL_THREAD_DETACH:
+		break;
 
-		//case DLL_PROCESS_DETACH:
-		//  break;
+	case DLL_PROCESS_DETACH:
+		break;*/
 	}
 
 	return TRUE;
@@ -293,14 +293,12 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
 
 STDAPI DllCanUnloadNow(void)
 {
-	HRESULT Result;
-
 	TRACE(_T("DllCanUnloadNow() - Enter\n"));
 
 	if (pDllCanUnloadNow)
 	{
 		TRACE(_T("DllCanUnloadNow() - Forward\n"));
-		Result = pDllCanUnloadNow();
+		HRESULT Result = pDllCanUnloadNow();
 		if (Result != S_OK)
 			return Result;
 	}
