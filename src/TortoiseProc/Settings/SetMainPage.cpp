@@ -241,6 +241,7 @@ void CSetMainPage::OnBnClickedEditconfig()
 void CSetMainPage::OnBnClickedChecknewerbutton()
 {
 	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible"), false, false);
+	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible /msysgit"), false, false);
 }
 
 void CSetMainPage::OnBnClickedSounds()

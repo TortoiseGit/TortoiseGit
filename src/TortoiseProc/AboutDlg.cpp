@@ -149,4 +149,5 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 void CAboutDlg::OnBnClickedUpdate()
 {
 	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible"), false, false);
+	CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /visible /msysgit"), false, false);
 }

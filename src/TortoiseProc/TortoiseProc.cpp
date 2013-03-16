@@ -692,6 +692,7 @@ void CTortoiseProcApp::CheckForNewerVersion()
 					oldweek = week;
 #endif
 					CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck"), false, false);
+					CAppUtils::RunTortoiseGitProc(_T("/command:updatecheck /msysgit"), false, false);
 				}
 			}
 		}
