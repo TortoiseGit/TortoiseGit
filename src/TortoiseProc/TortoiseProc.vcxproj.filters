@@ -147,6 +147,9 @@
     <Filter Include="Git">
       <UniqueIdentifier>{39afaa06-d8ee-454d-8484-9ee27c5cee21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\Daemon">
+      <UniqueIdentifier>{f2c90bcf-1214-4d34-b565-e7d2cdb16d27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -647,6 +650,9 @@
     <ClCompile Include="SendMail.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\DaemonCommand.cpp">
+      <Filter>Commands\Daemon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1125,6 +1131,9 @@
     </ClInclude>
     <ClInclude Include="SendMail.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\DaemonCommand.h">
+      <Filter>Commands\Daemon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
