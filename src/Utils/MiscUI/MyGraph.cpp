@@ -1220,8 +1220,8 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 		double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
 			(m_bLog10 ? (log10((double)GetAverageDataValue()) / log10((double)nMaxDataValue))
 			: (GetAverageDataValue() / (double)nMaxDataValue));
-		dc.MoveTo(m_ptOrigin.x, barTop);
-		VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
+		dc.MoveTo(m_ptOrigin.x, (int)barTop);
+		VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), (int)barTop));
 	}
 }
 
@@ -1326,8 +1326,8 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 	double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
 		(m_bLog10 ? (log10(GetAverageDataValue()) / log10((double)nMaxDataValue))
 		: (GetAverageDataValue() / (double)nMaxDataValue));
-	dc.MoveTo(m_ptOrigin.x, barTop);
-	VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
+	dc.MoveTo(m_ptOrigin.x, (int)barTop);
+	VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), (int)barTop));
 }
 
 //
