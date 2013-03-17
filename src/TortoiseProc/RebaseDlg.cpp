@@ -1930,6 +1930,8 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 	}
 	if (changed)
 	{
+		pos = m_CommitList.GetFirstSelectedItemPosition();
+		m_CommitList.EnsureVisible(m_CommitList.GetNextSelectedItem(pos), false);
 		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 		m_CommitList.Invalidate();
 		m_CommitList.SetFocus();
@@ -1968,6 +1970,7 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 			changed = true;
 		}
 	}
+	m_CommitList.EnsureVisible(indexes[m_CommitList.GetSelectedCount() - 1] + 1, false);
 	delete [] indexes;
 	indexes = NULL;
 	if (changed)
