@@ -233,6 +233,7 @@
     <Image Include="..\Resources\menurepobrowse.ico" />
     <Image Include="..\Resources\menuresolve.ico" />
     <Image Include="..\Resources\menurevert.ico" />
+    <Image Include="..\Resources\menurevisiongraph.ico" />
     <Image Include="..\Resources\menusendmail.ico" />
     <Image Include="..\Resources\menusettings.ico" />
     <Image Include="..\Resources\menushowchanged.ico" />
