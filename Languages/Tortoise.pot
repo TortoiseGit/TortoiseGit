@@ -3072,6 +3072,10 @@ msgstr ""
 msgid "DCommit Type"
 msgstr ""
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr ""
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr ""
@@ -7728,6 +7732,10 @@ msgstr ""
 
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
 msgstr ""
 
 #. Resource IDs: (1384, 4575)
