@@ -1142,6 +1142,35 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		AddLogString(out);
 
+		// update commit message if needed
+		CString str = m_LogMessageCtrl.GetText().Trim();
+		if (str != (curRev->GetSubject() + _T("\n") + curRev->GetBody()).Trim())
+		{
+			if (str.Trim().IsEmpty())
+			{
+				CMessageBox::Show(NULL, IDS_PROC_COMMITMESSAGE_EMPTY,IDS_APPNAME, MB_OK | MB_ICONERROR);
+				return;
+			}
+			CString tempfile = ::GetTempFile();
+			CAppUtils::SaveCommitUnicodeFile(tempfile, str);
+
+			out.Empty();
+			cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
+			AddLogString(cmd);
+
+			if (g_Git.Run(cmd, &out, CP_UTF8))
+			{
+				AddLogString(out);
+				if (!g_Git.CheckCleanWorkTree())
+				{
+					CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+					return;
+				}
+			}
+
+			AddLogString(out);
+		}
+
 		if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit"), TRUE)) == TRUE)
 		{
 			BOOL cancel = FALSE;

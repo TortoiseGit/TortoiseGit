@@ -52,6 +52,7 @@ Released: unreleased
  * Fixed issue #1276: Cannot show diff of renamed file
  * Fixed issue #1696: Fetch from switch dialog does not refresh branches list
  * Fixed issue #1701: Changing commit order in rebase dialog doesn't auto scroll
+ * Fixed issue #1702: Original commit message is showen even though it is changed during rebase
 
 = Release 1.8.1.0 =
 Released: 2013-02-07
