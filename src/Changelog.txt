@@ -32,6 +32,8 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive
  * Fixed issue #1643: TortoiseGitMerge window do not maximize correctly on screeen with right-side docked start bar
+ * Fixed issue #1639: Does not work on older CPU without SSE2
+ * Fixed issue #1682: Rebase ignores commits after an error is received
  * Fixed issue #1429: Blame: copy sha to clipboard copies the log message
  * Fixed issue #1654: Git blame commit message tooltip flashes when tooltip window is tall
  * Fixed issue #1658: Checkbox 'add "cherry picked from"' has wrong anchor
