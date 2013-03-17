@@ -18,8 +18,42 @@
 //
 #include "stdafx.h"
 #include "DaemonCommand.h"
+#include "ProgressDlg.h"
+#include "UnicodeUtils.h"
+
 
 bool DaemonCommand::Execute()
 {
+	WSADATA wsaData;
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != NO_ERROR)
+	{
+		MessageBox(NULL, _T("WSAStartup failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return false;
+	}
+
+	char hostName[128];
+	if (gethostname(hostName, sizeof(hostName)) == SOCKET_ERROR)
+	{
+		MessageBox(NULL, _T("gethostname failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return false;
+	}
+
+	CString ip = _T("localhost");
+	struct hostent *ipList = gethostbyname(hostName);
+	for (int i = 0; ipList->h_addr_list[i] != 0; ++i)
+	{
+		struct in_addr addr;
+		memcpy(&addr, ipList->h_addr_list[i], sizeof(struct in_addr));
+		CStringA str = inet_ntoa(addr);
+		ip = CUnicodeUtils::GetUnicode(str);
+		break;
+	}
+
+	CString cmd;
+	cmd.Format(_T("git.exe daemon --verbose --export-all --base-path=\"%s\""), g_Git.m_CurrentDir);
+	CProgressDlg progDlg;
+	progDlg.m_GitCmd = cmd;
+	progDlg.m_PreText = _T("git://") + ip + _T("/");
+	progDlg.DoModal();
 	return true;
 }
