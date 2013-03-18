@@ -2557,6 +2557,16 @@ void CAppUtils::RemoveTrailSlash(CString &path)
 	if(path.IsEmpty())
 		return ;
 
+	// For URL, do not trim the slash just after the host name component.
+	int index = path.Find(_T("://"));
+	if (index >= 0)
+	{
+		index += 4;
+		index = path.Find(_T('/'), index);
+		if (index == path.GetLength() - 1)
+			return;
+	}
+
 	while(path[path.GetLength()-1] == _T('\\') || path[path.GetLength()-1] == _T('/' ) )
 	{
 		path=path.Left(path.GetLength()-1);
