@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
+	ON_BN_CLICKED(IDC_BUTTON_ORIGIN, &CSettingGitRemote::OnBnClickedButtonOrigin)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitRemote::OnInitDialog()
@@ -367,4 +368,11 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 			OnLbnSelchangeListRemote();
 		}
 	}
+}
+
+void CSettingGitRemote::OnBnClickedButtonOrigin()
+{
+	m_strRemote = _T("origin");
+	GetDlgItem(IDC_EDIT_URL)->SetFocus();
+	UpdateData(FALSE);
 }
