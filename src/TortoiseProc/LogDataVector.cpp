@@ -30,16 +30,12 @@
 #include "TortoiseProc.h"
 #include "GitLogListBase.h"
 #include "GitRev.h"
-//#include "VssStyle.h"
 #include "IconMenu.h"
 // CGitLogList
 #include "cursor.h"
 #include "InputDlg.h"
 #include "GITProgressDlg.h"
 #include "ProgressDlg.h"
-//#include "RepositoryBrowser.h"
-//#include "CopyDlg.h"
-//#include "StatGraphDlg.h"
 #include "Logdlg.h"
 #include "MessageBox.h"
 #include "registry.h"
@@ -48,19 +44,8 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
-//#include "GitInfo.h"
-//#include "GitDiff.h"
 #include "IconMenu.h"
-//#include "RevisionRangeDlg.h"
-//#include "BrowseFolder.h"
-//#include "BlameDlg.h"
-//#include "Blame.h"
-//#include "GitHelpers.h"
 #include "GitStatus.h"
-//#include "LogDlgHelper.h"
-//#include "CachedLogInfo.h"
-//#include "RepositoryInfo.h"
-//#include "EditPropertiesDlg.h"
 #include "FileDiffDlg.h"
 #include "GitHash.h"
 CGitHashMap a;
@@ -338,11 +323,4 @@ void CLogDataVector::updateLanes(GitRev& c, Lanes& lns, CGitHash &sha)
 		lns.afterFork();
 	if (lns.isBranch())
 		lns.afterBranch();
-
-//	QString tmp = "", tmp2;
-//	for (uint i = 0; i < c.lanes.count(); i++) {
-//		tmp2.setNum(c.lanes[i]);
-//		tmp.append(tmp2 + "-");
-//	}
-//	qDebug("%s %s",tmp.latin1(), c.sha.latin1());
 }
