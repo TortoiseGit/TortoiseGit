@@ -1118,7 +1118,7 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 UINT CSyncDlg::ProgressThread()
 {
 	m_startTick = GetTickCount();
-	m_GitCmdStatus=CProgressDlg::RunCmdList(this,m_GitCmdList,true,NULL,&this->m_bAbort);
+	m_GitCmdStatus = CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
@@ -1128,6 +1128,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 {
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
+		m_BufStart = 0;
 		m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 		this->m_ctrlProgress.SetPos(0);
 		if (m_pTaskbarList)
@@ -1141,6 +1142,12 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	{
 		DWORD tickSpent = GetTickCount() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
+
+		m_BufStart = 0;
+		m_Databuf.m_critSec.Lock();
+		m_Databuf.clear();
+		m_Databuf.m_critSec.Unlock();
+
 		//m_bDone = true;
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
@@ -1177,6 +1184,26 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 	if(lParam != 0)
 		ParserCmdOutput((char)lParam);
+	else
+	{
+		m_Databuf.m_critSec.Lock();
+		for (int i = m_BufStart; i < m_Databuf.size(); ++i)
+		{
+			char c = m_Databuf[m_BufStart];
+			++m_BufStart;
+			m_Databuf.m_critSec.Unlock();
+			ParserCmdOutput(c);
+
+			m_Databuf.m_critSec.Lock();
+		}
+
+		if (m_BufStart > 1000)
+		{
+			m_Databuf.erase(m_Databuf.begin(), m_Databuf.begin() + m_BufStart);
+			m_BufStart = 0;
+		}
+		m_Databuf.m_critSec.Unlock();
+	}
 
 	return 0;
 }
