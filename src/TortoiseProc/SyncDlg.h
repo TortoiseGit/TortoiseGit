@@ -109,6 +109,8 @@ protected:
 	CWinThread*			m_pThread;
 
 	volatile LONG		m_bBlock;
+	CGitByteArray		m_Databuf;
+	int					m_BufStart;
 
 	void				ParserCmdOutput(char ch);
 

@@ -183,7 +183,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 		if (bShowCommand)
 		{
-			CStringA str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\n\n"), CP_UTF8);
+			CStringA str = CUnicodeUtils::GetMulti(cmdlist[i].Trim() + _T("\r\n\r\n"), CP_UTF8);
 			for (int j = 0; j < str.GetLength(); ++j)
 			{
 				if(pdata)
