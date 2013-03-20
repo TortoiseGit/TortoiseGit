@@ -608,6 +608,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 
 				result = int(fileSize1 - fileSize2);
 			}
+			break;
 		}
 	case 6: //Last Modification Date
 		{
@@ -621,6 +622,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 
 				result = CompareFileTime(filetime1, filetime2);
 			}
+			break;
 		}
 	case 5: //Del Number
 		{
@@ -629,6 +631,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 //				result = entry1->lock_comment.CompareNoCase(entry2->lock_comment);
 				result = A2L(entry1->m_StatDel)-A2L(entry2->m_StatDel);
 			}
+			break;
 		}
 	case 4: //Add Number
 		{
@@ -637,6 +640,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 				//result = entry1->lock_owner.CompareNoCase(entry2->lock_owner);
 				result = A2L(entry1->m_StatAdd)-A2L(entry2->m_StatAdd);
 			}
+			break;
 		}
 
 	case 3: // Status
@@ -645,6 +649,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			{
 				result = entry1->GetActionName(entry1->m_Action).CompareNoCase(entry2->GetActionName(entry2->m_Action));
 			}
+			break;
 		}
 	case 2: //Ext file
 		{
@@ -652,6 +657,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			{
 				result = entry1->GetFileExtension().CompareNoCase(entry2->GetFileExtension());
 			}
+			break;
 		}
 	case 1: // File name
 		{
@@ -659,6 +665,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			{
 				result = entry1->GetFileOrDirectoryName().CompareNoCase(entry2->GetFileOrDirectoryName());
 			}
+			break;
 		}
 	case 0: // Full path column
 		{
@@ -666,8 +673,12 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			{
 				result = CTGitPath::Compare(entry1->GetGitPathString(), entry2->GetGitPathString());
 			}
+			break;
 		}
 	} // switch (m_nSortedColumn)
+	// sort by path name as second priority
+	if (sortedColumn > 0 && result == 0)
+		result = CTGitPath::Compare(entry1->GetGitPathString(), entry2->GetGitPathString());
 	if (!ascending)
 		result = -result;
 
