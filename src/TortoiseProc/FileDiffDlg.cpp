@@ -950,6 +950,9 @@ bool CFileDiffDlg::SortCompare(const CTGitPath& Data1, const CTGitPath& Data2)
 	default:
 		break;
 	}
+	// sort by path name as second priority
+	if (m_nSortedColumn != 0 && result == 0)
+		result = Data1.GetWinPathString().Compare(Data2.GetWinPathString());
 
 	if (!m_bAscending)
 		result = -result;
