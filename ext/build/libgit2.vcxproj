@@ -147,6 +147,7 @@
     <ClCompile Include="..\libgit2\src\fnmatch.c" />
     <ClCompile Include="..\libgit2\src\global.c" />
     <ClCompile Include="..\libgit2\src\hash.c" />
+    <ClCompile Include="..\libgit2\src\hashsig.c" />
     <ClCompile Include="..\libgit2\src\ignore.c" />
     <ClCompile Include="..\libgit2\src\index.c" />
     <ClCompile Include="..\libgit2\src\indexer.c" />
@@ -168,6 +169,9 @@
     <ClCompile Include="..\libgit2\src\pool.c" />
     <ClCompile Include="..\libgit2\src\posix.c" />
     <ClCompile Include="..\libgit2\src\pqueue.c" />
+    <ClCompile Include="..\libgit2\src\push.c" />
+    <ClCompile Include="..\libgit2\src\refdb.c" />
+    <ClCompile Include="..\libgit2\src\refdb_fs.c" />
     <ClCompile Include="..\libgit2\src\reflog.c" />
     <ClCompile Include="..\libgit2\src\refs.c" />
     <ClCompile Include="..\libgit2\src\refspec.c" />
@@ -181,6 +185,7 @@
     <ClCompile Include="..\libgit2\src\submodule.c" />
     <ClCompile Include="..\libgit2\src\tag.c" />
     <ClCompile Include="..\libgit2\src\thread-utils.c" />
+    <ClCompile Include="..\libgit2\src\trace.c" />
     <ClCompile Include="..\libgit2\src\transport.c" />
     <ClCompile Include="..\libgit2\src\transports\cred.c" />
     <ClCompile Include="..\libgit2\src\transports\cred_helpers.c" />
@@ -217,7 +222,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
+    <ClInclude Include="..\libgit2\include\git2\refdb.h" />
+    <ClInclude Include="..\libgit2\include\git2\refdb_backend.h" />
+    <ClInclude Include="..\libgit2\include\git2\trace.h" />
     <ClInclude Include="..\libgit2\src\attr.h" />
+    <ClInclude Include="..\libgit2\src\attrcache.h" />
     <ClInclude Include="..\libgit2\src\attr_file.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
@@ -244,6 +253,7 @@
     <ClInclude Include="..\libgit2\src\fnmatch.h" />
     <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
+    <ClInclude Include="..\libgit2\src\hashsig.h" />
     <ClInclude Include="..\libgit2\src\hashtable.h" />
     <ClInclude Include="..\libgit2\src\ignore.h" />
     <ClInclude Include="..\libgit2\src\index.h" />
@@ -263,6 +273,9 @@
     <ClInclude Include="..\libgit2\src\pool.h" />
     <ClInclude Include="..\libgit2\src\posix.h" />
     <ClInclude Include="..\libgit2\src\pqueue.h" />
+    <ClInclude Include="..\libgit2\src\push.h" />
+    <ClInclude Include="..\libgit2\src\refdb.h" />
+    <ClInclude Include="..\libgit2\src\refdb_fs.h" />
     <ClInclude Include="..\libgit2\src\reflog.h" />
     <ClInclude Include="..\libgit2\src\refs.h" />
     <ClInclude Include="..\libgit2\src\refspec.h" />
@@ -274,6 +287,7 @@
     <ClInclude Include="..\libgit2\src\submodule.h" />
     <ClInclude Include="..\libgit2\src\tag.h" />
     <ClInclude Include="..\libgit2\src\thread-utils.h" />
+    <ClInclude Include="..\libgit2\src\trace.h" />
     <ClInclude Include="..\libgit2\src\transport.h" />
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
     <ClInclude Include="..\libgit2\src\tree.h" />
