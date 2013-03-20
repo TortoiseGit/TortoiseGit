@@ -186,24 +186,8 @@ CGit::~CGit(void)
 
 bool CGit::IsBranchNameValid(CString branchname)
 {
-	if (branchname.IsEmpty())
-		return false;
-
-	for (int i = 0; i < branchname.GetLength(); ++i)
-	{
-		TCHAR c = branchname.GetAt(i);
-		if (c <= ' ' || c == '~' || c == '^' || c == ':' || c == '\\' || c == '?' || c == '[')
-			return false;
-	}
-
-	if (branchname.Find(L".") == 0 || branchname.Find(L"/.") >= 0 || branchname.Find(L"..") >= 0 || branchname.Find(L"@{") >= 0 || branchname.ReverseFind('*') >= 0)
-		return false;
-
-	CString reverseBranchname = branchname.MakeReverse();
-	if (branchname.Find(L'.') == 0 || branchname.Find(L'/') == 0 || reverseBranchname.Find(L"kcol.") >= 0)
-		return false;
-
-	return true;
+	CStringA branchA = CUnicodeUtils::GetUTF8(_T("refs/heads/") + branchname);
+	return !!git_reference_is_valid_name(branchA);
 }
 
 static char g_Buffer[4096];
