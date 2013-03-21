@@ -146,8 +146,8 @@ BOOL CGitPropertyPage::PageProc (HWND /*hwnd*/, UINT uMessage, WPARAM wParam, LP
 						CTGitPath file;
 						file.SetFromWin(CString(it->c_str()).Mid(stripLength));
 						CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
-						int idx = git_index_find(NULL, index, pathA);
-						if (idx >= 0)
+						size_t idx;
+						if (!git_index_find(&idx, index, pathA))
 						{
 							git_index_entry *e = const_cast<git_index_entry *>(git_index_get_byindex(index, idx)); // HACK
 
@@ -653,8 +653,8 @@ void CGitPropertyPage::InitWorkfileView()
 					CTGitPath file;
 					file.SetFromWin(CString(it->c_str()).Mid(stripLength));
 					CStringA pathA = CUnicodeUtils::GetMulti(file.GetGitPathString(), CP_UTF8);
-					int idx = git_index_find(NULL, index, pathA);
-					if (idx >= 0)
+					size_t idx;
+					if (!git_index_find(&idx, index, pathA))
 					{
 						const git_index_entry *e = git_index_get_byindex(index, idx);
 
