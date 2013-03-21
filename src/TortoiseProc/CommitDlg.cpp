@@ -148,6 +148,28 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
 END_MESSAGE_MAP()
 
+bool PrefillMessage(const CString &filename, CString &msg)
+{
+	if (PathFileExists(filename))
+	{
+		CStdioFile file;
+		if (file.Open(filename, CFile::modeRead))
+		{
+			CString str;
+			while(file.ReadString(str))
+			{
+				msg += str;
+				str.Empty();
+				msg += _T("\n");
+			}
+		}
+		else
+			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
+		return true; // load no further files
+	}
+	return false;
+}
+
 BOOL CCommitDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
@@ -157,20 +179,8 @@ BOOL CCommitDlg::OnInitDialog()
 
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-	if(PathFileExists(dotGitPath + _T("MERGE_MSG")))
-	{
-		CStdioFile file;
-		if(file.Open(dotGitPath + _T("MERGE_MSG"), CFile::modeRead))
-		{
-			CString str;
-			while(file.ReadString(str))
-			{
-				m_sLogMessage += str;
-				str.Empty();
-				m_sLogMessage += _T("\n");
-			}
-		}
-	}
+	bool loadedMsg = !PrefillMessage(dotGitPath + _T("MERGE_MSG"), m_sLogMessage);
+	loadedMsg = loadedMsg && !PrefillMessage(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 		DialogEnableWindow(IDC_CHECK_NEWBRANCH, FALSE);
