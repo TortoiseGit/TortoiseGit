@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2009 - TortoiseGit
+// Copyright (C) 2007-2009,2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,8 @@
 #include "HistoryCombo.h"
 #include "ChooseVersion.h"
 #include "SciEdit.h"
+#include "RegHistory.h"
+
 // CMergeDlg dialog
 
 class CMergeDlg : public CResizableStandAloneDialog,public CChooseVersion , public CSciEditContextMenuInterface
@@ -47,7 +49,6 @@ public:
 	CString m_StrategyParam;
 	//CString m_Base;
 
-
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
@@ -59,10 +60,20 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	CHOOSE_EVENT_RADIO() ;
 
+	// CSciEditContextMenuInterface
+	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd);
+	virtual bool		HandleMenuItemClick(int cmd, CSciEdit * pSciEdit);
+
 public:
 	CString m_strLogMesage;
 
+private:
+	CRegHistory			m_History;
+	int					m_nPopupPasteLastMessage;
+	int					m_nPopupRecentMessage;
+
 	afx_msg void OnBnClickedOk();
+	virtual void OnCancel();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckMergeLog();
 	afx_msg void OnCbnSelchangeComboMergestrategy();

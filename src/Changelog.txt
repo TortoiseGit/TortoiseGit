@@ -28,6 +28,7 @@ Released: unreleased
  * Enhanced Windows 7 taskbar grouping and highlighting of windows belonging to the same working tree
  * .mailmap is now used for Log-Dialog Statistics
  * Fixed issue #1610: Average values on statistics dialog graph
+ * Fixed issue #1708: Merge dialog have no saving of log message
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	for (POSITION pos = loghistlist.GetHeadPosition(); pos != NULL; )
 	{
 		CString sHistName = loghistlist.GetNext(pos);
-		if (sHistName.Left(6).CompareNoCase(_T("commit"))==0)
+		if (sHistName.Left(6).CompareNoCase(_T("commit")) == 0 || sHistName.Left(5).CompareNoCase(_T("merge")) == 0)
 		{
 			nLogHistWC++;
 			CRegistryKey regloghistwc(_T("Software\\TortoiseGit\\History\\")+sHistName);

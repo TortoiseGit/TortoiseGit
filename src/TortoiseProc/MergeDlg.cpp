@@ -26,7 +26,7 @@
 #include "TortoiseProc.h"
 #include "MergeDlg.h"
 #include "AppUtils.h"
-
+#include "HistoryDlg.h"
 #include "Messagebox.h"
 // CMergeDlg dialog
 
@@ -120,6 +120,10 @@ BOOL CMergeDlg::OnInitDialog()
 
 	m_cLogMessage.SetText(m_pDefaultText);
 
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxHistoryItems"), 25));
+	if (m_History.GetCount() == 0)
+		m_History.Load(_T("Software\\TortoiseGit\\History\\merge"), _T("logmsgs"));
+
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("resolve"));
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("recursive"));
 	((CComboBox *)GetDlgItem(IDC_COMBO_MERGESTRATEGY))->AddString(_T("ours"));
@@ -155,6 +159,13 @@ void CMergeDlg::OnBnClickedOk()
 	{
 		m_strLogMesage.Empty();
 	}
+
+	if (!m_strLogMesage.IsEmpty() && !m_bNoCommit)
+	{
+		m_History.AddEntry(m_strLogMesage);
+		m_History.Save();
+	}
+
 	if (m_MergeStrategy != _T("recursive"))
 		m_StrategyOption = _T("");
 	if (m_StrategyOption != _T("rename-threshold") && m_StrategyOption != _T("subtree"))
@@ -163,10 +174,69 @@ void CMergeDlg::OnBnClickedOk()
 	OnOK();
 }
 
+void CMergeDlg::OnCancel()
+{
+	UpdateData(TRUE);
+	m_strLogMesage = m_cLogMessage.GetText();
+	if (m_strLogMesage != CString(this->m_pDefaultText) && !m_strLogMesage.IsEmpty() && !m_bNoCommit)
+	{
+		m_History.AddEntry(m_strLogMesage);
+		m_History.Save();
+	}
+	CResizableStandAloneDialog::OnCancel();
+}
+
 void CMergeDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
+}
+
+// CSciEditContextMenuInterface
+void CMergeDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
+{
+	//CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
+	if (m_History.GetCount() > 0)
+	{
+		CString sMenuItemText;
+		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
+		m_nPopupPasteLastMessage = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteLastMessage, sMenuItemText);
+
+		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_LOGHISTORY);
+		m_nPopupRecentMessage = nCmd++;
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupRecentMessage, sMenuItemText);
+	}
+}
+
+bool CMergeDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
+{
+	if (m_History.GetCount() == 0)
+		return false;
+
+	if (cmd == m_nPopupPasteLastMessage)
+	{
+		if (pSciEdit->GetText() == CString(m_pDefaultText))
+			pSciEdit->SetText(_T(""));
+		CString logmsg (m_History.GetEntry(0));
+		pSciEdit->InsertText(logmsg);
+		return true;
+	}
+
+	if (cmd == m_nPopupRecentMessage)
+	{
+		CHistoryDlg historyDlg;
+		historyDlg.SetHistory(m_History);
+		if (historyDlg.DoModal() != IDOK)
+			return false;
+
+		if (pSciEdit->GetText() == CString(m_pDefaultText))
+			pSciEdit->SetText(_T(""));
+		m_cLogMessage.InsertText(historyDlg.GetSelectedText(), !m_cLogMessage.GetText().IsEmpty());
+		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
+		return true;
+	}
+	return false;
 }
 
 void CMergeDlg::OnBnClickedCheckMergeLog()
