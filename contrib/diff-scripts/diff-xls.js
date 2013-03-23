@@ -209,7 +209,7 @@ function MsgBox(sMessage, iButtons, sTitle)
 function Abort(sMessage, sTitle)
 {
     MsgBox(sMessage, vbCritical, sTitle);
-    if (objExcelApp !== null)
+    if (objExcelApp)
     {
         objExcelApp.Quit();
     }
