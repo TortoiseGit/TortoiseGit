@@ -116,6 +116,8 @@ catch (e)
     oPropertyValue[0] = OO.Bridge_GetStruct("com.sun.star.beans.PropertyValue");
     oPropertyValue[0].Name = "ShowTrackedChanges";
     oPropertyValue[0].Value = true;
+    // objDocument is needed
+    var objDocument = objDesktop.loadComponentFromURL(sNewDoc,"_blank", 0, oPropertyValue);
 
     //Set the frame
     var Frame = objDesktop.getCurrentFrame();
