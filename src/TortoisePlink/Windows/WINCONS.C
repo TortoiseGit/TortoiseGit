@@ -118,7 +118,7 @@ int verify_ssh_host_key(void *frontend, char *host, int port, char *keytype,
 	int mbret;
 	char *message, *title;
 
-	message = dupprintf(wrongmsg, appname, keytype, fingerprint, appname);
+	message = dupprintf(wrongmsg, keytype, fingerprint, appname);
 	title = dupprintf(mbtitle, appname);
 
 	mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
