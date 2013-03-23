@@ -174,9 +174,9 @@ static void usage(void)
 	char buf[10000];
 	int j = 0;
 
-	j += sprintf(buf+j, "PuTTY Link: command-line connection utility\n");
+	j += sprintf(buf+j, "TortoiseGitPLink: command-line connection utility (based on PuTTY PLink)\n");
     j += sprintf(buf+j, "%s\n", ver);
-    j += sprintf(buf+j, "Usage: plink [options] [user@]host [command]\n");
+    j += sprintf(buf+j, "Usage: tortoisegitplink [options] [user@]host [command]\n");
     j += sprintf(buf+j, "       (\"host\" can also be a PuTTY saved session name)\n");
     j += sprintf(buf+j, "Options:\n");
     j += sprintf(buf+j, "  -V        print version information and exit\n");
