@@ -44,6 +44,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATH, m_PathListBox);
+	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_INIT, m_bInit);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_RECURSIVE, m_bRecursive);
 	DDX_Check(pDX, IDC_FORCE, m_bForce);
@@ -54,6 +55,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CStandAloneDialog)
+	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDOK, &CSubmoduleUpdateDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDHELP, &CSubmoduleUpdateDlg::OnBnClickedHelp)
 	ON_LBN_SELCHANGE(IDC_LIST_PATH, &CSubmoduleUpdateDlg::OnLbnSelchangeListPath)
@@ -109,6 +111,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
+	AdjustControlSize(IDC_SELECTALL);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_NOFETCH);
@@ -155,8 +158,30 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	}
 
 	UpdateData(FALSE);
+	OnLbnSelchangeListPath();
 
 	return TRUE;
+}
+
+void CSubmoduleUpdateDlg::OnBnClickedSelectall()
+{
+	UINT state = (m_SelectAll.GetState() & 0x0003);
+	if (state == BST_INDETERMINATE)
+	{
+		// It is not at all useful to manually place the checkbox into the indeterminate state...
+		// We will force this on to the unchecked state
+		state = BST_UNCHECKED;
+		m_SelectAll.SetCheck(state);
+	}
+	if (state == BST_UNCHECKED)
+	{
+		m_PathListBox.SetCurSel(-1);
+	}
+	else
+	{
+		for (int i = 0; i < m_PathListBox.GetCount(); ++i)
+			m_PathListBox.SetSel(i, TRUE);
+	}
 }
 
 void CSubmoduleUpdateDlg::OnBnClickedOk()
@@ -189,4 +214,11 @@ void CSubmoduleUpdateDlg::OnBnClickedHelp()
 void CSubmoduleUpdateDlg::OnLbnSelchangeListPath()
 {
 	GetDlgItem(IDOK)->EnableWindow(m_PathListBox.GetSelCount() > 0 ? TRUE : FALSE);
+	if (m_PathListBox.GetSelCount() == 0)
+		m_SelectAll.SetCheck(BST_UNCHECKED);
+	else if ((int)m_PathListBox.GetSelCount() < m_PathListBox.GetCount())
+		m_SelectAll.SetCheck(BST_INDETERMINATE);
+	else
+		m_SelectAll.SetCheck(BST_CHECKED);
+
 }
