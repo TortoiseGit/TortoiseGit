@@ -45,7 +45,7 @@
 			need the new CRT and MFC DLLs, which can only be deployed <emphasis>per
 			computer</emphasis> and not <emphasis>per user</emphasis>.
 			If you really must install TortoiseGit on a per user basis, then you must
-			first install the MFC and CRT package version 9 from Microsoft on each
+			first install the MFC and CRT package version 11 from Microsoft on each
 			computer you want to install TortoiseGit as per user.
 		</para>
 	</sect1>
