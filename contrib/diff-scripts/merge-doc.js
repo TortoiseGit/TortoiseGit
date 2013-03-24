@@ -76,15 +76,15 @@ word.visible = true;
 baseDoc = word.Documents.Open(sTheirDoc);
 
 // Merge into the "My" document
-if (parseInt(word.Version) < vOffice2000)
+if (parseInt(word.Version, 10) < vOffice2000)
 {
     baseDoc.Compare(sMergedDoc);
 }
-else if (parseInt(word.Version) < vOffice2007)
+else if (parseInt(word.Version, 10) < vOffice2007)
 {
     baseDoc.Compare(sMergedDoc, "Comparison", wdCompareTargetNew, true, true);
 }
-else if (parseInt(word.Version) < vOffice2010)
+else if (parseInt(word.Version, 10) < vOffice2010)
 {
     baseDoc.Merge(sMergedDoc);
 }
@@ -109,13 +109,13 @@ else
 }
 
 // Show the merge result
-if (parseInt(word.Version) < vOffice2007)
+if (parseInt(word.Version, 10) < vOffice2007)
 {
     word.ActiveDocument.Windows(1).Visible = 1;
 }
 
 // Close the first document
-if ((parseInt(word.Version) >= vOffice2002) && (parseInt(word.Version) < vOffice2010))
+if ((parseInt(word.Version, 10) >= vOffice2002) && (parseInt(word.Version, 10) < vOffice2010))
 {
     baseDoc.Close();
 }

@@ -65,7 +65,7 @@ try
 {
     word = WScript.CreateObject("Word.Application");
 
-    if (parseInt(word.Version) >= vOffice2013)
+    if (parseInt(word.Version, 10) >= vOffice2013)
     {
         var f = objScript.GetFile(sBaseDoc);
         if (f.attributes & 1)
@@ -112,7 +112,7 @@ catch (e)
     sNewDoc = objUriTranslator.translateToInternal(sNewDoc);
 
     //Open the %base document
-    var oPropertyValue = new Array();
+    var oPropertyValue = [];
     oPropertyValue[0] = OO.Bridge_GetStruct("com.sun.star.beans.PropertyValue");
     oPropertyValue[0].Name = "ShowTrackedChanges";
     oPropertyValue[0].Value = true;
@@ -132,7 +132,7 @@ catch (e)
     WScript.Quit(0);
 }
 
-if (parseInt(word.Version) >= vOffice2007)
+if (parseInt(word.Version, 10) >= vOffice2007)
 {
     sTempDoc = sNewDoc;
     sNewDoc = sBaseDoc;
@@ -145,7 +145,7 @@ word.visible = true;
 // Open the new document
 try
 {
-    destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version) < vOffice2013));
+    destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version, 10) < vOffice2013));
 }
 catch (e)
 {
@@ -153,7 +153,7 @@ catch (e)
     {
         // open empty document to prevent bug where first Open() call fails
         word.Documents.Add();
-        destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version) < vOffice2013));
+        destination = word.Documents.Open(sNewDoc, true, (parseInt(word.Version, 10) < vOffice2013));
     }
     catch (e)
     {
@@ -171,7 +171,7 @@ if (((destination.ActiveWindow.View.Type === wdOutlineView) || (destination.Acti
 }
 
 // Compare to the base document
-if (parseInt(word.Version) <= vOffice2000)
+if (parseInt(word.Version, 10) <= vOffice2000)
 {
     // Compare for Office 2000 and earlier
     try
@@ -202,7 +202,7 @@ else
 }
 
 // Show the comparison result
-if (parseInt(word.Version) < vOffice2007)
+if (parseInt(word.Version, 10) < vOffice2007)
 {
     word.ActiveDocument.Windows(1).Visible = 1;
 }
@@ -212,7 +212,7 @@ if (parseInt(word.Version) < vOffice2007)
 word.ActiveDocument.Saved = 1;
 
 // Close the first document
-if (parseInt(word.Version) >= vOffice2002)
+if (parseInt(word.Version, 10) >= vOffice2002)
 {
     destination.Close(wdDoNotSaveChanges);
 }
