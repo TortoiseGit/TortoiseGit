@@ -42,6 +42,7 @@
 #include "gitindex.h"
 #include "Libraries.h"
 #include "TaskbarUUID.h"
+#include "GitConfig.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -558,6 +559,21 @@ void CTortoiseProcApp::CheckUpgrade()
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE) == FALSE)
 			CRegStdDWORD(_T("Software\\TortoiseGit\\LogOrderBy")) = 0;
+
+		// smoothly migrate broken msysgit path settings
+		CString oldmsysGitSetting = CRegString(REG_MSYSGIT_PATH);
+		oldmsysGitSetting.TrimRight(_T("\\"));
+		CString right = oldmsysGitSetting.Right(4);
+		if (oldmsysGitSetting.GetLength() > 4 && oldmsysGitSetting.Right(4) == _T("\\cmd"))
+		{
+			CString newPath = oldmsysGitSetting.Mid(0, oldmsysGitSetting.GetLength() - 3) + _T("bin");
+			if (PathFileExists(newPath + _T("\\git.exe")))
+			{
+				CRegString(REG_MSYSGIT_PATH) = newPath;
+				g_Git.m_bInitialized = FALSE;
+				g_Git.CheckMsysGitDir();
+			}
+		}
 	}
 
 	if (lVersion <= 0x01040000)
