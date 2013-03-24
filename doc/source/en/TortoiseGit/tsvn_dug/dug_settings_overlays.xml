@@ -252,4 +252,20 @@ subst T: C:\TortoiseGit\trunk\doc
 			your computer for the changes to take effect.
 		</para>
 	</sect3>
+    <sect3 id="tsvn-dug-settings-overlay-handlers">
+        <title>Enabled Overlay Handlers</title>
+        <?dbhh topicname="HIDD_SETTINGSOVERLAYHANDLERS"?>
+        <para>
+            <figure id="tsvn-dug-settings-dia-overlay-handlers">
+                <title>The Settings Dialog, Icon Handlers Page</title>
+                <graphic fileref="../images/SettingsOverlayHandlers.png"/>
+            </figure>
+            Because the number of overlays available is severely restricted,
+            you can choose to disable some handlers to ensure that the ones
+            you want will be loaded. Because TortoiseGit uses the common
+            TortoiseOverlays component which is shared with other Tortoise
+            clients (e.g. TortoiseSVN, TortoiseCVS, TortoiseHg) this setting will affect
+            those clients too.
+        </para>
+    </sect3>
 </sect2>
