@@ -1,13 +1,15 @@
 #ifndef _AFFIX_HXX_
 #define _AFFIX_HXX_
 
+#include "hunvisapi.h"
+
 #include "atypes.hxx"
 #include "baseaffix.hxx"
 #include "affixmgr.hxx"
 
 /* A Prefix Entry  */
 
-class PfxEntry : public AffEntry
+class LIBHUNSPELL_DLL_EXPORTED PfxEntry : protected AffEntry
 {
        AffixMgr*    pmyMgr;
 
@@ -54,6 +56,7 @@ public:
   inline void   setNextEQ(PfxEntry * ptr) { nexteq = ptr; }
   inline void   setFlgNxt(PfxEntry * ptr) { flgnxt = ptr; }
   
+  inline char * nextchar(char * p);
   inline int    test_condition(const char * st);
 };
 
@@ -62,7 +65,7 @@ public:
 
 /* A Suffix Entry */
 
-class SfxEntry : public AffEntry
+class LIBHUNSPELL_DLL_EXPORTED SfxEntry : protected AffEntry
 {
        AffixMgr*    pmyMgr;
        char *       rappnd;
@@ -83,16 +86,16 @@ public:
 
   inline bool          allowCross() { return ((opts & aeXPRODUCT) != 0); }
   struct hentry *   checkword(const char * word, int len, int optflags, 
-                    AffEntry* ppfx, char ** wlst, int maxSug, int * ns,
+                    PfxEntry* ppfx, char ** wlst, int maxSug, int * ns,
 //                    const FLAG cclass = FLAG_NULL, const FLAG needflag = FLAG_NULL, char in_compound=IN_CPD_NOT);
                     const FLAG cclass = FLAG_NULL, const FLAG needflag = FLAG_NULL, const FLAG badflag = 0);
 
-  struct hentry *   check_twosfx(const char * word, int len, int optflags, AffEntry* ppfx, const FLAG needflag = NULL);
+  struct hentry *   check_twosfx(const char * word, int len, int optflags, PfxEntry* ppfx, const FLAG needflag = NULL);
 
   char *      check_twosfx_morph(const char * word, int len, int optflags,
-                 AffEntry* ppfx, const FLAG needflag = FLAG_NULL);
+                 PfxEntry* ppfx, const FLAG needflag = FLAG_NULL);
   struct hentry * get_next_homonym(struct hentry * he);
-  struct hentry * get_next_homonym(struct hentry * word, int optflags, AffEntry* ppfx, 
+  struct hentry * get_next_homonym(struct hentry * word, int optflags, PfxEntry* ppfx, 
     const FLAG cclass, const FLAG needflag);
 
 
@@ -123,7 +126,9 @@ public:
   inline void   setNextEQ(SfxEntry * ptr) { nexteq = ptr; }
   inline void   setFlgNxt(SfxEntry * ptr) { flgnxt = ptr; }
 
+  inline char * nextchar(char * p);
   inline int    test_condition(const char * st, const char * begin);
+
 };
 
 #endif

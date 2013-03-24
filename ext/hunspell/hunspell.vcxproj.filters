@@ -23,13 +23,25 @@
     <ClCompile Include="dictmgr.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filemgr.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="hashmgr.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hunspell.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hunzip.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="mythes.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="phonet.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="replist.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="suggestmgr.cxx">
@@ -49,10 +61,16 @@
     <ClInclude Include="baseaffix.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="csutil.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dictmgr.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filemgr.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hashmgr.hxx">
@@ -61,7 +79,13 @@
     <ClInclude Include="htypes.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="hunspell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="hunspell.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hunzip.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="langnum.hxx">
@@ -70,7 +94,16 @@
     <ClInclude Include="mythes.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="w_char.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="suggestmgr.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="replist.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phonet.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
