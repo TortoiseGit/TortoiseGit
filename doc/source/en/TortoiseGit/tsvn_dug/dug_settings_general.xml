@@ -6,6 +6,9 @@
 	<indexterm>
 		<primary>sounds</primary>
 	</indexterm>
+	<indexterm>
+		<primary>git.exe path</primary>
+	</indexterm>
 	<para>
 		<figure id="tsvn-dug-settings-dia-main">
 			<title>The Settings Dialog, General Page</title>
@@ -75,11 +78,32 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term>Git.exe Path</term>
+			<listitem>
+				<para>
+					TortoiseGit needs to know which <literal>git.exe</literal> to use for it's operations. Enter the full path to <literal>git.exe</literal> here.
+				</para>
+				<para>
+					<caution>
+						<para>
+							There is a <ulink url="https://github.com/msysgit/msysgit/issues/103"><citetitle>known issue in msysgit</citetitle></ulink>:
+							msysGit provides two <literal>git.exe</literal>-files (one in a folder named <literal>bin</literal> and one in a folder named <literal>cmd</literal>).
+							Make sure <guilabel>Git.exe Path</guilabel> points to the <literal>bin</literal>-folder within the msysgit installation folder.
+						</para>
+					</caution>
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term>Extern DLL Path</term>
 			<listitem>
 				<para>
 					If your git installation needs an extra entry in the PATH environment variable,
 					you can enter it here and it will get added to the PATH environment variable automatically when TortoiseGit starts.
+				</para>
+				<para>
+					This is especially needed if you installed the development version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <literal>msysGit-fullinstall-*.exe</literal>),
+					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path in order to execute git.exe.
 				</para>
 			</listitem>
 		</varlistentry>
