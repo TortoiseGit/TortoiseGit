@@ -2968,7 +2968,7 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 		cmd = _T("git.exe --version");
 		if (g_Git.Run(cmd, &version, &err, CP_UTF8))
 		{
-			CMessageBox::Show(NULL, _T("git have not installed (") + err + _T(")"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+			CMessageBox::Show(NULL, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
 			return false;
 		}
 	}

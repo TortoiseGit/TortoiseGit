@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -221,7 +221,8 @@ BOOL CSetMainPage::OnApply()
 	}
 	else
 	{
-		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		if (CMessageBox::Show(NULL, _T("Invalid git.exe path.\nCheck help file for \"Git.exe Path\"."), _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			OnHelp();
 		return 0;
 	}
 }
@@ -286,10 +287,14 @@ void CSetMainPage::OnCheck()
 		cmd=_T("git.exe --version");
 		g_Git.Run(cmd,&out,CP_UTF8);
 		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
+		if (out.IsEmpty())
+			if (CMessageBox::Show(NULL, _T("Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\"."),_T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				OnHelp();
 	}
 	else
 	{
-		CMessageBox::Show(NULL,_T("Msys Git Install Path Error"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+		if (CMessageBox::Show(NULL, _T("Invalid git.exe path.\nCheck help file for \"Git.exe Path\"."), _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			OnHelp();
 	}
 
 	Store (oldpath, m_regMsysGitPath);
