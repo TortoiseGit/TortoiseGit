@@ -76,7 +76,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\ext\gitdll;..\..\ext\libgit2\include;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;DEBUG;HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(IntDir);..\TortoiseShell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -88,7 +88,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\ext\gitdll;..\..\ext\libgit2\include;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;DEBUG;HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(IntDir);..\TortoiseShell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\ext\gitdll;..\..\ext\libgit2\include;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(IntDir);..\TortoiseShell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -112,7 +112,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\ext\gitdll;..\..\ext\libgit2\include;..\Git;..\TortoiseProc;..\..\ext\scintilla\include;..\Utils;..\Utils\MiscUI;..\..\ext\hunspell;..\..\ext\ResizableLib;..\Resources;..\TortoiseMerge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HUNSPELL_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(IntDir);..\TortoiseShell;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
