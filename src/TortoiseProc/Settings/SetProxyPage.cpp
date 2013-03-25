@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2012 - TortoiseGit
+// Copyright (C) 2010-2013 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -114,6 +114,17 @@ BOOL CSetProxyPage::OnInitDialog()
 	CString proxy = g_Git.GetConfigValue(_T("http.proxy"), CP_UTF8);
 
 	m_SSHClient = m_regSSHClient;
+	if (m_SSHClient.IsEmpty())
+	{
+		TCHAR sPlink[MAX_PATH];
+		GetModuleFileName(NULL, sPlink, _countof(sPlink));
+		LPTSTR ptr = _tcsrchr(sPlink, _T('\\'));
+		if (ptr)
+		{
+			_tcscpy_s(ptr + 1, MAX_PATH - (ptr - sPlink + 1), _T("TortoiseGitPLink.exe"));
+			m_SSHClient = CString(sPlink);
+		}
+	}
 	m_serveraddress = m_regServeraddress;
 	m_serverport = _ttoi((LPCTSTR)(CString)m_regServerport);
 	m_username = m_regUsername;
