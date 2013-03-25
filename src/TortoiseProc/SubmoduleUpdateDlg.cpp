@@ -33,6 +33,7 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	, m_bNoFetch(FALSE)
 	, m_bMerge(FALSE)
 	, m_bRebase(FALSE)
+	, m_bParallel(TRUE)
 {
 }
 
@@ -51,6 +52,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_NOFETCH, m_bNoFetch);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_MERGE, m_bMerge);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_REBASE, m_bRebase);
+	DDX_Check(pDX, IDC_CHECK_PARALLEL, m_bParallel);
 }
 
 
@@ -117,6 +119,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SUBMODULE_NOFETCH);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
+	AdjustControlSize(IDC_CHECK_PARALLEL);
 
 	CString WorkingDir = g_Git.m_CurrentDir;
 	WorkingDir.Replace(_T(':'), _T('_'));

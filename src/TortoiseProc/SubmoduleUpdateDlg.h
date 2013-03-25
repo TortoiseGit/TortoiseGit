@@ -52,6 +52,7 @@ public:
 	BOOL m_bNoFetch;
 	BOOL m_bMerge;
 	BOOL m_bRebase;
+	BOOL m_bParallel;
 	STRING_VECTOR m_PathFilterList;
 	STRING_VECTOR m_PathList;
 
