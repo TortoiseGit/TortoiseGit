@@ -427,7 +427,8 @@ void CPushDlg::OnBnClickedOk()
 		else
 		{
 			// do not store branch names on removal
-			this->m_RemoteURL.SaveHistory();
+			if (m_RemoteURL.IsWindowEnabled())
+				m_RemoteURL.SaveHistory(); // do not store Remote URLs if not used
 			this->m_BranchRemote.SaveHistory();
 			m_RemoteReg = m_Remote.GetString();
 

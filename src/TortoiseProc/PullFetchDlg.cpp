@@ -301,11 +301,13 @@ void CPullFetchDlg::OnBnClickedOk()
 	{
 		m_Other.GetWindowTextW(m_RemoteURL);
 		m_RemoteBranchName=m_RemoteBranch.GetString();
+
+		// only store URL in history if it's value was used
+		m_Other.SaveHistory();
 	}
 
 	m_RemoteReg = m_Remote.GetString();
 
-	m_Other.SaveHistory();
 	m_RemoteBranch.SaveHistory();
 	this->m_regRebase=this->m_bRebase;
 
