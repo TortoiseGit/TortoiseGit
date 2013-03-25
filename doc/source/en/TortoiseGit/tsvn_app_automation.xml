@@ -382,9 +382,11 @@ Don't touch these lines:
 								To explicitly set the revision numbers use
 								<option>/startrev:xxx</option> and
 								<option>/endrev:xxx</option>.
+<!--
 								If <option>/blame</option> is set and <option>/path2</option>
 								is not set, then the diff is done by first blaming 
 								the files with the given revisions.
+-->
 							</entry>
 						</row>
 						<row>
@@ -407,15 +409,6 @@ Don't touch these lines:
 								file in <option>/path</option>.
 							</entry>
 						</row>
-						<!--
-						<row>
-							<entry condition="pot">:relocate</entry>
-							<entry>
-								Opens the relocate dialog. The <option>/path</option>
-								specifies the working tree path to relocate.
-							</entry>
-						</row>
-						-->
 						<row>
 							<entry condition="pot">:help</entry>
 							<entry>
@@ -561,7 +554,6 @@ Don't touch these lines:
 								<option>/force</option>: Shows file list for download even if the latest TortoiseGit has been installed.
 							</entry>
 						</row>
-						<!--
 						<row>
 							<entry condition="pot">:revisiongraph</entry>
 							<entry>
@@ -569,7 +561,6 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
-						-->
 						<!--
 						<row>
 							<entry condition="pot">:rebuildiconcache</entry>
