@@ -30,6 +30,7 @@ Released: unreleased
  * Fixed issue #1610: Average values on statistics dialog graph
  * Fixed issue #1708: Merge dialog have no saving of log message
  * Fixed issue #1716: TortoiseGitBlame added line parameter
+ * Allow to set a default value for ssh client in HKLM (Software\TortoiseGit\SSH)
 
 == Bug Fixes ==
  * Fixed issue #1642: Incorrect behavior if repo is located on root of drive

@@ -48,6 +48,10 @@
 			first install the MFC and CRT package version 11 from Microsoft on each
 			computer you want to install TortoiseGit as per user.
 		</para>
+		<para>
+			You can provide a default setting for the ssh client in 
+			<filename>HKLM\TortoiseGit\SSH</filename>.
+		</para>
 	</sect1>
 	<sect1 id="tsvn-admins-upgradecheck">
 		<title>Redirect the upgrade check</title>

@@ -1641,6 +1641,8 @@ BOOL CGit::CheckMsysGitDir()
 
 	//setup ssh client
 	CString sshclient=CRegString(_T("Software\\TortoiseGit\\SSH"));
+	if (sshclient.IsEmpty())
+		sshclient = CRegString(_T("Software\\TortoiseGit\\SSH"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
 
 	if(!sshclient.IsEmpty())
 	{
