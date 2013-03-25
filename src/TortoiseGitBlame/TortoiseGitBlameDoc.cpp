@@ -53,6 +53,7 @@ CTortoiseGitBlameDoc::CTortoiseGitBlameDoc()
 {
 	m_bFirstStartup = true;
 	m_IsGitFile = FALSE;
+	m_lLine = 1;
 }
 
 CTortoiseGitBlameDoc::~CTortoiseGitBlameDoc()
@@ -66,14 +67,16 @@ BOOL CTortoiseGitBlameDoc::OnNewDocument()
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
-	if(parser.HasVal(_T("rev")) && m_bFirstStartup)
+	if (m_bFirstStartup)
 	{
 		m_Rev=parser.GetVal(_T("rev"));
+		m_lLine = parser.GetLongVal(_T("line"));
 		m_bFirstStartup = false;
 	}
 	else
 	{
 		m_Rev.Empty();
+		m_lLine = 1;
 	}
 
 	return OnOpenDocument(lpszPathName,m_Rev);
@@ -206,6 +209,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			}
 		}
 		pView->UpdateInfo();
+		if (m_lLine > 0)
+			pView->GotoLine(m_lLine);
 	}
 
 	return TRUE;

@@ -1868,6 +1868,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
 	{
+		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 	}

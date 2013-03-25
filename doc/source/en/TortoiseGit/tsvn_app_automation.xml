@@ -459,13 +459,11 @@ Don't touch these lines:
 								If the option <option>/endrev</option> is set TortoiseGitBlame
 								ends at that revision.
 								</para>
-<!--
 								<para>
 								If the option <option>/line:nnn</option> is set,
-								TortoiseBlame will open with the specified line
+								TortoiseGitBlame will open with the specified line
 								number showing.
 								</para>
--->
 							</entry>
 						</row>
 						<row>
