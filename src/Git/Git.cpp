@@ -948,7 +948,7 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer)
 		return result + 13;
 	}
 
-	_tcscat(lpBuffer, _T("TortoiseGit\\"));
+	_tcscat_s(lpBuffer, nBufferLength, _T("TortoiseGit\\"));
 	CreateDirectory(lpBuffer, NULL);
 
 	return result + 13;
@@ -1931,7 +1931,7 @@ int CGit::RefreshGitIndex()
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		try
 		{
-			return git_run_cmd("update-index","update-index -q --refresh");
+			return [] { return git_run_cmd("update-index","update-index -q --refresh"); }();
 
 		}catch(...)
 		{
