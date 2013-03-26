@@ -1,5 +1,5 @@
 ﻿= Release 1.8.2.0 =
-Released: unreleased
+Released: 2013-03-26
 
 == Features ==
  * Fixed issue #1270: Log dialog can revert selected files to parent revision

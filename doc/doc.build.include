@@ -192,7 +192,7 @@ This will only build the english HTML help file for TortoiseGit
 				<setenv>
 					<variable name="MajorVersion" value="1" />
 					<variable name="MinorVersion" value="8" />
-					<variable name="MicroVersion" value="1" />
+					<variable name="MicroVersion" value="2" />
 				</setenv>
 			</if>                                            
 		</if>
