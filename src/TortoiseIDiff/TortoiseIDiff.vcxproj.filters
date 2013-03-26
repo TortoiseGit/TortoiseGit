@@ -113,54 +113,57 @@
     <ClInclude Include="..\Utils\TaskbarUUID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ResString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alphatoggle.ico">
+    <Image Include="resources\alphatoggle.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="blend.ico">
+    <Image Include="resources\blend.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="fitinwindow.ico">
+    <Image Include="resources\fitinwindow.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="fittogether.ico">
+    <Image Include="resources\fittogether.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="imginfo.ico">
+    <Image Include="resources\imginfo.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="link.ico">
+    <Image Include="resources\link.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="origsize.ico">
+    <Image Include="resources\origsize.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="overlap.ico">
+    <Image Include="resources\overlap.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="player_fwd.ico">
+    <Image Include="resources\player_fwd.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="player_rew.ico">
+    <Image Include="resources\player_rew.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="player_start.ico">
+    <Image Include="resources\player_start.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="player_stop.ico">
+    <Image Include="resources\player_stop.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="TortoiseIDiff.ico">
+    <Image Include="resources\TortoiseIDiff.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="vertical.ico">
+    <Image Include="resources\vertical.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="zoomin.ico">
+    <Image Include="resources\zoomin.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="zoomout.ico">
+    <Image Include="resources\zoomout.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

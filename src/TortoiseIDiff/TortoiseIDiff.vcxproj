@@ -103,60 +103,61 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
-    <ClCompile Include="AboutDlg.cpp" />
+    <ClCompile Include="..\Utils\CmdLineParser.cpp" />
+    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
-    <ClCompile Include="..\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp" />
-    <ClCompile Include="..\Utils\LangDll.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
+    <ClCompile Include="..\Utils\Registry.cpp" />
+    <ClCompile Include="..\Utils\SysInfo.cpp" />
+    <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="NiceTrackbar.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
     <ClCompile Include="PicWindow.cpp" />
-    <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="TortoiseIDiff.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Utils\TaskbarUUID.h" />
-    <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="..\Utils\CmdLineParser.h" />
+    <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseDialog.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h" />
-    <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h" />
-    <ClInclude Include="..\Utils\LangDll.h" />
-    <ClInclude Include="MainWindow.h" />
     <ClInclude Include="..\Utils\MiscUI\MemDC.h" />
-    <ClInclude Include="NiceTrackbar.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
-    <ClInclude Include="PicWindow.h" />
+    <ClInclude Include="..\Utils\MiscUI\ResString.h" />
     <ClInclude Include="..\Utils\registry.h" />
+    <ClInclude Include="..\Utils\SysInfo.h" />
+    <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="NiceTrackbar.h" />
+    <ClInclude Include="PicWindow.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="TortoiseIDiff.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="alphatoggle.ico" />
-    <Image Include="blend.ico" />
-    <Image Include="fitinwindow.ico" />
-    <Image Include="fittogether.ico" />
-    <Image Include="imginfo.ico" />
-    <Image Include="link.ico" />
-    <Image Include="origsize.ico" />
-    <Image Include="overlap.ico" />
-    <Image Include="player_fwd.ico" />
-    <Image Include="player_rew.ico" />
-    <Image Include="player_start.ico" />
-    <Image Include="player_stop.ico" />
-    <Image Include="TortoiseIDiff.ico" />
-    <Image Include="vertical.ico" />
-    <Image Include="zoomin.ico" />
-    <Image Include="zoomout.ico" />
+    <Image Include="resources\alphatoggle.ico" />
+    <Image Include="resources\blend.ico" />
+    <Image Include="resources\fitinwindow.ico" />
+    <Image Include="resources\fittogether.ico" />
+    <Image Include="resources\imginfo.ico" />
+    <Image Include="resources\link.ico" />
+    <Image Include="resources\origsize.ico" />
+    <Image Include="resources\overlap.ico" />
+    <Image Include="resources\player_fwd.ico" />
+    <Image Include="resources\player_rew.ico" />
+    <Image Include="resources\player_start.ico" />
+    <Image Include="resources\player_stop.ico" />
+    <Image Include="resources\TortoiseIDiff.ico" />
+    <Image Include="resources\vertical.ico" />
+    <Image Include="resources\zoomin.ico" />
+    <Image Include="resources\zoomout.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TortoiseIDiff.rc" />

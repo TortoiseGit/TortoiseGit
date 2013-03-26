@@ -16,19 +16,13 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "BaseWindow.h"
+#include <memory>
 #include <Shlwapi.h>
 
 #pragma comment(lib, "shlwapi.lib")
-
-ResString::ResString (HINSTANCE hInst, int resId)
-{
-    if (!::LoadString (hInst, resId, _buf, MAX_RESSTRING + 1))
-    {
-        SecureZeroMemory(_buf, sizeof(_buf));
-    }
-}
 
 
 bool CWindow::RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground,
@@ -90,7 +84,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
         switch (uMsg)
         {
         case WM_ACTIVATE:
-            if ((wParam == WA_ACTIVE)&&(!pWnd->bWindowRestored)&&(!pWnd->sRegistryPath.empty()))
+            if ((wParam == WA_ACTIVE) && (!pWnd->bWindowRestored) && (!pWnd->sRegistryPath.empty()))
             {
                 WINDOWPLACEMENT wpl = {0};
                 DWORD size = sizeof(wpl);
@@ -135,17 +129,18 @@ bool CWindow::Create(DWORD dwStyles, HWND hParent /* = NULL */, RECT* rect /* = 
     return CreateEx(0, dwStyles, hParent, rect);
 }
 
-bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = NULL */, RECT* rect /* = NULL */)
+bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = NULL */, RECT* rect /* = NULL */, LPCTSTR classname /* = NULL */)
 {
     // send the this pointer as the window creation parameter
     if (rect == NULL)
-        m_hwnd = CreateWindowEx(dwExStyles, sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, NULL, hResource, (void *)this);
+        m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hParent, NULL, hResource, (void *)this);
     else
     {
-        m_hwnd = CreateWindowEx(dwExStyles, sClassName.c_str(), sWindowTitle.c_str(), dwStyles, rect->left, rect->top,
+        m_hwnd = CreateWindowEx(dwExStyles, classname ? classname : sClassName.c_str(), sWindowTitle.c_str(), dwStyles, rect->left, rect->top,
             rect->right - rect->left, rect->bottom - rect->top, hParent, NULL, hResource,
             (void *)this);
     }
+    m_hParent = hParent;
     return (m_hwnd != NULL);
 }
 

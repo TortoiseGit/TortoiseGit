@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012 - TortoiseGit
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,8 @@ bool CMainWindow::RegisterAndCreateWindow()
 	wcx.cbWndExtra = 0;
 	wcx.hInstance = hResource;
 	wcx.hCursor = NULL;
-	wcx.lpszClassName = ResString(hResource, IDS_APP_TITLE);
+	ResString clsname(hResource, IDS_APP_TITLE);
+	wcx.lpszClassName = clsname;
 	wcx.hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_TORTOISEUDIFF));
 	wcx.hbrBackground = (HBRUSH)(COLOR_3DFACE+1);
 	wcx.lpszMenuName = MAKEINTRESOURCE(IDC_TORTOISEUDIFF);

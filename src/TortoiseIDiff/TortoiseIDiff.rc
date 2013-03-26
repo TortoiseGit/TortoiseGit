@@ -30,22 +30,22 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_TORTOISEIDIFF       ICON                    "TortoiseIDiff.ico"
-IDI_OVERLAP             ICON                    "overlap.ico"
-IDI_FITINWINDOW         ICON                    "fitinwindow.ico"
-IDI_ORIGSIZE            ICON                    "origsize.ico"
-IDI_ZOOMIN              ICON                    "zoomin.ico"
-IDI_ZOOMOUT             ICON                    "zoomout.ico"
-IDI_IMGINFO             ICON                    "imginfo.ico"
-IDI_FORWARD             ICON                    "player_fwd.ico"
-IDI_BACKWARD            ICON                    "player_rew.ico"
-IDI_START               ICON                    "player_start.ico"
-IDI_STOP                ICON                    "player_stop.ico"
-IDI_VERTICAL            ICON                    "vertical.ico"
-IDI_LINK                ICON                    "link.ico"
-IDI_ALPHATOGGLE         ICON                    "alphatoggle.ico"
-IDI_FITTOGETHER         ICON                    "fittogether.ico"
-IDI_BLEND               ICON                    "blend.ico"
+IDI_TORTOISEIDIFF       ICON                    "resources\\TortoiseIDiff.ico"
+IDI_OVERLAP             ICON                    "resources\\overlap.ico"
+IDI_FITINWINDOW         ICON                    "resources\\fitinwindow.ico"
+IDI_ORIGSIZE            ICON                    "resources\\origsize.ico"
+IDI_ZOOMIN              ICON                    "resources\\zoomin.ico"
+IDI_ZOOMOUT             ICON                    "resources\\zoomout.ico"
+IDI_IMGINFO             ICON                    "resources\\imginfo.ico"
+IDI_FORWARD             ICON                    "resources\\player_fwd.ico"
+IDI_BACKWARD            ICON                    "resources\\player_rew.ico"
+IDI_START               ICON                    "resources\\player_start.ico"
+IDI_STOP                ICON                    "resources\\player_stop.ico"
+IDI_VERTICAL            ICON                    "resources\\vertical.ico"
+IDI_LINK                ICON                    "resources\\link.ico"
+IDI_ALPHATOGGLE         ICON                    "resources\\alphatoggle.ico"
+IDI_FITTOGETHER         ICON                    "resources\\fittogether.ico"
+IDI_BLEND               ICON                    "resources\\blend.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
