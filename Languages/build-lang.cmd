@@ -21,6 +21,7 @@ call :nmake 1049 ru
 call :nmake 1053 sv
 call :nmake 1055 tr
 call :nmake 2052 zh_CN
+call :nmake 2070 pt_PT
 goto :eof
 
 :nmake
