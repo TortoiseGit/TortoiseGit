@@ -5,6 +5,8 @@
 # 
 # Translators:
 # Freddydelanuit Dec <fred.dec@free.fr>, 2012-2013.
+# Fred <pinky__007@hotmail.com>, 2013.
+#  <greg.seth@gmail.com>, 2013.
 #   <pinky__007@hotmail.com>, 2013.
 # Stéphane Aulery <lkppo@free.fr>, 2012.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
@@ -14,7 +16,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-01-16 12:23+0000\n"
+"PO-Revision-Date: 2013-03-10 18:06+0000\n"
 "Last-Translator: Pinky007 <pinky__007@hotmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -285,7 +287,7 @@ msgstr "%s\n%s"
 msgid ""
 "%s\n"
 "Could not be cleanly patched."
-msgstr ""
+msgstr "%s\nN'a pas pu être patché correctement."
 
 #. Resource IDs: (145)
 #, c-format
@@ -313,6 +315,10 @@ msgstr "&3 manière de fusionner"
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
 msgstr "&À propos de TortoiseGitBlame..."
+
+#. Resource IDs: (57664)
+msgid "&About TortoiseGitMerge..."
+msgstr "&A propos de TortoiseGitMerge…"
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -786,7 +792,7 @@ msgstr "&Luminosité"
 
 #. Resource IDs: (65535)
 msgid "&Max line length for inline diffs"
-msgstr ""
+msgstr "Longueur &maximale de la ligne pour différenciation d'une ligne"
 
 #. Resource IDs: (16543)
 msgid "&Menu animations:"
@@ -798,7 +804,7 @@ msgstr "Contenu du &Menu :"
 
 #. Resource IDs: (1735)
 msgid "&Merge"
-msgstr ""
+msgstr "&Fusionner"
 
 #. Resource IDs: (9)
 msgid "&Merge..."
@@ -820,6 +826,10 @@ msgstr "&Commentaire :"
 msgid "&Minimize"
 msgstr "&Réduire"
 
+#. Resource IDs: (32880)
+msgid "&Moved blocks"
+msgstr "&Blocs déplacés"
+
 #. Resource IDs: (1515)
 msgid "&Name"
 msgstr "&Nom"
@@ -827,6 +837,10 @@ msgstr "&Nom"
 #. Resource IDs: (65535)
 msgid "&Name:"
 msgstr "&Nom :"
+
+#. Resource IDs: (65535)
+msgid "&Navigate"
+msgstr "&Naviguer"
 
 #. Resource IDs: (1049)
 msgid "&Network drives"
@@ -855,7 +869,7 @@ msgstr "&Pas d'événement double-clic"
 
 #. Resource IDs: (1734)
 msgid "&No fetch"
-msgstr ""
+msgstr "Aucu&ne extraction"
 
 #. Resource IDs: (1702)
 msgid "&None"
@@ -1129,6 +1143,10 @@ msgstr "&Texte uniquement"
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr "Délai en secondes pour arrê&ter le filtrage d'autocomplétion"
 
+#. Resource IDs: (59392)
+msgid "&Toolbar"
+msgstr "&Barre d'outils"
+
 #. Resource IDs: (65535)
 msgid "&Toolbar Name:"
 msgstr "&Nom de la Barre d'outils:"
@@ -1167,7 +1185,7 @@ msgstr "Ann&uler"
 
 #. Resource IDs: (110)
 msgid "&Unified diff"
-msgstr ""
+msgstr "Diff &unifié"
 
 #. Resource IDs: (1256)
 msgid "&Unified diff with"
@@ -1224,6 +1242,10 @@ msgstr "&Mot entier"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "&ignorer les changements d'espaces"
+
+#. Resource IDs: (88)
+msgid "(TortoiseGit default)"
+msgstr "(TortoiseGit par défaut)"
 
 #. Resource IDs: (85)
 #, c-format
@@ -1649,7 +1671,7 @@ msgstr "Tous les parents"
 
 #. Resource IDs: (9690)
 msgid "All tags only"
-msgstr ""
+msgstr "Uniquement tous les tags"
 
 #. Resource IDs: (1008)
 msgid ""
@@ -2064,7 +2086,7 @@ msgstr "/logmsg et /logmsgfile ont été spécifiés tous les deux !\nUn seul de
 #. Resource IDs: (70)
 msgid ""
 "Both the path to the patch file and the target path must be absolute paths!"
-msgstr ""
+msgstr "Les chemins du fichier de patch et de la cible doivent être absolus !"
 
 #. Resource IDs: (1007)
 msgid "Br&owse..."
@@ -2177,6 +2199,10 @@ msgstr "MAJ"
 msgid "CC:"
 msgstr "Copie à :"
 
+#. Resource IDs: (1741)
+msgid "Calculate"
+msgstr "Calculer"
+
 #. Resource IDs: (1127)
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "Peut double-cliquer dans la liste du journal pour comparer avec avec la révision précédente"
@@ -2231,7 +2257,7 @@ msgstr "Il n'est pas possible de monter la diff en raison de retours à la ligne
 
 #. Resource IDs: (16926)
 msgid "Casca&de"
-msgstr ""
+msgstr "Cascade"
 
 #. Resource IDs: (65535)
 msgid "Cascaded context menu"
@@ -2292,6 +2318,22 @@ msgstr "Fichiers modifiés entre %s, %s et %s, %s"
 #, c-format
 msgid "Changed files: %d"
 msgstr "Fichiers modifiés : %d"
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files"
+msgstr "Lignes modifiées incluant les fichiers ajoutés/supprimés"
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files by date"
+msgstr "Lignes modifiées incluant les fichiers ajoutés/supprimés par date"
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files"
+msgstr "Lignes modifiées sans inclure les fichiers ajoutés/supprimés"
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files by date"
+msgstr "Lignes modifiées sans inclure les fichiers ajoutés/supprimés par date"
 
 #. Resource IDs: (264)
 #, c-format
@@ -2354,11 +2396,6 @@ msgstr "Vérifier : "
 msgid "Checkout"
 msgstr "Extraire"
 
-#. Resource IDs: (229)
-#, c-format
-msgid "Checkout from %s, revision %s, %s, %s"
-msgstr "Vérification depuis %s, révision %s, %s, %s"
-
 #. Resource IDs: (67)
 msgid "Cherry Pick"
 msgstr "Cherry Pick"
@@ -2382,6 +2419,10 @@ msgstr "Chinois"
 #. Resource IDs: (602)
 msgid "Choose Repository"
 msgstr "Choisir le dépôt"
+
+#. Resource IDs: (88)
+msgid "Chronological reversed (git default)"
+msgstr "Ordre chronologique inversé (défaut de git)"
 
 #. Resource IDs: (4572)
 msgid "Clean"
@@ -2489,6 +2530,10 @@ msgstr "Cliquer afin de voir les commandes pour déplacer des blocs de texte\nUt
 msgid "Clipboard"
 msgstr "Presse-papiers"
 
+#. Resource IDs: (606)
+msgid "Clone"
+msgstr "Cloner"
+
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
 msgstr "Cloner un dépôt existant"
@@ -2541,13 +2586,13 @@ msgstr "Fermer la fenêtre avec demande de confirmation d'enregistrement"
 
 #. Resource IDs: (156)
 msgid "Collapse"
-msgstr ""
+msgstr "Replier"
 
 #. Resource IDs: (2055)
 msgid ""
 "Collapse unchanged sections\n"
 "Collapse"
-msgstr ""
+msgstr "Replier les sections inchangées\nReplier"
 
 #. Resource IDs: (16662)
 msgid "Color"
@@ -2621,6 +2666,10 @@ msgstr "Commentaires de livraison"
 msgid "Commit Name"
 msgstr "Nom de livraison"
 
+#. Resource IDs: (1750)
+msgid "Commit Ordering:"
+msgstr "Livraisons ordonnées:"
+
 #. Resource IDs: (1110)
 msgid "Commit to:"
 msgstr "Livrer vers :"
@@ -2664,7 +2713,7 @@ msgstr "Livrer un dossier non-versionné n'ajoutera pas récursivement ses enfan
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
-msgstr ""
+msgstr "comparer les révisions &HEAD"
 
 #. Resource IDs: (1254)
 msgid "Compare and blame with previous revision"
@@ -2672,7 +2721,7 @@ msgstr "Comparer avec la révision précédente et annoter"
 
 #. Resource IDs: (79)
 msgid "Compare selected refs"
-msgstr "Compurer les références sélectionnées"
+msgstr "Comparer les références sélectionnées"
 
 #. Resource IDs: (64)
 msgid "Compare two files"
@@ -2698,7 +2747,7 @@ msgstr "Comparer avec la révision précédente"
 msgid ""
 "Compares all whitespaces when diffing\n"
 "Compare whitespaces"
-msgstr ""
+msgstr "Comparer tous les espaces lors de la différenciation\nComparer les espaces"
 
 #. Resource IDs: (12)
 msgid ""
@@ -2718,6 +2767,10 @@ msgstr "Terminé"
 #. Resource IDs: (65535)
 msgid "Config"
 msgstr "Configurer"
+
+#. Resource IDs: (65535)
+msgid "Config type:"
+msgstr "Type de configuration:"
 
 #. Resource IDs: (236)
 msgid "Configure Hook Scripts"
@@ -3075,7 +3128,7 @@ msgstr "Créer un clone allégé avec un historique tronqué au nombre de révis
 
 #. Resource IDs: (156)
 msgid "Create patch file"
-msgstr ""
+msgstr "Créer le fichier de patch"
 
 #. Resource IDs: (72)
 msgid "Create pull &request"
@@ -3114,6 +3167,14 @@ msgstr "Crée un fichier de différence, au format unifié, avec toutes vos modi
 #. Resource IDs: (605)
 msgid "Creating pull-request..."
 msgstr "Création de demande d'extraction..."
+
+#. Resource IDs: (89)
+msgid "Credential helper must not be empty."
+msgstr "\"Credential helper\" ne doit pas être vide."
+
+#. Resource IDs: (65535)
+msgid "Credential helper:"
+msgstr "Crédit des aides:"
 
 #. Resource IDs: (65535)
 msgid "Credits:"
@@ -3249,6 +3310,10 @@ msgstr "Supprimer &localement"
 msgid "Delete Ref..."
 msgstr "Supprimer Ref..."
 
+#. Resource IDs: (87)
+msgid "Delete all tags"
+msgstr "Supprimer toutes les étiquettes"
+
 #. Resource IDs: (22)
 #, c-format
 msgid "Delete and &ignore %d items by name"
@@ -3328,6 +3393,10 @@ msgstr "Supprime le journal des actions"
 msgid "Deleting"
 msgstr "Supprime"
 
+#. Resource IDs: (88)
+msgid "Deleting remote refs..."
+msgstr "Supprimer les refs distant..."
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Description"
@@ -3394,6 +3463,10 @@ msgstr "Différences entre"
 #. Resource IDs: (1022)
 msgid "Diffing"
 msgstr "Voir différence"
+
+#. Resource IDs: (2054)
+msgid "Diffing commits"
+msgstr "Différenciation des livraisons"
 
 #. Resource IDs: (14)
 msgid "Diffs the working tree file with the one before the last commit"
@@ -3490,6 +3563,14 @@ msgstr "Voulez-vous vraiment <ct=0x0000FF>supprimer</ct> <b>%s</b> ?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Voulez-vous vraiment supprimer la barre d'outils '%s' ?"
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as assume-valid?"
+msgstr "Voulez-vous réellement marquer le(s) fichier(s) sélectionné(s) comme supposé valide?"
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as skip-worktree?"
+msgstr "Voulez-vous réellement marquer le(s) fichier(s) sélectionné(s) comme a ne pas afficher dans l'arborescence de travail?"
 
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
@@ -3620,7 +3701,7 @@ msgstr "Types de disque"
 
 #. Resource IDs: (1731)
 msgid "Dry run"
-msgstr ""
+msgstr "Simulation"
 
 #. Resource IDs: (1279)
 msgid "Dummy Button Form "
@@ -3736,9 +3817,22 @@ msgstr "Email"
 msgid "Email Address To and CC can't empty at the same time."
 msgstr "Les champs 'À' et 'Copie à' ne peuvent pas être vide en même temps."
 
+#. Resource IDs: (87)
+msgid "Emails"
+msgstr "Emails"
+
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Vide"
+
+#. Resource IDs: (87)
+msgid ""
+"Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
+msgstr "Activer chargement/sauvegarde les fichiers cache du journal (tortoisegit.data, tortoisegit.index)"
+
+#. Resource IDs: (1744)
+msgid "Enable log cache"
+msgstr "Activer le cache du journal"
 
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
@@ -4387,6 +4481,10 @@ msgstr "GDI+ ne peut créer un objet bitmap. Vous n'avez probablement plus assez
 msgid "Gathering information. Please wait..."
 msgstr "Obtention d'informations. Veuillez patienter..."
 
+#. Resource IDs: (2054)
+msgid "Gathering statistics"
+msgstr "Récupération des statistiques"
+
 #. Resource IDs: (107, 143)
 msgid "General"
 msgstr "Général"
@@ -4541,9 +4639,17 @@ msgstr "URL courte Git"
 msgid "Git.exe Path:"
 msgstr "Chemin de Git.exe :"
 
+#. Resource IDs: (4591)
+msgid "Git::Credential"
+msgstr "Git::Credential"
+
 #. Resource IDs: (4570)
 msgid "Git::Remote"
 msgstr "Git::Distant"
+
+#. Resource IDs: (89)
+msgid "Global"
+msgstr "Global"
 
 #. Resource IDs: (155)
 msgid "Go To Line"
@@ -4645,6 +4751,14 @@ msgstr "Aide"
 msgid "Help Keyboard"
 msgstr "Aide au Clavier"
 
+#. Resource IDs: (65535)
+msgid "Helper:"
+msgstr "Aide:"
+
+#. Resource IDs: (65535)
+msgid "Helpers:"
+msgstr "Helpers:"
+
 #. Resource IDs: (16974)
 msgid "Hex"
 msgstr "Héxa"
@@ -4667,7 +4781,7 @@ msgstr "Masquer le script pendant l'exécution"
 
 #. Resource IDs: (156)
 msgid "Hide/Show the patch file list"
-msgstr ""
+msgstr "Afficher/Masquer la liste des fichiers de patch"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -5109,13 +5223,18 @@ msgstr "Nom de fichier incorrect."
 msgid "Initial import"
 msgstr "Import initial"
 
+#. Resource IDs: (87)
+#, c-format
+msgid "Initialized empty Git repository in %s."
+msgstr "Dépôt Git vide initialisé dans %s."
+
 #. Resource IDs: (156)
 msgid "Inline diff"
-msgstr ""
+msgstr "Différences en ligne"
 
 #. Resource IDs: (156)
 msgid "Inline diff word-wise"
-msgstr ""
+msgstr "Différences de ligne dans les mots"
 
 #. Resource IDs: (65535)
 msgid "Inline differences"
@@ -5276,6 +5395,10 @@ msgid ""
 "Line"
 msgstr "Outil Ligne\nLigne"
 
+#. Resource IDs: (32853)
+msgid "Line diff bar"
+msgstr "Barre des lignes de différence"
+
 #. Resource IDs: (65535)
 msgid "Line differences"
 msgstr "Différences de ligne"
@@ -5335,6 +5458,10 @@ msgstr "Charger une &clef Putty"
 msgid "Loading..."
 msgstr "Chargement..."
 
+#. Resource IDs: (89)
+msgid "Local"
+msgstr "Local"
+
 #. Resource IDs: (65535)
 msgid "Local Branch"
 msgstr "Branche locale"
@@ -5355,6 +5482,10 @@ msgid ""
 "repository URL will be saved to."
 msgstr "Endroit où le contenu de l'URL\ndu dépôt sera sauvegardé."
 
+#. Resource IDs: (32854)
+msgid "Locator Bar"
+msgstr "Barre localisateur"
+
 #. Resource IDs: (65)
 msgid "Log"
 msgstr "Journal"
@@ -5374,6 +5505,10 @@ msgstr "Historique de journal"
 #. Resource IDs: (130)
 msgid "Log Messages"
 msgstr "Commentaires"
+
+#. Resource IDs: (345)
+msgid "Log commit ordering"
+msgstr "Journal des livraisons ordonnés"
 
 #. Resource IDs: (65535)
 msgid "Log messages"
@@ -5821,7 +5956,7 @@ msgid ""
 "No command specified!\n"
 "\n"
 "TortoiseGitProc.exe is used by the Shell extension and should not be called directly!"
-msgstr ""
+msgstr "Pas de commande entrée !\n\nTortoiseGitProc.exe est utilisé par l'extension du shell et ne doit pas être appelé directement !"
 
 #. Resource IDs: (81)
 msgid "No command value specified!"
@@ -5963,7 +6098,7 @@ msgid ""
 "Note that if you choose to recover the auto-saved documents, you must "
 "explicitly save them to overwrite the original documents.  If you choose to "
 "not recover the auto-saved versions, they will be deleted."
-msgstr ""
+msgstr "Notez que si vous choisissez de récupérer les documents automatiquement sauvegardés, vous devez explicitement les sauvegarder afin d'écraser les documents originaux. Si vous choisissez de ne pas récupérer les versions automatiquement sauvegardées, elles seront supprimées."
 
 #. Resource IDs: (1481)
 msgid "Note: the folder contains unversioned items"
@@ -6163,7 +6298,7 @@ msgstr "Ouvrir un document existant\nOuvrir"
 msgid ""
 "Open files for diff or to apply a patch\n"
 "Open files"
-msgstr ""
+msgstr "Ouvrir des fichiers pour la différenciation ou pour appliquer un patch\nOuvrir fichiers"
 
 #. Resource IDs: (1132)
 msgid "Open from clipboard"
@@ -6292,6 +6427,10 @@ msgstr "parents(s)"
 msgid "Part of code come from TortoiseSVN Blame"
 msgstr "Partie de code provenant d'annotations TortoiseSVN"
 
+#. Resource IDs: (4585)
+msgid "Password"
+msgstr "Mot de passe"
+
 #. Resource IDs: (69, 65535)
 msgid "Password:"
 msgstr "Mot de passe :"
@@ -6342,11 +6481,11 @@ msgstr "Patch en pièce jointe"
 
 #. Resource IDs: (376)
 msgid "Patch all files"
-msgstr ""
+msgstr "Patcher tous les fichiers"
 
 #. Resource IDs: (376)
 msgid "Patch selected files"
-msgstr ""
+msgstr "Patcher les fichiers sélectionnés"
 
 #. Resource IDs: (157)
 msgid "Patchfiles (*.diff, *.patch)|*.diff;*.patch|All Files (*.*)|*.*||"
@@ -6354,12 +6493,12 @@ msgstr "Fichiers patch (*.diff, *.patch)|*.diff;*.patch|Tous les fichiers (*.*)|
 
 #. Resource IDs: (169)
 msgid "Patching"
-msgstr ""
+msgstr "Application du patch"
 
 #. Resource IDs: (169)
 #, c-format
 msgid "Patching file '%s'"
-msgstr ""
+msgstr "Application du patch sur le fichier '%s'"
 
 #. Resource IDs: (63, 77, 198, 207)
 msgid "Path"
@@ -6413,8 +6552,15 @@ msgstr "Image:"
 #. Resource IDs: (157)
 msgid ""
 "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
-"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
-msgstr "Images (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|All "
+"Files (*.*)|*.*||"
+msgstr "Images (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphes (*.gv)|*.gv|Tous les Fichiers (*.*)|*.*||"
+
+#. Resource IDs: (157)
+msgid ""
+"Pictures (*.wmf, *.jpg, *.png, *.bmp, "
+"*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr "Images (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Fichiers (*.*)|*.*||"
 
 #. Resource IDs: (246)
 msgid "Pie Graph"
@@ -6643,7 +6789,7 @@ msgstr "Pousser"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
-msgstr ""
+msgstr "Pousser les notes"
 
 #. Resource IDs: (76)
 msgid "Push ta&gs"
@@ -6694,7 +6840,7 @@ msgstr "Intervalle"
 
 #. Resource IDs: (1736)
 msgid "Re&base"
-msgstr ""
+msgstr "Re&base"
 
 #. Resource IDs: (1494)
 msgid "Re&mote:"
@@ -6784,7 +6930,7 @@ msgstr "Outil Rectangle\nRectangle"
 
 #. Resource IDs: (1487)
 msgid "Recurse submodule"
-msgstr ""
+msgstr "Parcourir les sous-modules récursivement"
 
 #. Resource IDs: (1654)
 msgid "Recursive"
@@ -6850,7 +6996,7 @@ msgstr "Filtre d'expressions régulières:\r\n.   : n'importe quel caractère\r\
 #. Resource IDs: (7)
 #, c-format
 msgid "Rejected patch hunks for '%s'"
-msgstr ""
+msgstr "Partie du patch rejetée pour '%s'"
 
 #. Resource IDs: (1072)
 msgid "Relative Times in log"
@@ -7146,9 +7292,13 @@ msgstr "Restauré"
 msgid "Retry"
 msgstr "Réessayer"
 
+#. Resource IDs: (89)
+msgid "Retry with --force"
+msgstr "Réessayer avec --force"
+
 #. Resource IDs: (602)
-msgid "Retrying..."
-msgstr "Retenter..."
+msgid "Retrying in 2 seconds..."
+msgstr "Nouvel essai dans 2 secondes..."
 
 #. Resource IDs: (77, 175, 229)
 msgid "Revert"
@@ -7162,6 +7312,10 @@ msgstr "Restaurer la livraison"
 #, c-format
 msgid "Revert commit %s"
 msgstr "Restaurer la livraison %s"
+
+#. Resource IDs: (1258)
+msgid "Revert to parent revision"
+msgstr "Annuler vers la révision originale"
 
 #. Resource IDs: (323)
 #, c-format
@@ -7186,7 +7340,7 @@ msgstr "Vérifier le patch avec TortoiseGitMerge"
 
 #. Resource IDs: (14)
 msgid "Review/apply a unified diff file with TortoiseGitMerge"
-msgstr ""
+msgstr "Analyser/appliquer un fichier de diff unifié avec TortoiseGitMerge"
 
 #. Resource IDs: (13)
 msgid "Review/apply single &patch..."
@@ -7265,11 +7419,11 @@ msgstr "Ligne %d-%d de %d"
 
 #. Resource IDs: (1070)
 msgid "Row Down"
-msgstr ""
+msgstr "Ligne inférieure"
 
 #. Resource IDs: (1070)
 msgid "Row Up"
-msgstr ""
+msgstr "Ligne supérieure"
 
 #. Resource IDs: (17045)
 msgid "S&elect..."
@@ -7437,7 +7591,7 @@ msgstr "Rechercher :"
 
 #. Resource IDs: (169)
 msgid "Searching for better path to apply patch..."
-msgstr ""
+msgstr "Recherche d'un meilleur chemin pour appliquer le patch…"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -7526,7 +7680,7 @@ msgstr "Sélectionner la cible de la fusion"
 
 #. Resource IDs: (13)
 msgid "Select patch file..."
-msgstr ""
+msgstr "Sélectionner le fichier de patch…"
 
 #. Resource IDs: (79)
 msgid "Select text editor application"
@@ -7598,6 +7752,10 @@ msgstr "&Adresse serveur :"
 #. Resource IDs: (65535)
 msgid "Set Accelerator &for:"
 msgstr "Définir l'Accélérateur &pour :"
+
+#. Resource IDs: (1558)
+msgid "Set au&thor"
+msgstr "Régler le nom de l'Au&teur"
 
 #. Resource IDs: (1557)
 msgid "Set commit &date"
@@ -7718,7 +7876,7 @@ msgstr "Afficher Moins de Boutons"
 
 #. Resource IDs: (2051)
 msgid "Show HEAD revision nodes"
-msgstr ""
+msgstr "Afficher les noeuds de révision HEAD"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -7730,7 +7888,7 @@ msgstr "Voir les différences en ligne mot par mot\nDifférence en ligne par mot
 msgid ""
 "Show Inline-Diff\n"
 "Inline diff"
-msgstr ""
+msgstr "Afficher la différence en ligne\nDifférence en ligne"
 
 #. Resource IDs: (32781)
 msgid "Show Log"
@@ -7776,6 +7934,10 @@ msgstr "Voir les sections pour lesquelles cet engagement est actif"
 msgid "Show changes as &unified diff"
 msgstr "Voir les différences en mode diff &unifié"
 
+#. Resource IDs: (32784)
+msgid "Show date"
+msgstr "Afficher la date"
+
 #. Resource IDs: (83)
 msgid "Show destination folder"
 msgstr "Voir le dossier de destination"
@@ -7811,6 +7973,11 @@ msgstr "Voir le journal"
 #. Resource IDs: (65)
 msgid "Show log &before rename/copy"
 msgstr "Afficher le journal &avant de renommer/copier"
+
+#. Resource IDs: (88)
+#, c-format
+msgid "Show log of %s"
+msgstr "Voir le journal du %s"
 
 #. Resource IDs: (81)
 msgid "Show log of submodule"
@@ -7886,15 +8053,15 @@ msgstr "Afficher les &touches de raccourcis dans ScreenTips"
 msgid ""
 "Show special characters for whitespaces and newlines\n"
 "Show Whitespaces"
-msgstr ""
+msgstr "Afficher des caractères spéciaux à la place des espaces et les sauts de ligne\nAfficher les espaces"
 
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
-msgstr ""
+msgstr "Afficher les symboles sur les étiquettes des ref afin de remplacer une partie des noms de référence"
 
 #. Resource IDs: (1730)
 msgid "Show ta&gs"
-msgstr ""
+msgstr "Afficher les ta&gs"
 
 #. Resource IDs: (1209)
 msgid "Show un&modified files"
@@ -8152,6 +8319,10 @@ msgstr "État des éléments dans Git"
 msgid "Stops bisect mode"
 msgstr "Arrêter le mode bifurcation"
 
+#. Resource IDs: (1)
+msgid "Strategy"
+msgstr "Stratégie"
+
 #. Resource IDs: (156)
 msgid "Style"
 msgstr "Style"
@@ -8294,7 +8465,7 @@ msgstr "Permute la comparaison gauche<->droite"
 
 #. Resource IDs: (1733)
 msgid "Symbolize ref names"
-msgstr ""
+msgstr "Rétrécir les noms de référence aux symboles"
 
 #. Resource IDs: (22)
 msgid "Sync Remote Repositories, including pull, push, email patch and so on"
@@ -8303,6 +8474,10 @@ msgstr "Synchronisation du référentiel distant, tirer, pousser, envoyer par ma
 #. Resource IDs: (22)
 msgid "Sync..."
 msgstr "Sync..."
+
+#. Resource IDs: (89)
+msgid "System"
+msgstr "Système"
 
 #. Resource IDs: (1556)
 msgid "System &sounds"
@@ -8340,7 +8515,7 @@ msgstr "Étiquette"
 
 #. Resource IDs: (1382)
 msgid "Tag (FF)"
-msgstr ""
+msgstr "Etiquette (FF)"
 
 #. Resource IDs: (82)
 msgid "Tag Info"
@@ -8405,6 +8580,19 @@ msgstr "La chaîne '@@' était attendue à la ligne %d !"
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
 msgstr "Le commentaire de livraison ne peut pas être vide."
+
+#. Resource IDs: (89)
+#, c-format
+msgid ""
+"The credential helper URL \"%s\" already exists.\n"
+"Do you want to overwrite it?"
+msgstr "L'URL du \"credential helper\" \"%s\" existe déjà.\nVoulez-vous l'écraser?"
+
+#. Resource IDs: (89)
+msgid ""
+"The credential helper was changed.\n"
+"Do you want to save now or discard changes?"
+msgstr "Le \"credential helper\" a changé.\nVoulez-vous sauvegarder maintenant ou supprimer les changements?"
 
 #. Resource IDs: (603)
 msgid ""
@@ -8577,6 +8765,13 @@ msgid ""
 "You must only specify one of them."
 msgstr "Les paramètres '/path' et '/pathfile' s'excluent mutuellement.\nVous ne devez en définir qu'un des deux."
 
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"The patch does not apply cleanly to %s and no version information is given.\n"
+"Patching is not possible!"
+msgstr "Le patch ne s'applique pas correctement à %s et aucune information sur la version n'est donnée.\nL'application du patch est impossible!"
+
 #. Resource IDs: (64)
 #, c-format
 msgid ""
@@ -8609,7 +8804,7 @@ msgid ""
 "which seems to match the directory you're applying the patch.\n"
 "\n"
 "Do you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
-msgstr ""
+msgstr "Le chemin \n%s\ndans le fichier de patch n'existe pas.\nTortoiseGitMerge a trouvé le chemin relatif\n%s\nqui semble correspondre au dossier auquel vous appliquez le patch.\n\nVoulez-vous utiliser le chemin suggéré? Répondre \"non\" vous fera quitter TortoiseGitMerge."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8618,7 +8813,7 @@ msgid ""
 "%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr ""
+msgstr "Le chemin\n%s\ndans le fichier de patch n'existe pas.\nTortoiseGitMerge a essayé d'appliquer le patch en essayant des préfixes mais aucun chemin correspondant n'a pu être trouvé."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8629,7 +8824,7 @@ msgid ""
 "But TortoiseGitMerge found the path\n"
 "%s\n"
 "matches it better. Do you want to use the suggested path instead?"
-msgstr ""
+msgstr "Le chemin\n%s\nne semble pas correspondre aux chemins du fichier de patch.\nMais TortoiseGitMerge a trouvé le chemin\n%s\nqui correspond mieux. Voulez-vous utiliser le chemin suggéré à la place?"
 
 #. Resource IDs: (71)
 #, c-format
@@ -8842,10 +9037,6 @@ msgstr "Outils"
 msgid "Tools:"
 msgstr "Outils :"
 
-#. Resource IDs: (1096)
-msgid "Tortoise&UDiff"
-msgstr "Tortoise&UDiff"
-
 #. Resource IDs: (65, 65535)
 msgid "TortoiseGit"
 msgstr "TortoiseGit"
@@ -8873,6 +9064,10 @@ msgstr "TortoiseGit a détecté des noms de fichiers similaires. Voulez-vous que
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
 msgstr "TortoiseGit ne montrera pas les superpositions suivantes: %s"
+
+#. Resource IDs: (1096)
+msgid "TortoiseGit&UDiff"
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -8921,7 +9116,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: l'afficheur de différence entre les images pour TortoiseSVN\n\nLes paramètres de ligne de commande disponible sont:\n/left:\"chemin de l'image de gauche\"\n/lefttitle:\"titre à afficher pour l'image de gauche\"\n/right:\"chemin de l'image de droite\"\n/righttitle:\"titre à afficher pour l'image de droite\"\n/overlay»»pour activer le mode de superposition\n/fit»»pour ajuster la taille des images\n/showinfo»»pour afficher la case des infos sur les images"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
@@ -8941,9 +9136,24 @@ msgid ""
 "apr-utils %d.%d.%d"
 msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s⏎ libsvn_diff %d.%d.%d, %s⏎ apr %d.%d.%d⏎ apr-utils %d.%d.%d"
 
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
+" more than once."
+msgstr "TortoiseGitMerge ne peut pas utiliser ce fichier comme patch. Le nom \"%s\" apparait plus d'une fois."
+
 #. Resource IDs: (156)
 msgid "TortoiseMerge"
 msgstr "TortoiseMerge"
+
+#. Resource IDs: (1739)
+msgid "Total changed lines including added/deleted files:"
+msgstr "Nombre total de lignes modifiées incluant les fichiers ajoutés et supprimés:"
+
+#. Resource IDs: (1737)
+msgid "Total changed lines not including added/deleted files:"
+msgstr "Nombre total de lignes modifiées sans inclure les fichiers ajoutés et supprimés:"
 
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
@@ -9103,7 +9313,7 @@ msgstr "Format de fichier non attendu."
 
 #. Resource IDs: (1070)
 msgid "Unfold"
-msgstr ""
+msgstr "Déplier"
 
 #. Resource IDs: (3850)
 msgid ""
@@ -9113,7 +9323,7 @@ msgstr "Texte non formatté\nTexte sans formattage"
 
 #. Resource IDs: (2054)
 msgid "Unified &diff of HEAD revisions"
-msgstr ""
+msgstr "Regroupement des &diff des révisions HEAD"
 
 #. Resource IDs: (1258)
 msgid "Unknown"
@@ -9143,6 +9353,14 @@ msgstr "Rendre %s non-versionné"
 #. Resource IDs: (1384)
 msgid "Up"
 msgstr "Haut"
+
+#. Resource IDs: (1710)
+msgid "Update"
+msgstr "Mise à jour"
+
+#. Resource IDs: (607)
+msgid "Update Ref"
+msgstr "Mettre à jour la référence"
 
 #. Resource IDs: (65)
 msgid "Update Submodules"
@@ -9174,27 +9392,35 @@ msgstr "Utiliser l'autre bl&oc de texte"
 
 #. Resource IDs: (156)
 msgid "Use 'mine' text block"
-msgstr ""
+msgstr "Utiliser le bloc de texte 'le mien'"
 
 #. Resource IDs: (156)
 msgid "Use 'mine' text block then 'theirs'"
-msgstr ""
+msgstr "Utiliser le bloc de texte 'le mien' puis 'le leur'"
 
 #. Resource IDs: (156)
 msgid "Use 'theirs' text block"
-msgstr ""
+msgstr "Utiliser le bloc de texte 'le leur'"
 
 #. Resource IDs: (156)
 msgid "Use 'theirs' text block then 'mine'"
-msgstr ""
+msgstr "Utiliser le bloc de texte 'le leur' puis 'le mien'"
 
 #. Resource IDs: (156)
 msgid "Use Blocks"
-msgstr ""
+msgstr "Utiliser des blocs"
+
+#. Resource IDs: (1761)
+msgid "Use HTTP path component"
+msgstr "Utiliser un chemin de composante HTTP"
 
 #. Resource IDs: (1482)
 msgid "Use MAPI"
 msgstr "Utiliser MAPI"
+
+#. Resource IDs: (1066)
+msgid "Use Ribbons"
+msgstr "Utiliser les rubans"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -9292,7 +9518,7 @@ msgstr "Utiliser le bloc de texte depuis 'le mien'\nUtiliser 'mon' bloc de texte
 
 #. Resource IDs: (251)
 msgid "Use text block from 't&heirs' before 'mine'"
-msgstr ""
+msgstr "Utiliser '&leur' bloc de texte avant 'le mien'"
 
 #. Resource IDs: (2052)
 msgid ""
@@ -9592,13 +9818,13 @@ msgstr "Modifications du répertoire de travail"
 
 #. Resource IDs: (156)
 msgid "Wrap long lines"
-msgstr ""
+msgstr "Retour automatique à la ligne"
 
 #. Resource IDs: (2056)
 msgid ""
 "Wrap long lines at the right border of the view\n"
 "Wrap long lines"
-msgstr ""
+msgstr "Retour automatique à la ligne au bord de la fenêtre\nRetour automatique à la ligne"
 
 #. Resource IDs: (73)
 msgid "Yes"
@@ -9657,6 +9883,14 @@ msgid ""
 "You have modified properties without saving them first.\n"
 "Do you want to save them now?"
 msgstr "Vous avez modifié les propriétés sans les enregistrer d'abord.\nVoulez-vous les enregistrer maintenant?"
+
+#. Resource IDs: (87)
+#, c-format
+msgid ""
+"You have selected %d items to show the diff for.\n"
+"For every of these items a new instance of the diff viewer will be started.\n"
+"Do you really want to show the diff for so many items at once?"
+msgstr "Vous avez sélectionné %d objets afin de voir les différences.\nPour chacun de ces objets, une nouvelle instance de l'affichage de différence sera démarrée.\nVoulez-vous vraiment afficher les différences pour autant d'objets en une fois?"
 
 #. Resource IDs: (169)
 msgid ""
@@ -9841,10 +10075,6 @@ msgstr "un fichier non nommé"
 #. Resource IDs: (1085)
 msgid "and support the developers"
 msgstr "et supportez les développeurs"
-
-#. Resource IDs: (1073)
-msgid "apply --topo-order"
-msgstr "appliquer --topo-order"
 
 #. Resource IDs: (195)
 msgid "assume-valid"
@@ -10071,6 +10301,10 @@ msgid ""
 "%s"
 msgstr "allé sur\r\n%s"
 
+#. Resource IDs: (1386)
+msgid "take care of submodule changes"
+msgstr "prends soin des changements des sous-modules"
+
 #. Resource IDs: (3845)
 #, c-format
 msgid "to %1"
@@ -10088,6 +10322,26 @@ msgstr "vraie"
 #. Resource IDs: (245)
 msgid "week"
 msgstr "semaine"
+
+#. Resource IDs: (89)
+msgid "wincred - all Windows users"
+msgstr "wincred - pour tous les utilisateurs de windows"
+
+#. Resource IDs: (88)
+msgid "wincred - current Windows user"
+msgstr "wincred - pour l'utilisateur actuel de windows"
+
+#. Resource IDs: (88)
+msgid "wincred - this repository only"
+msgstr "wincred - pour ce dépôt seulement"
+
+#. Resource IDs: (88)
+msgid "winstore - current Windows user"
+msgstr "winstore - pour l'utilisateur actuel de windows"
+
+#. Resource IDs: (88)
+msgid "winstore - this repository only"
+msgstr "winstore - pour ce dépôt seulement"
 
 #. Resource IDs: (245)
 msgid "year"

@@ -5,8 +5,9 @@
 # 
 # Translators:
 #   <b3hzat@gmail.com>, 2012.
-# Ekrem KAYA <webmaster@e-piksel.com>, 2012.
+# Ekrem KAYA <webmaster@e-piksel.com>, 2012-2013.
 # E-Piksel KAYA <webmaster@e-piksel.com>, 2012.
+# Ertan Tike <ertant@rdgnet.org>, 2013.
 #   <ozantunca90@gmail.com>, 2013.
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012.
 #   <webmaster@e-piksel.com>, 2012.
@@ -15,14 +16,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-01-15 21:45+0000\n"
-"Last-Translator: ozantunca <ozantunca90@gmail.com>\n"
+"PO-Revision-Date: 2013-03-10 16:47+0000\n"
+"Last-Translator: ertant <ertant@rdgnet.org>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -314,6 +315,10 @@ msgstr "&3 yollu birleştirme"
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
 msgstr "&TortoiseGitBlame Hakkında..."
+
+#. Resource IDs: (57664)
+msgid "&About TortoiseGitMerge..."
+msgstr ""
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -754,7 +759,7 @@ msgstr "Getir/Al dan sonra Rebase Başlat"
 
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
-msgstr ""
+msgstr "&Aramayı değiştirilmiş satırlara kısıtla"
 
 #. Resource IDs: (1078)
 msgid "&Line number"
@@ -821,6 +826,10 @@ msgstr "&İleti:"
 msgid "&Minimize"
 msgstr "&Küçült"
 
+#. Resource IDs: (32880)
+msgid "&Moved blocks"
+msgstr ""
+
 #. Resource IDs: (1515)
 msgid "&Name"
 msgstr "&Ad:"
@@ -828,6 +837,10 @@ msgstr "&Ad:"
 #. Resource IDs: (65535)
 msgid "&Name:"
 msgstr "&Ad:"
+
+#. Resource IDs: (65535)
+msgid "&Navigate"
+msgstr ""
 
 #. Resource IDs: (1049)
 msgid "&Network drives"
@@ -1080,7 +1093,7 @@ msgstr ""
 
 #. Resource IDs: (1616)
 msgid "&Start"
-msgstr ""
+msgstr "&Başlat"
 
 #. Resource IDs: (16917)
 msgid "&Start Group"
@@ -1092,11 +1105,11 @@ msgstr "&Sakla"
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
-msgstr ""
+msgstr "&Durum Çubuğu"
 
 #. Resource IDs: (1525)
 msgid "&Switch to new branch"
-msgstr ""
+msgstr "Yeni dal'a &geç"
 
 #. Resource IDs: (1173)
 msgid "&Symbol View"
@@ -1104,7 +1117,7 @@ msgstr "&Sembol görünümü"
 
 #. Resource IDs: (65535)
 msgid "&Tab size:"
-msgstr ""
+msgstr "&Sekme boyutu:"
 
 #. Resource IDs: (1069)
 msgid "&Tabbed Document"
@@ -1129,6 +1142,10 @@ msgstr "&Sadece yazı"
 #. Resource IDs: (1222)
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr "&Otomatik-tamamlama çözümlenmesinin durdurulmasına kalan zaman aşımı süresi (sn)"
+
+#. Resource IDs: (59392)
+msgid "&Toolbar"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Toolbar Name:"
@@ -1225,6 +1242,10 @@ msgstr "&Tüm sözcük"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "&Boşluk değişikliklerini yoksay"
+
+#. Resource IDs: (88)
+msgid "(TortoiseGit default)"
+msgstr ""
 
 #. Resource IDs: (85)
 #, c-format
@@ -1630,7 +1651,7 @@ msgstr "Gelişmiş birleştirme ayarları"
 
 #. Resource IDs: (606)
 msgid "All"
-msgstr ""
+msgstr "Tümü"
 
 #. Resource IDs: (1007)
 msgid "All Commands"
@@ -1978,7 +1999,7 @@ msgstr "Taban"
 
 #. Resource IDs: (65535)
 msgid "Base file:"
-msgstr ""
+msgstr "Taban dosya:"
 
 #. Resource IDs: (1005)
 msgid "Based on TortoiseIDiff of TortoiseSVN"
@@ -2000,19 +2021,19 @@ msgstr "Big5 (Geleneksel)"
 
 #. Resource IDs: (11)
 msgid "Bisect bad"
-msgstr ""
+msgstr "İkiye ayırma kötü"
 
 #. Resource IDs: (9)
 msgid "Bisect good"
-msgstr ""
+msgstr "İkiye ayırma iyi"
 
 #. Resource IDs: (11)
 msgid "Bisect reset"
-msgstr ""
+msgstr "İkiye ayırmayı sıfırla"
 
 #. Resource IDs: (9, 4574)
 msgid "Bisect start"
-msgstr ""
+msgstr "İkiye ayırma başlat"
 
 #. Resource IDs: (3850)
 msgid ""
@@ -2069,7 +2090,7 @@ msgstr ""
 
 #. Resource IDs: (1007)
 msgid "Br&owse..."
-msgstr ""
+msgstr "&Gözat"
 
 #. Resource IDs: (1510)
 msgid "Branc&h:"
@@ -2088,15 +2109,15 @@ msgstr ""
 
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
-msgstr ""
+msgstr "Dal/Etiket adı geçersiz."
 
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
-msgstr ""
+msgstr "Dal/Etiket adı boş ya da geçersiz olmamalıdır."
 
 #. Resource IDs: (115)
 msgid "Branch/tag created successfully!"
-msgstr ""
+msgstr "Dal/Etiket başarıyla oluşturuldu!"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2112,7 +2133,7 @@ msgstr "Göz&at"
 
 #. Resource IDs: (21)
 msgid "Browse Reference"
-msgstr ""
+msgstr "Referansa Gözat"
 
 #. Resource IDs: (78)
 msgid "Browse for the external diff program"
@@ -2172,10 +2193,14 @@ msgstr "K&es"
 
 #. Resource IDs: (3697)
 msgid "CAP"
-msgstr ""
+msgstr "CAP"
 
 #. Resource IDs: (65535)
 msgid "CC:"
+msgstr "CC:"
+
+#. Resource IDs: (1741)
+msgid "Calculate"
 msgstr ""
 
 #. Resource IDs: (1127)
@@ -2274,11 +2299,11 @@ msgstr ""
 
 #. Resource IDs: (3825)
 msgid "Change the window position"
-msgstr ""
+msgstr "Pencerenin konumunu değiştir"
 
 #. Resource IDs: (3825)
 msgid "Change the window size"
-msgstr ""
+msgstr "Pencerenin boyutunu değiştir"
 
 #. Resource IDs: (199)
 msgid "Changed Files"
@@ -2293,6 +2318,22 @@ msgstr "Dosyalar %s, %s ile %s, %s arasında değiştirildi"
 #, c-format
 msgid "Changed files: %d"
 msgstr "Değiştirilmiş Dosyalar: %d"
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files by date"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files by date"
+msgstr ""
 
 #. Resource IDs: (264)
 #, c-format
@@ -2355,11 +2396,6 @@ msgstr "Kontol Et"
 msgid "Checkout"
 msgstr "Çıkar(al)"
 
-#. Resource IDs: (229)
-#, c-format
-msgid "Checkout from %s, revision %s, %s, %s"
-msgstr "%s revizyonundan çıkar, revizyon %s, %s, %s"
-
 #. Resource IDs: (67)
 msgid "Cherry Pick"
 msgstr ""
@@ -2382,15 +2418,19 @@ msgstr "Çince"
 
 #. Resource IDs: (602)
 msgid "Choose Repository"
+msgstr "Depo Seçiniz"
+
+#. Resource IDs: (88)
+msgid "Chronological reversed (git default)"
 msgstr ""
 
 #. Resource IDs: (4572)
 msgid "Clean"
-msgstr ""
+msgstr "Temizle"
 
 #. Resource IDs: (1630)
 msgid "Clean Type"
-msgstr ""
+msgstr "Temizle Türü"
 
 #. Resource IDs: (145)
 msgid "Cleaning up"
@@ -2490,13 +2530,17 @@ msgstr ""
 msgid "Clipboard"
 msgstr "Pano"
 
+#. Resource IDs: (606)
+msgid "Clone"
+msgstr ""
+
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
 msgstr "Var Olan Depoyu Çoğalt"
 
 #. Resource IDs: (22)
 msgid "Clone a repository"
-msgstr ""
+msgstr "Depo Kopyala"
 
 #. Resource IDs: (1653)
 msgid "Clone into Bare Repo"
@@ -2600,15 +2644,15 @@ msgstr "Teslim et"
 
 #. Resource IDs: (1255)
 msgid "Commit Date"
-msgstr ""
+msgstr "Teslim Etme Tarihi"
 
 #. Resource IDs: (1255)
 msgid "Commit Email"
-msgstr ""
+msgstr "Teslim Etme E-Postası"
 
 #. Resource IDs: (603)
 msgid "Commit Finish"
-msgstr ""
+msgstr "Teslim Etme Sonu"
 
 #. Resource IDs: (1260)
 msgid "Commit Info"
@@ -2620,6 +2664,10 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Commit Name"
+msgstr "Teslim Etme Adı"
+
+#. Resource IDs: (1750)
+msgid "Commit Ordering:"
 msgstr ""
 
 #. Resource IDs: (1110)
@@ -2641,7 +2689,7 @@ msgstr "Tarihe göre teslim eder"
 #. Resource IDs: (604)
 #, c-format
 msgid "Commits each %s"
-msgstr ""
+msgstr "Her %s başına düşen teslim sayısı"
 
 #. Resource IDs: (1135)
 msgid "Commits each week:"
@@ -2677,11 +2725,11 @@ msgstr ""
 
 #. Resource IDs: (64)
 msgid "Compare two files"
-msgstr ""
+msgstr "İki dosya karşılaştır"
 
 #. Resource IDs: (156)
 msgid "Compare whitespaces"
-msgstr ""
+msgstr "Boşlukları karşılaştır"
 
 #. Resource IDs: (1251)
 msgid "Compare with &working tree"
@@ -2718,6 +2766,10 @@ msgstr "Tamamlandı"
 
 #. Resource IDs: (65535)
 msgid "Config"
+msgstr "Yapılandırma"
+
+#. Resource IDs: (65535)
+msgid "Config type:"
 msgstr ""
 
 #. Resource IDs: (236)
@@ -2744,19 +2796,19 @@ msgstr "Dosyalar arası çakışmaları çözümleyen programın ayarları."
 
 #. Resource IDs: (65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
-msgstr ""
+msgstr "GNU karşılaştırma dosyasi (Yama dosyası) görüntüleyicisi ayarları."
 
 #. Resource IDs: (1257, 4568)
 msgid "Conflict"
-msgstr ""
+msgstr "Çakışma"
 
 #. Resource IDs: (67)
 msgid "Conflict Files"
-msgstr ""
+msgstr "Çakışan Dosyalar"
 
 #. Resource IDs: (65535)
 msgid "Conflict resolved"
-msgstr ""
+msgstr "Çakışma düzeltildi"
 
 #. Resource IDs: (263, 65535)
 msgid "Conflicted"
@@ -2769,7 +2821,7 @@ msgstr "Çakışmalar"
 #. Resource IDs: (188)
 #, c-format
 msgid "Conflicts: %d"
-msgstr ""
+msgstr "Çakışmalar: %d"
 
 #. Resource IDs: (16520)
 msgid "Context Menus: "
@@ -2838,7 +2890,7 @@ msgstr "Seçimi Pano'ya kopya"
 msgid ""
 "Copy the selection and put it on the Clipboard\n"
 "Copy"
-msgstr ""
+msgstr "Seçileni kopyala ve Panoya koy\nKopyala"
 
 #. Resource IDs: (1252)
 msgid "Copy to clipboard"
@@ -2910,7 +2962,7 @@ msgstr "%1 açılamadı çünkü çok fazla açık dosya bulunmakta."
 msgid ""
 "Could not open the file\n"
 "%s"
-msgstr ""
+msgstr "Dosya açılamadı\n%s"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2946,16 +2998,16 @@ msgstr "Dosyanın bağlantısına ulaşılamadı!\n%s"
 msgid ""
 "Could not retrieve revision %s of the file %s.\n"
 "Patching is not possible!"
-msgstr ""
+msgstr "Revizyon %s, %s dosyasını alamadı.\nYama işlemi mümkün değil!"
 
 #. Resource IDs: (64)
 #, c-format
 msgid "Could not save the file %s!"
-msgstr ""
+msgstr "%s dosyası kopyalanamadı!"
 
 #. Resource IDs: (64)
 msgid "Could not start TortoiseGitBlame"
-msgstr ""
+msgstr "TortoiseGitBlame başlatılamadı"
 
 #. Resource IDs: (70)
 #, c-format
@@ -3021,7 +3073,7 @@ msgstr ""
 
 #. Resource IDs: (1641)
 msgid "Create .gitignore file"
-msgstr ""
+msgstr ".gitignore dosyası oluştur"
 
 #. Resource IDs: (82)
 msgid "Create Branch"
@@ -3029,11 +3081,11 @@ msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Create Branch at this version..."
-msgstr ""
+msgstr "Bu sürümde dal oluştur..."
 
 #. Resource IDs: (9)
 msgid "Create Branch..."
-msgstr ""
+msgstr "Dal Oluştur..."
 
 #. Resource IDs: (243)
 msgid "Create Changelist"
@@ -3045,7 +3097,7 @@ msgstr "Yeni Dal Oluştur"
 
 #. Resource IDs: (20)
 msgid "Create Patch Serial..."
-msgstr ""
+msgstr "Paket Serisi Oluştur..."
 
 #. Resource IDs: (81)
 msgid "Create Tag"
@@ -3053,11 +3105,11 @@ msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Create Tag at this version..."
-msgstr ""
+msgstr "Bu sürümde etiket oluştur..."
 
 #. Resource IDs: (20)
 msgid "Create Tag..."
-msgstr ""
+msgstr "Etiket Oluştur..."
 
 #. Resource IDs: (3601)
 msgid ""
@@ -3084,11 +3136,11 @@ msgstr ""
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
-msgstr ""
+msgstr "Burada depo &yarat.."
 
 #. Resource IDs: (85)
 msgid "Created"
-msgstr ""
+msgstr "Yaratıldı"
 
 #. Resource IDs: (10)
 msgid "Creates a branch or tag"
@@ -3116,6 +3168,14 @@ msgstr "Yaptığınız tüm değişikliklerle birleştirilmiş bir karşılaşt�
 msgid "Creating pull-request..."
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "Credential helper must not be empty."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Credential helper:"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Credits:"
 msgstr "Katkıda bulunanlar:"
@@ -3134,7 +3194,7 @@ msgstr "Şu anki Dal"
 
 #. Resource IDs: (65535)
 msgid "Current Branch:"
-msgstr ""
+msgstr "Şu anki Dal:"
 
 #. Resource IDs: (65535)
 msgid "Current Filter"
@@ -3183,7 +3243,7 @@ msgstr "Hızlı Erişim Araç Çubuğunu Özelleştir..."
 
 #. Resource IDs: (1258)
 msgid "Customize..."
-msgstr ""
+msgstr "Özelleştir..."
 
 #. Resource IDs: (3603)
 msgid ""
@@ -3250,6 +3310,10 @@ msgstr ""
 msgid "Delete Ref..."
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Delete all tags"
+msgstr ""
+
 #. Resource IDs: (22)
 #, c-format
 msgid "Delete and &ignore %d items by name"
@@ -3257,7 +3321,7 @@ msgstr ""
 
 #. Resource IDs: (23)
 msgid "Delete and add to &ignore list"
-msgstr ""
+msgstr "Sil ve &aldırmama listesine ekle"
 
 #. Resource IDs: (23)
 #, c-format
@@ -3270,7 +3334,7 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Delete branch/tag"
-msgstr ""
+msgstr "Kol/Etiket sil"
 
 #. Resource IDs: (80)
 msgid "Delete remote branch"
@@ -3286,7 +3350,7 @@ msgstr ""
 
 #. Resource IDs: (605)
 msgid "Delete submodule"
-msgstr ""
+msgstr "Alt modülü sil"
 
 #. Resource IDs: (83)
 msgid "Delete tag"
@@ -3329,6 +3393,10 @@ msgstr "İşlem günlük dosyasını siler"
 msgid "Deleting"
 msgstr "Siliniyor"
 
+#. Resource IDs: (88)
+msgid "Deleting remote refs..."
+msgstr ""
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Açıklama"
@@ -3365,11 +3433,11 @@ msgstr "Diyalog boyutları ve konumları"
 
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
-msgstr ""
+msgstr "İki Teslimi Karşılaştır"
 
 #. Resource IDs: (192)
 msgid "Diff Viewer"
-msgstr ""
+msgstr "Karşılaştırma Görüntüleyici"
 
 #. Resource IDs: (193)
 msgid "Diff Viewer::Merge Tool"
@@ -3377,7 +3445,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Diff file:"
-msgstr ""
+msgstr "Karşılaştırma dosyası:"
 
 #. Resource IDs: (32780)
 msgid "Diff previous revision"
@@ -3394,6 +3462,10 @@ msgstr "Arasındaki farklılık"
 
 #. Resource IDs: (1022)
 msgid "Diffing"
+msgstr "Karşılaştırma"
+
+#. Resource IDs: (2054)
+msgid "Diffing commits"
 msgstr ""
 
 #. Resource IDs: (14)
@@ -3472,7 +3544,7 @@ msgstr ""
 
 #. Resource IDs: (1669)
 msgid "Do not autoselect submodules"
-msgstr ""
+msgstr "Alt modülleri otomatik seçme"
 
 #. Resource IDs: (65535)
 msgid "Do not show the context menu for the following paths:"
@@ -3492,6 +3564,14 @@ msgstr ""
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "'%s' araç çubuğunu gerçekten silmek istiyor musunuz?"
 
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as assume-valid?"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as skip-worktree?"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
 msgstr "Bu dosyayı gerçekten de bu klasöre taşımak istiyor musunuz?"
@@ -3506,7 +3586,7 @@ msgstr ""
 #. Resource IDs: (71)
 #, c-format
 msgid "Do you really want to remove \"%s\"?"
-msgstr ""
+msgstr "\"%s\" siliniyor. Emin misiniz ?"
 
 #. Resource IDs: (69)
 msgid ""
@@ -3558,7 +3638,7 @@ msgstr ""
 
 #. Resource IDs: (66)
 msgid "Do you want to see changes?"
-msgstr ""
+msgstr "Değişiklikleri görmek istiyor musunuz ?"
 
 #. Resource IDs: (604)
 msgid "Do you want to stash pop now?"
@@ -3597,7 +3677,7 @@ msgstr ""
 
 #. Resource IDs: (66, 602)
 msgid "Done"
-msgstr ""
+msgstr "Tamam"
 
 #. Resource IDs: (1385)
 msgid "Down"
@@ -3637,7 +3717,7 @@ msgstr "Bu &yolları hariç tut:"
 
 #. Resource IDs: (105, 57665)
 msgid "E&xit"
-msgstr ""
+msgstr "Çı&kış"
 
 #. Resource IDs: (9)
 msgid "E&xport..."
@@ -3645,7 +3725,7 @@ msgstr "&Dışa aktar..."
 
 #. Resource IDs: (1097)
 msgid "E&xternal"
-msgstr ""
+msgstr "&Harici"
 
 #. Resource IDs: (5064)
 msgid "EUC-KR"
@@ -3673,7 +3753,7 @@ msgstr "Buton Resmini Düzenle"
 
 #. Resource IDs: (75, 1255)
 msgid "Edit Notes"
-msgstr ""
+msgstr "Notları Düzenle"
 
 #. Resource IDs: (1252)
 msgid "Edit author"
@@ -3731,14 +3811,27 @@ msgstr "Elips Araçları\nElips"
 
 #. Resource IDs: (1255)
 msgid "Email"
-msgstr ""
+msgstr "ePosta"
 
 #. Resource IDs: (602)
 msgid "Email Address To and CC can't empty at the same time."
 msgstr ""
 
+#. Resource IDs: (87)
+msgid "Emails"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Empty"
+msgstr "Boş"
+
+#. Resource IDs: (87)
+msgid ""
+"Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
+msgstr ""
+
+#. Resource IDs: (1744)
+msgid "Enable log cache"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3900,7 +3993,7 @@ msgstr "Mevcut"
 
 #. Resource IDs: (156)
 msgid "Exit"
-msgstr ""
+msgstr "Çıkış"
 
 #. Resource IDs: (1002)
 #, c-format
@@ -3933,7 +4026,7 @@ msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Export this version..."
-msgstr ""
+msgstr "Bu versiyonu dışarı al..."
 
 #. Resource IDs: (79)
 msgid "Export unversioned files too"
@@ -4106,7 +4199,7 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Fetch..."
-msgstr ""
+msgstr "Getir..."
 
 #. Resource IDs: (1251)
 msgid "Fetching Status..."
@@ -4118,7 +4211,7 @@ msgstr ""
 
 #. Resource IDs: (313)
 msgid "Fetching file..."
-msgstr ""
+msgstr "Dosyaya ulaşılıyor..."
 
 #. Resource IDs: (313)
 #, c-format
@@ -4148,7 +4241,7 @@ msgstr "Dosya listesi boş."
 
 #. Resource IDs: (135, 376)
 msgid "File patches"
-msgstr ""
+msgstr "Dosya yamaları"
 
 #. Resource IDs: (7)
 #, c-format
@@ -4230,7 +4323,7 @@ msgstr "Doldurma Aracı\nDoldurma"
 
 #. Resource IDs: (116)
 msgid "Filter by"
-msgstr ""
+msgstr "Filtrele"
 
 #. Resource IDs: (321)
 msgid "Filter paths"
@@ -4238,15 +4331,15 @@ msgstr "Filtre yolları"
 
 #. Resource IDs: (1479)
 msgid "Filter:"
-msgstr ""
+msgstr "Filtre:"
 
 #. Resource IDs: (20090)
 msgid "Filter: "
-msgstr ""
+msgstr "Filtre:"
 
 #. Resource IDs: (139, 1269, 20100)
 msgid "Find"
-msgstr ""
+msgstr "Bul"
 
 #. Resource IDs: (3603)
 msgid ""
@@ -4292,7 +4385,7 @@ msgstr "Klasör"
 
 #. Resource IDs: (1675)
 msgid "Follow renames"
-msgstr ""
+msgstr "Ad değişiklerini takip et"
 
 #. Resource IDs: (65535)
 msgid "Font"
@@ -4327,7 +4420,7 @@ msgstr "Yama Biçimi"
 
 #. Resource IDs: (1255)
 msgid "Format Patch..."
-msgstr ""
+msgstr "Yama Düzenle..."
 
 #. Resource IDs: (1064, 1257)
 msgid "Forward"
@@ -4365,7 +4458,7 @@ msgstr "Tam Ekran"
 
 #. Resource IDs: (20086)
 msgid "Full text search"
-msgstr ""
+msgstr "Metin arama"
 
 #. Resource IDs: (19)
 msgid "Fully recursive"
@@ -4387,6 +4480,10 @@ msgstr "GDI+ bitmap objesi yaratamadı. Belki de yeterli bellek yok."
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
 msgstr "Bilgi getiriliyor. Lütfen bekleyin..."
+
+#. Resource IDs: (2054)
+msgid "Gathering statistics"
+msgstr ""
 
 #. Resource IDs: (107, 143)
 msgid "General"
@@ -4448,7 +4545,7 @@ msgstr "Birleştirilmiş karşılaştırma dosyası getiriliyor"
 
 #. Resource IDs: (4569)
 msgid "Git"
-msgstr ""
+msgstr "Git"
 
 #. Resource IDs: (16)
 msgid "Git Author"
@@ -4520,7 +4617,7 @@ msgstr "Git Durumu"
 
 #. Resource IDs: (326)
 msgid "Git Synchronization"
-msgstr ""
+msgstr "Git Eşleme"
 
 #. Resource IDs: (12)
 msgid "Git URL"
@@ -4540,10 +4637,18 @@ msgstr "Git kısa URL"
 
 #. Resource IDs: (65535)
 msgid "Git.exe Path:"
+msgstr "Git.exe Yolu:"
+
+#. Resource IDs: (4591)
+msgid "Git::Credential"
 msgstr ""
 
 #. Resource IDs: (4570)
 msgid "Git::Remote"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Global"
 msgstr ""
 
 #. Resource IDs: (155)
@@ -4645,6 +4750,14 @@ msgstr "Yardım"
 #. Resource IDs: (16982)
 msgid "Help Keyboard"
 msgstr "Klavye Yardım"
+
+#. Resource IDs: (65535)
+msgid "Helper:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Helpers:"
+msgstr ""
 
 #. Resource IDs: (16974)
 msgid "Hex"
@@ -5021,7 +5134,7 @@ msgstr ""
 
 #. Resource IDs: (1432)
 msgid "Ignored"
-msgstr ""
+msgstr "Aldırılmayan"
 
 #. Resource IDs: (78)
 msgid "Ignored Files"
@@ -5109,6 +5222,11 @@ msgstr "Geçersiz dosya adı."
 #. Resource IDs: (76)
 msgid "Initial import"
 msgstr "İlk içe aktarım"
+
+#. Resource IDs: (87)
+#, c-format
+msgid "Initialized empty Git repository in %s."
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Inline diff"
@@ -5241,7 +5359,7 @@ msgstr "Son Düzenleme"
 
 #. Resource IDs: (65535)
 msgid "Last Modified:"
-msgstr ""
+msgstr "Son Düzenleme:"
 
 #. Resource IDs: (1616)
 msgid "Last known &good:"
@@ -5277,6 +5395,10 @@ msgid ""
 "Line"
 msgstr "Satır aracı ⏎ Satır"
 
+#. Resource IDs: (32853)
+msgid "Line diff bar"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Line differences"
 msgstr ""
@@ -5302,11 +5424,11 @@ msgstr ""
 
 #. Resource IDs: (64, 601)
 msgid "Lines added"
-msgstr ""
+msgstr "Eklenen Satır"
 
 #. Resource IDs: (64, 601)
 msgid "Lines removed"
-msgstr ""
+msgstr "Silinen Satır"
 
 #. Resource IDs: (3605)
 msgid ""
@@ -5336,6 +5458,10 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "Local"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Local Branch"
 msgstr "Yerel Dal"
@@ -5356,6 +5482,10 @@ msgid ""
 "repository URL will be saved to."
 msgstr "Depo URL'sinin içeriğinin\nkayıt edileceği yer. "
 
+#. Resource IDs: (32854)
+msgid "Locator Bar"
+msgstr ""
+
 #. Resource IDs: (65)
 msgid "Log"
 msgstr "Günlük"
@@ -5375,6 +5505,10 @@ msgstr "Kayıt Günlüğü"
 #. Resource IDs: (130)
 msgid "Log Messages"
 msgstr "İleti Günlüğü"
+
+#. Resource IDs: (345)
+msgid "Log commit ordering"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Log messages"
@@ -5442,11 +5576,11 @@ msgstr ""
 
 #. Resource IDs: (1382)
 msgid "Mana&ge"
-msgstr ""
+msgstr "&Yönet"
 
 #. Resource IDs: (1483)
 msgid "Manage"
-msgstr ""
+msgstr "Yönet"
 
 #. Resource IDs: (79, 1382)
 msgid "Manage Remotes"
@@ -5541,7 +5675,7 @@ msgstr ""
 
 #. Resource IDs: (1073)
 msgid "Merging"
-msgstr ""
+msgstr "Birleştiriliyor"
 
 #. Resource IDs: (229)
 #, c-format
@@ -5576,7 +5710,7 @@ msgstr "Min"
 
 #. Resource IDs: (263)
 msgid "Mine"
-msgstr ""
+msgstr "Benim"
 
 #. Resource IDs: (1068)
 msgid "Minimize the Ribbon"
@@ -5620,7 +5754,7 @@ msgstr "Daha fazla komut..."
 
 #. Resource IDs: (438)
 msgid "More colors..."
-msgstr ""
+msgstr "Daha fazla renk..."
 
 #. Resource IDs: (438)
 msgid "More..."
@@ -5698,7 +5832,7 @@ msgstr "MsysGit Kurulum Yolu"
 
 #. Resource IDs: (65535)
 msgid "My file:"
-msgstr ""
+msgstr "Benim dosyam:"
 
 #. Resource IDs: (3697)
 msgid "NUM"
@@ -5706,11 +5840,11 @@ msgstr ""
 
 #. Resource IDs: (1071)
 msgid "Name"
-msgstr ""
+msgstr "Ad"
 
 #. Resource IDs: (65535)
 msgid "Name:"
-msgstr ""
+msgstr "&Ad:"
 
 #. Resource IDs: (156)
 msgid "Navigate"
@@ -5980,7 +6114,7 @@ msgstr ""
 
 #. Resource IDs: (82)
 msgid "Notes"
-msgstr ""
+msgstr "Notlar"
 
 #. Resource IDs: (604)
 #, c-format
@@ -5995,7 +6129,7 @@ msgstr ""
 
 #. Resource IDs: (603)
 msgid "Nothing to commit"
-msgstr ""
+msgstr "Teslim edilecek bir şey yok"
 
 #. Resource IDs: (88)
 msgid "Notice"
@@ -6118,7 +6252,7 @@ msgstr "Daha eski satırlar"
 
 #. Resource IDs: (87)
 msgid "On demand"
-msgstr ""
+msgstr "Gerektiğinde"
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
@@ -6168,7 +6302,7 @@ msgstr ""
 
 #. Resource IDs: (1132)
 msgid "Open from clipboard"
-msgstr ""
+msgstr "Panodan aç"
 
 #. Resource IDs: (7)
 msgid "Open image file..."
@@ -6230,7 +6364,7 @@ msgstr "Yetersiz hafıza."
 
 #. Resource IDs: (1538)
 msgid "Output Directory"
-msgstr ""
+msgstr "Çıktı Dizini"
 
 #. Resource IDs: (3845)
 msgid "Output.prn"
@@ -6279,11 +6413,11 @@ msgstr ""
 
 #. Resource IDs: (606)
 msgid "Parent 1"
-msgstr ""
+msgstr "Üst 1"
 
 #. Resource IDs: (606)
 msgid "Parent 2"
-msgstr ""
+msgstr "Üst 2"
 
 #. Resource IDs: (1)
 msgid "Parent(s)"
@@ -6291,6 +6425,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
+msgstr ""
+
+#. Resource IDs: (4585)
+msgid "Password"
 msgstr ""
 
 #. Resource IDs: (69, 65535)
@@ -6303,7 +6441,7 @@ msgstr ""
 
 #. Resource IDs: (603)
 msgid "Paste Recent Message..."
-msgstr ""
+msgstr "Son Mesajı Yapıştır"
 
 #. Resource IDs: (1057)
 msgid ""
@@ -6327,7 +6465,7 @@ msgstr "svn dizinini panodan yapıştırarak taşıma (kes) ya da kopyalama işl
 
 #. Resource IDs: (65)
 msgid "Patch"
-msgstr ""
+msgstr "Yama"
 
 #. Resource IDs: (1076)
 msgid "Patch &all items"
@@ -6414,7 +6552,14 @@ msgstr "Resim:"
 #. Resource IDs: (157)
 msgid ""
 "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
-"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|All "
+"Files (*.*)|*.*||"
+msgstr ""
+
+#. Resource IDs: (157)
+msgid ""
+"Pictures (*.wmf, *.jpg, *.png, *.bmp, "
+"*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (246)
@@ -6620,7 +6765,7 @@ msgstr ""
 
 #. Resource IDs: (14)
 msgid "Pull..."
-msgstr ""
+msgstr "Çek.."
 
 #. Resource IDs: (302)
 msgid "Pull/Fetch"
@@ -6640,7 +6785,7 @@ msgstr ""
 
 #. Resource IDs: (22, 303, 1612)
 msgid "Push"
-msgstr ""
+msgstr "Yolla"
 
 #. Resource IDs: (1385)
 msgid "Push notes"
@@ -6785,7 +6930,7 @@ msgstr "Dikdörtgen Aracı\nDikdörtgen"
 
 #. Resource IDs: (1487)
 msgid "Recurse submodule"
-msgstr ""
+msgstr "Alt modülleri tara"
 
 #. Resource IDs: (1654)
 msgid "Recursive"
@@ -6859,7 +7004,7 @@ msgstr "Günlükte Göreceli Zamanlar"
 
 #. Resource IDs: (32794)
 msgid "Reload"
-msgstr ""
+msgstr "Tekrar yükle"
 
 #. Resource IDs: (2050)
 msgid ""
@@ -6881,7 +7026,7 @@ msgstr "Uzaktaki"
 
 #. Resource IDs: (65535)
 msgid "Remote &Branch:"
-msgstr ""
+msgstr "Uzak &Dal:"
 
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
@@ -6963,7 +7108,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Removed"
-msgstr ""
+msgstr "Kaldırıldı"
 
 #. Resource IDs: (264)
 msgid "Removed from changelist"
@@ -7000,7 +7145,7 @@ msgstr ""
 
 #. Resource IDs: (221)
 msgid "Rename/move"
-msgstr ""
+msgstr "Ad Değiştir / Taşı"
 
 #. Resource IDs: (65535)
 msgid "Renamed node"
@@ -7125,7 +7270,7 @@ msgstr ""
 
 #. Resource IDs: (64)
 msgid "Restore"
-msgstr ""
+msgstr "Geri al"
 
 #. Resource IDs: (1254)
 msgid "Restore Default"
@@ -7147,8 +7292,12 @@ msgstr "Geridönüldü"
 msgid "Retry"
 msgstr "Tekrar"
 
+#. Resource IDs: (89)
+msgid "Retry with --force"
+msgstr ""
+
 #. Resource IDs: (602)
-msgid "Retrying..."
+msgid "Retrying in 2 seconds..."
 msgstr ""
 
 #. Resource IDs: (77, 175, 229)
@@ -7162,6 +7311,10 @@ msgstr ""
 #. Resource IDs: (69)
 #, c-format
 msgid "Revert commit %s"
+msgstr ""
+
+#. Resource IDs: (1258)
+msgid "Revert to parent revision"
 msgstr ""
 
 #. Resource IDs: (323)
@@ -7234,7 +7387,7 @@ msgstr ""
 
 #. Resource IDs: (1579, 65535)
 msgid "Revision:"
-msgstr ""
+msgstr "Revizyon:"
 
 #. Resource IDs: (605)
 msgid "Rewind"
@@ -7362,7 +7515,7 @@ msgstr ""
 
 #. Resource IDs: (313)
 msgid "Save as..."
-msgstr ""
+msgstr "Farklı Kaydet..."
 
 #. Resource IDs: (3857)
 #, c-format
@@ -7469,7 +7622,7 @@ msgstr "Renk Seçme Aracı\nRenk seç"
 
 #. Resource IDs: (13)
 msgid "Select File..."
-msgstr ""
+msgstr "Dosya Seç..."
 
 #. Resource IDs: (78)
 msgid "Select SSH client"
@@ -7554,11 +7707,11 @@ msgstr ""
 
 #. Resource IDs: (1)
 msgid "Send"
-msgstr ""
+msgstr "Gönder"
 
 #. Resource IDs: (602)
 msgid "Send Email"
-msgstr ""
+msgstr "ePosta Gönder"
 
 #. Resource IDs: (1587)
 msgid "Send Mail after create"
@@ -7570,15 +7723,15 @@ msgstr "Send Mail mesajınızı gönderemedi"
 
 #. Resource IDs: (21, 603)
 msgid "Send Mail..."
-msgstr ""
+msgstr "ePosta Gönder..."
 
 #. Resource IDs: (320)
 msgid "Send Patch"
-msgstr ""
+msgstr "Yama Gönder"
 
 #. Resource IDs: (602)
 msgid "Send Patch by Email"
-msgstr ""
+msgstr "Yamayı ePosta ile Gönder"
 
 #. Resource IDs: (21)
 msgid "Send Patch(es) by eMail"
@@ -7590,7 +7743,7 @@ msgstr "İçerik gönderiliyor"
 
 #. Resource IDs: (602)
 msgid "Sending..."
-msgstr ""
+msgstr "Gönderiliyor..."
 
 #. Resource IDs: (1409)
 msgid "Server &address:"
@@ -7599,6 +7752,10 @@ msgstr "Sunucu &adresi:"
 #. Resource IDs: (65535)
 msgid "Set Accelerator &for:"
 msgstr "Hızlandırıcıyı &ayarla:"
+
+#. Resource IDs: (1558)
+msgid "Set au&thor"
+msgstr ""
 
 #. Resource IDs: (1557)
 msgid "Set commit &date"
@@ -7623,7 +7780,7 @@ msgstr "Özellikler ayarlanıyor..."
 
 #. Resource IDs: (107)
 msgid "Settings"
-msgstr ""
+msgstr "Seçenekler"
 
 #. Resource IDs: (80)
 msgid "Settings - TortoiseGit"
@@ -7711,7 +7868,7 @@ msgstr "Şeritin Altında Göster"
 
 #. Resource IDs: (1382)
 msgid "Show Environment Variables"
-msgstr ""
+msgstr "Ortam Değişkenlerini Göster"
 
 #. Resource IDs: (1065)
 msgid "Show Fewer Buttons"
@@ -7777,6 +7934,10 @@ msgstr ""
 msgid "Show changes as &unified diff"
 msgstr "Değişiklikleri &birleştirilmiş karşılaştırma dosyası olarak göster"
 
+#. Resource IDs: (32784)
+msgid "Show date"
+msgstr ""
+
 #. Resource IDs: (83)
 msgid "Show destination folder"
 msgstr "Hedef klasörü göster"
@@ -7813,6 +7974,11 @@ msgstr ""
 msgid "Show log &before rename/copy"
 msgstr ""
 
+#. Resource IDs: (88)
+#, c-format
+msgid "Show log of %s"
+msgstr ""
+
 #. Resource IDs: (81)
 msgid "Show log of submodule"
 msgstr "Alt modülün günlüğünü göster"
@@ -7823,7 +7989,7 @@ msgstr "Bu klasörün günlüğünü göster"
 
 #. Resource IDs: (1256)
 msgid "Show log..."
-msgstr ""
+msgstr "Günlüğü göster..."
 
 #. Resource IDs: (1382)
 msgid "Show modified files in working tree"
@@ -8153,6 +8319,10 @@ msgstr "Git öğe durumu"
 msgid "Stops bisect mode"
 msgstr "İkiye bölünmüş kipten çık"
 
+#. Resource IDs: (1)
+msgid "Strategy"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Style"
 msgstr ""
@@ -8305,6 +8475,10 @@ msgstr "Uzaktaki Depoları Eşitle, çekme, gönderme, eposta yaması ve buna be
 msgid "Sync..."
 msgstr "Eşitle..."
 
+#. Resource IDs: (89)
+msgid "System"
+msgstr ""
+
 #. Resource IDs: (1556)
 msgid "System &sounds"
 msgstr "Sistem sesleri&"
@@ -8370,7 +8544,7 @@ msgstr "Görev Bölümü"
 
 #. Resource IDs: (65535)
 msgid "Temp files"
-msgstr ""
+msgstr "Geçici dosyalar"
 
 #. Resource IDs: (219)
 msgid "Test Only"
@@ -8405,6 +8579,19 @@ msgstr ""
 
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
+msgstr ""
+
+#. Resource IDs: (89)
+#, c-format
+msgid ""
+"The credential helper URL \"%s\" already exists.\n"
+"Do you want to overwrite it?"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid ""
+"The credential helper was changed.\n"
+"Do you want to save now or discard changes?"
 msgstr ""
 
 #. Resource IDs: (603)
@@ -8578,6 +8765,13 @@ msgid ""
 "You must only specify one of them."
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"The patch does not apply cleanly to %s and no version information is given.\n"
+"Patching is not possible!"
+msgstr ""
+
 #. Resource IDs: (64)
 #, c-format
 msgid ""
@@ -8681,7 +8875,7 @@ msgstr ""
 
 #. Resource IDs: (16)
 msgid "The user who did the last commit"
-msgstr ""
+msgstr "Son teslimi yapan kullanıcı"
 
 #. Resource IDs: (65535)
 msgid "Their file:"
@@ -8731,7 +8925,7 @@ msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Thesaurus"
-msgstr ""
+msgstr "Sözlük"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -8747,7 +8941,7 @@ msgstr ""
 msgid ""
 "This is not a valid URL.\n"
 "Please enter an URL here."
-msgstr ""
+msgstr "Bu geçerli bir URL adresi değil. Lütfen URL'yi belirtiniz."
 
 #. Resource IDs: (82)
 msgid ""
@@ -8770,7 +8964,7 @@ msgstr ""
 
 #. Resource IDs: (15)
 msgid "This property is only allowed on folders, not files."
-msgstr ""
+msgstr "Bu özellik dosyalar için değil, sadece klasörler için geçerlidir."
 
 #. Resource IDs: (67)
 msgid "This task requires a clean working tree."
@@ -8789,7 +8983,7 @@ msgstr ""
 
 #. Resource IDs: (16928)
 msgid "Tile &Vertically"
-msgstr ""
+msgstr "Dikey& Olarak Döşe"
 
 #. Resource IDs: (16924)
 msgid "Tile Hori&zontally"
@@ -8797,7 +8991,7 @@ msgstr ""
 
 #. Resource IDs: (1676)
 msgid "To"
-msgstr ""
+msgstr "Kime"
 
 #. Resource IDs: (606)
 msgid ""
@@ -8807,7 +9001,7 @@ msgstr ""
 
 #. Resource IDs: (1201, 65535)
 msgid "To:"
-msgstr ""
+msgstr "Kime:"
 
 #. Resource IDs: (3633)
 msgid ""
@@ -8817,35 +9011,31 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Toolbar"
-msgstr ""
+msgstr "Araç çubuğu"
 
 #. Resource IDs: (16130)
 msgid "Toolbar Name"
-msgstr ""
+msgstr "Araç Çubuğu İsmi"
 
 #. Resource IDs: (1064)
 msgid "Toolbar Options"
-msgstr ""
+msgstr "Araç Çubuğu Seçenekleri"
 
 #. Resource IDs: (1001)
 msgid "Toolbar internal error. Please contact your application vendor."
-msgstr ""
+msgstr "Dahili araç çubuğu hatası. Lütfen program satıcınızla iletişime geçin."
 
 #. Resource IDs: (16105)
 msgid "Toolbars"
-msgstr ""
+msgstr "Araç çubukları"
 
 #. Resource IDs: (16928)
 msgid "Tools"
-msgstr ""
+msgstr "Araçlar"
 
 #. Resource IDs: (65535)
 msgid "Tools:"
-msgstr ""
-
-#. Resource IDs: (1096)
-msgid "Tortoise&UDiff"
-msgstr "Tortoise&UDiff"
+msgstr "Araçlar:"
 
 #. Resource IDs: (65, 65535)
 msgid "TortoiseGit"
@@ -8873,6 +9063,10 @@ msgstr ""
 #. Resource IDs: (198)
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
+msgstr ""
+
+#. Resource IDs: (1096)
+msgid "TortoiseGit&UDiff"
 msgstr ""
 
 #. Resource IDs: (1, 244, 1000, 3585)
@@ -8942,17 +9136,32 @@ msgid ""
 "apr-utils %d.%d.%d"
 msgstr ""
 
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
+" more than once."
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "TortoiseMerge"
 msgstr ""
 
+#. Resource IDs: (1739)
+msgid "Total changed lines including added/deleted files:"
+msgstr ""
+
+#. Resource IDs: (1737)
+msgid "Total changed lines not including added/deleted files:"
+msgstr ""
+
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
-msgstr ""
+msgstr "Analiz edilen teslimler:"
 
 #. Resource IDs: (1163)
 msgid "Total file changes:"
-msgstr ""
+msgstr "Toplam dosya değişiklikleri:"
 
 #. Resource IDs: (1520)
 msgid "Trac&k"
@@ -8960,7 +9169,7 @@ msgstr ""
 
 #. Resource IDs: (1520)
 msgid "Track"
-msgstr ""
+msgstr "Takip"
 
 #. Resource IDs: (11023)
 msgid "Tracked Remote Branch:"
@@ -8969,7 +9178,7 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "Transferring at %s"
-msgstr ""
+msgstr "%s de transfer edilmekte"
 
 #. Resource IDs: (32816)
 msgid "Transparent &color..."
@@ -8981,7 +9190,7 @@ msgstr ""
 
 #. Resource IDs: (73)
 msgid "Try again"
-msgstr ""
+msgstr "Tekrar dene"
 
 #. Resource IDs: (65535)
 msgid "Turkish"
@@ -8993,15 +9202,15 @@ msgstr ""
 
 #. Resource IDs: (1642)
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #. Resource IDs: (1720)
 msgid "Type:"
-msgstr ""
+msgstr "Tip:"
 
 #. Resource IDs: (164, 207)
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. Resource IDs: (71)
 msgid "URL and directory must not be empty at the same time."
@@ -9009,15 +9218,15 @@ msgstr ""
 
 #. Resource IDs: (1272)
 msgid "URL history"
-msgstr ""
+msgstr "URL Geçmişi"
 
 #. Resource IDs: (12)
 msgid "URL of Git items"
-msgstr ""
+msgstr "Git elemanlarının kısaltılmış URL'si"
 
 #. Resource IDs: (65535)
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
@@ -9084,7 +9293,7 @@ msgstr "1 işlem geri al"
 
 #. Resource IDs: (14)
 msgid "Undo Add..."
-msgstr ""
+msgstr "Eklemeyi Geri Al..."
 
 #. Resource IDs: (3603)
 msgid ""
@@ -9130,7 +9339,7 @@ msgstr "Başlıksız"
 
 #. Resource IDs: (1462)
 msgid "Unversioned"
-msgstr ""
+msgstr "Versiyonlanmamış"
 
 #. Resource IDs: (1313)
 msgid "Unversioned files mark parent folder as modified"
@@ -9144,6 +9353,14 @@ msgstr "Versiyon kaldırılıyor: %s"
 #. Resource IDs: (1384)
 msgid "Up"
 msgstr "Yukarı"
+
+#. Resource IDs: (1710)
+msgid "Update"
+msgstr ""
+
+#. Resource IDs: (607)
+msgid "Update Ref"
+msgstr ""
 
 #. Resource IDs: (65)
 msgid "Update Submodules"
@@ -9193,8 +9410,16 @@ msgstr ""
 msgid "Use Blocks"
 msgstr ""
 
+#. Resource IDs: (1761)
+msgid "Use HTTP path component"
+msgstr ""
+
 #. Resource IDs: (1482)
 msgid "Use MAPI"
+msgstr ""
+
+#. Resource IDs: (1066)
+msgid "Use Ribbons"
 msgstr ""
 
 #. Resource IDs: (1497)
@@ -9659,6 +9884,14 @@ msgid ""
 "Do you want to save them now?"
 msgstr "Bazı özelliklerde değişiklik yaptınız ve bunları daha kaydetmediniz.\nBunları şimdi kaydetmek ister misiniz?"
 
+#. Resource IDs: (87)
+#, c-format
+msgid ""
+"You have selected %d items to show the diff for.\n"
+"For every of these items a new instance of the diff viewer will be started.\n"
+"Do you really want to show the diff for so many items at once?"
+msgstr ""
+
 #. Resource IDs: (169)
 msgid ""
 "You haven't entered an issue number!\n"
@@ -9842,10 +10075,6 @@ msgstr "isimlendirilmemiş dosya"
 #. Resource IDs: (1085)
 msgid "and support the developers"
 msgstr "ve geliştiricileri destekle"
-
-#. Resource IDs: (1073)
-msgid "apply --topo-order"
-msgstr ""
 
 #. Resource IDs: (195)
 msgid "assume-valid"
@@ -10072,6 +10301,10 @@ msgid ""
 "%s"
 msgstr "%s'e\ndeğiştirildi"
 
+#. Resource IDs: (1386)
+msgid "take care of submodule changes"
+msgstr ""
+
 #. Resource IDs: (3845)
 #, c-format
 msgid "to %1"
@@ -10089,6 +10322,26 @@ msgstr "doğru"
 #. Resource IDs: (245)
 msgid "week"
 msgstr "hafta"
+
+#. Resource IDs: (89)
+msgid "wincred - all Windows users"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "wincred - current Windows user"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "wincred - this repository only"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "winstore - current Windows user"
+msgstr ""
+
+#. Resource IDs: (88)
+msgid "winstore - this repository only"
+msgstr ""
 
 #. Resource IDs: (245)
 msgid "year"

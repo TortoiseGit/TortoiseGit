@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-01-15 20:46+0000\n"
+"PO-Revision-Date: 2013-03-11 14:41+0000\n"
 "Last-Translator: Zbyněk Schwarz <zbynek.schwarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -178,7 +178,7 @@ msgstr "Přeneseno %I64d kBajtů"
 #. Resource IDs: (1256)
 #, c-format
 msgid "%d Parent"
-msgstr "%d nadřazený"
+msgstr "%d rodič"
 
 #. Resource IDs: (75)
 #, c-format
@@ -313,6 +313,10 @@ msgstr "&Trojité porovnání"
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
 msgstr "&O TortoiseGitBlame..."
+
+#. Resource IDs: (57664)
+msgid "&About TortoiseGitMerge..."
+msgstr "&O TortoiseGitMerge..."
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -820,6 +824,10 @@ msgstr "&Zpráva:"
 msgid "&Minimize"
 msgstr "&Minimalizovat"
 
+#. Resource IDs: (32880)
+msgid "&Moved blocks"
+msgstr "Přesunuté &bloky"
+
 #. Resource IDs: (1515)
 msgid "&Name"
 msgstr "&Název"
@@ -827,6 +835,10 @@ msgstr "&Název"
 #. Resource IDs: (65535)
 msgid "&Name:"
 msgstr "&Název:"
+
+#. Resource IDs: (65535)
+msgid "&Navigate"
+msgstr "&Navigovat"
 
 #. Resource IDs: (1049)
 msgid "&Network drives"
@@ -1129,6 +1141,10 @@ msgstr "&Pouze text"
 msgid "&Timeout in seconds to stop the auto-completion parsing"
 msgstr "Časový limit ve vteřinách kdy má být zastaveno zpracování autodokončení"
 
+#. Resource IDs: (59392)
+msgid "&Toolbar"
+msgstr "&Panel nástrojů"
+
 #. Resource IDs: (65535)
 msgid "&Toolbar Name:"
 msgstr "&Název panelu nástrojů:"
@@ -1224,6 +1240,10 @@ msgstr "&Celé slovo"
 #. Resource IDs: (1657)
 msgid "&ignore space change"
 msgstr "&ignorovat změny mezer"
+
+#. Resource IDs: (88)
+msgid "(TortoiseGit default)"
+msgstr "(Výchozí v TortoiseGit)"
 
 #. Resource IDs: (85)
 #, c-format
@@ -1645,7 +1665,7 @@ msgstr "Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (1256)
 msgid "All Parents"
-msgstr "Všechny nadřazené"
+msgstr "Všichni rodičové"
 
 #. Resource IDs: (9690)
 msgid "All tags only"
@@ -2177,6 +2197,10 @@ msgstr "CAP"
 msgid "CC:"
 msgstr "Kopie:"
 
+#. Resource IDs: (1741)
+msgid "Calculate"
+msgstr "Vypočítat"
+
 #. Resource IDs: (1127)
 msgid "Can double-click in log list to compare with previous revision"
 msgstr "V seznamu protokolů je lze dvojklikem porovnat s předchozí revizí"
@@ -2293,6 +2317,22 @@ msgstr "Změněné soubory mezi %s, %s a %s, %s"
 msgid "Changed files: %d"
 msgstr "Změněné soubory: %d"
 
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files"
+msgstr "Změněné řádky včetně přidaných/smazaných souborů"
+
+#. Resource IDs: (2054)
+msgid "Changed lines including added/deleted files by date"
+msgstr "Změněné řádky včetně přidaných/smazaných souborů podle data"
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files"
+msgstr "Změněné řádky bez přidaných/smazaných souborů"
+
+#. Resource IDs: (2054)
+msgid "Changed lines not including added/deleted files by date"
+msgstr "Změněné řádky bez přidaných/smazaných souborů podle data"
+
 #. Resource IDs: (264)
 #, c-format
 msgid "Changelist %s moved"
@@ -2354,11 +2394,6 @@ msgstr "Zkontrolovat:"
 msgid "Checkout"
 msgstr "Získat"
 
-#. Resource IDs: (229)
-#, c-format
-msgid "Checkout from %s, revision %s, %s, %s"
-msgstr "Získávání z %s, revize %s, %s, %s"
-
 #. Resource IDs: (67)
 msgid "Cherry Pick"
 msgstr "Výběr nejlepšího"
@@ -2382,6 +2417,10 @@ msgstr "Čínština"
 #. Resource IDs: (602)
 msgid "Choose Repository"
 msgstr "Zvolte úložiště"
+
+#. Resource IDs: (88)
+msgid "Chronological reversed (git default)"
+msgstr "Opačně chronologicky (výchozí v git)"
 
 #. Resource IDs: (4572)
 msgid "Clean"
@@ -2488,6 +2527,10 @@ msgstr "Klikněte pro zobrazení příkazů pro přesun částí textu\nPoužít
 #. Resource IDs: (257)
 msgid "Clipboard"
 msgstr "Schránka"
+
+#. Resource IDs: (606)
+msgid "Clone"
+msgstr "Klonovat"
 
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
@@ -2621,6 +2664,10 @@ msgstr "Zpráva odevzdání"
 msgid "Commit Name"
 msgstr "Název odevzdání"
 
+#. Resource IDs: (1750)
+msgid "Commit Ordering:"
+msgstr "Seřazení odevzdání:"
+
 #. Resource IDs: (1110)
 msgid "Commit to:"
 msgstr "Odevzdat do:"
@@ -2718,6 +2765,10 @@ msgstr "Dokončeno"
 #. Resource IDs: (65535)
 msgid "Config"
 msgstr "Nastavení"
+
+#. Resource IDs: (65535)
+msgid "Config type:"
+msgstr "Typ nastavení:"
 
 #. Resource IDs: (236)
 msgid "Configure Hook Scripts"
@@ -3083,7 +3134,7 @@ msgstr "&Vytvořit žádost o stažení"
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
-msgstr "Zde &vytvořit úložiště"
+msgstr "Zde &vytvořit úložiště..."
 
 #. Resource IDs: (85)
 msgid "Created"
@@ -3114,6 +3165,14 @@ msgstr "Vytvoří soubor sjednoceného rozdílu se všemi provedenými změnami"
 #. Resource IDs: (605)
 msgid "Creating pull-request..."
 msgstr "Vytvořit žádost o stažení"
+
+#. Resource IDs: (89)
+msgid "Credential helper must not be empty."
+msgstr "Pomocník s pověřením nesmí být prázdný."
+
+#. Resource IDs: (65535)
+msgid "Credential helper:"
+msgstr "Pomocník s pověřením:"
 
 #. Resource IDs: (65535)
 msgid "Credits:"
@@ -3249,6 +3308,10 @@ msgstr "Smazat &místní"
 msgid "Delete Ref..."
 msgstr "Smazat odkaz..."
 
+#. Resource IDs: (87)
+msgid "Delete all tags"
+msgstr "Smazat všechny značky"
+
 #. Resource IDs: (22)
 #, c-format
 msgid "Delete and &ignore %d items by name"
@@ -3328,6 +3391,10 @@ msgstr "Smaže soubor protokolu činností"
 msgid "Deleting"
 msgstr "Mazání"
 
+#. Resource IDs: (88)
+msgid "Deleting remote refs..."
+msgstr "Smazat vzdálené odkazy..."
+
 #. Resource IDs: (1002)
 msgid "Description"
 msgstr "Popis"
@@ -3385,7 +3452,7 @@ msgstr "Porovnat předchozí revizi"
 #. Resource IDs: (81)
 #, c-format
 msgid "Diff with parent %d"
-msgstr "Porovnat s nadřazeným %d"
+msgstr "Porovnat s rodičem %d"
 
 #. Resource IDs: (1302)
 msgid "Difference between"
@@ -3394,6 +3461,10 @@ msgstr "Rozdíl mezi"
 #. Resource IDs: (1022)
 msgid "Diffing"
 msgstr "Porovnávání"
+
+#. Resource IDs: (2054)
+msgid "Diffing commits"
+msgstr "Porovnávání odevzdání"
 
 #. Resource IDs: (14)
 msgid "Diffs the working tree file with the one before the last commit"
@@ -3490,6 +3561,14 @@ msgstr "Opravdu chcete <ct=0x0000FF>smazat</ct> <b>%s</b>?"
 #, c-format
 msgid "Do you really want to delete the toolbar '%s'?"
 msgstr "Opravdu chcete smazat panel nástrojů '%s'?"
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as assume-valid?"
+msgstr "Chcete označit vybrané soubory jako \"považovat za platné\"?"
+
+#. Resource IDs: (88)
+msgid "Do you really want to mark the selected file(s) as skip-worktree?"
+msgstr "Opravdu chcete označit vybrané soubory jako \"přeskočit pracovní strom\"?"
 
 #. Resource IDs: (145)
 msgid "Do you really want to move this file or folder?"
@@ -3736,9 +3815,22 @@ msgstr "Email"
 msgid "Email Address To and CC can't empty at the same time."
 msgstr "Emailová adresa příjemce a kopie nemůžou být ve stejnou dobu prázdné."
 
+#. Resource IDs: (87)
+msgid "Emails"
+msgstr "Emaily"
+
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Prázdné"
+
+#. Resource IDs: (87)
+msgid ""
+"Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
+msgstr "Povolit načítání/ukládání souborů mezipaměti protokolu (tortoisegit.data, tortoisegit.index)"
+
+#. Resource IDs: (1744)
+msgid "Enable log cache"
+msgstr "Povolit mezipaměť protokolu"
 
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
@@ -4267,11 +4359,11 @@ msgstr "Hotovo!"
 
 #. Resource IDs: (1126)
 msgid "First Parent"
-msgstr "První nadřazený"
+msgstr "První rodič"
 
 #. Resource IDs: (119)
 msgid "First Parent Only"
-msgstr "Pouze první nadřazený"
+msgstr "Pouze první rodič"
 
 #. Resource IDs: (1617)
 msgid "First known &bad:"
@@ -4386,6 +4478,10 @@ msgstr "GDI+ nemůže vytvořit bitmapový objekt. Pravděpodobně nemáte dosta
 #. Resource IDs: (284)
 msgid "Gathering information. Please wait..."
 msgstr "Shromažďování informací. Prosím čekejte..."
+
+#. Resource IDs: (2054)
+msgid "Gathering statistics"
+msgstr "Shromažďování statistik"
 
 #. Resource IDs: (107, 143)
 msgid "General"
@@ -4541,9 +4637,17 @@ msgstr "Git krátká URL"
 msgid "Git.exe Path:"
 msgstr "Cesta k Git.exe:"
 
+#. Resource IDs: (4591)
+msgid "Git::Credential"
+msgstr "Git::Pověření"
+
 #. Resource IDs: (4570)
 msgid "Git::Remote"
 msgstr "Git::Vzdálené"
+
+#. Resource IDs: (89)
+msgid "Global"
+msgstr "Globální"
 
 #. Resource IDs: (155)
 msgid "Go To Line"
@@ -4644,6 +4748,14 @@ msgstr "Nápověda"
 #. Resource IDs: (16982)
 msgid "Help Keyboard"
 msgstr "Nápověda pro klávesnici"
+
+#. Resource IDs: (65535)
+msgid "Helper:"
+msgstr "Pomocník:"
+
+#. Resource IDs: (65535)
+msgid "Helpers:"
+msgstr "Pomocníci:"
 
 #. Resource IDs: (16974)
 msgid "Hex"
@@ -4964,7 +5076,7 @@ msgstr "Pokud nastaveno mohou být soubory uvnitř složek bez verzí  zobrazeny
 msgid ""
 "If set, then unversioned files will mark the status of the parent directory as modified\r\n"
 "i.e. they get the modified overlay icon."
-msgstr "Pokud nastaveno, soubory bez verze budou označovat stav nadřazeného adresáře jako změněny\ntj. jejich překrývací ikona bude označovat změnu."
+msgstr "Pokud nastaveno, soubory bez verze budou označovat stav nadřazeného adresáře jako změněný\ntj. jejich překrývací ikona bude označovat změnu."
 
 #. Resource IDs: (1654)
 msgid ""
@@ -5108,6 +5220,11 @@ msgstr "Nesprávný název souboru."
 #. Resource IDs: (76)
 msgid "Initial import"
 msgstr "Počáteční import"
+
+#. Resource IDs: (87)
+#, c-format
+msgid "Initialized empty Git repository in %s."
+msgstr "V %s vytvořeno prázdné úložiště Git."
 
 #. Resource IDs: (156)
 msgid "Inline diff"
@@ -5276,6 +5393,10 @@ msgid ""
 "Line"
 msgstr "Nástroj čáry\nČáry"
 
+#. Resource IDs: (32853)
+msgid "Line diff bar"
+msgstr "Lišta rozdílů řádku"
+
 #. Resource IDs: (65535)
 msgid "Line differences"
 msgstr "Rozdíly v řádku"
@@ -5335,6 +5456,10 @@ msgstr "Načíst &klíč Putty"
 msgid "Loading..."
 msgstr "Načítání..."
 
+#. Resource IDs: (89)
+msgid "Local"
+msgstr "Místní"
+
 #. Resource IDs: (65535)
 msgid "Local Branch"
 msgstr "Místní větev"
@@ -5355,6 +5480,10 @@ msgid ""
 "repository URL will be saved to."
 msgstr "Umístění kde bude uložen obsah\núložiště z URL."
 
+#. Resource IDs: (32854)
+msgid "Locator Bar"
+msgstr "Lišta umístění"
+
 #. Resource IDs: (65)
 msgid "Log"
 msgstr "Protokol"
@@ -5374,6 +5503,10 @@ msgstr "Protokol historie"
 #. Resource IDs: (130)
 msgid "Log Messages"
 msgstr "Protokol zpráv"
+
+#. Resource IDs: (345)
+msgid "Log commit ordering"
+msgstr "Seřazení protokolu odevzdání"
 
 #. Resource IDs: (65535)
 msgid "Log messages"
@@ -6274,23 +6407,27 @@ msgstr "Parametry:"
 #. Resource IDs: (70)
 #, c-format
 msgid "Parent %d does not exist"
-msgstr "Nadřazený %d neexistuje"
+msgstr "Rodič %d neexistuje"
 
 #. Resource IDs: (606)
 msgid "Parent 1"
-msgstr "Nadřazený 1"
+msgstr "Rodič 1"
 
 #. Resource IDs: (606)
 msgid "Parent 2"
-msgstr "Nadřazený 2"
+msgstr "Rodič 2"
 
 #. Resource IDs: (1)
 msgid "Parent(s)"
-msgstr "Nadřazené"
+msgstr "Rodič(ové)"
 
 #. Resource IDs: (65535)
 msgid "Part of code come from TortoiseSVN Blame"
 msgstr "Části kódu pocházejí z TortoiseSVN Blame"
+
+#. Resource IDs: (4585)
+msgid "Password"
+msgstr "Heslo"
 
 #. Resource IDs: (69, 65535)
 msgid "Password:"
@@ -6413,8 +6550,15 @@ msgstr "Obrázek:"
 #. Resource IDs: (157)
 msgid ""
 "Pictures (*.svg, *.wmf, *.jpg, *.png, *.bmp, "
-"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
-msgstr "Obrázky (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Všechny soubory (*.*)|*.*||"
+"*.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Graphs (*.gv)|*.gv|All "
+"Files (*.*)|*.*||"
+msgstr "Obrázky (*.svg, *.wmf, *.jpg, *.png, *.bmp, *.gif)|*.svg;*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Grafy (*.gv)|*.gv|Všechny soubory (*.*)|*.*||"
+
+#. Resource IDs: (157)
+msgid ""
+"Pictures (*.wmf, *.jpg, *.png, *.bmp, "
+"*.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr "Obrázky (*.wmf, *.jpg, *.png, *.bmp, *.gif)|*.wmf;*.jpg;*.jpeg;*.png;*.bmp;*.gif|Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (246)
 msgid "Pie Graph"
@@ -7146,9 +7290,13 @@ msgstr "Obnoveno"
 msgid "Retry"
 msgstr "Zkusit znovu"
 
+#. Resource IDs: (89)
+msgid "Retry with --force"
+msgstr "Zkusit znovu s --force"
+
 #. Resource IDs: (602)
-msgid "Retrying..."
-msgstr "Opakování..."
+msgid "Retrying in 2 seconds..."
+msgstr "Další pokus za 2 vteřiny..."
 
 #. Resource IDs: (77, 175, 229)
 msgid "Revert"
@@ -7162,6 +7310,10 @@ msgstr "Vrátit odevzdání"
 #, c-format
 msgid "Revert commit %s"
 msgstr "Vrátit odevzdání %s"
+
+#. Resource IDs: (1258)
+msgid "Revert to parent revision"
+msgstr "Vrátit na rodičovskou revizi"
 
 #. Resource IDs: (323)
 #, c-format
@@ -7599,6 +7751,10 @@ msgstr "&Adresa serveru:"
 msgid "Set Accelerator &for:"
 msgstr "&Nastavit zkratku pro:"
 
+#. Resource IDs: (1558)
+msgid "Set au&thor"
+msgstr "Nastavit au&tora"
+
 #. Resource IDs: (1557)
 msgid "Set commit &date"
 msgstr "Nastavit &datum odevzdání"
@@ -7776,6 +7932,10 @@ msgstr "Zobrazit větve na kterých je odevzdání"
 msgid "Show changes as &unified diff"
 msgstr "Zobrazit změny jako &sjednocený rozdíl"
 
+#. Resource IDs: (32784)
+msgid "Show date"
+msgstr "Zobrazit datum"
+
 #. Resource IDs: (83)
 msgid "Show destination folder"
 msgstr "Zobrazit cílovou složku"
@@ -7811,6 +7971,11 @@ msgstr "Zobrazit protokol"
 #. Resource IDs: (65)
 msgid "Show log &before rename/copy"
 msgstr "Zobrazit protokol &před přejmenováním/kopírováním"
+
+#. Resource IDs: (88)
+#, c-format
+msgid "Show log of %s"
+msgstr "Zobrazit protokol %s"
 
 #. Resource IDs: (81)
 msgid "Show log of submodule"
@@ -8152,6 +8317,10 @@ msgstr "Stav položky v Git"
 msgid "Stops bisect mode"
 msgstr "Zastaví režim půlení"
 
+#. Resource IDs: (1)
+msgid "Strategy"
+msgstr "Strategie"
+
 #. Resource IDs: (156)
 msgid "Style"
 msgstr "Styl"
@@ -8304,6 +8473,10 @@ msgstr "Synchronizace vzdálených úložišť, včetně stažení, odeslání, 
 msgid "Sync..."
 msgstr "Synchronizace..."
 
+#. Resource IDs: (89)
+msgid "System"
+msgstr "Systém"
+
 #. Resource IDs: (1556)
 msgid "System &sounds"
 msgstr "&Zvuky systému"
@@ -8405,6 +8578,19 @@ msgstr "Začátek kusu '@@' byl očekáván na řádku %d !"
 #. Resource IDs: (67)
 msgid "The commit message must not be empty."
 msgstr "Zpráva odevzdání nesmí být prázdná."
+
+#. Resource IDs: (89)
+#, c-format
+msgid ""
+"The credential helper URL \"%s\" already exists.\n"
+"Do you want to overwrite it?"
+msgstr "URL pomocníka ověření \"%s\" již existuje.\nChcete ji přepsat?"
+
+#. Resource IDs: (89)
+msgid ""
+"The credential helper was changed.\n"
+"Do you want to save now or discard changes?"
+msgstr "Pomocník s pověřením byl změněn.\nChcete změny nyní uložit nebo zahodit?"
 
 #. Resource IDs: (603)
 msgid ""
@@ -8576,6 +8762,13 @@ msgid ""
 "The parameters '/path' and '/pathfile' are mutually exclusive.\n"
 "You must only specify one of them."
 msgstr "Parametry '/path' a '/pathfile' se vzájemně vylučují.\nMůžete zadat pouze jeden z nich."
+
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"The patch does not apply cleanly to %s and no version information is given.\n"
+"Patching is not possible!"
+msgstr "Záplata nebyla v %s správně použita a nebyly zadány žádné informace o verzi.\nZáplatování není možné!"
 
 #. Resource IDs: (64)
 #, c-format
@@ -8842,10 +9035,6 @@ msgstr "Nástroje"
 msgid "Tools:"
 msgstr "Nástroje:"
 
-#. Resource IDs: (1096)
-msgid "Tortoise&UDiff"
-msgstr "Tortoise&UDiff"
-
 #. Resource IDs: (65, 65535)
 msgid "TortoiseGit"
 msgstr "TortoiseGit"
@@ -8873,6 +9062,10 @@ msgstr "TortoiseGit zjistil podobné názvy souborů. Chcete aby soubory: %s\nby
 #, c-format
 msgid "TortoiseGit will not show the following overlays: %s"
 msgstr "TortoiseGit nezobrazí následující překryvy: %s"
+
+#. Resource IDs: (1096)
+msgid "TortoiseGit&UDiff"
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -8941,9 +9134,24 @@ msgid ""
 "apr-utils %d.%d.%d"
 msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
 
+#. Resource IDs: (7)
+#, c-format
+msgid ""
+"TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
+" more than once."
+msgstr "TortoiseGitMerge nemůže zpracovat tuto záplatu. Název souboru \"%s\" se zde vyskytuje více než jednou."
+
 #. Resource IDs: (156)
 msgid "TortoiseMerge"
 msgstr "TortoiseMerge"
+
+#. Resource IDs: (1739)
+msgid "Total changed lines including added/deleted files:"
+msgstr "Celkem změněných řádků včetně přidaných/smazaných souborů:"
+
+#. Resource IDs: (1737)
+msgid "Total changed lines not including added/deleted files:"
+msgstr "Celkem změněných řádků bez přidaných/smazaných souborů:"
 
 #. Resource IDs: (1162)
 msgid "Total commits analyzed:"
@@ -9144,6 +9352,14 @@ msgstr "Odstraňování verze v %s"
 msgid "Up"
 msgstr "Nahoru"
 
+#. Resource IDs: (1710)
+msgid "Update"
+msgstr "Aktualizace"
+
+#. Resource IDs: (607)
+msgid "Update Ref"
+msgstr "Aktualizovat odkaz"
+
 #. Resource IDs: (65)
 msgid "Update Submodules"
 msgstr "Aktualizovat podmoduly"
@@ -9192,9 +9408,17 @@ msgstr "Použít textový blok 'jejich' pak 'můj'"
 msgid "Use Blocks"
 msgstr "Použít bloky"
 
+#. Resource IDs: (1761)
+msgid "Use HTTP path component"
+msgstr "Použít část cesty HTTP"
+
 #. Resource IDs: (1482)
 msgid "Use MAPI"
 msgstr "Použít MAPI"
+
+#. Resource IDs: (1066)
+msgid "Use Ribbons"
+msgstr "Použít pásy karet"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -9658,6 +9882,14 @@ msgid ""
 "Do you want to save them now?"
 msgstr "Změnili jste vlastnosti, aniž byste je uložili.\nChcete je uložit nyní?"
 
+#. Resource IDs: (87)
+#, c-format
+msgid ""
+"You have selected %d items to show the diff for.\n"
+"For every of these items a new instance of the diff viewer will be started.\n"
+"Do you really want to show the diff for so many items at once?"
+msgstr "Vybrali jste %d položek pro porovnání.\nPro každou z těchto položek bude spuštěna nová instance prohlížeče rozdílů.\nOpravdu chcete zobrazit rozdíly pro tolik položek najednou?"
+
 #. Resource IDs: (169)
 msgid ""
 "You haven't entered an issue number!\n"
@@ -9841,10 +10073,6 @@ msgstr "nepojmenovaný soubor"
 #. Resource IDs: (1085)
 msgid "and support the developers"
 msgstr "a podpořte vývojáře"
-
-#. Resource IDs: (1073)
-msgid "apply --topo-order"
-msgstr "Použít --topo-order"
 
 #. Resource IDs: (195)
 msgid "assume-valid"
@@ -10071,6 +10299,10 @@ msgid ""
 "%s"
 msgstr "přechod na\n%s"
 
+#. Resource IDs: (1386)
+msgid "take care of submodule changes"
+msgstr "postarat se o změny podmodulů"
+
 #. Resource IDs: (3845)
 #, c-format
 msgid "to %1"
@@ -10088,6 +10320,26 @@ msgstr "pravda"
 #. Resource IDs: (245)
 msgid "week"
 msgstr "týden"
+
+#. Resource IDs: (89)
+msgid "wincred - all Windows users"
+msgstr "wincred - všichni uživatelé Windows"
+
+#. Resource IDs: (88)
+msgid "wincred - current Windows user"
+msgstr "wincred - současný uživatel Windows"
+
+#. Resource IDs: (88)
+msgid "wincred - this repository only"
+msgstr "wincred - pouze toto úložiště"
+
+#. Resource IDs: (88)
+msgid "winstore - current Windows user"
+msgstr "winstore - současný uživatel Windows"
+
+#. Resource IDs: (88)
+msgid "winstore - this repository only"
+msgstr "winstore - pouze toto úložiště"
 
 #. Resource IDs: (245)
 msgid "year"
