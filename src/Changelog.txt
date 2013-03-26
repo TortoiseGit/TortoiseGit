@@ -61,6 +61,7 @@ Released: unreleased
  * Fixed issue #1223: Workaround endless waiting when git.exe already exited
  * Fixed issue #1709: Right click -> assume unchanged is irreversible
  * Fixed issue #1713: Pre-populate commit message on squash merges
+ * Fixed issue #1566: Frequent crashes when searching log
 
 = Release 1.8.1.0 =
 Released: 2013-02-07

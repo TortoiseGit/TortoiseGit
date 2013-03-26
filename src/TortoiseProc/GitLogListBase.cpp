@@ -2405,18 +2405,22 @@ int CGitLogListBase::BeginFetchLog()
 		cmd = g_Git.GetLogCmd(list[0], path, -1, mask, true, &data);
 	}
 
+	g_Git.m_critGitDllSec.Lock();
 	try {
 		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 		{
+			g_Git.m_critGitDllSec.Unlock();
 			return -1;
 		}
 	}
 	catch (char* msg)
 	{
+		g_Git.m_critGitDllSec.Unlock();
 		CString err(msg);
 		MessageBox(_T("Could not open log.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
+	g_Git.m_critGitDllSec.Unlock();
 
 	return 0;
 }
