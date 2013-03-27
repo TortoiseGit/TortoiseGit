@@ -191,7 +191,8 @@ int CGitLogListBase::AsyncDiffThread()
 				pRev->m_ParentHash.push_back(m_HeadHash);
 				if(g_Git.IsInitRepos())
 				{
-					g_Git.GetInitAddList(pRev->GetFiles(this));
+					if (g_Git.GetInitAddList(pRev->GetFiles(this)))
+						CMessageBox::Show(NULL, _T("Run ls-files failed!"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 
 				}
 				else

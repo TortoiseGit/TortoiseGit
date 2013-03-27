@@ -1074,7 +1074,8 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 	if (Run(cmd, &cmdout))
 		return -1;
 
-	outputlist.ParserFromLsFile(cmdout);
+	if (outputlist.ParserFromLsFile(cmdout))
+		return -1;
 	for(int i = 0; i < outputlist.GetCount(); ++i)
 		const_cast<CTGitPath&>(outputlist[i]).m_Action = CTGitPath::LOGACTIONS_ADDED;
 
@@ -1885,7 +1886,8 @@ int CGit::ListConflictFile(CTGitPathList &list,CTGitPath *path)
 		return -1;
 	}
 
-	list.ParserFromLsFile(vector);
+	if (list.ParserFromLsFile(vector))
+		return -1;
 
 	return 0;
 }

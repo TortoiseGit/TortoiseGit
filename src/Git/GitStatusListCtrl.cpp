@@ -3815,7 +3815,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 		if(g_Git.IsInitRepos())
 		{
-			m_StatusFileList.ParserFromLsFile(out);
+			if (m_StatusFileList.ParserFromLsFile(out))
+				CMessageBox::Show(NULL, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
 			for(int i=0;i<m_StatusFileList.GetCount();i++)
 				((CTGitPath&)(m_StatusFileList[i])).m_Action=CTGitPath::LOGACTIONS_ADDED;
 		}

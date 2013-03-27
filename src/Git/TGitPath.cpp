@@ -1020,16 +1020,26 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 
 		if(tabstart>=0)
 			path.SetFromGit(one.Right(one.GetLength()-tabstart));
+		else
+			return -1;
 
 		tabstart=0;
 
 		part=one.Tokenize(_T(" "),tabstart); //Tag
+		if (tabstart < 0)
+			return -1;
 
 		part=one.Tokenize(_T(" "),tabstart); //Mode
+		if (tabstart < 0)
+			return -1;
 
 		part=one.Tokenize(_T(" "),tabstart); //Hash
+		if (tabstart < 0)
+			return -1;
 
 		part=one.Tokenize(_T("\t"),tabstart); //Stage
+		if (tabstart < 0)
+			return -1;
 
 		path.m_Stage=_ttol(part);
 
@@ -1037,7 +1047,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 
 		pos=out.findNextString(pos);
 	}
-	return pos;
+	return 0;
 }
 int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 {

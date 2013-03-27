@@ -1547,7 +1547,11 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	}
 
 	CTGitPathList list;
-	list.ParserFromLsFile(vector);
+	if (list.ParserFromLsFile(vector))
+	{
+		CMessageBox::Show(NULL, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
+		return FALSE;
+	}
 
 	if(list.GetCount() == 0)
 		return FALSE;
