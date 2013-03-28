@@ -82,6 +82,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	git_init();
 
 	GIT_LOG handle;
+	g_Git.m_critGitDllSec.Lock();
 	try
 	{
 		if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
@@ -89,18 +90,47 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 			return -1;
 		}
 	}
-	catch (char * g_last_error)
+	catch (char* msg)
 	{
-		MessageBox(NULL, CString(g_last_error), _T("TortoiseGit"), MB_ICONERROR);
+		g_Git.m_critGitDllSec.Unlock();
+		MessageBox(NULL, _T("Could not open log.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
+	g_Git.m_critGitDllSec.Unlock();
 
-	git_get_log_firstcommit(handle);
-
-	GIT_COMMIT commit;
-
-	while (git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW) == 0)
+	g_Git.m_critGitDllSec.Lock();
+	try
 	{
+		[&]{ git_get_log_firstcommit(handle); }();
+	}
+	catch (char* msg)
+	{
+		g_Git.m_critGitDllSec.Unlock();
+		MessageBox(NULL, _T("Could not get first commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
+	g_Git.m_critGitDllSec.Unlock();
+
+	int ret = 0;
+	while (ret == 0)
+	{
+		GIT_COMMIT commit;
+		g_Git.m_critGitDllSec.Lock();
+		try
+		{
+			[&]{ ret = git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW); }();
+		}
+		catch (char* msg)
+		{
+			g_Git.m_critGitDllSec.Unlock();
+			MessageBox(NULL, _T("Could not get next commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			break;
+		}
+		g_Git.m_critGitDllSec.Unlock();
+
+		if (ret)
+			break;
+
 		if (commit.m_ignore == 1)
 		{
 			git_free_commit(&commit);
@@ -112,7 +142,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
 
 		char *note=NULL;
+		g_Git.m_critGitDllSec.Lock();
 		git_get_notes(commit.m_hash,&note);
+		g_Git.m_critGitDllSec.Unlock();
 		if(note)
 		{
 			pRev->m_Notes.Empty();
@@ -150,7 +182,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 	}
 
+	g_Git.m_critGitDllSec.Lock();
 	git_close_log(handle);
+	g_Git.m_critGitDllSec.Unlock();
 
 	return 0;
 }
