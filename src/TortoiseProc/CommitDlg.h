@@ -34,6 +34,7 @@
 #include "Git.h"
 #include "HyperLink.h"
 #include "PatchViewDlg.h"
+#include "ACEdit.h"
 
 #include <regex>
 using namespace std;
@@ -72,6 +73,7 @@ public:
 private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
+	UINT AuthorListThread();
 	void FillPatchView(bool onlySetTimer = false);
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
@@ -102,6 +104,7 @@ protected:
 
 	afx_msg LRESULT OnCheck(WPARAM count, LPARAM);
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
+	afx_msg LRESULT OnAuthorListReady(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnUpdateOKButton(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateDataFalse(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
@@ -156,12 +159,15 @@ protected:
 
 private:
 	CWinThread*			m_pThread;
+	CWinThread*			m_pAuthorThread;
 	std::set<CString>	m_autolist;
 	CGitStatusListCtrl	m_ListCtrl;
 	BOOL				m_bShowUnversioned;
 	volatile LONG		m_bBlock;
 	volatile LONG		m_bThreadRunning;
+	volatile LONG		m_bAuthorThreadRunning;
 	volatile LONG		m_bRunThread;
+	volatile LONG		m_bRunAuthorThread;
 	CToolTips			m_tooltips;
 	CRegDWORD			m_regAddBeforeCommit;
 	CRegDWORD			m_regKeepChangelists;
@@ -169,6 +175,7 @@ private:
 	ProjectProperties	m_ProjectProperties;
 	CString				m_sWindowTitle;
 	static UINT			WM_AUTOLISTREADY;
+	static UINT			WM_AUTHORLISTREADY;
 	static UINT			WM_UPDATEOKBUTTON;
 	static UINT			WM_UPDATEDATAFALSE;
 	int					m_nPopupPasteListCmd;
@@ -186,6 +193,7 @@ private:
 	CDateTimeCtrl		m_CommitDate;
 	CDateTimeCtrl		m_CommitTime;
 	CLinkControl		m_linkControl;
+	CACEdit			m_ctrlAuthor;
 
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
