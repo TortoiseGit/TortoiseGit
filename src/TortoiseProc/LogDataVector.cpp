@@ -81,6 +81,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 	git_init();
 
+	if (m_bRunning && !*m_bRunning)
+		return 0;
+
 	GIT_LOG handle;
 	g_Git.m_critGitDllSec.Lock();
 	try
@@ -97,6 +100,14 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 		return -1;
 	}
 	g_Git.m_critGitDllSec.Unlock();
+	
+	if (m_bRunning && !*m_bRunning)
+	{		
+		g_Git.m_critGitDllSec.Lock();
+		git_close_log(handle);
+		g_Git.m_critGitDllSec.Unlock();
+		return 0;
+	}
 
 	g_Git.m_critGitDllSec.Lock();
 	try
@@ -112,7 +123,7 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	g_Git.m_critGitDllSec.Unlock();
 
 	int ret = 0;
-	while (ret == 0)
+	while (ret == 0 && (!m_bRunning || (m_bRunning && *m_bRunning)))
 	{
 		GIT_COMMIT commit;
 		g_Git.m_critGitDllSec.Lock();

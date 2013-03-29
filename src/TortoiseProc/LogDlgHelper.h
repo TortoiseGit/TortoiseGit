@@ -60,11 +60,13 @@ public:
 	{
 		m_pLogCache=pLogCache;
 		m_FirstFreeLane=0;
+		m_bRunning = NULL;
 	}
 	CLogDataVector()
 	{
 		m_pLogCache=NULL;
 		m_FirstFreeLane=0;
+		m_bRunning = NULL;
 	}
 	void SetLogCache(CLogCache *pLogCache)
 	{
@@ -94,6 +96,8 @@ public:
 
 	BYTE_VECTOR		 m_RawlogData;
 	std::vector<int> m_RawLogStart;
+
+	LONG volatile *  m_bRunning;
 
 #if 0
 	/// Ascending date sorting.
