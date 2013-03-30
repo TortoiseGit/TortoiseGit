@@ -236,7 +236,7 @@ int CGitLogListBase::AsyncDiffThread()
 
 					if(nItem>=0)
 					{
-						GitRev* data = (GitRev*)m_arShownList[nItem];
+						GitRev* data = (GitRev*)m_arShownList.SafeGetAt(nItem);
 						if(data)
 							if(data->m_CommitHash == pRev->m_CommitHash)
 							{
@@ -3420,7 +3420,7 @@ int CGitLogListBase::GetHeadIndex()
 
 	for (int i = 0; i < m_arShownList.GetCount(); ++i)
 	{
-		GitRev *pRev = (GitRev*)m_arShownList[i];
+		GitRev *pRev = (GitRev*)m_arShownList.SafeGetAt(i);
 		if(pRev)
 		{
 			if(pRev->m_CommitHash.ToString() == m_HeadHash )
