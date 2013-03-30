@@ -47,7 +47,7 @@
 #include "InputDlg.h"
 #include "ShellUpdater.h"
 #include "GitAdminDir.h"
-//#include "DropFiles.h"
+#include "DropFiles.h"
 #include "IconMenu.h"
 //#include "AddDlg.h"
 //#include "EditPropertiesDlg.h"
@@ -3415,17 +3415,60 @@ void CGitStatusListCtrl::OnDestroy()
 
 void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
-#if 0
 	Locker lock(m_critSec);
 	CDropFiles dropFiles; // class for creating DROPFILES struct
 
 	int index;
 	POSITION pos = GetFirstSelectedItemPosition();
+	if (!pos)
+		return;
+
+	CString tempDir = GetTempFile();
+	::DeleteFile(tempDir);
+	::CreateDirectory(tempDir, NULL);
 	while ( (index = GetNextSelectedItem(pos)) >= 0 )
 	{
-		FileEntry * fentry = m_arStatusArray[m_arListArray[index]];
-		CTGitPath path = fentry->GetPath();
-		dropFiles.AddFile( path.GetWinPathString() );
+		CTGitPath *path = m_arStatusArray[index];
+		CString tempFile = tempDir + _T("\\") + path->GetWinPathString();
+		CString tempSubDir = tempDir + _T("\\") + path->GetContainingDirectory().GetWinPathString();
+		CPathUtils::MakeSureDirectoryPathExists(tempSubDir);
+		CString version;
+		if (!this->m_CurrentVersion.IsEmpty() && this->m_CurrentVersion != GIT_REV_ZERO)
+		{
+			if (path->m_Action & CTGitPath::LOGACTIONS_DELETED)
+				version.Format(_T("%s^%d"), m_CurrentVersion, (path->m_ParentNo + 1) & PARENT_MASK);
+			else
+				version = m_CurrentVersion;
+		}
+		else
+		{
+			if (path->m_Action & CTGitPath::LOGACTIONS_DELETED)
+				version = _T("HEAD");
+		}
+
+		if (version.IsEmpty())
+		{
+			TCHAR abspath[MAX_PATH];
+			PathCombine(abspath, g_Git.m_CurrentDir, path->GetWinPath());
+			if (!CopyFile(abspath, tempFile, FALSE))	// prevent from being moved accidentally
+			{
+				CString out;
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES)), tempFile);
+				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+				return;
+			}
+		}
+		else
+		{
+			if (g_Git.GetOneFile(version, *path, tempFile))
+			{
+				CString out;
+				out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, path->GetGitPathString(), version, tempFile);
+				CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
+				return;
+			}
+		}
+		dropFiles.AddFile(tempFile);
 	}
 
 	if ( dropFiles.GetCount()>0 )
@@ -3434,7 +3477,6 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		dropFiles.CreateStructure();
 		m_bOwnDrag = false;
 	}
-#endif
 	*pResult = 0;
 }
 
