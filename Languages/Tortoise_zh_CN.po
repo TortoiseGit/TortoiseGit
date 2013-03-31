@@ -7234,7 +7234,7 @@ msgstr "重置列"
 #. Resource IDs: (64)
 #, c-format
 msgid "Reset current branch \"%s\" to"
-msgstr "重置当前分支从%s到%s"
+msgstr "重置当前分支从%s到"
 
 #. Resource IDs: (77, 207, 229)
 msgid "Resolve"
