@@ -159,7 +159,18 @@ protected:
 	/// If the user wanted to save the modifications, this method does the saving
 	/// itself.
 	int				CheckForReload();
-	int				CheckForSave();
+    enum ECheckForSaveReason {
+        CHFSR_CLOSE, ///< closing apps
+        CHFSR_SWITCH, ///< switching views
+        CHFSR_RELOAD, ///< reload views also switching between 1 and 2 way diff
+        CHFSR_OPTIONS, ///< white space change, options
+        CHFSR_OPEN, ///< open open dialog
+    };
+    /// checks if there are modifications and asks the user to save them first
+    /// IDCANCEL is returned if the user wants to cancel.
+    /// If the user wanted to save the modifications, this method does the saving
+    /// itself.
+    int             CheckForSave(ECheckForSaveReason eReason/* = CHFSR_SWITCH*/);
 	void			OnViewLineUpDown(int direction);
 	void			OnViewLineLeftRight(int direction);
 	bool			HasConflictsWontKeep();

@@ -612,7 +612,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 
 void CMainFrame::OnFileOpen()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_OPEN)==IDCANCEL)
 		return;
 	COpenDlg dlg;
 	if (dlg.DoModal()!=IDOK)
@@ -1056,7 +1056,7 @@ void CMainFrame::OnUpdateViewWraplonglines(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewOnewaydiff()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_RELOAD)==IDCANCEL)
 		return;
 	m_bOneWay = !m_bOneWay;
 	ShowDiffBar(!m_bOneWay);
@@ -1109,7 +1109,6 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 	if (IsViewGood(m_pwndBottomView))
 	{
 		pViewData = m_pwndBottomView->m_pViewData;
-		Invalidate();
 	}
 	else if (IsViewGood(m_pwndRightView))
 	{
@@ -1118,13 +1117,13 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 			pOriginFile = &m_Data.m_arYourFile;
 		else if (m_Data.IsTheirFileInUse())
 			pOriginFile = &m_Data.m_arTheirFile;
-		Invalidate();
 	}
 	else
 	{
 		// nothing to save!
 		return 1;
 	}
+	Invalidate();
 	if ((pViewData)&&(pOriginFile))
 	{
 		CFileTextLines file;
@@ -1421,7 +1420,7 @@ void CMainFrame::OnViewOptions()
 	dlg.DoModal();
 	if (dlg.IsReloadNeeded())
 	{
-		if (CheckForSave()==IDCANCEL)
+		if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 			return;
 		CDiffColors::GetInstance().LoadRegistry();
 		LoadViews();
@@ -1438,20 +1437,7 @@ void CMainFrame::OnViewOptions()
 
 void CMainFrame::OnClose()
 {
-	UINT ret = IDNO;
-	if (HasUnsavedEdits())
-	{
-		CString sTemp;
-		sTemp.LoadString(IDS_ASKFORSAVE);
-		ret = MessageBox(sTemp, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
-
-		if (ret == IDYES)
-		{
-			if (!FileSave())
-				return;
-		}
-	}
-	if ((ret == IDNO)||(ret == IDYES))
+	if (CheckForSave(CHFSR_CLOSE)!=IDCANCEL)
 	{
 		WINDOWPLACEMENT wp;
 
@@ -1469,7 +1455,7 @@ void CMainFrame::OnClose()
 				// if maximized and maybe iconic restore maximized state
 				wp.showCmd = SW_SHOWMAXIMIZED ;
 
-			// and write it to the .INI file
+			// and write it
 			WriteWindowPlacement(&wp);
 		}
 		__super::OnClose();
@@ -1627,7 +1613,7 @@ void CMainFrame::OnUpdateEditUseblockfromrightbeforeleft(CCmdUI *pCmdUI)
 
 void CMainFrame::OnFileReload()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_RELOAD)==IDCANCEL)
 		return;
 	CDiffColors::GetInstance().LoadRegistry();
 	LoadViews(-1);
@@ -1907,19 +1893,7 @@ void CMainFrame::OnUpdateEditPaste(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewSwitchleft()
 {
-	int ret = IDNO;
-	if (HasUnsavedEdits())
-	{
-		CString sTemp;
-		sTemp.LoadString(IDS_ASKFORSAVE);
-		ret = MessageBox(sTemp, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
-		if (ret == IDYES)
-		{
-			if (!FileSave())
-				return;
-		}
-	}
-	if ((ret == IDNO)||(ret == IDYES))
+	if (CheckForSave(CHFSR_SWITCH)!=IDCANCEL)
 	{
 		CWorkingFile file = m_Data.m_baseFile;
 		m_Data.m_baseFile = m_Data.m_yourFile;
@@ -2030,14 +2004,32 @@ int CMainFrame::CheckForReload()
 	return ret;
 }
 
-int CMainFrame::CheckForSave()
+int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 {
+	CString sTitle(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
+	// todo use resources instead of constants; we may hold resource id instaed of string
+	switch (eReason) {
+	case CHFSR_CLOSE:
+		sTitle = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE)); // use more descriptive IDS_WARNMODIFIEDLOOSECHANGES instead?
+		break;
+	case CHFSR_SWITCH:
+		sTitle = CString(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
+		break;
+	case CHFSR_RELOAD:
+		sTitle = CString(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
+		break;
+	case CHFSR_OPTIONS:
+		sTitle = CString(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGESOPTIONS));
+		break;
+	case CHFSR_OPEN:
+		sTitle = CString(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
+		break;
+	}
+
 	UINT ret = IDNO;
 	if (HasUnsavedEdits())
 	{
-		CString sTemp;
-		sTemp.LoadString(IDS_WARNMODIFIEDLOOSECHANGES);
-		ret = MessageBox(sTemp, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
+		ret = MessageBox(sTitle, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
 
 		if (ret == IDYES)
 		{
@@ -2189,7 +2181,7 @@ void CMainFrame::OnViewLocatorbar()
 
 void CMainFrame::OnViewComparewhitespaces()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
 	regIgnoreWS = 0;
@@ -2205,7 +2197,7 @@ void CMainFrame::OnUpdateViewComparewhitespaces(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewIgnorewhitespacechanges()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
 	regIgnoreWS = 2;
@@ -2221,7 +2213,7 @@ void CMainFrame::OnUpdateViewIgnorewhitespacechanges(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewIgnoreallwhitespacechanges()
 {
-	if (CheckForSave()==IDCANCEL)
+	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS = CRegDWORD(_T("Software\\TortoiseGitMerge\\IgnoreWS"));
 	regIgnoreWS = 1;
@@ -2320,3 +2312,4 @@ void CMainFrame::SetWindowTitle()
 	else
 		SetWindowText(L"TortoiseGitMerge");
 }
+
