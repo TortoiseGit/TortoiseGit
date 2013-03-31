@@ -501,16 +501,21 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 		if(git_path)
 			p = CUnicodeUtils::GetMulti(*GitPath, CP_UTF8);
 
-		if(git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
-			return CString();
-		else
+		try
 		{
-			StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
-			if(RemoveCR)
-				return configValue.Tokenize(_T("\n"),start);
-			return configValue;
+			if (git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
+				return CString();
+		}
+		catch (const char *msg)
+		{
+			::MessageBox(NULL, _T("Could not get config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return CString();
 		}
 
+		StringAppend(&configValue,(BYTE*)value.GetBuffer(),encoding);
+		if(RemoveCR)
+			return configValue.Tokenize(_T("\n"),start);
+		return configValue;
 	}
 	else
 	{
@@ -543,8 +548,15 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 		if(GitPath)
 			p = CUnicodeUtils::GetMulti(*GitPath, CP_UTF8);
 
-		return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type, p.GetBuffer());
-
+		try
+		{
+			return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type, p.GetBuffer());
+		}
+		catch (const char *msg)
+		{
+			::MessageBox(NULL, _T("Could not set config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return -1;
+		}
 	}
 	else
 	{
@@ -589,7 +601,15 @@ int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding, CString 
 		if(GitPath)
 			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
 
-		return get_set_config(keya.GetBuffer(), NULL, type, p.GetBuffer());
+		try
+		{
+			return get_set_config(keya.GetBuffer(), NULL, type, p.GetBuffer());
+		}
+		catch (const char *msg)
+		{
+			::MessageBox(NULL, _T("Could not unset config.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return -1;
+		}
 	}
 	else
 	{
