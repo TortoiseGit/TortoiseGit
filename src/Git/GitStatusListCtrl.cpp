@@ -3429,6 +3429,9 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 	while ( (index = GetNextSelectedItem(pos)) >= 0 )
 	{
 		CTGitPath *path = m_arStatusArray[index];
+		if (path->IsDirectory())
+			continue;
+
 		CString tempFile = tempDir + _T("\\") + path->GetWinPathString();
 		CString tempSubDir = tempDir + _T("\\") + path->GetContainingDirectory().GetWinPathString();
 		CPathUtils::MakeSureDirectoryPathExists(tempSubDir);
