@@ -187,12 +187,19 @@ BOOL CHwSMTP::SendSpeedEmail
 		PDNS_RECORD pDnsRecord;
 		PDNS_RECORD pNext;
 
+		DNS_STATUS status = 
 		DnsQuery(itr1->first ,
 						DNS_TYPE_MX,DNS_QUERY_STANDARD,
 						NULL,			//Contains DNS server IP address.
 						&pDnsRecord,	//Resource record that contains the response.
 						NULL
 						);
+		if (status)
+		{
+			m_csLastError.Format(_T("DNS query failed %d"), status);
+			ret = false;
+			continue;
+		}
 
 		CString to;
 		to.Empty();
