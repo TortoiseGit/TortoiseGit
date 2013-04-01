@@ -79,7 +79,15 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	if (!g_Git.CanParseRev(gitrange))
 		return 0;
 
-	git_init();
+	try
+	{
+		[] { git_init(); } ();
+	}
+	catch (const char* msg)
+	{
+		MessageBox(NULL, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
 
 	GIT_LOG handle;
 	g_Git.m_critGitDllSec.Lock();

@@ -1399,11 +1399,28 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		CGitHash hash;
 		if(isbound)
 		{
-			git_init();
-			data[pos+39]=0;
-			if(git_get_sha1((const char*)&data[pos], hash.m_hash))
+			bool ok = false;
+			try
 			{
-				::MessageBox(NULL, _T("Can't get hash"), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+				[] { git_init(); } ();
+				ok = true;
+			}
+			catch (const char* msg)
+			{
+				::MessageBox(NULL, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			}
+			data[pos+39]=0;
+			if (ok)
+			{
+				try
+				{
+					if (git_get_sha1((const char*)&data[pos], hash.m_hash))
+						::MessageBox(NULL, _T("Can't get hash"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+				}
+				catch (const char* msg)
+				{
+					::MessageBox(NULL, _T("Can't get hash.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+				}
 			}
 
 		}
