@@ -226,6 +226,10 @@ public: // variables
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();
 	void			AddEmptyViewLine(int nLineIndex);
+	int				SaveFile();
+	int				SaveFileTo(CString FileName);
+
+	CWorkingFile * m_pWorkingFile; ///< pointer to destination/source file parametrers
 
 protected:  // methods
 	enum {
@@ -585,4 +589,5 @@ protected:  // variables
 	};
 
 	static Screen2View m_Screen2View;
+	CFileTextLines::SaveParams m_SaveParams; ///< encoding and new line style for saving
 };

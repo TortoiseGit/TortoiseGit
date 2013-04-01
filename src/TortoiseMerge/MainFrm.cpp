@@ -758,9 +758,12 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->lineendings = m_Data.m_arYourFile.GetLineEndings();
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName() + _T(" - ") + m_Data.m_yourFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename() + _T(" - ") + m_Data.m_yourFile.GetFilename();
+			m_pwndLeftView->m_pWorkingFile = &m_Data.m_yourFile;
 
 			m_pwndRightView->m_pViewData = NULL;
+			m_pwndRightView->m_pWorkingFile = NULL;
 			m_pwndBottomView->m_pViewData = NULL;
+			m_pwndBottomView->m_pWorkingFile = NULL;
 
 			if (!m_wndSplitter.IsRowHidden(1))
 				m_wndSplitter.HideRow(1);
@@ -781,6 +784,7 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
 			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
+			m_pwndLeftView->m_pWorkingFile = &m_Data.m_baseFile;
 
 			m_pwndRightView->m_pViewData = &m_Data.m_YourBaseRight;
 			m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
@@ -788,8 +792,10 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
+			m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
 
 			m_pwndBottomView->m_pViewData = NULL;
+			m_pwndBottomView->m_pWorkingFile = NULL;
 
 			if (!m_wndSplitter.IsRowHidden(1))
 				m_wndSplitter.HideRow(1);
@@ -812,6 +818,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
 		m_pwndLeftView->m_sConvertedFilePath = m_Data.m_theirFile.GetConvertedFileName();
+		m_pwndLeftView->m_pWorkingFile = &m_Data.m_theirFile;
 
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
 		m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
@@ -820,6 +827,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 		m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
+		m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
 
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
 		m_pwndBottomView->texttype = m_Data.m_arTheirFile.GetUnicodeType();
@@ -828,6 +836,7 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
 		m_pwndBottomView->m_sConvertedFilePath = m_Data.m_mergedFile.GetConvertedFileName();
+		m_pwndBottomView->m_pWorkingFile = &m_Data.m_mergedFile;
 
 		if (m_wndSplitter2.IsColumnHidden(1))
 			m_wndSplitter2.ShowColumn();
@@ -2024,6 +2033,67 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 	case CHFSR_OPEN:
 		sTitle = CString(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
 		break;
+	}
+
+	// TODO simplify logic, reduce code duplication
+	if (CBaseView::IsViewGood(m_pwndBottomView))
+	{
+		// three-way diff - by design only bottom can be changed
+	}
+	else if (CBaseView::IsViewGood(m_pwndRightView))
+	{
+		// two-way diff - 
+		// in 1.7 version only right was saved, now left and/or right can be save, so we need to indicate what we are asking to save
+		if (HasUnsavedEdits(m_pwndLeftView))
+		{
+			// both views
+			UINT ret = IDNO;
+			{
+				// show separate questions
+				// first show question for left view
+				ret = MessageBox(sTitle, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
+				if (ret == IDCANCEL)
+				{
+					return IDCANCEL;
+				}
+				if (ret == IDYES)
+				{
+					if (m_pwndLeftView->SaveFile()<0)
+					{
+						return IDCANCEL;
+					}
+				}
+				// right file is handled old way
+			}
+		}
+		else
+		{
+			// only secondary (left) view
+		}
+		// otherwise 1.7 behaviour is used
+	}
+	else if (CBaseView::IsViewGood(m_pwndLeftView))
+	{
+		// only one view - only one to save
+		// 1.7 FileSave don't support this mode
+		if (HasUnsavedEdits(m_pwndLeftView))
+		{
+			UINT ret = IDNO;
+			{
+				ret = MessageBox(sTitle, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
+			}
+
+			if (ret == IDYES)
+			{
+				if (m_pwndLeftView->SaveFile()<0)
+					return IDCANCEL;
+			}
+		}
+		return IDNO;
+	}
+	else
+	{
+		return IDNO; // nothing to save
 	}
 
 	UINT ret = IDNO;

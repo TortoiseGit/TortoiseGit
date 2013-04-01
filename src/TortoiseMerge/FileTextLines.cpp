@@ -51,10 +51,10 @@ UINT64 inline DwordSwapBytes(UINT64 nValue)
 }
 
 CFileTextLines::CFileTextLines(void)
-	: m_UnicodeType(CFileTextLines::AUTOTYPE)
-	, m_LineEndings(EOL_AUTOLINE)
-	, m_bNeedsConversion(false)
+	: m_bNeedsConversion(false)
 {
+	m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
+	m_SaveParams.m_LineEndings = EOL_AUTOLINE;
 }
 
 CFileTextLines::~CFileTextLines(void)
@@ -168,8 +168,8 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 {
 	WCHAR exceptionError[1000] = {0};
-	m_LineEndings = EOL_AUTOLINE;
-	m_UnicodeType = CFileTextLines::AUTOTYPE;
+	m_SaveParams.m_LineEndings = EOL_AUTOLINE;
+	m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
 	RemoveAll();
 	if(lengthHint != 0)
 	{
@@ -234,18 +234,18 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	hFile.CloseHandle();
 
 	// detect type
-	if (m_UnicodeType == CFileTextLines::AUTOTYPE)
+	if (m_SaveParams.m_UnicodeType == CFileTextLines::AUTOTYPE)
 	{
-		m_UnicodeType = this->CheckUnicodeType((LPVOID)oFile, dwReadBytes);
+		m_SaveParams.m_UnicodeType = this->CheckUnicodeType((LPVOID)oFile, dwReadBytes);
 		// enforce conversion for all but ASCII and UTF8 type
-		m_bNeedsConversion = (m_UnicodeType!=CFileTextLines::UTF8)&&(m_UnicodeType!=CFileTextLines::ASCII);
+		m_bNeedsConversion = (m_SaveParams.m_UnicodeType!=CFileTextLines::UTF8)&&(m_SaveParams.m_UnicodeType!=CFileTextLines::ASCII);
 	}
 
 	// we may have to convert the file content - CString is UTF16LE
 	try
 	{
 		CBaseFilter * pFilter = NULL;
-		switch (m_UnicodeType)
+		switch (m_SaveParams.m_UnicodeType)
 		{
 		case BINARY:
 			m_sErrorString.Format(IDS_ERR_FILE_BINARY, (LPCTSTR)sFilePath);
@@ -284,11 +284,11 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	int nReadChars=oFile.GetLength()/sizeof(wchar_t);
 	wchar_t * pTextBuf = (wchar_t *)oFile;
 	wchar_t * pLineStart = pTextBuf;
-	if ((m_UnicodeType == UTF8BOM)
-		|| (m_UnicodeType == UTF16_LE)
-		|| (m_UnicodeType == UTF16_BE)
-		|| (m_UnicodeType == UTF32_LE)
-		|| (m_UnicodeType == UTF32_BE))
+	if ((m_SaveParams.m_UnicodeType == UTF8BOM)
+		|| (m_SaveParams.m_UnicodeType == UTF16_LE)
+		|| (m_SaveParams.m_UnicodeType == UTF16_BE)
+		|| (m_SaveParams.m_UnicodeType == UTF32_LE)
+		|| (m_SaveParams.m_UnicodeType == UTF32_BE))
 	{
 		// ignore the BOM
 		++pTextBuf;
@@ -370,7 +370,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 		if (eolmax < countEOLs[nEol])
 		{
 			eolmax = countEOLs[nEol];
-			m_LineEndings = (EOL)nEol;
+			m_SaveParams.m_LineEndings = (EOL)nEol;
 		}
 	}
 
@@ -446,7 +446,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath
 
 		CBaseFilter * pFilter = NULL;
 		bool bSaveBom = true;
-		CFileTextLines::UnicodeType eUnicodeType = bSaveAsUTF8 ? CFileTextLines::UTF8 : m_UnicodeType;
+		CFileTextLines::UnicodeType eUnicodeType = bSaveAsUTF8 ? CFileTextLines::UTF8 : m_SaveParams.m_UnicodeType;
 		switch (eUnicodeType)
 		{
 		default:
@@ -511,7 +511,9 @@ BOOL CFileTextLines::Save(const CString& sFilePath
 			oEncodedEol[EOL_LS] = pFilter->Encode(_T("\x2028"));
 			oEncodedEol[EOL_PS] = pFilter->Encode(_T("\x2029"));
 		}
-		oEncodedEol[EOL_AUTOLINE] = oEncodedEol[m_LineEndings==EOL_AUTOLINE ? EOL_CRLF : m_LineEndings];
+		oEncodedEol[EOL_AUTOLINE] = oEncodedEol[m_SaveParams.m_LineEndings==EOL_AUTOLINE
+				? EOL_CRLF 
+				: m_SaveParams.m_LineEndings];
 
 		for (int i=0; i<GetCount(); i++)
 		{
@@ -546,8 +548,7 @@ void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo)
 {
 	if (pFileToCopySettingsTo)
 	{
-		pFileToCopySettingsTo->m_UnicodeType = m_UnicodeType;
-		pFileToCopySettingsTo->m_LineEndings = m_LineEndings;
+		pFileToCopySettingsTo->m_SaveParams = m_SaveParams;
 	}
 }
 

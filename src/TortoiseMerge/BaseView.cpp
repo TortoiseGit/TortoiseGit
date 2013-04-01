@@ -1,4 +1,4 @@
-﻿// TortoiseGitMerge - a Diff/Patch program
+// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2013 - TortoiseSVN
 // Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
@@ -100,6 +100,7 @@ CBaseView::CBaseView()
 	, m_bLimitToDiff(true)
 	, m_bWholeWord(false)
 	, m_pDC(NULL)
+	, m_pWorkingFile(NULL)
 {
 	m_ptCaretViewPos.x = 0;
 	m_ptCaretViewPos.y = 0;
@@ -4463,21 +4464,6 @@ int CBaseView::CleanEmptyLines()
 		}
 		nViewLine++;
 	}
-	if (nRemovedCount != 0)
-	{
-		if (bCheckLeft)
-		{
-			m_pwndLeft->SetModified();
-		}
-		if (bCheckRight)
-		{
-			m_pwndRight->SetModified();
-		}
-		if (bCheckBottom)
-		{
-			m_pwndBottom->SetModified();
-		}
-	}
 	return nRemovedCount;
 }
 
@@ -5294,3 +5280,80 @@ void CBaseView::OnEditGotoline()
 	}
 }
 
+int CBaseView::SaveFile() 
+{
+	Invalidate();
+	if (m_pViewData!=NULL && m_pWorkingFile!=NULL)
+	{
+		CFileTextLines file;
+		//file.SetSaveParams(m_SaveParams);
+
+		for (int i=0; i<m_pViewData->GetCount(); i++)
+		{
+			//only copy non-removed lines
+			DiffStates state = m_pViewData->GetState(i);
+			switch (state)
+			{
+			case DIFFSTATE_CONFLICTED:
+			case DIFFSTATE_CONFLICTED_IGNORED:
+				{
+					int first = i;
+					int last = i;
+					do
+					{
+						last++;
+					} while((last<m_pViewData->GetCount()) && ((m_pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(m_pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
+					file.Add(_T("<<<<<<< .mine"), EOL_NOENDING);
+					for (int j=first; j<last; j++)
+					{
+						file.Add(m_pwndRight->m_pViewData->GetLine(j), m_pwndRight->m_pViewData->GetLineEnding(j));
+					}
+					file.Add(_T("======="), EOL_NOENDING);
+					for (int j=first; j<last; j++)
+					{
+						file.Add(m_pwndLeft->m_pViewData->GetLine(j), m_pwndLeft->m_pViewData->GetLineEnding(j));
+					}
+					file.Add(_T(">>>>>>> .theirs"), EOL_NOENDING);
+					i = last-1;
+				}
+				break;
+			case DIFFSTATE_EMPTY:
+			case DIFFSTATE_CONFLICTEMPTY:
+			case DIFFSTATE_IDENTICALREMOVED:
+			case DIFFSTATE_REMOVED:
+			case DIFFSTATE_THEIRSREMOVED:
+			case DIFFSTATE_YOURSREMOVED:
+			case DIFFSTATE_CONFLICTRESOLVEDEMPTY:
+				// do not save removed lines
+				break;
+			default:
+				file.Add(m_pViewData->GetLine(i), m_pViewData->GetLineEnding(i));
+				break;
+			}
+		}
+		if (!file.Save(m_pWorkingFile->GetFilename()))
+		{
+			::MessageBox(m_hWnd, file.GetErrorString(), _T("TortoiseMerge"), MB_ICONERROR);
+			return -1;
+		}
+		m_pWorkingFile->StoreFileAttributes();
+		// m_dlgFilePatches.SetFileStatusAsPatched(sFilePath);
+		SetModified(FALSE);
+		CUndo::GetInstance().MarkAsOriginalState();
+		if (file.GetCount() == 1 && file.GetAt(0).IsEmpty() && file.GetLineEnding(0) == EOL_NOENDING)
+			return 0;
+		return file.GetCount();
+	}
+	return 1;
+}
+
+
+int CBaseView::SaveFileTo(CString sFileName)
+{
+	if (m_pWorkingFile)
+	{
+		m_pWorkingFile->SetFileName(sFileName);
+		return SaveFile();
+	}
+	return 1;
+}
