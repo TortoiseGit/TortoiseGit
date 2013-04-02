@@ -95,6 +95,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_EDIT_USEMINETHENTHEIRBLOCK, &CMainFrame::OnEditUseMineThenTheirs)
 	ON_COMMAND(ID_EDIT_UNDO, &CMainFrame::OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CMainFrame::OnUpdateEditUndo)
+	ON_COMMAND(ID_EDIT_ENABLE, &CMainFrame::OnEditEnable)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_ENABLE, &CMainFrame::OnUpdateEditEnable)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_USEMINETHENTHEIRBLOCK, &CMainFrame::OnUpdateEditUseminethentheirblock)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_USEMYBLOCK, &CMainFrame::OnUpdateEditUsemyblock)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_USETHEIRBLOCK, &CMainFrame::OnUpdateEditUsetheirblock)
@@ -1957,6 +1959,30 @@ void CMainFrame::OnEditUndo()
 void CMainFrame::OnUpdateEditUndo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(CUndo::GetInstance().CanUndo());
+}
+
+void CMainFrame::OnEditEnable()
+{
+	CBaseView * pView = GetActiveBaseView();
+	if (pView && pView->IsReadonlyChangable())
+	{
+		bool isReadOnly = pView->IsReadonly();
+		pView->SetReadonly(!isReadOnly);
+	}
+}
+
+void CMainFrame::OnUpdateEditEnable(CCmdUI *pCmdUI)
+{
+	CBaseView * pView = GetActiveBaseView();
+	if (pView)
+	{
+		pCmdUI->Enable(pView->IsReadonlyChangable() || !pView->IsReadonly());
+		pCmdUI->SetCheck(!pView->IsReadonly());
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
 }
 
 int CMainFrame::CheckForReload()

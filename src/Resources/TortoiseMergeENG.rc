@@ -411,6 +411,7 @@ BEGIN
         MENUITEM "Save &as...",                 ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
         MENUITEM "Reload",                      ID_FILE_RELOAD
+        MENUITEM "&Enable edit",                ID_EDIT_ENABLE
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -1030,7 +1031,7 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_EDIT_ENABLE          "Allow Editing for this view"
+    ID_EDIT_ENABLE          "Allow Editing for this view\nAllow Edit"
 END
 
 #endif    // English (United States) resources

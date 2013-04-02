@@ -1302,38 +1302,6 @@ void CBaseView::DrawHeader(CDC *pdc, const CRect &rect)
 
 	pdc->SelectObject(GetFont(FALSE, TRUE));
 
-	// until ribbon button is ready show state in View title bar
-	if ((IsLeftViewGood() && m_pwndLeft->m_bReadonlyIsChangable)
-			|| (IsRightViewGood() && m_pwndRight->m_bReadonlyIsChangable)
-			|| (IsBottomViewGood() && m_pwndBottom->m_bReadonlyIsChangable))
-	{
-		// any view has Readonly state changable draw current status
-		CString sState(IsReadonly() ? "ro" : "rw");
-		if (!m_bReadonlyIsChangable)
-		{
-			// state is locked
-			sState = CString("[") + sState + CString("]");
-		}
-		CFont * p_oldFont = pdc->GetCurrentFont();
-		LOGFONT lf;
-		p_oldFont->GetLogFont(&lf);
-		CFont oFont;
-		if (lf.lfHeight<-14)
-		{
-			lf.lfHeight /= 2;
-		}
-		else
-		if (lf.lfHeight<-7)
-		{
-			lf.lfHeight = -7;
-		}
-
-		oFont.CreateFontIndirect(&lf);
-		pdc->SelectObject(&oFont);
-		pdc->ExtTextOut(3, 1, ETO_CLIPPED, textrect, sState, NULL);
-		pdc->SelectObject(p_oldFont);
-	}
-
 	CString sViewTitle;
 	if (IsModified())
 	{

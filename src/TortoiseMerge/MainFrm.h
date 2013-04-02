@@ -105,6 +105,8 @@ protected:
 	afx_msg void	OnViewShowfilelist();
 	afx_msg void	OnEditUndo();
 	afx_msg void	OnUpdateEditUndo(CCmdUI *pCmdUI);
+	afx_msg void	OnEditEnable();
+	afx_msg void	OnUpdateEditEnable(CCmdUI *pCmdUI);
 	afx_msg void	OnViewInlinediffword();
 	afx_msg void	OnUpdateViewInlinediffword(CCmdUI *pCmdUI);
 	afx_msg void	OnViewInlinediff();
