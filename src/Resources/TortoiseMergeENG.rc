@@ -569,6 +569,7 @@ BEGIN
     "U",            ID_VIEW_SWITCHLEFT,     VIRTKEY, CONTROL, NOINVERT
     "T",            ID_VIEW_WHITESPACES,    VIRTKEY, CONTROL, NOINVERT
     "P",            ID_VIEW_WRAPLONGLINES,  VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_EDIT_ENABLE,         VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -1025,6 +1026,11 @@ END
 STRINGTABLE
 BEGIN
     IDS_MARKASRESOLVED      "Do you want to mark the file\n%s\nas resolved?"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_ENABLE          "Allow Editing for this view"
 END
 
 #endif    // English (United States) resources

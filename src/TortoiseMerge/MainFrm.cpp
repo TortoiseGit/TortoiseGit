@@ -695,9 +695,14 @@ bool CMainFrame::LoadViews(int line)
 	m_wndLocatorBar.DocumentUpdated();
 	m_wndLineDiffBar.DocumentUpdated();
 
+	m_pwndLeftView->SetWritable(false);
+	m_pwndLeftView->SetWritableIsChangable(false);
+	m_pwndLeftView->SetTarget(false);
 	m_pwndRightView->SetWritable(false);
+	m_pwndRightView->SetWritableIsChangable(false);
 	m_pwndRightView->SetTarget(false);
 	m_pwndBottomView->SetWritable(false);
+	m_pwndBottomView->SetWritableIsChangable(false);
 	m_pwndBottomView->SetTarget(false);
 
 	if (!m_Data.IsBaseFileInUse())
@@ -746,8 +751,6 @@ bool CMainFrame::LoadViews(int line)
 	if (m_Data.IsBaseFileInUse() && m_Data.IsYourFileInUse() && !m_Data.IsTheirFileInUse())
 	{
 		//diff between YOUR and BASE
-		m_pwndRightView->SetWritable();
-		m_pwndRightView->SetTarget();
 		if (m_bOneWay)
 		{
 			if (!m_wndSplitter2.IsColumnHidden(1))
@@ -759,6 +762,8 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName() + _T(" - ") + m_Data.m_yourFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename() + _T(" - ") + m_Data.m_yourFile.GetFilename();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_yourFile;
+			m_pwndLeftView->SetTarget();
+			m_pwndLeftView->SetWritableIsChangable(true);
 
 			m_pwndRightView->m_pViewData = NULL;
 			m_pwndRightView->m_pWorkingFile = NULL;
@@ -785,6 +790,7 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
 			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_baseFile;
+			m_pwndLeftView->SetWritableIsChangable(true);
 
 			m_pwndRightView->m_pViewData = &m_Data.m_YourBaseRight;
 			m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
@@ -793,6 +799,8 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
 			m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
+			m_pwndRightView->SetWritable();
+			m_pwndRightView->SetTarget();
 
 			m_pwndBottomView->m_pViewData = NULL;
 			m_pwndBottomView->m_pWorkingFile = NULL;
@@ -1471,7 +1479,8 @@ void CMainFrame::OnClose()
 	}
 }
 
-void CMainFrame::OnActivate(UINT nValue, CWnd* /*pwnd*/, BOOL /*bActivated?*/) {
+void CMainFrame::OnActivate(UINT nValue, CWnd* /*pwnd*/, BOOL /*bActivated?*/)
+{
 	if (nValue != 0) // activated
 	{
 		if (IsIconic())
@@ -2017,7 +2026,8 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 {
 	CString sTitle(MAKEINTRESOURCE(IDS_WARNMODIFIEDLOOSECHANGES));
 	// todo use resources instead of constants; we may hold resource id instaed of string
-	switch (eReason) {
+	switch (eReason)
+	{
 	case CHFSR_CLOSE:
 		sTitle = CString(MAKEINTRESOURCE(IDS_ASKFORSAVE)); // use more descriptive IDS_WARNMODIFIEDLOOSECHANGES instead?
 		break;

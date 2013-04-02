@@ -42,3 +42,4 @@ Exit.png
 Help.png
 Settings.png
 SaveAs.png
+EditEnabled.png

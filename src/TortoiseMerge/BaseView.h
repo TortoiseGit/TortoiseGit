@@ -76,9 +76,11 @@ public: // methods
 	void			ScrollAllToChar(int nNewOffsetChar, BOOL bTrackScrollBar = TRUE);
 	void			SetReadonly(bool bReadonly = true) {m_bReadonly = bReadonly;}
 	void			SetWritable(bool bWritable = true) {m_bReadonly = !bWritable;}
+	void			SetWritableIsChangable(bool bWritableIsChangable = true) {m_bReadonlyIsChangable = bWritableIsChangable;}
 	void			SetTarget(bool bTarget = true) {m_bTarget = bTarget;}
 	bool			IsReadonly() const {return m_bReadonly;}
 	bool			IsWritable() const {return !m_bReadonly && m_pViewData;}
+	bool			IsReadonlyChangable() const {return m_bReadonlyIsChangable && !IsModified();}
 	bool			IsTarget() const {return m_bTarget;}
 	void			SetCaretAndGoalPosition(const POINT& pt) {UpdateCaretPosition(pt); UpdateGoalPos(); }
 	void			SetCaretAndGoalViewPosition(const POINT& pt) {UpdateCaretViewPosition(pt); UpdateGoalPos(); }
@@ -229,7 +231,7 @@ public: // variables
 	int				SaveFile();
 	int				SaveFileTo(CString FileName);
 
-	CWorkingFile * m_pWorkingFile; ///< pointer to destination/source file parametrers
+	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 
 protected:  // methods
 	enum {
@@ -285,6 +287,7 @@ protected:  // methods
 	afx_msg void	OnEditFindnextStart();
 	afx_msg void	OnEditFindprevStart();
 	afx_msg void	OnEditGotoline();
+	afx_msg void	OnToggleReadonly();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -435,6 +438,7 @@ protected:  // variables
 
 	// caret
 	bool			m_bReadonly;
+	bool			m_bReadonlyIsChangable;
 	bool			m_bTarget;                     ///< view intended as result
 	POINT			m_ptCaretViewPos;
 	int				m_nCaretGoalPos;
