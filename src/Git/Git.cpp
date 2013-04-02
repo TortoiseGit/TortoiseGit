@@ -394,7 +394,7 @@ public:
 	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = NULL):CGitCall(cmd),m_pvector(pvector),m_pvectorErr(pvectorErr){}
 	virtual bool OnOutputData(const BYTE* data, size_t size)
 	{
-		if (size == 0)
+		if (!m_pvector || size == 0)
 			return false;
 		size_t oldsize=m_pvector->size();
 		m_pvector->resize(m_pvector->size()+size);
