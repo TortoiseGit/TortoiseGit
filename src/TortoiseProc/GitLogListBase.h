@@ -494,7 +494,9 @@ public:
 			// do not block here, but process messages and ask until the thread ends
 			while (ret == WAIT_TIMEOUT && !m_AsyncThreadExited)
 			{
-				AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
+				MSG msg;
+				if (::PeekMessage(&msg, NULL, 0,0, PM_NOREMOVE))
+					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
 				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
 			}
 			m_DiffingThread = NULL;
