@@ -71,11 +71,11 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	do
 	{
 		ret = WaitForSingleObject(process.hProcess, 100);
-	} while ((ret == WAIT_TIMEOUT) && (!progDlg->HasUserCancelled()));
+	} while ((ret == WAIT_TIMEOUT) && (!progDlg || !progDlg->HasUserCancelled()));
 	CloseHandle(process.hThread);
 	CloseHandle(process.hProcess);
 
-	if (progDlg->HasUserCancelled())
+	if (progDlg && progDlg->HasUserCancelled())
 	{
 		return FALSE;
 	}
