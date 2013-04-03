@@ -161,7 +161,6 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ja", "..\Languages\Lan
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_tr", "..\Languages\Lang_tr.wixproj", "{DD9A2398-7A47-48C4-9601-89856128AAC9}"
 	ProjectSection(ProjectDependencies) = postProject
-		{56016512-D578-46FD-85E0-9EDCD37433AC} = {56016512-D578-46FD-85E0-9EDCD37433AC}
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
@@ -204,10 +203,19 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ko_KR", "..\Languages\
 	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_ro", "..\Languages\Lang_ro.wixproj", "{701B5859-6F9D-451F-B30F-B9CBDBAB4C74}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_it_IT", "..\Languages\Lang_it_IT.wixproj", "{BDBF2BDF-5215-40CB-A06D-877833787A8D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_pt_PT", "..\Languages\Lang_pt_PT.wixproj", "{6E1E2566-FAD3-4D07-9D81-7EEF112AF495}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_hu", "..\Languages\Lang_hu.wixproj", "{5DA76789-4B2A-45D1-8E3A-81253245C71E}"
 	ProjectSection(ProjectDependencies) = postProject
