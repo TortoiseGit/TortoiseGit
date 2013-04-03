@@ -5,6 +5,9 @@ Released: unreleased
  * Press F5 can refresh Submodule Diff Dialog
  * Fixed issue #1359: Drag support for files listed as being changed in the commit/log/modifications window
 
+== Bug Fixes ==
+ * Fixed issue #1729: crash when commit
+
 = Release 1.8.2.0 =
 Released: 2013-03-26
 
