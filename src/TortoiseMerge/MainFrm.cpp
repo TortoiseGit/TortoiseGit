@@ -1233,7 +1233,43 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 
 void CMainFrame::OnFileSave()
 {
-	FileSave();
+	// when mutiple files are set as writable we have to ask what file to save
+	int nEditableViewCount = 
+			(CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsWritable() ? 1 : 0)
+			+ (CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsWritable() ? 1 : 0)
+			+ (CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsWritable() ? 1 : 0);
+	bool bLeftIsModified = CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsModified();
+	bool bRightIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
+	bool bBottomIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
+	int nModifiedViewCount = 
+			(bLeftIsModified ? 1 : 0)
+			+ (bRightIsModified ? 1 : 0)
+			+ (bBottomIsModified ? 1 : 0);
+	if (nEditableViewCount>1)
+	{
+		if (nModifiedViewCount>0)
+		{
+			// both views
+			UINT ret = IDNO;
+			CString sSubTitle("Save");
+			CString sTitle("There are more views set editable.\nWhat view you want to save?");
+			{
+				// show separate questions
+				// first show question for left view
+				ret = MessageBox(sTitle, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
+				if (ret == IDYES)
+				{
+					m_pwndLeftView->SaveFile(SAVE_REMOVED);
+				}
+				// right file is handled old way
+			}
+		}
+	}
+	else
+	{
+		// only target view was modified
+		FileSave();
+	}
 }
 
 void CMainFrame::PatchSave()
@@ -2094,7 +2130,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 				}
 				if (ret == IDYES)
 				{
-					if (m_pwndLeftView->SaveFile()<0)
+					if (m_pwndLeftView->SaveFile(SAVE_REMOVED)<0)
 					{
 						return IDCANCEL;
 					}
@@ -2121,7 +2157,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 
 			if (ret == IDYES)
 			{
-				if (m_pwndLeftView->SaveFile()<0)
+				if (m_pwndLeftView->SaveFile(SAVE_REMOVED)<0)
 					return IDCANCEL;
 			}
 		}

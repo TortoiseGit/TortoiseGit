@@ -96,7 +96,7 @@ void CRightView::UseBothLeftFirst()
 	ClearSelection();
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
-	m_pwndLeft->SetModified();
+	m_pwndLeft->Invalidate();
 	SetModified();
 	RefreshViews();
 }
@@ -161,7 +161,7 @@ void CRightView::UseBothRightFirst()
 	ClearSelection();
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
-	m_pwndLeft->SetModified();
+	m_pwndLeft->Invalidate();
 	SetModified();
 	RefreshViews();
 }
@@ -243,7 +243,6 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 			break;
 		case DIFFSTATE_ADDED:
 		case DIFFSTATE_MOVED_TO:
-		case DIFFSTATE_MOVED_FROM:
 		case DIFFSTATE_CONFLICTADDED:
 		case DIFFSTATE_CONFLICTED:
 		case DIFFSTATE_CONFLICTED_IGNORED:
@@ -252,6 +251,7 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		case DIFFSTATE_THEIRSADDED:
 		case DIFFSTATE_YOURSADDED:
 			break;
+		case DIFFSTATE_MOVED_FROM:
 		case DIFFSTATE_IDENTICALREMOVED:
 		case DIFFSTATE_REMOVED:
 		case DIFFSTATE_THEIRSREMOVED:
@@ -291,7 +291,7 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		SetupAllViewSelection(nFirstViewLine, nLastViewLine - nRemovedLines);
 	}
 	BuildAllScreen2ViewVector();
-	m_pwndLeft->SetModified();
+	m_pwndLeft->Invalidate();
 	SetModified();
 	RefreshViews();
 }

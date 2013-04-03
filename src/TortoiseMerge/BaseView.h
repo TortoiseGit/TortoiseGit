@@ -228,7 +228,8 @@ public: // variables
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();
 	void			AddEmptyViewLine(int nLineIndex);
-	int				SaveFile();
+#define SAVE_REMOVED 1
+	int				SaveFile(int Flags = 0);
 	int				SaveFileTo(CString FileName);
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
