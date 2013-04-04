@@ -3801,6 +3801,7 @@ void CGitStatusListCtrl::NotifyCheck()
 
 int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 {
+	CString cmdList;
 	BYTE_VECTOR out;
 	this->m_bBusy=TRUE;
 	m_CurrentVersion=hash;
@@ -3826,12 +3827,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			{
 				// also list staged files which will be in the commit
 				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
+				cmdList += cmd + _T("\n");
 				g_Git.Run(cmd, &cmdout);
 
 				if(list == NULL)
 					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z"));
 				else
 					cmd.Format(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
+				cmdList += cmd + _T("\n");
 
 				BYTE_VECTOR cmdErr;
 				if(g_Git.Run(cmd, &cmdout, &cmdErr))
@@ -3849,6 +3852,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				//We will list all added file for init repository because commit will comit these
 				//if(list == NULL)
 				cmd=_T("git.exe ls-files -s -t -z");
+				cmdList += cmd + _T("\n");
 				//else
 				//	cmd.Format(_T("git.exe ls-files -s -t -z -- \"%s\""),(*list)[i].GetGitPathString());
 
@@ -3861,7 +3865,17 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		if(g_Git.IsInitRepos())
 		{
 			if (m_StatusFileList.ParserFromLsFile(out))
-				CMessageBox::Show(NULL, _T("Parse ls-files failed!"), _T("TortoiseGit"), MB_OK);
+			{
+				CString tempFile1 = GetTempFile();
+				CFile file1(tempFile1, CFile::modeWrite | CFile::typeBinary);
+				file1.Write(out.data(), (UINT)out.size());
+				file1.Close();
+				CString tempFile2 = GetTempFile();
+				CFile file2(tempFile2, CFile::modeWrite);
+				file2.Write(cmdList, sizeof(TCHAR) * cmdList.GetLength());
+				file2.Close();
+				CMessageBox::Show(NULL, _T("Parse ls-files failed!\nPlease inspect ") + tempFile1 + _T("\nand ") + tempFile2, _T("TortoiseGit"), MB_OK);
+			}
 			for(int i=0;i<m_StatusFileList.GetCount();i++)
 				((CTGitPath&)(m_StatusFileList[i])).m_Action=CTGitPath::LOGACTIONS_ADDED;
 		}
