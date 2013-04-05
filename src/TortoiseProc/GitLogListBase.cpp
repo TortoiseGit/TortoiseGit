@@ -576,6 +576,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 		bool singleRemote = refList[i].singleRemote;
 		bool hasTracking = refList[i].hasTracking;
 		bool sameName = refList[i].sameName;
+		bool annotatedTag = refList[i].annotatedTag;
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -631,6 +632,28 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef, 100), m_Colors.Darken(colRef, 100));
 				rectEdge.DeflateRect(1, 1);
 				W_Dc.Draw3dRect(rectEdge, m_Colors.Lighten(colRef, 50), m_Colors.Darken(colRef, 50));
+			}
+
+			if (annotatedTag)
+			{
+				rt.right += 8;
+				POINT trianglept[3] = { { rt.right - 8, rt.top }, { rt.right, (rt.top + rt.bottom) / 2 }, { rt.right - 8, rt.bottom } };
+				HRGN hrgn = ::CreatePolygonRgn(trianglept, 3, ALTERNATE);
+				::FillRgn(hdc, hrgn, brush);
+				::DeleteObject(hrgn);
+				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[0].y, NULL);
+				HPEN pen;
+				HPEN oldpen = (HPEN)SelectObject(hdc, pen = ::CreatePen(PS_SOLID, 2, m_Colors.Lighten(colRef, 50)));
+				::LineTo(hdc, trianglept[1].x - 1, trianglept[1].y - 1);
+				::DeleteObject(pen);
+				SelectObject(hdc, pen = ::CreatePen(PS_SOLID, 2, m_Colors.Darken(colRef, 50)));
+				::LineTo(hdc, trianglept[2].x - 1, trianglept[2].y - 1);
+				::DeleteObject(pen);
+				SelectObject(hdc, pen = ::CreatePen(PS_SOLID, 2, colRef));
+				::MoveToEx(hdc, trianglept[0].x - 1, trianglept[2].y - 3, NULL);
+				::LineTo(hdc, trianglept[0].x - 1, trianglept[0].y);
+				::DeleteObject(pen);
+				SelectObject(hdc, oldpen);
 			}
 
 			//Draw text inside label
@@ -1205,6 +1228,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							refLabel.singleRemote = false;
 							refLabel.hasTracking = false;
 							refLabel.sameName = false;
+							refLabel.annotatedTag = false;
 							if (CGit::GetShortName(str, refLabel.name, _T("refs/heads/")))
 							{
 								if (!(m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES))
@@ -1290,6 +1314,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 								if (!(m_ShowRefMask & LOGLIST_SHOWTAGS))
 									continue;
 								refLabel.color = m_Colors.GetColor(CColors::Tag);
+								refLabel.annotatedTag = str.Right(3) == _T("^{}");
 							}
 							else if (CGit::GetShortName(str, refLabel.name, _T("refs/stash")))
 							{

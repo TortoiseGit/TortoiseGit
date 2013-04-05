@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Press F5 can refresh Submodule Diff Dialog
  * Fixed issue #1359: Drag support for files listed as being changed in the commit/log/modifications window
+ * log list: indicate annotated tag in tag shape
 
 == Bug Fixes ==
  * Fixed issue #1729: crash when commit

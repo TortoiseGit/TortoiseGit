@@ -402,6 +402,7 @@ protected:
 		bool singleRemote;
 		bool hasTracking;
 		bool sameName;
+		bool annotatedTag;
 	} REFLABEL;
 
 	DECLARE_MESSAGE_MAP()
