@@ -5343,11 +5343,16 @@ int CBaseView::SaveFile(int nFlags)
 				break;
 			}
 		}
-		if (!file.Save(m_pWorkingFile->GetFilename()))
+		CString filename = m_pWorkingFile->GetFilename();
+		if (m_pWorkingFile->IsReadonly())
+			if (!CCommonAppUtils::FileOpenSave(filename, NULL, IDS_SAVEASTITLE, IDS_COMMONFILEFILTER, false, m_hWnd))
+				return -1;
+		if (!file.Save(filename))
 		{
 			::MessageBox(m_hWnd, file.GetErrorString(), _T("TortoiseGitMerge"), MB_ICONERROR);
 			return -1;
 		}
+		m_pWorkingFile->SetFileName(filename);
 		m_pWorkingFile->StoreFileAttributes();
 		// m_dlgFilePatches.SetFileStatusAsPatched(sFilePath);
 		SetModified(FALSE);

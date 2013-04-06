@@ -44,6 +44,7 @@ public:
 	void SetOutOfUse();
 
 	bool HasSourceFileChanged() const;
+	bool IsReadonly() const;
 	void StoreFileAttributes();
 
 	// Move the details of the specified file to the current one, and then mark the specified file
