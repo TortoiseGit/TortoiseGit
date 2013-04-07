@@ -149,6 +149,7 @@
     <ClCompile Include="TortoiseGitBlameView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlameIndexColors.h" />
     <ClInclude Include="GitBlameLogList.h" />
     <ClInclude Include="..\TortoiseProc\gitlogcache.h" />
     <ClInclude Include="..\TortoiseProc\GitLogListBase.h" />

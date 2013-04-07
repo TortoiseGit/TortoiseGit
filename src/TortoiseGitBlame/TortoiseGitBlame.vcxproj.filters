@@ -143,6 +143,9 @@
     <ClInclude Include="TortoiseGitBlameView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlameIndexColors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="hlp\Images\Bullet.gif">

@@ -135,6 +135,8 @@ protected:
 	afx_msg void OnUpdateViewToggleDate(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleFollowRenames();
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleColorByAge();
+	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
 	afx_msg void CopyHashToClipboard();
 	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
@@ -237,6 +239,7 @@ protected:
 	void CreateFont();
 	void SetupLexer(CString filename);
 	void SetupCppLexer();
+	COLORREF GetLineColor(int line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CString GetAppDirectory();
 	std::vector<COLORREF>	colors;

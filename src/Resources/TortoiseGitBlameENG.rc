@@ -278,6 +278,8 @@ BEGIN
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
+        MENUITEM SEPARATOR
+        MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
     END
     POPUP "&Help"
     BEGIN

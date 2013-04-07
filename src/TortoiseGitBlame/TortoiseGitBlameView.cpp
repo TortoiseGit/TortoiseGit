@@ -37,6 +37,7 @@
 #include "gitdll.h"
 #include "SysInfo.h"
 #include "StringUtils.h"
+#include "BlameIndexColors.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -71,6 +72,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWDATE, OnUpdateViewToggleDate)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
+	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
 	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
@@ -129,7 +132,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_lowestrev = LONG_MAX;
 	m_highestrev = 0;
-	m_colorage = true;
+	m_colorage = !!theApp.GetInt(_T("ColorAge"));
 
 	m_bShowLine=true;
 
@@ -477,8 +480,8 @@ void CTortoiseGitBlameView::InitialiseEditor()
 	SendEditor(SCI_SETSELFORE, TRUE, ::GetSysColor(COLOR_HIGHLIGHTTEXT));
 	SendEditor(SCI_SETSELBACK, TRUE, ::GetSysColor(COLOR_HIGHLIGHT));
 	SendEditor(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
-	m_regOldLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
-	m_regNewLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
+	m_regOldLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), BLAMEOLDCOLOR);
+	m_regNewLinesColor = CRegStdDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
 	CRegStdDWORD used2d(L"Software\\TortoiseGit\\ScintillaDirect2D", FALSE);
 	if (SysInfo::Instance().IsWin7OrLater() && DWORD(used2d))
 	{
@@ -856,9 +859,9 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	// draw the colored bar
 	for (std::vector<LONG>::const_iterator it = m_ID.begin(); it != m_ID.end(); ++it)
 	{
+		COLORREF cr = GetLineColor(currentLine);
 		++currentLine;
 		// get the line color
-		COLORREF cr = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (*it - m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
 		if ((currentLine > line)&&(currentLine <= (line + linesonscreen)))
 		{
 			cr = InterColor(cr, blackColor, 10);
@@ -1503,7 +1506,20 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		{
 			this->m_NoListCommit[hash].GetCommitFromHash(hash);
 		}
-		m_ID.push_back(-1); // m_ID is calculated lazy on demand
+
+		bool found = false;
+		for (size_t i = 0; i < this->GetLogData()->size(); ++i)
+		{
+			if(hash == this->GetLogData()->at(i))
+			{
+				m_ID.push_back((LONG)(this->GetLogData()->size() - i));
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			m_ID.push_back(-2);
+
 		m_Authors.push_back(m_NoListCommit[hash].GetAuthorName());
 		m_Dates.push_back(CLoglistUtils::FormatDateAndTime(m_NoListCommit[hash].GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes));
 
@@ -1572,7 +1588,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(SCI_SETREADONLY, TRUE);
 
 	m_lowestrev=0;
-	m_highestrev = (long)(this->GetLogData()->size() + m_NoListCommit.size());
+	m_highestrev = (long)(this->GetLogData()->size());
 
 	GetBlameWidth();
 	CRect rect;
@@ -1583,6 +1599,14 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	this->m_TextView.MoveWindow(rect);
 
 	this->Invalidate();
+}
+
+COLORREF CTortoiseGitBlameView::GetLineColor(int line)
+{
+	if (m_colorage)
+		return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[line] - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
+	else
+		return m_windowcolor;
 }
 
 CGitBlameLogList * CTortoiseGitBlameView::GetLogList()
@@ -1615,20 +1639,6 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		{
 			m_SelectedHash = m_CommitHash[line];
 
-			// lazy calculate m_ID
-			if (m_ID[line] == -1)
-			{
-				m_ID[line] = -2; // don't do this lazy calculation again and again for unfindable hashes
-				for (size_t i = 0; i < this->GetLogData()->size(); ++i)
-				{
-					if(m_SelectedHash == this->GetLogData()->at(i))
-					{
-						m_ID[line] = (LONG)(this->GetLogData()->size() - i);
-						break;
-					}
-				}
-			}
-
 			if(m_ID[line]>=0)
 			{
 				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
@@ -1660,17 +1670,15 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 
 void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* /*result*/)
 {
-
 	SCNotification *notification=reinterpret_cast<SCNotification *>(hdr);
 
-	if ((m_colorage)&&(notification->line < (int)m_CommitHash.size()))
+	if (notification->line < (int)m_CommitHash.size())
 	{
-		if(m_CommitHash[notification->line] == this->m_SelectedHash )
+		if (m_CommitHash[notification->line] == this->m_SelectedHash)
 			notification->lParam = m_selectedauthorcolor;
 		else
-			notification->lParam = InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[notification->line]-m_lowestrev)*100/((m_highestrev-m_lowestrev)+1));
+			notification->lParam = GetLineColor(notification->line);
 	}
-
 }
 
 void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
@@ -1894,6 +1902,20 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bFollowRenames);
+}
+
+void CTortoiseGitBlameView::OnViewToggleColorByAge()
+{
+	m_colorage = ! m_colorage;
+
+	theApp.WriteInt(_T("ColorAge"), m_colorage);
+
+	m_TextView.Invalidate();
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_colorage);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)

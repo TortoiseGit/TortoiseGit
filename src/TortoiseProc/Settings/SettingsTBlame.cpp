@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2011 - TortoiseGit
+// Copyright (C) 2011-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "TortoiseProc.h"
 #include "MessageBox.h"
 #include "SettingsTBlame.h"
+#include "..\TortoiseGitBlame\BlameIndexColors.h"
 
 
 // CSettingsTBlame dialog
@@ -34,8 +35,8 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_dwTabSize(4)
 	, m_bFollowRenames(0)
 {
-	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), RGB(255, 230, 230));
-	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), RGB(230, 230, 255));
+	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
+	m_regOldLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameOldColor"), BLAMEOLDCOLOR);
 	m_regFontName = CRegString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
