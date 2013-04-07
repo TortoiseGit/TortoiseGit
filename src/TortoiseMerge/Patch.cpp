@@ -106,7 +106,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				if( sLine.Find(_T("index"))==0 )
 				{
 					int dotstart=sLine.Find(_T(".."));
-					if(dotstart>=0)
+					if(dotstart>=0 && chunks)
 					{
 						chunks->sRevision = sLine.Mid(dotstart-7,7);
 						chunks->sRevision2 = sLine.Mid(dotstart+2,7);
