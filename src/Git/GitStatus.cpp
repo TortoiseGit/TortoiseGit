@@ -19,20 +19,9 @@
 
 #include "stdafx.h"
 #include "registry.h"
-//#include "resource.h"
 #include "..\TortoiseShell\resource.h"
-//#include "git_config.h"
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
-//#include "GitGlobal.h"
-//#include "GitHelpers.h"
-#ifdef _MFC_VER
-//#	include "Git.h"
-//#	include "MessageBox.h"
-//#	include "registry.h"
-//#	include "TGitPath.h"
-//#	include "PathUtils.h"
-#endif
 #include "git.h"
 #include "gitindex.h"
 #include "shellcache.h"
