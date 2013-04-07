@@ -1640,6 +1640,13 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	}
 }
 
+static void SetLibGit2SearchPath(int level, const CString &value)
+{
+	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, level, valueA.GetBuffer());
+	valueA.ReleaseBuffer();
+}
+
 BOOL CGit::CheckMsysGitDir()
 {
 	if (m_bInitialized)
@@ -1742,6 +1749,14 @@ BOOL CGit::CheckMsysGitDir()
 	// check for git.exe existance (maybe it was deinstalled in the meantime)
 	if (!FileExists(CGit::ms_LastMsysGitDir + _T("\\git.exe")))
 		return FALSE;
+
+	// Configure libgit2 search paths
+	CString msysGitDir;
+	PathCanonicalize(msysGitDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\etc"));
+	msysGitDir.ReleaseBuffer();
+	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
+	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
+	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
 
 	//set path
 	_tdupenv_s(&oldpath,&size,_T("PATH"));

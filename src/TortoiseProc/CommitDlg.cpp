@@ -635,66 +635,6 @@ void CCommitDlg::OnOK()
 			}
 			gitdir.ReleaseBuffer();
 
-			git_config *config;
-			git_config_new(&config);
-
-			CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8);
-			if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4, FALSE))
-			{
-				projectConfigA.ReleaseBuffer();
-				git_config_free(config);
-				git_repository_free(repository);
-				CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open project config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				break;
-			}
-			projectConfigA.ReleaseBuffer();
-			CString globalConfig = g_Git.GetGitGlobalConfig();
-			if (PathFileExists(globalConfig))
-			{
-				CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-				if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3, FALSE))
-				{
-					globalConfigA.ReleaseBuffer();
-					git_config_free(config);
-					git_repository_free(repository);
-					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open global config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-					break;
-				}
-				globalConfigA.ReleaseBuffer();
-			}
-			CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
-			if (PathFileExists(globalXDGConfig))
-			{
-				CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-				if (git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2, FALSE))
-				{
-					globalXDGConfigA.ReleaseBuffer();
-					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open xdg config config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-					git_config_free(config);
-					git_repository_free(repository);
-					break;
-				}
-				globalXDGConfigA.ReleaseBuffer();
-			}
-			CString systemConfig = g_Git.GetGitSystemConfig();
-			if (!systemConfig.IsEmpty())
-			{
-				CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-				if (git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1, FALSE))
-				{
-					systemConfigA.ReleaseBuffer();
-					CMessageBox::Show(m_hWnd, CGit::GetLibGit2LastErr(_T("Could not open system config.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-					git_config_free(config);
-					git_repository_free(repository);
-					break;
-				}
-				systemConfigA.ReleaseBuffer();
-			}
-
-			git_repository_set_config(repository, config);
-			git_config_free(config);
-			config = nullptr;
-
 			CGitHash revHash;
 			CString revRef = _T("HEAD");
 			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)

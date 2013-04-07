@@ -1678,66 +1678,6 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 		}
 		gitdir.ReleaseBuffer();
 
-		git_config * config;
-		git_config_new(&config);
-
-		CStringA projectConfigA = CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8);
-		if (git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), 4, FALSE))
-		{
-			projectConfigA.ReleaseBuffer();
-			ReportGitError();
-			git_config_free(config);
-			git_repository_free(repo);
-			return false;
-		}
-		projectConfigA.ReleaseBuffer();
-		CString globalConfig = g_Git.GetGitGlobalConfig();
-		if (PathFileExists(globalConfig))
-		{
-			CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-			if (git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), 3, FALSE))
-			{
-				globalConfigA.ReleaseBuffer();
-				ReportGitError();
-				git_config_free(config);
-				git_repository_free(repo);
-				return false;
-			}
-			globalConfigA.ReleaseBuffer();
-		}
-		CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
-		if (PathFileExists(globalXDGConfig))
-		{
-			CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-			if (git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), 2, FALSE))
-			{
-				globalXDGConfigA.ReleaseBuffer();
-				ReportGitError();
-				git_config_free(config);
-				git_repository_free(repo);
-				return false;
-			}
-			globalXDGConfigA.ReleaseBuffer();
-		}
-		CString systemConfig = g_Git.GetGitSystemConfig();
-		if (!systemConfig.IsEmpty())
-		{
-			CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-			if (git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), 1, FALSE))
-			{
-				systemConfigA.ReleaseBuffer();
-				ReportGitError();
-				git_config_free(config);
-				git_repository_free(repo);
-				return false;
-			}
-			systemConfigA.ReleaseBuffer();
-		}
-
-		git_repository_set_config(repo, config);
-		git_config_free(config);
-		config = nullptr;
-
 		if (git_repository_index(&index, repo))
 		{
 			ReportGitError();
