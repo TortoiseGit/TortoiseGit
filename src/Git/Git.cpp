@@ -1078,12 +1078,11 @@ int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe rev-parse %s" ),FixBranchName(friendname));
-		CString out, err;
-		int ret = Run(cmd, &out, &err, CP_UTF8);
+		gitLastErr.Empty();
+		int ret = Run(cmd, &gitLastErr, NULL, CP_UTF8);
+		hash = CGitHash(gitLastErr.Trim());
 		if (ret == 0)
-			hash = CGitHash(out.Trim());
-		else
-			gitLastErr += err;
+			gitLastErr.Empty();
 		return ret;
 	}
 }
