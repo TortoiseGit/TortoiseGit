@@ -1886,10 +1886,6 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 
 	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames);
 
-	UINT uCheck = MF_BYCOMMAND;
-	uCheck |= m_bFollowRenames ? MF_CHECKED : MF_UNCHECKED;
-	CheckMenuItem(GetMenu()->m_hMenu, ID_VIEW_FOLLOWRENAMES, uCheck);
-
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
 	{

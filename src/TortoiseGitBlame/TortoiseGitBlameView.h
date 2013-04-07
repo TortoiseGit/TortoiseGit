@@ -242,7 +242,6 @@ protected:
 	COLORREF GetLineColor(int line);
 	COLORREF InterColor(COLORREF c1, COLORREF c2, int Slider);
 	CString GetAppDirectory();
-	std::vector<COLORREF>	colors;
 	HFONT					m_font;
 	HFONT					m_italicfont;
 	LONG					m_blamewidth;
