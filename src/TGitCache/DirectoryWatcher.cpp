@@ -553,7 +553,8 @@ void CDirectoryWatcher::CloseWatchHandles()
 	AutoLocker lock(m_critSec);
 
 	for (TInfoMap::iterator I = watchInfoMap.begin(); I != watchInfoMap.end(); ++I)
-		I->second->CloseDirectoryHandle();
+		if (I->second)
+			I->second->CloseDirectoryHandle();
 
 	CloseCompletionPort();
 }
