@@ -136,8 +136,8 @@ void CSettingsTBlame::OnChange()
 
 void CSettingsTBlame::OnBnClickedRestore()
 {
-	m_cOldLinesColor.SetColor(RGB(230, 230, 255));
-	m_cNewLinesColor.SetColor(RGB(255, 230, 230));
+	m_cOldLinesColor.SetColor(BLAMEOLDCOLOR);
+	m_cNewLinesColor.SetColor(BLAMENEWCOLOR);
 	SetModified(TRUE);
 }
 
