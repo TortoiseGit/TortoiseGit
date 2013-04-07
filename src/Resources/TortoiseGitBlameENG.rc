@@ -251,6 +251,7 @@ BEGIN
     BEGIN
         MENUITEM "Next",                        ID_VIEW_NEXT
         MENUITEM "Previous",                    ID_VIEW_PREV
+        MENUITEM SEPARATOR
         POPUP "&Toolbars and Docking Windows"
         BEGIN
             MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR
@@ -273,6 +274,7 @@ BEGIN
             MENUITEM "Visual Studio 2008",          ID_VIEW_APPLOOK_VS_2008
             MENUITEM "Windows 7",                   ID_VIEW_APPLOOK_WIN7
         END
+        MENUITEM SEPARATOR
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
