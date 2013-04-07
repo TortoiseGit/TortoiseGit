@@ -91,9 +91,9 @@ BOOL CSettingsTBlame::OnInitDialog()
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
 	sCustomText.LoadString(IDS_COLOURPICKER_CUSTOMTEXT);
-	m_cNewLinesColor.EnableAutomaticButton(sDefaultText, RGB(255, 230, 230));
+	m_cNewLinesColor.EnableAutomaticButton(sDefaultText, BLAMENEWCOLOR);
 	m_cNewLinesColor.EnableOtherButton(sCustomText);
-	m_cOldLinesColor.EnableAutomaticButton(sDefaultText, RGB(230, 230, 255));
+	m_cOldLinesColor.EnableAutomaticButton(sDefaultText, BLAMEOLDCOLOR);
 	m_cOldLinesColor.EnableOtherButton(sCustomText);
 
 	m_dwTabSize = m_regTabSize;
@@ -136,8 +136,8 @@ void CSettingsTBlame::OnChange()
 
 void CSettingsTBlame::OnBnClickedRestore()
 {
-	m_cOldLinesColor.SetColor(RGB(230, 230, 255));
-	m_cNewLinesColor.SetColor(RGB(255, 230, 230));
+	m_cOldLinesColor.SetColor(BLAMEOLDCOLOR);
+	m_cNewLinesColor.SetColor(BLAMENEWCOLOR);
 	SetModified(TRUE);
 }
 
