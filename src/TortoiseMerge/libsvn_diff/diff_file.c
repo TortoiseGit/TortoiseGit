@@ -2,7 +2,7 @@
  * diff_file.c :  routines for doing diffs on files
  *
  * ====================================================================
- * Copyright (c) 2000-2006 CollabNet.  All rights reserved.
+ * Copyright (c) 2002-2009 CollabNet.  All rights reserved.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution.  The terms
@@ -132,14 +132,14 @@ datasource_to_index(svn_diff_datasource_e datasource)
  */
 static APR_INLINE svn_error_t *
 read_chunk(apr_file_t *file, const char *path,
-           char *buffer, apr_size_t length,
+           char *buffer, apr_off_t length,
            apr_off_t offset, apr_pool_t *pool)
 {
   /* XXX: The final offset may not be the one we asked for.
    * XXX: Check.
    */
   SVN_ERR(svn_io_file_seek(file, APR_SET, &offset, pool));
-  return svn_io_file_read_full(file, buffer, length, NULL, pool);
+  return svn_io_file_read_full(file, buffer, (apr_size_t) length, NULL, pool);
 }
 
 
@@ -173,7 +173,7 @@ map_or_read_file(apr_file_t **file,
 #if APR_HAS_MMAP
   if (finfo.size > APR_MMAP_THRESHOLD)
     {
-      rv = apr_mmap_create(mm, *file, 0, finfo.size,
+      rv = apr_mmap_create(mm, *file, 0, (apr_size_t) finfo.size,
                            APR_MMAP_READ, pool);
       if (rv == APR_SUCCESS)
         {
@@ -188,9 +188,9 @@ map_or_read_file(apr_file_t **file,
 
    if (*buffer == NULL && finfo.size > 0)
     {
-      *buffer = apr_palloc(pool, finfo.size);
+      *buffer = apr_palloc(pool, (apr_size_t) finfo.size);
 
-      SVN_ERR(svn_io_file_read_full(*file, *buffer, finfo.size, 
+      SVN_ERR(svn_io_file_read_full(*file, *buffer, (apr_size_t) finfo.size,
                                     NULL, pool));
 
       /* Since we have the entire contents of the file we can
@@ -214,7 +214,7 @@ datasource_open(void *baton, svn_diff_datasource_e datasource)
   svn_diff__file_baton_t *file_baton = baton;
   int idx;
   apr_finfo_t finfo;
-  apr_size_t length;
+  apr_off_t length;
   char *curp;
   char *endp;
 
@@ -239,7 +239,7 @@ datasource_open(void *baton, svn_diff_datasource_e datasource)
   if (length == 0)
     return SVN_NO_ERROR;
 
-  endp = curp = apr_palloc(file_baton->pool, length);
+  endp = curp = apr_palloc(file_baton->pool, (apr_size_t) length);
   endp += length;
 
   file_baton->buffer[idx] = file_baton->curp[idx] = curp;
@@ -272,7 +272,7 @@ datasource_get_next_token(apr_uint32_t *hash, void **token, void *baton,
   char *endp;
   char *curp;
   char *eol;
-  int last_chunk;
+  apr_off_t last_chunk;
   apr_off_t length;
   apr_uint32_t h = 0;
   /* Did the last chunk end in a CR character? */
@@ -378,7 +378,11 @@ datasource_get_next_token(apr_uint32_t *hash, void **token, void *baton,
                                  &file_baton->normalize_state[idx],
                                  curp, file_baton->options);
 
-      file_token->norm_offset = file_token->offset + (c - curp);
+      file_token->norm_offset = file_token->offset;
+      if (file_token->length == 0) 
+        /* move past leading ignored characters */
+        file_token->norm_offset += (c - curp);
+
       file_token->length += length;
 
       *hash = svn_diff__adler32(h, c, length);
@@ -494,7 +498,7 @@ token_compare(void *baton, void *token1, void *token2, int *compare)
       /* Compare two chunks (that could be entire tokens if they both reside
        * in memory).
        */
-      *compare = memcmp(bufp[0], bufp[1], len);
+      *compare = memcmp(bufp[0], bufp[1], (size_t) len);
       if (*compare != 0)
         return SVN_NO_ERROR;
 
@@ -566,7 +570,6 @@ svn_diff_file_options_create(apr_pool_t *pool)
   return apr_pcalloc(pool, sizeof(svn_diff_file_options_t));
 }
 
-#if 0
 svn_error_t *
 svn_diff_file_options_parse(svn_diff_file_options_t *options,
                             const apr_array_header_t *args,
@@ -623,7 +626,7 @@ svn_diff_file_options_parse(svn_diff_file_options_t *options,
 
   return SVN_NO_ERROR;
 }
-#endif
+
 svn_error_t *
 svn_diff_file_diff_2(svn_diff_t **diff,
                      const char *original,
@@ -1068,6 +1071,7 @@ output_unified_diff_modified(void *baton,
       if (output_baton->show_c_function)
         {
           int p;
+          const char *invalid_character;
 
           /* Save the extra context for later use.
            * Note that the last byte of the hunk_extra_context array is never
@@ -1083,6 +1087,14 @@ output_unified_diff_modified(void *baton,
                  && svn_ctype_isspace(output_baton->hunk_extra_context[p - 1]))
             {
               output_baton->hunk_extra_context[--p] = '\0';
+            }
+          invalid_character =
+            svn_utf__last_valid(output_baton->hunk_extra_context,
+                                SVN_DIFF__EXTRA_CONTEXT_LENGTH);
+          for (p = invalid_character - output_baton->hunk_extra_context;
+               p < SVN_DIFF__EXTRA_CONTEXT_LENGTH; p++)
+            {
+              output_baton->hunk_extra_context[p] = '\0';
             }
         }
     }
@@ -1128,14 +1140,18 @@ output_unified_default_hdr(const char **header, const char *path,
   apr_time_exp_t exploded_time;
   char time_buffer[64];
   apr_size_t time_len;
+  const char *utf8_timestr;
 
   SVN_ERR(svn_io_stat(&file_info, path, APR_FINFO_MTIME, pool));
   apr_time_exp_lt(&exploded_time, file_info.mtime);
 
   apr_strftime(time_buffer, &time_len, sizeof(time_buffer) - 1,
-               "%a %b %e %H:%M:%S %Y", &exploded_time);
+  /* Order of date components can be different in different languages */
+               _("%a %b %e %H:%M:%S %Y"), &exploded_time);
 
-  *header = apr_psprintf(pool, "%s\t%s", path, time_buffer);
+  SVN_ERR(svn_utf_cstring_to_utf8(&utf8_timestr, time_buffer, pool));
+
+  *header = apr_psprintf(pool, "%s\t%s", path, utf8_timestr);
 
   return SVN_NO_ERROR;
 }
