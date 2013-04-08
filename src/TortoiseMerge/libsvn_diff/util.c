@@ -20,14 +20,16 @@
 #include <apr.h>
 #include <apr_general.h>
 
-#include "svn_error.h"
 #include "svn_version.h"
 #include "svn_io.h"
+
+#include "svn_error.h"
+#include "svn_diff.h"
 #include "svn_types.h"
 #include "svn_ctype.h"
 
 #include "diff.h"
-#include "svn_diff.h"
+
 /**
  * An Adler-32 implementation per RFC1950.
  *
@@ -54,7 +56,7 @@
  * of DATA sized LEN.
  */
 apr_uint32_t
-svn_diff__adler32(apr_uint32_t checksum, const char *data, apr_size_t len)
+svn_diff__adler32(apr_uint32_t checksum, const char *data, apr_off_t len)
 {
   const unsigned char *input = (const unsigned char *)data;
   apr_uint32_t s1 = checksum & 0xFFFF;
