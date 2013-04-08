@@ -21,7 +21,6 @@
 #include <apr_pools.h>
 #include <apr_general.h>
 
-#include <apr_general.h>
 #include "svn_error.h"
 #include "svn_version.h"
 #include "svn_io.h"

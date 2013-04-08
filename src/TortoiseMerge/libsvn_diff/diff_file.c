@@ -27,27 +27,20 @@
 #include <apr_getopt.h>
 
 #include <apr_general.h>
-#include "svn_error.h"
 #include "svn_version.h"
 #include "svn_io.h"
 #include "svn_ctype.h"
 
 #include "svn_error.h"
+#include "svn_diff.h"
 #include "svn_types.h"
-
 #include "svn_string.h"
-//#include "svn_io.h"
-//#include "svn_utf.h"
+#include "svn_io.h"
+#include "svn_utf.h"
 #include "svn_pools.h"
 #include "diff.h"
-//#include "svn_private_config.h"
-//#include "svn_path.h"
-//#include "svn_ctype.h"
-#include "svn_diff.h"
 
-
-/* A token, i.e. a line read from a
-file. */
+/* A token, i.e. a line read from a file. */
 typedef struct svn_diff__file_token_t
 {
   /* Next token in free list. */
@@ -180,7 +173,8 @@ map_or_read_file(apr_file_t **file,
 #if APR_HAS_MMAP
   if (finfo.size > APR_MMAP_THRESHOLD)
     {
-      rv = apr_mmap_create(mm, *file, 0, finfo.size, APR_MMAP_READ, pool);
+      rv = apr_mmap_create(mm, *file, 0, finfo.size,
+                           APR_MMAP_READ, pool);
       if (rv == APR_SUCCESS)
         {
           *buffer = (*mm)->mm;
@@ -196,7 +190,8 @@ map_or_read_file(apr_file_t **file,
     {
       *buffer = apr_palloc(pool, finfo.size);
 
-      SVN_ERR(svn_io_file_read_full(*file, *buffer, finfo.size, NULL, pool));
+      SVN_ERR(svn_io_file_read_full(*file, *buffer, finfo.size, 
+                                    NULL, pool));
 
       /* Since we have the entire contents of the file we can
        * close it now.
@@ -1124,7 +1119,6 @@ output_unified_diff_modified(void *baton,
   return SVN_NO_ERROR;
 }
 
-
 /* Set *HEADER to a new string consisting of PATH, a tab, and PATH's mtime. */
 static svn_error_t *
 output_unified_default_hdr(const char **header, const char *path,
@@ -1145,7 +1139,6 @@ output_unified_default_hdr(const char **header, const char *path,
 
   return SVN_NO_ERROR;
 }
-
 
 static const svn_diff_output_fns_t svn_diff__file_output_unified_vtable =
 {

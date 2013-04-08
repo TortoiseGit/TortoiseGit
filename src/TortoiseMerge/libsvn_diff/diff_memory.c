@@ -34,7 +34,6 @@
 #include "svn_string.h"
 #include "svn_utf.h"
 #include "diff.h"
-//#include "svn_private_config.h"
 
 typedef struct source_tokens_t
 {

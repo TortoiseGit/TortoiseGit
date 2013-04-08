@@ -23,11 +23,10 @@
 #include <apr_pools.h>
 #include <apr_general.h>
 
-
-#include "svn_types.h"
-#include "svn_pools.h"
 #include "svn_diff.h"
+#include "svn_types.h"
 
+#include "svn_pools.h"
 
 #define SVN_DIFF__UNIFIED_CONTEXT_SIZE 3
 
@@ -150,8 +149,6 @@ svn_diff__normalize_buffer(char **tgt,
                            svn_diff__normalize_state_t *statep,
                            const char *buf,
                            const svn_diff_file_options_t *opts);
-
-
 
 
 #endif /* DIFF_H */
