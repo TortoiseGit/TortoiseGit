@@ -77,6 +77,7 @@ IDI_COPYCLIP            ICON                    "..\\Resources\\copy.ico"
 IDI_THUMB_DOWN          ICON                    "..\\Resources\\thumb_down.ico"
 IDI_THUMB_UP            ICON                    "..\\Resources\\thumb_up.ico"
 IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
+IDI_DAEMON              ICON                    "..\\Resources\\menudaemon.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -391,6 +392,8 @@ BEGIN
     IDS_MENUDESCUNDOADD     "Reverts an addition to version control"
     IDS_MENUPREVDIFF        "&Diff with previous version"
     IDS_MENUDESCPREVDIFF    "Diffs the working tree file with the one before the last commit"
+    IDS_MENUDAEMON          "Daemon"
+    IDS_MENUDESCDAEMON      "Starts a git server running git protocol"
     IDS_DROPEXPORTMENU      "Git Export versioned items here"
     IDS_DROPEXPORTEXTENDEDMENU "Git Export all items here"
     IDS_MENUIGNOREMULTIPLEMASK "Ignore %d items by &extension"

@@ -5365,12 +5365,12 @@ int CBaseView::SaveFile(int nFlags)
 }
 
 
-int CBaseView::SaveFileTo(CString sFileName)
+int CBaseView::SaveFileTo(CString sFileName, int nFlags)
 {
 	if (m_pWorkingFile)
 	{
 		m_pWorkingFile->SetFileName(sFileName);
-		return SaveFile();
+		return SaveFile(nFlags);
 	}
 	return -1;
 }

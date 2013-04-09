@@ -1416,7 +1416,23 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 
 void CMainFrame::OnFileSaveAs()
 {
-	FileSaveAs();
+	{
+		// use 1.7 logic - only "target" can be saved
+		if (IsViewGood(m_pwndBottomView) || IsViewGood(m_pwndRightView))
+		{
+			// 2, 3 panel view was handled
+			FileSaveAs();
+		}
+		else if (IsViewGood(m_pwndLeftView))
+		{
+			CString sFileName;
+			if (TryGetFileName(sFileName))
+			{
+				m_pwndLeftView->SaveFileTo(sFileName);
+			}
+		}
+		return;
+	}
 }
 
 bool CMainFrame::FileSaveAs(bool bCheckResolved /*=true*/)

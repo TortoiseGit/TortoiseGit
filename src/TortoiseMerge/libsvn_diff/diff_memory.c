@@ -34,7 +34,6 @@
 #include "svn_string.h"
 #include "svn_utf.h"
 #include "diff.h"
-//#include "svn_private_config.h"
 
 typedef struct source_tokens_t
 {
@@ -162,7 +161,7 @@ token_compare(void *baton, void *token1, void *token2, int *result)
   if (len1 != len2)
     *result = (len1 < len2) ? -1 : 1;
   else
-    *result = (len1 == 0) ? 0 : memcmp(buf1, buf2, len1);
+    *result = (len1 == 0) ? 0 : memcmp(buf1, buf2, (size_t) len1);
 
   return SVN_NO_ERROR;
 }
@@ -344,7 +343,7 @@ typedef struct unified_output_baton_t
   svn_stream_t *output_stream;
   const char *header_encoding;
   source_tokens_t sources[2]; /* 0 == original; 1 == modified */
-  apr_size_t next_token; /* next token in original source */
+  apr_off_t next_token; /* next token in original source */
 
   /* Cached markers, in header_encoding,
      indexed using unified_output_e */

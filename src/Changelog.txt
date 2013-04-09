@@ -9,6 +9,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #1729: crash when commit
+ * Fixed issue #1728: TortoiseGitMerge show fake difference in the same lines if line end falls to 0x40000 byte
 
 = Release 1.8.2.0 =
 Released: 2013-03-26

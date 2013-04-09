@@ -230,7 +230,7 @@ public: // variables
 	void			AddEmptyViewLine(int nLineIndex);
 #define SAVE_REMOVED 1
 	int				SaveFile(int Flags = 0);
-	int				SaveFileTo(CString FileName);
+	int				SaveFileTo(CString FileName, int Flags = 0);
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 
