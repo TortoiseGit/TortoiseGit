@@ -9018,6 +9018,10 @@ msgstr ""
 msgid "When the patch does not apply cleanly, fall back on 3-way merge if the patch records the identity of blobs it is supposed to apply to and we have those blobs available locally."
 msgstr ""
 
+#. Resource IDs: (1409)
+msgid "While running daemon, all data of this repository is exposed without authentication and/or encryption."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Whitespaces"
 msgstr ""
