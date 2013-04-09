@@ -213,6 +213,7 @@
     <Image Include="..\Resources\menuconflict.ico" />
     <Image Include="..\Resources\menucopy.ico" />
     <Image Include="..\Resources\menucreaterepos.ico" />
+    <Image Include="..\Resources\menudaemon.ico" />
     <Image Include="..\Resources\menudelete.ico" />
     <Image Include="..\Resources\menudelunversioned.ico" />
     <Image Include="..\Resources\menudiff.ico" />

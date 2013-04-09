@@ -1395,6 +1395,9 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				if (id_it->second == ShellMenuLogSubmoduleFolder)
 					gitCmd += _T(" /submodule");
 				break;
+			case ShellMenuDaemon:
+				AddPathCommand(gitCmd, L"daemon", true);
+				break;
 			case ShellMenuRevisionGraph:
 				AddPathCommand(gitCmd, L"revisiongraph", true);
 				break;

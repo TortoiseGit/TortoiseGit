@@ -3082,6 +3082,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_SYSTEM_WINCRED      "wincred - all Windows users"
+    IDS_DAEMON_SECURITY_WARN 
+                            "While running daemon, all data of this repository is exposed without authentication and/or encryption."
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"
