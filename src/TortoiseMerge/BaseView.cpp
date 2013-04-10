@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2013 - TortoiseSVN
 // Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
