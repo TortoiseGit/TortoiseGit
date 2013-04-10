@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2012 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011-2013 Sven Strickroth, <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@
 #include "StashSave.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
-#include "registry.h"
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 
@@ -90,7 +89,7 @@ void CStashSaveDlg::OnBnClickedOk()
 	{
 		if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_STASHSAVE_INCLUDEUNTRACKED, IDS_APPNAME, 2, IDI_WARNING, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON, NULL, _T("NoStashIncludeUntrackedWarning"), IDS_PROC_NOTSHOWAGAINCONTINUE) == 2)
 		{
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\NoStashIncludeUntrackedWarning")).removeValue(); // only store answer if it is "Continue"
+			CMessageBox::RemoveRegistryKey(_T("NoStashIncludeUntrackedWarning")); // only store answer if it is "Continue"
 			return;
 		}
 	}

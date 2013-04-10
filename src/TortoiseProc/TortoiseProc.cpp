@@ -219,13 +219,13 @@ BOOL CTortoiseProcApp::InitInstance()
 		int ret = CMessageBox::ShowCheck(NULL, IDS_PROC_OLDMSYSGIT, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, _T("OldMsysgitVersionWarning"), IDS_PROC_NOTSHOWAGAINIGNORE);
 		if (ret == 1)
 		{
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
+			CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning")); // only store answer if it is "Ignore"
 			ShellExecute(NULL, NULL, _T("http://code.google.com/p/msysgit/"), NULL, NULL, SW_SHOW);
 			return FALSE;
 		}
 		else if (ret == 2)
 		{
-			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\OldMsysgitVersionWarning")).removeValue(); // only store answer if it is "Ignore"
+			CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning")); // only store answer if it is "Ignore"
 			return FALSE;
 		}
 	}
