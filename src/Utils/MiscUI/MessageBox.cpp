@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -254,7 +254,11 @@ bool CMessageBox::RemoveRegistryKey(LPCTSTR lpRegistry)
 	path += AfxGetAppName();
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_WRITE, &hKey) == ERROR_SUCCESS)
-		return !!RegDeleteValue(hKey, lpRegistry);
+	{
+		bool ret = !!RegDeleteValue(hKey, lpRegistry);
+		RegCloseKey(hKey);
+		return ret;
+	}
 	return false;
 }
 
