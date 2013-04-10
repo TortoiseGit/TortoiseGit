@@ -70,7 +70,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	path = XMESSAGEBOX_APPREGPATH;
 #else
 	path = "Software\\TortoiseGit\\";
-	path += AfxGetAppName();
+	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
@@ -170,7 +170,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	path = XMESSAGEBOX_APPREGPATH;
 #else
 	path = "Software\\TortoiseGit\\";
-	path += AfxGetAppName();
+	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
@@ -251,7 +251,7 @@ bool CMessageBox::RemoveRegistryKey(LPCTSTR lpRegistry)
 	path = XMESSAGEBOX_APPREGPATH;
 #else
 	path = "Software\\TortoiseGit\\";
-	path += AfxGetAppName();
+	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_WRITE, &hKey) == ERROR_SUCCESS)
 	{
@@ -514,7 +514,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 	path = XMESSAGEBOX_APPREGPATH;
 #else
 	path = "Software\\TortoiseGit\\";
-	path += AfxGetAppName();
+	path += AfxGetApp()->m_pszProfileName;
 #endif
 	DWORD disp;
 	HKEY hKey;
