@@ -21,14 +21,13 @@
 #include "ProgressDlg.h"
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
-#include "registry.h"
 
 
 bool DaemonCommand::Execute()
 {
 	if (CMessageBox::ShowCheck(NULL, IDS_DAEMON_SECURITY_WARN, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_PROCEEDBUTTON, IDS_ABORTBUTTON, NULL, _T("DaemonNoSecurityWarning"), IDS_MSGBOX_DONOTSHOWAGAIN) == 2)
 	{
-		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\DaemonNoSecurityWarning")).removeValue(); // only store answer if it is "Proceed"
+		CMessageBox::RemoveRegistryKey(_T("DaemonNoSecurityWarning")); // only store answer if it is "Proceed"
 		return false;
 	}
 

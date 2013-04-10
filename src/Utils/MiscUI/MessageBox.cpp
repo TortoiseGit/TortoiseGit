@@ -243,6 +243,21 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, UINT
 	return box.GoModal(CWnd::FromHandle(hWnd), sCaption, sMessage, box.FillBoxStandard(uType));
 }
 
+bool CMessageBox::RemoveRegistryKey(LPCTSTR lpRegistry)
+{
+	HKEY hKey;
+	CString path;
+#ifdef XMESSAGEBOX_APPREGPATH
+	path = XMESSAGEBOX_APPREGPATH;
+#else
+	path = "Software\\TortoiseGit\\";
+	path += AfxGetAppName();
+#endif
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_WRITE, &hKey) == ERROR_SUCCESS)
+		return !!RegDeleteValue(hKey, lpRegistry);
+	return false;
+}
+
 int CMessageBox::FillBoxStandard(UINT uType)
 {
 	int ret = 1;

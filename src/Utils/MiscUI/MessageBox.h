@@ -370,6 +370,11 @@ public:
 	 */
 	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage = NULL);
 
+	/**
+	 * Removes the registry key
+	 */
+	static bool RemoveRegistryKey(LPCTSTR lpRegistry);
+
 protected:
 	/**
 	 * Stores the value in the registry
