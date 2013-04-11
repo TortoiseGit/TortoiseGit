@@ -7,6 +7,7 @@ Released: unreleased
  * log list: indicate annotated tag in tag shape
  * TortoiseGitBlame: Allow to highlight lines by age of last modification
  * Fixed issue #1376: Daemon starting from Tortoise UI
+ * Fixed issue #1737: Make a button to rename remote
 
 == Bug Fixes ==
  * Fixed issue #1729: crash when commit

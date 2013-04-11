@@ -212,6 +212,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
+	GetDlgItem(IDC_BUTTON_ORIGIN)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)));
 	this->UpdateData(FALSE);
 
 }
@@ -312,8 +313,9 @@ BOOL CSettingGitRemote::OnApply()
 		}
 		m_ChangedMask &= ~REMOTE_URL;
 
-		this->m_ctrlRemoteList.AddString(m_strRemote);
+		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(m_strRemote));
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BUTTON_ORIGIN)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)));
 		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CCommonAppUtils::RunTortoiseGitProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
@@ -372,7 +374,30 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 
 void CSettingGitRemote::OnBnClickedButtonOrigin()
 {
-	m_strRemote = _T("origin");
-	GetDlgItem(IDC_EDIT_URL)->SetFocus();
-	UpdateData(FALSE);
+	int sel = m_ctrlRemoteList.GetCurSel();
+	if (sel >= 0)
+	{
+		CString oldRemote, newRemote;
+		m_ctrlRemoteList.GetText(sel, oldRemote);
+		GetDlgItem(IDC_EDIT_REMOTE)->GetWindowText(newRemote);
+		CString cmd, out;
+		cmd.Format(_T("git.exe remote rename %s %s"), oldRemote, newRemote);
+		if (g_Git.Run(cmd, &out, CP_UTF8))
+		{
+			CMessageBox::Show(NULL, out,_T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return;
+		}
+
+		m_ctrlRemoteList.DeleteString(sel);
+		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(newRemote));
+		m_ChangedMask &= ~REMOTE_NAME;
+		if (!m_ChangedMask)
+			this->SetModified(FALSE);
+	}
+	else
+	{
+		m_strRemote = _T("origin");
+		GetDlgItem(IDC_EDIT_URL)->SetFocus();
+		UpdateData(FALSE);
+	}
 }
