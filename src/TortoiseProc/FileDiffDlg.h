@@ -117,11 +117,22 @@ protected:
 	int					FillRevFromString(GitRev *rev, CString str)
 	{
 		GitRev gitrev;
-		if(gitrev.GetCommit(str))
+		bool revfail = false;
+		try
+		{
+			revfail = !!gitrev.GetCommit(str);
+		}
+		catch (const char *msg)
+		{
+			CMessageBox::Show(m_hWnd, _T("Could not get commit ") + str + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+
+		if (revfail)
 		{
 			CString msg;
-			msg.Format(_T("Reference %s is wrong"),str);
-			CMessageBox::Show(NULL,msg,_T("TortoiseGit"),MB_OK|MB_ICONERROR);
+			msg.Format(_T("Reference %s is wrong"), str);
+			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return -1;
 		}
 		*rev=gitrev;

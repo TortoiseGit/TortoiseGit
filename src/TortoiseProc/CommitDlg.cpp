@@ -2257,7 +2257,14 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
 		GitRev rev;
-		rev.GetCommit(CString(_T("HEAD")));
+		try
+		{
+			rev.GetCommit(CString(_T("HEAD")));
+		}
+		catch (const char *msg)
+		{
+			CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
 		m_AmendStr=rev.GetSubject()+_T("\n")+rev.GetBody();
 	}
 
@@ -2458,7 +2465,14 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
-			headRevision.GetCommit(_T("HEAD"));
+			try
+			{
+				headRevision.GetCommit(_T("HEAD"));
+			}
+			catch (const char *msg)
+			{
+				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			}
 			authordate = headRevision.GetAuthorDate();
 		}
 
@@ -2523,7 +2537,14 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
-			headRevision.GetCommit(_T("HEAD"));
+			try
+			{
+				headRevision.GetCommit(_T("HEAD"));
+			}
+			catch (const char *msg)
+			{
+				CMessageBox::Show(m_hWnd, _T("Could not get HEAD commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			}
 			m_sAuthor.Format(_T("%s <%s>"), headRevision.GetAuthorName(), headRevision.GetAuthorEmail());
 		}
 

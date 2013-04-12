@@ -2682,7 +2682,17 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 		CString fromwhere = m_CurrentVersion+_T("~1");
 		if(m_amend)
 			fromwhere = m_CurrentVersion+_T("~2");
-		if (rev.GetCommit(fromwhere) || (file1.m_Action & file1.LOGACTIONS_ADDED))
+		bool revfail = false;
+		try
+		{
+			revfail = !!rev.GetCommit(fromwhere);
+		}
+		catch (const char *msg)
+		{
+			revfail = true;
+			CMessageBox::Show(NULL, _T("Could not get commit ") + fromwhere + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
+		if (revfail || (file1.m_Action & file1.LOGACTIONS_ADDED))
 		{
 			CGitDiff::DiffNull(&file1,m_CurrentVersion,true);
 

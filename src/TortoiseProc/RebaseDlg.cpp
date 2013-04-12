@@ -621,7 +621,14 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo *pBranch)
 		CString tooltip;
 
 		GitRev rev;
-		rev.GetCommit(text);
+		try
+		{
+			rev.GetCommit(text);
+		}
+		catch (const char *msg)
+		{
+			CMessageBox::Show(m_hWnd, _T("Could not get commit ") + text + _T("\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
 
 		tooltip.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),
 			CString(MAKEINTRESOURCE(IDS_LOG_REVISION)),
