@@ -555,6 +555,12 @@ void CTortoiseProcApp::CheckUpgrade()
 	}
 #endif
 
+	if (lVersion <= 0x01080202)
+	{
+		// upgrade to 1.8.3: force recreation of all diff scripts.
+		CAppUtils::SetupDiffScripts(true, CString());
+	}
+
 	if (lVersion <= 0x01080100)
 	{
 		if (CRegStdDWORD(_T("Software\\TortoiseGit\\LogTopoOrder"), TRUE) == FALSE)
@@ -595,8 +601,6 @@ void CTortoiseProcApp::CheckUpgrade()
 	if (lVersion <= 0x01070E00)
 	{
 		CRegStdDWORD(_T("Software\\TortoiseGit\\CheckNewer")).removeValue();
-		// upgrade to 1.7.15: force recreation of all diff scripts.
-		CAppUtils::SetupDiffScripts(true, CString());
 	}
 	CAppUtils::SetupDiffScripts(false, CString());
 
