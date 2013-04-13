@@ -161,12 +161,6 @@ BOOL CPushDlg::OnInitDialog()
 	m_regPushAllBranches = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Push\\") + WorkingDir + _T("\\AllBranches"), FALSE);
 	m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\PushURLS\\"))+WorkingDir, _T("url"));
-	CString clippath=CAppUtils::GetClipboardLink();
-	if(clippath.IsEmpty())
-		m_RemoteURL.SetCurSel(0);
-	else
-		m_RemoteURL.SetWindowText(clippath);
-
 	m_RemoteURL.EnableWindow(FALSE);
 	CheckRadioButton(IDC_RD_REMOTE,IDC_RD_URL,IDC_RD_REMOTE);
 
@@ -367,6 +361,11 @@ void CPushDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 	{
+		CString clippath = CAppUtils::GetClipboardLink();
+		if (clippath.IsEmpty())
+			m_RemoteURL.SetCurSel(0);
+		else
+			m_RemoteURL.SetWindowText(clippath);
 		m_Remote.EnableWindow(FALSE);
 		GetDlgItem(IDC_REMOTE_MANAGE)->EnableWindow(FALSE);
 		m_RemoteURL.EnableWindow(TRUE);

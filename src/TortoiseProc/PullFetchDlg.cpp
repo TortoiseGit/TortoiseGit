@@ -174,11 +174,6 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	m_Other.SetURLHistory(TRUE);
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));
-	CString clippath=CAppUtils::GetClipboardLink();
-	if(clippath.IsEmpty())
-		m_Other.SetCurSel(0);
-	else
-		m_Other.SetWindowText(clippath);
 
 	m_RemoteBranch.LoadHistory(_T("Software\\TortoiseGit\\History\\PullRemoteBranch"), _T("br"));
 	m_RemoteBranch.SetCurSel(0);
@@ -275,6 +270,11 @@ void CPullFetchDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
+		CString clippath = CAppUtils::GetClipboardLink();
+		if (clippath.IsEmpty())
+			m_Other.SetCurSel(0);
+		else
+			m_Other.SetWindowText(clippath);
 		m_Remote.EnableWindow(FALSE);
 		m_Other.EnableWindow(TRUE);;
 		if(!m_IsPull)
