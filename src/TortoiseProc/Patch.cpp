@@ -73,7 +73,17 @@ int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * i
 			body += _T("\r\n");
 		}
 		else
-			g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
+		{
+			try
+			{
+				g_Git.StringAppend(&body, (BYTE*)patch.m_Body.GetBuffer(), CP_UTF8, patch.m_Body.GetLength());
+			}
+			catch (CMemoryException *)
+			{
+				instance->ReportError(_T("Out of memory. Could not parse ") + list[i].GetWinPathString());
+				return -2;
+			}
+		}
 	}
 	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments, m_bUseMAPI);
 }
@@ -118,25 +128,32 @@ int CPatch::Parse(CString &pathfile)
 	m_Body.ReleaseBuffer();
 	PatchFile.Close();
 
-	int start=0;
-	CStringA one;
-	one=m_Body.Tokenize("\n",start);
+	try
+	{
+		int start=0;
+		CStringA one;
+		one=m_Body.Tokenize("\n",start);
 
-	one=m_Body.Tokenize("\n",start);
-	if(one.GetLength()>6)
-		g_Git.StringAppend(&m_Author, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
+		one=m_Body.Tokenize("\n",start);
+		if(one.GetLength()>6)
+			g_Git.StringAppend(&m_Author, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
-	one=m_Body.Tokenize("\n",start);
-	if(one.GetLength()>6)
-		g_Git.StringAppend(&m_Date, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
+		one=m_Body.Tokenize("\n",start);
+		if(one.GetLength()>6)
+			g_Git.StringAppend(&m_Date, (BYTE*)one.GetBuffer() + 6, CP_UTF8, one.GetLength() - 6);
 
-	one=m_Body.Tokenize("\n",start);
-	if(one.GetLength()>9)
-		g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
+		one=m_Body.Tokenize("\n",start);
+		if(one.GetLength()>9)
+			g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
 
-	//one=m_Body.Tokenize("\n",start);
+		//one=m_Body.Tokenize("\n",start);
 
-	g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
+		g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
+	}
+	catch (CException *)
+	{
+		return -1;
+	}
 
 	return 0;
 }
