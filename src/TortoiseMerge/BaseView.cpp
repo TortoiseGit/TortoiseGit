@@ -141,6 +141,19 @@ CBaseView::CBaseView()
 	m_wszTip[0] = 0;
 	SecureZeroMemory(&m_lfBaseFont, sizeof(m_lfBaseFont));
 	EnableToolTips();
+
+	m_Eols[EOL_LF]   = L"\n"; // x0a
+	m_Eols[EOL_CR]   = L"\r"; // x0d
+	m_Eols[EOL_CRLF] = L"\r\n"; // x0d x0a
+	m_Eols[EOL_LFCR] = L"\n\r";
+	m_Eols[EOL_VT]   = L"\v"; // x0b
+	m_Eols[EOL_FF]   = L"\f"; // x0c
+	m_Eols[EOL_NEL]  = L"\x85";
+	m_Eols[EOL_LS]   = L"\x2028";
+	m_Eols[EOL_PS]   = L"\x2029";
+	m_Eols[EOL_AUTOLINE] = m_Eols[lineendings==EOL_AUTOLINE
+								? EOL_CRLF 
+								: lineendings];
 }
 
 CBaseView::~CBaseView()
@@ -235,6 +248,9 @@ void CBaseView::DocumentUpdated()
 	ClearCurrentSelection();
 	UpdateStatusBar();
 	Invalidate();
+	m_Eols[EOL_AUTOLINE] = m_Eols[lineendings==EOL_AUTOLINE
+								? EOL_CRLF 
+								: lineendings];
 }
 
 void CBaseView::UpdateStatusBar()
@@ -673,9 +689,10 @@ void CBaseView::GetWhitespaceBlock(CViewData *viewData, int nLineIndex, int & nS
 CString CBaseView::GetWhitespaceString(CViewData *viewData, int nStartBlock, int nEndBlock)
 {
 	enum { MAX_WHITESPACEBLOCK_SIZE = 8 };
+
 	int len = 0;
 	for (int i = nStartBlock; i <= nEndBlock; ++i)
-		len += viewData->GetLine(i).GetLength();
+		len += viewData->GetLine(i).GetLength()+2;
 
 	CString block;
 	// do not check for whitespace blocks if the line is too long, because
@@ -684,11 +701,14 @@ CString CBaseView::GetWhitespaceString(CViewData *viewData, int nStartBlock, int
 		return block;
 	block.Preallocate(len+1);
 	for (int i = nStartBlock; i <= nEndBlock; ++i)
+	{
 		block += viewData->GetLine(i);
+		block += m_Eols[viewData->GetLineEnding(i)];
+	}
 	return block;
 }
 
-bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical)
+bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical, int& blockstart, int& blockend)
 {
 	if (m_pViewData == NULL)
 		return false;
@@ -723,11 +743,10 @@ bool CBaseView::IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical)
 	if (mine == other)
 		return true;
 
-	int nStartBlock1, nEndBlock1;
 	int nStartBlock2, nEndBlock2;
-	GetWhitespaceBlock(m_pViewData, viewLine, nStartBlock1, nEndBlock1);
+	GetWhitespaceBlock(m_pViewData, viewLine, blockstart, blockend);
 	GetWhitespaceBlock(m_pOtherViewData, min(viewLine, m_pOtherViewData->GetCount() - 1), nStartBlock2, nEndBlock2);
-	mine = GetWhitespaceString(m_pViewData, nStartBlock1, nEndBlock1);
+	mine = GetWhitespaceString(m_pViewData, blockstart, blockend);
 	if (mine.IsEmpty())
 		bIdentical = false;
 	else
@@ -1175,12 +1194,21 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 				break;
 			}
 			bool bIdentical = false;
-			if ((state != DIFFSTATE_EDITED)&&(IsBlockWhitespaceOnly(nLineIndex, bIdentical)))
+			int blockstart = -1;
+			int blockend = -1;
+			if ((state != DIFFSTATE_EDITED)&&(IsBlockWhitespaceOnly(nLineIndex, bIdentical, blockstart, blockend)))
 			{
 				if (bIdentical)
 					eIcon = TScreenedViewLine::ICN_SAME;
 				else
 					eIcon = TScreenedViewLine::ICN_WHITESPACEDIFF;
+				if (((blockstart >= 0) && (blockend >= 0)) && (blockstart < blockend))
+				{
+					if (nViewLine > blockstart)
+						Invalidate();	// redraw the upper icons since they're now changing
+					while (blockstart <= blockend)
+						m_ScreenedViewLine[blockstart++].eIcon = eIcon;
+				}
 			}
 			m_ScreenedViewLine[nViewLine].eIcon = eIcon;
 		}

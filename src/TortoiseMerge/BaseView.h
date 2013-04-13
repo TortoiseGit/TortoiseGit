@@ -152,7 +152,7 @@ public: // methods
 	bool			IsViewLineEmpty(int nViewLine);
 	bool			IsLineRemoved(int nLineIndex);
 	bool			IsViewLineRemoved(int nViewLine);
-	bool			IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical);
+	bool			IsBlockWhitespaceOnly(int nLineIndex, bool& bIdentical, int& blockstart, int& blockend);
 	bool			IsViewLineConflicted(int nLineIndex);
 	bool			HasNextConflict();
 	bool			HasPrevConflict();
@@ -341,8 +341,8 @@ protected:  // methods
 	COLORREF		InlineViewLineDiffColor(int nLineIndex);
 	bool			GetInlineDiffPositions(int lineIndex, std::vector<inlineDiffPos>& positions);
 	void			CheckOtherView();
-	static void		GetWhitespaceBlock(CViewData *viewData, int nLineIndex, int & nStartBlock, int & nEndBlock);
-	static CString	GetWhitespaceString(CViewData *viewData, int nStartBlock, int nEndBlock);
+	void			GetWhitespaceBlock(CViewData *viewData, int nLineIndex, int & nStartBlock, int & nEndBlock);
+	CString			GetWhitespaceString(CViewData *viewData, int nStartBlock, int nEndBlock);
 	bool			IsViewLineHidden(int nViewLine);
 	static bool		IsViewLineHidden(CViewData * pViewData, int nViewLine);
 
@@ -483,6 +483,7 @@ protected:  // variables
 	CDC *			m_pDC;
 	CScrollTool		m_ScrollTool;
 	CString			m_sWordSeparators;
+	CString			m_Eols[EOL__COUNT];
 
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
