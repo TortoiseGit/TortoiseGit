@@ -353,9 +353,6 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 	{
 		CString path = pathParam;
 
-		TCHAR oldpath[MAX_PATH+1];
-		memset(oldpath,0,MAX_PATH+1);
-
 		path.Replace(_T('\\'),_T('/'));
 
 		CString lowcasepath =path;
@@ -533,9 +530,6 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 {
 	try
 	{
-		TCHAR oldpath[MAX_PATH+1];
-		memset(oldpath,0,MAX_PATH+1);
-
 		CString path =subpath;
 
 		path.Replace(_T('\\'),_T('/'));
@@ -766,9 +760,6 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 {
 	try
 	{
-		TCHAR oldpath[MAX_PATH+1];
-		memset(oldpath,0,MAX_PATH+1);
-
 		CString path =subpath;
 
 		path.Replace(_T('\\'),_T('/'));
