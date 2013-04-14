@@ -46,6 +46,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bForce=false;
 	m_Gitverion = 0;
 	m_bBlock = false;
+	m_BufStart = 0;
 	m_pThread = NULL;
 	m_bAbort = false;
 	m_GitCmdStatus = -1;

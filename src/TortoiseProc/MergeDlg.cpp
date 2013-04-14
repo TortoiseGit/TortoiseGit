@@ -44,6 +44,8 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=NULL*/)
 	CString mergeLog = g_Git.GetConfigValue(_T("merge.log"));
 	int nLog = _ttoi(mergeLog);
 	m_nLog = nLog > 0 ? nLog : 20;
+	m_nPopupPasteLastMessage = 0;
+	m_nPopupRecentMessage = 0;
 }
 
 CMergeDlg::~CMergeDlg()
