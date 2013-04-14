@@ -19,8 +19,6 @@
 
 #include "stdafx.h"
 #include "Git.h"
-#include "atlconv.h"
-#include "GitRev.h"
 #include "registry.h"
 #include "GitConfig.h"
 #include <map>
