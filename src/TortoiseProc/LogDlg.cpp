@@ -131,6 +131,7 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_SETCURSOR()
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGMSG, OnLvnItemchangedLogmsg)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
 	ON_BN_CLICKED(IDC_STATBUTTON, OnBnClickedStatbutton)
 
@@ -1182,6 +1183,11 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	UpdateLogInfoLabel();
 }
 
+void CLogDlg::OnLvnItemchangedLogmsg(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	UpdateLogInfoLabel();
+}
+
 void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	ENLINK *pEnLink = reinterpret_cast<ENLINK *>(pNMHDR);
@@ -1962,6 +1968,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CGitHash rev1 ;
 	CGitHash rev2 ;
 	long selectedrevs = 0;
+	long selectedfiles = 0;
 	int count = (int)m_LogList.m_arShownList.GetCount();
 	int start = 0;
 	if (count)
@@ -1973,11 +1980,13 @@ void CLogDlg::UpdateLogInfoLabel()
 		//pLogEntry = reinterpret_cast<PLOGENTRYDATA>(m_arShownList.SafeGetAt(m_arShownList.GetCount()-1));
 		rev2 =  (reinterpret_cast<GitRev*>(m_LogList.m_arShownList.SafeGetAt(count-1)))->m_CommitHash;
 		selectedrevs = m_LogList.GetSelectedCount();
+		if (selectedrevs)
+			selectedfiles = m_ChangedFileListCtrl.GetSelectedCount();
 	}
 	CString sTemp;
 	sTemp.Format(IDS_PROC_LOG_STATS,
 		count - start,
-		rev2.ToString().Left(g_Git.GetShortHASHLength()), rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs);
+		rev2.ToString().Left(g_Git.GetShortHASHLength()), rev1.ToString().Left(g_Git.GetShortHASHLength()), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{

@@ -7556,7 +7556,7 @@ msgstr ""
 
 #. Resource IDs: (76)
 #, c-format
-msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected\r\n"
+msgid "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) selected, %ld file(s) selected\r\n"
 msgstr ""
 
 #. Resource IDs: (24)
