@@ -1183,7 +1183,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	UpdateLogInfoLabel();
 }
 
-void CLogDlg::OnLvnItemchangedLogmsg(NMHDR *pNMHDR, LRESULT *pResult)
+void CLogDlg::OnLvnItemchangedLogmsg(NMHDR * /*pNMHDR*/, LRESULT * /*pResult*/)
 {
 	UpdateLogInfoLabel();
 }
