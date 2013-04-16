@@ -41,6 +41,7 @@
 #include "Globals.h"
 #include "SysProgressDlg.h"
 #include "MassiveGitTask.h"
+#include "LogDlgHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,6 +50,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(_T("TORTOISEGIT_AUTOLISTREADY_MSG"));
+UINT CCommitDlg::WM_AUTHORLISTREADY = RegisterWindowMessage(_T("TORTOISEGIT_AUTHORLISTREADY"));
 UINT CCommitDlg::WM_UPDATEOKBUTTON = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEOKBUTTON"));
 UINT CCommitDlg::WM_UPDATEDATAFALSE = RegisterWindowMessage(_T("TORTOISEGIT_COMMIT_UPDATEDATAFALSE"));
 
@@ -59,8 +61,11 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowUnversioned(FALSE)
 	, m_bBlock(FALSE)
 	, m_bThreadRunning(FALSE)
+	, m_bAuthorThreadRunning(FALSE)
 	, m_bRunThread(FALSE)
+	, m_bRunAuthorThread(FALSE)
 	, m_pThread(NULL)
+	, m_pAuthorThread(NULL)
 	, m_bWholeProject(FALSE)
 	, m_bKeepChangeList(TRUE)
 	, m_bDoNotAutoselectSubmodules(FALSE)
@@ -85,6 +90,8 @@ CCommitDlg::~CCommitDlg()
 	{
 		delete m_pThread;
 	}
+	if (m_pAuthorThread != nullptr)
+		delete m_pAuthorThread;
 }
 
 void CCommitDlg::DoDataExchange(CDataExchange* pDX)
@@ -109,6 +116,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
+	DDX_Control(pDX, IDC_COMMIT_AUTHORDATA, m_ctrlAuthor);
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
@@ -126,6 +134,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 
 	ON_REGISTERED_MESSAGE(CLinkControl::LK_LINKITEMCLICKED, &CCommitDlg::OnCheck)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady)
+	ON_REGISTERED_MESSAGE(WM_AUTHORLISTREADY, OnAuthorListReady)
 	ON_REGISTERED_MESSAGE(WM_UPDATEOKBUTTON, OnUpdateOKButton)
 	ON_REGISTERED_MESSAGE(WM_UPDATEDATAFALSE, OnUpdateDataFalse)
 	ON_WM_TIMER()
@@ -435,6 +444,8 @@ BOOL CCommitDlg::OnInitDialog()
 	if (viewPatchEnabled)
 		OnStnClickedViewPatch();
 
+	m_ctrlAuthor.Init();
+
 	return FALSE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -472,6 +483,18 @@ void CCommitDlg::OnOK()
 			// listen to us we have to kill it.
 			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
 			InterlockedExchange(&m_bThreadRunning, FALSE);
+		}
+	}
+	if (m_bAuthorThreadRunning)
+	{
+		InterlockedExchange(&m_bRunAuthorThread, FALSE);
+		WaitForSingleObject(m_pAuthorThread->m_hThread, 5000);
+		if (m_bAuthorThreadRunning)
+		{
+			// we gave the thread a chance to quit. Since the thread didn't
+			// listen to us we have to kill it.
+			TerminateThread(m_pAuthorThread->m_hThread, (DWORD)-1);
+			InterlockedExchange(&m_bAuthorThreadRunning, FALSE);
 		}
 	}
 	this->UpdateData();
@@ -1321,6 +1344,18 @@ void CCommitDlg::OnCancel()
 			// listen to us we have to kill it.
 			TerminateThread(m_pThread->m_hThread, (DWORD)-1);
 			InterlockedExchange(&m_bThreadRunning, FALSE);
+		}
+	}
+	if (m_bAuthorThreadRunning)
+	{
+		InterlockedExchange(&m_bRunAuthorThread, FALSE);
+		WaitForSingleObject(m_pAuthorThread->m_hThread, 5000);
+		if (m_bAuthorThreadRunning)
+		{
+			// we gave the thread a chance to quit. Since the thread didn't
+			// listen to us we have to kill it.
+			TerminateThread(m_pAuthorThread->m_hThread, (DWORD)-1);
+			InterlockedExchange(&m_bAuthorThreadRunning, FALSE);
 		}
 	}
 	UpdateData();
@@ -2551,7 +2586,70 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 		UpdateData(FALSE);
 
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
+
+		if (m_ctrlAuthor.m_Liste.m_SearchList.IsEmpty() && !m_bAuthorThreadRunning)
+		{
+			m_pAuthorThread = AfxBeginThread([](LPVOID payload) { return ((CCommitDlg *)payload)->AuthorListThread(); }, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
+			if (m_pAuthorThread == NULL)
+			{
+				CMessageBox::Show(m_hWnd, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+			}
+			else
+			{
+				m_pAuthorThread->m_bAutoDelete = FALSE;
+				m_pAuthorThread->ResumeThread();
+			}
+		}
 	}
 	else
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+}
+
+UINT CCommitDlg::AuthorListThread()
+{
+	InterlockedExchange(&m_bAuthorThreadRunning, TRUE);	// so the main thread knows that this thread is still running
+	InterlockedExchange(&m_bRunAuthorThread, TRUE);	// if this is set to FALSE, the thread should stop
+	STRING_VECTOR *list = new STRING_VECTOR;
+	CLogCache cache;
+	CLogDataVector v;
+	v.m_bRunning = &m_bRunAuthorThread;
+	v.SetLogCache(&cache);
+	v.ParserFromLog(nullptr);
+	if (m_bRunAuthorThread)
+	{
+		for (size_t i = 0; i < v.size(); ++i)
+		{
+			GitRev *rev = v.m_pLogCache->GetCacheData(v[i]);
+			if (rev == nullptr)
+				continue;
+			CString format;
+			format.Format(_T("%s <%s>"), rev->GetAuthorName(), rev->GetAuthorEmail());
+			bool found = false;
+			for (size_t j = 0; j < list->size(); ++j)
+			{
+				if (list->at(j) == format)
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+				list->push_back(format);
+		}
+		sort(list->begin(), list->end());
+		PostMessage(WM_AUTHORLISTREADY, 0, (LPARAM)list);
+	}
+
+	InterlockedExchange(&m_bAuthorThreadRunning, FALSE);
+	InterlockedExchange(&m_bRunAuthorThread, FALSE);
+	return 0;
+}
+
+LRESULT CCommitDlg::OnAuthorListReady(WPARAM, LPARAM lParam)
+{
+	STRING_VECTOR *list = (STRING_VECTOR *)lParam;
+	for (size_t i = 0; i < list->size(); ++i)
+		m_ctrlAuthor.AddSearchString(list->at(i));
+	delete list;
+	return 0;
 }

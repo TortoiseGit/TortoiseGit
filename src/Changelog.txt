@@ -2,6 +2,7 @@
 Released: unreleased
 
 == Features ==
+ * Fixed issue #1721: Autocompletion in "Set author" box
  * Press F5 can refresh Submodule Diff Dialog
  * Fixed issue #1359: Drag support for files listed as being changed in the commit/log/modifications window
  * log list: indicate annotated tag in tag shape
