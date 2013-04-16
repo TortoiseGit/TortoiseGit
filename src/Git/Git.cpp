@@ -2419,7 +2419,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 			if (tree2.IsEmpty())
 			{
 				/* don't check return value, there are not parent commit at first commit*/
-				resolve_to_tree(repo, tree1 + _T("~1"), &t2);
+				resolve_to_tree(repo, tree1 + "~1", &t2);
 			}
 			else if (resolve_to_tree(repo, tree2, &t2))
 			{
