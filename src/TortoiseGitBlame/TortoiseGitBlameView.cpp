@@ -331,7 +331,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 	line = line + (point.y/height);
 	if (line < (LONG)m_CommitHash.size())
 	{
-		if(m_ID[line] >= 0) // only show context menu if we have log data for it
+		if(line < (LONG)m_ID.size() && m_ID[line] >= 0) // only show context menu if we have log data for it
 		{
 			m_MouseLine = (LONG)line;
 			ClientToScreen(&point);
@@ -342,7 +342,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 
 void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
 {
-	if (m_ID[m_MouseLine] <= 1)
+	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
 	{
 		pCmdUI->Enable(false);
 	}
@@ -354,7 +354,7 @@ void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
 
 void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
 {
-	if (m_ID[m_MouseLine] <= 1)
+	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
 	{
 		pCmdUI->Enable(false);
 	}
@@ -631,6 +631,9 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
+	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
+		return;
+
 	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
@@ -642,6 +645,9 @@ void CTortoiseGitBlameView::BlamePreviousRevision()
 
 void CTortoiseGitBlameView::DiffPreviousRevision()
 {
+	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
+		return;
+
 	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
@@ -654,6 +660,9 @@ void CTortoiseGitBlameView::DiffPreviousRevision()
 
 void CTortoiseGitBlameView::ShowLog()
 {
+	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
+		return;
+
 	CString procCmd = _T("/path:\"");
 	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
 	procCmd += _T("\" ");
@@ -1603,7 +1612,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 COLORREF CTortoiseGitBlameView::GetLineColor(int line)
 {
-	if (m_colorage)
+	if (m_colorage && line >= 0 && line < m_ID.size())
 		return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[line] - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
 	else
 		return m_windowcolor;
