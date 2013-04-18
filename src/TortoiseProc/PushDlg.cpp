@@ -235,12 +235,26 @@ void CPushDlg::Refresh()
 	m_BranchSource.Reset();
 	m_BranchSource.AddString(_T(" ")); // empty string does not work, for removal of remote branches/tags
 	m_BranchSource.SetMaxHistoryItems(0x7FFFFFFF);
-	if(!g_Git.GetBranchList(list,&current))
+	if (!g_Git.GetRefList(list))
 	{
+		CString head = g_Git.GetCurrentBranch();
+		// add local branches before other kinds of refs to combobox
 		for (unsigned int i = 0; i < list.size(); ++i)
-			m_BranchSource.AddString(list[i]);
-		++current; // shift for " "
+		{
+			if (list[i].Left(11) == _T("refs/heads/"))
+				m_BranchSource.AddString(list[i].Mid(11));
+			if (list[i] == _T("refs/heads/") + head)
+				current = i + 1;
+		}
+
+		// add other kinds of refs to combobox
+		for (unsigned int i = 0; i < list.size(); ++i)
+		{
+			if (list[i].Left(11) != _T("refs/heads/") && list[i].Left(13) != _T("refs/remotes/"))	// excluding remote branches
+				m_BranchSource.AddString(list[i].Mid(5));
+		}
 	}
+
 	if (wcsncmp(m_BranchSourceName, _T("refs/"), 5) == 0)
 		m_BranchSourceName = m_BranchSourceName.Mid(5);
 	if (wcsncmp(m_BranchSourceName, _T("heads/"), 6) == 0)
