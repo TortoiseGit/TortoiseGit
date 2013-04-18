@@ -441,7 +441,8 @@ int git_close_log(GIT_LOG handle)
 	}
 	free_all_pack();
 
-	free_notes(*display_notes_trees);
+	if (display_notes_trees)
+		free_notes(*display_notes_trees);
 	display_notes_trees = 0;
 	return 0;
 }
