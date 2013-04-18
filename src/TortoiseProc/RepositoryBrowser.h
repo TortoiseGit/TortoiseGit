@@ -21,6 +21,7 @@
 
 #include <map>
 #include "StandAloneDlg.h"
+#include "GitHash.h"
 
 #define REPOBROWSER_CTRL_MIN_WIDTH	20
 
@@ -39,6 +40,7 @@ public:
 	{}
 
 	CString				m_sName;
+	CGitHash			m_hash;
 	size_t				m_iSize;
 	bool				m_bFolder;
 
@@ -85,6 +87,7 @@ public:
 		eCmd_Revert,
 		eCmd_SaveAs,
 		eCmd_CopyPath,
+		eCmd_CopyHash,
 	};
 
 	enum eCol
@@ -164,4 +167,5 @@ private:
 	afx_msg void			OnCaptureChanged(CWnd *pWnd);
 	afx_msg void			OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void			OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void			CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs);
 };

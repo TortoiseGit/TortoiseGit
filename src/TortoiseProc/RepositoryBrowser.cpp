@@ -321,9 +321,11 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		if (object == NULL)
 			continue;
 
+		const git_oid *oid = git_object_id(object);
 		CShadowFilesTree * pNextTree = &treeroot->m_ShadowTree[base];
 		pNextTree->m_sName = base;
 		pNextTree->m_pParent = treeroot;
+		pNextTree->m_hash = CGitHash((char *)oid->id);
 
 		if (mode & S_IFDIR)
 		{
@@ -344,8 +346,6 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		}
 		else
 		{
-			const git_oid *	oid = git_object_id(object);
-
 			git_blob * blob;
 			git_blob_lookup(&blob, &repo, oid);
 			if (blob == NULL)
@@ -586,6 +586,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	bAddSeparator = false;
 
 	popupMenu.AppendMenuIcon(eCmd_CopyPath, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
+	popupMenu.AppendMenuIcon(eCmd_CopyHash, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
 
 	eCmd cmd = (eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
 	switch(cmd)
@@ -649,6 +650,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				sClipboard += (*itShadowTree)->m_sName + _T("\r\n");
 			}
 			CStringUtils::WriteAsciiStringToClipboard(sClipboard);
+		}
+		break;
+	case eCmd_CopyHash:
+		{
+			CopyHashToClipboard(selectedLeafs);
 		}
 		break;
 	}
@@ -1009,4 +1015,21 @@ bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 	}
 
 	return true;
+}
+
+void CRepositoryBrowser::CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs)
+{
+	if (!selectedLeafs.empty())
+	{
+		CString sClipdata;
+		bool first = true;
+		for (int i = 0; i < selectedLeafs.size(); i++)
+		{
+			if (!first)
+				sClipdata += _T("\r\n");
+			sClipdata += selectedLeafs[i]->m_hash;
+			first = false;
+		}
+		CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
+	}
 }
