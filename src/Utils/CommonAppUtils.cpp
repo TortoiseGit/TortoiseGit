@@ -239,7 +239,24 @@ bool CCommonAppUtils::FileOpenSave(CString& path, int * filterindex, UINT title,
 	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name. Explorer can't handle paths longer than MAX_PATH.
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = hwndOwner;
-	_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
+	if (path.GetLength() >= MAX_PATH)
+	{
+		CString dir = path;
+		while (true)
+		{
+			int index = dir.ReverseFind(_T('\\'));
+			if (index < 0)
+				break;
+			dir = dir.Left(index);
+			if (PathFileExists(dir))
+				break;
+		}
+		GetShortPathName(dir, szFile, MAX_PATH);
+		CString remain = path.Right(path.GetLength() - dir.GetLength());
+		_tcscat_s(szFile, MAX_PATH, remain);
+	}
+	else
+		_tcscpy_s(szFile, MAX_PATH, (LPCTSTR)path);
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = _countof(szFile);
 
