@@ -154,7 +154,8 @@ public:
 												bool bAlternateDiff = false,
 												bool bIgnoreAncestry = false,
 												bool blame  = false,
-												bool bMerge = false);
+												bool bMerge = false,
+												bool bCompact = false);
 
 	static bool Export(CString *BashHash=NULL);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);

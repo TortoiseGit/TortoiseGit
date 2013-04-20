@@ -35,18 +35,7 @@ bool ShowCompareCommand::Execute()
 
 	if (unified)
 	{
-		CString tempfile = GetTempFile();
-		CString cmd;
-
-		if (rev1.IsEmpty())
-			cmd.Format(_T("git.exe diff -r -p --stat %s"), rev2);
-		else if (rev2.IsEmpty())
-			cmd.Format(_T("git.exe diff -r -p --stat %s"), rev1);
-		else
-			cmd.Format(_T("git.exe diff-tree -r -p --stat %s %s"), rev1, rev2);
-
-		g_Git.RunLogFile(cmd, tempfile);
-		return !!CAppUtils::StartUnifiedDiffViewer(tempfile, rev1 + _T(":") + rev2);
+		return !!CAppUtils::StartShowUnifiedDiff(NULL, CTGitPath(), rev1, CTGitPath(), rev2);
 	}
 	else
 		return !!CGitDiff::DiffCommit(cmdLinePath, rev2, rev1);
