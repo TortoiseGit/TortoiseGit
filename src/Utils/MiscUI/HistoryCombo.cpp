@@ -70,7 +70,9 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 
 		if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
 		{
-			GetEditCtrl()->SetSel(0, -1);
+			CEdit *edit = GetEditCtrl();
+			if (edit)
+				edit->SetSel(0, -1);
 			return TRUE;
 		}
 	}
