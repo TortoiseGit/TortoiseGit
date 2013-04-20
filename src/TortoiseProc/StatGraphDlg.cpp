@@ -60,6 +60,7 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_GraphType(MyGraph::Bar)
 , m_bAuthorsCaseSensitive(TRUE)
 , m_bSortByCommitCount(TRUE)
+, m_bLog10Scale(FALSE)
 , m_nWeeks(-1)
 , m_nDays(-1)
 , m_langOrder(0)
@@ -100,6 +101,7 @@ void CStatGraphDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SKIPPER, m_Skipper);
 	DDX_Check(pDX, IDC_AUTHORSCASESENSITIVE, m_bAuthorsCaseSensitive);
 	DDX_Check(pDX, IDC_SORTBYCOMMITCOUNT, m_bSortByCommitCount);
+	DDX_Check(pDX, IDC_LOG10SCALE, m_bLog10Scale);
 	DDX_Control(pDX, IDC_GRAPHBARBUTTON, m_btnGraphBar);
 	DDX_Control(pDX, IDC_GRAPHBARSTACKEDBUTTON, m_btnGraphBarStacked);
 	DDX_Control(pDX, IDC_GRAPHLINEBUTTON, m_btnGraphLine);
@@ -121,6 +123,7 @@ BEGIN_MESSAGE_MAP(CStatGraphDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_GRAPHPIEBUTTON, &CStatGraphDlg::OnBnClickedGraphpiebutton)
 	ON_COMMAND(ID_FILE_SAVESTATGRAPHAS, &CStatGraphDlg::OnFileSavestatgraphas)
 	ON_BN_CLICKED(IDC_CALC_DIFF, &CStatGraphDlg::OnBnClickedFetchDiff)
+	ON_BN_CLICKED(IDC_LOG10SCALE, &CStatGraphDlg::OnBnClickedLog10scale)
 END_MESSAGE_MAP()
 
 void CStatGraphDlg::LoadStatQueries (__in UINT curStr, Metrics loadMetric, bool setDef /* = false */)
@@ -1540,6 +1543,7 @@ void CStatGraphDlg::RedrawGraph()
 	{
 		m_btnGraphPie.SetState(BST_CHECKED);
 	}
+	GetDlgItem(IDC_LOG10SCALE)->EnableWindow(m_bStacked || (m_GraphType != MyGraph::Line && m_GraphType != MyGraph::Bar) ? FALSE : TRUE);
 
 	UpdateData();
 	ShowSelectStat((Metrics) m_cGraphType.GetItemData(m_cGraphType.GetCurSel()), true);
@@ -1894,4 +1898,11 @@ void CStatGraphDlg::OnBnClickedFetchDiff()
 	GetDlgItem(IDC_CALC_DIFF)->ShowWindow(!m_bDiffFetched);
 
 	ShowStats();
+}
+
+void CStatGraphDlg::OnBnClickedLog10scale()
+{
+	UpdateData();   // update checkbox state
+	m_graph.SetLogScale(!!m_bLog10Scale);
+	RedrawGraph();  // then update the current statistics page
 }

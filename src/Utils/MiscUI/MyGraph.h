@@ -78,6 +78,7 @@ public:
 	void	SetLegend(int nGroup, const CString& sLabel);
 	void	SetGraphType(GraphType eType, bool bStackedGraph);
 	void	SetGraphTitle(const CString& sTitle);
+	void	SetLogScale(bool bLog10);
 	int		LookupLabel(const CString& sLabel) const;
 	void	DrawGraph(CDC& dc);
 
@@ -143,6 +144,7 @@ private:
 	CString			m_sXAxisLabel;
 	CString			m_sYAxisLabel;
 	CString			m_sTitle;
+	bool			m_bLog10;
 	CDWordArray		m_dwaColors;
 	CStringArray	m_saLegendLabels;
 	CList<MyGraphSeries*,MyGraphSeries*> m_olMyGraphSeries;

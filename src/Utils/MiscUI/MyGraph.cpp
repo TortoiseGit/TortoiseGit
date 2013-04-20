@@ -173,7 +173,7 @@ int MyGraphSeries::GetAverageDataValue() const
 		nTotal += static_cast<int> (m_dwaValues.GetAt(nGroup));
 	}
 
-	return nTotal / m_dwaValues.GetSize();
+	return nTotal / (int)m_dwaValues.GetSize();
 }
 
 // Returns the number of data points that are not zero.
@@ -253,6 +253,7 @@ MyGraph::MyGraph(GraphType eGraphType /* = MyGraph::Pie */ , bool bStackedGraph 
 	, m_nAxisTickLabelHeight(0)
 	, m_eGraphType(eGraphType)
 	, m_bStackedGraph(bStackedGraph)
+	, m_bLog10(false)
 {
 	m_ptOrigin.x = m_ptOrigin.y = 0;
 	m_rcGraph.SetRectEmpty();
@@ -401,7 +402,8 @@ CString MyGraph::GetTipText() const
 			int average = GetAverageDataValue();
 			int nMaxDataValue = max(GetMaxDataValue(), 1);
 			double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
-				(average / (double)nMaxDataValue);
+				(m_bLog10 ? (log10((double)average) / log10((double)nMaxDataValue))
+				: (average / (double)nMaxDataValue));
 			if (pt.y >= barTop - 2 && pt.y <= barTop + 2) {
 				sTip.Format(_T("Average: %d %s (%d%%)"), average, m_sYAxisLabel, nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
 				return sTip;
@@ -676,6 +678,12 @@ void MyGraph::SetGraphTitle(const CString& sTitle)
 	_ASSERTE(! sTitle.IsEmpty());
 
 	m_sTitle = sTitle;
+}
+
+//
+void MyGraph::SetLogScale(bool bLog10)
+{
+	m_bLog10 = bLog10;
 }
 
 //
@@ -1053,6 +1061,8 @@ void MyGraph::DrawAxes(CDC& dc) const
 		// Draw tick label.
 		CString sTickLabel;
 		sTickLabel.Format(_T("%d"), nTickStep * (nTick+1));
+		if (m_bLog10 && !m_bStackedGraph)
+			sTickLabel.Format(_T("%d"), (int)pow(10, (double)(nTickStep * (nTick+1)) / (double)nMaxDataValue * log10((double)nMaxDataValue)));
 		CSize sizTickLabel(dc.GetTextExtent(sTickLabel));
 
 		VERIFY(dc.TextOut(m_ptOrigin.x - GAP_PIXELS - sizTickLabel.cx - TICK_PIXELS,
@@ -1169,6 +1179,9 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 					nMaxDataValue = max(nMaxDataValue, 1);
 					double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
 						pSeries->GetData(nGroup) / (double)nMaxDataValue - stackAccumulator;
+					if (m_bLog10 && !m_bStackedGraph)
+						barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
+							log10((double)pSeries->GetData(nGroup) + 1.0) / log10((double)nMaxDataValue + 1);
 
 					CRect rcBar;
 					rcBar.left = (int)runningLeft;
@@ -1205,9 +1218,10 @@ void MyGraph::DrawSeriesBar(CDC& dc) const
 	if (!m_bStackedGraph) {
 		int nMaxDataValue = max(GetMaxDataValue(), 1);
 		double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
-			(GetAverageDataValue() / (double)nMaxDataValue);
-		dc.MoveTo(m_ptOrigin.x, barTop);
-		VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
+			(m_bLog10 ? (log10((double)GetAverageDataValue()) / log10((double)nMaxDataValue))
+			: (GetAverageDataValue() / (double)nMaxDataValue));
+		dc.MoveTo(m_ptOrigin.x, (int)barTop);
+		VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), (int)barTop));
 	}
 }
 
@@ -1275,6 +1289,8 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 			nMaxDataValue = max(nMaxDataValue, 1);
 			double dLineHeight(pSeries->GetData(nGroup) * m_nYAxisHeight /
 				nMaxDataValue);
+			if (m_bLog10 && !m_bStackedGraph)
+				dLineHeight = log10((double)pSeries->GetData(nGroup)) * (double)m_nYAxisHeight / log10((double)nMaxDataValue);
 
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
 
@@ -1308,9 +1324,10 @@ void MyGraph::DrawSeriesLine(CDC& dc) const
 
 	int nMaxDataValue = max(GetMaxDataValue(), 1);
 	double barTop = m_ptOrigin.y - (double)m_nYAxisHeight *
-		(GetAverageDataValue() / (double)nMaxDataValue);
-	dc.MoveTo(m_ptOrigin.x, barTop);
-	VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), barTop));
+		(m_bLog10 ? (log10(GetAverageDataValue()) / log10((double)nMaxDataValue))
+		: (GetAverageDataValue() / (double)nMaxDataValue));
+	dc.MoveTo(m_ptOrigin.x, (int)barTop);
+	VERIFY(dc.LineTo(m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2)), (int)barTop));
 }
 
 //
@@ -1367,6 +1384,8 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 			CPoint ptLoc;
 			ptLoc.x = m_ptOrigin.x + (((nPolyBottom + 1) * nSeriesSpace) - (nSeriesSpace / 2));
 			double dLineHeight((stackAccumulator[nPolyBottom]) * dYScaling);
+			if (m_bLog10 && !m_bStackedGraph)
+				dLineHeight = log10(stackAccumulator[nPolyBottom]) / log10((double)nMaxDataValue) * (double)m_nYAxisHeight;
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
 
 			if (nSeriesCount > 1) {
@@ -1389,6 +1408,8 @@ void MyGraph::DrawSeriesLineStacked(CDC& dc) const
 			ptLoc.x = m_ptOrigin.x + (((nSeries + 1) * nSeriesSpace) -
 				(nSeriesSpace / 2));
 			double dLineHeight((pSeries->GetData(nGroup) + stackAccumulator[nSeries]) * dYScaling);
+			if (m_bLog10 && !m_bStackedGraph)
+				dLineHeight = log10(pSeries->GetData(nGroup) + stackAccumulator[nSeries]) / log10((double)nMaxDataValue) * (double)m_nYAxisHeight;
 			ptLoc.y = (int) ((double) m_ptOrigin.y - dLineHeight);
 			if (nSeriesCount > 1) {
 				polygon[nSeriesCount+nSeries] = ptLoc;
