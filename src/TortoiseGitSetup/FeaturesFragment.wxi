@@ -35,6 +35,7 @@
 
 		<ComponentRef Id="C__ProgramMenuFolder" />
 		<ComponentRef Id="C__Sounds" />
+		<ComponentRef Id="C__SoundsRegistry" />
 		<ComponentRef Id="C__DiffScripts" />
 		<ComponentRef Id="C__touch" />
 

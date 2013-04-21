@@ -32,6 +32,7 @@
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"
 #include "LoglistUtils.h"
+#include "SoundUtils.h"
 
 // CProgressDlg dialog
 
@@ -329,6 +330,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString err;
 			err.Format(_T("\r\n\r\n%s (%d ms @ %s)\r\n"), log, tickSpent, strEndTime);
 			InsertColorText(this->m_Log, err, RGB(255,0,0));
+			CSoundUtils::PlayTGitError();
 		}
 		else {
 			if (m_pTaskbarList)

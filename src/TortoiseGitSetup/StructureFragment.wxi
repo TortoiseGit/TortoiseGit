@@ -683,9 +683,18 @@
 					</Component>
 
 					<Component Id="C__Sounds" Guid="$(var.GuidSounds)" Win64="$(var.Win64YesNo)">
-						<File Id="F__sounderror" ShortName="TERROR.WAV" Name="TortoiseSVN_error.wav" DiskId="1" Source="..\Resources\TortoiseSVN_error.wav" KeyPath="yes" />
-						<File Id="F__soundwarning" ShortName="TWARN.WAV" Name="TortoiseSVN_Warning.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Warning.wav" />
-						<File Id="F__soundnotification" ShortName="TNOTIFY.WAV" Name="TortoiseSVN_Notification.wav" DiskId="1" Source="..\Resources\TortoiseSVN_Notification.wav" />
+						<File Id="F__sounderror" ShortName="TERROR.WAV" Name="TortoiseGit_Error.wav" DiskId="1" Source="..\Resources\TortoiseGit_Error.wav" KeyPath="yes" />
+						<File Id="F__soundwarning" ShortName="TWARN.WAV" Name="TortoiseGit_Warning.wav" DiskId="1" Source="..\Resources\TortoiseGit_Warning.wav" />
+						<File Id="F__soundnotification" ShortName="TNOTIFY.WAV" Name="TortoiseGit_Notification.wav" DiskId="1" Source="..\Resources\TortoiseGit_Notification.wav" />
+					</Component>
+
+					<Component Id="C__SoundsRegistry" Guid="$(var.GuidSoundsReg)" Win64="$(var.Win64YesNo)">
+						<!-- only used because this component needs a key path! -->
+						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="SoundUtils KeyPath" Value="keypath" Type="string" />
+						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Error" />
+						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Warning" />
+						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\EventLabels\TGit_Notification" />
+						<RemoveRegistryKey Action="removeOnUninstall" Root="HKCU" Key="AppEvents\Schemes\Apps\TortoiseGitProc" />
 					</Component>
 
 					<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">

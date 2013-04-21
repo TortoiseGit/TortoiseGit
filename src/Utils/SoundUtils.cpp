@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2009,2013 - TortoiseGit
+// Copyright (C) 2003-2006 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +22,7 @@
 #include "..\TortoiseProc\resource.h"
 #include "..\TortoiseProc\AppUtils.h"
 #include "PathUtils.h"
-#include ".\soundutils.h"
+#include "SoundUtils.h"
 #include "mmsystem.h"
 
 #pragma comment(lib, "Winmm")
@@ -44,7 +45,7 @@ void CSoundUtils::RegisterTGitSounds()
 	CRegString eventlabelnote = CRegString(_T("AppEvents\\EventLabels\\TGit_Notification\\"));
 	eventlabelnote = CString(MAKEINTRESOURCE(IDS_WARN_NOTE));
 
-	CRegString appscheme = CRegString(_T("AppEvents\\Schemes\\Apps\\TortoiseProc\\"));
+	CRegString appscheme = CRegString(_T("AppEvents\\Schemes\\Apps\\TortoiseGitProc\\"));
 	appscheme = _T("TortoiseGit");
 
 	CString apppath = CPathUtils::GetAppDirectory();
@@ -62,19 +63,19 @@ void CSoundUtils::RegisterTGitSounds()
 		CString name = schemenames.GetNext(pos);
 		if ((name.CompareNoCase(_T(".none"))!=0)&&(name.CompareNoCase(_T(".nosound"))!=0))
 		{
-			CString errorkey = _T("AppEvents\\Schemes\\Apps\\TortoiseProc\\TGit_Error\\") + name + _T("\\");
+			CString errorkey = _T("AppEvents\\Schemes\\Apps\\TortoiseGitProc\\TGit_Error\\") + name + _T("\\");
 			CRegString errorkeyval = CRegString(errorkey);
 			if (((CString)(errorkeyval)).IsEmpty())
 			{
 				errorkeyval = apppath + _T("TortoiseGit_Error.wav");
 			}
-			CString warnkey = _T("AppEvents\\Schemes\\Apps\\TortoiseProc\\TGit_Warning\\") + name + _T("\\");
+			CString warnkey = _T("AppEvents\\Schemes\\Apps\\TortoiseGitProc\\TGit_Warning\\") + name + _T("\\");
 			CRegString warnkeyval = CRegString(warnkey);
 			if (((CString)(warnkeyval)).IsEmpty())
 			{
 				warnkeyval = apppath + _T("TortoiseGit_Warning.wav");
 			}
-			CString notificationkey = _T("AppEvents\\Schemes\\Apps\\TortoiseProc\\TGit_Notification\\") + name + _T("\\");
+			CString notificationkey = _T("AppEvents\\Schemes\\Apps\\TortoiseGitProc\\TGit_Notification\\") + name + _T("\\");
 			CRegString notificationkeyval = CRegString(notificationkey);
 			if (((CString)(notificationkeyval)).IsEmpty())
 			{

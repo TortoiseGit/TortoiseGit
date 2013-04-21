@@ -43,6 +43,7 @@
 #include "Libraries.h"
 #include "TaskbarUUID.h"
 #include "GitConfig.h"
+#include "SoundUtils.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -548,15 +549,9 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
-#if 0
-	if (lVersion <= 0x01010300)
-	{
-		CSoundUtils::RegisterTSVNSounds();
-	}
-#endif
-
 	if (lVersion <= 0x01080202)
 	{
+		CSoundUtils::RegisterTGitSounds();
 		// upgrade to 1.8.3: force recreation of all diff scripts.
 		CAppUtils::SetupDiffScripts(true, CString());
 	}
