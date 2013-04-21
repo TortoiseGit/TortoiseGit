@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #1728: TortoiseGitMerge show fake difference in the same lines if line end falls to 0x40000 byte
  * Fixed issue #1741: Push / Pull Dialog URL combo box should not be filled unless enabled
  * Fixed issue #1735: diff-xls.vbs not found
+ * Fixed issue #1750: Repository Browser fails for empty repository
 
 = Release 1.8.2.0 =
 Released: 2013-03-26

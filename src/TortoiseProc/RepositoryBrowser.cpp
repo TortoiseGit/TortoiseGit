@@ -377,6 +377,18 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 			break;
 		}
 
+		if (m_sRevision == _T("HEAD"))
+		{
+			ret = git_repository_head_orphan(repository);
+			if (ret == 1)	// is orphan
+				break;
+			else if (ret != 0)
+			{
+				MessageBox(g_Git.GetGitLastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
+		}
+
 		CGitHash hash;
 		if (g_Git.GetHash(hash, m_sRevision))
 		{
