@@ -384,7 +384,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 				break;
 			else if (ret != 0)
 			{
-				MessageBox(g_Git.GetGitLastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(g_Git.GetLibGit2LastErr(_T("Could not check HEAD.")), _T("TortoiseGit"), MB_ICONERROR);
 				break;
 			}
 		}
