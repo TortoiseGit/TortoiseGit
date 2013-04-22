@@ -587,7 +587,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		bAddSeparator = true;
 	}
 
-	if (selType == ONLY_FILES && m_bHasWC)
+	if (!selectedLeafs.empty() && selType == ONLY_FILES && m_bHasWC)
 	{
 		popupMenu.AppendMenuIcon(eCmd_Revert, IDS_LOG_POPUP_REVERTTOREV, IDI_REVERT);
 		bAddSeparator = true;
@@ -597,8 +597,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		popupMenu.AppendMenu(MF_SEPARATOR);
 	bAddSeparator = false;
 
-	popupMenu.AppendMenuIcon(eCmd_CopyPath, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
-	popupMenu.AppendMenuIcon(eCmd_CopyHash, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
+	if (!selectedLeafs.empty())
+	{
+		popupMenu.AppendMenuIcon(eCmd_CopyPath, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
+		popupMenu.AppendMenuIcon(eCmd_CopyHash, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
+	}
 
 	eCmd cmd = (eCmd)popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN|TPM_RETURNCMD, point.x, point.y, this, 0);
 	switch(cmd)
