@@ -1240,14 +1240,21 @@ void CMainFrame::OnFileSave()
 			+ (CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsWritable() ? 1 : 0);
 	bool bLeftIsModified = CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsModified();
 	bool bRightIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
-	bool bBottomIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
+	bool bBottomIsModified = CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsModified();
 	int nModifiedViewCount = 
 			(bLeftIsModified ? 1 : 0)
 			+ (bRightIsModified ? 1 : 0)
 			+ (bBottomIsModified ? 1 : 0);
 	if (nEditableViewCount>1)
 	{
-		if (nModifiedViewCount>0)
+		if (nModifiedViewCount == 1)
+		{
+			if (bLeftIsModified)
+				m_pwndLeftView->SaveFile(SAVE_REMOVED);
+			else
+				FileSave();
+		}
+		else if (nModifiedViewCount>0)
 		{
 			// both views
 			UINT ret = IDNO;
