@@ -754,6 +754,12 @@ BEGIN
     IDS_VIEWCONTEXTMENU_USEBOTHTHISFIRST 
                             "Use both text blocks (this one first)"
     IDS_VIEWCONTEXTMENU_USEBOTHTHISLAST "Use both text blocks (this one last)"
+    IDS_VIEWCONTEXTMENU_PREPENDTHIS "Prepend this block to left"
+    IDS_VIEWCONTEXTMENU_USETHIS "Use this block on left"
+    IDS_VIEWCONTEXTMENU_APPENDTHIS "Append this block to left"
+    IDS_VIEWCONTEXTMENU_PREPENDRIGHT "Prepend right block"
+    IDS_VIEWCONTEXTMENU_USERIGHT "Use right block"
+    IDS_VIEWCONTEXTMENU_APPENDRIGHT "Append right block"
 END
 
 STRINGTABLE

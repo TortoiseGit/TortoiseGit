@@ -2308,6 +2308,19 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 	case POPUPCOMMAND_USEBOTHRIGHTFIRST:
 		m_pwndRight->UseBothRightFirst();
 		break;
+	// 2-pane view multiedit commands; target is left view
+	case POPUPCOMMAND_PREPENDFROMRIGHT:
+		if (!m_pwndLeft->IsReadonly())
+			m_pwndLeft->UseBothRightFirst();
+		break;
+	case POPUPCOMMAND_REPLACEBYRIGHT:
+		if (!m_pwndLeft->IsReadonly())
+			m_pwndLeft->UseRightBlock();
+		break;
+	case POPUPCOMMAND_APPENDFROMRIGHT:
+		if (!m_pwndLeft->IsReadonly())
+			m_pwndLeft->UseBothLeftFirst();
+		break;
 	// 3-pane view commands; target is bottom view
 	case POPUPCOMMAND_USEYOURANDTHEIRBLOCK:
 		m_pwndBottom->UseBothRightFirst();
