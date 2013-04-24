@@ -1176,23 +1176,24 @@ void CGitLogList::ShiftSelectedAction()
 	while(pos)
 	{
 		index = GetNextSelectedItem(pos);
-		int action = ((GitRev*)m_arShownList[index])->GetAction(this);
-		switch (action)
+		int dummyAction = 0;
+		int *action = &dummyAction;
+		SafeGetAction(((GitRev*)m_arShownList[index]), &action);
+		switch (*action)
 		{
 		case CTGitPath::LOGACTIONS_REBASE_PICK:
-			action = CTGitPath::LOGACTIONS_REBASE_SKIP;
+			*action = CTGitPath::LOGACTIONS_REBASE_SKIP;
 			break;
 		case CTGitPath::LOGACTIONS_REBASE_SKIP:
-			action= CTGitPath::LOGACTIONS_REBASE_EDIT;
+			*action= CTGitPath::LOGACTIONS_REBASE_EDIT;
 			break;
 		case CTGitPath::LOGACTIONS_REBASE_EDIT:
-			action = CTGitPath::LOGACTIONS_REBASE_SQUASH;
+			*action = CTGitPath::LOGACTIONS_REBASE_SQUASH;
 			break;
 		case CTGitPath::LOGACTIONS_REBASE_SQUASH:
-			action= CTGitPath::LOGACTIONS_REBASE_PICK;
+			*action= CTGitPath::LOGACTIONS_REBASE_PICK;
 			break;
 		}
-		((GitRev*)m_arShownList[index])->GetAction(this) = action;
 		CRect rect;
 		this->GetItemRect(index, &rect, LVIR_BOUNDS);
 		this->InvalidateRect(rect);

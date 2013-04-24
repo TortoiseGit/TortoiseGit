@@ -199,10 +199,13 @@ int CGitLogListBase::AsyncDiffThread()
 				{
 					g_Git.GetCommitDiffList(pRev->m_CommitHash.ToString(),this->m_HeadHash.ToString(), pRev->GetFiles(this));
 				}
-				pRev->GetAction(this) = 0;
+				int dummyAction = 0;
+				int *action = &dummyAction;
+				SafeGetAction(pRev, &action);
+				*action = 0;
 
 				for (int j = 0; j < pRev->GetFiles(this).GetCount(); ++j)
-					pRev->GetAction(this) |= pRev->GetFiles(this)[j].m_Action;
+					*action |= pRev->GetFiles(this)[j].m_Action;
 
 				pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER);
 
@@ -481,9 +484,10 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 
 	if (!(rItem.state & LVIS_SELECTED))
 	{
-		if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		int action = SafeGetAction(pLogEntry);
+		if (action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
 			brush = ::CreateSolidBrush(RGB(156,156,156));
-		else if(pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_EDIT)
+		else if (action & CTGitPath::LOGACTIONS_REBASE_EDIT)
 			brush = ::CreateSolidBrush(RGB(200,200,128));
 	}
 	else if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
@@ -1125,17 +1129,18 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 				if (data)
 				{
-					if (data->GetAction(this)& (CTGitPath::LOGACTIONS_REBASE_DONE| CTGitPath::LOGACTIONS_REBASE_SKIP) )
+					int action = SafeGetAction(data);
+					if (action & (CTGitPath::LOGACTIONS_REBASE_DONE | CTGitPath::LOGACTIONS_REBASE_SKIP))
 						crText = RGB(128,128,128);
 
-					if(data->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_SQUASH)
+					if (action & CTGitPath::LOGACTIONS_REBASE_SQUASH)
 						pLVCD->clrTextBk = RGB(156,156,156);
-					else if(data->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_EDIT)
+					else if (action & CTGitPath::LOGACTIONS_REBASE_EDIT)
 						pLVCD->clrTextBk  = RGB(200,200,128);
 					else
 						pLVCD->clrTextBk  = ::GetSysColor(COLOR_WINDOW);
 
-					if(data->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_CURRENT)
+					if (action & CTGitPath::LOGACTIONS_REBASE_CURRENT)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
@@ -1387,24 +1392,24 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
 
 				// Draw the icon(s) into the compatible DC
-				pLogEntry->GetAction(this);
+				int action = SafeGetAction(pLogEntry);
 
 				if (!pLogEntry->m_IsDiffFiles)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 
-				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_MODIFIED)
+				if (action & CTGitPath::LOGACTIONS_MODIFIED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left + ICONITEMBORDER, rect.top, m_hModifiedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				++nIcons;
 
-				if (pLogEntry->GetAction(this) & (CTGitPath::LOGACTIONS_ADDED|CTGitPath::LOGACTIONS_COPY) )
+				if (action & (CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_COPY))
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hAddedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				++nIcons;
 
-				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_DELETED)
+				if (action & CTGitPath::LOGACTIONS_DELETED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hDeletedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				++nIcons;
 
-				if (pLogEntry->GetAction(this) & CTGitPath::LOGACTIONS_REPLACED)
+				if (action & CTGitPath::LOGACTIONS_REPLACED)
 					::DrawIconEx(pLVCD->nmcd.hdc, rect.left+nIcons*iconwidth + ICONITEMBORDER, rect.top, m_hReplacedIcon, iconwidth, iconheight, 0, NULL, DI_NORMAL);
 				++nIcons;
 				*pResult = CDRF_SKIPDEFAULT;
@@ -1465,7 +1470,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			if(this->m_IsRebaseReplaceGraph)
 			{
 				CTGitPath path;
-				path.m_Action=pLogEntry->GetAction(this)&CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+				path.m_Action = SafeGetAction(pLogEntry) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
 				lstrcpyn(pItem->pszText,path.GetActionName(), pItem->cchTextMax);
 			}
 		}
