@@ -207,7 +207,7 @@ BOOL CSettingGitConfig::OnApply()
 bool CSettingGitConfig::Save(CString key, CString value, CONFIG_TYPE type)
 {
 	CString out;
-	if (g_Git.SetConfigValue(key, value, type, g_Git.GetGitEncode(L"i18n.commitencoding"), &g_Git.m_CurrentDir))
+	if (g_Git.SetConfigValue(key, value, type, g_Git.GetGitEncode(L"i18n.commitencoding")))
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);

@@ -72,7 +72,7 @@ BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
 	CString cmd,output;
 	output.Empty();
 
-	output = g_Git.GetConfigValue(key,CP_UTF8,NULL, bRemoveCR);
+	output = g_Git.GetConfigValue(key, CP_UTF8, bRemoveCR);
 
 	if(output.IsEmpty())
 	{

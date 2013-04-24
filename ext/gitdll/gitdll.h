@@ -189,7 +189,7 @@ GITDLL_API int git_deref_tag(const unsigned char *tagsha1,GIT_HASH refhash);
 
 GITDLL_API int git_checkout_file(const char *ref, const char *path, const char *outputpath);
 
-GITDLL_API int git_get_config(const char *key, char *buffer, int size, char* git_path);
+GITDLL_API int git_get_config(const char *key, char *buffer, int size);
 
 typedef enum
 {
@@ -200,7 +200,7 @@ typedef enum
 
 }CONFIG_TYPE;
 
-GITDLL_API int get_set_config(const char *key, char *value, CONFIG_TYPE type, char *git_path);
+GITDLL_API int get_set_config(const char *key, char *value, CONFIG_TYPE type);
 
 const char *get_windows_home_directory(void);
 

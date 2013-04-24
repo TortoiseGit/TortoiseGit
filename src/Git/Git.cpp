@@ -475,35 +475,26 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL RemoveCR)
+CString CGit::GetConfigValue(CString name,int encoding, BOOL RemoveCR)
 {
 	CString configValue;
 	int start = 0;
 	if(this->m_IsUseGitDLL)
 	{
-		CString *git_path=NULL;
-
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 
 		try
 		{
-			CTGitPath path;
-
 			CheckAndInitDll();
-			git_path = GitPath;
-
 		}catch(...)
 		{
 		}
 		CStringA key, value;
 		key =  CUnicodeUtils::GetMulti(name, encoding);
-		CStringA p;
-		if(git_path)
-			p = CUnicodeUtils::GetMulti(*GitPath, CP_UTF8);
 
 		try
 		{
-			if (git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096, p.GetBuffer()))
+			if (git_get_config(key.GetBuffer(), value.GetBufferSetLength(4096), 4096))
 				return CString();
 		}
 		catch (const char *msg)
@@ -528,7 +519,7 @@ CString CGit::GetConfigValue(CString name,int encoding, CString *GitPath, BOOL R
 	}
 }
 
-int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encoding, CString *GitPath)
+int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encoding)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -544,13 +535,10 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 		CStringA keya, valuea;
 		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
 		valuea = CUnicodeUtils::GetMulti(value, encoding);
-		CStringA p;
-		if(GitPath)
-			p = CUnicodeUtils::GetMulti(*GitPath, CP_UTF8);
 
 		try
 		{
-			return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type, p.GetBuffer());
+			return get_set_config(keya.GetBuffer(), valuea.GetBuffer(), type);
 		}
 		catch (const char *msg)
 		{
@@ -583,7 +571,7 @@ int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encod
 	return 0;
 }
 
-int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding, CString *GitPath)
+int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding)
 {
 	if(this->m_IsUseGitDLL)
 	{
@@ -597,13 +585,10 @@ int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding, CString 
 		}
 		CStringA keya;
 		keya = CUnicodeUtils::GetMulti(key, CP_UTF8);
-		CStringA p;
-		if(GitPath)
-			p=CUnicodeUtils::GetMulti(*GitPath,CP_ACP);
 
 		try
 		{
-			return get_set_config(keya.GetBuffer(), NULL, type, p.GetBuffer());
+			return get_set_config(keya.GetBuffer(), nullptr, type);
 		}
 		catch (const char *msg)
 		{

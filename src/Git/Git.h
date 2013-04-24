@@ -187,10 +187,10 @@ public:
 	int GetGitEncode(TCHAR* configkey);
 
 	bool IsFastForward(const CString &from, const CString &to, CGitHash * commonAncestor = NULL);
-	CString GetConfigValue(CString name, int encoding=CP_UTF8, CString *GitPath=NULL,BOOL RemoveCR=TRUE);
+	CString GetConfigValue(CString name, int encoding = CP_UTF8, BOOL RemoveCR = TRUE);
 
-	int SetConfigValue(CString key, CString value, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
-	int UnsetConfigValue(CString key, CONFIG_TYPE type=CONFIG_LOCAL, int encoding=CP_UTF8, CString *GitPath=NULL);
+	int SetConfigValue(CString key, CString value, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
+	int UnsetConfigValue(CString key, CONFIG_TYPE type = CONFIG_LOCAL, int encoding = CP_UTF8);
 
 	CString GetUserName(void);
 	CString GetUserEmail(void);

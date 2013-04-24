@@ -1020,12 +1020,12 @@ const wchar_t *wget_msysgit_etc(void)
 	return etc_gitconfig;
 }
 
-int git_get_config(const char *key, char *buffer, int size, char *git_path)
+int git_get_config(const char *key, char *buffer, int size)
 {
 	char *local, *global, *globalxdg;
 	const char *home, *system;
 	struct config_buf buf;
-	UNREFERENCED_PARAMETER(git_path);
+
 	buf.buf=buffer;
 	buf.size=size;
 	buf.seen = 0;
@@ -1102,10 +1102,10 @@ const wchar_t *wget_windows_home_directory(void)
 	return home_directory;
 }
 
-int get_set_config(const char *key, char *value, CONFIG_TYPE type,char *git_path)
+int get_set_config(const char *key, char *value, CONFIG_TYPE type)
 {
 	char * config_exclusive_filename = NULL;
-	UNREFERENCED_PARAMETER(git_path);
+
 	switch(type)
 	{
 	case CONFIG_LOCAL:

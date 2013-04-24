@@ -269,7 +269,7 @@ void CSettingGitRemote::Save(CString key,CString value)
 	if (value.IsEmpty())
 	{
 		// don't check result code. it fails if the entry not exist
-		g_Git.UnsetConfigValue(cmd, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir);
+		g_Git.UnsetConfigValue(cmd, CONFIG_LOCAL);
 		if (!g_Git.GetConfigValue(cmd).IsEmpty())
 		{
 			CString msg;
@@ -279,7 +279,7 @@ void CSettingGitRemote::Save(CString key,CString value)
 		return;
 	}
 
-	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL, CP_UTF8, &g_Git.m_CurrentDir))
+	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL))
 	{
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);

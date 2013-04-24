@@ -172,7 +172,7 @@ bool CloneCommand::Execute()
 				g_Git.m_CurrentDir = dlg.m_Directory;
 				SetCurrentDirectory(g_Git.m_CurrentDir);
 
-				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL, CP_UTF8, &dlg.m_Directory))
+				if(g_Git.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL, CP_UTF8))
 				{
 					CMessageBox::Show(NULL,_T("Fail set config remote.origin.puttykeyfile"),_T("TortoiseGit"),MB_OK|MB_ICONERROR);
 					return FALSE;
