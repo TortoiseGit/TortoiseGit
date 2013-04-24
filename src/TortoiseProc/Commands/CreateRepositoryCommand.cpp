@@ -34,7 +34,7 @@ bool CreateRepositoryCommand::Execute()
 	{
 		CString message;
 		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, folder);
-		if (!PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
+		if (dlg.m_bBare && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(hwndExplorer, message, _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
 		{
 			return false;
 		}
