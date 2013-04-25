@@ -6867,7 +6867,7 @@ msgstr "恢复默认值(&S)"
 
 #. Resource IDs: (8)
 msgid "Re&vert..."
-msgstr "SVN 还原(&V)..."
+msgstr "还原(&V)..."
 
 #. Resource IDs: (606)
 msgid "Reachable"
