@@ -33,6 +33,7 @@ CMessageBox::CMessageBox(void)
 	, m_bDestroyIcon(FALSE)
 	, m_nDefButton(0)
 	, m_uType(0)
+	, m_bChecked(FALSE)
 {
 }
 
@@ -716,14 +717,28 @@ void CMessageBox::OnLButtonUp(UINT nFlags, CPoint point)
 void CMessageBox::OnButton1()
 {
 	if (GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->SendMessage(BM_GETCHECK, 0, 0)==BST_CHECKED)
+	{
+		m_bChecked = TRUE;
 		SetRegistryValue(m_sRegistryValue, m_uButton1Ret);
+	}
+	else
+	{
+		m_bChecked = FALSE;
+	}
 	EndDialog(m_uButton1Ret);
 }
 
 void CMessageBox::OnButton2()
 {
 	if (GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->SendMessage(BM_GETCHECK, 0, 0)==BST_CHECKED)
+	{
+		m_bChecked = TRUE;
 		SetRegistryValue(m_sRegistryValue, m_uButton2Ret);
+	}
+	else
+	{
+		m_bChecked = FALSE;
+	}
 	if ((m_uButton2Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
@@ -750,7 +765,14 @@ void CMessageBox::OnButton2()
 void CMessageBox::OnButton3()
 {
 	if (GetDlgItem(IDC_MESSAGEBOX_CHECKBOX)->SendMessage(BM_GETCHECK, 0, 0)==BST_CHECKED)
+	{
+		m_bChecked = TRUE;
 		SetRegistryValue(m_sRegistryValue, m_uButton3Ret);
+	}
+	else
+	{
+		m_bChecked = FALSE;
+	}
 	if ((m_uButton3Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);

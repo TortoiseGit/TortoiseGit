@@ -449,6 +449,8 @@ public:
 	afx_msg void OnButton2();
 	afx_msg void OnButton3();
 	virtual BOOL OnInitDialog();
+
+	BOOL m_bChecked;
 protected:
 	virtual void OnCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
