@@ -73,7 +73,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	path = "Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
+	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
 		int size = sizeof(dwRetVal);
 		DWORD type;
@@ -173,7 +173,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	path = "Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
+	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
 	{
 		int size = sizeof(dwRetVal);
 		DWORD type;
@@ -510,6 +510,9 @@ UINT CMessageBox::GoModal(CWnd * pWnd, const CString& title, const CString& msg,
 
 void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 {
+	if (sValue.IsEmpty())
+		return;
+
 	CString path;
 #ifdef XMESSAGEBOX_APPREGPATH
 	path = XMESSAGEBOX_APPREGPATH;

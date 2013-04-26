@@ -279,7 +279,7 @@ public:
 	 * \param lpMessage the message string to show on the message box
 	 * \param lpCaption the dialog title
 	 * \param uType see class description for details
-	 * \param lpRegistry a value string to store the return value of this specific message box.
+	 * \param lpRegistry a value string to store the return value of this specific message box. Put NULL or empty if you do not use registry.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
@@ -296,7 +296,7 @@ public:
 	 * \param nMessage resource ID of the message string
 	 * \param nCaption resource ID of the title string
 	 * \param uType see class description for details
-	 * \param lpRegistry a value string to store the return value of this specific message box.
+	 * \param lpRegistry a value string to store the return value of this specific message box. Put NULL or empty if you do not use registry.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
@@ -343,7 +343,7 @@ public:
 	 * \param lpButton1 string for the first button
 	 * \param lpButton2 string for the second button
 	 * \param lpButton3 string for the third button
-	 * \param lpRegistry  a value string to store the return value of this specific message box.
+	 * \param lpRegistry  a value string to store the return value of this specific message box. Put NULL or empty if you do not use registry.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
@@ -362,7 +362,7 @@ public:
 	 * \param nButton1 resource ID of string for the first button
 	 * \param nButton2 resource ID of string for the second button
 	 * \param nButton3 resource ID of string for the third button
-	 * \param lpRegistry  a value string to store the return value of this specific message box.
+	 * \param lpRegistry  a value string to store the return value of this specific message box. Put NULL or empty if you do not use registry.
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
