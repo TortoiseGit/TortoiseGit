@@ -892,8 +892,11 @@
 #define IDC_PROXYLABEL1                 1409
 #define IDS_DAEMON_SECURITY_WARN        1409
 #define IDC_PROXYLABEL2                 1410
+#define IDS_ASK_REMOVE_FROM_INDEX       1410
 #define IDC_PROXYLABEL3                 1411
+#define IDS_REMOVE_FROM_INDEX           1411
 #define IDC_PROXYLABEL4                 1412
+#define IDS_DO_SAME_FOR_REST            1412
 #define IDC_PROXYLABEL5                 1413
 #define IDC_PROXYLABEL6                 1414
 #define IDS_SETTINGS_LOCAL              1415
