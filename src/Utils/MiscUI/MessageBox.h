@@ -284,9 +284,10 @@ public:
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
 	 * then it defaults to "do not show again" or the string with resource ID IDS_MSGBOX_DONOTSHOWAGAIN.
+	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return see class description for details
 	 */
-	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL);
+	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL, BOOL *bChecked = NULL);
 	/**
 	 * Shows a message box with a checkbox. If the user checks it then the next time
 	 * the message box isn't shown anymore - the method simply returns the same value as
@@ -300,9 +301,10 @@ public:
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
+	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return see class description for details
 	 */
-	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage);
+	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage, BOOL *bChecked = NULL);
 
 	/**
 	 * Shows a message box with user defined button texts.
@@ -348,9 +350,10 @@ public:
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param lpCheckMessage the message to show on the checkbox label. If this parameter is omitted
 	 * then it defaults to "do not show again" or the string with resource ID IDS_MSGBOX_DONOTSHOWAGAIN.
+	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL);
+	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = NULL, BOOL *bChecked = NULL);
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or NULL
@@ -366,9 +369,10 @@ public:
 	 * Each one of your message boxes must have it's own value string! Examples for such values
 	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
 	 * \param nCheckMessage resource ID of the checkbox string
+	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage = NULL);
+	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage = NULL, BOOL *bChecked = NULL);
 
 	/**
 	 * Removes the registry key

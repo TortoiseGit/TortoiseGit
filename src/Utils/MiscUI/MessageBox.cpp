@@ -43,7 +43,7 @@ CMessageBox::~CMessageBox(void)
 		::DestroyIcon(m_hIcon);
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage/* = NULL*/)
+UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage/* = NULL*/, BOOL *bChecked)
 {
 	CString sButton1;
 	CString sButton2;
@@ -57,10 +57,10 @@ UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, L
 	sMessage.LoadString(nMessage);
 	sCaption.LoadString(nCaption);
 	nCheckMsg.LoadString(nCheckMessage);
-	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3, lpRegistry, nCheckMsg);
+	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3, lpRegistry, nCheckMsg, bChecked);
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage/* = NULL*/)
+UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage/* = NULL*/, BOOL *bChecked)
 {
 	//check the registry if we have to show the box or just return with the last used return value
 	//this would be the case if the user pressed "do not show again".
@@ -104,6 +104,7 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 	}
 	else
 		box.m_sCheckbox = lpCheckMessage;
+	box.m_bChecked = bChecked ? *bChecked : FALSE;
 	box.m_sButton1 = lpButton1;
 	box.m_sButton2 = lpButton2;
 	box.m_sButton3 = lpButton3;
@@ -114,7 +115,10 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int
 		box.m_bDestroyIcon = TRUE;
 	if (!IsWindow(hWnd))
 		hWnd = NULL;
-	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
+	int result = box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
+	if (bChecked)
+		*bChecked = box.m_bChecked;
+	return result;
 }
 
 UINT CMessageBox::Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2/* = NULL*/, LPCTSTR lpButton3/* = NULL*/)
@@ -149,7 +153,7 @@ UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTST
 }
 
 
-UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage)
+UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage, BOOL *bChecked)
 {
 	CString sMessage;
 	CString sCaption;
@@ -157,10 +161,10 @@ UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType,
 	sMessage.LoadString(nMessage);
 	sCaption.LoadString(nCaption);
 	sCheckMsg.LoadString(nCheckMessage);
-	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, uType, lpRegistry, sCheckMsg);
+	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, uType, lpRegistry, sCheckMsg, bChecked);
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage)
+UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage, BOOL *bChecked)
 {
 	//check the registry if we have to show the box or just return with the last used return value
 	//this would be the case if the user pressed "do not show again".
@@ -204,9 +208,13 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UIN
 	}
 	else
 		box.m_sCheckbox = lpCheckMessage;
+	box.m_bChecked = bChecked ? *bChecked : FALSE;
 	if (!IsWindow(hWnd))
 		hWnd = NULL;
-	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
+	int result = box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, box.FillBoxStandard(uType));
+	if (bChecked)
+		*bChecked = box.m_bChecked;
+	return result;
 }
 
 UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath)
