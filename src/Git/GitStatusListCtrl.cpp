@@ -3933,6 +3933,8 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 			CTGitPathList deletelist;
 			deletelist.ParserFromLog(cmdout, true);
+			BOOL bDeleteChecked = FALSE;
+			int deleteFromIndex = 0;
 			for(int i = 0; i < deletelist.GetCount(); i++)
 			{
 				CTGitPath *p = m_StatusFileList.LookForGitPath(deletelist[i].GetGitPathString());
@@ -3940,7 +3942,13 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 					m_StatusFileList.AddPath(deletelist[i]);
 				else if ((p->m_Action == CTGitPath::LOGACTIONS_ADDED || p->m_Action == CTGitPath::LOGACTIONS_REPLACED) && !p->Exists())
 				{
-					if (CMessageBox::Show(m_hWnd, _T("TortoiseGit detected that the file \"") + p->GetWinPathString() +_T("\" does not exist, but is staged as \"Added\".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"), _T("TortoiseGit"), 1, IDI_EXCLAMATION, _T("&Remove file from index"), _T("&Ignore")) == 1)
+					if (!bDeleteChecked)
+					{
+						CString message;
+						message.Format(IDS_ASK_REMOVE_FROM_INDEX, p->GetWinPathString());
+						deleteFromIndex = CMessageBox::ShowCheck(m_hWnd, message, _T("TortoiseGit"), 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), NULL, NULL, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
+					}
+					if (deleteFromIndex == 1)
 					{
 						g_Git.Run(_T("git.exe rm -f --cache -- \"") + p->GetWinPathString() + _T("\""), &cmdout);
 						m_StatusFileList.RemoveItem(*p);

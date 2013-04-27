@@ -3084,6 +3084,10 @@ BEGIN
     IDS_SYSTEM_WINCRED      "wincred - all Windows users"
     IDS_DAEMON_SECURITY_WARN 
                             "While running daemon, all data of this repository is exposed without authentication and/or encryption."
+    IDS_ASK_REMOVE_FROM_INDEX 
+                            "TortoiseGit detected that the file ""%s"" does not exist, but is staged as ""Added"".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"
+    IDS_REMOVE_FROM_INDEX   "&Remove this file from index"
+    IDS_DO_SAME_FOR_REST    "&Do the same for the rest"
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"

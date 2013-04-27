@@ -536,6 +536,10 @@ msgstr ""
 msgid "&Discard"
 msgstr ""
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr ""
@@ -952,6 +956,10 @@ msgstr ""
 
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
+msgstr ""
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
 msgstr ""
 
 #. Resource IDs: (15)
@@ -8368,6 +8376,11 @@ msgstr ""
 #. Resource IDs: (107)
 #, c-format
 msgid "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr ""
+
+#. Resource IDs: (1410)
+#, c-format
+msgid "TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"
 msgstr ""
 
 #. Resource IDs: (98)
