@@ -178,7 +178,7 @@ for (var i = 1; i <= length; i++)
         {
             sFormula = "=INDIRECT(\"Dummy_for_Comparison" + i + "!\"&ADDRESS(ROW(),COLUMN()))";
         }
-        sFormula = convertFormula(sFormula)
+        sFormula = convertFormula(sFormula);
         objNewWorksheet.Cells.FormatConditions.Add(xlCellValue, xlNotEqual, sFormula);
         objNewWorksheet.Cells.FormatConditions(1).Interior.ColorIndex = 3;  // 3:Red RGB(128,0,0)
     }
