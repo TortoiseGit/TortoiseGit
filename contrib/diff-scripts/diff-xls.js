@@ -135,6 +135,9 @@ if (!bFastMode && objNewWorkbook.ProtectWindows)
     bFastMode = true;
 }
 
+// Create a special workbook for formula convertion.
+var objSpecialWorkbook = objExcelApp.Workbooks.Add;
+
 // Mark differences in sNewDoc red
 var length = objNewWorkbook.Worksheets.Count;
 for (var i = 1; i <= length; i++)
@@ -175,15 +178,15 @@ for (var i = 1; i <= length; i++)
         {
             sFormula = "=INDIRECT(\"Dummy_for_Comparison" + i + "!\"&ADDRESS(ROW(),COLUMN()))";
         }
-        var original_content = objNewWorksheet.Cells(1,1).Formula;
-        objNewWorksheet.Cells(1,1).Formula = sFormula;
-        sFormula = objNewWorksheet.Cells(1,1).FormulaLocal;
-        objNewWorksheet.Cells(1,1).Formula = original_content;
+        sFormula = convertFormula(sFormula)
         objNewWorksheet.Cells.FormatConditions.Add(xlCellValue, xlNotEqual, sFormula);
         objNewWorksheet.Cells.FormatConditions(1).Interior.ColorIndex = 3;  // 3:Red RGB(128,0,0)
     }
-
 }
+
+// Close the special workbook quietly
+objSpecialWorkbook.Saved = true;
+objSpecialWorkbook.Close;
 
 // Activate first Worksheet
 objBaseWorkbook.Sheets(1).Activate();
@@ -268,6 +271,18 @@ function UnhideWorksheet(objWorksheet)
 function ToAbsoluteReference(objWorksheet)
 {
     return "[" + objWorksheet.Parent.Name + "]" + objWorksheet.Name;
+}
+
+// Convert a formula for workaround in some situation.
+// Actually I don't know what will be changed between sFormula and FormulaLocal.
+function convertFormula(sFormula)
+{
+    var worksheet = objSpecialWorkbook.Sheets(1);
+    var original_content = worksheet.Cells(1,1).Formula;
+    worksheet.Cells(1,1).Formula = sFormula;
+    sFormula = worksheet.Cells(1,1).FormulaLocal;
+    worksheet.Cells(1,1).Formula = original_content;
+    return sFormula;
 }
 
 // Accumulate a warning message.
