@@ -2851,6 +2851,17 @@ void Editor::DrawLine(Surface *surface, ViewStyle &vsDraw, int line, int lineVis
 		}
 	}
 
+	SCNotification scn = {0};
+	scn.nmhdr.code = SCN_GETBKCOLOR;
+	scn.line = line;
+	scn.lParam = -1;
+	NotifyParent(&scn);
+	if (scn.lParam != -1)
+	{
+		background = scn.lParam;
+		overrideBackground = true;
+	}
+
 	bool drawWhitespaceBackground = (vsDraw.viewWhitespace != wsInvisible) &&
 	        (!overrideBackground) && (vsDraw.whitespaceBackgroundSet);
 
