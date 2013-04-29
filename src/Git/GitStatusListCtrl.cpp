@@ -2636,6 +2636,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex)
 		return;
 
 	CTGitPath file1=*(CTGitPath*)GetItemData(fileindex);
+	file1.m_Action = 0; // reset action, so that diff is not started as added/deleted file; see issue #1757
 
 	CGitDiff::Diff(&file1,&file1, GIT_REV_ZERO, m_CurrentVersion);
 
