@@ -261,6 +261,23 @@ def UpdateLineInFile(path, linePrefix, lineReplace):
     contents = NATIVE.join(lines) + NATIVE
     UpdateFile(path, contents)
 
+host = "prdownloads.sourceforge.net/"
+def UpdateDownloadLinks(path, version):
+    lines = []
+    with open(path, "r") as f:
+        for l in f.readlines():
+            l = l.rstrip()
+            if host in l:
+                start, prd, rest = l.partition(host)
+                pth, dot, ending = rest.partition(".")
+                pthNew = pth[:-3] + version.rstrip()
+                lineWithNewVersion = start + prd +pthNew + dot + ending
+                lines.append(lineWithNewVersion)
+            else:
+                lines.append(l)
+    contents = NATIVE.join(lines) + NATIVE
+    UpdateFile(path, contents)
+
 def UpdateVersionNumbers(root):
     with open(root + "scintilla/version.txt") as f:
         version = f.read()
@@ -279,6 +296,7 @@ def UpdateVersionNumbers(root):
         "VERSION = " + versionDotted)
     UpdateLineInFile(root + "scintilla/doc/ScintillaDownload.html", "       Release", 
         "       Release " + versionDotted)
+    UpdateDownloadLinks(root + "scintilla/doc/ScintillaDownload.html", version)
     UpdateLineInFile(root + "scintilla/doc/index.html",
         '          <font color="#FFCC99" size="3"> Release version', 
         '          <font color="#FFCC99" size="3"> Release version ' + versionDotted + '<br />') 
@@ -290,6 +308,7 @@ def UpdateVersionNumbers(root):
             "#define VERSION_WORDS " + versionCommad)
         UpdateLineInFile(root + "scite/doc/SciTEDownload.html", "       Release", 
             "       Release " + versionDotted)
+        UpdateDownloadLinks(root + "scite/doc/SciTEDownload.html", version)
         UpdateLineInFile(root + "scite/doc/SciTE.html",
             '          <font color="#FFCC99" size="3"> Release version', 
             '          <font color="#FFCC99" size="3"> Release version ' + versionDotted + '<br />') 
