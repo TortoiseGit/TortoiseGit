@@ -20,9 +20,13 @@ def printLexHFile(f,out):
 				out.write("#define " + name + " " + v["Value"] + "\n")
 
 def printHFile(f,out):
+	previousCategory = ""
 	for name in f.order:
 		v = f.features[name]
 		if v["Category"] != "Deprecated":
+			if v["Category"] == "Provisional" and previousCategory != "Provisional":
+				out.write("#ifndef SCI_DISABLE_PROVISIONAL\n")
+			previousCategory = v["Category"]
 			if v["FeatureType"] in ["fun", "get", "set"]:
 				featureDefineName = "SCI_" + name.upper()
 				out.write("#define " + featureDefineName + " " + v["Value"] + "\n")
@@ -32,6 +36,7 @@ def printHFile(f,out):
 			elif v["FeatureType"] in ["val"]:
 				if not (Contains(name, "SCE_") or Contains(name, "SCLEX_")):
 					out.write("#define " + name + " " + v["Value"] + "\n")
+	out.write("#endif\n")
 
 def CopyWithInsertion(input, output, genfn, definition):
 	copying = 1
