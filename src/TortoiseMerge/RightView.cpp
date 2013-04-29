@@ -245,8 +245,8 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		{
 		case DIFFSTATE_CONFLICTEMPTY:
 		case DIFFSTATE_UNKNOWN:
-		case DIFFSTATE_EMPTY:
 			line.state = DIFFSTATE_EMPTY;
+		case DIFFSTATE_EMPTY:
 			break;
 		case DIFFSTATE_ADDED:
 		case DIFFSTATE_MOVED_TO:
@@ -254,16 +254,16 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		case DIFFSTATE_CONFLICTED:
 		case DIFFSTATE_CONFLICTED_IGNORED:
 		case DIFFSTATE_IDENTICALADDED:
-		case DIFFSTATE_NORMAL:
 		case DIFFSTATE_THEIRSADDED:
 		case DIFFSTATE_YOURSADDED:
-			break;
 		case DIFFSTATE_MOVED_FROM:
 		case DIFFSTATE_IDENTICALREMOVED:
 		case DIFFSTATE_REMOVED:
 		case DIFFSTATE_THEIRSREMOVED:
 		case DIFFSTATE_YOURSREMOVED:
-			line.state = DIFFSTATE_ADDED;
+			m_pwndLeft->SetViewState(viewLine, DIFFSTATE_NORMAL);
+			line.state = DIFFSTATE_NORMAL;
+		case DIFFSTATE_NORMAL:
 			break;
 		default:
 			break;
