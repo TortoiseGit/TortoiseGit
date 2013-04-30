@@ -20,6 +20,7 @@ Released: unreleased
  * Fixed issue #1750: Repository Browser fails for empty repository
  * Fixed issue #1743: Remove "The target folder is not empty!" warning
  * Fixed issue #1757: Compare single new file against working tree
+ * Fixed issue #1760: Unified diff of two revisions is inversed
 
 = Release 1.8.2.0 =
 Released: 2013-03-26

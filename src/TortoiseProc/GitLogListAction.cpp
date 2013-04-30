@@ -241,7 +241,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
 				GitRev * r2 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(LastSelect));
-				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r1->m_CommitHash.ToString(), CTGitPath(), r2->m_CommitHash.ToString());
+				CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r2->m_CommitHash.ToString(), CTGitPath(), r1->m_CommitHash.ToString());
 			}
 			break;
 
