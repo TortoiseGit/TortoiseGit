@@ -396,8 +396,8 @@ void CSettingGitRemote::OnBnClickedButtonOrigin()
 	}
 	else
 	{
-		m_strRemote = _T("origin");
+		GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(_T("origin"));
+		OnEnChangeEditRemote();
 		GetDlgItem(IDC_EDIT_URL)->SetFocus();
-		UpdateData(FALSE);
 	}
 }
