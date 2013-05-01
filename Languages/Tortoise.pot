@@ -584,6 +584,10 @@ msgstr ""
 msgid "&Enable Proxy Server"
 msgstr ""
 
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
+
 #. Resource IDs: (323)
 msgid "&Export selection to..."
 msgstr ""
@@ -1635,6 +1639,10 @@ msgstr ""
 msgid "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr ""
 
+#. Resource IDs: (2062)
+msgid "Allow Editing for this view\nAllow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1690,6 +1698,14 @@ msgstr ""
 #. Resource IDs: (63)
 #, c-format
 msgid "An unknown line type was found in line %d !"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2461,6 +2477,10 @@ msgstr ""
 
 #. Resource IDs: (16662)
 msgid "Color"
+msgstr ""
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
 msgstr ""
 
 #. Resource IDs: (138, 16961, 65535)
@@ -3567,6 +3587,10 @@ msgstr ""
 msgid "Edit local git config"
 msgstr ""
 
+#. Resource IDs: (1254)
+msgid "Edit log message"
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
 msgstr ""
@@ -3597,6 +3621,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Empty"
+msgstr ""
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
 msgstr ""
 
 #. Resource IDs: (87)
@@ -4594,6 +4622,10 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
@@ -6215,6 +6247,14 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Preparing commit..."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -8438,16 +8478,12 @@ msgstr ""
 
 #. Resource IDs: (107)
 #, c-format
-msgid "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+msgid "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-util %d.%d.%d"
 msgstr ""
 
 #. Resource IDs: (7)
 #, c-format
 msgid "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears more than once."
-msgstr ""
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
 msgstr ""
 
 #. Resource IDs: (1739)
@@ -8775,6 +8811,10 @@ msgstr ""
 msgid "Use regular expression"
 msgstr ""
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr ""
@@ -8821,6 +8861,10 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -9470,6 +9514,10 @@ msgstr ""
 #. Resource IDs: (3845)
 #, c-format
 msgid "on %1"
+msgstr ""
+
+#. Resource IDs: (1753)
+msgid "origin"
 msgstr ""
 
 #. Resource IDs: (3869)
