@@ -193,8 +193,6 @@ protected:
 
 		m_ctrlLocalBranch.AddString(list);
 
-		CString currentBranch = g_Git.GetSymbolicRef();
-
 		if(this->m_RegKeyRemoteBranch.IsEmpty())
 		{
 			list.clear();
@@ -211,7 +209,6 @@ protected:
 		if(!this->m_strLocalBranch.IsEmpty())
 		{
 			m_ctrlLocalBranch.AddString(m_strLocalBranch);
-			currentBranch = m_strLocalBranch;
 		}
 		else
 		{
