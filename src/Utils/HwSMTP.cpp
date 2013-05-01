@@ -225,7 +225,8 @@ BOOL CHwSMTP::SendSpeedEmail
 			ret = false;
 
 		//SendEmail(itr1.first,NULL,NULL,false,lpszAddrFrom,,lpszFromname);
-		DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
+		if (pDnsRecord)
+			DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
 	}
 
 	return ret;
