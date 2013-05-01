@@ -644,7 +644,15 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 		int flag;
 
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		const char *refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(CString(symbolicRefName)), sha1, 0, &flag);
+		const char *refs_heads_master = nullptr;
+		try
+		{
+			refs_heads_master = git_resolve_ref(CUnicodeUtils::GetUTF8(CString(symbolicRefName)), sha1, 0, &flag);
+		}
+		catch (const char *err)
+		{
+			::MessageBox(NULL, _T("Could not resolve ref ") + CString(symbolicRefName) + _T(".\nlibgit reports:\n") + CString(err), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		}
 		if(refs_heads_master && (flag&REF_ISSYMREF))
 		{
 			StringAppend(&refName,(BYTE*)refs_heads_master);
