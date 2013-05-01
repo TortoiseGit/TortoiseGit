@@ -3121,7 +3121,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUTVERSION        "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+    IDS_ABOUTVERSION        "TortoiseGit %d.%d.%d.%d %s \r\n%s \r\n"
     IDS_ABOUTVERSIONBOX     "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 END
 

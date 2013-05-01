@@ -67,7 +67,12 @@ BOOL CAboutDlg::OnInitDialog()
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
 		out += _T(" (") + CGit::ms_LastMsysGitDir + _T(")");
 
-	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD,out);
+	TCHAR tgitexe[MAX_PATH + 4];
+	memset(tgitexe, 0, sizeof(tgitexe));
+	tgitexe[0] = _T('(');
+	GetModuleFileName(NULL, tgitexe + 1, MAX_PATH);
+	_tcscat(tgitexe, _T(")"));
+	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tgitexe, out);
 #if 0
 	const svn_version_t * svnver = svn_client_version();
 

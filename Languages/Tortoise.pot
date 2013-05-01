@@ -8375,7 +8375,7 @@ msgstr ""
 
 #. Resource IDs: (107)
 #, c-format
-msgid "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgid "TortoiseGit %d.%d.%d.%d %s \r\n%s \r\n"
 msgstr ""
 
 #. Resource IDs: (1410)
