@@ -92,7 +92,7 @@ private:
 	BOOL SendHead();
 	BOOL auth();
 	BOOL SendEmail();
-	BOOL Send ( CString &data );
+	BOOL Send ( const CString &data );
 	BOOL SendBuffer(char *buffer,int size=-1);
 	BOOL GetResponse( LPCTSTR lpszVerifyCode, int *pnCode=NULL );
 	BOOL m_bConnected;

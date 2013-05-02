@@ -372,7 +372,7 @@ BOOL CHwSMTP::SendBuffer(char *buff,int size)
 	return TRUE;
 }
 // 利用socket发送数据，数据长度不能超过10M
-BOOL CHwSMTP::Send(CString &str )
+BOOL CHwSMTP::Send(const CString &str )
 {
 	if ( !m_bConnected )
 	{
