@@ -27,7 +27,6 @@
 #include "Colors.h"
 //#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
 #include "afxwin.h"
-#include "Win7.h"
 #include "UnicodeUtils.h"
 #include "GitProgressList.h"
 

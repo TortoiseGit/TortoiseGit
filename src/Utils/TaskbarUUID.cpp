@@ -23,7 +23,6 @@
 #include "CmdLineParser.h"
 
 #include <Shobjidl.h>
-#include "Win7.h"
 #include "SmartHandle.h"
 #include <atlbase.h>
 

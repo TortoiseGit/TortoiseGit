@@ -21,7 +21,6 @@
 #include "StandAloneDlg.h"
 #include "git.h"
 #include "MenuButton.h"
-#include "Win7.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 

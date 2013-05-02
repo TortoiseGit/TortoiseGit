@@ -21,6 +21,7 @@
 #include "JumpListHelpers.h"
 #include "propvarutil.h"
 #include "propsys.h"
+#include <propkey.h>
 
 HRESULT SetAppID(LPCTSTR appID)
 {

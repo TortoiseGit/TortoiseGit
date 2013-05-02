@@ -27,7 +27,6 @@
 #include "registry.h"
 #include "BranchCombox.h"
 #include "GitLoglist.h"
-#include "Win7.h"
 #include "GitProgressList.h"
 
 // CSyncDlg dialog

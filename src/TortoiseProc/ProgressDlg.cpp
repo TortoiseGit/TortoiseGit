@@ -33,6 +33,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "LoglistUtils.h"
 #include "SoundUtils.h"
+#include "Win7.h"
 
 // CProgressDlg dialog
 

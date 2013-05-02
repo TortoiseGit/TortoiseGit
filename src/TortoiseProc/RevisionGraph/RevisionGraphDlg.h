@@ -24,7 +24,6 @@
 #include "Colors.h"
 #include "RevisionGraphWnd.h"
 #include "StandAloneDlg.h"
-#include "Win7.h"
 
 /**
  * \ingroup TortoiseProc
