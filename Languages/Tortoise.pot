@@ -9516,10 +9516,6 @@ msgstr ""
 msgid "on %1"
 msgstr ""
 
-#. Resource IDs: (1753)
-msgid "origin"
-msgstr ""
-
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr ""

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,7 +68,7 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
-	ON_BN_CLICKED(IDC_BUTTON_ORIGIN, &CSettingGitRemote::OnBnClickedButtonOrigin)
+	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
 END_MESSAGE_MAP()
 
 BOOL CSettingGitRemote::OnInitDialog()
@@ -97,6 +97,13 @@ BOOL CSettingGitRemote::OnInitDialog()
 
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
+
+	if (remotes.empty())
+	{
+		GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(_T("origin"));
+		OnEnChangeEditRemote();
+	}
+
 	return TRUE;
 }
 // CSettingGitRemote message handlers
@@ -212,7 +219,7 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
-	GetDlgItem(IDC_BUTTON_ORIGIN)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)));
+	GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
 	this->UpdateData(FALSE);
 
 }
@@ -315,7 +322,7 @@ BOOL CSettingGitRemote::OnApply()
 
 		m_ctrlRemoteList.SetCurSel(m_ctrlRemoteList.AddString(m_strRemote));
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
-		GetDlgItem(IDC_BUTTON_ORIGIN)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_RENAME)));
+		GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
 		if (!m_bNoFetch && CMessageBox::Show(NULL, IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 			CCommonAppUtils::RunTortoiseGitProc(_T("/command:fetch /path:\"") + g_Git.m_CurrentDir + _T("\" /remote:\"") + m_strRemote + _T("\""));
 	}
@@ -372,7 +379,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 	}
 }
 
-void CSettingGitRemote::OnBnClickedButtonOrigin()
+void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 {
 	int sel = m_ctrlRemoteList.GetCurSel();
 	if (sel >= 0)
@@ -393,11 +400,5 @@ void CSettingGitRemote::OnBnClickedButtonOrigin()
 		m_ChangedMask &= ~REMOTE_NAME;
 		if (!m_ChangedMask)
 			this->SetModified(FALSE);
-	}
-	else
-	{
-		GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(_T("origin"));
-		OnEnChangeEditRemote();
-		GetDlgItem(IDC_EDIT_URL)->SetFocus();
 	}
 }
