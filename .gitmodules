@@ -9,7 +9,7 @@
 	url = https://code.google.com/p/tortoisegit.tgit
 [submodule "ext/zlib"]
 	path = ext/zlib
-	url = https://code.google.com/p/tortoisegit.zlib
+	url = https://github.com/madler/zlib.git
 [submodule "ext/libcurl"]
 	path = ext/libcurl
 	url = https://github.com/bagder/curl.git
