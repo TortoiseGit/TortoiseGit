@@ -64,6 +64,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	DWORD pathLength = GetModuleFileName(NULL, buf, MAX_PATH);
 	if(pathLength >= 14)
 	{
+		if (pathLength >= 24 && _tcsicmp(&buf[pathLength - 24], _T("\\TortoiseGitExplorer.exe")) == 0)
+		{
+			bInShellTest = true;
+		}
 		if ((_tcsicmp(&buf[pathLength-14], _T("\\ShellTest.exe"))) == 0)
 		{
 			bInShellTest = true;
