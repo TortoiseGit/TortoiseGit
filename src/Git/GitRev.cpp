@@ -434,8 +434,16 @@ int GitRev::GetCommitFromHash(CGitHash &hash)
 int GitRev::GetCommitFromHash_withoutLock(CGitHash &hash)
 {
 	GIT_COMMIT commit;
-	if(git_get_commit_from_hash( &commit, hash.m_hash))
+	try
+	{
+		if (git_get_commit_from_hash(&commit, hash.m_hash))
+			return -1;
+	}
+	catch (char * msg)
+	{
+		MessageBox(NULL, _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
+	}
 
 	this->ParserFromCommit(&commit);
 	git_free_commit(&commit);
@@ -461,8 +469,16 @@ int GitRev::GetCommit(CString refname)
 	rev= CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname));
 	GIT_HASH sha;
 
-	if(git_get_sha1(rev.GetBuffer(),sha))
+	try
+	{
+		if (git_get_sha1(rev.GetBuffer(), sha))
+			return -1;
+	}
+	catch (char * msg)
+	{
+		MessageBox(NULL, _T("Could not get SHA-1 of ref \"") + g_Git.FixBranchName(refname) + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
+	}
 
 	CGitHash hash((char*)sha);
 	GetCommitFromHash_withoutLock(hash);
