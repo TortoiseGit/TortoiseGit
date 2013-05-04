@@ -9,6 +9,9 @@
   <indexterm>
     <primary>refs</primary>
   </indexterm>
+  <indexterm>
+    <primary>Delete remote tags</primary>
+  </indexterm>
   <para>
     This section talks about browse all refs(tag, branch, remote branch, stash and so on)
     <menuchoice>
@@ -54,5 +57,8 @@
 		<guimenu>Context menu</guimenu>
 		<guimenuitem>Create branch</guimenuitem>
 	</menuchoice>
+  </para>
+  <para>
+    In order to delete remote tags, use the context menu on a remote on he left and select <guimenuitem>Delete remote tags...</guimenuitem>. Then the following dialog will come up: <graphic fileref="../images/DeleteRemoteTag.png"/> There you can delete multiple remote tags at once.
   </para>
 </sect1>
