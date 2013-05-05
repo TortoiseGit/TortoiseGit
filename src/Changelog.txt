@@ -1,5 +1,5 @@
 ﻿= Release 1.8.3.0 =
-Released: unreleased
+Released: 2013-05-05
 
 == Features ==
  * Press F5 can refresh Submodule Diff Dialog
@@ -22,6 +22,7 @@ Released: unreleased
  * Fixed issue #1743: Remove "The target folder is not empty!" warning
  * Fixed issue #1757: Compare single new file against working tree
  * Fixed issue #1760: Unified diff of two revisions is inversed
+ * Fixed various possible crashes
 
 = Release 1.8.2.0 =
 Released: 2013-03-26
