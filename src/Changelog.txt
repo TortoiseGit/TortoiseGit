@@ -11,6 +11,7 @@ Released: unreleased
  * Repository Browser: Allow to copy tree / blob hashes to clipboard
  * Added sound support for indicating warnings and errors
  * Fixed issue #1755: Add "Remove All" and "Ignore All" options in Remove from Index Prompt
+ * Fixed issue #1747: Add interface to log window to view range log
 
 == Bug Fixes ==
  * Fixed issue #1729: crash when commit

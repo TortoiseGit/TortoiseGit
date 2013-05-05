@@ -365,6 +365,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				//	CAppUtils::StartShowCompare(m_hWnd, CTGitPath(pathURL), revPrevious, CTGitPath(pathURL), revSelected, GitRev(), m_LogRevision, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 			}
 			break;
+		case ID_LOG_VIEWRANGE:
+		case ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE:
+			{
+				GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
+
+				CString sep = _T("..");
+				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE)
+					sep = _T("...");
+
+				CAppUtils::RunTortoiseGitProc(_T("/command:log /range:\"") + pLastEntry->m_CommitHash.ToString() + sep + pSelLogEntry->m_CommitHash.ToString() + _T("\""));
+			}
+			break;
 		case ID_COPYCLIPBOARD:
 			{
 				CopySelectionToClipBoard();
