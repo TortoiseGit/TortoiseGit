@@ -561,6 +561,14 @@ Don't touch these lines:
 								<option>/path</option>.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:daemon</entry>
+							<entry>
+								Launch Git Daemon for the path given in
+								<option>/path</option>.
+							</entry>
+						</row>
+
 						<!--
 						<row>
 							<entry condition="pot">:rebuildiconcache</entry>
