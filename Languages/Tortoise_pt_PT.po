@@ -4,19 +4,20 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Abel Maio <am.abel.maio+transifex@gmail.com>, 2013.
-# JustinoAveiro <paulojustino.nec@gmail.com>, 2011.
-# Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011.
-# Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012.
-#  <paulojustino.nec@gmail.com>, 2013.
-# Sandro Amaral <sandro123iv@gmail.com>, 2011.
+# AMaio <am.abel.maio+transifex@gmail.com>, 2013
+# JustinoAveiro <paulojustino.nec@gmail.com>, 2011
+# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
+# Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
+# JustinoAveiro <paulojustino.nec@gmail.com>, 2013
+# Sandro Amaral <sandro123iv@gmail.com>, 2011
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-20 14:55+0000\n"
-"Last-Translator: JustinoAveiro <paulojustino.nec@gmail.com>\n"
+"PO-Revision-Date: 2013-05-01 16:09+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/tortoisegit/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -209,7 +210,7 @@ msgstr "%d ficheiros selecionados, %d ficheiros no total"
 #. Resource IDs: (246)
 #, c-format
 msgid "%d most active author(s) with at least %d commits each (%d %%)"
-msgstr ""
+msgstr "%d autore(s) mais activos com pelo menos %d sumições cada (%d %%)"
 
 #. Resource IDs: (8)
 #, c-format
@@ -227,7 +228,7 @@ msgstr "%ld Bytes/s"
 #. Resource IDs: (226)
 #, c-format
 msgid "%ld minute(s) and %ld second(s)"
-msgstr ""
+msgstr "%ld minuto(s) and %ld sgundo(s)"
 
 #. Resource IDs: (7)
 #, c-format
@@ -237,7 +238,7 @@ msgstr "%ld de %ld"
 #. Resource IDs: (226)
 #, c-format
 msgid "%s - at revision: %d"
-msgstr ""
+msgstr "%s - na revisão: %d"
 
 #. Resource IDs: (3887)
 #, c-format
@@ -257,7 +258,7 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "%s, at %s"
-msgstr ""
+msgstr "%s, em %s"
 
 #. Resource IDs: (151)
 #, c-format
@@ -267,12 +268,12 @@ msgstr ""
 #. Resource IDs: (145)
 #, c-format
 msgid "%s\\Export (%d) of %s"
-msgstr ""
+msgstr "%s\\Exportar (%d) de %s"
 
 #. Resource IDs: (145)
 #, c-format
 msgid "%s\\Export of %s"
-msgstr ""
+msgstr "%s\\Exportar de %s"
 
 #. Resource IDs: (3850)
 #, c-format
@@ -313,11 +314,11 @@ msgstr ""
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
-msgstr ""
+msgstr "&Sobre o TortoiseGitBlame..."
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitMerge..."
-msgstr ""
+msgstr "&Sobre o TortoiseGitMerge..."
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -559,6 +560,10 @@ msgstr ""
 msgid "&Discard"
 msgstr ""
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Ancorar"
@@ -602,6 +607,10 @@ msgstr ""
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Activar Servidor Proxy"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -853,11 +862,6 @@ msgstr "&Novo "
 msgid "&New..."
 msgstr "&Novo..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "&Próximos %ld"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Próxima Página"
@@ -981,6 +985,10 @@ msgstr ""
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "&Remover"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1346,7 +1354,7 @@ msgid ""
 "To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
 "to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
 "And <u>read the manual!</u>"
-msgstr ""
+msgstr "<b>TortoiseGit</b> é uma extensão de shell.\nO que significa que está integrada com o explorador do Windows.\nPara usar o <b>TortoiseGit</b> abrir por favor o explorador e clicar à direita em qualquer pasta para abrires o menu de contexto, onde encontrarás todos os comandos do <b>TortoiseGit</b>.\nE <u>lê o manual!</u>"
 
 #. Resource IDs: (84)
 msgid ""
@@ -1487,7 +1495,7 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "A&bout"
-msgstr ""
+msgstr "So&bre"
 
 #. Resource IDs: (1)
 msgid "A&pply"
@@ -1511,11 +1519,11 @@ msgstr "Sobre o TortoiseGit"
 
 #. Resource IDs: (100)
 msgid "About TortoiseGitBlame"
-msgstr ""
+msgstr "Sobre o TortoiseGitBlame"
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
-msgstr ""
+msgstr "Sobre o TortoiseGitMerge"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1696,6 +1704,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Todas as alterações serão perdidas! Deseja realmente repor a barra de ferramentas '%s'?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1767,6 +1781,14 @@ msgstr "Ocorreu um erro desconhecido ao aceder %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Um tipo de linha desconhecido foi encontrado na linha %d !"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -1912,7 +1934,7 @@ msgstr "Autores:"
 msgid ""
 "Authors:\tFrank Li (lznuaa@gmail.com),\n"
 "\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
+msgstr "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (65535)
 msgid "Auto CrLf convert"
@@ -1920,7 +1942,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Auto Crlf:"
-msgstr ""
+msgstr "Auto Crlf:"
 
 #. Resource IDs: (1003)
 msgid "Auto Hide"
@@ -1932,7 +1954,7 @@ msgstr "Ocultar Tudo Automaticamente"
 
 #. Resource IDs: (1631)
 msgid "Auto&Crlf"
-msgstr ""
+msgstr "Auto&Crlf"
 
 #. Resource IDs: (222)
 msgid "Auto-close for local operations"
@@ -2042,7 +2064,7 @@ msgstr "Mapa de bits\num mapa de bits"
 
 #. Resource IDs: (65535)
 msgid "BlAMEPOPUP"
-msgstr ""
+msgstr "BlAMEPOPUP"
 
 #. Resource IDs: (156, 626)
 msgid "Black Style"
@@ -2112,10 +2134,6 @@ msgstr ""
 
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
 msgstr ""
 
 #. Resource IDs: (1518)
@@ -2217,7 +2235,7 @@ msgid ""
 "%s\n"
 "to\n"
 "%s"
-msgstr ""
+msgstr "Não é possivel copiar de\n%s\npara\n%s"
 
 #. Resource IDs: (1001)
 msgid "Can't copy bitmap image into the clipboard!"
@@ -2311,7 +2329,7 @@ msgstr "Arquivos Alterados"
 #. Resource IDs: (324)
 #, c-format
 msgid "Changed files between %s, %s and %s, %s"
-msgstr ""
+msgstr "Ficheiros alterados entre %s, %s e %s, %s"
 
 #. Resource IDs: (163)
 #, c-format
@@ -2381,7 +2399,7 @@ msgstr ""
 
 #. Resource IDs: (81)
 msgid "Check to show relative times in log messages"
-msgstr ""
+msgstr "Picar para mostrar tempos relativos nas mensagens de registo"
 
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
@@ -2437,7 +2455,7 @@ msgstr "Limpando"
 
 #. Resource IDs: (146)
 msgid "Cleaning up."
-msgstr ""
+msgstr "A limpar."
 
 #. Resource IDs: (83)
 #, c-format
@@ -2535,7 +2553,7 @@ msgstr ""
 
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
-msgstr ""
+msgstr "Clonar repositório existente"
 
 #. Resource IDs: (22)
 msgid "Clone a repository"
@@ -2547,7 +2565,7 @@ msgstr ""
 
 #. Resource IDs: (14)
 msgid "Clone..."
-msgstr ""
+msgstr "Clonar..."
 
 #. Resource IDs: (2, 1003, 1007, 1064)
 msgid "Close"
@@ -2596,6 +2614,10 @@ msgstr "Contrair as secções inalteradas\nContrair"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Cor"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -2911,7 +2933,7 @@ msgstr "Copiando..."
 
 #. Resource IDs: (1001)
 msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr ""
+msgstr "Copyright (C) 2009-2013 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3084,7 +3106,7 @@ msgstr ""
 
 #. Resource IDs: (9)
 msgid "Create Branch..."
-msgstr ""
+msgstr "Criar Ramo..."
 
 #. Resource IDs: (243)
 msgid "Create Changelist"
@@ -3108,7 +3130,7 @@ msgstr ""
 
 #. Resource IDs: (20)
 msgid "Create Tag..."
-msgstr ""
+msgstr "Criar etiqueta..."
 
 #. Resource IDs: (3601)
 msgid ""
@@ -3135,7 +3157,7 @@ msgstr ""
 
 #. Resource IDs: (8)
 msgid "Create repositor&y here..."
-msgstr ""
+msgstr "Criar &repositório aqui..."
 
 #. Resource IDs: (85)
 msgid "Created"
@@ -3256,6 +3278,10 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "DCommit Type"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Daemon"
 msgstr ""
 
 #. Resource IDs: (208, 1251)
@@ -3758,10 +3784,6 @@ msgstr ""
 msgid "Edit author"
 msgstr "Editar autor"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Editar nome do autor"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr ""
@@ -3786,9 +3808,9 @@ msgstr ""
 msgid "Edit local git config"
 msgstr ""
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
-msgstr "Editar mensagem de registo"
+msgstr ""
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
@@ -3823,6 +3845,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Vazio"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -4832,7 +4858,7 @@ msgstr "ID"
 
 #. Accelerator Entry for Menu ID:220; '&Go to\tCtrl+G'
 msgid "ID:220:V C +G"
-msgstr ""
+msgstr "ID:220:V C +G"
 
 #. Accelerator Entry for Menu ID:32772; '&Overlay images'
 msgid "ID:32772:V   +O"
@@ -4876,7 +4902,7 @@ msgstr "ID:32811:V C +U"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
-msgstr ""
+msgstr "ID:32822:V C +F"
 
 #. Accelerator Entry for Menu ID:32825; ''
 msgid "ID:32825:V C +L"
@@ -4888,7 +4914,7 @@ msgstr "ID:32825:VA  +D"
 
 #. Accelerator Entry for Menu ID:32837; ''
 msgid "ID:32837:VA  +M"
-msgstr ""
+msgstr "ID:32837:VA  +M"
 
 #. Accelerator Entry for Menu ID:32870; ''
 msgid "ID:32870:V C +L"
@@ -4905,6 +4931,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6105,7 +6135,7 @@ msgstr "Nota: a pasta contém itens sem controlo de versões"
 
 #. Resource IDs: (65535)
 msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
+msgstr "Nota: as definições de tipo de letra também afectam o visualizador TortoiseGitUDiff"
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6609,10 +6639,6 @@ msgstr "Gancho Pós-Submissão"
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Gancho Pós-Actualização"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "Página &Anterior"
@@ -6625,12 +6651,16 @@ msgstr "Gancho Pré-Submissão"
 msgid "Pre-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Gancho Pré-Actualização"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7291,10 +7321,6 @@ msgstr "Restaurado"
 msgid "Retry"
 msgstr "Tentar novamente"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr ""
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr ""
@@ -7799,7 +7825,7 @@ msgstr "A Cache de Ícones de Shell foi reconstruída!"
 
 #. Resource IDs: (5062)
 msgid "Shift-JIS"
-msgstr ""
+msgstr "Shift-JIS"
 
 #. Resource IDs: (1105)
 msgid "Short &date/time format in log messages"
@@ -7820,14 +7846,6 @@ msgstr "Mostrar"
 #. Resource IDs: (16996)
 msgid "Show &Accelerator for:"
 msgstr "Mostrar &Acelerador para:"
-
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "Mostrar &Intervalo..."
 
 #. Resource IDs: (20)
 msgid "Show &Reflog"
@@ -7912,10 +7930,6 @@ msgstr "Mostrar Dicas de &Ecrã nas barras de ferramentas"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "Mostrar espaços em branco"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr ""
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8074,18 +8088,11 @@ msgstr ""
 msgid "Show/Hide"
 msgstr "Mostrar/Ocultar"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr ""
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
+"selected, %ld file(s) selected\r\n"
 msgstr ""
 
 #. Resource IDs: (24)
@@ -8235,12 +8242,12 @@ msgstr "Gancho de Início de Submissão"
 msgid "Start Rebase"
 msgstr ""
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "Gancho de Início de Actualização"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
 msgstr ""
 
 #. Resource IDs: (1384, 4575)
@@ -8803,7 +8810,7 @@ msgid ""
 "which seems to match the directory you're applying the patch.\n"
 "\n"
 "Do you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
-msgstr ""
+msgstr "O caminho\n%s\nno arquivo de correcção não existe.\nO TortoiseGitMerge encontrou o caminho relativo\n%s\nque parece corresponder à pasta à qual está a aplicar a correcção.\n\nDeseja usar o caminho sugerido? Responder 'não' fechará o TortoiseGitMerge."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8812,7 +8819,7 @@ msgid ""
 "%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr ""
+msgstr "O caminho\n%s\nno arquivo de correção, não existe.\nO TortoiseGitMerge tentou aplicar a correção retirando prefixos, mas nenhum caminho correspondente foi encontrado."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8823,7 +8830,7 @@ msgid ""
 "But TortoiseGitMerge found the path\n"
 "%s\n"
 "matches it better. Do you want to use the suggested path instead?"
-msgstr ""
+msgstr "O caminho\n%s\nnão parece corresponder aos caminhos no arquivo de correção.\nPorém, o TortoiseGitMerge determinou que o caminho\n%s\nlhe corresponde melhor. Deseja usar o caminho sugerido?"
 
 #. Resource IDs: (71)
 #, c-format
@@ -9048,9 +9055,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr ""
 
 #. Resource IDs: (98)
 #, c-format
@@ -9115,7 +9131,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: o visualizador de diferenças entre imagens para o TortoiseSVN\n\nOs parâmetros linha de comando disponíveis são:\n/left:\"caminho para a figura à esquerda\"\n/lefttitle:\"titulo para a figura à esquerda\"\n/right:\"caminho para a figura à direita.\"\n/righttitle:\"titulo para a figura à direita\"\n/overlay\t\tpara activar o modo de sobreposição\n/fit\t\tpara ajustar o tamanho das imagens\n/showinfo\t\tpara mostrar as caixas de informações das imagens"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
@@ -9132,8 +9148,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr ""
 
 #. Resource IDs: (7)
 #, c-format
@@ -9141,10 +9157,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr ""
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9229,15 +9241,15 @@ msgstr "URL:"
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr ""
+msgstr "UTF-16 BE"
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr ""
+msgstr "UTF-16 LE"
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -9487,6 +9499,10 @@ msgstr "Usar a reciclagem quando revertendo"
 msgid "Use regular expression"
 msgstr "Usar expressão regular"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Usar a configuração de região do sistema para a data/hora"
@@ -9544,6 +9560,10 @@ msgstr "Usar &este bloco de texto"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Usar &este arquivo como um todo"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9629,7 +9649,7 @@ msgstr "Informação de Versão"
 
 #. Resource IDs: (1552, 65535)
 msgid "Version:"
-msgstr ""
+msgstr "Versão:"
 
 #. Resource IDs: (264)
 msgid "Versioned"
@@ -9741,6 +9761,12 @@ msgid ""
 "When the patch does not apply cleanly, fall back on 3-way merge if the patch"
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
+msgstr ""
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -9914,7 +9940,7 @@ msgstr "Pode definir até %d ferramentas."
 
 #. Resource IDs: (170)
 msgid "You must enter a log message for the commit"
-msgstr ""
+msgstr "Deves introduzir uma mensagem de registo da submissão"
 
 #. Resource IDs: (196)
 msgid "You must restart your system for the changes to take effect."
@@ -9968,7 +9994,7 @@ msgstr "A sua versão é: %d.%d.%d.%d"
 
 #. Resource IDs: (1074)
 msgid "Zip File"
-msgstr ""
+msgstr "Ficheiro Zip"
 
 #. Resource IDs: (32783)
 msgid "Zoo&m out"
@@ -10161,7 +10187,7 @@ msgstr "externo"
 
 #. Resource IDs: (1594, 1596, 1598)
 msgid "false"
-msgstr ""
+msgstr "false"
 
 #. Resource IDs: (66)
 #, c-format
@@ -10206,7 +10232,7 @@ msgstr ""
 
 #. Resource IDs: (1494)
 msgid "master"
-msgstr ""
+msgstr "master"
 
 #. Resource IDs: (11, 65535)
 msgid "merged"
@@ -10265,6 +10291,10 @@ msgstr "obstruído"
 msgid "on %1"
 msgstr "em %1"
 
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr ""
+
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr "píxeis"
@@ -10316,7 +10346,7 @@ msgstr "para %s"
 
 #. Resource IDs: (1593, 1597, 1601)
 msgid "true"
-msgstr ""
+msgstr "true"
 
 #. Resource IDs: (245)
 msgid "week"

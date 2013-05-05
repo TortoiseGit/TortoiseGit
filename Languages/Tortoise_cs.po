@@ -4,17 +4,17 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011.
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013.
-# Václav Valíček <Valicek1994@gmail.com>, 2012.
-#   <Valicek1994@gmail.com>, 2012.
-# Zbyněk Schwarz <zbynek.schwarz@gmail.com>, 2012-2013.
+# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# Václav Valíček <Valicek1994@gmail.com>, 2012
+# Václav Valíček <Valicek1994@gmail.com>, 2012
+# Zbyněk Schwarz <zbynek.schwarz@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-11 14:41+0000\n"
+"PO-Revision-Date: 2013-05-03 07:19+0000\n"
 "Last-Translator: Zbyněk Schwarz <zbynek.schwarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -558,6 +558,10 @@ msgstr "&Adresář:"
 msgid "&Discard"
 msgstr "&Zahodit"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Ukotvení"
@@ -601,6 +605,10 @@ msgstr "&Email:"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Povolit proxy server"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr "&Povolit úpravy"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -834,7 +842,7 @@ msgstr "&Název"
 
 #. Resource IDs: (65535)
 msgid "&Name:"
-msgstr "&Název:"
+msgstr "&Jméno:"
 
 #. Resource IDs: (65535)
 msgid "&Navigate"
@@ -851,11 +859,6 @@ msgstr "&Nové "
 #. Resource IDs: (16509, 16615)
 msgid "&New..."
 msgstr "&Nové..."
-
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "&Další %ld"
 
 #. Resource IDs: (58114)
 msgid "&Next Page"
@@ -980,6 +983,10 @@ msgstr "&Vzdálené:"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "&Odstranit"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr "&Odstranit tento soubor z rejstříku"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1695,6 +1702,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Všechny vaše změny budou ztraceny! Opravdu chcete resetovat panel nástrojů '%s'?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr "Povolit úpravy tohoto zobrazení\nPovolit úpravy"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Již je aktuální."
@@ -1766,6 +1779,14 @@ msgstr "Při přístupu k %1 došlo k neznámé chybě."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Na řádku %d byl nalezen neznámý typ řádku!"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2112,10 +2133,6 @@ msgstr "Název větve/značky je neplatný."
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "Název větve/značky je buď neplatný nebo prázdný."
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "Větev/značka úspěšně vytvořena!"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2595,6 +2612,10 @@ msgstr "Sbalit nezměněné části\nSbalit"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Barva"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3257,6 +3278,10 @@ msgstr "Cyrilice"
 msgid "DCommit Type"
 msgstr "Typ odevzdání"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "Daemon"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "Datum"
@@ -3757,10 +3782,6 @@ msgstr "Upravit poznámky"
 msgid "Edit author"
 msgstr "Upravit autora"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Upravit jméno autora"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "Upravit popis"
@@ -3785,7 +3806,7 @@ msgstr "Upravit globální nastavení &XDG"
 msgid "Edit local git config"
 msgstr "Upravit místní nastavení git"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr "Upravit zprávu protokolu"
 
@@ -3822,6 +3843,10 @@ msgstr "Emaily"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Prázdné"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr "Povolit úpravy"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4904,6 +4929,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6608,10 +6637,6 @@ msgstr "Hák po odevzdání"
 msgid "Post-Push Hook"
 msgstr "Hák po odeslání"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Hák po aktualizaci"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "&Předchozí stránka"
@@ -6624,13 +6649,17 @@ msgstr "Hák před odevzdáním"
 msgid "Pre-Push Hook"
 msgstr "Hák před odesláním"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Hák před aktualizací"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "Připravování odevzdání..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7290,10 +7319,6 @@ msgstr "Obnoveno"
 msgid "Retry"
 msgstr "Zkusit znovu"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "Zkusit znovu s --force"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "Další pokus za 2 vteřiny..."
@@ -7820,14 +7845,6 @@ msgstr "Zobrazit"
 msgid "Show &Accelerator for:"
 msgstr "&Zobrazit zkratku pro:"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "Zobrazit všechny &větve"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "Zobrazit &rozsah..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "&Zobrazit protokol odkazů"
@@ -7911,10 +7928,6 @@ msgstr "Zobrazit &názvy tlačítek v panelech nástrojů"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "Zobrazit mezery"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "Zobrazit celý projekt"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8073,19 +8086,12 @@ msgstr "Zobrazit soubory bez &verze"
 msgid "Show/Hide"
 msgstr "Zobrazit/Skrýt"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "Zobrazování %ld revizí, od revize %ld do revize %ld - zvoleno %ld revizí."
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "Zobrazeno %ld revizí, od revize %s do revize %s - zvoleno %ld revizí\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "Zobrazeno %ld revizí, od revize %s do revize %s - zvoleno %ld revizí, zvoleno %ld souborů\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8234,13 +8240,13 @@ msgstr "Spustit hák odevzdání"
 msgid "Start Rebase"
 msgstr "Spustit přeskládání"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "Spustit hák aktualizace"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "Spustit režim půlení..."
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "Spustí server git s protokolem git"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -9047,9 +9053,18 @@ msgstr "TortoiseGit %d.%d.%d, Sestavení %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \n%s \n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr ""
 
 #. Resource IDs: (98)
 #, c-format
@@ -9131,8 +9146,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9140,10 +9155,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge nemůže zpracovat tuto záplatu. Název souboru \"%s\" se zde vyskytuje více než jednou."
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9486,6 +9497,10 @@ msgstr "Při vrácení použít Koš"
 msgid "Use regular expression"
 msgstr "Použít regulární výraz"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr "Použít blok vpravo"
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Použít místní nastavení pro datum/čas"
@@ -9543,6 +9558,10 @@ msgstr "&Použít tento blok textu"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Použít tento &celý soubor"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9741,6 +9760,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "Když se záplatu nepodaří správně použít, použít místo toho sloučení s trojím porovnáváním, pokud záplata obsahuje identifikaci blobů, na které má být použita a tyto bloby jsou dostupné v umístění."
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "Při spuštění daemona jsou všechna data v tomto úložišti vystavena bez ověřování a/nebo zašifrování."
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10263,6 +10288,10 @@ msgstr "zablokovaný"
 #, c-format
 msgid "on %1"
 msgstr "ve %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

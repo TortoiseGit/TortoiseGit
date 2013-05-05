@@ -4,20 +4,20 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-#   <b3hzat@gmail.com>, 2012.
-# Ekrem KAYA <webmaster@e-piksel.com>, 2012-2013.
-# E-Piksel KAYA <webmaster@e-piksel.com>, 2012.
-# Ertan Tike <ertant@rdgnet.org>, 2013.
-#   <ozantunca90@gmail.com>, 2013.
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012.
-#   <webmaster@e-piksel.com>, 2012.
+# berte <b3hzat@gmail.com>, 2012
+# Ekrem KAYA <webmaster@e-piksel.com>, 2012-2013
+# Ekrem KAYA <webmaster@e-piksel.com>, 2012
+# ertant <ertant@rdgnet.org>, 2013
+# ozantunca <ozantunca90@gmail.com>, 2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# Ekrem KAYA <webmaster@e-piksel.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-10 16:47+0000\n"
-"Last-Translator: ertant <ertant@rdgnet.org>\n"
+"PO-Revision-Date: 2013-05-01 16:09+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -560,6 +560,10 @@ msgstr "&Klasör"
 msgid "&Discard"
 msgstr "&Çıkart"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Yerleştirme"
@@ -603,6 +607,10 @@ msgstr "&EPosta"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Proxy sunucusunu etkinleştir"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -854,11 +862,6 @@ msgstr "&Yeni"
 msgid "&New..."
 msgstr "&Yeni..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "&Sonraki %ld"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Sonraki Sayfa"
@@ -982,6 +985,10 @@ msgstr "&Uzak"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "&Dil"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1165,7 +1172,7 @@ msgstr "&TortoiseGit"
 
 #. Resource IDs: (1091, 1094)
 msgid "&TortoiseGitMerge"
-msgstr ""
+msgstr "&TortoiseGitMerge"
 
 #. Resource IDs: (1605)
 msgid "&Trunk:"
@@ -1275,12 +1282,12 @@ msgstr "(bilinmeyen)"
 #. Resource IDs: (188)
 #, c-format
 msgid "+ %d"
-msgstr ""
+msgstr "+ %d"
 
 #. Resource IDs: (188)
 #, c-format
 msgid "- %d"
-msgstr ""
+msgstr "- %d"
 
 #. Resource IDs: (86)
 msgid "- all -"
@@ -1306,7 +1313,7 @@ msgstr "....."
 
 #. Resource IDs: (1691)
 msgid ".git/info/exclude"
-msgstr ""
+msgstr ".git/info/exclude"
 
 #. Resource IDs: (1690)
 msgid ".gitignore in the containing directories of the items"
@@ -1426,7 +1433,7 @@ msgstr "<vekil>"
 
 #. Resource IDs: (32814)
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #. Resource IDs: (85)
 msgid ""
@@ -1516,7 +1523,7 @@ msgstr "TortoiseGitBlame Hakkında"
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
-msgstr ""
+msgstr "TortoiseGitMerge Hakkında"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1697,6 +1704,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Tüm değişiklikleriniz kaybolacak! Gerçekten '%s araç çubuğunu sıfırlamak istiyor musunuz?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Zaten güncel."
@@ -1768,6 +1781,14 @@ msgstr "%1 erişimi esnasında bilinmeyen hata oluştu."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "%d satırında bilinmeyen satır biçi bulundu !"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2043,7 +2064,7 @@ msgstr "Bit Eşlemi\nbir bit eşlem"
 
 #. Resource IDs: (65535)
 msgid "BlAMEPOPUP"
-msgstr ""
+msgstr "BlAMEPOPUP"
 
 #. Resource IDs: (156, 626)
 msgid "Black Style"
@@ -2114,10 +2135,6 @@ msgstr "Dal/Etiket adı geçersiz."
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "Dal/Etiket adı boş ya da geçersiz olmamalıdır."
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "Dal/Etiket başarıyla oluşturuldu!"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2598,6 +2615,10 @@ msgstr ""
 msgid "Color"
 msgstr "Renk"
 
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
+
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
 msgstr "Renkler"
@@ -2912,7 +2933,7 @@ msgstr "Kopyalanıyor..."
 
 #. Resource IDs: (1001)
 msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr ""
+msgstr "Copyright (C) 2009-2013 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3257,6 +3278,10 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "DCommit Type"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Daemon"
 msgstr ""
 
 #. Resource IDs: (208, 1251)
@@ -3729,7 +3754,7 @@ msgstr "&Harici"
 
 #. Resource IDs: (5064)
 msgid "EUC-KR"
-msgstr ""
+msgstr "EUC-KR"
 
 #. Resource IDs: (65535)
 msgid "Eastern European"
@@ -3759,10 +3784,6 @@ msgstr "Notları Düzenle"
 msgid "Edit author"
 msgstr "Yazarı düzenle"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Yazar adını düzenle"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr ""
@@ -3787,9 +3808,9 @@ msgstr ""
 msgid "Edit local git config"
 msgstr ""
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
-msgstr "Günlük mesajını düzenle"
+msgstr ""
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
@@ -3824,6 +3845,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Boş"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -4434,7 +4459,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr ""
+msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
@@ -4833,47 +4858,47 @@ msgstr "ID"
 
 #. Accelerator Entry for Menu ID:220; '&Go to\tCtrl+G'
 msgid "ID:220:V C +G"
-msgstr ""
+msgstr "ID:220:V C +G"
 
 #. Accelerator Entry for Menu ID:32772; '&Overlay images'
 msgid "ID:32772:V   +O"
-msgstr ""
+msgstr "ID:32772:V   +O"
 
 #. Accelerator Entry for Menu ID:32773; '&Open'
 msgid "ID:32773:V C +O"
-msgstr ""
+msgstr "ID:32773:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; '&Whitespaces'
 msgid "ID:32774:V C +T"
-msgstr ""
+msgstr "ID:32774:V C +T"
 
 #. Accelerator Entry for Menu ID:32775; 'Single/&double-pane view'
 msgid "ID:32775:V C +D"
-msgstr ""
+msgstr "ID:32775:V C +D"
 
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window'
 msgid "ID:32778:V   +F"
-msgstr ""
+msgstr "ID:32778:V   +F"
 
 #. Accelerator Entry for Menu ID:32779; 'Ori&ginal size'
 msgid "ID:32779:V   +S"
-msgstr ""
+msgstr "ID:32779:V   +S"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical'
 msgid "ID:32793:V C +V"
-msgstr ""
+msgstr "ID:32793:V C +V"
 
 #. Accelerator Entry for Menu ID:32794; 'Reload'
 msgid "ID:32794:V C +R"
-msgstr ""
+msgstr "ID:32794:V C +R"
 
 #. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
 msgid "ID:32810:V   +T"
-msgstr ""
+msgstr "ID:32810:V   +T"
 
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
-msgstr ""
+msgstr "ID:32811:V C +U"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -4889,36 +4914,40 @@ msgstr "ID:32825:VA  +D"
 
 #. Accelerator Entry for Menu ID:32837; ''
 msgid "ID:32837:VA  +M"
-msgstr ""
+msgstr "ID:32837:VA  +M"
 
 #. Accelerator Entry for Menu ID:32870; ''
 msgid "ID:32870:V C +L"
-msgstr ""
+msgstr "ID:32870:V C +L"
 
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
-msgstr ""
+msgstr "ID:32881:V C +P"
 
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
-msgstr ""
+msgstr "ID:32883:V C +A"
 
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
+msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
 msgid "ID:57601:V C +O"
-msgstr ""
+msgstr "ID:57601:V C +O"
 
 #. Accelerator Entry for Menu ID:57603; '&Save'
 msgid "ID:57603:V C +S"
-msgstr ""
+msgstr "ID:57603:V C +S"
 
 #. Accelerator Entry for Menu ID:57604; 'Save &As...'
 msgid "ID:57604:V CS+S"
-msgstr ""
+msgstr "ID:57604:V CS+S"
 
 #. Accelerator Entry for Menu ID:57634; ''
 #. Accelerator Entry for Menu ID:57634; '&Copy'
@@ -4929,29 +4958,29 @@ msgstr "ID:57634:V C +C"
 #. Accelerator Entry for Menu ID:57635; ''
 #. Accelerator Entry for Menu ID:57635; 'Cu&t\tCtrl+X'
 msgid "ID:57635:V C +X"
-msgstr ""
+msgstr "ID:57635:V C +X"
 
 #. Accelerator Entry for Menu ID:57636; '&Find'
 #. Accelerator Entry for Menu ID:57636; '&Find\tCtrl+F'
 msgid "ID:57636:V C +F"
-msgstr ""
+msgstr "ID:57636:V C +F"
 
 #. Accelerator Entry for Menu ID:57637; ''
 #. Accelerator Entry for Menu ID:57637; ''
 msgid "ID:57637:V C +V"
-msgstr ""
+msgstr "ID:57637:V C +V"
 
 #. Accelerator Entry for Menu ID:57643; '&Undo'
 msgid "ID:57643:V C +Z"
-msgstr ""
+msgstr "ID:57643:V C +Z"
 
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
-msgstr ""
+msgstr "ID:57665:V C +Q"
 
 #. Accelerator Entry for Menu ID:57665; ''
 msgid "ID:57665:V C +W"
-msgstr ""
+msgstr "ID:57665:V C +W"
 
 #. Resource IDs: (5029)
 msgid "ISO 8859-1"
@@ -5283,11 +5312,11 @@ msgstr ""
 
 #. Resource IDs: (5068)
 msgid "KOI8-R"
-msgstr ""
+msgstr "KOI8-R"
 
 #. Resource IDs: (5067)
 msgid "KOI8-U"
-msgstr ""
+msgstr "KOI8-U"
 
 #. Resource IDs: (1126)
 msgid "Keep changelists"
@@ -6228,11 +6257,11 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
-msgstr ""
+msgstr "Office 2003"
 
 #. Resource IDs: (156)
 msgid "Office 2007"
-msgstr ""
+msgstr "Office 2007"
 
 #. Resource IDs: (626)
 msgid "Office 2007 colors"
@@ -6240,7 +6269,7 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office XP"
-msgstr ""
+msgstr "Office XP"
 
 #. Resource IDs: (605)
 msgid "Older commit time"
@@ -6610,10 +6639,6 @@ msgstr "Teslim-sonrası yakalayıcısı"
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Güncelleme-sonrası yakalayıcısı"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "&Önceki Sayfa"
@@ -6626,12 +6651,16 @@ msgstr "Teslim-öncesi yakalayıcısı"
 msgid "Pre-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Güncelleme-öncesi yakalayıcısı"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7292,10 +7321,6 @@ msgstr "Geridönüldü"
 msgid "Retry"
 msgstr "Tekrar"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr ""
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr ""
@@ -7451,7 +7476,7 @@ msgstr ""
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
-msgstr ""
+msgstr "SHA-1"
 
 #. Resource IDs: (1585)
 msgid "SMTP Server requires authentication"
@@ -7483,11 +7508,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
-msgstr ""
+msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
-msgstr ""
+msgstr "Safe Crlf:"
 
 #. Resource IDs: (605)
 msgid "Same commit time"
@@ -7800,7 +7825,7 @@ msgstr "Kabuk Simge Önbelleği tekrar oluşturuldu!"
 
 #. Resource IDs: (5062)
 msgid "Shift-JIS"
-msgstr ""
+msgstr "Shift-JIS"
 
 #. Resource IDs: (1105)
 msgid "Short &date/time format in log messages"
@@ -7821,14 +7846,6 @@ msgstr "Göster"
 #. Resource IDs: (16996)
 msgid "Show &Accelerator for:"
 msgstr "&Hızlandırıcıyı göster:"
-
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "Tüm Dallları Göster"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "Ara&lığı Göster..."
 
 #. Resource IDs: (20)
 msgid "Show &Reflog"
@@ -7913,10 +7930,6 @@ msgstr "Ekran&ipuçlarını araç çubuklarında göster."
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "Tüm Projeyi Göster"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8075,18 +8088,11 @@ msgstr "Versiyonlan&mamış dosyaları göster"
 msgid "Show/Hide"
 msgstr "Göster/Gizle"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "%ld revizyon(lar) gösteriliyor, %ld revizyonundan revizyonuna - %ld revizyon(lar) seçili, %ld değişmiş dizin gösteriliyor."
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
+"selected, %ld file(s) selected\r\n"
 msgstr ""
 
 #. Resource IDs: (24)
@@ -8236,13 +8242,13 @@ msgstr "Teslim yakalayıcısını çalıştır"
 msgid "Start Rebase"
 msgstr ""
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "Güncelleme yakalayıcısını çalıştır"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "İkiye bölünmüş kip..."
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr ""
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -8388,7 +8394,7 @@ msgid ""
 "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi "
 "<snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp "
 "<djszapi@archlinux.us>"
-msgstr ""
+msgstr "Sup Yut Sum <ch3cooli@gmail.com>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>"
 
 #. Resource IDs: (78)
 msgid "Switch"
@@ -8495,7 +8501,7 @@ msgstr "TIS-620"
 
 #. Resource IDs: (7)
 msgid "TORTOISEGITIDIFF"
-msgstr ""
+msgstr "TORTOISEGITIDIFF"
 
 #. Resource IDs: (1513)
 msgid "Ta&gs:"
@@ -9044,13 +9050,22 @@ msgstr "TortoiseGit"
 #. Resource IDs: (107)
 #, c-format
 msgid "TortoiseGit %d.%d.%d, Build %d - %s, %s"
-msgstr ""
+msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
 msgstr ""
 
 #. Resource IDs: (98)
@@ -9083,7 +9098,7 @@ msgstr ""
 #. Resource IDs: (1)
 #, c-format
 msgid "TortoiseGitBlame, Version %d.%d.%d.%d"
-msgstr ""
+msgstr "TortoiseGitBlame, Version %d.%d.%d.%d"
 
 #. Resource IDs: (1)
 msgid ""
@@ -9094,11 +9109,11 @@ msgid ""
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr ""
+msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
 
 #. Resource IDs: (7, 153)
 msgid "TortoiseGitIDiff"
-msgstr ""
+msgstr "TortoiseGitIDiff"
 
 #. Resource IDs: (65535)
 msgid "TortoiseGitIDiff - An image diff tool, part of TortoiseGit"
@@ -9116,16 +9131,16 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: TortoiseSVN'nin resimler arası farklılıkları karşılaştıran program\n\nGeçerli komutlar:\n/left:\"Soldaki resimin dizini\"\n/lefttitle:\"Soldaki resimin başlığı\"\n/right:\"Sağdaki resimin dizini\"\n/righttitle:\"Sağdaki resimin başlığı\"\n/overlay\t\toverlay modunu aç\n/fit\t\t resimleri pencereye yerleştir\n/showinfo\t\t resim bilgi kutucuklarini göster"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
-msgstr ""
+msgstr "TortoiseGitMerge"
 
 #. Resource IDs: (107)
 #, c-format
 msgid "TortoiseGitMerge %d.%d.%d.%d - %s, %s"
-msgstr ""
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s"
 
 #. Resource IDs: (107)
 #, c-format
@@ -9133,7 +9148,7 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
 msgstr ""
 
 #. Resource IDs: (7)
@@ -9141,10 +9156,6 @@ msgstr ""
 msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
-msgstr ""
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
 msgstr ""
 
 #. Resource IDs: (1739)
@@ -9230,15 +9241,15 @@ msgstr "URL:"
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr ""
+msgstr "UTF-16 BE"
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr ""
+msgstr "UTF-16 LE"
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -9488,6 +9499,10 @@ msgstr "Geri döndürürken geri dönüşüm kutusunu kullan"
 msgid "Use regular expression"
 msgstr "Kurallı ifade kullan"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Tarih/zaman için sistem yerelini kullan"
@@ -9544,6 +9559,10 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -9670,11 +9689,11 @@ msgstr "İnternet sayfamızı ziyaret edin"
 
 #. Resource IDs: (156, 626)
 msgid "Visual Studio 2005"
-msgstr ""
+msgstr "Visual Studio 2005"
 
 #. Resource IDs: (156, 626)
 msgid "Visual Studio 2008"
-msgstr ""
+msgstr "Visual Studio 2008"
 
 #. Resource IDs: (65535)
 msgid ""
@@ -9744,6 +9763,12 @@ msgid ""
 "blobs available locally."
 msgstr ""
 
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Whitespaces"
 msgstr "Boşluk karakterleri"
@@ -9758,15 +9783,15 @@ msgstr "Windows"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 2000"
-msgstr ""
+msgstr "Windows 2000"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 7"
-msgstr ""
+msgstr "Windows 7"
 
 #. Resource IDs: (156, 626)
 msgid "Windows XP"
-msgstr ""
+msgstr "Windows XP"
 
 #. Resource IDs: (5020)
 msgid "Windows-1250"
@@ -10265,6 +10290,10 @@ msgstr "engellenmiş"
 #, c-format
 msgid "on %1"
 msgstr "%1 de"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr ""
 
 #. Resource IDs: (3869)
 msgid "pixels"

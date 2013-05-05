@@ -4,13 +4,15 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-#   <abel@abel.hu>, 2012.
+# Baquatelle <abel@abel.hu>, 2012
+# Baquatelle <abel@abel.hu>, 2012
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-04-03 12:26+0000\n"
+"PO-Revision-Date: 2013-05-01 16:27+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/tortoisegit/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -296,7 +298,7 @@ msgid ""
 "%s\n"
 "is a directory, not a file!\n"
 "TortoiseGitMerge can't diff directories."
-msgstr ""
+msgstr "%s\negy mappa, nem egy fájl!\nA TortoiseGitMerge nem tud mappákat összehasonlítani."
 
 #. Resource IDs: (16923)
 msgid "&..."
@@ -312,7 +314,7 @@ msgstr ""
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitMerge..."
-msgstr ""
+msgstr "&A TortoiseGitMerge névjegye..."
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -554,6 +556,10 @@ msgstr ""
 msgid "&Discard"
 msgstr ""
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Dokkolt"
@@ -597,6 +603,10 @@ msgstr ""
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Proxy szerver engedélyezése"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -680,7 +690,7 @@ msgstr "&Súgó"
 
 #. Resource IDs: (57667, 57670)
 msgid "&Help Topics"
-msgstr ""
+msgstr "&Súgó témák"
 
 #. Resource IDs: (149, 1066, 3842)
 msgid "&Hide"
@@ -834,7 +844,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Navigate"
-msgstr ""
+msgstr "&Navigálás"
 
 #. Resource IDs: (1049)
 msgid "&Network drives"
@@ -847,11 +857,6 @@ msgstr "&Új"
 #. Resource IDs: (16509, 16615)
 msgid "&New..."
 msgstr "&Új..."
-
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "&Következő %ld"
 
 #. Resource IDs: (58114)
 msgid "&Next Page"
@@ -977,6 +982,10 @@ msgstr ""
 msgid "&Remove"
 msgstr "&Törlés"
 
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "&Repo-browser"
 msgstr "Tároló &böngészése"
@@ -1099,7 +1108,7 @@ msgstr ""
 
 #. Resource IDs: (59393)
 msgid "&Status Bar"
-msgstr ""
+msgstr "&Állapotsor"
 
 #. Resource IDs: (1525)
 msgid "&Switch to new branch"
@@ -1139,7 +1148,7 @@ msgstr "A &szókiegészítéshez a fájlok elemzésére szánt idő"
 
 #. Resource IDs: (59392)
 msgid "&Toolbar"
-msgstr ""
+msgstr "&Eszköztár"
 
 #. Resource IDs: (65535)
 msgid "&Toolbar Name:"
@@ -1510,7 +1519,7 @@ msgstr ""
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
-msgstr ""
+msgstr "A TortoiseGitMerge névjegye"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1575,7 +1584,7 @@ msgstr "Kiterjesztésfüggő egyesítő program hozzáadáasa"
 
 #. Resource IDs: (1065)
 msgid "Add new files automatically to Git"
-msgstr ""
+msgstr "Új fájlok automatikus hozzáadása az Git-hez"
 
 #. Resource IDs: (13)
 msgid "Add to &ignore list"
@@ -1691,6 +1700,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Minden módosítás el fog veszni! Biztosan alaphelyzetbe akarod állítani a(t) \"%s\" eszköztárat?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1762,6 +1777,14 @@ msgstr "Ismeretlen hiba %1 elérése közben."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Ismeretlen sortípus a %d. sorban!"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -1907,7 +1930,7 @@ msgstr "Fejlesztők:"
 msgid ""
 "Authors:\tFrank Li (lznuaa@gmail.com),\n"
 "\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
+msgstr "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (65535)
 msgid "Auto CrLf convert"
@@ -1915,7 +1938,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Auto Crlf:"
-msgstr ""
+msgstr "Auto Crlf:"
 
 #. Resource IDs: (1003)
 msgid "Auto Hide"
@@ -1927,7 +1950,7 @@ msgstr "Összes automatikus elrejtése"
 
 #. Resource IDs: (1631)
 msgid "Auto&Crlf"
-msgstr ""
+msgstr "Auto&Crlf"
 
 #. Resource IDs: (222)
 msgid "Auto-close for local operations"
@@ -2107,10 +2130,6 @@ msgstr ""
 
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
 msgstr ""
 
 #. Resource IDs: (1518)
@@ -2591,6 +2610,10 @@ msgstr "Változatlan részek elrejtése\nVáltozatlan részek elrejtése"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Szín"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3253,6 +3276,10 @@ msgstr ""
 msgid "DCommit Type"
 msgstr ""
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr ""
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "Dátum"
@@ -3753,10 +3780,6 @@ msgstr ""
 msgid "Edit author"
 msgstr "Fejlesztő szerkesztése"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Fejlesztő nevének szerkesztése"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr ""
@@ -3781,7 +3804,7 @@ msgstr ""
 msgid "Edit local git config"
 msgstr ""
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr "Megjegyzés szerkesztése"
 
@@ -3818,6 +3841,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Üres"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -4428,7 +4455,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr ""
+msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
@@ -4887,11 +4914,11 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32870; ''
 msgid "ID:32870:V C +L"
-msgstr ""
+msgstr "ID:32809:V C +F"
 
 #. Accelerator Entry for Menu ID:32881; ''
 msgid "ID:32881:V C +P"
-msgstr ""
+msgstr "ID:32814:V C +L"
 
 #. Accelerator Entry for Menu ID:32883; ''
 msgid "ID:32883:V C +A"
@@ -4900,6 +4927,10 @@ msgstr ""
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr ""
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5391,7 +5422,7 @@ msgstr "Vonal eszköz\nVonal"
 
 #. Resource IDs: (32853)
 msgid "Line diff bar"
-msgstr ""
+msgstr "Aktuális sor"
 
 #. Resource IDs: (65535)
 msgid "Line differences"
@@ -5478,7 +5509,7 @@ msgstr ""
 
 #. Resource IDs: (32854)
 msgid "Locator Bar"
-msgstr ""
+msgstr "Navigációs sáv"
 
 #. Resource IDs: (65)
 msgid "Log"
@@ -6100,7 +6131,7 @@ msgstr "Megjegyzés: a mappa nem verziókezelt elemeket (is) tartalmaz"
 
 #. Resource IDs: (65535)
 msgid "Note: the font settings also affect the TortoiseGitUDiff viewer"
-msgstr ""
+msgstr "Megjegyzés: a betűtípus beállításai a TortoiseGitUDiff megjelenítőt is érintik."
 
 #. Resource IDs: (65535)
 msgid "Note: this affects all Tortoise clients, not just TortoiseGit!"
@@ -6222,11 +6253,11 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
-msgstr ""
+msgstr "Office 2003"
 
 #. Resource IDs: (156)
 msgid "Office 2007"
-msgstr ""
+msgstr "Office 2007"
 
 #. Resource IDs: (626)
 msgid "Office 2007 colors"
@@ -6234,7 +6265,7 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office XP"
-msgstr ""
+msgstr "Office XP"
 
 #. Resource IDs: (605)
 msgid "Older commit time"
@@ -6618,6 +6649,14 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Preparing commit..."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7804,14 +7843,6 @@ msgstr "Megtekintés"
 msgid "Show &Accelerator for:"
 msgstr "Gyorsbillentyű &megjelenítése ehhez:"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "&Intervallum..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr ""
@@ -7894,10 +7925,6 @@ msgstr "&Tippek megjelenítése az eszköztárakon"
 
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -8057,18 +8084,11 @@ msgstr ""
 msgid "Show/Hide"
 msgstr "Megjelenítés/Elrejtés"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr ""
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
+"selected, %ld file(s) selected\r\n"
 msgstr ""
 
 #. Resource IDs: (24)
@@ -8220,6 +8240,10 @@ msgstr ""
 
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
 msgstr ""
 
 #. Resource IDs: (1384, 4575)
@@ -8791,7 +8815,7 @@ msgid ""
 "%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr ""
+msgstr "A patch fájlban lévő\n%s\nútvonal nem létezik.\nA TortoiseGitMerge megpróbálta alkalmazni a patch-et az előtagok elhagyásával, de így sem talált megfelelő útvonalat."
 
 #. Resource IDs: (314)
 #, c-format
@@ -9027,9 +9051,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr ""
 
 #. Resource IDs: (98)
 #, c-format
@@ -9045,7 +9078,7 @@ msgstr ""
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr ""
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -9094,7 +9127,7 @@ msgid ""
 "/overlay\t\tto enable overlay mode\n"
 "/fit\t\tto fit the images sizes\n"
 "/showinfo\t\tto show the image info boxes"
-msgstr ""
+msgstr "TortoiseGitIDiff: a TortoiseSVN különbség-megjelenítője képek számára\n\nA használható paraméterek:\n/left: \"a bal oldali kép útvonala\"\n/lefttitle: \"a bal oldali kép címe (a címsorban)\"\n/right: \"a jobb oldali kép útvonala\"\n/righttitle: \"a jobb oldali kép címe (a címsorban)\"\n/overlay Átfedés engedélyezése\n/fit Képek méreteinek egyeztetése\n/showinfo Információ megjelenítése a képekről"
 
 #. Resource IDs: (7, 130, 3585)
 msgid "TortoiseGitMerge"
@@ -9111,8 +9144,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9120,10 +9153,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr ""
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9208,15 +9237,15 @@ msgstr "URL:"
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr ""
+msgstr "UTF-16 BE"
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr ""
+msgstr "UTF-16 LE"
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -9466,6 +9495,10 @@ msgstr "Lomtár használata visszaállításkor"
 msgid "Use regular expression"
 msgstr "Regex használata"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Rendszerbeállítás használata dátumhoz/időhőz"
@@ -9523,6 +9556,10 @@ msgstr "&Ezt a szövegblokkot használja"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Ezt az egész &fájlt használja"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9722,6 +9759,12 @@ msgid ""
 "blobs available locally."
 msgstr ""
 
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Whitespaces"
 msgstr "Láthatatlan karakterek"
@@ -9736,15 +9779,15 @@ msgstr "Ablakok"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 2000"
-msgstr ""
+msgstr "Windows 2000"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 7"
-msgstr ""
+msgstr "Windows 7"
 
 #. Resource IDs: (156, 626)
 msgid "Windows XP"
-msgstr ""
+msgstr "Windows XP"
 
 #. Resource IDs: (5020)
 msgid "Windows-1250"
@@ -10185,7 +10228,7 @@ msgstr ""
 
 #. Resource IDs: (1494)
 msgid "master"
-msgstr ""
+msgstr "master"
 
 #. Resource IDs: (11, 65535)
 msgid "merged"
@@ -10244,6 +10287,10 @@ msgstr "akadályozva"
 msgid "on %1"
 msgstr "%1-en"
 
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
+
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr "képpontok"
@@ -10295,7 +10342,7 @@ msgstr "%s-be"
 
 #. Resource IDs: (1593, 1597, 1601)
 msgid "true"
-msgstr ""
+msgstr "true"
 
 #. Resource IDs: (245)
 msgid "week"

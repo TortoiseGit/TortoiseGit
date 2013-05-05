@@ -4,16 +4,17 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-#  <admin@alphacorp.tk>, 2013.
-# ch3 cooli <ch3cooli@gmail.com>, 2012.
-# ch cooli <ch3cooli@gmail.com>, 2012-2013.
-# 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2013.
+# Hydriz <admin@alphacorp.tk>, 2013
+# 鋰 乙酸 <ch3cooli@gmail.com>, 2012
+# 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
+# 鋰 乙酸 <ch3cooli@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-22 12:26+0000\n"
+"PO-Revision-Date: 2013-05-03 11:58+0000\n"
 "Last-Translator: 鋰 乙酸 <ch3cooli@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -557,6 +558,10 @@ msgstr "目錄(&D)"
 msgid "&Discard"
 msgstr "放棄(&D)"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr "對其餘的作相同處理(&D)"
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "視窗停駐(&D)"
@@ -600,6 +605,10 @@ msgstr "&電郵:"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "啟用代理伺服器(&E)"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr "啟用編輯(&E)"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -851,11 +860,6 @@ msgstr "新增(&N)"
 msgid "&New..."
 msgstr "新增(&N)..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "下 %ld(&N)"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "下一頁(&N)"
@@ -979,6 +983,10 @@ msgstr "遠端(&R)"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "移除(&R)"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr "從索引中移除此檔案(&R)"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1694,6 +1702,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "全部的變更都會消失！確定要重置工具列 '%s' 嗎？"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr "允許在此視窗中編輯\n允許編輯"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "己經是最新的"
@@ -1765,6 +1779,14 @@ msgstr "存取 %1 時發生不明錯誤."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "在第 %d 行發現不明型態資料!"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr "附加右方區塊"
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr "附加這個區塊至左方"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2111,10 +2133,6 @@ msgstr "分支/標籤名字無效"
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "分支/標籤名字無效或空白"
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "建立分支/標籤成功！"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2594,6 +2612,10 @@ msgstr "摺疊不變的部分\n摺疊"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "色彩"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr "依照時間上色(&C)"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3256,6 +3278,10 @@ msgstr "西里爾"
 msgid "DCommit Type"
 msgstr "DCommit類型"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "守護行程"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "日期"
@@ -3756,10 +3782,6 @@ msgstr "編輯備註"
 msgid "Edit author"
 msgstr "編輯作者"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "編輯作者姓名"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "編輯描述"
@@ -3784,9 +3806,9 @@ msgstr "編輯全域 &XDG config"
 msgid "Edit local git config"
 msgstr "編輯本地 .git/config"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
-msgstr "編輯紀錄訊息"
+msgstr "編輯記錄訊息"
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
@@ -3821,6 +3843,10 @@ msgstr "電郵"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "空的"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr "啟用編輯"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4903,6 +4929,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6607,10 +6637,6 @@ msgstr "提交後掛勾"
 msgid "Post-Push Hook"
 msgstr "推送後掛勾"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "更新後掛勾"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "前一頁(&V)"
@@ -6623,13 +6649,17 @@ msgstr "提交前掛勾"
 msgid "Pre-Push Hook"
 msgstr "推送前掛勾"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "更新前掛勾"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "提交準備中..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr "使用右方區塊在前面加上"
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr "使用這個區塊在左方前面加上"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7289,10 +7319,6 @@ msgstr "己還原"
 msgid "Retry"
 msgstr "重試"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "用 --force 來重試"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "兩秒後重試…"
@@ -7819,14 +7845,6 @@ msgstr "顯示"
 msgid "Show &Accelerator for:"
 msgstr "顯示快捷鍵(&A):"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "顯示全部分支(&A)"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "顯示範圍(&R)..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "顯示參考點記錄(&R)"
@@ -7910,10 +7928,6 @@ msgstr "在工具列上顯示畫面提示(&T)"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "顯示空白字元"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "顯示整個專案"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8072,19 +8086,12 @@ msgstr "顯示無版本控制的檔案(&V)"
 msgid "Show/Hide"
 msgstr "顯示/隱藏"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "顯示 %ld 個版本, 從版本: %ld 到版本: %ld - 選擇了 %ld 個版本."
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "顯示 %ld 個版本, 由版本 %s 至 版本%s - %ld 個版本己選取\r\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "顯示 %ld 個版本, 由版本 %s 至 版本%s - %ld 個版本己選取, %ld 個檔案已選取\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8233,13 +8240,13 @@ msgstr "開始提交掛勾"
 msgid "Start Rebase"
 msgstr "開始變基"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "開始更新掛勾"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "開始二分法模式"
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "啟動 Git 服務採用 Git 協定"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -8801,7 +8808,7 @@ msgid ""
 "which seems to match the directory you're applying the patch.\n"
 "\n"
 "Do you want to use the suggested path? Answering 'no' will quit TortoiseGitMerge."
-msgstr "補綴檔中的\n<i>%s</i>\n路徑不存在.\nTortoiseMerge找到的\n<i>%s</i>\n可能是正確的路徑. \n\n要改用找到的路徑嗎? 選擇 '否' 會結束 TortoiseGitMerge."
+msgstr "補綴檔中的\n%s\n路徑不存在.\nTortoiseGitMerge找到的\n%s\n可能是正確的路徑. \n\n要改用找到的路徑嗎? 選擇 '否' 會結束 TortoiseGitMerge."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8810,7 +8817,7 @@ msgid ""
 "%s\n"
 "in the patchfile does not exist.\n"
 "TortoiseGitMerge tried to apply the patch by stripping prefixes but no matching path could be found."
-msgstr "補綴檔中的路徑\n<i>%s</i>\n不存在.\nTortoiseGitMerge 嘗試找出相對路徑但是失敗了."
+msgstr "補綴檔中的路徑\n%s\n不存在.\nTortoiseGitMerge 嘗試找出相對路徑但是失敗了."
 
 #. Resource IDs: (314)
 #, c-format
@@ -8821,7 +8828,7 @@ msgid ""
 "But TortoiseGitMerge found the path\n"
 "%s\n"
 "matches it better. Do you want to use the suggested path instead?"
-msgstr "路徑\n<i>%s</i>\n與補綴檔中的路徑不相符.\nTortoiseGitMerge找到了\n<i>%s</i>\n可能是正確的路徑. 要改用找到的路徑嗎?"
+msgstr "路徑\n%s\n與補綴檔中的路徑不相符.\nTortoiseGitMerge找到了\n%s\n可能是正確的路徑. 要改用找到的路徑嗎?"
 
 #. Resource IDs: (71)
 #, c-format
@@ -9046,9 +9053,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr "TortoiseGit 偵測到檔案 \"%s\" 不存在，但被加入索引中。\n提交對話盒不能處理這情況。\n\n你要從索引中移除此檔案嗎？"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9130,8 +9146,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9139,10 +9155,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge 無法處理這補綴檔，檔名 %s 出現多於一次"
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9485,6 +9497,10 @@ msgstr "復原時使用資源回收筒"
 msgid "Use regular expression"
 msgstr "使用正規表示式"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr "使用右方區塊"
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "使用系統語系表示日期/時間"
@@ -9542,6 +9558,10 @@ msgstr "使用此文字區塊(&I)"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "使用整個檔案(&W)"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr "使用左方區塊"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9740,6 +9760,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "當套用補綴失敗時，嘗試3路合併。"
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "當執行守護行程時，此檔案庫的所有資料都可以被存取而沒有認證及/或加密。"
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10262,6 +10288,10 @@ msgstr "阻礙"
 #, c-format
 msgid "on %1"
 msgstr "於 %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

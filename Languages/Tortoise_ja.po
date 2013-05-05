@@ -4,21 +4,21 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-#  Koto <>, 2012.
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012.
-# Takumi Shotoku <sinsoku.listy@gmail.com>, 2012.
-# Tetsuhiko Koto <>, 2012-2013.
-#   <tetuyano+transi@gmail.com>, 2012-2013.
-# tt yn <tetuyano+transi@gmail.com>, 2013.
-# YANO Tetsu <tetuyano+transi@gmail.com>, 2013.
-# Yoshiharu Hirose <yh1224@gmail.com>, 2012.
+#  Koto <>, 2012
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# Takumi Shotoku <sinsoku.listy@gmail.com>, 2012
+# Tetsuhiko Koto <>, 2012-2013
+# tt yn <tetuyano+transi@gmail.com>, 2012-2013
+# tt yn <tetuyano+transi@gmail.com>, 2013
+# tt yn <tetuyano+transi@gmail.com>, 2013
+# Yoshiharu Hirose <yh1224@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-20 01:33+0000\n"
-"Last-Translator: Tetsuhiko Koto <>\n"
+"PO-Revision-Date: 2013-05-01 16:10+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,6 +561,10 @@ msgstr "ディレクトリ(&D):"
 msgid "&Discard"
 msgstr "破棄(&D)"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "ドッキング(&D)"
@@ -604,6 +608,10 @@ msgstr "メール(&E):"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "プロキシーサーバーを有効にする(&E)"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -855,11 +863,6 @@ msgstr "新規(&N)"
 msgid "&New..."
 msgstr "新規(&N)..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "次の %ld (&N)"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "次のページ(&N)"
@@ -983,6 +986,10 @@ msgstr "リモート(&R)"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "削除(&R)"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1698,6 +1705,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "すべての変更が失われます。本当にツールバー「%s」をリセットしてもよろしいですか？"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "最新状態です。"
@@ -1769,6 +1782,14 @@ msgstr "%1 にアクセス中に未知のエラーが発生しました。"
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "未知の改行コードが、%d行目で見つかりました。"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2115,10 +2136,6 @@ msgstr "ブランチ/タグの名前が無効です"
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "ブランチ/タグの名前が空であるか、無効です。"
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "ブランチ/タグを作成しました。"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2598,6 +2615,10 @@ msgstr "未変更のセクションを折りたたむ\n折りたたむ"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "色"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3260,6 +3281,10 @@ msgstr "キリル文字"
 msgid "DCommit Type"
 msgstr "DCommit タイプ"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "バックグラウンド稼働"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "日時"
@@ -3760,10 +3785,6 @@ msgstr "ノートを編集"
 msgid "Edit author"
 msgstr "作者を編集"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "作者名を編集"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "説明を編集"
@@ -3788,9 +3809,9 @@ msgstr "このユーザのXDG設定を編集(&X)"
 msgid "Edit local git config"
 msgstr "ローカルリポジトリの設定を編集"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
-msgstr "ログメッセージを編集"
+msgstr ""
 
 #. Resource IDs: (1384)
 msgid "Edit s&ystemwide gitconfig"
@@ -3825,6 +3846,10 @@ msgstr "メール"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "空"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -4907,6 +4932,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6611,10 +6640,6 @@ msgstr "Post-Commit フック"
 msgid "Post-Push Hook"
 msgstr "Post-Push フック"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Post-Update フック"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "1つ前のページ(&V)"
@@ -6627,13 +6652,17 @@ msgstr "Pre-Commit フック"
 msgid "Pre-Push Hook"
 msgstr "Pre-Push フック"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Pre-Update フック"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "コミットの準備中..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7293,10 +7322,6 @@ msgstr "復元"
 msgid "Retry"
 msgstr "再試行"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "--force 付きで再実行"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "2秒後に再実行..."
@@ -7823,14 +7848,6 @@ msgstr "表示"
 msgid "Show &Accelerator for:"
 msgstr "アクセラレータを表示(&A):"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "すべてのブランチを表示(&A)"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "範囲を表示(&R)..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "Reflogを表示(&R)"
@@ -7914,10 +7931,6 @@ msgstr "ツールバーの上にスクリーンチップを表示(&T)"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "ホワイトスペース表示"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "プロジェクト全体を表示"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8076,19 +8089,12 @@ msgstr "バージョン管理外のファイルを表示(&V)"
 msgid "Show/Hide"
 msgstr "表示/非表示"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "%ld 個のリビジョン（リビジョン %ld から %ld まで）。%ld 個のリビジョンを選択しています。"
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "%ld 個のリビジョン（リビジョン %s から %s まで）。%ld 個のリビジョンを選択しています。\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "%ld 個のリビジョン表示(リビジョン %s から %s まで)。 %ld 個のリビジョンを選択、 %ld 個のファイルを選択しています。\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8237,13 +8243,13 @@ msgstr "コミットフックを開始"
 msgid "Start Rebase"
 msgstr "リベース開始"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "アップデートフックを開始"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "二分探索モードを開始..."
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "gitプロトコルで稼働するgitサーバーを起動"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -9050,9 +9056,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr ""
 
 #. Resource IDs: (98)
 #, c-format
@@ -9134,8 +9149,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\n libsvn_diff %d.%d.%d, %s\n apr %d.%d.%d\n apr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9143,10 +9158,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMergeは、このパッチファイルを適用できません。ファイル名 ”%s\" が2回以上出現します。"
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9489,6 +9500,10 @@ msgstr "変更を取り消す際にごみ箱を使用する"
 msgid "Use regular expression"
 msgstr "正規表現を使用する"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "日付/時刻にシステムロケールを使用する"
@@ -9546,6 +9561,10 @@ msgstr "このテキストブロックを使用(&I)"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "このファイル全体を使用する(&W)"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9744,6 +9763,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "パッチが正しく適用されなかった場合にも、適用できそうなバイナリーオブジェクトでありローカルで利用できる場合には、3-wayマージを試みる。"
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "デーモンでバックグラウンド稼働中は、このレポジトリのすべてのデータが、認証とまたは暗号化無しに公開されます。"
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10266,6 +10291,10 @@ msgstr "妨害"
 #, c-format
 msgid "on %1"
 msgstr "on %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

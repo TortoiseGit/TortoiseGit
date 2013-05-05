@@ -4,15 +4,16 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-#  <eugen.cocalea@gmail.com>, 2013.
-# Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011.
-#   <zveriu@gmail.com>, 2011.
+# Eugen Cocalea <eugen.cocalea@gmail.com>, 2013
+# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2011
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
+# zveriu <zveriu@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-21 06:43+0000\n"
+"PO-Revision-Date: 2013-05-03 13:18+0000\n"
 "Last-Translator: Eugen Cocalea <eugen.cocalea@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/tortoisegit/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -556,6 +557,10 @@ msgstr "&Dosar:"
 msgid "&Discard"
 msgstr "Renunţă"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr "Fă același lucru pentru restul"
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Ataşare"
@@ -599,6 +604,10 @@ msgstr "&Email:"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Activează serverul proxy"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr "Activează editarea"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -850,11 +859,6 @@ msgstr "&Nou "
 msgid "&New..."
 msgstr "&Nou..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "Î&nainte %ld"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "Pagina &următoare"
@@ -978,6 +982,10 @@ msgstr "&Destinaţie:"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "&Elimină"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr "Șterge acest fișier din index"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1693,6 +1701,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Toate schimbările vor fi pierdute! Sigur doriţi să restabiliţi bara de unelte '%s'?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr "Permite editarea pentru această vizualizare\nPermite editarea"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Deja la zi."
@@ -1764,6 +1778,14 @@ msgstr "A avut loc o eroare necunoscută în timpul accesării %1."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Un tip de linie necunoscut s-a găsit în linia %d !"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr "Adaugă blocul din dreapta la sfârșit"
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr "Adaugă acest bloc la stânga"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2110,10 +2132,6 @@ msgstr "Numele de ramură/etichetă este invalid"
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "Numele de ramură/etichetă nu poate fi nul sau este invalid."
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "Ramură/etichetă creată cu succes!"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2593,6 +2611,10 @@ msgstr "Colapsează secţiunile nemodificate\nColapsează"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Culoare"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr "Colorează conform vechimii, &continuu"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3255,6 +3277,10 @@ msgstr "Chirilic"
 msgid "DCommit Type"
 msgstr "Tip DCommit"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "Demon"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "Data"
@@ -3755,10 +3781,6 @@ msgstr "Editează notiţe"
 msgid "Edit author"
 msgstr "Editează autor"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Editează numele autorului"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "Editează descrierea"
@@ -3783,7 +3805,7 @@ msgstr "Editează configurare &XDG globală"
 msgid "Edit local git config"
 msgstr "Editează git config local"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr "Editează mesajul din jurnal"
 
@@ -3820,6 +3842,10 @@ msgstr "Email-uri"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Gol"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr "Activează editarea"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4902,6 +4928,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6606,10 +6636,6 @@ msgstr "Interceptor post-transmitere"
 msgid "Post-Push Hook"
 msgstr "Interceptor post-împingere"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Hook post-actualizare"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "Pagina &precedentă"
@@ -6622,13 +6648,17 @@ msgstr "Interceptor pre-transmitere"
 msgid "Pre-Push Hook"
 msgstr "Interceptor pre-împingere"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Hook pre-actualizare"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "Se pregăteşte transmiterea..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr "Adaugă blocul din dreapta la început"
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr "Adaugă blocul la început în stânga"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7288,10 +7318,6 @@ msgstr "Restaurat"
 msgid "Retry"
 msgstr "Reîncearcă"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "Reîncearcă folosind --force"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "Se reîncearcă în 2 secunde..."
@@ -7818,14 +7844,6 @@ msgstr "Afişează"
 msgid "Show &Accelerator for:"
 msgstr "Afişează &accelerator pentru:"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "Arată &toate ramurile"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "Afişează &Interval..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "Arată &Reflog"
@@ -7909,10 +7927,6 @@ msgstr "Afişează &mesaje de ajutor pentru barele de unelte"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "Afișează spații goale"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "Arată tot proiectul:"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8071,19 +8085,12 @@ msgstr "Afişează fişiere fără &versiune"
 msgid "Show/Hide"
 msgstr "Afişează/Ascunde"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "Se afişează %ld revizii, de la revizia %ld la revizia %ld - %ld revizii selectate."
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "Se afişează %ld revizie(-ii), de la revizia %s la revizia %s - %ld revizie(-ii) selectate»⏎\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "Se afişează %ld revizie(-ii), de la revizia %s la revizia %s - %ld revizie(-ii) selectate, %ld fișier(e) selectate»⏎\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8232,13 +8239,13 @@ msgstr "Porneşte interceptorul de transmitere"
 msgid "Start Rebase"
 msgstr "Porneşte reamplasarea"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "Porneşte hook-ul de actualizare"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "Porneşte modul înjumătăţire..."
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "Pornește un server git folosind protocolul git"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -9045,9 +9052,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr "TortoiseGit a detectat că fișierul \"%s\" nu există dar este marcat ca \"Adăugat.\nDialogul de transmisie nu poate rezolva asta.\n\nDoriți să-l scoateți de la index?"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9129,8 +9145,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9138,10 +9154,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge nu poate procesa acest fişier petic. Numele de fişier \"%s\" apare de mai multe ori."
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9484,6 +9496,10 @@ msgstr "Foloseşte coşul de gunoi când se inversează"
 msgid "Use regular expression"
 msgstr "Foloseşte expresie regulară"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr "Folosește blocul din dreapta"
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Foloseşte localizarea sistemului pentru data/ora"
@@ -9541,6 +9557,10 @@ msgstr "Foloseşte &acest bloc de text"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Foloseşte totul din fişierul &acesta"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr "Folosește acest bloc în stânga"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9739,6 +9759,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "Dacă peticul nu este aplicat corect revino la îmbinarea în 3 dacă peticul reţine identitatea petelor pe care ar trebui să le aplice şi avem aceste pete disponibile local."
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "Când lucrează în modul demon, toate datele din acest depozit sunt expuse fără autentificare și / sau encriptare."
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10261,6 +10287,10 @@ msgstr "împiedicat"
 #, c-format
 msgid "on %1"
 msgstr "în %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

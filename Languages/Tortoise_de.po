@@ -4,16 +4,16 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012.
-# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2012.
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013.
-# Torsten Widmann <goover0976@googlemail.com>, 2012.
+# Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
+# Lübbe TortoiseSVN <luebbe.tortoisesvn@gmail.com>, 2012
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# Torsten Widmann <goover0976@googlemail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-10 13:48+0000\n"
+"PO-Revision-Date: 2013-05-02 00:57+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -557,6 +557,10 @@ msgstr "&Verzeichnis:"
 msgid "&Discard"
 msgstr "&Verwerfen"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr "&Diese Entscheidung für alle weiteren Funde merken"
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "&Andocken"
@@ -600,6 +604,10 @@ msgstr "&E-Mail:"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "Aktiviere &Proxy Server"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr "B&earbeiten aktivieren"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -851,11 +859,6 @@ msgstr "&Neu "
 msgid "&New..."
 msgstr "&Neu..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "&Nächste %ld"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Nächste Seite"
@@ -979,6 +982,10 @@ msgstr "A&rchiv:"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "Ent&fernen"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr "&Lösche diese Datei aus dem Index"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1694,6 +1701,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Alle Ihre Änderungen werden verworfen! Wollen Sie wirklich die Werkzeugleiste %s zurücksetzen?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr "Bearbeiten für diese Ansicht zulassen\nBearbeiten zulassen"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "Bereits auf dem neusten Stand."
@@ -1765,6 +1778,14 @@ msgstr "Ein unbekannter Fehler ist beim Zugriff auf %1 aufgetreten."
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "Ein unbekannter Zeilentyp wurde in Zeile %d gefunden!"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr "Rechten Block anfügen"
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr "Diesen Block links anfügen"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2111,10 +2132,6 @@ msgstr "Zweig/Markierungsname ist ungülig."
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "Zweig/Markierungsname darf nicht leer sein oder ist ungültig."
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "Zweig/Marke erfolgreich erstellt!"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2594,6 +2611,10 @@ msgstr "Unveränderte Bereiche einklappen\nEinklappen"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "Farbe"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr "Nach Alter einfärben, &kontinuierlich"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3256,6 +3277,10 @@ msgstr "Kryllisch"
 msgid "DCommit Type"
 msgstr "DCommit Typ"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "Dämon"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "Datum"
@@ -3756,10 +3781,6 @@ msgstr "Anmerkungen bearbeiten"
 msgid "Edit author"
 msgstr "Autor bearbeiten"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "Autor bearbeiten"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "Beschreibung bearbeiten"
@@ -3784,7 +3805,7 @@ msgstr "Bearbeite globale &XDG config"
 msgid "Edit local git config"
 msgstr "Lokale git Konfiguration bearbeiten"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr "Logmeldung bearbeiten"
 
@@ -3821,6 +3842,10 @@ msgstr "E-Mails"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Leer"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr "B&earbeiten aktivieren"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4903,6 +4928,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6607,10 +6636,6 @@ msgstr "Nach Eintragung"
 msgid "Post-Push Hook"
 msgstr "Nach Versenden"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Nach Aktualisierung"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "&Vorherige Seite"
@@ -6623,13 +6648,17 @@ msgstr "Vor Eintragung"
 msgid "Pre-Push Hook"
 msgstr "Vor Versenden"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Vor Aktualisierung"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "Bereite Eintragung vor..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr "Rechten Block voranstellen"
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr "Diesen Block links voranstellen"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7289,10 +7318,6 @@ msgstr "Zurückgesetzt"
 msgid "Retry"
 msgstr "Wiederholen"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "Wiederholen mit --force"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "Wiederhole in 2 Sekunden..."
@@ -7819,14 +7844,6 @@ msgstr "Anzeigen"
 msgid "Show &Accelerator for:"
 msgstr "&Zeige Tastenkürzel für:"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "Zeige &alle Zweige"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "&Zeige Bereich"
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "Zeige &Reflog"
@@ -7910,10 +7927,6 @@ msgstr "Zeige &Hinweise auf Werkzeugleisten"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "Leerzeichen anzeigen"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "Zeige gesamtes Projekt"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8072,19 +8085,12 @@ msgstr "Zeige un&versionierte Dateien"
 msgid "Show/Hide"
 msgstr "Anzeigen/Verbergen"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "Zeige %ld Revision(en) des gewählten Pfades. Von Revision %ld bis %ld - %ld Revision(en) gewählt."
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "Zeige %ld Revision(en), von Revision %s bis Revision %s - %ld Revision(en) ausgewählt\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "Zeige %ld Revision(en), von Revision %s bis Revision %s - %ld Revision(en) ausgewählt, %ld Datei(en) ausgewählt\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8233,13 +8239,13 @@ msgstr "Start Eintragung"
 msgid "Start Rebase"
 msgstr "Neuaufbau starten"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "Start Aktualisierung"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "Starte bisect Modus..."
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "Started einen Git-Server mit dem git-Protokoll"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -9046,9 +9052,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr "TortoiseGit hat entdeckt, dass die Datei \"%s\" nicht existiert, aber im Index als \"Hinzugefügt\" vorgemerkt ist.\nDer Eintragen-Dialog unterstützt dies nicht.\n\nMöchten Sie die Datei vom Index entfernen?"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9130,8 +9145,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9139,10 +9154,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge kann diesen Patch nicht verarbeiten. Der Dateiname \"%s\" ist im Patch mehrfach enthalten."
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9485,6 +9496,10 @@ msgstr "Verwende Papierkorb bei Rückgängig"
 msgid "Use regular expression"
 msgstr "Verwende reguläre Ausdrücke"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr "Verwende den rechten Block"
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "Systemvorgabe für Datum/Zeit verwenden"
@@ -9542,6 +9557,10 @@ msgstr "Verwende &diesen Textblock"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Verwende die &ganze Datei"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr "Verwende diesen Block links"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9740,6 +9759,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "Wenn sich der Patch nicht anwenden lässt, falle auf das 3-Wege-Zusammenführen zurück sofern der Patch die Identitäten der Referenzierten Objekte enthält und diese lokal vorliegen."
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "Solange der Dämon läuft, wird das gesamte Repository ohne Authentifizierung/Verschlüsselung im Netzwerk freigegeben."
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10262,6 +10287,10 @@ msgstr "Behindert"
 #, c-format
 msgid "on %1"
 msgstr "auf %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

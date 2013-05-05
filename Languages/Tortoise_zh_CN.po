@@ -4,18 +4,19 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Frank Li <lznuaa@gmail.com>, 2012.
-# Freeman Ke <guang810828@gmail.com>, 2012.
-#  <lznuaa@gmail.com>, 2013.
-#   <lznuaa@gmail.com>, 2012-2013.
-#   <ramboooo@126.com>, 2013.
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013.
+# lznuaa <lznuaa@gmail.com>, 2012
+# Freeman Ke <guang810828@gmail.com>, 2012
+# lznuaa <lznuaa@gmail.com>, 2013
+# lznuaa <lznuaa@gmail.com>, 2012-2013
+# RAMBOO <ramboooo@126.com>, 2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
+# weicong <weicong@live.cn>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-11 04:35+0000\n"
+"PO-Revision-Date: 2013-05-02 03:33+0000\n"
 "Last-Translator: lznuaa <lznuaa@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -559,6 +560,10 @@ msgstr "目录(&D)"
 msgid "&Discard"
 msgstr "放弃(&D)"
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr "剩下的做同样操作(&D)"
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr "钉住(&D)"
@@ -602,6 +607,10 @@ msgstr "Email(&E):"
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "使用代理服务器(&E)"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr "可编辑(&E)"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -853,11 +862,6 @@ msgstr "新建(&N)"
 msgid "&New..."
 msgstr "新建(&N)..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr "下 %ld (&N)"
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "下页(&N)"
@@ -981,6 +985,10 @@ msgstr "远端(&R)"
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "删除(&R)"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr "从索引中去掉这个文件(&R)"
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1696,6 +1704,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "将要丢弃你的全部修改! 你真的要重置工具栏“%s”吗?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr "允许编辑这个视窗\n允许编辑"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "已经最新"
@@ -1767,6 +1781,14 @@ msgstr "存取 %1 时发生不明错误。"
 #, c-format
 msgid "An unknown line type was found in line %d !"
 msgstr "在第 %d 行发现不明型态数据！"
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr "添加右侧内容"
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
+msgstr "追加这个块到左边"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2113,10 +2135,6 @@ msgstr "非法分支/标签名字"
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
 msgstr "非法或者空分支/标签名字"
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
-msgstr "成功创建分支/标签"
 
 #. Resource IDs: (1518)
 msgid "Branch:"
@@ -2596,6 +2614,10 @@ msgstr "折叠未修改的片段\n折叠"
 #. Resource IDs: (16662)
 msgid "Color"
 msgstr "颜色"
+
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr "依据年龄标识颜色，继续(&c)"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -3258,6 +3280,10 @@ msgstr "Cyrillic"
 msgid "DCommit Type"
 msgstr "DCommit类型"
 
+#. Resource IDs: (14)
+msgid "Daemon"
+msgstr "后台服务进程"
+
 #. Resource IDs: (208, 1251)
 msgid "Date"
 msgstr "日期"
@@ -3758,10 +3784,6 @@ msgstr "编辑注释"
 msgid "Edit author"
 msgstr "编辑作者"
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr "编辑作者名"
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr "编辑描述"
@@ -3786,7 +3808,7 @@ msgstr "编辑全局XDG配置文件(&X)"
 msgid "Edit local git config"
 msgstr "编辑本地git config"
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr "编辑日志信息"
 
@@ -3823,6 +3845,10 @@ msgstr "Emails"
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "空"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr "可编辑"
 
 #. Resource IDs: (87)
 msgid ""
@@ -4905,6 +4931,10 @@ msgstr "ID:32883:V C +A"
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
 msgstr "ID:32893:V C +G"
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -6609,10 +6639,6 @@ msgstr "Post-Commit Hook"
 msgid "Post-Push Hook"
 msgstr "Post-Push Hook"
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr "Post-Update Hook"
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr "上页(&V)"
@@ -6625,13 +6651,17 @@ msgstr "Pre-Commit Hook"
 msgid "Pre-Push Hook"
 msgstr "Pre-Push Hook"
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr "Pre-Update Hook"
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
 msgstr "准备提交..."
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr "前置右边块"
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
+msgstr "前置这个块到左边"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -7291,10 +7321,6 @@ msgstr "还原"
 msgid "Retry"
 msgstr "重试"
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr "用--force重试"
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr "在2秒内重试"
@@ -7335,11 +7361,11 @@ msgstr "撤销增加文件到版本控制"
 
 #. Resource IDs: (603)
 msgid "Review Patch with TortoiseGitMerge"
-msgstr "在TortosieMerge中审核补丁"
+msgstr "在TortosieGitMerge中审核补丁"
 
 #. Resource IDs: (14)
 msgid "Review/apply a unified diff file with TortoiseGitMerge"
-msgstr "使用TortoiseMerge审核/应用单个补丁..."
+msgstr "使用TortoiseGitMerge审核/应用单个补丁..."
 
 #. Resource IDs: (13)
 msgid "Review/apply single &patch..."
@@ -7821,14 +7847,6 @@ msgstr "显示"
 msgid "Show &Accelerator for:"
 msgstr "显示加速键(&F):"
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr "显示所有分支&A"
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr "显示范围(&R)..."
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr "显示应用记录(&R)"
@@ -7912,10 +7930,6 @@ msgstr "在工具栏中显示屏幕提示(&T)"
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
 msgstr "显示空白字符"
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
-msgstr "显示整个工程"
 
 #. Resource IDs: (2051)
 msgid "Show an overview of the whole graph"
@@ -8074,19 +8088,12 @@ msgstr "显示无版本控制的文件(&V)"
 msgid "Show/Hide"
 msgstr "显示/隐藏"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr "正在显示 %ld 个版本（介于版本 %ld 到版本 %ld 之间）， 选中了 %ld 个版本。"
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
-msgstr "正在显示 %ld 个版本（介于版本 %s 到版本 %s 之间）， 选中了 %ld 个版本。\n"
+"selected, %ld file(s) selected\r\n"
+msgstr "显示 %ld 版本, 从 %s 到 %s - 已选择 %ld 版本,  已选择 %ld 文件\n"
 
 #. Resource IDs: (24)
 msgid "Shows a graphical representation of copies/tags/branches"
@@ -8235,13 +8242,13 @@ msgstr "启动提交 Hook"
 msgid "Start Rebase"
 msgstr "开始变基"
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr "开始更新 Hook"
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
 msgstr "开始二分定位模式"
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
+msgstr "启动一个运行 Git 协议的 Git 服务器"
 
 #. Resource IDs: (1384, 4575)
 msgid "Stash"
@@ -9048,9 +9055,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \n%s \n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr "TortoiseGit 检查到文件 \"%s\" 不存在, 但是标记为 \"添加\".\n提交对话框不能处理这种情况.\n\n你想从索引中删除它吗？"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9132,8 +9148,8 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\nlibsvn_diff %d.%d.%d, %s\napr %d.%d.%d\napr-util %d.%d.%d"
 
 #. Resource IDs: (7)
 #, c-format
@@ -9141,10 +9157,6 @@ msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
 msgstr "TortoiseGitMerge不能处理这个补丁文件。文件 \"%s\" 出现多次。"
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
-msgstr "TortoiseMerge"
 
 #. Resource IDs: (1739)
 msgid "Total changed lines including added/deleted files:"
@@ -9487,6 +9499,10 @@ msgstr "在恢复的时候使用垃圾箱"
 msgid "Use regular expression"
 msgstr "使用正则表达式"
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr "使用右侧内容"
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr "对日期/时间使用系统区域"
@@ -9544,6 +9560,10 @@ msgstr "使用此文本块(&I)"
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "使用整个文件(&W)"
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
+msgstr "将内容添加至左侧"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9742,6 +9762,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "当引用补丁失败时，尝试三向合并。"
+
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr "当运行后台保护进程时，该版本库的所有数据都会暴露，无需验证凭证或加密。"
 
 #. Resource IDs: (65535)
 msgid "Whitespaces"
@@ -10264,6 +10290,10 @@ msgstr "阻碍"
 #, c-format
 msgid "on %1"
 msgstr "在 %1"
+
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

@@ -4,14 +4,15 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Evaldas Granickas <evaldasgr@gmail.com>, 2011.
-# Rytis Slatkevičius <rytis.s@gmail.com>, 2012.
+# Evaldas Granickas <evaldasgr@gmail.com>, 2011
+# Rytis Slatkevičius <rytis.s@gmail.com>, 2012
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-03-10 12:16+0000\n"
+"PO-Revision-Date: 2013-05-01 16:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/projects/p/tortoisegit/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -555,6 +556,10 @@ msgstr ""
 msgid "&Discard"
 msgstr ""
 
+#. Resource IDs: (1412)
+msgid "&Do the same for the rest"
+msgstr ""
+
 #. Resource IDs: (1066)
 msgid "&Docking"
 msgstr ""
@@ -598,6 +603,10 @@ msgstr ""
 #. Resource IDs: (1023)
 msgid "&Enable Proxy Server"
 msgstr "&Įjungti tarpinį"
+
+#. Resource IDs: (32976)
+msgid "&Enable edit"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -849,11 +858,6 @@ msgstr "&Naujas"
 msgid "&New..."
 msgstr "&Naujas..."
 
-#. Resource IDs: (115)
-#, c-format
-msgid "&Next %ld"
-msgstr ""
-
 #. Resource IDs: (58114)
 msgid "&Next Page"
 msgstr "&Sekantis puslapis"
@@ -977,6 +981,10 @@ msgstr ""
 #. Resource IDs: (1100, 1385, 16646)
 msgid "&Remove"
 msgstr "&Panaikinti"
+
+#. Resource IDs: (1411)
+msgid "&Remove this file from index"
+msgstr ""
 
 #. Resource IDs: (15)
 msgid "&Repo-browser"
@@ -1507,7 +1515,7 @@ msgstr "Apie TortoiseGit"
 
 #. Resource IDs: (100)
 msgid "About TortoiseGitBlame"
-msgstr ""
+msgstr "Apie TortoiseGitBlame"
 
 #. Resource IDs: (136)
 msgid "About TortoiseGitMerge"
@@ -1692,6 +1700,12 @@ msgid ""
 "All your changes will be lost! Do you really want to reset the toolbar '%s'?"
 msgstr "Visi jūsų pakeitimai bus prarasti! Ar jūs tikrai norite atstatyti '%s' įrankių juostą?"
 
+#. Resource IDs: (2062)
+msgid ""
+"Allow Editing for this view\n"
+"Allow Edit"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1762,6 +1776,14 @@ msgstr "Įvyko nežinoma klaida mėginant prieiti prie %1"
 #. Resource IDs: (63)
 #, c-format
 msgid "An unknown line type was found in line %d !"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Append this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1908,7 +1930,7 @@ msgstr "Autoriai:"
 msgid ""
 "Authors:\tFrank Li (lznuaa@gmail.com),\n"
 "\t\tSven Strickroth (email@cs-ware.de)"
-msgstr ""
+msgstr "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
 
 #. Resource IDs: (65535)
 msgid "Auto CrLf convert"
@@ -2108,10 +2130,6 @@ msgstr ""
 
 #. Resource IDs: (602)
 msgid "Branch/Tag name must not be empty or is invalid."
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Branch/tag created successfully!"
 msgstr ""
 
 #. Resource IDs: (1518)
@@ -2593,6 +2611,10 @@ msgstr ""
 msgid "Color"
 msgstr "Spalva"
 
+#. Resource IDs: (32785)
+msgid "Color by age, &continuous"
+msgstr ""
+
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
 msgstr "Spalvos"
@@ -2907,7 +2929,7 @@ msgstr "Kopijuojama..."
 
 #. Resource IDs: (1001)
 msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr ""
+msgstr "Copyright (C) 2009-2013 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3252,6 +3274,10 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "DCommit Type"
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Daemon"
 msgstr ""
 
 #. Resource IDs: (208, 1251)
@@ -3754,10 +3780,6 @@ msgstr ""
 msgid "Edit author"
 msgstr ""
 
-#. Resource IDs: (115)
-msgid "Edit author name"
-msgstr ""
-
 #. Resource IDs: (86)
 msgid "Edit description"
 msgstr ""
@@ -3782,7 +3804,7 @@ msgstr ""
 msgid "Edit local git config"
 msgstr ""
 
-#. Resource IDs: (115, 1254)
+#. Resource IDs: (1254)
 msgid "Edit log message"
 msgstr ""
 
@@ -3819,6 +3841,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "Empty"
 msgstr "Tusčia"
+
+#. Resource IDs: (156)
+msgid "Enable Edit"
+msgstr ""
 
 #. Resource IDs: (87)
 msgid ""
@@ -4429,7 +4455,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr ""
+msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
 
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
@@ -4900,6 +4926,10 @@ msgstr "ID:32883:V C +A"
 
 #. Accelerator Entry for Menu ID:32893; ''
 msgid "ID:32893:V C +G"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32976; '&Enable edit'
+msgid "ID:32976:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
@@ -6223,11 +6253,11 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
-msgstr ""
+msgstr "Office 2003"
 
 #. Resource IDs: (156)
 msgid "Office 2007"
-msgstr ""
+msgstr "Office 2007"
 
 #. Resource IDs: (626)
 msgid "Office 2007 colors"
@@ -6235,7 +6265,7 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office XP"
-msgstr ""
+msgstr "Office XP"
 
 #. Resource IDs: (605)
 msgid "Older commit time"
@@ -6605,10 +6635,6 @@ msgstr ""
 msgid "Post-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Post-Update Hook"
-msgstr ""
-
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
 msgstr ""
@@ -6621,12 +6647,16 @@ msgstr ""
 msgid "Pre-Push Hook"
 msgstr ""
 
-#. Resource IDs: (570)
-msgid "Pre-Update Hook"
-msgstr ""
-
 #. Resource IDs: (68)
 msgid "Preparing commit..."
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend right block"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Prepend this block to left"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7287,10 +7317,6 @@ msgstr ""
 msgid "Retry"
 msgstr ""
 
-#. Resource IDs: (89)
-msgid "Retry with --force"
-msgstr ""
-
 #. Resource IDs: (602)
 msgid "Retrying in 2 seconds..."
 msgstr ""
@@ -7817,14 +7843,6 @@ msgstr ""
 msgid "Show &Accelerator for:"
 msgstr ""
 
-#. Resource IDs: (115)
-msgid "Show &All Branch"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show &Range..."
-msgstr ""
-
 #. Resource IDs: (20)
 msgid "Show &Reflog"
 msgstr ""
@@ -7907,10 +7925,6 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "Show Whitespaces"
-msgstr ""
-
-#. Resource IDs: (115)
-msgid "Show Whole Project"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -8070,18 +8084,11 @@ msgstr ""
 msgid "Show/Hide"
 msgstr "Rodyti/Paslėpti"
 
-#. Resource IDs: (115)
-#, c-format
-msgid ""
-"Showing %ld revision(s), from revision %ld to revision %ld - %ld revision(s)"
-" selected."
-msgstr ""
-
 #. Resource IDs: (76)
 #, c-format
 msgid ""
 "Showing %ld revision(s), from revision %s to revision %s - %ld revision(s) "
-"selected\r\n"
+"selected, %ld file(s) selected\r\n"
 msgstr ""
 
 #. Resource IDs: (24)
@@ -8231,12 +8238,12 @@ msgstr ""
 msgid "Start Rebase"
 msgstr ""
 
-#. Resource IDs: (569)
-msgid "Start Update Hook"
-msgstr ""
-
 #. Resource IDs: (12)
 msgid "Start bisect mode..."
+msgstr ""
+
+#. Resource IDs: (14)
+msgid "Starts a git server running git protocol"
 msgstr ""
 
 #. Resource IDs: (1384, 4575)
@@ -9044,9 +9051,18 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 #. Resource IDs: (107)
 #, c-format
 msgid ""
-"TortoiseGit %d.%d.%d.%d \r\n"
+"TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d \r\n%s \r\n"
+msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+
+#. Resource IDs: (1410)
+#, c-format
+msgid ""
+"TortoiseGit detected that the file \"%s\" does not exist, but is staged as \"Added\".\n"
+"The commit dialog cannot handle this.\n"
+"\n"
+"Do you want to remove it from the index?"
+msgstr ""
 
 #. Resource IDs: (98)
 #, c-format
@@ -9062,7 +9078,7 @@ msgstr ""
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr ""
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -9128,18 +9144,14 @@ msgid ""
 "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\n"
 "libsvn_diff %d.%d.%d, %s\r\n"
 "apr %d.%d.%d\r\n"
-"apr-utils %d.%d.%d"
-msgstr "TortoiseGitMerge %d.%d.%d.%d - %s, %s\r\nlibsvn_diff %d.%d.%d, %s\r\napr %d.%d.%d\r\napr-utils %d.%d.%d"
+"apr-util %d.%d.%d"
+msgstr ""
 
 #. Resource IDs: (7)
 #, c-format
 msgid ""
 "TortoiseGitMerge cannot process this patch file. The filename \"%s\" appears"
 " more than once."
-msgstr ""
-
-#. Resource IDs: (156)
-msgid "TortoiseMerge"
 msgstr ""
 
 #. Resource IDs: (1739)
@@ -9225,15 +9237,15 @@ msgstr ""
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr ""
+msgstr "UTF-16 BE"
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr ""
+msgstr "UTF-16 LE"
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -9483,6 +9495,10 @@ msgstr ""
 msgid "Use regular expression"
 msgstr ""
 
+#. Resource IDs: (251)
+msgid "Use right block"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr ""
@@ -9539,6 +9555,10 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
+msgstr ""
+
+#. Resource IDs: (251)
+msgid "Use this block on left"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -9739,6 +9759,12 @@ msgid ""
 "blobs available locally."
 msgstr ""
 
+#. Resource IDs: (1409)
+msgid ""
+"While running daemon, all data of this repository is exposed without "
+"authentication and/or encryption."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Whitespaces"
 msgstr ""
@@ -9753,11 +9779,11 @@ msgstr "Windows"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 2000"
-msgstr ""
+msgstr "Windows 2000"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 7"
-msgstr ""
+msgstr "Windows 7"
 
 #. Resource IDs: (156, 626)
 msgid "Windows XP"
@@ -10157,7 +10183,7 @@ msgstr ""
 
 #. Resource IDs: (1594, 1596, 1598)
 msgid "false"
-msgstr ""
+msgstr "false"
 
 #. Resource IDs: (66)
 #, c-format
@@ -10202,7 +10228,7 @@ msgstr ""
 
 #. Resource IDs: (1494)
 msgid "master"
-msgstr ""
+msgstr "master"
 
 #. Resource IDs: (11, 65535)
 msgid "merged"
@@ -10261,6 +10287,10 @@ msgstr ""
 msgid "on %1"
 msgstr ""
 
+#. Resource IDs: (1753)
+msgid "origin"
+msgstr ""
+
 #. Resource IDs: (3869)
 msgid "pixels"
 msgstr "pikseliai"
@@ -10312,7 +10342,7 @@ msgstr "į %s"
 
 #. Resource IDs: (1593, 1597, 1601)
 msgid "true"
-msgstr ""
+msgstr "true"
 
 #. Resource IDs: (245)
 msgid "week"
