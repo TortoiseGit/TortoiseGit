@@ -128,31 +128,7 @@
     <ClCompile Include="..\ogdf\src\basic\basic.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\CliqueFinder.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\CombinatorialEmbedding.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\Constraint.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\ConstraintManager.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\DisjointSets.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\DualGraph.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\EdgeComparer.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\EdgeComparerSimple.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\extended_graph_alg.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\geometry.cpp">
@@ -167,46 +143,16 @@
     <ClCompile Include="..\ogdf\src\basic\GraphAttributes.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\GraphConstraints.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\GraphCopy.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\GridLayout.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\GridLayoutModule.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\Hashing.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\Logger.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\Math.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\modules.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\NearestRectangleFinder.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\PoolMemoryAllocator.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\PreprocessorLayout.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\random_hierarchy.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\simple_graph_alg.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\stNumber.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\basic\String.cpp">
@@ -215,76 +161,16 @@
     <ClCompile Include="..\ogdf\src\basic\System.cpp">
       <Filter>Source Files\basic</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\basic\UMLGraph.cpp">
-      <Filter>Source Files\basic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\CconnectClusterPlanar.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\CconnectClusterPlanarEmbed.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\Cluster_ChunkConnection.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\Cluster_CutConstraint.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\Cluster_EdgeVar.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\Cluster_MaxPlanarEdges.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\Clusterer.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\cluster\ClusterGraph.cpp">
       <Filter>Source Files\cluster</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\cluster\ClusterGraphAttributes.cpp">
       <Filter>Source Files\cluster</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\ClusterPlanarizationLayout.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\CPlanarEdgeInserter.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\CPlanarSubClusteredGraph.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\CPlanarSubCLusteredST.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\KuratowskiConstraint.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\MaxCPlanar_Master.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\MaxCPlanar_MinimalClusterConnection.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\MaxCPlanar_Sub.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\cluster\MaximumCPlanarSubgraph.cpp">
-      <Filter>Source Files\cluster</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\fileformats\DinoLineBuffer.cpp">
       <Filter>Source Files\fileformats</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\fileformats\DinoTools.cpp">
-      <Filter>Source Files\fileformats</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\fileformats\DinoUmlDiagramGraph.cpp">
-      <Filter>Source Files\fileformats</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\fileformats\DinoUmlModelGraph.cpp">
-      <Filter>Source Files\fileformats</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\fileformats\DinoUmlToGraphConverter.cpp">
       <Filter>Source Files\fileformats</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\fileformats\DinoXmlParser.cpp">
@@ -302,14 +188,8 @@
     <ClCompile Include="..\ogdf\src\fileformats\OgmlParser.cpp">
       <Filter>Source Files\fileformats</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\fileformats\simple_graph_load.cpp">
-      <Filter>Source Files\fileformats</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\fileformats\XmlParser.cpp">
       <Filter>Source Files\fileformats</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\graphalg\ConvexHull.cpp">
-      <Filter>Source Files\graphalg</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\graphalg\mcf_front_reinelt.cpp">
       <Filter>Source Files\graphalg</Filter>
@@ -320,19 +200,7 @@
     <ClCompile Include="..\ogdf\src\graphalg\MinCostFlowReinelt.cpp">
       <Filter>Source Files\graphalg</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\graphalg\MinimumCut.cpp">
-      <Filter>Source Files\graphalg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\graphalg\PageRank.cpp">
-      <Filter>Source Files\graphalg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\graphalg\ShortestPathsWithBFM.cpp">
-      <Filter>Source Files\graphalg</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\layered\acyclic_subgraph.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\CoffmanGrahamRanking.cpp">
       <Filter>Source Files\layered</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\layered\CrossingsMatrix.cpp">
@@ -341,19 +209,7 @@
     <ClCompile Include="..\ogdf\src\layered\FastHierarchyLayout.cpp">
       <Filter>Source Files\layered</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\FastSimpleHierarchyLayout.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\layered\heuristics.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\HierarchyLayoutModule.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\OptimalHierarchyClusterLayout.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\OptimalHierarchyLayout.cpp">
       <Filter>Source Files\layered</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\layered\OptimalRanking.cpp">
@@ -365,23 +221,14 @@
     <ClCompile Include="..\ogdf\src\layered\SplitHeuristic.cpp">
       <Filter>Source Files\layered</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\layered\sugiyama-cluster.cpp">
-      <Filter>Source Files\layered</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\layered\sugiyama.cpp">
       <Filter>Source Files\layered</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\packing\CCLayoutPackModule.cpp">
       <Filter>Source Files\packing</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\packing\ComponentSplitterLayout.cpp">
-      <Filter>Source Files\packing</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\packing\TileToRowsCCPacker.cpp">
       <Filter>Source Files\packing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\BoothLueker.cpp">
-      <Filter>Source Files\planarity</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\planarity\BoyerMyrvold.cpp">
       <Filter>Source Files\planarity</Filter>
@@ -392,161 +239,11 @@
     <ClCompile Include="..\ogdf\src\planarity\BoyerMyrvoldPlanar.cpp">
       <Filter>Source Files\planarity</Filter>
     </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\ClusterPlanRep.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EdgeInsertionModule.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMaxFace.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMaxFaceLayers.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMinDepth.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMinDepthMaxFace.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMinDepthMaxFaceLayers.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedderMinDepthPiTa.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\EmbedPQTree.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
     <ClCompile Include="..\ogdf\src\planarity\ExtractKuratowskis.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\FastPlanarSubgraph.cpp">
       <Filter>Source Files\planarity</Filter>
     </ClCompile>
     <ClCompile Include="..\ogdf\src\planarity\FindKuratowskis.cpp">
       <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\FixedEmbeddingInserter.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\GraphReduction.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\Layout.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\LayoutPlanRepModule.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MaximalPlanarSubgraphSimple.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MaximumPlanarSubgraph.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MDMFLengthAttribute.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MMCrossingMinimizationModule.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MMFixedEmbeddingInserter.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MMSubgraphPlanarizer.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MMVariableEmbeddingInserter.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\MultiEdgeApproxInserter.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarizationGridLayout.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarizationLayout.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarizationLayout_inc.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarPQTree.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarSubgraphModule.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanarSubgraphPQTree.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanRep.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanRepExpansion.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanRepInc.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\PlanRepUML.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\SimpleEmbedder.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\SubgraphPlanarizer.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\TopologyModule.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\VariableEmbeddingInserter.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarity\VariableEmbeddingInserter2.cpp">
-      <Filter>Source Files\planarity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\BiconnectedShellingOrder.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\FPPLayout.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\IOPoints.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\MixedModelBase.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\MixedModelCrossingsBeautifierModule.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\MixedModelLayout.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\MMCBBase.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\PlanarDrawLayout.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\PlanarStraightLayout.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\SchnyderLayout.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\ShellingOrder.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\ShellingOrderModule.cpp">
-      <Filter>Source Files\planarlayout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogdf\src\planarlayout\TriconnectedShellingOrder.cpp">
-      <Filter>Source Files\planarlayout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
