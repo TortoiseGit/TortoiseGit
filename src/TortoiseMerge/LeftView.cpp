@@ -72,9 +72,10 @@ void CLeftView::UseBothLeftFirst()
 		{
 			line.state = DIFFSTATE_EMPTY;
 		}
-		else
+		else if (line.state!=DIFFSTATE_NORMAL)
 		{
-			line.state = DIFFSTATE_THEIRSADDED;
+			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
+			line.state = DIFFSTATE_NORMAL;
 		}
 		InsertViewData(viewindex++, line);
 	}
@@ -135,9 +136,10 @@ void CLeftView::UseBothRightFirst()
 		{
 			line.state = DIFFSTATE_EMPTY;
 		}
-		else
+		else if (line.state!=DIFFSTATE_NORMAL)
 		{
-			line.state = DIFFSTATE_THEIRSREMOVED;
+			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
+			line.state = DIFFSTATE_NORMAL;
 		}
 		InsertViewData(viewLine, line);
 	}
@@ -184,6 +186,7 @@ void CLeftView::UseRightFile()
 
 	if (!IsWritable())
 		return;
+	ClearSelection();
 	return UseBlock(nFirstViewLine, nLastViewLine);
 }
 
@@ -220,6 +223,10 @@ void CLeftView::AddContextItems(CIconMenu& popup, DiffStates state)
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 		popup.AppendMenuIcon(POPUPCOMMAND_USELEFTFILE, IDS_VIEWCONTEXTMENU_USETHISFILE);
+		if (IsLeftViewGood() && !m_pwndLeft->IsReadonly())
+		{
+			popup.AppendMenuIcon(POPUPCOMMAND_USERIGHTFILE, IDS_VIEWCONTEXTMENU_USEOTHERFILE);
+		}
 	}
 
 	CBaseView::AddContextItems(popup, state);

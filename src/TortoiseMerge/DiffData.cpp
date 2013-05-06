@@ -426,7 +426,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 			}
 			else
 			{ // small trick - we need here a baseline, but we fix it back to yourline at the end of routine
-				m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVED, baseline, endingBase, HIDESTATE_SHOWN, -1);
+				m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVED, -1, endingBase, HIDESTATE_SHOWN, -1);
 			}
 			baseline++;
 		}
@@ -594,19 +594,19 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	}
 
 	// replace baseline with the yourline in m_YourBaseBoth
-	yourline = 0;
+/*	yourline = 0;
 	for(int i=0; i<m_YourBaseBoth.GetCount(); i++)
 	{
 		DiffStates state = m_YourBaseBoth.GetState(i);
 		if((state == DIFFSTATE_REMOVED)||(state == DIFFSTATE_MOVED_FROM))
 		{
-			m_YourBaseBoth.SetLineNumber(i, yourline);
+			m_YourBaseBoth.SetLineNumber(i, -1);
 		}
 		else
 		{
 			yourline++;
 		}
-	}
+	}//*/
 
 	TRACE(_T("done with 2-way diff\n"));
 

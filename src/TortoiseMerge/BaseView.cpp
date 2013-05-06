@@ -2321,6 +2321,9 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		if (!m_pwndLeft->IsReadonly())
 			m_pwndLeft->UseBothLeftFirst();
 		break;
+	case POPUPCOMMAND_USERIGHTFILE:
+		m_pwndLeft->UseRightFile();
+		break;
 	// 3-pane view commands; target is bottom view
 	case POPUPCOMMAND_USEYOURANDTHEIRBLOCK:
 		m_pwndBottom->UseBothRightFirst();
