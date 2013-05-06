@@ -568,8 +568,10 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	m_progress.SetPos(0);
 	m_progress.ShowWindow(SW_SHOW);
 
+	DeleteUrlCacheEntry(url);
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
+	DeleteUrlCacheEntry(url);
 	if (res == S_OK)
 	{
 		if (VerifySignature(tempfile))

@@ -1,4 +1,10 @@
-﻿= Release 1.8.3.0 =
+﻿= Release 1.8.4.0 =
+Released: Unreleased
+
+== Bug Fixes ==
+ * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching
+
+= Release 1.8.3.0 =
 Released: 2013-05-05
 
 == Features ==
