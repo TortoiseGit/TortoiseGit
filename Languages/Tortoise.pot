@@ -8911,7 +8911,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#. Resource IDs: (1004, 1075, 1514, 1539)
+#. Resource IDs: (1004, 1075, 1539)
 msgid "Version"
 msgstr ""
 
