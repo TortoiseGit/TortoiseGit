@@ -19,18 +19,8 @@
 //
 #include "stdafx.h"
 #include "PullCommand.h"
-
-//#include "SVNProgressDlg.h"
-#include "StringUtils.h"
-#include "Hooks.h"
 #include "MessageBox.h"
-#include "PullFetchDlg.h"
-#include "ProgressDlg.h"
-#include "FileDiffDlg.h"
 #include "AppUtils.h"
-#include "LogDlg.h"
-#include "AppUtils.h"
-#include "ChangedDlg.h"
 
 bool PullCommand::Execute()
 {
@@ -39,131 +29,8 @@ bool PullCommand::Execute()
 		return false;
 	}
 
-	CPullFetchDlg dlg;
-	dlg.m_IsPull=TRUE;
-	if(dlg.DoModal()==IDOK)
-	{
-		CString url;
-		url=dlg.m_RemoteURL;
-
-		if(dlg.m_bAutoLoad)
-		{
-			CAppUtils::LaunchPAgent(NULL,&dlg.m_RemoteURL);
-		}
-
-		CString cmd;
-		CGitHash hashOld;
-		if (g_Git.GetHash(hashOld, _T("HEAD")))
-		{
-			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
-			return false;
-		}
-		CString cmdRebase;
-		if(dlg.m_bRebase)
-			cmdRebase = "--rebase ";
-
-		CString noff;
-		CString ffonly;
-		CString squash;
-		CString nocommit;
-		CString notags;
-		if (!dlg.m_bFetchTags)
-			notags = _T("--no-tags");
-		if(dlg.m_bNoFF)
-			noff=_T("--no-ff");
-
-		if (dlg.m_bFFonly)
-			ffonly = _T("--ff-only");
-
-		if(dlg.m_bSquash)
-			squash=_T("--squash");
-
-		if(dlg.m_bNoCommit)
-			nocommit=_T("--no-commit");
-
-		int ver = CAppUtils::GetMsysgitVersion();
-
-		if(ver >= 0x01070203) //above 1.7.0.2
-			cmdRebase += _T("--progress ");
-
-		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, notags, url, dlg.m_RemoteBranchName);
-		CProgressDlg progress;
-		progress.m_GitCmd = cmd;
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_LOG)));
-
-		CTGitPath gitPath = g_Git.m_CurrentDir;
-		if (gitPath.HasSubmodules())
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
-
-		//progress.m_PostCmdList.Add(_T("Show Conflict"));
-
-		if (parser.HasVal(_T("closeonend")))
-			progress.m_bAutoCloseOnSuccess = !!parser.GetLongVal(_T("closeonend"));
-
-		INT_PTR ret = progress.DoModal();
-
-		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
-		{
-			CChangedDlg dlg;
-			dlg.m_pathList.AddPath(CTGitPath());
-			dlg.DoModal();
-
-			return FALSE;
-		}
-
-		CGitHash hashNew;
-		if (g_Git.GetHash(hashNew, L"HEAD"))
-		{
-			MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
-			return FALSE;
-		}
-
-		if( ret == IDC_PROGRESS_BUTTON1)
-		{
-			if(hashOld == hashNew)
-			{
-				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
-				return TRUE;
-			}
-
-			CFileDiffDlg dlg;
-			dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
-			dlg.DoModal();
-
-			return TRUE;
-		}
-		else if ( ret == IDC_PROGRESS_BUTTON1 +1 )
-		{
-			if(hashOld == hashNew)
-			{
-				if(progress.m_GitStatus == 0)
-					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
-				return TRUE;
-			}
-
-
-			CLogDlg dlg;
-
-			//dlg.SetParams(cmdLinePath);
-			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
-			//	dlg.SetIncludeMerge(!!parser.HasKey(_T("merge")));
-			//	val = parser.GetVal(_T("propspath"));
-			//	if (!val.IsEmpty())
-			//		dlg.SetProjectPropertiesPath(CTSVNPath(val));
-			dlg.DoModal();
-
-
-		}
-		else if (ret == IDC_PROGRESS_BUTTON1 + 2 && gitPath.HasSubmodules())
-		{
-			CString sCmd;
-			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
-
-			CAppUtils::RunTortoiseGitProc(sCmd);
-		}
-	}
-
-	return FALSE;
+	bool autoClose = false;
+	if (parser.HasVal(_T("closeonend")))
+		autoClose = !!parser.GetLongVal(_T("closeonend"));
+	return CAppUtils::Pull(false, autoClose);
 }

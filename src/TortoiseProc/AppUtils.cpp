@@ -55,6 +55,7 @@
 #include "SVNDCommitDlg.h"
 #include "requestpulldlg.h"
 #include "PullFetchDlg.h"
+#include "FileDiffDlg.h"
 #include "RebaseDlg.h"
 #include "PropKey.h"
 #include "StashSave.h"
@@ -2162,6 +2163,131 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	return 0;
 }
 
+bool CAppUtils::Pull(bool showPush, bool autoClose)
+{
+	CPullFetchDlg dlg;
+	dlg.m_IsPull = TRUE;
+	if (dlg.DoModal() == IDOK)
+	{
+		CString url = dlg.m_RemoteURL;
+
+		if (dlg.m_bAutoLoad)
+		{
+			CAppUtils::LaunchPAgent(NULL, &dlg.m_RemoteURL);
+		}
+
+		CString cmd;
+		CGitHash hashOld;
+		if (g_Git.GetHash(hashOld, _T("HEAD")))
+		{
+			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
+			return false;
+		}
+
+		CString cmdRebase;
+		CString noff;
+		CString ffonly;
+		CString squash;
+		CString nocommit;
+		CString notags;
+
+		if (dlg.m_bRebase)
+			cmdRebase = "--rebase ";
+
+		if (!dlg.m_bFetchTags)
+			notags = _T("--no-tags");
+
+		if (dlg.m_bNoFF)
+			noff=_T("--no-ff");
+
+		if (dlg.m_bFFonly)
+			ffonly = _T("--ff-only");
+
+		if (dlg.m_bSquash)
+			squash = _T("--squash");
+
+		if (dlg.m_bNoCommit)
+			nocommit = _T("--no-commit");
+
+		int ver = CAppUtils::GetMsysgitVersion();
+
+		if(ver >= 0x01070203) //above 1.7.0.2
+			cmdRebase += _T("--progress ");
+
+		cmd.Format(_T("git.exe pull -v %s %s %s %s %s %s \"%s\" %s"), cmdRebase, noff, ffonly, squash, nocommit, notags, url, dlg.m_RemoteBranchName);
+		CProgressDlg progress;
+		progress.m_GitCmd = cmd;
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
+		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_LOG)));
+		INT_PTR pushButton = showPush ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH))) + IDC_PROGRESS_BUTTON1 : -1;
+
+		CTGitPath gitPath = g_Git.m_CurrentDir;
+		INT_PTR smUpdateButton = gitPath.HasSubmodules() ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE))) + IDC_PROGRESS_BUTTON1 : -1;
+
+		progress.m_bAutoCloseOnSuccess = autoClose;
+
+		INT_PTR ret = progress.DoModal();
+
+		if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(_T("CONFLICT")) >= 0 && CMessageBox::Show(NULL, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		{
+			CChangedDlg dlg;
+			dlg.m_pathList.AddPath(CTGitPath());
+			dlg.DoModal();
+
+			return FALSE;
+		}
+
+		CGitHash hashNew;
+		if (g_Git.GetHash(hashNew, _T("HEAD")))
+		{
+			MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get HEAD hash after pulling.")), _T("TortoiseGit"), MB_ICONERROR);
+			return FALSE;
+		}
+
+		if( ret == IDC_PROGRESS_BUTTON1)
+		{
+			if(hashOld == hashNew)
+			{
+				if(progress.m_GitStatus == 0)
+					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
+				return TRUE;
+			}
+
+			CFileDiffDlg dlg;
+			dlg.SetDiff(NULL, hashNew.ToString(), hashOld.ToString());
+			dlg.DoModal();
+
+			return TRUE;
+		}
+		else if ( ret == IDC_PROGRESS_BUTTON1 +1 )
+		{
+			if(hashOld == hashNew)
+			{
+				if(progress.m_GitStatus == 0)
+					CMessageBox::Show(NULL, IDS_UPTODATE, IDS_APPNAME, MB_OK | MB_ICONINFORMATION);
+				return true;
+			}
+
+			CLogDlg dlg;
+			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
+			dlg.DoModal();
+		}
+		else if (ret == pushButton)
+		{
+			Push(_T(""), autoClose);
+		}
+		else if (ret == smUpdateButton)
+		{
+			CString sCmd;
+			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+
+			CAppUtils::RunTortoiseGitProc(sCmd);
+		}
+	}
+
+	return false;
+}
+
 bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 {
 	CPullFetchDlg dlg;
@@ -2406,6 +2532,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 		INT_PTR ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2431,7 +2558,14 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			}
 			return TRUE;
 		}
-
+		else
+		{
+			// failed, pull first
+			if (ret == IDC_PROGRESS_BUTTON1)
+			{
+				Pull(true, autoClose);
+			}
+		}
 	}
 	return FALSE;
 }
