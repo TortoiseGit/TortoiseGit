@@ -20,8 +20,8 @@
 //
 
 #include "stdafx.h"
+#include "../build/libgit-defines.h"
 #include "git-compat-util.h"
-#include "msvc.h"
 #include "gitdll.h"
 #include "cache.h"
 #include "commit.h"
@@ -646,9 +646,9 @@ int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context)
 }
 
 int git_add_exclude(const char *string, const char *base,
-					int baselen, struct exclude_list *which)
+					int baselen, struct exclude_list *which, int lineno)
 {
-	add_exclude(string, base, baselen, which);
+	add_exclude(string, base, baselen, which, lineno);
 	return 0;
 }
 
@@ -677,7 +677,7 @@ int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,
 							EXCLUDE_LIST el)
 {
-	return excluded_from_list(pathname, pathlen, basename,dtype,el);
+	return is_excluded_from_list(pathname, pathlen, basename, dtype, el);
 }
 
 int git_get_notes(GIT_HASH hash, char **p_note)
@@ -714,14 +714,6 @@ const char git_usage_string[] =
 
 const char git_more_info_string[] =
 	"See 'git help COMMAND' for more information on a specific command.";
-
-/* returns 0 for "no pager", 1 for "use pager", and -1 for "not specified" */
-int check_pager_config(const char *cmd)
-{
-	UNREFERENCED_PARAMETER(cmd);
-	return 0;
-}
-
 
 int git_run_cmd(char *cmd, char *arg)
 {
@@ -954,7 +946,7 @@ int git_checkout_file(const char *ref, const char *path, const char *outputpath)
 	match[1] = NULL;
 
 	init_pathspec(&pathspec, match);
-	pathspec.items[0].use_wildcard = 0;
+	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
 	ret = read_tree_recursive(root, "", 0, 0, &pathspec, update_some, ce);
 	free_pathspec(&pathspec);
 

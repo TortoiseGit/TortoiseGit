@@ -157,7 +157,7 @@ typedef void * EXCLUDE_LIST;
 GITDLL_API int git_create_exclude_list(EXCLUDE_LIST *which);
 
 GITDLL_API int git_add_exclude(const char *string, const char *base,
-					int baselen, EXCLUDE_LIST which);
+					int baselen, EXCLUDE_LIST which, int lineno);
 
 GITDLL_API int git_check_excluded_1(const char *pathname,
 							int pathlen, const char *basename, int *dtype,

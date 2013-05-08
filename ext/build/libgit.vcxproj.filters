@@ -269,9 +269,6 @@
     <ClCompile Include="..\tgit\match-trees.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\merge-file.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\merge-recursive.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -303,9 +300,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\pack-write.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\pager.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\parse-options-cb.c">
@@ -776,6 +770,27 @@
     <ClCompile Include="..\tgit\builtin\write-tree.c">
       <Filter>BuildIn</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\pathspec.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\merge.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fetch-pack.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\merge-blobs.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\wildmatch.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\send-pack.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\pager.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1065,6 +1080,15 @@
     </ClInclude>
     <ClInclude Include="..\tgit\xdiff\xutils.h">
       <Filter>xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\pathspec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\merge-blobs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\wildmatch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
