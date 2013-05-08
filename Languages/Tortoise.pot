@@ -2052,7 +2052,7 @@ msgid "Bro&wse"
 msgstr ""
 
 #. Resource IDs: (21)
-msgid "Browse Reference"
+msgid "Browse References"
 msgstr ""
 
 #. Resource IDs: (78)
@@ -5962,6 +5962,10 @@ msgstr ""
 
 #. Resource IDs: (3605)
 msgid "Opens Help\nHelp Topics"
+msgstr ""
+
+#. Resource IDs: (21)
+msgid "Opens the Reference Browser dialog."
 msgstr ""
 
 #. Resource IDs: (15)

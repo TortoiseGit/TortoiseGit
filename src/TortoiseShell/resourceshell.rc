@@ -305,8 +305,8 @@ BEGIN
     IDS_REFLOG_DEL          "Delete Ref..."
     IDS_MENUSENDMAIL        "Send Mail..."
     IDS_MENUDESSENDMAIL     "Send Patch(es) by eMail"
-    IDS_MENUREFBROWSE       "Browse Reference"
-    IDS_MENUDESCREFBROWSE   "Browse Reference"
+    IDS_MENUREFBROWSE       "Browse References"
+    IDS_MENUDESCREFBROWSE   "Opens the Reference Browser dialog."
     IDS_MENUSVNREBASE       "SVN Rebase..."
 END
 
