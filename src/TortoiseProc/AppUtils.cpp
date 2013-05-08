@@ -2163,7 +2163,7 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	return 0;
 }
 
-bool CAppUtils::Pull(bool autoClose)
+bool CAppUtils::Pull(bool showPush, bool autoClose)
 {
 	CPullFetchDlg dlg;
 	dlg.m_IsPull = TRUE;
@@ -2219,10 +2219,10 @@ bool CAppUtils::Pull(bool autoClose)
 		progress.m_GitCmd = cmd;
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_DIFFS)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_PULL_LOG)));
+		INT_PTR pushButton = showPush ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH))) + IDC_PROGRESS_BUTTON1 : -1;
 
 		CTGitPath gitPath = g_Git.m_CurrentDir;
-		if (gitPath.HasSubmodules())
-			progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+		INT_PTR smUpdateButton = gitPath.HasSubmodules() ? progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE))) + IDC_PROGRESS_BUTTON1 : -1;
 
 		progress.m_bAutoCloseOnSuccess = autoClose;
 
@@ -2272,7 +2272,11 @@ bool CAppUtils::Pull(bool autoClose)
 			dlg.SetParams(CTGitPath(_T("")), CTGitPath(_T("")), _T(""), hashOld.ToString() + _T("..") + hashNew.ToString(), 0);
 			dlg.DoModal();
 		}
-		else if (ret == IDC_PROGRESS_BUTTON1 + 2 && gitPath.HasSubmodules())
+		else if (ret == pushButton)
+		{
+			Push(_T(""), autoClose);
+		}
+		else if (ret == smUpdateButton)
 		{
 			CString sCmd;
 			sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
@@ -2528,6 +2532,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 		INT_PTR ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2553,7 +2558,14 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			}
 			return TRUE;
 		}
-
+		else
+		{
+			// failed, pull first
+			if (ret == IDC_PROGRESS_BUTTON1)
+			{
+				Pull(true, autoClose);
+			}
+		}
 	}
 	return FALSE;
 }
