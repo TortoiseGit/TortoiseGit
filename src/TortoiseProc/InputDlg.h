@@ -20,7 +20,6 @@
 
 #include "StandAloneDlg.h"
 #include "SciEdit.h"
-#include "ProjectProperties.h"
 #include "resource.h"
 /**
  * \ingroup TortoiseProc

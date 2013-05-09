@@ -18,10 +18,10 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SendMail.h"
-#include "hwsmtp.h"
-#include "mailmsg.h"
+#include "HwSMTP.h"
+#include "MailMsg.h"
 #include "Git.h"
 
 class CAppUtils;

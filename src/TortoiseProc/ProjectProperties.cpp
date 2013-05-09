@@ -17,13 +17,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "TortoiseProc.h"
-#include "UnicodeUtils.h"
 #include "ProjectProperties.h"
 #include "AppUtils.h"
-//#include "GitProperties.h"
-#include "TGitPath.h"
-#include "git.h"
+#include "Git.h"
 
 using namespace std;
 

@@ -21,12 +21,9 @@
 
 #include "StandAloneDlg.h"
 #include "TGitPath.h"
-#include "ProjectProperties.h"
 #include "Git.h"
 #include "GitStatus.h"
 #include "Colors.h"
-//#include "..\IBugTraqProvider\IBugTraqProvider_h.h"
-#include "afxwin.h"
 #include "UnicodeUtils.h"
 #include "GitProgressList.h"
 

@@ -32,7 +32,6 @@
 #include "FilterEdit.h"
 #include "GitRev.h"
 #include "Tooltip.h"
-//#include "GitLogList.h"
 #include "lanes.h"
 #include "GitLogCache.h"
 #include <regex>

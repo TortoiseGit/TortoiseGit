@@ -21,8 +21,6 @@
 #include "TortoiseProc.h"
 #include "CommitDlg.h"
 #include "DirFileEnum.h"
-//#include "GitConfig.h"
-#include "ProjectProperties.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"

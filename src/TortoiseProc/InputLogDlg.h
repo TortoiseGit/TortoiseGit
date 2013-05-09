@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "StandAloneDlg.h"
-#include "ProjectProperties.h"
 #include "SciEdit.h"
 
 /**

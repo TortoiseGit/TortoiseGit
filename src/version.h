@@ -1,7 +1,7 @@
 #define FILEVER        1,8,3,0
-#define PRODUCTVER     1,8,3,0
+#define PRODUCTVER     FILEVER
 #define STRFILEVER     "1.8.3.0"
-#define STRPRODUCTVER  "1.8.3.0"
+#define STRPRODUCTVER  STRFILEVER
 
 #define TGIT_VERMAJOR             1
 #define TGIT_VERMINOR             8

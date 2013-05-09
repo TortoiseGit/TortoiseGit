@@ -28,7 +28,6 @@
 #include "ShellExt.h"
 #include "ShellObjects.h"
 #include "..\version.h"
-//#include "libintl.h"
 #undef swprintf
 
 extern ShellObjects g_shellObjects;

@@ -32,7 +32,6 @@
 #include "SysInfo.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "ProjectProperties.h"
 #include "UniCodeUtils.h"
 
 // Link with Wintrust.lib

@@ -21,7 +21,6 @@
 
 #include "StandAloneDlg.h"
 #include "GitStatusListCtrl.h"
-#include "ProjectProperties.h"
 #include "RegHistory.h"
 #include "registry.h"
 #include "SciEdit.h"

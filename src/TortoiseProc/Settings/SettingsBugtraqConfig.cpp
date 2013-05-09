@@ -21,10 +21,10 @@
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "settings\SettingsBugtraqConfig.h"
+#include "SettingsBugtraqConfig.h"
 #include "ProjectProperties.h"
-#include "git.h"
-#include "messagebox.h"
+#include "Git.h"
+#include "MessageBox.h"
 // CSettingsBugtraqConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)

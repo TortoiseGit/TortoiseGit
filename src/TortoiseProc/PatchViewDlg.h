@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "SciEdit.h"
-#include "ProjectProperties.h"
+
 // CPatchViewDlg dialog
 class CCommitDlg;
 class CPatchViewDlg : public CDialog

@@ -21,7 +21,6 @@
 
 #include "resource.h"
 #include "Git.h"
-#include "ProjectProperties.h"
 #include "StandAloneDlg.h"
 #include "TGitPath.h"
 #include "registry.h"
