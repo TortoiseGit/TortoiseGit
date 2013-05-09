@@ -236,12 +236,6 @@
     <ClCompile Include="..\tgit\hex.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\http-walker.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\http.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\ident.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -881,9 +875,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\help.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\http.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\kwset.h">

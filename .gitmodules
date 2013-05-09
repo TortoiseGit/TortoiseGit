@@ -10,9 +10,6 @@
 [submodule "ext/zlib"]
 	path = ext/zlib
 	url = https://github.com/madler/zlib.git
-[submodule "ext/libcurl"]
-	path = ext/libcurl
-	url = https://github.com/bagder/curl.git
 [submodule "ext/libgit2"]
 	path = ext/libgit2
 	url = https://github.com/libgit2/libgit2.git
