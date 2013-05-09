@@ -16,3 +16,13 @@
 #endif
 
 #define PREVIEW		0
+
+/*
+ * TortoiseGit crash handler
+ * Enabling this causes the crash handler to upload stack traces to crash-server.com
+ * to the TortoiseGit account. Enabling does not make sense if the TortoiseGit team
+ * does not have access to the debug symbols!
+ *
+ * This only makes sense for official (preview) releases of the TortoiseGit team
+ */
+#define ENABLE_CRASHHANLDER	0

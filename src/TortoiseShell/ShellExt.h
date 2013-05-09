@@ -116,7 +116,9 @@ protected:
 	FN_BeginBufferedPaint pfnBeginBufferedPaint;
 	FN_EndBufferedPaint pfnEndBufferedPaint;
 
+#if ENABLE_CRASHHANLDER
 	CCrashReportTGit	m_crasher;
+#endif
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)))
 private:

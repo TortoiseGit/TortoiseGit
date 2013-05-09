@@ -89,7 +89,9 @@ BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
 	return g_Git.CheckMsysGitDir();
 }
+#if ENABLE_CRASHHANLDER
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
+#endif
 
 // CTortoiseProcApp initialization
 

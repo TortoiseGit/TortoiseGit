@@ -74,7 +74,9 @@ CTortoiseMergeApp::CTortoiseMergeApp()
 // The one and only CTortoiseMergeApp object
 CTortoiseMergeApp theApp;
 CString sOrigCWD;
+#if ENABLE_CRASHHANLDER
 CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
+#endif
 
 CString g_sGroupingUUID;
 
