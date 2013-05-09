@@ -35,8 +35,8 @@
  * handles the command line. Depending on the command line
  * other 'modules' are called, usually dialog boxes which
  * themselves then execute a specific function.\n\n
- * Many commands are executed using the CSVNProgressDlg which
- * just displays the common notify callbacks of the Subversion commands.
+ * Many commands are executed using the CGitProgressList which
+ * just displays the common notify callbacks of the libgit2 commands.
  */
 
 
