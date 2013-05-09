@@ -85,14 +85,6 @@ typedef struct GIT_COMMIT_DATA
 
 } GIT_COMMIT;
 
-
-GITDLL_API int ngitdll;
-
-GITDLL_API int fngitdll(void);
-/**
- *	Get Git Last Error string.
- */
-GITDLL_API char * get_git_last_error();
 /**
  *	Get hash value.
  *	@param	name	[IN] Reference name, such as HEAD, master, ...

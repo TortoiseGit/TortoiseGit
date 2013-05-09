@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "AboutDlg.h"
-//#include "svn_version.h"
 #include "..\version.h"
 #include "AppUtils.h"
 #include "git.h"
@@ -73,17 +72,6 @@ BOOL CAboutDlg::OnInitDialog()
 	GetModuleFileName(NULL, tgitexe + 1, MAX_PATH);
 	_tcscat(tgitexe, _T(")"));
 	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tgitexe, out);
-#if 0
-	const svn_version_t * svnver = svn_client_version();
-
-	temp.Format(IDS_ABOUTVERSION, TSVN_VERMAJOR, TSVN_VERMINOR, TSVN_VERMICRO, TSVN_VERBUILD, _T(TSVN_PLATFORM), _T(TSVN_VERDATE),
-		svnver->major, svnver->minor, svnver->patch, CString(svnver->tag),
-		APR_MAJOR_VERSION, APR_MINOR_VERSION, APR_PATCH_VERSION,
-		APU_MAJOR_VERSION, APU_MINOR_VERSION, APU_PATCH_VERSION,
-		_T(NEON_VERSION),
-		_T(OPENSSL_VERSION_TEXT),
-		_T(ZLIB_VERSION));
-#endif
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
 
 	this->SetWindowText(_T("TortoiseGit"));

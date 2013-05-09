@@ -36,32 +36,8 @@
 #include "run-command.h"
 #include "mailmap.h"
 
-#if 0
-
-// This is an example of an exported variable
-GITDLL_API int ngitdll=0;
-
-// This is an example of an exported function.
-GITDLL_API int fngitdll(void)
-{
-	return 42;
-}
-
-// This is the constructor of a class that has been exported.
-// see gitdll.h for the class definition
-Cgitdll::Cgitdll()
-{
-	return;
-}
-#endif
-
 extern char g_last_error[];
 const char * g_prefix;
-
-char * get_git_last_error()
-{
-	return g_last_error;
-}
 
 extern void die_dll(const char *err, va_list params);
 
