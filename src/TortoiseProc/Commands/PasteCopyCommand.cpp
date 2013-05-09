@@ -26,14 +26,11 @@
 #include "Git.h"
 #include "GitStatus.h"
 #include "ShellUpdater.h"
-#include "ProjectProperties.h"
 
 bool PasteCopyCommand::Execute()
 {
 	CString sDroppath = parser.GetVal(_T("droptarget"));
 	CTGitPath dropPath(sDroppath);
-	ProjectProperties props;
-	props.ReadProps(dropPath);
 	if (dropPath.IsAdminDir())
 		return FALSE;
 
