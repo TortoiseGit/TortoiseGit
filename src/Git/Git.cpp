@@ -518,6 +518,17 @@ CString CGit::GetConfigValue(CString name,int encoding, BOOL RemoveCR)
 	}
 }
 
+bool CGit::GetConfigValueBool(CString name)
+{
+	CString configValue = g_Git.GetConfigValue(name);
+	configValue.MakeLower();
+	configValue.Trim();
+	if(configValue == _T("true") || configValue == _T("on") || configValue == _T("yes") || StrToInt(configValue) != 0)
+		return true;
+	else
+		return false;
+}
+
 int CGit::SetConfigValue(CString key, CString value, CONFIG_TYPE type, int encoding)
 {
 	if(this->m_IsUseGitDLL)
