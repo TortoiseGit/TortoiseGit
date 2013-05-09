@@ -25,7 +25,6 @@
 #include "ShellUpdater.h"
 #include "CleanTypeDlg.h"
 #include "..\Utils\UnicodeUtils.h"
-#include "ProjectProperties.h"
 #include "SysProgressDlg.h"
 
 static CString UnescapeQuotePath(CString s)
@@ -55,9 +54,7 @@ bool CleanupCommand::Execute()
 	CCleanTypeDlg dlg;
 	if( dlg.DoModal() == IDOK)
 	{
-		ProjectProperties pp;
-		BOOL quotepath = TRUE;
-		pp.GetBOOLProps(quotepath, _T("core.quotepath"));
+		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
 
 		CString cmd;
 		cmd.Format(_T("git clean"));

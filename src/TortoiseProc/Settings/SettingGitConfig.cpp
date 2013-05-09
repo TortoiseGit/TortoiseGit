@@ -26,7 +26,6 @@
 #include "Settings.h"
 #include "GitAdminDir.h"
 #include "MessageBox.h"
-#include "ProjectProperties.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 // CSettingGitConfig dialog
@@ -88,22 +87,20 @@ BOOL CSettingGitConfig::OnInitDialog()
 	m_UserEmail = g_Git.GetUserEmail();
 	m_UserSigningKey = g_Git.GetConfigValue(_T("user.signingkey"));
 
-	ProjectProperties::GetBOOLProps(this->m_bAutoCrlf, _T("core.autocrlf"));
-	BOOL bSafeCrLf = FALSE;
-	ProjectProperties::GetBOOLProps(bSafeCrLf, _T("core.safecrlf"));
+	m_bAutoCrlf = g_Git.GetConfigValueBool(_T("core.autocrlf"));
+	bool bSafeCrLf = g_Git.GetConfigValueBool(_T("core.safecrlf"));
 	if (bSafeCrLf)
 		m_cSafeCrLf.SetCurSel(1);
 	else
 	{
-		CString sSafeCrLf;
-		ProjectProperties::GetStringProps(sSafeCrLf, _T("core.safecrlf"));
+		CString sSafeCrLf = g_Git.GetConfigValue(_T("core.safecrlf"));
 		sSafeCrLf = sSafeCrLf.MakeLower().Trim();
 		if (sSafeCrLf == _T("warn"))
 			m_cSafeCrLf.SetCurSel(2);
 		else
 			m_cSafeCrLf.SetCurSel(0);
 	}
-	ProjectProperties::GetBOOLProps(this->m_bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
+	m_bWarnNoSignedOffBy = g_Git.GetConfigValueBool(_T("tgit.warnnosignedoffby"));
 
 	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	bool isBareRepo = g_GitAdminDir.IsBareRepo(str);

@@ -428,9 +428,7 @@ BOOL CCommitDlg::OnInitDialog()
 
 	this->m_ctrlShowPatch.SetURL(CString());
 
-	BOOL viewPatchEnabled = FALSE;
-	m_ProjectProperties.GetBOOLProps(viewPatchEnabled, _T("tgit.commitshowpatch"));
-	if (viewPatchEnabled)
+	if (g_Git.GetConfigValueBool(_T("tgit.commitshowpatch")))
 		OnStnClickedViewPatch();
 
 	return FALSE;  // return TRUE unless you set the focus to a control
@@ -2343,7 +2341,7 @@ void CCommitDlg::OnStnClickedViewPatch()
 	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
 		BOOL viewPatchEnabled = FALSE;
-		m_ProjectProperties.GetBOOLProps(viewPatchEnabled, _T("tgit.commitshowpatch"));
+		viewPatchEnabled = g_Git.GetConfigValueBool(_T("tgit.commitshowpatch"));
 		if (viewPatchEnabled == FALSE)
 			g_Git.SetConfigValue(_T("tgit.commitshowpatch"), _T("true"));
 		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
