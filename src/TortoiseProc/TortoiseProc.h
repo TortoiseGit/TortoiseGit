@@ -28,9 +28,6 @@
 
 #include "..\\TortoiseShell\\resource.h"
 
-class CTSVNPath;
-class CTSVNPathList;
-
 /**
  * \ingroup TortoiseProc
  * Main class of the TortoiseGitProc.exe\n

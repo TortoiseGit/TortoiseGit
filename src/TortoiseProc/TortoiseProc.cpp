@@ -65,15 +65,12 @@ CTortoiseProcApp::CTortoiseProcApp()
 	_tputenv(_T("GIT_DIR="));
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 	EnableHtmlHelp();
-//	int argc = 0;
-//	const char* const * argv = NULL;
 	SYS_IMAGE_LIST();
 	CHooks::Create();
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
 	retSuccess = false;
 	m_gdiplusToken = NULL;
-
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()
@@ -90,11 +87,6 @@ HWND hWndExplorer;
 
 BOOL CTortoiseProcApp::CheckMsysGitDir()
 {
-	//CGitIndexFileMap map;
-	//int status;
-	//CTGitPath path;
-	//path.SetFromGit(_T("src/gpl.txt"));
-	//map.GetFileStatus(_T("D:\\TortoiseGit"),&path, &status);
 	return g_Git.CheckMsysGitDir();
 }
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
@@ -116,8 +108,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
 	langpath += "Languages";
-//	bindtextdomain("subversion", (LPCSTR)langpath);
-//	bind_textdomain_codeset("subversion", "UTF-8");
 	HINSTANCE hInst = NULL;
 	do
 	{

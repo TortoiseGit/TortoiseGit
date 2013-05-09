@@ -107,23 +107,6 @@ int CPatch::Parse(CString &pathfile)
 	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
 		return -1;
 
-#if 0
-	int i=0;
-	while(i<4)
-	{
-		PatchFile.ReadString(str);
-		if(i==1)
-			this->m_Author=str.Right( str.GetLength() - 6 );
-		if(i==2)
-			this->m_Date = str.Right( str.GetLength() - 6 );
-		if(i==3)
-			this->m_Subject = str.Right( str.GetLength() - 8 );
-
-		++i;
-	}
-
-	LONGLONG offset=PatchFile.GetPosition();
-#endif
 	PatchFile.Read(m_Body.GetBuffer((UINT)PatchFile.GetLength()), (UINT)PatchFile.GetLength());
 	m_Body.ReleaseBuffer();
 	PatchFile.Close();
@@ -145,8 +128,6 @@ int CPatch::Parse(CString &pathfile)
 		one=m_Body.Tokenize("\n",start);
 		if(one.GetLength()>9)
 			g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
-
-		//one=m_Body.Tokenize("\n",start);
 
 		g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
 	}
