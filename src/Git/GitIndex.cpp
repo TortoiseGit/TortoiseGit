@@ -985,6 +985,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 			return GetLastError();
 
 		BYTE *p = m_buffer;
+		int line = 0;
 		for (DWORD i = 0; i < size; ++i)
 		{
 			if (m_buffer[i] == '\n' || m_buffer[i] == '\r' || i == (size - 1))
@@ -998,7 +999,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString &projectroot, const CString &f
 					git_add_exclude((const char*)p,
 										this->m_BaseDir.GetBuffer(),
 										m_BaseDir.GetLength(),
-										this->m_pExcludeList);
+										this->m_pExcludeList, ++line);
 
 				p = m_buffer + i + 1;
 			}

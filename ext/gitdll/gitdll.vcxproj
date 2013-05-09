@@ -134,10 +134,6 @@
     <ResourceCompile Include="gitdll.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\build\libcurl.vcxproj">
-      <Project>{ad0e960b-5de9-4ac3-8ae0-8ed0fb5f1396}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\build\zlib.vcxproj">
       <Project>{5c6b6a95-2053-4593-9617-c4f176736d5a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
