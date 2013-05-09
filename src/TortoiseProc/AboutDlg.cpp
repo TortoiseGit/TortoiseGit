@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "AboutDlg.h"
+#include "PathUtils.h"
 #include "..\version.h"
 #include "AppUtils.h"
 #include "git.h"
@@ -66,12 +67,9 @@ BOOL CAboutDlg::OnInitDialog()
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
 		out += _T(" (") + CGit::ms_LastMsysGitDir + _T(")");
 
-	TCHAR tgitexe[MAX_PATH + 4];
-	memset(tgitexe, 0, sizeof(tgitexe));
-	tgitexe[0] = _T('(');
-	GetModuleFileName(NULL, tgitexe + 1, MAX_PATH);
-	_tcscat(tgitexe, _T(")"));
-	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tgitexe, out);
+	CString tortoisegitprocpath;
+	tortoisegitprocpath.Format(_T("(%s)"), CPathUtils::GetAppDirectory());
+	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, tortoisegitprocpath, out);
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
 
 	this->SetWindowText(_T("TortoiseGit"));
