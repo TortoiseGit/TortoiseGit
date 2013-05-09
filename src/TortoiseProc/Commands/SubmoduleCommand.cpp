@@ -28,6 +28,7 @@
 #include "SubmoduleAddDlg.h"
 #include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
+#include "GitLogListBase.h"
 
 bool SubmoduleAddCommand::Execute()
 {
@@ -131,6 +132,43 @@ bool SubmoduleUpdateCommand::Execute()
 		CString str;
 		str.Format(_T("git.exe submodule update%s \"%s\""), params, submoduleUpdateDlg.m_PathList[i]);
 		progress.m_GitCmdList.push_back(str);
+	}
+
+	if (submoduleUpdateDlg.m_bParallel)
+	{
+		unique_ptr<HANDLE> threads(new HANDLE[submoduleUpdateDlg.m_PathList.size()]);
+		unique_ptr<DWORD> statuses(new DWORD[submoduleUpdateDlg.m_PathList.size()]);
+		for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
+		{
+			struct payload_struct { CString cmd; DWORD *status; };
+			payload_struct *payload = new payload_struct;
+			payload->cmd = progress.m_GitCmdList[i];
+			payload->status = statuses.get() + i;
+			CWinThread *thread = AfxBeginThread([] (LPVOID pVoid) -> UINT
+				{
+					payload_struct *payload = (payload_struct *)pVoid;
+					CProgressDlg dlg;
+					dlg.m_GitCmd = payload->cmd;
+					dlg.DoModal();
+					*payload->status = dlg.m_GitStatus;
+					delete payload;
+					return 0;
+				}, payload);
+			if (thread == NULL)
+			{
+				CMessageBox::Show(NULL, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+				return false;
+			}
+			threads.get()[i] = thread->m_hThread;
+		}
+
+		::WaitForMultipleObjects((DWORD)submoduleUpdateDlg.m_PathList.size(), threads.get(), TRUE, INFINITE);
+
+		for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
+			if (statuses.get()[i])
+				return false;
+
+		return true;
 	}
 
 	progress.DoModal();
