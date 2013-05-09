@@ -47,13 +47,12 @@ bool DaemonCommand::Execute()
 
 	CString ip = _T("localhost");
 	struct hostent *ipList = gethostbyname(hostName);
-	for (int i = 0; ipList->h_addr_list[i] != 0; ++i)
+	if (ipList->h_addr_list[0])
 	{
 		struct in_addr addr;
-		memcpy(&addr, ipList->h_addr_list[i], sizeof(struct in_addr));
+		memcpy(&addr, ipList->h_addr_list[0], sizeof(struct in_addr));
 		CStringA str = inet_ntoa(addr);
 		ip = CUnicodeUtils::GetUnicode(str);
-		break;
 	}
 
 	CString cmd;
