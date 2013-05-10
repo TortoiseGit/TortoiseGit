@@ -2134,7 +2134,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
 		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
 
-		if (!remotebranch.IsEmpty() && git_remote_set_fetchspec(remote, remotebranch))
+		if (!remotebranch.IsEmpty() && git_remote_add_fetch(remote, remotebranch))
 		{
 			ReportGitError();
 			ret = false;
