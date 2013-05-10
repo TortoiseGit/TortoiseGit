@@ -2246,7 +2246,7 @@ bool CGit::UsingLibGit2(int cmd)
 	return false;
 }
 
-CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine)
+CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, bool bMerge, bool bCombine, int diffContext)
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
@@ -2262,7 +2262,10 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 		if (bCombine)
 			merge += _T(" -c");
 
-		cmd.Format(_T("git.exe diff-tree -r -p%s --stat %s %s"), merge, rev1, rev2);
+		CString unified;
+		if (diffContext > 0)
+			unified.Format(_T(" --unified=%d"), diffContext);
+		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s"), merge, unified, rev1, rev2);
 	}
 
 	if (!path.IsEmpty())
@@ -2444,7 +2447,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	return ret;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 	{
@@ -2459,7 +2462,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
 		return g_Git.RunLogFile(cmd, patchfile);
 	}
 }
@@ -2472,14 +2475,14 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 	return 0;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const git_revnum_t& rev2, CStringA * buffer, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
 		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffToStringA, buffer, bMerge);
 	else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine);
+		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
 		BYTE_VECTOR vector;
 		int ret = Run(cmd, &vector);
 		if (!vector.empty())

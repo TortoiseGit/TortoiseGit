@@ -4,6 +4,7 @@ Released: Unreleased
 == Features ==
  * Fixed issue #1765: Pull button when push (after commit) fails
  * Updated libgit to version 1.8.2.2
+ * Support diff.context config key
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching
