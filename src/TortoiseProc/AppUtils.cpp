@@ -945,9 +945,11 @@ bool CAppUtils::StartShowUnifiedDiff(HWND /*hWnd*/, const CTGitPath& url1, const
 												bool bMerge,
 												bool bCombine)
 {
-
+	int diffContext = 0;
+	if (GetMsysgitVersion() > 0x01080100)
+		diffContext = _ttoi(g_Git.GetConfigValue(_T("diff.context")));
 	CString tempfile=GetTempFile();
-	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine))
+	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext))
 	{
 		TRACE("Fail get unified diff\n");
 		return false;
