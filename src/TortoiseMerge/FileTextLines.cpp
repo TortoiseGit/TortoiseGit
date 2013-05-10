@@ -107,15 +107,24 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	int nNeedData = 0;
 	int i=0;
 	// run fast for ascii
-	for (; i<(cb-8); i+=8)
+	for (; i<(cb-7); i+=8)
 	{
-		if ((*(UINT64 *)&pVal8[i] & 0x8080808080808080)!=0) // all Ascii?
+		if ((*(UINT64 *)&pVal8[i] & 0x8080808080808080)!=0) // any non ASCII
 		{
 			bNonANSI = true;
 			break;
 		}
 	}
 	// continue slow
+	for (; i<cb; ++i)
+	{
+		if ((pVal8[i] & 0x80)!=0) // non ASCII
+		{
+			bNonANSI = true;
+			break;
+		}
+	}
+	// check remaining text for UTF-8 validity
 	for (; i<cb; ++i)
 	{
 		UINT8 zChar = pVal8[i];
