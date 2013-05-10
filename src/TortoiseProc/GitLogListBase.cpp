@@ -1941,14 +1941,17 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF2) && m_hasWC) // compare two revisions, unified
 					popup.AppendMenuIcon(ID_GNUDIFF2, IDS_LOG_POPUP_GNUDIFF, IDI_DIFF);
 
-				CString firstSelHash = pSelLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());	
-				GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
-				CString lastSelHash = pLastEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
-				CString menu;
-				menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("..") + firstSelHash);
-				popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
-				menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("...") + firstSelHash);
-				popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
+				if (!pSelLogEntry->m_CommitHash.IsEmpty())
+				{
+					CString firstSelHash = pSelLogEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
+					GitRev* pLastEntry = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(LastSelect));
+					CString lastSelHash = pLastEntry->m_CommitHash.ToString().Left(g_Git.GetShortHASHLength());
+					CString menu;
+					menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("..") + firstSelHash);
+					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
+					menu.Format(IDS_SHOWLOG_OF, lastSelHash + _T("...") + firstSelHash);
+					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
+				}
 
 				bAddSeparator = true;
 			}
