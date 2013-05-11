@@ -36,6 +36,7 @@ using namespace std;
 #define PROJECTPROPNAME_LOCKMSGMINSIZE	  _T("tsvn.lockmsgminsize")
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
 #define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tgit.projectlanguage")
+#define PROJECTPROPNAME_WARNNOSIGNEDOFFBY _T("tgit.warnnosignedoffby")
 #define PROJECTPROPNAME_USERFILEPROPERTY  _T("tsvn.userfileproperties")
 #define PROJECTPROPNAME_USERDIRPROPERTY   _T("tsvn.userdirproperties")
 
@@ -201,6 +202,8 @@ public:
 	 *  with the revision number, "HEAD", or a date. The string %PATH% is replaced
 	 *  with the path relative to the repository root, e.g. "/trunk/src/file" */
 	CString		sWebViewerPathRev;
+
+	BOOL		bWarnNoSignedOffBy;
 
 	/**
 	 * A regex string to extract revisions from a log message.

@@ -516,9 +516,7 @@ void CCommitDlg::OnOK()
 			return;
 	}
 
-	BOOL bWarnNoSignedOffBy = FALSE;
-	ProjectProperties::GetBOOLProps(bWarnNoSignedOffBy, _T("tgit.warnnosignedoffby"));
-	if (bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
+	if (m_ProjectProperties.bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
 	{
 		UINT retval = CMessageBox::Show(this->m_hWnd, IDS_PROC_COMMIT_NOSIGNOFFLINE, IDS_APPNAME, 1, IDI_WARNING, IDS_PROC_COMMIT_ADDSIGNOFFBUTTON, IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON, IDS_ABORTBUTTON);
 		if (retval == 1)

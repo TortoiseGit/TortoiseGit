@@ -35,6 +35,7 @@ struct num_compare
 ProjectProperties::ProjectProperties(void)
 	: regExNeedUpdate (true)
 	, nBugIdPos(-1)
+	, bWarnNoSignedOffBy(FALSE)
 {
 	bNumber = TRUE;
 	bWarnIfNoIssue = FALSE;
@@ -109,6 +110,8 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 	GetBOOLProps(this->bWarnIfNoIssue,BUGTRAQPROPNAME_WARNIFNOISSUE);
 	GetBOOLProps(this->bNumber,BUGTRAQPROPNAME_NUMBER);
 	GetBOOLProps(this->bAppend,BUGTRAQPROPNAME_APPEND);
+
+	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
 
 	GetStringProps(sPropVal,BUGTRAQPROPNAME_LOGREGEX,false);
 

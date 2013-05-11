@@ -28,6 +28,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
+#include "ProjectProperties.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -100,7 +101,6 @@ BOOL CSettingGitConfig::OnInitDialog()
 		else
 			m_cSafeCrLf.SetCurSel(0);
 	}
-	m_bWarnNoSignedOffBy = g_Git.GetConfigValueBool(_T("tgit.warnnosignedoffby"));
 
 	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
 	bool isBareRepo = g_GitAdminDir.IsBareRepo(str);
@@ -112,12 +112,17 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->SetWindowText(title + _T(" - ") + proj);
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
+
+		ProjectProperties props;
+		props.ReadProps(proj);
+		m_bWarnNoSignedOffBy = props.bWarnNoSignedOffBy;
 	}
 	else
 	{
 		m_bGlobal = TRUE;
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
+		m_bWarnNoSignedOffBy = g_Git.GetConfigValueBool(_T("tgit.warnnosignedoffby"));
 	}
 
 	if (isBareRepo)
@@ -182,7 +187,7 @@ BOOL CSettingGitConfig::OnApply()
 			return FALSE;
 
 	if(m_ChangeMask&GIT_WARNNOSIGNEDOFFBY)
-		if (!Save(_T("tgit.warnnosignedoffby"), this->m_bWarnNoSignedOffBy ? _T("true") : _T("false"), type))
+		if (!Save(PROJECTPROPNAME_WARNNOSIGNEDOFFBY, this->m_bWarnNoSignedOffBy ? _T("true") : _T("false"), type))
 			return FALSE;
 
 	if(m_ChangeMask&GIT_CRLF)
