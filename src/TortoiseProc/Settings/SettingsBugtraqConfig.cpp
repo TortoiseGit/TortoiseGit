@@ -77,14 +77,16 @@ END_MESSAGE_MAP()
 BOOL CSettingsBugtraqConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
-	ProjectProperties::GetStringProps(this->m_URL, BUGTRAQPROPNAME_URL);
-	ProjectProperties::GetStringProps(this->m_Logregex, BUGTRAQPROPNAME_LOGREGEX, false);
-	ProjectProperties::GetStringProps(this->m_Label, BUGTRAQPROPNAME_LABEL);
-	ProjectProperties::GetStringProps(this->m_Message, BUGTRAQPROPNAME_MESSAGE);
+	ProjectProperties props;
+	props.ReadProps(g_Git.m_CurrentDir);
+	m_URL = props.sUrl;
+	m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
+	m_Label = props.sLabel;
+	m_Message = props.sMessage;
 
-	ProjectProperties::GetBOOLProps(this->m_bNAppend, BUGTRAQPROPNAME_APPEND);
-	ProjectProperties::GetBOOLProps(this->m_bNNumber, BUGTRAQPROPNAME_NUMBER);
-	ProjectProperties::GetBOOLProps(this->m_bNWarningifnoissue, BUGTRAQPROPNAME_WARNIFNOISSUE);
+	m_bNAppend = props.bAppend;
+	m_bNNumber = props.bNumber;
+	m_bNWarningifnoissue = props.bWarnIfNoIssue;
 
 	m_Logregex.Trim();
 	m_Logregex.Replace(_T("\n"),_T("\r\n"));
