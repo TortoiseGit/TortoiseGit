@@ -47,7 +47,7 @@ bool DaemonCommand::Execute()
 
 	CString ip = _T("localhost");
 	struct hostent *ipList = gethostbyname(hostName);
-	if (ipList->h_addr_list[0])
+	if (ipList && ipList->h_addr_list && ipList->h_addr_list[0])
 	{
 		struct in_addr addr;
 		memcpy(&addr, ipList->h_addr_list[0], sizeof(struct in_addr));
