@@ -122,6 +122,16 @@ int ProjectProperties::ReadProps(CTGitPath path)
 		CStringA configFile = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig";
 		git_config_add_file_ondisk(gitconfig, configFile, 4, FALSE);
 	}
+	else
+	{
+		CString tmpFile = GetTempFile();
+		CTGitPath path(_T(".tgitconfig"));
+		if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
+		{
+			CStringA configFile = CUnicodeUtils::GetUTF8(tmpFile);
+			git_config_add_file_ondisk(gitconfig, configFile, 4, FALSE);
+		}
+	}
 
 	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
 	git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), 3, FALSE);
