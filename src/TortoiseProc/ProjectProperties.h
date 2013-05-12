@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009,2011-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include <set>
 #include "TGitPath.h"
 using namespace std;
 #include <regex>
@@ -61,14 +61,18 @@ public:
 	 * \param path path to a file or a folder
 	 */
 	BOOL ReadProps(CTGitPath path);
-	static BOOL GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR=true);
-	static BOOL GetBOOLProps(BOOL &b, TCHAR*key);
+
+private:
+	int GetStringProps(CString &prop, const CString &key);
+	int GetBOOLProps(BOOL &b, const CString &key);
+
+public:
 	/**
 	 * Reads the properties from all paths found in a path list.
 	 * This method calls ReadProps() for each path .
 	 * \param list of paths
 	 */
-	BOOL ReadPropsPathList(const CTGitPathList& pathList);
+	int ReadPropsPathList(const CTGitPathList& pathList);
 
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
@@ -211,6 +215,8 @@ public:
 	CString		sLogRevRegex;
 private:
 	CTGitPath	propsPath;
+
+	git_config *gitconfig;
 
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.
