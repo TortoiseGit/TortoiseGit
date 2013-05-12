@@ -114,6 +114,12 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
 	{
 		CStringA configFile = CUnicodeUtils::GetUTF8(adminDirPath) + "config";
+		git_config_add_file_ondisk(gitconfig, configFile, 5, FALSE);
+	}
+
+	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	{
+		CStringA configFile = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig";
 		git_config_add_file_ondisk(gitconfig, configFile, 4, FALSE);
 	}
 
