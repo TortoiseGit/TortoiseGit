@@ -2227,10 +2227,14 @@ CString CGit::GetShortName(CString ref, REF_TYPE *out_type)
 	{
 		type = CGit::NOTES;
 	}
+	else if (CGit::GetShortName(str, shortname, _T("refs/")))
+	{
+		type = CGit::UNKNOWN;
+	}
 	else
 	{
 		type = CGit::UNKNOWN;
-		shortname = _T("Unknown");
+		shortname = ref;
 	}
 
 	if(out_type)
