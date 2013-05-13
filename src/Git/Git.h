@@ -357,6 +357,7 @@ public:
 		GIT_CMD_FETCH,
 		GIT_CMD_COMMIT_UPDATE_INDEX,
 		GIT_CMD_DIFF,
+		GIT_CMD_RESET,
 	};
 	bool UsingLibGit2(int cmd);
 

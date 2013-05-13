@@ -3088,6 +3088,8 @@ BEGIN
                             "TortoiseGit detected that the file ""%s"" does not exist, but is staged as ""Added"".\nThe commit dialog cannot handle this.\n\nDo you want to remove it from the index?"
     IDS_REMOVE_FROM_INDEX   "&Remove this file from index"
     IDS_DO_SAME_FOR_REST    "&Do the same for the rest"
+    IDS_PROGRS_TITLE_RESET  "Reset"
+    IDS_RESET_SOFT          "Soft"
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"
@@ -3097,6 +3099,8 @@ BEGIN
     IDS_GITCREDENTIAL_SAVEHELPER 
                             "The credential helper was changed.\nDo you want to save now or discard changes?"
     IDS_GITCREDENTIAL_DELETEHELPER "Do you really want to remove ""%s""?"
+    IDS_RESET_MIXED         "Mixed"
+    IDS_RESET_HARD          "Hard"
 END
 
 STRINGTABLE
