@@ -100,6 +100,7 @@ public:
 		GitProgress_SendMail,
 		GitProgress_Clone,
 		GitProgress_Fetch,
+		GitProgress_Reset,
 	} Command;
 
 	CGitProgressList();
@@ -115,6 +116,8 @@ public:
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
 	void SetRefSpec(CString spec){ m_RefSpec = spec; }
 	void SetAutoTag(int tag){ m_AutoTag = tag; }
+	void SetRevision(CString revision){ m_revision = revision; }
+	void SetResetType(int resetType){ m_resetType = resetType; }
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}
@@ -308,6 +311,7 @@ private:
 	bool		CmdSendMail(CString& sWindowTitle, bool& localoperation);
 	bool		CmdClone(CString& sWindowTitle, bool& localoperation);
 	bool		CmdFetch(CString& sWindowTitle, bool& localoperation);
+	bool		CmdReset(CString& sWindowTitle, bool& localoperation);
 
 private:
 	typedef std::map<CStringA, git_revnum_t> StringRevMap;
@@ -372,6 +376,8 @@ private:
 	bool					m_bNoCheckout;
 	CString					m_RefSpec;
 	int						m_AutoTag;
+	CString					m_revision;
+	int						m_resetType;
 public:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	void Init();

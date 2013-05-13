@@ -78,6 +78,7 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bBare(false)
 	, m_bNoCheckout(false)
 	, m_AutoTag(GIT_REMOTE_DOWNLOAD_TAGS_AUTO)
+	, m_resetType(0)
 	, m_options(ProgOptNone)
 	, m_bSetTitle(false)
 	, m_pTaskbarList(nullptr)
@@ -853,6 +854,9 @@ UINT CGitProgressList::ProgressThread()
 		break;
 	case GitProgress_Fetch:
 		bSuccess = CmdFetch(sWindowTitle, localoperation);
+		break;
+	case GitProgress_Reset:
+		bSuccess = CmdReset(sWindowTitle, localoperation);
 		break;
 	}
 	if (!bSuccess)
@@ -2178,6 +2182,59 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 	} while(0);
 
 	git_remote_free(remote);
+	git_repository_free(repo);
+	if (m_pAnimate)
+		m_pAnimate->ShowWindow(SW_HIDE);
+	return ret;
+}
+
+bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
+{
+	if (!g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
+	{
+		// should never run to here
+		ASSERT(0);
+		return false;
+	}
+
+	SetWindowTitle(IDS_PROGRS_TITLE_RESET, g_Git.m_CurrentDir, sWindowTitle);
+	SetBackgroundImage(IDI_UPDATE_BKG);
+	int resetTypesResource[] = { IDS_RESET_SOFT, IDS_RESET_MIXED, IDS_RESET_HARD };
+	ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_TITLE_RESET)) + _T(" ") + CString(MAKEINTRESOURCE(resetTypesResource[m_resetType])) + _T(" ") + m_revision);
+
+	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+
+	git_remote *remote = NULL;
+	git_repository *repo = NULL;
+	bool ret = true;
+
+	do
+	{
+		if (m_pAnimate)
+		{
+			m_pAnimate->ShowWindow(SW_SHOW);
+			m_pAnimate->Play(0, INT_MAX, INT_MAX);
+		}
+
+		if (git_repository_open(&repo, gitdir.GetBuffer()))
+		{
+			gitdir.ReleaseBuffer();
+			ReportGitError();
+			ret = false;
+			break;
+		}
+
+		CStringA revstr = CUnicodeUtils::GetUTF8(m_revision);
+		git_object *target;
+		git_revparse_single(&target, repo, revstr);
+		if (git_reset(repo, target, (git_reset_t)(m_resetType + 1)))
+		{
+			ReportGitError();
+			ret = false;
+			break;
+		}
+	} while (0);
+
 	git_repository_free(repo);
 	if (m_pAnimate)
 		m_pAnimate->ShowWindow(SW_HIDE);

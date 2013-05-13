@@ -57,7 +57,9 @@ public:
 	void SetIsBare(bool b) { m_ProgList.SetIsBare(b); }
 	void SetNoCheckout(bool b){ m_ProgList.SetNoCheckout(b); }
 	void SetRefSpec(CString spec){ m_ProgList.SetRefSpec(spec); }
-	void SetAutoTag(int tag){ m_ProgList.SetAutoTag(tag); }
+	void SetAutoTag(int tag){ m_ProgList.SetAutoTag(tag); }	
+	void SetRevision(CString revision){ m_ProgList.SetRevision(revision); }
+	void SetResetType(int resetType){ m_ProgList.SetResetType(resetType); }
 
 //	void SetRevision(const GitRev& rev) {m_Revision = rev;}
 //	void SetRevisionEnd(const GitRev& rev) {m_RevisionEnd = rev;}

@@ -1367,6 +1367,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 			type=_T("--hard");
 			break;
 		default:
+			dlg.m_ResetType = 1;
 			type=_T("--mixed");
 			break;
 		}
@@ -1383,7 +1384,18 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 
 			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
 
-			INT_PTR ret = progress.DoModal();
+			INT_PTR ret;
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
+			{
+				CGitProgressDlg gitdlg;
+				gitdlg.SetCommand(CGitProgressList::GitProgress_Reset);
+				gitdlg.SetRevision(dlg.m_ResetToVersion);
+				gitdlg.SetResetType(dlg.m_ResetType);
+				ret = gitdlg.DoModal();
+			}
+			else
+				ret = progress.DoModal();
+
 			if (progress.m_GitStatus == 0 && gitPath.HasSubmodules() && dlg.m_ResetType == 2 && ret == IDC_PROGRESS_BUTTON1)
 			{
 				CString sCmd;

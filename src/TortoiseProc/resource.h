@@ -898,7 +898,9 @@
 #define IDC_PROXYLABEL4                 1412
 #define IDS_DO_SAME_FOR_REST            1412
 #define IDC_PROXYLABEL5                 1413
+#define IDS_PROGRS_TITLE_RESET          1413
 #define IDC_PROXYLABEL6                 1414
+#define IDS_RESET_SOFT                  1414
 #define IDS_SETTINGS_LOCAL              1415
 #define IDS_SETTINGS_GLOBAL             1416
 #define IDS_SETTINGS_SYSTEM             1417
@@ -906,6 +908,8 @@
 #define IDS_GITCREDENTIAL_OVERWRITEHELPER 1419
 #define IDS_GITCREDENTIAL_SAVEHELPER    1420
 #define IDS_GITCREDENTIAL_DELETEHELPER  1421
+#define IDS_RESET_MIXED                 1422
+#define IDS_RESET_HARD                  1423
 #define IDC_SYSTEMLOCALEFORDATES        1426
 #define IDC_ACTIONLOGCLEAR              1427
 #define IDC_MAXLINES                    1428
