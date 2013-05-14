@@ -106,14 +106,8 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	if (str.IsEmpty())
 		return -1;
 
-	COMBOBOXEXITEM cbei;
-	SecureZeroMemory(&cbei, sizeof cbei);
-	cbei.mask = CBEIF_TEXT;
-
 	if (pos < 0)
-        cbei.iItem = GetCount();
-	else
-		cbei.iItem = pos;
+		pos = GetCount();
 
 	if (m_bTrim)
 		str.Trim(_T(" "));
@@ -122,6 +116,38 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	combostring.Replace('\n', ' ');
 	if (m_bTrim)
 		combostring.Trim();
+
+	//search the Combo for another string like this
+	//and do not insert if found
+	int nIndex = FindStringExact(-1, combostring);
+	if (nIndex != -1)
+	{
+		if (nIndex > pos)
+		{
+			DeleteItem(nIndex);
+			m_arEntries.RemoveAt(nIndex);
+		}
+		else
+		{
+			if(isSel)
+				SetCurSel(nIndex);
+			return nIndex;
+		}
+	}
+
+	//truncate list to m_nMaxHistoryItems
+	int nNumItems = GetCount();
+	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
+	{
+		DeleteItem(m_nMaxHistoryItems);
+		m_arEntries.RemoveAt(m_nMaxHistoryItems);
+	}
+
+	COMBOBOXEXITEM cbei;
+	SecureZeroMemory(&cbei, sizeof cbei);
+	cbei.mask = CBEIF_TEXT;
+	cbei.iItem = pos;
+
 	cbei.pszText = const_cast<LPTSTR>(combostring.GetString());
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
@@ -158,35 +184,9 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 	}
 #endif
 
-	//search the Combo for another string like this
-	//and do not insert if found
-	int nIndex = FindStringExact(-1, combostring);
-	if (nIndex != -1)
-	{
-		if (nIndex > cbei.iItem)
-		{
-			DeleteItem(nIndex);
-			m_arEntries.RemoveAt(nIndex);
-		}
-		else
-		{
-			if(isSel)
-				SetCurSel(nIndex);
-			return nIndex;
-		}
-	}
-
 	int nRet = InsertItem(&cbei);
 	if (nRet >= 0)
 		m_arEntries.InsertAt(nRet, str);
-
-	//truncate list to m_nMaxHistoryItems
-	int nNumItems = GetCount();
-	for (int n = m_nMaxHistoryItems; n < nNumItems; n++)
-	{
-		DeleteItem(m_nMaxHistoryItems);
-		m_arEntries.RemoveAt(m_nMaxHistoryItems);
-	}
 
 	if(isSel)
 		SetCurSel(nRet);
