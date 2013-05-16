@@ -616,7 +616,7 @@ int git_read_tree(GIT_HASH hash,read_tree_fn_t fn, void *context)
 		free_all_pack();
 		return -1;
 	}
-	ret = read_tree_recursive(root,NULL,NULL,0,NULL,fn,context);
+	ret = read_tree_recursive(root, NULL, 0, 0, NULL, fn, context);
 	free_all_pack();
 	return ret;
 }
@@ -888,7 +888,7 @@ static int update_some(const unsigned char *sha1, const char *base, int baselen,
 	hashcpy(ce->sha1, sha1);
 	memcpy(ce->name, base, baselen);
 	memcpy(ce->name + baselen, pathname, strlen(pathname));
-	ce->ce_flags = create_ce_flags(strlen(pathname)+baselen, 0);
+	ce->ce_flags = create_ce_flags(strlen(pathname) + baselen);
 	ce->ce_mode = create_ce_mode(mode);
 
 	return 0;
