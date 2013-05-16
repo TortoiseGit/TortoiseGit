@@ -37,7 +37,7 @@ CSubmoduleAddDlg::CSubmoduleAddDlg(CWnd* pParent /*=NULL*/)
 	, m_strBranch(_T(""))
 	, m_bForce(FALSE)
 {
-
+	m_bAutoloadPuttyKeyFile = CAppUtils::IsSSHPutty();
 }
 
 CSubmoduleAddDlg::~CSubmoduleAddDlg()
@@ -52,6 +52,8 @@ void CSubmoduleAddDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_BRANCH_CHECK, m_bBranch);
 	DDX_Text(pDX, IDC_SUBMODULE_BRANCH, m_strBranch);
 	DDX_Check(pDX, IDC_FORCE, m_bForce);
+	DDX_Check(pDX,IDC_PUTTYKEY_AUTOLOAD, m_bAutoloadPuttyKeyFile);
+	DDX_Control(pDX, IDC_PUTTYKEYFILE, m_PuttyKeyCombo);
 }
 
 
@@ -59,6 +61,8 @@ BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 	ON_COMMAND(IDC_REP_BROWSE,			OnRepBrowse)
 	ON_COMMAND(IDC_BUTTON_PATH_BROWSE,	OnPathBrowse)
 	ON_COMMAND(IDC_BRANCH_CHECK,		OnBranchCheck)
+	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, OnBnClickedPuttykeyfileBrowse)
+	ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, OnBnClickedPuttykeyAutoload)
 END_MESSAGE_MAP()
 
 
@@ -79,11 +83,15 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddAnchor(IDC_BRANCH_CHECK,BOTTOM_LEFT);
 	AddAnchor(IDC_SUBMODULE_BRANCH,BOTTOM_LEFT,BOTTOM_RIGHT);
 	AddAnchor(IDC_FORCE,BOTTOM_LEFT);
+	AddAnchor(IDC_PUTTYKEYFILE_BROWSE,TOP_RIGHT);
+	AddAnchor(IDC_PUTTYKEY_AUTOLOAD,TOP_LEFT);
+	AddAnchor(IDC_PUTTYKEYFILE,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddOthersToAnchor();
 
 	AdjustControlSize(IDC_BRANCH_CHECK);
 	AdjustControlSize(IDC_FORCE);
+	AdjustControlSize(IDC_PUTTYKEY_AUTOLOAD);
 
 	EnableSaveRestore(_T("SubmoduleAddDlg"));
 
@@ -98,6 +106,14 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	m_PathCtrl.LoadHistory(_T("Software\\TortoiseGit\\History\\SubModulePath"), _T("url"));
 	m_PathCtrl.SetWindowText(m_strPath);
 	m_Repository.SetCurSel(0);
+
+	m_PuttyKeyCombo.SetPathHistory(TRUE);
+	m_PuttyKeyCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\puttykey"), _T("key"));
+	m_PuttyKeyCombo.SetCurSel(0);
+
+	GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
+	GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+	GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
 	GetDlgItem(IDC_GROUP_SUBMODULE)->SetWindowText(CString(_T("Submodule of Project: "))+m_strProject);
 
@@ -171,5 +187,25 @@ void CSubmoduleAddDlg::OnOK()
 		m_tooltips.ShowBalloon(IDC_COMBOBOXEX_REPOSITORY, IDS_ERR_MISSINGVALUE, IDS_ERR_ERROR, TTI_ERROR);
 		return;
 	}
+
+	m_PuttyKeyCombo.SaveHistory();
+	m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	__super::OnOK();
+}
+
+void CSubmoduleAddDlg::OnBnClickedPuttykeyfileBrowse()
+{
+	UpdateData();
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, CString(MAKEINTRESOURCE(IDS_PUTTYKEYFILEFILTER)));
+	if (dlg.DoModal()==IDOK)
+	{
+		m_PuttyKeyCombo.SetWindowText(dlg.GetPathName());
+	}
+}
+
+void CSubmoduleAddDlg::OnBnClickedPuttykeyAutoload()
+{
+	UpdateData();
+	GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+	GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 }

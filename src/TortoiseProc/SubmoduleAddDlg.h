@@ -40,16 +40,21 @@ protected:
 	void OnRepBrowse();
 	void OnPathBrowse();
 	void OnBranchCheck();
+	void OnBnClickedPuttykeyfileBrowse();
+	void OnBnClickedPuttykeyAutoload();
 	virtual void OnOK();
 	CToolTips m_tooltips;
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_Repository;
 	CHistoryCombo m_PathCtrl;
+	CHistoryCombo m_PuttyKeyCombo;
 	BOOL m_bBranch;
 	BOOL m_bForce;
+	BOOL m_bAutoloadPuttyKeyFile;
 	CString m_strBranch;
 	CString m_strPath;
 	CString m_strRepos;
 	CString m_strProject;
+	CString	m_strPuttyKeyFile;
 };

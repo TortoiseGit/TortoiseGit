@@ -5,6 +5,7 @@ Released: Unreleased
  * Fixed issue #1765: Pull button when push (after commit) fails
  * Updated libgit to version 1.8.2.2
  * Support diff.context config key
+ * Fixed issue #1778: Add Submodule with Putty key
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching

@@ -28,6 +28,7 @@
 #include "SubmoduleAddDlg.h"
 #include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
+#include "AppUtils.h"
 
 bool SubmoduleAddCommand::Execute()
 {
@@ -37,6 +38,9 @@ bool SubmoduleAddCommand::Execute()
 	dlg.m_strProject = g_Git.m_CurrentDir;
 	if( dlg.DoModal() == IDOK )
 	{
+		if (dlg.m_bAutoloadPuttyKeyFile)
+			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
+
 		CString cmd;
 		if(dlg.m_strPath.Left(g_Git.m_CurrentDir.GetLength()) == g_Git.m_CurrentDir)
 			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
@@ -59,6 +63,23 @@ bool SubmoduleAddCommand::Execute()
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		progress.DoModal();
+
+		if (progress.m_GitStatus == 0)
+		{
+			if (dlg.m_bAutoloadPuttyKeyFile)
+			{
+				SetCurrentDirectory(g_Git.m_CurrentDir);
+				CGit subgit;
+				dlg.m_strPath.Replace(_T('/'), _T('\\'));
+				subgit.m_CurrentDir = PathIsRelative(dlg.m_strPath) ? g_Git.m_CurrentDir + _T("\\") + dlg.m_strPath : dlg.m_strPath;
+
+				if (subgit.SetConfigValue(_T("remote.origin.puttykeyfile"), dlg.m_strPuttyKeyFile, CONFIG_LOCAL, CP_UTF8))
+				{
+					CMessageBox::Show(NULL, _T("Fail set config remote.origin.puttykeyfile"), _T("TortoiseGit"), MB_OK| MB_ICONERROR);
+					return FALSE;
+				}
+			}
+		}
 
 		bRet = TRUE;
 	}
