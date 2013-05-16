@@ -32,7 +32,7 @@ using namespace std;
 
 #define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn.logtemplate")
 #define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tgit.logwidthmarker")
-#define PROJECTPROPNAME_LOGMINSIZE		  _T("tsvn.logminsize")
+#define PROJECTPROPNAME_LOGMINSIZE		  _T("tgit.logminsize")
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
 #define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tgit.projectlanguage")
 #define PROJECTPROPNAME_WARNNOSIGNEDOFFBY _T("tgit.warnnosignedoffby")

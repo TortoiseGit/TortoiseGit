@@ -188,6 +188,14 @@ int ProjectProperties::ReadProps(CTGitPath path)
 		}
 	}
 
+	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGMINSIZE) == 0)
+	{
+		CString val;
+		val = sPropVal;
+		if (!val.IsEmpty())
+			nMinLogSize = _ttoi(val);
+	}
+
 	return 0;
 }
 
