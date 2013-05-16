@@ -42,7 +42,6 @@ ProjectProperties::ProjectProperties(void)
 	bWarnIfNoIssue = FALSE;
 	nLogWidthMarker = 0;
 	nMinLogSize = 0;
-	nMinLockMsgSize = 0;
 	bFileListInEnglish = TRUE;
 	bAppend = TRUE;
 	lProjectLanguage = 0;

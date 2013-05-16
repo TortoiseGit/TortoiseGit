@@ -179,21 +179,12 @@ public:
 	/** Minimum size a log message must have in chars */
 	int			nMinLogSize;
 
-	/** Minimum size a lock message must have in chars */
-	int			nMinLockMsgSize;
-
 	/** TRUE if the file list to be inserted in the commit dialog should be in
 	 * English and not in the localized language. Default is TRUE */
 	BOOL		bFileListInEnglish;
 
 	/** The language identifier this project uses for log messages. */
 	LONG		lProjectLanguage;
-
-	/** holds user defined properties for files. */
-	CString		sFPPath;
-
-	/** holds user defined properties for directories. */
-	CString		sDPPath;
 
 	/** The url pointing to the web viewer. The string %REVISION% is replaced
 	 *  with the revision number, "HEAD", or a date */
@@ -211,8 +202,6 @@ public:
 	 */
 	CString		sLogRevRegex;
 private:
-	CTGitPath	propsPath;
-
 	git_config *gitconfig;
 
 	/**
