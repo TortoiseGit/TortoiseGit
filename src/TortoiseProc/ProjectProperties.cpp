@@ -20,6 +20,7 @@
 #include "ProjectProperties.h"
 #include "AppUtils.h"
 #include "Git.h"
+#include "UnicodeUtils.h"
 
 using namespace std;
 
@@ -45,10 +46,13 @@ ProjectProperties::ProjectProperties(void)
 	bFileListInEnglish = TRUE;
 	bAppend = TRUE;
 	lProjectLanguage = 0;
+	gitconfig = nullptr;
 }
 
 ProjectProperties::~ProjectProperties(void)
 {
+	if (gitconfig)
+		git_config_free(gitconfig);
 }
 
 
@@ -64,42 +68,82 @@ BOOL ProjectProperties::ReadPropsPathList(const CTGitPathList& pathList)
 	return FALSE;
 }
 
-BOOL ProjectProperties::GetStringProps(CString &prop,TCHAR *key,bool bRemoveCR)
+int ProjectProperties::GetStringProps(CString &prop, const CString &key)
 {
-	CString cmd,output;
-	output.Empty();
+	ATLASSERT(gitconfig);
 
-	output = g_Git.GetConfigValue(key, CP_UTF8, bRemoveCR);
-
-	if(output.IsEmpty())
+	CStringA keyA = CUnicodeUtils::GetUTF8(key);
+	const char * value = nullptr;
+	if (git_config_get_string(&value, gitconfig, keyA.GetBuffer()))
 	{
-		return FALSE;
+		keyA.ReleaseBuffer();
+		return -1;
+	}
+	keyA.ReleaseBuffer();
+
+	prop = CUnicodeUtils::GetUnicode(value);
+
+	return 0;
+}
+
+int ProjectProperties::GetBOOLProps(BOOL &b, const CString &key)
+{
+	ATLASSERT(gitconfig);
+
+	CStringA keyA = CUnicodeUtils::GetUTF8(key);
+	int value = FALSE;
+	if (git_config_get_bool(&value, gitconfig, keyA.GetBuffer()))
+	{
+		keyA.ReleaseBuffer();
+		return -1;
+	}
+	keyA.ReleaseBuffer();
+
+	b = value;
+
+	return 0;
+}
+
+int ProjectProperties::ReadProps(CTGitPath path)
+{
+	if (gitconfig)
+		git_config_free(gitconfig);
+
+	git_config_new(&gitconfig);
+	CString adminDirPath;
+	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
+	{
+		CStringA configFile = CUnicodeUtils::GetUTF8(adminDirPath) + "config";
+		git_config_add_file_ondisk(gitconfig, configFile, 5, FALSE);
 	}
 
-	prop = output;
-
-	return TRUE;
-
-}
-
-BOOL ProjectProperties::GetBOOLProps(BOOL &b,TCHAR *key)
-{
-	CString str,low;
-	if(!GetStringProps(str,key))
-		return FALSE;
-
-	low = str.MakeLower().Trim();
-	if(low == _T("true") || low == _T("on") || low == _T("yes") || StrToInt(low) != 0)
-		b=true;
+	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	{
+		CStringA configFile = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig";
+		git_config_add_file_ondisk(gitconfig, configFile, 4, FALSE);
+	}
 	else
-		b=false;
+	{
+		CString tmpFile = GetTempFile();
+		CTGitPath path(_T(".tgitconfig"));
+		if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
+		{
+			CStringA configFile = CUnicodeUtils::GetUTF8(tmpFile);
+			git_config_add_file_ondisk(gitconfig, configFile, 4, FALSE);
+		}
+	}
 
-	return true;
+	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
+	git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), 3, FALSE);
+	globalConfigA.ReleaseBuffer();
+	CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8( g_Git.GetGitGlobalXDGConfig());
+	git_config_add_file_ondisk(gitconfig, globalXDGConfigA.GetBuffer(), 2, FALSE);
+	globalXDGConfigA.ReleaseBuffer();
+	CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig"));
+	git_config_add_file_ondisk(gitconfig, systemConfigA.GetBuffer(), 1, FALSE);
+	systemConfigA.ReleaseBuffer();
+	giterr_clear();
 
-}
-
-BOOL ProjectProperties::ReadProps(CTGitPath path)
-{
 	CString sPropVal;
 
 	GetStringProps(this->sLabel,BUGTRAQPROPNAME_LABEL);
@@ -113,7 +157,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 
 	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
 
-	GetStringProps(sPropVal,BUGTRAQPROPNAME_LOGREGEX,false);
+	GetStringProps(sPropVal, BUGTRAQPROPNAME_LOGREGEX);
 
 	sCheckRe = sPropVal;
 	if (sCheckRe.Find('\n')>=0)
@@ -126,7 +170,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 		sCheckRe = sCheckRe.Trim();
 	}
 
-	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGWIDTHLINE))
+	if (GetStringProps(sPropVal, PROJECTPROPNAME_LOGWIDTHLINE) == 0)
 	{
 		CString val;
 		val = sPropVal;
@@ -134,7 +178,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 			nLogWidthMarker = _ttoi(val) + 2; // HACK, + 2 needed
 	}
 
-	if (GetStringProps(sPropVal, PROJECTPROPNAME_PROJECTLANGUAGE))
+	if (GetStringProps(sPropVal, PROJECTPROPNAME_PROJECTLANGUAGE) == 0)
 	{
 		CString val;
 		val = sPropVal;
@@ -145,7 +189,7 @@ BOOL ProjectProperties::ReadProps(CTGitPath path)
 		}
 	}
 
-	return TRUE;
+	return 0;
 }
 
 CString ProjectProperties::GetBugIDFromLog(CString& msg)
