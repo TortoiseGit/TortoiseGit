@@ -2204,7 +2204,6 @@ bool CGitProgressList::CmdReset(CString& sWindowTitle, bool& /*localoperation*/)
 
 	CStringA gitdir = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
 
-	git_remote *remote = NULL;
 	git_repository *repo = NULL;
 	bool ret = true;
 
