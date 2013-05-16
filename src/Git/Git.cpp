@@ -1493,7 +1493,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 		}
 		gitdir.ReleaseBuffer();
 
-		if (git_reference_foreach(repo, GIT_REF_LISTALL, libgit2_addto_list_each_ref_fn, &list))
+		if (git_reference_foreach(repo, libgit2_addto_list_each_ref_fn, &list))
 		{
 			git_repository_free(repo);
 			return -1;
@@ -1599,7 +1599,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 		map_each_ref_payload payloadContent = { repo, &map };
 
-		if (git_reference_foreach(repo, GIT_REF_LISTALL, libgit2_addto_map_each_ref_fn, &payloadContent))
+		if (git_reference_foreach(repo, libgit2_addto_map_each_ref_fn, &payloadContent))
 		{
 			git_repository_free(repo);
 			return -1;
