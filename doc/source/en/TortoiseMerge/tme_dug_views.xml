@@ -94,29 +94,12 @@
             get applied directly because you already changed that file.
         </para>
         <para>
-            But don't worry. If you're working with Subversion you can
-            retrieve an older version of the file and resolve the conflict.
-            In fact, TortoiseGitMerge automatically tries to get that older
-            version of the file and then shows you the diff between
-            <emphasis>Base</emphasis> (the older version of the file),
-            <emphasis>Mine</emphasis> (the file as it is currently in your
-            working copy) and <emphasis>Theirs</emphasis> (the older version
-            of the file with the patch already applied). Then you can
-            resolve possible conflicts manually.
-        </para>
-        <para>
             The patch file window has a context menu which allows you to
             preview the effect of the patch on the current file
             (apply without saving), to apply and save the changes
             for the selected file, or to apply and save changes to
             <emphasis>all</emphasis> files in the list.
             The double click action is to preview.
-        </para>
-        <para>
-            Depending on whether TortoiseGitMerge can apply the patch directly
-            or by fetching an older version of the file first, it shows you
-            a two pane view (patch can be applied directly) or a three pane
-            view (older version of file fetched).
         </para>
     </sect2>
 </sect1>

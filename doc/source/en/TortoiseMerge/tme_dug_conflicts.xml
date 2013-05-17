@@ -82,13 +82,6 @@
         using the <emphasis>Conflict-Ignored</emphasis> icon. To resolve the
         conflict you still need to pick which version you want to use.
     </para>
-    <para>
-        Sometimes the conflict is too difficult to resolve by simply picking
-        <literal>Theirs</literal> and <literal>Mine</literal> and it
-        requires hand editing. TortoiseGitMerge allows you to do all the easy
-        changes visually first and then save the file, leaving only the
-        difficult changes to be resolved by hand-editing.
-    </para>
     <important>
         <para>
             Note that if you use TortoiseGitMerge on the same files again,
