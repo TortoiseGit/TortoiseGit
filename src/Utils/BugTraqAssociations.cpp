@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2009,2012-2013 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -81,29 +81,11 @@ void CBugTraqAssociations::Add(const CBugTraqAssociation &assoc)
 	m_inner.push_back(new CBugTraqAssociation(assoc));
 }
 
-bool CBugTraqAssociations::FindProvider(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc)
 {
-	return FindProviderForPathList(pathList, assoc);
-}
-
-bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc) const
-{
-
 	CTGitPath gitpath;
 	gitpath.SetFromUnknown(path);
 	return FindProviderForPath(gitpath,assoc);
-
-}
-bool CBugTraqAssociations::FindProviderForPathList(const CTGitPathList &pathList, CBugTraqAssociation *assoc) const
-{
-	for (int i = 0; i < pathList.GetCount(); ++i)
-	{
-		CTGitPath path = pathList[i];
-		if (FindProviderForPath(path, assoc))
-			return true;
-	}
-
-	return false;
 }
 
 bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const
