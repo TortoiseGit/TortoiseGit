@@ -651,7 +651,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	if(this->m_IsUseGitDLL)
 	{
 		unsigned char sha1[20];
-		int flag;
+		int flag = 0;
 
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		const char *refs_heads_master = nullptr;
