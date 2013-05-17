@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009,2012-2013 - TortoiseGit
-// Copyright (C) 2008 - TortoiseSVN
+// Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,17 +28,30 @@ DEFINE_GUID(CATID_BugTraqProvider,
 
 #define BUGTRAQ_ASSOCIATIONS_REGPATH _T("Software\\TortoiseGit\\BugTraq Associations")
 
+CBugTraqAssociations::CBugTraqAssociations()
+: pProjectProvider(nullptr)
+{
+}
+
 CBugTraqAssociations::~CBugTraqAssociations()
 {
 	for (inner_t::iterator it = m_inner.begin(); it != m_inner.end(); ++it)
 		delete *it;
+	if (pProjectProvider)
+		delete pProjectProvider;
 }
 
-void CBugTraqAssociations::Load()
+void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* = nullptr */)
 {
 	HKEY hk;
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, BUGTRAQ_ASSOCIATIONS_REGPATH, 0, KEY_READ, &hk) != ERROR_SUCCESS)
+	{
+		if (uuid)
+			providerUUID = uuid;
+		if (params)
+			providerParams = params;
 		return;
+	}
 
 	for (DWORD dwIndex = 0; /* nothing */; ++dwIndex)
 	{
@@ -74,6 +87,11 @@ void CBugTraqAssociations::Load()
 	}
 
 	RegCloseKey(hk);
+
+	if (uuid)
+		providerUUID = uuid;
+	if (params)
+		providerParams = params;
 }
 
 void CBugTraqAssociations::Add(const CBugTraqAssociation &assoc)
@@ -81,11 +99,33 @@ void CBugTraqAssociations::Add(const CBugTraqAssociation &assoc)
 	m_inner.push_back(new CBugTraqAssociation(assoc));
 }
 
-bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc) const
+bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc)
 {
 	CTGitPath gitpath;
 	gitpath.SetFromUnknown(path);
-	return FindProviderForPath(gitpath,assoc);
+
+	if (FindProviderForPath(gitpath, assoc))
+		return true;
+
+	if (pProjectProvider)
+	{
+		if (assoc)
+			*assoc = *pProjectProvider;
+		return true;
+	}
+	if (!providerUUID.IsEmpty())
+	{
+		CLSID provider_clsid;
+		CLSIDFromString((LPOLESTR)(LPCWSTR)providerUUID, &provider_clsid);
+		pProjectProvider = new CBugTraqAssociation(_T(""), provider_clsid, _T("bugtraq:provider"), (LPCWSTR)providerParams);
+		if (pProjectProvider)
+		{
+			if (assoc)
+				*assoc = *pProjectProvider;
+			return true;
+		}
+	}
+	return false;
 }
 
 bool CBugTraqAssociations::FindProviderForPath(CTGitPath path, CBugTraqAssociation *assoc) const

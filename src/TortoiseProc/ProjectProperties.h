@@ -29,6 +29,9 @@ using namespace std;
 #define BUGTRAQPROPNAME_URL               _T("bugtraq.url")
 #define BUGTRAQPROPNAME_WARNIFNOISSUE     _T("bugtraq.warnifnoissue")
 #define BUGTRAQPROPNAME_APPEND		      _T("bugtraq.append")
+#define BUGTRAQPROPNAME_PROVIDERUUID      _T("bugtraq.provideruuid")
+#define BUGTRAQPROPNAME_PROVIDERUUID64    _T("bugtraq.provideruuid64")
+#define BUGTRAQPROPNAME_PROVIDERPARAMS    _T("bugtraq.providerparams")
 
 #define PROJECTPROPNAME_LOGTEMPLATE		  _T("tsvn.logtemplate")
 #define PROJECTPROPNAME_LOGWIDTHLINE	  _T("tgit.logwidthmarker")
@@ -128,6 +131,12 @@ public:
 	const CString& GetBugIDRe() const {return sBugIDRe;}
 	void SetBugIDRe(const CString& s) {sBugIDRe = s;regExNeedUpdate=true;AutoUpdateRegex();}
 
+#ifdef _WIN64
+	const CString& GetProviderUUID() const { return (sProviderUuid64.IsEmpty() ? sProviderUuid : sProviderUuid64); }
+#else
+	const CString& GetProviderUUID() const { return (sProviderUuid.IsEmpty() ? sProviderUuid64 : sProviderUuid); }
+#endif
+
 public:
 	/** The label to show in the commit dialog where the issue number/bug id
 	 * is entered. Example: "Bug-ID: " or "Issue-No.:". Default is "Bug-ID :" */
@@ -160,10 +169,6 @@ public:
 	/** If set to FALSE, then the bug tracking entry is inserted at the top of the
 	   log message instead of at the bottom. Default is TRUE */
 	BOOL		bAppend;
-
-	/** the COM uuid of the bugtraq provider which implements the IBugTraqProvider
-	   interface. */
-	CString		sProviderUuid;
 
 	/** the parameters passed to the COM bugtraq provider which implements the
 	   IBugTraqProvider interface */
@@ -203,6 +208,11 @@ public:
 	CString		sLogRevRegex;
 private:
 	git_config *gitconfig;
+
+	/** the COM uuid of the bugtraq provider which implements the IBugTraqProvider
+	   interface. */
+	CString		sProviderUuid;
+	CString		sProviderUuid64;
 
 	/**
 	 * Constructing regex objects is expensive. Therefore, cache them here.

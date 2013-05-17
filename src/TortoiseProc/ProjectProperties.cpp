@@ -154,6 +154,10 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	GetBOOLProps(this->bNumber,BUGTRAQPROPNAME_NUMBER);
 	GetBOOLProps(this->bAppend,BUGTRAQPROPNAME_APPEND);
 
+	GetStringProps(sProviderUuid, BUGTRAQPROPNAME_PROVIDERUUID);
+	GetStringProps(sProviderUuid64, BUGTRAQPROPNAME_PROVIDERUUID64);
+	GetStringProps(sProviderParams, BUGTRAQPROPNAME_PROVIDERPARAMS);
+
 	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
 
 	GetStringProps(sPropVal, BUGTRAQPROPNAME_LOGREGEX);

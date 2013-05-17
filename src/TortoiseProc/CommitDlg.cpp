@@ -231,7 +231,7 @@ BOOL CCommitDlg::OnInitDialog()
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 
 	CBugTraqAssociations bugtraq_associations;
-	bugtraq_associations.Load();
+	bugtraq_associations.Load(m_ProjectProperties.GetProviderUUID(), m_ProjectProperties.sProviderParams);
 
 	if (bugtraq_associations.FindProvider(g_Git.m_CurrentDir, &m_bugtraq_association))
 	{
