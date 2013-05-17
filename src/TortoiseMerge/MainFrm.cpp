@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2004-2012 - TortoiseSVN
+// Copyright (C) 2004-2013 - TortoiseSVN
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -1354,7 +1354,7 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 
 	// if we're in conflict resolve mode (three pane view), check if there are no more conflicts
 	// and if there aren't, ask to mark the file as resolved
-	if (IsViewGood(m_pwndBottomView) && !m_bHasConflicts)
+	if (IsViewGood(m_pwndBottomView) && !m_bHasConflicts && bCheckResolved)
 	{
 		CString projectRoot;
 		if (g_GitAdminDir.HasAdminDir(m_Data.m_mergedFile.GetFilename(), false, &projectRoot))
