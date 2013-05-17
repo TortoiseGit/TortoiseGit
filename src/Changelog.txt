@@ -13,6 +13,7 @@ Released: Unreleased
  * Fixed issue #722: Pull/Push sometimes does not gets the right remote branch
  * Fixed issue #1781: Sync dialog fails with "Encountered an improper argument" when closing log tab with escape
  * Fixed issue #1773: "Show changes as unified diff" on "Working dir changes" show inverted diff operation
+ * Fixed issue #1753: On dialog box for SSH certificate's passphrase, some certificate filenames aren't fully displayed
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
