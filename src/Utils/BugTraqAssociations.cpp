@@ -81,7 +81,7 @@ void CBugTraqAssociations::Add(const CBugTraqAssociation &assoc)
 	m_inner.push_back(new CBugTraqAssociation(assoc));
 }
 
-bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc)
+bool CBugTraqAssociations::FindProvider(const CString &path, CBugTraqAssociation *assoc) const
 {
 	CTGitPath gitpath;
 	gitpath.SetFromUnknown(path);
