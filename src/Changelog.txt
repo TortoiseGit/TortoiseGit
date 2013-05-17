@@ -11,6 +11,7 @@ Released: Unreleased
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching
  * Fixed issue #795: Switch/Checkout Dialog, "Switch To Version" is confusing
  * Fixed issue #722: Pull/Push sometimes does not gets the right remote branch
+ * Fixed issue #1781: Sync dialog fails with "Encountered an improper argument" when closing log tab with escape
 
 = Release 1.8.3.0 =
 Released: 2013-05-05

@@ -727,7 +727,9 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				::GetClassName(pMsg->hwnd,buff,128);
 
 
-				if(_tcsnicmp(buff,_T("RichEdit20W"),128)==0 ||
+				/* Use MSFTEDIT_CLASS http://msdn.microsoft.com/en-us/library/bb531344.aspx */
+				if (_tcsnicmp(buff, MSFTEDIT_CLASS, 128) == 0 ||	//Unicode and MFC 2012 and later
+					_tcsnicmp(buff, RICHEDIT_CLASS, 128) == 0 ||	//ANSI or MFC 2010
 				   _tcsnicmp(buff,_T("Scintilla"),128)==0 ||
 				   _tcsnicmp(buff,_T("SysListView32"),128)==0||
 				   ::GetParent(pMsg->hwnd) == this->m_ctrlTabCtrl.m_hWnd)
