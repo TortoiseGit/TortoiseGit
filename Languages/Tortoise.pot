@@ -4456,6 +4456,10 @@ msgstr ""
 msgid "HEAD:"
 msgstr ""
 
+#. Resource IDs: (89)
+msgid "Hard"
+msgstr ""
+
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
 msgstr ""
@@ -7682,6 +7686,10 @@ msgstr ""
 
 #. Resource IDs: (1070)
 msgid "Slide"
+msgstr ""
+
+#. Resource IDs: (89)
+msgid "Soft"
 msgstr ""
 
 #. Resource IDs: (1550)
