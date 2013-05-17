@@ -1575,6 +1575,8 @@ int CRebaseDlg::DoRebase()
 		}
 		if(list.GetCount() == 0 )
 		{
+			if (out.Find(_T("nothing to commit, working directory clean")) != -1) // HACK for issue #1726
+				return 0;
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
 				m_RebaseStage = REBASE_ERROR;
