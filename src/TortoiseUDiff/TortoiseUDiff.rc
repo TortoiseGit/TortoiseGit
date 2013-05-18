@@ -84,6 +84,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Se&ttings",                   ID_FILE_SETTINGS
         MENUITEM SEPARATOR
+        MENUITEM "Apply &Patch...",             ID_FILE_APPLYPATCH
+        MENUITEM SEPARATOR
         MENUITEM "&Exit",                       ID_FILE_EXIT
     END
 END

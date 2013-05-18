@@ -22,6 +22,7 @@
 #define ID_FILE_OPEN                    32774
 #define ID_FILE_SAVE                    32776
 #define ID_FILE_SETTINGS                32779
+#define ID_FILE_APPLYPATCH              32780
 #define IDM_SHOWFINDBAR                 32787
 #define IDM_FINDNEXT                    32789
 #define IDM_FINDPREV                    32790
@@ -34,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        133
-#define _APS_NEXT_COMMAND_VALUE         32780
+#define _APS_NEXT_COMMAND_VALUE         32781
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

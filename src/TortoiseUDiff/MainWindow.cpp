@@ -256,6 +256,15 @@ LRESULT CMainWindow::DoCommand(int id)
 			RunCommand(gitCmd);
 		}
 		break;
+	case ID_FILE_APPLYPATCH:
+		{
+			std::wstring command = L" /diff:\"";
+			command += m_filename;
+			command += L"\"";
+			std::wstring tortoiseMergePath = GetAppDirectory() + _T("TortoiseGitMerge.exe");
+			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), const_cast<TCHAR*>(command.c_str()));
+		}
+		break;
 	default:
 		break;
 	};
