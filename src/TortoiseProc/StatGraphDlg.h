@@ -72,10 +72,15 @@ public:
 	// Data	passed from	the	caller of the dialog.
 	CDWordArray		m_parDates;
 	CDWordArray		m_parFileChanges;
+	CDWordArray		m_parFileChanges2;
 	CDWordArray		m_lineInc;
+	CDWordArray		m_lineInc2;
 	CDWordArray		m_lineDec;
+	CDWordArray		m_lineDec2;
 	CDWordArray		m_lineNew;
+	CDWordArray		m_lineNew2;
 	CDWordArray		m_lineDel;
+	CDWordArray		m_lineDel2;
 
 	CStringArray	m_parAuthors;
 	CTGitPath		m_path;
@@ -152,7 +157,7 @@ protected:
 	/// Returns the week-of-the-year for the given time.
 	int GetCalendarWeek(const CTime& time);
 	/// Parses the data given to the dialog and generates mappings with statistical data.
-	int GatherData(BOOL fetchdiff = FALSE);
+	int GatherData(BOOL fetchdiff = FALSE, BOOL keepFetchedData = FALSE);
 	/// Populates the lists passed as arguments based on the commit threshold set with the skipper.
 	void FilterSkippedAuthors(std::list<tstring>& included_authors, std::list<tstring>& skipped_authors);
 	/// Shows the graph Percentage Of Authorship

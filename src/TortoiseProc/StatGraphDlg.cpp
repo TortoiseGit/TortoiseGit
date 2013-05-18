@@ -690,15 +690,26 @@ public:
 
 };
 
-int CStatGraphDlg::GatherData(BOOL fetchdiff)
+int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 {
 	m_parAuthors.RemoveAll();
 	m_parDates.RemoveAll();
-	m_parFileChanges.RemoveAll();
-	m_lineInc.RemoveAll();
-	m_lineDec.RemoveAll();
-	m_lineDel.RemoveAll();
-	m_lineNew.RemoveAll();
+	if (!keepFetchedData)
+	{
+		m_parFileChanges.RemoveAll();
+		m_lineInc.RemoveAll();
+		m_lineDec.RemoveAll();
+		m_lineDel.RemoveAll();
+		m_lineNew.RemoveAll();
+	}
+	else
+	{
+		m_parFileChanges.Copy(m_parFileChanges2);
+		m_lineNew.Copy(m_lineNew2);
+		m_lineDel.Copy(m_lineDel2);
+		m_lineInc.Copy(m_lineInc2);
+		m_lineDec.Copy(m_lineDec2);
+	}
 
 	CSysProgressDlg progress;
 	if (fetchdiff)
@@ -770,11 +781,14 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 				}
 			}
 		}
-		m_parFileChanges.Add(files);
-		m_lineInc.Add(inc);
-		m_lineDec.Add(dec);
-		m_lineDel.Add(decdeletedfile);
-		m_lineNew.Add(incnewfile);
+		if (!keepFetchedData)
+		{
+			m_parFileChanges.Add(files);
+			m_lineInc.Add(inc);
+			m_lineDec.Add(dec);
+			m_lineDel.Add(decdeletedfile);
+			m_lineNew.Add(incnewfile);
+		}
 
 		if (progress.IsVisible() && (GetTickCount() - starttime > 100))
 		{
@@ -785,6 +799,15 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff)
 		
 	}
 	git_clear_mailmap(mailmap);
+
+	if (fetchdiff)
+	{
+		m_parFileChanges2.Copy(m_parFileChanges);
+		m_lineNew2.Copy(m_lineNew);
+		m_lineDel2.Copy(m_lineDel);
+		m_lineInc2.Copy(m_lineInc);
+		m_lineDec2.Copy(m_lineDec);
+	}
 
 	CDateSorter W_Sorter;
 	W_Sorter.m_parAuthors		= &m_parAuthors;
@@ -934,7 +957,7 @@ bool  CStatGraphDlg::PreViewStat(bool fShowLabels)
 	// This can be detected by checking the week count.
 	// If the week count is equal to -1, it hasn't been called before.
 	if (m_nWeeks == -1)
-		GatherData();
+		GatherData(FALSE, TRUE);
 	// If week count is still -1, something bad has happened, probably invalid data!
 	if (m_nWeeks == -1)
 		return false;
@@ -1493,7 +1516,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 void CStatGraphDlg::AuthorsCaseSensitiveChanged()
 {
 	UpdateData();   // update checkbox state
-	GatherData();   // first regenerate the statistics data
+	GatherData(FALSE, TRUE);   // first regenerate the statistics data
 	RedrawGraph();  // then update the current statistics page
 }
 
