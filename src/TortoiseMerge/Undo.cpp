@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2010-2011 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,6 +45,7 @@ void viewstate::Clear()
 
 	removedlines.clear();
 	replacedlines.clear();
+	modified = false;
 }
 
 CUndo& CUndo::GetInstance()
@@ -110,13 +111,6 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		pActiveView->RecalcAllHorzScrollBars();
 		pActiveView->EnsureCaretVisible();
 		pActiveView->UpdateCaret();
-		bool bModified = m_viewstates.size() != m_originalstate;
-		if (pLeft)
-			pLeft->SetModified(bModified);
-		if (pRight)
-			pRight->SetModified(bModified);
-		if (pBottom)
-			pBottom->SetModified(bModified);
 		pActiveView->RefreshViews();
 	}
 
@@ -183,8 +177,7 @@ void CUndo::Undo(const viewstate& state, CBaseView * pView, const POINT& pt)
 		pView->SetCaretViewPosition(pt);
 		pView->EnsureCaretVisible();
 	}
-
-
+	pView->SetModified(state.modified);
 }
 
 void CUndo::Clear()

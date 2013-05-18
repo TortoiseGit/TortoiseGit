@@ -4707,6 +4707,12 @@ void CBaseView::SaveUndoStep()
 {
 	if (!m_AllState.IsEmpty())
 	{
+		if (m_pwndLeft)
+			m_AllState.left.modified = m_pwndLeft->IsModified();
+		if (m_pwndRight)
+			m_AllState.right.modified = m_pwndRight->IsModified();
+		if (m_pwndBottom)
+			m_AllState.bottom.modified = m_pwndBottom->IsModified();
 		CUndo::GetInstance().AddState(m_AllState, GetCaretViewPosition());
 	}
 	ResetUndoStep();
