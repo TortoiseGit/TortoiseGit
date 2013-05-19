@@ -2,7 +2,7 @@
 
 // Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2012-2013 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -245,6 +245,27 @@ BOOL CRepositoryBrowser::OnInitDialog()
 
 void CRepositoryBrowser::OnOK()
 {
+	if (GetFocus() == &m_RepoList && (GetKeyState(VK_MENU) & 0x8000) == 0)
+	{
+		// list control has focus: 'enter' the folder
+		if (m_RepoList.GetSelectedCount() != 1)
+			return;
+
+		POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
+		if (pos)
+		{
+			CShadowFilesTree *item = (CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos));
+			if (item->m_bFolder)
+			{
+				FillListCtrlForShadowTree(item);
+				m_RepoTree.SelectItem(item->m_hTree);
+			}
+			else
+				OpenFile(item->GetFullName(), OPEN);
+		}
+		return;
+	}
+
 	SaveDividerPosition();
 	CResizableStandAloneDialog::OnOK();
 }
