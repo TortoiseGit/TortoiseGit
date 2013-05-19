@@ -1466,16 +1466,23 @@ void CMainFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 		else if ( (IsViewGood(m_pwndRightView)&&(m_pwndRightView->m_pViewData)) &&
 				  (m_pwndRightView->IsModified() || (m_Data.m_yourFile.GetWindowName().Right(9).Compare(_T(": patched"))==0)) )
 			bEnable = TRUE;
+		else if (IsViewGood(m_pwndLeftView)
+				&& (m_pwndLeftView->m_pViewData)
+				&& (m_pwndLeftView->IsModified()))
+			bEnable = TRUE;
 	}
 	pCmdUI->Enable(bEnable);
 }
 
 void CMainFrame::OnUpdateFileSaveAs(CCmdUI *pCmdUI)
 {
+	// any file is open we can save it as
 	BOOL bEnable = FALSE;
 	if (IsViewGood(m_pwndBottomView)&&(m_pwndBottomView->m_pViewData))
 		bEnable = TRUE;
 	else if (IsViewGood(m_pwndRightView)&&(m_pwndRightView->m_pViewData))
+		bEnable = TRUE;
+	else if (IsViewGood(m_pwndLeftView)&&(m_pwndLeftView->m_pViewData))
 		bEnable = TRUE;
 	pCmdUI->Enable(bEnable);
 }
@@ -2135,6 +2142,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 	if (CBaseView::IsViewGood(m_pwndBottomView))
 	{
 		// three-way diff - by design only bottom can be changed
+		// use 1.7 way to do that
 	}
 	else if (CBaseView::IsViewGood(m_pwndRightView))
 	{
@@ -2166,7 +2174,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 		{
 			// only secondary (left) view
 		}
-		// otherwise 1.7 behaviour is used
+		// only right view - 1.7 implementation is used
 	}
 	else if (CBaseView::IsViewGood(m_pwndLeftView))
 	{
@@ -2181,7 +2189,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 
 			if (ret == IDYES)
 			{
-				if (m_pwndLeftView->SaveFile(SAVE_REMOVED)<0)
+				if (m_pwndLeftView->SaveFile()<0)
 					return IDCANCEL;
 			}
 		}
