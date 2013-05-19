@@ -56,7 +56,6 @@ CUndo& CUndo::GetInstance()
 
 CUndo::CUndo()
 {
-	m_originalstate = 0;
 	m_groupCount = 0;
 }
 
@@ -113,10 +112,6 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		pActiveView->UpdateCaret();
 		pActiveView->RefreshViews();
 	}
-
-	if (m_viewstates.size() < m_originalstate)
-		// Can never get back to original state now
-		m_originalstate = (size_t)-1;
 
 	return true;
 }
@@ -185,6 +180,43 @@ void CUndo::Clear()
 	m_viewstates.clear();
 	m_caretpoints.clear();
 	m_groups.clear();
-	m_originalstate = 0;
 	m_groupCount = 0;
+}
+
+void CUndo::MarkAsOriginalState( CBaseView * pView )
+{
+	bool bUndoFound = false;
+	for (auto vs = m_viewstates.rbegin(); vs != m_viewstates.rend(); ++vs)
+	{
+		if (pView == pView->m_pwndLeft)
+		{
+			if (bUndoFound || !vs->left.IsEmpty())
+			{
+				vs->left.modified = true;
+				bUndoFound = true;
+			}
+			else
+				vs->left.modified = false;
+		}
+		if (pView == pView->m_pwndRight)
+		{
+			if (bUndoFound || !vs->right.IsEmpty())
+			{
+				vs->right.modified = true;
+				bUndoFound = true;
+			}
+			else
+				vs->right.modified = false;
+		}
+		if (pView == pView->m_pwndBottom)
+		{
+			if (bUndoFound || !vs->bottom.IsEmpty())
+			{
+				vs->bottom.modified = true;
+				bUndoFound = true;
+			}
+			else
+				vs->bottom.modified = false;
+		}
+	}
 }

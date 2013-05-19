@@ -1223,7 +1223,8 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 			m_pwndBottomView->SetModified(FALSE);
 		if (m_pwndRightView)
 			m_pwndRightView->SetModified(FALSE);
-		CUndo::GetInstance().MarkAsOriginalState();
+		CUndo::GetInstance().MarkAsOriginalState(m_pwndBottomView);
+		CUndo::GetInstance().MarkAsOriginalState(m_pwndRightView);
 		if (file.GetCount() == 1 && file.GetAt(0).IsEmpty() && file.GetLineEnding(0) == EOL_NOENDING)
 			return 0;
 		return file.GetCount();

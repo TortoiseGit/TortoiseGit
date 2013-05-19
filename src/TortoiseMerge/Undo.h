@@ -77,14 +77,13 @@ public:
 	void BeginGrouping() { if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); m_groupCount++; }
 	void EndGrouping(){ m_groupCount--; if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); }
 	void Clear();
-	void MarkAsOriginalState() { m_originalstate = m_viewstates.size(); }
+	void MarkAsOriginalState(CBaseView * pView);
 protected:
 	void Undo(const viewstate& state, CBaseView * pView, const POINT& pt);
 	void UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
 	std::list<allviewstate> m_viewstates;
 	std::list<POINT> m_caretpoints;
 	std::list< std::list<int>::size_type > m_groups;
-	size_t m_originalstate;
 	int m_groupCount;
 private:
 	CUndo();

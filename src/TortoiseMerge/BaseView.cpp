@@ -5406,7 +5406,7 @@ int CBaseView::SaveFile(int nFlags)
 		m_pWorkingFile->StoreFileAttributes();
 		// m_dlgFilePatches.SetFileStatusAsPatched(sFilePath);
 		SetModified(FALSE);
-		CUndo::GetInstance().MarkAsOriginalState();
+		CUndo::GetInstance().MarkAsOriginalState(this);
 		if (file.GetCount() == 1 && file.GetAt(0).IsEmpty() && file.GetLineEnding(0) == EOL_NOENDING)
 			return 0;
 		return file.GetCount();

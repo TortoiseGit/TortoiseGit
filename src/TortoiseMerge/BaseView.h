@@ -205,6 +205,15 @@ public: // variables
 	CViewData *		m_pViewData;
 	CViewData *		m_pOtherViewData;
 	CBaseView *		m_pOtherView;
+	// These three pointers lead to the three parent
+	// classes CLeftView, CRightView and CBottomView
+	// and are used for the communication between
+	// the views (e.g. synchronized scrolling, ...)
+	// To find out which parent class this object
+	// is made of just compare e.g. (m_pwndLeft==this).
+	static CBaseView * m_pwndLeft;		///< Pointer to the left view. Must be set by the CLeftView parent class.
+	static CBaseView * m_pwndRight;		///< Pointer to the right view. Must be set by the CRightView parent class.
+	static CBaseView * m_pwndBottom;	///< Pointer to the bottom view. Must be set by the CBottomView parent class.
 
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
@@ -487,15 +496,6 @@ protected:  // variables
 
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
-	// These three pointers lead to the three parent
-	// classes CLeftView, CRightView and CBottomView
-	// and are used for the communication between
-	// the views (e.g. synchronized scrolling, ...)
-	// To find out which parent class this object
-	// is made of just compare e.g. (m_pwndLeft==this).
-	static CBaseView * m_pwndLeft;		///< Pointer to the left view. Must be set by the CLeftView parent class.
-	static CBaseView * m_pwndRight;		///< Pointer to the right view. Must be set by the CRightView parent class.
-	static CBaseView * m_pwndBottom;	///< Pointer to the bottom view. Must be set by the CBottomView parent class.
 
 	struct TScreenLineInfo
 	{
