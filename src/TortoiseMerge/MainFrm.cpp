@@ -1219,9 +1219,9 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 			m_Data.m_mergedFile.StoreFileAttributes();
 		}//*/
 		m_dlgFilePatches.SetFileStatusAsPatched(sFilePath);
-		if (m_pwndBottomView)
+		if (IsViewGood(m_pwndBottomView))
 			m_pwndBottomView->SetModified(FALSE);
-		else if (m_pwndRightView)
+		else if (IsViewGood(m_pwndRightView))
 			m_pwndRightView->SetModified(FALSE);
 		CUndo::GetInstance().MarkAsOriginalState(
 				false,
