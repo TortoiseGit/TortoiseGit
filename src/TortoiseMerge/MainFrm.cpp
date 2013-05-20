@@ -1236,7 +1236,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 
 void CMainFrame::OnFileSave()
 {
-	// when mutiple files are set as writable we have to ask what file to save
+	// when multiple files are set as writable we have to ask what file to save
 	int nEditableViewCount = 
 			(CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsWritable() ? 1 : 0)
 			+ (CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsWritable() ? 1 : 0)
@@ -1427,21 +1427,42 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 void CMainFrame::OnFileSaveAs()
 {
 	{
-		// use 1.7 logic - only "target" can be saved
-		if (IsViewGood(m_pwndBottomView) || IsViewGood(m_pwndRightView))
+		int nEditableViewCount = 
+			(CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsWritable() ? 1 : 0)
+			+ (CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsWritable() ? 1 : 0)
+			+ (CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsWritable() ? 1 : 0);
+		bool bLeftIsModified = CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsModified();
+		bool bRightIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
+		bool bBottomIsModified = CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsModified();
+		int nModifiedViewCount = 
+			(bLeftIsModified ? 1 : 0)
+			+ (bRightIsModified ? 1 : 0)
+			+ (bBottomIsModified ? 1 : 0);
+		if (nEditableViewCount>1)
 		{
-			// 2, 3 panel view was handled
-			FileSaveAs();
-		}
-		else if (IsViewGood(m_pwndLeftView))
-		{
-			CString sFileName;
-			if (TryGetFileName(sFileName))
+			if (nModifiedViewCount == 1)
 			{
-				m_pwndLeftView->SaveFileTo(sFileName);
+				if (bLeftIsModified)
+				{
+					CString sFileName;
+					if (TryGetFileName(sFileName))
+					{
+						m_pwndLeftView->SaveFileTo(sFileName);
+					}
+				}
+				else
+					FileSaveAs();
+			}
+			else
+			{
+				FileSaveAs();
+				CString sFileName;
+				if (TryGetFileName(sFileName))
+				{
+					m_pwndLeftView->SaveFileTo(sFileName);
+				}
 			}
 		}
-		return;
 	}
 }
 
