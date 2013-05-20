@@ -64,6 +64,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 			lineData.ending = lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
+		SetModified();
 	}
 
 	// make sure previous (non empty) line have EOL set
@@ -74,6 +75,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
 			{
 				SetViewLineEnding(nCheckViewLine, lineendings);
+				SetModified();
 			}
 			break;
 		}
@@ -90,7 +92,6 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	ClearSelection();
 	SetupAllViewSelection(nFirstViewLine, nLastViewLine - nRemovedLines);
 	BuildAllScreen2ViewVector();
-	SetModified();
 	RefreshViews();
 }
 

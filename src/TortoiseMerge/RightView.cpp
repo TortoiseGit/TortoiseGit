@@ -74,6 +74,7 @@ void CRightView::UseBothLeftFirst()
 		}
 		else
 		{
+			SetModified();
 			line.state = DIFFSTATE_THEIRSADDED;
 		}
 		InsertViewData(viewLine, line);
@@ -97,7 +98,6 @@ void CRightView::UseBothLeftFirst()
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
 	m_pwndLeft->Invalidate();
-	SetModified();
 	RefreshViews();
 }
 
@@ -138,6 +138,7 @@ void CRightView::UseBothRightFirst()
 		}
 		else
 		{
+			SetModified();
 			line.state = DIFFSTATE_THEIRSADDED;
 		}
 		InsertViewData(viewindex++, line);
@@ -162,7 +163,6 @@ void CRightView::UseBothRightFirst()
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
 	m_pwndLeft->Invalidate();
-	SetModified();
 	RefreshViews();
 }
 
@@ -269,6 +269,7 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 			m_pwndLeft->SetViewState(viewLine, DIFFSTATE_NORMAL);
 			line.state = DIFFSTATE_NORMAL;
 		case DIFFSTATE_NORMAL:
+			SetModified();
 			break;
 		default:
 			break;
@@ -282,6 +283,7 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		{
 			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
 			{
+				SetModified();
 				SetViewLineEnding(nCheckViewLine, lineendings);
 			}
 			break;
@@ -304,6 +306,5 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 	}
 	BuildAllScreen2ViewVector();
 	m_pwndLeft->Invalidate();
-	SetModified();
 	RefreshViews();
 }

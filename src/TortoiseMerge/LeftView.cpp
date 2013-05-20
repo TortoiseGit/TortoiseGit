@@ -72,10 +72,13 @@ void CLeftView::UseBothLeftFirst()
 		{
 			line.state = DIFFSTATE_EMPTY;
 		}
-		else if (line.state!=DIFFSTATE_NORMAL)
+		else 
 		{
-			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
-			line.state = DIFFSTATE_NORMAL;
+			if (line.state!=DIFFSTATE_NORMAL) {
+				m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
+				line.state = DIFFSTATE_NORMAL;
+			}
+			SetModified();
 		}
 		InsertViewData(viewindex++, line);
 	}
@@ -99,7 +102,6 @@ void CLeftView::UseBothLeftFirst()
 	ClearSelection();
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
-	SetModified();
 	RefreshViews();
 }
 
@@ -136,10 +138,13 @@ void CLeftView::UseBothRightFirst()
 		{
 			line.state = DIFFSTATE_EMPTY;
 		}
-		else if (line.state!=DIFFSTATE_NORMAL)
+		else
 		{
-			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
-			line.state = DIFFSTATE_NORMAL;
+			if (line.state!=DIFFSTATE_NORMAL) {
+				m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
+				line.state = DIFFSTATE_NORMAL;
+			}
+			SetModified();
 		}
 		InsertViewData(viewLine, line);
 	}
@@ -162,7 +167,6 @@ void CLeftView::UseBothRightFirst()
 	ClearSelection();
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
-	SetModified();
 	RefreshViews();
 }
 
@@ -268,6 +272,7 @@ void CLeftView::UseBlock(int nFirstViewLine, int nLastViewLine)
 			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
 			line.state = DIFFSTATE_NORMAL;
 		case DIFFSTATE_NORMAL:
+			SetModified(); // normal is mostly same but may differ in EOL
 			break;
 		default:
 			break;
@@ -302,6 +307,5 @@ void CLeftView::UseBlock(int nFirstViewLine, int nLastViewLine)
 		SetupAllViewSelection(nFirstViewLine, nLastViewLine - nRemovedLines);
 	}
 	BuildAllScreen2ViewVector();
-	SetModified();
 	RefreshViews();
 }

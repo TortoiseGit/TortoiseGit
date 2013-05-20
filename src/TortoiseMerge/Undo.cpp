@@ -45,7 +45,43 @@ void viewstate::Clear()
 
 	removedlines.clear();
 	replacedlines.clear();
-	modified = false;
+	modifies = false;
+}
+
+void CUndo::MarkAsOriginalState(bool bLeft, bool bRight, bool bBottom)
+{
+	// TODO reduce code dumplication
+	// find higest index of changing step
+	if (bLeft) // left is selected for mark
+	{
+		m_originalstateLeft = m_viewstates.size();
+		std::list<allviewstate>::reverse_iterator i = m_viewstates.rbegin();
+		while (i != m_viewstates.rend() && !i->left.modifies)
+		{
+			++i;
+			--m_originalstateLeft;
+		}
+	}
+	if (bRight) // right is selected for mark
+	{
+		m_originalstateRight = m_viewstates.size();
+		std::list<allviewstate>::reverse_iterator i = m_viewstates.rbegin();
+		while (i != m_viewstates.rend() && !i->right.modifies)
+		{
+			++i;
+			--m_originalstateRight;
+		}
+	}
+	if (bBottom) // bottom is selected for mark
+	{
+		m_originalstateBottom = m_viewstates.size();
+		std::list<allviewstate>::reverse_iterator i = m_viewstates.rbegin();
+		while (i != m_viewstates.rend() && !i->bottom.modifies)
+		{
+			++i;
+			--m_originalstateBottom;
+		}
+	}
 }
 
 CUndo& CUndo::GetInstance()
@@ -56,7 +92,7 @@ CUndo& CUndo::GetInstance()
 
 CUndo::CUndo()
 {
-	m_groupCount = 0;
+	Clear();
 }
 
 CUndo::~CUndo()
@@ -110,6 +146,74 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		pActiveView->RecalcAllHorzScrollBars();
 		pActiveView->EnsureCaretVisible();
 		pActiveView->UpdateCaret();
+
+		// TODO reduce code dumplication
+		if (m_viewstates.size() < m_originalstateLeft)
+		{
+			// Left can never get back to original state now
+			m_originalstateLeft = (size_t)-1;
+		}
+		if (pLeft)
+		{
+			bool bModified = (m_originalstateLeft==(size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_viewstates.begin();
+				std::advance(i, m_originalstateLeft);
+				for (; i!=m_viewstates.end(); ++i)
+				{
+					if (i->left.modifies)
+					{
+						bModified = true;
+						break;
+					}
+				}
+			}
+			pLeft->SetModified(bModified);
+			pLeft->ClearStepModifiedMark();
+		}
+		if (m_viewstates.size() < m_originalstateRight)
+		{
+			// Right can never get back to original state now
+			m_originalstateRight = (size_t)-1;
+		}
+		if (pRight)
+		{
+			bool bModified = (m_originalstateRight==(size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_viewstates.begin();
+				std::advance(i, m_originalstateRight);
+				for (; i!=m_viewstates.end() && !i->right.modifies; ++i) ;
+				bModified = i!=m_viewstates.end();
+			}
+			pRight->SetModified(bModified);
+			pRight->ClearStepModifiedMark();
+		}
+		if (m_viewstates.size() < m_originalstateBottom)
+		{
+			// Bottom can never get back to original state now
+			m_originalstateBottom = (size_t)-1;
+		}
+		if (pBottom)
+		{
+			bool bModified = (m_originalstateRight==(size_t)-1);
+			if (!bModified)
+			{
+				std::list<allviewstate>::iterator i = m_viewstates.begin();
+				std::advance(i, m_originalstateBottom);
+				for (; i!=m_viewstates.end(); ++i)
+				{
+					if (i->bottom.modifies)
+					{
+						bModified = true;
+						break;
+					}
+				}
+			}
+			pBottom->SetModified(bModified);
+			pBottom->ClearStepModifiedMark();
+		}
 		pActiveView->RefreshViews();
 	}
 
@@ -172,7 +276,6 @@ void CUndo::Undo(const viewstate& state, CBaseView * pView, const POINT& pt)
 		pView->SetCaretViewPosition(pt);
 		pView->EnsureCaretVisible();
 	}
-	pView->SetModified(state.modified);
 }
 
 void CUndo::Clear()
@@ -180,43 +283,9 @@ void CUndo::Clear()
 	m_viewstates.clear();
 	m_caretpoints.clear();
 	m_groups.clear();
+	m_originalstateLeft = 0;
+	m_originalstateRight = 0;
+	m_originalstateBottom = 0;
 	m_groupCount = 0;
 }
 
-void CUndo::MarkAsOriginalState( CBaseView * pView )
-{
-	bool bUndoFound = false;
-	for (auto vs = m_viewstates.rbegin(); vs != m_viewstates.rend(); ++vs)
-	{
-		if (pView == pView->m_pwndLeft)
-		{
-			if (bUndoFound || !vs->left.IsEmpty())
-			{
-				vs->left.modified = true;
-				bUndoFound = true;
-			}
-			else
-				vs->left.modified = false;
-		}
-		if (pView == pView->m_pwndRight)
-		{
-			if (bUndoFound || !vs->right.IsEmpty())
-			{
-				vs->right.modified = true;
-				bUndoFound = true;
-			}
-			else
-				vs->right.modified = false;
-		}
-		if (pView == pView->m_pwndBottom)
-		{
-			if (bUndoFound || !vs->bottom.IsEmpty())
-			{
-				vs->bottom.modified = true;
-				bUndoFound = true;
-			}
-			else
-				vs->bottom.modified = false;
-		}
-	}
-}

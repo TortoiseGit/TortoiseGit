@@ -38,7 +38,7 @@ typedef struct viewstate
 
 	std::map<int, viewdata> removedlines;
 	std::map<int, viewdata> replacedlines;
-	bool					modified;
+	bool					modifies; ///< this step modifies view (save before and after save differs)
 
 	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
 	void	Clear();
@@ -77,13 +77,17 @@ public:
 	void BeginGrouping() { if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); m_groupCount++; }
 	void EndGrouping(){ m_groupCount--; if (m_groupCount==0) m_groups.push_back(m_caretpoints.size()); }
 	void Clear();
-	void MarkAsOriginalState(CBaseView * pView);
+	void MarkAllAsOriginalState() { MarkAsOriginalState(true, true, true); }
+	void MarkAsOriginalState(bool Left, bool Right, bool Bottom);
 protected:
 	void Undo(const viewstate& state, CBaseView * pView, const POINT& pt);
 	void UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
 	std::list<allviewstate> m_viewstates;
 	std::list<POINT> m_caretpoints;
 	std::list< std::list<int>::size_type > m_groups;
+	size_t m_originalstateLeft;
+	size_t m_originalstateRight;
+	size_t m_originalstateBottom;
 	int m_groupCount;
 private:
 	CUndo();
