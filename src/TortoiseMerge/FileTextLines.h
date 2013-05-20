@@ -107,7 +107,7 @@ public:
 	 * \param sFilePath the path to the file
 	 * \param lengthHint hint to create line array
 	 */
-	BOOL		Load(const CString& sFilePath, int lengthHint = 0);
+	BOOL			Load(const CString& sFilePath, int lengthHint = 0);
 	/**
 	 * Saves the whole array of text lines to a file, preserving
 	 * the line endings detected at Load()
@@ -118,37 +118,33 @@ public:
 	 * \param bIgnoreCase converts whole file to lower case
 	 * \param bBlame limit line len
 	 */
-	BOOL		Save(const CString& sFilePath
-					, bool bSaveAsUTF8 = false
-					, bool bUseSVNCompatibleEOLs = false
-					, DWORD dwIgnoreWhitespaces = 0
-					, BOOL bIgnoreCase = FALSE
-					, bool bBlame = false) const;
+	BOOL			Save(const CString& sFilePath
+						, bool bSaveAsUTF8 = false
+						, bool bUseSVNCompatibleEOLs = false
+						, DWORD dwIgnoreWhitespaces = 0
+						, BOOL bIgnoreCase = FALSE
+						, bool bBlame = false) const;
 	/**
 	 * Returns an error string of the last failed operation
 	 */
-	CString		GetErrorString() const  {return m_sErrorString;}
+	CString			GetErrorString() const  {return m_sErrorString;}
 	/**
 	 * Copies the settings of a file like the line ending styles
 	 * to another CFileTextLines object.
 	 */
-	void		CopySettings(CFileTextLines * pFileToCopySettingsTo);
+	void			CopySettings(CFileTextLines * pFileToCopySettingsTo);
 
-	bool		NeedsConversion() const { return m_bNeedsConversion; }
-	UnicodeType GetUnicodeType() const  {return m_SaveParams.m_UnicodeType;}
-	EOL GetLineEndings() const {return m_SaveParams.m_LineEndings;}
+	bool			NeedsConversion() const { return m_bNeedsConversion; }
+	UnicodeType		GetUnicodeType() const  {return m_SaveParams.m_UnicodeType;}
+	EOL				GetLineEndings() const {return m_SaveParams.m_LineEndings;}
 
-	using CStdFileLineArray::Add;
-	void		Add(const CString& sLine, EOL ending) { CFileTextLine temp={sLine, ending}; CStdFileLineArray::Add(temp); }
-	using CStdFileLineArray::RemoveAt;
-	using CStdFileLineArray::InsertAt;
-	void		InsertAt(int index, const CString& strVal, EOL ending) { CFileTextLine temp={strVal, ending}; CStdFileLineArray::InsertAt(index, temp); }
+	void			Add(const CString& sLine, EOL ending) { CFileTextLine temp={sLine, ending}; CStdFileLineArray::Add(temp); }
+	void			InsertAt(int index, const CString& strVal, EOL ending) { CFileTextLine temp={strVal, ending}; CStdFileLineArray::InsertAt(index, temp); }
 
 	const CString&	GetAt(int index) const { return CStdFileLineArray::GetAt(index).sLine; }
 	EOL				GetLineEnding(int index) const { return CStdFileLineArray::GetAt(index).eEnding; }
+	void			SetSaveParams(const SaveParams& sp) { m_SaveParams = sp; }
 	//void			SetLineEnding(int index, EOL ending) { CStdFileLineArray::GetAt(index).eEnding = ending; }
-
-	using CStdFileLineArray::RemoveAll;
 
 	/**
 	 * Checks the Unicode type in a text buffer
@@ -156,12 +152,12 @@ public:
 	 * \param pBuffer pointer to the buffer containing text
 	 * \param cb size of the text buffer in bytes
 	 */
-	UnicodeType CheckUnicodeType(LPVOID pBuffer, int cb);
+	UnicodeType		CheckUnicodeType(LPVOID pBuffer, int cb);
 
 private:
-	void		SetErrorString();
+	void			SetErrorString();
 
-	static void StripWhiteSpace(CString& sLine, DWORD dwIgnoreWhitespaces, bool blame);
+	static void		StripWhiteSpace(CString& sLine, DWORD dwIgnoreWhitespaces, bool blame);
 
 
 private:

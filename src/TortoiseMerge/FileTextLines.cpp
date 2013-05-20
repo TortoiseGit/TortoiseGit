@@ -353,7 +353,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 		}
 		oTextLine.sLine = CString(pLineStart, (int)(pTextBuf-pLineStart)-1);
 		oTextLine.eEnding = eEol;
-		Add(oTextLine);
+		CStdFileLineArray::Add(oTextLine);
 		++countEOLs[eEol];
 		if (eEol==EOL_CRLF || eEol==EOL_LFCR)
 		{
