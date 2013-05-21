@@ -16,6 +16,7 @@ Released: Unreleased
  * Fixed issue #1753: On dialog box for SSH certificate's passphrase, some certificate filenames aren't fully displayed
  * Fixed issue #1726: Rebasing issues with empty commits
  * Fixed issue #1782: Do not reset changed lines/files statistics after toggling "Authors case sensitive" checkbox
+ * Fixed issue #1783: TortoiseGit does not work on WinXP/2003 x64
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
