@@ -1107,7 +1107,7 @@ msgid "&Tabbed Document"
 msgstr ""
 
 #. Resource IDs: (1513)
-msgid "&Tags"
+msgid "&Tag"
 msgstr ""
 
 #. Resource IDs: (65535)
