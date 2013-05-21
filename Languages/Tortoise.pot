@@ -1198,10 +1198,6 @@ msgstr ""
 msgid "&Username:"
 msgstr ""
 
-#. Resource IDs: (1514)
-msgid "&Version"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "&View"
 msgstr ""
@@ -5613,16 +5609,16 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#. Resource IDs: (1482)
-msgid "No &Commit"
-msgstr ""
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr ""
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
+msgstr ""
+
+#. Resource IDs: (1482)
+msgid "No Co&mmit"
 msgstr ""
 
 #. Resource IDs: (67)
