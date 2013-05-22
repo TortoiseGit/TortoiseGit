@@ -987,8 +987,15 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 {
 	CTGitPath gitPath(path);
 
+	CGitHash hash;
+	if (g_Git.GetHash(hash, m_sRevision))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+
 	CString filename;
-	filename.Format(_T("%s-%s%s"), gitPath.GetBaseFilename(), CGitHash(m_sRevision).ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
+	filename.Format(_T("%s-%s%s"), gitPath.GetBaseFilename(), hash.ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
 	CFileDialog dlg(FALSE, NULL, filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL);
 
 	CString cmd, out;
@@ -1013,7 +1020,14 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
 	CString temppath;
 	CString file;
 	GetTempPath(temppath);
-	file.Format(_T("%s%s_%s%s"), temppath, gitPath.GetBaseFilename(), CGitHash(m_sRevision).ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
+	CGitHash hash;
+	if (g_Git.GetHash(hash, m_sRevision))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get hash of ") + m_sRevision + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+		return;
+	}
+
+	file.Format(_T("%s%s_%s%s"), temppath, gitPath.GetBaseFilename(), hash.ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
 
 	CString out;
 	if(g_Git.GetOneFile(m_sRevision, gitPath, file))
