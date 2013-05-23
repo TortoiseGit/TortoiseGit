@@ -269,6 +269,31 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,248,28,56,14
 END
 
+IDD_ENCODING DIALOGEX 0, 0, 229, 92
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Encoding"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Encoding",IDC_STATIC_ENCODING,7,31,30,8
+    COMBOBOX        IDC_COMBO_ENCODING,85,29,136,30,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "EOL",IDC_STATIC_EOL,7,50,30,8
+    COMBOBOX        IDC_COMBO_EOL,85,49,136,30,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,118,70,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,172,70,50,14
+    LTEXT           "",IDC_VIEW,7,7,215,8
+END
+
+IDD_GOTO DIALOGEX 0, 0, 175, 69
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Go To Line"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+   DEFPUSHBUTTON   "OK",IDOK,59,48,50,14
+   PUSHBUTTON      "Cancel",IDCANCEL,118,48,50,14
+   LTEXT           "&Line number",IDC_LINELABEL,7,7,161,8
+   EDITTEXT        IDC_NUMBER,7,20,161,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -338,6 +363,23 @@ BEGIN
         VERTGUIDE, 248
         TOPMARGIN, 7
         BOTTOMMARGIN, 66
+    END
+
+    IDD_ENCODING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 222
+        VERTGUIDE, 85
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 85
+    END
+
+    IDD_GOTO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 168
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 62
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -737,6 +779,7 @@ BEGIN
     IDS_STATUSBAR_LEFTVIEW  "Left View: "
     IDS_STATUSBAR_RIGHTVIEW "Right View: "
     IDS_STATUSBAR_CONFLICTS "Conflicts: %d"
+    IDS_STATUSBAR_BOTTOMVIEW "Bottom View:"
 END
 
 STRINGTABLE
@@ -1050,42 +1093,6 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_SWISS
 #pragma code_page(1252)
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_GOTO DIALOGEX 0, 0, 175, 69
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Go To Line"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,59,48,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,118,48,50,14
-    LTEXT           "&Line number",IDC_LINELABEL,7,7,161,8
-    EDITTEXT        IDC_NUMBER,7,20,161,14,ES_AUTOHSCROLL | ES_NUMBER
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_GOTO, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 168
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 62
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////

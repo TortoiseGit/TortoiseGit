@@ -142,6 +142,9 @@ protected:
 	afx_msg void	OnUpdateViewMovedBlocks(CCmdUI *pCmdUI);
 	afx_msg void	OnViewWraplonglines();
 	afx_msg void	OnUpdateViewWraplonglines(CCmdUI *pCmdUI);
+	afx_msg void	OnIndicatorLeftview();
+	afx_msg void	OnIndicatorRightview();
+	afx_msg void	OnIndicatorBottomview();
 
 	DECLARE_MESSAGE_MAP()
 protected:

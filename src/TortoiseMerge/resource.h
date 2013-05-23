@@ -43,6 +43,11 @@
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
 #define IDS_SELECTDIFFFILE              201
+#define IDD_ENCODING                    300
+#define IDC_STATIC_ENCODING             301
+#define IDC_COMBO_ENCODING              302
+#define IDC_STATIC_EOL                  303
+#define IDC_COMBO_EOL                   304
 #define IDC_BASEFILEEDIT                1000
 #define IDS_ERR_PATCH_NOINDEX           1000
 #define IDC_BASEFILEBROWSE              1001
@@ -149,6 +154,7 @@
 #define IDC_LINELABEL                   1078
 #define IDC_MAXINLINE                   1079
 #define IDS_ERR_DIFF_DIFF               1080
+#define IDC_VIEW                        1080
 #define IDS_ERR_DIFF_NEWLINES           1081
 #define IDC_WEBLINK                     1084
 #define IDC_SUPPORTLINK                 1085
@@ -188,6 +194,7 @@
 #define IDS_STATUSBAR_LEFTVIEW          3003
 #define IDS_STATUSBAR_RIGHTVIEW         3004
 #define IDS_STATUSBAR_CONFLICTS         3005
+#define IDS_STATUSBAR_BOTTOMVIEW        3006
 #define IDS_VIEWCONTEXTMENU_USETHISBLOCK 4000
 #define IDS_VIEWCONTEXTMENU_USETHEIRBLOCK 4001
 #define IDS_VIEWCONTEXTMENU_USEYOURBLOCK 4002
@@ -347,7 +354,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        161
 #define _APS_NEXT_COMMAND_VALUE         32979
-#define _APS_NEXT_CONTROL_VALUE         1080
+#define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

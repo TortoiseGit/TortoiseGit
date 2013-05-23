@@ -132,6 +132,7 @@
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
+    <ClCompile Include="EncodingDlg.cpp" />
     <ClCompile Include="Patch.cpp" />
     <ClCompile Include="TempFile.cpp" />
     <ClCompile Include="AboutDlg.cpp" />
@@ -403,6 +404,7 @@
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
+    <ClInclude Include="EncodingDlg.h" />
     <ClInclude Include="Patch.h" />
     <ClInclude Include="TempFile.h" />
     <ClInclude Include="AboutDlg.h" />
