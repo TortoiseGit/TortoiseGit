@@ -1185,6 +1185,8 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 
 	if (m_SelectedEntry1 && (m_SelectedEntry2 == NULL))
 	{
+		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
+
 		//AppendMenu (popup, IDS_SWITCH_TO_THIS, ID_SWITCH);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
@@ -1395,13 +1397,15 @@ void CRevisionGraphWnd::DoSwitchToHead()
 
 void CRevisionGraphWnd::DoBrowseRepo()
 {
-#if 0
-	CString sCmd;
-	sCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%d"),
-	  (LPCTSTR)GetSelectedURL(), m_SelectedEntry1->GetRevision());
+	if (m_SelectedEntry1 == NULL)
+		return;
 
-	CAppUtils::RunTortoiseProc(sCmd);
-#endif
+	CString sCmd;
+	sCmd.Format(_T("/command:repobrowser %s /rev:%s"),
+		this->m_sPath.IsEmpty() ?  _T("") : (_T("/path:\"") + this->m_sPath + _T("\"")),
+		GetFriendRefName(m_SelectedEntry1));
+
+	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
 void CRevisionGraphWnd::ResetNodeFlags (DWORD /*flags*/)
@@ -1480,6 +1484,9 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	case ID_SWITCH:
 		DoSwitch();
 		break;
+	case ID_BROWSEREPO:
+		DoBrowseRepo();
+		break;
 	case ID_COMPAREHEADS:
 		if (m_SelectedEntry1 != NULL)
 			CompareRevs(true);
@@ -1519,9 +1526,6 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 	case ID_COPYURL:
 		DoCopyUrl();
-		break;
-	case ID_BROWSEREPO:
-		DoBrowseRepo();
 		break;
 	case ID_EXPAND_ALL:
 		ResetNodeFlags (CGraphNodeStates::COLLAPSED_ALL);
