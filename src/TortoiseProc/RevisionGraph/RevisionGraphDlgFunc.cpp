@@ -396,6 +396,38 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 
 }
 
+STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE *refTypes, int refTypeCount)
+{
+	if (v == NULL)
+		return STRING_VECTOR();
+	CGitHash hash = m_logEntries[v->index()];
+	if (m_HashMap.find(hash) == m_HashMap.end())
+		return STRING_VECTOR();
+	else if (m_HashMap[hash].size() == 0)
+		return STRING_VECTOR();
+	else if (m_HashMap[hash][0].IsEmpty())
+		return STRING_VECTOR();
+	else
+	{
+		STRING_VECTOR &all = m_HashMap[hash];
+		STRING_VECTOR list;
+		for (size_t i = 0; i < all.size(); ++i)
+		{
+			CGit::REF_TYPE refType;
+			CString shortName = CGit::GetShortName(all[i], &refType);
+			if (refTypes == NULL)
+				list.push_back(shortName);
+			else
+			{
+				for (int i = 0; i < refTypeCount; ++i)
+					if (refTypes[i] == refType)
+						list.push_back(shortName);
+			}
+		}
+		return list;
+	}
+}
+
 void CRevisionGraphWnd::CompareRevs(bool bHead)
 {
 	ASSERT(m_SelectedEntry1 != NULL);

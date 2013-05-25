@@ -1177,6 +1177,29 @@ void CRevisionGraphWnd::AppendMenu
 	popup.AppendMenu (MF_STRING | flags, command, titleString);
 }
 
+void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CString *extra, CMenu *submenu)
+{
+	// separate different groups / section within the context menu
+	if (popup.GetMenuItemCount() > 0)
+	{
+		UINT lastCommand = popup.GetMenuItemID(popup.GetMenuItemCount() - 1);
+		if ((lastCommand & GROUP_MASK) != (command & GROUP_MASK))
+			popup.AppendMenu(MF_SEPARATOR, NULL);
+	}
+
+	// actually add the new item
+	MENUITEMINFO mii;
+	memset(&mii, 0, sizeof(mii));
+	mii.cbSize = sizeof(MENUITEMINFO);
+	mii.fMask = MIIM_STRING | MIIM_ID | (extra ? MIIM_DATA : 0) | (submenu ? MIIM_SUBMENU : 0);
+	mii.wID = command;
+	mii.hSubMenu = submenu ? submenu->m_hMenu : NULL;
+	mii.dwItemData = (ULONG_PTR)extra;
+	mii.dwTypeData = title.GetBuffer();
+	InsertMenuItem(popup, popup.GetMenuItemCount(), TRUE, &mii);
+	title.ReleaseBuffer();
+}
+
 void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 {
 	bool bothPresent = (m_SelectedEntry2 && m_SelectedEntry1);
@@ -1187,7 +1210,28 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 	{
 		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
 
-		//AppendMenu (popup, IDS_SWITCH_TO_THIS, ID_SWITCH);
+		CString currentBranch = g_Git.GetCurrentBranch();
+		CGit::REF_TYPE refType = CGit::LOCAL_BRANCH;
+		STRING_VECTOR allBranchNames = GetFriendRefNames(m_SelectedEntry1, &refType, 1);
+		STRING_VECTOR branchNames;
+		for (int i = 0; i < allBranchNames.size(); ++i)
+			if (allBranchNames[i] != currentBranch)
+				branchNames.push_back(allBranchNames[i]);
+		if (branchNames.size() == 1)
+		{
+			CString text;
+			text.Format(_T("%s \"%s\""), CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), branchNames[0]);
+			AppendMenu(popup, text, ID_SWITCH, new CString(branchNames[0]));
+		}
+		else if (branchNames.size() > 1)
+		{
+			CMenu switchMenu;
+			switchMenu.CreatePopupMenu();
+			for (size_t i = 0; i < branchNames.size(); ++i)
+				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), new CString(branchNames[i]));
+			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, NULL, &switchMenu);
+		}
+
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
 	}
@@ -1364,19 +1408,9 @@ void CRevisionGraphWnd::DoUpdate()
 #endif
 }
 
-void CRevisionGraphWnd::DoSwitch()
+void CRevisionGraphWnd::DoSwitch(CString rev)
 {
-#if 0
-	CSVNProgressDlg progDlg;
-	progDlg.SetCommand (CSVNProgressDlg::SVNProgress_Switch);
-	progDlg.SetPathList (CTGitPathList (CTGitPath (m_sPath)));
-	progDlg.SetUrl (GetSelectedURL());
-	progDlg.SetRevision (m_SelectedEntry1->GetRevision());
-	progDlg.DoModal();
-
-	if (m_state.GetFetchedWCState())
-		m_parent->UpdateFullHistory();
-#endif
+	CAppUtils::PerformSwitch(rev);
 }
 
 void CRevisionGraphWnd::DoSwitchToHead()
@@ -1464,7 +1498,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	}
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this, 0);
-	switch (cmd)
+	switch (cmd & 0xFFFF)
 	{
 	case ID_COMPAREREVS:
 		if (m_SelectedEntry1 != NULL)
@@ -1482,8 +1516,20 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		DoShowLog();
 		break;
 	case ID_SWITCH:
-		DoSwitch();
+	{
+		MENUITEMINFO mii;
+		memset(&mii, 0, sizeof(mii));
+		mii.cbSize = sizeof(mii);
+		mii.fMask |= MIIM_DATA;
+		GetMenuItemInfo(popup, cmd, FALSE, &mii);
+		CString *rev = (CString *)mii.dwItemData;
+		if (rev != NULL)
+		{
+			DoSwitch(*rev);
+			delete rev;
+		}
 		break;
+	}
 	case ID_BROWSEREPO:
 		DoBrowseRepo();
 		break;
@@ -1520,9 +1566,6 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 	case ID_SWITCHTOHEAD:
 		DoSwitchToHead();
-		break;
-	case ID_SWITCH:
-		DoSwitch();
 		break;
 	case ID_COPYURL:
 		DoCopyUrl();
