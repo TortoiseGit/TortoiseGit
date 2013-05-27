@@ -1098,6 +1098,13 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 				return TRUE;
 			}
 		}
+		if (GetFocus() == GetDlgItem(IDC_SEARCHEDIT))
+		{
+			KillTimer(LOGFILTER_TIMER);
+			m_limit = 0;
+			m_LogList.Refresh(FALSE);
+			FillLogMessageCtrl(false);
+		}
 	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
