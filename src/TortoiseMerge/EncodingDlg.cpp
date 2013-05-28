@@ -23,7 +23,6 @@
 static CFileTextLines::UnicodeType uctArray[] =
 {
 	CFileTextLines::ASCII,
-	CFileTextLines::BINARY,
 	CFileTextLines::UTF16_LE,
 	CFileTextLines::UTF16_BE,
 	CFileTextLines::UTF32_LE,
@@ -34,6 +33,7 @@ static CFileTextLines::UnicodeType uctArray[] =
 
 static EOL eolArray[] =
 {
+	EOL_AUTOLINE,
 	EOL_CRLF,
 	EOL_LF,
 	EOL_CR,
@@ -96,7 +96,6 @@ BOOL CEncodingDlg::OnInitDialog()
 	SetDlgItemText(IDC_VIEW, view);
 
 	m_Encoding.AddString(_T("ASCII"));
-	m_Encoding.AddString(_T("BINARY"));
 	m_Encoding.AddString(_T("UTF-16LE"));
 	m_Encoding.AddString(_T("UTF-16BE"));
 	m_Encoding.AddString(_T("UTF-32LE"));
@@ -114,6 +113,7 @@ BOOL CEncodingDlg::OnInitDialog()
 	}
 	m_Encoding.SetCurSel(idxtexttype);
 
+	m_EOL.AddString(_T("*"));
 	m_EOL.AddString(_T("CRLF"));
 	m_EOL.AddString(_T("LF"));
 	m_EOL.AddString(_T("CR"));

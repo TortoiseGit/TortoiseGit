@@ -5340,8 +5340,8 @@ int CBaseView::SaveFile(int nFlags)
 	if (m_pViewData!=NULL && m_pWorkingFile!=NULL)
 	{
 		CFileTextLines file;
-        m_SaveParams.m_LineEndings = lineendings;
-        m_SaveParams.m_UnicodeType = texttype;
+		m_SaveParams.m_LineEndings = lineendings;
+		m_SaveParams.m_UnicodeType = texttype;
 		file.SetSaveParams(m_SaveParams);
 
 		for (int i=0; i<m_pViewData->GetCount(); i++)
@@ -5381,7 +5381,7 @@ int CBaseView::SaveFile(int nFlags)
 			case DIFFSTATE_THEIRSREMOVED:
 			case DIFFSTATE_YOURSREMOVED:
 			case DIFFSTATE_CONFLICTRESOLVEDEMPTY:
-				if ((nFlags&SAVE_REMOVED) == 0)
+				if ((nFlags&SAVE_REMOVEDLINES) == 0)
 				{
 					// do not save removed lines
 					break;
@@ -5425,3 +5425,69 @@ int CBaseView::SaveFileTo(CString sFileName, int nFlags)
 	}
 	return -1;
 }
+
+
+EOL CBaseView::GetLineEndings()
+{
+	// check if all lines have same EOL
+	for (int i = 0; i < GetViewCount() - 1; ++i)
+	{
+		if (IsLineEmpty(i))
+		{
+			continue;
+		}
+		EOL eLineEol = GetViewLineEnding(i);
+		if (eLineEol == EOL_AUTOLINE || eLineEol == EOL_NOENDING || eLineEol == lineendings)
+		{
+			continue;
+		}
+		return EOL_AUTOLINE; // mixed eols - hack value
+	}
+	if (lineendings == EOL_AUTOLINE)
+	{
+		return EOL_CRLF;
+	}
+	return lineendings;
+}
+
+void CBaseView::SetLineEndings(EOL eEol)
+{
+	if (eEol == EOL_AUTOLINE)
+	{
+		return;
+	}
+	// set AUTOLINE
+	lineendings = eEol;
+	// replace all set EOLs
+	// TODO store line endings and lineendings in undo
+	//CUndo::BeginGrouping();
+	for (int i = 0; i < GetViewCount(); ++i)
+	{
+		if (IsLineEmpty(i))
+		{
+			continue;
+		}
+		EOL eLineEol = GetViewLineEnding(i);
+		if (eLineEol == EOL_AUTOLINE || eLineEol == EOL_NOENDING || eLineEol == lineendings)
+		{
+			continue;
+		}
+		SetViewLineEnding(i, eEol);
+	}
+	//CUndo::EndGrouping();
+	//CUndo::saveundostep;
+	DocumentUpdated();
+	SetModified();
+}
+
+void CBaseView::SetTextType(CFileTextLines::UnicodeType eTextType)
+{
+	if (texttype == eTextType)
+	{
+		return;
+	}
+	texttype = eTextType;
+	DocumentUpdated();
+	SetModified();
+}
+

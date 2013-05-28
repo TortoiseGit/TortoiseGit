@@ -1265,7 +1265,7 @@ void CMainFrame::OnFileSave()
 		if (nModifiedViewCount == 1)
 		{
 			if (bLeftIsModified)
-				m_pwndLeftView->SaveFile(SAVE_REMOVED);
+				m_pwndLeftView->SaveFile(SAVE_REMOVEDLINES);
 			else
 				FileSave();
 		}
@@ -1281,7 +1281,7 @@ void CMainFrame::OnFileSave()
 				ret = MessageBox(sTitle, 0, MB_YESNOCANCEL | MB_ICONQUESTION);
 				if (ret == IDYES)
 				{
-					m_pwndLeftView->SaveFile(SAVE_REMOVED);
+					m_pwndLeftView->SaveFile(SAVE_REMOVEDLINES);
 				}
 				// right file is handled old way
 			}
@@ -2092,15 +2092,11 @@ void CMainFrame::OnIndicatorLeftview()
 	CEncodingDlg dlg;
 	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW));
 	dlg.texttype = m_pwndLeftView->texttype;
-	dlg.lineendings = m_pwndLeftView->lineendings;
+	dlg.lineendings = m_pwndLeftView->GetLineEndings();
 	if (dlg.DoModal() != IDOK)
 		return;
-	m_pwndLeftView->texttype = dlg.texttype;
-	m_pwndLeftView->lineendings = dlg.lineendings;
-	for (int i = 0; i < m_pwndLeftView->m_pViewData->GetCount() - 1; ++i)
-		m_pwndLeftView->m_pViewData->SetLineEnding(i, dlg.lineendings);
-	m_pwndLeftView->DocumentUpdated();
-	m_pwndLeftView->SetModified();
+	m_pwndLeftView->SetTextType(dlg.texttype);
+	m_pwndLeftView->SetLineEndings(dlg.lineendings);
 }
 
 void CMainFrame::OnIndicatorRightview()
@@ -2108,15 +2104,11 @@ void CMainFrame::OnIndicatorRightview()
 	CEncodingDlg dlg;
 	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW));
 	dlg.texttype = m_pwndRightView->texttype;
-	dlg.lineendings = m_pwndRightView->lineendings;
+	dlg.lineendings = m_pwndRightView->GetLineEndings();
 	if (dlg.DoModal() != IDOK)
 		return;
-	m_pwndRightView->texttype = dlg.texttype;
-	m_pwndRightView->lineendings = dlg.lineendings;
-	for (int i = 0; i < m_pwndRightView->m_pViewData->GetCount() - 1; ++i)
-		m_pwndRightView->m_pViewData->SetLineEnding(i, dlg.lineendings);
-	m_pwndRightView->DocumentUpdated();
-	m_pwndRightView->SetModified();
+	m_pwndRightView->SetTextType(dlg.texttype);
+	m_pwndRightView->SetLineEndings(dlg.lineendings);
 }
 
 void CMainFrame::OnIndicatorBottomview()
@@ -2126,15 +2118,11 @@ void CMainFrame::OnIndicatorBottomview()
 	CEncodingDlg dlg;
 	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_BOTTOMVIEW));
 	dlg.texttype = m_pwndBottomView->texttype;
-	dlg.lineendings = m_pwndBottomView->lineendings;
+	dlg.lineendings = m_pwndBottomView->GetLineEndings();
 	if (dlg.DoModal() != IDOK)
 		return;
-	m_pwndBottomView->texttype = dlg.texttype;
-	m_pwndBottomView->lineendings = dlg.lineendings;
-	for (int i = 0; i < m_pwndBottomView->m_pViewData->GetCount() - 1; ++i)
-		m_pwndBottomView->m_pViewData->SetLineEnding(i, dlg.lineendings);
-	m_pwndBottomView->DocumentUpdated();
-	m_pwndBottomView->SetModified();
+	m_pwndBottomView->SetTextType(dlg.texttype);
+	m_pwndBottomView->SetLineEndings(dlg.lineendings);
 }
 
 int CMainFrame::CheckForReload()
@@ -2247,7 +2235,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 				}
 				if (ret == IDYES)
 				{
-					if (m_pwndLeftView->SaveFile(SAVE_REMOVED)<0)
+					if (m_pwndLeftView->SaveFile(SAVE_REMOVEDLINES)<0)
 					{
 						return IDCANCEL;
 					}
