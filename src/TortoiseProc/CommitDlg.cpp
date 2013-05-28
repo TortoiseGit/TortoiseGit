@@ -1767,9 +1767,6 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 {
-
-	if (m_bBlock)
-		return false;
 	if (cmd == m_nPopupPasteListCmd)
 	{
 		CString logmsg;
