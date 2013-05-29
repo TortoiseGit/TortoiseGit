@@ -28,6 +28,7 @@
 #include "uxtheme.h"
 #include "MenuInfo.h"
 #include "CrashReport.h"
+#include "../version.h"
 
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
 extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
