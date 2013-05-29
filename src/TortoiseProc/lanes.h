@@ -91,7 +91,7 @@ public:
 private:
 	int findNextSha(const CGitHash& next, int pos);
 	int findType(int type, int pos);
-	int add(int type, const CGitHash& next, int pos);
+	int add(int type, const CGitHash& next, int pos, bool& wasEmptyCross);
 
 	int activeLane;
 	QVector<int> typeVec;

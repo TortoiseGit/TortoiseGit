@@ -17,7 +17,8 @@ void Lanes::init(const CGitHash& expectedSha) {
 	clear();
 	activeLane = 0;
 	setBoundary(false);
-	add(BRANCH, expectedSha, activeLane);
+	bool wasEmptyCross = false;
+	add(BRANCH, expectedSha, activeLane, wasEmptyCross);
 }
 
 void Lanes::clear() {
@@ -108,6 +109,7 @@ void Lanes::setMerge(const CGitHashList& parents) {
 	bool wasFork_L = (t == NODE_L);
 	bool wasFork_R = (t == NODE_R);
 	bool startJoinWasACross = false, endJoinWasACross = false;
+	bool endWasEmptyCross = false;
 
 	t = NODE;
 
@@ -133,7 +135,7 @@ void Lanes::setMerge(const CGitHashList& parents) {
 			typeVec[idx] = JOIN;
 		}
 		else
-			rangeEnd = add(HEAD, *it, rangeEnd + 1);
+			rangeEnd = add(HEAD, *it, rangeEnd + 1, endWasEmptyCross);
 	}
 	int& startT = typeVec[rangeStart];
 	int& endT = typeVec[rangeEnd];
@@ -153,7 +155,7 @@ void Lanes::setMerge(const CGitHashList& parents) {
 	if (startT == HEAD)
 		startT = HEAD_L;
 
-	if (endT == HEAD)
+	if (endT == HEAD && !endWasEmptyCross)
 		endT = HEAD_R;
 
 	for (int i = rangeStart + 1; i < rangeEnd; ++i) {
@@ -195,8 +197,10 @@ void Lanes::changeActiveLane(const CGitHash& sha) {
 	int idx = findNextSha(sha, 0); // find first sha
 	if (idx != -1)
 		typeVec[idx] = ACTIVE; // called before setBoundary()
-	else
-		idx = add(BRANCH, sha, activeLane); // new branch
+	else {
+		bool wasEmptyCross = false;
+		idx = add(BRANCH, sha, activeLane, wasEmptyCross); // new branch
+	}
 
 	activeLane = idx;
 }
@@ -281,12 +285,26 @@ int Lanes::findType(int type, int pos) {
 	return -1;
 }
 
-int Lanes::add(int type, const CGitHash& next, int pos) {
+int Lanes::add(int type, const CGitHash& next, int pos, bool& wasEmptyCross) {
 
+	wasEmptyCross = false;
 	// first check empty lanes starting from pos
 	if (pos < (int)typeVec.size()) {
-		pos = findType(EMPTY, pos);
+		int posEmpty = findType(EMPTY, pos);
+		int posCrossEmpty = findType(CROSS_EMPTY, pos);
+		// Use first "empty" position.
+		if (posEmpty != -1 && posCrossEmpty != -1)
+			pos = min(posEmpty, posCrossEmpty);
+		else if (posEmpty != -1)
+			pos = posEmpty;
+		else if (posCrossEmpty != -1)
+			pos = posCrossEmpty;
+		else
+			pos = -1;
+
 		if (pos != -1) {
+			wasEmptyCross = (pos == posCrossEmpty);
+
 			typeVec[pos] = type;
 			nextShaVec[pos] = next;
 			return pos;

@@ -18,6 +18,7 @@ Released: Unreleased
  * Fixed issue #1782: Do not reset changed lines/files statistics after toggling "Authors case sensitive" checkbox
  * Fixed issue #1783: TortoiseGit does not work on WinXP/2003 x64
  * Fixed issue #1798: "Paste Recent commits" during Please wait in Commit dialog does not work
+ * Fixed issue #1106: Stairs in log view
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
