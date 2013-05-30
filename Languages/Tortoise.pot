@@ -2010,6 +2010,10 @@ msgstr ""
 msgid "Both the path to the patch file and the target path must be absolute paths!"
 msgstr ""
 
+#. Resource IDs: (188)
+msgid "Bottom View:"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "Br&owse..."
 msgstr ""
@@ -3527,6 +3531,10 @@ msgstr ""
 msgid "E&xternal"
 msgstr ""
 
+#. Resource IDs: (303)
+msgid "EOL"
+msgstr ""
+
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr ""
@@ -3637,6 +3645,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Encode"
+msgstr ""
+
+#. Resource IDs: (300, 301)
+msgid "Encoding"
 msgstr ""
 
 #. Resource IDs: (3867)
