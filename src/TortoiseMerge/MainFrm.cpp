@@ -2089,6 +2089,8 @@ void CMainFrame::OnUpdateEditEnable(CCmdUI *pCmdUI)
 
 void CMainFrame::OnIndicatorLeftview()
 {
+	if (m_pwndLeftView->IsReadonly())
+		return;
 	CEncodingDlg dlg;
 	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW));
 	dlg.texttype = m_pwndLeftView->texttype;
@@ -2101,6 +2103,8 @@ void CMainFrame::OnIndicatorLeftview()
 
 void CMainFrame::OnIndicatorRightview()
 {
+	if (m_pwndRightView->IsReadonly())
+		return;
 	CEncodingDlg dlg;
 	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW));
 	dlg.texttype = m_pwndRightView->texttype;
