@@ -77,6 +77,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SshAskPass", "SshAskPass\SshAskPass.vcxproj", "{E8C01071-3B47-4A3F-9168-AA58A4635638}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TortoiseGitMerge", "TortoiseMerge\TortoiseMerge.vcxproj", "{8ABB4F84-891A-4748-8507-F5494842173E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5C6B6A95-2053-4593-9617-C4F176736D5A} = {5C6B6A95-2053-4593-9617-C4F176736D5A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml", "..\ext\build\xml.vcxproj", "{AE6AAFBA-9992-452A-9EB8-DD69402A4ACE}"
 EndProject

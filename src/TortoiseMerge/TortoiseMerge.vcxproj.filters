@@ -177,25 +177,13 @@
     <ClCompile Include="GotoLineDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="libsvn_diff\adler32.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
     <ClCompile Include="libsvn_diff\checksum.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\cmdline.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
-    <ClCompile Include="libsvn_diff\compress.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\crc32.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
     <ClCompile Include="libsvn_diff\ctype.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\deflate.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\diff.c">
@@ -222,34 +210,10 @@
     <ClCompile Include="libsvn_diff\error.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
-    <ClCompile Include="libsvn_diff\gzio.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\infblock.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\infcodes.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\inffast.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\inflate.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\inftrees.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\infutil.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
     <ClCompile Include="libsvn_diff\io.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\lcs.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\maketree.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\md5.c">
@@ -276,15 +240,6 @@
     <ClCompile Include="libsvn_diff\token.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
-    <ClCompile Include="libsvn_diff\trees.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\uncompr.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\unzip.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
     <ClCompile Include="libsvn_diff\utf.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
@@ -295,12 +250,6 @@
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\win32_xlate.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\zip.c">
-      <Filter>Libdiff</Filter>
-    </ClCompile>
-    <ClCompile Include="libsvn_diff\zutil.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="TempFile.cpp">
