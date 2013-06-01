@@ -53,7 +53,7 @@ private:
 
 	bool				m_bWordDiff;
 
-	static svn_error_t * datasource_open(void *baton, svn_diff_datasource_e datasource);
+	static svn_error_t * datasources_open(void *baton, apr_off_t *prefix_lines, apr_off_t *suffix_lines, const svn_diff_datasource_e *datasources, apr_size_t datasource_len);
 	static svn_error_t * datasource_close(void *baton, svn_diff_datasource_e datasource);
 	static svn_error_t * next_token(apr_uint32_t * hash, void ** token, void * baton, svn_diff_datasource_e datasource);
 	static svn_error_t * compare_token(void * baton, void * token1, void * token2, int * compare);
@@ -70,5 +70,5 @@ private:
 		apr_uint32_t* hash, void** token, apr_size_t& linePos, const std::vector<std::wstring>& tokens);
 	static void NextTokenChars(
 		apr_uint32_t* hash, void** token, apr_size_t& linePos, LPCTSTR line, apr_size_t lineLength);
-	static const svn_diff_fns_t SVNLineDiff_vtable;
+	static const svn_diff_fns2_t SVNLineDiff_vtable;
 };

@@ -1,17 +1,22 @@
 /* pool.c:  pool wrappers for Subversion
  *
  * ====================================================================
- * Copyright (c) 2000-2007 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  */
 
@@ -23,6 +28,7 @@
 
 #include <apr_general.h>
 #include <apr_pools.h>
+#include <apr_thread_mutex.h>
 
 #include "svn_pools.h"
 
@@ -47,6 +53,7 @@ abort_on_pool_failure(int retcode)
      And we don't have any of it... */
   printf("Out of memory - terminating application.\n");
   abort();
+  return 0; /* not reached */
 }
 
 
@@ -92,3 +99,44 @@ svn_pool_create_ex(apr_pool_t *pool, apr_allocator_t *allocator)
 }
 
 #endif /* APR_POOL_DEBUG */
+
+apr_allocator_t *
+svn_pool_create_allocator(svn_boolean_t thread_safe)
+{
+  apr_allocator_t *allocator;
+  apr_pool_t *pool;
+
+  /* create the allocator and limit it's internal free list to keep
+   * memory usage in check */
+
+  if (apr_allocator_create(&allocator))
+    abort_on_pool_failure(EXIT_FAILURE);
+
+  apr_allocator_max_free_set(allocator, SVN_ALLOCATOR_RECOMMENDED_MAX_FREE);
+
+  /* create the root pool */
+
+  pool = svn_pool_create_ex(NULL, allocator);
+  apr_allocator_owner_set(allocator, pool);
+
+#if APR_POOL_DEBUG
+  apr_pool_tag (pool, "svn root pool");
+#endif
+
+  /* By default, allocators are *not* thread-safe. We must provide a mutex
+   * if we want thread-safety for that mutex. */
+
+#if APR_HAS_THREADS
+  if (thread_safe)
+    {
+      apr_thread_mutex_t *mutex;
+      apr_thread_mutex_create(&mutex, APR_THREAD_MUTEX_DEFAULT, pool);
+      apr_allocator_mutex_set(allocator, mutex);
+    }
+#endif
+
+  /* better safe than sorry */
+  SVN_ERR_ASSERT_NO_RETURN(allocator != NULL);
+
+  return allocator;
+}

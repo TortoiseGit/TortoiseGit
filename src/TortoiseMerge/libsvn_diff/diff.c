@@ -2,17 +2,22 @@
  * diff.c :  routines for doing diffs
  *
  * ====================================================================
- * Copyright (c) 2000-2004 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  */
 
@@ -21,15 +26,40 @@
 #include <apr_pools.h>
 #include <apr_general.h>
 
-#include "svn_version.h"
-#include "svn_io.h"
-
 #include "svn_pools.h"
 #include "svn_error.h"
 #include "svn_diff.h"
 #include "svn_types.h"
 
 #include "diff.h"
+
+
+svn_diff__token_index_t*
+svn_diff__get_token_counts(svn_diff__position_t *loop_start,
+                           svn_diff__token_index_t num_tokens,
+                           apr_pool_t *pool)
+{
+  svn_diff__token_index_t *token_counts;
+  svn_diff__token_index_t token_index;
+  svn_diff__position_t *current;
+
+  token_counts = apr_palloc(pool, num_tokens * sizeof(*token_counts));
+  for (token_index = 0; token_index < num_tokens; token_index++)
+    token_counts[token_index] = 0;
+
+  current = loop_start;
+  if (current != NULL)
+    {
+      do
+        {
+          token_counts[current->token_index]++;
+          current = current->next;
+        }
+      while (current != loop_start);
+    }
+
+  return token_counts;
+}
 
 
 svn_diff_t *
@@ -96,16 +126,22 @@ svn_diff__diff(svn_diff__lcs_t *lcs,
 
 
 svn_error_t *
-svn_diff_diff(svn_diff_t **diff,
-              void *diff_baton,
-              const svn_diff_fns_t *vtable,
-              apr_pool_t *pool)
+svn_diff_diff_2(svn_diff_t **diff,
+                void *diff_baton,
+                const svn_diff_fns2_t *vtable,
+                apr_pool_t *pool)
 {
   svn_diff__tree_t *tree;
   svn_diff__position_t *position_list[2];
+  svn_diff__token_index_t num_tokens;
+  svn_diff__token_index_t *token_counts[2];
+  svn_diff_datasource_e datasource[] = {svn_diff_datasource_original,
+                                        svn_diff_datasource_modified};
   svn_diff__lcs_t *lcs;
   apr_pool_t *subpool;
   apr_pool_t *treepool;
+  apr_off_t prefix_lines = 0;
+  apr_off_t suffix_lines = 0;
 
   *diff = NULL;
 
@@ -114,18 +150,25 @@ svn_diff_diff(svn_diff_t **diff,
 
   svn_diff__tree_create(&tree, treepool);
 
+  SVN_ERR(vtable->datasources_open(diff_baton, &prefix_lines, &suffix_lines,
+                                   datasource, 2));
+
   /* Insert the data into the tree */
   SVN_ERR(svn_diff__get_tokens(&position_list[0],
                                tree,
                                diff_baton, vtable,
                                svn_diff_datasource_original,
+                               prefix_lines,
                                subpool));
 
   SVN_ERR(svn_diff__get_tokens(&position_list[1],
                                tree,
                                diff_baton, vtable,
                                svn_diff_datasource_modified,
+                               prefix_lines,
                                subpool));
+
+  num_tokens = svn_diff__get_node_count(tree);
 
   /* The cool part is that we don't need the tokens anymore.
    * Allow the app to clean them up if it wants to.
@@ -136,8 +179,15 @@ svn_diff_diff(svn_diff_t **diff,
   /* We don't need the nodes in the tree either anymore, nor the tree itself */
   svn_pool_destroy(treepool);
 
+  token_counts[0] = svn_diff__get_token_counts(position_list[0], num_tokens,
+                                               subpool);
+  token_counts[1] = svn_diff__get_token_counts(position_list[1], num_tokens,
+                                               subpool);
+
   /* Get the lcs */
-  lcs = svn_diff__lcs(position_list[0], position_list[1], subpool);
+  lcs = svn_diff__lcs(position_list[0], position_list[1], token_counts[0],
+                      token_counts[1], num_tokens, prefix_lines,
+                      suffix_lines, subpool);
 
   /* Produce the diff */
   *diff = svn_diff__diff(lcs, 1, 1, TRUE, pool);

@@ -2,17 +2,22 @@
  * cmdline.c :  Helpers for command-line programs.
  *
  * ====================================================================
- * Copyright (c) 2003-2009 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  */
 
@@ -26,33 +31,46 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#else
+#include <crtdbg.h>
+#include <io.h>
 #endif
 
+#include <apr.h>                /* for STDIN_FILENO */
 #include <apr_errno.h>          /* for apr_strerror */
 #include <apr_general.h>        /* for apr_initialize/apr_terminate */
-#include <apr_atomic.h>         /* for apr_atomic_init */
 #include <apr_strings.h>        /* for apr_snprintf */
 #include <apr_pools.h>
 
 #include "svn_cmdline.h"
+#if 0 // TortoiseGit
+#include "svn_ctype.h"
 #include "svn_dso.h"
+#include "svn_dirent_uri.h"
+#include "svn_hash.h"
 #include "svn_path.h"
 #include "svn_pools.h"
+#endif // TortoiseGit
 #include "svn_error.h"
+#if 0 // TortoiseGit
 #include "svn_nls.h"
 #include "svn_utf.h"
 #include "svn_auth.h"
-#include "svn_version.h"
 #include "svn_xml.h"
 #include "svn_base64.h"
 #include "svn_config.h"
+#include "svn_sorts.h"
+#include "svn_props.h"
+#include "svn_subst.h"
 
-//#include "private/svn_cmdline_private.h"
-//#include "private/svn_utf_private.h"
+#include "private/svn_cmdline_private.h"
+#include "private/svn_utf_private.h"
+#include "private/svn_string_private.h"
+#endif // TortoiseGit
 
-//#include "svn_private_config.h"
+#include "svn_private_config.h"
 
-//#include "win32_crashrpt.h"
+//#include "win32_crashrpt.h" // TortoiseGit
 
 /* The stdin encoding. If null, it's the same as the native encoding. */
 static const char *input_encoding = NULL;
@@ -60,13 +78,14 @@ static const char *input_encoding = NULL;
 /* The stdout encoding. If null, it's the same as the native encoding. */
 static const char *output_encoding = NULL;
 
-#if 0
+#if 0 // TortoiseGit
 int
 svn_cmdline_init(const char *progname, FILE *error_stream)
 {
   apr_status_t status;
   apr_pool_t *pool;
   svn_error_t *err;
+  char prefix_buf[64];  /* 64 is probably bigger than most program names */
 
 #ifndef WIN32
   {
@@ -118,7 +137,29 @@ svn_cmdline_init(const char *progname, FILE *error_stream)
 #ifdef SVN_USE_WIN32_CRASHHANDLER
   /* Attach (but don't load) the crash handler */
   SetUnhandledExceptionFilter(svn__unhandled_exception_filter);
-#endif
+
+#if _MSC_VER >= 1400
+  /* ### This should work for VC++ 2002 (=1300) and later */
+  /* Show the abort message on STDERR instead of a dialog to allow
+     scripts (e.g. our testsuite) to continue after an abort without
+     user intervention. Allow overriding for easier debugging. */
+  if (!getenv("SVN_CMDLINE_USE_DIALOG_FOR_ABORT"))
+    {
+      /* In release mode: Redirect abort() errors to stderr */
+      _set_error_mode(_OUT_TO_STDERR);
+
+      /* In _DEBUG mode: Redirect all debug output (E.g. assert() to stderr.
+         (Ignored in release builds) */
+      _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR);
+      _CrtSetReportFile( _CRT_ERROR, _CRTDBG_FILE_STDERR);
+      _CrtSetReportFile( _CRT_ASSERT, _CRTDBG_FILE_STDERR);
+      _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+      _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+      _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+    }
+#endif /* _MSC_VER >= 1400 */
+
+#endif /* SVN_USE_WIN32_CRASHHANDLER */
 
 #endif /* WIN32 */
 
@@ -171,11 +212,17 @@ svn_cmdline_init(const char *progname, FILE *error_stream)
       return EXIT_FAILURE;
     }
 
-  /* This has to happen before any pools are created. */
+  strncpy(prefix_buf, progname, sizeof(prefix_buf) - 3);
+  prefix_buf[sizeof(prefix_buf) - 3] = '\0';
+  strcat(prefix_buf, ": ");
+
+  /* DSO pool must be created before any other pools used by the
+     application so that pool cleanup doesn't unload DSOs too
+     early. See docstring of svn_dso_initialize2(). */
   if ((err = svn_dso_initialize2()))
     {
-      if (error_stream && err->message)
-        fprintf(error_stream, "%s", err->message);
+      if (error_stream)
+        svn_handle_error2(err, error_stream, TRUE, prefix_buf);
 
       svn_error_clear(err);
       return EXIT_FAILURE;
@@ -193,12 +240,12 @@ svn_cmdline_init(const char *progname, FILE *error_stream)
   /* Create a pool for use by the UTF-8 routines.  It will be cleaned
      up by APR at exit time. */
   pool = svn_pool_create(NULL);
-  svn_utf_initialize(pool);
+  svn_utf_initialize2(pool, FALSE);
 
   if ((err = svn_nls_init()))
     {
-      if (error_stream && err->message)
-        fprintf(error_stream, "%s", err->message);
+      if (error_stream)
+        svn_handle_error2(err, error_stream, TRUE, prefix_buf);
 
       svn_error_clear(err);
       return EXIT_FAILURE;
@@ -206,7 +253,7 @@ svn_cmdline_init(const char *progname, FILE *error_stream)
 
   return EXIT_SUCCESS;
 }
-#endif 
+#endif // TortoiseGit
 
 svn_error_t *
 svn_cmdline_cstring_from_utf8(const char **dest,
@@ -218,6 +265,7 @@ svn_cmdline_cstring_from_utf8(const char **dest,
   else
     return svn_utf_cstring_from_utf8_ex2(dest, src, output_encoding, pool);
 }
+
 
 const char *
 svn_cmdline_cstring_from_utf8_fuzzy(const char *src,
@@ -239,14 +287,14 @@ svn_cmdline_cstring_to_utf8(const char **dest,
     return svn_utf_cstring_to_utf8_ex2(dest, src, input_encoding, pool);
 }
 
-#if 0
+
 svn_error_t *
 svn_cmdline_path_local_style_from_utf8(const char **dest,
                                        const char *src,
                                        apr_pool_t *pool)
 {
   return svn_cmdline_cstring_from_utf8(dest,
-                                       svn_path_local_style(src, pool),
+                                       svn_dirent_local_style(src, pool),
                                        pool);
 }
 
@@ -270,7 +318,7 @@ svn_cmdline_printf(apr_pool_t *pool, const char *fmt, ...)
 
   return svn_cmdline_fputs(message, stdout, pool);
 }
-#endif
+
 svn_error_t *
 svn_cmdline_fprintf(FILE *stream, apr_pool_t *pool, const char *fmt, ...)
 {
@@ -308,16 +356,22 @@ svn_cmdline_fputs(const char *string, FILE* stream, apr_pool_t *pool)
 
   if (fputs(out, stream) == EOF)
     {
-      if (errno)
-        return svn_error_wrap_apr(errno, _("Write error"));
+      if (apr_get_os_error()) /* is errno on POSIX */
+        {
+          /* ### Issue #3014: Return a specific error for broken pipes,
+           * ### with a single element in the error chain. */
+          if (APR_STATUS_IS_EPIPE(apr_get_os_error()))
+            return svn_error_create(SVN_ERR_IO_PIPE_WRITE_ERROR, NULL, NULL);
+          else
+            return svn_error_wrap_apr(apr_get_os_error(), _("Write error"));
+        }
       else
-        return svn_error_create
-          (SVN_ERR_IO_WRITE_ERROR, NULL, NULL);
+        return svn_error_create(SVN_ERR_IO_WRITE_ERROR, NULL, NULL);
     }
 
   return SVN_NO_ERROR;
 }
-#if 0
+#if 0 // TortoiseGit
 svn_error_t *
 svn_cmdline_fflush(FILE *stream)
 {
@@ -325,8 +379,15 @@ svn_cmdline_fflush(FILE *stream)
   errno = 0;
   if (fflush(stream) == EOF)
     {
-      if (errno)
-        return svn_error_wrap_apr(errno, _("Write error"));
+      if (apr_get_os_error()) /* is errno on POSIX */
+        {
+          /* ### Issue #3014: Return a specific error for broken pipes,
+           * ### with a single element in the error chain. */
+          if (APR_STATUS_IS_EPIPE(apr_get_os_error()))
+            return svn_error_create(SVN_ERR_IO_PIPE_WRITE_ERROR, NULL, NULL);
+          else
+            return svn_error_wrap_apr(apr_get_os_error(), _("Write error"));
+        }
       else
         return svn_error_create(SVN_ERR_IO_WRITE_ERROR, NULL, NULL);
     }
@@ -347,7 +408,15 @@ svn_cmdline_handle_exit_error(svn_error_t *err,
                               apr_pool_t *pool,
                               const char *prefix)
 {
-  svn_handle_error2(err, stderr, FALSE, prefix);
+  /* Issue #3014:
+   * Don't print anything on broken pipes. The pipe was likely
+   * closed by the process at the other end. We expect that
+   * process to perform error reporting as necessary.
+   *
+   * ### This assumes that there is only one error in a chain for
+   * ### SVN_ERR_IO_PIPE_WRITE_ERROR. See svn_cmdline_fputs(). */
+  if (err->apr_err != SVN_ERR_IO_PIPE_WRITE_ERROR)
+    svn_handle_error2(err, stderr, FALSE, prefix);
   svn_error_clear(err);
   if (pool)
     svn_pool_destroy(pool);
@@ -410,8 +479,8 @@ svn_cmdline_create_auth_baton(svn_auth_baton_t **ab,
   apr_array_header_t *providers;
 
   /* Populate the registered providers with the platform-specific providers */
-  SVN_ERR(svn_auth_get_platform_specific_client_providers
-            (&providers, cfg, pool));
+  SVN_ERR(svn_auth_get_platform_specific_client_providers(&providers,
+                                                          cfg, pool));
 
   /* If we have a cancellation function, cram it and the stuff it
      needs into the prompt baton. */
@@ -423,7 +492,7 @@ svn_cmdline_create_auth_baton(svn_auth_baton_t **ab,
       pb->config_dir = config_dir;
     }
 
-  if (non_interactive == FALSE)
+  if (!non_interactive)
     {
       /* This provider doesn't prompt the user in order to get creds;
          it prompts the user regarding the caching of creds. */
@@ -454,7 +523,7 @@ svn_cmdline_create_auth_baton(svn_auth_baton_t **ab,
   svn_auth_get_ssl_client_cert_file_provider(&provider, pool);
   APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
 
-  if (non_interactive == FALSE)
+  if (!non_interactive)
     {
       /* This provider doesn't prompt the user in order to get creds;
          it prompts the user regarding the caching of creds. */
@@ -469,8 +538,15 @@ svn_cmdline_create_auth_baton(svn_auth_baton_t **ab,
     }
   APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
 
-  if (non_interactive == FALSE)
+  if (!non_interactive)
     {
+      svn_boolean_t ssl_client_cert_file_prompt;
+
+      SVN_ERR(svn_config_get_bool(cfg, &ssl_client_cert_file_prompt,
+                                  SVN_CONFIG_SECTION_AUTH,
+                                  SVN_CONFIG_OPTION_SSL_CLIENT_CERT_FILE_PROMPT,
+                                  FALSE));
+
       /* Two basic prompt providers: username/password, and just username. */
       svn_auth_get_simple_prompt_provider(&provider,
                                           svn_cmdline_auth_simple_prompt,
@@ -484,19 +560,23 @@ svn_cmdline_create_auth_baton(svn_auth_baton_t **ab,
          2, /* retry limit */ pool);
       APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
 
-      /* Three ssl prompt providers, for server-certs, client-certs,
-         and client-cert-passphrases.  */
+      /* SSL prompt providers: server-certs and client-cert-passphrases.  */
       svn_auth_get_ssl_server_trust_prompt_provider
         (&provider, svn_cmdline_auth_ssl_server_trust_prompt, pb, pool);
-      APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
-
-      svn_auth_get_ssl_client_cert_prompt_provider
-        (&provider, svn_cmdline_auth_ssl_client_cert_prompt, pb, 2, pool);
       APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
 
       svn_auth_get_ssl_client_cert_pw_prompt_provider
         (&provider, svn_cmdline_auth_ssl_client_cert_pw_prompt, pb, 2, pool);
       APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
+
+      /* If configuration allows, add a provider for client-cert path
+         prompting, too. */
+      if (ssl_client_cert_file_prompt)
+        {
+          svn_auth_get_ssl_client_cert_prompt_provider
+            (&provider, svn_cmdline_auth_ssl_client_cert_prompt, pb, 2, pool);
+          APR_ARRAY_PUSH(providers, svn_auth_provider_object_t *) = provider;
+        }
     }
   else if (trust_server_cert)
     {
@@ -576,13 +656,14 @@ void
 svn_cmdline__print_xml_prop(svn_stringbuf_t **outstr,
                             const char* propname,
                             svn_string_t *propval,
+                            svn_boolean_t inherited_prop,
                             apr_pool_t *pool)
 {
   const char *xml_safe;
   const char *encoding = NULL;
 
   if (*outstr == NULL)
-    *outstr = svn_stringbuf_create("", pool);
+    *outstr = svn_stringbuf_create_empty(pool);
 
   if (svn_xml_is_xml_safe(propval->data, propval->len))
     {
@@ -599,19 +680,638 @@ svn_cmdline__print_xml_prop(svn_stringbuf_t **outstr,
     }
 
   if (encoding)
-    svn_xml_make_open_tag(outstr, pool, svn_xml_protect_pcdata,
-                          "property", "name", propname,
-                          "encoding", encoding, NULL);
+    svn_xml_make_open_tag(
+      outstr, pool, svn_xml_protect_pcdata,
+      inherited_prop ? "inherited_property" : "property",
+      "name", propname,
+      "encoding", encoding, NULL);
   else
-    svn_xml_make_open_tag(outstr, pool, svn_xml_protect_pcdata,
-                          "property", "name", propname, NULL);
+    svn_xml_make_open_tag(
+      outstr, pool, svn_xml_protect_pcdata,
+      inherited_prop ? "inherited_property" : "property",
+      "name", propname, NULL);
 
   svn_stringbuf_appendcstr(*outstr, xml_safe);
 
-  svn_xml_make_close_tag(outstr, pool, "property");
+  svn_xml_make_close_tag(
+    outstr, pool,
+    inherited_prop ? "inherited_property" : "property");
 
   return;
 }
 
+svn_error_t *
+svn_cmdline__parse_config_option(apr_array_header_t *config_options,
+                                 const char *opt_arg,
+                                 apr_pool_t *pool)
+{
+  svn_cmdline__config_argument_t *config_option;
+  const char *first_colon, *second_colon, *equals_sign;
+  apr_size_t len = strlen(opt_arg);
+  if ((first_colon = strchr(opt_arg, ':')) && (first_colon != opt_arg))
+    {
+      if ((second_colon = strchr(first_colon + 1, ':')) &&
+          (second_colon != first_colon + 1))
+        {
+          if ((equals_sign = strchr(second_colon + 1, '=')) &&
+              (equals_sign != second_colon + 1))
+            {
+              config_option = apr_pcalloc(pool, sizeof(*config_option));
+              config_option->file = apr_pstrndup(pool, opt_arg,
+                                                 first_colon - opt_arg);
+              config_option->section = apr_pstrndup(pool, first_colon + 1,
+                                                    second_colon - first_colon - 1);
+              config_option->option = apr_pstrndup(pool, second_colon + 1,
+                                                   equals_sign - second_colon - 1);
 
+              if (! (strchr(config_option->option, ':')))
+                {
+                  config_option->value = apr_pstrndup(pool, equals_sign + 1,
+                                                      opt_arg + len - equals_sign - 1);
+                  APR_ARRAY_PUSH(config_options, svn_cmdline__config_argument_t *)
+                                       = config_option;
+                  return SVN_NO_ERROR;
+                }
+            }
+        }
+    }
+  return svn_error_create(SVN_ERR_CL_ARG_PARSING_ERROR, NULL,
+                          _("Invalid syntax of argument of --config-option"));
+}
+
+svn_error_t *
+svn_cmdline__apply_config_options(apr_hash_t *config,
+                                  const apr_array_header_t *config_options,
+                                  const char *prefix,
+                                  const char *argument_name)
+{
+  int i;
+
+  for (i = 0; i < config_options->nelts; i++)
+   {
+     svn_config_t *cfg;
+     svn_cmdline__config_argument_t *arg =
+                          APR_ARRAY_IDX(config_options, i,
+                                        svn_cmdline__config_argument_t *);
+
+     cfg = svn_hash_gets(config, arg->file);
+
+     if (cfg)
+       {
+         svn_config_set(cfg, arg->section, arg->option, arg->value);
+       }
+     else
+       {
+         svn_error_t *err = svn_error_createf(SVN_ERR_CL_ARG_PARSING_ERROR, NULL,
+             _("Unrecognized file in argument of %s"), argument_name);
+
+         svn_handle_warning2(stderr, err, prefix);
+         svn_error_clear(err);
+       }
+    }
+
+  return SVN_NO_ERROR;
+}
+
+/* Return a copy, allocated in POOL, of the next line of text from *STR
+ * up to and including a CR and/or an LF. Change *STR to point to the
+ * remainder of the string after the returned part. If there are no
+ * characters to be returned, return NULL; never return an empty string.
+ */
+static const char *
+next_line(const char **str, apr_pool_t *pool)
+{
+  const char *start = *str;
+  const char *p = *str;
+
+  /* n.b. Throughout this fn, we never read any character after a '\0'. */
+  /* Skip over all non-EOL characters, if any. */
+  while (*p != '\r' && *p != '\n' && *p != '\0')
+    p++;
+  /* Skip over \r\n or \n\r or \r or \n, if any. */
+  if (*p == '\r' || *p == '\n')
+    {
+      char c = *p++;
+
+      if ((c == '\r' && *p == '\n') || (c == '\n' && *p == '\r'))
+        p++;
+    }
+
+  /* Now p points after at most one '\n' and/or '\r'. */
+  *str = p;
+
+  if (p == start)
+    return NULL;
+
+  return svn_string_ncreate(start, p - start, pool)->data;
+}
+
+const char *
+svn_cmdline__indent_string(const char *str,
+                           const char *indent,
+                           apr_pool_t *pool)
+{
+  svn_stringbuf_t *out = svn_stringbuf_create_empty(pool);
+  const char *line;
+
+  while ((line = next_line(&str, pool)))
+    {
+      svn_stringbuf_appendcstr(out, indent);
+      svn_stringbuf_appendcstr(out, line);
+    }
+  return out->data;
+}
+
+svn_error_t *
+svn_cmdline__print_prop_hash(svn_stream_t *out,
+                             apr_hash_t *prop_hash,
+                             svn_boolean_t names_only,
+                             apr_pool_t *pool)
+{
+  apr_array_header_t *sorted_props;
+  int i;
+
+  sorted_props = svn_sort__hash(prop_hash, svn_sort_compare_items_lexically,
+                                pool);
+  for (i = 0; i < sorted_props->nelts; i++)
+    {
+      svn_sort__item_t item = APR_ARRAY_IDX(sorted_props, i, svn_sort__item_t);
+      const char *pname = item.key;
+      svn_string_t *propval = item.value;
+      const char *pname_stdout;
+
+      if (svn_prop_needs_translation(pname))
+        SVN_ERR(svn_subst_detranslate_string(&propval, propval,
+                                             TRUE, pool));
+
+      SVN_ERR(svn_cmdline_cstring_from_utf8(&pname_stdout, pname, pool));
+
+      if (out)
+        {
+          pname_stdout = apr_psprintf(pool, "  %s\n", pname_stdout);
+          SVN_ERR(svn_subst_translate_cstring2(pname_stdout, &pname_stdout,
+                                              APR_EOL_STR,  /* 'native' eol */
+                                              FALSE, /* no repair */
+                                              NULL,  /* no keywords */
+                                              FALSE, /* no expansion */
+                                              pool));
+
+          SVN_ERR(svn_stream_puts(out, pname_stdout));
+        }
+      else
+        {
+          /* ### We leave these printfs for now, since if propval wasn't
+             translated above, we don't know anything about its encoding.
+             In fact, it might be binary data... */
+          printf("  %s\n", pname_stdout);
+        }
+
+      if (!names_only)
+        {
+          /* Add an extra newline to the value before indenting, so that
+           * every line of output has the indentation whether the value
+           * already ended in a newline or not. */
+          const char *newval = apr_psprintf(pool, "%s\n", propval->data);
+          const char *indented_newval = svn_cmdline__indent_string(newval,
+                                                                   "    ",
+                                                                   pool);
+          if (out)
+            {
+              SVN_ERR(svn_stream_puts(out, indented_newval));
+            }
+          else
+            {
+              printf("%s", indented_newval);
+            }
+        }
+    }
+
+  return SVN_NO_ERROR;
+}
+
+svn_error_t *
+svn_cmdline__print_xml_prop_hash(svn_stringbuf_t **outstr,
+                                 apr_hash_t *prop_hash,
+                                 svn_boolean_t names_only,
+                                 svn_boolean_t inherited_props,
+                                 apr_pool_t *pool)
+{
+  apr_array_header_t *sorted_props;
+  int i;
+
+  if (*outstr == NULL)
+    *outstr = svn_stringbuf_create_empty(pool);
+
+  sorted_props = svn_sort__hash(prop_hash, svn_sort_compare_items_lexically,
+                                pool);
+  for (i = 0; i < sorted_props->nelts; i++)
+    {
+      svn_sort__item_t item = APR_ARRAY_IDX(sorted_props, i, svn_sort__item_t);
+      const char *pname = item.key;
+      svn_string_t *propval = item.value;
+
+      if (names_only)
+        {
+          svn_xml_make_open_tag(
+            outstr, pool, svn_xml_self_closing,
+            inherited_props ? "inherited_property" : "property",
+            "name", pname, NULL);
+        }
+      else
+        {
+          const char *pname_out;
+
+          if (svn_prop_needs_translation(pname))
+            SVN_ERR(svn_subst_detranslate_string(&propval, propval,
+                                                 TRUE, pool));
+
+          SVN_ERR(svn_cmdline_cstring_from_utf8(&pname_out, pname, pool));
+
+          svn_cmdline__print_xml_prop(outstr, pname_out, propval,
+                                      inherited_props, pool);
+        }
+    }
+
+    return SVN_NO_ERROR;
+}
+
+svn_boolean_t
+svn_cmdline__be_interactive(svn_boolean_t non_interactive,
+                            svn_boolean_t force_interactive)
+{
+  /* If neither --non-interactive nor --force-interactive was passed,
+   * be interactive if stdin is a terminal.
+   * If --force-interactive was passed, always be interactive. */
+  if (!force_interactive && !non_interactive)
+    {
+#ifdef WIN32
+      return (_isatty(STDIN_FILENO) != 0);
+#else
+      return (isatty(STDIN_FILENO) != 0);
 #endif
+    }
+  else if (force_interactive)
+    return TRUE;
+
+  return !non_interactive;
+}
+
+
+/* Helper for the next two functions.  Set *EDITOR to some path to an
+   editor binary.  Sources to search include: the EDITOR_CMD argument
+   (if not NULL), $SVN_EDITOR, the runtime CONFIG variable (if CONFIG
+   is not NULL), $VISUAL, $EDITOR.  Return
+   SVN_ERR_CL_NO_EXTERNAL_EDITOR if no binary can be found. */
+static svn_error_t *
+find_editor_binary(const char **editor,
+                   const char *editor_cmd,
+                   apr_hash_t *config)
+{
+  const char *e;
+  struct svn_config_t *cfg;
+
+  /* Use the editor specified on the command line via --editor-cmd, if any. */
+  e = editor_cmd;
+
+  /* Otherwise look for the Subversion-specific environment variable. */
+  if (! e)
+    e = getenv("SVN_EDITOR");
+
+  /* If not found then fall back on the config file. */
+  if (! e)
+    {
+      cfg = config ? svn_hash_gets(config, SVN_CONFIG_CATEGORY_CONFIG) : NULL;
+      svn_config_get(cfg, &e, SVN_CONFIG_SECTION_HELPERS,
+                     SVN_CONFIG_OPTION_EDITOR_CMD, NULL);
+    }
+
+  /* If not found yet then try general purpose environment variables. */
+  if (! e)
+    e = getenv("VISUAL");
+  if (! e)
+    e = getenv("EDITOR");
+
+#ifdef SVN_CLIENT_EDITOR
+  /* If still not found then fall back on the hard-coded default. */
+  if (! e)
+    e = SVN_CLIENT_EDITOR;
+#endif
+
+  /* Error if there is no editor specified */
+  if (e)
+    {
+      const char *c;
+
+      for (c = e; *c; c++)
+        if (!svn_ctype_isspace(*c))
+          break;
+
+      if (! *c)
+        return svn_error_create
+          (SVN_ERR_CL_NO_EXTERNAL_EDITOR, NULL,
+           _("The EDITOR, SVN_EDITOR or VISUAL environment variable or "
+             "'editor-cmd' run-time configuration option is empty or "
+             "consists solely of whitespace. Expected a shell command."));
+    }
+  else
+    return svn_error_create
+      (SVN_ERR_CL_NO_EXTERNAL_EDITOR, NULL,
+       _("None of the environment variables SVN_EDITOR, VISUAL or EDITOR are "
+         "set, and no 'editor-cmd' run-time configuration option was found"));
+
+  *editor = e;
+  return SVN_NO_ERROR;
+}
+
+
+svn_error_t *
+svn_cmdline__edit_file_externally(const char *path,
+                                  const char *editor_cmd,
+                                  apr_hash_t *config,
+                                  apr_pool_t *pool)
+{
+  const char *editor, *cmd, *base_dir, *file_name, *base_dir_apr;
+  char *old_cwd;
+  int sys_err;
+  apr_status_t apr_err;
+
+  svn_dirent_split(&base_dir, &file_name, path, pool);
+
+  SVN_ERR(find_editor_binary(&editor, editor_cmd, config));
+
+  apr_err = apr_filepath_get(&old_cwd, APR_FILEPATH_NATIVE, pool);
+  if (apr_err)
+    return svn_error_wrap_apr(apr_err, _("Can't get working directory"));
+
+  /* APR doesn't like "" directories */
+  if (base_dir[0] == '\0')
+    base_dir_apr = ".";
+  else
+    SVN_ERR(svn_path_cstring_from_utf8(&base_dir_apr, base_dir, pool));
+
+  apr_err = apr_filepath_set(base_dir_apr, pool);
+  if (apr_err)
+    return svn_error_wrap_apr
+      (apr_err, _("Can't change working directory to '%s'"), base_dir);
+
+  cmd = apr_psprintf(pool, "%s %s", editor, file_name);
+  sys_err = system(cmd);
+
+  apr_err = apr_filepath_set(old_cwd, pool);
+  if (apr_err)
+    svn_handle_error2(svn_error_wrap_apr
+                      (apr_err, _("Can't restore working directory")),
+                      stderr, TRUE /* fatal */, "svn: ");
+
+  if (sys_err)
+    /* Extracting any meaning from sys_err is platform specific, so just
+       use the raw value. */
+    return svn_error_createf(SVN_ERR_EXTERNAL_PROGRAM, NULL,
+                             _("system('%s') returned %d"), cmd, sys_err);
+
+  return SVN_NO_ERROR;
+}
+
+
+svn_error_t *
+svn_cmdline__edit_string_externally(svn_string_t **edited_contents /* UTF-8! */,
+                                    const char **tmpfile_left /* UTF-8! */,
+                                    const char *editor_cmd,
+                                    const char *base_dir /* UTF-8! */,
+                                    const svn_string_t *contents /* UTF-8! */,
+                                    const char *filename,
+                                    apr_hash_t *config,
+                                    svn_boolean_t as_text,
+                                    const char *encoding,
+                                    apr_pool_t *pool)
+{
+  const char *editor;
+  const char *cmd;
+  apr_file_t *tmp_file;
+  const char *tmpfile_name;
+  const char *tmpfile_native;
+  const char *tmpfile_apr, *base_dir_apr;
+  svn_string_t *translated_contents;
+  apr_status_t apr_err, apr_err2;
+  apr_size_t written;
+  apr_finfo_t finfo_before, finfo_after;
+  svn_error_t *err = SVN_NO_ERROR, *err2;
+  char *old_cwd;
+  int sys_err;
+  svn_boolean_t remove_file = TRUE;
+
+  SVN_ERR(find_editor_binary(&editor, editor_cmd, config));
+
+  /* Convert file contents from UTF-8/LF if desired. */
+  if (as_text)
+    {
+      const char *translated;
+      SVN_ERR(svn_subst_translate_cstring2(contents->data, &translated,
+                                           APR_EOL_STR, FALSE,
+                                           NULL, FALSE, pool));
+      translated_contents = svn_string_create_empty(pool);
+      if (encoding)
+        SVN_ERR(svn_utf_cstring_from_utf8_ex2(&translated_contents->data,
+                                              translated, encoding, pool));
+      else
+        SVN_ERR(svn_utf_cstring_from_utf8(&translated_contents->data,
+                                          translated, pool));
+      translated_contents->len = strlen(translated_contents->data);
+    }
+  else
+    translated_contents = svn_string_dup(contents, pool);
+
+  /* Move to BASE_DIR to avoid getting characters that need quoting
+     into tmpfile_name */
+  apr_err = apr_filepath_get(&old_cwd, APR_FILEPATH_NATIVE, pool);
+  if (apr_err)
+    return svn_error_wrap_apr(apr_err, _("Can't get working directory"));
+
+  /* APR doesn't like "" directories */
+  if (base_dir[0] == '\0')
+    base_dir_apr = ".";
+  else
+    SVN_ERR(svn_path_cstring_from_utf8(&base_dir_apr, base_dir, pool));
+  apr_err = apr_filepath_set(base_dir_apr, pool);
+  if (apr_err)
+    {
+      return svn_error_wrap_apr
+        (apr_err, _("Can't change working directory to '%s'"), base_dir);
+    }
+
+  /*** From here on, any problems that occur require us to cd back!! ***/
+
+  /* Ask the working copy for a temporary file named FILENAME-something. */
+  err = svn_io_open_uniquely_named(&tmp_file, &tmpfile_name,
+                                   "" /* dirpath */,
+                                   filename,
+                                   ".tmp",
+                                   svn_io_file_del_none, pool, pool);
+
+  if (err && (APR_STATUS_IS_EACCES(err->apr_err) || err->apr_err == EROFS))
+    {
+      const char *temp_dir_apr;
+
+      svn_error_clear(err);
+
+      SVN_ERR(svn_io_temp_dir(&base_dir, pool));
+
+      SVN_ERR(svn_path_cstring_from_utf8(&temp_dir_apr, base_dir, pool));
+      apr_err = apr_filepath_set(temp_dir_apr, pool);
+      if (apr_err)
+        {
+          return svn_error_wrap_apr
+            (apr_err, _("Can't change working directory to '%s'"), base_dir);
+        }
+
+      err = svn_io_open_uniquely_named(&tmp_file, &tmpfile_name,
+                                       "" /* dirpath */,
+                                       filename,
+                                       ".tmp",
+                                       svn_io_file_del_none, pool, pool);
+    }
+
+  if (err)
+    goto cleanup2;
+
+  /*** From here on, any problems that occur require us to cleanup
+       the file we just created!! ***/
+
+  /* Dump initial CONTENTS to TMP_FILE. */
+  apr_err = apr_file_write_full(tmp_file, translated_contents->data,
+                                translated_contents->len, &written);
+
+  apr_err2 = apr_file_close(tmp_file);
+  if (! apr_err)
+    apr_err = apr_err2;
+
+  /* Make sure the whole CONTENTS were written, else return an error. */
+  if (apr_err)
+    {
+      err = svn_error_wrap_apr(apr_err, _("Can't write to '%s'"),
+                               tmpfile_name);
+      goto cleanup;
+    }
+
+  err = svn_path_cstring_from_utf8(&tmpfile_apr, tmpfile_name, pool);
+  if (err)
+    goto cleanup;
+
+  /* Get information about the temporary file before the user has
+     been allowed to edit its contents. */
+  apr_err = apr_stat(&finfo_before, tmpfile_apr,
+                     APR_FINFO_MTIME, pool);
+  if (apr_err)
+    {
+      err = svn_error_wrap_apr(apr_err, _("Can't stat '%s'"), tmpfile_name);
+      goto cleanup;
+    }
+
+  /* Backdate the file a little bit in case the editor is very fast
+     and doesn't change the size.  (Use two seconds, since some
+     filesystems have coarse granularity.)  It's OK if this call
+     fails, so we don't check its return value.*/
+  apr_file_mtime_set(tmpfile_apr, finfo_before.mtime - 2000, pool);
+
+  /* Stat it again to get the mtime we actually set. */
+  apr_err = apr_stat(&finfo_before, tmpfile_apr,
+                     APR_FINFO_MTIME | APR_FINFO_SIZE, pool);
+  if (apr_err)
+    {
+      err = svn_error_wrap_apr(apr_err, _("Can't stat '%s'"), tmpfile_name);
+      goto cleanup;
+    }
+
+  /* Prepare the editor command line.  */
+  err = svn_utf_cstring_from_utf8(&tmpfile_native, tmpfile_name, pool);
+  if (err)
+    goto cleanup;
+  cmd = apr_psprintf(pool, "%s %s", editor, tmpfile_native);
+
+  /* If the caller wants us to leave the file around, return the path
+     of the file we'll use, and make a note not to destroy it.  */
+  if (tmpfile_left)
+    {
+      *tmpfile_left = svn_dirent_join(base_dir, tmpfile_name, pool);
+      remove_file = FALSE;
+    }
+
+  /* Now, run the editor command line.  */
+  sys_err = system(cmd);
+  if (sys_err != 0)
+    {
+      /* Extracting any meaning from sys_err is platform specific, so just
+         use the raw value. */
+      err =  svn_error_createf(SVN_ERR_EXTERNAL_PROGRAM, NULL,
+                               _("system('%s') returned %d"), cmd, sys_err);
+      goto cleanup;
+    }
+
+  /* Get information about the temporary file after the assumed editing. */
+  apr_err = apr_stat(&finfo_after, tmpfile_apr,
+                     APR_FINFO_MTIME | APR_FINFO_SIZE, pool);
+  if (apr_err)
+    {
+      err = svn_error_wrap_apr(apr_err, _("Can't stat '%s'"), tmpfile_name);
+      goto cleanup;
+    }
+
+  /* If the file looks changed... */
+  if ((finfo_before.mtime != finfo_after.mtime) ||
+      (finfo_before.size != finfo_after.size))
+    {
+      svn_stringbuf_t *edited_contents_s;
+      err = svn_stringbuf_from_file2(&edited_contents_s, tmpfile_name, pool);
+      if (err)
+        goto cleanup;
+
+      *edited_contents = svn_stringbuf__morph_into_string(edited_contents_s);
+
+      /* Translate back to UTF8/LF if desired. */
+      if (as_text)
+        {
+          err = svn_subst_translate_string2(edited_contents, FALSE, FALSE,
+                                            *edited_contents, encoding, FALSE,
+                                            pool, pool);
+          if (err)
+            {
+              err = svn_error_quick_wrap
+                (err,
+                 _("Error normalizing edited contents to internal format"));
+              goto cleanup;
+            }
+        }
+    }
+  else
+    {
+      /* No edits seem to have been made */
+      *edited_contents = NULL;
+    }
+
+ cleanup:
+  if (remove_file)
+    {
+      /* Remove the file from disk.  */
+      err2 = svn_io_remove_file2(tmpfile_name, FALSE, pool);
+
+      /* Only report remove error if there was no previous error. */
+      if (! err && err2)
+        err = err2;
+      else
+        svn_error_clear(err2);
+    }
+
+ cleanup2:
+  /* If we against all probability can't cd back, all further relative
+     file references would be screwed up, so we have to abort. */
+  apr_err = apr_filepath_set(old_cwd, pool);
+  if (apr_err)
+    {
+      svn_handle_error2(svn_error_wrap_apr
+                        (apr_err, _("Can't restore working directory")),
+                        stderr, TRUE /* fatal */, "svn: ");
+    }
+
+  return svn_error_trace(err);
+}
+#endif // TortoiseGit

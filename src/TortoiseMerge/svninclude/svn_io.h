@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2008 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -60,16 +65,65 @@ typedef enum svn_io_file_del_t
   svn_io_file_del_on_pool_cleanup
 } svn_io_file_del_t;
 
+/** A set of directory entry data elements as returned by svn_io_get_dirents
+ *
+ * Note that the first two fields are exactly identical to svn_io_dirent_t
+ * to allow returning a svn_io_dirent2_t as a svn_io_dirent_t.
+ *
+ * Use svn_io_dirent2_create() to create new svn_dirent2_t instances or
+ * svn_io_dirent2_dup() to duplicate an existing instance.
+ *
+ * @since New in 1.7.
+ */
+typedef struct svn_io_dirent2_t {
+  /* New fields must be added at the end to preserve binary compatibility */
 
-
+  /** The kind of this entry. */
+  svn_node_kind_t kind;
+
+  /** If @c kind is #svn_node_file, whether this entry is a special file;
+   * else FALSE.
+   *
+   * @see svn_io_check_special_path().
+   */
+  svn_boolean_t special;
+
+  /** The filesize of this entry or undefined for a directory */
+  svn_filesize_t filesize;
+
+  /** The time the file was last modified */
+  apr_time_t mtime;
+
+  /* Don't forget to update svn_io_dirent2_dup() when adding new fields */
+} svn_io_dirent2_t;
+
+
+/** Creates a new #svn_io_dirent2_t structure
+ *
+ * @since New in 1.7.
+ */
+svn_io_dirent2_t *
+svn_io_dirent2_create(apr_pool_t *result_pool);
+
+/** Duplicates a @c svn_io_dirent2_t structure into @a result_pool.
+ *
+ * @since New in 1.7.
+ */
+svn_io_dirent2_t *
+svn_io_dirent2_dup(const svn_io_dirent2_t *item,
+                   apr_pool_t *result_pool);
+
 /** Represents the kind and special status of a directory entry.
+ *
+ * Note that the first two fields are exactly identical to svn_io_dirent2_t
+ * to allow returning a svn_io_dirent2_t as a svn_io_dirent_t.
  *
  * @since New in 1.3.
  */
 typedef struct svn_io_dirent_t {
   /** The kind of this entry. */
   svn_node_kind_t kind;
-  /** If @c kind is @c svn_node_file, whether this entry is a special file;
+  /** If @c kind is #svn_node_file, whether this entry is a special file;
    * else FALSE.
    *
    * @see svn_io_check_special_path().
@@ -79,17 +133,18 @@ typedef struct svn_io_dirent_t {
 
 /** Determine the @a kind of @a path.  @a path should be UTF-8 encoded.
  *
- * If @a path is a file, set @a *kind to @c svn_node_file.
+ * If @a path is a file, set @a *kind to #svn_node_file.
  *
- * If @a path is a directory, set @a *kind to @c svn_node_dir.
+ * If @a path is a directory, set @a *kind to #svn_node_dir.
  *
- * If @a path does not exist, set @a *kind to @c svn_node_none.
+ * If @a path does not exist, set @a *kind to #svn_node_none.
  *
- * If @a path exists but is none of the above, set @a *kind to @c
- * svn_node_unknown.
+ * If @a path exists but is none of the above, set @a *kind to
+ * #svn_node_unknown.
  *
- * If unable to determine @a path's kind, return an error, with @a *kind's
- * value undefined.
+ * If @a path is not a valid pathname, set @a *kind to #svn_node_none.  If
+ * unable to determine @a path's kind for any other reason, return an error,
+ * with @a *kind's value undefined.
  *
  * Use @a pool for temporary allocations.
  *
@@ -124,9 +179,10 @@ svn_io_check_resolved_path(const char *path,
  * utf-8 encoded @a filename, in the directory @a dirpath.  The file handle is
  * returned in @a *file, and the name, which ends with @a suffix, is returned
  * in @a *unique_name, also utf8-encoded.  Either @a file or @a unique_name
- * may be @c NULL.
+ * may be @c NULL.  If @a file is @c NULL, the file will be created but not
+ * open.
  *
- * If @a delete_when is @c svn_io_file_del_on_close, then the @c APR_DELONCLOSE
+ * If @a delete_when is #svn_io_file_del_on_close, then the @c APR_DELONCLOSE
  * flag will be used when opening the file.  The @c APR_BUFFERED flag will
  * always be used.
  *
@@ -159,7 +215,7 @@ svn_io_check_resolved_path(const char *path,
  * Allocates @a *file and @a *unique_name in @a result_pool. All
  * intermediate allocations will be performed in @a scratch_pool.
  *
- * If no unique name can be found, @c SVN_ERR_IO_UNIQUE_NAMES_EXHAUSTED is
+ * If no unique name can be found, #SVN_ERR_IO_UNIQUE_NAMES_EXHAUSTED is
  * the error returned.
  *
  * Claim of Historical Inevitability: this function was written
@@ -181,17 +237,25 @@ svn_io_open_uniquely_named(apr_file_t **file,
                            apr_pool_t *scratch_pool);
 
 
-/** Create a writable file in the directory @a dirpath. The file will have
- * an arbitrary and unique name, and the full path will be returned in
- * @a temp_path. The file will be returned in @a file. Both will be
- * allocated from @a result_pool.
+/** Create a writable file, with an arbitrary and unique name, in the
+ * directory @a dirpath.  Set @a *temp_path to its full path, and set
+ * @a *file to the file handle, both allocated from @a result_pool.  Either
+ * @a file or @a temp_path may be @c NULL.  If @a file is @c NULL, the file
+ * will be created but not open.
  *
  * If @a dirpath is @c NULL, use the path returned from svn_io_temp_dir().
  * (Note that when using the system-provided temp directory, it may not
- * be possibly to atomically rename the resulting file due to cross-device
+ * be possible to atomically rename the resulting file due to cross-device
  * issues.)
  *
- * The file will be deleted according to @a delete_when.
+ * The file will be deleted according to @a delete_when.  If @a delete_when
+ * is @c svn_io_file_del_on_close and @a file is @c NULL, the file will be
+ * deleted before this function returns.
+ *
+ * When passing @c svn_io_file_del_none please don't forget to eventually
+ * remove the temporary file to avoid filling up the system temp directory.
+ * It is often appropriate to bind the lifetime of the temporary file to
+ * the lifetime of a pool by using @c svn_io_file_del_on_pool_cleanup.
  *
  * Temporary allocations will be performed in @a scratch_pool.
  *
@@ -225,7 +289,7 @@ svn_io_open_unique_file2(apr_file_t **f,
 
 /** Like svn_io_open_unique_file2, but can't delete on pool cleanup.
  *
- * @deprecated Provided for backward compatibility with the 1.0 API
+ * @deprecated Provided for backward compatibility with the 1.3 API
  *
  * @note In 1.4 the API was extended to require either @a f or
  *       @a unique_name_p (the other can be NULL).  Before that, both were
@@ -289,6 +353,8 @@ svn_io_copy_file(const char *src,
 
 /** Copy permission flags from @a src onto the file at @a dst. Both
  * filenames are utf8-encoded filenames.
+ *
+ * @since New in 1.6.
  */
 svn_error_t *
 svn_io_copy_perms(const char *src,
@@ -318,7 +384,7 @@ svn_io_copy_link(const char *src,
  *
  * If @a cancel_func is non-NULL, invoke it with @a cancel_baton at
  * various points during the operation.  If it returns any error
- * (typically @c SVN_ERR_CANCELLED), return that error immediately.
+ * (typically #SVN_ERR_CANCELLED), return that error immediately.
  */
 svn_error_t *
 svn_io_copy_dir_recursively(const char *src,
@@ -526,14 +592,14 @@ svn_io_set_file_affected_time(apr_time_t apr_time,
 void
 svn_io_sleep_for_timestamps(const char *path, apr_pool_t *pool);
 
-/** Set @a *different_p to non-zero if @a file1 and @a file2 have different
- * sizes, else set to zero.  Both @a file1 and @a file2 are utf8-encoded.
+/** Set @a *different_p to TRUE if @a file1 and @a file2 have different
+ * sizes, else set to FALSE.  Both @a file1 and @a file2 are utf8-encoded.
  *
  * Setting @a *different_p to zero does not mean the files definitely
  * have the same size, it merely means that the sizes are not
  * definitely different.  That is, if the size of one or both files
  * cannot be determined, then the sizes are not known to be different,
- * so @a *different_p is set to 0.
+ * so @a *different_p is set to FALSE.
  */
 svn_error_t *
 svn_io_filesizes_different_p(svn_boolean_t *different_p,
@@ -541,6 +607,27 @@ svn_io_filesizes_different_p(svn_boolean_t *different_p,
                              const char *file2,
                              apr_pool_t *pool);
 
+/** Set @a *different_p12 to non-zero if @a file1 and @a file2 have different
+ * sizes, else set to zero.  Do the similar for @a *different_p23 with
+ * @a file2 and @a file3, and @a *different_p13 for @a file1 and @a file3.
+ * The filenames @a file1, @a file2 and @a file3 are utf8-encoded.
+ *
+ * Setting @a *different_p12 to zero does not mean the files definitely
+ * have the same size, it merely means that the sizes are not
+ * definitely different.  That is, if the size of one or both files
+ * cannot be determined (due to stat() returning an error), then the sizes
+ * are not known to be different, so @a *different_p12 is set to 0.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_filesizes_three_different_p(svn_boolean_t *different_p12,
+                                   svn_boolean_t *different_p23,
+                                   svn_boolean_t *different_p13,
+                                   const char *file1,
+                                   const char *file2,
+                                   const char *file3,
+                                   apr_pool_t *scratch_pool);
 
 /** Return in @a *checksum the checksum of type @a kind of @a file
  * Use @a pool for temporary allocations and to allocate @a *checksum.
@@ -575,6 +662,23 @@ svn_io_files_contents_same_p(svn_boolean_t *same,
                              const char *file1,
                              const char *file2,
                              apr_pool_t *pool);
+
+/** Set @a *same12 to TRUE if @a file1 and @a file2 have the same
+ * contents, else set it to FALSE.  Do the similar for @a *same23
+ * with @a file2 and @a file3, and @a *same13 for @a file1 and @a
+ * file3. The filenames @a file1, @a file2 and @a file3 are
+ * utf8-encoded. Use @a scratch_pool for temporary allocations.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_files_contents_three_same_p(svn_boolean_t *same12,
+                                   svn_boolean_t *same23,
+                                   svn_boolean_t *same13,
+                                   const char *file1,
+                                   const char *file2,
+                                   const char *file3,
+                                   apr_pool_t *scratch_pool);
 
 /** Create file at utf8-encoded @a file with contents @a contents.
  * @a file must not already exist.
@@ -616,6 +720,39 @@ svn_io_file_lock2(const char *lock_file,
                   svn_boolean_t exclusive,
                   svn_boolean_t nonblocking,
                   apr_pool_t *pool);
+
+/**
+ * Lock the file @a lockfile_handle. If @a exclusive is TRUE,
+ * obtain exclusive lock, otherwise obtain shared lock.
+ *
+ * If @a nonblocking is TRUE, do not wait for the lock if it
+ * is not available: throw an error instead.
+ *
+ * Lock will be automatically released when @a pool is cleared or destroyed.
+ * You may also explicitly call svn_io_unlock_open_file().
+ * Use @a pool for memory allocations. @a pool must be the pool that
+ * @a lockfile_handle has been created in or one of its sub-pools.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_lock_open_file(apr_file_t *lockfile_handle,
+                      svn_boolean_t exclusive,
+                      svn_boolean_t nonblocking,
+                      apr_pool_t *pool);
+
+/**
+ * Unlock the file @a lockfile_handle.
+ *
+ * Use @a pool for memory allocations. @a pool must be the pool that
+ * was passed to svn_io_lock_open_file().
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_unlock_open_file(apr_file_t *lockfile_handle,
+                        apr_pool_t *pool);
+
 /**
  * Flush any unwritten data from @a file to disk.  Use @a pool for
  * memory allocations.
@@ -626,8 +763,13 @@ svn_error_t *
 svn_io_file_flush_to_disk(apr_file_t *file,
                           apr_pool_t *pool);
 
-/** Copy file @a file from location @a src_path to location @a dest_path.
- * Use @a pool for memory allocations.
+/** Copy the file whose basename (or relative path) is @a file within
+ * directory @a src_path to the same basename (or relative path) within
+ * directory @a dest_path.  Overwrite the destination file if it already
+ * exists.  The destination directory (including any directory
+ * components in @a name) must already exist.  Set the destination
+ * file's permissions to match those of the source.  Use @a pool for
+ * memory allocations.
  */
 svn_error_t *
 svn_io_dir_file_copy(const char *src_path,
@@ -664,6 +806,10 @@ svn_io_dir_file_copy(const char *src_path,
  * to the maximum extent possible; thus, a short read with no
  * associated error implies the end of the input stream, and a short
  * write should never occur without an associated error.
+ *
+ * In Subversion 1.7 reset support was added as an optional feature of
+ * streams. If a stream implements resetting it allows reading the data
+ * again after a successful call to svn_stream_reset().
  */
 typedef struct svn_stream_t svn_stream_t;
 
@@ -674,6 +820,13 @@ typedef svn_error_t *(*svn_read_fn_t)(void *baton,
                                       char *buffer,
                                       apr_size_t *len);
 
+/** Skip data handler function for a generic stream.  @see svn_stream_t
+ * and svn_stream_skip().
+ * @since New in 1.7.
+ */
+typedef svn_error_t *(*svn_stream_skip_fn_t)(void *baton,
+                                             apr_size_t len);
+
 /** Write handler function for a generic stream.  @see svn_stream_t. */
 typedef svn_error_t *(*svn_write_fn_t)(void *baton,
                                        const char *data,
@@ -682,6 +835,31 @@ typedef svn_error_t *(*svn_write_fn_t)(void *baton,
 /** Close handler function for a generic stream.  @see svn_stream_t. */
 typedef svn_error_t *(*svn_close_fn_t)(void *baton);
 
+/** An opaque type which represents a mark on a stream.  There is no
+ * concrete definition of this type, it is a named type for stream
+ * implementation specific baton pointers.
+ *
+ * @see svn_stream_mark().
+ * @since New in 1.7.
+ */
+typedef struct svn_stream_mark_t svn_stream_mark_t;
+
+/** Mark handler function for a generic stream. @see svn_stream_t and
+ * svn_stream_mark().
+ *
+ * @since New in 1.7.
+ */
+typedef svn_error_t *(*svn_stream_mark_fn_t)(void *baton,
+                                         svn_stream_mark_t **mark,
+                                         apr_pool_t *pool);
+
+/** Seek handler function for a generic stream. @see svn_stream_t and
+ * svn_stream_seek().
+ *
+ * @since New in 1.7.
+ */
+typedef svn_error_t *(*svn_stream_seek_fn_t)(void *baton,
+                                         const svn_stream_mark_t *mark);
 
 /** Create a generic stream.  @see svn_stream_t. */
 svn_stream_t *
@@ -698,6 +876,14 @@ void
 svn_stream_set_read(svn_stream_t *stream,
                     svn_read_fn_t read_fn);
 
+/** Set @a stream's skip function to @a skip_fn
+ *
+ * @since New in 1.7
+ */
+void
+svn_stream_set_skip(svn_stream_t *stream,
+                    svn_stream_skip_fn_t skip_fn);
+
 /** Set @a stream's write function to @a write_fn */
 void
 svn_stream_set_write(svn_stream_t *stream,
@@ -708,6 +894,21 @@ void
 svn_stream_set_close(svn_stream_t *stream,
                      svn_close_fn_t close_fn);
 
+/** Set @a stream's mark function to @a mark_fn
+ *
+ * @since New in 1.7.
+ */
+void
+svn_stream_set_mark(svn_stream_t *stream,
+                    svn_stream_mark_fn_t mark_fn);
+
+/** Set @a stream's seek function to @a seek_fn
+ *
+ * @since New in 1.7.
+ */
+void
+svn_stream_set_seek(svn_stream_t *stream,
+                    svn_stream_seek_fn_t seek_fn);
 
 /** Create a stream that is empty for reading and infinite for writing. */
 svn_stream_t *
@@ -768,7 +969,7 @@ svn_stream_open_writable(svn_stream_t **stream,
  *
  * If @a dirpath is @c NULL, use the path returned from svn_io_temp_dir().
  * (Note that when using the system-provided temp directory, it may not
- * be possibly to atomically rename the resulting file due to cross-device
+ * be possible to atomically rename the resulting file due to cross-device
  * issues.)
  *
  * The file will be deleted according to @a delete_when.
@@ -817,6 +1018,26 @@ svn_stream_t *
 svn_stream_from_aprfile(apr_file_t *file,
                         apr_pool_t *pool);
 
+/** Set @a *in to a generic stream connected to stdin, allocated in
+ * @a pool.  The stream and its underlying APR handle will be closed
+ * when @a pool is cleared or destroyed.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_for_stdin(svn_stream_t **in,
+                     apr_pool_t *pool);
+
+/** Set @a *err to a generic stream connected to stderr, allocated in
+ * @a pool.  The stream and its underlying APR handle will be closed
+ * when @a pool is cleared or destroyed.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_for_stderr(svn_stream_t **err,
+                      apr_pool_t *pool);
+
 /** Set @a *out to a generic stream connected to stdout, allocated in
  * @a pool.  The stream and its underlying APR handle will be closed
  * when @a pool is cleared or destroyed.
@@ -838,6 +1059,16 @@ svn_stream_from_stringbuf(svn_stringbuf_t *str,
 svn_stream_t *
 svn_stream_from_string(const svn_string_t *str,
                        apr_pool_t *pool);
+
+/** Return a generic stream which implements buffered reads and writes.
+ *  The stream will preferentially store data in-memory, but may use
+ *  disk storage as backup if the amount of data is large.
+ *  Allocate the stream in @a result_pool
+ *
+ * @since New in 1.8.
+ */
+svn_stream_t *
+svn_stream_buffered(apr_pool_t *result_pool);
 
 /** Return a stream that decompresses all data read and compresses all
  * data written. The stream @a stream is used to read and write all
@@ -903,6 +1134,22 @@ svn_stream_read(svn_stream_t *stream,
                 char *buffer,
                 apr_size_t *len);
 
+/**
+ * Skip @a len bytes from a generic @a stream. If the stream is exhausted
+ * before @a len bytes have been read, return an error.
+ *
+ * @note  No assumption can be made on the semantics of this function
+ * other than that the stream read pointer will be advanced by *len
+ * bytes. Depending on the capabilities of the underlying stream
+ * implementation, this may for instance be translated into a sequence
+ * of reads or a simple seek operation. If the stream implementation has
+ * not provided a skip function, this will read from the stream and
+ * discard the data.
+ */
+svn_error_t *
+svn_stream_skip(svn_stream_t *stream,
+                apr_size_t len);
+
 /** Write to a generic stream. @see svn_stream_t. */
 svn_error_t *
 svn_stream_write(svn_stream_t *stream,
@@ -913,6 +1160,71 @@ svn_stream_write(svn_stream_t *stream,
 svn_error_t *
 svn_stream_close(svn_stream_t *stream);
 
+/** Reset a generic stream back to its origin. (E.g. On a file this would be
+ * implemented as a seek to position 0).  This function returns a
+ * #SVN_ERR_STREAM_SEEK_NOT_SUPPORTED error when the stream doesn't
+ * implement resetting.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_reset(svn_stream_t *stream);
+
+/** Returns @c TRUE if the generic @a stream supports svn_stream_mark().
+ *
+ * @see svn_stream_mark()
+ * @since New in 1.7.
+ */
+svn_boolean_t
+svn_stream_supports_mark(svn_stream_t *stream);
+
+/** Set a @a mark at the current position of a generic @a stream,
+ * which can later be sought back to using svn_stream_seek().
+ * The @a mark is allocated in @a pool.
+ *
+ * This function returns the #SVN_ERR_STREAM_SEEK_NOT_SUPPORTED error
+ * if the stream doesn't implement seeking.
+ *
+ * @see svn_stream_seek()
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_mark(svn_stream_t *stream,
+                svn_stream_mark_t **mark,
+                apr_pool_t *pool);
+
+/** Seek to a @a mark in a generic @a stream.
+ * This function returns the #SVN_ERR_STREAM_SEEK_NOT_SUPPORTED error
+ * if the stream doesn't implement seeking. Passing NULL as @a mark,
+ * seeks to the start of the stream.
+ *
+ * @see svn_stream_mark()
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_seek(svn_stream_t *stream, const svn_stream_mark_t *mark);
+
+/** Return a writable stream which, when written to, writes to both of the
+ * underlying streams.  Both of these streams will be closed upon closure of
+ * the returned stream; use svn_stream_disown() if this is not the desired
+ * behavior.  One or both of @a out1 and @a out2 may be @c NULL.  If both are
+ * @c NULL, @c NULL is returned.
+ *
+ * @since New in 1.7.
+ */
+svn_stream_t *
+svn_stream_tee(svn_stream_t *out1,
+               svn_stream_t *out2,
+               apr_pool_t *pool);
+
+/** Write NULL-terminated string @a str to @a stream.
+ *
+ * @since New in 1.8.
+ *
+ */
+svn_error_t *
+svn_stream_puts(svn_stream_t *stream,
+                const char *str);
 
 /** Write to @a stream using a printf-style @a fmt specifier, passed through
  * apr_psprintf() using memory from @a pool.
@@ -956,7 +1268,6 @@ svn_stream_readline(svn_stream_t *stream,
                     svn_boolean_t *eof,
                     apr_pool_t *pool);
 
-
 /**
  * Read the contents of the readable stream @a from and write them to the
  * writable stream @a to calling @a cancel_func before copying each chunk.
@@ -968,7 +1279,6 @@ svn_stream_readline(svn_stream_t *stream,
  * the two streams). If the closure is not desired, then you can use
  * svn_stream_disown() to protect either or both of the streams from
  * being closed.
- * ### TODO: should close the streams ALWAYS, even on error exit
  *
  * @since New in 1.6.
  */
@@ -1008,10 +1318,29 @@ svn_stream_copy(svn_stream_t *from,
 
 
 /** Set @a *same to TRUE if @a stream1 and @a stream2 have the same
- * contents, else set it to FALSE.  Use @a pool for temporary allocations.
+ * contents, else set it to FALSE.
+ *
+ * Both streams will be closed before this function returns (regardless of
+ * the result, or any possible error).
+ *
+ * Use @a scratch_pool for temporary allocations.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_stream_contents_same2(svn_boolean_t *same,
+                          svn_stream_t *stream1,
+                          svn_stream_t *stream2,
+                          apr_pool_t *pool);
+
+
+/**
+ * Same as svn_stream_contents_same2(), but the streams will not be closed.
  *
  * @since New in 1.4.
+ * @deprecated Provided for backward compatibility with the 1.6 API.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_stream_contents_same(svn_boolean_t *same,
                          svn_stream_t *stream1,
@@ -1038,6 +1367,47 @@ svn_string_from_stream(svn_string_t **result,
                        apr_pool_t *scratch_pool);
 
 
+/** A function type provided for use as a callback from
+ * @c svn_stream_lazyopen_create().
+ *
+ * The callback function shall open a new stream and set @a *stream to
+ * the stream object, allocated in @a result_pool.  @a baton is the
+ * callback baton that was passed to svn_stream_lazyopen_create().
+ *
+ * @a result_pool is the result pool that was passed to
+ * svn_stream_lazyopen_create().  The callback function may use
+ * @a scratch_pool for temporary allocations; the caller may clear or
+ * destroy @a scratch_pool any time after the function returns.
+ *
+ * @since New in 1.8.
+ */
+typedef svn_error_t *
+(*svn_stream_lazyopen_func_t)(svn_stream_t **stream,
+                              void *baton,
+                              apr_pool_t *result_pool,
+                              apr_pool_t *scratch_pool);
+
+
+/** Return a generic stream which wraps another primary stream,
+ * delaying the "opening" of that stream until the first time the
+ * returned stream is accessed.
+ *
+ * @a open_func and @a open_baton are a callback function/baton pair
+ * which will be invoked upon the first access of the returned
+ * stream (read, write, mark, seek, skip, or possibly close).  The
+ * callback shall open the primary stream.
+ *
+ * If the only "access" the returned stream gets is to close it
+ * then @a open_func will only be called if @a open_on_close is TRUE.
+ *
+ * @since New in 1.8.
+ */
+svn_stream_t *
+svn_stream_lazyopen_create(svn_stream_lazyopen_func_t open_func,
+                           void *open_baton,
+                           svn_boolean_t open_on_close,
+                           apr_pool_t *result_pool);
+
 /** @} */
 
 /** Set @a *result to a string containing the contents of @a
@@ -1061,7 +1431,7 @@ svn_stringbuf_from_file2(svn_stringbuf_t **result,
                          apr_pool_t *pool);
 
 /** Similar to svn_stringbuf_from_file2(), except that if @a filename
- * is "-", return the error @c SVN_ERR_UNSUPPORTED_FEATURE and don't
+ * is "-", return the error #SVN_ERR_UNSUPPORTED_FEATURE and don't
  * touch @a *result.
  *
  * @deprecated Provided for backwards compatibility with the 1.4 API.
@@ -1085,8 +1455,25 @@ svn_stringbuf_from_aprfile(svn_stringbuf_t **result,
                            apr_pool_t *pool);
 
 /** Remove file @a path, a utf8-encoded path.  This wraps apr_file_remove(),
- * converting any error to a Subversion error.
+ * converting any error to a Subversion error. If @a ignore_enoent is TRUE, and
+ * the file is not present (APR_STATUS_IS_ENOENT returns TRUE), then no
+ * error will be returned.
+ *
+ * The file will be removed even if it is not writable.  (On Windows and
+ * OS/2, this function first clears the file's read-only bit.)
+ *
+ * @since New in 1.7.
  */
+svn_error_t *
+svn_io_remove_file2(const char *path,
+                    svn_boolean_t ignore_enoent,
+                    apr_pool_t *scratch_pool);
+
+/** Similar to svn_io_remove_file2(), except with @a ignore_enoent set to FALSE.
+ *
+ * @deprecated Provided for backwards compatibility with the 1.6 API.
+ */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_remove_file(const char *path,
                    apr_pool_t *pool);
@@ -1096,7 +1483,7 @@ svn_io_remove_file(const char *path,
  * doesn't exist.  Use @a pool for temporary allocations.
  *
  * Because recursive delete of a directory tree can be a lengthy operation,
- * provide @a cancel_func and @a cancel_baton for interruptability.
+ * provide @a cancel_func and @a cancel_baton for interruptibility.
  *
  * @since New in 1.5.
  */
@@ -1125,7 +1512,9 @@ svn_io_remove_dir(const char *path,
  * apr_dir_read() are NOT returned in the hash.
  *
  * @since New in 1.4.
+ * @deprecated Provided for backward compatibility with the 1.6 API.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_get_dir_filenames(apr_hash_t **dirents,
                          const char *path,
@@ -1133,23 +1522,41 @@ svn_io_get_dir_filenames(apr_hash_t **dirents,
 
 /** Read all of the disk entries in directory @a path, a utf8-encoded
  * path.  Set @a *dirents to a hash mapping dirent names (<tt>char *</tt>) to
- * @c svn_io_dirent_t structures, allocated in @a pool.
+ * #svn_io_dirent2_t structures, allocated in @a pool.
+ *
+ * If @a only_check_type is set to @c TRUE, only the kind and special
+ * fields of the svn_io_dirent2_t are filled.
  *
  * @note The `.' and `..' directories normally returned by
  * apr_dir_read() are NOT returned in the hash.
  *
  * @note The kind field in the @a dirents is set according to the mapping
- *       as documented for svn_io_check_path()
+ *       as documented for svn_io_check_path().
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_io_get_dirents3(apr_hash_t **dirents,
+                    const char *path,
+                    svn_boolean_t only_check_type,
+                    apr_pool_t *result_pool,
+                    apr_pool_t *scratch_pool);
+
+
+/** Similar to svn_io_get_dirents3, but returns a mapping to svn_io_dirent_t
+ * structures instead of svn_io_dirent2_t and with only a single pool.
  *
  * @since New in 1.3.
+ * @deprecated Provided for backward compatibility with the 1.6 API.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_get_dirents2(apr_hash_t **dirents,
                     const char *path,
                     apr_pool_t *pool);
 
 /** Similar to svn_io_get_dirents2(), but @a *dirents is a hash table
- * with @c svn_node_kind_t values.
+ * with #svn_node_kind_t values.
  *
  * @deprecated Provided for backwards compatibility with the 1.2 API.
  */
@@ -1159,6 +1566,43 @@ svn_io_get_dirents(apr_hash_t **dirents,
                    const char *path,
                    apr_pool_t *pool);
 
+/** Create a svn_io_dirent2_t instance for path. Specialized variant of
+ * svn_io_stat() that directly translates node_kind and special.
+ *
+ * If @a verify_truename is @c TRUE, an additional check is performed to
+ * verify the truename of the last path component on case insensitive
+ * filesystems. This check is expensive compared to a just a stat,
+ * but certainly cheaper than a full truename calculation using
+ * apr_filepath_merge() which verifies all path components.
+ *
+ * If @a ignore_enoent is set to @c TRUE, set *dirent_p->kind to
+ * svn_node_none instead of returning an error.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_stat_dirent2(const svn_io_dirent2_t **dirent_p,
+                    const char *path,
+                    svn_boolean_t verify_truename,
+                    svn_boolean_t ignore_enoent,
+                    apr_pool_t *result_pool,
+                    apr_pool_t *scratch_pool);
+
+
+/** Similar to svn_io_stat_dirent2, but always passes FALSE for
+ * verify_truename.
+ *
+ * @since New in 1.7.
+ * @deprecated Provided for backwards compatibility with the 1.7 API.
+ */
+SVN_DEPRECATED
+svn_error_t *
+svn_io_stat_dirent(const svn_io_dirent2_t **dirent_p,
+                   const char *path,
+                   svn_boolean_t ignore_enoent,
+                   apr_pool_t *result_pool,
+                   apr_pool_t *scratch_pool);
+
 
 /** Callback function type for svn_io_dir_walk() */
 typedef svn_error_t * (*svn_io_walk_func_t)(void *baton,
@@ -1166,19 +1610,39 @@ typedef svn_error_t * (*svn_io_walk_func_t)(void *baton,
                                             const apr_finfo_t *finfo,
                                             apr_pool_t *pool);
 
-/** This function will recursively walk over the files and directories
- * rooted at @a dirname, a utf8-encoded path. For each file or directory,
- * @a walk_func is invoked, passing in the @a walk_baton, the utf8-encoded
- * full path to the entry, an @c apr_finfo_t structure, and a temporary
- * pool for allocations.  For any directory, @a walk_func will be invoked
- * on the directory itself before being invoked on any subdirectories or
- * files within the directory.
+/** Recursively walk the directory rooted at @a dirname, a
+ * utf8-encoded path, invoking @a walk_func (with @a walk_baton) for
+ * each item in the tree.  For a given directory, invoke @a walk_func
+ * on the directory itself before invoking it on any children thereof.
  *
- * The set of information passed to @a walk_func is specified by @a wanted,
- * and the items specified by @c APR_FINFO_TYPE and @c APR_FINFO_NAME.
+ * Deliver to @a walk_func the information specified by @a wanted,
+ * which is a combination of @c APR_FINFO_* flags, plus the
+ * information specified by @c APR_FINFO_TYPE and @c APR_FINFO_NAME.
  *
- * All allocations will be performed in @a pool.
+ * Use @a pool for all allocations.
+ *
+ * @note This function does not currently pass all file types to @a
+ * walk_func -- only APR_DIR, APR_REG, and APR_LNK.  We reserve the
+ * right to pass additional file types through this interface in the
+ * future, though, so implementations of this callback should
+ * explicitly test FINFO->filetype.  See the APR library's
+ * apr_filetype_e enum for the various filetypes and their meanings.
+ *
+ * @since New in 1.7.
  */
+svn_error_t *
+svn_io_dir_walk2(const char *dirname,
+                 apr_int32_t wanted,
+                 svn_io_walk_func_t walk_func,
+                 void *walk_baton,
+                 apr_pool_t *pool);
+
+/** Similar to svn_io_dir_walk(), but only calls @a walk_func for
+ * files of type APR_DIR (directory) and APR_REG (regular file).
+ *
+ * @deprecated Provided for backwards compatibility with the 1.6 API.
+ */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_dir_walk(const char *dirname,
                 apr_int32_t wanted,
@@ -1188,9 +1652,17 @@ svn_io_dir_walk(const char *dirname,
 
 /**
  * Start @a cmd with @a args, using utf8-encoded @a path as working
- * directory.  Connect @a cmd's stdin, stdout, and stderr to @a infile,
- * @a outfile, and @a errfile, except where they are NULL.  Return the
- * process handle for the invoked program in @a *cmd_proc.
+ * directory.  Return the process handle for the invoked program in @a
+ * *cmd_proc.
+ *
+ * If @a infile_pipe is TRUE, connect @a cmd's stdin to a pipe;
+ * otherwise, connect it to @a infile (which may be NULL).  If
+ * @a outfile_pipe is TRUE, connect @a cmd's stdout to a pipe; otherwise,
+ * connect it to @a outfile (which may be NULL).  If @a errfile_pipe
+ * is TRUE, connect @a cmd's stderr to a pipe; otherwise, connect it
+ * to @a errfile (which may be NULL).  (Callers must pass FALSE for
+ * each of these boolean values for which the corresponding file
+ * handle is non-NULL.)
  *
  * @a args is a list of utf8-encoded <tt>const char *</tt> arguments,
  * terminated by @c NULL.  @a args[0] is the name of the program, though it
@@ -1198,15 +1670,65 @@ svn_io_dir_walk(const char *dirname,
  *
  * If @a inherit is TRUE, the invoked program inherits its environment from
  * the caller and @a cmd, if not absolute, is searched for in PATH.
- * Otherwise, the invoked program runs with an empty environment and @a cmd
- * must be an absolute path.
+ *
+ * If @a inherit is FALSE @a cmd must be an absolute path and the invoked
+ * program inherits the environment defined by @a env or runs with an empty
+ * environment in @a env is NULL.
  *
  * @note On some platforms, failure to execute @a cmd in the child process
  * will result in error output being written to @a errfile, if non-NULL, and
  * a non-zero exit status being returned to the parent process.
  *
+ * @note An APR bug affects Windows: passing a NULL @a env does not
+ * guarantee the invoked program to run with an empty environment when
+ * @a inherits is FALSE, the program may inherit its parent's environment.
+ * Explicitly pass an empty @a env to get an empty environment.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *svn_io_start_cmd3(apr_proc_t *cmd_proc,
+                               const char *path,
+                               const char *cmd,
+                               const char *const *args,
+                               const char *const *env,
+                               svn_boolean_t inherit,
+                               svn_boolean_t infile_pipe,
+                               apr_file_t *infile,
+                               svn_boolean_t outfile_pipe,
+                               apr_file_t *outfile,
+                               svn_boolean_t errfile_pipe,
+                               apr_file_t *errfile,
+                               apr_pool_t *pool);
+
+
+/**
+ * Similar to svn_io_start_cmd3() but with @a env always set to NULL.
+ *
+ * @deprecated Provided for backward compatibility with the 1.7 API
+ * @since New in 1.7.
+ */
+SVN_DEPRECATED
+svn_error_t *svn_io_start_cmd2(apr_proc_t *cmd_proc,
+                               const char *path,
+                               const char *cmd,
+                               const char *const *args,
+                               svn_boolean_t inherit,
+                               svn_boolean_t infile_pipe,
+                               apr_file_t *infile,
+                               svn_boolean_t outfile_pipe,
+                               apr_file_t *outfile,
+                               svn_boolean_t errfile_pipe,
+                               apr_file_t *errfile,
+                               apr_pool_t *pool);
+
+/**
+ * Similar to svn_io_start_cmd2() but with @a infile_pipe, @a
+ * outfile_pipe, and @a errfile_pipe always FALSE.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API
  * @since New in 1.3.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_start_cmd(apr_proc_t *cmd_proc,
                  const char *path,
@@ -1222,12 +1744,15 @@ svn_io_start_cmd(apr_proc_t *cmd_proc,
  * Wait for the process @a *cmd_proc to complete and optionally retrieve
  * its exit code.  @a cmd is used only in error messages.
  *
- * If @a exitcode is not NULL, @a *exitcode will contain the exit code
- * of the process upon return, and if @a exitwhy is not NULL, @a
- * *exitwhy will indicate why the process terminated.  If @a exitwhy is
- * NULL, and the exit reason is not @c APR_PROC_CHECK_EXIT(), or if
- * @a exitcode is NULL and the exit code is non-zero, then an
- * @c SVN_ERR_EXTERNAL_PROGRAM error will be returned.
+ * If @a exitcode is not NULL, set @a *exitcode to the exit code of the
+ * process and do not consider any exit code to be an error.  If @a exitcode
+ * is NULL, then if the exit code of the process is non-zero then return an
+ * #SVN_ERR_EXTERNAL_PROGRAM error.
+ *
+ * If @a exitwhy is not NULL, set @a *exitwhy to indicate why the process
+ * terminated and do not consider any reason to be an error.  If @a exitwhy
+ * is NULL, then if the termination reason is not @c APR_PROC_CHECK_EXIT()
+ * then return an #SVN_ERR_EXTERNAL_PROGRAM error.
  *
  * @since New in 1.3.
  */
@@ -1288,7 +1813,7 @@ svn_io_run_diff2(const char *dir,
                  const char *diff_cmd,
                  apr_pool_t *pool);
 
-/** Similar to svn_io_run_diff2() but with @diff_cmd encoded in internal
+/** Similar to svn_io_run_diff2() but with @a diff_cmd encoded in internal
  * encoding used by APR.
  *
  * @deprecated Provided for backwards compatibility with the 1.5 API. */
@@ -1332,7 +1857,7 @@ svn_io_run_diff(const char *dir,
  * used instead.
  *
  * Set @a *exitcode to diff3's exit status.  If @a *exitcode is anything
- * other than 0 or 1, then return @c SVN_ERR_EXTERNAL_PROGRAM.  (Note the
+ * other than 0 or 1, then return #SVN_ERR_EXTERNAL_PROGRAM.  (Note the
  * following from the diff3 info pages: "An exit status of 0 means
  * `diff3' was successful, 1 means some conflicts were found, and 2
  * means trouble.")
@@ -1442,7 +1967,18 @@ svn_io_detect_mimetype(const char **mimetype,
                        apr_pool_t *pool);
 
 
-/** Wrapper for apr_file_open().  @a fname is utf8-encoded. */
+/** Examine up to @a len bytes of data in @a buf to determine if the
+ * can be considered binary data, in which case return TRUE.
+ * If the data can be considered plain-text data, return FALSE.
+ *
+ * @since New in 1.7.
+ */
+svn_boolean_t
+svn_io_is_binary_data(const void *buf, apr_size_t len);
+
+
+/** Wrapper for apr_file_open().  @a fname is utf8-encoded.
+    Always passed flag | APR_BINARY to apr. */
 svn_error_t *
 svn_io_file_open(apr_file_t **new_file,
                  const char *fname,
@@ -1464,6 +2000,15 @@ svn_io_file_getc(char *ch,
                  apr_pool_t *pool);
 
 
+/** Wrapper for apr_file_putc().
+  * @since New in 1.7
+  */
+svn_error_t *
+svn_io_file_putc(char ch,
+                 apr_file_t *file,
+                 apr_pool_t *pool);
+
+
 /** Wrapper for apr_file_info_get(). */
 svn_error_t *
 svn_io_file_info_get(apr_finfo_t *finfo,
@@ -1480,7 +2025,28 @@ svn_io_file_read(apr_file_t *file,
                  apr_pool_t *pool);
 
 
-/** Wrapper for apr_file_read_full(). */
+/** Wrapper for apr_file_read_full().
+ *
+ * If @a hit_eof is not NULL, EOF will be indicated there and no
+ * svn_error_t error object will be created upon EOF.
+ *
+ * @since New in 1.7
+ */
+svn_error_t *
+svn_io_file_read_full2(apr_file_t *file,
+                       void *buf,
+                       apr_size_t nbytes,
+                       apr_size_t *bytes_read,
+                       svn_boolean_t *hit_eof,
+                       apr_pool_t *pool);
+
+
+/** Similar to svn_io_file_read_full2 with hit_eof being set
+ * to @c NULL.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API
+ */
+SVN_DEPRECATED
 svn_error_t *
 svn_io_file_read_full(apr_file_t *file,
                       void *buf,
@@ -1515,12 +2081,12 @@ svn_io_file_write_full(apr_file_t *file,
 
 /**
  * Open a unique file in @a dirpath, and write @a nbytes from @a buf to
- * the file before closing it.  Return the name of the newly created file
- * in @a *tmp_path, allocated in @a pool.
+ * the file before flushing it to disk and closing it.  Return the name
+ * of the newly created file in @a *tmp_path, allocated in @a pool.
  *
  * If @a dirpath is @c NULL, use the path returned from svn_io_temp_dir().
  * (Note that when using the system-provided temp directory, it may not
- * be possibly to atomically rename the resulting file due to cross-device
+ * be possible to atomically rename the resulting file due to cross-device
  * issues.)
  *
  * The file will be deleted according to @a delete_when.
@@ -1551,7 +2117,11 @@ svn_io_stat(apr_finfo_t *finfo,
             apr_pool_t *pool);
 
 
-/** Wrapper for apr_file_rename().  @a from_path and @a to_path are
+/** Rename and/or move the node (not necessarily a regular file) at
+ * @a from_path to a new path @a to_path within the same filesystem.
+ * In some cases, an existing node at @a to_path will be overwritten.
+ *
+ * A wrapper for apr_file_rename().  @a from_path and @a to_path are
  * utf8-encoded.
  */
 svn_error_t *
@@ -1608,6 +2178,12 @@ svn_io_dir_open(apr_dir_t **new_dir,
                 const char *dirname,
                 apr_pool_t *pool);
 
+/** Wrapper for apr_dir_close().
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_io_dir_close(apr_dir_t *thedir);
 
 /** Wrapper for apr_dir_remove().  @a dirname is utf8-encoded.
  * @note This function has this name to avoid confusion with
@@ -1629,6 +2205,16 @@ svn_io_dir_read(apr_finfo_t *finfo,
                 apr_dir_t *thedir,
                 apr_pool_t *pool);
 
+/** Wrapper for apr_file_name_get().  @a *filename is utf8-encoded.
+ *
+ * @note The file name may be NULL.
+ *
+ * @since New in 1.7. */
+svn_error_t *
+svn_io_file_name_get(const char **filename,
+                     apr_file_t *file,
+                     apr_pool_t *pool);
+
 
 
 /** Version/format files.
@@ -1639,7 +2225,7 @@ svn_io_dir_read(apr_finfo_t *finfo,
 
 /** Set @a *version to the integer that starts the file at @a path.  If the
  * file does not begin with a series of digits followed by a newline,
- * return the error @c SVN_ERR_BAD_VERSION_FILE_FORMAT.  Use @a pool for
+ * return the error #SVN_ERR_BAD_VERSION_FILE_FORMAT.  Use @a pool for
  * all allocations.
  */
 svn_error_t *
@@ -1656,6 +2242,36 @@ svn_error_t *
 svn_io_write_version_file(const char *path,
                           int version,
                           apr_pool_t *pool);
+
+/** Read a line of text from a file, up to a specified length.
+ *
+ * Allocate @a *stringbuf in @a result_pool, and read into it one line
+ * from @a file. Reading stops either after a line-terminator was found
+ * or after @a max_len bytes have been read.
+ *
+ * If end-of-file is reached or @a max_len bytes have been read, and @a eof
+ * is not NULL, then set @a *eof to @c TRUE.
+ *
+ * The line-terminator is not stored in @a *stringbuf.
+ * The line-terminator is detected automatically and stored in @a *eol
+ * if @a eol is not NULL. If EOF is reached and @a file does not end
+ * with a newline character, and @a eol is not NULL, @ *eol is set to NULL.
+ *
+ * @a scratch_pool is used for temporary allocations.
+ *
+ * Hint: To read all data until a line-terminator is hit, pass APR_SIZE_MAX
+ * for @a max_len.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_io_file_readline(apr_file_t *file,
+                     svn_stringbuf_t **stringbuf,
+                     const char **eol,
+                     svn_boolean_t *eof,
+                     apr_size_t max_len,
+                     apr_pool_t *result_pool,
+                     apr_pool_t *scratch_pool);
 
 /** @} */
 

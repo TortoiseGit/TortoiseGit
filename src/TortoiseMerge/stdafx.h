@@ -57,9 +57,7 @@
 #include "apr_general.h"
 #include "svn_pools.h"
 #include "svn_path.h"
-#include "svn_wc.h"
 #include "svn_utf.h"
-#include "svn_config.h"
 #include "svn_error_codes.h"
 #pragma warning(pop)
 

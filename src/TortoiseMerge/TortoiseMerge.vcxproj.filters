@@ -231,7 +231,7 @@
     <ClCompile Include="libsvn_diff\stream.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
-    <ClCompile Include="libsvn_diff\svn_string.c">
+    <ClCompile Include="libsvn_diff\string.c">
       <Filter>Libdiff</Filter>
     </ClCompile>
     <ClCompile Include="libsvn_diff\SVNLineDiff.cpp">
@@ -278,6 +278,42 @@
     </ClCompile>
     <ClCompile Include="EncodingDlg.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\adler32.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\hash.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\atomic.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\sorts.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\mutex.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\types.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\eol.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\mergeinfo.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\iter.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\deprecated.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\properties.c">
+      <Filter>Libdiff</Filter>
+    </ClCompile>
+    <ClCompile Include="libsvn_diff\spillbuf.c">
+      <Filter>Libdiff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

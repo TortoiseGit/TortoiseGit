@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2008 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -29,6 +34,7 @@
 #include <apr_hash.h>   /* for apr_hash_t */
 
 #include "svn_types.h"
+#include "svn_io.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,6 +62,10 @@ typedef struct svn_config_t svn_config_t;
  * client configuration files.
  * @{
  */
+
+ /* This list of #defines is intentionally presented as a nested list
+    that matches the in-config hierarchy.  */
+
 #define SVN_CONFIG_CATEGORY_SERVERS        "servers"
 #define SVN_CONFIG_SECTION_GROUPS               "groups"
 #define SVN_CONFIG_SECTION_GLOBAL               "global"
@@ -81,17 +91,25 @@ typedef struct svn_config_t svn_config_t;
 #define SVN_CONFIG_OPTION_STORE_SSL_CLIENT_CERT_PP_PLAINTEXT \
                                           "store-ssl-client-cert-pp-plaintext"
 #define SVN_CONFIG_OPTION_USERNAME                  "username"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_HTTP_BULK_UPDATES         "http-bulk-updates"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_HTTP_MAX_CONNECTIONS      "http-max-connections"
 
 #define SVN_CONFIG_CATEGORY_CONFIG          "config"
 #define SVN_CONFIG_SECTION_AUTH                 "auth"
 #define SVN_CONFIG_OPTION_PASSWORD_STORES           "password-stores"
 #define SVN_CONFIG_OPTION_KWALLET_WALLET            "kwallet-wallet"
 #define SVN_CONFIG_OPTION_KWALLET_SVN_APPLICATION_NAME_WITH_PID "kwallet-svn-application-name-with-pid"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_SSL_CLIENT_CERT_FILE_PROMPT "ssl-client-cert-file-prompt"
 /* The majority of options of the "auth" section
  * has been moved to SVN_CONFIG_CATEGORY_SERVERS. */
 #define SVN_CONFIG_SECTION_HELPERS              "helpers"
 #define SVN_CONFIG_OPTION_EDITOR_CMD                "editor-cmd"
 #define SVN_CONFIG_OPTION_DIFF_CMD                  "diff-cmd"
+/** @since New in 1.7. */
+#define SVN_CONFIG_OPTION_DIFF_EXTENSIONS           "diff-extensions"
 #define SVN_CONFIG_OPTION_DIFF3_CMD                 "diff3-cmd"
 #define SVN_CONFIG_OPTION_DIFF3_HAS_PROGRAM_ARG     "diff3-has-program-arg"
 #define SVN_CONFIG_OPTION_MERGE_TOOL_CMD            "merge-tool-cmd"
@@ -99,14 +117,22 @@ typedef struct svn_config_t svn_config_t;
 #define SVN_CONFIG_OPTION_GLOBAL_IGNORES            "global-ignores"
 #define SVN_CONFIG_OPTION_LOG_ENCODING              "log-encoding"
 #define SVN_CONFIG_OPTION_USE_COMMIT_TIMES          "use-commit-times"
+/** @deprecated Not used by Subversion since 2003/r847039 (well before 1.0) */
 #define SVN_CONFIG_OPTION_TEMPLATE_ROOT             "template-root"
 #define SVN_CONFIG_OPTION_ENABLE_AUTO_PROPS         "enable-auto-props"
 #define SVN_CONFIG_OPTION_NO_UNLOCK                 "no-unlock"
 #define SVN_CONFIG_OPTION_MIMETYPES_FILE            "mime-types-file"
 #define SVN_CONFIG_OPTION_PRESERVED_CF_EXTS         "preserved-conflict-file-exts"
 #define SVN_CONFIG_OPTION_INTERACTIVE_CONFLICTS     "interactive-conflicts"
+#define SVN_CONFIG_OPTION_MEMORY_CACHE_SIZE         "memory-cache-size"
 #define SVN_CONFIG_SECTION_TUNNELS              "tunnels"
 #define SVN_CONFIG_SECTION_AUTO_PROPS           "auto-props"
+/** @since New in 1.8. */
+#define SVN_CONFIG_SECTION_WORKING_COPY         "working-copy"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_SQLITE_EXCLUSIVE          "exclusive-locking"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_SQLITE_EXCLUSIVE_CLIENTS  "exclusive-locking-clients"
 /** @} */
 
 /** @name Repository conf directory configuration files strings
@@ -121,6 +147,12 @@ typedef struct svn_config_t svn_config_t;
 #define SVN_CONFIG_OPTION_PASSWORD_DB               "password-db"
 #define SVN_CONFIG_OPTION_REALM                     "realm"
 #define SVN_CONFIG_OPTION_AUTHZ_DB                  "authz-db"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_GROUPS_DB                 "groups-db"
+/** @since New in 1.7. */
+#define SVN_CONFIG_OPTION_FORCE_USERNAME_CASE       "force-username-case"
+/** @since New in 1.8. */
+#define SVN_CONFIG_OPTION_HOOKS_ENV                 "hooks-env"
 #define SVN_CONFIG_SECTION_SASL                 "sasl"
 #define SVN_CONFIG_OPTION_USE_SASL                  "use-sasl"
 #define SVN_CONFIG_OPTION_MIN_SSF                   "min-encryption"
@@ -137,7 +169,7 @@ typedef struct svn_config_t svn_config_t;
  * but we don't want the # character to end up in the variable.
  */
 #define SVN_CONFIG__DEFAULT_GLOBAL_IGNORES_LINE_1 \
-  "*.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo"
+  "*.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo __pycache__"
 #define SVN_CONFIG__DEFAULT_GLOBAL_IGNORES_LINE_2 \
   "*.rej *~ #*# .#* .*.swp .DS_Store"
 
@@ -158,6 +190,7 @@ typedef struct svn_config_t svn_config_t;
 #define SVN_CONFIG_DEFAULT_OPTION_STORE_SSL_CLIENT_CERT_PP   TRUE
 #define SVN_CONFIG_DEFAULT_OPTION_STORE_SSL_CLIENT_CERT_PP_PLAINTEXT \
                                                              SVN_CONFIG_ASK
+#define SVN_CONFIG_DEFAULT_OPTION_HTTP_MAX_CONNECTIONS       4
 
 /** Read configuration information from the standard sources and merge it
  * into the hash @a *cfg_hash.  If @a config_dir is not NULL it specifies a
@@ -179,17 +212,64 @@ svn_config_get_config(apr_hash_t **cfg_hash,
                       apr_pool_t *pool);
 
 
+/** Set @a *cfgp to an empty @c svn_config_t structure,
+ * allocated in @a result_pool.
+ *
+ * Pass TRUE to @a section_names_case_sensitive if
+ * section names are to be populated case sensitively.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_config_create(svn_config_t **cfgp,
+                  svn_boolean_t section_names_case_sensitive,
+                  apr_pool_t *result_pool);
+
 /** Read configuration data from @a file (a file or registry path) into
  * @a *cfgp, allocated in @a pool.
  *
  * If @a file does not exist, then if @a must_exist, return an error,
  * otherwise return an empty @c svn_config_t.
+ *
+ * If @a section_names_case_sensitive is @c TRUE, populate section name hashes
+ * case sensitively, except for the default #SVN_CONFIG__DEFAULT_SECTION.
+ *
+ * @since New in 1.7.
  */
+
+svn_error_t *
+svn_config_read2(svn_config_t **cfgp,
+                 const char *file,
+                 svn_boolean_t must_exist,
+                 svn_boolean_t section_names_case_sensitive,
+                 apr_pool_t *pool);
+
+/** Similar to svn_config_read2, but always passes @c FALSE to
+ * section_names_case_sensitive.
+ *
+ * @deprecated Provided for backward compatibility with 1.6 API.
+ */
+SVN_DEPRECATED
 svn_error_t *
 svn_config_read(svn_config_t **cfgp,
                 const char *file,
                 svn_boolean_t must_exist,
                 apr_pool_t *pool);
+
+/** Read configuration data from @a stream into @a *cfgp, allocated in
+ * @a result_pool.
+ *
+ * If @a section_names_case_sensitive is @c TRUE, populate section name hashes
+ * case sensitively, except for the default #SVN_CONFIG__DEFAULT_SECTION.
+ *
+ * @since New in 1.8.
+ */
+
+svn_error_t *
+svn_config_parse(svn_config_t **cfgp,
+                 svn_stream_t *stream,
+                 svn_boolean_t section_names_case_sensitive,
+                 apr_pool_t *result_pool);
 
 /** Like svn_config_read(), but merges the configuration data from @a file
  * (a file or registry path) into @a *cfg, which was previously returned
@@ -228,7 +308,7 @@ svn_config_get(svn_config_t *cfg,
  *
  * This function invalidates all value expansions in @a cfg.
  *
- * To remove an option, pass NULL for the @c value.
+ * To remove an option, pass NULL for the @a value.
  */
 void
 svn_config_set(svn_config_t *cfg,
@@ -259,6 +339,35 @@ svn_config_set_bool(svn_config_t *cfg,
                     const char *option,
                     svn_boolean_t value);
 
+/** Like svn_config_get(), but for 64-bit signed integers.
+ *
+ * Parses the @a option in @a section of @a cfg as an integer value,
+ * setting @a *valuep to the result.  If the option is not found, sets
+ * @a *valuep to @a default_value.  If the option is found but cannot
+ * be converted to an integer, returns an error.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_config_get_int64(svn_config_t *cfg,
+                     apr_int64_t *valuep,
+                     const char *section,
+                     const char *option,
+                     apr_int64_t default_value);
+
+/** Like svn_config_set(), but for 64-bit signed integers.
+ *
+ * Sets the value of @a option in @a section of @a cfg to the signed
+ * decimal @a value.
+ *
+ * @since New in 1.8.
+ */
+void
+svn_config_set_int64(svn_config_t *cfg,
+                     const char *section,
+                     const char *option,
+                     apr_int64_t value);
+
 /** Like svn_config_get(), but only for yes/no/ask values.
  *
  * Parse @a option in @a section and set @a *valuep to one of
@@ -282,6 +391,27 @@ svn_config_get_yes_no_ask(svn_config_t *cfg,
                           const char *option,
                           const char* default_value);
 
+/** Like svn_config_get_bool(), but for tristate values.
+ *
+ * Set @a *valuep to #svn_tristate_true, #svn_tristate_false, or
+ * #svn_tristate_unknown, depending on the value of @a option in @a
+ * section of @a cfg.  True and false values are the same as for
+ * svn_config_get_bool(); @a unknown_value specifies the option value
+ * allowed for third state (#svn_tristate_unknown).
+ *
+ * Use @a default_value as the default value if @a option cannot be
+ * found.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_config_get_tristate(svn_config_t *cfg,
+                        svn_tristate_t *valuep,
+                        const char *section,
+                        const char *option,
+                        const char *unknown_value,
+                        svn_tristate_t default_value);
+
 /** Similar to @c svn_config_section_enumerator2_t, but is not
  * provided with a memory pool argument.
  *
@@ -293,7 +423,7 @@ typedef svn_boolean_t (*svn_config_section_enumerator_t)(const char *name,
                                                          void *baton);
 
 /** Similar to svn_config_enumerate_sections2(), but uses a memory pool of
- * @a cfg instead of one that is explicitely provided.
+ * @a cfg instead of one that is explicitly provided.
  *
  * @deprecated Provided for backwards compatibility with the 1.2 API.
  */
@@ -340,7 +470,7 @@ typedef svn_boolean_t (*svn_config_enumerator_t)(const char *name,
                                                  void *baton);
 
 /** Similar to svn_config_enumerate2(), but uses a memory pool of
- * @a cfg instead of one that is explicitely provided.
+ * @a cfg instead of one that is explicitly provided.
  *
  * @deprecated Provided for backwards compatibility with the 1.2 API.
  */
@@ -532,6 +662,63 @@ svn_config_write_auth_data(apr_hash_t *hash,
                            const char *config_dir,
                            apr_pool_t *pool);
 
+
+/** Callback for svn_config_walk_auth_data().
+ *
+ * Called for each credential walked by that function (and able to be
+ * fully purged) to allow perusal and selective removal of credentials.
+ *
+ * @a cred_kind and @a realmstring specify the key of the credential.
+ * @a hash contains the hash data associated with the record.
+ *
+ * Before returning set @a *delete_cred to TRUE to remove the credential from
+ * the cache; leave @a *delete_cred unchanged or set it to FALSE to keep the
+ * credential.
+ *
+ * Implementations may return #SVN_ERR_CEASE_INVOCATION to indicate
+ * that the callback should not be called again.  Note that when that
+ * error is returned, the value of @a delete_cred will still be
+ * honored and action taken if necessary.  (For other returned errors,
+ * @a delete_cred is ignored by svn_config_walk_auth_data().)
+ *
+ * @since New in 1.8.
+ */
+typedef svn_error_t *
+(*svn_config_auth_walk_func_t)(svn_boolean_t *delete_cred,
+                               void *cleanup_baton,
+                               const char *cred_kind,
+                               const char *realmstring,
+                               apr_hash_t *hash,
+                               apr_pool_t *scratch_pool);
+
+/** Call @a walk_func with @a walk_baton and information describing
+ * each credential cached within the Subversion auth store located
+ * under @a config_dir.  If the callback sets its delete_cred return
+ * flag, delete the associated credential.
+ *
+ * @note Removing credentials from the config-based disk store will
+ * not purge them from any open svn_auth_baton_t instance.  Consider
+ * using svn_auth_forget_credentials() -- from the @a cleanup_func,
+ * even -- for this purpose.
+ *
+ * @note Removing credentials from the config-based disk store will
+ * not also remove any related credentials from third-party password
+ * stores.  (Implementations of @a walk_func which delete credentials
+ * may wish to consult the "passtype" element of @a hash, if any, to
+ * see if a third-party store -- such as "gnome-keyring" or "kwallet"
+ * is being used to hold the most sensitive portion of the credentials
+ * for this @a cred_kind and @a realmstring.)
+ *
+ * @see svn_auth_forget_credentials()
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_config_walk_auth_data(const char *config_dir,
+                          svn_config_auth_walk_func_t walk_func,
+                          void *walk_baton,
+                          apr_pool_t *scratch_pool);
+
 /** Put the absolute path to the user's configuration directory,
  * or to a file within that directory, into @a *path.
  *
@@ -555,6 +742,26 @@ svn_config_get_user_config_path(const char **path,
                                 const char *config_dir,
                                 const char *fname,
                                 apr_pool_t *pool);
+
+/** Create a deep copy of the config object @a src and return
+ * it in @a cfgp, allocating the memory in @a pool.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_config_dup(svn_config_t **cfgp,
+               svn_config_t *src,
+               apr_pool_t *pool);
+
+/** Create a deep copy of the config hash @a src_hash and return
+ * it in @a cfg_hash, allocating the memory in @a pool.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_config_copy_config(apr_hash_t **cfg_hash,
+                       apr_hash_t *src_hash,
+                       apr_pool_t *pool);
 
 /** @} */
 

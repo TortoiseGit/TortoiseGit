@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2008 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -37,7 +42,7 @@ extern "C" {
  *
  * @since New in 1.6.
  */
-typedef enum
+typedef enum svn_checksum_kind_t
 {
   /** The checksum is (or should be set to) an MD5 checksum. */
   svn_checksum_md5,
@@ -75,7 +80,7 @@ svn_checksum_t *
 svn_checksum_create(svn_checksum_kind_t kind,
                     apr_pool_t *pool);
 
-/** Set @c checksum->digest to all zeros, which, by convention, matches
+/** Set @a checksum->digest to all zeros, which, by convention, matches
  * all other checksums.
  *
  * @since New in 1.6.
@@ -95,7 +100,8 @@ svn_checksum_match(const svn_checksum_t *checksum1,
 
 
 /**
- * Return a deep copy of @a checksum, allocated in @a pool.
+ * Return a deep copy of @a checksum, allocated in @a pool.  If @a
+ * checksum is NULL then NULL is returned.
  *
  * @since New in 1.6.
  */
@@ -116,13 +122,41 @@ svn_checksum_to_cstring_display(const svn_checksum_t *checksum,
 
 /** Return the hex representation of @a checksum, allocating the
  * string in @a pool.  If @a checksum->digest is all zeros (that is,
- * 0, not '0'), then return NULL.
+ * 0, not '0') then return NULL. In 1.7+, @a checksum may be NULL
+ * and NULL will be returned in that case.
  *
  * @since New in 1.6.
+ * @note Passing NULL for @a checksum in 1.6 will cause a segfault.
  */
 const char *
 svn_checksum_to_cstring(const svn_checksum_t *checksum,
                         apr_pool_t *pool);
+
+
+/** Return a serialized representation of @a checksum, allocated in
+ * @a result_pool. Temporary allocations are performed in @a scratch_pool.
+ *
+ * Note that @a checksum may not be NULL.
+ *
+ * @since New in 1.7.
+ */
+const char *
+svn_checksum_serialize(const svn_checksum_t *checksum,
+                       apr_pool_t *result_pool,
+                       apr_pool_t *scratch_pool);
+
+
+/** Return @a checksum from the serialized format at @a data. The checksum
+ * will be allocated in @a result_pool, with any temporary allocations
+ * performed in @a scratch_pool.
+ *
+ * @since New in 1.7.
+ */
+svn_error_t *
+svn_checksum_deserialize(const svn_checksum_t **checksum,
+                         const char *data,
+                         apr_pool_t *result_pool,
+                         apr_pool_t *scratch_pool);
 
 
 /** Parse the hex representation @a hex of a checksum of kind @a kind and
@@ -206,17 +240,36 @@ svn_checksum_final(svn_checksum_t **checksum,
 apr_size_t
 svn_checksum_size(const svn_checksum_t *checksum);
 
+/**
+ * Return @c TRUE iff @a checksum matches the checksum for the empty
+ * string.
+ *
+ * @since New in 1.8.
+ */
+svn_boolean_t
+svn_checksum_is_empty_checksum(svn_checksum_t *checksum);
+
 
 /**
- * Internal function for creating a checksum from a binary digest.
+ * Return an error of type #SVN_ERR_CHECKSUM_MISMATCH for @a actual and
+ * @a expected checksums which do not match.  Use @a fmt, and the following
+ * parameters to populate the error message.
  *
- * @since New in 1.6
+ * @note This function does not actually check for the mismatch, it just
+ * constructs the error.
+ *
+ * @a scratch_pool is used for temporary allocations; the returned error
+ * will be allocated in its own pool (as is typical).
+ *
+ * @since New in 1.7.
  */
-svn_checksum_t *
-svn_checksum__from_digest(const unsigned char *digest,
-                          svn_checksum_kind_t kind,
-                          apr_pool_t *result_pool);
-
+svn_error_t *
+svn_checksum_mismatch_err(const svn_checksum_t *expected,
+                          const svn_checksum_t *actual,
+                          apr_pool_t *scratch_pool,
+                          const char *fmt,
+                          ...)
+  __attribute__ ((format(printf, 4, 5)));
 
 #ifdef __cplusplus
 }

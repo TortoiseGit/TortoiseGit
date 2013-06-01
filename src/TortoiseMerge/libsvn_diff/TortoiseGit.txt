@@ -1,0 +1,1 @@
+Changes only needed in cmdline.c for TortoiseGit, marked with "// TortoiseGit"

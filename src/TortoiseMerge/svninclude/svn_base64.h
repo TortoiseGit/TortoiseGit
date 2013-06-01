@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2004, 2008 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -41,17 +46,17 @@ extern "C" {
  */
 
 /** Return a writable generic stream which will encode binary data in
- * base64 format and write the encoded data to @c output.  Be sure to
+ * base64 format and write the encoded data to @a output.  Be sure to
  * close the stream when done writing in order to squeeze out the last
- * bit of encoded data.  The stream is allocated in @c pool.
+ * bit of encoded data.  The stream is allocated in @a pool.
  */
 svn_stream_t *
 svn_base64_encode(svn_stream_t *output,
                   apr_pool_t *pool);
 
 /** Return a writable generic stream which will decode base64-encoded
- * data and write the decoded data to @c output.  The stream is allocated
- * in @c pool.
+ * data and write the decoded data to @a output.  The stream is allocated
+ * in @a pool.
  */
 svn_stream_t *
 svn_base64_decode(svn_stream_t *output,
@@ -64,7 +69,7 @@ svn_base64_decode(svn_stream_t *output,
  * it present at once.  If @a break_lines is true, newlines will be
  * inserted periodically; otherwise the string will only consist of
  * base64 encoding characters.  The returned string will be allocated
- * from @c pool.
+ * from @a pool.
  *
  * @since New in 1.6.
  */
@@ -96,10 +101,10 @@ svn_base64_decode_string(const svn_string_t *str,
                          apr_pool_t *pool);
 
 
-/** Return a base64-encoded checksum for finalized @c digest.
+/** Return a base64-encoded checksum for finalized @a digest.
  *
- * @c digest contains @c APR_MD5_DIGESTSIZE bytes of finalized data.
- * Allocate the returned checksum in @c pool.
+ * @a digest contains @c APR_MD5_DIGESTSIZE bytes of finalized data.
+ * Allocate the returned checksum in @a pool.
  *
  * @deprecated Provided for backward compatibility with the 1.5 API.
  */

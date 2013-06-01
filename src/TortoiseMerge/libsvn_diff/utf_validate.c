@@ -2,17 +2,22 @@
  * utf_validate.c:  Validate a UTF-8 string
  *
  * ====================================================================
- * Copyright (c) 2004, 2009 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  */
 
@@ -51,7 +56,9 @@
  *
  */
 
-#include "svn_utf_private.h"
+#include "private/svn_utf_private.h"
+#include "private/svn_eol_private.h"
+#include "private/svn_dep_compat.h"
 
 /* Lookup table to categorise each octet in the string. */
 static const char octet_category[256] = {
@@ -244,12 +251,100 @@ static const char machine [9][14] = {
    FSM_ERROR},        /* 0xf5-0xff */
 };
 
+/* Scan MAX_LEN bytes in *DATA for chars that are not in the octet
+ * category 0 (FSM_START).  Return the position of the first such char
+ * or DATA + MAX_LEN if all were cat 0.
+ */
+static const char *
+first_non_fsm_start_char(const char *data, apr_size_t max_len)
+{
+#if !SVN_UNALIGNED_ACCESS_IS_OK
+
+  /* On some systems, we need to make sure that buf is properly aligned
+   * for chunky data access.
+   */
+  if ((apr_uintptr_t)data & (sizeof(apr_uintptr_t)-1))
+    {
+      apr_size_t len = (~(apr_uintptr_t)data) & (sizeof(apr_uintptr_t)-1);
+      if (len > max_len)
+        len = max_len;
+      max_len -= len;
+
+      for (; len > 0; ++data, --len)
+        if (*data < 0 || *data >= 0x80)
+          return data;
+    }
+
+#endif
+
+  /* Scan the input one machine word at a time. */
+  for (; max_len > sizeof(apr_uintptr_t)
+       ; data += sizeof(apr_uintptr_t), max_len -= sizeof(apr_uintptr_t))
+    if (*(const apr_uintptr_t *)data & SVN__BIT_7_SET)
+      break;
+
+  /* The remaining odd bytes will be examined the naive way: */
+  for (; max_len > 0; ++data, --max_len)
+    if (*data < 0 || *data >= 0x80)
+      break;
+
+  return data;
+}
+
+/* Scan the C string in *DATA for chars that are not in the octet
+ * category 0 (FSM_START).  Return the position of either the such
+ * char or of the terminating NUL.
+ */
+static const char *
+first_non_fsm_start_char_cstring(const char *data)
+{
+  /* We need to make sure that BUF is properly aligned for chunky data
+   * access because we don't know the string's length. Unaligned chunk
+   * read access beyond the NUL terminator could therefore result in a
+   * segfault.
+   */
+  for (; (apr_uintptr_t)data & (sizeof(apr_uintptr_t)-1); ++data)
+    if (*data <= 0 || *data >= 0x80)
+      return data;
+
+  /* Scan the input one machine word at a time. */
+#ifndef SVN_UTF_NO_UNINITIALISED_ACCESS
+  /* This may read allocated but initialised bytes beyond the
+     terminating null.  Any such bytes are always readable and this
+     code operates correctly whatever the uninitialised values happen
+     to be.  However memory checking tools such as valgrind and GCC
+     4.8's address santitizer will object so this bit of code can be
+     disabled at compile time. */
+  for (; ; data += sizeof(apr_uintptr_t))
+    {
+      /* Check for non-ASCII chars: */
+      apr_uintptr_t chunk = *(const apr_uintptr_t *)data;
+      if (chunk & SVN__BIT_7_SET)
+        break;
+
+      /* This is the well-known strlen test: */
+      chunk |= (chunk & SVN__LOWER_7BITS_SET) + SVN__LOWER_7BITS_SET;
+      if ((chunk & SVN__BIT_7_SET) != SVN__BIT_7_SET)
+        break;
+    }
+#endif
+
+  /* The remaining odd bytes will be examined the naive way: */
+  for (; ; ++data)
+    if (*data <= 0 || *data >= 0x80)
+      break;
+
+  return data;
+}
 
 const char *
 svn_utf__last_valid(const char *data, apr_size_t len)
 {
-  const char *start = data, *end = data + len;
+  const char *start = first_non_fsm_start_char(data, len);
+  const char *end = data + len;
   int state = FSM_START;
+
+  data = start;
   while (data < end)
     {
       unsigned char octet = *data++;
@@ -265,6 +360,12 @@ svn_boolean_t
 svn_utf__cstring_is_valid(const char *data)
 {
   int state = FSM_START;
+
+  if (!data)
+    return FALSE;
+
+  data = first_non_fsm_start_char_cstring(data);
+
   while (*data)
     {
       unsigned char octet = *data++;
@@ -279,6 +380,12 @@ svn_utf__is_valid(const char *data, apr_size_t len)
 {
   const char *end = data + len;
   int state = FSM_START;
+
+  if (!data)
+    return FALSE;
+
+  data = first_non_fsm_start_char(data, len);
+
   while (data < end)
     {
       unsigned char octet = *data++;
@@ -291,8 +398,11 @@ svn_utf__is_valid(const char *data, apr_size_t len)
 const char *
 svn_utf__last_valid2(const char *data, apr_size_t len)
 {
-  const char *start = data, *end = data + len;
+  const char *start = first_non_fsm_start_char(data, len);
+  const char *end = data + len;
   int state = FSM_START;
+
+  data = start;
   while (data < end)
     {
       unsigned char octet = *data++;

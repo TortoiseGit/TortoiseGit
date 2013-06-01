@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2009 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -41,6 +46,10 @@
    not defined the enumerated constants yet.  */
 #if defined(SVN_ERROR_BUILD_ARRAY) || !defined(SVN_ERROR_ENUM_DEFINED)
 
+/* Note: despite lacking double underscores in its name, the macro
+   SVN_ERROR_BUILD_ARRAY is an implementation detail of Subversion and not
+   a public API. */
+
 
 #include <apr_errno.h>     /* APR's error system */
 
@@ -54,9 +63,9 @@ extern "C" {
 
 #define SVN_ERROR_START \
         static const err_defn error_table[] = { \
-          { SVN_WARNING, "Warning" },
-#define SVN_ERRDEF(num, offset, str) { num, str },
-#define SVN_ERROR_END { 0, NULL } };
+          { SVN_WARNING, "SVN_WARNING", "Warning" },
+#define SVN_ERRDEF(num, offset, str) { num, #num, str },
+#define SVN_ERROR_END { 0, NULL, NULL } };
 
 #elif !defined(SVN_ERROR_ENUM_DEFINED)
 
@@ -209,6 +218,21 @@ SVN_ERROR_START
              SVN_ERR_BAD_CATEGORY_START + 12,
              "Invalid character in hex checksum")
 
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_BAD_TOKEN,
+             SVN_ERR_BAD_CATEGORY_START + 13,
+             "Unknown string value of token")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_BAD_CHANGELIST_NAME,
+             SVN_ERR_BAD_CATEGORY_START + 14,
+             "Invalid changelist name")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_BAD_ATOMIC,
+             SVN_ERR_BAD_CATEGORY_START + 15,
+             "Invalid atomic")
+
   /* xml errors */
 
   SVN_ERRDEF(SVN_ERR_XML_ATTRIB_NOT_FOUND,
@@ -264,6 +288,11 @@ SVN_ERROR_START
              SVN_ERR_IO_CATEGORY_START + 6,
              "Write error")
 
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_IO_PIPE_WRITE_ERROR,
+             SVN_ERR_IO_CATEGORY_START + 7,
+             "Write error in pipe")
+
   /* stream errors */
 
   SVN_ERRDEF(SVN_ERR_STREAM_UNEXPECTED_EOF,
@@ -277,6 +306,11 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_STREAM_UNRECOGNIZED_DATA,
              SVN_ERR_STREAM_CATEGORY_START + 2,
              "Unrecognized stream data")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_STREAM_SEEK_NOT_SUPPORTED,
+             SVN_ERR_STREAM_CATEGORY_START + 3,
+             "Stream doesn't support seeking")
 
   /* node errors */
 
@@ -350,8 +384,16 @@ SVN_ERROR_START
              SVN_ERR_WC_CATEGORY_START + 6,
              "Invalid lock")
 
-  SVN_ERRDEF(SVN_ERR_WC_NOT_DIRECTORY,
+  /** @since New in 1.7. Previously this error number was used by
+   * #SVN_ERR_WC_NOT_DIRECTORY, which is now an alias for this error. */
+  SVN_ERRDEF(SVN_ERR_WC_NOT_WORKING_COPY,
              SVN_ERR_WC_CATEGORY_START + 7,
+             "Path is not a working copy directory")
+
+  /** @deprecated Provided for backward compatibility with the 1.6 API.
+   * Use #SVN_ERR_WC_NOT_WORKING_COPY. */
+  SVN_ERRDEF(SVN_ERR_WC_NOT_DIRECTORY,
+             SVN_ERR_WC_NOT_WORKING_COPY,
              "Path is not a working copy directory")
 
   SVN_ERRDEF(SVN_ERR_WC_NOT_FILE,
@@ -443,7 +485,10 @@ SVN_ERROR_START
              SVN_ERR_WC_CATEGORY_START + 28,
              "Failed to locate 'copyfrom' path in working copy")
 
-  /** @since New in 1.5. */
+  /** @since New in 1.5.
+   * @deprecated Provided for backward compatibility with the 1.6 API.
+   * This event is not an error, and is now reported
+   * via the standard notification mechanism instead. */
   SVN_ERRDEF(SVN_ERR_WC_CHANGELIST_MOVE,
              SVN_ERR_WC_CATEGORY_START + 29,
              "Moving a path from one changelist to another")
@@ -457,6 +502,57 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_WC_CANNOT_MOVE_FILE_EXTERNAL,
              SVN_ERR_WC_CATEGORY_START + 31,
              "Cannot move a file external")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_DB_ERROR,
+             SVN_ERR_WC_CATEGORY_START + 32,
+             "Something's amiss with the wc sqlite database")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_MISSING,
+             SVN_ERR_WC_CATEGORY_START + 33,
+             "The working copy is missing")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_NOT_SYMLINK,
+             SVN_ERR_WC_CATEGORY_START + 34,
+             "The specified node is not a symlink")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_PATH_UNEXPECTED_STATUS,
+             SVN_ERR_WC_CATEGORY_START + 35,
+             "The specified path has an unexpected status")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_UPGRADE_REQUIRED,
+             SVN_ERR_WC_CATEGORY_START + 36,
+             "The working copy needs to be upgraded")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_CLEANUP_REQUIRED,
+             SVN_ERR_WC_CATEGORY_START + 37,
+             "Previous operation has not finished; "
+             "run 'cleanup' if it was interrupted")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_INVALID_OPERATION_DEPTH,
+             SVN_ERR_WC_CATEGORY_START + 38,
+             "The operation cannot be performed with the specified depth")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_WC_PATH_ACCESS_DENIED,
+             SVN_ERR_WC_CATEGORY_START + 39,
+             "Couldn't open a working copy file because access was denied")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_WC_MIXED_REVISIONS,
+             SVN_ERR_WC_CATEGORY_START + 40,
+             "Mixed-revision working copy was found but not expected")
+
+  /** @since New in 1.8 */
+  SVN_ERRDEF(SVN_ERR_WC_DUPLICATE_EXTERNALS_TARGET,
+             SVN_ERR_WC_CATEGORY_START + 41,
+             "Duplicate targets in svn:externals property")
 
   /* fs errors */
 
@@ -679,6 +775,27 @@ SVN_ERROR_START
              SVN_ERR_FS_CATEGORY_START + 48,
              "Filesystem has no such checksum-representation index record")
 
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_FS_PROP_BASEVALUE_MISMATCH,
+             SVN_ERR_FS_CATEGORY_START + 49,
+             "Property value in filesystem differs from the provided "
+             "base value")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_FS_INCORRECT_EDITOR_COMPLETION,
+             SVN_ERR_FS_CATEGORY_START + 50,
+             "The filesystem editor completion process was not followed")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_FS_PACKED_REVPROP_READ_FAILURE,
+             SVN_ERR_FS_CATEGORY_START + 51,
+             "A packed revprop could not be read")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_FS_REVPROP_CACHE_INIT_FAILURE,
+             SVN_ERR_FS_CATEGORY_START + 52,
+             "Could not initialize the revprop caching infrastructure.")
+
   /* repos errors */
 
   SVN_ERRDEF(SVN_ERR_REPOS_LOCKED,
@@ -783,6 +900,16 @@ SVN_ERROR_START
              SVN_ERR_RA_CATEGORY_START + 10,
              "Repository root URL does not match expected root URL")
 
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_RA_SESSION_URL_MISMATCH,
+             SVN_ERR_RA_CATEGORY_START + 11,
+             "Session URL does not match expected session URL")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_RA_CANNOT_CREATE_TUNNEL,
+             SVN_ERR_RA_CATEGORY_START + 12,
+             "Can't create tunnel")
+
   /* ra_dav errors */
 
   SVN_ERRDEF(SVN_ERR_RA_DAV_SOCK_INIT,
@@ -817,7 +944,7 @@ SVN_ERROR_START
              "Invalid configuration value")
 
   /** @deprecated To improve consistency between ra layers, this error code
-      is replaced in ra_{neon|serf} by SVN_ERR_FS_NOT_FOUND.
+      is replaced in ra_serf by SVN_ERR_FS_NOT_FOUND.
       Slated for removal in the next major release. */
   SVN_ERRDEF(SVN_ERR_RA_DAV_PATH_NOT_FOUND,
              SVN_ERR_RA_DAV_CATEGORY_START + 7,
@@ -842,7 +969,10 @@ SVN_ERROR_START
              SVN_ERR_RA_DAV_CATEGORY_START + 11,
              "Repository has been moved")
 
-  /* SVN_ERR_RA_DAV_CATEGORY_START + 12 is reserved for use in 1.7. */
+  /** @since New in 1.7 */
+  SVN_ERRDEF(SVN_ERR_RA_DAV_CONN_TIMEOUT,
+             SVN_ERR_RA_DAV_CATEGORY_START + 12,
+             "Connection timed out")
 
   /** @since New in 1.6 */
   SVN_ERRDEF(SVN_ERR_RA_DAV_FORBIDDEN,
@@ -858,100 +988,6 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_RA_LOCAL_REPOS_OPEN_FAILED,
              SVN_ERR_RA_LOCAL_CATEGORY_START + 1,
              "Couldn't open a repository")
-  /* ra_svn errors */
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_CMD_ERR,
-             SVN_ERR_RA_SVN_CATEGORY_START + 0,
-             "Special code for wrapping server errors to report to client")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_UNKNOWN_CMD,
-             SVN_ERR_RA_SVN_CATEGORY_START + 1,
-             "Unknown svn protocol command")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_CONNECTION_CLOSED,
-             SVN_ERR_RA_SVN_CATEGORY_START + 2,
-             "Network connection closed unexpectedly")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_IO_ERROR,
-             SVN_ERR_RA_SVN_CATEGORY_START + 3,
-             "Network read/write error")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_MALFORMED_DATA,
-             SVN_ERR_RA_SVN_CATEGORY_START + 4,
-             "Malformed network data")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_REPOS_NOT_FOUND,
-             SVN_ERR_RA_SVN_CATEGORY_START + 5,
-             "Couldn't find a repository")
-
-  SVN_ERRDEF(SVN_ERR_RA_SVN_BAD_VERSION,
-             SVN_ERR_RA_SVN_CATEGORY_START + 6,
-             "Client/server version mismatch")
-
-  /** @since New in 1.5. */
-  SVN_ERRDEF(SVN_ERR_RA_SVN_NO_MECHANISMS,
-             SVN_ERR_RA_SVN_CATEGORY_START + 7,
-             "Cannot negotiate authentication mechanism")
-
-  /* libsvn_ra_serf errors */
-  /** @since New in 1.5. */
-  SVN_ERRDEF(SVN_ERR_RA_SERF_SSPI_INITIALISATION_FAILED,
-             SVN_ERR_RA_SERF_CATEGORY_START + 0,
-             "Initialization of SSPI library failed")
-  /** @since New in 1.5. */
-  SVN_ERRDEF(SVN_ERR_RA_SERF_SSL_CERT_UNTRUSTED,
-             SVN_ERR_RA_SERF_CATEGORY_START + 1,
-             "Server SSL certificate untrusted")
-
-  /* libsvn_auth errors */
-
-       /* this error can be used when an auth provider doesn't have
-          the creds, but no other "real" error occurred. */
-  SVN_ERRDEF(SVN_ERR_AUTHN_CREDS_UNAVAILABLE,
-             SVN_ERR_AUTHN_CATEGORY_START + 0,
-             "Credential data unavailable")
-
-  SVN_ERRDEF(SVN_ERR_AUTHN_NO_PROVIDER,
-             SVN_ERR_AUTHN_CATEGORY_START + 1,
-             "No authentication provider available")
-
-  SVN_ERRDEF(SVN_ERR_AUTHN_PROVIDERS_EXHAUSTED,
-             SVN_ERR_AUTHN_CATEGORY_START + 2,
-             "All authentication providers exhausted")
-
-  SVN_ERRDEF(SVN_ERR_AUTHN_CREDS_NOT_SAVED,
-             SVN_ERR_AUTHN_CATEGORY_START + 3,
-             "Credentials not saved")
-
-  /** @since New in 1.5. */
-  SVN_ERRDEF(SVN_ERR_AUTHN_FAILED,
-             SVN_ERR_AUTHN_CATEGORY_START + 4,
-             "Authentication failed")
-
-  /* authorization errors */
-
-  SVN_ERRDEF(SVN_ERR_AUTHZ_ROOT_UNREADABLE,
-             SVN_ERR_AUTHZ_CATEGORY_START + 0,
-             "Read access denied for root of edit")
-
-  /** @since New in 1.1. */
-  SVN_ERRDEF(SVN_ERR_AUTHZ_UNREADABLE,
-             SVN_ERR_AUTHZ_CATEGORY_START + 1,
-             "Item is not readable")
-
-  /** @since New in 1.1. */
-  SVN_ERRDEF(SVN_ERR_AUTHZ_PARTIALLY_READABLE,
-             SVN_ERR_AUTHZ_CATEGORY_START + 2,
-             "Item is partially readable")
-
-  SVN_ERRDEF(SVN_ERR_AUTHZ_INVALID_CONFIG,
-             SVN_ERR_AUTHZ_CATEGORY_START + 3,
-             "Invalid authz configuration")
-
-  /** @since New in 1.3 */
-  SVN_ERRDEF(SVN_ERR_AUTHZ_UNWRITABLE,
-             SVN_ERR_AUTHZ_CATEGORY_START + 4,
-             "Item is not writable")
 
   /* svndiff errors */
 
@@ -978,12 +1014,6 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_SVNDIFF_INVALID_COMPRESSED_DATA,
              SVN_ERR_SVNDIFF_CATEGORY_START + 5,
              "Svndiff compressed data is invalid")
-
-  /* libsvn_diff errors */
-
-  SVN_ERRDEF(SVN_ERR_DIFF_DATASOURCE_MODIFIED,
-             SVN_ERR_DIFF_CATEGORY_START + 0,
-             "Diff data source modified unexpectedly")
 
   /* mod_dav_svn errors */
 
@@ -1088,6 +1118,36 @@ SVN_ERROR_START
   SVN_ERRDEF(SVN_ERR_CLIENT_FILE_EXTERNAL_OVERWRITE_VERSIONED,
              SVN_ERR_CLIENT_CATEGORY_START + 17,
              "A file external cannot overwrite an existing versioned item")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_PATCH_BAD_STRIP_COUNT,
+             SVN_ERR_CLIENT_CATEGORY_START + 18,
+             "Invalid path component strip count specified")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_CYCLE_DETECTED,
+             SVN_ERR_CLIENT_CATEGORY_START + 19,
+             "Detected a cycle while processing the operation")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_MERGE_UPDATE_REQUIRED,
+             SVN_ERR_CLIENT_CATEGORY_START + 20,
+             "Working copy and merge source not ready for reintegration")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_INVALID_MERGEINFO_NO_MERGETRACKING,
+             SVN_ERR_CLIENT_CATEGORY_START + 21,
+             "Invalid mergeinfo detected in merge target")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_NO_LOCK_TOKEN,
+             SVN_ERR_CLIENT_CATEGORY_START + 22,
+             "Can't perform this operation without a valid lock token")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_CLIENT_FORBIDDEN_BY_SERVER,
+             SVN_ERR_CLIENT_CATEGORY_START + 23,
+             "The operation is forbidden by the server")
 
   /* misc errors */
 
@@ -1232,10 +1292,43 @@ SVN_ERROR_START
              SVN_ERR_MISC_CATEGORY_START + 31,
              "Attempted to write to readonly SQLite db")
 
-  /** @since New in 1.6. */
+  /** @since New in 1.6.
+   * @deprecated the internal sqlite support code does not manage schemas
+   * any longer.  */
   SVN_ERRDEF(SVN_ERR_SQLITE_UNSUPPORTED_SCHEMA,
              SVN_ERR_MISC_CATEGORY_START + 32,
              "Unsupported schema found in SQLite db")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_SQLITE_BUSY,
+             SVN_ERR_MISC_CATEGORY_START + 33,
+             "The SQLite db is busy")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_SQLITE_RESETTING_FOR_ROLLBACK,
+             SVN_ERR_MISC_CATEGORY_START + 34,
+             "SQLite busy at transaction rollback; "
+             "resetting all busy SQLite statements to allow rollback")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_SQLITE_CONSTRAINT,
+             SVN_ERR_MISC_CATEGORY_START + 35,
+             "Constraint error in SQLite db")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_TOO_MANY_MEMCACHED_SERVERS,
+             SVN_ERR_MISC_CATEGORY_START + 36,
+             "Too many memcached servers configured")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_MALFORMED_VERSION_STRING,
+             SVN_ERR_MISC_CATEGORY_START + 37,
+             "Failed to parse version number string")
+
+  /** @since New in 1.8. */
+  SVN_ERRDEF(SVN_ERR_CORRUPTED_ATOMIC_STORAGE,
+             SVN_ERR_MISC_CATEGORY_START + 38,
+             "Atomic data storage is corrupt")
 
   /* command-line client errors */
 
@@ -1283,11 +1376,136 @@ SVN_ERROR_START
              SVN_ERR_CL_CATEGORY_START + 10,
              "No external merge tool available")
 
+  SVN_ERRDEF(SVN_ERR_CL_ERROR_PROCESSING_EXTERNALS,
+             SVN_ERR_CL_CATEGORY_START + 11,
+             "Failed processing one or more externals definitions")
+
+  /* ra_svn errors */
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_CMD_ERR,
+             SVN_ERR_RA_SVN_CATEGORY_START + 0,
+             "Special code for wrapping server errors to report to client")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_UNKNOWN_CMD,
+             SVN_ERR_RA_SVN_CATEGORY_START + 1,
+             "Unknown svn protocol command")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_CONNECTION_CLOSED,
+             SVN_ERR_RA_SVN_CATEGORY_START + 2,
+             "Network connection closed unexpectedly")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_IO_ERROR,
+             SVN_ERR_RA_SVN_CATEGORY_START + 3,
+             "Network read/write error")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_MALFORMED_DATA,
+             SVN_ERR_RA_SVN_CATEGORY_START + 4,
+             "Malformed network data")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_REPOS_NOT_FOUND,
+             SVN_ERR_RA_SVN_CATEGORY_START + 5,
+             "Couldn't find a repository")
+
+  SVN_ERRDEF(SVN_ERR_RA_SVN_BAD_VERSION,
+             SVN_ERR_RA_SVN_CATEGORY_START + 6,
+             "Client/server version mismatch")
+
+  /** @since New in 1.5. */
+  SVN_ERRDEF(SVN_ERR_RA_SVN_NO_MECHANISMS,
+             SVN_ERR_RA_SVN_CATEGORY_START + 7,
+             "Cannot negotiate authentication mechanism")
+
+  /** @since New in 1.7  */
+  SVN_ERRDEF(SVN_ERR_RA_SVN_EDIT_ABORTED,
+             SVN_ERR_RA_SVN_CATEGORY_START + 8,
+             "Editor drive was aborted")
+
+  /* libsvn_auth errors */
+
+       /* this error can be used when an auth provider doesn't have
+          the creds, but no other "real" error occurred. */
+  SVN_ERRDEF(SVN_ERR_AUTHN_CREDS_UNAVAILABLE,
+             SVN_ERR_AUTHN_CATEGORY_START + 0,
+             "Credential data unavailable")
+
+  SVN_ERRDEF(SVN_ERR_AUTHN_NO_PROVIDER,
+             SVN_ERR_AUTHN_CATEGORY_START + 1,
+             "No authentication provider available")
+
+  SVN_ERRDEF(SVN_ERR_AUTHN_PROVIDERS_EXHAUSTED,
+             SVN_ERR_AUTHN_CATEGORY_START + 2,
+             "All authentication providers exhausted")
+
+  SVN_ERRDEF(SVN_ERR_AUTHN_CREDS_NOT_SAVED,
+             SVN_ERR_AUTHN_CATEGORY_START + 3,
+             "Credentials not saved")
+
+  /** @since New in 1.5. */
+  SVN_ERRDEF(SVN_ERR_AUTHN_FAILED,
+             SVN_ERR_AUTHN_CATEGORY_START + 4,
+             "Authentication failed")
+
+  /* authorization errors */
+
+  SVN_ERRDEF(SVN_ERR_AUTHZ_ROOT_UNREADABLE,
+             SVN_ERR_AUTHZ_CATEGORY_START + 0,
+             "Read access denied for root of edit")
+
+  /** @since New in 1.1. */
+  SVN_ERRDEF(SVN_ERR_AUTHZ_UNREADABLE,
+             SVN_ERR_AUTHZ_CATEGORY_START + 1,
+             "Item is not readable")
+
+  /** @since New in 1.1. */
+  SVN_ERRDEF(SVN_ERR_AUTHZ_PARTIALLY_READABLE,
+             SVN_ERR_AUTHZ_CATEGORY_START + 2,
+             "Item is partially readable")
+
+  SVN_ERRDEF(SVN_ERR_AUTHZ_INVALID_CONFIG,
+             SVN_ERR_AUTHZ_CATEGORY_START + 3,
+             "Invalid authz configuration")
+
+  /** @since New in 1.3 */
+  SVN_ERRDEF(SVN_ERR_AUTHZ_UNWRITABLE,
+             SVN_ERR_AUTHZ_CATEGORY_START + 4,
+             "Item is not writable")
+
+
+  /* libsvn_diff errors */
+
+  SVN_ERRDEF(SVN_ERR_DIFF_DATASOURCE_MODIFIED,
+             SVN_ERR_DIFF_CATEGORY_START + 0,
+             "Diff data source modified unexpectedly")
+
+  /* libsvn_ra_serf errors */
+  /** @since New in 1.5. */
+  SVN_ERRDEF(SVN_ERR_RA_SERF_SSPI_INITIALISATION_FAILED,
+             SVN_ERR_RA_SERF_CATEGORY_START + 0,
+             "Initialization of SSPI library failed")
+  /** @since New in 1.5. */
+  SVN_ERRDEF(SVN_ERR_RA_SERF_SSL_CERT_UNTRUSTED,
+             SVN_ERR_RA_SERF_CATEGORY_START + 1,
+             "Server SSL certificate untrusted")
+  /** @since New in 1.7.
+      @deprecated GSSAPI now handled by serf rather than libsvn_ra_serf. */
+  SVN_ERRDEF(SVN_ERR_RA_SERF_GSSAPI_INITIALISATION_FAILED,
+             SVN_ERR_RA_SERF_CATEGORY_START + 2,
+             "Initialization of the GSSAPI context failed")
+
+  /** @since New in 1.7. */
+  SVN_ERRDEF(SVN_ERR_RA_SERF_WRAPPED_ERROR,
+             SVN_ERR_RA_SERF_CATEGORY_START + 3,
+             "While handling serf response:")
+
   /* malfunctions such as assertion failures */
 
   SVN_ERRDEF(SVN_ERR_ASSERTION_FAIL,
              SVN_ERR_MALFUNC_CATEGORY_START + 0,
              "Assertion failure")
+
+  SVN_ERRDEF(SVN_ERR_ASSERTION_ONLY_TRACING_LINKS,
+             SVN_ERR_MALFUNC_CATEGORY_START + 1,
+             "No non-tracing links found in the error chain")
 
 SVN_ERROR_END
 

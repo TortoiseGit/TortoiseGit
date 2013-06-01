@@ -1,17 +1,22 @@
 /**
  * @copyright
  * ====================================================================
- * Copyright (c) 2000-2004 CollabNet.  All rights reserved.
+ *    Licensed to the Apache Software Foundation (ASF) under one
+ *    or more contributor license agreements.  See the NOTICE file
+ *    distributed with this work for additional information
+ *    regarding copyright ownership.  The ASF licenses this file
+ *    to you under the Apache License, Version 2.0 (the
+ *    "License"); you may not use this file except in compliance
+ *    with the License.  You may obtain a copy of the License at
  *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution.  The terms
- * are also available at http://subversion.tigris.org/license-1.html.
- * If newer versions of this license are posted there, you may use a
- * newer version instead, at your option.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software consists of voluntary contributions made by many
- * individuals.  For exact contribution history, see the revision
- * history and logs, available at http://subversion.tigris.org/.
+ *    Unless required by applicable law or agreed to in writing,
+ *    software distributed under the License is distributed on an
+ *    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *    KIND, either express or implied.  See the License for the
+ *    specific language governing permissions and limitations
+ *    under the License.
  * ====================================================================
  * @endcopyright
  *
@@ -49,6 +54,7 @@
 
 #include "svn_types.h"
 #include "svn_string.h"
+#include "svn_dirent_uri.h"
 
 
 #ifdef __cplusplus
@@ -57,11 +63,21 @@ extern "C" {
 
 
 
-/** Convert @a path from the local style to the canonical internal style. */
+/** Convert @a path from the local style to the canonical internal style.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_internal_style().
+ */
+SVN_DEPRECATED
 const char *
 svn_path_internal_style(const char *path, apr_pool_t *pool);
 
-/** Convert @a path from the canonical internal style to the local style. */
+/** Convert @a path from the canonical internal style to the local style.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_local_style().
+ */
+SVN_DEPRECATED
 const char *
 svn_path_local_style(const char *path, apr_pool_t *pool);
 
@@ -88,7 +104,12 @@ svn_path_local_style(const char *path, apr_pool_t *pool);
  * based on a leading '/' character.  Thus, an "absolute URI" for the
  * @a component won't be detected. An absolute URI can only be used
  * for the base.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_join(), svn_relpath_join() or
+ * svn_fspath__join().
  */
+SVN_DEPRECATED
 char *
 svn_path_join(const char *base, const char *component, apr_pool_t *pool);
 
@@ -103,7 +124,12 @@ svn_path_join(const char *base, const char *component, apr_pool_t *pool);
  * This function does not support URLs.
  *
  * See svn_path_join() for further notes about joining paths.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * For new code, consider using svn_dirent_join_many() or a sequence of
+ * calls to one of the *_join() functions.
  */
+SVN_DEPRECATED
 char *
 svn_path_join_many(apr_pool_t *pool, const char *base, ...);
 
@@ -119,7 +145,12 @@ svn_path_join_many(apr_pool_t *pool, const char *base, ...);
  * The returned basename will be allocated in @a pool.
  *
  * @note If an empty string is passed, then an empty string will be returned.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_basename(), svn_uri_basename(),
+ * svn_relpath_basename() or svn_fspath__basename().
  */
+SVN_DEPRECATED
 char *
 svn_path_basename(const char *path, apr_pool_t *pool);
 
@@ -128,7 +159,12 @@ svn_path_basename(const char *path, apr_pool_t *pool);
  * returned unchanged.
  *
  * The returned dirname will be allocated in @a pool.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_dirname(), svn_uri_dirname(),
+ * svn_relpath_dirname() or svn_fspath__dirname().
  */
+SVN_DEPRECATED
 char *
 svn_path_dirname(const char *path, apr_pool_t *pool);
 
@@ -195,7 +231,12 @@ svn_path_remove_components(svn_stringbuf_t *path, apr_size_t n);
  *             - <pre>"X:/"           ==>  "X:/" and "X:/"</pre>
  *             - <pre>"bar"           ==>  ""   and "bar"</pre>
  *             - <pre>""              ==>  ""   and ""</pre>
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_split(), svn_uri_split(),
+ * svn_relpath_split() or svn_fspath__split().
  */
+SVN_DEPRECATED
 void
 svn_path_split(const char *path,
                const char **dirpath,
@@ -210,12 +251,14 @@ svn_path_split(const char *path,
 int
 svn_path_is_empty(const char *path);
 
+
 #ifndef SVN_DIRENT_URI_H
-/* This declaration has been moved to svn_dirent_uri.h, remains here only for
-   compatiblity reasons. */
+/* This declaration has been moved to svn_dirent_uri.h, and remains
+   here only for compatibility reasons. */
 svn_boolean_t
 svn_dirent_is_root(const char *dirent, apr_size_t len);
 #endif /* SVN_DIRENT_URI_H */
+
 
 /** Return a new path (or URL) like @a path, but transformed such that
  * some types of path specification redundancies are removed.
@@ -229,7 +272,12 @@ svn_dirent_is_root(const char *dirent, apr_size_t len);
  *
  * The returned path may be statically allocated, equal to @a path, or
  * allocated from @a pool.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_canonicalize(), svn_uri_canonicalize(),
+ * svn_relpath_canonicalize() or svn_fspath__canonicalize().
  */
+SVN_DEPRECATED
 const char *
 svn_path_canonicalize(const char *path, apr_pool_t *pool);
 
@@ -237,13 +285,21 @@ svn_path_canonicalize(const char *path, apr_pool_t *pool);
  * allocations.
  *
  * @since New in 1.5.
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_is_canonical(), svn_uri_is_canonical(),
+ * svn_relpath_is_canonical() or svn_fspath__is_canonical().
  */
+SVN_DEPRECATED
 svn_boolean_t
 svn_path_is_canonical(const char *path, apr_pool_t *pool);
 
 
 /** Return an integer greater than, equal to, or less than 0, according
  * as @a path1 is greater than, equal to, or less than @a path2.
+ *
+ * This function works like strcmp() except that it orders children in
+ * subdirectories directly after their parents. This allows using the
+ * given ordering for a depth first walk.
  */
 int
 svn_path_compare_paths(const char *path1, const char *path2);
@@ -258,7 +314,13 @@ svn_path_compare_paths(const char *path1, const char *path2);
  * with the same path but different protocols may point at completely
  * different resources), and (b) share a common ancestor in their path
  * component, i.e. 'protocol://' is not a sufficient ancestor.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_get_longest_ancestor(),
+ * svn_uri_get_longest_ancestor(), svn_relpath_get_longest_ancestor() or
+ * svn_fspath__get_longest_ancestor().
  */
+SVN_DEPRECATED
 char *
 svn_path_get_longest_ancestor(const char *path1,
                               const char *path2,
@@ -269,7 +331,11 @@ svn_path_get_longest_ancestor(const char *path1,
  *
  * @a relative may be a URL, in which case no attempt is made to convert it,
  * and a copy of the URL is returned.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_get_absolute() on a non-URL input.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_path_get_absolute(const char **pabsolute,
                       const char *relative,
@@ -280,7 +346,12 @@ svn_path_get_absolute(const char **pabsolute,
  * directory, set @a *pdirectory to @a path, and @a *pfile to the
  * empty string.  If @a path does not exist it is treated as if it is
  * a file, since directories do not normally vanish.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should implement the required logic directly; no direct
+ * replacement is provided.
  */
+SVN_DEPRECATED
 svn_error_t *
 svn_path_split_if_file(const char *path,
                        const char **pdirectory,
@@ -316,7 +387,13 @@ svn_path_split_if_file(const char *path,
  * applicable) @a *pcondensed_targets to @c NULL.
  *
  * @note There is no guarantee that @a *pcommon is within a working
- * copy.  */
+ * copy.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * New code should use svn_dirent_condense_targets() or
+ * svn_uri_condense_targets().
+ */
+SVN_DEPRECATED
 svn_error_t *
 svn_path_condense_targets(const char **pcommon,
                           apr_array_header_t **pcondensed_targets,
@@ -435,11 +512,12 @@ svn_path_is_dotpath_present(const char *path);
  *       in which case a pointer into @a path2 will be returned to
  *       identify the remainder path.
  *
- * ### @todo the ".." restriction is unfortunate, and would ideally
- * be lifted by making the implementation smarter.  But this is not
- * trivial: if the path is "../foo", how do you know whether or not
- * the current directory is named "foo" in its parent?
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * For replacement functionality, see svn_dirent_skip_ancestor(),
+ * svn_dirent_is_child(), svn_uri_skip_ancestor(), and
+ * svn_relpath_skip_ancestor().
  */
+SVN_DEPRECATED
 const char *
 svn_path_is_child(const char *path1, const char *path2, apr_pool_t *pool);
 
@@ -447,7 +525,12 @@ svn_path_is_child(const char *path1, const char *path2, apr_pool_t *pool);
  * and FALSE otherwise.
  *
  * @since New in 1.3.
+ *
+ * @deprecated Provided for backward compatibility with the 1.6 API.
+ * For replacement functionality, see svn_dirent_skip_ancestor(),
+ * svn_uri_skip_ancestor(), and svn_relpath_skip_ancestor().
  */
+SVN_DEPRECATED
 svn_boolean_t
 svn_path_is_ancestor(const char *path1, const char *path2);
 
@@ -530,7 +613,7 @@ svn_path_url_add_component2(const char *url,
                             const char *component,
                             apr_pool_t *pool);
 
-/** Like svn_path_url_add_component2, but allows path components that
+/** Like svn_path_url_add_component2(), but allows path components that
  * end with a trailing '/'
  *
  * @deprecated Provided for backward compatibility with the 1.5 API.
@@ -584,6 +667,54 @@ svn_path_cstring_to_utf8(const char **path_utf8,
                          const char *path_apr,
                          apr_pool_t *pool);
 
+
+/** @} */
+
+
+/** Repository relative URLs
+ *
+ * @defgroup svn_path_repos_relative_urls Repository relative URLs
+ * @{
+ */
+
+/**
+ * Return @c TRUE iff @a path is a repository-relative URL:  specifically
+ * that it starts with the characters "^/"
+ *
+ * @a path is in UTF-8 encoding.
+ *
+ * Does not check whether @a path is a properly URI-encoded, canonical, or
+ * valid in any other way.
+ *
+ * @since New in 1.8.
+ */
+svn_boolean_t
+svn_path_is_repos_relative_url(const char *path);
+
+/**
+ * Set @a absolute_url to the absolute URL represented by @a relative_url
+ * relative to @a repos_root_url, preserving any peg revision
+ * specifier present in @a relative_url.  Allocate @a absolute_url
+ * from @a pool.
+ *
+ * @a relative_url is in repository-relative syntax: "^/[REL-URL][@PEG]"
+ *
+ * @a repos_root_url is the absolute URL of the repository root.
+ *
+ * All strings are in UTF-8 encoding.
+ *
+ * @a repos_root_url and @a relative_url do not have to be properly
+ * URI-encoded, canonical, or valid in any other way.  The caller is
+ * expected to perform canonicalization on @a absolute_url after the
+ * call to the function.
+ *
+ * @since New in 1.8.
+ */
+svn_error_t *
+svn_path_resolve_repos_relative_url(const char **absolute_url,
+                                    const char *relative_url,
+                                    const char *repos_root_url,
+                                    apr_pool_t *pool);
 
 /** @} */
 
