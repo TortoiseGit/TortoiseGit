@@ -568,6 +568,8 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					}
 					else
 					{
+						if (k >= chunk->arLines.GetCount())
+							k = j;
 						m_sErrorMessage.Format(IDS_ERR_PATCH_DOESNOTMATCH, (LPCTSTR)PatchLines.GetAt(lAddLine - 1), chunk->arLines.GetAt(k));
 						return FALSE;
 					}
