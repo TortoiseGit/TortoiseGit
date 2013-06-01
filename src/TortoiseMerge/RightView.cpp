@@ -279,11 +279,11 @@ void CRightView::UseBlock(int nFirstViewLine, int nLastViewLine)
 	// make sure previous (non empty) line have EOL set
 	for (int nCheckViewLine = nFirstViewLine-1; nCheckViewLine > 0; nCheckViewLine--)
 	{
+		SetModified();
 		if (!IsViewLineEmpty(nCheckViewLine))
 		{
 			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
 			{
-				SetModified();
 				SetViewLineEnding(nCheckViewLine, lineendings);
 			}
 			break;
