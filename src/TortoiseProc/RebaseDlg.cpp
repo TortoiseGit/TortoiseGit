@@ -775,7 +775,7 @@ bool CRebaseDlg::LogListHasFocus(HWND hwnd)
 
 bool CRebaseDlg::LogListHasMenuItem(int i)
 {
-	return m_CommitList.m_ContextMenuMask & m_CommitList.GetContextMenuBit(i);
+	return (m_CommitList.m_ContextMenuMask & m_CommitList.GetContextMenuBit(i)) != 0;
 }
 
 int CRebaseDlg::CheckRebaseCondition()
