@@ -1579,6 +1579,8 @@ int CRebaseDlg::DoRebase()
 				return 0;
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
+				if (m_pTaskbarList)
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 				m_RebaseStage = REBASE_ERROR;
 				AddLogString(_T("An unrecoverable error occurred."));
 				return -1;
@@ -1596,6 +1598,9 @@ int CRebaseDlg::DoRebase()
 				return -1;
 			}
 		}
+
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
 			m_RebaseStage = REBASE_SQUASH_CONFLICT;
 		else
