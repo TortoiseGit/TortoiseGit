@@ -185,4 +185,6 @@ protected:
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
+
+	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
 };

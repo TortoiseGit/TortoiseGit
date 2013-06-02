@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
+	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
 	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
@@ -1410,8 +1411,7 @@ void CRebaseDlg::SetControlEnable()
 		//this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
 		this->m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP));
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT));
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
@@ -2117,4 +2117,38 @@ void CRebaseDlg::FillLogMessageCtrl()
 void CRebaseDlg::OnBnClickedCheckCherryPickedFrom()
 {
 	UpdateData();
+}
+
+LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
+{
+	if (m_RebaseStage == REBASE_ERROR || m_RebaseStage == REBASE_CONFLICT)
+	{
+		GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		int mode = pRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+		if (mode == CTGitPath::LOGACTIONS_REBASE_SKIP)
+		{
+			CString out;
+			bool resetOK = false;
+			while (!resetOK)
+			{
+				out.Empty();
+				if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
+				{
+					AddLogString(out);
+					if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+						break;
+				}
+				else
+					resetOK = true;
+			}
+
+			if (resetOK)
+			{
+				m_FileListCtrl.Clear();
+				m_RebaseStage = REBASE_CONTINUE;
+				UpdateCurrentStatus();
+			}
+		}
+	}
+	return 0;
 }
