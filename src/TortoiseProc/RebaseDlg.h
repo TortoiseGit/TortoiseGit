@@ -91,6 +91,7 @@ protected:
 	bool m_bStatusWarning;
 	BOOL PreTranslateMessage(MSG* pMsg);
 	bool LogListHasFocus(HWND hwnd);
+	bool LogListHasMenuItem(int i);
 
 	CSciEdit m_wndOutputRebase;
 	void SetContinueButtonText();

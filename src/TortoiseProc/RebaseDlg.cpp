@@ -655,35 +655,39 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		switch (pMsg->wParam)
 		{
 		case ' ':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_PICK)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_SQUASH)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_EDIT)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_SKIP))
 			{
 				m_CommitList.ShiftSelectedAction();
 				return TRUE;
 			}
 			break;
 		case 'P':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_PICK))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
 				return TRUE;
 			}
 			break;
 		case 'S':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_SKIP))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
 				return TRUE;
 			}
 			break;
 		case 'Q':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_SQUASH))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
 				return TRUE;
 			}
 			break;
 		case 'E':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_EDIT))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
 				return TRUE;
@@ -766,6 +770,11 @@ bool CRebaseDlg::LogListHasFocus(HWND hwnd)
 	if(_tcsnicmp(buff, _T("SysListView32"), 128) == 0)
 		return true;
 	return false;
+}
+
+bool CRebaseDlg::LogListHasMenuItem(int i)
+{
+	return m_CommitList.m_ContextMenuMask & m_CommitList.GetContextMenuBit(i);
 }
 
 int CRebaseDlg::CheckRebaseCondition()
