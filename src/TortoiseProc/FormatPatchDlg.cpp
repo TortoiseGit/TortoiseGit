@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,7 +142,8 @@ BOOL CFormatPatchDlg::OnInitDialog()
 
 	OnBnClickedRadio();
 
-	m_spinNum.SetRange32(1, MAXSHORT);
+	if (g_Git.IsInitRepos())
+		DialogEnableWindow(IDOK, FALSE);
 
 	EnableSaveRestore(_T("FormatPatchDlg"));
 	return TRUE;
