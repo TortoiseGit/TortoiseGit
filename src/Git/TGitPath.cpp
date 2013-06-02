@@ -823,8 +823,25 @@ int CTGitPath::GetAdminDirMask() const
 		{
 			status |= ITEMIS_WCROOT;
 
-			if (g_GitAdminDir.HasAdminDir(GetWinPathString(), false))
-				status |= ITEMIS_SUBMODULE;
+			CString topProjectDir;
+			if (g_GitAdminDir.HasAdminDir(GetWinPathString(), false, &topProjectDir))
+			{
+				if (PathFileExists(topProjectDir + _T("\\.gitmodules")))
+				{
+					git_config * config;
+					git_config_new(&config);
+					CStringA gitModulesA(CUnicodeUtils::GetUTF8(topProjectDir + _T("\\.gitmodules")));
+					git_config_add_file_ondisk(config, gitModulesA, 0, FALSE);
+					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
+					relativePath.Replace(_T("\\"), _T("/"));
+					relativePath.Trim(_T("/"));
+					const char * out;
+					CStringA key(CUnicodeUtils::GetUTF8(_T("submodule.") + relativePath + _T(".path")));
+					if (!git_config_get_string(&out, config, key))
+						status |= ITEMIS_SUBMODULE;
+					git_config_free(config);
+				}
+			}
 		}
 	}
 
