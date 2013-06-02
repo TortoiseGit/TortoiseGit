@@ -121,7 +121,6 @@ bool RemoveCommand::Execute()
 	//because there are command "Delete(keep local copy)" at explore context menu
 	//int key=CMessageBox::Show(hwndExplorer, _T("File will removed from version control\r\n Do you want to keep local copy"), _T("TortoiseGit"), MB_ICONINFORMATION|MB_YESNOCANCEL);
 	//if(key == IDCANCEL)
-	int key;
 
 	CString format, keepLocal;
 	if(parser.HasKey(_T("keep")))
@@ -151,8 +150,7 @@ bool RemoveCommand::Execute()
 		cmd.Format(format,pathList[nPath].GetGitPathString());
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
-			key=CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), MB_ICONERROR|MB_OKCANCEL);
-			if(key == IDCANCEL)
+			if (CMessageBox::Show(hwndExplorer, output, _T("TortoiseGit"), 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return FALSE;
 		}
 	}
