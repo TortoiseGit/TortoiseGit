@@ -116,6 +116,8 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir,CString *ProjectTop
 			}
 			return true;
 		}
+		else if (IsBareRepo(sDirName))
+			return false;
 
 		int x = sDirName.ReverseFind(_T('\\'));
 		if (x < 2)

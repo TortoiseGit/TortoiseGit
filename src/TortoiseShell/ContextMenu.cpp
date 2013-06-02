@@ -312,7 +312,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 				if (g_ShellCache.HasGITAdminDir(child.toString().c_str(), FALSE))
 					itemStates |= ITEMIS_INVERSIONEDFOLDER;
 
-				if (itemStates == 0 && g_GitAdminDir.IsBareRepo(child.toString().c_str()))
+				if (g_GitAdminDir.IsBareRepo(child.toString().c_str()))
 					itemStates = ITEMIS_BAREREPO;
 
 				GlobalUnlock(medium.hGlobal);

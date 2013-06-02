@@ -19,6 +19,7 @@ Released: Unreleased
  * Fixed issue #1783: TortoiseGit does not work on WinXP/2003 x64
  * Fixed issue #1798: "Paste Recent commits" during Please wait in Commit dialog does not work
  * Fixed issue #1106: Stairs in log view
+ * Fixed issue #1304: TortoiseGit doesn't see a bare repo within a non-bare one
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
