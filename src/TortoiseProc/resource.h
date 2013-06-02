@@ -910,6 +910,7 @@
 #define IDS_GITCREDENTIAL_DELETEHELPER  1421
 #define IDS_RESET_MIXED                 1422
 #define IDS_RESET_HARD                  1423
+#define IDS_CHERRYPICKFAILEDSKIP        1424
 #define IDC_SYSTEMLOCALEFORDATES        1426
 #define IDC_ACTIONLOGCLEAR              1427
 #define IDC_MAXLINES                    1428

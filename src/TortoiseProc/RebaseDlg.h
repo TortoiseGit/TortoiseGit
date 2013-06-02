@@ -146,6 +146,7 @@ protected:
 
 	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;
+	BOOL				m_bAutoSkipFailedCommit;
 
 public:
 	CStringArray		m_PostButtonTexts;

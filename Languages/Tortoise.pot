@@ -2316,6 +2316,10 @@ msgstr ""
 msgid "Cherry Pick this commit..."
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Cherry-pick failed! Skip this commit?"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Chinese"
 msgstr ""

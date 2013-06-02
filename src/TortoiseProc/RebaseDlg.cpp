@@ -46,6 +46,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bEditAll(FALSE)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
+	, m_bAutoSkipFailedCommit(FALSE)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -1575,12 +1576,34 @@ int CRebaseDlg::DoRebase()
 		}
 		if(list.GetCount() == 0 )
 		{
-			if (out.Find(_T("nothing to commit, working directory clean")) != -1) // HACK for issue #1726
-				return 0;
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
 				if (m_pTaskbarList)
 					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				if (m_bAutoSkipFailedCommit || CMessageBox::ShowCheck(m_hWnd, IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, 0, NULL, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit) == 1)
+				{
+					bool resetOK = false;
+					while (!resetOK)
+					{
+						out.Empty();
+						if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
+						{
+							AddLogString(out);
+							if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+								break;
+						}
+						else
+							resetOK = true;
+					}
+
+					if (resetOK)
+					{
+						pRev->GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_SKIP;
+						m_CommitList.Invalidate();
+						return 0;
+					}
+				}
+
 				m_RebaseStage = REBASE_ERROR;
 				AddLogString(_T("An unrecoverable error occurred."));
 				return -1;
