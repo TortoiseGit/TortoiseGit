@@ -136,7 +136,7 @@ bool RemoveCommand::Execute()
 
 	if(parser.HasKey(_T("keep")))
 	{
-		format= _T("git.exe update-index --force-remove -- \"%s\"");
+		format= _T("git.exe rm -r -f --cached -- \"%s\"");
 	}
 	else
 	{
