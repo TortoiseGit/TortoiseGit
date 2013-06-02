@@ -4068,6 +4068,11 @@ BEGIN
                             "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CHERRYPICKFAILEDSKIP "Cherry-pick failed! Skip this commit?"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

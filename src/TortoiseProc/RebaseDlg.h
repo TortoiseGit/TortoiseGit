@@ -91,6 +91,7 @@ protected:
 	bool m_bStatusWarning;
 	BOOL PreTranslateMessage(MSG* pMsg);
 	bool LogListHasFocus(HWND hwnd);
+	bool LogListHasMenuItem(int i);
 
 	CSciEdit m_wndOutputRebase;
 	void SetContinueButtonText();
@@ -146,6 +147,7 @@ protected:
 
 	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;
+	BOOL				m_bAutoSkipFailedCommit;
 
 public:
 	CStringArray		m_PostButtonTexts;
@@ -183,4 +185,6 @@ protected:
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
+
+	afx_msg LRESULT OnRebaseActionMessage(WPARAM wParam, LPARAM lParam);
 };

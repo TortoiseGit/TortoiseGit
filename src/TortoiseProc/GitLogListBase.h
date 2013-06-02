@@ -313,6 +313,7 @@ public:
 	void OnFind();
 
 	static const UINT	m_ScrollToMessage;
+	static const UINT	m_RebaseActionMessage;
 
 	inline int ShownCountWithStopped() const { return (int)m_arShownList.GetCount() + (m_bStrictStopped ? 1 : 0); }
 	int FetchLogAsync(void * data=NULL);

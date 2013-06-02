@@ -46,6 +46,7 @@ CRebaseDlg::CRebaseDlg(CWnd* pParent /*=NULL*/)
 	, m_bEditAll(FALSE)
 	, m_bAddCherryPickedFrom(FALSE)
 	, m_bStatusWarning(false)
+	, m_bAutoSkipFailedCommit(FALSE)
 {
 	m_RebaseStage=CHOOSE_BRANCH;
 	m_CurrentRebaseIndex=-1;
@@ -97,6 +98,7 @@ BEGIN_MESSAGE_MAP(CRebaseDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_DOWN2, &CRebaseDlg::OnBnClickedButtonDown2)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_COMMIT_LIST, OnLvnItemchangedLoglist)
+	ON_REGISTERED_MESSAGE(CGitLogListBase::m_RebaseActionMessage, OnRebaseActionMessage)
 	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
@@ -654,35 +656,39 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		switch (pMsg->wParam)
 		{
 		case ' ':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_PICK)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_SQUASH)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_EDIT)
+				&& LogListHasMenuItem(CGitLogListBase::ID_REBASE_SKIP))
 			{
 				m_CommitList.ShiftSelectedAction();
 				return TRUE;
 			}
 			break;
 		case 'P':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_PICK))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_PICK);
 				return TRUE;
 			}
 			break;
 		case 'S':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_SKIP))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SKIP);
 				return TRUE;
 			}
 			break;
 		case 'Q':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_SQUASH))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_SQUASH);
 				return TRUE;
 			}
 			break;
 		case 'E':
-			if(LogListHasFocus(pMsg->hwnd))
+			if (LogListHasFocus(pMsg->hwnd) && LogListHasMenuItem(CGitLogListBase::ID_REBASE_EDIT))
 			{
 				m_CommitList.SetSelectedAction(CTGitPath::LOGACTIONS_REBASE_EDIT);
 				return TRUE;
@@ -765,6 +771,11 @@ bool CRebaseDlg::LogListHasFocus(HWND hwnd)
 	if(_tcsnicmp(buff, _T("SysListView32"), 128) == 0)
 		return true;
 	return false;
+}
+
+bool CRebaseDlg::LogListHasMenuItem(int i)
+{
+	return m_CommitList.m_ContextMenuMask & m_CommitList.GetContextMenuBit(i);
 }
 
 int CRebaseDlg::CheckRebaseCondition()
@@ -1400,8 +1411,7 @@ void CRebaseDlg::SetControlEnable()
 		//this->m_CommitList.m_IsEnableRebaseMenu=FALSE;
 		this->m_CommitList.m_ContextMenuMask &= ~(m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_PICK)|
 												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SQUASH)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT)|
-												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_SKIP));
+												m_CommitList.GetContextMenuBit(CGitLogListBase::ID_REBASE_EDIT));
 
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
@@ -1575,10 +1585,34 @@ int CRebaseDlg::DoRebase()
 		}
 		if(list.GetCount() == 0 )
 		{
-			if (out.Find(_T("nothing to commit, working directory clean")) != -1) // HACK for issue #1726
-				return 0;
 			if(mode ==  CTGitPath::LOGACTIONS_REBASE_PICK)
 			{
+				if (m_pTaskbarList)
+					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				if (m_bAutoSkipFailedCommit || CMessageBox::ShowCheck(m_hWnd, IDS_CHERRYPICKFAILEDSKIP, IDS_APPNAME, 1, IDI_QUESTION, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, 0, NULL, IDS_DO_SAME_FOR_REST, &m_bAutoSkipFailedCommit) == 1)
+				{
+					bool resetOK = false;
+					while (!resetOK)
+					{
+						out.Empty();
+						if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
+						{
+							AddLogString(out);
+							if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+								break;
+						}
+						else
+							resetOK = true;
+					}
+
+					if (resetOK)
+					{
+						pRev->GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_SKIP;
+						m_CommitList.Invalidate();
+						return 0;
+					}
+				}
+
 				m_RebaseStage = REBASE_ERROR;
 				AddLogString(_T("An unrecoverable error occurred."));
 				return -1;
@@ -1596,6 +1630,9 @@ int CRebaseDlg::DoRebase()
 				return -1;
 			}
 		}
+
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		if(mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
 			m_RebaseStage = REBASE_SQUASH_CONFLICT;
 		else
@@ -2080,4 +2117,38 @@ void CRebaseDlg::FillLogMessageCtrl()
 void CRebaseDlg::OnBnClickedCheckCherryPickedFrom()
 {
 	UpdateData();
+}
+
+LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
+{
+	if (m_RebaseStage == REBASE_ERROR || m_RebaseStage == REBASE_CONFLICT)
+	{
+		GitRev *pRev = (GitRev*)m_CommitList.m_arShownList[m_CurrentRebaseIndex];
+		int mode = pRev->GetAction(&m_CommitList) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;
+		if (mode == CTGitPath::LOGACTIONS_REBASE_SKIP)
+		{
+			CString out;
+			bool resetOK = false;
+			while (!resetOK)
+			{
+				out.Empty();
+				if (g_Git.Run(_T("git.exe reset --hard"), &out, CP_UTF8))
+				{
+					AddLogString(out);
+					if (CMessageBox::Show(m_hWnd, _T("Retry?\nUnrecoverable error on cleanup:\n") + out, _T("TortoiseGit"), MB_YESNO | MB_ICONERROR) != IDYES)
+						break;
+				}
+				else
+					resetOK = true;
+			}
+
+			if (resetOK)
+			{
+				m_FileListCtrl.Clear();
+				m_RebaseStage = REBASE_CONTINUE;
+				UpdateCurrentStatus();
+			}
+		}
+	}
+	return 0;
 }

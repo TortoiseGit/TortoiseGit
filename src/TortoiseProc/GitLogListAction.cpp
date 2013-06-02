@@ -1172,6 +1172,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 void CGitLogList::SetSelectedAction(int action)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
+	if (!pos) return;
 	int index;
 	while(pos)
 	{
@@ -1182,6 +1183,7 @@ void CGitLogList::SetSelectedAction(int action)
 		this->InvalidateRect(rect);
 
 	}
+	GetParent()->PostMessage(CGitLogListBase::m_RebaseActionMessage);
 }
 void CGitLogList::ShiftSelectedAction()
 {
