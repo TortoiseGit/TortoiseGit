@@ -172,8 +172,6 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	SetupAllViewSelection(nFirstViewLine, 2*nLastViewLine - nFirstViewLine - nRemovedLines + 1);
 	BuildAllScreen2ViewVector();
 	SetModified();
-	pwndLast->SetModified();
-	pwndFirst->SetModified();
 	RefreshViews();
 }
 
