@@ -555,7 +555,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					{
 						if ((int)chunk->arLinesStates.GetAt(k) == PATCHSTATE_ADDED)
 							continue;
-						if (chunk->arLines.GetAt(k).Compare(PatchLines.GetAt(lAddLine - 1)) == 0)
+						if (PatchLines.GetCount() > 0 && chunk->arLines.GetAt(k).Compare(PatchLines.GetAt(lAddLine - 1)) == 0)
 							insertOk = true;
 						else
 							break;

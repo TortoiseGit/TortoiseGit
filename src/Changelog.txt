@@ -22,6 +22,7 @@ Released: Unreleased
  * Fixed issue #1304: TortoiseGit doesn't see a bare repo within a non-bare one
  * "Delete (keep local)" did not work on folders
  * Fixed issue #1756: Rebase trips over merge commits
+ * Fixed possible crashes while applying a patch in TortoiseGitMerge
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
