@@ -256,7 +256,7 @@ public:
 		int month, day, year;
 		struct tm t = {0};
 		static const char month_names[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
-		sscanf_s(buildDate, "%s %d %d", s_month, _countof(s_month) - 1, &day, &year);
+		sscanf_s(buildDate, "%s %d %d", s_month, (unsigned int)_countof(s_month) - 1, &day, &year);
 		month = (int)((strstr(month_names, s_month)-month_names))/3;
 
 		t.tm_mon = month;
