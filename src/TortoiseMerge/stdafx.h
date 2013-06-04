@@ -37,10 +37,6 @@
 #include <afxext.h>         // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
-#ifndef LVS_EX_DOUBLEBUFFER
-#define LVS_EX_DOUBLEBUFFER     0x00010000
-#endif
-
 #pragma warning(push)
 #pragma warning(disable: 4201)	// nonstandard extension used : nameless struct/union (in MMSystem.h)
 #include <vfw.h>

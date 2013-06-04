@@ -31,10 +31,6 @@
 
 #include <atlbase.h>
 
-#ifndef LVS_EX_DOUBLEBUFFER
-#define LVS_EX_DOUBLEBUFFER     0x00010000
-#endif
-
 #pragma warning(push)
 #include "git2.h"
 #pragma warning(pop)
