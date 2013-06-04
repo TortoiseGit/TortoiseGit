@@ -61,7 +61,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	{
 		viewdata lineData = pwndView->GetViewData(viewLine);
 		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
-			lineData.ending = lineendings;
+			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
 		SetModified();
@@ -74,7 +74,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 		{
 			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
 			{
-				SetViewLineEnding(nCheckViewLine, lineendings);
+				SetViewLineEnding(nCheckViewLine, m_lineendings);
 				SetModified();
 			}
 			break;
@@ -114,7 +114,7 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	{
 		viewdata lineData = pwndFirst->GetViewData(viewLine);
 		if ((lineData.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
-			lineData.ending = lineendings;
+			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
 		if (!IsStateEmpty(pwndFirst->GetViewState(viewLine)))
@@ -129,7 +129,7 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 		{
 			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
 			{
-				SetViewLineEnding(nCheckViewLine, lineendings);
+				SetViewLineEnding(nCheckViewLine, m_lineendings);
 			}
 			break;
 		}

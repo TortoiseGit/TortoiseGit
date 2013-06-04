@@ -37,6 +37,4 @@ public:
 
 protected:
 	void	AddContextItems(CIconMenu& popup, DiffStates state);
-
-	void	UseBlock(int nStart, int nEnd);
 };

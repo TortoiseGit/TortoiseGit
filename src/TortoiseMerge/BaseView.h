@@ -46,6 +46,8 @@ class CBaseView : public CView, public CTripleClick
 	DECLARE_DYNCREATE(CBaseView)
 friend class CLineDiffBar;
 public:
+    typedef CFileTextLines::UnicodeType UnicodeType;
+
 	CBaseView();
 	virtual ~CBaseView();
 
@@ -210,8 +212,6 @@ public: // variables
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
 	CString			m_sConvertedFilePath;   ///< the path to the converted file that's shown in the view
-	CFileTextLines::UnicodeType texttype;	///< the text encoding this view uses
-	EOL lineendings; ///< the line endings the view uses
 
 	BOOL			m_bViewWhitespace;	///< If TRUE, then SPACE and TAB are shown as special characters
 	BOOL			m_bShowInlineDiff;	///< If TRUE, diffs in lines are marked colored
@@ -235,7 +235,9 @@ public: // variables
 
 	EOL				GetLineEndings();											///< Get Line endings on view from lineendings or "mixed"
 	void			SetLineEndings(EOL);										///< Set AUTO lineendings and replaces all EOLs
-	void			SetTextType(CFileTextLines::UnicodeType);					///< Changes TextType
+    UnicodeType     GetTextType() { return m_texttype; }
+    void            SetTextType(UnicodeType);                                   ///< Changes TextType
+    void            AskUserForNewLineEndingsAndTextType(int);                   ///< Open gui
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 
@@ -394,6 +396,7 @@ protected:  // methods
 
 	virtual void	UseBothBlocks(CBaseView * /*pwndFirst*/, CBaseView * /*pwndLast*/) {};
 	virtual void	UseViewBlock(CBaseView * /*pwndView*/) {}
+    void            UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine);
 	virtual void	UseViewFile(CBaseView * /*pwndView*/) {}
 
 	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
@@ -408,6 +411,7 @@ protected:  // methods
 
 	static void		ResetUndoStep();
 	void			SaveUndoStep();
+
 protected:  // variables
 	COLORREF		m_InlineRemovedBk;
 	COLORREF		m_InlineAddedBk;
@@ -489,6 +493,9 @@ protected:  // variables
 	CScrollTool		m_ScrollTool;
 	CString			m_sWordSeparators;
 	CString			m_Eols[EOL__COUNT];
+
+    UnicodeType     m_texttype;   ///< the text encoding this view uses
+    EOL             m_lineendings; ///< the line endings the view uses
 
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];

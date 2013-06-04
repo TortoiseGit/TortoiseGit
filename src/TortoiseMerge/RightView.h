@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2011 - TortoiseSVN
+// Copyright (C) 2006-2008, 2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,4 @@ public:
 
 protected:
 	void	AddContextItems(CIconMenu& popup, DiffStates state);
-
-	void	UseBlock(int nStart, int nEnd);
 };

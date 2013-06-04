@@ -180,7 +180,7 @@ void CLeftView::UseRightBlock()
 	if (!GetViewSelection(nFirstViewLine, nLastViewLine))
 		return;
 
-	return UseBlock(nFirstViewLine, nLastViewLine);
+	return UseViewBlock(m_pwndRight, nFirstViewLine, nLastViewLine);
 }
 
 void CLeftView::UseRightFile()
@@ -191,7 +191,7 @@ void CLeftView::UseRightFile()
 	if (!IsWritable())
 		return;
 	ClearSelection();
-	return UseBlock(nFirstViewLine, nLastViewLine);
+	return UseViewBlock(m_pwndRight, nFirstViewLine, nLastViewLine);
 }
 
 
@@ -234,78 +234,4 @@ void CLeftView::AddContextItems(CIconMenu& popup, DiffStates state)
 	}
 
 	CBaseView::AddContextItems(popup, state);
-}
-
-void CLeftView::UseBlock(int nFirstViewLine, int nLastViewLine)
-{
-	if (!IsRightViewGood())
-		return;
-	if (!IsWritable())
-		return;
-	CUndo::GetInstance().BeginGrouping();
-
-	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
-	{
-		viewdata line = m_pwndRight->GetViewData(viewLine);
-		if ((line.ending != EOL_NOENDING)||(viewLine < (GetViewCount()-1)))
-			line.ending = lineendings;
-		switch (line.state)
-		{
-		case DIFFSTATE_CONFLICTEMPTY:
-		case DIFFSTATE_UNKNOWN:
-			line.state = DIFFSTATE_EMPTY;
-		case DIFFSTATE_EMPTY:
-			break;
-		case DIFFSTATE_ADDED:
-		case DIFFSTATE_MOVED_TO:
-		case DIFFSTATE_CONFLICTADDED:
-		case DIFFSTATE_CONFLICTED:
-		case DIFFSTATE_CONFLICTED_IGNORED:
-		case DIFFSTATE_IDENTICALADDED:
-		case DIFFSTATE_THEIRSADDED:
-		case DIFFSTATE_YOURSADDED:
-		case DIFFSTATE_MOVED_FROM:
-		case DIFFSTATE_IDENTICALREMOVED:
-		case DIFFSTATE_REMOVED:
-		case DIFFSTATE_THEIRSREMOVED:
-		case DIFFSTATE_YOURSREMOVED:
-			m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
-			line.state = DIFFSTATE_NORMAL;
-		case DIFFSTATE_NORMAL:
-			SetModified(); // normal is mostly same but may differ in EOL
-			break;
-		default:
-			break;
-		}
-		SetViewData(viewLine, line);
-	}
-	// make sure previous (non empty) line have EOL set
-	for (int nCheckViewLine = nFirstViewLine-1; nCheckViewLine > 0; nCheckViewLine--)
-	{
-		if (!IsViewLineEmpty(nCheckViewLine))
-		{
-			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
-			{
-				SetViewLineEnding(nCheckViewLine, lineendings);
-			}
-			break;
-		}
-	}
-	SaveUndoStep();
-
-	int nRemovedLines = CleanEmptyLines();
-	SaveUndoStep();
-	UpdateViewLineNumbers();
-	SaveUndoStep();
-
-	CUndo::GetInstance().EndGrouping();
-
-	if (nRemovedLines)
-	{
-		// some lines are gone update selection
-		ClearSelection();
-		SetupAllViewSelection(nFirstViewLine, nLastViewLine - nRemovedLines);
-	}
-	BuildAllScreen2ViewVector();
-	RefreshViews();
 }

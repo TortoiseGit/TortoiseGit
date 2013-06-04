@@ -36,7 +36,6 @@
 #include "SelectFileFilter.h"
 #include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
-#include "EncodingDlg.h"
 #include "git2.h"
 
 #ifdef _DEBUG
@@ -764,8 +763,8 @@ bool CMainFrame::LoadViews(int line)
 				m_wndSplitter2.HideColumn(1);
 
 			m_pwndLeftView->m_pViewData = &m_Data.m_YourBaseBoth;
-			m_pwndLeftView->texttype = m_Data.m_arYourFile.GetUnicodeType();
-			m_pwndLeftView->lineendings = m_Data.m_arYourFile.GetLineEndings();
+			m_pwndLeftView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
+			m_pwndLeftView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName() + _T(" - ") + m_Data.m_yourFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename() + _T(" - ") + m_Data.m_yourFile.GetFilename();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_yourFile;
@@ -791,8 +790,8 @@ bool CMainFrame::LoadViews(int line)
 				m_wndSplitter2.ShowColumn();
 
 			m_pwndLeftView->m_pViewData = &m_Data.m_YourBaseLeft;
-			m_pwndLeftView->texttype = m_Data.m_arBaseFile.GetUnicodeType();
-			m_pwndLeftView->lineendings = m_Data.m_arBaseFile.GetLineEndings();
+			m_pwndLeftView->SetTextType(m_Data.m_arBaseFile.GetUnicodeType());
+			m_pwndLeftView->SetLineEndings(m_Data.m_arBaseFile.GetLineEndings());
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
 			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
@@ -800,8 +799,8 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->SetWritableIsChangable(true);
 
 			m_pwndRightView->m_pViewData = &m_Data.m_YourBaseRight;
-			m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
-			m_pwndRightView->lineendings = m_Data.m_arYourFile.GetLineEndings();
+			m_pwndRightView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
+			m_pwndRightView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
@@ -827,8 +826,8 @@ bool CMainFrame::LoadViews(int line)
 		pwndActiveView = m_pwndBottomView;
 
 		m_pwndLeftView->m_pViewData = &m_Data.m_TheirBaseBoth;
-		m_pwndLeftView->texttype = m_Data.m_arTheirFile.GetUnicodeType();
-		m_pwndLeftView->lineendings = m_Data.m_arTheirFile.GetLineEndings();
+		m_pwndLeftView->SetTextType(m_Data.m_arTheirFile.GetUnicodeType());
+		m_pwndLeftView->SetLineEndings(m_Data.m_arTheirFile.GetLineEndings());
 		m_pwndLeftView->m_sWindowName.LoadString(IDS_VIEWTITLE_THEIRS);
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
@@ -836,8 +835,8 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndLeftView->m_pWorkingFile = &m_Data.m_theirFile;
 
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
-		m_pwndRightView->texttype = m_Data.m_arYourFile.GetUnicodeType();
-		m_pwndRightView->lineendings = m_Data.m_arYourFile.GetLineEndings();
+		m_pwndRightView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
+		m_pwndRightView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
 		m_pwndRightView->m_sWindowName.LoadString(IDS_VIEWTITLE_MINE);
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
@@ -845,8 +844,8 @@ bool CMainFrame::LoadViews(int line)
 		m_pwndRightView->m_pWorkingFile = &m_Data.m_yourFile;
 
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
-		m_pwndBottomView->texttype = m_Data.m_arTheirFile.GetUnicodeType();
-		m_pwndBottomView->lineendings = m_Data.m_arTheirFile.GetLineEndings();
+		m_pwndBottomView->SetTextType(m_Data.m_arTheirFile.GetUnicodeType());
+		m_pwndBottomView->SetLineEndings(m_Data.m_arTheirFile.GetLineEndings());
 		m_pwndBottomView->m_sWindowName.LoadString(IDS_VIEWTITLE_MERGED);
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
@@ -1156,8 +1155,8 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 		CFileTextLines file;
 		pOriginFile->CopySettings(&file);
 		CFileTextLines::SaveParams saveParams;
-		saveParams.m_LineEndings = pView->lineendings;
-		saveParams.m_UnicodeType = pView->texttype;
+		saveParams.m_LineEndings = pView->GetLineEndings();
+		saveParams.m_UnicodeType = pView->GetTextType();
 		file.SetSaveParams(saveParams);
 		for (int i=0; i<pViewData->GetCount(); i++)
 		{
@@ -1175,23 +1174,23 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 						last++;
 					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
 					// TortoiseGitMerge changes here
-					file.Add(_T("<<<<<<< .mine"), m_pwndRightView->lineendings);
+					file.Add(_T("<<<<<<< .mine"), m_pwndRightView->GetLineEndings());
 					for (int j=first; j<last; j++)
 					{
 						EOL lineending = m_pwndRightView->m_pViewData->GetLineEnding(j);
 						if (lineending == EOL_NOENDING)
-							lineending = m_pwndRightView->lineendings;
+							lineending = m_pwndRightView->GetLineEndings();
 						file.Add(m_pwndRightView->m_pViewData->GetLine(j), lineending);
 					}
-					file.Add(_T("======="), m_pwndRightView->lineendings);
+					file.Add(_T("======="), m_pwndRightView->GetLineEndings());
 					for (int j=first; j<last; j++)
 					{
 						EOL lineending = m_pwndLeftView->m_pViewData->GetLineEnding(j);
 						if (lineending == EOL_NOENDING)
-							lineending = m_pwndLeftView->lineendings;
+							lineending = m_pwndLeftView->GetLineEndings();
 						file.Add(m_pwndLeftView->m_pViewData->GetLine(j), lineending);
 					}
-					file.Add(_T(">>>>>>> .theirs"), m_pwndRightView->lineendings);
+					file.Add(_T(">>>>>>> .theirs"), m_pwndRightView->GetLineEndings());
 					i = last-1;
 				}
 				break;
@@ -2089,44 +2088,26 @@ void CMainFrame::OnUpdateEditEnable(CCmdUI *pCmdUI)
 
 void CMainFrame::OnIndicatorLeftview()
 {
-	if (m_pwndLeftView->IsReadonly())
-		return;
-	CEncodingDlg dlg;
-	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW));
-	dlg.texttype = m_pwndLeftView->texttype;
-	dlg.lineendings = m_pwndLeftView->GetLineEndings();
-	if (dlg.DoModal() != IDOK)
-		return;
-	m_pwndLeftView->SetTextType(dlg.texttype);
-	m_pwndLeftView->SetLineEndings(dlg.lineendings);
+	if (IsViewGood(m_pwndLeftView))
+	{
+		m_pwndLeftView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_LEFTVIEW);
+	}
 }
 
 void CMainFrame::OnIndicatorRightview()
 {
-	if (m_pwndRightView->IsReadonly())
-		return;
-	CEncodingDlg dlg;
-	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW));
-	dlg.texttype = m_pwndRightView->texttype;
-	dlg.lineendings = m_pwndRightView->GetLineEndings();
-	if (dlg.DoModal() != IDOK)
-		return;
-	m_pwndRightView->SetTextType(dlg.texttype);
-	m_pwndRightView->SetLineEndings(dlg.lineendings);
+	if (IsViewGood(m_pwndRightView))
+	{
+		m_pwndRightView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_RIGHTVIEW);
+	}
 }
 
 void CMainFrame::OnIndicatorBottomview()
 {
-	if (!IsViewGood(m_pwndBottomView))
-		return;
-	CEncodingDlg dlg;
-	dlg.view = CString(MAKEINTRESOURCE(IDS_STATUSBAR_BOTTOMVIEW));
-	dlg.texttype = m_pwndBottomView->texttype;
-	dlg.lineendings = m_pwndBottomView->GetLineEndings();
-	if (dlg.DoModal() != IDOK)
-		return;
-	m_pwndBottomView->SetTextType(dlg.texttype);
-	m_pwndBottomView->SetLineEndings(dlg.lineendings);
+	if (IsViewGood(m_pwndBottomView))
+	{
+		m_pwndBottomView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_BOTTOMVIEW);
+	}
 }
 
 int CMainFrame::CheckForReload()
