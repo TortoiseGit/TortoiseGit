@@ -96,8 +96,8 @@ bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll)
 	};
 
 	bool bReturn = false;
-	DWORD dwReserved,dwBufferSize;
-	dwBufferSize = GetFileVersionInfoSize((LPTSTR)langDll,&dwReserved);
+	DWORD dwReserved = 0;
+	DWORD dwBufferSize = GetFileVersionInfoSize((LPTSTR)langDll,&dwReserved);
 
 	if (dwBufferSize > 0)
 	{
