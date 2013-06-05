@@ -47,6 +47,13 @@ class CBaseView : public CView, public CTripleClick
 friend class CLineDiffBar;
 public:
     typedef CFileTextLines::UnicodeType UnicodeType;
+	enum ECharGroup { // ordered by priority low-to-hi
+		CHG_UNKNOWN,
+		CHG_CONTROL, // x00-x08, x0a-x1f
+		CHG_WHITESPACE, // space, tab
+		CHG_WORDSEPARATOR, // 0x21-2f, x3a-x40, x5b-x60, x7b-x7f .,:;!?(){}[]/\<> ...
+		CHG_WORDLETTER, // alpha num _ (others)
+	};
 
 	CBaseView();
 	virtual ~CBaseView();
@@ -389,6 +396,7 @@ protected:  // methods
 	void			OnCaretMove(bool bMoveLeft, bool isShiftPressed);
 	void			UpdateGoalPos();
 
+	ECharGroup		GetCharGroup(const wchar_t zChar) const;
 	bool			IsWordSeparator(const wchar_t ch) const;
 	bool			IsCaretAtWordBoundary();
 	void			UpdateViewsCaretPosition();

@@ -117,7 +117,7 @@ CBaseView::CBaseView()
 	m_InlineRemovedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR);
 	m_ModifiedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\ColorModifiedB"), MODIFIED_COLOR);
 	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
-	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\""));
+	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
@@ -2978,15 +2978,7 @@ void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 	CView::OnLButtonDown(nFlags, point);
 }
 
-enum ECharGroup { // ordered by priority low-to-hi
-	CHG_UNKNOWN,
-	CHG_CONTROL, // x00-x08, x0a-x1f
-	CHG_WHITESPACE, // space tab
-	CHG_PUNCTUATION, // 0x21-2f, x3a-x40, x5b-x60, x7b-x7f .,:;!?(){}[]/\<> ...
-	CHG_WORDLETTER, // alpha num _ (others)
-};
-
-ECharGroup GetCharGroup(wchar_t zChar)
+CBaseView::ECharGroup CBaseView::GetCharGroup(wchar_t zChar) const
 {
 	if (zChar == ' ' || zChar == '\t' )
 	{
@@ -2996,13 +2988,9 @@ ECharGroup GetCharGroup(wchar_t zChar)
 	{
 		return CHG_CONTROL;
 	}
-	if ((zChar >= 0x21 && zChar <= 0x2f)
-			|| (zChar >= 0x3a && zChar <= 0x40)
-			|| (zChar >= 0x5b && zChar <= 0x5e)
-			|| (zChar == 0x60)
-			|| (zChar >= 0x7b && zChar <= 0x7f))
+	if (m_sWordSeparators.Find(zChar) >= 0)
 	{
-		return CHG_PUNCTUATION;
+		return CHG_WORDSEPARATOR;
 	}
 	return CHG_WORDLETTER;
 }
@@ -4098,7 +4086,14 @@ void CBaseView::OnCaretUp()
 
 bool CBaseView::IsWordSeparator(const wchar_t ch) const
 {
-	return ch == ' ' || ch == '\t' || (m_sWordSeparators.Find(ch) >= 0);
+	switch (GetCharGroup(ch))
+	{
+	case CHG_CONTROL:
+	case CHG_WHITESPACE:
+	case CHG_WORDSEPARATOR:
+		return true;
+	}
+	return false;
 }
 
 bool CBaseView::IsCaretAtWordBoundary()
@@ -5621,7 +5616,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	// or old last line (line before copied block missing eol, but have line under)
 	// we'll check all lines to be sure
 	int nLine = GetViewCount();
-	// check last line have no EOLs
+	// check last line have no EOL set
 	while (--nLine>=0)
 	{
 		if (!IsViewLineEmpty(nLine))
