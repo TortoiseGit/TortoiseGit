@@ -487,6 +487,12 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\ribbon\ribbonlargehdpi.png" />
+    <Image Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
+    <Image Include="..\Resources\ribbon\ribbonlarge.png" />
+    <Image Include="..\Resources\ribbon\ribbonsmall.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

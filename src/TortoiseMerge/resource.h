@@ -39,6 +39,9 @@
 #define IDB_RIBBONSMALL                 158
 #define IDB_PNG1                        159
 #define IDB_LOGO                        159
+#define IDB_RIBBONSMALLHDPI             161
+#define IDB_PNG3                        162
+#define IDB_RIBBONLARGEHDPI             162
 #define IDB_LOGOFLIPPED                 168
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
@@ -352,7 +355,7 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        161
+#define _APS_NEXT_RESOURCE_VALUE        163
 #define _APS_NEXT_COMMAND_VALUE         32979
 #define _APS_NEXT_CONTROL_VALUE         1081
 #define _APS_NEXT_SYMED_VALUE           101

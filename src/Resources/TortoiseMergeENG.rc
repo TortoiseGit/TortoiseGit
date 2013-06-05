@@ -124,6 +124,8 @@ IDC_MARGINCURSOR        CURSOR                  "Margin.cur"
 IDB_RIBBONLARGE         PNG                     "ribbon\\ribbonlarge.png"
 IDB_RIBBONSMALL         PNG                     "ribbon\\ribbonsmall.png"
 IDB_LOGO                PNG                     "ribbon\\TortoiseMerge.png"
+IDB_RIBBONSMALLHDPI     PNG                     "ribbon\\ribbonsmallhdpi.png"
+IDB_RIBBONLARGEHDPI     PNG                     "ribbon\\ribbonlargehdpi.png"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

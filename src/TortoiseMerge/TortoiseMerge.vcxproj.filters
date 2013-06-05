@@ -574,4 +574,10 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\ribbon\ribbonsmall.png" />
+    <Image Include="..\Resources\ribbon\ribbonlarge.png" />
+    <Image Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
+    <Image Include="..\Resources\ribbon\ribbonlargehdpi.png" />
+  </ItemGroup>
 </Project>
