@@ -1981,6 +1981,21 @@ CString CAppUtils::GetClipboardLink()
 				if( (sClipboardText[0] >= 'A' &&  sClipboardText[0] <= 'Z')
 					|| (sClipboardText[0] >= 'a' &&  sClipboardText[0] <= 'z') )
 					return sClipboardText;
+
+		// trim "git clone " prefix
+		CString gitClonePrefix = _T("git clone ");
+		if (sClipboardText.Find(gitClonePrefix) == 0)
+		{
+			CString args = sClipboardText.Mid(gitClonePrefix.GetLength()).Trim();
+			int quotePos = -1;
+			if (args.GetLength() && args[0] == '"')
+			{
+				quotePos = args.Find(_T('"'), 1);
+				args = quotePos >= 0 ? args.Mid(1, quotePos - 1) : args;
+			}
+			int spacePos = args.Find(_T(' '), quotePos >= 1 ? quotePos : 0);
+			return spacePos >= 0 ? args.Left(spacePos) : args;
+		}
 	}
 
 	return CString(_T(""));
