@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2006-2012 - TortoiseSVN
+// Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -189,7 +189,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 
 	// Initialize all Managers for usage. They are automatically constructed
 	// if not yet present
-	InitContextMenuManager();
 	InitKeyboardManager();
 	InitTooltipManager ();
 	CMFCToolTipInfo params;
