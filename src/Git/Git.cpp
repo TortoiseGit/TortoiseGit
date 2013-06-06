@@ -1364,7 +1364,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 				one = one.Mid(2);
 				cur = one;
 			}
-			if (one != _T("(no branch)"))
+			if (one.Left(10) != _T("(no branch") && one.Left(15) != _T("(detached from "))
 				list.push_back(one);
 		}
 	}
@@ -1374,7 +1374,7 @@ int CGit::GetBranchList(STRING_VECTOR &list,int *current,BRANCH_TYPE type)
 
 	std::sort(list.begin(), list.end(), LogicalCompareBranchesPredicate);
 
-	if (current && cur != _T("(no branch)"))
+	if (current && cur.Left(10) != _T("(no branch") && cur.Left(15) != _T("(detached from "))
 	{
 		for (unsigned int i = 0; i < list.size(); ++i)
 		{
