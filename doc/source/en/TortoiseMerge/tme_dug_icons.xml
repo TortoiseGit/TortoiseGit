@@ -37,4 +37,8 @@
         This line is conflicted, but the effect is hidden by whitespace or line-ending
         settings.
     </para>
+    <para>
+        <graphic fileref="images/TMerge_linemoved.png"/>
+        This line is detected as being moved from / to another location.
+    </para>
 </sect1>

@@ -194,6 +194,14 @@
                     </para>
                 </listitem>
             </varlistentry>
+            <varlistentry>
+                <term>Ctrl-Tab</term>
+                <listitem>
+                    <para>
+                        Switch between left/right/bottom view
+                    </para>
+                </listitem>
+            </varlistentry>
         </variablelist>
     </sect1>
 </appendix>

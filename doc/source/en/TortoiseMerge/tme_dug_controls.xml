@@ -33,6 +33,8 @@
         You can also see which line-ending style is in use, what
         encoding (ASCII, UTF-8, etc) is assumed by TortoiseGitMerge, and whether
         there is a byte-order-mark (BOM) present in UTF-8 files.
+        You can change line-ending style and encoding by double-clicking the corresponding column of that view.
+        A dialog box will be displayed.
         The left side of the status bar is used to display hints when you
         hover the mouse over a control.
     </para>

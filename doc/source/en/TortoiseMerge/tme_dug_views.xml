@@ -49,6 +49,9 @@
                     <para>
                         Hand editing of the file in the right pane is possible in two-pane
                         view. Such changes are marked with a pencil symbol.
+                        Hand editing of the file in the left pane is also possible, only 
+                        when <guibutton>Enable Edit </guibutton> is pressed when the left
+                        pane is active.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -74,6 +77,10 @@
         <para>
             If you hover the mouse over the pane title, a tooltip will
             show the filenames used for the diff in each pane.
+        </para>
+        <para>
+            Hand editing of the file in the left pane or right pane is also possible, only 
+            when <guibutton>Enable Edit </guibutton> is pressed when that pane is active.
         </para>
     </sect2>
     <sect2 id="tmerge-dug-view-patch">
