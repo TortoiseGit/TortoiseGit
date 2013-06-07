@@ -95,7 +95,7 @@ public:
 	int				FindLineNumber(int number);
 	EOL				GetLineEnding(int index) const {return m_data[index].ending;}
 
-	int				GetCount() { return (int)m_data.size(); }
+	int				GetCount() const { return (int)m_data.size();}
 
 	void			SetData(int index, const viewdata& data) {m_data[index] = data;};
 	void			SetState(int index, DiffStates state) {m_data[index].state = state;}

@@ -20,7 +20,7 @@
 #include "resource.h"
 #include "AppUtils.h"
 
-#include "bottomview.h"
+#include "BottomView.h"
 
 IMPLEMENT_DYNCREATE(CBottomView, CBaseView)
 

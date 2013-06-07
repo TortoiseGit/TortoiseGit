@@ -1,7 +1,7 @@
 // TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2012 - TortoiseGit
-// Copyright (C) 2006-2010, 2012 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "BrowseFolder.h"
-#include "opendlg.h"
+#include "OpenDlg.h"
 #include "CommonAppUtils.h"
 #include "registry.h"
 

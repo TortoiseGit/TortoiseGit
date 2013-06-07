@@ -31,7 +31,7 @@ public:
 	{
 		int bufsize = 1024;
 		str.clear();
-		do 
+		do
 		{
 			std::unique_ptr<wchar_t[]> buf(new wchar_t[bufsize]);
 			int ret = ::LoadString(hInst, resId, buf.get(), bufsize);

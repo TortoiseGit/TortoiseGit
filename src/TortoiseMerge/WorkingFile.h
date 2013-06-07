@@ -43,8 +43,8 @@ public:
 	CString GetFilename() const		{ return m_sFilename; }
 	void SetOutOfUse();
 
-	bool HasSourceFileChanged() const;
 	bool IsReadonly() const;
+	bool HasSourceFileChanged() const;
 	void StoreFileAttributes();
 
 	// Move the details of the specified file to the current one, and then mark the specified file

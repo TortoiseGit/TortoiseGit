@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006,2009-2010 - TortoiseSVN
+// Copyright (C) 2006,2009-2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,8 +18,8 @@
 //
 #pragma once
 
-#include "Watereffect.h"
-#include "Dib.h"
+#include "WaterEffect.h"
+#include "DIB.h"
 #include "HyperLink.h"
 #include "StandAloneDlg.h"
 

@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2009-2010 - TortoiseSVN
+// Copyright (C) 2006-2007, 2009-2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,9 +21,9 @@
 #include "AboutDlg.h"
 #include "svn_version.h"
 #include "svn_diff.h"
-#include "..\..\apr\include\apr_version.h"
-#include "..\..\apr-util\include\apu_version.h"
-#include "..\version.h"
+#include "../../apr/include/apr_version.h"
+#include "../../apr-util/include/apu_version.h"
+#include "../version.h"
 
 // CAboutDlg dialog
 

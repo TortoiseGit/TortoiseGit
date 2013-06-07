@@ -20,7 +20,7 @@
 #include "resource.h"
 #include "AppUtils.h"
 
-#include "leftview.h"
+#include "LeftView.h"
 #include "BottomView.h"
 
 IMPLEMENT_DYNCREATE(CLeftView, CBaseView)
@@ -72,7 +72,7 @@ void CLeftView::UseBothLeftFirst()
 		{
 			line.state = DIFFSTATE_EMPTY;
 		}
-		else 
+		else
 		{
 			if (line.state!=DIFFSTATE_NORMAL) {
 				m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);

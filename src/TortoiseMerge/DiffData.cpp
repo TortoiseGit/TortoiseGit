@@ -23,7 +23,7 @@
 #include "TempFile.h"
 #include "registry.h"
 #include "resource.h"
-#include "Diffdata.h"
+#include "DiffData.h"
 #include "UnicodeUtils.h"
 #include "svn_dso.h"
 #include "MovedBlocks.h"

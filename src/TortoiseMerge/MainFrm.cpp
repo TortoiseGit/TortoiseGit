@@ -1248,14 +1248,14 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 void CMainFrame::OnFileSave()
 {
 	// when multiple files are set as writable we have to ask what file to save
-	int nEditableViewCount = 
+	int nEditableViewCount =
 			(CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsWritable() ? 1 : 0)
 			+ (CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsWritable() ? 1 : 0)
 			+ (CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsWritable() ? 1 : 0);
 	bool bLeftIsModified = CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsModified();
 	bool bRightIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
 	bool bBottomIsModified = CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsModified();
-	int nModifiedViewCount = 
+	int nModifiedViewCount =
 			(bLeftIsModified ? 1 : 0)
 			+ (bRightIsModified ? 1 : 0)
 			+ (bBottomIsModified ? 1 : 0);
@@ -1438,14 +1438,14 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 void CMainFrame::OnFileSaveAs()
 {
 	{
-		int nEditableViewCount = 
+		int nEditableViewCount =
 			(CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsWritable() ? 1 : 0)
 			+ (CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsWritable() ? 1 : 0)
 			+ (CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsWritable() ? 1 : 0);
 		bool bLeftIsModified = CBaseView::IsViewGood(m_pwndLeftView) && m_pwndLeftView->IsModified();
 		bool bRightIsModified = CBaseView::IsViewGood(m_pwndRightView) && m_pwndRightView->IsModified();
 		bool bBottomIsModified = CBaseView::IsViewGood(m_pwndBottomView) && m_pwndBottomView->IsModified();
-		int nModifiedViewCount = 
+		int nModifiedViewCount =
 			(bLeftIsModified ? 1 : 0)
 			+ (bRightIsModified ? 1 : 0)
 			+ (bBottomIsModified ? 1 : 0);
@@ -2204,7 +2204,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 	}
 	else if (CBaseView::IsViewGood(m_pwndRightView))
 	{
-		// two-way diff - 
+		// two-way diff -
 		// in 1.7 version only right was saved, now left and/or right can be save, so we need to indicate what we are asking to save
 		if (HasUnsavedEdits(m_pwndLeftView))
 		{

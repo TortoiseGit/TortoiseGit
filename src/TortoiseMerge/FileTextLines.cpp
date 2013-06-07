@@ -20,7 +20,7 @@
 #include "resource.h"
 #include "UnicodeUtils.h"
 #include "registry.h"
-#include "filetextlines.h"
+#include "FileTextLines.h"
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 
@@ -521,7 +521,7 @@ BOOL CFileTextLines::Save(const CString& sFilePath
 			oEncodedEol[EOL_PS] = pFilter->Encode(_T("\x2029"));
 		}
 		oEncodedEol[EOL_AUTOLINE] = oEncodedEol[m_SaveParams.m_LineEndings==EOL_AUTOLINE
-				? EOL_CRLF 
+				? EOL_CRLF
 				: m_SaveParams.m_LineEndings];
 
 		for (int i=0; i<GetCount(); i++)

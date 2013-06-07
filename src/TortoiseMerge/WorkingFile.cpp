@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "Workingfile.h"
+#include "WorkingFile.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "resource.h"

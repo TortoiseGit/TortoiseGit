@@ -153,7 +153,7 @@ CBaseView::CBaseView()
 	m_Eols[EOL_LS]   = L"\x2028";
 	m_Eols[EOL_PS]   = L"\x2029";
 	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
-								? EOL_CRLF 
+								? EOL_CRLF
 								: m_lineendings];
 }
 
@@ -245,13 +245,13 @@ void CBaseView::DocumentUpdated()
 	m_WhiteSpaceFg = CRegDWORD(_T("Software\\TortoiseGitMerge\\Colors\\Whitespace"), GetSysColor(COLOR_GRAYTEXT));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nInlineDiffMaxLineLength = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
+	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
+								? EOL_CRLF
+								: m_lineendings];
 	DeleteFonts();
 	ClearCurrentSelection();
 	UpdateStatusBar();
 	Invalidate();
-	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
-								? EOL_CRLF 
-								: m_lineendings];
 }
 
 void CBaseView::UpdateStatusBar()
@@ -5387,7 +5387,7 @@ void CBaseView::OnToggleReadonly()
 	}
 }
 
-int CBaseView::SaveFile(int nFlags) 
+int CBaseView::SaveFile(int nFlags)
 {
 	Invalidate();
 	if (m_pViewData!=NULL && m_pWorkingFile!=NULL)
@@ -5605,7 +5605,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	}
 	// normal lines is mostly same but may differ in EOL so any copied line change view state to modified
 	// TODO: check if copied line is same as original one set modified only when differ
-	SetModified(); 
+	SetModified();
 	SaveUndoStep();
 
 	int nRemovedLines = CleanEmptyLines();
