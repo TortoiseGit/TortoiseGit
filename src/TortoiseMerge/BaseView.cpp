@@ -293,69 +293,10 @@ void CBaseView::UpdateStatusBar()
 	CString sBarText;
 	CString sTemp;
 
-	switch (m_texttype)
-	{
-	case CFileTextLines::ASCII:
-		sBarText = _T("ASCII ");
-		break;
-	case CFileTextLines::BINARY:
-		sBarText = _T("BINARY ");
-		break;
-	case CFileTextLines::UTF16_LE:
-		sBarText = _T("UTF-16LE ");
-		break;
-	case CFileTextLines::UTF16_BE:
-		sBarText = _T("UTF-16BE ");
-		break;
-	case CFileTextLines::UTF32_LE:
-		sBarText = _T("UTF-32LE ");
-		break;
-	case CFileTextLines::UTF32_BE:
-		sBarText = _T("UTF-32BE ");
-		break;
-	case CFileTextLines::UTF8:
-		sBarText = _T("UTF8 ");
-		break;
-	case CFileTextLines::UTF8BOM:
-		sBarText = _T("UTF8 BOM ");
-		break;
-	}
-
-	switch(m_lineendings)
-	{
-	case EOL_LF:
-		sBarText += _T("LF ");
-		break;
-	case EOL_CRLF:
-		sBarText += _T("CRLF ");
-		break;
-	case EOL_LFCR:
-		sBarText += _T("LFCR ");
-		break;
-	case EOL_CR:
-		sBarText += _T("CR ");
-		break;
-	case EOL_VT:
-		sBarText += _T("VT ");
-		break;
-	case EOL_FF:
-		sBarText += _T("FF ");
-		break;
-	case EOL_NEL:
-		sBarText += _T("NEL ");
-		break;
-	case EOL_LS:
-		sBarText += _T("LS ");
-		break;
-	case EOL_PS:
-		sBarText += _T("PS ");
-		break;
-#ifdef _DEBUG
-	case EOL_AUTOLINE:
-		sBarText += _T("AEOL ");
-		break;
-#endif
-	}
+	sBarText += CFileTextLines::GetEncodingName(m_texttype);
+	sBarText += sBarText.IsEmpty() ? L"" : L" ";
+	sBarText += GetEolName(m_lineendings);
+	sBarText += sBarText.IsEmpty() ? L"" : L" ";
 
 	if (sBarText.IsEmpty())
 		sBarText  += _T(" / ");

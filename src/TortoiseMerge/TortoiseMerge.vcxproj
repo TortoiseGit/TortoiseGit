@@ -133,6 +133,7 @@
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="EncodingDlg.cpp" />
+    <ClCompile Include="EOL.cpp" />
     <ClCompile Include="libsvn_diff\adler32.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;WINNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -152,6 +153,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;WINNT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName>$(IntDir)eolc.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="libsvn_diff\hash.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

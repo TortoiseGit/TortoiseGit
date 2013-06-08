@@ -279,6 +279,9 @@
     <ClCompile Include="EncodingDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EOL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="libsvn_diff\adler32.c">
       <Filter>Libdiff</Filter>
     </ClCompile>

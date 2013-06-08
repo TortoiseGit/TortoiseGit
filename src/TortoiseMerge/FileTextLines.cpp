@@ -561,6 +561,29 @@ void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo)
 	}
 }
 
+const wchar_t * CFileTextLines::GetEncodingName(UnicodeType eEncoding)
+{
+	switch (eEncoding)
+	{
+	case ASCII:
+		return L"ASCII";
+	case BINARY:
+		return L"BINARY";
+	case UTF16_LE:
+		return L"UTF-16LE";
+	case UTF16_BE:
+		return L"UTF-16BE";
+	case UTF32_LE:
+		return L"UTF-32LE";
+	case UTF32_BE:
+		return L"UTF-32BE";
+	case UTF8:
+		return L"UTF-8";
+	case UTF8BOM:
+		return L"UTF-8 BOM";
+	}
+	return L"";
+}
 
 
 void CBuffer::ExpandToAtLeast(int nNewSize)
@@ -799,4 +822,3 @@ const CBuffer & CUtf32beFilter::Encode(const CString s)
 	}
 	return m_oBuffer;
 }
-

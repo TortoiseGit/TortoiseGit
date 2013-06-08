@@ -95,44 +95,23 @@ BOOL CEncodingDlg::OnInitDialog()
 	SetWindowText(sTitle);
 	SetDlgItemText(IDC_VIEW, view);
 
-	m_Encoding.AddString(_T("ASCII"));
-	m_Encoding.AddString(_T("UTF-16LE"));
-	m_Encoding.AddString(_T("UTF-16BE"));
-	m_Encoding.AddString(_T("UTF-32LE"));
-	m_Encoding.AddString(_T("UTF-32BE"));
-	m_Encoding.AddString(_T("UTF-8"));
-	m_Encoding.AddString(_T("UTF-8 BOM"));
-	int idxtexttype = 0;
 	for (int i = 0; i < _countof(uctArray); i++)
 	{
+		m_Encoding.AddString(CFileTextLines::GetEncodingName(uctArray[i]));
 		if (texttype == uctArray[i])
 		{
-			idxtexttype = i;
-			break;
+			m_Encoding.SetCurSel(i);
 		}
 	}
-	m_Encoding.SetCurSel(idxtexttype);
 
-	m_EOL.AddString(_T("*"));
-	m_EOL.AddString(_T("CRLF"));
-	m_EOL.AddString(_T("LF"));
-	m_EOL.AddString(_T("CR"));
-	m_EOL.AddString(_T("LFCR"));
-	m_EOL.AddString(_T("VT"));
-	m_EOL.AddString(_T("FF"));
-	m_EOL.AddString(_T("NEL"));
-	m_EOL.AddString(_T("LS"));
-	m_EOL.AddString(_T("PS"));
-	int idxlineendings = 0;
 	for (int i = 0; i < _countof(eolArray); i++)
 	{
+		m_EOL.AddString(GetEolName(eolArray[i]));
 		if (lineendings == eolArray[i])
 		{
-			idxlineendings = i;
-			break;
+			m_EOL.SetCurSel(i);
 		}
 	}
-	m_EOL.SetCurSel(idxlineendings);
 
 	return FALSE;
 }

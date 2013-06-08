@@ -143,7 +143,9 @@ public:
 	const CString&	GetAt(int index) const { return CStdFileLineArray::GetAt(index).sLine; }
 	EOL				GetLineEnding(int index) const { return CStdFileLineArray::GetAt(index).eEnding; }
 	void			SetSaveParams(const SaveParams& sp) { m_SaveParams = sp; }
-	//void			SetLineEnding(int index, EOL ending) { CStdFileLineArray::GetAt(index).eEnding = ending; }
+	//void				SetLineEnding(int index, EOL ending) { CStdFileLineArray::GetAt(index).eEnding = ending; }
+
+	static const wchar_t * GetEncodingName(UnicodeType);
 
 	/**
 	 * Checks the Unicode type in a text buffer
