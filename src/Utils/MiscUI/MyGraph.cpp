@@ -410,7 +410,7 @@ CString MyGraph::GetTipText() const
 
 		POSITION pos(m_olMyGraphSeries.GetHeadPosition());
 
-		while (pos && sTip=="") {
+		while (pos && sTip.IsEmpty()) {
 			MyGraphSeries* pSeries = m_olMyGraphSeries.GetNext(pos);
 			ASSERT_VALID(pSeries);
 

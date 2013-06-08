@@ -18,7 +18,7 @@
 //
 #pragma once
 #include "resource.h"
-#include "afxcmn.h"
+#include <afxcmn.h>
 #include "HistoryCombo.h"
 #include "FileTextLines.h"
 

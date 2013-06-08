@@ -2,7 +2,7 @@
 
 // Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2004-2009,2011-2012 - TortoiseSVN
+// Copyright (C) 2004-2009,2011-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -792,7 +792,7 @@ CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*
 
 CString CPatch::RemoveUnicodeBOM(const CString& str)
 {
-	if (str.GetLength()==0)
+	if (str.IsEmpty())
 		return str;
 	if (str[0] == 0xFEFF)
 		return str.Mid(1);

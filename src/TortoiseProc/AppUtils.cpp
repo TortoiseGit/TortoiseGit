@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2003-2011 - TortoiseSVN
+// Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -246,11 +246,11 @@ BOOL CAppUtils::StartExtMerge(
 	bool bInternal = false;
 
 	CString mimetype;
-	if (ext != "")
+	if (!ext.IsEmpty())
 	{
 		// is there an extension specific merge tool?
 		CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\") + ext.MakeLower());
-		if (CString(mergetool) != "")
+		if (!CString(mergetool).IsEmpty())
 		{
 			com = mergetool;
 		}
@@ -266,7 +266,7 @@ BOOL CAppUtils::StartExtMerge(
 	}
 	// is there a filename specific merge tool?
 	CRegString mergetool(_T("Software\\TortoiseGit\\MergeTools\\.") + mergedfile.GetFilename().MakeLower());
-	if (CString(mergetool) != "")
+	if (!CString(mergetool).IsEmpty())
 	{
 		com = mergetool;
 	}
