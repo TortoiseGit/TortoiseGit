@@ -25,6 +25,7 @@ Released: Unreleased
  * "Delete (keep local)" did not work on folders
  * Fixed issue #1756: Rebase trips over merge commits
  * Fixed possible crashes while applying a patch in TortoiseGitMerge
+ * Fixed issue #1809: Overlay shows changes in parent folder if a file with a second extension exists
 
 = Release 1.8.3.0 =
 Released: 2013-05-05

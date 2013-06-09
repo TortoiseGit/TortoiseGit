@@ -608,14 +608,17 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				onepath += it->m_FileName;
 				casepath += it->m_CaseFileName;
 
-				LPTSTR onepathBuffer = onepath.GetBuffer();
-				int pos = SearchInSortVector(*indexptr, onepathBuffer, onepath.GetLength());
-				int posintree = SearchInSortVector(*treeptr, onepathBuffer, onepath.GetLength());
-				onepath.ReleaseBuffer();
+				bool bIsDir = false;
+				if (onepath.GetLength() > 0 && onepath[onepath.GetLength() - 1] == _T('/'))
+					bIsDir = true;
 
-				bool bIsDir =false;
-				if(onepath.GetLength()>0 && onepath[onepath.GetLength()-1] == _T('/'))
-					bIsDir =true;
+				LPTSTR onepathBuffer = onepath.GetBuffer();
+				int matchLength = -1;
+				if (bIsDir)
+					matchLength = onepath.GetLength();
+				int pos = SearchInSortVector(*indexptr, onepathBuffer, matchLength);
+				int posintree = SearchInSortVector(*treeptr, onepathBuffer, matchLength);
+				onepath.ReleaseBuffer();
 
 				if(pos <0 && posintree<0)
 				{
@@ -691,7 +694,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			/* Check deleted file in system */
 			LPTSTR lowcasepathBuffer = lowcasepath.GetBuffer();
 			int start=0, end=0;
-			int pos=SearchInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength());
+			int pos = SearchInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
 
 			if (GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
@@ -704,6 +707,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
+					else
+						++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
 					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if(oldstring != filename)
@@ -720,7 +725,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			}
 
 			start = end =0;
-			pos=SearchInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength());
+			pos = SearchInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
 			if (GetRangeInSortVector(*treeptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
 				CGitHeadFileList::iterator it;
@@ -732,6 +737,8 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
+					else
+						++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
 					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if(oldstring != filename)
