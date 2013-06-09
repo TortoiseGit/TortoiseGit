@@ -700,12 +700,12 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 				for (it = indexptr->begin() + start; it <= indexptr->begin() + end; ++it)
 				{
-					int start = lowcasepath.GetLength();
-					int index = (*it).m_FileName.Find(_T('/'), start);
+					int commonPrefixLength = lowcasepath.GetLength();
+					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
 
-					CString filename = (*it).m_FileName.Mid(start, index-start);
+					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if(oldstring != filename)
 					{
 						oldstring = filename;
@@ -728,12 +728,12 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 				for (it = treeptr->begin() + start; it <= treeptr->begin() + end; ++it)
 				{
-					int start = lowcasepath.GetLength();
-					int index = (*it).m_FileName.Find(_T('/'), start);
+					int commonPrefixLength = lowcasepath.GetLength();
+					int index = (*it).m_FileName.Find(_T('/'), commonPrefixLength);
 					if(index<0)
 						index = (*it).m_FileName.GetLength();
 
-					CString filename = (*it).m_FileName.Mid(start, index-start);
+					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
 					if(oldstring != filename)
 					{
 						oldstring = filename;
