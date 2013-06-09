@@ -674,7 +674,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 					if(onepath.GetLength() ==0)
 						continue;
 
-					if(onepath[onepath.GetLength()-1] == _T('/'))
+					if (bIsDir)
 					{
 						*status = git_wc_status_normal;
 						if(callback)
