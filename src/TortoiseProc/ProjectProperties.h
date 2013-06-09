@@ -19,7 +19,6 @@
 //
 #pragma once
 #include "TGitPath.h"
-using namespace std;
 #include <regex>
 
 #define BUGTRAQPROPNAME_LABEL             _T("bugtraq.label")

@@ -1502,7 +1502,7 @@ bool CLogDlg::Validate(LPCTSTR string)
 {
 	if (!m_bFilterWithRegex)
 		return true;
-	tr1::wregex pat;
+	std::tr1::wregex pat;
 	return m_LogList.ValidateRegexp(string, pat, false);
 }
 

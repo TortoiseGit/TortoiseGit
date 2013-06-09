@@ -1302,27 +1302,26 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 
 CString CGit::DerefFetchHead()
 {
-	using namespace std;
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(m_CurrentDir, dotGitPath);
-	ifstream fetchHeadFile((dotGitPath + L"FETCH_HEAD").GetString(), ios::in | ios::binary);
+	std::ifstream fetchHeadFile((dotGitPath + L"FETCH_HEAD").GetString(), std::ios::in | std::ios::binary);
 	int forMergeLineCount = 0;
-	string line;
-	string hashToReturn;
+	std::string line;
+	std::string hashToReturn;
 	while(getline(fetchHeadFile, line))
 	{
 		//Tokenize this line
-		string::size_type prevPos = 0;
-		string::size_type pos = line.find('\t');
-		if(pos == string::npos)	continue; //invalid line
+		std::string::size_type prevPos = 0;
+		std::string::size_type pos = line.find('\t');
+		if(pos == std::string::npos)	continue; //invalid line
 
-		string hash = line.substr(0, pos);
-		++pos; prevPos = pos; pos = line.find('\t', pos); if(pos == string::npos) continue;
+		std::string hash = line.substr(0, pos);
+		++pos; prevPos = pos; pos = line.find('\t', pos); if(pos == std::string::npos) continue;
 
 		bool forMerge = pos == prevPos;
-		++pos; prevPos = pos; pos = line.size(); if(pos == string::npos) continue;
+		++pos; prevPos = pos; pos = line.size(); if(pos == std::string::npos) continue;
 
-		string remoteBranch = line.substr(prevPos, pos - prevPos);
+		std::string remoteBranch = line.substr(prevPos, pos - prevPos);
 
 		//Process this line
 		if(forMerge)

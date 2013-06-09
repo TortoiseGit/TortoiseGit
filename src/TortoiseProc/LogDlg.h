@@ -38,8 +38,6 @@
 #include "HyperLink.h"
 #include "Win7.h"
 
-using namespace std;
-
 
 #define LOGFILTER_TIMER	101
 #define LOGFTIME_TIMER	102
@@ -168,7 +166,7 @@ private:
 	void EnableOKButton();
 
 	void SaveSplitterPos();
-	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase);
+	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase);
 	void CheckRegexpTooltip();
 	void GetChangedPaths(std::vector<CString>& changedpaths, std::vector<LogChangedPath*>& changedlogpaths);
 	void SetDlgTitle();

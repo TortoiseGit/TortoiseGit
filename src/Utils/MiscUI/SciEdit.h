@@ -25,8 +25,6 @@
 #include "PersonalDictionary.h"
 #include <regex>
 
-using namespace std;
-
 
 //forward declaration
 class CSciEdit;

@@ -1679,7 +1679,7 @@ void CCommitDlg::GetAutocompletionList()
 
 void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 {
-	wstring sFileContent;
+	std::wstring sFileContent;
 	HANDLE hFile = CreateFile(sFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
 	if (hFile != INVALID_HANDLE_VALUE)
 	{
@@ -1704,7 +1704,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 		}
 		if (opts & IS_TEXT_UNICODE_UNICODE_MASK)
 		{
-			sFileContent = wstring((wchar_t*)buffer, readbytes/sizeof(WCHAR));
+			sFileContent = std::wstring((wchar_t*)buffer, readbytes/sizeof(WCHAR));
 		}
 		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK)||(opts == 0))
 		{
@@ -1712,7 +1712,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 			wchar_t * pWideBuf = new wchar_t[ret];
 			int ret2 = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, (LPCSTR)buffer, readbytes, pWideBuf, ret);
 			if (ret2 == ret)
-				sFileContent = wstring(pWideBuf, ret);
+				sFileContent = std::wstring(pWideBuf, ret);
 			delete [] pWideBuf;
 		}
 		delete [] buffer;
@@ -1724,23 +1724,23 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 
 	try
 	{
-		const tr1::wregex regCheck(sRegex, tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
-		const tr1::wsregex_iterator end;
-		wstring s = sFileContent;
-		for (tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+		const std::tr1::wregex regCheck(sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+		const std::tr1::wsregex_iterator end;
+		std::wstring s = sFileContent;
+		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
 		{
-			const tr1::wsmatch match = *it;
+			const std::tr1::wsmatch match = *it;
 			for (size_t i=1; i<match.size(); ++i)
 			{
 				if (match[i].second-match[i].first)
 				{
-					ATLTRACE(_T("matched keyword : %s\n"), wstring(match[i]).c_str());
-					m_autolist.insert(wstring(match[i]).c_str());
+					ATLTRACE(_T("matched keyword : %s\n"), std::wstring(match[i]).c_str());
+					m_autolist.insert(std::wstring(match[i]).c_str());
 				}
 			}
 		}
 	}
-	catch (exception) {}
+	catch (std::exception) {}
 }
 
 // CSciEditContextMenuInterface

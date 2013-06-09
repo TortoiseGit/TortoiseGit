@@ -38,7 +38,6 @@
 #ifndef ASSERT
 #define ASSERT()
 #endif
-using namespace std;
 extern CGit g_Git;
 
 CTGitPath::CTGitPath(void)
@@ -965,7 +964,7 @@ bool CTGitPath::IsValidOnWindows() const
 	m_bIsValidOnWindows = false;
 	EnsureBackslashPathSet();
 	CString sMatch = m_sBackslashPath + _T("\r\n");
-	wstring sPattern;
+	std::wstring sPattern;
 	// the 'file://' URL is just a normal windows path:
 	if (sMatch.Left(7).CompareNoCase(_T("file:\\\\"))==0)
 	{
@@ -980,25 +979,25 @@ bool CTGitPath::IsValidOnWindows() const
 
 	try
 	{
-		tr1::wregex rx(sPattern, tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
-		tr1::wsmatch match;
+		std::tr1::wregex rx(sPattern, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+		std::tr1::wsmatch match;
 
-		wstring rmatch = wstring((LPCTSTR)sMatch);
-		if (tr1::regex_match(rmatch, match, rx))
+		std::wstring rmatch = std::wstring((LPCTSTR)sMatch);
+		if (std::tr1::regex_match(rmatch, match, rx))
 		{
-			if (wstring(match[0]).compare(sMatch)==0)
+			if (std::wstring(match[0]).compare(sMatch)==0)
 				m_bIsValidOnWindows = true;
 		}
 		if (m_bIsValidOnWindows)
 		{
 			// now check for illegal filenames
-			tr1::wregex rx2(_T("\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)"), tr1::regex_constants::icase | tr1::regex_constants::ECMAScript);
+			std::tr1::wregex rx2(_T("\\\\(lpt\\d|com\\d|aux|nul|prn|con)(\\\\|$)"), std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
 			rmatch = m_sBackslashPath;
-			if (tr1::regex_search(rmatch, rx2, tr1::regex_constants::match_default))
+			if (std::tr1::regex_search(rmatch, rx2, std::tr1::regex_constants::match_default))
 				m_bIsValidOnWindows = false;
 		}
 	}
-	catch (exception) {}
+	catch (std::exception) {}
 
 	m_bIsValidOnWindowsKnown = true;
 	return m_bIsValidOnWindows;

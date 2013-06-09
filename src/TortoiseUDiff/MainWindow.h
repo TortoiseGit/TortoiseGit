@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007,2009-2012 - TortoiseSVN
+// Copyright (C) 2007,2009-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,8 +25,6 @@
 #include "FindBar.h"
 #include <string>
 #include <stdio.h>
-
-using namespace std;
 
 /**
  * \ingroup TortoiseUDiff
@@ -76,8 +74,8 @@ private:
 	CFindBar            m_FindBar;
 	bool                m_bShowFindBar;
 	bool                m_bMatchCase;
-	wstring             m_findtext;
-	wstring             m_filename;
+	std::wstring             m_findtext;
+	std::wstring             m_filename;
 
-	void loadOrSaveFile( bool doLoad, const wstring& filename = L"" );
+	void loadOrSaveFile( bool doLoad, const std::wstring& filename = L"" );
 };

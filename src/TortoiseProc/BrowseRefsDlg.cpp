@@ -351,7 +351,7 @@ static int GetBranchDescriptionsCallback(const git_config_entry *entry, void *da
 	MAP_STRING_STRING *descriptions = (MAP_STRING_STRING *) data;
 	CString key = CUnicodeUtils::GetUnicode(entry->name, CP_UTF8);
 	CString val = CUnicodeUtils::GetUnicode(entry->value, CP_UTF8);
-	descriptions->insert(make_pair(key.Mid(7, key.GetLength() - 7 - 12), val)); // 7: branch., 12: .description
+	descriptions->insert(std::make_pair(key.Mid(7, key.GetLength() - 7 - 12), val)); // 7: branch., 12: .description
 	return 0;
 }
 

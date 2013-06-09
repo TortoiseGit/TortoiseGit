@@ -2606,7 +2606,7 @@ UINT CGitLogListBase::LogThread()
 		return 1;
 	}
 
-	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
+	std::tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
 	bool bRegex = false;
 	if (m_bFilterWithRegex)
 		bRegex = ValidateRegexp(m_sFilterText, pat, false);
@@ -2860,23 +2860,23 @@ void CGitLogListBase::Refresh(BOOL IsCleanFilter)
 		}
 	}
 }
-bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase /* = false */)
+bool CGitLogListBase::ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase /* = false */)
 {
 	try
 	{
-		tr1::regex_constants::syntax_option_type type = tr1::regex_constants::ECMAScript;
+		std::tr1::regex_constants::syntax_option_type type = std::tr1::regex_constants::ECMAScript;
 		if (!bMatchCase)
-			type |= tr1::regex_constants::icase;
-		pat = tr1::wregex(regexp_str, type);
+			type |= std::tr1::regex_constants::icase;
+		pat = std::tr1::wregex(regexp_str, type);
 		return true;
 	}
-	catch (exception) {}
+	catch (std::exception) {}
 	return false;
 }
-BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
+BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat)
 {
 
-	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
+	std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_any;
 	CString sRev;
 
 	if ((bRegex)&&(m_bFilterWithRegex))
@@ -2888,7 +2888,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 				CString sBugIds = m_ProjectProperties.FindBugID(pRev->GetSubject() + _T("\r\n\r\n") + pRev->GetBody());
 
 				ATLTRACE(_T("bugID = \"%s\"\n"), sBugIds);
-				if (regex_search(wstring(sBugIds), pat, flags))
+				if (std::regex_search(std::wstring(sBugIds), pat, flags))
 				{
 					return TRUE;
 				}
@@ -2898,7 +2898,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"), pRev->GetSubject());
-			if (regex_search(wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
+			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetSubject()), pat, flags))
 			{
 				return TRUE;
 			}
@@ -2907,7 +2907,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		if (m_SelectedFilters & LOGFILTER_MESSAGES)
 		{
 			ATLTRACE(_T("messge = \"%s\"\n"),pRev->GetBody());
-			if (regex_search(wstring((LPCTSTR)pRev->GetBody()), pat, flags))
+			if (std::regex_search(std::wstring((LPCTSTR)pRev->GetBody()), pat, flags))
 			{
 					return TRUE;
 			}
@@ -2915,12 +2915,12 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 
 		if (m_SelectedFilters & LOGFILTER_AUTHORS)
 		{
-			if (regex_search(wstring(pRev->GetAuthorName()), pat, flags))
+			if (std::regex_search(std::wstring(pRev->GetAuthorName()), pat, flags))
 			{
 				return TRUE;
 			}
 
-			if (regex_search(wstring(pRev->GetCommitterName()), pat, flags))
+			if (std::regex_search(std::wstring(pRev->GetCommitterName()), pat, flags))
 			{
 				return TRUE;
 			}
@@ -2928,12 +2928,12 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 
 		if (m_SelectedFilters & LOGFILTER_EMAILS)
 		{
-			if (regex_search(wstring(pRev->GetAuthorEmail()), pat, flags))
+			if (std::regex_search(std::wstring(pRev->GetAuthorEmail()), pat, flags))
 			{
 				return TRUE;
 			}
 
-			if (regex_search(wstring(pRev->GetCommitterEmail()), pat, flags))
+			if (std::regex_search(std::wstring(pRev->GetCommitterEmail()), pat, flags))
 			{
 				return TRUE;
 			}
@@ -2942,7 +2942,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 		if (m_SelectedFilters & LOGFILTER_REVS)
 		{
 			sRev.Format(_T("%s"), pRev->m_CommitHash.ToString());
-			if (regex_search(wstring((LPCTSTR)sRev), pat, flags))
+			if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags))
 			{
 				return TRUE;
 			}
@@ -2953,7 +2953,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			STRING_VECTOR refs = m_HashMap[pRev->m_CommitHash];
 			for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 			{
-				if (regex_search(wstring((LPCTSTR)*it), pat, flags))
+				if (std::regex_search(std::wstring((LPCTSTR)*it), pat, flags))
 				{
 					return TRUE;
 				}
@@ -2974,11 +2974,11 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 			if(pathList)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList->GetCount(); ++cpPathIndex)
 				{
-					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
+					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitOldPathString()), pat, flags))
 					{
 						return true;
 					}
-					if (regex_search(wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
+					if (std::regex_search(std::wstring((LPCTSTR)pathList->m_paths.at(cpPathIndex).GetGitPathString()), pat, flags))
 					{
 						return true;
 					}
@@ -2986,7 +2986,7 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat)
 
 			for (size_t i = 0; i < pRev->m_SimpleFileList.size(); ++i)
 			{
-				if (regex_search(wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
+				if (std::regex_search(std::wstring((LPCTSTR)pRev->m_SimpleFileList[i]), pat, flags))
 				{
 					return true;
 				}
@@ -3123,12 +3123,12 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 
 	pShownlist->SafeRemoveAll();
 
-	tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
+	std::tr1::wregex pat;//(_T("Remove"), tr1::regex_constants::icase);
 	bool bRegex = false;
 	if (m_bFilterWithRegex)
 		bRegex = ValidateRegexp(m_sFilterText, pat, false);
 
-	tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_any;
+	std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_any;
 	CString sRev;
 	for (DWORD i=0; i<m_logEntries.size(); ++i)
 	{
@@ -3138,7 +3138,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if ((m_nSelectedFilter == LOGFILTER_ALL)||(m_nSelectedFilter == LOGFILTER_BUGID))
 			{
 				ATLTRACE(_T("bugID = \"%s\"\n"), (LPCTSTR)m_logEntries[i]->sBugIDs);
-				if (regex_search(wstring((LPCTSTR)m_logEntries[i]->sBugIDs), pat, flags)&&IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries[i]->sBugIDs), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(m_logEntries[i]);
 					continue;
@@ -3148,7 +3148,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if ((m_SelectedFilters & LOGFILTER_SUBJECT) || (m_SelectedFilters & LOGFILTER_MESSAGES))
 			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetSubject());
-				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject()), pat, flags)&&IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetSubject()), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
@@ -3157,7 +3157,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if (m_SelectedFilters & LOGFILTER_MESSAGES)
 			{
 				ATLTRACE(_T("messge = \"%s\"\n"),m_logEntries.GetGitRevAt(i).GetBody());
-				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody()), pat, flags)&&IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetBody()), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
@@ -3171,19 +3171,19 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				for (INT_PTR cpPathIndex = 0; cpPathIndex < pathList.GetCount() && bGoing; ++cpPathIndex)
 				{
 					CTGitPath cpath = pathList[cpPathIndex];
-					if (regex_search(wstring((LPCTSTR)cpath.GetGitOldPathString()), pat, flags)&&IsEntryInDateRange(i))
+					if (std::regex_search(std::wstring((LPCTSTR)cpath.GetGitOldPathString()), pat, flags)&&IsEntryInDateRange(i))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
-					if (regex_search(wstring((LPCTSTR)cpath.GetGitPathString()), pat, flags)&&IsEntryInDateRange(i))
+					if (std::regex_search(std::wstring((LPCTSTR)cpath.GetGitPathString()), pat, flags)&&IsEntryInDateRange(i))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
 						continue;
 					}
-					if (regex_search(wstring((LPCTSTR)cpath.GetActionName()), pat, flags)&&IsEntryInDateRange(i))
+					if (std::regex_search(std::wstring((LPCTSTR)cpath.GetActionName()), pat, flags)&&IsEntryInDateRange(i))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 						bGoing = false;
@@ -3193,7 +3193,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if (m_SelectedFilters & LOGFILTER_AUTHORS)
 			{
-				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorName()), pat, flags)&&IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorName()), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
@@ -3201,7 +3201,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			}
 			if (m_SelectedFilters & LOGFILTER_EMAILS)
 			{
-				if (regex_search(wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorEmail()), pat, flags) && IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)m_logEntries.GetGitRevAt(i).GetAuthorEmail()), pat, flags) && IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
@@ -3210,7 +3210,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 			if (m_SelectedFilters & LOGFILTER_REVS)
 			{
 				sRev.Format(_T("%s"), m_logEntries.GetGitRevAt(i).m_CommitHash.ToString());
-				if (regex_search(wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
+				if (std::regex_search(std::wstring((LPCTSTR)sRev), pat, flags)&&IsEntryInDateRange(i))
 				{
 					pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 					continue;
@@ -3221,7 +3221,7 @@ void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
 				STRING_VECTOR refs = m_HashMap[m_logEntries.GetGitRevAt(i).m_CommitHash];
 				for (auto it = refs.cbegin(); it != refs.cend(); ++it)
 				{
-					if (regex_search(wstring((LPCTSTR)*it), pat, flags) && IsEntryInDateRange(i))
+					if (std::regex_search(std::wstring((LPCTSTR)*it), pat, flags) && IsEntryInDateRange(i))
 					{
 						pShownlist->SafeAdd(&m_logEntries.GetGitRevAt(i));
 						continue;
@@ -3567,10 +3567,10 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		CString FindText = m_pFindDialog->GetFindString();
 		bool bMatchCase = (m_pFindDialog->MatchCase() == TRUE);
 
-		tr1::wregex pat;
+		std::tr1::wregex pat;
 		bool bRegex = ValidateRegexp(FindText, pat, bMatchCase);
 
-		tr1::regex_constants::match_flag_type flags = tr1::regex_constants::match_not_null;
+		std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_not_null;
 
 
 		for (i = this->m_nSearchIndex; i < m_arShownList.GetCount() && !bFound; ++i)
@@ -3633,7 +3633,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 			if (bRegex)
 			{
-				if (regex_search(wstring(str), pat, flags))
+				if (std::regex_search(std::wstring(str), pat, flags))
 				{
 					bFound = true;
 					break;

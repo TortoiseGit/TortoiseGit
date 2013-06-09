@@ -12,10 +12,9 @@
 //#include <QVector>
 #include "githash.h"
 
-#define QVector vector
-using namespace std;
+#define QVector std::vector
 
-typedef vector<CGitHash> CGitHashList ;
+typedef std::vector<CGitHash> CGitHashList ;
 
 class Lanes {
 public:

@@ -306,7 +306,7 @@ public:
 	bool IsSelectionContinuous();
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
-	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, tr1::wregex &pat);
+	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat);
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
@@ -327,7 +327,7 @@ public:
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();
 	void StartFilter();
-	bool ValidateRegexp(LPCTSTR regexp_str, tr1::wregex& pat, bool bMatchCase = false );
+	bool ValidateRegexp(LPCTSTR regexp_str, std::tr1::wregex& pat, bool bMatchCase = false );
 	CString				m_sFilterText;
 
 	__time64_t			m_From;

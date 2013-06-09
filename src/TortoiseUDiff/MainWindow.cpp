@@ -546,7 +546,7 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 	return false;
 }
 
-void CMainWindow::loadOrSaveFile(bool doLoad, const wstring& filename /* = L"" */)
+void CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = L"" */)
 {
 	OPENFILENAME ofn = {0};				// common dialog box structure
 	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name

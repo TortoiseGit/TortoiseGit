@@ -6,7 +6,6 @@
 
 #include <cmath>
 #include <memory>
-using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

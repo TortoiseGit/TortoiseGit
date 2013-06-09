@@ -26,8 +26,6 @@
 #include ".\sciedit.h"
 #include "SysInfo.h"
 
-using namespace std;
-
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -1170,20 +1168,20 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 		// match with two regex strings (without grouping!)
 		try
 		{
-			const tr1::regex regCheck(m_sCommand);
-			const tr1::regex regBugID(m_sBugID);
-			const tr1::sregex_iterator end;
-			string s = msg;
+			const std::tr1::regex regCheck(m_sCommand);
+			const std::tr1::regex regBugID(m_sBugID);
+			const std::tr1::sregex_iterator end;
+			std::string s = msg;
 			LONG pos = 0;
-			for (tr1::sregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+			for (std::tr1::sregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
 			{
 				// clear the styles up to the match position
 				Call(SCI_SETSTYLING, it->position(0)-pos, STYLE_DEFAULT);
 				pos = (LONG)it->position(0);
 
 				// (*it)[0] is the matched string
-				string matchedString = (*it)[0];
-				for (tr1::sregex_iterator it2(matchedString.begin(), matchedString.end(), regBugID); it2 != end; ++it2)
+				std::string matchedString = (*it)[0];
+				for (std::tr1::sregex_iterator it2(matchedString.begin(), matchedString.end(), regBugID); it2 != end; ++it2)
 				{
 					ATLTRACE(_T("matched id : %s\n"), (*it2)[0].str().c_str());
 
@@ -1201,35 +1199,35 @@ BOOL CSciEdit::MarkEnteredBugID(int startstylepos, int endstylepos)
 			if (s.size()-pos)
 				Call(SCI_SETSTYLING, s.size()-pos, STYLE_DEFAULT);
 		}
-		catch (exception) {}
+		catch (std::exception) {}
 	}
 	else
 	{
 		try
 		{
-			const tr1::regex regCheck(m_sCommand);
-			const tr1::sregex_iterator end;
-			string s = msg;
+			const std::tr1::regex regCheck(m_sCommand);
+			const std::tr1::sregex_iterator end;
+			std::string s = msg;
 			LONG pos = 0;
-			for (tr1::sregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+			for (std::tr1::sregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
 			{
 				// clear the styles up to the match position
 				Call(SCI_SETSTYLING, it->position(0)-pos, STYLE_DEFAULT);
 				pos = (LONG)it->position(0);
 
-				const tr1::smatch match = *it;
+				const std::tr1::smatch match = *it;
 				// we define group 1 as the whole issue text and
 				// group 2 as the bug ID
 				if (match.size() >= 2)
 				{
-					ATLTRACE(_T("matched id : %s\n"), string(match[1]).c_str());
+					ATLTRACE(_T("matched id : %s\n"), std::string(match[1]).c_str());
 					Call(SCI_SETSTYLING, match[1].first-s.begin()-pos, STYLE_ISSUEBOLD);
-					Call(SCI_SETSTYLING, string(match[1]).size(), STYLE_ISSUEBOLDITALIC);
+					Call(SCI_SETSTYLING, std::string(match[1]).size(), STYLE_ISSUEBOLDITALIC);
 					pos = (LONG)(match[1].second-s.begin());
 				}
 			}
 		}
-		catch (exception) {}
+		catch (std::exception) {}
 	}
 	delete [] textbuffer;
 
