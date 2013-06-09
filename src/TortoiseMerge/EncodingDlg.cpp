@@ -51,6 +51,8 @@ IMPLEMENT_DYNAMIC(CEncodingDlg, CDialog)
 
 CEncodingDlg::CEncodingDlg(CWnd* pParent)
 	: CDialog(CEncodingDlg::IDD, pParent)
+	, texttype(CFileTextLines::ASCII)
+	, lineendings(EOL_AUTOLINE)
 {
 }
 
