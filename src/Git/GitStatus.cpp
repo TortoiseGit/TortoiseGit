@@ -695,6 +695,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 			LPTSTR lowcasepathBuffer = lowcasepath.GetBuffer();
 			int start=0, end=0;
 			int pos = SearchInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength()); // match path prefix, (sub)folders end with slash
+			std::map<CString, bool> skipWorktreeMap;
 
 			if (GetRangeInSortVector(*indexptr, lowcasepathBuffer, lowcasepath.GetLength(), &start, &end, pos) == 0)
 			{
@@ -716,9 +717,16 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						oldstring = filename;
 						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
 						{
+							bool skipWorktree = false;
 							*status = git_wc_status_deleted;
+							if (((*it).m_Flags & GIT_IDXENTRY_SKIP_WORKTREE) != 0)
+							{
+								skipWorktreeMap[filename] = true;
+								skipWorktree = true;
+								*status = git_wc_status_normal;
+							}
 							if(callback)
-								callback(gitdir + _T("/") + filename, *status, false, pData, false, false);
+								callback(gitdir + _T("/") + filename, *status, false, pData, false, skipWorktree);
 						}
 					}
 				}
@@ -741,7 +749,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 						++index; // include slash at the end for subfolders, so that we do not match files by mistake
 
 					CString filename = (*it).m_FileName.Mid(commonPrefixLength, index - commonPrefixLength);
-					if(oldstring != filename)
+					if (oldstring != filename && skipWorktreeMap[filename] != true)
 					{
 						oldstring = filename;
 						if(SearchInSortVector(filelist, filename.GetBuffer(), filename.GetLength())<0)
