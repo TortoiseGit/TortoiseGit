@@ -46,7 +46,7 @@ class CBaseView : public CView, public CTripleClick
 	DECLARE_DYNCREATE(CBaseView)
 friend class CLineDiffBar;
 public:
-    typedef CFileTextLines::UnicodeType UnicodeType;
+	typedef CFileTextLines::UnicodeType UnicodeType;
 	enum ECharGroup { // ordered by priority low-to-hi
 		CHG_UNKNOWN,
 		CHG_CONTROL, // x00-x08, x0a-x1f
@@ -63,7 +63,7 @@ public: // methods
 	 * Indicates that the underlying document has been updated. Reloads all
 	 * data and redraws the view.
 	 */
-	virtual void    DocumentUpdated();
+	virtual void	DocumentUpdated();
 	/**
 	 * Returns the number of lines visible on the view.
 	 */
@@ -112,11 +112,11 @@ public: // methods
 	POINT			ConvertViewPosToScreen(const POINT& pt);
 
 	void			RefreshViews();
-	static void		BuildAllScreen2ViewVector();                               ///< schedule full screen2view rebuild
-	static void		BuildAllScreen2ViewVector(int ViewLine);                   ///< schedule rebuild screen2view for single line
-	static void		BuildAllScreen2ViewVector(int FirstViewLine, int LastViewLine); ///< schedule rebuild screen2view for line range (first and last inclusive)
+	static void		BuildAllScreen2ViewVector();								///< schedule full screen2view rebuild
+	static void		BuildAllScreen2ViewVector(int ViewLine);					///< schedule rebuild screen2view for single line
+	static void		BuildAllScreen2ViewVector(int FirstViewLine, int LastViewLine);	///< schedule rebuild screen2view for line range (first and last inclusive)
 	void			UpdateViewLineNumbers();
-	int				CleanEmptyLines();                                         ///< remove line empty in all views
+	int				CleanEmptyLines();											///< remove line empty in all views
 	int				GetLineCount() const;
 	static int		GetViewLineForScreen(int screenLine) { return m_Screen2View.GetViewLineForScreen(screenLine); }
 	int				FindScreenLineForViewLine(int viewLine);
@@ -208,7 +208,7 @@ public: // methods
 	void			SetViewLineNumber(int index, int linenumber);
 	void			SetViewLineEnding(int index, EOL ending);
 
-	static bool     IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
+	static bool		IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
 	static CBaseView * GetFirstGoodView();
 
 public: // variables
@@ -242,9 +242,9 @@ public: // variables
 
 	EOL				GetLineEndings();											///< Get Line endings on view from lineendings or "mixed"
 	void			SetLineEndings(EOL);										///< Set AUTO lineendings and replaces all EOLs
-    UnicodeType     GetTextType() { return m_texttype; }
-    void            SetTextType(UnicodeType);                                   ///< Changes TextType
-    void            AskUserForNewLineEndingsAndTextType(int);                   ///< Open gui
+	UnicodeType		GetTextType() { return m_texttype; }
+	void			SetTextType(UnicodeType);									///< Changes TextType
+	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 
@@ -404,7 +404,7 @@ protected:  // methods
 
 	virtual void	UseBothBlocks(CBaseView * /*pwndFirst*/, CBaseView * /*pwndLast*/) {};
 	virtual void	UseViewBlock(CBaseView * /*pwndView*/) {}
-    void            UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine);
+	void			UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLastViewLine);
 	virtual void	UseViewFile(CBaseView * /*pwndView*/) {}
 
 	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
@@ -457,7 +457,7 @@ protected:  // variables
 	// caret
 	bool			m_bReadonly;
 	bool			m_bReadonlyIsChangable;
-	bool			m_bTarget;                     ///< view intended as result
+	bool			m_bTarget;						///< view intended as result
 	POINT			m_ptCaretViewPos;
 	int				m_nCaretGoalPos;
 
@@ -467,7 +467,7 @@ protected:  // variables
 	POINT			m_ptSelectionViewPosOrigin;
 
 	static const UINT m_FindDialogMessage;
-	CFindDlg *      m_pFindDialog;
+	CFindDlg *		m_pFindDialog;
 	CString			m_sFindText;
 	BOOL			m_bMatchCase;
 	bool			m_bLimitToDiff;
@@ -502,8 +502,8 @@ protected:  // variables
 	CString			m_sWordSeparators;
 	CString			m_Eols[EOL__COUNT];
 
-    UnicodeType     m_texttype;   ///< the text encoding this view uses
-    EOL             m_lineendings; ///< the line endings the view uses
+	UnicodeType		m_texttype;		///< the text encoding this view uses
+	EOL				m_lineendings;	///< the line endings the view uses
 
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
@@ -563,7 +563,7 @@ protected:  // variables
 	std::vector<TScreenedViewLine> m_ScreenedViewLine; ///< cached data for screening
 
 	static allviewstate m_AllState;
-	viewstate *     m_pState;
+	viewstate *		m_pState;
 
 	enum PopupCommands
 	{
