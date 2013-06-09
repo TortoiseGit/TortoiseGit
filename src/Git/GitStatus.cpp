@@ -609,7 +609,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				casepath += it->m_CaseFileName;
 
 				bool bIsDir = false;
-				if (onepath.GetLength() > 0 && onepath[onepath.GetLength() - 1] == _T('/'))
+				if (!onepath.IsEmpty() && onepath[onepath.GetLength() - 1] == _T('/'))
 					bIsDir = true;
 
 				LPTSTR onepathBuffer = onepath.GetBuffer();
@@ -622,7 +622,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 
 				if(pos <0 && posintree<0)
 				{
-					if(onepath.GetLength() ==0)
+					if (onepath.IsEmpty())
 						continue;
 
 					if(bIsDir) /*check if it is directory*/
@@ -671,7 +671,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 				}
 				else
 				{
-					if(onepath.GetLength() ==0)
+					if (onepath.IsEmpty())
 						continue;
 
 					if (bIsDir)
