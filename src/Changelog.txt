@@ -3,7 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #1765: Pull button when push (after commit) fails
- * Updated libgit to version 1.8.2.2
+ * Updated libgit to version 1.8.3
  * Support diff.context config key
  * Fixed issue #1778: Add Submodule with Putty key
  * Fixed issue #1800: Automatically remove "git clone " from URL in Clone dialog

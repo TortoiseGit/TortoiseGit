@@ -1,6 +1,7 @@
 #ifndef WIN32
 #define WIN32
 #endif
+#define NO_SYS_POLL_H
 #define HAVE_STRING_H 1
 #define NO_GETTEXT
 #define NO_PREAD
