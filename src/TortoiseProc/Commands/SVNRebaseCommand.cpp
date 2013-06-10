@@ -168,21 +168,6 @@ void SVNRebaseCommand::askIfUserWantsToStashPop()
 {
 	if(CMessageBox::Show(NULL, IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO|MB_ICONINFORMATION) == IDYES)
 	{
-		CSysProgressDlg sysProgressDlg;
-		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
-		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_STASHRUNNING)));
-		sysProgressDlg.SetLine(2, CString(MAKEINTRESOURCE(IDS_PROGRESSWAIT)));
-		sysProgressDlg.SetShowProgressBar(false);
-		sysProgressDlg.SetCancelMsg(IDS_PROGRS_INFOFAILED);
-		sysProgressDlg.ShowModeless((HWND)NULL, true);
-
-		CString cmd,out;
-		cmd=_T("git.exe stash pop");
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			sysProgressDlg.Stop();
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"), MB_OK);
-		}
-		sysProgressDlg.Stop();
+		CAppUtils::StashPop();
 	}
 }
