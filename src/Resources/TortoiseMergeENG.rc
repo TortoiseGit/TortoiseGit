@@ -305,8 +305,8 @@ CAPTION "Formatting inconsistencies"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Formatting inconsistencies have been detected!",IDC_TITLE_FIX,7,7,290,8
-    LTEXT           "Before saving TortoiseMerge can fix some formating incosistencies",IDC_TITLE_SETUP,7,7,290,8
-    LTEXT           "Select what TortoiseMerge should fix:",IDC_DESCRIPTION,7,18,290,8
+    LTEXT           "Before saving TortoiseGitMerge can fix some formating incosistencies",IDC_TITLE_SETUP,7,7,290,8
+    LTEXT           "Select what TortoiseGitMerge should fix:",IDC_DESCRIPTION,7,18,290,8
     CONTROL         "&Remove Trailing spaces and Tabs",IDC_TRIM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,32,280,10
     CONTROL         "Convert Tabs to &Spaces",IDC_USESPACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,44,280,10
     CONTROL         "Convert Spaces to &Tabs",IDC_USETABS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,56,280,10
