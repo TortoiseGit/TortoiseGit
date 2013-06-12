@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "WhitesFixDlg.h"
+#include "WhitesFixSetupDlg.h"
 #include "EncodingDlg.h"
 
 // dialog
@@ -49,8 +50,6 @@ void CWhitesFixDlg::Create(CWnd * pParent)
 void CWhitesFixDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TITLE_FIX, m_titleFix);
-	DDX_Control(pDX, IDC_TITLE_SETUP, m_titleSetup);
 	DDX_Control(pDX, IDC_TRIM, m_trimRight);
 	DDX_Control(pDX, IDC_USESPACES, m_useSpaces);
 	DDX_Control(pDX, IDC_USETABS, m_useTabs);
@@ -80,40 +79,21 @@ void CWhitesFixDlg::OnCancel()
 void CWhitesFixDlg::OnOK()
 {
 	UpdateData();
-	switch (m_eMode)
+	if (m_stopAsking.GetCheck())
 	{
-	case FIX:
-		// in fix mode copy data to public attributes
-		if (m_stopAsking.GetCheck())
-		{
-			Enable(false);
-			convertSpaces = false;
-			convertTabs = false;
-			trimRight = false;
-			fixEols = false;
-		}
-		else
-		{
-			convertSpaces = m_useTabs.GetCheck();
-			convertTabs = m_useSpaces.GetCheck();
-			trimRight = m_trimRight.GetCheck();
-			fixEols = m_fixEols.GetCheck();
-			lineendings = eolArray[m_EOL.GetCurSel()+1];
-		}
-		break;
-
-	case SETUP:
-		// update config
-		{
-			DWORD nTemp = GetSettingsMap() & 1;
-			nTemp |= m_useTabs.GetCheck() ? 2 : 0;
-			nTemp |= (m_useTabs.GetCheck()&0x03)<<2;
-			nTemp |= (m_useSpaces.GetCheck()&0x03)<<2;
-			nTemp |= (m_trimRight.GetCheck()&0x03)<<4;
-			nTemp |= (m_fixEols.GetCheck()&0x03)<<6;
-			SetSettingsMap(nTemp);
-		}
-		break;
+		Enable(false);
+		convertSpaces = false;
+		convertTabs = false;
+		trimRight = false;
+		fixEols = false;
+	}
+	else
+	{
+		convertSpaces = m_useTabs.GetCheck();
+		convertTabs = m_useSpaces.GetCheck();
+		trimRight = m_trimRight.GetCheck();
+		fixEols = m_fixEols.GetCheck();
+		lineendings = eolArray[m_EOL.GetCurSel()+1];
 	}
 
 	__super::OnOK();
@@ -124,48 +104,18 @@ BOOL CWhitesFixDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-/*	CString sTitle;
-	GetWindowText(sTitle);
-	SetWindowText(sTitle + view);//*/
-
-	switch (m_eMode)
+	m_trimRight.SetCheck(trimRight);
+	m_useSpaces.SetCheck(convertTabs);
+	m_useTabs.SetCheck(convertSpaces);
+	m_fixEols.SetCheck(fixEols);
+	m_EOL.EnableWindow(fixEols);
+	for (int i = 1; i < _countof(eolArray); i++)
 	{
-	case FIX:
-		// fix mode
-		m_trimRight.SetCheck(trimRight);
-		m_useSpaces.SetCheck(convertTabs);
-		m_useTabs.SetCheck(convertSpaces);
-		m_fixEols.SetCheck(fixEols);
-		m_EOL.EnableWindow(fixEols);
-		for (int i = 1; i < _countof(eolArray); i++)
+		m_EOL.AddString(GetEolName(eolArray[i]));
+		if (lineendings == eolArray[i])
 		{
-			m_EOL.AddString(GetEolName(eolArray[i]));
-			if (lineendings == eolArray[i])
-			{
-				m_EOL.SetCurSel(i-1);
-			}
+			m_EOL.SetCurSel(i-1);
 		}
-		m_titleSetup.ShowWindow(SW_HIDE);
-		break;
-
-	case SETUP:
-		// setup mode
-		m_trimRight.SetButtonStyle(BS_AUTO3STATE);
-		m_useSpaces.SetButtonStyle(BS_AUTO3STATE);
-		m_useTabs.SetButtonStyle(BS_AUTO3STATE);
-		m_fixEols.SetButtonStyle(BS_AUTO3STATE);
-		m_EOL.ShowWindow(SW_HIDE);
-		m_titleFix.ShowWindow(SW_HIDE);
-		m_stopAsking.ShowWindow(SW_HIDE);
-		m_setup.ShowWindow(SW_HIDE);
-		{
-			DWORD nMap = GetSettingsMap();
-			m_useTabs.SetCheck(nMap&2 ? (nMap>>2)&0x03 : 0);
-			m_useSpaces.SetCheck(nMap&2 ? 0 : (nMap>>2)&0x03);
-			m_trimRight.SetCheck((nMap>>4)&0x03);
-			m_fixEols.SetCheck((nMap>>6)&0x03);
-		}
-		break;
 	}
 
 	return FALSE;
@@ -173,78 +123,50 @@ BOOL CWhitesFixDlg::OnInitDialog()
 
 void CWhitesFixDlg::OnStopAskingClick()
 {
-	m_trimRight.EnableWindow(!m_stopAsking.GetCheck());
-	m_useSpaces.EnableWindow(!m_stopAsking.GetCheck());
-	m_useTabs.EnableWindow(!m_stopAsking.GetCheck());
-	m_fixEols.EnableWindow(!m_stopAsking.GetCheck());
-	m_EOL.EnableWindow(!m_stopAsking.GetCheck() && m_fixEols.GetCheck());
-	m_setup.EnableWindow(!m_stopAsking.GetCheck());
+	BOOL bStopAsking = m_stopAsking.GetCheck();
+	m_trimRight.EnableWindow(!bStopAsking);
+	m_useSpaces.EnableWindow(!bStopAsking);
+	m_useTabs.EnableWindow(!bStopAsking);
+	m_fixEols.EnableWindow(!bStopAsking);
+	m_EOL.EnableWindow(!bStopAsking && m_fixEols.GetCheck());
+	m_setup.EnableWindow(!bStopAsking);
 }
 
 
 // methods
 
-INT_PTR CWhitesFixDlg::DoModalConfirmMode()
-{
-	DWORD nFixBeforeSaveMap = GetSettingsMap();
-	/*
-		Bit map
-		 - 0 : Checking On / Off
-		 - 1 : Prefer spaces to tabs
-		 - 2 : Automatic fix of Indentation style
-		 - 3 : Asking for fix of Indentation style
-		 - 4 : Automatic fix of Trail enabled
-		 - 5 : Asking for fix of Trail enabled
-		 - 6 : Automatic fix of EOLs enabled
-		 - 7 : Asking for fix of EOLs enabled
-		 \note if Automatic and Asking is on Asking have priority
-	*/
-	if ((nFixBeforeSaveMap & (1<<0)) == 0)
-	{
-		// checking is disabled, stop all actions
-		convertSpaces = false;
-		convertTabs = false;
-		trimRight = false;
-		fixEols = false;
-		return IDOK;
-	}
-
-	bool bBothIndentationFound = convertSpaces && convertTabs;
-	bool askConvertSpaces = bBothIndentationFound && ((nFixBeforeSaveMap & 0x0A) == 0x0A);
-	bool askConvertTabs = bBothIndentationFound && ((nFixBeforeSaveMap & 0x0A) == 0x08);
-	bool askTrimRight = trimRight && (nFixBeforeSaveMap & (1<<5));
-	bool askFixEols = fixEols && (nFixBeforeSaveMap & (1<<7));
-	convertSpaces = askConvertSpaces || (bBothIndentationFound && ((nFixBeforeSaveMap & 0x06) == 0x06));
-	convertTabs = askConvertTabs || (bBothIndentationFound && ((nFixBeforeSaveMap & 0x06) == 0x04));
-	trimRight = askTrimRight || (trimRight && (nFixBeforeSaveMap & (1<<4)));
-	fixEols = askFixEols || (fixEols && (nFixBeforeSaveMap & (1<<6)));
-
-	// if checking for format change is enabled and coresponding change is detected show dialog
-	if (askConvertSpaces
-			|| askConvertTabs
-			|| askTrimRight
-			|| askFixEols)
-	{
-		m_eMode = FIX;
-		return DoModal();
-	}
-	return IDOK;
-}
-
-INT_PTR CWhitesFixDlg::DoModalSetupMode()
-{
-	m_eMode = SETUP;
-	return DoModal();
-}
-
 void CWhitesFixDlg::Enable(bool bEnable)
 {
-	DWORD nMap = GetSettingsMap() & ~1;
-	nMap |= bEnable ? 1 : 0;
+	DWORD nMap = GetSettingsMap() & ~TMERGE_WSF_GLOBALCHECK;
+	nMap |= bEnable ? TMERGE_WSF_GLOBALCHECK : 0;
 	SetSettingsMap(nMap);
 }
 
 bool CWhitesFixDlg::IsEnabled()
 {
-	return GetSettingsMap() & 1;
+	return GetSettingsMap() & TMERGE_WSF_GLOBALCHECK;
+}
+
+void CWhitesFixDlg::OnSetupClick()
+{
+	CWhitesFixSetupDlg dlg;
+	dlg.DoModal();
+}
+
+bool CWhitesFixDlg::HasSomethingToFix()
+{
+	// check if any of the inconsistencies
+	// are enabled for fixing
+
+	DWORD nMap = GetSettingsMap();
+	if ((nMap & TMERGE_WSF_GLOBALCHECK) == 0)
+		return false;
+	if ((nMap & TMERGE_WSF_ASKFIX_TABSPACE) && (convertTabs || convertSpaces))
+		return true;
+	if ((nMap & TMERGE_WSF_ASKFIX_TRAIL) && trimRight)
+		return true;
+	if ((nMap & TMERGE_WSF_ASKFIX_TRAIL) && fixEols)
+		return true;
+
+	return false;
 }

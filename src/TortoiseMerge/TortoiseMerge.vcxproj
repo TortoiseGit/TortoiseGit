@@ -229,6 +229,7 @@
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="ViewData.cpp" />
     <ClCompile Include="WhitesFixDlg.cpp" />
+    <ClCompile Include="WhitesFixSetupDlg.cpp" />
     <ClCompile Include="WorkingFile.cpp" />
     <ClCompile Include="AppUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp" />
@@ -418,6 +419,7 @@
     <ClInclude Include="TortoiseMerge.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="ViewData.h" />
+    <ClInclude Include="WhitesFixSetupDlg.h" />
     <ClInclude Include="WorkingFile.h" />
     <ClInclude Include="AppUtils.h" />
     <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h" />
@@ -453,7 +455,9 @@
     <None Include="..\Resources\moved.ico" />
     <None Include="..\Resources\ribbon.mfcribbon-ms" />
     <None Include="..\Resources\ribbon\ribbonlarge.png" />
+    <None Include="..\Resources\ribbon\ribbonlargehdpi.png" />
     <None Include="..\Resources\ribbon\ribbonsmall.png" />
+    <None Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
     <None Include="..\Resources\ribbon\TortoiseMerge.png" />
     <None Include="..\Resources\Toolbar.bmp" />
     <None Include="..\Resources\TortoiseMerge.ico" />
@@ -489,12 +493,6 @@
       <Project>{7ca5b1eb-8cc9-40a6-96d8-83649c1a870b}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resources\ribbon\ribbonlargehdpi.png" />
-    <Image Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
-    <Image Include="..\Resources\ribbon\ribbonlarge.png" />
-    <Image Include="..\Resources\ribbon\ribbonsmall.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,6 +24,7 @@
 #include "PathUtils.h"
 #include "SetMainPage.h"
 #include "WhitesFixDlg.h"
+#include "WhitesFixSetupDlg.h"
 
 
 // CSetMainPage dialog
@@ -258,5 +259,6 @@ void CSetMainPage::OnBnClickedStopaskinconsistencies()
 
 void CSetMainPage::OnSetupClick()
 {
-	CWhitesFixDlg().DoModalSetupMode();
+	CWhitesFixSetupDlg dlg;
+	dlg.DoModal();
 }

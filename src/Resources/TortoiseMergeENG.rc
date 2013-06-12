@@ -203,19 +203,19 @@ BEGIN
     CONTROL         "Add new files automatically to Git",IDC_AUTOADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,236,10
     CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,236,10
     CONTROL         "Don't ask to fix inconsistencies when saving",IDC_STOPASKINCONSISTENCIES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,101,236,10
-    LTEXT           "&Tab size:",IDC_STATIC,15,131,54,8
-    EDITTEXT        IDC_TABSIZE,80,128,41,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "&Font:",IDC_STATIC,15,148,52,8
-    COMBOBOX        IDC_FONTNAMES,80,146,122,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_FONTSIZES,211,146,40,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "&Max line length for inline diffs",IDC_STATIC,15,183,173,8
-    EDITTEXT        IDC_MAXINLINE,211,181,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "Ignore line &endings (recommended)",IDC_IGNORELF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,196,237,10
-    CONTROL         "Ignore case cha&nges",IDC_CASEINSENSITIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,207,236,10
-    GROUPBOX        "Misc",IDC_MISCGROUP,7,0,251,168
-    GROUPBOX        "Diffing",IDC_DIFFGROUP,7,175,251,68
-    PUSHBUTTON      "Details ...",IDC_SETUP,30,111,50,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,102,236,10
+    LTEXT           "&Tab size:",IDC_STATIC,15,143,54,8
+    EDITTEXT        IDC_TABSIZE,80,140,41,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Font:",IDC_STATIC,15,160,52,8
+    COMBOBOX        IDC_FONTNAMES,80,158,122,90,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_FONTSIZES,211,158,40,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Max line length for inline diffs",IDC_STATIC,15,196,173,8
+    EDITTEXT        IDC_MAXINLINE,211,194,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Ignore line &endings (recommended)",IDC_IGNORELF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,209,237,10
+    CONTROL         "Ignore case cha&nges",IDC_CASEINSENSITIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,220,236,10
+    GROUPBOX        "Misc",IDC_MISCGROUP,7,0,251,181
+    GROUPBOX        "Diffing",IDC_DIFFGROUP,7,186,251,57
+    PUSHBUTTON      "Details ...",IDC_SETUP,27,115,161,14
 END
 
 IDD_SETCOLORPAGE DIALOGEX 0, 0, 265, 257
@@ -305,7 +305,6 @@ CAPTION "Formatting inconsistencies"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Formatting inconsistencies have been detected!",IDC_TITLE_FIX,7,7,290,8
-    LTEXT           "Before saving TortoiseGitMerge can fix some formating incosistencies",IDC_TITLE_SETUP,7,7,290,8
     LTEXT           "Select what TortoiseGitMerge should fix:",IDC_DESCRIPTION,7,18,290,8
     CONTROL         "&Remove Trailing spaces and Tabs",IDC_TRIM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,32,280,10
     CONTROL         "Convert Tabs to &Spaces",IDC_USESPACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,44,280,10
@@ -314,9 +313,22 @@ BEGIN
     COMBOBOX        IDC_COMBO_EOL,29,81,47,30,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
     CONTROL         "&Don't ask anymore, always save without fixing.",IDC_STOPASKING,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,103,171,10
-    PUSHBUTTON      "Setup ...",IDC_SETUP,7,116,50,14
-    DEFPUSHBUTTON   "OK",IDOK,198,116,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,252,116,50,14
+    PUSHBUTTON      "Setu&p ...",IDC_SETUP,7,116,94,14
+    DEFPUSHBUTTON   "&Fix and Save",IDOK,108,116,94,14
+    PUSHBUTTON      "Cancel",IDCANCEL,208,116,94,14
+END
+
+IDD_WHITESFIXSETUP DIALOGEX 0, 0, 309, 101
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Whitespace-fix setup"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,80,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,252,80,50,14
+    CONTROL         "&Trailing spaces and Tabs",IDC_TRIM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,36,280,10
+    CONTROL         "Inconsistent Tabs and &Spaces",IDC_USESPACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,50,280,10
+    CONTROL         "Inconsistent &EOLs",IDC_FIXEOLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,63,280,10
+    LTEXT           "Select what TortoiseGitMerge should automatically detect and offer to fix when saving",IDC_STATIC,7,7,295,25
 END
 
 
@@ -414,6 +426,14 @@ BEGIN
         VERTGUIDE, 19
         TOPMARGIN, 7
         BOTTOMMARGIN, 130
+    END
+
+    IDD_WHITESFIXSETUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 94
     END
 END
 #endif    // APSTUDIO_INVOKED

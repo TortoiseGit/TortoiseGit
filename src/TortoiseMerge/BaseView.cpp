@@ -5840,7 +5840,7 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties(bool scanAll
 {
 	if (!scanAll && GetViewCount()>10000)
 	{
-		// 10k lines is enought to check
+		// 10k lines is enough to check
 		TWhitecharsProperties oRet = {true, true, true, true};
 		return oRet;
 	}
@@ -5902,21 +5902,27 @@ int CBaseView::FixBeforeSave()
 {
 	TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties(true);
 	CWhitesFixDlg dlg;
-	dlg.convertSpaces = oWhitesCurrent.HasSpacesToConvert;
-	dlg.convertTabs = oWhitesCurrent.HasTabsToConvert;
-	dlg.trimRight = oWhitesCurrent.HasTrailWhiteChars;
-	dlg.fixEols = oWhitesCurrent.HasMixedEols;
-	dlg.lineendings = m_lineendings;
-	// if checking for format change is enabled and corresponding change is detected show dialog
-	if (dlg.DoModalConfirmMode() != IDOK)
-		return -1; // user cancel action
-	if (dlg.convertSpaces)
-		Tabularize();
-	if (dlg.convertTabs)
-		ConvertTabToSpaces();
-	if (dlg.trimRight)
-		RemoveTrailWhiteChars();
-	if (dlg.fixEols)
-		ReplaceLineEndings(dlg.lineendings);
+	if (dlg.IsEnabled())
+	{
+		dlg.convertSpaces = oWhitesCurrent.HasSpacesToConvert;
+		dlg.convertTabs = oWhitesCurrent.HasTabsToConvert;
+		dlg.trimRight = oWhitesCurrent.HasTrailWhiteChars;
+		dlg.fixEols = oWhitesCurrent.HasMixedEols;
+		dlg.lineendings = m_lineendings;
+		// if checking for format change is enabled and corresponding change is detected show dialog
+		if (dlg.HasSomethingToFix())
+		{
+			if (dlg.DoModal() != IDOK)
+				return -1; // user cancel action
+			if (dlg.convertSpaces)
+				Tabularize();
+			if (dlg.convertTabs)
+				ConvertTabToSpaces();
+			if (dlg.trimRight)
+				RemoveTrailWhiteChars();
+			if (dlg.fixEols)
+				ReplaceLineEndings(dlg.lineendings);
+		}
+	}
 	return 0; // no errors
 }

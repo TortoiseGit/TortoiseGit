@@ -11,7 +11,7 @@
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;png</Extensions>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{95777dab-da10-49af-990c-44113399a0bc}</UniqueIdentifier>
@@ -282,6 +282,9 @@
     <ClCompile Include="WhitesFixDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WhitesFixSetupDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="EOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -503,6 +506,9 @@
     <ClInclude Include="EncodingDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WhitesFixSetupDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">
@@ -571,7 +577,13 @@
     <None Include="..\Resources\ribbon\ribbonlarge.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\ribbon\ribbonlargehdpi.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\Resources\ribbon\ribbonsmall.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\ribbon\ribbonsmallhdpi.png">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -579,11 +591,5 @@
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resources\ribbon\ribbonsmall.png" />
-    <Image Include="..\Resources\ribbon\ribbonlarge.png" />
-    <Image Include="..\Resources\ribbon\ribbonsmallhdpi.png" />
-    <Image Include="..\Resources\ribbon\ribbonlargehdpi.png" />
   </ItemGroup>
 </Project>

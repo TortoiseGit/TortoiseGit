@@ -23,6 +23,13 @@
 #include "FileTextLines.h"
 #include "registry.h"
 
+#define TMERGE_WSF_GLOBALCHECK              (1<<0)
+#define TMERGE_WSF_ASKFIX_TABSPACE          (1<<1)
+#define TMERGE_WSF_ASKFIX_INDENTATION       (1<<2)
+#define TMERGE_WSF_ASKFIX_TRAIL             (1<<3)
+#define TMERGE_WSF_ASKFIX_EOL               (1<<4)
+
+
 /**
  * \ingroup TortoiseMerge
  * WhitesFix dialog used in TortoiseMerge.
@@ -36,11 +43,12 @@ public:
 	virtual ~CWhitesFixDlg();
 	void Create(CWnd * pParent = NULL);
 
-	INT_PTR DoModalConfirmMode();
-	INT_PTR DoModalSetupMode();
-
 	static void Enable(bool bEnable = true);
 	static bool IsEnabled();
+	bool HasSomethingToFix();
+
+	static DWORD GetSettingsMap() { return CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1); }
+	static void SetSettingsMap(DWORD nNewMap) { CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1) = nNewMap; }
 
 	// Dialog Data
 	enum { IDD = IDD_WHITESFIX };
@@ -54,16 +62,10 @@ public:
 	BOOL stopAsking;
 
 protected:
-	// typedefs
-	enum EMode {
-		FIX,
-		SETUP,
-	};
-
 	afx_msg void	OnUseEolsClick() { m_EOL.EnableWindow(m_fixEols.GetCheck()); }
 	afx_msg void	OnUseSpacesClick() { m_useTabs.SetCheck(0); }
 	afx_msg void	OnUseTabsClick() { m_useSpaces.SetCheck(0); }
-	afx_msg void	OnSetupClick() { CWhitesFixDlg().DoModalSetupMode(); }
+	afx_msg void	OnSetupClick();
 	afx_msg void	OnStopAskingClick();
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
@@ -73,11 +75,7 @@ protected:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 
-	static DWORD GetSettingsMap() { return CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)0xAAA9); }
-	static void SetSettingsMap(DWORD nNewMap) { CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)0xAAA9) = nNewMap; }
 
-	CButton m_titleFix;
-	CButton m_titleSetup;
 	CButton m_useSpaces;
 	CButton m_useTabs;
 	CButton m_trimRight;
@@ -85,9 +83,4 @@ protected:
 	CComboBox m_EOL;
 	CButton m_stopAsking;
 	CButton m_setup;
-
-	EMode m_eMode;
-
-private:
-	virtual INT_PTR DoModal() { return CDialog::DoModal(); }
 };
