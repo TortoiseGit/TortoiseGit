@@ -23,6 +23,7 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "SetMainPage.h"
+#include "WhitesFixDlg.h"
 
 
 // CSetMainPage dialog
@@ -59,7 +60,6 @@ CSetMainPage::CSetMainPage()
 	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
-	m_regDontFixInconsistencies = CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), FALSE);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
@@ -73,7 +73,7 @@ CSetMainPage::CSetMainPage()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-	m_bDontFixInconsistencies = DWORD(m_regDontFixInconsistencies) != (DWORD)-1;
+	m_bDontFixInconsistencies = !CWhitesFixDlg::IsEnabled();
 }
 
 CSetMainPage::~CSetMainPage()
@@ -106,6 +106,8 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXINLINE, m_nMaxInline);
 	DDX_Check(pDX, IDC_USERIBBONS, m_bUseRibbons);
 	DDX_Check(pDX, IDC_STOPASKINCONSISTENCIES, m_bDontFixInconsistencies);
+	DDX_Control(pDX, IDC_SETUP, m_askIncosistenciesDetails);
+	m_askIncosistenciesDetails.EnableWindow(!m_bDontFixInconsistencies);
 }
 
 void CSetMainPage::SaveData()
@@ -124,7 +126,7 @@ void CSetMainPage::SaveData()
 	m_regAutoAdd = m_bAutoAdd;
 	m_regMaxInline = m_nMaxInline;
 	m_regUseRibbons = m_bUseRibbons;
-	m_regDontFixInconsistencies = m_bDontFixInconsistencies ? 0 : (DWORD)-1;
+	CWhitesFixDlg::Enable(!m_bDontFixInconsistencies);
 }
 
 BOOL CSetMainPage::OnApply()
@@ -159,7 +161,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
-	m_bDontFixInconsistencies = DWORD(m_regDontFixInconsistencies) != (DWORD)-1;
+	m_bDontFixInconsistencies = !CWhitesFixDlg::IsEnabled();
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);
 
@@ -208,7 +210,8 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_MAXINLINE, &CSetMainPage::OnModifiedWithReload)
 	ON_BN_CLICKED(IDC_USERIBBONS, &CSetMainPage::OnModified)
-	ON_BN_CLICKED(IDC_STOPASKINCONSISTENCIES, &CSetMainPage::OnModified)
+	ON_BN_CLICKED(IDC_STOPASKINCONSISTENCIES, &CSetMainPage::OnBnClickedStopaskinconsistencies)
+	ON_COMMAND(IDC_SETUP, OnSetupClick)
 END_MESSAGE_MAP()
 
 
@@ -247,3 +250,13 @@ BOOL CSetMainPage::DialogEnableWindow(UINT nID, BOOL bEnable)
 	return pwndDlgItem->EnableWindow(bEnable);
 }
 
+void CSetMainPage::OnBnClickedStopaskinconsistencies()
+{
+	OnModified();
+	m_askIncosistenciesDetails.EnableWindow(!m_bDontFixInconsistencies);
+}
+
+void CSetMainPage::OnSetupClick()
+{
+	CWhitesFixDlg().DoModalSetupMode();
+}

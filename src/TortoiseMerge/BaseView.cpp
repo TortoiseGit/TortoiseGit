@@ -121,7 +121,6 @@ CBaseView::CBaseView()
 	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
-	m_nFixBeforeSaveMap = CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
 	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
 	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
@@ -2287,7 +2286,7 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 	}
 	if ((cmd>=nEolCommandBase) && (cmd<nEolCommandBase+(int)_countof(eolArray)))
 	{
-		SetLineEndings(eolArray[cmd-nEolCommandBase]);
+		ReplaceLineEndings(eolArray[cmd-nEolCommandBase]);
 		SaveUndoStep();
 	}
 	switch (cmd)
@@ -3697,6 +3696,7 @@ void CBaseView::AddUndoViewLine(int nViewLine, bool bAddEmptyLine)
 	m_AllState.left.AddViewLineFromView(m_pwndLeft, nViewLine, bAddEmptyLine);
 	m_AllState.right.AddViewLineFromView(m_pwndRight, nViewLine, bAddEmptyLine);
 	m_AllState.bottom.AddViewLineFromView(m_pwndBottom, nViewLine, bAddEmptyLine);
+	SetModified();
 	SaveUndoStep();
 	RecalcAllVertScrollBars();
 	Invalidate(FALSE);
@@ -5468,7 +5468,7 @@ EOL CBaseView::GetLineEndings(bool bHasMixedEols)
 	return m_lineendings;
 }
 
-void CBaseView::SetLineEndings(EOL eEol)
+void CBaseView::ReplaceLineEndings(EOL eEol)
 {
 	if (eEol == EOL_AUTOLINE)
 	{
@@ -5498,6 +5498,11 @@ void CBaseView::SetLineEndings(EOL eEol)
 	SetModified();
 }
 
+void CBaseView::SetLineEndingStyle(EOL eEol)
+{
+	m_lineendings = eEol;
+}
+
 void CBaseView::SetTextType(CFileTextLines::UnicodeType eTextType)
 {
 	if (m_texttype == eTextType)
@@ -5520,7 +5525,7 @@ void CBaseView::AskUserForNewLineEndingsAndTextType(int nTextId)
 	if (dlg.DoModal() != IDOK)
 		return;
 	SetTextType(dlg.texttype);
-	SetLineEndings(dlg.lineendings);
+	ReplaceLineEndings(dlg.lineendings);
 }
 
 /**
@@ -5894,35 +5899,23 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
 
 int CBaseView::FixBeforeSave()
 {
-	if (m_nFixBeforeSaveMap != 0)
-	{
-		TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties();
-		CWhitesFixDlg dlg;
-		dlg.convertSpacesEnabled = oWhitesCurrent.HasSpacesToConvert && (!m_oWhitesOnLoad.HasSpacesToConvert && m_oWhitesOnLoad.HasTabsToConvert);
-		dlg.convertTabsEnabled = oWhitesCurrent.HasTabsToConvert && (!m_oWhitesOnLoad.HasTabsToConvert && m_oWhitesOnLoad.HasSpacesToConvert);
-		dlg.trimRightEnabled = oWhitesCurrent.HasTrailWhiteChars && (!m_oWhitesOnLoad.HasTrailWhiteChars);
-		dlg.fixEolsEnabled = oWhitesCurrent.HasMixedEols && (!m_oWhitesOnLoad.HasMixedEols);
-		dlg.lineendings = m_lineendings;
-		// if checking for format change is enabled and corresponding change is detected show dialog
-		if (((((m_nFixBeforeSaveMap&1)!=0) && dlg.convertSpacesEnabled)
-				|| (((m_nFixBeforeSaveMap&2)!=0) && dlg.convertTabsEnabled)
-				|| (((m_nFixBeforeSaveMap&4)!=0) && dlg.trimRightEnabled)
-				|| (((m_nFixBeforeSaveMap&8)!=0) && dlg.fixEolsEnabled))
-				&& dlg.DoModal() != IDOK)
-			return -1;
-		if (dlg.convertSpaces)
-			Tabularize();
-		if (dlg.convertTabs)
-			ConvertTabToSpaces();
-		if (dlg.trimRight)
-			RemoveTrailWhiteChars();
-		if (dlg.fixEols)
-			SetLineEndings(dlg.lineendings);
-		if (dlg.stopAsking)
-		{
-			CRegDWORD regFixBeforeSaveMap(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1);
-			regFixBeforeSaveMap = 0;
-		}
-	}
+	TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties();
+	CWhitesFixDlg dlg;
+	dlg.convertSpaces = oWhitesCurrent.HasSpacesToConvert;
+	dlg.convertTabs = oWhitesCurrent.HasTabsToConvert;
+	dlg.trimRight = oWhitesCurrent.HasTrailWhiteChars;
+	dlg.fixEols = oWhitesCurrent.HasMixedEols;
+	dlg.lineendings = m_lineendings;
+	// if checking for format change is enabled and corresponding change is detected show dialog
+	if (dlg.DoModalConfirmMode() != IDOK)
+		return -1; // user cancel action
+	if (dlg.convertSpaces)
+		Tabularize();
+	if (dlg.convertTabs)
+		ConvertTabToSpaces();
+	if (dlg.trimRight)
+		RemoveTrailWhiteChars();
+	if (dlg.fixEols)
+		ReplaceLineEndings(dlg.lineendings);
 	return 0; // no errors
 }

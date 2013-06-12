@@ -764,7 +764,7 @@ bool CMainFrame::LoadViews(int line)
 
 			m_pwndLeftView->m_pViewData = &m_Data.m_YourBaseBoth;
 			m_pwndLeftView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
-			m_pwndLeftView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
+			m_pwndLeftView->SetLineEndingStyle(m_Data.m_arYourFile.GetLineEndings());
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName() + _T(" - ") + m_Data.m_yourFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename() + _T(" - ") + m_Data.m_yourFile.GetFilename();
 			m_pwndLeftView->m_pWorkingFile = &m_Data.m_yourFile;
@@ -791,7 +791,7 @@ bool CMainFrame::LoadViews(int line)
 
 			m_pwndLeftView->m_pViewData = &m_Data.m_YourBaseLeft;
 			m_pwndLeftView->SetTextType(m_Data.m_arBaseFile.GetUnicodeType());
-			m_pwndLeftView->SetLineEndings(m_Data.m_arBaseFile.GetLineEndings());
+			m_pwndLeftView->SetLineEndingStyle(m_Data.m_arBaseFile.GetLineEndings());
 			m_pwndLeftView->m_sWindowName = m_Data.m_baseFile.GetWindowName();
 			m_pwndLeftView->m_sFullFilePath = m_Data.m_baseFile.GetFilename();
 			m_pwndLeftView->m_sConvertedFilePath = m_Data.m_baseFile.GetConvertedFileName();
@@ -800,7 +800,7 @@ bool CMainFrame::LoadViews(int line)
 
 			m_pwndRightView->m_pViewData = &m_Data.m_YourBaseRight;
 			m_pwndRightView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
-			m_pwndRightView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
+			m_pwndRightView->SetLineEndingStyle(m_Data.m_arYourFile.GetLineEndings());
 			m_pwndRightView->m_sWindowName = m_Data.m_yourFile.GetWindowName();
 			m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
 			m_pwndRightView->m_sConvertedFilePath = m_Data.m_yourFile.GetConvertedFileName();
@@ -827,7 +827,7 @@ bool CMainFrame::LoadViews(int line)
 
 		m_pwndLeftView->m_pViewData = &m_Data.m_TheirBaseBoth;
 		m_pwndLeftView->SetTextType(m_Data.m_arTheirFile.GetUnicodeType());
-		m_pwndLeftView->SetLineEndings(m_Data.m_arTheirFile.GetLineEndings());
+		m_pwndLeftView->SetLineEndingStyle(m_Data.m_arTheirFile.GetLineEndings());
 		m_pwndLeftView->m_sWindowName.LoadString(IDS_VIEWTITLE_THEIRS);
 		m_pwndLeftView->m_sWindowName += _T(" - ") + m_Data.m_theirFile.GetWindowName();
 		m_pwndLeftView->m_sFullFilePath = m_Data.m_theirFile.GetFilename();
@@ -836,7 +836,7 @@ bool CMainFrame::LoadViews(int line)
 
 		m_pwndRightView->m_pViewData = &m_Data.m_YourBaseBoth;
 		m_pwndRightView->SetTextType(m_Data.m_arYourFile.GetUnicodeType());
-		m_pwndRightView->SetLineEndings(m_Data.m_arYourFile.GetLineEndings());
+		m_pwndRightView->SetLineEndingStyle(m_Data.m_arYourFile.GetLineEndings());
 		m_pwndRightView->m_sWindowName.LoadString(IDS_VIEWTITLE_MINE);
 		m_pwndRightView->m_sWindowName += _T(" - ") + m_Data.m_yourFile.GetWindowName();
 		m_pwndRightView->m_sFullFilePath = m_Data.m_yourFile.GetFilename();
@@ -845,7 +845,7 @@ bool CMainFrame::LoadViews(int line)
 
 		m_pwndBottomView->m_pViewData = &m_Data.m_Diff3;
 		m_pwndBottomView->SetTextType(m_Data.m_arTheirFile.GetUnicodeType());
-		m_pwndBottomView->SetLineEndings(m_Data.m_arTheirFile.GetLineEndings());
+		m_pwndBottomView->SetLineEndingStyle(m_Data.m_arTheirFile.GetLineEndings());
 		m_pwndBottomView->m_sWindowName.LoadString(IDS_VIEWTITLE_MERGED);
 		m_pwndBottomView->m_sWindowName += _T(" - ") + m_Data.m_mergedFile.GetWindowName();
 		m_pwndBottomView->m_sFullFilePath = m_Data.m_mergedFile.GetFilename();
@@ -1155,7 +1155,10 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 	Invalidate();
 	if ((pViewData)&&(pOriginFile))
 	{
-		pView->FixBeforeSave();
+		if (pView->FixBeforeSave()!=0)
+		{
+			return -1; // user aborted saving
+		}
 		CFileTextLines file;
 		pOriginFile->CopySettings(&file);
 		CFileTextLines::SaveParams saveParams;

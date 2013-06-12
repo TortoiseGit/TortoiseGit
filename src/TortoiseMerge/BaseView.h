@@ -259,7 +259,8 @@ public: // variables
 
 	EOL				GetLineEndings();											///< Get Line endings on view from lineendings or "mixed"
 	EOL				GetLineEndings(bool MixelEols);
-	void			SetLineEndings(EOL);										///< Set AUTO lineendings and replaces all EOLs
+	void			ReplaceLineEndings(EOL);									///< Set AUTO lineending and replaces all EOLs
+	void			SetLineEndingStyle(EOL);									///< Set AUTO lineending
 	UnicodeType		GetTextType() { return m_texttype; }
 	void			SetTextType(UnicodeType);									///< Changes TextType
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
@@ -464,7 +465,6 @@ protected:  // variables
 	int				m_nTabSize;
 	int				m_nDigits;
 	bool			m_bInlineWordDiff;
-	DWORD			m_nFixBeforeSaveMap;
 
 	// Block selection attributes
 	int				m_nSelViewBlockStart;
