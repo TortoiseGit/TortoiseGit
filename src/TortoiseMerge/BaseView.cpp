@@ -3072,7 +3072,7 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		nViewLine = ptViewCarret.y;
 		if (nViewLine >= GetViewCount())
 			return;
-		CString sLine = GetViewLine(nViewLine);
+		const CString &sLine = GetViewLine(nViewLine);
 		int nLineLength = sLine.GetLength();
 		int nBasePos = ptViewCarret.x;
 		// get target char group
@@ -5452,7 +5452,7 @@ int CBaseView::SaveFileTo(CString sFileName, int nFlags)
 
 EOL CBaseView::GetLineEndings()
 {
-	return GetLineEndings(GetWhitecharsProperties().HasMixedEols);
+	return GetLineEndings(GetWhitecharsProperties(true).HasMixedEols);
 }
 
 EOL CBaseView::GetLineEndings(bool bHasMixedEols)
@@ -5642,8 +5642,9 @@ void CBaseView::AddIndentationForSelectedBlock()
 		{
 			continue;
 		}
-		CString sLine = GetViewLine(nViewLine);
-		if (sLine.Trim().IsEmpty())
+		const CString &sLine = GetViewLine(nViewLine);
+		CString sTemp = sLine;
+		if (sTemp.Trim().IsEmpty())
 		{
 			// skip empty and whitechar only lines
 			continue;
@@ -5715,7 +5716,7 @@ void CBaseView::ConvertTabToSpaces()
 		{
 			continue;
 		}
-		CString sLine = GetViewLine(nViewLine);
+		const CString &sLine = GetViewLine(nViewLine);
 		bool bTabToConvertFound = false;
 		int nPosIn = 0;
 		int nPosOut = 0;
@@ -5766,7 +5767,7 @@ void CBaseView::Tabularize()
 		{
 			continue;
 		}
-		CString sLine = GetViewLine(nViewLine);
+		const CString &sLine = GetViewLine(nViewLine);
 		int nDel = 0;
 		int nTabCount = 0; // total tabs to be used
 		int nSpaceCount = 0; // number of spaces in tab size run
@@ -5818,7 +5819,7 @@ void CBaseView::RemoveTrailWhiteChars()
 		{
 			continue;
 		}
-		CString sLine = GetViewLine(nViewLine);
+		const CString &sLine = GetViewLine(nViewLine);
 		CString sLineNew = sLine;
 		sLineNew.TrimRight();
 		if (sLine.GetLength()!=sLineNew.GetLength())
@@ -5835,9 +5836,9 @@ void CBaseView::RemoveTrailWhiteChars()
 	}
 }
 
-CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
+CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties(bool scanAll)
 {
-	if (GetViewCount()>10000)
+	if (!scanAll && GetViewCount()>10000)
 	{
 		// 10k lines is enought to check
 		TWhitecharsProperties oRet = {true, true, true, true};
@@ -5850,7 +5851,7 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
 		{
 			continue;
 		}
-		CString sLine = GetViewLine(nViewLine);
+		const CString &sLine = GetViewLine(nViewLine);
 		if (sLine.IsEmpty())
 		{
 			continue;
@@ -5899,7 +5900,7 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
 
 int CBaseView::FixBeforeSave()
 {
-	TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties();
+	TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties(true);
 	CWhitesFixDlg dlg;
 	dlg.convertSpaces = oWhitesCurrent.HasSpacesToConvert;
 	dlg.convertTabs = oWhitesCurrent.HasTabsToConvert;

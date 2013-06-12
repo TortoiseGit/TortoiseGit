@@ -225,7 +225,7 @@ public: // methods
 		bool HasTabsToConvert;
 	};
 
-	TWhitecharsProperties   GetWhitecharsProperties();
+	TWhitecharsProperties   GetWhitecharsProperties(bool scanAll = false);
 	int						FixBeforeSave();
 
 public: // variables
