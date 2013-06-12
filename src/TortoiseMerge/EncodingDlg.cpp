@@ -20,7 +20,7 @@
 #include "EncodingDlg.h"
 
 
-static CFileTextLines::UnicodeType uctArray[] =
+const CFileTextLines::UnicodeType uctArray[] =
 {
 	CFileTextLines::ASCII,
 	CFileTextLines::UTF16_LE,
@@ -31,7 +31,7 @@ static CFileTextLines::UnicodeType uctArray[] =
 	CFileTextLines::UTF8BOM
 };
 
-static EOL eolArray[] =
+const EOL eolArray[] =
 {
 	EOL_AUTOLINE,
 	EOL_CRLF,
@@ -45,7 +45,7 @@ static EOL eolArray[] =
 	EOL_PS
 };
 
-// CFindDlg dialog
+// dialog
 
 IMPLEMENT_DYNAMIC(CEncodingDlg, CDialog)
 
@@ -72,7 +72,7 @@ BEGIN_MESSAGE_MAP(CEncodingDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-// CFindDlg message handlers
+// message handlers
 
 void CEncodingDlg::OnCancel()
 {

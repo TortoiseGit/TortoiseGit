@@ -22,34 +22,46 @@
 #include "HistoryCombo.h"
 #include "FileTextLines.h"
 
-extern const CFileTextLines::UnicodeType uctArray[7];
-extern const EOL eolArray[10];
-
 /**
  * \ingroup TortoiseMerge
- * Encoding dialog used in TortoiseMerge.
+ * WhitesFix dialog used in TortoiseMerge.
  */
-class CEncodingDlg : public CDialog
+class CWhitesFixDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CEncodingDlg)
+	DECLARE_DYNAMIC(CWhitesFixDlg)
 
 public:
-	CEncodingDlg(CWnd* pParent = NULL);   // standard constructor
-	virtual ~CEncodingDlg();
+	CWhitesFixDlg(CWnd* pParent = NULL);	// standard constructor
+	virtual ~CWhitesFixDlg();
 	void Create(CWnd * pParent = NULL) {CDialog::Create(IDD, pParent);ShowWindow(SW_SHOW);UpdateWindow();}
 // Dialog Data
-	enum { IDD = IDD_ENCODING };
+	enum { IDD = IDD_WHITESFIX };
 
-	CFileTextLines::UnicodeType texttype;
+	// in: control enabled
+	bool convertSpacesEnabled;
+	bool convertTabsEnabled;
+	bool trimRightEnabled;
+	bool fixEolsEnabled;
+
+	// in out: values
+	BOOL convertSpaces;
+	BOOL convertTabs;
+	BOOL trimRight;
+	BOOL fixEols;
 	EOL lineendings;
-	CString view;
+	BOOL stopAsking;
+
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnCancel();
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
-	CComboBox m_Encoding;
+	CButton m_convertSpaces;
+	CButton m_convertTabs;
+	CButton m_trimRight;
+	CButton m_fixEols;
 	CComboBox m_EOL;
+	CButton m_stopAsking;
 };

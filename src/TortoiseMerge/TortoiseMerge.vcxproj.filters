@@ -279,6 +279,9 @@
     <ClCompile Include="EncodingDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WhitesFixDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="EOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -28,6 +28,7 @@
 #include "AppUtils.h"
 #include "GotoLineDlg.h"
 #include "EncodingDlg.h"
+#include "WhitesFixDlg.h"
 
 // Note about lines:
 // We use three different kind of lines here:
@@ -120,6 +121,7 @@ CBaseView::CBaseView()
 	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
+	m_nFixBeforeSaveMap = CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
 	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
 	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
@@ -2231,10 +2233,63 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 
 	AddContextItems(popup, state);
 
+	CMenu popupEols;
+	CMenu popupUnicode;
+	int nEncodingCommandBase = POPUPCOMMAND__LAST;
+	int nEolCommandBase = nEncodingCommandBase+_countof(uctArray);
+	if (IsWritable())
+	{
+		CString temp;
+		TWhitecharsProperties oWhites = GetWhitecharsProperties();
+		temp.LoadString(IDS_EDIT_TAB2SPACE);
+		popup.AppendMenu(MF_STRING | oWhites.HasTabsToConvert ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_TABTOSPACES, temp);
+		temp.LoadString(IDS_EDIT_SPACE2TAB);
+		popup.AppendMenu(MF_STRING | oWhites.HasSpacesToConvert ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_SPACESTOTABS, temp);
+		temp.LoadString(IDS_EDIT_TRIM);
+		popup.AppendMenu(MF_STRING | oWhites.HasTrailWhiteChars ? MF_ENABLED : (MF_DISABLED|MF_GRAYED), POPUPCOMMAND_REMOVETRAILWHITES, temp);
+
+		// add eol submenu
+		if (!popupEols.CreatePopupMenu())
+			return;
+
+		EOL eEolType = GetLineEndings(oWhites.HasMixedEols);
+		for (int i = 1; i < _countof(eolArray); i++)
+		{
+			CString temp = GetEolName(eolArray[i]);
+			bool bChecked = (eEolType == eolArray[i]);
+			popupEols.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEolCommandBase+i, temp);
+		}
+
+		temp.LoadString(IDS_VIEWCONTEXTMENU_EOL);
+		popup.AppendMenuW(MF_POPUP | MF_ENABLED, (UINT_PTR)popupEols.GetSafeHmenu(), temp);
+
+		// add encoding submenu
+		if (!popupUnicode.CreatePopupMenu())
+			return;
+		for (int i = 0; i < _countof(uctArray); i++)
+		{
+			CString temp = CFileTextLines::GetEncodingName(uctArray[i]);
+			bool bChecked = (m_texttype == uctArray[i]);
+			popupUnicode.AppendMenu(MF_STRING | MF_ENABLED | (bChecked ? MF_CHECKED : 0), nEncodingCommandBase+i, temp);
+		}
+		temp.LoadString(IDS_VIEWCONTEXTMENU_ENCODING);
+		popup.AppendMenuW(MF_POPUP | MF_ENABLED, (UINT_PTR)popupUnicode.GetSafeHmenu(), temp);
+
+	}
+
 	CompensateForKeyboard(point);
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this, 0);
 	ResetUndoStep();
+	if ((cmd>=nEncodingCommandBase) && (cmd<nEncodingCommandBase+(int)_countof(uctArray)))
+	{
+		SetTextType(uctArray[cmd-nEncodingCommandBase]);
+	}
+	if ((cmd>=nEolCommandBase) && (cmd<nEolCommandBase+(int)_countof(eolArray)))
+	{
+		SetLineEndings(eolArray[cmd-nEolCommandBase]);
+		SaveUndoStep();
+	}
 	switch (cmd)
 	{
 	// 2-pane view commands; target is right view
@@ -2294,6 +2349,16 @@ void CBaseView::OnContextMenu(CPoint point, DiffStates state)
 		break;
 	case ID_EDIT_PASTE:
 		OnEditPaste();
+		break;
+	// white chars manipulations
+	case POPUPCOMMAND_TABTOSPACES:
+		ConvertTabToSpaces();
+		break;
+	case POPUPCOMMAND_SPACESTOTABS:
+		Tabularize();
+		break;
+	case POPUPCOMMAND_REMOVETRAILWHITES:
+		RemoveTrailWhiteChars();
 		break;
 	default:
 		return;
@@ -3476,52 +3541,12 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		// change indentation for selected lines
 		if (bShift)
 		{
-			// remove indentation
-			for (int nViewLine = m_ptSelectionViewPosStart.y; nViewLine <= m_ptSelectionViewPosEnd.y; nViewLine++)
-			{
-				if (IsLineEmpty(nViewLine))
-				{
-					continue;
-				}
-				CString sLine = GetViewLine(nViewLine);
-				// remove up to n spaces from line start
-				// and one tab (if less then n spaces was removed)
-				int nPos = 0;
-				while (nPos<m_nTabSize)
-				{
-					switch (sLine[nPos])
-					{
-					case ' ':
-						nPos++;
-						continue;
-					case '\t':
-						nPos++;
-					}
-					break;
-				}
-				if (nPos>0)
-				{
-					sLine.Delete(0, nPos);
-					SetViewLine(nViewLine, sLine);
-				}
-			}
+			RemoveIndentationForSelectedBlock();
 		}
 		else
 		{
-			// add indentation
-			for (int nViewLine = m_ptSelectionViewPosStart.y; nViewLine <= m_ptSelectionViewPosEnd.y; nViewLine++)
-			{
-				if (IsLineEmpty(nViewLine))
-				{
-					continue;
-				}
-				CString sLine = GetViewLine(nViewLine);
-				// add tab to line start (alternatively m_nTabSize spaces can be used)
-				SetViewLine(nViewLine, CString("\t") + sLine);
-			}
+			AddIndentationForSelectedBlock();
 		}
-		SetModified();
-		SaveUndoStep();
 		bSkipSelectionClear = true;
 	}
 	else if ((nChar > 31)||(nChar == VK_TAB))
@@ -4200,6 +4225,7 @@ void CBaseView::AddCutCopyAndPaste(CIconMenu& popup)
 		popup.AppendMenu(MF_STRING | (HasTextSelection() ? MF_ENABLED : MF_DISABLED|MF_GRAYED), ID_EDIT_CUT, temp);
 		temp.LoadString(IDS_EDIT_PASTE);
 		popup.AppendMenu(MF_STRING | (CAppUtils::HasClipboardFormat(CF_UNICODETEXT)||CAppUtils::HasClipboardFormat(CF_TEXT) ? MF_ENABLED : MF_DISABLED|MF_GRAYED), ID_EDIT_PASTE, temp);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
 	}
 }
 
@@ -5333,6 +5359,9 @@ int CBaseView::SaveFile(int nFlags)
 	Invalidate();
 	if (m_pViewData!=NULL && m_pWorkingFile!=NULL)
 	{
+		if (FixBeforeSave()!=0)
+			return -1;
+
 		CFileTextLines file;
 		m_SaveParams.m_LineEndings = m_lineendings;
 		m_SaveParams.m_UnicodeType = m_texttype;
@@ -5423,18 +5452,13 @@ int CBaseView::SaveFileTo(CString sFileName, int nFlags)
 
 EOL CBaseView::GetLineEndings()
 {
-	// check if all lines have same EOL
-	for (int i = 0; i < GetViewCount() - 1; ++i)
+	return GetLineEndings(GetWhitecharsProperties().HasMixedEols);
+}
+
+EOL CBaseView::GetLineEndings(bool bHasMixedEols)
+{
+	if (bHasMixedEols)
 	{
-		if (IsLineEmpty(i))
-		{
-			continue;
-		}
-		EOL eLineEol = GetViewLineEnding(i);
-		if (eLineEol == EOL_AUTOLINE || eLineEol == EOL_NOENDING || eLineEol == m_lineendings)
-		{
-			continue;
-		}
 		return EOL_AUTOLINE; // mixed eols - hack value
 	}
 	if (m_lineendings == EOL_AUTOLINE)
@@ -5601,4 +5625,304 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	BuildAllScreen2ViewVector();
 	pwndView->Invalidate();
 	RefreshViews();
+}
+
+void CBaseView::AddIndentationForSelectedBlock()
+{
+	bool bModified = false;
+	for (int nViewLine = m_ptSelectionViewPosStart.y; nViewLine <= m_ptSelectionViewPosEnd.y; nViewLine++)
+	{
+		// skip empty lines
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		if (sLine.Trim().IsEmpty())
+		{
+			// skip empty and whitechar only lines
+			continue;
+		}
+		// add tab to line start (alternatively m_nTabSize spaces can be used)
+		SetViewLine(nViewLine, CString("\t") + sLine);
+		bModified = true;
+	}
+	if (bModified)
+	{
+		SetModified();
+		SaveUndoStep();
+		BuildAllScreen2ViewVector();
+	}
+}
+	
+void CBaseView::RemoveIndentationForSelectedBlock()
+{
+	bool bModified = false;
+	for (int nViewLine = m_ptSelectionViewPosStart.y; nViewLine <= m_ptSelectionViewPosEnd.y; nViewLine++)
+	{
+		// skip empty lines
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		// remove up to n spaces from line start
+		// and one tab (if less then n spaces was removed)
+		int nPos = 0;
+		while (nPos<m_nTabSize)
+		{
+			switch (sLine[nPos])
+			{
+			case ' ':
+				nPos++;
+				continue;
+			case '\t':
+				nPos++;
+			}
+			break;
+		}
+		if (nPos>0)
+		{
+			sLine.Delete(0, nPos);
+			SetViewLine(nViewLine, sLine);
+			bModified = true;
+		}
+	}
+	if (bModified)
+	{
+		SetModified();
+		SaveUndoStep();
+		BuildAllScreen2ViewVector();
+	}
+}
+
+/**
+	there are two possible versions
+	 - convert tabs to spaces only in front of text (implemented)
+	 - convert all tabs to spaces
+*/
+void CBaseView::ConvertTabToSpaces()
+{
+	bool bModified = false;
+	for (int nViewLine = 0; nViewLine < GetViewCount(); nViewLine++)
+	{
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		bool bTabToConvertFound = false;
+		int nPosIn = 0;
+		int nPosOut = 0;
+		while (nPosIn<sLine.GetLength())
+		{
+			switch (sLine[nPosIn])
+			{
+			case ' ':
+				nPosIn++;
+				nPosOut++;
+				continue;
+			case '\t':
+				nPosIn++;
+				bTabToConvertFound = true;
+				nPosOut = (nPosOut+m_nTabSize) - nPosOut%m_nTabSize;
+				continue;
+			}
+			break;
+		}
+		if (bTabToConvertFound)
+		{
+			CString sLineNew = sLine;
+			sLineNew.Delete(0, nPosIn);
+			sLineNew = CString(' ', nPosOut) + sLineNew;
+			SetViewLine(nViewLine, sLineNew);
+			bModified = true;
+		}
+	}
+	if (bModified)
+	{
+		SetModified();
+		SaveUndoStep();
+		BuildAllScreen2ViewVector();
+	}
+}
+
+/**
+	there are two possible version
+	 - convert spaces to tabs only in front of text (implemented)
+	 - convert all spaces to tabs
+*/
+void CBaseView::Tabularize()
+{
+	bool bModified = false;
+	for (int nViewLine = 0; nViewLine < GetViewCount(); nViewLine++)
+	{
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		int nDel = 0;
+		int nTabCount = 0; // total tabs to be used
+		int nSpaceCount = 0; // number of spaces in tab size run
+		int nPos = 0;
+		while (nPos<sLine.GetLength())
+		{
+			switch (sLine[nPos++])
+			{
+			case ' ':
+				//bSpace = true;
+				if (++nSpaceCount < m_nTabSize)
+				{
+					continue;
+				}
+			case '\t':
+				nTabCount++;
+				nSpaceCount = 0;
+				nDel = nPos;
+				continue;
+			}
+			break;
+		}
+		if (nDel > 0)
+		{
+			CString sLineNew = sLine;
+			sLineNew.Delete(0, nDel);
+			sLineNew = CString('\t', nTabCount) + sLineNew;
+			if (sLine!=sLineNew)
+			{
+				SetViewLine(nViewLine, sLineNew);
+				bModified = true;
+			}
+		}
+	}
+	if (bModified)
+	{
+		SetModified();
+		SaveUndoStep();
+		BuildAllScreen2ViewVector();
+	}
+}
+
+void CBaseView::RemoveTrailWhiteChars()
+{
+	bool bModified = false;
+	for (int nViewLine = 0; nViewLine < GetViewCount(); nViewLine++)
+	{
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		CString sLineNew = sLine;
+		sLineNew.TrimRight();
+		if (sLine.GetLength()!=sLineNew.GetLength())
+		{
+			SetViewLine(nViewLine, sLineNew);
+			bModified = true;
+		}
+	}
+	if (bModified)
+	{
+		SetModified();
+		SaveUndoStep();
+		BuildAllScreen2ViewVector();
+	}
+}
+
+CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties()
+{
+	if (GetViewCount()>10000)
+	{
+		// 10k lines is enought to check
+		TWhitecharsProperties oRet = {true, true, true, true};
+		return oRet;
+	}
+	TWhitecharsProperties oRet = {};
+	for (int nViewLine = 0; nViewLine < GetViewCount(); nViewLine++)
+	{
+		if (IsLineEmpty(nViewLine))
+		{
+			continue;
+		}
+		CString sLine = GetViewLine(nViewLine);
+		if (sLine.IsEmpty())
+		{
+			continue;
+		}
+		// check leading whites for convertible tabs and spaces
+		int nPos = 0;
+		int nSpaceCount = 0; // number of spaces in tab size run
+		while (nPos<sLine.GetLength() && (!oRet.HasSpacesToConvert || !oRet.HasTabsToConvert))
+		{
+			switch (sLine[nPos++])
+			{
+			case ' ':
+				if (++nSpaceCount >= m_nTabSize)
+				{
+					oRet.HasSpacesToConvert = true;
+				}
+				continue;
+			case '\t':
+				oRet.HasTabsToConvert = true;
+				if (nSpaceCount!=0)
+				{
+					oRet.HasSpacesToConvert = true;
+				}
+				continue;
+			}
+			break;
+		}
+
+		// check trailing whites for removable chars
+		switch (sLine[sLine.GetLength()-1])
+		{
+		case ' ':
+		case '\t':
+			oRet.HasTrailWhiteChars = true;
+		}
+
+		// check EOLs
+		EOL eLineEol = GetViewLineEnding(nViewLine);
+		if (!oRet.HasMixedEols && (eLineEol != m_lineendings) && (eLineEol != EOL_AUTOLINE) && (eLineEol != EOL_NOENDING))
+		{
+			oRet.HasMixedEols = true;
+		}
+	}
+	return oRet;
+}
+
+int CBaseView::FixBeforeSave()
+{
+	if (m_nFixBeforeSaveMap != 0)
+	{
+		TWhitecharsProperties oWhitesCurrent = GetWhitecharsProperties();
+		CWhitesFixDlg dlg;
+		dlg.convertSpacesEnabled = oWhitesCurrent.HasSpacesToConvert && (!m_oWhitesOnLoad.HasSpacesToConvert && m_oWhitesOnLoad.HasTabsToConvert);
+		dlg.convertTabsEnabled = oWhitesCurrent.HasTabsToConvert && (!m_oWhitesOnLoad.HasTabsToConvert && m_oWhitesOnLoad.HasSpacesToConvert);
+		dlg.trimRightEnabled = oWhitesCurrent.HasTrailWhiteChars && (!m_oWhitesOnLoad.HasTrailWhiteChars);
+		dlg.fixEolsEnabled = oWhitesCurrent.HasMixedEols && (!m_oWhitesOnLoad.HasMixedEols);
+		dlg.lineendings = m_lineendings;
+		// if checking for format change is enabled and corresponding change is detected show dialog
+		if (((((m_nFixBeforeSaveMap&1)!=0) && dlg.convertSpacesEnabled)
+				|| (((m_nFixBeforeSaveMap&2)!=0) && dlg.convertTabsEnabled)
+				|| (((m_nFixBeforeSaveMap&4)!=0) && dlg.trimRightEnabled)
+				|| (((m_nFixBeforeSaveMap&8)!=0) && dlg.fixEolsEnabled))
+				&& dlg.DoModal() != IDOK)
+			return -1;
+		if (dlg.convertSpaces)
+			Tabularize();
+		if (dlg.convertTabs)
+			ConvertTabToSpaces();
+		if (dlg.trimRight)
+			RemoveTrailWhiteChars();
+		if (dlg.fixEols)
+			SetLineEndings(dlg.lineendings);
+		if (dlg.stopAsking)
+		{
+			CRegDWORD regFixBeforeSaveMap(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1);
+			regFixBeforeSaveMap = 0;
+		}
+	}
+	return 0; // no errors
 }

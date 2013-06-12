@@ -211,6 +211,23 @@ public: // methods
 	static bool		IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
 	static CBaseView * GetFirstGoodView();
 
+	void			AddIndentationForSelectedBlock();
+	void			RemoveIndentationForSelectedBlock();
+	void			ConvertTabToSpaces();
+	void			Tabularize();
+	void			RemoveTrailWhiteChars();
+
+	struct TWhitecharsProperties
+	{
+		bool HasMixedEols;
+		bool HasTrailWhiteChars;
+		bool HasSpacesToConvert;
+		bool HasTabsToConvert;
+	};
+
+	TWhitecharsProperties   GetWhitecharsProperties();
+	int						FixBeforeSave();
+
 public: // variables
 	CViewData *		m_pViewData;
 	CViewData *		m_pOtherViewData;
@@ -241,12 +258,14 @@ public: // variables
 	int				SaveFileTo(CString FileName, int Flags = 0);
 
 	EOL				GetLineEndings();											///< Get Line endings on view from lineendings or "mixed"
+	EOL				GetLineEndings(bool MixelEols);
 	void			SetLineEndings(EOL);										///< Set AUTO lineendings and replaces all EOLs
 	UnicodeType		GetTextType() { return m_texttype; }
 	void			SetTextType(UnicodeType);									///< Changes TextType
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
+	TWhitecharsProperties m_oWhitesOnLoad;
 
 protected:  // methods
 	enum {
@@ -445,6 +464,7 @@ protected:  // variables
 	int				m_nTabSize;
 	int				m_nDigits;
 	bool			m_bInlineWordDiff;
+	DWORD			m_nFixBeforeSaveMap;
 
 	// Block selection attributes
 	int				m_nSelViewBlockStart;
@@ -585,6 +605,12 @@ protected:  // variables
 		POPUPCOMMAND_USEYOURFILE,
 		POPUPCOMMAND_USETHEIRBLOCK,
 		POPUPCOMMAND_USETHEIRFILE,
+		// others
+		POPUPCOMMAND_TABTOSPACES,
+		POPUPCOMMAND_SPACESTOTABS,
+		POPUPCOMMAND_REMOVETRAILWHITES,
+
+		POPUPCOMMAND__LAST,
 	};
 
 	class Screen2View

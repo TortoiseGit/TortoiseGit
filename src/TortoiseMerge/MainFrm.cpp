@@ -868,6 +868,9 @@ bool CMainFrame::LoadViews(int line)
 		m_Data.m_mergedFile.SetFileName(m_Data.m_yourFile.GetFilename());
 	}
 	m_pwndLeftView->BuildAllScreen2ViewVector();
+	m_pwndLeftView->m_oWhitesOnLoad = m_pwndLeftView->GetWhitecharsProperties();
+	m_pwndRightView->m_oWhitesOnLoad = m_pwndRightView->GetWhitecharsProperties();
+	m_pwndBottomView->m_oWhitesOnLoad = m_pwndBottomView->GetWhitecharsProperties();
 	m_pwndLeftView->DocumentUpdated();
 	m_pwndRightView->DocumentUpdated();
 	m_pwndBottomView->DocumentUpdated();
@@ -1152,6 +1155,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 	Invalidate();
 	if ((pViewData)&&(pOriginFile))
 	{
+		pView->FixBeforeSave();
 		CFileTextLines file;
 		pOriginFile->CopySettings(&file);
 		CFileTextLines::SaveParams saveParams;

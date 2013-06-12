@@ -43,6 +43,7 @@ CSetMainPage::CSetMainPage()
 	, m_bAutoAdd(TRUE)
 	, m_nMaxInline(3000)
 	, m_dwFontSize(0)
+	, m_bDontFixInconsistencies(FALSE)
 {
 	m_regBackup = CRegDWORD(_T("Software\\TortoiseGitMerge\\Backup"));
 	m_regFirstDiffOnLoad = CRegDWORD(_T("Software\\TortoiseGitMerge\\FirstDiffOnLoad"), TRUE);
@@ -58,6 +59,7 @@ CSetMainPage::CSetMainPage()
 	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
+	m_regDontFixInconsistencies = CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), FALSE);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
@@ -71,6 +73,7 @@ CSetMainPage::CSetMainPage()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
+	m_bDontFixInconsistencies = DWORD(m_regDontFixInconsistencies) != (DWORD)-1;
 }
 
 CSetMainPage::~CSetMainPage()
@@ -102,6 +105,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_AUTOADD, m_bAutoAdd);
 	DDX_Text(pDX, IDC_MAXINLINE, m_nMaxInline);
 	DDX_Check(pDX, IDC_USERIBBONS, m_bUseRibbons);
+	DDX_Check(pDX, IDC_STOPASKINCONSISTENCIES, m_bDontFixInconsistencies);
 }
 
 void CSetMainPage::SaveData()
@@ -120,6 +124,7 @@ void CSetMainPage::SaveData()
 	m_regAutoAdd = m_bAutoAdd;
 	m_regMaxInline = m_nMaxInline;
 	m_regUseRibbons = m_bUseRibbons;
+	m_regDontFixInconsistencies = m_bDontFixInconsistencies ? 0 : (DWORD)-1;
 }
 
 BOOL CSetMainPage::OnApply()
@@ -154,6 +159,7 @@ BOOL CSetMainPage::OnInitDialog()
 	m_bAutoAdd = m_regAutoAdd;
 	m_nMaxInline = m_regMaxInline;
 	m_bUseRibbons = m_regUseRibbons;
+	m_bDontFixInconsistencies = DWORD(m_regDontFixInconsistencies) != (DWORD)-1;
 
 	DialogEnableWindow(IDC_FIRSTCONFLICTONLOAD, m_bFirstDiffOnLoad);
 
@@ -202,6 +208,7 @@ BEGIN_MESSAGE_MAP(CSetMainPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_AUTOADD, &CSetMainPage::OnModified)
 	ON_EN_CHANGE(IDC_MAXINLINE, &CSetMainPage::OnModifiedWithReload)
 	ON_BN_CLICKED(IDC_USERIBBONS, &CSetMainPage::OnModified)
+	ON_BN_CLICKED(IDC_STOPASKINCONSISTENCIES, &CSetMainPage::OnModified)
 END_MESSAGE_MAP()
 
 

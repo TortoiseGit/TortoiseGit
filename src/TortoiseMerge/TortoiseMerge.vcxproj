@@ -228,6 +228,7 @@
     <ClCompile Include="TortoiseMerge.cpp" />
     <ClCompile Include="Undo.cpp" />
     <ClCompile Include="ViewData.cpp" />
+    <ClCompile Include="WhitesFixDlg.cpp" />
     <ClCompile Include="WorkingFile.cpp" />
     <ClCompile Include="AppUtils.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp" />

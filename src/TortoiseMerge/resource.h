@@ -42,6 +42,7 @@
 #define IDB_RIBBONSMALLHDPI             161
 #define IDB_PNG3                        162
 #define IDB_RIBBONLARGEHDPI             162
+#define IDD_WHITESFIX                   164
 #define IDB_LOGOFLIPPED                 168
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
@@ -164,6 +165,13 @@
 #define IDC_FONTSIZES                   1086
 #define IDC_BKMOVEDFROM                 1087
 #define IDC_BKMOVEDTO                   1088
+#define IDC_TRIM                        1090
+#define IDC_USESPACES                   1091
+#define IDC_USETABS                     1092
+#define IDC_STOPASKING                  1093
+#define IDC_TITLE                       1094
+#define IDC_DESCRIPTION                 1095
+#define IDC_FIXEOLS                     1096
 #define IDS_ERR_FILE_OPEN               1100
 #define IDS_ERR_FILE_BINARY             1101
 #define IDS_ERR_FILE_NOTAFILE           1102
@@ -177,6 +185,7 @@
 #define IDS_ERR_TEXTVIEWSTART           1326
 #define IDS_GOTOLINE                    1400
 #define IDS_GOTO_OUTOFRANGE             1401
+#define IDC_STOPASKINCONSISTENCIES      1500
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_SETTINGSTITLE               1702
@@ -215,6 +224,8 @@
 #define IDS_VIEWCONTEXTMENU_USERIGHT    4014
 #define IDS_VIEWCONTEXTMENU_APENDRIGHT  4015
 #define IDS_VIEWCONTEXTMENU_APPENDRIGHT 4015
+#define IDS_VIEWCONTEXTMENU_EOL         4016
+#define IDS_VIEWCONTEXTMENU_ENCODING    4017
 #define IDS_VIEWTITLE_THEIRS            4200
 #define IDS_VIEWTITLE_MERGED            4201
 #define IDS_VIEWTITLE_MINE              4202
@@ -249,6 +260,9 @@
 #define IDS_EDIT_COPY                   8000
 #define IDS_EDIT_CUT                    8001
 #define IDS_EDIT_PASTE                  8002
+#define IDS_EDIT_TAB2SPACE              8003
+#define IDS_EDIT_SPACE2TAB              8004
+#define IDS_EDIT_TRIM                   8005
 #define IDS_MSGBOX_OK                   9001
 #define IDS_MSGBOX_CANCEL               9002
 #define IDS_MSGBOX_IGNORE               9003
@@ -355,9 +369,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        163
+#define _APS_NEXT_RESOURCE_VALUE        165
 #define _APS_NEXT_COMMAND_VALUE         32979
-#define _APS_NEXT_CONTROL_VALUE         1081
+#define _APS_NEXT_CONTROL_VALUE         1501
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
