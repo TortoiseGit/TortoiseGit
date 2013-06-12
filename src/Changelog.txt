@@ -8,6 +8,9 @@ Released: Unreleased
  * Fixed issue #1778: Add Submodule with Putty key
  * Fixed issue #1800: Automatically remove "git clone " from URL in Clone dialog
  * Fixed issue #1807: Handle new descriptions of detached head introduced in git 1.8.3
+ * TortoiseGitMerge: Encoding and EOL conversion
+ * TortoiseGitMerge: Tab / spaces conversion and trim trailing space
+ * TortoiseGitMerge: Unify EOL, tab/space style and trim trailing space on saving
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching
@@ -26,6 +29,7 @@ Released: Unreleased
  * Fixed issue #1756: Rebase trips over merge commits
  * Fixed possible crashes while applying a patch in TortoiseGitMerge
  * Fixed issue #1809: Overlay shows changes in parent folder if a file with a second extension exists
+ * TortoiseGitMerge: Fixed bugs regarding multi-view edit
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
