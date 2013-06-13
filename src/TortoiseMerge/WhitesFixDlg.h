@@ -47,8 +47,8 @@ public:
 	static bool IsEnabled();
 	bool HasSomethingToFix();
 
-	static DWORD GetSettingsMap() { return CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1); }
-	static void SetSettingsMap(DWORD nNewMap) { CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-1) = nNewMap; }
+	static DWORD GetSettingsMap() { return CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-2); }
+	static void SetSettingsMap(DWORD nNewMap) { CRegDWORD(_T("Software\\TortoiseGitMerge\\FixBeforeSave"), (DWORD)-2) = nNewMap; }
 
 	// Dialog Data
 	enum { IDD = IDD_WHITESFIX };
