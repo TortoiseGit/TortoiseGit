@@ -5845,6 +5845,8 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties(bool scanAll
 		return oRet;
 	}
 	TWhitecharsProperties oRet = {};
+	bool bUsesSpaces = false;
+	bool bUsesTabs = false;
 	for (int nViewLine = 0; nViewLine < GetViewCount(); nViewLine++)
 	{
 		if (IsLineEmpty(nViewLine))
@@ -5866,18 +5868,21 @@ CBaseView::TWhitecharsProperties CBaseView::GetWhitecharsProperties(bool scanAll
 			case ' ':
 				if (++nSpaceCount >= m_nTabSize)
 				{
-					oRet.HasSpacesToConvert = true;
+					// if there are enough spaces to fill a tab, the file uses spaces at least here instead of using a tab
+					bUsesSpaces = true;
+					if (bUsesTabs)
+						oRet.HasTabsToConvert = true;
 				}
-				continue;
+				break;
 			case '\t':
-				oRet.HasTabsToConvert = true;
-				if (nSpaceCount!=0)
-				{
+				bUsesTabs = true;
+				if (bUsesSpaces)
 					oRet.HasSpacesToConvert = true;
-				}
-				continue;
+				break;
+			default:
+				nSpaceCount = 0;
+				break;
 			}
-			break;
 		}
 
 		// check trailing whites for removable chars
