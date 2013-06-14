@@ -989,7 +989,8 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 
 				/* Use MSFTEDIT_CLASS http://msdn.microsoft.com/en-us/library/bb531344.aspx */
 				if (_tcsnicmp(buff, MSFTEDIT_CLASS, 128) == 0 ||	//Unicode and MFC 2012 and later
-					_tcsnicmp(buff, RICHEDIT_CLASS, 128) == 0)		//ANSI or MFC 2010
+					_tcsnicmp(buff, RICHEDIT_CLASS, 128) == 0 ||	//ANSI or MFC 2010
+					_tcsnicmp(buff, _T("SysListView32"), 128) == 0)
 				{
 					this->PostMessage(WM_KEYDOWN,VK_ESCAPE,0);
 					return TRUE;
