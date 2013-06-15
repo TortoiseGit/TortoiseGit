@@ -1246,6 +1246,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		CFile::Remove(tempfile);
 		AddLogString(out);
+		m_SquashMessage.Empty();
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage=REBASE_CONTINUE;
 		curRev->GetAction(&m_CommitList)|=CTGitPath::LOGACTIONS_REBASE_DONE;
