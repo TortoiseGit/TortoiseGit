@@ -42,8 +42,8 @@ CWhitesFixDlg::~CWhitesFixDlg()
 
 void CWhitesFixDlg::Create(CWnd * pParent)
 {
-	CDialog::Create(IDD, pParent); 
-	ShowWindow(SW_SHOW); 
+	CDialog::Create(IDD, pParent);
+	ShowWindow(SW_SHOW);
 	UpdateWindow();
 }
 
