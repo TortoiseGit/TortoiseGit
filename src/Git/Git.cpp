@@ -1469,11 +1469,11 @@ int CGit::GetRemoteTags(CString remote, STRING_VECTOR &list)
 	return 0;
 }
 
-int libgit2_addto_list_each_ref_fn(const char *refname, void *payload)
+int libgit2_addto_list_each_ref_fn(git_reference *ref, void *payload)
 {
 	STRING_VECTOR *list = (STRING_VECTOR*)payload;
 	CString str;
-	g_Git.StringAppend(&str, (BYTE*)refname, CP_UTF8);
+	g_Git.StringAppend(&str, (BYTE*)git_reference_name(ref), CP_UTF8);
 	list->push_back(str);
 	return 0;
 }
@@ -1535,18 +1535,18 @@ typedef struct map_each_ref_payload {
 	MAP_HASH_NAME * map;
 } map_each_ref_payload;
 
-int libgit2_addto_map_each_ref_fn(const char *refname, void *payload)
+int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
 {
 	map_each_ref_payload *payloadContent = (map_each_ref_payload*)payload;
 
 	CString str;
-	g_Git.StringAppend(&str, (BYTE*)refname, CP_UTF8);
+	g_Git.StringAppend(&str, (BYTE*)git_reference_name(ref), CP_UTF8);
 
 	git_object * gitObject = NULL;
 
 	do
 	{
-		if (git_revparse_single(&gitObject, payloadContent->repo, refname))
+		if (git_revparse_single(&gitObject, payloadContent->repo, git_reference_name(ref)))
 		{
 			break;
 		}
