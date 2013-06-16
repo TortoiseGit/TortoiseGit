@@ -544,6 +544,10 @@ msgstr ""
 msgid "&Docking"
 msgstr ""
 
+#. Resource IDs: (1093)
+msgid "&Don't ask anymore, always save without fixing."
+msgstr ""
+
 #. Resource IDs: (1384)
 msgid "&Down"
 msgstr ""
@@ -610,6 +614,10 @@ msgstr ""
 
 #. Resource IDs: (32778)
 msgid "&Fit images in window"
+msgstr ""
+
+#. Resource IDs: (1)
+msgid "&Fix and Save"
 msgstr ""
 
 #. Resource IDs: (1050)
@@ -962,6 +970,10 @@ msgstr ""
 msgid "&Remove"
 msgstr ""
 
+#. Resource IDs: (1090)
+msgid "&Remove Trailing spaces and Tabs"
+msgstr ""
+
 #. Resource IDs: (1411)
 msgid "&Remove this file from index"
 msgstr ""
@@ -1148,6 +1160,10 @@ msgstr ""
 
 #. Resource IDs: (1091, 1094)
 msgid "&TortoiseGitMerge"
+msgstr ""
+
+#. Resource IDs: (1090)
+msgid "&Trailing spaces and Tabs"
 msgstr ""
 
 #. Resource IDs: (1605)
@@ -2714,6 +2730,22 @@ msgstr ""
 msgid "Contract docked window"
 msgstr ""
 
+#. Resource IDs: (1092)
+msgid "Convert Spaces to &Tabs"
+msgstr ""
+
+#. Resource IDs: (1091)
+msgid "Convert Tabs to &Spaces"
+msgstr ""
+
+#. Resource IDs: (501)
+msgid "Convert spaces to tabs"
+msgstr ""
+
+#. Resource IDs: (501)
+msgid "Convert tabs to spaces"
+msgstr ""
+
 #. Resource IDs: (1253)
 msgid "Cop&y"
 msgstr ""
@@ -3256,6 +3288,10 @@ msgstr ""
 msgid "Destination disk drive is full."
 msgstr ""
 
+#. Resource IDs: (1501)
+msgid "Details ..."
+msgstr ""
+
 #. Resource IDs: (2056)
 msgid "Detect and highlight moved blocks"
 msgstr ""
@@ -3460,6 +3496,10 @@ msgstr ""
 
 #. Resource IDs: (564)
 msgid "Don't ask me again"
+msgstr ""
+
+#. Resource IDs: (1500)
+msgid "Don't ask to fix inconsistencies when saving"
 msgstr ""
 
 #. Resource IDs: (75)
@@ -3686,6 +3726,10 @@ msgstr ""
 
 #. Resource IDs: (1617)
 msgid "End"
+msgstr ""
+
+#. Resource IDs: (252)
+msgid "End of Line Style"
 msgstr ""
 
 #. Resource IDs: (3825)
@@ -4021,6 +4065,10 @@ msgstr ""
 msgid "File"
 msgstr ""
 
+#. Resource IDs: (252)
+msgid "File Encoding"
+msgstr ""
+
 #. Resource IDs: (605)
 #, c-format
 msgid "File changes each %s"
@@ -4168,6 +4216,14 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Format Patch..."
+msgstr ""
+
+#. Resource IDs: (164)
+msgid "Formatting inconsistencies"
+msgstr ""
+
+#. Resource IDs: (1097)
+msgid "Formatting inconsistencies have been detected!"
 msgstr ""
 
 #. Resource IDs: (1064, 1257)
@@ -4927,6 +4983,14 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Include only the following revision range:"
+msgstr ""
+
+#. Resource IDs: (1096)
+msgid "Inconsistent &EOLs"
+msgstr ""
+
+#. Resource IDs: (1091)
+msgid "Inconsistent Tabs and &Spaces"
 msgstr ""
 
 #. Resource IDs: (3857)
@@ -7281,6 +7345,14 @@ msgstr ""
 msgid "Select viewer for diff-files"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Select what TortoiseGitMerge should automatically detect and offer to fix when saving"
+msgstr ""
+
+#. Resource IDs: (1095)
+msgid "Select what TortoiseGitMerge should fix:"
+msgstr ""
+
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
 msgstr ""
@@ -7363,6 +7435,10 @@ msgstr ""
 
 #. Resource IDs: (80)
 msgid "Settings - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (1501)
+msgid "Setu&p ..."
 msgstr ""
 
 #. Resource IDs: (1270)
@@ -8547,6 +8623,10 @@ msgstr ""
 msgid "Transparent &color..."
 msgstr ""
 
+#. Resource IDs: (501)
+msgid "Trim right"
+msgstr ""
+
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr ""
@@ -8676,6 +8756,10 @@ msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Unified &diff of HEAD revisions"
+msgstr ""
+
+#. Resource IDs: (1096)
+msgid "Unify &EOLs"
 msgstr ""
 
 #. Resource IDs: (1258)
@@ -9067,6 +9151,10 @@ msgstr ""
 
 #. Resource IDs: (1409)
 msgid "While running daemon, all data of this repository is exposed without authentication and/or encryption."
+msgstr ""
+
+#. Resource IDs: (165)
+msgid "Whitespace-fix setup"
 msgstr ""
 
 #. Resource IDs: (65535)
