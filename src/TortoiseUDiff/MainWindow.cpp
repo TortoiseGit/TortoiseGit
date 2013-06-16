@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -263,6 +263,252 @@ LRESULT CMainWindow::DoCommand(int id)
 			command += L"\"";
 			std::wstring tortoiseMergePath = GetAppDirectory() + _T("TortoiseGitMerge.exe");
 			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), const_cast<TCHAR*>(command.c_str()));
+		}
+		break;
+	case ID_FILE_PAGESETUP:
+		{
+			TCHAR localeInfo[3];
+			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
+			// Metric system. '1' is US System
+			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
+
+			PAGESETUPDLG pdlg = {0};
+			pdlg.lStructSize = sizeof(PAGESETUPDLG);
+			pdlg.hwndOwner = *this;
+			pdlg.hInstance = NULL;
+			pdlg.Flags = PSD_DEFAULTMINMARGINS|PSD_MARGINS|PSD_DISABLEPAPER|PSD_DISABLEORIENTATION;
+			if (localeInfo[0] == '0')
+				pdlg.Flags |= PSD_INHUNDREDTHSOFMILLIMETERS;
+
+			CRegStdDWORD m_regMargLeft   = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginleft", defaultMargin);
+			CRegStdDWORD m_regMargTop    = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmargintop", defaultMargin);
+			CRegStdDWORD m_regMargRight  = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginright", defaultMargin);
+			CRegStdDWORD m_regMargBottom = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginbottom", defaultMargin);
+
+			pdlg.rtMargin.left   = (long)(DWORD)m_regMargLeft;
+			pdlg.rtMargin.top    = (long)(DWORD)m_regMargTop;
+			pdlg.rtMargin.right  = (long)(DWORD)m_regMargRight;
+			pdlg.rtMargin.bottom = (long)(DWORD)m_regMargBottom;
+
+			if (!PageSetupDlg(&pdlg))
+				return false;
+
+			m_regMargLeft   = pdlg.rtMargin.left;
+			m_regMargTop    = pdlg.rtMargin.top;
+			m_regMargRight  = pdlg.rtMargin.right;
+			m_regMargBottom = pdlg.rtMargin.bottom;
+		}
+		break;
+	case ID_FILE_PRINT:
+		{
+			PRINTDLGEX pdlg = {0};
+			pdlg.lStructSize = sizeof(PRINTDLGEX);
+			pdlg.hwndOwner = *this;
+			pdlg.hInstance = NULL;
+			pdlg.Flags = PD_USEDEVMODECOPIESANDCOLLATE | PD_ALLPAGES | PD_RETURNDC | PD_NOCURRENTPAGE | PD_NOPAGENUMS;
+			pdlg.nMinPage = 1;
+			pdlg.nMaxPage = 0xffffU; // We do not know how many pages in the document
+			pdlg.nCopies = 1;
+			pdlg.hDC = 0;
+			pdlg.nStartPage = START_PAGE_GENERAL;
+
+			// See if a range has been selected
+			size_t startPos = SendEditor(SCI_GETSELECTIONSTART);
+			size_t endPos = SendEditor(SCI_GETSELECTIONEND);
+
+			if (startPos == endPos)
+				pdlg.Flags |= PD_NOSELECTION;
+			else
+				pdlg.Flags |= PD_SELECTION;
+
+			HRESULT hResult = PrintDlgEx(&pdlg);
+			if ((hResult != S_OK) || (pdlg.dwResultAction != PD_RESULT_PRINT))
+				return 0;
+
+			// reset all indicators
+			size_t endpos = SendEditor(SCI_GETLENGTH);
+			for (int i = INDIC_CONTAINER; i <= INDIC_MAX; ++i)
+			{
+				SendEditor(SCI_SETINDICATORCURRENT, i);
+				SendEditor(SCI_INDICATORCLEARRANGE, 0, endpos);
+			}
+			// store and reset UI settings
+			int viewws = (int)SendEditor(SCI_GETVIEWWS);
+			SendEditor(SCI_SETVIEWWS, 0);
+			int edgemode = (int)SendEditor(SCI_GETEDGEMODE);
+			SendEditor(SCI_SETEDGEMODE, EDGE_NONE);
+			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_END);
+
+			HDC hdc = pdlg.hDC;
+
+			RECT rectMargins, rectPhysMargins;
+			POINT ptPage;
+			POINT ptDpi;
+
+			// Get printer resolution
+			ptDpi.x = GetDeviceCaps(hdc, LOGPIXELSX);    // dpi in X direction
+			ptDpi.y = GetDeviceCaps(hdc, LOGPIXELSY);    // dpi in Y direction
+
+			// Start by getting the physical page size (in device units).
+			ptPage.x = GetDeviceCaps(hdc, PHYSICALWIDTH);   // device units
+			ptPage.y = GetDeviceCaps(hdc, PHYSICALHEIGHT);  // device units
+
+			// Get the dimensions of the unprintable
+			// part of the page (in device units).
+			rectPhysMargins.left = GetDeviceCaps(hdc, PHYSICALOFFSETX);
+			rectPhysMargins.top = GetDeviceCaps(hdc, PHYSICALOFFSETY);
+
+			// To get the right and lower unprintable area,
+			// we take the entire width and height of the paper and
+			// subtract everything else.
+			rectPhysMargins.right = ptPage.x                        // total paper width
+				- GetDeviceCaps(hdc, HORZRES)                       // printable width
+				- rectPhysMargins.left;                             // left unprintable margin
+
+			rectPhysMargins.bottom = ptPage.y                       // total paper height
+				- GetDeviceCaps(hdc, VERTRES)                       // printable height
+				- rectPhysMargins.top;                              // right unprintable margin
+
+			TCHAR localeInfo[3];
+			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
+			// Metric system. '1' is US System
+			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
+			RECT pagesetupMargin;
+			CRegStdDWORD m_regMargLeft   = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginleft", defaultMargin);
+			CRegStdDWORD m_regMargTop    = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmargintop", defaultMargin);
+			CRegStdDWORD m_regMargRight  = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginright", defaultMargin);
+			CRegStdDWORD m_regMargBottom = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffpagesetupmarginbottom", defaultMargin);
+
+			pagesetupMargin.left   = (long)(DWORD)m_regMargLeft;
+			pagesetupMargin.top    = (long)(DWORD)m_regMargTop;
+			pagesetupMargin.right  = (long)(DWORD)m_regMargRight;
+			pagesetupMargin.bottom = (long)(DWORD)m_regMargBottom;
+
+			if (pagesetupMargin.left != 0 || pagesetupMargin.right != 0 ||
+				pagesetupMargin.top != 0 || pagesetupMargin.bottom != 0)
+			{
+				RECT rectSetup;
+
+				// Convert the hundredths of millimeters (HiMetric) or
+				// thousandths of inches (HiEnglish) margin values
+				// from the Page Setup dialog to device units.
+				// (There are 2540 hundredths of a mm in an inch.)
+				if (localeInfo[0] == '0')
+				{
+					// Metric system. '1' is US System
+					rectSetup.left      = MulDiv (pagesetupMargin.left, ptDpi.x, 2540);
+					rectSetup.top       = MulDiv (pagesetupMargin.top, ptDpi.y, 2540);
+					rectSetup.right     = MulDiv(pagesetupMargin.right, ptDpi.x, 2540);
+					rectSetup.bottom    = MulDiv(pagesetupMargin.bottom, ptDpi.y, 2540);
+				}
+				else
+				{
+					rectSetup.left      = MulDiv(pagesetupMargin.left, ptDpi.x, 1000);
+					rectSetup.top       = MulDiv(pagesetupMargin.top, ptDpi.y, 1000);
+					rectSetup.right     = MulDiv(pagesetupMargin.right, ptDpi.x, 1000);
+					rectSetup.bottom    = MulDiv(pagesetupMargin.bottom, ptDpi.y, 1000);
+				}
+
+				// Don't reduce margins below the minimum printable area
+				rectMargins.left    = max(rectPhysMargins.left, rectSetup.left);
+				rectMargins.top     = max(rectPhysMargins.top, rectSetup.top);
+				rectMargins.right   = max(rectPhysMargins.right, rectSetup.right);
+				rectMargins.bottom  = max(rectPhysMargins.bottom, rectSetup.bottom);
+			}
+			else
+			{
+				rectMargins.left    = rectPhysMargins.left;
+				rectMargins.top     = rectPhysMargins.top;
+				rectMargins.right   = rectPhysMargins.right;
+				rectMargins.bottom  = rectPhysMargins.bottom;
+			}
+
+			// rectMargins now contains the values used to shrink the printable
+			// area of the page.
+
+			// Convert device coordinates into logical coordinates
+			DPtoLP(hdc, (LPPOINT) &rectMargins, 2);
+			DPtoLP(hdc, (LPPOINT)&rectPhysMargins, 2);
+
+			// Convert page size to logical units and we're done!
+			DPtoLP(hdc, (LPPOINT) &ptPage, 1);
+
+
+			DOCINFO di = {sizeof(DOCINFO), 0, 0, 0, 0};
+			di.lpszDocName = m_filename.c_str();
+			di.lpszOutput = 0;
+			di.lpszDatatype = 0;
+			di.fwType = 0;
+			if (::StartDoc(hdc, &di) < 0)
+			{
+				::DeleteDC(hdc);
+				return 0;
+			}
+
+			size_t lengthDoc = SendEditor(SCI_GETLENGTH);
+			size_t lengthDocMax = lengthDoc;
+			size_t lengthPrinted = 0;
+
+			// Requested to print selection
+			if (pdlg.Flags & PD_SELECTION)
+			{
+				if (startPos > endPos)
+				{
+					lengthPrinted = endPos;
+					lengthDoc = startPos;
+				}
+				else
+				{
+					lengthPrinted = startPos;
+					lengthDoc = endPos;
+				}
+
+				if (lengthDoc > lengthDocMax)
+					lengthDoc = lengthDocMax;
+			}
+
+			// We must subtract the physical margins from the printable area
+			Sci_RangeToFormat frPrint;
+			frPrint.hdc             = hdc;
+			frPrint.hdcTarget       = hdc;
+			frPrint.rc.left         = rectMargins.left - rectPhysMargins.left;
+			frPrint.rc.top          = rectMargins.top - rectPhysMargins.top;
+			frPrint.rc.right        = ptPage.x - rectMargins.right - rectPhysMargins.left;
+			frPrint.rc.bottom       = ptPage.y - rectMargins.bottom - rectPhysMargins.top;
+			frPrint.rcPage.left     = 0;
+			frPrint.rcPage.top      = 0;
+			frPrint.rcPage.right    = ptPage.x - rectPhysMargins.left - rectPhysMargins.right - 1;
+			frPrint.rcPage.bottom   = ptPage.y - rectPhysMargins.top - rectPhysMargins.bottom - 1;
+
+			// Print each page
+			while (lengthPrinted < lengthDoc)
+			{
+				::StartPage(hdc);
+
+				frPrint.chrg.cpMin = (long)lengthPrinted;
+				frPrint.chrg.cpMax = (long)lengthDoc;
+
+				lengthPrinted = SendEditor(SCI_FORMATRANGE, true, reinterpret_cast<LPARAM>(&frPrint));
+
+				::EndPage(hdc);
+			}
+
+			SendEditor(SCI_FORMATRANGE, FALSE, 0);
+
+			::EndDoc(hdc);
+			::DeleteDC(hdc);
+
+			if (pdlg.hDevMode != NULL)
+				GlobalFree(pdlg.hDevMode);
+			if (pdlg.hDevNames != NULL)
+				GlobalFree(pdlg.hDevNames);
+			if (pdlg.lpPageRanges != NULL)
+				GlobalFree(pdlg.lpPageRanges);
+
+			// reset the UI
+			SendEditor(SCI_SETVIEWWS, viewws);
+			SendEditor(SCI_SETEDGEMODE, edgemode);
+			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_NONE);
 		}
 		break;
 	default:
