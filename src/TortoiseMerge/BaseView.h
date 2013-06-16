@@ -145,6 +145,7 @@ public: // methods
 	BOOL			GetViewSelection(int& start, int& end) const;
 	BOOL			HasSelection() const { return (!((m_nSelViewBlockEnd < 0)||(m_nSelViewBlockStart < 0)||(m_nSelViewBlockStart > m_nSelViewBlockEnd))); }
 	BOOL			HasTextSelection() const { return ((m_ptSelectionViewPosStart.x != m_ptSelectionViewPosEnd.x) || (m_ptSelectionViewPosStart.y != m_ptSelectionViewPosEnd.y)); }
+	BOOL			HasTextLineSelection() const { return m_ptSelectionViewPosStart.y != m_ptSelectionViewPosEnd.y; }
 	static void		SetupAllViewSelection(int start, int end);
 	static void		SetupAllSelection(int start, int end);
 	void			SetupSelection(int start, int end);
