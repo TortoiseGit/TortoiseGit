@@ -279,12 +279,6 @@
     <ClCompile Include="EncodingDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WhitesFixDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WhitesFixSetupDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EOL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -504,9 +498,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EncodingDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WhitesFixSetupDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

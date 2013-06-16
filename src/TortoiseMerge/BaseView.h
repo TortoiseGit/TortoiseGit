@@ -225,8 +225,7 @@ public: // methods
 		bool HasTabsToConvert;
 	};
 
-	TWhitecharsProperties   GetWhitecharsProperties(bool scanAll = false);
-	int						FixBeforeSave();
+	TWhitecharsProperties   GetWhitecharsProperties();
 
 public: // variables
 	CViewData *		m_pViewData;
@@ -266,7 +265,6 @@ public: // variables
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
 
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
-	TWhitecharsProperties m_oWhitesOnLoad;
 
 protected:  // methods
 	enum {

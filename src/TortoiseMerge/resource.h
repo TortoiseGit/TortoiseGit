@@ -43,8 +43,6 @@
 #define IDB_RIBBONSMALLHDPI             161
 #define IDB_PNG3                        162
 #define IDB_RIBBONLARGEHDPI             162
-#define IDD_WHITESFIX                   164
-#define IDD_WHITESFIXSETUP              165
 #define IDB_LOGOFLIPPED                 168
 #define IDD_PATCH_FILE_OPEN_CUSTOM      180
 #define IDS_SELECTFILE                  200
@@ -174,8 +172,6 @@
 #define IDC_TITLE                       1094
 #define IDC_DESCRIPTION                 1095
 #define IDC_FIXEOLS                     1096
-#define IDC_TITLE_FIX                   1097
-#define IDC_TITLE_SETUP                 1098
 #define IDS_ERR_FILE_OPEN               1100
 #define IDS_ERR_FILE_BINARY             1101
 #define IDS_ERR_FILE_NOTAFILE           1102
@@ -189,8 +185,6 @@
 #define IDS_ERR_TEXTVIEWSTART           1326
 #define IDS_GOTOLINE                    1400
 #define IDS_GOTO_OUTOFRANGE             1401
-#define IDC_STOPASKINCONSISTENCIES      1500
-#define IDC_SETUP                       1501
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_SETTINGSTITLE               1702
@@ -374,9 +368,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        166
+#define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         32979
-#define _APS_NEXT_CONTROL_VALUE         1502
+#define _APS_NEXT_CONTROL_VALUE         1500
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
