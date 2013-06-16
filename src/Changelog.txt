@@ -10,7 +10,7 @@ Released: Unreleased
  * Fixed issue #1807: Handle new descriptions of detached head introduced in git 1.8.3
  * TortoiseGitMerge: Encoding and EOL conversion
  * TortoiseGitMerge: Tab / spaces conversion and trim trailing space
- * TortoiseGitMerge: Unify EOL, tab/space style and trim trailing space on saving
+ * TortoiseUDiff: Add Printing function
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching
