@@ -201,7 +201,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,56,236,10
     CONTROL         "Show linenumber&s",IDC_LINENUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,67,236,10
     CONTROL         "Add new files automatically to Git",IDC_AUTOADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,236,10
-    CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,236,10
+    CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,109,10
+    CONTROL         "Use Task Dialog",IDC_USETASKDIALOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,90,128,10
     LTEXT           "&Tab size:",IDC_STATIC,15,118,54,8
     EDITTEXT        IDC_TABSIZE,80,115,41,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "&Font:",IDC_STATIC,15,135,52,8
@@ -914,6 +915,17 @@ BEGIN
     IDS_WARNMODIFIEDOUTSIDELOOSECHANGES 
                             "Some file(s) have been changed outside TortoiseGitMerge.\nWould you like to reload and lose your changes?"
     IDS_WARNMODIFIEDOUTSIDE "Some file(s) have been changed outside TortoiseGitMerge.\nDo you want to load the changes?"
+    IDS_WARNBETTERPATCHPATHFOUND_TASK2 
+                            "Path found that matches the patch better."
+    IDS_WARNBETTERPATCHPATHFOUND_TASK3 
+                            "Use the found path.\nApply the patch to\n%s"
+    IDS_WARNBETTERPATCHPATHFOUND_TASK4 
+                            "Use the original path.\nApply the patch to\n%s"
+    IDS_DELETEWHENEMPTY_TASK2 "File is empty."
+    IDS_DELETEWHENEMPTY_TASK3 "Delete\nThe file is removed."
+    IDS_DELETEWHENEMPTY_TASK4 "Cancel\nKeep the empty file."
+    IDS_ASKFORSAVE_TASK2    "Save modifications."
+    IDS_ASKFORSAVE_TASK3    "Save\nThe modifications are saved to\n%s"
 END
 
 STRINGTABLE
@@ -1038,6 +1050,32 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_ASKFORSAVE_TASK4    "Quit\nExit TortoiseGitMerge without saving the modifications"
+    IDS_ASKFORSAVE_TASK5    "Cancel\nDon't quit TortoiseGitMerge"
+    IDS_ASKFORSAVE_TASK6    "Save as\nYou're asked where to save the file"
+    IDS_ASKFORSAVE_TASK7    "Don't save\nReload the views without saving the modifications"
+    IDS_ASKFORSAVE_TASK8    "Cancel\nDon't switch the views"
+    IDS_WARNMODIFIEDOUTSIDE_TASK2 "Do you want to load the changed files?"
+    IDS_WARNMODIFIEDOUTSIDE_TASK3 
+                            "Load changes\nChanges made in TortoiseGitMerge are lost and replaced with the new content."
+    IDS_WARNMODIFIEDOUTSIDE_TASK4 
+                            "Load changes\nThe views are updated with the new content."
+    IDS_WARNMODIFIEDOUTSIDE_TASK5 
+                            "Ignore changes\nIgnore the outside changes."
+    IDS_ERR_MAINFRAME_FILEHASCONFLICTS_TASK2 "Unresolved conflicts!"
+    IDS_ERR_MAINFRAME_FILEHASCONFLICTS_TASK3 
+                            "Save\nSave the file with the conflict markers."
+    IDS_ERR_MAINFRAME_FILEHASCONFLICTS_TASK4 
+                            "Cancel\nResolve the conflicts first."
+    IDS_ASKFORSAVE_NOSAVE_OPEN 
+                            "Don't save\nClose the views without saving the modifications"
+    IDS_ASKFORSAVE_CANCEL_OPEN "Cancel\nStay with current files"
+    IDS_ASKFORSAVE_CANCEL_RELOAD "Cancel\nDon't reload views"
+    IDS_ASKFORSAVE_CANCEL_OPTIONS "Cancel\nStay with current settings"
+END
+
+STRINGTABLE
+BEGIN
     IDS_GOTOLINE            "&Line number (%d - %d)"
     IDS_GOTO_OUTOFRANGE     "The line number must be in between %d and %d"
 END
@@ -1086,7 +1124,35 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_ASKFORSAVE_TASK9    "When resolving conflicts, you always have to save even if there is no conflict shown. TortoiseGitMerge can merge changes that Git can't and won't show a conflict for those!"
+    IDS_ASKFORSAVE_SAVELEFT "Save Left File\nThe modifications are saved to\n%s"
+    IDS_ASKFORSAVE_SAVELEFTAS 
+                            "Save Left File as\nYou're asked where to save the left file"
+    IDS_ASKFORSAVE_SAVERIGHT 
+                            "Save Right File\nThe modifications are saved to\n%s"
+    IDS_ASKFORSAVE_SAVERIGHTAS 
+                            "Save Right File as\nYou're asked where to save the right file"
+    IDS_ASKFORSAVE_SAVEALL2 "Save all\nBoth Files are saved"
+    IDS_SAVE                "Save File"
+    IDS_SAVE_MORE           "There are more editable views.\nWhat view do you want to save?"
+    IDS_ASKFORSAVE_SAVEBOTTOMAS 
+                            "Save Bottom File as\nYou're asked where to save the bottom file"
+    IDS_ASKFORSAVE_NEEDRESOLVE 
+                            "Keep resolving\nJump to first unresolved conflict"
+    IDS_ASKFORSAVEAS        "Save as"
+    IDS_ASKFORSAVEAS_MORE   "Select what file you want to save as"
+    IDS_ASKFORSAVEAS_MORECONFLICT 
+                            "Select what file you want to save as\nNote: There is unresolved conflict!"
+END
+
+STRINGTABLE
+BEGIN
     IDS_MARKASRESOLVED      "Do you want to mark the file\n%s\nas resolved?"
+    IDS_MARKASRESOLVED_TASK2 "File has no conflicts"
+    IDS_MARKASRESOLVED_TASK3 
+                            "Mark as resolved\nThe file status is changed to modified"
+    IDS_MARKASRESOLVED_TASK4 
+                            "Leave as conflicted\nThe conflict status of the file is kept"
 END
 
 STRINGTABLE

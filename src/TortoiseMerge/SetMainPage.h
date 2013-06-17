@@ -82,6 +82,8 @@ protected:
 	CRegDWORD		m_regMaxInline;
 	BOOL			m_bUseRibbons;
 	CRegDWORD		m_regUseRibbons;
+	BOOL			m_bUseTaskDialog;
+	CRegDWORD		m_regUseTaskDialog;
 
 	CRegDWORD		m_regFontSize;
 	DWORD			m_dwFontSize;

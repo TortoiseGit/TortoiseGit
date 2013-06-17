@@ -36,6 +36,7 @@
 #include <afxctl.h>
 #include <afxext.h>         // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
+#include <afxtaskdialog.h>
 
 #pragma warning(push)
 #pragma warning(disable: 4201)	// nonstandard extension used : nameless struct/union (in MMSystem.h)

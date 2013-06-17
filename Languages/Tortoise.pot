@@ -2156,6 +2156,34 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Cancel\nDon't quit TortoiseGitMerge"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Cancel\nDon't reload views"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Cancel\nDon't switch the views"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "Cancel\nKeep the empty file."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Cancel\nResolve the conflicts first."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Cancel\nStay with current files"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Cancel\nStay with current settings"
+msgstr ""
+
 #. Resource IDs: (70)
 msgid "Cannot combine commits now.\r\nMake sure you are viewing the log of your current branch and no filters are applied."
 msgstr ""
@@ -3208,6 +3236,10 @@ msgstr ""
 msgid "Delete the existing branch or use a different name."
 msgstr ""
 
+#. Resource IDs: (314)
+msgid "Delete\nThe file is removed."
+msgstr ""
+
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
 msgstr ""
@@ -3437,6 +3469,10 @@ msgstr ""
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Do you want to load the changed files?"
+msgstr ""
+
 #. Resource IDs: (319)
 #, c-format
 msgid "Do you want to mark the file\n%s\nas resolved?"
@@ -3481,6 +3517,14 @@ msgstr ""
 
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Don't save\nClose the views without saving the modifications"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Don't save\nReload the views without saving the modifications"
 msgstr ""
 
 #. Resource IDs: (73, 80)
@@ -4048,6 +4092,14 @@ msgstr ""
 
 #. Resource IDs: (376)
 msgid "File diffs"
+msgstr ""
+
+#. Resource IDs: (319)
+msgid "File has no conflicts"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "File is empty."
 msgstr ""
 
 #. Resource IDs: (213)
@@ -4851,6 +4903,10 @@ msgstr ""
 msgid "Ignore case cha&nges"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Ignore changes\nIgnore the outside changes."
+msgstr ""
+
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
 msgstr ""
@@ -5022,6 +5078,10 @@ msgstr ""
 msgid "Keep file locally?"
 msgstr ""
 
+#. Resource IDs: (316)
+msgid "Keep resolving\nJump to first unresolved conflict"
+msgstr ""
+
 #. Resource IDs: (16136)
 msgid "Keyboard"
 msgstr ""
@@ -5102,6 +5162,10 @@ msgstr ""
 msgid "Least active author:"
 msgstr ""
 
+#. Resource IDs: (319)
+msgid "Leave as conflicted\nThe conflict status of the file is kept"
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr ""
@@ -5171,6 +5235,14 @@ msgstr ""
 
 #. Resource IDs: (1505)
 msgid "Load Putty &Key"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Load changes\nChanges made in TortoiseGitMerge are lost and replaced with the new content."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Load changes\nThe views are updated with the new content."
 msgstr ""
 
 #. Resource IDs: (369,1379)
@@ -5301,6 +5373,10 @@ msgstr ""
 
 #. Resource IDs: (282)
 msgid "Mark as resolved"
+msgstr ""
+
+#. Resource IDs: (319)
+msgid "Mark as resolved\nThe file status is changed to modified"
 msgstr ""
 
 #. Resource IDs: (2051)
@@ -6172,6 +6248,10 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
+#. Resource IDs: (314)
+msgid "Path found that matches the patch better."
+msgstr ""
+
 #. Resource IDs: (1580, 65535)
 msgid "Path:"
 msgstr ""
@@ -6464,6 +6544,10 @@ msgstr ""
 
 #. Resource IDs: (3605)
 msgid "Quit the application; prompts to save documents\nExit"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Quit\nExit TortoiseGitMerge without saving the modifications"
 msgstr ""
 
 #. Resource IDs: (1073)
@@ -7114,6 +7198,36 @@ msgstr ""
 msgid "Save As"
 msgstr ""
 
+#. Resource IDs: (316)
+msgid "Save Bottom File as\nYou're asked where to save the bottom file"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Save File"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Save Left File as\nYou're asked where to save the left file"
+msgstr ""
+
+#. Resource IDs: (316)
+#, c-format
+msgid "Save Left File\nThe modifications are saved to\n%s"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Save Right File as\nYou're asked where to save the right file"
+msgstr ""
+
+#. Resource IDs: (316)
+#, c-format
+msgid "Save Right File\nThe modifications are saved to\n%s"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Save all\nBoth Files are saved"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr ""
@@ -7126,9 +7240,17 @@ msgstr ""
 msgid "Save as..."
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Save as\nYou're asked where to save the file"
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "Save modifications."
 msgstr ""
 
 #. Resource IDs: (1253)
@@ -7157,6 +7279,15 @@ msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid "Save\nSave the file with the conflict markers."
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "Save\nThe modifications are saved to\n%s"
 msgstr ""
 
 #. Resource IDs: (108)
@@ -7295,6 +7426,14 @@ msgstr ""
 
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Select what file you want to save as"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Select what file you want to save as\nNote: There is unresolved conflict!"
 msgstr ""
 
 #. Resource IDs: (1067)
@@ -8329,6 +8468,10 @@ msgstr ""
 msgid "There are currently %d overlay handlers installed besides the ones Tortoise uses."
 msgstr ""
 
+#. Resource IDs: (316)
+msgid "There are more editable views.\nWhat view do you want to save?"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr ""
@@ -8706,6 +8849,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Unresolved conflicts!"
+msgstr ""
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr ""
@@ -8793,6 +8940,10 @@ msgstr ""
 
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
+msgstr ""
+
+#. Resource IDs: (1500)
+msgid "Use Task Dialog"
 msgstr ""
 
 #. Resource IDs: (1497)
@@ -8901,6 +9052,16 @@ msgstr ""
 
 #. Resource IDs: (251)
 msgid "Use th&is text block"
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "Use the found path.\nApply the patch to\n%s"
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid "Use the original path.\nApply the patch to\n%s"
 msgstr ""
 
 #. Resource IDs: (251)
@@ -9079,6 +9240,10 @@ msgstr ""
 
 #. Resource IDs: (197)
 msgid "When enabled, the versioned items listed in the commit dialog are automatically selected"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "When resolving conflicts, you always have to save even if there is no conflict shown. TortoiseGitMerge can merge changes that Git can't and won't show a conflict for those!"
 msgstr ""
 
 #. Resource IDs: (604)
