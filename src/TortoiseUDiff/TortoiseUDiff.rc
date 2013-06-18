@@ -60,6 +60,7 @@ IDI_TORTOISEUDIFF       ICON                    "TortoiseUDiff.ico"
 IDC_TORTOISEUDIFF ACCELERATORS
 BEGIN
     "W",            ID_FILE_EXIT,           VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVEAS,         VIRTKEY, SHIFT, CONTROL, NOINVERT
     VK_ESCAPE,      IDM_FINDEXIT,           VIRTKEY, NOINVERT
