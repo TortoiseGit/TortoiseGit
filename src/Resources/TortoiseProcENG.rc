@@ -3093,6 +3093,7 @@ BEGIN
     IDS_DO_SAME_FOR_REST    "&Do the same for the rest"
     IDS_PROGRS_TITLE_RESET  "Reset"
     IDS_RESET_SOFT          "Soft"
+    IDS_COPY_REF_NAMES      "Copy ref names"
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"

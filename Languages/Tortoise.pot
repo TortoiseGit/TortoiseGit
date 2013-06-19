@@ -2795,6 +2795,10 @@ msgstr ""
 msgid "Copy paths to clipboard"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Copy ref names"
+msgstr ""
+
 #. Resource IDs: (323)
 msgid "Copy selection to cli&pboard"
 msgstr ""

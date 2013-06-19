@@ -80,7 +80,7 @@ enum RevisionGraphContextMenuCommands
 	ID_UPDATE,
 	ID_SWITCHTOHEAD,
 	ID_SWITCH,
-	ID_COPYURL = 0x400,
+	ID_COPYREFS = 0x400,
 	ID_EXPAND_ALL = 0x500,
 	ID_JOIN_ALL,
 	ID_GRAPH_EXPANDCOLLAPSE_ABOVE = 0x600,
@@ -1232,6 +1232,8 @@ void CRevisionGraphWnd::AddGitOps (CMenu& popup)
 			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, NULL, &switchMenu);
 		}
 
+		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
+
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
 		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
 	}
@@ -1462,9 +1464,22 @@ void CRevisionGraphWnd::ToggleNodeFlag (const CVisibleGraphNode * /*node*/, DWOR
 #endif
 }
 
-void CRevisionGraphWnd::DoCopyUrl()
+void CRevisionGraphWnd::DoCopyRefs()
 {
-	CStringUtils::WriteAsciiStringToClipboard(GetSelectedURL(), m_hWnd);
+	if (m_SelectedEntry1 == NULL)
+		return;
+
+	STRING_VECTOR list = GetFriendRefNames(m_SelectedEntry1);
+	CString text;
+	if (list.empty())
+		text = m_logEntries[m_SelectedEntry1->index()].ToString();
+	for (size_t i = 0; i < list.size(); ++i)
+	{
+		if (i > 0)
+			text.Append(_T("\r\n"));
+		text.Append(list[i]);
+	}
+	CStringUtils::WriteAsciiStringToClipboard(text, m_hWnd);
 }
 
 void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
@@ -1530,6 +1545,9 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		}
 		break;
 	}
+	case ID_COPYREFS:
+		DoCopyRefs();
+		break;
 	case ID_BROWSEREPO:
 		DoBrowseRepo();
 		break;
@@ -1566,9 +1584,6 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		break;
 	case ID_SWITCHTOHEAD:
 		DoSwitchToHead();
-		break;
-	case ID_COPYURL:
-		DoCopyUrl();
 		break;
 	case ID_EXPAND_ALL:
 		ResetNodeFlags (CGraphNodeStates::COLLAPSED_ALL);
