@@ -6745,6 +6745,10 @@ msgstr ""
 msgid "Remote &URL:"
 msgstr ""
 
+#. Resource IDs: (1754)
+msgid "Remote &tracking branch"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Remote Branch"
 msgstr ""

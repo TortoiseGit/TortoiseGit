@@ -146,6 +146,8 @@ bool SubmoduleUpdateCommand::Execute()
 		params += _T(" --merge");
 	if (submoduleUpdateDlg.m_bRebase)
 		params += _T(" --rebase");
+	if (submoduleUpdateDlg.m_bRemote)
+		params += _T(" --remote");
 
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{

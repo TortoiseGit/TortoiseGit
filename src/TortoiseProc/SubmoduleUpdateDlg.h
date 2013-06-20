@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,6 +52,7 @@ public:
 	BOOL m_bNoFetch;
 	BOOL m_bMerge;
 	BOOL m_bRebase;
+	BOOL m_bRemote;
 	STRING_VECTOR m_PathFilterList;
 	STRING_VECTOR m_PathList;
 

@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +23,7 @@
 #include "SubmoduleUpdateDlg.h"
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
+#include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CStandAloneDialog)
 
@@ -33,6 +35,7 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	, m_bNoFetch(FALSE)
 	, m_bMerge(FALSE)
 	, m_bRebase(FALSE)
+	, m_bRemote(FALSE)
 {
 }
 
@@ -50,6 +53,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_NOFETCH, m_bNoFetch);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_MERGE, m_bMerge);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_REBASE, m_bRebase);
+	DDX_Check(pDX, IDC_CHECK_SUBMODULE_REMOTE, m_bRemote);
 }
 
 
@@ -163,6 +167,14 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 {
 	CStandAloneDialog::UpdateData(TRUE);
 	m_PathList.clear();
+	if (m_bRemote && CAppUtils::GetMsysgitVersion() < 0x01080200)
+	{
+		CString gitver;
+		gitver.Format(IDS_GITVER_REQUIRED, _T("--remote"), _T("1.8.2"));
+		CMessageBox::Show(m_hWnd, gitver, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return;
+	}
+
 	CString selected;
 	for (int i = 0; i < m_PathListBox.GetCount(); ++i)
 	{
