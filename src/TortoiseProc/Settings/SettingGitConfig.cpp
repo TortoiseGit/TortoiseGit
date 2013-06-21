@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
+	ON_BN_CLICKED(IDC_EDITTGITCONFIG, &CSettingGitConfig::OnBnClickedEdittgitconfig)
 	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
 	ON_BN_CLICKED(IDC_VIEWSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedViewsystemgitconfig)
@@ -126,7 +127,10 @@ BOOL CSettingGitConfig::OnInitDialog()
 	}
 
 	if (isBareRepo)
+	{
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
+		this->GetDlgItem(IDC_EDITTGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_VIEWTGITCONFIG)));
+	}
 
 	if (!CAppUtils::IsAdminLogin())
 	{
@@ -251,6 +255,24 @@ void CSettingGitConfig::OnBnClickedEditlocalgitconfig()
 {
 	// use alternative editor because of LineEndings
 	CAppUtils::LaunchAlternativeEditor(g_Git.GetGitLocalConfig());
+}
+
+void CSettingGitConfig::OnBnClickedEdittgitconfig()
+{
+	// use alternative editor because of LineEndings
+	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
+	{
+		CString tmpFile = GetTempFile();
+		CTGitPath path(_T(".tgitconfig"));
+		if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
+		{
+			CAppUtils::LaunchAlternativeEditor(tmpFile);
+		}
+	}
+	else
+	{
+		CAppUtils::LaunchAlternativeEditor(g_Git.m_CurrentDir + _T("\\.tgitconfig"));
+	}
 }
 
 void CSettingGitConfig::OnBnClickedEditsystemgitconfig()

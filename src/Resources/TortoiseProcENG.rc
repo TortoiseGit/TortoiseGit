@@ -1438,6 +1438,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,120,279,10
     CONTROL         "Save as &Global",IDC_CHECK_GLOBAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,136,279,10
     PUSHBUTTON      "Edit &local .git/config",IDC_EDITLOCALGITCONFIG,14,152,90,14
+    PUSHBUTTON      "Edit .tgitconfig",IDC_EDITTGITCONFIG,14,170,90,14
     PUSHBUTTON      "Edit gl&obal .gitconfig",IDC_EDITGLOBALGITCONFIG,109,152,90,14
     PUSHBUTTON      "Edit global &XDG config",IDC_EDITGLOBALXDGGITCONFIG,109,170,90,14,NOT WS_VISIBLE
     PUSHBUTTON      "Edit s&ystemwide gitconfig",IDC_EDITSYSTEMGITCONFIG,203,152,90,14
@@ -3110,6 +3111,7 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_PROC_GITCONFIG_VIEWTGITCONFIG "View .tgitconfig"
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END

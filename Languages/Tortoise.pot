@@ -3615,6 +3615,10 @@ msgstr ""
 msgid "Edit &local .git/config"
 msgstr ""
 
+#. Resource IDs: (1755)
+msgid "Edit .tgitconfig"
+msgstr ""
+
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
 msgstr ""
@@ -9167,6 +9171,10 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "View"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "View .tgitconfig"
 msgstr ""
 
 #. Resource IDs: (328, 603)
