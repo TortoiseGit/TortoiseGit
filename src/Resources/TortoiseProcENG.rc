@@ -1708,7 +1708,8 @@ BEGIN
     CONTROL         "&No fetch",IDC_CHECK_SUBMODULE_NOFETCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,165,77,140,13
     CONTROL         "&Merge",IDC_CHECK_SUBMODULE_MERGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,165,91,140,13
     CONTROL         "Re&base",IDC_CHECK_SUBMODULE_REBASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,165,104,140,13
-    CONTROL         "Remote &tracking branch",IDC_CHECK_SUBMODULE_REMOTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,117,140,13
+    CONTROL         "Remote &tracking branch",IDC_CHECK_SUBMODULE_REMOTE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,117,140,13
     DEFPUSHBUTTON   "OK",IDOK,149,140,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,205,140,50,14
     PUSHBUTTON      "Help",IDHELP,262,140,50,14,WS_DISABLED
@@ -3095,7 +3096,6 @@ BEGIN
     IDS_DO_SAME_FOR_REST    "&Do the same for the rest"
     IDS_PROGRS_TITLE_RESET  "Reset"
     IDS_RESET_SOFT          "Soft"
-    IDS_COPY_REF_NAMES      "Copy ref names"
     IDS_SETTINGS_LOCAL      "Local"
     IDS_SETTINGS_GLOBAL     "Global"
     IDS_SETTINGS_SYSTEM     "System"
@@ -3111,7 +3111,13 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_CHERRYPICKFAILEDSKIP "Cherry-pick failed! Skip this commit?"
+    IDS_COPY_REF_NAMES      "Copy ref names"
     IDS_PROC_GITCONFIG_VIEWTGITCONFIG "View .tgitconfig"
+END
+
+STRINGTABLE
+BEGIN
     IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END
@@ -4070,11 +4076,6 @@ BEGIN
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
     IDS_STATUSLIST_WARN_MAXDIFF 
                             "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_CHERRYPICKFAILEDSKIP "Cherry-pick failed! Skip this commit?"
 END
 
 #endif    // English (U.S.) resources
