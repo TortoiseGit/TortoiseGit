@@ -77,9 +77,6 @@ bool DropCopyAddCommand::Execute()
 	if (parser.HasVal(_T("closeonend")))
 		progDlg.SetAutoClose(parser.GetLongVal(_T("closeonend")));
 	progDlg.SetPathList(copiedFiles);
-	ProjectProperties props;
-	props.ReadPropsPathList(copiedFiles);
-	progDlg.SetProjectProperties(props);
 	progDlg.DoModal();
 	bRet = !progDlg.DidErrorsOccur();
 
