@@ -3439,7 +3439,7 @@ void CGitStatusListCtrl::OnBeginDrag(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 	::CreateDirectory(tempDir, NULL);
 	while ( (index = GetNextSelectedItem(pos)) >= 0 )
 	{
-		CTGitPath *path = m_arStatusArray[index];
+		CTGitPath *path = (CTGitPath *)GetItemData(index); // m_arStatusArray[index] does not work with SyncDlg
 		if (path->IsDirectory())
 			continue;
 
