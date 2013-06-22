@@ -32,10 +32,23 @@ extern "C" void die_dll(const char *err, va_list params)
 	throw g_last_error;
 }
 
+void die(const char *err, ...)
+{
+	va_list params;
+
+	va_start(params, err);
+	die_dll(err, params);
+	va_end(params);
+}
+
 extern "C" void vc_exit(int code)
 {
-	memset(g_last_error, 0, MAX_ERROR_STR_SIZE);
-	sprintf(g_last_error, "libgit called \"exit(%d)\".", code);
-	close_all();
-	throw g_last_error;
+	if (strlen(g_last_error))
+	{
+		char old_err[MAX_ERROR_STR_SIZE];
+		memcpy(old_err, g_last_error, MAX_ERROR_STR_SIZE);
+		die("libgit called \"exit(%d)\". Last error was:\n%s", code, old_err);
+	}
+	else
+		die("libgit called \"exit(%d)\".", code);
 }
