@@ -33,27 +33,18 @@ CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 	, CChooseVersion(this)
 	, m_Revision(_T("HEAD"))
 	, m_strExportDirectory(_T(""))
-	, m_sExportDirOrig(_T(""))
-	, m_bNoExternals(FALSE)
-	, m_pLogDlg(NULL)
-	, m_bAutoCreateTargetName(false)
 {
 }
 
 CExportDlg::~CExportDlg()
 {
-	if (m_pLogDlg)
-		delete m_pLogDlg;
 }
 
 void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_CHECKOUTDIRECTORY, m_strExportDirectory);
-	DDX_Control(pDX, IDC_CHECKOUTDIRECTORY, m_cCheckoutEdit);
-
 	CHOOSE_VERSION_DDX;
-
 }
 
 
@@ -70,9 +61,6 @@ BOOL CExportDlg::OnInitDialog()
 {
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
-
-	m_sExportDirOrig = m_strExportDirectory;
-	m_bAutoCreateTargetName = !PathIsDirectoryEmpty(m_sExportDirOrig);
 
 	AddAnchor(IDC_REPOGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_EXPORT_CHECKOUTDIR, TOP_LEFT);
@@ -130,12 +118,6 @@ void CExportDlg::OnOK()
 		return;
 	}
 
-	m_bAutoCreateTargetName = false;
-
-//	m_URLCombo.SaveHistory();
-//	m_URL = m_URLCombo.GetString();
-
-
 	if(::PathFileExists(this->m_strExportDirectory))
 	{
 		if(::PathIsDirectory(m_strExportDirectory))
@@ -158,12 +140,6 @@ void CExportDlg::OnOK()
 
 	UpdateData(FALSE);
 	CHorizontalResizableStandAloneDialog::OnOK();
-}
-
-void CExportDlg::OnBnClickedBrowse()
-{
-	m_tooltips.Pop();	// hide the tooltips
-
 }
 
 void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
@@ -208,27 +184,6 @@ void CExportDlg::OnBnClickedHelp()
 void CExportDlg::OnBnClickedShowlog()
 {
 	m_tooltips.Pop();	// hide the tooltips
-
-}
-
-void CExportDlg::OnCbnSelchangeEolcombo()
-{
-}
-
-void CExportDlg::OnCbnEditchangeUrlcombo()
-{
-	if (!m_bAutoCreateTargetName)
-		return;
-	if (m_sExportDirOrig.IsEmpty())
-		return;
-	// find out what to use as the checkout directory name
-	UpdateData();
-	m_URLCombo.GetWindowText(m_URL);
-	if (m_URL.IsEmpty())
-		return;
-	CString name = CAppUtils::GetProjectNameFromURL(m_URL);
-	m_strExportDirectory = m_sExportDirOrig+_T('\\')+name;
-	UpdateData(FALSE);
 }
 
 void CExportDlg::OnDestroy()

@@ -49,40 +49,20 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnOK();
-	afx_msg void OnBnClickedBrowse();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
 	afx_msg void OnEnChangeCheckoutdirectory();
 	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowlog();
-	afx_msg LRESULT OnRevSelected(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnEnChangeRevisionNum();
-	afx_msg void OnCbnSelchangeEolcombo();
-	afx_msg void OnCbnEditchangeUrlcombo();
-
-	void		SetRevision(const CString& rev);
 
 	DECLARE_MESSAGE_MAP()
 protected:
 	CToolTips		m_tooltips;
-	CString			m_sRevision;
-	CComboBox		m_eolCombo;
-	CString			m_sExportDirOrig;
-	bool			m_bAutoCreateTargetName;
-	CComboBox		m_depthCombo;
 
 	CHOOSE_EVENT_RADIO()	;
 
 public:
-	CHistoryCombo	m_URLCombo;
-	CString			m_URL;
-	CString			m_eolStyle;
 	CString			m_Revision;
-	BOOL			m_bNoExternals;
 	CButton			m_butBrowse;
-	CEdit			m_editRevision;
 	CString			m_strExportDirectory;
-	CFileDropEdit	m_cCheckoutEdit;
-	CLogDlg	*		m_pLogDlg;
-	//svn_depth_t		m_depth;
 	afx_msg void OnDestroy();
 };
