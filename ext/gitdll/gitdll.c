@@ -40,10 +40,12 @@ extern char g_last_error[];
 const char * g_prefix;
 
 extern void die_dll(const char *err, va_list params);
+extern int die_is_recursing_dll();
 
 void dll_entry()
 {
 	set_die_routine(die_dll);
+	set_die_is_recursing_routine(die_is_recursing_dll);
 }
 
 int git_get_sha1(const char *name, GIT_HASH sha1)
