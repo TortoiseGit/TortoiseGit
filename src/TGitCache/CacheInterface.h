@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// External Cache Copyright (C) 2005-2006,2008-2010 - TortoiseSVN
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,9 +19,9 @@
 //
 
 #pragma once
-#include "wininet.h"
-
+#include <wininet.h>
 #include "GitStatus.h"
+
 // The name of the named-pipe for the cache
 
 #define TGIT_CACHE_PIPE_NAME _T("\\\\.\\pipe\\TGitCache")
@@ -46,8 +46,8 @@ typedef enum git_node_kind_t
 
 }git_node_kind;
 
-
 /**
+ * \ingroup TGitCache
  * RAII class that temporarily disables updates for the given path
  * by sending TGITCACHECOMMAND_BLOCK and TGITCACHECOMMAND_UNBLOCK.
  */
@@ -100,7 +100,6 @@ struct TGITCacheCommand
 #define		TGITCACHECOMMAND_RELEASE	3		///< Releases all open handles for the specified path and all paths below
 #define		TGITCACHECOMMAND_BLOCK		4		///< Blocks a path from getting crawled for a specific amount of time or until the TSVNCACHECOMMAND_UNBLOCK command is sent for that path
 #define		TGITCACHECOMMAND_UNBLOCK		5		///< Removes a path from the list of paths blocked from getting crawled
-
 
 /// Set this flag if you already know whether or not the item is a folder
 #define TGITCACHE_FLAGS_FOLDERISKNOWN		0x01

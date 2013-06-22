@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "SmartHandle.h"
 
 struct TGITCacheResponse;
 class CTGitPath;
@@ -38,18 +39,24 @@ public:
 	bool ReleaseLockForPath(const CTGitPath& path);
 
 private:
+	bool InternalEnsurePipeOpen (CAutoFile& hPipe, const CString& pipeName);
+
 	bool EnsurePipeOpen();
 	void ClosePipe();
 
 	bool EnsureCommandPipeOpen();
 	void CloseCommandPipe();
 
-private:
-	HANDLE m_hPipe;
-	OVERLAPPED m_Overlapped;
-	HANDLE m_hEvent;
+	DWORD GetProcessIntegrityLevel();
+	bool RunTGitCacheProcess();
+	CString GetTGitCachePath();
 
-	HANDLE m_hCommandPipe;
+private:
+	CAutoFile m_hPipe;
+	OVERLAPPED m_Overlapped;
+	CAutoGeneralHandle m_hEvent;
+
+	CAutoFile m_hCommandPipe;
 
 
 	CComCriticalSection m_critSec;

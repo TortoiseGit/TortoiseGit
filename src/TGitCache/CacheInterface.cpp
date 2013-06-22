@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// External Cache Copyright (C) 2007,2010-2011 - TortoiseSVN
-// Copyright (C) 2008-2011 - TortoiseGit
+// External Cache Copyright (C) 2007,2009-2012 - TortoiseSVN
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "CacheInterface.h"
 #include "SmartHandle.h"
+#include <memory>
 
 CString GetCachePipeName()
 {
@@ -35,23 +36,25 @@ CString GetCacheMutexName()
 {
 	return TGIT_CACHE_MUTEX_NAME + GetCacheID();
 }
+
 CString GetCacheID()
 {
+	CString t;
 	CAutoGeneralHandle token;
-	DWORD len;
 	BOOL result = OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, token.GetPointer());
 	if(result)
 	{
+		DWORD len = 0;
 		GetTokenInformation(token, TokenStatistics, NULL, 0, &len);
-		LPBYTE data = new BYTE[len];
-		GetTokenInformation(token, TokenStatistics, data, len, &len);
-		LUID uid = ((PTOKEN_STATISTICS)data)->AuthenticationId;
-		delete [ ] data;
-		CString t;
-		t.Format(_T("-%08x%08x"), uid.HighPart, uid.LowPart);
-		return t;
+		if (len >= sizeof (TOKEN_STATISTICS))
+		{
+			std::unique_ptr<BYTE[]> data (new BYTE[len]);
+			GetTokenInformation(token, TokenStatistics, data.get(), len, &len);
+			LUID uid = ((PTOKEN_STATISTICS)data.get())->AuthenticationId;
+			t.Format(_T("-%08x%08x"), uid.HighPart, uid.LowPart);
+		}
 	}
-	return _T("");
+	return t;
 }
 
 bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
@@ -141,10 +144,17 @@ CBlockCacheForPath::CBlockCacheForPath(const WCHAR * aPath)
 	wcsncpy_s(path, aPath, MAX_PATH);
 	path[MAX_PATH] = 0;
 
-	SendCacheCommand (TGITCACHECOMMAND_BLOCK, path);
+	SendCacheCommand(TGITCACHECOMMAND_BLOCK, path);
+	// Wait a short while to make sure the cache has
+	// processed this command. Without this, we risk
+	// executing the svn command before the cache has
+	// blocked the path and already gets change notifications.
+	Sleep(20);
 }
 
 CBlockCacheForPath::~CBlockCacheForPath()
 {
-	SendCacheCommand (TGITCACHECOMMAND_UNBLOCK, path);
+	int retry = 3;
+	while (retry-- && !SendCacheCommand(TGITCACHECOMMAND_UNBLOCK, path))
+		Sleep(10);
 }
