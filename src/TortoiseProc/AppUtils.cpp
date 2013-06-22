@@ -1089,7 +1089,7 @@ bool CAppUtils::Export(CString *BashHash)
 	{
 		CString cmd;
 		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s"),
-					dlg.m_strExportDirectory, g_Git.FixBranchName(dlg.m_VersionName));
+					dlg.m_strFile, g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg pro;
 		pro.m_GitCmd=cmd;

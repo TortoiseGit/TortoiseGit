@@ -32,7 +32,7 @@ CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_Revision(_T("HEAD"))
-	, m_strExportDirectory(_T(""))
+	, m_strFile(_T(""))
 {
 }
 
@@ -43,14 +43,14 @@ CExportDlg::~CExportDlg()
 void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_CHECKOUTDIRECTORY, m_strExportDirectory);
+	DDX_Text(pDX, IDC_EXPORTFILE, m_strFile);
 	CHOOSE_VERSION_DDX;
 }
 
 
 BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
-	ON_BN_CLICKED(IDC_CHECKOUTDIRECTORY_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
-	ON_EN_CHANGE(IDC_CHECKOUTDIRECTORY, OnEnChangeCheckoutdirectory)
+	ON_BN_CLICKED(IDC_EXPORTFILE_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
+	ON_EN_CHANGE(IDC_EXPORTFILE, OnEnChangeCheckoutdirectory)
 	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 
 	CHOOSE_VERSION_EVENT
@@ -63,9 +63,9 @@ BOOL CExportDlg::OnInitDialog()
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AddAnchor(IDC_REPOGROUP, TOP_LEFT, TOP_RIGHT);
-	AddAnchor(IDC_EXPORT_CHECKOUTDIR, TOP_LEFT);
-	AddAnchor(IDC_CHECKOUTDIRECTORY_BROWSE, TOP_RIGHT);
-	AddAnchor(IDC_CHECKOUTDIRECTORY, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_EXPORTFILE_LABEL, TOP_LEFT);
+	AddAnchor(IDC_EXPORTFILE_BROWSE, TOP_RIGHT);
+	AddAnchor(IDC_EXPORTFILE, TOP_LEFT, TOP_RIGHT);
 
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
@@ -94,9 +94,9 @@ BOOL CExportDlg::OnInitDialog()
 	}
 
 	m_tooltips.Create(this);
-	m_tooltips.AddTool(IDC_CHECKOUTDIRECTORY, IDS_CHECKOUT_TT_DIR);
+	m_tooltips.AddTool(IDC_EXPORTFILE, IDS_EXPORTFILE_TT);
 
-	SHAutoComplete(GetDlgItem(IDC_CHECKOUTDIRECTORY)->m_hWnd, SHACF_FILESYSTEM);
+	SHAutoComplete(GetDlgItem(IDC_EXPORTFILE)->m_hWnd, SHACF_FILESYSTEM);
 
 	if ((m_pParentWnd==NULL)&&(hWndExplorer))
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -118,21 +118,21 @@ void CExportDlg::OnOK()
 		return;
 	}
 
-	if(::PathFileExists(this->m_strExportDirectory))
+	if(::PathFileExists(m_strFile))
 	{
-		if(::PathIsDirectory(m_strExportDirectory))
+		if(::PathIsDirectory(m_strFile))
 		{
 			CMessageBox::Show(NULL, IDS_PROCEXPORTERRFOLDER, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
 		}
 		CString sMessage;
-		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, m_strExportDirectory);
+		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, m_strFile);
 		if (CMessageBox::Show(NULL, sMessage, _T("TortoiseGit"), MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 		{
 			return ;
 		}
 	}
-	else if (m_strExportDirectory.IsEmpty())
+	else if (m_strFile.IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROC_NOZIPFILE, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
@@ -159,7 +159,7 @@ void CExportDlg::OnBnClickedCheckoutdirectoryBrowse()
 	if (ret == IDOK)
 	{
 		UpdateData(TRUE);
-		m_strExportDirectory = dlg.GetPathName();
+		m_strFile = dlg.GetPathName();
 		UpdateData(FALSE);
 	}
 }
@@ -173,7 +173,7 @@ BOOL CExportDlg::PreTranslateMessage(MSG* pMsg)
 void CExportDlg::OnEnChangeCheckoutdirectory()
 {
 	UpdateData(TRUE);
-	DialogEnableWindow(IDOK, !m_strExportDirectory.IsEmpty());
+	DialogEnableWindow(IDOK, !m_strFile.IsEmpty());
 }
 
 void CExportDlg::OnBnClickedHelp()

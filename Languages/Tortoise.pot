@@ -5274,7 +5274,7 @@ msgid "Local:                                                                   
 msgstr ""
 
 #. Resource IDs: (94)
-msgid "Location where the contents of the\nrepository URL will be saved to."
+msgid "Location where the contents of the\nselected revision of the repository will be saved to."
 msgstr ""
 
 #. Resource IDs: (32854)

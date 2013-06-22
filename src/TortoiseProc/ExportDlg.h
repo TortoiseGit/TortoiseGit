@@ -63,6 +63,6 @@ protected:
 public:
 	CString			m_Revision;
 	CButton			m_butBrowse;
-	CString			m_strExportDirectory;
+	CString			m_strFile;
 	afx_msg void OnDestroy();
 };

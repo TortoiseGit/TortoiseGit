@@ -821,9 +821,9 @@ CAPTION "Export"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Export Zip File",IDC_REPOGROUP,7,7,286,51
-    LTEXT           "Zip File",IDC_EXPORT_CHECKOUTDIR,13,20,223,8
-    EDITTEXT        IDC_CHECKOUTDIRECTORY,13,31,255,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_CHECKOUTDIRECTORY_BROWSE,273,31,14,14
+    LTEXT           "Zip File",IDC_EXPORTFILE_LABEL,13,20,223,8
+    EDITTEXT        IDC_EXPORTFILE,13,31,255,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_EXPORTFILE_BROWSE,273,31,14,14
     GROUPBOX        "Revision",IDC_GROUP_BASEON,7,65,286,90
     CONTROL         "HEAD",IDC_RADIO_HEAD,"Button",BS_AUTORADIOBUTTON,20,82,62,10
     CONTROL         "Branch",IDC_RADIO_BRANCH,"Button",BS_AUTORADIOBUTTON,19,96,62,10
@@ -3118,7 +3118,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CHECKOUT_TT_DIR     "Location where the contents of the\nrepository URL will be saved to."
+    IDS_EXPORTFILE_TT       "Location where the contents of the\nselected revision of the repository will be saved to."
     IDS_CHECKOUT_EXPORTDIR  "Export directory:"
 END
 
