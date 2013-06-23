@@ -401,7 +401,7 @@ public:
 					_tcsncpy_s(pathbuf, MAX_PATH+4, path, MAX_PATH+3);
 					PathStripToRoot(pathbuf);
 					PathAddBackslash(pathbuf);
-					ATLTRACE2(_T("GetDriveType for %s, Drive %d\n"), pathbuf, drivenumber);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": GetDriveType for %s, Drive %d\n"), pathbuf, drivenumber);
 					drivetype = GetDriveType(pathbuf);
 					drivetypecache[drivenumber] = drivetype;
 				}
@@ -421,7 +421,7 @@ public:
 					drivetype = drivetypecache[26];
 				else
 				{
-					ATLTRACE2(_T("GetDriveType for %s\n"), pathbuf);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T("GetDriveType for %s\n"), pathbuf);
 					drivetype = GetDriveType(pathbuf);
 					drivetypecache[26] = drivetype;
 					_tcsncpy_s(drivetypepathcache, MAX_PATH, pathbuf, MAX_PATH);			// MAX_PATH ok.

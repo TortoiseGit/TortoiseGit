@@ -48,6 +48,8 @@
 #include <atlbase.h>
 #include <afxstr.h>
 
+#include "DebugOutput.h"
+
 #pragma warning(push)
 #include "git2.h"
 #pragma warning(pop)

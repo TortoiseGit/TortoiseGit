@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -130,7 +130,7 @@ exit:
 		fclose(pFile);
 	DeleteFile(path2);
 	m_pInstance->watcher.ClearInfoMap();
-	ATLTRACE("cache loaded from disk successfully!\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": cache loaded from disk successfully!\n");
 	return;
 error:
 	if (pFile)
@@ -139,7 +139,7 @@ error:
 	m_pInstance->watcher.ClearInfoMap();
 	Destroy();
 	m_pInstance = new CGitStatusCache;
-	ATLTRACE("cache not loaded from disk\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": cache not loaded from disk\n");
 }
 
 bool CGitStatusCache::SaveCache()
@@ -186,7 +186,7 @@ bool CGitStatusCache::SaveCache()
 			fclose(pFile);
 		}
 	}
-	ATLTRACE(_T("cache saved to disk at %s\n"), path);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache saved to disk at %s\n"), path);
 	return true;
 error:
 	fclose(pFile);
@@ -282,7 +282,7 @@ bool CGitStatusCache::IsPathGood(const CTGitPath& path)
 		// TODO: maybe we also need to check if index.lock and HEAD.lock still exists after a specific timeout (if we miss update notifications for these files too often)
 		if (GetTickCount() < it->second && it->first.IsAncestorOf(path))
 		{
-			ATLTRACE(_T("path not good: %s\n"), it->first.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path not good: %s\n"), it->first.GetWinPath());
 			return false;
 		}
 	}
@@ -312,7 +312,7 @@ bool CGitStatusCache::UnBlockPath(const CTGitPath& path)
 	std::map<CTGitPath, DWORD>::iterator it = m_NoWatchPaths.find(path.GetDirectory());
 	if (it != m_NoWatchPaths.end())
 	{
-		ATLTRACE(_T("path removed from no good: %s\n"), it->first.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": path removed from no good: %s\n"), it->first.GetWinPath());
 		m_NoWatchPaths.erase(it);
 		ret = true;
 	}
@@ -403,7 +403,7 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 		itMap = m_directoryCache.lower_bound(cdir->m_directoryPath);
 	} while (itMap != m_directoryCache.end() && cdir->m_directoryPath.IsAncestorOf(itMap->first));
 
-	ATLTRACE(_T("removed path %s from cache\n"), cdir->m_directoryPath.GetWinPathString());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": removed from cache %s\n"), cdir->m_directoryPath.GetWinPathString());
 	delete cdir;
 	cdir = NULL;
 	return true;
@@ -467,7 +467,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 			// again. If that's the case, just do nothing
 			if (path.IsDirectory()||(!path.Exists()))
 			{
-				ATLTRACE(_T("adding %s to our cache\n"), path.GetWinPath());
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": adding %s to our cache\n"), path.GetWinPath());
 				CCachedDirectory * newcdir = new CCachedDirectory(path);
 				if (newcdir)
 				{
@@ -535,7 +535,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		CCachedDirectory * cachedDir = GetDirectoryCacheEntry(dirpath);
 		if (cachedDir != NULL)
 		{
-			//ATLTRACE(_T("GetStatusForMember %d\n"), bFetch);
+			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": GetStatusForMember %d\n"), bFetch);
 			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, bFetch);
 			{
 				AutoLocker lock(m_critSec);
@@ -572,11 +572,11 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		}
 	}
 	AutoLocker lock(m_critSec);
-	ATLTRACE(_T("ignored no good path %s\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ignored no good path %s\n"), path.GetWinPath());
 	m_mostRecentStatus = CStatusCacheEntry();
 	if (m_shellCache.ShowExcludedAsNormal() && path.IsDirectory() && m_shellCache.HasGITAdminDir(path.GetWinPath(), true))
 	{
-		ATLTRACE(_T("force status %s\n"), path.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": force status %s\n"), path.GetWinPath());
 		m_mostRecentStatus.ForceStatus(git_wc_status_normal);
 	}
 	return m_mostRecentStatus;

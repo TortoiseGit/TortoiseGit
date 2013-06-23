@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,7 +66,7 @@ bool RemoveCommand::Execute()
 	{
 		for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
-			TRACE(_T("remove file %s\n"), (LPCTSTR)pathList[nPath].GetUIPathString());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": remove file %s\n"), (LPCTSTR)pathList[nPath].GetUIPathString());
 			// even though SVN::Remove takes a list of paths to delete at once
 			// we delete each item individually so we can prompt the user
 			// if something goes wrong or unversioned/modified items are

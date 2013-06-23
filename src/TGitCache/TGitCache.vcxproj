@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ext\xpsupportvc11upd2\xpatl.cpp" />
+    <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="CachedDirectory.cpp" />
     <ClCompile Include="CacheInterface.cpp" />
     <ClCompile Include="DirectoryWatcher.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="..\Utils\UniqueQueue.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="CachedDirectory.h" />
     <ClInclude Include="CacheInterface.h" />
     <ClInclude Include="DirectoryWatcher.h" />

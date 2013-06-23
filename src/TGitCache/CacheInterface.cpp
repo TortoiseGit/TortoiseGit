@@ -79,7 +79,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 
 	if (!hPipe)
 	{
-		//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not connect to pipe\n");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not connect to pipe\n");
 		return false;
 	}
 
@@ -115,7 +115,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 
 		if (! fSuccess || sizeof(cmd) != cbWritten)
 		{
-			//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not write to pipe\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Could not write to pipe\n");
 			DisconnectNamedPipe(hPipe);
 			return false;
 		}
@@ -132,7 +132,7 @@ bool SendCacheCommand(BYTE command, const WCHAR * path /* = NULL */)
 	}
 	else
 	{
-		//CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
 		return false;
 	}
 

@@ -43,7 +43,7 @@ void CShellUpdater::Stop()
 		SetEvent(m_hTerminationEvent);
 		if(WaitForSingleObject(m_hThread, 200) != WAIT_OBJECT_0)
 		{
-			ATLTRACE("Error terminating shell updater thread\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Error terminating shell updater thread\n");
 		}
 	}
 	m_hThread.CloseHandle();
@@ -76,8 +76,6 @@ void CShellUpdater::AddPathForUpdate(const CTGitPath& path)
 			if(m_pathsToUpdate[i] == path)
 				return;
 		}
-
-		//ATLTRACE(_T("Add Path for Update : %s\n"), path.GetWinPath());
 
 		m_pathsToUpdate.push_back(path);
 
@@ -141,7 +139,7 @@ void CShellUpdater::WorkerThread()
 			}
 			if (workingPath.IsEmpty())
 				continue;
-			ATLTRACE(_T("Update notifications for: %s\n"), workingPath.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": shell notification for %s\n"), workingPath.GetWinPath());
 			if (workingPath.IsDirectory())
 			{
 				// check if the path is monitored by the watcher. If it isn't, then we have to invalidate the cache

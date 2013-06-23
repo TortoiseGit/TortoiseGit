@@ -368,7 +368,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	//If is not version control path
 	if( !bIsVersionedPath)
 	{
-		ATLTRACE(_T("%s is not underversion control\n"), path.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": %s is not underversion control\n"), path.GetWinPath());
 		return CStatusCacheEntry();
 	}
 
@@ -412,7 +412,7 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	else
 		m_directoryPath.HasAdminDir(&sProjectRoot);
 
-	ATLTRACE(_T("EnumFiles %s\n"), path->GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": EnumFiles %s\n"), path->GetWinPath());
 
 	ATLASSERT( !m_directoryPath.IsEmpty() );
 
@@ -498,7 +498,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 					if(childDir->GetCurrentFullStatus() != GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
 					{
 						CGitStatusCache::Instance().UpdateShell(path);
-						//ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+						//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": shell update for %s\n"), path.GetWinPath());
 						childDir->m_ownStatus.SetKind(git_node_dir);
 						childDir->m_ownStatus.SetStatus(pGitStatus);
 					}
@@ -546,10 +546,10 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 		if(bNotified)
 		{
 			CGitStatusCache::Instance().UpdateShell(path);
-			//ATLTRACE(_T("shell update for %s\n"), path.GetWinPath());
+			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": shell update for %s\n"), path.GetWinPath());
 		}
 
-		//ATLTRACE(_T("Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
+		//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Path Entry Add %s %s %s %d\n"), path.GetWinPath(), cachekey, m_directoryPath.GetWinPath(), pGitStatus->text_status);
 	}
 
 	CCachedDirectory * parent = CGitStatusCache::Instance().GetDirectoryCacheEntry(path.GetContainingDirectory());
@@ -563,7 +563,7 @@ CCachedDirectory::AddEntry(const CTGitPath& path, const git_wc_status2_t* pGitSt
 				if(parent->GetCurrentFullStatus() < GitStatus::GetMoreImportant(pGitStatus->prop_status, pGitStatus->text_status))
 				{
 					CGitStatusCache::Instance().UpdateShell(parent->m_directoryPath);
-					//ATLTRACE(_T("shell update for %s\n"), parent->m_directoryPath.GetWinPathString());
+					//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": shell update for %s\n"), parent->m_directoryPath.GetWinPathString());
 					parent->m_ownStatus.SetKind(git_node_dir);
 					parent->m_ownStatus.SetStatus(pGitStatus);
 				}
@@ -611,7 +611,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 			{
 				if (!gitPath.Exists())
 				{
-					ATLTRACE(_T("Miss dir %s \n"), gitPath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Miss dir %s \n"), gitPath.GetWinPath());
 					pThis->m_mostImportantFileStatus = GitStatus::GetMoreImportant(pThis->m_mostImportantFileStatus, git_wc_status_deleted);
 				}
 
@@ -619,7 +619,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 				{
 					if( ::PathFileExists(path+_T("\\.git")))
 					{ // this is submodule
-						ATLTRACE(_T("skip submodule %s\n"), path);
+						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": skip submodule %s\n"), path);
 						return FALSE;
 					}
 				}
@@ -647,7 +647,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					git_wc_status_kind st = GitStatus::GetMoreImportant(s, cdir->GetCurrentFullStatus());
 					AutoLocker lock(pThis->m_critSec);
 					pThis->m_childDirectories[gitPath] = st;
-					ATLTRACE(_T("call 1 Update dir %s %d\n"), gitPath.GetWinPath(), st);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": call 1 Update dir %s %d\n"), gitPath.GetWinPath(), st);
 				}
 				else
 				{
@@ -658,7 +658,7 @@ BOOL CCachedDirectory::GetStatusCallback(const CString & path, git_wc_status_kin
 					CGitStatusCache::Instance().GetDirectoryCacheEntry(gitPath);
 
 					pThis->m_childDirectories[gitPath] = s;
-					ATLTRACE(_T("call 2 Update dir %s %d\n"), gitPath.GetWinPath(), s);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": call 2 Update dir %s %d\n"), gitPath.GetWinPath(), s);
 				}
 			}
 		}
@@ -724,7 +724,7 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 void CCachedDirectory::UpdateCurrentStatus()
 {
 	git_wc_status_kind newStatus = CalculateRecursiveStatus();
-	ATLTRACE(_T("UpdateCurrentStatus %s new:%d old: %d\n"),
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": UpdateCurrentStatus %s new:%d old: %d\n"),
 		m_directoryPath.GetWinPath(),
 		newStatus, m_currentFullStatus);
 
@@ -733,7 +733,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		if (::PathFileExists(this->m_directoryPath.GetWinPathString()+_T("\\.git")))
 		{
 			//project root must be normal status at least.
-			ATLTRACE(_T("force update project root directory as normal status\n"));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": force update project root directory as normal status\n"));
 			this->m_ownStatus.ForceStatus(git_wc_status_normal);
 		}
 	}
@@ -743,7 +743,7 @@ void CCachedDirectory::UpdateCurrentStatus()
 		if ((m_currentFullStatus != git_wc_status_none)&&(m_ownStatus.GetEffectiveStatus() != git_wc_status_missing))
 		{
 			// Our status has changed - tell the shell
-			ATLTRACE(_T("Dir %s, status change from %d to %d, send shell notification\n"), m_directoryPath.GetWinPath(), m_currentFullStatus, newStatus);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Dir %s, status change from %d to %d\n"), m_directoryPath.GetWinPath(), m_currentFullStatus, newStatus);
 			CGitStatusCache::Instance().UpdateShell(m_directoryPath);
 		}
 		if (m_ownStatus.GetEffectiveStatus() != git_wc_status_missing)
@@ -875,7 +875,7 @@ void CCachedDirectory::RefreshMostImportant()
 	}
 	if (newStatus != m_mostImportantFileStatus)
 	{
-		ATLTRACE(_T("status change of path %s\n"), m_directoryPath.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": status change of path %s\n"), m_directoryPath.GetWinPath());
 		CGitStatusCache::Instance().UpdateShell(m_directoryPath);
 	}
 	m_mostImportantFileStatus = newStatus;

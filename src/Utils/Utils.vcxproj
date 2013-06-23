@@ -116,6 +116,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DebugHelpers.cpp" />
+    <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirFileEnum.cpp" />
     <ClCompile Include="DragDropImpl.cpp" />
     <ClCompile Include="DropFiles.cpp" />

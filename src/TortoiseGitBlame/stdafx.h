@@ -43,7 +43,7 @@
 
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
-
+#include "DebugOutput.h"
 
 
 #include <string>

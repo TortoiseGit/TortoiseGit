@@ -67,6 +67,7 @@
 #define HISTORYCOMBO_WITH_SYSIMAGELIST
 
 #include "ProfilingInfo.h"
+#include "DebugOutput.h"
 #include <afxdhtml.h>
 
 #ifdef _WIN64
