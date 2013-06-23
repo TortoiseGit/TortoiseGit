@@ -694,7 +694,7 @@ void CGitProgressList::ResizeColumns()
 			HDITEM hdi = {0};
 			hdi.mask = HDI_TEXT;
 			hdi.pszText = textbuf;
-			hdi.cchTextMax = sizeof(textbuf);
+			hdi.cchTextMax = _countof(textbuf);
 			pHeaderCtrl->GetItem(col, &hdi);
 			int cx = GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
 
