@@ -683,35 +683,39 @@ void CGitProgressList::ResizeColumns()
 
 	TCHAR textbuf[MAX_PATH];
 
-	int maxcol = ((CHeaderCtrl*)(GetDlgItem(0)))->GetItemCount()-1;
-	for (int col = 0; col <= maxcol; ++col)
+	CHeaderCtrl * pHeaderCtrl = (CHeaderCtrl*)(GetDlgItem(0));
+	if (pHeaderCtrl)
 	{
-		// find the longest width of all items
-		int count = GetItemCount();
-		HDITEM hdi = {0};
-		hdi.mask = HDI_TEXT;
-		hdi.pszText = textbuf;
-		hdi.cchTextMax = sizeof(textbuf);
-		((CHeaderCtrl*)(GetDlgItem(0)))->GetItem(col, &hdi);
-		int cx = GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
-
-		for (int index = 0; index<count; ++index)
+		int maxcol = pHeaderCtrl->GetItemCount()-1;
+		for (int col = 0; col <= maxcol; ++col)
 		{
-			// get the width of the string and add 12 pixels for the column separator and margins
-			int linewidth = cx;
-			switch (col)
+			// find the longest width of all items
+			int count = GetItemCount();
+			HDITEM hdi = {0};
+			hdi.mask = HDI_TEXT;
+			hdi.pszText = textbuf;
+			hdi.cchTextMax = sizeof(textbuf);
+			pHeaderCtrl->GetItem(col, &hdi);
+			int cx = GetStringWidth(hdi.pszText)+20; // 20 pixels for col separator and margin
+
+			for (int index = 0; index<count; ++index)
 			{
-			case 0:
-				linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + 12;
-				break;
-			case 1:
-				linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + 12;
-				break;
+				// get the width of the string and add 12 pixels for the column separator and margins
+				int linewidth = cx;
+				switch (col)
+				{
+				case 0:
+					linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + 12;
+					break;
+				case 1:
+					linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + 12;
+					break;
+				}
+				if (cx < linewidth)
+					cx = linewidth;
 			}
-			if (cx < linewidth)
-				cx = linewidth;
+			SetColumnWidth(col, cx);
 		}
-		SetColumnWidth(col, cx);
 	}
 
 	SetRedraw(TRUE);
