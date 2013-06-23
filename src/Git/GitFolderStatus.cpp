@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -123,7 +123,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 		status = git_wc_status_unknown;
 	}
 
-	ATLTRACE2(_T("building cache for %s - time %d\n"), filepath.GetWinPath(), t2 -t1);
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": building cache for %s - time %d\n"), filepath.GetWinPath(), t2 - t1);
 
 	m_TimeStamp = GetTickCount();
 	FileStatusCacheEntry * ret = NULL;
@@ -203,12 +203,12 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 	if(m_mostRecentPath.IsEquivalentTo(CTGitPath(sCacheKey.c_str())))
 	{
 		// We've hit the same result as we were asked for last time
-		ATLTRACE2(_T("fast cache hit for %s\n"), filepath);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": fast cache hit for %s\n"), filepath);
 		retVal = m_mostRecentStatus;
 	}
 	else if ((iter = m_cache.find(sCacheKey)) != m_cache.end())
 	{
-		ATLTRACE2(_T("cache found for %s\n"), filepath);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": cache found for %s\n"), filepath);
 		retVal = &iter->second;
 		m_mostRecentStatus = retVal;
 		m_mostRecentPath = CTGitPath(sCacheKey.c_str());
@@ -226,14 +226,14 @@ const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& fil
 		if ((now >= m_TimeStamp)&&((now - m_TimeStamp) > GetTimeoutValue()))
 		{
 			// Cache is timed-out
-			ATLTRACE("Cache timed-out\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Cache timed-out\n");
 			ClearCache();
 			retVal = NULL;
 		}
 		else if(WaitForSingleObject(m_hInvalidationEvent, 0) == WAIT_OBJECT_0)
 		{
 			// TortoiseGitProc has just done something which has invalidated the cache
-			ATLTRACE("Cache invalidated\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Cache invalidated\n");
 			ClearCache();
 			retVal = NULL;
 		}

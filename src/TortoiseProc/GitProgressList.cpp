@@ -1881,7 +1881,7 @@ bool CGitProgressList::CmdResolve(CString& sWindowTitle, bool& localoperation)
 		}
 		catch (CFileException* pE)
 		{
-			TRACE(_T("CFileException in Resolve!\n"));
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException in Resolve!\n");
 			TCHAR error[10000] = {0};
 			pE->GetErrorMessage(error, 10000);
 			ReportError(error);

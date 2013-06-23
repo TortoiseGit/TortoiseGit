@@ -41,6 +41,8 @@ using namespace ATL;
 #include "git2.h"
 #pragma warning(pop)
 
+#include "DebugOutput.h"
+
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;
 
 #ifdef _WIN64

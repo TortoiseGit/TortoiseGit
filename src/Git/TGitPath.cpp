@@ -1336,7 +1336,7 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 	}
 	catch (CFileException* pE)
 	{
-		TRACE("CFileException loading target file list\n");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
 		TCHAR error[10000] = {0};
 		pE->GetErrorMessage(error, 10000);
 //		CMessageBox::Show(NULL, error, _T("TortoiseGit"), MB_ICONERROR);
@@ -1374,7 +1374,7 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bANSI /* = false 
 	}
 	catch (CFileException* pE)
 	{
-		TRACE("CFileException in writing temp file\n");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException in writing temp file\n");
 		pE->Delete();
 		return false;
 	}

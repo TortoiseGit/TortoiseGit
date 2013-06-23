@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -286,7 +286,7 @@ STDMETHODIMP CShellExt::IsMemberOf_Wrap(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 			}
 			break;
 		}
-		ATLTRACE(_T("Status %d for file %s\n"), status, pwszPath);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Status %d for file %s\n"), status, pwszPath);
 	}
 	g_filepath.clear();
 	g_filepath = pPath;

@@ -41,6 +41,9 @@
     <ClCompile Include="TGitPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Git.h">
@@ -77,6 +80,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TGitPath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

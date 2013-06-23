@@ -98,6 +98,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="Git.cpp" />
     <ClCompile Include="GitAdminDir.cpp" />
     <ClCompile Include="GitConfig.cpp" />
@@ -112,6 +113,7 @@
     <ClCompile Include="TGitPath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="TGitPath.h" />
     <ClInclude Include="Git.h" />
     <ClInclude Include="GitAdminDir.h" />

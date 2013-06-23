@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ void CShellUpdater::Flush()
 {
 	if(m_pathsForUpdating.GetCount() > 0)
 	{
-		ATLTRACE("Flushing shell update list\n");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Flushing shell update list\n");
 
 		UpdateShell();
 		m_pathsForUpdating.Clear();
@@ -81,7 +81,7 @@ void CShellUpdater::Flush()
 void CShellUpdater::UpdateShell()
 {
 	// Tell the shell extension to purge its cache
-	ATLTRACE("Setting cache invalidation event %d\n", GetTickCount());
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Setting cache invalidation event %d\n", GetTickCount());
 	SetEvent(m_hInvalidationEvent);
 
 	// We use the SVN 'notify' call-back to add items to the list
@@ -120,7 +120,7 @@ void CShellUpdater::UpdateShell()
 			for(int nPath = 0; nPath < m_pathsForUpdating.GetCount(); nPath++)
 			{
 				path.SetFromWin(g_Git.m_CurrentDir+_T("\\")+m_pathsForUpdating[nPath].GetWinPathString());
-				ATLTRACE(_T("Cache Item Update for %s (%d)\n"), path.GetWinPathString(), GetTickCount());
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Cache Item Update for %s (%d)\n"), path.GetWinPathString(), GetTickCount());
 				if (!path.IsDirectory())
 				{
 					// send notifications to the shell for changed files - folders are updated by the cache itself.
@@ -160,7 +160,7 @@ void CShellUpdater::UpdateShell()
 		}
 		else
 		{
-			ATLTRACE("SetNamedPipeHandleState failed");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
 		}
 	}
 }

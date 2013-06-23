@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -248,7 +249,7 @@ LRESULT CResolveDlg::OnFileDropped(WPARAM, LPARAM lParam)
 
 	// Always start the timer, since the status of an existing item might have changed
 	SetTimer(REFRESHTIMER, 200, NULL);
-	ATLTRACE(_T("Item %s dropped, timer started\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Item %s dropped, timer started\n"), path.GetWinPath());
 	return 0;
 }
 
@@ -260,12 +261,12 @@ void CResolveDlg::OnTimer(UINT_PTR nIDEvent)
 		if (m_bThreadRunning)
 		{
 			SetTimer(REFRESHTIMER, 200, NULL);
-			ATLTRACE("Wait some more before refreshing\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Wait some more before refreshing\n");
 		}
 		else
 		{
 			KillTimer(REFRESHTIMER);
-			ATLTRACE("Refreshing after items dropped\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Refreshing after items dropped\n");
 			OnSVNStatusListCtrlNeedsRefresh(0, 0);
 		}
 		break;

@@ -1,7 +1,8 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008,2012-2013 - TortoiseSVN
-// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -263,7 +264,7 @@ BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 	if (pChecker)
 	{
 		const char * encoding = pChecker->get_dic_encoding();
-		ATLTRACE(encoding);
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": %s\n", encoding);
 		int n = _countof(enc2locale);
 		m_spellcodepage = 0;
 		for (int i = 0; i < n; i++)

@@ -108,6 +108,9 @@
     <ClCompile Include="..\..\ext\xpsupportvc11upd2\xpatl.cpp">
       <Filter>workaround</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">
@@ -173,6 +176,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DirFileEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

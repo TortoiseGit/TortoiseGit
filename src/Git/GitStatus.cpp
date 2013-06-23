@@ -415,7 +415,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						if(start<0)
 						{
 							*status =st=git_wc_status_added;
-							ATLTRACE(_T("File miss in head tree %s"), path);
+							CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": File miss in head tree %s"), path);
 							if(callback)
 								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 							return 0;
@@ -973,7 +973,7 @@ int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_
 									if( callback && (sub != currentPath) )
 									{
 										sub = currentPath;
-										ATLTRACE(_T("index subdir %s\n"),sub);
+										CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": index subdir %s\n"),sub);
 										if(callback) callback(gitdir + _T("\\") + sub,
 											git_wc_status_normal, true, pData, false, false);
 									}

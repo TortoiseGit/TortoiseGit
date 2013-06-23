@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\Graphviz.cpp" />
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
@@ -298,6 +299,7 @@
     <ClCompile Include="UserPassword.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />

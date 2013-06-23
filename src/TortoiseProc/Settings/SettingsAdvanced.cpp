@@ -54,6 +54,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
+    settings[i].sName   = L"DebugOutputString";
+    settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
+    settings[i++].def.b = false;
+
 	settings[i].sName	= L"DiffBlamesWithTortoiseMerge";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

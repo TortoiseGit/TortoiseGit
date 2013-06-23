@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
                                         LPDATAOBJECT pDataObj,
                                         HKEY /* hRegKey */)
 {
-	ATLTRACE("Shell :: Initialize\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize\n");
 	PreserveChdir preserveChdir;
 	files_.clear();
 	folder_.clear();
@@ -163,7 +163,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							}
 							catch ( ... )
 							{
-								ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+								CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
 							}
 
 							// TODO: should we really assume any sub-directory to be versioned
@@ -269,7 +269,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 								}
 								catch ( ... )
 								{
-									ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+									CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
 								}
 							}
 
@@ -402,7 +402,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 				}
 				catch ( ... )
 				{
-					ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
 				}
 			}
 			else
@@ -463,7 +463,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 					}
 					catch ( ... )
 					{
-						ATLTRACE2(_T("Exception in GitStatus::GetStatus()\n"));
+						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
 					}
 				}
 				else
@@ -877,7 +877,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
                                               UINT /*idCmdLast*/,
                                               UINT uFlags)
 {
-	ATLTRACE("Shell :: QueryContextMenu\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: QueryContextMenu itemStates=%ld\n", itemStates);
 	PreserveChdir preserveChdir;
 
 	//first check if our drop handler is called
@@ -1702,7 +1702,7 @@ STDMETHODIMP CShellExt::GetCommandString_Wrap(UINT_PTR idCmd,
 			if (verb_id_it != myVerbsIDMap.end() && verb_id_it->first == idCmd)
 			{
 				wide_string help = verb_id_it->second;
-				ATLTRACE("verb : %ws\n", help.c_str());
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": verb : %ws\n", help.c_str());
 				lstrcpynW((LPWSTR)pszName, help.c_str(), cchMax);
 				hr = S_OK;
 			}

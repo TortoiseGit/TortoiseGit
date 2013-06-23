@@ -653,6 +653,9 @@
     <ClCompile Include="Commands\DaemonCommand.cpp">
       <Filter>Commands\Daemon</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\DebugOutput.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1134,6 +1137,9 @@
     </ClInclude>
     <ClInclude Include="Commands\DaemonCommand.h">
       <Filter>Commands\Daemon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\DebugOutput.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

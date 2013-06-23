@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -127,7 +127,7 @@ void CDirectoryWatcher::BlockPath(const CTGitPath& path)
 	blockedPath = path;
 	// block the path from being watched for 4 seconds
 	blockTickCount = GetTickCount()+4000;
-	ATLTRACE(_T("Blocking path: %s\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Blocking path: %s\n"), path.GetWinPath());
 }
 
 bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
@@ -138,7 +138,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 	{
 		if (GetTickCount() < blockTickCount)
 		{
-			ATLTRACE(_T("Path %s prevented from being watched\n"), path.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Path %s prevented from being watched\n"), path.GetWinPath());
 			return false;
 		}
 	}
@@ -215,7 +215,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 	}
 	if (!newroot.IsEmpty())
 	{
-		ATLTRACE(_T("add path to watch %s\n"), newroot.GetWinPath());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": add path to watch %s\n"), newroot.GetWinPath());
 		watchedPaths.AddPath(newroot);
 		watchedPaths.RemoveChildren();
 		if (bCloseInfoMap)
@@ -223,7 +223,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 
 		return true;
 	}
-	ATLTRACE(_T("add path to watch %s\n"), path.GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": add path to watch %s\n"), path.GetWinPath());
 	watchedPaths.AddPath(path);
 	if (bCloseInfoMap)
 		ClearInfoMap();
@@ -277,7 +277,7 @@ void CDirectoryWatcher::WorkerThread()
 				if (!m_bRunning)
 					return;
 
-				ATLTRACE(_T(": restarting watcher\n"));
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": restarting watcher\n"));
 				m_hCompPort.CloseHandle();
 
 				// We must sync the whole section because other threads may
@@ -307,7 +307,7 @@ void CDirectoryWatcher::WorkerThread()
 					if (!hDir)
 					{
 						// this could happen if a watched folder has been removed/renamed
-						ATLTRACE(_T("CDirectoryWatcher: CreateFile failed. Can't watch directory %s\n"), watchedPaths[i].GetWinPath());
+						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CreateFile failed. Can't watch directory %s\n"), watchedPaths[i].GetWinPath());
 						watchedPaths.RemovePath(watchedPath);
 						break;
 					}
@@ -344,7 +344,7 @@ void CDirectoryWatcher::WorkerThread()
 					HANDLE port = CreateIoCompletionPort(pDirInfo->m_hDir, m_hCompPort, (ULONG_PTR)pDirInfo, 0);
 					if (port == NULL)
 					{
-						ATLTRACE(_T("CDirectoryWatcher: CreateIoCompletionPort failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
+						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": CreateIoCompletionPort failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
 
 						// we must close the directory handle to allow ClearInfoMap()
 						// to close the completion port properly
@@ -369,7 +369,7 @@ void CDirectoryWatcher::WorkerThread()
 												&pDirInfo->m_Overlapped,
 												NULL))  //no completion routine!
 					{
-						ATLTRACE(_T("CDirectoryWatcher: ReadDirectoryChangesW failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
+						CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ReadDirectoryChangesW failed. Can't watch directory %s\n"), watchedPath.GetWinPath());
 
 						// we must close the directory handle to allow ClearInfoMap()
 						// to close the completion port properly
@@ -383,7 +383,7 @@ void CDirectoryWatcher::WorkerThread()
 						break;
 					}
 
-					ATLTRACE(_T("watching path %s\n"), pDirInfo->m_DirName.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": watching path %s\n"), pDirInfo->m_DirName.GetWinPath());
 					watchInfoMap[pDirInfo->m_hDir] = pDirInfo;
 				}
 			}
@@ -501,7 +501,7 @@ void CDirectoryWatcher::WorkerThread()
 								if(!path.HasAdminDir() && !isIndex)
 									continue;
 
-								ATLTRACE(_T("change notification: %s\n"), buf);
+								CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": change notification for %s\n"), buf);
 								notifyPaths.push_back(path);
 							}
 						} while ((nOffset > 0)&&(nOffset < READ_DIR_CHANGE_BUFFER_SIZE));

@@ -185,7 +185,7 @@ bool CleanupCommand::Execute()
 			for (INT_PTR i=0; i<updateList.GetCount(); ++i)
 			{
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH, updateList[i].GetWinPath(), NULL);
-				ATLTRACE(_T("notify change for path %s\n"), updateList[i].GetWinPath());
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": notify change for path %s\n"), updateList[i].GetWinPath());
 			}
 		}
 	}

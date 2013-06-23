@@ -39,6 +39,8 @@ using namespace ATL;
 #define USE_GDI_GRADIENT
 #define HISTORYCOMBO_WITH_SYSIMAGELIST
 
+#include "DebugOutput.h"
+
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls

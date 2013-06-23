@@ -102,7 +102,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 	if ((!hReloadProtection) || (GetLastError() == ERROR_ALREADY_EXISTS))
 	{
 		// An instance of TGitCache is already running
-		ATLTRACE("TGitCache ignoring restart\n");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": TGitCache ignoring restart\n");
 		return 0;
 	}
 
@@ -323,7 +323,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	case WM_QUERYENDSESSION:
 		{
-			ATLTRACE("WM_QUERYENDSESSION\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_QUERYENDSESSION\n");
 			CAutoWriteWeakLock writeLock(CGitStatusCache::Instance().GetGuard(), 200);
 			CGitStatusCache::Instance().Stop();
 			return TRUE;
@@ -334,7 +334,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 	case WM_QUIT:
 		{
-			ATLTRACE("WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_CLOSE/DESTROY/ENDSESSION/QUIT\n");
 			CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 			CGitStatusCache::Instance().Stop();
 			CGitStatusCache::Instance().SaveCache();
@@ -351,19 +351,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 			case DBT_CUSTOMEVENT:
 				{
-					ATLTRACE("WM_DEVICECHANGE with DBT_CUSTOMEVENT\n");
+					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_CUSTOMEVENT\n");
 					if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 					{
 						DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_DISMOUNT))
 						{
-							ATLTRACE("Device to be dismounted\n");
+							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Device to be dismounted\n");
 							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
 						}
 						if (IsEqualGUID(phandle->dbch_eventguid, GUID_IO_VOLUME_LOCK))
 						{
-							ATLTRACE("Device lock event\n");
+							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Device lock event\n");
 							CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 							CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
 						}
@@ -371,7 +371,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case DBT_DEVICEREMOVEPENDING:
-				ATLTRACE("WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING\n");
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING\n");
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
@@ -385,7 +385,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case DBT_DEVICEQUERYREMOVE:
-				ATLTRACE("WM_DEVICECHANGE with DBT_DEVICEQUERYREMOVE\n");
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEQUERYREMOVE\n");
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
@@ -399,7 +399,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case DBT_DEVICEREMOVECOMPLETE:
-				ATLTRACE("WM_DEVICECHANGE with DBT_DEVICEREMOVECOMPLETE\n");
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVECOMPLETE\n");
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
@@ -450,7 +450,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 
 DWORD WINAPI PipeThread(LPVOID lpvParam)
 {
-	ATLTRACE("PipeThread started\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": PipeThread started\n");
 	bool * bRun = (bool *)lpvParam;
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
@@ -523,13 +523,13 @@ DWORD WINAPI PipeThread(LPVOID lpvParam)
 			continue;	// don't end the thread!
 		}
 	}
-	ATLTRACE("Pipe thread exited\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Pipe thread exited\n");
 	return 0;
 }
 
 DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 {
-	ATLTRACE("CommandWaitThread started\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandWaitThread started\n");
 	bool * bRun = (bool *)lpvParam;
 	// The main loop creates an instance of the named pipe and
 	// then waits for a client to connect to it. When the client
@@ -603,13 +603,13 @@ DWORD WINAPI CommandWaitThread(LPVOID lpvParam)
 			continue;	// don't end the thread!
 		}
 	}
-	ATLTRACE("CommandWait thread exited\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandWait thread exited\n");
 	return 0;
 }
 
 DWORD WINAPI InstanceThread(LPVOID lpvParam)
 {
-	ATLTRACE("InstanceThread started\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": InstanceThread started\n");
 	TGITCacheResponse response;
 	DWORD cbBytesRead, cbWritten;
 	BOOL fSuccess;
@@ -633,7 +633,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 		if (! fSuccess || cbBytesRead == 0)
 		{
 			DisconnectNamedPipe(hPipe);
-			ATLTRACE("Instance thread exited\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
 				PostMessage(hWnd, WM_CLOSE, 0, 0);
@@ -654,7 +654,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 		if (! fSuccess || responseLength != cbWritten)
 		{
 			DisconnectNamedPipe(hPipe);
-			ATLTRACE("Instance thread exited\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 			InterlockedDecrement(&nThreadCount);
 			if (nThreadCount == 0)
 				PostMessage(hWnd, WM_CLOSE, 0, 0);
@@ -668,7 +668,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 
 	FlushFileBuffers(hPipe);
 	DisconnectNamedPipe(hPipe);
-	ATLTRACE("Instance thread exited\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Instance thread exited\n");
 	InterlockedDecrement(&nThreadCount);
 	if (nThreadCount == 0)
 		PostMessage(hWnd, WM_CLOSE, 0, 0);
@@ -677,7 +677,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 
 DWORD WINAPI CommandThread(LPVOID lpvParam)
 {
-	ATLTRACE("CommandThread started\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandThread started\n");
 	DWORD cbBytesRead;
 	BOOL fSuccess;
 	CAutoFile hPipe;
@@ -700,7 +700,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 		if (! fSuccess || cbBytesRead == 0)
 		{
 			DisconnectNamedPipe(hPipe);
-			ATLTRACE("Command thread exited\n");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Command thread exited\n");
 			return 1;
 		}
 
@@ -709,7 +709,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_END:
 				FlushFileBuffers(hPipe);
 				DisconnectNamedPipe(hPipe);
-				ATLTRACE("Command thread exited\n");
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Command thread exited\n");
 				return 0;
 			case TGITCACHECOMMAND_CRAWL:
 				{
@@ -733,7 +733,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path, true);
-					ATLTRACE(_T("release handle for path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": release handle for path %s\n"), changedpath.GetWinPath());
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
 					CGitStatusCache::Instance().CloseWatcherHandles(changedpath);
 					CGitStatusCache::Instance().RemoveCacheForPath(changedpath);
@@ -743,7 +743,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path);
-					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": block path %s\n"), changedpath.GetWinPath());
 					CGitStatusCache::Instance().BlockPath(changedpath);
 				}
 				break;
@@ -751,7 +751,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 				{
 					CTGitPath changedpath;
 					changedpath.SetFromWin(command.path);
-					ATLTRACE(_T("block path %s\n"), changedpath.GetWinPath());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": unblock path %s\n"), changedpath.GetWinPath());
 					CGitStatusCache::Instance().UnBlockPath(changedpath);
 				}
 				break;
@@ -764,6 +764,6 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 
 	FlushFileBuffers(hPipe);
 	DisconnectNamedPipe(hPipe);
-	ATLTRACE("Command thread exited\n");
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Command thread exited\n");
 	return 0;
 }
