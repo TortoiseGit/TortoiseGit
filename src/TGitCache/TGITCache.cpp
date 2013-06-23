@@ -371,35 +371,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case DBT_DEVICEREMOVEPENDING:
-				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING\n");
-				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
-				{
-					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-				}
-				else
-				{
-					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-				}
-				break;
 			case DBT_DEVICEQUERYREMOVE:
-				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEQUERYREMOVE\n");
-				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
-				{
-					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
-					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(phandle->dbch_hdevnotify);
-				}
-				else
-				{
-					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
-					CGitStatusCache::Instance().CloseWatcherHandles(INVALID_HANDLE_VALUE);
-				}
-				break;
 			case DBT_DEVICEREMOVECOMPLETE:
-				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVECOMPLETE\n");
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": WM_DEVICECHANGE with DBT_DEVICEREMOVEPENDING/DBT_DEVICEQUERYREMOVE/DBT_DEVICEREMOVECOMPLETE\n");
 				if (phdr->dbch_devicetype == DBT_DEVTYP_HANDLE)
 				{
 					DEV_BROADCAST_HANDLE * phandle = (DEV_BROADCAST_HANDLE*)lParam;
