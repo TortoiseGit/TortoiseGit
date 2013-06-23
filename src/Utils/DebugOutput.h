@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011 - TortoiseSVN
+// Copyright (C) 2009, 2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ private:
 	{
 		// Format the output buffer
 		char szBuffer[1024];
-		_vsnprintf_s(szBuffer, 1024, _countof(szBuffer), pszFormat, args);
+		_vsnprintf_s(szBuffer, _countof(szBuffer), _countof(szBuffer)-1, pszFormat, args);
 		OutputDebugStringA(szBuffer);
 	}
 
@@ -87,7 +87,7 @@ private:
 	void TraceV(PCWSTR pszFormat, va_list args)
 	{
 		wchar_t szBuffer[1024];
-		_vsnwprintf_s(szBuffer, 1024, _countof(szBuffer), pszFormat, args);
+		_vsnwprintf_s(szBuffer, _countof(szBuffer), _countof(szBuffer)-1, pszFormat, args);
 		OutputDebugStringW(szBuffer);
 	}
 
