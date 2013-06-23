@@ -36,14 +36,6 @@
 
 #pragma warning(push)
 #include "git2.h"
-//#include "apr_general.h"
-//#include "git_pools.h"
-//#include "git_client.h"
-//#include "git_path.h"
-//#include "git_wc.h"
-//#include "git_utf.h"
-//#include "git_config.h"
-//#include "git_subst.h"
 #pragma warning(pop)
 
 #include "SysInfo.h"
