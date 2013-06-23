@@ -248,6 +248,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 			cmd=_T('"')+CGit::ms_LastMsysGitDir+_T("\\")+cmd+_T('"');
 	}
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing ") + cmd + _T("\n"));
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
@@ -1000,6 +1001,7 @@ int CGit::RunLogFile(CString cmd,const CString &filename)
 	if(cmd.Find(_T("git")) == 0)
 		cmd=CGit::ms_LastMsysGitDir+_T("\\")+cmd;
 
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing ") + cmd + _T("\n"));
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
 		LPVOID lpMsgBuf;
