@@ -302,7 +302,7 @@ BOOL CHwSMTP::SendEmail (
 	m_SendSock.Close();
 	if ( !m_SendSock.Create () )
 	{
-		int nResult = GetLastError();
+		//int nResult = GetLastError();
 		m_csLastError.Format ( _T("Create socket failed!") );
 		return FALSE;
 	}
