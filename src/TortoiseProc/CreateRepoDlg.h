@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011 - TortoiseGit
+// Copyright (C) 2010-2011,2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 
 #include "StandAloneDlg.h"
 #include "registry.h"
-#include "tooltip.h"
 
 // CCreateRepoDlg dialog
 
@@ -52,7 +51,4 @@ public:
 
 protected:
 	afx_msg void OnBnClickedCheckBare();
-
-	CToolTips	m_tooltips;
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

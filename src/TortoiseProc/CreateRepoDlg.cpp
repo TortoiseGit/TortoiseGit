@@ -58,12 +58,6 @@ BOOL CCreateRepoDlg::OnInitDialog()
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, m_folder, sWindowTitle);
 
-	m_tooltips.Create(this);
-	CString tt;
-	tt.LoadString(IDS_CLONE_DEPTH_TT);
-	m_tooltips.AddTool(IDC_EDIT_DEPTH,tt);
-	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
-
 	// Check if the folder ends with .git this indicates the use probably want this to be a bare repository
 	if (m_folder.Right(4) == _T(".git"))
 	{
@@ -95,10 +89,4 @@ void CCreateRepoDlg::OnCancel()
 void CCreateRepoDlg::OnBnClickedCheckBare()
 {
 	this->UpdateData();
-}
-BOOL CCreateRepoDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-
-	return CStandAloneDialog::PreTranslateMessage(pMsg);
 }
