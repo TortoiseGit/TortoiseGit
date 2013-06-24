@@ -184,7 +184,10 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
 
 		if (patchtry == TRUE)
+		{
 			pr.rejects = 0;
+			pr.basePath = sBaseFile;
+		}
 		else
 		{
 			pr.rejects = 1;
@@ -250,13 +253,14 @@ bool GitPatch::PatchPath(const CString& path)
 }
 
 
-int GitPatch::GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath) const
+int GitPatch::GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath, CString &sBasePath) const
 {
 	for (std::vector<PathRejects>::const_iterator it = m_filePaths.begin(); it != m_filePaths.end(); ++it)
 	{
 		if (Strip(it->path).CompareNoCase(sPath)==0)
 		{
 			sSavePath = it->resultPath;
+			sBasePath = it->basePath;
 			if (it->rejects > 0)
 				sRejectPath = it->rejectsPath;
 			else

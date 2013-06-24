@@ -502,14 +502,16 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 	CString sDummy;
 	//"dry run" was successful, so save the patched file somewhere...
 	CString sTempFile = CTempFiles::Instance().GetTempFilePathString();
-	CString sRejectedFile;
-	if (m_Patch.GetPatchResult(sFilePath, sTempFile, sRejectedFile) < 0)
+	CString sRejectedFile, sBasePath;
+	if (m_Patch.GetPatchResult(sFilePath, sTempFile, sRejectedFile, sBasePath) < 0)
 	{
 		MessageBox(m_Patch.GetErrorMessage(), NULL, MB_ICONERROR);
 		return FALSE;
 	}
 	sFilePath = m_Patch.GetTargetPath() + _T("\\") + sFilePath;
 	sFilePath.Replace('/', '\\');
+	if (sBasePath.IsEmpty())
+		sBasePath = sFilePath;
 	if (m_bReversedPatch)
 	{
 		m_Data.m_baseFile.SetFileName(sTempFile);
@@ -524,23 +526,43 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 	}
 	else
 	{
-		if ((!PathFileExists(sFilePath))||(PathIsDirectory(sFilePath)))
+		if ((!PathFileExists(sBasePath))||(PathIsDirectory(sBasePath)))
 		{
 			m_Data.m_baseFile.SetFileName(CTempFiles::Instance().GetTempFilePathString());
 			m_Data.m_baseFile.CreateEmptyFile();
 		}
 		else
 		{
-			m_Data.m_baseFile.SetFileName(sFilePath);
+			m_Data.m_baseFile.SetFileName(sBasePath);
 		}
 		CString sDescription;
-		sDescription.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchOriginal);
+		sDescription.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sBasePath), (LPCTSTR)m_Data.m_sPatchOriginal);
 		m_Data.m_baseFile.SetDescriptiveName(sDescription);
-		m_Data.m_yourFile.SetFileName(sTempFile);
-		CString temp;
-		temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
-		m_Data.m_yourFile.SetDescriptiveName(temp);
-		m_Data.m_theirFile.SetOutOfUse();
+		if (sBasePath == sFilePath)
+		{
+			m_Data.m_yourFile.SetFileName(sTempFile);
+			CString temp;
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sBasePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			m_Data.m_yourFile.SetDescriptiveName(temp);
+			m_Data.m_theirFile.SetOutOfUse();
+		}
+		else
+		{
+			if (!PathFileExists(sFilePath) || PathIsDirectory(sFilePath))
+			{
+				m_Data.m_yourFile.SetFileName(CTempFiles::Instance().GetTempFilePathString());
+				m_Data.m_yourFile.CreateEmptyFile();
+				CString temp;
+				temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), CString(MAKEINTRESOURCE(IDS_NOTFOUNDVIEWTITLEINDICATOR)));
+				m_Data.m_yourFile.SetDescriptiveName(temp);
+			}
+			else
+				m_Data.m_yourFile.SetFileName(sFilePath);
+			m_Data.m_theirFile.SetFileName(sTempFile);
+			CString temp;
+			temp.Format(_T("%s %s"), (LPCTSTR)CPathUtils::GetFileNameFromPath(sFilePath), (LPCTSTR)m_Data.m_sPatchPatched);
+			m_Data.m_theirFile.SetDescriptiveName(temp);
+		}
 		m_Data.m_mergedFile.SetFileName(sFilePath);
 		m_Data.m_bPatchRequired = bPropMods;
 	}
@@ -558,6 +580,9 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 	}
 	if (bAutoPatch)
 	{
+		if (sBasePath != sFilePath && HasConflictsWontKeep())
+			return FALSE;
+
 		PatchSave();
 	}
 	return TRUE;
