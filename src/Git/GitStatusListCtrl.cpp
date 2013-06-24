@@ -2306,11 +2306,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
 											SetEntryCheck(path,nItem,false);
 											updateStatusList = true;
+#if 0 // revert an added file and some entry will be cloned (part 1/2)
 											SetItemGroup(nItem,1);
 											this->m_StatusFileList.RemoveItem(*path);
 											this->m_UnRevFileList.AddPath(*path);
 											//this->m_IgnoreFileList.RemoveItem(*path);
-
+#endif
 										}
 										else
 										{
@@ -2328,8 +2329,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							}
 							SetRedraw(TRUE);
 							SaveColumnWidths();
+#if 0 // revert an added file and some entry will be cloned (part 2/2)
 							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
+#else
+							if (updateStatusList && nullptr != GetLogicalParent() && nullptr != GetLogicalParent()->GetSafeHwnd())
+								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+#endif
 						}
 					}
 				}

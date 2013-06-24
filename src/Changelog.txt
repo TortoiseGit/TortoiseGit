@@ -33,6 +33,7 @@ Released: Unreleased
  * Fixed issue #1809: Overlay shows changes in parent folder if a file with a second extension exists
  * TortoiseGitMerge: Fixed bugs regarding multi-view edit
  * Fixed issue #1814: Squash rebase fills message too much
+ * Reverting newly added file in Commit-dialog misbehaving
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
