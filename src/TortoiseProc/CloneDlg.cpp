@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 
 	m_nDepth = 0;
 	m_bDepth = false;
+	m_bSaving = false;
 }
 
 CCloneDlg::~CCloneDlg()
@@ -190,18 +191,21 @@ END_MESSAGE_MAP()
 
 void CCloneDlg::OnOK()
 {
+	m_bSaving = true;
 	this->m_URLCombo.GetWindowTextW(m_URL);
 	m_URL.Trim();
 	UpdateData(TRUE);
 	if(m_URL.IsEmpty() || m_Directory.IsEmpty())
 	{
 		CMessageBox::Show(NULL, IDS_PROC_CLONE_URLDIREMPTY, IDS_APPNAME, MB_OK);
+		m_bSaving = false;
 		return;
 	}
 
 	if (m_bBranch && !g_Git.IsBranchNameValid(m_strBranch))
 	{
 		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		m_bSaving = false;
 		return;
 	}
 
@@ -210,6 +214,7 @@ void CCloneDlg::OnOK()
 
 	this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	CResizableDialog::OnOK();
+	m_bSaving = false;
 
 }
 
@@ -279,6 +284,10 @@ void CCloneDlg::OnBnClickedPuttykeyAutoload()
 
 void CCloneDlg::OnCbnEditchangeUrlcombo()
 {
+	// do not update member variables from UI while saving
+	if (m_bSaving)
+		return;
+
 	this->UpdateData();
 	CString url;
 	m_URLCombo.GetWindowText(url);
