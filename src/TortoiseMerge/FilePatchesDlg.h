@@ -58,6 +58,7 @@ public:
 #define FPDLG_FILESTATE_GOOD		0
 #define FPDLG_FILESTATE_ERROR		(-1)
 #define FPDLG_FILESTATE_PATCHED		(-2)
+#define FPDLG_FILESTATE_CONFLICT    (-3)
 
 #define ID_PATCHALL					1
 #define ID_PATCHSELECTED			2

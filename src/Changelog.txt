@@ -12,6 +12,7 @@ Released: Unreleased
  * TortoiseGitMerge: Tab / spaces conversion and trim trailing space
  * TortoiseUDiff: Add Printing function
  * Fixed issue #553: Pull the latest version of all submodules
+ * TortoiseGitMerge: Improved applying a patch with conflicts
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching

@@ -64,7 +64,7 @@ public:
 	 * The patch is applied in the Init() method.
 	 * \return the number of failed hunks, 0 if everything was applied successfully, -1 on error
 	 */
-	int						GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath) const;
+	int						GetPatchResult(const CString& sPath, CString& sSavePath, CString& sRejectPath, CString &sBasePath) const;
 
 	/**
 	 * returns the number of files that are affected by the patchfile.
@@ -80,6 +80,8 @@ public:
 	 * Returns the number of failed hunks for the affected file
 	 */
 	int						GetFailedHunks(int index) const { return m_filePaths[index].rejects; }
+
+	bool					GetHasConflict(int index) const { return !m_filePaths[index].basePath.IsEmpty(); }
 
 	/**
 	 * Returns true if there are content modifications for the path
@@ -120,6 +122,7 @@ private:
 	{
 		CString		path;
 		int			rejects;
+		CString		basePath; // empty if patch applies cleany to local file; path to tempfile of base-version if patch only applies cleanly to base-version
 		CString		resultPath;
 		CString		rejectsPath;
 		bool		content;

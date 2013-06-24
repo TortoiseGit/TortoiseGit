@@ -149,6 +149,8 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		{
 			state = m_pPatch->GetFailedHunks(i);
 		}
+		if (m_pPatch->GetHasConflict(i))
+			state = FPDLG_FILESTATE_CONFLICT;
 		if (state > 0)
 			state = FPDLG_FILESTATE_ERROR;
 		m_arFileStates.Add(state);
@@ -296,6 +298,10 @@ void CFilePatchesDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 
 		if (m_arFileStates.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 		{
+			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec) == FPDLG_FILESTATE_CONFLICT)
+			{
+				crText = RGB(255, 200, 100); // orange
+			}
 			if (m_arFileStates.GetAt(pLVCD->nmcd.dwItemSpec)==FPDLG_FILESTATE_ERROR)
 			{
 				crText = RGB(200, 0, 0);
