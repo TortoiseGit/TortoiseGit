@@ -81,6 +81,8 @@ public:
 	 */
 	int						GetFailedHunks(int index) const { return m_filePaths[index].rejects; }
 
+	bool					GetHasConflict(int index) const { return !m_filePaths[index].basePath.IsEmpty(); }
+
 	/**
 	 * Returns true if there are content modifications for the path
 	 */
