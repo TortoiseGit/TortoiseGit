@@ -92,6 +92,7 @@ protected:
 	afx_msg LRESULT OnEnUpdate(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnEnChangeFilter();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedLog();
 
 	DECLARE_MESSAGE_MAP()
 

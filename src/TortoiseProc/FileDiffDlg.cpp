@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_MESSAGE(ENAC_UPDATE, &CFileDiffDlg::OnEnUpdate)
 	ON_MESSAGE(MSG_REF_LOADED, OnRefLoad)
+	ON_BN_CLICKED(IDC_LOG, &CFileDiffDlg::OnBnClickedLog)
 END_MESSAGE_MAP()
 
 
@@ -249,6 +250,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	AddAnchor(IDC_REV2GROUP,TOP_LEFT,TOP_RIGHT);
 	AddAnchor(IDC_REV1EDIT,TOP_LEFT);
 	AddAnchor(IDC_REV2EDIT,TOP_LEFT);
+	AddAnchor(IDC_LOG, TOP_RIGHT);
 
 	EnableSaveRestore(_T("FileDiffDlg"));
 
@@ -443,6 +445,7 @@ void CFileDiffDlg::EnableInputControl(bool b)
 	this->m_cRev2Btn.EnableWindow(b);
 	m_cFilter.EnableWindow(b);
 	m_SwitchButton.EnableWindow(b);
+	GetDlgItem(IDC_LOG)->EnableWindow(b && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()));
 }
 
 void CFileDiffDlg::DoDiff(int selIndex, bool blame)
@@ -1284,4 +1287,11 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	out.Format(IDS_STATUSLIST_FILESREVERTED, count, rev);
 	CMessageBox::Show(NULL, out, _T("TortoiseGit"), MB_OK);
 	return 0;
+}
+
+void CFileDiffDlg::OnBnClickedLog()
+{
+	CLogDlg dlg;
+	dlg.SetRange(m_rev2.m_CommitHash.ToString() + _T("..") + m_rev1.m_CommitHash.ToString());
+	dlg.DoModal();
 }
