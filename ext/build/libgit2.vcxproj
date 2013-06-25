@@ -333,6 +333,7 @@
     <ClInclude Include="..\libgit2\src\revwalk.h" />
     <ClInclude Include="..\libgit2\src\sha1_lookup.h" />
     <ClInclude Include="..\libgit2\src\signature.h" />
+    <ClInclude Include="..\libgit2\src\status.h" />
     <ClInclude Include="..\libgit2\src\strmap.h" />
     <ClInclude Include="..\libgit2\src\submodule.h" />
     <ClInclude Include="..\libgit2\src\tag.h" />

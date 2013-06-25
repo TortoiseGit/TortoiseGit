@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #1765: Pull button when push (after commit) fails
+ * Updated shipped libgit2 to version 0.19
  * Updated libgit to version 1.8.3
  * Support diff.context config key
  * Fixed issue #1778: Add Submodule with Putty key
