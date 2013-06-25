@@ -439,7 +439,7 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 		DeleteFile(szTempName);
 		CreateDirectory(szTempName, NULL);
 		CTGitPath fileName = *pPath2;
-		if (rev1 == GIT_REV_ZERO && pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+		if (pPath2->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 			fileName = CTGitPath(pPath2->GetGitOldPathString());
 
 		// use original file extension, an external diff tool might need it
