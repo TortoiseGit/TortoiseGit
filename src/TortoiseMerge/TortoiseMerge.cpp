@@ -189,6 +189,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 
 	// Initialize all Managers for usage. They are automatically constructed
 	// if not yet present
+	InitContextMenuManager();
 	InitKeyboardManager();
 	InitTooltipManager ();
 	CMFCToolTipInfo params;
