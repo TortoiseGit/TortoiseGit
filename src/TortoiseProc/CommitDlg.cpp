@@ -840,7 +840,7 @@ void CCommitDlg::OnOK()
 	if (sysProgressDlg.HasUserCancelled())
 		bAddSuccess = false;
 
-	sysProgressDlg.Stop();
+	//sysProgressDlg.Stop();
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{
@@ -977,6 +977,7 @@ void CCommitDlg::OnOK()
 			m_bCommitAmend = FALSE;
 			UpdateData(FALSE);
 			this->Refresh();
+			this->BringWindowToTop();
 		}
 		else if (userResponse == IDC_PROGRESS_BUTTON1 + indexTag)
 		{
