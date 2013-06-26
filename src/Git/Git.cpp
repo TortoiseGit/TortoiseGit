@@ -26,6 +26,7 @@
 #include "UnicodeUtils.h"
 #include "gitdll.h"
 #include <fstream>
+#include "FormatMessageWrapper.h"
 
 int CGit::m_LogEncode=CP_UTF8;
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
@@ -202,10 +203,16 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	sa.bInheritHandle=TRUE;
 	if(!CreatePipe(&hRead,&hWrite,&sa,0))
 	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stdout pipe: %s\n"), err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 	if (hErrReadOut && !CreatePipe(&hReadErr, &hWriteErr, &sa, 0))
+	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not open stderr pipe: %s\n"), err.Trim());
 		return TGIT_GIT_ERROR_OPEN_PIP;
+	}
 
 	if(StdioFile)
 	{
@@ -251,11 +258,8 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION *piOut, HANDLE *hReadOut, HA
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": executing ") + cmd + _T("\n"));
 	if(!CreateProcess(NULL,(LPWSTR)cmd.GetString(), NULL,NULL,TRUE,dwFlags,pEnv,(LPWSTR)m_CurrentDir.GetString(),&si,&pi))
 	{
-		LPVOID lpMsgBuf;
-		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-						NULL,GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-						(LPTSTR)&lpMsgBuf,
-						0,NULL);
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": error while executing command: %s\n"), err.Trim());
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
 
@@ -379,8 +383,12 @@ int CGit::Run(CGitCall* pcall)
 
 	if(!GetExitCodeProcess(pi.hProcess,&exitcode))
 	{
+		CString err = CFormatMessageWrapper();
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": could not get exit code: %s\n"), err.Trim());
 		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}
+	else
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process exited: %d\n"), exitcode);
 
 	CloseHandle(pi.hProcess);
 
