@@ -3408,7 +3408,9 @@ void CGitStatusListCtrl::OnPaint()
 		}
 		ReleaseDC(pDC);
 	}
-	ValidateRect(NULL);
+	CRect rc;
+	GetUpdateRect(&rc, FALSE);
+	ValidateRect(rc);
 }
 
 // prevent users from extending our hidden (size 0) columns
