@@ -197,7 +197,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		}
 		if (pBottom)
 		{
-			bool bModified = (m_originalstateRight==(size_t)-1);
+			bool bModified = (m_originalstateBottom==(size_t)-1);
 			if (!bModified)
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
