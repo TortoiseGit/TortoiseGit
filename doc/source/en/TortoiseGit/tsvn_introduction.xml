@@ -274,11 +274,11 @@
 				different languages, so you may be able to download a language
 				pack to suit your needs.
 				You can find the language packs on our 
-				<ulink url="http://code.google.com/p/tortoisegit/wiki/Download?tm=2">
+				<ulink url="http://redir.tortoisegit.org/download">
 					<citetitle>translation status page</citetitle>
 				</ulink>.
 				And if there is no language pack available yet, why not join
-				the team and <ulink url="http://code.google.com/p/tortoisegit/wiki/Translation">submit your own translation</ulink> ;-)
+				the team and <ulink url="http://redir.tortoisegit.org/translate">submit your own translation</ulink> ;-)
 			</para>
 			<para>
 				Each language pack is packaged as a <literal>.msi</literal> installer.

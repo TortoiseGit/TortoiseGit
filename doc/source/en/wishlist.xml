@@ -7,7 +7,7 @@ not pretty but it works.
 -->
 <sidebar>
 	<title>
-		<ulink url="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=GJGTG75GV5PL6&amp;lc=C2&amp;item_name=TortoiseGit&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
+		<ulink url="http://redir.tortoisegit.org/donate">
 				<citetitle>Donate!</citetitle>
 		</ulink>
 	</title>
