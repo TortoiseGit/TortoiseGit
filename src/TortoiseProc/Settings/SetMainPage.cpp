@@ -281,11 +281,15 @@ void CSetMainPage::OnCheck()
 		CString cmd;
 		CString out;
 		cmd=_T("git.exe --version");
-		g_Git.Run(cmd,&out,CP_UTF8);
+		int ret = g_Git.Run(cmd,&out,CP_UTF8);
 		this->GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(out);
 		if (out.IsEmpty())
-			if (CMessageBox::Show(NULL, _T("Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\"."),_T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+		{
+			if (ret == 0xC0000135 && CMessageBox::Show(NULL, _T("Could not start git.exe. A dynamic library (dll) is missing.\nCheck help file for \"Extern DLL Path\"."), _T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
 				OnHelp();
+			else if (CMessageBox::Show(NULL, _T("Could not get read version information from git.exe.\nCheck help file for \"Git.exe Path\"."),_T("TortoiseGit"), 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				OnHelp();
+		}
 	}
 	else
 	{

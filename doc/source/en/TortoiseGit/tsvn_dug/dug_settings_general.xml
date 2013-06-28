@@ -9,6 +9,9 @@
 	<indexterm>
 		<primary>git.exe path</primary>
 	</indexterm>
+	<indexterm>
+		<primary>Extern DLL Path</primary>
+	</indexterm>
 	<para>
 		<figure id="tsvn-dug-settings-dia-main">
 			<title>The Settings Dialog, General Page</title>
@@ -102,8 +105,11 @@
 					you can enter it here and it will get added to the PATH environment variable automatically when TortoiseGit starts.
 				</para>
 				<para>
-					This is especially needed if you installed the development version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <literal>msysGit-fullinstall-*.exe</literal>),
-					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path in order to execute git.exe.
+					This is especially needed if you installed the developer version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <literal>msysGit-fullinstall-*.exe</literal>),
+					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path (i.e. entered in the <guilabel>Extern DLL Path</guilabel> textbox) in order to execute git.exe.
+				</para>
+				<para>
+					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a messagebox saying that a dll is missing.
 				</para>
 			</listitem>
 		</varlistentry>
