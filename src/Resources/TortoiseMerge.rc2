@@ -31,7 +31,7 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "CompanyName", "http://code.google.com/p/tortoisegit/"
+            VALUE "CompanyName", "http://tortoisegit.org/"
             VALUE "FileDescription", "TortoiseGitMerge"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitMerge.exe"

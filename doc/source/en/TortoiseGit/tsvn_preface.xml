@@ -127,8 +127,8 @@ and
 		<para>
 			TortoiseGit is an Open Source project. That means you have full
 			read access to the source code of this program. Project Home is 
-			<ulink url="http://code.google.com/p/tortoisegit">
-				<citetitle>http://code.google.com/p/tortoisegit</citetitle>
+			<ulink url="http://tortoisegit.org/">
+				<citetitle>http://tortoisegit.org/</citetitle>
 			</ulink>
 		</para>
 	</sect1>

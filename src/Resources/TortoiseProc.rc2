@@ -31,7 +31,7 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-		VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
+            VALUE "CompanyName", "http://tortoisegit.org/\0"
             VALUE "FileDescription", "TortoiseGit client\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "TortoiseGitProc.exe\0"

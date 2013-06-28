@@ -38,7 +38,7 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-			VALUE "CompanyName", "http://code.google.com/p/tortoisegit\0"
+            VALUE "CompanyName", "http://tortoisegit.org/\0"
             VALUE "FileDescription", "TortoiseGit - git CLI stdin wrapper\0"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "SshAskPass.exe\0"
