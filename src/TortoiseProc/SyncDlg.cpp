@@ -1123,7 +1123,7 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 UINT CSyncDlg::ProgressThread()
 {
 	m_startTick = GetTickCount();
-	m_GitCmdStatus = CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
+	CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
@@ -1183,6 +1183,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			log.Format(_T("\r\n%s (%d ms @ %s)\r\n"), temp, tickSpent, strEndTime);
 			CProgressDlg::InsertColorText(this->m_ctrlCmdOut, log, RGB(0,0,255));
 		}
+		m_GitCmdStatus = exitCode;
 
 		//if(wParam == MSG_PROGRESSDLG_END)
 		RunPostAction();
