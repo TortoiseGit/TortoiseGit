@@ -1786,6 +1786,9 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 
 void CTortoiseGitBlameView::OnEditFind()
 {
+	if (m_pFindDialog)
+		return;
+
 	m_pFindDialog=new CFindReplaceDialog();
 
 	CString oneline = theApp.GetString(_T("FindString"));
