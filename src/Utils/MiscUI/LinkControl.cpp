@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2012 - TortoiseSVN
+// Copyright (C) 2009, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,8 +68,8 @@ bool CLinkControl::ConvertStaticToLink(HWND hwndCtl)
 		WNDPROC pfnOrigProc = (WNDPROC) GetWindowLongPtr(hwndParent, GWLP_WNDPROC);
 		if (pfnOrigProc != _HyperlinkParentProc)
 		{
-			SetProp(hwndParent, PROP_ORIGINAL_PROC, (HANDLE)pfnOrigProc);
-			SetWindowLongPtr(hwndParent, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)_HyperlinkParentProc);
+			if (SetProp(hwndParent, PROP_ORIGINAL_PROC, (HANDLE)pfnOrigProc))
+				SetWindowLongPtr(hwndParent, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)_HyperlinkParentProc);
 		}
 	}
 
@@ -91,8 +91,8 @@ bool CLinkControl::ConvertStaticToLink(HWND hwndCtl)
 	// Subclass the existing control.
 
 	m_pfnOrigCtlProc = (WNDPROC)GetWindowLongPtr(hwndCtl, GWLP_WNDPROC);
-	SetProp(hwndCtl, PROP_OBJECT_PTR, (HANDLE)this);
-	SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)_HyperlinkProc);
+	if (SetProp(hwndCtl, PROP_OBJECT_PTR, (HANDLE)this))
+		SetWindowLongPtr(hwndCtl, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)_HyperlinkProc);
 
 	return true;
 }
