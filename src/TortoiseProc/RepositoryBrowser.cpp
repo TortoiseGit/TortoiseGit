@@ -430,6 +430,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 			break;
 		}
 
+		treeroot->m_hash = CGitHash((char *)git_tree_id(tree)->id);
 		ReadTreeRecursive(*repository, tree, treeroot);
 
 		// try to resolve hash to a branch name
