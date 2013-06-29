@@ -1822,9 +1822,6 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 {
 	ASSERT(m_pFindDialog != NULL);
 
-	if (m_CommitHash.empty())
-		return 0;
-
 	// If the FR_DIALOGTERM flag is set,
 	// invalidate the handle identifying the dialog box.
 	if (m_pFindDialog->IsTerminating())
@@ -1832,6 +1829,9 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 			m_pFindDialog = NULL;
 			return 0;
 	}
+
+	if (m_CommitHash.empty())
+		return 0;
 
 	// If the FR_FINDNEXT flag is set,
 	// call the application-defined search routine
