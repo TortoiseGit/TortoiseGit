@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2010, 2012 - TortoiseSVN
+// Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ public:
         , bValid(false)
         , nHScrollPos(0)
         , nVScrollPos(0)
-        , picscale(1.0)
+        , picscale(100)
         , transparentColor(::GetSysColor(COLOR_WINDOW))
         , pSecondPic(NULL)
         , blendAlpha(0.5f)
@@ -162,9 +162,9 @@ public:
     /// Makes both images the same size, fitting into the window
     void FitSizes(bool bFit);
     /// Sets the zoom factor of the image
-    void SetZoom(double dZoom, bool centermouse);
+    void SetZoom(int Zoom, bool centermouse);
     /// Returns the currently used zoom factor in which the image is shown.
-    double GetZoom() {return picscale;}
+    int GetZoom() {return picscale;}
     /// Zooms in (true) or out (false) in nice steps
     void Zoom(bool in, bool centermouse);
     /// Sets the 'Other' pic window
@@ -182,7 +182,7 @@ public:
 
     int GetHPos() {return nHScrollPos;}
     int GetVPos() {return nVScrollPos;}
-    void SetZoomValue(double z) {picscale = z; InvalidateRect(*this, NULL, FALSE);}
+    void SetZoomValue(int z) {picscale = z; InvalidateRect(*this, NULL, FALSE);}
 
     /// Handles the mouse wheel
     void                OnMouseWheel(short fwKeys, short zDelta);
@@ -205,7 +205,7 @@ protected:
     /// the WM_PAINT function
     void                Paint(HWND hwnd);
     /// Draw pic to hdc, with a border, scaled by scale.
-    void                ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, double scale);
+    void                ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, int scale);
     /// Positions the buttons
     void                PositionChildren();
     /// Rounds a double to a given precision
@@ -227,7 +227,7 @@ protected:
     tstring             pictitle;           ///< the string to show in the image view as a title
     CPicture            picture;            ///< the picture object of the image
     bool                bValid;             ///< true if the picture object is valid, i.e. if the image could be loaded and can be shown
-    double              picscale;           ///< the scale factor of the image
+    int                 picscale;           ///< the scale factor of the image in percent
     COLORREF            transparentColor;   ///< the color to draw under the images
     bool                bFirstpaint;        ///< true if the image is painted the first time. Used to initialize some stuff when the window is valid for sure.
     CPicture *          pSecondPic;         ///< if set, this is the picture to draw transparently above the original
