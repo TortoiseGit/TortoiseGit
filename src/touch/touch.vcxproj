@@ -22,6 +22,7 @@
     <ProjectGuid>{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}</ProjectGuid>
     <RootNamespace>touch</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <ProjectName>tgittouch</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

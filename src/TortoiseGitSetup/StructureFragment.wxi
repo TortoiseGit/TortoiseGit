@@ -576,7 +576,7 @@
 					</Component>
 
 					<Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
-						<File Id="F__touch" ShortName="touch.exe" Name="touch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\touch.exe" KeyPath="yes" />
+						<File Id="F__touch" ShortName="TGITOUCH.exe" Name="tgittouch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgittouch.exe" KeyPath="yes" />
 					</Component>
 
 					<?if $(var.IncludeCrashReportDll) = 1 ?>

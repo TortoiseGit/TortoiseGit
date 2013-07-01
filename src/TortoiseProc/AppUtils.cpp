@@ -726,7 +726,7 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 
 	proc += _T(" -c \"");
 	proc += CPathUtils::GetAppDirectory();
-	proc += _T("touch.exe\"");
+	proc += _T("tgittouch.exe\"");
 	proc += _T(" \"");
 	proc += tempfile;
 	proc += _T("\"");
