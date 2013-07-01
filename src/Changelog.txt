@@ -40,6 +40,7 @@ Released: Unreleased
  * Fixed issue #1786: Committing 25 or more files causes hidden progress dialog
  * Fixed issue #1732: Tortoisegit always crashes when viewing the history log of blink
  * Fixed issue #1824: Rebase Dialog sometimes not showing after running Fetch and Rebase in Sync Dialog
+ * Fixed issue #1725: 'Git Show Log' doesn't work on folders created by git-new-workdir script
 
 = Release 1.8.3.0 =
 Released: 2013-05-05
