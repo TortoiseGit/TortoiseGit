@@ -89,7 +89,7 @@
 				<para>
 					<caution>
 						<para>
-							git.exe must not be marked to be run in evelated mode (i.e. "Run as administrator" or run in any compatibility mode).
+							git.exe must not be marked to be run in elevated mode (i.e. "Run as administrator" or run in any compatibility mode).
 						</para>
 					</caution>
 					<caution>
