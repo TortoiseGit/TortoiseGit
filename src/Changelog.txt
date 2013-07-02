@@ -15,6 +15,7 @@ Released: Unreleased
  * Fixed issue #553: Pull the latest version of all submodules
  * TortoiseGitMerge: Improved applying a patch with conflicts
  * Rename touch.exe as tgittouch.exe to avoid filename collision
+ * Support SOCKS proxy
 
 == Bug Fixes ==
  * Fixed issue #1763: Unable to re-download TortoiseGit packages due to caching

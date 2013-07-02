@@ -252,7 +252,7 @@ BOOL CSetProxyPage::OnApply()
 	CString http_proxy;
 	if(!m_serveraddress.IsEmpty())
 	{
-		if(m_serveraddress.Left(5) != _T("http:"))
+		if (m_serveraddress.Find(_T("://")) == -1)
 			http_proxy=_T("http://");
 
 		if(!m_username.IsEmpty())
