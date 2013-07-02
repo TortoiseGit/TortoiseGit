@@ -30,6 +30,15 @@
             Default is set.
         </para>
         <para>
+            <guilabel>Use Task Dialog</guilabel>
+            when set, Task Dialog is used (a more powerful and user-friendly 
+            dialog for multiple choices).
+            When unset, traditional message box is used.
+            Note that this requires at least Windows Vista.
+            Windows XP is not supported.
+            Default is currently unset.
+        </para>
+        <para>
             <guilabel>Max line length for inline diffs</guilabel>
             TortoiseGitMerge can get slow when showing inline diffs for
             very long lines. Because of that only lines that are shorter
