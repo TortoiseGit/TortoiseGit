@@ -35,7 +35,9 @@
 			</menuchoice>
 			a file, it is removed from your working tree immediately as well
 			as being marked for deletion in the repository on next commit.
+<!--
 			The file's parent folder shows a <quote>deleted</quote> icon overlay.
+-->
 			Up until you commit the change, you can get the file back using
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
@@ -44,40 +46,22 @@
 			on the parent folder.
 		</para>
 		<para>
-			When you
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Delete</guimenuitem>
-			</menuchoice>
-			a folder, it remains in your working tree, but the overlay
-			changes to indicate that it is marked for deletion.
-			Up until you commit the change, you can get the folder back using
-			<menuchoice>
-				<guimenu>TortoiseGit</guimenu>
-				<guimenuitem>Revert</guimenuitem>
-			</menuchoice>
-			on the folder itself.
-			This difference in behaviour between files and folders
-			is a part of Git, not TortoiseGit.
-		</para>
-		<para>
 			If you want to delete an item from the repository, but keep it
 			locally as an unversioned file/folder, use
 			<menuchoice>
 				<guimenu>Extended Context Menu</guimenu>
 				<guimenuitem>Delete (keep local)</guimenuitem>
 			</menuchoice>.
-			You have to hold the <keycap>Shift</keycap> key while right clicking on
+			You might have to hold the <keycap>Shift</keycap> key while right clicking on
 			the item in the explorer list pane (right pane) in order to see this
 			in the extended context menu.
 		</para>
+<!--
 		<para>
 			If a <emphasis>file</emphasis> is deleted via the explorer
 			instead of using the TortoiseGit context menu, the commit
 			dialog shows those files and lets you remove them from
-			version control too before the commit. However, if you update
-			your working tree, Git will spot the missing file and
-			replace it with the latest version from the repository.
+			version control too before the commit.
 			If you need to delete a version-controlled file, always use
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
@@ -85,7 +69,7 @@
 			</menuchoice> so that Git doesn't have to guess what
 			you really want to do.
 		</para>
-    
+-->
     
 		<tip>
 			<title>Getting a deleted file or folder back</title>
@@ -103,7 +87,7 @@
 				the file or folder you deleted, right-click and select
 				<menuchoice>
 					<guimenu>Context Menu</guimenu>
-					<guimenuitem>Switch/Checkout...</guimenuitem>
+					<guimenuitem>Revert to this revision</guimenuitem>
 				</menuchoice>
 			</para>
 		</tip>
@@ -129,7 +113,7 @@
 <!--
 		<para>
 			If you want to move files around inside your working tree,
-			perhaps to a different sub-folder,
+			perhaps to a different sub-folder, you can
 			use the right-mouse drag-and-drop handler:
 			<orderedlist>
 				<listitem>
@@ -161,40 +145,12 @@
 		</para>
 -->
 		<caution>
-			<title>Commit the parent folder</title>
-			<para>
-				Since renames and moves are done as a delete followed by an
-				add you must commit the parent folder of the renamed/moved
-				file so that the deleted part of the rename/move will
-				show up in the commit dialog. If you don't commit the removed
-				part of the rename/move, it will stay behind in the repository
-				and when your co-workers update, the old file will not be
-				removed. i.e. they will have <emphasis>both</emphasis> the old
-				and the new copies.
-			</para>
-		</caution>
-    <!--
-		<para>
-			You can also use the repository browser to move items around.
-			Read <xref linkend="tsvn-dug-repobrowser"/> to find out more.
-		</para>
-    -->
-		<caution>
 			<title>Do Not Git Move Submodule</title>
 			<para>
 				You should <emphasis>not</emphasis> use the TortoiseGit
 				<guilabel>Move</guilabel> or <guilabel>Rename</guilabel>
 				commands on a folder which has been created using
 				<literal>git submodule</literal>.
-        <!--
-				This action would cause the external item to be deleted from
-				its parent repository, probably upsetting many other people.
-				If you need to move an externals folder you should use an
-				ordinary shell move, then adjust the
-				<literal>svn:externals</literal> properties of the source
-				and destination parent folders
-        -->
-        
 			</para>
 		</caution>
 	</sect2>
@@ -274,7 +230,7 @@
 			If the repository already contains two files with the same name
 			but differing only in case (e.g. <filename>TEST.TXT</filename>
 			and <filename>test.txt</filename>), you
-			will not be able to update or checkout the parent directory
+			will not be able to commit or checkout the parent directory
 			on a Windows client. Whilst Git supports case-sensitive
 			filenames, Windows does not.
 		</para>
@@ -289,42 +245,8 @@
 			In that case, you have to decide which one of them you want to 
 			keep and delete (or rename) the other one from the repository.
 		</para>
-		<tip>
-			<title>Preventing two files with the same name</title>
-			<para>
-				There is a server hook script available at: 
-				<ulink url="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">
-					<citetitle>http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</citetitle>
-				</ulink>
-				that will prevent checkins which result in case conflicts.
-			</para>
-		</tip>
 	</sect2>
 	-->
-	
-	<sect2 id="tsvn-dug-rename-repair">
-		<title>Repairing File Renames</title>
-		<para>
-			Sometimes your friendly IDE will rename files for you as part of a refactoring
-			exercise, and of course it doesn't tell Git. If you try to commit your
-			changes, Git will see the old filename as missing and the new one as
-			an unversioned file. You could just check the new filename to get it added in,
-			but you would then lose the history tracing, as Git does not know the
-			files are related.
-		</para>
-		<para>
-			A better way is to notify Git that this change is actually a rename,
-			and you can do this within the <guilabel>Commit</guilabel> and
-			<guilabel>Check for Modifications</guilabel> dialogs.
-			Simply select both the old name (missing) and the new name (unversioned)
-			and use
-			<menuchoice>
-				<guimenu>Context Menu</guimenu>
-				<guimenuitem>Repair Move</guimenuitem>
-			</menuchoice>
-			to pair the two files as a rename.
-		</para>
-	</sect2>
 	<sect2 id="tsvn-dug-rename-del-unversioned">
 		<title>Deleting Unversioned Files</title>
 		<para>
@@ -338,17 +260,12 @@
 			TortoiseGit provides just such an option using
 			<menuchoice>
 				<guimenu>Extended Context Menu</guimenu>
-				<guimenuitem>Delete unversioned items...</guimenuitem>
+				<guimenuitem>Clean up...</guimenuitem>
 			</menuchoice>.
-			You have to hold the <keycap>Shift</keycap> while right clicking on a folder
-			in the explorer list pane (right pane) in order to see this in the extended
+			You may have to hold the <keycap>Shift</keycap> while right clicking on a folder
+			in the explorer list pane (right pane) in order to see this in the
 			context menu.
-			This will produce a dialog which lists all unversioned files anywhere in your
-			working tree. You can then select or deselect items to be removed.
-		</para>
-		<para>
-			When such items are deleted, the recycle bin is used, so if you make a mistake
-			here and delete a file that should have been versioned, you can still recover it.
+			This will produce a dialog which lists all possible clean up options: <xref linkend="tsvn-dug-cleanup"/>
 		</para>
 	</sect2>
 </sect1>
