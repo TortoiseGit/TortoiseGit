@@ -261,7 +261,7 @@ void CRepositoryBrowser::OnOK()
 				m_RepoTree.SelectItem(item->m_hTree);
 			}
 			else
-				OpenFile(item->GetFullName(), OPEN);
+				OpenFile(item->GetFullName(), OPEN, item->m_bSubmodule);
 		}
 		return;
 	}
@@ -290,7 +290,7 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (!pItem->m_bFolder)
 	{
-		OpenFile(pItem->GetFullName(), OPEN);
+		OpenFile(pItem->GetFullName(), OPEN, pItem->m_bSubmodule);
 		return;
 	}
 	else
@@ -581,7 +581,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	{
 		popupMenu.AppendMenuIcon(eCmd_Open, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 		popupMenu.SetDefaultItem(eCmd_Open, FALSE);
-		if (selType == ONLY_FILES)
+		if (selType == ONLY_FILESSUBMODULES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_OpenWith, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV);
@@ -654,13 +654,13 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			m_RepoTree.SelectItem(selectedLeafs.at(0)->m_hTree);
 			return;
 		}
-		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN, selectedLeafs.at(0)->m_bSubmodule);
 		break;
 	case eCmd_OpenWith:
-		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN_WITH);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN_WITH, selectedLeafs.at(0)->m_bSubmodule);
 		break;
 	case eCmd_OpenWithAlternativeEditor:
-		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR, selectedLeafs.at(0)->m_bSubmodule);
 		break;
 	case eCmd_CompareWC:
 		{
@@ -1021,7 +1021,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	}
 }
 
-void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
+void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSubmodule)
 {
 	CTGitPath gitPath(path);
 
@@ -1037,9 +1037,16 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode)
 
 	file.Format(_T("%s%s_%s%s"), temppath, gitPath.GetBaseFilename(), hash.ToString().Left(g_Git.GetShortHASHLength()), gitPath.GetFileExtension());
 
-	CString out;
-	if(g_Git.GetOneFile(m_sRevision, gitPath, file))
+	if (isSubmodule)
 	{
+		file += _T(".txt");
+		CFile submoduleCommit(file, CFile::modeCreate | CFile::modeWrite);
+		CStringA commitInfo = "Subproject commit " + CStringA(hash.ToString());
+		submoduleCommit.Write(commitInfo, commitInfo.GetLength());
+	}
+	else if (g_Git.GetOneFile(m_sRevision, gitPath, file))
+	{
+		CString out;
 		out.Format(IDS_STATUSLIST_CHECKOUTFILEFAILED, gitPath.GetGitPathString(), m_sRevision, file);
 		MessageBox(out, _T("TortoiseGit"), MB_OK);
 		return;
