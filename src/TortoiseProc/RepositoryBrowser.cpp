@@ -266,7 +266,7 @@ void CRepositoryBrowser::OnOK()
 				m_RepoTree.SelectItem(item->m_hTree);
 			}
 			else
-				OpenFile(item->GetFullName(), OPEN, item->m_bSubmodule);
+				OpenFile(item->GetFullName(), OPEN, item->m_bSubmodule, item->m_hash);
 		}
 		return;
 	}
@@ -295,7 +295,7 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 
 	if (!pItem->m_bFolder)
 	{
-		OpenFile(pItem->GetFullName(), OPEN, pItem->m_bSubmodule);
+		OpenFile(pItem->GetFullName(), OPEN, pItem->m_bSubmodule, pItem->m_hash);
 		return;
 	}
 	else
@@ -666,13 +666,13 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			m_RepoTree.SelectItem(selectedLeafs.at(0)->m_hTree);
 			return;
 		}
-		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN, selectedLeafs.at(0)->m_bSubmodule);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN, selectedLeafs.at(0)->m_bSubmodule, selectedLeafs.at(0)->m_hash);
 		break;
 	case eCmd_OpenWith:
-		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN_WITH, selectedLeafs.at(0)->m_bSubmodule);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), OPEN_WITH, selectedLeafs.at(0)->m_bSubmodule, selectedLeafs.at(0)->m_hash);
 		break;
 	case eCmd_OpenWithAlternativeEditor:
-		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR, selectedLeafs.at(0)->m_bSubmodule);
+		OpenFile(selectedLeafs.at(0)->GetFullName(), ALTERNATIVEEDITOR, selectedLeafs.at(0)->m_bSubmodule, selectedLeafs.at(0)->m_hash);
 		break;
 	case eCmd_CompareWC:
 		{
@@ -1033,7 +1033,7 @@ void CRepositoryBrowser::FileSaveAs(const CString path)
 	}
 }
 
-void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSubmodule)
+void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSubmodule, CGitHash itemHash)
 {
 	CTGitPath gitPath(path);
 
@@ -1053,7 +1053,7 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 	{
 		file += _T(".txt");
 		CFile submoduleCommit(file, CFile::modeCreate | CFile::modeWrite);
-		CStringA commitInfo = "Subproject commit " + CStringA(hash.ToString());
+		CStringA commitInfo = "Subproject commit " + CStringA(itemHash.ToString());
 		submoduleCommit.Write(commitInfo, commitInfo.GetLength());
 	}
 	else if (g_Git.GetOneFile(m_sRevision, gitPath, file))

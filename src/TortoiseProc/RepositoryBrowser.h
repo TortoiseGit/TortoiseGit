@@ -152,7 +152,7 @@ private:
 	void					ShowContextMenu(CPoint point, TShadowFilesTreeList &selectedLeafs, eSelectionType selType);
 
 	void					FileSaveAs(const CString path);
-	void					OpenFile(const CString path, eOpenType mode, bool isSubmodule);
+	void					OpenFile(const CString path, eOpenType mode, bool isSubmodule, CGitHash itemHash);
 	bool					RevertItemToVersion(const CString &path);
 
 	afx_msg void			OnBnClickedButtonRevision();
