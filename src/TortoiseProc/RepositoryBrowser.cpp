@@ -333,22 +333,20 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
 			continue;
-		int mode = git_tree_entry_filemode(entry);
+
+		const int mode = git_tree_entry_filemode(entry);
 
 		CString base = CUnicodeUtils::GetUnicode(git_tree_entry_name(entry), CP_UTF8);
 
-		git_object *object = NULL;
-		git_tree_entry_to_object(&object, &repo, entry);
-		if (object == NULL)
-			continue;
-
-		const git_oid *oid = git_object_id(object);
+		const git_oid *oid = git_tree_entry_id(entry);
 		CShadowFilesTree * pNextTree = &treeroot->m_ShadowTree[base];
 		pNextTree->m_sName = base;
 		pNextTree->m_pParent = treeroot;
 		pNextTree->m_hash = CGitHash((char *)oid->id);
 
-		if (mode & S_IFDIR)
+		if (mode == GIT_FILEMODE_COMMIT)
+			pNextTree->m_bSubmodule = true;
+		else if (mode & S_IFDIR)
 		{
 			pNextTree->m_bFolder = true;
 
@@ -363,7 +361,14 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 			pNextTree->m_hTree = m_RepoTree.InsertItem(&tvinsert);
 			base.ReleaseBuffer();
 
+			git_object *object = nullptr;
+			git_tree_entry_to_object(&object, &repo, entry);
+			if (object == nullptr)
+				continue;
+
 			ReadTreeRecursive(repo, (git_tree*)object, pNextTree);
+
+			git_object_free(object);
 		}
 		else
 		{
@@ -375,8 +380,6 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 			pNextTree->m_iSize = git_blob_rawsize(blob);
 			git_blob_free(blob);
 		}
-
-		git_object_free(object);
 	}
 
 	return 0;
@@ -487,7 +490,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 	for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
 	{
 		int icon = m_nIconFolder;
-		if (!(*itShadowTree).second.m_bFolder)
+		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 			icon = SYS_IMAGE_LIST().GetFileIconIndex((*itShadowTree).second.m_sName);
 
 		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
@@ -542,11 +545,14 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 
 	bool folderSelected = false;
 	bool filesSelected = false;
+	bool submodulesSelected = false;
 
 	POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
 	while (pos)
 	{
 		CShadowFilesTree * item = (CShadowFilesTree *)m_RepoList.GetItemData(m_RepoList.GetNextSelectedItem(pos));
+		if (item->m_bSubmodule)
+			submodulesSelected = true;
 		if (item->m_bFolder)
 			folderSelected = true;
 		else
@@ -556,10 +562,11 @@ void CRepositoryBrowser::OnContextMenu_RepoList(CPoint point)
 
 	eSelectionType selType = ONLY_FILES;
 	if (folderSelected && filesSelected)
-		selType = MIXED;
+		selType = MIXED_FOLDERS_FILES;
 	else if (folderSelected)
 		selType = ONLY_FOLDERS;
-
+	else if (submodulesSelected)
+		selType = ONLY_FILESSUBMODULES;
 	ShowContextMenu(point, selectedLeafs, selType);
 }
 
@@ -582,7 +589,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 
-		if (m_bHasWC && selType == ONLY_FILES)
+		if (m_bHasWC && selType == ONLY_FILESSUBMODULES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_CompareWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 			bAddSeparator = true;
@@ -641,7 +648,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		}
 		break;
 	case eCmd_Open:
-		if (selectedLeafs.at(0)->m_bFolder)
+		if (!selectedLeafs.at(0)->m_bSubmodule && selectedLeafs.at(0)->m_bFolder)
 		{
 			FillListCtrlForTreeNode(selectedLeafs.at(0)->m_hTree);
 			m_RepoTree.SelectItem(selectedLeafs.at(0)->m_hTree);

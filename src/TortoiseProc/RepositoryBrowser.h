@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012 - TortoiseGit
-// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2009-2013 - TortoiseGit
+// Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@ public:
 	: m_hTree(NULL)
 	, m_pParent(NULL)
 	, m_bFolder(false)
+	, m_bSubmodule(false)
 	, m_iSize(0)
 	{}
 
@@ -43,6 +44,7 @@ public:
 	CGitHash			m_hash;
 	size_t				m_iSize;
 	bool				m_bFolder;
+	bool				m_bSubmodule;
 
 	HTREEITEM			m_hTree;
 
@@ -107,8 +109,9 @@ public:
 	enum eSelectionType
 	{
 		ONLY_FILES,
+		ONLY_FILESSUBMODULES,
 		ONLY_FOLDERS,
-		MIXED,
+		MIXED_FOLDERS_FILES,
 	};
 
 private:
