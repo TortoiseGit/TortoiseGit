@@ -36,6 +36,8 @@
 #include "StringUtils.h"
 #include "GitDiff.h"
 
+#define OVERLAY_EXTERNAL	1
+
 void SetSortArrowA(CListCtrl * control, int nColumn, bool bAscending)
 {
 	if (control == NULL)
@@ -212,6 +214,9 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		m_RepoTree.SetExtendedStyle(exStyle, exStyle);
 	}
 
+	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon((HICON)LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDI_EXTERNALOVL), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE));
+	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
+
 	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", NULL);
 	SetWindowTheme(m_RepoList.GetSafeHwnd(), L"Explorer", NULL);
 
@@ -302,6 +307,9 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CRepositoryBrowser::Refresh()
 {
+	if (m_nExternalOvl >= 0)
+		SYS_IMAGE_LIST().SetOverlayImage(m_nExternalOvl, OVERLAY_EXTERNAL);
+
 	m_RepoTree.DeleteAllItems();
 	m_RepoList.DeleteAllItems();
 	m_TreeRoot.m_ShadowTree.clear();
@@ -495,6 +503,8 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 
 		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
 
+		if ((*itShadowTree).second.m_bSubmodule)
+			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXTERNAL), LVIS_OVERLAYMASK);
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
 		if (!(*itShadowTree).second.m_bFolder)
 		{

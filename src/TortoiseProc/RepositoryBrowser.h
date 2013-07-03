@@ -135,6 +135,7 @@ private:
 	int						ReadTree(CShadowFilesTree * treeroot);
 	int						m_nIconFolder;
 	int						m_nOpenIconFolder;
+	int						m_nExternalOvl;
 
 	bool					m_bHasWC;
 

@@ -97,6 +97,7 @@ IDI_JUMPUP              ICON                    "jumpup.ico"
 IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
 IDI_GITCREDENTIAL       ICON                    "gitcredential.ico"
+IDI_EXTERNALOVL         ICON                    "externalovl.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

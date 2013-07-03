@@ -490,6 +490,7 @@
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\explorer.ico" />
     <Image Include="..\Resources\ExportBackground.ico" />
+    <Image Include="..\Resources\externalovl.ico" />
     <Image Include="..\Resources\extwarning.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
