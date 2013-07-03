@@ -506,7 +506,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		if ((*itShadowTree).second.m_bSubmodule)
 			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXTERNAL), LVIS_OVERLAYMASK);
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
-		if (!(*itShadowTree).second.m_bFolder)
+		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{
 			CString temp;
 
