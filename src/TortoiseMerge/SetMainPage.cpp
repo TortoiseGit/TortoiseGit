@@ -58,7 +58,7 @@ CSetMainPage::CSetMainPage()
 	m_regAutoAdd = CRegDWORD(_T("Software\\TortoiseGitMerge\\AutoAdd"), TRUE);
 	m_regMaxInline = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineDiffMaxLineLength"), 3000);
 	m_regUseRibbons = CRegDWORD(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE);
-	m_regUseTaskDialog = CRegDWORD(L"Software\\TortoiseGitMerge\\UseTaskDialog", FALSE);
+	m_regUseTaskDialog = CRegDWORD(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE);
 
 	m_bBackup = m_regBackup;
 	m_bFirstDiffOnLoad = m_regFirstDiffOnLoad;
