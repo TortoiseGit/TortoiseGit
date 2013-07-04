@@ -44,6 +44,7 @@ protected:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedHelp();
 	afx_msg void OnLbnSelchangeListPath();
+	afx_msg void OnBnClickedSelectall();
 
 public:
 	BOOL m_bInit;
@@ -59,4 +60,5 @@ public:
 protected:
 	CListBox	m_PathListBox;
 	CRegString		m_regPath;
+	CButton			m_SelectAll;
 };
