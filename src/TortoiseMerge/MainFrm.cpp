@@ -179,7 +179,7 @@ CMainFrame::CMainFrame()
 	, m_regCollapsed(L"Software\\TortoiseGitMerge\\Collapsed", 0)
 	, m_regInlineDiff(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE)
 	, m_regUseRibbons(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE)
-	, m_regUseTaskDialog(L"Software\\TortoiseGitMerge\\UseTaskDialog", FALSE)
+	, m_regUseTaskDialog(L"Software\\TortoiseGitMerge\\UseTaskDialog", TRUE)
 {
 	m_bOneWay = (0 != ((DWORD)m_regOneWay));
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
