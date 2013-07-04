@@ -36,7 +36,7 @@
             When unset, traditional message box is used.
             Note that this requires at least Windows Vista.
             Windows XP is not supported.
-            Default is currently unset.
+            Default is set.
         </para>
         <para>
             <guilabel>Max line length for inline diffs</guilabel>
