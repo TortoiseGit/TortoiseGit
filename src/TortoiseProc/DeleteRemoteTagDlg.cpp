@@ -92,6 +92,7 @@ void CDeleteRemoteTagDlg::Refresh()
 	sysProgressDlg.ShowModal(this, true);
 	g_Git.GetRemoteTags(m_sRemote, m_taglist);
 	sysProgressDlg.Stop();
+	BringWindowToTop();
 
 	for (int i = 0; i < (int)m_taglist.size(); ++i)
 	{
@@ -158,6 +159,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	BOOL cancel = FALSE;
 	mgtPush.Execute(cancel);
 	sysProgressDlg.Stop();
+	BringWindowToTop();
 	Refresh();
 }
 

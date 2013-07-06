@@ -755,10 +755,12 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 			CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			if (bIsRemoteBranch)
 				sysProgressDlg.Stop();
+			BringWindowToTop();
 			return false;
 		}
 		if (bIsRemoteBranch)
 			sysProgressDlg.Stop();
+		BringWindowToTop();
 	}
 	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
 	{
