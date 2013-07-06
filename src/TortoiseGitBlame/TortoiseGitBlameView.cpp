@@ -488,7 +488,6 @@ void CTortoiseGitBlameView::InitialiseEditor()
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
-	SendEditor(SCI_SETFONTQUALITY, SC_EFF_QUALITY_DEFAULT);
 
 	this->m_TextView.Call(SCI_SETWRAPMODE, SC_WRAP_NONE);
 
