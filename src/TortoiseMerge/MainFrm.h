@@ -145,6 +145,7 @@ protected:
 	afx_msg void	OnIndicatorLeftview();
 	afx_msg void	OnIndicatorRightview();
 	afx_msg void	OnIndicatorBottomview();
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 
 	DECLARE_MESSAGE_MAP()
 protected:
