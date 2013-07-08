@@ -95,7 +95,9 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 		GetDlgItem(IDC_TOGROUP)->SetWindowText(toGroup);
 	}
 
-	CString title = _T("Submodule \"") + m_sPath + _T("\"");
+	CString fsPath = m_sPath;
+	fsPath.Replace('\\', '/');
+	CString title = _T("Submodule \"") + fsPath + _T("\"");
 	GetDlgItem(IDC_SUBMODULEDIFFTITLE)->SetWindowText(title);
 
 	UpdateData(FALSE);
