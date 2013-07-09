@@ -4,8 +4,6 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# Paras Nath Chaudhary <opnchaudhary@gmail.com>, 2013
-# Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
@@ -13,12 +11,12 @@ msgstr ""
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2013-06-25 13:49+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
-"Language-Team: Nepali (http://www.transifex.com/projects/p/tortoisegit/language/ne/)\n"
+"Language-Team: Silesian (http://www.transifex.com/projects/p/tortoisegit/language/szl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ne\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: szl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. Resource IDs: (188)
 # msgid/msgstr fields for Accelerator keys
@@ -75,77 +73,77 @@ msgstr ""
 #. Resource IDs: (3867)
 #, c-format
 msgid "%1 was not found."
-msgstr "%1 भेटिएन ।"
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Day ago"
-msgstr "%1!d! दिन अगाडी"
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Days ago"
-msgstr "%1!d! दिन अगाडी"
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Hour ago"
-msgstr "%1!d! घन्टा अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Hours ago"
-msgstr "%1!d! घन्टा अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Minute ago"
-msgstr "%1!d! मिनेट अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Month ago"
-msgstr "%1!d! महिना अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Months ago"
-msgstr "%1!d! महिना अगाडी "
+msgstr ""
 
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! Second ago"
-msgstr "%1!d! सेकेन्ड  अगाडी "
+msgstr ""
 
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! Seconds ago"
-msgstr "%1!d! सेकेन्ड  अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Week ago"
-msgstr "%1!d! हप्ताअगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Weeks ago"
-msgstr "%1!d! हप्ता अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Year ago"
-msgstr "%1!d! बर्ष अगाडी "
+msgstr ""
 
 #. Resource IDs: (601)
 #, c-format
 msgid "%1!d! Years ago"
-msgstr "%1!d! बर्ष अगाडी "
+msgstr ""
 
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! minutes ago"
-msgstr "%1!d! मिनेट अगाडी "
+msgstr ""
 
 #. Resource IDs: (3860)
 #, c-format
@@ -1925,7 +1923,7 @@ msgstr ""
 msgid ""
 "Authors:\tFrank Li (lznuaa@gmail.com),\n"
 "\t\tSven Strickroth (email@cs-ware.de)"
-msgstr "Authors:\tFrank Li (lznuaa@gmail.com),\n\t\tSven Strickroth (email@cs-ware.de)"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Auto CrLf convert"
@@ -2986,7 +2984,7 @@ msgstr ""
 
 #. Resource IDs: (1001)
 msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr "Copyright (C) 2009-2013 TortoiseGit"
+msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -4562,7 +4560,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
-msgstr "Frank Li (lznuaa@gmail.com), Sven Strickroth <email@cs-ware.de>"
+msgstr ""
 
 #. Resource IDs: (1385, 1522, 65535)
 msgid "From"
@@ -6400,11 +6398,11 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office 2003"
-msgstr "Office 2003"
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "Office 2007"
-msgstr "Office 2007"
+msgstr ""
 
 #. Resource IDs: (626)
 msgid "Office 2007 colors"
@@ -6412,7 +6410,7 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office XP"
-msgstr "Office XP"
+msgstr ""
 
 #. Resource IDs: (605)
 msgid "Older commit time"
@@ -9306,7 +9304,7 @@ msgstr "TortoiseGit %d.%d.%d, Build %d - %s, %s"
 msgid ""
 "TortoiseGit %d.%d.%d.%d %s \r\n"
 "%s \r\n"
-msgstr "TortoiseGit %d.%d.%d.%d %s \n%s \n"
+msgstr ""
 
 #. Resource IDs: (1410)
 #, c-format
@@ -9331,7 +9329,7 @@ msgstr ""
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr "TortoiseGit&UDiff"
+msgstr ""
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -9494,15 +9492,15 @@ msgstr ""
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr "UTF-16 BE"
+msgstr ""
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr "UTF-16 LE"
+msgstr ""
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr "UTF-8"
+msgstr ""
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -10071,15 +10069,15 @@ msgstr "Windows"
 
 #. Resource IDs: (156, 626)
 msgid "Windows 2000"
-msgstr "Windows 2000"
+msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Windows 7"
-msgstr "Windows 7"
+msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Windows XP"
-msgstr "Windows XP"
+msgstr ""
 
 #. Resource IDs: (5020)
 msgid "Windows-1250"
@@ -10475,7 +10473,7 @@ msgstr ""
 
 #. Resource IDs: (1594, 1596, 1598)
 msgid "false"
-msgstr "false"
+msgstr ""
 
 #. Resource IDs: (66)
 #, c-format
@@ -10520,7 +10518,7 @@ msgstr ""
 
 #. Resource IDs: (1494)
 msgid "master"
-msgstr "master"
+msgstr ""
 
 #. Resource IDs: (11, 65535)
 msgid "merged"
@@ -10630,7 +10628,7 @@ msgstr ""
 
 #. Resource IDs: (1593, 1597, 1601)
 msgid "true"
-msgstr "true"
+msgstr ""
 
 #. Resource IDs: (245)
 msgid "week"

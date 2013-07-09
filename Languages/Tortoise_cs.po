@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-05-03 07:19+0000\n"
+"PO-Revision-Date: 2013-07-06 14:22+0000\n"
 "Last-Translator: Zbyněk Schwarz <zbynek.schwarz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -560,7 +560,7 @@ msgstr "&Zahodit"
 
 #. Resource IDs: (1412)
 msgid "&Do the same for the rest"
-msgstr ""
+msgstr "&Provést totéž u ostatních"
 
 #. Resource IDs: (1066)
 msgid "&Docking"
@@ -1129,8 +1129,8 @@ msgid "&Tabbed Document"
 msgstr "&Dokument s kartami"
 
 #. Resource IDs: (1513)
-msgid "&Tags"
-msgstr "&Značky"
+msgid "&Tag"
+msgstr "&Značka"
 
 #. Resource IDs: (65535)
 msgid "&Tags:"
@@ -1219,10 +1219,6 @@ msgstr "&Použít automatické dokončení cest souborů a klíčových slov"
 #. Resource IDs: (1005, 1410, 65535)
 msgid "&Username:"
 msgstr "&Uživatelské jméno:"
-
-#. Resource IDs: (1514)
-msgid "&Version"
-msgstr "&Verze"
 
 #. Resource IDs: (65535)
 msgid "&View"
@@ -1782,11 +1778,11 @@ msgstr "Na řádku %d byl nalezen neznámý typ řádku!"
 
 #. Resource IDs: (251)
 msgid "Append right block"
-msgstr ""
+msgstr "Umístit za pravý blok"
 
 #. Resource IDs: (251)
 msgid "Append this block to left"
-msgstr ""
+msgstr "Umístit tento blok za konec levého"
 
 #. Resource IDs: (65535)
 msgid "Application Frame Menus: "
@@ -2107,6 +2103,10 @@ msgid ""
 "Both the path to the patch file and the target path must be absolute paths!"
 msgstr "Jak cesta k záplatovému souboru, tak cesta cíle musí být absolutní!"
 
+#. Resource IDs: (188)
+msgid "Bottom View:"
+msgstr "Dolní pohled:"
+
 #. Resource IDs: (1007)
 msgid "Br&owse..."
 msgstr "P&rocházet..."
@@ -2147,7 +2147,7 @@ msgid "Bro&wse"
 msgstr "Pr&ocházet"
 
 #. Resource IDs: (21)
-msgid "Browse Reference"
+msgid "Browse References"
 msgstr "Procházet odkazy"
 
 #. Resource IDs: (78)
@@ -2254,6 +2254,48 @@ msgstr "Nelze vložit bitmapový obrázek ze schránky!"
 #. Resource IDs: (2, 73, 1069)
 msgid "Cancel"
 msgstr "Zrušit"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't quit TortoiseGitMerge"
+msgstr "Zrušit\nNeukončovat TortoiseGitMerge"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't reload views"
+msgstr "Zrušit\nZobrazení znovu nenačítat"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't switch the views"
+msgstr "Zrušit\nNepřepínat zobrazení"
+
+#. Resource IDs: (314)
+msgid ""
+"Cancel\n"
+"Keep the empty file."
+msgstr "Zrušit\nPonechat prázdný soubor."
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Resolve the conflicts first."
+msgstr "Zrušit\nNejdříve vyřešit konflikty."
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current files"
+msgstr "Zrušit\nZůstat u současných souborů"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current settings"
+msgstr "Zrušit\nZůstat u současných nastavení"
 
 #. Resource IDs: (70)
 msgid ""
@@ -2426,6 +2468,10 @@ msgstr "Vybrat nejlepší ze zvolených odevzdání..."
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
 msgstr "Vybrat toto odevzdání jako nejlepší..."
+
+#. Resource IDs: (90)
+msgid "Cherry-pick failed! Skip this commit?"
+msgstr "Vybrat toto odevzdání selhal! Chcete ho přeskočit?"
 
 #. Resource IDs: (65535)
 msgid "Chinese"
@@ -2615,7 +2661,7 @@ msgstr "Barva"
 
 #. Resource IDs: (32785)
 msgid "Color by age, &continuous"
-msgstr ""
+msgstr "Barvit podle věku, &průběžné"
 
 #. Resource IDs: (138, 16961, 65535)
 msgid "Colors"
@@ -2854,6 +2900,14 @@ msgstr "Pokračovat"
 msgid "Contract docked window"
 msgstr "Smrštit ukotvené okno"
 
+#. Resource IDs: (501)
+msgid "Convert spaces to tabs"
+msgstr "Převést mezery na tabulátory"
+
+#. Resource IDs: (501)
+msgid "Convert tabs to spaces"
+msgstr "Převést tabulátory na mezery"
+
 #. Resource IDs: (1253)
 msgid "Cop&y"
 msgstr "&Kopírovat"
@@ -2900,6 +2954,10 @@ msgstr "Kopírovat protokol do schránky"
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
 msgstr "Kopírovat cesty do schránky"
+
+#. Resource IDs: (90)
+msgid "Copy ref names"
+msgstr "Kopírovat názvy odkazů"
 
 #. Resource IDs: (323)
 msgid "Copy selection to cli&pboard"
@@ -3383,6 +3441,12 @@ msgstr "Smazat značku"
 msgid "Delete the existing branch or use a different name."
 msgstr "Smazat existující větev nebo použít jiný název."
 
+#. Resource IDs: (314)
+msgid ""
+"Delete\n"
+"The file is removed."
+msgstr "Smazat\nSoubor je odstraněn."
+
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
 msgstr "Smazáno"
@@ -3637,6 +3701,10 @@ msgstr "Opravdu chcete vrátit všechny změny v\n%s\nkteré byly provedeny v t�
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr "Chcete přinést vzdálené větve z nové přidané vzdálené?"
 
+#. Resource IDs: (315)
+msgid "Do you want to load the changed files?"
+msgstr "Chcete načíst změněné soubory?"
+
 #. Resource IDs: (319)
 #, c-format
 msgid ""
@@ -3689,6 +3757,18 @@ msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
 msgstr "Neobnovovat automaticky uložené dokumenty\nPoužít poslední jednoznačně uloženou verzi dokumentu"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Close the views without saving the modifications"
+msgstr "Neukládat\nUzavřít zobrazení bez uložení změn"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Reload the views without saving the modifications"
+msgstr "Neukládat\nZnovu načíst zobrazení bez uložení změn"
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
@@ -3750,6 +3830,10 @@ msgstr "E&xportovat..."
 msgid "E&xternal"
 msgstr "E&xterní"
 
+#. Resource IDs: (303)
+msgid "EOL"
+msgstr "EOL"
+
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr "EUC-KR"
@@ -3769,6 +3853,10 @@ msgstr "Upravit &globální .gitconfig"
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
 msgstr "Upravit &místní .git/config"
+
+#. Resource IDs: (1755)
+msgid "Edit .tgitconfig"
+msgstr "Upravit .tgitconfig"
 
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
@@ -3865,6 +3953,10 @@ msgstr "Povolené obslužné rutiny překrytí"
 msgid "Encode"
 msgstr "Kódování"
 
+#. Resource IDs: (300, 301)
+msgid "Encoding"
+msgstr "Kódování"
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -3897,6 +3989,10 @@ msgstr "Při zápisu %1 došlo k neznámé chybě"
 #. Resource IDs: (1617)
 msgid "End"
 msgstr "Konec"
+
+#. Resource IDs: (252)
+msgid "End of Line Style"
+msgstr "Styl konce řádku"
 
 #. Resource IDs: (3825)
 msgid "Enlarge the window to full size"
@@ -4245,6 +4341,10 @@ msgstr "Přinášení revize %s souboru:"
 msgid "File"
 msgstr "Soubor"
 
+#. Resource IDs: (252)
+msgid "File Encoding"
+msgstr "Kódování souboru"
+
 #. Resource IDs: (605)
 #, c-format
 msgid "File changes each %s"
@@ -4257,6 +4357,14 @@ msgstr "Změny souborů v každém týdnu:"
 #. Resource IDs: (376)
 msgid "File diffs"
 msgstr "Rozdíly souborů"
+
+#. Resource IDs: (319)
+msgid "File has no conflicts"
+msgstr "Soubor nemá konflikty"
+
+#. Resource IDs: (314)
+msgid "File is empty."
+msgstr "Soubor je prázdný."
 
 #. Resource IDs: (213)
 msgid "File list is empty"
@@ -4758,6 +4866,10 @@ msgstr "Čelo"
 msgid "HEAD:"
 msgstr "Čelo:"
 
+#. Resource IDs: (89)
+msgid "Hard"
+msgstr "Pevné"
+
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
 msgstr "Tvrdé: Resetovat pracovní strom a index (zahodit všechny místní změny)"
@@ -5143,6 +5255,12 @@ msgstr "Ignorovat všechny změny mezer"
 msgid "Ignore case cha&nges"
 msgstr "Ignorovat &změny velikosti"
 
+#. Resource IDs: (315)
+msgid ""
+"Ignore changes\n"
+"Ignore the outside changes."
+msgstr "Ignorovat změny\nIgnorovat vnější změny."
+
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
 msgstr "Ignorovat položky pouze v obsa"
@@ -5324,6 +5442,12 @@ msgstr "Ponechat seznamy změn"
 msgid "Keep file locally?"
 msgstr "Ponechat si soubor místně?"
 
+#. Resource IDs: (316)
+msgid ""
+"Keep resolving\n"
+"Jump to first unresolved conflict"
+msgstr "Pokračovat v řešení\nPřeskočit na první nevyřešený konflikt"
+
 #. Resource IDs: (16136)
 msgid "Keyboard"
 msgstr "Klávesnice"
@@ -5404,6 +5528,12 @@ msgstr "Spustí externí program pro sloučení/porovnání k vyřešení konfli
 msgid "Least active author:"
 msgstr "Nejméně aktivní autor:"
 
+#. Resource IDs: (319)
+msgid ""
+"Leave as conflicted\n"
+"The conflict status of the file is kept"
+msgstr "Ponechat v konfliktu\nJe ponechán konfliktní stav souboru"
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr "Levé zobrazení:"
@@ -5481,6 +5611,18 @@ msgstr "Nahrát obrázky"
 msgid "Load Putty &Key"
 msgstr "Načíst &klíč Putty"
 
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"Changes made in TortoiseGitMerge are lost and replaced with the new content."
+msgstr "Načíst změny\nZměny provedené v TortoiseGitMerge jsou ztraceny a nahrazeny novým obsahem."
+
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"The views are updated with the new content."
+msgstr "Načíst změny\nZobrazení jsou aktualizována novým obsahem."
+
 #. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr "Načítání..."
@@ -5506,8 +5648,8 @@ msgstr "Místní:"
 #. Resource IDs: (94)
 msgid ""
 "Location where the contents of the\n"
-"repository URL will be saved to."
-msgstr "Umístění kde bude uložen obsah\núložiště z URL."
+"selected revision of the repository will be saved to."
+msgstr "Umístění kam obsah\nzvolené revize úložiště bude uložen."
 
 #. Resource IDs: (32854)
 msgid "Locator Bar"
@@ -5616,6 +5758,12 @@ msgstr "Spravovat vzdálené"
 #. Resource IDs: (282)
 msgid "Mark as resolved"
 msgstr "Označit jako vyřešený"
+
+#. Resource IDs: (319)
+msgid ""
+"Mark as resolved\n"
+"The file status is changed to modified"
+msgstr "Označit jako vyřešené\nStav souboru bude změněn na Změněno"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -5962,10 +6110,6 @@ msgstr "Další rozdíl v řádku"
 msgid "No"
 msgstr "Ne"
 
-#. Resource IDs: (1482)
-msgid "No &Commit"
-msgstr "Žádné &odevzdání"
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Žádný &rychlý posun vpřed"
@@ -5973,6 +6117,10 @@ msgstr "Žádný &rychlý posun vpřed"
 #. Resource IDs: (1716)
 msgid "No Checkout"
 msgstr "Bez získání"
+
+#. Resource IDs: (1482)
+msgid "No Co&mmit"
+msgstr "&Bez odevzdání"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -6353,6 +6501,10 @@ msgid ""
 "Help Topics"
 msgstr "Otevře nápovědu\nTémata nápovědy"
 
+#. Resource IDs: (21)
+msgid "Opens the Reference Browser dialog."
+msgstr "Otevře dialogové okno odkazů."
+
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
 msgstr "Otevře průzkumníka úložiště"
@@ -6531,6 +6683,10 @@ msgstr "Záplatování souboru '%s'"
 msgid "Path"
 msgstr "Cesta"
 
+#. Resource IDs: (314)
+msgid "Path found that matches the patch better."
+msgstr "Nalezená cesta lépe odpovídá záplatě."
+
 #. Resource IDs: (1580, 65535)
 msgid "Path:"
 msgstr "Cesta:"
@@ -6655,11 +6811,11 @@ msgstr "Připravování odevzdání..."
 
 #. Resource IDs: (251)
 msgid "Prepend right block"
-msgstr ""
+msgstr "Umístit před pravý blok"
 
 #. Resource IDs: (251)
 msgid "Prepend this block to left"
-msgstr ""
+msgstr "Umístit tento blok na začátek levého"
 
 #. Resource IDs: (65535)
 msgid "Press &New Shortcut Key:"
@@ -6844,6 +7000,12 @@ msgid ""
 "Quit the application; prompts to save documents\n"
 "Exit"
 msgstr "Ukončení aplikace; zobrazen dotaz k uložení dokumentů\nOdejít"
+
+#. Resource IDs: (315)
+msgid ""
+"Quit\n"
+"Exit TortoiseGitMerge without saving the modifications"
+msgstr "Ukončit\nOdejít z TortoiseGitMerge bez uložení změn"
 
 #. Resource IDs: (1073)
 msgid "R&AM drives"
@@ -7058,6 +7220,10 @@ msgstr "Vzdálená &větev:"
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
 msgstr "Vzdálená &URL:"
+
+#. Resource IDs: (1754)
+msgid "Remote &tracking branch"
+msgstr "Vzdálená větev &sledování"
 
 #. Resource IDs: (65535)
 msgid "Remote Branch"
@@ -7528,6 +7694,50 @@ msgstr "&Uložit jako..."
 msgid "Save As"
 msgstr "Uložit jako"
 
+#. Resource IDs: (316)
+msgid ""
+"Save Bottom File as\n"
+"You're asked where to save the bottom file"
+msgstr "Uložit spodní soubor jako\nJste požádáni o zadání místa pro uložení spodního souboru"
+
+#. Resource IDs: (316)
+msgid "Save File"
+msgstr "Uložit soubor"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Left File as\n"
+"You're asked where to save the left file"
+msgstr "Uložit soubor vlevo jako\nJste požádáni o zadání místa pro uložení souboru vlevo"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Left File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Uložit soubor vlevo\nZměny jsou uloženy do\n%s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Right File as\n"
+"You're asked where to save the right file"
+msgstr "Uložit soubor vpravo jako\nJste požádáni o zadání místa pro uložení  souboru vpravo"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Right File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Uložit soubor vpravo\nZměny jsou uloženy do\n%s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save all\n"
+"Both Files are saved"
+msgstr "Uložit vše\nOba soubory jsou uloženy"
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr "Uložit jako"
@@ -7540,10 +7750,20 @@ msgstr "Uložit jako &globální"
 msgid "Save as..."
 msgstr "Uložit jako..."
 
+#. Resource IDs: (315)
+msgid ""
+"Save as\n"
+"You're asked where to save the file"
+msgstr "Uložit jako\nJste požádáni o zadání místa pro uložení souboru"
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Uložit změny do %1?"
+
+#. Resource IDs: (314)
+msgid "Save modifications."
+msgstr "Uložit změny."
 
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
@@ -7578,6 +7798,20 @@ msgstr "Uložit sjednocený rozdíl"
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
 msgstr "Uložit sjednocený rozdíl zahrnující vše od čela větve"
+
+#. Resource IDs: (315)
+msgid ""
+"Save\n"
+"Save the file with the conflict markers."
+msgstr "Uložit\nUložit soubor se značkami konfliktu."
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Save\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Uložit\nZměny jsou uloženy do\n%s"
 
 #. Resource IDs: (108)
 msgid "Saved Data"
@@ -7723,6 +7957,16 @@ msgstr "Vybrat celý dokument\nVybrat vše"
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
 msgstr "Vybrat prohlížeč pro soubory rozdílů"
+
+#. Resource IDs: (316)
+msgid "Select what file you want to save as"
+msgstr "Vyberte který soubor chcete uložit jako"
+
+#. Resource IDs: (316)
+msgid ""
+"Select what file you want to save as\n"
+"Note: There is unresolved conflict!"
+msgstr "Vyberte který soubor chcete uložit jako\nPoznámka: Zjištěn nevyřešený konflikt!"
 
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
@@ -8167,6 +8411,10 @@ msgstr "Chybějící cíl přeskočen"
 #. Resource IDs: (1070)
 msgid "Slide"
 msgstr "Posunout"
+
+#. Resource IDs: (89)
+msgid "Soft"
+msgstr "Měkké"
 
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
@@ -8902,6 +9150,12 @@ msgid ""
 "uses."
 msgstr "V současnosti je nainstalováno %d obslužných rutin překryvů mimo těch, které používá Tortoise."
 
+#. Resource IDs: (316)
+msgid ""
+"There are more editable views.\n"
+"What view do you want to save?"
+msgstr "Existuje více upravitelných zobrazení.\nKteré zobrazení chcete uložit?"
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "Nejsou dostupní žádní poskytovatelé systému pro sledování chyb."
@@ -9064,7 +9318,7 @@ msgid ""
 "The commit dialog cannot handle this.\n"
 "\n"
 "Do you want to remove it from the index?"
-msgstr ""
+msgstr "TortoiseGit zjistil. že \"%s\" neexistuje, ale je označen jako \"Přidán\".\nDialogové okno odevzdání toto nemůže zpracovat.\n\nChcete ho odstranit z rejstříku?"
 
 #. Resource IDs: (98)
 #, c-format
@@ -9192,6 +9446,10 @@ msgstr "Přenášení při %s"
 #. Resource IDs: (32816)
 msgid "Transparent &color..."
 msgstr "&Průhledná barva ..."
+
+#. Resource IDs: (501)
+msgid "Trim right"
+msgstr "Oříznout vpravo"
 
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
@@ -9342,6 +9600,10 @@ msgstr "Neznámé"
 msgid "Unknown depth"
 msgstr "Neznámá hloubka"
 
+#. Resource IDs: (315)
+msgid "Unresolved conflicts!"
+msgstr "Nevyřešené konflikty!"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Bez názvu"
@@ -9430,6 +9692,10 @@ msgstr "Použít MAPI"
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "Použít pásy karet"
+
+#. Resource IDs: (1500)
+msgid "Use Task Dialog"
+msgstr "Použít dialogové okno úloh"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -9555,13 +9821,29 @@ msgstr "Použít textový blok z levého zobrazení\nPoužít levý blok"
 msgid "Use th&is text block"
 msgstr "&Použít tento blok textu"
 
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the found path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Použít nalezenou cestu.\nPoužít záplatu na\n%s"
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the original path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Použít původní cestu.\nPoužít záplatu na\n%s"
+
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Použít tento &celý soubor"
 
 #. Resource IDs: (251)
 msgid "Use this block on left"
-msgstr ""
+msgstr "Použít tento blok na levý"
 
 #. Resource IDs: (251)
 msgid "Use whole other &file"
@@ -9616,7 +9898,7 @@ msgstr "Platné možnosti příkazového řádku jsou:\n/base:<cesta k základn�
 msgid "Value"
 msgstr "Hodnota"
 
-#. Resource IDs: (1004, 1075, 1514, 1539)
+#. Resource IDs: (1004, 1075, 1539)
 msgid "Version"
 msgstr "Verze"
 
@@ -9660,6 +9942,10 @@ msgstr "Vietnamština"
 #. Resource IDs: (156)
 msgid "View"
 msgstr "Zobrazit"
+
+#. Resource IDs: (90)
+msgid "View .tgitconfig"
+msgstr "Zobrazit .tgitconfig"
 
 #. Resource IDs: (328, 603)
 msgid "View Patch"
@@ -9753,6 +10039,13 @@ msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Při povolení jsou položky s verzí, uvedené v dialogovém okně odevzdání, automaticky vybrány"
+
+#. Resource IDs: (316)
+msgid ""
+"When resolving conflicts, you always have to save even if there is no "
+"conflict shown. TortoiseGitMerge can merge changes that Git can't and won't "
+"show a conflict for those!"
+msgstr "Při řešení konfliktů vždycky musíte uložit, i když není žádný konflikt zobrazen. TortoiseGitMerge může sloučit změny, které Git nemůže, a pro tyto konflikt nezobrazí!"
 
 #. Resource IDs: (604)
 msgid ""
@@ -10288,10 +10581,6 @@ msgstr "zablokovaný"
 #, c-format
 msgid "on %1"
 msgstr "ve %1"
-
-#. Resource IDs: (1753)
-msgid "origin"
-msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

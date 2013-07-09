@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-05-01 16:27+0000\n"
+"PO-Revision-Date: 2013-06-25 13:49+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/tortoisegit/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -1135,8 +1135,8 @@ msgid "&Tabbed Document"
 msgstr "&Tabbat dokument"
 
 #. Resource IDs: (1513)
-msgid "&Tags"
-msgstr "&Märken"
+msgid "&Tag"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Tags:"
@@ -1225,10 +1225,6 @@ msgstr "&Använd automatisk ifyllning av filsökvägar och nyckelord"
 #. Resource IDs: (1005, 1410, 65535)
 msgid "&Username:"
 msgstr "Användar&namn: "
-
-#. Resource IDs: (1514)
-msgid "&Version"
-msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&View"
@@ -1358,7 +1354,7 @@ msgid ""
 "To use <b>TortoiseGit</b> please open the explorer and right-click on any folder you like\n"
 "to bring up the context menu where you will find all <b>TortoiseGit</b> commands.\n"
 "And <u>read the manual!</u>"
-msgstr ""
+msgstr "<b>TortoiseGit</b> är en skalprogramsutbyggnad.\nDet betyder att det är integrerat i Windows utforskaren.\nFör att använda <b>TortoiseGit<b>, öppna utforskaren och högerklicka på en valfri mapp.\nDetta öppnar en meny där alla <b>TortoiseGit</b>-kommandon finns tillgängliga.\nOch <u>läs manualen!</u>"
 
 #. Resource IDs: (84)
 msgid ""
@@ -1808,7 +1804,7 @@ msgstr "Applicera patch..."
 
 #. Resource IDs: (311)
 msgid "Apply Patches"
-msgstr ""
+msgstr "Applicera patchar"
 
 #. Resource IDs: (22)
 msgid "Apply a series of patches from a mailbox"
@@ -1828,7 +1824,7 @@ msgstr ""
 
 #. Resource IDs: (1495)
 msgid "Arbitrary &URL:"
-msgstr ""
+msgstr "&URL:"
 
 #. Resource IDs: (68)
 msgid "Are you sure you want to abort the rebase process?"
@@ -2020,7 +2016,7 @@ msgstr "Stapeldiagram"
 
 #. Resource IDs: (1522)
 msgid "Base On"
-msgstr ""
+msgstr "Basera på"
 
 #. Resource IDs: (65535)
 msgid "Base file:"
@@ -2113,6 +2109,10 @@ msgid ""
 "Both the path to the patch file and the target path must be absolute paths!"
 msgstr ""
 
+#. Resource IDs: (188)
+msgid "Bottom View:"
+msgstr ""
+
 #. Resource IDs: (1007)
 msgid "Br&owse..."
 msgstr "Bl&äddra..."
@@ -2153,7 +2153,7 @@ msgid "Bro&wse"
 msgstr ""
 
 #. Resource IDs: (21)
-msgid "Browse Reference"
+msgid "Browse References"
 msgstr ""
 
 #. Resource IDs: (78)
@@ -2260,6 +2260,48 @@ msgstr "Kan inte klistra in en bitmap bild från urklipp!"
 #. Resource IDs: (2, 73, 1069)
 msgid "Cancel"
 msgstr "Avbryt"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't quit TortoiseGitMerge"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't reload views"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't switch the views"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid ""
+"Cancel\n"
+"Keep the empty file."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Resolve the conflicts first."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current files"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current settings"
+msgstr ""
 
 #. Resource IDs: (70)
 msgid ""
@@ -2393,7 +2435,7 @@ msgstr "Kontrollera sökvägen och/eller URL:en som du angivit."
 msgid ""
 "Check those menu entries you want to appear in the top context menu instead "
 "of the TortoiseGit submenu"
-msgstr ""
+msgstr "Markera de menyobjekt som du vill ska finnas tillgängliga i huvudmenyn istället för TortoiseGit-menyn"
 
 #. Resource IDs: (173)
 msgid ""
@@ -2431,6 +2473,10 @@ msgstr ""
 
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "Cherry-pick failed! Skip this commit?"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2557,7 +2603,7 @@ msgstr ""
 
 #. Resource IDs: (1572)
 msgid "Clone Existing Repository"
-msgstr ""
+msgstr "Klona existerande arkiv"
 
 #. Resource IDs: (22)
 msgid "Clone a repository"
@@ -2860,6 +2906,14 @@ msgstr "Fortsätt"
 msgid "Contract docked window"
 msgstr "Förminska det dockade fönstret"
 
+#. Resource IDs: (501)
+msgid "Convert spaces to tabs"
+msgstr ""
+
+#. Resource IDs: (501)
+msgid "Convert tabs to spaces"
+msgstr ""
+
 #. Resource IDs: (1253)
 msgid "Cop&y"
 msgstr "K&opiera"
@@ -2906,6 +2960,10 @@ msgstr ""
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
 msgstr "Kopiera sökvägar till urklipp"
+
+#. Resource IDs: (90)
+msgid "Copy ref names"
+msgstr ""
 
 #. Resource IDs: (323)
 msgid "Copy selection to cli&pboard"
@@ -3389,6 +3447,12 @@ msgstr ""
 msgid "Delete the existing branch or use a different name."
 msgstr ""
 
+#. Resource IDs: (314)
+msgid ""
+"Delete\n"
+"The file is removed."
+msgstr ""
+
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
 msgstr "Borttagna"
@@ -3643,6 +3707,10 @@ msgstr ""
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid "Do you want to load the changed files?"
+msgstr ""
+
 #. Resource IDs: (319)
 #, c-format
 msgid ""
@@ -3695,6 +3763,18 @@ msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
 msgstr "Återställ inte de automatiskt sparade dokumenten\nAnvänd den senaste uttryckligen sparade versionen av dokumenten"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Close the views without saving the modifications"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Reload the views without saving the modifications"
+msgstr ""
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
@@ -3756,6 +3836,10 @@ msgstr "E&xportera..."
 msgid "E&xternal"
 msgstr ""
 
+#. Resource IDs: (303)
+msgid "EOL"
+msgstr ""
+
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr "EUC-KR"
@@ -3774,6 +3858,10 @@ msgstr ""
 
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
+msgstr ""
+
+#. Resource IDs: (1755)
+msgid "Edit .tgitconfig"
 msgstr ""
 
 #. Resource IDs: (16133)
@@ -3871,6 +3959,10 @@ msgstr "Aktivera statusikonhanterare"
 msgid "Encode"
 msgstr ""
 
+#. Resource IDs: (300, 301)
+msgid "Encoding"
+msgstr ""
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -3902,6 +3994,10 @@ msgstr "Ett oväntat fel inträffade vid skrivning till %1."
 
 #. Resource IDs: (1617)
 msgid "End"
+msgstr ""
+
+#. Resource IDs: (252)
+msgid "End of Line Style"
 msgstr ""
 
 #. Resource IDs: (3825)
@@ -4251,6 +4347,10 @@ msgstr "Hämtar revision %s av filen:"
 msgid "File"
 msgstr "Filnamn"
 
+#. Resource IDs: (252)
+msgid "File Encoding"
+msgstr ""
+
 #. Resource IDs: (605)
 #, c-format
 msgid "File changes each %s"
@@ -4263,6 +4363,14 @@ msgstr "Filändringar varje vecka:"
 #. Resource IDs: (376)
 msgid "File diffs"
 msgstr "Filskillnader"
+
+#. Resource IDs: (319)
+msgid "File has no conflicts"
+msgstr ""
+
+#. Resource IDs: (314)
+msgid "File is empty."
+msgstr ""
 
 #. Resource IDs: (213)
 msgid "File list is empty"
@@ -4445,7 +4553,7 @@ msgstr ""
 
 #. Resource IDs: (312)
 msgid "Format Patch"
-msgstr ""
+msgstr "Formatera patch"
 
 #. Resource IDs: (1255)
 msgid "Format Patch..."
@@ -4524,15 +4632,15 @@ msgstr ""
 
 #. Resource IDs: (315)
 msgid "General::Colors 1"
-msgstr ""
+msgstr "Allmänt::Färger 1"
 
 #. Resource IDs: (212)
 msgid "General::Colors 2"
-msgstr ""
+msgstr "Allmänt::Färger 2"
 
 #. Resource IDs: (316)
 msgid "General::Colors 3"
-msgstr ""
+msgstr "Allmänt::Färger 3"
 
 #. Resource IDs: (195)
 msgid "General::Context Menu"
@@ -4763,6 +4871,10 @@ msgstr "HEAD"
 #. Resource IDs: (65535)
 msgid "HEAD:"
 msgstr "HEAD:"
+
+#. Resource IDs: (89)
+msgid "Hard"
+msgstr ""
 
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
@@ -5149,6 +5261,12 @@ msgstr "Ignorera ändringar av tomrum"
 msgid "Ignore case cha&nges"
 msgstr "Ig&norera ändringar mellan gemener/versaler"
 
+#. Resource IDs: (315)
+msgid ""
+"Ignore changes\n"
+"Ignore the outside changes."
+msgstr ""
+
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
 msgstr ""
@@ -5330,6 +5448,12 @@ msgstr "Behåll ändringslistor"
 msgid "Keep file locally?"
 msgstr ""
 
+#. Resource IDs: (316)
+msgid ""
+"Keep resolving\n"
+"Jump to first unresolved conflict"
+msgstr ""
+
 #. Resource IDs: (16136)
 msgid "Keyboard"
 msgstr "Tangentbord"
@@ -5348,35 +5472,35 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "LINE1"
-msgstr ""
+msgstr "RAD1"
 
 #. Resource IDs: (65535)
 msgid "LINE2"
-msgstr ""
+msgstr "RAD2"
 
 #. Resource IDs: (65535)
 msgid "LINE3"
-msgstr ""
+msgstr "RAD3"
 
 #. Resource IDs: (65535)
 msgid "LINE4"
-msgstr ""
+msgstr "RAD4"
 
 #. Resource IDs: (65535)
 msgid "LINE5"
-msgstr ""
+msgstr "RAD5"
 
 #. Resource IDs: (65535)
 msgid "LINE6"
-msgstr ""
+msgstr "RAD6"
 
 #. Resource IDs: (65535)
 msgid "LINE7"
-msgstr ""
+msgstr "RAD7"
 
 #. Resource IDs: (65535)
 msgid "LINE8"
-msgstr ""
+msgstr "RAD8"
 
 #. Resource IDs: (85)
 msgid "Last Author"
@@ -5409,6 +5533,12 @@ msgstr ""
 #. Resource IDs: (1137)
 msgid "Least active author:"
 msgstr "Minst aktiv:"
+
+#. Resource IDs: (319)
+msgid ""
+"Leave as conflicted\n"
+"The conflict status of the file is kept"
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Left View: "
@@ -5487,6 +5617,18 @@ msgstr "Ladda bilder"
 msgid "Load Putty &Key"
 msgstr ""
 
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"Changes made in TortoiseGitMerge are lost and replaced with the new content."
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"The views are updated with the new content."
+msgstr ""
+
 #. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr ""
@@ -5512,8 +5654,8 @@ msgstr ""
 #. Resource IDs: (94)
 msgid ""
 "Location where the contents of the\n"
-"repository URL will be saved to."
-msgstr "Plats där innehållet på URL:en\ni arkivet ska sparas."
+"selected revision of the repository will be saved to."
+msgstr ""
 
 #. Resource IDs: (32854)
 msgid "Locator Bar"
@@ -5622,6 +5764,12 @@ msgstr ""
 #. Resource IDs: (282)
 msgid "Mark as resolved"
 msgstr "Markera som löst"
+
+#. Resource IDs: (319)
+msgid ""
+"Mark as resolved\n"
+"The file status is changed to modified"
+msgstr ""
 
 #. Resource IDs: (2051)
 msgid ""
@@ -5968,16 +6116,16 @@ msgstr ""
 msgid "No"
 msgstr "Nej"
 
-#. Resource IDs: (1482)
-msgid "No &Commit"
-msgstr ""
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr ""
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
+msgstr ""
+
+#. Resource IDs: (1482)
+msgid "No Co&mmit"
 msgstr ""
 
 #. Resource IDs: (67)
@@ -6016,7 +6164,7 @@ msgstr "Inga fel inträffade."
 msgid ""
 "No files or folders were modified. There is nothing for TortoiseGit to "
 "revert!"
-msgstr ""
+msgstr "Inga filer eller mappar var modifierade. Det finns ingenting som TortoiseGIt kan återställa!"
 
 #. Resource IDs: (239)
 msgid ""
@@ -6030,7 +6178,7 @@ msgid ""
 "No files were changed or added since\n"
 "the last commit. There's nothing\n"
 "for TortoiseGit to do here..."
-msgstr ""
+msgstr "Inga filer har blivit ändrade eller tillagda\nsedan senaste arkiveringen. Det finns\ningenting för TortoiseGit att göra här..."
 
 #. Resource IDs: (170)
 msgid ""
@@ -6038,7 +6186,7 @@ msgid ""
 "the last commit. There's nothing\n"
 "for TortoiseGit to do here...\n"
 "Do you want to see the unversioned files?"
-msgstr ""
+msgstr "Inga filer har blivit ändrade eller\ntillagda sedan senaste arkiverinen. Det\nfinns ingenting som TortoiseGit kan göra här...\nVill du se icke arkiverade filer?"
 
 #. Resource IDs: (173)
 msgid "No graph available"
@@ -6170,7 +6318,7 @@ msgstr "Notera"
 
 #. Resource IDs: (1534)
 msgid "Number Commits"
-msgstr ""
+msgstr "Antal arkiveringar"
 
 #. Resource IDs: (604)
 #, c-format
@@ -6359,6 +6507,10 @@ msgid ""
 "Help Topics"
 msgstr "Öppnar hjälp\nHjälpavsnitt"
 
+#. Resource IDs: (21)
+msgid "Opens the Reference Browser dialog."
+msgstr ""
+
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
 msgstr ""
@@ -6537,6 +6689,10 @@ msgstr ""
 msgid "Path"
 msgstr "Sökväg"
 
+#. Resource IDs: (314)
+msgid "Path found that matches the patch better."
+msgstr ""
+
 #. Resource IDs: (1580, 65535)
 msgid "Path:"
 msgstr ""
@@ -6633,7 +6789,7 @@ msgstr "Port :"
 
 #. Resource IDs: (65535)
 msgid "Port:"
-msgstr ""
+msgstr "Port :"
 
 #. Resource IDs: (569)
 msgid "Post-Commit Hook"
@@ -6851,6 +7007,12 @@ msgid ""
 "Exit"
 msgstr "Avsluta programmet\nAvsluta"
 
+#. Resource IDs: (315)
+msgid ""
+"Quit\n"
+"Exit TortoiseGitMerge without saving the modifications"
+msgstr ""
+
 #. Resource IDs: (1073)
 msgid "R&AM drives"
 msgstr "R&AM enheter"
@@ -7063,6 +7225,10 @@ msgstr ""
 
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
+msgstr ""
+
+#. Resource IDs: (1754)
+msgid "Remote &tracking branch"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7534,6 +7700,50 @@ msgstr "Spara so&m..."
 msgid "Save As"
 msgstr "Spara som"
 
+#. Resource IDs: (316)
+msgid ""
+"Save Bottom File as\n"
+"You're asked where to save the bottom file"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid "Save File"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid ""
+"Save Left File as\n"
+"You're asked where to save the left file"
+msgstr ""
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Left File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid ""
+"Save Right File as\n"
+"You're asked where to save the right file"
+msgstr ""
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Right File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid ""
+"Save all\n"
+"Both Files are saved"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr ""
@@ -7546,10 +7756,20 @@ msgstr ""
 msgid "Save as..."
 msgstr "Spara som..."
 
+#. Resource IDs: (315)
+msgid ""
+"Save as\n"
+"You're asked where to save the file"
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Spara ändringar i %1?"
+
+#. Resource IDs: (314)
+msgid "Save modifications."
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
@@ -7583,6 +7803,20 @@ msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
+msgstr ""
+
+#. Resource IDs: (315)
+msgid ""
+"Save\n"
+"Save the file with the conflict markers."
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Save\n"
+"The modifications are saved to\n"
+"%s"
 msgstr ""
 
 #. Resource IDs: (108)
@@ -7729,6 +7963,16 @@ msgstr "Markera hela dokumentet\nMarkera allt"
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
 msgstr "Välj applikation för att visa skillnadsfiler"
+
+#. Resource IDs: (316)
+msgid "Select what file you want to save as"
+msgstr ""
+
+#. Resource IDs: (316)
+msgid ""
+"Select what file you want to save as\n"
+"Note: There is unresolved conflict!"
+msgstr ""
 
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
@@ -8173,6 +8417,10 @@ msgstr "Hoppade över mål som saknades"
 #. Resource IDs: (1070)
 msgid "Slide"
 msgstr "Skjut"
+
+#. Resource IDs: (89)
+msgid "Soft"
+msgstr ""
 
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
@@ -8908,6 +9156,12 @@ msgid ""
 "uses."
 msgstr ""
 
+#. Resource IDs: (316)
+msgid ""
+"There are more editable views.\n"
+"What view do you want to save?"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "Det finns inga ärendespårningsproviders. "
@@ -9199,6 +9453,10 @@ msgstr "Överför i %s"
 msgid "Transparent &color..."
 msgstr "Transparant &färg..."
 
+#. Resource IDs: (501)
+msgid "Trim right"
+msgstr ""
+
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr "Pröva \"Rensa\". Om det inte fungerar måste du göra en ny uthämtning."
@@ -9348,6 +9606,10 @@ msgstr ""
 msgid "Unknown depth"
 msgstr "Okänt djup"
 
+#. Resource IDs: (315)
+msgid "Unresolved conflicts!"
+msgstr ""
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Namnlös"
@@ -9435,6 +9697,10 @@ msgstr ""
 
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
+msgstr ""
+
+#. Resource IDs: (1500)
+msgid "Use Task Dialog"
 msgstr ""
 
 #. Resource IDs: (1497)
@@ -9561,6 +9827,22 @@ msgstr "Använd textblocket från den vänstra vyn\nAnvänd vänstra blocket"
 msgid "Use th&is text block"
 msgstr "Använd &detta textblock"
 
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the found path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr ""
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the original path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr ""
+
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Använd &hela den här filen"
@@ -9622,7 +9904,7 @@ msgstr "Tillåtna kommandoradsparametrar är:\n/base:<sökväg till basfilen>\n/
 msgid "Value"
 msgstr "Värde"
 
-#. Resource IDs: (1004, 1075, 1514, 1539)
+#. Resource IDs: (1004, 1075, 1539)
 msgid "Version"
 msgstr "Version"
 
@@ -9665,6 +9947,10 @@ msgstr ""
 
 #. Resource IDs: (156)
 msgid "View"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "View .tgitconfig"
 msgstr ""
 
 #. Resource IDs: (328, 603)
@@ -9759,6 +10045,13 @@ msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Välj versionshanterade objekt i arkiveringsdialogen automatiskt"
+
+#. Resource IDs: (316)
+msgid ""
+"When resolving conflicts, you always have to save even if there is no "
+"conflict shown. TortoiseGitMerge can merge changes that Git can't and won't "
+"show a conflict for those!"
+msgstr ""
 
 #. Resource IDs: (604)
 msgid ""
@@ -10294,10 +10587,6 @@ msgstr "blockerad"
 #, c-format
 msgid "on %1"
 msgstr "på %1"
-
-#. Resource IDs: (1753)
-msgid "origin"
-msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

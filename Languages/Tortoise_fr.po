@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-05-04 08:14+0000\n"
-"Last-Translator: Pinky007 <pinky__007@hotmail.com>\n"
+"PO-Revision-Date: 2013-06-27 22:34+0000\n"
+"Last-Translator: Freddydelanuit Dec <fred.dec@free.fr>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1131,8 +1131,8 @@ msgid "&Tabbed Document"
 msgstr "Document &Tabulé"
 
 #. Resource IDs: (1513)
-msgid "&Tags"
-msgstr "&Tags"
+msgid "&Tag"
+msgstr "É&tiquettes"
 
 #. Resource IDs: (65535)
 msgid "&Tags:"
@@ -1221,10 +1221,6 @@ msgstr "&Utiliser l'autocomplétion des chemins de fichiers et des mots-clé"
 #. Resource IDs: (1005, 1410, 65535)
 msgid "&Username:"
 msgstr "&Nom :"
-
-#. Resource IDs: (1514)
-msgid "&Version"
-msgstr "&Révision"
 
 #. Resource IDs: (65535)
 msgid "&View"
@@ -2109,6 +2105,10 @@ msgid ""
 "Both the path to the patch file and the target path must be absolute paths!"
 msgstr "Les chemins du fichier de patch et de la cible doivent être absolus !"
 
+#. Resource IDs: (188)
+msgid "Bottom View:"
+msgstr "Vue du bas:"
+
 #. Resource IDs: (1007)
 msgid "Br&owse..."
 msgstr "Parc&ourir..."
@@ -2149,8 +2149,8 @@ msgid "Bro&wse"
 msgstr "&Explorer"
 
 #. Resource IDs: (21)
-msgid "Browse Reference"
-msgstr "Explorer la référence"
+msgid "Browse References"
+msgstr "Explorer les références"
 
 #. Resource IDs: (78)
 msgid "Browse for the external diff program"
@@ -2256,6 +2256,48 @@ msgstr "Ne peut pas coller l'image du presse-papiers !"
 #. Resource IDs: (2, 73, 1069)
 msgid "Cancel"
 msgstr "Annuler"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't quit TortoiseGitMerge"
+msgstr "Annuler⏎\n ne pas quitter TortoiseGitMerge"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't reload views"
+msgstr "Annuler⏎\n Ne pas recharger les vues"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't switch the views"
+msgstr "Annuler⏎\n Ne pas basculer les vues"
+
+#. Resource IDs: (314)
+msgid ""
+"Cancel\n"
+"Keep the empty file."
+msgstr "Annuler⏎\nGarder le fichier vide"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Resolve the conflicts first."
+msgstr "Annuler⏎\nRésoudre les conflits d'abord."
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current files"
+msgstr "Annuler⏎\nRester avec les fichiers actuels"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current settings"
+msgstr "Annuler⏎\nRester avec les réglages actuels"
 
 #. Resource IDs: (70)
 msgid ""
@@ -2428,6 +2470,10 @@ msgstr "Livraisons sélectionnées pour le Cherry Pick..."
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
 msgstr "Cherry Pick cette livraison..."
+
+#. Resource IDs: (90)
+msgid "Cherry-pick failed! Skip this commit?"
+msgstr "Echec d'écrémage! On passe le commentaire?"
 
 #. Resource IDs: (65535)
 msgid "Chinese"
@@ -2856,6 +2902,14 @@ msgstr "Continuer"
 msgid "Contract docked window"
 msgstr "Contracter la fenêtre rangée"
 
+#. Resource IDs: (501)
+msgid "Convert spaces to tabs"
+msgstr "Convertir les espaces en tabulations"
+
+#. Resource IDs: (501)
+msgid "Convert tabs to spaces"
+msgstr "Convertir les tabulations en espaces"
+
 #. Resource IDs: (1253)
 msgid "Cop&y"
 msgstr "&Copier"
@@ -2902,6 +2956,10 @@ msgstr "Copier le commentaire dans le presse-papiers"
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
 msgstr "Copier les chemins dans le presse-papiers"
+
+#. Resource IDs: (90)
+msgid "Copy ref names"
+msgstr "Copier les noms ref"
 
 #. Resource IDs: (323)
 msgid "Copy selection to cli&pboard"
@@ -3385,6 +3443,12 @@ msgstr "Supprimer l'étiquette"
 msgid "Delete the existing branch or use a different name."
 msgstr "Effacer la branche existante ou utiliser un autre nom."
 
+#. Resource IDs: (314)
+msgid ""
+"Delete\n"
+"The file is removed."
+msgstr "Supprimer⏎\nLe fichier est retiré."
+
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
 msgstr "Effacé"
@@ -3639,6 +3703,10 @@ msgstr "Voulez-vous vraiment annuler toutes vos modifications dans \n%s\nqui ont
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr "Voulez-vous chercher des branches distantes à partir des branches distantes nouvellement ajoutées ?"
 
+#. Resource IDs: (315)
+msgid "Do you want to load the changed files?"
+msgstr "Voulez-vous charger les fichiers modifiés?"
+
 #. Resource IDs: (319)
 #, c-format
 msgid ""
@@ -3691,6 +3759,18 @@ msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
 msgstr "Ne pas récupérer les documents sauvegardés automatiquement\nUtiliser la dernière version explicitement sauvegardée des documents"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Close the views without saving the modifications"
+msgstr "Ne pas sauver⏎\nFermer les vues sans sauver les modifications"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Reload the views without saving the modifications"
+msgstr "Ne pas sauver⏎\nRecharger les vues sans sauver les modifications"
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
@@ -3752,6 +3832,10 @@ msgstr "E&xporter..."
 msgid "E&xternal"
 msgstr "E&xterne"
 
+#. Resource IDs: (303)
+msgid "EOL"
+msgstr "EOL"
+
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr "EUC-KR"
@@ -3771,6 +3855,10 @@ msgstr "Modifier le fichier .gitconfig &global"
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
 msgstr "Modifier le fichier .git/config &local"
+
+#. Resource IDs: (1755)
+msgid "Edit .tgitconfig"
+msgstr "Editer .tgitconfig"
 
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
@@ -3867,6 +3955,10 @@ msgstr "Gestionnaires de Recouvrement Activés"
 msgid "Encode"
 msgstr "Encoder"
 
+#. Resource IDs: (300, 301)
+msgid "Encoding"
+msgstr "Encodage"
+
 #. Resource IDs: (3867)
 #, c-format
 msgid "Encountered a hardware I/O error while accessing %1."
@@ -3899,6 +3991,10 @@ msgstr "Une erreur inconnue est survenue pendant l'écriture de %1."
 #. Resource IDs: (1617)
 msgid "End"
 msgstr "Fin"
+
+#. Resource IDs: (252)
+msgid "End of Line Style"
+msgstr "Fin de la ligne de Style"
 
 #. Resource IDs: (3825)
 msgid "Enlarge the window to full size"
@@ -4247,6 +4343,10 @@ msgstr "Extraction de la révision %s du fichier :"
 msgid "File"
 msgstr "Fichier"
 
+#. Resource IDs: (252)
+msgid "File Encoding"
+msgstr "Fichier en cours d'encodage"
+
 #. Resource IDs: (605)
 #, c-format
 msgid "File changes each %s"
@@ -4259,6 +4359,14 @@ msgstr "Modifications de fichier chaque semaine :"
 #. Resource IDs: (376)
 msgid "File diffs"
 msgstr "Différences de fichiers"
+
+#. Resource IDs: (319)
+msgid "File has no conflicts"
+msgstr "Le fichier n'a pas de conflit"
+
+#. Resource IDs: (314)
+msgid "File is empty."
+msgstr "Le fichier est vide."
 
 #. Resource IDs: (213)
 msgid "File list is empty"
@@ -4760,6 +4868,10 @@ msgstr "HEAD"
 msgid "HEAD:"
 msgstr "HEAD :"
 
+#. Resource IDs: (89)
+msgid "Hard"
+msgstr "Dur"
+
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
 msgstr "Dur: Réinitialiser l'arborescence de travail et l'index (annuler toutes les modifications locales)"
@@ -5145,6 +5257,12 @@ msgstr "Ignorer toutes les modification d'espace"
 msgid "Ignore case cha&nges"
 msgstr "Ignorer les modificatio&ns de casse"
 
+#. Resource IDs: (315)
+msgid ""
+"Ignore changes\n"
+"Ignore the outside changes."
+msgstr "Ignorer les changements⏎\nIgnorer les changements externes."
+
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
 msgstr "Ignorer l'objet(s) seulement dans le dossier(s) conteneur"
@@ -5326,6 +5444,12 @@ msgstr "Conserver les listes de modifications"
 msgid "Keep file locally?"
 msgstr "Garder le fichier local ?"
 
+#. Resource IDs: (316)
+msgid ""
+"Keep resolving\n"
+"Jump to first unresolved conflict"
+msgstr "Garder les cas résolus⏎\nAller au premier conflit non résolu"
+
 #. Resource IDs: (16136)
 msgid "Keyboard"
 msgstr "Clavier"
@@ -5406,6 +5530,12 @@ msgstr "Lancement de l'outil externe de compraraison / fusion pour résoudre les
 msgid "Least active author:"
 msgstr "Auteur le moins actif :"
 
+#. Resource IDs: (319)
+msgid ""
+"Leave as conflicted\n"
+"The conflict status of the file is kept"
+msgstr "Laisser le statut en conflit⏎\nLe statut de conflit du fichier est gardé"
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr "Vue de gauche :"
@@ -5483,6 +5613,18 @@ msgstr "Charger les images"
 msgid "Load Putty &Key"
 msgstr "Charger une &clef Putty"
 
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"Changes made in TortoiseGitMerge are lost and replaced with the new content."
+msgstr "Charger les changements⏎\nLes changements faits dans TortoiseGitMerge sont perdus et remplacés avec le nouveau contenu."
+
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"The views are updated with the new content."
+msgstr "Charger les changements⏎\nLes vues sont mises à jour avec le nouveau contenu."
+
 #. Resource IDs: (369,1379)
 msgid "Loading..."
 msgstr "Chargement..."
@@ -5508,8 +5650,8 @@ msgstr "Local :                                                                 
 #. Resource IDs: (94)
 msgid ""
 "Location where the contents of the\n"
-"repository URL will be saved to."
-msgstr "Endroit où le contenu de l'URL\ndu dépôt sera sauvegardé."
+"selected revision of the repository will be saved to."
+msgstr "Les emplacements où les contenus des⏎\nrévisions choisies du dépôt seront sauvées dedans."
 
 #. Resource IDs: (32854)
 msgid "Locator Bar"
@@ -5618,6 +5760,12 @@ msgstr "Gestion des éléments distants"
 #. Resource IDs: (282)
 msgid "Mark as resolved"
 msgstr "Marquer comme résolu"
+
+#. Resource IDs: (319)
+msgid ""
+"Mark as resolved\n"
+"The file status is changed to modified"
+msgstr "Marquer comme résolu⏎\nLe statut du fichier est changé en modifié"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -5964,10 +6112,6 @@ msgstr "Différence entre les lignes suivante"
 msgid "No"
 msgstr "Non"
 
-#. Resource IDs: (1482)
-msgid "No &Commit"
-msgstr "Pas de &livraison"
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Pas de transfert &rapide"
@@ -5975,6 +6119,10 @@ msgstr "Pas de transfert &rapide"
 #. Resource IDs: (1716)
 msgid "No Checkout"
 msgstr "Pas de vérification"
+
+#. Resource IDs: (1482)
+msgid "No Co&mmit"
+msgstr "Pas de livraisons"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -6355,6 +6503,10 @@ msgid ""
 "Help Topics"
 msgstr "Ouvre l'aide\nAide"
 
+#. Resource IDs: (21)
+msgid "Opens the Reference Browser dialog."
+msgstr "Ouvre l'explorateur de référence."
+
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
 msgstr "Ouvre le navigateur de dépôt"
@@ -6532,6 +6684,10 @@ msgstr "Application du patch sur le fichier '%s'"
 #. Resource IDs: (63, 77, 198, 207)
 msgid "Path"
 msgstr "Chemin"
+
+#. Resource IDs: (314)
+msgid "Path found that matches the patch better."
+msgstr "Emplacement trouvé qui correspond mieux au patch."
 
 #. Resource IDs: (1580, 65535)
 msgid "Path:"
@@ -6847,6 +7003,12 @@ msgid ""
 "Exit"
 msgstr "Quitter l'application avec demande de confirmation d'enregistrement\nQuitter"
 
+#. Resource IDs: (315)
+msgid ""
+"Quit\n"
+"Exit TortoiseGitMerge without saving the modifications"
+msgstr "Fermer⏎\nFermer TortoiseGitMerge sans sauver les modifications"
+
 #. Resource IDs: (1073)
 msgid "R&AM drives"
 msgstr "D&isques mémoire"
@@ -7060,6 +7222,10 @@ msgstr "Branche distante :"
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
 msgstr "URL distante :"
+
+#. Resource IDs: (1754)
+msgid "Remote &tracking branch"
+msgstr "Branche de &pistage distante"
 
 #. Resource IDs: (65535)
 msgid "Remote Branch"
@@ -7530,6 +7696,50 @@ msgstr "Enregistrer &sous..."
 msgid "Save As"
 msgstr "Enregistrer sous"
 
+#. Resource IDs: (316)
+msgid ""
+"Save Bottom File as\n"
+"You're asked where to save the bottom file"
+msgstr "Sauver le fichier du bas sous⏎\nIl vous sera demandé où sauver le fichier du bas"
+
+#. Resource IDs: (316)
+msgid "Save File"
+msgstr "Sauver le fichier"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Left File as\n"
+"You're asked where to save the left file"
+msgstr "Sauver le fichier à gauche sous⏎\nIl vous sera demandé où sauver le fichier à gauche"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Left File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Sauver le fichier à gauche⏎\nLes modifications seront sauvée sous⏎\n %s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Right File as\n"
+"You're asked where to save the right file"
+msgstr "Sauver le fichier à droite sous⏎\nIl vous sera demandé où sauver le fichier à droite"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Right File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Sauver le fichier à droite⏎\nLes modifications seront sauvées sous⏎\n%s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save all\n"
+"Both Files are saved"
+msgstr "Sauver tout⏎\nTous les fichiers seront sauvés"
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr "Sauvegarder sous"
@@ -7542,10 +7752,20 @@ msgstr "Enregistrer sous &globalement"
 msgid "Save as..."
 msgstr "Enregistrer sous..."
 
+#. Resource IDs: (315)
+msgid ""
+"Save as\n"
+"You're asked where to save the file"
+msgstr "Sauver sous⏎\nIl vous sera demandé où sauver le fichier"
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Enregistrer les changements dans %1?"
+
+#. Resource IDs: (314)
+msgid "Save modifications."
+msgstr "Sauver les modifications."
 
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
@@ -7580,6 +7800,20 @@ msgstr "Enregistrer le diff unifié"
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
 msgstr "Enregister le diff unifié depuis HEAD"
+
+#. Resource IDs: (315)
+msgid ""
+"Save\n"
+"Save the file with the conflict markers."
+msgstr "Sauver⏎\nSauver le fichier avec les marqueurs de conflits."
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Save\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Sauver⏎\nLes modifications seront sauvées sous⏎\n%s"
 
 #. Resource IDs: (108)
 msgid "Saved Data"
@@ -7725,6 +7959,16 @@ msgstr "Sélectionner le document entier\nSélectionner tout"
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
 msgstr "Sélectionner l'application de visualisation des différences"
+
+#. Resource IDs: (316)
+msgid "Select what file you want to save as"
+msgstr "Choisissez quel fichier vous voulez sauver sous"
+
+#. Resource IDs: (316)
+msgid ""
+"Select what file you want to save as\n"
+"Note: There is unresolved conflict!"
+msgstr "Choisissez quel fichier vous voulez sauver sous⏎\nNote: il y a des conflits non résolus!"
 
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
@@ -8169,6 +8413,10 @@ msgstr "Ignoré, cible absente "
 #. Resource IDs: (1070)
 msgid "Slide"
 msgstr "Glisser"
+
+#. Resource IDs: (89)
+msgid "Soft"
+msgstr "Doux"
 
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
@@ -8904,6 +9152,12 @@ msgid ""
 "uses."
 msgstr "Il y a actuellement %d gestionnaires de superposition installés en plus de celui qu'utilise la Tortoise."
 
+#. Resource IDs: (316)
+msgid ""
+"There are more editable views.\n"
+"What view do you want to save?"
+msgstr "Il y a plus de vues éditables.⏎\nQuelle vue voulez-vous sauver?"
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "Il n'y a pas de fournisseur de système de suivi des problèmes de disponible."
@@ -9195,6 +9449,10 @@ msgstr "Transfert à %s"
 msgid "Transparent &color..."
 msgstr "&Couleur transparente..."
 
+#. Resource IDs: (501)
+msgid "Trim right"
+msgstr "découper à droite"
+
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
 msgstr "Essayez un 'Nettoyer'. Si cela ne fonctionne pas vous devrez faire une nouvelle extraction."
@@ -9344,6 +9602,10 @@ msgstr "Inconnu"
 msgid "Unknown depth"
 msgstr "Profondeur inconnu"
 
+#. Resource IDs: (315)
+msgid "Unresolved conflicts!"
+msgstr "Conflits non résolus!"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Sans nom"
@@ -9432,6 +9694,10 @@ msgstr "Utiliser MAPI"
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "Utiliser les rubans"
+
+#. Resource IDs: (1500)
+msgid "Use Task Dialog"
+msgstr "Utiliser le dialogue tâche"
 
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
@@ -9557,6 +9823,22 @@ msgstr "Utiliser le bloc de texte de la vue de gauche\nUtiliser le bloc gauche"
 msgid "Use th&is text block"
 msgstr "Ut&iliser ce bloc de texte"
 
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the found path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Utiliser l'emplacement trouvé.⏎\nAppliquer le patch à⏎\n%s"
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the original path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Utiliser l'emplacement original.⏎\nAppliquer le patch à⏎\n%s"
+
 #. Resource IDs: (251)
 msgid "Use this &whole file"
 msgstr "Utiliser la &totalité de ce fichier"
@@ -9618,7 +9900,7 @@ msgstr "Les options de la ligne de commandes valides sont :\n/base:<chemin du fi
 msgid "Value"
 msgstr "Valeur"
 
-#. Resource IDs: (1004, 1075, 1514, 1539)
+#. Resource IDs: (1004, 1075, 1539)
 msgid "Version"
 msgstr "Révision"
 
@@ -9662,6 +9944,10 @@ msgstr "Vitnamien"
 #. Resource IDs: (156)
 msgid "View"
 msgstr "Vue"
+
+#. Resource IDs: (90)
+msgid "View .tgitconfig"
+msgstr "Voir .tgitconfig"
 
 #. Resource IDs: (328, 603)
 msgid "View Patch"
@@ -9755,6 +10041,13 @@ msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Si activé, les éléments versionnés listés dans la boîte de dialogue de livraison sont automatiquement sélectionnés."
+
+#. Resource IDs: (316)
+msgid ""
+"When resolving conflicts, you always have to save even if there is no "
+"conflict shown. TortoiseGitMerge can merge changes that Git can't and won't "
+"show a conflict for those!"
+msgstr "Lors de la résolution de conflits, vous avez toujours à sauver même s'il n'y a pas de conflit montré. TortoiseGitMerge peut joindre les changements que Git ne peut en ne montrera pas pour ceux-ci! "
 
 #. Resource IDs: (604)
 msgid ""
@@ -10290,10 +10583,6 @@ msgstr "gênant"
 #, c-format
 msgid "on %1"
 msgstr "sur %1"
-
-#. Resource IDs: (1753)
-msgid "origin"
-msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"

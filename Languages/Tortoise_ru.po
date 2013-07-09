@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-05-02 20:13+0000\n"
+"PO-Revision-Date: 2013-06-28 09:28+0000\n"
 "Last-Translator: shcham <shcham@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -655,7 +655,7 @@ msgstr "Отслеживать переименования"
 
 #. Resource IDs: (65535)
 msgid "&Font for log messages:"
-msgstr "&Шрифт сообщений журнала:"
+msgstr "&Шрифт журнала:"
 
 #. Resource IDs: (65535)
 msgid "&Font:"
@@ -1136,8 +1136,8 @@ msgid "&Tabbed Document"
 msgstr "Документ с &закладками"
 
 #. Resource IDs: (1513)
-msgid "&Tags"
-msgstr "&Метки"
+msgid "&Tag"
+msgstr "&Метка"
 
 #. Resource IDs: (65535)
 msgid "&Tags:"
@@ -1226,10 +1226,6 @@ msgstr "&Использовать автозавершение путей фай
 #. Resource IDs: (1005, 1410, 65535)
 msgid "&Username:"
 msgstr "&Имя:"
-
-#. Resource IDs: (1514)
-msgid "&Version"
-msgstr "&Версия"
 
 #. Resource IDs: (65535)
 msgid "&View"
@@ -1465,14 +1461,14 @@ msgid ""
 "A newline separated list of paths for which no context menu is shown.\r\n"
 "If you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\n"
 "An empty list will allow the context menu on all paths."
-msgstr "Список путей, по одному в строке, где не будут показываться контекстные меню.\r\nЕсли вы добавите '*' в конец пути, будут также исключены все дочерние файлы и подпапки.\r\nПустой список разрешает контекстные меню для всех путей."
+msgstr "Список папок, в которых не будет показываться контекстные меню. По одной в строке.\nСимвол '*' в конец пути, исключает также все дочерние файлы и подпапки.\nПустой список разрешает контекстные меню во всех папках."
 
 #. Resource IDs: (194)
 msgid ""
 "A newline separated list of paths for which no icon overlays are shown.\r\n"
 "If you add an '*' char at the end of a path, then all files and subdirs inside that path are excluded too.\r\n"
 "An empty list will allow overlays on all paths."
-msgstr "Список путей, по одному в строке, где не будут показываться пометки на значках.\r\nЕсли вы добавите '*' в конец пути, будут также исключены все дочерние файлы и подпапки.\r\nПустой список разрешает пометки для всех путей."
+msgstr "Список папок, в которых не будут показываться пометки на значках. По одной в строке.\nСимвол '*' в конец пути, исключает также все дочерние файлы и подпапки.\nПустой список разрешает пометки во всех папках."
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1508,7 +1504,7 @@ msgstr "П&рименить"
 
 #. Resource IDs: (1128)
 msgid "Abbreviate renamings"
-msgstr "Сокращенные переименования"
+msgstr "Сокращать переименования"
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
@@ -2114,6 +2110,10 @@ msgid ""
 "Both the path to the patch file and the target path must be absolute paths!"
 msgstr "Путь к файлу-заплатке и путь назначения должны быть аболютными путями!"
 
+#. Resource IDs: (188)
+msgid "Bottom View:"
+msgstr "Вид снизу:"
+
 #. Resource IDs: (1007)
 msgid "Br&owse..."
 msgstr "Об&зор..."
@@ -2154,8 +2154,8 @@ msgid "Bro&wse"
 msgstr "Просмотреть"
 
 #. Resource IDs: (21)
-msgid "Browse Reference"
-msgstr "Обзор Ссылки"
+msgid "Browse References"
+msgstr "Обзор Ссылок"
 
 #. Resource IDs: (78)
 msgid "Browse for the external diff program"
@@ -2195,7 +2195,7 @@ msgstr "Button3"
 
 #. Resource IDs: (1215, 1216)
 msgid "C&heck now"
-msgstr "П&роверить"
+msgstr "Проверить"
 
 #. Resource IDs: (65535)
 msgid "C&ommands:"
@@ -2261,6 +2261,48 @@ msgstr "Невозможно вставить растровое изображ�
 #. Resource IDs: (2, 73, 1069)
 msgid "Cancel"
 msgstr "Отмена"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't quit TortoiseGitMerge"
+msgstr "Отменить⏎\nНе выходить из TortoiseGitMerge"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't reload views"
+msgstr "Отменить⏎\nНе перезагружать виды"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Don't switch the views"
+msgstr "Отменить⏎\nНе переключать виды"
+
+#. Resource IDs: (314)
+msgid ""
+"Cancel\n"
+"Keep the empty file."
+msgstr "Отменить⏎\nОставить пустой файл."
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Resolve the conflicts first."
+msgstr "Отменить⏎\nСначала разрешить конфликты."
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current files"
+msgstr "Отмена⏎\nОставить текущие файлы"
+
+#. Resource IDs: (315)
+msgid ""
+"Cancel\n"
+"Stay with current settings"
+msgstr "Отмена⏎\nОставить текущие настройки"
 
 #. Resource IDs: (70)
 msgid ""
@@ -2404,7 +2446,7 @@ msgstr "Отметьте пункты меню, которые будут ото
 
 #. Resource IDs: (81)
 msgid "Check to show relative times in log messages"
-msgstr "Отметьте чтобы отображать относительное время в логе"
+msgstr "Отметьте чтобы отображать сколько прошло времени со дня изменения вместо указания конкретной даты"
 
 #. Resource IDs: (80)
 msgid "Check to use a less verbose date and time format in log messages"
@@ -2433,6 +2475,10 @@ msgstr "Пересмотреть выбранные коммиты..."
 #. Resource IDs: (1255)
 msgid "Cherry Pick this commit..."
 msgstr "Пересмотреть коммит..."
+
+#. Resource IDs: (90)
+msgid "Cherry-pick failed! Skip this commit?"
+msgstr "Пересмотр неудачен! Пропустить этот коммит?"
 
 #. Resource IDs: (65535)
 msgid "Chinese"
@@ -2861,6 +2907,14 @@ msgstr "Продолжить"
 msgid "Contract docked window"
 msgstr "Сжать присоединённое окно"
 
+#. Resource IDs: (501)
+msgid "Convert spaces to tabs"
+msgstr "Преобразовать пробелы в табуляцию"
+
+#. Resource IDs: (501)
+msgid "Convert tabs to spaces"
+msgstr "Преобразовать табуляцию в пробелы"
+
 #. Resource IDs: (1253)
 msgid "Cop&y"
 msgstr "Копи&ровать"
@@ -2907,6 +2961,10 @@ msgstr "Копировать запись журнала"
 #. Resource IDs: (209)
 msgid "Copy paths to clipboard"
 msgstr "Скопировать пути в буфер обмена"
+
+#. Resource IDs: (90)
+msgid "Copy ref names"
+msgstr "Скопировать имена ветвей"
 
 #. Resource IDs: (323)
 msgid "Copy selection to cli&pboard"
@@ -3390,6 +3448,12 @@ msgstr "Удалить метку"
 msgid "Delete the existing branch or use a different name."
 msgstr "Удалите существующую ветвь или используйте другое имя."
 
+#. Resource IDs: (314)
+msgid ""
+"Delete\n"
+"The file is removed."
+msgstr "Удалить⏎\nФайл удалён."
+
 #. Resource IDs: (73, 264, 1257, 1551)
 msgid "Deleted"
 msgstr "Удалено"
@@ -3644,6 +3708,10 @@ msgstr "Действительно хотите откатить все изме
 msgid "Do you want to fetch remote branches from the newly added remote?"
 msgstr "Вы хотите забрать отдалённые ветви из нового добавленного отдалённого хранилища?"
 
+#. Resource IDs: (315)
+msgid "Do you want to load the changed files?"
+msgstr "Хотите ли загрузить измененные файлы?"
+
 #. Resource IDs: (319)
 #, c-format
 msgid ""
@@ -3696,6 +3764,18 @@ msgid ""
 "Don't recover the auto-saved documents\n"
 "Use the last explicitly saved versions of the documents"
 msgstr "Не восстанавливать авто-сохранённые документы\nИспользовать последние сохранённые версии документов"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Close the views without saving the modifications"
+msgstr "Не сохранять⏎\nЗакрыть виды без сохранения изменений"
+
+#. Resource IDs: (315)
+msgid ""
+"Don't save\n"
+"Reload the views without saving the modifications"
+msgstr "Не сохранять⏎\nПерезагрузить виды без сохранения изменений"
 
 #. Resource IDs: (73, 80)
 msgid "Don't show this message again"
@@ -3757,6 +3837,10 @@ msgstr "&Экспорт..."
 msgid "E&xternal"
 msgstr "В&нешние"
 
+#. Resource IDs: (303)
+msgid "EOL"
+msgstr "символ конца строки EOL"
+
 #. Resource IDs: (5064)
 msgid "EUC-KR"
 msgstr "EUC-KR"
@@ -3776,6 +3860,10 @@ msgstr "Редактировать &глобальный .gitconfig"
 #. Resource IDs: (1383)
 msgid "Edit &local .git/config"
 msgstr "Конфиг репозитария"
+
+#. Resource IDs: (1755)
+msgid "Edit .tgitconfig"
+msgstr "Редактироовать .tgitconfig"
 
 #. Resource IDs: (16133)
 msgid "Edit Button Image"
@@ -3862,7 +3950,7 @@ msgstr "Разрешить загружать/сохранять файлы кэ
 
 #. Resource IDs: (1744)
 msgid "Enable log cache"
-msgstr "Включить кэш журнала"
+msgstr "Включить кэш"
 
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
@@ -3871,6 +3959,10 @@ msgstr "Используемые пометки"
 #. Resource IDs: (65535)
 msgid "Encode"
 msgstr "Кодировать"
+
+#. Resource IDs: (300, 301)
+msgid "Encoding"
+msgstr "Кодировка"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -3904,6 +3996,10 @@ msgstr "Случилась неожиданная ошибка при запис
 #. Resource IDs: (1617)
 msgid "End"
 msgstr "Конец"
+
+#. Resource IDs: (252)
+msgid "End of Line Style"
+msgstr "Стиль конца строки"
 
 #. Resource IDs: (3825)
 msgid "Enlarge the window to full size"
@@ -4089,7 +4185,7 @@ msgstr "Программы для определённых расширений/
 
 #. Resource IDs: (65535)
 msgid "Extern DLL Path:"
-msgstr "Путь к внешней DLL"
+msgstr "Путь к dll:"
 
 #. Resource IDs: (74)
 msgid "External"
@@ -4252,6 +4348,10 @@ msgstr "Извлечение ревизии %s файла"
 msgid "File"
 msgstr "Файл"
 
+#. Resource IDs: (252)
+msgid "File Encoding"
+msgstr "Кодировка файла"
+
 #. Resource IDs: (605)
 #, c-format
 msgid "File changes each %s"
@@ -4264,6 +4364,14 @@ msgstr "Изменений файлов в неделю:"
 #. Resource IDs: (376)
 msgid "File diffs"
 msgstr "Файловые различия"
+
+#. Resource IDs: (319)
+msgid "File has no conflicts"
+msgstr "Файл не имеет конфликтов"
+
+#. Resource IDs: (314)
+msgid "File is empty."
+msgstr "Файл пустой."
 
 #. Resource IDs: (213)
 msgid "File list is empty"
@@ -4667,7 +4775,7 @@ msgstr "Git короткий URL"
 
 #. Resource IDs: (65535)
 msgid "Git.exe Path:"
-msgstr "Путь к Git.exe"
+msgstr "Путь к git.exe:"
 
 #. Resource IDs: (4591)
 msgid "Git::Credential"
@@ -4765,6 +4873,10 @@ msgstr "ГОЛОВНАЯ"
 msgid "HEAD:"
 msgstr "ГОЛОВНАЯ:"
 
+#. Resource IDs: (89)
+msgid "Hard"
+msgstr "Жесткая"
+
 #. Resource IDs: (1552)
 msgid "Hard: Reset working tree and index (discard all local changes)"
 msgstr "Жёсткий: Сбросить рабочую копию и индекс (отменить все локальные изменения)"
@@ -4795,7 +4907,7 @@ msgstr "Hex"
 
 #. Resource IDs: (1660)
 msgid "Hide Menus for unversioned paths"
-msgstr "Скрыть меню для путей без версий"
+msgstr "Скрыть меню для неверсированных папок"
 
 #. Resource IDs: (71)
 msgid "Hide Patch<<"
@@ -5150,6 +5262,12 @@ msgstr "Игнорировать все изменения непечатаем�
 msgid "Ignore case cha&nges"
 msgstr "Игнорировать изме&нения регистра"
 
+#. Resource IDs: (315)
+msgid ""
+"Ignore changes\n"
+"Ignore the outside changes."
+msgstr "Игнорировать изменения⏎\nИгнорировать внешние изменения."
+
 #. Resource IDs: (1687)
 msgid "Ignore item(s) only in the containing folder(s)"
 msgstr "Игнорировать файл(ы) только в содержащих директориях"
@@ -5331,6 +5449,12 @@ msgstr "Сохранить группы изменений"
 msgid "Keep file locally?"
 msgstr "Оставить локальный файл?"
 
+#. Resource IDs: (316)
+msgid ""
+"Keep resolving\n"
+"Jump to first unresolved conflict"
+msgstr "Продолжать улаживание⏎\nПерейти к первому неулаженному конфликту"
+
 #. Resource IDs: (16136)
 msgid "Keyboard"
 msgstr "Клавиатура"
@@ -5411,6 +5535,12 @@ msgstr "Запускает внешнюю программу различий/с
 msgid "Least active author:"
 msgstr "Наименее активный автор:"
 
+#. Resource IDs: (319)
+msgid ""
+"Leave as conflicted\n"
+"The conflict status of the file is kept"
+msgstr "Оставить конфликтующим⏎\nФайл сохраняется в статусе конфликта"
+
 #. Resource IDs: (188)
 msgid "Left View: "
 msgstr "Вид слева:"
@@ -5474,7 +5604,7 @@ msgstr "Показать разделы справки\nРазделы спра�
 msgid ""
 "List a renamed file as \"long/path/{to => for}/file.txt\" instead of "
 "\"long/path/for/file.txt (from long/path/to/file.txt)\"."
-msgstr "Выводить список переименованных файлов в виде \"long/path/{to => for}/file.txt\" вместо \"long/path/for/file.txt (из long/path/to/file.txt)\"."
+msgstr "Выводить переименованный файл в виде \"long/path/{to => for}/file.txt\" вместо \"long/path/for/file.txt (из long/path/to/file.txt)\"."
 
 #. Resource IDs: (16631, 16992)
 msgid "List1"
@@ -5487,6 +5617,18 @@ msgstr "Загрузить изображения"
 #. Resource IDs: (1505)
 msgid "Load Putty &Key"
 msgstr "Загрузить ключ Putty"
+
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"Changes made in TortoiseGitMerge are lost and replaced with the new content."
+msgstr "Загрузить изменения⏎\nИзменения, сделанные в TortoiseGitMerge, теряются и заменяются новым содержимым."
+
+#. Resource IDs: (315)
+msgid ""
+"Load changes\n"
+"The views are updated with the new content."
+msgstr "Загрузить изменения⏎\nПредставления обновляются новым содержимым."
 
 #. Resource IDs: (369,1379)
 msgid "Loading..."
@@ -5513,8 +5655,8 @@ msgstr "Локально:"
 #. Resource IDs: (94)
 msgid ""
 "Location where the contents of the\n"
-"repository URL will be saved to."
-msgstr "Место, куда будет сохранено то, что содержится\nпо указанному URL в хранилище."
+"selected revision of the repository will be saved to."
+msgstr "Место, куда будет сохранено содержимое⏎\nвыбранной ревизии хранилища."
 
 #. Resource IDs: (32854)
 msgid "Locator Bar"
@@ -5623,6 +5765,12 @@ msgstr "Управление отдалёнными хранилищами"
 #. Resource IDs: (282)
 msgid "Mark as resolved"
 msgstr "Пометить как улаженный"
+
+#. Resource IDs: (319)
+msgid ""
+"Mark as resolved\n"
+"The file status is changed to modified"
+msgstr "Отметить как улаженный⏎\nСтатус файла меняется на изменённый"
 
 #. Resource IDs: (2051)
 msgid ""
@@ -5849,7 +5997,7 @@ msgstr "Перемещено в"
 
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
-msgstr "Перемещать изменённые файлы в корзину перед тем, как убрать изменения"
+msgstr "Помещать изменённые файлы в корзину перед тем, как убрать изменения"
 
 #. Resource IDs: (80)
 #, c-format
@@ -5969,10 +6117,6 @@ msgstr "Следующее различие в строке"
 msgid "No"
 msgstr "Нет"
 
-#. Resource IDs: (1482)
-msgid "No &Commit"
-msgstr "Не &фиксировать"
-
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "Без перемотки"
@@ -5980,6 +6124,10 @@ msgstr "Без перемотки"
 #. Resource IDs: (1716)
 msgid "No Checkout"
 msgstr "Нет извлечения"
+
+#. Resource IDs: (1482)
+msgid "No Co&mmit"
+msgstr "Не &фиксировать"
 
 #. Resource IDs: (67)
 msgid "No HEAD found"
@@ -6360,6 +6508,10 @@ msgid ""
 "Help Topics"
 msgstr "Отрывает справку\nРазделы справки"
 
+#. Resource IDs: (21)
+msgid "Opens the Reference Browser dialog."
+msgstr "Открывает обозреватель ссылок"
+
 #. Resource IDs: (15)
 msgid "Opens the repository browser"
 msgstr "Открывает обозреватель репозитария."
@@ -6537,6 +6689,10 @@ msgstr "Патчим файл '%s'"
 #. Resource IDs: (63, 77, 198, 207)
 msgid "Path"
 msgstr "Путь"
+
+#. Resource IDs: (314)
+msgid "Path found that matches the patch better."
+msgstr "Найден путь, который лучше соответствует заплатке."
 
 #. Resource IDs: (1580, 65535)
 msgid "Path:"
@@ -6852,6 +7008,12 @@ msgid ""
 "Exit"
 msgstr "Выходит из приложения; приглашает сохранить документы\nВыход"
 
+#. Resource IDs: (315)
+msgid ""
+"Quit\n"
+"Exit TortoiseGitMerge without saving the modifications"
+msgstr "Выйти⏎\nВыйти из TortoiseGitMerge без сохранения изменений"
+
 #. Resource IDs: (1073)
 msgid "R&AM drives"
 msgstr "RAM &диски"
@@ -6954,7 +7116,7 @@ msgstr "Восстановление автоматически сохранен
 
 #. Resource IDs: (603)
 msgid "Recover to the status before rebase"
-msgstr "Восстановить к статусу до перебазирования"
+msgstr "Восстановить к состоянию до перебазирования"
 
 #. Resource IDs: (1057)
 msgid ""
@@ -7034,7 +7196,7 @@ msgstr "Патч для '%s' отменён"
 
 #. Resource IDs: (1072)
 msgid "Relative Times in log"
-msgstr "Относительное время в журнале"
+msgstr "Относительное время"
 
 #. Resource IDs: (32794)
 msgid "Reload"
@@ -7065,6 +7227,10 @@ msgstr "Отдалённая &ветвь:"
 #. Resource IDs: (1618)
 msgid "Remote &URL:"
 msgstr "Отдалённый &URL:"
+
+#. Resource IDs: (1754)
+msgid "Remote &tracking branch"
+msgstr "Отдаленная &отслеживаемая ветвь"
 
 #. Resource IDs: (65535)
 msgid "Remote Branch"
@@ -7256,7 +7422,7 @@ msgstr "Сбросить тип"
 #. Resource IDs: (1255)
 #, c-format
 msgid "Reset \"%s\" to this..."
-msgstr "Восстановить \"%s\" к этому..."
+msgstr "Сбросить \"%s\" до этого..."
 
 #. Resource IDs: (1553)
 msgid "Reset active branch"
@@ -7535,6 +7701,50 @@ msgstr "Сохранить &как..."
 msgid "Save As"
 msgstr "Сохранить как"
 
+#. Resource IDs: (316)
+msgid ""
+"Save Bottom File as\n"
+"You're asked where to save the bottom file"
+msgstr "Сохранить нижний файл как⏎\nУ вас спросили куда сохранить нижний файл"
+
+#. Resource IDs: (316)
+msgid "Save File"
+msgstr "Сохранить файл"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Left File as\n"
+"You're asked where to save the left file"
+msgstr "Сохранить файл слева как⏎\nУ вас спросили куда сохранить файл слева"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Left File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Сохранить файл слева⏎\nИзменения будут сохранены в⏎\n%s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save Right File as\n"
+"You're asked where to save the right file"
+msgstr "Сохранить файл справа как⏎\nУ вас спросили куда сохранить файл справа"
+
+#. Resource IDs: (316)
+#, c-format
+msgid ""
+"Save Right File\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Сохранить файл справа⏎\nИзменения будут сохранены в⏎\n%s"
+
+#. Resource IDs: (316)
+msgid ""
+"Save all\n"
+"Both Files are saved"
+msgstr "Сохранить всё⏎\nОба файла сохранены"
+
 #. Resource IDs: (156)
 msgid "Save as"
 msgstr "Сохранить как"
@@ -7547,10 +7757,20 @@ msgstr "Сохранить как &глобальное"
 msgid "Save as..."
 msgstr "Сохранить как..."
 
+#. Resource IDs: (315)
+msgid ""
+"Save as\n"
+"You're asked where to save the file"
+msgstr "Сохранить как⏎\nВас попросили указать куда сохранить файл"
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
 msgstr "Сохранить изменения в %1?"
+
+#. Resource IDs: (314)
+msgid "Save modifications."
+msgstr "Сохранить изменения."
 
 #. Resource IDs: (1253)
 msgid "Save revision &to..."
@@ -7585,6 +7805,20 @@ msgstr "Сохранить объединённые различия"
 #. Resource IDs: (1385)
 msgid "Save unified diff since HEAD"
 msgstr "Сохранить объединённые различия по сравнению с ГОЛОВНОЙ ветвью"
+
+#. Resource IDs: (315)
+msgid ""
+"Save\n"
+"Save the file with the conflict markers."
+msgstr "Сохранить⏎\nСохранить файл с маркерами конфликта."
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Save\n"
+"The modifications are saved to\n"
+"%s"
+msgstr "Сохранить⏎\nИзменения сохранены в⏎\n%s"
 
 #. Resource IDs: (108)
 msgid "Saved Data"
@@ -7731,9 +7965,19 @@ msgstr "Выбрать весь документ\nВыбрать всё"
 msgid "Select viewer for diff-files"
 msgstr "Выберите программу просмотра файлов различий"
 
+#. Resource IDs: (316)
+msgid "Select what file you want to save as"
+msgstr "Выберите файл, который вы хотите сохранить как"
+
+#. Resource IDs: (316)
+msgid ""
+"Select what file you want to save as\n"
+"Note: There is unresolved conflict!"
+msgstr "Выберите файл, который вы хотите сохранить⏎\nПримечание: Есть неулаженный конфликт!"
+
 #. Resource IDs: (1067)
 msgid "Select/deselect &all"
-msgstr "Выбрать/снять &всё"
+msgstr "Выбрать/снять &все"
 
 #. Resource IDs: (1)
 msgid "Send"
@@ -7834,7 +8078,7 @@ msgstr "Shift-JIS японская кодировка"
 
 #. Resource IDs: (1105)
 msgid "Short &date/time format in log messages"
-msgstr "Короткий формат &даты/времени в сообщениях журнала"
+msgstr "Короткий формат &даты/времени"
 
 #. Resource IDs: (12)
 msgid "Short URL of Git items"
@@ -8175,6 +8419,10 @@ msgstr "Пропущена отсутствующая цель"
 msgid "Slide"
 msgstr "Сдвиг"
 
+#. Resource IDs: (89)
+msgid "Soft"
+msgstr "Мягкая"
+
 #. Resource IDs: (1550)
 msgid "Soft: Leave working tree and index untouched"
 msgstr "Мягкий: Оставить рабочую копию и индекс как есть"
@@ -8460,11 +8708,11 @@ msgstr "Переключить"
 
 #. Resource IDs: (1256)
 msgid "Switch/Checkout to"
-msgstr "Переключить к"
+msgstr "Переключиться на"
 
 #. Resource IDs: (1254)
 msgid "Switch/Checkout to this..."
-msgstr "Переключить к этой..."
+msgstr "Переключиться на этот..."
 
 #. Resource IDs: (9)
 msgid "Switch/Checkout working tree to another branch/tag"
@@ -8909,6 +9157,12 @@ msgid ""
 "uses."
 msgstr "Сейчас установлено %d обработчиков оверлеев кроме тех, которые используются Tortoise."
 
+#. Resource IDs: (316)
+msgid ""
+"There are more editable views.\n"
+"What view do you want to save?"
+msgstr "Остались еще редактируемые виды.⏎\nКакой вид вы хотите сохранить?"
+
 #. Resource IDs: (64)
 msgid "There are no issue-tracker providers available."
 msgstr "Нет поставщиков интеграции с системами отслеживания проблем."
@@ -9087,7 +9341,7 @@ msgstr "TortoiseGit не будет показывать следующие ов
 
 #. Resource IDs: (1096)
 msgid "TortoiseGit&UDiff"
-msgstr "TortoiseGit&ОбъединённыеРазличия"
+msgstr "TortoiseGit&UDiff"
 
 #. Resource IDs: (1, 244, 1000, 3585)
 msgid "TortoiseGitBlame"
@@ -9199,6 +9453,10 @@ msgstr "Передача на %s"
 #. Resource IDs: (32816)
 msgid "Transparent &color..."
 msgstr "Прозрачный &цвет..."
+
+#. Resource IDs: (501)
+msgid "Trim right"
+msgstr "Обрезать справа"
 
 #. Resource IDs: (251)
 msgid "Try a 'Cleanup'. If that doesn't work you need to do a fresh checkout."
@@ -9349,6 +9607,10 @@ msgstr "Неизвестно"
 msgid "Unknown depth"
 msgstr "Неизвестная глубина"
 
+#. Resource IDs: (315)
+msgid "Unresolved conflicts!"
+msgstr "Неулаженные конфликты!"
+
 #. Resource IDs: (3841)
 msgid "Untitled"
 msgstr "Неназванный"
@@ -9438,6 +9700,10 @@ msgstr "Использовать MAPI"
 msgid "Use Ribbons"
 msgstr "Использовать ленточный интерфейс"
 
+#. Resource IDs: (1500)
+msgid "Use Task Dialog"
+msgstr "Использовать диалог задач"
+
 #. Resource IDs: (1497)
 msgid "Use Thin &Pack (For slow network connections)"
 msgstr "Использовать тонкие пакеты (для медленного соединения с сетью)"
@@ -9498,7 +9764,7 @@ msgstr "Использовать левый файл"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
-msgstr "Использовать корзину при убирании изменений"
+msgstr "Использовать корзину при возврате изменений"
 
 #. Resource IDs: (116)
 msgid "Use regular expression"
@@ -9510,7 +9776,7 @@ msgstr "Использовать правый блок"
 
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
-msgstr "Использовать формат даты/времени из локализации системы "
+msgstr "Использовать формат даты/времени из системных настроек"
 
 #. Resource IDs: (251)
 msgid "Use text block from '&mine'"
@@ -9561,6 +9827,22 @@ msgstr "Использовать текстовый блок из левой п�
 #. Resource IDs: (251)
 msgid "Use th&is text block"
 msgstr "Использовать э&тот текстовый блок"
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the found path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Использовать найденный путь.⏎\nПрименить заплатку к⏎\n%s"
+
+#. Resource IDs: (314)
+#, c-format
+msgid ""
+"Use the original path.\n"
+"Apply the patch to\n"
+"%s"
+msgstr "Использовать исходный путь.⏎\nПрименить заплатку к⏎\n%s"
 
 #. Resource IDs: (251)
 msgid "Use this &whole file"
@@ -9623,7 +9905,7 @@ msgstr "Разрешенные опции в командной строке:\n/
 msgid "Value"
 msgstr "Значение"
 
-#. Resource IDs: (1004, 1075, 1514, 1539)
+#. Resource IDs: (1004, 1075, 1539)
 msgid "Version"
 msgstr "Версия"
 
@@ -9667,6 +9949,10 @@ msgstr "Вьетнамский"
 #. Resource IDs: (156)
 msgid "View"
 msgstr "Вид"
+
+#. Resource IDs: (90)
+msgid "View .tgitconfig"
+msgstr "Просмотреть .tgitconfig"
 
 #. Resource IDs: (328, 603)
 msgid "View Patch"
@@ -9760,6 +10046,13 @@ msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
 "automatically selected"
 msgstr "Если включено, перечисленные в диалоге фиксации версированные элементы автоматически отмечаются как выбранные "
+
+#. Resource IDs: (316)
+msgid ""
+"When resolving conflicts, you always have to save even if there is no "
+"conflict shown. TortoiseGitMerge can merge changes that Git can't and won't "
+"show a conflict for those!"
+msgstr "При разрешении конфликтов вы всегда должны сохранять изменения, даже если конфликты не отображаются. TortoiseGitMerge может сливать изменения, которые Git не может и для таких случаев конфликты не будут отображаться!"
 
 #. Resource IDs: (604)
 msgid ""
@@ -10295,10 +10588,6 @@ msgstr "мешающий"
 #, c-format
 msgid "on %1"
 msgstr "на %1"
-
-#. Resource IDs: (1753)
-msgid "origin"
-msgstr "origin"
 
 #. Resource IDs: (3869)
 msgid "pixels"
