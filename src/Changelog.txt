@@ -1,5 +1,5 @@
 ﻿= Release 1.8.4.0 =
-Released: Unreleased
+Released: 2013-07-09
 
 == Features ==
  * Fixed issue #1765: Pull button when push (after commit) fails
