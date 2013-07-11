@@ -8023,10 +8023,6 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr ""
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr ""
@@ -8035,7 +8031,7 @@ msgstr ""
 msgid "Subject:"
 msgstr ""
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr ""
 
