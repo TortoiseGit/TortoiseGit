@@ -1031,6 +1031,8 @@
 #define IDC_CHECK_BRANCH                1527
 #define IDC_EDIT_BRANCH                 1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
+#define IDC_EDIT_ORIGIN                 1530
+#define IDC_CHECK_ORIGIN                1531
 #define IDC_RADIO_SINCE                 1532
 #define IDC_COMBOBOXEX_SINCE            1533
 #define IDC_RADIO_NUM                   1534

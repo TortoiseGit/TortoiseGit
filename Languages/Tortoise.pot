@@ -6100,6 +6100,10 @@ msgstr ""
 msgid "Ori&ginal size"
 msgstr ""
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr ""
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr ""

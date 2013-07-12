@@ -60,6 +60,7 @@ public:
 	CString	m_strPuttyKeyFile;
 	CString	m_URL;
 	CString m_strBranch;
+	CString	m_strOrigin;
 	BOOL	m_bAutoloadPuttyKeyFile;
 	BOOL	m_bSVN;
 	BOOL	m_bSVNTrunk;
@@ -71,6 +72,7 @@ public:
 	BOOL	m_bBare;
 	BOOL	m_bRecursive;
 	BOOL	m_bBranch;
+	BOOL	m_bOrigin;
 	BOOL	m_bNoCheckout;
 
 	int		m_nDepth;
@@ -94,6 +96,7 @@ protected:
 	afx_msg void OnBnClickedCheckRecursive();
 	afx_msg void OnBnClickedCheckBare();
 	afx_msg void OnBnClickedCheckBranch();
+	afx_msg void OnBnClickedCheckOrigin();
 	afx_msg void OnBnClickedCheckSvn();
 	afx_msg void OnBnClickedCheckSvnTrunk();
 	afx_msg void OnBnClickedCheckSvnTag();

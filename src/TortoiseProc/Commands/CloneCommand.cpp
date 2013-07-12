@@ -60,6 +60,10 @@ bool CloneCommand::Execute()
 		if (dlg.m_bBranch)
 			branchStr = _T("--branch ") + dlg.m_strBranch;
 
+		CString originStr;
+		if (dlg.m_bOrigin)
+			originStr = _T("--origin ") + dlg.m_strOrigin;
+
 		if(dlg.m_bAutoloadPuttyKeyFile)
 		{
 			CAppUtils::LaunchPAgent(&dlg.m_strPuttyKeyFile);
@@ -104,11 +108,12 @@ bool CloneCommand::Execute()
 		if(ver >= 0x01070002) //above 1.7.0.2
 			progressarg = _T("--progress");
 
-		cmd.Format(_T("git.exe clone %s %s %s %s %s -v %s \"%s\" \"%s\""),
+		cmd.Format(_T("git.exe clone %s %s %s %s %s %s -v %s \"%s\" \"%s\""),
 						nocheckoutStr,
 						recursiveStr,
 						bareStr,
 						branchStr,
+						originStr,
 						progressarg,
 						depth,
 						url,
@@ -156,6 +161,7 @@ bool CloneCommand::Execute()
 				GitDlg.SetPathList(list);
 				GitDlg.SetIsBare(!!dlg.m_bBare);
 				GitDlg.SetRefSpec(dlg.m_bBranch ? dlg.m_strBranch : CString());
+				GitDlg.SetRemote(dlg.m_bOrigin ? dlg.m_strOrigin : CString());
 				GitDlg.SetNoCheckout(!!dlg.m_bNoCheckout);
 				GitDlg.DoModal();
 				return !GitDlg.DidErrorsOccur();

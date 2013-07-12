@@ -2041,6 +2041,8 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	CStringA refspecA = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
 	if (!m_RefSpec.IsEmpty())
 		clone_opts.checkout_branch = refspecA.GetBuffer();
+	CStringA remoteA = CUnicodeUtils::GetMulti(m_remote, CP_UTF8);
+	clone_opts.remote_name = remoteA.GetBuffer();
 
 	clone_opts.fetch_progress_cb = FetchCallback;
 	clone_opts.fetch_progress_payload = this;
@@ -2063,6 +2065,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	}
 
 	refspecA.ReleaseBuffer();
+	remoteA.ReleaseBuffer();
 	git_remote_free(origin);
 	if (error)
 	{

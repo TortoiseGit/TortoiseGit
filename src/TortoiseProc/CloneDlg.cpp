@@ -38,6 +38,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_bRecursive = FALSE;
 	m_bBare = FALSE;
 	m_bBranch = FALSE;
+	m_bOrigin = FALSE;
 	m_bNoCheckout = FALSE;
 	m_bSVN = FALSE;
 	m_bSVNTrunk = FALSE;
@@ -90,6 +91,8 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_DEPTH,m_nDepth);
 	DDX_Check(pDX,IDC_CHECK_BRANCH, m_bBranch);
 	DDX_Text(pDX, IDC_EDIT_BRANCH, m_strBranch);
+	DDX_Check(pDX, IDC_CHECK_ORIGIN, m_bOrigin);
+	DDX_Text(pDX, IDC_EDIT_ORIGIN, m_strOrigin);
 	DDX_Check(pDX,IDC_CHECK_NOCHECKOUT, m_bNoCheckout);
 }
 
@@ -166,6 +169,7 @@ BOOL CCloneDlg::OnInitDialog()
 	OnBnClickedCheckSvn();
 	OnBnClickedCheckDepth();
 	OnBnClickedCheckBranch();
+	OnBnClickedCheckOrigin();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -173,6 +177,7 @@ BEGIN_MESSAGE_MAP(CCloneDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_CLONE_BROWSE_URL, &CCloneDlg::OnBnClickedCloneBrowseUrl)
 	ON_BN_CLICKED(IDC_CLONE_DIR_BROWSE, &CCloneDlg::OnBnClickedCloneDirBrowse)
 	ON_BN_CLICKED(IDC_CHECK_BRANCH, &CCloneDlg::OnBnClickedCheckBranch)
+	ON_BN_CLICKED(IDC_CHECK_ORIGIN, &CCloneDlg::OnBnClickedCheckOrigin)
 	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, &CCloneDlg::OnBnClickedPuttykeyfileBrowse)
 	ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, &CCloneDlg::OnBnClickedPuttykeyAutoload)
 	ON_CBN_EDITCHANGE(IDC_URLCOMBO, &CCloneDlg::OnCbnEditchangeUrlcombo)
@@ -205,6 +210,13 @@ void CCloneDlg::OnOK()
 	if (m_bBranch && !g_Git.IsBranchNameValid(m_strBranch))
 	{
 		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, TTI_ERROR);
+		m_bSaving = false;
+		return;
+	}
+
+	if (m_bOrigin && m_strOrigin.GetLength() == 0)
+	{
+		ShowEditBalloon(IDC_EDIT_ORIGIN, IDS_B_T_NOTEMPTY, TTI_ERROR);
 		m_bSaving = false;
 		return;
 	}
@@ -396,6 +408,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_bBare = false;
 		m_bRecursive = false;
 		m_bBranch = FALSE;
+		m_bOrigin = FALSE;
 		this->UpdateData(FALSE);
 		OnBnClickedCheckDepth();
 	}
@@ -404,6 +417,8 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	this->GetDlgItem(IDC_CHECK_RECURSIVE)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_ORIGIN)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(!m_bSVN);
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
@@ -457,6 +472,12 @@ void CCloneDlg::OnBnClickedCheckBranch()
 {
 	UpdateData(TRUE);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(this->m_bBranch);
+}
+
+void CCloneDlg::OnBnClickedCheckOrigin()
+{
+	UpdateData(TRUE);
+	this->GetDlgItem(IDC_EDIT_ORIGIN)->EnableWindow(this->m_bOrigin);
 }
 
 BOOL CCloneDlg::PreTranslateMessage(MSG* pMsg)

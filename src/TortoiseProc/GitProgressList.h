@@ -115,6 +115,7 @@ public:
 	void SetIsBare(bool b) { m_bBare = b; }
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }
 	void SetRefSpec(CString spec){ m_RefSpec = spec; }
+	void SetRemote(const CString& remote) { m_remote = remote; }
 	void SetAutoTag(int tag){ m_AutoTag = tag; }
 	void SetRevision(CString revision){ m_revision = revision; }
 	void SetResetType(int resetType){ m_resetType = resetType; }
@@ -375,6 +376,7 @@ private:
 	bool					m_bBare;
 	bool					m_bNoCheckout;
 	CString					m_RefSpec;
+	CString					m_remote;
 	int						m_AutoTag;
 	CString					m_revision;
 	int						m_resetType;

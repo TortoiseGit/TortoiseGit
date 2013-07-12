@@ -1,4 +1,10 @@
-﻿= Release 1.8.4.0 =
+﻿= Release 1.8.5.0 =
+Released: Unreleased
+
+== Features ==
+ * Fixed issue #1831: Allow Origin Remote Renaming on Clone
+
+= Release 1.8.4.0 =
 Released: 2013-07-09
 
 == Features ==
