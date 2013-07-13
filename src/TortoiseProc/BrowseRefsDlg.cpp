@@ -452,8 +452,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			treeLeaf.m_csDescription = descriptions[treeLeaf.m_csRefName];
 	}
 
-
-	if(selectRef.IsEmpty() || !SelectRef(selectRef, false))
+	// try exact match first
+	if(selectRef.IsEmpty() || !(SelectRef(selectRef, true) || SelectRef(selectRef, false)))
 		//Probably not on a branch. Select root node.
 		m_RefTreeCtrl.Expand(m_TreeRoot.m_hTree,TVE_EXPAND);
 
