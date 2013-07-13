@@ -457,23 +457,42 @@ LRESULT CMainWindow::DoCommand(int id)
             }
         }
         break;
-    case ID_VIEW_FITTOGETHER:
+    case ID_VIEW_FITIMAGEWIDTHS:
         {
-            bFitSizes = !bFitSizes;
-            picWindow1.FitSizes(bFitSizes);
-            picWindow2.FitSizes(bFitSizes);
+            bFitWidths = !bFitWidths;
+            picWindow1.FitWidths(bFitWidths);
+            picWindow2.FitWidths(bFitWidths);
 
             HMENU hMenu = GetMenu(*this);
             UINT uCheck = MF_BYCOMMAND;
-            uCheck |= bFitSizes ? MF_CHECKED : MF_UNCHECKED;
-            CheckMenuItem(hMenu, ID_VIEW_FITTOGETHER, uCheck);
+            uCheck |= bFitWidths ? MF_CHECKED : MF_UNCHECKED;
+            CheckMenuItem(hMenu, ID_VIEW_FITIMAGEWIDTHS, uCheck);
 
             // change the state of the toolbar button
             TBBUTTONINFO tbi;
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
-            tbi.fsState = bFitSizes ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
-            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITTOGETHER, (LPARAM)&tbi);
+            tbi.fsState = bFitWidths ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEWIDTHS, (LPARAM)&tbi);
+        }
+        break;
+    case ID_VIEW_FITIMAGEHEIGHTS:
+        {
+            bFitHeights = !bFitHeights;
+            picWindow1.FitHeights(bFitHeights);
+            picWindow2.FitHeights(bFitHeights);
+
+            HMENU hMenu = GetMenu(*this);
+            UINT uCheck = MF_BYCOMMAND;
+            uCheck |= bFitHeights ? MF_CHECKED : MF_UNCHECKED;
+            CheckMenuItem(hMenu, ID_VIEW_FITIMAGEHEIGHTS, uCheck);
+
+            // change the state of the toolbar button
+            TBBUTTONINFO tbi;
+            tbi.cbSize = sizeof(TBBUTTONINFO);
+            tbi.dwMask = TBIF_STATE;
+            tbi.fsState = bFitHeights ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
+            SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_FITIMAGEHEIGHTS, (LPARAM)&tbi);
         }
         break;
     case ID_VIEW_LINKIMAGESTOGETHER:
@@ -524,14 +543,14 @@ LRESULT CMainWindow::DoCommand(int id)
     case ID_VIEW_ZOOMIN:
         {
             picWindow1.Zoom(true, false);
-            if ((!bFitSizes)&&(!bOverlap))
+            if ((!(bFitWidths || bFitHeights))&&(!bOverlap))
                 picWindow2.Zoom(true, false);
         }
         break;
     case ID_VIEW_ZOOMOUT:
         {
             picWindow1.Zoom(false, false);
-            if ((!bFitSizes)&&(!bOverlap))
+            if ((!(bFitWidths || bFitHeights))&&(!bOverlap))
                 picWindow2.Zoom(false, false);
         }
         break;
@@ -903,7 +922,7 @@ bool CMainWindow::CreateToolbar()
 
     SendMessage(hwndTB, TB_BUTTONSTRUCTSIZE, (WPARAM) sizeof(TBBUTTON), 0);
 
-    TBBUTTON tbb[12];
+    TBBUTTON tbb[13];
     // create an imagelist containing the icons for the toolbar
     hToolbarImgList = ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 12, 4);
     if (hToolbarImgList == NULL)
@@ -933,9 +952,17 @@ bool CMainWindow::CreateToolbar()
     tbb[index].dwData = 0;
     tbb[index++].iString = 0;
 
-    hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_FITTOGETHER));
+    hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_FITWIDTHS));
     tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
-    tbb[index].idCommand = ID_VIEW_FITTOGETHER;
+    tbb[index].idCommand = ID_VIEW_FITIMAGEWIDTHS;
+    tbb[index].fsState = TBSTATE_ENABLED;
+    tbb[index].fsStyle = BTNS_BUTTON;
+    tbb[index].dwData = 0;
+    tbb[index++].iString = 0;
+
+    hIcon = LoadIcon(hResource, MAKEINTRESOURCE(IDI_FITHEIGHTS));
+    tbb[index].iBitmap = ImageList_AddIcon(hToolbarImgList, hIcon);
+    tbb[index].idCommand = ID_VIEW_FITIMAGEHEIGHTS;
     tbb[index].fsState = TBSTATE_ENABLED;
     tbb[index].fsStyle = BTNS_BUTTON;
     tbb[index].dwData = 0;

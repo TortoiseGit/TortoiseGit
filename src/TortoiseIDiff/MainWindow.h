@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2006-2007,2009, 2011-2012 - TortoiseSVN
+// Copyright (C) 2006-2007, 2009, 2011-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,7 +47,8 @@ public:
         , bShowInfo(false)
         , bVertical(false)
         , bLinkedPositions(true)
-        , bFitSizes(false)
+        , bFitWidths(false)
+        , bFitHeights(false)
         , transparentColor(::GetSysColor(COLOR_WINDOW))
         , m_BlendType(CPicWindow::BLEND_ALPHA)
         , hwndTB(0)
@@ -119,7 +120,8 @@ protected:
     bool            bOverlap;
     bool            bVertical;
     bool            bLinkedPositions;
-    bool            bFitSizes;
+    bool            bFitWidths;
+    bool            bFitHeights;
     CPicWindow::BlendType   m_BlendType;
 
 };

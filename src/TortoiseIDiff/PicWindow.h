@@ -75,7 +75,8 @@ public:
         , bPlaying(false)
         , pTheOtherPic(NULL)
         , bLinkedPositions(true)
-        , bFitSizes(false)
+        , bFitWidths(false)
+        , bFitHeights(false)
         , bOverlap(false)
         , m_blend(BLEND_ALPHA)
         , bMainPic(false)
@@ -96,6 +97,9 @@ public:
         , hPlay(0)
         , hStop(0)
         , hAlphaToggle(0)
+        , m_linkedWidth(0)
+        , m_linkedHeight(0)
+        , bDragging(false)
     {
         SetWindowTitle(_T("Picture Window"));
         m_lastTTPos.x = 0;
@@ -159,10 +163,12 @@ public:
     void FitImageInWindow();
     /// center the image in the view
     void CenterImage();
-    /// Makes both images the same size, fitting into the window
-    void FitSizes(bool bFit);
+    /// forces the widths of the images to be the same
+    void FitWidths(bool bFit);
+    /// forces the heights of the images to be the same
+    void FitHeights(bool bFit);
     /// Sets the zoom factor of the image
-    void SetZoom(int Zoom, bool centermouse);
+    void SetZoom(int Zoom, bool centermouse, bool inzoom = false);
     /// Returns the currently used zoom factor in which the image is shown.
     int GetZoom() {return picscale;}
     /// Zooms in (true) or out (false) in nice steps
@@ -208,8 +214,6 @@ protected:
     void                ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, int scale);
     /// Positions the buttons
     void                PositionChildren();
-    /// Rounds a double to a given precision
-    double              RoundDouble(double doValue, int nPrecision);
     /// advance to the next image in the file
     void                NextImage();
     /// go back to the previous image in the file
@@ -222,6 +226,11 @@ protected:
     void                PositionTrackBar();
     /// creates the info string used in the info box and the tooltips
     void                BuildInfoString(TCHAR * buf, int size, bool bTooltip);
+    /// adjusts the zoom to fit the specified width
+    void                SetZoomToWidth(long width);
+    /// adjusts the zoom to fit the specified height
+    void                SetZoomToHeight(long height);
+
 
     tstring             picpath;            ///< the path to the image we show
     tstring             pictitle;           ///< the string to show in the image view as a title
@@ -234,8 +243,10 @@ protected:
     CPicWindow *        pTheOtherPic;       ///< pointer to the other picture window. Used for "linking" the two windows when scrolling/zooming/...
     bool                bMainPic;           ///< if true, this is the first image
     bool                bLinkedPositions;   ///< if true, the two image windows are linked together for scrolling/zooming/...
-    bool                bFitSizes;          ///< if true, the two image windows are always zoomed so they match their size
+    bool                bFitWidths;         ///< if true, the two image windows are shown with the same width
+    bool                bFitHeights;        ///< if true, the two image windows are shown with the same height
     bool                bOverlap;           ///< true if the overlay mode is active
+    bool                bDragging;          ///< indicates an ongoing dragging operation
     BlendType           m_blend;            ///< type of blending to use
     tstring             pictitle2;          ///< the title of the second picture
     tstring             picpath2;           ///< the path of the second picture
@@ -274,4 +285,8 @@ protected:
     HICON               hAlphaToggle;
     bool                bPlaying;
     RECT                m_inforect;
+
+    // linked image sizes/positions
+    long                m_linkedWidth;
+    long                m_linkedHeight;
 };

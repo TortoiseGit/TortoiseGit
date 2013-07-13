@@ -1,6 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2006 - 2007, 2010-2013 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "mainWindow.h"
+#include "MainWindow.h"
 #include "CmdLineParser.h"
 #include "registry.h"
 #include "LangDll.h"
@@ -94,7 +94,16 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         }
         if (parser.HasKey(_T("fit")))
         {
-            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITTOGETHER, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEHEIGHTS, 0);
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEWIDTHS, 0);
+        }
+        if (parser.HasKey(_T("fitwidth")))
+        {
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEWIDTHS, 0);
+        }
+        if (parser.HasKey(_T("fitheight")))
+        {
+            PostMessage(*mainWindow, WM_COMMAND, ID_VIEW_FITIMAGEHEIGHTS, 0);
         }
         if (parser.HasKey(_T("showinfo")))
         {

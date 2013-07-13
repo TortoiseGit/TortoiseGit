@@ -44,8 +44,9 @@ IDI_STOP                ICON                    "resources\\player_stop.ico"
 IDI_VERTICAL            ICON                    "resources\\vertical.ico"
 IDI_LINK                ICON                    "resources\\link.ico"
 IDI_ALPHATOGGLE         ICON                    "resources\\alphatoggle.ico"
-IDI_FITTOGETHER         ICON                    "resources\\fittogether.ico"
+IDI_FITWIDTHS           ICON                    "resources\\fitwidths.ico"
 IDI_BLEND               ICON                    "resources\\blend.ico"
+IDI_FITHEIGHTS          ICON                    "resources\\fitheights.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -113,7 +114,8 @@ BEGIN
         MENUITEM "&Overlay images",             ID_VIEW_OVERLAPIMAGES
         MENUITEM "Blend alpha",                 ID_VIEW_BLENDALPHA
         MENUITEM "&Link image positions",       ID_VIEW_LINKIMAGESTOGETHER, CHECKED
-        MENUITEM "Fit image &sizes",            ID_VIEW_FITTOGETHER
+        MENUITEM "Fit image &widths",           ID_VIEW_FITIMAGEWIDTHS
+        MENUITEM "Fit image &heights",          ID_VIEW_FITIMAGEHEIGHTS
         MENUITEM "&Fit images in window",       ID_VIEW_FITIMAGESINWINDOW
         MENUITEM "Ori&ginal size",              ID_VIEW_ORININALSIZE
         MENUITEM "Transparent &color...",       ID_VIEW_TRANSPARENTCOLOR
@@ -154,7 +156,7 @@ CAPTION "TortoiseGitIDiff"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,201,65,50,14
-    ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,20,20
+    ICON            IDI_TORTOISEIDIFF,IDC_STATIC,15,15,21,20
     LTEXT           "TortoiseGitIDiff - An image diff tool, part of TortoiseGit",IDC_STATIC,53,15,198,21
     LTEXT           "Version",IDC_ABOUTVERSION,53,42,198,8
     LTEXT           "Based on TortoiseIDiff of TortoiseSVN",IDC_WEBLINK,53,71,140,8
@@ -215,7 +217,8 @@ BEGIN
     VK_OEM_MINUS,   ID_VIEW_ZOOMOUT,        VIRTKEY, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, NOINVERT
     VK_ESCAPE,      IDM_EXIT,               VIRTKEY, NOINVERT
-    "T",            ID_VIEW_FITTOGETHER,    VIRTKEY, NOINVERT
+    "W",            ID_VIEW_FITIMAGEWIDTHS, VIRTKEY, NOINVERT
+    "H",            ID_VIEW_FITIMAGEHEIGHTS, VIRTKEY, NOINVERT
 END
 
 

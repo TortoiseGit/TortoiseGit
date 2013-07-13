@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 
 #include "stdafx.h"
 #include <olectl.h>
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #include <locale>
 #include <algorithm>
 #include "Picture.h"
@@ -495,6 +495,7 @@ bool CPicture::Show(HDC hDC, RECT DrawRect)
 		Graphics graphics(hDC);
 		graphics.SetInterpolationMode(m_ip);
 		graphics.SetPixelOffsetMode(PixelOffsetModeHighQuality);
+		graphics.SetPixelOffsetMode(PixelOffsetModeHalf);
 		ImageAttributes attr;
 		attr.SetWrapMode(WrapModeTileFlipXY);
 		Rect rect(DrawRect.left, DrawRect.top, DrawRect.right-DrawRect.left, DrawRect.bottom-DrawRect.top);

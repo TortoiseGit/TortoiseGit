@@ -206,15 +206,11 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
     case WM_MOUSEWHEEL:
         {
             OnMouseWheel(GET_KEYSTATE_WPARAM(wParam), GET_WHEEL_DELTA_WPARAM(wParam));
-            if (bFitSizes)
-                pTheOtherPic->OnMouseWheel(GET_KEYSTATE_WPARAM(wParam), GET_WHEEL_DELTA_WPARAM(wParam));
         }
         break;
     case WM_MOUSEHWHEEL:
         {
             OnMouseWheel(GET_KEYSTATE_WPARAM(wParam)|MK_SHIFT, GET_WHEEL_DELTA_WPARAM(wParam));
-            if (bFitSizes)
-                pTheOtherPic->OnMouseWheel(GET_KEYSTATE_WPARAM(wParam)|MK_SHIFT, GET_WHEEL_DELTA_WPARAM(wParam));
         }
         break;
     case WM_LBUTTONDOWN:
@@ -225,10 +221,13 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
         startHScrollPos = nHScrollPos;
         startVSecondScrollPos = nVSecondScrollPos;
         startHSecondScrollPos = nHSecondScrollPos;
+        bDragging = true;
         SetCapture(*this);
         break;
     case WM_LBUTTONUP:
+        bDragging = false;
         ReleaseCapture();
+        InvalidateRect(*this, NULL, FALSE);
         break;
     case WM_MOUSELEAVE:
         ptPanStart.x = -1;
@@ -291,6 +290,14 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                     nVSecondScrollPos = startVSecondScrollPos + (ptPanStart.y - yPos);
                     nHScrollPos = startHScrollPos + (ptPanStart.x - xPos);
                     nVScrollPos = startVScrollPos + (ptPanStart.y - yPos);
+                    if (!bLinkedPositions && pTheOtherPic)
+                    {
+                        // snap to the other picture borders
+                        if (abs(nVScrollPos-pTheOtherPic->nVScrollPos) < 10)
+                            nVScrollPos = pTheOtherPic->nVScrollPos;
+                        if (abs(nHScrollPos-pTheOtherPic->nHScrollPos) < 10)
+                            nHScrollPos = pTheOtherPic->nHScrollPos;
+                    }
                 }
                 SetupScrollBars();
                 InvalidateRect(*this, NULL, TRUE);
@@ -870,11 +877,18 @@ void CPicWindow::OnMouseWheel(short fwKeys, short zDelta)
     {
         // control means adjusting the scale factor
         Zoom(zDelta>0, true);
-        if ((bFitSizes)&&(pTheOtherPic)&&(!bOverlap))
-            pTheOtherPic->Zoom(zDelta>0, true);
         PositionChildren();
         InvalidateRect(*this, NULL, FALSE);
         SetWindowPos(*this, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED|SWP_NOSIZE|SWP_NOREPOSITION|SWP_NOMOVE);
+        UpdateWindow(*this);
+        if (bLinkedPositions)
+        {
+            pTheOtherPic->nHScrollPos = nHScrollPos;
+            pTheOtherPic->nVScrollPos = nVScrollPos;
+            pTheOtherPic->SetupScrollBars();
+            InvalidateRect(*pTheOtherPic, NULL, TRUE);
+            UpdateWindow(*pTheOtherPic);
+        }
     }
     else
     {
@@ -916,74 +930,69 @@ void CPicWindow::GetClientRectWithScrollbars(RECT * pRect)
 };
 
 
-void CPicWindow::SetZoom(int Zoom, bool centermouse)
+void CPicWindow::SetZoom(int Zoom, bool centermouse, bool inzoom)
 {
     // Set the interpolation mode depending on zoom
     int oldPicscale = picscale;
     int oldOtherPicscale = picscale;
-    if (Zoom < 100)
-    {   // Zoomed out, use high quality bicubic
-        picture.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-        if (pSecondPic)
-            pSecondPic->SetInterpolationMode(InterpolationModeHighQualityBicubic);
-    }
-    else if (!(Zoom%100))
-    {   // "Even" zoom sizes should be shown w-o any interpolation
-        picture.SetInterpolationMode(InterpolationModeNearestNeighbor);
-        if (pSecondPic)
-            pSecondPic->SetInterpolationMode(InterpolationModeNearestNeighbor);
-    }
-    else
-    {   // Arbitrary zoomed in, use bilinear that is semi-smoothed
-        picture.SetInterpolationMode(InterpolationModeBilinear);
-        if (pSecondPic)
-            pSecondPic->SetInterpolationMode(InterpolationModeBilinear);
-    }
+
+    picture.SetInterpolationMode(InterpolationModeNearestNeighbor);
+    if (pSecondPic)
+        pSecondPic->SetInterpolationMode(InterpolationModeNearestNeighbor);
+
+    if ((oldPicscale == 0) || (Zoom == 0))
+        return;
+
     picscale = Zoom;
 
-    if ((bFitSizes)&&(bMainPic))
+    if (pTheOtherPic && !inzoom)
     {
-        long width, height;
-        long zoomWidth, zoomHeight;
-        width = picture.m_Width*Zoom;
-        height = picture.m_Height*Zoom;
-        zoomWidth = width/pTheOtherPic->GetPic()->m_Width;
-        zoomHeight = height/pTheOtherPic->GetPic()->m_Height;
-        oldOtherPicscale = pTheOtherPic->GetZoom();
-        pTheOtherPic->SetZoom(min(zoomWidth, zoomHeight), false);
+        if (bFitHeights)
+        {
+            m_linkedHeight = 0;
+            pTheOtherPic->SetZoomToHeight(picture.m_Height*Zoom/100);
+        }
+        if (bFitWidths)
+        {
+            m_linkedWidth = 0;
+            pTheOtherPic->SetZoomToWidth(picture.m_Width*Zoom/100);
+        }
     }
 
     // adjust the scrollbar positions according to the new zoom and the
     // mouse position: if possible, keep the pixel where the mouse pointer
     // is at the same position after the zoom
-    POINT cpos;
-    DWORD ptW = GetMessagePos();
-    cpos.x = GET_X_LPARAM(ptW);
-    cpos.y = GET_Y_LPARAM(ptW);
-    ScreenToClient(*this, &cpos);
-    RECT clientrect;
-    GetClientRect(&clientrect);
-    if ((PtInRect(&clientrect, cpos))&&(centermouse))
+    if (!inzoom)
     {
-        // the mouse pointer is over our window
-        nHScrollPos = nHScrollPos + cpos.x*Zoom/oldPicscale-cpos.x;
-        nVScrollPos = nVScrollPos + cpos.y*Zoom/oldPicscale-cpos.y;
-        if (pTheOtherPic && bMainPic)
+        POINT cpos;
+        DWORD ptW = GetMessagePos();
+        cpos.x = GET_X_LPARAM(ptW);
+        cpos.y = GET_Y_LPARAM(ptW);
+        ScreenToClient(*this, &cpos);
+        RECT clientrect;
+        GetClientRect(&clientrect);
+        if ((PtInRect(&clientrect, cpos))&&(centermouse))
         {
-            int otherzoom = pTheOtherPic->GetZoom();
-            nHSecondScrollPos = nHSecondScrollPos + cpos.x*otherzoom/oldOtherPicscale-cpos.x;
-            nVSecondScrollPos = nVSecondScrollPos + cpos.y*otherzoom/oldOtherPicscale-cpos.y;
+            // the mouse pointer is over our window
+            nHScrollPos = (nHScrollPos + cpos.x)*Zoom/oldPicscale-cpos.x;
+            nVScrollPos = (nVScrollPos + cpos.y)*Zoom/oldPicscale-cpos.y;
+            if (pTheOtherPic && bMainPic)
+            {
+                int otherzoom = pTheOtherPic->GetZoom();
+                nHSecondScrollPos = (nHSecondScrollPos + cpos.x)*otherzoom/oldOtherPicscale-cpos.x;
+                nVSecondScrollPos = (nVSecondScrollPos + cpos.y)*otherzoom/oldOtherPicscale-cpos.y;
+            }
         }
-    }
-    else
-    {
-        nHScrollPos = nHScrollPos + ((clientrect.right-clientrect.left)/2)*Zoom/oldPicscale-((clientrect.right-clientrect.left)/2);
-        nVScrollPos = nVScrollPos + ((clientrect.bottom-clientrect.top)/2)*Zoom/oldPicscale-((clientrect.bottom-clientrect.top)/2);
-        if (pTheOtherPic && bMainPic)
+        else
         {
-            int otherzoom = pTheOtherPic->GetZoom();
-            nHSecondScrollPos = nHSecondScrollPos + ((clientrect.right-clientrect.left)/2)*otherzoom/oldOtherPicscale-((clientrect.right-clientrect.left)/2);
-            nVSecondScrollPos = nVSecondScrollPos + ((clientrect.bottom-clientrect.top)/2)*otherzoom/oldOtherPicscale-((clientrect.bottom-clientrect.top)/2);
+            nHScrollPos = (nHScrollPos + ((clientrect.right-clientrect.left)/2))*Zoom/oldPicscale-((clientrect.right-clientrect.left)/2);
+            nVScrollPos = (nVScrollPos + ((clientrect.bottom-clientrect.top)/2))*Zoom/oldPicscale-((clientrect.bottom-clientrect.top)/2);
+            if (pTheOtherPic && bMainPic)
+            {
+                int otherzoom = pTheOtherPic->GetZoom();
+                nHSecondScrollPos = (nHSecondScrollPos + ((clientrect.right-clientrect.left)/2))*otherzoom/oldOtherPicscale-((clientrect.right-clientrect.left)/2);
+                nVSecondScrollPos = (nVSecondScrollPos + ((clientrect.bottom-clientrect.top)/2))*otherzoom/oldOtherPicscale-((clientrect.bottom-clientrect.top)/2);
+            }
         }
     }
 
@@ -1026,39 +1035,14 @@ void CPicWindow::Zoom(bool in, bool centermouse)
     // Set zoom
     if (in)
     {
-        if ((pSecondPic)&&(!bFitSizes))
-            pTheOtherPic->SetZoom(pTheOtherPic->GetZoom()+zoomFactor, false);
         SetZoom(picscale+zoomFactor, centermouse);
     }
     else
     {
-        if ((pSecondPic)&&(!bFitSizes))
-            pTheOtherPic->SetZoom(pTheOtherPic->GetZoom()-zoomFactor, false);
         SetZoom(picscale-zoomFactor, centermouse);
     }
 }
 
-double CPicWindow::RoundDouble(double doValue, int nPrecision)
-{
-    static const double doBase = 10.0;
-    double doComplete5, doComplete5i;
-
-    doComplete5 = doValue * pow(doBase, (double) (nPrecision + 1));
-
-    if (doValue < 0.0)
-    {
-        doComplete5 -= 5.0;
-    }
-    else
-    {
-        doComplete5 += 5.0;
-    }
-
-    doComplete5 /= doBase;
-    modf(doComplete5, &doComplete5i);
-
-    return doComplete5i / pow(doBase, (double) nPrecision);
-}
 void CPicWindow::FitImageInWindow()
 {
     RECT rect;
@@ -1133,9 +1117,16 @@ void CPicWindow::CenterImage()
     SetupScrollBars();
 }
 
-void CPicWindow::FitSizes(bool bFit)
+void CPicWindow::FitWidths(bool bFit)
 {
-    bFitSizes = bFit;
+    bFitWidths = bFit;
+
+    SetZoom(GetZoom(), false);
+}
+
+void CPicWindow::FitHeights(bool bFit)
+{
+    bFitHeights = bFit;
 
     SetZoom(GetZoom(), false);
 }
@@ -1155,6 +1146,11 @@ void CPicWindow::ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, i
     }
     picrect.right = (picrect.left + pic.m_Width * scale / 100);
     picrect.bottom = (picrect.top + pic.m_Height * scale / 100);
+
+    if (bFitWidths && m_linkedWidth)
+        picrect.right = picrect.left + m_linkedWidth;
+    if (bFitHeights && m_linkedHeight)
+        picrect.bottom = picrect.top + m_linkedHeight;
 
     pic.Show(hdc, picrect);
 
@@ -1259,6 +1255,33 @@ void CPicWindow::Paint(HWND hwnd)
                 DeleteObject(hBitmap);
                 DeleteDC(secondhdc);
             }
+            else if (bDragging && pTheOtherPic && !bLinkedPositions)
+            {
+                // when dragging, show lines indicating the position of the other image
+                HPEN hPen = CreatePen(PS_SOLID, 1, GetSysColor(/*COLOR_ACTIVEBORDER*/COLOR_HIGHLIGHT));
+                HPEN hOldPen = (HPEN)SelectObject(memDC, hPen);
+                int xpos = rect.left - pTheOtherPic->nHScrollPos - 1;
+                MoveToEx(memDC, xpos, rect.top, NULL);
+                LineTo(memDC, xpos, rect.bottom);
+                xpos = rect.left - pTheOtherPic->nHScrollPos + pTheOtherPic->picture.m_Width*pTheOtherPic->GetZoom()/100 + 1;
+                if (bFitWidths && m_linkedWidth)
+                    xpos = rect.left + pTheOtherPic->m_linkedWidth + 1;
+                MoveToEx(memDC, xpos, rect.top, NULL);
+                LineTo(memDC, xpos, rect.bottom);
+
+                int ypos = rect.top - pTheOtherPic->nVScrollPos - 1;
+                MoveToEx(memDC, rect.left, ypos, NULL);
+                LineTo(memDC, rect.right, ypos);
+                ypos = rect.top - pTheOtherPic->nVScrollPos + pTheOtherPic->picture.m_Height*pTheOtherPic->GetZoom()/100 + 1;
+                if (bFitHeights && m_linkedHeight)
+                    ypos = rect.top - pTheOtherPic->m_linkedHeight + 1;
+                MoveToEx(memDC, rect.left, ypos, NULL);
+                LineTo(memDC, rect.right, ypos);
+
+                SelectObject(memDC, hOldPen);
+                DeleteObject(hPen);
+            }
+
             int sliderwidth = 0;
             if ((pSecondPic)&&(m_blend == BLEND_ALPHA))
                 sliderwidth = SLIDER_WIDTH;
@@ -1270,7 +1293,7 @@ void CPicWindow::Paint(HWND hwnd)
             SetBkColor(memDC, transparentColor);
             if (bShowInfo)
             {
-                std::unique_ptr<TCHAR[]> infostring(new TCHAR[8192]);
+               std::unique_ptr<TCHAR[]> infostring(new TCHAR[8192]);
                 BuildInfoString(infostring.get(), 8192, false);
                 // set the font
                 NONCLIENTMETRICS metrics = {0};
@@ -1509,5 +1532,25 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
             picture.GetHorizontalResolution(), picture.GetVerticalResolution(),
             picture.m_ColorDepth,
             (UINT)(GetZoom()*100.0));
+    }
+}
+
+void CPicWindow::SetZoomToWidth( long width )
+{
+    m_linkedWidth = width;
+    if (picture.m_Width)
+    {
+        int zoom = width*100/picture.m_Width;
+        SetZoom(zoom, false, true);
+    }
+}
+
+void CPicWindow::SetZoomToHeight( long height )
+{
+    m_linkedHeight = height;
+    if (picture.m_Height)
+    {
+        int zoom = height*100/picture.m_Height;
+        SetZoom(zoom, false, true);
     }
 }
