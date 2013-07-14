@@ -398,7 +398,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 				return 0;
 			}
 
-			if( st == git_wc_status_normal && IsFull)
+			if ((st == git_wc_status_normal || st == git_wc_status_modified) && IsFull)
 			{
 				{
 					g_HeadFileMap.CheckHeadAndUpdate(gitdir);
