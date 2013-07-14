@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="workaround">
-      <UniqueIdentifier>{abcabcec-73f8-4bde-9023-1c07e630af1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -26,9 +23,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\xpsupportvc11upd2\xpatl.cpp">
-      <Filter>workaround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,13 +55,5 @@
     <ResourceCompile Include="CrashHandler.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="..\..\..\xpsupportvc11upd2\xpatlwrap.asm">
-      <Filter>workaround</Filter>
-    </MASM>
-    <MASM Include="..\..\..\xpsupportvc11upd2\xpatlwrap64.asm">
-      <Filter>workaround</Filter>
-    </MASM>
   </ItemGroup>
 </Project>

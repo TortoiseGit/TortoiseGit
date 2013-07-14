@@ -13,9 +13,6 @@
       <UniqueIdentifier>{2d65adcd-634d-4948-9ece-1c3e524717e1}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
-    <Filter Include="workaround">
-      <UniqueIdentifier>{d204e0de-a1dd-4968-bf7e-d83143761663}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\TGitCache\CacheInterface.cpp">
@@ -104,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="..\Utils\DirFileEnum.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ext\xpsupportvc11upd2\xpatl.cpp">
-      <Filter>workaround</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
       <Filter>Source Files</Filter>
@@ -359,13 +353,5 @@
     <ResourceCompile Include="resourceshell.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="..\..\ext\xpsupportvc11upd2\xpatlwrap.asm">
-      <Filter>workaround</Filter>
-    </MASM>
-    <MASM Include="..\..\ext\xpsupportvc11upd2\xpatlwrap64.asm">
-      <Filter>workaround</Filter>
-    </MASM>
   </ItemGroup>
 </Project>

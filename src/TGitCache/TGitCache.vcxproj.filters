@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
-    <Filter Include="workaround">
-      <UniqueIdentifier>{cb76eb98-1dec-4d3c-99fa-a60086444330}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CachedDirectory.cpp">
@@ -86,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="..\Utils\UniqueQueue.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ext\xpsupportvc11upd2\xpatl.cpp">
-      <Filter>workaround</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
       <Filter>Source Files</Filter>
@@ -177,13 +171,5 @@
     <Image Include="..\Resources\Tortoise.ico">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="..\..\ext\xpsupportvc11upd2\xpatlwrap.asm">
-      <Filter>workaround</Filter>
-    </MASM>
-    <MASM Include="..\..\ext\xpsupportvc11upd2\xpatlwrap64.asm">
-      <Filter>workaround</Filter>
-    </MASM>
   </ItemGroup>
 </Project>
