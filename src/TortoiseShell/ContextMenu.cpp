@@ -1128,10 +1128,7 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
 						if(InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
-						{
 							bMenuEntryAdded = true;
-							bMenuEmpty = false;
-						}
 					}
 					else
 					{
@@ -1158,6 +1155,20 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 			}
 		}
 		menuIndex++;
+	}
+
+	// do not show TortoiseGit menu if it's empty
+	if (bMenuEmpty)
+	{
+		if (idCmd - idCmdFirst > 0)
+		{
+			//separator after
+			InsertMenu(hMenu, indexMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, NULL); idCmd++;
+		}
+		TweakMenu(hMenu);
+
+		//return number of menu items added
+		return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(idCmd - idCmdFirst)));
 	}
 
 	//add sub menu to main context menu
