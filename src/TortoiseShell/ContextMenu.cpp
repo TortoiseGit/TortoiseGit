@@ -27,6 +27,7 @@
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
+#include "..\TGitCache\CacheInterface.h"
 #include "resource.h"
 
 #define GetPIDLFolder(pida) (LPCITEMIDLIST)(((LPBYTE)pida)+(pida)->aoffset[0])
@@ -129,36 +130,65 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							askedpath.SetFromWin(str.c_str());
 							try
 							{
-								GitStatus stat;
-								stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
-								if (stat.status)
+								if (g_ShellCache.GetCacheType() == ShellCache::exe)
 								{
-									statuspath = str;
-									status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-									fetchedstatus = status;
-									//if ((stat.status->entry)&&(stat.status->entry->lock_token))
-									//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-									if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+									CTGitPath tpath(str.c_str());
+									if (!tpath.HasAdminDir())
 									{
-										itemStates |= ITEMIS_FOLDER;
-										if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-											itemStates |= ITEMIS_FOLDERINGIT;
+										status = git_wc_status_none;
+										continue;
 									}
-									//if ((stat.status->entry)&&(stat.status->entry->present_props))
-									//{
-									//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-									//		itemStates |= ITEMIS_NEEDSLOCK;
-									//}
-									//if ((stat.status->entry)&&(stat.status->entry->uuid))
-									//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+									if (tpath.IsAdminDir())
+									{
+										status = git_wc_status_none;
+										continue;
+									}
+									TGITCacheResponse itemStatus;
+									SecureZeroMemory(&itemStatus, sizeof(itemStatus));
+									if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+									{
+										fetchedstatus = status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+										if (askedpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+										{
+											itemStates |= ITEMIS_FOLDER;
+											if ((status != git_wc_status_unversioned) && (status != git_wc_status_ignored) && (status != git_wc_status_none))
+												itemStates |= ITEMIS_FOLDERINGIT;
+										}
+									}
 								}
 								else
 								{
-									// sometimes, git_client_status() returns with an error.
-									// in that case, we have to check if the working copy is versioned
-									// anyway to show the 'correct' context menu
-									if (askedpath.HasAdminDir())
-										status = git_wc_status_normal;
+									GitStatus stat;
+									stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
+									if (stat.status)
+									{
+										statuspath = str;
+										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+										fetchedstatus = status;
+										//if ((stat.status->entry)&&(stat.status->entry->lock_token))
+										//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+										if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+										{
+											itemStates |= ITEMIS_FOLDER;
+											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+												itemStates |= ITEMIS_FOLDERINGIT;
+										}
+										//if ((stat.status->entry)&&(stat.status->entry->present_props))
+										//{
+										//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+										//		itemStates |= ITEMIS_NEEDSLOCK;
+										//}
+										//if ((stat.status->entry)&&(stat.status->entry->uuid))
+										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+									}
+									else
+									{
+										// sometimes, git_client_status() returns with an error.
+										// in that case, we have to check if the working copy is versioned
+										// anyway to show the 'correct' context menu
+										if (askedpath.HasAdminDir())
+											status = git_wc_status_normal;
+									}
 								}
 							}
 							catch ( ... )
@@ -227,42 +257,73 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							{
 								try
 								{
-									GitStatus stat;
-									if (strpath.HasAdminDir())
-										stat.GetStatus(strpath, false, false, true);
-									statuspath = str;
-									if (stat.status)
+									if (g_ShellCache.GetCacheType() == ShellCache::exe)
 									{
-										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-										fetchedstatus = status;
-										//if ((stat.status->entry)&&(stat.status->entry->lock_token))
-										//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-										if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+										CTGitPath tpath(str.c_str());
+										if(!tpath.HasAdminDir())
 										{
-											itemStates |= ITEMIS_FOLDER;
-											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINGIT;
+											status = git_wc_status_none;
+											continue;
 										}
-										// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
-										if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
-											itemStates |= ITEMIS_CONFLICTED;
-										//if ((stat.status->entry)&&(stat.status->entry->present_props))
-										//{
-										//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-										//		itemStates |= ITEMIS_NEEDSLOCK;
-										//}
-										//if ((stat.status->entry)&&(stat.status->entry->uuid))
-										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+										if(tpath.IsAdminDir())
+										{
+											status = git_wc_status_none;
+											continue;
+										}
+										TGITCacheResponse itemStatus;
+										SecureZeroMemory(&itemStatus, sizeof(itemStatus));
+										if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+										{
+											fetchedstatus = status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+											if (strpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+											{
+												itemStates |= ITEMIS_FOLDER;
+												if ((status != git_wc_status_unversioned) && (status != git_wc_status_ignored) && (status != git_wc_status_none))
+													itemStates |= ITEMIS_FOLDERINGIT;
+											}
+											if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+												itemStates |= ITEMIS_CONFLICTED;
+										}
 									}
 									else
 									{
-										// sometimes, git_client_status() returns with an error.
-										// in that case, we have to check if the working copy is versioned
-										// anyway to show the 'correct' context menu
+										GitStatus stat;
 										if (strpath.HasAdminDir())
+											stat.GetStatus(strpath, false, false, true);
+										statuspath = str;
+										if (stat.status)
 										{
-											status = git_wc_status_normal;
+											status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 											fetchedstatus = status;
+											//if ((stat.status->entry)&&(stat.status->entry->lock_token))
+											//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+											if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+											{
+												itemStates |= ITEMIS_FOLDER;
+												if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
+													itemStates |= ITEMIS_FOLDERINGIT;
+											}
+											// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
+											if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+												itemStates |= ITEMIS_CONFLICTED;
+											//if ((stat.status->entry)&&(stat.status->entry->present_props))
+											//{
+											//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+											//		itemStates |= ITEMIS_NEEDSLOCK;
+											//}
+											//if ((stat.status->entry)&&(stat.status->entry->uuid))
+											//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+										}
+										else
+										{
+											// sometimes, git_client_status() returns with an error.
+											// in that case, we have to check if the working copy is versioned
+											// anyway to show the 'correct' context menu
+											if (strpath.HasAdminDir())
+											{
+												status = git_wc_status_normal;
+												fetchedstatus = status;
+											}
 										}
 									}
 									statfetched = TRUE;
@@ -359,29 +420,47 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 				try
 				{
-					GitStatus stat;
-					stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
-					if (stat.status)
+					if (g_ShellCache.GetCacheType() == ShellCache::exe)
 					{
-						status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-						//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
-						//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-						//					if ((stat.status->entry)&&(stat.status->entry->present_props))
-						//					{
-						//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-						//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
-						//					}
-						//					if ((stat.status->entry)&&(stat.status->entry->uuid))
-						//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-
+						CTGitPath tpath(folder_.c_str());
+						if(!tpath.HasAdminDir())
+							status = git_wc_status_none;
+						else if(tpath.IsAdminDir())
+							status = git_wc_status_none;
+						else
+						{
+							TGITCacheResponse itemStatus;
+							SecureZeroMemory(&itemStatus, sizeof(itemStatus));
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+								status = GitStatus::GetMoreImportant(itemStatus.m_status.text_status, itemStatus.m_status.prop_status);
+						}
 					}
 					else
 					{
-						// sometimes, git_client_status() returns with an error.
-						// in that case, we have to check if the working copy is versioned
-						// anyway to show the 'correct' context menu
-						if (askedpath.HasAdminDir())
-							status = git_wc_status_normal;
+						GitStatus stat;
+						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
+						if (stat.status)
+						{
+							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
+							//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
+							//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
+							//					if ((stat.status->entry)&&(stat.status->entry->present_props))
+							//					{
+							//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
+							//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
+							//					}
+							//					if ((stat.status->entry)&&(stat.status->entry->uuid))
+							//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
+
+						}
+						else
+						{
+							// sometimes, git_client_status() returns with an error.
+							// in that case, we have to check if the working copy is versioned
+							// anyway to show the 'correct' context menu
+							if (askedpath.HasAdminDir())
+								status = git_wc_status_normal;
+						}
 					}
 
 					//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
