@@ -398,9 +398,14 @@ BOOL CHwSMTP::SendEmail()
 	char szLocalHostName[64] = {0};
 	gethostname ( (char*)szLocalHostName, sizeof(szLocalHostName) );
 
+	// make sure helo hostname can be interpreted as a FQDN
+	CString hostname(GetCompatibleString(szLocalHostName, FALSE));
+	if (hostname.Find(_T(".")) == -1)
+		hostname += _T(".local");
+
 	// hello£¨Œ’ ÷
 	CString str;
-	str.Format(_T("HELO %s\r\n"), GetCompatibleString(szLocalHostName,FALSE));
+	str.Format(_T("HELO %s\r\n"), hostname);
 	if ( !Send (  str ))
 	{
 		return FALSE;
