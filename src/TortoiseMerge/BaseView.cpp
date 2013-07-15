@@ -5263,6 +5263,8 @@ CString CBaseView::GetSelectedText() const
 		end.y = m_nSelViewBlockEnd;
 		end.x = GetViewLineLength(m_nSelViewBlockEnd);
 	}
+	if (m_pViewData == nullptr)
+		return sSelectedText;
 	// first store the selected lines in one CString
 	for (int nViewLine=start.y; nViewLine<=end.y; nViewLine++)
 	{
