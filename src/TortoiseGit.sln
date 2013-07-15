@@ -101,7 +101,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GitIndexTest", "..\test\Git
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cache", "..\test\Cache\Cache.vcxproj", "{948733DE-FC5A-46C2-8CD6-429017508D63}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "touch", "touch\touch.vcxproj", "{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tgittouch", "touch\touch.vcxproj", "{84E07810-9AD4-4E0E-A7F7-FAD9A8CDFC7F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libgit2", "..\ext\build\libgit2.vcxproj", "{2B4F366C-93BA-491E-87AF-5EF7B37F75F7}"
 EndProject
