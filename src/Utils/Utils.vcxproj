@@ -104,17 +104,11 @@
   <ItemGroup>
     <ClCompile Include="ACEdit.cpp" />
     <ClCompile Include="ACListWnd.cpp" />
-    <ClCompile Include="base64.cpp">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="BugTraqAssociations.cpp" />
     <ClCompile Include="CBase64.cpp" />
     <ClCompile Include="CmdLineParser.cpp" />
     <ClCompile Include="COMError.cpp" />
     <ClCompile Include="CommonAppUtils.cpp" />
-    <ClCompile Include="CSmtp.cpp">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="DebugHelpers.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirFileEnum.cpp" />
@@ -172,8 +166,6 @@
   <ItemGroup>
     <ClInclude Include="ACEdit.h" />
     <ClInclude Include="ACListWnd.h" />
-    <ClInclude Include="base64.h" />
-    <ClInclude Include="CSmtp.h" />
     <ClInclude Include="DirFileEnum.h" />
     <ClInclude Include="Hooks.h" />
     <ClInclude Include="HwSMTP.h" />

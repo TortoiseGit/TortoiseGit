@@ -27,9 +27,6 @@
     <ClCompile Include="ACListWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="base64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BugTraqAssociations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,9 +40,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommonAppUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSmtp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DebugHelpers.cpp">
@@ -207,12 +201,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ACListWnd.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="base64.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSmtp.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="DirFileEnum.h">
