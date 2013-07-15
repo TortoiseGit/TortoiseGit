@@ -9142,7 +9142,7 @@ msgid "Version 1"
 msgstr ""
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
+msgid "Version 1 (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (72, 1645)
@@ -9150,7 +9150,7 @@ msgid "Version 2 (Base)"
 msgstr ""
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
+msgid "Version 2 (Base) (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (1075)
