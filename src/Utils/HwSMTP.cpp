@@ -972,17 +972,17 @@ CString FormatDateTime (COleDateTime &DateTime, LPCTSTR /*pFormat*/)
 	}
 
 	TCHAR *weeks[]={_T("Sun"),_T("Mon"),_T("Tue"),_T("Wen"),_T("Thu"),_T("Fri"),_T("Sat")};
-	TCHAR *month[]={_T("JAN"),_T("FEB"),_T("MAR"),_T("APR"),
-					_T("MAY"),_T("JUN"),_T("JUL"),_T("AUG"),
-					_T("SEP"),_T("OCT"),_T("NOV"),_T("DEC")};
+	TCHAR *month[]={_T("Jan"),_T("Feb"),_T("Mar"),_T("Apr"),
+					_T("May"),_T("Jun"),_T("Jul"),_T("Aug"),
+					_T("Sep"),_T("Oct"),_T("Nov"),_T("Dec")};
 
 	TIME_ZONE_INFORMATION stTimeZone;
 	GetTimeZoneInformation(&stTimeZone);
 
 	CString strDate;
-	strDate.Format(_T("%s, %d %s %02d %d:%d:%d %c%04d")
+	strDate.Format(_T("%s, %d %s %d %02d:%02d:%02d %c%04d")
 		,weeks[ud.st.wDayOfWeek],
-		ud.st.wDay,month[ud.st.wMonth-1],ud.st.wYear%100,ud.st.wHour,
+		ud.st.wDay,month[ud.st.wMonth-1],ud.st.wYear,ud.st.wHour,
 		ud.st.wMinute,ud.st.wSecond,
 		stTimeZone.Bias>0?_T('-'):_T('+'),
 		abs(stTimeZone.Bias*10/6)
