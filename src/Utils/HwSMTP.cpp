@@ -425,7 +425,7 @@ BOOL CHwSMTP::SendEmail()
 		return FALSE;
 	}
 	// 发送邮件主题
-	if ( !SendSubject() )
+	if (!SendSubject(hostname))
 	{
 		return FALSE;
 	}
@@ -531,7 +531,7 @@ BOOL CHwSMTP::SendHead()
 	return TRUE;
 }
 
-BOOL CHwSMTP::SendSubject()
+BOOL CHwSMTP::SendSubject(const CString &hostname)
 {
 	CString csSubject;
 	csSubject += _T("Date: ");
@@ -559,6 +559,25 @@ BOOL CHwSMTP::SendSubject()
 	CString m_csToList;
 
 	csSubject += FormatString ( _T("Subject: %s\r\n"), m_csSubject );
+
+	CString m_ListID;
+	GUID guid;
+	HRESULT hr = CoCreateGuid(&guid);
+	if (hr == S_OK)
+	{
+		RPC_WSTR guidStr;
+		if (UuidToString(&guid, &guidStr) == RPC_S_OK)
+		{
+			m_ListID = (LPTSTR)guidStr;
+			RpcStringFree(&guidStr);
+		}
+	}
+	if (m_ListID.IsEmpty())
+	{
+		m_csLastError = _T("Could not generate Message-ID");
+		return FALSE;
+	}
+	csSubject += FormatString( _T("Message-ID: <%s@%s>\r\n"), m_ListID, hostname);
 
 	csSubject += FormatString ( _T("X-Mailer: TortoiseGit\r\nMIME-Version: 1.0\r\nContent-Type: %s\r\n\r\n"),
 		m_csMIMEContentType );

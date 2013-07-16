@@ -87,7 +87,7 @@ protected:
 	void GetNameAddress(CString &in, CString &name,CString &address);
 
 private:
-	BOOL SendSubject();
+	BOOL SendSubject(const CString &hostname);
 	CString m_StrCC;
 	BOOL SendHead();
 	BOOL auth();
