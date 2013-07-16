@@ -543,7 +543,8 @@ BOOL CHwSMTP::SendSubject()
 	csSubject += _T("\r\n");
 	csSubject += FormatString ( _T("From: %s\r\n"), this->m_csAddrFrom);
 
-	csSubject += FormatString ( _T("CC: %s\r\n"), this->m_StrCC);
+	if (!m_StrCC.IsEmpty())
+		csSubject += FormatString ( _T("CC: %s\r\n"), this->m_StrCC);
 
 	if(m_csSender.IsEmpty())
 		m_csSender =  this->m_csAddrFrom;
