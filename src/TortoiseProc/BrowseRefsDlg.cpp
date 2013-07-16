@@ -900,6 +900,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bAddSeparator = false;
 		if (m_bHasWC)
 		{
+			CString format, str;
+			if (selectedLeafs[0]->GetRefName() != _T("refs/heads/") + g_Git.GetCurrentBranch())
+			{
+				format.LoadString(IDS_LOG_POPUP_MERGEREV);
+				str.Format(format, g_Git.GetCurrentBranch());
+				popupMenu.AppendMenuIcon(eCmd_Merge, str, IDI_MERGE);
+			}
 			popupMenu.AppendMenuIcon(eCmd_Switch, CString(MAKEINTRESOURCE(IDS_SWITCH_TO_THIS)), IDI_SWITCH);
 			popupMenu.AppendMenu(MF_SEPARATOR);
 		}
@@ -1083,6 +1090,12 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CDeleteRemoteTagDlg deleteRemoteTagDlg;
 			deleteRemoteTagDlg.m_sRemote = remoteName;
 			deleteRemoteTagDlg.DoModal();
+		}
+		break;
+	case eCmd_Merge:
+		{
+			CString ref = selectedLeafs[0]->GetRefName();
+			CAppUtils::Merge(&ref);
 		}
 		break;
 	case eCmd_Switch:

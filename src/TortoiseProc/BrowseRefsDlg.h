@@ -91,6 +91,7 @@ public:
 		eCmd_Diff,
 		eCmd_Fetch,
 		eCmd_Switch,
+		eCmd_Merge,
 		eCmd_Rename,
 		eCmd_RepoBrowser,
 		eCmd_DeleteRemoteTag,
