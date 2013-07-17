@@ -16,9 +16,9 @@ You only have to do this once.
 
 \subsection Requirements1 First, you need to install the compiler package.
 
--# You need VS2012 Professional with Update 1 (or at least VS 2010 Professional) to allow
+-# You need VS2012 Professional with Update 3 (or at least VS 2010 Professional) to allow
    building of the full TortoiseGit package. 
-   If you don't have the Update 1 installed for VS2012 you cannot build
+   If you don't have the Update 3 installed for VS2012 you cannot build
    binaries which run on Windows XP.
    This is the recommended option, but it is not free :-(
    If you want to build the msi make sure the "Tools for Redistributing
