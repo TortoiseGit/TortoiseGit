@@ -181,7 +181,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	return 0;
 }
 
-int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,git_wc_status_kind *status,__int64 time,FIll_STATUS_CALLBACK callback,void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
+int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, git_wc_status_kind *status, __int64 time, FILL_STATUS_CALLBACK callback, void *pData, CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
 	if(status)
 	{
@@ -259,7 +259,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir,const CString &pathorg,gi
 
 int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git_wc_status_kind *status,
 							 BOOL IsFull, BOOL /*IsRecursive*/,
-							 FIll_STATUS_CALLBACK callback,void *pData,
+							 FILL_STATUS_CALLBACK callback, void *pData,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
 	int result;
@@ -415,7 +415,7 @@ int CGitIndexFileMap::LoadIndex(const CString &gitdir)
 }
 
 int CGitIndexFileMap::GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind *status,BOOL IsFull, BOOL IsRecursive,
-									FIll_STATUS_CALLBACK callback,void *pData,
+									FILL_STATUS_CALLBACK callback, void *pData,
 									CGitHash *pHash,
 									bool isLoadUpdatedIndex, bool * assumeValid, bool * skipWorktree)
 {

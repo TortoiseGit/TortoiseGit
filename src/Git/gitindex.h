@@ -45,13 +45,13 @@ public:
 	~CGitIndexList();
 
 	int ReadIndex(CString file);
-	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull=false, BOOL IsRecursive=false, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL,CGitHash *pHash=NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
+	int GetStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
 protected:
 	bool m_bCheckContent;
 	CComCriticalSection m_critRepoSec;
 	git_repository * repository;
-	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL, CGitHash *pHash = NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
-	int GetDirStatus(const CString &gitdir,const CString &path, git_wc_status_kind * status,__int64 time,FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,CGitHash *pHash=NULL);
+	int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, __int64 time, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, CGitHash *pHash = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	int GetDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status,__int64 time, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,CGitHash *pHash = nullptr);
 };
 
 typedef std::tr1::shared_ptr<CGitIndexList> SHARED_INDEX_PTR;
@@ -103,7 +103,7 @@ public:
 	}
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,
 							BOOL IsFull=false, BOOL IsRecursive=false,
-							FIll_STATUS_CALLBACK callback=NULL,
+							FILL_STATUS_CALLBACK callback = nullptr,
 							void *pData=NULL,CGitHash *pHash=NULL,
 							bool isLoadUpdatedIndex = true, bool * assumeValid = NULL, bool * skipWorktree = NULL);
 
@@ -199,7 +199,7 @@ public:
 	}
 
 	int GetFileStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false,
-						FIll_STATUS_CALLBACK callback=NULL,void *pData=NULL,
+						FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr,
 						bool isLoaded=false);
 	bool CheckHeadAndUpdate(const CString &gitdir, bool readTree = true);
 	int IsUnderVersionControl(const CString &gitdir, const CString &path, bool isDir, bool *isVersion);

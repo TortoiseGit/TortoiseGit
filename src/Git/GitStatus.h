@@ -85,7 +85,7 @@ typedef struct git_wc_status2_t
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FIll_STATUS_CALLBACK)(const CString &path, git_wc_status_kind status, bool isDir, void *pdata, bool assumeValid, bool skipWorktree);
+typedef BOOL (*FILL_STATUS_CALLBACK)(const CString &path, git_wc_status_kind status, bool isDir, void *pdata, bool assumeValid, bool skipWorktree);
 
 /**
  * \ingroup Git
@@ -95,9 +95,9 @@ class GitStatus
 {
 public:
 
-	static int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status,BOOL IsFull=false, BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback = NULL, void *pData = NULL, bool * assumeValid = NULL, bool * skipWorktree = NULL);
-	static int GetDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
-	static int EnumDirStatus(const CString &gitdir,const CString &path,git_wc_status_kind * status,BOOL IsFull=false,  BOOL IsRecursive=false, BOOL isIgnore=true, FIll_STATUS_CALLBACK callback=NULL, void *pData=NULL);
+	static int GetFileStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr, bool * assumeValid = nullptr, bool * skipWorktree = nullptr);
+	static int GetDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
+	static int EnumDirStatus(const CString &gitdir, const CString &path, git_wc_status_kind * status, BOOL IsFull = false, BOOL IsRecursive = false, BOOL isIgnore = true, FILL_STATUS_CALLBACK callback = nullptr, void *pData = nullptr);
 	static int GetFileList(const CString &gitdir, const CString &path, std::vector<CGitFileName> &list);
 	static bool HasIgnoreFilesChanged(const CString &gitdir, const CString &subpaths);
 	static int LoadIgnoreFile(const CString &gitdir, const CString &subpaths);

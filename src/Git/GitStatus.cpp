@@ -347,7 +347,7 @@ int GitStatus::LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int 
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 
-int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData, bool * assumeValid, bool * skipWorktree)
+int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, git_wc_status_kind * status,BOOL IsFull, BOOL /*IsRecursive*/,BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData, bool * assumeValid, bool * skipWorktree)
 {
 	try
 	{
@@ -526,7 +526,7 @@ int GitStatus::GetFileList(const CString &gitdir, const CString &subpath, std::v
 	return 0;
 }
 
-int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc_status_kind * status,BOOL IsFul,  BOOL IsRecursive, BOOL IsIgnore, FIll_STATUS_CALLBACK callback, void *pData)
+int GitStatus::EnumDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
 {
 	try
 	{
@@ -771,7 +771,7 @@ int GitStatus::EnumDirStatus(const CString &gitdir,const CString &subpath,git_wc
 	return 0;
 
 }
-int GitStatus::GetDirStatus(const CString &gitdir,const CString &subpath,git_wc_status_kind * status,BOOL IsFul, BOOL IsRecursive,BOOL IsIgnore,FIll_STATUS_CALLBACK callback,void *pData)
+int GitStatus::GetDirStatus(const CString &gitdir, const CString &subpath, git_wc_status_kind * status, BOOL IsFul, BOOL IsRecursive, BOOL IsIgnore, FILL_STATUS_CALLBACK callback, void *pData)
 {
 	try
 	{
