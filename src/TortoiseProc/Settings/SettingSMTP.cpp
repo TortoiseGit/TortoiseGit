@@ -29,7 +29,7 @@ CSettingSMTP::~CSettingSMTP()
 void CSettingSMTP::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_STMP_SERVER, m_Server);
+	DDX_Text(pDX, IDC_SMTP_SERVER, m_Server);
 	DDX_Text(pDX, IDC_SMTP_PORT, m_Port);
 	DDX_Text(pDX, IDC_SEND_ADDRESS, m_From);
 	DDX_Check(pDX, IDC_SMTP_AUTH, m_bAuth);

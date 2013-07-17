@@ -1109,7 +1109,7 @@
 #define IDC_REP_BROWSE                  1583
 #define IDC_SEND_ADDRESS                1583
 #define IDC_BUTTON_PATH_BROWSE          1584
-#define IDC_STMP_SERVER                 1584
+#define IDC_SMTP_SERVER                 1584
 #define IDC_GROUP_SUBMODULE             1585
 #define IDC_SMTP_AUTH                   1585
 #define IDC_BRANCH_CHECK                1586
