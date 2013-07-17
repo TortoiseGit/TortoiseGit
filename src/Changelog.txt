@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #1831: Allow Origin Remote Renaming on Clone
+ * Fixed issue #1839: Conflict dialog does not allow resolving multiple or all conflicts with the same option
 
 = Release 1.8.4.0 =
 Released: 2013-07-09
