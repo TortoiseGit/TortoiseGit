@@ -41,7 +41,7 @@ CSetMainPage::CSetMainPage()
 	, m_dwLanguage(0)
 {
 	m_regLanguage = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
-	CString temp=CRegString(REG_MSYSGIT_INSTALL,_T(""),FALSE,HKEY_LOCAL_MACHINE);;
+	CString temp = CRegString(REG_MSYSGIT_INSTALL, _T(""), FALSE, HKEY_LOCAL_MACHINE);
 	if(!temp.IsEmpty())
 		temp+=_T("bin");
 	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH,temp,FALSE);
@@ -72,7 +72,6 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetMainPage, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_LANGUAGECOMBO, OnModified)
 //	ON_EN_CHANGE(IDC_TEMPEXTENSIONS, OnModified)
-	ON_BN_CLICKED(IDC_EDITCONFIG, OnBnClickedEditconfig)
 	ON_BN_CLICKED(IDC_CHECKNEWERVERSION, OnModified)
 	ON_BN_CLICKED(IDC_CHECKNEWERBUTTON, OnBnClickedChecknewerbutton)
 	ON_BN_CLICKED(IDC_SOUNDS, OnBnClickedSounds)
@@ -221,18 +220,6 @@ BOOL CSetMainPage::OnApply()
 			OnHelp();
 		return 0;
 	}
-}
-
-void CSetMainPage::OnBnClickedEditconfig()
-{
-#if 0
-	TCHAR buf[MAX_PATH];
-	SVN::EnsureConfigFile();
-	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
-	CString path = buf;
-	path += _T("\\Subversion\\config");
-	CAppUtils::StartTextViewer(path);
-#endif
 }
 
 void CSetMainPage::OnBnClickedChecknewerbutton()
