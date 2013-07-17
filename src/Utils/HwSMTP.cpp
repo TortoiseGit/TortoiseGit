@@ -300,22 +300,10 @@ BOOL CHwSMTP::SendBuffer(char *buff,int size)
 // 利用socket发送数据，数据长度不能超过10M
 BOOL CHwSMTP::Send(const CString &str )
 {
-	if ( !m_bConnected )
-	{
-		m_csLastError.Format ( _T("Didn't connect") );
-		return FALSE;
-	}
-
 	CMultiByteString cbsData ( str );
 
 	TRACE ( _T("Send : %s\r\n"), cbsData.GetBuffer() );
-	if ( m_SendSock.Send ( cbsData.GetBuffer(), cbsData.GetLength() ) != cbsData.GetLength() )
-	{
-		m_csLastError.Format ( _T("Socket send data failed") );
-		return FALSE;
-	}
-
-	return TRUE;
+	return SendBuffer(cbsData.GetBuffer(), cbsData.GetLength());
 }
 
 BOOL CHwSMTP::SendEmail()
