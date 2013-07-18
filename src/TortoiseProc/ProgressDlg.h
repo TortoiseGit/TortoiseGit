@@ -94,7 +94,6 @@ private:
 
 	void					OnCancel();
 	afx_msg void			OnClose();
-	void					KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
 	CGitByteArray			m_Databuf;
 	virtual CString Convert2UnionCode(char *buff, int size=-1)
@@ -118,6 +117,8 @@ public:
 									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
 
 	static UINT	RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
+
+	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
 	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
 
