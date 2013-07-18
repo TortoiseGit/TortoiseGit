@@ -50,6 +50,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_BufStart = 0;
 	m_pThread = NULL;
 	m_bAbort = false;
+	m_bDone = false;
 	m_GitCmdStatus = -1;
 	m_startTick = GetTickCount();
 }
@@ -1123,6 +1124,7 @@ void CSyncDlg::OnCbnEditchangeComboboxex()
 UINT CSyncDlg::ProgressThread()
 {
 	m_startTick = GetTickCount();
+	m_bDone = false;
 	CProgressDlg::RunCmdList(this, m_GitCmdList, true, NULL, &this->m_bAbort, &this->m_Databuf);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
@@ -1153,7 +1155,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_Databuf.clear();
 		m_Databuf.m_critSec.Unlock();
 
-		//m_bDone = true;
+		m_bDone = true;
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
 		//this->DialogEnableWindow(IDOK,TRUE);
@@ -1287,6 +1289,33 @@ void CSyncDlg::OnOK()
 	SaveHistory();
 	m_regAutoLoadPutty = this->m_bAutoLoadPuttyKey;
 	__super::OnOK();
+}
+
+void CSyncDlg::OnCancel()
+{
+	m_bAbort = true;
+	if (m_bDone)
+	{
+		CResizableStandAloneDialog::OnCancel();
+		return;
+	}
+
+	if (g_Git.m_CurrentGitPi.hProcess)
+	{
+		if (::GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0))
+		{
+			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess, 10000);
+		}
+		else
+		{
+			GetLastError();
+		}
+
+		CProgressDlg::KillProcessTree(g_Git.m_CurrentGitPi.dwProcessId);
+	}
+
+	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+	CResizableStandAloneDialog::OnCancel();
 }
 
 void CSyncDlg::OnBnClickedButtonSubmodule()

@@ -143,6 +143,7 @@ protected:
 	std::vector<CString> m_GitCmdList;
 
 	bool			m_bAbort;
+	bool			m_bDone;
 	DWORD			m_startTick;
 
 	int				m_GitCmdStatus;
@@ -210,6 +211,7 @@ protected:
 	afx_msg void OnBnClickedButtonCommit();
 
 	virtual void OnOK();
+	void	OnCancel();
 	void	Refresh();
 
 	afx_msg void OnBnClickedButtonSubmodule();
