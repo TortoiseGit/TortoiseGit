@@ -4198,8 +4198,12 @@ msgstr ""
 msgid "First known &bad:"
 msgstr ""
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr ""
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
 msgstr ""
 
 #. Resource IDs: (1315)
@@ -4676,12 +4680,16 @@ msgstr ""
 msgid "ID:32794:V C +R"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr ""
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
