@@ -76,7 +76,6 @@ public:
 			LPCTSTR lpszCharSet,						// 字符集类型，例如：繁体中文这里应输入"big5"，简体中文时输入"gb2312"
 			CStringArray *pStrAryAttach=NULL,
 			LPCTSTR pStrAryCC=NULL,
-			UINT nSmtpSrvPort=25,
 			LPCTSTR pSend = NULL
 		);
 	CHwSMTP();

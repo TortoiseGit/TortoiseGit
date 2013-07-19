@@ -113,7 +113,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 		sender.Format(_T("%s <%s>"), FromName, FromMail);
 
 		CHwSMTP mail;
-		if (mail.SendSpeedEmail(sender, To, subject, body, NULL, &attachments, CC, 25, sender))
+		if (mail.SendSpeedEmail(sender, To, subject, body, NULL, &attachments, CC, sender))
 			return 0;
 		else
 		{

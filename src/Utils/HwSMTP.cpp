@@ -77,7 +77,6 @@ BOOL CHwSMTP::SendSpeedEmail
 			LPCTSTR	lpszCharSet,
 			CStringArray *pStrAryAttach,
 			LPCTSTR	pStrAryCC,
-			UINT	/*nSmtpSrvPort*/,
 			LPCTSTR	pSend
 		)
 {
