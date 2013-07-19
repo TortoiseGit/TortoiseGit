@@ -1938,10 +1938,6 @@ msgstr ""
 msgid "Basic Info"
 msgstr ""
 
-#. Resource IDs: (69)
-msgid "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
-msgstr ""
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr ""
@@ -3278,6 +3274,10 @@ msgstr ""
 
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -5325,10 +5325,6 @@ msgstr ""
 msgid "Log messages (Show log dialog)"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Login:"
-msgstr ""
-
 #. Resource IDs: (238)
 #, c-format
 msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
@@ -5341,6 +5337,10 @@ msgstr ""
 
 #. Resource IDs: (16973)
 msgid "Lum"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "MAPI"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6357,10 +6357,6 @@ msgstr ""
 msgid "Port :"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Port:"
-msgstr ""
-
 #. Resource IDs: (569)
 msgid "Post-Commit Hook"
 msgstr ""
@@ -7170,12 +7166,8 @@ msgstr ""
 msgid "SHA-1"
 msgstr ""
 
-#. Resource IDs: (1585)
-msgid "SMTP Server requires authentication"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "SMTP Server:"
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
 msgstr ""
 
 #. Resource IDs: (1081)
@@ -7518,10 +7510,6 @@ msgstr ""
 
 #. Resource IDs: (1557)
 msgid "Set commit &date"
-msgstr ""
-
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
 msgstr ""
 
 #. Resource IDs: (86)
@@ -8954,10 +8942,6 @@ msgstr ""
 msgid "Use HTTP path component"
 msgstr ""
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr ""
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr ""
@@ -9642,6 +9626,10 @@ msgstr ""
 
 #. Resource IDs: (58116)
 msgid "dummy"
+msgstr ""
+
+#. Resource IDs: (1580)
+msgid "eMail settings"
 msgstr ""
 
 #. Resource IDs: (79)

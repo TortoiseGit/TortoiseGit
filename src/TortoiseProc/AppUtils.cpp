@@ -2055,7 +2055,7 @@ bool CAppUtils::SendPatchMail(CTGitPathList &list,bool autoclose)
 				//progDlg.SetProjectProperties(props);
 		progDlg.SetItemCount(dlg.m_PathList.GetCount());
 
-		CSendMailPatch sendMailPatch(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine, !!dlg.m_bUseMAPI);
+		CSendMailPatch sendMailPatch(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine);
 		progDlg.SetSendMailOption(&sendMailPatch);
 
 		progDlg.DoModal();
@@ -2650,7 +2650,7 @@ bool CAppUtils::RequestPull(CString endrevision, CString repositoryUrl)
 				progDlg.SetPathList(dlg.m_PathList);
 				progDlg.SetItemCount(dlg.m_PathList.GetCount());
 
-				CSendMailCombineable sendMailCombineable(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine, !!dlg.m_bUseMAPI);
+				CSendMailCombineable sendMailCombineable(dlg.m_To, dlg.m_CC, dlg.m_Subject, !!dlg.m_bAttachment, !!dlg.m_bCombine);
 				progDlg.SetSendMailOption(&sendMailCombineable);
 
 				progDlg.DoModal();

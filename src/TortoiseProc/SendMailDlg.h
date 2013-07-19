@@ -42,7 +42,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	DECLARE_MESSAGE_MAP()
 
 	void UpdateSubject();
@@ -52,7 +51,6 @@ protected:
 	CACEdit			m_ctrlCC;
 	CACEdit			m_ctrlTO;
 	CRegHistory		m_AddressReg;
-	CToolTipCtrl	m_ToolTip;
 
 public:
 	CString			m_To;
@@ -61,7 +59,6 @@ public:
 	BOOL			m_bCustomSubject;
 	BOOL			m_bAttachment;
 	BOOL			m_bCombine;
-	BOOL			m_bUseMAPI;
 	CTGitPathList	m_PathList;
 
 private:
@@ -69,7 +66,6 @@ private:
 
 	CRegDWORD		m_regAttach;
 	CRegDWORD		m_regCombine;
-	CRegDWORD		m_regUseMAPI;
 
 	std::map<int,CPatch> m_MapPatch;
 
@@ -78,5 +74,5 @@ private:
 	afx_msg void OnLvnItemchangedSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkSendmailPatchs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnEnChangeSendmailSubject();
-	afx_msg void OnBnClickedSendmailMapi();
+	afx_msg void OnStnClickedSendmailSetup();
 };

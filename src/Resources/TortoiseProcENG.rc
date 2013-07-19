@@ -415,18 +415,8 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Network::Email"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_SMTP_SERVER,68,11,151,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_SMTP_PORT,247,11,38,14,ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_SEND_ADDRESS,68,32,217,14,ES_AUTOHSCROLL
-    CONTROL         "SMTP Server requires authentication",IDC_SMTP_AUTH,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,56,277,10
-    EDITTEXT        IDC_SMTP_USER,92,73,193,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_SMTP_PASSWORD,92,93,193,14,ES_PASSWORD | ES_AUTOHSCROLL
-    LTEXT           "SMTP Server:",IDC_STATIC,8,14,56,8
-    LTEXT           "Port:",IDC_STATIC,223,15,19,8
-    LTEXT           "Login:",IDC_STATIC,51,76,20,8
-    LTEXT           "Password:",IDC_STATIC,50,95,34,8
-    LTEXT           "From",IDC_STATIC,9,36,47,8
+    LTEXT           "Delivery:",IDC_STATIC,7,9,47,8
+    COMBOBOX        IDC_SMTPDELIVERYCOMBO,69,7,216,64,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_SVNPROGRESS DIALOGEX 0, 0, 434, 165
@@ -1484,8 +1474,7 @@ BEGIN
     EDITTEXT        IDC_SENDMAIL_SUBJECT,64,56,300,14,ES_AUTOHSCROLL
     CONTROL         "Patch As Attachment",IDC_SENDMAIL_ATTACHMENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,88,96,10
     CONTROL         "Combine One Mail",IDC_SENDMAIL_COMBINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,114,88,84,10
-    CONTROL         "Use MAPI",IDC_SENDMAIL_MAPI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,202,88,79,10
-    LTEXT           "Set up SMTP Server",IDC_SENDMAIL_SETUP,285,88,80,8,NOT WS_VISIBLE
+    LTEXT           "eMail settings",IDC_SENDMAIL_SETUP,285,88,80,8,SS_NOTIFY | WS_TABSTOP
     CONTROL         "",IDC_SENDMAIL_PATCHS,"SysListView32",LVS_LIST | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,107,364,92
     DEFPUSHBUTTON   "Send",IDOK,197,208,58,14
     PUSHBUTTON      "Cancel",IDCANCEL,263,208,50,14
@@ -3119,6 +3108,8 @@ BEGIN
     IDS_CHERRYPICKFAILEDSKIP "Cherry-pick failed! Skip this commit?"
     IDS_COPY_REF_NAMES      "Copy ref names"
     IDS_PROC_GITCONFIG_VIEWTGITCONFIG "View .tgitconfig"
+    IDS_SMTP_MAPI           "MAPI"
+    IDS_SMTP_DIRECTLY       "SMTP, directly to destination server"
 END
 
 STRINGTABLE
@@ -3167,8 +3158,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROC_SENDMAIL_WRAPTOOLTIP 
-                            "Be warned that email clients tend to automatic wrap lines.\r\nRecommendation: Use attachments."
     IDS_STATUSLIST_RESTOREPATH 
                             "Do you really want to restore the copy? You will lose all changes that you have done after creating the copy."
     IDS_RESTOREBUTTON       "&Restore"

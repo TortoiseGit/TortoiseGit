@@ -22,20 +22,17 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingSMTP.h"
+#include "MailMsg.h"
 
 // CSettingSMTP dialog
 
-IMPLEMENT_DYNAMIC(CSettingSMTP, CPropertyPage)
+IMPLEMENT_DYNAMIC(CSettingSMTP, ISettingsPropPage)
 
 CSettingSMTP::CSettingSMTP()
-	: CPropertyPage(CSettingSMTP::IDD)
-	, m_Server(_T(""))
-	, m_Port(0)
-	, m_From(_T(""))
-	, m_bAuth(FALSE)
-	, m_User(_T(""))
-	, m_Password(_T(""))
+	: ISettingsPropPage(CSettingSMTP::IDD)
+	, m_regDeliveryType(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 0)
 {
+	m_dwDeliveryType = m_regDeliveryType;
 }
 
 CSettingSMTP::~CSettingSMTP()
@@ -45,16 +42,47 @@ CSettingSMTP::~CSettingSMTP()
 void CSettingSMTP::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_SMTP_SERVER, m_Server);
-	DDX_Text(pDX, IDC_SMTP_PORT, m_Port);
-	DDX_Text(pDX, IDC_SEND_ADDRESS, m_From);
-	DDX_Check(pDX, IDC_SMTP_AUTH, m_bAuth);
-	DDX_Text(pDX, IDC_SMTP_USER, m_User);
-	DDX_Text(pDX, IDC_SMTP_PASSWORD, m_Password);
+	DDX_Control(pDX, IDC_SMTPDELIVERYCOMBO, m_SMTPDeliveryTypeCombo);
 }
 
-
 BEGIN_MESSAGE_MAP(CSettingSMTP, CPropertyPage)
+	ON_CBN_SELCHANGE(IDC_SMTPDELIVERYCOMBO, OnModifiedDeliveryCombo)
 END_MESSAGE_MAP()
 
-// CSettingSMTP message handlers
+BOOL CSettingSMTP::OnInitDialog()
+{
+	ISettingsPropPage::OnInitDialog();
+
+	m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_DIRECTLY)));
+	CString mailCient;
+	CMailMsg::DetectMailClient(mailCient);
+	if (!mailCient.IsEmpty())
+		m_SMTPDeliveryTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_SMTP_MAPI)));
+
+	if ((int)m_dwDeliveryType >= m_SMTPDeliveryTypeCombo.GetCount())
+		m_dwDeliveryType = 0;
+
+	m_SMTPDeliveryTypeCombo.SetCurSel(m_dwDeliveryType);
+
+	this->UpdateData(FALSE);
+
+	return TRUE;
+}
+
+void CSettingSMTP::OnModifiedDeliveryCombo()
+{
+	m_dwDeliveryType = m_SMTPDeliveryTypeCombo.GetCurSel();
+	SetModified();
+}
+
+BOOL CSettingSMTP::OnApply()
+{
+	CWaitCursor wait;
+	this->UpdateData();
+
+	m_regDeliveryType = m_dwDeliveryType;
+
+	SetModified(FALSE);
+
+	return ISettingsPropPage::OnApply();
+}

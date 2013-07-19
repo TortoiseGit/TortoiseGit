@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,6 +44,7 @@
 #include "SettingsBugtraqConfig.h"
 #include "SetExtMenu.h"
 #include "SettingsAdvanced.h"
+#include "SettingSMTP.h"
 
 using namespace TreePropSheet;
 
@@ -73,6 +74,7 @@ private:
 private:
 	CSetMainPage *						m_pMainPage;
 	CSetProxyPage *						m_pProxyPage;
+	CSettingSMTP *						m_pSMTPPage;
 	CSetOverlayPage *					m_pOverlayPage;
 	CSetOverlayIcons *					m_pOverlaysPage;
 	CSetOverlayHandlers *				m_pOverlayHandlersPage;

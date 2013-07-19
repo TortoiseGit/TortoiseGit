@@ -24,7 +24,7 @@
 class CSendMailPatch : public CSendMailCombineable
 {
 public:
-	CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI);
+	CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine);
 	~CSendMailPatch(void);
 
 protected:

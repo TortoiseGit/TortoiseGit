@@ -537,6 +537,13 @@ void CTortoiseProcApp::CheckUpgrade()
 		}
 	}
 
+	if (lVersion <= 0x01080401)
+	{
+		if (CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"), FALSE) == TRUE)
+			CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType")) = 1;
+		CRegStdDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI")).removeValue();
+	}
+
 	if (lVersion <= 0x01080202)
 	{
 		CSoundUtils::RegisterTGitSounds();

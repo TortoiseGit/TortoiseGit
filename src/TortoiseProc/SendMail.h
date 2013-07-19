@@ -25,17 +25,16 @@
 class CSendMail
 {
 protected:
-	static int SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext);
-	static int SendMail(const CTGitPath &item, CGitProgressList * instance, CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI);
+	static int SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, CString *errortext);
+	static int SendMail(const CTGitPath &item, CGitProgressList * instance, CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments);
 	CString	m_sSenderName;
 	CString	m_sSenderMail;
 	CString	m_sTo;
 	CString	m_sCC;
-	bool	m_bUseMAPI;
 	bool	m_bAttachment;
 
 public:
-	CSendMail(CString &To, CString &CC, bool m_bAttachment, bool useMAPI);
+	CSendMail(CString &To, CString &CC, bool m_bAttachment);
 	~CSendMail(void);
 	virtual int Send(CTGitPathList &list, CGitProgressList * instance) = 0;
 };
@@ -43,7 +42,7 @@ public:
 class CSendMailCombineable : public CSendMail
 {
 public:
-	CSendMailCombineable(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI);
+	CSendMailCombineable(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine);
 	~CSendMailCombineable(void);
 
 	virtual int Send(CTGitPathList &list, CGitProgressList * instance);

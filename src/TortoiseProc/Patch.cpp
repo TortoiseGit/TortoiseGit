@@ -21,8 +21,8 @@
 #include "stdafx.h"
 #include "Patch.h"
 
-CSendMailPatch::CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI)
-	: CSendMailCombineable(To, CC, subject, bAttachment, bCombine, useMAPI)
+CSendMailPatch::CSendMailPatch(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine)
+	: CSendMailCombineable(To, CC, subject, bAttachment, bCombine)
 {
 }
 
@@ -49,7 +49,7 @@ int CSendMailPatch::SendAsSingleMail(CTGitPath &path, CGitProgressList * instanc
 	else
 		body = patch.m_strBody;
 
-	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, patch.m_Subject, body, attachments, m_bUseMAPI);
+	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, patch.m_Subject, body, attachments);
 }
 
 int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance)
@@ -85,7 +85,7 @@ int CSendMailPatch::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * i
 			}
 		}
 	}
-	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments, m_bUseMAPI);
+	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);
 }
 
 CPatch::CPatch()

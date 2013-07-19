@@ -26,13 +26,12 @@
 
 class CAppUtils;
 
-CSendMail::CSendMail(CString &To, CString &CC, bool bAttachment, bool useMAPI)
+CSendMail::CSendMail(CString &To, CString &CC, bool bAttachment)
 {
 	m_sSenderName = g_Git.GetUserName();
 	m_sSenderMail = g_Git.GetUserEmail();
 	m_sTo = To;
 	m_sCC = CC;
-	m_bUseMAPI = useMAPI;
 	m_bAttachment = bAttachment;
 }
 
@@ -40,7 +39,7 @@ CSendMail::~CSendMail(void)
 {
 }
 
-int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI)
+int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments)
 {
 	ASSERT(instance);
 	int retry = 0;
@@ -55,7 +54,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 		instance->Notify(item, git_wc_notify_sendmail);
 
 		CString error;
-		if (SendMail(FromName, FromMail, To, CC, subject, body, attachments, useMAPI, &error) == 0)
+		if (SendMail(FromName, FromMail, To, CC, subject, body, attachments, &error) == 0)
 			return 0;
 
 		instance->ReportError(error);
@@ -75,9 +74,9 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 	return -1;
 }
 
-int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, bool useMAPI, CString *errortext)
+int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, CString *errortext)
 {
-	if (useMAPI)
+	if (CRegDWORD(_T("Software\\TortoiseGit\\Mailserver\\DeliveryType"), 1))
 	{
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
@@ -125,8 +124,8 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 	}
 }
 
-CSendMailCombineable::CSendMailCombineable(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine, bool useMAPI)
-	: CSendMail(To, CC, bAttachment, useMAPI)
+CSendMailCombineable::CSendMailCombineable(CString &To, CString &CC, CString &subject, bool bAttachment, bool bCombine)
+	: CSendMail(To, CC, bAttachment)
 	, m_sSubject(subject)
 	, m_bCombine(bCombine)
 {
@@ -191,7 +190,7 @@ int CSendMailCombineable::SendAsSingleMail(CTGitPath &path, CGitProgressList * i
 		return -2;
 	}
 
-	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments, m_bUseMAPI);
+	return SendMail(path, instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);
 }
 
 int CSendMailCombineable::SendAsCombinedMail(CTGitPathList &list, CGitProgressList * instance)
@@ -218,5 +217,5 @@ int CSendMailCombineable::SendAsCombinedMail(CTGitPathList &list, CGitProgressLi
 			body += _T("\n");
 		}
 	}
-	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments, m_bUseMAPI);
+	return SendMail(CTGitPath(), instance, m_sSenderName, m_sSenderMail, m_sTo, m_sCC, m_sSubject, body, attachments);
 }

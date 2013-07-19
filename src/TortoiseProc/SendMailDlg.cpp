@@ -25,7 +25,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
-#include "MailMsg.h"
+
 // CSendMailDlg dialog
 
 IMPLEMENT_DYNAMIC(CSendMailDlg, CResizableStandAloneDialog)
@@ -39,11 +39,9 @@ CSendMailDlg::CSendMailDlg(CWnd* pParent /*=NULL*/)
 
 	, m_regAttach(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Attach"),0)
 	, m_regCombine(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Combine"),0)
-	, m_regUseMAPI(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\UseMAPI"),0)
 {
 	m_bAttachment  = m_regAttach;
 	m_bCombine =     m_regCombine;
-	m_bUseMAPI = m_regUseMAPI;
 	this->m_ctrlList.m_ContextMenuMask &=~ m_ctrlList.GetMenuMask(CPatchListCtrl::MENU_SENDMAIL);
 }
 
@@ -58,7 +56,6 @@ void CSendMailDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SENDMAIL_CC, m_CC);
 	DDX_Check(pDX, IDC_SENDMAIL_ATTACHMENT, m_bAttachment);
 	DDX_Check(pDX, IDC_SENDMAIL_COMBINE, m_bCombine);
-	DDX_Check(pDX, IDC_SENDMAIL_MAPI, m_bUseMAPI);
 	DDX_Control(pDX, IDC_SENDMAIL_PATCHS, m_ctrlList);
 	DDX_Control(pDX,IDC_SENDMAIL_SETUP, this->m_SmtpSetup);
 	DDX_Control(pDX,IDC_SENDMAIL_TO,m_ctrlTO);
@@ -72,17 +69,10 @@ BEGIN_MESSAGE_MAP(CSendMailDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnLvnItemchangedSendmailPatchs)
 	ON_NOTIFY(NM_DBLCLK, IDC_SENDMAIL_PATCHS, &CSendMailDlg::OnNMDblclkSendmailPatchs)
 	ON_EN_CHANGE(IDC_SENDMAIL_SUBJECT, &CSendMailDlg::OnEnChangeSendmailSubject)
-	ON_BN_CLICKED(IDC_SENDMAIL_MAPI, &CSendMailDlg::OnBnClickedSendmailMapi)
+	ON_STN_CLICKED(IDC_SENDMAIL_SETUP, &CSendMailDlg::OnStnClickedSendmailSetup)
 END_MESSAGE_MAP()
 
 // CSendMailDlg message handlers
-
-BOOL CSendMailDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_ToolTip.RelayEvent(pMsg);
-
-	return CDialog::PreTranslateMessage(pMsg);
-}
 
 BOOL CSendMailDlg::OnInitDialog()
 {
@@ -104,7 +94,6 @@ BOOL CSendMailDlg::OnInitDialog()
 
 	AdjustControlSize(IDC_SENDMAIL_ATTACHMENT);
 	AdjustControlSize(IDC_SENDMAIL_COMBINE);
-	AdjustControlSize(IDC_SENDMAIL_MAPI);
 	AdjustControlSize(IDC_SENDMAIL_SETUP);
 
 	EnableSaveRestore(_T("SendMailDlg"));
@@ -112,14 +101,6 @@ BOOL CSendMailDlg::OnInitDialog()
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, m_PathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
-
-	CString mailCient;
-	CMailMsg::DetectMailClient(mailCient);
-	if (mailCient.IsEmpty()) {
-		m_bUseMAPI = false;
-		GetDlgItem(IDC_SENDMAIL_MAPI)->EnableWindow(false);
-		GetDlgItem(IDC_SENDMAIL_MAPI)->SendMessage(BM_SETCHECK, BST_UNCHECKED);
-	}
 
 	m_ctrlCC.Init();
 	m_ctrlTO.Init();
@@ -147,22 +128,10 @@ BOOL CSendMailDlg::OnInitDialog()
 	if (m_PathList.GetCount() == 1)
 		m_ctrlList.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
 
-//	m_ctrlCC.AddSearchString(_T("Tortoisegit-dev@google.com"));
-//	m_ctrlTO.AddSearchString(_T("Tortoisegit-dev@google.com"));
 	this->UpdateData(FALSE);
 	OnBnClickedSendmailCombine();
 
-	//Create the ToolTip control
-	if( !m_ToolTip.Create(this))
-	{
-		TRACE0("Unable to create the ToolTip!");
-	}
-	else
-	{
-		m_ToolTip.SetMaxTipWidth(1024*8); // make multiline tooltips possible
-		m_ToolTip.AddTool(GetDlgItem(IDC_SENDMAIL_MAPI), CString(MAKEINTRESOURCE(IDS_PROC_SENDMAIL_WRAPTOOLTIP)));
-		m_ToolTip.Activate(TRUE);
-	}
+	m_SmtpSetup.SetURL(CString());
 
 	return TRUE;
 }
@@ -218,7 +187,6 @@ void CSendMailDlg::OnBnClickedOk()
 
 	m_regAttach=m_bAttachment;
 	m_regCombine=m_bCombine;
-	m_regUseMAPI=m_bUseMAPI;
 
 	OnOK();
 }
@@ -275,7 +243,7 @@ void CSendMailDlg::OnEnChangeSendmailSubject()
 		GetDlgItem(IDC_SENDMAIL_SUBJECT)->GetWindowText(this->m_Subject);
 }
 
-void CSendMailDlg::OnBnClickedSendmailMapi()
+void CSendMailDlg::OnStnClickedSendmailSetup()
 {
-	this->UpdateData();
+	CCommonAppUtils::RunTortoiseGitProc(_T("/command:settings /page:smtp"));
 }

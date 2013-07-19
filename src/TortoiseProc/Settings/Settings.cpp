@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -48,6 +48,7 @@ void CSettings::AddPropPages()
 	m_pOverlaysPage = new CSetOverlayIcons();
 	m_pOverlayHandlersPage = new CSetOverlayHandlers();
 	m_pProxyPage = new CSetProxyPage();
+	m_pSMTPPage = new CSettingSMTP();
 	m_pProgsDiffPage = new CSettingsProgsDiff();
 	m_pProgsMergePage = new CSettingsProgsMerge();
 	m_pProgsAlternativeEditor = new CSettingsProgsAlternativeEditor();
@@ -76,6 +77,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pOverlaysPage, m_pOverlaysPage->GetIconID());
 	SetPageIcon(m_pOverlayHandlersPage, m_pOverlayHandlersPage->GetIconID());
 	SetPageIcon(m_pProxyPage, m_pProxyPage->GetIconID());
+	SetPageIcon(m_pSMTPPage, m_pSMTPPage->GetIconID());
 	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
 	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
 	SetPageIcon(m_pProgsAlternativeEditor, m_pProgsAlternativeEditor->GetIconID());
@@ -101,6 +103,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pOverlaysPage);
 	AddPage(m_pOverlayHandlersPage);
 	AddPage(m_pProxyPage);
+	AddPage(m_pSMTPPage);
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
 	AddPage(m_pLookAndFeelPage);
@@ -136,6 +139,7 @@ void CSettings::RemovePropPages()
 	delete m_pOverlaysPage;
 	delete m_pOverlayHandlersPage;
 	delete m_pProxyPage;
+	delete m_pSMTPPage;
 	delete m_pProgsDiffPage;
 	delete m_pProgsMergePage;
 	delete m_pProgsAlternativeEditor;
@@ -166,6 +170,7 @@ void CSettings::HandleRestart()
 	restart |= m_pOverlaysPage->GetRestart();
 	restart |= m_pOverlayHandlersPage->GetRestart();
 	restart |= m_pProxyPage->GetRestart();
+	restart |= m_pSMTPPage->GetRestart();
 	restart |= m_pProgsDiffPage->GetRestart();
 	restart |= m_pProgsMergePage->GetRestart();
 	restart |= m_pProgsAlternativeEditor->GetRestart();
@@ -317,6 +322,10 @@ BOOL CSettings::OnInitDialog()
 	else if (this->m_DefaultPage == _T("proxy"))
 	{
 		this->SetActivePage(this->m_pProxyPage);
+	}
+	else if (this->m_DefaultPage == _T("smtp"))
+	{
+		this->SetActivePage(this->m_pSMTPPage);
 	}
 	else if (this->m_DefaultPage == _T("diff"))
 	{

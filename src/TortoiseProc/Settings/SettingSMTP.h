@@ -17,30 +17,35 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include "SettingsPropPage.h"
 
 // CSettingSMTP dialog
 
-class CSettingSMTP : public CPropertyPage
+class CSettingSMTP : public ISettingsPropPage
 {
 	DECLARE_DYNAMIC(CSettingSMTP)
 
 public:
 	CSettingSMTP();
 	virtual ~CSettingSMTP();
+	UINT GetIconID() { return IDI_MENUSENDMAIL; }
 
 // Dialog Data
 	enum { IDD = IDD_SETTINGSMTP };
+
+	BOOL OnInitDialog();
+	BOOL OnApply();
+	afx_msg void OnModifiedDeliveryCombo();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
-	CString m_Server;
-	int m_Port;
-	CString m_From;
-	BOOL m_bAuth;
-	CString m_User;
-	CString m_Password;
+
+	CComboBox		m_SMTPDeliveryTypeCombo;
+
+private:
+	CRegDWORD		m_regDeliveryType;
+
+	DWORD m_dwDeliveryType;
 };
