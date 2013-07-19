@@ -307,6 +307,7 @@ void CRepositoryBrowser::OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CRepositoryBrowser::Refresh()
 {
+	BeginWaitCursor();
 	if (m_nExternalOvl >= 0)
 		SYS_IMAGE_LIST().SetOverlayImage(m_nExternalOvl, OVERLAY_EXTERNAL);
 
@@ -330,6 +331,7 @@ void CRepositoryBrowser::Refresh()
 	m_RepoTree.Expand(m_TreeRoot.m_hTree, TVE_EXPAND);
 	FillListCtrlForShadowTree(&m_TreeRoot);
 	m_RepoTree.SelectItem(m_TreeRoot.m_hTree);
+	EndWaitCursor();
 }
 
 int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree, CShadowFilesTree * treeroot)
