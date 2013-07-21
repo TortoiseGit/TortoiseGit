@@ -35,6 +35,7 @@ public:
 
 	BOOL OnInitDialog();
 	BOOL OnApply();
+	afx_msg void OnModified();
 	afx_msg void OnModifiedDeliveryCombo();
 
 protected:
@@ -44,8 +45,22 @@ protected:
 
 	CComboBox		m_SMTPDeliveryTypeCombo;
 
+	afx_msg void OnBnClickedSmtpAuth();
+	afx_msg void OnBnClickedSmtpUseconfiguredserver();
+
 private:
 	CRegDWORD		m_regDeliveryType;
+	CRegString		m_regServer;
+	CRegDWORD		m_regPort;
+	CRegDWORD		m_regAuthenticate;
+	CRegString		m_regUsername;
+	CRegString		m_regPassword;
 
 	DWORD m_dwDeliveryType;
+	CString m_Server;
+	DWORD m_Port;
+	CString m_From;
+	BOOL m_bAuth;
+	CString m_User;
+	CString m_Password;
 };

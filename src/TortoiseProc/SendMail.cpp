@@ -76,7 +76,7 @@ int CSendMail::SendMail(const CTGitPath &item, CGitProgressList * instance, CStr
 
 int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CString &CC, CString &subject, CString &body, CStringArray &attachments, CString *errortext)
 {
-	if (CRegDWORD(_T("Software\\TortoiseGit\\Mailserver\\DeliveryType"), 1))
+	if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 1) == 1)
 	{
 		CMailMsg mapiSender;
 		BOOL bMAPIInit = mapiSender.MAPIInitialize();
@@ -113,7 +113,21 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 		sender.Format(_T("%s <%s>"), FromName, FromMail);
 
 		CHwSMTP mail;
-		if (mail.SendSpeedEmail(sender, To, subject, body, NULL, &attachments, CC, sender))
+		if (CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 2) == 2)
+		{
+			CString recipients(To);
+			if (!CC.IsEmpty())
+				recipients += L";" + CC;
+			if (mail.SendEmail((CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T("")), (BOOL)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25), To, sender) == TRUE)
+				return 0;
+			else
+			{
+				if (errortext)
+					*errortext = mail.GetLastErrorText();
+				return -1;
+			}
+		}
+		else if (mail.SendSpeedEmail(sender, To, subject, body, nullptr, &attachments, CC, sender))
 			return 0;
 		else
 		{
