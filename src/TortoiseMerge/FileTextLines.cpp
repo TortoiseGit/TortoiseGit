@@ -116,12 +116,15 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 		}
 	}
 	// continue slow
-	for (; i<cb; ++i)
+	if (!bNonANSI)
 	{
-		if ((pVal8[i] & 0x80)!=0) // non ASCII
+		for (; i<cb; ++i)
 		{
-			bNonANSI = true;
-			break;
+			if ((pVal8[i] & 0x80)!=0) // non ASCII
+			{
+				bNonANSI = true;
+				break;
+			}
 		}
 	}
 	// check remaining text for UTF-8 validity
