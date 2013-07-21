@@ -149,7 +149,6 @@ BOOL CHwSMTP::SendSpeedEmail
 		if(pNext == NULL)
 			ret = false;
 
-		//SendEmail(itr1.first,NULL,NULL,false,lpszAddrFrom,,lpszFromname);
 		if (pDnsRecord)
 			DnsRecordListFree(pDnsRecord,DnsFreeRecordList);
 	}
@@ -248,7 +247,6 @@ BOOL CHwSMTP::SendEmail (
 
 	return ret;
 }
-
 
 BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 {
@@ -428,15 +426,6 @@ BOOL CHwSMTP::SendHead()
 		if ( !Send ( str ) ) return FALSE;
 		if ( !GetResponse ( _T("250") ) ) return FALSE;
 	}
-
-#if 0
-	for ( int i=0; i<m_StrAryCC.GetSize(); i++ )
-	{
-		str.Format(_T("RCPT TO: <%s>\r\n"), m_StrAryCC.GetAt(i)  );
-		if ( !Send ( str ) ) return FALSE;
-		if ( !GetResponse ( _T("250") ) ) return FALSE;
-	}
-#endif
 
 	if ( !Send ( CString(_T("DATA\r\n") ) ) ) return FALSE;
 	if ( !GetResponse ( CString(_T("354") )) ) return FALSE;
