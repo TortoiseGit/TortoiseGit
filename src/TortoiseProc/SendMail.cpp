@@ -118,7 +118,7 @@ int CSendMail::SendMail(CString &FromName, CString &FromMail, CString &To, CStri
 			CString recipients(To);
 			if (!CC.IsEmpty())
 				recipients += L";" + CC;
-			if (mail.SendEmail((CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T("")), (BOOL)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25), To, sender) == TRUE)
+			if (mail.SendEmail((CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T("")), (CString)CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T("")), (BOOL)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE), sender, recipients, subject, body, nullptr, &attachments, CC, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25), To, sender, (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)) == TRUE)
 				return 0;
 			else
 			{

@@ -1,5 +1,7 @@
 // HwSMTP.cpp: implementation of the CHwSMTP class.
 //
+// Schannel/SSPI implementation based on http://www.coastrd.com/c-schannel-smtp
+//
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -9,6 +11,17 @@
 #include "SpeedPostEmail.h"
 #include "Windns.h"
 #include <Afxmt.h>
+#include "FormatMessageWrapper.h"
+
+#define IO_BUFFER_SIZE 0x10000
+
+#pragma comment(lib, "Secur32.lib")
+
+DWORD dwProtocol = SP_PROT_TLS1; // SP_PROT_TLS1; // SP_PROT_PCT1; SP_PROT_SSL2; SP_PROT_SSL3; 0=default
+ALG_ID aiKeyExch = 0; // = default; CALG_DH_EPHEM; CALG_RSA_KEYX;
+
+SCHANNEL_CRED SchannelCred;
+PSecurityFunctionTable g_pSSPI;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -23,6 +36,13 @@ CHwSMTP::CHwSMTP () :
 	m_csMIMEContentType = FormatString ( _T( "multipart/mixed; boundary=%s" ), m_csPartBoundary);
 	m_csNoMIMEText = _T( "This is a multi-part message in MIME format." );
 	//m_csCharSet = _T("\r\n\tcharset=\"iso-8859-1\"\r\n");
+
+	hContext = nullptr;
+	hCreds = nullptr;
+	pbIoBuffer = nullptr;
+	cbIoBufferLength = 0;
+
+	m_iSecurityLevel = none;
 
 	AfxSocketInit();
 }
@@ -155,6 +175,611 @@ BOOL CHwSMTP::SendSpeedEmail
 
 	return ret;
 }
+
+static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds, CtxtHandle * phContext, BOOL fDoInitialRead, SecBuffer * pExtraData)
+{
+	SecBufferDesc OutBuffer, InBuffer;
+	SecBuffer InBuffers[2], OutBuffers[1];
+	DWORD dwSSPIFlags, dwSSPIOutFlags, cbData, cbIoBuffer;
+	TimeStamp tsExpiry;
+	SECURITY_STATUS scRet;
+	PUCHAR IoBuffer;
+	BOOL fDoRead;
+
+	dwSSPIFlags = ISC_REQ_SEQUENCE_DETECT	| ISC_REQ_REPLAY_DETECT		| ISC_REQ_CONFIDENTIALITY |
+				  ISC_RET_EXTENDED_ERROR	| ISC_REQ_ALLOCATE_MEMORY	| ISC_REQ_STREAM;
+
+	// Allocate data buffer.
+	IoBuffer = new UCHAR[IO_BUFFER_SIZE];
+	if (IoBuffer == nullptr)
+	{
+		// printf("**** Out of memory (1)\n");
+		return SEC_E_INTERNAL_ERROR;
+	}
+	cbIoBuffer = 0;
+	fDoRead = fDoInitialRead;
+
+	// Loop until the handshake is finished or an error occurs.
+	scRet = SEC_I_CONTINUE_NEEDED;
+
+	while (scRet == SEC_I_CONTINUE_NEEDED || scRet == SEC_E_INCOMPLETE_MESSAGE || scRet == SEC_I_INCOMPLETE_CREDENTIALS)
+	{
+		if (0 == cbIoBuffer || scRet == SEC_E_INCOMPLETE_MESSAGE) // Read data from server.
+		{
+			if (fDoRead)
+			{
+				cbData = Socket->Receive(IoBuffer + cbIoBuffer, IO_BUFFER_SIZE - cbIoBuffer, 0);
+				if (cbData == SOCKET_ERROR)
+				{
+					// printf("**** Error %d reading data from server\n", WSAGetLastError());
+					scRet = SEC_E_INTERNAL_ERROR;
+					break;
+				}
+				else if (cbData == 0)
+				{
+					// printf("**** Server unexpectedly disconnected\n");
+					scRet = SEC_E_INTERNAL_ERROR;
+					break;
+				}
+				// printf("%d bytes of handshake data received\n", cbData);
+				cbIoBuffer += cbData;
+			}
+			else
+				fDoRead = TRUE;
+		}
+
+		// Set up the input buffers. Buffer 0 is used to pass in data
+		// received from the server. Schannel will consume some or all
+		// of this. Leftover data (if any) will be placed in buffer 1 and
+		// given a buffer type of SECBUFFER_EXTRA.
+		InBuffers[0].pvBuffer	= IoBuffer;
+		InBuffers[0].cbBuffer	= cbIoBuffer;
+		InBuffers[0].BufferType	= SECBUFFER_TOKEN;
+
+		InBuffers[1].pvBuffer	= nullptr;
+		InBuffers[1].cbBuffer	= 0;
+		InBuffers[1].BufferType	= SECBUFFER_EMPTY;
+
+		InBuffer.cBuffers		= 2;
+		InBuffer.pBuffers		= InBuffers;
+		InBuffer.ulVersion		= SECBUFFER_VERSION;
+
+		// Set up the output buffers. These are initialized to NULL
+		// so as to make it less likely we'll attempt to free random
+		// garbage later.
+		OutBuffers[0].pvBuffer	= nullptr;
+		OutBuffers[0].BufferType= SECBUFFER_TOKEN;
+		OutBuffers[0].cbBuffer	= 0;
+
+		OutBuffer.cBuffers		= 1;
+		OutBuffer.pBuffers		= OutBuffers;
+		OutBuffer.ulVersion		= SECBUFFER_VERSION;
+
+		// Call InitializeSecurityContext.
+		scRet = g_pSSPI->InitializeSecurityContext(phCreds, phContext, nullptr, dwSSPIFlags, 0, SECURITY_NATIVE_DREP, &InBuffer, 0, nullptr, &OutBuffer, &dwSSPIOutFlags, &tsExpiry);
+
+		// If InitializeSecurityContext was successful (or if the error was
+		// one of the special extended ones), send the contends of the output
+		// buffer to the server.
+		if (scRet == SEC_E_OK || scRet == SEC_I_CONTINUE_NEEDED || FAILED(scRet) && (dwSSPIOutFlags & ISC_RET_EXTENDED_ERROR))
+		{
+			if (OutBuffers[0].cbBuffer != 0 && OutBuffers[0].pvBuffer != nullptr)
+			{
+				cbData = Socket->Send(OutBuffers[0].pvBuffer, OutBuffers[0].cbBuffer, 0 );
+				if(cbData == SOCKET_ERROR || cbData == 0)
+				{
+					// printf( "**** Error %d sending data to server (2)\n",  WSAGetLastError() );
+					g_pSSPI->FreeContextBuffer(OutBuffers[0].pvBuffer);
+					g_pSSPI->DeleteSecurityContext(phContext);
+					return SEC_E_INTERNAL_ERROR;
+				}
+				// printf("%d bytes of handshake data sent\n", cbData);
+
+				// Free output buffer.
+				g_pSSPI->FreeContextBuffer(OutBuffers[0].pvBuffer);
+				OutBuffers[0].pvBuffer = nullptr;
+			}
+		}
+
+		// If InitializeSecurityContext returned SEC_E_INCOMPLETE_MESSAGE,
+		// then we need to read more data from the server and try again.
+		if (scRet == SEC_E_INCOMPLETE_MESSAGE) continue;
+
+		// If InitializeSecurityContext returned SEC_E_OK, then the
+		// handshake completed successfully.
+		if (scRet == SEC_E_OK)
+		{
+			// If the "extra" buffer contains data, this is encrypted application
+			// protocol layer stuff. It needs to be saved. The application layer
+			// will later decrypt it with DecryptMessage.
+			// printf("Handshake was successful\n");
+
+			if (InBuffers[1].BufferType == SECBUFFER_EXTRA)
+			{
+				pExtraData->pvBuffer = LocalAlloc( LMEM_FIXED, InBuffers[1].cbBuffer );
+				if (pExtraData->pvBuffer == nullptr)
+				{
+					// printf("**** Out of memory (2)\n");
+					return SEC_E_INTERNAL_ERROR;
+				}
+
+				MoveMemory(pExtraData->pvBuffer, IoBuffer + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
+
+				pExtraData->cbBuffer	= InBuffers[1].cbBuffer;
+				pExtraData->BufferType	= SECBUFFER_TOKEN;
+
+				// printf( "%d bytes of app data was bundled with handshake data\n", pExtraData->cbBuffer );
+			}
+			else
+			{
+				pExtraData->pvBuffer	= nullptr;
+				pExtraData->cbBuffer	= 0;
+				pExtraData->BufferType	= SECBUFFER_EMPTY;
+			}
+			break; // Bail out to quit
+		}
+
+		// Check for fatal error.
+		if (FAILED(scRet))
+		{
+			// printf("**** Error 0x%x returned by InitializeSecurityContext (2)\n", scRet);
+			break;
+		}
+
+		// If InitializeSecurityContext returned SEC_I_INCOMPLETE_CREDENTIALS,
+		// then the server just requested client authentication.
+		if (scRet == SEC_I_INCOMPLETE_CREDENTIALS)
+		{
+			// Busted. The server has requested client authentication and
+			// the credential we supplied didn't contain a client certificate.
+			// This function will read the list of trusted certificate
+			// authorities ("issuers") that was received from the server
+			// and attempt to find a suitable client certificate that
+			// was issued by one of these. If this function is successful,
+			// then we will connect using the new certificate. Otherwise,
+			// we will attempt to connect anonymously (using our current credentials).
+			//GetNewClientCredentials(phCreds, phContext);
+
+			// Go around again.
+			fDoRead = FALSE;
+			scRet = SEC_I_CONTINUE_NEEDED;
+			continue;
+		}
+
+		// Copy any leftover data from the "extra" buffer, and go around again.
+		if ( InBuffers[1].BufferType == SECBUFFER_EXTRA )
+		{
+			MoveMemory(IoBuffer, IoBuffer + (cbIoBuffer - InBuffers[1].cbBuffer), InBuffers[1].cbBuffer);
+			cbIoBuffer = InBuffers[1].cbBuffer;
+		}
+		else
+			cbIoBuffer = 0;
+	}
+
+	// Delete the security context in the case of a fatal error.
+	if (FAILED(scRet))
+		g_pSSPI->DeleteSecurityContext(phContext);
+	LocalFree(IoBuffer);
+
+	return scRet;
+}
+
+static SECURITY_STATUS PerformClientHandshake( CSocket * Socket, PCredHandle phCreds, LPTSTR pszServerName, CtxtHandle * phContext, SecBuffer * pExtraData)
+{
+	SecBufferDesc OutBuffer;
+	SecBuffer OutBuffers[1];
+	DWORD dwSSPIFlags, dwSSPIOutFlags, cbData;
+	TimeStamp tsExpiry;
+	SECURITY_STATUS scRet;
+
+	dwSSPIFlags = ISC_REQ_SEQUENCE_DETECT	| ISC_REQ_REPLAY_DETECT		| ISC_REQ_CONFIDENTIALITY |
+				  ISC_RET_EXTENDED_ERROR	| ISC_REQ_ALLOCATE_MEMORY	| ISC_REQ_STREAM;
+
+	//  Initiate a ClientHello message and generate a token.
+	OutBuffers[0].pvBuffer = nullptr;
+	OutBuffers[0].BufferType = SECBUFFER_TOKEN;
+	OutBuffers[0].cbBuffer = 0;
+
+	OutBuffer.cBuffers = 1;
+	OutBuffer.pBuffers = OutBuffers;
+	OutBuffer.ulVersion = SECBUFFER_VERSION;
+
+	scRet = g_pSSPI->InitializeSecurityContext(phCreds, nullptr, pszServerName, dwSSPIFlags, 0, SECURITY_NATIVE_DREP, nullptr, 0, phContext, &OutBuffer, &dwSSPIOutFlags, &tsExpiry);
+
+	if (scRet != SEC_I_CONTINUE_NEEDED)
+	{
+		// printf("**** Error %d returned by InitializeSecurityContext (1)\n", scRet);
+		return scRet;
+	}
+
+	// Send response to server if there is one.
+	if (OutBuffers[0].cbBuffer != 0 && OutBuffers[0].pvBuffer != nullptr)
+	{
+		cbData = Socket->Send(OutBuffers[0].pvBuffer, OutBuffers[0].cbBuffer, 0);
+		if (cbData == SOCKET_ERROR || cbData == 0)
+		{
+			// printf("**** Error %d sending data to server (1)\n", WSAGetLastError());
+			g_pSSPI->FreeContextBuffer(OutBuffers[0].pvBuffer);
+			g_pSSPI->DeleteSecurityContext(phContext);
+			return SEC_E_INTERNAL_ERROR;
+		}
+		// printf("%d bytes of handshake data sent\n", cbData);
+
+		g_pSSPI->FreeContextBuffer(OutBuffers[0].pvBuffer); // Free output buffer.
+		OutBuffers[0].pvBuffer = nullptr;
+	}
+
+	return ClientHandshakeLoop(Socket, phCreds, phContext, TRUE, pExtraData);
+}
+
+static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
+{
+	TimeStamp tsExpiry;
+	SECURITY_STATUS Status;
+	DWORD cSupportedAlgs = 0;
+	ALG_ID rgbSupportedAlgs[16];
+	PCCERT_CONTEXT pCertContext = nullptr;
+
+	// Build Schannel credential structure. Currently, this sample only
+	// specifies the protocol to be used (and optionally the certificate,
+	// of course). Real applications may wish to specify other parameters as well.
+	SecureZeroMemory(&SchannelCred, sizeof(SchannelCred));
+
+	SchannelCred.dwVersion = SCHANNEL_CRED_VERSION;
+	if (pCertContext)
+	{
+		SchannelCred.cCreds = 1;
+		SchannelCred.paCred = &pCertContext;
+	}
+
+	SchannelCred.grbitEnabledProtocols = dwProtocol;
+
+	if (aiKeyExch)
+		rgbSupportedAlgs[cSupportedAlgs++] = aiKeyExch;
+
+	if (cSupportedAlgs)
+	{
+		SchannelCred.cSupportedAlgs = cSupportedAlgs;
+		SchannelCred.palgSupportedAlgs = rgbSupportedAlgs;
+	}
+
+	SchannelCred.dwFlags |= SCH_CRED_NO_DEFAULT_CREDS;
+
+	// The SCH_CRED_MANUAL_CRED_VALIDATION flag is specified because
+	// this sample verifies the server certificate manually.
+	// Applications that expect to run on WinNT, Win9x, or WinME
+	// should specify this flag and also manually verify the server
+	// certificate. Applications running on newer versions of Windows can
+	// leave off this flag, in which case the InitializeSecurityContext
+	// function will validate the server certificate automatically.
+	SchannelCred.dwFlags |= SCH_CRED_MANUAL_CRED_VALIDATION;
+
+	// Create an SSPI credential.
+	Status = g_pSSPI->AcquireCredentialsHandle(nullptr,                // Name of principal
+												 UNISP_NAME,           // Name of package
+												 SECPKG_CRED_OUTBOUND, // Flags indicating use
+												 nullptr,              // Pointer to logon ID
+												 &SchannelCred,        // Package specific data
+												 nullptr,              // Pointer to GetKey() func
+												 nullptr,              // Value to pass to GetKey()
+												 phCreds,              // (out) Cred Handle
+												 &tsExpiry );          // (out) Lifetime (optional)
+
+	/*if (Status != SEC_E_OK)
+		printf("**** Error 0x%x returned by AcquireCredentialsHandle\n", Status);*/
+
+	// cleanup: Free the certificate context. Schannel has already made its own copy.
+	if (pCertContext)
+		CertFreeCertificateContext(pCertContext);
+
+	return Status;
+}
+
+static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServerName, DWORD dwCertFlags)
+{
+	HTTPSPolicyCallbackData polHttps;
+	CERT_CHAIN_POLICY_PARA PolicyPara;
+	CERT_CHAIN_POLICY_STATUS PolicyStatus;
+	CERT_CHAIN_PARA ChainPara;
+	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
+	DWORD Status;
+	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
+
+	DWORD cUsages = sizeof(rgszUsages) / sizeof(LPSTR);
+
+	if (pServerCert == nullptr || pwszServerName == nullptr)
+	{
+		Status = (DWORD)SEC_E_WRONG_PRINCIPAL;
+		goto cleanup;
+	}
+
+	// Build certificate chain.
+	SecureZeroMemory(&ChainPara, sizeof(ChainPara));
+	ChainPara.cbSize = sizeof(ChainPara);
+	ChainPara.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
+	ChainPara.RequestedUsage.Usage.cUsageIdentifier = cUsages;
+	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = rgszUsages;
+
+	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, 0, nullptr, &pChainContext))
+	{
+		Status = GetLastError();
+		// printf("Error 0x%x returned by CertGetCertificateChain!\n", Status);
+		goto cleanup;
+	}
+
+	// Validate certificate chain.
+	SecureZeroMemory(&polHttps, sizeof(HTTPSPolicyCallbackData));
+	polHttps.cbStruct = sizeof(HTTPSPolicyCallbackData);
+	polHttps.dwAuthType = AUTHTYPE_SERVER;
+	polHttps.fdwChecks = dwCertFlags;
+	polHttps.pwszServerName = pwszServerName;
+
+	SecureZeroMemory(&PolicyPara, sizeof(PolicyPara));
+	PolicyPara.cbSize = sizeof(PolicyPara);
+	PolicyPara.pvExtraPolicyPara = &polHttps;
+
+	SecureZeroMemory(&PolicyStatus, sizeof(PolicyStatus));
+	PolicyStatus.cbSize = sizeof(PolicyStatus);
+
+	if (!CertVerifyCertificateChainPolicy(CERT_CHAIN_POLICY_SSL, pChainContext, &PolicyPara, &PolicyStatus))
+	{
+		Status = GetLastError();
+		goto cleanup;
+	}
+
+	if (PolicyStatus.dwError)
+	{
+		Status = PolicyStatus.dwError;
+		goto cleanup;
+	}
+
+	Status = SEC_E_OK;
+
+cleanup:
+	if (pChainContext)
+		CertFreeCertificateChain(pChainContext);
+
+	return Status;
+}
+
+static DWORD EncryptSend(CSocket * Socket, CtxtHandle * phContext, PBYTE pbIoBuffer, SecPkgContext_StreamSizes Sizes)
+// http://msdn.microsoft.com/en-us/library/aa375378(VS.85).aspx
+// The encrypted message is encrypted in place, overwriting the original contents of its buffer.
+{
+	SECURITY_STATUS scRet;
+	SecBufferDesc Message;
+	SecBuffer Buffers[4];
+	DWORD cbMessage;
+	PBYTE pbMessage;
+
+	pbMessage = pbIoBuffer + Sizes.cbHeader; // Offset by "header size"
+	cbMessage = (DWORD)strlen((char *)pbMessage);
+
+	// Encrypt the HTTP request.
+	Buffers[0].pvBuffer     = pbIoBuffer;                 // Pointer to buffer 1
+	Buffers[0].cbBuffer     = Sizes.cbHeader;             // length of header
+	Buffers[0].BufferType   = SECBUFFER_STREAM_HEADER;    // Type of the buffer
+
+	Buffers[1].pvBuffer     = pbMessage;                  // Pointer to buffer 2
+	Buffers[1].cbBuffer     = cbMessage;                  // length of the message
+	Buffers[1].BufferType   = SECBUFFER_DATA;             // Type of the buffer
+
+	Buffers[2].pvBuffer     = pbMessage + cbMessage;      // Pointer to buffer 3
+	Buffers[2].cbBuffer     = Sizes.cbTrailer;            // length of the trailor
+	Buffers[2].BufferType   = SECBUFFER_STREAM_TRAILER;   // Type of the buffer
+
+	Buffers[3].pvBuffer     = SECBUFFER_EMPTY;            // Pointer to buffer 4
+	Buffers[3].cbBuffer     = SECBUFFER_EMPTY;            // length of buffer 4
+	Buffers[3].BufferType   = SECBUFFER_EMPTY;            // Type of the buffer 4
+
+	Message.ulVersion       = SECBUFFER_VERSION;          // Version number
+	Message.cBuffers        = 4;                          // Number of buffers - must contain four SecBuffer structures.
+	Message.pBuffers        = Buffers;                    // Pointer to array of buffers
+
+	scRet = g_pSSPI->EncryptMessage(phContext, 0, &Message, 0); // must contain four SecBuffer structures.
+	if (FAILED(scRet))
+	{
+		// printf("**** Error 0x%x returned by EncryptMessage\n", scRet);
+		return scRet;
+	}
+
+
+	// Send the encrypted data to the server.
+	return Socket->Send(pbIoBuffer, Buffers[0].cbBuffer + Buffers[1].cbBuffer + Buffers[2].cbBuffer, 0);
+}
+
+static LONG DisconnectFromServer(CSocket * Socket, PCredHandle phCreds, CtxtHandle * phContext)
+{
+	PBYTE pbMessage;
+	DWORD dwType, dwSSPIFlags, dwSSPIOutFlags, cbMessage, cbData, Status;
+	SecBufferDesc OutBuffer;
+	SecBuffer OutBuffers[1];
+	TimeStamp tsExpiry;
+
+	dwType = SCHANNEL_SHUTDOWN; // Notify schannel that we are about to close the connection.
+
+	OutBuffers[0].pvBuffer = &dwType;
+	OutBuffers[0].BufferType = SECBUFFER_TOKEN;
+	OutBuffers[0].cbBuffer = sizeof(dwType);
+
+	OutBuffer.cBuffers = 1;
+	OutBuffer.pBuffers = OutBuffers;
+	OutBuffer.ulVersion = SECBUFFER_VERSION;
+
+	Status = g_pSSPI->ApplyControlToken(phContext, &OutBuffer);
+	if (FAILED(Status))
+	{
+		// printf("**** Error 0x%x returned by ApplyControlToken\n", Status);
+		goto cleanup; 
+	}
+
+	// Build an SSL close notify message.
+	dwSSPIFlags = ISC_REQ_SEQUENCE_DETECT | ISC_REQ_REPLAY_DETECT | ISC_REQ_CONFIDENTIALITY | ISC_RET_EXTENDED_ERROR | ISC_REQ_ALLOCATE_MEMORY | ISC_REQ_STREAM;
+
+	OutBuffers[0].pvBuffer = nullptr;
+	OutBuffers[0].BufferType = SECBUFFER_TOKEN;
+	OutBuffers[0].cbBuffer = 0;
+
+	OutBuffer.cBuffers = 1;
+	OutBuffer.pBuffers = OutBuffers;
+	OutBuffer.ulVersion = SECBUFFER_VERSION;
+
+	Status = g_pSSPI->InitializeSecurityContext(phCreds, phContext, nullptr, dwSSPIFlags, 0, SECURITY_NATIVE_DREP, nullptr, 0, phContext, &OutBuffer, &dwSSPIOutFlags, &tsExpiry);
+
+	if (FAILED(Status))
+	{
+		// printf("**** Error 0x%x returned by InitializeSecurityContext\n", Status);
+		goto cleanup;
+	}
+
+	pbMessage = (PBYTE)OutBuffers[0].pvBuffer;
+	cbMessage = OutBuffers[0].cbBuffer;
+
+	// Send the close notify message to the server.
+	if (pbMessage != nullptr && cbMessage != 0)
+	{
+		cbData = Socket->Send(pbMessage, cbMessage, 0);
+		if (cbData == SOCKET_ERROR || cbData == 0)
+		{
+			Status = WSAGetLastError();
+			goto cleanup;
+		}
+		// printf("Sending Close Notify\n");
+		// printf("%d bytes of handshake data sent\n", cbData);
+		g_pSSPI->FreeContextBuffer(pbMessage); // Free output buffer.
+	}
+
+cleanup:
+	g_pSSPI->DeleteSecurityContext(phContext); // Free the security context.
+	Socket->Close();
+
+	return Status;
+}
+
+static SECURITY_STATUS ReadDecrypt(CSocket * Socket, PCredHandle phCreds, CtxtHandle * phContext, PBYTE pbIoBuffer, DWORD cbIoBufferLength)
+
+// calls recv() - blocking socket read
+// http://msdn.microsoft.com/en-us/library/ms740121(VS.85).aspx
+
+// The encrypted message is decrypted in place, overwriting the original contents of its buffer.
+// http://msdn.microsoft.com/en-us/library/aa375211(VS.85).aspx
+
+{
+	SecBuffer ExtraBuffer;
+	SecBuffer * pDataBuffer, * pExtraBuffer;
+
+	SECURITY_STATUS scRet;
+	SecBufferDesc Message;
+	SecBuffer Buffers[4];
+
+	DWORD cbIoBuffer, cbData, length;
+	PBYTE buff;
+
+	// Read data from server until done.
+	cbIoBuffer = 0;
+	scRet = 0;
+	while (TRUE) // Read some data.
+	{
+		if (cbIoBuffer == 0 || scRet == SEC_E_INCOMPLETE_MESSAGE) // get the data
+		{
+			cbData = Socket->Receive(pbIoBuffer + cbIoBuffer, cbIoBufferLength - cbIoBuffer, 0);
+			if (cbData == SOCKET_ERROR)
+			{
+				// printf("**** Error %d reading data from server\n", WSAGetLastError());
+				scRet = SEC_E_INTERNAL_ERROR;
+				break;
+			}
+			else if (cbData == 0) // Server disconnected.
+			{
+				if (cbIoBuffer)
+				{
+					// printf("**** Server unexpectedly disconnected\n");
+					scRet = SEC_E_INTERNAL_ERROR;
+					return scRet;
+				}
+				else
+					break; // All Done
+			}
+			else // success
+			{
+				// printf("%d bytes of (encrypted) application data received\n", cbData);
+				cbIoBuffer += cbData;
+			}
+		}
+		
+		// Decrypt the received data.
+		Buffers[0].pvBuffer     = pbIoBuffer;
+		Buffers[0].cbBuffer     = cbIoBuffer;
+		Buffers[0].BufferType   = SECBUFFER_DATA;  // Initial Type of the buffer 1
+		Buffers[1].BufferType   = SECBUFFER_EMPTY; // Initial Type of the buffer 2
+		Buffers[2].BufferType   = SECBUFFER_EMPTY; // Initial Type of the buffer 3
+		Buffers[3].BufferType   = SECBUFFER_EMPTY; // Initial Type of the buffer 4
+
+		Message.ulVersion       = SECBUFFER_VERSION;    // Version number
+		Message.cBuffers        = 4;                    // Number of buffers - must contain four SecBuffer structures.
+		Message.pBuffers        = Buffers;              // Pointer to array of buffers
+
+		scRet = g_pSSPI->DecryptMessage(phContext, &Message, 0, nullptr);
+		if (scRet == SEC_I_CONTEXT_EXPIRED)
+			break; // Server signalled end of session
+//		if (scRet == SEC_E_INCOMPLETE_MESSAGE - Input buffer has partial encrypted record, read more
+		if (scRet != SEC_E_OK && scRet != SEC_I_RENEGOTIATE && scRet != SEC_I_CONTEXT_EXPIRED)
+			return scRet;
+
+		// Locate data and (optional) extra buffers.
+		pDataBuffer  = nullptr;
+		pExtraBuffer = nullptr;
+		for (int i = 1; i < 4; ++i)
+		{
+			if (pDataBuffer  == nullptr && Buffers[i].BufferType == SECBUFFER_DATA)
+				pDataBuffer  = &Buffers[i];
+			if (pExtraBuffer == nullptr && Buffers[i].BufferType == SECBUFFER_EXTRA)
+				pExtraBuffer = &Buffers[i];
+		}
+
+		// Display the decrypted data.
+		if (pDataBuffer)
+		{
+			length = pDataBuffer->cbBuffer;
+			if (length) // check if last two chars are CR LF
+			{
+				buff = (PBYTE)pDataBuffer->pvBuffer;
+				if (buff[length-2] == 13 && buff[length-1] == 10) // Found CRLF
+				{
+					buff[length] = 0;
+					break;
+				}
+			}
+		}
+
+		// Move any "extra" data to the input buffer.
+		if (pExtraBuffer)
+		{
+			MoveMemory(pbIoBuffer, pExtraBuffer->pvBuffer, pExtraBuffer->cbBuffer);
+			cbIoBuffer = pExtraBuffer->cbBuffer;
+		}
+		else
+			cbIoBuffer = 0;
+
+		// The server wants to perform another handshake sequence.
+		if (scRet == SEC_I_RENEGOTIATE)
+		{
+			// printf("Server requested renegotiate!\n");
+			scRet = ClientHandshakeLoop( Socket, phCreds, phContext, FALSE, &ExtraBuffer);
+			if (scRet != SEC_E_OK)
+				return scRet;
+
+			if (ExtraBuffer.pvBuffer) // Move any "extra" data to the input buffer.
+			{
+				MoveMemory(pbIoBuffer, ExtraBuffer.pvBuffer, ExtraBuffer.cbBuffer);
+				cbIoBuffer = ExtraBuffer.cbBuffer;
+			}
+		}
+	} // Loop till CRLF is found at the end of the data
+
+	return SEC_E_OK;
+}
+
 BOOL CHwSMTP::SendEmail (
 		LPCTSTR lpszSmtpSrvHost,
 		LPCTSTR lpszUserName,
@@ -169,7 +794,8 @@ BOOL CHwSMTP::SendEmail (
 		LPCTSTR pStrAryCC/*=NULL*/,
 		UINT nSmtpSrvPort,/*=25*/
 		LPCTSTR pSender,
-		LPCTSTR pToList
+		LPCTSTR pToList,
+		DWORD secLevel
 		)
 {
 	TRACE ( _T("发送邮件：%s,  %s\n"), lpszAddrTo, lpszBody );
@@ -231,6 +857,18 @@ BOOL CHwSMTP::SendEmail (
 		return FALSE;
 	}
 
+	switch (secLevel)
+	{
+	case 1:
+		m_iSecurityLevel = want_tls;
+		break;
+	case 2:
+		m_iSecurityLevel = ssl;
+		break;
+	default:
+		m_iSecurityLevel = none;
+	}
+
 	// 连接到服务器
 	if ( !m_SendSock.Connect ( m_csSmtpSrvHost, m_nSmtpSrvPort ) )
 	{
@@ -238,12 +876,120 @@ BOOL CHwSMTP::SendEmail (
 		TRACE ( _T("%d\n"), GetLastError() );
 		return FALSE;
 	}
-	if ( !GetResponse( _T("220") ) ) return FALSE;
 
-	m_bConnected = TRUE;
-	BOOL ret= SendEmail();
+	if (m_iSecurityLevel == want_tls) {
+		if (!GetResponse(_T("220")))
+			return FALSE;
+		m_bConnected = TRUE;
+		Send(L"STARTTLS\n");
+		if (!GetResponse(_T("220")))
+			return FALSE;
+		m_iSecurityLevel = tls_established;
+	}
 
-	m_SendSock.Close();
+	BOOL ret = FALSE;
+
+	SecBuffer ExtraData;
+	SECURITY_STATUS Status;
+
+	CtxtHandle contextStruct;
+	CredHandle credentialsStruct;
+
+	if (m_iSecurityLevel >= ssl)
+	{
+		g_pSSPI = InitSecurityInterface();
+
+		contextStruct.dwLower = 0;
+		contextStruct.dwUpper = 0;
+
+		hCreds = &credentialsStruct;
+		credentialsStruct.dwLower = 0;
+		credentialsStruct.dwUpper = 0;
+		Status = CreateCredentials(hCreds);
+		if (Status != SEC_E_OK)
+		{
+			m_csLastError = CFormatMessageWrapper(Status);
+			return FALSE;
+		}
+
+		hContext = &contextStruct;
+		Status = PerformClientHandshake(&m_SendSock, hCreds, m_csSmtpSrvHost.GetBuffer(), hContext, &ExtraData);
+		if (Status != SEC_E_OK)
+		{
+			m_csLastError = CFormatMessageWrapper(Status);
+			return FALSE;
+		}
+
+		PCCERT_CONTEXT pRemoteCertContext = nullptr;
+		// Authenticate server's credentials. Get server's certificate.
+		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_REMOTE_CERT_CONTEXT, (PVOID)&pRemoteCertContext);
+		if (Status)
+		{
+			m_csLastError = CFormatMessageWrapper(Status);
+			goto cleanup;
+		}
+
+		Status = VerifyServerCertificate( pRemoteCertContext, m_csSmtpSrvHost.GetBuffer(), 0 );
+		if (Status)
+		{
+			m_csLastError = CFormatMessageWrapper(Status);
+			goto cleanup;
+		}
+
+		CertFreeCertificateContext(pRemoteCertContext);
+
+		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_STREAM_SIZES, &Sizes);
+		if (Status)
+		{
+			m_csLastError = CFormatMessageWrapper(Status);
+			goto cleanup;
+		}
+
+		// Create a buffer.
+		cbIoBufferLength = Sizes.cbHeader + Sizes.cbMaximumMessage + Sizes.cbTrailer;
+		pbIoBuffer = (PBYTE)LocalAlloc(LMEM_FIXED, cbIoBufferLength);
+		SecureZeroMemory(pbIoBuffer, cbIoBufferLength);
+		if (pbIoBuffer == nullptr)
+		{
+			m_csLastError = _T("Could not allocate memory");
+			goto cleanup;
+		}
+	}
+
+	if (m_iSecurityLevel <= ssl)
+	{
+		if (!GetResponse(_T("220")))
+			goto cleanup;
+		m_bConnected = TRUE;
+	}
+	
+	ret = SendEmail();
+
+cleanup:
+	if (m_iSecurityLevel >= ssl)
+	{
+		if (hContext && hCreds)
+			DisconnectFromServer(&m_SendSock, hCreds, hContext);
+		if (pbIoBuffer)
+		{
+			LocalFree(pbIoBuffer);
+			pbIoBuffer = nullptr;
+			cbIoBufferLength = 0;
+		}
+		if (hContext)
+		{
+			g_pSSPI->DeleteSecurityContext(hContext);
+			hContext = nullptr;
+		}
+		if (hCreds)
+		{
+			g_pSSPI->FreeCredentialsHandle(hCreds);
+			hCreds = nullptr;
+		}
+		g_pSSPI = nullptr;
+	}
+	else
+		m_SendSock.Close();
 
 	return ret;
 }
@@ -253,12 +999,22 @@ BOOL CHwSMTP::GetResponse ( LPCTSTR lpszVerifyCode, int *pnCode/*=NULL*/)
 	if ( !lpszVerifyCode || lstrlen(lpszVerifyCode) < 1 )
 		return FALSE;
 
+	SECURITY_STATUS scRet = SEC_E_OK;
+
 	char szRecvBuf[1024] = {0};
 	int nRet = 0;
 	char szStatusCode[4] = {0};
-	nRet = m_SendSock.Receive ( szRecvBuf, sizeof(szRecvBuf) );
+
+	if (m_iSecurityLevel >= ssl)
+	{
+		scRet = ReadDecrypt(&m_SendSock, hCreds, hContext, pbIoBuffer, cbIoBufferLength);
+		SecureZeroMemory(szRecvBuf, 1024);
+		memcpy(szRecvBuf, pbIoBuffer+Sizes.cbHeader, 1024);
+	}
+	else
+		nRet = m_SendSock.Receive(szRecvBuf, sizeof(szRecvBuf));
 	TRACE ( _T("Received : %s\r\n"), szRecvBuf );
-	if ( nRet <= 0 )
+	if (nRet == 0 && m_iSecurityLevel == none || m_iSecurityLevel >= ssl && scRet != SEC_E_OK)
 	{
 		m_csLastError.Format ( _T("Receive TCP data failed") );
 		return FALSE;
@@ -286,7 +1042,21 @@ BOOL CHwSMTP::SendBuffer(char *buff,int size)
 		return FALSE;
 	}
 
-	if ( m_SendSock.Send ( buff, size ) != size )
+	if (m_iSecurityLevel >= ssl)
+	{
+		int sent = 0;
+		while (size - sent > 0)
+		{
+			int toSend = min(size - sent, (int)Sizes.cbMaximumMessage);
+			SecureZeroMemory(pbIoBuffer + Sizes.cbHeader, Sizes.cbMaximumMessage);
+			memcpy(pbIoBuffer + Sizes.cbHeader, buff + sent, toSend);
+			DWORD cbData = EncryptSend(&m_SendSock, hContext, pbIoBuffer, Sizes);
+			if (cbData == SOCKET_ERROR || cbData == 0)
+				return FALSE;
+			sent += toSend;
+		}
+	}
+	else if (m_SendSock.Send ( buff, size ) != size)
 	{
 		m_csLastError.Format ( _T("Socket send data failed") );
 		return FALSE;

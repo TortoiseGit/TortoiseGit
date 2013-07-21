@@ -3054,6 +3054,10 @@ msgid "Credential helper:"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Credentials"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Credits:"
 msgstr ""
 
@@ -3742,6 +3746,10 @@ msgstr ""
 #. Resource IDs: (3859)
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
+msgstr ""
+
+#. Resource IDs: (1759)
+msgid "Encryption"
 msgstr ""
 
 #. Resource IDs: (1617)
@@ -5325,6 +5333,10 @@ msgstr ""
 msgid "Log messages (Show log dialog)"
 msgstr ""
 
+#. Resource IDs: (1760)
+msgid "Login:"
+msgstr ""
+
 #. Resource IDs: (238)
 #, c-format
 msgid "Lowest shown revision: %ld - Highest shown revision: %ld"
@@ -6357,6 +6369,10 @@ msgstr ""
 msgid "Port :"
 msgstr ""
 
+#. Resource IDs: (1758)
+msgid "Port:"
+msgstr ""
+
 #. Resource IDs: (569)
 msgid "Post-Commit Hook"
 msgstr ""
@@ -7164,6 +7180,14 @@ msgstr ""
 
 #. Resource IDs: (604, 1251)
 msgid "SHA-1"
+msgstr ""
+
+#. Resource IDs: (1585)
+msgid "SMTP Server requires authentication"
+msgstr ""
+
+#. Resource IDs: (1757)
+msgid "SMTP Server:"
 msgstr ""
 
 #. Resource IDs: (90)

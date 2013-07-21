@@ -33,6 +33,7 @@ CSettingSMTP::CSettingSMTP()
 	, m_regDeliveryType(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\DeliveryType"), 0)
 	, m_regServer(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Address"), _T(""))
 	, m_regPort(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Port"), 25)
+	, m_regEncryption(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Encryption"), 0)
 	, m_regAuthenticate(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\AuthenticationRequired"), FALSE)
 	, m_regUsername(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Username"), _T(""))
 	, m_regPassword(_T("Software\\TortoiseGit\\TortoiseProc\\SendMail\\Password"), _T(""))
@@ -40,6 +41,7 @@ CSettingSMTP::CSettingSMTP()
 	m_dwDeliveryType = m_regDeliveryType;
 	m_Server = m_regServer;
 	m_Port = m_regPort;
+	m_dwSMTPEnrcyption = m_regEncryption;
 	m_bAuth = m_regAuthenticate;
 	m_User = m_regUsername;
 	m_Password = m_regPassword;
@@ -53,6 +55,7 @@ void CSettingSMTP::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SMTPDELIVERYCOMBO, m_SMTPDeliveryTypeCombo);
+	DDX_Control(pDX, IDC_SMTPENCRYPTIONCOMBO, m_SMTPEncryptionCombo);
 	DDX_Check(pDX, IDC_SMTP_AUTH, m_bAuth);
 	DDX_Text(pDX, IDC_SMTP_SERVER, m_Server);
 	DDX_Text(pDX, IDC_SMTP_PORT, m_Port);
@@ -62,6 +65,7 @@ void CSettingSMTP::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSettingSMTP, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_SMTPDELIVERYCOMBO, OnModifiedDeliveryCombo)
+	ON_CBN_SELCHANGE(IDC_SMTPENCRYPTIONCOMBO, OnModifiedEncryptionCombo)
 	ON_BN_CLICKED(IDC_SMTP_AUTH, OnBnClickedSmtpAuth)
 	ON_CBN_SELCHANGE(IDC_SMTPENCRYPTIONCOMBO, OnModified)
 	ON_EN_CHANGE(IDC_SMTP_SERVER, OnModified)
@@ -87,6 +91,15 @@ BOOL CSettingSMTP::OnInitDialog()
 
 	m_SMTPDeliveryTypeCombo.SetCurSel(m_dwDeliveryType);
 
+	m_SMTPEncryptionCombo.AddString(_T("none"));
+	m_SMTPEncryptionCombo.AddString(_T("STARTTLS"));
+	m_SMTPEncryptionCombo.AddString(_T("SSL"));
+
+	if ((int)m_dwSMTPEnrcyption >= m_SMTPEncryptionCombo.GetCount())
+		m_dwSMTPEnrcyption = 0;
+		
+	m_SMTPEncryptionCombo.SetCurSel(m_dwSMTPEnrcyption);
+
 	this->UpdateData(FALSE);
 
 	OnModifiedDeliveryCombo();
@@ -100,6 +113,12 @@ void CSettingSMTP::OnModified()
 	SetModified();
 }
 
+void CSettingSMTP::OnModifiedEncryptionCombo()
+{
+	m_dwSMTPEnrcyption = m_SMTPEncryptionCombo.GetCurSel();
+	SetModified();
+}
+
 void CSettingSMTP::OnModifiedDeliveryCombo()
 {
 	m_dwDeliveryType = m_SMTPDeliveryTypeCombo.GetCurSel();
@@ -107,8 +126,10 @@ void CSettingSMTP::OnModifiedDeliveryCombo()
 	GetDlgItem(IDC_SMTP_PASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_USER)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_SMTP_AUTH)->EnableWindow(m_dwDeliveryType >= 2);
+	GetDlgItem(IDC_SMTPENCRYPTIONCOMBO)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_SMTP_PORT)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_SMTP_SERVER)->EnableWindow(m_dwDeliveryType >= 2);
+	GetDlgItem(IDC_STATIC_SMTPENCRYPTION)->EnableWindow(m_dwDeliveryType >= 2);
 	GetDlgItem(IDC_STATIC_SMTPLOGIN)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_STATIC_SMTPPASSWORD)->EnableWindow(m_dwDeliveryType >= 2 && m_bAuth);
 	GetDlgItem(IDC_STATIC_SMTPPORT)->EnableWindow(m_dwDeliveryType >= 2);
@@ -126,6 +147,7 @@ BOOL CSettingSMTP::OnApply()
 	m_regServer = m_Server;
 	m_regPort = m_Port;
 	m_regAuthenticate = m_bAuth;
+	m_regEncryption = m_dwSMTPEnrcyption;
 	m_regUsername = m_User;
 	m_regPassword = m_Password;
 

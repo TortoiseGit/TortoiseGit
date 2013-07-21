@@ -40,12 +40,26 @@ Wins°¢Õ¯ø®MACµÿ÷∑µ»œ‡πÿ–≈œ¢£ªªπÃ·π©¡ÀSMTP–≠“ÈΩ‚Œˆ¿‡£¨∏√¿‡ µœ÷¡ÀSMTPøÕªß∂Àπ¶ƒ‹µƒ 
 
 #include <afxsock.h>
 
+#define SECURITY_WIN32
+#include <wincrypt.h>
+#include <wintrust.h>
+#include <schannel.h>
+#include <security.h>
+#include <sspi.h>
+
 #if !defined(AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_)
 #define AFX_HwSMTP_H__633A52B7_1CBE_41D7_BDA3_188D98D692AF__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+
+enum SECURITY_LEVEL {
+	none,
+	want_tls,
+	ssl,
+	tls_established,
+};
 
 class CHwSMTP
 {
@@ -65,7 +79,8 @@ public:
 		LPCTSTR pStrAryCC=NULL,
 		UINT nSmtpSrvPort=25,
 		LPCTSTR pSend = NULL,
-		LPCTSTR pToList = NULL
+		LPCTSTR pToList = NULL,
+		DWORD secLevel = SECURITY_LEVEL::none
 		);
 	BOOL SendSpeedEmail
 		(
@@ -109,7 +124,13 @@ private:
 	CString m_csSender;
 	CString m_csToList;
 
-private:
+	CtxtHandle * hContext;
+	CredHandle * hCreds;
+	SecPkgContext_StreamSizes Sizes;
+	PBYTE pbIoBuffer;
+	DWORD cbIoBufferLength;
+	SECURITY_LEVEL m_iSecurityLevel;
+
 	BOOL m_bMustAuth;
 	UINT m_nSmtpSrvPort;
 	CString m_csCharSet;
