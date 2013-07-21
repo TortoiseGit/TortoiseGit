@@ -1292,6 +1292,8 @@ BOOL CHwSMTP::SendAttach()
 			return FALSE;
 	}
 
+	Send(L"--" + m_csPartBoundary + L"--\r\n");
+
 	return TRUE;
 }
 
