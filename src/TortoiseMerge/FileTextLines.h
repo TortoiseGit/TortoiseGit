@@ -88,12 +88,14 @@ public:
 		AUTOTYPE,
 		BINARY,
 		ASCII,
-		UTF16_LE, //=1200,
-		UTF16_BE, //=1201,
-		UTF32_LE, //=12000,
-		UTF32_BE, //=12001,
-		UTF8, //=65001,
-		UTF8BOM, //=UTF8+65536,
+		UTF16_LE,		//=1200,
+		UTF16_BE,		//=1201,
+		UTF16_LEBOM,	//=1200,
+		UTF16_BEBOM,	//=1201,
+		UTF32_LE,		//=12000,
+		UTF32_BE,		//=12001,
+		UTF8,			//=65001,
+		UTF8BOM,		//=UTF8+65536,
 	};
 
 	struct SaveParams {

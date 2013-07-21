@@ -25,6 +25,8 @@ const CFileTextLines::UnicodeType uctArray[] =
 	CFileTextLines::ASCII,
 	CFileTextLines::UTF16_LE,
 	CFileTextLines::UTF16_BE,
+	CFileTextLines::UTF16_LEBOM,
+	CFileTextLines::UTF16_BEBOM,
 	CFileTextLines::UTF32_LE,
 	CFileTextLines::UTF32_BE,
 	CFileTextLines::UTF8,

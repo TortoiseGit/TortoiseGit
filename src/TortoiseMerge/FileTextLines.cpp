@@ -89,11 +89,11 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 	}
 	if (*pVal16 == 0xFEFF)
 	{
-		return CFileTextLines::UTF16_LE;
+		return CFileTextLines::UTF16_LEBOM;
 	}
 	if (*pVal16 == 0xFFFE)
 	{
-		return CFileTextLines::UTF16_BE;
+		return CFileTextLines::UTF16_BEBOM;
 	}
 	if (cb < 3)
 		return CFileTextLines::ASCII;
@@ -116,10 +116,29 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 		}
 	}
 	// continue slow
+	int nullcount = 0;
 	if (!bNonANSI)
 	{
 		for (; i<cb; ++i)
 		{
+			if (pVal8[i] == 0)
+			{
+				++nullcount;
+				// count the null chars, we do not want to treat an ASCII/UTF8 file
+				// as UTF16 just because of some null chars that might be accidentally
+				// in the file.
+				// Use an arbitrary value of one fiftieth of the file length as
+				// the limit after which a file is considered UTF16.
+				if (nullcount > (cb / 50))
+				{
+					// null-chars are not allowed for ASCII or UTF8, that means
+					// this file is most likely UTF16 encoded
+					if (i%2)
+						return CFileTextLines::UTF16_LE;
+					else
+						return CFileTextLines::UTF16_BE;
+				}
+			}
 			if ((pVal8[i] & 0x80)!=0) // non ASCII
 			{
 				bNonANSI = true;
@@ -133,7 +152,26 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int
 		UINT8 zChar = pVal8[i];
 		if ((zChar & 0x80)==0) // Ascii
 		{
-			if (nNeedData)
+			if (zChar == 0)
+			{
+				++nullcount;
+				// count the null chars, we do not want to treat an ASCII/UTF8 file
+				// as UTF16 just because of some null chars that might be accidentally
+				// in the file.
+				// Use an arbitrary value of one fiftieth of the file length as
+				// the limit after which a file is considered UTF16.
+				if (nullcount > (cb / 50))
+				{
+					// null-chars are not allowed for ASCII or UTF8, that means
+					// this file is most likely UTF16 encoded
+					if (i%2)
+						return CFileTextLines::UTF16_LE;
+					else
+						return CFileTextLines::UTF16_BE;
+				}
+				nNeedData = 0;
+			}
+			else if (nNeedData)
 			{
 				return CFileTextLines::ASCII;
 			}
@@ -271,9 +309,11 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 			pFilter = new CAsciiFilter(NULL);
 			break;
 		case UTF16_BE:
+		case UTF16_BEBOM:
 			pFilter = new CUtf16beFilter(NULL);
 			break;
 		case UTF16_LE:
+		case UTF16_LEBOM:
 			pFilter = new CUtf16leFilter(NULL);
 			break;
 		case UTF32_BE:
@@ -297,8 +337,8 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	wchar_t * pTextBuf = (wchar_t *)oFile;
 	wchar_t * pLineStart = pTextBuf;
 	if ((m_SaveParams.m_UnicodeType == UTF8BOM)
-		|| (m_SaveParams.m_UnicodeType == UTF16_LE)
-		|| (m_SaveParams.m_UnicodeType == UTF16_BE)
+		|| (m_SaveParams.m_UnicodeType == UTF16_LEBOM)
+		|| (m_SaveParams.m_UnicodeType == UTF16_BEBOM)
 		|| (m_SaveParams.m_UnicodeType == UTF32_LE)
 		|| (m_SaveParams.m_UnicodeType == UTF32_BE))
 	{
@@ -472,9 +512,17 @@ BOOL CFileTextLines::Save(const CString& sFilePath
 			pFilter = new CUtf8Filter(&file);
 			break;
 		case CFileTextLines::UTF16_BE:
+			bSaveBom = false;
+			pFilter = new CUtf16beFilter(&file);
+			break;
+		case CFileTextLines::UTF16_BEBOM:
 			pFilter = new CUtf16beFilter(&file);
 			break;
 		case CFileTextLines::UTF16_LE:
+			bSaveBom = false;
+			pFilter = new CUtf16leFilter(&file);
+			break;
+		case CFileTextLines::UTF16_LEBOM:
 			pFilter = new CUtf16leFilter(&file);
 			break;
 		case CFileTextLines::UTF32_BE:
@@ -574,8 +622,12 @@ const wchar_t * CFileTextLines::GetEncodingName(UnicodeType eEncoding)
 		return L"BINARY";
 	case UTF16_LE:
 		return L"UTF-16LE";
+	case UTF16_LEBOM:
+		return L"UTF-16LE BOM";
 	case UTF16_BE:
 		return L"UTF-16BE";
+	case UTF16_BEBOM:
+		return L"UTF-16BE BOM";
 	case UTF32_LE:
 		return L"UTF-32LE";
 	case UTF32_BE:

@@ -22,7 +22,7 @@
 #include "HistoryCombo.h"
 #include "FileTextLines.h"
 
-extern const CFileTextLines::UnicodeType uctArray[7];
+extern const CFileTextLines::UnicodeType uctArray[9];
 extern const EOL eolArray[10];
 
 /**

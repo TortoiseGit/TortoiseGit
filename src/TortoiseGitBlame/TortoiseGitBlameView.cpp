@@ -1353,12 +1353,16 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 		return CP_UTF8;
 
 	if(type == CFileTextLines::UTF16_LE)
+		return 1200;
+	if (type == CFileTextLines::UTF16_LEBOM)
 	{
 		*bomoffset = 2;
 		return 1200;
 	}
 
 	if(type == CFileTextLines::UTF16_BE)
+		return 1201;
+	if (type == CFileTextLines::UTF16_BEBOM)
 	{
 		*bomoffset = 2;
 		return 1201;
