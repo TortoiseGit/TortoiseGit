@@ -1,41 +1,41 @@
-// HwSMTP.h: interface for the CHwSMTP class.
+ï»¿// HwSMTP.h: interface for the CHwSMTP class.
 //
 //////////////////////////////////////////////////////////////////////
 
 /*******************************************************************
-		ËµÃ÷
-	1¡¢ÕâÊÇÎÒ×Ô¼ºÐ´µÄÒ»¸öÀûÓÃSMTP·þÎñÆ÷·¢ËÍÓÊ¼þµÄÀà£¬¿ÉÒÔÊµÏÖ¸½¼þµÄ
-·¢ËÍ¡£
-	2¡¢ÔÚ InitInstance() º¯Êýµ÷ÓÃ
+		è¯´æ˜Ž
+	1ã€è¿™æ˜¯æˆ‘è‡ªå·±å†™çš„ä¸€ä¸ªåˆ©ç”¨SMTPæœåŠ¡å™¨å‘é€é‚®ä»¶çš„ç±»ï¼Œå¯ä»¥å®žçŽ°é™„ä»¶çš„
+å‘é€ã€‚
+	2ã€åœ¨ InitInstance() å‡½æ•°è°ƒç”¨
 	if (!AfxSocketInit())
 	{
 		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
 		return FALSE;
 	}
-	ÔÚ ExitInstance () ÖÐµ÷ÓÃ ::WSACleanup ();
+	åœ¨ ExitInstance () ä¸­è°ƒç”¨ ::WSACleanup ();
 *******************************************************************/
 
 /****************************************************************************************************************
-Í¶¸åËµÃ÷£º
+æŠ•ç¨¿è¯´æ˜Žï¼š
 ****************************************************************************************************************/
 #define NOTE_SpeedPostMail \
 _T("\
-			¡¾Èí¼þÃû³Æ¡¿\r\n\
-	ÎÞÐëSMTP·þÎñÆ÷ÖÐ×ªÖ±½Ó½«E-Mailµç×ÓÓÊ¼þ·¢ËÍµ½¶Ô·½ÓÊÏä\r\n\
-			¡¾°æ    ±¾¡¿\r\n\
+			ã€è½¯ä»¶åç§°ã€‘\r\n\
+	æ— é¡»SMTPæœåŠ¡å™¨ä¸­è½¬ç›´æŽ¥å°†E-Mailç”µå­é‚®ä»¶å‘é€åˆ°å¯¹æ–¹é‚®ç®±\r\n\
+			ã€ç‰ˆ    æœ¬ã€‘\r\n\
 	1.0.0\r\n\
-			¡¾²Ù×÷ÏµÍ³¡¿\r\n\
-	Windows ×ÀÃæÏµÁÐ\r\n\
-			¡¾×÷    Õß¡¿\r\n\
-	Ð»ºìÎ° ¡¤ chrys ¡¤ chrys@163.com ¡¤ http://www.viction.net\r\n\
-			¡¾Èí¼þËµÃ÷¡¿\r\n\
-	´ó¼ÒÒ»¶¨ÊìÏ¤FoxmailÖÐµÄ¡°ÌØ¿ì×¨µÝ¡±£¬ËüÄÜÖ±½Ó½«ÓÊ¼þ·¢ËÍµ½¶Ô·½µÄÓÊ¼þ·þÎñÆ÷ÖÐ£¬¶ø²»ÐèÒª¾­¹ýSMTP·þÎñÆ÷ÖÐ×ª£¬\
-±¾´úÂë½«ÏòÄãÆÊÎö¡°ÌØ¿ì×¨µÝ¡±·¢ËÍµç×ÓÓÊ¼þµÄ·½·¨¡£´úÂëÖÐÌá¹©ÁËÍø¿¨ÐÅÏ¢»ñÈ¡Àà£¬¿ÉÒÔ»ñÈ¡±¾»úIPµØÖ·¡¢×ÓÍøÑÚÂë¡¢DNS¡¢\
-Wins¡¢Íø¿¨MACµØÖ·µÈÏà¹ØÐÅÏ¢£»»¹Ìá¹©ÁËSMTPÐ­Òé½âÎöÀà£¬¸ÃÀàÊµÏÖÁËSMTP¿Í»§¶Ë¹¦ÄÜµÄÊµÏÖÀà£¬ÊµÏÖµç×ÓÓÊ¼þÊÕ·¢£»Base64±àÂëÊµÏÖ\
-ÁË×Ö·û±àÂëµÄ·½·¨¡£\r\n\
-	Äã¿ÉÒÔÈÎÒâÐÞ¸Ä¸´ÖÆ±¾´úÂë£¬µ«Çë±£ÁôÕâ¶ÎÎÄ×Ö²»ÒªÐÞ¸Ä¡£\r\n\
-	Ï£ÍûÎÒÄÜÎªÖÐ¹úµÄÈí¼þÐÐÒµ¾¡Ò»·Ý±¡Á¦£¡\r\n\
-			¡¾¿ª·¢ÈÕÆÚ¡¿\r\n\
+			ã€æ“ä½œç³»ç»Ÿã€‘\r\n\
+	Windows æ¡Œé¢ç³»åˆ—\r\n\
+			ã€ä½œ    è€…ã€‘\r\n\
+	è°¢çº¢ä¼Ÿ Â· chrys Â· chrys@163.com Â· http://www.viction.net\r\n\
+			ã€è½¯ä»¶è¯´æ˜Žã€‘\r\n\
+	å¤§å®¶ä¸€å®šç†Ÿæ‚‰Foxmailä¸­çš„â€œç‰¹å¿«ä¸“é€’â€ï¼Œå®ƒèƒ½ç›´æŽ¥å°†é‚®ä»¶å‘é€åˆ°å¯¹æ–¹çš„é‚®ä»¶æœåŠ¡å™¨ä¸­ï¼Œè€Œä¸éœ€è¦ç»è¿‡SMTPæœåŠ¡å™¨ä¸­è½¬ï¼Œ\
+æœ¬ä»£ç å°†å‘ä½ å‰–æžâ€œç‰¹å¿«ä¸“é€’â€å‘é€ç”µå­é‚®ä»¶çš„æ–¹æ³•ã€‚ä»£ç ä¸­æä¾›äº†ç½‘å¡ä¿¡æ¯èŽ·å–ç±»ï¼Œå¯ä»¥èŽ·å–æœ¬æœºIPåœ°å€ã€å­ç½‘æŽ©ç ã€DNSã€\
+Winsã€ç½‘å¡MACåœ°å€ç­‰ç›¸å…³ä¿¡æ¯ï¼›è¿˜æä¾›äº†SMTPåè®®è§£æžç±»ï¼Œè¯¥ç±»å®žçŽ°äº†SMTPå®¢æˆ·ç«¯åŠŸèƒ½çš„å®žçŽ°ç±»ï¼Œå®žçŽ°ç”µå­é‚®ä»¶æ”¶å‘ï¼›Base64ç¼–ç å®žçŽ°\
+äº†å­—ç¬¦ç¼–ç çš„æ–¹æ³•ã€‚\r\n\
+	ä½ å¯ä»¥ä»»æ„ä¿®æ”¹å¤åˆ¶æœ¬ä»£ç ï¼Œä½†è¯·ä¿ç•™è¿™æ®µæ–‡å­—ä¸è¦ä¿®æ”¹ã€‚\r\n\
+	å¸Œæœ›æˆ‘èƒ½ä¸ºä¸­å›½çš„è½¯ä»¶è¡Œä¸šå°½ä¸€ä»½è–„åŠ›ï¼\r\n\
+			ã€å¼€å‘æ—¥æœŸã€‘\r\n\
 	2008-11-23 3:54\r\n")
 
 #include <afxsock.h>
@@ -74,7 +74,7 @@ public:
 		LPCTSTR lpszAddrTo,
 		LPCTSTR lpszSubject,
 		LPCTSTR lpszBody,
-		LPCTSTR lpszCharSet,						// ×Ö·û¼¯ÀàÐÍ£¬ÀýÈç£º·±ÌåÖÐÎÄÕâÀïÓ¦ÊäÈë"big5"£¬¼òÌåÖÐÎÄÊ±ÊäÈë"gb2312"
+		LPCTSTR lpszCharSet,						// å­—ç¬¦é›†ç±»åž‹ï¼Œä¾‹å¦‚ï¼šç¹ä½“ä¸­æ–‡è¿™é‡Œåº”è¾“å…¥"big5"ï¼Œç®€ä½“ä¸­æ–‡æ—¶è¾“å…¥"gb2312"
 		CStringArray *pStrAryAttach=NULL,
 		LPCTSTR pStrAryCC=NULL,
 		UINT nSmtpSrvPort=25,
@@ -88,7 +88,7 @@ public:
 			LPCTSTR lpszAddrTo,
 			LPCTSTR lpszSubject,
 			LPCTSTR lpszBody,
-			LPCTSTR lpszCharSet,						// ×Ö·û¼¯ÀàÐÍ£¬ÀýÈç£º·±ÌåÖÐÎÄÕâÀïÓ¦ÊäÈë"big5"£¬¼òÌåÖÐÎÄÊ±ÊäÈë"gb2312"
+			LPCTSTR lpszCharSet,						// å­—ç¬¦é›†ç±»åž‹ï¼Œä¾‹å¦‚ï¼šç¹ä½“ä¸­æ–‡è¿™é‡Œåº”è¾“å…¥"big5"ï¼Œç®€ä½“ä¸­æ–‡æ—¶è¾“å…¥"gb2312"
 			CStringArray *pStrAryAttach=NULL,
 			LPCTSTR pStrAryCC=NULL,
 			LPCTSTR pSend = NULL
