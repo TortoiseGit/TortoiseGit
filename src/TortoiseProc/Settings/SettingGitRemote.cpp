@@ -310,6 +310,17 @@ BOOL CSettingGitRemote::OnApply()
 			CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_URLEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return FALSE;
 		}
+
+		if (m_ctrlRemoteList.GetCount() > 0)
+		{
+			// tagopt not --no-tags
+			if (m_ctrlTagOpt.GetCurSel() != 1)
+			{
+				if (CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_GITCONFIG_ASKTAGOPT, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION, _T("TagOptNoTagsWarning"), IDS_MSGBOX_DONOTSHOWAGAIN) == IDYES)
+					m_ctrlTagOpt.SetCurSel(1);
+			}
+		}
+
 		m_strUrl.Replace(L'\\', L'/');
 		CString cmd,out;
 		cmd.Format(_T("git.exe remote add \"%s\" \"%s\""),m_strRemote,m_strUrl);
