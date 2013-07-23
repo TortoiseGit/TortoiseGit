@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#include <algorithm>
+
 #include "Platform.h"
 
 #include "Scintilla.h"
@@ -81,11 +83,15 @@ Action::~Action() {
 	Destroy();
 }
 
-void Action::Create(actionType at_, int position_, char *data_, int lenData_, bool mayCoalesce_) {
+void Action::Create(actionType at_, int position_, const char *data_, int lenData_, bool mayCoalesce_) {
 	delete []data;
+	data = NULL;
 	position = position_;
 	at = at_;
-	data = data_;
+	if (lenData_) {
+		data = new char[lenData_];
+		memcpy(data, data_, lenData_);
+	}
 	lenData = lenData_;
 	mayCoalesce = mayCoalesce_;
 }
@@ -162,7 +168,7 @@ void UndoHistory::EnsureUndoRoom() {
 	}
 }
 
-void UndoHistory::AppendAction(actionType at, int position, char *data, int lengthData,
+const char *UndoHistory::AppendAction(actionType at, int position, const char *data, int lengthData,
 	bool &startSequence, bool mayCoalesce) {
 	EnsureUndoRoom();
 	//Platform::DebugPrintf("%% %d action %d %d %d\n", at, position, lengthData, currentAction);
@@ -226,10 +232,12 @@ void UndoHistory::AppendAction(actionType at, int position, char *data, int leng
 		currentAction++;
 	}
 	startSequence = oldCurrentAction != currentAction;
+	int actionWithData = currentAction;
 	actions[currentAction].Create(at, position, data, lengthData, mayCoalesce);
 	currentAction++;
 	actions[currentAction].Create(startAction);
 	maxAction = currentAction;
+	return actions[actionWithData].data;
 }
 
 void UndoHistory::BeginUndoAction() {
@@ -387,17 +395,13 @@ int CellBuffer::GapPosition() const {
 
 // The char* returned is to an allocation owned by the undo history
 const char *CellBuffer::InsertString(int position, const char *s, int insertLength, bool &startSequence) {
-	char *data = 0;
 	// InsertString and DeleteChars are the bottleneck though which all changes occur
+	const char *data = s;
 	if (!readOnly) {
 		if (collectingUndo) {
 			// Save into the undo/redo stack, but only the characters - not the formatting
 			// This takes up about half load time
-			data = new char[insertLength];
-			for (int i = 0; i < insertLength; i++) {
-				data[i] = s[i];
-			}
-			uh.AppendAction(insertAction, position, data, insertLength, startSequence);
+			data = uh.AppendAction(insertAction, position, s, insertLength, startSequence);
 		}
 
 		BasicInsertString(position, s, insertLength);
@@ -435,15 +439,13 @@ bool CellBuffer::SetStyleFor(int position, int lengthStyle, char styleValue, cha
 const char *CellBuffer::DeleteChars(int position, int deleteLength, bool &startSequence) {
 	// InsertString and DeleteChars are the bottleneck though which all changes occur
 	PLATFORM_ASSERT(deleteLength > 0);
-	char *data = 0;
+	const char *data = 0;
 	if (!readOnly) {
 		if (collectingUndo) {
 			// Save into the undo/redo stack, but only the characters - not the formatting
-			data = new char[deleteLength];
-			for (int i = 0; i < deleteLength; i++) {
-				data[i] = substance.ValueAt(position + i);
-			}
-			uh.AppendAction(removeAction, position, data, deleteLength, startSequence);
+			// The gap would be moved to position anyway for the deletion so this doesn't cost extra
+			data = substance.RangePointer(position, deleteLength);
+			data = uh.AppendAction(removeAction, position, data, deleteLength, startSequence);
 		}
 
 		BasicDeleteChars(position, deleteLength);
@@ -496,7 +498,7 @@ void CellBuffer::SetSavePoint() {
 	uh.SetSavePoint();
 }
 
-bool CellBuffer::IsSavePoint() {
+bool CellBuffer::IsSavePoint() const {
 	return uh.IsSavePoint();
 }
 
@@ -728,7 +730,7 @@ void CellBuffer::DeleteUndoHistory() {
 	uh.DeleteUndoHistory();
 }
 
-bool CellBuffer::CanUndo() {
+bool CellBuffer::CanUndo() const {
 	return uh.CanUndo();
 }
 
@@ -750,7 +752,7 @@ void CellBuffer::PerformUndoStep() {
 	uh.CompletedUndoStep();
 }
 
-bool CellBuffer::CanRedo() {
+bool CellBuffer::CanRedo() const {
 	return uh.CanRedo();
 }
 

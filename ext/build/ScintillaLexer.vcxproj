@@ -117,8 +117,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
+    <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
     <ClCompile Include="..\scintilla\src\CallTip.cxx" />
+    <ClCompile Include="..\scintilla\src\CaseConvert.cxx" />
+    <ClCompile Include="..\scintilla\src\CaseFolder.cxx" />
     <ClCompile Include="..\scintilla\src\Catalogue.cxx" />
     <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
     <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
@@ -241,8 +245,11 @@
     <ClCompile Include="..\scintilla\win32\ScintillaWin.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\scintilla\lexlib\CharacterCategory.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
     <ClInclude Include="..\scintilla\src\CallTip.h" />
+    <ClInclude Include="..\scintilla\src\CaseConvert.h" />
+    <ClInclude Include="..\scintilla\src\CaseFolder.h" />
     <ClInclude Include="..\scintilla\src\Catalogue.h" />
     <ClInclude Include="..\scintilla\src\CellBuffer.h" />
     <ClInclude Include="..\scintilla\src\CharClassify.h" />
@@ -264,7 +271,7 @@
     <ClInclude Include="..\scintilla\src\Selection.h" />
     <ClInclude Include="..\scintilla\src\SplitVector.h" />
     <ClInclude Include="..\scintilla\src\Style.h" />
-    <ClInclude Include="..\scintilla\src\SVector.h" />
+    <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h" />
     <ClInclude Include="..\scintilla\src\UniConversion.h" />
     <ClInclude Include="..\scintilla\src\ViewStyle.h" />
     <ClInclude Include="..\scintilla\src\XPM.h" />

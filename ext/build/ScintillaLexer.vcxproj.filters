@@ -391,6 +391,18 @@
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx">
       <Filter>lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx">
+      <Filter>lexlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\CaseConvert.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\CaseFolder.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
@@ -462,9 +474,6 @@
     <ClInclude Include="..\scintilla\src\Style.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\src\SVector.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\UniConversion.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -512,6 +521,18 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\lexlib\WordList.h">
       <Filter>lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\lexlib\CharacterCategory.h">
+      <Filter>lexlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\CaseConvert.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\CaseFolder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\UnicodeFromUTF8.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

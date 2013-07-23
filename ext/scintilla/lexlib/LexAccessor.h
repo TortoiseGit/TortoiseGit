@@ -79,6 +79,12 @@ public:
 		}
 		return buf[position - startPos];
 	}
+	IDocumentWithLineEnd *MultiByteAccess() const {
+		if (documentVersion >= dvLineEnd) {
+			return static_cast<IDocumentWithLineEnd *>(pAccess);
+		}
+		return 0;
+	}
 	/** Safe version of operator[], returning a defined value for invalid position. */
 	char SafeGetCharAt(int position, char chDefault=' ') {
 		if (position < startPos || position >= endPos) {
@@ -90,7 +96,7 @@ public:
 		}
 		return buf[position - startPos];
 	}
-	bool IsLeadByte(char ch) {
+	bool IsLeadByte(char ch) const {
 		return pAccess->IsDBCSLeadByte(ch);
 	}
 	EncodingType Encoding() const {
@@ -104,13 +110,13 @@ public:
 		}
 		return true;
 	}
-	char StyleAt(int position) {
+	char StyleAt(int position) const {
 		return static_cast<char>(pAccess->StyleAt(position) & mask);
 	}
-	int GetLine(int position) {
+	int GetLine(int position) const {
 		return pAccess->LineFromPosition(position);
 	}
-	int LineStart(int line) {
+	int LineStart(int line) const {
 		return pAccess->LineStart(line);
 	}
 	int LineEnd(int line) {
@@ -126,7 +132,7 @@ public:
 				return startNext - 1;
 		}
 	}
-	int LevelAt(int line) {
+	int LevelAt(int line) const {
 		return pAccess->GetLevel(line);
 	}
 	int Length() const {
@@ -140,7 +146,7 @@ public:
 			validLen = 0;
 		}
 	}
-	int GetLineState(int line) {
+	int GetLineState(int line) const {
 		return pAccess->GetLineState(line);
 	}
 	int SetLineState(int line, int state) {

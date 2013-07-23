@@ -922,8 +922,9 @@ static int RecogniseErrorListLine(const char *lineBuffer, unsigned int lengthLin
 	        (strstr(lineBuffer, " at ") < (lineBuffer + lengthLine)) &&
 	           strstr(lineBuffer, " line ") &&
 	           (strstr(lineBuffer, " line ") < (lineBuffer + lengthLine)) &&
-	        (strstr(lineBuffer, " at ") < (strstr(lineBuffer, " line ")))) {
-		// perl error message
+	        (strstr(lineBuffer, " at ") + 4 < (strstr(lineBuffer, " line ")))) {
+		// perl error message:
+		// <message> at <file> line <line>
 		return SCE_ERR_PERL;
 	} else if ((memcmp(lineBuffer, "   at ", 6) == 0) &&
 	           strstr(lineBuffer, ":line ")) {
@@ -1047,10 +1048,10 @@ static int RecogniseErrorListLine(const char *lineBuffer, unsigned int lengthLin
 				}
 			} else if (state == stCtagsStart) {
 				if ((lineBuffer[i - 1] == '\t') &&
-				        ((ch == '/' && lineBuffer[i + 1] == '^') || Is0To9(ch))) {
+				        ((ch == '/' && chNext == '^') || Is0To9(ch))) {
 					state = stCtags;
 					break;
-				} else if ((ch == '/') && (lineBuffer[i + 1] == '^')) {
+				} else if ((ch == '/') && (chNext == '^')) {
 					state = stCtagsStartString;
 				}
 			} else if ((state == stCtagsStartString) && ((lineBuffer[i] == '$') && (lineBuffer[i + 1] == '/'))) {
