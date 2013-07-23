@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include "Platform.h"
 
@@ -41,6 +42,7 @@
 #include "AutoComplete.h"
 #include "CharClassify.h"
 #include "Decoration.h"
+#include "CaseFolder.h"
 #include "Document.h"
 #include "Selection.h"
 #include "PositionCache.h"
@@ -367,13 +369,13 @@ void ScintillaBase::AutoCompleteCompleted() {
 	SetLastXChosen();
 }
 
-int ScintillaBase::AutoCompleteGetCurrent() {
+int ScintillaBase::AutoCompleteGetCurrent() const {
 	if (!ac.Active())
 		return -1;
 	return ac.GetSelection();
 }
 
-int ScintillaBase::AutoCompleteGetCurrentText(char *buffer) {
+int ScintillaBase::AutoCompleteGetCurrentText(char *buffer) const {
 	if (ac.Active()) {
 		int item = ac.GetSelection();
 		if (item != -1) {
