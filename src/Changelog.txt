@@ -6,6 +6,7 @@ Released: Unreleased
  * Fixed issue #1839: Conflict dialog does not allow resolving multiple or all conflicts with the same option
  * Allow to send (patch)mails over relay servers (e.g. the one from your ISP)
  * When adding second and more remotes, prompt user to disable tag fetching to avoid fetching wrong tags
+ * Fixed issue #1845: Add "pull" button on "git switch" window
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits

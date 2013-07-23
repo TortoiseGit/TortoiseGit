@@ -1224,17 +1224,26 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	progress.m_bAutoCloseOnSuccess = autoClose;
 	progress.m_GitCmd = cmd;
 
+	INT_PTR idPull = -1;
+	INT_PTR idSubmoduleUpdate = -1;
+
 	CTGitPath gitPath = g_Git.m_CurrentDir;
 	if (gitPath.HasSubmodules())
-		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+		idSubmoduleUpdate = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+	idPull = progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
 
 	INT_PTR ret = progress.DoModal();
-	if (gitPath.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
+	if (idSubmoduleUpdate >= 0 && ret == IDC_PROGRESS_BUTTON1 + idSubmoduleUpdate)
 	{
 		CString sCmd;
 		sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
 
 		RunTortoiseGitProc(sCmd);
+		return TRUE;
+	}
+	else if (ret == IDC_PROGRESS_BUTTON1 + idPull)
+	{
+		Pull();
 		return TRUE;
 	}
 	else if (ret == IDOK)
