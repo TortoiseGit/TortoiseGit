@@ -1572,6 +1572,8 @@ int CRebaseDlg::DoRebase()
 	CString cherryPickedFrom;
 	if (m_bAddCherryPickedFrom)
 		cherryPickedFrom = _T("-x ");
+	else if (!m_IsCherryPick)
+		cherryPickedFrom = _T("--ff "); // for issue #1833: "If the current HEAD is the same as the parent of the cherry-pick’ed commit, then a fast forward to this commit will be performed."
 
 	cmd.Format(_T("git.exe cherry-pick %s%s %s"), cherryPickedFrom, nocommit, pRev->m_CommitHash.ToString());
 

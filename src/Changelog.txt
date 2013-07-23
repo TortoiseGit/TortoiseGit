@@ -7,6 +7,9 @@ Released: Unreleased
  * Allow to send (patch)mails over relay servers (e.g. the one from your ISP)
  * When adding second and more remotes, prompt user to disable tag fetching to avoid fetching wrong tags
 
+== Bug Fixes ==
+ * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
+
 = Release 1.8.4.0 =
 Released: 2013-07-09
 
