@@ -128,6 +128,14 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	return TRUE;
 }
 
+void CCheckForUpdatesDlg::OnDestroy()
+{
+	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
+		delete (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+
+	CStandAloneDialog::OnDestroy();
+}
+
 void CCheckForUpdatesDlg::OnOK()
 {
 	if (m_bThreadRunning || m_pDownloadThread != NULL)
