@@ -42,6 +42,7 @@ CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
 	this->m_CleanType = this->m_regType;
 	m_bNoRecycleBin = FALSE;
 	m_bDryRun = FALSE;
+	m_bSubmodules = FALSE;
 }
 
 CCleanTypeDlg::~CCleanTypeDlg()
@@ -54,12 +55,15 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_DIR, m_bDir);
 	DDX_Check(pDX, IDC_CHECK_NORECYCLEBIN, m_bNoRecycleBin);
 	DDX_Check(pDX, IDC_CHECK_DRYRUN, m_bDryRun);
+	DDX_Check(pDX, IDC_CHECKSUBMODULES, m_bSubmodules);
 	DDX_Radio(pDX, IDC_RADIO_CLEAN_ALL,m_CleanType);
 }
 
 
 BEGIN_MESSAGE_MAP(CCleanTypeDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, &CCleanTypeDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_CHECK_NORECYCLEBIN, &CCleanTypeDlg::OnBnClickedCheckNoRecycleBin)
+	ON_BN_CLICKED(IDC_CHECK_DRYRUN, &CCleanTypeDlg::OnBnClickedCheckNoRecycleBin)
 END_MESSAGE_MAP()
 
 
@@ -76,10 +80,12 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_DIR);
 	AdjustControlSize(IDC_CHECK_NORECYCLEBIN);
 	AdjustControlSize(IDC_CHECK_DRYRUN);
+	AdjustControlSize(IDC_CHECKSUBMODULES);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	GetDlgItem(IDC_CHECKSUBMODULES)->EnableWindow(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -98,4 +104,10 @@ void CCleanTypeDlg::OnOK()
 void CCleanTypeDlg::OnBnClickedHelp()
 {
 	OnHelp();
+}
+
+void CCleanTypeDlg::OnBnClickedCheckNoRecycleBin()
+{
+	this->UpdateData(TRUE);
+	GetDlgItem(IDC_CHECKSUBMODULES)->EnableWindow((m_bNoRecycleBin || m_bDryRun) ? TRUE : FALSE);
 }

@@ -128,6 +128,14 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	return TRUE;
 }
 
+void CCheckForUpdatesDlg::OnDestroy()
+{
+	for (int i = 0; i < m_ctrlFiles.GetItemCount(); ++i)
+		delete (CUpdateListCtrl::Entry *)m_ctrlFiles.GetItemData(i);
+
+	CStandAloneDialog::OnDestroy();
+}
+
 void CCheckForUpdatesDlg::OnOK()
 {
 	if (m_bThreadRunning || m_pDownloadThread != NULL)
@@ -438,7 +446,7 @@ void CCheckForUpdatesDlg::OnStnClickedCheckresult()
 	HINSTANCE result = ShellExecute(NULL, _T("opennew"), m_sUpdateDownloadLink, NULL,NULL, SW_SHOWNORMAL);
 	if ((UINT)result <= HINSTANCE_ERROR)
 	{
-		result = ShellExecute(NULL, _T("open"), m_sUpdateDownloadLink, NULL,NULL, SW_SHOWNORMAL);
+		ShellExecute(nullptr, _T("open"), m_sUpdateDownloadLink, nullptr, nullptr, SW_SHOWNORMAL);
 	}
 }
 

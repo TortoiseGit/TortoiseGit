@@ -205,12 +205,12 @@ int git_get_commit_from_hash(GIT_COMMIT *commit, GIT_HASH hash)
 
 	struct commit *p;
 
+	if (commit == NULL)
+		return -1;
+
 	memset(commit,0,sizeof(GIT_COMMIT));
 
 	commit->m_pGitCommit = p = lookup_commit(hash);
-
-	if(commit == NULL)
-		return -1;
 
 	if(p == NULL)
 		return -1;

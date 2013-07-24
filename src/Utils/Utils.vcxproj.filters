@@ -42,9 +42,6 @@
     <ClCompile Include="CommonAppUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DebugHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DirFileEnum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -23,6 +23,7 @@
 #include "StandAloneDlg.h"
 #include "afxwin.h"
 #include "FilterEdit.h"
+#include "GitStatusListCtrl.h"
 
 const int gPickRef_Head		= 1;
 const int gPickRef_Tag		= 2;
@@ -148,6 +149,7 @@ private:
 	CShadowTree*	m_pListCtrlRoot;
 	CTreeCtrl		m_RefTreeCtrl;
 	CListCtrl		m_ListRefLeafs;
+	ColumnManager	m_ColumnManager;
 
 	CFilterEdit		m_ctrlFilter;
 	afx_msg void OnEnChangeEditFilter();

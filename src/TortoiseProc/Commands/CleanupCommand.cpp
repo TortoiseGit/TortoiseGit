@@ -75,6 +75,8 @@ bool CleanupCommand::Execute()
 			break;
 		}
 
+		CString smcmd = _T("git submodule foreach --recursive \"") + cmd + _T("\"");
+
 		if (dlg.m_bDryRun || dlg.m_bNoRecycleBin)
 		{
 			CProgressDlg progress;
@@ -88,6 +90,10 @@ bool CleanupCommand::Execute()
 
 				progress.m_GitCmdList.push_back(cmd + _T(" \"") + path + _T("\""));
 			}
+
+			if (dlg.m_bSubmodules)
+				progress.m_GitCmdList.push_back(smcmd);
+
 			if (progress.DoModal()==IDOK)
 				return TRUE;
 		}
