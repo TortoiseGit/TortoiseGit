@@ -359,7 +359,7 @@ static SECURITY_STATUS ClientHandshakeLoop(CSocket * Socket, PCredHandle phCreds
 	// Delete the security context in the case of a fatal error.
 	if (FAILED(scRet))
 		g_pSSPI->DeleteSecurityContext(phContext);
-	LocalFree(IoBuffer);
+	delete[] IoBuffer;
 
 	return scRet;
 }
