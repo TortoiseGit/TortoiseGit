@@ -20,7 +20,6 @@
 #include "stdafx.h"
 //#include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
 #include "messagebox.h"
-#include ".\messagebox.h"
 #include "ClipboardHelper.h"
 
 CMessageBox::CMessageBox(void)
