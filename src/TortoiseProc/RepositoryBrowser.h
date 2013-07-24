@@ -22,6 +22,7 @@
 #include <map>
 #include "StandAloneDlg.h"
 #include "GitHash.h"
+#include "GitStatusListCtrl.h"
 
 #define REPOBROWSER_CTRL_MIN_WIDTH	20
 
@@ -121,10 +122,12 @@ private:
 
 	afx_msg void			OnOK();
 	afx_msg void			OnCancel();
+	afx_msg void			OnDestroy();
 	virtual BOOL			OnInitDialog();
 
 	CTreeCtrl				m_RepoTree;
 	CListCtrl				m_RepoList;
+	ColumnManager			m_ColumnManager;
 
 	afx_msg void			OnLvnColumnclickRepoList(NMHDR *pNMHDR, LRESULT *pResult);
 	int						m_currSortCol;

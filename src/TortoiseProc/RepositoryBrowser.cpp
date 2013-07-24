@@ -139,6 +139,7 @@ CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 , m_currSortDesc(false)
 , m_sRevision(rev)
 , m_bHasWC(true)
+, m_ColumnManager(&m_RepoList)
 {
 }
 
@@ -161,6 +162,7 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(NM_DBLCLK, IDC_REPOLIST, &CRepositoryBrowser::OnNMDblclk_RepoList)
 	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 	ON_WM_SETCURSOR()
+	ON_WM_DESTROY()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -188,13 +190,11 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	if (CRepositoryBrowser::s_bSortLogical)
 		CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
-	CString temp;
-	temp.LoadString(IDS_STATUSLIST_COLFILENAME);
-	m_RepoList.InsertColumn(eCol_Name, temp, 0, 150);
-	temp.LoadString(IDS_STATUSLIST_COLEXT);
-	m_RepoList.InsertColumn(eCol_Extension, temp, 0, 100);
-	temp.LoadString(IDS_LOG_SIZE);
-	m_RepoList.InsertColumn(eCol_FileSize, temp, 0, 100);
+	static UINT columnNames[] = { IDS_STATUSLIST_COLFILENAME, IDS_STATUSLIST_COLEXT, IDS_LOG_SIZE };
+	static int columnWidths[] = { 150, 100, 100 };
+	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
+	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("RepoBrowser"), _countof(columnNames), columnWidths);
 
 	// set up the list control
 	// set the extended style of the list control
@@ -246,6 +246,17 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_RepoList.SetFocus();
 
 	return FALSE;
+}
+
+void CRepositoryBrowser::OnDestroy()
+{
+	int maxcol = m_ColumnManager.GetColumnCount();
+	for (int col = 0; col < maxcol; ++col)
+		if (m_ColumnManager.IsVisible(col))
+			m_ColumnManager.ColumnResized(col);
+	m_ColumnManager.WriteSettings();
+
+	CResizableStandAloneDialog::OnDestroy();
 }
 
 void CRepositoryBrowser::OnOK()
