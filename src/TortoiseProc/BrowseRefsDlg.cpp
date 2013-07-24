@@ -158,6 +158,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_pListCtrlRoot(NULL),
 	m_bHasWC(true),
 	m_SelectedFilters(LOGFILTER_ALL),
+	m_ColumnManager(&m_ListRefLeafs),
 	m_bPickOne(false)
 {
 
@@ -216,19 +217,12 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
-	CString temp;
-	temp.LoadString(IDS_BRANCHNAME);
-	m_ListRefLeafs.InsertColumn(eCol_Name, temp, 0, 150);
-	temp.LoadString(IDS_DATELASTCOMMIT);
-	m_ListRefLeafs.InsertColumn(eCol_Date, temp, 0, 100);
-	temp.LoadString(IDS_LASTCOMMIT);
-	m_ListRefLeafs.InsertColumn(eCol_Msg, temp, 0, 300);
-	temp.LoadString(IDS_LASTAUTHOR);
-	m_ListRefLeafs.InsertColumn(eCol_LastAuthor, temp, 0, 100);
-	temp.LoadString(IDS_HASH);
-	m_ListRefLeafs.InsertColumn(eCol_Hash, temp, 0, 80);
-	temp.LoadString(IDS_DESCRIPTION);
-	m_ListRefLeafs.InsertColumn(eCol_Description, temp, 0, 80);
+	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
+	static int columnWidths[] = { 150, 100, 300, 100, 80, 80 };
+	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Date) | (1 << eCol_Msg) | 
+		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
+	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -1256,6 +1250,12 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 void CBrowseRefsDlg::OnDestroy()
 {
 	m_pickedRef = GetSelectedRef(true, false);
+
+	int maxcol = m_ColumnManager.GetColumnCount();
+	for (int col = 0; col < maxcol; ++col)
+		if (m_ColumnManager.IsVisible(col))
+			m_ColumnManager.ColumnResized(col);
+	m_ColumnManager.WriteSettings();
 
 	CResizableStandAloneDialog::OnDestroy();
 }
