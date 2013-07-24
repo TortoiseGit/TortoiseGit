@@ -799,6 +799,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		
 	}
 	git_clear_mailmap(mailmap);
+	free(mailmap);
 
 	if (fetchdiff)
 	{

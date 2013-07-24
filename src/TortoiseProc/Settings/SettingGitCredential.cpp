@@ -830,9 +830,9 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			CStringA urlA = CUnicodeUtils::GetUTF8(url);
 			CStringA pattern = urlA.IsEmpty() ? "^credential\\.[^.]+$" : ("credential\\." + RegexEscape(urlA) + "\\..*");
 			git_config_foreach_match(config, pattern, GetCredentialEntryCallback, &list);
+			git_config_free(config);
 			for (size_t i = 0; i < list.size(); ++i)
 				g_Git.UnsetConfigValue(list[i], configLevel, CP_UTF8);
-
 			m_ctrlUrlList.DeleteString(index);
 			OnLbnSelchangeListUrl();
 		}

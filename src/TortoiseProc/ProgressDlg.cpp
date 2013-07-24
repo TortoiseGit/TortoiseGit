@@ -619,7 +619,7 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 				KillProcessTree(pe.th32ProcessID, depth + 1);
 		} while (::Process32Next(hSnap, &pe));
 
-		HANDLE hProc = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
+		CAutoGeneralHandle hProc = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
 		if (hProc)
 			::TerminateProcess(hProc, 1);
 	}

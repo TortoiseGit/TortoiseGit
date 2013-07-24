@@ -2026,12 +2026,15 @@ int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile
 }
 void CEnvironment::CopyProcessEnvironment()
 {
-	TCHAR *p = GetEnvironmentStrings();
+	TCHAR *porig = GetEnvironmentStrings();
+	TCHAR *p = porig;
 	while(*p !=0 || *(p+1) !=0)
 		this->push_back(*p++);
 
 	push_back(_T('\0'));
 	push_back(_T('\0'));
+
+	FreeEnvironmentStrings(porig);
 }
 
 CString CEnvironment::GetEnv(TCHAR *name)

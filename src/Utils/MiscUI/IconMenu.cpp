@@ -125,7 +125,10 @@ HBITMAP CIconMenu::IconToBitmapPARGB32(UINT uIcon)
 		return NULL;
 
 	if (pfnBeginBufferedPaint == NULL || pfnEndBufferedPaint == NULL || pfnGetBufferedPaintBits == NULL)
+	{
+		DestroyIcon(hIcon);
 		return NULL;
+	}
 
 	SIZE sizIcon;
 	sizIcon.cx = GetSystemMetrics(SM_CXSMICON);

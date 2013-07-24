@@ -21,6 +21,7 @@
 //#include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
 #include "messagebox.h"
 #include "ClipboardHelper.h"
+#include "SmartHandle.h"
 
 CMessageBox::CMessageBox(void)
 	: m_hIcon(NULL)
@@ -753,7 +754,7 @@ void CMessageBox::OnButton2()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp=NULL; // Function pointer
-		HINSTANCE hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
+		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
 		HWND hHelp = NULL;
 		if (hInstHtmlHelp != NULL)
 		{
@@ -787,7 +788,7 @@ void CMessageBox::OnButton3()
 	{
 		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp=NULL; // Function pointer
-		HINSTANCE hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
+		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(_T("HHCtrl.ocx"));
 		HWND hHelp = NULL;
 		if (hInstHtmlHelp != NULL)
 		{

@@ -1958,6 +1958,10 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 			CString sErr;
 			sErr.Format(IDS_ERR_FAILEDISSUETRACKERCOM, (LPCTSTR)m_bugtraq_association.GetProviderName(), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(m_hWnd, sErr, _T("TortoiseGit"), MB_ICONERROR);
+			SysFreeString(parameters);
+			SysFreeString(commonRoot);
+			SafeArrayDestroy(pathList);
+			SysFreeString(originalMessage);
 			return;
 		}
 
