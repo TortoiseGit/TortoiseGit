@@ -446,7 +446,7 @@ void CCheckForUpdatesDlg::OnStnClickedCheckresult()
 	HINSTANCE result = ShellExecute(NULL, _T("opennew"), m_sUpdateDownloadLink, NULL,NULL, SW_SHOWNORMAL);
 	if ((UINT)result <= HINSTANCE_ERROR)
 	{
-		result = ShellExecute(NULL, _T("open"), m_sUpdateDownloadLink, NULL,NULL, SW_SHOWNORMAL);
+		ShellExecute(nullptr, _T("open"), m_sUpdateDownloadLink, nullptr, nullptr, SW_SHOWNORMAL);
 	}
 }
 
