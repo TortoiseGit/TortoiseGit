@@ -109,7 +109,6 @@
     <ClCompile Include="CmdLineParser.cpp" />
     <ClCompile Include="COMError.cpp" />
     <ClCompile Include="CommonAppUtils.cpp" />
-    <ClCompile Include="DebugHelpers.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirFileEnum.cpp" />
     <ClCompile Include="DragDropImpl.cpp" />
