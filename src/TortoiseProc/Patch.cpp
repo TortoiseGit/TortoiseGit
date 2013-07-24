@@ -133,7 +133,14 @@ int CPatch::Parse(CString &pathfile)
 			return -1;
 		one=m_Body.Tokenize("\n",start);
 		if(one.GetLength()>9)
+		{
 			g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer() + 9, CP_UTF8, one.GetLength() - 9);
+			while (m_Body.GetLength() > start && m_Body.GetAt(start) == _T(' '))
+			{
+				one = m_Body.Tokenize("\n", start);
+				g_Git.StringAppend(&m_Subject, (BYTE*)one.GetBuffer(), CP_UTF8, one.GetLength());
+			}
+		}
 
 		if (start + 1 < m_Body.GetLength())
 			g_Git.StringAppend(&m_strBody, (BYTE*)m_Body.GetBuffer() + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
