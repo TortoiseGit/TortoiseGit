@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,18 +25,19 @@
 class ItemIDList
 {
 public:
-	ItemIDList(LPCITEMIDLIST item, LPCITEMIDLIST parent = 0);
+	ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent);
+	ItemIDList(PCIDLIST_ABSOLUTE item);
 
 	int size() const;
 	LPCSHITEMID get(int index) const;
 	virtual ~ItemIDList();
 
-	stdstring toString(bool resolveLibraries = true);
+	tstring toString(bool resolveLibraries = true);
 
-	LPCITEMIDLIST operator& ();
+	PCUITEMID_CHILD operator& ();
 private:
-	LPCITEMIDLIST item_;
-	LPCITEMIDLIST parent_;
+	PCUITEMID_CHILD item_;
+	PCUIDLIST_RELATIVE parent_;
 	mutable int count_;
 };
 

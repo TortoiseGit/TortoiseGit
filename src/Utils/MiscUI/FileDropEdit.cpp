@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,20 +18,17 @@
 //
 #include "stdafx.h"
 #include "FileDropEdit.h"
-#include ".\filedropedit.h"
 
 
 // CFileDropEdit
 
 IMPLEMENT_DYNAMIC(CFileDropEdit, CEdit)
-CFileDropEdit::CFileDropEdit() : m_pDropTarget(NULL)
+CFileDropEdit::CFileDropEdit()
 {
 }
 
 CFileDropEdit::~CFileDropEdit()
 {
-	if (m_pDropTarget)
-		delete m_pDropTarget;
 }
 
 
@@ -44,8 +41,8 @@ END_MESSAGE_MAP()
 
 void CFileDropEdit::PreSubclassWindow()
 {
-	m_pDropTarget = new CFileDropTarget(m_hWnd);
-	RegisterDragDrop(m_hWnd,m_pDropTarget);
+	m_pDropTarget.reset (new CFileDropTarget (m_hWnd));
+	RegisterDragDrop(m_hWnd, m_pDropTarget.get());
 	// create the supported formats:
 	FORMATETC ftetc={0};
 	ftetc.cfFormat = CF_TEXT;
