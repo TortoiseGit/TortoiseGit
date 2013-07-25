@@ -247,6 +247,7 @@
     <ClInclude Include="..\libgit2\include\git2\graph.h" />
     <ClInclude Include="..\libgit2\include\git2\merge.h" />
     <ClInclude Include="..\libgit2\include\git2\message.h" />
+    <ClInclude Include="..\libgit2\include\git2\pathspec.h" />
     <ClInclude Include="..\libgit2\include\git2\push.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb_backend.h" />
@@ -268,6 +269,7 @@
     <ClInclude Include="..\libgit2\src\attr.h" />
     <ClInclude Include="..\libgit2\src\attrcache.h" />
     <ClInclude Include="..\libgit2\src\attr_file.h" />
+    <ClInclude Include="..\libgit2\src\bitvec.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
     <ClInclude Include="..\libgit2\src\bswap.h" />
