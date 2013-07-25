@@ -638,6 +638,9 @@ void CTortoiseGitBlameView::BlamePreviousRevision()
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:blame");
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
+	CString lineNumber;
+	lineNumber.Format(_T(" /line:%d"), m_MouseLine + 1);
+	procCmd += lineNumber;
 
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
