@@ -1179,11 +1179,12 @@ const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, voi
 	return NULL;
 }
 
-void git_clear_mailmap(GIT_MAILMAP mailmap)
+void git_free_mailmap(GIT_MAILMAP mailmap)
 {
 	if (!mailmap)
 		return;
 
 	clear_mailmap((struct string_list *)mailmap);
+	free(mailmap);
 }
 

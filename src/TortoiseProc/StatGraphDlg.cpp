@@ -776,7 +776,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 				if (progress.HasUserCancelled())
 				{
-					git_clear_mailmap(mailmap);
+					git_free_mailmap(mailmap);
 					return -1;
 				}
 			}
@@ -798,8 +798,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		}
 		
 	}
-	git_clear_mailmap(mailmap);
-	free(mailmap);
+	git_free_mailmap(mailmap);
 
 	if (fetchdiff)
 	{

@@ -203,6 +203,6 @@ typedef void *GIT_MAILMAP;
 
 GITDLL_API int git_read_mailmap(GIT_MAILMAP *mailmap);
 GITDLL_API const char * git_get_mailmap_author(GIT_MAILMAP mailmap, const char *email2, void *payload, const char *(*author2_cb)(void *));
-GITDLL_API void git_clear_mailmap(GIT_MAILMAP mailmap);
+GITDLL_API void git_free_mailmap(GIT_MAILMAP mailmap);
 
 #endif
