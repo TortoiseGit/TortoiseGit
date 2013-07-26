@@ -583,6 +583,61 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 	return output;
 }
 
+bool LookLikeGitHash(const CString& msg, int &pos)
+{
+	int c = 0;
+	for (; pos < msg.GetLength(); ++pos)
+	{
+		if (msg[pos] >= '0' && msg[pos] <= '9' || msg[pos] >= 'a' && msg[pos] <= 'f')
+		{
+			c++;
+		}
+		else
+		{
+			return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
+		}
+	}
+	return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
+}
+
+std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
+{
+	std::vector<CHARRANGE> result;
+	offset = offset < 0 ? 0 : offset;
+	int old = offset;
+	while (offset < msg.GetLength())
+	{
+		old = offset;
+		TCHAR b = offset > 1 ? msg[offset - 2] : '\0';
+		TCHAR c = offset > 0 ? msg[offset - 1] : '\0';
+		// git hash can optionally starts with 'g'
+		if ((c == 'g' && (offset == 0 || !((b >= 'A' && b <= 'Z') || (b >= 'h' && b <= 'z'))))
+			|| (!((c >= 'A' && c <= 'Z') || (c >= 'h' && c <= 'z'))))
+		{
+			if (LookLikeGitHash(msg, offset))
+			{
+				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
+				if (!((d >= 'A' && d <= 'Z') || (d >= 'g' && d <= 'z')))
+				{
+					CHARRANGE range = { old, offset };
+					result.push_back(range);
+				}
+			}
+		}
+		++offset;
+	}
+
+	return result;
+}
+
+BOOL FindGitHash(const CString& msg, int offset, CWnd *pWnd)
+{
+	std::vector<CHARRANGE> positions = FindGitHashPositions(msg, offset);
+	CAppUtils::SetCharFormat(pWnd, CFM_LINK, CFE_LINK, positions);
+
+	return positions.empty() ? FALSE : TRUE;
+}
+
 void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 {
 	// we fill here the log message rich edit control,
@@ -678,6 +733,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			// to be exact: CRLF is treated as one char.
 			text.Remove('\r');
 
+			FindGitHash(text, text.Find('\n'), pMsgView);
 			m_LogList.m_ProjectProperties.FindBugID(text, pMsgView);
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
@@ -1204,13 +1260,44 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		GetDlgItemText(IDC_MSGVIEW, msg);
 		msg.Replace(_T("\r\n"), _T("\n"));
 		url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax-pEnLink->chrg.cpMin);
-		if (!::PathIsURL(url))
+		int pos = 0;
+		if (LookLikeGitHash(url, pos))
 		{
-			url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
-			url = GetAbsoluteUrlFromRelativeUrl(url);
+			bool found = false;
+			for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+			{
+				GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+				if (!rev) continue;
+				if (rev->m_CommitHash.ToString().Left(url.GetLength()) == url)
+				{
+					POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+					if (pos)
+					{
+						int index = m_LogList.GetNextSelectedItem(pos);
+						if (index > 0)
+							m_LogList.SetItemState(index, 0, LVIS_SELECTED);
+					}
+					m_LogList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+					m_LogList.EnsureVisible(i, FALSE);
+					m_LogList.SetSelectionMark(i);
+					found = true;
+					break;
+				}
+			}
+
+			if (!found)
+				CMessageBox::ShowCheck(GetSafeHwnd(), IDS_PROC_LOG_JUMPNOTFOUND, IDS_APPNAME, 1, IDI_INFORMATION, IDS_OKBUTTON, 0, 0, _T("NoJumpNotFoundWarning"), IDS_MSGBOX_DONOTSHOWAGAIN);
 		}
-		if (!url.IsEmpty())
-			ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+		else
+		{
+			if (!::PathIsURL(url))
+			{
+				url = m_LogList.m_ProjectProperties.GetBugIDUrl(url);
+				url = GetAbsoluteUrlFromRelativeUrl(url);
+			}
+			if (!url.IsEmpty())
+				ShellExecute(this->m_hWnd, _T("open"), url, NULL, NULL, SW_SHOWDEFAULT);
+		}
 	}
 	*pResult = 0;
 }

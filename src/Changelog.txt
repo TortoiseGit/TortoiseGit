@@ -8,6 +8,7 @@ Released: Unreleased
  * When adding second and more remotes, prompt user to disable tag fetching to avoid fetching wrong tags
  * Fixed issue #1845: Add "pull" button on "git switch" window
  * Fixed issue #1848: TortoiseGitBlame doesn't scroll to the previously selected line on "Blame previous revision"
+ * Underline git hash in log message view and jump to that commit when clicking on the hash
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
