@@ -2040,7 +2040,7 @@ msgid "Branch:"
 msgstr ""
 
 #. Resource IDs: (68)
-msgid "Branchname"
+msgid "Branch Name"
 msgstr ""
 
 #. Resource IDs: (1383)

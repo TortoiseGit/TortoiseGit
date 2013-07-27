@@ -3926,7 +3926,7 @@ BEGIN
                             "Found an empty commit message. You have to enter one or rebase cannot proceed."
     IDS_PROC_REBASE_ABORT   "Are you sure you want to abort the rebase process?"
     IDS_LASTCOMMIT          "Last Commit"
-    IDS_BRANCHNAME          "Branchname"
+    IDS_BRANCHNAME          "Branch Name"
     IDS_DATELASTCOMMIT      "Date Last Commit"
     IDS_PROC_COMMIT_ADDSIGNOFFBUTTON "&Add it"
     IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON "&Commit w/o"
