@@ -35,12 +35,13 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 	int i=0;
 	while(menuInfo[i].command != ShellMenuLastEntry)
 	{
-		if(menuInfo[i].command != ShellSeparator &&
+		if ((menuInfo[i].command != ShellSeparator &&
 		   menuInfo[i].command != ShellSubMenu &&
 		   menuInfo[i].command != ShellSubMenuFile &&
 		   menuInfo[i].command != ShellSubMenuFolder &&
 		   menuInfo[i].command != ShellSubMenuLink &&
-		   menuInfo[i].command != ShellSubMenuMultiple)
+		   menuInfo[i].command != ShellSubMenuMultiple) &&
+		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
 			HICON hIcon = reinterpret_cast<HICON>(::LoadImage(AfxGetResourceHandle(),
 					MAKEINTRESOURCE(menuInfo[i].iconID),IMAGE_ICON, 16, 16, LR_LOADTRANSPARENT ));
