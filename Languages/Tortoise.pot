@@ -2027,6 +2027,10 @@ msgstr ""
 msgid "Branch %s behind %s\r\n%s will fastforward to %s"
 msgstr ""
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr ""
@@ -2037,10 +2041,6 @@ msgstr ""
 
 #. Resource IDs: (1518)
 msgid "Branch:"
-msgstr ""
-
-#. Resource IDs: (68)
-msgid "Branch Name"
 msgstr ""
 
 #. Resource IDs: (1383)
