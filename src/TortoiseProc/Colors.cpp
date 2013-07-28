@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2009-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +31,6 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{LastCommit,_T("Software\\TortoiseGit\\Colors\\LastCommit"), RGB(100, 100, 100)},
 	{DeletedNode,_T("Software\\TortoiseGit\\Colors\\DeletedNode"), RGB(255, 0, 0)},
 	{NoteNode,_T("Software\\TortoiseGit\\Colors\\NoteNode"), RGB(160, 160, 0)},
-	{ReplacedNode,_T("Software\\TortoiseGit\\Colors\\ReplacedNode"), RGB(0, 255, 0)},
 	{RenamedNode,_T("Software\\TortoiseGit\\Colors\\RenamedNode"), RGB(0, 0, 255)},
 	{LastCommitNode,_T("Software\\TortoiseGit\\Colors\\LastCommitNode"), RGB(200, 200, 200)},
 	{PropertyChanged,_T("Software\\TortoiseGit\\Colors\\PropertyChanged"), RGB(0, 50, 160)},

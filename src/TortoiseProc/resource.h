@@ -619,7 +619,6 @@
 #define IDS_PROC_CLEANUPFINISHED        1257
 #define IDC_RENAMEDNODECOLOR            1257
 #define IDS_PROC_REPOCREATEERR          1258
-#define IDC_REPLACEDNODECOLOR           1258
 #define IDS_PROC_EXPORT_1               1259
 #define IDS_PROC_EXPORT_2               1260
 #define IDC_UNVERSIONEDRECURSE          1260

@@ -41,7 +41,6 @@ void CSettingsColors::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MODIFIEDCOLOR, m_cModified);
 	DDX_Control(pDX, IDC_DELETEDNODECOLOR, m_cDeletedNode);
 	DDX_Control(pDX, IDC_NOTENODECOLOR, m_cNoteNode);
-	DDX_Control(pDX, IDC_REPLACEDNODECOLOR, m_cReplacedNode);
 	DDX_Control(pDX, IDC_RENAMEDNODECOLOR, m_cRenamedNode);
 }
 
@@ -55,7 +54,6 @@ BEGIN_MESSAGE_MAP(CSettingsColors, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_MODIFIEDCOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_DELETEDNODECOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_NOTENODECOLOR, &CSettingsColors::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_REPLACEDNODECOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_RENAMEDNODECOLOR, &CSettingsColors::OnBnClickedColor)
 END_MESSAGE_MAP()
 
@@ -71,7 +69,6 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
 	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
 	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
-	m_cReplacedNode.SetColor(m_Colors.GetColor(CColors::ReplacedNode));
 
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
@@ -92,8 +89,6 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cDeletedNode.EnableOtherButton(sCustomText);
 	m_cRenamedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::RenamedNode, true));
 	m_cRenamedNode.EnableOtherButton(sCustomText);
-	m_cReplacedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::ReplacedNode, true));
-	m_cReplacedNode.EnableOtherButton(sCustomText);
 
 	return TRUE;
 }
@@ -108,7 +103,6 @@ void CSettingsColors::OnBnClickedRestore()
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
 	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
 	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
-	m_cReplacedNode.SetColor(m_Colors.GetColor(CColors::ReplacedNode));
 	SetModified(TRUE);
 }
 
@@ -122,7 +116,6 @@ BOOL CSettingsColors::OnApply()
 	m_Colors.SetColor(CColors::NoteNode, m_cNoteNode.GetColor() == -1 ? m_cNoteNode.GetAutomaticColor() : m_cNoteNode.GetColor());
 	m_Colors.SetColor(CColors::DeletedNode, m_cDeletedNode.GetColor() == -1 ? m_cDeletedNode.GetAutomaticColor() : m_cDeletedNode.GetColor());
 	m_Colors.SetColor(CColors::RenamedNode, m_cRenamedNode.GetColor() == -1 ? m_cRenamedNode.GetAutomaticColor() : m_cRenamedNode.GetColor());
-	m_Colors.SetColor(CColors::ReplacedNode, m_cReplacedNode.GetColor() == -1 ? m_cReplacedNode.GetAutomaticColor() : m_cReplacedNode.GetColor());
 	m_Colors.SetColor(CColors::PropertyChanged, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
 
 	return ISettingsPropPage::OnApply();
