@@ -1661,6 +1661,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMMIT))
 						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
+					if (isMergeActive && (m_ContextMenuMask & GetContextMenuBit(ID_MERGE_ABORT)))
+						popup.AppendMenuIcon(ID_MERGE_ABORT, IDS_MENUMERGEABORT, IDI_MERGEABORT);
 				}
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1) && m_hasWC) // compare with WC, unified
 				{

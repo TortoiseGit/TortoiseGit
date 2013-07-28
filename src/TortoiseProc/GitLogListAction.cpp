@@ -203,6 +203,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 				this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH,0);
 			}
 			break;
+			case ID_MERGE_ABORT:
+			{
+				if (CAppUtils::MergeAbort())
+					this->GetParent()->PostMessage(WM_COMMAND,ID_LOGDLG_REFRESH, 0);
+			}
+			break;
 			case ID_GNUDIFF1: // compare with WC, unified
 			{
 				GitRev * r1 = reinterpret_cast<GitRev*>(m_arShownList.GetAt(FirstSelect));
