@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include ".\colors.h"
+#include "Colors.h"
 
 CColors::COLOR_DATA CColors::m_ColorArray[]=
 {
