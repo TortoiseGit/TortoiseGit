@@ -1630,6 +1630,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	{
 		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 		CString currentBranch = _T("refs/heads/") + g_Git.GetCurrentBranch();
+		bool isMergeActive = CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1742,7 +1743,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 
-				if (pSelLogEntry->m_CommitHash.IsEmpty())
+				if (pSelLogEntry->m_CommitHash.IsEmpty() && !isMergeActive)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
 						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
@@ -1808,13 +1809,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isMergeActive)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
 
@@ -1873,7 +1874,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_REBASE_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if(pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC)
+				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
 						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);
 
@@ -1962,7 +1963,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC)
+			if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive)
 					popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREVS, IDI_REVERT);
 
 			if (bAddSeparator)
@@ -1974,7 +1975,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			bool bAddSeparator = false;
 			if ( IsSelectionContinuous() && GetSelectedCount() >= 2 )
 			{
-				if(m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC && !isMergeActive)
 				{
 					CString head;
 					int headindex;
@@ -1993,7 +1994,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 			}
-			if(m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC) {
+			if (m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC && !isMergeActive) {
 				if (GetSelectedCount() >= 2)
 					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_EXPORT);
 				else
@@ -2011,7 +2012,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (m_hasWC && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect))->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+		if (m_hasWC && !isMergeActive && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect))->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
 		{
 			popup.AppendMenuIcon(ID_BISECTSTART, IDS_MENUBISECTSTART);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
