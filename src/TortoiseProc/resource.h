@@ -612,7 +612,6 @@
 #define IDC_MODIFIEDCOLOR               1253
 #define IDC_RESTORE                     1254
 #define IDS_PROC_BROWSEREFS_RENAME      1254
-#define IDC_DELETEDNODECOLOR            1255
 #define IDS_PROC_BROWSEREFS_MANAGEREMOTES 1255
 #define IDS_PROC_WARNREVERT             1256
 #define IDC_NOTENODECOLOR               1256

@@ -39,7 +39,6 @@ public:
 		Deleted,
 		Added,
 		LastCommit,
-		DeletedNode,
 		NoteNode,
 		RenamedNode,
 		LastCommitNode,

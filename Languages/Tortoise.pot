@@ -3248,10 +3248,6 @@ msgstr ""
 msgid "Deleted merge conflict"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr ""
-
 #. Resource IDs: (23)
 msgid "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
 msgstr ""

@@ -39,7 +39,6 @@ void CSettingsColors::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DELETEDCOLOR, m_cDeleted);
 	DDX_Control(pDX, IDC_MERGEDCOLOR, m_cMerged);
 	DDX_Control(pDX, IDC_MODIFIEDCOLOR, m_cModified);
-	DDX_Control(pDX, IDC_DELETEDNODECOLOR, m_cDeletedNode);
 	DDX_Control(pDX, IDC_NOTENODECOLOR, m_cNoteNode);
 	DDX_Control(pDX, IDC_RENAMEDNODECOLOR, m_cRenamedNode);
 }
@@ -52,7 +51,6 @@ BEGIN_MESSAGE_MAP(CSettingsColors, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_DELETEDCOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_MERGEDCOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_MODIFIEDCOLOR, &CSettingsColors::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_DELETEDNODECOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_NOTENODECOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_RENAMEDNODECOLOR, &CSettingsColors::OnBnClickedColor)
 END_MESSAGE_MAP()
@@ -67,7 +65,6 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
-	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
 	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
 
 	CString sDefaultText, sCustomText;
@@ -85,8 +82,6 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cConflict.EnableOtherButton(sCustomText);
 	m_cNoteNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::NoteNode, true));
 	m_cNoteNode.EnableOtherButton(sCustomText);
-	m_cDeletedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::DeletedNode, true));
-	m_cDeletedNode.EnableOtherButton(sCustomText);
 	m_cRenamedNode.EnableAutomaticButton(sDefaultText, m_Colors.GetColor(CColors::RenamedNode, true));
 	m_cRenamedNode.EnableOtherButton(sCustomText);
 
@@ -101,7 +96,6 @@ void CSettingsColors::OnBnClickedRestore()
 	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
-	m_cDeletedNode.SetColor(m_Colors.GetColor(CColors::DeletedNode));
 	m_cRenamedNode.SetColor(m_Colors.GetColor(CColors::RenamedNode));
 	SetModified(TRUE);
 }
@@ -114,7 +108,6 @@ BOOL CSettingsColors::OnApply()
 	m_Colors.SetColor(CColors::Modified, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
 	m_Colors.SetColor(CColors::Conflict, m_cConflict.GetColor() == -1 ? m_cConflict.GetAutomaticColor() : m_cConflict.GetColor());
 	m_Colors.SetColor(CColors::NoteNode, m_cNoteNode.GetColor() == -1 ? m_cNoteNode.GetAutomaticColor() : m_cNoteNode.GetColor());
-	m_Colors.SetColor(CColors::DeletedNode, m_cDeletedNode.GetColor() == -1 ? m_cDeletedNode.GetAutomaticColor() : m_cDeletedNode.GetColor());
 	m_Colors.SetColor(CColors::RenamedNode, m_cRenamedNode.GetColor() == -1 ? m_cRenamedNode.GetAutomaticColor() : m_cRenamedNode.GetColor());
 	m_Colors.SetColor(CColors::PropertyChanged, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
 
