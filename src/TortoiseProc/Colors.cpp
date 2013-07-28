@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
+// Copyright (C) 2009-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include ".\colors.h"
+#include "Colors.h"
 
 CColors::COLOR_DATA CColors::m_ColorArray[]=
 {
@@ -28,10 +29,8 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{Deleted,_T("Software\\TortoiseGit\\Colors\\Deleted"), RGB(100, 0, 0)},
 	{Added,_T("Software\\TortoiseGit\\Colors\\Added"), RGB(100, 0, 100)},
 	{LastCommit,_T("Software\\TortoiseGit\\Colors\\LastCommit"), RGB(100, 100, 100)},
-	{DeletedNode,_T("Software\\TortoiseGit\\Colors\\DeletedNode"), RGB(255, 0, 0)},
 	{NoteNode,_T("Software\\TortoiseGit\\Colors\\NoteNode"), RGB(160, 160, 0)},
-	{ReplacedNode,_T("Software\\TortoiseGit\\Colors\\ReplacedNode"), RGB(0, 255, 0)},
-	{RenamedNode,_T("Software\\TortoiseGit\\Colors\\RenamedNode"), RGB(0, 0, 255)},
+	{Renamed,_T("Software\\TortoiseGit\\Colors\\Renamed"), RGB(0, 0, 255)},
 	{LastCommitNode,_T("Software\\TortoiseGit\\Colors\\LastCommitNode"), RGB(200, 200, 200)},
 	{PropertyChanged,_T("Software\\TortoiseGit\\Colors\\PropertyChanged"), RGB(0, 50, 160)},
 	{CurrentBranch,_T("Software\\TortoiseGit\\Colors\\CurrentBranch"), RGB(200, 0, 0)},
