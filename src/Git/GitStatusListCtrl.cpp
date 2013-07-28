@@ -3089,7 +3089,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
 				{
-					crText = m_Colors.GetColor(CColors::DeletedNode);
+					crText = m_Colors.GetColor(CColors::Deleted);
 				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{
