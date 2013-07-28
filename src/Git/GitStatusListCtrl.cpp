@@ -3093,7 +3093,7 @@ void CGitStatusListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
 				{
-					crText = m_Colors.GetColor(CColors::RenamedNode);
+					crText = m_Colors.GetColor(CColors::Renamed);
 				}
 				else if(entry->m_Action & CTGitPath::LOGACTIONS_MERGED)
 				{

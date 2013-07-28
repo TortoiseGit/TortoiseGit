@@ -53,6 +53,6 @@ private:
 	CMFCColorButton	m_cMerged;
 	CMFCColorButton	m_cModified;
 	CMFCColorButton	m_cNoteNode;
-	CMFCColorButton	m_cRenamedNode;
+	CMFCColorButton	m_cRenamed;
 	CColors			m_Colors;
 };

@@ -40,7 +40,7 @@ public:
 		Added,
 		LastCommit,
 		NoteNode,
-		RenamedNode,
+		Renamed,
 		LastCommitNode,
 		PropertyChanged,
 		CurrentBranch,

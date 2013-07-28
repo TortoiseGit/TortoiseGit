@@ -6885,10 +6885,6 @@ msgstr ""
 msgid "Rename/move"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr ""
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr ""
@@ -9771,6 +9767,10 @@ msgstr ""
 
 #. Resource IDs: (245)
 msgid "quarter of year"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "renamed"
 msgstr ""
 
 #. Resource IDs: (10)
