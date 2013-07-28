@@ -45,6 +45,7 @@
 #include "PushDlg.h"
 #include "CommitDlg.h"
 #include "MergeDlg.h"
+#include "MergeAbortDlg.h"
 #include "Hooks.h"
 #include "..\Settings\Settings.h"
 #include "InputDlg.h"
@@ -3050,6 +3051,70 @@ BOOL CAppUtils::Merge(CString *commit)
 		return !Prodlg.m_GitStatus;
 	}
 	return false;
+}
+
+BOOL CAppUtils::MergeAbort()
+{
+	CMergeAbortDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CString cmd;
+		CString type;
+		switch (dlg.m_ResetType)
+		{
+		case 0:
+			type = _T("--mixed");
+			break;
+		case 1:
+			type = _T("--hard");
+			break;
+		default:
+			dlg.m_ResetType = 0;
+			type = _T("--mixed");
+			break;
+		}
+		cmd.Format(_T("git.exe reset %s HEAD"), type);
+
+		while (true)
+		{
+			CProgressDlg progress;
+			progress.m_GitCmd = cmd;
+
+			CTGitPath gitPath = g_Git.m_CurrentDir;
+			if (gitPath.HasSubmodules() && dlg.m_ResetType == 1)
+				progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_SUBMODULESUPDATE)));
+
+			progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)));
+
+			INT_PTR ret;
+			if (g_Git.UsingLibGit2(CGit::GIT_CMD_RESET))
+			{
+				CGitProgressDlg gitdlg;
+				gitdlg.SetCommand(CGitProgressList::GitProgress_Reset);
+				gitdlg.SetRevision(_T("HEAD"));
+				gitdlg.SetResetType(dlg.m_ResetType + 1);
+				ret = gitdlg.DoModal();
+			}
+			else
+				ret = progress.DoModal();
+
+			if (progress.m_GitStatus == 0 && gitPath.HasSubmodules() && dlg.m_ResetType == 1 && ret == IDC_PROGRESS_BUTTON1)
+			{
+				CString sCmd;
+				sCmd.Format(_T("/command:subupdate /bkpath:\"%s\""), g_Git.m_CurrentDir);
+
+				CCommonAppUtils::RunTortoiseGitProc(sCmd);
+				return TRUE;
+			}
+			else if (progress.m_GitStatus != 0 && ret == IDC_PROGRESS_BUTTON1)
+				continue;	// retry
+			else if (ret == IDOK)
+				return TRUE;
+			else
+				break;
+		}
+	}
+	return FALSE;
 }
 
 void CAppUtils::EditNote(GitRev *rev)
