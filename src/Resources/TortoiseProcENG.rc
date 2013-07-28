@@ -1283,7 +1283,7 @@ BEGIN
     PUSHBUTTON      "",IDC_MODIFIEDCOLOR,158,88,101,14
     GROUPBOX        "Revision graph",IDC_STATIC,7,115,286,77
     LTEXT           "Deleted node",IDC_STATIC,14,126,137,8
-    LTEXT           "Added node",IDC_STATIC,14,142,137,8
+    LTEXT           "Note node",IDC_STATIC,14,142,137,8
     LTEXT           "Renamed node",IDC_STATIC,14,159,137,8
     LTEXT           "Replaced node",IDC_STATIC,14,175,137,8
     PUSHBUTTON      "",IDC_DELETEDNODECOLOR,158,122,101,14

@@ -1552,10 +1552,6 @@ msgstr ""
 msgid "Added"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr ""
-
 #. Resource IDs: (145)
 #, c-format
 msgid "Added the file pattern(s)\n%s\nto the ignore list."
@@ -5880,6 +5876,10 @@ msgstr ""
 
 #. Resource IDs: (72)
 msgid "Not patches generated."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Note node"
 msgstr ""
 
 #. Resource IDs: (3887)
