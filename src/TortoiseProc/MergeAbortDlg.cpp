@@ -1,0 +1,93 @@
+// TortoiseGit - a Windows shell extension for easy version control
+
+// Copyright (C) 2008-2013 - TortoiseGit
+
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software Foundation,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+//
+// MergeAbort.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "TortoiseProc.h"
+#include "MergeAbortDlg.h"
+#include "FileDiffDlg.h"
+#include "AppUtils.h"
+
+// CMergeAbortDlg dialog
+
+IMPLEMENT_DYNAMIC(CMergeAbortDlg, CStandAloneDialog)
+
+CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=NULL*/)
+	: CStandAloneDialog(CMergeAbortDlg::IDD, pParent)
+	, m_ResetType(1)
+{
+
+}
+
+CMergeAbortDlg::~CMergeAbortDlg()
+{
+}
+
+void CMergeAbortDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+}
+
+
+BEGIN_MESSAGE_MAP(CMergeAbortDlg, CStandAloneDialog)
+	ON_BN_CLICKED(IDHELP, &CMergeAbortDlg::OnBnClickedHelp)
+	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CMergeAbortDlg::OnBnClickedShowModifiedFiles)
+END_MESSAGE_MAP()
+
+
+// CMergeAbortDlg message handlers
+BOOL CMergeAbortDlg::OnInitDialog()
+{
+	CStandAloneDialog::OnInitDialog();
+	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
+	CString sWindowTitle;
+	GetWindowText(sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+
+	AdjustControlSize(IDC_RADIO_RESET_MIXED);
+	AdjustControlSize(IDC_RADIO_RESET_HARD);
+
+	this->CheckRadioButton(IDC_RADIO_RESET_MIXED, IDC_RADIO_RESET_HARD, IDC_RADIO_RESET_MIXED + m_ResetType);
+
+	return FALSE;
+}
+
+void CMergeAbortDlg::OnOK()
+{
+	this->UpdateData(TRUE);
+	m_ResetType = this->GetCheckedRadioButton(IDC_RADIO_RESET_MIXED, IDC_RADIO_RESET_HARD) - IDC_RADIO_RESET_MIXED;
+	return CStandAloneDialog::OnOK();
+}
+
+void CMergeAbortDlg::OnBnClickedHelp()
+{
+	OnHelp();
+}
+
+void CMergeAbortDlg::OnBnClickedShowModifiedFiles()
+{
+		CFileDiffDlg dlg;
+
+		dlg.m_strRev1 = _T("0000000000000000000000000000000000000000");
+		dlg.m_strRev2 = _T("HEAD");
+
+		dlg.DoModal();
+}

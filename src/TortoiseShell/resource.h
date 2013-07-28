@@ -134,10 +134,12 @@
 #define IDS_MENUPULL                    221
 #define IDS_MENUPUSH                    222
 #define IDS_MENUCLONE                   223
+#define IDS_MENUMERGEABORT              224
 #define IDS_MENUCLIPPASTE               225
 #define IDS_MENUDESCCLIPPASTE           226
 #define IDS_MENUREPOBROWSE              227
 #define IDS_MENUDESCREPOBROWSE          228
+#define IDS_MENUDESCMERGEABORT          229
 #define IDS_ERR_PROPNOTONFILE           230
 #define IDS_MENUIGNOREMULTIPLE          231
 #define IDS_MENUUNIGNORE                237
@@ -256,6 +258,7 @@
 #define IDI_THUMB_DOWN                  5178
 #define IDI_THUMB_UP                    5179
 #define IDI_DAEMON                      5180
+#define IDI_MERGEABORT                  5181
 #define IDC_CONFIG_AUTOCRLF             11020
 #define IDC_EDITPROPERTIES              11021
 #define IDC_REPOURLUNESCAPED            11022
@@ -276,7 +279,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        5181
+#define _APS_NEXT_RESOURCE_VALUE        5182
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         11028
 #define _APS_NEXT_SYMED_VALUE           5101

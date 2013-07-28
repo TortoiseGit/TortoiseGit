@@ -132,6 +132,7 @@
     <ClCompile Include="AddRemoteDlg.cpp" />
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
+    <ClCompile Include="MergeAbortDlg.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="FindDlg.cpp" />
     <ClCompile Include="..\Utils\Libraries.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="..\Utils\Graphviz.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
+    <ClInclude Include="MergeAbortDlg.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="FindDlg.h" />
     <ClInclude Include="GitProgressList.h" />

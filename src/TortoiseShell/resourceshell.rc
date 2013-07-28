@@ -78,6 +78,7 @@ IDI_THUMB_DOWN          ICON                    "..\\Resources\\thumb_down.ico"
 IDI_THUMB_UP            ICON                    "..\\Resources\\thumb_up.ico"
 IDI_REVISIONGRAPH       ICON                    "..\\Resources\\menurevisiongraph.ico"
 IDI_DAEMON              ICON                    "..\\Resources\\menudaemon.ico"
+IDI_MERGEABORT          ICON                    "..\\Resources\\menumergeabort.ico"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -352,10 +353,12 @@ END
 
 STRINGTABLE
 BEGIN
+    IDS_MENUMERGEABORT      "Abort &Merge"
     IDS_MENUCLIPPASTE       "&Paste"
     IDS_MENUDESCCLIPPASTE   "Pastes the svn path from the clipboard, resulting in a move (cut) or copy operation"
     IDS_MENUREPOBROWSE      "&Repo-browser"
     IDS_MENUDESCREPOBROWSE  "Opens the repository browser"
+    IDS_MENUDESCMERGEABORT  "Aborts a running merge."
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
     IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
     IDS_MENUUNIGNORE        "Remove from &ignore list"
