@@ -1270,22 +1270,22 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "General::Colors 1"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Status and action colors",IDC_STATIC,7,7,286,103
+    GROUPBOX        "Status and action colors",IDC_STATIC,7,7,286,120
     LTEXT           "possible or real conflict/obstructed",IDC_STATIC,14,23,137,8
     LTEXT           "added files",IDC_STATIC,14,40,135,8
     LTEXT           "missing/deleted/replaced",IDC_STATIC,14,57,137,8
     LTEXT           "merged",IDC_STATIC,14,74,137,8
     LTEXT           "modified/copied",IDC_STATIC,14,92,137,8
+    LTEXT           "renamed",IDC_STATIC,14,109,137,8
     PUSHBUTTON      "",IDC_CONFLICTCOLOR,158,20,101,14
     PUSHBUTTON      "",IDC_ADDEDCOLOR,158,37,101,14
     PUSHBUTTON      "",IDC_DELETEDCOLOR,158,54,101,14
     PUSHBUTTON      "",IDC_MERGEDCOLOR,158,71,101,14
     PUSHBUTTON      "",IDC_MODIFIEDCOLOR,158,88,101,14
-    GROUPBOX        "Revision graph",IDC_STATIC,7,115,286,77
+    PUSHBUTTON      "",IDC_RENAMEDCOLOR,158,106,101,14
+    GROUPBOX        "Revision graph",IDC_STATIC,7,130,286,62
     LTEXT           "Note node",IDC_STATIC,14,142,137,8
-    LTEXT           "renamed",IDC_STATIC,14,159,137,8
     PUSHBUTTON      "",IDC_NOTENODECOLOR,158,139,101,14
-    PUSHBUTTON      "",IDC_RENAMEDCOLOR,158,156,101,14
     PUSHBUTTON      "Restore Default",IDC_RESTORE,211,196,82,14
 END
 
