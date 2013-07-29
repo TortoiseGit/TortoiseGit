@@ -90,13 +90,13 @@ BOOL CSettingsColors::OnInitDialog()
 
 void CSettingsColors::OnBnClickedRestore()
 {
-	m_cAdded.SetColor(m_Colors.GetColor(CColors::Added));
-	m_cDeleted.SetColor(m_Colors.GetColor(CColors::Deleted));
-	m_cMerged.SetColor(m_Colors.GetColor(CColors::Merged));
-	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified));
-	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
-	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
-	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed));
+	m_cAdded.SetColor(m_Colors.GetColor(CColors::Added, true));
+	m_cDeleted.SetColor(m_Colors.GetColor(CColors::Deleted, true));
+	m_cMerged.SetColor(m_Colors.GetColor(CColors::Merged, true));
+	m_cModified.SetColor(m_Colors.GetColor(CColors::Modified, true));
+	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict, true));
+	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode, true));
+	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed, true));
 	SetModified(TRUE);
 }
 

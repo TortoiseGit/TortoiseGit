@@ -79,10 +79,10 @@ BOOL CSettingsColors2::OnInitDialog()
 
 void CSettingsColors2::OnBnClickedRestore()
 {
-	m_cCurrentBranch.SetColor(m_Colors.GetColor(CColors::CurrentBranch));
-	m_cLocalBranch.SetColor(m_Colors.GetColor(CColors::LocalBranch));
-	m_cRemoteBranch.SetColor(m_Colors.GetColor(CColors::RemoteBranch));
-	m_cTags.SetColor(m_Colors.GetColor(CColors::Tag));
+	m_cCurrentBranch.SetColor(m_Colors.GetColor(CColors::CurrentBranch, true));
+	m_cLocalBranch.SetColor(m_Colors.GetColor(CColors::LocalBranch, true));
+	m_cRemoteBranch.SetColor(m_Colors.GetColor(CColors::RemoteBranch, true));
+	m_cTags.SetColor(m_Colors.GetColor(CColors::Tag, true));
 
 	SetModified(TRUE);
 }

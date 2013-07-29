@@ -80,7 +80,7 @@ void CSettingsColors3::OnBnClickedRestore()
 {
 	for(int i=0;i<8;i++)
 	{
-		m_cLine[i].SetColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i)));
+		m_cLine[i].SetColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i), true));
 	}
 	SetModified(TRUE);
 }
