@@ -125,7 +125,6 @@ public:
 
 	void SetDiffOptions(const CString& opts) {m_diffoptions = opts;}
 	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
-	void SetDepth(git_depth_t depth = git_depth_unknown) {m_depth = depth;}
 	void SetPegRevision(GitRev pegrev = GitRev()) {m_pegRev = pegrev;}
 	void SetProjectProperties(ProjectProperties props) {m_ProjectProperties = props;}
 	void SetChangeList(const CString& changelist, bool keepchangelist) {m_changelist = changelist; m_keepchangelist = keepchangelist;}
@@ -326,7 +325,6 @@ private:
 	ProjectProperties		m_ProjectProperties;
 
 	int						m_options;	// Use values from the ProgressOptions enum
-	git_depth_t				m_depth;
 	CTGitPathList			m_targetPathList;
 	CTGitPathList			m_selectedPaths;
 	CTGitPath				m_url;

@@ -224,11 +224,8 @@ public:
 
 	std::map<CString,GitRev> m_NoListCommit;
 
-	char					m_szTip[MAX_LOG_LENGTH*2+6];
-	wchar_t					m_wszTip[MAX_LOG_LENGTH*2+6];
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
-	BOOL					ttVisible;
 
 	CLogDataVector *		GetLogData();
 
@@ -260,8 +257,6 @@ protected:
 
 	LRESULT					m_directFunction;
 	LRESULT					m_directPointer;
-	FINDREPLACE				fr;
-	TCHAR					szFindWhat[80];
 
 	CRegStdDWORD				m_regOldLinesColor;
 	CRegStdDWORD				m_regNewLinesColor;

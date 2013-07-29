@@ -67,7 +67,6 @@ public:
 
 	void SetDiffOptions(const CString& opts) {m_ProgList.SetDiffOptions(opts);}
 	void SetSendMailOption(CSendMail *sendmail) { m_ProgList.SetSendMailOption(sendmail); }
-	void SetDepth(git_depth_t depth = git_depth_unknown) {m_ProgList.SetDepth(depth);}
 	void SetPegRevision(GitRev pegrev = GitRev()) {m_ProgList.SetPegRevision(pegrev);}
 	void SetProjectProperties(ProjectProperties props) {m_ProgList.SetProjectProperties(props);}
 	void SetChangeList(const CString& changelist, bool keepchangelist) {m_ProgList.SetChangeList(changelist, keepchangelist);}
