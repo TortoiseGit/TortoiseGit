@@ -82,6 +82,7 @@ enum GitCommands
 		ShellMenuRepoBrowse,
 		ShellMenuLogSubmoduleFolder,
 		ShellMenuDaemon,
+		ShellMenuMergeAbort,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

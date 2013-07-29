@@ -1401,6 +1401,10 @@ msgstr ""
 msgid "A branch with this name already exists."
 msgstr ""
 
+#. Resource IDs: (69)
+msgid "A merge process is active, so this commit will be a merge commit. In order to abort a merge, you have to perform a reset or forced checkout."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr ""
@@ -1451,6 +1455,18 @@ msgstr ""
 
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr ""
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
 msgstr ""
 
 #. Resource IDs: (156)
@@ -5003,6 +5019,10 @@ msgstr ""
 
 #. Resource IDs: (75)
 msgid "In Commits"
+msgstr ""
+
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
 msgstr ""
 
 #. Resource IDs: (1499)

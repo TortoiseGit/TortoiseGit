@@ -656,6 +656,9 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="MergeAbortDlg.cpp">
+      <Filter>Commands\merge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1140,6 +1143,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MergeAbortDlg.h">
+      <Filter>Commands\merge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

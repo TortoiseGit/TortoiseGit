@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,14 +16,30 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "stdafx.h"
-#include "MergeCommand.h"
-#include "AppUtils.h"
+#pragma once
 
-bool MergeCommand::Execute()
+#include "StandAloneDlg.h"
+// CMergeAbortDlg dialog
+
+class CMergeAbortDlg : public CStandAloneDialog
 {
-	if (parser.HasKey(_T("abort")))
-		return !!CAppUtils::MergeAbort();
+	DECLARE_DYNAMIC(CMergeAbortDlg)
 
-	return !!CAppUtils::Merge();
-}
+public:
+	CMergeAbortDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CMergeAbortDlg();
+
+// Dialog Data
+	enum { IDD = IDD_MERGEABORT };
+
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
+	virtual void OnBnClickedHelp();
+	afx_msg void OnBnClickedShowModifiedFiles();
+
+	DECLARE_MESSAGE_MAP()
+public:
+	int m_ResetType;
+};

@@ -227,6 +227,7 @@
     <Image Include="..\Resources\menulock.ico" />
     <Image Include="..\Resources\menulog.ico" />
     <Image Include="..\Resources\menumerge.ico" />
+    <Image Include="..\Resources\menumergeabort.ico" />
     <Image Include="..\Resources\menupatch.ico" />
     <Image Include="..\Resources\menupick.ico" />
     <Image Include="..\Resources\menuproperties.ico" />

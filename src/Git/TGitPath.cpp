@@ -850,6 +850,9 @@ int CTGitPath::GetAdminDirMask() const
 	if (PathFileExists(dotGitPath + _T("BISECT_START")))
 		status |= ITEMIS_BISECT;
 
+	if (PathFileExists(dotGitPath + _T("MERGE_HEAD")))
+		status |= ITEMIS_MERGEACTIVE;
+
 	if (PathFileExists(dotGitPath + _T("refs\\stash")))
 		status |= ITEMIS_STASH;
 
