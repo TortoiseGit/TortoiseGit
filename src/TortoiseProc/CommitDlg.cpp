@@ -181,7 +181,11 @@ BOOL CCommitDlg::OnInitDialog()
 	loadedMsg = loadedMsg && !PrefillMessage(dotGitPath + _T("SQUASH_MSG"), m_sLogMessage);
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
+	{
 		DialogEnableWindow(IDC_CHECK_NEWBRANCH, FALSE);
+		m_bCreateNewBranch = FALSE;
+		GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(SW_SHOW);
+	}
 
 	m_regAddBeforeCommit = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	m_bShowUnversioned = m_regAddBeforeCommit;
@@ -228,6 +232,7 @@ BOOL CCommitDlg::OnInitDialog()
 	m_tooltips.Create(this);
 	m_tooltips.AddTool(IDC_EXTERNALWARNING, IDS_COMMITDLG_EXTERNALS);
 	m_tooltips.AddTool(IDC_COMMIT_AMEND,IDS_COMMIT_AMEND_TT);
+	m_tooltips.AddTool(IDC_MERGEACTIVE, IDC_MERGEACTIVE_TT);
 //	m_tooltips.AddTool(IDC_HISTORY, IDS_COMMITDLG_HISTORY_TT);
 
 	CBugTraqAssociations bugtraq_associations;
@@ -348,6 +353,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_MERGEACTIVE, BOTTOM_RIGHT);
 	AddAnchor(IDC_COMMIT_AMEND,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_MESSAGEONLY, BOTTOM_LEFT);
 	AddAnchor(IDC_COMMIT_AMENDDIFF,TOP_LEFT);

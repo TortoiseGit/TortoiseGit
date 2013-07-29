@@ -98,6 +98,7 @@ IDI_JUMPDOWN            ICON                    "jumpdown.ico"
 IDI_UPDATE_BKG          ICON                    "UpdateBackground.ico"
 IDI_GITCREDENTIAL       ICON                    "gitcredential.ico"
 IDI_EXTERNALOVL         ICON                    "externalovl.ico"
+IDI_MERGEACTIVE         ICON                    "menumerge.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -272,6 +273,7 @@ BEGIN
     GROUPBOX        "&Message:",IDC_MESSAGEGROUP,6,19,346,135
     GROUPBOX        "Changes made (double-click on file for diff):",IDC_LISTGROUP,6,162,346,113
     LTEXT           "",IDC_TEXT_INFO,299,105,45,8,0,WS_EX_RIGHT
+    ICON            IDI_MERGEACTIVE,IDC_MERGEACTIVE,167,285,21,20,SS_NOTIFY | SS_REALSIZEIMAGE | NOT WS_VISIBLE,WS_EX_TRANSPARENT
 END
 
 IDD_PROMPT DIALOGEX 0, 0, 241, 54
@@ -3195,6 +3197,7 @@ END
 
 STRINGTABLE
 BEGIN
+    IDC_MERGEACTIVE_TT      "A merge process is active, so this commit will be a merge commit. In order to abort a merge, you have to perform a reset or forced checkout."
     IDS_STATUSLIST_RESTOREPATH 
                             "Do you really want to restore the copy? You will lose all changes that you have done after creating the copy."
     IDS_RESTOREBUTTON       "&Restore"
