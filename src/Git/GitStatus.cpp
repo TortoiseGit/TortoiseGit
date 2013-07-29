@@ -33,6 +33,7 @@ CGitIgnoreList  g_IgnoreList;
 
 GitStatus::GitStatus()
 	: status(NULL)
+	, m_allstatus(git_wc_status_none)
 {
 }
 

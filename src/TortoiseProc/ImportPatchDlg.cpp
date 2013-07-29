@@ -33,6 +33,7 @@ IMPLEMENT_DYNAMIC(CImportPatchDlg, CResizableStandAloneDialog)
 
 CImportPatchDlg::CImportPatchDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CImportPatchDlg::IDD, pParent)
+	, m_LoadingThread(FALSE)
 {
 	m_cList.m_ContextMenuMask &=~ m_cList.GetMenuMask(CPatchListCtrl::MENU_APPLY);
 

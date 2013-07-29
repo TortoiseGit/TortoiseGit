@@ -44,6 +44,8 @@ CHwSMTP::CHwSMTP () :
 
 	m_iSecurityLevel = none;
 
+	SecureZeroMemory(&Sizes, sizeof(SecPkgContext_StreamSizes));
+
 	AfxSocketInit();
 }
 

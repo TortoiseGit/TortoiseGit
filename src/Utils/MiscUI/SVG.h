@@ -36,7 +36,7 @@ public:
 	virtual ~SVG();
 
 	bool Save(const CString& path);
-	enum {left, middle, right} align;
+	enum align {left, middle, right};
 
 	void StartGroup() { objects.push_back("<g>"); }
 	void EndGroup() { objects.push_back("</g>"); }

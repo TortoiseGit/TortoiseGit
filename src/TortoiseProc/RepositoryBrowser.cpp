@@ -140,6 +140,12 @@ CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=NULL*/)
 , m_sRevision(rev)
 , m_bHasWC(true)
 , m_ColumnManager(&m_RepoList)
+, m_nIconFolder(0)
+, m_nOpenIconFolder(0)
+, m_nExternalOvl(0)
+, bDragMode(false)
+, oldy(0)
+, oldx(0)
 {
 }
 
@@ -232,7 +238,6 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 		xPos = rc.right - rc.left;
 	}
-	bDragMode = false;
 	HandleDividerMove(CPoint(xPos + 20, 10), false);
 
 	CString sWindowTitle;

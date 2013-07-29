@@ -43,6 +43,7 @@ GitRev::GitRev(void)
 	m_IsDiffFiles = 0;
 	m_CallDiffAsync = NULL;
 	m_IsSimpleListReady =0;
+	m_Mark = 0;
 
 	memset(&this->m_GitCommit,0,sizeof(GIT_COMMIT));
 

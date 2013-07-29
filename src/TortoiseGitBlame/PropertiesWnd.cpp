@@ -38,8 +38,18 @@ static char THIS_FILE[]=__FILE__;
 // CResourceViewBar
 
 CPropertiesWnd::CPropertiesWnd()
+	: m_CommitHash(nullptr)
+	, m_AuthorName(nullptr)
+	, m_AuthorEmail(nullptr)
+	, m_AuthorDate(nullptr)
+	, m_CommitterName(nullptr)
+	, m_CommitterEmail(nullptr)
+	, m_CommitterDate(nullptr)
+	, m_Subject(nullptr)
+	, m_Body(nullptr)
+	, m_ParentGroup(nullptr)
+	, m_BaseInfoGroup(nullptr)
 {
-	m_CommitHash = NULL;
 }
 
 CPropertiesWnd::~CPropertiesWnd()

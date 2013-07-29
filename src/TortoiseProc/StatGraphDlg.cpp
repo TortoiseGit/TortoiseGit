@@ -560,6 +560,7 @@ public:
 		CCommitPointer():m_cont(NULL){}
 		CCommitPointer(const CCommitPointer& P_Right)
 		: m_cont(NULL)
+		, m_place(0)
 		{
 			*this = P_Right;
 		}

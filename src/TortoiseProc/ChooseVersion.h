@@ -29,6 +29,16 @@ class CChooseVersion
 public:
 	CString m_initialRefName;
 
+	CChooseVersion()
+		: m_bIsBranch(false)
+		, m_bIsFirstTimeToSetFocus(false)
+		, m_pLoadingThread(nullptr)
+		, m_bLoadingThreadRunning(FALSE)
+		, m_bNotFullName(true)
+		, m_bSelectRef(true)
+	{
+	}
+
 private:
 	CWnd *	m_pWin;
 	CWinThread*			m_pLoadingThread;

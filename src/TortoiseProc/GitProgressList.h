@@ -89,6 +89,7 @@ class CGitProgressList : public CListCtrl
 public:
 	typedef enum
 	{
+		GitProgress_none,
 		GitProgress_Add,
 		GitProgress_Checkout,
 		GitProgress_Copy,

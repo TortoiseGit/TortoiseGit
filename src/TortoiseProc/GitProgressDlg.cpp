@@ -49,16 +49,14 @@
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
-
+	, m_dwCloseOnEnd((DWORD)-1)
 #if 0
 	, m_Revision(_T("HEAD"))
 	//, m_RevisionEnd(0)
 	, m_bLockWarning(false)
 	, m_bLockExists(false)
-	, m_bThreadRunning(FALSE)
 	, m_nConflicts(0)
 	, m_bMergesAddsDeletesOccurred(FALSE)
-	, m_dwCloseOnEnd((DWORD)-1)
 	, m_bFinishedItemAdded(false)
 	, m_bLastVisible(false)
 	, m_itemCount(-1)

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2012 - TortoiseGit
+// Copyright (C) 2010-2013 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@ CSysProgressDlg::CSysProgressDlg()
 	, m_dwDlgFlags(PROGDLG_NORMAL)
 	, m_hWndProgDlg(NULL)
 	, m_hWndParent(NULL)
+	, m_OrigProc(0)
 {
 	EnsureValid();
 }

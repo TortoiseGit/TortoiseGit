@@ -66,6 +66,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 #endif
 	EnableHtmlHelp();
 
+	m_nAppLook = 0;
 	m_gdiplusToken = NULL;
 	m_bHiColorIcons = TRUE;
 }

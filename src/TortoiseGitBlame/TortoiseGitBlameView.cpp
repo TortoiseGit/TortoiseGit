@@ -99,6 +99,13 @@ END_MESSAGE_MAP()
 // CTortoiseGitBlameView construction/destruction
 
 CTortoiseGitBlameView::CTortoiseGitBlameView()
+	: wBlame(0)
+	, wHeader(0)
+	, hwndTT(0)
+	, bIgnoreEOL(false)
+	, bIgnoreSpaces(false)
+	, bIgnoreAllSpaces(false)
+	, m_MouseLine(-1)
 {
 	hInstance = 0;
 	hResource = 0;

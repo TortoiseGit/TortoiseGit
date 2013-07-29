@@ -83,12 +83,27 @@ CGitProgressList::CGitProgressList():CListCtrl()
 	, m_bSetTitle(false)
 	, m_pTaskbarList(nullptr)
 	, m_SendMail(nullptr)
+	, m_Command(GitProgress_none)
+	, m_AlwaysConflicted(false)
+	, m_bThreadRunning(FALSE)
+	, m_keepchangelist(false)
+	, m_nConflicts(0)
+	, m_bMergesAddsDeletesOccurred(FALSE)
+	, iFirstResized(0)
+	, bSecondResized(false)
+	, nEnsureVisibleCount(0)
+	, m_TotalBytesTransferred(0)
+	, m_bFinishedItemAdded(false)
+	, m_bLastVisible(false)
+	, m_itemCount(-1)
+	, m_itemCountTotal(-1)
 {
 	m_pInfoCtrl = nullptr;
 	m_pAnimate = nullptr;
 	m_pProgControl = nullptr;
 	m_pProgressLabelCtrl = nullptr;
 	m_pPostWnd = nullptr;
+	m_columnbuf[0] = 0;
 }
 
 CGitProgressList::~CGitProgressList()

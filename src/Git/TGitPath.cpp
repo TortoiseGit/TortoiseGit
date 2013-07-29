@@ -61,11 +61,11 @@ CTGitPath::CTGitPath(void)
 	, m_bIsWCRootKnown(false)
 	, m_bIsWCRoot(false)
 	, m_fileSize(0)
+	, m_Checked(false)
 {
 	m_Action=0;
 	m_ParentNo=0;
 	m_Stage = 0;
-	m_Checked = false;
 }
 
 CTGitPath::~CTGitPath(void)
@@ -93,6 +93,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath) :
 	, m_bIsWCRootKnown(false)
 	, m_bIsWCRoot(false)
 	, m_fileSize(0)
+	, m_Checked(false)
 {
 	SetFromUnknown(sUnknownPath);
 	m_Action=0;
