@@ -58,11 +58,13 @@ bool SVNIgnoreCommand::Execute()
 
 	if(progress.DoModal()==IDOK)
 	{
+		::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 		if( dlg.m_SVNIgnoreType == 0 )
 		{
 
 		}
 		return progress.m_GitStatus == 0;
 	}
+	::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 	return false;
 }

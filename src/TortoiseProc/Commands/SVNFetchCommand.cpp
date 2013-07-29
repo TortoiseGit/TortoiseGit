@@ -67,6 +67,7 @@ bool SVNFetchCommand::Execute()
 	progress.m_bAutoCloseOnSuccess = autoClose;
 
 	INT_PTR userResponse = progress.DoModal();
+	::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 	if (g_Git.GetHash(upstreamNewHash, out))
 	{
 		MessageBox(hwndExplorer, g_Git.GetGitLastErr(_T("Could not get upstream hash after fetching.")), _T("TortoiseGit"), MB_ICONERROR);
