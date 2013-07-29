@@ -161,11 +161,10 @@ bool GitAdminDir::GetAdminDirPath(const CString &projectTopDir, CString &adminDi
 
 		int size = 65536;
 		std::unique_ptr<char[]> buffer(new char[size]);
-		SecureZeroMemory(buffer.get(), size);
-		fread(buffer.get(), sizeof(char), size, pFile);
+		int length = (int)fread(buffer.get(), sizeof(char), size, pFile);
 		fclose(pFile);
-		CStringA gitPathA(buffer.get());
-		if (gitPathA.Left(8) != "gitdir: ")
+		CStringA gitPathA(buffer.get(), length);
+		if (length < 8 || gitPathA.Left(8) != "gitdir: ")
 			return false;
 		CString gitPath = CUnicodeUtils::GetUnicode(gitPathA.Trim().Mid(8)); // 8 = len("gitdir: ")
 		gitPath.Replace('/', '\\');

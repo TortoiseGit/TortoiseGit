@@ -406,11 +406,11 @@ public:
 				{
 					int size = 65536;
 					std::unique_ptr<char[]> buffer(new char[size]);
-					SecureZeroMemory(buffer.get(), size);
-					if (fread(buffer.get(), sizeof(char), size, pFile))
+					int length = 0;
+					if ((length = (int)fread(buffer.get(), sizeof(char), size, pFile)) >= 8)
 					{
 						fclose(pFile);
-						CStringA strA(buffer.get());
+						CStringA strA(buffer.get(), length);
 						if (strA.Left(8) == "gitdir: ")
 						{
 							CString str = CUnicodeUtils::GetUnicode(strA.Trim().Mid(8)); // 8 = len("gitdir: ")
