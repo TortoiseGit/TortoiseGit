@@ -149,6 +149,8 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	bool isfull = ((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\CacheType"),
 				GetSystemMetrics(SM_REMOTESESSION) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
+	int err = 0;
+
 	{
 		LPCTSTR lpszSubPath = NULL;
 		CString sSubPath;
@@ -168,17 +170,17 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 		if(path.IsDirectory())
 		{
-			m_err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , isfull, false,!noignore, NULL, NULL);
+			err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , isfull, false,!noignore, NULL, NULL);
 
 		}
 		else
 		{
-			m_err = GetFileStatus(sProjectRoot, CString(lpszSubPath), &m_status.text_status ,isfull, false,!noignore, NULL,NULL, &m_status.assumeValid, &m_status.skipWorktree);
+			err = GetFileStatus(sProjectRoot, CString(lpszSubPath), &m_status.text_status ,isfull, false,!noignore, NULL,NULL, &m_status.assumeValid, &m_status.skipWorktree);
 		}
 	}
 
 	// Error present if function is not under version control
-	if (m_err)
+	if (err)
 	{
 		status = NULL;
 		return;

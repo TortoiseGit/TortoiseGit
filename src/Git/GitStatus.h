@@ -181,7 +181,6 @@ friend class Git;	// So that Git can get to our m_err
 
 private:
 	git_wc_status_kind			m_allstatus;	///< used by GetAllStatus and GetAllStatusRecursive
-	int							m_err;
 
 	git_wc_status2_t			m_status;		// used for GetStatus
 
