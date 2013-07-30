@@ -72,7 +72,6 @@ private:
 	FileStatusMap			m_cache;
 	DWORD					m_TimeStamp;
 	FileStatusCacheEntry	dirstat;
-	FileStatusCacheEntry	filestat;
 	git_wc_status2_t *		dirstatus;
 
 	stdstring		sCacheKey;
