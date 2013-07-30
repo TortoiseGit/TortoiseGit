@@ -179,8 +179,6 @@ private:
 	CTGitPath			m_path2;
 	GitRev				m_rev2;
 
-	bool				m_bIgnoreancestry;
-	bool				m_bDoPegDiff;
 	volatile LONG		m_bThreadRunning;
 
 	volatile LONG		m_bLoadingRef;
