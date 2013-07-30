@@ -150,6 +150,7 @@ protected:
 	BOOL			m_bPathHistory;
 	HWND			m_hWndToolTip;
 	TOOLINFO		m_ToolInfo;
+	CString			m_ToolText;
 	BOOL			m_ttShown;
 	BOOL			m_bDyn;
 	BOOL			m_bTrim;
