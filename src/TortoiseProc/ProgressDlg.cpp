@@ -27,7 +27,7 @@
 #include "UnicodeUtils.h"
 #include "IconMenu.h"
 #include "LoglistCommonResource.h"
-#include "Tlhelp32.h"
+#include <Tlhelp32.h>
 #include "AppUtils.h"
 #include "SmartHandle.h"
 #include "../TGitCache/CacheInterface.h"

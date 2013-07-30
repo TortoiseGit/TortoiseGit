@@ -20,7 +20,6 @@
 
 #include "TortoiseProc.h"
 #include "URLDlg.h"
-#include ".\urldlg.h"
 
 IMPLEMENT_DYNAMIC(CURLDlg, CResizableStandAloneDialog)
 CURLDlg::CURLDlg(CWnd* pParent /*=NULL*/)

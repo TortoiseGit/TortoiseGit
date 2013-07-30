@@ -19,7 +19,7 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "git.h"
+#include "Git.h"
 #include "MenuButton.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)

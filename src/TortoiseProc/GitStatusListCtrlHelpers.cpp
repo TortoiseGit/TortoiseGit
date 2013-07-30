@@ -19,7 +19,7 @@
 //
 
 #include "stdafx.h"
-#include ".\resource.h"
+#include "resource.h"
 #include "GitStatusListCtrl.h"
 #include <iterator>
 

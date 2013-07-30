@@ -22,7 +22,6 @@
 #include "StandAloneDlg.h"
 #include "Git.h"
 #include "TGitPath.h"
-//#include "Blame.h"
 #include "Git.h"
 #include "HintListCtrl.h"
 #include "Colors.h"

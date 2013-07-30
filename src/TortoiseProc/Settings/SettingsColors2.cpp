@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009,2011,2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingsColors2.h"
-#include ".\settingscolors2.h"
 
 IMPLEMENT_DYNAMIC(CSettingsColors2, ISettingsPropPage)
 CSettingsColors2::CSettingsColors2()

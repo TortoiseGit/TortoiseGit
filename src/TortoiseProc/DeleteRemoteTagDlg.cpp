@@ -23,7 +23,7 @@
 #include "AppUtils.h"
 #include "TortoiseProc.h"
 #include "DeleteRemoteTagDlg.h"
-#include "Messagebox.h"
+#include "MessageBox.h"
 #include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
 

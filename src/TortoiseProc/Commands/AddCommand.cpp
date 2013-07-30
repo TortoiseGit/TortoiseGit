@@ -21,9 +21,8 @@
 #include "AddCommand.h"
 
 #include "AddDlg.h"
-#include "GITProgressDlg.h"
+#include "GitProgressDlg.h"
 #include "ShellUpdater.h"
-#include "messagebox.h"
 
 bool AddCommand::Execute()
 {

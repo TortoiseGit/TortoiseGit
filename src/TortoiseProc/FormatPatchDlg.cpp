@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "FormatPatchDlg.h"
-#include "git.h"
+#include "Git.h"
 #include "BrowseFolder.h"
 #include "LogDlg.h"
 #include "BrowseRefsDlg.h"

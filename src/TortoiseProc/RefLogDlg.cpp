@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "RefLogDlg.h"
-#include "git.h"
+#include "Git.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
 

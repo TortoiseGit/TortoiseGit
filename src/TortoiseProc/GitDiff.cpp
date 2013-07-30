@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "GitDiff.h"
 #include "AppUtils.h"
-#include "git.h"
+#include "Git.h"
 #include "gittype.h"
 #include "resource.h"
 #include "MessageBox.h"

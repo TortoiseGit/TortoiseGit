@@ -22,8 +22,8 @@
 #include "SetProxyPage.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include "git.h"
-#include ".\setproxypage.h"
+#include "Git.h"
+#include "SetProxyPage.h"
 #include "MessageBox.h"
 
 IMPLEMENT_DYNAMIC(CSetProxyPage, ISettingsPropPage)

@@ -32,7 +32,7 @@
 #include "svn_string.h"
 #include "svn_utf.h"
 #pragma warning(pop)
-#include "git.h"
+#include "Git.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 

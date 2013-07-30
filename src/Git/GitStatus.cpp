@@ -22,9 +22,9 @@
 #include "..\TortoiseShell\resource.h"
 #include "GitStatus.h"
 #include "UnicodeUtils.h"
-#include "git.h"
-#include "gitindex.h"
-#include "shellcache.h"
+#include "Git.h"
+#include "GitIndex.h"
+#include "ShellCache.h"
 
 extern CGitAdminDirMap g_AdminDirMap;
 CGitIndexFileMap g_IndexFileMap;

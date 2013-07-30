@@ -20,7 +20,7 @@
 #include "TortoiseProc.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include ".\settingsprogsmerge.h"
+#include "SettingsProgsMerge.h"
 
 
 IMPLEMENT_DYNAMIC(CSettingsProgsMerge, ISettingsPropPage)

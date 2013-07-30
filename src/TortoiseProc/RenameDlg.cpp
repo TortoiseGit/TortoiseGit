@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2009,2011-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +22,6 @@
 #include "MessageBox.h"
 #include "TGitPath.h"
 #include "RenameDlg.h"
-#include ".\renamedlg.h"
 #include "AppUtils.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)

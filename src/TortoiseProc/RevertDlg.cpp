@@ -19,11 +19,10 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "messagebox.h"
-#include "Revertdlg.h"
+#include "MessageBox.h"
+#include "RevertDlg.h"
 #include "Git.h"
 #include "registry.h"
-#include ".\revertdlg.h"
 #include "AppUtils.h"
 
 #define REFRESHTIMER   100

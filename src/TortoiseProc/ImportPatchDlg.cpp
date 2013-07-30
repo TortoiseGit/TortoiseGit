@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "ImportPatchDlg.h"
-#include "git.h"
+#include "Git.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "SmartHandle.h"

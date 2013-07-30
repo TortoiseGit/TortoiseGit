@@ -21,8 +21,7 @@
 #include "RevertCommand.h"
 
 #include "RevertDlg.h"
-#include "GITProgressDlg.h"
-#include "MessageBox.h"
+#include "GitProgressDlg.h"
 
 bool RevertCommand::Execute()
 {

@@ -22,7 +22,7 @@
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "ResolveDlg.h"
-#include "GITProgressDlg.h"
+#include "GitProgressDlg.h"
 
 bool ResolveCommand::Execute()
 {

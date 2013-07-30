@@ -18,8 +18,6 @@
 //
 #include "stdafx.h"
 #include "SendMailCommand.h"
-#include "SendMailDlg.h"
-#include "GITProgressDlg.h"
 #include "AppUtils.h"
 
 bool SendMailCommand::Execute()

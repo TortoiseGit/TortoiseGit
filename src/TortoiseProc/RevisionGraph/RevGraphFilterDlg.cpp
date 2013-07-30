@@ -21,7 +21,7 @@
 #include "TortoiseProc.h"
 #include "RevGraphFilterDlg.h"
 #include "gittype.h"
-#include "git.h"
+#include "Git.h"
 #include "BrowseRefsDlg.h"
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CDialog)

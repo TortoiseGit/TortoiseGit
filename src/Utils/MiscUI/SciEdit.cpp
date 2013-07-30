@@ -24,7 +24,7 @@
 #include "..\UnicodeUtils.h"
 #include <string>
 #include "..\registry.h"
-#include ".\sciedit.h"
+#include "SciEdit.h"
 #include "SysInfo.h"
 
 

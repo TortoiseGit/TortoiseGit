@@ -19,8 +19,8 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "RefLogDlg.h"
-#include "git.h"
-#include "RefLogList.h"
+#include "Git.h"
+#include "refloglist.h"
 
 IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 

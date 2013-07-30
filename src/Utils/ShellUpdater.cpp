@@ -21,7 +21,7 @@
 #include "Shellupdater.h"
 #include "../TGitCache/CacheInterface.h"
 #include "registry.h"
-#include "git.h"
+#include "Git.h"
 #include "SmartHandle.h"
 
 CShellUpdater::CShellUpdater(void)

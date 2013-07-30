@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "BisectStartDlg.h"
-#include "git.h"
+#include "Git.h"
 #include "LogDlg.h"
 #include "MessageBox.h"
 #include "AppUtils.h"

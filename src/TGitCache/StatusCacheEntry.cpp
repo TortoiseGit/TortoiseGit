@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include ".\statuscacheentry.h"
+#include "StatusCacheEntry.h"
 #include "GitStatus.h"
 #include "CacheInterface.h"
 #include "registry.h"

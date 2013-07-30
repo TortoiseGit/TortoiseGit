@@ -24,7 +24,7 @@
 #include "PathUtils.h"
 #include "..\version.h"
 #include "AppUtils.h"
-#include "git.h"
+#include "Git.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)

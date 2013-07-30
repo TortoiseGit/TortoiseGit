@@ -20,7 +20,7 @@
 #pragma once
 #include "StandAloneDlg.h"
 #include "HistoryCombo.h"
-#include "RefLoglist.h"
+#include "refloglist.h"
 // CRefLogDlg dialog
 
 class CRefLogDlg : public CResizableStandAloneDialog

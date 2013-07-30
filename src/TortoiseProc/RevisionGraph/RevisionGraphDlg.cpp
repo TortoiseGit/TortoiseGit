@@ -19,7 +19,7 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "Revisiongraphdlg.h"
+#include "RevisionGraphDlg.h"
 #include "MessageBox.h"
 #include "Git.h"
 #include "AppUtils.h"
@@ -30,7 +30,6 @@
 //#include "SVNInfo.h"
 //#include "SVNDiff.h"
 #include "RevGraphFilterDlg.h"
-#include ".\revisiongraphdlg.h"
 //#include "RepositoryInfo.h"
 //#include "RevisionInRange.h"
 //#include "RemovePathsBySubString.h"

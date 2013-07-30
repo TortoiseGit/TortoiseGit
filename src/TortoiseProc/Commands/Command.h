@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2009,2011,2013 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +21,7 @@
 #include "TortoiseProc.h"
 #include "CmdLineParser.h"
 #include "TGitPath.h"
-#include "git.h"
+#include "Git.h"
 
 
 

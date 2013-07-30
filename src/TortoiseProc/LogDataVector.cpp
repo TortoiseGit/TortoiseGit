@@ -29,25 +29,8 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "GitLogListBase.h"
-#include "GitRev.h"
-#include "IconMenu.h"
-// CGitLogList
-#include "cursor.h"
-#include "InputDlg.h"
-#include "GITProgressDlg.h"
-#include "ProgressDlg.h"
-#include "Logdlg.h"
-#include "MessageBox.h"
-#include "registry.h"
-#include "AppUtils.h"
-#include "PathUtils.h"
-#include "StringUtils.h"
 #include "UnicodeUtils.h"
-#include "TempFile.h"
-#include "IconMenu.h"
-#include "GitStatus.h"
-#include "FileDiffDlg.h"
-#include "GitHash.h"
+
 CGitHashMap a;
 
 void CLogDataVector::ClearAll()

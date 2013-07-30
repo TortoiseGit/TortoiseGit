@@ -20,7 +20,7 @@
 #include "stdafx.h"
 #include "DropCopyAddCommand.h"
 #include "FormatMessageWrapper.h"
-#include "GITProgressDlg.h"
+#include "GitProgressDlg.h"
 #include "MessageBox.h"
 
 bool DropCopyAddCommand::Execute()

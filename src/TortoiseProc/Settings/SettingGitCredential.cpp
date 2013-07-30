@@ -26,7 +26,7 @@
 #include "GitAdminDir.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
-#include "git.h"
+#include "Git.h"
 #include "PathUtils.h"
 
 namespace SimpleCredentialType

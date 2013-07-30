@@ -21,8 +21,8 @@
 #include "TortoiseProc.h"
 #include "SetMainPage.h"
 #include "AppUtils.h"
-#include "GITProgressDlg.h"
-#include ".\setdialogs.h"
+#include "GitProgressDlg.h"
+#include "SetDialogs.h"
 
 IMPLEMENT_DYNAMIC(CSetDialogs, ISettingsPropPage)
 CSetDialogs::CSetDialogs()

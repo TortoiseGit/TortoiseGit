@@ -21,10 +21,6 @@
 
 #include "StandAloneDlg.h"
 #include "TGitPath.h"
-#include "Git.h"
-#include "GitStatus.h"
-#include "Colors.h"
-#include "UnicodeUtils.h"
 #include "GitProgressList.h"
 
 typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2009,2011,2013 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,9 +22,7 @@
 #include "SetOverlayPage.h"
 #include "SetOverlayIcons.h"
 #include "Globals.h"
-#include "ShellUpdater.h"
 #include "..\TGitCache\CacheInterface.h"
-#include ".\setoverlaypage.h"
 #include "MessageBox.h"
 
 

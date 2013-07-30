@@ -24,7 +24,7 @@
 #include "GitAdminDir.h"
 #include "PathUtils.h"
 #include <regex>
-#include "git.h"
+#include "Git.h"
 #include "Globals.h"
 #include "StringUtils.h"
 #include "../Resources/LoglistCommonResource.h"

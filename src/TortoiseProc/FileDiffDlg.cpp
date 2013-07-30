@@ -25,12 +25,11 @@
 #include "TempFile.h"
 #include "SysImageList.h"
 #include "IconMenu.h"
-//#include "GitProperties.h"
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
-#include ".\filediffdlg.h"
-#include "gitdiff.h"
+#include "FileDiffDlg.h"
+#include "GitDiff.h"
 #include "LoglistCommonResource.h"
 #include "LoglistUtils.h"
 #include "BrowseRefsDlg.h"
@@ -56,7 +55,7 @@ int		CFileDiffDlg::m_nSortedColumn = -1;
 
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
-	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent),
+	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent)
 	, m_bBlame(false)
 	, m_pProgDlg(NULL)
 	, m_bCancelled(false)

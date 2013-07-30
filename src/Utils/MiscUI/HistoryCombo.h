@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2008-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoioseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +37,7 @@
  *
  * thats it.
  */
-#include "git.h"
+#include "Git.h"
 class CHistoryCombo : public CComboBoxEx
 {
 // Construction
