@@ -36,6 +36,7 @@ CFolderCrawler::CFolderCrawler(void)
 	m_bRun = false;
 	m_bPathsAddedSinceLastCrawl = false;
 	m_bItemsAddedSinceLastCrawl = false;
+	m_blockReleasesAt = 0;
 }
 
 CFolderCrawler::~CFolderCrawler(void)

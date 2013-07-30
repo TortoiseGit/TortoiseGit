@@ -34,8 +34,12 @@ GitFolderStatus::GitFolderStatus(void)
 	invalidstatus.status = git_wc_status_none;
 	invalidstatus.assumeValid = FALSE;
 	invalidstatus.skipWorktree = FALSE;
+	dirstat.askedcounter = -1;
+	dirstat.assumeValid = dirstat.skipWorktree = false;
+	dirstat.status = git_wc_status_none;
 	m_nCounter = 0;
 	dirstatus = NULL;
+	m_mostRecentStatus = NULL;
 	sCacheKey.reserve(MAX_PATH);
 
 	g_Git.SetCurrentDir(_T(""));

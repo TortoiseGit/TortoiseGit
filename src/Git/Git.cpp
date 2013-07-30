@@ -164,6 +164,8 @@ CGit::CGit(void)
 	m_IsUseLibGit2 = !!CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2"), TRUE);
 	m_IsUseLibGit2_mask = CRegDWORD(_T("Software\\TortoiseGit\\UseLibgit2_mask"), 0);
 
+	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
+
 	GetSortOptions();
 	this->m_bInitialized =false;
 	CheckMsysGitDir();

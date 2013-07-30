@@ -25,6 +25,10 @@ CACEdit::CACEdit()
 	m_pEdit = NULL;
 	m_CursorMode = false;
 	m_PrefixChar = 0;
+	m_szDrive[0] = 0;
+	m_szDir[0] = 0;
+	m_szFname[0] = 0;
+	m_szExt[0] = 0;
 }
 
 /*********************************************************************/

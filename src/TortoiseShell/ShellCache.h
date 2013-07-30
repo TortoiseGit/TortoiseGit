@@ -96,17 +96,21 @@ public:
 		unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
 		menulayoutlow = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntries"),	  entries&0xFFFFFFFF);
 		menulayouthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntrieshigh"), entries>>32);
+		layoutticker = cachetypeticker;
 
 		unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
 		menuextlow	= CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesLow"), ext&0xFFFFFFFF  );
 		menuexthigh = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuExtEntriesHigh"),	ext>>32	  );
+		exticker = cachetypeticker;
 
 		menumasklow_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumaskhigh_lm = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0, FALSE, HKEY_LOCAL_MACHINE);
 		menumasklow_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskLow"), 0);
 		menumaskhigh_cu = CRegStdDWORD(_T("Software\\TortoiseGit\\ContextMenuEntriesMaskHigh"), 0);
+		menumaskticker = cachetypeticker;
 		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
+		blockstatusticker = cachetypeticker;
 		columnseverywhere = CRegStdDWORD(_T("Software\\TortoiseGit\\ColumnsEveryWhere"), FALSE);
 		for (int i = 0; i < 27; ++i)
 		{
@@ -115,6 +119,7 @@ public:
 		// A: and B: are floppy disks
 		drivetypecache[0] = DRIVE_REMOVABLE;
 		drivetypecache[1] = DRIVE_REMOVABLE;
+		drivetypepathcache[0] = 0;
 		TCHAR szBuffer[5];
 		columnrevformatticker = GetTickCount();
 		SecureZeroMemory(&columnrevformat, sizeof(NUMBERFMT));

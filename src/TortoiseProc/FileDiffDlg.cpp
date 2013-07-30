@@ -57,9 +57,12 @@ int		CFileDiffDlg::m_nSortedColumn = -1;
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent),
-	m_bBlame(false),
-	m_pProgDlg(NULL),
-	m_bCancelled(false)
+	, m_bBlame(false)
+	, m_pProgDlg(NULL)
+	, m_bCancelled(false)
+	, propchanged(false)
+	, m_nIconFolder(0)
+	, m_bThreadRunning(FALSE)
 {
 	m_bLoadingRef=FALSE;
 }

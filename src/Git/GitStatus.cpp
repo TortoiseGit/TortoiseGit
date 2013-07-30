@@ -35,6 +35,8 @@ GitStatus::GitStatus()
 	: status(NULL)
 	, m_allstatus(git_wc_status_none)
 {
+	m_status.assumeValid = m_status.skipWorktree = false;
+	m_status.prop_status = m_status.text_status = git_wc_status_none;
 }
 
 GitStatus::~GitStatus(void)

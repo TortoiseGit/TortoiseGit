@@ -58,6 +58,7 @@ public:
 	{
 		ASSERT(this);
 		m_bInitialized = FALSE;
+		m_hOldCursor = nullptr;
 	}
 	~CCursor(void)
 	{

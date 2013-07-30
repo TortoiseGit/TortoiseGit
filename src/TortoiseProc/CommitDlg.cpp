@@ -72,6 +72,13 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_bForceCommitAmend(false)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
+	, m_bCancelled(false)
+	, m_PostCmd(-1)
+	, m_bAmendDiffToLastCommit(TRUE)
+	, m_nPopupPasteListCmd(0)
+	, m_nPopupPasteLastMessage(0)
+	, m_nPopupRecentMessage(0)
+	, m_hAccel(nullptr)
 {
 	this->m_bCommitAmend=FALSE;
 	m_bPushAfterCommit = FALSE;

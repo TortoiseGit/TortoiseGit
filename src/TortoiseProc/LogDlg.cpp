@@ -54,6 +54,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_nSortColumn(0)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
+	, m_bSelectionMustBeSingle(true)
 	, m_bShowTags(TRUE)
 
 	, m_bSelectionMustBeContinuous(false)

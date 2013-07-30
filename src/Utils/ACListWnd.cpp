@@ -45,6 +45,8 @@ CACListWnd::CACListWnd()
 	m_PrefixChar = 0;
 	m_lMode = 0;
 	pFontDC = NULL;
+	m_nIDTimer = 0;
+	SecureZeroMemory(&logfont, sizeof(LOGFONT));
 }
 
 /**********************************************************************/

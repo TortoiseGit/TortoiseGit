@@ -35,6 +35,7 @@ CMessageBox::CMessageBox(void)
 	, m_uType(0)
 	, m_bChecked(FALSE)
 {
+	SecureZeroMemory(&m_LogFont, sizeof(LOGFONT));
 }
 
 CMessageBox::~CMessageBox(void)

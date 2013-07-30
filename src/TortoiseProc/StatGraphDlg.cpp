@@ -72,6 +72,9 @@ CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=NULL*/)
 , m_nTotalLinesDel(0)
 , m_bDiffFetched(FALSE)
 , m_ShowList(NULL)
+, m_minDate(0)
+, m_maxDate(0)
+, m_nTotalFileChanges(0)
 {
 	m_pToolTip = NULL;
 }
@@ -557,10 +560,25 @@ public:
 	class CCommitPointer
 	{
 	public:
-		CCommitPointer():m_cont(NULL){}
+		CCommitPointer()
+		: m_cont(nullptr)
+		, m_place(0)
+		, m_Date(0)
+		, m_Changes(0)
+		, m_lineInc(0)
+		, m_lineDec(0)
+		, m_lineNew(0)
+		, m_lineDel(0)
+		{}
 		CCommitPointer(const CCommitPointer& P_Right)
 		: m_cont(NULL)
 		, m_place(0)
+		, m_Date(0)
+		, m_Changes(0)
+		, m_lineInc(0)
+		, m_lineDec(0)
+		, m_lineNew(0)
+		, m_lineDel(0)
 		{
 			*this = P_Right;
 		}
