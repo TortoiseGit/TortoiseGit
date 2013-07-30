@@ -1435,10 +1435,13 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 						break;
 					case ID_EXPLORE:
 						{
-							CString sPath = GetPathFromColumnText(data->sPathColumnText);
+							if (data)
+							{
+								CString sPath = GetPathFromColumnText(data->sPathColumnText);
 
-							CTGitPath path = CTGitPath(sPath);
-							ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
+								CTGitPath path = CTGitPath(sPath);
+								ShellExecute(m_hWnd, _T("explore"), path.GetDirectory().GetWinPath(), NULL, path.GetDirectory().GetWinPath(), SW_SHOW);
+							}
 						}
 						break;
 #if 0

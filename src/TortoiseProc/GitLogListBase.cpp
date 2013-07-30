@@ -1468,7 +1468,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case this->LOGLIST_REBASE:
 		{
-			if(this->m_IsRebaseReplaceGraph)
+			if (this->m_IsRebaseReplaceGraph && pLogEntry)
 			{
 				CTGitPath path;
 				path.m_Action = SafeGetAction(pLogEntry) & CTGitPath::LOGACTIONS_REBASE_MODE_MASK;

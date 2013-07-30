@@ -566,14 +566,11 @@ int git_get_diff_file(GIT_DIFF diff,GIT_FILE file,int i, char **newname, char **
 	if(i>=q->nr)
 		return -1;
 
-	if(newname)
-		*newname = q->queue[i]->two->path;
+	assert(newname && oldname && status);
 
-	if(oldname)
-		*oldname = q->queue[i]->one->path;
-
-	if(status)
-		*status = q->queue[i]->status;
+	*newname = q->queue[i]->two->path;
+	*oldname = q->queue[i]->one->path;
+	*status = q->queue[i]->status;
 
 	if(p_Rev->diffstat.files)
 	{
