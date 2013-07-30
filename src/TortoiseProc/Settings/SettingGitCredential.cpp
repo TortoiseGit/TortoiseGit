@@ -815,6 +815,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 				if (!CAppUtils::IsAdminLogin())
 				{
 					RunUAC();
+					git_config_free(config);
 					EndDialog(0);
 					return;
 				}
