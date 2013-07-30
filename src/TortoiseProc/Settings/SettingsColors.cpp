@@ -25,6 +25,7 @@ IMPLEMENT_DYNAMIC(CSettingsColors, ISettingsPropPage)
 CSettingsColors::CSettingsColors()
 	: ISettingsPropPage(CSettingsColors::IDD)
 {
+	m_regRevGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\RevGraphUseLocalForCur"));
 }
 
 CSettingsColors::~CSettingsColors()
@@ -41,6 +42,7 @@ void CSettingsColors::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MODIFIEDCOLOR, m_cModified);
 	DDX_Control(pDX, IDC_NOTENODECOLOR, m_cNoteNode);
 	DDX_Control(pDX, IDC_RENAMEDCOLOR, m_cRenamed);
+	DDX_Control(pDX, IDC_REVGRAPHUSELOCALFORCUR, m_RevGraphUseLocalForCur);
 }
 
 
@@ -53,6 +55,7 @@ BEGIN_MESSAGE_MAP(CSettingsColors, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_MODIFIEDCOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_NOTENODECOLOR, &CSettingsColors::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_RENAMEDCOLOR, &CSettingsColors::OnBnClickedColor)
+	ON_BN_CLICKED(IDC_REVGRAPHUSELOCALFORCUR, &CSettingsColors::OnBnClickedColor)
 END_MESSAGE_MAP()
 
 BOOL CSettingsColors::OnInitDialog()
@@ -66,6 +69,8 @@ BOOL CSettingsColors::OnInitDialog()
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode));
 	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed));
+	DWORD revGraphUseLocalForCur = m_regRevGraphUseLocalForCur;
+	m_RevGraphUseLocalForCur.SetCheck(!!revGraphUseLocalForCur);
 
 	CString sDefaultText, sCustomText;
 	sDefaultText.LoadString(IDS_COLOURPICKER_DEFAULTTEXT);
@@ -97,6 +102,7 @@ void CSettingsColors::OnBnClickedRestore()
 	m_cConflict.SetColor(m_Colors.GetColor(CColors::Conflict, true));
 	m_cNoteNode.SetColor(m_Colors.GetColor(CColors::NoteNode, true));
 	m_cRenamed.SetColor(m_Colors.GetColor(CColors::Renamed, true));
+	m_RevGraphUseLocalForCur.SetCheck(FALSE);
 	SetModified(TRUE);
 }
 
@@ -110,6 +116,8 @@ BOOL CSettingsColors::OnApply()
 	m_Colors.SetColor(CColors::NoteNode, m_cNoteNode.GetColor() == -1 ? m_cNoteNode.GetAutomaticColor() : m_cNoteNode.GetColor());
 	m_Colors.SetColor(CColors::Renamed, m_cRenamed.GetColor() == -1 ? m_cRenamed.GetAutomaticColor() : m_cRenamed.GetColor());
 	m_Colors.SetColor(CColors::PropertyChanged, m_cModified.GetColor() == -1 ? m_cModified.GetAutomaticColor() : m_cModified.GetColor());
+	DWORD revGraphUseLocalForCur = m_RevGraphUseLocalForCur.GetCheck();
+	m_regRevGraphUseLocalForCur = revGraphUseLocalForCur;
 
 	return ISettingsPropPage::OnApply();
 }

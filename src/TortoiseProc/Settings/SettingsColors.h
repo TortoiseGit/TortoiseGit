@@ -55,4 +55,6 @@ private:
 	CMFCColorButton	m_cNoteNode;
 	CMFCColorButton	m_cRenamed;
 	CColors			m_Colors;
+	CButton			m_RevGraphUseLocalForCur;
+	CRegDWORD		m_regRevGraphUseLocalForCur;
 };

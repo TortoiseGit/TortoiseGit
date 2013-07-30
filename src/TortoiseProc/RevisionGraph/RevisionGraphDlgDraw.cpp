@@ -1007,6 +1007,8 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	Gdiplus::Font font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular);
 	SolidBrush blackbrush((ARGB)Color::Black);
 
+	DWORD revGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\RevGraphUseLocalForCur"));
+
 	node v;
 	forall_nodes(v,m_Graph)
 	{
@@ -1073,7 +1075,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 
 				if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
 				{
-					if( shortname == m_CurrentBranch )
+					if (!revGraphUseLocalForCur && shortname == m_CurrentBranch)
 						colRef = m_Colors.GetColor(CColors::CurrentBranch);
 					else
 						colRef = m_Colors.GetColor(CColors::LocalBranch);

@@ -9038,6 +9038,10 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr ""
+
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
 msgstr ""
