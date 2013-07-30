@@ -329,9 +329,9 @@ static int TreewalkCB_FindFileRecentCommit(const char *root, const git_tree_entr
 {
 	TreewalkStruct *treewalkstruct = (TreewalkStruct *)payload;
 	char folder[MAX_PATH];
-	strcpy(folder, root);
-	strcat(folder, git_tree_entry_name(entry));
-	strcat(folder, "/");
+	strcpy_s(folder, root);
+	strcat_s(folder, git_tree_entry_name(entry));
+	strcat_s(folder, "/");
 	if (strstr(treewalkstruct->folder, folder))
 		return 0;
 
