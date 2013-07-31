@@ -1070,7 +1070,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				rect.Width = (REAL)noderect.Width;
 				rect.Height = (REAL)hight;
 
-				COLORREF colRef = 0;
+				COLORREF colRef = RGB(224, 224, 224);
 
 
 				if(CGit::GetShortName(str,shortname,_T("refs/heads/")))
