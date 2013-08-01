@@ -1111,6 +1111,10 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				{
 					colRef = m_Colors.GetColor(CColors::NoteNode);
 				}
+				else
+				{
+					CGit::GetShortName(str, shortname, _T("refs/"));
+				}
 
 				Gdiplus::Color color(GetRValue(colRef), GetGValue(colRef), GetBValue(colRef));
 				Gdiplus::Pen pen(color);
