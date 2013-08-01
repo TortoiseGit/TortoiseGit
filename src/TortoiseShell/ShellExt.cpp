@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - TortoiseGit
-// Copyright (C) 2003-2012 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -132,7 +132,7 @@ void LoadLangDll()
 					LPSTR       lpVersion = NULL;
 					VOID*       lpFixedPointer;
 					TRANSARRAY* lpTransArray;
-					TCHAR       strLangProduktVersion[MAX_PATH];
+					TCHAR       strLangProductVersion[MAX_PATH];
 
 					if (GetFileVersionInfo((LPTSTR)langDll,
 						dwReserved,
@@ -147,11 +147,11 @@ void LoadLangDll()
 						{
 							lpTransArray = (TRANSARRAY*) lpFixedPointer;
 
-							_stprintf_s(strLangProduktVersion, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
+							_stprintf_s(strLangProductVersion, _T("\\StringFileInfo\\%04x%04x\\ProductVersion"),
 								lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 							if (VerQueryValue(pBuffer,
-								(LPTSTR)strLangProduktVersion,
+								(LPTSTR)strLangProductVersion,
 								(LPVOID *)&lpVersion,
 								&nInfoSize))
 							{

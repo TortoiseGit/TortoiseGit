@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -111,10 +111,10 @@ public:
 
 	/**
 	 * Returns the version string from the VERSION resource of a dll or exe.
-	 * \param p_strDateiname path to the dll or exe
+	 * \param p_strFilename path to the dll or exe
 	 * \return the version string
 	 */
-	static CString GetVersionFromFile(const CString & p_strDateiname);
+	static CString GetVersionFromFile(const CString & p_strFilename);
 
 
 #endif

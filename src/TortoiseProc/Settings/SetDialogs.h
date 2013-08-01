@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2008, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,8 +52,6 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeAutoclosecombo();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
-
-	CString GetVersionFromFile(const CString & p_strDateiname);
 
 private:
 	CToolTips			m_tooltips;
