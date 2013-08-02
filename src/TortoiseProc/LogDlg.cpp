@@ -603,6 +603,20 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 		if ((c == 'g' && (offset == 0 || !((b >= 'A' && b <= 'Z') || (b >= 'h' && b <= 'z'))))
 			|| (!((c >= 'A' && c <= 'Z') || (c >= 'h' && c <= 'z'))))
 		{
+			if (b == '\n')
+			{
+				if (msg.Mid(offset, 11) == _T("git-svn-id:") || msg.Mid(offset, 14) == _T("Signed-off-by:"))
+				{
+					offset += 11;
+					while (offset < msg.GetLength())
+					{
+						if (msg[offset++] == '\n')
+							break;
+					}
+					continue;
+				}
+			}
+
 			if (LookLikeGitHash(msg, offset))
 			{
 				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
