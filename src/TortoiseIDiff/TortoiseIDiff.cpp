@@ -41,6 +41,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     SetTaskIDPerUUID();
     CRegStdDWORD loc = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
     long langId = loc;
+    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
     CLangDll langDLL;
     hResource = langDLL.Init(_T("TortoiseIDiff"), langId);
@@ -123,5 +124,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     langDLL.Close();
     DestroyCursor(curHand);
     DestroyCursor(curHandDown);
+    CoUninitialize();
     return 1;
 }
