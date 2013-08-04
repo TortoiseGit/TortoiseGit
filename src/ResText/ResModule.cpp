@@ -17,8 +17,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
 #include "Utils.h"
-#include "resmodule.h"
-#include "..\Utils\SysInfo.h"
+#include "ResModule.h"
+#include "../Utils/SysInfo.h"
 #include <regex>
 #include <memory>
 
