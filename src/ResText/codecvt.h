@@ -59,6 +59,3 @@ protected:
     int  do_encoding() const throw() { return 2; }
 };
 #pragma warning(pop)
-
-
-
