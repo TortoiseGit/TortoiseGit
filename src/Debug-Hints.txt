@@ -2,7 +2,7 @@ Debugging hints
 
 Since TortoiseGit is a shell extension it's not
 as easy to debug as normal applications. The
-TortoiseShell part is only a dll which is 
+TortoiseShell part is only a dll which is
 loaded by the windows explorer. So the first
 thing you need to do is:
 
@@ -20,9 +20,9 @@ thing you need to do is:
   *.reg. Then you have to edit those three
   files so that the paths in it reflects
   your source paths exactly.
-  Now if you doubleclick on register.reg 
+  Now if you doubleclick on register.reg
   the debug version of the TortoiseGit.dll
-  get's registered. registerrelease.reg 
+  get's registered. registerrelease.reg
   registers the release version of the
   TortoiseGit.dll. Don't do it right now!
 - Start VS.NET and load the TortoiseGit
