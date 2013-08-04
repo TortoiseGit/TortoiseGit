@@ -1,5 +1,5 @@
        ___
   oo  // \\      "De Chelonian Mobile"
  (_,\/ \_/ \     TortoiseSVN
-   \ \_/_\_/>    The coolest Interface to (Sub)Version Control
+   \ \_/_\_/>    The coolest interface to (Sub)version control
    /_/   \_\     http://tortoisesvn.net

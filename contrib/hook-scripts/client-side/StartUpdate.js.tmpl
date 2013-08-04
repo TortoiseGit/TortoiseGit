@@ -1,23 +1,24 @@
-// this script is a local start-update hook script.
+/* this script is a local start-update hook script. */
 
-var objArgs,num;
+var ForReading = 1;
+var objArgs, num;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
-if (num != 2)
+if (num !== 2)
 {
     WScript.Echo("Usage: [CScript | WScript] StartUpdate.js path/to/pathsfile path/to/CWD ");
     WScript.Quit(1);
 }
 
 var paths = readPaths(objArgs(0));
-var message = "list of paths selected for commit:\n";
-var i = 0;
-while (i < paths.length)
+var message = "list of paths selected for update:\n";
+
+for (var i = 0; i < paths.length; i++)
 {
-	message = message + paths[i] + "\n";
-	i = i + 1;
+    message = message + paths[i] + "\n";
 }
+
 message = message + "CWD is: " + objArgs(1) + "\n";
 
 WScript.Echo(message);
@@ -26,20 +27,17 @@ WScript.Quit(0);
 
 function readPaths(path)
 {
-	var retPaths = new Array();
-	var fs = new ActiveXObject("Scripting.FileSystemObject");
-	if (fs.FileExists(path))
-	{
-		var a = fs.OpenTextFile(path, 1, false);
-		var i = 0;
-		while (!a.AtEndOfStream)
-		{
-			var line = a.ReadLine();
-			retPaths[i] = line;
-			i = i + 1;
-		}
-		a.Close();
-	}
-	return retPaths;
-	
+    var retPaths = [];
+    var fs = new ActiveXObject("Scripting.FileSystemObject");
+    if (fs.FileExists(path))
+    {
+        var a = fs.OpenTextFile(path, ForReading);
+        while (!a.AtEndOfStream)
+        {
+            var line = a.ReadLine();
+            retPaths.push(line);
+        }
+        a.Close();
+    }
+    return retPaths;
 }
