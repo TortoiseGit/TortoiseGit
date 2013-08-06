@@ -86,8 +86,8 @@ CGitIndexList::~CGitIndexList()
 	if (repository != NULL)
 	{
 		git_repository_free(repository);
-		m_critRepoSec.Term();
 	}
+	m_critRepoSec.Term();
 }
 
 static bool SortIndex(CGitIndex &Item1, CGitIndex &Item2)
