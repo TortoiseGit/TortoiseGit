@@ -599,5 +599,5 @@ void CGitStatusCache::CloseWatcherHandles(HDEVNOTIFY hdev)
 void CGitStatusCache::CloseWatcherHandles(const CTGitPath& path)
 {
 	watcher.CloseHandlesForPath(path);
-	m_folderCrawler.BlockPath(path);
+	m_folderCrawler.ReleasePathForUpdate(path);
 }

@@ -130,6 +130,15 @@ void CFolderCrawler::AddPathForUpdate(const CTGitPath& path)
 		SetEvent(m_hWakeEvent);
 }
 
+void CFolderCrawler::ReleasePathForUpdate(const CTGitPath& path)
+{
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": ReleasePathForUpdate %s\n"), path.GetWinPath());
+	AutoLocker lock(m_critSec);
+
+	m_pathsToRelease.Push(path);
+	SetEvent(m_hWakeEvent);
+}
+
 unsigned int CFolderCrawler::ThreadEntry(void* pContext)
 {
 	((CFolderCrawler*)pContext)->WorkerThread();
@@ -204,6 +213,13 @@ void CFolderCrawler::WorkerThread()
 				m_blockedPath.Reset();
 			}
 			CGitStatusCache::Instance().RemoveTimedoutBlocks();
+
+			while (!m_pathsToRelease.empty())
+			{
+				AutoLocker lock(m_critSec);
+				CTGitPath path = m_pathsToRelease.Pop();
+				GitStatus::ReleasePath(path.GetWinPathString());
+			}
 
 			if (m_foldersToUpdate.empty() && m_pathsToUpdate.empty())
 			{

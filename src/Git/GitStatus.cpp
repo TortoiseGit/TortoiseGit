@@ -1029,3 +1029,10 @@ bool GitStatus::IsExistIndexLockFile(const CString &gitdir)
 		sDirName = sDirName.Left(x);
 	}
 }
+
+bool GitStatus::ReleasePath(const CString &gitdir)
+{
+	g_IndexFileMap.SafeClear(gitdir);
+	return true;
+}
+

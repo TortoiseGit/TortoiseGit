@@ -105,6 +105,7 @@ public:
 	static int IsIgnore(const CString &gitdir, const CString &path, bool *isIgnore);
 	static __int64 GetIndexFileTime(const CString &gitdir);
 	static bool IsExistIndexLockFile(const CString &gitdir);
+	static bool ReleasePath(const CString &gitdir);
 
 public:
 	GitStatus();

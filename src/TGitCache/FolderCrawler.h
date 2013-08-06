@@ -45,6 +45,7 @@ public:
 	void Initialise();
 	void AddDirectoryForUpdate(const CTGitPath& path);
 	void AddPathForUpdate(const CTGitPath& path);
+	void ReleasePathForUpdate(const CTGitPath& path);
 	void Stop();
 	bool SetHoldoff(DWORD milliseconds = 100);
 	void BlockPath(const CTGitPath& path, DWORD ticks = 0);
@@ -57,6 +58,7 @@ private:
 	CAutoGeneralHandle m_hThread;
 	UniqueQueue<CTGitPath> m_foldersToUpdate;
 	UniqueQueue<CTGitPath> m_pathsToUpdate;
+	UniqueQueue<CTGitPath> m_pathsToRelease;
 
 	void RemoveDuplicate(std::deque<CTGitPath> &list,const CTGitPath &path);
 

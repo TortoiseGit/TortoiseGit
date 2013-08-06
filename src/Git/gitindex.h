@@ -84,6 +84,17 @@ public:
 		(*this)[thePath] = ptr;
 	}
 
+	bool SafeClear(const CString &path)
+	{
+		CString thePath = path;
+		thePath.MakeLower();
+		CAutoLocker lock(m_critIndexSec);
+		if (this->find(thePath) == end())
+			return false;
+		(*this)[thePath] = nullptr;
+		return true;
+	}
+
 	int Check(const CString &gitdir, bool *isChanged);
 	int LoadIndex(const CString &gitdir);
 
