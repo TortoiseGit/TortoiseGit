@@ -290,8 +290,9 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	TCHAR timebuf[MAX_STRING_LENGTH];
 	TCHAR datebuf[MAX_STRING_LENGTH];
 
-	LCID locale = (WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT));
-	locale = MAKELCID(locale, SORT_DEFAULT);
+	LCID locale = LOCALE_USER_DEFAULT;
+	if (!CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
+		locale = MAKELCID((WORD)CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)), SORT_DEFAULT);
 
 	*buf = '\0';
 	if (time)
@@ -312,9 +313,9 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 			GetDateFormat(locale, DATE_LONGDATE, &systime, NULL, datebuf, MAX_STRING_LENGTH);
 		GetTimeFormat(locale, 0, &systime, NULL, timebuf, MAX_STRING_LENGTH);
 		*buf = '\0';
-		_tcsncat_s(buf, buflen, timebuf, MAX_STRING_LENGTH-1);
-		_tcsncat_s(buf, buflen, _T(", "), MAX_STRING_LENGTH-1);
 		_tcsncat_s(buf, buflen, datebuf, MAX_STRING_LENGTH-1);
+		_tcsncat_s(buf, buflen, _T(" "), MAX_STRING_LENGTH-1);
+		_tcsncat_s(buf, buflen, timebuf, MAX_STRING_LENGTH-1);
 	}
 }
 
