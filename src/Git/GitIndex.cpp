@@ -152,6 +152,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	// load index in order to enumerate files
 	if (git_repository_index(&index, repository))
 	{
+		git_repository_free(repository);
 		repository = NULL;
 		m_critRepoSec.Unlock();
 		return -1;
