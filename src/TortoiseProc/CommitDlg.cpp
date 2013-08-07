@@ -39,6 +39,7 @@
 #include "Globals.h"
 #include "SysProgressDlg.h"
 #include "MassiveGitTask.h"
+#include "LogDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1761,6 +1762,10 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 {
 	CString sMenuItemText;
+	sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PICKCOMMITHASH);
+	m_nPopupPickCommitHash = nCmd++;
+	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPickCommitHash, sMenuItemText);
+
 	sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTEFILELIST);
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
@@ -1779,6 +1784,23 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 {
+	if (cmd == m_nPopupPickCommitHash)
+	{
+		// use the git log to allow selection of a version
+		CLogDlg dlg;
+		// tell the dialog to use mode for selecting revisions
+		dlg.SetSelect(true);
+		// only one revision must be selected however
+		dlg.SingleSelection(true);
+		if (dlg.DoModal() == IDOK)
+		{
+			// get selected hash if any
+			CString selectedHash = dlg.GetSelectedHash();
+			pSciEdit->InsertText(selectedHash);
+		}
+		return true;
+	}
+
 	if (cmd == m_nPopupPasteListCmd)
 	{
 		CString logmsg;

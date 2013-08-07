@@ -6328,6 +6328,10 @@ msgstr ""
 msgid "Pick"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr ""
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"

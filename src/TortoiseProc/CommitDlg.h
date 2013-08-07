@@ -169,6 +169,7 @@ private:
 	static UINT			WM_AUTOLISTREADY;
 	static UINT			WM_UPDATEOKBUTTON;
 	static UINT			WM_UPDATEDATAFALSE;
+	int					m_nPopupPickCommitHash;
 	int					m_nPopupPasteListCmd;
 	int					m_nPopupPasteLastMessage;
 	int					m_nPopupRecentMessage;
