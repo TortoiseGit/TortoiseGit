@@ -1760,12 +1760,12 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
 // CSciEditContextMenuInterface
 void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 {
-	CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
+	CString sMenuItemText;
+	sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTEFILELIST);
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
 
-	//CString sMenuItemText(MAKEINTRESOURCE(IDS_COMMITDLG_POPUP_PASTEFILELIST));
-	if(m_History.GetCount() > 0)
+	if (m_History.GetCount() > 0)
 	{
 		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTELASTMESSAGE);
 		m_nPopupPasteLastMessage = nCmd++;
@@ -1774,9 +1774,7 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 		sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_LOGHISTORY);
 		m_nPopupRecentMessage = nCmd++;
 		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupRecentMessage, sMenuItemText);
-
 	}
-
 }
 
 bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
