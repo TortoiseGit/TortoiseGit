@@ -137,6 +137,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
 
+	m_LineWidth = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2));
+	m_NodeSize = max(1, CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10));
+
 	m_AsyncThreadExit = FALSE;
 	m_AsyncDiffEvent = ::CreateEvent(NULL,FALSE,TRUE,NULL);
 	m_AsynDiffListLock.Init();
@@ -747,7 +750,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 {
 	int h = laneHeight / 2;
 	int m = (x1 + x2) / 2;
-	int r = (x2 - x1) / 3;
+	int r = (x2 - x1) * m_NodeSize / 30;
 	int d =  2 * r;
 
 	#define P_CENTER	m , h+top
@@ -793,7 +796,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								GetGdiColor(activeColor),GetGdiColor(col));
 
 
-		Gdiplus::Pen mypen(&gradient,2);
+		Gdiplus::Pen mypen(&gradient, m_LineWidth);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
 
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
@@ -811,7 +814,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								GetGdiColor(col),GetGdiColor(activeColor));
 
 
-		Gdiplus::Pen mypen(&gradient,2);
+		Gdiplus::Pen mypen(&gradient, m_LineWidth);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
 
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
@@ -830,7 +833,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								Gdiplus::Point(P_90),
 								GetGdiColor(activeColor),GetGdiColor(col));
 
-		Gdiplus::Pen mypen(&gradient,2);
+		Gdiplus::Pen mypen(&gradient, m_LineWidth);
 
 		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1,laneHeight,0,90);
 
@@ -855,7 +858,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	//myPen.setColor(col);
 	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
 
-	Gdiplus::Pen myPen(GetGdiColor(col),2);
+	Gdiplus::Pen myPen(GetGdiColor(col), m_LineWidth);
 
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 

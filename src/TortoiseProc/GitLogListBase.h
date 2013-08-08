@@ -545,6 +545,8 @@ protected:
 	CGitHash			m_HeadHash;
 
 	COLORREF			m_LineColors[Lanes::COLORS_NUM];
+	DWORD				m_LineWidth;
+	DWORD				m_NodeSize;
 	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool				m_bRelativeTimes;	// Show relative times
 	GIT_LOG				m_DllGitLog;
