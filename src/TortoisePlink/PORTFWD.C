@@ -33,13 +33,15 @@ struct PFwdPrivate {
     int dynamic;
     /*
      * `hostname' and `port' are the real hostname and port, once
-     * we know what we're connecting to; they're unused for this
-     * purpose while conducting a local SOCKS exchange, which means
-     * we can also use them as a buffer and pointer for reading
-     * data from the SOCKS client.
+     * we know what we're connecting to.
      */
-    char hostname[256+8];
+    char *hostname;
     int port;
+    /*
+     * `socksbuf' is the buffer we use to accumulate a SOCKS request.
+     */
+    char *socksbuf;
+    int sockslen, sockssize;
     /*
      * When doing dynamic port forwarding, we can receive
      * connection data before we are actually able to send it; so
@@ -49,6 +51,26 @@ struct PFwdPrivate {
     void *buffer;
     int buflen;
 };
+
+static struct PFwdPrivate *new_portfwd_private(void)
+{
+    struct PFwdPrivate *pr = snew(struct PFwdPrivate);
+    pr->hostname = NULL;
+    pr->socksbuf = NULL;
+    pr->sockslen = pr->sockssize = 0;
+    pr->buffer = NULL;
+    return pr;
+}
+
+static void free_portfwd_private(struct PFwdPrivate *pr)
+{
+    if (!pr)
+        return;
+    sfree(pr->hostname);
+    sfree(pr->socksbuf);
+    sfree(pr->buffer);
+    sfree(pr);
+}
 
 static void pfd_log(Plug plug, int type, SockAddr addr, int port,
 		    const char *error_msg, int error_code)
@@ -61,14 +83,20 @@ static int pfd_closing(Plug plug, const char *error_msg, int error_code,
 {
     struct PFwdPrivate *pr = (struct PFwdPrivate *) plug;
 
-    /*
-     * We have no way to communicate down the forwarded connection,
-     * so if an error occurred on the socket, we just ignore it
-     * and treat it like a proper close.
-     */
-    if (pr->c)
-	sshfwd_close(pr->c);
-    pfd_close(pr->s);
+    if (error_msg) {
+        /*
+         * Socket error. Slam the connection instantly shut.
+         */
+        sshfwd_unclean_close(pr->c);
+    } else {
+        /*
+         * Ordinary EOF received on socket. Send an EOF on the SSH
+         * channel.
+         */
+        if (pr->c)
+            sshfwd_write_eof(pr->c);
+    }
+
     return 1;
 }
 
@@ -77,37 +105,26 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
     struct PFwdPrivate *pr = (struct PFwdPrivate *) plug;
     if (pr->dynamic) {
 	while (len--) {
-	    /*
-	     * Throughout SOCKS negotiation, "hostname" is re-used as a
-	     * random protocol buffer with "port" storing the length.
-	     */ 
-	    if (pr->port >= lenof(pr->hostname)) {
-		/* Request too long. */
-		if ((pr->dynamic >> 12) == 4) {
-		    /* Send back a SOCKS 4 error before closing. */
-		    char data[8];
-		    memset(data, 0, sizeof(data));
-		    data[1] = 91;      /* generic `request rejected' */
-		    sk_write(pr->s, data, 8);
-		}
-		pfd_close(pr->s);
-		return 1;
+	    if (pr->sockslen >= pr->sockssize) {
+                pr->sockssize = pr->sockslen * 5 / 4 + 256;
+                pr->socksbuf = sresize(pr->socksbuf, pr->sockssize, char);
 	    }
-	    pr->hostname[pr->port++] = *data++;
+	    pr->socksbuf[pr->sockslen++] = *data++;
 
 	    /*
 	     * Now check what's in the buffer to see if it's a
 	     * valid and complete message in the SOCKS exchange.
 	     */
 	    if ((pr->dynamic == 1 || (pr->dynamic >> 12) == 4) &&
-		pr->hostname[0] == 4) {
+		pr->socksbuf[0] == 4) {
 		/*
 		 * SOCKS 4.
 		 */
 		if (pr->dynamic == 1)
 		    pr->dynamic = 0x4000;
-		if (pr->port < 2) continue;/* don't have command code yet */
-		if (pr->hostname[1] != 1) {
+		if (pr->sockslen < 2)
+                    continue;        /* don't have command code yet */
+		if (pr->socksbuf[1] != 1) {
 		    /* Not CONNECT. */
 		    /* Send back a SOCKS 4 error before closing. */
 		    char data[8];
@@ -117,15 +134,16 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		    pfd_close(pr->s);
 		    return 1;
 		}
-		if (pr->port <= 8) continue; /* haven't started user/hostname */
-		if (pr->hostname[pr->port-1] != 0)
+		if (pr->sockslen <= 8)
+                    continue;      /* haven't started user/hostname */
+		if (pr->socksbuf[pr->sockslen-1] != 0)
 		    continue;	       /* haven't _finished_ user/hostname */
 		/*
 		 * Now we have a full SOCKS 4 request. Check it to
 		 * see if it's a SOCKS 4A request.
 		 */
-		if (pr->hostname[4] == 0 && pr->hostname[5] == 0 &&
-		    pr->hostname[6] == 0 && pr->hostname[7] != 0) {
+		if (pr->socksbuf[4] == 0 && pr->socksbuf[5] == 0 &&
+		    pr->socksbuf[6] == 0 && pr->socksbuf[7] != 0) {
 		    /*
 		     * It's SOCKS 4A. So if we haven't yet
 		     * collected the host name, we should continue
@@ -135,15 +153,17 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		    int len;
 		    if (pr->dynamic == 0x4000) {
 			pr->dynamic = 0x4001;
-			pr->port = 8;      /* reset buffer to overwrite name */
+			pr->sockslen = 8; /* reset buffer to overwrite name */
 			continue;
 		    }
-		    pr->hostname[0] = 0;   /* reply version code */
-		    pr->hostname[1] = 90;   /* request granted */
-		    sk_write(pr->s, pr->hostname, 8);
-		    len= pr->port - 8;
-		    pr->port = GET_16BIT_MSB_FIRST(pr->hostname+2);
-		    memmove(pr->hostname, pr->hostname + 8, len);
+		    pr->socksbuf[0] = 0;   /* reply version code */
+		    pr->socksbuf[1] = 90;   /* request granted */
+		    sk_write(pr->s, pr->socksbuf, 8);
+		    len = pr->sockslen - 8;
+		    pr->port = GET_16BIT_MSB_FIRST(pr->socksbuf+2);
+                    pr->hostname = snewn(len+1, char);
+                    pr->hostname[len] = '\0';
+		    memcpy(pr->hostname, pr->socksbuf + 8, len);
 		    goto connect;
 		} else {
 		    /*
@@ -151,21 +171,21 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		     * the IP address into the hostname string and
 		     * then just go.
 		     */
-		    pr->hostname[0] = 0;   /* reply version code */
-		    pr->hostname[1] = 90;   /* request granted */
-		    sk_write(pr->s, pr->hostname, 8);
-		    pr->port = GET_16BIT_MSB_FIRST(pr->hostname+2);
-		    sprintf(pr->hostname, "%d.%d.%d.%d",
-			    (unsigned char)pr->hostname[4],
-			    (unsigned char)pr->hostname[5],
-			    (unsigned char)pr->hostname[6],
-			    (unsigned char)pr->hostname[7]);
+		    pr->socksbuf[0] = 0;   /* reply version code */
+		    pr->socksbuf[1] = 90;   /* request granted */
+		    sk_write(pr->s, pr->socksbuf, 8);
+		    pr->port = GET_16BIT_MSB_FIRST(pr->socksbuf+2);
+		    pr->hostname = dupprintf("%d.%d.%d.%d",
+                                             (unsigned char)pr->socksbuf[4],
+                                             (unsigned char)pr->socksbuf[5],
+                                             (unsigned char)pr->socksbuf[6],
+                                             (unsigned char)pr->socksbuf[7]);
 		    goto connect;
 		}
 	    }
 
 	    if ((pr->dynamic == 1 || (pr->dynamic >> 12) == 5) &&
-		pr->hostname[0] == 5) {
+		pr->socksbuf[0] == 5) {
 		/*
 		 * SOCKS 5.
 		 */
@@ -178,12 +198,13 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		    /*
 		     * We're receiving a set of method identifiers.
 		     */
-		    if (pr->port < 2) continue;/* no method count yet */
-		    if (pr->port < 2 + (unsigned char)pr->hostname[1])
+		    if (pr->sockslen < 2)
+                        continue;      /* no method count yet */
+		    if (pr->sockslen < 2 + (unsigned char)pr->socksbuf[1])
 			continue;      /* no methods yet */
 		    method = 0xFF;     /* invalid */
-		    for (i = 0; i < (unsigned char)pr->hostname[1]; i++)
-			if (pr->hostname[2+i] == 0) {
+		    for (i = 0; i < (unsigned char)pr->socksbuf[1]; i++)
+			if (pr->socksbuf[2+i] == 0) {
 			    method = 0;/* no auth */
 			    break;
 			}
@@ -191,7 +212,7 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		    data[1] = method;
 		    sk_write(pr->s, data, 2);
 		    pr->dynamic = 0x5001;
-		    pr->port = 0;      /* re-empty the buffer */
+		    pr->sockslen = 0;      /* re-empty the buffer */
 		    continue;
 		}
 
@@ -213,16 +234,16 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		    reply[0] = 5; /* VER */
 		    reply[3] = 1; /* ATYP = 1 (IPv4, 0.0.0.0:0) */
 
-		    if (pr->port < 6) continue;
-		    atype = (unsigned char)pr->hostname[3];
+		    if (pr->sockslen < 6) continue;
+		    atype = (unsigned char)pr->socksbuf[3];
 		    if (atype == 1)    /* IPv4 address */
 			alen = 4;
 		    if (atype == 4)    /* IPv6 address */
 			alen = 16;
 		    if (atype == 3)    /* domain name has leading length */
-			alen = 1 + (unsigned char)pr->hostname[4];
-		    if (pr->port < 6 + alen) continue;
-		    if (pr->hostname[1] != 1 || pr->hostname[2] != 0) {
+			alen = 1 + (unsigned char)pr->socksbuf[4];
+		    if (pr->sockslen < 6 + alen) continue;
+		    if (pr->socksbuf[1] != 1 || pr->socksbuf[2] != 0) {
 			/* Not CONNECT or reserved field nonzero - error */
 			reply[1] = 1;	/* generic failure */
 			sk_write(pr->s, (char *) reply, lenof(reply));
@@ -233,21 +254,22 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 		     * Now we have a viable connect request. Switch
 		     * on atype.
 		     */
-		    pr->port = GET_16BIT_MSB_FIRST(pr->hostname+4+alen);
+		    pr->port = GET_16BIT_MSB_FIRST(pr->socksbuf+4+alen);
 		    if (atype == 1) {
 			/* REP=0 (success) already */
 			sk_write(pr->s, (char *) reply, lenof(reply));
-			sprintf(pr->hostname, "%d.%d.%d.%d",
-				(unsigned char)pr->hostname[4],
-				(unsigned char)pr->hostname[5],
-				(unsigned char)pr->hostname[6],
-				(unsigned char)pr->hostname[7]);
+			pr->hostname = dupprintf("%d.%d.%d.%d",
+                                                 (unsigned char)pr->socksbuf[4],
+                                                 (unsigned char)pr->socksbuf[5],
+                                                 (unsigned char)pr->socksbuf[6],
+                                                 (unsigned char)pr->socksbuf[7]);
 			goto connect;
 		    } else if (atype == 3) {
 			/* REP=0 (success) already */
 			sk_write(pr->s, (char *) reply, lenof(reply));
-			memmove(pr->hostname, pr->hostname + 5, alen-1);
+                        pr->hostname = snewn(alen, char);
 			pr->hostname[alen-1] = '\0';
+			memcpy(pr->hostname, pr->socksbuf + 5, alen-1);
 			goto connect;
 		    } else {
 			/*
@@ -277,6 +299,8 @@ static int pfd_receive(Plug plug, int urgent, char *data, int len)
 	 * connection.
 	 */
 	connect:
+        sfree(pr->socksbuf);
+        pr->socksbuf = NULL;
 
 	/*
 	 * Freeze the socket until the SSH server confirms the
@@ -325,7 +349,7 @@ static void pfd_sent(Plug plug, int bufsize)
  * Called when receiving a PORT OPEN from the server
  */
 const char *pfd_newconnect(Socket *s, char *hostname, int port,
-			   void *c, const Config *cfg, int addressfamily)
+			   void *c, Conf *conf, int addressfamily)
 {
     static const struct plug_function_table fn_table = {
 	pfd_log,
@@ -343,17 +367,17 @@ const char *pfd_newconnect(Socket *s, char *hostname, int port,
     /*
      * Try to find host.
      */
-    addr = name_lookup(hostname, port, &dummy_realhost, cfg, addressfamily);
+    addr = name_lookup(hostname, port, &dummy_realhost, conf, addressfamily);
     if ((err = sk_addr_error(addr)) != NULL) {
 	sk_addr_free(addr);
+        sfree(dummy_realhost);
 	return err;
     }
 
     /*
      * Open socket.
      */
-    pr = snew(struct PFwdPrivate);
-    pr->buffer = NULL;
+    pr = new_portfwd_private();
     pr->fn = &fn_table;
     pr->throttled = pr->throttle_override = 0;
     pr->ready = 1;
@@ -362,9 +386,10 @@ const char *pfd_newconnect(Socket *s, char *hostname, int port,
     pr->dynamic = 0;
 
     pr->s = *s = new_connection(addr, dummy_realhost, port,
-				0, 1, 0, 0, (Plug) pr, cfg);
+				0, 1, 0, 0, (Plug) pr, conf);
+    sfree(dummy_realhost);
     if ((err = sk_socket_error(*s)) != NULL) {
-	sfree(pr);
+	free_portfwd_private(pr);
 	return err;
     }
 
@@ -390,8 +415,7 @@ static int pfd_accepting(Plug p, OSSocket sock)
     const char *err;
 
     org = (struct PFwdPrivate *)p;
-    pr = snew(struct PFwdPrivate);
-    pr->buffer = NULL;
+    pr = new_portfwd_private();
     pr->fn = &fn_table;
 
     pr->c = NULL;
@@ -399,7 +423,7 @@ static int pfd_accepting(Plug p, OSSocket sock)
 
     pr->s = s = sk_register(sock, (Plug) pr);
     if ((err = sk_socket_error(s)) != NULL) {
-	sfree(pr);
+	free_portfwd_private(pr);
 	return err != NULL;
     }
 
@@ -414,12 +438,12 @@ static int pfd_accepting(Plug p, OSSocket sock)
 	sk_set_frozen(s, 0);	       /* we want to receive SOCKS _now_! */
     } else {
 	pr->dynamic = 0;
-	strcpy(pr->hostname, org->hostname);
+	pr->hostname = dupstr(org->hostname);
 	pr->port = org->port;	
 	pr->c = new_sock_channel(org->backhandle, s);
 
 	if (pr->c == NULL) {
-	    sfree(pr);
+	    free_portfwd_private(pr);
 	    return 1;
 	} else {
 	    /* asks to forward to the specified host/port for this */
@@ -435,7 +459,7 @@ static int pfd_accepting(Plug p, OSSocket sock)
  sets up a listener on the local machine on (srcaddr:)port
  */
 const char *pfd_addforward(char *desthost, int destport, char *srcaddr,
-			   int port, void *backhandle, const Config *cfg,
+			   int port, void *backhandle, Conf *conf,
 			   void **sockdata, int address_family)
 {
     static const struct plug_function_table fn_table = {
@@ -453,12 +477,11 @@ const char *pfd_addforward(char *desthost, int destport, char *srcaddr,
     /*
      * Open socket.
      */
-    pr = snew(struct PFwdPrivate);
-    pr->buffer = NULL;
+    pr = new_portfwd_private();
     pr->fn = &fn_table;
     pr->c = NULL;
     if (desthost) {
-	strcpy(pr->hostname, desthost);
+	pr->hostname = dupstr(desthost);
 	pr->port = destport;
 	pr->dynamic = 0;
     } else
@@ -468,9 +491,10 @@ const char *pfd_addforward(char *desthost, int destport, char *srcaddr,
     pr->backhandle = backhandle;
 
     pr->s = s = new_listener(srcaddr, port, (Plug) pr,
-			     !cfg->lport_acceptall, cfg, address_family);
+			     !conf_get_int(conf, CONF_lport_acceptall),
+			     conf, address_family);
     if ((err = sk_socket_error(s)) != NULL) {
-	sfree(pr);
+	free_portfwd_private(pr);
 	return err;
     }
 
@@ -490,8 +514,7 @@ void pfd_close(Socket s)
 
     pr = (struct PFwdPrivate *) sk_get_private_ptr(s);
 
-    sfree(pr->buffer);
-    sfree(pr);
+    free_portfwd_private(pr);
 
     sk_close(s);
 }
@@ -536,6 +559,10 @@ int pfd_send(Socket s, char *data, int len)
     return sk_write(s, data, len);
 }
 
+void pfd_send_eof(Socket s)
+{
+    sk_write_eof(s);
+}
 
 void pfd_confirm(Socket s)
 {

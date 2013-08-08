@@ -12,6 +12,7 @@ Released: Unreleased
  * Fixed issue #1829: You have not concluded your merge (MERGE_HEAD exists) - allow to abort merge more easily.
  * Commit Dialog: Add "Pick commit hash" in message text box context menu
  * Can set log graph line width and node size
+ * Updated shipped PuTTY PLink to version 0.63 (which contains some securiuty fixes)
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits

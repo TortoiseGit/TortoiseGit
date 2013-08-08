@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,62,0,0
- PRODUCTVERSION 0,62,0,0
+ FILEVERSION 0,63,0,9999
+ PRODUCTVERSION 0,63,0,9999
  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
@@ -72,12 +72,12 @@ BEGIN
             VALUE "Comments", "Adapted from PuTTY plink (http://www.chiark.greenend.org.uk/~sgtatham/putty/)"
             VALUE "CompanyName", "TortoiseGit team and TortoiseSVN team"
             VALUE "FileDescription", "TortoiseGitPLink"
-            VALUE "FileVersion", "Release 0.62"
+            VALUE "FileVersion", "Release 0.63"
             VALUE "InternalName", "TortoiseGitPLink"
             VALUE "LegalCopyright", "Copyright © 2003-2013"
             VALUE "OriginalFilename", "TortoiseGitPLink.exe"
             VALUE "ProductName", "TortoiseGit TortoiseGitPLink"
-            VALUE "ProductVersion", "Release 0.62"
+            VALUE "ProductVersion", "Release 0.63"
         END
     END
     BLOCK "VarFileInfo"

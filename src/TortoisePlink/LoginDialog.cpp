@@ -1,6 +1,6 @@
 // TortoiseSVN - a Windows shell extension for easy version control
 
-// Copyright (C) 2003 - Tim Kemp and Stefan Kueng
+// Copyright (C) 2003, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ class LoginDialog
 {
 public:
    LoginDialog(const std::string& prompt);
-   
+
    static bool DoLoginDialog(std::string& password, const std::string& prompt);
 
 private:
@@ -36,10 +36,10 @@ private:
 
    std::string  myPassword;
    std::string  myPrompt;
-   
+
    void CreateModule(void);
    void RetrieveValues();
-   
+
    std::string GetPassword();
 
    friend BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -71,11 +71,11 @@ BOOL CALLBACK LoginDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
       // Make sure edit control has the focus
       //SendDlgItemMessage(hwndDlg, IDC_LOGIN_PASSWORD, WM_SETFOCUS, 0, 0);
       if (GetDlgCtrlID((HWND) wParam) != IDC_LOGIN_PASSWORD)
-      { 
+      {
          SetFocus(GetDlgItem(hwndDlg, IDC_LOGIN_PASSWORD));
-         return FALSE; 
-      } 
-      return TRUE; 
+         return FALSE;
+      }
+      return TRUE;
    }
    else if (uMsg == WM_COMMAND && LOWORD(wParam) == IDCANCEL && HIWORD(wParam) == BN_CLICKED)
    {
@@ -103,7 +103,7 @@ LoginDialog::LoginDialog(const std::string& prompt)
 void LoginDialog::CreateModule(void)
 {
    DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain,
-                  (DLGPROC)(LoginDialogProc), (LONG_PTR)this);
+                  (DLGPROC)(LoginDialogProc), (long)this);
 }
 
 
@@ -115,7 +115,7 @@ bool LoginDialog::DoLoginDialog(std::string& password, const std::string& prompt
 
    bool ret = pDlg->myOK;
    password = pDlg->myPassword;
-   
+
    delete pDlg;
 
    return ret;
