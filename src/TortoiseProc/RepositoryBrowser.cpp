@@ -398,7 +398,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 		}
 		else
 		{
-			git_blob * blob;
+			git_blob * blob = nullptr;
 			git_blob_lookup(&blob, &repo, oid);
 			if (blob == NULL)
 				continue;
