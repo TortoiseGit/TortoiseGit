@@ -42,6 +42,8 @@ void CSettingsColors3::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COLOR_LINE6, m_cLine[5]);
 	DDX_Control(pDX, IDC_COLOR_LINE7, m_cLine[6]);
 	DDX_Control(pDX, IDC_COLOR_LINE8, m_cLine[7]);
+	DDX_Control(pDX, IDC_LOGGRAPHLINEWIDTH, m_LogGraphLineWidth);
+	DDX_Control(pDX, IDC_LOGGRAPHNODESIZE, m_LogGraphNodeSize);
 
 }
 
@@ -56,6 +58,8 @@ BEGIN_MESSAGE_MAP(CSettingsColors3, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_COLOR_LINE6, &CSettingsColors3::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_COLOR_LINE7, &CSettingsColors3::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_COLOR_LINE8, &CSettingsColors3::OnBnClickedColor)
+	ON_CBN_SELCHANGE(IDC_LOGGRAPHLINEWIDTH, &CSettingsColors3::OnCbnSelchangeLoggraphlinewidth)
+	ON_CBN_SELCHANGE(IDC_LOGGRAPHNODESIZE, &CSettingsColors3::OnCbnSelchangeLoggraphlinewidth)
 END_MESSAGE_MAP()
 
 BOOL CSettingsColors3::OnInitDialog()
@@ -73,6 +77,24 @@ BOOL CSettingsColors3::OnInitDialog()
 		m_cLine[i].EnableOtherButton(sCustomText);
 	}
 
+	CString text;
+	for (int i = 1; i <= 10; i++)
+	{
+		text.Format(_T("%d"), i);
+		m_LogGraphLineWidth.AddString(text);
+	}
+	for (int i = 1; i <= 30; i++)
+	{
+		text.Format(_T("%d"), i);
+		m_LogGraphNodeSize.AddString(text);
+	}
+	m_regLogGraphLineWidth = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogLineWidth"), 2);
+	text.Format(_T("%d"), (DWORD)m_regLogGraphLineWidth);
+	m_LogGraphLineWidth.SelectString(-1, text);
+	m_regLogGraphNodeSize = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\LogNodeSize"), 10);
+	text.Format(_T("%d"), (DWORD)m_regLogGraphNodeSize);
+	m_LogGraphNodeSize.SelectString(-1, text);
+
 	return TRUE;
 }
 
@@ -82,6 +104,8 @@ void CSettingsColors3::OnBnClickedRestore()
 	{
 		m_cLine[i].SetColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1+i), true));
 	}
+	m_LogGraphLineWidth.SelectString(-1, _T("2"));
+	m_LogGraphNodeSize.SelectString(-1, _T("10"));
 	SetModified(TRUE);
 }
 
@@ -92,10 +116,22 @@ BOOL CSettingsColors3::OnApply()
 		m_Colors.SetColor((CColors::Colors)(CColors::BranchLine1+i),
 			m_cLine[i].GetColor() == -1 ? m_cLine[i].GetAutomaticColor() : m_cLine[i].GetColor());
 	}
+
+	CString text;
+	m_LogGraphLineWidth.GetWindowText(text);
+	m_regLogGraphLineWidth = _ttoi(text);
+	m_LogGraphNodeSize.GetWindowText(text);
+	m_regLogGraphNodeSize = _ttoi(text);
+
 	return ISettingsPropPage::OnApply();
 }
 
 void CSettingsColors3::OnBnClickedColor()
+{
+	SetModified();
+}
+
+void CSettingsColors3::OnCbnSelchangeLoggraphlinewidth()
 {
 	SetModified();
 }

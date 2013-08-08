@@ -41,6 +41,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedColor();
 	afx_msg void OnBnClickedRestore();
+	afx_msg void OnCbnSelchangeLoggraphlinewidth();
 	virtual BOOL OnApply();
 
 	DECLARE_MESSAGE_MAP()
@@ -48,4 +49,8 @@ protected:
 private:
 	CMFCColorButton	m_cLine[8];
 	CColors			m_Colors;
+	CComboBox		m_LogGraphLineWidth;
+	CComboBox		m_LogGraphNodeSize;
+	CRegDWORD		m_regLogGraphLineWidth;
+	CRegDWORD		m_regLogGraphNodeSize;
 };

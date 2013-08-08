@@ -5237,6 +5237,10 @@ msgid "Line moved to line %ld"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr ""
 
@@ -5852,6 +5856,10 @@ msgstr ""
 
 #. Resource IDs: (65)
 msgid "No working directory found."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Node size"
 msgstr ""
 
 #. Resource IDs: (1272)
