@@ -74,6 +74,7 @@
       <AdditionalIncludeDirectories>..\..\..\;..\..\..\charset\;..\..\..\windows\;..\..\..\unix\;..\..\..\mac\;..\..\..\macosx\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -96,7 +97,9 @@
       <AdditionalIncludeDirectories>..\..\..\;..\..\..\charset\;..\..\..\windows\;..\..\..\unix\;..\..\..\mac\;..\..\..\macosx\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;imm32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -108,6 +111,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;SECURITY_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;imm32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -116,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\be_all_s.c" />
     <ClCompile Include="..\..\..\cmdline.c" />
+    <ClCompile Include="..\..\..\conf.c" />
     <ClCompile Include="..\..\..\cproxy.c" />
     <ClCompile Include="..\..\..\ldisc.c" />
     <ClCompile Include="..\..\..\logging.c" />
@@ -140,6 +145,7 @@
     <ClCompile Include="..\..\..\sshdes.c" />
     <ClCompile Include="..\..\..\sshdh.c" />
     <ClCompile Include="..\..\..\sshdss.c" />
+    <ClCompile Include="..\..\..\sshdssg.c" />
     <ClCompile Include="..\..\..\sshgssc.c" />
     <ClCompile Include="..\..\..\sshmd5.c" />
     <ClCompile Include="..\..\..\sshprime.c" />
@@ -170,8 +176,8 @@
     <ClCompile Include="..\..\winser.c" />
     <ClCompile Include="..\..\winstore.c" />
     <ClCompile Include="..\..\wintime.c" />
-    <ClCompile Include="..\..\winx11.c" />
     <ClCompile Include="..\..\..\x11fwd.c" />
+    <ClCompile Include="..\..\winx11.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\charset\charset.h" />
@@ -180,10 +186,13 @@
     <ClInclude Include="..\..\..\logindialog.h" />
     <ClInclude Include="..\..\..\misc.h" />
     <ClInclude Include="..\..\..\network.h" />
+    <ClInclude Include="..\..\..\pgssapi.h" />
     <ClInclude Include="..\..\..\proxy.h" />
     <ClInclude Include="..\..\..\putty.h" />
     <ClInclude Include="..\..\..\puttymem.h" />
     <ClInclude Include="..\..\..\puttyps.h" />
+    <ClInclude Include="..\..\..\sshgss.h" />
+    <ClInclude Include="..\..\..\sshgssc.h" />
     <ClInclude Include="..\..\rcstuff.h" />
     <ClInclude Include="..\..\resource.h" />
     <ClInclude Include="..\..\..\ssh.h" />

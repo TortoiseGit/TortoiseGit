@@ -3,7 +3,7 @@
 
 /* For platforms not supporting GSSAPI */
 
-struct ssh_gss_liblist *ssh_gss_setup(const Config *cfg)
+struct ssh_gss_liblist *ssh_gss_setup(Conf *conf)
 {
     struct ssh_gss_liblist *list = snew(struct ssh_gss_liblist *);
     list->libraries = NULL;

@@ -11,9 +11,13 @@
 typedef struct ldisc_tag {
     Terminal *term;
     Backend *back;
-    Config *cfg;
     void *backhandle;
     void *frontend;
+
+    /*
+     * Values cached out of conf.
+     */
+    int telnet_keyboard, telnet_newline, protocol, localecho, localedit;
 
     char *buf;
     int buflen, bufsiz, quotenext;

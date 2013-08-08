@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "putty.h"
 
@@ -21,8 +22,10 @@ typedef struct raw_backend_data {
     /* the above field _must_ be first in the structure */
 
     Socket s;
+    int closed_on_socket_error;
     int bufsize;
     void *frontend;
+    int sent_console_eof, sent_socket_eof;
 } *Raw;
 
 static void raw_size(void *handle, int width, int height);
@@ -47,6 +50,22 @@ static void raw_log(Plug plug, int type, SockAddr addr, int port,
 	msg = dupprintf("Failed to connect to %s: %s", addrbuf, error_msg);
 
     logevent(raw->frontend, msg);
+    sfree(msg);
+}
+
+static void raw_check_close(Raw raw)
+{
+    /*
+     * Called after we send EOF on either the socket or the console.
+     * Its job is to wind up the session once we have sent EOF on both.
+     */
+    if (raw->sent_console_eof && raw->sent_socket_eof) {
+        if (raw->s) {
+            sk_close(raw->s);
+            raw->s = NULL;
+            notify_remote_exit(raw->frontend);
+        }
+    }
 }
 
 static int raw_closing(Plug plug, const char *error_msg, int error_code,
@@ -54,16 +73,32 @@ static int raw_closing(Plug plug, const char *error_msg, int error_code,
 {
     Raw raw = (Raw) plug;
 
-    if (raw->s) {
-        sk_close(raw->s);
-        raw->s = NULL;
-	notify_remote_exit(raw->frontend);
-    }
     if (error_msg) {
-	/* A socket error has occurred. */
-	logevent(raw->frontend, error_msg);
-	connection_fatal(raw->frontend, "%s", error_msg);
-    }				       /* Otherwise, the remote side closed the connection normally. */
+        /* A socket error has occurred. */
+        if (raw->s) {
+            sk_close(raw->s);
+            raw->s = NULL;
+            raw->closed_on_socket_error = TRUE;
+            notify_remote_exit(raw->frontend);
+        }
+        logevent(raw->frontend, error_msg);
+        connection_fatal(raw->frontend, "%s", error_msg);
+    } else {
+        /* Otherwise, the remote side closed the connection normally. */
+        if (!raw->sent_console_eof && from_backend_eof(raw->frontend)) {
+            /*
+             * The front end wants us to close the outgoing side of the
+             * connection as soon as we see EOF from the far end.
+             */
+            if (!raw->sent_socket_eof) {
+                if (raw->s)
+                    sk_write_eof(raw->s);
+                raw->sent_socket_eof= TRUE;
+            }
+        }
+        raw->sent_console_eof = TRUE;
+        raw_check_close(raw);
+    }
     return 0;
 }
 
@@ -89,7 +124,7 @@ static void raw_sent(Plug plug, int bufsize)
  * freed by the caller.
  */
 static const char *raw_init(void *frontend_handle, void **backend_handle,
-			    Config *cfg,
+			    Conf *conf,
 			    char *host, int port, char **realhost, int nodelay,
 			    int keepalive)
 {
@@ -102,27 +137,32 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
     SockAddr addr;
     const char *err;
     Raw raw;
+    int addressfamily;
+    char *loghost;
 
     raw = snew(struct raw_backend_data);
     raw->fn = &fn_table;
     raw->s = NULL;
+    raw->closed_on_socket_error = FALSE;
     *backend_handle = raw;
+    raw->sent_console_eof = raw->sent_socket_eof = FALSE;
 
     raw->frontend = frontend_handle;
 
+    addressfamily = conf_get_int(conf, CONF_addressfamily);
     /*
      * Try to find host.
      */
     {
 	char *buf;
 	buf = dupprintf("Looking up host \"%s\"%s", host,
-			(cfg->addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
-			 (cfg->addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
+			(addressfamily == ADDRTYPE_IPV4 ? " (IPv4)" :
+			 (addressfamily == ADDRTYPE_IPV6 ? " (IPv6)" :
 			  "")));
 	logevent(raw->frontend, buf);
 	sfree(buf);
     }
-    addr = name_lookup(host, port, realhost, cfg, cfg->addressfamily);
+    addr = name_lookup(host, port, realhost, conf, addressfamily);
     if ((err = sk_addr_error(addr)) != NULL) {
 	sk_addr_free(addr);
 	return err;
@@ -135,15 +175,16 @@ static const char *raw_init(void *frontend_handle, void **backend_handle,
      * Open socket.
      */
     raw->s = new_connection(addr, *realhost, port, 0, 1, nodelay, keepalive,
-			    (Plug) raw, cfg);
+			    (Plug) raw, conf);
     if ((err = sk_socket_error(raw->s)) != NULL)
 	return err;
 
-    if (*cfg->loghost) {
+    loghost = conf_get_str(conf, CONF_loghost);
+    if (*loghost) {
 	char *colon;
 
 	sfree(*realhost);
-	*realhost = dupstr(cfg->loghost);
+	*realhost = dupstr(loghost);
 	colon = strrchr(*realhost, ':');
 	if (colon) {
 	    /*
@@ -170,7 +211,7 @@ static void raw_free(void *handle)
 /*
  * Stub routine (we don't have any need to reconfigure this backend).
  */
-static void raw_reconfig(void *handle, Config *cfg)
+static void raw_reconfig(void *handle, Conf *conf)
 {
 }
 
@@ -208,11 +249,17 @@ static void raw_size(void *handle, int width, int height)
 }
 
 /*
- * Send raw special codes.
+ * Send raw special codes. We only handle outgoing EOF here.
  */
 static void raw_special(void *handle, Telnet_Special code)
 {
-    /* Do nothing! */
+    Raw raw = (Raw) handle;
+    if (code == TS_EOF && raw->s) {
+        sk_write_eof(raw->s);
+        raw->sent_socket_eof= TRUE;
+        raw_check_close(raw);
+    }
+
     return;
 }
 
@@ -264,6 +311,8 @@ static int raw_exitcode(void *handle)
     Raw raw = (Raw) handle;
     if (raw->s != NULL)
         return -1;                     /* still connected */
+    else if (raw->closed_on_socket_error)
+        return INT_MAX;     /* a socket error counts as an unclean exit */
     else
         /* Exit codes are a meaningless concept in the Raw protocol */
         return 0;

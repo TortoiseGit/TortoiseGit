@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include "misc.h"
 
@@ -120,7 +121,11 @@ Bignum Zero = bnZero, One = bnOne;
 
 static Bignum newbn(int length)
 {
-    Bignum b = snewn(length + 1, BignumInt);
+    Bignum b;
+
+    assert(length >= 0 && length < INT_MAX / BIGNUM_INT_BITS);
+
+    b = snewn(length + 1, BignumInt);
     if (!b)
 	abort();		       /* FIXME */
     memset(b, 0, (length + 1) * sizeof(*b));
@@ -148,13 +153,17 @@ void freebn(Bignum b)
     /*
      * Burn the evidence, just in case.
      */
-    memset(b, 0, sizeof(b[0]) * (b[0] + 1));
+    smemclr(b, sizeof(b[0]) * (b[0] + 1));
     sfree(b);
 }
 
 Bignum bn_power_2(int n)
 {
-    Bignum ret = newbn(n / BIGNUM_INT_BITS + 1);
+    Bignum ret;
+
+    assert(n >= 0);
+
+    ret = newbn(n / BIGNUM_INT_BITS + 1);
     bignum_set_bit(ret, n, 1);
     return ret;
 }
@@ -598,6 +607,7 @@ static void internal_add_shifted(BignumInt *number,
     addend = (BignumDblInt)n << bshift;
 
     while (addend) {
+        assert(word <= number[0]);
 	addend += number[word];
 	number[word] = (BignumInt) addend & BIGNUM_INT_MASK;
 	addend >>= BIGNUM_INT_BITS;
@@ -624,6 +634,7 @@ static void internal_mod(BignumInt *a, int alen,
     int i, k;
 
     m0 = m[0];
+    assert(m0 >> (BIGNUM_INT_BITS-1) == 1);
     if (mlen > 1)
 	m1 = m[1];
     else
@@ -815,20 +826,15 @@ Bignum modpow_simple(Bignum base_in, Bignum exp, Bignum mod)
 	result[0]--;
 
     /* Free temporary arrays */
-    for (i = 0; i < 2 * mlen; i++)
-	a[i] = 0;
+    smemclr(a, 2 * mlen * sizeof(*a));
     sfree(a);
-    for (i = 0; i < scratchlen; i++)
-	scratch[i] = 0;
+    smemclr(scratch, scratchlen * sizeof(*scratch));
     sfree(scratch);
-    for (i = 0; i < 2 * mlen; i++)
-	b[i] = 0;
+    smemclr(b, 2 * mlen * sizeof(*b));
     sfree(b);
-    for (i = 0; i < mlen; i++)
-	m[i] = 0;
+    smemclr(m, mlen * sizeof(*m));
     sfree(m);
-    for (i = 0; i < mlen; i++)
-	n[i] = 0;
+    smemclr(n, mlen * sizeof(*n));
     sfree(n);
 
     freebn(base);
@@ -873,6 +879,7 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
     len = mod[0];
     r = bn_power_2(BIGNUM_INT_BITS * len);
     inv = modinv(mod, r);
+    assert(inv); /* cannot fail, since mod is odd and r is a power of 2 */
 
     /*
      * Multiply the base by r mod n, to get it into Montgomery
@@ -965,23 +972,17 @@ Bignum modpow(Bignum base_in, Bignum exp, Bignum mod)
 	result[0]--;
 
     /* Free temporary arrays */
-    for (i = 0; i < scratchlen; i++)
-	scratch[i] = 0;
+    smemclr(scratch, scratchlen * sizeof(*scratch));
     sfree(scratch);
-    for (i = 0; i < 2 * len; i++)
-	a[i] = 0;
+    smemclr(a, 2 * len * sizeof(*a));
     sfree(a);
-    for (i = 0; i < 2 * len; i++)
-	b[i] = 0;
+    smemclr(b, 2 * len * sizeof(*b));
     sfree(b);
-    for (i = 0; i < len; i++)
-	mninv[i] = 0;
+    smemclr(mninv, len * sizeof(*mninv));
     sfree(mninv);
-    for (i = 0; i < len; i++)
-	n[i] = 0;
+    smemclr(n, len * sizeof(*n));
     sfree(n);
-    for (i = 0; i < len; i++)
-	x[i] = 0;
+    smemclr(x, len * sizeof(*x));
     sfree(x);
 
     return result;
@@ -998,6 +999,12 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
     int mshift, scratchlen;
     int pqlen, mlen, rlen, i, j;
     Bignum result;
+
+    /*
+     * The most significant word of mod needs to be non-zero. It
+     * should already be, but let's make sure.
+     */
+    assert(mod[mod[0]] != 0);
 
     /* Allocate m of size mlen, copy mod to m */
     /* We use big endian internally */
@@ -1017,6 +1024,13 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
     }
 
     pqlen = (p[0] > q[0] ? p[0] : q[0]);
+
+    /*
+     * Make sure that we're allowing enough space. The shifting below
+     * will underflow the vectors we allocate if pqlen is too small.
+     */
+    if (2*pqlen <= mlen)
+        pqlen = mlen/2 + 1;
 
     /* Allocate n of size pqlen, copy p to n */
     n = snewn(pqlen, BignumInt);
@@ -1064,20 +1078,15 @@ Bignum modmul(Bignum p, Bignum q, Bignum mod)
 	result[0]--;
 
     /* Free temporary arrays */
-    for (i = 0; i < scratchlen; i++)
-	scratch[i] = 0;
+    smemclr(scratch, scratchlen * sizeof(*scratch));
     sfree(scratch);
-    for (i = 0; i < 2 * pqlen; i++)
-	a[i] = 0;
+    smemclr(a, 2 * pqlen * sizeof(*a));
     sfree(a);
-    for (i = 0; i < mlen; i++)
-	m[i] = 0;
+    smemclr(m, mlen * sizeof(*m));
     sfree(m);
-    for (i = 0; i < pqlen; i++)
-	n[i] = 0;
+    smemclr(n, pqlen * sizeof(*n));
     sfree(n);
-    for (i = 0; i < pqlen; i++)
-	o[i] = 0;
+    smemclr(o, pqlen * sizeof(*o));
     sfree(o);
 
     return result;
@@ -1095,6 +1104,12 @@ static void bigdivmod(Bignum p, Bignum mod, Bignum result, Bignum quotient)
     BignumInt *n, *m;
     int mshift;
     int plen, mlen, i, j;
+
+    /*
+     * The most significant word of mod needs to be non-zero. It
+     * should already be, but let's make sure.
+     */
+    assert(mod[mod[0]] != 0);
 
     /* Allocate m of size mlen, copy mod to m */
     /* We use big endian internally */
@@ -1147,11 +1162,9 @@ static void bigdivmod(Bignum p, Bignum mod, Bignum result, Bignum quotient)
     }
 
     /* Free temporary arrays */
-    for (i = 0; i < mlen; i++)
-	m[i] = 0;
+    smemclr(m, mlen * sizeof(*m));
     sfree(m);
-    for (i = 0; i < plen; i++)
-	n[i] = 0;
+    smemclr(n, plen * sizeof(*n));
     sfree(n);
 }
 
@@ -1170,6 +1183,8 @@ Bignum bignum_from_bytes(const unsigned char *data, int nbytes)
 {
     Bignum result;
     int w, i;
+
+    assert(nbytes >= 0 && nbytes < INT_MAX/8);
 
     w = (nbytes + BIGNUM_INT_BYTES - 1) / BIGNUM_INT_BYTES; /* bytes->words */
 
@@ -1247,7 +1262,7 @@ int ssh2_bignum_length(Bignum bn)
  */
 int bignum_byte(Bignum bn, int i)
 {
-    if (i >= (int)(BIGNUM_INT_BYTES * bn[0]))
+    if (i < 0 || i >= (int)(BIGNUM_INT_BYTES * bn[0]))
 	return 0;		       /* beyond the end */
     else
 	return (bn[i / BIGNUM_INT_BYTES + 1] >>
@@ -1259,7 +1274,7 @@ int bignum_byte(Bignum bn, int i)
  */
 int bignum_bit(Bignum bn, int i)
 {
-    if (i >= (int)(BIGNUM_INT_BITS * bn[0]))
+    if (i < 0 || i >= (int)(BIGNUM_INT_BITS * bn[0]))
 	return 0;		       /* beyond the end */
     else
 	return (bn[i / BIGNUM_INT_BITS + 1] >> (i % BIGNUM_INT_BITS)) & 1;
@@ -1270,7 +1285,7 @@ int bignum_bit(Bignum bn, int i)
  */
 void bignum_set_bit(Bignum bn, int bitnum, int value)
 {
-    if (bitnum >= (int)(BIGNUM_INT_BITS * bn[0]))
+    if (bitnum < 0 || bitnum >= (int)(BIGNUM_INT_BITS * bn[0]))
 	abort();		       /* beyond the end */
     else {
 	int v = bitnum / BIGNUM_INT_BITS + 1;
@@ -1306,7 +1321,18 @@ int ssh1_write_bignum(void *data, Bignum bn)
 int bignum_cmp(Bignum a, Bignum b)
 {
     int amax = a[0], bmax = b[0];
-    int i = (amax > bmax ? amax : bmax);
+    int i;
+
+    /* Annoyingly we have two representations of zero */
+    if (amax == 1 && a[amax] == 0)
+        amax = 0;
+    if (bmax == 1 && b[bmax] == 0)
+        bmax = 0;
+
+    assert(amax == 0 || a[amax] != 0);
+    assert(bmax == 0 || b[bmax] != 0);
+
+    i = (amax > bmax ? amax : bmax);
     while (i) {
 	BignumInt aval = (i > amax ? 0 : a[i]);
 	BignumInt bval = (i > bmax ? 0 : b[i]);
@@ -1327,6 +1353,8 @@ Bignum bignum_rshift(Bignum a, int shift)
     Bignum ret;
     int i, shiftw, shiftb, shiftbb, bits;
     BignumInt ai, ai1;
+
+    assert(shift >= 0);
 
     bits = bignum_bitcount(a) - shift;
     ret = newbn((bits + BIGNUM_INT_BITS - 1) / BIGNUM_INT_BITS);
@@ -1398,8 +1426,7 @@ Bignum bigmuladd(Bignum a, Bignum b, Bignum addend)
     }
     ret[0] = maxspot;
 
-    for (i = 0; i < wslen; i++)
-        workspace[i] = 0;
+    smemclr(workspace, wslen * sizeof(*workspace));
     sfree(workspace);
     return ret;
 }
@@ -1629,9 +1656,26 @@ Bignum modinv(Bignum number, Bignum modulus)
     Bignum x = copybn(One);
     int sign = +1;
 
+    assert(number[number[0]] != 0);
+    assert(modulus[modulus[0]] != 0);
+
     while (bignum_cmp(b, One) != 0) {
-	Bignum t = newbn(b[0]);
-	Bignum q = newbn(a[0]);
+	Bignum t, q;
+
+        if (bignum_cmp(b, Zero) == 0) {
+            /*
+             * Found a common factor between the inputs, so we cannot
+             * return a modular inverse at all.
+             */
+            freebn(b);
+            freebn(a);
+            freebn(xp);
+            freebn(x);
+            return NULL;
+        }
+
+        t = newbn(b[0]);
+	q = newbn(a[0]);
 	bigdivmod(a, b, t, q);
 	while (t[0] > 1 && t[t[0]] == 0)
 	    t[0]--;
@@ -1750,6 +1794,7 @@ char *bignum_decimal(Bignum x)
     /*
      * Done.
      */
+    smemclr(workspace, x[0] * sizeof(*workspace));
     sfree(workspace);
     return ret;
 }
@@ -1761,7 +1806,7 @@ char *bignum_decimal(Bignum x)
 #include <ctype.h>
 
 /*
- * gcc -g -O0 -DTESTBN -o testbn sshbn.c misc.c -I unix -I charset
+ * gcc -Wall -g -O0 -DTESTBN -o testbn sshbn.c misc.c conf.c tree234.c unix/uxmisc.c -I. -I unix -I charset
  *
  * Then feed to this program's standard input the output of
  * testdata/bignum.py .
@@ -1862,6 +1907,44 @@ int main(int argc, char **argv)
             }
             freebn(a);
             freebn(b);
+            freebn(c);
+            freebn(p);
+        } else if (!strcmp(buf, "modmul")) {
+            Bignum a, b, m, c, p;
+
+            if (ptrnum != 4) {
+                printf("%d: modmul with %d parameters, expected 4\n",
+                       line, ptrnum);
+                exit(1);
+            }
+            a = bignum_from_bytes(ptrs[0], ptrs[1]-ptrs[0]);
+            b = bignum_from_bytes(ptrs[1], ptrs[2]-ptrs[1]);
+            m = bignum_from_bytes(ptrs[2], ptrs[3]-ptrs[2]);
+            c = bignum_from_bytes(ptrs[3], ptrs[4]-ptrs[3]);
+            p = modmul(a, b, m);
+
+            if (bignum_cmp(c, p) == 0) {
+                passes++;
+            } else {
+                char *as = bignum_decimal(a);
+                char *bs = bignum_decimal(b);
+                char *ms = bignum_decimal(m);
+                char *cs = bignum_decimal(c);
+                char *ps = bignum_decimal(p);
+                
+                printf("%d: fail: %s * %s mod %s gave %s expected %s\n",
+                       line, as, bs, ms, ps, cs);
+                fails++;
+
+                sfree(as);
+                sfree(bs);
+                sfree(ms);
+                sfree(cs);
+                sfree(ps);
+            }
+            freebn(a);
+            freebn(b);
+            freebn(m);
             freebn(c);
             freebn(p);
         } else if (!strcmp(buf, "pow")) {

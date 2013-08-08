@@ -353,12 +353,12 @@ static const PROPERTYKEY PKEY_Title = {
     0x00000002
 };
 
-/* Type-checking macro to provide arguments for CoCreateInstance() etc.
- * The pointer arithmetic is a compile-time pointer type check that 'obj'
- * really is a 'type **', but is intended to have no effect at runtime. */
+/* Type-checking macro to provide arguments for CoCreateInstance()
+ * etc, ensuring that 'obj' really is a 'type **'. */
+#define typecheck(checkexpr, result) \
+    (sizeof(checkexpr) ? (result) : (result))
 #define COMPTR(type, obj) &IID_##type, \
-    (void **)(void *)((obj) + (sizeof((obj)-(type **)(obj))) \
-		            - (sizeof((obj)-(type **)(obj))))
+    typecheck((obj)-(type **)(obj), (void **)(void *)(obj))
 
 static char putty_path[2048];
 
@@ -410,16 +410,20 @@ static IShellLink *make_shell_link(const char *appname,
     /* Check if this is a valid session, otherwise don't add. */
     if (sessionname) {
         psettings_tmp = open_settings_r(sessionname);
-        if (!psettings_tmp)
+        if (!psettings_tmp) {
+            sfree(app_path);
             return NULL;
+        }
         close_settings_r(psettings_tmp);
     }
 
     /* Create the new item. */
     if (!SUCCEEDED(CoCreateInstance(&CLSID_ShellLink, NULL,
                                     CLSCTX_INPROC_SERVER,
-                                    COMPTR(IShellLink, &ret))))
+                                    COMPTR(IShellLink, &ret)))) {
+        sfree(app_path);
         return NULL;
+    }
 
     /* Set path, parameters, icon and description. */
     ret->lpVtbl->SetPath(ret, app_path);

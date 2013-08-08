@@ -20,7 +20,7 @@ static void sha_mpint(SHA_State * s, Bignum b)
 	lenbuf[0] = bignum_byte(b, len);
 	SHA_Bytes(s, lenbuf, 1);
     }
-    memset(lenbuf, 0, sizeof(lenbuf));
+    smemclr(lenbuf, sizeof(lenbuf));
 }
 
 static void sha512_mpint(SHA512_State * s, Bignum b)
@@ -34,7 +34,7 @@ static void sha512_mpint(SHA512_State * s, Bignum b)
 	lenbuf[0] = bignum_byte(b, len);
 	SHA512_Bytes(s, lenbuf, 1);
     }
-    memset(lenbuf, 0, sizeof(lenbuf));
+    smemclr(lenbuf, sizeof(lenbuf));
 }
 
 static void getstring(char **data, int *datalen, char **p, int *length)
@@ -42,7 +42,9 @@ static void getstring(char **data, int *datalen, char **p, int *length)
     *p = NULL;
     if (*datalen < 4)
 	return;
-    *length = GET_32BIT(*data);
+    *length = toint(GET_32BIT(*data));
+    if (*length < 0)
+        return;
     *datalen -= 4;
     *data += 4;
     if (*datalen < *length)
@@ -70,12 +72,17 @@ static Bignum get160(char **data, int *datalen)
 {
     Bignum b;
 
+    if (*datalen < 20)
+        return NULL;
+
     b = bignum_from_bytes((unsigned char *)*data, 20);
     *data += 20;
     *datalen -= 20;
 
     return b;
 }
+
+static void dss_freekey(void *key);    /* forward reference */
 
 static void *dss_newkey(char *data, int len)
 {
@@ -84,8 +91,6 @@ static void *dss_newkey(char *data, int len)
     struct dss_key *dss;
 
     dss = snew(struct dss_key);
-    if (!dss)
-	return NULL;
     getstring(&data, &len, &p, &slen);
 
 #ifdef DEBUG_DSS
@@ -98,7 +103,7 @@ static void *dss_newkey(char *data, int len)
     }
 #endif
 
-    if (!p || memcmp(p, "ssh-dss", 7)) {
+    if (!p || slen != 7 || memcmp(p, "ssh-dss", 7)) {
 	sfree(dss);
 	return NULL;
     }
@@ -106,6 +111,14 @@ static void *dss_newkey(char *data, int len)
     dss->q = getmp(&data, &len);
     dss->g = getmp(&data, &len);
     dss->y = getmp(&data, &len);
+    dss->x = NULL;
+
+    if (!dss->p || !dss->q || !dss->g || !dss->y ||
+        !bignum_cmp(dss->q, Zero) || !bignum_cmp(dss->p, Zero)) {
+        /* Invalid key. */
+        dss_freekey(dss);
+        return NULL;
+    }
 
     return dss;
 }
@@ -113,10 +126,16 @@ static void *dss_newkey(char *data, int len)
 static void dss_freekey(void *key)
 {
     struct dss_key *dss = (struct dss_key *) key;
-    freebn(dss->p);
-    freebn(dss->q);
-    freebn(dss->g);
-    freebn(dss->y);
+    if (dss->p)
+        freebn(dss->p);
+    if (dss->q)
+        freebn(dss->q);
+    if (dss->g)
+        freebn(dss->g);
+    if (dss->y)
+        freebn(dss->y);
+    if (dss->x)
+        freebn(dss->x);
     sfree(dss);
 }
 
@@ -249,13 +268,29 @@ static int dss_verifysig(void *key, char *sig, int siglen,
     }
     r = get160(&sig, &siglen);
     s = get160(&sig, &siglen);
-    if (!r || !s)
+    if (!r || !s) {
+        if (r)
+            freebn(r);
+        if (s)
+            freebn(s);
 	return 0;
+    }
+
+    if (!bignum_cmp(s, Zero)) {
+        freebn(r);
+        freebn(s);
+        return 0;
+    }
 
     /*
      * Step 1. w <- s^-1 mod q.
      */
     w = modinv(s, dss->q);
+    if (!w) {
+        freebn(r);
+        freebn(s);
+        return 0;
+    }
 
     /*
      * Step 2. u1 <- SHA(message) * w mod q.
@@ -287,6 +322,8 @@ static int dss_verifysig(void *key, char *sig, int siglen,
 
     freebn(w);
     freebn(sha);
+    freebn(u1);
+    freebn(u2);
     freebn(gu1p);
     freebn(yu2p);
     freebn(gu1yu2p);
@@ -377,7 +414,13 @@ static void *dss_createkey(unsigned char *pub_blob, int pub_len,
     Bignum ytest;
 
     dss = dss_newkey((char *) pub_blob, pub_len);
+    if (!dss)
+        return NULL;
     dss->x = getmp(&pb, &priv_len);
+    if (!dss->x) {
+        dss_freekey(dss);
+        return NULL;
+    }
 
     /*
      * Check the obsolete hash in the old DSS key format.
@@ -402,6 +445,7 @@ static void *dss_createkey(unsigned char *pub_blob, int pub_len,
     ytest = modpow(dss->g, dss->x, dss->p);
     if (0 != bignum_cmp(ytest, dss->y)) {
 	dss_freekey(dss);
+        freebn(ytest);
 	return NULL;
     }
     freebn(ytest);
@@ -415,8 +459,6 @@ static void *dss_openssh_createkey(unsigned char **blob, int *len)
     struct dss_key *dss;
 
     dss = snew(struct dss_key);
-    if (!dss)
-	return NULL;
 
     dss->p = getmp(b, len);
     dss->q = getmp(b, len);
@@ -424,14 +466,11 @@ static void *dss_openssh_createkey(unsigned char **blob, int *len)
     dss->y = getmp(b, len);
     dss->x = getmp(b, len);
 
-    if (!dss->p || !dss->q || !dss->g || !dss->y || !dss->x) {
-	sfree(dss->p);
-	sfree(dss->q);
-	sfree(dss->g);
-	sfree(dss->y);
-	sfree(dss->x);
-	sfree(dss);
-	return NULL;
+    if (!dss->p || !dss->q || !dss->g || !dss->y || !dss->x ||
+        !bignum_cmp(dss->q, Zero) || !bignum_cmp(dss->p, Zero)) {
+        /* Invalid key. */
+        dss_freekey(dss);
+        return NULL;
     }
 
     return dss;
@@ -471,6 +510,8 @@ static int dss_pubkey_bits(void *blob, int len)
     int ret;
 
     dss = dss_newkey((char *) blob, len);
+    if (!dss)
+        return -1;
     ret = bignum_bitcount(dss->p);
     dss_freekey(dss);
 
@@ -573,18 +614,34 @@ static unsigned char *dss_sign(void *key, char *data, int datalen, int *siglen)
     SHA512_Init(&ss);
     SHA512_Bytes(&ss, digest512, sizeof(digest512));
     SHA512_Bytes(&ss, digest, sizeof(digest));
-    SHA512_Final(&ss, digest512);
 
-    memset(&ss, 0, sizeof(ss));
+    while (1) {
+        SHA512_State ss2 = ss;         /* structure copy */
+        SHA512_Final(&ss2, digest512);
 
-    /*
-     * Now convert the result into a bignum, and reduce it mod q.
-     */
-    proto_k = bignum_from_bytes(digest512, 64);
-    k = bigmod(proto_k, dss->q);
-    freebn(proto_k);
+        smemclr(&ss2, sizeof(ss2));
 
-    memset(digest512, 0, sizeof(digest512));
+        /*
+         * Now convert the result into a bignum, and reduce it mod q.
+         */
+        proto_k = bignum_from_bytes(digest512, 64);
+        k = bigmod(proto_k, dss->q);
+        freebn(proto_k);
+        kinv = modinv(k, dss->q);	       /* k^-1 mod q */
+        if (!kinv) {                           /* very unlikely */
+            freebn(k);
+            /* Perturb the hash to think of a different k. */
+            SHA512_Bytes(&ss, "x", 1);
+            /* Go round and try again. */
+            continue;
+        }
+
+        break;
+    }
+
+    smemclr(&ss, sizeof(ss));
+
+    smemclr(digest512, sizeof(digest512));
 
     /*
      * Now we have k, so just go ahead and compute the signature.
@@ -594,11 +651,11 @@ static unsigned char *dss_sign(void *key, char *data, int datalen, int *siglen)
     freebn(gkp);
 
     hash = bignum_from_bytes(digest, 20);
-    kinv = modinv(k, dss->q);	       /* k^-1 mod q */
     hxr = bigmuladd(dss->x, r, hash);  /* hash + x*r */
     s = modmul(kinv, hxr, dss->q);     /* s = k^-1 * (hash + x*r) mod q */
     freebn(hxr);
     freebn(kinv);
+    freebn(k);
     freebn(hash);
 
     /*

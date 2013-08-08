@@ -43,7 +43,7 @@ void notify_remote_exit(void *frontend)
 {
 }
 
-void timer_change_notify(long next)
+void timer_change_notify(unsigned long next)
 {
 }
 
@@ -195,7 +195,7 @@ int askalg(void *frontend, const char *algtype, const char *algname,
  * Ask whether to wipe a session log file before writing to it.
  * Returns 2 for wipe, 1 for append, 0 for cancel (don't log).
  */
-int askappend(void *frontend, Filename filename,
+int askappend(void *frontend, Filename *filename,
 	      void (*callback)(void *ctx, int result), void *ctx)
 {
     HANDLE hin;
@@ -217,11 +217,11 @@ int askappend(void *frontend, Filename filename,
     char line[32];
 
     if (console_batch_mode) {
-	fprintf(stderr, msgtemplate_batch, FILENAME_MAX, filename.path);
+	fprintf(stderr, msgtemplate_batch, FILENAME_MAX, filename->path);
 	fflush(stderr);
 	return 0;
     }
-    fprintf(stderr, msgtemplate, FILENAME_MAX, filename.path);
+    fprintf(stderr, msgtemplate, FILENAME_MAX, filename->path);
     fflush(stderr);
 
     hin = GetStdHandle(STD_INPUT_HANDLE);
@@ -308,7 +308,7 @@ int console_get_userpass_input(prompts_t *p, unsigned char *in, int inlen)
     {
 	int i;
 	for (i = 0; i < (int)p->n_prompts; i++)
-	    memset(p->prompts[i]->result, 0, p->prompts[i]->result_len);
+            prompt_set_result(p->prompts[i], "");
     }
 
     if (console_batch_mode)
@@ -318,7 +318,7 @@ int console_get_userpass_input(prompts_t *p, unsigned char *in, int inlen)
     for (curr_prompt = 0; curr_prompt < p->n_prompts; curr_prompt++) {
 		
 	prompt_t *pr = p->prompts[curr_prompt];
-	if (!DoLoginDialog(pr->result, pr->result_len-1, pr->prompt))
+	if (!DoLoginDialog(pr->result, pr->resultsize-1, pr->prompt))
 	return 0;
     }
 

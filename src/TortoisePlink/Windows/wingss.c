@@ -65,11 +65,12 @@ const char *gsslogmsg = NULL;
 
 static void ssh_sspi_bind_fns(struct ssh_gss_library *lib);
 
-struct ssh_gss_liblist *ssh_gss_setup(const Config *cfg)
+struct ssh_gss_liblist *ssh_gss_setup(Conf *conf)
 {
     HMODULE module;
     HKEY regkey;
     struct ssh_gss_liblist *list = snew(struct ssh_gss_liblist);
+    char *path;
 
     list->libraries = snewn(3, struct ssh_gss_library);
     list->nlibraries = 0;
@@ -152,8 +153,9 @@ struct ssh_gss_liblist *ssh_gss_setup(const Config *cfg)
      * Custom GSSAPI DLL.
      */
     module = NULL;
-    if (cfg->ssh_gss_custom.path[0]) {
-	module = LoadLibrary(cfg->ssh_gss_custom.path);
+    path = conf_get_filename(conf, CONF_ssh_gss_custom)->path;
+    if (*path) {
+	module = LoadLibrary(path);
     }
     if (module) {
 	struct ssh_gss_library *lib =
@@ -161,7 +163,7 @@ struct ssh_gss_liblist *ssh_gss_setup(const Config *cfg)
 
 	lib->id = 2;
 	lib->gsslogmsg = dupprintf("Using GSSAPI from user-specified"
-				   " library '%s'", cfg->ssh_gss_custom.path);
+				   " library '%s'", path);
 	lib->handle = (void *)module;
 
 #define BIND_GSS_FN(name) \
