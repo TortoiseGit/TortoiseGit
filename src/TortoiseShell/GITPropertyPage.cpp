@@ -713,7 +713,7 @@ void CGitPropertyPage::InitWorkfileView()
 	}
 	git_repository_free(repository);
 
-	if (filenames.size() == 1)
+	if (filenames.size() == 1 && !PathIsDirectory(filenames[0].c_str()))
 	{
 		SetDlgItemText(m_hwnd, IDC_LAST_SUBJECT, CString(MAKEINTRESOURCE(IDS_LOADING)));
 		CString adminDir;
@@ -727,6 +727,8 @@ void CGitPropertyPage::InitWorkfileView()
 		UINT stack = 1024 * 1024 + min(64 * 1024 * 1024 * sizeof(void*), (UINT)(size / 2000) * 4 * sizeof(void*));
 		_beginthread(LogThreadEntry, stack, this);
 	}
+	else
+		ShowWindow(GetDlgItem(m_hwnd, IDC_STATIC_LASTMODIFIED), SW_HIDE);
 }
 
 
