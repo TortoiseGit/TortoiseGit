@@ -16,6 +16,7 @@ Released: Unreleased
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
+ * Fixed issue #1832: TortoiseGitMerge has an empty menue when German language pack is loaded
 
 = Release 1.8.4.0 =
 Released: 2013-07-09

@@ -3935,7 +3935,7 @@ msgstr "Leer"
 
 #. Resource IDs: (156)
 msgid "Enable Edit"
-msgstr "B&earbeiten aktivieren"
+msgstr "Bearbeiten aktivieren"
 
 #. Resource IDs: (87)
 msgid ""
