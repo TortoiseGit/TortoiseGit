@@ -171,6 +171,9 @@ bool CloneCommand::Execute()
 		progress.m_GitCmd=cmd;
 		INT_PTR ret = progress.DoModal();
 
+		if (dlg.m_bSVN)
+			::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
+
 		if( progress.m_GitStatus == 0)
 		{
 			if(dlg.m_bAutoloadPuttyKeyFile)
