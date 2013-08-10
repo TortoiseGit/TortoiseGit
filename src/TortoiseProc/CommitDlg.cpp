@@ -1277,7 +1277,7 @@ UINT CCommitDlg::StatusThread()
 				// do not allow to show diff to "last" revision if it has more that one parent
 				if (headRevision.ParentsCount() != 1)
 				{
-					m_bAmendDiffToLastCommit = true;
+					m_bAmendDiffToLastCommit = TRUE;
 					SendMessage(WM_UPDATEDATAFALSE);
 				}
 				else
