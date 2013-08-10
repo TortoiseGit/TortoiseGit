@@ -40,9 +40,11 @@ BOOL CToolTips::OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult)
 			// idFrom is actually the HWND of the tool
 			nID = ::GetDlgCtrlID((HWND)nID);
 		}
-		if (toolTextMap.find((unsigned int)nID) != toolTextMap.end())
+
+		auto iterFind = toolTextMap.find((unsigned int)nID);
+		if (iterFind != toolTextMap.end())
 		{
-			lpnmtdi->lpszText = (LPTSTR)(LPCTSTR)(CString)toolTextMap[(unsigned int)nID];
+			lpnmtdi->lpszText = (LPTSTR)(LPCTSTR)iterFind->second;
 			lpnmtdi->hinst = AfxGetResourceHandle();
 			*pResult = 0;
 			return TRUE;
@@ -143,7 +145,6 @@ CString CToolTips::LoadTooltip( UINT nIDText )
 
 void CToolTips::RelayEvent(LPMSG lpMsg, CWnd * dlgWnd)
 {
-	if (lpMsg->message == WM_NULL) return;
 	if(dlgWnd && ((lpMsg->message == WM_MOUSEMOVE) || (lpMsg->message == WM_NCMOUSEMOVE)) && (lpMsg->hwnd == dlgWnd->m_hWnd))
 	{
 		// allow tooltips for disabled controls
@@ -153,7 +154,7 @@ void CToolTips::RelayEvent(LPMSG lpMsg, CWnd * dlgWnd)
 		pt.x = LOWORD(lpMsg->lParam);
 		pt.y = HIWORD(lpMsg->lParam);
 
-		for (std::map<UINT, CString>::iterator it = toolTextMap.begin(); it != toolTextMap.end(); ++it)
+		for (auto it = toolTextMap.cbegin(); it != toolTextMap.cend(); ++it)
 		{
 			CWnd * pWndCtrl = dlgWnd->GetDlgItem(it->first);
 			pWndCtrl->GetWindowRect(&rect);
