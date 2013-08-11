@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012-2013 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -47,7 +47,6 @@ public:
 	};
 
 protected:
-	afx_msg void OnStnClickedCheckresult();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);

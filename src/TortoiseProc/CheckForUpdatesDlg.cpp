@@ -66,7 +66,6 @@ void CCheckForUpdatesDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
-	ON_STN_CLICKED(IDC_CHECKRESULT, OnStnClickedCheckresult)
 	ON_WM_TIMER()
 	ON_WM_WINDOWPOSCHANGING()
 	ON_WM_SETCURSOR()
@@ -454,16 +453,6 @@ void CCheckForUpdatesDlg::FillChangelog(CStdioFile &file)
 		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(_T("Could not load changelog.")));
 }
 
-void CCheckForUpdatesDlg::OnStnClickedCheckresult()
-{
-	// user clicked on the label, start the browser with our web page
-	HINSTANCE result = ShellExecute(NULL, _T("opennew"), m_sUpdateDownloadLink, NULL,NULL, SW_SHOWNORMAL);
-	if ((UINT)result <= HINSTANCE_ERROR)
-	{
-		ShellExecute(nullptr, _T("open"), m_sUpdateDownloadLink, nullptr, nullptr, SW_SHOWNORMAL);
-	}
-}
-
 void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == 100)
@@ -493,13 +482,6 @@ void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 BOOL CCheckForUpdatesDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	if ((!m_sUpdateDownloadLink.IsEmpty())&&(pWnd)&&(pWnd == GetDlgItem(IDC_CHECKRESULT)))
-	{
-		HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND));
-		SetCursor(hCur);
-		return TRUE;
-	}
-
 	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
 	SetCursor(hCur);
 	return CStandAloneDialogTmpl<CDialog>::OnSetCursor(pWnd, nHitTest, message);
