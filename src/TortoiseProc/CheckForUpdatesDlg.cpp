@@ -26,16 +26,14 @@
 #include "registry.h"
 #include "AppUtils.h"
 #include "TempFile.h"
-#include <wintrust.h>
-#include <Softpub.h>
 #include "SmartHandle.h"
 #include "SysInfo.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
 #include "UniCodeUtils.h"
+#include "UpdateCrypto.h"
 
-// Link with Wintrust.lib
-#pragma comment (lib, "wintrust")
+#define SIGNATURE_FILE_ENDING _T(".asc")
 
 #define WM_USER_DISPLAYSTATUS	(WM_USER + 1)
 #define WM_USER_ENDDOWNLOAD		(WM_USER + 2)
@@ -164,6 +162,8 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	CString temp;
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
+	bool official = false;
+
 	CRegString checkurluser = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""));
 	CRegString checkurlmachine = CRegString(_T("Software\\TortoiseGit\\UpdateCheckURL"), _T(""), FALSE, HKEY_LOCAL_MACHINE);
 	CString sCheckURL = checkurluser;
@@ -172,6 +172,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		sCheckURL = checkurlmachine;
 		if (sCheckURL.IsEmpty())
 		{
+			official = true;
 			bool checkPreview = false;
 #if PREVIEW
 			checkPreview = true;
@@ -188,6 +189,18 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	}
 	CoInitialize(NULL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
+	if (res == S_OK && official)
+	{
+		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+		res = URLDownloadToFile(nullptr, sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
+		if (res == S_OK && VerifyIntegrity(tempfile, signatureTempfile))
+		{
+			SetDlgItemText(IDC_CHECKRESULT, _T("Could not verify digital signature."));
+			DeleteUrlCacheEntry(sCheckURL);
+			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
+			goto finish;
+		}
+	}
 	if (res == S_OK)
 	{
 		try
@@ -322,7 +335,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		m_link.SetURL(m_sUpdateDownloadLink);
 	}
 
-	DeleteFile(tempfile);
+finish:
 	m_bThreadRunning = FALSE;
 	DialogEnableWindow(IDOK, TRUE);
 	return 0;
@@ -560,12 +573,15 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 bool CCheckForUpdatesDlg::Download(CString filename)
 {
 	CString destFilename = GetDownloadsDirectory() + filename;
-	if (PathFileExists(destFilename))
+	if (PathFileExists(destFilename) && PathFileExists(destFilename + SIGNATURE_FILE_ENDING))
 	{
-		if (VerifySignature(destFilename))
+		if (VerifyIntegrity(destFilename, destFilename + SIGNATURE_FILE_ENDING) == 0)
 			return true;
 		else
+		{
 			DeleteFile(destFilename);
+			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
+		}
 	}
 
 	CBSCallbackImpl bsc(this->GetSafeHwnd(), m_eventStop);
@@ -578,15 +594,24 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 
 	DeleteUrlCacheEntry(url);
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
 	DeleteUrlCacheEntry(url);
 	if (res == S_OK)
 	{
-		if (VerifySignature(tempfile))
+		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
+		res = URLDownloadToFile(NULL, url + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
+		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
+		m_progress.SetPos(m_progress.GetPos() + 1);
+	}
+	if (res == S_OK)
+	{
+		if (VerifyIntegrity(tempfile, signatureTempfile) == 0)
 		{
-			if (PathFileExists(destFilename))
-				DeleteFile(destFilename);
+			DeleteFile(destFilename);
+			DeleteFile(destFilename + SIGNATUE_FILE_ENDING);
 			MoveFile(tempfile, destFilename);
+			MoveFile(signatureTempfile, destFilename + SIGNATUE_FILE_ENDING);
 			return true;
 		}
 	}
@@ -785,7 +810,7 @@ STDMETHODIMP CBSCallbackImpl::OnProgress(ULONG ulProgress, ULONG ulProgressMax, 
 	{
 		// inform the dialog box to display current status,
 		// don't use PostMessage
-		CCheckForUpdatesDlg::DOWNLOADSTATUS downloadStatus = { ulProgress, ulProgressMax };
+		CCheckForUpdatesDlg::DOWNLOADSTATUS downloadStatus = { ulProgress, ulProgressMax + 1 }; // + 1 for download of signature file
 		::SendMessage(m_hWnd, WM_USER_DISPLAYSTATUS, 0, reinterpret_cast<LPARAM>(&downloadStatus));
 	}
 
@@ -815,25 +840,4 @@ STDMETHODIMP CBSCallbackImpl::OnDataAvailable(DWORD, DWORD, FORMATETC *, STGMEDI
 STDMETHODIMP CBSCallbackImpl::OnObjectAvailable(REFIID, IUnknown *)
 {
 	return S_OK;
-}
-
-BOOL CCheckForUpdatesDlg::VerifySignature(CString fileName)
-{
-	WINTRUST_FILE_INFO fileInfo;
-	memset(&fileInfo, 0, sizeof(fileInfo));
-	fileInfo.cbStruct = sizeof(WINTRUST_FILE_INFO);
-	fileInfo.pcwszFilePath = fileName;
-
-	WINTRUST_DATA data;
-	memset(&data, 0, sizeof(data));
-	data.cbStruct = sizeof(data);
-
-	data.dwUIChoice = WTD_UI_NONE;
-	data.fdwRevocationChecks = WTD_REVOKE_NONE;
-	data.dwUnionChoice = WTD_CHOICE_FILE;
-	data.pFile = &fileInfo;
-
-	GUID policyGUID = WINTRUST_ACTION_GENERIC_VERIFY_V2;
-
-	return (WinVerifyTrust(NULL, &policyGUID, &data) == ERROR_SUCCESS);
 }
