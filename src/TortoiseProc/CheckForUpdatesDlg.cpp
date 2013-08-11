@@ -554,6 +554,7 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 
 bool CCheckForUpdatesDlg::Download(CString filename)
 {
+	CString url = m_sFilesURL + filename;
 	CString destFilename = GetDownloadsDirectory() + filename;
 	if (PathFileExists(destFilename) && PathFileExists(destFilename + SIGNATURE_FILE_ENDING))
 	{
@@ -563,27 +564,23 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		{
 			DeleteFile(destFilename);
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
+			DeleteUrlCacheEntry(url);
+			DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 		}
 	}
 
 	CBSCallbackImpl bsc(this->GetSafeHwnd(), m_eventStop);
 
-	CString url = m_sFilesURL + filename;
-
 	m_progress.SetRange32(0, 1);
 	m_progress.SetPos(0);
 	m_progress.ShowWindow(SW_SHOW);
 
-	DeleteUrlCacheEntry(url);
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
-	DeleteUrlCacheEntry(url);
 	if (res == S_OK)
 	{
-		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 		res = URLDownloadToFile(NULL, url + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
-		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 		m_progress.SetPos(m_progress.GetPos() + 1);
 	}
 	if (res == S_OK)
@@ -591,11 +588,13 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		if (VerifyIntegrity(tempfile, signatureTempfile) == 0)
 		{
 			DeleteFile(destFilename);
-			DeleteFile(destFilename + SIGNATUE_FILE_ENDING);
+			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
 			MoveFile(tempfile, destFilename);
-			MoveFile(signatureTempfile, destFilename + SIGNATUE_FILE_ENDING);
+			MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING);
 			return true;
 		}
+		DeleteUrlCacheEntry(url);
+		DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 	}
 	return false;
 }
