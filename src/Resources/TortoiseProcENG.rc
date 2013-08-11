@@ -2855,7 +2855,7 @@ BEGIN
     IDS_PROC_SYNC_FETCHREBASE "Fetch&&Re&base"
     IDS_LOG_REVERT_CONFIRM  "Do you really want to revert all changes in\n%s\nwhich were made in this revision? These changes will be reverted by reverse-merging the revision into your working tree."
     IDS_PROC_SYNC_REMOTEUPDATE "Remote Update"
-    IDS_PROC_SYNC_CLEANUPSTALEBRANCHES "Cleanup stale remote banches"
+    IDS_PROC_SYNC_CLEANUPSTALEBRANCHES "Clean up stale remote banches"
     IDS_PROC_SYNC_SUBKODULEUPDATE "Submodule Update"
     IDS_PROC_SYNC_SUBKODULEINIT "Submodule Init"
 END

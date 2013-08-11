@@ -2376,6 +2376,10 @@ msgstr ""
 msgid "Clean Type"
 msgstr ""
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr ""
@@ -2392,10 +2396,6 @@ msgstr ""
 #. Resource IDs: (79)
 #, c-format
 msgid "Cleanup has successfully processed the following paths:\n%s"
-msgstr ""
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
 msgstr ""
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
