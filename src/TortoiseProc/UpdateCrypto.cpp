@@ -654,45 +654,76 @@ static int hash_sha1_from_public_key(HCRYPTHASH hHash, public_key_t *p_pkey)
 	return hash_finish(hHash, &p_pkey->sig);
 }
 
-/*
- * return a sha1 hash of a text
- */
-static int hash_sha1_from_text(HCRYPTHASH hHash, const char *psz_string, signature_packet_t *p_sig)
-{
-	if (p_sig->type == TEXT_SIGNATURE)
-	{
-		while (*psz_string)
-		{
-			size_t i_len = strcspn(psz_string, "\r\n");
-
-			if (i_len)
-			{
-				CryptHashData(hHash, (BYTE *)psz_string, (DWORD)i_len, 0);
-				psz_string += i_len;
-			}
-			CryptHashChar(hHash, '\r');
-			CryptHashChar(hHash, '\n');
-
-			if (*psz_string == '\r' || *psz_string == '\n')
-				psz_string++;
-		}
-	}
-	else
-		CryptHashData(hHash, (BYTE *)psz_string, (DWORD)strlen(psz_string), 0);
-
-	return hash_finish(hHash, p_sig);
-}
-
-static int hash_sha1_from_binary_file(HCRYPTHASH hHash, CString filename, signature_packet_t *p_sig)
+static int hash_sha1_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t *p_sig)
 {
 	FILE * pFile = _tfsopen(filename, _T("rb"), SH_DENYWR);
 	if (!pFile)
 		return -1;
 
-	char buf[4096];
+	char buf[4097];
 	int read = 0;
-	while ((read = (int)fread(buf, sizeof(char), sizeof(buf), pFile)) > 0)
-		CryptHashData(hHash, (BYTE *)buf, read, 0);
+	int nlHandling = 0;
+	while ((read = (int)fread(buf, sizeof(char), sizeof(buf) - 1, pFile)) > 0)
+	{
+		if (p_sig->type == TEXT_SIGNATURE)
+		{
+			buf[read] = 0;
+			char * psz_string = buf;
+			while (*psz_string)
+			{
+				if (nlHandling == 1 && (*psz_string == '\r' || *psz_string == '\n'))
+				{
+					CryptHashChar(hHash, '\r');
+					CryptHashChar(hHash, '\n');
+					nlHandling = 2;
+				}
+				if (nlHandling == 2 && *psz_string == '\r')
+				{
+					psz_string++;
+					nlHandling = 2;
+					if (!*psz_string)
+						break;
+				}
+
+				if ((nlHandling == 2 || nlHandling == 3) && *psz_string == '\n')
+				{
+					psz_string++;
+					if (!*psz_string)
+						break;
+				}
+
+				size_t i_len = strcspn(psz_string, "\r\n");
+
+				if (i_len)
+				{
+					CryptHashData(hHash, (BYTE *)psz_string, (DWORD)i_len, 0);
+					psz_string += i_len;
+				}
+
+				nlHandling = 1;
+				if (*psz_string == '\r' || *psz_string == '\n')
+				{
+					CryptHashChar(hHash, '\r');
+					CryptHashChar(hHash, '\n');
+					nlHandling = 2;
+
+					if (*psz_string == '\r')
+					{
+						psz_string++;
+						nlHandling = 3;
+					}
+				
+					if (*psz_string == '\n')
+					{
+						psz_string++;
+						nlHandling = 0;
+					}
+				}
+			}
+		}
+		else
+			CryptHashData(hHash, (BYTE *)buf, read, 0);
+	}
 
 	fclose(pFile);
 
@@ -945,7 +976,7 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename)
 	if (!CryptCreateHash(hCryptProv, CALG_SHA1, 0, 0, &hHash))
 		goto error;
 
-	if (hash_sha1_from_binary_file(hHash, filename, &p_sig))
+	if (hash_sha1_from_file(hHash, filename, &p_sig))
 		goto error;
 
 	if (check_hash(hHash, &p_sig))
