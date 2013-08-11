@@ -2044,63 +2044,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 
 			case IDGITLC_DELETE:
-				{
-					//Collect paths
-					std::vector<int> selectIndex;
-
-					POSITION pos = GetFirstSelectedItemPosition();
-					int index;
-					while ((index = GetNextSelectedItem(pos)) >= 0)
-					{
-						selectIndex.push_back(index);
-					}
-
-					//Create file-list ('\0' separated) for SHFileOperation
-					CString filelist;
-					for(int i=0;i<selectIndex.size();i++)
-					{
-						index=selectIndex[i];
-
-						CTGitPath * path=(CTGitPath*)GetItemData(index);
-						ASSERT(path);
-						if(path == NULL)
-							continue;
-
-						filelist += path->GetWinPathString();
-						filelist += _T("|");
-					}
-					filelist += _T("|");
-					int len = filelist.GetLength();
-					std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
-					_tcscpy_s(buf.get(), len + 2, filelist);
-					for (int i=0; i<len; ++i)
-						if (buf.get()[i] == '|')
-							buf.get()[i] = 0;
-					SHFILEOPSTRUCT fileop;
-					fileop.hwnd = this->m_hWnd;
-					fileop.wFunc = FO_DELETE;
-					fileop.pFrom = buf.get();
-					fileop.pTo = NULL;
-					fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | ((GetAsyncKeyState(VK_SHIFT) & 0x8000) ? 0 : FOF_ALLOWUNDO);
-					fileop.lpszProgressTitle = _T("deleting file");
-					int result = SHFileOperation(&fileop);
-
-					if ( (result==0) && (!fileop.fAnyOperationsAborted) )
-					{
-						SetRedraw(FALSE);
-						POSITION pos = NULL;
-						while ((pos = GetFirstSelectedItemPosition()) != 0)
-						{
-							int index = GetNextSelectedItem(pos);
-							if (GetCheck(index))
-								m_nSelected--;
-							m_nTotal--;
-
-							RemoveListEntry(index);
-						}
-						SetRedraw(TRUE);
-					}
-				}
+				DeleteSelectedFiles();
 				break;
 
 			case IDGITLC_BLAME:
@@ -3588,6 +3532,18 @@ BOOL CGitStatusListCtrl::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			break;
+		case VK_DELETE:
+			{
+				if ((GetSelectedCount() > 0) && (m_dwContextMenus & GITSLC_POPDELETE))
+				{
+					m_bBlock = TRUE;
+					CTGitPath * filepath = (CTGitPath *)GetItemData(GetSelectionMark());
+					if (filepath != nullptr && (filepath->m_Action & CTGitPath::LOGACTIONS_UNVER))
+						DeleteSelectedFiles();
+					m_bBlock = FALSE;
+				}
+			}
+			break;
 		}
 	}
 
@@ -4450,5 +4406,65 @@ void CGitStatusListCtrl::OpenFile(CTGitPath*filepath,int mode)
 		cmd += file;
 		CAppUtils::LaunchApplication(cmd, NULL, false);
 	}
+}
 
+void CGitStatusListCtrl::DeleteSelectedFiles()
+{
+	//Collect paths
+	std::vector<int> selectIndex;
+
+	POSITION pos = GetFirstSelectedItemPosition();
+	int index;
+	while ((index = GetNextSelectedItem(pos)) >= 0)
+	{
+		selectIndex.push_back(index);
+	}
+
+	//Create file-list ('\0' separated) for SHFileOperation
+	CString filelist;
+	for (int i = 0; i < selectIndex.size(); ++i)
+	{
+		index = selectIndex[i];
+
+		CTGitPath * path=(CTGitPath*)GetItemData(index);
+		ASSERT(path);
+		if (path == nullptr)
+			continue;
+
+		filelist += path->GetWinPathString();
+		filelist += _T("|");
+	}
+	filelist += _T("|");
+	int len = filelist.GetLength();
+	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
+	_tcscpy_s(buf.get(), len + 2, filelist);
+	for (int i = 0; i < len; ++i)
+	{
+		if (buf.get()[i] == '|')
+			buf.get()[i] = 0;
+	}
+	SHFILEOPSTRUCT fileop;
+	fileop.hwnd = this->m_hWnd;
+	fileop.wFunc = FO_DELETE;
+	fileop.pFrom = buf.get();
+	fileop.pTo = NULL;
+	fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | ((GetAsyncKeyState(VK_SHIFT) & 0x8000) ? 0 : FOF_ALLOWUNDO);
+	fileop.lpszProgressTitle = _T("deleting file");
+	int result = SHFileOperation(&fileop);
+
+	if ((result == 0) && (!fileop.fAnyOperationsAborted))
+	{
+		SetRedraw(FALSE);
+		POSITION pos = NULL;
+		while ((pos = GetFirstSelectedItemPosition()) != 0)
+		{
+			int index = GetNextSelectedItem(pos);
+			if (GetCheck(index))
+				m_nSelected--;
+			m_nTotal--;
+
+			RemoveListEntry(index);
+		}
+		SetRedraw(TRUE);
+	}
 }

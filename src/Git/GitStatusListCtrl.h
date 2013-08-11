@@ -1030,6 +1030,8 @@ private:
 	void OnContextMenuHeader(CWnd * pWnd, CPoint point);
 	bool CheckMultipleDiffs();
 
+	void DeleteSelectedFiles();
+
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;

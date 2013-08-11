@@ -13,6 +13,7 @@ Released: Unreleased
  * Commit Dialog: Add "Pick commit hash" in message text box context menu
  * Can set log graph line width and node size
  * Updated shipped PuTTY PLink to version 0.63 (which contains some securiuty fixes)
+ * Fixed issue #1746: Pressing "Delete" on keyboard should delete selected non versioned file in commit dialog
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
