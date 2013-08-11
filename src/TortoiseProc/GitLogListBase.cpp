@@ -1869,7 +1869,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive)
 				{
 					GitRev *pRev = pSelLogEntry;
 					if (pSelLogEntry->m_ParentHash.empty())
