@@ -186,7 +186,10 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CString pathText = g_Git.m_CurrentDir;
+	if (!m_path1.IsEmpty())
+		pathText = g_Git.m_CurrentDir + _T("\\") + m_path1.GetWinPathString();
+	CAppUtils::SetWindowTitle(m_hWnd, pathText, sWindowTitle);
 
 	this->m_ctrRev1Edit.Init();
 	this->m_ctrRev2Edit.Init();
