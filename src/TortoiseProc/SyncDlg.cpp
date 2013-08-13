@@ -72,6 +72,7 @@ void CSyncDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROGRESS_SYNC, m_ctrlProgress);
 	DDX_Control(pDX, IDC_ANIMATE_SYNC, m_ctrlAnimate);
 	DDX_Control(pDX, IDC_BUTTON_SUBMODULE,m_ctrlSubmodule);
+	DDX_Control(pDX, IDC_BUTTON_STASH, m_ctrlStash);
 	DDX_Control(pDX, IDC_PROG_LABEL, m_ctrlProgLabel);
 	BRANCH_COMBOX_DDX;
 }
@@ -91,6 +92,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_IN_LOGLIST, OnLvnInLogListColumnClick)
 	ON_BN_CLICKED(IDC_BUTTON_COMMIT, &CSyncDlg::OnBnClickedButtonCommit)
 	ON_BN_CLICKED(IDC_BUTTON_SUBMODULE, &CSyncDlg::OnBnClickedButtonSubmodule)
+	ON_BN_CLICKED(IDC_BUTTON_STASH, &CSyncDlg::OnBnClickedButtonStash)
 	ON_WM_TIMER()
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
@@ -106,6 +108,7 @@ void CSyncDlg::EnableControlButton(bool bEnabled)
 	GetDlgItem(IDC_BUTTON_EMAIL)->EnableWindow(bEnabled);
 	GetDlgItem(IDOK)->EnableWindow(bEnabled);
 	GetDlgItem(IDC_BUTTON_SUBMODULE)->EnableWindow(bEnabled);
+	GetDlgItem(IDC_BUTTON_STASH)->EnableWindow(bEnabled);
 }
 // CSyncDlg message handlers
 
@@ -433,6 +436,43 @@ void CSyncDlg::FetchComplete()
 
 			CAppUtils::SendPatchMail(cmd,out);
 		}
+	}
+}
+
+void CSyncDlg::StashComplete()
+{
+	EnableControlButton(true);
+	INT_PTR entry = m_ctrlStash.GetCurrentEntry();
+	if (entry != 1 && entry != 2)
+		return;
+
+	SwitchToInput();
+	if (m_GitCmdStatus)
+	{
+		CTGitPathList list;
+		if (g_Git.ListConflictFile(list))
+		{
+			m_ctrlCmdOut.SetSel(-1, -1);
+			m_ctrlCmdOut.ReplaceSel(_T("Get conflict files fail\n"));
+
+			ShowTab(IDC_CMD_LOG);
+			return;
+		}
+
+		if (list.GetCount() > 0)
+		{
+			m_ConflictFileList.Clear();
+			CTGitPathList list;
+			CTGitPath path;
+			list.AddPath(path);
+
+			m_ConflictFileList.GetStatus(&list,true);
+			m_ConflictFileList.Show(CTGitPath::LOGACTIONS_UNMERGED, CTGitPath::LOGACTIONS_UNMERGED);
+
+			ShowTab(IDC_IN_CONFLICT);
+		}
+		else
+			ShowTab(IDC_CMD_LOG);
 	}
 }
 
@@ -811,6 +851,7 @@ BOOL CSyncDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_PULL,BOTTOM_LEFT);
 	AddAnchor(IDC_BUTTON_PUSH,BOTTOM_LEFT);
 	AddAnchor(IDC_BUTTON_SUBMODULE,BOTTOM_LEFT);
+	AddAnchor(IDC_BUTTON_STASH,BOTTOM_LEFT);
 	AddAnchor(IDC_BUTTON_APPLY,BOTTOM_RIGHT);
 	AddAnchor(IDC_BUTTON_EMAIL,BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS_SYNC,TOP_LEFT,TOP_RIGHT);
@@ -852,6 +893,10 @@ BOOL CSyncDlg::OnInitDialog()
 	this->m_ctrlSubmodule.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_SUBKODULEUPDATE)));
 	this->m_ctrlSubmodule.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_SUBKODULEINIT)));
 	this->m_ctrlSubmodule.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_SYNC_SUBKODULESYNC)));
+
+	this->m_ctrlStash.AddEntry(CString(MAKEINTRESOURCE(IDS_MENUSTASHSAVE)));
+	this->m_ctrlStash.AddEntry(CString(MAKEINTRESOURCE(IDS_MENUSTASHPOP)));
+	this->m_ctrlStash.AddEntry(CString(MAKEINTRESOURCE(IDS_MENUSTASHAPPLY)));
 
 	WorkingDir.Replace(_T(':'),_T('_'));
 
@@ -1260,6 +1305,10 @@ void CSyncDlg::RunPostAction()
 		EnableControlButton(true);
 		SwitchToInput();
 	}
+	else if (this->m_CurrentCmd == GIT_COMMAND_STASH)
+	{
+		StashComplete();
+	}
 	else if (this->m_CurrentCmd == GIT_COMMAND_REMOTE)
 	{
 		this->FetchOutList(true);
@@ -1357,6 +1406,53 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	if (m_pThread==NULL)
 	{
 //		ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
+	}
+	else
+	{
+		m_pThread->m_bAutoDelete = TRUE;
+		m_pThread->ResumeThread();
+	}
+}
+
+void CSyncDlg::OnBnClickedButtonStash()
+{
+	UpdateData();
+	UpdateCombox();
+	m_ctrlCmdOut.SetWindowTextW(_T(""));
+	m_LogText = "";
+
+	SwitchToRun();
+
+	m_bAbort = false;
+	m_GitCmdList.clear();
+
+	ShowTab(IDC_CMD_LOG);
+
+	m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST - 1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST -1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT -1, false);
+
+	CString cmd;
+	switch (m_ctrlStash.GetCurrentEntry())
+	{
+	case 0:
+		cmd = _T("git.exe stash save");
+		break;
+	case 1:
+		cmd = _T("git.exe stash pop");
+		break;
+	case 2:
+		cmd = _T("git.exe stash apply");
+		break;
+	}
+
+	m_GitCmdList.push_back(cmd);
+	m_CurrentCmd = GIT_COMMAND_STASH;
+
+	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
+	if (!m_pThread)
+	{
+		//ReportError(CString(MAKEINTRESOURCE(IDS_ERR_THREADSTARTFAILED)));
 	}
 	else
 	{

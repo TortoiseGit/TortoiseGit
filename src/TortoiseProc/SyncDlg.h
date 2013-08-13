@@ -58,7 +58,8 @@ public:
 			GIT_COMMAND_FETCH,
 			GIT_COMMAND_FETCHANDREBASE,
 			GIT_COMMAND_SUBMODULE,
-			GIT_COMMAND_REMOTE
+			GIT_COMMAND_REMOTE,
+			GIT_COMMAND_STASH
 		};
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -183,6 +184,7 @@ protected:
 
 	void PullComplete();
 	void FetchComplete();
+	void StashComplete();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -203,6 +205,7 @@ protected:
 	CMenuButton		m_ctrlPush;
 	CStatic			m_ctrlStatus;
 	CMenuButton		m_ctrlSubmodule;
+	CMenuButton		m_ctrlStash;
 	CProgressCtrl	m_ctrlProgress;
 	CAnimateCtrl	m_ctrlAnimate;
 	CStatic			m_ctrlProgLabel;
@@ -215,6 +218,7 @@ protected:
 	void	Refresh();
 
 	afx_msg void OnBnClickedButtonSubmodule();
+	afx_msg void OnBnClickedButtonStash();
 	afx_msg void OnLvnInLogListColumnClick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedCheckForce();
 	afx_msg void OnBnClickedLog();
