@@ -659,6 +659,9 @@
     <ClCompile Include="MergeAbortDlg.cpp">
       <Filter>Commands\merge</Filter>
     </ClCompile>
+    <ClCompile Include="UpdateCrypto.cpp">
+      <Filter>Commands\UpdateCheck</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1146,6 +1149,9 @@
     </ClInclude>
     <ClInclude Include="MergeAbortDlg.h">
       <Filter>Commands\merge</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateCrypto.h">
+      <Filter>Commands\UpdateCheck</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
