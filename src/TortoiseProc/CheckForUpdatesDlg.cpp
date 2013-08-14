@@ -181,11 +181,18 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				checkPreview = true;
 #endif
 			if (checkPreview)
+			{
 				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version-preview.txt");
+				SetDlgItemText(IDC_SOURCE, _T("Using preview release channel"));
+			}
 			else
 				sCheckURL = _T("http://version.tortoisegit.googlecode.com/git/version.txt");
 		}
 	}
+
+	if (!official)
+		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
+
 	CoInitialize(NULL);
 	if (m_bForce)
 		DeleteUrlCacheEntry(sCheckURL);
