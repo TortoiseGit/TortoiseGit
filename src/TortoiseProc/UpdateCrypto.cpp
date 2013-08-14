@@ -815,6 +815,7 @@ static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_sign
 	public_key_t *p_pkey = (public_key_t*) malloc(sizeof(public_key_t));
 	if (!p_pkey)
 	{
+		DeleteUrlCacheEntry(url);
 		return nullptr;
 	}
 
