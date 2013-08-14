@@ -187,10 +187,14 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		}
 	}
 	CoInitialize(NULL);
+	if (m_bForce)
+		DeleteUrlCacheEntry(sCheckURL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
 	if (res == S_OK && official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+		if (m_bForce)
+			DeleteUrlCacheEntry(sCheckURL + SIGNATURE_FILE_ENDING);
 		res = URLDownloadToFile(nullptr, sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
 		if (res == S_OK && VerifyIntegrity(tempfile, signatureTempfile))
 		{
@@ -577,9 +581,13 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
+	if (m_bForce)
+		DeleteUrlCacheEntry(url);
 	HRESULT res = URLDownloadToFile(NULL, url, tempfile, 0, &bsc);
 	if (res == S_OK)
 	{
+		if (m_bForce)
+			DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 		res = URLDownloadToFile(NULL, url + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
 		m_progress.SetPos(m_progress.GetPos() + 1);
 	}
