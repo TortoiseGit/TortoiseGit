@@ -38,6 +38,7 @@
  * Don't forget to upload the key to http://download.tortoisegit.org/keys/
  */
 
+#ifdef NEED_SIGNING_KEY
 /*
  * TortoiseGit Release Signing Key
  */
@@ -67,3 +68,4 @@ static const uint8_t tortoisegit_public_key[] = {
 	"=L+nv\n"
 	"-----END PGP PUBLIC KEY BLOCK-----\n"
 };
+#endif

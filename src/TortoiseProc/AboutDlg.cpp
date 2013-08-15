@@ -22,6 +22,7 @@
 #include "TortoiseProc.h"
 #include "AboutDlg.h"
 #include "PathUtils.h"
+#define NEED_SIGNING_KEY
 #include "..\version.h"
 #include "AppUtils.h"
 #include "Git.h"

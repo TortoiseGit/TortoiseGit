@@ -24,7 +24,8 @@
 #include "UpdateCrypto.h"
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
-#include "..\..\version.h"
+#define NEED_SIGNING_KEY
+#include "..\version.h"
 #include "TempFile.h"
 
 #define packet_type(c) ((c & 0x3c) >> 2)      /* 0x3C = 00111100 */
