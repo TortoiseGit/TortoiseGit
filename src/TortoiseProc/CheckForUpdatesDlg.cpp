@@ -30,7 +30,7 @@
 #include "SysInfo.h"
 #include "PathUtils.h"
 #include "DirFileEnum.h"
-#include "UniCodeUtils.h"
+#include "UnicodeUtils.h"
 #include "UpdateCrypto.h"
 
 #define SIGNATURE_FILE_ENDING _T(".asc")

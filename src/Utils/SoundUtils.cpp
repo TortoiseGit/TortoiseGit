@@ -23,7 +23,7 @@
 #include "..\TortoiseProc\AppUtils.h"
 #include "PathUtils.h"
 #include "SoundUtils.h"
-#include "mmsystem.h"
+#include <MMSystem.h>
 
 #pragma comment(lib, "Winmm")
 

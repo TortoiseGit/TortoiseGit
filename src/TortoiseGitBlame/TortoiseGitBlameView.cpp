@@ -32,7 +32,7 @@
 #include "EditGotoDlg.h"
 #include "LoglistUtils.h"
 #include "FileTextLines.h"
-#include "UniCodeUtils.h"
+#include "UnicodeUtils.h"
 #include "MenuEncode.h"
 #include "gitdll.h"
 #include "SysInfo.h"
