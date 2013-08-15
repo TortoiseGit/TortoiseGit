@@ -122,6 +122,8 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 		m_YourBaseRight.SetMovedIndex(toIndex, fromIndex);
 
 		toIndex = m_YourBaseBoth.FindLineNumber(to);
+		if (toIndex < 0)
+			return;
 		while((toIndex < m_YourBaseBoth.GetCount())&&
 			  ((m_YourBaseBoth.GetState(toIndex) != DIFFSTATE_ADDED)&&
 			  (m_YourBaseBoth.GetState(toIndex) != DIFFSTATE_MOVED_TO)||
@@ -131,6 +133,8 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 		}
 
 		fromIndex = m_YourBaseBoth.FindLineNumber(from);
+		if (fromIndex < 0)
+			return;
 		while((fromIndex < m_YourBaseBoth.GetCount())&&
 			  ((m_YourBaseBoth.GetState(fromIndex) != DIFFSTATE_REMOVED)&&
 			  (m_YourBaseBoth.GetState(fromIndex) != DIFFSTATE_MOVED_FROM)||
