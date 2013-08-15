@@ -30,6 +30,20 @@
 #include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
 
+static CString GetExistingDirectoryForClone(CString path)
+{
+	int index = path.ReverseFind('\\');
+	while (index >= 0 && path.GetLength() >= 3)
+	{
+		if (PathFileExists(path.Left(index)))
+			return path.Left(index);
+		path = path.Left(index);
+		index = path.ReverseFind('\\');
+	}
+	GetTempPath(path);
+	return path;
+}
+
 bool CloneCommand::Execute()
 {
 	CCloneDlg dlg;
@@ -98,7 +112,7 @@ bool CloneCommand::Execute()
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
-		g_Git.m_CurrentDir = this->orgCmdLinePath.GetWinPathString();
+		g_Git.m_CurrentDir = GetExistingDirectoryForClone(this->orgCmdLinePath.GetWinPathString());
 
 		CString cmd;
 		CString progressarg;
