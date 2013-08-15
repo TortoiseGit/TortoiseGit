@@ -81,6 +81,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_IsIDReplaceAction=FALSE;
 
 	this->m_critSec.Init();
+	m_critSec_AsyncDiff.Init();
 	m_wcRev.m_CommitHash.Empty();
 	m_wcRev.GetSubject() = CString(MAKEINTRESOURCE(IDS_LOG_WORKINGDIRCHANGES));
 	m_wcRev.m_ParentHash.clear();
@@ -173,6 +174,7 @@ int CGitLogListBase::AsyncDiffThread()
 				if(pRev->m_IsDiffFiles)
 					continue;
 
+				Locker lock(m_critSec_AsyncDiff);
 				pRev->GetFiles(this).Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
@@ -204,7 +206,10 @@ int CGitLogListBase::AsyncDiffThread()
 				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 			}
 
-			if(!pRev->CheckAndDiff())
+			m_critSec_AsyncDiff.Lock();
+			int ret = pRev->CheckAndDiff();
+			m_critSec_AsyncDiff.Unlock();
+			if (!ret)
 			{	// fetch change file list
 				for (int i = GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex() + GetCountPerPage(); ++i)
 				{

@@ -692,6 +692,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
+		Locker lock(m_LogList.m_critSec_AsyncDiff);
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
 
 		{
