@@ -46,6 +46,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_bSVNBranch = FALSE;
 	m_bSVNFrom = FALSE;
 	m_bSVNUserName = FALSE;
+	m_bExactPath = FALSE;
 
 	m_strSVNTrunk = _T("trunk");
 	m_strSVNTags = _T("tags");
@@ -297,7 +298,7 @@ void CCloneDlg::OnBnClickedPuttykeyAutoload()
 void CCloneDlg::OnCbnEditchangeUrlcombo()
 {
 	// do not update member variables from UI while saving
-	if (m_bSaving)
+	if (m_bSaving || m_bExactPath)
 		return;
 
 	this->UpdateData();

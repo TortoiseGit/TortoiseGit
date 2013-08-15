@@ -74,6 +74,7 @@ public:
 	BOOL	m_bBranch;
 	BOOL	m_bOrigin;
 	BOOL	m_bNoCheckout;
+	BOOL	m_bExactPath;
 
 	int		m_nDepth;
 

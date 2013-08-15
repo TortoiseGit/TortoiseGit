@@ -15,6 +15,7 @@ Released: Unreleased
  * Updated shipped PuTTY PLink to version 0.63 (which contains some securiuty fixes)
  * Fixed issue #1746: Pressing "Delete" on keyboard should delete selected non versioned file in commit dialog
  * Sync Dialog: Add stash menu button
+ * Fixed issue #1852: Add command-line argument to tortoisegitproc that specifies value for Directory field
 
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
