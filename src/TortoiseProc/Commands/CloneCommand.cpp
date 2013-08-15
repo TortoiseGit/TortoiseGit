@@ -51,6 +51,8 @@ bool CloneCommand::Execute()
 
 	if (parser.HasKey(_T("url")))
 		dlg.m_URL = parser.GetVal(_T("url"));
+	if (parser.HasKey(_T("exactpath")))
+		dlg.m_bExactPath = TRUE;
 
 	if(dlg.DoModal()==IDOK)
 	{

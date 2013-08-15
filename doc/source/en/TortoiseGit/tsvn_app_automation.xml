@@ -214,6 +214,15 @@ Don't touch these lines:
 							<entry condition="pot">:clone</entry>
 							<entry>
 								Opens the clone dialog.
+								The <option>/url</option> specifies the URL to clone from.
+								The <option>/path</option> specifies the target directory
+								to clone to.
+								If <option>/exactpath</option> is not specfied, the 
+								repository name (without trailing .git) will be appended to
+								target directory. This is the default behaviour.
+								If <option>/exactpath</option> is specfied, the 
+								exact <option>/path</option> is considered the target directory,
+								without appending repository name to it.
 							</entry>
 						</row>
 						<!--
