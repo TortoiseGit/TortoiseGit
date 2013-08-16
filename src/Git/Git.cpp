@@ -150,6 +150,7 @@ static int LogicalCompareBranchesPredicate(CString &left, CString &right)
 #define CALL_OUTPUT_READ_CHUNK_SIZE 1024
 
 CString CGit::ms_LastMsysGitDir;
+int CGit::ms_LastMsysGitVersion = 0;
 CGit g_Git;
 
 

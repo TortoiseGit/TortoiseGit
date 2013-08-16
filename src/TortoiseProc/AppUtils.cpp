@@ -3161,8 +3161,11 @@ void CAppUtils::EditNote(GitRev *rev)
 	}
 }
 
-int CAppUtils::GetMsysgitVersion(CString *versionstr)
+int CAppUtils::GetMsysgitVersion()
 {
+	if (g_Git.ms_LastMsysGitVersion)
+		return g_Git.ms_LastMsysGitVersion;
+
 	CString cmd;
 	CString versiondebug;
 	CString version;
@@ -3173,25 +3176,21 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 	CString gitpath = CGit::ms_LastMsysGitDir+_T("\\git.exe");
 
 	__int64 time=0;
-	if(!g_Git.GetFileModifyTime(gitpath, &time) && !versionstr)
+	if (!g_Git.GetFileModifyTime(gitpath, &time))
 	{
 		if((DWORD)time == regTime)
 		{
+			g_Git.ms_LastMsysGitVersion = regVersion;
 			return regVersion;
 		}
 	}
 
-	if(versionstr)
-		version = *versionstr;
-	else
+	CString err;
+	cmd = _T("git.exe --version");
+	if (g_Git.Run(cmd, &version, &err, CP_UTF8))
 	{
-		CString err;
-		cmd = _T("git.exe --version");
-		if (g_Git.Run(cmd, &version, &err, CP_UTF8))
-		{
-			CMessageBox::Show(NULL, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
-			return false;
-		}
+		CMessageBox::Show(NULL, _T("git.exe not correctly set up (") + err + _T(")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\"."), _T("TortoiseGit"), MB_OK|MB_ICONERROR);
+		return -1;
 	}
 
 	int start=0;
@@ -3225,12 +3224,13 @@ int CAppUtils::GetMsysgitVersion(CString *versionstr)
 		if (!ver)
 		{
 			CMessageBox::Show(NULL, _T("Could not parse git.exe version number: \"") + versiondebug + _T("\""), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-			return false;
+			return -1;
 		}
 	}
 
 	regTime = time&0xFFFFFFFF;
 	regVersion = ver;
+	g_Git.ms_LastMsysGitVersion = ver;
 
 	return ver;
 }

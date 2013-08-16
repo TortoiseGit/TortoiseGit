@@ -152,6 +152,7 @@ public:
 	CString GetGitGlobalXDGConfig();
 	CString GetGitSystemConfig();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
+	static int ms_LastMsysGitVersion;
 	static int m_LogEncode;
 	static bool IsBranchNameValid(CString branchname);
 	bool IsBranchTagNameUnique(const CString& name);

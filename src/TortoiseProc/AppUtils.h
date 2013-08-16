@@ -211,7 +211,7 @@ public:
 	static BOOL MergeAbort();
 	static void RemoveTempMergeFile(CTGitPath &path);
 	static void EditNote(GitRev *hash);
-	static int GetMsysgitVersion(CString *versionstring=NULL);
+	static int GetMsysgitVersion();
 	static void MarkWindowAsUnpinnable(HWND hWnd);
 
 	static bool BisectStart(CString lastGood, CString firstBad, bool autoClose = false);
