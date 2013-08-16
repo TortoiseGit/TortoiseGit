@@ -174,7 +174,6 @@ int CGitLogListBase::AsyncDiffThread()
 				if(pRev->m_IsDiffFiles)
 					continue;
 
-				Locker lock(m_critSec_AsyncDiff);
 				pRev->GetFiles(this).Clear();
 				pRev->m_ParentHash.clear();
 				pRev->m_ParentHash.push_back(m_HeadHash);
