@@ -157,7 +157,6 @@ public:
 	bool IsBranchTagNameUnique(const CString& name);
 	bool BranchTagExists(const CString& name, bool isBranch = true);
 	unsigned int Hash2int(CGitHash &hash);
-//	static CString m_MsysGitPath;
 
 	PROCESS_INFORMATION m_CurrentGitPi;
 

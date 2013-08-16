@@ -85,10 +85,6 @@ CString sOrigCWD;
 CString g_sGroupingUUID;
 HWND hWndExplorer;
 
-BOOL CTortoiseProcApp::CheckMsysGitDir()
-{
-	return g_Git.CheckMsysGitDir();
-}
 #if ENABLE_CRASHHANLDER
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif
@@ -189,7 +185,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	} while (langId);
 	setlocale(LC_ALL, "");
 
-	if(!CheckMsysGitDir())
+	if (!g_Git.CheckMsysGitDir())
 	{
 		UINT ret = CMessageBox::Show(NULL, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
 		if(ret == 2)
@@ -361,13 +357,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	CheckForNewerVersion();
-
-	if (parser.HasVal(_T("configdir")))
-	{
-		// the user can override the location of the Subversion config directory here
-		CString sConfigDir = parser.GetVal(_T("configdir"));
-//		g_GitGlobal.SetConfigDir(sConfigDir);
-	}
 
 	CAutoGeneralHandle TGitMutex = ::CreateMutex(NULL, FALSE, _T("TortoiseGitProc.exe"));
 	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(_T("submodule")) == TRUE))
