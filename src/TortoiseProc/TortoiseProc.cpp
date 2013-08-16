@@ -103,6 +103,11 @@ BOOL CTortoiseProcApp::InitInstance()
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 	long langId = loc;
+	{
+		CString langStr;
+		langStr.Format(_T("%d"), langId);
+		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
+	}
 	CString langDll;
 	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
 	langpath += "Languages";
@@ -213,6 +218,13 @@ BOOL CTortoiseProcApp::InitInstance()
 			CMessageBox::RemoveRegistryKey(_T("OldMsysgitVersionWarning")); // only store answer if it is "Ignore"
 			return FALSE;
 		}
+	}
+
+	{
+		CCrashReport::Instance().AddUserInfoToReport(L"msysGitDir", CGit::ms_LastMsysGitDir);
+		CString versionString;
+		versionString.Format(_T("%d"), CGit::ms_LastMsysGitVersion);
+		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
 	}
 
 	// InitCommonControls() is required on Windows XP if an application
