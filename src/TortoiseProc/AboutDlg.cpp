@@ -62,10 +62,8 @@ BOOL CAboutDlg::OnInitDialog()
 	cmd=_T("git.exe --version");
 	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 		out = _T("git not found (") + err + _T(")");;
-	int start =0;
-	out=out.Tokenize(_T("\n"),start);
+	out.Trim();
 
-	CAppUtils::GetMsysgitVersion(&out);
 	if (!CGit::ms_LastMsysGitDir.IsEmpty())
 		out += _T(" (") + CGit::ms_LastMsysGitDir + _T(")");
 
