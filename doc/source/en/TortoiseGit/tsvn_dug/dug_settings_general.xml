@@ -445,36 +445,20 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Deleted node</term>
+				<term>Note node</term>
 				<listitem>
 					<para>
-						An item which has been deleted from the repository.
+						A reference which points to git notes, under refs/notes namespace.
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Added node</term>
+				<term>Use local branch color for current branch</term>
 				<listitem>
 					<para>
-						An item which has been added to the repository, by an add, copy
-						or move operation.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Renamed node</term>
-				<listitem>
-					<para>
-						An item which has been renamed within the repository.
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>Replaced node</term>
-				<listitem>
-					<para>
-						The original item has been deleted and a new item with
-						the same name replaces it.
+						In revision graph, use local branch color for current branch.
+						You may not want to emphasize current branch of a local
+						repository in revision graph.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -500,7 +484,7 @@
 				<title>The Settings Dialog, Colours Page</title>
 				<graphic fileref="../images/SettingsColors3.png"/>
 			</figure>
-			This dialog allows you to configure the line colours
+			This dialog allows you to configure the line colours, line width and node size
 			in the graph column used in TortoiseGit's log dialog the way you like them.
 		</para>
 	</sect3>
