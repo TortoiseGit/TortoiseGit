@@ -1007,7 +1007,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	Gdiplus::Font font(fontname.GetBuffer(),(REAL)m_nFontSize,FontStyleRegular);
 	SolidBrush blackbrush((ARGB)Color::Black);
 
-	DWORD revGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\RevGraphUseLocalForCur"));
+	DWORD revGraphUseLocalForCur = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\Graph\\RevGraphUseLocalForCur"));
 
 	node v;
 	forall_nodes(v,m_Graph)
