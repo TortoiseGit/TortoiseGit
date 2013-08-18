@@ -82,6 +82,18 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">DebugOutputString</term>
+            <listitem>
+                <para>
+                    Set this to <literal>true</literal> if you want TortoiseGit
+                    to print out debug messages during execution. The messages
+                    can be captured with special debugging tools only (like
+                    <ulink url="http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx"><citetitle>Debug View</citetitle></ulink>
+                    from the SysInternals Suite).
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">DiffBlamesWithTortoiseMerge</term>
             <listitem>
                 <para>
