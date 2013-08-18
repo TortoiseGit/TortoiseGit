@@ -103,8 +103,8 @@
 				<para>
 					<tip>
 						<para>
-							In order to debug problems you can open TortoiseGit advanced settings and set "DebugOutputString" to "true". Downlaod and start DbgView.exe (Debug View) from the Sysinternals Tools.
-							Then start TortoiseGit settings, click on <guilabel>Check now</guilabel> and observe the messages received in dbgview.exe.
+							In order to debug problems you can open TortoiseGit advanced settings and set "DebugOutputString" to "true" (<xref linkend="tsvn-dug-settings-registry"/>). Start capturing the debug output.
+							Then start TortoiseGit settings, click on <guilabel>Check now</guilabel> and observe the debug messages.
 						</para>
 					</tip>
 				</para>
