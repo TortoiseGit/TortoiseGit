@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-07-08 03:53+0000\n"
+"PO-Revision-Date: 2013-08-15 03:52+0000\n"
 "Last-Translator: Tetsuhiko Koto <>\n"
 "Language-Team: Japanese <tortoisegit-jp@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -1442,6 +1442,12 @@ msgstr "入力したタグ名と同じ名前のブランチが既にあります
 msgid "A branch with this name already exists."
 msgstr "このブランチ名は既に存在します"
 
+#. Resource IDs: (69)
+msgid ""
+"A merge process is active, so this commit will be a merge commit. In order "
+"to abort a merge, you have to perform a reset or forced checkout."
+msgstr "マージプロセスが実行中なので、このコミットはマージコミットになります。マージを中止するには、リセットするか、強制チェックアウトする必要があります。"
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr "新しいバージョンが利用可能です。最新バージョンをダウンロードしてください。"
@@ -1505,6 +1511,18 @@ msgstr "名前の変更を短縮"
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "中止"
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr "マージを中止(&M)"
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr "マージ中止"
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
+msgstr "実行中のマージを中止します。"
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1606,10 +1624,6 @@ msgstr "拡張子に対応した差分/マージプログラムの追加/編集"
 #. Resource IDs: (73, 264, 1257, 1549, 65535)
 msgid "Added"
 msgstr "追加"
-
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr "ノードを追加"
 
 #. Resource IDs: (145)
 #, c-format
@@ -2027,12 +2041,6 @@ msgstr "TortoiseSVN の TortoiseIDiff を元にしています"
 msgid "Basic Info"
 msgstr "基本情報"
 
-#. Resource IDs: (69)
-msgid ""
-"Be warned that email clients tend to automatic wrap lines.\r\n"
-"Recommendation: Use attachments."
-msgstr "メールクライアントは、しばしば自動的に改行を入れてしまいます。\n添付ファイルを使うことを推奨します。"
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Traditional)"
@@ -2129,6 +2137,10 @@ msgid ""
 "%s will fastforward to %s"
 msgstr "ブランチ %s は %s の下流にあります。\n%s は %s へファストフォワードされます"
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr "ブランチ名"
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr "ブランチ/タグの名前が無効です"
@@ -2140,10 +2152,6 @@ msgstr "ブランチ/タグの名前が空であるか、無効です。"
 #. Resource IDs: (1518)
 msgid "Branch:"
 msgstr "ブランチ:"
-
-#. Resource IDs: (68)
-msgid "Branchname"
-msgstr "ブランチ名"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
@@ -2496,6 +2504,10 @@ msgstr "クリーン"
 msgid "Clean Type"
 msgstr "クリーンタイプ"
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr "古いリモートブランチをクリーンナップ"
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr "クリーンアップ"
@@ -2517,10 +2529,6 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "次のパスに対してクリーンアップが正しく行われました。\n%s"
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
-msgstr "古いリモートブランチをクリーンナップ"
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -2566,7 +2574,7 @@ msgstr "保存されている%ld個のダイアログの位置と大きさをク
 
 #. Resource IDs: (1466)
 msgid "Click here to go to the website"
-msgstr "WEBサイトへ行くにはここをクリックしてください"
+msgstr "WEBサイトを訪れるにはここをクリックしてください"
 
 #. Resource IDs: (170)
 msgid "Click here to select a recently typed message"
@@ -3257,6 +3265,10 @@ msgid "Credential helper:"
 msgstr "資格情報ヘルパー:"
 
 #. Resource IDs: (65535)
+msgid "Credentials"
+msgstr "資格情報"
+
+#. Resource IDs: (65535)
 msgid "Credits:"
 msgstr "謝辞:"
 
@@ -3286,7 +3298,7 @@ msgid ""
 "Current branch %s is up to date\r\n"
 "\r\n"
 " If you want to force the rebase even if the current branch is a descendant of the commit you are rebasing onto, please check below \"Force Rebase\" checkbox."
-msgstr "現在のブランチ %s は最新です。\n\nもし、現在のブランチが接続しようとしているコミットの子孫であってもリベースしたいのであれば、\"強制リベース\" にチェックを入れて下さい。"
+msgstr "現在のブランチ %s は最新です。\n\n現在のブランチは接続しようとしているコミットの子孫ですが、それでもリベースしたいのであれば、\"強制リベース\" にチェックを入れて下さい。"
 
 #. Resource IDs: (1113)
 msgid "Current version is:"
@@ -3458,10 +3470,6 @@ msgstr "削除"
 msgid "Deleted merge conflict"
 msgstr "削除されたマージの競合"
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr "削除したノード"
-
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
@@ -3486,6 +3494,10 @@ msgstr "削除中"
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "リモートのrefを削除..."
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
+msgstr "配送:"
 
 #. Resource IDs: (1002)
 msgid "Description"
@@ -3988,6 +4000,10 @@ msgstr "%1 の読み込み中に予期せぬエラーが発生しました。"
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "%1 の書き込み中に予期せぬエラーが発生しました。"
+
+#. Resource IDs: (1759)
+msgid "Encryption"
+msgstr "暗号化"
 
 #. Resource IDs: (1617)
 msgid "End"
@@ -4505,9 +4521,13 @@ msgstr "最初の親のみ"
 msgid "First known &bad:"
 msgstr "問題のあるものの最初(&B):"
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
-msgstr "画像サイズを合わせる(&S)"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr "画像の高さを合わせる(&H)"
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
+msgstr "画像の幅を合わせる(&W)"
 
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
@@ -5005,13 +5025,17 @@ msgstr "ID:32793:V C +V"
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr "ID:32810:V   +T"
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
 msgstr "ID:32811:V C +U"
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr "ID:32817:V   +W"
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
+msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5351,6 +5375,10 @@ msgstr "変更リストにて"
 msgid "In Commits"
 msgstr "コミットにて"
 
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr "マージ操作を中止するには、(HEADへの)リセットが必要です。"
+
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr "タグを含める(&T)"
@@ -5574,6 +5602,10 @@ msgid "Line moved to line %ld"
 msgstr "%ld 行目へ移動した行"
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr "線の幅"
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr "行番号:"
 
@@ -5694,7 +5726,7 @@ msgstr "ログメッセージ（入力ダイアログ）"
 msgid "Log messages (Show log dialog)"
 msgstr "ログメッセージ（ログダイアログ）"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1760)
 msgid "Login:"
 msgstr "ログイン:"
 
@@ -5713,6 +5745,10 @@ msgstr "一番下の表示リビジョン: %ld - 一番上の表示リビジョ�
 #. Resource IDs: (16973)
 msgid "Lum"
 msgstr "明度"
+
+#. Resource IDs: (90)
+msgid "MAPI"
+msgstr "MAPI"
 
 #. Resource IDs: (65535)
 msgid "MSysGit"
@@ -6228,6 +6264,10 @@ msgstr "全ていいえ"
 msgid "No working directory found."
 msgstr "ワーキングディレクトリーが見つかりません。"
 
+#. Resource IDs: (65535)
+msgid "Node size"
+msgstr "ノードサイズ"
+
 #. Resource IDs: (1272)
 msgid "None"
 msgstr "無し"
@@ -6270,6 +6310,10 @@ msgstr "メモリーが足りません!\nノードを畳むかズームを減ら
 #. Resource IDs: (72)
 msgid "Not patches generated."
 msgstr "パッチは生成されませんでした。"
+
+#. Resource IDs: (65535)
+msgid "Note node"
+msgstr "ノートノード"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -6524,6 +6568,10 @@ msgstr "オプション"
 msgid "Ori&ginal size"
 msgstr "オリジナルのサイズで表示する(&G)"
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr "オリジナル名"
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr "その他のタスク領域"
@@ -6720,6 +6768,10 @@ msgstr "個人用メニューとツールバー"
 msgid "Pick"
 msgstr "採用"
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr "コミットのハッシュを選択"
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6784,7 +6836,7 @@ msgstr "ポップアップ"
 msgid "Port :"
 msgstr "ポート:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1758)
 msgid "Port:"
 msgstr "ポート:"
 
@@ -7343,10 +7395,6 @@ msgstr "名前の変更 - TortoiseGit"
 msgid "Rename/move"
 msgstr "名前変更/移動"
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr "名前を変更されたノード"
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr "バージョン管理内のファイル/フォルダーの名前を変更"
@@ -7362,10 +7410,6 @@ msgid ""
 "Replace specific text with different text\n"
 "Replace"
 msgstr "指定された文字列を、他の文字列に置き換える\n置換"
-
-#. Resource IDs: (65535)
-msgid "Replaced node"
-msgstr "置き換えられたノード"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7649,9 +7693,13 @@ msgstr "SHA-1"
 msgid "SMTP Server requires authentication"
 msgstr "SMTP サーバーが認証を必要な場合"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1757)
 msgid "SMTP Server:"
 msgstr "SMTP サーバー:"
+
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
+msgstr "SMTPで直接宛先のサーバーへ"
 
 #. Resource IDs: (1081)
 msgid "SSH"
@@ -8031,10 +8079,6 @@ msgstr "作者を設定(&T)"
 msgid "Set commit &date"
 msgstr "コミットの日時を設定する(D)"
 
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
-msgstr "SMTP サーバーを設定"
-
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr "選択したローカルブランチでリモートを「pushremote」としてセットする。"
@@ -8102,7 +8146,7 @@ msgstr "バージョン管理外のファイルを表示(&U)"
 
 #. Resource IDs: (1208)
 msgid "Show &Whole Project"
-msgstr "全てのプロジェクトを表示(&W)"
+msgstr "プロジェクト全体を表示(&W)"
 
 #. Resource IDs: (1254)
 msgid "Show &changes"
@@ -8582,10 +8626,6 @@ msgstr "方針"
 msgid "Style"
 msgstr "スタイル"
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr "サブモジュール"
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr "件名"
@@ -8594,7 +8634,7 @@ msgstr "件名"
 msgid "Subject:"
 msgstr "件名:"
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr "サブモジュール"
 
@@ -9254,6 +9294,13 @@ msgstr "水平に並べる(&Z)"
 msgid "To"
 msgstr "To"
 
+#. Resource IDs: (1422)
+msgid ""
+"To avoid fetching wrong tags, if this is not an official remote,\n"
+"you are advised to disable tag fetching for this remote.\n"
+"Disable tag fetching?"
+msgstr "もしこれが公式なリモートではないなら、不適切なタグを取得しない為に、\nこのリモートに対するタグの取得を無効にすることをお勧めします。\nタグの取得を無効にしますか？"
+
 #. Resource IDs: (606)
 msgid ""
 "To clear temporary files, you should ensure that no other TortoiseGit "
@@ -9688,10 +9735,6 @@ msgstr "ブロックを使用"
 msgid "Use HTTP path component"
 msgstr "HTTP path を要素として利用"
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr "MAPI を利用"
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "リボンを使用"
@@ -9757,6 +9800,10 @@ msgstr "左側のブロックを使用"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "左側のファイルを使用"
+
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr "ローカルブランチの色をカレントブランチに使用"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -9915,16 +9962,16 @@ msgid "Version 1"
 msgstr "バージョン1"
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
-msgstr "バージョン1 (コミットの日時が新しい)"
+msgid "Version 1 (Newer commit time)"
+msgstr "バージョン1 (コミット日時がより新しい)"
 
 #. Resource IDs: (72, 1645)
 msgid "Version 2 (Base)"
 msgstr "バージョン2 (ベース)"
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
-msgstr "バージョン2 (ベース) (コミットの日時が新しい)"
+msgid "Version 2 (Base) (Newer commit time)"
+msgstr "バージョン2 (ベース) (コミット日時がより新しい)"
 
 #. Resource IDs: (1075)
 msgid "Version Information"
@@ -10466,6 +10513,10 @@ msgstr "深さ "
 msgid "dummy"
 msgstr "dummy"
 
+#. Resource IDs: (1580)
+msgid "eMail settings"
+msgstr "eMailの設定"
+
 #. Resource IDs: (79)
 #, c-format
 msgid ""
@@ -10600,6 +10651,10 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "四半期"
+
+#. Resource IDs: (65535)
+msgid "renamed"
+msgstr "名前変更"
 
 #. Resource IDs: (10)
 msgid "replaced"

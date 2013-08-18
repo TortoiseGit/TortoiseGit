@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-06-25 13:49+0000\n"
+"PO-Revision-Date: 2013-08-11 11:45+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/tortoisegit/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -1443,6 +1443,12 @@ msgstr ""
 msgid "A branch with this name already exists."
 msgstr "Bu isimli dal mevcut."
 
+#. Resource IDs: (69)
+msgid ""
+"A merge process is active, so this commit will be a merge commit. In order "
+"to abort a merge, you have to perform a reset or forced checkout."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr "Yeni bir versiyon mevcut. Güncel versiyonu indirin!"
@@ -1506,6 +1512,18 @@ msgstr "Hızlı yeniden isimlendirme"
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "İptal"
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr ""
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1607,10 +1625,6 @@ msgstr "Belirli bir uzantı için karşılaştırma/birleştirme programı ekle/
 #. Resource IDs: (73, 264, 1257, 1549, 65535)
 msgid "Added"
 msgstr "Eklendi"
-
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr "Düğüm eklendi"
 
 #. Resource IDs: (145)
 #, c-format
@@ -2028,12 +2042,6 @@ msgstr ""
 msgid "Basic Info"
 msgstr "Basit Bilgi"
 
-#. Resource IDs: (69)
-msgid ""
-"Be warned that email clients tend to automatic wrap lines.\r\n"
-"Recommendation: Use attachments."
-msgstr ""
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Geleneksel)"
@@ -2078,7 +2086,7 @@ msgstr ""
 
 #. Resource IDs: (32776)
 msgid "Blame previous revision"
-msgstr ""
+msgstr "Önceki Düzenlemeyi Suçla"
 
 #. Resource IDs: (13)
 msgid "Blames each line of a file on an author"
@@ -2130,6 +2138,10 @@ msgid ""
 "%s will fastforward to %s"
 msgstr ""
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr "Dal/Etiket adı geçersiz."
@@ -2141,10 +2153,6 @@ msgstr "Dal/Etiket adı boş ya da geçersiz olmamalıdır."
 #. Resource IDs: (1518)
 msgid "Branch:"
 msgstr "Dal:"
-
-#. Resource IDs: (68)
-msgid "Branchname"
-msgstr "Dal adı"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
@@ -2497,6 +2505,10 @@ msgstr "Temizle"
 msgid "Clean Type"
 msgstr "Temizle Türü"
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr "Temizleniyor"
@@ -2518,10 +2530,6 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "Cleanup has successfully processed the following paths:\n%s"
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
-msgstr ""
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -2725,7 +2733,7 @@ msgstr "Teslim Etme Sonu"
 
 #. Resource IDs: (1260)
 msgid "Commit Info"
-msgstr ""
+msgstr "Gönderim Bilgisi"
 
 #. Resource IDs: (66)
 msgid "Commit Message"
@@ -3196,7 +3204,7 @@ msgstr "Etiket Oluştur..."
 msgid ""
 "Create a new document\n"
 "New"
-msgstr ""
+msgstr "Yeni belge yarat\nYeni"
 
 #. Resource IDs: (604)
 msgid ""
@@ -3255,6 +3263,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Credential helper:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Credentials"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -3459,10 +3471,6 @@ msgstr "Silindi"
 msgid "Deleted merge conflict"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr "Silinmiş düğüm"
-
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
@@ -3486,6 +3494,10 @@ msgstr "Siliniyor"
 
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -3569,7 +3581,7 @@ msgstr ""
 
 #. Resource IDs: (71)
 msgid "Dir..."
-msgstr ""
+msgstr "Klasör..."
 
 #. Resource IDs: (65535)
 msgid "Directory:"
@@ -3844,7 +3856,7 @@ msgstr "EUC-KR"
 
 #. Resource IDs: (65535)
 msgid "Eastern European"
-msgstr ""
+msgstr "Doğu Avrupa"
 
 #. Resource IDs: (1254, 1257, 1270)
 msgid "Edit"
@@ -3955,7 +3967,7 @@ msgstr "Sağlanan Simge Yöneticileri"
 
 #. Resource IDs: (65535)
 msgid "Encode"
-msgstr ""
+msgstr "Şifrele"
 
 #. Resource IDs: (300, 301)
 msgid "Encoding"
@@ -3990,9 +4002,13 @@ msgstr "%1 'i okurken beklenilmeyen bir hata ile karşılaşıldı."
 msgid "Encountered an unexpected error while writing %1."
 msgstr "%1 'e yazarken beklenilmeyen bir hata ile karşılaşıldı."
 
+#. Resource IDs: (1759)
+msgid "Encryption"
+msgstr ""
+
 #. Resource IDs: (1617)
 msgid "End"
-msgstr ""
+msgstr "Son"
 
 #. Resource IDs: (252)
 msgid "End of Line Style"
@@ -4309,7 +4325,7 @@ msgstr "Getir/Al"
 
 #. Resource IDs: (14)
 msgid "Fetch from SVN repository"
-msgstr ""
+msgstr "SVN kaynağından al"
 
 #. Resource IDs: (78)
 #, c-format
@@ -4484,7 +4500,7 @@ msgstr "Belirtilen metni bul\nBul"
 
 #. Resource IDs: (67)
 msgid "Finish"
-msgstr ""
+msgstr "Bitir"
 
 #. Resource IDs: (67)
 msgid "Finished rebasing."
@@ -4506,9 +4522,13 @@ msgstr "Sadece Üst"
 msgid "First known &bad:"
 msgstr ""
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
-msgstr "Re&sim boyutlarını oturt"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr ""
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
+msgstr ""
 
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
@@ -4601,7 +4621,7 @@ msgstr "Tamamen özyineli"
 
 #. Resource IDs: (5061)
 msgid "GB2312 (Simplified)"
-msgstr ""
+msgstr "GB2312 (Sadeleştirilmiş)"
 
 #. Resource IDs: (273)
 msgid "GDI+ couldn't be initialized!"
@@ -4716,7 +4736,7 @@ msgstr ""
 
 #. Resource IDs: (1270)
 msgid "Git Log"
-msgstr ""
+msgstr "Git Kaydı"
 
 #. Resource IDs: (17)
 msgid "Git Move and rename versioned item here"
@@ -4740,11 +4760,11 @@ msgstr ""
 
 #. Resource IDs: (22)
 msgid "Git SVN DCommit"
-msgstr ""
+msgstr "Git SVN DCommit"
 
 #. Resource IDs: (22)
 msgid "Git SVN Rebase"
-msgstr ""
+msgstr "Git SVN Rebase"
 
 #. Resource IDs: (11)
 msgid "Git Status"
@@ -4760,7 +4780,7 @@ msgstr "Git URL"
 
 #. Resource IDs: (297)
 msgid "Git clone - TortoiseGit"
-msgstr ""
+msgstr "Git clone - TortoiseGit"
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -5006,13 +5026,17 @@ msgstr "ID:32793:V C +V"
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr "ID:32810:V   +T"
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
 msgstr "ID:32811:V C +U"
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5352,6 +5376,10 @@ msgstr ""
 msgid "In Commits"
 msgstr ""
 
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr ""
+
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr ""
@@ -5575,6 +5603,10 @@ msgid "Line moved to line %ld"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr "Satır:"
 
@@ -5695,7 +5727,7 @@ msgstr "İleti günlüğü (Giriş diyaloğu)"
 msgid "Log messages (Show log dialog)"
 msgstr "İleti günlüğü (Günlük diyaloğunu göster)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1760)
 msgid "Login:"
 msgstr ""
 
@@ -5715,6 +5747,10 @@ msgstr "Gösterilen en düşük revizyon: %ld - Gösterilen en yüksek revizyon:
 msgid "Lum"
 msgstr "Aydınlık"
 
+#. Resource IDs: (90)
+msgid "MAPI"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "MSysGit"
 msgstr "MSysGit"
@@ -5733,7 +5769,7 @@ msgstr ""
 
 #. Resource IDs: (1582)
 msgid "Mail"
-msgstr ""
+msgstr "E-Posta"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -6053,7 +6089,7 @@ msgstr "Ağ Ayarları"
 
 #. Resource IDs: (321)
 msgid "Network::Email"
-msgstr ""
+msgstr "Ağ::E-Posta"
 
 #. Resource IDs: (1002, 30721, 65535)
 msgid "New"
@@ -6229,6 +6265,10 @@ msgstr ""
 msgid "No working directory found."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Node size"
+msgstr ""
+
 #. Resource IDs: (1272)
 msgid "None"
 msgstr "Hiçbiri"
@@ -6270,6 +6310,10 @@ msgstr ""
 
 #. Resource IDs: (72)
 msgid "Not patches generated."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Note node"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -6525,6 +6569,10 @@ msgstr "Seçenekler"
 msgid "Ori&ginal size"
 msgstr "Ori&jinal boyutu"
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr ""
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr "Diğer görev bölmeleri"
@@ -6721,6 +6769,10 @@ msgstr "Kişiselleştirilmiş Menü ve Araç Çubukları"
 msgid "Pick"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr ""
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6785,7 +6837,7 @@ msgstr ""
 msgid "Port :"
 msgstr "Port :"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1758)
 msgid "Port:"
 msgstr "Port :"
 
@@ -6795,7 +6847,7 @@ msgstr "Teslim-sonrası yakalayıcısı"
 
 #. Resource IDs: (604)
 msgid "Post-Push Hook"
-msgstr ""
+msgstr "Gönderim Sonrası Kancası"
 
 #. Resource IDs: (58115)
 msgid "Pre&v Page"
@@ -6807,7 +6859,7 @@ msgstr "Teslim-öncesi yakalayıcısı"
 
 #. Resource IDs: (604)
 msgid "Pre-Push Hook"
-msgstr ""
+msgstr "Gönderim Öncesi Kancası"
 
 #. Resource IDs: (68)
 msgid "Preparing commit..."
@@ -6956,7 +7008,7 @@ msgstr "Çek.."
 
 #. Resource IDs: (302)
 msgid "Pull/Fetch"
-msgstr ""
+msgstr "Çek/İndir"
 
 #. Resource IDs: (66)
 msgid "Pulled Diff"
@@ -6984,11 +7036,11 @@ msgstr ""
 
 #. Resource IDs: (14, 64)
 msgid "Push..."
-msgstr ""
+msgstr "Gönder"
 
 #. Resource IDs: (65535)
 msgid "Putty Key:"
-msgstr ""
+msgstr "Puyyt Anahtarı:"
 
 #. Resource IDs: (71)
 msgid "Putty Private Key (*.ppk)|*.ppk|All Files (*.*)|*.*||"
@@ -7025,7 +7077,7 @@ msgstr "Bu revizyona geri&dön"
 
 #. Resource IDs: (1255)
 msgid "REBASE"
-msgstr ""
+msgstr "Tekrar Konumlandır"
 
 #. Resource IDs: (1535)
 msgid "Range"
@@ -7073,7 +7125,7 @@ msgstr "Takılmadan önce günlük kullanım kılavuzunu okuyunuz..."
 
 #. Resource IDs: (318)
 msgid "Rebase"
-msgstr ""
+msgstr "Tekrar Konumlandır"
 
 #. Resource IDs: (1254)
 #, c-format
@@ -7165,7 +7217,7 @@ msgstr "Yenile"
 
 #. Resource IDs: (75)
 msgid "Refreshing..."
-msgstr ""
+msgstr "Güncelleniyor"
 
 #. Resource IDs: (117)
 msgid ""
@@ -7344,10 +7396,6 @@ msgstr ""
 msgid "Rename/move"
 msgstr "Ad Değiştir / Taşı"
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr "Yeniden adlandırılmış düğüm"
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr ""
@@ -7363,10 +7411,6 @@ msgid ""
 "Replace specific text with different text\n"
 "Replace"
 msgstr "Belirli bir metni farklı bir metin ile değiştir\nDeğiştir"
-
-#. Resource IDs: (65535)
-msgid "Replaced node"
-msgstr "Değiştirilen düğüm"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7650,8 +7694,12 @@ msgstr "SHA-1"
 msgid "SMTP Server requires authentication"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1757)
 msgid "SMTP Server:"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
 msgstr ""
 
 #. Resource IDs: (1081)
@@ -8032,10 +8080,6 @@ msgstr ""
 msgid "Set commit &date"
 msgstr ""
 
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
-msgstr ""
-
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr ""
@@ -8227,7 +8271,7 @@ msgstr "Satır numaralarasını/larını &s goster"
 
 #. Resource IDs: (64)
 msgid "Show log"
-msgstr ""
+msgstr "Kayıtları Göster"
 
 #. Resource IDs: (65)
 msgid "Show log &before rename/copy"
@@ -8583,10 +8627,6 @@ msgstr ""
 msgid "Style"
 msgstr ""
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr "Alt"
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr "Konu"
@@ -8595,7 +8635,7 @@ msgstr "Konu"
 msgid "Subject:"
 msgstr "Konu:"
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr "Altbirim"
 
@@ -9047,7 +9087,7 @@ msgid ""
 "com1-com9, lpt1-lpt9, prn, aux, con, nul, clock$\n"
 "\n"
 "Do you want to proceed anyway?"
-msgstr ""
+msgstr "Girdiğiniz dosya yolu Windows için geçerli bir dosya yolu değildir.\nEğer bu dosya yolunu kullanmakta ısrar ederseniz ileride hatalarla karşılaşabilirsiniz.\n\nWindows üzerinde geçerli bir dosya yolu '<<>|\"?*:' işaretlerini ya da com1-com9, lpt1-lpt9, prn, aux, con, nış, clock$ aygıt isimlerini kullanamaz.\n\nDevam etmek istediğinizden emin misiniz?"
 
 #. Resource IDs: (314)
 #, c-format
@@ -9254,6 +9294,13 @@ msgstr ""
 #. Resource IDs: (1676)
 msgid "To"
 msgstr "Kime"
+
+#. Resource IDs: (1422)
+msgid ""
+"To avoid fetching wrong tags, if this is not an official remote,\n"
+"you are advised to disable tag fetching for this remote.\n"
+"Disable tag fetching?"
+msgstr ""
 
 #. Resource IDs: (606)
 msgid ""
@@ -9689,10 +9736,6 @@ msgstr ""
 msgid "Use HTTP path component"
 msgstr ""
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr ""
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr ""
@@ -9758,6 +9801,10 @@ msgstr ""
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Soldaki dosyayı kullan"
+
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr ""
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -9916,16 +9963,16 @@ msgid "Version 1"
 msgstr "Sürüm 1"
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
-msgstr "Sürüm 1 (Yeni Veri Teslim et)"
+msgid "Version 1 (Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (72, 1645)
 msgid "Version 2 (Base)"
 msgstr "Sürüm 2 (Taban)"
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
-msgstr "Sürüm 2 (Taban) (Yeni Veri Teslim et)"
+msgid "Version 2 (Base) (Newer commit time)"
+msgstr ""
 
 #. Resource IDs: (1075)
 msgid "Version Information"
@@ -10467,6 +10514,10 @@ msgstr "derinlik"
 msgid "dummy"
 msgstr "işlevsiz"
 
+#. Resource IDs: (1580)
+msgid "eMail settings"
+msgstr ""
+
 #. Resource IDs: (79)
 #, c-format
 msgid ""
@@ -10601,6 +10652,10 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "yılın çeyrekleri"
+
+#. Resource IDs: (65535)
+msgid "renamed"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "replaced"

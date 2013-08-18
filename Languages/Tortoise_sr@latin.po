@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-07-04 07:00+0000\n"
-"Last-Translator: Darko Krišan <dkrisan@gmail.com>\n"
+"PO-Revision-Date: 2013-08-11 11:45+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Serbian (Latin) (http://www.transifex.com/projects/p/tortoisegit/language/sr@latin/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1440,6 +1440,12 @@ msgstr ""
 msgid "A branch with this name already exists."
 msgstr ""
 
+#. Resource IDs: (69)
+msgid ""
+"A merge process is active, so this commit will be a merge commit. In order "
+"to abort a merge, you have to perform a reset or forced checkout."
+msgstr ""
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr ""
@@ -1503,6 +1509,18 @@ msgstr ""
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Prekini"
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr ""
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
+msgstr ""
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1604,10 +1622,6 @@ msgstr "Dodaj/Uredi zavistan od ekstenzije program za razlike/stapanje"
 #. Resource IDs: (73, 264, 1257, 1549, 65535)
 msgid "Added"
 msgstr "Dodat"
-
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr "Dodat čvor"
 
 #. Resource IDs: (145)
 #, c-format
@@ -2025,12 +2039,6 @@ msgstr ""
 msgid "Basic Info"
 msgstr ""
 
-#. Resource IDs: (69)
-msgid ""
-"Be warned that email clients tend to automatic wrap lines.\r\n"
-"Recommendation: Use attachments."
-msgstr ""
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr ""
@@ -2127,6 +2135,10 @@ msgid ""
 "%s will fastforward to %s"
 msgstr ""
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr ""
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr ""
@@ -2138,10 +2150,6 @@ msgstr ""
 #. Resource IDs: (1518)
 msgid "Branch:"
 msgstr "Grana:"
-
-#. Resource IDs: (68)
-msgid "Branchname"
-msgstr ""
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
@@ -2494,6 +2502,10 @@ msgstr ""
 msgid "Clean Type"
 msgstr ""
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr ""
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr "Čišćenje"
@@ -2515,10 +2527,6 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "Čišćenje je uspešno završeno na sledećim putanjama:\n%s"
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
-msgstr ""
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -3255,6 +3263,10 @@ msgid "Credential helper:"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Credentials"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Credits:"
 msgstr "Zasluge:"
 
@@ -3456,10 +3468,6 @@ msgstr "Obrisano"
 msgid "Deleted merge conflict"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr "Obrisani čvor"
-
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
@@ -3483,6 +3491,10 @@ msgstr "Brisanje"
 
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
 msgstr ""
 
 #. Resource IDs: (1002)
@@ -3986,6 +3998,10 @@ msgstr "Primećena je neočekivana greška prilikom čitanja %1."
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "Primećena je neočekivana greška prilikom zapisivanja u %1."
+
+#. Resource IDs: (1759)
+msgid "Encryption"
+msgstr ""
 
 #. Resource IDs: (1617)
 msgid "End"
@@ -4503,9 +4519,13 @@ msgstr "Samo Prvi Matični"
 msgid "First known &bad:"
 msgstr ""
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
-msgstr "Uklopi &veličine slike"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr ""
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
+msgstr ""
 
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
@@ -5003,13 +5023,17 @@ msgstr "ID:32793:V C +V"
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr "ID:32810:V   +Z"
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
 msgstr "ID:32811:V C +U"
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5349,6 +5373,10 @@ msgstr ""
 msgid "In Commits"
 msgstr ""
 
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr ""
+
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr ""
@@ -5572,6 +5600,10 @@ msgid "Line moved to line %ld"
 msgstr "Linija pomereno ka liniji %ld"
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr "Linija:"
 
@@ -5692,7 +5724,7 @@ msgstr "Poruke dnevnika (Ulazni dijalog)"
 msgid "Log messages (Show log dialog)"
 msgstr "Poruke dnevnika (Prikaži dijalog dnevnika)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1760)
 msgid "Login:"
 msgstr ""
 
@@ -5711,6 +5743,10 @@ msgstr "Najniža prikazana revizija: %ld - Najviša prikazana revizija: %ld - HE
 #. Resource IDs: (16973)
 msgid "Lum"
 msgstr "Lum"
+
+#. Resource IDs: (90)
+msgid "MAPI"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "MSysGit"
@@ -6226,6 +6262,10 @@ msgstr "Ne za sve"
 msgid "No working directory found."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Node size"
+msgstr ""
+
 #. Resource IDs: (1272)
 msgid "None"
 msgstr "Ništa"
@@ -6267,6 +6307,10 @@ msgstr "Nema dovoljno memorije!\nPokušajte smanjivanjem veličine revizionog gr
 
 #. Resource IDs: (72)
 msgid "Not patches generated."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Note node"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -6522,6 +6566,10 @@ msgstr "Opcije"
 msgid "Ori&ginal size"
 msgstr "&Originalna veličina"
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr ""
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr "Drugi Panel Zadataka"
@@ -6718,6 +6766,10 @@ msgstr "Prilagodljivi meniji i alatni paneli"
 msgid "Pick"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr ""
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6782,7 +6834,7 @@ msgstr ""
 msgid "Port :"
 msgstr "Port:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1758)
 msgid "Port:"
 msgstr ""
 
@@ -7341,10 +7393,6 @@ msgstr ""
 msgid "Rename/move"
 msgstr "Preimenuj/pomeri"
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr "Preimenovani čvor"
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr ""
@@ -7360,10 +7408,6 @@ msgid ""
 "Replace specific text with different text\n"
 "Replace"
 msgstr "Zameni označeni tekst nekim drugim tekstom\nZameni"
-
-#. Resource IDs: (65535)
-msgid "Replaced node"
-msgstr ""
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7647,8 +7691,12 @@ msgstr "SHA-1"
 msgid "SMTP Server requires authentication"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1757)
 msgid "SMTP Server:"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
 msgstr ""
 
 #. Resource IDs: (1081)
@@ -8027,10 +8075,6 @@ msgstr ""
 
 #. Resource IDs: (1557)
 msgid "Set commit &date"
-msgstr ""
-
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
 msgstr ""
 
 #. Resource IDs: (86)
@@ -8580,10 +8624,6 @@ msgstr ""
 msgid "Style"
 msgstr "Stil"
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr ""
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr ""
@@ -8592,7 +8632,7 @@ msgstr ""
 msgid "Subject:"
 msgstr ""
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr ""
 
@@ -9252,6 +9292,13 @@ msgstr "Složi hori&zontalno"
 msgid "To"
 msgstr ""
 
+#. Resource IDs: (1422)
+msgid ""
+"To avoid fetching wrong tags, if this is not an official remote,\n"
+"you are advised to disable tag fetching for this remote.\n"
+"Disable tag fetching?"
+msgstr ""
+
 #. Resource IDs: (606)
 msgid ""
 "To clear temporary files, you should ensure that no other TortoiseGit "
@@ -9686,10 +9733,6 @@ msgstr "Koristi blokove"
 msgid "Use HTTP path component"
 msgstr ""
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr ""
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "Koristi trake"
@@ -9755,6 +9798,10 @@ msgstr "Koristi levi blok"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Koristi preostali fajl"
+
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr ""
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -9913,7 +9960,7 @@ msgid "Version 1"
 msgstr ""
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
+msgid "Version 1 (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (72, 1645)
@@ -9921,7 +9968,7 @@ msgid "Version 2 (Base)"
 msgstr ""
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
+msgid "Version 2 (Base) (Newer commit time)"
 msgstr ""
 
 #. Resource IDs: (1075)
@@ -10464,6 +10511,10 @@ msgstr ""
 msgid "dummy"
 msgstr "veštačko"
 
+#. Resource IDs: (1580)
+msgid "eMail settings"
+msgstr ""
+
 #. Resource IDs: (79)
 #, c-format
 msgid ""
@@ -10598,6 +10649,10 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "tromesečje"
+
+#. Resource IDs: (65535)
+msgid "renamed"
+msgstr ""
 
 #. Resource IDs: (10)
 msgid "replaced"

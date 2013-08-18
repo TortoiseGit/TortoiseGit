@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-06-28 09:28+0000\n"
-"Last-Translator: shcham <shcham@gmail.com>\n"
+"PO-Revision-Date: 2013-08-11 11:48+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1446,6 +1446,12 @@ msgstr "Ветвь с именем, совпадающем с введённым
 msgid "A branch with this name already exists."
 msgstr "Ветка с таким именем уже существует."
 
+#. Resource IDs: (69)
+msgid ""
+"A merge process is active, so this commit will be a merge commit. In order "
+"to abort a merge, you have to perform a reset or forced checkout."
+msgstr "Процесс слияния активен, поэтому фиксация будет фиксацией слияния. Чтобы отменить слияние, необходимо выполнить восстановление или сброс ветви."
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr "Новая версия доступна. Вы можете скачать текущую версию!"
@@ -1509,6 +1515,18 @@ msgstr "Сокращать переименования"
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "Прервать"
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr "Прервать с&лияние"
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr "Прервать слияние"
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
+msgstr "Прерывает процесс слияния."
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1610,10 +1628,6 @@ msgstr "Добавить/Править программу различий/сл
 #. Resource IDs: (73, 264, 1257, 1549, 65535)
 msgid "Added"
 msgstr "Добавлено"
-
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr "Добавленный узел"
 
 #. Resource IDs: (145)
 #, c-format
@@ -2031,12 +2045,6 @@ msgstr "Основано на TortoiseIDiff из проекта TortoiseSVN"
 msgid "Basic Info"
 msgstr "Основная информация"
 
-#. Resource IDs: (69)
-msgid ""
-"Be warned that email clients tend to automatic wrap lines.\r\n"
-"Recommendation: Use attachments."
-msgstr "Предупреждение: как правило, почтовые клиенты переносят строки автоматически.»\nРекомендация: используйте вложения в письма."
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (Традиционный китайский)"
@@ -2133,6 +2141,10 @@ msgid ""
 "%s will fastforward to %s"
 msgstr "Ветвь %s отстает от %s\n%s и может быть перемотано на %s"
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr "Имя ветви"
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr "Неправильное имя ветви/метки "
@@ -2144,10 +2156,6 @@ msgstr "Имя ветви/метки не должно быть пустым и�
 #. Resource IDs: (1518)
 msgid "Branch:"
 msgstr "Ветвь:"
-
-#. Resource IDs: (68)
-msgid "Branchname"
-msgstr "Имя ветви"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
@@ -2500,6 +2508,10 @@ msgstr "Очистить"
 msgid "Clean Type"
 msgstr "Тип очистки"
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr "Очистить устаревшие отдалённые ветви"
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr "Производится очистка"
@@ -2521,10 +2533,6 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "Очистка успешно обработала следующие пути:\n%s"
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
-msgstr "Очистить устаревшие отдалённые ветви"
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -3261,6 +3269,10 @@ msgid "Credential helper:"
 msgstr "Помощник полномочий:"
 
 #. Resource IDs: (65535)
+msgid "Credentials"
+msgstr "Полномочия"
+
+#. Resource IDs: (65535)
 msgid "Credits:"
 msgstr "Участники:"
 
@@ -3462,10 +3474,6 @@ msgstr "Удалено"
 msgid "Deleted merge conflict"
 msgstr "Удалить конфликты слияния"
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr "Удалённый узел"
-
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
@@ -3490,6 +3498,10 @@ msgstr "Удаление"
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "Удаляются отдалённые ссылки..."
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
+msgstr "Доставка:"
 
 #. Resource IDs: (1002)
 msgid "Description"
@@ -3992,6 +4004,10 @@ msgstr "Случилась неожиданная ошибка при чтени
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "Случилась неожиданная ошибка при записи %1."
+
+#. Resource IDs: (1759)
+msgid "Encryption"
+msgstr "Шифрование"
 
 #. Resource IDs: (1617)
 msgid "End"
@@ -4509,9 +4525,13 @@ msgstr "Только первый предок"
 msgid "First known &bad:"
 msgstr "Первый неудачный:"
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
-msgstr "&Подогнать размеры изображений"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr "Подогнать &высоты изображений"
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
+msgstr "Подогнать &ширину изображений"
 
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
@@ -5009,13 +5029,17 @@ msgstr "ID:32793:V C +V"
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr "ID:32810:V   +T"
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
 msgstr "ID:32811:V C +U"
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr "ID:32817:V +W"
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
+msgstr "ID:32818:V +H"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5355,6 +5379,10 @@ msgstr "В группе изменений"
 msgid "In Commits"
 msgstr "В фиксациях"
 
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr "Для прекращения процесса слияния восстановление (к ГОЛОВНОЙ ветви) необходимо."
+
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr "Включая &метки"
@@ -5578,6 +5606,10 @@ msgid "Line moved to line %ld"
 msgstr "Строка перемещена на строку %ld"
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr "Ширина линии"
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr "Строка:"
 
@@ -5698,7 +5730,7 @@ msgstr "Введённые предыдущие сообщения журнал�
 msgid "Log messages (Show log dialog)"
 msgstr "Полученные кэшированные сообщения журнала"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1760)
 msgid "Login:"
 msgstr "Login:"
 
@@ -5717,6 +5749,10 @@ msgstr "Показанные ревизии: - меньшая: %ld - больш�
 #. Resource IDs: (16973)
 msgid "Lum"
 msgstr "Ярк"
+
+#. Resource IDs: (90)
+msgid "MAPI"
+msgstr "MAPI"
 
 #. Resource IDs: (65535)
 msgid "MSysGit"
@@ -6232,6 +6268,10 @@ msgstr "Нет для всех"
 msgid "No working directory found."
 msgstr "Не найдена рабочая копия"
 
+#. Resource IDs: (65535)
+msgid "Node size"
+msgstr "Размер узла"
+
 #. Resource IDs: (1272)
 msgid "None"
 msgstr "Без кэширования"
@@ -6274,6 +6314,10 @@ msgstr "Недостаточно памяти!\nПопробуйте сокра�
 #. Resource IDs: (72)
 msgid "Not patches generated."
 msgstr "Заплатки не созданы."
+
+#. Resource IDs: (65535)
+msgid "Note node"
+msgstr "Заметка узла"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -6528,6 +6572,10 @@ msgstr "Параметры"
 msgid "Ori&ginal size"
 msgstr "Исходный &размер"
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr "Имя Origin"
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr "Остальные панели задач"
@@ -6724,6 +6772,10 @@ msgstr "Настраиваемые меню и панели инструмент
 msgid "Pick"
 msgstr "Оставить"
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr "Взять хеш фиксации"
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6788,7 +6840,7 @@ msgstr "Всплывающее окно"
 msgid "Port :"
 msgstr "Порт:"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1758)
 msgid "Port:"
 msgstr "Порт:"
 
@@ -7347,10 +7399,6 @@ msgstr "Переименовать - TortoiseGit"
 msgid "Rename/move"
 msgstr "Переименование/перемещение"
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr "Переименованный узел"
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr "Переименовывает файлы/папки внутри управления версиями"
@@ -7366,10 +7414,6 @@ msgid ""
 "Replace specific text with different text\n"
 "Replace"
 msgstr "Заменяет заданный текст другим\nЗаменить"
-
-#. Resource IDs: (65535)
-msgid "Replaced node"
-msgstr "Замещённый узел"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7653,9 +7697,13 @@ msgstr "SHA-1"
 msgid "SMTP Server requires authentication"
 msgstr "SMTP Сервер требует авторизации пользователя"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1757)
 msgid "SMTP Server:"
 msgstr "SMTP Сервер:"
+
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
+msgstr "SMTP, напрямую на сервер назначения"
 
 #. Resource IDs: (1081)
 msgid "SSH"
@@ -8034,10 +8082,6 @@ msgstr "Установить автора"
 #. Resource IDs: (1557)
 msgid "Set commit &date"
 msgstr "Установить дату коммита"
-
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
-msgstr "Настроить SMTP сервер"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8586,10 +8630,6 @@ msgstr "Стратегия"
 msgid "Style"
 msgstr "Стиль"
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr "Подмодуль"
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr "Тема"
@@ -8598,7 +8638,7 @@ msgstr "Тема"
 msgid "Subject:"
 msgstr "Тема:"
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr "Подмодуль"
 
@@ -9258,6 +9298,13 @@ msgstr "Выстроить по &горизонтали"
 msgid "To"
 msgstr "К/в"
 
+#. Resource IDs: (1422)
+msgid ""
+"To avoid fetching wrong tags, if this is not an official remote,\n"
+"you are advised to disable tag fetching for this remote.\n"
+"Disable tag fetching?"
+msgstr "Чтобы избежать неверных меток при извлечении, если это не официальное отдаленное хранилище,⏎\nпредлагаем отключить извлечение меток для этого отдаленного хранилища.⏎\nОтключить извлечение меток?"
+
 #. Resource IDs: (606)
 msgid ""
 "To clear temporary files, you should ensure that no other TortoiseGit "
@@ -9692,10 +9739,6 @@ msgstr "Использовать блоки"
 msgid "Use HTTP path component"
 msgstr "Использовать компонент пути HTTP"
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr "Использовать MAPI"
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "Использовать ленточный интерфейс"
@@ -9761,6 +9804,10 @@ msgstr "Использовать левый блок"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "Использовать левый файл"
+
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr "Использовать цвет локальной ветви для текущей ветви"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -9919,16 +9966,16 @@ msgid "Version 1"
 msgstr "Версия 1"
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
-msgstr "Версия 1 (Новые данные фиксации)"
+msgid "Version 1 (Newer commit time)"
+msgstr "Версия 1 (Более новое время фиксации)"
 
 #. Resource IDs: (72, 1645)
 msgid "Version 2 (Base)"
 msgstr "Версия 2 (Базовая)"
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
-msgstr "Версия 2 (Базовая) (Свежая дата фиксации)"
+msgid "Version 2 (Base) (Newer commit time)"
+msgstr "Версия 2 (Базовая) (Более новое время фиксации)"
 
 #. Resource IDs: (1075)
 msgid "Version Information"
@@ -10470,6 +10517,10 @@ msgstr "глубина"
 msgid "dummy"
 msgstr "пустой"
 
+#. Resource IDs: (1580)
+msgid "eMail settings"
+msgstr "eMail настройки"
+
 #. Resource IDs: (79)
 #, c-format
 msgid ""
@@ -10604,6 +10655,10 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "квартал"
+
+#. Resource IDs: (65535)
+msgid "renamed"
+msgstr "переименованный"
 
 #. Resource IDs: (10)
 msgid "replaced"

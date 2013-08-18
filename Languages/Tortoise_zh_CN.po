@@ -11,14 +11,14 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # weicong <weicong@live.cn>, 2013
-# YFdyh000 Yang <yfdyh000@gmail.com>, 2013
+# Y.F Yang <yfdyh000@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-06-28 09:34+0000\n"
-"Last-Translator: lznuaa <lznuaa@gmail.com>\n"
+"PO-Revision-Date: 2013-08-11 11:48+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1442,6 +1442,12 @@ msgstr "你输入的标签的名字和一个分支的名字相同，\n这可能�
 msgid "A branch with this name already exists."
 msgstr "分支名已存在"
 
+#. Resource IDs: (69)
+msgid ""
+"A merge process is active, so this commit will be a merge commit. In order "
+"to abort a merge, you have to perform a reset or forced checkout."
+msgstr "正在进行合并过程，这个提交是一个合并提交。为了放弃合并，你不得不作一个重置(reset)或者强制签出。"
+
 #. Resource IDs: (201)
 msgid "A newer version is available. Please download the current version!"
 msgstr "新版本发布，请下载!"
@@ -1505,6 +1511,18 @@ msgstr "缩写重命名"
 #. Resource IDs: (2, 73, 1565)
 msgid "Abort"
 msgstr "放弃"
+
+#. Resource IDs: (15)
+msgid "Abort &Merge"
+msgstr "取消合并(&M)"
+
+#. Resource IDs: (4592)
+msgid "Abort Merge"
+msgstr "取消合并"
+
+#. Resource IDs: (15)
+msgid "Aborts a running merge."
+msgstr "放弃进行中的合并"
 
 #. Resource IDs: (156)
 msgid "About"
@@ -1606,10 +1624,6 @@ msgstr "增加/编辑针对扩展名的差异比较/合并工具"
 #. Resource IDs: (73, 264, 1257, 1549, 65535)
 msgid "Added"
 msgstr "已增加"
-
-#. Resource IDs: (65535)
-msgid "Added node"
-msgstr "增加的节点"
 
 #. Resource IDs: (145)
 #, c-format
@@ -2027,12 +2041,6 @@ msgstr "基于TortoiseSVN的TortoiseIDiff "
 msgid "Basic Info"
 msgstr "基本信息"
 
-#. Resource IDs: (69)
-msgid ""
-"Be warned that email clients tend to automatic wrap lines.\r\n"
-"Recommendation: Use attachments."
-msgstr "一般电子邮件客户端往往自动换行。\n建议：使用附件"
-
 #. Resource IDs: (5060)
 msgid "Big5 (Traditional)"
 msgstr "Big5 (繁体)"
@@ -2129,6 +2137,10 @@ msgid ""
 "%s will fastforward to %s"
 msgstr "分支%s是%s的子节点\n%s能直接迁移到%s"
 
+#. Resource IDs: (68)
+msgid "Branch Name"
+msgstr "分支名字"
+
 #. Resource IDs: (64)
 msgid "Branch/Tag name is invalid."
 msgstr "非法分支/标签名字"
@@ -2140,10 +2152,6 @@ msgstr "非法或者空分支/标签名字"
 #. Resource IDs: (1518)
 msgid "Branch:"
 msgstr "分支："
-
-#. Resource IDs: (68)
-msgid "Branchname"
-msgstr "分支名字"
 
 #. Resource IDs: (1383)
 msgid "Bro&wse"
@@ -2496,6 +2504,10 @@ msgstr "清除"
 msgid "Clean Type"
 msgstr "清除类型"
 
+#. Resource IDs: (76)
+msgid "Clean up stale remote banches"
+msgstr "清理过时的远程分支"
+
 #. Resource IDs: (145)
 msgid "Cleaning up"
 msgstr "清理"
@@ -2517,10 +2529,6 @@ msgid ""
 "Cleanup has successfully processed the following paths:\n"
 "%s"
 msgstr "清理以下路径成功: \n%s"
-
-#. Resource IDs: (76)
-msgid "Cleanup stale remote banches"
-msgstr "清理过时的远程分支"
 
 #. Resource IDs: (1273, 1275, 1276, 1279, 1281, 1427)
 msgid "Clear"
@@ -3257,6 +3265,10 @@ msgid "Credential helper:"
 msgstr "凭证助手:"
 
 #. Resource IDs: (65535)
+msgid "Credentials"
+msgstr "凭证"
+
+#. Resource IDs: (65535)
 msgid "Credits:"
 msgstr "贡献者: "
 
@@ -3458,10 +3470,6 @@ msgstr "已删除"
 msgid "Deleted merge conflict"
 msgstr "删除分支合并冲突"
 
-#. Resource IDs: (65535)
-msgid "Deleted node"
-msgstr "删除的节点"
-
 #. Resource IDs: (23)
 msgid ""
 "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
@@ -3486,6 +3494,10 @@ msgstr "正在删除"
 #. Resource IDs: (88)
 msgid "Deleting remote refs..."
 msgstr "删除远程引用..."
+
+#. Resource IDs: (65535)
+msgid "Delivery:"
+msgstr "发布"
 
 #. Resource IDs: (1002)
 msgid "Description"
@@ -3988,6 +4000,10 @@ msgstr "读取 %1 时意外出错。"
 #, c-format
 msgid "Encountered an unexpected error while writing %1."
 msgstr "写入 %1 时意外出错。"
+
+#. Resource IDs: (1759)
+msgid "Encryption"
+msgstr "加密"
 
 #. Resource IDs: (1617)
 msgid "End"
@@ -4505,9 +4521,13 @@ msgstr "第一个父亲节点"
 msgid "First known &bad:"
 msgstr "一个已知问题版本(&B)"
 
-#. Resource IDs: (32810)
-msgid "Fit image &sizes"
-msgstr "优化图像显示尺寸(&S)"
+#. Resource IDs: (32818)
+msgid "Fit image &heights"
+msgstr "适合图像高度(&H)"
+
+#. Resource IDs: (32817)
+msgid "Fit image &widths"
+msgstr "适合图像宽度(&W)"
 
 #. Resource IDs: (1315)
 msgid "Floppy drives (A: B:)"
@@ -5005,13 +5025,17 @@ msgstr "ID:32793:V C +V"
 msgid "ID:32794:V C +R"
 msgstr "ID:32794:V C +R"
 
-#. Accelerator Entry for Menu ID:32810; 'Fit image &sizes'
-msgid "ID:32810:V   +T"
-msgstr "ID:32810:V   +T"
-
 #. Accelerator Entry for Menu ID:32811; ''
 msgid "ID:32811:V C +U"
 msgstr "ID:32811:V C +U"
+
+#. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
+msgid "ID:32817:V   +W"
+msgstr "ID:32817:V   +W"
+
+#. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
+msgid "ID:32818:V   +H"
+msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5351,6 +5375,10 @@ msgstr "在改变列表中"
 msgid "In Commits"
 msgstr "在提交中"
 
+#. Resource IDs: (1649)
+msgid "In order to abort a merge progess a reset (to HEAD) is needed."
+msgstr "为了放弃合并过程，需要一个重置(reset)操作"
+
 #. Resource IDs: (1499)
 msgid "Include &Tags"
 msgstr "包含标签(&T)"
@@ -5574,6 +5602,10 @@ msgid "Line moved to line %ld"
 msgstr "行移动到%ld"
 
 #. Resource IDs: (65535)
+msgid "Line width"
+msgstr "行宽度"
+
+#. Resource IDs: (65535)
 msgid "Line:"
 msgstr "行:"
 
@@ -5694,7 +5726,7 @@ msgstr "日志信息(输入对话框)"
 msgid "Log messages (Show log dialog)"
 msgstr "日志信息(显示日志对话框)"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1760)
 msgid "Login:"
 msgstr "用户名:"
 
@@ -5713,6 +5745,10 @@ msgstr "最低显示版本 %ld - 最高显示版本: %ld - 最新版本: %ld"
 #. Resource IDs: (16973)
 msgid "Lum"
 msgstr "亮度"
+
+#. Resource IDs: (90)
+msgid "MAPI"
+msgstr "MAPI"
 
 #. Resource IDs: (65535)
 msgid "MSysGit"
@@ -6228,6 +6264,10 @@ msgstr "全部选否"
 msgid "No working directory found."
 msgstr "没有找到工作目录"
 
+#. Resource IDs: (65535)
+msgid "Node size"
+msgstr "节点大小"
+
 #. Resource IDs: (1272)
 msgid "None"
 msgstr "无"
@@ -6270,6 +6310,10 @@ msgstr "内存不足！\n尝试折叠节点或减少缩放比例\n以减少版�
 #. Resource IDs: (72)
 msgid "Not patches generated."
 msgstr "没补丁创建"
+
+#. Resource IDs: (65535)
+msgid "Note node"
+msgstr "注释节点"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -6524,6 +6568,10 @@ msgstr "选项"
 msgid "Ori&ginal size"
 msgstr "原始大小(&G)"
 
+#. Resource IDs: (1531)
+msgid "Origin Name"
+msgstr "原始名字"
+
 #. Resource IDs: (1065)
 msgid "Other Task Panes"
 msgstr "其它任务窗格"
@@ -6720,6 +6768,10 @@ msgstr "个人菜单和工具栏"
 msgid "Pick"
 msgstr "选取"
 
+#. Resource IDs: (90)
+msgid "Pick commit hash"
+msgstr "摘取提交hash"
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6784,7 +6836,7 @@ msgstr "弹出"
 msgid "Port :"
 msgstr "端口: "
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1758)
 msgid "Port:"
 msgstr "端口:"
 
@@ -7343,10 +7395,6 @@ msgstr "重命名 - TortoiseGit"
 msgid "Rename/move"
 msgstr "重命名/移动"
 
-#. Resource IDs: (65535)
-msgid "Renamed node"
-msgstr "改名的节点"
-
 #. Resource IDs: (11)
 msgid "Renames files/folders inside version control"
 msgstr "重命名版本控制树中的文件/文件夹"
@@ -7362,10 +7410,6 @@ msgid ""
 "Replace specific text with different text\n"
 "Replace"
 msgstr "用指定的文字替换特定文字\n替换"
-
-#. Resource IDs: (65535)
-msgid "Replaced node"
-msgstr "替换的节点"
 
 #. Resource IDs: (74)
 msgid "Replacing"
@@ -7649,9 +7693,13 @@ msgstr "SHA-1"
 msgid "SMTP Server requires authentication"
 msgstr "SMTP服务器要求授权"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1757)
 msgid "SMTP Server:"
 msgstr "SMTP服务器地址:"
+
+#. Resource IDs: (90)
+msgid "SMTP, directly to destination server"
+msgstr "SMTP，直连到目标服务器"
 
 #. Resource IDs: (1081)
 msgid "SSH"
@@ -8030,10 +8078,6 @@ msgstr "设置作者(&t)"
 #. Resource IDs: (1557)
 msgid "Set commit &date"
 msgstr "设置提交日期(&D)"
-
-#. Resource IDs: (1580)
-msgid "Set up SMTP Server"
-msgstr "设置 SMTP服务器"
 
 #. Resource IDs: (86)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -8582,10 +8626,6 @@ msgstr "策略"
 msgid "Style"
 msgstr "风格"
 
-#. Resource IDs: (1639)
-msgid "SubModule"
-msgstr "子模块"
-
 #. Resource IDs: (1, 65)
 msgid "Subject"
 msgstr "标题"
@@ -8594,7 +8634,7 @@ msgstr "标题"
 msgid "Subject:"
 msgstr "标题:"
 
-#. Resource IDs: (1302)
+#. Resource IDs: (1639)
 msgid "Submodule"
 msgstr "子模块"
 
@@ -9254,6 +9294,13 @@ msgstr "水平标题(&z)"
 msgid "To"
 msgstr "收件人"
 
+#. Resource IDs: (1422)
+msgid ""
+"To avoid fetching wrong tags, if this is not an official remote,\n"
+"you are advised to disable tag fetching for this remote.\n"
+"Disable tag fetching?"
+msgstr "如果这不是一个官方的远程，为了避免获取错误的标签，建议你关闭获取标签选项。\n关闭获取标签吗？"
+
 #. Resource IDs: (606)
 msgid ""
 "To clear temporary files, you should ensure that no other TortoiseGit "
@@ -9688,10 +9735,6 @@ msgstr "使用块"
 msgid "Use HTTP path component"
 msgstr "使用Http路径组件"
 
-#. Resource IDs: (1482)
-msgid "Use MAPI"
-msgstr "使用MAPI"
-
 #. Resource IDs: (1066)
 msgid "Use Ribbons"
 msgstr "使用Ribbons"
@@ -9757,6 +9800,10 @@ msgstr "使用左边文件块"
 #. Resource IDs: (32856)
 msgid "Use left file"
 msgstr "使用左边的文件"
+
+#. Resource IDs: (1762)
+msgid "Use local branch color for current branch"
+msgstr "当前分支颜色使用本地分支颜色"
 
 #. Resource IDs: (1432)
 msgid "Use recycle bin when reverting"
@@ -9915,7 +9962,7 @@ msgid "Version 1"
 msgstr "版本1"
 
 #. Resource IDs: (72)
-msgid "Version 1 (Commit Data New)"
+msgid "Version 1 (Newer commit time)"
 msgstr "版本1(提交日期更新)"
 
 #. Resource IDs: (72, 1645)
@@ -9923,7 +9970,7 @@ msgid "Version 2 (Base)"
 msgstr "版本2(基础)"
 
 #. Resource IDs: (72)
-msgid "Version 2 (Base) (Commit Date New)"
+msgid "Version 2 (Base) (Newer commit time)"
 msgstr "版本2(基础)(提交日期更新)"
 
 #. Resource IDs: (1075)
@@ -10466,6 +10513,10 @@ msgstr "深度"
 msgid "dummy"
 msgstr "虚拟"
 
+#. Resource IDs: (1580)
+msgid "eMail settings"
+msgstr "邮件设置"
+
 #. Resource IDs: (79)
 #, c-format
 msgid ""
@@ -10600,6 +10651,10 @@ msgstr "prn"
 #. Resource IDs: (245)
 msgid "quarter of year"
 msgstr "季度"
+
+#. Resource IDs: (65535)
+msgid "renamed"
+msgstr "重命名"
 
 #. Resource IDs: (10)
 msgid "replaced"
