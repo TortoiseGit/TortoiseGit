@@ -5,7 +5,7 @@
 		<term><guilabel>HEAD</guilabel></term>
 		<listitem>
 			<para>
-				Current branch latest commit. 
+				Current commit checked out.
 			</para>
 		</listitem>
 	</varlistentry>
@@ -20,21 +20,21 @@
 	</varlistentry>
 	
 	<varlistentry>
-		<term><guilabel>Tags</guilabel></term>
+		<term><guilabel>Tag</guilabel></term>
 		<listitem>
 			<para>
-				The commit of chosen Tag.
+				The commit of chosen tag.
 			</para>
 		</listitem>
 	</varlistentry>
 	
 	<varlistentry>
-		<term><guilabel>Version</guilabel></term>
+		<term><guilabel>Commit</guilabel></term>
 		<listitem>
 			<para>
 				Any commit, you click <guibutton>...</guibutton> to launch log
 				dialog to choose commit. You also can input commit hash, or 
-				friend version name, such as HEAD~4. 
+				friendly commit name, such as HEAD~4. 
 			</para>
 		</listitem>
 	</varlistentry>

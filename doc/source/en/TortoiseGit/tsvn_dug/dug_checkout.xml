@@ -219,8 +219,9 @@
 	-->
 	<important>
 		<para>
-			If you checkout\switch to <guilabel>Tags</guilabel> or <guilabel>Version</guilabel>
-			prefer you create new branch for it, otherwise you will work at "no branch".
+			If you checkout/switch to <guilabel>Tag</guilabel> or <guilabel>Commit</guilabel>,
+			it is preferred that you create a new branch for it, otherwise you will
+			work at "no branch" (detached HEAD state).
 		</para>
 	</important>
 	
