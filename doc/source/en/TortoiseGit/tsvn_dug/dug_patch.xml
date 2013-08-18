@@ -131,16 +131,6 @@ and
 			<guilabel>Combine One Mail</guilabel> adds all patches to one mail. You have to enter a <guilabel>Subject</guilabel>
 			for the mail in this case.
 		</para>
-		<para>
-			<guilabel>Use MAPI</guilabel> uses the Windows MAPI interface for sending the mails. This requires a MUA to be configured on your system.
-		</para>
-		<important>
-			<para>
-				If you do not select <guilabel>Use MAPI</guilabel> mails are delivered via SMTP directly to the destination MTA.
-				This might be problematic if your ISP blocks outgoing SMTP connections (port 25) or you have a dialup internet connection.
-				In the ladder case the destination MTA might not accept your mails or marks them as SPAM.
-			</para>
-		</important>
 	</sect2>
 	<sect2 id="tsvn-dug-patch-applysinglepatch">
 		<title>Applying a single Patch File</title>

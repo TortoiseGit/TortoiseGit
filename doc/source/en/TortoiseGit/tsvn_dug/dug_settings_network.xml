@@ -71,4 +71,57 @@
 			<citetitle>Git/TortoiseGit SSH How-To</citetitle>
 		</ulink>.
 	</para>
+
+	<sect3 id="tsvn-dug-settings-network-email">
+		<title>Email settings</title>
+		<?dbhh topicname="HIDD_SETTINGSMTP"?>
+		<para>
+			<figure id="tsvn-dug-settings-network-email">
+				<title>The Settings Dialog, email settings</title>
+				<graphic fileref="../images/SettingsEmail.png"/>
+			</figure>
+			This page allows you to specify configure how mails should be send.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>SMTP, directly to destination server</term>
+				<listitem>
+					<para>
+						When this option is selected, TortoiseGit directly connects to the SMTP server(s) (on port 25)
+						which is/are responsible for the specific destination email-address(es).
+						This is the default for TortoiseGit (unless some different method is configured).
+					</para>
+					<important>
+						<para>
+							This might be problematic if your ISP blocks outgoing SMTP connections (port 25) or you have a dialup internet connection.
+							In the ladder case some destination MTAs might not accept your mails or mark them as SPAM.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>MIME</term>
+				<listitem>
+					<para>
+						When this option is selected, TortoiseGit uses the Microsoft MIME-API for sending mails.
+						For this, you need a MAPI capable mail client (e.g. Thunderbird or Outlook).
+					</para>
+					<important>
+						<para>
+							If you don't send patches as attachments, you might need to make sure that no auto line wrapping takes place.
+							For Thunderbird there is an add-on (<ulink url="https://addons.mozilla.org/de/thunderbird/addon/toggle-word-wrap/"><citetitle>Toggle Word Wrap</citetitle></ulink>) available.
+						</para>
+					</important>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>use configured server</term>
+				<listitem>
+					<para>
+						This is the recommended way for sending mails. Just enter the same data as in your mail tools (MUA).
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect3>
 </sect2>
