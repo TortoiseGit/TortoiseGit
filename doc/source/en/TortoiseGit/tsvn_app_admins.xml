@@ -56,6 +56,9 @@
 			TortoiseGit automatically finds <filename>git.exe</filename> if a normal msysgit installation is on the computer
 			or git.exe is on the <emphasis>PATH</emphasis> (and is runnable in a normal cmd.exe session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysgit development package).
 		</para>
+		<para>
+			For completely disabling automatic update checking see <emphasis>VersionCheck</emphasis> in <xref linkend="tsvn-dug-settings-registry"/>.
+		</para>
 	</sect1>
 	<sect1 id="tsvn-admins-upgradecheck">
 		<title>Redirect the upgrade check</title>
@@ -80,15 +83,17 @@
 		<para>
 			If you're responsible for a lot of users in your domain, you might want
 			your users to use only versions you have approved and not have them install
-			always the latest version (or to save bandwidth). You probably don't want that upgrade dialog
-			to show up so your users don't go and upgrade immediately.
+			always the latest version (or to save bandwidth or want to add some further notes for installation). You probably don't want that upgrade dialog
+			to show up so your users don't go and upgrade immediately (to disable update checking at all (e.g. because you use group policies to deploy TortoiseGit, see <xref linkend="tsvn-admins-grouppolicies"/> and/or <emphasis>VersionCheck</emphasis> in <xref linkend="tsvn-dug-settings-registry"/>).
 		</para>
 		<para>
 			TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
 			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, HKCU overrides HKLM)
-			to an URL pointing to a text file in your intranet (default is <ulink url="http://version.tortoisegit.googlecode.com/git/version.txt">http://version.tortoisegit.googlecode.com/git/version.txt</ulink>). That text file must have
-			the following format:
+			to an URL pointing to a text file in your intranet (default is <ulink url="http://version.tortoisegit.googlecode.com/git/version.txt">http://version.tortoisegit.googlecode.com/git/version.txt</ulink>).
+			When the default version.txt file is used, it is checked by verifying a digital signature (<ulink url="http://version.tortoisegit.googlecode.com/git/version.txt.asc">http://version.tortoisegit.googlecode.com/git/version.txt.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
+			The check for the digital signature of the version.txt file is omitted if the location is overridden in registry.
+			That text file must have the following format:
 <screen>
 X.X.X.X
 A new version of TortoiseGit is available for you to download!
@@ -114,9 +119,12 @@ http://192.168.2.1/downloads/TortoiseGit/
 			Starting from this line, one can advertise language packs (one per line: Four digit country code;ISO Country code).
 		</para>
 		<para>
-			Clicking on <guibutton>Download</guibutton> downloads the selected files to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename> (Vista or later) or
+			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename> (Vista or later) or
 			<filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx">CSIDL_PERSONAL</ulink>\Downloads</filename> or <filename>CSIDL_PERSONAL</filename>.
 			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
+		</para>
+		<para>
+			If you want to distribute your own modified TortoiseGit packages in your network, you have to put your own GPG key into TortoiseGit and sign the .msi-files with this key or deactivate the signature verification completely.
 		</para>
 	</sect1>
 	<sect1 id="tsvn-admins-disablemenus">
