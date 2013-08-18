@@ -702,6 +702,10 @@
 			to control how this is handled.
 		</para>
 		<para>
+			The statistics dialog also honours the .mailmap file
+			(see <xref linkend="git-blame(1)__mapping_authors"/>).
+		</para>
+		<para>
 			Note that the statistics cover the same period as the
 			Log dialog. If that is only displaying one revision
 			then the statistics will not tell you very much.
