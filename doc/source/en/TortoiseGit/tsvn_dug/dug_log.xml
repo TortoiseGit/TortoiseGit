@@ -603,10 +603,6 @@
 		</para>
 -->
 		<para>
-			Note that these filters act on the messages already retrieved.
-			They do not control downloading of messages from the repository.
-		</para>
-		<para>
 			You can also filter the path names in the bottom pane using the
 			<guilabel>Hide unrelated changed paths</guilabel> checkbox.
 			Related paths are those which contain the path used to display
@@ -715,9 +711,7 @@
 		<title>Refreshing the View</title>
 		<para>
 			If you want to check the repository again for newer log messages,
-			you can simply refresh the view using <keycap>F5</keycap>. If you
-			are using the log cache (enabled by default), this will check the
-			repository for newer messages and fetch only the new ones.
+			you can simply refresh the view using <keycap>F5</keycap>.
 		</para>
 	</sect2>
 </sect1>
