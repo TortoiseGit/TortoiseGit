@@ -6,9 +6,10 @@
     <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{7f23743b-e9e6-4ddb-97de-74a889176808}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TortoiseGit-LanguagePack-sr@latin</OutputName>
+    <OutputName>TortoiseGit-LanguagePack-sr-latin</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <Name>Lang_sr-latin</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>

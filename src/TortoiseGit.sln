@@ -222,7 +222,7 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_hu", "..\Languages\Lan
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_sr@latin", "..\Languages\Lang_sr@latin.wixproj", "{7F23743B-E9E6-4DDB-97DE-74A889176808}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Lang_sr-latin", "..\Languages\Lang_sr-latin.wixproj", "{7F23743B-E9E6-4DDB-97DE-74A889176808}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EC88E7EC-3074-4841-BA45-B938D098EFF6} = {EC88E7EC-3074-4841-BA45-B938D098EFF6}
 	EndProjectSection
