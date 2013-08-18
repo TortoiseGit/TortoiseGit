@@ -1,5 +1,5 @@
 ﻿= Release 1.8.5.0 =
-Released: Unreleased
+Released: 2013-08-18
 
 == Features ==
  * Fixed issue #1831: Allow Origin Remote Renaming on Clone
@@ -20,6 +20,8 @@ Released: Unreleased
 == Bug Fixes ==
  * Fixed issue #1833: Fast-Forward rebase does not preserve SHA-1 of commits
  * Fixed issue #1832: TortoiseGitMerge has an empty menue when German language pack is loaded
+ * Fixed issue #497: TGitCache.exe won't let user delete folder
+ * Mitigated issue #1011: "git svn" commands create "sys$command" file
 
 = Release 1.8.4.0 =
 Released: 2013-07-09
