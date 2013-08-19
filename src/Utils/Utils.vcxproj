@@ -118,6 +118,7 @@
     <ClCompile Include="JumpListHelpers.cpp" />
     <ClCompile Include="LangDll.cpp" />
     <ClCompile Include="MailMsg.cpp" />
+    <ClCompile Include="MiscUI\IconBitmapUtils.cpp" />
     <ClCompile Include="PathUtils.cpp" />
     <ClCompile Include="PathWatcher.cpp" />
     <ClCompile Include="PersonalDictionary.cpp" />

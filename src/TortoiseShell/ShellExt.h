@@ -25,7 +25,7 @@
 #include "RemoteCacheLink.h"
 #include "GitStatus.h"
 #include "GitFolderStatus.h"
-#include "uxtheme.h"
+#include "IconBitmapUtils.h"
 #include "MenuInfo.h"
 #include "CrashReport.h"
 #include "../version.h"
@@ -55,13 +55,6 @@ extern LPCTSTR				g_MenuIDString;
 extern	void				LoadLangDll();
 extern  CComCriticalSection	g_csGlobalCOMGuard;
 typedef CComCritSecLock<CComCriticalSection> AutoLocker;
-
-typedef DWORD ARGB;
-
-typedef HRESULT (WINAPI *FN_GetBufferedPaintBits) (HPAINTBUFFER hBufferedPaint, RGBQUAD **ppbBuffer, int *pcxRow);
-typedef HPAINTBUFFER (WINAPI *FN_BeginBufferedPaint) (HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS *pPaintParams, HDC *phdc);
-typedef HRESULT (WINAPI *FN_EndBufferedPaint) (HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
-
 
 // The actual OLE Shell context menu handler
 /**
@@ -108,14 +101,10 @@ protected:
 	stdstring ignoredprops;
 	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
 	git_wc_status_kind	filestatus;
-	std::map<UINT, HBITMAP> bitmaps;
 
 	GitFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;
-
-	FN_GetBufferedPaintBits pfnGetBufferedPaintBits;
-	FN_BeginBufferedPaint pfnBeginBufferedPaint;
-	FN_EndBufferedPaint pfnEndBufferedPaint;
+	IconBitmapUtils		m_iconBitmapUtils;
 
 #if ENABLE_CRASHHANLDER
 	CCrashReportTGit	m_crasher;
@@ -136,15 +125,9 @@ private:
 	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
 	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command);
 	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
-	HBITMAP			IconToBitmap(UINT uIcon);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(std::wstring folder, int * cslidarray);
 	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
-	HBITMAP			IconToBitmapPARGB32(UINT uIcon);
-	HRESULT			Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp);
-	HRESULT			ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE& sizIcon);
-	bool			HasAlpha(__in ARGB *pargb, SIZE& sizImage, int cxRow);
-	HRESULT			ConvertToPARGB32(HDC hdc, __inout ARGB *pargb, HBITMAP hbmp, SIZE& sizImage, int cxRow);
 
 	/** \name IContextMenu2 wrappers
 	 * IContextMenu2 wrapper functions to catch exceptions and send crash reports

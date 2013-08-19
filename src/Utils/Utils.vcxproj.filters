@@ -192,6 +192,9 @@
     <ClCompile Include="DebugOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MiscUI\IconBitmapUtils.cpp">
+      <Filter>MiscUi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ACEdit.h">

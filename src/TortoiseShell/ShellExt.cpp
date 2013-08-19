@@ -54,15 +54,6 @@ CShellExt::CShellExt(FileState state)
 	};
 	InitCommonControlsEx(&used);
 	LoadLangDll();
-
-	if (SysInfo::Instance().IsVistaOrLater())
-	{
-		HMODULE hUxTheme = ::GetModuleHandle (_T("UXTHEME.DLL"));
-
-		pfnGetBufferedPaintBits = (FN_GetBufferedPaintBits)::GetProcAddress(hUxTheme, "GetBufferedPaintBits");
-		pfnBeginBufferedPaint = (FN_BeginBufferedPaint)::GetProcAddress(hUxTheme, "BeginBufferedPaint");
-		pfnEndBufferedPaint = (FN_EndBufferedPaint)::GetProcAddress(hUxTheme, "EndBufferedPaint");
-	}
 }
 
 CShellExt::~CShellExt()
