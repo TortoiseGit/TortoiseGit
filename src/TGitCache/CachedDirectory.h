@@ -44,7 +44,7 @@ public:
 	CStatusCacheEntry GetCacheStatusForMember(const CTGitPath& path);
 
 	// If path is not emtpy, means fetch special file status.
-	int EnumFiles(CTGitPath *path = NULL, bool isFull=true);
+	int EnumFiles(const CTGitPath &path, bool isFull = true);
 	CStatusCacheEntry GetOwnStatus(bool bRecursive);
 	bool IsOwnStatusValid() const;
 	void Invalidate();

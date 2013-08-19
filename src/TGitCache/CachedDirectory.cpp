@@ -335,7 +335,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, CStr
 	}
 	else
 	{
-		EnumFiles((CTGitPath*)&path, TRUE);
+		EnumFiles(path, TRUE);
 		UpdateCurrentStatus();
 		return CStatusCacheEntry(m_ownStatus);
 	}
@@ -403,25 +403,18 @@ CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& pat
 	return CStatusCacheEntry();
 }
 
-int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
+int CCachedDirectory::EnumFiles(const CTGitPath &path , bool IsFull)
 {
 	CString sProjectRoot;
-	if(path)
-		path->HasAdminDir(&sProjectRoot);
-	else
-		m_directoryPath.HasAdminDir(&sProjectRoot);
+	path.HasAdminDir(&sProjectRoot);
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": EnumFiles %s\n"), path->GetWinPath());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": EnumFiles %s\n"), path.GetWinPath());
 
 	ATLASSERT( !m_directoryPath.IsEmpty() );
 
 	CString sSubPath;
 
-	CString s;
-	if(path)
-		s=path->GetWinPath();
-	else
-		s=m_directoryPath.GetDirectory().GetWinPathString();
+	CString s = path.GetWinPath();
 
 	if (s.GetLength() > sProjectRoot.GetLength())
 	{
@@ -439,7 +432,7 @@ int CCachedDirectory::EnumFiles(CTGitPath *path , bool IsFull)
 	UNREFERENCED_PARAMETER(pStatus);
 	git_wc_status_kind status = git_wc_status_none;
 
-	if(!path->IsDirectory())
+	if (!path.IsDirectory())
 	{
 		bool assumeValid = false;
 		bool skipWorktree = false;
