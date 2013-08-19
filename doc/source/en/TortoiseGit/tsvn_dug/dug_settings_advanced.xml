@@ -282,6 +282,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">ShowAppContextMenuIcons</term>
+            <listitem>
+                <para>
+                    If you don't want TortoiseGit to show icons for the context menus
+                    in its own dialogs, set this value to <literal>false</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">ShowListBackgroundImage</term>
             <listitem>
                 <para>
