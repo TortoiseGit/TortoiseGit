@@ -568,6 +568,20 @@ Don't touch these lines:
 							<entry>
 								Shows the revision graph for the path given in
 								<option>/path</option>.
+								<para>
+								To create an image file of the revision graph for a specific path, but
+								without showing the graph window, pass <option>/output:path</option>
+								with the path to the output file. The output file must have
+								an extension that the revision graph can actually
+								export to. These are:
+								<literal>.svg</literal>,
+								<literal>.wmf</literal>,
+								<literal>.gv</literal>,
+								<literal>.png</literal>,
+								<literal>.jpg</literal>,
+								<literal>.bmp</literal> and
+								<literal>.gif</literal>.
+								</para>
 							</entry>
 						</row>
 						<row>
