@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "stdafx.h"
-#include "ShellExt.h"
+#include "ShellCache.h"
 #include "GitFolderStatus.h"
 #include "UnicodeUtils.h"
 #include "..\TGitCache\CacheInterface.h"
