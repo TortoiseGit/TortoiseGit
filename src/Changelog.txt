@@ -1,4 +1,10 @@
-﻿= Release 1.8.5.0 =
+﻿= Release 1.8.6.0 =
+Released: Unreleased
+
+== Features ==
+ * Revision Graph: Can generate output graph file through command line
+
+= Release 1.8.5.0 =
 Released: 2013-08-18
 
 == Features ==

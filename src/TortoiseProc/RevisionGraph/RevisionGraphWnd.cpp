@@ -1756,27 +1756,12 @@ LRESULT CRevisionGraphWnd::OnWorkerThreadDone(WPARAM, LPARAM)
 
 	Invalidate(FALSE);
 
-#if 0
-	SVN svn;
-	LogCache::CRepositoryInfo& cachedProperties
-		= svn.GetLogCachePool()->GetRepositoryInfo();
-
-	CSyncPointer<const CFullHistory> fullHistoy (m_state.GetFullHistory());
-	if (fullHistoy.get() != NULL)
-	{
-		SetDlgTitle (cachedProperties.IsOffline
-			( fullHistoy->GetRepositoryUUID()
-			, fullHistoy->GetRepositoryRoot()
-			, false));
-	}
-
 	if (m_parent && !m_parent->GetOutputFile().IsEmpty())
 	{
 		// save the graph to the output file and exit
 		SaveGraphAs(m_parent->GetOutputFile());
 		PostQuitMessage(0);
 	}
-#endif
 	return 0;
 }
 
