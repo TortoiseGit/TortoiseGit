@@ -173,7 +173,6 @@
     <ClInclude Include="MailMsg.h" />
     <ClInclude Include="SmartHandle.h" />
     <ClInclude Include="SoundUtils.h" />
-    <ClInclude Include="strconv.h" />
     <ClInclude Include="SysInfo.h" />
     <ClInclude Include="TaskbarUUID.h" />
     <ClInclude Include="TempFile.h" />

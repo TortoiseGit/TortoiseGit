@@ -49,7 +49,7 @@
 
 #include "stdafx.h"
 #include "MailMsg.h"
-#include "strconv.h"
+#include "UnicodeUtils.h"
 
 CMailMsg::CMailMsg()
 {
@@ -68,30 +68,22 @@ CMailMsg::~CMailMsg()
 
 void CMailMsg::SetFrom(CString sAddress)
 {  
-	strconv_t strconv;
-	LPCSTR lpszAddress = strconv.t2a(sAddress.GetBuffer(0));
-	m_from = lpszAddress;
+	m_from = CUnicodeUtils::GetUTF8(sAddress);
 }
 
 void CMailMsg::SetTo(CString sAddress)
 {
-	strconv_t strconv;
-	LPCSTR lpszAddress = strconv.t2a(sAddress.GetBuffer(0));
-	m_to = lpszAddress;
+	m_to = CUnicodeUtils::GetUTF8(sAddress);
 }
 
 void CMailMsg::SetSubject(CString sSubject)
 {
-	strconv_t strconv;
-	LPCSTR lpszSubject = strconv.t2a(sSubject.GetBuffer(0));
-	m_sSubject = lpszSubject;
+	m_sSubject = CUnicodeUtils::GetUTF8(sSubject);
 }
 
 void CMailMsg::SetMessage(CString sMessage) 
 {
-	strconv_t strconv;
-	LPCSTR lpszMessage = strconv.t2a(sMessage.GetBuffer(0));
-	m_sMessage = lpszMessage;
+	m_sMessage = CUnicodeUtils::GetUTF8(sMessage);
 };
 
 void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
@@ -101,15 +93,11 @@ void CMailMsg::SetShowComposeDialog(BOOL showComposeDialog)
 
 void CMailMsg::AddCC(CString sAddress)
 {
-	strconv_t strconv;
-	LPCSTR lpszAddress = strconv.t2a(sAddress.GetBuffer(0));
-	m_cc.push_back(lpszAddress);
+	m_cc.push_back((std::string)CUnicodeUtils::GetUTF8(sAddress));
 }
 
 void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
 {
-	strconv_t strconv;
-	LPCSTR lpszAttachment = strconv.t2a(sAttachment.GetBuffer(0));
 	if (sTitle.IsEmpty())
 	{
 		int position = sAttachment.ReverseFind(_T('\\'));
@@ -122,8 +110,7 @@ void CMailMsg::AddAttachment(CString sAttachment, CString sTitle)
 			sTitle = sAttachment;
 		}
 	}
-	LPCSTR lpszTitle = strconv.t2a(sTitle.GetBuffer(0));
-	m_attachments[lpszAttachment] = lpszTitle;
+	m_attachments[(LPCSTR)CUnicodeUtils::GetUTF8(sAttachment)] = CUnicodeUtils::GetUTF8(sTitle);
 }
 
 BOOL CMailMsg::DetectMailClient(CString& sMailClientName)

@@ -224,9 +224,6 @@
     <ClInclude Include="SoundUtils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="strconv.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SysInfo.h">
       <Filter>Source Files</Filter>
     </ClInclude>
