@@ -268,7 +268,11 @@ public:
 		__time64_t now;
 		_time64(&now);
 
-		if ((now - compiletime)<(60*60*24*31*4))
+#if PREVIEW
+		if ((now - compiletime) < (60 * 60 * 24 * 7 * 5))
+#else
+		if ((now - compiletime) < (60 * 60 * 24 * 7 * 10))
+#endif
 		{
 			ApplicationInfo appInfo;
 			memset(&appInfo, 0, sizeof(appInfo));
