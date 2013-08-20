@@ -165,6 +165,7 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_REPOTREE, &CRepositoryBrowser::OnTvnSelchangedRepoTree)
 	ON_WM_CONTEXTMENU()
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_REPOLIST, &CRepositoryBrowser::OnLvnColumnclickRepoList)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_REPOLIST, &CRepositoryBrowser::OnLvnItemchangedRepolist)
 	ON_NOTIFY(NM_DBLCLK, IDC_REPOLIST, &CRepositoryBrowser::OnNMDblclk_RepoList)
 	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 	ON_WM_SETCURSOR()
@@ -189,6 +190,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	AddAnchor(IDC_REPOTREE, TOP_LEFT, BOTTOM_LEFT);
 	AddAnchor(IDC_REPOLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
+	AddAnchor(IDC_INFOLABEL, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
@@ -513,16 +515,23 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 
 void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 {
+	size_t files = 0, submodules = 0;
 	for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
 	{
 		int icon = m_nIconFolder;
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
+		{
 			icon = SYS_IMAGE_LIST().GetFileIconIndex((*itShadowTree).second.m_sName);
+			++files;
+		}
 
 		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
 
 		if ((*itShadowTree).second.m_bSubmodule)
+		{
 			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXTERNAL), LVIS_OVERLAYMASK);
+			++submodules;
+		}
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{
@@ -541,6 +550,38 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 	m_RepoList.SortItemsEx(&CRepoListCompareFunc::StaticCompare, (DWORD_PTR)&compareFunc);
 
 	SetSortArrowA(&m_RepoList, m_currSortCol, !m_currSortDesc);
+
+	CString temp;
+	temp.FormatMessage(IDS_REPOBROWSE_INFO, (LPCTSTR)pTree->m_sName, files, submodules, pTree->m_ShadowTree.size() - files - submodules, pTree->m_ShadowTree.size());
+	SetDlgItemText(IDC_INFOLABEL, temp);
+}
+
+void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	*pResult = 0;
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if (pNMLV->uChanged & LVIF_STATE)
+	{
+		if ((pNMLV->uNewState & LVIS_SELECTED) &&
+			(pNMLV->iItem >= 0) &&
+			(pNMLV->iItem < m_RepoList.GetItemCount()))
+		{
+			CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNMLV->iItem);
+			if (pItem)
+			{
+				CString temp;
+				if (pItem->m_bSubmodule)
+					temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name), pItem->m_hash.ToString());
+				else if (pItem->m_bFolder)
+					temp.FormatMessage(IDS_REPOBROWSE_INFODIR, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name));
+				else
+					temp.FormatMessage(IDS_REPOBROWSE_INFOFILE, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name), (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_FileSize));
+				SetDlgItemText(IDC_INFOLABEL, temp);
+			}
+			else
+				SetDlgItemText(IDC_INFOLABEL, L"");
+		}
+	}
 }
 
 void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)

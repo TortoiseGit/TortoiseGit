@@ -147,6 +147,7 @@ private:
 	void					FillListCtrlForTreeNode(HTREEITEM treeNode);
 	void					FillListCtrlForShadowTree(CShadowFilesTree* pTree);
 	afx_msg void			OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void			OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void			OnNMDblclk_RepoList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void			OnContextMenu(CWnd* pWndFrom, CPoint point);

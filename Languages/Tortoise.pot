@@ -145,6 +145,21 @@ msgstr ""
 msgid "%1!d! minutes ago"
 msgstr ""
 
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!s!"
+msgstr ""
+
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!s!\r\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
+msgstr ""
+
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!s!\r\nSize %2!s!"
+msgstr ""
+
 #. Resource IDs: (3860)
 #, c-format
 msgid "%1: %2\nContinue running script?"
@@ -8113,6 +8128,11 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
+msgstr ""
+
+#. Resource IDs: (90)
+#, c-format
+msgid "Submodule \"%1!s!\"\r\nRevision %2!s!"
 msgstr ""
 
 #. Resource IDs: (1708)

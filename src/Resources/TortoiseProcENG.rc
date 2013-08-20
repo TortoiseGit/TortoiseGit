@@ -311,6 +311,7 @@ BEGIN
     PUSHBUTTON      "HEAD",IDC_BUTTON_REVISION,216,5,193,13
     CONTROL         "",IDC_REPOTREE,"SysTreeView32",TVS_HASBUTTONS | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_TRACKSELECT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,22,160,227,WS_EX_CLIENTEDGE
     CONTROL         "",IDC_REPOLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,170,22,238,227,WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_INFOLABEL,7,256,234,16,SS_NOPREFIX,WS_EX_RIGHT
     DEFPUSHBUTTON   "OK",IDOK,246,258,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,302,258,50,14
     PUSHBUTTON      "Help",IDHELP,358,258,50,14
@@ -3161,6 +3162,10 @@ BEGIN
                             "To avoid fetching wrong tags, if this is not an official remote,\nyou are advised to disable tag fetching for this remote.\nDisable tag fetching?"
     IDS_COMMITDLG_POPUP_PICKCOMMITHASH "Pick commit hash"
     IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE "Pick commit message"
+    IDS_REPOBROWSE_INFO     "%1!s!\r\nShowing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
+    IDS_REPOBROWSE_INFOEXT  "Submodule ""%1!s!""\r\nRevision %2!s!"
+    IDS_REPOBROWSE_INFODIR  "%1!s!"
+    IDS_REPOBROWSE_INFOFILE "%1!s!\r\nSize %2!s!"
 END
 
 STRINGTABLE

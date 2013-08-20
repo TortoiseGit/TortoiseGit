@@ -927,6 +927,10 @@
 #define IDC_SHOWIGNOREDOVERLAY          1432
 #define IDC_NONINTERACTIVE              1432
 #define IDC_USERECYCLEBIN               1432
+#define IDS_REPOBROWSE_INFO             1432
+#define IDS_REPOBROWSE_INFOEXT          1433
+#define IDS_REPOBROWSE_INFODIR          1434
+#define IDS_REPOBROWSE_INFOFILE         1435
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
