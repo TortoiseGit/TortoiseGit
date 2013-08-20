@@ -3160,6 +3160,7 @@ BEGIN
     IDS_PROC_GITCONFIG_ASKTAGOPT 
                             "To avoid fetching wrong tags, if this is not an official remote,\nyou are advised to disable tag fetching for this remote.\nDisable tag fetching?"
     IDS_COMMITDLG_POPUP_PICKCOMMITHASH "Pick commit hash"
+    IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE "Pick commit message"
 END
 
 STRINGTABLE

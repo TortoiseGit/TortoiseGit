@@ -1766,6 +1766,10 @@ void CCommitDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 	m_nPopupPickCommitHash = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPickCommitHash, sMenuItemText);
 
+	sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PICKCOMMITMESSAGE);
+	m_nPopupPickCommitMessage = nCmd++;
+	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPickCommitMessage, sMenuItemText);
+
 	sMenuItemText.LoadString(IDS_COMMITDLG_POPUP_PASTEFILELIST);
 	m_nPopupPasteListCmd = nCmd++;
 	mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nPopupPasteListCmd, sMenuItemText);
@@ -1797,6 +1801,26 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 			// get selected hash if any
 			CString selectedHash = dlg.GetSelectedHash();
 			pSciEdit->InsertText(selectedHash);
+		}
+		return true;
+	}
+
+	if (cmd == m_nPopupPickCommitMessage)
+	{
+		// use the git log to allow selection of a version
+		CLogDlg dlg;
+		// tell the dialog to use mode for selecting revisions
+		dlg.SetSelect(true);
+		// only one revision must be selected however
+		dlg.SingleSelection(true);
+		if (dlg.DoModal() == IDOK)
+		{
+			// get selected hash if any
+			CString selectedHash = dlg.GetSelectedHash();
+			GitRev rev;
+			rev.GetCommit(selectedHash);
+			CString message = rev.GetSubject() + _T("\r\n") + rev.GetBody();
+			pSciEdit->InsertText(message);
 		}
 		return true;
 	}
