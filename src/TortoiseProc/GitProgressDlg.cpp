@@ -143,6 +143,7 @@ void CGitProgressDlg::OnBnClickedLogbutton()
 	{
 	case CGitProgressList::GitProgress_Add:
 	case CGitProgressList::GitProgress_Resolve:
+	case CGitProgressList::GitProgress_Revert:
 		{
 			CString cmd = _T(" /command:commit");
 			cmd += _T(" /path:\"")+g_Git.m_CurrentDir+_T("\"");
