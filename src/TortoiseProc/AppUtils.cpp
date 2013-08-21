@@ -1159,9 +1159,7 @@ bool CAppUtils::CreateBranchTag(bool IsTag,CString *CommitHash, bool switch_new_
 		if( !IsTag  &&  dlg.m_bSwitch )
 		{
 			// it is a new branch and the user has requested to switch to it
-			cmd.Format(_T("git.exe checkout %s"), dlg.m_BranchTagName);
-			g_Git.Run(cmd,&out,CP_UTF8);
-			CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
+			PerformSwitch(dlg.m_BranchTagName);
 		}
 
 		return TRUE;
