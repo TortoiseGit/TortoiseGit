@@ -88,7 +88,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			if (idErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+				temp.Format(idErrMessageFormat, (CString)CFormatMessageWrapper());
 				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
@@ -116,7 +116,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			if(idErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(idErrMessageFormat, CFormatMessageWrapper());
+				temp.Format(idErrMessageFormat, (CString)CFormatMessageWrapper());
 				MessageBox(NULL, temp, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
