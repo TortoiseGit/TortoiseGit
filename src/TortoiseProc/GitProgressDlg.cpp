@@ -297,6 +297,8 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM wParam, LPARAM /*lParam*/)
 	{
 	case CGitProgressList::GitProgress_Add:
 	case CGitProgressList::GitProgress_Revert:
+		if (DidErrorsOccur())
+			break;
 		this->GetDlgItem(IDC_LOGBUTTON)->SetWindowText(CString(MAKEINTRESOURCE(IDS_COMMITBUTTON)));
 		this->GetDlgItem(IDC_LOGBUTTON)->ShowWindow(SW_SHOW);
 		break;
