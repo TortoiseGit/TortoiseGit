@@ -8,6 +8,7 @@ Released: Unreleased
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog
  * Fixed issue #1864: Commit button did not work after revert
  * Fixed issue #1862: Some labels not wide enough for translations to fit in
+ * Fixed issue #1790: "Clean up" window position is not preserved on multi-monitor setup
 
 = Release 1.8.5.0 =
 Released: 2013-08-18

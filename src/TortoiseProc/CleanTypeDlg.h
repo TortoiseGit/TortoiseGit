@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,12 +19,12 @@
 #pragma once
 
 
-#include "StandAloneDlg.h"
+#include "HorizontalResizableStandAloneDialog.h"
 #include "registry.h"
 
 // CCleanTypeDlg dialog
 
-class CCleanTypeDlg : public CStandAloneDialog
+class CCleanTypeDlg : public CHorizontalResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCleanTypeDlg)
 
