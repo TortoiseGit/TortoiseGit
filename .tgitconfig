@@ -5,3 +5,4 @@
 
 [tgit]
 	warnnosignedoffby = true
+	projectlanguage = 1033
