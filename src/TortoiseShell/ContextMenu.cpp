@@ -649,7 +649,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 			}
 
 			// append branch name and end with ...
-			_tcscat_s(s, 255 - _tcslen(menutextbuffer) - 1, _T(" -> \"") + sBranchName + _T("\"..."));
+			_tcscpy_s(s, 255 - _tcslen(menutextbuffer) - 1, _T(" -> \"") + sBranchName + _T("\"..."));
 		}
 	}
 #endif
