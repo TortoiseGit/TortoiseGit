@@ -122,6 +122,8 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, UINT idErrM
 			return false;
 		}
 
+		AllowSetForegroundWindow(process.dwProcessId);
+
 		if (bWaitForStartup)
 		{
 			WaitForInputIdle(process.hProcess, 10000);
