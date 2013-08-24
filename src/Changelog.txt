@@ -9,6 +9,7 @@ Released: Unreleased
  * Fixed issue #1864: Commit button did not work after revert
  * Fixed issue #1862: Some labels not wide enough for translations to fit in
  * Fixed issue #1790: "Clean up" window position is not preserved on multi-monitor setup
+ * Fixed issue #1876: Up/down buttons in Rebase dialog desynchronise the bottom view
 
 = Release 1.8.5.0 =
 Released: 2013-08-18

@@ -2003,6 +2003,7 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 			CGitHash old = m_CommitList.m_logEntries[index-1];
 			m_CommitList.m_logEntries[index-1] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
+			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 			m_CommitList.SetItemState(index-1, LVIS_SELECTED, LVIS_SELECTED);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
 			changed = true;
@@ -2012,7 +2013,6 @@ void CRebaseDlg::OnBnClickedButtonUp2()
 	{
 		pos = m_CommitList.GetFirstSelectedItemPosition();
 		m_CommitList.EnsureVisible(m_CommitList.GetNextSelectedItem(pos), false);
-		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 		m_CommitList.Invalidate();
 		m_CommitList.SetFocus();
 	}
@@ -2045,6 +2045,7 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 			CGitHash old = m_CommitList.m_logEntries[index+1];
 			m_CommitList.m_logEntries[index+1] = m_CommitList.m_logEntries[index];
 			m_CommitList.m_logEntries[index] = old;
+			m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 			m_CommitList.SetItemState(index, 0, LVIS_SELECTED);
 			m_CommitList.SetItemState(index+1, LVIS_SELECTED, LVIS_SELECTED);
 			changed = true;
@@ -2055,7 +2056,6 @@ void CRebaseDlg::OnBnClickedButtonDown2()
 	indexes = NULL;
 	if (changed)
 	{
-		m_CommitList.RecalculateShownList(&m_CommitList.m_arShownList);
 		m_CommitList.Invalidate();
 		m_CommitList.SetFocus();
 	}
