@@ -2392,7 +2392,7 @@ msgid "Clean Type"
 msgstr ""
 
 #. Resource IDs: (76)
-msgid "Clean up stale remote banches"
+msgid "Clean up stale remote branches"
 msgstr ""
 
 #. Resource IDs: (145)
