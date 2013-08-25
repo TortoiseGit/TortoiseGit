@@ -1807,7 +1807,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isMergeActive)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
 
