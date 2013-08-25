@@ -158,6 +158,21 @@ BOOL CProgressDlg::OnInitDialog()
 	return TRUE;
 }
 
+static void EnsurePostMessage(CWnd *pWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+redo:
+	if (!pWnd->PostMessage(Msg, wParam, lParam))
+	{	
+		if (GetLastError() == ERROR_NOT_ENOUGH_QUOTA)
+		{
+			Sleep(20);
+			goto redo;
+		}
+		else
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Message %d-%d could not be sent (error %d; %s)\n"), wParam, lParam, GetLastError(), (CString)CFormatMessageWrapper());
+	}
+}
+
 UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 {
 	return ((CProgressDlg*)pVoid)->ProgressThread();
@@ -175,7 +190,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
-	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_START,0);
+	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_START, 0);
 
 	if(pdata)
 		pdata->clear();
@@ -229,8 +244,17 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 			else
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,byte);
 		}
+		if (pdata)
+		{
+			pdata->m_critSec.Lock();
+			if (!pdata->empty())
+				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
+			pdata->m_critSec.Unlock();
+		}
 
 		CloseHandle(pi.hThread);
+
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": waiting for process to finish (%s), aborted: %d\n"), cmdlist[i], *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
 
@@ -241,9 +265,12 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 			CloseHandle(hRead);
 
-			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n"), cmdlist[i], GetLastError(), (CString)CFormatMessageWrapper(), *bAbort);
+
+			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
 			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": process %s finished with code %d\n"), cmdlist[i], status);
 		ret |= status;
 	}
 
@@ -251,10 +278,9 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	CloseHandle(hRead);
 
-	pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_END, ret);
+	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_END, ret);
 
 	return ret;
-
 }
 
 UINT CProgressDlg::ProgressThread()
@@ -289,6 +315,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	}
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": got message: %d\n"), wParam);
 		DWORD tickSpent = GetTickCount() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
@@ -574,6 +601,7 @@ void CProgressDlg::OnClose()
 
 void CProgressDlg::OnCancel()
 {
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": User canceled\n"));
 	m_bAbort = true;
 	if(m_bDone)
 	{
