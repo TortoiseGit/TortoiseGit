@@ -1231,7 +1231,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString out,cmd;
 
 		if(  m_RebaseStage == REBASE_SQUASH_EDIT )
-			cmd.Format(_T("git.exe commit -F \"%s\""), tempfile);
+			cmd.Format(_T("git.exe commit %s-F \"%s\""), m_SquashFirstMetaData, tempfile);
 		else
 			cmd.Format(_T("git.exe commit --amend -F \"%s\""), tempfile);
 
@@ -1543,7 +1543,8 @@ int CRebaseDlg::DoRebase()
 		return 0;
 	}
 
-	if (!CheckNextCommitIsSquash() || mode != CTGitPath::LOGACTIONS_REBASE_PICK)
+	bool nextCommitIsSquash = (CheckNextCommitIsSquash() == 0);
+	if (nextCommitIsSquash || mode != CTGitPath::LOGACTIONS_REBASE_PICK)
 	{ // next commit is squash or not pick
 		if (!this->m_SquashMessage.IsEmpty())
 			this->m_SquashMessage += _T("\n\n");
@@ -1552,12 +1553,18 @@ int CRebaseDlg::DoRebase()
 		this->m_SquashMessage += pRev->GetBody().TrimRight();
 	}
 	else
+	{
 		this->m_SquashMessage.Empty();
+		m_SquashFirstMetaData.Empty();
+	}
 
-	if (!CheckNextCommitIsSquash() || mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
+	if (nextCommitIsSquash || mode == CTGitPath::LOGACTIONS_REBASE_SQUASH)
 	{ // next or this commit is squash
 		nocommit=_T(" --no-commit ");
 	}
+
+	if (nextCommitIsSquash && mode != CTGitPath::LOGACTIONS_REBASE_SQUASH)
+		m_SquashFirstMetaData.Format(_T("--date=%s --author=\"%s <%s>\" "), pRev->GetAuthorDate().Format(_T("%Y-%m-%dT%H:%M:%S")), pRev->GetAuthorName(), pRev->GetAuthorEmail());
 
 	CString log;
 	log.Format(_T("%s %d: %s"),CTGitPath::GetActionName(mode),this->GetCurrentCommitID(),pRev->m_CommitHash.ToString());

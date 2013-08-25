@@ -11,6 +11,7 @@ Released: Unreleased
  * Fixed issue #1790: "Clean up" window position is not preserved on multi-monitor setup
  * Fixed issue #1876: Up/down buttons in Rebase dialog desynchronise the bottom view
  * Fixed issue #1875: Commit selection is lost with focus in Rebase dialog
+ * Fixed issue #1873: Squash doesn't preserve original author date
 
 = Release 1.8.5.0 =
 Released: 2013-08-18

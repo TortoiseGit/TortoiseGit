@@ -116,6 +116,7 @@ protected:
 	CString GetRebaseModeName(int rebasemode);
 
 	CString m_SquashMessage;
+	CString m_SquashFirstMetaData;
 
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();
