@@ -247,9 +247,10 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 		if (pdata)
 		{
 			pdata->m_critSec.Lock();
-			if (!pdata->empty())
-				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
+			bool post = !pdata->empty();
 			pdata->m_critSec.Unlock();
+			if (post)
+				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
 		CloseHandle(pi.hThread);
