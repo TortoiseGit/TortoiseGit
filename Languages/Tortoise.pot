@@ -8098,7 +8098,7 @@ msgstr ""
 msgid "Submodule"
 msgstr ""
 
-#. Resource IDs: (8, 11)
+#. Resource IDs: (11)
 msgid "Submodule &Update"
 msgstr ""
 

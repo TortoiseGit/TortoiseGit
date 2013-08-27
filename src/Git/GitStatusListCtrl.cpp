@@ -1608,24 +1608,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 					}
 				}
-			//	if (wcStatus > git_wc_status_normal)
-			//	{
-			//		if (m_dwContextMenus & SVNSLC_POPREVERT)
-			//		{
-			//			// reverting missing folders is not possible
-			//			if (!entry->IsFolder() || (wcStatus != git_wc_status_missing))
-			//			{
-			//				popup.AppendMenuIcon(IDSVNLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
-			//			}
-			//		}
-			//	}
-			//	if (entry->remotestatus > git_wc_status_normal)
-			//	{
-			//		if (m_dwContextMenus & SVNSLC_POPUPDATE)
-			//		{
-			//			popup.AppendMenuIcon(IDSVNLC_UPDATE, IDS_MENUUPDATE, IDI_UPDATE);
-			//		}
-			//	}
 			}
 
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)) && m_bHasWC)
