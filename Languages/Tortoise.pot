@@ -7250,7 +7250,7 @@ msgid "SVN Fetch"
 msgstr ""
 
 #. Resource IDs: (21)
-msgid "SVN Rebase..."
+msgid "SVN Rebase"
 msgstr ""
 
 #. Resource IDs: (65535)

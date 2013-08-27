@@ -308,7 +308,7 @@ BEGIN
     IDS_MENUDESSENDMAIL     "Send Patch(es) by eMail"
     IDS_MENUREFBROWSE       "Browse References"
     IDS_MENUDESCREFBROWSE   "Opens the Reference Browser dialog."
-    IDS_MENUSVNREBASE       "SVN Rebase..."
+    IDS_MENUSVNREBASE       "SVN Rebase"
 END
 
 STRINGTABLE
