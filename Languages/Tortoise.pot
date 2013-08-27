@@ -8099,11 +8099,15 @@ msgid "Submodule"
 msgstr ""
 
 #. Resource IDs: (11)
-msgid "Submodule &Update"
+msgid "Submodule &Update..."
 msgstr ""
 
-#. Resource IDs: (20, 1589)
+#. Resource IDs: (1589)
 msgid "Submodule Add"
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Submodule Add..."
 msgstr ""
 
 #. Resource IDs: (4576)
