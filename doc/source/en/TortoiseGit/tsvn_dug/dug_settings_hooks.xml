@@ -346,7 +346,7 @@
 	<title>Config</title>
 		<para>
 			<figure id="tsvn-dug-settings-hooks-issuetrack-config">
-				<title>The Settings Dialog, issue track config</title>
+				<title>The Settings Dialog, Issue Tracker Config</title>
 				<graphic fileref="../images/SettingsIssueTrackerConfig.png"/>
 			</figure>
 		</para>

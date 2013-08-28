@@ -29,7 +29,7 @@
 			<title>The Checkout dialog</title>
 			<graphic fileref="../images/SwitchCheckOut.png"/>
 		</figure>
-		If you enter a branch name at <guilabel>Create New Branch</guilabel>, new branch created and switch to new branchs.
+		If you enter a branch name at <guilabel>Create New Branch</guilabel>, new branch created and switch to new branches.
 	</para>
   <para>
     You can click <guibutton>...</guibutton> to browse git log and choose special version. 

@@ -172,7 +172,7 @@
                                 If set to 1, then the grouping works as with
                                 the setting set to 3 (grouping by application),
                                 except that grouping takes place
-                                indenpendently of the working tree. This was the default
+                                independently of the working tree. This was the default
                                 before TGit 1.8.1.2.
                             </para>
                         </listitem>
@@ -180,7 +180,7 @@
                             <para>
                                 If set to 2, then the grouping works as with
                                 the setting set to 4, except that grouping takes place
-                                indenpendently of the working tree. Thus all TortoiseGit
+                                independently of the working tree. Thus all TortoiseGit
                                 icons are grouped to only show one icon.
                             </para>
                         </listitem>
@@ -304,7 +304,7 @@
             <term condition="pot">TGitCacheCheckContent</term>
             <listitem>
                 <para>
-                    This makes TGitCache check file contents if timestamps (to index) missmatch in order to
+                    This makes TGitCache check file contents if timestamps (to index) mismatch in order to
                     calculate the file status.
                     TortoiseGit 1.7.0 up to 1.7.12 calculated the file status based on the timestamp only.
                     If do not you want TGitCache to check the file contents (this lowers disk access and CPU time), set this value to <literal>false</literal>.

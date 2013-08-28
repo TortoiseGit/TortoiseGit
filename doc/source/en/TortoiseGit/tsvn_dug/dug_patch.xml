@@ -118,7 +118,7 @@ and
 			</figure>
 		</para>
 		<para>
-			First you need to enter the receipient(s) (<guilabel>To</guilabel> and/or <guilabel>CC</guilabel>).
+			First you need to enter the recipient(s) (<guilabel>To</guilabel> and/or <guilabel>CC</guilabel>).
 		</para>
 		<para>
 			Depending on the mail type (<guilabel>Patch as attachment</guilabel> or <guilabel>Combine One Mail</guilabel>)

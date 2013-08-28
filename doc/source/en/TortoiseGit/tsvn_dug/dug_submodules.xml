@@ -4,7 +4,7 @@
 	<?dbhh topicname="HIDD_SUBMODULE_ADD"?>
 	<title>Submodules</title>
 	<para>
-		When you want to embedd foreign repositories into a working tree/git repository, this is called a submodule.
+		When you want to embed foreign repositories into a working tree/git repository, this is called a submodule.
 		Here using the
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
@@ -16,11 +16,11 @@
 			<title>The add submodule dialog</title>
 			<graphic fileref="../images/GitSubModuleAdd.png"/>
 		</figure>
-		Here you can enter the location/URL of the <guilabel>Repository</guilabel> you want to embedd
+		Here you can enter the location/URL of the <guilabel>Repository</guilabel> you want to embed
 		into the directory <guilabel>Path</guilabel>. <guilabel>Path</guilabel> can be entered as a relative
 		path within the active source tree, but can also be an absolute path (pointing to the active source tree).
 		The folder should be empty or non existent.
-		If you don't want to integrate the HEAD of the <guilabel>Repository</guilabel>, you can enter a differend
+		If you don't want to integrate the HEAD of the <guilabel>Repository</guilabel>, you can enter a different
 		<guilabel>Branch</guilabel>.
 		By pressing <guibutton>OK</guibutton>, the entered <guilabel>Repository</guilabel> is cloned and integrated
 		into the current source tree.

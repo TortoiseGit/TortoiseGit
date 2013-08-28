@@ -7,8 +7,8 @@
     <primary>Sync</primary>
   </indexterm>
   <para>
-	Sync Dialog collect all operation related with remote respository to one dialog. 
-	Sync Dialog included push, pull, fetch, remote upate, send patch ...
+	Sync Dialog collect all operation related with remote repository to one dialog. 
+	Sync Dialog included push, pull, fetch, remote update, send patch ...
   </para>
   <para>
 	<menuchoice>
@@ -43,7 +43,7 @@
 	<title>Options</title>
 	<para>
 		<guilabel>Force</guilabel> 
-		Force Overwrite Existing Branch(May discard changeds)
+		Force Overwrite Existing Branch(May discard changes)
 	</para>
 	<para>
 		<guilabel>Autoload putty key</guilabel> 

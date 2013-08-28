@@ -58,7 +58,7 @@
 		</para>
 		<para>
 			<graphic fileref="../images/ReadOnlyIcon.png"/> 
-			Staged. If you use "git update-index" to tell git this file will be commited,
+			Staged. If you use "git update-index" to tell git this file will be committed,
 			Git makes that file staged.
 		</para>
 		<!--

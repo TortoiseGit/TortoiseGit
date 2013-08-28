@@ -20,16 +20,16 @@
 		</figure>
 	</para>
 	<para>
-		<guilabel>Clean All untracked file</guilabel>
+		<guilabel>Clean all untracked files</guilabel>
 	</para>
 	<para>
-		<guilabel>Clean Only Non-ignore untrack</guilabel>
+		<guilabel>Clean only non-ignore untracked files</guilabel>
 	</para>
 	<para>
-		<guilabel>Clean Only Ignore file</guilabel>
+		<guilabel>Clean only ignored files</guilabel>
 	</para>
 	<para>
-		<guilabel>Remove Untracked Directory</guilabel>
+		<guilabel>Remove untracked directories</guilabel>
 	</para>
 	<caution>
 		<title>Attention</title>

@@ -42,7 +42,7 @@
 	<sect2>
 		<title>Options</title>
 		<para>
-			<guilabel>Force Overwrite Existing Branch(May discard changeds)</guilabel>
+			<guilabel>Force Overwrite Existing Branch(May discard changes)</guilabel>
 			This allows remote repository to accept a non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
 		</para>
 		<para>

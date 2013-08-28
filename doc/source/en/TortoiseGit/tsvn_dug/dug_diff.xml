@@ -353,7 +353,7 @@
 			The 'From' group box on the top displays the information of the original revision.
 			Below it, there is a 'To' group box, which display the information of the changed revision.
 			For each group box, the full commit hash is displayed, and can be highlighted and copied to clipboard;
-			the subject (i.e. first line of commit message) is displayed and also copiable to clipboard;
+			the subject (i.e. first line of commit message) is displayed and also copyable to clipboard;
 			the Show Log button brings you to a new Log Dialog and jump to that revision.
 		</para>
 		<para>

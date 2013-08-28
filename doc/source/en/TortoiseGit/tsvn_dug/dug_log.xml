@@ -372,10 +372,10 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Fomat Patch...</term>
+					<term>Format Patch...</term>
 					<listitem>
 						<para>
-							Create patchs between chosen two commits.
+							Create patches between two chosen commits.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -401,7 +401,7 @@
 						<para>
 							Copy the log messages of the selected revisions to the clipboard.
 							This will copy the log message for each revision.
-							This faciliates the preparation of release notes.
+							This facilitates the preparation of release notes.
 						</para>
 					</listitem>
 				</varlistentry>
