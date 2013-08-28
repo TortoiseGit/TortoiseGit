@@ -1195,52 +1195,6 @@ void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CS
 	title.ReleaseBuffer();
 }
 
-void CRevisionGraphWnd::AddGitOps (CMenu& popup)
-{
-	bool bothPresent = (m_SelectedEntry2 && m_SelectedEntry1);
-
-	AppendMenu (popup, IDS_REPOBROWSE_SHOWLOG, ID_SHOWLOG);
-
-	if (m_SelectedEntry1 && (m_SelectedEntry2 == NULL))
-	{
-		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
-
-		CString currentBranch = g_Git.GetCurrentBranch();
-		CGit::REF_TYPE refType = CGit::LOCAL_BRANCH;
-		STRING_VECTOR allBranchNames = GetFriendRefNames(m_SelectedEntry1, &refType, 1);
-		STRING_VECTOR branchNames;
-		for (int i = 0; i < allBranchNames.size(); ++i)
-			if (allBranchNames[i] != currentBranch)
-				branchNames.push_back(allBranchNames[i]);
-		if (branchNames.size() == 1)
-		{
-			CString text;
-			text.Format(_T("%s \"%s\""), CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), branchNames[0]);
-			AppendMenu(popup, text, ID_SWITCH, new CString(branchNames[0]));
-		}
-		else if (branchNames.size() > 1)
-		{
-			CMenu switchMenu;
-			switchMenu.CreatePopupMenu();
-			for (size_t i = 0; i < branchNames.size(); ++i)
-				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), new CString(branchNames[i]));
-			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, NULL, &switchMenu);
-		}
-
-		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
-
-		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
-		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
-	}
-
-	if (bothPresent)
-	{
-		AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_COMPAREREVS);
-		AppendMenu (popup, IDS_REVGRAPH_POPUP_UNIDIFFREVS, ID_UNIDIFFREVS);
-	}
-
-}
-
 void CRevisionGraphWnd::AddGraphOps (CMenu& /*popup*/, const CVisibleGraphNode * /*node*/)
 {
 #if 0
@@ -1496,7 +1450,48 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	if (!popup.CreatePopupMenu())
 		return;
 
-	AddGitOps (popup);
+	bool bothPresent = (m_SelectedEntry2 && m_SelectedEntry1);
+
+	AppendMenu (popup, IDS_REPOBROWSE_SHOWLOG, ID_SHOWLOG);
+
+	STRING_VECTOR branchNames;
+	if (m_SelectedEntry1 && (m_SelectedEntry2 == nullptr))
+	{
+		AppendMenu(popup, IDS_LOG_BROWSEREPO, ID_BROWSEREPO);
+
+		CString currentBranch = g_Git.GetCurrentBranch();
+		CGit::REF_TYPE refType = CGit::LOCAL_BRANCH;
+		STRING_VECTOR allBranchNames = GetFriendRefNames(m_SelectedEntry1, &refType, 1);
+		for (int i = 0; i < allBranchNames.size(); ++i)
+			if (allBranchNames[i] != currentBranch)
+				branchNames.push_back(allBranchNames[i]);
+		if (branchNames.size() == 1)
+		{
+			CString text;
+			text.Format(_T("%s \"%s\""), CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), branchNames[0]);
+			AppendMenu(popup, text, ID_SWITCH, &branchNames[0]);
+		}
+		else if (branchNames.size() > 1)
+		{
+			CMenu switchMenu;
+			switchMenu.CreatePopupMenu();
+			for (size_t i = 0; i < branchNames.size(); ++i)
+				AppendMenu(switchMenu, branchNames[i], ID_SWITCH + ((int)(i + 1) << 16), &branchNames[i]);
+			AppendMenu(popup, CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH)), ID_SWITCH, NULL, &switchMenu);
+		}
+
+		AppendMenu(popup, IDS_COPY_REF_NAMES, ID_COPYREFS);
+
+		AppendMenu(popup, IDS_REVGRAPH_POPUP_COMPAREHEADS, ID_COMPAREHEADS);
+		AppendMenu(popup, IDS_REVGRAPH_POPUP_UNIDIFFHEADS,  ID_UNIDIFFHEADS);
+	}
+
+	if (bothPresent)
+	{
+		AppendMenu (popup, IDS_REVGRAPH_POPUP_COMPAREREVS, ID_COMPAREREVS);
+		AppendMenu (popup, IDS_REVGRAPH_POPUP_UNIDIFFREVS, ID_UNIDIFFREVS);
+	}
+
 //	AddGraphOps (popup, clickedentry);
 
 	// if the context menu is invoked through the keyboard, we have to use
