@@ -515,14 +515,12 @@ void CRepositoryBrowser::FillListCtrlForTreeNode(HTREEITEM treeNode)
 
 void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 {
-	size_t files = 0, submodules = 0;
 	for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
 	{
 		int icon = m_nIconFolder;
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
 		{
 			icon = SYS_IMAGE_LIST().GetFileIconIndex((*itShadowTree).second.m_sName);
-			++files;
 		}
 
 		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
@@ -530,7 +528,6 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 		if ((*itShadowTree).second.m_bSubmodule)
 		{
 			m_RepoList.SetItemState(indexItem, INDEXTOOVERLAYMASK(OVERLAY_EXTERNAL), LVIS_OVERLAYMASK);
-			++submodules;
 		}
 		m_RepoList.SetItemData(indexItem, (DWORD_PTR)&(*itShadowTree).second);
 		if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
@@ -551,37 +548,58 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 
 	SetSortArrowA(&m_RepoList, m_currSortCol, !m_currSortDesc);
 
+	UpdateInfoLabel();
+}
+
+void CRepositoryBrowser::UpdateInfoLabel()
+{
 	CString temp;
-	temp.FormatMessage(IDS_REPOBROWSE_INFO, (LPCTSTR)pTree->m_sName, files, submodules, pTree->m_ShadowTree.size() - files - submodules, pTree->m_ShadowTree.size());
+	POSITION pos = m_RepoList.GetFirstSelectedItemPosition();
+	if (pos)
+	{
+		if (m_RepoList.GetSelectedCount() > 1)
+		{
+			temp.FormatMessage(IDS_REPOBROWSE_INFOMULTI, m_RepoList.GetSelectedCount());
+		}
+		else
+		{
+			int index = m_RepoList.GetNextSelectedItem(pos);
+			CShadowFilesTree *item = (CShadowFilesTree *)m_RepoList.GetItemData(index);
+			if (item->m_bSubmodule)
+				temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name), item->m_hash.ToString());
+			else if (item->m_bFolder)
+				temp.FormatMessage(IDS_REPOBROWSE_INFODIR, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name));
+			else
+				temp.FormatMessage(IDS_REPOBROWSE_INFOFILE, (LPCTSTR)m_RepoList.GetItemText(index, eCol_Name), (LPCTSTR)m_RepoList.GetItemText(index, eCol_FileSize));
+		}
+	}
+	else
+	{
+		HTREEITEM hTreeItem = m_RepoTree.GetSelectedItem();
+		if (hTreeItem != nullptr)
+		{
+			CShadowFilesTree* pTree = (CShadowFilesTree*)m_RepoTree.GetItemData(hTreeItem);
+			if (pTree != nullptr)
+			{
+				size_t files = 0, submodules = 0;
+				for (TShadowFilesTreeMap::iterator itShadowTree = pTree->m_ShadowTree.begin(); itShadowTree != pTree->m_ShadowTree.end(); ++itShadowTree)
+				{
+					if (!(*itShadowTree).second.m_bFolder && !(*itShadowTree).second.m_bSubmodule)
+						++files;
+					if ((*itShadowTree).second.m_bSubmodule)
+						++submodules;
+				}
+				temp.FormatMessage(IDS_REPOBROWSE_INFO, (LPCTSTR)pTree->m_sName, files, submodules, pTree->m_ShadowTree.size() - files - submodules, pTree->m_ShadowTree.size());
+			}
+		}
+	}
 	SetDlgItemText(IDC_INFOLABEL, temp);
 }
 
 void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	*pResult = 0;
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	if (pNMLV->uChanged & LVIF_STATE)
-	{
-		if ((pNMLV->uNewState & LVIS_SELECTED) &&
-			(pNMLV->iItem >= 0) &&
-			(pNMLV->iItem < m_RepoList.GetItemCount()))
-		{
-			CShadowFilesTree * pItem = (CShadowFilesTree *)m_RepoList.GetItemData(pNMLV->iItem);
-			if (pItem)
-			{
-				CString temp;
-				if (pItem->m_bSubmodule)
-					temp.FormatMessage(IDS_REPOBROWSE_INFOEXT, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name), pItem->m_hash.ToString());
-				else if (pItem->m_bFolder)
-					temp.FormatMessage(IDS_REPOBROWSE_INFODIR, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name));
-				else
-					temp.FormatMessage(IDS_REPOBROWSE_INFOFILE, (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_Name), (LPCTSTR)m_RepoList.GetItemText(pNMLV->iItem, eCol_FileSize));
-				SetDlgItemText(IDC_INFOLABEL, temp);
-			}
-			else
-				SetDlgItemText(IDC_INFOLABEL, L"");
-		}
-	}
+	UpdateInfoLabel();
 }
 
 void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)

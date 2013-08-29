@@ -140,6 +140,11 @@ msgstr ""
 msgid "%1!d! Years ago"
 msgstr ""
 
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!d! items selected"
+msgstr ""
+
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! minutes ago"

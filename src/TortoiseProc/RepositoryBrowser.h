@@ -146,6 +146,7 @@ private:
 	CString					m_sRevision;
 	void					FillListCtrlForTreeNode(HTREEITEM treeNode);
 	void					FillListCtrlForShadowTree(CShadowFilesTree* pTree);
+	void					UpdateInfoLabel();
 	afx_msg void			OnTvnSelchangedRepoTree(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void			OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult);
 

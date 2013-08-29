@@ -3168,6 +3168,7 @@ BEGIN
     IDS_REPOBROWSE_INFOEXT  "Submodule ""%1!s!""\r\nRevision %2!s!"
     IDS_REPOBROWSE_INFODIR  "%1!s!"
     IDS_REPOBROWSE_INFOFILE "%1!s!\r\nSize %2!s!"
+    IDS_REPOBROWSE_INFOMULTI "%1!d! items selected"
 END
 
 STRINGTABLE
