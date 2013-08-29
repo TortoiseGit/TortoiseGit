@@ -74,6 +74,7 @@ protected:
 	afx_msg void OnBnClickedButtonApply();
 	afx_msg void OnBnClickedButtonEmail();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnDestroy();
 
 	afx_msg LRESULT	OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
@@ -146,6 +147,7 @@ protected:
 	bool			m_bAbort;
 	bool			m_bDone;
 	DWORD			m_startTick;
+	bool			m_bWantToExit;
 
 	int				m_GitCmdStatus;
 

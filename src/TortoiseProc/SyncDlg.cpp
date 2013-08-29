@@ -51,6 +51,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_pThread = NULL;
 	m_bAbort = false;
 	m_bDone = false;
+	m_bWantToExit = false;
 	m_GitCmdStatus = -1;
 	m_startTick = GetTickCount();
 }
@@ -97,6 +98,7 @@ BEGIN_MESSAGE_MAP(CSyncDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 	ON_BN_CLICKED(IDC_CHECK_FORCE, &CSyncDlg::OnBnClickedCheckForce)
 	ON_BN_CLICKED(IDC_LOG, &CSyncDlg::OnBnClickedLog)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -1264,6 +1266,8 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 void CSyncDlg::RunPostAction()
 {
+	if (m_bWantToExit)
+		return;
 	if (this->m_CurrentCmd == GIT_COMMAND_PUSH)
 	{
 		if (!m_GitCmdStatus)
@@ -1506,4 +1510,10 @@ LRESULT CSyncDlg::OnProgCmdFinish(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	RunPostAction();
 	return 0;
+}
+
+void CSyncDlg::OnDestroy()
+{
+	m_bWantToExit = true;
+	__super::OnDestroy();
 }
