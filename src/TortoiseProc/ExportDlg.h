@@ -49,6 +49,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnOK();
+	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
 	afx_msg void OnEnChangeCheckoutdirectory();
 	afx_msg void OnBnClickedHelp();
@@ -64,5 +65,4 @@ public:
 	CString			m_Revision;
 	CButton			m_butBrowse;
 	CString			m_strFile;
-	afx_msg void OnDestroy();
 };
