@@ -1838,6 +1838,8 @@ void CRebaseDlg::OnBnClickedAbort()
 	if (m_pTaskbarList)
 		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
+	m_tooltips.Pop();
+
 	CString cmd,out;
 	CString pron = m_OrigUpstreamHash.ToString();
 	if(m_OrigUpstreamHash.IsEmpty())

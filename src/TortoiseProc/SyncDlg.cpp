@@ -1337,6 +1337,7 @@ void CSyncDlg::OnOK()
 	m_ctrlURL.SaveHistory();
 	SaveHistory();
 	m_regAutoLoadPutty = this->m_bAutoLoadPuttyKey;
+	m_tooltips.Pop();
 	__super::OnOK();
 }
 
@@ -1364,6 +1365,7 @@ void CSyncDlg::OnCancel()
 	}
 
 	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+	m_tooltips.Pop();
 	CResizableStandAloneDialog::OnCancel();
 }
 
