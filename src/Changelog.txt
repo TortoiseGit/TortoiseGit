@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Revision Graph: Can generate output graph file through command line
+ * Fixed issue #1858: Switch-and-merge as a single command
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog
