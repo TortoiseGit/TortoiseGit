@@ -62,6 +62,8 @@ public:
 	DWORD					m_GitStatus;
 	CString					m_LogText;
 
+	CString					GetLogText() { CString text; m_Log.GetWindowText(text); return text; }
+
 private:
 	CMenuButton				m_ctrlPostCmd;
 
