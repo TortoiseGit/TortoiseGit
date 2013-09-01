@@ -2490,6 +2490,19 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 	return FALSE;
 }
 
+static void PushCallback(CProgressDlg *dlg, void *caller, int result)
+{
+	if (result)
+	{
+		dlg->m_PostCmdList.RemoveAll();
+		bool rejected = dlg->GetLogText().Find(_T("! [rejected]")) > 0;
+		*(bool*)caller = rejected;
+		if (rejected)
+			dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+		dlg->m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
+	}
+}
+
 bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 {
 	CPushDlg dlg;
@@ -2575,7 +2588,9 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_PROC_REQUESTPULL)));
 		progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPUSH)));
-		progress.m_PostFailCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUPULL)));
+		bool rejected = false;
+		progress.m_caller = &rejected;
+		progress.m_PostCmdCallback = PushCallback;
 		INT_PTR ret = progress.DoModal();
 
 		if(!progress.m_GitStatus)
@@ -2603,10 +2618,24 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 		}
 		else
 		{
-			// failed, pull first
-			if (ret == IDC_PROGRESS_BUTTON1)
+			if (rejected)
 			{
-				Pull(true, autoClose);
+				// failed, pull first
+				if (ret == IDC_PROGRESS_BUTTON1)
+				{
+					Pull(true, autoClose);
+				}
+				else if (ret == IDC_PROGRESS_BUTTON1 + 1)
+				{
+					Push();
+				}
+			}
+			else
+			{
+				if (ret == IDC_PROGRESS_BUTTON1)
+				{
+					Push();
+				}
 			}
 		}
 	}
