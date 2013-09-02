@@ -66,7 +66,7 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 void CMenuButton::RemoveAll()
 {
 	for (int index = 0; index < m_sEntries.GetCount(); index++)
-		m_btnMenu.RemoveMenu(MF_BYPOSITION, 0);
+		m_btnMenu.RemoveMenu(0, MF_BYPOSITION);
 	m_sEntries.RemoveAll();
 	m_nDefault = m_nMenuResult = -1;
 	m_bMenuIsActive = TRUE;
