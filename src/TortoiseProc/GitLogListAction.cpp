@@ -220,7 +220,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 								hash2 = r1->m_ParentHash[cmd-1].ToString();
 						}
 					}
-					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), r1->m_CommitHash.ToString(), CTGitPath(), hash2, false, false, false, bMerge, bCombine);
+					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), hash2, CTGitPath(), r1->m_CommitHash.ToString(), false, false, false, bMerge, bCombine);
 				}
 				else
 					CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), _T("HEAD"), CTGitPath(), GitRev::GetWorkingCopy(), false, false, false, bMerge, bCombine);

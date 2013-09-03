@@ -15,6 +15,7 @@ Released: Unreleased
  * Fixed issue #1873: Squash doesn't preserve original author date
  * Fixed issue #1863: never-ending wait due to lost messages
  * Fixed issue #1883: Option Buttons in Hook script not wide enough
+ * Fixed issue #1893: Unified diff for merge commit always shows inverted changes
 
 = Release 1.8.5.0 =
 Released: 2013-08-18
