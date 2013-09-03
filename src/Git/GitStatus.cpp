@@ -373,7 +373,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 			if( st == git_wc_status_conflicted )
 			{
 				*status =st;
-				if(callback)
+				if (callback && assumeValid && skipWorktree)
 					callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 				return 0;
 			}
@@ -383,7 +383,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 				if(!IsIgnore)
 				{
 					*status = git_wc_status_unversioned;
-					if(callback)
+					if (callback && assumeValid && skipWorktree)
 						callback(gitdir + _T("/") + path, *status, false, pData, *assumeValid, *skipWorktree);
 					return 0;
 				}
@@ -397,7 +397,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 					st = git_wc_status_ignored;
 				}
 				*status = st;
-				if(callback)
+				if (callback && assumeValid && skipWorktree)
 					callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 
 				return 0;
@@ -421,7 +421,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						{
 							*status =st=git_wc_status_added;
 							CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": File miss in head tree %s"), path);
-							if(callback)
+							if (callback && assumeValid && skipWorktree)
 								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 							return 0;
 						}
@@ -430,7 +430,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 						if( treeptr->at(start).m_Hash != hash )
 						{
 							*status =st=git_wc_status_modified;
-							if(callback)
+							if (callback && assumeValid && skipWorktree)
 								callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 							return 0;
 						}
@@ -438,7 +438,7 @@ int GitStatus::GetFileStatus(const CString &gitdir, const CString &pathParam, gi
 				}
 			}
 			*status =st;
-			if(callback)
+			if (callback && assumeValid && skipWorktree)
 				callback(gitdir + _T("/") + path, st, false, pData, *assumeValid, *skipWorktree);
 			return 0;
 		}

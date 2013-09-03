@@ -251,7 +251,7 @@ int CGitIndexList::GetFileStatus(const CString &gitdir, const CString &pathorg, 
 
 	}
 
-	if(callback && status)
+	if (callback && status && assumeValid && skipWorktree)
 			callback(gitdir + _T("\\") + pathorg, *status, false, pData, *assumeValid, *skipWorktree);
 	return 0;
 }
@@ -277,7 +277,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 		if (result)
 		{
 			*status = git_wc_status_deleted;
-			if (callback)
+			if (callback && assumeValid && skipWorktree)
 				callback(gitdir + _T("\\") + path, git_wc_status_deleted, false, pData, *assumeValid, *skipWorktree);
 
 			return 0;
