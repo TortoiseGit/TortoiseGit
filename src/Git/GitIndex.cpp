@@ -318,7 +318,7 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 									*skipWorktree = false;
 								GetFileStatus(gitdir, at(i).m_FileName, status, time, callback, pData, NULL, assumeValid, skipWorktree);
 								// if a file is assumed valid, we need to inform the caller, otherwise the assumevalid flag might not get to the explorer on first open of a repository
-								if (callback && (assumeValid || skipWorktree))
+								if (callback && assumeValid && skipWorktree && (*assumeValid || *skipWorktree))
 									callback(gitdir + _T("\\") + path, *status, false, pData, *assumeValid, *skipWorktree);
 								if (*status != git_wc_status_none)
 								{
