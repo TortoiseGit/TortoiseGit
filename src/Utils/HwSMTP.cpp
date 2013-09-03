@@ -7,11 +7,11 @@
 #include "stdafx.h"
 #include "afxstr.h"
 #include "HwSMTP.h"
-#include "CBase64.h"
 #include "SpeedPostEmail.h"
 #include "Windns.h"
 #include <Afxmt.h>
 #include "FormatMessageWrapper.h"
+#include <atlenc.h>
 
 #define IO_BUFFER_SIZE 0x10000
 
@@ -1135,6 +1135,19 @@ BOOL CHwSMTP::SendEmail()
 	return bRet;
 }
 
+static CStringA EncodeBase64(const char * source, int len)
+{
+	int neededLength = Base64EncodeGetRequiredLength(len);
+	CStringA output;
+	if (!Base64Encode((BYTE *)source, len, output.GetBufferSetLength(neededLength), &neededLength))
+	{
+		output.ReleaseBuffer(0);
+		return output;
+	}
+	output.ReleaseBuffer(neededLength);
+	return output;
+}
+
 BOOL CHwSMTP::auth()
 {
 	int nResponseCode = 0;
@@ -1143,10 +1156,9 @@ BOOL CHwSMTP::auth()
 	if ( nResponseCode != 334 )	// 不需要验证用户名和密码
 		return TRUE;
 
-	CBase64 Base64Encode;
 	CMultiByteString cbsUserName ( m_csUserName ), cbsPasswd ( m_csPasswd );
-	CString csBase64_UserName = GetCompatibleString ( Base64Encode.Encode ( cbsUserName.GetBuffer(), cbsUserName.GetLength() ).GetBuffer(0), FALSE );
-	CString csBase64_Passwd = GetCompatibleString ( Base64Encode.Encode ( cbsPasswd.GetBuffer(), cbsPasswd.GetLength() ).GetBuffer(0), FALSE );
+	CString csBase64_UserName = GetCompatibleString(EncodeBase64(cbsUserName.GetBuffer(), cbsUserName.GetLength()).GetBuffer(0), FALSE);
+	CString csBase64_Passwd = GetCompatibleString(EncodeBase64(cbsPasswd.GetBuffer(), cbsPasswd.GetLength()).GetBuffer(0), FALSE);
 
 	CString str;
 	str.Format( _T("%s\r\n"), csBase64_UserName );
@@ -1350,8 +1362,7 @@ BOOL CHwSMTP::SendOnAttach(LPCTSTR lpszFileName)
 			return FALSE;
 		}
 		UINT nFileLen = file.Read ( pBuf, dwFileSize );
-		CBase64 Base64Encode;
-		filedata = Base64Encode.Encode ( pBuf, nFileLen );
+		filedata = EncodeBase64(pBuf, nFileLen);
 		filedata += _T("\r\n\r\n");
 	}
 	catch (CFileException *e)

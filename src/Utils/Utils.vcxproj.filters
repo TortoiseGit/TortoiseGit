@@ -30,9 +30,6 @@
     <ClCompile Include="BugTraqAssociations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CBase64.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CmdLineParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

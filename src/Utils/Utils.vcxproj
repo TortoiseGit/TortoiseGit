@@ -105,7 +105,6 @@
     <ClCompile Include="ACEdit.cpp" />
     <ClCompile Include="ACListWnd.cpp" />
     <ClCompile Include="BugTraqAssociations.cpp" />
-    <ClCompile Include="CBase64.cpp" />
     <ClCompile Include="CmdLineParser.cpp" />
     <ClCompile Include="COMError.cpp" />
     <ClCompile Include="CommonAppUtils.cpp" />
