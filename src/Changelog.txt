@@ -17,6 +17,7 @@ Released: Unreleased
  * Fixed issue #1883: Option Buttons in Hook script not wide enough
  * Fixed issue #1893: Unified diff for merge commit always shows inverted changes
  * Fixed issue #1896: Switch/Checkout Branch name resets itself after browsing for a branch
+ * Fixed issue #1895: Context menu incomplete if working tree is located on network share
 
 = Release 1.8.5.0 =
 Released: 2013-08-18

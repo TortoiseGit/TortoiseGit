@@ -130,7 +130,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							askedpath.SetFromWin(str.c_str());
 							try
 							{
-								if (g_ShellCache.GetCacheType() == ShellCache::exe)
+								if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 								{
 									CTGitPath tpath(str.c_str());
 									if (!tpath.HasAdminDir())
@@ -250,7 +250,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							{
 								try
 								{
-									if (g_ShellCache.GetCacheType() == ShellCache::exe)
+									if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 									{
 										CTGitPath tpath(str.c_str());
 										if(!tpath.HasAdminDir())
@@ -391,7 +391,7 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 
 				try
 				{
-					if (g_ShellCache.GetCacheType() == ShellCache::exe)
+					if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(folder_.c_str()))
 					{
 						CTGitPath tpath(folder_.c_str());
 						if(!tpath.HasAdminDir())
