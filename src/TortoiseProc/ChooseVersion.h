@@ -46,7 +46,6 @@ protected:
 	CButton			m_RadioTag;
 	CString			m_pendingRefName;
 	bool			m_bNotFullName;
-	bool			m_bSelectRef;
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -136,12 +135,14 @@ protected:
 		CString resultRef = CBrowseRefsDlg::PickRef(false, m_VersionName, gPickRef_All);
 		if(resultRef.IsEmpty())
 		{
-			Init(false, true, false);
+			m_pendingRefName = m_VersionName;
+			m_bNotFullName = true;
+			Init(false, true);
 			return;
 		}
 		m_pendingRefName = resultRef;
 		m_bNotFullName = false;
-		Init(false, true, true);
+		Init(false, true);
 	}
 
 	void SelectRef(CString refName, bool bRefNameIsPossiblyNotFullName = true)
@@ -213,19 +214,16 @@ protected:
 		m_RadioBranch.EnableWindow(TRUE);
 		m_RadioTag.EnableWindow(TRUE);
 
-		if (m_bSelectRef)
-		{
-			if (m_pendingRefName.IsEmpty())
-				OnVersionChanged();
-			else
-				SelectRef(m_pendingRefName, m_bNotFullName);
-		}
+		if (m_pendingRefName.IsEmpty())
+			OnVersionChanged();
+		else
+			SelectRef(m_pendingRefName, m_bNotFullName);
 
 		if (m_bIsFirstTimeToSetFocus && m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
 			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
 		m_bIsFirstTimeToSetFocus = false;
 	}
-	void Init(bool setFocusToBranchComboBox = false, bool bReInit = false, bool bSelectRef = true)
+	void Init(bool setFocusToBranchComboBox = false, bool bReInit = false)
 	{
 		m_ChooseVersioinBranch.SetMaxHistoryItems(0x7FFFFFFF);
 		m_ChooseVersioinTags.SetMaxHistoryItems(0x7FFFFFFF);
@@ -235,7 +233,6 @@ protected:
 		m_RadioTag.EnableWindow(FALSE);
 
 		m_bIsFirstTimeToSetFocus = setFocusToBranchComboBox;
-		m_bSelectRef = bSelectRef;
 		if (!bReInit)
 		{
 			m_pendingRefName = m_initialRefName;
@@ -269,7 +266,6 @@ public:
 	, m_pLoadingThread(nullptr)
 	, m_bLoadingThreadRunning(FALSE)
 	, m_bNotFullName(true)
-	, m_bSelectRef(true)
 	{
 		m_pWin=win;
 	};
