@@ -165,19 +165,12 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										statuspath = str;
 										status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 										fetchedstatus = status;
-										//if ((stat.status->entry)&&(stat.status->entry->lock_token))
-										//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
 										if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 										{
 											itemStates |= ITEMIS_FOLDER;
 											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 												itemStates |= ITEMIS_FOLDERINGIT;
 										}
-										//if ((stat.status->entry)&&(stat.status->entry->present_props))
-										//{
-										//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-										//		itemStates |= ITEMIS_NEEDSLOCK;
-										//}
 										//if ((stat.status->entry)&&(stat.status->entry->uuid))
 										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 									}
@@ -295,8 +288,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 										{
 											status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
 											fetchedstatus = status;
-											//if ((stat.status->entry)&&(stat.status->entry->lock_token))
-											//	itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
 											if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 											{
 												itemStates |= ITEMIS_FOLDER;
@@ -306,11 +297,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 											// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
 											if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
 												itemStates |= ITEMIS_CONFLICTED;
-											//if ((stat.status->entry)&&(stat.status->entry->present_props))
-											//{
-											//	if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-											//		itemStates |= ITEMIS_NEEDSLOCK;
-											//}
 											//if ((stat.status->entry)&&(stat.status->entry->uuid))
 											//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 										}
@@ -341,21 +327,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							if (status == git_wc_status_ignored)
 							{
 								itemStates |= ITEMIS_IGNORED;
-								// the item is ignored. Get the svn:ignored properties so we can (maybe) later
-								// offer a 'remove from ignored list' entry
-//								GitProperties props(strpath.GetContainingDirectory(), false);
-//								ignoredprops.empty();
-//								for (int p=0; p<props.GetCount(); ++p)
-//								{
-//									if (props.GetItemName(p).compare(stdstring(_T("svn:ignore")))==0)
-//									{
-//										std::string st = props.GetItemValue(p);
-//										ignoredprops = MultibyteToWide(st.c_str());
-//										// remove all escape chars ('\\')
-//										std::remove(ignoredprops.begin(), ignoredprops.end(), '\\');
-//										break;
-//									}
-//								}
 							}
 
 							if (status == git_wc_status_normal)
@@ -442,13 +413,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						if (stat.status)
 						{
 							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-							//					if ((stat.status->entry)&&(stat.status->entry->lock_token))
-							//						itemStatesFolder |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-							//					if ((stat.status->entry)&&(stat.status->entry->present_props))
-							//					{
-							//						if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-							//							itemStatesFolder |= ITEMIS_NEEDSLOCK;
-							//					}
 							//					if ((stat.status->entry)&&(stat.status->entry->uuid))
 							//						uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 
@@ -529,13 +493,6 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 						if (stat.status)
 						{
 							status = GitStatus::GetMoreImportant(stat.status->text_status, stat.status->prop_status);
-//							if ((stat.status->entry)&&(stat.status->entry->lock_token))
-//								itemStates |= (stat.status->entry->lock_token[0] != 0) ? ITEMIS_LOCKED : 0;
-//							if ((stat.status->entry)&&(stat.status->entry->present_props))
-//							{
-//								if (strstr(stat.status->entry->present_props, "svn:needs-lock"))
-//									itemStates |= ITEMIS_NEEDSLOCK;
-//							}
 //							if ((stat.status->entry)&&(stat.status->entry->uuid))
 //								uuidTarget = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 						}
