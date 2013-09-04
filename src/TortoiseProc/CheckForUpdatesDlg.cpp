@@ -346,6 +346,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	}
 
 finish:
+	CoUninitialize();
 	m_bThreadRunning = FALSE;
 	DialogEnableWindow(IDOK, TRUE);
 	return 0;
@@ -645,6 +646,8 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 	}
 
 	::PostMessage(GetSafeHwnd(), WM_USER_ENDDOWNLOAD, 0, 0);
+
+	CoUninitialize();
 
 	return result;
 }
