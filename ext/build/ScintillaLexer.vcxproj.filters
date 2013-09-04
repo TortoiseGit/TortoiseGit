@@ -403,6 +403,9 @@
     <ClCompile Include="..\scintilla\src\CaseFolder.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx">
+      <Filter>lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\scintilla\src\AutoComplete.h">
