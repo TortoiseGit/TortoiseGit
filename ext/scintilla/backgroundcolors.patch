@@ -30,7 +30,7 @@ Index: src/Editor.cxx
 +		overrideBackground = true;
 +	}
 +
- 	bool drawWhitespaceBackground = (vsDraw.viewWhitespace != wsInvisible) &&
+ 	const bool drawWhitespaceBackground = (vsDraw.viewWhitespace != wsInvisible) &&
  	        (!overrideBackground) && (vsDraw.whitespaceBackgroundSet);
  
 Index: src/Editor.h
