@@ -38,13 +38,7 @@
     <Image Include="..\Resources\cache.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\cancel-normal.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\cancel-normal.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\cancel-pressed.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\cancel-pressed.ico">
@@ -72,9 +66,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\ExportBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\extwarning.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\filteredit.ico">
@@ -170,9 +161,6 @@
     <Image Include="..\Resources\saveddata.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\TortoiseBlame\small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\ssh.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -208,9 +196,7 @@
     <None Include="..\Resources\pandown.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Languages\res\bin167.avi" />
     <None Include="..\Resources\bin167.avi" />
-    <None Include="..\Languages\res\bin168.avi" />
     <None Include="..\Resources\bin168.avi" />
     <None Include="..\Resources\cleananim.avi" />
     <None Include="..\Resources\download.avi" />

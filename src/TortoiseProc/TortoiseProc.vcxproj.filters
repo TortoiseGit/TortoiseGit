@@ -1188,9 +1188,6 @@
     <Image Include="..\Resources\CacheList.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\cancel-highlight.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\cancel-normal.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -1270,9 +1267,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\hook.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\icon1.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\iconset.ico">
@@ -1485,9 +1479,6 @@
     <Image Include="..\Resources\showbranches.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\TortoiseBlame\small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\ssh.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -1501,15 +1492,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\Tortoise.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\Tortoise13by13.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\Tortoise16by16.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\Tortoise20by16.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\TortoiseBlame.ico">

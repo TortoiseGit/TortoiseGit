@@ -477,7 +477,6 @@
     <Image Include="..\Resources\bugtraq.ico" />
     <Image Include="..\Resources\cache.ico" />
     <Image Include="..\Resources\CacheList.ico" />
-    <Image Include="..\Resources\cancel-highlight.bmp" />
     <Image Include="..\Resources\cancel-normal.ico" />
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
@@ -507,7 +506,6 @@
     <Image Include="..\Resources\graph-line.ico" />
     <Image Include="..\Resources\graph-pie.ico" />
     <Image Include="..\Resources\hook.ico" />
-    <Image Include="..\Resources\icon1.ico" />
     <Image Include="..\Resources\iconset.ico" />
     <Image Include="..\Resources\ImportBackground.ico" />
     <Image Include="..\Resources\ImportPatchesBackground.ico" />
@@ -579,15 +577,11 @@
     <Image Include="..\Resources\saveddata.ico" />
     <Image Include="..\Resources\showbranches.ico" />
     <Image Include="..\Resources\UpdateBackground.ico" />
-    <Image Include="..\TortoiseBlame\small.ico" />
     <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />
     <Image Include="..\Resources\Toolbar.bmp" />
     <Image Include="..\Resources\Tortoise.ico" />
-    <Image Include="..\Resources\Tortoise13by13.ico" />
-    <Image Include="..\Resources\Tortoise16by16.ico" />
-    <Image Include="..\Resources\Tortoise20by16.ico" />
     <Image Include="..\Resources\TortoiseBlame.ico" />
     <Image Include="..\Resources\tortoisegit_logoflipped.bmp" />
     <Image Include="..\Resources\TortoiseMerge.ico" />

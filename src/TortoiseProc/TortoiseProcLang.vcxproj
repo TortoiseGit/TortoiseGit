@@ -85,9 +85,7 @@
     <Image Include="..\Resources\actionreplaced.ico" />
     <Image Include="..\Resources\AddBackground.ico" />
     <Image Include="..\Resources\cache.ico" />
-    <Image Include="..\Resources\cancel-normal.bmp" />
     <Image Include="..\Resources\cancel-normal.ico" />
-    <Image Include="..\Resources\cancel-pressed.bmp" />
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\CheckoutBackground.ico" />
@@ -97,7 +95,6 @@
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\ExportBackground.ico" />
-    <Image Include="..\Resources\extwarning.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\graph-bar-stacked.ico" />
@@ -129,7 +126,6 @@
     <Image Include="..\Resources\revgraph_tag.ico" />
     <Image Include="..\Resources\revgraphbar.bmp" />
     <Image Include="..\Resources\saveddata.ico" />
-    <Image Include="..\TortoiseBlame\small.ico" />
     <Image Include="..\Resources\ssh.ico" />
     <Image Include="..\Resources\switch.ico" />
     <Image Include="..\Resources\SwitchBackground.ico" />
@@ -143,9 +139,7 @@
   <ItemGroup>
     <None Include="..\Resources\pan.cur" />
     <None Include="..\Resources\pandown.cur" />
-    <None Include="..\Languages\res\bin167.avi" />
     <None Include="..\Resources\bin167.avi" />
-    <None Include="..\Languages\res\bin168.avi" />
     <None Include="..\Resources\bin168.avi" />
     <None Include="..\Resources\cleananim.avi" />
     <None Include="..\Resources\download.avi" />
