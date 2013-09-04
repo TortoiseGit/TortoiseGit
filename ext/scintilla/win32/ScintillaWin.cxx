@@ -5,7 +5,6 @@
 // Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
-#include <new>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,6 +12,7 @@
 #include <assert.h>
 #include <limits.h>
 
+#include <new>
 #include <string>
 #include <vector>
 #include <map>
@@ -197,6 +197,7 @@ class ScintillaWin :
 	bool hasOKText;
 
 	CLIPFORMAT cfColumnSelect;
+	CLIPFORMAT cfBorlandIDEBlockType;
 	CLIPFORMAT cfLineSelect;
 
 	HRESULT hrOle;
@@ -256,7 +257,6 @@ class ScintillaWin :
 	virtual void SetCtrlID(int identifier);
 	virtual int GetCtrlID();
 	virtual void NotifyParent(SCNotification scn);
-	virtual void NotifyParent(SCNotification * scn);
 	virtual void NotifyDoubleClick(Point pt, bool shift, bool ctrl, bool alt);
 	virtual CaseFolder *CaseFolderForEncoding();
 	virtual std::string CaseMapString(const std::string &s, int caseMapping);
@@ -348,9 +348,11 @@ ScintillaWin::ScintillaWin(HWND hwnd) {
 	hasOKText = false;
 
 	// There does not seem to be a real standard for indicating that the clipboard
-	// contains a rectangular selection, so copy Developer Studio.
+	// contains a rectangular selection, so copy Developer Studio and Borland Delphi.
 	cfColumnSelect = static_cast<CLIPFORMAT>(
 		::RegisterClipboardFormat(TEXT("MSDEVColumnSelect")));
+	cfBorlandIDEBlockType = static_cast<CLIPFORMAT>(
+		::RegisterClipboardFormat(TEXT("Borland IDE Block Type")));
 
 	// Likewise for line-copy (copies a full line when no text is selected)
 	cfLineSelect = static_cast<CLIPFORMAT>(
@@ -624,7 +626,11 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 		::EndPaint(MainHWND(), pps);
 	if (paintState == paintAbandoned) {
 		// Painting area was insufficient to cover new styling or brace highlight positions
-		FullPaint();
+		if (IsOcxCtrl) {
+			FullPaintDC(pps->hdc);
+		} else {
+			FullPaint();
+		}
 	}
 	paintState = notPainting;
 
@@ -891,7 +897,10 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 
 		case WM_MOUSEMOVE:
 			SetTrackMouseLeaveEvent(true);
-			ButtonMove(Point::FromLong(lParam));
+			ButtonMoveWithModifiers(Point::FromLong(lParam),
+				((wParam & MK_SHIFT) != 0 ? SCI_SHIFT : 0) |
+				((wParam & MK_CONTROL) != 0 ? SCI_CTRL : 0) |
+				(Platform::IsKeyDown(VK_MENU) ? SCI_ALT : 0));
 			break;
 
 		case WM_MOUSELEAVE:
@@ -1387,7 +1396,7 @@ bool ScintillaWin::ModifyScrollBars(int nMax, int nPage) {
 	if (horizEndPreferred < 0)
 		horizEndPreferred = 0;
 	unsigned int pageWidth = rcText.Width();
-	if (!horizontalScrollBarVisible || (wrapState != eWrapNone))
+	if (!horizontalScrollBarVisible || Wrapping())
 		pageWidth = horizEndPreferred + 1;
 	sci.fMask = SIF_PAGE | SIF_RANGE;
 	GetScrollInfo(SB_HORZ, &sci);
@@ -1435,13 +1444,6 @@ void ScintillaWin::NotifyParent(SCNotification scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
-}
-
-void ScintillaWin::NotifyParent(SCNotification * scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, bool shift, bool ctrl, bool alt) {
@@ -1705,7 +1707,16 @@ void ScintillaWin::Paste() {
 	SelectionPosition selStart = sel.IsRectangular() ?
 		sel.Rectangular().Start() :
 		sel.Range(sel.Main()).Start();
-	bool isRectangular = ::IsClipboardFormatAvailable(cfColumnSelect) != 0;
+	bool isRectangular = (::IsClipboardFormatAvailable(cfColumnSelect) != 0);
+
+	if (!isRectangular) {
+		// Evaluate "Borland IDE Block Type" explicitly
+		GlobalMemory memBorlandSelection(::GetClipboardData(cfBorlandIDEBlockType));
+		if (memBorlandSelection) {
+			isRectangular = (memBorlandSelection.Size() == 1) && (static_cast<BYTE *>(memBorlandSelection.ptr)[0] == 0x02);
+			memBorlandSelection.Unlock();
+		}
+	}
 
 	// Always use CF_UNICODETEXT if available
 	GlobalMemory memUSelection(::GetClipboardData(CF_UNICODETEXT));
@@ -2140,7 +2151,7 @@ void ScintillaWin::ImeStartComposition() {
 			lf.lfItalic = static_cast<BYTE>(vs.styles[styleHere].italic ? 1 : 0);
 			lf.lfCharSet = DEFAULT_CHARSET;
 			lf.lfFaceName[0] = '\0';
-			if (vs.styles[styleHere].fontName)
+			if (vs.styles[styleHere].fontName && (strlen(vs.styles[styleHere].fontName) < sizeof(lf.lfFaceName)))
 				strcpy(lf.lfFaceName, vs.styles[styleHere].fontName);
 
 			::ImmSetCompositionFontA(hIMC, &lf);
@@ -2252,6 +2263,13 @@ void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
 
 	if (selectedText.rectangular) {
 		::SetClipboardData(cfColumnSelect, 0);
+
+		GlobalMemory borlandSelection;
+		borlandSelection.Allocate(1);
+		if (borlandSelection) {
+			static_cast<BYTE *>(borlandSelection.ptr)[0] = 0x02;
+			borlandSelection.SetClip(cfBorlandIDEBlockType);
+		}
 	}
 
 	if (selectedText.lineCopy) {

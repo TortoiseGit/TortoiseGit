@@ -19,7 +19,7 @@ LDFLAGS=-shared -static -Wl,--enable-runtime-pseudo-reloc-v2 -mwindows -Wl,--add
 LIBS=-lstdc++ -limm32 -lole32 -luuid
 # Add -MMD to get dependencies
 INCLUDEDIRS=-I ../include -I ../src -I../lexlib
-CXXBASEFLAGS=-Wall -Wno-missing-braces -Wno-char-subscripts -pedantic $(INCLUDEDIRS) -fno-rtti
+CXXBASEFLAGS=--std=c++0x -Wall -Wno-missing-braces -Wno-char-subscripts -pedantic $(INCLUDEDIRS) -fno-rtti -DDISABLE_D2D
 
 ifdef DEBUG
 CXXFLAGS=-DDEBUG -g $(CXXBASEFLAGS)

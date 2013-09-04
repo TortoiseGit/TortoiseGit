@@ -5,6 +5,13 @@
 // Copyright 1998-2011 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
+#ifndef PLATWIN_H
+#define PLATWIN_H
+
+#ifdef SCI_NAMESPACE
+namespace Scintilla {
+#endif
+
 extern bool IsNT();
 extern void Platform_Initialise(void *hInstance);
 extern void Platform_Finalise();
@@ -13,4 +20,10 @@ extern void Platform_Finalise();
 extern bool LoadD2D();
 extern ID2D1Factory *pD2DFactory;
 extern IDWriteFactory *pIDWriteFactory;
+#endif
+
+#ifdef SCI_NAMESPACE
+}
+#endif
+
 #endif

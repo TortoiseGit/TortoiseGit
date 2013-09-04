@@ -7,12 +7,12 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <stdarg.h>
-#include <stdio.h>
 #include <time.h>
-#include <limits.h>
 #include <math.h>
+#include <limits.h>
 
 #include <vector>
 #include <map>
@@ -285,6 +285,7 @@ static void SetLogFont(LOGFONTA &lf, const char *faceName, int characterSet, flo
 	lf.lfCharSet = static_cast<BYTE>(characterSet);
 	lf.lfQuality = Win32MapFontQuality(extraFontFlag);
 	strncpy(lf.lfFaceName, faceName, sizeof(lf.lfFaceName));
+	lf.lfFaceName[sizeof(lf.lfFaceName)-1] = '\0';
 }
 
 /**
@@ -1746,14 +1747,17 @@ void SurfaceD2D::MeasureWidths(Font &font_, const char *s, int len, XYPOSITION *
 	} else {
 
 		// May be more than one byte per position
-		int ui = 0;
+		unsigned int ui = 0;
+		FLOAT position = 0.0f;
 		for (int i=0;i<len;) {
+			if (ui < count)
+				position = poses.buffer[ui];
 			if (Platform::IsDBCSLeadByte(codePageText, s[i])) {
-				positions[i] = poses.buffer[ui];
-				positions[i+1] = poses.buffer[ui];
+				positions[i] = position;
+				positions[i+1] = position;
 				i += 2;
 			} else {
-				positions[i] = poses.buffer[ui];
+				positions[i] = position;
 				i++;
 			}
 
@@ -2270,12 +2274,15 @@ PRectangle ListBoxX::GetDesiredRect() {
 	HDC hdc = ::GetDC(lb);
 	HFONT oldFont = SelectFont(hdc, fontCopy);
 	SIZE textSize = {0, 0};
-	int len = static_cast<int>(widestItem ? strlen(widestItem) : 0);
-	if (unicodeMode) {
-		const TextWide tbuf(widestItem, len, unicodeMode);
-		::GetTextExtentPoint32W(hdc, tbuf.buffer, tbuf.tlen, &textSize);
-	} else {
-		::GetTextExtentPoint32A(hdc, widestItem, len, &textSize);
+	int len = 0;
+	if (widestItem) {
+		len = static_cast<int>(strlen(widestItem));
+		if (unicodeMode) {
+			const TextWide tbuf(widestItem, len, unicodeMode);
+			::GetTextExtentPoint32W(hdc, tbuf.buffer, tbuf.tlen, &textSize);
+		} else {
+			::GetTextExtentPoint32A(hdc, widestItem, len, &textSize);
+		}
 	}
 	TEXTMETRIC tm;
 	::GetTextMetrics(hdc, &tm);
@@ -2439,7 +2446,11 @@ void ListBoxX::Draw(DRAWITEMSTRUCT *pDrawItem) {
 							delete surfaceItem;
 							pDCRT->EndDraw();
 							pDCRT->Release();
+						} else {
+							delete surfaceItem;
 						}
+					} else {
+						delete surfaceItem;
 					}
 #endif
 				}
@@ -2991,6 +3002,7 @@ ElapsedTime::ElapsedTime() {
 		littleBit = timeVal.LowPart;
 	} else {
 		bigBit = clock();
+		littleBit = 0;
 	}
 }
 
