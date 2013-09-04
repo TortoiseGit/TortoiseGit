@@ -25,6 +25,8 @@
 #include "ChangedDlg.h"
 #include "GitDiff.h"
 #include "GitStatus.h"
+#include "../TGitCache/CacheInterface.h"
+#include "../Utils/UnicodeUtils.h"
 
 bool DiffCommand::Execute()
 {
@@ -56,8 +58,18 @@ bool DiffCommand::Execute()
 				CString topDir;
 				if (orgCmdLinePath.HasAdminDir(&topDir))
 				{
-					g_Git.Run(_T("git.exe update-index -- \"") + cmdLinePath.GetGitPathString() + _T("\""), nullptr); // make sure we get the right status
+					CBlockCacheForPath cacheBlock(topDir);
+					git_index *index = nullptr;
+					CString adminDir;
+					g_GitAdminDir.GetAdminDirPath(topDir, adminDir);
+					if (!git_index_open(&index, CUnicodeUtils::GetMulti(adminDir + _T("index"), CP_UTF8)))
+						g_Git.Run(_T("git.exe update-index -- \"") + cmdLinePath.GetGitPathString() + _T("\""), nullptr); // make sure we get the right status
 					GitStatus::GetFileStatus(topDir, cmdLinePath.GetWinPathString(), &status, true);
+					if (index)
+					{
+						git_index_write(index);
+						git_index_free(index);
+					}
 				}
 				if (status == git_wc_status_added)
 				{
