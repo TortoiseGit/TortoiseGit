@@ -618,6 +618,8 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 {
 	m_ctrlFiles.SetExtendedStyle(m_ctrlFiles.GetExtendedStyle() & ~LVS_EX_CHECKBOXES);
 
+	CoInitialize(NULL);
+
 	BOOL result = TRUE;
 	for (int i = 0; i < (int)m_ctrlFiles.GetItemCount(); ++i)
 	{
