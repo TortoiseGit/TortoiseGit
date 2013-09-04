@@ -115,74 +115,46 @@ protected:
 
 	BOOL CheckHeader(SLogCacheIndexHeader *header)
 	{
-		__try
-		{
-			if(header->m_Magic != LOG_INDEX_MAGIC)
-				return FALSE;
+		if (header->m_Magic != LOG_INDEX_MAGIC)
+			return FALSE;
 
-			if(header->m_Version != LOG_INDEX_VERSION)
-				return FALSE;
+		if (header->m_Version != LOG_INDEX_VERSION)
+			return FALSE;
 
-			return TRUE;
-		}
-		__finally
-		{
-		}
-		return FALSE;
+		return TRUE;
 	}
 
 	BOOL CheckHeader(SLogCacheRevFileHeader *header)
 	{
-		__try
-		{
-			if(header->m_Magic != LOG_DATA_FILE_MAGIC)
-				return FALSE;
+		if (header->m_Magic != LOG_DATA_FILE_MAGIC)
+			return FALSE;
 
-			if(header->m_Version != LOG_INDEX_VERSION)
-				return FALSE;
+		if (header->m_Version != LOG_INDEX_VERSION)
+			return FALSE;
 
-			return TRUE;
-		}
-		__finally
-		{
-		}
-		return FALSE;
+		return TRUE;
 	}
 
 	BOOL CheckHeader(SLogCacheRevItemHeader *header)
 	{
-		__try
-		{
-			if(header->m_Magic != LOG_DATA_ITEM_MAGIC)
-				return FALSE;
+		if (header->m_Magic != LOG_DATA_ITEM_MAGIC)
+			return FALSE;
 
-			if(header->m_Version != LOG_INDEX_VERSION)
-				return FALSE;
+		if (header->m_Version != LOG_INDEX_VERSION)
+			return FALSE;
 
-			return TRUE;
-		}
-		__finally
-		{
-		}
-		return FALSE;
+		return TRUE;
 	}
 
 	BOOL CheckHeader(SLogCacheDataFileHeader *header)
 	{
-		__try
-		{
-			if(header->m_Magic != LOG_DATA_MAGIC)
-				return FALSE;
+		if (header->m_Magic != LOG_DATA_MAGIC)
+			return FALSE;
 
-			if(header->m_Version != LOG_INDEX_VERSION)
-				return FALSE;
+		if (header->m_Version != LOG_INDEX_VERSION)
+			return FALSE;
 
-			return TRUE;
-		}
-		__finally
-		{
-		}
-		return FALSE;
+		return TRUE;
 	}
 
 	int SaveOneItem(GitRev &Rev, LONG offset);
