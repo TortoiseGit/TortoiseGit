@@ -700,6 +700,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 			case TGITCACHECOMMAND_REFRESHALL:
 				{
 					CAutoWriteLock writeLock(CGitStatusCache::Instance().GetGuard());
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": refresh all\n"));
 					CGitStatusCache::Instance().Refresh();
 				}
 				break;
