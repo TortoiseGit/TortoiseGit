@@ -261,9 +261,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_CONTEXTMENU:
 			{
 				POINT pt;
-				DWORD ptW = GetMessagePos();
-				pt.x = GET_X_LPARAM(ptW);
-				pt.y = GET_Y_LPARAM(ptW);
+				GetCursorPos(&pt);
 				HMENU hMenu = CreatePopupMenu();
 				if(hMenu)
 				{
