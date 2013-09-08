@@ -662,6 +662,9 @@
     <ClCompile Include="UpdateCrypto.cpp">
       <Filter>Commands\UpdateCheck</Filter>
     </ClCompile>
+    <ClCompile Include="GravatarPictureBox.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1152,6 +1155,9 @@
     </ClInclude>
     <ClInclude Include="UpdateCrypto.h">
       <Filter>Commands\UpdateCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="GravatarPictureBox.h">
+      <Filter>Commands\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

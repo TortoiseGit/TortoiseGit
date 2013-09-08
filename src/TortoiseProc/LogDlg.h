@@ -37,6 +37,7 @@
 #include "GitStatusListCtrl.h"
 #include "HyperLink.h"
 #include "Win7.h"
+#include "GravatarPictureBox.h"
 
 
 #define LOGFILTER_TIMER	101
@@ -149,6 +150,7 @@ private:
 	CRegDWORD m_regbShowTags;
 
 	void Refresh (bool clearfilter = false);
+	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);
 	void DoSizeV1(int delta);
 	void DoSizeV2(int delta);
 	void AdjustMinSize();
@@ -239,6 +241,8 @@ private:
 	CImageList			m_imgList;
 
 	HACCEL				m_hAccel;
+
+	CGravatar			m_gravatar;
 };
 static UINT WM_REVSELECTED = RegisterWindowMessage(_T("TORTOISEGit_REVSELECTED_MSG"));
 static UINT WM_REVLIST = RegisterWindowMessage(_T("TORTOISEGit_REVLIST_MSG"));

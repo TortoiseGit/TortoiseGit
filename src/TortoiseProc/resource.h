@@ -1322,6 +1322,7 @@
 #define IDC_REVGRAPHUSELOCALFORCUR      1762
 #define IDC_LOGGRAPHLINEWIDTH           1763
 #define IDC_LOGGRAPHNODESIZE            1764
+#define IDC_PIC_AUTHOR                  1765
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1757,7 +1758,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        349
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1765
+#define _APS_NEXT_CONTROL_VALUE         1766
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
