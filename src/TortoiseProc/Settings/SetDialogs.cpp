@@ -54,6 +54,8 @@ CSetDialogs::CSetDialogs()
 	m_regAbbreviateRenamings = CRegDWORD(_T("Software\\TortoiseGit\\AbbreviateRenamings"), FALSE);
 	m_regSymbolizeRefNames = CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_regEnableLogCache = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
+	m_regEnableGravatar = CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
+	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%"));
 	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE);
 	m_bAutocompletion = (DWORD)m_regAutocompletion;
 	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
@@ -89,6 +91,8 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ABBREVIATERENAMINGS, m_bAbbreviateRenamings);
 	DDX_Check(pDX, IDC_SYMBOLIZEREFNAMES, m_bSymbolizeRefNames);
 	DDX_Check(pDX, IDC_ENABLELOGCACHE, m_bEnableLogCache);
+	DDX_Check(pDX, IDC_ENABLEGRAVATAR, m_bEnableGravatar);
+	DDX_Text(pDX, IDC_GRAVATARURL, m_GravatarUrl);
 	DDX_Check(pDX, IDC_AUTOCOMPLETION, m_bAutocompletion);
 	DDX_Text(pDX, IDC_AUTOCOMPLETIONTIMEOUT, m_dwAutocompletionTimeout);
 	DDV_MinMaxUInt(pDX, m_dwAutocompletionTimeout, 1, 100);
@@ -109,6 +113,8 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ABBREVIATERENAMINGS, OnChange)
 	ON_BN_CLICKED(IDC_SYMBOLIZEREFNAMES, OnChange)
 	ON_BN_CLICKED(IDC_ENABLELOGCACHE, OnChange)
+	ON_BN_CLICKED(IDC_ENABLEGRAVATAR, OnChange)
+	ON_EN_CHANGE(IDC_GRAVATARURL, OnChange)
 	ON_BN_CLICKED(IDC_AUTOCOMPLETION, OnChange)
 	ON_EN_CHANGE(IDC_AUTOCOMPLETIONTIMEOUT, OnChange)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
@@ -146,6 +152,8 @@ BOOL CSetDialogs::OnInitDialog()
 	m_bAbbreviateRenamings = m_regAbbreviateRenamings;
 	m_bSymbolizeRefNames = m_regSymbolizeRefNames;
 	m_bEnableLogCache = m_regEnableLogCache;
+	m_bEnableGravatar = m_regEnableGravatar;
+	m_GravatarUrl = m_regGravatarUrl;
 
 	for (int i=0; i<m_cAutoClose.GetCount(); ++i)
 		if (m_cAutoClose.GetItemData(i)==m_dwAutoClose)
@@ -163,6 +171,8 @@ BOOL CSetDialogs::OnInitDialog()
 	m_tooltips.AddTool(IDC_ABBREVIATERENAMINGS, IDS_SETTINGS_ABBREVIATERENAMINGS_TT);
 	m_tooltips.AddTool(IDC_SYMBOLIZEREFNAMES, IDS_SETTINGS_SYMBOLIZEREFNAMES_TT);
 	m_tooltips.AddTool(IDC_ENABLELOGCACHE, IDS_SETTINGS_ENABLELOGCACHE_TT);
+	m_tooltips.AddTool(IDC_ENABLEGRAVATAR, IDS_SETTINGS_ENABLEGRAVATAR_TT);
+	m_tooltips.AddTool(IDC_GRAVATARURL, IDS_SETTINGS_GRAVATARURL_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETION, IDS_SETTINGS_AUTOCOMPLETION_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETIONTIMEOUT, IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT);
 	m_tooltips.AddTool(IDC_AUTOCOMPLETIONTIMEOUTLABEL, IDS_SETTINGS_AUTOCOMPLETIONTIMEOUT_TT);
@@ -231,6 +241,8 @@ BOOL CSetDialogs::OnApply()
 	Store (m_bAbbreviateRenamings, m_regAbbreviateRenamings);
 	Store (m_bSymbolizeRefNames, m_regSymbolizeRefNames);
 	Store (m_bEnableLogCache, m_regEnableLogCache);
+	Store (m_bEnableGravatar, m_regEnableGravatar);
+	Store (m_GravatarUrl, m_regGravatarUrl);
 
 	Store (m_bAutocompletion, m_regAutocompletion);
 	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);

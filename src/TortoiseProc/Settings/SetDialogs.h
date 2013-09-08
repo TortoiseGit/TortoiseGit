@@ -80,6 +80,10 @@ private:
 	BOOL				m_bSymbolizeRefNames;
 	CRegDWORD			m_regEnableLogCache;
 	BOOL				m_bEnableLogCache;
+	CRegDWORD			m_regEnableGravatar;
+	BOOL				m_bEnableGravatar;
+	CRegString			m_regGravatarUrl;
+	CString				m_GravatarUrl;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;
