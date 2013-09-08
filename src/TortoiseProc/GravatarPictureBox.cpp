@@ -157,15 +157,34 @@ void CGravatar::GravatarThread()
 			CString tempFile;
 			GetTempPath(tempFile);
 			tempFile += md5;
-			HRESULT res = URLDownloadToFile(nullptr, gravatarUrl, tempFile, 0, nullptr);
-			m_gravatarLock.Lock();
-			if (m_email == email && res == S_OK)
+			if (PathFileExists(tempFile))
 			{
 				m_filename = tempFile;
 				m_email = _T("");
 			}
 			else
-				m_filename = _T("");
+			{
+				HRESULT res = URLDownloadToFile(nullptr, gravatarUrl, tempFile, 0, nullptr);
+				m_gravatarLock.Lock();
+				if (m_email == email && res == S_OK)
+				{
+					HANDLE hFile = CreateFile(tempFile, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+					FILETIME creationTime = {};
+					GetFileTime(hFile, &creationTime, nullptr, nullptr);
+					uint64_t delta = 7 * 24 * 60 * 60 * 10000000LL;
+					DWORD low = creationTime.dwLowDateTime;
+					creationTime.dwLowDateTime += delta & 0xffffffff;
+					creationTime.dwHighDateTime += delta >> 32;
+					if (creationTime.dwLowDateTime < low)
+						creationTime.dwHighDateTime++;
+					SetFileTime(hFile, &creationTime, nullptr, nullptr);
+					CloseHandle(hFile);
+					m_filename = tempFile;
+					m_email = _T("");
+				}
+				else
+					m_filename = _T("");
+			}
 			m_gravatarLock.Unlock();
 			Invalidate();
 		}
