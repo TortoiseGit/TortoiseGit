@@ -113,6 +113,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LOG_SHOWTAGS, m_bShowTags);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
+	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
 }
 
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
@@ -269,6 +270,19 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_LOG_FOLLOWRENAMES);
 	AdjustControlSize(IDC_LOG_SHOWTAGS);
 
+	if (m_gravatar.IsGravatarEnabled())
+	{
+		RECT rect, rect2;
+		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(&rect);
+		ScreenToClient(&rect);
+		m_gravatar.GetWindowRect(&rect2);
+		ScreenToClient(&rect2);
+		rect.right = rect2.left;
+		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
+	}
+	else
+		m_gravatar.ShowWindow(SW_HIDE);
+
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(m_MsgViewOrigRect);
@@ -296,6 +310,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 
@@ -409,6 +424,7 @@ BOOL CLogDlg::OnInitDialog()
 		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
 
 	m_LogList.FetchLogAsync(this);
+	m_gravatar.Init();
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 
@@ -666,6 +682,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		m_ChangedFileListCtrl.Invalidate();
 //		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
+		m_gravatar.LoadGravatar();
 		return;
 	}
 
@@ -677,6 +694,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		// if nothing is selected, we have nothing more to do
 //		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
+		m_gravatar.LoadGravatar();
 		return;
 	}
 	else if (selCount == 1)
@@ -780,6 +798,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				m_ChangedFileListCtrl.SetBusy(FALSE);
 
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
+			m_gravatar.LoadGravatar(pLogEntry->GetAuthorEmail());
 			return;
 		}
 
@@ -818,6 +837,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	else
 		SetSortArrow(&m_ChangedFileListCtrl, -1, false);
 	m_ChangedFileListCtrl.SetRedraw(TRUE);
+	m_gravatar.LoadGravatar();
 
 }
 
@@ -867,6 +887,7 @@ void CLogDlg::OnCancel()
 	{
 		m_LogList.SafeTerminateThread();
 	}
+	m_gravatar.SafeTerminateGravatarThread();
 	UpdateData();
 
 	SaveSplitterPos();
@@ -998,6 +1019,7 @@ void CLogDlg::OnOK()
 	{
 		m_LogList.SafeTerminateThread();
 	}
+	m_gravatar.SafeTerminateGravatarThread();
 	UpdateData();
 	// check that one and only one row is selected
 	if (m_LogList.GetSelectedCount() == 1)
@@ -1325,19 +1347,35 @@ void CLogDlg::OnBnClickedStatbutton()
 	OnTimer(LOGFILTER_TIMER);
 }
 
+void CLogDlg::MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget)
+{
+	CRect rcWndPicAuthor, rcWndMsgView;
+	pWndRef->GetWindowRect(rcWndMsgView);
+	ScreenToClient(rcWndMsgView);
+	pWndTarget->GetWindowRect(rcWndPicAuthor);
+	ScreenToClient(rcWndPicAuthor);
+	int diff = rcWndMsgView.top - rcWndPicAuthor.top;
+	rcWndPicAuthor.top += diff;
+	rcWndPicAuthor.bottom += diff;
+	pWndTarget->MoveWindow(rcWndPicAuthor);
+}
+
 void CLogDlg::DoSizeV1(int delta)
 {
 
 	RemoveAnchor(IDC_LOGLIST);
 	RemoveAnchor(IDC_SPLITTERTOP);
 	RemoveAnchor(IDC_MSGVIEW);
+	RemoveAnchor(IDC_PIC_AUTHOR);
 	RemoveAnchor(IDC_SPLITTERBOTTOM);
 	RemoveAnchor(IDC_LOGMSG);
 	CSplitterControl::ChangeHeight(&m_LogList, delta, CW_TOPALIGN);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), -delta, CW_BOTTOMALIGN);
+	MoveToSameTop(GetDlgItem(IDC_MSGVIEW), GetDlgItem(IDC_PIC_AUTHOR));
 	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 	ArrangeLayout();
@@ -1345,6 +1383,7 @@ void CLogDlg::DoSizeV1(int delta)
 	SetSplitterRange();
 	m_LogList.Invalidate();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
+	m_gravatar.Invalidate();
 
 }
 
@@ -1354,6 +1393,7 @@ void CLogDlg::DoSizeV2(int delta)
 	RemoveAnchor(IDC_LOGLIST);
 	RemoveAnchor(IDC_SPLITTERTOP);
 	RemoveAnchor(IDC_MSGVIEW);
+	RemoveAnchor(IDC_PIC_AUTHOR);
 	RemoveAnchor(IDC_SPLITTERBOTTOM);
 	RemoveAnchor(IDC_LOGMSG);
 	CSplitterControl::ChangeHeight(GetDlgItem(IDC_MSGVIEW), delta, CW_TOPALIGN);
@@ -1361,6 +1401,7 @@ void CLogDlg::DoSizeV2(int delta)
 	AddAnchor(IDC_LOGLIST, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERTOP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_MSGVIEW, TOP_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_PIC_AUTHOR, TOP_RIGHT);
 	AddAnchor(IDC_SPLITTERBOTTOM, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 	ArrangeLayout();
@@ -1368,6 +1409,7 @@ void CLogDlg::DoSizeV2(int delta)
 	SetSplitterRange();
 	GetDlgItem(IDC_MSGVIEW)->Invalidate();
 	m_ChangedFileListCtrl.Invalidate();
+	m_gravatar.Invalidate();
 
 }
 
