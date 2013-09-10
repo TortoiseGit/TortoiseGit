@@ -36,6 +36,7 @@ public:
 	enum { IDD = IDD_GITSWITCH };
 
 	BOOL	m_bForce;
+	BOOL	m_bMerge;
 	BOOL	m_bTrack;
 	BOOL	m_bBranch;
 	BOOL	m_bBranchOverride;

@@ -1138,6 +1138,7 @@ BEGIN
     CONTROL         "Create New Branch",IDC_CHECK_BRANCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,91,88,10
     EDITTEXT        IDC_EDIT_BRANCH,112,88,146,14,ES_AUTOHSCROLL
     CONTROL         "Force",IDC_CHECK_FORCE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,108,100,10
+    CONTROL         "Merge",IDC_CHECK_MERGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,136,108,100,10
     CONTROL         "Track",IDC_CHECK_TRACK,"Button",BS_AUTO3STATE | WS_TABSTOP,19,124,100,10
     CONTROL         "Override branch if exists",IDC_CHECK_BRANCHOVERRIDE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,140,261,10
@@ -3175,6 +3176,8 @@ BEGIN
     IDS_SETTINGS_ENABLEGRAVATAR_TT 
                             "Enable showing Gravatar image in Log Dialog"
     IDS_SETTINGS_GRAVATARURL_TT "Allow to use custom Gravatar URL"
+    IDS_PROC_SWITCH_MERGE_TT 
+                            "Merge between original branch, working tree contents, and the branch to switch to"
 END
 
 STRINGTABLE

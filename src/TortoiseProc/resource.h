@@ -934,6 +934,7 @@
 #define IDS_REPOBROWSE_INFOMULTI        1436
 #define IDS_SETTINGS_ENABLEGRAVATAR_TT  1437
 #define IDS_SETTINGS_GRAVATARURL_TT     1438
+#define IDS_PROC_SWITCH_MERGE_TT        1439
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
@@ -1041,6 +1042,7 @@
 #define IDC_CHECK_SIGN                  1523
 #define IDC_CHECK_SQUASH                1524
 #define IDC_CHECK_SWITCH                1525
+#define IDC_CHECK_MERGE                 1526
 #define IDC_CHECK_BRANCH                1527
 #define IDC_EDIT_BRANCH                 1528
 #define IDC_SHOWLOCKEDOVERLAY           1529
