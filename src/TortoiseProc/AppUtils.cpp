@@ -1184,17 +1184,18 @@ bool CAppUtils::Switch(CString initialRefName, bool autoclose)
 		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
 			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
 
-		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose);
+		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose, dlg.m_bMerge);
 	}
 	return FALSE;
 }
 
-bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool autoClose /* false */)
+bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool autoClose /* false */, bool bMerge /* false */)
 {
 	CString cmd;
 	CString track;
 	CString force;
 	CString branch;
+	CString merge;
 
 	if(!sNewBranch.IsEmpty()){
 		if (bBranchOverride)
@@ -1212,10 +1213,13 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	}
 	if (bForce)
 		force = _T("-f");
+	if (bMerge)
+		merge = _T("--merge");
 
-	cmd.Format(_T("git.exe checkout %s %s %s %s"),
+	cmd.Format(_T("git.exe checkout %s %s %s %s %s"),
 		 force,
 		 track,
+		 merge,
 		 branch,
 		 g_Git.FixBranchName(ref));
 

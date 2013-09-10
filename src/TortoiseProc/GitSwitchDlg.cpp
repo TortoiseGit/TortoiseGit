@@ -36,6 +36,7 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=NULL*/)
 	,CChooseVersion(this)
 {
 	m_bBranch=FALSE;
+	m_bMerge = FALSE;
 	m_bTrack = 2;
 	m_bForce=FALSE;
 	m_bBranchOverride = FALSE;
@@ -51,6 +52,7 @@ void CGitSwitchDlg::DoDataExchange(CDataExchange* pDX)
 	CHOOSE_VERSION_DDX;
 
 	DDX_Check(pDX,IDC_CHECK_FORCE,this->m_bForce);
+	DDX_Check(pDX, IDC_CHECK_MERGE, m_bMerge);
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_BRANCH,this->m_bBranch);
 	DDX_Check(pDX,IDC_CHECK_BRANCHOVERRIDE,this->m_bBranchOverride);
@@ -99,6 +101,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_VERSION);
 	AdjustControlSize(IDC_CHECK_BRANCH);
 	AdjustControlSize(IDC_CHECK_FORCE);
+	AdjustControlSize(IDC_CHECK_MERGE);
 	AdjustControlSize(IDC_CHECK_TRACK);
 	AdjustControlSize(IDC_CHECK_BRANCHOVERRIDE);
 
@@ -123,6 +126,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 	else
 	{
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_FORCE), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_FORCE_TT)));
+		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_MERGE), CString(MAKEINTRESOURCE(IDS_PROC_SWITCH_MERGE_TT)));
 		m_ToolTip.AddTool(GetDlgItem(IDC_CHECK_TRACK), CString(MAKEINTRESOURCE(IDS_PROC_NEWBRANCHTAG_TRACK_TT)));
 		m_ToolTip.Activate(TRUE);
 	}
