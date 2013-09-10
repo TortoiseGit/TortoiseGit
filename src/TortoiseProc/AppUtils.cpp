@@ -1184,7 +1184,7 @@ bool CAppUtils::Switch(CString initialRefName, bool autoclose)
 		if (dlg.m_VersionName.Left(11) ==_T("refs/heads/") && dlg.m_bBranchOverride != TRUE)
 			dlg.m_VersionName = dlg.m_VersionName.Mid(11);
 
-		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose, dlg.m_bMerge);
+		return PerformSwitch(dlg.m_VersionName, dlg.m_bForce == TRUE , branch, dlg.m_bBranchOverride == TRUE, dlg.m_bTrack, autoclose, dlg.m_bMerge == TRUE);
 	}
 	return FALSE;
 }
