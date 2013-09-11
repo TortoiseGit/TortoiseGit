@@ -278,11 +278,9 @@ BOOL CAppUtils::StartExtMerge(
 		(ext == _T(".png")) || (ext == _T(".ico"))  ||
 		(ext == _T(".dib")) || (ext == _T(".emf")))
 	{
-		com = _T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
-			_T(" /left:%base /right:%mine /lefttitle:%bname /righttitle:%yname") + _T("\n") + 
-			// delimited by \n
-			_T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"") +
-			_T(" /left:%base /right:%theirs /lefttitle:%bname /righttitle:%tname");
+		com = _T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"");
+		com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
+		com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
 	}
 
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
@@ -402,18 +400,7 @@ BOOL CAppUtils::StartExtMerge(
 	if ((bReadOnly)&&(bInternal))
 		com += _T(" /readonly");
 
-	CString com2;
-	int newLine = com.Find(_T('\n'));
-	if (newLine >= 0)
-	{
-		com2 = com.Mid(newLine + 1);
-		com = com.Left(newLine);
-	}
 	if(!LaunchApplication(com, IDS_ERR_EXTMERGESTART, false))
-	{
-		return FALSE;
-	}
-	if (!com2.IsEmpty() && !LaunchApplication(com2, IDS_ERR_EXTMERGESTART, false))
 	{
 		return FALSE;
 	}
