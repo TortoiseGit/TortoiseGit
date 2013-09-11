@@ -19,13 +19,22 @@
 #pragma once
 #include "BaseWindow.h"
 #include "PicWindow.h"
-#include <CommCtrl.h>
 #include "TortoiseIDiff.h"
+
+#include <map>
+#include <CommCtrl.h>
 
 #define SPLITTER_BORDER 2
 
 #define WINDOW_MINHEIGHT 200
 #define WINDOW_MINWIDTH 200
+
+enum FileType
+{
+    FileTypeMine        = 1,
+    FileTypeTheirs      = 2,
+    FileTypeBase        = 3,
+};
 
 /**
  * \ingroup TortoiseIDiff
@@ -38,10 +47,12 @@ public:
     CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = NULL) : CWindow(hInst, wcx)
         , picWindow1(hInst)
         , picWindow2(hInst)
+        , picWindow3(hInst)
         , oldx(-4)
         , oldy(-4)
         , bMoved(false)
         , bDragMode(false)
+        , bDrag2(false)
         , nSplitterPos(100)
         , bOverlap(false)
         , bShowInfo(false)
@@ -71,58 +82,75 @@ public:
      */
     void SetRight(tstring rightpath, tstring righttitle) {rightpicpath=rightpath; rightpictitle=righttitle;}
 
+    /**
+     * Sets the image path and title for selection mode. In selection mode, the images
+     * are shown side-by-side for the user to chose one of them. The chosen image is
+     * saved at the path for \b FileTypeResult (if that path has been set) and the
+     * process return value is the chosen FileType.
+     */
+    void SetSelectionImage(FileType ft, const std::wstring& path, const std::wstring& title);
+    void SetSelectionResult(const std::wstring& path) { selectionResult = path; }
+
 protected:
     /// the message handler for this window
-    LRESULT CALLBACK    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK                    WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
     /// Handles all the WM_COMMAND window messages (e.g. menu commands)
-    LRESULT             DoCommand(int id);
+    LRESULT                             DoCommand(int id, LPARAM lParam);
 
     /// Positions the child windows. Call this after the window sizes/positions have changed.
-    void                PositionChildren(RECT * clientrect = NULL);
+    void                                PositionChildren(RECT * clientrect = NULL);
     /// Shows the "Open images" dialog where the user can select the images to diff
-    bool                OpenDialog();
-    static BOOL CALLBACK OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);
-    static bool         AskForFile(HWND owner, TCHAR * path);
+    bool                                OpenDialog();
+    static BOOL CALLBACK                OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);
+    static bool                         AskForFile(HWND owner, TCHAR * path);
 
     // splitter methods
-    void                DrawXorBar(HDC hdc, int x1, int y1, int width, int height);
-    LRESULT             Splitter_OnLButtonDown(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
-    LRESULT             Splitter_OnLButtonUp(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
-    LRESULT             Splitter_OnMouseMove(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
-    void                Splitter_CaptureChanged();
+    void                                DrawXorBar(HDC hdc, int x1, int y1, int width, int height);
+    LRESULT                             Splitter_OnLButtonDown(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT                             Splitter_OnLButtonUp(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+    LRESULT                             Splitter_OnMouseMove(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+    void                                Splitter_CaptureChanged();
 
     // toolbar
-    bool                CreateToolbar();
-    HWND                hwndTB;
-    HIMAGELIST          hToolbarImgList;
+    bool                                CreateToolbar();
+    HWND                                hwndTB;
+    HIMAGELIST                          hToolbarImgList;
 
     // command line params
-    static tstring  leftpicpath;
-    static tstring  leftpictitle;
+    static tstring                      leftpicpath;
+    static tstring                      leftpictitle;
 
-    static tstring  rightpicpath;
-    static tstring  rightpictitle;
+    static tstring                      rightpicpath;
+    static tstring                      rightpictitle;
 
     // image data
-    CPicWindow      picWindow1;
-    CPicWindow      picWindow2;
-    bool            bShowInfo;
-    COLORREF        transparentColor;
+    CPicWindow                          picWindow1;
+    CPicWindow                          picWindow2;
+    CPicWindow                          picWindow3;
+    bool                                bShowInfo;
+    COLORREF                            transparentColor;
 
     // splitter data
-    int             oldx;
-    int             oldy;
-    bool            bMoved;
-    bool            bDragMode;
-    int             nSplitterPos;
+    int                                 oldx;
+    int                                 oldy;
+    bool                                bMoved;
+    bool                                bDragMode;
+    bool                                bDrag2;
+    int                                 nSplitterPos;
+    int                                 nSplitterPos2;
 
     // one/two pane view
-    bool            bOverlap;
-    bool            bVertical;
-    bool            bLinkedPositions;
-    bool            bFitWidths;
-    bool            bFitHeights;
-    CPicWindow::BlendType   m_BlendType;
+    bool                                bSelectionMode;
+    bool                                bOverlap;
+    bool                                bVertical;
+    bool                                bLinkedPositions;
+    bool                                bFitWidths;
+    bool                                bFitHeights;
+    CPicWindow::BlendType               m_BlendType;
 
+    // selection mode data
+    std::map<FileType, std::wstring>    selectionPaths;
+    std::map<FileType, std::wstring>    selectionTitles;
+    std::wstring                        selectionResult;
 };
 

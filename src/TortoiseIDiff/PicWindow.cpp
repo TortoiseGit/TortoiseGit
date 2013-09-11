@@ -302,7 +302,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 SetupScrollBars();
                 InvalidateRect(*this, NULL, TRUE);
                 UpdateWindow(*this);
-                if ((bLinkedPositions)&&((wParam & MK_SHIFT)==0))
+                if (pTheOtherPic && (bLinkedPositions) && ((wParam & MK_SHIFT)==0))
                 {
                     pTheOtherPic->nHScrollPos = nHScrollPos;
                     pTheOtherPic->nVScrollPos = nVScrollPos;
@@ -415,6 +415,11 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                     m_blend = BLEND_XOR;
                     PositionTrackBar();
                     InvalidateRect(*this, NULL, TRUE);
+                }
+                break;
+            case SELECTBUTTON_ID:
+                {
+                    SendMessage(GetParent(m_hwnd), WM_COMMAND, MAKEWPARAM(SELECTBUTTON_ID, SELECTBUTTON_ID), (LPARAM)m_hwnd);
                 }
                 break;
             }
@@ -881,7 +886,7 @@ void CPicWindow::OnMouseWheel(short fwKeys, short zDelta)
         InvalidateRect(*this, NULL, FALSE);
         SetWindowPos(*this, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED|SWP_NOSIZE|SWP_NOREPOSITION|SWP_NOMOVE);
         UpdateWindow(*this);
-        if (bLinkedPositions)
+        if (bLinkedPositions && pTheOtherPic)
         {
             pTheOtherPic->nHScrollPos = nHScrollPos;
             pTheOtherPic->nVScrollPos = nVScrollPos;
@@ -1215,7 +1220,8 @@ void CPicWindow::Paint(HWND hwnd)
                     RECT bounds = {0, m_inforect.top-4, SLIDER_WIDTH, m_inforect.bottom+4};
                     ::ExtTextOut(secondhdc, 0, 0, ETO_OPAQUE, &bounds, NULL, 0, NULL);
                 }
-                ShowPicWithBorder(secondhdc, rect, *pSecondPic, pTheOtherPic->GetZoom());
+                if (pTheOtherPic)
+                    ShowPicWithBorder(secondhdc, rect, *pSecondPic, pTheOtherPic->GetZoom());
 
                 if (m_blend == BLEND_ALPHA)
                 {
@@ -1443,6 +1449,18 @@ bool CPicWindow::CreateButtons()
     ti.rect.right = 0;
     ti.rect.bottom = 0;
     SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &ti);
+    ResString sSelect(hResource, IDS_SELECT);
+    hwndSelectBtn = CreateWindowEx(0,
+                                   _T("BUTTON"),
+                                   sSelect,
+                                   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+                                   0, 0, 0, 0,
+                                   *this,
+                                   (HMENU)SELECTBUTTON_ID,
+                                   hResource,
+                                   NULL);
+    if (hwndPlayBtn == INVALID_HANDLE_VALUE)
+        return false;
 
     return true;
 }
@@ -1466,6 +1484,10 @@ void CPicWindow::PositionChildren()
         ShowWindow(hwndRightBtn, SW_HIDE);
         ShowWindow(hwndPlayBtn, SW_HIDE);
     }
+    if (bSelectionMode)
+        SetWindowPos(hwndSelectBtn, HWND_TOP, rect.right-100, rect.bottom-HEADER_HEIGHT, 100, HEADER_HEIGHT, SWP_FRAMECHANGED|SWP_SHOWWINDOW);
+    else
+        ShowWindow(hwndSelectBtn, SW_HIDE);
     PositionTrackBar();
 }
 
@@ -1508,7 +1530,7 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
     // Note: some translations could end up with two identical strings, but
     // in English we need two - even if we wouldn't need two in English, some
     // translation might then need two again.
-    if (pSecondPic)
+    if (pSecondPic && pTheOtherPic)
     {
         _stprintf_s(buf, size,
             (TCHAR const *)ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO),
