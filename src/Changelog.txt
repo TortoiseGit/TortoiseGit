@@ -6,6 +6,7 @@ Released: Unreleased
  * Fixed issue #1858: Switch-and-merge as a single command
  * Support Gravatar
  * Implement git checkout --merge
+ * TortoiseGitIDiff: Conflict resolving for images
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog

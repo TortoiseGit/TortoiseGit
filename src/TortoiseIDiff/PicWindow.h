@@ -35,6 +35,7 @@
 #define ALPHATOGGLEBUTTON_ID    104
 #define BLENDALPHA_ID           105
 #define BLENDXOR_ID             106
+#define SELECTBUTTON_ID         107
 
 #define TRACKBAR_ID 101
 #define SLIDER_HEIGHT 30
@@ -91,6 +92,7 @@ public:
         , hwndLeftBtn(0)
         , hwndRightBtn(0)
         , hwndPlayBtn(0)
+        , hwndSelectBtn(0)
         , hwndAlphaToggleBtn(0)
         , hLeft(0)
         , hRight(0)
@@ -100,6 +102,7 @@ public:
         , m_linkedWidth(0)
         , m_linkedHeight(0)
         , bDragging(false)
+        , bSelectionMode(false)
     {
         SetWindowTitle(_T("Picture Window"));
         m_lastTTPos.x = 0;
@@ -190,6 +193,7 @@ public:
     int GetVPos() {return nVScrollPos;}
     void SetZoomValue(int z) {picscale = z; InvalidateRect(*this, NULL, FALSE);}
 
+    void SetSelectionMode(bool bSelect = true) { bSelectionMode = bSelect; }
     /// Handles the mouse wheel
     void                OnMouseWheel(short fwKeys, short zDelta);
 protected:
@@ -256,6 +260,7 @@ protected:
     char                m_szTip[8192];
     POINT               m_lastTTPos;
     HWND                hwndTT;
+    bool                bSelectionMode;     ///< true if TortoiseIDiff is in selection mode, used to resolve conflicts
     // scrollbar info
     int                 nVScrollPos;        ///< vertical scroll position
     int                 nHScrollPos;        ///< horizontal scroll position
@@ -276,6 +281,7 @@ protected:
     HWND                hwndLeftBtn;
     HWND                hwndRightBtn;
     HWND                hwndPlayBtn;
+    HWND                hwndSelectBtn;
     CNiceTrackbar       m_AlphaSlider;
     HWND                hwndAlphaToggleBtn;
     HICON               hLeft;

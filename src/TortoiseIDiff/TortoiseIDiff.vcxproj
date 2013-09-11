@@ -144,8 +144,9 @@
   <ItemGroup>
     <Image Include="resources\alphatoggle.ico" />
     <Image Include="resources\blend.ico" />
+    <Image Include="resources\fitheights.ico" />
     <Image Include="resources\fitinwindow.ico" />
-    <Image Include="resources\fittogether.ico" />
+    <Image Include="resources\fitwidths.ico" />
     <Image Include="resources\imginfo.ico" />
     <Image Include="resources\link.ico" />
     <Image Include="resources\origsize.ico" />

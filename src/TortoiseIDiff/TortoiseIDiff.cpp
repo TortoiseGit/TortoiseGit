@@ -82,10 +82,18 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     }
     mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
     mainWindow->SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
+    if (parser.HasVal(L"base"))
+        mainWindow->SetSelectionImage(FileTypeBase, parser.GetVal(L"base"), parser.HasVal(L"basetitle") ? parser.GetVal(L"basetitle") : L"");
+    if (parser.HasVal(L"mine"))
+        mainWindow->SetSelectionImage(FileTypeMine, parser.GetVal(L"mine"), parser.HasVal(L"minetitle") ? parser.GetVal(L"minetitle") : L"");
+    if (parser.HasVal(L"theirs"))
+        mainWindow->SetSelectionImage(FileTypeTheirs, parser.GetVal(L"theirs"), parser.HasVal(L"theirstitle") ? parser.GetVal(L"theirstitle") : L"");
+    if (parser.HasVal(L"result"))
+        mainWindow->SetSelectionResult(parser.GetVal(L"result"));
     if (mainWindow->RegisterAndCreateWindow())
     {
         HACCEL hAccelTable = LoadAccelerators(hResource, MAKEINTRESOURCE(IDR_TORTOISEIDIFF));
-        if (!parser.HasVal(_T("left")))
+        if (!parser.HasVal(L"left") && parser.HasVal(L"base") && !parser.HasVal(L"mine") && !parser.HasVal(L"theirs"))
         {
             PostMessage(*mainWindow, WM_COMMAND, ID_FILE_OPEN, 0);
         }
