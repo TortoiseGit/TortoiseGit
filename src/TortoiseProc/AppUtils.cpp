@@ -247,6 +247,7 @@ BOOL CAppUtils::StartExtMerge(
 	bool bInternal = false;
 
 	CString mimetype;
+
 	if (!ext.IsEmpty())
 	{
 		// is there an extension specific merge tool?
@@ -272,38 +273,40 @@ BOOL CAppUtils::StartExtMerge(
 		com = mergetool;
 	}
 
-	// Maybe we should use TortoiseIDiff?
-	if ((ext == _T(".jpg")) || (ext == _T(".jpeg")) ||
-		(ext == _T(".bmp")) || (ext == _T(".gif"))  ||
-		(ext == _T(".png")) || (ext == _T(".ico"))  ||
-		(ext == _T(".tif")) || (ext == _T(".tiff"))  ||
-		(ext == _T(".dib")) || (ext == _T(".emf")))
-	{
-		com = _T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"");
-		com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
-		com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
-	}
-
 	if (com.IsEmpty()||(com.Left(1).Compare(_T("#"))==0))
 	{
-		// use TortoiseGitMerge
-		bInternal = true;
-		CRegString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
-		com = tortoiseMergePath;
-		if (com.IsEmpty())
+		// Maybe we should use TortoiseIDiff?
+		if ((ext == _T(".jpg")) || (ext == _T(".jpeg")) ||
+			(ext == _T(".bmp")) || (ext == _T(".gif"))  ||
+			(ext == _T(".png")) || (ext == _T(".ico"))  ||
+			(ext == _T(".tif")) || (ext == _T(".tiff"))  ||
+			(ext == _T(".dib")) || (ext == _T(".emf")))
 		{
-			com = CPathUtils::GetAppDirectory();
-			com += _T("TortoiseGitMerge.exe");
+			com = CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe");
+			com = _T("\"") + com + _T("\"");
+			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /result:%merged");
+			com = com + _T(" /basetitle:%bname /theirstitle:%tname /minetitle:%yname");
 		}
-		com = _T("\"") + com + _T("\"");
+		else
+		{
+			// use TortoiseGitMerge
+			bInternal = true;
+			CRegString tortoiseMergePath(_T("Software\\TortoiseGit\\TMergePath"), _T(""), false, HKEY_LOCAL_MACHINE);
+			com = tortoiseMergePath;
+			if (com.IsEmpty())
+			{
+				com = CPathUtils::GetAppDirectory() + _T("TortoiseGitMerge.exe");
+			}
+			com = _T("\"") + com + _T("\"");
+			com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
+			com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
+		}
 		if (!g_sGroupingUUID.IsEmpty())
 		{
 			com += L" /groupuuid:\"";
 			com += g_sGroupingUUID;
 			com += L"\"";
 		}
-		com = com + _T(" /base:%base /theirs:%theirs /mine:%mine /merged:%merged");
-		com = com + _T(" /basename:%bname /theirsname:%tname /minename:%yname /mergedname:%mname");
 	}
 	// check if the params are set. If not, just add the files to the command line
 	if ((com.Find(_T("%merged"))<0)&&(com.Find(_T("%base"))<0)&&(com.Find(_T("%theirs"))<0)&&(com.Find(_T("%mine"))<0))
