@@ -20,9 +20,10 @@
 #include "resource.h"
 #include "AboutDlg.h"
 #include "registry.h"
-#include "..\version.h"
+#include "../version.h"
 #include <string>
 #include <Commdlg.h>
+
 
 CAboutDlg::CAboutDlg(HWND hParent)
     : m_hParent(hParent)
@@ -34,8 +35,9 @@ CAboutDlg::~CAboutDlg(void)
 {
 }
 
-LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM /*lParam*/)
+LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER(lParam);
     switch (uMsg)
     {
     case WM_INITDIALOG:
