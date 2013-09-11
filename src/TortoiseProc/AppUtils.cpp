@@ -276,6 +276,7 @@ BOOL CAppUtils::StartExtMerge(
 	if ((ext == _T(".jpg")) || (ext == _T(".jpeg")) ||
 		(ext == _T(".bmp")) || (ext == _T(".gif"))  ||
 		(ext == _T(".png")) || (ext == _T(".ico"))  ||
+		(ext == _T(".tif")) || (ext == _T(".tiff"))  ||
 		(ext == _T(".dib")) || (ext == _T(".emf")))
 	{
 		com = _T("\"") + CPathUtils::GetAppDirectory() + _T("TortoiseGitIDiff.exe") + _T("\"");
