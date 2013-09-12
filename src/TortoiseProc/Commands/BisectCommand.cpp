@@ -69,7 +69,7 @@ bool BisectCommand::Execute()
 
 		int reset = -1;
 		if (!this->parser.HasKey(_T("reset")))
-			reset = (int)progress.m_PostCmdList.Add(_T("Bisect reset"));
+			reset = (int)progress.m_PostCmdList.Add(CString(MAKEINTRESOURCE(IDS_MENUBISECTRESET)));
 
 		INT_PTR ret = progress.DoModal();
 		if (path.HasSubmodules() && ret == IDC_PROGRESS_BUTTON1)
