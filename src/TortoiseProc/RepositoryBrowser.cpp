@@ -596,7 +596,7 @@ void CRepositoryBrowser::UpdateInfoLabel()
 	SetDlgItemText(IDC_INFOLABEL, temp);
 }
 
-void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR *pNMHDR, LRESULT *pResult)
+void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR * /* pNMHDR */, LRESULT *pResult)
 {
 	*pResult = 0;
 	UpdateInfoLabel();
