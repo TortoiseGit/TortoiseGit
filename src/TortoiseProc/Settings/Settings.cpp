@@ -99,6 +99,8 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pAdvanced, m_pAdvanced->GetIconID());
 
 	AddPage(m_pMainPage);
+	AddPage(m_pGitConfig);
+	AddPage(m_pHooksPage);
 	AddPage(m_pOverlayPage);
 	AddPage(m_pOverlaysPage);
 	AddPage(m_pOverlayHandlersPage);
@@ -115,14 +117,11 @@ void CSettings::AddPropPages()
 	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pSavedPage);
 
-	AddPage(m_pGitConfig);
-
 	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
 	{
 		AddPage(m_pGitRemote);
 	}
 	AddPage(m_pGitCredential);
-	AddPage(m_pHooksPage);
 	AddPage(m_pBugTraqPage);
 	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
 	{
