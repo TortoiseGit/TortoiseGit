@@ -3591,6 +3591,10 @@ msgstr ""
 msgid "Draw"
 msgstr ""
 
+#. Resource IDs: (1073)
+msgid "Draw tag/branch labels on right side"
+msgstr ""
+
 #. Resource IDs: (1079)
 msgid "Drive Types"
 msgstr ""

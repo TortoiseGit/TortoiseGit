@@ -36,6 +36,7 @@ CSetDialogs::CSetDialogs()
 	, m_bAbbreviateRenamings(FALSE)
 	, m_bSymbolizeRefNames(FALSE)
 	, m_bEnableLogCache(TRUE)
+	, m_regDrawBranchesTagsOnRightSide(FALSE)
 {
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
@@ -48,6 +49,7 @@ CSetDialogs::CSetDialogs()
 	m_regEnableLogCache = CRegDWORD(_T("Software\\TortoiseGit\\EnableLogCache"), TRUE);
 	m_regEnableGravatar = CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
 	m_regGravatarUrl = CRegString(_T("Software\\TortoiseGit\\GravatarUrl"), _T("http://www.gravatar.com/avatar/%HASH%"));
+	m_regDrawBranchesTagsOnRightSide = CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 }
 
 CSetDialogs::~CSetDialogs()
@@ -75,6 +77,7 @@ void CSetDialogs::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_ENABLELOGCACHE, m_bEnableLogCache);
 	DDX_Check(pDX, IDC_ENABLEGRAVATAR, m_bEnableGravatar);
 	DDX_Text(pDX, IDC_GRAVATARURL, m_GravatarUrl);
+	DDX_Check(pDX, IDC_RIGHTSIDEBRANCHESTAGS, m_bDrawBranchesTagsOnRightSide);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
@@ -89,6 +92,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ENABLELOGCACHE, OnChange)
 	ON_BN_CLICKED(IDC_ENABLEGRAVATAR, OnChange)
 	ON_EN_CHANGE(IDC_GRAVATARURL, OnChange)
+	ON_BN_CLICKED(IDC_RIGHTSIDEBRANCHESTAGS, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs message handlers
@@ -111,6 +115,7 @@ BOOL CSetDialogs::OnInitDialog()
 	m_bEnableLogCache = m_regEnableLogCache;
 	m_bEnableGravatar = m_regEnableGravatar;
 	m_GravatarUrl = m_regGravatarUrl;
+	m_bDrawBranchesTagsOnRightSide = m_regDrawBranchesTagsOnRightSide;
 
 	CString temp;
 
@@ -185,6 +190,7 @@ BOOL CSetDialogs::OnApply()
 	Store (m_bEnableLogCache, m_regEnableLogCache);
 	Store (m_bEnableGravatar, m_regEnableGravatar);
 	Store (m_GravatarUrl, m_regGravatarUrl);
+	Store (m_bDrawBranchesTagsOnRightSide, m_regDrawBranchesTagsOnRightSide);
 
     SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
