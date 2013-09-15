@@ -565,6 +565,10 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 
 	DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 
+	SIZE oneSpaceSize;
+	GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
+	rt.left += oneSpaceSize.cx;
+
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 	{
 		int txtState = LISS_NORMAL;
