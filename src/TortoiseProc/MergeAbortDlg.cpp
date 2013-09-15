@@ -27,10 +27,10 @@
 
 // CMergeAbortDlg dialog
 
-IMPLEMENT_DYNAMIC(CMergeAbortDlg, CStandAloneDialog)
+IMPLEMENT_DYNAMIC(CMergeAbortDlg, CStateStandAloneDialog)
 
 CMergeAbortDlg::CMergeAbortDlg(CWnd* pParent /*=NULL*/)
-	: CStandAloneDialog(CMergeAbortDlg::IDD, pParent)
+	: CStateStandAloneDialog(CMergeAbortDlg::IDD, pParent)
 	, m_ResetType(1)
 {
 
@@ -46,8 +46,7 @@ void CMergeAbortDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CMergeAbortDlg, CStandAloneDialog)
-	ON_BN_CLICKED(IDHELP, &CMergeAbortDlg::OnBnClickedHelp)
+BEGIN_MESSAGE_MAP(CMergeAbortDlg, CStateStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CMergeAbortDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
 
@@ -55,7 +54,7 @@ END_MESSAGE_MAP()
 // CMergeAbortDlg message handlers
 BOOL CMergeAbortDlg::OnInitDialog()
 {
-	CStandAloneDialog::OnInitDialog();
+	CStateStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	CString sWindowTitle;
@@ -64,6 +63,8 @@ BOOL CMergeAbortDlg::OnInitDialog()
 
 	AdjustControlSize(IDC_RADIO_RESET_MIXED);
 	AdjustControlSize(IDC_RADIO_RESET_HARD);
+
+	EnableSaveRestore(_T("MergeAbortDlg"));
 
 	this->CheckRadioButton(IDC_RADIO_RESET_MIXED, IDC_RADIO_RESET_HARD, IDC_RADIO_RESET_MIXED + m_ResetType);
 
@@ -74,12 +75,7 @@ void CMergeAbortDlg::OnOK()
 {
 	this->UpdateData(TRUE);
 	m_ResetType = this->GetCheckedRadioButton(IDC_RADIO_RESET_MIXED, IDC_RADIO_RESET_HARD) - IDC_RADIO_RESET_MIXED;
-	return CStandAloneDialog::OnOK();
-}
-
-void CMergeAbortDlg::OnBnClickedHelp()
-{
-	OnHelp();
+	return CStateStandAloneDialog::OnOK();
 }
 
 void CMergeAbortDlg::OnBnClickedShowModifiedFiles()
