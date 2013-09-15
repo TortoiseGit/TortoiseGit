@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011, 2013 Sven Strickroth, <email@cs-ware.de>
 //
 // Based on PushDlg.cpp
 // Copyright (C) 2003-2008 - TortoiseGit
@@ -42,7 +42,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedCheckUntracked();
 	afx_msg void OnBnClickedCheckAll();
 

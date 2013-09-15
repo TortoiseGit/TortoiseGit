@@ -46,7 +46,6 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnBnClickedHookbrowse();
 	afx_msg void OnBnClickedHookcommandbrowse();
-	afx_msg void OnBnClickedHelp();
 
 	DECLARE_MESSAGE_MAP()
 

@@ -53,7 +53,6 @@ void CSetBugTraqAdv::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetBugTraqAdv, CResizableStandAloneDialog)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUGTRAQBROWSE, &CSetBugTraqAdv::OnBnClickedBugTraqbrowse)
-	ON_BN_CLICKED(IDHELP, &CSetBugTraqAdv::OnBnClickedHelp)
 	ON_CBN_SELCHANGE(IDC_BUGTRAQPROVIDERCOMBO, &CSetBugTraqAdv::OnCbnSelchangeBugtraqprovidercombo)
 	ON_BN_CLICKED(IDC_OPTIONS, &CSetBugTraqAdv::OnBnClickedOptions)
 END_MESSAGE_MAP()
@@ -164,11 +163,6 @@ void CSetBugTraqAdv::OnBnClickedBugTraqbrowse()
 		m_sPath = sPath;
 		UpdateData(FALSE);
 	}
-}
-
-void CSetBugTraqAdv::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 CBugTraqAssociation CSetBugTraqAdv::GetAssociation() const

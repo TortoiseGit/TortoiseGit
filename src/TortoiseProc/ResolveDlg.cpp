@@ -47,7 +47,6 @@ void CResolveDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CResolveDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
@@ -147,11 +146,6 @@ UINT CResolveDlg::ResolveThread()
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;
-}
-
-void CResolveDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 BOOL CResolveDlg::PreTranslateMessage(MSG* pMsg)

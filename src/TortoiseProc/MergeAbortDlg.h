@@ -21,7 +21,7 @@
 #include "StandAloneDlg.h"
 // CMergeAbortDlg dialog
 
-class CMergeAbortDlg : public CStandAloneDialog
+class CMergeAbortDlg : public CStateStandAloneDialog
 {
 	DECLARE_DYNAMIC(CMergeAbortDlg)
 
@@ -36,7 +36,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
-	virtual void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowModifiedFiles();
 
 	DECLARE_MESSAGE_MAP()

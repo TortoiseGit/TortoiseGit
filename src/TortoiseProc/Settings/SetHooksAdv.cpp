@@ -52,7 +52,6 @@ void CSetHooksAdv::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSetHooksAdv, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_HOOKBROWSE, &CSetHooksAdv::OnBnClickedHookbrowse)
 	ON_BN_CLICKED(IDC_HOOKCOMMANDBROWSE, &CSetHooksAdv::OnBnClickedHookcommandbrowse)
-	ON_BN_CLICKED(IDHELP, &CSetHooksAdv::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
 BOOL CSetHooksAdv::OnInitDialog()
@@ -178,11 +177,6 @@ void CSetHooksAdv::OnBnClickedHookcommandbrowse()
 		m_sCommandLine = sCmdLine;
 		UpdateData(FALSE);
 	}
-}
-
-void CSetHooksAdv::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 BOOL CSetHooksAdv::PreTranslateMessage(MSG* pMsg)

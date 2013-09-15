@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012 - TortoiseGit
-// Copyright (C) 2012 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,10 +25,10 @@
 
 // CIgnoreDlg dialog
 
-IMPLEMENT_DYNAMIC(CIgnoreDlg, CStandAloneDialog)
+IMPLEMENT_DYNAMIC(CIgnoreDlg, CStateStandAloneDialog)
 
 CIgnoreDlg::CIgnoreDlg(CWnd* pParent /*=NULL*/)
-	: CStandAloneDialog(CIgnoreDlg::IDD, pParent)
+	: CStateStandAloneDialog(CIgnoreDlg::IDD, pParent)
 	, m_IgnoreType(0)
 	, m_IgnoreFile(1)
 {
@@ -46,15 +45,14 @@ void CIgnoreDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CIgnoreDlg, CStandAloneDialog)
-	ON_BN_CLICKED(IDHELP, OnHelp)
+BEGIN_MESSAGE_MAP(CIgnoreDlg, CStateStandAloneDialog)
 END_MESSAGE_MAP()
 
 
 // CIgnoreDlg message handlers
 BOOL CIgnoreDlg::OnInitDialog()
 {
-	CStandAloneDialog::OnInitDialog();
+	CStateStandAloneDialog::OnInitDialog();
 
 	this->CheckRadioButton(IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE, IDC_RADIO_IGNOREFILE_GITINFOEXCLUDE, IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE + m_IgnoreType);
 
@@ -67,6 +65,8 @@ BOOL CIgnoreDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_IGNORETYPE_ONLYINFOLDER);
 	AdjustControlSize(IDC_RADIO_IGNORETYPE_RECURSIVELY);
 
+	EnableSaveRestore(_T("IgnoreDlg"));
+
 	return TRUE;
 }
 
@@ -74,5 +74,5 @@ void CIgnoreDlg::OnOK()
 {
 	m_IgnoreFile = this->GetCheckedRadioButton(IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE, IDC_RADIO_IGNOREFILE_GITINFOEXCLUDE) - IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE;
 	m_IgnoreType = this->GetCheckedRadioButton(IDC_RADIO_IGNORETYPE_ONLYINFOLDER, IDC_RADIO_IGNORETYPE_RECURSIVELY) - IDC_RADIO_IGNORETYPE_ONLYINFOLDER;
-	return CStandAloneDialog::OnOK();
+	return CStateStandAloneDialog::OnOK();
 }

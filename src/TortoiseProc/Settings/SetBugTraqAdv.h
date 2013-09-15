@@ -48,7 +48,6 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedBugTraqbrowse();
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnCbnSelchangeBugtraqprovidercombo();
 	afx_msg void OnBnClickedOptions();
 

@@ -491,7 +491,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
 		}
 	}
-
+	InvalidateRect(rect);
 	if (brush != NULL)
 	{
 		::FillRect(hdc, &rect, brush);

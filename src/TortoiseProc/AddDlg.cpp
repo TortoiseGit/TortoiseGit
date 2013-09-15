@@ -51,7 +51,6 @@ void CAddDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ADDFILE, OnFileDropped)
 	ON_WM_TIMER()
@@ -161,11 +160,6 @@ UINT CAddDlg::AddThread()
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;
-}
-
-void CAddDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 BOOL CAddDlg::PreTranslateMessage(MSG* pMsg)

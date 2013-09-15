@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2008 - Stefan Kueng
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011, 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,7 +52,6 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
 	afx_msg void OnEnChangeCheckoutdirectory();
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowlog();
 
 	DECLARE_MESSAGE_MAP()

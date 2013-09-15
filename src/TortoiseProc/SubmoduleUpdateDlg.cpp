@@ -61,7 +61,6 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_BN_CLICKED(IDOK, &CSubmoduleUpdateDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDHELP, &CSubmoduleUpdateDlg::OnBnClickedHelp)
 	ON_LBN_SELCHANGE(IDC_LIST_PATH, &CSubmoduleUpdateDlg::OnLbnSelchangeListPath)
 END_MESSAGE_MAP()
 
@@ -194,11 +193,6 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 	m_regPath = selected;
 
 	CStandAloneDialog::OnOK();
-}
-
-void CSubmoduleUpdateDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CSubmoduleUpdateDlg::OnLbnSelchangeListPath()

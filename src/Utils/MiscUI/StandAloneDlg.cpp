@@ -40,6 +40,7 @@ CStateStandAloneDialog::CStateStandAloneDialog(UINT nIDTemplate, CWnd* pParentWn
 {
 }
 BEGIN_MESSAGE_MAP(CStateStandAloneDialog, CStandAloneDialogTmpl<CStateDialog>)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 IMPLEMENT_DYNAMIC(CResizableStandAloneDialog, CDialog)
@@ -126,4 +127,5 @@ void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point)
 }
 
 BEGIN_MESSAGE_MAP(CStateDialog, CDialog)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()

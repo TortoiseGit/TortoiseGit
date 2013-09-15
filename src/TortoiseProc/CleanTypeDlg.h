@@ -19,12 +19,12 @@
 #pragma once
 
 
-#include "HorizontalResizableStandAloneDialog.h"
+#include "StandAloneDlg.h"
 #include "registry.h"
 
 // CCleanTypeDlg dialog
 
-class CCleanTypeDlg : public CHorizontalResizableStandAloneDialog
+class CCleanTypeDlg : public CStateStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCleanTypeDlg)
 
@@ -51,5 +51,4 @@ public:
 	int		m_CleanType;
 	BOOL	m_bNoRecycleBin;
 	BOOL	m_bDryRun;
-	afx_msg void OnBnClickedHelp();
 };
