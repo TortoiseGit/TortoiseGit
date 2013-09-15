@@ -985,6 +985,7 @@ void CCommitDlg::OnOK()
 			{
 				this->m_sLogMessage.Empty();
 				m_cLogMessage.SetText(m_sLogMessage);
+				m_bCreateNewBranch = FALSE;
 			}
 
 			m_bCommitAmend = FALSE;
