@@ -1671,6 +1671,10 @@ msgstr ""
 msgid "Allow Editing for this view\nAllow Edit"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Allow to use custom Gravatar URL"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -3727,12 +3731,20 @@ msgstr ""
 msgid "Enable Edit"
 msgstr ""
 
+#. Resource IDs: (1766)
+msgid "Enable Gravatar"
+msgstr ""
+
 #. Resource IDs: (87)
 msgid "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
 msgstr ""
 
 #. Resource IDs: (1744)
 msgid "Enable log cache"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "Enable showing Gravatar image in Log Dialog"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7422,6 +7434,10 @@ msgstr ""
 #. Resource IDs: (3867)
 #, c-format
 msgid "Seek failed on %1"
+msgstr ""
+
+#. Resource IDs: (8)
+msgid "Select"
 msgstr ""
 
 #. Resource IDs: (1253)
