@@ -7,6 +7,7 @@ Released: Unreleased
  * Support Gravatar
  * Implement git checkout --merge
  * TortoiseGitIDiff: Conflict resolving for images
+ * Fixed issue #1795: Put branch labels on right side of message column in log view
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog

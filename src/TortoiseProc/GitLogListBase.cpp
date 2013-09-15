@@ -135,6 +135,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_ColumnRegKey=_T("log");
 
+	m_bTagsBranchesOnRightSide = !!CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
 
@@ -545,7 +546,7 @@ void DrawUpTriangle(HDC hdc, CRect rect, COLORREF color, int bold)
 	::DeleteObject(pen);
 }
 
-void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
+void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
 {
 	GitRev* data = (GitRev*)m_arShownList.SafeGetAt(index);
 	CRect rt=rect;
@@ -563,6 +564,53 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
+	if (!m_bTagsBranchesOnRightSide)
+		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+
+	SIZE oneSpaceSize;
+	GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
+	rt.left += oneSpaceSize.cx;
+
+	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+	{
+		int txtState = LISS_NORMAL;
+		if (rItem.state & LVIS_SELECTED)
+			txtState = LISS_SELECTED;
+
+		DrawThemeText(hTheme, hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, 0, &rt);
+	}
+	else
+	{
+		if (rItem.state & LVIS_SELECTED)
+		{
+			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
+			::DrawText(hdc,data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+			::SetTextColor(hdc, clrOld);
+		}
+		else
+		{
+			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
+		}
+	}
+
+	if (m_bTagsBranchesOnRightSide)
+	{
+		SIZE size;
+		GetTextExtentPoint32(hdc, data->GetSubject(), data->GetSubject().GetLength(), &size);
+
+		rt.left += oneSpaceSize.cx + size.cx;
+
+		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+	}
+
+	if (hTheme)
+		CloseThemeData(hTheme);
+
+	W_Dc.Detach();
+}
+
+void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &rect, CRect &rt, LVITEM &rItem, GitRev* data, std::vector<REFLABEL> &refList)
+{
 	for (unsigned int i = 0; i < refList.size(); ++i)
 	{
 		CString shortname = !refList[i].simplifiedName.IsEmpty() ? refList[i].simplifiedName : refList[i].name;
@@ -575,26 +623,28 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 
 		//When row selected, ajust label color
 		if (!(IsAppThemed() && SysInfo::Instance().IsVistaOrLater()))
+		{
 			if (rItem.state & LVIS_SELECTED)
 				colRef = CColors::MixColors(colRef, ::GetSysColor(COLOR_HIGHLIGHT), 150);
+		}
 
 		brush = ::CreateSolidBrush(colRef);
 
-		if(!shortname.IsEmpty() && (rt.left<rect.right) )
+		if (!shortname.IsEmpty() && (rt.left < rect.right))
 		{
 			SIZE size;
 			memset(&size,0,sizeof(SIZE));
-			GetTextExtentPoint32(hdc, shortname,shortname.GetLength(),&size);
+			GetTextExtentPoint32(hdc, shortname, shortname.GetLength(), &size);
 
-			rt.SetRect(rt.left,rt.top,rt.left+size.cx,rt.bottom);
-			rt.right+=8;
+			rt.SetRect(rt.left, rt.top, rt.left + size.cx, rt.bottom);
+			rt.right += 8;
 
 			int textpos = DT_CENTER;
 
-			if(rt.right > rect.right)
+			if (rt.right > rect.right)
 			{
 				rt.right = rect.right;
-				textpos =0;
+				textpos = 0;
 			}
 
 			CRect textRect = rt;
@@ -619,7 +669,6 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 			}
 
 			//Draw edge of label
-
 			CRect rectEdge = rt;
 
 			if (!hasTracking)
@@ -695,45 +744,12 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::ve
 				DrawUpTriangle(hdc, newRect, color, bold);
 			}
 
-			//::MoveToEx(hdc,rt.left,rt.top,NULL);
-			//::LineTo(hdc,rt.right,rt.top);
-			//::LineTo(hdc,rt.right,rt.bottom);
-			//::LineTo(hdc,rt.left,rt.bottom);
-			//::LineTo(hdc,rt.left,rt.top);
-
-			rt.left=rt.right+1;
+			rt.left = rt.right + 1;
 		}
-		if(brush)
+		if (brush)
 			::DeleteObject(brush);
 	}
-	rt.right=rect.right;
-
-	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
-	{
-		int txtState = LISS_NORMAL;
-		if (rItem.state & LVIS_SELECTED)
-			txtState = LISS_SELECTED;
-
-		DrawThemeText(hTheme,hdc, LVP_LISTITEM, txtState, data->GetSubject(), -1, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS, 0, &rt);
-	}
-	else
-	{
-		if (rItem.state & LVIS_SELECTED)
-		{
-			COLORREF clrOld = ::SetTextColor(hdc,::GetSysColor(COLOR_HIGHLIGHTTEXT));
-			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-			::SetTextColor(hdc,clrOld);
-		}
-		else
-		{
-			::DrawText(hdc,data->GetSubject(),data->GetSubject().GetLength(),&rt,DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
-		}
-	}
-
-	if (hTheme)
-		CloseThemeData(hTheme);
-
-	W_Dc.Detach();
+	rt.right = rect.right;
 }
 
 static COLORREF blend(const COLORREF& col1, const COLORREF& col2, int amount = 128) {
@@ -1346,7 +1362,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							return;
 						}
 
-						DrawTagBranch(pLVCD->nmcd.hdc, rect, pLVCD->nmcd.dwItemSpec, refsToShow);
+						DrawTagBranchMessage(pLVCD->nmcd.hdc, rect, pLVCD->nmcd.dwItemSpec, refsToShow);
 
 						*pResult = CDRF_SKIPDEFAULT;
 						return;
