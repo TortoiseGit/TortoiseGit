@@ -545,7 +545,7 @@ void DrawUpTriangle(HDC hdc, CRect rect, COLORREF color, int bold)
 	::DeleteObject(pen);
 }
 
-void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> refList)
+void CGitLogListBase::DrawTagBranch(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList)
 {
 	GitRev* data = (GitRev*)m_arShownList.SafeGetAt(index);
 	CRect rt=rect;
