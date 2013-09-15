@@ -278,15 +278,18 @@ class CStateDialog : public CDialog, public CResizableWndState
 {
 public:
 	CStateDialog()
-	: m_bEnableSaveRestore(false)
+	: CDialog()
+	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
-	CStateDialog(UINT /*nIDTemplate*/, CWnd* /*pParentWnd = NULL*/)
-	: m_bEnableSaveRestore(false)
+	CStateDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL)
+	: CDialog(nIDTemplate, pParentWnd)
+	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
-	CStateDialog(LPCTSTR /*lpszTemplateName*/, CWnd* /*pParentWnd = NULL*/)
-	: m_bEnableSaveRestore(false)
+	CStateDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL)
+	: CDialog(lpszTemplateName, pParentWnd)
+	, m_bEnableSaveRestore(false)
 	, m_bRectOnly(false)
 	{}
 	virtual ~CStateDialog() {};

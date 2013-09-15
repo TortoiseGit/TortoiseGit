@@ -19,12 +19,12 @@
 #pragma once
 
 
-#include "HorizontalResizableStandAloneDialog.h"
+#include "StandAloneDlg.h"
 #include "registry.h"
 
 // CCleanTypeDlg dialog
 
-class CCleanTypeDlg : public CHorizontalResizableStandAloneDialog
+class CCleanTypeDlg : public CStateStandAloneDialog
 {
 	DECLARE_DYNAMIC(CCleanTypeDlg)
 

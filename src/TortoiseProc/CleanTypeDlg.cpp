@@ -27,10 +27,10 @@
 
 // CCleanTypeDlg dialog
 
-IMPLEMENT_DYNAMIC(CCleanTypeDlg, CHorizontalResizableStandAloneDialog)
+IMPLEMENT_DYNAMIC(CCleanTypeDlg, CStateStandAloneDialog)
 
 CCleanTypeDlg::CCleanTypeDlg(CWnd* pParent /*=NULL*/)
-	: CHorizontalResizableStandAloneDialog(CCleanTypeDlg::IDD, pParent)
+	: CStateStandAloneDialog(CCleanTypeDlg::IDD, pParent)
 
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
@@ -58,7 +58,7 @@ void CCleanTypeDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CCleanTypeDlg, CHorizontalResizableStandAloneDialog)
+BEGIN_MESSAGE_MAP(CCleanTypeDlg, CStateStandAloneDialog)
 	ON_BN_CLICKED(IDHELP, &CCleanTypeDlg::OnBnClickedHelp)
 END_MESSAGE_MAP()
 
@@ -67,7 +67,7 @@ END_MESSAGE_MAP()
 
 BOOL CCleanTypeDlg::OnInitDialog()
 {
-	CHorizontalResizableStandAloneDialog::OnInitDialog();
+	CStateStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	AdjustControlSize(IDC_RADIO_CLEAN_ALL);
@@ -94,7 +94,7 @@ void CCleanTypeDlg::OnOK()
 	this->m_regDir = this->m_bDir;
 	this->m_regType = this->m_CleanType ;
 
-	CHorizontalResizableStandAloneDialog::OnOK();
+	CStateStandAloneDialog::OnOK();
 }
 
 void CCleanTypeDlg::OnBnClickedHelp()
