@@ -127,4 +127,5 @@ void CResizableStandAloneDialog::OnNcRButtonUp(UINT nHitTest, CPoint point)
 }
 
 BEGIN_MESSAGE_MAP(CStateDialog, CDialog)
+	ON_BN_CLICKED(IDHELP, OnHelp)
 END_MESSAGE_MAP()
