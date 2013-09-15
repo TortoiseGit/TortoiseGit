@@ -553,6 +553,7 @@ protected:
 	bool				m_bRelativeTimes;	// Show relative times
 	GIT_LOG				m_DllGitLog;
 	CString				m_SingleRemote;
+	bool				m_bTagsBranchesOnRightSide;
 	bool				m_bSymbolizeRefNames;
 	bool				m_bIncludeBoundaryCommits;
 

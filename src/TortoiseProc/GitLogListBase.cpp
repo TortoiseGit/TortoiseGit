@@ -135,6 +135,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 
 	m_ColumnRegKey=_T("log");
 
+	m_bTagsBranchesOnRightSide = !!CRegDWORD(_T("Software\\TortoiseGit\\DrawTagsBranchesOnRightSide"), FALSE);
 	m_bSymbolizeRefNames = !!CRegDWORD(_T("Software\\TortoiseGit\\SymbolizeRefNames"), FALSE);
 	m_bIncludeBoundaryCommits = !!CRegDWORD(_T("Software\\TortoiseGit\\LogIncludeBoundaryCommits"), FALSE);
 
@@ -563,7 +564,8 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 	if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-	DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
+	if (!m_bTagsBranchesOnRightSide)
+		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 
 	SIZE oneSpaceSize;
 	GetTextExtentPoint32(hdc, L" ", 1, &oneSpaceSize);
@@ -589,6 +591,16 @@ void CGitLogListBase::DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, 
 		{
 			::DrawText(hdc, data->GetSubject(), data->GetSubject().GetLength(), &rt, DT_NOPREFIX | DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 		}
+	}
+
+	if (m_bTagsBranchesOnRightSide)
+	{
+		SIZE size;
+		GetTextExtentPoint32(hdc, data->GetSubject(), data->GetSubject().GetLength(), &size);
+
+		rt.left += oneSpaceSize.cx + size.cx;
+
+		DrawTagBranch(hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 	}
 
 	if (hTheme)
