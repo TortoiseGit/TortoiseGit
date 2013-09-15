@@ -4371,7 +4371,11 @@ msgid "General::Context Menu"
 msgstr ""
 
 #. Resource IDs: (196)
-msgid "General::Dialogs"
+msgid "General::Dialogs 1"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "General::Dialogs 2"
 msgstr ""
 
 #. Resource IDs: (4573)

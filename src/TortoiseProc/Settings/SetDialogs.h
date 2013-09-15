@@ -50,7 +50,6 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
-	afx_msg void OnCbnSelchangeAutoclosecombo();
 	afx_msg void OnBnClickedBrowsecheckoutpath();
 
 private:
@@ -61,19 +60,14 @@ private:
 	CRegDWORD			m_regRelativeTimes;
 	BOOL				m_bUseSystemLocaleForDates;
 	CRegDWORD			m_regUseSystemLocaleForDates;
-	CRegDWORD			m_regAutoClose;
-	DWORD_PTR			m_dwAutoClose;
 	CMFCFontComboBox	m_cFontNames;
 	CComboBox			m_cFontSizes;
 	CRegDWORD			m_regFontSize;
 	DWORD				m_dwFontSize;
 	CRegString			m_regFontName;
 	CString				m_sFontName;
-	CComboBox			m_cAutoClose;
 	CRegDWORD			m_regDiffByDoubleClick;
 	BOOL				m_bDiffByDoubleClick;
-	CRegDWORD			m_regUseRecycleBin;
-	BOOL				m_bUseRecycleBin;
 	CRegDWORD			m_regAbbreviateRenamings;
 	BOOL				m_bAbbreviateRenamings;
 	CRegDWORD			m_regSymbolizeRefNames;
@@ -84,12 +78,4 @@ private:
 	BOOL				m_bEnableGravatar;
 	CRegString			m_regGravatarUrl;
 	CString				m_GravatarUrl;
-	CRegDWORD		m_regAutocompletion;
-	BOOL			m_bAutocompletion;
-	CRegDWORD		m_regAutocompletionTimeout;
-	DWORD			m_dwAutocompletionTimeout;
-	CRegDWORD		m_regMaxHistory;
-	DWORD			m_dwMaxHistory;
-	CRegDWORD		m_regAutoSelect;
-	BOOL			m_bAutoSelect;
 };

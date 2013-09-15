@@ -49,6 +49,7 @@
 #define IDD_SETTINGSDIALOGS             196
 #define IDI_LOOKANDFEEL                 196
 #define IDI_ICONSET                     197
+#define IDD_SETTINGSDIALOGS2            197
 #define IDI_DIALOGS                     198
 #define IDD_DIFFFILES                   199
 #define IDR_HTML_CLONEDLG               200

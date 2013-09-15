@@ -57,6 +57,7 @@ void CSettings::AddPropPages()
 	m_pExtMenu	= new CSetExtMenu();
 
 	m_pDialogsPage = new CSetDialogs();
+	m_pDialogsPage2 = new CSetDialogs2();
 	m_pColorsPage = new CSettingsColors();
     m_pColorsPage2 = new CSettingsColors2();
     m_pColorsPage3 = new CSettingsColors3();
@@ -83,6 +84,7 @@ void CSettings::AddPropPages()
 	SetPageIcon(m_pProgsAlternativeEditor, m_pProgsAlternativeEditor->GetIconID());
 	SetPageIcon(m_pLookAndFeelPage, m_pLookAndFeelPage->GetIconID());
 	SetPageIcon(m_pDialogsPage, m_pDialogsPage->GetIconID());
+	SetPageIcon(m_pDialogsPage2, m_pDialogsPage2->GetIconID());
 	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
     SetPageIcon(m_pColorsPage2, m_pColorsPage2->GetIconID());
     SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
@@ -111,6 +113,7 @@ void CSettings::AddPropPages()
 	AddPage(m_pLookAndFeelPage);
 	AddPage(m_pExtMenu);
 	AddPage(m_pDialogsPage);
+	AddPage(m_pDialogsPage2);
 	AddPage(m_pColorsPage);
 	AddPage(m_pColorsPage2);
 	AddPage(m_pColorsPage3);
@@ -144,6 +147,7 @@ void CSettings::RemovePropPages()
 	delete m_pProgsAlternativeEditor;
 	delete m_pLookAndFeelPage;
 	delete m_pDialogsPage;
+	delete m_pDialogsPage2;
 	delete m_pColorsPage;
 	delete m_pColorsPage2;
 	delete m_pColorsPage3;
@@ -175,6 +179,7 @@ void CSettings::HandleRestart()
 	restart |= m_pProgsAlternativeEditor->GetRestart();
 	restart |= m_pLookAndFeelPage->GetRestart();
 	restart |= m_pDialogsPage->GetRestart();
+	restart |= m_pDialogsPage2->GetRestart();
 	restart |= m_pColorsPage->GetRestart();
 	restart |= m_pColorsPage2->GetRestart();
 	restart |= m_pColorsPage3->GetRestart();
@@ -345,6 +350,10 @@ BOOL CSettings::OnInitDialog()
 	else if (this->m_DefaultPage == _T("dialog"))
 	{
 		this->SetActivePage(this->m_pDialogsPage);
+	}
+	else if (this->m_DefaultPage == _T("dialog2"))
+	{
+		this->SetActivePage(this->m_pDialogsPage2);
 	}
 	else if (this->m_DefaultPage == _T("color1"))
 	{

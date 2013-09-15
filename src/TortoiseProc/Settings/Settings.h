@@ -30,6 +30,7 @@
 #include "SettingsProgsMerge.h"
 #include "SetLookAndFeelPage.h"
 #include "SetDialogs.h"
+#include "SetDialogs2.h"
 #include "SettingsColors.h"
 #include "SettingsColors2.h"
 #include "SettingsColors3.h"
@@ -83,6 +84,7 @@ private:
 	CSettingsProgsAlternativeEditor *	m_pProgsAlternativeEditor;
 	CSetLookAndFeelPage *				m_pLookAndFeelPage;
 	CSetDialogs *						m_pDialogsPage;
+	CSetDialogs2 *						m_pDialogsPage2;
 	CSettingsColors *					m_pColorsPage;
     CSettingsColors2 *					m_pColorsPage2;
     CSettingsColors3 *					m_pColorsPage3;
