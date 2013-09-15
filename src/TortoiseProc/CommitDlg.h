@@ -86,7 +86,6 @@ protected:
 	virtual void OnCancel();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnBnClickedShowunversioned();
 	afx_msg void OnBnClickedHistory();
 	afx_msg void OnBnClickedBugtraqbutton();

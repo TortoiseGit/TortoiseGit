@@ -51,7 +51,6 @@ void CRevertDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CRevertDlg, CResizableStandAloneDialog)
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_NEEDSREFRESH, OnSVNStatusListCtrlNeedsRefresh)
 	ON_REGISTERED_MESSAGE(CGitStatusListCtrl::GITSLNM_ADDFILE, OnFileDropped)
@@ -191,11 +190,6 @@ void CRevertDlg::OnCancel()
 		return;
 
 	CResizableStandAloneDialog::OnCancel();
-}
-
-void CRevertDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CRevertDlg::OnBnClickedSelectall()

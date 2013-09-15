@@ -119,7 +119,6 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGLIST, OnLvnItemchangedLoglist)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGMSG, OnLvnItemchangedLogmsg)
 	ON_NOTIFY(EN_LINK, IDC_MSGVIEW, OnEnLinkMsgview)
@@ -1223,11 +1222,6 @@ BOOL CLogDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	HCURSOR hCur = LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW));
 	SetCursor(hCur);
 	return CResizableStandAloneDialog::OnSetCursor(pWnd, nHitTest, message);
-}
-
-void CLogDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)

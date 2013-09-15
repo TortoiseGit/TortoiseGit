@@ -42,7 +42,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedHelp();
 	afx_msg void OnLbnSelchangeListPath();
 	afx_msg void OnBnClickedSelectall();
 

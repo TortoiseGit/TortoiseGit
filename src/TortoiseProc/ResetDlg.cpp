@@ -51,7 +51,6 @@ void CResetDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CResetDlg, CHorizontalResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
-	ON_BN_CLICKED(IDHELP, &CResetDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOW_MODIFIED_FILES, &CResetDlg::OnBnClickedShowModifiedFiles)
 END_MESSAGE_MAP()
 
@@ -124,11 +123,6 @@ void CResetDlg::OnOK()
 	m_ResetToVersion = m_VersionName;
 	m_ResetType=this->GetCheckedRadioButton(IDC_RADIO_RESET_SOFT,IDC_RADIO_RESET_HARD)-IDC_RADIO_RESET_SOFT;
 	return CHorizontalResizableStandAloneDialog::OnOK();
-}
-
-void CResetDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CResetDlg::OnBnClickedShowModifiedFiles()

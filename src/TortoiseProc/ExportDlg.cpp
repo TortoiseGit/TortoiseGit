@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,8 +51,6 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_EXPORTFILE_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
 	ON_EN_CHANGE(IDC_EXPORTFILE, OnEnChangeCheckoutdirectory)
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
-
 	CHOOSE_VERSION_EVENT
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -174,11 +172,6 @@ void CExportDlg::OnEnChangeCheckoutdirectory()
 {
 	UpdateData(TRUE);
 	DialogEnableWindow(IDOK, !m_strFile.IsEmpty());
-}
-
-void CExportDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CExportDlg::OnBnClickedShowlog()

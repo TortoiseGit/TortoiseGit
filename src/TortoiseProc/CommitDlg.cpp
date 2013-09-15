@@ -118,7 +118,6 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
-	ON_BN_CLICKED(IDHELP, OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_SHOWUNVERSIONED, OnBnClickedShowunversioned)
 	ON_NOTIFY(SCN_UPDATEUI, IDC_LOGMESSAGE, OnScnUpdateUI)
 //	ON_BN_CLICKED(IDC_HISTORY, OnBnClickedHistory)
@@ -1421,11 +1420,6 @@ void CCommitDlg::Refresh()
 		m_pThread->m_bAutoDelete = FALSE;
 		m_pThread->ResumeThread();
 	}
-}
-
-void CCommitDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CCommitDlg::OnBnClickedShowunversioned()

@@ -46,7 +46,6 @@ void CStashSaveDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDOK, &CStashSaveDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDHELP, &CStashSaveDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_CHECK_UNTRACKED, &CStashSaveDlg::OnBnClickedCheckUntracked)
 	ON_BN_CLICKED(IDC_CHECK_ALL, &CStashSaveDlg::OnBnClickedCheckAll)
 END_MESSAGE_MAP()
@@ -95,11 +94,6 @@ void CStashSaveDlg::OnBnClickedOk()
 	}
 
 	CHorizontalResizableStandAloneDialog::OnOK();
-}
-
-void CStashSaveDlg::OnBnClickedHelp()
-{
-	OnHelp();
 }
 
 void CStashSaveDlg::OnBnClickedCheckUntracked()
