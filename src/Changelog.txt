@@ -8,6 +8,7 @@ Released: Unreleased
  * Implement git checkout --merge
  * TortoiseGitIDiff: Conflict resolving for images
  * Fixed issue #1795: Put branch labels on right side of message column in log view
+ * Fixed issue #1870: Commit subset of changes selected from diff dialog
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog

@@ -1512,6 +1512,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			if (GetSelectedCount() > 0)
 			{
 				if (wcStatus & CTGitPath::LOGACTIONS_UNVER)
+				{
 					if (m_dwContextMenus & GITSLC_POPADD)
 					{
 						//if ( entry->IsFolder() )
@@ -1523,6 +1524,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							popup.AppendMenuIcon(IDGITLC_ADD, IDS_STATUSLIST_CONTEXT_ADD, IDI_ADD);
 						}
 					}
+					if (m_dwContextMenus & GITSLC_POPCOMMIT)
+					{
+						popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
+					}
+				}
 			}
 
 			if (!(wcStatus & CTGitPath::LOGACTIONS_UNVER) && GetSelectedCount() > 0)
@@ -1553,15 +1559,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						bEntryAdded = true;
 					}
 				}
-
-				//else if (GetSelectedCount() > 1)
-				//{
-				//	if (m_dwContextMenus & SVNSLC_POPCOMMIT)
-				//	{
-				//		popup.AppendMenuIcon(IDSVNLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
-				//		popup.SetDefaultItem(IDSVNLC_COMPARE, FALSE);
-				//	}
-				//}
 
 				if (bEntryAdded)
 					popup.AppendMenu(MF_SEPARATOR);
@@ -1612,6 +1609,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			if ( (GetSelectedCount() >0 ) && (!(wcStatus & CTGitPath::LOGACTIONS_UNVER)) && m_bHasWC)
 			{
+				if ((m_dwContextMenus & GITSLC_POPCOMMIT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
+				{
+					popup.AppendMenuIcon(IDGITLC_COMMIT, IDS_STATUSLIST_CONTEXT_COMMIT, IDI_COMMIT);
+				}
+
 				if ((m_dwContextMenus & GITSLC_POPREVERT) && (this->m_CurrentVersion.IsEmpty() || this->m_CurrentVersion == GIT_REV_ZERO))
 				{
 					popup.AppendMenuIcon(IDGITLC_REVERT, IDS_MENUREVERT, IDI_REVERT);
@@ -2184,7 +2186,19 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					SetRedraw(TRUE);
 				}
 				break;
-
+			case IDGITLC_COMMIT:
+				{
+					CTGitPathList targetList;
+					FillListOfSelectedItemPaths(targetList);
+					CTGitPath tempFile = CTempFiles::Instance().GetTempFilePath(false);
+					VERIFY(targetList.WriteToFile(tempFile.GetWinPathString()));
+					CString commandline = _T("/command:commit /pathfile:\"");
+					commandline += tempFile.GetWinPathString();
+					commandline += _T("\"");
+					commandline += _T(" /deletepathfile");
+					CAppUtils::RunTortoiseGitProc(commandline);
+				}
+				break;
 			case IDGITLC_REVERT:
 				{
 					// If at least one item is not in the status "added"
