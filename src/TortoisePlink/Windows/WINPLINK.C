@@ -342,6 +342,8 @@ int main(int argc, char **argv)
     errors = 0;
     conf_set_int(conf, CONF_protocol, default_protocol);
     conf_set_int(conf, CONF_port, default_port);
+    conf_set_int(conf, CONF_agentfwd, 0);
+    conf_set_int(conf, CONF_x11_forward, 0);
     while (--argc) {
 	char *p = *++argv;
 	if (*p == '-') {
