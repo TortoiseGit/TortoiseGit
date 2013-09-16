@@ -28,6 +28,9 @@ Released: Unreleased
  * Fixed issue #1891: Cleanup dialog unexpectedly sizable
  * Bring back templates when creating repository with libgit2, it was "cancelled" in since TortoiseGit 1.8.0
 
+== Known Issues ==
+ * If you experience problems with PuTTY ssh, please see issue #1880.
+
 = Release 1.8.5.0 =
 Released: 2013-08-18
 
