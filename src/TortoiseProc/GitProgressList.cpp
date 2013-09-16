@@ -2059,7 +2059,8 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	if (!m_RefSpec.IsEmpty())
 		clone_opts.checkout_branch = refspecA.GetBuffer();
 	CStringA remoteA = CUnicodeUtils::GetMulti(m_remote, CP_UTF8);
-	clone_opts.remote_name = remoteA.GetBuffer();
+	if (!m_remote.IsEmpty())
+		clone_opts.remote_name = remoteA.GetBuffer();
 
 	clone_opts.fetch_progress_cb = FetchCallback;
 	clone_opts.fetch_progress_payload = this;
