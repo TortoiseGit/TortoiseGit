@@ -40,13 +40,20 @@ bool CreateRepositoryCommand::Execute()
 		}
 
 		git_repository *repo;
+		git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+		options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+		options.flags |= dlg.m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
+		CStringA msysGitDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+		options.template_path = msysGitDir.GetBuffer();
 		CStringA path(CUnicodeUtils::GetMulti(folder, CP_UTF8));
-		if (git_repository_init(&repo, path.GetBuffer(), dlg.m_bBare))
+		if (git_repository_init_ext(&repo, path.GetBuffer(), &options))
 		{
+			msysGitDir.ReleaseBuffer();
 			path.ReleaseBuffer();
 			CMessageBox::Show(hwndExplorer, CGit::GetLibGit2LastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
+		msysGitDir.ReleaseBuffer();
 		path.ReleaseBuffer();
 		git_repository_free(repo);
 
