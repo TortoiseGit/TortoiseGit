@@ -339,24 +339,9 @@ int main(int argc, char **argv)
     conf = conf_new();
     do_defaults(NULL, conf);
     loaded_session = FALSE;
-    default_protocol = conf_get_int(conf, CONF_protocol);
-    default_port = conf_get_int(conf, CONF_port);
     errors = 0;
-    {
-	/*
-	 * Override the default protocol if PLINK_PROTOCOL is set.
-	 */
-	char *p = getenv("PLINK_PROTOCOL");
-	if (p) {
-	    const Backend *b = backend_from_name(p);
-	    if (b) {
-		default_protocol = b->protocol;
-		default_port = b->default_port;
-		conf_set_int(conf, CONF_protocol, default_protocol);
-		conf_set_int(conf, CONF_port, default_port);
-	    }
-	}
-    }
+    conf_set_int(conf, CONF_protocol, default_protocol);
+    conf_set_int(conf, CONF_port, default_port);
     while (--argc) {
 	char *p = *++argv;
 	if (*p == '-') {
