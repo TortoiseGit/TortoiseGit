@@ -2069,6 +2069,13 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 
 	clone_opts.bare = m_bBare;
 
+	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
+	CStringA msysGitDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	init_options.template_path = msysGitDir.GetBuffer();
+	clone_opts.init_options = &init_options;
+
 	if(m_pAnimate)
 	{
 		m_pAnimate->ShowWindow(SW_SHOW);
@@ -2082,6 +2089,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		m_pAnimate->ShowWindow(SW_HIDE);
 	}
 
+	msysGitDir.ReleaseBuffer();
 	refspecA.ReleaseBuffer();
 	remoteA.ReleaseBuffer();
 	git_remote_free(origin);
