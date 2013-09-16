@@ -2059,7 +2059,8 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	if (!m_RefSpec.IsEmpty())
 		clone_opts.checkout_branch = refspecA.GetBuffer();
 	CStringA remoteA = CUnicodeUtils::GetMulti(m_remote, CP_UTF8);
-	clone_opts.remote_name = remoteA.GetBuffer();
+	if (!m_remote.IsEmpty())
+		clone_opts.remote_name = remoteA.GetBuffer();
 
 	clone_opts.fetch_progress_cb = FetchCallback;
 	clone_opts.fetch_progress_payload = this;
@@ -2067,6 +2068,13 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 	clone_opts.cred_acquire_cb = CAppUtils::Git2GetUserPassword;
 
 	clone_opts.bare = m_bBare;
+
+	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
+	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
+	CStringA msysGitDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	init_options.template_path = msysGitDir.GetBuffer();
+	clone_opts.init_options = &init_options;
 
 	if(m_pAnimate)
 	{
@@ -2081,6 +2089,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		m_pAnimate->ShowWindow(SW_HIDE);
 	}
 
+	msysGitDir.ReleaseBuffer();
 	refspecA.ReleaseBuffer();
 	remoteA.ReleaseBuffer();
 	git_remote_free(origin);
