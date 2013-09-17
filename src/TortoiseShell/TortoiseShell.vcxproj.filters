@@ -99,9 +99,6 @@
     <ClCompile Include="..\Utils\UnicodeUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\DirFileEnum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\DebugOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -170,9 +167,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\UnicodeUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\DirFileEnum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
