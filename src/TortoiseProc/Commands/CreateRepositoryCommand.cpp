@@ -39,21 +39,43 @@ bool CreateRepositoryCommand::Execute()
 			return false;
 		}
 
+		CStringA templateDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+		{
+			git_config *gitconfig;
+			git_config_new(&gitconfig);
+			CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
+			git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+			globalConfigA.ReleaseBuffer();
+			CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8( g_Git.GetGitGlobalXDGConfig());
+			git_config_add_file_ondisk(gitconfig, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
+			globalXDGConfigA.ReleaseBuffer();
+			CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig"));
+			git_config_add_file_ondisk(gitconfig, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+			systemConfigA.ReleaseBuffer();
+			giterr_clear();
+
+			const char * value = nullptr;
+			if (!git_config_get_string(&value, gitconfig, "init.templatedir"))
+				templateDir = value;
+
+			git_config_free(gitconfig);
+		}
+
+
 		git_repository *repo;
 		git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 		options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 		options.flags |= dlg.m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
-		CStringA msysGitDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
-		options.template_path = msysGitDir.GetBuffer();
+		options.template_path = templateDir.GetBuffer();
 		CStringA path(CUnicodeUtils::GetMulti(folder, CP_UTF8));
 		if (git_repository_init_ext(&repo, path.GetBuffer(), &options))
 		{
-			msysGitDir.ReleaseBuffer();
+			templateDir.ReleaseBuffer();
 			path.ReleaseBuffer();
 			CMessageBox::Show(hwndExplorer, CGit::GetLibGit2LastErr(_T("Could not initialize a new repository.")), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			return false;
 		}
-		msysGitDir.ReleaseBuffer();
+		templateDir.ReleaseBuffer();
 		path.ReleaseBuffer();
 		git_repository_free(repo);
 
