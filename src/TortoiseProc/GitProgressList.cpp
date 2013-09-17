@@ -2069,11 +2069,32 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 
 	clone_opts.bare = m_bBare;
 
+	CStringA templateDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	{
+		git_config *gitconfig;
+		git_config_new(&gitconfig);
+		CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
+		git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+		globalConfigA.ReleaseBuffer();
+		CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8( g_Git.GetGitGlobalXDGConfig());
+		git_config_add_file_ondisk(gitconfig, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
+		globalXDGConfigA.ReleaseBuffer();
+		CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig"));
+		git_config_add_file_ondisk(gitconfig, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
+		systemConfigA.ReleaseBuffer();
+		giterr_clear();
+
+		const char * value = nullptr;
+		if (!git_config_get_string(&value, gitconfig, "init.templatedir"))
+			templateDir = value;
+
+		git_config_free(gitconfig);
+	}
+
 	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
-	CStringA msysGitDir = CUnicodeUtils::GetUTF8(CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
-	init_options.template_path = msysGitDir.GetBuffer();
+	init_options.template_path = templateDir.GetBuffer();
 	clone_opts.init_options = &init_options;
 
 	if(m_pAnimate)
@@ -2089,7 +2110,7 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 		m_pAnimate->ShowWindow(SW_HIDE);
 	}
 
-	msysGitDir.ReleaseBuffer();
+	templateDir.ReleaseBuffer();
 	refspecA.ReleaseBuffer();
 	remoteA.ReleaseBuffer();
 	git_remote_free(origin);
