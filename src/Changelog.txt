@@ -27,6 +27,7 @@ Released: Unreleased
  * Fixed issue #1618: In "Show log", mouseover triggers improper redraw of ClearType font log descriptions in "Message" column
  * Fixed issue #1891: Cleanup dialog unexpectedly sizable
  * Bring back templates when creating repository with libgit2, it was "cancelled" in since TortoiseGit 1.8.0
+ * Fixed issue #1908: "Export selection to.." fails to checkout files which names (or paths) renamed in working dir
 
 == Known Issues ==
  * If you experience problems with PuTTY ssh, please see issue #1880.

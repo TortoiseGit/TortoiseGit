@@ -4231,7 +4231,7 @@ void CGitStatusListCtrl::FilesExport()
 		if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
 			continue;
 
-		CAppUtils::CreateMultipleDirectory(exportDir + _T("\\") + fd->GetDirectory().GetWinPathString());
+		CAppUtils::CreateMultipleDirectory(exportDir + _T("\\") + fd->GetContainingDirectory().GetWinPathString());
 		CString filename = exportDir + _T("\\") + fd->GetWinPathString();
 		if (m_CurrentVersion == GIT_REV_ZERO)
 		{
