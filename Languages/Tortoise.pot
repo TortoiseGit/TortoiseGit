@@ -8529,6 +8529,10 @@ msgstr ""
 msgid "The path\n%s\nseems not to match the paths in the patchfile.\nBut TortoiseGitMerge found the path\n%s\nmatches it better. Do you want to use the suggested path instead?"
 msgstr ""
 
+#. Resource IDs: (91)
+msgid "The process is still running.\nAre you sure to abort?"
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid "The remote \"%s\" already exists.\nDo you want to overwrite it?"
