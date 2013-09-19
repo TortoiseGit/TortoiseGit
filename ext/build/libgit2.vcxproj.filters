@@ -389,6 +389,9 @@
     <ClCompile Include="..\libgit2\src\strmap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\ident.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -870,6 +873,15 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\sortedcache.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\filter.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\buffer.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\filter.h">
+      <Filter>Public Header Files\sys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

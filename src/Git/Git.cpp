@@ -1053,7 +1053,7 @@ int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 		}
 		gitdirA.ReleaseBuffer();
 
-		int isHeadOrphan = git_repository_head_orphan(repo);
+		int isHeadOrphan = git_repository_head_unborn(repo);
 		if (isHeadOrphan != 0)
 		{
 			git_repository_free(repo);
@@ -2349,7 +2349,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	}
 	gitdirA.ReleaseBuffer();
 
-	int isHeadOrphan = git_repository_head_orphan(repo);
+	int isHeadOrphan = git_repository_head_unborn(repo);
 	if (isHeadOrphan != 0)
 	{
 		git_repository_free(repo);

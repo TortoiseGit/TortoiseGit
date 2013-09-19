@@ -431,7 +431,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree * treeroot)
 
 		if (m_sRevision == _T("HEAD"))
 		{
-			ret = git_repository_head_orphan(repository);
+			ret = git_repository_head_unborn(repository);
 			if (ret == 1)	// is orphan
 				break;
 			else if (ret != 0)
