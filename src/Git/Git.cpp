@@ -1053,7 +1053,7 @@ int CGit::GetHash(CGitHash &hash, TCHAR* friendname)
 		}
 		gitdirA.ReleaseBuffer();
 
-		int isHeadOrphan = git_repository_head_orphan(repo);
+		int isHeadOrphan = git_repository_head_unborn(repo);
 		if (isHeadOrphan != 0)
 		{
 			git_repository_free(repo);
@@ -1662,6 +1662,13 @@ static void SetLibGit2SearchPath(int level, const CString &value)
 	valueA.ReleaseBuffer();
 }
 
+static void SetLibGit2TemplatePath(const CString &value)
+{
+	CStringA valueA = CUnicodeUtils::GetMulti(value, CP_UTF8);
+	git_libgit2_opts(GIT_OPT_SET_TEMPLATE_PATH, valueA.GetBuffer());
+	valueA.ReleaseBuffer();
+}
+
 BOOL CGit::CheckMsysGitDir()
 {
 	if (m_bInitialized)
@@ -1772,6 +1779,10 @@ BOOL CGit::CheckMsysGitDir()
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, msysGitDir);
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_XDG, g_Git.GetGitGlobalXDGConfigPath());
+	CString msysGitTemplateDir;
+	PathCanonicalize(msysGitTemplateDir.GetBufferSetLength(MAX_PATH), CGit::ms_LastMsysGitDir + _T("\\..\\share\\git-core\\templates"));
+	msysGitTemplateDir.ReleaseBuffer();
+	SetLibGit2TemplatePath(msysGitTemplateDir);
 
 	//set path
 	_tdupenv_s(&oldpath,&size,_T("PATH"));
@@ -2349,7 +2360,7 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	}
 	gitdirA.ReleaseBuffer();
 
-	int isHeadOrphan = git_repository_head_orphan(repo);
+	int isHeadOrphan = git_repository_head_unborn(repo);
 	if (isHeadOrphan != 0)
 	{
 		git_repository_free(repo);
