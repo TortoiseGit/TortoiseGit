@@ -720,6 +720,8 @@ BEGIN
     EDITTEXT        IDC_MAXHISTORY,252,163,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,180,238,10
+    CONTROL         "Confirm to kill running git process",IDC_CONFIRMKILLPROCESS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,47,121,10
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -4162,6 +4164,14 @@ BEGIN
     IDS_CARE_SUBMODULE_CHANGES "take care of submodule changes"
     IDS_STATUSLIST_WARN_MAXDIFF 
                             "You have selected %d items to show the diff for.\nFor every of these items a new instance of the diff viewer will be started.\nDo you really want to show the diff for so many items at once?"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROC_CONFIRMKILLPROCESS 
+                            "The process is still running.\nAre you sure to abort?"
+    IDS_SETTINGS_CONFIRMKILLPROCESS_TT 
+                            "When closing a progress dialog with a running git process, ask for confirmation before killing it"
 END
 
 #endif    // English (U.S.) resources

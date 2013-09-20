@@ -60,6 +60,8 @@ private:
 	CRegDWORD		m_regAutoClose;
 	DWORD_PTR		m_dwAutoClose;
 	CComboBox		m_cAutoClose;
+	CRegDWORD		m_regConfirmKillProcess;
+	BOOL			m_bConfirmKillProcess;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;

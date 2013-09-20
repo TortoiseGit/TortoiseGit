@@ -1356,6 +1356,9 @@ void CSyncDlg::OnCancel()
 
 	if (g_Git.m_CurrentGitPi.hProcess)
 	{
+		DWORD dwConfirmKillProcess = CRegDWORD(_T("Software\\TortoiseGit\\ConfirmKillProcess"));
+		if (dwConfirmKillProcess && CMessageBox::Show(m_hWnd, IDS_PROC_CONFIRMKILLPROCESS, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
+			return;
 		if (::GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0))
 		{
 			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess, 10000);
