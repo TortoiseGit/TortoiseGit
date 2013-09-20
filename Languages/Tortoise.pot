@@ -2737,6 +2737,10 @@ msgstr ""
 msgid "Configure viewer program for GNU diff files (patch files)"
 msgstr ""
 
+#. Resource IDs: (1768)
+msgid "Confirm to kill running git process"
+msgstr ""
+
 #. Resource IDs: (1257, 4568)
 msgid "Conflict"
 msgstr ""
@@ -9361,6 +9365,10 @@ msgstr ""
 
 #. Resource IDs: (604)
 msgid "When applying a patch, ignore changes in whitespace in context lines if necessary"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid "When closing a progress dialog with a running git process, ask for confirmation before killing it"
 msgstr ""
 
 #. Resource IDs: (197)
