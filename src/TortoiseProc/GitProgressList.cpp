@@ -1965,6 +1965,12 @@ bool CGitProgressList::CmdRevert(CString& sWindowTitle, bool& localoperation)
 		}
 		Notify(m_selectedPaths[i], git_wc_notify_revert);
 		++m_itemCount;
+
+		if (IsCancelled() == TRUE)
+		{
+			ReportUserCanceled();
+			return false;
+		}
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_selectedPaths);
