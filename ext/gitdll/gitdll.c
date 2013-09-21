@@ -1015,13 +1015,13 @@ int git_get_config(const char *key, char *buffer, int size)
 	local = git_pathdup("config");
 
 	if ( !buf.seen)
-		git_config_from_file(get_config, local, &buf);
+		git_config_with_options(get_config, &buf, local, 1);
 	if (!buf.seen && global)
-		git_config_from_file(get_config, global, &buf);
+		git_config_with_options(get_config, &buf, global, 1);
 	if (!buf.seen && globalxdg)
-		git_config_from_file(get_config, globalxdg, &buf);
+		git_config_with_options(get_config, &buf, globalxdg, 1);
 	if (!buf.seen && system)
-		git_config_from_file(get_config, system, &buf);
+		git_config_with_options(get_config, &buf, system, 1);
 
 	if(local)
 		free(local);
