@@ -532,7 +532,7 @@ CString CGit::GetConfigValue(CString name,int encoding, BOOL RemoveCR)
 
 bool CGit::GetConfigValueBool(CString name)
 {
-	CString configValue = g_Git.GetConfigValue(name);
+	CString configValue = GetConfigValue(name);
 	configValue.MakeLower();
 	configValue.Trim();
 	if(configValue == _T("true") || configValue == _T("on") || configValue == _T("yes") || StrToInt(configValue) != 0)
@@ -1810,7 +1810,7 @@ CString CGit::GetHomeDirectory()
 CString CGit::GetGitLocalConfig()
 {
 	CString path;
-	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, path);
+	g_GitAdminDir.GetAdminDirPath(m_CurrentDir, path);
 	path += _T("config");
 	return path;
 }
