@@ -54,6 +54,7 @@ CSyncDlg::CSyncDlg(CWnd* pParent /*=NULL*/)
 	m_bWantToExit = false;
 	m_GitCmdStatus = -1;
 	m_startTick = GetTickCount();
+	m_seq = 0;
 }
 
 CSyncDlg::~CSyncDlg()
@@ -956,6 +957,21 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlURL.m_bWantReturn = TRUE;
 
 	this->m_Gitverion = CAppUtils::GetMsysgitVersion();
+
+	if (m_seq > 0 && (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\SyncDialogRandomPos")))
+	{
+		m_seq %= 5;
+		RECT rect;
+		GetWindowRect(&rect);
+		rect.top -= m_seq * 30;
+		rect.bottom -= m_seq * 30;
+		if (rect.top < 0)
+		{
+			rect.top += 150;
+			rect.bottom += 150;
+		}
+		MoveWindow(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
