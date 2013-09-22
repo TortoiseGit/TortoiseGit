@@ -66,6 +66,9 @@ public:
 	 */
 	bool	SetCurrentEntry(INT_PTR entry);
 
+	void	SetEntryChecked(INT_PTR entry, BOOL bChecked);
+	void	SetEntryEnabled(INT_PTR entry, BOOL bEnabled);
+
 	/**
 	 * Determines if the button control is drawn with the XP
 	 * themes or without. The default is \a true, which means
@@ -75,6 +78,7 @@ public:
 	void	RemoveAll();
 
 	bool	m_bMarkDefault;
+	bool	m_bSetCurrentEntry;
 
 protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
