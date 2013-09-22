@@ -1815,9 +1815,19 @@ CString CGit::GetGitLocalConfig()
 	return path;
 }
 
+CStringA CGit::GetGitLocalConfigA()
+{
+	return CUnicodeUtils::GetUTF8(CTGitPath(GetGitLocalConfig()).GetGitPathString());
+}
+
 CString CGit::GetGitGlobalConfig()
 {
 	return g_Git.GetHomeDirectory() + _T("\\.gitconfig");
+}
+
+CStringA CGit::GetGitGlobalConfigA()
+{
+	return CUnicodeUtils::GetUTF8(CTGitPath(GetGitGlobalConfig()).GetGitPathString());
 }
 
 CString CGit::GetGitGlobalXDGConfigPath()
@@ -1830,10 +1840,20 @@ CString CGit::GetGitGlobalXDGConfig()
 	return g_Git.GetGitGlobalXDGConfigPath() + _T("\\config");
 }
 
+CStringA CGit::GetGitGlobalXDGConfigA()
+{
+	return CUnicodeUtils::GetUTF8(CTGitPath(GetGitGlobalXDGConfig()).GetGitPathString());
+}
+
 CString CGit::GetGitSystemConfig()
 {
 	const wchar_t * systemConfig = wget_msysgit_etc();
 	return CString(systemConfig, (int)wcslen(systemConfig));
+}
+
+CStringA CGit::GetGitSystemConfigA()
+{
+	return CUnicodeUtils::GetUTF8(CTGitPath(GetGitSystemConfig()).GetGitPathString());
 }
 
 BOOL CGit::CheckCleanWorkTree()
