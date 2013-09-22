@@ -43,6 +43,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
+	, m_bHidePaths(FALSE)
+	, m_bGrayPaths(FALSE)
 	, m_bShowTags(TRUE)
 
 	, m_bSelectionMustBeContinuous(false)
@@ -104,12 +106,8 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
 	DDX_Control(pDX, IDC_LOG_JUMPUP, m_JumpUp);
 	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
-	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
+	DDX_Control(pDX, IDC_WALKBEHAVIOUR, m_btnWalkBehaviour);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
-	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
-	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
-	DDX_Check(pDX, IDC_LOG_FOLLOWRENAMES, m_bFollowRenames);
-	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
 	DDX_Check(pDX, IDC_LOG_SHOWTAGS, m_bShowTags);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
@@ -136,18 +134,15 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_LOG_JUMPTYPE, &CLogDlg::OnCbnSelchangeJumpType)
 	ON_COMMAND(IDC_LOG_JUMPUP, &CLogDlg::OnBnClickedJumpUp)
 	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
-	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
+	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
-	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
-	ON_BN_CLICKED(IDC_LOG_FOLLOWRENAMES, OnBnClickedFollowRenames)
 	ON_BN_CLICKED(IDC_LOG_SHOWTAGS, OnBnClickedShowTags)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
-	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
@@ -168,6 +163,12 @@ enum JumpType
 	JumpType_Tag,
 	JumpType_TagFF
 };
+
+#define WALKBEHAVIOUR_HIDEPATHS				0
+#define WALKBEHAVIOUR_GRAYPATHS				1
+#define WALKBEHAVIOUR_FIRSTPARENT			2
+#define WALKBEHAVIOUR_SHOWWHOLEPROJECT		3
+#define WALKBEHAVIOUR_FOLLOWRENAMES			4
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
 {
@@ -232,10 +233,6 @@ BOOL CLogDlg::OnInitDialog()
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
 	//m_LogList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 
-	// the "hide unrelated paths" checkbox should be indeterminate
-	m_cHidePaths.SetCheck(BST_INDETERMINATE);
-
-
 	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
 
@@ -262,11 +259,7 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
 	m_cFilter.SetValidator(this);
 
-	AdjustControlSize(IDC_HIDEPATHS);
-	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
-	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
-	AdjustControlSize(IDC_LOG_FOLLOWRENAMES);
 	AdjustControlSize(IDC_LOG_SHOWTAGS);
 
 	if (m_gravatar.IsGravatarEnabled())
@@ -314,11 +307,8 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
+	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_FOLLOWRENAMES, BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
-	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_SHOWTAGS, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
@@ -348,6 +338,20 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
+
+	m_btnWalkBehaviour.m_bMarkDefault = false;
+	m_btnWalkBehaviour.m_bSetCurrentEntry = false;
+	m_btnWalkBehaviour.AddEntry(CString(MAKEINTRESOURCE(IDS_WALKBEHAVIOUR_HIDEPATHS)));
+	m_btnWalkBehaviour.AddEntry(CString(MAKEINTRESOURCE(IDS_WALKBEHAVIOUR_GRAYPATHS)));
+	m_btnWalkBehaviour.AddEntry(CString(MAKEINTRESOURCE(IDS_WALKBEHAVIOUR_FIRSTPARENT)));
+	m_btnWalkBehaviour.AddEntry(CString(MAKEINTRESOURCE(IDS_WALKBEHAVIOUR_SHOWWHOLEPROJECT)));
+	m_btnWalkBehaviour.AddEntry(CString(MAKEINTRESOURCE(IDS_WALKBEHAVIOUR_FOLLOWRENAMES)));
+
+	// "unrelated paths" should be in gray color
+	m_bHidePaths = FALSE;
+	m_bGrayPaths = TRUE;
+	m_btnWalkBehaviour.SetEntryChecked(WALKBEHAVIOUR_HIDEPATHS, FALSE);
+	m_btnWalkBehaviour.SetEntryChecked(WALKBEHAVIOUR_GRAYPATHS, TRUE);
 
 	if (hWndExplorer)
 		CenterWindow(CWnd::FromHandle(hWndExplorer));
@@ -420,7 +424,7 @@ BOOL CLogDlg::OnInitDialog()
 	}
 
 	if (m_path.IsEmpty() || m_path.IsDirectory())
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_FOLLOWRENAMES, FALSE);
 
 	m_LogList.FetchLogAsync(this);
 	m_gravatar.Init();
@@ -457,7 +461,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
-		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_HIDEPATHS, FALSE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_GRAYPATHS, FALSE);
 
 	}
 	else if( cur == GITLOG_END)
@@ -471,11 +476,12 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		if (m_pTaskbarList)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
-		DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_SHOWWHOLEPROJECT, !m_bFollowRenames);
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
-		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_HIDEPATHS, TRUE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_GRAYPATHS, TRUE);
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
@@ -759,7 +765,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
@@ -772,9 +777,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
 				{
-					if(HidePaths==BST_CHECKED)
+					if (m_bHidePaths)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
-					if(HidePaths==BST_INDETERMINATE)
+					else if (m_bGrayPaths)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
@@ -2274,8 +2279,6 @@ void CLogDlg::OnBnClickedAllBranch()
 
 void CLogDlg::OnBnClickedFollowRenames()
 {
-	this->UpdateData();
-
 	if(m_bFollowRenames)
 	{
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
@@ -2291,7 +2294,7 @@ void CLogDlg::OnBnClickedFollowRenames()
 		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FOLLOW;
 
 	DialogEnableWindow(IDC_LOG_ALLBRANCH, !m_bFollowRenames);
-	DialogEnableWindow(IDC_SHOWWHOLEPROJECT, !m_bFollowRenames);
+	m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_SHOWWHOLEPROJECT, !m_bFollowRenames);
 
 	OnRefresh();
 
@@ -2361,11 +2364,43 @@ void CLogDlg::SetRange(const CString& range)
 	ShowStartRef();
 }
 
+void CLogDlg::OnBnClickedWalkBehaviour()
+{
+	INT_PTR selection = m_btnWalkBehaviour.GetCurrentEntry();
+	switch (selection)
+	{
+	case WALKBEHAVIOUR_HIDEPATHS:
+		m_bHidePaths = !m_bHidePaths;
+		m_btnWalkBehaviour.SetEntryChecked(selection, m_bHidePaths);
+		OnBnClickedHidepaths();
+		break;
+	case WALKBEHAVIOUR_GRAYPATHS:
+		m_bGrayPaths = !m_bGrayPaths;
+		m_btnWalkBehaviour.SetEntryChecked(selection, m_bGrayPaths);
+		OnBnClickedHidepaths();
+		break;
+	case WALKBEHAVIOUR_FIRSTPARENT:
+		m_bFirstParent = !m_bFirstParent;
+		m_btnWalkBehaviour.SetEntryChecked(selection, m_bFirstParent);
+		OnBnClickedFirstParent();
+		break;
+	case WALKBEHAVIOUR_SHOWWHOLEPROJECT:
+		m_bWholeProject = !m_bWholeProject;
+		m_btnWalkBehaviour.SetEntryChecked(selection, m_bWholeProject);
+		OnBnClickShowWholeProject();
+		break;
+	case WALKBEHAVIOUR_FOLLOWRENAMES:
+		m_bFollowRenames = !m_bFollowRenames;
+		m_btnWalkBehaviour.SetEntryChecked(selection, m_bFollowRenames);
+		OnBnClickedFollowRenames();
+		break;
+	default:
+		break;
+	}
+}
 
 void CLogDlg::OnBnClickedFirstParent()
 {
-	this->UpdateData();
-
 	if(this->m_bFirstParent)
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_FIRST_PARENT;
 	else
@@ -2379,18 +2414,16 @@ void CLogDlg::OnBnClickedFirstParent()
 
 void CLogDlg::OnBnClickShowWholeProject()
 {
-	this->UpdateData();
-
 	if(this->m_bWholeProject)
 	{
 		m_LogList.m_Path.Reset();
 		SetDlgTitle();
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_FOLLOWRENAMES, FALSE);
 	}
 	else
 	{
 		m_LogList.m_Path=m_path;
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, !(m_path.IsEmpty() || m_path.IsDirectory()));
+		m_btnWalkBehaviour.SetEntryEnabled(WALKBEHAVIOUR_FOLLOWRENAMES, !(m_path.IsEmpty() || m_path.IsDirectory()));
 	}
 
 	SetDlgTitle();

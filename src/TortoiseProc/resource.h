@@ -394,7 +394,6 @@
 #define IDS_SAVEBUTTON                  1125
 #define IDC_KEEPLISTS                   1126
 #define IDC_SHOWEXCLUDEDASNORMAL        1126
-#define IDC_LOG_FIRSTPARENT             1126
 #define IDC_IGNOREEOL                   1126
 #define IDC_SORTBYCOMMITCOUNT           1126
 #define IDS_DISCARDBUTTON               1126
@@ -537,7 +536,6 @@
 #define IDS_STATUSLIST_GROUP_MODIFIEDFILES 1206
 #define IDC_CHECKBOX                    1207
 #define IDS_PROC_SYNC_PUSHTAGS          1207
-#define IDC_SHOWWHOLEPROJECT            1208
 #define IDS_PROC_SYNC_PULL              1208
 #define IDC_SHOWUNMODIFIED              1209
 #define IDS_PROC_SYNC_FETCH             1209
@@ -573,7 +571,6 @@
 #define IDS_PROC_SYNC_SUBKODULESYNC     1227
 #define IDS_PROGRS_TITLE_COMMIT         1228
 #define IDS_PROGRS_TITLE_ADD            1229
-#define IDC_HIDEPATHS                   1229
 #define IDS_PROGRS_TITLE_REVERT         1230
 #define IDS_PROGRS_TITLE_RESOLVE        1231
 #define IDC_RESOLVELIST                 1231
@@ -939,6 +936,11 @@
 #define IDS_PROC_SWITCH_MERGE_TT        1439
 #define IDS_PROC_CONFIRMKILLPROCESS     1440
 #define IDS_SETTINGS_CONFIRMKILLPROCESS_TT 1441
+#define IDS_WALKBEHAVIOUR_HIDEPATHS     1442
+#define IDS_WALKBEHAVIOUR_GRAYPATHS     1443
+#define IDS_WALKBEHAVIOUR_FIRSTPARENT   1444
+#define IDS_WALKBEHAVIOUR_SHOWWHOLEPROJECT 1445
+#define IDS_WALKBEHAVIOUR_FOLLOWRENAMES 1446
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
@@ -1188,7 +1190,6 @@
 #define IDC_STATIC_MERGE_MESSAGE        1635
 #define IDC_PATCH                       1636
 #define IDC_VIEW_PATCH                  1637
-#define IDC_LOG_FOLLOWRENAMES           1638
 #define IDC_BUTTON_SUBMODULE            1639
 #define IDC_RADIO_EXCLUDE               1640
 #define IDC_RADIO_GITIGNORE             1641
@@ -1334,6 +1335,7 @@
 #define IDC_ENABLEGRAVATAR              1766
 #define IDC_GRAVATARURL                 1767
 #define IDC_CONFIRMKILLPROCESS          1768
+#define IDC_WALKBEHAVIOUR               1769
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1769,7 +1771,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        349
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1769
+#define _APS_NEXT_CONTROL_VALUE         1770
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
