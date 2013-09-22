@@ -36,6 +36,7 @@ CMenuButton::CMenuButton(void) : CMFCMenuButton()
 	, m_nDefault(-1)
 	, m_bMarkDefault(TRUE)
 	, m_bRealMenuIsActive(false)
+	, m_bSetCurrentEntry(true)
 {
 	m_bOSMenu = TRUE;
 	m_bDefaultClick = TRUE;
@@ -63,6 +64,16 @@ bool CMenuButton::SetCurrentEntry(INT_PTR entry)
 	return true;
 }
 
+void CMenuButton::SetEntryChecked(INT_PTR entry, BOOL bChecked)
+{
+	m_btnMenu.CheckMenuItem((UINT)entry, MF_BYPOSITION | (bChecked ? MF_CHECKED : MF_UNCHECKED));
+}
+
+void CMenuButton::SetEntryEnabled(INT_PTR entry, BOOL bEnabled)
+{
+	m_btnMenu.EnableMenuItem((UINT)entry, MF_BYPOSITION | (bEnabled ? MF_ENABLED : MF_DISABLED));
+}
+
 void CMenuButton::RemoveAll()
 {
 	for (int index = 0; index < m_sEntries.GetCount(); index++)
@@ -79,7 +90,7 @@ INT_PTR CMenuButton::AddEntry(const CString& sEntry)
 	if (m_sEntries.GetCount() == 2)
 		m_bMenuIsActive = FALSE;
 
-	if (ret == 0)
+	if (ret == 0 && m_bSetCurrentEntry)
 		SetCurrentEntry(ret);
 	return ret;
 }
@@ -105,7 +116,8 @@ END_MESSAGE_MAP()
 
 BOOL CMenuButton::OnClicked()
 {
-	SetCurrentEntry(GetCurrentEntry());
+	if (m_bSetCurrentEntry)
+		SetCurrentEntry(GetCurrentEntry());
 
 	// let the parent handle the message the usual way
 	return FALSE;
