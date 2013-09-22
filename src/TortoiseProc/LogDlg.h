@@ -118,6 +118,7 @@ protected:
 	afx_msg void OnBnClickedJumpUp();
 	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedWalkBehaviour();
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
@@ -201,6 +202,7 @@ private:
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
+	BOOL				m_bFollowRenamesEnabled;
 	BOOL				m_bShowUnversioned;
 	BOOL				m_bShowTags;
 
