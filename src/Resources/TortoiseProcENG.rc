@@ -722,6 +722,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,180,238,10
     CONTROL         "Confirm to kill running git process",IDC_CONFIRMKILLPROCESS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,47,121,10
+    CONTROL         "Randomize Sync Dialog startup position",IDC_SYNCDIALOGRANDOMPOS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,60,141,10
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -4172,6 +4174,8 @@ BEGIN
                             "The process is still running.\nAre you sure to abort?"
     IDS_SETTINGS_CONFIRMKILLPROCESS_TT 
                             "When closing a progress dialog with a running git process, ask for confirmation before killing it"
+    IDS_SYNCDIALOGRANDOMPOS_TT 
+                            "Randomize the startup position of Sync Dialog. This prevents from pressing the Pull button of same dialog"
 END
 
 #endif    // English (U.S.) resources

@@ -939,6 +939,7 @@
 #define IDS_PROC_SWITCH_MERGE_TT        1439
 #define IDS_PROC_CONFIRMKILLPROCESS     1440
 #define IDS_SETTINGS_CONFIRMKILLPROCESS_TT 1441
+#define IDS_SYNCDIALOGRANDOMPOS_TT      1442
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
@@ -1334,6 +1335,7 @@
 #define IDC_ENABLEGRAVATAR              1766
 #define IDC_GRAVATARURL                 1767
 #define IDC_CONFIRMKILLPROCESS          1768
+#define IDC_SYNCDIALOGRANDOMPOS         1769
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1769,7 +1771,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        349
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1769
+#define _APS_NEXT_CONTROL_VALUE         1770
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -6678,6 +6678,14 @@ msgstr ""
 msgid "REBASE"
 msgstr ""
 
+#. Resource IDs: (1769)
+msgid "Randomize Sync Dialog startup position"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid "Randomize the startup position of Sync Dialog. This prevents from pressing the Pull button of same dialog"
+msgstr ""
+
 #. Resource IDs: (1535)
 msgid "Range"
 msgstr ""
