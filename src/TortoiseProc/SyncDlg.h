@@ -194,6 +194,7 @@ public:
 	BOOL			m_bAutoLoadPuttyKey;
 	BOOL			m_bForce;
 	CString			m_strURL;
+	int				m_seq;
 
 protected:
 	int				m_Gitverion;

@@ -30,6 +30,7 @@ CSetDialogs2::CSetDialogs2()
 	, m_dwAutoClose(0)
 	, m_bUseRecycleBin(TRUE)
 	, m_bConfirmKillProcess(FALSE)
+	, m_bSyncDialogRandomPos(FALSE)
 	, m_bAutocompletion(FALSE)
 	, m_dwAutocompletionTimeout(0)
 	, m_dwMaxHistory(25)
@@ -39,6 +40,8 @@ CSetDialogs2::CSetDialogs2()
 	m_regUseRecycleBin = CRegDWORD(_T("Software\\TortoiseGit\\RevertWithRecycleBin"), TRUE);
 	m_regConfirmKillProcess = CRegDWORD(_T("Software\\TortoiseGit\\ConfirmKillProcess"), FALSE);
 	m_bConfirmKillProcess = (BOOL)m_regConfirmKillProcess;
+	m_regSyncDialogRandomPos = CRegDWORD(_T("Software\\TortoiseGit\\SyncDialogRandomPos"), FALSE);
+	m_bSyncDialogRandomPos = (BOOL)m_regSyncDialogRandomPos;
 	m_regAutocompletion = CRegDWORD(_T("Software\\TortoiseGit\\Autocompletion"), TRUE);
 	m_bAutocompletion = (DWORD)m_regAutocompletion;
 	m_regAutocompletionTimeout = CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseTimeout"), 5);
@@ -59,6 +62,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOCLOSECOMBO, m_cAutoClose);
 	DDX_Check(pDX, IDC_USERECYCLEBIN, m_bUseRecycleBin);
 	DDX_Check(pDX, IDC_CONFIRMKILLPROCESS, m_bConfirmKillProcess);
+	DDX_Check(pDX, IDC_SYNCDIALOGRANDOMPOS, m_bSyncDialogRandomPos);
 	DDX_Check(pDX, IDC_AUTOCOMPLETION, m_bAutocompletion);
 	DDX_Text(pDX, IDC_AUTOCOMPLETIONTIMEOUT, m_dwAutocompletionTimeout);
 	DDV_MinMaxUInt(pDX, m_dwAutocompletionTimeout, 1, 100);
@@ -71,6 +75,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_AUTOCLOSECOMBO, OnCbnSelchangeAutoclosecombo)
 	ON_BN_CLICKED(IDC_USERECYCLEBIN, OnChange)
 	ON_BN_CLICKED(IDC_CONFIRMKILLPROCESS, OnChange)
+	ON_BN_CLICKED(IDC_SYNCDIALOGRANDOMPOS, OnChange)
 	ON_BN_CLICKED(IDC_AUTOCOMPLETION, OnChange)
 	ON_EN_CHANGE(IDC_AUTOCOMPLETIONTIMEOUT, OnChange)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
@@ -139,6 +144,7 @@ BOOL CSetDialogs2::OnApply()
 	Store ((DWORD)m_dwAutoClose, m_regAutoClose);
 	Store (m_bUseRecycleBin, m_regUseRecycleBin);
 	Store (m_bConfirmKillProcess, m_regConfirmKillProcess);
+	Store (m_bSyncDialogRandomPos, m_regSyncDialogRandomPos);
 
 	Store (m_bAutocompletion, m_regAutocompletion);
 	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);

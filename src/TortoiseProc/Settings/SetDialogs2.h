@@ -62,6 +62,8 @@ private:
 	CComboBox		m_cAutoClose;
 	CRegDWORD		m_regConfirmKillProcess;
 	BOOL			m_bConfirmKillProcess;
+	CRegDWORD		m_regSyncDialogRandomPos;
+	BOOL			m_bSyncDialogRandomPos;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;

@@ -36,7 +36,7 @@
 int g_shellidlist=RegisterClipboardFormat(CFSTR_SHELLIDLIST);
 
 extern MenuInfo menuInfo[];
-
+static int g_syncSeq = 0;
 
 STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder,
                                    LPDATAOBJECT pDataObj,
@@ -1216,7 +1216,13 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 			{
 				//#region case
 			case ShellMenuSync:
-				AddPathCommand(gitCmd, L"sync", false);
+				{
+					TCHAR syncSeq[12];
+					_stprintf_s(syncSeq, _T("%d"), g_syncSeq++);
+					AddPathCommand(gitCmd, L"sync", false);
+					gitCmd += _T(" /seq:");
+					gitCmd += syncSeq;
+				}
 				break;
 			case ShellMenuSubSync:
 				AddPathFileCommand(gitCmd, L"subsync");
