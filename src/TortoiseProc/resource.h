@@ -572,7 +572,6 @@
 #define IDS_PROC_SYNC_SUBKODULESYNC     1227
 #define IDS_PROGRS_TITLE_COMMIT         1228
 #define IDS_PROGRS_TITLE_ADD            1229
-#define IDC_HIDEPATHS                   1229
 #define IDS_PROGRS_TITLE_REVERT         1230
 #define IDS_PROGRS_TITLE_RESOLVE        1231
 #define IDC_RESOLVELIST                 1231
@@ -949,6 +948,8 @@
 #define IDS_WARNUSERSAFEDIFFERENT       1450
 #define IDS_WALKBEHAVIOUR_FIRSTPARENT   1451
 #define IDS_WALKBEHAVIOUR_FOLLOWRENAMES 1452
+#define IDS_SHOWFILES_HIDEPATHS         1453
+#define IDS_SHOWFILES_GRAYPATHS         1454
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
@@ -1353,6 +1354,7 @@
 #define IDC_RADIO_SETTINGS_SYSTEM       1774
 #define IDC_COMBO_SETTINGS_SAFETO       1775
 #define IDC_WALKBEHAVIOUR               1776
+#define IDC_SHOWFILES                   1777
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1789,7 +1791,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1777
+#define _APS_NEXT_CONTROL_VALUE         1778
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -43,6 +43,9 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
+	, m_bHidePaths(FALSE)
+	, m_bHidePathsEnabled(TRUE)
+	, m_bGrayPaths(FALSE)
 	, m_bFollowRenamesEnabled(TRUE)
 	, m_bShowTags(TRUE)
 
@@ -105,7 +108,6 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
 	DDX_Control(pDX, IDC_LOG_JUMPUP, m_JumpUp);
 	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
-	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
@@ -136,9 +138,9 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(IDC_LOG_JUMPUP, &CLogDlg::OnBnClickedJumpUp)
 	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
 	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
+	ON_BN_CLICKED(IDC_SHOWFILES, OnBnClickedShowFiles)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
-	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
 	ON_BN_CLICKED(IDC_LOG_SHOWTAGS, OnBnClickedShowTags)
@@ -230,8 +232,9 @@ BOOL CLogDlg::OnInitDialog()
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
 	//m_LogList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 
-	// the "hide unrelated paths" checkbox should be indeterminate
-	m_cHidePaths.SetCheck(BST_INDETERMINATE);
+	// "unrelated paths" should be in gray color
+	m_bHidePaths = FALSE;
+	m_bGrayPaths = TRUE;
 
 
 	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
@@ -260,7 +263,6 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
 	m_cFilter.SetValidator(this);
 
-	AdjustControlSize(IDC_HIDEPATHS);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
 	AdjustControlSize(IDC_LOG_SHOWTAGS);
@@ -311,7 +313,7 @@ BOOL CLogDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
-	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
+	AddAnchor(IDC_SHOWFILES, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_SHOWTAGS, BOTTOM_LEFT);
@@ -452,7 +454,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
-		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
+		m_bHidePathsEnabled = FALSE;
 
 	}
 	else if( cur == GITLOG_END)
@@ -470,7 +472,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
-		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
+		m_bHidePathsEnabled = TRUE;
 
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
@@ -754,7 +756,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
@@ -767,9 +768,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
 				{
-					if(HidePaths==BST_CHECKED)
+					if (m_bHidePaths)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
-					if(HidePaths==BST_INDETERMINATE)
+					else if (m_bGrayPaths)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
@@ -2386,6 +2387,37 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;
 			OnBnClickedFollowRenames();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+#define SHOWFILES_HIDEPATHS				1
+#define SHOWFILES_GRAYPATHS				2
+
+void CLogDlg::OnBnClickedShowFiles()
+{
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, SHOWFILES_HIDEPATHS, m_bHidePaths, m_bHidePathsEnabled);
+		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, SHOWFILES_GRAYPATHS, m_bGrayPaths, m_bHidePathsEnabled);
+
+		m_tooltips.Pop();
+		RECT rect;
+		GetDlgItem(IDC_SHOWFILES)->GetWindowRect(&rect);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this, 0);
+		switch (selection)
+		{
+		case SHOWFILES_HIDEPATHS:
+			m_bHidePaths = !m_bHidePaths;
+			OnBnClickedHidepaths();
+			break;
+		case SHOWFILES_GRAYPATHS:
+			m_bGrayPaths = !m_bGrayPaths;
+			OnBnClickedHidepaths();
 			break;
 		default:
 			break;
