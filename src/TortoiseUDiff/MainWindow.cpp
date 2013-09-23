@@ -761,7 +761,7 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 				return false;
 			bUTF8 = true;
 		}
-		if ((*pVal8 & 0xF0)==0xE0)
+		else if ((*pVal8 & 0xF0)==0xE0)
 		{
 			pVal8++;i++;
 			if ((*pVal8 & 0xC0)!=0x80)
@@ -771,7 +771,7 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 				return false;
 			bUTF8 = true;
 		}
-		if ((*pVal8 & 0xF8)==0xF0)
+		else if ((*pVal8 & 0xF8)==0xF0)
 		{
 			pVal8++;i++;
 			if ((*pVal8 & 0xC0)!=0x80)
@@ -784,6 +784,9 @@ bool CMainWindow::IsUTF8(LPVOID pBuffer, size_t cb)
 				return false;
 			bUTF8 = true;
 		}
+		else if (*pVal8 >= 0x80)
+			return false;
+
 		pVal8++;
 	}
 	if (bUTF8)
