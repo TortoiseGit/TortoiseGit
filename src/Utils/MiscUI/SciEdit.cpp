@@ -120,7 +120,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 			continue;
 		else if (i < 0x20 || i == ' ')
 			sWhiteSpace += (char)i;
-		else if (isalnum(i) || i == '\'')
+		else if (isalnum(i) || i == '\'' || i == '_')
 			sWordChars += (char)i;
 	}
 	Call(SCI_SETWORDCHARS, 0, (LPARAM)(LPCSTR)sWordChars);
