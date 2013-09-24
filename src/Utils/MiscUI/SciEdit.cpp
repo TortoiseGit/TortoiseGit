@@ -418,6 +418,8 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 		buf = sWordA.GetBuffer(sWord.GetLength()*4 + 1);
 		int lengthIncTerminator =
 			WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength()*4, NULL, NULL);
+		if (lengthIncTerminator == 0)
+			return FALSE;	// converting to the codepage failed, assume word is spelled correctly
 		sWordA.ReleaseBuffer(lengthIncTerminator-1);
 	}
 	else
