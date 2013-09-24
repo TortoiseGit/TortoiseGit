@@ -596,11 +596,12 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 		return;	//don't auto complete if we're not at the end of a word
 	CString sAutoCompleteList;
 
-	word.MakeUpper();
-	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(word);
+	CString wordLower = word;
+	wordLower.MakeLower();
+	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(wordLower);
 		lowerit != m_autolist.end(); ++lowerit)
 	{
-		int compare = word.CompareNoCase(lowerit->Left(word.GetLength()));
+		int compare = wordLower.CompareNoCase(lowerit->Left(wordLower.GetLength()));
 		if (compare>0)
 			continue;
 		else if (compare == 0)
@@ -612,6 +613,25 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 			break;
 		}
 	}
+
+	CString wordHigher = word;
+	wordHigher.MakeUpper();
+	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(wordHigher);
+		lowerit != m_autolist.end(); ++lowerit)
+	{
+		int compare = wordHigher.CompareNoCase(lowerit->Left(wordHigher.GetLength()));
+		if (compare>0)
+			continue;
+		else if (compare == 0)
+		{
+			sAutoCompleteList += *lowerit + m_separator;
+		}
+		else
+		{
+			break;
+		}
+	}
+
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
 		return;
