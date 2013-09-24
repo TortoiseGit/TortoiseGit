@@ -171,7 +171,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             }
 
             OnVScroll(LOWORD(wParam), nPos);
-            if (bLinkedPositions)
+            if (bLinkedPositions && pTheOtherPic)
             {
                 pTheOtherPic->OnVScroll(LOWORD(wParam), nPos);
                 if (bForceUpdate)
@@ -195,7 +195,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             }
 
             OnHScroll(LOWORD(wParam), nPos);
-            if (bLinkedPositions)
+            if (bLinkedPositions && pTheOtherPic)
             {
                 pTheOtherPic->OnHScroll(LOWORD(wParam), nPos);
                 if (bForceUpdate)
@@ -362,7 +362,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             case LEFTBUTTON_ID:
                 {
                     PrevImage();
-                    if (bLinkedPositions)
+                    if (bLinkedPositions && pTheOtherPic)
                         pTheOtherPic->PrevImage();
                     return 0;
                 }
@@ -370,7 +370,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             case RIGHTBUTTON_ID:
                 {
                     NextImage();
-                    if (bLinkedPositions)
+                    if (bLinkedPositions && pTheOtherPic)
                         pTheOtherPic->NextImage();
                     return 0;
                 }
@@ -379,7 +379,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 {
                     bPlaying = !bPlaying;
                     Animate(bPlaying);
-                    if (bLinkedPositions)
+                    if (bLinkedPositions && pTheOtherPic)
                         pTheOtherPic->Animate(bPlaying);
                     return 0;
                 }
@@ -1074,14 +1074,16 @@ void CPicWindow::FitImageInWindow()
             if (((rect.right - rect.left) > pSecondPic->m_Width+2)&&((rect.bottom - rect.top)> pSecondPic->m_Height+2))
             {
                 // image is smaller than the window
-                pTheOtherPic->SetZoom(min(100, Zoom), false);
+                if (pTheOtherPic)
+                    pTheOtherPic->SetZoom(min(100, Zoom), false);
             }
             else
             {
                 // image is bigger than the window
                 int xscale = (rect.right-rect.left-2)*100/pSecondPic->m_Width;
                 int yscale = (rect.bottom-rect.top-2)*100/pSecondPic->m_Height;
-                pTheOtherPic->SetZoom(min(yscale, xscale), false);
+                if (pTheOtherPic)
+                    pTheOtherPic->SetZoom(min(yscale, xscale), false);
             }
             nHSecondScrollPos = 0;
             nVSecondScrollPos = 0;
@@ -1099,7 +1101,7 @@ void CPicWindow::CenterImage()
     GetClientRectWithScrollbars(&rect);
     long width = picture.m_Width*picscale/100 + 2;
     long height = picture.m_Height*picscale/100 + 2;
-    if (pSecondPic)
+    if (pSecondPic && pTheOtherPic)
     {
         width = max(width, pSecondPic->m_Width*pTheOtherPic->GetZoom()/100 + 2);
         height = max(height, pSecondPic->m_Height*pTheOtherPic->GetZoom()/100 + 2);
