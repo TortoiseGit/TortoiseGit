@@ -120,7 +120,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 			continue;
 		else if (i < 0x20 || i == ' ')
 			sWhiteSpace += (char)i;
-		else if (isalnum(i) || i == '\'' || i == '_')
+		else if (isalnum(i) || i == '\'' || i == '_' || i == '-')
 			sWordChars += (char)i;
 	}
 	Call(SCI_SETWORDCHARS, 0, (LPARAM)(LPCSTR)sWordChars);
@@ -596,41 +596,56 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 		return;	//don't auto complete if we're not at the end of a word
 	CString sAutoCompleteList;
 
+	std::vector<CString> words;
+
+	pos = word.Find('-');
+
 	CString wordLower = word;
 	wordLower.MakeLower();
-	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(wordLower);
-		lowerit != m_autolist.end(); ++lowerit)
+	CString wordHigher = word;
+	wordHigher.MakeUpper();
+
+	words.push_back(wordLower);
+	words.push_back(wordHigher);
+
+	if (pos >= 0)
 	{
-		int compare = wordLower.CompareNoCase(lowerit->Left(wordLower.GetLength()));
-		if (compare>0)
-			continue;
-		else if (compare == 0)
+		CString s = wordLower.Left(pos);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(s);
+		s = wordLower.Mid(pos+1);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(s);
+		s = wordHigher.Left(pos);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(wordHigher.Left(pos));
+		s = wordHigher.Mid(pos+1);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(wordHigher.Mid(pos+1));
+	}
+
+	std::set<CString> wordset;
+	for (const auto& w : words)
+	{
+		for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(w);
+		lowerit != m_autolist.end(); ++lowerit)
 		{
-			sAutoCompleteList += *lowerit + m_separator;
-		}
-		else
-		{
-			break;
+			int compare = w.CompareNoCase(lowerit->Left(w.GetLength()));
+			if (compare>0)
+				continue;
+			else if (compare == 0)
+			{
+				wordset.insert(*lowerit);
+			}
+			else
+			{
+				break;
+			}
 		}
 	}
 
-	CString wordHigher = word;
-	wordHigher.MakeUpper();
-	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(wordHigher);
-		lowerit != m_autolist.end(); ++lowerit)
-	{
-		int compare = wordHigher.CompareNoCase(lowerit->Left(wordHigher.GetLength()));
-		if (compare>0)
-			continue;
-		else if (compare == 0)
-		{
-			sAutoCompleteList += *lowerit + m_separator;
-		}
-		else
-		{
-			break;
-		}
-	}
+	for (const auto& w : wordset)
+		sAutoCompleteList += w + m_separator;
 
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
