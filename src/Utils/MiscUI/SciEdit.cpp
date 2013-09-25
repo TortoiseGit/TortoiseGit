@@ -120,7 +120,7 @@ void CSciEdit::Init(LONG lLanguage, BOOL bLoadSpellCheck)
 			continue;
 		else if (i < 0x20 || i == ' ')
 			sWhiteSpace += (char)i;
-		else if (isalnum(i) || i == '\'')
+		else if (isalnum(i) || i == '\'' || i == '_' || i == '-')
 			sWordChars += (char)i;
 	}
 	Call(SCI_SETWORDCHARS, 0, (LPARAM)(LPCSTR)sWordChars);
@@ -418,6 +418,8 @@ BOOL CSciEdit::IsMisspelled(const CString& sWord)
 		buf = sWordA.GetBuffer(sWord.GetLength()*4 + 1);
 		int lengthIncTerminator =
 			WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, buf, sWord.GetLength()*4, NULL, NULL);
+		if (lengthIncTerminator == 0)
+			return FALSE;	// converting to the codepage failed, assume word is spelled correctly
 		sWordA.ReleaseBuffer(lengthIncTerminator-1);
 	}
 	else
@@ -594,22 +596,57 @@ void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
 		return;	//don't auto complete if we're not at the end of a word
 	CString sAutoCompleteList;
 
-	word.MakeUpper();
-	for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(word);
-		lowerit != m_autolist.end(); ++lowerit)
+	std::vector<CString> words;
+
+	pos = word.Find('-');
+
+	CString wordLower = word;
+	wordLower.MakeLower();
+	CString wordHigher = word;
+	wordHigher.MakeUpper();
+
+	words.push_back(wordLower);
+	words.push_back(wordHigher);
+
+	if (pos >= 0)
 	{
-		int compare = word.CompareNoCase(lowerit->Left(word.GetLength()));
-		if (compare>0)
-			continue;
-		else if (compare == 0)
+		CString s = wordLower.Left(pos);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(s);
+		s = wordLower.Mid(pos+1);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(s);
+		s = wordHigher.Left(pos);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(wordHigher.Left(pos));
+		s = wordHigher.Mid(pos+1);
+		if (s.GetLength() >= nMinPrefixLength)
+			words.push_back(wordHigher.Mid(pos+1));
+	}
+
+	std::set<CString> wordset;
+	for (const auto& w : words)
+	{
+		for (std::set<CString>::const_iterator lowerit = m_autolist.lower_bound(w);
+		lowerit != m_autolist.end(); ++lowerit)
 		{
-			sAutoCompleteList += *lowerit + m_separator;
-		}
-		else
-		{
-			break;
+			int compare = w.CompareNoCase(lowerit->Left(w.GetLength()));
+			if (compare>0)
+				continue;
+			else if (compare == 0)
+			{
+				wordset.insert(*lowerit);
+			}
+			else
+			{
+				break;
+			}
 		}
 	}
+
+	for (const auto& w : wordset)
+		sAutoCompleteList += w + m_separator;
+
 	sAutoCompleteList.TrimRight(m_separator);
 	if (sAutoCompleteList.IsEmpty())
 		return;
