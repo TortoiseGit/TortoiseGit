@@ -183,6 +183,8 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	{
 		CString val;
 		val = sPropVal;
+		if (val == _T("-1"))
+			lProjectLanguage = -1;
 		if (!val.IsEmpty())
 		{
 			LPTSTR strEnd;
