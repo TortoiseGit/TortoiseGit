@@ -32,6 +32,8 @@
 
 static CString GetExistingDirectoryForClone(CString path)
 {
+	if (PathFileExists(path))
+		return path;
 	int index = path.ReverseFind('\\');
 	while (index >= 0 && path.GetLength() >= 3)
 	{
