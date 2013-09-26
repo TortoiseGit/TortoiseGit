@@ -140,7 +140,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (!msysGitBinPath.IsEmpty())
 	{
 		CString systemConfig = msysGitBinPath + _T("\\..\\etc\\gitconfig");
-		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
+		CStringA systemConfigA = CUnicodeUtils::GetMulti(CTGitPath(systemConfig).GetGitPathString(), CP_UTF8);
 		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 		systemConfigA.ReleaseBuffer();
 	}
@@ -1243,7 +1243,7 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	globalXDGConfigA.ReleaseBuffer();
 	if (!m_sMsysGitBinPath.IsEmpty())
 	{
-		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
+		CStringA systemConfigA = CUnicodeUtils::GetMulti(CTGitPath(systemConfig).GetGitPathString(), CP_UTF8);
 		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 		systemConfigA.ReleaseBuffer();
 	}
