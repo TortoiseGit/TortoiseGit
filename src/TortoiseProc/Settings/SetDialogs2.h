@@ -51,7 +51,6 @@ protected:
 	virtual BOOL OnApply();
 	afx_msg void OnChange();
 	afx_msg void OnCbnSelchangeAutoclosecombo();
-	afx_msg void OnBnClickedBrowsecheckoutpath();
 
 private:
 	CToolTips		m_tooltips;

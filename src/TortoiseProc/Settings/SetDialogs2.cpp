@@ -85,8 +85,6 @@ END_MESSAGE_MAP()
 // CSetDialogs2 message handlers
 BOOL CSetDialogs2::OnInitDialog()
 {
-	CMFCFontComboBox::m_bDrawUsingFont = true;
-
 	ISettingsPropPage::OnInitDialog();
 
 	EnableToolTips();
@@ -151,7 +149,7 @@ BOOL CSetDialogs2::OnApply()
 	Store (m_dwMaxHistory, m_regMaxHistory);
 	Store (m_bAutoSelect, m_regAutoSelect);
 
-    SetModified(FALSE);
+	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
 }
 
