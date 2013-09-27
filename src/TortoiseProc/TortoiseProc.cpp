@@ -266,6 +266,30 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (CRegDWORD(_T("Software\\TortoiseGit\\Debug"), FALSE)==TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
 
+	if (parser.HasKey(_T("urlhandler")))
+	{
+		CString url = parser.GetVal(_T("urlhandler"));
+		if (url.Find(_T("github-windows://openRepo/")) == 0)
+		{
+			url = url.Mid(26); // 26 = "github-windows://openRepo/".GetLength()
+			int questioMark = url.Find('?');
+			if (questioMark > 0)
+				url = url.Left(questioMark);
+		}
+		else if (url.Find(_T("smartgit://cloneRepo/")) == 0)
+		{
+			url = url.Mid(21); // 21 = "smartgit://cloneRepo/".GetLength()
+		}
+		else
+		{
+			CMessageBox::Show(NULL, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
+			return FALSE;
+		}
+		CString newCmd;
+		newCmd.Format(_T("/command:clone /url:\"%s\""), url);
+		parser = CCmdLineParser(newCmd);
+	}
+
 	if ( parser.HasKey(_T("path")) && parser.HasKey(_T("pathfile")))
 	{
 		CMessageBox::Show(NULL, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
