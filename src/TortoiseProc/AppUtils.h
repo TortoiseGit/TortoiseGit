@@ -177,7 +177,7 @@ public:
 
 	static bool LaunchPAgent(CString *keyfile=NULL,CString * pRemote=NULL);
 
-	static CString GetClipboardLink();
+	static CString GetClipboardLink(const CString &skipGitPrefix = _T(""));
 	static CString ChooseRepository(CString *path);
 
 	static bool SendPatchMail(CTGitPathList &pathlist,bool autoclose=false);

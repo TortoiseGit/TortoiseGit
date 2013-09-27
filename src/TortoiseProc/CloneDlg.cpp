@@ -139,7 +139,7 @@ BOOL CCloneDlg::OnInitDialog()
 	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	if(m_URL.IsEmpty())
 	{
-		CString str=CAppUtils::GetClipboardLink();
+		CString str = CAppUtils::GetClipboardLink(_T("git clone "));
 		str.Trim();
 		if(str.IsEmpty())
 			m_URLCombo.SetCurSel(0);
