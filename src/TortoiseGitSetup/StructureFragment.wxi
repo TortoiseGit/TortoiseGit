@@ -611,6 +611,21 @@
 					</Component>
 					<?endif ?>
 
+					<Component Id="ProtocolGit" Guid="$(var.GuidProtocolGit)">
+						<RegistryKey Key="git" Root="HKCR">
+							<RegistryValue Value="URL: Git for Windows Protocol" Type="string" />
+							<RegistryValue Name="URL Protocol" Value="" Type="string" />
+						</RegistryKey>
+						<RegistryKey Key="git\DefaultIcon" Root="HKCR">
+							<RegistryValue Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
+						</RegistryKey>
+						<RegistryKey Root="HKCR" Key="git\shell" />
+						<RegistryKey Root="HKCR" Key="git\shell\open" />
+						<RegistryKey Root="HKCR" Key="git\shell\open\command">
+							<RegistryValue Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
+						</RegistryKey>
+					</Component>
+
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
             <?if $(var.Platform) = "x86" ?>
             <File Id="F__TortoisePlinkold" ShortName="TORTPLI.EXE" Name="TortoisePLink.exe" DiskId="1" Source="..\..\ext\putty\TortoisePLink-x86.exe" />

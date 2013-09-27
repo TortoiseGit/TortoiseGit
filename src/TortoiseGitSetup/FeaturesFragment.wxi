@@ -87,6 +87,10 @@
 			<ComponentRef Id="C__TortoiseUDiffAssoc" />
 		</Feature>
 
+		<Feature Id="ProtocolAssocGit" Level="1" Title="Register git://-link handlers" Description="Associate git://-links with TortoiseGit clone command" TypicalDefault="install" Absent="allow">
+			<ComponentRef Id="ProtocolGit"/>
+		</Feature>
+
 		<?if $(var.DictionaryENGB) = 1 ?>
 		<Feature Id="DictionaryENGB" Level="1" Title="English (GB) dictionary" Description="English (GB) spell checker dictionary" TypicalDefault="install" Absent="allow">
 			<ComponentRef Id="C__DictionaryENGB" />

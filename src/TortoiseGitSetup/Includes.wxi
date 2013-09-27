@@ -66,7 +66,6 @@
 	<?define GuidMachineRegistry32="ACDC3F06-4976-4a77-A676-378B076F96BE"?>
 	<?define GuidApproveShellComponents="E7E43AE0-DB46-4af9-95EA-2EF7AD3F2119"?>
 	<?define GuidApproveShellComponents32="56A11ACF-3DE2-40f8-A6A8-4CC334E19571"?>
-	<?define GuidGitProtocol="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
 
 	<?define GuidLibSSL="CB2A61D8-AE23-4b9b-AC7D-473E2610367E"?>
 	<?define GuidAPR="72EB77A1-E5CD-4cdb-BFC2-77FDCFD04ACF"?>
@@ -93,6 +92,7 @@
 	<?define GuidTortoiseIDiffShortcuts="7312EFB9-4775-4b9c-8FE8-4E9F8C1D5586"?>
 	<?define GuidTortoiseUDiff="F41B3D1B-E500-457e-876E-86A0186BE7B5"?>
 	<?define GuidTortoiseUDiffAssoc="1A2972B9-F6B2-4dd5-B656-30638ACCF205"?>
+	<?define GuidProtocolGit="0AD2B787-A9B3-4ad7-99A5-EC6DFF0EB2B7"?>
 	<?define GuidPlainSettingsShortcuts="D78CE764-1770-4d38-9229-F5068D8738FD"?>
 	<?define GuidPlatformSettingsShortcuts="256F134F-87F1-418f-BA9A-AFA92270D42D"?>
 
@@ -136,7 +136,6 @@
 	<?define GuidShellRegistry="EED2630A-E3DA-4046-B642-6296C23DEC2A"?>
 	<?define GuidMachineRegistry="27FA9458-F68B-4a26-A36B-D452FD9EABBA"?>
 	<?define GuidApproveShellComponents="E3B982F9-7B17-457f-A72F-2F47E9DB1719"?>
-	<?define GuidGitProtocol="508DD925-273C-4170-9D81-55222E2E36AB"?>
 
 	<?define GuidLibSSL="BD9DD138-AEA4-4cf3-982D-8B5EB2A510D9"?>
 	<?define GuidAPR="DFBE3185-5272-4880-9ED3-F50F21EA9BE7"?>
@@ -161,6 +160,7 @@
 	<?define GuidTortoiseIDiffShortcuts="85832CAF-32F7-48ef-8E18-A4271C1DB5ED"?>
 	<?define GuidTortoiseUDiff="E41DAF84-C1F5-4e43-9DC8-B5CB84A649D6"?>
 	<?define GuidTortoiseUDiffAssoc="6CF22556-FE5B-4640-A184-D60C5B6AEBE7"?>
+	<?define GuidProtocolGit="508DD925-273C-4170-9D81-55222E2E36AB"?>
 	<?define GuidPlainSettingsShortcuts="49263747-C09E-4ffe-A0A4-8E8966CBD807"?>
 	<?define GuidPlatformSettingsShortcuts="F1B92E39-6F75-4ed4-9099-CB5DC7A91831"?>
 
