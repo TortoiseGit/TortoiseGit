@@ -1,6 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,8 +49,25 @@ static CString GetExistingDirectoryForClone(CString path)
 
 bool CloneCommand::Execute()
 {
+	CTGitPath cloneDirectory;
+	if (orgCmdLinePath.IsEmpty())
+	{
+		cloneDirectory.SetFromWin(sOrigCWD, true);
+		DWORD len = ::GetTempPath(0, NULL);
+		std::unique_ptr<TCHAR[]> tszPath(new TCHAR[len]);
+		::GetTempPath(len, tszPath.get());
+		if (_tcsncicmp(cloneDirectory.GetWinPath(), tszPath.get(), len-2 /* \\ and \0 */) == 0)
+		{
+			// if the current directory is set to a temp directory,
+			// we don't use that but leave it empty instead.
+			cloneDirectory.Reset();
+		}
+	}
+	else
+		cloneDirectory = orgCmdLinePath;
+
 	CCloneDlg dlg;
-	dlg.m_Directory=this->orgCmdLinePath.GetWinPathString();
+	dlg.m_Directory = cloneDirectory.GetWinPathString();
 
 	if (parser.HasKey(_T("url")))
 		dlg.m_URL = parser.GetVal(_T("url"));
