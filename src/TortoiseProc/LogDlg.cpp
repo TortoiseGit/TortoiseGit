@@ -849,6 +849,7 @@ void CLogDlg::Refresh (bool clearfilter /*autoGoOnline*/)
 {
 	m_limit = 0;
 	m_LogList.Refresh(clearfilter);
+	EnableOKButton();
 	ShowStartRef();
 	FillLogMessageCtrl(false);
 }
