@@ -611,6 +611,12 @@
 					</Component>
 					<?endif ?>
 
+					<Component Id="ProtocolTGit" Guid="$(var.GuidProtocolTGit)" Win64="$(var.Win64YesNo)">
+						<RegistryValue Root="HKLM" Key="Software\Classes\tgit" Value="URL: TGit Protocol" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tgit" Name="URL Protocol" Value="" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tgit\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\tgit\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
+					</Component>
 					<Component Id="ProtocolGit" Guid="$(var.GuidProtocolGit)" Win64="$(var.Win64YesNo)">
 						<RegistryValue Root="HKLM" Key="Software\Classes\git" Value="URL: Git Protocol" Type="string" />
 						<RegistryValue Root="HKLM" Key="Software\Classes\git" Name="URL Protocol" Value="" Type="string" />

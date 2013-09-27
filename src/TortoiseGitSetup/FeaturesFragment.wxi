@@ -27,7 +27,7 @@
 		<ComponentRef Id="C__shellregistry" />
 		<ComponentRef Id="C__machineregistry" />
 
-		<!-- <ComponentRef Id="C__svnprotocoll" /> -->
+		<ComponentRef Id="ProtocolTGit" />
 
 		<ComponentRef Id="C__approveshellcomponents" />
 
