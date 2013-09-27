@@ -611,19 +611,11 @@
 					</Component>
 					<?endif ?>
 
-					<Component Id="ProtocolGit" Guid="$(var.GuidProtocolGit)">
-						<RegistryKey Key="git" Root="HKCR">
-							<RegistryValue Value="URL: Git for Windows Protocol" Type="string" />
-							<RegistryValue Name="URL Protocol" Value="" Type="string" />
-						</RegistryKey>
-						<RegistryKey Key="git\DefaultIcon" Root="HKCR">
-							<RegistryValue Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
-						</RegistryKey>
-						<RegistryKey Root="HKCR" Key="git\shell" />
-						<RegistryKey Root="HKCR" Key="git\shell\open" />
-						<RegistryKey Root="HKCR" Key="git\shell\open\command">
-							<RegistryValue Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
-						</RegistryKey>
+					<Component Id="ProtocolGit" Guid="$(var.GuidProtocolGit)" Win64="$(var.Win64YesNo)">
+						<RegistryValue Root="HKLM" Key="Software\Classes\git" Value="URL: Git Protocol" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\git" Name="URL Protocol" Value="" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\git\DefaultIcon" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
+						<RegistryValue Root="HKLM" Key="Software\Classes\git\shell\open\command" Value="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:clone /url:&quot;%1&quot;" Type="string" />
 					</Component>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
