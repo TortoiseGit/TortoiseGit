@@ -191,6 +191,25 @@ protected:
 	virtual void LoadDataImpl(git_config * config) = 0;
 	virtual BOOL SafeDataImpl(git_config * config) = 0;
 
+	static void AddTrueFalseToComboBox(CComboBox &combobox)
+	{
+		combobox.AddString(_T(""));
+		combobox.AddString(_T("true"));
+		combobox.AddString(_T("false"));
+	}
+
+	static void GetBoolConfigValueComboBox(git_config * config, const CString &key, CComboBox &combobox)
+	{
+		CStringA keyA = CUnicodeUtils::GetUTF8(key);
+		BOOL out = 0;
+		if (git_config_get_bool(&out, config, keyA) == GIT_ENOTFOUND)
+			combobox.SetCurSel(0);
+		else if (out)
+			combobox.SetCurSel(1);
+		else
+			combobox.SetCurSel(2);
+	}
+
 	static int GetConfigValue(git_config * config, const CString &key, CString &value)
 	{
 		CStringA keyA = CUnicodeUtils::GetUTF8(key);

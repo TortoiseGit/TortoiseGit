@@ -31,12 +31,10 @@ IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
 CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
 	: ISettingsPropPage(CSettingsBugtraqConfig::IDD)
 	, m_URL(_T(""))
-	, m_bNWarningifnoissue(FALSE)
 	, m_Message(_T(""))
-	, m_bNAppend(FALSE)
 	, m_Label(_T(""))
-	, m_bNNumber(TRUE)
 	, m_Logregex(_T(""))
+	, m_bNeedSave(false)
 {
 }
 
@@ -48,50 +46,36 @@ void CSettingsBugtraqConfig::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_BUGTRAQ_URL, m_URL);
-	DDX_Radio(pDX, IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE, m_bNWarningifnoissue);
+	DDX_Control(pDX, IDC_BUGTRAQ_WARNINGIFNOISSUE, m_cWarningifnoissue);
 	DDX_Text(pDX, IDC_BUGTRAQ_MESSAGE, m_Message);
-	DDX_Radio(pDX, IDC_BUGTRAQ_APPEND_TRUE, m_bNAppend);
+	DDX_Control(pDX, IDC_BUGTRAQ_APPEND, m_cAppend);
 	DDX_Text(pDX, IDC_BUGTRAQ_LABEL, m_Label);
-	DDX_Radio(pDX, IDC_BUGTRAQ_NUMBER_TRUE, m_bNNumber);
+	DDX_Control(pDX, IDC_BUGTRAQ_NUMBER, m_cNumber);
 	DDX_Text(pDX, IDC_BUGTRAQ_LOGREGEX, m_Logregex);
 	DDX_Control(pDX, IDC_BUGTRAQ_LOGREGEX, m_BugtraqRegex1);
+	GITSETTINGS_DDX
 }
 
-
 BEGIN_MESSAGE_MAP(CSettingsBugtraqConfig, ISettingsPropPage)
-
+	GITSETTINGS_RADIO_EVENT
 	ON_EN_CHANGE(IDC_BUGTRAQ_URL, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_CBN_SELCHANGE(IDC_BUGTRAQ_WARNINGIFNOISSUE, &CSettingsBugtraqConfig::OnChange)
 	ON_EN_CHANGE(IDC_BUGTRAQ_MESSAGE, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_TRUE, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_CBN_SELCHANGE(IDC_BUGTRAQ_APPEND, &CSettingsBugtraqConfig::OnChange)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LABEL, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_TRUE, &CSettingsBugtraqConfig::OnChange)
-	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_CBN_SELCHANGE(IDC_BUGTRAQ_NUMBER, &CSettingsBugtraqConfig::OnChange)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LOGREGEX, &CSettingsBugtraqConfig::OnChange)
 END_MESSAGE_MAP()
 
 BOOL CSettingsBugtraqConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
-	ProjectProperties props;
-	props.ReadProps(g_Git.m_CurrentDir);
-	m_URL = props.sUrl;
-	m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
-	m_Label = props.sLabel;
-	m_Message = props.sMessage;
 
-	m_bNAppend = props.bAppend;
-	m_bNNumber = props.bNumber;
-	m_bNWarningifnoissue = props.bWarnIfNoIssue;
+	AddTrueFalseToComboBox(m_cWarningifnoissue);
+	AddTrueFalseToComboBox(m_cAppend);
+	AddTrueFalseToComboBox(m_cNumber);
 
-	m_Logregex.Trim();
-	m_Logregex.Replace(_T("\n"),_T("\r\n"));
-
-	m_bNAppend = !m_bNAppend;
-	m_bNNumber = !m_bNNumber;
-	m_bNWarningifnoissue = !m_bNWarningifnoissue;
+	InitGitSettings(this, true);
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -99,51 +83,103 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 
 void CSettingsBugtraqConfig::OnChange()
 {
+	m_bNeedSave = true;
 	SetModified();
+}
+
+void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
+{
+	if (m_iConfigSource == 0)
+	{
+		// use project properties here, so that we correctly get the default values
+		ProjectProperties props;
+		props.ReadProps(g_Git.m_CurrentDir);
+		m_URL = props.sUrl;
+		m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
+		m_Label = props.sLabel;
+		m_Message = props.sMessage;
+
+		if (props.bAppend)
+			m_cAppend.SetCurSel(1);
+		else
+			m_cAppend.SetCurSel(2);
+
+		if (props.bNumber)
+			m_cNumber.SetCurSel(1);
+		else
+			m_cNumber.SetCurSel(2);
+
+		if (props.bWarnIfNoIssue)
+			m_cWarningifnoissue.SetCurSel(1);
+		else
+			m_cWarningifnoissue.SetCurSel(2);
+	}
+	else
+	{
+		GetConfigValue(config, BUGTRAQPROPNAME_URL, m_URL);
+		GetConfigValue(config, BUGTRAQPROPNAME_MESSAGE, m_Message);
+		GetConfigValue(config, BUGTRAQPROPNAME_LABEL, m_Label);
+		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_NUMBER, m_cNumber);
+		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_APPEND, m_cAppend);
+		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_WARNIFNOISSUE, m_cWarningifnoissue);
+		GetConfigValue(config, BUGTRAQPROPNAME_LOGREGEX, m_Logregex);
+	}
+
+	m_Logregex.Trim();
+	m_Logregex.Replace(_T("\n"), _T("\r\n"));
+
+	m_bNeedSave = false;
+	SetModified(FALSE);
+	UpdateData(FALSE);
+}
+
+BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
+{
+	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL))
+		return FALSE;
+
+	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message))
+		return FALSE;
+
+	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label))
+		return FALSE;
+
+	{
+		CString value;
+		m_cAppend.GetWindowText(value);
+		if (!Save(config, BUGTRAQPROPNAME_APPEND, value))
+			return FALSE;
+	}
+	{
+		CString value;
+		m_cNumber.GetWindowText(value);
+		if (!Save(config, BUGTRAQPROPNAME_NUMBER, value))
+			return FALSE;
+	}
+	{
+		CString value;
+		m_cWarningifnoissue.GetWindowText(value);
+		if (!Save(config, BUGTRAQPROPNAME_WARNIFNOISSUE, value))
+			return FALSE;
+	}
+	{
+		CString value(m_Logregex);
+		value.Replace(_T("\r\n"),_T("\n"));
+		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value))
+			return FALSE;
+	}
+
+	return TRUE;
 }
 
 BOOL CSettingsBugtraqConfig::OnApply()
 {
-	this->UpdateData();
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_URL, m_URL, CONFIG_LOCAL))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_WARNIFNOISSUE, (!this->m_bNWarningifnoissue) ? _T("true") : _T("false")))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_MESSAGE, m_Message, CONFIG_LOCAL, g_Git.GetGitEncode(L"i18n.commitencoding")))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_APPEND, (!this->m_bNAppend) ? _T("true") : _T("false")))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_LABEL, m_Label))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_NUMBER, (!this->m_bNNumber) ? _T("true") : _T("false")))
-	{
-		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-	}
-
-	{
-		m_Logregex.Replace(_T("\r\n"),_T("\n"));
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_LOGREGEX, m_Logregex))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
-		m_Logregex.Replace(_T("\n"),_T("\r\n"));
-	}
-
+	if (!m_bNeedSave)
+		return TRUE;
+	UpdateData();
+	if (!SafeData())
+		return FALSE;
+	m_bNeedSave = false;
+	SetModified(FALSE);
 	return TRUE;
 }

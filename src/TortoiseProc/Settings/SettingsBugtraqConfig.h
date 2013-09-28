@@ -20,9 +20,10 @@
 
 #include "SettingsPropPage.h"
 #include "RegexEdit.h"
+#include "GitSettings.h"
 // CSettingsBugtraqConfig dialog
 
-class CSettingsBugtraqConfig : public ISettingsPropPage
+class CSettingsBugtraqConfig : public ISettingsPropPage, public CGitSettings
 {
 	DECLARE_DYNAMIC(CSettingsBugtraqConfig)
 
@@ -40,17 +41,22 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
 
+	virtual void LoadDataImpl(git_config * config);
+	virtual BOOL SafeDataImpl(git_config * config);
+
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnChange();
+	GITSETTINGS_RADIO_EVENT_HANDLE
 
 	CRegexEdit	m_BugtraqRegex1;
 
+	bool	m_bNeedSave;
 	CString	m_URL;
-	BOOL	m_bNWarningifnoissue;
+	CComboBox	m_cWarningifnoissue;
 	CString	m_Message;
-	BOOL	m_bNAppend;
+	CComboBox	m_cAppend;
 	CString	m_Label;
-	BOOL	m_bNNumber;
+	CComboBox	m_cNumber;
 	CString	m_Logregex;
 };
