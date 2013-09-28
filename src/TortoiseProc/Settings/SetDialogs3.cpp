@@ -154,14 +154,14 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 		CString value;
 		char numBuf[20];
 		sprintf_s(numBuf, "%ld", m_langCombo.GetItemData(m_langCombo.GetCurSel()));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, true))
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, true, _T("0")))
 			return FALSE;
 	}
 
-	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, true))
+	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, true, _T("0")))
 		return FALSE;
 
-	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, true))
+	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, true, _T("0")))
 		return FALSE;
 
 	{

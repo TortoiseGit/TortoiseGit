@@ -89,11 +89,11 @@ protected:
 		LoadData();
 	}
 
-	bool Save(git_config * config, const CString &key, const CString &value, const bool askEmptyDelete = false)
+	bool Save(git_config * config, const CString &key, const CString &value, const bool askEmptyDelete = false, const CString def = _T(""))
 	{
 		CStringA keyA = CUnicodeUtils::GetUTF8(key);
 		int err = 0;
-		if (value.IsEmpty())
+		if (value.IsEmpty() || value == def)
 		{
 			const git_config_entry * entry = nullptr;
 			if (git_config_get_entry(&entry, config, keyA) == GIT_ENOTFOUND)
