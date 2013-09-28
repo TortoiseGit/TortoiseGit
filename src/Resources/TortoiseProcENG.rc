@@ -4195,6 +4195,9 @@ BEGIN
     IDS_CONFIG_LOCAL        "Local"
     IDS_CONFIG_PROJECT      "Project"
     IDS_CONFIG_GLOBAL       "Global"
+    IDS_CONFIG_GLOBAL_TT    "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+    IDS_CONFIG_PROJECT_TT   ".tgitconfig in the repository root"
+    IDS_CONFIG_LOCAL_TT     ".git/config in the repository root"
 END
 
 #endif    // English (U.S.) resources

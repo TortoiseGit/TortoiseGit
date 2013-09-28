@@ -20,6 +20,7 @@
 #pragma once
 #include "../TortoiseProc.h"
 #include "Git.h"
+#include "Tooltip.h"
 #include "../../Utils/UnicodeUtils.h"
 
 class CSettings;
@@ -42,9 +43,17 @@ protected:
 	bool	m_bIsBareRepo;
 	bool	m_bHonorProjectConfig;
 
-	void InitGitSettings(ISettingsPropPage *page, bool honorProjectConfig)
+	void InitGitSettings(ISettingsPropPage *page, bool honorProjectConfig, CToolTips * tooltips)
 	{
 		m_bHonorProjectConfig = honorProjectConfig;
+
+		if (tooltips)
+		{
+			tooltips->AddTool(IDC_RADIO_SETTINGS_LOCAL, IDS_CONFIG_LOCAL_TT);
+			if (page->GetDlgItem(IDC_RADIO_SETTINGS_PROJECT) != nullptr)
+				tooltips->AddTool(IDC_RADIO_SETTINGS_PROJECT, IDS_CONFIG_PROJECT_TT);
+			tooltips->AddTool(IDC_RADIO_SETTINGS_GLOBAL, IDS_CONFIG_GLOBAL_TT);
+		}
 
 		CString str = g_Git.m_CurrentDir;
 		m_bIsBareRepo = g_GitAdminDir.IsBareRepo(str);

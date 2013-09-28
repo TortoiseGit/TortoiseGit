@@ -40,6 +40,7 @@ protected:
 
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);
@@ -48,6 +49,8 @@ protected:
 
 	afx_msg void OnChange();
 	GITSETTINGS_RADIO_EVENT_HANDLE
+
+	CToolTips	m_tooltips;
 
 	CRegexEdit	m_BugtraqRegex1;
 

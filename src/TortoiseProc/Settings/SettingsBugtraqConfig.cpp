@@ -75,7 +75,9 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 	AddTrueFalseToComboBox(m_cAppend);
 	AddTrueFalseToComboBox(m_cNumber);
 
-	InitGitSettings(this, true);
+	m_tooltips.Create(this);
+
+	InitGitSettings(this, true, &m_tooltips);
 
 	this->UpdateData(FALSE);
 	return TRUE;
@@ -182,4 +184,10 @@ BOOL CSettingsBugtraqConfig::OnApply()
 	m_bNeedSave = false;
 	SetModified(FALSE);
 	return TRUE;
+}
+
+BOOL CSettingsBugtraqConfig::PreTranslateMessage(MSG* pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }

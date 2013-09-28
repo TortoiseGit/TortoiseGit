@@ -42,6 +42,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
 	BOOL OnApply();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);
@@ -58,6 +59,7 @@ protected:
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	bool	m_bNeedSave;
+	CToolTips	m_tooltips;
 	CString	m_UserName;
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;

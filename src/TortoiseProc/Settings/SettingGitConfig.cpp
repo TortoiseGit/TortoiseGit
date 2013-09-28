@@ -79,7 +79,9 @@ BOOL CSettingGitConfig::OnInitDialog()
 	m_cSafeCrLf.AddString(_T("true"));
 	m_cSafeCrLf.AddString(_T("warn"));
 
-	InitGitSettings(this, false);
+	m_tooltips.Create(this);
+
+	InitGitSettings(this, false, &m_tooltips);
 
 	if (!m_bGlobal || m_bIsBareRepo)
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
@@ -173,6 +175,12 @@ BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 	}
 
 	return TRUE;
+}
+
+BOOL CSettingGitConfig::PreTranslateMessage(MSG* pMsg)
+{
+	m_tooltips.RelayEvent(pMsg);
+	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSettingGitConfig::OnApply()
