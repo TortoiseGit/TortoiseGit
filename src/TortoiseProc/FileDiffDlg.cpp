@@ -52,6 +52,8 @@
 BOOL	CFileDiffDlg::m_bAscending = FALSE;
 int		CFileDiffDlg::m_nSortedColumn = -1;
 
+UINT CFileDiffDlg::WM_DISABLEBUTTONS = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DISABLEBUTTONS"));
+UINT CFileDiffDlg::WM_DIFFFINISHED = RegisterWindowMessage(_T("TORTOISEGIT_FILEDIFF_DIFFFINISHED"));
 
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
@@ -99,6 +101,8 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 	ON_WM_TIMER()
 	ON_MESSAGE(ENAC_UPDATE, &CFileDiffDlg::OnEnUpdate)
 	ON_MESSAGE(MSG_REF_LOADED, OnRefLoad)
+	ON_REGISTERED_MESSAGE(WM_DISABLEBUTTONS, OnDisableButtons)
+	ON_REGISTERED_MESSAGE(WM_DIFFFINISHED, OnDiffFinished)
 	ON_BN_CLICKED(IDC_LOG, &CFileDiffDlg::OnBnClickedLog)
 END_MESSAGE_MAP()
 
@@ -347,11 +351,8 @@ UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 
 UINT CFileDiffDlg::DiffThread()
 {
-	RefreshCursor();
-	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
-	m_cFileList.DeleteAllItems();
-	m_arFileList.Clear();
-	EnableInputControl(false);
+	SendMessage(WM_DISABLEBUTTONS);
+
 #if 0
 	bool bSuccess = true;
 	if (m_bDoPegDiff)
@@ -375,11 +376,29 @@ UINT CFileDiffDlg::DiffThread()
 
 	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
 
+	SendMessage(WM_DIFFFINISHED);
+
+	InterlockedExchange(&m_bThreadRunning, FALSE);
+	return 0;
+}
+
+LRESULT CFileDiffDlg::OnDisableButtons(WPARAM, LPARAM)
+{
+	RefreshCursor();
+	m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_FILEDIFF_WAIT)));
+	m_cFileList.DeleteAllItems();
+	m_arFileList.Clear();
+	EnableInputControl(false);
+	return 0;
+}
+
+LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
+{
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
 	m_cFileList.SetRedraw(false);
 	Filter(sFilterText);
-	if (m_arFileList.GetCount()>0)
+	if (m_arFileList.GetCount() > 0)
 	{
 		// Highlight first entry in file list
 		m_cFileList.SetSelectionMark(0);
@@ -389,15 +408,14 @@ UINT CFileDiffDlg::DiffThread()
 	int mincol = 0;
 	int maxcol = ((CHeaderCtrl*)(m_cFileList.GetDlgItem(0)))->GetItemCount()-1;
 	int col;
-	for (col = mincol; col <= maxcol; col++)
+	for (col = mincol; col <= maxcol; ++col)
 	{
-		m_cFileList.SetColumnWidth(col,LVSCW_AUTOSIZE_USEHEADER);
+		m_cFileList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
 	}
 
 	m_cFileList.ClearText();
 	m_cFileList.SetRedraw(true);
 
-	InterlockedExchange(&m_bThreadRunning, FALSE);
 	InvalidateRect(NULL);
 	RefreshCursor();
 	EnableInputControl(true);

@@ -79,6 +79,8 @@ protected:
 	afx_msg void OnEnChangeFilter();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedLog();
+	afx_msg LRESULT OnDisableButtons(WPARAM, LPARAM);
+	afx_msg LRESULT OnDiffFinished(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -122,6 +124,9 @@ protected:
 	}
 
 private:
+	static UINT			WM_DISABLEBUTTONS;
+	static UINT			WM_DIFFFINISHED;
+
 	static UINT			DiffThreadEntry(LPVOID pVoid);
 	UINT				DiffThread();
 
