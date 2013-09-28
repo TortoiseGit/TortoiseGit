@@ -161,7 +161,7 @@ BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 	if (!Save(config, _T("user.email"), this->m_UserEmail))
 		return FALSE;
 
-	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey))
+	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey, true))
 		return FALSE;
 
 	if (!Save(config, _T("core.autocrlf"), m_bAutoCrlf == BST_INDETERMINATE ? _T("") : m_bAutoCrlf ? _T("true") : _T("false")))

@@ -137,13 +137,13 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 
 BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
 {
-	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL))
+	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, true))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message))
+	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message, true))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label))
+	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, true))
 		return FALSE;
 
 	{
@@ -167,7 +167,7 @@ BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
 	{
 		CString value(m_Logregex);
 		value.Replace(_T("\r\n"),_T("\n"));
-		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value))
+		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value, true))
 			return FALSE;
 	}
 

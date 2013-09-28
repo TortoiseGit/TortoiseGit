@@ -946,6 +946,7 @@
 #define IDS_CONFIG_GLOBAL_TT            1446
 #define IDS_CONFIG_PROJECT_TT           1447
 #define IDS_CONFIG_LOCAL_TT             1448
+#define IDS_ASK_DELETE_EMPTY            1449
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
