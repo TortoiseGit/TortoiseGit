@@ -270,11 +270,20 @@ void CPullFetchDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
-		CString clippath = CAppUtils::GetClipboardLink();
+		CString clippath = CAppUtils::GetClipboardLink(m_IsPull ? _T("git pull") : _T("git fetch"), 1);
 		if (clippath.IsEmpty())
 			m_Other.SetCurSel(0);
 		else
-			m_Other.SetWindowText(clippath);
+		{
+			int argSeparator = clippath.Find(' ');
+			if (argSeparator > 1 && clippath.GetLength() > argSeparator + 2)
+			{
+				m_Other.SetWindowText(clippath.Left(argSeparator));
+				m_RemoteBranch.SetWindowText(clippath.Mid(argSeparator + 1));
+			}
+			else
+				m_Other.SetWindowText(clippath);
+		}
 		m_Remote.EnableWindow(FALSE);
 		m_Other.EnableWindow(TRUE);;
 		if(!m_IsPull)
