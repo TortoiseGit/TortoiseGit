@@ -112,7 +112,12 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CString dir = g_Git.m_CurrentDir;
+	if (m_PathFilterList.size() > 0)
+		dir += (g_Git.m_CurrentDir.Right(1) == _T('\\') ? _T("") : _T("\\")) + CTGitPath(m_PathFilterList[0]).GetWinPathString();
+	if (m_PathFilterList.size() > 1)
+		dir += _T(", ...");
+	CAppUtils::SetWindowTitle(m_hWnd, dir, sWindowTitle);
 
 	AdjustControlSize(IDC_CHECK_SUBMODULE_INIT);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_RECURSIVE);
