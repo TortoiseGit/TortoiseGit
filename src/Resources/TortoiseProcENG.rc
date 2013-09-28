@@ -724,6 +724,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,47,121,10
     CONTROL         "Randomize Sync Dialog startup position",IDC_SYNCDIALOGRANDOMPOS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,60,141,10
+    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,196,270,9
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -1877,6 +1878,39 @@ BEGIN
     LTEXT           "In order to abort a merge progess a reset (to HEAD) is needed.",IDC_STATIC_REMINDER,7,7,285,10
 END
 
+IDD_SETTINGSDIALOGS3 DIALOGEX 0, 0, 301, 231
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General::Dialogs 3"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CTEXT           "|",IDC_STATIC,64,18,8,11
+    CTEXT           "<<",IDC_STATIC,173,18,13,11
+    CTEXT           "<<",IDC_STATIC,233,18,13,11
+    CTEXT           "<<",IDC_STATIC,112,18,13,11
+    CONTROL         "Effective",IDC_RADIO_SETTINGS_EFFECTIVE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,18,50,10
+    CONTROL         "Local",IDC_RADIO_SETTINGS_LOCAL,"Button",BS_AUTORADIOBUTTON,72,18,40,10
+    CONTROL         "Project",IDC_RADIO_SETTINGS_PROJECT,"Button",BS_AUTORADIOBUTTON,126,18,47,10
+    CONTROL         "Global",IDC_RADIO_SETTINGS_GLOBAL,"Button",BS_AUTORADIOBUTTON,187,18,46,10
+    CONTROL         "System",IDC_RADIO_SETTINGS_SYSTEM,"Button",BS_AUTORADIOBUTTON,247,18,46,10
+    GROUPBOX        "Config source",IDC_STATIC,7,7,286,26
+    GROUPBOX        "Commit",IDC_STATIC,7,34,286,149
+    LTEXT           "Select the language this project is using. This settings affects the spell checker used for commit messages.",IDC_STATIC,14,45,269,18
+    LTEXT           "Language:",IDC_STATIC,14,64,56,8
+    COMBOBOX        IDC_LANGCOMBO,113,64,170,70,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_KEEPFILELISTSENGLISH,113,81,63,15,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "keep the file lists in English",IDC_STATIC,14,81,91,10,NOT WS_VISIBLE
+    LTEXT           "Minimum number of chars for a commit message:",IDC_STATIC,14,101,269,8
+    LTEXT           "&Limit:",IDC_STATIC,14,115,47,8
+    EDITTEXT        IDC_LOGMINSIZE,113,115,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Char position where to show a border line in commit text boxes:",IDC_STATIC,14,133,269,8
+    LTEXT           "&Border:",IDC_STATIC,14,146,47,8
+    EDITTEXT        IDC_BORDER,113,144,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Warn on missing Signed-Off-By on commit",IDC_STATIC,14,163,148,10
+    COMBOBOX        IDC_WARN_NO_SIGNED_OFF_BY,194,163,63,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Save to:",IDC_STATIC,14,193,41,11
+    COMBOBOX        IDC_COMBO_SETTINGS_SAFETO,65,192,103,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2731,6 +2765,17 @@ BEGIN
         RIGHTMARGIN, 292
         TOPMARGIN, 7
         BOTTOMMARGIN, 104
+    END
+
+    IDD_SETTINGSDIALOGS3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        VERTGUIDE, 14
+        VERTGUIDE, 113
+        VERTGUIDE, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 224
     END
 END
 #endif    // APSTUDIO_INVOKED

@@ -1079,6 +1079,7 @@
 #define IDC_COLOR_LINE1                 1546
 #define IDC_COLOR_LINE2                 1547
 #define IDC_COLOR_LINE3                 1548
+#define IDC_LOGMINSIZE                  1548
 #define IDC_COLOR_LINE4                 1549
 #define IDC_SHOWADDEDOVERLAY            1549
 #define IDC_SHOWREADONLYOVERLAY         1550
@@ -1089,6 +1090,8 @@
 #define IDC_MSYSGIT_BROWSE              1551
 #define IDS_PROC_NEWNAME                1551
 #define IDC_RADIO_RESET_MIXED           1551
+#define IDC_BORDER                      1551
+#define IDC_KEEPFILELISTSENGLISH        1552
 #define IDC_MSYSGIT_VER                 1552
 #define IDS_PROC_NEWNAMECOPY            1552
 #define IDC_RADIO_RESET_HARD            1552
@@ -1150,6 +1153,7 @@
 #define IDC_STATIC_BRANCH               1592
 #define IDC_BUGTRAQ_WARNINGIFNOISSUE    1593
 #define IDC_BUGTRAQ_APPEND              1594
+#define IDC_WARN_NO_SIGNED_OFF_BY       1594
 #define IDC_BUGTRAQ_NUMBER              1595
 #define IDC_BUGTRAQ_URL                 1599
 #define IDS_REPOBROWSE_SAVEAS           1600
@@ -1157,6 +1161,7 @@
 #define IDS_REPOBROWSE_SHOWLOG          1601
 #define IDS_REPOBROWSE_OPEN             1602
 #define IDC_CHECK_REBASE                1602
+#define IDC_LANGCOMBO                   1602
 #define IDC_CLONE_GROUP_SVN             1603
 #define IDC_CHECK_PRUNE                 1603
 #define IDC_CHECK_SVN                   1604
@@ -1620,6 +1625,7 @@
 #define IDC_REMOVESUBTREE               4590
 #define IDD_SETTINGSCREDENTIAL          4591
 #define IDD_MERGEABORT                  4592
+#define IDD_SETTINGSDIALOGS3            4593
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1778,7 +1784,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        349
+#define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32860
 #define _APS_NEXT_CONTROL_VALUE         1776
 #define _APS_NEXT_SYMED_VALUE           201
