@@ -58,7 +58,6 @@ protected:
 	CString	m_UserName;
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;
-	BOOL	m_bWarnNoSignedOffBy;
 	BOOL	m_bGlobal;
 	BOOL	m_bAutoCrlf;
 	CComboBox m_cSafeCrLf;

@@ -26,7 +26,6 @@
 #include "Settings.h"
 #include "GitAdminDir.h"
 #include "AppUtils.h"
-#include "ProjectProperties.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -38,7 +37,6 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_UserSigningKey(_T(""))
 	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
-	, m_bWarnNoSignedOffBy(FALSE)
 	, m_bNeedSave(false)
 {
 }
@@ -56,7 +54,6 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
 	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
-	DDX_Check(pDX, IDC_CHECK_WARN_NO_SIGNED_OFF_BY, m_bWarnNoSignedOffBy);
 }
 
 BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
@@ -70,7 +67,6 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_EDITTGITCONFIG, &CSettingGitConfig::OnBnClickedEdittgitconfig)
-	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
 	ON_BN_CLICKED(IDC_VIEWSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedViewsystemgitconfig)
 END_MESSAGE_MAP()
@@ -111,17 +107,12 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->SetWindowText(title + _T(" - ") + proj);
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
-
-		ProjectProperties props;
-		props.ReadProps(proj);
-		m_bWarnNoSignedOffBy = props.bWarnNoSignedOffBy;
 	}
 	else
 	{
 		m_bGlobal = TRUE;
 		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
-		m_bWarnNoSignedOffBy = g_Git.GetConfigValueBool(_T("tgit.warnnosignedoffby"));
 	}
 
 	if (isBareRepo)
@@ -167,9 +158,6 @@ BOOL CSettingGitConfig::OnApply()
 		return FALSE;
 
 	if (!Save(_T("user.signingkey"), m_UserSigningKey, type))
-		return FALSE;
-
-	if (!Save(PROJECTPROPNAME_WARNNOSIGNEDOFFBY, m_bWarnNoSignedOffBy ? _T("true") : _T("false"), type))
 		return FALSE;
 
 	if (!Save(_T("core.autocrlf"), m_bAutoCrlf ? _T("true") : _T("false"), type))
