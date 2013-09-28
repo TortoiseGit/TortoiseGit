@@ -4245,6 +4245,7 @@ BEGIN
     IDS_CONFIG_PROJECT_TT   ".tgitconfig in the repository root"
     IDS_CONFIG_LOCAL_TT     ".git/config in the repository root"
     IDS_ASK_DELETE_EMPTY    "You are about to save an empty/default value. This can be useful to prevent inheriting another value.\nDo you want to remove the key instead of saving the empty/default value?"
+    IDS_WARNUSERSAFEDIFFERENT "Are you sure you want to save to ""%s""?"
 END
 
 #endif    // English (U.S.) resources

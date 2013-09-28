@@ -165,6 +165,20 @@ protected:
 		git_config_free(config);
 	}
 
+	bool WarnUserSafeToDifferentDestination(int storeTo)
+	{
+		if ((storeTo == IDS_CONFIG_GLOBAL && m_iConfigSource != 3) || (storeTo == IDS_CONFIG_PROJECT && m_iConfigSource != 2) || (storeTo == IDS_CONFIG_LOCAL && m_iConfigSource != 1))
+		{
+			CString dest;
+			dest.LoadString(storeTo);
+			CString msg;
+			msg.Format(IDS_WARNUSERSAFEDIFFERENT, dest);
+			if (CMessageBox::Show(nullptr, msg, _T("TortoiseGit"), 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_SAVEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				return false;
+		}
+		return true;
+	}
+
 	BOOL SafeData()
 	{
 		git_config * config;
@@ -173,6 +187,8 @@ protected:
 		int err = 0;
 		if (m_bGlobal || (m_cSaveTo.GetCurSel() == 1 && (!m_bHonorProjectConfig || m_bIsBareRepo)) || m_cSaveTo.GetCurSel() == 2)
 		{
+			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_GLOBAL))
+				return FALSE;
 			if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
 				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 			else
@@ -180,10 +196,14 @@ protected:
 		}
 		else if (m_cSaveTo.GetCurSel() == 1 && !m_bIsBareRepo && m_bHonorProjectConfig)
 		{
+			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
+				return FALSE;
 			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_APP, FALSE);
 		}
 		else
 		{
+			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
+				return FALSE;
 			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 		}
 		if (err)
