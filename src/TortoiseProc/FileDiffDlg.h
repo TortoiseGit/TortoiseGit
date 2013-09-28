@@ -46,21 +46,8 @@ class CFileDiffDlg : public CResizableStandAloneDialog
 {
 	DECLARE_DYNAMIC(CFileDiffDlg)
 public:
-//	class FileDiff
-//	{
-//	public:
-//		CTGitPath path;
-//		svn_client_diff_summarize_kind_t kind;
-		bool propchanged;
-//		svn_node_kind_t node;
-//	};
-
-public:
 	CFileDiffDlg(CWnd* pParent = NULL);
 	virtual ~CFileDiffDlg();
-
-//	void SetDiff(const CTGitPath& path1, GitRev rev1, const CTGitPath& path2, GitRev rev2, svn_depth_t depth, bool ignoreancestry);
-//	void SetDiff(const CTGitPath& path, GitRev peg, GitRev rev1, GitRev rev2, svn_depth_t depth, bool ignoreancestry);
 
 	void SetDiff(CTGitPath * path, GitRev rev1,GitRev rev2);
 	void SetDiff(CTGitPath * path, GitRev rev1);
@@ -94,11 +81,6 @@ protected:
 	afx_msg void OnBnClickedLog();
 
 	DECLARE_MESSAGE_MAP()
-
-//	virtual svn_error_t* DiffSummarizeCallback(const CTGitPath& path,
-//											svn_client_diff_summarize_kind_t kind,
-//											bool propchanged,
-//											svn_node_kind_t node);
 
 	int					AddEntry(const CTGitPath * fd);
 	void				DoDiff(int selIndex, bool blame);

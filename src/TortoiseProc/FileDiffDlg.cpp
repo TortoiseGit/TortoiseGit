@@ -59,7 +59,6 @@ CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=NULL*/)
 	, m_bBlame(false)
 	, m_pProgDlg(NULL)
 	, m_bCancelled(false)
-	, propchanged(false)
 	, m_nIconFolder(0)
 	, m_bThreadRunning(FALSE)
 {
@@ -341,21 +340,6 @@ BOOL CFileDiffDlg::OnInitDialog()
 	return FALSE;
 }
 
-#if 0
-svn_error_t* CFileDiffDlg::DiffSummarizeCallback(const CTGitPath& path,
-												 svn_client_diff_summarize_kind_t kind,
-												 bool propchanged, svn_node_kind_t node)
-{
-	CTGitPath* fd;
-	fd.path = path;
-	fd.kind = kind;
-	fd.node = node;
-	fd.propchanged = propchanged;
-	m_arFileList.push_back(fd);
-	return Git_NO_ERROR;
-}
-#endif
-
 UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
 {
 	return ((CFileDiffDlg*)pVoid)->DiffThread();
@@ -529,9 +513,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 			case CTGitPath::LOGACTIONS_MODIFIED:
 				crText = m_colors.GetColor(CColors::Modified);
 				break;
-			//case svn_client_diff_summarize_kind_normal:
 			default:
-			//if (fd.propchanged)
 				crText = m_colors.GetColor(CColors::PropertyChanged);
 				break;
 			}
