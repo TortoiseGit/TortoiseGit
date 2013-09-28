@@ -1165,6 +1165,9 @@
     <ClInclude Include="Settings\SetDialogs2.h">
       <Filter>Commands\setting</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\GitSettings.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionad.ico">

@@ -23,10 +23,11 @@
 #include "registry.h"
 #include "afxwin.h"
 #include "Git.h"
+#include "GitSettings.h"
 
 // CSettingGitConfig dialog
 
-class CSettingGitConfig : public ISettingsPropPage
+class CSettingGitConfig : public ISettingsPropPage, public CGitSettings
 {
 	DECLARE_DYNAMIC(CSettingGitConfig)
 
@@ -42,7 +43,8 @@ protected:
 	BOOL OnInitDialog();
 	BOOL OnApply();
 
-	bool Save(CString key, CString value, CONFIG_TYPE type);
+	virtual void LoadDataImpl(git_config * config);
+	virtual BOOL SafeDataImpl(git_config * config);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -53,12 +55,12 @@ protected:
 	afx_msg void OnBnClickedEditglobalxdggitconfig();
 	afx_msg void OnBnClickedEditlocalgitconfig();
 	afx_msg void OnBnClickedEdittgitconfig();
+	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	bool	m_bNeedSave;
 	CString	m_UserName;
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;
-	BOOL	m_bGlobal;
 	BOOL	m_bAutoCrlf;
 	CComboBox m_cSafeCrLf;
 };

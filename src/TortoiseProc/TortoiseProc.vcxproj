@@ -318,6 +318,7 @@
     <ClInclude Include="Patch.h" />
     <ClInclude Include="ProjectProperties.h" />
     <ClInclude Include="..\TortoiseShell\resource.h" />
+    <ClInclude Include="Settings\GitSettings.h" />
     <ClInclude Include="Settings\SetDialogs2.h" />
     <ClInclude Include="Settings\SettingGitCredential.h" />
     <ClInclude Include="SinglePropSheetDlg.h" />
