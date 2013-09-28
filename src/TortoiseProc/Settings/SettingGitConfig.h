@@ -44,25 +44,9 @@ protected:
 
 	bool Save(CString key, CString value, CONFIG_TYPE type);
 
-	int m_ChangeMask;
-	enum
-	{
-		GIT_NAME=0x1,
-		GIT_EMAIL=0x2,
-		GIT_CRLF=0x4,
-		GIT_SAFECRLF=0x8,
-		GIT_SIGNINGKEY=0x10,
-		GIT_WARNNOSIGNEDOFFBY=0x20,
-	};
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnBnClickedCheckGlobal();
-	afx_msg void OnEnChangeGitUsername();
-	afx_msg void OnEnChangeGitUseremail();
-	afx_msg void OnEnChangeGitUserSigningKey();
-	afx_msg void OnBnClickedCheckAutocrlf();
-	afx_msg void OnCbnSelchangeSafeCrLf();
-	afx_msg void OnBnClickedCheckWarnNoSignedOffBy();
+	afx_msg void OnChange();
 	afx_msg void OnBnClickedEditsystemgitconfig();
 	afx_msg void OnBnClickedViewsystemgitconfig();
 	afx_msg void OnBnClickedEditglobalgitconfig();
@@ -70,6 +54,7 @@ protected:
 	afx_msg void OnBnClickedEditlocalgitconfig();
 	afx_msg void OnBnClickedEdittgitconfig();
 
+	bool	m_bNeedSave;
 	CString	m_UserName;
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;

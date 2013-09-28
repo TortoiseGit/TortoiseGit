@@ -24,7 +24,6 @@
 #include "SettingsBugtraqConfig.h"
 #include "ProjectProperties.h"
 #include "Git.h"
-#include "MessageBox.h"
 // CSettingsBugtraqConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
@@ -39,7 +38,6 @@ CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
 	, m_bNNumber(TRUE)
 	, m_Logregex(_T(""))
 {
-	m_ChangeMask=0;
 }
 
 CSettingsBugtraqConfig::~CSettingsBugtraqConfig()
@@ -62,16 +60,16 @@ void CSettingsBugtraqConfig::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSettingsBugtraqConfig, ISettingsPropPage)
 
-	ON_EN_CHANGE(IDC_BUGTRAQ_URL, &CSettingsBugtraqConfig::OnEnChangeBugtraqUrl)
-	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE, &CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueTrue)
-	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_FALSE, &CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueFalse)
-	ON_EN_CHANGE(IDC_BUGTRAQ_MESSAGE, &CSettingsBugtraqConfig::OnEnChangeBugtraqMessage)
-	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_TRUE, &CSettingsBugtraqConfig::OnBnClickedBugtraqAppendTrue)
-	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_FALSE, &CSettingsBugtraqConfig::OnBnClickedBugtraqAppendFalse)
-	ON_EN_CHANGE(IDC_BUGTRAQ_LABEL, &CSettingsBugtraqConfig::OnEnChangeBugtraqLabel)
-	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_TRUE, &CSettingsBugtraqConfig::OnBnClickedBugtraqNumberTrue)
-	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_FALSE, &CSettingsBugtraqConfig::OnBnClickedBugtraqNumberFalse)
-	ON_EN_CHANGE(IDC_BUGTRAQ_LOGREGEX, &CSettingsBugtraqConfig::OnEnChangeBugtraqLogregex)
+	ON_EN_CHANGE(IDC_BUGTRAQ_URL, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_WARNINGIFNOISSUE_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_BUGTRAQ_MESSAGE, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_TRUE, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_APPEND_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_BUGTRAQ_LABEL, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_TRUE, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_BUGTRAQ_NUMBER_FALSE, &CSettingsBugtraqConfig::OnChange)
+	ON_EN_CHANGE(IDC_BUGTRAQ_LOGREGEX, &CSettingsBugtraqConfig::OnChange)
 END_MESSAGE_MAP()
 
 BOOL CSettingsBugtraqConfig::OnInitDialog()
@@ -99,62 +97,45 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 	return TRUE;
 }
 
+void CSettingsBugtraqConfig::OnChange()
+{
+	SetModified();
+}
+
 BOOL CSettingsBugtraqConfig::OnApply()
 {
 	this->UpdateData();
 
-	CString cmd,out;
-	if(m_ChangeMask & BUG_URL)
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_URL, m_URL, CONFIG_LOCAL))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_URL, m_URL, CONFIG_LOCAL))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask & BUG_WARNING)
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_WARNIFNOISSUE, (!this->m_bNWarningifnoissue) ? _T("true") : _T("false")))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_WARNIFNOISSUE, (!this->m_bNWarningifnoissue) ? _T("true") : _T("false")))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
-
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask & BUG_MESSAGE)
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_MESSAGE, m_Message, CONFIG_LOCAL, g_Git.GetGitEncode(L"i18n.commitencoding")))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_MESSAGE, m_Message, CONFIG_LOCAL, g_Git.GetGitEncode(L"i18n.commitencoding")))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask & BUG_APPEND )
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_APPEND, (!this->m_bNAppend) ? _T("true") : _T("false")))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_APPEND, (!this->m_bNAppend) ? _T("true") : _T("false")))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
-
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask & BUG_LABEL )
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_LABEL, m_Label))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_LABEL, m_Label))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask &BUG_NUMBER )
+	if (g_Git.SetConfigValue(BUGTRAQPROPNAME_NUMBER, (!this->m_bNNumber) ? _T("true") : _T("false")))
 	{
-		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_NUMBER, (!this->m_bNNumber) ? _T("true") : _T("false")))
-		{
-			CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
-		}
+		CMessageBox::Show(NULL,_T("Fail to set config"),_T("TortoiseGit"),MB_OK);
 	}
 
-	if(m_ChangeMask & BUG_LOGREGEX)
 	{
 		m_Logregex.Replace(_T("\r\n"),_T("\n"));
 		if (g_Git.SetConfigValue(BUGTRAQPROPNAME_LOGREGEX, m_Logregex))
@@ -164,67 +145,5 @@ BOOL CSettingsBugtraqConfig::OnApply()
 		m_Logregex.Replace(_T("\n"),_T("\r\n"));
 	}
 
-	m_ChangeMask= 0;
 	return TRUE;
-}
-// CSettingsBugtraqConfig message handlers
-
-void CSettingsBugtraqConfig::OnEnChangeBugtraqUrl()
-{
-	m_ChangeMask |= BUG_URL;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueTrue()
-{
-	m_ChangeMask |= BUG_WARNING;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqWarningifnoissueFalse()
-{
-	m_ChangeMask |= BUG_WARNING;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnEnChangeBugtraqMessage()
-{
-	m_ChangeMask |= BUG_MESSAGE;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqAppendTrue()
-{
-	m_ChangeMask |= BUG_APPEND;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqAppendFalse()
-{
-	m_ChangeMask |= BUG_APPEND;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnEnChangeBugtraqLabel()
-{
-	m_ChangeMask |= BUG_LABEL;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqNumberTrue()
-{
-	m_ChangeMask |= BUG_NUMBER;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnBnClickedBugtraqNumberFalse()
-{
-	m_ChangeMask |= BUG_NUMBER;
-	SetModified();
-}
-
-void CSettingsBugtraqConfig::OnEnChangeBugtraqLogregex()
-{
-	m_ChangeMask |= BUG_LOGREGEX;
-	SetModified();
 }

@@ -40,31 +40,9 @@ protected:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnApply();
 
-	int m_ChangeMask;
-
-	enum
-	{
-		BUG_URL=0x1,
-		BUG_MESSAGE=0x2,
-		BUG_APPEND=0x4,
-		BUG_LABEL=0x8,
-		BUG_NUMBER=0x10,
-		BUG_LOGREGEX=0x20,
-		BUG_WARNING=0x40,
-	};
-
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnEnChangeBugtraqUrl();
-	afx_msg void OnBnClickedBugtraqWarningifnoissueTrue();
-	afx_msg void OnBnClickedBugtraqWarningifnoissueFalse();
-	afx_msg void OnEnChangeBugtraqMessage();
-	afx_msg void OnBnClickedBugtraqAppendTrue();
-	afx_msg void OnBnClickedBugtraqAppendFalse();
-	afx_msg void OnEnChangeBugtraqLabel();
-	afx_msg void OnBnClickedBugtraqNumberTrue();
-	afx_msg void OnBnClickedBugtraqNumberFalse();
-	afx_msg void OnEnChangeBugtraqLogregex();
+	afx_msg void OnChange();
 
 	CRegexEdit	m_BugtraqRegex1;
 
