@@ -4183,6 +4183,7 @@ BEGIN
     IDS_SYNCDIALOGRANDOMPOS_TT 
                             "Randomize the startup position of Sync Dialog. This prevents from pressing the Pull button of same dialog"
     IDS_CONFIG_LOCAL        "Local"
+    IDS_CONFIG_PROJECT      "Project"
     IDS_CONFIG_GLOBAL       "Global"
 END
 

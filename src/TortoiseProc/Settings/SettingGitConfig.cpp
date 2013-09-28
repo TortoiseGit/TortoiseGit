@@ -79,7 +79,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 	m_cSafeCrLf.AddString(_T("true"));
 	m_cSafeCrLf.AddString(_T("warn"));
 
-	InitGitSettings(this);
+	InitGitSettings(this, false);
 
 	if (!m_bGlobal || m_bIsBareRepo)
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);

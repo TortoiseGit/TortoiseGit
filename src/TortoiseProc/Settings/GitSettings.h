@@ -31,6 +31,7 @@ public:
 	: m_iConfigSource(0)
 	, m_bGlobal(false)
 	, m_bIsBareRepo(false)
+	, m_bHonorProjectConfig(false)
 	{
 	}
 
@@ -39,9 +40,12 @@ protected:
 	int		m_iConfigSource;
 	bool	m_bGlobal;
 	bool	m_bIsBareRepo;
+	bool	m_bHonorProjectConfig;
 
-	void InitGitSettings(ISettingsPropPage *page)
+	void InitGitSettings(ISettingsPropPage *page, bool honorProjectConfig)
 	{
+		m_bHonorProjectConfig = honorProjectConfig;
+
 		CString str = g_Git.m_CurrentDir;
 		m_bIsBareRepo = g_GitAdminDir.IsBareRepo(str);
 		CString proj;
@@ -53,11 +57,20 @@ protected:
 			page->GetDlgItem(IDC_RADIO_SETTINGS_LOCAL)->EnableWindow(TRUE);
 
 			m_cSaveTo.AddString(CString(MAKEINTRESOURCE(IDS_CONFIG_LOCAL)));
+
+			if (page->GetDlgItem(IDC_RADIO_SETTINGS_PROJECT) != nullptr)
+			{
+				page->GetDlgItem(IDC_RADIO_SETTINGS_PROJECT)->EnableWindow(honorProjectConfig);
+				if (honorProjectConfig && !m_bIsBareRepo)
+					m_cSaveTo.AddString(CString(MAKEINTRESOURCE(IDS_CONFIG_PROJECT)));
+			}
 		}
 		else
 		{
 			m_bGlobal = true;
 			page->GetDlgItem(IDC_RADIO_SETTINGS_LOCAL)->EnableWindow(FALSE);
+			if (page->GetDlgItem(IDC_RADIO_SETTINGS_PROJECT) != nullptr)
+				page->GetDlgItem(IDC_RADIO_SETTINGS_PROJECT)->EnableWindow(FALSE);
 		}
 		m_cSaveTo.AddString(CString(MAKEINTRESOURCE(IDS_CONFIG_GLOBAL)));
 		m_cSaveTo.SetCurSel(0);
@@ -99,10 +112,28 @@ protected:
 		git_config_new(&config);
 		if (!m_bGlobal && (m_iConfigSource == 0 || m_iConfigSource == 1))
 		{
-			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE))
+			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_APP, FALSE)) // this needs to have the highest priority in order to override .tgitconfig settings
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 		}
-		if (m_iConfigSource == 0 || m_iConfigSource == 2)
+		if ((m_iConfigSource == 0 && m_bHonorProjectConfig) || m_iConfigSource == 2)
+		{
+			if (!m_bIsBareRepo)
+			{
+				if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
+					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+			}
+			else
+			{
+				CString tmpFile = GetTempFile();
+				CTGitPath path(_T(".tgitconfig"));
+				if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
+				{
+					if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
+						MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
+				}
+			}
+		}
+		if (m_iConfigSource == 0 || m_iConfigSource == 3)
 		{
 			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
@@ -112,7 +143,7 @@ protected:
 					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			}
 		}
-		if (m_iConfigSource == 0 || m_iConfigSource == 3)
+		if (m_iConfigSource == 0 || m_iConfigSource == 4)
 		{
 			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
@@ -129,12 +160,16 @@ protected:
 		git_config_new(&config);
 
 		int err = 0;
-		if (m_bGlobal || m_cSaveTo.GetCurSel() == 1)
+		if (m_bGlobal || (m_cSaveTo.GetCurSel() == 1 && (!m_bHonorProjectConfig || m_bIsBareRepo)) || m_cSaveTo.GetCurSel() == 2)
 		{
 			if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
 				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 			else
 				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+		}
+		else if (m_cSaveTo.GetCurSel() == 1 && !m_bIsBareRepo && m_bHonorProjectConfig)
+		{
+			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_APP, FALSE);
 		}
 		else
 		{
@@ -173,6 +208,7 @@ protected:
 	ON_CBN_SELCHANGE(IDC_COMBO_SETTINGS_SAFETO, &OnChange) \
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_EFFECTIVE, &OnBnClickedChangedConfigSource) \
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_LOCAL, &OnBnClickedChangedConfigSource) \
+	ON_BN_CLICKED(IDC_RADIO_SETTINGS_PROJECT, &OnBnClickedChangedConfigSource) \
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_GLOBAL, &OnBnClickedChangedConfigSource) \
 	ON_BN_CLICKED(IDC_RADIO_SETTINGS_SYSTEM, &OnBnClickedChangedConfigSource)
 
