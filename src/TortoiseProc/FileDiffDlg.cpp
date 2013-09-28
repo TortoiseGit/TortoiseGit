@@ -353,24 +353,6 @@ UINT CFileDiffDlg::DiffThread()
 {
 	SendMessage(WM_DISABLEBUTTONS);
 
-#if 0
-	bool bSuccess = true;
-	if (m_bDoPegDiff)
-	{
-//		bSuccess = DiffSummarizePeg(m_path1, m_peg, m_rev1, m_rev2, m_depth, m_bIgnoreancestry);
-	}
-	else
-	{
-//		bSuccess = DiffSummarize(m_path1, m_rev1, m_path2, m_rev2, m_depth, m_bIgnoreancestry);
-	}
-//	if (!bSuccess)
-//	{
-//		m_cFileList.ShowText(GetLastErrorMessage());
-//		InterlockedExchange(&m_bThreadRunning, FALSE);
-//		return 0;
-//	}
-#endif
-
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
