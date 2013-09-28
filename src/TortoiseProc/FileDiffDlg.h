@@ -135,6 +135,8 @@ private:
 	STRING_VECTOR		m_Reflist;
 
 	virtual BOOL		Cancel() {return m_bCancelled;}
+	virtual BOOL DestroyWindow();
+	void OnTextUpdate(CACEdit *pEdit);
 
 	CToolTips			m_tooltips;
 
@@ -176,12 +178,9 @@ private:
 	CACEdit				m_ctrRev2Edit;
 
 	CString				m_FileListText;
+
 public:
 	CString				m_strRev1;
 	CString				m_strRev2;
 	CString				m_sFilter;
-
-public:
-	virtual BOOL DestroyWindow();
-	void OnTextUpdate(CACEdit *pEdit);
 };
