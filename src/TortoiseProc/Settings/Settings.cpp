@@ -120,13 +120,15 @@ void CSettings::AddPropPages()
 	AddPage(m_pProgsAlternativeEditor);
 	AddPage(m_pSavedPage);
 
-	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()) || g_GitAdminDir.IsBareRepo(this->m_CmdPath.GetWinPath()))
+	CString repo = g_Git.m_CurrentDir;
+	bool hasLocalRepo = g_GitAdminDir.HasAdminDir(repo) || g_GitAdminDir.IsBareRepo(repo);
+	if (hasLocalRepo)
 	{
 		AddPage(m_pGitRemote);
 	}
 	AddPage(m_pGitCredential);
 	AddPage(m_pBugTraqPage);
-	if (g_GitAdminDir.HasAdminDir(this->m_CmdPath.GetWinPath()))
+	if (hasLocalRepo)
 	{
 		AddPage(m_pBugtraqConfig);
 	}

@@ -97,7 +97,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 			m_cSafeCrLf.SetCurSel(0);
 	}
 
-	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
+	CString str = g_Git.m_CurrentDir;
 	bool isBareRepo = g_GitAdminDir.IsBareRepo(str);
 	CString proj;
 	if (g_GitAdminDir.HasAdminDir(str, &proj) || isBareRepo)
