@@ -64,5 +64,6 @@ protected:
 	CString	m_UserEmail;
 	CString	m_UserSigningKey;
 	BOOL	m_bAutoCrlf;
+	BOOL	m_bQuotePath;
 	CComboBox m_cSafeCrLf;
 };

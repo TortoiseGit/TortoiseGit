@@ -37,6 +37,7 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_UserSigningKey(_T(""))
 	, m_bAutoCrlf(FALSE)
 	, m_bNeedSave(false)
+	, m_bQuotePath(TRUE)
 {
 }
 
@@ -51,6 +52,7 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
+	DDX_Check(pDX, IDC_CHECK_QUOTEPATH, m_bQuotePath);
 	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
 	GITSETTINGS_DDX
 }
@@ -60,6 +62,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnChange)
 	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_QUOTEPATH, &CSettingGitConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
@@ -126,6 +129,9 @@ void CSettingGitConfig::LoadDataImpl(git_config * config)
 	if (git_config_get_bool(&m_bAutoCrlf, config, "core.autocrlf") == GIT_ENOTFOUND)
 		m_bAutoCrlf = BST_INDETERMINATE;
 
+	if (git_config_get_bool(&m_bQuotePath, config, "core.quotepath") == GIT_ENOTFOUND)
+		m_bQuotePath = BST_INDETERMINATE;
+
 	BOOL bSafeCrLf = FALSE;
 	if (git_config_get_bool(&bSafeCrLf, config, "core.safecrlf") == GIT_ENOTFOUND)
 		m_cSafeCrLf.SetCurSel(0);
@@ -162,6 +168,9 @@ BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 		return FALSE;
 
 	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey, true))
+		return FALSE;
+
+	if (!Save(config, _T("core.quotepath"), m_bQuotePath == BST_INDETERMINATE ? _T("") : m_bQuotePath ? _T("true") : _T("false")))
 		return FALSE;
 
 	if (!Save(config, _T("core.autocrlf"), m_bAutoCrlf == BST_INDETERMINATE ? _T("") : m_bAutoCrlf ? _T("true") : _T("false")))
