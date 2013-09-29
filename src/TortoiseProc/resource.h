@@ -954,7 +954,6 @@
 #define IDS_VIEW_SHOWLOCALBRANCHLABELS  1456
 #define IDS_VIEW_SHOWREMOTEBRANCHLABELS 1457
 #define IDS_VIEW_LABELS                 1458
-#define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467
@@ -965,7 +964,6 @@
 #define IDC_GIT_USEREMAIL               1470
 #define IDC_EDIT_REMOTE                 1470
 #define IDC_SMTP_PORT                   1470
-#define IDC_EDIT3                       1470
 #define IDC_EDIT_SVN_FROM               1470
 #define IDC_VER2EDIT                    1470
 #define IDC_REV2EDIT                    1470
@@ -1200,7 +1198,6 @@
 #define IDC_CHECK_AUTOCRLF              1631
 #define IDC_COMBO_SAFECRLF              1632
 #define IDC_CHECK_QUOTEPATH             1633
-#define IDC_CHECK4                      1634
 #define IDC_CHECK_AUTORETRY             1634
 #define IDC_STATIC_MERGE_MESSAGE        1635
 #define IDC_PATCH                       1636
