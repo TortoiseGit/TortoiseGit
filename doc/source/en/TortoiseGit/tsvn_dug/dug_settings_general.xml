@@ -382,6 +382,74 @@
 			</varlistentry>
 		</variablelist>
 	</sect3>
+	<sect3 id="tsvn-dug-settings-dialogs">
+		<title>TortoiseGit Dialog Settings 3</title>
+		<?dbhh topicname="HIDD_SETTINGSDIALOGS3"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-dialogs">
+				<title>The Settings Dialog, Dialogs 3 Page</title>
+				<graphic fileref="../images/SettingsDialog3.png"/>
+			</figure>
+			This dialog allows you to configure some of TortoiseGit's
+			dialogs the way you like them.
+			This third page mainly affects the Commit dialog and the settings which are stored in git config files.
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>Language</term>
+				<listitem>
+					<para>
+						TortoiseGit can use spell checker modules which are also
+						used by OpenOffice and Mozilla. If you have those installed
+						this property will determine which spell checker to use, i.e.
+						in which language the log messages for your project should
+						be written.
+						The <literal>tgit.projectlanguage</literal> config key sets the language
+						module the spell checking engine should use when you enter
+						a log message. You can find the values for your language
+						on this page:
+						<ulink url="http://msdn2.microsoft.com/en-us/library/ms776260.aspx">
+							<citetitle>MSDN: Language Identifiers</citetitle>
+						</ulink>.
+					</para>
+					<para>
+						Enter this value in decimal. For example English (US) can be entered as <literal>1033</literal>.
+					</para>
+					<para>
+						Use <literal>-1</literal> to disable the spell checker.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Limit</term>
+				<listitem>
+					<para>
+						<literal>tgit.logminsize</literal>
+						sets the minimum length of a log message for a commit.
+						If you enter a shorter message than specified here, the commit button
+						is disabled. This feature is very useful for reminding you to
+						supply a proper descriptive message for every commit.
+						If this property is not set,
+						or the value is zero, empty log messages are allowed.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Border</term>
+				<listitem>
+					<para>
+						<literal>tgit.logwidthmarker</literal> is used with projects which
+						require log messages to be formatted with some maximum width
+						(typically 72 characters) before a line break. Setting this
+						property to a non-zero will place a marker to indicate the maximum width
+						and performs line wrapping. Note: this feature
+						will only work correctly if you have a fixed-width font
+						selected for log messages.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+	</sect3>
 	<sect3 id="tsvn-dug-settings-colours">
 		<title>TortoiseGit Colour Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSCOLORS_1"?>

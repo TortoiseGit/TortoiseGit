@@ -668,6 +668,9 @@
     <ClCompile Include="Settings\SetDialogs2.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\SetDialogs3.cpp">
+      <Filter>Commands\setting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1163,6 +1166,12 @@
       <Filter>Commands\Log</Filter>
     </ClInclude>
     <ClInclude Include="Settings\SetDialogs2.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\GitSettings.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SetDialogs3.h">
       <Filter>Commands\setting</Filter>
     </ClInclude>
   </ItemGroup>

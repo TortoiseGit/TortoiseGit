@@ -31,6 +31,7 @@
 #include "SetLookAndFeelPage.h"
 #include "SetDialogs.h"
 #include "SetDialogs2.h"
+#include "SetDialogs3.h"
 #include "SettingsColors.h"
 #include "SettingsColors2.h"
 #include "SettingsColors3.h"
@@ -85,6 +86,7 @@ private:
 	CSetLookAndFeelPage *				m_pLookAndFeelPage;
 	CSetDialogs *						m_pDialogsPage;
 	CSetDialogs2 *						m_pDialogsPage2;
+	CSetDialogs3 *						m_pDialogsPage3;
 	CSettingsColors *					m_pColorsPage;
     CSettingsColors2 *					m_pColorsPage2;
     CSettingsColors3 *					m_pColorsPage3;

@@ -940,6 +940,14 @@
 #define IDS_PROC_CONFIRMKILLPROCESS     1440
 #define IDS_SETTINGS_CONFIRMKILLPROCESS_TT 1441
 #define IDS_SYNCDIALOGRANDOMPOS_TT      1442
+#define IDS_CONFIG_LOCAL                1443
+#define IDS_CONFIG_PROJECT              1444
+#define IDS_CONFIG_GLOBAL               1445
+#define IDS_CONFIG_GLOBAL_TT            1446
+#define IDS_CONFIG_PROJECT_TT           1447
+#define IDS_CONFIG_LOCAL_TT             1448
+#define IDS_ASK_DELETE_EMPTY            1449
+#define IDS_WARNUSERSAFEDIFFERENT       1450
 #define IDC_TEXTSIZE2                   1462
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
@@ -1072,6 +1080,7 @@
 #define IDC_COLOR_LINE1                 1546
 #define IDC_COLOR_LINE2                 1547
 #define IDC_COLOR_LINE3                 1548
+#define IDC_LOGMINSIZE                  1548
 #define IDC_COLOR_LINE4                 1549
 #define IDC_SHOWADDEDOVERLAY            1549
 #define IDC_SHOWREADONLYOVERLAY         1550
@@ -1082,6 +1091,8 @@
 #define IDC_MSYSGIT_BROWSE              1551
 #define IDS_PROC_NEWNAME                1551
 #define IDC_RADIO_RESET_MIXED           1551
+#define IDC_BORDER                      1551
+#define IDC_KEEPFILELISTSENGLISH        1552
 #define IDC_MSYSGIT_VER                 1552
 #define IDS_PROC_NEWNAMECOPY            1552
 #define IDC_RADIO_RESET_HARD            1552
@@ -1108,7 +1119,6 @@
 #define IDC_GIT_USERNAME                1566
 #define IDC_CHECK_GLOBAL                1567
 #define IDC_EDIT_URL                    1568
-#define IDC_CHECK_WARN_NO_SIGNED_OFF_BY 1568
 #define IDC_EDIT_PUTTY_KEY              1569
 #define IDC_CHECK_ISAUTOLOADPUTTYKEY    1570
 #define IDC_PUTTYKEYFILE                1571
@@ -1142,18 +1152,17 @@
 #define IDC_EDIT_NAME                   1589
 #define IDC_CHECK_FORSE                 1590
 #define IDC_STATIC_BRANCH               1592
-#define IDC_BUGTRAQ_WARNINGIFNOISSUE_TRUE 1593
-#define IDC_BUGTRAQ_WARNINGIFNOISSUE_FALSE 1594
-#define IDC_BUGTRAQ_APPEND_FALSE        1596
-#define IDC_BUGTRAQ_NUMBER_TRUE         1597
-#define IDC_BUGTRAQ_NUMBER_FALSE        1598
+#define IDC_BUGTRAQ_WARNINGIFNOISSUE    1593
+#define IDC_BUGTRAQ_APPEND              1594
+#define IDC_WARN_NO_SIGNED_OFF_BY       1594
+#define IDC_BUGTRAQ_NUMBER              1595
 #define IDC_BUGTRAQ_URL                 1599
 #define IDS_REPOBROWSE_SAVEAS           1600
 #define IDC_BUGTRAQ_MESSAGE             1600
 #define IDS_REPOBROWSE_SHOWLOG          1601
-#define IDC_BUGTRAQ_APPEND_TRUE         1601
 #define IDS_REPOBROWSE_OPEN             1602
 #define IDC_CHECK_REBASE                1602
+#define IDC_LANGCOMBO                   1602
 #define IDC_CLONE_GROUP_SVN             1603
 #define IDC_CHECK_PRUNE                 1603
 #define IDC_CHECK_SVN                   1604
@@ -1184,6 +1193,7 @@
 #define IDC_GROUP_CLEAN_TYPE            1630
 #define IDC_CHECK_AUTOCRLF              1631
 #define IDC_COMBO_SAFECRLF              1632
+#define IDC_CHECK_QUOTEPATH             1633
 #define IDC_CHECK4                      1634
 #define IDC_CHECK_AUTORETRY             1634
 #define IDC_STATIC_MERGE_MESSAGE        1635
@@ -1336,6 +1346,12 @@
 #define IDC_GRAVATARURL                 1767
 #define IDC_CONFIRMKILLPROCESS          1768
 #define IDC_SYNCDIALOGRANDOMPOS         1769
+#define IDC_RADIO_SETTINGS_EFFECTIVE    1770
+#define IDC_RADIO_SETTINGS_LOCAL        1771
+#define IDC_RADIO_SETTINGS_PROJECT      1772
+#define IDC_RADIO_SETTINGS_GLOBAL       1773
+#define IDC_RADIO_SETTINGS_SYSTEM       1774
+#define IDC_COMBO_SETTINGS_SAFETO       1775
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1611,6 +1627,7 @@
 #define IDC_REMOVESUBTREE               4590
 #define IDD_SETTINGSCREDENTIAL          4591
 #define IDD_MERGEABORT                  4592
+#define IDD_SETTINGSDIALOGS3            4593
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -1769,9 +1786,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        349
+#define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1770
+#define _APS_NEXT_CONTROL_VALUE         1776
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

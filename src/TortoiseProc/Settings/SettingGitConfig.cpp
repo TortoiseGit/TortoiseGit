@@ -25,10 +25,7 @@
 #include "Git.h"
 #include "Settings.h"
 #include "GitAdminDir.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
-#include "ProjectProperties.h"
 // CSettingGitConfig dialog
 
 IMPLEMENT_DYNAMIC(CSettingGitConfig, ISettingsPropPage)
@@ -38,11 +35,10 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_UserName(_T(""))
 	, m_UserEmail(_T(""))
 	, m_UserSigningKey(_T(""))
-	, m_bGlobal(FALSE)
 	, m_bAutoCrlf(FALSE)
-	, m_bWarnNoSignedOffBy(FALSE)
+	, m_bNeedSave(false)
+	, m_bQuotePath(TRUE)
 {
-	m_ChangeMask=0;
 }
 
 CSettingGitConfig::~CSettingGitConfig()
@@ -55,78 +51,47 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USERNAME, m_UserName);
 	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
-	DDX_Check(pDX, IDC_CHECK_GLOBAL, m_bGlobal);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
+	DDX_Check(pDX, IDC_CHECK_QUOTEPATH, m_bQuotePath);
 	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
-	DDX_Check(pDX, IDC_CHECK_WARN_NO_SIGNED_OFF_BY, m_bWarnNoSignedOffBy);
+	GITSETTINGS_DDX
 }
 
 BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
-	ON_BN_CLICKED(IDC_CHECK_GLOBAL, &CSettingGitConfig::OnBnClickedCheckGlobal)
-	ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnEnChangeGitUsername)
-	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnEnChangeGitUseremail)
-	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnEnChangeGitUserSigningKey)
-	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnBnClickedCheckAutocrlf)
-	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnCbnSelchangeSafeCrLf)
+	ON_EN_CHANGE(IDC_GIT_USERNAME, &CSettingGitConfig::OnChange)
+	ON_EN_CHANGE(IDC_GIT_USEREMAIL, &CSettingGitConfig::OnChange)
+	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_QUOTEPATH, &CSettingGitConfig::OnChange)
+	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
 	ON_BN_CLICKED(IDC_EDITTGITCONFIG, &CSettingGitConfig::OnBnClickedEdittgitconfig)
-	ON_BN_CLICKED(IDC_CHECK_WARN_NO_SIGNED_OFF_BY, &CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy)
 	ON_BN_CLICKED(IDC_EDITSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedEditsystemgitconfig)
 	ON_BN_CLICKED(IDC_VIEWSYSTEMGITCONFIG, &CSettingGitConfig::OnBnClickedViewsystemgitconfig)
+	GITSETTINGS_RADIO_EVENT
 END_MESSAGE_MAP()
 
 BOOL CSettingGitConfig::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
 
+	m_cSafeCrLf.AddString(_T(""));
 	m_cSafeCrLf.AddString(_T("false"));
 	m_cSafeCrLf.AddString(_T("true"));
 	m_cSafeCrLf.AddString(_T("warn"));
 
-	m_UserName = g_Git.GetUserName();
-	m_UserEmail = g_Git.GetUserEmail();
-	m_UserSigningKey = g_Git.GetConfigValue(_T("user.signingkey"));
+	m_tooltips.Create(this);
 
-	m_bAutoCrlf = g_Git.GetConfigValueBool(_T("core.autocrlf"));
-	bool bSafeCrLf = g_Git.GetConfigValueBool(_T("core.safecrlf"));
-	if (bSafeCrLf)
-		m_cSafeCrLf.SetCurSel(1);
-	else
-	{
-		CString sSafeCrLf = g_Git.GetConfigValue(_T("core.safecrlf"));
-		sSafeCrLf = sSafeCrLf.MakeLower().Trim();
-		if (sSafeCrLf == _T("warn"))
-			m_cSafeCrLf.SetCurSel(2);
-		else
-			m_cSafeCrLf.SetCurSel(0);
-	}
+	InitGitSettings(this, false, &m_tooltips);
 
-	CString str = ((CSettings*)GetParent())->m_CmdPath.GetWinPath();
-	bool isBareRepo = g_GitAdminDir.IsBareRepo(str);
-	CString proj;
-	if (g_GitAdminDir.HasAdminDir(str, &proj) || isBareRepo)
-	{
-		CString title;
-		this->GetWindowText(title);
-		this->SetWindowText(title + _T(" - ") + proj);
-		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(TRUE);
+	if (!m_bGlobal || m_bIsBareRepo)
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(TRUE);
-
-		ProjectProperties props;
-		props.ReadProps(proj);
-		m_bWarnNoSignedOffBy = props.bWarnNoSignedOffBy;
-	}
 	else
-	{
-		m_bGlobal = TRUE;
-		this->GetDlgItem(IDC_CHECK_GLOBAL)->EnableWindow(FALSE);
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->EnableWindow(FALSE);
-		m_bWarnNoSignedOffBy = g_Git.GetConfigValueBool(_T("tgit.warnnosignedoffby"));
-	}
 
-	if (isBareRepo)
+	if (m_bIsBareRepo)
 	{
 		this->GetDlgItem(IDC_EDITLOCALGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_EDITLOCALGONCFIG)));
 		this->GetDlgItem(IDC_EDITTGITCONFIG)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_GITCONFIG_VIEWTGITCONFIG)));
@@ -146,97 +111,108 @@ BOOL CSettingGitConfig::OnInitDialog()
 }
 // CSettingGitConfig message handlers
 
-void CSettingGitConfig::OnBnClickedCheckGlobal()
+void CSettingGitConfig::LoadDataImpl(git_config * config)
 {
+	// special handling for UserName and UserEmail, because these can also be defined as environment variables for effective settings
+	if (m_iConfigSource == 0)
+	{
+		m_UserName = g_Git.GetUserName();
+		m_UserEmail = g_Git.GetUserEmail();
+	}
+	else
+	{
+		GetConfigValue(config, _T("user.name"), m_UserName);
+		GetConfigValue(config, _T("user.email"), m_UserEmail);
+	}
+	GetConfigValue(config, _T("user.signingkey"), m_UserSigningKey);
+
+	if (git_config_get_bool(&m_bAutoCrlf, config, "core.autocrlf") == GIT_ENOTFOUND)
+		m_bAutoCrlf = BST_INDETERMINATE;
+
+	if (git_config_get_bool(&m_bQuotePath, config, "core.quotepath") == GIT_ENOTFOUND)
+		m_bQuotePath = BST_INDETERMINATE;
+
+	BOOL bSafeCrLf = FALSE;
+	if (git_config_get_bool(&bSafeCrLf, config, "core.safecrlf") == GIT_ENOTFOUND)
+		m_cSafeCrLf.SetCurSel(0);
+	else if (bSafeCrLf)
+		m_cSafeCrLf.SetCurSel(2);
+	else
+	{
+		CString sSafeCrLf;
+		GetConfigValue(config, _T("core.safecrlf"), sSafeCrLf);
+		sSafeCrLf = sSafeCrLf.MakeLower().Trim();
+		if (sSafeCrLf == _T("warn"))
+			m_cSafeCrLf.SetCurSel(3);
+		else
+			m_cSafeCrLf.SetCurSel(1);
+	}
+
+	m_bNeedSave = false;
+	SetModified(FALSE);
+	UpdateData(FALSE);
+}
+
+void CSettingGitConfig::EnDisableControls()
+{
+	GetDlgItem(IDC_GIT_USERNAME)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_GIT_USEREMAIL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_CHECK_AUTOCRLF)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+}
+
+void CSettingGitConfig::OnChange()
+{
+	m_bNeedSave = true;
 	SetModified();
 }
 
-void CSettingGitConfig::OnEnChangeGitUsername()
+BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 {
-	m_ChangeMask |= GIT_NAME;
-	SetModified();
+	if (!Save(config, _T("user.name"), this->m_UserName))
+		return FALSE;
+
+	if (!Save(config, _T("user.email"), this->m_UserEmail))
+		return FALSE;
+
+	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey, true))
+		return FALSE;
+
+	if (!Save(config, _T("core.quotepath"), m_bQuotePath == BST_INDETERMINATE ? _T("") : m_bQuotePath ? _T("true") : _T("false")))
+		return FALSE;
+
+	if (!Save(config, _T("core.autocrlf"), m_bAutoCrlf == BST_INDETERMINATE ? _T("") : m_bAutoCrlf ? _T("true") : _T("false")))
+		return FALSE;
+
+	{
+		CString safecrlf;
+		this->m_cSafeCrLf.GetWindowText(safecrlf);
+		if (!Save(config, _T("core.safecrlf"), safecrlf))
+			return FALSE;
+	}
+
+	return TRUE;
 }
 
-void CSettingGitConfig::OnEnChangeGitUseremail()
+BOOL CSettingGitConfig::PreTranslateMessage(MSG* pMsg)
 {
-	m_ChangeMask |= GIT_EMAIL;
-	SetModified();
-}
-
-void CSettingGitConfig::OnEnChangeGitUserSigningKey()
-{
-	m_ChangeMask |= GIT_SIGNINGKEY;
-	SetModified();
+	m_tooltips.RelayEvent(pMsg);
+	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
 BOOL CSettingGitConfig::OnApply()
 {
-	CString cmd, out;
-	CONFIG_TYPE type=CONFIG_LOCAL;
-	this->UpdateData(FALSE);
-
-	if(this->m_bGlobal)
-		type = CONFIG_GLOBAL;
-
-	if(m_ChangeMask&GIT_NAME)
-		if (!Save(_T("user.name"), this->m_UserName, type))
-			return FALSE;
-
-	if(m_ChangeMask&GIT_EMAIL)
-		if (!Save(_T("user.email"), this->m_UserEmail,type))
-			return FALSE;
-
-	if(m_ChangeMask&GIT_SIGNINGKEY)
-		if (!Save(_T("user.signingkey"), this->m_UserSigningKey, type))
-			return FALSE;
-
-	if(m_ChangeMask&GIT_WARNNOSIGNEDOFFBY)
-		if (!Save(PROJECTPROPNAME_WARNNOSIGNEDOFFBY, this->m_bWarnNoSignedOffBy ? _T("true") : _T("false"), type))
-			return FALSE;
-
-	if(m_ChangeMask&GIT_CRLF)
-		if (!Save(_T("core.autocrlf"), this->m_bAutoCrlf ? _T("true") : _T("false"), type))
-			return FALSE;
-
-	if(m_ChangeMask&GIT_SAFECRLF)
-	{
-		CString safecrlf;
-		this->m_cSafeCrLf.GetWindowText(safecrlf);
-		if (!Save(_T("core.safecrlf"), safecrlf, type))
-			return FALSE;
-	}
-
-	m_ChangeMask = 0;
+	if (!m_bNeedSave)
+		return TRUE;
+	UpdateData();
+	if (!SafeData())
+		return FALSE;
+	m_bNeedSave = false;
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
-}
-bool CSettingGitConfig::Save(CString key, CString value, CONFIG_TYPE type)
-{
-	CString out;
-	if (g_Git.SetConfigValue(key, value, type, g_Git.GetGitEncode(L"i18n.commitencoding")))
-	{
-		CString msg;
-		msg.Format(IDS_PROC_SAVECONFIGFAILED, key, value);
-		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-		return false;
-	}
-	return true;
-}
-void CSettingGitConfig::OnBnClickedCheckWarnNoSignedOffBy()
-{
-	m_ChangeMask |= GIT_WARNNOSIGNEDOFFBY;
-	SetModified();
-}
-void CSettingGitConfig::OnBnClickedCheckAutocrlf()
-{
-	m_ChangeMask |= GIT_CRLF;
-	SetModified();
-}
-
-void CSettingGitConfig::OnCbnSelchangeSafeCrLf()
-{
-	m_ChangeMask |= GIT_SAFECRLF;
-	SetModified();
 }
 
 void CSettingGitConfig::OnBnClickedEditglobalgitconfig()
