@@ -255,9 +255,9 @@ msgstr ""
 msgid "%s in %s"
 msgstr ""
 
-#. Resource IDs: (1383)
+#. Resource IDs: (87)
 #, c-format
-msgid "%s requires msysgit >= %s"
+msgid "%s requires Git >= %s"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -891,7 +891,7 @@ msgid "&Open"
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "&Open msysGit WebSite"
+msgid "&Open Git for Windows WebSite"
 msgstr ""
 
 #. Resource IDs: (57601)
@@ -1055,7 +1055,7 @@ msgid "&Save list of selected files to..."
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "&Set MSysGit path"
+msgid "&Set Git path"
 msgstr ""
 
 #. Resource IDs: (1486)
@@ -4464,6 +4464,10 @@ msgstr ""
 msgid "Git Init"
 msgstr ""
 
+#. Resource IDs: (79)
+msgid "Git Install Path"
+msgstr ""
+
 #. Resource IDs: (1270)
 msgid "Git Log"
 msgstr ""
@@ -4510,6 +4514,18 @@ msgstr ""
 
 #. Resource IDs: (297)
 msgid "Git clone - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (71)
+msgid "Git directory not set (see \"General\" settings page)."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Git for Windows"
+msgstr ""
+
+#. Resource IDs: (84)
+msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -5415,18 +5431,6 @@ msgstr ""
 msgid "MAPI"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "MSysGit"
-msgstr ""
-
-#. Resource IDs: (84)
-msgid "MSysGit (http://code.google.com/p/msysgit/) not found."
-msgstr ""
-
-#. Resource IDs: (71)
-msgid "MSysGit directory not set (see \"General\" settings page)."
-msgstr ""
-
 #. Resource IDs: (5066)
 msgid "Macintosh"
 msgstr ""
@@ -5702,10 +5706,6 @@ msgstr ""
 
 #. Resource IDs: (80)
 msgid "Moving..."
-msgstr ""
-
-#. Resource IDs: (79)
-msgid "MsysGit Install Path"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -9510,7 +9510,7 @@ msgid "You cannot change the type of this ref with a rename."
 msgstr ""
 
 #. Resource IDs: (84)
-msgid "You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
+msgid "You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n\nYou should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr ""
 
 #. Resource IDs: (86)
