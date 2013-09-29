@@ -44,6 +44,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
 	, m_bShowTags(true)
+	, m_bShowLocalBranches(true)
+	, m_bShowRemoteBranches(true)
 	, m_iHidePaths(0)
 
 	, m_bSelectionMustBeContinuous(false)
@@ -71,9 +73,12 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	str = g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
-	str = CString(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\")) + str;
-	m_regbShowTags = CRegDWORD(str, TRUE);
+	m_regbShowTags = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\") + str, TRUE);
 	m_bShowTags = !!m_regbShowTags;
+	m_regbShowLocalBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowLocalBranches\\") + str, TRUE);
+	m_bShowLocalBranches = !!m_regbShowLocalBranches;
+	m_regbShowRemoteBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowRemoteBranches\\") + str, TRUE);
+	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
 
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
@@ -86,6 +91,8 @@ CLogDlg::~CLogDlg()
 
 	m_regbAllBranch=m_bAllBranch;
 	m_regbShowTags = m_bShowTags;
+	m_regbShowLocalBranches = m_bShowLocalBranches;
+	m_regbShowRemoteBranches = m_bShowRemoteBranches;
 
 	m_CurrentFilteredChangedArray.RemoveAll();
 
@@ -320,10 +327,9 @@ BOOL CLogDlg::OnInitDialog()
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
-	if (m_bShowTags)
-		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
-	else
-		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
+	HandleShowLabels(m_bShowTags, LOGLIST_SHOWTAGS);
+	HandleShowLabels(m_bShowLocalBranches, LOGLIST_SHOWLOCALBRANCHES);
+	HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
 
 //	SetPromptParentWindow(m_hWnd);
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_AUTHOREMAIL)));
@@ -2280,12 +2286,12 @@ void CLogDlg::OnBnClickedFollowRenames()
 	FillLogMessageCtrl(false);
 }
 
-void CLogDlg::OnBnClickedShowTags()
+void CLogDlg::HandleShowLabels(bool var, int flag)
 {
-	if (m_bShowTags)
-		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
+	if (var)
+		m_LogList.m_ShowRefMask |= flag;
 	else
-		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
+		m_LogList.m_ShowRefMask &= ~flag;
 
 	m_LogList.Invalidate();
 }
@@ -2382,6 +2388,8 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_HIDEPATHS				1
 #define VIEW_GRAYPATHS				2
 #define VIEW_SHOWTAGS				3
+#define VIEW_SHOWLOCALBRANCHES		4
+#define VIEW_SHOWREMOTEBRANCHES		5
 
 void CLogDlg::OnBnClickedView()
 {
@@ -2391,7 +2399,14 @@ void CLogDlg::OnBnClickedView()
 		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, m_iHidePaths != 2);
 		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, m_iHidePaths != 1);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		AppendMenuChecked(popup, IDS_VIEW_SHOWTAGLABELS, VIEW_SHOWTAGS, m_bShowTags);
+		CMenu showLabelsMenu;
+		if (showLabelsMenu.CreatePopupMenu())
+		{
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWTAGLABELS, VIEW_SHOWTAGS, m_bShowTags);
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWLOCALBRANCHLABELS, VIEW_SHOWLOCALBRANCHES, m_bShowLocalBranches);
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
+			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
+		}
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2415,7 +2430,15 @@ void CLogDlg::OnBnClickedView()
 			break;
 		case VIEW_SHOWTAGS:
 			m_bShowTags = !m_bShowTags;
-			OnBnClickedShowTags();
+			HandleShowLabels(m_bShowTags, LOGLIST_SHOWTAGS);
+			break;
+		case VIEW_SHOWLOCALBRANCHES:
+			m_bShowLocalBranches = !m_bShowLocalBranches;
+			HandleShowLabels(m_bShowLocalBranches, LOGLIST_SHOWLOCALBRANCHES);
+			break;
+		case VIEW_SHOWREMOTEBRANCHES:
+			m_bShowRemoteBranches = !m_bShowRemoteBranches;
+			HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
 			break;
 		default:
 			break;

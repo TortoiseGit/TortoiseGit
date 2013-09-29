@@ -124,7 +124,7 @@ protected:
 	void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
 	void OnBnClickedFollowRenames();
-	void OnBnClickedShowTags();
+	void HandleShowLabels(bool var, int flag);
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -149,6 +149,8 @@ protected:
 private:
 	CRegDWORD m_regbAllBranch;
 	CRegDWORD m_regbShowTags;
+	CRegDWORD m_regbShowLocalBranches;
+	CRegDWORD m_regbShowRemoteBranches;
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);
@@ -206,6 +208,8 @@ private:
 	BOOL				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;
 	bool				m_bShowTags;
+	bool				m_bShowLocalBranches;
+	bool				m_bShowRemoteBranches;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

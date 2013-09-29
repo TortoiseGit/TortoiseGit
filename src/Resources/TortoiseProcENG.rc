@@ -4252,6 +4252,13 @@ BEGIN
     IDS_VIEW_SHOWTAGLABELS  "&Tags"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_VIEW_SHOWLOCALBRANCHLABELS "&Local branches"
+    IDS_VIEW_SHOWREMOTEBRANCHLABELS "&Remote branches"
+    IDS_VIEW_LABELS         "&Labels"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
