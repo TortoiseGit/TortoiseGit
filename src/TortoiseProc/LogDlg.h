@@ -118,17 +118,18 @@ protected:
 	afx_msg void OnBnClickedJumpUp();
 	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedWalkBehaviour();
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
-	afx_msg void OnBnClickedFollowRenames();
+	void OnBnClickedFollowRenames();
 	afx_msg void OnBnClickedShowTags();
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnBnClickedFirstParent();
+	void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
 	afx_msg void OnBnClickedDownAuthor();
 	afx_msg void OnRefresh();
