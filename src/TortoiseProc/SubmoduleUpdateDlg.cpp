@@ -36,6 +36,7 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=NULL*/)
 	, m_bMerge(FALSE)
 	, m_bRebase(FALSE)
 	, m_bRemote(FALSE)
+	, m_bWholeProject(FALSE)
 {
 }
 
@@ -48,6 +49,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 	CStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PATH, m_PathListBox);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
+	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT, m_bWholeProject);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_INIT, m_bInit);
 	DDX_Check(pDX, IDC_CHECK_SUBMODULE_RECURSIVE, m_bRecursive);
 	DDX_Check(pDX, IDC_FORCE, m_bForce);
@@ -60,6 +62,7 @@ void CSubmoduleUpdateDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSubmoduleUpdateDlg, CStandAloneDialog)
 	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickedShowWholeProject)
 	ON_BN_CLICKED(IDOK, &CSubmoduleUpdateDlg::OnBnClickedOk)
 	ON_LBN_SELCHANGE(IDC_LIST_PATH, &CSubmoduleUpdateDlg::OnLbnSelchangeListPath)
 END_MESSAGE_MAP()
@@ -194,6 +197,12 @@ void CSubmoduleUpdateDlg::OnBnClickedSelectall()
 	}
 }
 
+void CSubmoduleUpdateDlg::OnBnClickedShowWholeProject()
+{
+	UpdateData();
+	Refresh();
+}
+
 void CSubmoduleUpdateDlg::Refresh()
 {
 	while (m_PathListBox.GetCount() > 0)
@@ -204,8 +213,9 @@ void CSubmoduleUpdateDlg::Refresh()
 
 	m_regPath = CRegString(CString(_T("Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\") + WorkingDir));
 	CString path = m_regPath;
+	STRING_VECTOR emptylist;
 	STRING_VECTOR list;
-	GetSubmodulePathList(list, m_PathFilterList);
+	GetSubmodulePathList(list, m_bWholeProject ? emptylist : m_PathFilterList);
 	STRING_VECTOR selected;
 	if (m_PathList.empty())
 	{
