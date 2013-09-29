@@ -190,7 +190,10 @@ protected:
 		if (m_bGlobal || (m_cSaveTo.GetCurSel() == 1 && (!m_bHonorProjectConfig || m_bIsBareRepo)) || m_cSaveTo.GetCurSel() == 2)
 		{
 			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_GLOBAL))
+			{
+				git_config_free(config);
 				return FALSE;
+			}
 			if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
 				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 			else
@@ -199,13 +202,19 @@ protected:
 		else if (m_cSaveTo.GetCurSel() == 1 && !m_bIsBareRepo && m_bHonorProjectConfig)
 		{
 			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
+			{
+				git_config_free(config);
 				return FALSE;
+			}
 			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_APP, FALSE);
 		}
 		else
 		{
 			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
+			{
+				git_config_free(config);
 				return FALSE;
+			}
 			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 		}
 		if (err)
