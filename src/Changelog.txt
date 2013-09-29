@@ -15,6 +15,9 @@ Released: Unreleased
  * Added optional support for git://-links to start cloning from browser
  * Added optional support for smartgit:// and github-windows://-links to start cloning from browser
    In order to use github-windows://-links from Github, you have to enable them by installing and registering the Github client first
+ * Allow to edit hierarchical git settings
+   If you have set "i18n.commitencoding" to something different than UTF-8 check your "user.name" setting
+ * Fixed issue #1645: enable/disable spell checking in commit dialog
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog

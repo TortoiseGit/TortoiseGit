@@ -473,7 +473,7 @@ CString CGit::GetUserName(void)
 	CString envname = env.GetEnv(_T("GIT_AUTHOR_NAME"));
 	if (!envname.IsEmpty())
 		return envname;
-	return GetConfigValue(L"user.name", this->GetGitEncode(L"i18n.commitencoding"));
+	return GetConfigValue(L"user.name");
 }
 CString CGit::GetUserEmail(void)
 {

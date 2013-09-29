@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,54 +17,50 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
 #include "SettingsPropPage.h"
 #include "Tooltip.h"
-#include "registry.h"
-#include "afxwin.h"
-#include "Git.h"
 #include "GitSettings.h"
 
-// CSettingGitConfig dialog
-
-class CSettingGitConfig : public ISettingsPropPage, public CGitSettings
+/**
+ * \ingroup TortoiseProc
+ * Settings page responsible for dialog settings.
+ */
+class CSetDialogs3 : public ISettingsPropPage, public CGitSettings
 {
-	DECLARE_DYNAMIC(CSettingGitConfig)
+	DECLARE_DYNAMIC(CSetDialogs3)
 
 public:
-	CSettingGitConfig();
-	virtual ~CSettingGitConfig();
-	UINT GetIconID() {return IDI_GITCONFIG;}
+	CSetDialogs3();
+	virtual ~CSetDialogs3();
+
+	UINT GetIconID() {return IDI_DIALOGS;}
+
 // Dialog Data
-	enum { IDD = IDD_SETTINGIT_CONFIG };
+	enum { IDD = IDD_SETTINGSDIALOGS3 };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	BOOL OnInitDialog();
-	BOOL OnApply();
+
+	DECLARE_MESSAGE_MAP()
+
+	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual BOOL OnApply();
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);
 	virtual void EnDisableControls();
 
-	DECLARE_MESSAGE_MAP()
-
 	afx_msg void OnChange();
-	afx_msg void OnBnClickedEditsystemgitconfig();
-	afx_msg void OnBnClickedViewsystemgitconfig();
-	afx_msg void OnBnClickedEditglobalgitconfig();
-	afx_msg void OnBnClickedEditglobalxdggitconfig();
-	afx_msg void OnBnClickedEditlocalgitconfig();
-	afx_msg void OnBnClickedEdittgitconfig();
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
-	bool	m_bNeedSave;
-	CToolTips	m_tooltips;
-	CString	m_UserName;
-	CString	m_UserEmail;
-	CString	m_UserSigningKey;
-	BOOL	m_bAutoCrlf;
-	BOOL	m_bQuotePath;
-	CComboBox m_cSafeCrLf;
+	static BOOL CALLBACK EnumLocalesProc(LPTSTR lpLocaleString);
+
+private:
+	bool				m_bNeedSave;
+	CToolTips			m_tooltips;
+	static CComboBox	m_langCombo;
+	CString				m_LogMinSize;
+	CString				m_Border;
+	CComboBox			m_cWarnNoSignedOffBy;
 };

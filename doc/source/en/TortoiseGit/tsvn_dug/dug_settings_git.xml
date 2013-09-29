@@ -12,6 +12,7 @@
 			</figure>
 		</para>
 		<para> Set git basic configuration </para>
+		<para><guilabel>Name</guilabel> and <guilabel>Email</guilabel> are required for git to operate correctly.</para>
 		<para> <guilabel>AutoCrlf</guilabel>
 			If true, makes git convert CRLF at the end of lines in text files
 			to LF when reading from the filesystem, and convert in reverse when
@@ -30,9 +31,7 @@
 			The variable can be set to "warn", 
 			in which case git will only warn about an irreversible conversion but continue the operation.
 		</para>
-		<para> <guilabel>Save as Global</guilabel>
-			For writing options: write to global ~/.gitconfig file rather than the repository .git/config.
-		</para>
+		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-remote">
 		<title>Remote</title>
