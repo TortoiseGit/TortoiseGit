@@ -45,6 +45,8 @@ protected:
 	afx_msg void OnLbnSelchangeListPath();
 	afx_msg void OnBnClickedSelectall();
 
+	void Refresh();
+
 public:
 	BOOL m_bInit;
 	BOOL m_bRecursive;

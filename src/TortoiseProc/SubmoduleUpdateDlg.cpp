@@ -125,46 +125,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SUBMODULE_MERGE);
 	AdjustControlSize(IDC_CHECK_SUBMODULE_REBASE);
 
-	CString WorkingDir = g_Git.m_CurrentDir;
-	WorkingDir.Replace(_T(':'), _T('_'));
-
-	m_regPath = CRegString(CString(_T("Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\") + WorkingDir));
-	CString path = m_regPath;
-	STRING_VECTOR list;
-	GetSubmodulePathList(list, m_PathFilterList);
-	STRING_VECTOR selected;
-	if (m_PathList.empty())
-	{
-		int pos = 0;
-		while (pos >= 0)
-		{
-			CString part = path.Tokenize(_T("|"), pos);
-			if (!part.IsEmpty())
-				selected.push_back(part);
-		}
-	}
-	else
-	{
-		for (size_t i = 0; i < m_PathList.size(); ++i)
-			selected.push_back(m_PathList[i]);
-	}
-
-	for (size_t i = 0; i < list.size(); ++i)
-	{
-		m_PathListBox.AddString(list[i]);
-		if (selected.size() == 0)
-			m_PathListBox.SetSel((int)i);
-		else
-		{
-			for (int j = 0; j < selected.size(); ++j)
-			{
-				if (selected[j] == list[i])
-					m_PathListBox.SetSel((int)i);
-			}
-		}
-	}
-
-	OnLbnSelchangeListPath();
+	Refresh();
 	UpdateData(FALSE);
 
 	return TRUE;
@@ -231,4 +192,51 @@ void CSubmoduleUpdateDlg::OnBnClickedSelectall()
 		for (int i = 0; i < m_PathListBox.GetCount(); ++i)
 			m_PathListBox.SetSel(i, TRUE);
 	}
+}
+
+void CSubmoduleUpdateDlg::Refresh()
+{
+	while (m_PathListBox.GetCount() > 0)
+		m_PathListBox.DeleteString(m_PathListBox.GetCount() - 1);
+
+	CString WorkingDir = g_Git.m_CurrentDir;
+	WorkingDir.Replace(_T(':'), _T('_'));
+
+	m_regPath = CRegString(CString(_T("Software\\TortoiseGit\\History\\SubmoduleUpdatePath\\") + WorkingDir));
+	CString path = m_regPath;
+	STRING_VECTOR list;
+	GetSubmodulePathList(list, m_PathFilterList);
+	STRING_VECTOR selected;
+	if (m_PathList.empty())
+	{
+		int pos = 0;
+		while (pos >= 0)
+		{
+			CString part = path.Tokenize(_T("|"), pos);
+			if (!part.IsEmpty())
+				selected.push_back(part);
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < m_PathList.size(); ++i)
+			selected.push_back(m_PathList[i]);
+	}
+
+	for (size_t i = 0; i < list.size(); ++i)
+	{
+		m_PathListBox.AddString(list[i]);
+		if (selected.size() == 0)
+			m_PathListBox.SetSel((int)i);
+		else
+		{
+			for (int j = 0; j < selected.size(); ++j)
+			{
+				if (selected[j] == list[i])
+					m_PathListBox.SetSel((int)i);
+			}
+		}
+	}
+
+	OnLbnSelchangeListPath();
 }
