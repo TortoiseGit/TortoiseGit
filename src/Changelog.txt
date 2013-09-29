@@ -11,7 +11,7 @@ Released: Unreleased
  * Fixed issue #1870: Commit subset of changes selected from diff dialog
  * Fixed issue #1785: If PuTTY defaults to anything other than type SSH port 22, TortoiseGit acts up on SSH cloning (fixed in TortoiseGitPlink.exe)
  * Add setting to confirm to kill running git process in progress dialog
- * Added support for tgit://-links to start cloning from browser
+ * Added support for tgit://-links to start cloning from browser (e.g. tgit://clone/https://code.google.com/p/tortoisegit/)
  * Added optional support for git://-links to start cloning from browser
  * Added optional support for smartgit:// and github-windows://-links to start cloning from browser
    In order to use github-windows://-links from Github, you have to enable them by installing and registering the Github client first

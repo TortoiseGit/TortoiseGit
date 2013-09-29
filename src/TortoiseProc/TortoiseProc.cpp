@@ -269,7 +269,11 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (parser.HasKey(_T("urlhandler")))
 	{
 		CString url = parser.GetVal(_T("urlhandler"));
-		if (url.Find(_T("github-windows://openRepo/")) == 0)
+		if (url.Find(_T("tgit://clone/")) == 0)
+		{
+			url = url.Mid(13); // 21 = "tgit://clone/".GetLength()
+		}
+		else if (url.Find(_T("github-windows://openRepo/")) == 0)
 		{
 			url = url.Mid(26); // 26 = "github-windows://openRepo/".GetLength()
 			int questioMark = url.Find('?');
