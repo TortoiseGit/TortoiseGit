@@ -83,6 +83,18 @@ BOOL CSettingsBugtraqConfig::OnInitDialog()
 	return TRUE;
 }
 
+void CSettingsBugtraqConfig::EnDisableControls()
+{
+	GetDlgItem(IDC_BUGTRAQ_URL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BUGTRAQ_LABEL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BUGTRAQ_WARNINGIFNOISSUE)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_BUGTRAQ_APPEND)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_BUGTRAQ_NUMBER)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+}
+
 void CSettingsBugtraqConfig::OnChange()
 {
 	m_bNeedSave = true;

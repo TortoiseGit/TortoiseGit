@@ -153,6 +153,17 @@ void CSettingGitConfig::LoadDataImpl(git_config * config)
 	UpdateData(FALSE);
 }
 
+void CSettingGitConfig::EnDisableControls()
+{
+	GetDlgItem(IDC_GIT_USERNAME)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_GIT_USEREMAIL)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_CHECK_AUTOCRLF)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+}
+
 void CSettingGitConfig::OnChange()
 {
 	m_bNeedSave = true;

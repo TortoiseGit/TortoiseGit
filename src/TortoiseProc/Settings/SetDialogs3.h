@@ -49,6 +49,7 @@ protected:
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);
+	virtual void EnDisableControls();
 
 	afx_msg void OnChange();
 	GITSETTINGS_RADIO_EVENT_HANDLE;

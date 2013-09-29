@@ -46,6 +46,7 @@ protected:
 
 	virtual void LoadDataImpl(git_config * config);
 	virtual BOOL SafeDataImpl(git_config * config);
+	virtual void EnDisableControls();
 
 	DECLARE_MESSAGE_MAP()
 

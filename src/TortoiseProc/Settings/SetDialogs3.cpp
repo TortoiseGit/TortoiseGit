@@ -180,6 +180,15 @@ BOOL CSetDialogs3::PreTranslateMessage(MSG* pMsg)
 	return ISettingsPropPage::PreTranslateMessage(pMsg);
 }
 
+void CSetDialogs3::EnDisableControls()
+{
+	GetDlgItem(IDC_LOGMINSIZE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_BORDER)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
+	GetDlgItem(IDC_LANGCOMBO)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+}
+
 void CSetDialogs3::OnChange()
 {
 	m_bNeedSave = true;

@@ -163,6 +163,8 @@ protected:
 		LoadDataImpl(config);
 
 		git_config_free(config);
+
+		EnDisableControls();
 	}
 
 	bool WarnUserSafeToDifferentDestination(int storeTo)
@@ -221,6 +223,7 @@ protected:
 
 	virtual void LoadDataImpl(git_config * config) = 0;
 	virtual BOOL SafeDataImpl(git_config * config) = 0;
+	virtual void EnDisableControls() = 0;
 
 	static void AddTrueFalseToComboBox(CComboBox &combobox)
 	{
