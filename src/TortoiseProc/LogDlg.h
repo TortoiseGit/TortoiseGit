@@ -118,6 +118,8 @@ protected:
 	afx_msg void OnBnClickedJumpUp();
 	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedWalkBehaviour();
+	afx_msg void OnBnClickedShowFiles();
 	afx_msg void OnBnClickShowWholeProject();
 	afx_msg void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
@@ -197,10 +199,14 @@ private:
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bCancelled;
 
+	BOOL				m_bHidePaths;
+	BOOL				m_bHidePathsEnabled;
+	BOOL				m_bGrayPaths;
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
+	BOOL				m_bFollowRenamesEnabled;
 	BOOL				m_bShowUnversioned;
 	BOOL				m_bShowTags;
 
@@ -229,7 +235,6 @@ private:
 	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
-	CButton				m_cHidePaths;
 	CString				m_sTitle;
 	bool				m_bSelect;
 	CString				m_sLogInfo;

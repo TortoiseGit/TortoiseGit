@@ -212,11 +212,10 @@ BEGIN
     CONTROL         "",IDC_SPLITTERBOTTOM,"Static",SS_BLACKFRAME,7,182,407,4
     CONTROL         "",IDC_LOGMSG,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,187,407,58
     EDITTEXT        IDC_LOGINFO,7,248,407,16,ES_MULTILINE | ES_READONLY | NOT WS_BORDER
-    CONTROL         "H&ide Unrelated Changed Paths",IDC_HIDEPATHS,"Button",BS_AUTO3STATE | WS_TABSTOP,7,267,181,10
+    PUSHBUTTON      "Walk Behaviour",IDC_WALKBEHAVIOUR,200,270,100,14
+    PUSHBUTTON      "Show Files",IDC_SHOWFILES,200,286,100,14
     CONTROL         "Show &Whole Project",IDC_SHOWWHOLEPROJECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,195,267,161,10
     CONTROL         "&All Branches",IDC_LOG_ALLBRANCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,278,181,10
-    CONTROL         "&Follow renames",IDC_LOG_FOLLOWRENAMES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,195,278,161,10
-    CONTROL         "First Parent",IDC_LOG_FIRSTPARENT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,289,181,10
     CONTROL         "Show ta&gs",IDC_LOG_SHOWTAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,195,289,161,10
     PUSHBUTTON      "S&tatistics",IDC_STATBUTTON,364,265,50,14,WS_DISABLED
     PUSHBUTTON      "Help",IDHELP,364,283,50,14
@@ -4247,6 +4246,10 @@ BEGIN
     IDS_CONFIG_LOCAL_TT     ".git/config in the repository root"
     IDS_ASK_DELETE_EMPTY    "You are about to save an empty/default value. This can be useful to prevent inheriting another value.\nDo you want to remove the key instead of saving the empty/default value?"
     IDS_WARNUSERSAFEDIFFERENT "Are you sure you want to save to ""%s""?"
+    IDS_WALKBEHAVIOUR_FIRSTPARENT "First Parent"
+    IDS_WALKBEHAVIOUR_FOLLOWRENAMES "&Follow renames"
+    IDS_SHOWFILES_HIDEPATHS "H&ide Unrelated Changed Paths"
+    IDS_SHOWFILES_GRAYPATHS "&Gray Unrelated Changed Paths"
 END
 
 #endif    // English (U.S.) resources
