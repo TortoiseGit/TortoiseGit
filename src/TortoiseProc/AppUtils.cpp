@@ -1950,7 +1950,7 @@ bool CAppUtils::IsSSHPutty()
 	return false;
 }
 
-CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix)
+CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCount)
 {
 	if (!OpenClipboard(NULL))
 		return CString();
@@ -1998,15 +1998,18 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix)
 		// trim prefixes like "git clone "
 		if (!skipGitPrefix.IsEmpty() && sClipboardText.Find(skipGitPrefix) == 0)
 		{
-			CString args = sClipboardText.Mid(skipGitPrefix.GetLength()).Trim();
-			int quotePos = -1;
-			if (args.GetLength() && args[0] == '"')
+			sClipboardText = sClipboardText.Mid(skipGitPrefix.GetLength()).Trim();
+			int spacePos = -1;
+			while (paramsCount >= 0)
 			{
-				quotePos = args.Find(_T('"'), 1);
-				args = quotePos >= 0 ? args.Mid(1, quotePos - 1) : args;
+				--paramsCount;
+				spacePos = sClipboardText.Find(_T(' '), spacePos + 1);
+				if (spacePos == -1)
+					break;
 			}
-			int spacePos = args.Find(_T(' '), quotePos >= 1 ? quotePos : 0);
-			return spacePos >= 0 ? args.Left(spacePos) : args;
+			if (spacePos > 0 && paramsCount < 0)
+				sClipboardText = sClipboardText.Left(spacePos);
+			return sClipboardText;
 		}
 	}
 
