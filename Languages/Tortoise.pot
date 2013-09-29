@@ -685,6 +685,10 @@ msgstr ""
 msgid "&Go to\tCtrl+G"
 msgstr ""
 
+#. Resource IDs: (91)
+msgid "&Gray Unrelated Changed Paths"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Green:"
 msgstr ""
@@ -758,6 +762,10 @@ msgstr ""
 msgid "&Keep current state"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "&Labels"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Language:"
 msgstr ""
@@ -797,6 +805,10 @@ msgstr ""
 
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "&Local branches"
 msgstr ""
 
 #. Resource IDs: (1504)
@@ -987,6 +999,10 @@ msgstr ""
 msgid "&Remote Branch:"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "&Remote branches"
+msgstr ""
+
 #. Resource IDs: (1490, 1503)
 msgid "&Remote:"
 msgstr ""
@@ -1141,6 +1157,10 @@ msgstr ""
 
 #. Resource IDs: (1513)
 msgid "&Tag"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid "&Tags"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7955,10 +7975,6 @@ msgstr ""
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr ""
 
-#. Resource IDs: (1730)
-msgid "Show ta&gs"
-msgstr ""
-
 #. Resource IDs: (1209)
 msgid "Show un&modified files"
 msgstr ""
@@ -9418,6 +9434,10 @@ msgstr ""
 
 #. Resource IDs: (75)
 msgid "Waiting for input"
+msgstr ""
+
+#. Resource IDs: (1776)
+msgid "Walk Be&haviour"
 msgstr ""
 
 #. Resource IDs: (88)

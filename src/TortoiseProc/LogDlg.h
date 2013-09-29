@@ -118,17 +118,19 @@ protected:
 	afx_msg void OnBnClickedJumpUp();
 	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedWalkBehaviour();
+	afx_msg void OnBnClickedView();
 	afx_msg void OnBnClickShowWholeProject();
-	afx_msg void OnBnClickedHidepaths();
+	void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
-	afx_msg void OnBnClickedFollowRenames();
-	afx_msg void OnBnClickedShowTags();
+	void OnBnClickedFollowRenames();
+	void HandleShowLabels(bool var, int flag);
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnBnClickedFirstParent();
+	void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
 	afx_msg void OnBnClickedDownAuthor();
 	afx_msg void OnRefresh();
@@ -147,6 +149,8 @@ protected:
 private:
 	CRegDWORD m_regbAllBranch;
 	CRegDWORD m_regbShowTags;
+	CRegDWORD m_regbShowLocalBranches;
+	CRegDWORD m_regbShowRemoteBranches;
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);
@@ -197,12 +201,15 @@ private:
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bCancelled;
 
+	BOOL				m_iHidePaths;
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;
-	BOOL				m_bShowTags;
+	bool				m_bShowTags;
+	bool				m_bShowLocalBranches;
+	bool				m_bShowRemoteBranches;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
@@ -229,7 +236,6 @@ private:
 	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
-	CButton				m_cHidePaths;
 	CString				m_sTitle;
 	bool				m_bSelect;
 	CString				m_sLogInfo;

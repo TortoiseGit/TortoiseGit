@@ -43,7 +43,10 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
-	, m_bShowTags(TRUE)
+	, m_bShowTags(true)
+	, m_bShowLocalBranches(true)
+	, m_bShowRemoteBranches(true)
+	, m_iHidePaths(0)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -70,9 +73,12 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 
 	str = g_Git.m_CurrentDir;
 	str.Replace(_T(":"),_T("_"));
-	str = CString(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\")) + str;
-	m_regbShowTags = CRegDWORD(str, TRUE);
-	m_bShowTags = m_regbShowTags;
+	m_regbShowTags = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\") + str, TRUE);
+	m_bShowTags = !!m_regbShowTags;
+	m_regbShowLocalBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowLocalBranches\\") + str, TRUE);
+	m_bShowLocalBranches = !!m_regbShowLocalBranches;
+	m_regbShowRemoteBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowRemoteBranches\\") + str, TRUE);
+	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
 
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
@@ -85,6 +91,8 @@ CLogDlg::~CLogDlg()
 
 	m_regbAllBranch=m_bAllBranch;
 	m_regbShowTags = m_bShowTags;
+	m_regbShowLocalBranches = m_bShowLocalBranches;
+	m_regbShowRemoteBranches = m_bShowRemoteBranches;
 
 	m_CurrentFilteredChangedArray.RemoveAll();
 
@@ -104,13 +112,9 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
 	DDX_Control(pDX, IDC_LOG_JUMPUP, m_JumpUp);
 	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
-	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
-	DDX_Check(pDX, IDC_LOG_FIRSTPARENT, m_bFirstParent);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
-	DDX_Check(pDX, IDC_LOG_FOLLOWRENAMES, m_bFollowRenames);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
-	DDX_Check(pDX, IDC_LOG_SHOWTAGS, m_bShowTags);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
@@ -136,18 +140,16 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_CBN_SELCHANGE(IDC_LOG_JUMPTYPE, &CLogDlg::OnCbnSelchangeJumpType)
 	ON_COMMAND(IDC_LOG_JUMPUP, &CLogDlg::OnBnClickedJumpUp)
 	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
+	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
+	ON_BN_CLICKED(IDC_VIEW, OnBnClickedView)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
-	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
-	ON_BN_CLICKED(IDC_LOG_FOLLOWRENAMES, OnBnClickedFollowRenames)
-	ON_BN_CLICKED(IDC_LOG_SHOWTAGS, OnBnClickedShowTags)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
 	ON_WM_SIZE()
-	ON_BN_CLICKED(IDC_LOG_FIRSTPARENT, &CLogDlg::OnBnClickedFirstParent)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
@@ -232,9 +234,8 @@ BOOL CLogDlg::OnInitDialog()
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
 	//m_LogList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 
-	// the "hide unrelated paths" checkbox should be indeterminate
-	m_cHidePaths.SetCheck(BST_INDETERMINATE);
-
+	// "unrelated paths" should be in gray color
+	m_iHidePaths = 2;
 
 	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
@@ -262,12 +263,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
 	m_cFilter.SetValidator(this);
 
-	AdjustControlSize(IDC_HIDEPATHS);
-	AdjustControlSize(IDC_LOG_FIRSTPARENT);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
-	AdjustControlSize(IDC_LOG_FOLLOWRENAMES);
-	AdjustControlSize(IDC_LOG_SHOWTAGS);
 
 	if (m_gravatar.IsGravatarEnabled())
 	{
@@ -314,12 +311,10 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDC_LOGMSG, BOTTOM_LEFT, BOTTOM_RIGHT);
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
+	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
+	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_FOLLOWRENAMES, BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_FIRSTPARENT, BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_SHOWTAGS, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -332,10 +327,9 @@ BOOL CLogDlg::OnInitDialog()
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
-	if (m_bShowTags)
-		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
-	else
-		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
+	HandleShowLabels(m_bShowTags, LOGLIST_SHOWTAGS);
+	HandleShowLabels(m_bShowLocalBranches, LOGLIST_SHOWLOCALBRANCHES);
+	HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
 
 //	SetPromptParentWindow(m_hWnd);
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_AUTHOREMAIL)));
@@ -419,9 +413,6 @@ BOOL CLogDlg::OnInitDialog()
 			MessageBox(g_Git.GetGitLastErr(_T("Could not get HEAD hash.")), _T("TortoiseGit"), MB_ICONERROR);
 	}
 
-	if (m_path.IsEmpty() || m_path.IsDirectory())
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
-
 	m_LogList.FetchLogAsync(this);
 	m_gravatar.Init();
 
@@ -453,11 +444,10 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
 
-		//DialogEnableWindow(IDC_SHOWWHOLEPROJECT, FALSE);
-		//DialogEnableWindow(IDC_LOG_FIRSTPARENT, FALSE);
+		DialogEnableWindow(IDC_WALKBEHAVIOUR, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
-		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
+		DialogEnableWindow(IDC_VIEW, FALSE);
 
 	}
 	else if( cur == GITLOG_END)
@@ -475,8 +465,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
-		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
-
+		DialogEnableWindow(IDC_VIEW, TRUE);
+		DialogEnableWindow(IDC_WALKBEHAVIOUR, TRUE);
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
@@ -759,7 +749,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
@@ -772,9 +761,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
 				{
-					if(HidePaths==BST_CHECKED)
+					if (m_iHidePaths == 1)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
-					if(HidePaths==BST_INDETERMINATE)
+					else if (m_iHidePaths == 2)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
@@ -2275,8 +2264,6 @@ void CLogDlg::OnBnClickedAllBranch()
 
 void CLogDlg::OnBnClickedFollowRenames()
 {
-	this->UpdateData();
-
 	if(m_bFollowRenames)
 	{
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
@@ -2299,14 +2286,12 @@ void CLogDlg::OnBnClickedFollowRenames()
 	FillLogMessageCtrl(false);
 }
 
-void CLogDlg::OnBnClickedShowTags()
+void CLogDlg::HandleShowLabels(bool var, int flag)
 {
-	this->UpdateData();
-
-	if (m_bShowTags)
-		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
+	if (var)
+		m_LogList.m_ShowRefMask |= flag;
 	else
-		m_LogList.m_ShowRefMask &= ~LOGLIST_SHOWTAGS;
+		m_LogList.m_ShowRefMask &= ~flag;
 
 	m_LogList.Invalidate();
 }
@@ -2362,11 +2347,107 @@ void CLogDlg::SetRange(const CString& range)
 	ShowStartRef();
 }
 
+void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked = FALSE, BOOL enabled = TRUE)
+{
+	CString text;
+	text.LoadString(nTextID);
+	menu.AppendMenu(MF_STRING | (enabled ? MF_ENABLED : MF_DISABLED) | (checked ? MF_CHECKED : MF_UNCHECKED), nItemID, text);
+}
+
+#define WALKBEHAVIOUR_FIRSTPARENT			1
+#define WALKBEHAVIOUR_FOLLOWRENAMES			2
+
+void CLogDlg::OnBnClickedWalkBehaviour()
+{
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FIRSTPARENT, WALKBEHAVIOUR_FIRSTPARENT, m_bFirstParent);
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FOLLOWRENAMES, WALKBEHAVIOUR_FOLLOWRENAMES, m_bFollowRenames, !(m_path.IsEmpty() || m_path.IsDirectory()));
+
+		m_tooltips.Pop();
+		RECT rect;
+		GetDlgItem(IDC_WALKBEHAVIOUR)->GetWindowRect(&rect);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this, 0);
+		switch (selection)
+		{
+		case WALKBEHAVIOUR_FIRSTPARENT:
+			m_bFirstParent = !m_bFirstParent;
+			OnBnClickedFirstParent();
+			break;
+		case WALKBEHAVIOUR_FOLLOWRENAMES:
+			m_bFollowRenames = !m_bFollowRenames;
+			OnBnClickedFollowRenames();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+#define VIEW_HIDEPATHS				1
+#define VIEW_GRAYPATHS				2
+#define VIEW_SHOWTAGS				3
+#define VIEW_SHOWLOCALBRANCHES		4
+#define VIEW_SHOWREMOTEBRANCHES		5
+
+void CLogDlg::OnBnClickedView()
+{
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, m_iHidePaths != 2);
+		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, m_iHidePaths != 1);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		CMenu showLabelsMenu;
+		if (showLabelsMenu.CreatePopupMenu())
+		{
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWTAGLABELS, VIEW_SHOWTAGS, m_bShowTags);
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWLOCALBRANCHLABELS, VIEW_SHOWLOCALBRANCHES, m_bShowLocalBranches);
+			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
+			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
+		}
+
+		m_tooltips.Pop();
+		RECT rect;
+		GetDlgItem(IDC_VIEW)->GetWindowRect(&rect);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this, 0);
+		switch (selection)
+		{
+		case VIEW_HIDEPATHS:
+			if (m_iHidePaths == 1)
+				m_iHidePaths = 0;
+			else
+				m_iHidePaths = 1;
+			OnBnClickedHidepaths();
+			break;
+		case VIEW_GRAYPATHS:
+			if (m_iHidePaths == 2)
+				m_iHidePaths = 0;
+			else
+				m_iHidePaths = 2;
+			OnBnClickedHidepaths();
+			break;
+		case VIEW_SHOWTAGS:
+			m_bShowTags = !m_bShowTags;
+			HandleShowLabels(m_bShowTags, LOGLIST_SHOWTAGS);
+			break;
+		case VIEW_SHOWLOCALBRANCHES:
+			m_bShowLocalBranches = !m_bShowLocalBranches;
+			HandleShowLabels(m_bShowLocalBranches, LOGLIST_SHOWLOCALBRANCHES);
+			break;
+		case VIEW_SHOWREMOTEBRANCHES:
+			m_bShowRemoteBranches = !m_bShowRemoteBranches;
+			HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
+			break;
+		default:
+			break;
+		}
+	}
+}
 
 void CLogDlg::OnBnClickedFirstParent()
 {
-	this->UpdateData();
-
 	if(this->m_bFirstParent)
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_FIRST_PARENT;
 	else
@@ -2386,13 +2467,9 @@ void CLogDlg::OnBnClickShowWholeProject()
 	{
 		m_LogList.m_Path.Reset();
 		SetDlgTitle();
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, FALSE);
 	}
 	else
-	{
 		m_LogList.m_Path=m_path;
-		DialogEnableWindow(IDC_LOG_FOLLOWRENAMES, !(m_path.IsEmpty() || m_path.IsDirectory()));
-	}
 
 	SetDlgTitle();
 
