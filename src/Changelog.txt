@@ -32,6 +32,7 @@ Released: Unreleased
  * Bring back templates when creating repository with libgit2, it was "cancelled" in since TortoiseGit 1.8.0
  * Fixed issue #1908: "Export selection to.." fails to checkout files which names (or paths) renamed in working dir
  * Fixed issue #1914: Repository Browser give an error (libgit2) after change branch
+ * Fixed issue #1915: Submodule Update Dialog behaves curious
 
 == Known Issues ==
  * If you experience problems with PuTTY ssh, please see issue #1880.
