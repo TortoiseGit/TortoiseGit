@@ -210,7 +210,7 @@ protected:
 		}
 		else
 		{
-			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_PROJECT))
+			if (!WarnUserSafeToDifferentDestination(IDS_CONFIG_LOCAL))
 			{
 				git_config_free(config);
 				return FALSE;
