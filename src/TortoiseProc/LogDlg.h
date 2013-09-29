@@ -119,11 +119,12 @@ protected:
 	afx_msg void OnBnClickedJumpDown();
 	afx_msg void OnLvnColumnclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedWalkBehaviour();
+	afx_msg void OnBnClickedView();
 	afx_msg void OnBnClickShowWholeProject();
-	afx_msg void OnBnClickedHidepaths();
+	void OnBnClickedHidepaths();
 	afx_msg void OnBnClickedAllBranch();
 	void OnBnClickedFollowRenames();
-	afx_msg void OnBnClickedShowTags();
+	void OnBnClickedShowTags();
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -198,12 +199,13 @@ private:
 	bool				m_bSelectionMustBeSingle;
 	bool				m_bCancelled;
 
+	BOOL				m_iHidePaths;
 	BOOL				m_bFirstParent;
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
 	BOOL				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;
-	BOOL				m_bShowTags;
+	bool				m_bShowTags;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
@@ -230,7 +232,6 @@ private:
 	bool				m_bAscending;
 	static int			m_nSortColumnPathList;
 	static bool			m_bAscendingPathList;
-	CButton				m_cHidePaths;
 	CString				m_sTitle;
 	bool				m_bSelect;
 	CString				m_sLogInfo;

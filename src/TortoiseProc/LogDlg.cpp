@@ -43,7 +43,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
-	, m_bShowTags(TRUE)
+	, m_bShowTags(true)
+	, m_iHidePaths(0)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -72,7 +73,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	str.Replace(_T(":"),_T("_"));
 	str = CString(_T("Software\\TortoiseGit\\LogDialog\\ShowTags\\")) + str;
 	m_regbShowTags = CRegDWORD(str, TRUE);
-	m_bShowTags = m_regbShowTags;
+	m_bShowTags = !!m_regbShowTags;
 
 	m_bFirstParent=FALSE;
 	m_bWholeProject=FALSE;
@@ -104,11 +105,9 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOG_JUMPTYPE, m_JumpType);
 	DDX_Control(pDX, IDC_LOG_JUMPUP, m_JumpUp);
 	DDX_Control(pDX, IDC_LOG_JUMPDOWN, m_JumpDown);
-	DDX_Control(pDX, IDC_HIDEPATHS, m_cHidePaths);
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
-	DDX_Check(pDX, IDC_LOG_SHOWTAGS, m_bShowTags);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
@@ -135,12 +134,11 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_COMMAND(IDC_LOG_JUMPUP, &CLogDlg::OnBnClickedJumpUp)
 	ON_COMMAND(IDC_LOG_JUMPDOWN, &CLogDlg::OnBnClickedJumpDown)
 	ON_BN_CLICKED(IDC_WALKBEHAVIOUR, OnBnClickedWalkBehaviour)
+	ON_BN_CLICKED(IDC_VIEW, OnBnClickedView)
 	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickShowWholeProject)
 	ON_NOTIFY(LVN_COLUMNCLICK,IDC_LOGLIST, OnLvnColumnclick)
-	ON_BN_CLICKED(IDC_HIDEPATHS, OnBnClickedHidepaths)
 	ON_COMMAND(MSG_FETCHED_DIFF, OnBnClickedHidepaths)
 	ON_BN_CLICKED(IDC_LOG_ALLBRANCH, OnBnClickedAllBranch)
-	ON_BN_CLICKED(IDC_LOG_SHOWTAGS, OnBnClickedShowTags)
 
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATEFROM, &CLogDlg::OnDtnDropdownDatefrom)
 	ON_NOTIFY(DTN_DROPDOWN, IDC_DATETO, &CLogDlg::OnDtnDropdownDateto)
@@ -229,9 +227,8 @@ BOOL CLogDlg::OnInitDialog()
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
 	//m_LogList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 
-	// the "hide unrelated paths" checkbox should be indeterminate
-	m_cHidePaths.SetCheck(BST_INDETERMINATE);
-
+	// "unrelated paths" should be in gray color
+	m_iHidePaths = 2;
 
 	//SetWindowTheme(m_LogList.GetSafeHwnd(), L"Explorer", NULL);
 	//SetWindowTheme(m_ChangedFileListCtrl.GetSafeHwnd(), L"Explorer", NULL);
@@ -259,10 +256,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_cFilter.SetInfoIcon(IDI_LOGFILTER);
 	m_cFilter.SetValidator(this);
 
-	AdjustControlSize(IDC_HIDEPATHS);
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
-	AdjustControlSize(IDC_LOG_SHOWTAGS);
 
 	if (m_gravatar.IsGravatarEnabled())
 	{
@@ -310,10 +305,9 @@ BOOL CLogDlg::OnInitDialog()
 
 	AddAnchor(IDC_LOGINFO, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_WALKBEHAVIOUR, BOTTOM_LEFT);
-	AddAnchor(IDC_HIDEPATHS, BOTTOM_LEFT);
+	AddAnchor(IDC_VIEW, BOTTOM_LEFT);
 	AddAnchor(IDC_LOG_ALLBRANCH,BOTTOM_LEFT);
 	AddAnchor(IDC_SHOWWHOLEPROJECT, BOTTOM_LEFT);
-	AddAnchor(IDC_LOG_SHOWTAGS, BOTTOM_LEFT);
 	AddAnchor(IDC_REFRESH, BOTTOM_LEFT);
 	AddAnchor(IDC_STATBUTTON, BOTTOM_RIGHT);
 	AddAnchor(IDC_PROGRESS, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -447,7 +441,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		DialogEnableWindow(IDC_WALKBEHAVIOUR, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);
 		//DialogEnableWindow(IDC_REFRESH, FALSE);
-		DialogEnableWindow(IDC_HIDEPATHS,FALSE);
+		DialogEnableWindow(IDC_VIEW, FALSE);
 
 	}
 	else if( cur == GITLOG_END)
@@ -465,9 +459,8 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 
 		DialogEnableWindow(IDC_STATBUTTON, !(m_LogList.m_arShownList.IsEmpty() || m_LogList.m_arShownList.GetCount() == 1 && m_LogList.m_bShowWC));
 		DialogEnableWindow(IDC_REFRESH, TRUE);
+		DialogEnableWindow(IDC_VIEW, TRUE);
 		DialogEnableWindow(IDC_WALKBEHAVIOUR, TRUE);
-		DialogEnableWindow(IDC_HIDEPATHS,TRUE);
-
 //		PostMessage(WM_TIMER, LOGFILTER_TIMER);
 		GetDlgItem(IDC_PROGRESS)->ShowWindow(FALSE);
 		//CTime time=m_LogList.GetOldestTime();
@@ -750,7 +743,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			if (((DWORD)CRegStdDWORD(_T("Software\\TortoiseGit\\StyleCommitMessages"), TRUE)) == TRUE)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
-			int HidePaths=m_cHidePaths.GetState() & 0x0003;
 			CString matchpath=this->m_path.GetGitPathString();
 
 			int count = pLogEntry->GetFiles(&m_LogList).GetCount();
@@ -763,9 +755,9 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 				if(pLogEntry->GetFiles(&m_LogList)[i].GetGitPathString().Left(matchpath.GetLength()) != matchpath && pLogEntry->GetFiles(&m_LogList)[i].GetGitOldPathString().Left(matchpath.GetLength()) != matchpath)
 				{
-					if(HidePaths==BST_CHECKED)
+					if (m_iHidePaths == 1)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_HIDE;
-					if(HidePaths==BST_INDETERMINATE)
+					else if (m_iHidePaths == 2)
 						((CTGitPath&)pLogEntry->GetFiles(&m_LogList)[i]).m_Action |= CTGitPath::LOGACTIONS_GRAY;
 				}
 			}
@@ -2290,8 +2282,6 @@ void CLogDlg::OnBnClickedFollowRenames()
 
 void CLogDlg::OnBnClickedShowTags()
 {
-	this->UpdateData();
-
 	if (m_bShowTags)
 		m_LogList.m_ShowRefMask |= LOGLIST_SHOWTAGS;
 	else
@@ -2382,6 +2372,50 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;
 			OnBnClickedFollowRenames();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+#define VIEW_HIDEPATHS				1
+#define VIEW_GRAYPATHS				2
+#define VIEW_SHOWTAGS				3
+
+void CLogDlg::OnBnClickedView()
+{
+	CMenu popup;
+	if (popup.CreatePopupMenu())
+	{
+		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, m_iHidePaths != 2);
+		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, m_iHidePaths != 1);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_VIEW_SHOWTAGLABELS, VIEW_SHOWTAGS, m_bShowTags);
+
+		m_tooltips.Pop();
+		RECT rect;
+		GetDlgItem(IDC_VIEW)->GetWindowRect(&rect);
+		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this, 0);
+		switch (selection)
+		{
+		case VIEW_HIDEPATHS:
+			if (m_iHidePaths == 1)
+				m_iHidePaths = 0;
+			else
+				m_iHidePaths = 1;
+			OnBnClickedHidepaths();
+			break;
+		case VIEW_GRAYPATHS:
+			if (m_iHidePaths == 2)
+				m_iHidePaths = 0;
+			else
+				m_iHidePaths = 2;
+			OnBnClickedHidepaths();
+			break;
+		case VIEW_SHOWTAGS:
+			m_bShowTags = !m_bShowTags;
+			OnBnClickedShowTags();
 			break;
 		default:
 			break;
