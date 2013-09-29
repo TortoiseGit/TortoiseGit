@@ -267,6 +267,20 @@
 					</para>
 				</listitem>
 			</varlistentry>
+		</variablelist>
+	</sect3>
+	<sect3 id="tsvn-dug-settings-dialogs2">
+		<title>TortoiseGit Dialog Settings 2</title>
+		<?dbhh topicname="HIDD_SETTINGSDIALOGS2"?>
+		<para>
+			<figure id="tsvn-dug-settings-dia-dialogs">
+				<title>The Settings Dialog, Dialogs Page 2</title>
+				<graphic fileref="../images/SettingsDialog2.png"/>
+			</figure>
+			This dialog allows you to configure some more of TortoiseGit's
+			dialogs the way you like them.
+		</para>
+		<variablelist>
 <!--
 			<varlistentry>
 				<term>Progress Dialog</term>
@@ -382,7 +396,7 @@
 			</varlistentry>
 		</variablelist>
 	</sect3>
-	<sect3 id="tsvn-dug-settings-dialogs">
+	<sect3 id="tsvn-dug-settings-dialogs3">
 		<title>TortoiseGit Dialog Settings 3</title>
 		<?dbhh topicname="HIDD_SETTINGSDIALOGS3"?>
 		<para>
