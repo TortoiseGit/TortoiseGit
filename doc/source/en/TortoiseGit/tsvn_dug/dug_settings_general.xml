@@ -94,9 +94,9 @@
 					</caution>
 					<caution>
 						<para>
-							There is a <ulink url="https://github.com/msysgit/msysgit/issues/103"><citetitle>known issue in msysgit</citetitle></ulink>:
-							msysGit provides two <literal>git.exe</literal>-files (one in a folder named <literal>bin</literal> and one in a folder named <literal>cmd</literal>).
-							Make sure <guilabel>Git.exe Path</guilabel> points to the <literal>bin</literal>-folder within the msysgit installation folder.
+							There is a <ulink url="https://github.com/msysgit/msysgit/issues/103"><citetitle>known issue in msysGit/Git for Windows</citetitle></ulink>:
+							Git for Windows provides two <literal>git.exe</literal>-files (one in a folder named <literal>bin</literal> and one in a folder named <literal>cmd</literal>).
+							Make sure <guilabel>Git.exe Path</guilabel> points to the <literal>bin</literal>-folder within the Git for Windows installation folder.
 						</para>
 					</caution>
 				</para>

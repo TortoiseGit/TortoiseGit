@@ -37,7 +37,7 @@
 	</para>
 	<tip>
 		<para>
-			If you want to use OpenSSH shipped by msysGit just enter <filename>ssh.exe</filename>.
+			If you want to use OpenSSH shipped by Git for Windows/msysGit just enter <filename>ssh.exe</filename>.
 		</para>
 	</tip>
 	<para>
