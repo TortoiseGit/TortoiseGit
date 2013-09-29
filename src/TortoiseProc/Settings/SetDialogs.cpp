@@ -36,7 +36,8 @@ CSetDialogs::CSetDialogs()
 	, m_bAbbreviateRenamings(FALSE)
 	, m_bSymbolizeRefNames(FALSE)
 	, m_bEnableLogCache(TRUE)
-	, m_regDrawBranchesTagsOnRightSide(FALSE)
+	, m_bDrawBranchesTagsOnRightSide(FALSE)
+	, m_bEnableGravatar(FALSE)
 {
 	m_regShortDateFormat = CRegDWORD(_T("Software\\TortoiseGit\\LogDateFormat"), TRUE);
 	m_regRelativeTimes = CRegDWORD(_T("Software\\TortoiseGit\\RelativeTimes"), FALSE);
