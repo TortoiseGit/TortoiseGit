@@ -78,13 +78,13 @@ enum LISTITEMSTATES_MINE {
 #define LOGFILTER_REFNAME		0x0080
 #define LOGFILTER_EMAILS		0x0100
 
-#define LOGLIST_SHOWNOREFS			0x0000
-#define LOGLIST_SHOWLOCALBRANCHES	0x0001
-#define LOGLIST_SHOWREMOTEBRANCHES	0x0002
-#define LOGLIST_SHOWTAGS			0x0004
-#define LOGLIST_SHOWSTASH			0x0008
-#define LOGLIST_SHOWBISECT			0x0010
-#define LOGLIST_SHOWALLREFS			0xFFFF
+#define LOGLIST_SHOWNOTHING				0x0000
+#define LOGLIST_SHOWLOCALBRANCHES		0x0001
+#define LOGLIST_SHOWREMOTEBRANCHES		0x0002
+#define LOGLIST_SHOWTAGS				0x0004
+#define LOGLIST_SHOWSTASH				0x0008
+#define LOGLIST_SHOWBISECT				0x0010
+#define LOGLIST_SHOWALLREFS				0xFFFF
 
 //typedef void CALLBACK_PROCESS(void * data, int progress);
 #define MSG_LOADED				(WM_USER+110)
@@ -299,6 +299,13 @@ public:
 	ID_COPY_SUBJECT,
 	ID_COPY_HASH,
 	};
+	enum FilterShow
+	{
+		FILTERSHOW_REFS = 1,
+		FILTERSHOW_MERGEPOINTS = 2,
+		FILTERSHOW_ANYCOMMIT = 4,
+		FILTERSHOW_ALL = FILTERSHOW_ANYCOMMIT | FILTERSHOW_REFS | FILTERSHOW_MERGEPOINTS
+	};
 	inline unsigned __int64 GetContextMenuBit(int i){ return ((unsigned __int64 )0x1)<<i ;}
 	void InsertGitColumn();
 	void ResizeAllListCtrlCols();
@@ -308,6 +315,7 @@ public:
 	int  BeginFetchLog();
 	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat);
+	bool ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren);
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
@@ -324,6 +332,7 @@ public:
 	void Clear();
 
 	DWORD				m_SelectedFilters;
+	FilterShow			m_ShowFilter;
 	bool				m_bFilterWithRegex;
 	CLogDataVector		m_logEntries;
 	void RemoveFilter();

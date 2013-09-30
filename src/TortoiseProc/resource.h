@@ -954,6 +954,7 @@
 #define IDS_VIEW_SHOWLOCALBRANCHLABELS  1456
 #define IDS_VIEW_SHOWREMOTEBRANCHLABELS 1457
 #define IDS_VIEW_LABELS                 1458
+#define IDS_VIEW_COMPRESSED             1459
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467

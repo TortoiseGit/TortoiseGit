@@ -43,10 +43,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
-	, m_bShowTags(true)
-	, m_bShowLocalBranches(true)
-	, m_bShowRemoteBranches(true)
-	, m_iHidePaths(0)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -2296,6 +2292,20 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	m_LogList.Invalidate();
 }
 
+void CLogDlg::OnBnClickedCompressedView()
+{
+	this->UpdateData();
+
+	if (m_bCompressedView)
+		m_LogList.m_ShowFilter = static_cast<CGitLogListBase::FilterShow>(CGitLogListBase::FILTERSHOW_REFS | CGitLogListBase::FILTERSHOW_MERGEPOINTS);
+	else
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_ALL;
+	// m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_REFS;
+
+	OnRefresh();
+	FillLogMessageCtrl(false);
+}
+
 void CLogDlg::OnBnClickedBrowseRef()
 {
 	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange(), gPickRef_All, true);
@@ -2390,6 +2400,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_SHOWTAGS				3
 #define VIEW_SHOWLOCALBRANCHES		4
 #define VIEW_SHOWREMOTEBRANCHES		5
+#define VIEW_COMPRESSEDGRAPH		6
 
 void CLogDlg::OnBnClickedView()
 {
@@ -2407,6 +2418,8 @@ void CLogDlg::OnBnClickedView()
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
 			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
 		}
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_VIEW_COMPRESSED, VIEW_COMPRESSEDGRAPH, m_bCompressedView, true);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2439,6 +2452,10 @@ void CLogDlg::OnBnClickedView()
 		case VIEW_SHOWREMOTEBRANCHES:
 			m_bShowRemoteBranches = !m_bShowRemoteBranches;
 			HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
+			break;
+		case VIEW_COMPRESSEDGRAPH:
+			m_bCompressedView = !m_bCompressedView;
+			OnBnClickedCompressedView();
 			break;
 		default:
 			break;

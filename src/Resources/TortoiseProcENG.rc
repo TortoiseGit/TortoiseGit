@@ -4250,6 +4250,7 @@ BEGIN
     IDS_SHOWFILES_HIDEPATHS "H&ide Unrelated Changed Paths"
     IDS_SHOWFILES_GRAYPATHS "&Gray Unrelated Changed Paths"
     IDS_VIEW_SHOWTAGLABELS  "&Tags"
+    IDS_VIEW_COMPRESSED     "&Compressed Graph"
 END
 
 STRINGTABLE
