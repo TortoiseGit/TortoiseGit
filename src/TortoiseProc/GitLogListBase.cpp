@@ -2711,7 +2711,17 @@ UINT CGitLogListBase::LogThread()
 
 			char *note=NULL;
 			g_Git.m_critGitDllSec.Lock();
-			git_get_notes(commit.m_hash,&note);
+			try
+			{
+				git_get_notes(commit.m_hash, &note);
+			}
+			catch (char* msg)
+			{
+				g_Git.m_critGitDllSec.Unlock();
+				CString err(msg);
+				MessageBox(_T("Could not get commit notes.\nlibgit reports:\n") + err, _T("TortoiseGit"), MB_ICONERROR);
+				break;
+			}
 			g_Git.m_critGitDllSec.Unlock();
 
 			if(note)
