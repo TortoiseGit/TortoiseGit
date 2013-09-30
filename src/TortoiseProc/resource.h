@@ -958,6 +958,7 @@
 #define IDS_HINT                        1460
 #define IDS_VIEW_SHOWGRAVATAR           1461
 #define IDC_SHOWUNVERSIONEDOVERLAY      1462
+#define IDS_WALKBEHAVIOUR_COMPRESSED    1462
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467
 #define IDC_EDIT1                       1469

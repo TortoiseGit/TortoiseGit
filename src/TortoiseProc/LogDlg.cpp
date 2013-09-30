@@ -2317,6 +2317,19 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	m_LogList.Invalidate();
 }
 
+void CLogDlg::OnBnClickedCompressedGraph()
+{
+	UpdateData();
+
+	if (m_bCompressedGraph)
+		m_LogList.m_ShowFilter = static_cast<CGitLogListBase::FilterShow>(CGitLogListBase::FILTERSHOW_REFS | CGitLogListBase::FILTERSHOW_MERGEPOINTS);
+	else
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_ALL;
+
+	OnRefresh();
+	FillLogMessageCtrl(false);
+}
+
 void CLogDlg::OnBnClickedBrowseRef()
 {
 	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange(), gPickRef_All, true);
@@ -2377,6 +2390,7 @@ void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked
 
 #define WALKBEHAVIOUR_FIRSTPARENT			1
 #define WALKBEHAVIOUR_FOLLOWRENAMES			2
+#define WALKBEHAVIOUR_COMPRESSEDGRAPH		3
 
 void CLogDlg::OnBnClickedWalkBehaviour()
 {
@@ -2385,6 +2399,8 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 	{
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FIRSTPARENT, WALKBEHAVIOUR_FIRSTPARENT, m_bFirstParent);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FOLLOWRENAMES, WALKBEHAVIOUR_FOLLOWRENAMES, m_bFollowRenames, !(m_path.IsEmpty() || m_path.IsDirectory()));
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_COMPRESSED, WALKBEHAVIOUR_COMPRESSEDGRAPH, m_bCompressedGraph);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2399,6 +2415,10 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;
 			OnBnClickedFollowRenames();
+			break;
+		case WALKBEHAVIOUR_COMPRESSEDGRAPH:
+			m_bCompressedGraph = !m_bCompressedGraph;
+			OnBnClickedCompressedGraph();
 			break;
 		default:
 			break;

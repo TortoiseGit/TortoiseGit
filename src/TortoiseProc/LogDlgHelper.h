@@ -91,6 +91,7 @@ public:
 	MAP_HASH_REV m_HashMap;
 	void updateLanes(GitRev& c, Lanes& lns, CGitHash &sha) ;
 	void setLane(CGitHash& sha) ;
+	void append(CGitHash& sha, bool storeInVector);
 
 	BYTE_VECTOR		 m_RawlogData;
 	std::vector<int> m_RawLogStart;

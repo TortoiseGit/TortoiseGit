@@ -513,6 +513,10 @@ msgstr ""
 msgid "&Compare revisions"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "&Compressed Graph"
+msgstr ""
+
 #. Resource IDs: (1239)
 msgid "&Configure"
 msgstr ""
