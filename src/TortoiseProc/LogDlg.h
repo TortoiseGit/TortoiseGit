@@ -213,7 +213,7 @@ private:
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
 	bool				m_bShowGravatar;
-	bool				m_bCompressedGraph;
+	int					m_iCompressedGraph;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

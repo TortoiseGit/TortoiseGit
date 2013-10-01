@@ -7838,6 +7838,10 @@ msgstr ""
 msgid "Show Inline-Diff\nInline diff"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "Show la&beled commits only"
+msgstr ""
+
 #. Resource IDs: (32781)
 msgid "Show Log"
 msgstr ""

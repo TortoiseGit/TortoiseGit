@@ -4261,6 +4261,7 @@ BEGIN
     IDS_HINT                "Hint"
     IDS_VIEW_SHOWGRAVATAR   "G&ravatar"
     IDS_WALKBEHAVIOUR_COMPRESSED "&Compressed Graph"
+    IDS_WALKBEHAVIOUR_LABELEDCOMMITS "Show la&beled commits only"
 END
 
 #endif    // English (U.S.) resources
