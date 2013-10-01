@@ -2418,8 +2418,8 @@ void CLogDlg::OnBnClickedView()
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
-		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, m_iHidePaths != 2);
-		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, m_iHidePaths != 1);
+		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1);
+		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		CMenu showLabelsMenu;
 		if (showLabelsMenu.CreatePopupMenu())
