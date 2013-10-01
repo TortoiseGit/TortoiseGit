@@ -2738,15 +2738,18 @@ UINT CGitLogListBase::LogThread()
 			}
 
 			pRev->ParserParentFromCommit(&commit);
-			for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
+			if (m_ShowFilter & FILTERSHOW_MERGEPOINTS) // See also ShouldShowFilter()
 			{
-				const CGitHash &parentHash = pRev->m_ParentHash[i];
-				auto it = commitChildren.find(parentHash);
-				if (it == commitChildren.end())
+				for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 				{
-					it = commitChildren.insert(make_pair(parentHash, std::set<CGitHash>())).first;
+					const CGitHash &parentHash = pRev->m_ParentHash[i];
+					auto it = commitChildren.find(parentHash);
+					if (it == commitChildren.end())
+					{
+						it = commitChildren.insert(make_pair(parentHash, std::set<CGitHash>())).first;
+					}
+					it->second.insert(pRev->m_CommitHash);
 				}
-				it->second.insert(pRev->m_CommitHash);
 			}
 
 #ifdef DEBUG
