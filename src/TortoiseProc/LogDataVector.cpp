@@ -259,6 +259,15 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 	return 0;
 }
 
+void CLogDataVector::append(CGitHash& sha, bool storeInVector)
+{
+	if (storeInVector)
+		this->push_back(sha);
+
+	GitRev* r = &m_pLogCache->m_HashMap[sha];
+	updateLanes(*r, this->m_Lns, sha);
+}
+
 void CLogDataVector::setLane(CGitHash& sha)
 {
 	Lanes* l = &(this->m_Lns);

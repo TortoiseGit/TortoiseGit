@@ -4250,6 +4250,7 @@ BEGIN
     IDS_SHOWFILES_HIDEPATHS "H&ide Unrelated Changed Paths"
     IDS_SHOWFILES_GRAYPATHS "&Gray Unrelated Changed Paths"
     IDS_VIEW_SHOWTAGLABELS  "&Tags"
+    IDS_VIEW_COMPRESSED     "&Compressed Graph"
 END
 
 STRINGTABLE
@@ -4257,6 +4258,7 @@ BEGIN
     IDS_VIEW_SHOWLOCALBRANCHLABELS "&Local branches"
     IDS_VIEW_SHOWREMOTEBRANCHLABELS "&Remote branches"
     IDS_VIEW_LABELS         "&Labels"
+    IDS_VIEW_LABELEDCOMMITS "Show La&beled Commits Only"
 END
 
 #endif    // English (U.S.) resources

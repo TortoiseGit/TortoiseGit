@@ -43,10 +43,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bFollowRenames(FALSE)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
-	, m_bShowTags(true)
-	, m_bShowLocalBranches(true)
-	, m_bShowRemoteBranches(true)
-	, m_iHidePaths(0)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -2293,7 +2289,32 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	else
 		m_LogList.m_ShowRefMask &= ~flag;
 
-	m_LogList.Invalidate();
+	if ((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT))
+	{
+		// Remove commits where labels are not shown.
+		OnRefresh();
+		FillLogMessageCtrl(false);
+	}
+	else
+	{
+		// Just redraw
+		m_LogList.Invalidate();
+	}
+}
+
+void CLogDlg::OnBnClickedCompressedView()
+{
+	this->UpdateData();
+
+	if (m_iCompressedView == 2)
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_REFS;
+	else if (m_iCompressedView == 1)
+		m_LogList.m_ShowFilter = static_cast<CGitLogListBase::FilterShow>(CGitLogListBase::FILTERSHOW_REFS | CGitLogListBase::FILTERSHOW_MERGEPOINTS);
+	else
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_ALL;
+
+	OnRefresh();
+	FillLogMessageCtrl(false);
 }
 
 void CLogDlg::OnBnClickedBrowseRef()
@@ -2390,14 +2411,16 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_SHOWTAGS				3
 #define VIEW_SHOWLOCALBRANCHES		4
 #define VIEW_SHOWREMOTEBRANCHES		5
+#define VIEW_COMPRESSEDGRAPH		6
+#define VIEW_LABELEDCOMMITS			7
 
 void CLogDlg::OnBnClickedView()
 {
 	CMenu popup;
 	if (popup.CreatePopupMenu())
 	{
-		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, m_iHidePaths != 2);
-		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, m_iHidePaths != 1);
+		AppendMenuChecked(popup, IDS_SHOWFILES_HIDEPATHS, VIEW_HIDEPATHS, m_iHidePaths == 1, true);
+		AppendMenuChecked(popup, IDS_SHOWFILES_GRAYPATHS, VIEW_GRAYPATHS, m_iHidePaths == 2, true);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		CMenu showLabelsMenu;
 		if (showLabelsMenu.CreatePopupMenu())
@@ -2407,6 +2430,9 @@ void CLogDlg::OnBnClickedView()
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
 			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
 		}
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_VIEW_COMPRESSED, VIEW_COMPRESSEDGRAPH, m_iCompressedView == 1, true);
+		AppendMenuChecked(popup, IDS_VIEW_LABELEDCOMMITS, VIEW_LABELEDCOMMITS, m_iCompressedView == 2, true);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2439,6 +2465,14 @@ void CLogDlg::OnBnClickedView()
 		case VIEW_SHOWREMOTEBRANCHES:
 			m_bShowRemoteBranches = !m_bShowRemoteBranches;
 			HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
+			break;
+		case VIEW_LABELEDCOMMITS:
+			m_iCompressedView = (m_iCompressedView == 2 ? 0 : 2);
+			OnBnClickedCompressedView();
+			break;
+		case VIEW_COMPRESSEDGRAPH:
+			m_iCompressedView = (m_iCompressedView == 1 ? 0 : 1);
+			OnBnClickedCompressedView();
 			break;
 		default:
 			break;

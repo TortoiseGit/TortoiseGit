@@ -124,6 +124,7 @@ protected:
 	afx_msg void OnBnClickedAllBranch();
 	void OnBnClickedFollowRenames();
 	void HandleShowLabels(bool var, int flag);
+	afx_msg void OnBnClickedCompressedView();
 	afx_msg void OnBnClickedBrowseRef();
 
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -209,6 +210,7 @@ private:
 	bool				m_bShowTags;
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
+	int					m_iCompressedView;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

@@ -57,6 +57,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	, m_bStrictStopped(false)
 	, m_pStoreSelection(NULL)
 	, m_SelectedFilters(LOGFILTER_ALL)
+	, m_ShowFilter(FILTERSHOW_ALL)
 	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
 	, m_pFindDialog(NULL)
@@ -1189,7 +1190,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				pLVCD->nmcd.uItemState &= ~(CDIS_SELECTED|CDIS_FOCUS);
 			}
 
-			if (pLVCD->iSubItem == LOGLIST_GRAPH && m_sFilterText.IsEmpty())
+			if (pLVCD->iSubItem == LOGLIST_GRAPH && m_sFilterText.IsEmpty() && (m_ShowFilter & FILTERSHOW_MERGEPOINTS))
 			{
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec && (!this->m_IsRebaseReplaceGraph) )
 				{
@@ -2674,6 +2675,7 @@ UINT CGitLogListBase::LogThread()
 		t2=t1=GetTickCount();
 		int oldprecentage = 0;
 		size_t oldsize = m_logEntries.size();
+		std::map<CGitHash, std::set<CGitHash>> commitChildren;
 		while (ret== 0 && !m_bExitThread)
 		{
 			g_Git.m_critGitDllSec.Lock();
@@ -2736,24 +2738,44 @@ UINT CGitLogListBase::LogThread()
 			}
 
 			pRev->ParserParentFromCommit(&commit);
+			if (m_ShowFilter & FILTERSHOW_MERGEPOINTS) // See also ShouldShowFilter()
+			{
+				for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
+				{
+					const CGitHash &parentHash = pRev->m_ParentHash[i];
+					auto it = commitChildren.find(parentHash);
+					if (it == commitChildren.end())
+					{
+						it = commitChildren.insert(make_pair(parentHash, std::set<CGitHash>())).first;
+					}
+					it->second.insert(pRev->m_CommitHash);
+				}
+			}
 
 #ifdef DEBUG
 			pRev->DbgPrint();
 			TRACE(_T("\n"));
 #endif
 
+			bool visible = true;
 			if(!m_sFilterText.IsEmpty())
 			{
 				if(!IsMatchFilter(bRegex,pRev,pat))
-					continue;
+					visible = false;
 			}
+			if (visible && !ShouldShowFilter(pRev, commitChildren))
+				visible = false;
 			this->m_critSec.Lock();
-			m_logEntries.push_back(hash);
-			m_arShownList.SafeAdd(pRev);
+			m_logEntries.append(hash, visible);
+			if (visible)
+				m_arShownList.SafeAdd(pRev);
 			this->m_critSec.Unlock();
 
 			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
 				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
+
+			if (!visible)
+				continue;
 
 			t2=GetTickCount();
 
@@ -2774,6 +2796,10 @@ UINT CGitLogListBase::LogThread()
 					::PostMessage(this->GetParent()->m_hWnd,MSG_LOAD_PERCENTAGE,(WPARAM) percent,0);
 					oldprecentage = percent;
 				}
+
+				if (lastSelectedHashNItem >= 0)
+					PostMessage(m_ScrollToMessage, lastSelectedHashNItem);
+
 				t1 = t2;
 			}
 		}
@@ -3134,6 +3160,68 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 		}
 	} // else (from if (bRegex))
 	return FALSE;
+}
+
+static bool CStringStartsWith(const CString &str, const CString &prefix)
+{
+	return str.Left(prefix.GetLength()) == prefix;
+}
+bool CGitLogListBase::ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren)
+{
+	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
+		return true;
+
+	if (m_ShowFilter & FILTERSHOW_REFS)
+	{
+		// Keep all refs.
+		const STRING_VECTOR &refList = m_HashMap[pRev->m_CommitHash];
+		for (size_t i = 0; i < refList.size(); ++i)
+		{
+			const CString &str = refList[i];
+			if (CStringStartsWith(str, _T("refs/heads/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/remotes/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/tags/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWTAGS)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/stash")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWSTASH)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/bisect/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWBISECT)
+					return true;
+			}
+		}
+		// Keep the head too.
+		if (pRev->m_CommitHash == m_HeadHash)
+			return true;
+	}
+
+	if (m_ShowFilter & FILTERSHOW_MERGEPOINTS)
+	{
+		if (pRev->ParentsCount() > 1)
+			return true;
+		auto childrenIt = commitChildren.find(pRev->m_CommitHash);
+		if (childrenIt != commitChildren.end())
+		{
+			const std::set<CGitHash> &children = childrenIt->second;
+			if (children.size() > 1)
+				return true;
+		}
+	}
+	return false;
 }
 
 
@@ -3534,7 +3622,14 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 {
 	if (GetSelectedCount() != 0)
 		return 0;
+
+	CGitHash theSelectedHash = m_lastSelectedHash;
 	SetItemState((int)itemToSelect, LVIS_SELECTED, LVIS_SELECTED);
+	m_lastSelectedHash = theSelectedHash;
+
+	int countPerPage = GetCountPerPage();
+	EnsureVisible(max(0, (int)itemToSelect-countPerPage/2), FALSE);
+	EnsureVisible(min(GetItemCount(), (int)itemToSelect+countPerPage/2), FALSE);
 	EnsureVisible((int)itemToSelect, FALSE);
 	return 0;
 }
