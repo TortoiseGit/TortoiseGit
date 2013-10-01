@@ -4258,6 +4258,7 @@ BEGIN
     IDS_VIEW_SHOWLOCALBRANCHLABELS "&Local branches"
     IDS_VIEW_SHOWREMOTEBRANCHLABELS "&Remote branches"
     IDS_VIEW_LABELS         "&Labels"
+    IDS_VIEW_LABELEDCOMMITS "Show La&beled Commits Only"
 END
 
 #endif    // English (U.S.) resources

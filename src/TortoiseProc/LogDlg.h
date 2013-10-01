@@ -210,7 +210,7 @@ private:
 	bool				m_bShowTags;
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
-	bool				m_bCompressedView;
+	int					m_iCompressedView;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

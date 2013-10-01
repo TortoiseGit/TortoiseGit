@@ -3162,6 +3162,10 @@ BOOL CGitLogListBase::IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex 
 	return FALSE;
 }
 
+static bool CStringStartsWith(const CString &str, const CString &prefix)
+{
+	return str.Left(prefix.GetLength()) == prefix;
+}
 bool CGitLogListBase::ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren)
 {
 	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
@@ -3171,8 +3175,35 @@ bool CGitLogListBase::ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, st
 	{
 		// Keep all refs.
 		const STRING_VECTOR &refList = m_HashMap[pRev->m_CommitHash];
-		if (!refList.empty())
-			return true;
+		for (size_t i = 0; i < refList.size(); ++i)
+		{
+			const CString &str = refList[i];
+			if (CStringStartsWith(str, _T("refs/heads/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/remotes/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/tags/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWTAGS)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/stash")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWSTASH)
+					return true;
+			}
+			else if (CStringStartsWith(str, _T("refs/bisect/")))
+			{
+				if (m_ShowRefMask & LOGLIST_SHOWBISECT)
+					return true;
+			}
+		}
 		// Keep the head too.
 		if (pRev->m_CommitHash == m_HeadHash)
 			return true;
