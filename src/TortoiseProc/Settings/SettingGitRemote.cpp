@@ -98,12 +98,6 @@ BOOL CSettingGitRemote::OnInitDialog()
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
 
-	if (remotes.empty())
-	{
-		GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(_T("origin"));
-		OnEnChangeEditRemote();
-	}
-
 	return TRUE;
 }
 // CSettingGitRemote message handlers
@@ -240,6 +234,13 @@ void CSettingGitRemote::OnEnChangeEditUrl()
 	m_ChangedMask|=REMOTE_URL;
 
 	this->UpdateData();
+
+	if (m_strRemote.IsEmpty() && !m_strUrl.IsEmpty() && m_ctrlRemoteList.GetCount() == 0)
+	{
+		GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(_T("origin"));
+		OnEnChangeEditRemote();
+	}
+
 	if( (!this->m_strRemote.IsEmpty())&&(!this->m_strUrl.IsEmpty()) )
 		this->SetModified();
 	else

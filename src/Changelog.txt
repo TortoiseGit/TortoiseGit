@@ -39,6 +39,7 @@ Released: Unreleased
  * Fixed issue #1914: Repository Browser give an error (libgit2) after change branch
  * Fixed issue #1915: Submodule Update Dialog behaves curious
  * Fixed issue #1919: Submodule visibility with square brackets
+ * Fixed issue #1918: Settings dialog forces to use remotes
 
 == Known Issues ==
  * If you experience problems with PuTTY ssh, please see issue #1880.
