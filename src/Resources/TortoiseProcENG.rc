@@ -4257,6 +4257,8 @@ BEGIN
     IDS_VIEW_SHOWLOCALBRANCHLABELS "&Local branches"
     IDS_VIEW_SHOWREMOTEBRANCHLABELS "&Remote branches"
     IDS_VIEW_LABELS         "&Labels"
+    IDS_B_T_PREFILL_ORIGIN  "When you type the URL, the remote name will be automatically filled with ""origin"" if the remote name is empty, so you do not have to."
+    IDS_HINT                "Hint"
 END
 
 #endif    // English (U.S.) resources

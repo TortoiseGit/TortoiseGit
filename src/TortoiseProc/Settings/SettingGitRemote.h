@@ -49,6 +49,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedButtonBrowse();
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnLbnSelchangeListRemote();
