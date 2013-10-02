@@ -60,6 +60,7 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
+	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, &CSettingGitRemote::OnBnClickedButtonBrowse)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CSettingGitRemote::OnBnClickedButtonAdd)
 	ON_LBN_SELCHANGE(IDC_LIST_REMOTE, &CSettingGitRemote::OnLbnSelchangeListRemote)
@@ -70,6 +71,20 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
 END_MESSAGE_MAP()
+
+static void ShowEditBalloon(HWND hDlg, UINT nIdControl, UINT nIdText, UINT nIdTitle, int nIcon = TTI_WARNING)
+{
+	CString text(MAKEINTRESOURCE(nIdText));
+	CString title(MAKEINTRESOURCE(nIdTitle));
+	EDITBALLOONTIP bt;
+	bt.cbStruct = sizeof(bt);
+	bt.pszText  = text;
+	bt.pszTitle = title;
+	bt.ttiIcon  = nIcon;
+	SendDlgItemMessage(hDlg, nIdControl, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
+}
+
+#define TIMER_PREFILL 1
 
 BOOL CSettingGitRemote::OnInitDialog()
 {
@@ -98,9 +113,23 @@ BOOL CSettingGitRemote::OnInitDialog()
 	//this->GetDlgItem(IDC_EDIT_REMOTE)->EnableWindow(FALSE);
 	this->UpdateData(FALSE);
 
+	SetTimer(TIMER_PREFILL, 1000, nullptr);
 	return TRUE;
 }
 // CSettingGitRemote message handlers
+
+void CSettingGitRemote::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == TIMER_PREFILL)
+	{
+		if (m_strRemote.IsEmpty() && m_ctrlRemoteList.GetCount() == 0)
+		{
+			ShowEditBalloon(m_hWnd, IDC_EDIT_URL, IDS_B_T_PREFILL_ORIGIN, IDS_HINT, TTI_INFO);
+		}
+	
+		KillTimer(TIMER_PREFILL);
+	}
+}
 
 void CSettingGitRemote::OnBnClickedButtonBrowse()
 {
