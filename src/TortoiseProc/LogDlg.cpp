@@ -84,6 +84,10 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_bWholeProject=FALSE;
 
 	m_bShowUnversioned = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
+	
+	m_bShowGravatar = !!CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
+	m_regbShowGravatar = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowGravatar\\") + str, m_bShowGravatar);
+	m_bShowGravatar = !!m_regbShowGravatar;
 }
 
 CLogDlg::~CLogDlg()
@@ -93,6 +97,7 @@ CLogDlg::~CLogDlg()
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
+	m_regbShowGravatar = m_bShowGravatar;
 
 	m_CurrentFilteredChangedArray.RemoveAll();
 
@@ -266,18 +271,7 @@ BOOL CLogDlg::OnInitDialog()
 	AdjustControlSize(IDC_LOG_ALLBRANCH);
 	AdjustControlSize(IDC_SHOWWHOLEPROJECT);
 
-	if (m_gravatar.IsGravatarEnabled())
-	{
-		RECT rect, rect2;
-		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(&rect);
-		ScreenToClient(&rect);
-		m_gravatar.GetWindowRect(&rect2);
-		ScreenToClient(&rect2);
-		rect.right = rect2.left;
-		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
-	}
-	else
-		m_gravatar.ShowWindow(SW_HIDE);
+	ShowGravatar();
 
 	GetClientRect(m_DlgOrigRect);
 	m_LogList.GetClientRect(m_LogListOrigRect);
@@ -2204,6 +2198,33 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 	return url;
 }
 
+void CLogDlg::ShowGravatar()
+{
+	m_gravatar.EnableGravatar(m_bShowGravatar);
+	if (m_gravatar.IsGravatarEnabled())
+	{
+		RECT rect, rect2;
+		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(&rect);
+		ScreenToClient(&rect);
+		m_gravatar.GetWindowRect(&rect2);
+		ScreenToClient(&rect2);
+		rect.right = rect2.left;
+		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
+		m_gravatar.ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		RECT rect, rect2;
+		GetDlgItem(IDC_MSGVIEW)->GetWindowRect(&rect);
+		ScreenToClient(&rect);
+		m_gravatar.GetWindowRect(&rect2);
+		ScreenToClient(&rect2);
+		rect.right = rect2.right;
+		GetDlgItem(IDC_MSGVIEW)->MoveWindow(&rect);
+		m_gravatar.ShowWindow(SW_HIDE);
+	}
+}
+
 
 void CLogDlg::OnEnChangeSearchedit()
 {
@@ -2390,6 +2411,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 #define VIEW_SHOWTAGS				3
 #define VIEW_SHOWLOCALBRANCHES		4
 #define VIEW_SHOWREMOTEBRANCHES		5
+#define VIEW_SHOWGRAVATAR			6
 
 void CLogDlg::OnBnClickedView()
 {
@@ -2407,6 +2429,8 @@ void CLogDlg::OnBnClickedView()
 			AppendMenuChecked(showLabelsMenu, IDS_VIEW_SHOWREMOTEBRANCHLABELS, VIEW_SHOWREMOTEBRANCHES, m_bShowRemoteBranches);
 			popup.AppendMenu(MF_STRING | MF_POPUP, (UINT)showLabelsMenu.m_hMenu, (CString)MAKEINTRESOURCE(IDS_VIEW_LABELS));
 		}
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_VIEW_SHOWGRAVATAR, VIEW_SHOWGRAVATAR, m_bShowGravatar);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2440,6 +2464,27 @@ void CLogDlg::OnBnClickedView()
 			m_bShowRemoteBranches = !m_bShowRemoteBranches;
 			HandleShowLabels(m_bShowRemoteBranches, LOGLIST_SHOWREMOTEBRANCHES);
 			break;
+		case VIEW_SHOWGRAVATAR:
+			{
+				m_bShowGravatar = !m_bShowGravatar;
+				ShowGravatar();
+				m_gravatar.Init();
+				CString email;
+				POSITION pos = m_LogList.GetFirstSelectedItemPosition();
+				if (pos)
+				{
+					int selIndex = m_LogList.GetNextSelectedItem(pos);
+					int moreSel = m_LogList.GetNextSelectedItem(pos);
+					if (moreSel < 0)
+					{
+						GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(selIndex));
+						if (pLogEntry)
+							email = pLogEntry->GetAuthorEmail();
+					}
+				}
+				m_gravatar.LoadGravatar(email);
+				break;
+			}
 		default:
 			break;
 		}

@@ -73,8 +73,8 @@ CGravatar::CGravatar()
 	, m_gravatarEvent(INVALID_HANDLE_VALUE)
 	, m_gravatarThread(nullptr)
 	, m_gravatarExit(false)
+	, m_bEnableGravatar(false)
 {
-	m_bEnableGravatar = !!CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
 }
 
 CGravatar::~CGravatar()
@@ -88,13 +88,19 @@ void CGravatar::Init()
 {
 	if (m_bEnableGravatar)
 	{
-		m_gravatarEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
-		m_gravatarLock.Init();
-		m_gravatarThread = AfxBeginThread([] (LPVOID lpVoid) -> UINT { ((CGravatar *)lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
+		if (m_gravatarEvent == INVALID_HANDLE_VALUE)
+		{
+			m_gravatarEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
+			m_gravatarLock.Init();
+		}
 		if (m_gravatarThread == nullptr)
 		{
-			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-			return;
+			m_gravatarThread = AfxBeginThread([] (LPVOID lpVoid) -> UINT { ((CGravatar *)lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
+			if (m_gravatarThread == nullptr)
+			{
+				CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+				return;
+			}
 		}
 	}
 }

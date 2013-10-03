@@ -150,6 +150,7 @@ private:
 	CRegDWORD m_regbShowTags;
 	CRegDWORD m_regbShowLocalBranches;
 	CRegDWORD m_regbShowRemoteBranches;
+	CRegDWORD m_regbShowGravatar;
 
 	void Refresh (bool clearfilter = false);
 	void MoveToSameTop(CWnd *pWndRef, CWnd *pWndTarget);
@@ -175,6 +176,7 @@ private:
 	void GetChangedPaths(std::vector<CString>& changedpaths, std::vector<LogChangedPath*>& changedlogpaths);
 	void SetDlgTitle();
 	CString GetAbsoluteUrlFromRelativeUrl(const CString& url);
+	void ShowGravatar();
 
 
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -209,6 +211,7 @@ private:
 	bool				m_bShowTags;
 	bool				m_bShowLocalBranches;
 	bool				m_bShowRemoteBranches;
+	bool				m_bShowGravatar;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;

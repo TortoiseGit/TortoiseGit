@@ -4259,6 +4259,7 @@ BEGIN
     IDS_VIEW_LABELS         "&Labels"
     IDS_B_T_PREFILL_ORIGIN  "When you type the URL, the remote name will be automatically filled with ""origin"" if the remote name is empty, so you do not have to."
     IDS_HINT                "Hint"
+    IDS_VIEW_SHOWGRAVATAR   "G&ravatar"
 END
 
 #endif    // English (U.S.) resources

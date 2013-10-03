@@ -4416,6 +4416,10 @@ msgstr ""
 msgid "Further options for the commit dialog are on Dialogs 3 page."
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "G&ravatar"
+msgstr ""
+
 #. Resource IDs: (5061)
 msgid "GB2312 (Simplified)"
 msgstr ""

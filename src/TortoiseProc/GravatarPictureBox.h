@@ -27,6 +27,7 @@ public:
 	virtual ~CGravatar();
 	void	Init();
 	bool	IsGravatarEnabled() const { return m_bEnableGravatar; }
+	void	EnableGravatar(bool value) { m_bEnableGravatar = value; }
 	void	LoadGravatar(CString email = _T(""));
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
