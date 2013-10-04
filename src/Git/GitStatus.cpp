@@ -174,7 +174,8 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 		if(path.IsDirectory())
 		{
 			err = GetDirStatus(sProjectRoot,CString(lpszSubPath),&m_status.text_status , isfull, false,!noignore, NULL, NULL);
-
+			if (m_status.text_status == git_wc_status_added || m_status.text_status == git_wc_status_deleted) // fix for issue #1769; a folder is either modified, conflicted or normal
+				m_status.text_status = git_wc_status_modified;
 		}
 		else
 		{

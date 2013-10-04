@@ -41,6 +41,7 @@ Released: Unreleased
  * Fixed issue #1919: Submodule visibility with square brackets
  * Fixed issue #1918: Settings dialog forces to use remotes
  * Fixed issue #1923: Once Credential node is activated, pressing apply button in Settings dialog will close the dialog
+ * Fixed issue #1769: "Show Log" missing from context menu if "Shell Extended" and a file was Added but not committed
 
 == Known Issues ==
  * If you experience problems with PuTTY ssh, please see issue #1880.
