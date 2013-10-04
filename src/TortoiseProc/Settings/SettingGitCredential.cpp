@@ -711,11 +711,12 @@ BOOL CSettingGitCredential::OnApply()
 		if (!SaveSimpleCredential(type))
 			return FALSE;
 
-		if (!DeleteOtherKeys(type))
-		{
+		int ret = DeleteOtherKeys(type);
+		if (ret < 0)
 			EndDialog(0);
+		if (ret)
 			return FALSE;
-		}
+		SetModified(FALSE);
 		return ISettingsPropPage::OnApply();
 	}
 
