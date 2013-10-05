@@ -204,10 +204,10 @@ private:
 	bool				m_bCancelled;
 
 	BOOL				m_iHidePaths;
-	BOOL				m_bFirstParent;
+	bool				m_bFirstParent;
 	BOOL				m_bAllBranch;
 	BOOL				m_bWholeProject;
-	BOOL				m_bFollowRenames;
+	bool				m_bFollowRenames;
 	BOOL				m_bShowUnversioned;
 	bool				m_bShowTags;
 	bool				m_bShowLocalBranches;

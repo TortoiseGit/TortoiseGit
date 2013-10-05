@@ -40,7 +40,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_wParam(0)
 	, m_currentChangedArray(NULL)
 	, m_nSortColumn(0)
-	, m_bFollowRenames(FALSE)
+	, m_bFollowRenames(false)
 	, m_bSelect(false)
 	, m_bSelectionMustBeSingle(true)
 	, m_bShowTags(true)
@@ -49,6 +49,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bNoMerges(false)
 	, m_iHidePaths(0)
 	, m_bWalkBehavior(FALSE)
+	, m_bFirstParent(false)
+	, m_bWholeProject(FALSE)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -81,9 +83,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	m_bShowLocalBranches = !!m_regbShowLocalBranches;
 	m_regbShowRemoteBranches = CRegDWORD(_T("Software\\TortoiseGit\\LogDialog\\ShowRemoteBranches\\") + str, TRUE);
 	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
-
-	m_bFirstParent=FALSE;
-	m_bWholeProject=FALSE;
 
 	m_bShowUnversioned = CRegDWORD(_T("Software\\TortoiseGit\\AddBeforeCommit"), TRUE);
 	
