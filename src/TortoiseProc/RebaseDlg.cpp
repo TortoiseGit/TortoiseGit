@@ -302,13 +302,6 @@ BOOL CRebaseDlg::OnInitDialog()
 	else
 		this->m_CurrentRebaseIndex = (int)m_CommitList.m_logEntries.size();
 
-
-	if(this->CheckRebaseCondition())
-	{
-		/* Disable Start Rebase */
-		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
-	}
-
 	return TRUE;
 }
 // CRebaseDlg message handlers
@@ -973,6 +966,12 @@ void CRebaseDlg::OnBnClickedContinue()
 	{
 		OnOK();
 		return;
+	}
+
+	if (m_RebaseStage == CHOOSE_BRANCH || m_RebaseStage == CHOOSE_COMMIT_PICK_MODE)
+	{
+		if (CheckRebaseCondition())
+			return;
 	}
 
 	if( this->m_IsFastForward )
@@ -1948,11 +1947,6 @@ void CRebaseDlg::OnBnClickedRebaseCheckForce()
 {
 	this->UpdateData();
 	this->FetchLogList();
-	if(this->CheckRebaseCondition())
-	{
-		/* Disable Start Rebase */
-		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
-	}
 }
 
 void CRebaseDlg::OnBnClickedRebasePostButton()
@@ -1984,11 +1978,6 @@ void CRebaseDlg::Refresh()
 	{
 		this->UpdateData();
 		this->FetchLogList();
-		if(this->CheckRebaseCondition())
-		{
-			/* Disable Start Rebase */
-			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
-		}
 	}
 }
 

@@ -671,12 +671,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			break;
 
 		case ID_CHERRY_PICK:
-			if(!g_Git.CheckCleanWorkTree())
-			{
-				CMessageBox::Show(NULL, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
-
-			}
-			else
 			{
 				CRebaseDlg dlg;
 				dlg.m_IsCherryPick = TRUE;
@@ -697,12 +691,6 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			}
 			break;
 		case ID_REBASE_TO_VERSION:
-			if(!g_Git.CheckCleanWorkTree())
-			{
-				CMessageBox::Show(NULL, IDS_PROC_NOCLEAN, IDS_APPNAME, MB_OK);
-
-			}
-			else
 			{
 				CRebaseDlg dlg;
 				dlg.m_Upstream = pSelLogEntry->m_CommitHash;
