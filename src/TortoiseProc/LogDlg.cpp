@@ -47,6 +47,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowLocalBranches(true)
 	, m_bShowRemoteBranches(true)
 	, m_iHidePaths(0)
+	, m_bWalkBehavior(FALSE)
 
 	, m_bSelectionMustBeContinuous(false)
 
@@ -120,6 +121,7 @@ void CLogDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_LOGINFO, m_sLogInfo);
 	DDX_Check(pDX, IDC_LOG_ALLBRANCH,m_bAllBranch);
 	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT,m_bWholeProject);
+	DDX_Check(pDX, IDC_WALKBEHAVIOUR, m_bWalkBehavior);
 	DDX_Control(pDX, IDC_SEARCHEDIT, m_cFilter);
 	DDX_Control(pDX, IDC_STATIC_REF, m_staticRef);
 	DDX_Control(pDX, IDC_PIC_AUTHOR, m_gravatar);
@@ -2441,6 +2443,8 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		default:
 			break;
 		}
+		m_bWalkBehavior = (m_bFirstParent || m_bFollowRenames || m_iCompressedGraph);
+		UpdateData(FALSE);
 	}
 }
 

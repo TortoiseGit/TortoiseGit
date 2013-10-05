@@ -214,6 +214,7 @@ private:
 	bool				m_bShowRemoteBranches;
 	bool				m_bShowGravatar;
 	int					m_iCompressedGraph;
+	BOOL				m_bWalkBehavior;
 
 	CTGitPathList	*   m_currentChangedArray;
 	LogChangedPathArray m_CurrentFilteredChangedArray;
