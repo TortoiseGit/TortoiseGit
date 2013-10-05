@@ -46,6 +46,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bShowTags(true)
 	, m_bShowLocalBranches(true)
 	, m_bShowRemoteBranches(true)
+	, m_bNoMerges(false)
 	, m_iHidePaths(0)
 	, m_bWalkBehavior(FALSE)
 
@@ -2406,6 +2407,7 @@ void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked
 #define WALKBEHAVIOUR_FOLLOWRENAMES			2
 #define WALKBEHAVIOUR_COMPRESSEDGRAPH		3
 #define WALKBEHAVIOUR_LABELEDCOMMITS		4
+#define WALKBEHAVIOUR_NOMERGES				5
 
 void CLogDlg::OnBnClickedWalkBehaviour()
 {
@@ -2413,6 +2415,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 	if (popup.CreatePopupMenu())
 	{
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FIRSTPARENT, WALKBEHAVIOUR_FIRSTPARENT, m_bFirstParent);
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_NOMERGES, WALKBEHAVIOUR_NOMERGES, m_bNoMerges);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FOLLOWRENAMES, WALKBEHAVIOUR_FOLLOWRENAMES, m_bFollowRenames, !(m_path.IsEmpty() || m_path.IsDirectory()));
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_COMPRESSED, WALKBEHAVIOUR_COMPRESSEDGRAPH, m_iCompressedGraph == 1);
@@ -2427,6 +2430,10 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_FIRSTPARENT:
 			m_bFirstParent = !m_bFirstParent;
 			OnBnClickedFirstParent();
+			break;
+		case WALKBEHAVIOUR_NOMERGES:
+			m_bNoMerges = !m_bNoMerges;
+			OnBnClickedFirstParent(); // OnBnClickedFirstParent handles both cases: m_bFirstParent and m_bNoMerges
 			break;
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;
@@ -2443,7 +2450,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		default:
 			break;
 		}
-		m_bWalkBehavior = (m_bFirstParent || m_bFollowRenames || m_iCompressedGraph);
+		m_bWalkBehavior = (m_bFirstParent || m_bNoMerges || m_bFollowRenames || m_iCompressedGraph);
 		UpdateData(FALSE);
 	}
 }
@@ -2539,6 +2546,11 @@ void CLogDlg::OnBnClickedFirstParent()
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_FIRST_PARENT;
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_FIRST_PARENT;
+
+	if (m_bNoMerges)
+		m_LogList.m_ShowMask |= CGit::LOG_INFO_NO_MERGE;
+	else
+		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_NO_MERGE;
 
 	OnRefresh();
 

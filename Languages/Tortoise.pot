@@ -5907,6 +5907,10 @@ msgstr ""
 msgid "No &Fast Forward"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "No &merges"
+msgstr ""
+
 #. Resource IDs: (1716)
 msgid "No Checkout"
 msgstr ""
@@ -7838,10 +7842,6 @@ msgstr ""
 msgid "Show Inline-Diff\nInline diff"
 msgstr ""
 
-#. Resource IDs: (92)
-msgid "Show la&beled commits only"
-msgstr ""
-
 #. Resource IDs: (32781)
 msgid "Show Log"
 msgstr ""
@@ -7908,6 +7908,10 @@ msgstr ""
 
 #. Resource IDs: (1264)
 msgid "Show i&gnored files"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "Show la&beled commits only"
 msgstr ""
 
 #. Resource IDs: (1063)

@@ -19,6 +19,7 @@ Released: Unreleased
    If you have set "i18n.commitencoding" to something different than UTF-8 check your "user.name" setting
  * Fixed issue #1645: enable/disable spell checking in commit dialog
  * Fixed issue #1806: Compressed graph in the log view
+ * Fixed issue #1926: Add "No Merges" checkbox in Log Messages window
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog
