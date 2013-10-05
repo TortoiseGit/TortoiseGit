@@ -14,7 +14,8 @@ Released: Unreleased
  * Added support for tgit://-links to start cloning from browser (e.g. tgit://clone/https://code.google.com/p/tortoisegit/)
  * Added optional support for git://-links to start cloning from browser
  * Added optional support for smartgit:// and github-windows://-links to start cloning from browser
-   In order to use github-windows://-links from Github, you have to enable them by installing and registering the Github client first
+   In order to be able to use github-windows://-links on github.com web page, you have to enable them for your GitHub profile once.
+   Right now the only way is to install the official GitHub client and sign in with your GitHub profile (on any Windows machine).
  * Allow to edit hierarchical git settings
    If you have set "i18n.commitencoding" to something different than UTF-8 check your "user.name" setting
  * Fixed issue #1645: enable/disable spell checking in commit dialog
