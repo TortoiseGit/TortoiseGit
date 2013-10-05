@@ -26,7 +26,6 @@
 #include "registry.h"
 #include "SplitterControl.h"
 #include "Colors.h"
-#include "MenuButton.h"
 #include "LogDlgHelper.h"
 #include "FilterEdit.h"
 #include "GitRev.h"
@@ -132,7 +131,6 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	void OnBnClickedFirstParent();
 	afx_msg void OnBnClickedRefresh();
-	afx_msg void OnBnClickedDownAuthor();
 	afx_msg void OnRefresh();
 	afx_msg void OnFocusFilter();
 	afx_msg void OnEditCopy();
@@ -193,7 +191,6 @@ private:
 	CFilterEdit			m_cFilter;
 	CHyperLink			m_staticRef;
 	CProgressCtrl		m_LogProgress;
-	CMenuButton			m_btnShowWholeProject;
 	CTGitPath			m_path;
 	CTGitPath			m_orgPath;
 	CString				m_hightlightRevision;
