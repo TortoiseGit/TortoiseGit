@@ -513,6 +513,10 @@ msgstr ""
 msgid "&Compare revisions"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "&Compressed Graph"
+msgstr ""
+
 #. Resource IDs: (1239)
 msgid "&Configure"
 msgstr ""
@@ -7832,6 +7836,10 @@ msgstr ""
 
 #. Resource IDs: (2056)
 msgid "Show Inline-Diff\nInline diff"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "Show la&beled commits only"
 msgstr ""
 
 #. Resource IDs: (32781)

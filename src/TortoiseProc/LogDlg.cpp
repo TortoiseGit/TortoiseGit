@@ -2314,7 +2314,32 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	else
 		m_LogList.m_ShowRefMask &= ~flag;
 
-	m_LogList.Invalidate();
+	if ((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT))
+	{
+		// Remove commits where labels are not shown.
+		OnRefresh();
+		FillLogMessageCtrl(false);
+	}
+	else
+	{
+		// Just redraw
+		m_LogList.Invalidate();
+	}
+}
+
+void CLogDlg::OnBnClickedCompressedGraph()
+{
+	UpdateData();
+
+	if (m_iCompressedGraph == 2)
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_REFS;
+	else if (m_iCompressedGraph == 1)
+		m_LogList.m_ShowFilter = static_cast<CGitLogListBase::FilterShow>(CGitLogListBase::FILTERSHOW_REFS | CGitLogListBase::FILTERSHOW_MERGEPOINTS);
+	else
+		m_LogList.m_ShowFilter = CGitLogListBase::FILTERSHOW_ALL;
+
+	OnRefresh();
+	FillLogMessageCtrl(false);
 }
 
 void CLogDlg::OnBnClickedBrowseRef()
@@ -2377,6 +2402,8 @@ void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked
 
 #define WALKBEHAVIOUR_FIRSTPARENT			1
 #define WALKBEHAVIOUR_FOLLOWRENAMES			2
+#define WALKBEHAVIOUR_COMPRESSEDGRAPH		3
+#define WALKBEHAVIOUR_LABELEDCOMMITS		4
 
 void CLogDlg::OnBnClickedWalkBehaviour()
 {
@@ -2385,6 +2412,9 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 	{
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FIRSTPARENT, WALKBEHAVIOUR_FIRSTPARENT, m_bFirstParent);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FOLLOWRENAMES, WALKBEHAVIOUR_FOLLOWRENAMES, m_bFollowRenames, !(m_path.IsEmpty() || m_path.IsDirectory()));
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_COMPRESSED, WALKBEHAVIOUR_COMPRESSEDGRAPH, m_iCompressedGraph == 1);
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_LABELEDCOMMITS, WALKBEHAVIOUR_LABELEDCOMMITS, m_iCompressedGraph == 2);
 
 		m_tooltips.Pop();
 		RECT rect;
@@ -2399,6 +2429,14 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;
 			OnBnClickedFollowRenames();
+			break;
+		case WALKBEHAVIOUR_COMPRESSEDGRAPH:
+			m_iCompressedGraph = (m_iCompressedGraph == 1 ? 0 : 1);
+			OnBnClickedCompressedGraph();
+			break;
+		case WALKBEHAVIOUR_LABELEDCOMMITS:
+			m_iCompressedGraph = (m_iCompressedGraph == 2 ? 0 : 2);
+			OnBnClickedCompressedGraph();
 			break;
 		default:
 			break;
