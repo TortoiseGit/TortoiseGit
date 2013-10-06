@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2007-2011 - TortoiseSVN
+// Copyright (C) 2007-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ public:
 		: state(DIFFSTATE_UNKNOWN)
 		, linenumber(-1)
 		, movedIndex(-1)
+		, movedFrom(true)
 		, ending(EOL_AUTOLINE)
 		, hidestate(HIDESTATE_HIDDEN)
 	{
@@ -50,11 +51,11 @@ public:
 			DiffStates stateInit,
 			int linenumberInit,
 			EOL endingInit,
-			HIDESTATE hideInit,
-			int movedIndexInit)
+			HIDESTATE hideInit)
 		: state(stateInit)
 		, linenumber(linenumberInit)
-		, movedIndex(movedIndexInit)
+		, movedIndex(-1)
+		, movedFrom(true)
 		, ending(endingInit)
 		, hidestate(hideInit)
 	{
@@ -65,6 +66,7 @@ public:
 	DiffStates		state;
 	int				linenumber;
 	int				movedIndex;
+	bool			movedFrom;
 	EOL				ending;
 	HIDESTATE 		hidestate;
 };
@@ -92,6 +94,8 @@ public:
 	HIDESTATE		GetHideState(int index) {return m_data[index].hidestate;}
 	int				GetLineNumber(int index) {return m_data.size() ? m_data[index].linenumber : 0;}
 	int				GetMovedIndex(int index) {return m_data.size() ? m_data[index].movedIndex: 0;}
+	bool			IsMoved(int index) {return m_data.size() ? m_data[index].movedIndex >= 0 : false;}
+	bool			IsMovedFrom(int index) {return m_data.size() ? m_data[index].movedFrom : true;}
 	int				FindLineNumber(int number);
 	EOL				GetLineEnding(int index) const {return m_data[index].ending;}
 
@@ -102,7 +106,7 @@ public:
 	void			SetLine(int index, const CString& sLine) {m_data[index].sLine = sLine;}
 	void			SetLineNumber(int index, int linenumber) {m_data[index].linenumber = linenumber;}
 	void			SetLineEnding(int index, EOL ending) {m_data[index].ending = ending;}
-	void			SetMovedIndex(int index, int movedIndex) {m_data[index].movedIndex = movedIndex;}
+	void			SetMovedIndex(int index, int movedIndex, bool movedFrom) {m_data[index].movedIndex = movedIndex; m_data[index].movedFrom = movedFrom;}
 	void			SetLineHideState(int index, HIDESTATE state) {m_data[index].hidestate = state;}
 
 	void			Clear() {m_data.clear();}

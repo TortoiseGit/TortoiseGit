@@ -116,17 +116,15 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 	{
 		int fromIndex = m_YourBaseLeft.FindLineNumber(from);
 		int toIndex = m_YourBaseRight.FindLineNumber(to);
-		m_YourBaseLeft.SetState(fromIndex, DIFFSTATE_MOVED_FROM);
-		m_YourBaseLeft.SetMovedIndex(fromIndex, toIndex);
-		m_YourBaseRight.SetState(toIndex, DIFFSTATE_MOVED_TO);
-		m_YourBaseRight.SetMovedIndex(toIndex, fromIndex);
+		m_YourBaseLeft.SetMovedIndex(fromIndex, toIndex, true);
+		m_YourBaseRight.SetMovedIndex(toIndex, fromIndex, false);
 
 		toIndex = m_YourBaseBoth.FindLineNumber(to);
 		if (toIndex < 0)
 			return;
 		while((toIndex < m_YourBaseBoth.GetCount())&&
 			  ((m_YourBaseBoth.GetState(toIndex) != DIFFSTATE_ADDED)&&
-			  (m_YourBaseBoth.GetState(toIndex) != DIFFSTATE_MOVED_TO)||
+			  (!m_YourBaseBoth.IsMoved(toIndex))||(m_YourBaseBoth.IsMovedFrom(toIndex))||
 			  (m_YourBaseBoth.GetLineNumber(toIndex) != to)))
 		{
 			toIndex++;
@@ -137,17 +135,15 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 			return;
 		while((fromIndex < m_YourBaseBoth.GetCount())&&
 			  ((m_YourBaseBoth.GetState(fromIndex) != DIFFSTATE_REMOVED)&&
-			  (m_YourBaseBoth.GetState(fromIndex) != DIFFSTATE_MOVED_FROM)||
+			  (!m_YourBaseBoth.IsMoved(fromIndex))||(!m_YourBaseBoth.IsMovedFrom(fromIndex))||
 			  (m_YourBaseBoth.GetLineNumber(fromIndex) != from)))
 		{
 			fromIndex++;
 		}
 		if ((fromIndex < m_YourBaseBoth.GetCount())&&(toIndex < m_YourBaseBoth.GetCount()))
 		{
-			m_YourBaseBoth.SetState(fromIndex, DIFFSTATE_MOVED_FROM);
-			m_YourBaseBoth.SetMovedIndex(fromIndex, toIndex);
-			m_YourBaseBoth.SetState(toIndex, DIFFSTATE_MOVED_TO);
-			m_YourBaseBoth.SetMovedIndex(toIndex, fromIndex);
+			m_YourBaseBoth.SetMovedIndex(fromIndex, toIndex, true);
+			m_YourBaseBoth.SetMovedIndex(toIndex, fromIndex, false);
 		}
 	}
 }
@@ -542,7 +538,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 		}
 		else
 		{
-			viewdata oViewData(m_arBaseFile.GetAt(baseline), DIFFSTATE_REMOVED, baseline, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
+			viewdata oViewData(m_arBaseFile.GetAt(baseline), DIFFSTATE_REMOVED, baseline, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN);
 			baseline++;
 
 			// find first EMPTY line in last blok
@@ -561,7 +557,7 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 	}
 	else if (m_arYourFile.GetCount() > yourline)
 	{
-		viewdata oViewData(m_arYourFile.GetAt(yourline), DIFFSTATE_ADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
+		viewdata oViewData(m_arYourFile.GetAt(yourline), DIFFSTATE_ADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN);
 		yourline++;
 
 		// try to move last line higher
@@ -653,8 +649,8 @@ CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYourFile
 	LONG theirline = 0;
 	LONG resline = 0;
 	// common viewdata
-	const viewdata emptyConflictEmpty(_T(""), DIFFSTATE_CONFLICTEMPTY, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN, -1);
-	const viewdata emptyIdenticalRemoved(_T(""), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+	const viewdata emptyConflictEmpty(_T(""), DIFFSTATE_CONFLICTEMPTY, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
+	const viewdata emptyIdenticalRemoved(_T(""), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)

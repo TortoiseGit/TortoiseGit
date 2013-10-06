@@ -269,7 +269,6 @@ void CBaseView::UpdateStatusBar()
 			{
 			case DIFFSTATE_ADDED:
 			case DIFFSTATE_IDENTICALADDED:
-			case DIFFSTATE_MOVED_TO:
 			case DIFFSTATE_THEIRSADDED:
 			case DIFFSTATE_YOURSADDED:
 			case DIFFSTATE_CONFLICTADDED:
@@ -277,7 +276,6 @@ void CBaseView::UpdateStatusBar()
 				break;
 			case DIFFSTATE_IDENTICALREMOVED:
 			case DIFFSTATE_REMOVED:
-			case DIFFSTATE_MOVED_FROM:
 			case DIFFSTATE_THEIRSREMOVED:
 			case DIFFSTATE_YOURSREMOVED:
 				nRemovedLines++;
@@ -1128,10 +1126,6 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 			case DIFFSTATE_EDITED:
 				eIcon = TScreenedViewLine::ICN_EDIT;
 				break;
-			case DIFFSTATE_MOVED_TO:
-			case DIFFSTATE_MOVED_FROM:
-				eIcon = TScreenedViewLine::ICN_MOVED;
-				break;
 			default:
 				break;
 			}
@@ -1152,6 +1146,8 @@ void CBaseView::DrawMargin(CDC *pdc, const CRect &rect, int nLineIndex)
 						m_ScreenedViewLine[blockstart++].eIcon = eIcon;
 				}
 			}
+			if (m_pViewData->GetMovedIndex(nViewLine) >= 0)
+				eIcon = TScreenedViewLine::ICN_MOVED;
 			m_ScreenedViewLine[nViewLine].eIcon = eIcon;
 		}
 		switch (eIcon)
@@ -1378,7 +1374,6 @@ bool CBaseView::IsStateRemoved(DiffStates state)
 	switch (state)
 	{
 	 case DIFFSTATE_REMOVED:
-	 case DIFFSTATE_MOVED_FROM:
 	 case DIFFSTATE_THEIRSREMOVED:
 	 case DIFFSTATE_YOURSREMOVED:
 	 case DIFFSTATE_IDENTICALREMOVED:
@@ -2558,16 +2553,6 @@ bool CBaseView::LinesInOneChange(int direction,
 	// Checks whether all the adjacent lines starting from the initial line
 	// and up to the current line form the single change
 
-	// Do not distinguish between moved and added/removed lines
-	if (initialLineState == DIFFSTATE_MOVED_TO)
-		initialLineState = DIFFSTATE_ADDED;
-	if (initialLineState == DIFFSTATE_MOVED_FROM)
-		initialLineState = DIFFSTATE_REMOVED;
-	if (currentLineState == DIFFSTATE_MOVED_TO)
-		currentLineState = DIFFSTATE_ADDED;
-	if (currentLineState == DIFFSTATE_MOVED_FROM)
-		currentLineState = DIFFSTATE_REMOVED;
-
 	// First of all, if the two lines have identical states, they surely
 	// belong to one change.
 	if (initialLineState == currentLineState)
@@ -2713,13 +2698,17 @@ BOOL CBaseView::OnToolTipNotify(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 		int nViewLine = GetViewLineForScreen(nLine);
 		if((m_pViewData)&&(nViewLine < m_pViewData->GetCount()))
 		{
-			if (m_pViewData->GetState(nViewLine)==DIFFSTATE_MOVED_FROM)
+			auto movedIndex = m_pViewData->GetMovedIndex(nViewLine);
+			if (movedIndex >= 0)
 			{
-				strTipText.Format(IDS_MOVED_TO_TT, m_pViewData->GetMovedIndex(nViewLine)+1);
-			}
-			if (m_pViewData->GetState(nViewLine)==DIFFSTATE_MOVED_TO)
-			{
-				strTipText.Format(IDS_MOVED_FROM_TT, m_pViewData->GetMovedIndex(nViewLine)+1);
+				if (m_pViewData->IsMovedFrom(nViewLine))
+				{
+					strTipText.Format(IDS_MOVED_TO_TT, movedIndex+1);
+				}
+				else
+				{
+					strTipText.Format(IDS_MOVED_FROM_TT, movedIndex+1);
+				}
 			}
 		}
 	}
@@ -3014,8 +3003,7 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	{
 		if((nViewLine < m_pViewData->GetCount())) // a double click on moved line scrolls to corresponding line
 		{
-			if((m_pViewData->GetState(nViewLine)==DIFFSTATE_MOVED_FROM)||
-				(m_pViewData->GetState(nViewLine)==DIFFSTATE_MOVED_TO))
+			if (m_pViewData->GetMovedIndex(nViewLine)>=0)
 			{
 				int movedindex = m_pViewData->GetMovedIndex(nViewLine);
 				int screenLine = FindViewLineNumber(movedindex);
@@ -3026,10 +3014,10 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 				// find and select the whole moved block
 				int startSel = movedindex;
 				int endSel = movedindex;
-				while ((startSel > 0) && ((m_pOtherViewData->GetState(startSel) == DIFFSTATE_MOVED_FROM) || (m_pOtherViewData->GetState(startSel) == DIFFSTATE_MOVED_TO)))
+				while ((startSel > 0) && (m_pOtherViewData->GetMovedIndex(startSel) >= 0))
 					startSel--;
 				startSel++;
-				while ((endSel < GetLineCount()) && ((m_pOtherViewData->GetState(endSel) == DIFFSTATE_MOVED_FROM) || (m_pOtherViewData->GetState(endSel) == DIFFSTATE_MOVED_TO)))
+				while ((endSel < GetLineCount()) && (m_pOtherViewData->GetMovedIndex(endSel) >= 0))
 					endSel++;
 				endSel--;
 				m_pOtherView->SetupSelection(startSel, endSel);
@@ -3328,7 +3316,7 @@ void CBaseView::ShowDiffLines(int nLine)
 
 const viewdata& CBaseView::GetEmptyLineData()
 {
-	static const viewdata emptyLine(_T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+	static const viewdata emptyLine(_T(""), DIFFSTATE_EMPTY, -1, EOL_NOENDING, HIDESTATE_SHOWN);
 	return emptyLine;
 }
 
@@ -3646,12 +3634,12 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 		if (!sLineRight.IsEmpty() || (eOriginalEnding!=m_lineendings))
 		{
-			viewdata newFirstLine(sLineLeft, DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN, -1);
+			viewdata newFirstLine(sLineLeft, DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN);
 			SetViewData(nViewLine, newFirstLine);
 		}
 
 		int nInsertLine = (m_pViewData->GetCount()==0) ? 0 : nViewLine + 1;
-		viewdata newLastLine(sLineRight, DIFFSTATE_EDITED, 1, eOriginalEnding, HIDESTATE_SHOWN, -1);
+		viewdata newLastLine(sLineRight, DIFFSTATE_EDITED, 1, eOriginalEnding, HIDESTATE_SHOWN);
 		InsertViewData(nInsertLine, newLastLine);
 		SetModified();
 		SaveUndoStep();
@@ -3711,7 +3699,7 @@ void CBaseView::AddEmptyViewLine(int nViewLineIndex)
 	{
 		 ending = m_lineendings;
 	}
-	viewdata newLine(_T(""), DIFFSTATE_EDITED, -1, ending, HIDESTATE_SHOWN, -1);
+	viewdata newLine(_T(""), DIFFSTATE_EDITED, -1, ending, HIDESTATE_SHOWN);
 	if (IsTarget()) // TODO: once more wievs will writable this is not correct anymore
 	{
 		CString sPartLine = GetViewLineChars(nViewLineIndex);
@@ -3853,7 +3841,7 @@ void CBaseView::PasteText()
 		CString sLineLeft = sLine.Left(nLeft);
 		CString sLineRight = sLine.Right(sLine.GetLength() - nLeft);
 		EOL eOriginalEnding = GetViewLineEnding(nViewLine);
-		viewdata newLine(_T(""), DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN, -1);
+		viewdata newLine(_T(""), DIFFSTATE_EDITED, 1, m_lineendings, HIDESTATE_SHOWN);
 		if (!lines[0].IsEmpty() || !sLineRight.IsEmpty() || (eOriginalEnding!=m_lineendings))
 		{
 			newLine.sLine = sLineLeft + lines[0];
@@ -5210,8 +5198,6 @@ void CBaseView::Search(SearchDirection srchDir)
 		case DIFFSTATE_IDENTICALADDED:
 		case DIFFSTATE_THEIRSREMOVED:
 		case DIFFSTATE_THEIRSADDED:
-		case DIFFSTATE_MOVED_FROM:
-		case DIFFSTATE_MOVED_TO:
 		case DIFFSTATE_YOURSREMOVED:
 		case DIFFSTATE_YOURSADDED:
 		case DIFFSTATE_EDITED:
@@ -5289,8 +5275,6 @@ CString CBaseView::GetSelectedText() const
 		case DIFFSTATE_IDENTICALADDED:
 		case DIFFSTATE_THEIRSREMOVED:
 		case DIFFSTATE_THEIRSADDED:
-		case DIFFSTATE_MOVED_FROM:
-		case DIFFSTATE_MOVED_TO:
 		case DIFFSTATE_YOURSREMOVED:
 		case DIFFSTATE_YOURSADDED:
 		case DIFFSTATE_EDITED:
@@ -5550,14 +5534,12 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 		case DIFFSTATE_EMPTY:
 			break;
 		case DIFFSTATE_ADDED:
-		case DIFFSTATE_MOVED_TO:
 		case DIFFSTATE_CONFLICTADDED:
 		case DIFFSTATE_CONFLICTED:
 		case DIFFSTATE_CONFLICTED_IGNORED:
 		case DIFFSTATE_IDENTICALADDED:
 		case DIFFSTATE_THEIRSADDED:
 		case DIFFSTATE_YOURSADDED:
-		case DIFFSTATE_MOVED_FROM:
 		case DIFFSTATE_IDENTICALREMOVED:
 		case DIFFSTATE_REMOVED:
 		case DIFFSTATE_THEIRSREMOVED:
@@ -5595,7 +5577,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 				// so next line is empty
 				ASSERT(IsViewLineEmpty(nLine+1));
 				// and we can turn it to normal empty line
-				SetViewData(nLine+1, viewdata(CString(), DIFFSTATE_ADDED, 1, EOL_NOENDING, HIDESTATE_SHOWN, -1));
+				SetViewData(nLine+1, viewdata(CString(), DIFFSTATE_ADDED, 1, EOL_NOENDING, HIDESTATE_SHOWN));
 			}
 			break;
 		}

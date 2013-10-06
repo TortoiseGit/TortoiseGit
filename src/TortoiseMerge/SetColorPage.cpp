@@ -1,6 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2008, 2012 - TortoiseSVN
+// Copyright (C) 2006-2008, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,7 +71,6 @@ void CSetColorPage::SaveData()
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_IDENTICALADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_THEIRSADDED, cBk, cFg);
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_YOURSADDED, cBk, cFg);
-	CDiffColors::GetInstance().SetColors(DIFFSTATE_MOVED_TO, cBk, cFg);
 
 	if ((DWORD)m_regInlineAdded != (DWORD)m_cBkInlineAdded.GetColor())
 		m_bReloadNeeded = true;
@@ -102,15 +101,6 @@ void CSetColorPage::SaveData()
 		cBk = m_cBkConflictResolved.GetAutomaticColor();
 	CDiffColors::GetInstance().SetColors(DIFFSTATE_CONFLICTRESOLVED, cBk, cFg);
 
-	cBk = m_cBkMovedFrom.GetColor();
-	if (cBk == -1)
-		cBk = m_cBkMovedFrom.GetAutomaticColor();
-	CDiffColors::GetInstance().SetColors(DIFFSTATE_MOVED_FROM, cBk, cFg);
-
-	cBk = m_cBkMovedTo.GetColor();
-	if (cBk == -1)
-		cBk = m_cBkMovedTo.GetAutomaticColor();
-	CDiffColors::GetInstance().SetColors(DIFFSTATE_MOVED_TO, cBk, cFg);
 
 	cFg = m_cFgWhitespaces.GetColor();
 	if (cFg == -1)
@@ -131,8 +121,6 @@ void CSetColorPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BKEMPTY, m_cBkEmpty);
 	DDX_Control(pDX, IDC_BKCONFLICTED, m_cBkConflict);
 	DDX_Control(pDX, IDC_BKCONFLICTRESOLVED, m_cBkConflictResolved);
-	DDX_Control(pDX, IDC_BKMOVEDFROM, m_cBkMovedFrom);
-	DDX_Control(pDX, IDC_BKMOVEDTO, m_cBkMovedTo);
 	DDX_Control(pDX, IDC_FGWHITESPACES, m_cFgWhitespaces);
 }
 
@@ -147,8 +135,6 @@ BEGIN_MESSAGE_MAP(CSetColorPage, CPropertyPage)
 	ON_BN_CLICKED(IDC_BKEMPTY, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_BKCONFLICTED, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_BKCONFLICTRESOLVED, &CSetColorPage::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_BKMOVEDFROM, &CSetColorPage::OnBnClickedColor)
-	ON_BN_CLICKED(IDC_BKMOVEDTO, &CSetColorPage::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_FGWHITESPACES, &CSetColorPage::OnBnClickedColor)
 END_MESSAGE_MAP()
 
@@ -202,16 +188,6 @@ BOOL CSetColorPage::OnInitDialog()
 	m_cBkConflict.SetColor(cBk);
 	m_cBkConflict.EnableAutomaticButton(sDefaultText, DIFFSTATE_CONFLICTED_DEFAULT_BG);
 	m_cBkConflict.EnableOtherButton(sCustomText);
-
-	CDiffColors::GetInstance().GetColors(DIFFSTATE_MOVED_FROM, cBk, cFg);
-	m_cBkMovedFrom.SetColor(cBk);
-	m_cBkMovedFrom.EnableAutomaticButton(sDefaultText, DIFFSTATE_MOVEDFROM_DEFAULT_BG);
-	m_cBkMovedFrom.EnableOtherButton(sCustomText);
-
-	CDiffColors::GetInstance().GetColors(DIFFSTATE_MOVED_TO, cBk, cFg);
-	m_cBkMovedTo.SetColor(cBk);
-	m_cBkMovedTo.EnableAutomaticButton(sDefaultText, DIFFSTATE_MOVEDTO_DEFAULT_BG);
-	m_cBkMovedTo.EnableOtherButton(sCustomText);
 
 	CDiffColors::GetInstance().GetColors(DIFFSTATE_CONFLICTRESOLVED, cBk, cFg);
 	m_cBkConflictResolved.SetColor(cBk);
