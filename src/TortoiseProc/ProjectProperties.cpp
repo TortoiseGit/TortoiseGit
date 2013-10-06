@@ -35,6 +35,7 @@ ProjectProperties::ProjectProperties(void)
 	: regExNeedUpdate (true)
 	, nBugIdPos(-1)
 	, bWarnNoSignedOffBy(FALSE)
+	, bIconEnabled(TRUE)
 {
 	bNumber = TRUE;
 	bWarnIfNoIssue = FALSE;
@@ -142,6 +143,8 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	GetStringProps(sProviderParams, BUGTRAQPROPNAME_PROVIDERPARAMS);
 
 	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
+	GetStringProps(sIcon, PROJECTPROPNAME_ICON);
+	GetBOOLProps(bIconEnabled, PROJECTPROPNAME_ICONENABLED);
 
 	GetStringProps(sPropVal, BUGTRAQPROPNAME_LOGREGEX);
 
