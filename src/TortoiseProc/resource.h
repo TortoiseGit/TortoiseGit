@@ -961,6 +961,7 @@
 #define IDS_WALKBEHAVIOUR_COMPRESSED    1462
 #define IDS_WALKBEHAVIOUR_LABELEDCOMMITS 1463
 #define IDS_WALKBEHAVIOUR_NOMERGES      1464
+#define IDS_ICONFILEFILTER              1465
 #define IDC_LINK                        1466
 #define IDC_LINK_CHANGE_LOG             1467
 #define IDC_EDIT1                       1469
@@ -1362,6 +1363,8 @@
 #define IDC_COMBO_SETTINGS_SAFETO       1775
 #define IDC_WALKBEHAVIOUR               1776
 #define IDC_VIEW                        1777
+#define IDC_ICONFILE_BROWSE             1778
+#define IDC_ICONFILE                    1779
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1798,7 +1801,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1778
+#define _APS_NEXT_CONTROL_VALUE         1780
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
