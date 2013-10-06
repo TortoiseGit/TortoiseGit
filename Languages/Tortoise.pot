@@ -3418,6 +3418,10 @@ msgstr ""
 msgid "Dialog sizes and positions"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Dialogs"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr ""
@@ -4996,6 +5000,10 @@ msgstr ""
 msgid "ISO 8859-9"
 msgstr ""
 
+#. Resource IDs: (1781)
+msgid "Icon"
+msgstr ""
+
 #. Resource IDs: (106)
 msgid "Icon Overlays"
 msgstr ""
@@ -5010,6 +5018,10 @@ msgstr ""
 
 #. Resource IDs: (338)
 msgid "Icon Overlays::Overlay Handlers"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "Icons (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
 msgstr ""
 
 #. Resource IDs: (65535)
