@@ -130,13 +130,9 @@ int ProjectProperties::ReadProps(CTGitPath path)
 		}
 	}
 
-	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-	git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8( g_Git.GetGitGlobalXDGConfig());
-	git_config_add_file_ondisk(gitconfig, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
-	CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig"));
+	git_config_add_file_ondisk(gitconfig, g_Git.GetGitGlobalConfigA(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(gitconfig, g_Git.GetGitGlobalXDGConfigA(), GIT_CONFIG_LEVEL_XDG, FALSE);
+	CStringA systemConfigA = CUnicodeUtils::GetUTF8(CTGitPath(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig")).GetGitPathString());
 	git_config_add_file_ondisk(gitconfig, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	systemConfigA.ReleaseBuffer();
 	giterr_clear();

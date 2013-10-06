@@ -147,10 +147,14 @@ public:
 
 	CString GetHomeDirectory();
 	CString GetGitLocalConfig();
+	CStringA GetGitLocalConfigA();
 	CString GetGitGlobalConfig();
+	CStringA GetGitGlobalConfigA();
 	CString GetGitGlobalXDGConfigPath();
 	CString GetGitGlobalXDGConfig();
+	CStringA GetGitGlobalXDGConfigA();
 	CString GetGitSystemConfig();
+	CStringA GetGitSystemConfigA();
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none
 	static int ms_LastMsysGitVersion;
 	static int m_LogEncode;

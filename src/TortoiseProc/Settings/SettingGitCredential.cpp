@@ -409,18 +409,10 @@ void CSettingGitCredential::LoadList()
 {
 	git_config * config;
 	git_config_new(&config);
-	CStringA projectConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig());
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	projectConfigA.ReleaseBuffer();
-	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig());
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
-	CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig());
-	git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-	systemConfigA.ReleaseBuffer();
+	git_config_add_file_ondisk(config, g_Git.GetGitLocalConfigA(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitGlobalConfigA(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitGlobalXDGConfigA(), GIT_CONFIG_LEVEL_XDG, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitSystemConfigA(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 
 	STRING_VECTOR defaultList, urlList;
 	git_config_foreach_match(config, "credential\\.helper", GetCredentialDefaultUrlCallback, &defaultList);
@@ -510,24 +502,16 @@ CString CSettingGitCredential::Load(CString key)
 	int sel = m_ctrlConfigType.GetCurSel();
 	if (sel == ConfigType::Local)
 	{
-		CStringA projectConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig());
-		git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-		projectConfigA.ReleaseBuffer();
+		git_config_add_file_ondisk(config, g_Git.GetGitLocalConfigA(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 	}
 	else if (sel == ConfigType::Global)
 	{
-		CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-		git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-		globalConfigA.ReleaseBuffer();
-		CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig());
-		git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-		globalXDGConfigA.ReleaseBuffer();
+		git_config_add_file_ondisk(config, g_Git.GetGitGlobalConfigA(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+		git_config_add_file_ondisk(config, g_Git.GetGitGlobalXDGConfigA(), GIT_CONFIG_LEVEL_XDG, FALSE);
 	}
 	else if (sel == ConfigType::System)
 	{
-		CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig());
-		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-		systemConfigA.ReleaseBuffer();
+		git_config_add_file_ondisk(config, g_Git.GetGitSystemConfigA(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	}
 	
 	CStringA cmdA = CUnicodeUtils::GetUTF8(cmd);
@@ -591,18 +575,10 @@ static int DeleteOtherKeys(int type)
 
 	git_config * config;
 	git_config_new(&config);
-	CStringA projectConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig());
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	projectConfigA.ReleaseBuffer();
-	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig());
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
-	CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig());
-	git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-	systemConfigA.ReleaseBuffer();
+	git_config_add_file_ondisk(config, g_Git.GetGitLocalConfigA(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitGlobalConfigA(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitGlobalXDGConfigA(), GIT_CONFIG_LEVEL_XDG, FALSE);
+	git_config_add_file_ondisk(config, g_Git.GetGitSystemConfigA(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 
 	STRING_VECTOR list;
 	git_config_foreach_match(config, "credential\\..*", GetCredentialAnyEntryCallback, &list);
@@ -794,21 +770,15 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			case _T('L'):
 				{
 				configLevel = CONFIG_LOCAL;
-				CStringA projectConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig());
-				git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-				projectConfigA.ReleaseBuffer();
+				git_config_add_file_ondisk(config, g_Git.GetGitLocalConfigA(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 				break;
 				}
 			case _T('G'):
 			case _T('X'):
 				{
 				configLevel = CONFIG_GLOBAL;
-				CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-				git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-				globalConfigA.ReleaseBuffer();
-				CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig());
-				git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-				globalXDGConfigA.ReleaseBuffer();
+				git_config_add_file_ondisk(config, g_Git.GetGitGlobalConfigA(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+				git_config_add_file_ondisk(config, g_Git.GetGitGlobalXDGConfigA(), GIT_CONFIG_LEVEL_XDG, FALSE);
 				break;
 				}
 			case _T('S'):
@@ -821,9 +791,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 					return;
 				}
 				configLevel = CONFIG_SYSTEM;
-				CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig());
-				git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-				systemConfigA.ReleaseBuffer();
+				git_config_add_file_ondisk(config, g_Git.GetGitSystemConfigA(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 				break;
 				}
 			}
