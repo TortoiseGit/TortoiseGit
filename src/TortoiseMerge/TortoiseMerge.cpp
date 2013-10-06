@@ -79,6 +79,8 @@ CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING), TGIT_VERMAJO
 #endif
 
 CString g_sGroupingUUID;
+CString g_sGroupingIcon;
+bool g_bGroupingRemoveIcon = false;
 
 // CTortoiseMergeApp initialization
 BOOL CTortoiseMergeApp::InitInstance()
