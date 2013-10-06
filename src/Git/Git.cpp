@@ -1815,6 +1815,11 @@ CString CGit::GetGitLocalConfig()
 	return path;
 }
 
+CStringA CGit::GetGitPathStringA(const CString &path)
+{
+	return CUnicodeUtils::GetUTF8(CTGitPath(path).GetGitPathString());
+}
+
 CString CGit::GetGitGlobalConfig()
 {
 	return g_Git.GetHomeDirectory() + _T("\\.gitconfig");
