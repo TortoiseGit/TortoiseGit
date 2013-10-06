@@ -1893,22 +1893,26 @@ BEGIN
     CONTROL         "Global",IDC_RADIO_SETTINGS_GLOBAL,"Button",BS_AUTORADIOBUTTON,187,18,46,10
     CONTROL         "System",IDC_RADIO_SETTINGS_SYSTEM,"Button",BS_AUTORADIOBUTTON,247,18,46,10
     GROUPBOX        "Config source",IDC_STATIC,7,7,286,26
-    GROUPBOX        "Commit",IDC_STATIC,7,34,286,149
-    LTEXT           "Select the language this project is using. This settings affects the spell checker used for commit messages.",IDC_STATIC,14,45,269,18
-    LTEXT           "Language:",IDC_STATIC,14,64,56,8
-    COMBOBOX        IDC_LANGCOMBO,113,64,170,70,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_KEEPFILELISTSENGLISH,113,81,63,15,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "keep the file lists in English",IDC_STATIC,14,81,91,10,NOT WS_VISIBLE
-    LTEXT           "Minimum number of chars for a commit message:",IDC_STATIC,14,101,269,8
-    LTEXT           "&Limit:",IDC_STATIC,14,115,47,8
-    EDITTEXT        IDC_LOGMINSIZE,113,115,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Char position where to show a border line in commit text boxes:",IDC_STATIC,14,133,269,8
-    LTEXT           "&Border:",IDC_STATIC,14,146,47,8
-    EDITTEXT        IDC_BORDER,113,144,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "&Warn on missing Signed-Off-By on commit",IDC_STATIC,14,163,148,10
-    COMBOBOX        IDC_WARN_NO_SIGNED_OFF_BY,194,163,63,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Save to:",IDC_STATIC,14,193,41,11
-    COMBOBOX        IDC_COMBO_SETTINGS_SAFETO,65,192,103,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Commit",IDC_STATIC,7,34,286,136
+    LTEXT           "Select the language this project is using. This settings affects the spell checker used for commit messages.",IDC_STATIC,14,43,269,18
+    LTEXT           "Language:",IDC_STATIC,14,62,56,8
+    COMBOBOX        IDC_LANGCOMBO,113,62,170,70,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_KEEPFILELISTSENGLISH,113,79,63,15,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "keep the file lists in English",IDC_STATIC,14,79,91,10,NOT WS_VISIBLE
+    LTEXT           "Minimum number of chars for a commit message:",IDC_STATIC,14,99,269,8
+    LTEXT           "&Limit:",IDC_STATIC,14,111,47,8
+    EDITTEXT        IDC_LOGMINSIZE,113,111,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Char position where to show a border line in commit text boxes:",IDC_STATIC,14,126,269,8
+    LTEXT           "&Border:",IDC_STATIC,14,138,47,8
+    EDITTEXT        IDC_BORDER,113,136,40,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "&Warn on missing Signed-Off-By on commit",IDC_STATIC,14,153,148,10
+    COMBOBOX        IDC_WARN_NO_SIGNED_OFF_BY,194,153,63,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Save to:",IDC_STATIC,14,212,41,11
+    COMBOBOX        IDC_COMBO_SETTINGS_SAFETO,65,211,103,15,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Dialogs",IDC_STATIC,7,170,286,40
+    CONTROL         "Icon",IDC_ICONENABLED,"Button",BS_AUTO3STATE | WS_TABSTOP,14,182,35,10
+    EDITTEXT        IDC_ICONFILE,50,180,216,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_ICONFILE_BROWSE,269,180,14,14
 END
 
 
@@ -4263,6 +4267,7 @@ BEGIN
     IDS_WALKBEHAVIOUR_COMPRESSED "&Compressed Graph"
     IDS_WALKBEHAVIOUR_LABELEDCOMMITS "Show la&beled commits only"
     IDS_WALKBEHAVIOUR_NOMERGES "No &merges"
+    IDS_ICONFILEFILTER      "Icons (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
 END
 
 #endif    // English (U.S.) resources

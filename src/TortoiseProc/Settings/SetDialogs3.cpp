@@ -28,6 +28,7 @@ IMPLEMENT_DYNAMIC(CSetDialogs3, ISettingsPropPage)
 CSetDialogs3::CSetDialogs3()
 	: ISettingsPropPage(CSetDialogs3::IDD)
 	, m_bNeedSave(false)
+	, m_bIconEnabled(TRUE)
 {
 }
 
@@ -41,6 +42,8 @@ void CSetDialogs3::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LANGCOMBO, m_langCombo);
 	DDX_Text(pDX, IDC_LOGMINSIZE, m_LogMinSize);
 	DDX_Text(pDX, IDC_BORDER, m_Border);
+	DDX_Text(pDX, IDC_ICONFILE, m_iconFile);
+	DDX_Check(pDX, IDC_ICONENABLED, m_bIconEnabled);
 	DDX_Control(pDX, IDC_WARN_NO_SIGNED_OFF_BY, m_cWarnNoSignedOffBy);
 	GITSETTINGS_DDX
 }
@@ -51,6 +54,9 @@ BEGIN_MESSAGE_MAP(CSetDialogs3, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_WARN_NO_SIGNED_OFF_BY, &OnChange)
 	ON_EN_CHANGE(IDC_LOGMINSIZE, &OnChange)
 	ON_EN_CHANGE(IDC_BORDER, &OnChange)
+	ON_EN_CHANGE(IDC_ICONFILE, &OnChange)
+	ON_BN_CLICKED(IDC_ICONENABLED, &OnChange)
+	ON_BN_CLICKED(IDC_ICONFILE_BROWSE, &OnBnClickedIconfileBrowse)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -137,6 +143,23 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 
 	GetBoolConfigValueComboBox(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, m_cWarnNoSignedOffBy);
 
+	{
+		m_iconFile = _T("");
+		CString value;
+		GetConfigValue(config, PROJECTPROPNAME_ICON, value);
+		if (!value.IsEmpty() || m_iConfigSource == 0 || m_iConfigSource == 1 || m_iConfigSource == 2)
+			m_iconFile = value;
+	}
+
+	{
+		m_bIconEnabled = BST_INDETERMINATE;
+		CString value;
+		GetConfigValue(config, PROJECTPROPNAME_ICONENABLED, value);
+		if (!value.IsEmpty() || m_iConfigSource == 0 || m_iConfigSource == 1 || m_iConfigSource == 2)
+			m_bIconEnabled = value == _T("true") ? BST_CHECKED : value == _T("false") ? BST_UNCHECKED : BST_INDETERMINATE;
+	}
+
+
 	m_bNeedSave = false;
 	SetModified(FALSE);
 	UpdateData(FALSE);
@@ -171,6 +194,12 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 			return FALSE;
 	}
 
+	if (!Save(config, PROJECTPROPNAME_ICON, m_iconFile, true))
+		return FALSE;
+
+	if (!Save(config, PROJECTPROPNAME_ICONENABLED, m_bIconEnabled == BST_INDETERMINATE ? _T("") : m_bIconEnabled ? _T("true") : _T("false")))
+		return FALSE;
+
 	return TRUE;
 }
 
@@ -187,12 +216,43 @@ void CSetDialogs3::EnDisableControls()
 	GetDlgItem(IDC_LANGCOMBO)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_ICONFILE)->EnableWindow(m_iConfigSource == 1 || m_iConfigSource == 2);
+	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource == 1 || m_iConfigSource == 2);
+	GetDlgItem(IDC_ICONENABLED)->EnableWindow(m_iConfigSource == 1 || m_iConfigSource == 2);
 }
 
 void CSetDialogs3::OnChange()
 {
 	m_bNeedSave = true;
 	SetModified();
+}
+
+void CSetDialogs3::OnBnClickedIconfileBrowse()
+{
+	UpdateData(TRUE);
+	CString currentDir = g_Git.m_CurrentDir + (g_Git.m_CurrentDir.Right(1) == _T("\\") ? _T("") : _T("\\"));
+	CString iconFile = m_iconFile;
+	if (!(iconFile.Mid(1, 1) == _T(":") || iconFile.Left(1) == _T("\\")))
+		iconFile = currentDir + iconFile;
+	iconFile.Replace('/', '\\');
+	CFileDialog dlg(FALSE, _T("ico"), iconFile, OFN_FILEMUSTEXIST, CString(MAKEINTRESOURCE(IDS_ICONFILEFILTER)));
+
+	INT_PTR ret = dlg.DoModal();
+	SetCurrentDirectory(g_Git.m_CurrentDir);
+	if (ret == IDOK)
+	{
+		CString iconFile = dlg.GetPathName();
+		if (iconFile.Left(currentDir.GetLength()) == currentDir)
+			iconFile = iconFile.Mid(currentDir.GetLength());
+		iconFile.Replace('\\', '/');
+		if (m_iconFile != iconFile)
+		{
+			m_iconFile = iconFile;
+			m_bNeedSave = true;
+			SetModified();
+		}
+		UpdateData(FALSE);
+	}
 }
 
 BOOL CSetDialogs3::OnApply()

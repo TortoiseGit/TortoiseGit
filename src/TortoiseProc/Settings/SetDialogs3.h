@@ -52,6 +52,7 @@ protected:
 	virtual void EnDisableControls();
 
 	afx_msg void OnChange();
+	afx_msg void OnBnClickedIconfileBrowse();
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
 	static BOOL CALLBACK EnumLocalesProc(LPTSTR lpLocaleString);
@@ -63,4 +64,6 @@ private:
 	CString				m_LogMinSize;
 	CString				m_Border;
 	CComboBox			m_cWarnNoSignedOffBy;
+	CString				m_iconFile;
+	BOOL				m_bIconEnabled;
 };
