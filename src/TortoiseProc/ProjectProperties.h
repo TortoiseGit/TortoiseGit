@@ -38,6 +38,7 @@
 #define PROJECTPROPNAME_LOGFILELISTLANG	  _T("tsvn.logfilelistenglish")
 #define PROJECTPROPNAME_PROJECTLANGUAGE   _T("tgit.projectlanguage")
 #define PROJECTPROPNAME_WARNNOSIGNEDOFFBY _T("tgit.warnnosignedoffby")
+#define PROJECTPROPNAME_ICON              _T("tgit.icon")
 
 #define PROJECTPROPNAME_WEBVIEWER_REV     _T("webviewer.revision")
 #define PROJECTPROPNAME_WEBVIEWER_PATHREV _T("webviewer.pathrevision")
@@ -200,6 +201,7 @@ public:
 	CString		sWebViewerPathRev;
 
 	BOOL		bWarnNoSignedOffBy;
+	CString		sIcon;
 
 	/**
 	 * A regex string to extract revisions from a log message.
