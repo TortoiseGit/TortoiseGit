@@ -3624,7 +3624,7 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 		return 0;
 
 	CGitHash theSelectedHash = m_lastSelectedHash;
-	SetItemState((int)itemToSelect, LVIS_SELECTED, LVIS_SELECTED);
+	SetItemState((int)itemToSelect, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	m_lastSelectedHash = theSelectedHash;
 
 	int countPerPage = GetCountPerPage();
@@ -3786,7 +3786,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		this->m_nSearchIndex = i;
 		EnsureVisible(i, FALSE);
 		SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
-		SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+		SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		SetSelectionMark(i);
 		//FillLogMessageCtrl();
 		UpdateData(FALSE);

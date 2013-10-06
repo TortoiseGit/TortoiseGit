@@ -46,6 +46,7 @@ Released: Unreleased
  * Fixed issue #1923: Once Credential node is activated, pressing apply button in Settings dialog will close the dialog
  * Fixed issue #1769: "Show Log" missing from context menu if "Shell Extended" and a file was Added but not committed
  * Fixed issue #1917: Avoid request to stash if there is nothing to rebase or fast forward is possible
+ * Fixed issue #1929: Using "Find" in "Show log" doesn't move to commits it finds, it only selects them
 
 == Known Issues ==
  * If you experience problems with PuTTY ssh, please see issue #1880.
