@@ -26,6 +26,7 @@
 #include <Shobjidl.h>
 #include "SmartHandle.h"
 #include <atlbase.h>
+#include <GdiPlus.h>
 
 #define APPID (_T("TGIT.TGIT.1"))
 
@@ -141,7 +142,24 @@ void SetUUIDOverlayIcon(HWND hWnd)
                     HICON icon = nullptr;
                     if (!sicon.empty())
                     {
-                        icon = (HICON)::LoadImage(NULL, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
+                        if (sicon.size() >=4 && !_wcsicmp(sicon.substr(sicon.size() - 4).c_str(), L".ico"))
+                        {
+                            icon = (HICON)::LoadImage(NULL, sicon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE | LR_SHARED);
+                        }
+                        else
+                        {
+                            UINT_PTR gdiplusToken = 0;
+                            Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+                            GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+                            if (gdiplusToken)
+                            {
+                                Gdiplus::Bitmap *pBitmap = new Gdiplus::Bitmap(sicon.c_str(), FALSE);
+                                if (pBitmap->GetLastStatus() == Gdiplus::Status::Ok)
+                                    pBitmap->GetHICON(&icon);
+                                delete pBitmap;
+                                Gdiplus::GdiplusShutdown(gdiplusToken);
+                            }
+                        }
                     }
 
                     if (!icon)
