@@ -150,14 +150,7 @@ public:
 
 	void UpdateProjectProperties()
 	{
-		// do not crash if config file is broken; needed for TortoiseGitBlame
-		try
-		{
-			m_ProjectProperties.ReadProps(this->m_Path);
-		}
-		catch (char *)
-		{
-		}
+		m_ProjectProperties.ReadProps(this->m_Path);
 
 		if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
 			m_bShowBugtraqColumn = true;
