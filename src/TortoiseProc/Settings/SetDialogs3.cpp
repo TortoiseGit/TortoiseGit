@@ -64,9 +64,11 @@ BOOL CSetDialogs3::OnInitDialog()
 	AddTrueFalseToComboBox(m_cWarnNoSignedOffBy);
 
 	m_langCombo.AddString(_T(""));
-	m_langCombo.SetItemData(0, 0);
-	m_langCombo.AddString(_T("(disable)"));
-	m_langCombo.SetItemData(1, (DWORD_PTR)-1);
+	m_langCombo.SetItemData(0, (DWORD_PTR)-2);
+	m_langCombo.AddString(_T("(auto)")); // do not translate, the order matters!
+	m_langCombo.SetItemData(1, 0);
+	m_langCombo.AddString(_T("(disable)")); // do not translate, the order matters!
+	m_langCombo.SetItemData(2, (DWORD_PTR)-1);
 	// fill the combo box with all available languages
 	EnumSystemLocales(EnumLocalesProc, LCID_SUPPORTED);
 
@@ -94,9 +96,10 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 {
 	{
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_PROJECTLANGUAGE, value);
-		if (value == _T("-1"))
-			m_langCombo.SetCurSel(1);
+		if (GetConfigValue(config, PROJECTPROPNAME_PROJECTLANGUAGE, value) == GIT_ENOTFOUND && m_iConfigSource != 0)
+			m_langCombo.SetCurSel(0);
+		else if (value == _T("-1"))
+			m_langCombo.SetCurSel(2);
 		else if (!value.IsEmpty())
 		{
 			LPTSTR strEnd;
@@ -106,14 +109,15 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 				if (m_iConfigSource == 0)
 					SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 				else
-					m_langCombo.SetCurSel(0);
+					m_langCombo.SetCurSel(1);
 			}
 			else
 				SelectLanguage(m_langCombo, longValue);
-		} else if (m_iConfigSource == 0)
+		}
+		else if (m_iConfigSource == 0)
 			SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 		else
-			m_langCombo.SetCurSel(0);
+			m_langCombo.SetCurSel(1);
 	}
 
 	{
@@ -149,9 +153,14 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 
 BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 {
-	if (m_langCombo.GetCurSel() == 1)
+	if (m_langCombo.GetCurSel() == 2) // disable
 	{
 		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L"-1"))
+			return FALSE;
+	}
+	else if (m_langCombo.GetCurSel() == 0) // inherit
+	{
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L""))
 			return FALSE;
 	}
 	else
@@ -159,7 +168,7 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 		CString value;
 		char numBuf[20];
 		sprintf_s(numBuf, "%ld", m_langCombo.GetItemData(m_langCombo.GetCurSel()));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, true, _T("0")))
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, false))
 			return FALSE;
 	}
 
