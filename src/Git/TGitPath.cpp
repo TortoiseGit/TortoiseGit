@@ -830,8 +830,7 @@ int CTGitPath::GetAdminDirMask() const
 				{
 					git_config * config;
 					git_config_new(&config);
-					CStringA gitModulesA(CUnicodeUtils::GetUTF8(topProjectDir + _T("\\.gitmodules")));
-					git_config_add_file_ondisk(config, gitModulesA, GIT_CONFIG_LEVEL_APP, FALSE);
+					git_config_add_file_ondisk(config, CGit::GetGitPathStringA(topProjectDir + _T("\\.gitmodules")), GIT_CONFIG_LEVEL_APP, FALSE);
 					CString relativePath = GetWinPathString().Mid(topProjectDir.GetLength());
 					relativePath.Replace(_T("\\"), _T("/"));
 					relativePath.Trim(_T("/"));

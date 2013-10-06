@@ -123,14 +123,14 @@ protected:
 		git_config_new(&config);
 		if (!m_bGlobal && (m_iConfigSource == 0 || m_iConfigSource == 1))
 		{
-			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_APP, FALSE)) // this needs to have the highest priority in order to override .tgitconfig settings
+			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_APP, FALSE)) // this needs to have the highest priority in order to override .tgitconfig settings
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 		}
 		if ((m_iConfigSource == 0 && m_bHonorProjectConfig) || m_iConfigSource == 2)
 		{
 			if (!m_bIsBareRepo)
 			{
-				if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
+				if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
 					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			}
 			else
@@ -139,24 +139,24 @@ protected:
 				CTGitPath path(_T(".tgitconfig"));
 				if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
 				{
-					if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
+					if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE)) // this needs to have the second highest priority
 						MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 				}
 			}
 		}
 		if (m_iConfigSource == 0 || m_iConfigSource == 3)
 		{
-			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE))
+			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			else
 			{
-				if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE))
+				if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE))
 					MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 			}
 		}
 		if (m_iConfigSource == 0 || m_iConfigSource == 4)
 		{
-			if (git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE))
+			if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitSystemConfig()), GIT_CONFIG_LEVEL_SYSTEM, FALSE))
 				MessageBox(nullptr, g_Git.GetLibGit2LastErr(), _T("TortoiseGit"), MB_ICONEXCLAMATION);
 		}
 
@@ -195,9 +195,9 @@ protected:
 				return FALSE;
 			}
 			if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
-				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
+				err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
 			else
-				err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+				err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
 		}
 		else if (m_cSaveTo.GetCurSel() == 1 && !m_bIsBareRepo && m_bHonorProjectConfig)
 		{
@@ -206,7 +206,7 @@ protected:
 				git_config_free(config);
 				return FALSE;
 			}
-			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig", GIT_CONFIG_LEVEL_APP, FALSE);
+			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_APP, FALSE);
 		}
 		else
 		{
@@ -215,7 +215,7 @@ protected:
 				git_config_free(config);
 				return FALSE;
 			}
-			err = git_config_add_file_ondisk(config, CUnicodeUtils::GetMulti(g_Git.GetGitLocalConfig(), CP_UTF8), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+			err = git_config_add_file_ondisk(config, CGit::GetGitPathStringA(g_Git.GetGitLocalConfig()), GIT_CONFIG_LEVEL_LOCAL, FALSE);
 		}
 		if (err)
 		{

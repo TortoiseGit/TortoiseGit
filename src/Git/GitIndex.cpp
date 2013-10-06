@@ -128,22 +128,11 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 	CString msysGitBinPath(CRegString(REG_MSYSGIT_PATH, _T(""), FALSE));
 
-	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	projectConfigA.ReleaseBuffer();
-	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
 	if (!msysGitBinPath.IsEmpty())
-	{
-		CString systemConfig = msysGitBinPath + _T("\\..\\etc\\gitconfig");
-		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-		systemConfigA.ReleaseBuffer();
-	}
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(msysGitBinPath + _T("\\..\\etc\\gitconfig")), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 
 	git_repository_set_config(repository, config);
 	git_config_free(config);
@@ -1232,21 +1221,11 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 
 	git_config * config;
 	git_config_new(&config);
-	CStringA projectConfigA = CUnicodeUtils::GetMulti(projectConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, projectConfigA.GetBuffer(), GIT_CONFIG_LEVEL_LOCAL, FALSE);
-	projectConfigA.ReleaseBuffer();
-	CStringA globalConfigA = CUnicodeUtils::GetMulti(globalConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetMulti(globalXDGConfig, CP_UTF8);
-	git_config_add_file_ondisk(config, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, FALSE);
 	if (!m_sMsysGitBinPath.IsEmpty())
-	{
-		CStringA systemConfigA = CUnicodeUtils::GetMulti(systemConfig, CP_UTF8);
-		git_config_add_file_ondisk(config, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-		systemConfigA.ReleaseBuffer();
-	}
+		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	const char * out = NULL;
 	CStringA name(_T("core.excludesfile"));
 	git_config_get_string(&out, config, name.GetBuffer());

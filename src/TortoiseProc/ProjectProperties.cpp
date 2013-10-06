@@ -109,36 +109,21 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	git_config_new(&gitconfig);
 	CString adminDirPath;
 	if (g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, adminDirPath))
-	{
-		CStringA configFile = CUnicodeUtils::GetUTF8(adminDirPath) + "config";
-		git_config_add_file_ondisk(gitconfig, configFile, GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
-	}
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(adminDirPath + L"config"), GIT_CONFIG_LEVEL_APP, FALSE); // this needs to have the highest priority in order to override .tgitconfig settings
 
 	if (!g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
-	{
-		CStringA configFile = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir) + "\\.tgitconfig";
-		git_config_add_file_ondisk(gitconfig, configFile, GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
-	}
+		git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.m_CurrentDir + L"\\.tgitconfig"), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	else
 	{
 		CString tmpFile = GetTempFile();
 		CTGitPath path(_T(".tgitconfig"));
 		if (g_Git.GetOneFile(_T("HEAD"), path, tmpFile) == 0)
-		{
-			CStringA configFile = CUnicodeUtils::GetUTF8(tmpFile);
-			git_config_add_file_ondisk(gitconfig, configFile, GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
-		}
+			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, FALSE); // this needs to have the second highest priority
 	}
 
-	CStringA globalConfigA = CUnicodeUtils::GetUTF8(g_Git.GetGitGlobalConfig());
-	git_config_add_file_ondisk(gitconfig, globalConfigA.GetBuffer(), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
-	globalConfigA.ReleaseBuffer();
-	CStringA globalXDGConfigA = CUnicodeUtils::GetUTF8( g_Git.GetGitGlobalXDGConfig());
-	git_config_add_file_ondisk(gitconfig, globalXDGConfigA.GetBuffer(), GIT_CONFIG_LEVEL_XDG, FALSE);
-	globalXDGConfigA.ReleaseBuffer();
-	CStringA systemConfigA = CUnicodeUtils::GetUTF8(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig"));
-	git_config_add_file_ondisk(gitconfig, systemConfigA.GetBuffer(), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
-	systemConfigA.ReleaseBuffer();
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.GetGitGlobalConfig()), GIT_CONFIG_LEVEL_GLOBAL, FALSE);
+	git_config_add_file_ondisk(gitconfig,CGit::GetGitPathStringA(g_Git.GetGitGlobalXDGConfig()), GIT_CONFIG_LEVEL_XDG, FALSE);
+	git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(g_Git.ms_LastMsysGitDir + _T("\\..\\etc\\gitconfig")), GIT_CONFIG_LEVEL_SYSTEM, FALSE);
 	giterr_clear();
 
 	CString sPropVal;
