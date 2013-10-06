@@ -75,6 +75,8 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 CTortoiseGitBlameApp theApp;
 CString sOrigCWD;
 CString g_sGroupingUUID;
+CString g_sGroupingIcon;
+bool g_bGroupingRemoveIcon;
 
 // CTortoiseGitBlameApp initialization
 
