@@ -142,6 +142,7 @@ int ProjectProperties::ReadProps(CTGitPath path)
 	GetStringProps(sProviderParams, BUGTRAQPROPNAME_PROVIDERPARAMS);
 
 	GetBOOLProps(this->bWarnNoSignedOffBy, PROJECTPROPNAME_WARNNOSIGNEDOFFBY);
+	GetStringProps(sIcon, PROJECTPROPNAME_ICON);
 
 	GetStringProps(sPropVal, BUGTRAQPROPNAME_LOGREGEX);
 

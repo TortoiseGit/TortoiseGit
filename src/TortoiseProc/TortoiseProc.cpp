@@ -40,6 +40,7 @@
 #include "TaskbarUUID.h"
 #include "GitConfig.h"
 #include "SoundUtils.h"
+#include "ProjectProperties.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -83,6 +84,8 @@ CTortoiseProcApp::~CTortoiseProcApp()
 CTortoiseProcApp theApp;
 CString sOrigCWD;
 CString g_sGroupingUUID;
+CString g_sGroupingIcon;
+bool g_bGroupingRemoveIcon = false;
 HWND hWndExplorer;
 
 #if ENABLE_CRASHHANLDER
@@ -436,6 +439,13 @@ BOOL CTortoiseProcApp::InitInstance()
 						hash.ReleaseBuffer();
 						g_sGroupingUUID = hash;
 					}
+					ProjectProperties pp;
+					pp.ReadProps(CTGitPath());
+					CString icon = pp.sIcon;
+					icon.Replace('/', '\\');
+					if (icon.IsEmpty())
+						g_bGroupingRemoveIcon = true;
+					g_sGroupingIcon = icon;
 				}
 			}
 		}
