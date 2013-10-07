@@ -9925,6 +9925,10 @@ msgstr ""
 msgid "incomplete"
 msgstr ""
 
+#. Resource IDs: (1780, 1781, 1782, 1783)
+msgid "inherit"
+msgstr ""
+
 #. Resource IDs: (214)
 msgid "item kept locally"
 msgstr ""

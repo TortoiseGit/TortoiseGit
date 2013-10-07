@@ -62,8 +62,11 @@ protected:
 	bool	m_bNeedSave;
 	CToolTips	m_tooltips;
 	CString	m_UserName;
+	BOOL	m_bInheritUserName;
 	CString	m_UserEmail;
+	BOOL	m_bInheritEmail;
 	CString	m_UserSigningKey;
+	BOOL	m_bInheritSigningKey;
 	BOOL	m_bAutoCrlf;
 	BOOL	m_bQuotePath;
 	CComboBox m_cSafeCrLf;

@@ -38,6 +38,9 @@ CSettingGitConfig::CSettingGitConfig()
 	, m_bAutoCrlf(FALSE)
 	, m_bNeedSave(false)
 	, m_bQuotePath(TRUE)
+	, m_bInheritUserName(FALSE)
+	, m_bInheritEmail(FALSE)
+	, m_bInheritSigningKey(FALSE)
 {
 }
 
@@ -53,6 +56,9 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
 	DDX_Check(pDX, IDC_CHECK_AUTOCRLF, m_bAutoCrlf);
 	DDX_Check(pDX, IDC_CHECK_QUOTEPATH, m_bQuotePath);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_NAME, m_bInheritUserName);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_EMAIL, m_bInheritEmail);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_KEYID, m_bInheritSigningKey);
 	DDX_Control(pDX, IDC_COMBO_SAFECRLF, m_cSafeCrLf);
 	GITSETTINGS_DDX
 }
@@ -64,6 +70,9 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_AUTOCRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_QUOTEPATH, &CSettingGitConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_NAME, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_EMAIL, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_KEYID, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_EDITGLOBALGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalgitconfig)
 	ON_BN_CLICKED(IDC_EDITGLOBALXDGGITCONFIG, &CSettingGitConfig::OnBnClickedEditglobalxdggitconfig)
 	ON_BN_CLICKED(IDC_EDITLOCALGITCONFIG, &CSettingGitConfig::OnBnClickedEditlocalgitconfig)
@@ -113,18 +122,22 @@ BOOL CSettingGitConfig::OnInitDialog()
 
 void CSettingGitConfig::LoadDataImpl(git_config * config)
 {
+	m_bInheritSigningKey = (GetConfigValue(config, _T("user.signingkey"), m_UserSigningKey) == GIT_ENOTFOUND);
+
 	// special handling for UserName and UserEmail, because these can also be defined as environment variables for effective settings
 	if (m_iConfigSource == 0)
 	{
 		m_UserName = g_Git.GetUserName();
 		m_UserEmail = g_Git.GetUserEmail();
+		m_bInheritUserName = FALSE;
+		m_bInheritEmail = FALSE;
+		m_bInheritSigningKey = FALSE;
 	}
 	else
 	{
-		GetConfigValue(config, _T("user.name"), m_UserName);
-		GetConfigValue(config, _T("user.email"), m_UserEmail);
+		m_bInheritUserName = (GetConfigValue(config, _T("user.name"), m_UserName) == GIT_ENOTFOUND);
+		m_bInheritEmail = (GetConfigValue(config, _T("user.email"), m_UserEmail) == GIT_ENOTFOUND);
 	}
-	GetConfigValue(config, _T("user.signingkey"), m_UserSigningKey);
 
 	if (git_config_get_bool(&m_bAutoCrlf, config, "core.autocrlf") == GIT_ENOTFOUND)
 		m_bAutoCrlf = BST_INDETERMINATE;
@@ -162,10 +175,26 @@ void CSettingGitConfig::EnDisableControls()
 	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_NAME)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_EMAIL)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_KEYID)->EnableWindow(m_iConfigSource != 0);
+
+	GetDlgItem(IDC_GIT_USERNAME)->EnableWindow(!m_bInheritUserName);
+	if (m_bInheritUserName)
+		m_UserName.Empty();
+	GetDlgItem(IDC_GIT_USEREMAIL)->EnableWindow(!m_bInheritEmail);
+	if (m_bInheritEmail)
+		m_UserEmail.Empty();
+	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->EnableWindow(!m_bInheritSigningKey);
+	if (m_bInheritSigningKey)
+		m_UserSigningKey.Empty();
+	UpdateData(FALSE);
 }
 
 void CSettingGitConfig::OnChange()
 {
+	UpdateData();
+	EnDisableControls();
 	m_bNeedSave = true;
 	SetModified();
 }
@@ -178,7 +207,7 @@ BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 	if (!Save(config, _T("user.email"), this->m_UserEmail))
 		return FALSE;
 
-	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey, true))
+	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey))
 		return FALSE;
 
 	if (!Save(config, _T("core.quotepath"), m_bQuotePath == BST_INDETERMINATE ? _T("") : m_bQuotePath ? _T("true") : _T("false")))

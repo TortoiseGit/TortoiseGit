@@ -28,6 +28,9 @@ IMPLEMENT_DYNAMIC(CSetDialogs3, ISettingsPropPage)
 CSetDialogs3::CSetDialogs3()
 	: ISettingsPropPage(CSetDialogs3::IDD)
 	, m_bNeedSave(false)
+	, m_bInheritLogMinSize(FALSE)
+	, m_bInheritBorder(FALSE)
+	, m_bInheritIconFile(FALSE)
 {
 }
 
@@ -43,6 +46,9 @@ void CSetDialogs3::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BORDER, m_Border);
 	DDX_Text(pDX, IDC_ICONFILE, m_iconFile);
 	DDX_Control(pDX, IDC_WARN_NO_SIGNED_OFF_BY, m_cWarnNoSignedOffBy);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_LIMIT, m_bInheritLogMinSize);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BORDER, m_bInheritBorder);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_KEYID, m_bInheritIconFile);
 	GITSETTINGS_DDX
 }
 
@@ -53,6 +59,9 @@ BEGIN_MESSAGE_MAP(CSetDialogs3, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_LOGMINSIZE, &OnChange)
 	ON_EN_CHANGE(IDC_BORDER, &OnChange)
 	ON_EN_CHANGE(IDC_ICONFILE, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_LIMIT, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BORDER, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_KEYID, &OnChange)
 	ON_BN_CLICKED(IDC_ICONFILE_BROWSE, &OnBnClickedIconfileBrowse)
 END_MESSAGE_MAP()
 
@@ -123,28 +132,30 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 	{
 		m_LogMinSize = _T("");
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_LOGMINSIZE, value);
+		m_bInheritLogMinSize = (GetConfigValue(config, PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nMinLogSize = _ttoi(value);
 			m_LogMinSize.Format(L"%d", nMinLogSize);
+			m_bInheritLogMinSize = FALSE;
 		}
 	}
 
 	{
 		m_Border = _T("");
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_LOGWIDTHLINE, value);
+		m_bInheritBorder = (GetConfigValue(config, PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nLogWidthMarker = _ttoi(value);
 			m_Border.Format(L"%d", nLogWidthMarker);
+			m_bInheritBorder = FALSE;
 		}
 	}
 
 	GetBoolConfigValueComboBox(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, m_cWarnNoSignedOffBy);
 
-	GetConfigValue(config, PROJECTPROPNAME_ICON, m_iconFile);
+	m_bInheritIconFile = (GetConfigValue(config, PROJECTPROPNAME_ICON, m_iconFile) == GIT_ENOTFOUND);
 
 	m_bNeedSave = false;
 	SetModified(FALSE);
@@ -205,11 +216,27 @@ void CSetDialogs3::EnDisableControls()
 	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_ICONFILE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != 0 && !m_bInheritIconFile);
+	GetDlgItem(IDC_CHECK_INHERIT_LIMIT)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BORDER)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_ICONPATH)->EnableWindow(m_iConfigSource != 0);
+
+	GetDlgItem(IDC_LOGMINSIZE)->EnableWindow(!m_bInheritLogMinSize);
+	if (m_bInheritLogMinSize)
+		m_LogMinSize.Empty();
+	GetDlgItem(IDC_BORDER)->EnableWindow(!m_bInheritBorder);
+	if (m_bInheritBorder)
+		m_Border.Empty();
+	GetDlgItem(IDC_ICONFILE)->EnableWindow(!m_bInheritIconFile);
+	if (m_bInheritIconFile)
+		m_iconFile.Empty();
+	UpdateData(FALSE);
 }
 
 void CSetDialogs3::OnChange()
 {
+	UpdateData();
+	EnDisableControls();
 	m_bNeedSave = true;
 	SetModified();
 }
