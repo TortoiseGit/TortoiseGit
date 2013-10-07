@@ -171,7 +171,7 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 	}
 	else if (m_langCombo.GetCurSel() == 0) // inherit
 	{
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L""))
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L"", true))
 			return FALSE;
 	}
 	else
@@ -179,24 +179,24 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 		CString value;
 		char numBuf[20];
 		sprintf_s(numBuf, "%ld", m_langCombo.GetItemData(m_langCombo.GetCurSel()));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, false))
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf))
 			return FALSE;
 	}
 
-	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, true, _T("0")))
+	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, m_bInheritLogMinSize == TRUE))
 		return FALSE;
 
-	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, true, _T("0")))
+	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, m_bInheritBorder == TRUE))
 		return FALSE;
 
 	{
 		CString value;
 		m_cWarnNoSignedOffBy.GetWindowText(value);
-		if (!Save(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, value))
+		if (!Save(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, value, value.IsEmpty()))
 			return FALSE;
 	}
 
-	if (!Save(config, PROJECTPROPNAME_ICON, m_iconFile, true))
+	if (!Save(config, PROJECTPROPNAME_ICON, m_iconFile, m_bInheritIconFile == TRUE))
 		return FALSE;
 
 	return TRUE;
@@ -222,14 +222,8 @@ void CSetDialogs3::EnDisableControls()
 	GetDlgItem(IDC_CHECK_INHERIT_ICONPATH)->EnableWindow(m_iConfigSource != 0);
 
 	GetDlgItem(IDC_LOGMINSIZE)->EnableWindow(!m_bInheritLogMinSize);
-	if (m_bInheritLogMinSize)
-		m_LogMinSize.Empty();
 	GetDlgItem(IDC_BORDER)->EnableWindow(!m_bInheritBorder);
-	if (m_bInheritBorder)
-		m_Border.Empty();
 	GetDlgItem(IDC_ICONFILE)->EnableWindow(!m_bInheritIconFile);
-	if (m_bInheritIconFile)
-		m_iconFile.Empty();
 	UpdateData(FALSE);
 }
 

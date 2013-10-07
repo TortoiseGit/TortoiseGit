@@ -111,17 +111,9 @@ void CSettingsBugtraqConfig::EnDisableControls()
 	GetDlgItem(IDC_CHECK_INHERIT_BTREGEXP)->EnableWindow(m_iConfigSource != 0);
 
 	GetDlgItem(IDC_BUGTRAQ_URL)->EnableWindow(!m_bInheritURL);
-	if (m_bInheritURL)
-		m_URL.Empty();
 	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->EnableWindow(!m_bInheritMessage);
-	if (m_bInheritMessage)
-		m_Message.Empty();
 	GetDlgItem(IDC_BUGTRAQ_LABEL)->EnableWindow(!m_bInheritLabel);
-	if (m_bInheritLabel)
-		m_Label.Empty();
 	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->EnableWindow(!m_bInheritLogregex);
-	if (m_bInheritLogregex)
-		m_Logregex.Empty();
 	UpdateData(FALSE);
 }
 
@@ -186,37 +178,37 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 
 BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
 {
-	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, true))
+	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, m_bInheritURL == TRUE))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message, true))
+	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message, m_bInheritMessage == TRUE))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, true))
+	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, m_bInheritLabel == TRUE))
 		return FALSE;
 
 	{
 		CString value;
 		m_cAppend.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_APPEND, value))
+		if (!Save(config, BUGTRAQPROPNAME_APPEND, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value;
 		m_cNumber.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_NUMBER, value))
+		if (!Save(config, BUGTRAQPROPNAME_NUMBER, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value;
 		m_cWarningifnoissue.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_WARNIFNOISSUE, value))
+		if (!Save(config, BUGTRAQPROPNAME_WARNIFNOISSUE, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value(m_Logregex);
 		value.Replace(_T("\r\n"),_T("\n"));
-		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value, true))
+		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value, m_bInheritLogregex == TRUE))
 			return FALSE;
 	}
 

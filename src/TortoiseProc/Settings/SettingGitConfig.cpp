@@ -180,14 +180,8 @@ void CSettingGitConfig::EnDisableControls()
 	GetDlgItem(IDC_CHECK_INHERIT_KEYID)->EnableWindow(m_iConfigSource != 0);
 
 	GetDlgItem(IDC_GIT_USERNAME)->EnableWindow(!m_bInheritUserName);
-	if (m_bInheritUserName)
-		m_UserName.Empty();
 	GetDlgItem(IDC_GIT_USEREMAIL)->EnableWindow(!m_bInheritEmail);
-	if (m_bInheritEmail)
-		m_UserEmail.Empty();
 	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->EnableWindow(!m_bInheritSigningKey);
-	if (m_bInheritSigningKey)
-		m_UserSigningKey.Empty();
 	UpdateData(FALSE);
 }
 
@@ -201,25 +195,25 @@ void CSettingGitConfig::OnChange()
 
 BOOL CSettingGitConfig::SafeDataImpl(git_config * config)
 {
-	if (!Save(config, _T("user.name"), this->m_UserName))
+	if (!Save(config, _T("user.name"), m_UserName, m_bInheritUserName == TRUE))
 		return FALSE;
 
-	if (!Save(config, _T("user.email"), this->m_UserEmail))
+	if (!Save(config, _T("user.email"), m_UserEmail, m_bInheritEmail == TRUE))
 		return FALSE;
 
-	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey))
+	if (!Save(config, _T("user.signingkey"), this->m_UserSigningKey, m_bInheritSigningKey == TRUE))
 		return FALSE;
 
-	if (!Save(config, _T("core.quotepath"), m_bQuotePath == BST_INDETERMINATE ? _T("") : m_bQuotePath ? _T("true") : _T("false")))
+	if (!Save(config, _T("core.quotepath"), m_bQuotePath ? _T("true") : _T("false"), m_bQuotePath == BST_INDETERMINATE))
 		return FALSE;
 
-	if (!Save(config, _T("core.autocrlf"), m_bAutoCrlf == BST_INDETERMINATE ? _T("") : m_bAutoCrlf ? _T("true") : _T("false")))
+	if (!Save(config, _T("core.autocrlf"), m_bAutoCrlf ? _T("true") : _T("false"), m_bAutoCrlf == BST_INDETERMINATE))
 		return FALSE;
 
 	{
 		CString safecrlf;
 		this->m_cSafeCrLf.GetWindowText(safecrlf);
-		if (!Save(config, _T("core.safecrlf"), safecrlf))
+		if (!Save(config, _T("core.safecrlf"), safecrlf, safecrlf.IsEmpty()))
 			return FALSE;
 	}
 

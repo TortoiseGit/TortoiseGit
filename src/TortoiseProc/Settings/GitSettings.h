@@ -89,16 +89,14 @@ protected:
 		LoadData();
 	}
 
-	bool Save(git_config * config, const CString &key, const CString &value, const bool askEmptyDelete = false, const CString def = _T(""))
+	bool Save(git_config * config, const CString &key, const CString &value, const bool deleteKey = false)
 	{
 		CStringA keyA = CUnicodeUtils::GetUTF8(key);
 		int err = 0;
-		if (value.IsEmpty() || value == def)
+		if (deleteKey)
 		{
 			const git_config_entry * entry = nullptr;
 			if (git_config_get_entry(&entry, config, keyA) == GIT_ENOTFOUND)
-				return true;
-			if (askEmptyDelete && CMessageBox::Show(nullptr, IDS_ASK_DELETE_EMPTY, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_NO) == 2)
 				return true;
 			err = git_config_delete_entry(config, keyA);
 		}
