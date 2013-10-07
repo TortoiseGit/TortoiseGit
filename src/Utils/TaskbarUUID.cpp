@@ -148,7 +148,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
                         }
                         else
                         {
-                            UINT_PTR gdiplusToken = 0;
+                            ULONG_PTR gdiplusToken = 0;
                             Gdiplus::GdiplusStartupInput gdiplusStartupInput;
                             GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
                             if (gdiplusToken)
