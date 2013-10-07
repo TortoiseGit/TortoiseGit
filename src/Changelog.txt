@@ -22,6 +22,7 @@ Released: Unreleased
  * Fixed issue #1806: Compressed graph in the log view
  * Fixed issue #1926: Add "No Merges" checkbox in Log Messages window
  * Fixed issue #1779: tortoisegit does not understand include.path in global config
+   If you have relevant settings for TGitCache in an included file, you have to restard TGitCache or modify the global, system, or local config file in order to reload any included file.
  * Support project icon as task button overlay
 
 == Bug Fixes ==
