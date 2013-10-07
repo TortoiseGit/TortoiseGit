@@ -35,6 +35,10 @@ CSettingsBugtraqConfig::CSettingsBugtraqConfig(CString cmdPath)
 	, m_Label(_T(""))
 	, m_Logregex(_T(""))
 	, m_bNeedSave(false)
+	, m_bInheritURL(FALSE)
+	, m_bInheritMessage(FALSE)
+	, m_bInheritLabel(FALSE)
+	, m_bInheritLogregex(FALSE)
 {
 }
 
@@ -53,6 +57,10 @@ void CSettingsBugtraqConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BUGTRAQ_NUMBER, m_cNumber);
 	DDX_Text(pDX, IDC_BUGTRAQ_LOGREGEX, m_Logregex);
 	DDX_Control(pDX, IDC_BUGTRAQ_LOGREGEX, m_BugtraqRegex1);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTURL, m_bInheritURL);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTMSG, m_bInheritMessage);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTLABEL, m_bInheritLabel);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BTREGEXP, m_bInheritLogregex);
 	GITSETTINGS_DDX
 }
 
@@ -65,6 +73,10 @@ BEGIN_MESSAGE_MAP(CSettingsBugtraqConfig, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LABEL, &CSettingsBugtraqConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_BUGTRAQ_NUMBER, &CSettingsBugtraqConfig::OnChange)
 	ON_EN_CHANGE(IDC_BUGTRAQ_LOGREGEX, &CSettingsBugtraqConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTURL, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTMSG, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTLABEL, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BTREGEXP, &OnChange)
 END_MESSAGE_MAP()
 
 BOOL CSettingsBugtraqConfig::OnInitDialog()
@@ -93,10 +105,22 @@ void CSettingsBugtraqConfig::EnDisableControls()
 	GetDlgItem(IDC_BUGTRAQ_APPEND)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_BUGTRAQ_NUMBER)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTURL)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTMSG)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTLABEL)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BTREGEXP)->EnableWindow(m_iConfigSource != 0);
+
+	GetDlgItem(IDC_BUGTRAQ_URL)->EnableWindow(!m_bInheritURL);
+	GetDlgItem(IDC_BUGTRAQ_MESSAGE)->EnableWindow(!m_bInheritMessage);
+	GetDlgItem(IDC_BUGTRAQ_LABEL)->EnableWindow(!m_bInheritLabel);
+	GetDlgItem(IDC_BUGTRAQ_LOGREGEX)->EnableWindow(!m_bInheritLogregex);
+	UpdateData(FALSE);
 }
 
 void CSettingsBugtraqConfig::OnChange()
 {
+	UpdateData();
+	EnDisableControls();
 	m_bNeedSave = true;
 	SetModified();
 }
@@ -127,16 +151,21 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 			m_cWarningifnoissue.SetCurSel(1);
 		else
 			m_cWarningifnoissue.SetCurSel(2);
+
+		m_bInheritURL = FALSE;
+		m_bInheritMessage = FALSE;
+		m_bInheritLabel = FALSE;
+		m_bInheritLogregex = FALSE;
 	}
 	else
 	{
-		GetConfigValue(config, BUGTRAQPROPNAME_URL, m_URL);
-		GetConfigValue(config, BUGTRAQPROPNAME_MESSAGE, m_Message);
-		GetConfigValue(config, BUGTRAQPROPNAME_LABEL, m_Label);
+		m_bInheritURL = (GetConfigValue(config, BUGTRAQPROPNAME_URL, m_URL) == GIT_ENOTFOUND);
+		m_bInheritMessage = (GetConfigValue(config, BUGTRAQPROPNAME_MESSAGE, m_Message) == GIT_ENOTFOUND);
+		m_bInheritLabel = (GetConfigValue(config, BUGTRAQPROPNAME_LABEL, m_Label) == GIT_ENOTFOUND);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_NUMBER, m_cNumber);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_APPEND, m_cAppend);
 		GetBoolConfigValueComboBox(config, BUGTRAQPROPNAME_WARNIFNOISSUE, m_cWarningifnoissue);
-		GetConfigValue(config, BUGTRAQPROPNAME_LOGREGEX, m_Logregex);
+		m_bInheritLogregex = (GetConfigValue(config, BUGTRAQPROPNAME_LOGREGEX, m_Logregex) == GIT_ENOTFOUND);
 	}
 
 	m_Logregex.Trim();
@@ -149,37 +178,37 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 
 BOOL CSettingsBugtraqConfig::SafeDataImpl(git_config * config)
 {
-	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, true))
+	if (!Save(config, BUGTRAQPROPNAME_URL, m_URL, m_bInheritURL == TRUE))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message, true))
+	if (!Save(config, BUGTRAQPROPNAME_MESSAGE, m_Message, m_bInheritMessage == TRUE))
 		return FALSE;
 
-	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, true))
+	if (!Save(config, BUGTRAQPROPNAME_LABEL, m_Label, m_bInheritLabel == TRUE))
 		return FALSE;
 
 	{
 		CString value;
 		m_cAppend.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_APPEND, value))
+		if (!Save(config, BUGTRAQPROPNAME_APPEND, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value;
 		m_cNumber.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_NUMBER, value))
+		if (!Save(config, BUGTRAQPROPNAME_NUMBER, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value;
 		m_cWarningifnoissue.GetWindowText(value);
-		if (!Save(config, BUGTRAQPROPNAME_WARNIFNOISSUE, value))
+		if (!Save(config, BUGTRAQPROPNAME_WARNIFNOISSUE, value, value.IsEmpty()))
 			return FALSE;
 	}
 	{
 		CString value(m_Logregex);
 		value.Replace(_T("\r\n"),_T("\n"));
-		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value, true))
+		if (!Save(config, BUGTRAQPROPNAME_LOGREGEX, value, m_bInheritLogregex == TRUE))
 			return FALSE;
 	}
 

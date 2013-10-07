@@ -62,7 +62,10 @@ private:
 	CToolTips			m_tooltips;
 	static CComboBox	m_langCombo;
 	CString				m_LogMinSize;
+	BOOL				m_bInheritLogMinSize;
 	CString				m_Border;
+	BOOL				m_bInheritBorder;
 	CComboBox			m_cWarnNoSignedOffBy;
 	CString				m_iconFile;
+	BOOL				m_bInheritIconFile;
 };

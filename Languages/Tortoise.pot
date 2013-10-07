@@ -9617,10 +9617,6 @@ msgstr ""
 msgid "You already have the latest version installed."
 msgstr ""
 
-#. Resource IDs: (91)
-msgid "You are about to save an empty/default value. This can be useful to prevent inheriting another value.\nDo you want to remove the key instead of saving the empty/default value?"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "You can disable specific Overlay handlers here.\nDisabled handlers won't use up an overlay slot and give other shell extensions a chance to show their overlays."
 msgstr ""
@@ -9923,6 +9919,10 @@ msgstr ""
 
 #. Resource IDs: (13)
 msgid "incomplete"
+msgstr ""
+
+#. Resource IDs: (1780, 1781, 1782, 1783)
+msgid "inherit"
 msgstr ""
 
 #. Resource IDs: (214)

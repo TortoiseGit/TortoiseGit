@@ -57,10 +57,14 @@ protected:
 
 	bool	m_bNeedSave;
 	CString	m_URL;
+	BOOL	m_bInheritURL;
 	CComboBox	m_cWarningifnoissue;
 	CString	m_Message;
+	BOOL	m_bInheritMessage;
 	CComboBox	m_cAppend;
 	CString	m_Label;
+	BOOL	m_bInheritLabel;
 	CComboBox	m_cNumber;
 	CString	m_Logregex;
+	BOOL	m_bInheritLogregex;
 };

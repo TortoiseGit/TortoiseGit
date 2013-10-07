@@ -28,6 +28,9 @@ IMPLEMENT_DYNAMIC(CSetDialogs3, ISettingsPropPage)
 CSetDialogs3::CSetDialogs3()
 	: ISettingsPropPage(CSetDialogs3::IDD)
 	, m_bNeedSave(false)
+	, m_bInheritLogMinSize(FALSE)
+	, m_bInheritBorder(FALSE)
+	, m_bInheritIconFile(FALSE)
 {
 }
 
@@ -43,6 +46,9 @@ void CSetDialogs3::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_BORDER, m_Border);
 	DDX_Text(pDX, IDC_ICONFILE, m_iconFile);
 	DDX_Control(pDX, IDC_WARN_NO_SIGNED_OFF_BY, m_cWarnNoSignedOffBy);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_LIMIT, m_bInheritLogMinSize);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_BORDER, m_bInheritBorder);
+	DDX_Check(pDX, IDC_CHECK_INHERIT_KEYID, m_bInheritIconFile);
 	GITSETTINGS_DDX
 }
 
@@ -53,6 +59,9 @@ BEGIN_MESSAGE_MAP(CSetDialogs3, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_LOGMINSIZE, &OnChange)
 	ON_EN_CHANGE(IDC_BORDER, &OnChange)
 	ON_EN_CHANGE(IDC_ICONFILE, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_LIMIT, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_BORDER, &OnChange)
+	ON_BN_CLICKED(IDC_CHECK_INHERIT_KEYID, &OnChange)
 	ON_BN_CLICKED(IDC_ICONFILE_BROWSE, &OnBnClickedIconfileBrowse)
 END_MESSAGE_MAP()
 
@@ -64,9 +73,11 @@ BOOL CSetDialogs3::OnInitDialog()
 	AddTrueFalseToComboBox(m_cWarnNoSignedOffBy);
 
 	m_langCombo.AddString(_T(""));
-	m_langCombo.SetItemData(0, 0);
-	m_langCombo.AddString(_T("(disable)"));
-	m_langCombo.SetItemData(1, (DWORD_PTR)-1);
+	m_langCombo.SetItemData(0, (DWORD_PTR)-2);
+	m_langCombo.AddString(_T("(auto)")); // do not translate, the order matters!
+	m_langCombo.SetItemData(1, 0);
+	m_langCombo.AddString(_T("(disable)")); // do not translate, the order matters!
+	m_langCombo.SetItemData(2, (DWORD_PTR)-1);
 	// fill the combo box with all available languages
 	EnumSystemLocales(EnumLocalesProc, LCID_SUPPORTED);
 
@@ -94,9 +105,10 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 {
 	{
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_PROJECTLANGUAGE, value);
-		if (value == _T("-1"))
-			m_langCombo.SetCurSel(1);
+		if (GetConfigValue(config, PROJECTPROPNAME_PROJECTLANGUAGE, value) == GIT_ENOTFOUND && m_iConfigSource != 0)
+			m_langCombo.SetCurSel(0);
+		else if (value == _T("-1"))
+			m_langCombo.SetCurSel(2);
 		else if (!value.IsEmpty())
 		{
 			LPTSTR strEnd;
@@ -106,41 +118,44 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 				if (m_iConfigSource == 0)
 					SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 				else
-					m_langCombo.SetCurSel(0);
+					m_langCombo.SetCurSel(1);
 			}
 			else
 				SelectLanguage(m_langCombo, longValue);
-		} else if (m_iConfigSource == 0)
+		}
+		else if (m_iConfigSource == 0)
 			SelectLanguage(m_langCombo, CRegDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033));
 		else
-			m_langCombo.SetCurSel(0);
+			m_langCombo.SetCurSel(1);
 	}
 
 	{
 		m_LogMinSize = _T("");
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_LOGMINSIZE, value);
+		m_bInheritLogMinSize = (GetConfigValue(config, PROJECTPROPNAME_LOGMINSIZE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nMinLogSize = _ttoi(value);
 			m_LogMinSize.Format(L"%d", nMinLogSize);
+			m_bInheritLogMinSize = FALSE;
 		}
 	}
 
 	{
 		m_Border = _T("");
 		CString value;
-		GetConfigValue(config, PROJECTPROPNAME_LOGWIDTHLINE, value);
+		m_bInheritBorder = (GetConfigValue(config, PROJECTPROPNAME_LOGWIDTHLINE, value) == GIT_ENOTFOUND);
 		if (!value.IsEmpty() || m_iConfigSource == 0)
 		{
 			int nLogWidthMarker = _ttoi(value);
 			m_Border.Format(L"%d", nLogWidthMarker);
+			m_bInheritBorder = FALSE;
 		}
 	}
 
 	GetBoolConfigValueComboBox(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, m_cWarnNoSignedOffBy);
 
-	GetConfigValue(config, PROJECTPROPNAME_ICON, m_iconFile);
+	m_bInheritIconFile = (GetConfigValue(config, PROJECTPROPNAME_ICON, m_iconFile) == GIT_ENOTFOUND);
 
 	m_bNeedSave = false;
 	SetModified(FALSE);
@@ -149,9 +164,14 @@ void CSetDialogs3::LoadDataImpl(git_config * config)
 
 BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 {
-	if (m_langCombo.GetCurSel() == 1)
+	if (m_langCombo.GetCurSel() == 2) // disable
 	{
 		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L"-1"))
+			return FALSE;
+	}
+	else if (m_langCombo.GetCurSel() == 0) // inherit
+	{
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, L"", true))
 			return FALSE;
 	}
 	else
@@ -159,24 +179,24 @@ BOOL CSetDialogs3::SafeDataImpl(git_config * config)
 		CString value;
 		char numBuf[20];
 		sprintf_s(numBuf, "%ld", m_langCombo.GetItemData(m_langCombo.GetCurSel()));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf, true, _T("0")))
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, (CString)numBuf))
 			return FALSE;
 	}
 
-	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, true, _T("0")))
+	if (!Save(config, PROJECTPROPNAME_LOGMINSIZE, m_LogMinSize, m_bInheritLogMinSize == TRUE))
 		return FALSE;
 
-	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, true, _T("0")))
+	if (!Save(config, PROJECTPROPNAME_LOGWIDTHLINE, m_Border, m_bInheritBorder == TRUE))
 		return FALSE;
 
 	{
 		CString value;
 		m_cWarnNoSignedOffBy.GetWindowText(value);
-		if (!Save(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, value))
+		if (!Save(config, PROJECTPROPNAME_WARNNOSIGNEDOFFBY, value, value.IsEmpty()))
 			return FALSE;
 	}
 
-	if (!Save(config, PROJECTPROPNAME_ICON, m_iconFile, true))
+	if (!Save(config, PROJECTPROPNAME_ICON, m_iconFile, m_bInheritIconFile == TRUE))
 		return FALSE;
 
 	return TRUE;
@@ -196,11 +216,21 @@ void CSetDialogs3::EnDisableControls()
 	GetDlgItem(IDC_WARN_NO_SIGNED_OFF_BY)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != 0);
 	GetDlgItem(IDC_ICONFILE)->SendMessage(EM_SETREADONLY, m_iConfigSource == 0, 0);
-	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_ICONFILE_BROWSE)->EnableWindow(m_iConfigSource != 0 && !m_bInheritIconFile);
+	GetDlgItem(IDC_CHECK_INHERIT_LIMIT)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_BORDER)->EnableWindow(m_iConfigSource != 0);
+	GetDlgItem(IDC_CHECK_INHERIT_ICONPATH)->EnableWindow(m_iConfigSource != 0);
+
+	GetDlgItem(IDC_LOGMINSIZE)->EnableWindow(!m_bInheritLogMinSize);
+	GetDlgItem(IDC_BORDER)->EnableWindow(!m_bInheritBorder);
+	GetDlgItem(IDC_ICONFILE)->EnableWindow(!m_bInheritIconFile);
+	UpdateData(FALSE);
 }
 
 void CSetDialogs3::OnChange()
 {
+	UpdateData();
+	EnDisableControls();
 	m_bNeedSave = true;
 	SetModified();
 }
