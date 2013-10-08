@@ -276,5 +276,11 @@ protected:
 	afx_msg void OnBnClickedChangedConfigSource() \
 	{ \
 		m_iConfigSource = GetCheckedRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM) - IDC_RADIO_SETTINGS_EFFECTIVE; \
+		if (m_iConfigSource == 1) \
+			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_LOCAL))); \
+		else if (m_iConfigSource == 2) \
+			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_PROJECT))); \
+		else if (m_iConfigSource == 3) \
+			m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_GLOBAL))); \
 		LoadData(); \
 	}
