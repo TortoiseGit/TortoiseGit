@@ -331,6 +331,7 @@
 		<para>
 			<figure id="tsvn-dug-settings-dia-issuetracker">
 				<title>The Settings Dialog, Issue Tracker Integration Page</title>
+				<graphic fileref="../images/SettingsIssueTrackerIntegration.png"/>
 				<graphic fileref="../images/SettingsIssueTracker.png"/>
 			</figure>
 			Click on <guibutton>Add...</guibutton> to use the plugin with
