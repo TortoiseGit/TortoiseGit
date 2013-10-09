@@ -143,7 +143,12 @@ void CSettingGitConfig::LoadDataImpl(git_config * config)
 		m_bAutoCrlf = BST_INDETERMINATE;
 
 	if (git_config_get_bool(&m_bQuotePath, config, "core.quotepath") == GIT_ENOTFOUND)
-		m_bQuotePath = BST_INDETERMINATE;
+	{
+		if (m_iConfigSource == 0)
+			m_bQuotePath = BST_CHECKED;
+		else
+			m_bQuotePath = BST_INDETERMINATE;
+	}
 
 	BOOL bSafeCrLf = FALSE;
 	if (git_config_get_bool(&bSafeCrLf, config, "core.safecrlf") == GIT_ENOTFOUND)
