@@ -267,6 +267,26 @@
 					</para>
 				</listitem>
 			</varlistentry>
+			<varlistentry>
+				<term>Enable Gravatar</term>
+				<listitem>
+					<para>
+						Shows the Gravatar image of the author of the commit in Log Dialog.
+						The URL is customizable so you may specify more options supported by the server,
+						or use your own avatar server.
+						The default URL is http://www.gravatar.com/avatar/%HASH%
+						Currently, the supported parameter is <literal>%HASH%</literal>, which is the MD5 email hash.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Draw tag/branch labels on right side</term>
+				<listitem>
+					<para>
+						Shows tag/branch labels after the commit message.
+					</para>
+				</listitem>
+			</varlistentry>
 		</variablelist>
 	</sect3>
 	<sect3 id="tsvn-dug-settings-dialogs2">
@@ -340,6 +360,26 @@
 						sending the modified file to the recycle bin before
 						bringing back the pristine copy. If you prefer to
 						skip the recycle bin, uncheck this option.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Confirm to kill running git process</term>
+				<listitem>
+					<para>
+						When enabled, if you close Progress Dialog or Sync Dialog with a running git process,
+						you will be asked for confirmation before killing it.
+						This avoids closing the dialog by accident that kills running git process.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Randomize Sync Dialog startup position</term>
+				<listitem>
+					<para>
+						When enabled, the startup position of Sync Dialog will be randomized.
+						If you open many Sync Dialogs and press pull button at the same time,
+						you may easily press the pull button in any previous Sync Dialog if it finishes and becomes foreground.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -459,6 +499,33 @@
 						and performs line wrapping. Note: this feature
 						will only work correctly if you have a fixed-width font
 						selected for log messages.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Warn on Signed-Off-By on commit</term>
+				<listitem>
+					<para>
+						<literal>tgit.warnnosignedoffby</literal> is used with projects which
+						require Signed-off-by line in commit messages.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Overlay Icon</term>
+				<listitem>
+					<para>
+						<literal>tgit.icon</literal> is used with projects which wish to show the logo 
+						on the taskbar for easier identification when multiple TortoiseGit application instances
+						of different projects are running at the same time.
+						<graphic fileref="../images/TaskbarOverlayIcon.png"/>
+						If icon is not 16x16 px in size, it will be automatically scaled.
+						Supported formats are ico, png, jpg, gif, bmp.
+						If no icon is included by that project, you may find one on you own, 
+						put it in .git folder and set the relative path in local config. e.g. <literal>.git/logo.ico</literal>
+						If you want to disable it, you may set <literal>tgit.icon</literal> as an empty string in local config.
+						It will fallback to a color block when disabled or load failed.
+						Note that the advanced option <literal>GroupTaskbarIconsPerRepo</literal> should be 3 or 4 in order to use this function.
 					</para>
 				</listitem>
 			</varlistentry>
