@@ -604,12 +604,19 @@
 -->
 		<para>
 			You can also filter the path names in the bottom pane using the
-			<guilabel>Hide unrelated changed paths</guilabel> checkbox.
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Hide unrelated changed paths</guimenuitem>
+			</menuchoice>
 			Related paths are those which contain the path used to display
 			the log. If you fetch the log for a folder, that means anything
 			in that folder or below it. For a file it means just that one file.
-			The checkbox is tristate: you can show all paths, grey out the
-			unrelated ones, or hide the unrelated paths completely.
+			If you want to grey out the unrelated ones, check
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Gray unrelated changed paths</guimenuitem>
+			</menuchoice>
+			Uncheck both menu items to hide the unrelated paths completely.
 		</para>
 
 		<para>
@@ -620,8 +627,65 @@
 			<guilabel>Show Whole Project</guilabel>
 		</para>
 		<para>
-			<guilabel>First Parent</guilabel> just follow up first parent commit. This will
-			help understand overwhole history.
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Tags</guimenuitem>
+			</menuchoice>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Local branches</guimenuitem>
+			</menuchoice>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Remote branches</guimenuitem>
+			</menuchoice>
+			You can disable showing some reference types in the log graph.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Gravatar</guimenuitem>
+			</menuchoice>
+			You can enable / disable Gravatar for a specific repository.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>First Parent</guimenuitem>
+			</menuchoice>
+			just follow up first parent commit. This will help understand overwhole history.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>No merges</guimenuitem>
+			</menuchoice>
+			Skips all merge points.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Follow renames</guimenuitem>
+			</menuchoice>
+			This is available to a single file only, which tracks rename.
+			Otherwise, the log list stops at the commit that the current filename is introduced.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Compressed Graph</guimenuitem>
+			</menuchoice>
+			The log graph is simplified to include merge points, commits with references, and possibly other commits.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Show labelled commits only</guimenuitem>
+			</menuchoice>
+			The log graph is simplified to include commits with references only.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-showlog-5">
