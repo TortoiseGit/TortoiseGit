@@ -31,6 +31,7 @@
 #include "GitLogListBase.h"
 #include "UnicodeUtils.h"
 
+typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
 CGitHashMap a;
 
 void CLogDataVector::ClearAll()
@@ -73,9 +74,9 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	}
 
 	GIT_LOG handle;
-	g_Git.m_critGitDllSec.Lock();
 	try
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		if (git_open_log(&handle,CUnicodeUtils::GetMulti(cmd, CP_UTF8).GetBuffer()))
 		{
 			return -1;
@@ -83,41 +84,36 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	}
 	catch (char* msg)
 	{
-		g_Git.m_critGitDllSec.Unlock();
 		MessageBox(NULL, _T("Could not open log.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
-	g_Git.m_critGitDllSec.Unlock();
 
-	g_Git.m_critGitDllSec.Lock();
 	try
 	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
 		[&]{ git_get_log_firstcommit(handle); }();
 	}
 	catch (char* msg)
 	{
-		g_Git.m_critGitDllSec.Unlock();
 		MessageBox(NULL, _T("Could not get first commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 		return -1;
 	}
-	g_Git.m_critGitDllSec.Unlock();
 
 	int ret = 0;
 	while (ret == 0)
 	{
 		GIT_COMMIT commit;
-		g_Git.m_critGitDllSec.Lock();
+
 		try
 		{
+			CAutoLocker lock(g_Git.m_critGitDllSec);
 			[&]{ ret = git_get_log_nextcommit(handle, &commit, infomask & CGit::LOG_INFO_FOLLOW); }();
 		}
 		catch (char* msg)
 		{
-			g_Git.m_critGitDllSec.Unlock();
 			MessageBox(NULL, _T("Could not get next commit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 			break;
 		}
-		g_Git.m_critGitDllSec.Unlock();
 
 		if (ret)
 			break;
@@ -132,14 +128,15 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
 
-		char *note=NULL;
-		g_Git.m_critGitDllSec.Lock();
-		git_get_notes(commit.m_hash,&note);
-		g_Git.m_critGitDllSec.Unlock();
-		if(note)
+		char *pNote = nullptr;
+		{
+			CAutoLocker lock(g_Git.m_critGitDllSec);
+			git_get_notes(commit.m_hash, &pNote);
+		}
+		if (pNote)
 		{
 			pRev->m_Notes.Empty();
-			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)note);
+			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)pNote);
 		}
 
 		if((pRev == NULL || !pRev->m_IsFull) && infomask& CGit::LOG_INFO_FULL_DIFF)
@@ -173,9 +170,10 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 
 	}
 
-	g_Git.m_critGitDllSec.Lock();
-	git_close_log(handle);
-	g_Git.m_critGitDllSec.Unlock();
+	{
+		CAutoLocker lock(g_Git.m_critGitDllSec);
+		git_close_log(handle);
+	}
 
 	return 0;
 }
