@@ -223,8 +223,6 @@ public:
 	CTortoiseGitBlameData	m_data;
 	std::vector<LONG>		m_ID;
 
-	CGitHashMap m_HashToRev;
-
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
 

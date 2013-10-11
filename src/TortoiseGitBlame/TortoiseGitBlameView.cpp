@@ -1367,8 +1367,7 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 
 void CTortoiseGitBlameView::ParseBlame()
 {
-	CGitHashMap HashToRev;
-	m_data.ParseBlameOutput(GetDocument()->m_BlameData, HashToRev, m_DateFormat, m_bRelativeTimes);
+	m_data.ParseBlameOutput(GetDocument()->m_BlameData, GetLogData()->m_pLogCache->m_HashMap, m_DateFormat, m_bRelativeTimes);
 
 	std::vector<LONG> ID;
 
@@ -1391,7 +1390,6 @@ void CTortoiseGitBlameView::ParseBlame()
 		ID.push_back(id);
 	}
 	this->m_ID.swap(ID);
-	this->m_HashToRev.swap(HashToRev);
 }
 
 void CTortoiseGitBlameView::UpdateInfo(int Encode)
@@ -1531,7 +1529,7 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 
 			if (m_ID[line] < 0)
 			{
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&m_HashToRev[m_data.GetHash(line)]);
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&GetLogData()->m_pLogCache->m_HashMap[m_data.GetHash(line)]);
 			}
 			else
 			{
@@ -1603,7 +1601,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			GitRev *pRev;
 			if(m_ID[line]<0)
 			{
-				pRev=&this->m_HashToRev[m_data.GetHash(line)];
+				pRev = &this->GetLogData()->m_pLogCache->m_HashMap[m_data.GetHash(line)];
 			}
 			else
 			{
