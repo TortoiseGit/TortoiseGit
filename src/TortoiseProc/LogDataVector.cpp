@@ -139,13 +139,15 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 			g_Git.StringAppend(&pRev->m_Notes,(BYTE*)pNote);
 		}
 
-		if((pRev == NULL || !pRev->m_IsFull) && infomask& CGit::LOG_INFO_FULL_DIFF)
+		ASSERT(pRev->m_CommitHash == hash);
+		pRev->ParserFromCommit(&commit);
+		pRev->ParserParentFromCommit(&commit);
+		git_free_commit(&commit);
+		// Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
+		// file list will wrong if parent rewrite.
+
+		if (!pRev->m_IsFull && (infomask & CGit::LOG_INFO_FULL_DIFF))
 		{
-			pRev->ParserFromCommit(&commit);
-			pRev->ParserParentFromCommit(&commit);
-			git_free_commit(&commit);
-			//Must call free commit before SafeFetchFullInfo, commit parent is rewrite by log.
-			//file list will wrong if parent rewrite.
 			try
 			{
 				pRev->SafeFetchFullInfo(&g_Git);
@@ -155,13 +157,6 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 				MessageBox(NULL, _T("Could not fetch full info of a commit.\nlibgit reports:\n") + CString(g_last_error), _T("TortoiseGit"), MB_ICONERROR);
 				return -1;
 			}
-		}
-		else
-		{
-			ASSERT(pRev->m_CommitHash == hash);
-			pRev->ParserFromCommit(&commit);
-			pRev->ParserParentFromCommit(&commit);
-			git_free_commit(&commit);
 		}
 
 		this->push_back(pRev->m_CommitHash);
