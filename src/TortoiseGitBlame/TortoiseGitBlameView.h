@@ -81,6 +81,16 @@ public:
 
 class CTortoiseGitBlameView : public CView
 {
+	enum
+	{
+	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
+	ID_BLAMEPREVIOUS = 1,
+	ID_COMPAREWITHPREVIOUS,
+	ID_SHOWLOG,
+	ID_COPYHASHTOCLIPBOARD,
+	ID_COPYLOGTOCLIPBOARD
+	};
+
 protected: // create from serialization only
 	CTortoiseGitBlameView();
 	DECLARE_DYNCREATE(CTortoiseGitBlameView)
@@ -150,11 +160,9 @@ protected:
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleColorByAge();
 	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
-	afx_msg void CopyHashToClipboard();
-	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
 	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
+	void ContextMenuAction(int cmd, GitRev* pRev, GIT_REV_LIST& parentHash, const std::vector<CString>& parentFilename);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -162,6 +170,8 @@ protected:
 public:
 	void ParseBlame();
 	void UpdateInfo(int encode = 0);
+	CString ResolveCommitFile(LONG line);
+	CString ResolveCommitFile(const CString& path);
 	void FocusOn(GitRev *pRev);
 
 	CSciEditBlame		m_TextView;
@@ -196,11 +206,6 @@ public:
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
 	void CopyToClipboard();
-	void CopySelectedLogToClipboard();
-	CString GetFilenameOfPreviousRevision();
-	void BlamePreviousRevision();
-	void DiffPreviousRevision();
-	void ShowLog();
 	bool DoSearch(CString what, DWORD flags);
 	bool GotoLine(long line);
 	bool ScrollToLine(long line);

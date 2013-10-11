@@ -39,6 +39,8 @@
 #include "StringUtils.h"
 #include "BlameIndexColors.h"
 #include "BlameDetectMovedOrCopiedLines.h"
+#include "TGitPath.h"
+#include "IconMenu.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -82,13 +84,6 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
-	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
-	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
-	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
-	ON_COMMAND(ID_BLAMEPOPUP_DIFFPREVIOUS, DiffPreviousRevision)
-	ON_COMMAND(ID_BLAMEPOPUP_SHOWLOG, ShowLog)
-	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, OnUpdateBlamePopupBlamePrevious)
-	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_DIFFPREVIOUS, OnUpdateBlamePopupDiffPrevious)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -353,42 +348,181 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 	line = line + (int)(point.y / height);
 	if (m_data.IsValidLine(line))
 	{
-		if(line < (LONG)m_ID.size() && m_ID[line] >= 0) // only show context menu if we have log data for it
+		m_MouseLine = (LONG)line;
+		ClientToScreen(&point);
+
+		CGitHash hash = m_data.GetHash(line);
+		CString hashStr = hash.ToString();
+
+		GitRev* pRev = GetLogData()->m_pLogCache->GetCacheData(hash);
+		if (!pRev)
+			return;
+
+		CIconMenu popup;
+		CIconMenu blamemenu, diffmenu;
+
+		if (!popup.CreatePopupMenu())
+			return;
+
+		// Now find the relevant parent commits, they must contain the file which is blamed to be the source of the selected line,
+		// otherwise there is no previous file to compare to (only another previous revision).
+
+		GIT_REV_LIST parentHashWithFile;
+		std::vector<CString> parentFilename;
+		try
 		{
-			m_MouseLine = (LONG)line;
-			ClientToScreen(&point);
-			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_BLAME_POPUP, point.x, point.y, this, TRUE);
+			CTGitPath path(m_data.GetFilename(line));
+			const CTGitPathList & files = pRev->GetFiles(NULL);
+			for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
+			{
+				const CTGitPath &file =  files[j];
+				if (file.IsEquivalentTo(path))
+				{
+					if (!(file.m_ParentNo & MERGE_MASK))
+					{
+						int action = file.m_Action;
+						// ignore (action & CTGitPath::LOGACTIONS_ADDED), as then there is nothing to blame/diff
+						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
+						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
+						{
+							int parentNo = file.m_ParentNo & PARENT_MASK;
+							parentHashWithFile.push_back(pRev->m_ParentHash[parentNo]);
+							parentFilename.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+						}
+					}
+				}
+			}
 		}
+		catch (const char* msg)
+		{
+			MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
+
+		// blame previous
+		if (!parentHashWithFile.empty())
+		{
+			if (parentHashWithFile.size() == 1)
+			{
+				popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_BLAME_POPUP_BLAME, IDI_BLAME_POPUP_BLAME);
+			}
+			else
+			{
+				blamemenu.CreatePopupMenu();
+				popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_BLAME_POPUP_BLAME, IDI_BLAME_POPUP_BLAME, blamemenu.m_hMenu);
+
+				for (size_t i = 0; i < parentHashWithFile.size(); ++i)
+				{
+					CString str;
+					str.Format(IDS_PARENT, i + 1);
+					blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS + ((i + 1) << 16), str);
+				}
+			}
+		}
+
+		// compare with previous
+		if (!parentHashWithFile.empty())
+		{
+			if (parentHashWithFile.size() == 1)
+			{
+				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_BLAME_POPUP_COMPARE, IDI_BLAME_POPUP_COMPARE);
+				if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+					popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+			}
+			else
+			{
+				diffmenu.CreatePopupMenu();
+				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_BLAME_POPUP_COMPARE, IDI_BLAME_POPUP_COMPARE, diffmenu.m_hMenu);
+				for (size_t i = 0; i < parentHashWithFile.size(); ++i)
+				{
+					CString str;
+					str.Format(IDS_BLAME_POPUP_PARENT, i + 1);
+					diffmenu.AppendMenuIcon((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)),str);
+					if (i == 0 && CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+					{
+						popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+						diffmenu.SetDefaultItem((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)), FALSE);
+					}
+				}
+			}
+		}
+
+		popup.AppendMenuIcon(ID_SHOWLOG, IDS_BLAME_POPUP_LOG);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		if (m_ID[m_MouseLine] >= 0){
+			popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD);
+			popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD);
+		}
+
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);
 	}
 }
 
-void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
+void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIST& parentHashWithFile, const std::vector<CString>& parentFilename)
 {
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
+	switch (cmd & 0xFFFF)
 	{
-		pCmdUI->Enable(false);
-	}
-	else
-	{
-		pCmdUI->Enable(true);
-	}
-}
+	case ID_BLAMEPREVIOUS:
+		{
+			int index = (cmd>>16) & 0xFFFF;
+			if (index > 0)
+				index -= 1;
 
-void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
-	{
-		pCmdUI->Enable(false);
-	}
-	else
-	{
-		pCmdUI->Enable(true);
-	}
-}
+			CString path = ResolveCommitFile(parentFilename[index]);
+			CString endrev = parentHashWithFile[index].ToString();
+			LONG line = m_data.GetOriginalLineNumber(m_MouseLine);
+			CString lineNumber;
+			lineNumber.Format(_T("%d"), line);
 
-void CTortoiseGitBlameView::CopyHashToClipboard()
-{
-	this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:blame");
+			procCmd += _T(" /endrev:") + endrev;
+			procCmd += _T(" /line:") + lineNumber;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_COMPAREWITHPREVIOUS:
+		{
+			int index = (cmd >> 16) & 0xFFFF;
+			if (index > 0)
+				index -= 1;
+
+			CString path = ResolveCommitFile(parentFilename[index]);
+			CString startrev = pRev->m_CommitHash.ToString();
+			CString endrev = parentHashWithFile[index].ToString();
+
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:diff");
+			procCmd += _T(" /startrev:") + startrev;
+			procCmd += _T(" /endrev:") + endrev;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_SHOWLOG:
+		{
+			CString path = ResolveCommitFile(m_MouseLine);
+			CString rev = m_data.GetHash(m_MouseLine).ToString();
+
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:log");
+			procCmd += _T(" /rev:") + rev;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_COPYHASHTOCLIPBOARD:
+		this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
+		break;
+
+	case ID_COPYLOGTOCLIPBOARD:
+		this->GetLogList()->CopySelectionToClipBoard();
+		break;
+	}
 }
 
 // CTortoiseGitBlameView diagnostics
@@ -600,7 +734,7 @@ void CTortoiseGitBlameView::CopyToClipboard()
 {
 	CWnd * wnd = GetFocus();
 	if (wnd == this->GetLogList())
-		CopySelectedLogToClipboard();
+		GetLogList()->CopySelectionToClipBoard();
 	else if (wnd)
 	{
 		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == _T("CMFCPropertyGridCtrl"))
@@ -612,57 +746,6 @@ void CTortoiseGitBlameView::CopyToClipboard()
 		else
 			m_TextView.Call(SCI_COPY);
 	}
-}
-
-void CTortoiseGitBlameView::CopySelectedLogToClipboard()
-{
-	this->GetLogList()->CopySelectionToClipBoard(FALSE);
-}
-
-void CTortoiseGitBlameView::BlamePreviousRevision()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:blame");
-	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
-	CString lineNumber;
-	lineNumber.Format(_T(" /line:%d"), m_MouseLine + 1);
-	procCmd += lineNumber;
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
-}
-
-void CTortoiseGitBlameView::DiffPreviousRevision()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:diff");
-	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
-	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
-}
-
-void CTortoiseGitBlameView::ShowLog()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:log");
-	procCmd += _T(" /rev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
@@ -1487,6 +1570,25 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	this->m_TextView.MoveWindow(rect);
 
 	this->Invalidate();
+}
+
+CString CTortoiseGitBlameView::ResolveCommitFile(LONG line)
+{
+	return ResolveCommitFile(m_data.GetFilename(line));
+}
+
+CString CTortoiseGitBlameView::ResolveCommitFile(const CString& path)
+{
+	if (path.IsEmpty())
+	{
+		return ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	}
+	else
+	{
+		CTGitPath tgp(g_Git.m_CurrentDir);
+		tgp.AppendPathString(path);
+		return tgp.GetWinPathString();
+	}
 }
 
 COLORREF CTortoiseGitBlameView::GetLineColor(int line)
