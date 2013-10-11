@@ -668,7 +668,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	{
 		popupMenu.AppendMenuIcon(eCmd_Open, IDS_REPOBROWSE_OPEN, IDI_OPEN);
 		popupMenu.SetDefaultItem(eCmd_Open, FALSE);
-		if (selType == ONLY_FILESSUBMODULES)
+		if (selType == ONLY_FILES || selType == ONLY_FILESSUBMODULES)
 		{
 			popupMenu.AppendMenuIcon(eCmd_OpenWith, IDS_LOG_POPUP_OPENWITH, IDI_OPEN);
 			popupMenu.AppendMenuIcon(eCmd_OpenWithAlternativeEditor, IDS_LOG_POPUP_VIEWREV);
@@ -676,7 +676,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 
 		popupMenu.AppendMenu(MF_SEPARATOR);
 
-		if (m_bHasWC && selType == ONLY_FILESSUBMODULES)
+		if (m_bHasWC && (selType == ONLY_FILES || selType == ONLY_FILESSUBMODULES))
 		{
 			popupMenu.AppendMenuIcon(eCmd_CompareWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
 			bAddSeparator = true;
