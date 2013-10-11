@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="BlameDetectMovedOrCopiedLines.h" />
     <ClInclude Include="BlameIndexColors.h" />
     <ClInclude Include="GitBlameLogList.h" />
     <ClInclude Include="..\TortoiseProc\gitlogcache.h" />

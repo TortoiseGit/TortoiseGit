@@ -134,6 +134,18 @@ protected:
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleDate();
 	afx_msg void OnUpdateViewToggleDate(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleDisabled();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleWithinFile();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleIgnoreWhitespace();
+	afx_msg void OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleFollowRenames();
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleColorByAge();
@@ -142,6 +154,7 @@ protected:
 	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
+	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
 
 	DECLARE_MESSAGE_MAP()
 
@@ -170,6 +183,8 @@ public:
 
 	BOOL m_bShowAuthor;
 	BOOL m_bShowDate;
+	DWORD m_dwDetectMovedOrCopiedLines;
+	BOOL m_bIgnoreWhitespace;
 	BOOL m_bFollowRenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);

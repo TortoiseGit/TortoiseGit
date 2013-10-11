@@ -38,6 +38,7 @@
 #include "SysInfo.h"
 #include "StringUtils.h"
 #include "BlameIndexColors.h"
+#include "BlameDetectMovedOrCopiedLines.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +66,18 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWDATE, OnUpdateViewToggleDate)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnViewDetectMovedOrCopiedLinesToggleDisabled)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE, OnViewDetectMovedOrCopiedLinesToggleWithinFile)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE, OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES, OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES, OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION, OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION, OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES, OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES, OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles)
+	ON_COMMAND(ID_VIEW_IGNORE_WHITESPACE, OnViewToggleIgnoreWhitespace)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORE_WHITESPACE, OnUpdateViewToggleIgnoreWhitespace)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
@@ -140,6 +153,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate = (theApp.GetInt(_T("ShowDate"), 0) == 1);
+	m_dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), 0);
+	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
@@ -1762,6 +1777,91 @@ void CTortoiseGitBlameView::OnViewToggleDate()
 void CTortoiseGitBlameView::OnUpdateViewToggleDate(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bShowDate);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines)
+{
+	m_dwDetectMovedOrCopiedLines = dwDetectMovedOrCopiedLines;
+
+	theApp.WriteInt(_T("DetectMovedOrCopiedLines"), m_dwDetectMovedOrCopiedLines);
+
+	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	if (!document->m_CurrentFileName.IsEmpty())
+	{
+		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
+		theApp.m_pDocManager->OnFileNew();
+		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+	}
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleDisabled()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleWithinFile()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+}
+
+void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
+{
+	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
+
+	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace);
+
+	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	if (!document->m_CurrentFileName.IsEmpty())
+	{
+		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
+		theApp.m_pDocManager->OnFileNew();
+		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+	}
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bIgnoreWhitespace);
 }
 
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()

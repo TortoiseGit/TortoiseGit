@@ -155,6 +155,9 @@
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlameDetectMovedOrCopiedLines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="TortoiseGitBlameData.h">
       <Filter>Header Files</Filter>
     </ClInclude>

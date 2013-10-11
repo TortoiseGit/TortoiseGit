@@ -277,6 +277,17 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
+        MENUITEM SEPARATOR
+        POPUP "&Detect moved or copied lines"
+        BEGIN
+            MENUITEM "&Disabled",                   ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED
+            MENUITEM "&Within file",                ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE
+            MENUITEM "From &modified files",        ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES
+            MENUITEM "At file &creation",           ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION
+            MENUITEM "From &existing files",        ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES
+        END
+        MENUITEM "&Ignore whitespace",          ID_VIEW_IGNORE_WHITESPACE
+        MENUITEM SEPARATOR
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
@@ -548,6 +559,25 @@ END
 STRINGTABLE
 BEGIN
     ID_INDICATOR_ENCODING   " "
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_IGNORE_WHITESPACE 
+                            "Ignore whitespace when comparing the parents version and the child's "
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE 
+                            "Detect moved or copied lines within a file"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES 
+                            "Detect moved and copied lines from files modified in the same commit"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION 
+                            "Detect moved and copied lines from existing files at the commit where the destination file has been created"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES 
+                            "Detect moved and copied lines from existing files at any commit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_FOLLOWRENAMES   "Git revision list follows file renames"
 END
 
 #endif    // English (U.S.) resources
