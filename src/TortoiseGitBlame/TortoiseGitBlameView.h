@@ -267,7 +267,9 @@ protected:
 
 	CFindReplaceDialog		*m_pFindDialog;
 
+#ifdef USE_TEMPFILENAME
 	char					*m_Buffer;
+#endif
 
 	DWORD					m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
 	bool					m_bRelativeTimes;	// Show relative times
