@@ -150,6 +150,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlame.cpp" />
+    <ClCompile Include="TortoiseGitBlameData.cpp" />
     <ClCompile Include="TortoiseGitBlameDoc.cpp" />
     <ClCompile Include="TortoiseGitBlameView.cpp" />
   </ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TortoiseGitBlame.h" />
+    <ClInclude Include="TortoiseGitBlameData.h" />
     <ClInclude Include="TortoiseGitBlameDoc.h" />
     <ClInclude Include="TortoiseGitBlameView.h" />
   </ItemGroup>

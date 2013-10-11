@@ -87,6 +87,9 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TortoiseGitBlameData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GitBlameLogList.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\DebugOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TortoiseGitBlameData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

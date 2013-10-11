@@ -31,6 +31,7 @@
 #include "SciEdit.h"
 
 #include "GitBlameLogList.h"
+#include "TortoiseGitBlameData.h"
 #include "Tooltip.h"
 
 const COLORREF black = RGB(0,0,0);
@@ -142,25 +143,11 @@ protected:
 	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
 
-	int FindNextLine(CGitHash commithash, bool bUpOrDown=false);
-	int FindFirstLine(CGitHash commithash, int line)
-	{
-		while(line>=0)
-		{
-			if( m_CommitHash[line] != commithash )
-			{
-				return line++;
-			}
-			--line;
-		}
-		return line;
-	}
-
 	DECLARE_MESSAGE_MAP()
 
 	static UINT m_FindDialogMessage;
 public:
-
+	void ParseBlame();
 	void UpdateInfo(int encode = 0);
 	void FocusOn(GitRev *pRev);
 
@@ -218,13 +205,10 @@ public:
 	long					m_highestrev;
 	bool					m_colorage;
 
+	CTortoiseGitBlameData	m_data;
 	std::vector<LONG>		m_ID;
-	std::vector<CString>	m_FileNames;
-	std::vector<CString>	m_Dates;
-	std::vector<CString>	m_Authors;
-	std::vector<CGitHash>	m_CommitHash;
 
-	std::map<CString,GitRev> m_NoListCommit;
+	CGitHashMap m_HashToRev;
 
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
