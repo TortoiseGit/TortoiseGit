@@ -257,8 +257,6 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 		RemoveParent();
 
-		m_ParentGroup;
-
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
 		for (unsigned int i = 0; i < rev->m_ParentHash.size(); ++i)
