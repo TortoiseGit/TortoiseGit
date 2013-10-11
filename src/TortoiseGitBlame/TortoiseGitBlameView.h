@@ -169,6 +169,7 @@ protected:
 	static UINT m_FindDialogMessage;
 public:
 	void ParseBlame();
+	void CreateIds();
 	void UpdateInfo(int encode = 0);
 	CString ResolveCommitFile(LONG line);
 	CString ResolveCommitFile(const CString& path);

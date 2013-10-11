@@ -1451,7 +1451,10 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 void CTortoiseGitBlameView::ParseBlame()
 {
 	m_data.ParseBlameOutput(GetDocument()->m_BlameData, GetLogData()->m_pLogCache->m_HashMap, m_DateFormat, m_bRelativeTimes);
+}
 
+void CTortoiseGitBlameView::CreateIds()
+{
 	std::vector<LONG> ID;
 
 

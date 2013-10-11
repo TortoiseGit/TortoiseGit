@@ -76,6 +76,15 @@ public:
 		return m_Hash[line];
 	}
 
+	void GetHashes(std::set<CGitHash>& hashes)
+	{
+		hashes.clear();
+		for (auto it = m_Hash.begin(); it != m_Hash.end(); ++it)
+		{
+			hashes.insert(*it);
+		}
+	}
+
 	const CString& GetDate(int line) const
 	{
 		return m_Dates[line];

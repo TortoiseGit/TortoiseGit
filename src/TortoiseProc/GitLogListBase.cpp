@@ -2463,6 +2463,37 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 
 }
 
+int CGitLogListBase::FillGitLog(std::set<CGitHash>& hashes)
+{
+	ClearText();
+
+	m_arShownList.SafeRemoveAll();
+
+	m_logEntries.ClearAll();
+	if (m_logEntries.Fill(hashes))
+		return -1;
+
+	SetItemCountEx((int)m_logEntries.size());
+
+	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
+	{
+		if (m_IsOldFirst)
+		{
+			m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1).m_IsFull = TRUE;
+			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1));
+		}
+		else
+		{
+			m_logEntries.GetGitRevAt(i).m_IsFull = TRUE;
+			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
+		}
+	}
+
+	ReloadHashMap();
+
+	return 0;
+}
+
 int CGitLogListBase::BeginFetchLog()
 {
 	ClearText();

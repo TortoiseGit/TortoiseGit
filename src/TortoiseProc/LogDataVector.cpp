@@ -172,6 +172,103 @@ int CLogDataVector::ParserFromLog(CTGitPath *path, int count, int infomask, CStr
 	return 0;
 }
 
+struct SortByParentDate
+{
+	bool operator()(GitRev *pLhs, GitRev *pRhs)
+	{
+		if (pLhs->m_CommitHash == pRhs->m_CommitHash)
+			return false;
+		for (auto it = pLhs->m_ParentHash.begin(); it != pLhs->m_ParentHash.end(); ++it)
+		{
+			if (*it == pRhs->m_CommitHash)
+				return true;
+		}
+		for (auto it = pRhs->m_ParentHash.begin(); it != pRhs->m_ParentHash.end(); ++it)
+		{
+			if (*it == pLhs->m_CommitHash)
+				return false;
+		}
+		return pLhs->GetCommitterDate()>pRhs->GetCommitterDate();
+	}
+};
+
+int CLogDataVector::Fill(std::set<CGitHash>& hashes)
+{
+	try
+	{
+		[] { git_init(); } ();
+	}
+	catch (const char* msg)
+	{
+		MessageBox(nullptr, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		return -1;
+	}
+
+	std::set<GitRev*, SortByParentDate> revs;
+
+	for (auto it = hashes.begin(); it != hashes.end(); ++it)
+	{
+		CGitHash hash = *it;
+		GitRev *pRev = this->m_pLogCache->GetCacheData(hash);
+		ASSERT(pRev->m_CommitHash == hash);
+
+		GIT_COMMIT commit;
+		try
+		{
+			CAutoLocker lock(g_Git.m_critGitDllSec);
+			if (git_get_commit_from_hash(&commit, hash.m_hash))
+			{
+				return -1;
+			}
+		}
+		catch (char * msg)
+		{
+			MessageBox(nullptr, _T("Could not get commit \"") + hash.ToString() + _T("\".\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+
+		// right now this code is only used by TortoiseGitBlame,
+		// as such git notes are not needed to be loaded
+
+		pRev->ParserFromCommit(&commit);
+		pRev->ParserParentFromCommit(&commit);
+		git_free_commit(&commit);
+
+		revs.insert(pRev);
+	}
+
+	for (auto it = revs.begin(); it != revs.end(); ++it)
+	{
+		GitRev *pRev = *it;
+		this->push_back(pRev->m_CommitHash);
+		m_HashMap[pRev->m_CommitHash] = (int)size() - 1;
+	}
+
+	return 0;
+}
+
+int AddTolist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
+{
+	CLogDataVector *vector = (CLogDataVector*)data;
+	GitRev rev;
+	rev.m_CommitHash = (char*)nsha1;
+
+	CString one;
+	g_Git.StringAppend(&one, (BYTE *)msg);
+
+	int message = one.Find(_T(":"), 0);
+	if (message > 0)
+	{
+		rev.m_RefAction = one.Left(message);
+		rev.GetSubject() = one.Mid(message + 1);
+	}
+
+	vector->m_pLogCache->m_HashMap[rev.m_CommitHash] = rev;
+	vector->insert(vector->begin(),rev.m_CommitHash);
+
+	return 0;
+}
+
 void CLogDataVector::append(CGitHash& sha, bool storeInVector)
 {
 	if (storeInVector)

@@ -215,8 +215,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 #endif
 		m_GitPath = path;
-		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
-			return FALSE;
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if(pView == NULL)
@@ -232,6 +230,14 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			}
 		}
 		pView->ParseBlame();
+
+		std::set<CGitHash> hashes;
+		pView->m_data.GetHashes(hashes);
+
+		if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
+			return FALSE;
+
+		pView->CreateIds();
 		pView->UpdateInfo();
 		if (m_lLine > 0)
 			pView->GotoLine(m_lLine);
