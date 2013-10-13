@@ -415,6 +415,7 @@ protected:  // methods
 	void			OnCaretMove(bool bMoveLeft, bool isShiftPressed);
 	void			UpdateGoalPos();
 
+	ECharGroup		GetCharGroup(const CString &str, int index) const { return index >= 0 && index < str.GetLength() ? GetCharGroup(str[index]) : CHG_UNKNOWN; }
 	ECharGroup		GetCharGroup(const wchar_t zChar) const;
 	bool			IsWordSeparator(const wchar_t ch) const;
 	bool			IsCaretAtWordBoundary();

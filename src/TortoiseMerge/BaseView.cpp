@@ -1654,6 +1654,16 @@ void CBaseView::DrawTextLine(
 		{
 			int nMarkStart = static_cast<int>(findText - text);
 			int nMarkEnd = nMarkStart + nMarkLength;
+			findText += nMarkLength;
+			ECharGroup eLeft = GetCharGroup(sViewLine, nMarkStart - 1);
+			ECharGroup eStart = GetCharGroup(sViewLine, nMarkStart);
+			if (eLeft == eStart)
+				continue;
+			ECharGroup eRight = GetCharGroup(sViewLine, nMarkEnd);
+			ECharGroup eEnd = GetCharGroup(sViewLine, nMarkEnd - 1);
+			if (eRight == eEnd)
+				continue;
+
 			// First enforce start and end point
 			lineCols.SplitBlock(nMarkStart);
 			lineCols.SplitBlock(nMarkEnd);
@@ -1670,7 +1680,6 @@ void CBaseView::DrawTextLine(
 				it->second.background = crBk;
 				it->second.text = CAppUtils::IntenseColor(nIntenseColorScale, it->second.text);
 			}
-			findText += nMarkLength;
 		}
 	}
 	if (!m_sFindText.IsEmpty())
@@ -4259,7 +4268,25 @@ void CBaseView::BuildMarkedWordArray()
 
 			if (!line.IsEmpty())
 			{
-				m_arMarkedWordLines.push_back(line.Find(m_sMarkedWord) != -1);
+				int found = 0;
+				int nMarkStart = -1;
+				while ((nMarkStart = line.Find(m_sMarkedWord, ++nMarkStart)) >= 0)
+				{
+					int nMarkEnd = nMarkStart + m_sMarkedWord.GetLength();
+					ECharGroup eLeft = GetCharGroup(line, nMarkStart - 1);
+					ECharGroup eStart = GetCharGroup(line, nMarkStart);
+					if (eLeft != eStart)
+					{
+						ECharGroup eRight = GetCharGroup(line, nMarkEnd);
+						ECharGroup eEnd = GetCharGroup(line, nMarkEnd - 1);
+						if (eRight != eEnd)
+						{
+							found = 1;
+							break;
+						}
+					}
+				}
+				m_arMarkedWordLines.push_back(found);
 			}
 			else
 				m_arMarkedWordLines.push_back(0);
