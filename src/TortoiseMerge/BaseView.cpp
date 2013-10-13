@@ -5228,16 +5228,22 @@ void CBaseView::Search(SearchDirection srchDir)
 		{
 			nViewLine = m_pViewData->GetCount()-1;
 			startline = start.y;
+			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
 		}
 		if (nViewLine > end.y)
 		{
 			nViewLine = 0;
 			startline = start.y;
+			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
 		}
 		if (startline >= 0)
 		{
 			if (nViewLine == startline)
+			{
+				::MessageBeep(0xFFFFFFFF);
+				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
 				break;
+			}
 		}
 		switch (m_pViewData->GetState(nViewLine))
 		{
