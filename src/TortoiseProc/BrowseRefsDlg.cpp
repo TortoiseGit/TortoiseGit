@@ -837,7 +837,6 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 		bool bShowReflogOption				= false;
 		bool bShowFetchOption				= false;
-		bool bShowSwitchOption				= false;
 		bool bShowRenameOption				= false;
 		bool bShowCreateBranchOption		= false;
 		bool bShowEditBranchDescriptionOption = false;
@@ -847,7 +846,6 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
 		{
 			bShowReflogOption = true;
-			bShowSwitchOption = true;
 			bShowRenameOption = true;
 			bShowEditBranchDescriptionOption = true;
 		}

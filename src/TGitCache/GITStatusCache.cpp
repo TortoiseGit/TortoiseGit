@@ -408,7 +408,6 @@ bool CGitStatusCache::RemoveCacheForDirectory(CCachedDirectory * cdir)
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": removed from cache %s\n"), cdir->m_directoryPath.GetWinPathString());
 	delete cdir;
-	cdir = NULL;
 	return true;
 }
 

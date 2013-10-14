@@ -230,7 +230,6 @@
 #define IDS_FAIL                        1039
 #define IDC_PASSWORD                    1040
 #define IDS_DONE                        1040
-#define IDC_TIMEOUT                     1041
 #define IDS_PROC_SKIPPATCH              1041
 #define IDS_ABORTBUTTON                 1042
 #define IDC_FILELIST                    1043
@@ -300,7 +299,6 @@
 #define IDC_LABEL                       1076
 #define IDS_LASTCOMMIT                  1076
 #define IDC_MSGVIEW                     1077
-#define IDC_EXCEPTIONS                  1077
 #define IDC_BUGID                       1077
 #define IDC_EXCLUDEPATHS                1077
 #define IDS_BRANCHNAME                  1077
