@@ -35,6 +35,7 @@ var wdOutlineView = 2;
 var wdDoNotSaveChanges = 0;
 //var wdPromptToSaveChanges = -2;
 //var wdSaveChanges = -1;
+var wdReadingView = 7;
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
@@ -164,7 +165,7 @@ catch (e)
 }
 
 // If the Type property returns either wdOutlineView or wdMasterView and the Count property returns zero, the current document is an outline.
-if (((destination.ActiveWindow.View.Type === wdOutlineView) || (destination.ActiveWindow.View.Type === wdMasterView)) && (destination.Subdocuments.Count === 0))
+if ((destination.ActiveWindow.View.Type === wdOutlineView) || ((destination.ActiveWindow.View.Type === wdMasterView) || (destination.ActiveWindow.View.Type === wdReadingView)) && (destination.Subdocuments.Count === 0))
 {
     // Change the Type property of the current document to normal
     destination.ActiveWindow.View.Type = wdNormalView;
