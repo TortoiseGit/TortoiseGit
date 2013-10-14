@@ -255,7 +255,7 @@ public:
 		}
 		return (simplecontext!=0);
 	}
-	BOOL ShellCache::HasShellMenuAccelerators()
+	BOOL HasShellMenuAccelerators()
 	{
 		if ((GetTickCount() - shellmenuacceleratorsticker)>REGISTRYTIMEOUT)
 		{

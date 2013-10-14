@@ -436,7 +436,7 @@ protected:
 	void FetchFullLogInfo(CString &from, CString &to);
 	void FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect);
 	void DrawTagBranchMessage(HDC hdc, CRect &rect, INT_PTR index, std::vector<REFLABEL> &refList);
-	void CGitLogListBase::DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &rect, CRect &rt, LVITEM &rItem, GitRev* data, std::vector<REFLABEL> &refList);
+	void DrawTagBranch(HDC hdc, CDC &W_Dc, HTHEME hTheme, CRect &rect, CRect &rt, LVITEM &rItem, GitRev* data, std::vector<REFLABEL> &refList);
 	void DrawGraph(HDC,CRect &rect,INT_PTR index);
 
 	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
