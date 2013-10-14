@@ -131,6 +131,8 @@ public:
 	 */
 	void DisableTrimming() { m_bTrim = false; }
 
+	int FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind);
+
 protected:
 	/**
 	 * Will be called whenever the return key is pressed while the

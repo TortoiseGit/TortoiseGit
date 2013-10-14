@@ -119,7 +119,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 
 	//search the Combo for another string like this
 	//and do not insert if found
-	int nIndex = FindStringExact(-1, combostring);
+	int nIndex = FindStringExactCaseSensitive(-1, combostring);
 	if (nIndex != -1)
 	{
 		if (nIndex > pos)
@@ -570,4 +570,19 @@ int CHistoryCombo::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		CreateToolTip();
 
 	return 0;
+}
+
+int CHistoryCombo::FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind)
+{
+	nIndexStart = max(0, nIndexStart);
+	for (int i = nIndexStart; i < GetCount(); i++)
+	{
+		CString exactString;
+		GetLBText(i, exactString);
+		if (exactString == lpszFind)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
