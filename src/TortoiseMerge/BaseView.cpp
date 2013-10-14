@@ -4312,8 +4312,45 @@ void CBaseView::BuildFindStringArray()
 
 			if (!line.IsEmpty())
 			{
-				line = line.MakeLower();
-				m_arFindStringLines.push_back(StringFound(line, SearchNext, s, e));
+				switch (m_pViewData->GetState(i))
+				{
+				case DIFFSTATE_EMPTY:
+					m_arFindStringLines.push_back(0);
+					break;
+				case DIFFSTATE_UNKNOWN:
+				case DIFFSTATE_NORMAL:
+					if (m_bLimitToDiff)
+					{
+						m_arFindStringLines.push_back(0);
+						break;
+					}
+				case DIFFSTATE_REMOVED:
+				case DIFFSTATE_REMOVEDWHITESPACE:
+				case DIFFSTATE_ADDED:
+				case DIFFSTATE_ADDEDWHITESPACE:
+				case DIFFSTATE_WHITESPACE:
+				case DIFFSTATE_WHITESPACE_DIFF:
+				case DIFFSTATE_CONFLICTED:
+				case DIFFSTATE_CONFLICTED_IGNORED:
+				case DIFFSTATE_CONFLICTADDED:
+				case DIFFSTATE_CONFLICTEMPTY:
+				case DIFFSTATE_CONFLICTRESOLVED:
+				case DIFFSTATE_IDENTICALREMOVED:
+				case DIFFSTATE_IDENTICALADDED:
+				case DIFFSTATE_THEIRSREMOVED:
+				case DIFFSTATE_THEIRSADDED:
+				case DIFFSTATE_YOURSREMOVED:
+				case DIFFSTATE_YOURSADDED:
+				case DIFFSTATE_EDITED:
+					{
+						if (!m_bMatchCase)
+							line = line.MakeLower();
+						m_arFindStringLines.push_back(StringFound(line, SearchNext, s, e));
+						break;
+					}
+				default:
+					m_arFindStringLines.push_back(0);
+				}
 			}
 			else
 				m_arFindStringLines.push_back(0);
