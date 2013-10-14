@@ -1171,7 +1171,6 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 {
 	static unsigned int start = 0;
 	unsigned int dt = GetCurrentTime() - start;
-	size_t ds;
 	double speed = 0;
 	
 	if (m_bCancelled)
@@ -1180,7 +1179,7 @@ BOOL CGitProgressList::Notify(const git_wc_notify_action_t /*action*/, const git
 	if (dt > 100)
 	{
 		start = GetCurrentTime();
-		ds = stat->received_bytes - m_TotalBytesTransferred;
+		size_t ds = stat->received_bytes - m_TotalBytesTransferred;
 		speed = ds * 1000.0/dt;
 		m_TotalBytesTransferred = stat->received_bytes;
 	}

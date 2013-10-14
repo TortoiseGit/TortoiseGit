@@ -1070,7 +1070,6 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 }
 int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 {
-	int pos=0;
 	this->Clear();
 	CTGitPath path;
 
@@ -1082,7 +1081,7 @@ int CTGitPathList::FillUnRev(unsigned int action,CTGitPathList *list)
 	for (int i = 0; i < count; ++i)
 	{
 		CString cmd;
-		pos=0;
+		int pos = 0;
 
 		CString ignored;
 		if(action & CTGitPath::LOGACTIONS_IGNORE)
@@ -1147,7 +1146,6 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			}
 			int end=log.find(0,pos);
 			int actionstart=-1;
-			int numfile=1;
 			int file1=-1,file2=-1;
 			if( end>0 )
 			{
@@ -1167,7 +1165,6 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				if( log[actionstart] == 'C' || log[actionstart] == 'R' )
 				{
 					file2=file1;
-					numfile=2;
 					file1 = log.find(0,file1);
 					if(file1>=0 )
 					{

@@ -238,11 +238,10 @@ int CLogDataVector::ParserFromRefLog(CString ref)
 				return -1;
 			}
 			int action=one.Find(_T(' '),ref+1);
-			int message;
 			if(action>0)
 			{
 				rev.m_Ref=one.Mid(ref+1,action-ref-2);
-				message=one.Find(_T(":"),action);
+				int message = one.Find(_T(":"), action);
 				if(message>0)
 				{
 					rev.m_RefAction=one.Mid(action+1,message-action-1);

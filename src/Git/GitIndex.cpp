@@ -250,14 +250,14 @@ int CGitIndexList::GetStatus(const CString &gitdir,const CString &pathParam, git
 							 FILL_STATUS_CALLBACK callback, void *pData,
 							 CGitHash *pHash, bool * assumeValid, bool * skipWorktree)
 {
-	int result;
-	git_wc_status_kind dirstatus = git_wc_status_none;
 	__int64 time;
 	bool isDir = false;
 	CString path = pathParam;
 
 	if (status)
 	{
+		git_wc_status_kind dirstatus = git_wc_status_none;
+		int result;
 		if (path.IsEmpty())
 			result = g_Git.GetFileModifyTime(gitdir, &time, &isDir);
 		else
@@ -617,7 +617,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 				break;
 			}
 
-			DWORD size = 0,filesize = 0;
+			DWORD size = 0;
 			unsigned char buffer[40] ;
 			ReadFile(hfile, buffer, 4, &size, NULL);
 			if (size != 4)
@@ -628,7 +628,7 @@ int CGitHeadFileList::ReadHeadHash(CString gitdir)
 			buffer[4]=0;
 			if (strcmp((const char*)buffer,"ref:") == 0)
 			{
-				filesize = GetFileSize(hfile, NULL);
+				DWORD filesize = GetFileSize(hfile, NULL);
 				if (filesize < 5)
 				{
 					m_HeadRefFile.Empty();
@@ -1194,14 +1194,12 @@ bool CGitIgnoreList::CheckAndUpdateMsysGitBinpath(bool force)
 }
 bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 {
-	bool hasChanged = false;
-
 	CString projectConfig = adminDir + _T("config");
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 
 	CAutoWriteLock lock(&m_coreExcludefilesSharedMutex);
-	hasChanged = CheckAndUpdateMsysGitBinpath();
+	bool hasChanged = CheckAndUpdateMsysGitBinpath();
 	CString systemConfig = m_sMsysGitBinPath + _T("\\..\\etc\\gitconfig");
 
 	hasChanged = hasChanged || CheckFileChanged(projectConfig);

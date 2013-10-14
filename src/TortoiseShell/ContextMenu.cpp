@@ -1328,7 +1328,7 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				{
 					std::vector<stdstring>::iterator I = files_.begin();
 					gitCmd += *I;
-					I++;
+					++I;
 					gitCmd += _T("\" /path2:\"");
 					gitCmd += *I;
 				}
@@ -1768,7 +1768,6 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 		break;
 	case WM_MENUCHAR:
 		{
-			LPCTSTR resource;
 			TCHAR *szItem;
 			if (HIWORD(wParam) != MF_POPUP)
 				return S_OK;
@@ -1780,7 +1779,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lPa
 			std::vector<UINT_PTR> accmenus;
 			for (std::map<UINT_PTR, UINT_PTR>::iterator It = mySubMenuMap.begin(); It != mySubMenuMap.end(); ++It)
 			{
-				resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
+				LPCTSTR resource = GetMenuTextFromResource((int)mySubMenuMap[It->first]);
 				if (resource == NULL)
 					continue;
 				szItem = stringtablebuffer;

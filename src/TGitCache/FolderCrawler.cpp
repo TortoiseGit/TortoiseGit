@@ -151,7 +151,6 @@ void CFolderCrawler::WorkerThread()
 	hWaitHandles[0] = m_hTerminationEvent;
 	hWaitHandles[1] = m_hWakeEvent;
 	CTGitPath workingPath;
-	bool bFirstRunAfterWakeup = false;
 	DWORD currentTicks = 0;
 
 	for(;;)
@@ -181,7 +180,7 @@ void CFolderCrawler::WorkerThread()
 		// If we get here, we've been woken up by something being added to the queue.
 		// However, it's important that we don't do our crawling while
 		// the shell is still asking for items
-		bFirstRunAfterWakeup = true;
+		bool bFirstRunAfterWakeup = true;
 		for(;;)
 		{
 			if (!m_bRun)

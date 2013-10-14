@@ -138,8 +138,6 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 	// Create output panes:
-	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
 
 	if( ! this->m_PatchCtrl.Create(_T("Scintilla"),_T("source"),0,rectDummy,&m_ctrlTabCtrl,0,0) )
 	{
@@ -150,7 +148,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	m_PatchCtrl.Call(SCI_SETREADONLY, TRUE);
 	m_PatchCtrl.SetUDiffStyle();
 
-	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
 	if (!m_wndOutput.Create(_T("Scintilla"),_T("source"),0,rectDummy, &m_ctrlTabCtrl, 0,0) )
 	{

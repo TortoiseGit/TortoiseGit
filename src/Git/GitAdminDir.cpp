@@ -190,11 +190,10 @@ bool GitAdminDir::IsAdminDirPath(const CString& path) const
 	bool bIsAdminDir = false;
 	CString lowerpath = path;
 	lowerpath.MakeLower();
-	int ind = -1;
 	int ind1 = 0;
 	while ((ind1 = lowerpath.Find(_T("\\.git"), ind1))>=0)
 	{
-		ind = ind1++;
+		int ind = ind1++;
 		if (ind == (lowerpath.GetLength() - 5))
 		{
 			bIsAdminDir = true;

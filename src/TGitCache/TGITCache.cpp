@@ -209,10 +209,9 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*
 
 
 	// loop to handle window messages.
-	BOOL bLoopRet;
 	while (bRun)
 	{
-		bLoopRet = GetMessage(&msg, NULL, 0, 0);
+		BOOL bLoopRet = GetMessage(&msg, NULL, 0, 0);
 		if ((bLoopRet != -1)&&(bLoopRet != 0))
 		{
 			DispatchMessage(&msg);
@@ -584,7 +583,6 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": InstanceThread started\n");
 	TGITCacheResponse response;
 	DWORD cbBytesRead, cbWritten;
-	BOOL fSuccess;
 	CAutoFile hPipe;
 
 	// The thread's parameter is a handle to a pipe instance.
@@ -595,7 +593,7 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 	{
 		// Read client requests from the pipe.
 		TGITCacheRequest request;
-		fSuccess = ReadFile(
+		BOOL fSuccess = ReadFile(
 			hPipe,        // handle to pipe
 			&request,    // buffer to receive data
 			sizeof(request), // size of buffer
@@ -651,7 +649,6 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CommandThread started\n");
 	DWORD cbBytesRead;
-	BOOL fSuccess;
 	CAutoFile hPipe;
 
 	// The thread's parameter is a handle to a pipe instance.
@@ -662,7 +659,7 @@ DWORD WINAPI CommandThread(LPVOID lpvParam)
 	{
 		// Read client requests from the pipe.
 		TGITCacheCommand command;
-		fSuccess = ReadFile(
+		BOOL fSuccess = ReadFile(
 			hPipe,				// handle to pipe
 			&command,			// buffer to receive data
 			sizeof(command),	// size of buffer

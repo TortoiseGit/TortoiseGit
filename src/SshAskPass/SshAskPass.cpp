@@ -116,7 +116,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 				PROPVARIANT var;
 				var.vt = VT_BOOL;
 				var.boolVal = VARIANT_TRUE;
-				hr = pps->SetValue(PKEY_AppUserModel_PreventPinning, var);
+				pps->SetValue(PKEY_AppUserModel_PreventPinning, var);
 				pps->Release();
 			}
 		}

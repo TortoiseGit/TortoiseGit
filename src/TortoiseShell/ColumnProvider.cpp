@@ -249,9 +249,8 @@ void CShellExt::GetColumnStatus(const TCHAR * path, BOOL bIsDir)
 	columnfilepath = path;
 	const FileStatusCacheEntry * status = NULL;
 	TGITCacheResponse itemStatus;
-	ShellCache::CacheType t = ShellCache::exe;
 	AutoLocker lock(g_csGlobalCOMGuard);
-	t = g_ShellCache.GetCacheType();
+	ShellCache::CacheType t = g_ShellCache.GetCacheType();
 
 	switch (t)
 	{

@@ -1057,7 +1057,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			break;
 		}
 
-	int x1 = 0, x2 = 0;
+	int x2 = 0;
 	int maxWidth = rect.Width();
 	int lw = 3 * rect.Height() / 4; //laneWidth()
 
@@ -1068,7 +1068,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	for (unsigned int i = 0; i < laneNum && x2 < maxWidth; ++i)
 	{
 
-		x1 = x2;
+		int x1 = x2;
 		x2 += lw;
 
 		int ln = lanes[i];
@@ -1082,7 +1082,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 #if 0
 	for (UINT i = 0; i < laneNum && x2 < maxWidth; ++i) {
 
-		x1 = x2;
+		int x1 = x2;
 		x2 += lw;
 
 		int ln = lanes[i];

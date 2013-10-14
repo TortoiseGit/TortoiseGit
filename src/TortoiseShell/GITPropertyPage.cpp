@@ -286,8 +286,6 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 {
 	struct tm newtime;
 	SYSTEMTIME systime;
-	TCHAR timebuf[MAX_STRING_LENGTH];
-	TCHAR datebuf[MAX_STRING_LENGTH];
 
 	LCID locale = LOCALE_USER_DEFAULT;
 	if (!CRegDWORD(_T("Software\\TortoiseGit\\UseSystemLocaleForDates"), TRUE))
@@ -296,6 +294,8 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	*buf = '\0';
 	if (time)
 	{
+		TCHAR timebuf[MAX_STRING_LENGTH];
+		TCHAR datebuf[MAX_STRING_LENGTH];
 		_localtime64_s(&newtime, &time);
 
 		systime.wDay = (WORD)newtime.tm_mday;

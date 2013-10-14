@@ -938,16 +938,13 @@ void CTortoiseGitBlameView::StringExpand(LPWSTR str)
 
 void CTortoiseGitBlameView::SetupLexer(CString filename)
 {
-
-	TCHAR *line;
-	//const char * lineptr = _tcsrchr(filename, '.');
 	int start=filename.ReverseFind(_T('.'));
 	if (start>0)
 	{
 		//_tcscpy_s(line, 20, lineptr+1);
 		//_tcslwr_s(line, 20);
 		CString ext=filename.Right(filename.GetLength()-start-1);
-		line=ext.GetBuffer();
+		TCHAR * line = ext.GetBuffer();
 
 		if ((_tcscmp(line, _T("py"))==0)||
 			(_tcscmp(line, _T("pyw"))==0))
