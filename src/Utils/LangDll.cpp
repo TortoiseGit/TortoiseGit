@@ -52,7 +52,7 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 			assert(m_hInstance == NULL);
 			do
 			{
-				_stprintf_s(langdllpath, MAX_PATH, _T("%s%s%d.dll"), langpath, appname, langID);
+				_stprintf_s(langdllpath, MAX_PATH, _T("%s%s%lu.dll"), langpath, appname, langID);
 
 				m_hInstance = LoadLibrary(langdllpath);
 

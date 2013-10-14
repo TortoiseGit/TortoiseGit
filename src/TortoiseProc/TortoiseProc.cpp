@@ -108,7 +108,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	long langId = loc;
 	{
 		CString langStr;
-		langStr.Format(_T("%d"), langId);
+		langStr.Format(_T("%ld"), langId);
 		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
 	}
 	CString langDll;
@@ -117,7 +117,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	HINSTANCE hInst = NULL;
 	do
 	{
-		langDll.Format(_T("%sLanguages\\TortoiseProc%d.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
+		langDll.Format(_T("%sLanguages\\TortoiseProc%ld.dll"), (LPCTSTR)CPathUtils::GetAppParentDirectory(), langId);
 
 		hInst = LoadLibrary(langDll);
 

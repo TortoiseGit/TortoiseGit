@@ -119,7 +119,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	}
 	if (!foundfont)
 	{
-		temp.Format(_T("%d"), m_dwFontSize);
+		temp.Format(_T("%lu"), m_dwFontSize);
 		m_cFontSizes.SetWindowText(temp);
 	}
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);

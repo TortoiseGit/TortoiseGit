@@ -360,7 +360,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
-			err.Format(_T("\r\n\r\n%s (%d ms @ %s)\r\n"), log, tickSpent, strEndTime);
+			err.Format(_T("\r\n\r\n%s (%lu ms @ %s)\r\n"), log, tickSpent, strEndTime);
 			InsertColorText(this->m_Log, err, RGB(255,0,0));
 			CSoundUtils::PlayTGitError();
 		}
@@ -370,7 +370,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
-			log.Format(_T("\r\n%s (%d ms @ %s)\r\n"), temp, tickSpent, strEndTime);
+			log.Format(_T("\r\n%s (%lu ms @ %s)\r\n"), temp, tickSpent, strEndTime);
 			InsertColorText(this->m_Log, log, RGB(0,0,255));
 			this->DialogEnableWindow(IDCANCEL,FALSE);
 		}

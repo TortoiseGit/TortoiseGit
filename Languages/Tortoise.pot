@@ -5793,14 +5793,6 @@ msgstr ""
 msgid "Move: New name for %s"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Moved from"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Moved to"
-msgstr ""
-
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
 msgstr ""
@@ -9935,12 +9927,12 @@ msgstr ""
 
 #. Resource IDs: (69)
 #, c-format
-msgid "line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d"
+msgid "line: %d(+) %d(-) files: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld"
 msgstr ""
 
 #. Resource IDs: (69)
 #, c-format
-msgid "line: %d(+) %d(-) files: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"
+msgid "line: %d(+) %d(-) files: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld"
 msgstr ""
 
 #. Resource IDs: (1494)

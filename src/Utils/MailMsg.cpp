@@ -287,7 +287,7 @@ BOOL CMailMsg::Send()
 
 	if(status!=SUCCESS_SUCCESS)
 	{
-		m_sErrorMsg.Format(_T("MAPISendMail has failed with code %X."), status);
+		m_sErrorMsg.Format(_T("MAPISendMail has failed with code %lu."), status);
 	}
 
 	if (pRecipients)

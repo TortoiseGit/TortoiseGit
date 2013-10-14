@@ -190,7 +190,7 @@ void CBugTraqAssociations::Save() const
 	for (const_iterator it = begin(); it != end(); ++it)
 	{
 		TCHAR szSubKey[MAX_PATH];
-		_stprintf_s(szSubKey, _T("%d"), dwIndex);
+		_stprintf_s(szSubKey, _T("%lu"), dwIndex);
 
 		HKEY hk2;
 		if (RegCreateKeyEx(hk, szSubKey, 0, NULL, 0, KEY_WRITE, NULL, &hk2, NULL) == ERROR_SUCCESS)

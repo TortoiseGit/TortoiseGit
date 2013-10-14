@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008, 2010-2012 - TortoiseSVN
+// Copyright (C) 2003-2008, 2010-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,33 +68,33 @@ BOOL CResModule::ExtractResources(std::vector<std::wstring> filelist, LPCTSTR lp
 			_ftprintf(stdout, _T("Extracting StringTable...."));
 		EnumResourceNames(m_hResDll, RT_STRING,  EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
 			_ftprintf(stdout, _T("Extracting Dialogs........"));
 		EnumResourceNames(m_hResDll, RT_DIALOG,  EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
 			_ftprintf(stdout, _T("Extracting Menus.........."));
 		EnumResourceNames(m_hResDll, RT_MENU,    EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
 			_ftprintf(stdout, _T("Extracting Accelerators..."));
 		EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4d Accelerators\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, _T("%4Iu Accelerators\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
 			_ftprintf(stdout, _T("Extracting Ribbons........"));
 		EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameCallback, (LONG_PTR)this);
 		if (!m_bQuiet)
-			_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+			_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 		nEntries = m_StringEntries.size();
 
 		// parse a probably existing file and update the translations which are
@@ -121,28 +121,28 @@ BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFile
 		_ftprintf(stdout, _T("Extracting StringTable...."));
 	EnumResourceNames(m_hResDll, RT_STRING,  EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size());
+		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size());
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("Extracting Dialogs........"));
 	EnumResourceNames(m_hResDll, RT_DIALOG,  EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("Extracting Menus.........."));
 	EnumResourceNames(m_hResDll, RT_MENU,    EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d Strings\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, _T("%4Iu Strings\n"), m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
 		_ftprintf(stdout, _T("Extracting Accelerators..."));
 	EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, (LONG_PTR)this);
 	if (!m_bQuiet)
-		_ftprintf(stdout, _T("%4d Accelerators\n"), m_StringEntries.size()-nEntries);
+		_ftprintf(stdout, _T("%4Iu Accelerators\n"), m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	// parse a probably existing file and update the translations which are
@@ -791,7 +791,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 
 			entry.resourceIDs.insert(menuId);
 			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%u"), menuId);
+			_stprintf(szTempBuf, _T("#: MenuExPopupEntry; ID:%lu"), menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;
@@ -814,7 +814,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			entry.resourceIDs.insert(menuId);
 
 			TCHAR szTempBuf[1024];
-			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%u"), menuId);
+			_stprintf(szTempBuf, _T("#: MenuExEntry; ID:%lu"), menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = (WORD)menuId;
 			menu_entry.reference = szTempBuf;

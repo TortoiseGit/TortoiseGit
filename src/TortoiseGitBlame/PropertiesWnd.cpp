@@ -279,7 +279,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 			if(p)
 				parentsubject=p->GetSubject();
 
-			str.Format(_T("%d - %s \n %s"),i,rev->m_ParentHash[i].ToString(),parentsubject);
+			str.Format(_T("%ud - %s\n%s"), i, rev->m_ParentHash[i].ToString(), parentsubject);
 
 			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
 											rev->m_ParentHash[i].ToString().Left(8),
