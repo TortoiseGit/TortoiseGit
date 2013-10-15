@@ -1897,7 +1897,7 @@ void CStatGraphDlg::DrawOthers(const std::list<tstring> &others, MyGraphSeries *
 	}
 
 	CString temp;
-	temp.Format(_T(" (%lu)"), (unsigned long)others.size());
+	temp.Format(_T(" (%Iu)"), others.size());
 
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));
 	sOthers += temp;
