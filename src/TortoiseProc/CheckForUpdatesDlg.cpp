@@ -265,7 +265,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				if (version != 0)
 				{
 					CString version;
-					version.Format(_T("%ud.%ud.%ud.%ud"), major, minor, micro, build);
+					version.Format(_T("%u.%u.%u.%u"),major,minor,micro,build);
 					if (version != ver)
 						version += _T(" (") + ver + _T(")");
 					temp.Format(IDS_CHECKNEWER_CURRENTVERSION, (LPCTSTR)version);

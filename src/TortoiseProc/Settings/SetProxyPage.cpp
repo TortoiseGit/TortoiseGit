@@ -243,7 +243,7 @@ BOOL CSetProxyPage::OnApply()
 
 	CString temp;
 	Store (m_serveraddress, m_regServeraddress);
-	temp.Format(_T("%ud"), m_serverport);
+	temp.Format(_T("%u"), m_serverport);
 	Store (temp, m_regServerport);
 	Store (m_username, m_regUsername);
 	Store (m_password, m_regPassword);
@@ -284,7 +284,7 @@ BOOL CSetProxyPage::OnApply()
 
 		if(m_serverport)
 		{
-			temp.Format(_T("%ud"), m_serverport);
+			temp.Format(_T("%u"), m_serverport);
 			http_proxy  += _T(":")+temp;
 		}
 	}
