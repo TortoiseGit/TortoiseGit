@@ -53,6 +53,7 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=NULL*/)
 	m_strSVNBranchs = _T("branches");
 
 	m_regBrowseUrl = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\CloneBrowse"),0);
+	m_regCloneDir = CRegString(_T("Software\\TortoiseGit\\TortoiseProc\\CloneDir"));
 	m_nSVNFrom = 0;
 
 	m_nDepth = 0;
@@ -134,6 +135,22 @@ BOOL CCloneDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_CHECK_DEPTH,tt);
 
 	this->AddOthersToAnchor();
+
+	if (m_Directory.IsEmpty())
+	{
+		CString dir = m_regCloneDir;
+		int index = dir.ReverseFind('\\');
+		if (index >= 0)
+			dir = dir.Left(index);
+		m_Directory = dir;
+	}
+	if (m_Directory.IsEmpty())
+	{
+		TCHAR szPath[MAX_PATH];
+		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, szPath)))
+			m_Directory = szPath;
+	}
+	UpdateData(FALSE);
 
 	m_URLCombo.SetURLHistory(TRUE);
 	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
@@ -224,6 +241,7 @@ void CCloneDlg::OnOK()
 
 	m_URLCombo.SaveHistory();
 	m_PuttyKeyCombo.SaveHistory();
+	m_regCloneDir = m_Directory;
 
 	this->m_PuttyKeyCombo.GetWindowText(m_strPuttyKeyFile);
 	CResizableDialog::OnOK();

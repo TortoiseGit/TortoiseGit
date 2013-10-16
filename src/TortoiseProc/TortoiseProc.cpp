@@ -293,7 +293,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			return FALSE;
 		}
 		CString newCmd;
-		newCmd.Format(_T("/command:clone /url:\"%s\""), url);
+		newCmd.Format(_T("/command:clone /url:\"%s\" /hasurlhandler"), url);
 		parser = CCmdLineParser(newCmd);
 	}
 

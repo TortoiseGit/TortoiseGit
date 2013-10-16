@@ -88,6 +88,7 @@ public:
 protected:
 	CMenuButton	m_BrowseUrl;
 	CRegDWORD	m_regBrowseUrl;
+	CRegString	m_regCloneDir;
 	bool		m_bSaving;
 
 	afx_msg void OnBnClickedPuttykeyfileBrowse();

@@ -50,21 +50,24 @@ static CString GetExistingDirectoryForClone(CString path)
 bool CloneCommand::Execute()
 {
 	CTGitPath cloneDirectory;
-	if (orgCmdLinePath.IsEmpty())
+	if (!parser.HasKey(_T("hasurlhandler")))
 	{
-		cloneDirectory.SetFromWin(sOrigCWD, true);
-		DWORD len = ::GetTempPath(0, NULL);
-		std::unique_ptr<TCHAR[]> tszPath(new TCHAR[len]);
-		::GetTempPath(len, tszPath.get());
-		if (_tcsncicmp(cloneDirectory.GetWinPath(), tszPath.get(), len-2 /* \\ and \0 */) == 0)
+		if (orgCmdLinePath.IsEmpty())
 		{
-			// if the current directory is set to a temp directory,
-			// we don't use that but leave it empty instead.
-			cloneDirectory.Reset();
+			cloneDirectory.SetFromWin(sOrigCWD, true);
+			DWORD len = ::GetTempPath(0, NULL);
+			std::unique_ptr<TCHAR[]> tszPath(new TCHAR[len]);
+			::GetTempPath(len, tszPath.get());
+			if (_tcsncicmp(cloneDirectory.GetWinPath(), tszPath.get(), len-2 /* \\ and \0 */) == 0)
+			{
+				// if the current directory is set to a temp directory,
+				// we don't use that but leave it empty instead.
+				cloneDirectory.Reset();
+			}
 		}
+		else
+			cloneDirectory = orgCmdLinePath;
 	}
-	else
-		cloneDirectory = orgCmdLinePath;
 
 	CCloneDlg dlg;
 	dlg.m_Directory = cloneDirectory.GetWinPathString();
