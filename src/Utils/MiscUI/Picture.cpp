@@ -200,22 +200,36 @@ bool CPicture::Load(tstring sFilePathName)
 							hFile.CloseHandle();
 
 							LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
-							if ((lpIconDir->idCount)&&(lpIconDir->idCount * sizeof(ICONDIR) <= fileinfo.nFileIndexLow))
+							if ((lpIconDir->idCount)&&((lpIconDir->idCount * sizeof(ICONDIR)) <= fileinfo.nFileIndexLow))
 							{
 								try
 								{
+									bResult = false;
 									nCurrentIcon = 0;
 									hIcons = new HICON[lpIconDir->idCount];
-									m_Width = lpIconDir->idEntries[0].bWidth;
-									m_Height = lpIconDir->idEntries[0].bHeight;
-									for (int i=0; i<lpIconDir->idCount; ++i)
+									// check that the pointers point to data that we just loaded
+									if (((BYTE*)lpIconDir->idEntries > (BYTE*)lpIconDir) && 
+										(((BYTE*)lpIconDir->idEntries)+(lpIconDir->idCount * sizeof(ICONDIRENTRY)) < ((BYTE*)lpIconDir)+fileinfo.nFileIndexLow))
 									{
-										hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON,
-											lpIconDir->idEntries[i].bWidth,
-											lpIconDir->idEntries[i].bHeight,
-											LR_LOADFROMFILE);
+										m_Width = lpIconDir->idEntries[0].bWidth;
+										m_Height = lpIconDir->idEntries[0].bHeight;
+										bResult = true;
+										for (int i=0; i<lpIconDir->idCount; ++i)
+										{
+											hIcons[i] = (HICON)LoadImage(NULL, sFilePathName.c_str(), IMAGE_ICON,
+																		 lpIconDir->idEntries[i].bWidth,
+																		 lpIconDir->idEntries[i].bHeight,
+																		 LR_LOADFROMFILE);
+											if (hIcons[i] == NULL)
+											{
+												// if the icon couldn't be loaded, the data is most likely corrupt
+												delete [] lpIcons;
+												lpIcons = NULL;
+												bResult = false;
+												break;
+											}
+										}
 									}
-									bResult = true;
 								}
 								catch (...)
 								{
