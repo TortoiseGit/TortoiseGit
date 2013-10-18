@@ -2609,7 +2609,7 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 			}
 			else if(ret == IDC_PROGRESS_BUTTON1 + 1)
 			{
-				Push();
+				Push(selectLocalBranch, autoClose);
 			}
 			return TRUE;
 		}
@@ -2624,14 +2624,14 @@ bool CAppUtils::Push(CString selectLocalBranch, bool autoClose)
 				}
 				else if (ret == IDC_PROGRESS_BUTTON1 + 1)
 				{
-					Push();
+					Push(selectLocalBranch, autoClose);
 				}
 			}
 			else
 			{
 				if (ret == IDC_PROGRESS_BUTTON1)
 				{
-					Push();
+					Push(selectLocalBranch, autoClose);
 				}
 			}
 		}
