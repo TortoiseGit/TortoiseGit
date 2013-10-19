@@ -161,14 +161,14 @@
 		need the overlays. For example:
 	</para>
 	<para>
-		<filename>f:\development\SVN\Git</filename> will disable
+		<filename>f:\development\TortoiseGit</filename> will disable
 		the overlays <emphasis>only</emphasis> on that specific folder. You
 		still can see the overlays on all files and folder inside that folder.
 	</para>
 	<para>
-		<filename>f:\development\SVN\Git*</filename> will disable the
+		<filename>f:\development\TortoiseGit*</filename> will disable the
 		overlays on <emphasis>all</emphasis> files and folders whose path
-		starts with <filename>f:\development\SVN\Git</filename>. That
+		starts with <filename>f:\development\TortoiseGit</filename>. That
 		means you won't see overlays for any files and folders below that
 		path.
 	</para>
@@ -204,7 +204,7 @@ if (path is allowed drive type) AND (path is not in exclude list)
 			It is often convenient to use a <literal>SUBST</literal> drive
 			to access your working trees, e.g. using the command
 <screen>
-subst T: C:\TortoiseGit\trunk\doc
+subst T: C:\TortoiseGit\doc
 </screen>
 			However this can cause the overlays not to update, as
 			<literal>TGitCache</literal> will only receive one notification when
