@@ -3794,6 +3794,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		if (m_nSearchIndex >= m_arShownList.GetCount())
 			m_nSearchIndex = (int)m_arShownList.GetCount()-1;
 	}
+	else
+		m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
 
 	return 0;
 }
