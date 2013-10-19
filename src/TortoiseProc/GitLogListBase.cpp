@@ -3647,6 +3647,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		return 0;
 	}
 
+	INT_PTR cnt = m_arShownList.GetCount();
+
 	if(m_pFindDialog->IsRef())
 	{
 		CString str;
@@ -3662,7 +3664,7 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 		if(!hash.IsEmpty())
 		{
-			for (i = 0; i<m_arShownList.GetCount(); ++i)
+			for (i = 0; i < cnt; ++i)
 			{
 				GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
 				if(pLogEntry && pLogEntry->m_CommitHash == hash)
@@ -3672,10 +3674,14 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 				}
 			}
 		}
-
+		if (!bFound)
+		{
+			m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
+			return 0;
+		}
 	}
 
-	if(m_pFindDialog->FindNext())
+	if (m_pFindDialog->FindNext() && !bFound)
 	{
 		//read data from dialog
 		CString FindText = m_pFindDialog->GetFindString();
@@ -3686,9 +3692,23 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 		std::tr1::regex_constants::match_flag_type flags = std::tr1::regex_constants::match_not_null;
 
-
-		for (i = this->m_nSearchIndex; i < m_arShownList.GetCount() && !bFound; ++i)
+		for (i = m_nSearchIndex + 1; ; ++i)
 		{
+			if (i >= cnt)
+			{
+				i = 0;
+				m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
+			}
+			if (m_nSearchIndex >= 0)
+			{
+				if (i == m_nSearchIndex)
+				{
+					::MessageBeep(0xFFFFFFFF);
+					m_pFindDialog->FlashWindowEx(FLASHW_ALL, 3, 100);
+					break;
+				}
+			}
+
 			GitRev* pLogEntry = (GitRev*)m_arShownList.SafeGetAt(i);
 
 			CString str;
@@ -3783,19 +3803,14 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 
 	if (bFound)
 	{
-		this->m_nSearchIndex = i;
+		m_nSearchIndex = i;
 		EnsureVisible(i, FALSE);
 		SetItemState(GetSelectionMark(), 0, LVIS_SELECTED);
 		SetItemState(i, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 		SetSelectionMark(i);
 		//FillLogMessageCtrl();
 		UpdateData(FALSE);
-		++m_nSearchIndex;
-		if (m_nSearchIndex >= m_arShownList.GetCount())
-			m_nSearchIndex = (int)m_arShownList.GetCount()-1;
 	}
-	else
-		m_pFindDialog->FlashWindowEx(FLASHW_ALL, 2, 100);
 
 	return 0;
 }
