@@ -4259,6 +4259,7 @@ BEGIN
     IDS_CONFIG_GLOBAL_TT    "%HOME%/gitconfig or %XDGHOME%/gitconfig"
     IDS_CONFIG_PROJECT_TT   ".tgitconfig in the repository root"
     IDS_CONFIG_LOCAL_TT     ".git/config in the repository root"
+    IDS_COMPAREREV_NODIFF   "No differences found!"
     IDS_WARNUSERSAFEDIFFERENT "Are you sure you want to save to ""%s""?"
     IDS_WALKBEHAVIOUR_FIRSTPARENT "First Parent"
     IDS_WALKBEHAVIOUR_FOLLOWRENAMES "&Follow renames"

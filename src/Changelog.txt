@@ -24,6 +24,7 @@ Released: Unreleased
  * Fixed issue #1779: tortoisegit does not understand include.path in global config
    If you have relevant settings for TGitCache in an included file, you have to restard TGitCache or modify the global, system, or local config file in order to reload any included file.
  * Support project icon as task button overlay
+ * Fixed issue #1946: In "Compare revisions", please show something to confirm when there are no differences
 
 == Bug Fixes ==
  * Fixed issue #1859: Log too long when using Switch to New Branch option in Create Branch dialog

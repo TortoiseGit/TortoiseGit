@@ -396,6 +396,8 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	}
 
 	m_cFileList.ClearText();
+	if (m_arFileList.GetCount() == 0)
+		m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
 	m_cFileList.SetRedraw(true);
 
 	InvalidateRect(NULL);
