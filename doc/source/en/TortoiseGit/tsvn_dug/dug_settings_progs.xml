@@ -131,7 +131,7 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 		</para>
 		<para>
 			If you have configured an alternate diff tool, you can access
-			TortoiseMerge <emphasis>and</emphasis> the third party tool
+			TortoiseGitMerge <emphasis>and</emphasis> the third party tool
 			from the context menus.
 			<menuchoice>
 				<guimenu>Context menu</guimenu>

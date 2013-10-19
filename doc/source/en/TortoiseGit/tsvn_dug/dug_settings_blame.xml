@@ -2,23 +2,23 @@
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 <sect2 id="tsvn-dug-settings-tortoiseblame">
 	<?dbhh topicname="HIDD_SETTINGSTBLAME"?>
-	<title>TortoiseBlame Settings</title>
+	<title>TortoiseGitBlame Settings</title>
 	<para>
 		<figure id="tsvn-dug-settings-dia-blame">
-			<title>The Settings Dialog, TortoiseBlame Page</title>
+			<title>The Settings Dialog, TortoiseGitBlame Page</title>
 			<graphic fileref="../images/SettingsBlame.png"/>
 		</figure>
-		The settings used by TortoiseBlame are controlled from the
-		main context menu, not directly with TortoiseBlame itself.
+		The settings used by TortoiseGitBlame are controlled from the
+		main context menu, not directly with TortoiseGitBlame itself.
 	</para>
 	<variablelist>
 		<varlistentry>
 			<term>Colors</term>
 			<listitem>
 				<para>
-					TortoiseBlame can use the background colour to indicate the age
+					TortoiseGitBlame can use the background colour to indicate the age
 					of lines in a file. You set the endpoints by specifying the
-					colours for the newest and oldest revisions, and TortoiseBlame
+					colours for the newest and oldest revisions, and TortoiseGitBlame
 					uses a linear interpolation between these colours according to
 					the repository revision indicated for each line.
 				</para>

@@ -14,9 +14,9 @@
 		between two revisions of the same file, or the differences between
 		two separate files.
 		TortoiseGit provides a built-in tool named 
-		<application>TortoiseMerge</application> for viewing differences of
+		<application>TortoiseGitMerge</application> for viewing differences of
 		text files. For viewing differences of image files, TortoiseGit
-		also has a tool named <application>TortoiseIDiff</application>.
+		also has a tool named <application>TortoiseGitIDiff</application>.
 		Of course, you can use your own favourite diff program if you
 		like.
 	</para>
@@ -208,7 +208,7 @@
 			these changes when it comes to comparing and applying differences.
 			You will see these settings in the <guilabel>Merge</guilabel> and
 			<guilabel>Blame</guilabel> dialogs, as well as in the settings for
-			TortoiseMerge.
+			TortoiseGitMerge.
 		</para>
 		<para>
 			<guilabel>Ignore line endings</guilabel>
@@ -439,17 +439,17 @@
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-idiff">
-		<title>Diffing Images Using TortoiseIDiff</title>
+		<title>Diffing Images Using TortoiseGitIDiff</title>
 		<indexterm>
 			<primary>image diff</primary>
 		</indexterm>
 		<indexterm>
-			<primary>TortoiseIDiff</primary>
+			<primary>TortoiseGitIDiff</primary>
 		</indexterm>
 		<para>
 			There are many tools available for diffing text files, including our
-			own TortoiseMerge, but we often find ourselves wanting to see how
-			an image file has changed too. That's why we created TortoiseIDiff.
+			own TortoiseGitMerge, but we often find ourselves wanting to see how
+			an image file has changed too. That's why we created TortoiseGitIDiff.
 		</para>
 		<para>
 			<figure id="tsvn-dug-idiff-dia-1">
@@ -460,7 +460,7 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Diff</guimenuitem>
 			</menuchoice>
-			for any of the common image file formats will start TortoiseIDiff
+			for any of the common image file formats will start TortoiseGitIDiff
 			to show image differences. By default the images are displayed side-by-side
 			but you can use the View menu or toolbar to switch to a top-bottom
 			view instead, or if you prefer, you can overlay the images and pretend

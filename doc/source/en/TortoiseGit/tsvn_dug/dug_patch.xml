@@ -160,7 +160,7 @@ and
 				<title>The Choose Repository Dialog</title>
 				<graphic fileref="../images/ChooseRepository.png"/>
 			</figure>
-			If the working tree is found, TortoiseMerge is launched to show and apply differences.
+			If the working tree is found, TortoiseGitMerge is launched to show and apply differences.
 		</para>
 	</sect2>
 	<sect2 id="tsvn-dug-patch-applaypatchserial">

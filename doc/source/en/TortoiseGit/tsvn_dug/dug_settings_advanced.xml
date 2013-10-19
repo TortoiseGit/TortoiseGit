@@ -100,7 +100,7 @@
                     TortoiseGit allows you to assign an external diff viewer.
                     Most such viewers, however, are not suited for change blaming
                     (<xref linkend="tsvn-dug-blame-diffs"/>),
-                    so you might wish to fall back to TortoiseMerge in this case.
+                    so you might wish to fall back to TortoiseGitMerge in this case.
                     To do so, set this value to <literal>true</literal>.
                 </para>
             </listitem>

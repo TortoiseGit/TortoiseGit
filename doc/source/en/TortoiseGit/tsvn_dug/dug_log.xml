@@ -116,7 +116,7 @@
 					<listitem>
 						<para>
 							Compare the selected revision with your working tree.
-							The default Diff-Tool is TortoiseMerge which
+							The default Diff-Tool is TortoiseGitMerge which
 							is supplied with TortoiseGit.
 							If the log dialog is for a folder, this will show you a list
 							of changed files, and allow you to review the changes made
@@ -322,7 +322,7 @@
 					<listitem>
 						<para>
 							Compare the two selected revisions using a visual
-							difference tool. The default Diff-Tool is TortoiseMerge
+							difference tool. The default Diff-Tool is TortoiseGitMerge
 							which is supplied with TortoiseGit.
 						</para>
 					</listitem>

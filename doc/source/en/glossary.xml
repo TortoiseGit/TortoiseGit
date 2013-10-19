@@ -34,7 +34,7 @@
 				This command is for text files only, and it annotates every line to
 				show the repository revision in which it was last changed, and the
 				author who made that change. Our GUI implementation is called
-				TortoiseBlame and it also shows the commit date/time and the
+				TortoiseGitBlame and it also shows the commit date/time and the
 				log message when you hover the mouse of the revision number.
 			</para>
 		</glossdef>

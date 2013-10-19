@@ -166,7 +166,7 @@
 				<guimenuitem>Restore after commit</guimenuitem>
 			</menuchoice>.
 			This will create a copy of the file as it is. Then you
-			can edit the file, e.g. in TortoiseMerge and undo all
+			can edit the file, e.g. in TortoiseGitMerge and undo all
 			the changes you don't want to commit. After saving those
 			changes you can commit the file.
 		</para>

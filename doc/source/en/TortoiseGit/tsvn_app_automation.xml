@@ -624,7 +624,7 @@ TortoiseGitProc.exe /command:log /path:"c:\svn_wc\file1.txt"
 	</sect1>
 
 	<sect1 id="tsvn-automation-idiff">
-		<title>TortoiseIDiff Commands</title>
+		<title>TortoiseGitIDiff Commands</title>
 		<indexterm>
 			<primary>automation</primary>
 		</indexterm>
