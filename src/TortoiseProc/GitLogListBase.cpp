@@ -817,7 +817,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								GetGdiColor(activeColor),GetGdiColor(col));
 
 
-		Gdiplus::Pen mypen(&gradient, m_LineWidth);
+		Gdiplus::Pen mypen(&gradient, (Gdiplus::REAL)m_LineWidth);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
 
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
@@ -835,7 +835,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								GetGdiColor(col),GetGdiColor(activeColor));
 
 
-		Gdiplus::Pen mypen(&gradient, m_LineWidth);
+		Gdiplus::Pen mypen(&gradient, (Gdiplus::REAL)m_LineWidth);
 		//Gdiplus::Pen mypen(Gdiplus::Color(0,0,0),2);
 
 		//graphics.DrawRectangle(&mypen,x1-(x2-x1)/2,top+h, x2-x1,laneHeight);
@@ -854,7 +854,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 								Gdiplus::Point(P_90),
 								GetGdiColor(activeColor),GetGdiColor(col));
 
-		Gdiplus::Pen mypen(&gradient, m_LineWidth);
+		Gdiplus::Pen mypen(&gradient, (Gdiplus::REAL)m_LineWidth);
 
 		graphics.DrawArc(&mypen,x1-(x2-x1)/2-1,top-h-1, x2-x1,laneHeight,0,90);
 
@@ -879,7 +879,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	//myPen.setColor(col);
 	HPEN oldpen=(HPEN)::SelectObject(hdc,(HPEN)pen);
 
-	Gdiplus::Pen myPen(GetGdiColor(col), m_LineWidth);
+	Gdiplus::Pen myPen(GetGdiColor(col), (Gdiplus::REAL)m_LineWidth);
 
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 
