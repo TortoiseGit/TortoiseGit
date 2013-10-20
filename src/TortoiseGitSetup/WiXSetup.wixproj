@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -12,7 +12,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\..\bin\setup\</OutputPath>
     <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
     <WixVariables>
     </WixVariables>
     <SuppressSpecificWarnings>
@@ -21,12 +21,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\bin\setup\x86\</OutputPath>
     <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
+    <DefineConstants>Debug;IncludeCrashReportDll=0;DictionaryENGB=0;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
     <WixVariables>
     </WixVariables>
     <SuppressSpecificWarnings>
@@ -35,7 +35,7 @@
     <IntermediateOutputPath>..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;</DefineConstants>
+    <DefineConstants>IncludeCrashReportDll=1;DictionaryENGB=0;DictionaryENUS=1;VisualStudioVersion=$(VisualStudioVersion);</DefineConstants>
     <SuppressSpecificWarnings>
     </SuppressSpecificWarnings>
     <OutputPath>..\..\bin\setup\x64\</OutputPath>

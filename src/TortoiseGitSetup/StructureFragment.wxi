@@ -14,6 +14,13 @@
 	<Fragment Id="StructureFragment">
 -->
 
+<?if $(var.VisualStudioVersion) = "12.0" ?>
+<?define vcver="120" ?>
+<?endif ?>
+<?if $(var.VisualStudioVersion) = "11.0" ?>
+<?define vcver="110" ?>
+<?endif ?>
+
 <?ifdef env.CommonProgramFiles(x86) ?>
 <?define MergeModules="C:\Program Files (x86)\Common Files\Merge Modules" ?>
 <?else?>
@@ -26,16 +33,16 @@
 			<Directory Id="INSTALLDIR" ShortName="TGIT" Name="TortoiseGit">
 
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x86.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFC_x86.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFCLOC_x86.msm' DiskId='1'/>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
+				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFC_x86.msm' DiskId='1'/>
+				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFCLOC_x86.msm' DiskId='1'/>
 				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
-				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x64.msm' DiskId='1'/>
-				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFC_x64.msm' DiskId='1'/>
-				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_MFCLOC_x64.msm' DiskId='1'/>
-				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC110_CRT_x86.msm' DiskId='1'/>
+				<Merge Id='CRT' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x64.msm' DiskId='1'/>
+				<Merge Id='MFC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFC_x64.msm' DiskId='1'/>
+				<Merge Id='MFCLOC' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_MFCLOC_x64.msm' DiskId='1'/>
+				<Merge Id='CRT32' Language='0' SourceFile='$(var.MergeModules)\Microsoft_VC$(var.vcver)_CRT_x86.msm' DiskId='1'/>
 				<?endif ?>
 
 				<?if $(var.Platform) = "x86" ?>
