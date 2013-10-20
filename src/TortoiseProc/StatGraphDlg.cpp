@@ -717,6 +717,8 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 {
 	m_parAuthors.RemoveAll();
 	m_parDates.RemoveAll();
+	if (m_parFileChanges2.IsEmpty()) // Fixes issue #1948
+		keepFetchedData = FALSE;
 	if (!keepFetchedData)
 	{
 		m_parFileChanges.RemoveAll();
