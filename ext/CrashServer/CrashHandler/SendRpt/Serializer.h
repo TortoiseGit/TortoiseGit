@@ -21,10 +21,9 @@
 
 class Serializer
 {
+public:
     const BYTE*  m_buf;
     size_t       m_size;
-
-public:
     std::vector<BYTE> m_storage;
 
     CString GetHex() const;
