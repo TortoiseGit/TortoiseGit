@@ -6,18 +6,22 @@
 # Translators:
 # lznuaa <lznuaa@gmail.com>, 2012
 # Freeman Ke <guang810828@gmail.com>, 2012
+# Gongong <gongong83@gmail.com>, 2013
 # lznuaa <lznuaa@gmail.com>, 2013
 # lznuaa <lznuaa@gmail.com>, 2012-2013
+# lznuaa <lznuaa@gmail.com>, 2012-2013
+# RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013
 # weicong <weicong@live.cn>, 2013
+# Y.F Yang <yfdyh000@gmail.com>, 2013
 # Y.F Yang <yfdyh000@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-08-11 11:48+0000\n"
+"PO-Revision-Date: 2013-10-17 16:43+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -148,10 +152,34 @@ msgstr "%1!d!年前"
 msgid "%1!d! Years ago"
 msgstr "%1!d!年前"
 
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!d! items selected"
+msgstr "已选择 %1!d! 个项目"
+
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! minutes ago"
 msgstr "%1!d!分钟前"
+
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!s!"
+msgstr "%1!s!"
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"%1!s!\r\n"
+"Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
+msgstr "%1!s!\n总计显示 %2!d! 个文件, %3!d! 个子模块和 %4!d! 个文件夹, %5!d! 个项目"
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"%1!s!\r\n"
+"Size %2!s!"
+msgstr "%1!s!\n大小 %2!s!"
 
 #. Resource IDs: (3860)
 #, c-format
@@ -167,6 +195,11 @@ msgid ""
 "Cannot find this file.\n"
 "Verify that the correct path and file name are given."
 msgstr "%1\n无法找到该文件，\n请检查输入的路径和文件名是否正确。"
+
+#. Resource IDs: (91)
+#, c-format
+msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgstr "%HOME%/gitconfig 或 %XDGHOME%/gitconfig"
 
 #. Resource IDs: (357)
 #, c-format
@@ -251,10 +284,10 @@ msgstr "%s [已恢复的]"
 msgid "%s in %s"
 msgstr "%s，耗用 %s"
 
-#. Resource IDs: (1383)
+#. Resource IDs: (87)
 #, c-format
-msgid "%s requires msysgit >= %s"
-msgstr "%s 要求 msysgit >= %s"
+msgid "%s requires Git >= %s"
+msgstr "%s 要求 Git >= %s"
 
 #. Resource IDs: (357)
 #, c-format
@@ -417,6 +450,10 @@ msgstr "追溯版本(&B)"
 msgid "&Blue:"
 msgstr "蓝色(&B):"
 
+#. Resource IDs: (65535)
+msgid "&Border:"
+msgstr "边框(&B):"
+
 #. Resource IDs: (1512)
 msgid "&Branch"
 msgstr "分支(&B)"
@@ -508,6 +545,10 @@ msgstr "提交(&C)..."
 #. Resource IDs: (1252)
 msgid "&Compare revisions"
 msgstr "比较版本差异(&C)"
+
+#. Resource IDs: (92)
+msgid "&Compressed Graph"
+msgstr "紧缩版本树(&C)"
 
 #. Resource IDs: (1239)
 msgid "&Configure"
@@ -681,6 +722,10 @@ msgstr "Git风格提交(--rmdir)(&G)"
 msgid "&Go to\tCtrl+G"
 msgstr "跳转(&G)\tCtrl+G"
 
+#. Resource IDs: (91)
+msgid "&Gray Unrelated Changed Paths"
+msgstr "灰化无关的修改路径(&G)"
+
 #. Resource IDs: (65535)
 msgid "&Green:"
 msgstr "绿色(&G):"
@@ -754,6 +799,10 @@ msgstr "保持换行符(&K)"
 msgid "&Keep current state"
 msgstr "保持当前状态(&K)"
 
+#. Resource IDs: (92)
+msgid "&Labels"
+msgstr "标记(&L)"
+
 #. Resource IDs: (65535)
 msgid "&Language:"
 msgstr "语言(&L)"
@@ -769,6 +818,10 @@ msgstr "下载后运行变基(&L)"
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
 msgstr "仅在已修改的行中搜索(&L)"
+
+#. Resource IDs: (65535)
+msgid "&Limit:"
+msgstr "限制(&L):"
 
 #. Resource IDs: (1078)
 msgid "&Line number"
@@ -789,6 +842,10 @@ msgstr "列表视图(&L)"
 
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
+msgstr "本地分支(&L)"
+
+#. Resource IDs: (92)
+msgid "&Local branches"
 msgstr "本地分支(&L)"
 
 #. Resource IDs: (1504)
@@ -896,8 +953,8 @@ msgid "&Open"
 msgstr "打开(&O)"
 
 #. Resource IDs: (84)
-msgid "&Open msysGit WebSite"
-msgstr "打开msysgit网站(&O)"
+msgid "&Open Git for Windows WebSite"
+msgstr "打开 Git for Windows 网站(&O)"
 
 #. Resource IDs: (57601)
 msgid "&Open...\tCtrl+O"
@@ -906,6 +963,10 @@ msgstr "打开(&O)...\tCtrl+O"
 #. Resource IDs: (1382)
 msgid "&Options"
 msgstr "选项(&O)"
+
+#. Resource IDs: (65535)
+msgid "&Overlay Icon:"
+msgstr "叠加图标(&O)"
 
 #. Resource IDs: (32772)
 msgid "&Overlay images"
@@ -978,6 +1039,10 @@ msgstr "刷新(&R)"
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
 msgstr "远端分支(&R)"
+
+#. Resource IDs: (92)
+msgid "&Remote branches"
+msgstr "远程分支(&R)"
 
 #. Resource IDs: (1490, 1503)
 msgid "&Remote:"
@@ -1060,8 +1125,8 @@ msgid "&Save list of selected files to..."
 msgstr "保存选择文件列表(&S)"
 
 #. Resource IDs: (84)
-msgid "&Set MSysGit path"
-msgstr "设置MSysGit路径(&S)"
+msgid "&Set Git path"
+msgstr "设置 Git 路径(&S)"
 
 #. Resource IDs: (1486)
 msgid "&Set upstream/track remote branch"
@@ -1133,6 +1198,10 @@ msgstr "标签显示文档(&T)"
 
 #. Resource IDs: (1513)
 msgid "&Tag"
+msgstr "标签(&T)"
+
+#. Resource IDs: (91)
+msgid "&Tags"
 msgstr "标签(&T)"
 
 #. Resource IDs: (65535)
@@ -1308,6 +1377,10 @@ msgstr "..."
 msgid "....."
 msgstr "....."
 
+#. Resource IDs: (91)
+msgid ".git/config in the repository root"
+msgstr "版本库根目录中的 .git/config"
+
 #. Resource IDs: (1691)
 msgid ".git/info/exclude"
 msgstr ".git/info/exclude"
@@ -1320,9 +1393,17 @@ msgstr "在指定目录里的.gitignore"
 msgid ".gitignore in the repository root"
 msgstr "在版本库根目录里的.gitignore"
 
+#. Resource IDs: (91)
+msgid ".tgitconfig in the repository root"
+msgstr "版本库根目录中的 .tgitconfig"
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr "<.....>"
+
+#. Resource IDs: (65535)
+msgid "<<"
+msgstr "<<"
 
 #. Resource IDs: (76)
 msgid "<All Branches>"
@@ -1721,6 +1802,10 @@ msgid ""
 "Allow Edit"
 msgstr "允许编辑这个视窗\n允许编辑"
 
+#. Resource IDs: (90)
+msgid "Allow to use custom Gravatar URL"
+msgstr "允许使用自定义的 Gravatar 网址"
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr "已经最新"
@@ -1851,6 +1936,11 @@ msgid ""
 "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
 " since the last update!"
 msgstr "是否确定要复原 %d 个项目? 从上次更新之后的<b>所有</b>变更都会消失！"
+
+#. Resource IDs: (91)
+#, c-format
+msgid "Are you sure you want to save to \"%s\"?"
+msgstr "您确定要保存至 \"%s\" 吗？"
 
 #. Resource IDs: (32793)
 msgid "Arrange &vertical"
@@ -2185,6 +2275,10 @@ msgstr "问题ID"
 msgid "Bug-IDs"
 msgstr "Bug-ID"
 
+#. Resource IDs: (65535)
+msgid "BugTraq"
+msgstr "BugTraq"
+
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "按钮外观"
@@ -2416,6 +2510,10 @@ msgstr "变更列表（双击文件查看差异）: "
 msgid "Changes the style of the application"
 msgstr "改版程序的风格"
 
+#. Resource IDs: (65535)
+msgid "Char position where to show a border line in commit text boxes:"
+msgstr "在提交文本框中要显示边框线的字符位置:"
+
 #. Resource IDs: (3887)
 msgid "Check"
 msgstr "选中"
@@ -2505,7 +2603,7 @@ msgid "Clean Type"
 msgstr "清除类型"
 
 #. Resource IDs: (76)
-msgid "Clean up stale remote banches"
+msgid "Clean up stale remote branches"
 msgstr "清理过时的远程分支"
 
 #. Resource IDs: (145)
@@ -2845,6 +2943,10 @@ msgid "Config"
 msgstr "配置"
 
 #. Resource IDs: (65535)
+msgid "Config source"
+msgstr "配置源"
+
+#. Resource IDs: (65535)
 msgid "Config type:"
 msgstr "配置类型:"
 
@@ -2873,6 +2975,10 @@ msgstr "设置用来解决冲突的程序。"
 #. Resource IDs: (65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
 msgstr "设置查看 GNU 差异文件（补丁文件）的程序"
+
+#. Resource IDs: (1768)
+msgid "Confirm to kill running git process"
+msgstr "确认停止运行 git 进程"
 
 #. Resource IDs: (1257, 4568)
 msgid "Conflict"
@@ -3533,6 +3639,10 @@ msgstr "设备中立位图\n一种设备中立的位图"
 msgid "Dialog sizes and positions"
 msgstr "窗口大小及位置"
 
+#. Resource IDs: (65535)
+msgid "Dialogs"
+msgstr "对话框"
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr "比较两个版本差异"
@@ -3813,6 +3923,10 @@ msgstr "通过拖动使此菜单浮动"
 msgid "Draw"
 msgstr "画图"
 
+#. Resource IDs: (1073)
+msgid "Draw tag/branch labels on right side"
+msgstr "在右侧绘制 tag/branch 标签"
+
 #. Resource IDs: (1079)
 msgid "Drive Types"
 msgstr "磁盘驱动器类型"
@@ -3921,6 +4035,10 @@ msgstr "编辑系统gitconfig(&Y)"
 msgid "Edit..."
 msgstr "编辑..."
 
+#. Resource IDs: (1770)
+msgid "Effective"
+msgstr "有效"
+
 #. Resource IDs: (79)
 msgid "Either the name or IP of the proxy server"
 msgstr "输入代理服务器的 IP 地址或名称"
@@ -3951,6 +4069,10 @@ msgstr "空"
 msgid "Enable Edit"
 msgstr "可编辑"
 
+#. Resource IDs: (1766)
+msgid "Enable Gravatar"
+msgstr "启用 Gravatar"
+
 #. Resource IDs: (87)
 msgid ""
 "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
@@ -3959,6 +4081,10 @@ msgstr "使用日志缓存文件 (tortoisegit.data, tortoisegit.index)"
 #. Resource IDs: (1744)
 msgid "Enable log cache"
 msgstr "使用日志缓存"
+
+#. Resource IDs: (90)
+msgid "Enable showing Gravatar image in Log Dialog"
+msgstr "在日志对话框启用显示 Gravatar 头像"
 
 #. Resource IDs: (65535)
 msgid "Enabled Overlay Handlers"
@@ -4618,6 +4744,14 @@ msgstr "全文搜索"
 msgid "Fully recursive"
 msgstr "全递归"
 
+#. Resource IDs: (65535)
+msgid "Further options for the commit dialog are on Dialogs 3 page."
+msgstr "在对话框组三页面有更多关于提交对话框的选项。"
+
+#. Resource IDs: (92)
+msgid "G&ravatar"
+msgstr "G&ravatar"
+
 #. Resource IDs: (5061)
 msgid "GB2312 (Simplified)"
 msgstr "GB2312 (Simplified)"
@@ -4664,8 +4798,16 @@ msgid "General::Context Menu"
 msgstr "常规设置::右键菜单"
 
 #. Resource IDs: (196)
-msgid "General::Dialogs"
-msgstr "常规设置::对话框"
+msgid "General::Dialogs 1"
+msgstr "常规::对话框组一"
+
+#. Resource IDs: (197)
+msgid "General::Dialogs 2"
+msgstr "常规::对话框组二"
+
+#. Resource IDs: (4593)
+msgid "General::Dialogs 3"
+msgstr "常规::对话框组三"
 
 #. Resource IDs: (4573)
 msgid "General::Set Extend Menu Item"
@@ -4733,6 +4875,10 @@ msgstr "Git 导出版本控制的条目到当前位置"
 msgid "Git Init"
 msgstr "Git Init"
 
+#. Resource IDs: (79)
+msgid "Git Install Path"
+msgstr "Git 安装路径"
+
 #. Resource IDs: (1270)
 msgid "Git Log"
 msgstr "Git日志"
@@ -4780,6 +4926,18 @@ msgstr "Git URL"
 #. Resource IDs: (297)
 msgid "Git clone - TortoiseGit"
 msgstr "Git克隆 - TortoiseGit"
+
+#. Resource IDs: (71)
+msgid "Git directory not set (see \"General\" settings page)."
+msgstr "Git 目录没有设置 (见 \"常规\" 设置页面)。"
+
+#. Resource IDs: (65535)
+msgid "Git for Windows"
+msgstr "Git for Windows"
+
+#. Resource IDs: (84)
+msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
+msgstr "未找到 Git for Windows (http://code.google.com/p/msysgit/)。"
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
@@ -4946,6 +5104,10 @@ msgid ""
 "Hide/Show the patch file list\n"
 "Hides or shows the patch file list"
 msgstr "隐藏/显示补丁文件列表"
+
+#. Resource IDs: (92)
+msgid "Hint"
+msgstr "示意"
 
 #. Resource IDs: (16519)
 msgid ""
@@ -5194,6 +5356,12 @@ msgstr "图标覆盖::图标集"
 #. Resource IDs: (338)
 msgid "Icon Overlays::Overlay Handlers"
 msgstr "图标覆盖::覆盖程序"
+
+#. Resource IDs: (92)
+msgid ""
+"Icons (*.ico, *.jpg, *.png, *.bmp, "
+"*.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr "图标 (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|全部文件 (*.*)|*.*||"
 
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
@@ -5527,6 +5695,10 @@ msgstr "行7"
 msgid "LINE8"
 msgstr "行8"
 
+#. Resource IDs: (65535)
+msgid "Language:"
+msgstr "语言:"
+
 #. Resource IDs: (85)
 msgid "Last Author"
 msgstr "最后跟新的作者"
@@ -5750,18 +5922,6 @@ msgstr "亮度"
 msgid "MAPI"
 msgstr "MAPI"
 
-#. Resource IDs: (65535)
-msgid "MSysGit"
-msgstr "MsysGit"
-
-#. Resource IDs: (84)
-msgid "MSysGit (http://code.google.com/p/msysgit/) not found."
-msgstr "不能找到MSysGit (http://code.google.com/p/msysgit/)"
-
-#. Resource IDs: (71)
-msgid "MSysGit directory not set (see \"General\" settings page)."
-msgstr "MSysGit目录没有设置 (见\"常用\"设置页面)."
-
 #. Resource IDs: (5066)
 msgid "Macintosh"
 msgstr "Macintosh"
@@ -5866,6 +6026,12 @@ msgstr "合并点"
 msgid "Merge Reintegrate"
 msgstr "合并复兴分支"
 
+#. Resource IDs: (90)
+msgid ""
+"Merge between original branch, working tree contents, and the branch to "
+"switch to"
+msgstr "合并原始分支、工作树内容和要切换到的分支"
+
 #. Resource IDs: (1432)
 msgid "Merge non-interactive"
 msgstr "非交互合并"
@@ -5929,6 +6095,10 @@ msgstr "本地文件（mine）"
 #. Resource IDs: (1068)
 msgid "Minimize the Ribbon"
 msgstr "最小化缎带"
+
+#. Resource IDs: (65535)
+msgid "Minimum number of chars for a commit message:"
+msgstr "提交消息的最小字符数:"
 
 #. Resource IDs: (1023, 65535)
 msgid "Misc"
@@ -6019,14 +6189,6 @@ msgstr "移动/改名"
 msgid "Move: New name for %s"
 msgstr "移动: %s  的新名称"
 
-#. Resource IDs: (65535)
-msgid "Moved from"
-msgstr "从移动"
-
-#. Resource IDs: (65535)
-msgid "Moved to"
-msgstr "移动到"
-
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
 msgstr "在恢复前将已经修改的文件移动到垃圾箱"
@@ -6039,10 +6201,6 @@ msgstr "正在移动 %s"
 #. Resource IDs: (80)
 msgid "Moving..."
 msgstr "正在移动..."
-
-#. Resource IDs: (79)
-msgid "MsysGit Install Path"
-msgstr "MsysGit安装路径"
 
 #. Resource IDs: (65535)
 msgid "My file:"
@@ -6152,6 +6310,10 @@ msgstr "否"
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
 msgstr "非直接迁移(&F)"
+
+#. Resource IDs: (92)
+msgid "No &merges"
+msgstr "不合并(&m)"
 
 #. Resource IDs: (1716)
 msgid "No Checkout"
@@ -6772,6 +6934,10 @@ msgstr "选取"
 msgid "Pick commit hash"
 msgstr "摘取提交hash"
 
+#. Resource IDs: (90)
+msgid "Pick commit message"
+msgstr "摘取提交信息"
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6968,6 +7134,10 @@ msgstr "程序文件 (*.exe)|*.exe|所有文件 (*.*)|*.*||"
 msgid "Progress"
 msgstr "进程"
 
+#. Resource IDs: (91, 1772)
+msgid "Project"
+msgstr "项目"
+
 #. Resource IDs: (11)
 msgid "Property"
 msgstr "属性"
@@ -7062,6 +7232,10 @@ msgid ""
 "Exit TortoiseGitMerge without saving the modifications"
 msgstr "退出\n不保存修改并且退出TortoiseGitMerge "
 
+#. Resource IDs: (1633)
+msgid "QuotePath"
+msgstr "QuotePath"
+
 #. Resource IDs: (1073)
 msgid "R&AM drives"
 msgstr "内存虚拟磁盘(&A)"
@@ -7077,6 +7251,16 @@ msgstr "复原到此版本(&E)"
 #. Resource IDs: (1255)
 msgid "REBASE"
 msgstr "变基"
+
+#. Resource IDs: (1769)
+msgid "Randomize Sync Dialog startup position"
+msgstr "同步对话框启动位置随机化"
+
+#. Resource IDs: (91)
+msgid ""
+"Randomize the startup position of Sync Dialog. This prevents from pressing "
+"the Pull button of same dialog"
+msgstr "随机化同步对话框的启动位置。这可以防止按到相同对话框中的 Pull 按钮。"
 
 #. Resource IDs: (1535)
 msgid "Range"
@@ -7718,8 +7902,8 @@ msgid "SVN Fetch"
 msgstr "SVN Fetch"
 
 #. Resource IDs: (21)
-msgid "SVN Rebase..."
-msgstr "SVN Rebase..."
+msgid "SVN Rebase"
+msgstr "SVN Rebase"
 
 #. Resource IDs: (65535)
 msgid "Sa&feCrLf:"
@@ -7793,10 +7977,6 @@ msgstr "保存所有\n两侧文件都将保存"
 msgid "Save as"
 msgstr "另存为"
 
-#. Resource IDs: (1567)
-msgid "Save as &Global"
-msgstr "保存为全局(&G)"
-
 #. Resource IDs: (313)
 msgid "Save as..."
 msgstr "另存为..."
@@ -7841,6 +8021,10 @@ msgstr "保存变更过的文件\n保存文件"
 #. Resource IDs: (1132)
 msgid "Save to clipboard"
 msgstr "保存到剪切板"
+
+#. Resource IDs: (65535)
+msgid "Save to:"
+msgstr "保存至:"
 
 #. Resource IDs: (1385)
 msgid "Save unified diff"
@@ -7905,6 +8089,10 @@ msgstr "正在搜索更好的路径来应用补丁..."
 #, c-format
 msgid "Seek failed on %1"
 msgstr "查找错误: %1"
+
+#. Resource IDs: (8)
+msgid "Select"
+msgstr "选择"
 
 #. Resource IDs: (1253)
 msgid "Select &All"
@@ -8004,6 +8192,12 @@ msgid ""
 "Select the entire document\n"
 "Select All"
 msgstr "选取整份文件\n全选"
+
+#. Resource IDs: (65535)
+msgid ""
+"Select the language this project is using. This settings affects the spell "
+"checker used for commit messages."
+msgstr "选择该项目正在使用的语言。此设置会影响到用于提交消息的拼写检查器。"
 
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
@@ -8264,6 +8458,10 @@ msgstr "在短暂延时后显示全部菜单(&U)"
 msgid "Show i&gnored files"
 msgstr "显示被忽略的文件(&G)"
 
+#. Resource IDs: (92)
+msgid "Show la&beled commits only"
+msgstr "仅仅显示有标签的提交(&b)"
+
 #. Resource IDs: (1063)
 msgid "Show linenumber&s"
 msgstr "显示行号(&S)"
@@ -8360,10 +8558,6 @@ msgstr "空白和换行显示为特殊字符\n显示空白"
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
 msgstr "在ref标签中显示特殊符号"
-
-#. Resource IDs: (1730)
-msgid "Show ta&gs"
-msgstr "显示标签(&G)"
 
 #. Resource IDs: (1209)
 msgid "Show un&modified files"
@@ -8638,13 +8832,17 @@ msgstr "标题:"
 msgid "Submodule"
 msgstr "子模块"
 
-#. Resource IDs: (8, 11)
-msgid "Submodule &Update"
-msgstr "更新子模块(&U)"
+#. Resource IDs: (11)
+msgid "Submodule &Update..."
+msgstr "更新子模块(&U)..."
 
-#. Resource IDs: (20, 1589)
+#. Resource IDs: (1589)
 msgid "Submodule Add"
 msgstr "添加子模块"
+
+#. Resource IDs: (20)
+msgid "Submodule Add..."
+msgstr "添加子模块..."
 
 #. Resource IDs: (4576)
 msgid "Submodule Diff"
@@ -8669,6 +8867,13 @@ msgstr "Submodule Update"
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
 msgstr "子模块更新选项"
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"Submodule \"%1!s!\"\r\n"
+"Revision %2!s!"
+msgstr "子模块 \"%1!s!\"\n修订版本 %2!s!"
 
 #. Resource IDs: (1708)
 msgid "Submodules"
@@ -9120,6 +9325,12 @@ msgid ""
 "%s\n"
 "matches it better. Do you want to use the suggested path instead?"
 msgstr "路径\n%s\n似乎不符合补丁文件中的路径\n但是TortoiseGitMerge找到更好的路径\n%s. \n你想使用建议的路径吗?"
+
+#. Resource IDs: (91)
+msgid ""
+"The process is still running.\n"
+"Are you sure to abort?"
+msgstr "该过程仍在运行中。\n您确定要中止吗？"
 
 #. Resource IDs: (71)
 #, c-format
@@ -10048,6 +10259,10 @@ msgstr "等待脚本运行结束"
 msgid "Waiting for input"
 msgstr "等待输入"
 
+#. Resource IDs: (1776)
+msgid "Walk Be&haviour"
+msgstr "遍历方法(&h)"
+
 #. Resource IDs: (88)
 msgid "Warning"
 msgstr "警告"
@@ -10084,6 +10299,12 @@ msgid ""
 "necessary"
 msgstr "在应用补丁时，忽略空白改变"
 
+#. Resource IDs: (91)
+msgid ""
+"When closing a progress dialog with a running git process, ask for "
+"confirmation before killing it"
+msgstr "当关闭一个正在运行 git 进程的进度对话框时，在关闭前要求确认"
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
@@ -10095,7 +10316,7 @@ msgid ""
 "When resolving conflicts, you always have to save even if there is no "
 "conflict shown. TortoiseGitMerge can merge changes that Git can't and won't "
 "show a conflict for those!"
-msgstr "解决冲突时，即使未显示有冲突也必须保存。因为TortoiseMerge可能合并SVN无法合并的改动，而且对此不会显示冲突。"
+msgstr "解决冲突时，即使未显示有冲突也必须保存。因为TortoiseMerge可能合并GIT无法合并的改动，而且对此不会显示冲突。"
 
 #. Resource IDs: (604)
 msgid ""
@@ -10103,6 +10324,12 @@ msgid ""
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
 msgstr "当引用补丁失败时，尝试三向合并。"
+
+#. Resource IDs: (92)
+msgid ""
+"When you type the URL, the remote name will be automatically filled with "
+"\"origin\" if the remote name is empty, so you do not have to."
+msgstr "如果远程名称为空，当你键入的URL时远程名称将被自动填充为“origin”，所以你不必。"
 
 #. Resource IDs: (1409)
 msgid ""
@@ -10233,10 +10460,10 @@ msgstr "不能通过重命名改变这个引用的类型"
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
-msgstr "版本的msysGit (http://code.google.com/p/msysgit/)安装\n\n你应该考虑升级到 1.7.10+ ，这个版本支持UTF-并且兼任 *nix版本的 git."
+msgstr "您已安装了一个旧版本的 Git for Windows (http://code.google.com/p/msysgit/)。\n\n您应该考虑升级到 1.7.10+，可支持 UTF-8 并且兼容于 git 的 *nix 版本。"
 
 #. Resource IDs: (86)
 msgid ""
@@ -10530,10 +10757,6 @@ msgstr "完成导出\n%s\n至\n%s"
 msgid "external"
 msgstr "外部"
 
-#. Resource IDs: (1594, 1596, 1598)
-msgid "false"
-msgstr "否"
-
 #. Resource IDs: (66)
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
@@ -10551,29 +10774,37 @@ msgstr "包括未被版本控制的文件"
 msgid "incomplete"
 msgstr "未完成"
 
+#. Resource IDs: (1780, 1781, 1782, 1783)
+msgid "inherit"
+msgstr "继承"
+
 #. Resource IDs: (214)
 msgid "item kept locally"
 msgstr "保留本地项目"
 
-#. Resource IDs: (69)
-#, c-format
-msgid ""
-"line: %d(+) %d(-) files: %s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d"
-msgstr "行: %d(+) %d(-) 文件: %s = %d\n%s = %d\n%s = %d\n%s = %d"
+#. Resource IDs: (65535)
+msgid "keep the file lists in English"
+msgstr "用英语保存文件列表"
 
 #. Resource IDs: (69)
 #, c-format
 msgid ""
-"line: %d(+) %d(-) files: %s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d"
-msgstr "行: %d(+) %d(-) 文件: %s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d\n%s = %d"
+"line: %d(+) %d(-) files: %s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld"
+msgstr "行: %d(+) %d(-) 文件: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld"
+
+#. Resource IDs: (69)
+#, c-format
+msgid ""
+"line: %d(+) %d(-) files: %s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld"
+msgstr "行: %d(+) %d(-) 文件: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %ld"
 
 #. Resource IDs: (1494)
 msgid "master"
@@ -10677,7 +10908,7 @@ msgstr "切换到\r\n%s"
 
 #. Resource IDs: (1386)
 msgid "take care of submodule changes"
-msgstr "关系子模块的改动"
+msgstr "关心子模块的改动"
 
 #. Resource IDs: (3845)
 #, c-format
@@ -10688,10 +10919,6 @@ msgstr "至 %1"
 #, c-format
 msgid "to %s"
 msgstr "至 %s"
-
-#. Resource IDs: (1593, 1597, 1601)
-msgid "true"
-msgstr "是"
 
 #. Resource IDs: (245)
 msgid "week"
@@ -10728,3 +10955,7 @@ msgstr "是"
 #. Resource IDs: (1382)
 msgid "{BugTraq}"
 msgstr "{BugTraq}"
+
+#. Resource IDs: (65535)
+msgid "|"
+msgstr "|"

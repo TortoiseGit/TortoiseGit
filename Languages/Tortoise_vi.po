@@ -4,16 +4,18 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
-# ppanhh <ppanhh@gmail.com>, 2013
+# ppanhh <vietnamesel10n@gmail.com>, 2013
 # Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
-# ppanhh <ppanhh@gmail.com>, 2013
+# ppanhh <vietnamesel10n@gmail.com>, 2013
+# ppanhh <vietnamesel10n@gmail.com>, 2013
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/tortoisegit/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2013-08-18 15:34+0000\n"
-"Last-Translator: ppanhh <ppanhh@gmail.com>\n"
+"PO-Revision-Date: 2013-10-20 12:22+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/tortoisegit/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -143,10 +145,34 @@ msgstr "%1!d! Năm trước"
 msgid "%1!d! Years ago"
 msgstr "%1!d! Năm trước"
 
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!d! items selected"
+msgstr "Đã chọn %'d mục"
+
 #. Resource IDs: (602)
 #, c-format
 msgid "%1!d! minutes ago"
 msgstr "%1!d! phút trước"
+
+#. Resource IDs: (90)
+#, c-format
+msgid "%1!s!"
+msgstr "%1 !s !"
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"%1!s!\r\n"
+"Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
+msgstr "%1! s!\r\nĐang hiển thị %2! d! tập tin, %3! d! mô-đun con và %4! d! thư mục, %5!d! mục trong tổng số"
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"%1!s!\r\n"
+"Size %2!s!"
+msgstr "%1 !s !\r\nKích thước %2 !s !"
 
 #. Resource IDs: (3860)
 #, c-format
@@ -163,6 +189,11 @@ msgid ""
 "Verify that the correct path and file name are given."
 msgstr "%1\nKhông tìm thấy tập tin này.\nXác nhận lại đường dẫn và tên tập tin xem có chính xác hay chưa."
 
+#. Resource IDs: (91)
+#, c-format
+msgid "%HOME%/gitconfig or %XDGHOME%/gitconfig"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "%I64d Bytes transferred"
@@ -176,27 +207,27 @@ msgstr "Đã truyền tải %I64d kByte"
 #. Resource IDs: (1256)
 #, c-format
 msgid "%d Parent"
-msgstr ""
+msgstr "%d Gốc"
 
 #. Resource IDs: (75)
 #, c-format
 msgid "%d commits ahead \"%s\""
-msgstr ""
+msgstr "%d đệ trình phía trước \"%s\""
 
 #. Resource IDs: (1256)
 #, c-format
 msgid "%d files changed"
-msgstr ""
+msgstr "%d tập tin đã bị thay đổi"
 
 #. Resource IDs: (65)
 #, c-format
 msgid "%d files removed."
-msgstr ""
+msgstr "%d tập tin bị loại bỏ."
 
 #. Resource IDs: (69)
 #, c-format
 msgid "%d files reverted to %s."
-msgstr ""
+msgstr "%d tập tin trở lại thành %s."
 
 #. Resource IDs: (169)
 #, c-format
@@ -246,9 +277,9 @@ msgstr "%s [Phục hồi]"
 msgid "%s in %s"
 msgstr "%s trong %s"
 
-#. Resource IDs: (1383)
+#. Resource IDs: (87)
 #, c-format
-msgid "%s requires msysgit >= %s"
+msgid "%s requires Git >= %s"
 msgstr ""
 
 #. Resource IDs: (357)
@@ -259,7 +290,7 @@ msgstr "%s, tại %s"
 #. Resource IDs: (151)
 #, c-format
 msgid "%s: Working Tree"
-msgstr ""
+msgstr "%s : Cây đang thao tác"
 
 #. Resource IDs: (145)
 #, c-format
@@ -283,7 +314,7 @@ msgstr "%s\n%s"
 msgid ""
 "%s\n"
 "Could not be cleanly patched."
-msgstr ""
+msgstr "%s\nKhông thể áp dụng bản vá hoàn toàn."
 
 #. Resource IDs: (145)
 #, c-format
@@ -298,7 +329,7 @@ msgid ""
 "%s\n"
 "is a directory, not a file!\n"
 "TortoiseGitMerge can't diff directories."
-msgstr ""
+msgstr "%s\nlà một thư mục, không phải là một tập tin!\nTortoiseGitMerge không thể tìm ra điểm khác nhau giữa các thư mục."
 
 #. Resource IDs: (16923)
 msgid "&..."
@@ -310,11 +341,11 @@ msgstr "&3 cách xác nhập"
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitBlame..."
-msgstr ""
+msgstr "&Thông tin về TortoiseGitBlame"
 
 #. Resource IDs: (57664)
 msgid "&About TortoiseGitMerge..."
-msgstr ""
+msgstr "&Thông tin về TortoiseGitMerge..."
 
 #. Resource IDs: (16920)
 msgid "&Activate"
@@ -334,7 +365,7 @@ msgstr "&Thêm mới/Lưu"
 
 #. Resource IDs: (68)
 msgid "&Add it"
-msgstr ""
+msgstr "&Thêm phần này"
 
 #. Resource IDs: (1064)
 msgid "&Add or Remove Buttons"
@@ -354,7 +385,7 @@ msgstr "&Tất Cả"
 
 #. Resource IDs: (3936)
 msgid "&All Branches"
-msgstr ""
+msgstr "&Tất cả các nhánh"
 
 #. Resource IDs: (65535)
 msgid "&Application Look"
@@ -412,6 +443,10 @@ msgstr "&Trách cứ các chỉnh sửa"
 msgid "&Blue:"
 msgstr "&Xanh Dương:"
 
+#. Resource IDs: (65535)
+msgid "&Border:"
+msgstr ""
+
 #. Resource IDs: (1512)
 msgid "&Branch"
 msgstr "&Nhánh"
@@ -466,11 +501,11 @@ msgstr "&Dọn dẹp..."
 
 #. Resource IDs: (57632)
 msgid "&Clear"
-msgstr ""
+msgstr "&Xóa"
 
 #. Resource IDs: (1686)
 msgid "&Clear stash"
-msgstr ""
+msgstr "&Xóa stash"
 
 #. Resource IDs: (1, 58112)
 msgid "&Close"
@@ -490,11 +525,11 @@ msgstr "&Đệ trình"
 
 #. Resource IDs: (355)
 msgid "&Commit submodule..."
-msgstr ""
+msgstr "&Đệ trình mô-đun con..."
 
 #. Resource IDs: (68)
 msgid "&Commit w/o"
-msgstr ""
+msgstr "&Đệ trình w/o"
 
 #. Resource IDs: (8)
 msgid "&Commit..."
@@ -503,6 +538,10 @@ msgstr "&Khẳng định..."
 #. Resource IDs: (1252)
 msgid "&Compare revisions"
 msgstr "&So sánh các bản chỉnh sửa"
+
+#. Resource IDs: (92)
+msgid "&Compressed Graph"
+msgstr ""
 
 #. Resource IDs: (1239)
 msgid "&Configure"
@@ -518,7 +557,7 @@ msgstr "&Sao chép ảnh của nút bấm"
 
 #. Resource IDs: (57634)
 msgid "&Copy\tCtrl+C"
-msgstr ""
+msgstr "&Sao chép Ctrl + C"
 
 #. Resource IDs: (1662)
 msgid "&Custom"
@@ -538,7 +577,7 @@ msgstr "&Xóa (giữ bản trên máy)"
 
 #. Resource IDs: (70)
 msgid "&Delete remote && local"
-msgstr ""
+msgstr "&Xóa phần từ xa && địa phương"
 
 #. Resource IDs: (12)
 msgid "&Diff"
@@ -554,11 +593,11 @@ msgstr "&Thư mục:"
 
 #. Resource IDs: (71)
 msgid "&Discard"
-msgstr ""
+msgstr "&Bỏ qua"
 
 #. Resource IDs: (1412)
 msgid "&Do the same for the rest"
-msgstr ""
+msgstr "&Làm tương tự cho phần còn lại"
 
 #. Resource IDs: (1066)
 msgid "&Docking"
@@ -570,7 +609,7 @@ msgstr "&Xuống"
 
 #. Resource IDs: (78, 1710)
 msgid "&Download"
-msgstr ""
+msgstr "&Tải về"
 
 #. Resource IDs: (65535)
 msgid "&Edit"
@@ -578,7 +617,7 @@ msgstr "&Biên tập"
 
 #. Resource IDs: (84)
 msgid "&Edit .git/config"
-msgstr ""
+msgstr "&Chỉnh sửa .git/config"
 
 #. Resource IDs: (1559)
 msgid "&Edit ALL"
@@ -606,7 +645,7 @@ msgstr "&Cho phép Máy Chủ Proxy"
 
 #. Resource IDs: (32976)
 msgid "&Enable edit"
-msgstr ""
+msgstr "&Cho phép chỉnh sửa"
 
 #. Resource IDs: (323)
 msgid "&Export selection to..."
@@ -626,7 +665,7 @@ msgstr "&Tìm"
 
 #. Resource IDs: (57636)
 msgid "&Find\tCtrl+F"
-msgstr ""
+msgstr "&Tìm kiếm Ctrl + F"
 
 #. Resource IDs: (32778)
 msgid "&Fit images in window"
@@ -674,6 +713,10 @@ msgstr "&Mẫu đệ trình Git (--rmdir)"
 
 #. Resource IDs: (220)
 msgid "&Go to\tCtrl+G"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid "&Gray Unrelated Changed Paths"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -749,6 +792,10 @@ msgstr "&Giữ CR"
 msgid "&Keep current state"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "&Labels"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "&Language:"
 msgstr "&Ngôn ngữ:"
@@ -764,6 +811,10 @@ msgstr "&Truy cập Dựa trên Gốc sau khi thoát"
 #. Resource IDs: (1065)
 msgid "&Limit search to modified lines"
 msgstr "&Tìm kiếm giới hạn trong các dòng bị thay đổi"
+
+#. Resource IDs: (65535)
+msgid "&Limit:"
+msgstr ""
 
 #. Resource IDs: (1078)
 msgid "&Line number"
@@ -785,6 +836,10 @@ msgstr "&Xem theo danh sách"
 #. Resource IDs: (1616)
 msgid "&Local Branch:"
 msgstr "&Nhánh nội bộ:"
+
+#. Resource IDs: (92)
+msgid "&Local branches"
+msgstr ""
 
 #. Resource IDs: (1504)
 msgid "&Local:"
@@ -891,7 +946,7 @@ msgid "&Open"
 msgstr "&Mở"
 
 #. Resource IDs: (84)
-msgid "&Open msysGit WebSite"
+msgid "&Open Git for Windows WebSite"
 msgstr ""
 
 #. Resource IDs: (57601)
@@ -901,6 +956,10 @@ msgstr ""
 #. Resource IDs: (1382)
 msgid "&Options"
 msgstr "&Lựa chọn"
+
+#. Resource IDs: (65535)
+msgid "&Overlay Icon:"
+msgstr ""
 
 #. Resource IDs: (32772)
 msgid "&Overlay images"
@@ -973,6 +1032,10 @@ msgstr "&Thể hiện lại"
 #. Resource IDs: (1617)
 msgid "&Remote Branch:"
 msgstr "&Nhánh từ xa:"
+
+#. Resource IDs: (92)
+msgid "&Remote branches"
+msgstr ""
 
 #. Resource IDs: (1490, 1503)
 msgid "&Remote:"
@@ -1055,7 +1118,7 @@ msgid "&Save list of selected files to..."
 msgstr "&Lưu danh sách của các tập tin được chọn đến..."
 
 #. Resource IDs: (84)
-msgid "&Set MSysGit path"
+msgid "&Set Git path"
 msgstr ""
 
 #. Resource IDs: (1486)
@@ -1128,6 +1191,10 @@ msgstr "&Tài liệu theo mục"
 
 #. Resource IDs: (1513)
 msgid "&Tag"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid "&Tags"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1303,6 +1370,10 @@ msgstr "..."
 msgid "....."
 msgstr "....."
 
+#. Resource IDs: (91)
+msgid ".git/config in the repository root"
+msgstr ""
+
 #. Resource IDs: (1691)
 msgid ".git/info/exclude"
 msgstr ".git/info/exclude"
@@ -1315,9 +1386,17 @@ msgstr ""
 msgid ".gitignore in the repository root"
 msgstr ""
 
+#. Resource IDs: (91)
+msgid ".tgitconfig in the repository root"
+msgstr ""
+
 #. Resource IDs: (16506)
 msgid "<.....>"
 msgstr "<.....>"
+
+#. Resource IDs: (65535)
+msgid "<<"
+msgstr "<<"
 
 #. Resource IDs: (76)
 msgid "<All Branches>"
@@ -1716,6 +1795,10 @@ msgid ""
 "Allow Edit"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Allow to use custom Gravatar URL"
+msgstr ""
+
 #. Resource IDs: (66)
 msgid "Already up to date."
 msgstr ""
@@ -1846,6 +1929,11 @@ msgid ""
 "Are you sure you want to revert %d item(s)? You will lose <b>all</b> changes"
 " since the last update!"
 msgstr "Bạn có chắc muốn đảo ngược %d (các) đối tượng? Bạn sẽ mất <b>tất cả</b> các thay đổi kể từ lần cập nhật mới nhất!"
+
+#. Resource IDs: (91)
+#, c-format
+msgid "Are you sure you want to save to \"%s\"?"
+msgstr ""
 
 #. Resource IDs: (32793)
 msgid "Arrange &vertical"
@@ -2180,6 +2268,10 @@ msgstr "Chỉ số Lỗi/Chỉ số vấn đề lỗi:"
 msgid "Bug-IDs"
 msgstr "Những lỗi-ID"
 
+#. Resource IDs: (65535)
+msgid "BugTraq"
+msgstr "BugTraq"
+
 #. Resource IDs: (16132)
 msgid "Button Appearance"
 msgstr "Giao diện nút bấm"
@@ -2411,6 +2503,10 @@ msgstr "Những thay đổi được thực hiện (nháy kép trên tập tin �
 msgid "Changes the style of the application"
 msgstr "Thay đổi phong cách của ứng dụng"
 
+#. Resource IDs: (65535)
+msgid "Char position where to show a border line in commit text boxes:"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Check"
 msgstr "Kiểm tra"
@@ -2500,7 +2596,7 @@ msgid "Clean Type"
 msgstr ""
 
 #. Resource IDs: (76)
-msgid "Clean up stale remote banches"
+msgid "Clean up stale remote branches"
 msgstr ""
 
 #. Resource IDs: (145)
@@ -2840,6 +2936,10 @@ msgid "Config"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Config source"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Config type:"
 msgstr ""
 
@@ -2867,6 +2967,10 @@ msgstr "Cấu hình chương trình dùng cho giải quyết các tập tin bị
 
 #. Resource IDs: (65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
+msgstr ""
+
+#. Resource IDs: (1768)
+msgid "Confirm to kill running git process"
 msgstr ""
 
 #. Resource IDs: (1257, 4568)
@@ -2995,7 +3099,7 @@ msgstr "Đang sao chép..."
 
 #. Resource IDs: (1001)
 msgid "Copyright (C) 2009-2013 TortoiseGit"
-msgstr ""
+msgstr "Copyright (C) 2009-2013 TortoiseGit"
 
 #. Resource IDs: (1254)
 msgid "Corrections"
@@ -3528,6 +3632,10 @@ msgstr "Ảnh độc lập với thiết bị\nmột ảnh độc lập với th
 msgid "Dialog sizes and positions"
 msgstr "Kích thước và vị trí của hộp thoại"
 
+#. Resource IDs: (65535)
+msgid "Dialogs"
+msgstr ""
+
 #. Resource IDs: (22)
 msgid "Diff Two Commits"
 msgstr ""
@@ -3808,6 +3916,10 @@ msgstr "Kéo lê để làm thực đơn này nổi"
 msgid "Draw"
 msgstr "Vẽ"
 
+#. Resource IDs: (1073)
+msgid "Draw tag/branch labels on right side"
+msgstr ""
+
 #. Resource IDs: (1079)
 msgid "Drive Types"
 msgstr "Loại ổ đĩa"
@@ -3842,7 +3954,7 @@ msgstr ""
 
 #. Resource IDs: (303)
 msgid "EOL"
-msgstr ""
+msgstr "EOL"
 
 #. Resource IDs: (5064)
 msgid "EUC-KR"
@@ -3916,6 +4028,10 @@ msgstr ""
 msgid "Edit..."
 msgstr "Biên tập..."
 
+#. Resource IDs: (1770)
+msgid "Effective"
+msgstr ""
+
 #. Resource IDs: (79)
 msgid "Either the name or IP of the proxy server"
 msgstr "Tên hoặc IP của máy chủ proxy"
@@ -3946,6 +4062,10 @@ msgstr "Trống"
 msgid "Enable Edit"
 msgstr ""
 
+#. Resource IDs: (1766)
+msgid "Enable Gravatar"
+msgstr ""
+
 #. Resource IDs: (87)
 msgid ""
 "Enable loading/saving log cache files (tortoisegit.data, tortoisegit.index)"
@@ -3953,6 +4073,10 @@ msgstr ""
 
 #. Resource IDs: (1744)
 msgid "Enable log cache"
+msgstr ""
+
+#. Resource IDs: (90)
+msgid "Enable showing Gravatar image in Log Dialog"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -4613,6 +4737,14 @@ msgstr ""
 msgid "Fully recursive"
 msgstr "Đệ quy hoàn toàn"
 
+#. Resource IDs: (65535)
+msgid "Further options for the commit dialog are on Dialogs 3 page."
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "G&ravatar"
+msgstr ""
+
 #. Resource IDs: (5061)
 msgid "GB2312 (Simplified)"
 msgstr ""
@@ -4659,7 +4791,15 @@ msgid "General::Context Menu"
 msgstr "Tổng quát::Thực đơn ngữ cảnh"
 
 #. Resource IDs: (196)
-msgid "General::Dialogs"
+msgid "General::Dialogs 1"
+msgstr ""
+
+#. Resource IDs: (197)
+msgid "General::Dialogs 2"
+msgstr ""
+
+#. Resource IDs: (4593)
+msgid "General::Dialogs 3"
 msgstr ""
 
 #. Resource IDs: (4573)
@@ -4728,6 +4868,10 @@ msgstr "Xuất dữ liệu các đối tượng phiên bản Git tại đây"
 msgid "Git Init"
 msgstr ""
 
+#. Resource IDs: (79)
+msgid "Git Install Path"
+msgstr ""
+
 #. Resource IDs: (1270)
 msgid "Git Log"
 msgstr ""
@@ -4774,6 +4918,18 @@ msgstr "Đường dẫn Git"
 
 #. Resource IDs: (297)
 msgid "Git clone - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (71)
+msgid "Git directory not set (see \"General\" settings page)."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Git for Windows"
+msgstr ""
+
+#. Resource IDs: (84)
+msgid "Git for Windows (http://code.google.com/p/msysgit/) not found."
 msgstr ""
 
 #. Resource IDs: (79)
@@ -4942,6 +5098,10 @@ msgid ""
 "Hides or shows the patch file list"
 msgstr "Ẩn/Hiện danh sách tập tin vá\nẨn hoặc hiện danh sách tập tin vá"
 
+#. Resource IDs: (92)
+msgid "Hint"
+msgstr ""
+
 #. Resource IDs: (16519)
 msgid ""
 "Hint: select the context menu, change the page to 'Commands' and drag the "
@@ -5026,11 +5186,11 @@ msgstr "ID:32811:V C +U"
 
 #. Accelerator Entry for Menu ID:32817; 'Fit image &widths'
 msgid "ID:32817:V   +W"
-msgstr ""
+msgstr "ID:32817:V   +W"
 
 #. Accelerator Entry for Menu ID:32818; 'Fit image &heights'
 msgid "ID:32818:V   +H"
-msgstr ""
+msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5066,7 +5226,7 @@ msgstr "ID:32893:V C +G"
 
 #. Accelerator Entry for Menu ID:32976; '&Enable edit'
 msgid "ID:32976:V C +E"
-msgstr ""
+msgstr "ID:32976:V C +E"
 
 #. Accelerator Entry for Menu ID:57601; '&Open'
 #. Accelerator Entry for Menu ID:57601; '&Open...\tCtrl+O'
@@ -5189,6 +5349,12 @@ msgstr "Biểu tượng nạp chồng::Tập hợp biểu tượng"
 #. Resource IDs: (338)
 msgid "Icon Overlays::Overlay Handlers"
 msgstr "Biểu tượng nạp chồng::Xử lý nạp chồng"
+
+#. Resource IDs: (92)
+msgid ""
+"Icons (*.ico, *.jpg, *.png, *.bmp, "
+"*.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Icons/Design/Code:\t\tLuebbe Onken"
@@ -5522,6 +5688,10 @@ msgstr "Dòng7"
 msgid "LINE8"
 msgstr "Dòng8"
 
+#. Resource IDs: (65535)
+msgid "Language:"
+msgstr ""
+
 #. Resource IDs: (85)
 msgid "Last Author"
 msgstr ""
@@ -5743,19 +5913,7 @@ msgstr "Lum"
 
 #. Resource IDs: (90)
 msgid "MAPI"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "MSysGit"
-msgstr "MSysGit"
-
-#. Resource IDs: (84)
-msgid "MSysGit (http://code.google.com/p/msysgit/) not found."
-msgstr ""
-
-#. Resource IDs: (71)
-msgid "MSysGit directory not set (see \"General\" settings page)."
-msgstr ""
+msgstr "MAPI"
 
 #. Resource IDs: (5066)
 msgid "Macintosh"
@@ -5861,6 +6019,12 @@ msgstr ""
 msgid "Merge Reintegrate"
 msgstr "Tái tích hợp cho hợp nhật"
 
+#. Resource IDs: (90)
+msgid ""
+"Merge between original branch, working tree contents, and the branch to "
+"switch to"
+msgstr ""
+
 #. Resource IDs: (1432)
 msgid "Merge non-interactive"
 msgstr "Hợp nhất không tương tác"
@@ -5924,6 +6088,10 @@ msgstr "Của tôi"
 #. Resource IDs: (1068)
 msgid "Minimize the Ribbon"
 msgstr "Thu nhỏ Ribbon"
+
+#. Resource IDs: (65535)
+msgid "Minimum number of chars for a commit message:"
+msgstr ""
 
 #. Resource IDs: (1023, 65535)
 msgid "Misc"
@@ -6014,14 +6182,6 @@ msgstr "Chuyển/Đổi tên"
 msgid "Move: New name for %s"
 msgstr "Chuyển: Tên mới cho %s"
 
-#. Resource IDs: (65535)
-msgid "Moved from"
-msgstr "Được chuyển từ"
-
-#. Resource IDs: (65535)
-msgid "Moved to"
-msgstr "Được chuyển đến"
-
 #. Resource IDs: (197)
 msgid "Moves the modified files to the recycle bin first before reverting"
 msgstr "Chuyển các tập tin bị thay đổi sang thùng rác trước khi thực hiện phục hồi quay lui"
@@ -6034,10 +6194,6 @@ msgstr "Đang chuyển %s"
 #. Resource IDs: (80)
 msgid "Moving..."
 msgstr "Đang chuyển..."
-
-#. Resource IDs: (79)
-msgid "MsysGit Install Path"
-msgstr "Đường dẫn cài đặt MsysGit"
 
 #. Resource IDs: (65535)
 msgid "My file:"
@@ -6146,6 +6302,10 @@ msgstr "Không"
 
 #. Resource IDs: (1481)
 msgid "No &Fast Forward"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "No &merges"
 msgstr ""
 
 #. Resource IDs: (1716)
@@ -6767,6 +6927,10 @@ msgstr ""
 msgid "Pick commit hash"
 msgstr ""
 
+#. Resource IDs: (90)
+msgid "Pick commit message"
+msgstr ""
+
 #. Resource IDs: (69)
 #, c-format
 msgid "Pick up %s"
@@ -6963,6 +7127,10 @@ msgstr "Chương trình (*.exe)|*.exe|All Files (*.*)|*.*||"
 msgid "Progress"
 msgstr "Tiến triển"
 
+#. Resource IDs: (91, 1772)
+msgid "Project"
+msgstr ""
+
 #. Resource IDs: (11)
 msgid "Property"
 msgstr "Thuộc tính"
@@ -7057,6 +7225,10 @@ msgid ""
 "Exit TortoiseGitMerge without saving the modifications"
 msgstr ""
 
+#. Resource IDs: (1633)
+msgid "QuotePath"
+msgstr ""
+
 #. Resource IDs: (1073)
 msgid "R&AM drives"
 msgstr "Ổ đĩa R&AM"
@@ -7071,6 +7243,16 @@ msgstr "&Quay lui tới bản chỉnh sửa này"
 
 #. Resource IDs: (1255)
 msgid "REBASE"
+msgstr ""
+
+#. Resource IDs: (1769)
+msgid "Randomize Sync Dialog startup position"
+msgstr ""
+
+#. Resource IDs: (91)
+msgid ""
+"Randomize the startup position of Sync Dialog. This prevents from pressing "
+"the Pull button of same dialog"
 msgstr ""
 
 #. Resource IDs: (1535)
@@ -7713,7 +7895,7 @@ msgid "SVN Fetch"
 msgstr ""
 
 #. Resource IDs: (21)
-msgid "SVN Rebase..."
+msgid "SVN Rebase"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7788,10 +7970,6 @@ msgstr ""
 msgid "Save as"
 msgstr "Lưu dưới dạng"
 
-#. Resource IDs: (1567)
-msgid "Save as &Global"
-msgstr ""
-
 #. Resource IDs: (313)
 msgid "Save as..."
 msgstr "Lưu như là..."
@@ -7836,6 +8014,10 @@ msgstr "Lưu tập tin được sửa đổi\nLưu tập tin"
 #. Resource IDs: (1132)
 msgid "Save to clipboard"
 msgstr "Lưu vào clipboard"
+
+#. Resource IDs: (65535)
+msgid "Save to:"
+msgstr ""
 
 #. Resource IDs: (1385)
 msgid "Save unified diff"
@@ -7900,6 +8082,10 @@ msgstr "Tìm đường dẫn tốt hơn để áp dụng bản vá..."
 #, c-format
 msgid "Seek failed on %1"
 msgstr "Việc tìm bị thất bại %1"
+
+#. Resource IDs: (8)
+msgid "Select"
+msgstr ""
 
 #. Resource IDs: (1253)
 msgid "Select &All"
@@ -7999,6 +8185,12 @@ msgid ""
 "Select the entire document\n"
 "Select All"
 msgstr "Chọn toàn bộ tài liệu\nChọn tất cả"
+
+#. Resource IDs: (65535)
+msgid ""
+"Select the language this project is using. This settings affects the spell "
+"checker used for commit messages."
+msgstr ""
 
 #. Resource IDs: (78)
 msgid "Select viewer for diff-files"
@@ -8259,6 +8451,10 @@ msgstr "&Hiển thị đầy đủ thực đơn sau một khoảng chờ ngắn"
 msgid "Show i&gnored files"
 msgstr "Hiển thị c&ác tập tin bị bỏ qua"
 
+#. Resource IDs: (92)
+msgid "Show la&beled commits only"
+msgstr ""
+
 #. Resource IDs: (1063)
 msgid "Show linenumber&s"
 msgstr "Hiển thị số thứ tự &dòng"
@@ -8354,10 +8550,6 @@ msgstr "Hiển thị ký tự đặc biệt cho các khoảng trắng và dòng 
 
 #. Resource IDs: (87)
 msgid "Show symbols on ref labels to substitute part of the ref names"
-msgstr ""
-
-#. Resource IDs: (1730)
-msgid "Show ta&gs"
 msgstr ""
 
 #. Resource IDs: (1209)
@@ -8633,12 +8825,16 @@ msgstr ""
 msgid "Submodule"
 msgstr ""
 
-#. Resource IDs: (8, 11)
-msgid "Submodule &Update"
+#. Resource IDs: (11)
+msgid "Submodule &Update..."
 msgstr ""
 
-#. Resource IDs: (20, 1589)
+#. Resource IDs: (1589)
 msgid "Submodule Add"
+msgstr ""
+
+#. Resource IDs: (20)
+msgid "Submodule Add..."
 msgstr ""
 
 #. Resource IDs: (4576)
@@ -8663,6 +8859,13 @@ msgstr ""
 
 #. Resource IDs: (1624)
 msgid "Submodule Update Options"
+msgstr ""
+
+#. Resource IDs: (90)
+#, c-format
+msgid ""
+"Submodule \"%1!s!\"\r\n"
+"Revision %2!s!"
 msgstr ""
 
 #. Resource IDs: (1708)
@@ -9116,6 +9319,12 @@ msgid ""
 "matches it better. Do you want to use the suggested path instead?"
 msgstr ""
 
+#. Resource IDs: (91)
+msgid ""
+"The process is still running.\n"
+"Are you sure to abort?"
+msgstr ""
+
 #. Resource IDs: (71)
 #, c-format
 msgid ""
@@ -9542,15 +9751,15 @@ msgstr "URL:"
 
 #. Resource IDs: (5071)
 msgid "UTF-16 BE"
-msgstr ""
+msgstr "UTF-16 BE"
 
 #. Resource IDs: (5070)
 msgid "UTF-16 LE"
-msgstr ""
+msgstr "UTF-16 LE"
 
 #. Resource IDs: (5069)
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #. Resource IDs: (3866)
 msgid "Unable to load mail system support."
@@ -10043,6 +10252,10 @@ msgstr "Chờ cho kịch bản hoàn tất"
 msgid "Waiting for input"
 msgstr ""
 
+#. Resource IDs: (1776)
+msgid "Walk Be&haviour"
+msgstr ""
+
 #. Resource IDs: (88)
 msgid "Warning"
 msgstr "Cảnh báo"
@@ -10079,6 +10292,12 @@ msgid ""
 "necessary"
 msgstr ""
 
+#. Resource IDs: (91)
+msgid ""
+"When closing a progress dialog with a running git process, ask for "
+"confirmation before killing it"
+msgstr ""
+
 #. Resource IDs: (197)
 msgid ""
 "When enabled, the versioned items listed in the commit dialog are "
@@ -10097,6 +10316,12 @@ msgid ""
 "When the patch does not apply cleanly, fall back on 3-way merge if the patch"
 " records the identity of blobs it is supposed to apply to and we have those "
 "blobs available locally."
+msgstr ""
+
+#. Resource IDs: (92)
+msgid ""
+"When you type the URL, the remote name will be automatically filled with "
+"\"origin\" if the remote name is empty, so you do not have to."
 msgstr ""
 
 #. Resource IDs: (1409)
@@ -10228,7 +10453,7 @@ msgstr ""
 
 #. Resource IDs: (84)
 msgid ""
-"You have an old version of msysGit (http://code.google.com/p/msysgit/) installed.\n"
+"You have an old version of Git for Windows (http://code.google.com/p/msysgit/) installed.\n"
 "\n"
 "You should consider an upgrade to 1.7.10+ which supports UTF-8 and is compatible to the *nix version of git."
 msgstr ""
@@ -10525,10 +10750,6 @@ msgstr "đã xuất\n%s\nsang\n%s"
 msgid "external"
 msgstr "bên ngoài"
 
-#. Resource IDs: (1594, 1596, 1598)
-msgid "false"
-msgstr ""
-
 #. Resource IDs: (66)
 #, c-format
 msgid "git did not exit cleanly (exit code %d)"
@@ -10546,28 +10767,36 @@ msgstr ""
 msgid "incomplete"
 msgstr "chưa hoàn chỉnh"
 
+#. Resource IDs: (1780, 1781, 1782, 1783)
+msgid "inherit"
+msgstr ""
+
 #. Resource IDs: (214)
 msgid "item kept locally"
 msgstr "món được giữ một cách địa phương"
 
-#. Resource IDs: (69)
-#, c-format
-msgid ""
-"line: %d(+) %d(-) files: %s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d"
+#. Resource IDs: (65535)
+msgid "keep the file lists in English"
 msgstr ""
 
 #. Resource IDs: (69)
 #, c-format
 msgid ""
-"line: %d(+) %d(-) files: %s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d\n"
-"%s = %d"
+"line: %d(+) %d(-) files: %s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld"
+msgstr ""
+
+#. Resource IDs: (69)
+#, c-format
+msgid ""
+"line: %d(+) %d(-) files: %s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld\n"
+"%s = %ld"
 msgstr ""
 
 #. Resource IDs: (1494)
@@ -10684,10 +10913,6 @@ msgstr "sang %1"
 msgid "to %s"
 msgstr "sang %s"
 
-#. Resource IDs: (1593, 1597, 1601)
-msgid "true"
-msgstr ""
-
 #. Resource IDs: (245)
 msgid "week"
 msgstr "tuần"
@@ -10723,3 +10948,7 @@ msgstr "vâng"
 #. Resource IDs: (1382)
 msgid "{BugTraq}"
 msgstr "{BugTraq}"
+
+#. Resource IDs: (65535)
+msgid "|"
+msgstr "|"
