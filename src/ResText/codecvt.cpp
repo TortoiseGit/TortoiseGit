@@ -1,4 +1,5 @@
 #include "codecvt.h"
+#include <algorithm>
 
 ucs2_conversion::result
 ucs2_conversion::do_in(mbstate_t&,
