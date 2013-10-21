@@ -1,4 +1,10 @@
-﻿= Release 1.8.6.0 =
+﻿= Release 1.8.7.0 =
+Released: Unreleased
+
+== Bug Fixes ==
+ * Fixed issue #1947: When editing git notes, spurious reformatting is done
+
+= Release 1.8.6.0 =
 Released: 2013-10-20
 
 == Features ==

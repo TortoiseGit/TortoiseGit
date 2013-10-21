@@ -660,7 +660,7 @@ int git_get_notes(GIT_HASH hash, char **p_note)
 	struct strbuf sb;
 	size_t size;
 	strbuf_init(&sb,0);
-	format_display_notes(hash, &sb, "utf-8", 0);
+	format_display_notes(hash, &sb, "utf-8", 1);
 	*p_note = strbuf_detach(&sb,&size);
 
 	return 0;
