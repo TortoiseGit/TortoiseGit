@@ -32,7 +32,6 @@
 #include "UnicodeUtils.h"
 
 typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
-CGitHashMap a;
 
 void CLogDataVector::ClearAll()
 {
