@@ -1256,9 +1256,56 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	return FALSE;
 }
 
-bool CAppUtils::OpenIgnoreFile(CStdioFile &file, const CString& filename)
+class CIgnoreFile : public CStdioFile
 {
-	if (!file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate))
+public:
+	STRING_VECTOR m_Items;
+	CString m_eol;
+
+	virtual BOOL ReadString(CString& rString)
+	{
+		if (GetPosition() == 0)
+		{
+			unsigned char utf8bom[] = { 0xEF, 0xBB, 0xBF };
+			char buf[3] = { 0, 0, 0 };
+			Read(buf, 3);
+			if (memcpy(buf, utf8bom, sizeof(utf8bom)))
+			{
+				SeekToBegin();
+			}
+		}
+
+		CStringA strA;
+		char lastChar = '\0';
+		for (char c = '\0'; Read(&c, 1) == 1; lastChar = c)
+		{
+			if (c == '\r')
+				continue;
+			if (c == '\n')
+			{
+				m_eol = lastChar == '\r' ? _T("\r\n") : _T("\n");
+				break;
+			}
+			strA.AppendChar(c);
+		}
+		if (strA.IsEmpty())
+			return FALSE;
+
+		rString = CUnicodeUtils::GetUnicode(strA);
+		return TRUE;
+	}
+
+	void ResetState()
+	{
+		m_Items.clear();
+		m_eol = _T("");
+	}
+};
+
+bool CAppUtils::OpenIgnoreFile(CIgnoreFile &file, const CString& filename)
+{
+	file.ResetState();
+	if (!file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate | CFile::typeBinary))
 	{
 		CMessageBox::Show(NULL, filename + _T(" Open Failure"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return false;
@@ -1266,12 +1313,19 @@ bool CAppUtils::OpenIgnoreFile(CStdioFile &file, const CString& filename)
 
 	if (file.GetLength() > 0)
 	{
+		CString fileText;
+		while (file.ReadString(fileText))
+			file.m_Items.push_back(fileText);
 		file.Seek(file.GetLength() - 1, 0);
-		std::unique_ptr<TCHAR[]> buf(new TCHAR[1]);
-		file.Read(buf.get(), 1);
+		char lastchar[1];
+		file.Read(lastchar, 1);
 		file.SeekToEnd();
-		if (buf.get()[0] != _T('\n'))
-			file.WriteString(_T("\n"));
+		if (lastchar[0] != '\n')
+		{
+			CStringA eol = CStringA(file.m_eol.IsEmpty() ? _T("\n") : file.m_eol);
+			file.Write(eol.GetBuffer(), eol.GetLength());
+			eol.ReleaseBuffer();
+		}
 	}
 	else
 		file.SeekToEnd();
@@ -1298,7 +1352,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				break;
 		}
 
-		CStdioFile file;
+		CIgnoreFile file;
 		try
 		{
 			if (ignoreDlg.m_IgnoreFile != 1 && !OpenIgnoreFile(file, ignorefile))
@@ -1334,10 +1388,23 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				ignorePattern.Replace(_T("["), _T("\\["));
 				ignorePattern.Replace(_T("]"), _T("\\]"));
 
-				ignorePattern += _T("\n");
-				CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
-				file.Write(ignorePatternA.GetBuffer(), ignorePatternA.GetLength());
-				ignorePatternA.ReleaseBuffer();
+				bool found = false;
+				for (int j = 0; j < file.m_Items.size(); ++j)
+				{
+					if (file.m_Items[j] == ignorePattern)
+					{
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					file.m_Items.push_back(ignorePattern);
+					ignorePattern += file.m_eol.IsEmpty() ? _T("\n") : file.m_eol;
+					CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
+					file.Write(ignorePatternA.GetBuffer(), ignorePatternA.GetLength());
+					ignorePatternA.ReleaseBuffer();
+				}
 
 				if (ignoreDlg.m_IgnoreFile == 1)
 					file.Close();
