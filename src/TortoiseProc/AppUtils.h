@@ -25,6 +25,7 @@
 class CTGitPath;
 struct git_cred;
 struct git_transfer_progress;
+class CIgnoreFile;
 
 enum GIT_POST_CMD
 {
@@ -222,7 +223,7 @@ private:
 	static CString PickDiffTool(const CTGitPath& file1, const CTGitPath& file2);
 	static bool GetMimeType(const CTGitPath& file, CString& mimetype);
 
-	static bool OpenIgnoreFile(CStdioFile &file, const CString& filename);
+	static bool OpenIgnoreFile(CIgnoreFile &file, const CString& filename);
 
 	static void DescribeFile(bool mode, bool base,CString &descript);
 };

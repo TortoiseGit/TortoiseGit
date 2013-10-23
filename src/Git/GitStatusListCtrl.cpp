@@ -1769,6 +1769,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								temp.Format(IDS_MENUIGNOREMULTIPLE, ignorelist.GetCount());
 							}
 							popup.AppendMenuIcon(IDGITLC_IGNORE, temp, IDI_IGNORE);
+							temp.Format(IDS_MENUIGNOREMULTIPLEMASK, ignorelist.GetCount());
+							popup.AppendMenuIcon(IDGITLC_IGNOREMASK, temp, IDI_IGNORE);
 						}
 					}
 				}

@@ -1,6 +1,9 @@
 ﻿= Release 1.8.7.0 =
 Released: Unreleased
 
+== Features ==
+ * Fixed issue #1943: Add "Ignore N items by extension" in Commit dialog
+
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
 
