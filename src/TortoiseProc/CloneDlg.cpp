@@ -152,7 +152,7 @@ BOOL CCloneDlg::OnInitDialog()
 	}
 	UpdateData(FALSE);
 
-    m_URLCombo.SetCaseSensitive(TRUE);
+	m_URLCombo.SetCaseSensitive(TRUE);
 	m_URLCombo.SetURLHistory(TRUE);
 	m_URLCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\repoURLS"), _T("url"));
 	if(m_URL.IsEmpty())

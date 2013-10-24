@@ -927,7 +927,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("SyncDlg"));
 
-    m_ctrlURL.SetCaseSensitive(TRUE);
+	m_ctrlURL.SetCaseSensitive(TRUE);
 	this->m_ctrlURL.LoadHistory(CString(_T("Software\\TortoiseGit\\History\\SyncURL\\"))+WorkingDir, _T("url"));
 
 	STRING_VECTOR list;

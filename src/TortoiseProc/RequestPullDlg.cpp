@@ -95,7 +95,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 
 	// store URLs in global history, but save last used local url separately,
 	// because one normally has only one writable repository
-    m_cRepositoryURL.SetCaseSensitive(TRUE);
+	m_cRepositoryURL.SetCaseSensitive(TRUE);
 	m_cRepositoryURL.SetURLHistory(TRUE);
 	m_cRepositoryURL.LoadHistory(_T("Software\\TortoiseGit\\History\\RequestPull"), _T("url"));
 	m_RegRepositoryURL = CRegString(_T("Software\\TortoiseGit\\History\\RequestPull\\")+WorkingDir+_T("\\repositoryurl"));

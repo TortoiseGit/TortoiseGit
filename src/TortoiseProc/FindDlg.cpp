@@ -117,7 +117,7 @@ BOOL CFindDlg::OnInitDialog()
 	m_bWholeWord = (BOOL)(DWORD)m_regWholeWord;
 	UpdateData(FALSE);
 
-    m_FindCombo.SetCaseSensitive(TRUE);
+	m_FindCombo.SetCaseSensitive(TRUE);
 	m_FindCombo.LoadHistory(_T("Software\\TortoiseGit\\History\\Find"), _T("Search"));
 	m_FindCombo.SetCurSel(0);
 	m_FindCombo.SetFocus();
