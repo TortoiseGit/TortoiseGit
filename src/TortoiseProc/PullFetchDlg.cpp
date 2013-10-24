@@ -172,6 +172,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 	if (g_GitAdminDir.IsBareRepo(g_Git.m_CurrentDir))
 		this->GetDlgItem(IDC_CHECK_REBASE)->EnableWindow(FALSE);
 
+    m_Other.SetCaseSensitive(TRUE);
 	m_Other.SetURLHistory(TRUE);
 	m_Other.LoadHistory(_T("Software\\TortoiseGit\\History\\PullURLS"), _T("url"));
 

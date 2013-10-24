@@ -152,6 +152,7 @@ BOOL CPushDlg::OnInitDialog()
 
 	EnableSaveRestore(_T("PushDlg"));
 
+    m_RemoteURL.SetCaseSensitive(TRUE);
 	m_RemoteURL.SetURLHistory(TRUE);
 
 	CString WorkingDir=g_Git.m_CurrentDir;
