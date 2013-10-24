@@ -131,6 +131,8 @@ public:
 	 */
 	void DisableTrimming() { m_bTrim = false; }
 
+	void SetCaseSensitive(BOOL bCaseSensitive) { m_bCaseSensitive = bCaseSensitive; }
+
 	int FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind);
 
 protected:
@@ -157,4 +159,5 @@ protected:
 	BOOL			m_ttShown;
 	BOOL			m_bDyn;
 	BOOL			m_bTrim;
+	BOOL			m_bCaseSensitive;
 };

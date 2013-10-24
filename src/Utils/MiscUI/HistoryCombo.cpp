@@ -37,6 +37,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	m_bDyn = FALSE;
 	m_bWantReturn = FALSE;
 	m_bTrim = TRUE;
+    m_bCaseSensitive = FALSE;
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
 
@@ -119,7 +120,7 @@ int CHistoryCombo::AddString(CString str, INT_PTR pos,BOOL isSel)
 
 	//search the Combo for another string like this
 	//and do not insert if found
-	int nIndex = FindStringExactCaseSensitive(-1, combostring);
+	int nIndex = m_bCaseSensitive ? FindStringExactCaseSensitive(-1, combostring) : FindStringExact(-1, combostring);
 	if (nIndex != -1)
 	{
 		if (nIndex > pos)
