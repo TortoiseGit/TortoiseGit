@@ -265,7 +265,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,41,200,10
     CONTROL         "&Whole word",IDC_WHOLEWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,56,200,10
     DEFPUSHBUTTON   "&Find",IDOK,248,7,56,14,WS_DISABLED
-    PUSHBUTTON      "Cancel",IDCANCEL,248,28,56,14
+    PUSHBUTTON      "Coun&t",IDC_COUNT,248,28,56,14
+    PUSHBUTTON      "Cancel",IDCANCEL,248,52,56,14
 END
 
 IDD_ENCODING DIALOGEX 0, 0, 229, 92
@@ -636,6 +637,7 @@ BEGIN
                             "TortoiseGitMerge cannot process this patch file. The filename ""%s"" appears more than once."
     IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 
                             "The patch does not apply cleanly to %s and no version information is given.\nPatching is not possible!"
+    IDS_FIND_COUNT          "Count: %d matches."
 END
 
 STRINGTABLE

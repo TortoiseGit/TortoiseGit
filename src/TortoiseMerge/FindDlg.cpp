@@ -56,6 +56,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CFindDlg, CDialog)
 	ON_CBN_EDITCHANGE(IDC_FINDCOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
+	ON_BN_CLICKED(IDC_COUNT, &CFindDlg::OnBnClickedCount)
 END_MESSAGE_MAP()
 
 
@@ -118,4 +119,22 @@ void CFindDlg::OnCbnEditchangeFindcombo()
 {
 	UpdateData();
 	GetDlgItem(IDOK)->EnableWindow(!m_FindCombo.GetString().IsEmpty());
+}
+
+void CFindDlg::OnBnClickedCount()
+{
+	UpdateData();
+	m_FindCombo.SaveHistory();
+	m_regMatchCase = m_bMatchCase;
+	m_regLimitToDiffs = m_bLimitToDiffs;
+	m_regWholeWord = m_bWholeWord;
+
+	if (m_FindCombo.GetString().IsEmpty())
+		return;
+	m_bFindNext = true;
+	if (m_pParent)
+		m_pParent->SendMessage(m_FindMsg, FindType::Count);
+	else if (GetParent())
+		GetParent()->SendMessage(m_FindMsg, FindType::Count);
+	m_bFindNext = false;
 }

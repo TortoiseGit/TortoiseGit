@@ -1710,6 +1710,8 @@ void CBaseView::DrawTextLine(
 			}
 			searchLine = searchLine.Mid(nMarkEnd);
 			nStringPos = nMarkEnd;
+			nMarkStart = 0;
+			nMarkEnd = 0;
 		}
 	}
 
@@ -4345,7 +4347,16 @@ void CBaseView::BuildFindStringArray()
 					{
 						if (!m_bMatchCase)
 							line = line.MakeLower();
-						m_arFindStringLines.push_back(StringFound(line, SearchNext, s, e));
+						s = 0;
+						e = 0;
+						int match = 0;
+						while (StringFound(line, SearchNext, s, e))
+						{
+							match++;
+							s = e;
+							e = 0;
+						}
+						m_arFindStringLines.push_back(match);
 						break;
 					}
 				default:
@@ -5077,7 +5088,7 @@ void CBaseView::OnEditFind()
 	m_pFindDialog->SetFindString(HasTextSelection() ? GetSelectedText() : L"");
 }
 
-LRESULT CBaseView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
+LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 {
 	ASSERT(m_pFindDialog != NULL);
 
@@ -5100,7 +5111,19 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			m_sFindText = m_sFindText.MakeLower();
 
 		BuildFindStringArray();
-		OnEditFindnext();
+		if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Find)
+			OnEditFindnext();
+		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Count)
+		{
+			int count = 0;
+			for (int i = 0; i < m_arFindStringLines.size(); ++i)
+				count += m_arFindStringLines[i];
+			CString format;
+			format.LoadString(IDS_FIND_COUNT);
+			CString matches;
+			matches.Format(format, count);
+			::MessageBox(m_hWnd, matches, _T("TortoiseGitMerge"), MB_ICONINFORMATION);
+		}
 	}
 
 	return 0;
@@ -5152,7 +5175,7 @@ void CBaseView::OnEditFindprevStart()
 
 bool CBaseView::StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const
 {
-	start = str.Find(m_sFindText);
+	start = str.Find(m_sFindText, start);
 	if ((srchDir==SearchPrevious)&&(start>=0))
 	{
 		int laststart = start;
@@ -5277,8 +5300,8 @@ void CBaseView::Search(SearchDirection srchDir)
 					sSelectedText = srchDir==SearchNext ? sSelectedText.Mid(start.x) : sSelectedText.Left(start.x);
 				if (!m_bMatchCase)
 					sSelectedText = sSelectedText.MakeLower();
-				int startfound = -1;
-				int endfound = -1;
+				int startfound = 0;
+				int endfound = 0;
 				if (StringFound(sSelectedText, srchDir, startfound, endfound))
 				{
 					HighlightViewLines(nViewLine, nViewLine);

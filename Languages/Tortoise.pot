@@ -3063,6 +3063,15 @@ msgstr ""
 msgid "Could not start thread!"
 msgstr ""
 
+#. Resource IDs: (1501)
+msgid "Coun&t"
+msgstr ""
+
+#. Resource IDs: (94)
+#, c-format
+msgid "Count: %d matches."
+msgstr ""
+
 #. Resource IDs: (1683)
 msgid "Create &Library"
 msgstr ""
