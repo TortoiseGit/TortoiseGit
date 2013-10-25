@@ -4317,6 +4317,19 @@ msgstr ""
 msgid "Find the specified text\nFind"
 msgstr ""
 
+#. Resource IDs: (95)
+#, c-format
+msgid "Find: Can't find the text \"%s\""
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Find: First occurrence from the bottom found. Beginning of document reached."
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Find: First occurrence from the top found. End of document reached."
+msgstr ""
+
 #. Resource IDs: (67)
 msgid "Finish"
 msgstr ""

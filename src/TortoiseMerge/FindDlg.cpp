@@ -34,6 +34,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
 	, m_FindMsg(0)
+	, m_clrFindStatus(RGB(0, 0, 255))
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
 	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
@@ -51,12 +52,14 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_LIMITTODIFFS, m_bLimitToDiffs);
 	DDX_Check(pDX, IDC_WHOLEWORD, m_bWholeWord);
 	DDX_Control(pDX, IDC_FINDCOMBO, m_FindCombo);
+	DDX_Control(pDX, IDC_FINDSTATUS, m_FindStatus);
 }
 
 
 BEGIN_MESSAGE_MAP(CFindDlg, CDialog)
 	ON_CBN_EDITCHANGE(IDC_FINDCOMBO, &CFindDlg::OnCbnEditchangeFindcombo)
 	ON_BN_CLICKED(IDC_COUNT, &CFindDlg::OnBnClickedCount)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -65,6 +68,7 @@ END_MESSAGE_MAP()
 void CFindDlg::OnCancel()
 {
 	m_bTerminating = true;
+	SetStatusText(_T(""));
 	if (m_pParent)
 		m_pParent->SendMessage(m_FindMsg);
 	else if (GetParent())
@@ -80,6 +84,7 @@ void CFindDlg::PostNcDestroy()
 void CFindDlg::OnOK()
 {
 	UpdateData();
+	SetStatusText(_T(""));
 	m_FindCombo.SaveHistory();
 	m_regMatchCase = m_bMatchCase;
 	m_regLimitToDiffs = m_bLimitToDiffs;
@@ -124,6 +129,7 @@ void CFindDlg::OnCbnEditchangeFindcombo()
 void CFindDlg::OnBnClickedCount()
 {
 	UpdateData();
+	SetStatusText(_T(""));
 	m_FindCombo.SaveHistory();
 	m_regMatchCase = m_bMatchCase;
 	m_regLimitToDiffs = m_bLimitToDiffs;
@@ -137,4 +143,25 @@ void CFindDlg::OnBnClickedCount()
 	else if (GetParent())
 		GetParent()->SendMessage(m_FindMsg, FindType::Count);
 	m_bFindNext = false;
+}
+
+HBRUSH CFindDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
+{
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_STATIC:
+		if (pWnd == &m_FindStatus)
+		{
+			pDC->SetTextColor(m_clrFindStatus);
+			return (HBRUSH)GetStockObject(WHITE_BRUSH);
+		}
+	default:
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	}
+}
+
+void CFindDlg::SetStatusText(const CString& str, COLORREF color)
+{
+	m_clrFindStatus = color;
+	m_FindStatus.SetWindowText(str);
 }

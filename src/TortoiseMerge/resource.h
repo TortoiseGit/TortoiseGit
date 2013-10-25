@@ -188,6 +188,10 @@
 #define IDC_USETASKDIALOG               1500
 #define IDC_COUNT                       1501
 #define IDS_FIND_COUNT                  1502
+#define IDC_FINDSTATUS                  1503
+#define IDS_FIND_NOTFOUND               1504
+#define IDS_FIND_BOTTOMREACHED          1505
+#define IDS_FIND_TOPREACHED             1506
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_SETTINGSTITLE               1702
@@ -413,7 +417,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
 #define _APS_NEXT_COMMAND_VALUE         32979
-#define _APS_NEXT_CONTROL_VALUE         1503
+#define _APS_NEXT_CONTROL_VALUE         1504
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

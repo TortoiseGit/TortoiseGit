@@ -253,20 +253,21 @@ BEGIN
     PUSHBUTTON      "Open from clipboard",IDC_PATCH_TO_CLIPBOARD,7,7,108,14
 END
 
-IDD_FIND DIALOGEX 0, 0, 311, 73
+IDD_FIND DIALOGEX 0, 0, 311, 98
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Find"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "Search for:",IDC_STATIC,7,10,79,8
     CONTROL         "",IDC_FINDCOMBO,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP,90,7,154,95
-    CONTROL         "Match &case",IDC_MATCHCASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,26,200,10
+    CONTROL         "Match &case",IDC_MATCHCASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,26,102,10
     CONTROL         "&Limit search to modified lines",IDC_LIMITTODIFFS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,41,200,10
-    CONTROL         "&Whole word",IDC_WHOLEWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,56,200,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,41,169,10
+    CONTROL         "&Whole word",IDC_WHOLEWORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,137,25,98,10
     DEFPUSHBUTTON   "&Find",IDOK,248,7,56,14,WS_DISABLED
     PUSHBUTTON      "Coun&t",IDC_COUNT,248,28,56,14
     PUSHBUTTON      "Cancel",IDCANCEL,248,52,56,14
+    LTEXT           "",IDC_FINDSTATUS,7,88,297,8
 END
 
 IDD_ENCODING DIALOGEX 0, 0, 229, 92
@@ -288,10 +289,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Go To Line"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-   DEFPUSHBUTTON   "OK",IDOK,59,48,50,14
-   PUSHBUTTON      "Cancel",IDCANCEL,118,48,50,14
-   LTEXT           "&Line number",IDC_LINELABEL,7,7,161,8
-   EDITTEXT        IDC_NUMBER,7,20,161,14,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,59,48,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,118,48,50,14
+    LTEXT           "&Line number",IDC_LINELABEL,7,7,161,8
+    EDITTEXT        IDC_NUMBER,7,20,161,14,ES_AUTOHSCROLL | ES_NUMBER
 END
 
 
@@ -362,7 +363,7 @@ BEGIN
         VERTGUIDE, 244
         VERTGUIDE, 248
         TOPMARGIN, 7
-        BOTTOMMARGIN, 66
+        BOTTOMMARGIN, 96
     END
 
     IDD_ENCODING, DIALOG
@@ -637,7 +638,14 @@ BEGIN
                             "TortoiseGitMerge cannot process this patch file. The filename ""%s"" appears more than once."
     IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION 
                             "The patch does not apply cleanly to %s and no version information is given.\nPatching is not possible!"
+END
+
+STRINGTABLE
+BEGIN
     IDS_FIND_COUNT          "Count: %d matches."
+    IDS_FIND_NOTFOUND       "Find: Can't find the text ""%s"""
+    IDS_FIND_BOTTOMREACHED  "Find: First occurrence from the top found. End of document reached."
+    IDS_FIND_TOPREACHED     "Find: First occurrence from the bottom found. Beginning of document reached."
 END
 
 STRINGTABLE

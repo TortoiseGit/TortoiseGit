@@ -5122,7 +5122,7 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 			format.LoadString(IDS_FIND_COUNT);
 			CString matches;
 			matches.Format(format, count);
-			::MessageBox(m_hWnd, matches, _T("TortoiseGitMerge"), MB_ICONINFORMATION);
+			m_pFindDialog->SetStatusText(matches);
 		}
 	}
 
@@ -5251,18 +5251,26 @@ void CBaseView::Search(SearchDirection srchDir)
 		{
 			nViewLine = m_pViewData->GetCount()-1;
 			startline = start.y;
+			if (m_pFindDialog)
+				m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_TOPREACHED)), RGB(63, 127, 47));
 			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
 		}
 		if (nViewLine > end.y)
 		{
 			nViewLine = 0;
 			startline = start.y;
+			if (m_pFindDialog)
+				m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_BOTTOMREACHED)), RGB(63, 127, 47));
 			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
 		}
 		if (startline >= 0)
 		{
 			if (nViewLine == startline)
 			{
+				CString message;
+				message.Format(IDS_FIND_NOTFOUND, m_sFindText);
+				if (m_pFindDialog)
+					m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
 				::MessageBeep(0xFFFFFFFF);
 				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
 				break;
