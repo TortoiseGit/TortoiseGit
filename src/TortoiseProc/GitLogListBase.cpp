@@ -1262,7 +1262,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 									{
 										bool found = false;
-										for (int j = i + 1; j < refList.size(); ++j)
+										for (size_t j = i + 1; j < refList.size(); ++j)
 										{
 											if (refList[j] == defaultUpstream)
 											{
@@ -1301,7 +1301,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 									continue;
 
 								bool found = false;
-								for (int j = 0; j < remoteTrackingList.size(); ++j)
+								for (size_t j = 0; j < remoteTrackingList.size(); ++j)
 								{
 									if (remoteTrackingList[j] == str)
 									{
@@ -2843,7 +2843,7 @@ void CGitLogListBase::FetchTrackingBranchList()
 	m_TrackingMap.clear();
 	for (MAP_HASH_NAME::iterator it = m_HashMap.begin(); it != m_HashMap.end(); ++it)
 	{
-		for (int j = 0; j < it->second.size(); ++j)
+		for (size_t j = 0; j < it->second.size(); ++j)
 		{
 			CString branchName;
 			if (CGit::GetShortName(it->second[j], branchName, _T("refs/heads/")))

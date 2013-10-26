@@ -117,7 +117,7 @@ void ColumnManager::ReadSettings
 
 	columns.resize (maxsize);
 	int power = 1;
-	for (size_t i = 0; i < maxsize; ++i)
+	for (int i = 0; i < maxsize; ++i)
 	{
 		columns[i].index = static_cast<int>(i);
 		if(widthlist==NULL)
@@ -435,7 +435,7 @@ void ColumnManager::ParseWidths (const CString& widths)
 	for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
 	{
 		long width = _tcstol (widths.Mid (i*8, 8), NULL, 16);
-		if (i < itemName.size())
+		if (i < (int)itemName.size())
 		{
 			// a standard column
 
@@ -471,7 +471,7 @@ void ColumnManager::ParseColumnOrder
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
 		int index = _tcstol (widths.Mid (i*2, 2), NULL, 16);
-		if ((index < itemName.size()))
+		if ((index < (int)itemName.size()))
 		{
 			alreadyPlaced.insert (index);
 			columnOrder.push_back (index);
@@ -480,7 +480,7 @@ void ColumnManager::ParseColumnOrder
 
 	// place the remaining colums behind it
 
-	for (int i = 0; i < itemName.size(); ++i)
+	for (int i = 0; i < (int)itemName.size(); ++i)
 		if (alreadyPlaced.find (i) == alreadyPlaced.end())
 			columnOrder.push_back (i);
 }

@@ -226,7 +226,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if ((phdr->iItem < 0)||(phdr->iItem >= itemName.size()))
+		if ((phdr->iItem < 0)||(phdr->iItem >= (int)itemName.size()))
 			return;
 
 		if (IsVisible (phdr->iItem))
@@ -240,7 +240,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if ((phdr->iItem < 0)||(phdr->iItem >= itemName.size()))
+		if ((phdr->iItem < 0)||(phdr->iItem >= (int)itemName.size()))
 		{
 			return 0;
 		}
@@ -357,7 +357,7 @@ public:
 		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
 		UINT uUnCheckedFlags = MF_STRING | MF_ENABLED;
 
-		for (int i = 1; i < itemName.size(); ++i)
+		for (int i = 1; i < (int)itemName.size(); ++i)
 		{
 			if(IsRelevant(i))
 				pop->AppendMenu ( IsVisible(i)
