@@ -192,6 +192,10 @@
 #define IDS_FIND_NOTFOUND               1504
 #define IDS_FIND_BOTTOMREACHED          1505
 #define IDS_FIND_TOPREACHED             1506
+#define IDS_TEXTIDENTICAL_MAIN          1600
+#define IDS_TEXTIDENTICAL_WHITESPACE    1601
+#define IDS_TEXTIDENTICAL_ENCODING      1602
+#define IDS_TEXTIDENTICAL_EOL           1603
 #define IDS_ABOUTVERSION                1700
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDS_SETTINGSTITLE               1702

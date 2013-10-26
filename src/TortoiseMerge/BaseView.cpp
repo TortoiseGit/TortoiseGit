@@ -5391,6 +5391,45 @@ CString CBaseView::GetSelectedText() const
 	return sSelectedText;
 }
 
+void CBaseView::CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasWhitespaceMods)
+{
+	hasMods				= false;
+	hasConflicts		= false;
+	hasWhitespaceMods	= false;
+
+	if (m_pViewData)
+	{
+		for (int i=0; i<m_pViewData->GetCount(); i++)
+		{
+			DiffStates state = m_pViewData->GetState(i);
+			switch (state)
+			{
+			case DIFFSTATE_ADDED:
+			case DIFFSTATE_IDENTICALADDED:
+			case DIFFSTATE_THEIRSADDED:
+			case DIFFSTATE_YOURSADDED:
+			case DIFFSTATE_CONFLICTADDED:
+			case DIFFSTATE_IDENTICALREMOVED:
+			case DIFFSTATE_REMOVED:
+			case DIFFSTATE_THEIRSREMOVED:
+			case DIFFSTATE_YOURSREMOVED:
+				hasMods = true;
+				break;
+			case DIFFSTATE_CONFLICTED:
+			case DIFFSTATE_CONFLICTED_IGNORED:
+				hasConflicts = true;
+				break;
+			case DIFFSTATE_REMOVEDWHITESPACE:
+			case DIFFSTATE_ADDEDWHITESPACE:
+			case DIFFSTATE_WHITESPACE:
+			case DIFFSTATE_WHITESPACE_DIFF:
+				hasWhitespaceMods = true;
+				break;
+			}
+		}
+	}
+}
+
 void CBaseView::OnEditGotoline()
 {
 	if (m_pViewData == NULL)

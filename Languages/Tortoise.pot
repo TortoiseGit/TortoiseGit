@@ -5905,6 +5905,10 @@ msgstr ""
 msgid "Newer commit time"
 msgstr ""
 
+#. Resource IDs: (101)
+msgid "Newlines"
+msgstr ""
+
 #. Resource IDs: (20308)
 msgid "Next"
 msgstr ""
@@ -8704,6 +8708,10 @@ msgstr ""
 msgid "The target folder \n%s\nis not empty!\nAre you sure you want to initialize a git repository inside that folder?"
 msgstr ""
 
+#. Resource IDs: (101)
+msgid "The text is identical, but the files do not match!\r\nThe following differences were found:"
+msgstr ""
+
 #. Resource IDs: (195)
 msgid "The time in seconds after which the parsing of the selected files stops.\r\nA lower value will make the auto-completion list available sooner,\r\nbut maybe not scan all files."
 msgstr ""
@@ -9537,6 +9545,10 @@ msgstr ""
 
 #. Resource IDs: (1409)
 msgid "While running daemon, all data of this repository is exposed without authentication and/or encryption."
+msgstr ""
+
+#. Resource IDs: (101)
+msgid "Whitespace changes (tabs, spaces)"
 msgstr ""
 
 #. Resource IDs: (65535)

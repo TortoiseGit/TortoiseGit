@@ -817,6 +817,7 @@ bool CMainFrame::LoadViews(int line)
 		//diff between YOUR and BASE
 		if (m_bOneWay)
 		{
+			pwndActiveView = m_pwndLeftView;
 			if (!m_wndSplitter2.IsColumnHidden(1))
 				m_wndSplitter2.HideColumn(1);
 
@@ -874,6 +875,44 @@ bool CMainFrame::LoadViews(int line)
 			m_pwndLeftView->SetHidden(FALSE);
 			m_pwndRightView->SetHidden(FALSE);
 			m_pwndBottomView->SetHidden(TRUE);
+		}
+		bool hasMods, hasConflicts, hasWhitespaceMods;
+		pwndActiveView->CheckModifications(hasMods, hasConflicts, hasWhitespaceMods);
+		if (!hasMods && !hasConflicts)
+		{
+			// files appear identical, show a dialog informing the user that there are or might
+			// be other differences
+			bool hasEncodingDiff = m_Data.m_arBaseFile.GetUnicodeType() != m_Data.m_arYourFile.GetUnicodeType();
+			bool hasEOLDiff = m_Data.m_arBaseFile.GetLineEndings() != m_Data.m_arYourFile.GetLineEndings();
+			if (hasWhitespaceMods || hasEncodingDiff || hasEOLDiff)
+			{
+				// text is identical, but the files do not match
+				CString sWarning(MAKEINTRESOURCE(IDS_TEXTIDENTICAL_MAIN));
+				CString sWhitespace(MAKEINTRESOURCE(IDS_TEXTIDENTICAL_WHITESPACE));
+				CString sEncoding(MAKEINTRESOURCE(IDS_TEXTIDENTICAL_ENCODING));
+				CString sEOL(MAKEINTRESOURCE(IDS_TEXTIDENTICAL_EOL));
+				if (hasWhitespaceMods)
+				{
+					sWarning += L"\r\n";
+					sWarning += sWhitespace;
+				}
+				if (hasEncodingDiff)
+				{
+					sWarning += L"\r\n";
+					sWarning += sEncoding;
+					sWarning += L" (";
+					sWarning += m_Data.m_arBaseFile.GetEncodingName(m_Data.m_arBaseFile.GetUnicodeType());
+					sWarning += L", ";
+					sWarning += m_Data.m_arYourFile.GetEncodingName(m_Data.m_arYourFile.GetUnicodeType());
+					sWarning += L")";
+				}
+				if (hasEOLDiff)
+				{
+					sWarning += L"\r\n";
+					sWarning += sEOL;
+				}
+				AfxMessageBox(sWarning, MB_ICONINFORMATION);
+			}
 		}
 	}
 	else if (m_Data.IsBaseFileInUse() && m_Data.IsYourFileInUse() && m_Data.IsTheirFileInUse())

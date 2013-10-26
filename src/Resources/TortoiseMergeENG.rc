@@ -643,6 +643,10 @@ END
 STRINGTABLE
 BEGIN
     IDS_FIND_COUNT          "Count: %d matches."
+END
+
+STRINGTABLE
+BEGIN
     IDS_FIND_NOTFOUND       "Find: Can't find the text ""%s"""
     IDS_FIND_BOTTOMREACHED  "Find: First occurrence from the top found. End of document reached."
     IDS_FIND_TOPREACHED     "Find: First occurrence from the bottom found. Beginning of document reached."
@@ -1164,6 +1168,14 @@ END
 STRINGTABLE
 BEGIN
     ID_EDIT_ENABLE          "Allow Editing for this view\nAllow Edit"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_TEXTIDENTICAL_MAIN  "The text is identical, but the files do not match!\r\nThe following differences were found:"
+    IDS_TEXTIDENTICAL_WHITESPACE "Whitespace changes (tabs, spaces)"
+    IDS_TEXTIDENTICAL_ENCODING "Encoding"
+    IDS_TEXTIDENTICAL_EOL   "Newlines"
 END
 
 #endif    // English (United States) resources

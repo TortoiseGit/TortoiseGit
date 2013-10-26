@@ -152,6 +152,7 @@ public: // methods
 	static void		SetupViewSelection(CBaseView* view, int start, int end);
 	void			SetupViewSelection(int start, int end);
 	CString			GetSelectedText() const;
+	void			CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasWhitespaceMods);
 
 	// state classifying methods; note: state may belong to more classes
 	static bool		IsStateConflicted(DiffStates state);
@@ -439,7 +440,6 @@ protected:  // methods
 
 	static void		ResetUndoStep();
 	void			SaveUndoStep();
-
 protected:  // variables
 	COLORREF		m_InlineRemovedBk;
 	COLORREF		m_InlineAddedBk;
