@@ -1531,6 +1531,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (rev != NULL)
 		{
 			DoSwitch(*rev);
+			m_parent->UpdateFullHistory();
 		}
 		break;
 	}
