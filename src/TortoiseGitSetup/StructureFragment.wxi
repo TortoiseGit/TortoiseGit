@@ -801,59 +801,143 @@
 				<Directory Id='$(var.cf)' ShortName='Common'>
 					<Directory Id='TortoioseOverlays' ShortName='TortOvl' Name='TortoiseOverlays'>
 						<Directory Id="D__icons" ShortName="ICONS" Name="icons">
-							<Directory Id="D__iconscvsclassic" ShortName="CVSClass" Name="CVSClassic">
-								<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
-									<File Id="F__CVSClassicConflictIcon" ShortName="TORTOI1.ICO" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__CVSClassicInSubversionIcon" ShortName="TORTOI2.ICO" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
-									<File Id="F__CVSClassicModifiedIcon" ShortName="TORTOI3.ICO" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
-									<File Id="F__CVSClassicReadOnlyIcon" ShortName="TORTOI4.ICO" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ReadOnlyIcon.ico" />
-									<File Id="F__CVSClassicDeletedIcon" ShortName="TORTOI5.ICO" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\DeletedIcon.ico" />
-									<File Id="F__CVSClassicLockedIcon" ShortName="TORTOI6.ICO" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\LockedIcon.ico" />
-									<File Id="F__CVSClassicAddedIcon" ShortName="TORTOI7.ICO" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\AddedIcon.ico" />
-									<File Id="F__CVSClassicIgnoredIcon" ShortName="TORTOI8.ICO" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\IgnoredIcon.ico" />
-									<File Id="F__CVSClassicUnversionedIcon" ShortName="TORTOI9.ICO" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\UnversionedIcon.ico" />
+							<Directory Id="D__iconscvsclassic" Name="CVSClassic" >
+							 	<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
+									<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
+									<File Id="F__CVSClassicModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
+									<File Id="F__CVSClassicReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ReadOnlyIcon.ico" />
+									<File Id="F__CVSClassicDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\DeletedIcon.ico" />
+									<File Id="F__CVSClassicLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\LockedIcon.ico" />
+									<File Id="F__CVSClassicAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\AddedIcon.ico" />
+									<File Id="F__CVSClassicIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\IgnoredIcon.ico" />
+									<File Id="F__CVSClassicUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\UnversionedIcon.ico" />
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsmodern" ShortName="Modern">
-								<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
-									<File Id="F__ModernConflictIcon" ShortName="TORTOI1.ICO" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__ModernInSubversionIcon" ShortName="TORTOI2.ICO" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
-									<File Id="F__ModernModifiedIcon" ShortName="TORTOI3.ICO" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />
-									<File Id="F__ModernReadOnlyIcon" ShortName="TORTOI4.ICO" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ReadOnlyIcon.ico" />
-									<File Id="F__ModernDeletedIcon" ShortName="TORTOI5.ICO" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\DeletedIcon.ico" />
-									<File Id="F__ModernLockedIcon" ShortName="TORTOI6.ICO" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\LockedIcon.ico" />
-									<File Id="F__ModernAddedIcon" ShortName="TORTOI7.ICO" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\AddedIcon.ico" />
-									<File Id="F__ModernIgnoredIcon" ShortName="TORTOI8.ICO" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\IgnoredIcon.ico" />
-									<File Id="F__ModernUnversionedIcon" ShortName="TORTOI9.ICO" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\UnversionedIcon.ico" />
+							<Directory Id="D__iconsmodern" Name="Modern" >
+							 	<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
+									<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
+									<File Id="F__ModernModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />
+									<File Id="F__ModernReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ReadOnlyIcon.ico" />
+									<File Id="F__ModernDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\DeletedIcon.ico" />
+									<File Id="F__ModernLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\LockedIcon.ico" />
+									<File Id="F__ModernAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\AddedIcon.ico" />
+									<File Id="F__ModernIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\IgnoredIcon.ico" />
+									<File Id="F__ModernUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\UnversionedIcon.ico" />
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconssubclipse" ShortName="SUBCLI1" Name="Subclipse">
+							<Directory Id="D__iconssubclipse" Name="Subclipse" >
 								<Component Id="C__iconsmarkphippard" Guid="$(var.GuidIconsMarkPhippard)" Win64="$(var.Win64YesNo)">
-									<File Id="F__SubclipseConflictIcon" ShortName="TORTOI1.ICO" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__SubclipseInSubversionIcon" ShortName="TORTOI2.ICO" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
-									<File Id="F__SubclipseModifiedIcon" ShortName="TORTOI3.ICO" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ModifiedIcon.ico" />
-									<File Id="F__SubclipseReadOnlyIcon" ShortName="TORTOI4.ICO" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ReadOnlyIcon.ico" />
-									<File Id="F__SubclipseDeletedIcon" ShortName="TORTOI5.ICO" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\DeletedIcon.ico" />
-									<File Id="F__SubclipseLockedIcon" ShortName="TORTOI6.ICO" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\LockedIcon.ico" />
-									<File Id="F__SubclipseAddedIcon" ShortName="TORTOI7.ICO" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\AddedIcon.ico" />
-									<File Id="F__SubclipseIgnoredIcon" ShortName="TORTOI8.ICO" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\IgnoredIcon.ico" />
-									<File Id="F__SubclipseUnversionedIcon" ShortName="TORTOI9.ICO" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\UnversionedIcon.ico" />
+									<File Id="F__SubclipseConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__SubclipseInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
+									<File Id="F__SubclipseModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ModifiedIcon.ico" />
+									<File Id="F__SubclipseReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ReadOnlyIcon.ico" />
+									<File Id="F__SubclipseDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\DeletedIcon.ico" />
+									<File Id="F__SubclipseLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\LockedIcon.ico" />
+									<File Id="F__SubclipseAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\AddedIcon.ico" />
+									<File Id="F__SubclipseIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\IgnoredIcon.ico" />
+									<File Id="F__SubclipseUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\UnversionedIcon.ico" />
 								</Component>
 							</Directory>
 
-							<Directory Id="D__iconsstraight" ShortName="Straight">
+							<Directory Id="D__iconsstraight" Name="Straight" >
 								<Component Id="C__iconsstraight" Guid="$(var.GuidIconsStraight)" Win64="$(var.Win64YesNo)">
-									<File Id="F__StraightConflictIcon" ShortName="TORTOI1.ICO" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__StraightInSubversionIcon" ShortName="TORTOI2.ICO" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
-									<File Id="F__StraightModifiedIcon" ShortName="TORTOI3.ICO" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ModifiedIcon.ico" />
-									<File Id="F__StraightReadOnlyIcon" ShortName="TORTOI4.ICO" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ReadOnlyIcon.ico" />
-									<File Id="F__StraightDeletedIcon" ShortName="TORTOI5.ICO" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\DeletedIcon.ico" />
-									<File Id="F__StraightLockedIcon" ShortName="TORTOI6.ICO" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\LockedIcon.ico" />
-									<File Id="F__StraightAddedIcon" ShortName="TORTOI7.ICO" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\AddedIcon.ico" />
-									<File Id="F__StraightIgnoredIcon" ShortName="TORTOI8.ICO" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\IgnoredIcon.ico" />
-									<File Id="F__StraightUnversionedIcon" ShortName="TORTOI9.ICO" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\UnversionedIcon.ico" />
+									<File Id="F__StraightConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__StraightInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
+									<File Id="F__StraightModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ModifiedIcon.ico" />
+									<File Id="F__StraightReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ReadOnlyIcon.ico" />
+									<File Id="F__StraightDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\DeletedIcon.ico" />
+									<File Id="F__StraightLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\LockedIcon.ico" />
+									<File Id="F__StraightAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\AddedIcon.ico" />
+									<File Id="F__StraightIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\IgnoredIcon.ico" />
+									<File Id="F__StraightUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsfunction" Name="Function" >
+								<Component Id="C__iconsfunction" Guid="$(var.GuidIconsFunction)" Win64="$(var.Win64YesNo)">
+									<File Id="F__FunctionConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__FunctionInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\NormalIcon.ico" />
+									<File Id="F__FunctionModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ModifiedIcon.ico" />
+									<File Id="F__FunctionReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ReadOnlyIcon.ico" />
+									<File Id="F__FunctionDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\DeletedIcon.ico" />
+									<File Id="F__FunctionLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\LockedIcon.ico" />
+									<File Id="F__FunctionAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\AddedIcon.ico" />
+									<File Id="F__FunctionIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\IgnoredIcon.ico" />
+									<File Id="F__FunctionUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsdechenesxp" Name="DechenesXP" >
+								<Component Id="C__iconsdechenesxp" Guid="$(var.GuidIconsDechenesXP)" Win64="$(var.Win64YesNo)">
+									<File Id="F__DechenesXPConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__DechenesXPInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\NormalIcon.ico" />
+									<File Id="F__DechenesXPModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ModifiedIcon.ico" />
+									<File Id="F__DechenesXPReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ReadOnlyIcon.ico" />
+									<File Id="F__DechenesXPDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\DeletedIcon.ico" />
+									<File Id="F__DechenesXPLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\LockedIcon.ico" />
+									<File Id="F__DechenesXPAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\AddedIcon.ico" />
+									<File Id="F__DechenesXPIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\IgnoredIcon.ico" />
+									<File Id="F__DechenesXPUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsdechenesvista" Name="DechenesVista" >
+								<Component Id="C__iconsdechenesvista" Guid="$(var.GuidIconsDechenesVista)" Win64="$(var.Win64YesNo)">
+									<File Id="F__DechenesVistaConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__DechenesVistaInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\NormalIcon.ico" />
+									<File Id="F__DechenesVistaModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ModifiedIcon.ico" />
+									<File Id="F__DechenesVistaReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ReadOnlyIcon.ico" />
+									<File Id="F__DechenesVistaDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\DeletedIcon.ico" />
+									<File Id="F__DechenesVistaLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\LockedIcon.ico" />
+									<File Id="F__DechenesVistaAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\AddedIcon.ico" />
+									<File Id="F__DechenesVistaIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\IgnoredIcon.ico" />
+									<File Id="F__DechenesVistaUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsblip" Name="Blip" >
+								<Component Id="C__iconsblip" Guid="$(var.GuidIconsBlip)" Win64="$(var.Win64YesNo)">
+									<File Id="F__BlipConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__BlipInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\NormalIcon.ico" />
+									<File Id="F__BlipModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ModifiedIcon.ico" />
+									<File Id="F__BlipReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ReadOnlyIcon.ico" />
+									<File Id="F__BlipDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\DeletedIcon.ico" />
+									<File Id="F__BlipLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\LockedIcon.ico" />
+									<File Id="F__BlipAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\AddedIcon.ico" />
+									<File Id="F__BlipIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\IgnoredIcon.ico" />
+									<File Id="F__BlipUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsblipclean" Name="BlipClean" >
+								<Component Id="C__iconsblipclean" Guid="$(var.GuidIconsBlipClean)" Win64="$(var.Win64YesNo)">
+									<File Id="F__BlipCleanConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__BlipCleanInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\NormalIcon.ico" />
+									<File Id="F__BlipCleanModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ModifiedIcon.ico" />
+									<File Id="F__BlipCleanReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ReadOnlyIcon.ico" />
+									<File Id="F__BlipCleanDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\DeletedIcon.ico" />
+									<File Id="F__BlipCleanLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\LockedIcon.ico" />
+									<File Id="F__BlipCleanAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\AddedIcon.ico" />
+									<File Id="F__BlipCleanIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\IgnoredIcon.ico" />
+									<File Id="F__BlipCleanUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\UnversionedIcon.ico" />
+								</Component>
+							</Directory>
+
+							<Directory Id="D__iconsmufwin7" Name="MufWin7" >
+								<Component Id="C__iconsmufwin7" Guid="$(var.GuidIconsMufWin7)" Win64="$(var.Win64YesNo)">
+									<File Id="F__MufWin7ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ConflictIcon.ico" KeyPath="yes" />
+									<File Id="F__MufWin7InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\NormalIcon.ico" />
+									<File Id="F__MufWin7ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ModifiedIcon.ico" />
+									<File Id="F__MufWin7ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ReadOnlyIcon.ico" />
+									<File Id="F__MufWin7DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\DeletedIcon.ico" />
+									<File Id="F__MufWin7LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\LockedIcon.ico" />
+									<File Id="F__MufWin7AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\AddedIcon.ico" />
+									<File Id="F__MufWin7IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\IgnoredIcon.ico" />
+									<File Id="F__MufWin7UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\UnversionedIcon.ico" />
 								</Component>
 							</Directory>
 						</Directory>

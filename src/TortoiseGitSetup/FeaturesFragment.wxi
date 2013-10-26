@@ -75,6 +75,12 @@
 			<ComponentRef Id="C__iconsmodern" />
 			<ComponentRef Id="C__iconsmarkphippard" />
 			<ComponentRef Id="C__iconsstraight" />
+			<ComponentRef Id="C__iconsfunction" />
+			<ComponentRef Id="C__iconsdechenesxp" />
+			<ComponentRef Id="C__iconsdechenesvista" />
+			<ComponentRef Id="C__iconsblip" />
+			<ComponentRef Id="C__iconsblipclean" />
+			<ComponentRef Id="C__iconsmufwin7" />
 		</Feature>
 
 		<?if $(var.IncludeCrashReportDll) = 1 ?>
