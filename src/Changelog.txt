@@ -7,6 +7,7 @@ Released: Unreleased
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
  * Fixed issue #1951: Slow switch/checkout dialog
+ * Fixed issue #1958: Revision graph crashes when trying to switch/checkout via context menu
 
 = Release 1.8.6.0 =
 Released: 2013-10-20

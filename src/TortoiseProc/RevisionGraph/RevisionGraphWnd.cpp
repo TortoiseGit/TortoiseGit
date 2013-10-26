@@ -1531,7 +1531,6 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (rev != NULL)
 		{
 			DoSwitch(*rev);
-			delete rev;
 		}
 		break;
 	}
