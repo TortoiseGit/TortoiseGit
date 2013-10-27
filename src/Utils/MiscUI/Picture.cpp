@@ -200,7 +200,7 @@ bool CPicture::Load(tstring sFilePathName)
 							hFile.CloseHandle();
 
 							LPICONDIR lpIconDir = (LPICONDIR)lpIcons;
-							if ((lpIconDir->idCount)&&((lpIconDir->idCount * sizeof(ICONDIR)) <= fileinfo.nFileIndexLow))
+							if ((lpIconDir->idCount) && ((lpIconDir->idCount * sizeof(ICONDIR)) <= fileinfo.nFileSizeLow))
 							{
 								try
 								{
@@ -209,7 +209,7 @@ bool CPicture::Load(tstring sFilePathName)
 									hIcons = new HICON[lpIconDir->idCount];
 									// check that the pointers point to data that we just loaded
 									if (((BYTE*)lpIconDir->idEntries > (BYTE*)lpIconDir) && 
-										(((BYTE*)lpIconDir->idEntries)+(lpIconDir->idCount * sizeof(ICONDIRENTRY)) < ((BYTE*)lpIconDir)+fileinfo.nFileIndexLow))
+										(((BYTE*)lpIconDir->idEntries) + (lpIconDir->idCount * sizeof(ICONDIRENTRY)) < ((BYTE*)lpIconDir) + fileinfo.nFileSizeLow))
 									{
 										m_Width = lpIconDir->idEntries[0].bWidth;
 										m_Height = lpIconDir->idEntries[0].bHeight;
