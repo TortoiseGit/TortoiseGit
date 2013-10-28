@@ -5413,6 +5413,7 @@ void CBaseView::CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasW
 			case DIFFSTATE_REMOVED:
 			case DIFFSTATE_THEIRSREMOVED:
 			case DIFFSTATE_YOURSREMOVED:
+			case DIFFSTATE_EMPTY:
 				hasMods = true;
 				break;
 			case DIFFSTATE_CONFLICTED:
