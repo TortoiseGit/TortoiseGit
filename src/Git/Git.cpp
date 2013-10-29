@@ -2163,7 +2163,7 @@ int CGit::GetDiffPath(CTGitPathList *PathList, CGitHash *hash1, CGitHash *hash2,
 	if(hash2 == NULL)
 		ret = git_root_diff(diff, hash1->m_hash, &file, &count,isStat);
 	else
-		ret = git_diff(diff,hash2->m_hash,hash1->m_hash,&file,&count,isStat);
+		ret = git_do_diff(diff,hash2->m_hash,hash1->m_hash,&file,&count,isStat);
 
 	if(ret)
 		return -1;

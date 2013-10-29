@@ -520,7 +520,7 @@ int git_root_diff(GIT_DIFF diff, GIT_HASH hash,GIT_FILE *file, int *count, int i
 	return 0;
 }
 
-int git_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count,int isstat)
+int git_do_diff(GIT_DIFF diff, GIT_HASH hash1, GIT_HASH hash2, GIT_FILE * file, int *count,int isstat)
 {
 	struct rev_info *p_Rev;
 	int ret;

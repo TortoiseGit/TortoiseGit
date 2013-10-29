@@ -199,7 +199,7 @@ int GitRev::SafeGetSimpleList(CGit *git)
 				if(isRoot)
 					git_root_diff(git->GetGitSimpleListDiff(), commit.m_hash, &file, &count, 0);
 				else
-					git_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
+					git_do_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
 			}
 			catch (char *)
 			{
@@ -285,7 +285,7 @@ int GitRev::SafeFetchFullInfo(CGit *git)
 				if (isRoot)
 					git_root_diff(git->GetGitDiff(), this->m_CommitHash.m_hash, &file, &count, 1);
 				else
-					git_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
+					git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
 			}
 			catch (char *)
 			{
