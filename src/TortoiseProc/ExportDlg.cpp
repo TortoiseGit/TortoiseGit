@@ -31,6 +31,7 @@ IMPLEMENT_DYNAMIC(CExportDlg, CHorizontalResizableStandAloneDialog)
 CExportDlg::CExportDlg(CWnd* pParent /*=NULL*/)
 	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
+	, m_bWholeProject(FALSE)
 	, m_Revision(_T("HEAD"))
 	, m_strFile(_T(""))
 {
@@ -44,6 +45,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CHorizontalResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EXPORTFILE, m_strFile);
+	DDX_Check(pDX, IDC_SHOWWHOLEPROJECT, m_bWholeProject);
 	CHOOSE_VERSION_DDX;
 }
 
@@ -51,6 +53,7 @@ void CExportDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CExportDlg, CHorizontalResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_EXPORTFILE_BROWSE, OnBnClickedCheckoutdirectoryBrowse)
 	ON_EN_CHANGE(IDC_EXPORTFILE, OnEnChangeCheckoutdirectory)
+	ON_BN_CLICKED(IDC_SHOWWHOLEPROJECT, OnBnClickedWholeProject)
 	CHOOSE_VERSION_EVENT
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -59,6 +62,12 @@ BOOL CExportDlg::OnInitDialog()
 {
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+
+	if (g_Git.m_CurrentDir == m_orgPath.GetWinPathString())
+	{
+		GetDlgItem(IDC_SHOWWHOLEPROJECT)->EnableWindow(FALSE);
+		((CButton *)GetDlgItem(IDC_SHOWWHOLEPROJECT))->SetCheck(TRUE);
+	}
 
 	AddAnchor(IDC_REPOGROUP, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_EXPORTFILE_LABEL, TOP_LEFT);
@@ -74,9 +83,7 @@ BOOL CExportDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_TAGS);
 	AdjustControlSize(IDC_RADIO_VERSION);
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	SetDlgTitle();
 
 	CHOOSE_VERSION_ADDANCHOR;
 	this->AddOthersToAnchor();
@@ -174,6 +181,12 @@ void CExportDlg::OnEnChangeCheckoutdirectory()
 	DialogEnableWindow(IDOK, !m_strFile.IsEmpty());
 }
 
+void CExportDlg::OnBnClickedWholeProject()
+{
+	UpdateData(TRUE);
+	SetDlgTitle();
+}
+
 void CExportDlg::OnBnClickedShowlog()
 {
 	m_tooltips.Pop();	// hide the tooltips
@@ -183,4 +196,15 @@ void CExportDlg::OnDestroy()
 {
 	WaitForFinishLoading();
 	__super::OnDestroy();
+}
+
+void CExportDlg::SetDlgTitle()
+{
+	if (m_sTitle.IsEmpty())
+		GetWindowText(m_sTitle);
+
+	if (m_bWholeProject)
+		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, m_sTitle);
+	else
+		CAppUtils::SetWindowTitle(m_hWnd, m_orgPath.GetWinPathString(), m_sTitle);
 }

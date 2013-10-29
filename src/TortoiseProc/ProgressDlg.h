@@ -58,6 +58,7 @@ public:
 	CString					m_LogFile;
 	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit
 	bool					m_bAutoCloseOnSuccess;
+	CGit *					m_Git;
 
 	DWORD					m_GitStatus;
 	CString					m_LogText;
@@ -118,7 +119,7 @@ public:
 	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,
 									CStringA &oneline, char ch,CWnd *CurrentWork=NULL);
 
-	static UINT	RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata=NULL);
+	static UINT	RunCmdList(CWnd *pWnd, std::vector<CString> &cmdlist, bool bShowCommand, CString *pfilename, bool *bAbort, CGitByteArray *pdata = nullptr, CGit *git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 

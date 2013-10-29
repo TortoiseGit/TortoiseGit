@@ -52,15 +52,20 @@ protected:
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
 	afx_msg void OnEnChangeCheckoutdirectory();
+	afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnBnClickedShowlog();
+	void SetDlgTitle();
 
 	DECLARE_MESSAGE_MAP()
 protected:
 	CToolTips		m_tooltips;
+	CString			m_sTitle;
 
 	CHOOSE_EVENT_RADIO()	;
 
 public:
+	CTGitPath		m_orgPath;
+	BOOL			m_bWholeProject;
 	CString			m_Revision;
 	CButton			m_butBrowse;
 	CString			m_strFile;

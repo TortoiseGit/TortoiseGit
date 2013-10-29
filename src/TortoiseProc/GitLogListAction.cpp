@@ -388,7 +388,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 		case ID_EXPORT:
 			{
 				CString str=pSelLogEntry->m_CommitHash.ToString();
-				CAppUtils::Export(&str);
+				CAppUtils::Export(&str, &m_Path);
 			}
 			break;
 		case ID_CREATE_BRANCH:

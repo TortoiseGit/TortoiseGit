@@ -1070,12 +1070,19 @@ bool CAppUtils::SetupDiffScripts(bool force, const CString& type)
 	return true;
 }
 
-bool CAppUtils::Export(CString *BashHash)
+bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 {
 		// ask from where the export has to be done
 	CExportDlg dlg;
 	if(BashHash)
 		dlg.m_Revision=*BashHash;
+	if (orgPath)
+	{
+		if (PathIsRelative(orgPath->GetWinPath()))
+			dlg.m_orgPath = g_Git.m_CurrentDir + _T("\\") + orgPath->GetWinPathString();
+		else
+			dlg.m_orgPath = *orgPath;
+	}
 
 	if (dlg.DoModal() == IDOK)
 	{
@@ -1085,6 +1092,12 @@ bool CAppUtils::Export(CString *BashHash)
 
 		CProgressDlg pro;
 		pro.m_GitCmd=cmd;
+		CGit git;
+		if (!dlg.m_bWholeProject && !dlg.m_orgPath.IsEmpty() && PathIsDirectory(dlg.m_orgPath.GetWinPathString()))
+		{
+			git.m_CurrentDir = dlg.m_orgPath.GetWinPathString();
+			pro.m_Git = &git;
+		}
 		return (pro.DoModal() == IDOK);
 	}
 	return false;
