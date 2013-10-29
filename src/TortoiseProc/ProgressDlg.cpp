@@ -44,6 +44,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent), m_bShowCommand(true), m_bAutoCloseOnSuccess(false), m_bAbort(false), m_bDone(false), m_startTick(GetTickCount())
 	, m_bThreadRunning(FALSE)
 	, m_BufStart(0)
+	, m_Git(&g_Git)
 {
 	m_pThread = NULL;
 	m_PostCmdCallback = NULL;
@@ -151,7 +152,7 @@ BOOL CProgressDlg::OnInitDialog()
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CAppUtils::SetWindowTitle(m_hWnd, m_Git->m_CurrentDir, sWindowTitle);
 
 	// Make sure this dialog is shown in foreground (see issue #1536)
 	SetForegroundWindow();
@@ -180,7 +181,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata)
+UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bShowCommand,CString *pfilename,bool *bAbort,CGitByteArray *pdata, CGit *git)
 {
 	UINT ret=0;
 
@@ -189,7 +190,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 
 	memset(&pi,0,sizeof(PROCESS_INFORMATION));
 
-	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
+	CBlockCacheForPath cacheBlock(git->m_CurrentDir);
 
 	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_START, 0);
 
@@ -219,7 +220,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI,MSG_PROGRESSDLG_RUN,0);
 		}
 
-		g_Git.RunAsync(cmdlist[i].Trim(),&pi, &hRead, NULL, pfilename);
+		git->RunAsync(cmdlist[i].Trim(),&pi, &hRead, NULL, pfilename);
 
 		DWORD readnumber;
 		char lastByte = '\0';
@@ -298,7 +299,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename=&m_LogFile;
 
 	m_startTick = GetTickCount();
-	m_GitStatus = RunCmdList(this,m_GitCmdList,m_bShowCommand,pfilename,&m_bAbort,&this->m_Databuf);;
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
 	return 0;
 }
 
@@ -611,24 +612,24 @@ void CProgressDlg::OnCancel()
 		return;
 	}
 
-	if( g_Git.m_CurrentGitPi.hProcess )
+	if( m_Git->m_CurrentGitPi.hProcess )
 	{
 		DWORD dwConfirmKillProcess = CRegDWORD(_T("Software\\TortoiseGit\\ConfirmKillProcess"));
 		if (dwConfirmKillProcess && CMessageBox::Show(m_hWnd, IDS_PROC_CONFIRMKILLPROCESS, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) != IDYES)
 			return;
 		if(::GenerateConsoleCtrlEvent(CTRL_C_EVENT,0))
 		{
-			::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+			::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
 		}
 		else
 		{
 			GetLastError();
 		}
 
-		KillProcessTree(g_Git.m_CurrentGitPi.dwProcessId);
+		KillProcessTree(m_Git->m_CurrentGitPi.dwProcessId);
 	}
 
-	::WaitForSingleObject(g_Git.m_CurrentGitPi.hProcess ,10000);
+	::WaitForSingleObject(m_Git->m_CurrentGitPi.hProcess ,10000);
 	CResizableStandAloneDialog::OnCancel();
 }
 
@@ -686,7 +687,7 @@ CString CCommitProgressDlg::Convert2UnionCode(char *buff, int size)
 	int cp=CP_UTF8;
 
 	cmd=_T("git.exe config i18n.logOutputEncoding");
-	if (g_Git.Run(cmd, &output, NULL, CP_UTF8))
+	if (m_Git->Run(cmd, &output, NULL, CP_UTF8))
 		cp=CP_UTF8;
 
 	int start=0;
