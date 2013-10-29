@@ -354,7 +354,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		CGitHash hash = m_data.GetHash(line);
 		CString hashStr = hash.ToString();
 
-		GitRev* pRev = GetLogData()->m_pLogCache->GetCacheData(hash);
+		GitRev* pRev = &GetLogData()->GetGitRevAt(m_lineToLogIndex[line]);
 		if (!pRev)
 			return;
 
@@ -448,10 +448,8 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 
 		popup.AppendMenuIcon(ID_SHOWLOG, IDS_BLAME_POPUP_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		if (m_lineToLogIndex[m_MouseLine] >= 0){
-			popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD);
-			popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD);
-		}
+		popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD);
+		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);
@@ -942,33 +940,32 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
-	LONG currentLine = 0;
 
+	LONG numberOfLines = (LONG)m_data.GetNumberOfLines();
 	// draw the colored bar
-	for (auto it = m_lineToLogIndex.begin(); it != m_lineToLogIndex.end(); ++it)
+	for (LONG currentLine = 0; currentLine < numberOfLines; ++currentLine)
 	{
 		COLORREF cr = GetLineColor(currentLine);
-		++currentLine;
 		// get the line color
-		if ((currentLine > line)&&(currentLine <= (line + linesonscreen)))
+		if ((currentLine >= line)&&(currentLine < (line + linesonscreen)))
 		{
 			cr = InterColor(cr, blackColor, 10);
 		}
 		SetBkColor(hDC, cr);
 		lineRect.top = (LONG)Y;
-		lineRect.bottom = (currentLine * height / (LONG)m_data.GetNumberOfLines());
+		lineRect.bottom = ((currentLine + 1) * height / numberOfLines);
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 		Y = lineRect.bottom;
 	}
 
-	if (!m_lineToLogIndex.empty())
+	if (numberOfLines > 0)
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);
-		lineRect.top = (LONG)line * height / (LONG)m_data.GetNumberOfLines();
+		lineRect.top = (LONG)line * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
-		lineRect.top = (LONG)(line + linesonscreen) * height / (LONG)m_data.GetNumberOfLines();
+		lineRect.top = (LONG)(line + linesonscreen) * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
@@ -1636,16 +1633,9 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 		{
 			m_SelectedHash = m_data.GetHash(line);
 
-			if (m_lineToLogIndex[line] < 0)
-			{
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&GetLogData()->m_pLogCache->m_HashMap[m_data.GetHash(line)]);
-			}
-			else
-			{
-				int logIndex = m_lineToLogIndex[line];
-				this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
-				this->GetLogList()->EnsureVisible(logIndex, FALSE);
-			}
+			int logIndex = m_lineToLogIndex[line];
+			this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
+			this->GetLogList()->EnsureVisible(logIndex, FALSE);
 		}
 		else
 		{
@@ -1707,16 +1697,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 		if (line != m_MouseLine)
 		{
 			m_MouseLine = (LONG)line;
-			GitRev *pRev;
-			if (m_lineToLogIndex[line] < 0)
-			{
-				pRev = &this->GetLogData()->m_pLogCache->m_HashMap[m_data.GetHash(line)];
-			}
-			else
-			{
-				pRev=&this->GetLogData()->GetGitRevAt(m_lineToLogIndex[line]);
-			}
-
+			GitRev *pRev = &this->GetLogData()->GetGitRevAt(m_lineToLogIndex[line]);
 			CString body = pRev->GetBody();
 			int maxLine = 15;
 			int iline = 0;
