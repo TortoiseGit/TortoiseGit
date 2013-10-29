@@ -169,7 +169,7 @@ protected:
 	static UINT m_FindDialogMessage;
 public:
 	void ParseBlame();
-	void CreateIds();
+	void MapLineToLogIndex();
 	void UpdateInfo(int encode = 0);
 	CString ResolveCommitFile(LONG line);
 	CString ResolveCommitFile(const CString& path);
@@ -227,7 +227,7 @@ public:
 	bool					m_colorage;
 
 	CTortoiseGitBlameData	m_data;
-	std::vector<LONG>		m_ID;
+	std::vector<LONG>		m_lineToLogIndex;
 
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);

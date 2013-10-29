@@ -237,7 +237,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
 			return FALSE;
 
-		pView->CreateIds();
+		pView->MapLineToLogIndex();
 		pView->UpdateInfo();
 		if (m_lLine > 0)
 			pView->GotoLine(m_lLine);
