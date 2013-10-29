@@ -28,5 +28,5 @@ bool ExportCommand::Execute()
 	if(base.IsEmpty())
 		p=NULL;
 
-	return CAppUtils::Export(p);
+	return CAppUtils::Export(p, &orgCmdLinePath);
 }

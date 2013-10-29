@@ -3,6 +3,7 @@ Released: Unreleased
 
 == Features ==
  * Fixed issue #1943: Add "Ignore N items by extension" in Commit dialog
+ * Fixed issue #1952: Export specific folder
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

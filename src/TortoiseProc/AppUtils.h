@@ -158,7 +158,7 @@ public:
 												bool bMerge = false,
 												bool bCompact = false);
 
-	static bool Export(CString *BashHash=NULL);
+	static bool Export(CString *BashHash = nullptr, const CTGitPath *orgPath = nullptr);
 	static bool CreateBranchTag(bool IsTag=TRUE,CString *CommitHash=NULL, bool switch_new_brach=false);
 	static bool Switch(CString initialRefName = CString(), bool autoClose = false);
 	static bool PerformSwitch(CString ref, bool bForce = false, CString sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool autoClose = false, bool bMerge = false);
