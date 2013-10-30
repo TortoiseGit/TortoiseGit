@@ -30,8 +30,10 @@ IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintListCtrl)
 
 void CGitBlameLogList::hideUnimplementedCommands()
 {
+	m_ContextMenuMask |= GetContextMenuBit(ID_BLAMEPREVIOUS);
 	hideFromContextMenu(
 		GetContextMenuBit(ID_COMPAREWITHPREVIOUS) |
+		GetContextMenuBit(ID_BLAMEPREVIOUS) |
 		GetContextMenuBit(ID_COPYCLIPBOARD) |
 		GetContextMenuBit(ID_COPYHASH) |
 		GetContextMenuBit(ID_EXPORT) |
@@ -39,7 +41,6 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		GetContextMenuBit(ID_CREATE_TAG) |
 		GetContextMenuBit(ID_SWITCHTOREV) |
 		GetContextMenuBit(ID_LOG) |
-		GetContextMenuBit(ID_BLAME) |
 		GetContextMenuBit(ID_REPOBROWSE)
 		, true);
 }

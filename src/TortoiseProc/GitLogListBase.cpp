@@ -133,6 +133,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAME);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAMEPREVIOUS);
 
 	m_ColumnRegKey=_T("log");
 
@@ -1714,7 +1715,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, revertmenu;
+	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, blamemenu, revertmenu;
 
 	if (popup.CreatePopupMenu())
 	{
@@ -1763,6 +1764,27 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					if (isMergeActive && (m_ContextMenuMask & GetContextMenuBit(ID_MERGE_ABORT)))
 					{
 						popup.AppendMenuIcon(ID_MERGE_ABORT, IDS_MENUMERGEABORT, IDI_MERGEABORT);
+						requiresSeparator = true;
+					}
+				}
+
+				if (m_ContextMenuMask & GetContextMenuBit(ID_BLAMEPREVIOUS))
+				{
+					if (parentHash.size() == 1)
+					{
+						popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_LOG_POPUP_BLAMEPREVIOUS, IDI_BLAME);
+						requiresSeparator = true;
+					}
+					else if (parentHash.size() > 1)
+					{
+						blamemenu.CreatePopupMenu();
+						popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_LOG_POPUP_BLAMEPREVIOUS, IDI_BLAME, blamemenu.m_hMenu);
+						for (size_t i = 0; i < parentHash.size(); ++i)
+						{
+							CString str;
+							str.Format(IDS_PARENT, i + 1);
+							blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS +((i + 1) << 16), str);
+						}
 						requiresSeparator = true;
 					}
 				}
@@ -1825,8 +1847,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
 					requiresSeparator = true;
 				}
-
-				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 
 				if (requiresSeparator)
 					popup.AppendMenu(MF_SEPARATOR, NULL);
