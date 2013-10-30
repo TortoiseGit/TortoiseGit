@@ -31,4 +31,5 @@ public:
 private:
 	void GetPaths(const CGitHash& hash, std::vector<CTGitPath>& paths);
 	void GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos);
+	void GetParentHash(GitRev *pRev, int index, CGitHash &parentHash, std::vector<CString>& parentFilenames);
 };

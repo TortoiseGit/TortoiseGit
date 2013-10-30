@@ -66,21 +66,49 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 	int indexNext = GetNextSelectedItem(pos);
 	if (indexNext < 0)
 		return;
+	CTortoiseGitBlameView *pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView,((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView());
 
 	GitRev *pRev = &this->m_logEntries.GetGitRevAt(indexNext);
 
-	switch (cmd)
+	switch (cmd & 0xFFFF)
 	{
+		case ID_BLAMEPREVIOUS:
+			{
+				int index = (cmd >> 16) & 0xFFFF;
+				if (index > 0)
+					index -= 1;
+
+				CGitHash parentHash;
+				std::vector<CString> parentFilenames;
+				GetParentHash(pRev, index, parentHash, parentFilenames);
+				for (size_t i = 0; i < parentFilenames.size(); ++i)
+				{
+					CString procCmd = _T("/path:\"") + pView->ResolveCommitFile(parentFilenames[i]) + _T("\" ");
+					procCmd += _T(" /command:blame");
+					procCmd += _T(" /endrev:") + parentHash.ToString();
+
+					CCommonAppUtils::RunTortoiseGitProc(procCmd);
+				}
+			}
+			break;
 		case ID_COMPAREWITHPREVIOUS:
 			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\" ");
-				procCmd += _T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+				int index = (cmd >> 16) & 0xFFFF;
+				if (index > 0)
+					index -= 1;
 
-				procCmd += _T(" /command:");
-				procCmd+=CString(_T("diff /startrev:"))+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString()+CString(_T(" /endrev:"))+this->m_logEntries.GetGitRevAt(indexNext+1).m_CommitHash.ToString();
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+				CGitHash parentHash;
+				std::vector<CString> parentFilenames;
+				GetParentHash(pRev, index, parentHash, parentFilenames);
+				for (size_t i = 0; i < parentFilenames.size(); ++i)
+				{
+					CString procCmd = _T("/path:\"") + pView->ResolveCommitFile(parentFilenames[i]) + _T("\" ");
+					procCmd += _T(" /command:diff");
+					procCmd += _T(" /startrev:") + pRev->m_CommitHash.ToString();
+					procCmd += _T(" /endrev:") + parentHash.ToString();
+
+					CCommonAppUtils::RunTortoiseGitProc(procCmd);
+				}
 			}
 			break;
 		case ID_COPYCLIPBOARD:
@@ -209,6 +237,62 @@ void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPat
 						{
 							int parentNo = file.m_ParentNo & PARENT_MASK;
 							parentNos.insert(parentNo);
+						}
+					}
+				}
+			}
+		}
+	}
+	catch (const char* msg)
+	{
+		MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+	}
+}
+
+void CGitBlameLogList::GetParentHash(GitRev *pRev, int index, CGitHash &parentHash, std::vector<CString>& parentFilenames)
+{
+	std::vector<CTGitPath> paths;
+	GetPaths(pRev->m_CommitHash, paths);
+
+	std::set<int> parentNos;
+	GetParentNumbers(pRev, paths, parentNos);
+
+	int parentNo = 0;
+	{
+		int i = 0;
+		for (auto it = parentNos.cbegin(); it != parentNos.cend(); ++it, ++i)
+		{
+			if (i == index)
+			{
+				parentNo = *it;
+				break;
+			}
+		}
+	}
+	parentHash = pRev->m_ParentHash[parentNo];
+
+	try
+	{
+		const CTGitPathList& files = pRev->GetFiles(NULL);
+		for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
+		{
+			const CTGitPath &file =  files[j];
+			for (auto it = paths.cbegin(); it != paths.cend(); ++it)
+			{
+				const CTGitPath& path = *it;
+				if (file.IsEquivalentTo(path))
+				{
+					if (!(file.m_ParentNo & MERGE_MASK))
+					{
+						int action = file.m_Action;
+						// ignore (action & CTGitPath::LOGACTIONS_ADDED), as then there is nothing to blame/diff
+						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
+						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
+						{
+							if (parentNo == (file.m_ParentNo & PARENT_MASK))
+							{
+								parentFilenames.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+							}
 						}
 					}
 				}
