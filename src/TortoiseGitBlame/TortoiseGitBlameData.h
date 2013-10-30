@@ -110,6 +110,8 @@ public:
 		return m_Utf8Lines[line];
 	}
 
+	bool ContainsOnlyFilename(const CString &filename) const;
+
 	GitRev* GetRev(int line, CGitHashMap & hashToRev)
 	{
 		return GetRevForHash(hashToRev, GetHash(line));

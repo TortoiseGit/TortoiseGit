@@ -162,6 +162,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
 	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
+	m_bBlameOuputContainsOtherFilenames = FALSE;
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	m_pFindDialog = NULL;
@@ -1509,6 +1510,8 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 void CTortoiseGitBlameView::ParseBlame()
 {
 	m_data.ParseBlameOutput(GetDocument()->m_BlameData, GetLogData()->m_pLogCache->m_HashMap, m_DateFormat, m_bRelativeTimes);
+	CString filename = GetDocument()->m_GitPath.GetGitPathString();
+	m_bBlameOuputContainsOtherFilenames = m_data.ContainsOnlyFilename(filename) ? FALSE : TRUE;
 }
 
 void CTortoiseGitBlameView::MapLineToLogIndex()
@@ -1806,7 +1809,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			}
 
 			CString filename;
-			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
+			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOuputContainsOtherFilenames)
 				filename.Format(_T("%s: %s\n"), m_sFileName, m_data.GetFilename(line));
 
 			CString str;

@@ -397,6 +397,15 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line
 	return bFound ? i : -1;
 }
 
+bool CTortoiseGitBlameData::ContainsOnlyFilename(const CString &filename) const
+{
+	for (auto it = m_Filenames.cbegin(); it != m_Filenames.cend(); ++it)
+	{
+		if (filename != *it)
+			return false;
+	}
+	return true;
+}
 
 GitRev* CTortoiseGitBlameData::GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash)
 {

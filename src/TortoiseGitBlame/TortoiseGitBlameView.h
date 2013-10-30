@@ -206,6 +206,7 @@ public:
 	BOOL m_bIgnoreWhitespace;
 	BOOL m_bShowCompleteLog;
 	BOOL m_bFollowRenames;
+	BOOL m_bBlameOuputContainsOtherFilenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 
