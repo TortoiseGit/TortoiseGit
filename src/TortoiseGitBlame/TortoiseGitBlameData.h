@@ -110,9 +110,14 @@ public:
 		return m_Utf8Lines[line];
 	}
 
-	static GitRev* GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash);
+	GitRev* GetRev(int line, CGitHashMap & hashToRev)
+	{
+		return GetRevForHash(hashToRev, GetHash(line));
+	}
 
 private:
+	static GitRev* GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash);
+
 	std::vector<CGitHash>		m_Hash;
 	std::vector<CString>		m_Dates;
 	std::vector<CString>		m_Authors;

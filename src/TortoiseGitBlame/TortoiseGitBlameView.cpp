@@ -365,7 +365,13 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		CGitHash hash = m_data.GetHash(line);
 		CString hashStr = hash.ToString();
 
-		GitRev* pRev = &GetLogData()->GetGitRevAt(m_lineToLogIndex[line]);
+		GitRev* pRev = nullptr;
+		int logIndex = m_lineToLogIndex[line];
+		if (logIndex >= 0)
+			pRev = &GetLogData()->GetGitRevAt(logIndex);
+		else
+			pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+
 		if (!pRev)
 			return;
 
@@ -1663,11 +1669,14 @@ COLORREF CTortoiseGitBlameView::GetLineColor(int line)
 {
 	if (m_colorage && m_data.IsValidLine(line))
 	{
-		int slider = (int)((GetLogData()->size() - m_lineToLogIndex[line] - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
-		return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), slider);
+		int logIndex = m_lineToLogIndex[line];
+		if (logIndex >= 0)
+		{
+			int slider = (int)((GetLogData()->size() - logIndex - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
+			return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), slider);
+		}
 	}
-	else
-		return m_windowcolor;
+	return m_windowcolor;
 }
 
 CGitBlameLogList * CTortoiseGitBlameView::GetLogList()
@@ -1701,8 +1710,16 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 			m_SelectedHash = m_data.GetHash(line);
 
 			int logIndex = m_lineToLogIndex[line];
-			this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
-			this->GetLogList()->EnsureVisible(logIndex, FALSE);
+			if (logIndex >= 0)
+			{
+				this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
+				this->GetLogList()->EnsureVisible(logIndex, FALSE);
+			}
+			else
+			{
+				GitRev *pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+			}
 		}
 		else
 		{
@@ -1764,7 +1781,16 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 		if (line != m_MouseLine)
 		{
 			m_MouseLine = (LONG)line;
-			GitRev *pRev = &this->GetLogData()->GetGitRevAt(m_lineToLogIndex[line]);
+			GitRev *pRev = nullptr;
+			int logIndex = m_lineToLogIndex[line];
+			if (logIndex >= 0)
+				pRev = &GetLogData()->GetGitRevAt(logIndex);
+			else
+				pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+
+			if (!pRev)
+				return;
+
 			CString body = pRev->GetBody();
 			int maxLine = 15;
 			int iline = 0;
