@@ -156,6 +156,8 @@ protected:
 	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleIgnoreWhitespace();
 	afx_msg void OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowCompleteLog();
+	afx_msg void OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleFollowRenames();
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleColorByAge();
@@ -196,6 +198,7 @@ public:
 	BOOL m_bShowDate;
 	DWORD m_dwDetectMovedOrCopiedLines;
 	BOOL m_bIgnoreWhitespace;
+	BOOL m_bShowCompleteLog;
 	BOOL m_bFollowRenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);

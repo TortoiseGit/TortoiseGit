@@ -36,6 +36,7 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_dwTabSize(4)
 	, m_dwDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
 	, m_bIgnoreWhitespace(0)
+	, m_bShowCompleteLog(0)
 	, m_bFollowRenames(0)
 {
 	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
@@ -45,6 +46,7 @@ CSettingsTBlame::CSettingsTBlame()
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
 	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
 	m_regIgnoreWhitespace = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace"), 0);
+	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 0);
 	m_regFollowRenames = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames"), 0);
 }
 
@@ -73,6 +75,7 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 		m_dwDetectMovedOrCopiedLines = BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED;
 	}
 	DDX_Check(pDX, IDC_IGNORE_WHITESPACE, m_bIgnoreWhitespace);
+	DDX_Check(pDX, IDC_SHOWCOMPLETELOG, m_bShowCompleteLog);
 	DDX_Check(pDX, IDC_FOLLOWRENAMES, m_bFollowRenames);
 }
 
@@ -82,8 +85,9 @@ BEGIN_MESSAGE_MAP(CSettingsTBlame, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_FONTSIZES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, OnChange)
 	ON_EN_CHANGE(IDC_TABSIZE, OnChange)
-	ON_BN_CLICKED(IDC_IGNORE_WHITESPACE, OnChange)
 	ON_CBN_SELCHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES, OnChange)
+	ON_BN_CLICKED(IDC_IGNORE_WHITESPACE, OnChange)
+	ON_BN_CLICKED(IDC_SHOWCOMPLETELOG, OnChange)
 	ON_BN_CLICKED(IDC_FOLLOWRENAMES, OnChange)
 	ON_BN_CLICKED(IDC_NEWLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_OLDLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
@@ -114,6 +118,7 @@ BOOL CSettingsTBlame::OnInitDialog()
 	m_dwFontSize = m_regFontSize;
 	m_dwDetectMovedOrCopiedLines = m_regDetectMovedOrCopiedLines;
 	m_bIgnoreWhitespace = m_regIgnoreWhitespace;
+	m_bShowCompleteLog = m_regShowCompleteLog;
 	m_bFollowRenames = m_regFollowRenames;
 	int count = 0;
 	CString temp;
@@ -171,11 +176,14 @@ BOOL CSettingsTBlame::OnInitDialog()
 	}
 
 	UpdateData(FALSE);
+	UpdateDependencies();
 	return TRUE;
 }
 
 void CSettingsTBlame::OnChange()
 {
+	UpdateData();
+	UpdateDependencies();
 	SetModified();
 }
 
@@ -201,6 +209,7 @@ BOOL CSettingsTBlame::OnApply()
     Store (m_dwTabSize, m_regTabSize);
 	Store (m_dwDetectMovedOrCopiedLines, m_regDetectMovedOrCopiedLines);
 	Store (m_bIgnoreWhitespace, m_regIgnoreWhitespace);
+	Store (m_bShowCompleteLog, m_regShowCompleteLog);
 	Store (m_bFollowRenames, m_regFollowRenames);
 
     SetModified(FALSE);
@@ -210,4 +219,18 @@ BOOL CSettingsTBlame::OnApply()
 void CSettingsTBlame::OnBnClickedColor()
 {
 	SetModified();
+}
+
+void CSettingsTBlame::UpdateDependencies()
+{
+	BOOL enableShowCompleteLog = FALSE;
+	BOOL enableFollowRenames = FALSE;
+	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE)
+	{
+		enableShowCompleteLog = TRUE;
+		if (m_bShowCompleteLog)
+			enableFollowRenames = TRUE;
+	}
+	GetDlgItem(IDC_SHOWCOMPLETELOG)->EnableWindow(enableShowCompleteLog);
+	GetDlgItem(IDC_FOLLOWRENAMES)->EnableWindow(enableFollowRenames);
 }

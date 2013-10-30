@@ -80,6 +80,8 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES, OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles)
 	ON_COMMAND(ID_VIEW_IGNORE_WHITESPACE, OnViewToggleIgnoreWhitespace)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORE_WHITESPACE, OnUpdateViewToggleIgnoreWhitespace)
+	ON_COMMAND(ID_VIEW_SHOWCOMPLETELOG, OnViewToggleShowCompleteLog)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWCOMPLETELOG, OnUpdateViewToggleShowCompleteLog)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
@@ -150,6 +152,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bShowDate = (theApp.GetInt(_T("ShowDate"), 0) == 1);
 	m_dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), 0);
 	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
+	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
@@ -1948,7 +1951,7 @@ void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
 {
 	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
 
-	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace);
+	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace ? 1 : 0);
 
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
@@ -1964,12 +1967,33 @@ void CTortoiseGitBlameView::OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(m_bIgnoreWhitespace);
 }
 
+void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
+{
+	m_bShowCompleteLog = ! m_bShowCompleteLog;
+
+	theApp.WriteInt(_T("ShowCompleteLog"), m_bShowCompleteLog ? 1 : 0);
+
+	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	if (!document->m_CurrentFileName.IsEmpty())
+	{
+		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
+		theApp.m_pDocManager->OnFileNew();
+		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+	}
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+	pCmdUI->SetCheck(m_bShowCompleteLog);
+}
+
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 {
 	m_bFollowRenames = ! m_bFollowRenames;
 	theApp.DoWaitCursor(1);
 
-	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames);
+	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames ? 1 : 0);
 
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
@@ -1984,6 +2008,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
+	pCmdUI->Enable(m_bShowCompleteLog && (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
 	pCmdUI->SetCheck(m_bFollowRenames);
 }
 

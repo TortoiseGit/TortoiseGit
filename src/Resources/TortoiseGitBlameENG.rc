@@ -290,6 +290,7 @@ BEGIN
         END
         MENUITEM "&Ignore whitespace",          ID_VIEW_IGNORE_WHITESPACE
         MENUITEM SEPARATOR
+        MENUITEM "Show com&plete log",          ID_VIEW_SHOWCOMPLETELOG
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
@@ -554,6 +555,7 @@ STRINGTABLE
 BEGIN
     ID_VIEW_IGNORE_WHITESPACE 
                             "Ignore whitespace when comparing the parents version and the child's "
+    ID_VIEW_SHOWCOMPLETELOG "Git revision list contains the complete file history"
     ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE 
                             "Detect moved or copied lines within a file"
     ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES 

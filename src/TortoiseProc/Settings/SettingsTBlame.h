@@ -46,6 +46,8 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedRestore();
 
+	void UpdateDependencies();
+
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -67,6 +69,8 @@ private:
 	CRegDWORD			m_regDetectMovedOrCopiedLines;
 	BOOL				m_bIgnoreWhitespace;
 	CRegDWORD			m_regIgnoreWhitespace;
+	BOOL				m_bShowCompleteLog;
+	CRegDWORD			m_regShowCompleteLog;
 	BOOL				m_bFollowRenames;
 	CRegDWORD			m_regFollowRenames;
 };

@@ -231,11 +231,19 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 		pView->ParseBlame();
 
-		std::set<CGitHash> hashes;
-		pView->m_data.GetHashes(hashes);
-
-		if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
-			return FALSE;
+		BOOL bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
+		if (bShowCompleteLog && (dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE))
+		{
+			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
+				return FALSE;
+		}
+		else
+		{
+			std::set<CGitHash> hashes;
+			pView->m_data.GetHashes(hashes);
+			if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
+				return FALSE;
+		}
 
 		pView->MapLineToLogIndex();
 		pView->UpdateInfo();
