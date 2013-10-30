@@ -144,6 +144,10 @@ protected:
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleDate();
 	afx_msg void OnUpdateViewToggleDate(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowFilename();
+	afx_msg void OnUpdateViewToggleShowFilename(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowOriginalLineNumber();
+	afx_msg void OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCmdUI);
 	afx_msg void OnViewDetectMovedOrCopiedLinesToggleDisabled();
 	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled(CCmdUI *pCmdUI);
 	afx_msg void OnViewDetectMovedOrCopiedLinesToggleWithinFile();
@@ -196,6 +200,8 @@ public:
 
 	BOOL m_bShowAuthor;
 	BOOL m_bShowDate;
+	BOOL m_bShowFilename;
+	BOOL m_bShowOriginalLineNumber;
 	DWORD m_dwDetectMovedOrCopiedLines;
 	BOOL m_bIgnoreWhitespace;
 	BOOL m_bShowCompleteLog;
@@ -252,6 +258,8 @@ protected:
 	LONG					m_revwidth;
 	LONG					m_datewidth;
 	LONG					m_authorwidth;
+	LONG					m_filenameWidth;
+	LONG					m_originalLineNumberWidth;
 	LONG					m_linewidth;
 	LONG					m_SelectedLine; ///< zero-based
 

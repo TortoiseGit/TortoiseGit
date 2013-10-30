@@ -68,6 +68,10 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWDATE, OnUpdateViewToggleDate)
+	ON_COMMAND(ID_VIEW_SHOWFILENAME, OnViewToggleShowFilename)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWFILENAME, OnUpdateViewToggleShowFilename)
+	ON_COMMAND(ID_VIEW_SHOWORIGINALLINENUMBER, OnViewToggleShowOriginalLineNumber)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWORIGINALLINENUMBER, OnUpdateViewToggleShowOriginalLineNumber)
 	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnViewDetectMovedOrCopiedLinesToggleDisabled)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled)
 	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE, OnViewDetectMovedOrCopiedLinesToggleWithinFile)
@@ -125,6 +129,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_revwidth = 0;
 	m_datewidth = 0;
 	m_authorwidth = 0;
+	m_filenameWidth = 0;
+	m_originalLineNumberWidth = 0;
 	m_linewidth = 0;
 
 	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
@@ -150,6 +156,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate = (theApp.GetInt(_T("ShowDate"), 0) == 1);
+	m_bShowFilename = (theApp.GetInt(_T("ShowFilename"), 0) == 1);
+	m_bShowOriginalLineNumber = (theApp.GetInt(_T("ShowOriginalLineNumber"), 0) == 1);
 	m_dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), 0);
 	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
 	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
@@ -790,6 +798,36 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 		m_authorwidth = maxwidth.cx + BLAMESPACE;
 		blamewidth += m_authorwidth;
 	}
+	if (m_bShowFilename)
+	{
+		SIZE maxwidth = {0};
+
+		int numberOfLines = m_data.GetNumberOfLines();
+		for (int i = 0; i < numberOfLines; ++i)
+		{
+			::GetTextExtentPoint32(hDC, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), &width);
+			if (width.cx > maxwidth.cx)
+				maxwidth = width;
+		}
+		m_filenameWidth = maxwidth.cx + BLAMESPACE;
+		blamewidth += m_filenameWidth;
+	}
+	if (m_bShowOriginalLineNumber)
+	{
+		SIZE maxwidth = {0};
+
+		int numberOfLines = m_data.GetNumberOfLines();
+		CString str;
+		for (int i = 0; i < numberOfLines; ++i)
+		{
+			str.Format(_T("%5d"), m_data.GetOriginalLineNumber(i));
+			::GetTextExtentPoint32(hDC, str, str.GetLength(), &width);
+			if (width.cx > maxwidth.cx)
+				maxwidth = width;
+		}
+		m_originalLineNumberWidth = maxwidth.cx + BLAMESPACE;
+		blamewidth += m_originalLineNumberWidth;
+	}
 	::SelectObject(hDC, oldfont);
 	POINT pt = {blamewidth, 0};
 	LPtoDP(hDC, &pt, 1);
@@ -891,6 +929,20 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 				rc.right = rc.left + Left + m_datewidth;
 				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
 				Left += m_datewidth;
+			}
+			if (m_bShowFilename)
+			{
+				rc.right = rc.left + Left + m_filenameWidth;
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+				Left += m_filenameWidth;
+			}
+			if (m_bShowOriginalLineNumber)
+			{
+				rc.right = rc.left + Left + m_originalLineNumberWidth;
+				CString str;
+				str.Format(_T("%5d"), m_data.GetOriginalLineNumber(i));
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+				Left += m_originalLineNumberWidth;
 			}
 			if ((i==m_SelectedLine)&&(m_pFindDialog))
 			{
@@ -1880,6 +1932,42 @@ void CTortoiseGitBlameView::OnViewToggleDate()
 void CTortoiseGitBlameView::OnUpdateViewToggleDate(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_bShowDate);
+}
+
+void CTortoiseGitBlameView::OnViewToggleShowFilename()
+{
+	m_bShowFilename = ! m_bShowFilename;
+
+	theApp.WriteInt(_T("ShowFilename"), m_bShowFilename);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowFilename(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowFilename);
+}
+
+void CTortoiseGitBlameView::OnViewToggleShowOriginalLineNumber()
+{
+	m_bShowOriginalLineNumber = ! m_bShowOriginalLineNumber;
+
+	theApp.WriteInt(_T("ShowOriginalLineNumber"), m_bShowOriginalLineNumber);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowOriginalLineNumber);
 }
 
 void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines)

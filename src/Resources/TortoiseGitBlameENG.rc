@@ -279,6 +279,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
+        MENUITEM "Show file name",              ID_VIEW_SHOWFILENAME
+        MENUITEM "Show original line number",   ID_VIEW_SHOWORIGINALLINENUMBER
         MENUITEM SEPARATOR
         POPUP "&Detect moved or copied lines"
         BEGIN
@@ -579,6 +581,8 @@ STRINGTABLE
 BEGIN
     IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD "Copy SHA-1 to clipboard"
     IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD "Copy log to clipboard"
+    ID_VIEW_SHOWFILENAME    "Show file name"
+    ID_VIEW_SHOWORIGINALLINENUMBER "Show original line number"
 END
 
 #endif    // English (U.S.) resources
