@@ -343,6 +343,7 @@ public:
 	int					m_ShowRefMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
+	virtual void GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash);
 	virtual void ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMenu * menu)=0;
 	void ReloadHashMap()
 	{
