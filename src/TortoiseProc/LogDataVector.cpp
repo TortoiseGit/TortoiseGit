@@ -42,6 +42,10 @@ void CLogDataVector::ClearAll()
 
 	m_FirstFreeLane=0;
 	m_Lns.clear();
+	if (m_pLogCache)
+	{
+		m_pLogCache->ClearAllLanes();
+	}
 
 	m_RawlogData.clear();
 	m_RawLogStart.clear();
