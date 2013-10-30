@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011 - TortoiseGit
+// Copyright (C) 2008-2011,2013 - TortoiseGit
 // Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -25,5 +25,10 @@ class CGitBlameLogList : public CGitLogListBase
 	DECLARE_DYNAMIC(CGitBlameLogList)
 public:
 	void hideUnimplementedCommands();
+	void GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash);
 	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu);
+
+private:
+	void GetPaths(const CGitHash& hash, std::vector<CTGitPath>& paths);
+	void GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos);
 };

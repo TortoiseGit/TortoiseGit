@@ -45,6 +45,21 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		, true);
 }
 
+void CGitBlameLogList::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
+{
+	std::vector<CTGitPath> paths;
+	GetPaths(pRev->m_CommitHash, paths);
+
+	std::set<int> parentNos;
+	GetParentNumbers(pRev, paths, parentNos);
+
+	for (auto it = parentNos.cbegin(); it != parentNos.cend(); ++it)
+	{
+		int parentNo = *it;
+		parentHash.push_back(pRev->m_ParentHash[parentNo]);
+	}
+}
+
 void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*LastSelect*/, CMenu * /*menu*/)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -144,4 +159,64 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
 			break;
 	} // switch (cmd)
+}
+
+void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& paths)
+{
+	CTortoiseGitBlameView *pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView,((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView());
+	if (pView)
+	{
+		{
+			std::set<CString> filenames;
+			int numberOfLines = pView->m_data.GetNumberOfLines();
+			for (int i = 0; i < numberOfLines; ++i)
+			{
+				if (pView->m_data.GetHash(i) == hash)
+				{
+					filenames.insert(pView->m_data.GetFilename(i));
+				}
+			}
+			for (auto it = filenames.cbegin(); it != filenames.cend(); ++it)
+			{
+				paths.push_back(CTGitPath(*it));
+			}
+		}
+	}
+}
+
+void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos)
+{
+	GIT_REV_LIST allParentHash;
+	CGitLogListBase::GetParentHashes(pRev, allParentHash);
+
+	try
+	{
+		const CTGitPathList& files = pRev->GetFiles(NULL);
+		for (int j=0, j_size = files.GetCount(); j < j_size; ++j)
+		{
+			const CTGitPath &file =  files[j];
+			for (auto it=paths.cbegin(); it != paths.cend(); ++it)
+			{
+				const CTGitPath& path = *it;
+				if (file.IsEquivalentTo(path))
+				{
+					if (!(file.m_ParentNo & MERGE_MASK))
+					{
+						int action = file.m_Action;
+						// ignore (action & CTGitPath::LOGACTIONS_ADDED), as then there is nothing to blame/diff
+						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
+						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
+						{
+							int parentNo = file.m_ParentNo & PARENT_MASK;
+							parentNos.insert(parentNo);
+						}
+					}
+				}
+			}
+		}
+	}
+	catch (const char* msg)
+	{
+		MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+	}
 }
