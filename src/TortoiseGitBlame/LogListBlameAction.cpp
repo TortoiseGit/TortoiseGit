@@ -52,61 +52,96 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 	if (indexNext < 0)
 		return;
 
-	CString  procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
-
-	procCmd += _T(" /command:");
+	GitRev *pRev = &this->m_logEntries.GetGitRevAt(indexNext);
 
 	switch (cmd)
 	{
 		case ID_COMPAREWITHPREVIOUS:
-			if (indexNext + 1 < m_logEntries.size()) // cannot diff previous revision in first revision
 			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\" ");
+				procCmd += _T(" /rev:")+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+
+				procCmd += _T(" /command:");
 				procCmd+=CString(_T("diff /startrev:"))+this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString()+CString(_T(" /endrev:"))+this->m_logEntries.GetGitRevAt(indexNext+1).m_CommitHash.ToString();
-			}
-			else
-			{
-				return;
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
 			}
 			break;
 		case ID_COPYCLIPBOARD:
 			{
 				CopySelectionToClipBoard();
 			}
-			return;
+			break;
 		case ID_COPYHASH:
 			{
 				CopySelectionToClipBoard(ID_COPY_HASH);
 			}
-			return;
+			break;
 		case ID_EXPORT:
-			procCmd += _T("export");
+			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\"");
+				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
+
+				procCmd += _T(" /command:export");
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_CREATE_BRANCH:
-			procCmd += _T("branch");
+			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\"");
+				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
+
+				procCmd += _T(" /command:branch");
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_CREATE_TAG:
-			procCmd += _T("tag");
+			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\"");
+				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
+
+				procCmd += _T(" /command:tag");
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_SWITCHTOREV:
-			procCmd += _T("switch");
-			break;
-		case ID_BLAME:
-			procCmd += _T("blame");
-			procCmd += _T(" /endrev:") + this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString();
+			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\"");
+				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
+
+				procCmd += _T(" /command:switch");
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_LOG:
-			procCmd += _T("log");
+			{
+				CString  procCmd = _T("/path:\"");
+				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+				procCmd += _T("\"");
+				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
+
+				procCmd += _T(" /command:log");
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		case ID_REPOBROWSE:
-			procCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir, this->m_logEntries.GetGitRevAt(indexNext).m_CommitHash.ToString());
+			{
+				CString  procCmd;
+				procCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir, pRev->m_CommitHash.ToString());
+				CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			}
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
-			return;
-		} // switch (cmd)
-
-		CCommonAppUtils::RunTortoiseGitProc(procCmd);
+			break;
+	} // switch (cmd)
 }
