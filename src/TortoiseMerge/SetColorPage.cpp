@@ -78,6 +78,7 @@ void CSetColorPage::SaveData()
 	if ((DWORD)m_regModifiedBackground != (DWORD)m_cBkModified.GetColor())
 		m_bReloadNeeded = true;
 	m_regModifiedBackground = (m_cBkModified.GetColor() == -1 ? m_cBkModified.GetAutomaticColor() : m_cBkModified.GetColor());
+	CDiffColors::GetInstance().SetColors(DIFFSTATE_EDITED, (DWORD)m_regModifiedBackground, cFg);
 
 	cBk = m_cBkEmpty.GetColor();
 	if (cBk == -1)
