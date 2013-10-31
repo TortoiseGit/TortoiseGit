@@ -226,6 +226,7 @@ void CPropertiesWnd::SetPropListFont()
 
 	m_wndPropList.SetFont(&m_fntPropList);
 }
+
 void CPropertiesWnd::RemoveParent()
 {
 	m_ParentGroup->Expand(FALSE);
@@ -234,8 +235,8 @@ void CPropertiesWnd::RemoveParent()
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
 		m_ParentGroup->RemoveSubItem(p);
 	}
-
 }
+
 void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 {
 	if (pRev)
@@ -257,7 +258,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 
 		RemoveParent();
 
-		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
+		CLogDataVector *pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
 		for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 		{
@@ -279,11 +280,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 
 			str.Format(_T("%u - %s\n%s"), i, pRev->m_ParentHash[i].ToString(), parentsubject);
 
-			CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(
-											pRev->m_ParentHash[i].ToString().Left(8),
-												parentsubject,
-												str
-											);
+			CMFCPropertyGridProperty *pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString().Left(8), parentsubject, str);
 			pProperty->AllowEdit(FALSE);
 			m_ParentGroup->AddSubItem(pProperty);
 		}
