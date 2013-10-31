@@ -228,7 +228,7 @@ void CPropertiesWnd::SetPropListFont()
 }
 void CPropertiesWnd::RemoveParent()
 {
-	m_ParentGroup->Expand(false);
+	m_ParentGroup->Expand(FALSE);
 	for (int i = 0; i < m_ParentGroup->GetSubItemsCount(); ++i)
 	{
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
@@ -259,7 +259,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
-		for (unsigned int i = 0; i < rev->m_ParentHash.size(); ++i)
+		for (size_t i = 0; i < rev->m_ParentHash.size(); ++i)
 		{
 			CString str;
 			CString parentsubject;
