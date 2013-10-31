@@ -308,8 +308,7 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(_T(""));
 	}
-	this->Invalidate();
-	m_wndPropList.Invalidate();
+	m_wndPropList.AdjustLayout();
 }
 
 void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
