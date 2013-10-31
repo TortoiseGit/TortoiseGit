@@ -23,9 +23,6 @@
 
 
 // CSetColorPage dialog
-#define INLINEADDED_COLOR			RGB(255, 255, 150)
-#define INLINEREMOVED_COLOR			RGB(200, 100, 100)
-#define MODIFIED_COLOR				RGB(220, 220, 255)
 
 IMPLEMENT_DYNAMIC(CSetColorPage, CPropertyPage)
 CSetColorPage::CSetColorPage()
