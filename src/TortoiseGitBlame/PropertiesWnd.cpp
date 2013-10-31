@@ -260,23 +260,15 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 
 		CLogDataVector *pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
+		CGitHashMap & hashMap = pLogEntry->m_pLogCache->m_HashMap;
 		for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 		{
 			CString str;
 			CString parentsubject;
 
-			GitRev *p =NULL;
-
-			if( pLogEntry->m_pLogCache->m_HashMap.find(pRev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
-			{
-				p=NULL;
-			}
-			else
-			{
-				p= &pLogEntry->m_pLogCache->m_HashMap[pRev->m_ParentHash[i]] ;
-			}
-			if(p)
-				parentsubject=p->GetSubject();
+			auto it = hashMap.find(pRev->m_ParentHash[i]);
+			if (it != hashMap.end())
+				parentsubject = it->second.GetSubject();
 
 			str.Format(_T("%u - %s\n%s"), i, pRev->m_ParentHash[i].ToString(), parentsubject);
 
@@ -287,7 +279,6 @@ void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 		m_ParentGroup->Expand();
 		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
 			m_BaseInfoGroup->GetSubItem(i)->SetDescription(m_BaseInfoGroup->GetSubItem(i)->GetValue());
-
 	}
 	else
 	{
