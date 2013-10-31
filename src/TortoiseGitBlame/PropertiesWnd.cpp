@@ -279,13 +279,13 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 			str.Format(_T("%u - %s\n%s"), i, rev->m_ParentHash[i].ToString(), parentsubject);
 
-			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
+			CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(
 											rev->m_ParentHash[i].ToString().Left(8),
 												parentsubject,
 												str
 											);
-			pProtery->AllowEdit(FALSE);
-			m_ParentGroup->AddSubItem(pProtery);
+			pProperty->AllowEdit(FALSE);
+			m_ParentGroup->AddSubItem(pProperty);
 		}
 		m_ParentGroup->Expand();
 		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
@@ -317,11 +317,11 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
-	CMFCPropertyGridProperty * pProtery = m_wndPropList.GetCurSel();
+	CMFCPropertyGridProperty * pProperty = m_wndPropList.GetCurSel();
 
 	CString sMenuItemText;
 	CIconMenu popup;
-	if (pProtery && !pProtery->IsGroup() && popup.CreatePopupMenu())
+	if (pProperty && !pProperty->IsGroup() && popup.CreatePopupMenu())
 	{
 		sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, WM_COPY, sMenuItemText);
@@ -332,7 +332,7 @@ void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		case 0:
 			break;	// no command selected
 		case WM_COPY:
-			CStringUtils::WriteAsciiStringToClipboard(pProtery->GetValue(), GetSafeHwnd());
+			CStringUtils::WriteAsciiStringToClipboard(pProperty->GetValue(), GetSafeHwnd());
 			break;
 		}
 	}
