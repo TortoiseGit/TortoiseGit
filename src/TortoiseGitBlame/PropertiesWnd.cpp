@@ -229,7 +229,7 @@ void CPropertiesWnd::SetPropListFont()
 void CPropertiesWnd::RemoveParent()
 {
 	m_ParentGroup->Expand(FALSE);
-	for (int i = 0; i < m_ParentGroup->GetSubItemsCount(); ++i)
+	while (m_ParentGroup->GetSubItemsCount())
 	{
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
 		m_ParentGroup->RemoveSubItem(p);
