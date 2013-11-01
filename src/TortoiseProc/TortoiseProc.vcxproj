@@ -306,6 +306,8 @@
   <ItemGroup>
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\Graphviz.h" />
+    <ClInclude Include="..\Utils\IInputValidator.h" />
+    <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h" />
     <ClInclude Include="AddRemoteDlg.h" />
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="GravatarPictureBox.h" />

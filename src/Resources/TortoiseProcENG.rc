@@ -288,15 +288,16 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,184,33,50,14
 END
 
-IDD_RENAME DIALOGEX 0, 0, 234, 55
+IDD_RENAME DIALOGEX 0, 0, 235, 69
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "Rename - TortoiseGit"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "New &name:",IDC_LABEL,7,14,67,8
-    EDITTEXT        IDC_NAME,79,11,148,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,120,34,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,177,34,50,14
+    LTEXT           "New &name:",IDC_LABEL,7,27,67,8
+    EDITTEXT        IDC_NAME,80,24,148,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,109,48,58,14
+    PUSHBUTTON      "Cancel",IDCANCEL,170,48,58,14
+    LTEXT           "",IDC_RENINFOLABEL,7,7,221,8
 END
 
 IDD_REPOSITORY_BROWSER DIALOGEX 0, 0, 415, 279
@@ -1994,10 +1995,9 @@ BEGIN
     IDD_RENAME, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 227
-        VERTGUIDE, 170
+        RIGHTMARGIN, 228
         TOPMARGIN, 7
-        BOTTOMMARGIN, 48
+        BOTTOMMARGIN, 62
     END
 
     IDD_SETTINGSMAIN, DIALOG
@@ -4281,6 +4281,8 @@ BEGIN
     IDS_WALKBEHAVIOUR_LABELEDCOMMITS "Show la&beled commits only"
     IDS_WALKBEHAVIOUR_NOMERGES "No &merges"
     IDS_ICONFILEFILTER      "Icons (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+    IDS_WARN_RENAMEREQUIRED "New name must not be empty or the same as the original name!"
+    IDS_RENAME_INFO         "Rename ""%s"":"
 END
 
 #endif    // English (U.S.) resources

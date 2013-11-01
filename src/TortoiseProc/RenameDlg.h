@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2006 - Stefan Kueng
+// Copyright (C) 2003-2006, 2009-2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #pragma once
 #include "HorizontalResizableStandAloneDialog.h"
+#include "IInputValidator.h"
 
 /**
  * \ingroup TortoiseProc
@@ -31,6 +32,8 @@ public:
 	CRenameDlg(CWnd* pParent = NULL);
 	virtual ~CRenameDlg();
 
+	void SetInputValidator(IInputValidator * validator) { m_pInputValidator = validator; }
+	void SetRenameRequired(bool renameRequired) { m_renameRequired = renameRequired; }
 	enum { IDD = IDD_RENAME };
 
 protected:
@@ -38,13 +41,20 @@ protected:
 
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+	virtual void OnCancel();
+
+	afx_msg void OnEnSetfocusName();
 
 	DECLARE_MESSAGE_MAP()
-
-	afx_msg void OnEnChangeName();
 
 public:
 	CString m_name;
 	CString m_windowtitle;
 	CString m_label;
+
+private:
+	bool				m_bBalloonVisible;
+	bool				m_renameRequired;
+	CString				m_originalName;
+	IInputValidator *	m_pInputValidator;
 };

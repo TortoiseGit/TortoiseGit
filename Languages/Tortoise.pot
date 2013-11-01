@@ -5893,6 +5893,10 @@ msgstr ""
 msgid "New name for %s"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "New name must not be empty or the same as the original name!"
+msgstr ""
+
 #. Resource IDs: (98)
 msgid "New name:"
 msgstr ""
@@ -7107,6 +7111,11 @@ msgstr ""
 
 #. Resource IDs: (151)
 msgid "Rename - TortoiseGit"
+msgstr ""
+
+#. Resource IDs: (92)
+#, c-format
+msgid "Rename \"%s\":"
 msgstr ""
 
 #. Resource IDs: (221)

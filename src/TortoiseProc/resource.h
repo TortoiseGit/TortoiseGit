@@ -82,6 +82,7 @@
 #define IDD_SETTINGSTBLAME              244
 #define IDC_PANCUR                      250
 #define IDC_PANCURDOWN                  251
+#define IDC_RENINFOLABEL                252
 #define IDI_TORTOISEBLAME               252
 #define IDR_ACC_LOGDLG                  254
 #define IDI_ADD_BKG                     255
@@ -966,6 +967,7 @@
 #define IDC_EDIT1                       1469
 #define IDC_BUGTRAQPARAMETERS           1469
 #define IDC_CLONE_DIR                   1469
+#define IDS_WARN_RENAMEREQUIRED         1469
 #define IDC_BUGTRAQREMOVEBUTTON         1470
 #define IDC_GIT_USEREMAIL               1470
 #define IDC_EDIT_REMOTE                 1470
@@ -974,6 +976,7 @@
 #define IDC_VER2EDIT                    1470
 #define IDC_REV2EDIT                    1470
 #define IDC_NEWBRANCH                   1470
+#define IDS_RENAME_INFO                 1470
 #define IDC_BUGTRAQCOPYBUTTON           1471
 #define IDC_GIT_USERESINGNINGKEY        1471
 #define IDC_BUGTRAQWCPATHLABEL          1472

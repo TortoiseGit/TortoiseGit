@@ -1174,6 +1174,12 @@
     <ClInclude Include="Settings\SetDialogs3.h">
       <Filter>Commands\setting</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\IInputValidator.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h">
+      <Filter>Utils\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionad.ico">
