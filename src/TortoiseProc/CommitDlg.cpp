@@ -176,12 +176,38 @@ bool PrefillMessage(const CString &filename, CString &msg)
 	return false;
 }
 
+int GetCommitTemplate(CString &msg)
+{
+	CString tplFilename = g_Git.GetConfigValue(_T("commit.template"));
+	if (tplFilename.IsEmpty())
+		return -1;
+
+	if (tplFilename[0] == _T('/'))
+	{
+		if (tplFilename.GetLength() >= 3)
+		{
+			// handle "/d/TortoiseGit/tpl.txt" -> "d:/TortoiseGit/tpl.txt"
+			if (tplFilename[2] == _T('/'))
+			{
+				tplFilename.GetBuffer()[0] = tplFilename[1];
+				tplFilename.GetBuffer()[1] = _T(':');
+			}
+		}
+	}
+
+	tplFilename.Replace(_T('/'), _T('\\'));
+
+	if (!PrefillMessage(tplFilename, msg))
+		return -1;
+	return 0;
+}
+
 BOOL CCommitDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	CAppUtils::GetCommitTemplate(this->m_sLogMessage);
+	GetCommitTemplate(this->m_sLogMessage);
 
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);

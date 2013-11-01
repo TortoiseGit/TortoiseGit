@@ -2216,47 +2216,6 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 		return CUnicodeUtils::GetCPCode(output);
 	}
 }
-int CAppUtils::GetCommitTemplate(CString &temp)
-{
-	CString cmd,output;
-
-	output = g_Git.GetConfigValue(_T("commit.template"), CP_UTF8);
-	if( output.IsEmpty() )
-		return -1;
-
-	if( output.GetLength()<1)
-		return -1;
-
-	if( output[0] == _T('/'))
-	{
-		if(output.GetLength()>=3)
-			if(output[2] == _T('/'))
-			{
-				output.GetBuffer()[0] = output[1];
-				output.GetBuffer()[1] = _T(':');
-			}
-	}
-
-	int start=0;
-	output=output.Tokenize(_T("\n"),start);
-
-	output.Replace(_T('/'),_T('\\'));
-
-	try
-	{
-		CStdioFile file(output,CFile::modeRead|CFile::typeText);
-		CString str;
-		while(file.ReadString(str))
-		{
-			temp+=str+_T("\n");
-		}
-
-	}catch(...)
-	{
-		return -1;
-	}
-	return 0;
-}
 int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 {
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );

@@ -205,8 +205,6 @@ public:
 					bool bSelectFilesForCommit,
 					bool autoClose = false);
 
-	static int GetCommitTemplate(CString &temp);
-
 	static BOOL SVNDCommit();
 	static BOOL Merge(CString *commit =NULL);
 	static BOOL MergeAbort();
