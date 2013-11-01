@@ -161,10 +161,9 @@ bool PrefillMessage(const CString &filename, CString &msg)
 		if (file.Open(filename, CFile::modeRead | CFile::typeBinary))
 		{
 			CString str;
-			BYTE *buf = new BYTE[file.GetLength() + 1];
-			buf[file.GetLength()] = 0;
-			file.Read(buf, file.GetLength());
-			g_Git.StringAppend(&str, buf);
+			std::unique_ptr<BYTE[]> buf(new BYTE[file.GetLength()]);
+			UINT read = file.Read(buf.get(), file.GetLength());
+			g_Git.StringAppend(&str, buf.get(), CP_UTF8, read);
 			str.Replace(_T("\r\n"), _T("\n"));
 			str.TrimRight(_T("\n"));
 			str += _T("\n");
