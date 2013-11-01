@@ -4281,6 +4281,9 @@ BEGIN
     IDS_WALKBEHAVIOUR_LABELEDCOMMITS "Show la&beled commits only"
     IDS_WALKBEHAVIOUR_NOMERGES "No &merges"
     IDS_ICONFILEFILTER      "Icons (*.ico, *.jpg, *.png, *.bmp, *.gif)|*.ico;*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files (*.*)|*.*||"
+    IDS_PROC_OVERWRITEEXPORT_CANCEL "Cancel"
+    IDS_PROC_OVERWRITEEXPORT_OVERWRITE "Overwrite"
+    IDS_PROC_OVERWRITEEXPORT_KEEP "Keep"
     IDS_WARN_RENAMEREQUIRED "New name must not be empty or the same as the original name!"
     IDS_RENAME_INFO         "Rename ""%s"":"
 END

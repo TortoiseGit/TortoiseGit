@@ -128,6 +128,9 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 							git_wc_status_kind status = git_wc_status_none;
 							CTGitPath askedpath;
 							askedpath.SetFromWin(str.c_str());
+							CString workTreePath;
+							askedpath.HasAdminDir(&workTreePath);
+							uuidSource = workTreePath;
 							try
 							{
 								if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
@@ -388,7 +391,9 @@ STDMETHODIMP CShellExt::Initialize_Wrap(LPCITEMIDLIST pIDFolder,
 		{
 			if (folder_.compare(statuspath)!=0)
 			{
-
+				CString worktreePath;
+				askedpath.HasAdminDir(&worktreePath);
+				uuidTarget = worktreePath;
 				try
 				{
 					if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(folder_.c_str()))
@@ -785,8 +790,8 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 
 	// Git add here
 	// available if target is versioned and source is either unversioned or from another repository
-	//if ((itemStatesFolder & ITEMIS_FOLDERINGIT)&&(((~itemStates) & ITEMIS_INGIT)||!bSourceAndTargetFromSameRepository))
-	//	InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
+	if ((itemStatesFolder & ITEMIS_FOLDERINGIT)&&(((~itemStates) & ITEMIS_INGIT)||!bSourceAndTargetFromSameRepository))
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPCOPYADDMENU, 0, idCmdFirst, ShellMenuDropCopyAdd, uFlags);
 
 	// Git export here
 	// available if source is versioned and a folder

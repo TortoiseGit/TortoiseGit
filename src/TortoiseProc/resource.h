@@ -963,7 +963,10 @@
 #define IDS_WALKBEHAVIOUR_NOMERGES      1464
 #define IDS_ICONFILEFILTER              1465
 #define IDC_LINK                        1466
+#define IDS_PROC_OVERWRITEEXPORT_CANCEL 1466
 #define IDC_LINK_CHANGE_LOG             1467
+#define IDS_PROC_OVERWRITEEXPORT_OVERWRITE 1467
+#define IDS_PROC_OVERWRITEEXPORT_KEEP   1468
 #define IDC_EDIT1                       1469
 #define IDC_BUGTRAQPARAMETERS           1469
 #define IDC_CLONE_DIR                   1469

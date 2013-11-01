@@ -5286,6 +5286,10 @@ msgstr ""
 msgid "KOI8-U"
 msgstr ""
 
+#. Resource IDs: (92)
+msgid "Keep"
+msgstr ""
+
 #. Resource IDs: (1126)
 msgid "Keep changelists"
 msgstr ""
@@ -6358,6 +6362,10 @@ msgstr ""
 
 #. Resource IDs: (1523)
 msgid "Override branch if exists"
+msgstr ""
+
+#. Resource IDs: (92)
+msgid "Overwrite"
 msgstr ""
 
 #. Resource IDs: (3845)

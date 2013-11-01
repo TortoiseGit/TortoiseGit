@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011,2013 - TortoiseGit
-// Copyright (C) 2007-2008,2010 - TortoiseSVN
+// Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,11 +22,12 @@
 #include "FormatMessageWrapper.h"
 #include "GitProgressDlg.h"
 #include "MessageBox.h"
+#include "StringUtils.h"
+#include "DirFileEnum.h"
 
 bool DropCopyAddCommand::Execute()
 {
 	bool bRet = false;
-
 	CString droppath = parser.GetVal(_T("droptarget"));
 	if (CTGitPath(droppath).IsAdminDir())
 		return FALSE;
@@ -34,32 +35,74 @@ bool DropCopyAddCommand::Execute()
 	if(!CTGitPath(droppath).HasAdminDir(&g_Git.m_CurrentDir))
 		return FALSE;
 
+	int worktreePathLen = g_Git.m_CurrentDir.GetLength();
 	orgPathList.RemoveAdminPaths();
 	CTGitPathList copiedFiles;
-	for (int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
+	for(int nPath = 0; nPath < orgPathList.GetCount(); ++nPath)
 	{
-		if (!orgPathList[nPath].IsEquivalentTo(CTGitPath(droppath)))
+		if (orgPathList[nPath].IsEquivalentTo(CTGitPath(droppath)))
+			continue;
+
+		//copy the file to the new location
+		CString name = orgPathList[nPath].GetFileOrDirectoryName();
+		if (::PathFileExists(droppath + _T("\\") + name))
 		{
-			//copy the file to the new location
-			CString name = orgPathList[nPath].GetFileOrDirectoryName();
-			if (::PathFileExists(droppath+_T("\\")+name))
+			if (::PathIsDirectory(droppath + _T("\\") + name))
 			{
-				CString strMessage;
-				strMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)(droppath+_T("\\")+name));
-				int ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), MB_YESNOCANCEL | MB_ICONQUESTION);
-				if (ret == IDYES)
+				if (orgPathList[nPath].IsDirectory())
+					continue;
+			}
+
+			CString strMessage;
+			strMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, (LPCTSTR)(droppath + _T("\\") + name));
+			CString sBtn1(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_OVERWRITE));
+			CString sBtn2(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_KEEP));
+			CString sBtn3(MAKEINTRESOURCE(IDS_PROC_OVERWRITEEXPORT_CANCEL));
+			UINT ret = CMessageBox::Show(hwndExplorer, strMessage, _T("TortoiseGit"), 2, IDI_QUESTION, sBtn1, sBtn2, sBtn3);
+
+			if (ret == 3)
+				return FALSE; //cancel the whole operation
+			if (ret == 1)
+			{
+				if (!::CopyFile(orgPathList[nPath].GetWinPath(), droppath + _T("\\") + name, FALSE))
 				{
-					if (!::CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
+					//the copy operation failed! Get out of here!
+					ShowErrorMessage();
+					return FALSE;
+				}
+			}
+		}
+		else
+		{
+			if (orgPathList[nPath].IsDirectory())
+			{
+				CString fromPath = orgPathList[nPath].GetWinPathString() + L"||";
+				CString toPath = droppath + L"\\" + name + L"||";
+				std::unique_ptr<TCHAR[]> fromBuf(new TCHAR[fromPath.GetLength() + 2]);
+				std::unique_ptr<TCHAR[]> toBuf(new TCHAR[toPath.GetLength() + 2]);
+				wcscpy_s(fromBuf.get(), fromPath.GetLength() + 2, fromPath);
+				wcscpy_s(toBuf.get(), toPath.GetLength() + 2, toPath);
+				CStringUtils::PipesToNulls(fromBuf.get(), fromPath.GetLength() + 2);
+				CStringUtils::PipesToNulls(toBuf.get(), toPath.GetLength() + 2);
+
+				SHFILEOPSTRUCT fileop = {0};
+				fileop.wFunc = FO_COPY;
+				fileop.pFrom = fromBuf.get();
+				fileop.pTo = toBuf.get();
+				fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR | FOF_NOCOPYSECURITYATTRIBS | FOF_SILENT;
+				if (!SHFileOperation(&fileop))
+				{
+					// add all copied files
+					CDirFileEnum finder(droppath + L"\\" + name);
+					bool isDir = true;
+					CString filepath;
+					while (finder.NextFile(filepath, &isDir))
 					{
-						//the copy operation failed! Get out of here!
-						ShowErrorMessage();
-						return FALSE;
+						if (!isDir)
+							copiedFiles.AddPath(CTGitPath(filepath.Mid(worktreePathLen + 1))); //add the new filepath
 					}
 				}
-				if (ret == IDCANCEL)
-				{
-					return FALSE;		//cancel the whole operation
-				}
+				continue; // do not add a directory to copiedFiles
 			}
 			else if (!CopyFile(orgPathList[nPath].GetWinPath(), droppath+_T("\\")+name, FALSE))
 			{
@@ -67,8 +110,9 @@ bool DropCopyAddCommand::Execute()
 				ShowErrorMessage();
 				return FALSE;
 			}
-			copiedFiles.AddPath(CTGitPath(droppath+_T("\\")+name));		//add the new filepath
 		}
+		CString destPath(droppath + _T("\\") + name);
+		copiedFiles.AddPath(CTGitPath(destPath.Mid(worktreePathLen + 1))); //add the new filepath
 	}
 	//now add all the newly copied files to the working copy
 	CGitProgressDlg progDlg;
@@ -85,7 +129,8 @@ bool DropCopyAddCommand::Execute()
 
 void DropCopyAddCommand::ShowErrorMessage()
 {
+	CFormatMessageWrapper errorDetails;
 	CString strMessage;
-	strMessage.Format(IDS_ERR_COPYFILES, CFormatMessageWrapper());
+	strMessage.Format(IDS_ERR_COPYFILES, (LPCTSTR)errorDetails);
 	MessageBox(hwndExplorer, strMessage, _T("TortoiseGit"), MB_OK | MB_ICONINFORMATION);
 }
