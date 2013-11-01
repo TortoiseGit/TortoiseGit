@@ -158,15 +158,17 @@ bool PrefillMessage(const CString &filename, CString &msg)
 	if (PathFileExists(filename))
 	{
 		CStdioFile file;
-		if (file.Open(filename, CFile::modeRead))
+		if (file.Open(filename, CFile::modeRead | CFile::typeBinary))
 		{
 			CString str;
-			while(file.ReadString(str))
-			{
-				msg += str;
-				str.Empty();
-				msg += _T("\n");
-			}
+			BYTE *buf = new BYTE[file.GetLength() + 1];
+			buf[file.GetLength()] = 0;
+			file.Read(buf, file.GetLength());
+			g_Git.StringAppend(&str, buf);
+			str.Replace(_T("\r\n"), _T("\n"));
+			str.TrimRight(_T("\n"));
+			str += _T("\n");
+			msg = str;
 		}
 		else
 			::MessageBox(nullptr, _T("Could not open ") + filename, _T("TortoiseGit"), MB_ICONERROR);
