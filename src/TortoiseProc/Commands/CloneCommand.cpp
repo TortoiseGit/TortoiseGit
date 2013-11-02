@@ -137,7 +137,7 @@ bool CloneCommand::Execute()
 			depth.Format(_T(" --depth %d"),dlg.m_nDepth);
 		}
 
-		g_Git.m_CurrentDir = GetExistingDirectoryForClone(this->orgCmdLinePath.GetWinPathString());
+		g_Git.m_CurrentDir = GetExistingDirectoryForClone(dlg.m_Directory);
 
 		CString cmd;
 		CString progressarg;
