@@ -4436,11 +4436,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	int len = filelist.GetLength();
 	std::unique_ptr<TCHAR[]> buf(new TCHAR[len + 2]);
 	_tcscpy_s(buf.get(), len + 2, filelist);
-	for (int i = 0; i < len; ++i)
-	{
-		if (buf.get()[i] == '|')
-			buf.get()[i] = 0;
-	}
+	CStringUtils::PipesToNulls(buf.get(), len + 2);
 	SHFILEOPSTRUCT fileop;
 	fileop.hwnd = this->m_hWnd;
 	fileop.wFunc = FO_DELETE;
