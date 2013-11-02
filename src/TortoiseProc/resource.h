@@ -963,7 +963,10 @@
 #define IDS_WALKBEHAVIOUR_NOMERGES      1464
 #define IDS_ICONFILEFILTER              1465
 #define IDC_LINK                        1466
+#define IDS_PROC_OVERWRITEEXPORT_CANCEL 1466
 #define IDC_LINK_CHANGE_LOG             1467
+#define IDS_PROC_OVERWRITEEXPORT_OVERWRITE 1467
+#define IDS_PROC_OVERWRITEEXPORT_KEEP   1468
 #define IDC_EDIT1                       1469
 #define IDC_BUGTRAQPARAMETERS           1469
 #define IDC_CLONE_DIR                   1469
@@ -979,7 +982,9 @@
 #define IDS_RENAME_INFO                 1470
 #define IDC_BUGTRAQCOPYBUTTON           1471
 #define IDC_GIT_USERESINGNINGKEY        1471
+#define IDS_PROC_COPY_SUBMODULE         1471
 #define IDC_BUGTRAQWCPATHLABEL          1472
+#define IDS_PROC_COPY_REPOSITORY        1472
 #define IDC_BUGTRAQPATH                 1473
 #define IDC_BUGTRAQBROWSE               1474
 #define IDC_BUGTRAQPROVIDERLABEL        1475

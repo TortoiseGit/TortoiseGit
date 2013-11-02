@@ -4,6 +4,7 @@ Released: Unreleased
 == Features ==
  * Fixed issue #1943: Add "Ignore N items by extension" in Commit dialog
  * Fixed issue #1952: Export specific folder
+ * Fixed issue #1002: No right-drag context menu (git copy & add, git move)
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

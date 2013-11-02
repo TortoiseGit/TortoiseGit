@@ -110,7 +110,6 @@
 			</menuchoice>
 			Enter the new name for the item and you're done.
 		</para>
-<!--
 		<para>
 			If you want to move files around inside your working tree,
 			perhaps to a different sub-folder, you can
@@ -143,7 +142,6 @@
 				</listitem>
 			</orderedlist>
 		</para>
--->
 		<caution>
 			<title>Do Not Git Move Submodule</title>
 			<para>
