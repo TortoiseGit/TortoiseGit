@@ -92,12 +92,40 @@ bool DropCopyAddCommand::Execute()
 				fileop.fFlags = FOF_NO_CONNECTED_ELEMENTS | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR | FOF_NOCOPYSECURITYATTRIBS | FOF_SILENT;
 				if (!SHFileOperation(&fileop))
 				{
-					// add all copied files
+					// add all copied files WITH special handling for repos/submodules (folders which include a .git entry)
 					CDirFileEnum finder(droppath + L"\\" + name);
 					bool isDir = true;
 					CString filepath;
-					while (finder.NextFile(filepath, &isDir))
+					CString lastRepo;
+					bool isRepo = false;
+					while (finder.NextFile(filepath, &isDir, !isRepo)) // don't recurse into .git directories
 					{
+						if (!lastRepo.IsEmpty())
+						{
+							if (filepath.Find(lastRepo) == 0)
+								continue;
+							else
+								lastRepo.Empty();
+						}
+						isRepo = filepath.Find(L"\\" + g_GitAdminDir.GetAdminDirName()) >= 0;
+						if (isRepo)
+						{
+							lastRepo = filepath.Mid(0, filepath.GetLength() - g_GitAdminDir.GetAdminDirName().GetLength());
+							CString msg;
+							if (!isDir)
+								msg.Format(IDS_PROC_COPY_SUBMODULE, lastRepo);
+							else
+								msg.Format(IDS_PROC_COPY_REPOSITORY, lastRepo);
+							int ret = CMessageBox::Show(hwndExplorer, msg, _T("TortoiseGit"), 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+							if (ret == 3)
+								return FALSE;
+							if (ret == 1)
+							{
+								CTGitPath(filepath).Delete(false);
+								lastRepo.Empty();
+							}
+							continue;
+						}
 						if (!isDir)
 							copiedFiles.AddPath(CTGitPath(filepath.Mid(worktreePathLen + 1))); //add the new filepath
 					}

@@ -982,7 +982,9 @@
 #define IDS_RENAME_INFO                 1470
 #define IDC_BUGTRAQCOPYBUTTON           1471
 #define IDC_GIT_USERESINGNINGKEY        1471
+#define IDS_PROC_COPY_SUBMODULE         1471
 #define IDC_BUGTRAQWCPATHLABEL          1472
+#define IDS_PROC_COPY_REPOSITORY        1472
 #define IDC_BUGTRAQPATH                 1473
 #define IDC_BUGTRAQBROWSE               1474
 #define IDC_BUGTRAQPROVIDERLABEL        1475
