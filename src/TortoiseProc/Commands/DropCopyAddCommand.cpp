@@ -107,7 +107,11 @@ bool DropCopyAddCommand::Execute()
 							else
 								lastRepo.Empty();
 						}
-						isRepo = filepath.Find(L"\\" + g_GitAdminDir.GetAdminDirName()) >= 0;
+						int pos = -1;
+						if ((pos = filepath.Find(L"\\" + g_GitAdminDir.GetAdminDirName())) >= 0)
+							isRepo = (pos == filepath.GetLength() - g_GitAdminDir.GetAdminDirName().GetLength() - 1);
+						else
+							isRepo = false;
 						if (isRepo)
 						{
 							lastRepo = filepath.Mid(0, filepath.GetLength() - g_GitAdminDir.GetAdminDirName().GetLength());
