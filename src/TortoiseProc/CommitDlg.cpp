@@ -162,7 +162,7 @@ bool PrefillMessage(const CString &filename, CString &msg)
 		{
 			CString str;
 			std::unique_ptr<BYTE[]> buf(new BYTE[file.GetLength()]);
-			UINT read = file.Read(buf.get(), file.GetLength());
+			UINT read = file.Read(buf.get(), (UINT)file.GetLength());
 			g_Git.StringAppend(&str, buf.get(), CP_UTF8, read);
 			str.Replace(_T("\r\n"), _T("\n"));
 			str.TrimRight(_T("\n"));
