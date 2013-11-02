@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009,2011-2013 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,6 +40,8 @@ bool DropMoveCommand::Execute()
 	}
 
 	droppath = droppath.Right(droppath.GetLength()-ProjectTop.GetLength()-1);
+	if (!droppath.IsEmpty())
+		droppath += L"\\";
 
 	unsigned long count = 0;
 	pathList.RemoveAdminPaths();
@@ -57,7 +60,7 @@ bool DropMoveCommand::Execute()
 				return FALSE;
 			}
 			sNewName = renDlg.m_name;
-		} while(sNewName.IsEmpty() || PathFileExists(droppath+_T("\\")+sNewName));
+		} while(sNewName.IsEmpty() || PathFileExists(droppath + sNewName));
 	}
 	CSysProgressDlg progress;
 	if (progress.IsValid())
@@ -71,9 +74,9 @@ bool DropMoveCommand::Execute()
 	{
 		CTGitPath destPath;
 		if (sNewName.IsEmpty())
-			destPath = CTGitPath(droppath+_T("\\")+pathList[nPath].GetFileOrDirectoryName());
+			destPath = CTGitPath(droppath + pathList[nPath].GetFileOrDirectoryName());
 		else
-			destPath = CTGitPath(droppath+_T("\\")+sNewName);
+			destPath = CTGitPath(droppath + sNewName);
 		if (destPath.Exists())
 		{
 			CString name = pathList[nPath].GetFileOrDirectoryName();
@@ -87,14 +90,14 @@ bool DropMoveCommand::Execute()
 			{
 				return FALSE;
 			}
-			destPath.SetFromWin(droppath+_T("\\")+dlg.m_name);
+			destPath.SetFromWin(droppath + dlg.m_name);
 		}
 		CString cmd,out;
 
 		cmd.Format(_T("git.exe mv -- \"%s\" \"%s\""),pathList[nPath].GetGitPathString(),destPath.GetGitPathString());
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(hwndExplorer, out, _T("TortoiseGit"), MB_YESNO)==IDYES)
+			if (CMessageBox::Show(hwndExplorer, out, _T("TortoiseGit"), 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
 			{
 #if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))
@@ -107,8 +110,7 @@ bool DropMoveCommand::Execute()
 			}
 			else
 			{
-				//TRACE(_T("%s\n"), (LPCTSTR)svn.GetLastErrorMessage());
-				CMessageBox::Show(hwndExplorer, _T("Cancel"), _T("TortoiseGit"), MB_ICONERROR);
+				CMessageBox::Show(hwndExplorer, IDS_git_USERCANCELLED, IDS_APPNAME, MB_ICONERROR);
 				return FALSE;		//get out of here
 			}
 		}
