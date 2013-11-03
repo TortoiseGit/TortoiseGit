@@ -671,6 +671,9 @@
     <ClCompile Include="Settings\SetDialogs3.cpp">
       <Filter>Commands\setting</Filter>
     </ClCompile>
+    <ClCompile Include="GitRefCompareList.cpp">
+      <Filter>Commands\Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1179,6 +1182,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ControlsBridge.h">
       <Filter>Utils\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GitRefCompareList.h">
+      <Filter>Commands\Log</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

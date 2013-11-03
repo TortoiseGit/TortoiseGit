@@ -4295,6 +4295,21 @@ BEGIN
                             """%s"" contains a git repository. It will not work as a submodule out of the box.\nDo you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CHANGETYPE          "Change type"
+    IDS_OLDHASH             "Old hash"
+    IDS_OLDMESSAGE          "Old message"
+    IDS_NEWHASH             "New hash"
+    IDS_NEWMESSAGE          "New message"
+    IDS_SAME                "Same"
+    IDS_NEW                 "New"
+    IDS_DELETED             "Deleted"
+    IDS_FORWARDN            "Forward %d"
+    IDS_REWINDN             "Rewind %d"
+    IDS_HIDEUNCHANGED       "Hide unchanged"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
