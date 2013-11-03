@@ -724,6 +724,8 @@ BEGIN
     CONTROL         "Randomize Sync Dialog startup position",IDC_SYNCDIALOGRANDOMPOS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,60,141,10
     LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,196,270,9
+    CONTROL         "Hide unchanged refs in Ref Compare List",IDC_REFCOMPAREHIDEUNCHANGED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,73,193,10
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
@@ -4309,6 +4311,7 @@ BEGIN
     IDS_REWINDN             "Rewind %d"
     IDS_REFLIST             "Ref List"
     IDS_HIDEUNCHANGED       "Hide unchanged"
+    IDS_REFCOMPAREHIDEUNCHANGED_TT "Hide unchanged refs in Ref Compare List"
 END
 
 #endif    // English (U.S.) resources
