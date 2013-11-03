@@ -63,6 +63,8 @@ private:
 	BOOL			m_bConfirmKillProcess;
 	CRegDWORD		m_regSyncDialogRandomPos;
 	BOOL			m_bSyncDialogRandomPos;
+	CRegDWORD		m_regRefCompareHideUnchanged;
+	BOOL			m_bRefCompareHideUnchanged;
 	CRegDWORD		m_regAutocompletion;
 	BOOL			m_bAutocompletion;
 	CRegDWORD		m_regAutocompletionTimeout;
