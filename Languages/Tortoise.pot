@@ -2335,6 +2335,10 @@ msgstr ""
 msgid "Change the window size"
 msgstr ""
 
+#. Resource IDs: (95)
+msgid "Change type"
+msgstr ""
+
 #. Resource IDs: (199)
 msgid "Changed Files"
 msgstr ""
@@ -4410,6 +4414,11 @@ msgstr ""
 msgid "Forward"
 msgstr ""
 
+#. Resource IDs: (95)
+#, c-format
+msgid "Forward %d"
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "Found an empty commit message. You have to enter one or rebase cannot proceed."
 msgstr ""
@@ -4782,6 +4791,14 @@ msgstr ""
 
 #. Resource IDs: (1326)
 msgid "Hide the script while running"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Hide unchanged"
+msgstr ""
+
+#. Resource IDs: (95, 1781)
+msgid "Hide unchanged refs in Ref Compare List"
 msgstr ""
 
 #. Resource IDs: (156)
@@ -5892,6 +5909,14 @@ msgstr ""
 msgid "New Menu"
 msgstr ""
 
+#. Resource IDs: (95)
+msgid "New hash"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "New message"
+msgstr ""
+
 #. Resource IDs: (97)
 #, c-format
 msgid "New name for %s"
@@ -6230,6 +6255,14 @@ msgstr ""
 
 #. Resource IDs: (156, 626)
 msgid "Office XP"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Old hash"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Old message"
 msgstr ""
 
 #. Resource IDs: (605)
@@ -6948,6 +6981,10 @@ msgstr ""
 msgid "Ref (Click it then go to)"
 msgstr ""
 
+#. Resource IDs: (95)
+msgid "Ref List"
+msgstr ""
+
 #. Resource IDs: (69)
 msgid "RefBrowse"
 msgstr ""
@@ -7357,6 +7394,11 @@ msgstr ""
 msgid "Rewind"
 msgstr ""
 
+#. Resource IDs: (95)
+#, c-format
+msgid "Rewind %d"
+msgstr ""
+
 #. Resource IDs: (3850)
 msgid "Rich Text (RTF)\ntext with font and paragraph formatting"
 msgstr ""
@@ -7453,6 +7495,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Safe Crlf:"
+msgstr ""
+
+#. Resource IDs: (95)
+msgid "Same"
 msgstr ""
 
 #. Resource IDs: (605)

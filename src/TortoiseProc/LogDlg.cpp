@@ -2395,7 +2395,7 @@ void CLogDlg::SetRange(const CString& range)
 	ShowStartRef();
 }
 
-void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked = FALSE, BOOL enabled = TRUE)
+static void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL checked = FALSE, BOOL enabled = TRUE)
 {
 	CString text;
 	text.LoadString(nTextID);

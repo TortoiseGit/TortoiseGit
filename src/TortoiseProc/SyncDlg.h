@@ -28,6 +28,7 @@
 #include "BranchCombox.h"
 #include "GitLoglist.h"
 #include "GitProgressList.h"
+#include "GitRefCompareList.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -39,6 +40,7 @@
 #define IDC_OUT_LOGLIST		0x5
 #define IDC_OUT_CHANGELIST	0x6
 #define IDC_CMD_GIT_PROG	0x7
+#define IDC_REFLIST			0x8
 
 #define IDT_INPUT		108
 
@@ -101,6 +103,7 @@ protected:
 	CGitStatusListCtrl	m_ConflictFileList;
 
 	CRichEditCtrl		m_ctrlCmdOut;
+	CGitRefCompareList	m_refList;
 
 	CTGitPathList		m_arOutChangeList;
 	CTGitPathList		m_arInChangeList;
@@ -156,6 +159,8 @@ protected:
 	CString			m_OutRemoteBranch;
 
 	CGitHash		m_oldHash;
+	MAP_HASH_NAME	m_oldHashMap;
+	MAP_HASH_NAME	m_newHashMap;
 
 	void ShowProgressCtrl(bool bShow=true);
 	void ShowInputCtrl(bool bShow=true);
@@ -164,6 +169,7 @@ protected:
 
 	LRESULT OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
 	LRESULT OnProgCmdFinish(WPARAM wParam, LPARAM lParam);
+	void FillNewRefMap();
 	void RunPostAction();
 	void UpdateCombox()
 	{
