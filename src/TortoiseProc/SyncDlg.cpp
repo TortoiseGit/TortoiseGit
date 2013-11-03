@@ -135,6 +135,14 @@ void CSyncDlg::OnBnClickedButtonPull()
 		return;
 	}
 
+	m_refList.Clear();
+	m_newHashMap.clear();
+	m_oldHashMap.clear();
+	if (g_Git.GetMapHashToFriendName(m_oldHashMap))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+	}
+
 	if( CurrentEntry == 0)
 	{
 		CGitHash localBranchHash;
@@ -171,6 +179,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 
 	ShowTab(IDC_CMD_LOG);
 
+	this->m_ctrlTabCtrl.ShowTab(IDC_REFLIST-1,true);
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,false);
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	this->m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
@@ -381,6 +390,7 @@ void CSyncDlg::PullComplete()
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 			this->m_InLogList.ShowText(CString(MAKEINTRESOURCE(IDS_UPTODATE)));
 			this->m_ctrlTabCtrl.ShowTab(IDC_IN_LOGLIST-1,true);
+			this->ShowTab(IDC_REFLIST);
 		}
 		else
 		{
@@ -392,8 +402,8 @@ void CSyncDlg::PullComplete()
 			CString range;
 			range.Format(_T("%s..%s"), m_oldHash.ToString(), newhash.ToString());
 			m_InLogList.FillGitLog(nullptr, &range, CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
+			this->ShowTab(IDC_IN_LOGLIST);
 		}
-		this->ShowTab(IDC_IN_LOGLIST);
 	}
 }
 
@@ -844,6 +854,13 @@ BOOL CSyncDlg::OnInitDialog()
 	m_GitProgressList.m_pProgControl = &m_ctrlProgress;
 	m_GitProgressList.m_pTaskbarList = m_pTaskbarList;
 
+	dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
+	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT;
+	m_refList.Create(dwStyle, rectDummy, &m_ctrlTabCtrl, IDC_REFLIST);
+	m_refList.SetExtendedStyle(exStyle);
+	m_refList.Init();
+	m_ctrlTabCtrl.InsertTab(&m_refList, CString(MAKEINTRESOURCE(IDS_REFLIST)), -1);
+
 	this->m_tooltips.Create(this);
 
 	AddAnchor(IDC_SYNC_TAB,TOP_LEFT,BOTTOM_RIGHT);
@@ -953,6 +970,7 @@ BOOL CSyncDlg::OnInitDialog()
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT-1,false);
 	m_ctrlTabCtrl.ShowTab(IDC_CMD_GIT_PROG-1, false);
+	m_ctrlTabCtrl.ShowTab(IDC_REFLIST-1, false);
 
 	m_ctrlRemoteBranch.m_bWantReturn = TRUE;
 	m_ctrlURL.m_bWantReturn = TRUE;
@@ -1281,10 +1299,79 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	return 0;
 }
 
+static std::map<CString, CGitHash> * HashMapToRefMap(MAP_HASH_NAME &map)
+{
+	auto rmap = new std::map<CString, CGitHash>();
+	for (auto mit = map.begin(); mit != map.end(); ++mit)
+	{
+		for (auto rit = mit->second.begin(); rit != mit->second.end(); ++rit)
+		{
+			rmap->insert(std::make_pair(*rit, mit->first));
+		}
+	}
+	return rmap;
+}
+
+void CSyncDlg::FillNewRefMap()
+{
+	m_refList.Clear();
+	m_newHashMap.clear();
+	if (g_Git.GetMapHashToFriendName(m_newHashMap))
+	{
+		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
+	}
+
+	auto oldRefMap = HashMapToRefMap(m_oldHashMap);
+	auto newRefMap = HashMapToRefMap(m_newHashMap);
+	if (m_refList.OpenRepository())
+		return;
+	for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
+	{
+		bool found = false;
+		for (auto nit = newRefMap->begin(); nit != newRefMap->end(); ++nit)
+		{
+			// changed ref
+			if (oit->first == nit->first)
+			{
+				found = true;
+				m_refList.AddEntry(oit->first, &oit->second, &nit->second);
+				break;
+			}
+		}
+		// deleted ref
+		if (!found)
+		{
+			m_refList.AddEntry(oit->first, &oit->second, nullptr);
+		}
+	}
+	for (auto nit = newRefMap->begin(); nit != newRefMap->end(); ++nit)
+	{
+		bool found = false;
+		for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
+		{
+			if (oit->first == nit->first)
+			{
+				found = true;
+				break;
+			}
+		}
+		// new ref
+		if (!found)
+		{
+			m_refList.AddEntry(nit->first, nullptr, &nit->second);
+		}
+	}
+	m_refList.CloseRepository();
+	m_refList.Show();
+}
+
 void CSyncDlg::RunPostAction()
 {
 	if (m_bWantToExit)
 		return;
+
+	FillNewRefMap();
+
 	if (this->m_CurrentCmd == GIT_COMMAND_PUSH)
 	{
 		if (!m_GitCmdStatus)

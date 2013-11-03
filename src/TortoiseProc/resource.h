@@ -1073,6 +1073,7 @@
 #define IDC_RADIO_VERSION               1514
 #define IDS_REWINDN                     1515
 #define IDC_GROUP_BRANCH                1515
+#define IDS_REFLIST                     1516
 #define IDS_HIDEUNCHANGED               1517
 #define IDC_GROUP_OPTION                1517
 #define IDC_LABEL_BRANCH                1518

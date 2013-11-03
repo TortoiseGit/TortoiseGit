@@ -4307,6 +4307,7 @@ BEGIN
     IDS_DELETED             "Deleted"
     IDS_FORWARDN            "Forward %d"
     IDS_REWINDN             "Rewind %d"
+    IDS_REFLIST             "Ref List"
     IDS_HIDEUNCHANGED       "Hide unchanged"
 END
 
