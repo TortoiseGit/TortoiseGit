@@ -60,10 +60,13 @@
 					<para>
 						Disadvantage: the process runs constantly, even if you're not 
 						working on your projects. It also uses around 10-50 MB of RAM 
-						depending on number and size of your working trees. In the
-						current implementation it doesn't check the contents of the files,
-						it just checks the last modification time against the time stored
+						depending on number and size of your working trees. From version 1.7.0 to 1.7.12
+						TGitCache did not check the contents of the files,
+						it just checked the last modification time against the time stored
 						in the git index file.
+						Starting from 1.7.13 TGitCache now also checks the contents of the files by default.
+						If you want to restore the old behavior, you can disable checking the contents
+						via the Settings dialog -> Advanced and set TGitCacheCheckContent to "false". 
 					</para>
 				</listitem>
 			</varlistentry>
