@@ -1023,8 +1023,6 @@ private:
 	void NotifyCheck();
 	CWnd * GetLogicalParent() { return m_hwndLogicalParent != NULL ? m_hwndLogicalParent : this->GetParent(); }
 
-	int CellRectFromPoint(CPoint& point, RECT *cellrect, int *col) const;
-
 	void OnContextMenuList(CWnd * pWnd, CPoint point);
 	void OnContextMenuGroup(CWnd * pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd * pWnd, CPoint point);
@@ -1034,7 +1032,6 @@ private:
 
 	virtual void PreSubclassWindow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
