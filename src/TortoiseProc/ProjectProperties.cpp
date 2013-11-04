@@ -52,19 +52,6 @@ ProjectProperties::~ProjectProperties(void)
 		git_config_free(gitconfig);
 }
 
-
-BOOL ProjectProperties::ReadPropsPathList(const CTGitPathList& pathList)
-{
-	for(int nPath = 0; nPath < pathList.GetCount(); ++nPath)
-	{
-		if (ReadProps(pathList[nPath]))
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
 int ProjectProperties::GetStringProps(CString &prop, const CString &key)
 {
 	ATLASSERT(gitconfig);
@@ -101,7 +88,7 @@ int ProjectProperties::GetBOOLProps(BOOL &b, const CString &key)
 	return 0;
 }
 
-int ProjectProperties::ReadProps(CTGitPath path)
+int ProjectProperties::ReadProps()
 {
 	if (gitconfig)
 		git_config_free(gitconfig);

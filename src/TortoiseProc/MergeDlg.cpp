@@ -114,7 +114,7 @@ BOOL CMergeDlg::OnInitDialog()
 
 	Init(true);
 
-	m_ProjectProperties.ReadProps(CTGitPath(g_Git.m_CurrentDir));
+	m_ProjectProperties.ReadProps();
 
 	m_cLogMessage.Init(m_ProjectProperties);
 	m_cLogMessage.SetFont((CString)CRegString(_T("Software\\TortoiseGit\\LogFontName"), _T("Courier New")), (DWORD)CRegDWORD(_T("Software\\TortoiseGit\\LogFontSize"), 8));

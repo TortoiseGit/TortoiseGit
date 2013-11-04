@@ -131,7 +131,7 @@ void CSettingsBugtraqConfig::LoadDataImpl(git_config * config)
 	{
 		// use project properties here, so that we correctly get the default values
 		ProjectProperties props;
-		props.ReadProps(g_Git.m_CurrentDir);
+		props.ReadProps();
 		m_URL = props.sUrl;
 		m_Logregex = props.sCheckRe + _T("\n") + props.sBugIDRe;
 		m_Label = props.sLabel;

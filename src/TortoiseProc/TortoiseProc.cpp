@@ -440,7 +440,7 @@ BOOL CTortoiseProcApp::InitInstance()
 						g_sGroupingUUID = hash;
 					}
 					ProjectProperties pp;
-					pp.ReadProps(CTGitPath());
+					pp.ReadProps();
 					CString icon = pp.sIcon;
 					icon.Replace('/', '\\');
 					if (icon.IsEmpty())

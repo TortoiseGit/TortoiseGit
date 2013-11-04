@@ -56,24 +56,15 @@ public:
 	~ProjectProperties(void);
 
 	/**
-	 * Reads the properties from a path. If the path is a file
-	 * then the properties are read from the parent folder of that file.
-	 * \param path path to a file or a folder
+	 * Reads the properties from the current working tree
 	 */
-	BOOL ReadProps(CTGitPath path);
+	BOOL ReadProps();
 
 private:
 	int GetStringProps(CString &prop, const CString &key);
 	int GetBOOLProps(BOOL &b, const CString &key);
 
 public:
-	/**
-	 * Reads the properties from all paths found in a path list.
-	 * This method calls ReadProps() for each path .
-	 * \param list of paths
-	 */
-	int ReadPropsPathList(const CTGitPathList& pathList);
-
 	/**
 	 * Searches for the BugID inside a log message. If one is found,
 	 * the method returns TRUE. The rich edit control is used to set

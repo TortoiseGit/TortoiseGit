@@ -150,7 +150,7 @@ public:
 
 	void UpdateProjectProperties()
 	{
-		m_ProjectProperties.ReadProps(this->m_Path);
+		m_ProjectProperties.ReadProps();
 
 		if ((!m_ProjectProperties.sUrl.IsEmpty())||(!m_ProjectProperties.sCheckRe.IsEmpty()))
 			m_bShowBugtraqColumn = true;
@@ -169,7 +169,6 @@ public:
 		if (refresh && m_bShowWC)
 			m_arShownList[0] = &m_wcRev;
 	}
-	void SetProjectPropertiesPath(const CTGitPath& path) {m_ProjectProperties.ReadProps(path);}
 
 	volatile LONG		m_bNoDispUpdates;
 	BOOL m_IsIDReplaceAction;
