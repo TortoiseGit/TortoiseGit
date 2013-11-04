@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,12 +29,12 @@ public:
 	~CGitDiff(void);
 
 	// Use two path to handle rename cases
-	static int Diff(CTGitPath * pPath1, CTGitPath *pPath2 ,git_revnum_t rev1, git_revnum_t rev2, bool blame=false, bool unified=false);
-	static int SubmoduleDiff(CTGitPath * pPath1, CTGitPath *pPath2 ,git_revnum_t  rev1, git_revnum_t rev2, bool blame=false, bool unified=false);
-	static int DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd=true);
-	static int DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2);
-	static int DiffCommit(CTGitPath path1, CTGitPath path2, GitRev *r1, GitRev *r2);
-	static int DiffCommit(CTGitPath &path, CString r1, CString r2);
-	static int DiffCommit(CTGitPath path1, CTGitPath path2, CString r1, CString r2);
-	static int SubmoduleDiffNull(CTGitPath *pPath1,git_revnum_t &rev1);
+	static int Diff(const CTGitPath * pPath1, const CTGitPath *pPath2, git_revnum_t rev1, git_revnum_t rev2, bool blame = false, bool unified = false);
+	static int SubmoduleDiff(const CTGitPath * pPath1, const CTGitPath *pPath2, const git_revnum_t &rev1, const git_revnum_t &rev2, bool blame = false, bool unified = false);
+	static int DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd=true);
+	static int DiffCommit(const CTGitPath &path, const GitRev *r1, const GitRev *r2);
+	static int DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const GitRev *r1, const GitRev *r2);
+	static int DiffCommit(const CTGitPath &path, const CString &r1, const CString &r2);
+	static int DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const CString &r1, const CString &r2);
+	static int SubmoduleDiffNull(const CTGitPath * pPath1, const git_revnum_t &rev1);
 };

@@ -36,7 +36,7 @@ CMassiveGitTask::~CMassiveGitTask(void)
 {
 }
 
-void CMassiveGitTask::AddFile(CString filename)
+void CMassiveGitTask::AddFile(const CString &filename)
 {
 	assert(m_bUnused);
 	if (m_bIsPath)
@@ -45,7 +45,7 @@ void CMassiveGitTask::AddFile(CString filename)
 		m_itemList.push_back(filename);
 }
 
-void CMassiveGitTask::AddFile(CTGitPath filename)
+void CMassiveGitTask::AddFile(const CTGitPath &filename)
 {
 	assert(m_bUnused);
 	if (m_bIsPath)

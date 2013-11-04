@@ -301,7 +301,7 @@ public:
 	int GetRefList(STRING_VECTOR &list);
 
 	int RefreshGitIndex();
-	int GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile);
+	int GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile);
 
 	//Example: master -> refs/heads/master
 	CString GetFullRefName(CString shortRefName);

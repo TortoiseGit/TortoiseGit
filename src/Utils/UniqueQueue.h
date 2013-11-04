@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2013 - TortoiseGit
 // Copyright (C) 2010-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,9 +45,9 @@ public:
 	UniqueQueue();
 	~UniqueQueue();
 
-	size_t			Push(T value);
+	size_t			Push(const T &value);
 	T				Pop();
-	size_t			erase(T value);
+	size_t			erase(const T &value);
 	size_t			size() { return m_Queue.size(); }
 	bool			empty() { return m_Queue.empty(); }
 private:
@@ -73,7 +74,7 @@ UniqueQueue<T>::~UniqueQueue()
 }
 
 template <class T>
-size_t UniqueQueue<T>::Push( T value )
+size_t UniqueQueue<T>::Push(const T &value)
 {
 	std::map<T, size_t>::iterator it = m_QueueTMap.find(value);
 	if (it != m_QueueTMap.end())
@@ -140,7 +141,7 @@ T UniqueQueue<T>::Pop()
 }
 
 template <class T>
-size_t UniqueQueue<T>::erase( T value )
+size_t UniqueQueue<T>::erase(const T &value)
 {
 	std::map<T, size_t>::iterator it = m_QueueTMap.find(value);
 	if (it != m_QueueTMap.end())

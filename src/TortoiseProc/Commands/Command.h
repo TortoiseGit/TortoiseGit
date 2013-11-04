@@ -38,7 +38,7 @@ public:
 	virtual bool			Execute() = 0;
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
-	void					SetPaths(const CTGitPathList& plist, const CTGitPath path)
+	void					SetPaths(const CTGitPathList& plist, const CTGitPath &path)
 							{
 								orgCmdLinePath = path;
 								CString WinPath=path.GetWinPath();

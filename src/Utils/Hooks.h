@@ -103,7 +103,7 @@ public:
 	 * Removes the hook script identified by \c key. To make the change persistent
 	 * call Save().
 	 */
-	bool				Remove(hookkey key);
+	bool				Remove(const hookkey &key);
 	/**
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */

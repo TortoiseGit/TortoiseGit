@@ -38,7 +38,7 @@ CTempFiles& CTempFiles::Instance()
 	return instance;
 }
 
-CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /* = CTGitPath() */, const GitRev revision /* = GitRev() */)
+CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /* = CTGitPath() */, const GitRev &revision /* = GitRev() */)
 {
 	DWORD len = GetTortoiseGitTempPath(0, NULL);
 

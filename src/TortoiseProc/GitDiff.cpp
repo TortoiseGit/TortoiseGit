@@ -33,7 +33,7 @@ CGitDiff::CGitDiff(void)
 CGitDiff::~CGitDiff(void)
 {
 }
-int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
+int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev1)
 {
 	CString oldhash = GIT_REV_ZERO;
 	CString oldsub ;
@@ -93,7 +93,7 @@ int CGitDiff::SubmoduleDiffNull(CTGitPath *pPath, git_revnum_t &rev1)
 	return -1;
 }
 
-int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
+int CGitDiff::DiffNull(const CTGitPath *pPath, git_revnum_t rev1, bool bIsAdd)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -115,10 +115,10 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	{
 		int result;
 		// refresh if result = 1
-		while ((result = SubmoduleDiffNull(pPath, rev1)) == 1)
+		CTGitPath path = *pPath;
+		while ((result = SubmoduleDiffNull(&path, rev1)) == 1)
 		{
-			CString sPath = pPath->GetGitPathString();
-			pPath->SetFromGit(sPath);	// pass by reference
+			path.SetFromGit(pPath->GetGitPathString());
 		}
 		return result;
 	}
@@ -170,7 +170,7 @@ int CGitDiff::DiffNull(CTGitPath *pPath, git_revnum_t rev1,bool bIsAdd)
 	return 0;
 }
 
-int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/)
+int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*/, const git_revnum_t &rev1, const git_revnum_t &rev2, bool /*blame*/, bool /*unified*/)
 {
 	CString oldhash;
 	CString newhash;
@@ -351,7 +351,7 @@ int CGitDiff::SubmoduleDiff(CTGitPath * pPath,CTGitPath * /*pPath2*/, git_revnum
 	return 0;
 }
 
-int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/)
+int CGitDiff::Diff(const CTGitPath * pPath, const CTGitPath * pPath2, git_revnum_t rev1, git_revnum_t rev2, bool /*blame*/, bool /*unified*/)
 {
 	CString temppath;
 	GetTempPath(temppath);
@@ -386,12 +386,12 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 	{
 		int result;
 		// refresh if result = 1
-		while ((result = SubmoduleDiff(pPath, pPath2, rev1, rev2)) == 1)
+		CTGitPath path = *pPath;
+		CTGitPath path2 = *pPath2;
+		while ((result = SubmoduleDiff(&path, &path2, rev1, rev2)) == 1)
 		{
-			CString sPath = pPath->GetGitPathString();
-			pPath->SetFromGit(sPath);	// pass by reference
-			CString sPath2 = pPath2->GetGitPathString();
-			pPath2->SetFromGit(sPath2);	// pass by reference
+			path.SetFromGit(pPath->GetGitPathString());
+			path2.SetFromGit(pPath2->GetGitPathString());
 		}
 		return result;
 	}
@@ -481,12 +481,12 @@ int CGitDiff::Diff(CTGitPath * pPath,CTGitPath * pPath2, git_revnum_t rev1, git_
 	return 0;
 }
 
-int CGitDiff::DiffCommit(CTGitPath &path, GitRev *r1, GitRev *r2)
+int CGitDiff::DiffCommit(const CTGitPath &path, const GitRev *r1, const GitRev *r2)
 {
 	return DiffCommit(path, path, r1, r2);
 }
 
-int CGitDiff::DiffCommit(CTGitPath path1, CTGitPath path2, GitRev *r1, GitRev *r2)
+int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const GitRev *r1, const GitRev *r2)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
@@ -507,13 +507,13 @@ int CGitDiff::DiffCommit(CTGitPath path1, CTGitPath path2, GitRev *r1, GitRev *r
 	return 0;
 }
 
-int CGitDiff::DiffCommit(CTGitPath &path, CString r1, CString r2)
+int CGitDiff::DiffCommit(const CTGitPath &path, const CString &r1, const CString &r2)
 {
 	return DiffCommit(path, path, r1, r2);
 }
 
 
-int CGitDiff::DiffCommit(CTGitPath path1, CTGitPath path2, CString r1, CString r2)
+int CGitDiff::DiffCommit(const CTGitPath &path1, const CTGitPath &path2, const CString &r1, const CString &r2)
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{

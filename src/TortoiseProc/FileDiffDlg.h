@@ -49,9 +49,9 @@ public:
 	CFileDiffDlg(CWnd* pParent = NULL);
 	virtual ~CFileDiffDlg();
 
-	void SetDiff(CTGitPath * path, GitRev rev1,GitRev rev2);
-	void SetDiff(CTGitPath * path, GitRev rev1);
-	void SetDiff(CTGitPath * path, CString hash1, CString hash2);
+	void SetDiff(const CTGitPath * path, const GitRev &rev1, const GitRev &rev2);
+	void SetDiff(const CTGitPath * path, const GitRev &rev1);
+	void SetDiff(const CTGitPath * path, const CString &hash1, const CString &hash2);
 
 	void	DoBlame(bool blame = true) {m_bBlame = blame;}
 

@@ -115,7 +115,7 @@ public:
 		return true;
 	}
 
-	CString ToString()
+	CString ToString() const
 	{
 		CString str;
 		CString a;

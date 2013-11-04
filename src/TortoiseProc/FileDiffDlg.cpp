@@ -107,7 +107,7 @@ BEGIN_MESSAGE_MAP(CFileDiffDlg, CResizableStandAloneDialog)
 END_MESSAGE_MAP()
 
 
-void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
+void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1, const GitRev &rev2)
 {
 	if(path!=NULL)
 	{
@@ -119,7 +119,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1, GitRev rev2)
 	m_rev2 = rev2;
 }
 
-void CFileDiffDlg::SetDiff(CTGitPath * path, CString hash1, CString hash2)
+void CFileDiffDlg::SetDiff(const CTGitPath * path, const CString &hash1, const CString &hash2)
 {
 	if(path!=NULL)
 	{
@@ -167,7 +167,7 @@ void CFileDiffDlg::SetDiff(CTGitPath * path, CString hash1, CString hash2)
 	}
 }
 
-void CFileDiffDlg::SetDiff(CTGitPath * path, GitRev rev1)
+void CFileDiffDlg::SetDiff(const CTGitPath * path, const GitRev &rev1)
 {
 	if(path!=NULL)
 	{

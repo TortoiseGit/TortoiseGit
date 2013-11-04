@@ -2016,7 +2016,7 @@ int CGit::RefreshGitIndex()
 	}
 }
 
-int CGit::GetOneFile(CString Refname, CTGitPath &path, const CString &outputfile)
+int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile)
 {
 	if(g_Git.m_IsUseGitDLL)
 	{

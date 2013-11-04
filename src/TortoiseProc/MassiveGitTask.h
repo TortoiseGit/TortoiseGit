@@ -30,8 +30,8 @@ public:
 	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
 	~CMassiveGitTask(void);
 
-	void					AddFile(CString filename);
-	void					AddFile(CTGitPath filename);
+	void					AddFile(const CString &filename);
+	void					AddFile(const CTGitPath &filename);
 	bool					ExecuteWithNotify(CTGitPathList *pathList, volatile BOOL &cancel, git_wc_notify_action_t action, CGitProgressList * instance);
 	bool					Execute(BOOL &cancel);
 	int						GetListCount();

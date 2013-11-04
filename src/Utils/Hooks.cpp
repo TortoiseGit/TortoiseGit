@@ -138,7 +138,7 @@ bool CHooks::Save()
 	return true;
 }
 
-bool CHooks::Remove(hookkey key)
+bool CHooks::Remove(const hookkey &key)
 {
 	return (erase(key) > 0);
 }

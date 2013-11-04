@@ -41,7 +41,7 @@ public:
 	 * \param path         if set, the temp file will have the same file extension
 	 *                     as this path.
 	 */
-	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const GitRev revision = GitRev());
+	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const GitRev &revision = GitRev());
 
 private:
 
