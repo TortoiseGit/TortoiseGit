@@ -420,7 +420,6 @@ static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
 	SECURITY_STATUS Status;
 	DWORD cSupportedAlgs = 0;
 	ALG_ID rgbSupportedAlgs[16];
-	PCCERT_CONTEXT pCertContext = nullptr;
 
 	// Build Schannel credential structure. Currently, this sample only
 	// specifies the protocol to be used (and optionally the certificate,
@@ -428,12 +427,6 @@ static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
 	SecureZeroMemory(&SchannelCred, sizeof(SchannelCred));
 
 	SchannelCred.dwVersion = SCHANNEL_CRED_VERSION;
-	if (pCertContext)
-	{
-		SchannelCred.cCreds = 1;
-		SchannelCred.paCred = &pCertContext;
-	}
-
 	SchannelCred.grbitEnabledProtocols = dwProtocol;
 
 	if (aiKeyExch)
@@ -466,13 +459,6 @@ static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
 												 nullptr,              // Value to pass to GetKey()
 												 phCreds,              // (out) Cred Handle
 												 &tsExpiry );          // (out) Lifetime (optional)
-
-	/*if (Status != SEC_E_OK)
-		printf("**** Error 0x%x returned by AcquireCredentialsHandle\n", Status);*/
-
-	// cleanup: Free the certificate context. Schannel has already made its own copy.
-	if (pCertContext)
-		CertFreeCertificateContext(pCertContext);
 
 	return Status;
 }
