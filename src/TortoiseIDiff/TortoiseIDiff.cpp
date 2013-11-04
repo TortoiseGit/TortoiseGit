@@ -23,6 +23,7 @@
 #include "LangDll.h"
 #include "TortoiseIDiff.h"
 #include "TaskbarUUID.h"
+#include <Shellapi.h>
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -76,12 +77,32 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     std::unique_ptr<CMainWindow> mainWindow(new CMainWindow(hResource));
     mainWindow->SetRegistryPath(_T("Software\\TortoiseGit\\TortoiseIDiffWindowPos"));
     std::wstring leftfile = parser.HasVal(_T("left")) ? parser.GetVal(_T("left")) : _T("");
+    std::wstring rightfile = parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T("");
     if ((leftfile.empty()) && (lpCmdLine[0] != 0))
     {
-        leftfile = lpCmdLine;
+        int nArgs;
+        LPWSTR * szArglist = CommandLineToArgvW(GetCommandLineW(), &nArgs);
+        if (szArglist)
+        {
+            if (nArgs == 3)
+            {
+                // Four parameters:
+                // [0]: Program name
+                // [1]: left file
+                // [2]: right file
+                if (PathFileExists(szArglist[1]) && PathFileExists(szArglist[2]))
+                {
+                    leftfile = szArglist[1];
+                    rightfile = szArglist[2];
+                }
+            }
+        }
+
+        // Free memory allocated for CommandLineToArgvW arguments.
+        LocalFree(szArglist);
     }
     mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(_T("lefttitle")) ? parser.GetVal(_T("lefttitle")) : _T(""));
-    mainWindow->SetRight(parser.HasVal(_T("right")) ? parser.GetVal(_T("right")) : _T(""), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
+    mainWindow->SetRight(rightfile.c_str(), parser.HasVal(_T("righttitle")) ? parser.GetVal(_T("righttitle")) : _T(""));
     if (parser.HasVal(L"base"))
         mainWindow->SetSelectionImage(FileTypeBase, parser.GetVal(L"base"), parser.HasVal(L"basetitle") ? parser.GetVal(L"basetitle") : L"");
     if (parser.HasVal(L"mine"))
