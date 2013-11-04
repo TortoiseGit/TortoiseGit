@@ -118,6 +118,7 @@
   <ItemGroup>
     <ClCompile Include="..\scintilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexLaTeX.cxx" />
+    <ClCompile Include="..\scintilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\scintilla\lexers\LexSTTXT.cxx" />
     <ClCompile Include="..\scintilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\scintilla\src\AutoComplete.cxx" />
