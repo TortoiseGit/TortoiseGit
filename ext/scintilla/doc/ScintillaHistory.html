@@ -430,6 +430,8 @@
 	<td>Özgür Emir</td>
 	<td>Neomi</td>
 	<td>OmegaPhil</td>
+      </tr><tr>
+	<td>SiegeLord</td>
     </tr>
     </table>
     <p>
@@ -440,6 +442,119 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite336.zip?download">Release 3.3.6</a>
+    </h3>
+    <ul>
+	<li>
+	Released 15 October 2013.
+	</li>
+	<li>
+	Added functions to help convert between substyles and base styles and between secondary and primary styles.
+	SCI_GETSTYLEFROMSUBSTYLE finds the base style of substyles.
+	Can be used to treat all substyles of a style equivalent to that style.
+	SCI_GETPRIMARYSTYLEFROMSTYLE finds the primary style of secondary styles.
+	StyleFromSubStyle and PrimaryStyleFromStyle methods were added to ILexerWithSubStyles so each lexer can implement these.
+	</li>
+	<li>
+	Lexer added for Rust language.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1024/">Feature #1024.</a>
+	</li>
+	<li>
+	Avoid false matches in errorlist lexer which is used for the SciTE output pane
+	by stricter checking of ctags lines.
+	</li>
+	<li>
+	Perl lexer fixes bugs with multi-byte characters, including in HEREDOCs and PODs.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1528/">Bug #1528</a>.
+	</li>
+	<li>
+	SQL folder folds 'create view' statements.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1020/">Feature #1020.</a>
+	</li>
+	<li>
+	Visual Prolog lexer updated with better support for string literals and Unicode.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1025/">Feature #1025.</a>
+	</li>
+	<li>
+	For SCI_SETIDENTIFIERS, \t, \r, and \n are allowed as well as space between identifiers.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1521/">Bug #1521</a>.
+	</li>
+	<li>
+	Gaining and losing focus is now reported as a notification with the code set to SCN_FOCUSIN
+	or SCN_FOCUSOUT.
+	This allows clients to uniformly use notifications instead of commands.
+	Since there is no longer a need for commands they will be deprecated in a future version.
+	Clients should switch any code that currently uses SCEN_SETFOCUS or SCEN_KILLFOCUS.
+	</li>
+	<li>
+	On Cocoa, clients should use the delegate mechanism or subclass ScintillaView in preference
+	to registerNotifyCallback: which will be deprecated in the future.
+	</li>
+	<li>
+	On Cocoa, the ScintillaView.h header hides internal implementation details from Platform.h and ScintillaCocoa.h.
+	InnerView was renamed to SCIContentView and MarginView was renamed to SCIMarginView.
+	dealloc removed from @interface.
+	</li>
+	<li>
+	On Cocoa, clients may customize SCIContentView by subclassing both SCIContentView and ScintillaView
+	and implementing the contentViewClass class method on the ScintillaView subclass to return the class of
+	the SCIContentView subclass.
+	</li>
+	<li>
+	On Cocoa, fixed appearance of alpha rectangles to use specified alpha and colour for outline as well as corner size.
+	This makes INDIC_STRAIGHTBOX and INDIC_ROUNDBOX look correct.
+	</li>
+	<li>
+	On Cocoa, memory leak fixed for MarginView.
+	</li>
+	<li>
+	On Cocoa, make drag and drop work when destination view is empty.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1534/">Bug #1534</a>.
+	</li>
+	<li>
+	On Cocoa, drag image fixed when view scrolled.
+	</li>
+	<li>
+	On Cocoa, SCI_POSITIONFROMPOINTCLOSE fixed when view scrolled.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1021/">Feature #1021.</a>
+	</li>
+	<li>
+	On Cocoa, don't send selection change notification when scrolling.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1522/">Bug #1522</a>.
+	</li>
+	<li>
+	On Qt, turn off idle events on destruction to prevent repeatedly calling idle.
+	</li>
+	<li>
+	Qt bindings in ScintillaEdit changed to use signed first parameter.
+	</li>
+	<li>
+	Compilation errors fixed on Windows and GTK+ with SCI_NAMESPACE.
+	</li>
+	<li>
+	On Windows, building with gcc will check if Direct2D headers are available and enable Direct2D if they are.
+	</li>
+	<li>
+	Avoid attempts to redraw empty areas when lexing beyond the currently visible lines.
+	</li>
+	<li>
+	Control more attributes of indicators in SciTE with find.mark.indicator and highlight.current.word.indicator
+	properties.
+	</li>
+	<li>
+	Fix SciTE bug with buffers becoming read-only.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1525/">Bug #1525</a>.
+	</li>
+	<li>
+	Fix linking SciTE on non-Linux Unix systems with GNU toolchain by linking to libdl.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1523/">Bug #1523</a>.
+	</li>
+	<li>
+	Fix SciTE on GTK+ 3.x incremental search to change foreground colour when no match as
+	changing background colour is difficult.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite335.zip?download">Release 3.3.5</a>

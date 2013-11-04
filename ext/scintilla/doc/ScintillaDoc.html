@@ -82,7 +82,7 @@
 
     <h1>Scintilla Documentation</h1>
 
-    <p>Last edited 22/August/2013 NH</p>
+    <p>Last edited 29 September 2013 NH</p>
 
     <p>There is <a class="jump" href="Design.html">an overview of the internal design of
     Scintilla</a>.<br />
@@ -1306,9 +1306,9 @@ struct Sci_TextToFind {
 
     <p><b id="SCI_GETLINEENDPOSITION">SCI_GETLINEENDPOSITION(int line)</b><br />
      This returns the position at the end of the line, before any line end characters. If <code>line</code>
-    is the last line in the document (which does not have any end of line characters), the result is the size of the
-    document. If <code>line</code> is negative or <code>line</code> &gt;= <a class="message"
-    href="#SCI_GETLINECOUNT"><code>SCI_GETLINECOUNT()</code></a>, the result is undefined.</p>
+    is the last line in the document (which does not have any end of line characters) or greater,
+    the result is the size of the document.
+    If <code>line</code> is negative the result is undefined.</p>
 
     <p><b id="SCI_LINELENGTH">SCI_LINELENGTH(int line)</b><br />
      This returns the length of the line, including any line end characters. If <code>line</code>
@@ -3857,7 +3857,9 @@ struct Sci_TextToFind {
     indicatorStyle)</b><br />
      <b id="SCI_INDICGETSTYLE">SCI_INDICGETSTYLE(int indicatorNumber)</b><br />
      These two messages set and get the style for a particular indicator. The indicator styles
-    currently available are:</p>
+    currently available are:<br />
+
+    <img src="Indicators.png" alt="Indicator samples" /></p>
 
     <table cellpadding="1" cellspacing="2" border="0" summary="Indicators">
       <tbody>
@@ -5930,6 +5932,8 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
      <a class="message" href="#SCI_FREESUBSTYLES">SCI_FREESUBSTYLES</a><br />
      <a class="message" href="#SCI_GETSUBSTYLESSTART">SCI_GETSUBSTYLESSTART(int styleBase)</a><br />
      <a class="message" href="#SCI_GETSUBSTYLESLENGTH">SCI_GETSUBSTYLESLENGTH(int styleBase)</a><br />
+     <a class="message" href="#SCI_GETSTYLEFROMSUBSTYLE">SCI_GETSTYLEFROMSUBSTYLE(int subStyle)</a><br />
+     <a class="message" href="#SCI_GETPRIMARYSTYLEFROMSTYLE">SCI_GETPRIMARYSTYLEFROMSTYLE(int style)</a><br />
      <a class="message" href="#SCI_SETIDENTIFIERS">SCI_SETIDENTIFIERS(int style, const char *identifiers)</a><br />
 </div>
 
@@ -6049,8 +6053,8 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     <code>SCI_SETPROPERTY</code></a> will be performed before any numeric interpretation.</p>
 
     <p><b id="SCI_SETKEYWORDS">SCI_SETKEYWORDS(int keyWordSet, const char *keyWordList)</b><br />
-     You can set up to 9 lists of keywords for use by the current lexer. This was increased from 6
-    at revision 1.50. <code>keyWordSet</code> can be 0 to 8 (actually 0 to <code>KEYWORDSET_MAX</code>)
+     You can set up to 9 lists of keywords for use by the current lexer.
+     <code>keyWordSet</code> can be 0 to 8 (actually 0 to <code>KEYWORDSET_MAX</code>)
     and selects which keyword list to replace. <code>keyWordList</code> is a list of keywords
     separated by spaces, tabs, <code>"\n"</code> or <code>"\r"</code> or any combination of these.
     It is expected that the keywords will be composed of standard ASCII printing characters,
@@ -6105,8 +6109,15 @@ sptr_t CallScintilla(unsigned int iMessage, uptr_t wParam, sptr_t lParam){
     <b id="SCI_GETSUBSTYLESLENGTH">SCI_GETSUBSTYLESLENGTH(int styleBase)</b><br />
      Return the start and length of the substyles allocated for a base style.</p>
 
+    <p><b id="SCI_GETSTYLEFROMSUBSTYLE">SCI_GETSTYLEFROMSUBSTYLE(int subStyle)</b><br />
+     For a sub style, return the base style, else return the argument.</p>
+
+    <p><b id="SCI_GETPRIMARYSTYLEFROMSTYLE">SCI_GETPRIMARYSTYLEFROMSTYLE(int style)</b><br />
+     For a secondary style, return the primary style, else return the argument.</p>
+
     <p><b id="SCI_SETIDENTIFIERS">SCI_SETIDENTIFIERS(int style, const char *identifiers)</b><br />
-     Similar to <code>SCI_SETKEYWORDS</code> but for substyles.</p>
+     Similar to <code>SCI_SETKEYWORDS</code> but for substyles.
+     The prefix feature available with <code>SCI_SETKEYWORDS</code> is not implemented for <code>SCI_SETIDENTIFIERS</code>.</p>
 </div>
 
     <h2 id="LexerObjects">Lexer Objects</h2>
@@ -6237,6 +6248,8 @@ To allow lexers to report which line ends they support, and to support substyles
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>AllocateSubStyles<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>styleBase<span class="S10">,</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>numberStyles<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>SubStylesStart<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>styleBase<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>SubStylesLength<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>styleBase<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>StyleFromSubStyle<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>subStyle<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>PrimaryStyleFromStyle<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>style<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>FreeSubStyles<span class="S10">()</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>SetIdentifiers<span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>style<span class="S10">,</span><span class="S0"> </span><span class="S5">const</span><span class="S0"> </span><span class="S5">char</span><span class="S0"> </span><span class="S10">*</span>identifiers<span class="S10">)</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
 <span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S5">virtual</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>SCI_METHOD<span class="S0"> </span>DistanceToSecondaryStyles<span class="S10">()</span><span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S4">0</span><span class="S10">;</span><br />
@@ -6425,8 +6438,16 @@ implemented and thus which methods may be called.</p>
     <h2 id="Notifications">Notifications</h2>
 
     <p>Notifications are sent (fired) from the Scintilla control to its container when an event has
-    occurred that may interest the container. Notifications are sent using the
-    <code>WM_NOTIFY</code> message on Windows and the "notify" signal on GTK+. The container is
+    occurred that may interest the container.</p>
+    <p>Notifications are sent using the
+    <code>WM_NOTIFY</code> message on Windows.</p>
+    <p>On GTK+, the "sci-notify" signal is sent and the signal handler should have the signature
+    <code>handler(GtkWidget *, gint, SCNotification *notification, gpointer  userData)</code>.</p>
+    <p>On Cocoa, a delegate implementing the <code>ScintillaNotificationProtocol</code>
+    may be set to receive notifications or the <code>ScintillaView</code> class may be subclassed and the
+    <code>notification:</code> method overridden. Overriding <code>notification:</code> allows the
+    subclass to control whether default handling is performed.</p>
+    <p>The container is
     passed a <code>SCNotification</code> structure containing information about the event.</p>
 <pre id="SCNotification">
 struct NotifyHeader {   // This matches the Win32 NMHDR structure
@@ -6500,6 +6521,8 @@ struct SCNotification {
      <a class="message" href="#SCN_AUTOCSELECTION">SCN_AUTOCSELECTION</a><br />
      <a class="message" href="#SCN_AUTOCCANCELLED">SCN_AUTOCCANCELLED</a><br />
      <a class="message" href="#SCN_AUTOCCHARDELETED">SCN_AUTOCCHARDELETED</a><br />
+     <a class="message" href="#SCN_FOCUSIN">SCN_FOCUSIN</a><br />
+     <a class="message" href="#SCN_FOCUSOUT">SCN_FOCUSOUT</a><br />
     </code>
 
     <p>The following <code>SCI_*</code> messages are associated with these notifications:</p>
@@ -6511,9 +6534,14 @@ struct SCNotification {
      <a class="message" href="#SCI_GETIDENTIFIER">SCI_GETIDENTIFIER</a><br />
     </code>
 
-    <p>The following additional notifications are sent using the <code>WM_COMMAND</code> message on
-    Windows and the "Command" signal on GTK+. This emulates the Windows Edit control. Only the lower
+    <p>The following additional notifications are sent using a secondary "command" method and should
+    be avoided in new code as the primary "notification" method provides all the same events with richer
+    information.
+    The <code>WM_COMMAND</code> message is used on Windows.
+    This emulates the Windows Edit control. Only the lower
     16 bits of the control's ID is passed in these notifications.</p>
+    <p>On GTK+, the "command" signal is sent and the signal handler should have the signature
+    <code>handler(GtkWidget *, gint wParam, gpointer lParam, gpointer userData)</code>.</p>
     <code><a class="message" href="#SCEN_CHANGE">SCEN_CHANGE</a><br />
      <a class="message" href="#SCEN_SETFOCUS">SCEN_SETFOCUS</a><br />
      <a class="message" href="#SCEN_KILLFOCUS">SCEN_KILLFOCUS</a><br />
@@ -6956,7 +6984,7 @@ href="#SCI_POSITIONFROMLINE">SCI_POSITIONFROMLINE</a>(lineNumber);
     <p><b id="SCEN_CHANGE">SCEN_CHANGE</b><br />
      <code>SCEN_CHANGE</code> (768) is fired when the text (not the style) of the document changes.
     This notification is sent using the <code>WM_COMMAND</code> message on Windows and the
-    "Command" signal on GTK+ as this is the behaviour of the standard Edit control
+    "command" signal on GTK+ as this is the behaviour of the standard Edit control
     (<code>SCEN_CHANGE</code> has the same value as the Windows Edit control
     <code>EN_CHANGE</code>). No other information is sent. If you need more detailed information
     use <a class="message" href="#SCN_MODIFIED"><code>SCN_MODIFIED</code></a>. You can filter the
@@ -6985,7 +7013,7 @@ href="#SCI_POSITIONFROMLINE">SCI_POSITIONFROMLINE</a>(lineNumber);
      <b id="SCEN_KILLFOCUS">SCEN_KILLFOCUS</b><br />
      <code>SCEN_SETFOCUS</code> (512) is fired when Scintilla receives focus and
     <code>SCEN_KILLFOCUS</code> (256) when it loses focus. These notifications are sent using the
-    <code>WM_COMMAND</code> message on Windows and the "Command" signal on GTK+ as this is the
+    <code>WM_COMMAND</code> message on Windows and the "command" signal on GTK+ as this is the
     behaviour of the standard Edit control. Unfortunately, these codes do not match the Windows Edit
     notification codes <code>EN_SETFOCUS</code> (256) and <code>EN_KILLFOCUS</code> (512). It is
     now too late to change the Scintilla codes as clients depend on the current values.</p>
@@ -7248,6 +7276,11 @@ for line = lineStart to lineEnd do SCI_ENSUREVISIBLE(line) next
     <p><b id="SCN_AUTOCCHARDELETED">SCN_AUTOCCHARDELETED</b><br />
      The user deleted a character while autocompletion list was active.
      There is no other information in SCNotification.</p>
+
+    <p><b id="SCN_FOCUSIN">SCN_FOCUSIN</b><br />
+    <b id="SCN_FOCUSOUT">SCN_FOCUSOUT</b><br />
+    <code>SCN_FOCUSIN</code> (2028) is fired when Scintilla receives focus and
+    <code>SCN_FOCUSOUT</code> (2029) when it loses focus.</p>
 
     <h2 id="Images">Images</h2>
 

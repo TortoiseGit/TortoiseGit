@@ -161,6 +161,7 @@ LEXOBJS=\
 	$(DIR_O)\LexR.obj \
 	$(DIR_O)\LexRebol.obj \
 	$(DIR_O)\LexRuby.obj \
+	$(DIR_O)\LexRust.obj \
 	$(DIR_O)\LexScriptol.obj \
 	$(DIR_O)\LexSmalltalk.obj \
 	$(DIR_O)\LexSML.obj \
@@ -456,6 +457,8 @@ $(DIR_O)\LexR.obj: ..\lexers\LexR.cxx $(LEX_HEADERS)
 $(DIR_O)\LexRebol.obj: ..\lexers\LexRebol.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexRuby.obj: ..\lexers\LexRuby.cxx $(LEX_HEADERS)
+
+$(DIR_O)\LexRust.obj: ..\lexers\LexRust.cxx $(LEX_HEADERS)
 
 $(DIR_O)\LexScriptol.obj: ..\lexers\LexScriptol.cxx $(LEX_HEADERS)
 
