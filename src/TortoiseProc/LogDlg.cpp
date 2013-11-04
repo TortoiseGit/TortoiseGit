@@ -239,7 +239,6 @@ BOOL CLogDlg::OnInitDialog()
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_AUTOURLDETECT, TRUE, NULL);
 	// make the log message rich edit control send a message when the mouse pointer is over a link
 	GetDlgItem(IDC_MSGVIEW)->SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK);
-	//m_LogList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 
 	// "unrelated paths" should be in gray color
 	m_iHidePaths = 2;
@@ -655,7 +654,6 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	m_ChangedFileListCtrl.SetRedraw(FALSE);
 //	InterlockedExchange(&m_bNoDispUpdates, TRUE);
 	m_currentChangedArray = NULL;
-	//m_ChangedFileListCtrl.SetExtendedStyle ( LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER );
 	m_ChangedFileListCtrl.DeleteAllItems();
 
 	// if we're not here to really show a selected revision, just
