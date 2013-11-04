@@ -672,7 +672,7 @@
       <Filter>Commands\setting</Filter>
     </ClCompile>
     <ClCompile Include="GitRefCompareList.cpp">
-      <Filter>Commands\Log</Filter>
+      <Filter>Commands\Sync</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1184,7 +1184,7 @@
       <Filter>Utils\UI</Filter>
     </ClInclude>
     <ClInclude Include="GitRefCompareList.h">
-      <Filter>Commands\Log</Filter>
+      <Filter>Commands\Sync</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
