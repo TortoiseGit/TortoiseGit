@@ -246,7 +246,7 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		logStr.Format(IDS_SHOWLOG_OF, newHash);
 		popup.AppendMenuIcon(IDGITRCL_NEWLOG, logStr, IDI_LOG);
 	}
-	popup.AppendMenuIcon(IDGITRCL_REFLOG, IDS_REFLOG, IDI_LOG);
+	popup.AppendMenuIcon(IDGITRCL_REFLOG, IDS_MENUREFLOG, IDI_LOG);
 
 	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 	AfxGetApp()->DoWaitCursor(1);
