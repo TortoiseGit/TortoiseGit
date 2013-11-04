@@ -1871,6 +1871,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if (m_restorepaths.find(entry2->GetWinPathString()) != m_restorepaths.end())
 							continue;
 						CTGitPath tempFile = CTempFiles::Instance().GetTempFilePath(false);
+						// delete the temp file: the temp file has the FILE_ATTRIBUTE_TEMPORARY flag set
+						// and copying the real file over it would leave that temp flag.
+						DeleteFile(tempFile.GetWinPath());
 						if (CopyFile(g_Git.m_CurrentDir + _T("\\") + entry2->GetWinPathString(), tempFile.GetWinPath(), FALSE))
 						{
 							m_restorepaths[entry2->GetWinPathString()] = tempFile.GetWinPathString();
