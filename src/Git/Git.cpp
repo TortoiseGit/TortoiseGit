@@ -2313,10 +2313,12 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 	return cmd;
 }
 
-static int UnifiedDiffToFile(const git_diff_delta * /* delta */, const git_diff_range * /* range */, char /* line_origin */, const char *content, size_t content_len, void *payload)
+static int UnifiedDiffToFile(const git_diff_delta * /* delta */, const git_diff_hunk * /* hunk */, const git_diff_line * line, void *payload)
 {
-	ATLASSERT(payload && content);
-	fwrite(content, 1, content_len, (FILE *)payload);
+	ATLASSERT(payload && line);
+	if (line->origin == GIT_DIFF_LINE_CONTEXT || line->origin == GIT_DIFF_LINE_ADDITION || line->origin == GIT_DIFF_LINE_DELETION)
+		fwrite(&line->origin, 1, 1, (FILE *)payload);
+	fwrite(line->content, 1, line->content_len, (FILE *)payload);
 	return 0;
 }
 
@@ -2350,7 +2352,7 @@ static int resolve_to_tree(git_repository *repo, const char *identifier, git_tre
 }
 
 /* use libgit2 get unified diff */
-static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_data_cb callback, void *data, bool /* bMerge */)
+static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& rev1, const git_revnum_t& rev2, git_diff_line_cb callback, void *data, bool /* bMerge */)
 {
 	git_repository *repo = nullptr;
 	CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
@@ -2376,12 +2378,12 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 	}
 
 	git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
-	git_diff_list *diff = nullptr;
+	git_diff *diff = nullptr;
 
 	if (rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
 	{
 		git_tree *t1 = nullptr;
-		git_diff_list *diff2 = nullptr;
+		git_diff *diff2 = nullptr;
 
 		do
 		{
@@ -2414,14 +2416,29 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 			if (ret) 
 				break;
 
-			ret = git_diff_print_patch(diff, callback, data);
-			if (ret)
-				break;
+			for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
+			{
+				git_patch *patch;
+				if (git_patch_from_diff(&patch, diff, i))
+				{
+					ret = -1;
+					break;
+				}
+
+				if (git_patch_print(patch, callback, data))
+				{
+					git_patch_free(patch);
+					ret = -1;
+					break;
+				}
+
+				git_patch_free(patch);
+			}
 		} while(0);
 		if (diff)
-			git_diff_list_free(diff);
+			git_diff_free(diff);
 		if (diff2)
-			git_diff_list_free(diff2);
+			git_diff_free(diff2);
 		if (t1)
 			git_tree_free(t1);
 	}
@@ -2463,15 +2480,29 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& /*path*/, const git_revnum_t& 
 				ret = -1;
 				break;
 			}
-			if(git_diff_print_patch(diff, callback, data))
+
+			for (size_t i = 0; i < git_diff_num_deltas(diff); ++i)
 			{
-				ret = -1;
-				break;
+				git_patch *patch;
+				if (git_patch_from_diff(&patch, diff, i))
+				{
+					ret = -1;
+					break;
+				}
+
+				if (git_patch_print(patch, callback, data))
+				{
+					git_patch_free(patch);
+					ret = -1;
+					break;
+				}
+
+				git_patch_free(patch);
 			}
 		} while(0);
 
 		if (diff)
-			git_diff_list_free(diff);
+			git_diff_free(diff);
 		if (t1)
 			git_tree_free(t1);
 		if (t2)
@@ -2502,11 +2533,13 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const git_revnum_t& rev1, const 
 	}
 }
 
-static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff_range * /*range*/, char /*line_origin*/, const char *content, size_t content_len, void *payload)
+static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff_hunk * /*hunk*/, const git_diff_line *line, void *payload)
 {
-	ATLASSERT(payload && content);
+	ATLASSERT(payload && line);
 	CStringA *str = (CStringA*) payload;
-	str->Append(content, content_len);
+	if (line->origin == GIT_DIFF_LINE_CONTEXT || line->origin == GIT_DIFF_LINE_ADDITION || line->origin == GIT_DIFF_LINE_DELETION)
+		str->Append(&line->origin, 1);
+	str->Append(line->content, (int)line->content_len);
 	return 0;
 }
 

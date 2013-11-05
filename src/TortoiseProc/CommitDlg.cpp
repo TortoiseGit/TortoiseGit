@@ -694,7 +694,7 @@ void CCommitDlg::OnOK()
 			}
 			else if (!revHash.IsEmpty() && !needResetIndex)
 			{
-				git_index_read(index);
+				git_index_read(index, true);
 			}
 
 			bAddSuccess = true;
