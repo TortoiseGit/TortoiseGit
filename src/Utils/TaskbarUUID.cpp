@@ -120,7 +120,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
                             break;
                         }
                         size_t sep = sr.find(L';');
-                        std::wstring olduuid = sep >= 0 ? sr.substr(0, sep) : sr;
+                        std::wstring olduuid = sep != std::wstring::npos ? sr.substr(0, sep) : sr;
                         if (olduuid.compare(uuid) == 0)
                         {
                             if (bRemoveicon)
@@ -128,7 +128,7 @@ void SetUUIDOverlayIcon( HWND hWnd )
                             else if (!sicon.empty())
                                 r = uuid + (sicon.empty() ? L"" : (L";"  + sicon));
                             else
-                                sicon = sep >= 0 ? sr.substr(sep + 1) : L"";
+                                sicon = sep != std::wstring::npos ? sr.substr(sep + 1) : L"";
                             break;
                         }
                         foundUUIDIndex++;
