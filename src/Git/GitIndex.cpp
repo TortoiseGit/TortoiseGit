@@ -117,7 +117,10 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	int ret = git_repository_open(&repository, gitdir.GetBuffer());
 	gitdir.ReleaseBuffer();
 	if (ret)
+	{
+		m_critRepoSec.Unlock();
 		return -1;
+	}
 
 	// add config files
 	git_config * config;
