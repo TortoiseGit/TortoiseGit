@@ -240,11 +240,12 @@ protected:
 		((CGitProgressList*)payload) -> Notify(tpath, git_wc_notify_checkout);
 	}
 
-	static void RemoteProgressCallback(const char *str, int len, void *data)
+	static int RemoteProgressCallback(const char *str, int len, void *data)
 	{
 		CString progText;
 		progText = CUnicodeUtils::GetUnicode(CStringA(str, len));
 		((CGitProgressList*)data) -> SetDlgItemText(IDC_PROGRESSLABEL, progText);
+		return 0;
 	}
 	static int RemoteCompletionCallback(git_remote_completion_type /*type*/, void * /*data*/)
 	{

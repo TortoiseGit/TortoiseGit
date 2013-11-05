@@ -1708,7 +1708,7 @@ bool CGitProgressList::CmdAdd(CString& sWindowTitle, bool& localoperation)
 			git_repository_free(repo);
 			return false;
 		}
-		if (git_index_read(index))
+		if (git_index_read(index, true))
 		{
 			ReportGitError();
 			git_index_free(index);
@@ -2043,48 +2043,40 @@ bool CGitProgressList::CmdClone(CString& sWindowTitle, bool& /*localoperation*/)
 
 	int error = 0;
 
-	git_clone_options clone_opts = GIT_CLONE_OPTIONS_INIT;
-
-	clone_opts.checkout_opts = checkout_opts;
-
-	clone_opts.checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE_CREATE;
-	clone_opts.checkout_opts.progress_cb = CheckoutCallback;
-	clone_opts.checkout_opts.progress_payload = this;
+	checkout_opts.checkout_strategy = m_bNoCheckout? GIT_CHECKOUT_NONE : GIT_CHECKOUT_SAFE_CREATE;
+	checkout_opts.progress_cb = CheckoutCallback;
+	checkout_opts.progress_payload = this;
 
 	git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
 
 	callbacks.update_tips = RemoteUpdatetipsCallback;
 	callbacks.progress = RemoteProgressCallback;
 	callbacks.completion = RemoteCompletionCallback;
+	callbacks.transfer_progress = FetchCallback;
+	callbacks.credentials = CAppUtils::Git2GetUserPassword;
 	callbacks.payload = this;
 
-	clone_opts.remote_callbacks = &callbacks;
-
 	CStringA refspecA = CUnicodeUtils::GetMulti(m_RefSpec, CP_UTF8);
-	if (!m_RefSpec.IsEmpty())
-		clone_opts.checkout_branch = refspecA.GetBuffer();
 	CStringA remoteA = CUnicodeUtils::GetMulti(m_remote, CP_UTF8);
-	if (!m_remote.IsEmpty())
-		clone_opts.remote_name = remoteA.GetBuffer();
-
-	clone_opts.fetch_progress_cb = FetchCallback;
-	clone_opts.fetch_progress_payload = this;
-
-	clone_opts.cred_acquire_cb = CAppUtils::Git2GetUserPassword;
-
-	clone_opts.bare = m_bBare;
 
 	git_repository_init_options init_options = GIT_REPOSITORY_INIT_OPTIONS_INIT;
 	init_options.flags = GIT_REPOSITORY_INIT_MKPATH | GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE;
 	init_options.flags |= m_bBare ? GIT_REPOSITORY_INIT_BARE : 0;
-	clone_opts.init_options = &init_options;
 
 	if(m_pAnimate)
 	{
 		m_pAnimate->ShowWindow(SW_SHOW);
 		m_pAnimate->Play(0, INT_MAX, INT_MAX);
 	}
-	error = git_clone(&cloned_repo, url, path, &clone_opts);
+	do
+	{
+		if ((error = git_repository_init_ext(&cloned_repo, path, &init_options)) < 0)
+			break;
+		if ((error = git_remote_create(&origin, cloned_repo, remoteA.IsEmpty() ? "origin" : remoteA, url)) < 0)
+			break;
+		git_remote_set_callbacks(origin, &callbacks);
+		error = git_clone_into(cloned_repo, origin, &checkout_opts, refspecA.IsEmpty() ? nullptr : (const char*)refspecA);
+	} while (false);
 
 	if (m_pAnimate)
 	{
@@ -2168,11 +2160,12 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 
 		callbacks.update_tips = RemoteUpdatetipsCallback;
 		callbacks.progress = RemoteProgressCallback;
+		callbacks.transfer_progress = FetchCallback;
 		callbacks.completion = RemoteCompletionCallback;
+		callbacks.credentials = CAppUtils::Git2GetUserPassword;
 		callbacks.payload = this;
 
 		git_remote_set_callbacks(remote, &callbacks);
-		git_remote_set_cred_acquire_cb(remote, CAppUtils::Git2GetUserPassword, NULL);
 		git_remote_set_autotag(remote, (git_remote_autotag_option_t)m_AutoTag);
 
 		if (!remotebranch.IsEmpty() && git_remote_add_fetch(remote, remotebranch))
@@ -2193,7 +2186,7 @@ bool CGitProgressList::CmdFetch(CString& sWindowTitle, bool& /*localoperation*/)
 		// Download the packfile and index it. This function updates the
 		// amount of received data and the indexer stats which lets you
 		// inform the user about progress.
-		if (git_remote_download(remote, FetchCallback, this) < 0) {
+		if (git_remote_download(remote) < 0) {
 			ReportGitError();
 			ret = false;
 			break;

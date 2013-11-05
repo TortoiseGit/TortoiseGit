@@ -130,6 +130,8 @@
   <ItemGroup>
     <ClCompile Include="..\libgit2\src\attr.c" />
     <ClCompile Include="..\libgit2\src\attr_file.c" />
+    <ClCompile Include="..\libgit2\src\blame.c" />
+    <ClCompile Include="..\libgit2\src\blame_git.c" />
     <ClCompile Include="..\libgit2\src\blob.c" />
     <ClCompile Include="..\libgit2\src\branch.c" />
     <ClCompile Include="..\libgit2\src\buf_text.c" />
@@ -246,12 +248,14 @@
     <ClCompile Include="..\libgit2\deps\regex\regex.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\libgit2\include\git2\blame.h" />
     <ClInclude Include="..\libgit2\include\git2\buffer.h" />
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
     <ClInclude Include="..\libgit2\include\git2\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\graph.h" />
     <ClInclude Include="..\libgit2\include\git2\merge.h" />
     <ClInclude Include="..\libgit2\include\git2\message.h" />
+    <ClInclude Include="..\libgit2\include\git2\patch.h" />
     <ClInclude Include="..\libgit2\include\git2\pathspec.h" />
     <ClInclude Include="..\libgit2\include\git2\push.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
@@ -267,6 +271,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
     <ClInclude Include="..\libgit2\include\git2\trace.h" />
@@ -276,6 +281,8 @@
     <ClInclude Include="..\libgit2\src\attrcache.h" />
     <ClInclude Include="..\libgit2\src\attr_file.h" />
     <ClInclude Include="..\libgit2\src\bitvec.h" />
+    <ClInclude Include="..\libgit2\src\blame.h" />
+    <ClInclude Include="..\libgit2\src\blame_git.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
     <ClInclude Include="..\libgit2\src\bswap.h" />

@@ -392,6 +392,12 @@
     <ClCompile Include="..\libgit2\src\ident.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\blame_git.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\blame.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -882,6 +888,21 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\sys\filter.h">
       <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\patch.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\blame.h">
+      <Filter>Public Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\include\git2\sys\reflog.h">
+      <Filter>Public Header Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\blame_git.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\blame.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
