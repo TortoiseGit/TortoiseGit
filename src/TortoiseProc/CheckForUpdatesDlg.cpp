@@ -211,6 +211,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			goto finish;
 		}
 	}
+	else if (FAILED(res))
+	{
+		DeleteUrlCacheEntry(sCheckURL);
+	}
 	if (res == S_OK)
 	{
 		try
