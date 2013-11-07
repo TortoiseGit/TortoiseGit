@@ -118,6 +118,8 @@ BOOL CPullFetchDlg::OnInitDialog()
 	CString regkey;
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase"),WorkingDir,this->m_IsPull);
 	m_regRebase=CRegDWORD(regkey,false);
+	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\ffonly"), WorkingDir, m_IsPull);
+	m_regFFonly = CRegDWORD(regkey, false);
 	regkey.Format(_T("Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload"),WorkingDir,this->m_IsPull);
 
 	m_regAutoLoadPutty = CRegDWORD(regkey,this->m_bAutoLoad);
@@ -157,6 +159,7 @@ BOOL CPullFetchDlg::OnInitDialog()
 		GetDlgItem(IDC_CHECK_PRUNE)->ShowWindow(SW_HIDE);
 		// check tags checkbox and make it a normal checkbox
 		m_bFetchTags = 1;
+		m_bFFonly = m_regFFonly;
 		UpdateData(FALSE);
 		::SendMessage(GetDlgItem(IDC_CHECK_FETCHTAGS)->GetSafeHwnd(), BM_SETSTYLE, GetDlgItem(IDC_CHECK_FETCHTAGS)->GetStyle() & ~BS_AUTO3STATE | BS_AUTOCHECKBOX, 0);
 	}
@@ -320,6 +323,7 @@ void CPullFetchDlg::OnBnClickedOk()
 
 	m_RemoteBranch.SaveHistory();
 	this->m_regRebase=this->m_bRebase;
+	m_regFFonly = m_bFFonly;
 
 	m_regAutoLoadPutty = m_bAutoLoad;
 
