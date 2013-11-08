@@ -5263,19 +5263,6 @@ void CBaseView::Search(SearchDirection srchDir)
 				m_pFindDialog->SetStatusText(CString(MAKEINTRESOURCE(IDS_FIND_BOTTOMREACHED)), RGB(63, 127, 47));
 			m_pMainFrame->FlashWindowEx(FLASHW_ALL, 2, 100);
 		}
-		if (startline >= 0)
-		{
-			if (nViewLine == startline)
-			{
-				CString message;
-				message.Format(IDS_FIND_NOTFOUND, m_sFindText);
-				if (m_pFindDialog)
-					m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
-				::MessageBeep(0xFFFFFFFF);
-				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
-				break;
-			}
-		}
 		switch (m_pViewData->GetState(nViewLine))
 		{
 		case DIFFSTATE_EMPTY:
@@ -5304,7 +5291,7 @@ void CBaseView::Search(SearchDirection srchDir)
 		case DIFFSTATE_EDITED:
 			{
 				sSelectedText = GetViewLineChars(nViewLine);
-				if (nViewLine==start.y)
+				if (nViewLine == start.y && startline < 0)
 					sSelectedText = srchDir==SearchNext ? sSelectedText.Mid(start.x) : sSelectedText.Left(start.x);
 				if (!m_bMatchCase)
 					sSelectedText = sSelectedText.MakeLower();
@@ -5315,7 +5302,7 @@ void CBaseView::Search(SearchDirection srchDir)
 					HighlightViewLines(nViewLine, nViewLine);
 					m_ptSelectionViewPosStart.x = startfound;
 					m_ptSelectionViewPosEnd.x = endfound;
-					if (nViewLine==start.y)
+					if (nViewLine == start.y && startline < 0)
 					{
 						m_ptSelectionViewPosStart.x += start.x;
 						m_ptSelectionViewPosEnd.x += start.x;
@@ -5331,6 +5318,20 @@ void CBaseView::Search(SearchDirection srchDir)
 				}
 			}
 			break;
+		}
+
+		if (startline >= 0)
+		{
+			if (nViewLine == startline)
+			{
+				CString message;
+				message.Format(IDS_FIND_NOTFOUND, m_sFindText);
+				if (m_pFindDialog)
+					m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
+				::MessageBeep(0xFFFFFFFF);
+				m_pMainFrame->FlashWindowEx(FLASHW_ALL, 3, 100);
+				break;
+			}
 		}
 	}
 	m_pMainFrame->m_nMoveMovesToIgnore = MOVESTOIGNORE;
