@@ -151,6 +151,7 @@
 #define IDC_MERGEGROUP                  1073
 #define IDC_CHECK1                      1074
 #define IDC_FIRSTCONFLICTONLOAD         1074
+#define IDC_SEARCHUP                    1074
 #define IDC_VERSIONBOX                  1075
 #define IDC_PATCHSELECTEDBUTTON         1075
 #define IDC_PATCHALLBUTTON              1076

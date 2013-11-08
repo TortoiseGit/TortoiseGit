@@ -33,6 +33,7 @@ CFindDlg::CFindDlg(CWnd* pParent /*=NULL*/)
 	, m_bMatchCase(FALSE)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
+	, m_bSearchUp(FALSE)
 	, m_FindMsg(0)
 	, m_clrFindStatus(RGB(0, 0, 255))
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
@@ -51,6 +52,7 @@ void CFindDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_MATCHCASE, m_bMatchCase);
 	DDX_Check(pDX, IDC_LIMITTODIFFS, m_bLimitToDiffs);
 	DDX_Check(pDX, IDC_WHOLEWORD, m_bWholeWord);
+	DDX_Check(pDX, IDC_SEARCHUP, m_bSearchUp);
 	DDX_Control(pDX, IDC_FINDCOMBO, m_FindCombo);
 	DDX_Control(pDX, IDC_FINDSTATUS, m_FindStatus);
 }

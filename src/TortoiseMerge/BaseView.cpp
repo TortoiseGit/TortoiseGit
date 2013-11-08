@@ -5112,7 +5112,12 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 
 		BuildFindStringArray();
 		if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Find)
-			OnEditFindnext();
+		{
+			if (m_pFindDialog->SearchUp())
+				OnEditFindprev();
+			else
+				OnEditFindnext();
+		}
 		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Count)
 		{
 			int count = 0;
@@ -5175,16 +5180,19 @@ void CBaseView::OnEditFindprevStart()
 
 bool CBaseView::StringFound(const CString& str, SearchDirection srchDir, int& start, int& end) const
 {
-	start = str.Find(m_sFindText, start);
-	if ((srchDir==SearchPrevious)&&(start>=0))
+	if (srchDir == SearchPrevious)
 	{
-		int laststart = start;
+		int laststart = -1;
+		int laststart2 = -1;
 		do
 		{
-			start = laststart;
-			laststart = str.Find(m_sFindText, laststart+1);
-		} while (laststart >= 0);
+			laststart2 = laststart;
+			laststart = str.Find(m_sFindText, laststart + 1);
+		} while (laststart >= 0 && laststart < start);
+		start = laststart2;
 	}
+	else
+		start = str.Find(m_sFindText, start);
 	end = start + m_sFindText.GetLength();
 	bool bStringFound = (start >= 0);
 	if (bStringFound && m_bWholeWord)
@@ -5292,10 +5300,10 @@ void CBaseView::Search(SearchDirection srchDir)
 			{
 				sSelectedText = GetViewLineChars(nViewLine);
 				if (nViewLine == start.y && startline < 0)
-					sSelectedText = srchDir==SearchNext ? sSelectedText.Mid(start.x) : sSelectedText.Left(start.x);
+					sSelectedText = srchDir == SearchNext ? sSelectedText.Mid(start.x) : sSelectedText.Left(end.x);
 				if (!m_bMatchCase)
 					sSelectedText = sSelectedText.MakeLower();
-				int startfound = 0;
+				int startfound = srchDir == SearchNext ? 0 : sSelectedText.GetLength();
 				int endfound = 0;
 				if (StringFound(sSelectedText, srchDir, startfound, endfound))
 				{
