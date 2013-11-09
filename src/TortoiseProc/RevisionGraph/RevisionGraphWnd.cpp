@@ -1462,7 +1462,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		CString currentBranch = g_Git.GetCurrentBranch();
 		CGit::REF_TYPE refType = CGit::LOCAL_BRANCH;
 		STRING_VECTOR allBranchNames = GetFriendRefNames(m_SelectedEntry1, &refType, 1);
-		for (int i = 0; i < allBranchNames.size(); ++i)
+		for (size_t i = 0; i < allBranchNames.size(); ++i)
 			if (allBranchNames[i] != currentBranch)
 				branchNames.push_back(allBranchNames[i]);
 		if (branchNames.size() == 1)

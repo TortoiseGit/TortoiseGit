@@ -222,7 +222,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	dev.graphics = Graphics::FromHDC(dev.pDC->m_hDC);
 	dev.graphics->SetPageUnit (UnitPixel);
 
-	for (int i = 0; i < m_logEntries.size(); ++i)
+	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
 		node nd;
 		nd = this->m_Graph.newNode();
@@ -232,10 +232,10 @@ bool CRevisionGraphWnd::FetchRevisionData
 		SetNodeRect(dev, &nd, m_logEntries[i], 0);
 	}
 
-	for (int i = 0; i < m_logEntries.size(); ++i)
+	for (size_t i = 0; i < m_logEntries.size(); ++i)
 	{
 		GitRev rev=m_logEntries.GetGitRevAt(i);
-		for (int j = 0; j < rev.m_ParentHash.size(); ++j)
+		for (size_t j = 0; j < rev.m_ParentHash.size(); ++j)
 		{
 			if(m_logEntries.m_HashMap.find(rev.m_ParentHash[j]) == m_logEntries.m_HashMap.end())
 			{

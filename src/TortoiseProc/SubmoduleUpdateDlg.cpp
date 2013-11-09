@@ -240,7 +240,7 @@ void CSubmoduleUpdateDlg::Refresh()
 			m_PathListBox.SetSel((int)i);
 		else
 		{
-			for (int j = 0; j < selected.size(); ++j)
+			for (size_t j = 0; j < selected.size(); ++j)
 			{
 				if (selected[j] == list[i])
 					m_PathListBox.SetSel((int)i);

@@ -517,7 +517,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	}
 
 	int index =0;
-	for(int i=0;i<this->m_arStatusArray.size();i++)
+	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		//set default checkbox status
 		CTGitPath* entry = ((CTGitPath*)m_arStatusArray[i]);
@@ -1286,7 +1286,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 	m_nLineDeleted = 0;
 	m_nRenamed = 0;
 
-	for (int i=0; i < (int)m_arStatusArray.size(); ++i)
+	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		int status=((CTGitPath*)m_arStatusArray[i])->m_Action;
 
@@ -1313,10 +1313,7 @@ bool CGitStatusListCtrl::BuildStatistics()
 
 		if(((CTGitPath*)m_arStatusArray[i])->m_Checked)
 			m_nSelected++;
-
-//			} // switch (entry->status)
-//		} // if (entry)
-	} // for (int i=0; i < (int)m_arStatusArray.size(); ++i)
+	}
 	return !bRefetchStatus;
 }
 
@@ -2708,7 +2705,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				merge.SetFromGit(temppath + _T("\\") + file1.GetFileOrDirectoryName() + _T(".Merged") + file1.GetFileExtension());
 
 				int parent1=-1, parent2 =-1;
-				for(int i=0;i<this->m_arStatusArray.size();i++)
+				for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 				{
 					if(m_arStatusArray[i]->GetGitPathString() == file1.GetGitPathString())
 					{
@@ -3595,7 +3592,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	bool bHasGroups=false;
 	int	max =0;
 
-	for(int i=0;i< this->m_arStatusArray.size(); i++)
+	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		int ParentNo = m_arStatusArray[i]->m_ParentNo&PARENT_MASK;
 		if( ParentNo > max)
@@ -4352,7 +4349,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 
 	//Create file-list ('\0' separated) for SHFileOperation
 	CString filelist;
-	for (int i = 0; i < selectIndex.size(); ++i)
+	for (size_t i = 0; i < selectIndex.size(); ++i)
 	{
 		index = selectIndex[i];
 

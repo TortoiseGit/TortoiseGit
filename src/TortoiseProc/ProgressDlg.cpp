@@ -197,7 +197,7 @@ UINT CProgressDlg::RunCmdList(CWnd *pWnd,std::vector<CString> &cmdlist,bool bSho
 	if(pdata)
 		pdata->clear();
 
-	for (int i = 0; i < cmdlist.size(); ++i)
+	for (size_t i = 0; i < cmdlist.size(); ++i)
 	{
 		if(cmdlist[i].IsEmpty())
 			continue;

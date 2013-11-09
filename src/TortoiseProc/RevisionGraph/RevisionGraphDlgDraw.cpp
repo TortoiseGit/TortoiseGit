@@ -1059,7 +1059,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 				graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, (int)noderect.Height);
 			}
 
-			for (int i = 0; i < m_HashMap[hash].size(); ++i)
+			for (size_t i = 0; i < m_HashMap[hash].size(); ++i)
 			{
 				CString shortname;
 				CString str = m_HashMap[hash][i];
@@ -1341,7 +1341,7 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, ogdf::node *pnode,
 			double xmax=0;
 			double ymax=0;
 			int lines =0;
-			for (int i = 0; i < m_HashMap[rev].size(); ++i)
+			for (size_t i = 0; i < m_HashMap[rev].size(); ++i)
 			{
 				RectF rect;
 				CString shortref = m_HashMap[rev][i];
