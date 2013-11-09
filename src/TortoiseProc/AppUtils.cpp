@@ -699,8 +699,6 @@ bool CAppUtils::LaunchPAgent(CString *keyfile,CString * pRemote)
 	{
 		cmd.Format(_T("remote.%s.puttykeyfile"),remote);
 		key = g_Git.GetConfigValue(cmd);
-		int start=0;
-		key = key.Tokenize(_T("\n"),start);
 	}
 	else
 		key=*keyfile;
@@ -2195,9 +2193,7 @@ bool CAppUtils::SendPatchMail(CString &cmd,CString &formatpatchoutput,bool autoc
 
 int CAppUtils::GetLogOutputEncode(CGit *pGit)
 {
-	CString cmd,output;
-	int start=0;
-
+	CString output;
 	output = pGit->GetConfigValue(_T("i18n.logOutputEncoding"));
 	if(output.IsEmpty())
 	{
@@ -2205,14 +2201,11 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 		if(output.IsEmpty())
 			return CP_UTF8;
 
-		int start=0;
-		output=output.Tokenize(_T("\n"),start);
 		return CUnicodeUtils::GetCPCode(output);
 
 	}
 	else
 	{
-		output=output.Tokenize(_T("\n"),start);
 		return CUnicodeUtils::GetCPCode(output);
 	}
 }
@@ -2226,8 +2219,6 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	if(output.IsEmpty())
 		cp=CP_UTF8;
 
-	int start=0;
-	output=output.Tokenize(_T("\n"),start);
 	cp=CUnicodeUtils::GetCPCode(output);
 
 	int len=message.GetLength();
