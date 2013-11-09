@@ -387,7 +387,7 @@ CString	CRevisionGraphWnd::GetFriendRefName(ogdf::node v)
 	CGitHash hash = this->m_logEntries[v->index()];
 	if(this->m_HashMap.find(hash) == m_HashMap.end())
 		return hash.ToString();
-	else if(this->m_HashMap[hash].size() == 0)
+	else if (m_HashMap[hash].empty())
 		return hash.ToString();
 	else if(this->m_HashMap[hash][0].IsEmpty())
 		return hash.ToString();
@@ -403,7 +403,7 @@ STRING_VECTOR CRevisionGraphWnd::GetFriendRefNames(ogdf::node v, CGit::REF_TYPE 
 	CGitHash hash = m_logEntries[v->index()];
 	if (m_HashMap.find(hash) == m_HashMap.end())
 		return STRING_VECTOR();
-	else if (m_HashMap[hash].size() == 0)
+	else if (m_HashMap[hash].empty())
 		return STRING_VECTOR();
 	else if (m_HashMap[hash][0].IsEmpty())
 		return STRING_VECTOR();
