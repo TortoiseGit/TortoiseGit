@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012 - TortoiseGit
-// Copyright (C) 2011-2012 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013 - TortoiseGit
+// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,9 +37,11 @@ void CGitBlameLogList::hideUnimplementedCommands()
 		GetContextMenuBit(ID_EXPORT) |
 		GetContextMenuBit(ID_CREATE_BRANCH) |
 		GetContextMenuBit(ID_CREATE_TAG) |
-		GetContextMenuBit(ID_SWITCHTOREV)
+		GetContextMenuBit(ID_SWITCHTOREV) |
+		GetContextMenuBit(ID_LOG) |
+		GetContextMenuBit(ID_BLAME) |
+		GetContextMenuBit(ID_REPOBROWSE)
 		, true);
-	m_ContextMenuMask |= GetContextMenuBit(ID_LOG) | GetContextMenuBit(ID_BLAME) | GetContextMenuBit(ID_REPOBROWSE);
 }
 
 void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*LastSelect*/, CMenu * /*menu*/)
