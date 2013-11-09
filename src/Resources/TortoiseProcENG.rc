@@ -710,6 +710,12 @@ BEGIN
     COMBOBOX        IDC_AUTOCLOSECOMBO,107,18,177,75,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Use recycle bin when reverting",IDC_USERECYCLEBIN,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,34,270,10
+    CONTROL         "Confirm to kill running git process",IDC_CONFIRMKILLPROCESS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,47,121,10
+    CONTROL         "Randomize Sync Dialog startup position",IDC_SYNCDIALOGRANDOMPOS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,60,141,10
+    CONTROL         "Hide unchanged refs in Ref Compare List",IDC_REFCOMPAREHIDEUNCHANGED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,73,193,10
     GROUPBOX        "Commit",IDC_COMMITGROUP,7,121,287,103
     CONTROL         "&Use auto-completion of file paths and keywords",IDC_AUTOCOMPLETION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,133,271,10
@@ -719,13 +725,7 @@ BEGIN
     EDITTEXT        IDC_MAXHISTORY,252,163,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,180,238,10
-    CONTROL         "Confirm to kill running git process",IDC_CONFIRMKILLPROCESS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,47,121,10
-    CONTROL         "Randomize Sync Dialog startup position",IDC_SYNCDIALOGRANDOMPOS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,60,141,10
     LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,196,270,9
-    CONTROL         "Hide unchanged refs in Ref Compare List",IDC_REFCOMPAREHIDEUNCHANGED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,73,193,10
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154
