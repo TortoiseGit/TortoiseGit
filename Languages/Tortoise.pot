@@ -4917,6 +4917,10 @@ msgstr ""
 msgid "ID:32837:VA  +M"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32860; ''
+msgid "ID:32860:VA  +F"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:32870; ''
 msgid "ID:32870:V C +L"
 msgstr ""
