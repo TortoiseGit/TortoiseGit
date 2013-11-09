@@ -321,7 +321,11 @@ BOOL CCommitDlg::OnInitDialog()
 	}
 
 	if (!m_sLogMessage.IsEmpty())
+	{
 		m_cLogMessage.SetText(m_sLogMessage);
+		m_cLogMessage.Call(SCI_SETCURRENTPOS, 0);
+		m_cLogMessage.Call(SCI_SETSEL, 0, 0);
+	}
 
 	GetWindowText(m_sWindowTitle);
 
