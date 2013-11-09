@@ -75,6 +75,7 @@ CGravatar::CGravatar()
 	, m_gravatarExit(false)
 	, m_bEnableGravatar(false)
 {
+	m_gravatarLock.Init();
 }
 
 CGravatar::~CGravatar()
@@ -90,10 +91,7 @@ void CGravatar::Init()
 	if (m_bEnableGravatar)
 	{
 		if (m_gravatarEvent == INVALID_HANDLE_VALUE)
-		{
 			m_gravatarEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
-			m_gravatarLock.Init();
-		}
 		if (m_gravatarThread == nullptr)
 		{
 			m_gravatarThread = AfxBeginThread([] (LPVOID lpVoid) -> UINT { ((CGravatar *)lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL);
