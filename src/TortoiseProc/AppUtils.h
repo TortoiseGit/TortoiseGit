@@ -141,11 +141,6 @@ public:
 	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
 
 	/**
-	 * guesses a name of the project from a repository URL
-	 */
-	static 	CString	GetProjectNameFromURL(CString url);
-
-	/**
 	 * Replacement for GitDiff::ShowUnifiedDiff(), but started as a separate process.
 	 */
 	static bool StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1,  const git_revnum_t& rev1,
