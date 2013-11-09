@@ -9,6 +9,7 @@ Released: Unreleased
  * Add Ref Compare List in Sync Dialog
  * Fixed issue #1975: Pull Dialog should remember fast forward only
  * Fixed issue #1981: Hotkey to focus on file list in commit dialog
+ * Fixed issue #1979: Comments are not stripped from commit message
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

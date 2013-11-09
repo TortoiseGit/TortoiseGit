@@ -73,4 +73,6 @@ private:
 	DWORD			m_dwMaxHistory;
 	CRegDWORD		m_regAutoSelect;
 	BOOL			m_bAutoSelect;
+	CRegDWORD		m_regStripCommentedLines;
+	BOOL			m_bStripCommentedLines;
 };

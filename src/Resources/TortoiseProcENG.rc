@@ -725,7 +725,9 @@ BEGIN
     EDITTEXT        IDC_MAXHISTORY,252,163,31,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
     CONTROL         "Select items automatically",IDC_SELECTFILESONCOMMIT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,180,238,10
-    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,196,270,9
+    CONTROL         "Strip lines starting with ""#"" in commit message",IDC_STRIPCOMMENTEDLINES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,193,270,10
+    LTEXT           "Further options for the commit dialog are on Dialogs 3 page.",IDC_STATIC,14,207,270,9
 END
 
 IDD_RESOLVE DIALOGEX 0, 0, 289, 154

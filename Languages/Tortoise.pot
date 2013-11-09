@@ -8334,6 +8334,10 @@ msgstr ""
 msgid "Strategy"
 msgstr ""
 
+#. Resource IDs: (1406)
+msgid "Strip lines starting with \"#\" in commit message"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Style"
 msgstr ""

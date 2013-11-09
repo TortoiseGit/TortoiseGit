@@ -888,6 +888,7 @@
 #define IDS_WARN_WARNING                1405
 #define IDC_SELECTFILESONCOMMIT         1405
 #define IDS_WARN_NOTE                   1406
+#define IDC_STRIPCOMMENTEDLINES         1406
 #define IDS_WARN_NOVALIDPATH            1407
 #define IDS_SYSTEM_WINCRED              1408
 #define IDC_PROXYLABEL1                 1409

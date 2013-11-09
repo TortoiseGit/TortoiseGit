@@ -2180,14 +2180,20 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
 	int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
-	int len=message.GetLength();
+	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
 
-	std::unique_ptr<char[]> buf(new char[len * 4 + 4]);
-	SecureZeroMemory(buf.get(), len * 4 + 4);
+	message.TrimRight(L" \r\n");
 
-	int lengthIncTerminator = WideCharToMultiByte(cp, 0, message, -1, buf.get(), len * 4, NULL, NULL);
-
-	file.Write(buf.get(), lengthIncTerminator - 1);
+	int start = 0;
+	while (start >= 0)
+	{
+		CString line = message.Tokenize(L"\n", start);
+		if (stripComments && (line.GetLength() > 1 && line.GetAt(0) == '#') || start < 0)
+			continue;
+		line.TrimRight(L" \r");
+		CStringA lineA = CUnicodeUtils::GetMulti(line, cp) + L"\n";
+		file.Write(lineA.GetBuffer(), lineA.GetLength());
+	}
 	file.Close();
 	return 0;
 }

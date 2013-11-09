@@ -53,6 +53,8 @@ CSetDialogs2::CSetDialogs2()
 	m_dwMaxHistory = (DWORD)m_regMaxHistory;
 	m_regAutoSelect = CRegDWORD(_T("Software\\TortoiseGit\\SelectFilesForCommit"), TRUE);
 	m_bAutoSelect = (BOOL)(DWORD)m_regAutoSelect;
+	m_regStripCommentedLines = CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE);
+	m_bStripCommentedLines = (BOOL)(DWORD)m_regStripCommentedLines;
 }
 
 CSetDialogs2::~CSetDialogs2()
@@ -73,6 +75,7 @@ void CSetDialogs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MAXHISTORY, m_dwMaxHistory);
 	DDV_MinMaxUInt(pDX, m_dwMaxHistory, 1, 100);
 	DDX_Check(pDX, IDC_SELECTFILESONCOMMIT, m_bAutoSelect);
+	DDX_Check(pDX, IDC_STRIPCOMMENTEDLINES, m_bStripCommentedLines);
 }
 
 BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
@@ -85,6 +88,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs2, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_AUTOCOMPLETIONTIMEOUT, OnChange)
 	ON_EN_CHANGE(IDC_MAXHISTORY, OnChange)
 	ON_BN_CLICKED(IDC_SELECTFILESONCOMMIT, OnChange)
+	ON_BN_CLICKED(IDC_STRIPCOMMENTEDLINES, OnChange)
 END_MESSAGE_MAP()
 
 // CSetDialogs2 message handlers
@@ -156,6 +160,7 @@ BOOL CSetDialogs2::OnApply()
 	Store (m_dwAutocompletionTimeout, m_regAutocompletionTimeout);
 	Store (m_dwMaxHistory, m_regMaxHistory);
 	Store (m_bAutoSelect, m_regAutoSelect);
+	Store (m_bStripCommentedLines, m_regStripCommentedLines);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
