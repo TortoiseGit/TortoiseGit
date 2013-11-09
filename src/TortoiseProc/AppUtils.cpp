@@ -799,7 +799,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 	pWnd->GetWindowText(sText);
 	// the rich edit control doesn't count the CR char!
 	// to be exact: CRLF is treated as one char.
-	sText.Remove('\r');
+	sText.Remove(_T('\r'));
 
 	// style each line separately
 	int offset = 0;
@@ -807,9 +807,8 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 	do
 	{
 		nNewlinePos = sText.Find('\n', offset);
-		CString sLine = sText.Mid(offset);
-		if (nNewlinePos>=0)
-			sLine = sLine.Left(nNewlinePos-offset);
+		CString sLine = nNewlinePos >= 0 ? sText.Mid(offset, nNewlinePos - offset) : sText.Mid(offset);
+
 		int start = 0;
 		int end = 0;
 		while (FindStyleChars(sLine, '*', start, end))
@@ -848,17 +847,27 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end)
 {
 	int i=start;
+	int last = sText.GetLength() - 1;
 	bool bFoundMarker = false;
+	TCHAR c = i == 0 ? _T('\0') : sText[i - 1];
+	TCHAR nextChar = i >= last ? _T('\0') : sText[i + 1];
+
 	// find a starting marker
-	while (sText[i] != 0)
+	while (i < last)
 	{
-		if (sText[i] == stylechar)
+		TCHAR prevChar = c;
+		c = nextChar;
+		nextChar = sText[i + 1];
+
+		// IsCharAlphaNumeric can be somewhat expensive.
+		// Long lines of "*****" or "----" will be pre-empted efficiently
+		// by the (c != nextChar) condition.
+
+		if ((c == stylechar) && (c != nextChar))
 		{
-			if (((i+1)<sText.GetLength())&&(IsCharAlphaNumeric(sText[i+1])) &&
-				(((i>0)&&(!IsCharAlphaNumeric(sText[i-1])))||(i==0)))
+			if (IsCharAlphaNumeric(nextChar) && !IsCharAlphaNumeric(prevChar))
 			{
-				start = i+1;
-				++i;
+				start = ++i;
 				bFoundMarker = true;
 				break;
 			}
@@ -867,14 +876,18 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 	}
 	if (!bFoundMarker)
 		return false;
+
 	// find ending marker
+	// c == sText[i - 1]
+
 	bFoundMarker = false;
-	while (sText[i] != 0)
+	while (i <= last)
 	{
-		if (sText[i] == stylechar)
+		TCHAR prevChar = c;
+		c = sText[i];
+		if (c == stylechar)
 		{
-			if ((IsCharAlphaNumeric(sText[i-1])) &&
-				((((i+1)<sText.GetLength())&&(!IsCharAlphaNumeric(sText[i+1])))||(i+1)==sText.GetLength()))
+			if ((i == last) || (!IsCharAlphaNumeric(sText[i + 1]) && IsCharAlphaNumeric(prevChar)))
 			{
 				end = i;
 				++i;
