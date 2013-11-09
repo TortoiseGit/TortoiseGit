@@ -171,7 +171,7 @@ void CGitStatusListCtrl::ClearStatusArray()
 {
 #if 0
 	Locker lock(m_critSec);
-	for (size_t i=0; i < m_arStatusArray.size(); i++)
+	for (size_t i = 0; i < m_arStatusArray.size(); ++i)
 	{
 		delete m_arStatusArray[i];
 	}
@@ -494,17 +494,17 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 	if(UpdateStatusList)
 	{
 		m_arStatusArray.clear();
-		for(int i=0;i<this->m_StatusFileList.GetCount();i++)
+		for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 		{
 			m_arStatusArray.push_back((CTGitPath*)&m_StatusFileList[i]);
 		}
 
-		for(int i=0;i<this->m_UnRevFileList.GetCount();i++)
+		for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 		{
 			m_arStatusArray.push_back((CTGitPath*)&m_UnRevFileList[i]);
 		}
 
-		for(int i=0;i<this->m_IgnoreFileList.GetCount();i++)
+		for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 		{
 			m_arStatusArray.push_back((CTGitPath*)&m_IgnoreFileList[i]);
 		}
@@ -737,7 +737,7 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& checkedList, bool /*bShowFolders*/ /* = true */)
 {
 	DeleteAllItems();
-	for(int i=0;i<checkedList.GetCount();i++)
+	for (int i = 0; i < checkedList.GetCount(); ++i)
 		this->AddEntry((CTGitPath *)&checkedList[i],0,i);
 	return ;
 #if 0
@@ -874,8 +874,7 @@ void CGitStatusListCtrl::Show(unsigned int /*dwShow*/, const CTGitPathList& chec
 }
 int CGitStatusListCtrl::GetColumnIndex(int mask)
 {
-	int i=0;
-	for(i=0;i<32;i++)
+	for (int i = 0; i < 32; ++i)
 		if(mask&0x1)
 			return i;
 		else
@@ -2260,7 +2259,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							bool updateStatusList = false;
-							for(int i=0;i<targetList.GetCount();i++)
+							for (int i = 0 ; i < targetList.GetCount(); ++i)
 							{
 								int nListboxEntries = GetItemCount();
 								for (int nItem=0; nItem<nListboxEntries; ++nItem)
@@ -3157,7 +3156,7 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 
 	pathList.Clear();
 	int nListItems = GetItemCount();
-	for (int i=0; i< nListItems; i++)
+	for (int i = 0; i< nListItems; ++i)
 	{
 		CTGitPath * entry = (CTGitPath*)GetItemData(i);
 		ASSERT(entry != NULL);
@@ -3417,7 +3416,7 @@ bool CGitStatusListCtrl::EnableFileDrop()
 
 bool CGitStatusListCtrl::HasPath(const CTGitPath& path)
 {
-	for (size_t i=0; i < m_arStatusArray.size(); i++)
+	for (size_t i=0; i < m_arStatusArray.size(); ++i)
 	{
 		if (m_arStatusArray[i]->IsEquivalentTo(path))
 			return true;
@@ -3628,7 +3627,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 			grp.uAlign = LVGA_HEADER_LEFT;
 			InsertGroup(0, &grp);
 
-			for(int i=0;i<=max;i++)
+			for (int i = 0; i <= max; ++i)
 			{
 				CString str;
 				str.Format(IDS_STATUSLIST_GROUP_DIFFWITHPARENT, i+1);
@@ -3745,7 +3744,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 	if(hash == GIT_REV_ZERO)
 	{
-		for(int i=0;i<count;i++)
+		for (int i = 0; i < count; ++i)
 		{
 			BYTE_VECTOR cmdout;
 			cmdout.clear();
@@ -3803,14 +3802,14 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 				file2.Close();
 				CMessageBox::Show(NULL, _T("Parse ls-files failed!\nPlease inspect ") + tempFile1 + _T("\nand ") + tempFile2, _T("TortoiseGit"), MB_OK);
 			}
-			for(int i=0;i<m_StatusFileList.GetCount();i++)
+			for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 				((CTGitPath&)(m_StatusFileList[i])).m_Action=CTGitPath::LOGACTIONS_ADDED;
 		}
 		else
 			this->m_StatusFileList.ParserFromLog(out);
 
 		//handle delete conflict case, when remote : modified, local : deleted.
-		for(int i=0;i<count;i++)
+		for (int i = 0; i < count; ++i)
 		{
 			BYTE_VECTOR cmdout;
 			CString cmd;
@@ -3824,7 +3823,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 			CTGitPathList conflictlist;
 			conflictlist.ParserFromLog(cmdout);
-			for(int i=0;i<conflictlist.GetCount();i++)
+			for (int i = 0; i < conflictlist.GetCount(); ++i)
 			{
 				CTGitPath *p=m_StatusFileList.LookForGitPath(conflictlist[i].GetGitPathString());
 				if(p)
@@ -3836,7 +3835,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 		// handle source files of file renames/moves (issue #860)
 		// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
-		for(int i = 0; i < count; i++)
+		for (int i = 0; i < count; ++i)
 		{
 			BYTE_VECTOR cmdout;
 			CString cmd;
@@ -3852,7 +3851,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			deletelist.ParserFromLog(cmdout, true);
 			BOOL bDeleteChecked = FALSE;
 			int deleteFromIndex = 0;
-			for(int i = 0; i < deletelist.GetCount(); i++)
+			for (int i = 0; i < deletelist.GetCount(); ++i)
 			{
 				CTGitPath *p = m_StatusFileList.LookForGitPath(deletelist[i].GetGitPathString());
 				if(!p)
@@ -3882,7 +3881,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 		else
 			count = list->GetCount();
 
-		for(int i=0;i<count;i++)
+		for (int i = 0; i < count; ++i)
 		{
 			BYTE_VECTOR cmdout;
 			CString cmd;
@@ -3899,7 +3898,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 
 	}
 
-	for(int i=0;i<m_StatusFileList.GetCount();i++)
+	for (int i = 0; i < m_StatusFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_StatusFileList[i];
 		gitpatch->m_Checked = TRUE;
@@ -3913,7 +3912,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 {
 	m_arStatusArray.clear();
-	for(int i=0;i<list.GetCount();i++)
+	for (int i = 0; i < list.GetCount(); ++i)
 	{
 		CTGitPath * gitpath=(CTGitPath*)&list[i];
 
@@ -3929,7 +3928,7 @@ int CGitStatusListCtrl::UpdateWithGitPathList(CTGitPathList &list)
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 {
 	m_UnRevFileList = list;
-	for(int i=0;i<m_UnRevFileList.GetCount();i++)
+	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
 		gitpatch->m_Checked = FALSE;
@@ -3941,7 +3940,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList &list)
 int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 {
 	this->m_UnRevFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER,List);
-	for(int i=0;i<m_UnRevFileList.GetCount();i++)
+	for (int i = 0; i < m_UnRevFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_UnRevFileList[i];
 		gitpatch->m_Checked = FALSE;
@@ -3953,7 +3952,7 @@ int CGitStatusListCtrl::UpdateUnRevFileList(CTGitPathList *List)
 int CGitStatusListCtrl::UpdateIgnoreFileList(CTGitPathList *List)
 {
 	this->m_IgnoreFileList.FillUnRev(CTGitPath::LOGACTIONS_UNVER|CTGitPath::LOGACTIONS_IGNORE,List);
-	for(int i=0;i<m_IgnoreFileList.GetCount();i++)
+	for (int i = 0; i < m_IgnoreFileList.GetCount(); ++i)
 	{
 		CTGitPath * gitpatch=(CTGitPath*)&m_IgnoreFileList[i];
 		gitpatch->m_Checked = FALSE;
