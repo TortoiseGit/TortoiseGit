@@ -1826,13 +1826,14 @@
 #define IDS_STATGRAPH_LINES_BYDATE_WO   32854
 #define IDS_STATGRAPH_LINES_BYDATE_W_Y  32855
 #define IDS_STATGRAPH_LINES_BYDATE_WO_Y 32856
+#define ID_FOCUS_FILELIST               32860
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
-#define _APS_NEXT_COMMAND_VALUE         32860
+#define _APS_NEXT_COMMAND_VALUE         32861
 #define _APS_NEXT_CONTROL_VALUE         1782
 #define _APS_NEXT_SYMED_VALUE           201
 #endif

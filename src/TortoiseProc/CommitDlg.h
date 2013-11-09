@@ -92,6 +92,7 @@ protected:
 	afx_msg void OnEnChangeLogmessage();
 	afx_msg void OnStnClickedExternalwarning();
 	afx_msg void OnFocusMessage();
+	afx_msg void OnFocusFileList();
 	afx_msg LRESULT OnGitStatusListCtrlItemCountChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM);

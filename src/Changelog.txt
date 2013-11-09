@@ -8,6 +8,7 @@ Released: Unreleased
  * Fixed issue #1956: Ship more overlay icon sets as TortoiseSVN does
  * Add Ref Compare List in Sync Dialog
  * Fixed issue #1975: Pull Dialog should remember fast forward only
+ * Fixed issue #1981: Hotkey to focus on file list in commit dialog
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

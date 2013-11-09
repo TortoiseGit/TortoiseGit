@@ -141,6 +141,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_MESSAGEONLY, &CCommitDlg::OnBnClickedCommitMessageOnly)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, &CCommitDlg::OnBnClickedWholeProject)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
+	ON_COMMAND(ID_FOCUS_FILELIST, OnFocusFileList)
 	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
@@ -2398,6 +2399,11 @@ void CCommitDlg::OnBnClickedWholeProject()
 void CCommitDlg::OnFocusMessage()
 {
 	m_cLogMessage.SetFocus();
+}
+
+void CCommitDlg::OnFocusFileList()
+{
+	m_ListCtrl.SetFocus();
 }
 
 void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
