@@ -47,10 +47,8 @@ public:
 	 */
 	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects, const std::vector<CHARRANGE>& positions);
 
-private:
-	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
-
 protected:
+	static void SetCharFormat(CWnd* window, DWORD mask, DWORD effects);
 	CCommonAppUtils(void){};
 	~CCommonAppUtils(void){};
 };

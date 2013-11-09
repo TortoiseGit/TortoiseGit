@@ -816,12 +816,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 		{
 			CHARRANGE range = {(LONG)start+offset, (LONG)end+offset};
 			pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-			CHARFORMAT2 format;
-			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-			format.cbSize = sizeof(CHARFORMAT2);
-			format.dwMask = CFM_BOLD;
-			format.dwEffects = CFE_BOLD;
-			pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			SetCharFormat(pWnd, CFM_BOLD, CFE_BOLD);
 			bStyled = true;
 			start = end;
 		}
@@ -831,12 +826,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 		{
 			CHARRANGE range = {(LONG)start+offset, (LONG)end+offset};
 			pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-			CHARFORMAT2 format;
-			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-			format.cbSize = sizeof(CHARFORMAT2);
-			format.dwMask = CFM_ITALIC;
-			format.dwEffects = CFE_ITALIC;
-			pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			SetCharFormat(pWnd, CFM_ITALIC, CFE_ITALIC);
 			bStyled = true;
 			start = end;
 		}
@@ -846,12 +836,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 		{
 			CHARRANGE range = {(LONG)start+offset, (LONG)end+offset};
 			pWnd->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&range);
-			CHARFORMAT2 format;
-			SecureZeroMemory(&format, sizeof(CHARFORMAT2));
-			format.cbSize = sizeof(CHARFORMAT2);
-			format.dwMask = CFM_UNDERLINE;
-			format.dwEffects = CFE_UNDERLINE;
-			pWnd->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+			SetCharFormat(pWnd, CFM_UNDERLINE, CFE_UNDERLINE);
 			bStyled = true;
 			start = end;
 		}
