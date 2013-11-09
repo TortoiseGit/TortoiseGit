@@ -80,6 +80,7 @@ CGravatar::CGravatar()
 CGravatar::~CGravatar()
 {
 	SafeTerminateGravatarThread();
+	m_gravatarLock.Term();
 	if (m_gravatarEvent)
 		CloseHandle(m_gravatarEvent);
 }
