@@ -2196,14 +2196,7 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 	CString output;
 	output = pGit->GetConfigValue(_T("i18n.logOutputEncoding"));
 	if(output.IsEmpty())
-	{
-		output =  pGit->GetConfigValue(_T("i18n.commitencoding"));
-		if(output.IsEmpty())
-			return CP_UTF8;
-
-		return CUnicodeUtils::GetCPCode(output);
-
-	}
+		return CUnicodeUtils::GetCPCode(pGit->GetConfigValue(_T("i18n.commitencoding")));
 	else
 	{
 		return CUnicodeUtils::GetCPCode(output);
@@ -2212,14 +2205,7 @@ int CAppUtils::GetLogOutputEncode(CGit *pGit)
 int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 {
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
-	CString cmd,output;
-	int cp=CP_UTF8;
-
-	output= g_Git.GetConfigValue(_T("i18n.commitencoding"));
-	if(output.IsEmpty())
-		cp=CP_UTF8;
-
-	cp=CUnicodeUtils::GetCPCode(output);
+	int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
 	int len=message.GetLength();
 

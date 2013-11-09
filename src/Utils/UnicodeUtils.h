@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2013 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +47,7 @@ public:
 	static CStringA GetUTF8(const CStringA& string);
 	static CString GetUnicode(const CStringA& string, int acp=CP_UTF8);
 	static CStringA ConvertWCHARStringToUTF8(const CString& string);
-	static int GetCPCode(CString & codename);
+	static int GetCPCode(const CString & codename);
 #endif
 #ifdef UNICODE
 	static std::string StdGetUTF8(const wide_string& wide);
