@@ -210,7 +210,7 @@ BOOL CSetMainPage::OnApply()
 
 	// only complete if the msysgit directory is ok
 	g_Git.m_bInitialized = FALSE;
-	if(g_Git.CheckMsysGitDir())
+	if (g_Git.CheckMsysGitDir(FALSE))
 	{
 		SetModified(FALSE);
 		return ISettingsPropPage::OnApply();
@@ -264,7 +264,7 @@ void CSetMainPage::OnCheck()
 
 	g_Git.m_bInitialized = false;
 
-	if(g_Git.CheckMsysGitDir())
+	if (g_Git.CheckMsysGitDir(FALSE))
 	{
 		CString cmd;
 		CString out;

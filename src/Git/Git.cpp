@@ -1669,7 +1669,7 @@ static void SetLibGit2TemplatePath(const CString &value)
 	valueA.ReleaseBuffer();
 }
 
-BOOL CGit::CheckMsysGitDir()
+BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 {
 	if (m_bInitialized)
 	{
@@ -1733,6 +1733,9 @@ BOOL CGit::CheckMsysGitDir()
 	str=msysdir;
 	if(str.IsEmpty() || !FileExists(str + _T("\\git.exe")))
 	{
+		if (!bFallback)
+			return FALSE;
+
 		CRegString msyslocalinstalldir = CRegString(REG_MSYSGIT_INSTALL_LOCAL, _T(""), FALSE, HKEY_CURRENT_USER);
 		str = msyslocalinstalldir;
 		str.TrimRight(_T("\\"));

@@ -142,7 +142,7 @@ public:
 		}
 	}
 
-	BOOL CheckMsysGitDir();
+	BOOL CheckMsysGitDir(BOOL bFallback = TRUE);
 	BOOL m_bInitialized;
 
 	CString GetHomeDirectory();
