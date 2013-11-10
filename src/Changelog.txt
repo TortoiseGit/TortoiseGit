@@ -17,6 +17,7 @@ Released: Unreleased
  * Fixed issue #1958: Revision graph crashes when trying to switch/checkout via context menu
  * Fixed issue #1963: TortoiseGitMerge: Missing color config when an added line is changed
  * Fixed issue #1976: Commit log crashes if it receives a WM_PRINTCLIENT while opening
+ * Fixed issue #1974: bugtraq logregex does not save correctly
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
