@@ -209,6 +209,7 @@ BOOL CSetMainPage::OnApply()
 	Store (m_bCheckNewer, m_regCheckNewer);
 
 	// only complete if the msysgit directory is ok
+	g_Git.m_bInitialized = FALSE;
 	if(g_Git.CheckMsysGitDir())
 	{
 		SetModified(FALSE);
