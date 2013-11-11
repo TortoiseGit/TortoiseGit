@@ -2456,7 +2456,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				else if (response == IDC_REBASE_POST_BUTTON + 1)
 				{
 					CString cmd, out, err;
-					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+					cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
 						g_Git.m_CurrentDir,
 						g_Git.FixBranchName(dlg.m_Upstream),
 						g_Git.FixBranchName(dlg.m_Branch));
