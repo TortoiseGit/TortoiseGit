@@ -152,7 +152,7 @@ bool SubmoduleUpdateCommand::Execute()
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
 		CString str;
-		str.Format(_T("git.exe submodule update%s \"%s\""), params, submoduleUpdateDlg.m_PathList[i]);
+		str.Format(_T("git.exe submodule update%s -- \"%s\""), params, submoduleUpdateDlg.m_PathList[i]);
 		progress.m_GitCmdList.push_back(str);
 	}
 
@@ -197,7 +197,7 @@ bool SubmoduleCommand::Execute(CString cmd,  CString arg)
 	{
 		if(orgPathList[i].IsDirectory())
 		{
-			str.Format(_T("git.exe submodule %s %s \"%s\""),cmd,arg, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
+			str.Format(_T("git.exe submodule %s %s -- \"%s\""),cmd,arg, ((CTGitPath &)orgPathList[i]).GetSubPath(CTGitPath(super)).GetGitPathString());
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

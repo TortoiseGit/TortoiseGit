@@ -686,7 +686,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git symbolic-ref %s", symbolicRefName);
+		cmd.Format(L"git.exe symbolic-ref %s", symbolicRefName);
 		if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
 			return CString();//Error
 		int iStart = 0;
@@ -701,7 +701,7 @@ CString CGit::GetFullRefName(CString shortRefName)
 {
 	CString refName;
 	CString cmd;
-	cmd.Format(L"git rev-parse --symbolic-full-name %s", shortRefName);
+	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", shortRefName);
 	if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
 		return CString();//Error
 	int iStart = 0;
@@ -814,7 +814,7 @@ CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bo
 	CString num;
 	CString since;
 
-	CString file;
+	CString file = _T(" --");
 
 	if(path)
 		file.Format(_T(" -- \"%s\""),path->GetGitPathString());
@@ -1128,13 +1128,13 @@ int CGit::GetCommitDiffList(const CString &rev1,const CString &rev2,CTGitPathLis
 	{
 		//rev1=+_T("");
 		if(rev1 == GIT_REV_ZERO)
-			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s"),rev2);
+			cmd.Format(_T("git.exe diff -r --raw -C -M --numstat -z %s --"), rev2);
 		else
-			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s"),rev1);
+			cmd.Format(_T("git.exe diff -r -R --raw -C -M --numstat -z %s --"), rev1);
 	}
 	else
 	{
-		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s"),rev2,rev1);
+		cmd.Format(_T("git.exe diff-tree -r --raw -C -M --numstat -z %s %s --"), rev2, rev1);
 	}
 
 	BYTE_VECTOR out;
@@ -1269,7 +1269,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	CString output;
 
 	CString cmd;
-	cmd.Format(_T("git show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
+	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
 	int ret = Run(cmd, &output, NULL, CP_UTF8);
 	if (!ret)
 	{
@@ -1294,7 +1294,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	CString cmd, output;
 
-	cmd = _T("git show-ref ");
+	cmd = _T("git.exe show-ref ");
 	if (isBranch)
 		cmd += _T("--heads ");
 	else
@@ -1861,7 +1861,7 @@ BOOL CGit::CheckCleanWorkTree()
 	if(Run(cmd,&out,CP_UTF8))
 		return FALSE;
 
-	cmd=_T("git diff-index --cached --quiet HEAD --ignore-submodules");
+	cmd = _T("git.exe diff-index --cached --quiet HEAD --ignore-submodules --");
 	if(Run(cmd,&out,CP_UTF8))
 		return FALSE;
 
@@ -2288,9 +2288,9 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff --stat -p %s"), rev1);
+		cmd.Format(_T("git.exe diff --stat -p %s --"), rev1);
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(_T("git.exe diff -R --stat -p %s"), rev2);
+		cmd.Format(_T("git.exe diff -R --stat -p %s --"), rev2);
 	else
 	{
 		CString merge;
@@ -2303,7 +2303,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const git_revnum_t& rev1,
 		CString unified;
 		if (diffContext > 0)
 			unified.Format(_T(" --unified=%d"), diffContext);
-		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s"), merge, unified, rev1, rev2);
+		cmd.Format(_T("git.exe diff-tree -r -p %s %s --stat %s %s --"), merge, unified, rev1, rev2);
 	}
 
 	if (!path.IsEmpty())

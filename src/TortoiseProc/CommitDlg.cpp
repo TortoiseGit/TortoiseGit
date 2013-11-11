@@ -889,12 +889,12 @@ void CCommitDlg::OnOK()
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{
-		if (g_Git.Run(_T("git branch ") + m_sCreateNewBranch, &out, CP_UTF8))
+		if (g_Git.Run(_T("git.exe branch ") + m_sCreateNewBranch, &out, CP_UTF8))
 		{
 			MessageBox(_T("Creating new branch failed:\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			bAddSuccess = false;
 		}
-		if (g_Git.Run(_T("git checkout ") + m_sCreateNewBranch, &out, CP_UTF8))
+		if (g_Git.Run(_T("git.exe checkout ") + m_sCreateNewBranch + _T(" --"), &out, CP_UTF8))
 		{
 			MessageBox(_T("Switching to new branch failed:\n") + out, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 			bAddSuccess = false;

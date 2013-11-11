@@ -57,7 +57,7 @@ bool CleanupCommand::Execute()
 		bool quotepath = g_Git.GetConfigValueBool(_T("core.quotepath"));
 
 		CString cmd;
-		cmd.Format(_T("git clean"));
+		cmd.Format(_T("git.exe clean"));
 		if (dlg.m_bDryRun || !dlg.m_bNoRecycleBin)
 			cmd += _T(" -n ");
 		if(dlg.m_bDir)

@@ -85,7 +85,7 @@ bool PasteCopyCommand::Execute()
 			// source file is unversioned: move the file to the target, then add it
 			CopyFile(sourcePath.GetWinPath(), fullDropPath.GetWinPath(), FALSE);
 			CString cmd,output;
-			cmd.Format(_T("git.exe add \"%s\""),fullDropPath.GetWinPath());
+			cmd.Format(_T("git.exe add -- \"%s\""),fullDropPath.GetWinPath());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				TRACE(_T("%s\n"), (LPCTSTR)output);

@@ -385,7 +385,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	m_RefTreeCtrl.SetItemData(m_TreeRoot.m_hTree,(DWORD_PTR)&m_TreeRoot);
 
 	CString allRefs, error;
-	if (g_Git.Run(L"git for-each-ref --format="
+	if (g_Git.Run(L"git.exe for-each-ref --format="
 			  L"%(refname)%04"
 			  L"%(objectname)%04"
 			  L"%(authordate:relative)%04"
@@ -1356,7 +1356,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 	CString newNameTrunced = newName.Mid(11);
 
 	CString errorMsg;
-	if(g_Git.Run(L"git branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &errorMsg, CP_UTF8) != 0)
+	if(g_Git.Run(L"git.exe branch -m \"" + origName + L"\" \"" + newNameTrunced + L"\"", &errorMsg, CP_UTF8) != 0)
 	{
 		CMessageBox::Show(m_hWnd, errorMsg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
 		return;

@@ -808,7 +808,7 @@ int CRebaseDlg::StartRebase()
 	if(!this->m_IsCherryPick)
 	{
 		//Todo call comment_for_reflog
-		cmd.Format(_T("git.exe checkout %s"),this->m_BranchCtrl.GetString());
+		cmd.Format(_T("git.exe checkout %s --"), this->m_BranchCtrl.GetString());
 		this->AddLogString(cmd);
 		while (true)
 		{
@@ -852,7 +852,7 @@ int CRebaseDlg::StartRebase()
 
 	if( !this->m_IsCherryPick )
 	{
-		cmd.Format(_T("git.exe checkout -f %s"), m_OrigUpstreamHash.ToString());
+		cmd.Format(_T("git.exe checkout -f %s --"), m_OrigUpstreamHash.ToString());
 		this->AddLogString(cmd);
 		while (true)
 		{
@@ -919,7 +919,7 @@ int CRebaseDlg::FinishRebase()
 	}
 	CString out,cmd;
 
-	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
+	cmd.Format(_T("git.exe checkout -f %s --"), this->m_BranchCtrl.GetString());
 	AddLogString(cmd);
 	while (true)
 	{
@@ -935,7 +935,7 @@ int CRebaseDlg::FinishRebase()
 	}
 	AddLogString(out);
 
-	cmd.Format(_T("git.exe reset --hard %s"), head.ToString());
+	cmd.Format(_T("git.exe reset --hard %s --"), head.ToString());
 	AddLogString(cmd);
 	while (true)
 	{
@@ -980,7 +980,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString oldbranch = g_Git.GetCurrentBranch();
 		if( oldbranch != m_BranchCtrl.GetString() )
 		{
-			cmd.Format(_T("git.exe checkout %s"),m_BranchCtrl.GetString());
+			cmd.Format(_T("git.exe checkout %s --"), m_BranchCtrl.GetString());
 			AddLogString(cmd);
 			while (true)
 			{
@@ -1016,7 +1016,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			return;
 		}
 
-		cmd.Format(_T("git.exe reset --hard %s"),g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
+		cmd.Format(_T("git.exe reset --hard %s --"), g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 		CString log;
 		log.Format(IDS_PROC_REBASE_FFTO, m_UpstreamCtrl.GetString());
 		this->AddLogString(log);
@@ -1856,7 +1856,7 @@ void CRebaseDlg::OnBnClickedAbort()
 
 	if(this->m_IsFastForward)
 	{
-		cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.ToString());
+		cmd.Format(_T("git.exe reset --hard %s --"),this->m_OrigBranchHash.ToString());
 		while (true)
 		{
 			out.Empty();
@@ -1872,7 +1872,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		__super::OnCancel();
 		return;
 	}
-	cmd.Format(_T("git.exe checkout -f %s"),g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
+	cmd.Format(_T("git.exe checkout -f %s --"), g_Git.FixBranchName(this->m_UpstreamCtrl.GetString()));
 	while (true)
 	{
 		out.Empty();
@@ -1889,7 +1889,7 @@ void CRebaseDlg::OnBnClickedAbort()
 			break;
 	}
 
-	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigUpstreamHash.ToString());
+	cmd.Format(_T("git.exe reset --hard %s --"), this->m_OrigUpstreamHash.ToString());
 	while (true)
 	{
 		out.Empty();
@@ -1912,7 +1912,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return;
 	}
 
-	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
+	cmd.Format(_T("git.exe checkout -f %s --"), this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);
@@ -1921,7 +1921,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return;
 	}
 
-	cmd.Format(_T("git.exe reset --hard  %s"),this->m_OrigBranchHash.ToString());
+	cmd.Format(_T("git.exe reset --hard %s --"), this->m_OrigBranchHash.ToString());
 	while (true)
 	{
 		out.Empty();

@@ -102,7 +102,7 @@ bool DropCopyCommand::Execute()
 				g_Git.SetCurrentDir(ProjectTopDir);
 				SetCurrentDirectory(ProjectTopDir);
 				CString cmd;
-				cmd = _T("git.exe add \"");
+				cmd = _T("git.exe add -- \"");
 
 				CString path;
 				path=fullDropPath.GetGitPathString().Mid(ProjectTopDir.GetLength());

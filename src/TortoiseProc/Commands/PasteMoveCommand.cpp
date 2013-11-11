@@ -76,7 +76,7 @@ bool PasteMoveCommand::Execute()
 			// source file is unversioned: move the file to the target, then add it
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
 			CString cmd,output;
-			cmd.Format(_T("git.exe add \"%s\""),destPath.GetWinPath());
+			cmd.Format(_T("git.exe add -- \"%s\""),destPath.GetWinPath());
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{

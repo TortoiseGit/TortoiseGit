@@ -77,7 +77,7 @@ bool DiffCommand::Execute()
 					{
 						// this might be a rename, try to find original name
 						BYTE_VECTOR cmdout;
-						g_Git.Run(_T("git.exe diff-index --raw HEAD -M -C -z"), &cmdout);
+						g_Git.Run(_T("git.exe diff-index --raw HEAD -M -C -z --"), &cmdout);
 						CTGitPathList changedFiles;
 						changedFiles.ParserFromLog(cmdout);
 						for (int i = 0; i < changedFiles.GetCount(); ++i)

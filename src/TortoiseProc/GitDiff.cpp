@@ -66,7 +66,7 @@ int CGitDiff::SubmoduleDiffNull(const CTGitPath * pPath, const git_revnum_t &rev
 		subgit.m_CurrentDir=g_Git.m_CurrentDir+_T("\\")+pPath->GetWinPathString();
 		int encode=CAppUtils::GetLogOutputEncode(&subgit);
 
-		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s"),newhash);
+		cmd.Format(_T("git.exe log -n1  --pretty=format:\"%%s\" %s --"), newhash);
 		bool toOK = !subgit.Run(cmd,&newsub,encode);
 
 		bool dirty = false;
@@ -205,7 +205,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 			output.Empty();
 			err.Empty();
 			// also compare against index
-			cmd.Format(_T("git.exe diff \"%s\""), pPath->GetGitPathString());
+			cmd.Format(_T("git.exe diff -- \"%s\""), pPath->GetGitPathString());
 			if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 			{
 				CMessageBox::Show(NULL, output + _T("\n") + err, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
@@ -279,7 +279,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		if(oldhash != GIT_REV_ZERO)
 		{
 			CString cmdout, cmderr;
-			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), oldhash);
+			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), oldhash);
 			oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 			if (oldOK)
 			{
@@ -293,7 +293,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		if (newhash != GIT_REV_ZERO)
 		{
 			CString cmdout, cmderr;
-			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), newhash);
+			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s --"), newhash);
 			newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 			if (newOK)
 			{

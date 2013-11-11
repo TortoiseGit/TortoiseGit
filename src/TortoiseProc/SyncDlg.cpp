@@ -437,7 +437,7 @@ void CSyncDlg::FetchComplete()
 		if(response == IDC_REBASE_POST_BUTTON + 1)
 		{
 			CString cmd, out, err;
-			cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+			cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
 					g_Git.FixBranchName(dlg.m_Upstream),
 					g_Git.FixBranchName(dlg.m_Branch));
@@ -662,7 +662,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 	m_strURL=m_strURL.Trim();
 	m_strRemoteBranch=m_strRemoteBranch.Trim();
 
-	cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+	cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
 					g_Git.m_CurrentDir,
 					m_strURL+_T('/')+m_strRemoteBranch,g_Git.FixBranchName(m_strLocalBranch));
 

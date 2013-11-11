@@ -1058,7 +1058,7 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
-		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s"),
+		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s --"),
 					dlg.m_strFile, g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg pro;
@@ -1191,7 +1191,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	if (bMerge)
 		merge = _T("--merge");
 
-	cmd.Format(_T("git.exe checkout %s %s %s %s %s"),
+	cmd.Format(_T("git.exe checkout %s %s %s %s %s --"),
 		 force,
 		 track,
 		 merge,
@@ -1435,7 +1435,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 			type=_T("--mixed");
 			break;
 		}
-		cmd.Format(_T("git.exe reset %s %s"),type, dlg.m_ResetToVersion);
+		cmd.Format(_T("git.exe reset %s %s --"),type, dlg.m_ResetToVersion);
 
 		while (true)
 		{
@@ -1632,7 +1632,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	CString format;
 
 	//format=_T("git.exe cat-file blob \":%d:%s\"");
-	format = _T("git checkout-index --temp --stage=%d -- \"%s\"");
+	format = _T("git.exe checkout-index --temp --stage=%d -- \"%s\"");
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
@@ -2456,7 +2456,7 @@ bool CAppUtils::Fetch(CString remoteName, bool allowRebase, bool autoClose)
 				else if (response == IDC_REBASE_POST_BUTTON + 1)
 				{
 					CString cmd, out, err;
-					cmd.Format(_T("git.exe  format-patch -o \"%s\" %s..%s"),
+					cmd.Format(_T("git.exe format-patch -o \"%s\" %s..%s"),
 						g_Git.m_CurrentDir,
 						g_Git.FixBranchName(dlg.m_Upstream),
 						g_Git.FixBranchName(dlg.m_Branch));
@@ -3104,7 +3104,7 @@ BOOL CAppUtils::MergeAbort()
 			type = _T("--mixed");
 			break;
 		}
-		cmd.Format(_T("git.exe reset %s HEAD"), type);
+		cmd.Format(_T("git.exe reset %s HEAD --"), type);
 
 		while (true)
 		{
