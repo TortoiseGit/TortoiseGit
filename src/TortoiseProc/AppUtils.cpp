@@ -2180,15 +2180,23 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
 	int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
-	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
+	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == FALSE);
 
 	message.TrimRight(L" \r\n");
 
+	int len = message.GetLength();
 	int start = 0;
-	while (start >= 0)
+	while (start >= 0 && start < len)
 	{
-		CString line = message.Tokenize(L"\n", start);
-		if (stripComments && (line.GetLength() > 1 && line.GetAt(0) == '#') || start < 0)
+		int oldStart = start;
+		start = message.Find(L"\n", oldStart);
+		CString line = message.Mid(oldStart);
+		if (start != -1)
+		{
+			line = line.Left(start - oldStart);
+			++start; // move forward so we don't find the same char again
+		}
+		if (stripComments && (line.GetLength() >= 1 && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
 			continue;
 		line.TrimRight(L" \r");
 		CStringA lineA = CUnicodeUtils::GetMulti(line, cp) + L"\n";
