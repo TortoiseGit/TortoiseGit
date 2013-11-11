@@ -87,7 +87,7 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, const CString& output, bool bShowError)
 {
 	CString cmd;
-	cmd.Format(_T("git.exe diff --no-index \"%s\" \"%s\""),orig, modified);
+	cmd.Format(_T("git.exe diff --no-index -- \"%s\" \"%s\""),orig, modified);
 
 	if(g_Git.RunLogFile(cmd,(CString&)output) && bShowError)
 	{

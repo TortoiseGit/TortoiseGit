@@ -1058,7 +1058,7 @@ bool CAppUtils::Export(CString *BashHash, const CTGitPath *orgPath)
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
-		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s"),
+		cmd.Format(_T("git.exe archive --output=\"%s\" --format=zip --verbose %s --"),
 					dlg.m_strFile, g_Git.FixBranchName(dlg.m_VersionName));
 
 		CProgressDlg pro;
@@ -1191,7 +1191,7 @@ bool CAppUtils::PerformSwitch(CString ref, bool bForce /* false */, CString sNew
 	if (bMerge)
 		merge = _T("--merge");
 
-	cmd.Format(_T("git.exe checkout %s %s %s %s %s"),
+	cmd.Format(_T("git.exe checkout %s %s %s %s %s --"),
 		 force,
 		 track,
 		 merge,
@@ -1435,7 +1435,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 			type=_T("--mixed");
 			break;
 		}
-		cmd.Format(_T("git.exe reset %s %s"),type, dlg.m_ResetToVersion);
+		cmd.Format(_T("git.exe reset %s %s --"),type, dlg.m_ResetToVersion);
 
 		while (true)
 		{
@@ -3104,7 +3104,7 @@ BOOL CAppUtils::MergeAbort()
 			type = _T("--mixed");
 			break;
 		}
-		cmd.Format(_T("git.exe reset %s HEAD"), type);
+		cmd.Format(_T("git.exe reset %s HEAD --"), type);
 
 		while (true)
 		{

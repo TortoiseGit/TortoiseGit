@@ -530,13 +530,13 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			//Use throw to abort this process (reset back to original HEAD)
 			try
 			{
-				cmd.Format(_T("git.exe reset --hard %s"),pFirstEntry->m_CommitHash.ToString());
+				cmd.Format(_T("git.exe reset --hard %s --"), pFirstEntry->m_CommitHash.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					throw std::exception(CUnicodeUtils::GetUTF8(CString(MAKEINTRESOURCE(IDS_PROC_COMBINE_ERRORSTEP1)) + _T("\r\n\r\n") + out));
 				}
-				cmd.Format(_T("git.exe reset --mixed %s"),hashLast.ToString());
+				cmd.Format(_T("git.exe reset --mixed %s --"), hashLast.ToString());
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
@@ -642,12 +642,12 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 						CString newHead=g_Git.GetHash(CString(_T("HEAD")));
 
 						//Checkout working branch
-						cmd.Format(_T("git.exe checkout -f \"%s\""),currentBranch);
+						cmd.Format(_T("git.exe checkout -f \"%s\" --"), currentBranch);
 						if(g_Git.Run(cmd,&out,CP_UTF8))
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not checkout original branch. Aborting...\r\n\r\n")+out));
 
 						//Reset to new HEAD
-						cmd.Format(_T("git.exe reset --hard  %s"),newHead);
+						cmd.Format(_T("git.exe reset --hard %s --"), newHead);
 						if(g_Git.Run(cmd,&out,CP_UTF8))
 							throw std::exception(CUnicodeUtils::GetUTF8(_T("Could not reset to new head. Aborting...\r\n\r\n")+out));
 #endif
@@ -659,7 +659,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			catch(std::exception& e)
 			{
 				CMessageBox::Show(NULL, CUnicodeUtils::GetUnicode(CStringA(e.what())), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				cmd.Format(_T("git.exe reset --hard  %s"),headhash.ToString());
+				cmd.Format(_T("git.exe reset --hard %s --"), headhash.ToString());
 				out.Empty();
 				if(g_Git.Run(cmd,&out,CP_UTF8))
 				{

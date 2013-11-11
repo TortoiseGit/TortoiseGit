@@ -2312,7 +2312,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_ASSUMEVALID, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
 						break;
 					CString cmdTemplate;
-					cmdTemplate = _T("git.exe update-index --assume-unchanged \"%s\"");
+					cmdTemplate = _T("git.exe update-index --assume-unchanged -- \"%s\"");
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = -1;
 					while ((index = GetNextSelectedItem(pos)) >= 0)
@@ -2340,7 +2340,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_MARK_SKIPWORKTREE, IDS_APPNAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION) == IDNO)
 						break;
 					CString cmdTemplate;
-					cmdTemplate = _T("git.exe update-index --skip-worktree \"%s\"");
+					cmdTemplate = _T("git.exe update-index --skip-worktree -- \"%s\"");
 					POSITION pos = GetFirstSelectedItemPosition();
 					int index = -1;
 					while ((index = GetNextSelectedItem(pos)) >= 0)
@@ -3752,12 +3752,12 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			if(!g_Git.IsInitRepos())
 			{
 				// also list staged files which will be in the commit
-				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z"));
+				cmd=(_T("git.exe diff-index --cached --raw ") + head + _T(" --numstat -C -M -z --"));
 				cmdList += cmd + _T("\n");
 				g_Git.Run(cmd, &cmdout);
 
 				if(list == NULL)
-					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z"));
+					cmd=(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z --"));
 				else
 					cmd.Format(_T("git.exe diff-index --raw ") + head + _T("  --numstat -C -M -z -- \"%s\""),(*list)[i].GetGitPathString());
 				cmdList += cmd + _T("\n");
@@ -3886,7 +3886,7 @@ int CGitStatusListCtrl::UpdateFileList(git_revnum_t hash,CTGitPathList *list)
 			BYTE_VECTOR cmdout;
 			CString cmd;
 			if(list == NULL)
-				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M -z %s"),hash);
+				cmd.Format(_T("git.exe diff-tree --raw --numstat -C -M -z %s --"), hash);
 			else
 				cmd.Format(_T("git.exe diff-tree --raw  --numstat -C -M %s -z -- \"%s\""),hash,(*list)[i].GetGitPathString());
 
