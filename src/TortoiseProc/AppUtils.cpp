@@ -1632,7 +1632,7 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 	CString format;
 
 	//format=_T("git.exe cat-file blob \":%d:%s\"");
-	format = _T("git checkout-index --temp --stage=%d -- \"%s\"");
+	format = _T("git.exe checkout-index --temp --stage=%d -- \"%s\"");
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);

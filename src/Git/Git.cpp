@@ -686,7 +686,7 @@ CString CGit::GetSymbolicRef(const wchar_t* symbolicRefName, bool bStripRefsHead
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git symbolic-ref %s", symbolicRefName);
+		cmd.Format(L"git.exe symbolic-ref %s", symbolicRefName);
 		if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
 			return CString();//Error
 		int iStart = 0;
@@ -701,7 +701,7 @@ CString CGit::GetFullRefName(CString shortRefName)
 {
 	CString refName;
 	CString cmd;
-	cmd.Format(L"git rev-parse --symbolic-full-name %s", shortRefName);
+	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", shortRefName);
 	if (Run(cmd, &refName, NULL, CP_UTF8) != 0)
 		return CString();//Error
 	int iStart = 0;
@@ -1269,7 +1269,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	CString output;
 
 	CString cmd;
-	cmd.Format(_T("git show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
+	cmd.Format(_T("git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s"), name, name);
 	int ret = Run(cmd, &output, NULL, CP_UTF8);
 	if (!ret)
 	{
@@ -1294,7 +1294,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 {
 	CString cmd, output;
 
-	cmd = _T("git show-ref ");
+	cmd = _T("git.exe show-ref ");
 	if (isBranch)
 		cmd += _T("--heads ");
 	else
@@ -1861,7 +1861,7 @@ BOOL CGit::CheckCleanWorkTree()
 	if(Run(cmd,&out,CP_UTF8))
 		return FALSE;
 
-	cmd=_T("git diff-index --cached --quiet HEAD --ignore-submodules");
+	cmd = _T("git.exe diff-index --cached --quiet HEAD --ignore-submodules");
 	if(Run(cmd,&out,CP_UTF8))
 		return FALSE;
 

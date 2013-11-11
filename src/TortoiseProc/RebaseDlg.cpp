@@ -1912,7 +1912,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		return;
 	}
 
-	cmd.Format(_T("git checkout -f %s"),this->m_BranchCtrl.GetString());
+	cmd.Format(_T("git.exe checkout -f %s"),this->m_BranchCtrl.GetString());
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(out);

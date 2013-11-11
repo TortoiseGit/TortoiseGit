@@ -279,7 +279,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		if(oldhash != GIT_REV_ZERO)
 		{
 			CString cmdout, cmderr;
-			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), oldhash);
+			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s"), oldhash);
 			oldOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 			if (oldOK)
 			{
@@ -293,7 +293,7 @@ int CGitDiff::SubmoduleDiff(const CTGitPath * pPath, const CTGitPath * /*pPath2*
 		if (newhash != GIT_REV_ZERO)
 		{
 			CString cmdout, cmderr;
-			cmd.Format(_T("git log -n1 --pretty=format:\"%%ct %%s\" %s"), newhash);
+			cmd.Format(_T("git.exe log -n1 --pretty=format:\"%%ct %%s\" %s"), newhash);
 			newOK = !subgit.Run(cmd, &cmdout, &cmderr, encode);
 			if (newOK)
 			{

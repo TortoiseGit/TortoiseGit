@@ -2372,7 +2372,7 @@ void CLogDlg::ShowStartRef()
 	{
 		showStartRef.Empty();
 		//Ref name is HEAD
-		if (g_Git.Run(L"git symbolic-ref HEAD", &showStartRef, NULL, CP_UTF8))
+		if (g_Git.Run(L"git.exe symbolic-ref HEAD", &showStartRef, NULL, CP_UTF8))
 			showStartRef = CString(MAKEINTRESOURCE(IDS_PROC_LOG_NOBRANCH));
 		showStartRef.Trim(L"\r\n\t ");
 	}
