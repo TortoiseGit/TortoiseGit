@@ -163,14 +163,38 @@ void CSetMainPage::OnModified()
 	SetModified();
 }
 
+static void PerformCommonGitPathCleanup(CString &path)
+{
+	path.Trim(L"\"'");
+
+	if (path.Find(L"%") >= 0)
+	{
+		int neededSize = ExpandEnvironmentStrings(path, nullptr, 0);
+		CString origPath(path);
+		ExpandEnvironmentStrings(origPath, path.GetBufferSetLength(neededSize), neededSize);
+		path.ReleaseBuffer();
+	}
+
+	path.Replace(L"/", L"\\");
+	path.Replace(L"\\\\", L"\\");
+
+	if (path.GetLength() > 7 && path.Right(7) == _T("git.exe"))
+		path = path.Left(path.GetLength() - 7);
+
+	path.TrimRight(L"\\");
+
+	// prefer git.exe in bin-directory, see https://github.com/msysgit/msysgit/issues/103
+	if (path.GetLength() > 5 && path.Right(4) == _T("\\cmd") && PathFileExists(path.Left(path.GetLength() - 4) + _T("\\bin\\git.exe")))
+		path = path.Left(path.GetLength() - 4) + _T("\\bin");
+}
+
 void CSetMainPage::OnMsysGitPathModify()
 {
 	this->UpdateData();
 	CString str=this->m_sMsysGitPath;
 	if(!str.IsEmpty())
 	{
-		if(str[str.GetLength()-1]==_T('\'') || str[str.GetLength()-1]==_T('/'))
-			str=str.Left(str.GetLength()-1);
+		PerformCommonGitPathCleanup(str);
 
 		if(str.GetLength()>=3 && str.Find(_T("bin"), str.GetLength()-3) >=0)
 		{
@@ -193,11 +217,10 @@ void CSetMainPage::OnMsysGitPathModify()
 BOOL CSetMainPage::OnApply()
 {
 	UpdateData();
-	if (!m_sMsysGitPath.IsEmpty() && (m_sMsysGitPath.Right(1) == _T("\\") || m_sMsysGitPath.Right(1) == _T("/")))
-	{
-		m_sMsysGitPath = m_sMsysGitPath.Left(m_sMsysGitPath.GetLength() - 1);
-		UpdateData(FALSE);
-	}
+
+	PerformCommonGitPathCleanup(m_sMsysGitPath);
+	UpdateData(FALSE);
+
 	Store (m_dwLanguage, m_regLanguage);
 	if (m_sMsysGitPath.Compare(CString(m_regMsysGitPath)) ||
 		this->m_sMsysGitExtranPath.Compare(CString(m_regMsysGitExtranPath)))
@@ -246,6 +269,7 @@ void CSetMainPage::OnBrowseDir()
 	if (browseFolder.Show(GetSafeHwnd(), dir) == CBrowseFolder::OK)
 	{
 		m_sMsysGitPath=dir;
+		PerformCommonGitPathCleanup(m_sMsysGitPath);
 		this->UpdateData(FALSE);
 		OnMsysGitPathModify();
 	}
@@ -254,7 +278,14 @@ void CSetMainPage::OnBrowseDir()
 
 void CSetMainPage::OnCheck()
 {
+	GetDlgItem(IDC_MSYSGIT_VER)->SetWindowText(L"");
+
 	this->UpdateData(TRUE);
+
+	PerformCommonGitPathCleanup(m_sMsysGitPath);
+	UpdateData(FALSE);
+
+	OnMsysGitPathModify();
 
 	CString oldpath = m_regMsysGitPath;
 	CString oldextranpath = this->m_regMsysGitExtranPath;
