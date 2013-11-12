@@ -416,7 +416,7 @@ void CSyncDlg::FetchComplete()
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_FETCH))
 		ShowTab(IDC_CMD_GIT_PROG);
 	else
-		ShowTab(IDC_CMD_LOG);
+		ShowTab(IDC_REFLIST);
 	if( (!this->m_GitCmdStatus) && this->m_CurrentCmd == GIT_COMMAND_FETCHANDREBASE)
 	{
 		CRebaseDlg dlg;
@@ -1422,6 +1422,7 @@ void CSyncDlg::RunPostAction()
 		this->FetchOutList(true);
 		EnableControlButton(true);
 		SwitchToInput();
+		ShowTab(IDC_REFLIST);
 	}
 }
 void CSyncDlg::ParserCmdOutput(char ch)
