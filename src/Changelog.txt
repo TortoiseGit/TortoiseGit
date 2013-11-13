@@ -19,6 +19,7 @@ Released: Unreleased
  * Fixed issue #1976: Commit log crashes if it receives a WM_PRINTCLIENT while opening
  * Fixed issue #1974: bugtraq logregex does not save correctly
  * Fixed issue #1977: Commit log: cannot select multiple branches if a branch name matches a filename
+ * Fixed issue #1992: Compare selected refs fails if tag object is selected
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
