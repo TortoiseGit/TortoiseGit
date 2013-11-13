@@ -1828,19 +1828,19 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				format.LoadString(IDS_LOG_POPUP_MERGEREV);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive && !isStash)
 					popup.AppendMenuIcon(ID_MERGEREV, str, IDI_MERGE);
 
 				format.LoadString(IDS_RESET_TO_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
 					popup.AppendMenuIcon(ID_RESET,str,IDI_REVERT);
 
 
 				// Add Switch Branch express Menu
 				if( this->m_HashMap.find(pSelLogEntry->m_CommitHash) != m_HashMap.end()
-					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH) && m_hasWC)
+					&& (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHBRANCH) && m_hasWC && !isStash)
 					)
 				{
 					std::vector<CString *> branchs;
@@ -1881,26 +1881,26 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit && m_hasWC)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_SWITCHTOREV) && !isHeadCommit && m_hasWC && !isStash)
 					popup.AppendMenuIcon(ID_SWITCHTOREV, IDS_SWITCH_TO_THIS , IDI_SWITCH);
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH))
+				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_BRANCH) && !isStash)
 					popup.AppendMenuIcon(ID_CREATE_BRANCH, IDS_CREATE_BRANCH_AT_THIS , IDI_COPY);
 
-				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG))
+				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG) && !isStash)
 					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);
 
 				format.LoadString(IDS_REBASE_THIS_FORMAT);
 				str.Format(format,g_Git.GetCurrentBranch());
 
-				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive)
+				if (pSelLogEntry->m_CommitHash != m_HeadHash && m_hasWC && !isMergeActive && !isStash)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
 						popup.AppendMenuIcon(ID_REBASE_TO_VERSION, str , IDI_REBASE);
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_EXPORT))
 					popup.AppendMenuIcon(ID_EXPORT,IDS_EXPORT_TO_THIS, IDI_EXPORT);
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive)
+				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive && !isStash)
 				{
 					GitRev *pRev = pSelLogEntry;
 					if (pSelLogEntry->m_ParentHash.empty())
@@ -1932,7 +1932,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
-				if (m_ContextMenuMask&GetContextMenuBit(ID_EDITNOTE))
+				if (m_ContextMenuMask&GetContextMenuBit(ID_EDITNOTE) && !isStash)
 					popup.AppendMenuIcon(ID_EDITNOTE, IDS_EDIT_NOTES, IDI_EDIT);
 
 				popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -2021,7 +2021,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if(GetSelectedCount()<=2 || (IsSelectionContinuous() && GetSelectedCount() > 0))
+			if (GetSelectedCount() <= 2 || (IsSelectionContinuous() && GetSelectedCount() > 0 && !isStash))
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH)) {
 					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
 					bAddSeparator = true;
@@ -2031,7 +2031,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 		}
 
-		if (m_hasWC && !isMergeActive && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect))->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
+		if (m_hasWC && !isMergeActive && !isStash && (m_ContextMenuMask & GetContextMenuBit(ID_BISECTSTART)) && GetSelectedCount() == 2 && !reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(FirstSelect))->m_CommitHash.IsEmpty() && !CTGitPath(g_Git.m_CurrentDir).IsBisectActive())
 		{
 			popup.AppendMenuIcon(ID_BISECTSTART, IDS_MENUBISECTSTART);
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -2040,7 +2040,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (GetSelectedCount() == 1)
 		{
 			bool bAddSeparator = false;
-			if(m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && !m_HashMap[pSelLogEntry->m_CommitHash].empty())
+			if (m_ContextMenuMask&GetContextMenuBit(ID_PUSH) && !isStash && !m_HashMap[pSelLogEntry->m_CommitHash].empty())
 			{
 				// show the push-option only if the log entry has an associated local branch
 				bool isLocal = false;
