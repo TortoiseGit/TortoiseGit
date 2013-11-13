@@ -429,6 +429,8 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	static UINT LogThreadEntry(LPVOID pVoid);
 	UINT LogThread();
+	bool IsOnStash(int index);
+	bool IsStash(const GitRev * pSelLogEntry);
 	void FetchRemoteList();
 	void FetchTrackingBranchList();
 	void FetchLastLogInfo();

@@ -1539,6 +1539,25 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 }
 
+bool CGitLogListBase::IsOnStash(int index)
+{
+	if (IsStash(reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index))))
+		return true;
+	if (index > 0 && IsStash(reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index - 1))))
+		return true;
+	return false;
+}
+
+bool CGitLogListBase::IsStash(const GitRev * pSelLogEntry)
+{
+	for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+	{
+		if (m_HashMap[pSelLogEntry->m_CommitHash][i] == _T("refs/stash"))
+			return true;
+	}
+	return false;
+}
+
 void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 
@@ -1638,6 +1657,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		bool isHeadCommit = (pSelLogEntry->m_CommitHash == m_HeadHash);
 		CString currentBranch = _T("refs/heads/") + g_Git.GetCurrentBranch();
 		bool isMergeActive = CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
+		bool isStash = IsOnStash(indexNext);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1756,16 +1776,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_STASH_SAVE))
 						popup.AppendMenuIcon(ID_STASH_SAVE, IDS_MENUSTASHSAVE, IDI_COMMIT);
-				}
-
-				bool isStash = false;
-				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
-				{
-					if (m_HashMap[pSelLogEntry->m_CommitHash][i] == _T("refs/stash"))
-					{
-						isStash = true;
-						break;
-					}
 				}
 
 				if (CTGitPath(g_Git.m_CurrentDir).HasStashDir() && (pSelLogEntry->m_CommitHash.IsEmpty() || isStash))
