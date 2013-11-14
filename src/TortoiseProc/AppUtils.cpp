@@ -2180,7 +2180,7 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 	CFile file(filename,CFile::modeReadWrite|CFile::modeCreate );
 	int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(_T("i18n.commitencoding")));
 
-	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == FALSE);
+	bool stripComments = (CRegDWORD(_T("Software\\TortoiseGit\\StripCommentedLines"), FALSE) == TRUE);
 
 	message.TrimRight(L" \r\n");
 
