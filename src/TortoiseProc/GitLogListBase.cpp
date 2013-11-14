@@ -1541,10 +1541,15 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 bool CGitLogListBase::IsOnStash(int index)
 {
-	if (IsStash(reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index))))
+	GitRev *rev = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index));
+	if (IsStash(rev))
 		return true;
-	if (index > 0 && IsStash(reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index - 1))))
-		return true;
+	if (index > 0)
+	{
+		GitRev *preRev = reinterpret_cast<GitRev*>(m_arShownList.SafeGetAt(index - 1));
+		if (IsStash(preRev))
+			return preRev->m_ParentHash.size() == 2 && preRev->m_ParentHash[1] == rev->m_CommitHash;
+	}
 	return false;
 }
 
