@@ -1745,16 +1745,16 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 
 			CString body = pRev->GetBody();
 			int maxLine = 15;
-			int line = 0;
+			int iline = 0;
 			int pos = 0;
-			while (line++ < maxLine)
+			while (iline++ < maxLine)
 			{
 				int pos2 = body.Find(_T("\n"), pos);
 				if (pos2 < 0)
 					break;
 				int lineLength = pos2 - pos - 1;
 				pos = pos2 + 1;
-				line += lineLength / 70;
+				iline += lineLength / 70;
 			}
 
 			CString str;
@@ -1762,7 +1762,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
 																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
-																	line <= maxLine ? body : (body.Left(pos) + _T("\n....................")));
+																	iline <= maxLine ? body : (body.Left(pos) + _T("\n....................")));
 
 			m_ToolTip.Pop();
 			m_ToolTip.AddTool(this, str);
