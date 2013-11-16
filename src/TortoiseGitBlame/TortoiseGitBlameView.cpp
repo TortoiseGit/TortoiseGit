@@ -1914,6 +1914,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+		document->SetPathName(document->m_CurrentFileName, FALSE);
 	}
 }
 
