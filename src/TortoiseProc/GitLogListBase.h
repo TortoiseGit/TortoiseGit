@@ -308,6 +308,7 @@ public:
 	int  FillGitLog(CTGitPath *path, CString *range = NULL, int infomask = CGit::LOG_INFO_STAT| CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	BOOL IsMatchFilter(bool bRegex, GitRev *pRev, std::tr1::wregex &pat);
 	bool ShouldShowFilter(GitRev *pRev, const std::map<CGitHash, std::set<CGitHash>> &commitChildren);
+	void ShowGraphColumn(bool bShow);
 
 	CFindDlg *m_pFindDialog;
 	static const UINT	m_FindDialogMessage;
