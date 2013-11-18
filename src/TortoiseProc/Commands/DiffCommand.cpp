@@ -101,10 +101,21 @@ bool DiffCommand::Execute()
 		}
 	}
 	else
-		bRet = CAppUtils::StartExtDiff(
-			path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
-			CString(), CString(), git_revnum_t(GIT_REV_ZERO), git_revnum_t(GIT_REV_ZERO),
-			CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
+	{
+		CGitDiff diff;
+		if ( parser.HasKey(_T("startrev")) && parser.HasKey(_T("endrev")) && path2.Left(g_Git.m_CurrentDir.GetLength() + 1) == g_Git.m_CurrentDir + _T("\\"))
+		{
+			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
+			bRet = !!diff.Diff(&tgitPath2, &cmdLinePath, git_revnum_t(parser.GetVal(_T("startrev"))), git_revnum_t(parser.GetVal(_T("endrev"))));
+		}
+		else
+		{
+			bRet = CAppUtils::StartExtDiff(
+				path2, orgCmdLinePath.GetWinPathString(), CString(), CString(),
+				CString(), CString(), git_revnum_t(GIT_REV_ZERO), git_revnum_t(GIT_REV_ZERO),
+				CAppUtils::DiffFlags().AlternativeTool(bAlternativeTool));
+		}
+	}
 
 	return bRet;
 }
