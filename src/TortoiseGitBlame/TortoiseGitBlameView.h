@@ -218,6 +218,7 @@ public:
 	bool					m_colorage;
 
 	std::vector<LONG>		m_ID;
+	std::vector<CString>	m_FileNames;
 	std::vector<CString>	m_Dates;
 	std::vector<CString>	m_Authors;
 	std::vector<CGitHash>	m_CommitHash;

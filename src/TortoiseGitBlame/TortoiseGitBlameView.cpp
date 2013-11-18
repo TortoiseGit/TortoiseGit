@@ -1387,6 +1387,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	BYTE_VECTOR vector;
 
 	this->m_CommitHash.clear();
+	this->m_FileNames.clear();
 	this->m_Authors.clear();
 	this->m_Dates.clear();
 	this->m_ID.clear();
@@ -1449,6 +1450,21 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		else
 			hash.ConvertFromStrA((char*)&data[pos]);
 
+		int start1 = data.find(' ', pos + 40);
+		if (start1 >= 0)
+		{
+			int start2 = data.find(' ', start1 + 1);
+			if (start2 >= 0)
+			{
+				CString filename;
+				g_Git.StringAppend(&filename, &data[start1 + 1], CP_UTF8, start2 - start1 - 1);
+				m_FileNames.push_back(filename);
+			}
+			else
+				m_FileNames.push_back(_T(""));
+		}
+		else
+			m_FileNames.push_back(_T(""));
 
 		int start=0;
 		start=data.findData((const BYTE*)")",1,pos + 40);
