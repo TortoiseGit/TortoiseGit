@@ -14,6 +14,7 @@
 #define IDS_SUBJECT                     9
 #define IDS_BODY                        10
 #define IDS_PARENTS                     11
+#define IDS_FILENAME                    12
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define ID_STATUSBAR_PANE1              120

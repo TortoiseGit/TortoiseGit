@@ -410,6 +410,7 @@ BEGIN
     IDS_SUBJECT             "Subject"
     IDS_BODY                "Body"
     IDS_PARENTS             "Parent(s)"
+    IDS_FILENAME            "Filename"
 END
 
 STRINGTABLE

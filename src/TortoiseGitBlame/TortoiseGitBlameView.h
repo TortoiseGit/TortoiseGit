@@ -272,6 +272,7 @@ protected:
 	bool					m_bRelativeTimes;	// Show relative times
 
 	CString					m_sRev;
+	CString					m_sFileName;
 	CString					m_sAuthor;
 	CString					m_sDate;
 	CString					m_sMessage;

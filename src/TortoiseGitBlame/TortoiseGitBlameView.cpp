@@ -164,6 +164,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bRelativeTimes = (regRelativeTimes != 0);
 
 	m_sRev.LoadString(IDS_LOG_REVISION);
+	m_sFileName.LoadString(IDS_FILENAME);
 	m_sAuthor.LoadString(IDS_LOG_AUTHOR);
 	m_sDate.LoadString(IDS_LOG_DATE);
 	m_sMessage.LoadString(IDS_LOG_MESSAGE);
@@ -1773,8 +1774,12 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 				iline += lineLength / 70;
 			}
 
+			CString filename;
+			if (m_bFollowRenames)
+				filename.Format(_T("%s: %s\n"), m_sFileName, m_FileNames[line]);
+
 			CString str;
-			str.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
+			str.Format(_T("%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(), filename,
 																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
 																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
