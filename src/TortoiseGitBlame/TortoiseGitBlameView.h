@@ -195,6 +195,7 @@ public:
 	void DrawLocatorBar(HDC hDC);
 	void CopyToClipboard();
 	void CopySelectedLogToClipboard();
+	CString GetFilenameOfPreviousRevision();
 	void BlamePreviousRevision();
 	void DiffPreviousRevision();
 	void ShowLog();

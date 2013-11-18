@@ -636,13 +636,42 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 	this->GetLogList()->CopySelectionToClipBoard(FALSE);
 }
 
+CString CTortoiseGitBlameView::GetFilenameOfPreviousRevision()
+{
+	if (m_bFollowRenames)
+	{
+		CString filename = m_FileNames[m_MouseLine];
+		GitRev &rev = GetLogData()->GetGitRevAt(GetLogData()->size() - m_ID[m_MouseLine]);
+		CTGitPathList &files = rev.GetFiles(nullptr);
+		CString oldPath = filename;
+		for (int i = 0; i < files.GetCount(); ++i)
+		{
+			if (files[i].GetGitPathString() == filename)
+			{
+				oldPath = files[i].GetGitOldPathString();
+				break;
+			}
+		}
+		if (oldPath.IsEmpty())
+			return _T("");
+		CTGitPath path(g_Git.m_CurrentDir);
+		path.AppendPathString(oldPath);
+		return path.GetWinPathString();
+	}
+
+	return ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+}
+
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
 	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
 		return;
 
 	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	CString filename = GetFilenameOfPreviousRevision();
+	if (filename.IsEmpty())
+		return;
+	procCmd += filename;
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:blame");
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
@@ -658,10 +687,36 @@ void CTortoiseGitBlameView::DiffPreviousRevision()
 	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
 		return;
 
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:diff");
+	CString procCmd = _T("/command:diff");
+	CString filename1;
+	if (m_bFollowRenames)
+	{
+		CString filename = m_FileNames[m_MouseLine];
+		if (filename.IsEmpty())
+			return;
+		CTGitPath path(g_Git.m_CurrentDir);
+		path.AppendPathString(filename);
+		filename1 = path.GetWinPathString();
+	}
+	else
+		filename1 = ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+
+	CString filename2 = GetFilenameOfPreviousRevision();
+	if (!filename2.IsEmpty() && filename1 != filename2)
+	{
+		procCmd += _T(" /path:\"");
+		procCmd += filename2;
+		procCmd += _T("\"");
+		procCmd += _T(" /path2:\"");
+		procCmd += filename1;
+		procCmd += _T("\"");
+	}
+	else
+	{
+		procCmd += _T(" /path:\"");
+		procCmd += filename1;
+		procCmd += _T("\"");
+	}
 	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
