@@ -164,6 +164,7 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_bRelativeTimes = (regRelativeTimes != 0);
 
 	m_sRev.LoadString(IDS_LOG_REVISION);
+	m_sFileName.LoadString(IDS_FILENAME);
 	m_sAuthor.LoadString(IDS_LOG_AUTHOR);
 	m_sDate.LoadString(IDS_LOG_DATE);
 	m_sMessage.LoadString(IDS_LOG_MESSAGE);
@@ -635,13 +636,42 @@ void CTortoiseGitBlameView::CopySelectedLogToClipboard()
 	this->GetLogList()->CopySelectionToClipBoard(FALSE);
 }
 
+CString CTortoiseGitBlameView::GetFilenameOfPreviousRevision()
+{
+	if (m_bFollowRenames)
+	{
+		CString filename = m_FileNames[m_MouseLine];
+		GitRev &rev = GetLogData()->GetGitRevAt(GetLogData()->size() - m_ID[m_MouseLine]);
+		CTGitPathList &files = rev.GetFiles(nullptr);
+		CString oldPath = filename;
+		for (int i = 0; i < files.GetCount(); ++i)
+		{
+			if (files[i].GetGitPathString() == filename)
+			{
+				oldPath = files[i].GetGitOldPathString();
+				break;
+			}
+		}
+		if (oldPath.IsEmpty())
+			return _T("");
+		CTGitPath path(g_Git.m_CurrentDir);
+		path.AppendPathString(oldPath);
+		return path.GetWinPathString();
+	}
+
+	return ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+}
+
 void CTortoiseGitBlameView::BlamePreviousRevision()
 {
 	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
 		return;
 
 	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	CString filename = GetFilenameOfPreviousRevision();
+	if (filename.IsEmpty())
+		return;
+	procCmd += filename;
 	procCmd += _T("\" ");
 	procCmd += _T(" /command:blame");
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
@@ -657,10 +687,36 @@ void CTortoiseGitBlameView::DiffPreviousRevision()
 	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
 		return;
 
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:diff");
+	CString procCmd = _T("/command:diff");
+	CString filename1;
+	if (m_bFollowRenames)
+	{
+		CString filename = m_FileNames[m_MouseLine];
+		if (filename.IsEmpty())
+			return;
+		CTGitPath path(g_Git.m_CurrentDir);
+		path.AppendPathString(filename);
+		filename1 = path.GetWinPathString();
+	}
+	else
+		filename1 = ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+
+	CString filename2 = GetFilenameOfPreviousRevision();
+	if (!filename2.IsEmpty() && filename1 != filename2)
+	{
+		procCmd += _T(" /path:\"");
+		procCmd += filename2;
+		procCmd += _T("\"");
+		procCmd += _T(" /path2:\"");
+		procCmd += filename1;
+		procCmd += _T("\"");
+	}
+	else
+	{
+		procCmd += _T(" /path:\"");
+		procCmd += filename1;
+		procCmd += _T("\"");
+	}
 	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
 	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
 
@@ -1387,6 +1443,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	BYTE_VECTOR vector;
 
 	this->m_CommitHash.clear();
+	this->m_FileNames.clear();
 	this->m_Authors.clear();
 	this->m_Dates.clear();
 	this->m_ID.clear();
@@ -1449,6 +1506,21 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		else
 			hash.ConvertFromStrA((char*)&data[pos]);
 
+		int start1 = data.find(' ', pos + 40);
+		if (start1 >= 0)
+		{
+			int start2 = data.find(' ', start1 + 1);
+			if (start2 >= 0)
+			{
+				CString filename;
+				g_Git.StringAppend(&filename, &data[start1 + 1], CP_UTF8, start2 - start1 - 1);
+				m_FileNames.push_back(filename);
+			}
+			else
+				m_FileNames.push_back(_T(""));
+		}
+		else
+			m_FileNames.push_back(_T(""));
 
 		int start=0;
 		start=data.findData((const BYTE*)")",1,pos + 40);
@@ -1757,8 +1829,12 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 				iline += lineLength / 70;
 			}
 
+			CString filename;
+			if (m_bFollowRenames)
+				filename.Format(_T("%s: %s\n"), m_sFileName, m_FileNames[line]);
+
 			CString str;
-			str.Format(_T("%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(),
+			str.Format(_T("%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(), filename,
 																	m_sAuthor, pRev->GetAuthorName(), pRev->GetAuthorEmail(),
 																	m_sDate, CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes),
 																	m_sMessage, pRev->GetSubject(),
