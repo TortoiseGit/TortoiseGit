@@ -2199,7 +2199,7 @@ int CAppUtils::SaveCommitUnicodeFile(CString &filename, CString &message)
 		if (stripComments && (line.GetLength() >= 1 && line.GetAt(0) == '#') || (start < 0 && line.IsEmpty()))
 			continue;
 		line.TrimRight(L" \r");
-		CStringA lineA = CUnicodeUtils::GetMulti(line, cp) + L"\n";
+		CStringA lineA = CUnicodeUtils::GetMulti(line + L"\n", cp);
 		file.Write(lineA.GetBuffer(), lineA.GetLength());
 	}
 	file.Close();
