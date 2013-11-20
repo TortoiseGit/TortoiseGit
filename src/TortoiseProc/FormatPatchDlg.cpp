@@ -138,6 +138,7 @@ BOOL CFormatPatchDlg::OnInitDialog()
 	if(!m_To.IsEmpty())
 		m_cTo.SetWindowText(m_To);
 
+	m_spinNum.SetRange32(1, INT_MAX);
 	this->CheckRadioButton(IDC_RADIO_SINCE,IDC_RADIO_RANGE,this->m_Radio);
 
 	OnBnClickedRadio();

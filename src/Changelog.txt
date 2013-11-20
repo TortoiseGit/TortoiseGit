@@ -24,6 +24,7 @@ Released: Unreleased
  * Fixed issue #1992: Compare selected refs fails if tag object is selected
  * Fixed issue #1985: TortoiseGitBlame does not follow renames when comparing line with previous version
  * Fixed issue #2008: Wrong reflog if hash repeated
+ * Fixed issue #2004: In create patch serial dialog, number of commits up down buttons reversed
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
