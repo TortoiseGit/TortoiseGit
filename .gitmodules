@@ -13,3 +13,6 @@
 [submodule "ext/libgit2"]
 	path = ext/libgit2
 	url = https://github.com/libgit2/libgit2.git
+[submodule "ext/spell"]
+	path = ext/spell
+	url = http://anongit.freedesktop.org/git/libreoffice/dictionaries.git

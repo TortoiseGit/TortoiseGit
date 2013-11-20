@@ -1,0 +1,4 @@
+<Include>
+  <File Id='SPELLCAAFF' Name='ca.aff' DiskId='1' Source='..\ext\spell\ca\ca.aff' Vital='no'></File>
+  <File Id='SPELLCADIC' Name='ca.dic' DiskId='1' Source='..\ext\spell\ca\ca.dic' Vital='no'></File>
+</Include>

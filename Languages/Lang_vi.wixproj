@@ -19,7 +19,7 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1066;LANGNATIVE=Vietnamese;</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1066;LANGNATIVE=Vietnamese;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
     <Cultures>en-US</Cultures>
@@ -35,7 +35,7 @@
     <IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1066;LANGNATIVE=Vietnamese;</DefineConstants>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1066;LANGNATIVE=Vietnamese;SPELL=1;</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
     <Cultures>en-US</Cultures>
@@ -44,6 +44,9 @@
   <ItemGroup>
     <Compile Include="LanguagePack.wxs" />
     <Compile Include="WixUI_LanguagePacks.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="spell\1066.wxi" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
