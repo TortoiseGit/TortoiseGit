@@ -93,6 +93,7 @@
                 </para>
             </listitem>
         </varlistentry>
+<!--
         <varlistentry>
             <term condition="pot">DiffBlamesWithTortoiseMerge</term>
             <listitem>
@@ -105,6 +106,7 @@
                 </para>
             </listitem>
         </varlistentry>
+-->
         <varlistentry>
             <term condition="pot">FullRowSelect</term>
             <listitem>

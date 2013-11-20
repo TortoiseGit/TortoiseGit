@@ -63,6 +63,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+<!--
 		<varlistentry>
 			<term>Authentication data</term>
 			<listitem>
@@ -80,6 +81,7 @@
 				</para>
 			</listitem>
 		</varlistentry>
+-->
 		<varlistentry>
 			<term>Action log</term>
 			<listitem>
