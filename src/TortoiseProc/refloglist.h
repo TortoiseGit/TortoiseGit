@@ -35,7 +35,7 @@ public:
 		REFLOG_MESSAGE
 	};
 
-	std::map<CString,CLogDataVector> m_RefMap;
+	std::vector<GitRev> m_RevCache;
 
 protected:
 	virtual void OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult);

@@ -740,7 +740,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 					if (ref.Find(_T("refs/")) == 0)
 						ref = ref.Mid(5);
 					int refpos = ref.ReverseFind('{');
-					if (refpos > 0 && ref.Mid(refpos, 2) != _T("@{"))
+					if (refpos > 0 && ref.Mid(refpos - 1, 2) != _T("@{"))
 						ref = ref.Left(refpos) + _T("@")+ ref.Mid(refpos);
 					refsToDelete.push_back(ref);
 				}
