@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-branchtag" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Branching / Tagging</title>
+	<indexterm>
+		<primary>branch</primary>
+	</indexterm>
+	<indexterm>
+		<primary>tag</primary>
+	</indexterm>
+	<indexterm>
+		<primary>mark release</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_NEW_BRANCH_TAG"?>
+	<para>
+		One of the features of version control systems is the ability
+		to isolate changes onto a separate line of development.
+		This line is known as a <firstterm>branch</firstterm>.
+		Branches are often used to try out new features without
+		disturbing the main line of development with compiler
+		errors and bugs. As soon as the new feature is stable enough
+		then the development branch is <firstterm>merged</firstterm>
+		back into the main branch.
+	</para>
+	<para>
+		Another feature of version control systems is the ability
+		to mark particular revisions (e.g. a release version),
+		so you can at any time recreate a certain build or
+		environment. This process is known as <firstterm>tagging</firstterm>.
+	</para>
+	<para>
+		Git is very powerful at branch and tag. It is very easy to create branch
+		and tag.
+	</para>
+	<sect2 id="tgit-dug-branch-1">
+		<title>Creating a Branch or Tag</title>
+		<para>
+			Creating a branch is very simple:
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Create Branch...</guimenuitem>
+			</menuchoice>
+			<figure id="tgit-dug-branchtag-dia-1">
+				<title>The Branch Dialog</title>
+				<graphic fileref="../images/Branch.png"/>
+			</figure>
+		</para>
+		<para>
+			<guilabel>Branch:</guilabel> input your branch name. 
+		</para>
+		<para>
+			Creating a tag is very simple:
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Create Tag...</guimenuitem>
+			</menuchoice>
+			
+			<figure id="tgit-dug-branchtag-dia-2">
+				<title>The Tag Dialog</title>
+				<graphic fileref="../images/Tag.png"/>
+			</figure>
+			
+		</para>
+		<para>
+			<guilabel>Tag:</guilabel> input your tag name. 
+		</para>
+		<para>
+			You can choose one commit that base on. 
+			<xi:include href="./dug_chooseversion.xml"/> 
+		</para>
+		<para>
+			If you want your working tree to be switched to the newly created
+			branch automatically, use the
+			<guilabel>Switch to new branch/tag</guilabel> checkbox.
+			But if you do that, first make sure that your working tree does not
+			contain modifications. If it does, those changes will be merged into
+			the branch working tree when you switch.
+		</para>
+		<para>
+			<guilabel>track</guilabel> is a checkbox with three values. If it is checked
+			<literal>--track</literal> is passed to git on <guilabel>OK</guilabel>, if it is
+			unchecked <literal>--no-track</literal> is passed to git on <guilabel>OK</guilabel>.
+			The third state indicates, that neither <literal>--track</literal> nor <literal>--no-track</literal>
+			is passed to git on <guilabel>OK</guilabel> - see branch.autosetupmerge configuration variable
+			(<xref linkend="git-config(1)"/>) and --track parameter documentation for <xref linkend="git-branch(1)"/>.
+		</para>
+		<para>
+			Check <guilabel>Sign</guilabel> to create a signed tag. This requires GPG
+			and a key <emphasis>without</emphasis> a passphrase.
+		</para>
+		<para>
+			Press <guibutton>OK</guibutton> to create branch or tag at  
+			<emphasis>local repository</emphasis>.
+		</para>
+		<para>
+			Note that unless you opted to switch your working tree to the newly
+			created branch, creating a Branch or Tag does <emphasis>not</emphasis>
+			affect your working tree. Even if you create the branch from your working tree,
+			those changes are committed to the original branch, not to the new branch.
+		</para>
+		<para>
+			How to switch working tree to tag\branch,
+			please refer to <xref linkend="tgit-dug-checkout"/> 
+		</para>
+	</sect2>
+	<para>
+		You can find more information at <xref linkend="git-branch(1)"/> and <xref linkend="git-tag(1)"/>
+	</para>
+</sect1>

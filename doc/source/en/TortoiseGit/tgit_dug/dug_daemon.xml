@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-daemon">
+    <?dbhh topicname="HIDD_DAEMON"?>
+    <title>Daemon</title>
+    <indexterm>
+        <primary>daemon</primary>
+    </indexterm>
+    <indexterm>
+        <primary>Daemon</primary>
+    </indexterm>
+    <para>
+        <figure id="tgit-dug-daemon-dia-1">
+            <title>A running daemon dialog</title>
+            <graphic fileref="../images/DaemonProgress.png"/>
+        </figure>
+        Sometimes you want to quickly share you local repository to others
+        without pushing to a remote git repository.
+        That's when you need to use
+        <menuchoice>
+            <guimenu>TortoiseGit</guimenu>
+            <guimenuitem>Daemon...</guimenuitem>
+        </menuchoice>
+    </para>
+    <para>
+        This command runs Git Daemon that serves Git protocol at port 9418 (git://hostname/).
+    </para>
+    <caution>
+        <para>
+            The selected repository is exported for read/write access without further authentication.
+        </para>
+    </caution>
+    <important>
+        <para>
+            Your host might only be accessible within your local network and you might need to adjust your firewall.
+        </para>
+    </important>
+    <para>
+        You can find more information at <xref linkend="git-daemon(1)"/>
+    </para>
+</sect1>

@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-showlog">
+	<title>Revision Log Dialog</title>
+	<indexterm>
+		<primary>log</primary>
+	</indexterm>
+	<indexterm>
+		<primary>history</primary>
+	</indexterm>
+	<indexterm>
+		<primary>commit messages</primary>
+	</indexterm>
+	<indexterm>
+		<primary>log messages</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_LOGMESSAGE"?>
+	<para>
+		For every change you make and commit, you should provide
+		a log message for that change. That way you can later find out
+		what changes you made and why, and you have a detailed log for
+		your development process.
+	</para>
+	<para>
+		The Revision Log Dialog retrieves all those log messages and shows them
+		to you.
+		The display is divided into 3 panes.
+		<itemizedlist>
+			<listitem>
+				<para>
+					The top pane shows a list of revisions where changes to the
+					file/folder have been committed. This summary includes the
+					date and time, the person who committed the revision and the
+					start of the log message.
+				</para>
+				<para>
+					Lines shown in bold indicate that that is HEAD commit.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The middle pane shows the full log message for the selected
+					revision.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The bottom pane shows a list of all files and folders that
+					were changed as part of the selected revision.
+				</para>
+			</listitem>
+		</itemizedlist>
+		But it does much more than that - it provides context menu
+		commands which you can use to get even more information about the
+		project history.
+	</para>
+	<sect2 id="tgit-dug-showlog-1">
+		<title>Invoking the Revision Log Dialog</title>
+		<para>
+			<figure id="tgit-dug-showlog-1-dia-1">
+				<title>The Revision Log Dialog</title>
+				<graphic fileref="../images/LogMessages.png"/>
+			</figure>
+			There are several places from where you can show the Log dialog:
+			<itemizedlist>
+				<listitem>
+					<para>
+						From the TortoiseGit context submenu
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-actions">
+		<title>Revision Log Actions</title>
+		<para>
+			The top pane has an <guilabel>Actions</guilabel> column containing
+			icons that summarize what has been done in that revision.
+			There are four different icons, each shown in its own column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionModifiedIcon.png"/>
+			If a revision modified a file or directory, the
+			<emphasis>modified</emphasis> icon is shown in the first column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionAddedIcon.png"/>
+			If a revision added a file or directory, the
+			<emphasis>added</emphasis> icon is shown in the second column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionDeletedIcon.png"/>
+			If a revision deleted a file or directory, the
+			<emphasis>deleted</emphasis> icon is shown in the third column.
+		</para>
+		<para>
+			<graphic fileref="../images/ActionReplacedIcon.png"/>
+			If a revision replaced(rename) a file, the
+			<emphasis>replaced</emphasis> icon is shown in the fourth column.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-2">
+		<title>Getting Additional Information</title>
+		<para>
+			<figure id="tgit-dug-showlog-2-dia-1">
+				<title>The Revision Log Dialog Top Pane with Context Menu</title>
+				<graphic fileref="../images/LogContextMenu.png"/>
+			</figure>
+			The top pane of the Log dialog has a context menu that allows you to
+			access much more information. Some of these menu entries appear only
+			when the log is shown for a file, and some only when the log is shown
+			for a folder.
+			<variablelist>
+				<varlistentry>
+					<term>Compare with working tree</term>
+					<listitem>
+						<para>
+							Compare the selected revision with your working tree.
+							The default Diff-Tool is TortoiseGitMerge which
+							is supplied with TortoiseGit.
+							If the log dialog is for a folder, this will show you a list
+							of changed files, and allow you to review the changes made
+							to each file individually.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show changes as unified diff</term>
+					<listitem>
+						<para>
+							View the changes made in the selected revision as a
+							Unified-Diff file (GNU patch format). This shows
+							only the differences with a few lines of context. It
+							is harder to read than a visual file compare, but will
+							show all file changes together in a compact format.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Compare with previous revision</term>
+					<listitem>
+						<para>
+							Compare the selected revision with the previous revision.
+							This works in a similar manner to comparing with your
+							working tree.
+							For folders this option will first show the changed files
+							dialog allowing you to select files to compare.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Browse repository</term>
+					<listitem>
+						<para>
+							Open the repository browser to examine the selected file or
+							folder in the repository as it was at the selected revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Reset (current branch) to this</term>
+					<listitem>
+						<para>
+							Reset current branch HEAD to selected commit.
+							<!-- todo refer reset -->
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Switch / Checkout to revision</term>
+					<listitem>
+						<para>
+							Update your working tree to the selected revision.
+							Useful if you want to have your working tree reflect
+							a time in the past, or if there have been further commits to
+							the repository and you want to update your working tree one
+							step at a time.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Create branch from revision</term>
+					<listitem>
+						<para>
+							Create a branch from a selected revision.
+							This is useful e.g.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Create tag from revision</term>
+					<listitem>
+						<para>
+							Create a tag from a selected revision.
+							This is useful e.g.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Rebase (current branch) to this</term>
+					<listitem>
+						<para>
+							Rebase current branch to selected commit.
+							<!-- todo refer rebase -->
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Export this version...</term>
+					<listitem>
+						<para>
+							Export the selected revision to an archive file such as zip. This brings up a dialog for you to confirm the
+							revision, and select a location for the export.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Revert change by this commit</term>
+					<listitem>
+						<para>
+							Revert changes from which were made in the selected
+							revision. All changes are integrated into your working tree.
+							You may choose to commit immediately or edit and commit later.
+							To abandon the reverted changes, perform a hard reset.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Edit notes</term>
+					<listitem>
+						<para>
+							Edit notes of the selected commit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Cherry Pick this commit</term>
+					<listitem>
+						<para>
+							Cherry Pick this commit to current branch
+							<!-- todo refer cherry pick -->
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Format Patch...</term>
+					<listitem>
+						<para>
+							Create Patches from this commit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy SHA-1 to clipboard</term>
+					<listitem>
+						<para>
+							Copy the commit hash of the selected revision to the clipboard.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log details of the selected revisions to the clipboard.
+							This will copy the revision number, author, date, log message
+							and the list of changed items for each revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy log message to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log message of the selected revision to the clipboard.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Search log messages...</term>
+					<listitem>
+						<figure id="tgit-dug-showlog-1-dia-2">
+							<title>The Search Log Messages Dialog</title>
+							<graphic fileref="../images/LogSearch.png"/>
+						</figure>
+						<para>
+							Search log messages for the text you enter. This searches
+							the log messages that you entered and also the action summaries
+							created by Git (shown in the bottom pane). The search
+							is not case sensitive.
+						</para>
+						<tip>
+							<para>
+								This allows you to easily search for refs (tags and branches).
+							</para>
+						</tip>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Shows branches this commit is on</term>
+					<listitem>
+						<para>
+							Shows the branches that the select commit belongs to.
+							It shows both local and remote branches.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<para>
+			<figure id="tgit-dug-showlog-2-dia-1a">
+				<title>Top Pane Context Menu for 2 Selected Revisions</title>
+				<graphic fileref="../images/LogContextMenu1.png"/>
+			</figure>
+			If you select two revisions at once (using the usual
+			<keycap>Ctrl</keycap>-modifier), the context menu changes and
+			gives you fewer options:
+			<variablelist>
+				<varlistentry>
+					<term>Compare revisions</term>
+					<listitem>
+						<para>
+							Compare the two selected revisions using a visual
+							difference tool. The default Diff-Tool is TortoiseGitMerge
+							which is supplied with TortoiseGit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show differences as unified diff</term>
+					<listitem>
+						<para>
+							View the differences between the two selected revisions
+							as a Unified-Diff file. This works for files and folders.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Revert changes by these commit</term>
+					<listitem>
+						<para>
+							Revert changes from which were made in the selected
+							revisions. All changes are integrated into your working tree.
+							You may choose to commit immediately or edit and commit later.
+							To abandon the reverted changes, perform a hard reset.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Combine to one commit</term>
+					<listitem>
+						<para>
+							Combine continuous commits to one commit.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Cherry Pick selected commits</term>
+					<listitem>
+						<para>
+							Cherry Pick Chosen Commits.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Bisect start</term>
+					<listitem>
+						<para>
+							Start bisection. Find by binary search the change that introduced a bug. 
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Format Patch...</term>
+					<listitem>
+						<para>
+							Create patches between two chosen commits.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy SHA-1 to clipboard</term>
+					<listitem>
+						<para>
+							Copy the commit hashes of the selected revisions to the clipboard, delimited by CRLF.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy to clipboard</term>
+					<listitem>
+						<para>
+							Copy log messages to clipboard as described above.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Copy log messages to clipboard</term>
+					<listitem>
+						<para>
+							Copy the log messages of the selected revisions to the clipboard.
+							This will copy the log message for each revision.
+							This facilitates the preparation of release notes.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Search log messages...</term>
+					<listitem>
+						<para>
+							Search log messages as described above.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+
+		<para>
+			If you select two or more revisions (using the usual
+			<keycap>Ctrl</keycap> or <keycap>Shift</keycap> modifiers),
+			You can combine select commits to one commit. And cherry pick
+			these commits to current branch.
+		</para>
+		<para>
+			<figure id="tgit-dug-showlog-2-dia-2">
+				<title>The Log Dialog Bottom Pane with Context Menu</title>
+				<graphic fileref="../images/LogContextMenu2.png"/>
+			</figure>
+			The bottom pane of the Log dialog also has a context menu that allows you to
+			<variablelist>
+				<varlistentry>
+					<term>Compare with base</term>
+					<listitem>
+						<para>
+							Compare chosen file with base version.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Show as unified diff</term>
+					<listitem>
+						<para>
+							Show file changes in unified diff format.
+							This context menu is only available for
+							files shown as <emphasis>modified</emphasis>.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Compare with working tree</term>
+					<listitem>
+						<para>
+							Compare chosen file with working tree.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Revert changes to this revision</term>
+					<listitem>
+						<para>
+							Revert chosen files to this revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Revert changes to parent revision</term>
+					<listitem>
+						<para>
+							Revert chosen files to parent revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Show log</term>
+					<listitem>
+						<para>
+							Show the revision log for the selected single file.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Blame...</term>
+					<listitem>
+						<para>
+							Opens the Blame dialog, allowing you to blame up to the
+							selected revision.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Save revision to...</term>
+					<listitem>
+						<para>
+							Save the selected revision to a file so you
+							have an older version of that file.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Export selection to...</term>
+					<listitem>
+						<para>
+							Saves the selected files to a target directory. Compared to "Save revision to..." this preserves the directory structure.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>View revision in alternative editor</term>
+					<listitem>
+						<para>
+							Show chosen file with an alternative editor such as notepad2 with chosen commit.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Open / Open with...</term>
+					<listitem>
+						<para>
+							Open the selected file, either with the default viewer for
+							that file type, or with a program you choose.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Explore to</term>
+					<listitem>
+						<para>
+							Open directory of file with Explore.
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Copy paths to clipboard</term>
+					<listitem>
+						<para>
+							Copy paths to clipboard
+						</para>
+					</listitem>
+				</varlistentry>
+
+				<varlistentry>
+					<term>Copy all information to clipboard</term>
+					<listitem>
+						<para>
+							Copy all information to clipboard, include version info.
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+		</para>
+		<tip>
+			<para>
+				You may notice that sometimes we refer to changes and other times
+				to differences. What's the difference?
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-filter">
+		<title>Filtering Log Messages</title>
+		<indexterm>
+			<primary>filter</primary>
+		</indexterm>
+		<para>
+			If you want to restrict the log messages to show only those
+			you are interested in rather than scrolling through a list
+			of hundreds, you can use the filter controls at the top of
+			the Log Dialog. The start and end date controls allow you
+			to restrict the output to a known date range. The search
+			box allows you to show only messages which contain a
+			particular phrase.
+		</para>
+		<para>
+			Click on the search icon to select which information you want
+			to search in, and to choose <emphasis>regex</emphasis> mode.
+			Normally you will only need a simple text search, but if you
+			need to more flexible search terms, you can use regular expressions.
+			If you hover the mouse over the box, a tooltip will give hints
+			on how to use the regex functions.
+			You can also find online documentation and a tutorial at
+			<ulink url="http://www.regular-expressions.info/">
+				<citetitle>http://www.regular-expressions.info/</citetitle>
+			</ulink>.
+			The filter works by checking whether your filter string matches
+			the log entries, and then only those entries which <emphasis>match</emphasis>
+			the filter string are shown.
+		</para>
+<!--
+		<para>
+			To make the filter show all log entries that do <emphasis>not</emphasis>
+			match the filter string, start the string with an exclamation mark ('!').
+			For example, a filter string <literal>!username</literal> will only
+			show those entries which were not committed by <literal>username</literal>.
+		</para>
+-->
+		<para>
+			You can also filter the path names in the bottom pane using the
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Hide unrelated changed paths</guimenuitem>
+			</menuchoice>
+			Related paths are those which contain the path used to display
+			the log. If you fetch the log for a folder, that means anything
+			in that folder or below it. For a file it means just that one file.
+			If you want to grey out the unrelated ones, check
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Gray unrelated changed paths</guimenuitem>
+			</menuchoice>
+			Uncheck both menu items to hide the unrelated paths completely.
+		</para>
+
+		<para>
+			You can show all branches history by click <guilabel>All branches</guilabel>
+		</para>
+		<para>
+			You can show whole project history, no choose directory or file by click
+			<guilabel>Show Whole Project</guilabel>
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Tags</guimenuitem>
+			</menuchoice>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Local branches</guimenuitem>
+			</menuchoice>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenu>Labels</guimenu>
+				<guimenuitem>Remote branches</guimenuitem>
+			</menuchoice>
+			You can disable showing some reference types in the log graph.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Gravatar</guimenuitem>
+			</menuchoice>
+			You can enable / disable Gravatar for a specific repository.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>First Parent</guimenuitem>
+			</menuchoice>
+			just follow up first parent commit. This will help understand overwhole history.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>No merges</guimenuitem>
+			</menuchoice>
+			Skips all merge points.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Follow renames</guimenuitem>
+			</menuchoice>
+			This is available to a single file only, which tracks rename.
+			Otherwise, the log list stops at the commit that the current filename is introduced.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Compressed Graph</guimenuitem>
+			</menuchoice>
+			The log graph is simplified to include merge points, commits with references, and possibly other commits.
+		</para>
+		<para>
+			<menuchoice>
+				<guimenu>Walk Behaviour</guimenu>
+				<guimenuitem>Show labelled commits only</guimenuitem>
+			</menuchoice>
+			The log graph is simplified to include commits with references only.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-5">
+		<?dbhh topicname="HIDD_STATGRAPH"?>
+		<title>Statistical Information</title>
+		<indexterm>
+			<primary>statistics</primary>
+		</indexterm>
+		<para>
+			The <guibutton>Statistics</guibutton> button brings up a box
+			showing some interesting information about the revisions
+			shown in the Log dialog. This shows how many authors have
+			been at work, how many commits they have made, progress
+			by week, and much more. Now you can see at a glance who
+			has been working hardest and who is slacking ;-)
+		</para>
+		<sect3 id="tgit-dug-showlog-stats-1">
+			<title>Statistics Page</title>
+			<para>
+				This page gives you all the numbers you can think of,
+				in particular the period and number of revisions covered,
+				and some min/max/average values.
+			</para>
+		</sect3>
+		<sect3 id="tgit-dug-showlog-stats-2">
+			<title>Commits by Author Page</title>
+			<para>
+				<figure id="tgit-dug-showlog-stats-dia-2">
+					<title>Commits-by-Author Histogram</title>
+					<graphic fileref="../images/StatsByAuthor.png"/>
+				</figure>
+				This graph shows you which authors have been active on the
+				project as a simple histogram, stacked histogram or
+				pie chart.
+				<figure id="tgit-dug-showlog-stats-dia-3">
+					<title>Commits-by-Author Pie Chart</title>
+					<graphic fileref="../images/StatsByAuthPie.png"/>
+				</figure>
+			</para>
+			<para>
+				Where there are a few major authors and many minor contributors,
+				the number of tiny segments can make the graph more difficult to
+				read. The slider at the bottom allows you to set a threshold
+				(as a percentage of total commits) below which any activity is
+				grouped into an <emphasis>Others</emphasis> category.
+			</para>
+		</sect3>
+		<sect3 id="tgit-dug-showlog-stats-3">
+			<title>Commits by date Page</title>
+			<para>
+				<figure id="tgit-dug-showlog-stats-dia-4">
+					<title>Commits-by-date Graph</title>
+					<graphic fileref="../images/StatsByDate.png"/>
+				</figure>
+				This page gives you a graphical representation of project
+				activity in terms of number of commits <emphasis>and</emphasis>
+				author. This gives some idea of when a project is being worked
+				on, and who was working at which time.
+			</para>
+			<para>
+				When there are several authors, you will get many lines on the
+				graph. There are two views available here: <emphasis>normal</emphasis>,
+				where each author's activity is relative to the base line, and
+				<emphasis>stacked</emphasis>, where each author's activity is
+				relative to the line underneath.
+				The latter option avoids the lines crossing over, which can make
+				the graph easier to read, but less easy to see one author's output.
+			</para>
+		</sect3>
+		<para>
+			By default the analysis is case-sensitive, so users
+			<literal>PeterEgan</literal> and <literal>PeteRegan</literal>
+			are treated as different authors. However, in many cases user names
+			are not case-sensitive, and are sometimes entered inconsistently,
+			so you may want <literal>DavidMorgan</literal> and
+			<literal>davidmorgan</literal> to be treated as the same person.
+			Use the <guilabel>Authors case insensitive</guilabel> checkbox
+			to control how this is handled.
+		</para>
+		<para>
+			The statistics dialog also honours the .mailmap file
+			(see <xref linkend="git-blame(1)__mapping_authors"/>).
+		</para>
+		<para>
+			Note that the statistics cover the same period as the
+			Log dialog. If that is only displaying one revision
+			then the statistics will not tell you very much.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-showlog-refresh">
+		<title>Refreshing the View</title>
+		<para>
+			If you want to check the repository again for newer log messages,
+			you can simply refresh the view using <keycap>F5</keycap>.
+		</para>
+	</sect2>
+</sect1>

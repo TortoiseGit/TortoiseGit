@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-rename">
+	<title>Deleting, Moving and Renaming</title>
+	<para>
+		Unlike CVS, Git allows renaming and moving of files and
+		folders. So there are menu entries for delete and rename
+		in the TortoiseGit submenu.
+		<figure id="tgit-dug-renaming-dia-1">
+			<title>Explorer context menu for versioned files</title>
+			<graphic fileref="../images/ContextMenuFileControl.png"/>
+		</figure>
+	</para>
+	<sect2 id="tgit-dug-rename-delete">
+		<title>Deleting files and folders</title>
+		<indexterm>
+			<primary>delete</primary>
+		</indexterm>
+		<indexterm>
+			<primary>remove</primary>
+		</indexterm>
+		<para>
+			Use
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Delete</guimenuitem>
+			</menuchoice>
+			to remove files or folders from Git.
+		</para>
+		<para>
+			When you 
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Delete</guimenuitem>
+			</menuchoice>
+			a file, it is removed from your working tree immediately as well
+			as being marked for deletion in the repository on next commit.
+<!--
+			The file's parent folder shows a <quote>deleted</quote> icon overlay.
+-->
+			Up until you commit the change, you can get the file back using
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Revert</guimenuitem>
+			</menuchoice>
+			on the parent folder.
+		</para>
+		<para>
+			If you want to delete an item from the repository, but keep it
+			locally as an unversioned file/folder, use
+			<menuchoice>
+				<guimenu>Extended Context Menu</guimenu>
+				<guimenuitem>Delete (keep local)</guimenuitem>
+			</menuchoice>.
+			You might have to hold the <keycap>Shift</keycap> key while right clicking on
+			the item in the explorer list pane (right pane) in order to see this
+			in the extended context menu.
+		</para>
+<!--
+		<para>
+			If a <emphasis>file</emphasis> is deleted via the explorer
+			instead of using the TortoiseGit context menu, the commit
+			dialog shows those files and lets you remove them from
+			version control too before the commit.
+			If you need to delete a version-controlled file, always use
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Delete</guimenuitem>
+			</menuchoice> so that Git doesn't have to guess what
+			you really want to do.
+		</para>
+-->
+    
+		<tip>
+			<title>Getting a deleted file or folder back</title>
+			<para>
+				If you have deleted a file or a folder and already committed
+				that delete operation to the repository, then a normal 
+				<menuchoice>
+					<guimenu>TortoiseGit</guimenu>
+					<guimenuitem>Revert</guimenuitem>
+				</menuchoice>
+				can't bring it back anymore. But the file or folder is not
+				lost at all. If you know the revision the file or folder got
+				deleted (if you don't, use the log dialog to find out) open
+				the repository browser and switch to that revision. Then select
+				the file or folder you deleted, right-click and select
+				<menuchoice>
+					<guimenu>Context Menu</guimenu>
+					<guimenuitem>Revert to this revision</guimenuitem>
+				</menuchoice>
+			</para>
+		</tip>
+	</sect2>
+	<sect2 id="tgit-dug-rename-move">
+		<title>Moving files and folders</title>
+		<indexterm>
+			<primary>rename</primary>
+		</indexterm>
+		<indexterm>
+			<primary>move</primary>
+		</indexterm>
+		<?dbhh topicname="HIDD_RENAME"?>
+		<para>
+			If you want to do a simple in-place rename of a file or
+			folder, use
+			<menuchoice>
+				<guimenu>Context Menu</guimenu>
+				<guimenuitem>Rename...</guimenuitem>
+			</menuchoice>
+			Enter the new name for the item and you're done.
+		</para>
+		<para>
+			If you want to move files around inside your working tree,
+			perhaps to a different sub-folder, you can
+			use the right-mouse drag-and-drop handler:
+			<orderedlist>
+				<listitem>
+					<para>
+						select the files or directories you want to move
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<action>right-drag</action> them to the
+						new location inside the working tree
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						release the right mouse button
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						in the popup menu select
+						<menuchoice>
+							<guimenu>Context Menu</guimenu>
+							<guimenuitem>Git Move versioned files here</guimenuitem>
+						</menuchoice>
+					</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		<caution>
+			<title>Do Not Git Move Submodule</title>
+			<para>
+				You should <emphasis>not</emphasis> use the TortoiseGit
+				<guilabel>Move</guilabel> or <guilabel>Rename</guilabel>
+				commands on a folder which has been created using
+				<literal>git submodule</literal>.
+			</para>
+		</caution>
+	</sect2>
+	<!--
+	<sect2 id="tgit-dug-renameincase">
+		<title>Changing case in a filename</title>
+		<indexterm>
+			<primary>case change</primary>
+		</indexterm>
+		<?dbhh topicname="HIDD_RENAMEINCASE"?>
+		<para>
+			Making case-only changes to a filename is tricky with Git
+			on Windows, because for a short time during a rename, both filenames
+			have to exist. As Windows has a case-insensitive file system,
+			this does not work using the usual Rename command.
+		</para>
+		<para>
+			Fortunately there are (at least) two possible methods to rename a file 
+			without losing its log history. It is important to rename it 
+			within Git. Just renaming in the explorer will corrupt 
+			your working tree!
+		</para>
+		<para>
+			Solution A) (recommended)
+			<orderedlist>
+				<listitem>
+					<para>
+						Commit the changes in your working tree.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Rename the file from UPPERcase to upperCASE directly 
+						in the repository using the repository browser.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Update your working tree.
+					</para>
+				</listitem>
+			</orderedlist>
+		</para>
+
+		<para>
+			Solution B)
+			<orderedlist>
+				<listitem>
+					<para>
+						Rename from UPPERcase to UPPERcase_ with the rename command
+						in the TortoiseGit submenu.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Commit the changes.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Rename from UPPERcase_ to upperCASE.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Commit the changes.
+					</para>
+				</listitem>
+			</orderedlist>
+		</para>
+	</sect2>
+	-->
+	<!--
+	<sect2 id="tgit-dug-rename-case-conflict">
+		<title>Dealing with filename case conflicts</title>
+		<para>
+			If the repository already contains two files with the same name
+			but differing only in case (e.g. <filename>TEST.TXT</filename>
+			and <filename>test.txt</filename>), you
+			will not be able to commit or checkout the parent directory
+			on a Windows client. Whilst Git supports case-sensitive
+			filenames, Windows does not.
+		</para>
+		<para>
+			This sometimes happens when two people commit, from separate
+			working trees, files which happen to have
+			the same name, but with a case difference. It can also happen
+			when files are committed from a system with a case-sensitive
+			file system, like Linux.
+		</para>
+		<para>
+			In that case, you have to decide which one of them you want to 
+			keep and delete (or rename) the other one from the repository.
+		</para>
+	</sect2>
+	-->
+	<sect2 id="tgit-dug-rename-del-unversioned">
+		<title>Deleting Unversioned Files</title>
+		<para>
+			Usually you set your ignore list such that all generated files are ignored
+			in Git. But what if you want to clear all those ignored items to produce
+			a clean build? Usually you would set that in your makefile, but if you are
+			debugging the makefile, or changing the build system it is useful to have a way
+			of clearing the decks.
+		</para>
+		<para>
+			TortoiseGit provides just such an option using
+			<menuchoice>
+				<guimenu>Extended Context Menu</guimenu>
+				<guimenuitem>Clean up...</guimenuitem>
+			</menuchoice>.
+			You may have to hold the <keycap>Shift</keycap> while right clicking on a folder
+			in the explorer list pane (right pane) in order to see this in the
+			context menu.
+			This will produce a dialog which lists all possible clean up options: <xref linkend="tgit-dug-cleanup"/>
+		</para>
+	</sect2>
+</sect1>

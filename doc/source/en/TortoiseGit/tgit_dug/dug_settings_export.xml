@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tgit-dug-settings-export">
+    <title>Exporting TortoiseGit Settings</title>
+    <para>
+        If you want to export all your client settings to use on another computer
+        you can do so using the Windows registry editor <filename>regedt32.exe</filename>.
+        Go to the registry key <literal>HKCU\Software\TortoiseGit</literal> and export it
+        to a reg file. On the other computer, just import that file again (usually, a
+        double click on the reg file will do that).
+    </para>
+    <para>
+        Remember to save Git's general settings, which you can find in the Git
+        configuration file <literal>.gitconfig</literal> and/or the folder <literal>.config/git</literal>
+        which both are located in your userprofile directory.
+    </para>
+</sect2>

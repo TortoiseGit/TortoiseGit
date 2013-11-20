@@ -4,7 +4,7 @@
  Enter Glossary definitions in alphabetical Order! 
  DocBook doesn't sort them automatically.
 -->
-<glossary id="tsvn-glossary">
+<glossary id="tgit-glossary">
 	<title>Glossary</title>
 	<glossentry>
 		<glossterm>Add</glossterm>

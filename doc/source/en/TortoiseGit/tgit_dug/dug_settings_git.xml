@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+<sect2 id="tgit-dug-settings-git">
+	<title>Git</title>
+	<sect3 id="tgit-dug-settings-config">
+		<title>Config</title>
+		<?dbhh topicname="HIDD_SETTINGIT_CONFIG"?>
+		<para>
+			<figure id="tgit-dug-settings-git-config">
+				<title>The Settings Dialog, Config</title>
+				<graphic fileref="../images/SettingsGitConfig.png"/>
+			</figure>
+		</para>
+		<para> Set git basic configuration </para>
+		<para><guilabel>Name</guilabel> and <guilabel>Email</guilabel> are required for git to operate correctly.</para>
+		<para> <guilabel>AutoCrlf</guilabel>
+			If true, makes git convert CRLF at the end of lines in text files
+			to LF when reading from the filesystem, and convert in reverse when
+			writing to the filesystem. The variable can be set to input,
+			in which case the conversion happens only while reading from
+			the filesystem but files are written out with LF at the end of lines. 
+			A file is considered "text" (i.e. be subjected to the autocrlf mechanism) 
+			based on the file's crlf attribute, or if crlf is unspecified, 
+			based on the file's contents.
+		</para>
+		<para> <guilabel>SafeCrlf</guilabel>
+			If true, makes git check if converting CRLF as controlled by core.autocrlf is reversible.
+			Git will verify if a command modifies a file in the work tree either directly or indirectly. 
+			For example, committing a file followed by checking out the same file should yield the original file in the work tree. 
+			If this is not the case for the current setting of core.autocrlf, git will reject the file. 
+			The variable can be set to "warn", 
+			in which case git will only warn about an irreversible conversion but continue the operation.
+		</para>
+		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
+	</sect3>
+	<sect3 id="tgit-dug-settings-remote">
+		<title>Remote</title>
+		<?dbhh topicname="HIDD_SETTINREMOTE"?>
+		<para>
+			<figure id="tgit-dug-settings-git-remote">
+				<title>The Settings Dialog, Remote</title>
+				<graphic fileref="../images/SettingsGitRemote.png"/>
+			</figure>
+		</para>
+		<para> Set git remote configuration </para>
+		<para>
+			<guilabel>Remote</guilabel>
+			The name of the remote, usually the default one is called 'origin'.
+		</para>
+		<para>
+			<guilabel>URL</guilabel>
+			The URL of the remote. It can be http / https / ssh / git protocol or local file system.
+			Note that for local file system, the path should use forward slash '/'; and
+			for absolute path, use /C/Project1 for C:\Project1.
+		</para>
+		<para>
+			<guilabel>Putty Key</guilabel>
+			The putty key file to load when performing network operations.
+		</para>
+		<para>
+			<guilabel>Tag</guilabel>
+			This sets remote.name.tagopt config, which controls the default tag fetching behaviour of the specified remote.
+			Reachable: Download tags that are reachable from remote branch heads (default behaviour).
+			None: No tags are downloaded (--no-tags).
+			All tags only: Only all tags are downloaded but no branches are downloaded (--tags).
+		</para>
+	</sect3>
+	<sect3 id="tgit-dug-settings-credential">
+		<title>Credential</title>
+		<?dbhh topicname="HIDD_SETTINCREDENTIAL"?>
+		<para>
+			<figure id="tgit-dug-settings-git-credential">
+				<title>The Settings Dialog, Credential</title>
+				<graphic fileref="../images/SettingsGitCredential.png"/>
+			</figure>
+		</para>
+		<para>Set simple credential helper configuration</para>
+		<para>
+			<guilabel>Advanced</guilabel>
+			This is used if the credential helper configuration does not match any simple settings.
+			If you choose other than Advanced, except the corrsponding credential.helper, all other config keys credential.* or credential.*.* are removed.
+		</para>
+		<para>
+			<guilabel>None</guilabel>
+			No credential config keys are in all config levels.
+		</para>
+		<para>
+			<guilabel>wincred - this repository only</guilabel>
+			wincred is enabled in local config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>
+			<guilabel>winstore - this repository only</guilabel>
+			winstore is enabled in local config.
+			This option is visible only if winstore is installed for current Windows user.
+		</para>
+		<para>
+			<guilabel>wincred - current Windows user</guilabel>
+			wincred is enabled in global config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>
+			<guilabel>winstore - current Windows user</guilabel>
+			winstore is enabled in global config.
+			This option is visible only if winstore is installed for current Windows user.
+		</para>
+		<para>
+			<guilabel>wincred - all Windows users</guilabel>
+			wincred is enabled in system config.
+			This option is visible only if wincred is installed.
+		</para>
+		<para>Advanced credential helper configuration</para>
+		<para>
+			<guilabel>Config type</guilabel>
+			Either Local, Global or System config.
+		</para>
+		<para>
+			<guilabel>URL</guilabel>
+			Define a context-specific configuration based on URL pattern. By default, the path component is not considered as a different context.
+		</para>
+		<para>
+			<guilabel>Helper</guilabel>
+			Select a credential helper program.
+			wincred and winstore are predefined in TortoiseGit.
+			It is possible to use other credential helpers or with extra options.
+		</para>
+		<para>
+			<guilabel>Username</guilabel>
+			A default username, if one is not provided in the URL. 
+		</para>
+		<para>
+			<guilabel>Use HTTP path component</guilabel>
+			Also considers the path component of URL to match the configuration context.
+		</para>
+		<para>
+			You can find more information at <xref linkend="gitcredentials(7)"/>.
+		</para>
+	</sect3>
+</sect2>

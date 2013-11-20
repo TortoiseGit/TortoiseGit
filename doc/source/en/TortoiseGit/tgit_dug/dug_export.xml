@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-export" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Exporting a Git Working Tree</title>
+	<?dbhh topicname="HIDD_EXPORT"?>
+	<indexterm>
+		<primary>export</primary>
+	</indexterm>
+	<indexterm>
+		<primary>unversioned 'working tree'</primary>
+	</indexterm>
+	<para>
+		Sometimes you may want a copy of your working tree without any of
+		those <filename>.git</filename> directories, e.g. to create a zipped
+		tarball of your source, or to export to a web server. Instead of
+		making a copy and then deleting all those <filename>.git</filename>
+		directories manually, TortoiseGit offers the command
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Export...</guimenuitem>
+		</menuchoice>.
+	</para>
+	<para>
+		<figure id="tgit-dug-export-dia-1">
+			<title>The Export Dialog</title>
+			<graphic fileref="../images/ExportURL.png"/>
+		</figure>
+	</para>
+	<para>
+		<guilabel>Zip File</guilabel> zip file of export
+	</para>
+	<para>
+		<xi:include href="./dug_chooseversion.xml"/>
+	</para>
+<!--
+	<para>
+		Another way to export from a working tree is to <action>right drag</action>
+		the working tree folder to another location and choose
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Git Export here</guimenuitem>
+		</menuchoice>
+		or 
+		<menuchoice>
+			<guimenu>Context Menu</guimenu>
+			<guimenuitem>Git Export all here</guimenuitem>
+		</menuchoice>.
+		The second option includes the unversioned files as well.
+	</para>
+	<para>
+		When exporting from a working tree,
+		if the target folder already contains a folder of the same
+		name as the one you are exporting, you will be given the option
+		to overwrite the existing content, or to create a new folder with
+		an automatically generated name, eg. <literal>Target (1)</literal>.
+	</para>
+-->
+	<!--
+	<tip>
+		<title>Exporting single files</title>
+		<para>
+			The export dialog does not allow exporting single files, even 
+			though Git can.
+		</para>
+		<para>
+			To export single files with TortoiseGit, you have to use
+			the log dialog <xref linkend="tgit-dug-repobrowser"/>).
+			Simply drag the file(s) you want to export from the repository
+			browser to where you want them in the explorer, or use the
+			context menu in the repository browser to export the files.
+		</para>
+	</tip>
+	-->
+	<!--
+	<tip>
+		<title>Exporting a Change Tree</title>
+		<para>
+			If you want to export a copy of your project tree structure
+			but containing only the files which have changed in a particular
+			revision, or between any two revisions, use the compare revisions
+			feature described in <xref linkend="tgit-dug-compare-revs"/>.
+		</para>
+	</tip>
+	<sect2 id="tgit-dug-export-unversion">
+		<title>Removing a working tree from version control</title>
+		<indexterm>
+			<primary>unversion</primary>
+		</indexterm>
+		<para>
+			Sometimes you have a working tree which you want to convert back
+			to a normal folder without the <literal>.svn</literal> directories.
+			What you really need is an export-in-place command, that just
+			removes the control directories rather than generating a new
+			clean directory tree.
+		</para>
+		<para>
+			The answer is surprisingly simple - export the folder to itself!
+			TortoiseGit detects this special case and asks if you want to
+			make the working tree unversioned. If you answer
+			<emphasis>yes</emphasis> the control directories will be removed
+			and you will have a plain, unversioned directory tree.
+		</para>
+	</sect2>
+	-->
+</sect1>

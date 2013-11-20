@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-svn-dcommit">
+	<title>git svn dcommit</title>
+	<indexterm>
+		<primary>dcommit</primary>
+	</indexterm>
+	<indexterm>
+		<primary>svn</primary>
+	</indexterm>
+	<indexterm>
+		<primary>svn commit</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_SVNDCOMMITTYPE"?>
+	<para>
+	Commit each diff from a specified head directly to the SVN repository,
+	and then rebase or reset (depending on whether or not there is a diff between SVN and head).
+	This will create a revision in SVN for each commit in git. It is recommended that you run
+	git-svn fetch and rebase (not pull or merge) your commits against the latest changes in
+	the SVN repository. An optional command-line argument may be specified as an alternative
+	to HEAD. This is advantageous over set-tree (below) because it produces cleaner,
+	more linear history
+	</para>
+	<para>
+    <guilabel>Normal SVN Commit</guilabel>
+	</para>
+	<para>
+    <guilabel>Git Style Commit(--rmdir)</guilabel>:Remove directories from the SVN tree 
+	if there are no files left behind. SVN can version empty directories, and they are
+	not removed by default if there are no files left in them. git cannot version empty
+	directories. Enabling this flag will make the commit to SVN act like git.
+	</para>
+</sect1>

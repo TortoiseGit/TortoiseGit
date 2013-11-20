@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-diff">
+	<title>Viewing Differences</title>
+	<indexterm>
+		<primary>diff</primary>
+	</indexterm>
+	<indexterm>
+		<primary>compare</primary>
+	</indexterm>
+	<para>
+		One of the commonest requirements in project development is to
+		see what has changed. You might want to look at the differences
+		between two revisions of the same file, or the differences between
+		two separate files.
+		TortoiseGit provides a built-in tool named 
+		<application>TortoiseGitMerge</application> for viewing differences of
+		text files. For viewing differences of image files, TortoiseGit
+		also has a tool named <application>TortoiseGitIDiff</application>.
+		Of course, you can use your own favourite diff program if you
+		like.
+	</para>
+	<sect2 id="tgit-dug-diff-file">
+		<?dbhh topicname="HIDD_URLDIFF"?>
+		<title>File Differences</title>
+		<variablelist>
+			<varlistentry>
+				<term>Local changes</term>
+				<listitem>
+					<para>
+						If you want to see what changes <emphasis>you</emphasis>
+						have made in your working tree, just use the explorer
+						context menu and select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Diff</guimenuitem>
+						</menuchoice>.
+					</para>
+				</listitem>
+			</varlistentry>
+      <!--
+			<varlistentry>
+				<term>Difference to another branch/tag</term>
+				<listitem>
+					<para>
+						If you want to see what has changed on trunk (if you are
+						working on a branch) or on a specific branch (if you are
+						working on trunk), you can use the explorer context menu.
+						Just hold down the <keycap>Shift</keycap> key while you
+						right click on the file. Then select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Diff with URL</guimenuitem>
+						</menuchoice>. In the following dialog, specify the URL in
+						the repository with which you want to compare your local
+						file to.
+					</para>
+					<para>
+						You can also use the repository browser and select two
+						trees to diff, perhaps two tags, or a branch/tag and trunk.
+						The context menu there allows you to compare them
+						using <guimenuitem>Compare revisions</guimenuitem>.
+						Read more in <xref linkend="tgit-dug-compare-revs"/>.
+					</para>
+				</listitem>
+			</varlistentry>
+      -->
+			<varlistentry>
+				<term>Difference from a previous revision</term>
+				<listitem>
+					<para>
+						If you want to see the difference between a particular
+						revision and your working tree, use the Revision Log
+						dialog, select the revision of interest, then select
+						<guimenuitem>Compare with working tree</guimenuitem>
+						from the context menu.
+					</para>
+					<para>
+						If you want to see the difference between the last committed
+						revision and your working tree, assuming that the working tree
+						hasn't been modified, just right click on the file. Then select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Diff with previous version</guimenuitem>
+						</menuchoice>.
+						This will perform a diff between the revision before
+						the last-commit-date (as recorded in your working tree) and the
+						working BASE. This shows you the last change made to that file
+						to bring it to the state you now see in your working tree.
+						It will not show changes newer than your working tree.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Difference between two previous revisions</term>
+				<listitem>
+					<para>
+						If you want to see the difference between two revisions
+						which are already committed, use the Revision Log
+						dialog and select the two revisions you want to compare
+						(using the usual <keycap>Ctrl</keycap>-modifier).
+						Then select <guimenuitem>Compare revisions</guimenuitem>
+						from the context menu.
+					</para>
+					<para>
+						If you did this from the revision log for a folder,
+						a Compare Revisions dialog appears, showing a list
+						of changed files in that folder. Read more in
+						<xref linkend="tgit-dug-compare-revs"/>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>All changes made in a commit</term>
+				<listitem>
+					<para>
+						If you want to see the changes made to all files
+						in a particular revision in one view, you can
+						use Unified-Diff output (GNU patch format). This shows
+						only the differences with a few lines of context. It
+						is harder to read than a visual file compare, but will
+						show all the changes together. From the Revision Log
+						dialog select the revision of interest, then select
+						<guimenuitem>Show Differences as Unified-Diff</guimenuitem>
+						from the context menu.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Difference between files</term>
+				<listitem>
+					<para>
+						If you want to see the differences between two different
+						files, you can do that directly in explorer by selecting
+						both files (using the usual <keycap>Ctrl</keycap>-modifier).
+						Then from the explorer context menu select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Diff</guimenuitem>
+						</menuchoice>.
+					</para>
+				</listitem>
+			</varlistentry>
+      <!--
+			<varlistentry>
+				<term>Difference between working tree file/folder and a URL</term>
+				<listitem>
+					<para>
+						If you want to see the differences between a file in your
+						working tree, and a file in any Git repository,
+						you can do that directly in explorer by selecting the
+						file then holding down the <keycap>Shift</keycap> key whilst
+						right clicking to obtain the context menu. Select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Diff with URL</guimenuitem>
+						</menuchoice>.
+						You can do the same thing for a working tree folder.
+						TortoiseMerge shows these differences in the same way
+						as it shows a patch file - a list of changed files which
+						you can view one at a time.
+					</para>
+				</listitem>
+			</varlistentry>
+      -->
+      <!--
+			<varlistentry>
+				<term>Difference with blame information</term>
+				<listitem>
+					<para>
+						If you want to see not only the differences but also the author,
+						revision and date that changes were made, you can combine the
+						diff and blame reports from within the revision log dialog.
+						Read <xref linkend="tgit-dug-blame-diffs"/> for more detail.
+					</para>
+				</listitem>
+			</varlistentry>
+      -->
+			<varlistentry>
+				<term>Difference between folders</term>
+				<listitem>
+					<para>
+						The built-in tools supplied with TortoiseGit do not support
+						viewing differences between directory hierarchies. But if you
+						have an external tool which does support that feature, you can
+						use that instead. In <xref linkend="tgit-dug-diff-tools"/>
+						we tell you about some tools which we have used.
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			If you have configured a third party diff tool, you can use
+			<keycap>Shift</keycap> when selecting the Diff command to
+			use the alternate tool.
+			Read <xref linkend="tgit-dug-settings-progs"/> to
+			find out about configuring other diff tools.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-diff-eol-whitespace">
+		<title>Line-end and Whitespace Options</title>
+		<para>
+			Sometimes in the life of a project you might change the line endings
+			from <literal>CRLF</literal> to <literal>LF</literal>, or you may
+			change the indentation of a section. Unfortunately this will mark
+			a large number of lines as changed, even though there is no change
+			to the meaning of the code. The options here will help to manage
+			these changes when it comes to comparing and applying differences.
+			You will see these settings in the <guilabel>Merge</guilabel> and
+			<guilabel>Blame</guilabel> dialogs, as well as in the settings for
+			TortoiseGitMerge.
+		</para>
+		<para>
+			<guilabel>Ignore line endings</guilabel>
+			excludes changes which are due solely to difference in line-end style.
+		</para>
+		<para>
+			<guilabel>Compare whitespaces</guilabel>
+			includes all changes in indentation and inline whitespace as
+			added/removed lines.
+		</para>
+		<para>
+			<guilabel>Ignore whitespace changes</guilabel>
+			excludes changes which are due solely to a change in the
+			amount or type of whitespace, eg. changing the indentation
+			or changing tabs to spaces. Adding whitespace where there
+			was none before, or removing a whitespace completely is still
+			shown as a change.
+		</para>
+		<para>
+			<guilabel>Ignore all whitespaces</guilabel>
+			excludes all whitespace-only changes.
+		</para>
+		<para>
+			Naturally, any line with changed content is always included in
+			the diff.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-compare-revs">
+		<title>Comparing Version</title>
+		<indexterm>
+			<primary>compare revisions</primary>
+		</indexterm>
+		<indexterm>
+			<primary>export changes</primary>
+		</indexterm>
+		<?dbhh topicname="HIDD_DIFFFILES"?>
+		<para>
+			<figure id="tgit-dug-compare-revs-dia-1">
+				<title>The Compare Revisions Dialog</title>
+				<graphic fileref="../images/CompareRevisions.png"/>
+			</figure>
+			In log dialog, when you select two commits
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Compare revisions</guimenuitem>
+			</menuchoice>
+			, or when you select a commit
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Compare with previous version / Compare with working tree</guimenuitem>
+			</menuchoice>
+			; or in Windows Explorer, when you select no files
+			<menuchoice>
+				<guimenu>TortoiseGit context menu</guimenu>
+				<guimenuitem>Diff with previous version</guimenuitem>
+			</menuchoice>
+			, Compare Revisions Dialog shows.
+		</para>
+		<para>
+			This dialog shows a list of all files which have changed and allows
+			you to compare them individually using context menu.
+		</para>
+		<para>
+			You can Revert selected files to version 1 or version 2.
+			There are 2 menu items for this purpose.
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Revert to revision xxxxxxx / Revert to revision yyyyyyy</guimenuitem>
+			</menuchoice>
+			where xxxxxxx is revision 1 short hash and yyyyyyy revision is 2 short hash.
+		</para>
+		<para>
+			You can export a <emphasis>change tree</emphasis>, which is useful
+			if you need to send someone else your project tree structure, but
+			containing only the files which have changed.
+			This operation works on the selected files only, so you need
+			to select the files of interest - usually that means all of them -
+			and then
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Export selection to...</guimenuitem>
+			</menuchoice>.
+			You will be prompted for a location to save the change tree.
+		</para>
+		<para>
+			You can also export the <emphasis>list</emphasis> of changed files
+			to a text file using
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Save list of selected files to...</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			If you want to export the list of files <emphasis>and</emphasis>
+			the actions (modified, added, deleted) as well, you can do that using
+			<menuchoice>
+				<guimenu>Context menu</guimenu>
+				<guimenuitem>Copy selection to clipboard</guimenuitem>
+			</menuchoice>.
+		</para>
+		<para>
+			The button at the top allows you to change the direction of
+			comparison. You can show the changes need to get from A to B,
+			or if you prefer, from B to A.
+		</para>
+		<para>
+			The buttons with the revision numbers on can be used to change to a
+			different revision range. When you change the range, the list of items
+			which differ between the two revisions will be updated automatically.
+		</para>
+		<para>
+			If the list of filenames is very long, you can use the search box
+			to reduce the list to filenames containing specific text. Note that
+			a simple text search is used, so if you want to restrict the list
+			to C source files you should enter <filename>.c</filename> rather than
+			<filename>*.c</filename>.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-submodulediff">
+		<title>Diffing submodules using Submodule Diff Dialog</title>
+		<indexterm>
+			<primary>Submodule Diff Dialog</primary>
+		</indexterm>
+		<para>
+			The built-in diff command of git is available for diffing submodules, 
+			but we often find ourselves wanting to see more details how
+			a submodule has changed too. That's why we created Submodule Diff Dialog.
+		</para>
+		<para>
+			<figure id="tgit-dug-submodulediff-dia-1">
+				<title>The submodule difference dialog</title>
+				<graphic fileref="../images/SubmoduleDiff.png"/>
+			</figure>
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Diff</guimenuitem>
+			</menuchoice>
+			for submodules will start Submodule Diff Dialog to show submodules differences. 
+			The summary of the two revisions are displayed.
+		</para>
+		<para>
+			The 'From' group box on the top displays the information of the original revision.
+			Below it, there is a 'To' group box, which display the information of the changed revision.
+			For each group box, the full commit hash is displayed, and can be highlighted and copied to clipboard;
+			the subject (i.e. first line of commit message) is displayed and also copyable to clipboard;
+			the Show Log button brings you to a new Log Dialog and jump to that revision.
+		</para>
+		<para>
+			To better draw the attention of the change of revision of submodule mounted, 
+			we added some indicators.
+			In 'To' group box, there is a change type field. Here list out the types:
+			<variablelist>
+				<varlistentry>
+					<term>Fast-forward</term>
+					<listitem>
+						<para>
+							Topology-based. This is for a fast-forward change.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Rewind</term>
+					<listitem>
+						<para>
+							Topology-based. This is the reversed direction of a fast-forward change.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Newer commit time</term>
+					<listitem>
+						<para>
+							Time-based. If it is neither fast-forward nor rewind, then we compare commit time.
+							This is for a revision with newer commit time than the original revision.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Older commit time</term>
+					<listitem>
+						<para>
+							Time-based. This is the reversal of 'Newer commit time'.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Same commit time</term>
+					<listitem>
+						<para>
+							Time-based. The commit time is the same. 
+							This may be produced by auto-generating commits or committing at the same time by two persons.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>New Submodule</term>
+					<listitem>
+						<para>
+							This is for newly added submodule.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Delete Submodule</term>
+					<listitem>
+						<para>
+							This is for deleted submodule.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Unknown</term>
+					<listitem>
+						<para>
+							This is for submodule revision hash not changed, error, etc..
+						</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+
+			If current workspace of the submodule is dirty, 
+			the commit hash will be rendered in yellow background and red text.
+		</para>
+		<para>
+			In both group boxes,
+			if the revision is not fetched, submodule not initialized or other errors,
+			the commit hash will be rendered in red background.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-idiff">
+		<title>Diffing Images Using TortoiseGitIDiff</title>
+		<indexterm>
+			<primary>image diff</primary>
+		</indexterm>
+		<indexterm>
+			<primary>TortoiseGitIDiff</primary>
+		</indexterm>
+		<para>
+			There are many tools available for diffing text files, including our
+			own TortoiseGitMerge, but we often find ourselves wanting to see how
+			an image file has changed too. That's why we created TortoiseGitIDiff.
+		</para>
+		<para>
+			<figure id="tgit-dug-idiff-dia-1">
+				<title>The image difference viewer</title>
+				<graphic fileref="../images/TortoiseIDiff.png"/>
+			</figure>
+			<menuchoice>
+				<guimenu>TortoiseGit</guimenu>
+				<guimenuitem>Diff</guimenuitem>
+			</menuchoice>
+			for any of the common image file formats will start TortoiseGitIDiff
+			to show image differences. By default the images are displayed side-by-side
+			but you can use the View menu or toolbar to switch to a top-bottom
+			view instead, or if you prefer, you can overlay the images and pretend
+			you are using a lightbox.
+		</para>
+		<para>
+			Naturally you can also zoom in and out and pan around the image.
+			You can also pan the image simply by left-dragging it.
+			If you select the <guilabel>Link images together</guilabel> option,
+			then the pan controls (scrollbars, mousewheel) on both images are linked.
+		</para>
+		<para>
+			An image info box shows details about the image file, such as the
+			size in pixels, resolution and colour depth. If this box gets in the
+			way, use
+			<menuchoice>
+				<guimenu>View</guimenu>
+				<guimenuitem>Image Info</guimenuitem>
+			</menuchoice>
+			to hide it.
+			You can get the same information in a tooltip if you hover the mouse
+			over the image title bar.
+		</para>
+		<para>
+			When the images are overlaid, the relative intensity of the images
+			(alpha blend) is controlled by a slider control at the left side.
+			You can click anywhere in the slider to set the blend directly, or you
+			can drag the slider to change the blend interactively.
+			<keycap>Ctrl+Shift</keycap>-<action>Wheel</action> to change the blend.
+		</para>
+		<para>
+			The button above the slider toggles between two preset blends, indicated
+			by the markers on either side of the blend slider. By default one is at
+			the top and the other at the bottom, so the toggle button just switches
+			between one image and the other. You can move the markers to choose
+			the two blend values that the toggle button will use.
+		</para>
+		<para>
+			Sometimes you want to see a difference rather than a blend. You might
+			have the image files for two revisions of a printed circuit board and
+			want to see which tracks have changed. If you disable alpha blend mode,
+			the difference will be shown as an <emphasis>XOR</emphasis> of the pixel
+			colour values. Unchanged areas will be plain white and changes will be
+			coloured.
+		</para>
+	</sect2>
+	<sect2 id="tgit-dug-diff-tools">
+		<title>External Diff/Merge Tools</title>
+		<indexterm>
+			<primary>diff tools</primary>
+		</indexterm>
+		<indexterm>
+			<primary>merge tools</primary>
+		</indexterm>
+		<para>
+			If the tools we	provide don't do what you need, try one of the many
+			open-source or commercial programs available. Everyone has their own
+			favourites, and this list is by no means complete, but here are a few
+			that you might consider:
+		</para>
+		<variablelist>
+			<varlistentry>
+				<term>WinMerge</term>
+				<listitem>
+					<para>
+						<ulink url="http://winmerge.sourceforge.net/">
+							<citetitle>WinMerge</citetitle>
+						</ulink>
+						is a great open-source diff tool which can also
+						handle directories.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Perforce Merge</term>
+				<listitem>
+					<para>
+						Perforce is a commercial RCS, but you can download the
+						diff/merge tool for free. Get more information from
+						<ulink url="http://www.perforce.com/perforce/products/merge.html">
+							<citetitle>Perforce</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>KDiff3</term>
+				<listitem>
+					<para>
+						KDiff3 is a free diff tool which can also handle
+						directories. You can download it from
+						<ulink url="http://kdiff3.sf.net/">
+							<citetitle>here</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>ExamDiff</term>
+				<listitem>
+					<para>
+						ExamDiff Standard is freeware. It can handle
+						files but not directories.
+						ExamDiff Pro is shareware and adds a number
+						of goodies including directory diff and editing
+						capability.
+						In both flavours, version 3.2 and above can handle
+						unicode. You can download them from
+						<ulink url="http://www.prestosoft.com/">
+							<citetitle>PrestoSoft</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Beyond Compare</term>
+				<listitem>
+					<para>
+						Similar to ExamDiff Pro, this is an excellent shareware
+						diff tool which can handle directory diffs and unicode.
+						Download it from
+						<ulink url="http://www.scootersoftware.com/">
+							<citetitle>Scooter Software</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Araxis Merge</term>
+				<listitem>
+					<para>
+						Araxis Merge is a useful commercial tool for diff and merging
+						both files and folders. It does three-way comparison in merges
+						and has synchronization links to use if you've changed the order
+						of functions. Download it from
+						<ulink url="http://www.araxis.com/merge/index.html">
+							<citetitle>Araxis</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>SciTE</term>
+				<listitem>
+					<para>
+						This text editor includes syntax colouring for unified diffs,
+						making them much easier to read. Download it from
+						<ulink url="http://www.scintilla.org/SciTEDownload.html">
+							<citetitle>Scintilla</citetitle>
+						</ulink>.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>Notepad2</term>
+				<listitem>
+					<para>
+						Notepad2 is designed as a replacement for the standard
+						Windows Notepad program, and is based on the Scintilla
+						open-source edit control. As well as being good for
+						viewing unified diffs, it is much better than the
+						Windows notepad for most jobs. Download it for free
+						<ulink url="http://www.flos-freeware.ch/notepad2.html">
+							<citetitle>here</citetitle>
+						</ulink>.
+					</para>
+          <para>
+            Notepad2 have been included at TortoiseGit Setup MSI.
+            You can launch it by command line "notepad2". 
+          </para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<para>
+			Read <xref linkend="tgit-dug-settings-progs"/> for information
+			on how to set up TortoiseGit to use these tools.
+		</para>
+	</sect2>
+</sect1>

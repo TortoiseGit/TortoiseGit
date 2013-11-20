@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-reset">
+	<title>Reset</title>
+	<indexterm>
+		<primary>Reset</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_RESET"?>
+	<?dbhh topicname="HIDD_MERGEABORT"?>
+	<para>
+		 Reset current HEAD to the specified state.
+		Sets the current head to the specified commit and optionally resets the
+index and working tree to match.
+		<figure id="tgit-dug-reset-dia-1">
+			<title>The Reset dialog</title>
+			<graphic fileref="../images/GitReset.png"/>
+		</figure>
+		<figure id="tgit-dug-reset-dia-2">
+			<title>The Abort Merge dialog</title>
+			<graphic fileref="../images/AbortMerge.png"/>
+		</figure>
+	</para>
+	<para>
+		In Reset dialog, you can click <guibutton>...</guibutton> to browse git log and choose a specific version.
+		In Abort merge dialog, you can only reset to HEAD.
+	</para>
+	<para>
+		<guilabel>Soft: Leave working tree and index untouched</guilabel>
+		Does not touch the index file nor the working tree at all (but resets the head to &lt;commit&gt;, just like all modes do). This leaves all your changed files "Changes to be committed", as git status would put it.
+		This option is not available in Abort Merge dialog.
+	</para>
+	<para>
+		<guilabel>Mixed: Leave working tree untouched, reset index</guilabel>
+		Resets the index but not the working tree (i.e., the changed files are preserved but not marked for commit) and reports what has not been updated. This is the git default action.
+		This option can abort a merge.
+	</para>
+	<para>
+		<guilabel>Hard: Reset working tree and index (discard all local changes)</guilabel>
+		Resets the index and working tree. Any changes to tracked files in the working tree since &lt;commit&gt; are discarded.
+		This option can abort a merge, and it is the default action in Abort Merge dialog.
+	</para>
+	<para>
+		You can find more information at <xref linkend="git-reset(1)"/>
+	</para>
+</sect1>

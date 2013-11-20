@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-stash">
+	<?dbhh topicname="HIDD_STASH"?>
+	<title>Stash Changes</title>
+	<indexterm>
+		<primary>stash</primary>
+	</indexterm>
+	<para>
+		When you want to record the current state of the working directory and the index,
+		but want to go back to a clean working directory,
+		<action>right click</action> on a folder to pop up the context menu and then select
+		the command
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Stash Save</guimenuitem>
+		</menuchoice>
+		A dialog will pop up where you can optionally enter a message for this state:
+		<figure id="tgit-dug-stash-dia-1">
+			<title>Stash save dialog</title>
+			<graphic fileref="../images/stash.png"/>
+		</figure>
+		You can also select <guilabel>include untracked</guilabel>, to stash untracked files away, too.
+		To stash all files away, including ignored files in addition to the untracked files, select <guilabel>--all</guilabel>.
+	</para>
+	<para>
+		When TortoiseGit detects that a stashed changes exist, the context menu will be extended:
+		<figure id="tgit-dug-stash-dia-2">
+			<title>(un)stash options</title>
+			<graphic fileref="../images/ContextMenuStash.png"/>
+		</figure>
+		The stash is implemented as a stack. <guimenuitem>Stash Apply</guimenuitem> will apply the changes of the latest stash
+		to your working tree. <guimenuitem>Stash Pop</guimenuitem> does the same, but will remove the latest stash from the stack
+		after applying it. <guimenuitem>Stash Save</guimenuitem> is still possible and will stash the current changes of the working
+		copy to the top of the stack. <guimenuitem>Stash List</guimenuitem> provides an overview of all the whole stash stack. You
+		can also remove and view the stashed changes there (similarly to the <xref linkend="tgit-dug-showlog"/> and <xref linkend="tgit-dug-update"/>).
+	</para>
+	<para>
+		You can find more information at <xref linkend="git-stash(1)"/>
+	</para>
+</sect1>

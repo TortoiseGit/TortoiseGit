@@ -26,26 +26,26 @@
 		</authorgroup>
 	</bookinfo>
 	<!-- include external files -->
-	<xi:include href="./tsvn_preface.xml"/>
-	<xi:include href="./tsvn_introduction.xml"/>
+	<xi:include href="./tgit_preface.xml"/>
+	<xi:include href="./tgit_introduction.xml"/>
 	<xi:include href="./git_book/gitbook.xml"/>	
 
 	<!--
-	<xi:include href="./tsvn_repository/repository.xml"/>
+	<xi:include href="./tgit_repository/repository.xml"/>
 	-->
-	<xi:include href="./tsvn_dug/dug.xml"/>
-	<xi:include href="./tsvn_app_faq.xml"/>
-	<xi:include href="./tsvn_bugtraqprovider.xml"/>
-	<xi:include href="./tsvn_app_admins.xml" />
-	<xi:include href="./tsvn_app_automation.xml"/>	
+	<xi:include href="./tgit_dug/dug.xml"/>
+	<xi:include href="./tgit_app_faq.xml"/>
+	<xi:include href="./tgit_bugtraqprovider.xml"/>
+	<xi:include href="./tgit_app_admins.xml" />
+	<xi:include href="./tgit_app_automation.xml"/>	
 	
-	<xi:include href="./tsvn_app_internals.xml"/>
+	<xi:include href="./tgit_app_internals.xml"/>
 
-	<xi:include href="./tsvn_app_ssh.xml"/>
+	<xi:include href="./tgit_app_ssh.xml"/>
 
 	<xi:include href="./git_doc/git-doc.xml"/>
 
 	<xi:include href="../glossary.xml"/>
 
-	<index id="tsvn-index"/>
+	<index id="tgit-index"/>
 </book>

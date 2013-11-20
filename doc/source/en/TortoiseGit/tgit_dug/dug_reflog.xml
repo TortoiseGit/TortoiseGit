@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-update">
+	<title>Reference Log</title>
+	<indexterm>
+		<primary>RefLog</primary>
+	</indexterm>
+	<?dbhh topicname="HIDD_REFLOG"?>
+	<para>
+		Manage reflog information. 
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>RefLog</guimenuitem>
+		</menuchoice>
+		You have to hold the <keycap>Shift</keycap> key while right clicking on
+		the item in the explorer list pane (right pane) in order to see this
+		in the extended context menu.
+		<figure id="tgit-dug-reflog">
+				<title>RefLog Dialog</title>
+				<graphic fileref="../images/GitReflog.png"/>
+		</figure>
+		The RefLog can be used to restore deleted commits or HEAD positions (e.g. when you deleted a branch which was HEAD some time ago).
+	</para>
+</sect1>

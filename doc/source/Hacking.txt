@@ -92,13 +92,13 @@ Require valid-user
 </screen>
 
 - Figures (graphics) should use a format like this:
-  <figure id="tsvn-DUG-settings-dia-1">
+  <figure id="tgit-DUG-settings-dia-1">
 	<title>The Settings Dialog, Main Tab</title>
 	<graphic fileref="images/SettingsMain.png"/>
   </figure>
 
 - Links:
-  Use this <xref linkend="tsvn-DUG-import-4"/> to reference internal sections.
+  Use this <xref linkend="tgit-DUG-import-4"/> to reference internal sections.
   Use ulink for external links. This should be formatted as
   as shown below:
   <ulink url="http://svnbook.red-bean.com/">
