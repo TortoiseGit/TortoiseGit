@@ -25,6 +25,7 @@
 #include "Git.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
+#include "UnicodeUtils.h"
 
 // CRefLogDlg dialog
 
@@ -62,7 +63,7 @@ END_MESSAGE_MAP()
 
 LRESULT CRefLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	m_RefList.m_RefMap.clear();
+	m_RefList.m_RevCache.clear();
 	OnCbnSelchangeRef();
 	return 0;
 }
@@ -127,37 +128,103 @@ void CRefLogDlg::OnBnClickedClearStash()
 			return;
 		}
 
-		m_RefList.m_RefMap.clear();
+		m_RefList.m_RevCache.clear();
 
 		OnCbnSelchangeRef();
 	}
 }
 
+int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
+{
+	std::vector<GitRev> *vector = (std::vector<GitRev> *)data;
+	GitRev rev;
+	rev.m_CommitHash = (char *)nsha1;
+
+	CString one;
+	g_Git.StringAppend(&one, (BYTE *)msg);
+
+	int message = one.Find(_T(":"), 0);
+	if (message > 0)
+	{
+		rev.m_RefAction = one.Left(message);
+		rev.GetSubject() = one.Mid(message + 1);
+	}
+
+	vector->insert(vector->begin(), rev); 
+
+	return 0;
+}
+
+int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
+{
+	refloglist.clear();
+	if (g_Git.m_IsUseGitDLL)
+	{
+		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), AddToRefLoglist, &refloglist);
+		for (size_t i = 0; i < refloglist.size(); ++i)
+			refloglist[i].m_Ref.Format(_T("%s@{%d}"), ref, i);
+	}
+	else
+	{
+		CString cmd, out;
+		GitRev rev;
+		cmd.Format(_T("git.exe reflog show %s"), ref);
+		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
+			return -1;
+
+		int pos = 0;
+		while (pos >= 0)
+		{
+			CString one = out.Tokenize(_T("\n"), pos);
+			int ref = one.Find(_T(' '), 0);
+			if (ref < 0)
+				continue;
+
+			rev.Clear();
+
+			if (g_Git.GetHash(rev.m_CommitHash, one.Left(ref)))
+			{
+				MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of ") + one.Left(ref) + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+				return -1;
+			}
+			int action = one.Find(_T(' '), ref + 1);
+			if (action > 0)
+			{
+				rev.m_Ref = one.Mid(ref + 1, action - ref - 2);
+				int message = one.Find(_T(":"), action);
+				if (message > 0)
+				{
+					rev.m_RefAction = one.Mid(action + 1, message - action - 1);
+					rev.GetSubject() = one.Right(one.GetLength() - message - 1);
+				}
+			}
+
+			refloglist.push_back(rev);
+		}
+	}
+	return 0;
+}
+
+
 void CRefLogDlg::OnCbnSelchangeRef()
 {
 	CString ref=m_ChooseRef.GetString();
-	if(m_RefList.m_RefMap.find(ref) == m_RefList.m_RefMap.end())
-	{
-		m_RefList.m_RefMap[ref].m_pLogCache = &m_RefList.m_LogCache;
-		m_RefList.m_RefMap[ref].ParserFromRefLog(ref);
-	}
 	m_RefList.ClearText();
 
 	//this->m_logEntries.ParserFromLog();
 	m_RefList.SetRedraw(false);
 
-	CLogDataVector *plog;
-	plog = &m_RefList.m_RefMap[ref];
+	ParserFromRefLog(ref, m_RefList.m_RevCache);
 
-	m_RefList.SetItemCountEx((int)plog->size());
+	m_RefList.SetItemCountEx((int)m_RefList.m_RevCache.size());
 
 	this->m_RefList.m_arShownList.RemoveAll();
 
-	for (unsigned int i = 0; i < m_RefList.m_RefMap[ref].size(); ++i)
+	for (unsigned int i = 0; i < m_RefList.m_RevCache.size(); ++i)
 	{
-		plog->GetGitRevAt(i).m_IsFull=TRUE;
-		this->m_RefList.m_arShownList.Add(&(plog->GetGitRevAt(i)));
-
+		GitRev *rev = &m_RefList.m_RevCache[i];
+		rev->m_IsFull = TRUE;
+		this->m_RefList.m_arShownList.Add(rev);
 	}
 
 	m_RefList.SetRedraw(true);
@@ -213,7 +280,7 @@ void CRefLogDlg::Refresh()
 			m_ChooseRef.SetCurSel(0);
 	}
 
-	m_RefList.m_RefMap.clear();
+	m_RefList.m_RevCache.clear();
 
 	OnCbnSelchangeRef();
 }
