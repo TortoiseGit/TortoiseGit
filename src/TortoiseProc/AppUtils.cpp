@@ -2946,6 +2946,7 @@ BOOL CAppUtils::SVNDCommit()
 	}
 	if(progress.DoModal()==IDOK && progress.m_GitStatus == 0)
 	{
+		::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 		if( IsStash)
 		{
 			if(CMessageBox::Show(NULL,IDS_DCOMMIT_STASH_POP,IDS_APPNAME,MB_YESNO|MB_ICONINFORMATION)==IDYES)
@@ -2962,12 +2963,10 @@ BOOL CAppUtils::SVNDCommit()
 				cmd=_T("git.exe stash pop");
 				if (g_Git.Run(cmd, &out, CP_UTF8))
 				{
-					::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 					sysProgressDlg.Stop();
 					CMessageBox::Show(NULL,out,_T("TortoiseGit"),MB_OK);
 					return false;
 				}
-				::DeleteFile(g_Git.m_CurrentDir + _T("\\sys$command"));
 				sysProgressDlg.Stop();
 			}
 			else
