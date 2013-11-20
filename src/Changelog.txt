@@ -11,6 +11,7 @@ Released: Unreleased
  * Fixed issue #1981: Hotkey to focus on file list in commit dialog
  * Fixed issue #1979: Comments are not stripped from commit message
  * Fixed issue #1991: Disable (by default) certain operations with stash commits
+ * Updated shipped libgit2 to version 0.19
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
