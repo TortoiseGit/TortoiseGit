@@ -298,7 +298,7 @@ void CRefLogDlg::Refresh()
 	if (g_Git.GetRefList(list))
 		MessageBox(g_Git.GetGitLastErr(_T("Could not get all refs.")), _T("TortoiseGit"), MB_ICONERROR);
 
-	m_ChooseRef.AddString(list);
+	m_ChooseRef.AddString(list, 0);
 
 	if (m_CurrentBranch.IsEmpty())
 	{
