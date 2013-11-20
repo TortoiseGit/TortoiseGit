@@ -23,6 +23,7 @@
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
+    <Cultures>nl-NL</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -38,6 +39,7 @@
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1043;LANGNATIVE=Dutch (Nederlands);</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
     <SuppressIces>ICE61;ICE82</SuppressIces>
+    <Cultures>nl-NL</Cultures>
     <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
