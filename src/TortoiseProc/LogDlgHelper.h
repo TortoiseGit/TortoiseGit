@@ -81,8 +81,6 @@ public:
 	int  FetchShortLog(CTGitPath *path , CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH, int showWC=0 );
 	int  ParserShortLog(CTGitPath *path ,CString &hash,int count=-1 ,int mask=CGit::LOG_INFO_ONLY_HASH );
 
-	int  ParserFromRefLog(CString ref);
-
 	int FetchFullInfo(int i);
 //	void AddFullInfo(
 
