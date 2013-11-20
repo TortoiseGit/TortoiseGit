@@ -158,7 +158,48 @@ int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char 
 int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 {
 	refloglist.clear();
-	if (g_Git.m_IsUseGitDLL)
+	if (g_Git.m_IsUseLibGit2)
+	{
+		CStringA refA = CUnicodeUtils::GetUTF8(ref);
+		git_repository *repo;
+		CStringA gitdirA = CUnicodeUtils::GetMulti(CTGitPath(g_Git.m_CurrentDir).GetGitPathString(), CP_UTF8);
+		if (git_repository_open(&repo, gitdirA) < 0)
+		{
+			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not open repository.")), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+
+		git_reflog *reflog;
+		if (git_reflog_read(&reflog, repo, refA) < 0)
+		{
+			MessageBox(nullptr, CGit::GetLibGit2LastErr(_T("Could not read reflog.")), _T("TortoiseGit"), MB_ICONERROR);
+			return -1;
+		}
+
+		for (size_t i = 0; i < git_reflog_entrycount(reflog); ++i)
+		{
+			const git_reflog_entry *entry = git_reflog_entry_byindex(reflog, i);
+			if (!entry)
+				continue;
+
+			GitRev rev;
+			rev.m_CommitHash = (char *)git_reflog_entry_id_new(entry)->id;
+			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
+			CString one;
+			g_Git.StringAppend(&one, (BYTE *)git_reflog_entry_message(entry));
+			int message = one.Find(_T(":"), 0);
+			if (message > 0)
+			{
+				rev.m_RefAction = one.Left(message);
+				rev.GetSubject() = one.Mid(message + 1);
+			}
+			refloglist.push_back(rev); 
+		}
+
+		git_reflog_free(reflog);
+		git_repository_free(repo);
+	}
+	else if (g_Git.m_IsUseGitDLL)
 	{
 		git_for_each_reflog_ent(CUnicodeUtils::GetUTF8(ref), AddToRefLoglist, &refloglist);
 		for (size_t i = 0; i < refloglist.size(); ++i)
