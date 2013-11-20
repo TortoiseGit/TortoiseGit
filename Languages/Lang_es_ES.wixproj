@@ -21,6 +21,8 @@
     </WixVariables>
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1034;LANGNATIVE=Spanish (Spain);</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
+    <SuppressIces>ICE61;ICE82</SuppressIces>
+    <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <OutputPath>bin\$(Configuration)64\</OutputPath>
@@ -34,6 +36,8 @@
     </WixVariables>
     <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;TSVNMoFile=0;COUNTRYID=1034;LANGNATIVE=Spanish (Spain);</DefineConstants>
     <LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
+    <SuppressIces>ICE61;ICE82</SuppressIces>
+    <SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LanguagePack.wxs" />
