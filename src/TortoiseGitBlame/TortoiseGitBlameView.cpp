@@ -1981,6 +1981,7 @@ void CTortoiseGitBlameView::OnUpdateViewToggleDate(CCmdUI *pCmdUI)
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 {
 	m_bFollowRenames = ! m_bFollowRenames;
+	theApp.DoWaitCursor(1);
 
 	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames);
 
@@ -1992,6 +1993,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 		document->SetPathName(document->m_CurrentFileName, FALSE);
 	}
+	theApp.DoWaitCursor(-1);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
