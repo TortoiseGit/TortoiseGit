@@ -4652,6 +4652,10 @@ msgstr ""
 msgid "Git short URL"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe \"Effective\" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Git.exe Path:"
 msgstr ""
