@@ -134,6 +134,7 @@ int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 int COutputWnd::LoadHistory(std::set<CGitHash>& hashes)
 {
 	m_LogList.Clear();
+	m_LogList.ShowGraphColumn(false);
 	if (m_LogList.FillGitLog(hashes))
 		return -1;
 	m_LogList.UpdateProjectProperties();
