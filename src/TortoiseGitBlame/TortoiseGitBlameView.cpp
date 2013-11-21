@@ -1806,7 +1806,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			}
 
 			CString filename;
-			if (m_bFollowRenames)
+			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
 				filename.Format(_T("%s: %s\n"), m_sFileName, m_data.GetFilename(line));
 
 			CString str;
@@ -2098,7 +2098,7 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 
 void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+	pCmdUI->Enable(BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
 	pCmdUI->SetCheck(m_bShowCompleteLog);
 }
 
@@ -2122,7 +2122,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_bShowCompleteLog && (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+	pCmdUI->Enable(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
 	pCmdUI->SetCheck(m_bFollowRenames);
 }
 

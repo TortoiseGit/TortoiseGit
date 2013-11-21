@@ -225,7 +225,7 @@ void CSettingsTBlame::UpdateDependencies()
 {
 	BOOL enableShowCompleteLog = FALSE;
 	BOOL enableFollowRenames = FALSE;
-	if (m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE)
+	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
 	{
 		enableShowCompleteLog = TRUE;
 		if (m_bShowCompleteLog)
