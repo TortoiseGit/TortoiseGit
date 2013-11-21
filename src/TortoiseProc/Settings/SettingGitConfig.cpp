@@ -116,6 +116,18 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->ShowWindow(SW_SHOW);
 
 	this->UpdateData(FALSE);
+
+	if (m_UserName.IsEmpty() && m_UserEmail.IsEmpty())
+	{
+		// preselect "global" and remove check in "inherit" checkboxes if no username and email are set on first open
+		m_iConfigSource = 3;
+		CheckRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM, IDC_RADIO_SETTINGS_EFFECTIVE + m_iConfigSource);
+		m_cSaveTo.SelectString(0, CString(MAKEINTRESOURCE(IDS_CONFIG_GLOBAL)));
+		LoadData();
+		m_bInheritUserName = FALSE;
+		m_bInheritEmail = FALSE;
+		EnDisableControls();
+	}
 	return TRUE;
 }
 // CSettingGitConfig message handlers

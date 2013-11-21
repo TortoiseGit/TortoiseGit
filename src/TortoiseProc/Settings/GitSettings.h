@@ -86,6 +86,8 @@ protected:
 
 		page->CheckRadioButton(IDC_RADIO_SETTINGS_EFFECTIVE, IDC_RADIO_SETTINGS_SYSTEM, IDC_RADIO_SETTINGS_EFFECTIVE + m_iConfigSource);
 
+		CMessageBox::ShowCheck(nullptr, IDS_HIERARCHICALCONFIG, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, _T("HintHierarchicalConfig"), IDS_MSGBOX_DONOTSHOWAGAIN);
+
 		LoadData();
 	}
 
