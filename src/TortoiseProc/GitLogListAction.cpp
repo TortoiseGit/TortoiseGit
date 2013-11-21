@@ -307,6 +307,18 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CFileDiffDlg dlg;
 
+				if (pSelLogEntry->m_ParentHash.empty())
+				{
+					try
+					{
+						pSelLogEntry->GetParentFromHash(pSelLogEntry->m_CommitHash);
+					}
+					catch (const char* msg)
+					{
+						MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+					}
+				}
+
 				if (!pSelLogEntry->m_ParentHash.empty())
 				//if(m_logEntries.m_HashMap[pSelLogEntry->m_ParentHash[0]]>=0)
 				{
