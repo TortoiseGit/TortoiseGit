@@ -76,7 +76,7 @@ BEGIN
 	IDS_FILESCHANGES		"%d files changed"
 	IDS_ONLYMERGEDFILES		"Only Merged Files"
 	IDS_ALLPARENTS			"All Parents"
-	IDS_PARENT				"%d Parent"
+	IDS_PARENT				"Parent %d"
 	IDS_REBASE_SKIP			"Skip"
 	IDS_REBASE_EDIT			"Edit"
 	IDS_REBASE_PICK			"Pick"

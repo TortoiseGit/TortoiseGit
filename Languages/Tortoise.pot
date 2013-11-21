@@ -190,11 +190,6 @@ msgstr ""
 msgid "%I64d kBytes transferred"
 msgstr ""
 
-#. Resource IDs: (1256)
-#, c-format
-msgid "%d Parent"
-msgstr ""
-
 #. Resource IDs: (75)
 #, c-format
 msgid "%d commits ahead \"%s\""
@@ -6433,6 +6428,11 @@ msgstr ""
 
 #. Resource IDs: (1477)
 msgid "Parameters:"
+msgstr ""
+
+#. Resource IDs: (1256)
+#, c-format
+msgid "Parent %d"
 msgstr ""
 
 #. Resource IDs: (70)
