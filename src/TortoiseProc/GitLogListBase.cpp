@@ -3304,9 +3304,9 @@ void CGitLogListBase::ShowGraphColumn(bool bShow)
 {
 	// HACK to hide graph column
 	if (bShow)
-		SetColumnWidth(0, 0);
-	else
 		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
+	else
+		SetColumnWidth(0, 0);
 }
 
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)
