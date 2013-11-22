@@ -3253,7 +3253,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 
 void CGitStatusListCtrl::OnPaint()
 {
-	Default();
+	LRESULT defres = Default();
 	if ((m_bBusy)||(m_bEmpty))
 	{
 		CString str;
@@ -3303,9 +3303,16 @@ void CGitStatusListCtrl::OnPaint()
 		}
 		ReleaseDC(pDC);
 	}
-	CRect rc;
-	GetUpdateRect(&rc, FALSE);
-	ValidateRect(rc);
+	if (defres)
+	{
+		// the Default() call did not process the WM_PAINT message!
+		// Validate the update region ourselves to avoid
+		// an endless loop repainting
+		CRect rc;
+		GetUpdateRect(&rc, FALSE);
+		if (!rc.IsRectEmpty())
+			ValidateRect(rc);
+	}
 }
 
 // prevent users from extending our hidden (size 0) columns

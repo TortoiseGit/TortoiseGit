@@ -345,12 +345,19 @@ void CFilterEdit::Validate()
 
 void CFilterEdit::OnPaint()
 {
-	Default();
+	LRESULT defres = Default();
 
 	DrawDimText();
-	CRect rc;
-	GetUpdateRect(&rc, FALSE);
-	ValidateRect(rc);
+	if (defres)
+	{
+		// the Default() call did not process the WM_PAINT message!
+		// Validate the update region ourselves to avoid
+		// an endless loop repainting
+		CRect rc;
+		GetUpdateRect(&rc, FALSE);
+		if (!rc.IsRectEmpty())
+			ValidateRect(rc);
+	}
 
 	return;
 }
