@@ -236,7 +236,8 @@ void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPat
 						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
 						{
 							int parentNo = file.m_ParentNo & PARENT_MASK;
-							parentNos.insert(parentNo);
+							if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
+								parentNos.insert(parentNo);
 						}
 					}
 				}
@@ -291,7 +292,8 @@ void CGitBlameLogList::GetParentHash(GitRev *pRev, int index, CGitHash &parentHa
 						{
 							if (parentNo == (file.m_ParentNo & PARENT_MASK))
 							{
-								parentFilenames.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+								if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
+									parentFilenames.push_back( (action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
 							}
 						}
 					}

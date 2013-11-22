@@ -404,8 +404,11 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
 						{
 							int parentNo = file.m_ParentNo & PARENT_MASK;
-							parentHashWithFile.push_back(pRev->m_ParentHash[parentNo]);
-							parentFilename.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+							if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
+							{
+								parentHashWithFile.push_back(pRev->m_ParentHash[parentNo]);
+								parentFilename.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+							}
 						}
 					}
 				}
