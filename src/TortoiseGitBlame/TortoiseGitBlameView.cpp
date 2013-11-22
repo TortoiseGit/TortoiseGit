@@ -371,7 +371,20 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		if (logIndex >= 0)
 			pRev = &GetLogData()->GetGitRevAt(logIndex);
 		else
+		{
 			pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+			if (pRev->m_ParentHash.empty())
+			{
+				try
+				{
+					pRev->GetParentFromHash(pRev->m_CommitHash);
+				}
+				catch (const char* msg)
+				{
+					MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+				}
+			}
+		}
 
 		if (!pRev)
 			return;

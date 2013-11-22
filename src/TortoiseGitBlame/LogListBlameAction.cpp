@@ -209,11 +209,28 @@ void CGitBlameLogList::GetPaths(const CGitHash& hash, std::vector<CTGitPath>& pa
 				paths.push_back(CTGitPath(*it));
 			}
 		}
+		if (paths.empty())
+		{
+			// in case the hash does not exist in the blame output but it exists in the log follow only the file
+			paths.push_back(pView->GetDocument()->m_GitPath);
+		}
 	}
 }
 
 void CGitBlameLogList::GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos)
 {
+	if (pRev->m_ParentHash.empty())
+	{
+		try
+		{
+			pRev->GetParentFromHash(pRev->m_CommitHash);
+		}
+		catch (const char* msg)
+		{
+			MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
+	}
+
 	GIT_REV_LIST allParentHash;
 	CGitLogListBase::GetParentHashes(pRev, allParentHash);
 
