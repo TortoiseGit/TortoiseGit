@@ -357,6 +357,7 @@ UINT CFileDiffDlg::DiffThread()
 		g_Git.RefreshGitIndex();
 
 	g_Git.GetCommitDiffList(m_rev1.m_CommitHash.ToString(),m_rev2.m_CommitHash.ToString(),m_arFileList);
+	Sort();
 
 	SendMessage(WM_DIFFFINISHED);
 

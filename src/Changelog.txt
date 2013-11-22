@@ -26,6 +26,7 @@ Released: Unreleased
  * Fixed issue #2008: Wrong reflog if hash repeated
  * Fixed issue #2004: In create patch serial dialog, number of commits up down buttons reversed
  * Fixed issue #2013: Double-clicking on ref log list doesn't work until after right-clicking it
+ * Fixed issue #2016: Changed files list forgets sort order after switching versions in compare revisions dialog
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
