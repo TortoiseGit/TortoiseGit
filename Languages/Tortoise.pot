@@ -2947,6 +2947,11 @@ msgstr ""
 msgid "Could not check for a newer version!"
 msgstr ""
 
+#. Resource IDs: (93)
+#, c-format
+msgid "Could not check for a newer version! (Error code: 0x%08X)"
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid "Could not copy the files!\n\n%s"
@@ -8494,6 +8499,10 @@ msgstr ""
 
 #. Resource IDs: (1556)
 msgid "System &sounds"
+msgstr ""
+
+#. Resource IDs: (93)
+msgid "System in offline mode. Check Internet Explorer."
 msgstr ""
 
 #. Resource IDs: (3857)

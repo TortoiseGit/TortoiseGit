@@ -4299,6 +4299,9 @@ BEGIN
     IDS_PROC_COPY_REPOSITORY 
                             """%s"" contains a git repository. It will not work as a submodule out of the box.\nDo you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
     IDS_HIERARCHICALCONFIG  "Git uses the concept of a hierarchical configuration.\nI.e. there are multiple levels; settings in higher levels override values in lower levels.\nThe ""Effective"" tab shows you the effective values for the current scope (read-only).\nSelect any level to see the values stored there.\nIn order to change settings select a level, enter the values and select where to store to."
+    IDS_OFFLINEMODE         "System in offline mode. Check Internet Explorer."
+    IDS_CHECKNEWER_NETERROR_FORMAT 
+                            "Could not check for a newer version! (Error code: 0x%08X)"
 END
 
 STRINGTABLE

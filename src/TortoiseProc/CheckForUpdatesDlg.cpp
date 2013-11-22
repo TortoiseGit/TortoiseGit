@@ -194,6 +194,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		SetDlgItemText(IDC_SOURCE, _T("Using (unofficial) release channel: ") + sCheckURL);
 
 	CoInitialize(NULL);
+	CString errorText;
 	if (m_bForce)
 		DeleteUrlCacheEntry(sCheckURL);
 	HRESULT res = URLDownloadToFile(NULL, sCheckURL, tempfile, 0, NULL);
@@ -214,6 +215,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	else if (FAILED(res))
 	{
 		DeleteUrlCacheEntry(sCheckURL);
+		if (CRegDWORD(_T("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline"), 0))
+			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
+		else
+			errorText.Format(IDS_CHECKNEWER_NETERROR_FORMAT, res);
 	}
 	if (res == S_OK)
 	{
@@ -338,10 +343,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	}
 	else
 	{
-		// Try to cache web page;
-
-		temp.LoadString(IDS_CHECKNEWER_NETERROR);
-		SetDlgItemText(IDC_CHECKRESULT, temp);
+		SetDlgItemText(IDC_CHECKRESULT, errorText);
 	}
 	if (!m_sUpdateDownloadLink.IsEmpty())
 	{
