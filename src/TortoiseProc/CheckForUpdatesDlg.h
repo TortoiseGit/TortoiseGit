@@ -54,6 +54,7 @@ protected:
 	afx_msg LRESULT OnDisplayStatus(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
+	afx_msg LRESULT OnTaskbarBtnCreated(WPARAM, LPARAM);
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
@@ -75,6 +76,7 @@ public:
 private:
 	BOOL		m_bVisible;
 	CProgressCtrl	m_progress;
+	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	CEvent		m_eventStop;
 	CWinThread	*m_pDownloadThread;
 	CString		m_sFilesURL;

@@ -32,6 +32,7 @@
 #include "DirFileEnum.h"
 #include "UnicodeUtils.h"
 #include "UpdateCrypto.h"
+#include "Win7.h"
 
 #define SIGNATURE_FILE_ENDING _T(".asc")
 
@@ -74,6 +75,7 @@ BEGIN_MESSAGE_MAP(CCheckForUpdatesDlg, CStandAloneDialog)
 	ON_MESSAGE(WM_USER_DISPLAYSTATUS, OnDisplayStatus)
 	ON_MESSAGE(WM_USER_ENDDOWNLOAD, OnEndDownload)
 	ON_MESSAGE(WM_USER_FILLCHANGELOG, OnFillChangelog)
+	ON_REGISTERED_MESSAGE(WM_TASKBARBTNCREATED, OnTaskbarBtnCreated)
 END_MESSAGE_MAP()
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
@@ -86,6 +88,10 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	SetDlgItemText(IDC_YOURVERSION, temp);
 
 	DialogEnableWindow(IDOK, FALSE);
+
+	m_pTaskbarList.Release();
+	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
+		m_pTaskbarList = nullptr;
 
 	// hide download controls
 	m_ctrlFiles.ShowWindow(SW_HIDE);
@@ -592,6 +598,11 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 	m_progress.SetRange32(0, 1);
 	m_progress.SetPos(0);
 	m_progress.ShowWindow(SW_SHOW);
+	if (m_pTaskbarList)
+	{
+		m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+		m_pTaskbarList->SetProgressValue(m_hWnd, 0, 1);
+	}
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
@@ -604,6 +615,13 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			DeleteUrlCacheEntry(url + SIGNATURE_FILE_ENDING);
 		res = URLDownloadToFile(NULL, url + SIGNATURE_FILE_ENDING, signatureTempfile, 0, nullptr);
 		m_progress.SetPos(m_progress.GetPos() + 1);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			int minValue, maxValue;
+			m_progress.GetRange(minValue, maxValue);
+			m_pTaskbarList->SetProgressValue(m_hWnd, m_progress.GetPos(), maxValue);
+		}
 	}
 	if (res == S_OK)
 	{
@@ -680,11 +698,17 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 		m_ctrlUpdate.AddEntry(CString(MAKEINTRESOURCE(IDS_PROC_INSTALL)));
 		m_ctrlUpdate.AddEntry(CString(MAKEINTRESOURCE(IDS_CHECKUPDATE_DESTFOLDER)));
 		m_ctrlUpdate.Invalidate();
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}
 	else
 	{
 		m_ctrlUpdate.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_DOWNLOAD)));
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
 		CMessageBox::Show(NULL, IDS_ERR_FAILEDUPDATEDOWNLOAD, IDS_APPNAME, MB_ICONERROR);
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 	}
 
 	return 0;
@@ -747,8 +771,20 @@ LRESULT CCheckForUpdatesDlg::OnDisplayStatus(WPARAM, LPARAM lParam)
 
 		m_progress.SetRange32(0, pDownloadStatus->ulProgressMax);
 		m_progress.SetPos(pDownloadStatus->ulProgress);
+		if (m_pTaskbarList)
+		{
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+			m_pTaskbarList->SetProgressValue(m_hWnd, pDownloadStatus->ulProgress, pDownloadStatus->ulProgressMax);
+		}
 	}
 
+	return 0;
+}
+
+LRESULT CCheckForUpdatesDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	m_pTaskbarList.Release();
+	m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList);
 	return 0;
 }
 
