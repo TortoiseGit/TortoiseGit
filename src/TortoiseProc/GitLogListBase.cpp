@@ -493,7 +493,6 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 				brush = ::CreateSolidBrush(::GetSysColor(COLOR_BTNFACE));
 		}
 	}
-	InvalidateRect(rect);
 	if (brush != NULL)
 	{
 		::FillRect(hdc, &rect, brush);
@@ -1224,8 +1223,58 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (!m_HashMap[data->m_CommitHash].empty())
 					{
 						CRect rect;
-
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
+
+						// BEGIN: extended redraw, HACK for issue #1618 and #2014
+						// not in FillBackGround method, because this only affected the message subitem
+						if (0 != pLVCD->iStateId) // don't know why, but this helps against loosing the focus rect
+							return;
+
+						int index = (int)pLVCD->nmcd.dwItemSpec;
+						int state = GetItemState(index, LVIS_SELECTED);
+						int txtState = LISS_NORMAL;
+						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater() && GetHotItem() == (int)index)
+						{
+							if (state & LVIS_SELECTED)
+								txtState = LISS_HOTSELECTED;
+							else
+								txtState = LISS_HOT;
+						}
+						else if (state & LVIS_SELECTED)
+						{
+							if (::GetFocus() == m_hWnd)	
+								txtState = LISS_SELECTED;
+							else
+								txtState = LISS_SELECTEDNOTFOCUS;
+						}
+
+						HTHEME hTheme = nullptr;
+						if (IsAppThemed() && SysInfo::Instance().IsVistaOrLater())
+							hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
+
+						if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
+							DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
+						else
+						{
+							HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
+							::FillRect(pLVCD->nmcd.hdc, rect, brush);
+							::DeleteObject(brush);
+						}
+						if (hTheme)
+						{
+							CRect rt;
+							// get rect of whole line
+							GetItemRect(index, rt, LVIR_BOUNDS);
+							CRect rect2 = rect;
+							if (txtState == LISS_NORMAL) // avoid drawing of grey borders
+								rect2.DeflateRect(1, 1, 1, 1);
+
+							// calculate background for rect of whole line, but limit redrawing to SubItem rect
+							DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
+
+							CloseThemeData(hTheme);
+						}
+						// END: extended redraw
 
 						FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec,rect);
 
