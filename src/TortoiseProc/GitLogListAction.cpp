@@ -408,7 +408,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				// try to guess remote branch in order to enable tracking
-				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
 					{
@@ -426,7 +426,7 @@ void CGitLogList::ContextMenuAction(int cmd,int FirstSelect, int LastSelect, CMe
 			{
 				CString str = pSelLogEntry->m_CommitHash.ToString();
 				// try to guess remote branch in order to recommend good branch name and tracking
-				for (int i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
+				for (size_t i = 0; i < m_HashMap[pSelLogEntry->m_CommitHash].size(); ++i)
 				{
 					if (m_HashMap[pSelLogEntry->m_CommitHash][i].Find(_T("refs/remotes/")) == 0)
 					{

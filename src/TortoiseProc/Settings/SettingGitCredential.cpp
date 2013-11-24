@@ -421,9 +421,9 @@ void CSettingGitCredential::LoadList()
 	git_config_foreach_match(config, "credential\\..*", GetCredentialAnyEntryCallback, &anyList);
 	git_config_free(config);
 
-	for (int i = 0; i < defaultList.size(); ++i)
+	for (size_t i = 0; i < defaultList.size(); ++i)
 		m_ctrlUrlList.AddString(defaultList[i]);
-	for (int i = 0; i < urlList.size(); ++i)
+	for (size_t i = 0; i < urlList.size(); ++i)
 		m_ctrlUrlList.AddString(urlList[i]);
 
 	if (anyList.empty())

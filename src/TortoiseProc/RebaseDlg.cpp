@@ -353,7 +353,7 @@ void CRebaseDlg::OnBnClickedEditAll()
 
 void CRebaseDlg::SetAllRebaseAction(int action)
 {
-	for (int i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
+	for (size_t i = 0; i < this->m_CommitList.m_logEntries.size(); ++i)
 	{
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList)=action;
 	}
@@ -592,7 +592,7 @@ void CRebaseDlg::FetchLogList()
 	AddBranchToolTips(&this->m_BranchCtrl);
 	AddBranchToolTips(&this->m_UpstreamCtrl);
 
-	for (int i = 0; i < m_CommitList.m_logEntries.size(); ++i)
+	for (size_t i = 0; i < m_CommitList.m_logEntries.size(); ++i)
 	{
 		m_CommitList.m_logEntries.GetGitRevAt(i).GetAction(&m_CommitList) = CTGitPath::LOGACTIONS_REBASE_PICK;
 	}

@@ -1015,7 +1015,7 @@ void CSyncDlg::Refresh()
 	bool found = false;
 	if (!g_Git.GetRemoteList(list))
 	{
-		for (int i = 0; i < list.size(); ++i)
+		for (size_t i = 0; i < list.size(); ++i)
 		{
 			m_ctrlURL.AddString(list[i]);
 			if (list[i] == url)
@@ -1277,7 +1277,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	else
 	{
 		m_Databuf.m_critSec.Lock();
-		for (int i = m_BufStart; i < m_Databuf.size(); ++i)
+		for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
 		{
 			char c = m_Databuf[m_BufStart];
 			++m_BufStart;

@@ -111,7 +111,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	m_AddressReg.SetMaxHistoryItems(0xFFFF);
 
 	m_AddressReg.Load(_T("Software\\TortoiseGit\\TortoiseProc\\EmailAddress\\"),_T("email"));
-	for (int i = 0; i < m_AddressReg.GetCount(); ++i)
+	for (size_t i = 0; i < m_AddressReg.GetCount(); ++i)
 	{
 		m_ctrlCC.AddSearchString(m_AddressReg.GetEntry(i));
 		m_ctrlTO.AddSearchString(m_AddressReg.GetEntry(i));

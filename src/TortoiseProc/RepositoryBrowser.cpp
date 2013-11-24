@@ -356,7 +356,7 @@ int CRepositoryBrowser::ReadTreeRecursive(git_repository &repo, git_tree * tree,
 {
 	size_t count = git_tree_entrycount(tree);
 
-	for (int i = 0; i < count; ++i)
+	for (size_t i = 0; i < count; ++i)
 	{
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (entry == NULL)
@@ -537,7 +537,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 			temp = CPathUtils::GetFileExtFromPath((*itShadowTree).second.m_sName);
 			m_RepoList.SetItemText(indexItem, eCol_Extension, temp);
 
-			StrFormatByteSize((*itShadowTree).second.m_iSize, temp.GetBuffer(20), 20);
+			StrFormatByteSize64((*itShadowTree).second.m_iSize, temp.GetBuffer(20), 20);
 			temp.ReleaseBuffer();
 			m_RepoList.SetItemText(indexItem, eCol_FileSize, temp);
 		}
@@ -1177,7 +1177,7 @@ void CRepositoryBrowser::CopyHashToClipboard(TShadowFilesTreeList &selectedLeafs
 	{
 		CString sClipdata;
 		bool first = true;
-		for (int i = 0; i < selectedLeafs.size(); i++)
+		for (size_t i = 0; i < selectedLeafs.size(); ++i)
 		{
 			if (!first)
 				sClipdata += _T("\r\n");

@@ -421,7 +421,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		if(lParam == 0)
 		{
 			m_Databuf.m_critSec.Lock();
-			for (int i = this->m_BufStart; i < this->m_Databuf.size(); ++i)
+			for (size_t i = this->m_BufStart; i < this->m_Databuf.size(); ++i)
 			{
 				char c = this->m_Databuf[m_BufStart];
 				++m_BufStart;

@@ -43,7 +43,7 @@ public:
 
 	CString				m_sName;
 	CGitHash			m_hash;
-	size_t				m_iSize;
+	git_off_t			m_iSize;
 	bool				m_bFolder;
 	bool				m_bSubmodule;
 

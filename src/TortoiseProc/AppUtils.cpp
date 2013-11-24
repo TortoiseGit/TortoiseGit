@@ -1373,7 +1373,7 @@ bool CAppUtils::IgnoreFile(CTGitPathList &path,bool IsMask)
 				ignorePattern.Replace(_T("]"), _T("\\]"));
 
 				bool found = false;
-				for (int j = 0; j < file.m_Items.size(); ++j)
+				for (size_t j = 0; j < file.m_Items.size(); ++j)
 				{
 					if (file.m_Items[j] == ignorePattern)
 					{

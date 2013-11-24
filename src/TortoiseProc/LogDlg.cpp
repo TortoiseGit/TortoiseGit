@@ -545,7 +545,7 @@ CString CLogDlg::GetTagInfo(GitRev* pLogEntry)
 	if(m_LogList.m_HashMap.find(pLogEntry->m_CommitHash) != m_LogList.m_HashMap.end())
 	{
 		STRING_VECTOR &vector = m_LogList.m_HashMap[pLogEntry->m_CommitHash];
-		for (int i = 0; i < vector.size(); ++i)
+		for (size_t i = 0; i < vector.size(); ++i)
 		{
 			if(vector[i].Find(_T("refs/tags/")) == 0 )
 			{
@@ -1791,7 +1791,7 @@ void CLogDlg::OnBnClickedJumpUp()
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (int j = 0; j < refList.size(); ++j)
+			for (size_t j = 0; j < refList.size(); ++j)
 			{
 				if (refList[j].Left(10) == _T("refs/tags/"))
 				{
@@ -1881,7 +1881,7 @@ void CLogDlg::OnBnClickedJumpDown()
 		else if (jumpType == JumpType_Tag || jumpType == JumpType_TagFF)
 		{
 			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
-			for (int j = 0; j < refList.size(); ++j)
+			for (size_t j = 0; j < refList.size(); ++j)
 			{
 				if (refList[j].Left(10) == _T("refs/tags/"))
 				{
