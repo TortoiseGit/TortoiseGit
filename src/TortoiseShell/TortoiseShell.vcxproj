@@ -224,7 +224,6 @@
     <Image Include="..\Resources\menuhelp.ico" />
     <Image Include="..\Resources\menuignore.ico" />
     <Image Include="..\Resources\menuimport.ico" />
-    <Image Include="..\Resources\menulock.ico" />
     <Image Include="..\Resources\menulog.ico" />
     <Image Include="..\Resources\menumerge.ico" />
     <Image Include="..\Resources\menumergeabort.ico" />
@@ -245,7 +244,6 @@
     <Image Include="..\Resources\menusquash.ico" />
     <Image Include="..\Resources\menuswitch.ico" />
     <Image Include="..\Resources\menusync.ico" />
-    <Image Include="..\Resources\menuunlock.ico" />
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\pull1.ico" />
     <Image Include="..\Resources\Push.ico" />

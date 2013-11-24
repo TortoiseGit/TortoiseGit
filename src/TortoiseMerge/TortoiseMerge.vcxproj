@@ -415,7 +415,7 @@
     <ClInclude Include="SetMainPage.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="..\Gut\GitAdminDir.h" />
+    <ClInclude Include="..\Git\GitAdminDir.h" />
     <ClInclude Include="TortoiseMerge.h" />
     <ClInclude Include="Undo.h" />
     <ClInclude Include="ViewData.h" />
@@ -462,7 +462,6 @@
     <None Include="..\Resources\TortoiseMerge.ico" />
     <None Include="..\Resources\TortoiseMerge.rc2" />
     <None Include="..\Resources\tortoisemerge_logoflipped.bmp" />
-    <None Include="..\Resources\tortoisesvn_logoflipped.bmp" />
     <None Include="..\Resources\ttf_glyph.bmp" />
   </ItemGroup>
   <ItemGroup>

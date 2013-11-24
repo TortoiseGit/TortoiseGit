@@ -193,8 +193,6 @@
     <ClInclude Include="..\..\..\puttyps.h" />
     <ClInclude Include="..\..\..\sshgss.h" />
     <ClInclude Include="..\..\..\sshgssc.h" />
-    <ClInclude Include="..\..\rcstuff.h" />
-    <ClInclude Include="..\..\resource.h" />
     <ClInclude Include="..\..\..\ssh.h" />
     <ClInclude Include="..\..\..\storage.h" />
     <ClInclude Include="..\..\..\terminal.h" />

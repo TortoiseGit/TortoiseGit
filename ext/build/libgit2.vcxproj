@@ -261,7 +261,6 @@
     <ClInclude Include="..\libgit2\include\git2\pathspec.h" />
     <ClInclude Include="..\libgit2\include\git2\push.h" />
     <ClInclude Include="..\libgit2\include\git2\refdb.h" />
-    <ClInclude Include="..\libgit2\include\git2\refdb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\reset.h" />
     <ClInclude Include="..\libgit2\include\git2\revparse.h" />
     <ClInclude Include="..\libgit2\include\git2\stash.h" />

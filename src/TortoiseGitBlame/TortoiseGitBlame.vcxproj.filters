@@ -154,19 +154,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="hlp\Images\Bullet.gif">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\blameres\output_wnd.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\blameres\output_wnd_hc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\blameres\properties.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\blameres\properties_hc.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\blameres\properties_wnd.ico">

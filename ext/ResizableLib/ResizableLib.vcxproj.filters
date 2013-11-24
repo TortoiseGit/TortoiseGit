@@ -141,9 +141,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ResizableMsgSupport.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="ChangeLog" />
   </ItemGroup>
   <ItemGroup>

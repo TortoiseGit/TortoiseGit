@@ -177,11 +177,8 @@
     <ClInclude Include="TortoiseGitBlameView.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="hlp\Images\Bullet.gif" />
     <Image Include="..\Resources\blameres\output_wnd.ico" />
     <Image Include="..\Resources\blameres\output_wnd_hc.ico" />
-    <Image Include="..\Resources\blameres\properties.bmp" />
-    <Image Include="..\Resources\blameres\properties_hc.bmp" />
     <Image Include="..\Resources\blameres\properties_wnd.ico" />
     <Image Include="..\Resources\blameres\properties_wnd_hc.ico" />
     <Image Include="..\Resources\blameres\Toolbar.bmp" />

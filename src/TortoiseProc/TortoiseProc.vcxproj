@@ -477,14 +477,12 @@
     <ClInclude Include="UserPassword.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\actionad.ico" />
     <Image Include="..\Resources\actionadded.ico" />
     <Image Include="..\Resources\actiondeleted.ico" />
     <Image Include="..\Resources\actionfetching.ico" />
     <Image Include="..\Resources\actionmodified.ico" />
     <Image Include="..\Resources\actionreplaced.ico" />
     <Image Include="..\Resources\AddBackground.ico" />
-    <Image Include="..\Resources\AddedIcon.ico" />
     <Image Include="..\Resources\bugtraq.ico" />
     <Image Include="..\Resources\cache.ico" />
     <Image Include="..\Resources\CacheList.ico" />
@@ -494,17 +492,14 @@
     <Image Include="..\Resources\checkout.ico" />
     <Image Include="..\Resources\clippaste.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
-    <Image Include="..\Resources\ConflictIcon.ico" />
     <Image Include="..\Resources\copy.ico" />
     <Image Include="..\Resources\CopyBackground.ico" />
-    <Image Include="..\Resources\DeletedIcon.ico" />
     <Image Include="..\Resources\DelunversionedBackground.ico" />
     <Image Include="..\Resources\dialogs.ico" />
     <Image Include="..\Resources\Drives.ico" />
     <Image Include="..\Resources\explorer.ico" />
     <Image Include="..\Resources\ExportBackground.ico" />
     <Image Include="..\Resources\externalovl.ico" />
-    <Image Include="..\Resources\extwarning.ico" />
     <Image Include="..\Resources\filteredit.ico" />
     <Image Include="..\Resources\general.ico" />
     <Image Include="..\Resources\git.bmp" />
@@ -520,7 +515,6 @@
     <Image Include="..\Resources\iconset.ico" />
     <Image Include="..\Resources\ImportBackground.ico" />
     <Image Include="..\Resources\ImportPatchesBackground.ico" />
-    <Image Include="..\Resources\InSubVersionIcon.ico" />
     <Image Include="..\Resources\jumpdown.ico" />
     <Image Include="..\Resources\jumpup.ico" />
     <Image Include="..\Resources\Library.ico" />
@@ -560,7 +554,6 @@
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\MergeBackground.ico" />
     <Image Include="..\Resources\misc.ico" />
-    <Image Include="..\Resources\ModifiedIcon.ico" />
     <Image Include="..\Resources\newfolder.ico" />
     <Image Include="..\Resources\open.ico" />
     <Image Include="..\Resources\Overlays.ico" />

@@ -1188,9 +1188,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\actionad.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\actionadded.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -1207,9 +1204,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\AddBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\AddedIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\bugtraq.ico">
@@ -1239,16 +1233,10 @@
     <Image Include="..\Resources\CommitBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\ConflictIcon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\copy.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\CopyBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\DeletedIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\DelunversionedBackground.ico">
@@ -1264,9 +1252,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\ExportBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\extwarning.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\filteredit.ico">
@@ -1309,9 +1294,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\ImportPatchesBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\InSubVersionIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\jumpdown.ico">
@@ -1429,9 +1411,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\misc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\ModifiedIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\newfolder.ico">

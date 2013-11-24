@@ -11,9 +11,6 @@
     <None Include="Tortoise_ko_KR.po">
       <Filter>Translation Files</Filter>
     </None>
-    <None Include="Tortoise_lt_LT.po">
-      <Filter>Translation Files</Filter>
-    </None>
     <None Include="Tortoise_pl_PL.po">
       <Filter>Translation Files</Filter>
     </None>

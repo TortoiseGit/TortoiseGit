@@ -127,7 +127,7 @@
     <ClInclude Include="..\Utils\MiscUI\BaseDialog.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h" />
     <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h" />
-    <ClInclude Include="..\Utils\MiscUI\MemDC.h" />
+    <ClInclude Include="..\Utils\MiscUI\MyMemDC.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />
     <ClInclude Include="..\Utils\registry.h" />

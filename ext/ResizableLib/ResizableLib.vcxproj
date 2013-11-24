@@ -126,7 +126,6 @@
     <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ResizableMsgSupport.inl" />
     <None Include="ChangeLog" />
   </ItemGroup>
   <ItemGroup>

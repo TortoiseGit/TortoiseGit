@@ -47,9 +47,6 @@
     <Image Include="..\Resources\CFMBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\CheckoutBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\CommitBackground.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -96,12 +93,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\ImportBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\LockBackground.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\logfilter.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\logfilter.ico">

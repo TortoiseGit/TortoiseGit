@@ -88,7 +88,6 @@
     <Image Include="..\Resources\cancel-normal.ico" />
     <Image Include="..\Resources\cancel-pressed.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
-    <Image Include="..\Resources\CheckoutBackground.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />
     <Image Include="..\Resources\CopyBackground.ico" />
     <Image Include="..\Resources\DelunversionedBackground.ico" />
@@ -105,8 +104,6 @@
     <Image Include="..\Resources\hook.ico" />
     <Image Include="..\Resources\iconset.ico" />
     <Image Include="..\Resources\ImportBackground.ico" />
-    <Image Include="..\Resources\LockBackground.ico" />
-    <Image Include="..\Resources\logfilter.bmp" />
     <Image Include="..\Resources\logfilter.ico" />
     <Image Include="..\Resources\lookandfeel.ico" />
     <Image Include="..\Resources\MergeBackground.ico" />

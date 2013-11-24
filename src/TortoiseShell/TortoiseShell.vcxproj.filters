@@ -243,9 +243,6 @@
     <Image Include="..\Resources\menuimport.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\menulock.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\menulog.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -298,9 +295,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menusync.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\menuunlock.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menuupdate.ico">

@@ -482,7 +482,7 @@
     <ClInclude Include="TempFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Gut\GitAdminDir.h">
+    <ClInclude Include="..\Git\GitAdminDir.h">
       <Filter>Git\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Git\GitPatch.h">
@@ -551,9 +551,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\tortoisemerge_logoflipped.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\tortoisesvn_logoflipped.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\ttf_glyph.bmp">

@@ -83,7 +83,7 @@
     <ClInclude Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\MemDC.h">
+    <ClInclude Include="..\Utils\MiscUI\MyMemDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NiceTrackbar.h">
