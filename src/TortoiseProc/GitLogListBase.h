@@ -35,7 +35,7 @@
 #include "lanes.h"
 #include "GitLogCache.h"
 #include <regex>
-#include <GitStatusListCtrl.h>
+#include "GitStatusListCtrl.h"
 #include "FindDlg.h"
 
 // CGitLogList
