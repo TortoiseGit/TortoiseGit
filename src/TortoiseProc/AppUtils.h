@@ -218,5 +218,5 @@ private:
 
 	static bool OpenIgnoreFile(CIgnoreFile &file, const CString& filename);
 
-	static void DescribeFile(bool mode, bool base,CString &descript);
+	static void DescribeConflictFile(bool mode, bool base,CString &descript);
 };

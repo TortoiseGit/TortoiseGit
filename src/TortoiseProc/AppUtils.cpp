@@ -1479,7 +1479,7 @@ bool CAppUtils::GitReset(CString *CommitHash,int type)
 	return FALSE;
 }
 
-void CAppUtils::DescribeFile(bool mode, bool base,CString &descript)
+void CAppUtils::DescribeConflictFile(bool mode, bool base,CString &descript)
 {
 	if(mode == FALSE)
 	{
@@ -1702,8 +1702,8 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 		CFile::Remove(base.GetWinPathString());
 
 		CDeleteConflictDlg dlg;
-		DescribeFile(b_local, b_base,dlg.m_LocalStatus);
-		DescribeFile(b_remote,b_base,dlg.m_RemoteStatus);
+		DescribeConflictFile(b_local, b_base,dlg.m_LocalStatus);
+		DescribeConflictFile(b_remote,b_base,dlg.m_RemoteStatus);
 		dlg.m_bShowModifiedButton=b_base;
 		dlg.m_File=merge.GetGitPathString();
 		if(dlg.DoModal() == IDOK)
