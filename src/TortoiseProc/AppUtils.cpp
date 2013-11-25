@@ -1704,6 +1704,17 @@ bool CAppUtils::ConflictEdit(CTGitPath &path,bool /*bAlternativeTool*/,bool reve
 		CDeleteConflictDlg dlg;
 		DescribeConflictFile(b_local, b_base,dlg.m_LocalStatus);
 		DescribeConflictFile(b_remote,b_base,dlg.m_RemoteStatus);
+		CGitHash localHash, remoteHash;
+		if (!g_Git.GetHash(localHash, _T("HEAD")))
+			dlg.m_LocalHash = localHash.ToString();
+		if (!g_Git.GetHash(remoteHash, _T("MERGE_HEAD")))
+			dlg.m_RemoteHash = remoteHash.ToString();
+		else if (!g_Git.GetHash(remoteHash, _T("rebase-apply/original-commit")))
+			dlg.m_RemoteHash = remoteHash.ToString();
+		else if (!g_Git.GetHash(remoteHash, _T("CHERRY_PICK_HEAD")))
+			dlg.m_RemoteHash = remoteHash.ToString();
+		else if (!g_Git.GetHash(remoteHash, _T("REVERT_HEAD")))
+			dlg.m_RemoteHash = remoteHash.ToString();
 		dlg.m_bShowModifiedButton=b_base;
 		dlg.m_File=merge.GetGitPathString();
 		if(dlg.DoModal() == IDOK)

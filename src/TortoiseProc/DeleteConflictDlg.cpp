@@ -48,10 +48,14 @@ void CDeleteConflictDlg::DoDataExchange(CDataExchange* pDX)
 
 	DDX_Text(pDX, IDC_LOCAL_STATUS, m_LocalStatus);
 	DDX_Text(pDX, IDC_REMOTE_STATUS, m_RemoteStatus);
+	DDX_Text(pDX, IDC_FROMHASH, m_LocalHash);
+	DDX_Text(pDX, IDC_TOHASH, m_RemoteHash);
 }
 
 
 BEGIN_MESSAGE_MAP(CDeleteConflictDlg, CStandAloneDialog)
+	ON_BN_CLICKED(IDC_LOG, OnBnClickedLog)
+	ON_BN_CLICKED(IDC_LOG2, OnBnClickedLog2)
 	ON_BN_CLICKED(IDC_DELETE, &CDeleteConflictDlg::OnBnClickedDelete)
 	ON_BN_CLICKED(IDC_MODIFY, &CDeleteConflictDlg::OnBnClickedModify)
 END_MESSAGE_MAP()
@@ -65,6 +69,10 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED)));
 	else
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_CREATED)));
+	if (m_LocalHash.IsEmpty())
+		GetDlgItem(IDC_LOG)->ShowWindow(SW_HIDE);
+	if (m_RemoteHash.IsEmpty())
+		GetDlgItem(IDC_LOG2)->ShowWindow(SW_HIDE);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -73,6 +81,16 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	return TRUE;
 }
 // CDeleteConflictDlg message handlers
+
+void CDeleteConflictDlg::OnBnClickedLog()
+{
+	ShowLog(m_LocalHash);
+}
+
+void CDeleteConflictDlg::OnBnClickedLog2()
+{
+	ShowLog(m_RemoteHash);
+}
 
 void CDeleteConflictDlg::OnBnClickedDelete()
 {
@@ -84,4 +102,11 @@ void CDeleteConflictDlg::OnBnClickedModify()
 {
 	m_bIsDelete = FALSE;
 	OnOK();
+}
+
+void CDeleteConflictDlg::ShowLog(CString hash)
+{
+	CString sCmd;
+	sCmd.Format(_T("/command:log /path:\"%s\" /endrev:%s"), g_Git.m_CurrentDir + _T("\\") + m_File, hash);
+	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
