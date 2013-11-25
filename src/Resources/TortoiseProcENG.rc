@@ -1422,14 +1422,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Conflict"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDC_MODIFY,55,71,50,14
-    PUSHBUTTON      "Abort",IDCANCEL,179,71,50,14
     GROUPBOX        "Deleted merge conflict",IDC_DEL_GROUP,7,7,236,52
     LTEXT           "Local:                                                                                            ",IDC_STATIC,22,24,42,8
-    LTEXT           "Remote:",IDC_STATIC,22,36,32,8
-    PUSHBUTTON      "Delete",IDC_DELETE,116,71,50,14
     LTEXT           "Static",IDC_LOCAL_STATUS,58,24,167,8
+    LTEXT           "Remote:",IDC_STATIC,22,36,32,8
     LTEXT           "Static",IDC_REMOTE_STATUS,58,37,164,8
+    DEFPUSHBUTTON   "OK",IDC_MODIFY,55,71,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE,116,71,50,14
+    PUSHBUTTON      "Abort",IDCANCEL,179,71,50,14
 END
 
 IDD_REFLOG DIALOGEX 0, 0, 356, 196
