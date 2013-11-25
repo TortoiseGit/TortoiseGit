@@ -5515,7 +5515,7 @@ msgid "Local status"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Local:                                                                                            "
+msgid "Local:"
 msgstr ""
 
 #. Resource IDs: (94)

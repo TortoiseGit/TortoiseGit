@@ -12,6 +12,7 @@ Released: Unreleased
  * Fixed issue #1979: Comments are not stripped from commit message
  * Fixed issue #1991: Disable (by default) certain operations with stash commits
  * Updated shipped libgit2 to version 0.20
+ * Fixed issue #2010: Conflict dialog show local and remote commits
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
