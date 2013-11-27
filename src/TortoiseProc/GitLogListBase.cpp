@@ -1213,12 +1213,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (m_arShownList.GetCount() > (INT_PTR)pLVCD->nmcd.dwItemSpec)
 				{
 					GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
-					//if(!data->m_IsFull)
-					//{
-						//if(data->SafeFetchFullInfo(&g_Git))
-						//	this->Invalidate();
-						//TRACE(_T("Update ... %d\r\n"),pLVCD->nmcd.dwItemSpec);
-					//}
 
 					if (!m_HashMap[data->m_CommitHash].empty())
 					{
