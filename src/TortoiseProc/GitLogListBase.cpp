@@ -1214,7 +1214,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				{
 					GitRev* data = (GitRev*)m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 
-					if (!m_HashMap[data->m_CommitHash].empty())
+					if (!m_HashMap[data->m_CommitHash].empty() && !(SafeGetAction(data) & CTGitPath::LOGACTIONS_REBASE_DONE))
 					{
 						CRect rect;
 						GetSubItemRect((int)pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem, LVIR_BOUNDS, rect);
