@@ -209,7 +209,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 	{
 		CString cmd, out;
 		GitRev rev;
-		cmd.Format(_T("git.exe reflog show %s"), ref);
+		cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" %s"), ref);
 		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
 			return -1;
 
@@ -223,11 +223,8 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 
 			rev.Clear();
 
-			if (g_Git.GetHash(rev.m_CommitHash, one.Left(refPos)))
-			{
-				MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of ") + one.Left(refPos) + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
-				return -1;
-			}
+			CString hashStr = one.Left(refPos);
+			rev.m_CommitHash = hashStr;
 			int action = one.Find(_T(' '), refPos + 1);
 			if (action > 0)
 			{
