@@ -134,11 +134,12 @@ void CRefLogDlg::OnBnClickedClearStash()
 	}
 }
 
-int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long /*time*/, int /*sz*/, const char *msg, void *data)
+int AddToRefLoglist(unsigned char * /*osha1*/, unsigned char *nsha1, const char * /*name*/, unsigned long time, int /*sz*/, const char *msg, void *data)
 {
 	std::vector<GitRev> *vector = (std::vector<GitRev> *)data;
 	GitRev rev;
 	rev.m_CommitHash = (char *)nsha1;
+	rev.GetCommitterDate() = CTime(time);
 
 	CString one;
 	g_Git.StringAppend(&one, (BYTE *)msg);
@@ -185,6 +186,7 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 			GitRev rev;
 			rev.m_CommitHash = (char *)git_reflog_entry_id_new(entry)->id;
 			rev.m_Ref.Format(_T("%s@{%d}"), ref, i);
+			rev.GetCommitterDate() = CTime(git_reflog_entry_committer(entry)->when.time);
 			CString one;
 			g_Git.StringAppend(&one, (BYTE *)git_reflog_entry_message(entry));
 			int message = one.Find(_T(":"), 0);
@@ -209,10 +211,12 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 	{
 		CString cmd, out;
 		GitRev rev;
-		cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" %s"), ref);
+		cmd.Format(_T("git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s"), ref);
 		if (g_Git.Run(cmd, &out, NULL, CP_UTF8))
 			return -1;
 
+		int i = 0;
+		CString prefix = ref + _T("@{");
 		int pos = 0;
 		while (pos >= 0)
 		{
@@ -225,10 +229,21 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 
 			CString hashStr = one.Left(refPos);
 			rev.m_CommitHash = hashStr;
-			int action = one.Find(_T(' '), refPos + 1);
+			rev.m_Ref.Format(_T("%s@{%d}"), ref, i++);
+			int prefixPos = one.Find(prefix, refPos + 1);
+			if (prefixPos != refPos + 1)
+				continue;
+
+			int spacePos = one.Find(_T(' '), prefixPos + prefix.GetLength() + 1);
+			if (spacePos < 0)
+				continue;
+
+			CString timeStr = one.Mid(prefixPos + prefix.GetLength(), spacePos - prefixPos - prefix.GetLength());
+			rev.GetCommitterDate() = CTime(_ttoi(timeStr));
+			int action = one.Find(_T("}: "), spacePos + 1);
 			if (action > 0)
 			{
-				rev.m_Ref = one.Mid(refPos + 1, action - refPos - 2);
+				action += 2;
 				int message = one.Find(_T(":"), action);
 				if (message > 0)
 				{
