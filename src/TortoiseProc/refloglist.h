@@ -32,7 +32,8 @@ public:
 		REFLOG_HASH,
 		REFLOG_REF,
 		REFLOG_ACTION,
-		REFLOG_MESSAGE
+		REFLOG_MESSAGE,
+		REFLOG_DATE,
 	};
 
 	std::vector<GitRev> m_RevCache;

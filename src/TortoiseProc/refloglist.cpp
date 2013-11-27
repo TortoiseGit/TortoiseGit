@@ -21,6 +21,7 @@
 #include "RefLogDlg.h"
 #include "Git.h"
 #include "refloglist.h"
+#include "LoglistUtils.h"
 
 IMPLEMENT_DYNAMIC(CRefLogList, CGitLogList)
 
@@ -46,6 +47,7 @@ void CRefLogList::InsertRefLogColumn()
 		IDS_REF,
 		IDS_ACTION,
 		IDS_MESSAGE,
+		IDS_STATUSLIST_COLDATE,
 	};
 
 	static int with[] =
@@ -54,6 +56,7 @@ void CRefLogList::InsertRefLogColumn()
 		ICONITEMBORDER+16*4,
 		ICONITEMBORDER+16*4,
 		LOGLIST_MESSAGE_MIN,
+		ICONITEMBORDER+16*4,
 	};
 	m_dwDefaultColumns = 0xFFFF;
 
@@ -114,6 +117,10 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	case REFLOG_MESSAGE:
 		if (pLogEntry)
 			lstrcpyn(pItem->pszText, (LPCTSTR)pLogEntry->GetSubject().Trim(), pItem->cchTextMax);
+		break;
+	case REFLOG_DATE:
+		if (pLogEntry)
+			lstrcpyn(pItem->pszText, (LPCTSTR)CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes), pItem->cchTextMax);
 		break;
 
 	default:
