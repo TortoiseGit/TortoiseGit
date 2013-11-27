@@ -217,21 +217,21 @@ int ParserFromRefLog(CString ref, std::vector<GitRev> &refloglist)
 		while (pos >= 0)
 		{
 			CString one = out.Tokenize(_T("\n"), pos);
-			int ref = one.Find(_T(' '), 0);
-			if (ref < 0)
+			int refPos = one.Find(_T(' '), 0);
+			if (refPos < 0)
 				continue;
 
 			rev.Clear();
 
-			if (g_Git.GetHash(rev.m_CommitHash, one.Left(ref)))
+			if (g_Git.GetHash(rev.m_CommitHash, one.Left(refPos)))
 			{
-				MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of ") + one.Left(ref) + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
+				MessageBox(NULL, g_Git.GetGitLastErr(_T("Could not get hash of ") + one.Left(refPos) + _T(".")), _T("TortoiseGit"), MB_ICONERROR);
 				return -1;
 			}
-			int action = one.Find(_T(' '), ref + 1);
+			int action = one.Find(_T(' '), refPos + 1);
 			if (action > 0)
 			{
-				rev.m_Ref = one.Mid(ref + 1, action - ref - 2);
+				rev.m_Ref = one.Mid(refPos + 1, action - refPos - 2);
 				int message = one.Find(_T(":"), action);
 				if (message > 0)
 				{
