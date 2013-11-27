@@ -320,7 +320,7 @@ void CRefLogDlg::Refresh()
 	else
 	{
 		bool found = false;
-		for (size_t i = 0; i < list.size(); ++i)
+		for (int i = 0; i < (int)list.size(); ++i)
 		{
 			if(list[i] == m_CurrentBranch)
 			{
