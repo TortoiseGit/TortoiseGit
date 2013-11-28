@@ -54,6 +54,7 @@ public:
         , bDragMode(false)
         , bDrag2(false)
         , nSplitterPos(100)
+        , nSplitterPos2(200)
         , bOverlap(false)
         , bShowInfo(false)
         , bVertical(false)
@@ -64,6 +65,7 @@ public:
         , m_BlendType(CPicWindow::BLEND_ALPHA)
         , hwndTB(0)
         , hToolbarImgList(NULL)
+        , bSelectionMode(false)
     {
         SetWindowTitle((LPCTSTR)ResString(hResource, IDS_APP_TITLE));
     };
