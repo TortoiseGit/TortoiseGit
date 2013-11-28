@@ -29,6 +29,7 @@ Released: Unreleased
  * Fixed issue #2013: Double-clicking on ref log list doesn't work until after right-clicking it
  * Fixed issue #2016: Changed files list forgets sort order after switching versions in compare revisions dialog
  * Fixed issue #2014: "Show log" doesn't update properly when a window is dragged over it if aero is not enabled
+ * Fixed issue #2021: Disable commit template when combine commits
 
 = Release 1.8.6.0 =
 Released: 2013-10-20

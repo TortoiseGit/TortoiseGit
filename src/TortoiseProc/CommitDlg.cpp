@@ -208,7 +208,8 @@ BOOL CCommitDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	GetCommitTemplate(this->m_sLogMessage);
+	if (!m_bForceCommitAmend)
+		GetCommitTemplate(this->m_sLogMessage);
 
 	CString dotGitPath;
 	g_GitAdminDir.GetAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
