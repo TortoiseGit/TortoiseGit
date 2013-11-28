@@ -239,6 +239,9 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 
 	m_Authors.swap(authors);
 	m_Dates.swap(dates);
+	// reset detected and applied encoding
+	m_encode = -1;
+	m_Utf8Lines.clear();
 }
 
 int CTortoiseGitBlameData::UpdateEncoding(int encode)
