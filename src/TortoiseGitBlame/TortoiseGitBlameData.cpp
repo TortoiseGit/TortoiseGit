@@ -194,7 +194,11 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 							int filenameEnd = lineEnd;
 							CStringA filenameA = CStringA((LPCSTR)&data[filenameBegin], filenameEnd - filenameBegin);
 							filename = UnquoteFilename(filenameA);
-							hashToFilename.insert(std::make_pair(hash, filename));
+							auto r = hashToFilename.insert(std::make_pair(hash, filename));
+							if (!r.second)
+							{
+								r.first->second = filename;
+							}
 						}
 					}
 				}
