@@ -119,6 +119,7 @@ public:
 
 private:
 	static GitRev* GetRevForHash(CGitHashMap & HashToRev, CGitHash& hash);
+	static CString UnquoteFilename(CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;
 	std::vector<CString>		m_Dates;

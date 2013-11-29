@@ -192,7 +192,8 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 						{
 							int filenameBegin = tokenEnd + 1;
 							int filenameEnd = lineEnd;
-							filename = CUnicodeUtils::GetUnicode(CStringA((LPCSTR)&data[filenameBegin], filenameEnd-filenameBegin));
+							CStringA filenameA = CStringA((LPCSTR)&data[filenameBegin], filenameEnd - filenameBegin);
+							filename = UnquoteFilename(filenameA);
 							hashToFilename.insert(std::make_pair(hash, filename));
 						}
 					}
@@ -420,4 +421,63 @@ GitRev* CTortoiseGitBlameData::GetRevForHash(CGitHashMap & HashToRev, CGitHash& 
 		it = HashToRev.insert(std::make_pair(hash, rev)).first;
 	}
 	return &(it->second);
+}
+
+CString CTortoiseGitBlameData::UnquoteFilename(CStringA& s)
+{
+	if (s[0] == '"')
+	{
+		CStringA ret;
+		int i_size = s.GetLength();
+		bool isEscaped = false;
+		for (int i = 1; i < i_size; ++i)
+		{
+			char c = s[i];
+			if (isEscaped)
+			{
+				if (c >= '0' && c <= '3')
+				{
+					if (i + 2 < i_size)
+					{
+						c = (((c - '0') & 03) << 6) | (((s[i + 1] - '0') & 07) << 3) | ((s[i + 2] - '0') & 07);
+						i += 2;
+						ret += c;
+					}
+				}
+				else
+				{
+					switch (c)
+					{
+					case 'a' : c = '\a'; break;
+					case 'b' : c = '\b'; break;
+					case 't' : c = '\t'; break;
+					case 'n' : c = '\n'; break;
+					case 'v' : c = '\v'; break;
+					case 'f' : c = '\f'; break;
+					case 'r' : c = '\r'; break;
+					}
+					ret += c;
+				}
+				isEscaped = false;
+			}
+			else
+			{
+				if (c == '\\')
+				{
+					isEscaped = true;
+				}
+				else if(c == '"')
+				{
+					break;
+				}
+				else
+				{
+					ret += c;
+				}
+			}
+		}
+		return CUnicodeUtils::GetUnicode(ret);
+	}
+	else
+		return CUnicodeUtils::GetUnicode(s);
 }
