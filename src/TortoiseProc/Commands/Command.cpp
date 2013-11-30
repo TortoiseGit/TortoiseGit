@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2013 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "Command.h"
 
 #include "AboutCommand.h"
+#include "AutoTextTestCommand.h"
 #include "CommitCommand.h"
 #include "LogCommand.h"
 
@@ -103,6 +104,7 @@ typedef enum
 {
 	cmdAbout,
 	cmdAdd,
+	cmdAutoTextTest,
 	cmdBlame,
 	cmdBranch,
 	cmdCat,
@@ -175,6 +177,7 @@ static const struct CommandInfo
 {
 	{	cmdAbout,			_T("about")				},
 	{	cmdAdd,				_T("add")				},
+	{	cmdAutoTextTest,	_T("autotexttest")		},
 	{	cmdBlame,			_T("blame")				},
 	{	cmdBranch,			_T("branch")			},
 	{	cmdCat,				_T("cat")				},
@@ -261,6 +264,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	{
 	case cmdAbout:
 		return new AboutCommand;
+	case cmdAutoTextTest:
+		return new AutoTextTestCommand;
 	case cmdCommit:
 		return new CommitCommand;
 	case cmdLog:

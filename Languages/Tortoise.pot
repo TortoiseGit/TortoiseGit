@@ -1991,6 +1991,10 @@ msgstr ""
 msgid "Automatically check for &newer versions every week"
 msgstr ""
 
+#. Resource IDs: (306)
+msgid "Autotext Tester"
+msgstr ""
+
 #. Resource IDs: (1157)
 msgid "Average"
 msgstr ""
@@ -3961,6 +3965,10 @@ msgstr ""
 msgid "Enter an integer."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Enter file content to test for below:"
+msgstr ""
+
 #. Resource IDs: (1065)
 msgid "Enter log &message:"
 msgstr ""
@@ -3968,6 +3976,10 @@ msgstr ""
 #. Resource IDs: (3858)
 #, c-format
 msgid "Enter no more than %1 characters."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Enter the regex string below:"
 msgstr ""
 
 #. Resource IDs: (3603)
@@ -4421,6 +4433,10 @@ msgstr ""
 
 #. Resource IDs: (68)
 msgid "Found an empty commit message. You have to enter one or rebase cannot proceed."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Found auto words:"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -7633,6 +7649,10 @@ msgstr ""
 
 #. Resource IDs: (75)
 msgid "Saving notes failed."
+msgstr ""
+
+#. Resource IDs: (1522)
+msgid "Scan"
 msgstr ""
 
 #. Resource IDs: (1014, 1064, 1636)

@@ -120,6 +120,7 @@
 #define IDD_PULLFETCH                   302
 #define IDD_PUSH                        303
 #define IDD_GITSWITCH                   304
+#define IDD_AUTOTEXTTESTDLG             306
 #define IDD_NEW_BRANCH_TAG              309
 #define IDD_APPLY_PATCH_LIST            311
 #define IDD_FORMAT_PATCH                312
@@ -1083,11 +1084,16 @@
 #define IDS_REFCOMPAREHIDEUNCHANGED_TT  1518
 #define IDC_LABEL_BRANCH                1518
 #define IDC_BRANCH_TAG                  1519
+#define IDC_AUTOTEXTCONTENT             1520
 #define IDC_CHECK_TRACK                 1520
+#define IDC_AUTOTEXTREGEX               1521
 #define IDC_CHECK_FORCE                 1521
+#define IDC_AUTOTEXTSCAN                1522
 #define IDC_GROUP_BASEON                1522
+#define IDC_TESTRESULT                  1523
 #define IDC_CHECK_BRANCHOVERRIDE        1523
 #define IDC_CHECK_SIGN                  1523
+#define IDC_TIMINGLABEL                 1524
 #define IDC_CHECK_SQUASH                1524
 #define IDC_CHECK_SWITCH                1525
 #define IDC_CHECK_MERGE                 1526
