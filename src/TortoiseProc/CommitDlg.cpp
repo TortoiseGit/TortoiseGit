@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2003-2013 - TortoiseSVN
 // Copyright (C) 2008-2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -1614,9 +1614,9 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 	{
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading auto list regex file\n");
 		pE->Delete();
-		return;
 	}
 }
+
 void CCommitDlg::GetAutocompletionList()
 {
 	// the auto completion list is made of strings from each selected files.
@@ -1667,15 +1667,6 @@ void CCommitDlg::GetAutocompletionList()
 		CString sPartPath =path->GetGitPathString();
 		m_autolist.insert(sPartPath);
 
-//		const CGitStatusListCtrl::FileEntry * entry = m_ListCtrl.GetListEntry(i);
-//		if (!entry)
-//			continue;
-
-		// add the path parts to the auto completion list too
-//		CString sPartPath = entry->GetRelativeGitPath();
-//		m_autolist.insert(sPartPath);
-
-
 		int pos = 0;
 		int lastPos = 0;
 		while ((pos = sPartPath.Find('/', pos)) >= 0)
@@ -1693,91 +1684,85 @@ void CCommitDlg::GetAutocompletionList()
 			if ((dotPos >= 0) && (dotPos > lastPos))
 				m_autolist.insert(sPartPath.Mid(lastPos, dotPos - lastPos));
 		}
-#if 0
-		if ((entry->status <= Git_wc_status_normal)||(entry->status == Git_wc_status_ignored))
+
+		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER || path->m_Action == CTGitPath::LOGACTIONS_IGNORE || path->m_Action == CTGitPath::LOGACTIONS_DELETED)
 			continue;
 
-		CString sExt = entry->GetPath().GetFileExtension();
+		CString sExt = path->GetFileExtension();
 		sExt.MakeLower();
 		// find the regex string which corresponds to the file extension
 		CString rdata = mapRegex[sExt];
 		if (rdata.IsEmpty())
 			continue;
 
-		ScanFile(entry->GetPath().GetWinPathString(), rdata);
-		if ((entry->textstatus != Git_wc_status_unversioned) &&
-			(entry->textstatus != Git_wc_status_none) &&
-			(entry->textstatus != Git_wc_status_ignored) &&
-			(entry->textstatus != Git_wc_status_added) &&
-			(entry->textstatus != Git_wc_status_normal))
-		{
-			CTGitPath basePath = Git::GetPristinePath(entry->GetPath());
-			if (!basePath.IsEmpty())
-				ScanFile(basePath.GetWinPathString(), rdata);
-		}
-#endif
+		ScanFile(path->GetWinPathString(), rdata, sExt);
 	}
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) _T(": Auto completion list loaded in %d msec\n"), GetTickCount() - starttime);
 }
 
-void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex)
+void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt)
 {
+	static std::map<CString, std::tr1::wregex> regexmap;
+
 	std::wstring sFileContent;
-	HANDLE hFile = CreateFile(sFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE)
+	CAutoFile hFile = CreateFile(sFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
+	if (hFile)
 	{
 		DWORD size = GetFileSize(hFile, NULL);
-		if (size > 1000000L)
+		if (size > 300000L)
 		{
-			// no files bigger than 1 Meg
-			CloseHandle(hFile);
+			// no files bigger than 300k
 			return;
 		}
 		// allocate memory to hold file contents
-		char * buffer = new char[size];
+		std::unique_ptr<char[]> buffer(new char[size]);
 		DWORD readbytes;
-		ReadFile(hFile, buffer, size, &readbytes, NULL);
-		CloseHandle(hFile);
+		if (!ReadFile(hFile, buffer.get(), size, &readbytes, NULL))
+			return;
 		int opts = 0;
-		IsTextUnicode(buffer, readbytes, &opts);
+		IsTextUnicode(buffer.get(), readbytes, &opts);
 		if (opts & IS_TEXT_UNICODE_NULL_BYTES)
 		{
-			delete [] buffer;
 			return;
 		}
 		if (opts & IS_TEXT_UNICODE_UNICODE_MASK)
 		{
-			sFileContent = std::wstring((wchar_t*)buffer, readbytes/sizeof(WCHAR));
+			sFileContent = std::wstring((wchar_t*)buffer.get(), readbytes / sizeof(WCHAR));
 		}
-		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK)||(opts == 0))
+		if ((opts & IS_TEXT_UNICODE_NOT_UNICODE_MASK) || (opts == 0))
 		{
-			int ret = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, (LPCSTR)buffer, readbytes, NULL, 0);
-			wchar_t * pWideBuf = new wchar_t[ret];
-			int ret2 = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, (LPCSTR)buffer, readbytes, pWideBuf, ret);
+			const int ret = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, NULL, 0);
+			std::unique_ptr<wchar_t[]> pWideBuf(new wchar_t[ret]);
+			const int ret2 = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, (LPCSTR)buffer.get(), readbytes, pWideBuf.get(), ret);
 			if (ret2 == ret)
-				sFileContent = std::wstring(pWideBuf, ret);
-			delete [] pWideBuf;
+				sFileContent = std::wstring(pWideBuf.get(), ret);
 		}
-		delete [] buffer;
 	}
-	if (sFileContent.empty()|| !m_bRunThread)
+	if (sFileContent.empty() || !m_bRunThread)
 	{
 		return;
 	}
 
 	try
 	{
-		const std::tr1::wregex regCheck(sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+
+		std::tr1::wregex regCheck;
+		std::map<CString, std::tr1::wregex>::const_iterator regIt;
+		if ((regIt = regexmap.find(sExt)) != regexmap.end())
+			regCheck = regIt->second;
+		else
+		{
+			regCheck = std::tr1::wregex(sRegex, std::tr1::regex_constants::icase | std::tr1::regex_constants::ECMAScript);
+			regexmap[sExt] = regCheck;
+		}
 		const std::tr1::wsregex_iterator end;
-		std::wstring s = sFileContent;
-		for (std::tr1::wsregex_iterator it(s.begin(), s.end(), regCheck); it != end; ++it)
+		for (std::tr1::wsregex_iterator it(sFileContent.begin(), sFileContent.end(), regCheck); it != end; ++it)
 		{
 			const std::tr1::wsmatch match = *it;
-			for (size_t i=1; i<match.size(); ++i)
+			for (size_t i = 1; i < match.size(); ++i)
 			{
 				if (match[i].second-match[i].first)
 				{
-					ATLTRACE(_T("matched keyword : %s\n"), std::wstring(match[i]).c_str());
 					m_autolist.insert(std::wstring(match[i]).c_str());
 				}
 			}
