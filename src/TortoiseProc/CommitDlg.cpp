@@ -1685,7 +1685,9 @@ void CCommitDlg::GetAutocompletionList()
 				m_autolist.insert(sPartPath.Mid(lastPos, dotPos - lastPos));
 		}
 
-		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER || path->m_Action == CTGitPath::LOGACTIONS_IGNORE || path->m_Action == CTGitPath::LOGACTIONS_DELETED)
+		if (path->m_Action == CTGitPath::LOGACTIONS_UNVER && !CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseUnversioned"), FALSE))
+			continue;
+		if (path->m_Action == CTGitPath::LOGACTIONS_IGNORE || path->m_Action == CTGitPath::LOGACTIONS_DELETED)
 			continue;
 
 		CString sExt = path->GetFileExtension();
@@ -1709,7 +1711,7 @@ void CCommitDlg::ScanFile(const CString& sFilePath, const CString& sRegex, const
 	if (hFile)
 	{
 		DWORD size = GetFileSize(hFile, NULL);
-		if (size > 300000L)
+		if (size > CRegDWORD(_T("Software\\TortoiseGit\\AutocompleteParseMaxSize"), 300000L))
 		{
 			// no files bigger than 300k
 			return;
