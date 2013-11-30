@@ -107,7 +107,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	void Refresh();
 	void GetAutocompletionList();
-	void ScanFile(const CString& sFilePath, const CString& sRegex);
+	void ScanFile(const CString& sFilePath, const CString& sRegex, const CString& sExt);
 	void DoSize(int delta);
 	void SetSplitterRange();
 	void SaveSplitterPos();

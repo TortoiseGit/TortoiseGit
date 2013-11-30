@@ -228,6 +228,13 @@
 			</ulink>.
 		</para>
 		<para>
+			Getting the regex just right can be tricky, so to help you sort out a
+			suitable expression there is a test dialog which allows you to enter
+			an expression and then type in filenames to test it against.
+			Start it from the command prompt using the command
+			<literal>TortoiseGitProc.exe /command:autotexttest</literal>.
+		</para>
+		<para>
 			You can re-use previously entered log messages. Just use the command
 			<menuchoice>
 				<guimenu>Context Menu</guimenu>

@@ -150,6 +150,9 @@
     <Filter Include="Commands\Daemon">
       <UniqueIdentifier>{f2c90bcf-1214-4d34-b565-e7d2cdb16d27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\AutoTextTest">
+      <UniqueIdentifier>{9baf680f-fe31-4b6d-bd01-50b7a2c043b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -674,6 +677,9 @@
     <ClCompile Include="GitRefCompareList.cpp">
       <Filter>Commands\Sync</Filter>
     </ClCompile>
+    <ClCompile Include="AutoTextTestDlg.cpp">
+      <Filter>Commands\AutoTextTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1185,6 +1191,12 @@
     </ClInclude>
     <ClInclude Include="GitRefCompareList.h">
       <Filter>Commands\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoTextTestDlg.h">
+      <Filter>Commands\AutoTextTest</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\AutoTextTestCommand.h">
+      <Filter>Commands\AutoTextTest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
