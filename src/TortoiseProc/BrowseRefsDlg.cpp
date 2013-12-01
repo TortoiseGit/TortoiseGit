@@ -1146,8 +1146,8 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			CFileDiffDlg dlg;
 			dlg.SetDiff(
 				NULL,
-				selectedLeafs[0]->GetRefName() + L"^{}",
-				selectedLeafs[1]->GetRefName() + L"^{}");
+				selectedLeafs[1]->GetRefName() + L"^{}",
+				selectedLeafs[0]->GetRefName() + L"^{}");
 			dlg.DoModal();
 		}
 		break;
