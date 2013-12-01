@@ -356,7 +356,7 @@ void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 {
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	line = line + (int)(point.y / height);
 	if (m_data.IsValidLine(line))
 	{
@@ -889,8 +889,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	HFONT oldfont = NULL;
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
-	LONG_PTR Y = 0;
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	int Y = 0;
 	TCHAR buf[MAX_PATH];
 	RECT rc;
 	BOOL sel = FALSE;
@@ -938,19 +938,19 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			rc.left=LOCATOR_WIDTH;
 			rc.bottom = (LONG)(Y + height);
 			rc.right = rc.left + m_blamewidth;
-			::ExtTextOut(hDC, LOCATOR_WIDTH, (int)Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
+			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			int Left = m_revwidth;
 
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
 				Left += m_authorwidth;
 			}
 			if (m_bShowDate)
 			{
 				rc.right = rc.left + Left + m_datewidth;
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
 				Left += m_datewidth;
 			}
 			if (m_bShowFilename)
@@ -1007,7 +1007,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
 	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
-	LONG_PTR Y = 0;
+	int Y = 0;
 	COLORREF blackColor = GetSysColor(COLOR_WINDOWTEXT);
 
 	RECT rc;
@@ -1718,8 +1718,8 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
 
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG height = (LONG)SendEditor(SCI_TEXTHEIGHT);
-	line = line + (point.y/height);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	line = line + (int)(point.y/height);
 
 	if (line < m_data.GetNumberOfLines())
 	{
@@ -1792,8 +1792,8 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 {
 	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
-	line = line + (int)(point.y / height);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	line = line + (point.y/height);
 
 	if (m_data.IsValidLine(line))
 	{
