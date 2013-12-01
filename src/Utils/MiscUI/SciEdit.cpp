@@ -561,7 +561,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 	Call(SCI_SETCURRENTPOS, Call(SCI_WORDSTARTPOSITION, Call(SCI_GETCURRENTPOS), TRUE));
 	if (word.IsEmpty())
 		return;
-	char ** wlst;
+	char ** wlst = nullptr;
 	int ns = pChecker->suggest(&wlst, CStringA(word));
 	if (ns > 0)
 	{
@@ -578,8 +578,9 @@ void CSciEdit::SuggestSpellingAlternatives()
 		Call(SCI_AUTOCSETSEPARATOR, (WPARAM)CStringA(m_separator).GetAt(0));
 		Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
 		Call(SCI_AUTOCSHOW, 0, (LPARAM)(LPCSTR)StringForControl(suggestions));
+		return;
 	}
-
+	free(wlst);
 }
 
 void CSciEdit::DoAutoCompletion(int nMinPrefixLength)
@@ -837,7 +838,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		// check if the word under the cursor is spelled wrong
 		if ((pChecker)&&(!worda.IsEmpty()) && !bIsReadOnly)
 		{
-			char ** wlst;
+			char ** wlst = nullptr;
 			// get the spell suggestions
 			int ns = pChecker->suggest(&wlst,worda);
 			if (ns > 0)
@@ -852,6 +853,8 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				}
 				free(wlst);
 			}
+			else
+				free(wlst);
 		}
 		// only add a separator if spelling correction suggestions were added
 		if (bSpellAdded)
