@@ -923,6 +923,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	{
 		bAddSeparator = true;
 		popupMenu.AppendMenuIcon(eCmd_Diff, CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_COMPAREREFS)), IDI_DIFF);
+		popupMenu.AppendMenuIcon(eCmd_UnifiedDiff, CString(MAKEINTRESOURCE(IDS_LOG_POPUP_GNUDIFF)), IDI_DIFF);
 		CString menu;
 		menu.Format(IDS_SHOWLOG_OF, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")));
 		popupMenu.AppendMenuIcon(eCmd_ViewLogRange, menu, IDI_LOG);
@@ -1149,6 +1150,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				selectedLeafs[1]->GetRefName() + L"^{}",
 				selectedLeafs[0]->GetRefName() + L"^{}");
 			dlg.DoModal();
+		}
+		break;
+	case eCmd_UnifiedDiff:
+		{
+			CAppUtils::StartShowUnifiedDiff(nullptr, CTGitPath(), selectedLeafs[0]->m_csRefHash, CTGitPath(), selectedLeafs[1]->m_csRefHash);
 		}
 		break;
 	case eCmd_EditBranchDescription:

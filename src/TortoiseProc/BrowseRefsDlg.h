@@ -99,6 +99,7 @@ public:
 		eCmd_EditBranchDescription,
 		eCmd_ViewLogRange,
 		eCmd_ViewLogRangeReachableFromOnlyOne,
+		eCmd_UnifiedDiff,
 	};
 
 	enum eCol
