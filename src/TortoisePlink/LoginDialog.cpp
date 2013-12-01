@@ -103,7 +103,7 @@ LoginDialog::LoginDialog(const std::string& prompt)
 void LoginDialog::CreateModule(void)
 {
    DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain,
-                  (DLGPROC)(LoginDialogProc), (long)this);
+                  (DLGPROC)(LoginDialogProc), (LPARAM)this);
 }
 
 
