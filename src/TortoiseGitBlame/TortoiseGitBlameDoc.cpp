@@ -158,7 +158,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 
 		CString cmd;
-		cmd.Format(_T("git.exe blame -s -l %s -- \"%s\""),Rev,path.GetGitPathString());
+		cmd.Format(_T("git.exe blame -s -l -f %s -- \"%s\""),Rev,path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
