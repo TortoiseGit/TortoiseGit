@@ -177,7 +177,7 @@ public:
 	void ParseBlame();
 	void MapLineToLogIndex();
 	void UpdateInfo(int encode = 0);
-	CString ResolveCommitFile(LONG line);
+	CString ResolveCommitFile(int line);
 	CString ResolveCommitFile(const CString& path);
 	void FocusOn(GitRev *pRev);
 
@@ -218,15 +218,15 @@ public:
 	void DrawLocatorBar(HDC hDC);
 	void CopyToClipboard();
 	bool DoSearch(CString what, DWORD flags);
-	bool GotoLine(long line);
+	bool GotoLine(int line);
 	bool ScrollToLine(long line);
 	void GotoLineDlg();
 	static INT_PTR CALLBACK GotoDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void SetSelectedLine(LONG line) { m_SelectedLine=line;};
+	void SetSelectedLine(int line) { m_SelectedLine = line;};
 
 	LONG					m_mouserev;
-	LONG					m_MouseLine;
+	int						m_MouseLine;
 	LONG					m_selectedrev;
 	LONG					m_selectedorigrev;
 	CGitHash				m_SelectedHash;
@@ -237,7 +237,7 @@ public:
 	bool					m_colorage;
 
 	CTortoiseGitBlameData	m_data;
-	std::vector<LONG>		m_lineToLogIndex;
+	std::vector<int>		m_lineToLogIndex;
 
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
@@ -262,7 +262,7 @@ protected:
 	LONG					m_filenameWidth;
 	LONG					m_originalLineNumberWidth;
 	LONG					m_linewidth;
-	LONG					m_SelectedLine; ///< zero-based
+	int						m_SelectedLine; ///< zero-based
 
 	COLORREF				m_mouserevcolor;
 	COLORREF				m_mouseauthorcolor;

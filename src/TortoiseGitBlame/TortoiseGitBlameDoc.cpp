@@ -71,7 +71,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (m_bFirstStartup)
 	{
 		m_Rev=parser.GetVal(_T("rev"));
-		m_lLine = parser.GetLongVal(_T("line"));
+		m_lLine = (int)parser.GetLongVal(_T("line"));
 		m_bFirstStartup = false;
 	}
 	else

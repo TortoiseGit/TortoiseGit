@@ -100,7 +100,7 @@ public:
 		return m_Filenames[line];
 	}
 
-	LONG GetOriginalLineNumber(int line) const
+	int GetOriginalLineNumber(int line) const
 	{
 		return m_OriginalLineNumbers[line];
 	}
