@@ -155,6 +155,8 @@ CBaseView::CBaseView()
 	m_Eols[EOL_AUTOLINE] = m_Eols[m_lineendings==EOL_AUTOLINE
 								? EOL_CRLF
 								: m_lineendings];
+	m_SaveParams.m_LineEndings = EOL::EOL_AUTOLINE;
+	m_SaveParams.m_UnicodeType = CFileTextLines::AUTOTYPE;
 }
 
 CBaseView::~CBaseView()
