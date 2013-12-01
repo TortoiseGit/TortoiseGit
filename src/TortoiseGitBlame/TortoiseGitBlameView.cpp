@@ -2017,7 +2017,10 @@ void CTortoiseGitBlameView::OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCm
 
 void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines)
 {
+	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
 	m_dwDetectMovedOrCopiedLines = dwDetectMovedOrCopiedLines;
+
+	theApp.DoWaitCursor(1);
 
 	theApp.WriteInt(_T("DetectMovedOrCopiedLines"), m_dwDetectMovedOrCopiedLines);
 
@@ -2028,6 +2031,7 @@ void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOr
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 	}
+	theApp.DoWaitCursor(-1);
 }
 
 void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleDisabled()
@@ -2084,6 +2088,8 @@ void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
 {
 	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
 
+	theApp.DoWaitCursor(1);
+
 	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace ? 1 : 0);
 
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
@@ -2093,6 +2099,7 @@ void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 	}
+	theApp.DoWaitCursor(-1);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI)
@@ -2104,6 +2111,8 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 {
 	m_bShowCompleteLog = ! m_bShowCompleteLog;
 
+	theApp.DoWaitCursor(1);
+
 	theApp.WriteInt(_T("ShowCompleteLog"), m_bShowCompleteLog ? 1 : 0);
 
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
@@ -2113,6 +2122,7 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 	}
+	theApp.DoWaitCursor(-1);
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
