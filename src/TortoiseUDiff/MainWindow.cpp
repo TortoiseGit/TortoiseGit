@@ -599,6 +599,10 @@ bool CMainWindow::Initialize()
 		SendEditor(SCI_SETTECHNOLOGY, SC_TECHNOLOGY_DIRECTWRITE);
 		SendEditor(SCI_SETBUFFEREDDRAW, 0);
 	}
+	SendEditor(SCI_SETVIEWWS, 1);
+	SendEditor(SCI_SETWHITESPACESIZE, 2);
+	SendEditor(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
+	SendEditor(SCI_STYLESETVISIBLE, STYLE_CONTROLCHAR, TRUE);
 
 	return true;
 }
