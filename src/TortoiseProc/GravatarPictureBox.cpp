@@ -189,8 +189,8 @@ void CGravatar::GravatarThread()
 				}
 				else
 					m_filename = _T("");
+				m_gravatarLock.Unlock();
 			}
-			m_gravatarLock.Unlock();
 			Invalidate();
 		}
 	}
