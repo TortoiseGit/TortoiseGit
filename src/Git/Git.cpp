@@ -1255,6 +1255,20 @@ CString CGit::GetGitLastErr(CString msg)
 	}
 }
 
+CString CGit::GetGitLastErr(CString msg, int cmd)
+{
+	if (UsingLibGit2(cmd))
+		return GetLibGit2LastErr(msg);
+	else if (gitLastErr.IsEmpty())
+		return msg + _T("\nUnknown git.exe error.");
+	else
+	{
+		CString lastError = gitLastErr;
+		gitLastErr.Empty();
+		return msg + _T("\n") + lastError;
+	}
+}
+
 CString CGit::GetLibGit2LastErr()
 {
 	const git_error *libgit2err = giterr_last();
