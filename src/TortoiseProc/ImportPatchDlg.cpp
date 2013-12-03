@@ -172,12 +172,14 @@ BOOL CImportPatchDlg::OnInitDialog()
 
 	m_PathList.SortByPathname(true);
 	m_cList.SetExtendedStyle( m_cList.GetExtendedStyle()| LVS_EX_CHECKBOXES );
+	m_cList.InsertColumn(0, L"");
 
 	for (int i = 0; i < m_PathList.GetCount(); ++i)
 	{
 		m_cList.InsertItem(0,m_PathList[i].GetWinPath());
 		m_cList.SetCheck(0,true);
 	}
+	m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 
 	DWORD yPos = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
@@ -271,6 +273,7 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 					m_cList.SetCheck(index, true);
 			}
 		}
+		m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 	}
 }
 
@@ -349,6 +352,7 @@ void CImportPatchDlg::OnBnClickedButtonRemove()
 		m_cList.DeleteItem(index);
 		pos = m_cList.GetFirstSelectedItemPosition();
 	}
+	m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 }
 
 UINT CImportPatchDlg::PatchThread()
@@ -371,6 +375,9 @@ UINT CImportPatchDlg::PatchThread()
 		CRect rect;
 		this->m_cList.GetItemRect(i,&rect,LVIR_BOUNDS);
 		this->m_cList.InvalidateRect(rect);
+
+		m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
+		m_cList.EnsureVisible(i, FALSE);
 
 		if(m_bExitThread)
 			break;
