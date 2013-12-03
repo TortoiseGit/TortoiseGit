@@ -327,6 +327,12 @@ BOOL CSettingGitRemote::OnApply()
 {
 	CWaitCursor wait;
 	this->UpdateData();
+	if (m_ChangedMask && m_strRemote.Trim().IsEmpty())
+	{
+		CMessageBox::Show(NULL, IDS_PROC_GITCONFIG_REMOTEEMPTY, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
 	if(m_ChangedMask & REMOTE_NAME)
 	{
 		//Add Remote
