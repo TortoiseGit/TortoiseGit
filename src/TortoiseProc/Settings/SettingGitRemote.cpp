@@ -298,7 +298,7 @@ void CSettingGitRemote::OnCbnSelchangeComboTagOpt()
 		this->SetModified(0);
 }
 
-void CSettingGitRemote::Save(CString key,CString value)
+BOOL CSettingGitRemote::Save(CString key,CString value)
 {
 	CString cmd,out;
 
@@ -312,8 +312,9 @@ void CSettingGitRemote::Save(CString key,CString value)
 			CString msg;
 			msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
 			CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+			return FALSE;
 		}
-		return;
+		return TRUE;
 	}
 
 	if (g_Git.SetConfigValue(cmd, value, CONFIG_LOCAL))
@@ -321,7 +322,9 @@ void CSettingGitRemote::Save(CString key,CString value)
 		CString msg;
 		msg.Format(IDS_PROC_SAVECONFIGFAILED, cmd, value);
 		CMessageBox::Show(NULL, msg, _T("TortoiseGit"), MB_OK | MB_ICONERROR);
+		return FALSE;
 	}
+	return TRUE;
 }
 BOOL CSettingGitRemote::OnApply()
 {
@@ -376,12 +379,14 @@ BOOL CSettingGitRemote::OnApply()
 	if(m_ChangedMask & REMOTE_URL)
 	{
 		m_strUrl.Replace(L'\\', L'/');
-		Save(_T("url"),this->m_strUrl);
+		if (!Save(_T("url"),this->m_strUrl))
+			return FALSE;
 	}
 
 	if(m_ChangedMask & REMOTE_PUTTYKEY)
 	{
-		Save(_T("puttykeyfile"),this->m_strPuttyKeyfile);
+		if (!Save(_T("puttykeyfile"),this->m_strPuttyKeyfile))
+			return FALSE;
 	}
 
 	if (m_ChangedMask & REMOTE_TAGOPT)
@@ -392,7 +397,8 @@ BOOL CSettingGitRemote::OnApply()
 			tagopt = "--no-tags";
 		else if (index == 2)
 			tagopt = "--tags";
-		Save(_T("tagopt"), tagopt);
+		if (!Save(_T("tagopt"), tagopt))
+			return FALSE;
 	}
 
 	SetModified(FALSE);

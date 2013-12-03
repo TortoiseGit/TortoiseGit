@@ -65,7 +65,7 @@ protected:
 
 	BOOL IsRemoteExist(CString &remote);
 
-	void Save(CString key, CString value);
+	BOOL Save(CString key, CString value);
 
 	int			m_ChangedMask;
 
