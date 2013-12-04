@@ -27,15 +27,12 @@
 
 using namespace ATL;
 
-#pragma warning(push)
-#pragma warning(disable: 4702)	// Unreachable code warnings in xtree
 #include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <deque>
 #include <functional>
-#pragma warning(pop)
 
 #pragma warning(push)
 #include "git2.h"

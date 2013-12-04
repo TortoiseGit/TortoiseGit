@@ -19,8 +19,6 @@
 //
 #include "stdafx.h"
 
-#pragma warning (disable : 4786)
-
 // Initialize GUIDs (should be done only and at-least once per DLL/EXE)
 #include <initguid.h>
 #include "Guids.h"

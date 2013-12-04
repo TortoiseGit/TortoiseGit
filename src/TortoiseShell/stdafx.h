@@ -24,15 +24,12 @@
 #include <atlexcept.h>
 #include <atlstr.h>
 
-#pragma warning(push)
-#pragma warning(disable: 4702)	// Unreachable code warnings in xtree
 #include <string>
 #include <set>
 #include <map>
 #include <vector>
 #include <algorithm>
 #include <functional>
-#pragma warning(pop)
 
 #pragma warning(push)
 #include "git2.h"

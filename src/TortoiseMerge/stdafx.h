@@ -38,18 +38,12 @@
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 #include <afxtaskdialog.h>
 
-#pragma warning(push)
-#pragma warning(disable: 4201)	// nonstandard extension used : nameless struct/union (in MMSystem.h)
 #include <vfw.h>
-#pragma warning(pop)
 
-#pragma warning(push)
-#pragma warning(disable: 4702)	// Unreachable code warnings in xtree
 #include <string>
 #include <map>
 #include <vector>
 #include <algorithm>
-#pragma warning(pop)
 
 #pragma warning(push)
 #include "apr_general.h"
