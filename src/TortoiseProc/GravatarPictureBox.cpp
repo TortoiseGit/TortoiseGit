@@ -199,6 +199,7 @@ void CGravatar::GravatarThread()
 
 void CGravatar::SafeTerminateGravatarThread()
 {
+	m_gravatarExit = true;
 	if (m_gravatarThread)
 	{
 		::SetEvent(m_gravatarEvent);
