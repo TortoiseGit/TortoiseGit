@@ -414,11 +414,11 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 
 
 		//Use ref based on m_pickRef_Kind
-		if(wcsncmp(refName,L"refs/heads",10)==0 && !(m_pickRef_Kind & gPickRef_Head) )
+		if (wcsncmp(refName, L"refs/heads/", 11) == 0 && !(m_pickRef_Kind & gPickRef_Head))
 			continue; //Skip
-		if(wcsncmp(refName,L"refs/tags",9)==0 && !(m_pickRef_Kind & gPickRef_Tag) )
+		if (wcsncmp(refName, L"refs/tags/", 10) == 0 && !(m_pickRef_Kind & gPickRef_Tag))
 			continue; //Skip
-		if(wcsncmp(refName,L"refs/remotes",12)==0 && !(m_pickRef_Kind & gPickRef_Remote) )
+		if (wcsncmp(refName, L"refs/remotes/", 13) == 0 && !(m_pickRef_Kind & gPickRef_Remote))
 			continue; //Skip
 
 		refMap[refName] = refRest; //Use
@@ -440,7 +440,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		treeLeaf.m_csAuthor=		values.Tokenize(L"\04",valuePos); if(valuePos < 0) continue;
 		treeLeaf.m_csDate_Iso8601=	values.Tokenize(L"\04",valuePos);
 
-		if (wcsncmp(iterRefMap->first, L"refs/heads", 10) == 0)
+		if (wcsncmp(iterRefMap->first, L"refs/heads/", 11) == 0)
 			treeLeaf.m_csDescription = descriptions[treeLeaf.m_csRefName];
 	}
 
@@ -639,8 +639,8 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
-	if		(leafs[0]->IsFrom(L"refs/remotes"))	{bIsBranch = true; bIsRemoteBranch = true;}
-	else if	(leafs[0]->IsFrom(L"refs/heads"))	{bIsBranch = true;}
+	if		(leafs[0]->IsFrom(L"refs/remotes/"))	{bIsBranch = true; bIsRemoteBranch = true;}
+	else if	(leafs[0]->IsFrom(L"refs/heads/"))	{bIsBranch = true;}
 
 	if(bIsBranch)
 	{
@@ -681,7 +681,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 		}
 
 	}
-	else if(leafs[0]->IsFrom(L"refs/tags"))
+	else if(leafs[0]->IsFrom(L"refs/tags/"))
 	{
 		if(leafs.size() == 1)
 		{
@@ -710,8 +710,8 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 {
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
-	if		(wcsncmp(completeRefName, L"refs/remotes",12)==0)	{bIsBranch = true; bIsRemoteBranch = true;}
-	else if	(wcsncmp(completeRefName, L"refs/heads",10)==0)		{bIsBranch = true;}
+	if		(wcsncmp(completeRefName, L"refs/remotes/",13) == 0)	{bIsBranch = true; bIsRemoteBranch = true;}
+	else if	(wcsncmp(completeRefName, L"refs/heads/",11) == 0)		{bIsBranch = true;}
 
 	if(bIsBranch)
 	{
@@ -754,7 +754,7 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName, bool bForce)
 			sysProgressDlg.Stop();
 		BringWindowToTop();
 	}
-	else if(wcsncmp(completeRefName,L"refs/tags",9)==0)
+	else if (wcsncmp(completeRefName, L"refs/tags/", 10) == 0)
 	{
 		CString tagToDelete = completeRefName.Mid(10);
 		CString cmd;
@@ -843,13 +843,13 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 
 		CString fetchFromCmd;
 
-		if(selectedLeafs[0]->IsFrom(L"refs/heads"))
+		if(selectedLeafs[0]->IsFrom(L"refs/heads/"))
 		{
 			bShowReflogOption = true;
 			bShowRenameOption = true;
 			bShowEditBranchDescriptionOption = true;
 		}
-		else if(selectedLeafs[0]->IsFrom(L"refs/remotes"))
+		else if(selectedLeafs[0]->IsFrom(L"refs/remotes/"))
 		{
 			bShowReflogOption = true;
 			bShowFetchOption  = true;
@@ -861,7 +861,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			else
 				fetchFromCmd.Format(IDS_PROC_BROWSEREFS_FETCHFROM, remoteName);
 		}
-		else if(selectedLeafs[0]->IsFrom(L"refs/tags"))
+		else if(selectedLeafs[0]->IsFrom(L"refs/tags/"))
 		{
 		}
 
@@ -1340,7 +1340,7 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
 
-	if(!pTree->IsFrom(L"refs/heads"))
+	if(!pTree->IsFrom(L"refs/heads/"))
 	{
 		CMessageBox::Show(m_hWnd, IDS_PROC_BROWSEREFS_RENAMEONLYBRANCHES, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
@@ -1385,7 +1385,7 @@ void CBrowseRefsDlg::OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pRe
 
 	CShadowTree* pTree=(CShadowTree*)m_ListRefLeafs.GetItemData(pDispInfo->item.iItem);
 
-	if(!pTree->IsFrom(L"refs/heads"))
+	if(!pTree->IsFrom(L"refs/heads/"))
 	{
 		*pResult = TRUE; //Dont allow renaming any other things then branches at the moment.
 		return;
