@@ -153,7 +153,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
 	}
-	m_wndOutput.Init(0);
+	m_wndOutput.Init(-1, FALSE);
 	m_wndOutput.Call(SCI_SETREADONLY, TRUE);
 
 	m_tooltips.Create(this);
