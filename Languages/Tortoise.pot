@@ -2120,6 +2120,10 @@ msgstr ""
 msgid "Branch %s behind %s\r\n%s will fastforward to %s"
 msgstr ""
 
+#. Resource IDs: (93)
+msgid "Branch (FF)"
+msgstr ""
+
 #. Resource IDs: (68)
 msgid "Branch Name"
 msgstr ""

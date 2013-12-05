@@ -175,7 +175,9 @@ enum JumpType
 	JumpType_Parent1,
 	JumpType_Parent2,
 	JumpType_Tag,
-	JumpType_TagFF
+	JumpType_TagFF,
+	JumpType_Branch,
+	JumpType_BranchFF,
 };
 
 void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, int limit)
@@ -334,6 +336,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_PARENT2)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_TAG_FF)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
+	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH_FF)));
 	m_JumpType.SetCurSel(0);
 	m_JumpUp.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPUP), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
 	m_JumpDown.SetIcon((HICON)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_JUMPDOWN), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR));
@@ -1755,6 +1759,8 @@ void CLogDlg::OnBnClickedJumpUp()
 			hashValue = data->m_CommitHash;
 		else if (jumpType == JumpType_TagFF)
 			hashValue = data->m_CommitHash;
+		else if (jumpType == JumpType_BranchFF)
+			hashValue = data->m_CommitHash;
 
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
@@ -1801,6 +1807,21 @@ void CLogDlg::OnBnClickedJumpUp()
 			}
 
 			if (found && jumpType == JumpType_TagFF)
+				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
+		}
+		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
+		{
+			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
+			for (size_t j = 0; j < refList.size(); ++j)
+			{
+				if (refList[j].Left(11) == _T("refs/heads/") || refList[j].Left(13) == _T("refs/remotes/"))
+				{
+					found = true;
+					break;
+				}
+			}
+
+			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(hashValue, data->m_CommitHash);
 		}
 
@@ -1851,6 +1872,8 @@ void CLogDlg::OnBnClickedJumpDown()
 		}
 		else if (jumpType == JumpType_TagFF)
 			hashValue = data->m_CommitHash;
+		else if (jumpType == JumpType_BranchFF)
+			hashValue = data->m_CommitHash;
 
 		m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 	}
@@ -1891,6 +1914,21 @@ void CLogDlg::OnBnClickedJumpDown()
 			}
 
 			if (found && jumpType == JumpType_TagFF)
+				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
+		}
+		else if (jumpType == JumpType_Branch || jumpType == JumpType_BranchFF)
+		{
+			STRING_VECTOR refList = m_LogList.m_HashMap[data->m_CommitHash];
+			for (size_t j = 0; j < refList.size(); ++j)
+			{
+				if (refList[j].Left(11) == _T("refs/heads/") || refList[j].Left(13) == _T("refs/remotes/"))
+				{
+					found = true;
+					break;
+				}
+			}
+
+			if (found && jumpType == JumpType_BranchFF)
 				found = g_Git.IsFastForward(data->m_CommitHash, hashValue);
 		}
 
