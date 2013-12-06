@@ -249,6 +249,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		pView->UpdateInfo();
 		if (m_lLine > 0)
 			pView->GotoLine(m_lLine);
+
+		SetPathName(m_CurrentFileName, FALSE);
 	}
 
 	return TRUE;

@@ -2136,7 +2136,6 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
-		document->SetPathName(document->m_CurrentFileName, FALSE);
 	}
 	theApp.DoWaitCursor(-1);
 }
