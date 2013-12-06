@@ -169,6 +169,7 @@ protected:
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
 	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
 	void ContextMenuAction(int cmd, GitRev* pRev, GIT_REV_LIST& parentHash, const std::vector<CString>& parentFilename);
+	void ReloadDocument();
 
 	DECLARE_MESSAGE_MAP()
 

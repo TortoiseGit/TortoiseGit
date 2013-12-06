@@ -2076,14 +2076,9 @@ void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExisti
 	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
 }
 
-void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
+void CTortoiseGitBlameView::ReloadDocument()
 {
-	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
-
 	theApp.DoWaitCursor(1);
-
-	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace ? 1 : 0);
-
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
 	{
@@ -2092,6 +2087,15 @@ void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
 	}
 	theApp.DoWaitCursor(-1);
+}
+
+void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
+{
+	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
+
+	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace ? 1 : 0);
+
+	ReloadDocument();
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI)
@@ -2103,18 +2107,9 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 {
 	m_bShowCompleteLog = ! m_bShowCompleteLog;
 
-	theApp.DoWaitCursor(1);
-
 	theApp.WriteInt(_T("ShowCompleteLog"), m_bShowCompleteLog ? 1 : 0);
 
-	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
-	if (!document->m_CurrentFileName.IsEmpty())
-	{
-		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
-		theApp.m_pDocManager->OnFileNew();
-		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
-	}
-	theApp.DoWaitCursor(-1);
+	ReloadDocument();
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
@@ -2126,18 +2121,10 @@ void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 {
 	m_bFollowRenames = ! m_bFollowRenames;
-	theApp.DoWaitCursor(1);
 
 	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames ? 1 : 0);
 
-	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
-	if (!document->m_CurrentFileName.IsEmpty())
-	{
-		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
-		theApp.m_pDocManager->OnFileNew();
-		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
-	}
-	theApp.DoWaitCursor(-1);
+	ReloadDocument();
 }
 
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
