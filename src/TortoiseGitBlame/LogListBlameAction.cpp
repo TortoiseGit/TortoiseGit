@@ -60,6 +60,14 @@ void CGitBlameLogList::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
 	}
 }
 
+void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev, const CString &path = g_Git.m_CurrentDir)
+{
+	ASSERT(pRev);
+	CString  procCmd;
+	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", command, path, pRev->m_CommitHash.ToString());
+	CCommonAppUtils::RunTortoiseGitProc(procCmd);
+}
+
 void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*LastSelect*/, CMenu * /*menu*/)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
@@ -122,66 +130,22 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 			}
 			break;
 		case ID_EXPORT:
-			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\"");
-				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
-
-				procCmd += _T(" /command:export");
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("export"), pRev);
 			break;
 		case ID_CREATE_BRANCH:
-			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\"");
-				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
-
-				procCmd += _T(" /command:branch");
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("branch"), pRev);
 			break;
 		case ID_CREATE_TAG:
-			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\"");
-				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
-
-				procCmd += _T(" /command:tag");
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("tag"), pRev);
 			break;
 		case ID_SWITCHTOREV:
-			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\"");
-				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
-
-				procCmd += _T(" /command:switch");
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("switch"), pRev);
 			break;
 		case ID_LOG:
-			{
-				CString  procCmd = _T("/path:\"");
-				procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-				procCmd += _T("\"");
-				procCmd += _T(" /rev:")+pRev->m_CommitHash.ToString();
-
-				procCmd += _T(" /command:log");
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("log"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
 			break;
 		case ID_REPOBROWSE:
-			{
-				CString  procCmd;
-				procCmd.Format(_T("/command:repobrowser /path:\"%s\" /rev:%s"), g_Git.m_CurrentDir, pRev->m_CommitHash.ToString());
-				CCommonAppUtils::RunTortoiseGitProc(procCmd);
-			}
+			RunTortoiseGitProcWithCurrentRev(_T("repobrowser"), pRev, ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName());
 			break;
 		default:
 			//CMessageBox::Show(NULL,_T("Have not implemented"),_T("TortoiseGit"),MB_OK);
