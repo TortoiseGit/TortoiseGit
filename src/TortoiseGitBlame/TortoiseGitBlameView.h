@@ -225,15 +225,9 @@ public:
 
 	void SetSelectedLine(int line) { m_SelectedLine = line;};
 
-	LONG					m_mouserev;
 	int						m_MouseLine;
-	LONG					m_selectedrev;
-	LONG					m_selectedorigrev;
 	CGitHash				m_SelectedHash;
 	CGitHash				m_selecteddate;
-	static long				m_gotoline;
-	long					m_lowestrev;
-	long					m_highestrev;
 	bool					m_colorage;
 
 	CTortoiseGitBlameData	m_data;

@@ -140,16 +140,11 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
 	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
 	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
-	m_mouserev = -2;
 
-	m_selectedrev = -1;
-	m_selectedorigrev = -1;
 	m_SelectedLine = -1;
 	m_directPointer = 0;
 	m_directFunction = 0;
 
-	m_lowestrev = LONG_MAX;
-	m_highestrev = 0;
 	m_colorage = !!theApp.GetInt(_T("ColorAge"));
 
 	m_bShowLine=true;
@@ -1651,9 +1646,6 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
-	m_lowestrev=0;
-	m_highestrev = (long)(this->GetLogData()->size());
-
 	GetBlameWidth();
 	CRect rect;
 	this->GetClientRect(rect);
@@ -1691,7 +1683,7 @@ COLORREF CTortoiseGitBlameView::GetLineColor(int line)
 		int logIndex = m_lineToLogIndex[line];
 		if (logIndex >= 0)
 		{
-			int slider = (int)((GetLogData()->size() - logIndex - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
+			int slider = (int)((GetLogData()->size() - logIndex) * 100 / (GetLogData()->size() + 1));
 			return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), slider);
 		}
 	}
