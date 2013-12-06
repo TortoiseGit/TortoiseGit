@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Utils\DebugOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cache.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

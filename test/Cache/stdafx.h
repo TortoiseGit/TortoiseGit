@@ -5,29 +5,7 @@
 
 #pragma once
 
-#define _WIN32_IE 0x600
-
-#ifdef UNICODE
-#	ifndef WINVER
-#		define WINVER 0x0501
-#	endif
-#	ifndef _WIN32_WINNT
-#		define _WIN32_WINNT 0x0501
-#	endif						
-#	ifndef _WIN32_WINDOWS
-#		define _WIN32_WINDOWS 0x0501
-#	endif
-#else
-#	ifndef WINVER
-#		define WINVER 0x0410
-#	endif
-#	ifndef _WIN32_WINNT
-#		define _WIN32_WINNT 0x0500
-#	endif						
-#	ifndef _WIN32_WINDOWS
-#		define _WIN32_WINDOWS 0x0410
-#	endif
-#endif
+#include "../../targetver.h"
 
 #define _AFX_ALL_WARNINGS
 
@@ -43,7 +21,6 @@
 #include <afxtempl.h>
 #include <afxmt.h>
 
-
 #include <tchar.h>
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
@@ -53,18 +30,19 @@
 
 #define CSTRING_AVAILABLE
 
-
 using namespace ATL;
 
-#pragma warning(push)
-#pragma warning(disable: 4702)	// Unreachable code warnings in xtree
 #include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
 #include <deque>
 #include <functional>
+
+#pragma warning(push)
+#include "git2.h"
 #pragma warning(pop)
 
+#include "DebugOutput.h"
 
 typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;

@@ -44,7 +44,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -52,13 +52,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\src\Utils;..\..\src\Git;..\..\src\TortoiseProc;..\..\src\Utils\MiscUI;..\..\src\TGitCache;..\..\ext\libgit2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\Utils\DebugOutput.cpp" />
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="CacheDlg.cpp" />
     <ClCompile Include="..\..\src\TGitCache\CacheInterface.cpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Utils\DebugOutput.h" />
     <ClInclude Include="Cache.h" />
     <ClInclude Include="CacheDlg.h" />
     <ClInclude Include="..\..\src\Utils\DirFileEnum.h" />
@@ -96,6 +98,9 @@
     <None Include="res\Cache.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\libgit2.vcxproj">
+      <Project>{2b4f366c-93ba-491e-87af-5ef7b37f75f7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\gitdll\gitdll.vcxproj">
       <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
