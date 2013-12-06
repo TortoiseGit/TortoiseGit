@@ -230,6 +230,17 @@ void CSettingsTBlame::UpdateDependencies()
 		enableShowCompleteLog = TRUE;
 		if (m_bShowCompleteLog)
 			enableFollowRenames = TRUE;
+		else if (m_bFollowRenames)
+		{
+			m_bFollowRenames = FALSE;
+			UpdateData(FALSE);
+		}
+	}
+	else if (m_bShowCompleteLog || m_bFollowRenames)
+	{
+		m_bShowCompleteLog = FALSE;
+		m_bFollowRenames = FALSE;
+		UpdateData(FALSE);
 	}
 	GetDlgItem(IDC_SHOWCOMPLETELOG)->EnableWindow(enableShowCompleteLog);
 	GetDlgItem(IDC_FOLLOWRENAMES)->EnableWindow(enableFollowRenames);

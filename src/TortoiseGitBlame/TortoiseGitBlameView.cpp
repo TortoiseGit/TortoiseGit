@@ -2115,7 +2115,7 @@ void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
 void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
-	pCmdUI->SetCheck(m_bShowCompleteLog);
+	pCmdUI->SetCheck(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
 }
 
 void CTortoiseGitBlameView::OnViewToggleFollowRenames()
@@ -2130,7 +2130,7 @@ void CTortoiseGitBlameView::OnViewToggleFollowRenames()
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
-	pCmdUI->SetCheck(m_bFollowRenames);
+	pCmdUI->SetCheck(m_bFollowRenames && m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
 }
 
 void CTortoiseGitBlameView::OnViewToggleColorByAge()
