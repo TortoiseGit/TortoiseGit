@@ -2829,11 +2829,11 @@ UINT CGitLogListBase::LogThread()
 				m_arShownList.SafeAdd(pRev);
 			this->m_critSec.Unlock();
 
-			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
-				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
-
 			if (!visible)
 				continue;
+
+			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
+				lastSelectedHashNItem = (int)m_arShownList.GetCount() - 1;
 
 			t2=GetTickCount();
 
