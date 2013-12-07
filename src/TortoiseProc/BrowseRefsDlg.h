@@ -178,12 +178,14 @@ private:
 	afx_msg void OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnBeginlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedCurrentbranch();
 
 	CString	m_sLastSelected;
 	CString m_initialRef;
 	int		m_pickRef_Kind;
 	CString m_pickedRef;
 	bool	m_bPickOne;
+	bool	m_bPickCurrentBranch;
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefs = false);

@@ -196,10 +196,10 @@ public:
 
 	CString GetUserName(void);
 	CString GetUserEmail(void);
-	CString GetCurrentBranch(void);
+	CString GetCurrentBranch(bool fallback = false);
 	CString GetSymbolicRef(const wchar_t* symbolicRefName = L"HEAD", bool bStripRefsHeads = true);
 	// read current branch name from HEAD file, returns 0 on success, -1 on failure, 1 detached (branch name "HEAD" returned)
-	int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut);
+	int GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback = false);
 	BOOL CheckCleanWorkTree();
 	int Revert(CString commit, CTGitPathList &list, bool keep=true);
 	int Revert(CString commit, CTGitPath &path);

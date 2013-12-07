@@ -643,12 +643,13 @@ int CGit::UnsetConfigValue(CString key, CONFIG_TYPE type, int encoding)
 	return 0;
 }
 
-CString CGit::GetCurrentBranch(void)
+CString CGit::GetCurrentBranch(bool fallback)
 {
 	CString output;
 	//Run(_T("git.exe branch"),&branch);
 
-	if(this->GetCurrentBranchFromFile(this->m_CurrentDir,output))
+	int result = GetCurrentBranchFromFile(m_CurrentDir, output, fallback);
+	if (result != 0 && ((result == 1 && !fallback) || result != 1))
 	{
 		return _T("(no branch)");
 	}
@@ -718,7 +719,7 @@ CString CGit::StripRefName(CString refName)
 	return refName.Tokenize(_T("\n"),start);
 }
 
-int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut)
+int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranchOut, bool fallback)
 {
 	// read current branch name like git-gui does, by parsing the .git/HEAD file directly
 
@@ -757,6 +758,18 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 
 		if ( sBranchOut.IsEmpty() )
 			return -1;
+	}
+	else if (fallback)
+	{
+		CStringA utf8Hash(s);
+		CString unicodeHash = CUnicodeUtils::GetUnicode(utf8Hash);
+		unicodeHash.TrimRight(_T(" \r\n\t"));
+		if (CGitHash::IsValidSHA1(unicodeHash))
+			sBranchOut = unicodeHash;
+		else
+			//# Assume this is a detached head.
+			sBranchOut = _T("HEAD");
+		return 1;
 	}
 	else
 	{

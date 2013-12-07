@@ -159,7 +159,8 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_bHasWC(true),
 	m_SelectedFilters(LOGFILTER_ALL),
 	m_ColumnManager(&m_ListRefLeafs),
-	m_bPickOne(false)
+	m_bPickOne(false),
+	m_bPickCurrentBranch(false)
 {
 
 }
@@ -190,6 +191,7 @@ BEGIN_MESSAGE_MAP(CBrowseRefsDlg, CResizableStandAloneDialog)
 	ON_EN_CHANGE(IDC_BROWSEREFS_EDIT_FILTER, &CBrowseRefsDlg::OnEnChangeEditFilter)
 	ON_MESSAGE(WM_FILTEREDIT_INFOCLICKED, OnClickedInfoIcon)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_CURRENTBRANCH, OnBnClickedCurrentbranch)
 END_MESSAGE_MAP()
 
 
@@ -223,6 +225,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
+	m_bPickCurrentBranch = false;
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -1251,7 +1254,10 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 
 void CBrowseRefsDlg::OnDestroy()
 {
-	m_pickedRef = GetSelectedRef(true, false);
+	if (m_bPickCurrentBranch)
+		m_pickedRef = g_Git.GetCurrentBranch(true);
+	else
+		m_pickedRef = GetSelectedRef(true, false);
 
 	int maxcol = m_ColumnManager.GetColumnCount();
 	for (int col = 0; col < maxcol; ++col)
@@ -1477,4 +1483,10 @@ void CBrowseRefsDlg::SetFilterCueText()
 	// to make the cue banner text appear more to the right of the edit control
 	temp = _T("   ") + temp;
 	m_ctrlFilter.SetCueBanner(temp.TrimRight());
+}
+
+void CBrowseRefsDlg::OnBnClickedCurrentbranch()
+{
+	m_bPickCurrentBranch = true;
+	OnOK();
 }

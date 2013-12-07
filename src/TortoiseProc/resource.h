@@ -1408,6 +1408,7 @@
 #define IDC_CHECK_INHERIT_ICONPATH      1782
 #define IDC_CHECK_INHERIT_BTMSG         1782
 #define IDC_CHECK_INHERIT_BTLABEL       1783
+#define IDC_CURRENTBRANCH               1784
 #define IDS_LOG_FILTER_BY               1850
 #define IDS_LOG_FILTER_PATHS            1851
 #define IDS_LOG_FILTER_AUTHORS          1852
@@ -1845,7 +1846,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        350
 #define _APS_NEXT_COMMAND_VALUE         32861
-#define _APS_NEXT_CONTROL_VALUE         1782
+#define _APS_NEXT_CONTROL_VALUE         1785
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif
