@@ -39,7 +39,9 @@ protected: // create from serialization only
 public:
 	BYTE_VECTOR m_BlameData;
 	CString m_CurrentFileName;
+#ifdef USE_TEMPFILENAME
 	CString m_TempFileName;
+#endif
 	CString m_Rev;
 	long	m_lLine;
 

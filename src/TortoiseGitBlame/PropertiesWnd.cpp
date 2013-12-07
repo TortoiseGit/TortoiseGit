@@ -226,68 +226,63 @@ void CPropertiesWnd::SetPropListFont()
 
 	m_wndPropList.SetFont(&m_fntPropList);
 }
+
 void CPropertiesWnd::RemoveParent()
 {
-	m_ParentGroup->Expand(false);
-	for (int i = 0; i < m_ParentGroup->GetSubItemsCount(); ++i)
+	m_ParentGroup->Expand(FALSE);
+	while (m_ParentGroup->GetSubItemsCount())
 	{
 		CMFCPropertyGridProperty * p=m_ParentGroup->GetSubItem(0);
 		m_ParentGroup->RemoveSubItem(p);
 	}
-
 }
-void CPropertiesWnd::UpdateProperties(GitRev *rev)
-{
-	if(rev)
-	{
-		CString hash = rev->m_CommitHash.ToString();
-		m_CommitHash->SetValue(hash);
-		m_AuthorName->SetValue(rev->GetAuthorName());
-		CString authorDate = rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
-		m_AuthorDate->SetValue(authorDate);
-		m_AuthorEmail->SetValue(rev->GetAuthorEmail());
 
-		m_CommitterName->SetValue(rev->GetAuthorName());
-		m_CommitterEmail->SetValue(rev->GetCommitterEmail());
-		CString committerDate = rev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M"));
+void CPropertiesWnd::UpdateProperties(GitRev *pRev)
+{
+	if (pRev)
+	{
+		CString hash = pRev->m_CommitHash.ToString();
+		m_CommitHash->SetValue(hash);
+		m_AuthorName->SetValue(pRev->GetAuthorName());
+		CString authorDate = pRev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
+		m_AuthorDate->SetValue(authorDate);
+		m_AuthorEmail->SetValue(pRev->GetAuthorEmail());
+
+		m_CommitterName->SetValue(pRev->GetAuthorName());
+		m_CommitterEmail->SetValue(pRev->GetCommitterEmail());
+		CString committerDate = pRev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M"));
 		m_CommitterDate->SetValue(committerDate);
 
-		m_Subject->SetValue(rev->GetSubject());
-		m_Body->SetValue(rev->GetBody().Trim());
+		m_Subject->SetValue(pRev->GetSubject());
+		m_Body->SetValue(pRev->GetBody().Trim());
 
 		RemoveParent();
 
-		m_ParentGroup;
+		CLogDataVector *pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
-		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
-
-		for (unsigned int i = 0; i < rev->m_ParentHash.size(); ++i)
+		for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 		{
 			CString str;
 			CString parentsubject;
 
 			GitRev *p =NULL;
 
-			if( pLogEntry->m_pLogCache->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
+			if( pLogEntry->m_pLogCache->m_HashMap.find(pRev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
 			{
 				p=NULL;
 			}
 			else
 			{
-				p= &pLogEntry->m_pLogCache->m_HashMap[rev->m_ParentHash[i]] ;
+				p= &pLogEntry->m_pLogCache->m_HashMap[pRev->m_ParentHash[i]] ;
 			}
 			if(p)
 				parentsubject=p->GetSubject();
 
-			str.Format(_T("%u - %s\n%s"), i, rev->m_ParentHash[i].ToString(), parentsubject);
+			str.Format(_T("%u - %s\n%s"), i, pRev->m_ParentHash[i].ToString(), parentsubject);
 
-			CMFCPropertyGridProperty*pProtery=new CMFCPropertyGridProperty(
-											rev->m_ParentHash[i].ToString().Left(8),
-												parentsubject,
-												str
-											);
-			pProtery->AllowEdit(FALSE);
-			m_ParentGroup->AddSubItem(pProtery);
+			CMFCPropertyGridProperty *pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString().Left(8), parentsubject, str);
+			pProperty->AllowEdit(FALSE);
+			m_ParentGroup->AddSubItem(pProperty);
 		}
 		m_ParentGroup->Expand();
 		for (int i = 0; i < m_BaseInfoGroup->GetSubItemsCount(); ++i)
@@ -319,11 +314,11 @@ void CPropertiesWnd::UpdateProperties(GitRev *rev)
 
 void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
-	CMFCPropertyGridProperty * pProtery = m_wndPropList.GetCurSel();
+	CMFCPropertyGridProperty * pProperty = m_wndPropList.GetCurSel();
 
 	CString sMenuItemText;
 	CIconMenu popup;
-	if (pProtery && !pProtery->IsGroup() && popup.CreatePopupMenu())
+	if (pProperty && !pProperty->IsGroup() && popup.CreatePopupMenu())
 	{
 		sMenuItemText.LoadString(IDS_SCIEDIT_COPY);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, WM_COPY, sMenuItemText);
@@ -334,7 +329,7 @@ void CPropertiesWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		case 0:
 			break;	// no command selected
 		case WM_COPY:
-			CStringUtils::WriteAsciiStringToClipboard(pProtery->GetValue(), GetSafeHwnd());
+			CStringUtils::WriteAsciiStringToClipboard(pProperty->GetValue(), GetSafeHwnd());
 			break;
 		}
 	}

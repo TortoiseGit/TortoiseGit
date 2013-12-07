@@ -173,6 +173,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			return FALSE;
 		}
 
+#ifdef USE_TEMPFILENAME
 		if(!m_TempFileName.IsEmpty())
 		{
 			::DeleteFile(m_TempFileName);
@@ -190,7 +191,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			MessageBox(NULL, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + _T("\n\n") + str, _T("TortoiseGitBlame"), MB_OK);
 			return FALSE;
 		}
-
+#endif
 		m_GitPath = path;
 		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
 			return FALSE;

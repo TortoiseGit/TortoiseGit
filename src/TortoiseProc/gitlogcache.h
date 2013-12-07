@@ -171,7 +171,7 @@ public:
 
 	CGitHashMap m_HashMap;
 
-	GitRev * GetCacheData(CGitHash &Rev);
+	GitRev * GetCacheData(CGitHash &hash);
 	int AddCacheEntry(GitRev &Rev);
 	int SaveCache();
 

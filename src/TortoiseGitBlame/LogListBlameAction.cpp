@@ -60,9 +60,6 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 
 	switch (cmd)
 	{
-		case ID_GNUDIFF1:
-			procCmd += _T("diff /udiff");
-		break;
 		case ID_COMPAREWITHPREVIOUS:
 			if (indexNext + 1 < m_logEntries.size()) // cannot diff previous revision in first revision
 			{
