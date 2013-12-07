@@ -236,51 +236,51 @@ void CPropertiesWnd::RemoveParent()
 	}
 
 }
-void CPropertiesWnd::UpdateProperties(GitRev *rev)
+void CPropertiesWnd::UpdateProperties(GitRev *pRev)
 {
-	if(rev)
+	if (pRev)
 	{
-		CString hash = rev->m_CommitHash.ToString();
+		CString hash = pRev->m_CommitHash.ToString();
 		m_CommitHash->SetValue(hash);
-		m_AuthorName->SetValue(rev->GetAuthorName());
-		CString authorDate = rev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
+		m_AuthorName->SetValue(pRev->GetAuthorName());
+		CString authorDate = pRev->GetAuthorDate().Format(_T("%Y-%m-%d %H:%M"));
 		m_AuthorDate->SetValue(authorDate);
-		m_AuthorEmail->SetValue(rev->GetAuthorEmail());
+		m_AuthorEmail->SetValue(pRev->GetAuthorEmail());
 
-		m_CommitterName->SetValue(rev->GetAuthorName());
-		m_CommitterEmail->SetValue(rev->GetCommitterEmail());
-		CString committerDate = rev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M"));
+		m_CommitterName->SetValue(pRev->GetAuthorName());
+		m_CommitterEmail->SetValue(pRev->GetCommitterEmail());
+		CString committerDate = pRev->GetCommitterDate().Format(_T("%Y-%m-%d %H:%M"));
 		m_CommitterDate->SetValue(committerDate);
 
-		m_Subject->SetValue(rev->GetSubject());
-		m_Body->SetValue(rev->GetBody().Trim());
+		m_Subject->SetValue(pRev->GetSubject());
+		m_Body->SetValue(pRev->GetBody().Trim());
 
 		RemoveParent();
 
 		CLogDataVector		*pLogEntry = &((CMainFrame*)AfxGetApp()->GetMainWnd())->m_wndOutput.m_LogList.m_logEntries;
 
-		for (size_t i = 0; i < rev->m_ParentHash.size(); ++i)
+		for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
 		{
 			CString str;
 			CString parentsubject;
 
 			GitRev *p =NULL;
 
-			if( pLogEntry->m_pLogCache->m_HashMap.find(rev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
+			if( pLogEntry->m_pLogCache->m_HashMap.find(pRev->m_ParentHash[i]) == pLogEntry->m_pLogCache->m_HashMap.end())
 			{
 				p=NULL;
 			}
 			else
 			{
-				p= &pLogEntry->m_pLogCache->m_HashMap[rev->m_ParentHash[i]] ;
+				p= &pLogEntry->m_pLogCache->m_HashMap[pRev->m_ParentHash[i]] ;
 			}
 			if(p)
 				parentsubject=p->GetSubject();
 
-			str.Format(_T("%u - %s\n%s"), i, rev->m_ParentHash[i].ToString(), parentsubject);
+			str.Format(_T("%u - %s\n%s"), i, pRev->m_ParentHash[i].ToString(), parentsubject);
 
 			CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(
-											rev->m_ParentHash[i].ToString().Left(8),
+											pRev->m_ParentHash[i].ToString().Left(8),
 												parentsubject,
 												str
 											);
