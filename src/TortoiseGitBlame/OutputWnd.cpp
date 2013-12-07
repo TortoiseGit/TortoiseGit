@@ -124,7 +124,7 @@ int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 	path.SetFromGit(filename);
 
 	m_LogList.Clear();
-	m_LogList.ShowGraphColumn(follow);
+	m_LogList.ShowGraphColumn(!follow);
 	if (m_LogList.FillGitLog(&path, &revision, follow ? CGit::LOG_INFO_FOLLOW : 0))
 		return -1;
 	m_LogList.UpdateProjectProperties();

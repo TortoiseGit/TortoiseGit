@@ -1725,20 +1725,30 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		if (GetSelectedCount() == 1)
 		{
-
 			{
+				bool requiresSeparator = false;
 				if( !pSelLogEntry->m_CommitHash.IsEmpty())
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMPARE) && m_hasWC) // compare revision with WC
+					{
 						popup.AppendMenuIcon(ID_COMPARE, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
+						requiresSeparator = true;
+					}
 				}
 				else
 				{
 					if(m_ContextMenuMask&GetContextMenuBit(ID_COMMIT))
+					{
 						popup.AppendMenuIcon(ID_COMMIT, IDS_LOG_POPUP_COMMIT, IDI_COMMIT);
+						requiresSeparator = true;
+					}
 					if (isMergeActive && (m_ContextMenuMask & GetContextMenuBit(ID_MERGE_ABORT)))
+					{
 						popup.AppendMenuIcon(ID_MERGE_ABORT, IDS_MENUMERGEABORT, IDI_MERGEABORT);
+						requiresSeparator = true;
+					}
 				}
+
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1) && m_hasWC) // compare with WC, unified
 				{
 					GitRev *pRev=pSelLogEntry;
@@ -1753,12 +1763,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 						}
 					}
-					if(pRev->m_ParentHash.size()<=1)
+					if (pRev->m_ParentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
-
+						requiresSeparator = true;
 					}
-					else
+					else if (pRev->m_ParentHash.size() > 1)
 					{
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
@@ -1772,6 +1782,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							str.Format(IDS_PARENT, i + 1);
 							gnudiffmenu.AppendMenuIcon(ID_GNUDIFF1+((i+1)<<16),str);
 						}
+						requiresSeparator = true;
 					}
 				}
 
@@ -1795,6 +1806,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 						if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 							popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+						requiresSeparator = true;
 					}
 					else
 					{
@@ -1811,14 +1823,20 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 								diffmenu.SetDefaultItem((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)), FALSE);
 							}
 						}
+						requiresSeparator = true;
 					}
 				}
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_BLAME))
+				{
 					popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
+					requiresSeparator = true;
+				}
 
 				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
-				popup.AppendMenu(MF_SEPARATOR, NULL);
+
+				if (requiresSeparator)
+					popup.AppendMenu(MF_SEPARATOR, NULL);
 
 				if (pSelLogEntry->m_CommitHash.IsEmpty() && !isMergeActive)
 				{
@@ -1966,7 +1984,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
 					}
-					else
+					else if (pRev->m_ParentHash.size() > 1)
 					{
 						revertmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
@@ -3286,9 +3304,9 @@ void CGitLogListBase::ShowGraphColumn(bool bShow)
 {
 	// HACK to hide graph column
 	if (bShow)
-		SetColumnWidth(0, 0);
-	else
 		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
+	else
+		SetColumnWidth(0, 0);
 }
 
 void CGitLogListBase::RecalculateShownList(CThreadSafePtrArray * pShownlist)

@@ -169,7 +169,9 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_sDate.LoadString(IDS_LOG_DATE);
 	m_sMessage.LoadString(IDS_LOG_MESSAGE);
 
+#ifdef USE_TEMPFILENAME
 	m_Buffer = NULL;
+#endif
 }
 
 CTortoiseGitBlameView::~CTortoiseGitBlameView()
@@ -179,11 +181,13 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 	if (m_italicfont)
 		DeleteObject(m_italicfont);
 
+#ifdef USE_TEMPFILENAME
 	if(m_Buffer)
 	{
 		delete m_Buffer;
 		m_Buffer=NULL;
 	}
+#endif
 }
 struct EncodingUnit
 {
@@ -1643,7 +1647,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		((CMainFrame *)::AfxGetApp()->GetMainWnd())->m_wndStatusBar.SetPaneText(nIndex, sBarText);
 	}
 
-#if 0
+#ifdef USE_TEMPFILENAME
 	if(m_Buffer)
 	{
 		delete m_Buffer;
