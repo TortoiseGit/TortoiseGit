@@ -1753,12 +1753,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
 						}
 					}
-					if(pRev->m_ParentHash.size()<=1)
+					if (pRev->m_ParentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 
 					}
-					else
+					else if (pRev->m_ParentHash.size() > 1)
 					{
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
@@ -1966,7 +1966,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
 					}
-					else
+					else if (pRev->m_ParentHash.size() > 1)
 					{
 						revertmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
