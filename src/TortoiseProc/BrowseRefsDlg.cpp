@@ -1282,6 +1282,8 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 {
 	*pResult = 0;
 
+	if (!m_ListRefLeafs.GetFirstSelectedItemPosition())
+		return;
 	EndDialog(IDOK);
 }
 
