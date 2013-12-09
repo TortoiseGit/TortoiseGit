@@ -67,6 +67,7 @@ public:
 	virtual ~COutputWnd();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
 	int	LoadHistory(CString filename, CString revision, bool follow);
+	int	LoadHistory(std::set<CGitHash>& hashes);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

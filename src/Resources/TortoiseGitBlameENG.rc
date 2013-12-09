@@ -80,6 +80,8 @@ IDI_OUTPUT_WND          ICON                    "..\\Resources\\blameres\\output
 IDI_OUTPUT_WND_HC       ICON                    "..\\Resources\\blameres\\output_wnd_hc.ico"
 IDI_PROPERTIES_WND      ICON                    "..\\Resources\\blameres\\properties_wnd.ico"
 IDI_PROPERTIES_WND_HC   ICON                    "..\\Resources\\blameres\\properties_wnd_hc.ico"
+IDI_BLAME_POPUP_BLAME   ICON                    "..\\Resources\\menublame.ico"
+IDI_BLAME_POPUP_COMPARE ICON                    "..\\Resources\\menucompare.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -277,6 +279,20 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Show author",                 ID_VIEW_SHOWAUTHOR
         MENUITEM "Show date",                   ID_VIEW_SHOWDATE
+        MENUITEM "Show file name",              ID_VIEW_SHOWFILENAME
+        MENUITEM "Show original line number",   ID_VIEW_SHOWORIGINALLINENUMBER
+        MENUITEM SEPARATOR
+        POPUP "&Detect moved or copied lines"
+        BEGIN
+            MENUITEM "&Disabled",                   ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED
+            MENUITEM "&Within file",                ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE
+            MENUITEM "From &modified files",        ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES
+            MENUITEM "At file &creation",           ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION
+            MENUITEM "From &existing files",        ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES
+        END
+        MENUITEM "&Ignore whitespace",          ID_VIEW_IGNORE_WHITESPACE
+        MENUITEM SEPARATOR
+        MENUITEM "Show com&plete log",          ID_VIEW_SHOWCOMPLETELOG
         MENUITEM "&Follow renames",             ID_VIEW_FOLLOWRENAMES
         MENUITEM SEPARATOR
         MENUITEM "Color by age, &continuous",   ID_VIEW_COLORBYAGE
@@ -297,19 +313,6 @@ BEGIN
         MENUITEM "&Clear",                      ID_EDIT_CLEAR
         MENUITEM SEPARATOR
         MENUITEM "&Hide",                       ID_VIEW_OUTPUTWND
-    END
-END
-
-IDR_BLAME_POPUP MENU
-BEGIN
-    POPUP "BlAMEPOPUP"
-    BEGIN
-        MENUITEM "Blame previous revision",     ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION
-        MENUITEM "Diff previous revision",      ID_BLAMEPOPUP_DIFFPREVIOUS
-        MENUITEM "Show Log",                    ID_BLAMEPOPUP_SHOWLOG
-        MENUITEM SEPARATOR
-        MENUITEM "Copy SHA-1 to clipboard",     ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD
-        MENUITEM "Copy log to clipboard",       ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD
     END
 END
 
@@ -548,6 +551,38 @@ END
 STRINGTABLE
 BEGIN
     ID_INDICATOR_ENCODING   " "
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_IGNORE_WHITESPACE 
+                            "Ignore whitespace when comparing the parents version and the child's "
+    ID_VIEW_SHOWCOMPLETELOG "Git revision list contains the complete file history"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE 
+                            "Detect moved or copied lines within a file"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES 
+                            "Detect moved and copied lines from files modified in the same commit"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION 
+                            "Detect moved and copied lines from existing files at the commit where the destination file has been created"
+    ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES 
+                            "Detect moved and copied lines from existing files at any commit"
+    IDS_BLAME_POPUP_BLAME   "Blame previous revision"
+    IDS_BLAME_POPUP_COMPARE "Compare with previous revision"
+    IDS_BLAME_POPUP_LOG     "Show log"
+    IDS_BLAME_POPUP_PARENT  "Parent %d"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_FOLLOWRENAMES   "Git revision list follows file renames"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD "Copy SHA-1 to clipboard"
+    IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD "Copy log to clipboard"
+    ID_VIEW_SHOWFILENAME    "Show file name"
+    ID_VIEW_SHOWORIGINALLINENUMBER "Show original line number"
 END
 
 #endif    // English (U.S.) resources

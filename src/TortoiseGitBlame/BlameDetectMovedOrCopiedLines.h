@@ -1,7 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011,2013 - TortoiseGit
-// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2013 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,19 +16,15 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
 #pragma once
-#include "GitLoglistBase.h"
-class CGitBlameLogList : public CGitLogListBase
-{
-	DECLARE_DYNAMIC(CGitBlameLogList)
-public:
-	void hideUnimplementedCommands();
-	void GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash);
-	void ContextMenuAction(int cmd,int FirstSelect, int LastSelect,CMenu * menu);
 
-private:
-	void GetPaths(const CGitHash& hash, std::vector<CTGitPath>& paths);
-	void GetParentNumbers(GitRev *pRev, const std::vector<CTGitPath>& paths, std::set<int> &parentNos);
-	void GetParentHash(GitRev *pRev, int index, CGitHash &parentHash, std::vector<CString>& parentFilenames);
-};
+#define BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED 0
+#define BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE 1
+#define BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES 2
+#define BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION 3
+#define BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES 4
+
+inline bool BlameIsLimitedToOneFilename(DWORD dwDetectMovedOrCopiedLines)
+{
+	return (dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED || dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+}

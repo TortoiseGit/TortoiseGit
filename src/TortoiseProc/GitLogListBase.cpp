@@ -133,6 +133,7 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_REBASE_SKIP);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_LOG);
 	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAME);
+	m_ContextMenuMask &= ~GetContextMenuBit(ID_BLAMEPREVIOUS);
 
 	m_ColumnRegKey=_T("log");
 
@@ -1606,6 +1607,22 @@ bool CGitLogListBase::IsStash(const GitRev * pSelLogEntry)
 	return false;
 }
 
+void CGitLogListBase::GetParentHashes(GitRev *pRev, GIT_REV_LIST &parentHash)
+{
+	if (pRev->m_ParentHash.empty())
+	{
+		try
+		{
+			pRev->GetParentFromHash(pRev->m_CommitHash);
+		}
+		catch (const char* msg)
+		{
+			MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
+	}
+	parentHash = pRev->m_ParentHash;
+}
+
 void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 
@@ -1698,7 +1715,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	//entry is selected, now show the popup menu
 	CIconMenu popup;
-	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, revertmenu;
+	CIconMenu subbranchmenu, submenu, gnudiffmenu, diffmenu, blamemenu, revertmenu;
 
 	if (popup.CreatePopupMenu())
 	{
@@ -1706,6 +1723,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		CString currentBranch = _T("refs/heads/") + g_Git.GetCurrentBranch();
 		bool isMergeActive = CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 		bool isStash = IsOnStash(indexNext);
+		GIT_REV_LIST parentHash;
+		GetParentHashes(pSelLogEntry, parentHash);
 
 		if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_PICK))
 			popup.AppendMenuIcon(ID_REBASE_PICK, IDS_REBASE_PICK, IDI_PICK);
@@ -1749,26 +1768,35 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					}
 				}
 
+				if (m_ContextMenuMask & GetContextMenuBit(ID_BLAMEPREVIOUS))
+				{
+					if (parentHash.size() == 1)
+					{
+						popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_LOG_POPUP_BLAMEPREVIOUS, IDI_BLAME);
+						requiresSeparator = true;
+					}
+					else if (parentHash.size() > 1)
+					{
+						blamemenu.CreatePopupMenu();
+						popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_LOG_POPUP_BLAMEPREVIOUS, IDI_BLAME, blamemenu.m_hMenu);
+						for (size_t i = 0; i < parentHash.size(); ++i)
+						{
+							CString str;
+							str.Format(IDS_PARENT, i + 1);
+							blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS +((i + 1) << 16), str);
+						}
+						requiresSeparator = true;
+					}
+				}
+
 				if(m_ContextMenuMask&GetContextMenuBit(ID_GNUDIFF1) && m_hasWC) // compare with WC, unified
 				{
-					GitRev *pRev=pSelLogEntry;
-					if (pSelLogEntry->m_ParentHash.empty())
-					{
-						try
-						{
-							pRev->GetParentFromHash(pRev->m_CommitHash);
-						}
-						catch (const char* msg)
-						{
-							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-						}
-					}
-					if (pRev->m_ParentHash.size() == 1)
+					if (parentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_GNUDIFF1, IDS_LOG_POPUP_GNUDIFF_CH, IDI_DIFF);
 						requiresSeparator = true;
 					}
-					else if (pRev->m_ParentHash.size() > 1)
+					else if (parentHash.size() > 1)
 					{
 						gnudiffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_GNUDIFF1,IDS_LOG_POPUP_GNUDIFF_PARENT, IDI_DIFF, gnudiffmenu.m_hMenu);
@@ -1776,7 +1804,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFF << 16)), CString(MAKEINTRESOURCE(IDS_ALLPARENTS)));
 						gnudiffmenu.AppendMenuIcon((UINT_PTR)(ID_GNUDIFF1 + (0xFFFE << 16)), CString(MAKEINTRESOURCE(IDS_ONLYMERGEDFILES)));
 
-						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
+						for (size_t i = 0; i < parentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -1788,31 +1816,18 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				if(m_ContextMenuMask&GetContextMenuBit(ID_COMPAREWITHPREVIOUS))
 				{
-
-					GitRev *pRev=pSelLogEntry;
-					if (pSelLogEntry->m_ParentHash.empty())
-					{
-						try
-						{
-							pRev->GetParentFromHash(pRev->m_CommitHash);
-						}
-						catch (const char* msg)
-						{
-							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-						}
-					}
-					if(pRev->m_ParentHash.size()<=1)
+					if (parentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF);
 						if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
 							popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
 						requiresSeparator = true;
 					}
-					else
+					else if (parentHash.size() > 1)
 					{
 						diffmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_LOG_POPUP_COMPAREWITHPREVIOUS, IDI_DIFF, diffmenu.m_hMenu);
-						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
+						for (size_t i = 0; i < parentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -1832,8 +1847,6 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					popup.AppendMenuIcon(ID_BLAME, IDS_LOG_POPUP_BLAME, IDI_BLAME);
 					requiresSeparator = true;
 				}
-
-				//popup.AppendMenuIcon(ID_BLAMEWITHPREVIOUS, IDS_LOG_POPUP_BLAMEWITHPREVIOUS, IDI_BLAME);
 
 				if (requiresSeparator)
 					popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -1968,28 +1981,16 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REVERTREV) && m_hasWC && !isMergeActive && !isStash)
 				{
-					GitRev *pRev = pSelLogEntry;
-					if (pSelLogEntry->m_ParentHash.empty())
-					{
-						try
-						{
-							pRev->GetParentFromHash(pRev->m_CommitHash);
-						}
-						catch (const char* msg)
-						{
-							MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-						}
-					}
-					if (pRev->m_ParentHash.size() == 1)
+					if (parentHash.size() == 1)
 					{
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT);
 					}
-					else if (pRev->m_ParentHash.size() > 1)
+					else if (parentHash.size() > 1)
 					{
 						revertmenu.CreatePopupMenu();
 						popup.AppendMenuIcon(ID_REVERTREV, IDS_LOG_POPUP_REVERTREV, IDI_REVERT, revertmenu.m_hMenu);
 
-						for (size_t i = 0; i < pRev->m_ParentHash.size(); ++i)
+						for (size_t i = 0; i < parentHash.size(); ++i)
 						{
 							CString str;
 							str.Format(IDS_PARENT, i + 1);
@@ -2461,6 +2462,37 @@ int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
 		m_Path=*path;
 	return 0;
 
+}
+
+int CGitLogListBase::FillGitLog(std::set<CGitHash>& hashes)
+{
+	ClearText();
+
+	m_arShownList.SafeRemoveAll();
+
+	m_logEntries.ClearAll();
+	if (m_logEntries.Fill(hashes))
+		return -1;
+
+	SetItemCountEx((int)m_logEntries.size());
+
+	for (unsigned int i = 0; i < m_logEntries.size(); ++i)
+	{
+		if (m_IsOldFirst)
+		{
+			m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1).m_IsFull = TRUE;
+			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(m_logEntries.size() - i - 1));
+		}
+		else
+		{
+			m_logEntries.GetGitRevAt(i).m_IsFull = TRUE;
+			m_arShownList.SafeAdd(&m_logEntries.GetGitRevAt(i));
+		}
+	}
+
+	ReloadHashMap();
+
+	return 0;
 }
 
 int CGitLogListBase::BeginFetchLog()

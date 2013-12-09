@@ -50,7 +50,7 @@ BEGIN
     IDS_LOG_POPUP_VIEWREV   "View revision in alternative editor"
     IDS_LOG_POPUP_VIEWPATHREV "View revision for path in &webviewer"
     IDS_LOG_POPUP_COMPAREWITHPREVIOUS "Compare with previous revision"
-    IDS_LOG_POPUP_BLAMEWITHPREVIOUS "Compare and blame with previous revision"
+    IDS_LOG_POPUP_BLAMEPREVIOUS "Blame previous revision"
     IDS_LOG_POPUP_BLAME     "Blame"
     IDS_LOG_POPUP_GNUDIFF_CH "Show changes as &unified diff"
     IDS_LOG_POPUP_GNUDIFF_PARENT "&Unified diff with"

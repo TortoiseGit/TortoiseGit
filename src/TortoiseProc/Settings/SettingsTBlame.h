@@ -46,6 +46,8 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedRestore();
 
+	void UpdateDependencies();
+
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -62,6 +64,13 @@ private:
 	CString				m_sFontName;
 	DWORD				m_dwTabSize;
 	CRegDWORD			m_regTabSize;
+	CComboBox			m_cDetectMovedOrCopiedLines;
+	DWORD				m_dwDetectMovedOrCopiedLines;
+	CRegDWORD			m_regDetectMovedOrCopiedLines;
+	BOOL				m_bIgnoreWhitespace;
+	CRegDWORD			m_regIgnoreWhitespace;
+	BOOL				m_bShowCompleteLog;
+	CRegDWORD			m_regShowCompleteLog;
 	BOOL				m_bFollowRenames;
 	CRegDWORD			m_regFollowRenames;
 };

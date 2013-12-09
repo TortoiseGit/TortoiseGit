@@ -131,6 +131,16 @@ int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
 	return 0;
 
 }
+int COutputWnd::LoadHistory(std::set<CGitHash>& hashes)
+{
+	m_LogList.Clear();
+	m_LogList.ShowGraphColumn(false);
+	if (m_LogList.FillGitLog(hashes))
+		return -1;
+	m_LogList.UpdateProjectProperties();
+	return 0;
+
+}
 void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);

@@ -176,5 +176,5 @@ public:
 	int SaveCache();
 
 	int ClearAllParent();
-
+	void ClearAllLanes();
 };

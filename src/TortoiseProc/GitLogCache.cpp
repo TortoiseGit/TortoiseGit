@@ -547,3 +547,11 @@ int CLogCache::ClearAllParent()
 	}
 	return 0;
 }
+
+void CLogCache::ClearAllLanes()
+{
+	for (auto i = m_HashMap.begin(); i != m_HashMap.end(); ++i)
+	{
+		(*i).second.m_Lanes.clear();
+	}
+}

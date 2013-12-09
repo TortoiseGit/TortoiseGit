@@ -311,7 +311,6 @@ void CTortoiseGitBlameApp::OnFileSettings()
 
 void CTortoiseGitBlameApp::PreLoadState()
 {
-	GetContextMenuManager()->AddMenu(IDR_BLAME_POPUP, IDR_BLAME_POPUP);
 }
 
 void CTortoiseGitBlameApp::LoadCustomState()

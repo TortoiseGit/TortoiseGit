@@ -38,15 +38,13 @@
 #include "SysInfo.h"
 #include "StringUtils.h"
 #include "BlameIndexColors.h"
+#include "BlameDetectMovedOrCopiedLines.h"
+#include "TGitPath.h"
+#include "IconMenu.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-wchar_t WideCharSwap2(wchar_t nValue)
-{
-	return (((nValue>> 8)) | (nValue << 8));
-}
 
 UINT CTortoiseGitBlameView::m_FindDialogMessage;
 
@@ -70,17 +68,28 @@ BEGIN_MESSAGE_MAP(CTortoiseGitBlameView, CView)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWAUTHOR, OnUpdateViewToggleAuthor)
 	ON_COMMAND(ID_VIEW_SHOWDATE, OnViewToggleDate)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWDATE, OnUpdateViewToggleDate)
+	ON_COMMAND(ID_VIEW_SHOWFILENAME, OnViewToggleShowFilename)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWFILENAME, OnUpdateViewToggleShowFilename)
+	ON_COMMAND(ID_VIEW_SHOWORIGINALLINENUMBER, OnViewToggleShowOriginalLineNumber)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWORIGINALLINENUMBER, OnUpdateViewToggleShowOriginalLineNumber)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnViewDetectMovedOrCopiedLinesToggleDisabled)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED, OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE, OnViewDetectMovedOrCopiedLinesToggleWithinFile)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE, OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES, OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES, OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION, OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION, OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation)
+	ON_COMMAND(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES, OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES, OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles)
+	ON_COMMAND(ID_VIEW_IGNORE_WHITESPACE, OnViewToggleIgnoreWhitespace)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORE_WHITESPACE, OnUpdateViewToggleIgnoreWhitespace)
+	ON_COMMAND(ID_VIEW_SHOWCOMPLETELOG, OnViewToggleShowCompleteLog)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOWCOMPLETELOG, OnUpdateViewToggleShowCompleteLog)
 	ON_COMMAND(ID_VIEW_FOLLOWRENAMES, OnViewToggleFollowRenames)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_FOLLOWRENAMES, OnUpdateViewToggleFollowRenames)
 	ON_COMMAND(ID_VIEW_COLORBYAGE, OnViewToggleColorByAge)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_COLORBYAGE, OnUpdateViewToggleColorByAge)
-	ON_COMMAND(ID_BLAMEPOPUP_COPYHASHTOCLIPBOARD, CopyHashToClipboard)
-	ON_COMMAND(ID_BLAMEPOPUP_COPYLOGTOCLIPBOARD, CopySelectedLogToClipboard)
-	ON_COMMAND(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, BlamePreviousRevision)
-	ON_COMMAND(ID_BLAMEPOPUP_DIFFPREVIOUS, DiffPreviousRevision)
-	ON_COMMAND(ID_BLAMEPOPUP_SHOWLOG, ShowLog)
-	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_BLAMEPREVIOUSREVISION, OnUpdateBlamePopupBlamePrevious)
-	ON_UPDATE_COMMAND_UI(ID_BLAMEPOPUP_DIFFPREVIOUS, OnUpdateBlamePopupDiffPrevious)
 	ON_COMMAND_RANGE(IDM_FORMAT_ENCODE, IDM_FORMAT_ENCODE_END, OnChangeEncode)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -120,6 +129,8 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_revwidth = 0;
 	m_datewidth = 0;
 	m_authorwidth = 0;
+	m_filenameWidth = 0;
+	m_originalLineNumberWidth = 0;
 	m_linewidth = 0;
 
 	m_windowcolor = ::GetSysColor(COLOR_WINDOW);
@@ -129,23 +140,24 @@ CTortoiseGitBlameView::CTortoiseGitBlameView()
 	m_mouseauthorcolor = InterColor(m_windowcolor, m_textcolor, 10);
 	m_selectedrevcolor = ::GetSysColor(COLOR_HIGHLIGHT);
 	m_selectedauthorcolor = InterColor(m_selectedrevcolor, m_texthighlightcolor, 35);
-	m_mouserev = -2;
 
-	m_selectedrev = -1;
-	m_selectedorigrev = -1;
 	m_SelectedLine = -1;
 	m_directPointer = 0;
 	m_directFunction = 0;
 
-	m_lowestrev = LONG_MAX;
-	m_highestrev = 0;
 	m_colorage = !!theApp.GetInt(_T("ColorAge"));
 
 	m_bShowLine=true;
 
 	m_bShowAuthor = (theApp.GetInt(_T("ShowAuthor"), 1) == 1);
 	m_bShowDate = (theApp.GetInt(_T("ShowDate"), 0) == 1);
+	m_bShowFilename = (theApp.GetInt(_T("ShowFilename"), 0) == 1);
+	m_bShowOriginalLineNumber = (theApp.GetInt(_T("ShowOriginalLineNumber"), 0) == 1);
+	m_dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), 0);
+	m_bIgnoreWhitespace = (theApp.GetInt(_T("IgnoreWhitespace"), 0) == 1);
+	m_bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
 	m_bFollowRenames = (theApp.GetInt(_T("FollowRenames"), 0) == 1);
+	m_bBlameOuputContainsOtherFilenames = FALSE;
 
 	m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 	m_pFindDialog = NULL;
@@ -338,47 +350,206 @@ void CTortoiseGitBlameView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 {
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
-	line = line + (point.y/height);
-	if (line < (LONG)m_CommitHash.size())
+	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	line = line + (int)(point.y / height);
+	if (m_data.IsValidLine(line))
 	{
-		if(line < (LONG)m_ID.size() && m_ID[line] >= 0) // only show context menu if we have log data for it
+		m_MouseLine = line;
+		ClientToScreen(&point);
+
+		CGitHash hash = m_data.GetHash(line);
+		CString hashStr = hash.ToString();
+
+		GitRev* pRev = nullptr;
+		int logIndex = m_lineToLogIndex[line];
+		if (logIndex >= 0)
+			pRev = &GetLogData()->GetGitRevAt(logIndex);
+		else
 		{
-			m_MouseLine = (LONG)line;
-			ClientToScreen(&point);
-			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_BLAME_POPUP, point.x, point.y, this, TRUE);
+			pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+			if (pRev->m_ParentHash.empty())
+			{
+				try
+				{
+					pRev->GetParentFromHash(pRev->m_CommitHash);
+				}
+				catch (const char* msg)
+				{
+					MessageBox(_T("Could not get parent.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+				}
+			}
 		}
+
+		if (!pRev)
+			return;
+
+		CIconMenu popup;
+		CIconMenu blamemenu, diffmenu;
+
+		if (!popup.CreatePopupMenu())
+			return;
+
+		// Now find the relevant parent commits, they must contain the file which is blamed to be the source of the selected line,
+		// otherwise there is no previous file to compare to (only another previous revision).
+
+		GIT_REV_LIST parentHashWithFile;
+		std::vector<CString> parentFilename;
+		try
+		{
+			CTGitPath path(m_data.GetFilename(line));
+			const CTGitPathList & files = pRev->GetFiles(NULL);
+			for (int j = 0, j_size = files.GetCount(); j < j_size; ++j)
+			{
+				const CTGitPath &file =  files[j];
+				if (file.IsEquivalentTo(path))
+				{
+					if (!(file.m_ParentNo & MERGE_MASK))
+					{
+						int action = file.m_Action;
+						// ignore (action & CTGitPath::LOGACTIONS_ADDED), as then there is nothing to blame/diff
+						// ignore (action & CTGitPath::LOGACTIONS_DELETED), should never happen as the file must exist
+						if (action & (CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED))
+						{
+							int parentNo = file.m_ParentNo & PARENT_MASK;
+							if (parentNo >= 0 && (size_t)parentNo < pRev->m_ParentHash.size())
+							{
+								parentHashWithFile.push_back(pRev->m_ParentHash[parentNo]);
+								parentFilename.push_back((action & CTGitPath::LOGACTIONS_REPLACED) ? file.GetGitOldPathString() : file.GetGitPathString());
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (const char* msg)
+		{
+			MessageBox(_T("Could not get files of parents.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
+		}
+
+		// blame previous
+		if (!parentHashWithFile.empty())
+		{
+			if (parentHashWithFile.size() == 1)
+			{
+				popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_BLAME_POPUP_BLAME, IDI_BLAME_POPUP_BLAME);
+			}
+			else
+			{
+				blamemenu.CreatePopupMenu();
+				popup.AppendMenuIcon(ID_BLAMEPREVIOUS, IDS_BLAME_POPUP_BLAME, IDI_BLAME_POPUP_BLAME, blamemenu.m_hMenu);
+
+				for (size_t i = 0; i < parentHashWithFile.size(); ++i)
+				{
+					CString str;
+					str.Format(IDS_PARENT, i + 1);
+					blamemenu.AppendMenuIcon(ID_BLAMEPREVIOUS + ((i + 1) << 16), str);
+				}
+			}
+		}
+
+		// compare with previous
+		if (!parentHashWithFile.empty())
+		{
+			if (parentHashWithFile.size() == 1)
+			{
+				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_BLAME_POPUP_COMPARE, IDI_BLAME_POPUP_COMPARE);
+				if (CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+					popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+			}
+			else
+			{
+				diffmenu.CreatePopupMenu();
+				popup.AppendMenuIcon(ID_COMPAREWITHPREVIOUS, IDS_BLAME_POPUP_COMPARE, IDI_BLAME_POPUP_COMPARE, diffmenu.m_hMenu);
+				for (size_t i = 0; i < parentHashWithFile.size(); ++i)
+				{
+					CString str;
+					str.Format(IDS_BLAME_POPUP_PARENT, i + 1);
+					diffmenu.AppendMenuIcon((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)),str);
+					if (i == 0 && CRegDWORD(_T("Software\\TortoiseGit\\DiffByDoubleClickInLog"), FALSE))
+					{
+						popup.SetDefaultItem(ID_COMPAREWITHPREVIOUS, FALSE);
+						diffmenu.SetDefaultItem((UINT)(ID_COMPAREWITHPREVIOUS + ((i + 1) << 16)), FALSE);
+					}
+				}
+			}
+		}
+
+		popup.AppendMenuIcon(ID_SHOWLOG, IDS_BLAME_POPUP_LOG);
+		popup.AppendMenu(MF_SEPARATOR, NULL);
+		popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD);
+		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD);
+
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);
 	}
 }
 
-void CTortoiseGitBlameView::OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI)
+void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIST& parentHashWithFile, const std::vector<CString>& parentFilename)
 {
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
+	switch (cmd & 0xFFFF)
 	{
-		pCmdUI->Enable(false);
-	}
-	else
-	{
-		pCmdUI->Enable(true);
-	}
-}
+	case ID_BLAMEPREVIOUS:
+		{
+			int index = (cmd>>16) & 0xFFFF;
+			if (index > 0)
+				index -= 1;
 
-void CTortoiseGitBlameView::OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI)
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size() || m_ID[m_MouseLine] <= 1)
-	{
-		pCmdUI->Enable(false);
-	}
-	else
-	{
-		pCmdUI->Enable(true);
-	}
-}
+			CString path = ResolveCommitFile(parentFilename[index]);
+			CString endrev = parentHashWithFile[index].ToString();
+			int line = m_data.GetOriginalLineNumber(m_MouseLine);
+			CString lineNumber;
+			lineNumber.Format(_T("%d"), line);
 
-void CTortoiseGitBlameView::CopyHashToClipboard()
-{
-	this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:blame");
+			procCmd += _T(" /endrev:") + endrev;
+			procCmd += _T(" /line:") + lineNumber;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_COMPAREWITHPREVIOUS:
+		{
+			int index = (cmd >> 16) & 0xFFFF;
+			if (index > 0)
+				index -= 1;
+
+			CString path = ResolveCommitFile(parentFilename[index]);
+			CString startrev = pRev->m_CommitHash.ToString();
+			CString endrev = parentHashWithFile[index].ToString();
+
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:diff");
+			procCmd += _T(" /startrev:") + startrev;
+			procCmd += _T(" /endrev:") + endrev;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_SHOWLOG:
+		{
+			CString path = ResolveCommitFile(m_MouseLine);
+			CString rev = m_data.GetHash(m_MouseLine).ToString();
+
+			CString procCmd = _T("/path:\"") + path + _T("\" ");
+			procCmd += _T(" /command:log");
+			procCmd += _T(" /rev:") + rev;
+
+			CCommonAppUtils::RunTortoiseGitProc(procCmd);
+		}
+		break;
+
+	case ID_COPYHASHTOCLIPBOARD:
+		this->GetLogList()->CopySelectionToClipBoard(CGitLogListBase::ID_COPY_HASH);
+		break;
+
+	case ID_COPYLOGTOCLIPBOARD:
+		this->GetLogList()->CopySelectionToClipBoard();
+		break;
+	}
 }
 
 // CTortoiseGitBlameView diagnostics
@@ -509,51 +680,19 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 {
 	int pos = (int)SendEditor(SCI_GETCURRENTPOS);
 	int line = (int)SendEditor(SCI_LINEFROMPOSITION, pos);
-	bool bFound = false;
 	bool bCaseSensitive = !!(flags & FR_MATCHCASE);
 	theApp.WriteInt(_T("FindMatchCase"), bCaseSensitive ? 1 : 0);
 	theApp.WriteString(_T("FindString"), what);
 
-	if(!bCaseSensitive)
-		what.MakeLower();
-
-	int i=line;
-	if(i >= (signed int)m_CommitHash.size())
-		i = 0;
-	do
+	int i = m_data.FindFirstLineWrapAround(what, line, bCaseSensitive);
+	if (i >= 0)
 	{
-		int bufsize = (int)SendEditor(SCI_GETLINE, i);
-		char * linebuf = new char[bufsize+1];
-		SecureZeroMemory(linebuf, bufsize+1);
-		SendEditor(SCI_GETLINE, i, (LPARAM)linebuf);
-		CString oneline=this->m_TextView.StringFromControl(linebuf);
-		delete [] linebuf;
-		if (!bCaseSensitive)
-		{
-			CString lcAuthor = m_Authors[i];
-			if (lcAuthor.MakeLower().Find(what) >= 0)
-				bFound = true;
-			else if (oneline.MakeLower().Find(what) >=0)
-				bFound = true;
-		}
-		else if (m_Authors[i].Find(what) >= 0)
-			bFound = true;
-		else if (oneline.Find(what) >=0)
-			bFound = true;
-
-		++i;
-		if(!bFound && i >= (signed int)m_CommitHash.size())
-			i=0;
-	}while(i!=line &&(!bFound));
-
-	if (bFound)
-	{
-		GotoLine(i);
+		GotoLine(i + 1);
 		int selstart = (int)SendEditor(SCI_GETCURRENTPOS);
-		int selend = (int)SendEditor(SCI_POSITIONFROMLINE, i);
+		int selend = (int)SendEditor(SCI_POSITIONFROMLINE, i + 1);
 		SendEditor(SCI_SETSELECTIONSTART, selstart);
 		SendEditor(SCI_SETSELECTIONEND, selend);
-		m_SelectedLine = i-1;
+		m_SelectedLine = i;
 	}
 	else
 	{
@@ -563,14 +702,15 @@ bool CTortoiseGitBlameView::DoSearch(CString what, DWORD flags)
 	return true;
 }
 
-bool CTortoiseGitBlameView::GotoLine(long line)
+bool CTortoiseGitBlameView::GotoLine(int line)
 {
 	--line;
-	if (line < 0)
+	int numberOfLines = m_data.GetNumberOfLines();
+	if (line < 0 || numberOfLines == 0)
 		return false;
-	if ((unsigned long)line >= m_CommitHash.size())
+	if (line >= numberOfLines)
 	{
-		line = (long)m_CommitHash.size()-1;
+		line = numberOfLines - 1;
 	}
 
 	int nCurrentPos = (int)SendEditor(SCI_GETCURRENTPOS);
@@ -621,7 +761,7 @@ void CTortoiseGitBlameView::CopyToClipboard()
 {
 	CWnd * wnd = GetFocus();
 	if (wnd == this->GetLogList())
-		CopySelectedLogToClipboard();
+		GetLogList()->CopySelectionToClipBoard();
 	else if (wnd)
 	{
 		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == _T("CMFCPropertyGridCtrl"))
@@ -633,112 +773,6 @@ void CTortoiseGitBlameView::CopyToClipboard()
 		else
 			m_TextView.Call(SCI_COPY);
 	}
-}
-
-void CTortoiseGitBlameView::CopySelectedLogToClipboard()
-{
-	this->GetLogList()->CopySelectionToClipBoard(FALSE);
-}
-
-CString CTortoiseGitBlameView::GetFilenameOfPreviousRevision()
-{
-	if (m_bFollowRenames)
-	{
-		CString filename = m_FileNames[m_MouseLine];
-		GitRev &rev = GetLogData()->GetGitRevAt(GetLogData()->size() - m_ID[m_MouseLine]);
-		CTGitPathList &files = rev.GetFiles(nullptr);
-		CString oldPath = filename;
-		for (int i = 0; i < files.GetCount(); ++i)
-		{
-			if (files[i].GetGitPathString() == filename)
-			{
-				oldPath = files[i].GetGitOldPathString();
-				break;
-			}
-		}
-		if (oldPath.IsEmpty())
-			return _T("");
-		CTGitPath path(g_Git.m_CurrentDir);
-		path.AppendPathString(oldPath);
-		return path.GetWinPathString();
-	}
-
-	return ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-}
-
-void CTortoiseGitBlameView::BlamePreviousRevision()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/path:\"");
-	CString filename = GetFilenameOfPreviousRevision();
-	if (filename.IsEmpty())
-		return;
-	procCmd += filename;
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:blame");
-	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size()-m_ID[m_MouseLine]+1).m_CommitHash.ToString();
-	CString lineNumber;
-	lineNumber.Format(_T(" /line:%d"), m_MouseLine + 1);
-	procCmd += lineNumber;
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
-}
-
-void CTortoiseGitBlameView::DiffPreviousRevision()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/command:diff");
-	CString filename1;
-	if (m_bFollowRenames)
-	{
-		CString filename = m_FileNames[m_MouseLine];
-		if (filename.IsEmpty())
-			return;
-		CTGitPath path(g_Git.m_CurrentDir);
-		path.AppendPathString(filename);
-		filename1 = path.GetWinPathString();
-	}
-	else
-		filename1 = ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-
-	CString filename2 = GetFilenameOfPreviousRevision();
-	if (!filename2.IsEmpty() && filename1 != filename2)
-	{
-		procCmd += _T(" /path:\"");
-		procCmd += filename2;
-		procCmd += _T("\"");
-		procCmd += _T(" /path2:\"");
-		procCmd += filename1;
-		procCmd += _T("\"");
-	}
-	else
-	{
-		procCmd += _T(" /path:\"");
-		procCmd += filename1;
-		procCmd += _T("\"");
-	}
-	procCmd += _T(" /startrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
-	procCmd += _T(" /endrev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine] + 1).m_CommitHash.ToString();
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
-}
-
-void CTortoiseGitBlameView::ShowLog()
-{
-	if (m_MouseLine < 0 || m_MouseLine >= (LONG)m_ID.size())
-		return;
-
-	CString procCmd = _T("/path:\"");
-	procCmd += ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
-	procCmd += _T("\" ");
-	procCmd += _T(" /command:log");
-	procCmd += _T(" /rev:") + this->GetLogData()->GetGitRevAt(this->GetLogData()->size() - m_ID[m_MouseLine]).m_CommitHash.ToString();
-
-	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
@@ -758,9 +792,10 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		for (size_t i = 0; i < this->m_Dates.size(); ++i)
+		int numberOfLines = m_data.GetNumberOfLines();
+		for (int i = 0; i < numberOfLines; ++i)
 		{
-			::GetTextExtentPoint32(hDC, m_Dates[i] , m_Dates[i].GetLength(), &width);
+			::GetTextExtentPoint32(hDC, m_data.GetDate(i), m_data.GetDate(i).GetLength(), &width);
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
@@ -771,14 +806,45 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		for (unsigned int i = 0; i < this->m_Authors.size(); ++i)
+		int numberOfLines = m_data.GetNumberOfLines();
+		for (int i = 0; i < numberOfLines; ++i)
 		{
-			::GetTextExtentPoint32(hDC,m_Authors[i] , m_Authors[i].GetLength(), &width);
+			::GetTextExtentPoint32(hDC,m_data.GetAuthor(i) , m_data.GetAuthor(i).GetLength(), &width);
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
 		m_authorwidth = maxwidth.cx + BLAMESPACE;
 		blamewidth += m_authorwidth;
+	}
+	if (m_bShowFilename)
+	{
+		SIZE maxwidth = {0};
+
+		int numberOfLines = m_data.GetNumberOfLines();
+		for (int i = 0; i < numberOfLines; ++i)
+		{
+			::GetTextExtentPoint32(hDC, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), &width);
+			if (width.cx > maxwidth.cx)
+				maxwidth = width;
+		}
+		m_filenameWidth = maxwidth.cx + BLAMESPACE;
+		blamewidth += m_filenameWidth;
+	}
+	if (m_bShowOriginalLineNumber)
+	{
+		SIZE maxwidth = {0};
+
+		int numberOfLines = m_data.GetNumberOfLines();
+		CString str;
+		for (int i = 0; i < numberOfLines; ++i)
+		{
+			str.Format(_T("%5d"), m_data.GetOriginalLineNumber(i));
+			::GetTextExtentPoint32(hDC, str, str.GetLength(), &width);
+			if (width.cx > maxwidth.cx)
+				maxwidth = width;
+		}
+		m_originalLineNumberWidth = maxwidth.cx + BLAMESPACE;
+		blamewidth += m_originalLineNumberWidth;
 	}
 	::SelectObject(hDC, oldfont);
 	POINT pt = {blamewidth, 0};
@@ -816,30 +882,31 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		return;
 
 	HFONT oldfont = NULL;
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR linesonscreen = SendEditor(SCI_LINESONSCREEN);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
-	LONG_PTR Y = 0;
+	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	int Y = 0;
 	TCHAR buf[MAX_PATH];
 	RECT rc;
 	BOOL sel = FALSE;
 	//::GetClientRect(this->m_hWnd, &rc);
-	for (LRESULT i=line; i<(line+linesonscreen); ++i)
+	for (int i = line; i < (line + linesonscreen); ++i)
 	{
 		sel = FALSE;
-		if (i < (int)m_CommitHash.size())
+		if (i < m_data.GetNumberOfLines())
 		{
+			 CGitHash hash(m_data.GetHash(i));
 		//	if (mergelines[i])
 		//		oldfont = (HFONT)::SelectObject(hDC, m_italicfont);
 		//	else
 				oldfont = (HFONT)::SelectObject(hDC, m_font);
 			::SetBkColor(hDC, m_windowcolor);
 			::SetTextColor(hDC, m_textcolor);
-			if (!m_CommitHash[i].IsEmpty())
+			if (!hash.IsEmpty())
 			{
 				//if (m_CommitHash[i].Compare(m_MouseHash)==0)
 				//	::SetBkColor(hDC, m_mouseauthorcolor);
-				if (m_CommitHash[i] == m_SelectedHash )
+				if (hash == m_SelectedHash)
 				{
 					::SetBkColor(hDC, m_selectedauthorcolor);
 					::SetTextColor(hDC, m_texthighlightcolor);
@@ -858,28 +925,42 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			//	::SetTextColor(hDC, m_texthighlightcolor);
 			//}
 
-			CString str;
-			str = m_CommitHash[i].ToString().Left(g_Git.GetShortHASHLength());
+			CString shortHashStr;
+			shortHashStr = hash.ToString().Left(g_Git.GetShortHASHLength());
 
 			//_stprintf_s(buf, MAX_PATH, _T("%8ld       "), revs[i]);
 			rc.top = (LONG)Y;
 			rc.left=LOCATOR_WIDTH;
 			rc.bottom = (LONG)(Y + height);
 			rc.right = rc.left + m_blamewidth;
-			::ExtTextOut(hDC, LOCATOR_WIDTH, (int)Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+			::ExtTextOut(hDC, LOCATOR_WIDTH, Y, ETO_CLIPPED, &rc, shortHashStr, shortHashStr.GetLength(), 0);
 			int Left = m_revwidth;
 
 			if (m_bShowAuthor)
 			{
 				rc.right = rc.left + Left + m_authorwidth;
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Authors[i], m_Authors[i].GetLength(), 0);
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetAuthor(i), m_data.GetAuthor(i).GetLength(), 0);
 				Left += m_authorwidth;
 			}
 			if (m_bShowDate)
 			{
 				rc.right = rc.left + Left + m_datewidth;
-				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_Dates[i], m_Dates[i].GetLength(), 0);
+				::ExtTextOut(hDC, Left, Y, ETO_CLIPPED, &rc, m_data.GetDate(i), m_data.GetDate(i).GetLength(), 0);
 				Left += m_datewidth;
+			}
+			if (m_bShowFilename)
+			{
+				rc.right = rc.left + Left + m_filenameWidth;
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), 0);
+				Left += m_filenameWidth;
+			}
+			if (m_bShowOriginalLineNumber)
+			{
+				rc.right = rc.left + Left + m_originalLineNumberWidth;
+				CString str;
+				str.Format(_T("%5d"), m_data.GetOriginalLineNumber(i));
+				::ExtTextOut(hDC, Left, (int)Y, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
+				Left += m_originalLineNumberWidth;
 			}
 			if ((i==m_SelectedLine)&&(m_pFindDialog))
 			{
@@ -919,9 +1000,9 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	if (hDC == NULL)
 		return;
 
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR linesonscreen = SendEditor(SCI_LINESONSCREEN);
-	LONG_PTR Y = 0;
+	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int linesonscreen = (int)SendEditor(SCI_LINESONSCREEN);
+	int Y = 0;
 	COLORREF blackColor = GetSysColor(COLOR_WINDOWTEXT);
 
 	RECT rc;
@@ -932,33 +1013,32 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
-	LONG currentLine = 0;
 
+	int numberOfLines = m_data.GetNumberOfLines();
 	// draw the colored bar
-	for (std::vector<LONG>::const_iterator it = m_ID.begin(); it != m_ID.end(); ++it)
+	for (int currentLine = 0; currentLine<numberOfLines; ++currentLine)
 	{
 		COLORREF cr = GetLineColor(currentLine);
-		++currentLine;
 		// get the line color
-		if ((currentLine > line)&&(currentLine <= (line + linesonscreen)))
+		if ((currentLine >= line)&&(currentLine < (line + linesonscreen)))
 		{
 			cr = InterColor(cr, blackColor, 10);
 		}
 		SetBkColor(hDC, cr);
 		lineRect.top = (LONG)Y;
-		lineRect.bottom = (currentLine * height / (LONG)m_ID.size());
+		lineRect.bottom = ((currentLine + 1) * height / numberOfLines);
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 		Y = lineRect.bottom;
 	}
 
-	if (!m_ID.empty())
+	if (numberOfLines > 0)
 	{
 		// now draw two lines indicating the scroll position of the source view
 		SetBkColor(hDC, blackColor);
-		lineRect.top = (LONG)line * height / (LONG)m_ID.size();
+		lineRect.top = (LONG)line * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
-		lineRect.top = (LONG)(line + linesonscreen) * height / (LONG)m_ID.size();
+		lineRect.top = (LONG)(line + linesonscreen) * height / numberOfLines;
 		lineRect.bottom = lineRect.top+1;
 		::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &lineRect, NULL, 0, NULL);
 	}
@@ -1438,21 +1518,41 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 	return GetACP();
 }
 
+void CTortoiseGitBlameView::ParseBlame()
+{
+	m_data.ParseBlameOutput(GetDocument()->m_BlameData, GetLogData()->m_pLogCache->m_HashMap, m_DateFormat, m_bRelativeTimes);
+	CString filename = GetDocument()->m_GitPath.GetGitPathString();
+	m_bBlameOuputContainsOtherFilenames = m_data.ContainsOnlyFilename(filename) ? FALSE : TRUE;
+}
+
+void CTortoiseGitBlameView::MapLineToLogIndex()
+{
+	std::vector<int> lineToLogIndex;
+
+
+	int numberOfLines = m_data.GetNumberOfLines();
+	lineToLogIndex.reserve(numberOfLines);
+	size_t logSize = this->GetLogData()->size();
+	for (int j = 0; j < numberOfLines; ++j)
+	{
+		CGitHash& hash = m_data.GetHash(j);
+
+		int index = -2;
+		for (size_t i = 0; i < logSize; ++i)
+		{
+			if (hash == this->GetLogData()->at(i))
+			{
+				index = (int)i;
+				break;
+			}
+		}
+		lineToLogIndex.push_back(index);
+	}
+	this->m_lineToLogIndex.swap(lineToLogIndex);
+}
+
 void CTortoiseGitBlameView::UpdateInfo(int Encode)
 {
-	BYTE_VECTOR &data = GetDocument()->m_BlameData;
-	CString one;
-	int pos=0;
-
-	BYTE_VECTOR vector;
-
-	this->m_CommitHash.clear();
-	this->m_FileNames.clear();
-	this->m_Authors.clear();
-	this->m_Dates.clear();
-	this->m_ID.clear();
-	CString line;
-
 	CreateFont();
 
 	SendEditor(SCI_SETREADONLY, FALSE);
@@ -1464,163 +1564,27 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	SendEditor(SCI_SETCODEPAGE, SC_CP_UTF8);
 
-	int current = 0;
-	int encoding = Encode;
-	while( pos>=0 && current >=0 && pos<data.size() )
+	int encoding = m_data.UpdateEncoding(Encode);
+
+	int numberOfLines = m_data.GetNumberOfLines();
+	if (numberOfLines > 0)
 	{
-		current = data.findData((const BYTE*)"\n",1,pos);
-		//one=data.Tokenize(_T("\n"),pos);
-
-		bool isbound = ( data[pos] == _T('^') );
-
-		if( (data.size() - pos) >1 && data[pos] == _T('^'))
-			++pos;
-
-		if( data[pos] == 0)
-			continue;
-
-		CGitHash hash;
-		if(isbound)
+		for (int i = 0; i < numberOfLines - 1; ++i)
 		{
-			bool ok = false;
-			try
-			{
-				[] { git_init(); } ();
-				ok = true;
-			}
-			catch (const char* msg)
-			{
-				::MessageBox(NULL, _T("Could not initialize libgit.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-			}
-			data[pos+39]=0;
-			if (ok)
-			{
-				try
-				{
-					if (git_get_sha1((const char*)&data[pos], hash.m_hash))
-						::MessageBox(NULL, _T("Can't get hash"), _T("TortoiseGit"), MB_OK | MB_ICONERROR);
-				}
-				catch (const char* msg)
-				{
-					::MessageBox(NULL, _T("Can't get hash.\nlibgit reports:\n") + CString(msg), _T("TortoiseGit"), MB_ICONERROR);
-				}
-			}
-
-		}
-		else
-			hash.ConvertFromStrA((char*)&data[pos]);
-
-		int start1 = data.find(' ', pos + 40);
-		if (start1 >= 0)
-		{
-			int start2 = data.find(' ', start1 + 1);
-			if (start2 >= 0)
-			{
-				CString filename;
-				g_Git.StringAppend(&filename, &data[start1 + 1], CP_UTF8, start2 - start1 - 1);
-				m_FileNames.push_back(filename);
-			}
-			else
-				m_FileNames.push_back(_T(""));
-		}
-		else
-			m_FileNames.push_back(_T(""));
-
-		int start=0;
-		start=data.findData((const BYTE*)")",1,pos + 40);
-		if(start>0)
-		{
-
-			int bomoffset = 0;
-			CStringA stra;
-			stra.Empty();
-
-			if(current>=0)
-				data[current] = 0;
-			else
-				data.push_back(0);
-
-			if( pos <40 && encoding==0)
-			{
-				// first line
-				encoding = GetEncode(&data[start + 2], (int)(data.size() - start - 2), &bomoffset);
-			}
-			{
-				if(encoding == 1201)
-				{
-					CString strw;
-					DWORD size = ((current - start -2 - bomoffset)/2);
-					TCHAR *buffer = strw.GetBuffer(size);
-					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
-					// swap the bytes to little-endian order to get proper strings in wchar_t format
-					wchar_t * pSwapBuf = buffer;
-					for (DWORD i = 0; i<size; ++i)
-					{
-						*pSwapBuf = WideCharSwap2(*pSwapBuf);
-						++pSwapBuf;
-					}
-					strw.ReleaseBuffer();
-
-					stra = CUnicodeUtils::GetUTF8(strw);
-				}
-				else if(encoding == 1200)
-				{
-					CString strw;
-					// the first bomoffset is 2, after that it's 1 (see issue #920)
-					// also: don't set bomoffset if called from Encodings menu (i.e. start == 42 and bomoffset == 0); bomoffset gets only set if autodetected
-					if (bomoffset == 0 && start != 42)
-						bomoffset = 1;
-					int size = ((current - start -2 - bomoffset)/2);
-					TCHAR *buffer = strw.GetBuffer(size);
-					memcpy(buffer, &data[start + 2 + bomoffset],sizeof(TCHAR)*size);
-					strw.ReleaseBuffer();
-
-					stra = CUnicodeUtils::GetUTF8(strw);
-				}
-				else if(encoding == CP_UTF8)
-				{
-					stra =  &data[start + 2 + bomoffset ];
-				}
-				else
-				{
-					CString strw;
-					strw = CUnicodeUtils::GetUnicode(CStringA(&data[start + 2 + bomoffset ]), encoding);
-					stra = CUnicodeUtils::GetUTF8(strw);
-				}
-			}
-
-			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)stra);
+			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)m_data.GetUtf8Line(i));
 			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)"\n\0\0\0");
-
-			if(current>=0)
-				data[current] = '\n';
-
 		}
-
-		if(this->m_NoListCommit.find(hash) == m_NoListCommit.end() )
 		{
-			this->m_NoListCommit[hash].GetCommitFromHash(hash);
+			// as it will add another line number in scintilla which has no counter part in the blame output
+			// prevent carriage return and line feed for the last line
+			CStringA s = m_data.GetUtf8Line(numberOfLines - 1);
+			int length = s.GetLength();
+			if (length > 0 && s.GetAt(length - 1) == '\r')
+				s.Truncate(length - 1);
+			SendEditor(SCI_REPLACESEL, 0, (LPARAM)(LPCSTR)s);
 		}
-
-		bool found = false;
-		for (size_t i = 0; i < this->GetLogData()->size(); ++i)
-		{
-			if(hash == this->GetLogData()->at(i))
-			{
-				m_ID.push_back((LONG)(this->GetLogData()->size() - i));
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			m_ID.push_back(-2);
-
-		m_Authors.push_back(m_NoListCommit[hash].GetAuthorName());
-		m_Dates.push_back(CLoglistUtils::FormatDateAndTime(m_NoListCommit[hash].GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes));
-
-		m_CommitHash.push_back(hash);
-		pos = current+1;
 	}
+
 	{
 		UINT nID;
 		UINT nStyle;
@@ -1682,9 +1646,6 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	SendEditor(SCI_SETSCROLLWIDTHTRACKING, TRUE);
 	SendEditor(SCI_SETREADONLY, TRUE);
 
-	m_lowestrev=0;
-	m_highestrev = (long)(this->GetLogData()->size());
-
 	GetBlameWidth();
 	CRect rect;
 	this->GetClientRect(rect);
@@ -1696,12 +1657,37 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	this->Invalidate();
 }
 
+CString CTortoiseGitBlameView::ResolveCommitFile(int line)
+{
+	return ResolveCommitFile(m_data.GetFilename(line));
+}
+
+CString CTortoiseGitBlameView::ResolveCommitFile(const CString& path)
+{
+	if (path.IsEmpty())
+	{
+		return ((CMainFrame*)::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName();
+	}
+	else
+	{
+		CTGitPath tgp(g_Git.m_CurrentDir);
+		tgp.AppendPathString(path);
+		return tgp.GetWinPathString();
+	}
+}
+
 COLORREF CTortoiseGitBlameView::GetLineColor(int line)
 {
-	if (m_colorage && line >= 0 && line < m_ID.size())
-		return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), (m_ID[line] - m_lowestrev) * 100 / ((m_highestrev - m_lowestrev) + 1));
-	else
-		return m_windowcolor;
+	if (m_colorage && m_data.IsValidLine(line))
+	{
+		int logIndex = m_lineToLogIndex[line];
+		if (logIndex >= 0)
+		{
+			int slider = (int)((GetLogData()->size() - logIndex) * 100 / (GetLogData()->size() + 1));
+			return InterColor(DWORD(m_regOldLinesColor), DWORD(m_regNewLinesColor), slider);
+		}
+	}
+	return m_windowcolor;
 }
 
 CGitBlameLogList * CTortoiseGitBlameView::GetLogList()
@@ -1723,27 +1709,27 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
 
-	LONG line = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG height = (LONG)SendEditor(SCI_TEXTHEIGHT);
-	line = line + (point.y/height);
+	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
+	line = line + (int)(point.y/height);
 
-	if (line < (LONG)m_CommitHash.size())
+	if (line < m_data.GetNumberOfLines())
 	{
 		SetSelectedLine(line);
-		if (m_CommitHash[line] != m_SelectedHash)
+		if (m_data.GetHash(line) != m_SelectedHash)
 		{
-			m_SelectedHash = m_CommitHash[line];
+			m_SelectedHash = m_data.GetHash(line);
 
-			if(m_ID[line]>=0)
+			int logIndex = m_lineToLogIndex[line];
+			if (logIndex >= 0)
 			{
-				this->GetLogList()->SetItemState(this->GetLogList()->GetItemCount()-m_ID[line],
-															LVIS_SELECTED,
-															LVIS_SELECTED);
-				this->GetLogList()->EnsureVisible(this->GetLogList()->GetItemCount()-m_ID[line], FALSE);
+				this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
+				this->GetLogList()->EnsureVisible(logIndex, FALSE);
 			}
 			else
 			{
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(&m_NoListCommit[m_CommitHash[line]]);
+				GitRev *pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 			}
 		}
 		else
@@ -1767,9 +1753,9 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* /*result*/)
 {
 	SCNotification *notification=reinterpret_cast<SCNotification *>(hdr);
 
-	if (notification->line < (int)m_CommitHash.size())
+	if (notification->line < m_data.GetNumberOfLines())
 	{
-		if (m_CommitHash[notification->line] == this->m_SelectedHash)
+		if (m_data.GetHash(notification->line) == this->m_SelectedHash)
 			notification->lParam = m_selectedauthorcolor;
 		else
 			notification->lParam = GetLineColor(notification->line);
@@ -1784,40 +1770,37 @@ void CTortoiseGitBlameView::FocusOn(GitRev *pRev)
 
 	if (m_SelectedHash != pRev->m_CommitHash) {
 		m_SelectedHash = pRev->m_CommitHash;
-		for (size_t i = 0; i < m_CommitHash.size(); ++i)
+		int line = m_data.FindFirstLine(m_SelectedHash, 0);
+		if (line >= 0)
 		{
-			if (pRev->m_CommitHash == m_CommitHash[i])
-			{
-				GotoLine((long)(i + 1));
-				m_TextView.Invalidate();
-				return;
-			}
+			GotoLine(line + 1);
+			m_TextView.Invalidate();
+			return;
 		}
-		SendEditor(SCI_SETSEL, LONG_MAX, -1);
+		SendEditor(SCI_SETSEL, INT_MAX, -1);
 	}
 }
 
 void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 {
-	LONG_PTR line = SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG_PTR height = SendEditor(SCI_TEXTHEIGHT);
+	int line = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int height = (int)SendEditor(SCI_TEXTHEIGHT);
 	line = line + (point.y/height);
 
-	if (line < (LONG)m_CommitHash.size())
+	if (m_data.IsValidLine(line))
 	{
 		if (line != m_MouseLine)
 		{
-			m_MouseLine = (LONG)line;//m_CommitHash[line];
-			GitRev *pRev;
-			if(m_ID[line]<0)
-			{
-				pRev=&this->m_NoListCommit[m_CommitHash[line]];
-
-			}
+			m_MouseLine = line;
+			GitRev *pRev = nullptr;
+			int logIndex = m_lineToLogIndex[line];
+			if (logIndex >= 0)
+				pRev = &GetLogData()->GetGitRevAt(logIndex);
 			else
-			{
-				pRev=&this->GetLogData()->GetGitRevAt(this->GetLogList()->GetItemCount()-m_ID[line]);
-			}
+				pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+
+			if (!pRev)
+				return;
 
 			CString body = pRev->GetBody();
 			int maxLine = 15;
@@ -1834,8 +1817,8 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 			}
 
 			CString filename;
-			if (m_bFollowRenames)
-				filename.Format(_T("%s: %s\n"), m_sFileName, m_FileNames[line]);
+			if ((m_bShowCompleteLog && m_bFollowRenames) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOuputContainsOtherFilenames)
+				filename.Format(_T("%s: %s\n"), m_sFileName, m_data.GetFilename(line));
 
 			CString str;
 			str.Format(_T("%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s"),	m_sRev, pRev->m_CommitHash.ToString(), filename,
@@ -1920,7 +1903,7 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 			return 0;
 	}
 
-	if (m_CommitHash.empty())
+	if (m_data.GetNumberOfLines()==0)
 		return 0;
 
 	// If the FR_FINDNEXT flag is set,
@@ -1939,11 +1922,17 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 
 void CTortoiseGitBlameView::OnViewNext()
 {
-	FindNextLine(this->m_SelectedHash,false);
+	int startline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int line = m_data.FindNextLine(this->m_SelectedHash, (int)SendEditor(SCI_GETFIRSTVISIBLELINE), false);
+	if(line >= 0)
+		SendEditor(SCI_LINESCROLL, 0, line - startline - 2);
 }
 void CTortoiseGitBlameView::OnViewPrev()
 {
-	FindNextLine(this->m_SelectedHash,true);
+	int startline = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int line = m_data.FindNextLine(this->m_SelectedHash, (int)SendEditor(SCI_GETFIRSTVISIBLELINE), true);
+	if(line >= 0)
+		SendEditor(SCI_LINESCROLL, 0, line - startline - 2);
 }
 
 void CTortoiseGitBlameView::OnViewToggleAuthor()
@@ -1982,27 +1971,166 @@ void CTortoiseGitBlameView::OnUpdateViewToggleDate(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(m_bShowDate);
 }
 
-void CTortoiseGitBlameView::OnViewToggleFollowRenames()
+void CTortoiseGitBlameView::OnViewToggleShowFilename()
 {
-	m_bFollowRenames = ! m_bFollowRenames;
+	m_bShowFilename = ! m_bShowFilename;
+
+	theApp.WriteInt(_T("ShowFilename"), m_bShowFilename);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowFilename(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowFilename);
+}
+
+void CTortoiseGitBlameView::OnViewToggleShowOriginalLineNumber()
+{
+	m_bShowOriginalLineNumber = ! m_bShowOriginalLineNumber;
+
+	theApp.WriteInt(_T("ShowOriginalLineNumber"), m_bShowOriginalLineNumber);
+
+	CRect rect;
+	this->GetClientRect(&rect);
+	rect.left = GetBlameWidth();
+
+	m_TextView.MoveWindow(&rect);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bShowOriginalLineNumber);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines)
+{
+	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
+	m_dwDetectMovedOrCopiedLines = dwDetectMovedOrCopiedLines;
+
 	theApp.DoWaitCursor(1);
 
-	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames);
+	theApp.WriteInt(_T("DetectMovedOrCopiedLines"), m_dwDetectMovedOrCopiedLines);
 
 	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
 	if (!document->m_CurrentFileName.IsEmpty())
 	{
-		document->m_lLine = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
+		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
 		theApp.m_pDocManager->OnFileNew();
 		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
-		document->SetPathName(document->m_CurrentFileName, FALSE);
 	}
 	theApp.DoWaitCursor(-1);
 }
 
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleDisabled()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleWithinFile()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+}
+
+void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles()
+{
+	OnViewDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+}
+
+void CTortoiseGitBlameView::OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetRadio(m_dwDetectMovedOrCopiedLines == BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+}
+
+void CTortoiseGitBlameView::ReloadDocument()
+{
+	theApp.DoWaitCursor(1);
+	CTortoiseGitBlameDoc *document = (CTortoiseGitBlameDoc *) m_pDocument;
+	if (!document->m_CurrentFileName.IsEmpty())
+	{
+		document->m_lLine = (int)SendEditor(SCI_GETFIRSTVISIBLELINE) + 1;
+		theApp.m_pDocManager->OnFileNew();
+		document->OnOpenDocument(document->m_CurrentFileName, document->m_Rev);
+	}
+	theApp.DoWaitCursor(-1);
+}
+
+void CTortoiseGitBlameView::OnViewToggleIgnoreWhitespace()
+{
+	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
+
+	theApp.WriteInt(_T("IgnoreWhitespace"), m_bIgnoreWhitespace ? 1 : 0);
+
+	ReloadDocument();
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_bIgnoreWhitespace);
+}
+
+void CTortoiseGitBlameView::OnViewToggleShowCompleteLog()
+{
+	m_bShowCompleteLog = ! m_bShowCompleteLog;
+
+	theApp.WriteInt(_T("ShowCompleteLog"), m_bShowCompleteLog ? 1 : 0);
+
+	ReloadDocument();
+}
+
+void CTortoiseGitBlameView::OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
+	pCmdUI->SetCheck(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
+}
+
+void CTortoiseGitBlameView::OnViewToggleFollowRenames()
+{
+	m_bFollowRenames = ! m_bFollowRenames;
+
+	theApp.WriteInt(_T("FollowRenames"), m_bFollowRenames ? 1 : 0);
+
+	ReloadDocument();
+}
+
 void CTortoiseGitBlameView::OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_bFollowRenames);
+	pCmdUI->Enable(m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
+	pCmdUI->SetCheck(m_bFollowRenames && m_bShowCompleteLog && BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines));
 }
 
 void CTortoiseGitBlameView::OnViewToggleColorByAge()
@@ -2038,40 +2166,4 @@ void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
 	}
 	else
 		pCmdUI->Enable(FALSE);
-}
-
-int CTortoiseGitBlameView::FindNextLine(CGitHash CommitHash,bool bUpOrDown)
-{
-	LONG line = (LONG)SendEditor(SCI_GETFIRSTVISIBLELINE);
-	LONG startline = line;
-	bool findNoMatch =false;
-	while(line>=0 && line<m_CommitHash.size())
-	{
-		if(m_CommitHash[line]!=CommitHash)
-		{
-			findNoMatch=true;
-		}
-
-		if(m_CommitHash[line] == CommitHash && findNoMatch)
-		{
-			if( line == startline+2 )
-			{
-				findNoMatch=false;
-			}
-			else
-			{
-				if( bUpOrDown )
-				{
-					line=FindFirstLine(CommitHash,line);
-				}
-				SendEditor(SCI_LINESCROLL,0,line-startline-2);
-				return line;
-			}
-		}
-		if(bUpOrDown)
-			--line;
-		else
-			++line;
-	}
-	return -1;
 }
