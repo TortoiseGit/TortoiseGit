@@ -147,6 +147,8 @@ void CGravatar::GravatarThread()
 				break;
 
 			Sleep(500);
+			if (m_gravatarExit)
+				break;
 			m_gravatarLock.Lock();
 			bool diff = email != m_email;
 			m_gravatarLock.Unlock();
@@ -170,6 +172,8 @@ void CGravatar::GravatarThread()
 			else
 			{
 				HRESULT res = URLDownloadToFile(nullptr, gravatarUrl, tempFile, 0, nullptr);
+				if (m_gravatarExit)
+					break;
 				m_gravatarLock.Lock();
 				if (m_email == email && res == S_OK)
 				{
