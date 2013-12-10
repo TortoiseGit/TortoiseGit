@@ -14,6 +14,7 @@ Released: Unreleased
  * Updated shipped libgit2 to version 0.20
  * Fixed issue #2010: Conflict dialog show local and remote commits
  * Autocompletion for language-dependent keywords (usually class/method/variable names) in the commit dialog
+ * Fixed issue #2034: Show gravatar in TortoiseGitBlame
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

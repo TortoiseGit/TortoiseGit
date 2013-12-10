@@ -22,6 +22,7 @@
 
 #include "GitBlameLogList.h"
 #include "ProjectProperties.h"
+#include "GravatarPictureBox.h"
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
 
@@ -56,6 +57,7 @@ public:
 	CFont m_Font;
 
 	CGitBlameLogList m_LogList;
+	CGravatar m_Gravatar;
 
 protected:
 	void AdjustHorzScroll(CListBox& wndListBox);

@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\TortoiseProc\Colors.cpp" />
+    <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp" />
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="EditGotoDlg.cpp" />

@@ -73,6 +73,12 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_LogList.SetFont(&m_Font);
 
+	m_Gravatar.Create(_T(""), WS_CHILD | WS_VISIBLE, rectDummy, this);
+	bool bEnableGravatar = !!CRegDWORD(_T("Software\\TortoiseGit\\EnableGravatar"), FALSE);
+	m_Gravatar.EnableGravatar(bEnableGravatar);
+	if (bEnableGravatar)
+		m_Gravatar.Init();
+
 	CString strTabName;
 	BOOL bNameValid;
 
@@ -96,6 +102,12 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 	CDockablePane::OnSize(nType, cx, cy);
 
 	// Tab control should cover the whole client area:
+	if (m_Gravatar.IsGravatarEnabled())
+	{
+		m_LogList.SetWindowPos(NULL, -1, -1, cx - 80, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+		m_Gravatar.SetWindowPos(NULL, cx - 80, 0, 80, 80, SWP_NOACTIVATE | SWP_NOZORDER);
+		return;
+	}
 	m_LogList.SetWindowPos(NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
@@ -148,6 +160,7 @@ void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			POSITION pos=pMain->GetActiveDocument()->GetFirstViewPosition();
 			CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,pMain->GetActiveDocument()->GetNextView(pos));
 			pView->FocusOn(&this->m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem));
+			m_Gravatar.LoadGravatar(m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem).GetAuthorEmail());
 		}
 	}
 }
