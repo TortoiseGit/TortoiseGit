@@ -548,6 +548,14 @@ msgstr ""
 msgid "&Delete remote && local"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "&Detect moved or copied lines"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Detect moved or copied lines:"
+msgstr ""
+
 #. Resource IDs: (12)
 msgid "&Diff"
 msgstr ""
@@ -558,6 +566,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "&Directory:"
+msgstr ""
+
+#. Resource IDs: (32789)
+msgid "&Disabled"
 msgstr ""
 
 #. Resource IDs: (71)
@@ -719,6 +731,10 @@ msgstr ""
 #. Resource IDs: (15)
 #, c-format
 msgid "&Ignore %d items by name"
+msgstr ""
+
+#. Resource IDs: (32786)
+msgid "&Ignore whitespace"
 msgstr ""
 
 #. Resource IDs: (16914)
@@ -1272,6 +1288,10 @@ msgstr ""
 
 #. Resource IDs: (1066, 20085)
 msgid "&Whole word"
+msgstr ""
+
+#. Resource IDs: (32790)
+msgid "&Within file"
 msgstr ""
 
 #. Resource IDs: (1657)
@@ -1867,6 +1887,14 @@ msgstr ""
 msgid "Assume valid/unchanged (\"Needs-lock\" in TortoiseSVN)"
 msgstr ""
 
+#. Resource IDs: (32792)
+msgid "At file &creation"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "At file creation"
+msgstr ""
+
 #. Resource IDs: (77)
 #, c-format
 msgid "At revision: %d"
@@ -2053,10 +2081,6 @@ msgstr ""
 
 #. Resource IDs: (3850)
 msgid "Bitmap\na bitmap"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "BlAMEPOPUP"
 msgstr ""
 
 #. Resource IDs: (156, 626)
@@ -2731,10 +2755,6 @@ msgstr ""
 
 #. Resource IDs: (2054)
 msgid "Compare &HEAD revisions"
-msgstr ""
-
-#. Resource IDs: (1254)
-msgid "Compare and blame with previous revision"
 msgstr ""
 
 #. Resource IDs: (79)
@@ -3435,6 +3455,22 @@ msgstr ""
 msgid "Detect and highlight moved blocks"
 msgstr ""
 
+#. Resource IDs: (2050)
+msgid "Detect moved and copied lines from existing files at any commit"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Detect moved and copied lines from existing files at the commit where the destination file has been created"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Detect moved and copied lines from files modified in the same commit"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Detect moved or copied lines within a file"
+msgstr ""
+
 #. Resource IDs: (3849)
 msgid "Device Independent Bitmap\na device independent bitmap"
 msgstr ""
@@ -3461,10 +3497,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Diff file:"
-msgstr ""
-
-#. Resource IDs: (32780)
-msgid "Diff previous revision"
 msgstr ""
 
 #. Resource IDs: (81)
@@ -3502,6 +3534,10 @@ msgstr ""
 
 #. Resource IDs: (195)
 msgid "Disable this option if you have really big working trees and experience\r\ntoo much disk access when browsing the working tree."
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Disabled"
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -4455,8 +4491,24 @@ msgstr ""
 msgid "From &SVN Repository"
 msgstr ""
 
+#. Resource IDs: (32793)
+msgid "From &existing files"
+msgstr ""
+
+#. Resource IDs: (32791)
+msgid "From &modified files"
+msgstr ""
+
 #. Resource IDs: (1603)
 msgid "From SVN Repository"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "From existing files"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "From modified files"
 msgstr ""
 
 #. Resource IDs: (1200, 65535)
@@ -4671,6 +4723,14 @@ msgstr ""
 
 #. Resource IDs: (79)
 msgid "Git reported an error while creating a repository!\n"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Git revision list contains the complete file history"
+msgstr ""
+
+#. Resource IDs: (2049)
+msgid "Git revision list follows file renames"
 msgstr ""
 
 #. Resource IDs: (12)
@@ -4941,8 +5001,8 @@ msgstr ""
 msgid "ID:32837:VA  +M"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32860; ''
-msgid "ID:32860:VA  +F"
+#. Accelerator Entry for Menu ID:32857; ''
+msgid "ID:32857:VA  +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32870; ''
@@ -5176,8 +5236,16 @@ msgstr ""
 msgid "Ignore line &endings (recommended)"
 msgstr ""
 
+#. Resource IDs: (1676)
+msgid "Ignore whitespace"
+msgstr ""
+
 #. Resource IDs: (156)
 msgid "Ignore whitespace changes"
+msgstr ""
+
+#. Resource IDs: (2050)
+msgid "Ignore whitespace when comparing the parents version and the child's "
 msgstr ""
 
 #. Resource IDs: (1432)
@@ -7972,10 +8040,6 @@ msgstr ""
 msgid "Show Inline-Diff\nInline diff"
 msgstr ""
 
-#. Resource IDs: (32781)
-msgid "Show Log"
-msgstr ""
-
 #. Resource IDs: (1065)
 msgid "Show More Buttons"
 msgstr ""
@@ -8012,6 +8076,14 @@ msgstr ""
 msgid "Show changes as &unified diff"
 msgstr ""
 
+#. Resource IDs: (32787)
+msgid "Show com&plete log"
+msgstr ""
+
+#. Resource IDs: (32864)
+msgid "Show complete log"
+msgstr ""
+
 #. Resource IDs: (32784)
 msgid "Show date"
 msgstr ""
@@ -8034,6 +8106,10 @@ msgstr ""
 
 #. Resource IDs: (16656)
 msgid "Show f&ull menus after a short delay"
+msgstr ""
+
+#. Resource IDs: (2051, 32802)
+msgid "Show file name"
 msgstr ""
 
 #. Resource IDs: (1264)
@@ -8103,6 +8179,10 @@ msgstr ""
 
 #. Resource IDs: (3713)
 msgid "Show or hide the toolbar\nToggle ToolBar"
+msgstr ""
+
+#. Resource IDs: (2051, 32803)
+msgid "Show original line number"
 msgstr ""
 
 #. Resource IDs: (1270)
@@ -9717,6 +9797,10 @@ msgstr ""
 
 #. Resource IDs: (5028)
 msgid "Windows-1258"
+msgstr ""
+
+#. Resource IDs: (2054)
+msgid "Within file"
 msgstr ""
 
 #. Resource IDs: (20, 158)

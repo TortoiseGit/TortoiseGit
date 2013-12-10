@@ -90,6 +90,9 @@
     <ClCompile Include="..\TortoiseProc\GravatarPictureBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TortoiseGitBlameData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GitBlameLogList.h">
@@ -155,6 +158,12 @@
     <ClInclude Include="..\Utils\DebugOutput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlameDetectMovedOrCopiedLines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TortoiseGitBlameData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\blameres\output_wnd.ico">
@@ -179,6 +188,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\blameres\TortoiseGitBlameDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menublame.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucompare.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

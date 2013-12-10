@@ -31,6 +31,7 @@
 #include "SciEdit.h"
 
 #include "GitBlameLogList.h"
+#include "TortoiseGitBlameData.h"
 #include "Tooltip.h"
 
 const COLORREF black = RGB(0,0,0);
@@ -80,6 +81,16 @@ public:
 
 class CTortoiseGitBlameView : public CView
 {
+	enum
+	{
+	// needs to start with 1, since 0 is the return value if *nothing* is clicked on in the context menu
+	ID_BLAMEPREVIOUS = 1,
+	ID_COMPAREWITHPREVIOUS,
+	ID_SHOWLOG,
+	ID_COPYHASHTOCLIPBOARD,
+	ID_COPYLOGTOCLIPBOARD
+	};
+
 protected: // create from serialization only
 	CTortoiseGitBlameView();
 	DECLARE_DYNCREATE(CTortoiseGitBlameView)
@@ -133,35 +144,42 @@ protected:
 	afx_msg void OnUpdateViewToggleAuthor(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleDate();
 	afx_msg void OnUpdateViewToggleDate(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowFilename();
+	afx_msg void OnUpdateViewToggleShowFilename(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowOriginalLineNumber();
+	afx_msg void OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleDisabled();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleDisabled(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleWithinFile();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleWithinFile(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromModifiedFiles();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromModifiedFiles(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFilesAtFileCreation(CCmdUI *pCmdUI);
+	afx_msg void OnViewDetectMovedOrCopiedLinesToggleFromExistingFiles();
+	afx_msg void OnUpdateViewDetectMovedOrCopiedLinesToggleFromExistingFiles(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleIgnoreWhitespace();
+	afx_msg void OnUpdateViewToggleIgnoreWhitespace(CCmdUI *pCmdUI);
+	afx_msg void OnViewToggleShowCompleteLog();
+	afx_msg void OnUpdateViewToggleShowCompleteLog(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleFollowRenames();
 	afx_msg void OnUpdateViewToggleFollowRenames(CCmdUI *pCmdUI);
 	afx_msg void OnViewToggleColorByAge();
 	afx_msg void OnUpdateViewToggleColorByAge(CCmdUI *pCmdUI);
-	afx_msg void CopyHashToClipboard();
-	afx_msg void OnUpdateBlamePopupBlamePrevious(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateBlamePopupDiffPrevious(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI);
-
-	int FindNextLine(CGitHash commithash, bool bUpOrDown=false);
-	int FindFirstLine(CGitHash commithash, int line)
-	{
-		while(line>=0)
-		{
-			if( m_CommitHash[line] != commithash )
-			{
-				return line++;
-			}
-			--line;
-		}
-		return line;
-	}
+	void OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines);
+	void ContextMenuAction(int cmd, GitRev* pRev, GIT_REV_LIST& parentHash, const std::vector<CString>& parentFilename);
+	void ReloadDocument();
 
 	DECLARE_MESSAGE_MAP()
 
 	static UINT m_FindDialogMessage;
 public:
-
+	void ParseBlame();
+	void MapLineToLogIndex();
 	void UpdateInfo(int encode = 0);
+	CString ResolveCommitFile(int line);
+	CString ResolveCommitFile(const CString& path);
 	void FocusOn(GitRev *pRev);
 
 	CSciEditBlame		m_TextView;
@@ -183,7 +201,13 @@ public:
 
 	BOOL m_bShowAuthor;
 	BOOL m_bShowDate;
+	BOOL m_bShowFilename;
+	BOOL m_bShowOriginalLineNumber;
+	DWORD m_dwDetectMovedOrCopiedLines;
+	BOOL m_bIgnoreWhitespace;
+	BOOL m_bShowCompleteLog;
 	BOOL m_bFollowRenames;
+	BOOL m_bBlameOuputContainsOtherFilenames;
 
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0);
 
@@ -194,37 +218,21 @@ public:
 	void DrawBlame(HDC hDC);
 	void DrawLocatorBar(HDC hDC);
 	void CopyToClipboard();
-	void CopySelectedLogToClipboard();
-	CString GetFilenameOfPreviousRevision();
-	void BlamePreviousRevision();
-	void DiffPreviousRevision();
-	void ShowLog();
 	bool DoSearch(CString what, DWORD flags);
-	bool GotoLine(long line);
+	bool GotoLine(int line);
 	bool ScrollToLine(long line);
 	void GotoLineDlg();
 	static INT_PTR CALLBACK GotoDlgProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void SetSelectedLine(LONG line) { m_SelectedLine=line;};
+	void SetSelectedLine(int line) { m_SelectedLine = line;};
 
-	LONG					m_mouserev;
-	LONG					m_MouseLine;
-	LONG					m_selectedrev;
-	LONG					m_selectedorigrev;
+	int						m_MouseLine;
 	CGitHash				m_SelectedHash;
 	CGitHash				m_selecteddate;
-	static long				m_gotoline;
-	long					m_lowestrev;
-	long					m_highestrev;
 	bool					m_colorage;
 
-	std::vector<LONG>		m_ID;
-	std::vector<CString>	m_FileNames;
-	std::vector<CString>	m_Dates;
-	std::vector<CString>	m_Authors;
-	std::vector<CGitHash>	m_CommitHash;
-
-	std::map<CString,GitRev> m_NoListCommit;
+	CTortoiseGitBlameData	m_data;
+	std::vector<int>		m_lineToLogIndex;
 
 	void StringExpand(LPSTR str);
 	void StringExpand(LPWSTR str);
@@ -246,8 +254,10 @@ protected:
 	LONG					m_revwidth;
 	LONG					m_datewidth;
 	LONG					m_authorwidth;
+	LONG					m_filenameWidth;
+	LONG					m_originalLineNumberWidth;
 	LONG					m_linewidth;
-	LONG					m_SelectedLine; ///< zero-based
+	int						m_SelectedLine; ///< zero-based
 
 	COLORREF				m_mouserevcolor;
 	COLORREF				m_mouseauthorcolor;

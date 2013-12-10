@@ -22,6 +22,7 @@
 #include "MessageBox.h"
 #include "SettingsTBlame.h"
 #include "..\TortoiseGitBlame\BlameIndexColors.h"
+#include "..\TortoiseGitBlame\BlameDetectMovedOrCopiedLines.h"
 
 
 // CSettingsTBlame dialog
@@ -33,6 +34,9 @@ CSettingsTBlame::CSettingsTBlame()
 	, m_dwFontSize(0)
 	, m_sFontName(_T(""))
 	, m_dwTabSize(4)
+	, m_dwDetectMovedOrCopiedLines(BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
+	, m_bIgnoreWhitespace(0)
+	, m_bShowCompleteLog(0)
 	, m_bFollowRenames(0)
 {
 	m_regNewLinesColor = CRegDWORD(_T("Software\\TortoiseGit\\BlameNewColor"), BLAMENEWCOLOR);
@@ -40,6 +44,9 @@ CSettingsTBlame::CSettingsTBlame()
 	m_regFontName = CRegString(_T("Software\\TortoiseGit\\BlameFontName"), _T("Courier New"));
 	m_regFontSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameFontSize"), 10);
 	m_regTabSize = CRegDWORD(_T("Software\\TortoiseGit\\BlameTabSize"), 4);
+	m_regDetectMovedOrCopiedLines = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+	m_regIgnoreWhitespace = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\IgnoreWhitespace"), 0);
+	m_regShowCompleteLog = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\ShowCompleteLog"), 0);
 	m_regFollowRenames = CRegDWORD(_T("Software\\TortoiseGit\\TortoiseGitBlame\\Workspace\\FollowRenames"), 0);
 }
 
@@ -62,6 +69,13 @@ void CSettingsTBlame::DoDataExchange(CDataExchange* pDX)
 	}
 	DDX_Control(pDX, IDC_FONTNAMES, m_cFontNames);
 	DDX_Text(pDX, IDC_TABSIZE, m_dwTabSize);
+	DDX_Control(pDX, IDC_DETECT_MOVED_OR_COPIED_LINES, m_cDetectMovedOrCopiedLines);
+	m_dwDetectMovedOrCopiedLines = (DWORD)m_cDetectMovedOrCopiedLines.GetItemData(m_cDetectMovedOrCopiedLines.GetCurSel());
+	if (m_dwDetectMovedOrCopiedLines == -1){
+		m_dwDetectMovedOrCopiedLines = BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED;
+	}
+	DDX_Check(pDX, IDC_IGNORE_WHITESPACE, m_bIgnoreWhitespace);
+	DDX_Check(pDX, IDC_SHOWCOMPLETELOG, m_bShowCompleteLog);
 	DDX_Check(pDX, IDC_FOLLOWRENAMES, m_bFollowRenames);
 }
 
@@ -71,6 +85,9 @@ BEGIN_MESSAGE_MAP(CSettingsTBlame, ISettingsPropPage)
 	ON_CBN_SELCHANGE(IDC_FONTSIZES, OnChange)
 	ON_CBN_SELCHANGE(IDC_FONTNAMES, OnChange)
 	ON_EN_CHANGE(IDC_TABSIZE, OnChange)
+	ON_CBN_SELCHANGE(IDC_DETECT_MOVED_OR_COPIED_LINES, OnChange)
+	ON_BN_CLICKED(IDC_IGNORE_WHITESPACE, OnChange)
+	ON_BN_CLICKED(IDC_SHOWCOMPLETELOG, OnChange)
 	ON_BN_CLICKED(IDC_FOLLOWRENAMES, OnChange)
 	ON_BN_CLICKED(IDC_NEWLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
 	ON_BN_CLICKED(IDC_OLDLINESCOLOR, &CSettingsTBlame::OnBnClickedColor)
@@ -99,6 +116,9 @@ BOOL CSettingsTBlame::OnInitDialog()
 	m_dwTabSize = m_regTabSize;
 	m_sFontName = m_regFontName;
 	m_dwFontSize = m_regFontSize;
+	m_dwDetectMovedOrCopiedLines = m_regDetectMovedOrCopiedLines;
+	m_bIgnoreWhitespace = m_regIgnoreWhitespace;
+	m_bShowCompleteLog = m_regShowCompleteLog;
 	m_bFollowRenames = m_regFollowRenames;
 	int count = 0;
 	CString temp;
@@ -125,12 +145,45 @@ BOOL CSettingsTBlame::OnInitDialog()
 	m_cFontNames.Setup(DEVICE_FONTTYPE|RASTER_FONTTYPE|TRUETYPE_FONTTYPE, 1, FIXED_PITCH);
 	m_cFontNames.SelectFont(m_sFontName);
 
+	CString sDetectMovedOrCopiedLinesDisabled;
+	CString sDetectMovedOrCopiedLinesWithinFile;
+	CString sDetectMovedOrCopiedLinesFromModifiedFiles;
+	CString sDetectMovedOrCopiedLinesFromExistingFilesAtFileCreation;
+	CString sDetectMovedOrCopiedLinesFromExistingFiles;
+	sDetectMovedOrCopiedLinesDisabled.LoadString(IDS_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+	sDetectMovedOrCopiedLinesWithinFile.LoadString(IDS_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+	sDetectMovedOrCopiedLinesFromModifiedFiles.LoadString(IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+	sDetectMovedOrCopiedLinesFromExistingFilesAtFileCreation.LoadString(IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+	sDetectMovedOrCopiedLinesFromExistingFiles.LoadString(IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+
+	m_cDetectMovedOrCopiedLines.AddString(sDetectMovedOrCopiedLinesDisabled);
+	m_cDetectMovedOrCopiedLines.SetItemData(0, BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+	m_cDetectMovedOrCopiedLines.AddString(sDetectMovedOrCopiedLinesWithinFile);
+	m_cDetectMovedOrCopiedLines.SetItemData(1, BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE);
+	m_cDetectMovedOrCopiedLines.AddString(sDetectMovedOrCopiedLinesFromModifiedFiles);
+	m_cDetectMovedOrCopiedLines.SetItemData(2, IDS_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES);
+	m_cDetectMovedOrCopiedLines.AddString(sDetectMovedOrCopiedLinesFromExistingFilesAtFileCreation);
+	m_cDetectMovedOrCopiedLines.SetItemData(3, BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION);
+	m_cDetectMovedOrCopiedLines.AddString(sDetectMovedOrCopiedLinesFromExistingFiles);
+	m_cDetectMovedOrCopiedLines.SetItemData(4, BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES);
+	for (int i = 0; i < m_cDetectMovedOrCopiedLines.GetCount(); ++i)
+	{
+		if (m_cDetectMovedOrCopiedLines.GetItemData(i) == m_dwDetectMovedOrCopiedLines)
+		{
+			m_cDetectMovedOrCopiedLines.SetCurSel(i);
+			break;
+		}
+	}
+
 	UpdateData(FALSE);
+	UpdateDependencies();
 	return TRUE;
 }
 
 void CSettingsTBlame::OnChange()
 {
+	UpdateData();
+	UpdateDependencies();
 	SetModified();
 }
 
@@ -154,6 +207,9 @@ BOOL CSettingsTBlame::OnApply()
     Store ((LPCTSTR)m_sFontName, m_regFontName);
     Store (m_dwFontSize, m_regFontSize);
     Store (m_dwTabSize, m_regTabSize);
+	Store (m_dwDetectMovedOrCopiedLines, m_regDetectMovedOrCopiedLines);
+	Store (m_bIgnoreWhitespace, m_regIgnoreWhitespace);
+	Store (m_bShowCompleteLog, m_regShowCompleteLog);
 	Store (m_bFollowRenames, m_regFollowRenames);
 
     SetModified(FALSE);
@@ -163,4 +219,29 @@ BOOL CSettingsTBlame::OnApply()
 void CSettingsTBlame::OnBnClickedColor()
 {
 	SetModified();
+}
+
+void CSettingsTBlame::UpdateDependencies()
+{
+	BOOL enableShowCompleteLog = FALSE;
+	BOOL enableFollowRenames = FALSE;
+	if (BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines))
+	{
+		enableShowCompleteLog = TRUE;
+		if (m_bShowCompleteLog)
+			enableFollowRenames = TRUE;
+		else if (m_bFollowRenames)
+		{
+			m_bFollowRenames = FALSE;
+			UpdateData(FALSE);
+		}
+	}
+	else if (m_bShowCompleteLog || m_bFollowRenames)
+	{
+		m_bShowCompleteLog = FALSE;
+		m_bFollowRenames = FALSE;
+		UpdateData(FALSE);
+	}
+	GetDlgItem(IDC_SHOWCOMPLETELOG)->EnableWindow(enableShowCompleteLog);
+	GetDlgItem(IDC_FOLLOWRENAMES)->EnableWindow(enableFollowRenames);
 }

@@ -43,7 +43,7 @@ public:
 	CString m_TempFileName;
 #endif
 	CString m_Rev;
-	long	m_lLine;
+	int		m_lLine;
 
 // Operations
 	BOOL m_IsGitFile;

@@ -33,6 +33,7 @@
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
 #include "CommonAppUtils.h"
+#include "BlameDetectMovedOrCopiedLines.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,7 +71,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (m_bFirstStartup)
 	{
 		m_Rev=parser.GetVal(_T("rev"));
-		m_lLine = parser.GetLongVal(_T("line"));
+		m_lLine = (int)parser.GetLongVal(_T("line"));
 		m_bFirstStartup = false;
 	}
 	else
@@ -157,8 +158,29 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 			return FALSE;
 		}
 
-		CString cmd;
-		cmd.Format(_T("git.exe blame -s -l -f %s -- \"%s\""),Rev,path.GetGitPathString());
+		CString cmd, option;
+		int dwDetectMovedOrCopiedLines = theApp.GetInt(_T("DetectMovedOrCopiedLines"), BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED);
+		switch(dwDetectMovedOrCopiedLines)
+		{
+		default:
+		case BLAME_DETECT_MOVED_OR_COPIED_LINES_DISABLED:
+			option.Empty();
+			break;
+		case BLAME_DETECT_MOVED_OR_COPIED_LINES_WITHIN_FILE:
+			option = _T("-M");
+			break;
+		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_MODIFIED_FILES:
+			option = _T("-C");
+			break;
+		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES_AT_FILE_CREATION:
+			option = _T("-C -C");
+			break;
+		case BLAME_DETECT_MOVED_OR_COPIED_LINES_FROM_EXISTING_FILES:
+			option = _T("-C -C -C");
+			break;
+		}
+
+		cmd.Format(_T("git.exe blame -p %s %s -- \"%s\""), option, Rev, path.GetGitPathString());
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
@@ -193,8 +215,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 		}
 #endif
 		m_GitPath = path;
-		if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
-			return FALSE;
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if(pView == NULL)
@@ -209,9 +229,28 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCTSTR lpszPathName,CString Rev)
 				return FALSE;
 			}
 		}
+		pView->ParseBlame();
+
+		BOOL bShowCompleteLog = (theApp.GetInt(_T("ShowCompleteLog"), 0) == 1);
+		if (bShowCompleteLog && BlameIsLimitedToOneFilename(dwDetectMovedOrCopiedLines))
+		{
+			if (GetMainFrame()->m_wndOutput.LoadHistory(path.GetGitPathString(), m_Rev, (theApp.GetInt(_T("FollowRenames"), 0) == 1)))
+				return FALSE;
+		}
+		else
+		{
+			std::set<CGitHash> hashes;
+			pView->m_data.GetHashes(hashes);
+			if (GetMainFrame()->m_wndOutput.LoadHistory(hashes))
+				return FALSE;
+		}
+
+		pView->MapLineToLogIndex();
 		pView->UpdateInfo();
 		if (m_lLine > 0)
 			pView->GotoLine(m_lLine);
+
+		SetPathName(m_CurrentFileName, FALSE);
 	}
 
 	return TRUE;

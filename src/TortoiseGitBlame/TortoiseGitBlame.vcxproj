@@ -151,11 +151,13 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlame.cpp" />
+    <ClCompile Include="TortoiseGitBlameData.cpp" />
     <ClCompile Include="TortoiseGitBlameDoc.cpp" />
     <ClCompile Include="TortoiseGitBlameView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\DebugOutput.h" />
+    <ClInclude Include="BlameDetectMovedOrCopiedLines.h" />
     <ClInclude Include="BlameIndexColors.h" />
     <ClInclude Include="GitBlameLogList.h" />
     <ClInclude Include="..\TortoiseProc\gitlogcache.h" />
@@ -174,10 +176,13 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TortoiseGitBlame.h" />
+    <ClInclude Include="TortoiseGitBlameData.h" />
     <ClInclude Include="TortoiseGitBlameDoc.h" />
     <ClInclude Include="TortoiseGitBlameView.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Resources\menublame.ico" />
+    <Image Include="..\Resources\menucompare.ico" />
     <Image Include="..\Resources\blameres\output_wnd.ico" />
     <Image Include="..\Resources\blameres\output_wnd_hc.ico" />
     <Image Include="..\Resources\blameres\properties_wnd.ico" />
