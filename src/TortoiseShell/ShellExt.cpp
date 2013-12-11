@@ -34,7 +34,10 @@ extern ShellObjects g_shellObjects;
 CShellExt::CShellExt(FileState state)
 #if ENABLE_CRASHHANLDER
 	: m_crasher(L"TortoiseGit", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE, false)
+#else
+	: m_State(state)
 #endif
+	,regDiffLater(L"Software\\TortoiseGit\\DiffLater", L"")
 {
 	m_State = state;
 

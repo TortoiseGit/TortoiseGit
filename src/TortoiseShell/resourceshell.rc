@@ -360,6 +360,9 @@ BEGIN
     IDS_MENUDESCMERGEABORT  "Aborts a running merge."
     IDS_ERR_PROPNOTONFILE   "This property is only allowed on folders, not files."
     IDS_MENUIGNOREMULTIPLE  "&Ignore %d items by name"
+    IDS_MENUDIFFLATER       "Diff later"
+    IDS_MENUDESCDIFFLATER   "Stores the path of the file to be used for a diff on a later right-click. Hold down the Ctrl key to remove the last saved path."
+    IDS_MENUDIFFNOW         "Diff with ""%s"""
     IDS_MENUUNIGNORE        "Remove from &ignore list"
     IDS_MENUDESCUNIGNORE    "Removes the file or filemask from the list of ignored items"
 END

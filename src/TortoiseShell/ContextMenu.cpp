@@ -614,6 +614,20 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 			_tcscpy_s(s, 255 - _tcslen(menutextbuffer) - 1, _T(" -> \"") + sBranchName + _T("\"..."));
 		}
 	}
+
+	if (com == ShellMenuDiffLater)
+	{
+		std::wstring sPath = regDiffLater;
+		if (!sPath.empty())
+		{
+			// add the path of the saved file
+			wchar_t compact[40] = {0};
+			PathCompactPathEx(compact, sPath.c_str(), _countof(compact) - 1, 0);
+			CString sMenu;
+			sMenu.Format(IDS_MENUDIFFNOW, compact);
+			wcscpy_s(menutextbuffer, sMenu);
+		}
+	}
 #endif
 	MENUITEMINFO menuiteminfo;
 	SecureZeroMemory(&menuiteminfo, sizeof(menuiteminfo));
@@ -918,6 +932,10 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 	if (uFlags & CMF_EXTENDEDVERBS)
 		itemStates |= ITEMIS_EXTENDED;
 
+	regDiffLater.read();
+	if (!std::wstring(regDiffLater).empty())
+		itemStates |= ITEMIS_HASDIFFLATER;
+
 	const BOOL bShortcut = !!(uFlags & CMF_VERBSONLY);
 	if ( bShortcut && (files_.size()==1))
 	{
@@ -979,6 +997,8 @@ STDMETHODIMP CShellExt::QueryContextMenu_Wrap(HMENU hMenu,
 			// we simply set a flag here, indicating that before the next
 			// 'normal' menu entry, a separator should be added.
 			if (!bMenuEmpty)
+				bAddSeparator = true;
+			if (bMenuEntryAdded)
 				bAddSeparator = true;
 		}
 		else
@@ -1340,6 +1360,35 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					gitCmd += _T(" /alternative");
 				break;
+			case ShellMenuDiffLater:
+				if (lpcmi->fMask & CMIC_MASK_CONTROL_DOWN)
+				{
+					gitCmd.clear();
+					regDiffLater.removeValue();
+				}
+				else if (files_.size() == 1)
+				{
+					if (std::wstring(regDiffLater).empty())
+					{
+						gitCmd.clear();
+						regDiffLater = files_[0];
+					}
+					else
+					{
+						AddPathCommand(gitCmd, L"diff", true);
+						gitCmd += _T(" /path2:\"");
+						gitCmd += std::wstring(regDiffLater);
+						gitCmd += _T("\"");
+						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+							gitCmd += _T(" /alternative");
+						regDiffLater.removeValue();
+					}
+				}
+				else
+				{
+					gitCmd.clear();
+				}
+				break;
 			case ShellMenuPrevDiff:
 				AddPathCommand(gitCmd, L"prevdiff", true);
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
@@ -1589,14 +1638,17 @@ STDMETHODIMP CShellExt::InvokeCommand_Wrap(LPCMINVOKECOMMANDINFO lpcmi)
 				break;
 				//#endregion
 			} // switch (id_it->second)
-			gitCmd += _T(" /hwnd:");
-			TCHAR buf[30];
-			_stprintf_s(buf, _T("%ld"), (LONG_PTR)lpcmi->hwnd);
-			gitCmd += buf;
-			myIDMap.clear();
-			myVerbsIDMap.clear();
-			myVerbsMap.clear();
-			RunCommand(tortoiseProcPath, gitCmd, _T("TortoiseProc launch failed"));
+			if (!gitCmd.empty())
+			{
+				gitCmd += _T(" /hwnd:");
+				TCHAR buf[30];
+				_stprintf_s(buf, _T("%ld"), (LONG_PTR)lpcmi->hwnd);
+				gitCmd += buf;
+				myIDMap.clear();
+				myVerbsIDMap.clear();
+				myVerbsMap.clear();
+				RunCommand(tortoiseProcPath, gitCmd, _T("TortoiseProc launch failed"));
+			}
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if (files_.empty() || folder_.empty())

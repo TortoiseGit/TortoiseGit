@@ -101,6 +101,7 @@ protected:
 	stdstring ignoredprops;
 	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
 	git_wc_status_kind	filestatus;
+	CRegStdString		regDiffLater;
 
 	GitFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;

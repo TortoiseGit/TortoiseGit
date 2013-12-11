@@ -3499,6 +3499,15 @@ msgstr ""
 msgid "Diff file:"
 msgstr ""
 
+#. Resource IDs: (15)
+msgid "Diff later"
+msgstr ""
+
+#. Resource IDs: (15)
+#, c-format
+msgid "Diff with \"%s\""
+msgstr ""
+
 #. Resource IDs: (81)
 #, c-format
 msgid "Diff with parent %d"
@@ -8441,6 +8450,10 @@ msgstr ""
 
 #. Resource IDs: (13)
 msgid "Stops bisect mode"
+msgstr ""
+
+#. Resource IDs: (15)
+msgid "Stores the path of the file to be used for a diff on a later right-click. Hold down the Ctrl key to remove the last saved path."
 msgstr ""
 
 #. Resource IDs: (1)
