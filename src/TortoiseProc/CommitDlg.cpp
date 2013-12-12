@@ -79,6 +79,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=NULL*/)
 	, m_nPopupPasteListCmd(0)
 	, m_nPopupPasteLastMessage(0)
 	, m_nPopupRecentMessage(0)
+	, m_nPopupPickCommitHash(0)
 	, m_hAccel(nullptr)
 {
 	this->m_bCommitAmend=FALSE;

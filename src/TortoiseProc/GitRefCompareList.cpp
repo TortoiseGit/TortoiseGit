@@ -53,6 +53,12 @@ enum IDGITRCLH
 CGitRefCompareList::CGitRefCompareList()
 	: CHintListCtrl()
 	, m_Repository(nullptr)
+	, colRef(0)
+	, colChange(0)
+	, colOldHash(0)
+	, colOldMessage(0)
+	, colNewHash(0)
+	, colNewMessage(0)
 {
 	m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (m_bSortLogical)

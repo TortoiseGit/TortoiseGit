@@ -34,6 +34,14 @@ class CCrashReport
 {
 private:
 	CCrashReport(void)
+	: m_InitCrashHandler(nullptr)
+	, m_SendReport(nullptr)
+	, m_IsReadyToExit(nullptr)
+	, m_AddUserInfoToReport(nullptr)
+	, m_AddFileToReport(nullptr)
+	, m_RemoveFileFromReport(nullptr)
+	, m_GetVersionFromApp(nullptr)
+	, m_GetVersionFromFile(nullptr)
 	{
 		LoadDll();
 	}

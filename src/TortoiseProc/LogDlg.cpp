@@ -51,6 +51,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 	, m_bWalkBehavior(FALSE)
 	, m_bFirstParent(false)
 	, m_bWholeProject(FALSE)
+	, m_iCompressedGraph(0)
 
 	, m_bSelectionMustBeContinuous(false)
 
