@@ -2009,7 +2009,6 @@ void CTortoiseGitBlameView::OnUpdateViewToggleShowOriginalLineNumber(CCmdUI *pCm
 
 void CTortoiseGitBlameView::OnViewDetectMovedOrCopiedLines(DWORD dwDetectMovedOrCopiedLines)
 {
-	m_bIgnoreWhitespace = ! m_bIgnoreWhitespace;
 	m_dwDetectMovedOrCopiedLines = dwDetectMovedOrCopiedLines;
 
 	theApp.DoWaitCursor(1);
