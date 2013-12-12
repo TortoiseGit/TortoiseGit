@@ -384,9 +384,9 @@ int CTortoiseGitBlameData::FindFirstLineWrapAround(const CString& what, int line
 		}
 		else
 		{
-			if (m_Authors[i].MakeLower().Find(whatNormalized) >= 0)
+			if (CString(m_Authors[i]).MakeLower().Find(whatNormalized) >= 0)
 				bFound = true;
-			else if (m_Utf8Lines[i].MakeLower().Find(whatNormalizedUtf8) >=0)
+			else if (CStringA(m_Utf8Lines[i]).MakeLower().Find(whatNormalizedUtf8) >=0)
 				bFound = true;
 		}
 
