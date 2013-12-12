@@ -72,7 +72,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ColumnHandlers\{$(var.GuidUncontrolled)}" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" />
@@ -155,7 +154,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ColumnHandlers\{$(var.GuidUncontrolled)}" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" />
@@ -240,7 +238,6 @@
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ColumnHandlers\{$(var.GuidUncontrolled)}" />
 					<RegistryKey Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" />
 					<RegistryValue Root="HKMU" Key="Software\Classes\Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryKey Root="HKLM" Key="Software\Classes\LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" />

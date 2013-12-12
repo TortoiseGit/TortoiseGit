@@ -27,7 +27,6 @@
 #define EXCLUDELISTTIMEOUT 5000
 #define ADMINDIRTIMEOUT 10000
 #define DRIVETYPETIMEOUT 300000		// 5 min
-#define NUMBERFMTTIMEOUT 300000
 #define MENUTIMEOUT 100
 
 #define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
@@ -78,7 +77,6 @@ public:
 		driveticker = cachetypeticker;
 		drivetypeticker = cachetypeticker;
 		langticker = cachetypeticker;
-		columnrevformatticker = cachetypeticker;
 		excludelistticker = cachetypeticker;
 		includelistticker = cachetypeticker;
 		simplecontextticker = cachetypeticker;
@@ -87,7 +85,6 @@ public:
 		showunversionedoverlayticker = cachetypeticker;
 		showignoredoverlayticker = cachetypeticker;
 		admindirticker = cachetypeticker;
-		columnseverywhereticker = cachetypeticker;
 		getlocktopticker = cachetypeticker;
 		excludedasnormalticker = cachetypeticker;
 		hidemenusforunversioneditemsticker = cachetypeticker;
@@ -111,7 +108,6 @@ public:
 		langid = CRegStdDWORD(_T("Software\\TortoiseGit\\LanguageID"), 1033);
 		blockstatus = CRegStdDWORD(_T("Software\\TortoiseGit\\BlockStatus"), 0);
 		blockstatusticker = cachetypeticker;
-		columnseverywhere = CRegStdDWORD(_T("Software\\TortoiseGit\\ColumnsEveryWhere"), FALSE);
 		for (int i = 0; i < 27; ++i)
 		{
 			drivetypecache[i] = (UINT)-1;
@@ -121,16 +117,10 @@ public:
 		drivetypecache[1] = DRIVE_REMOVABLE;
 		drivetypepathcache[0] = 0;
 		TCHAR szBuffer[5];
-		columnrevformatticker = GetTickCount();
-		SecureZeroMemory(&columnrevformat, sizeof(NUMBERFMT));
 		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szDecSep[0], _countof(szDecSep));
 		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STHOUSAND, &szThousandsSep[0], _countof(szThousandsSep));
-		columnrevformat.lpDecimalSep = szDecSep;
-		columnrevformat.lpThousandSep = szThousandsSep;
 		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SGROUPING, &szBuffer[0], _countof(szBuffer));
-		columnrevformat.Grouping = _ttoi(szBuffer);
 		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_INEGNUMBER, &szBuffer[0], _countof(szBuffer));
-		columnrevformat.NegativeOrder = _ttoi(szBuffer);
 		sAdminDirCacheKey.reserve(MAX_PATH);		// MAX_PATH as buffer reservation ok.
 		nocontextpaths = CRegStdString(_T("Software\\TortoiseGit\\NoContextPaths"), _T(""));
 		m_critSec.Init();
@@ -160,7 +150,6 @@ public:
 		menulayouthigh.read();
 		langid.read();
 		blockstatus.read();
-		columnseverywhere.read();
 		getlocktop.read();
 		menumasklow_lm.read();
 		menumaskhigh_lm.read();
@@ -473,24 +462,6 @@ public:
 		}
 		return (langid);
 	}
-	NUMBERFMT * GetNumberFmt()
-	{
-		if ((GetTickCount() - NUMBERFMTTIMEOUT) > columnrevformatticker)
-		{
-			TCHAR szBuffer[5];
-			columnrevformatticker = GetTickCount();
-			SecureZeroMemory(&columnrevformat, sizeof(NUMBERFMT));
-			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szDecSep[0], _countof(szDecSep));
-			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STHOUSAND, &szThousandsSep[0], _countof(szThousandsSep));
-			columnrevformat.lpDecimalSep = szDecSep;
-			columnrevformat.lpThousandSep = szThousandsSep;
-			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SGROUPING, &szBuffer[0], _countof(szBuffer));
-			columnrevformat.Grouping = _ttoi(szBuffer);
-			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_INEGNUMBER, &szBuffer[0], _countof(szBuffer));
-			columnrevformat.NegativeOrder = _ttoi(szBuffer);
-		}
-		return &columnrevformat;
-	}
 	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString *ProjectTopDir = NULL)
 	{
 		size_t len = _tcslen(path);
@@ -531,15 +502,6 @@ public:
 		}
 
 		return hasAdminDir;
-	}
-	bool IsColumnsEveryWhere()
-	{
-		if ((GetTickCount() - REGISTRYTIMEOUT) > columnseverywhereticker)
-		{
-			columnseverywhereticker = GetTickCount();
-			columnseverywhere.read();
-		}
-		return !!(DWORD)columnseverywhere;
 	}
 private:
 	void DriveValid()
@@ -671,7 +633,6 @@ public:
 	CRegStdDWORD excludedasnormal;
 	CRegStdString excludelist;
 	CRegStdDWORD hidemenusforunversioneditems;
-	CRegStdDWORD columnseverywhere;
 	stdstring excludeliststr;
 	std::vector<stdstring> exvector;
 	CRegStdString includelist;
@@ -688,7 +649,6 @@ public:
 	DWORD menumaskticker;
 	DWORD langticker;
 	DWORD blockstatusticker;
-	DWORD columnrevformatticker;
 	DWORD excludelistticker;
 	DWORD includelistticker;
 	DWORD simplecontextticker;
@@ -698,10 +658,8 @@ public:
 	DWORD showignoredoverlayticker;
 	DWORD excludedasnormalticker;
 	DWORD hidemenusforunversioneditemsticker;
-	DWORD columnseverywhereticker;
 	UINT  drivetypecache[27];
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
-	NUMBERFMT columnrevformat;
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
 	std::map<stdstring, AdminDir_s> admindircache;

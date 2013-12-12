@@ -161,7 +161,7 @@ DWORD GitFolderStatus::GetTimeoutValue()
 	return factor*timeout;
 }
 
-const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder, BOOL bColumnProvider)
+const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder)
 {
 	const FileStatusCacheEntry * ret = NULL;
 
@@ -169,7 +169,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& fil
 	BOOL bHasAdminDir = g_ShellCache.HasGITAdminDir(filepath.GetWinPath(), bIsFolder, &sProjectRoot);
 
 	//no overlay for unversioned folders
-	if ((!bColumnProvider)&&(!bHasAdminDir))
+	if (!bHasAdminDir)
 		return &invalidstatus;
 	//for the SVNStatus column, we have to check the cache to see
 	//if it's not just unversioned but ignored
@@ -189,8 +189,6 @@ const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& fil
 
 	//if it's not in the cache and has no admin dir, then we assume
 	//it's not ignored too
-	if ((bColumnProvider)&&(!bHasAdminDir))
-		return &invalidstatus;
 	ret = BuildCache(filepath, sProjectRoot, bIsFolder);
 	if (ret)
 		return ret;

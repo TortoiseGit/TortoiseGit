@@ -144,7 +144,6 @@
     <ClCompile Include="..\TGitCache\CacheInterface.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\MiscUI\IconBitmapUtils.cpp" />
-    <ClCompile Include="ColumnProvider.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
     <ClCompile Include="..\Git\Git.cpp" />
     <ClCompile Include="..\Git\GitAdminDir.cpp" />

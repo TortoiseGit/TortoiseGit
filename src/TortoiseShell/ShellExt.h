@@ -66,16 +66,11 @@ typedef CComCritSecLock<CComCriticalSection> AutoLocker;
  */
 class CShellExt : public IContextMenu3,
 							IPersistFile,
-							IColumnProvider,
 							IShellExtInit,
 							IShellIconOverlayIdentifier,
 							IShellPropSheetExt,
 							ICopyHookW
 
-// COMPILER ERROR? You need the latest version of the
-// platform SDK which has references to IColumnProvider
-// in the header files.  Download it here:
-// http://www.microsoft.com/msdownload/platformsdk/sdkupdate/
 {
 protected:
 
@@ -94,13 +89,7 @@ protected:
 	stdstring uuidTarget;
 	int space;
 	TCHAR stringtablebuffer[255];
-	stdstring columnfilepath;		///< holds the last file/dir path for the column provider
-	stdstring columnauthor;			///< holds the corresponding author of the file/dir above
-	stdstring itemurl;
-	stdstring itemshorturl;
 	stdstring ignoredprops;
-	git_revnum_t columnrev;			///< holds the corresponding revision to the file/dir above
-	git_wc_status_kind	filestatus;
 	CRegStdString		regDiffLater;
 
 	GitFolderStatus		m_CachedStatus;		// status cache
@@ -118,8 +107,6 @@ private:
 	stdstring		WriteFileListToTempFile();
 	bool			WriteClipboardPathsToTempFile(stdstring& tempfile);
 	LPCTSTR			GetMenuTextFromResource(int id);
-	void			GetColumnStatus(const TCHAR * path, BOOL bIsDir);
-	void			GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci, UINT characterCount, UINT title, UINT description);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
@@ -145,15 +132,6 @@ private:
 	 */
 	//@{
 	STDMETHODIMP	HandleMenuMsg2_Wrap(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
-	//@}
-
-	/** \name IColumnProvider wrappers
-	 * IColumnProvider wrapper functions to catch exceptions and send crash reports
-	 */
-	//@{
-	STDMETHODIMP	GetColumnInfo_Wrap(DWORD dwIndex, SHCOLUMNINFO *psci);
-	STDMETHODIMP	GetItemData_Wrap(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData);
-	STDMETHODIMP	Initialize_Wrap(LPCSHCOLUMNINIT psci);
 	//@}
 
 	/** \name IShellExtInit wrappers
@@ -215,15 +193,6 @@ public:
 	 */
 	//@{
 	STDMETHODIMP	HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
-	//@}
-
-	/** \name IColumnProvider
-	 * IColumnProvider members
-	 */
-	//@{
-	STDMETHODIMP	GetColumnInfo(DWORD dwIndex, SHCOLUMNINFO *psci);
-	STDMETHODIMP	GetItemData(LPCSHCOLUMNID pscid, LPCSHCOLUMNDATA pscd, VARIANT *pvarData);
-	STDMETHODIMP	Initialize(LPCSHCOLUMNINIT psci);
 	//@}
 
 	/** \name IShellExtInit

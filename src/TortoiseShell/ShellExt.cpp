@@ -228,10 +228,6 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 	{
 		*ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
 	}
-	else if (IsEqualIID(riid, IID_IColumnProvider))
-	{
-		*ppv = static_cast<IColumnProvider*>(this);
-	}
 	else if (IsEqualIID(riid, IID_IShellCopyHook))
 	{
 		*ppv = static_cast<ICopyHook*>(this);

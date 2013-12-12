@@ -343,7 +343,7 @@
  * This project links to a COM object implementing all required
  * interfaces a shell extension needs.
  * The shell extension draws the overlay icons, provides the right-click menu,
- * the property sheet and the SVN column (in Win2k and later).
+ * and the property sheet.
  */
 
 /**

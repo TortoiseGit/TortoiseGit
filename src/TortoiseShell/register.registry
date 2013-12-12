@@ -234,8 +234,6 @@ REGEDIT4
 [HKEY_CLASSES_ROOT\InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit]
 @="{10A0FDD2-B0C0-4cd4-A7AE-E594CE3B91C8}"
 
-[HKEY_CLASSES_ROOT\Folder\shellex\ColumnHandlers\{10A0FDD2-B0C0-4cd4-A7AE-E594CE3B91C8}]
-
 [HKEY_CLASSES_ROOT\Directory\shellex\CopyHookHandlers\TortoiseGit]
 @="{10A0FDD2-B0C0-4cd4-A7AE-E594CE3B91C8}"
 

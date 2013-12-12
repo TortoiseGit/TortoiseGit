@@ -347,7 +347,7 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Icon Overlays"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Icon Overlays/Status Columns",IDC_STATIC,12,7,274,39
+    GROUPBOX        "Icon Overlays",IDC_STATIC,12,7,274,39
     CONTROL         "Show &overlays and context menu only in explorer",IDC_ONLYEXPLORER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,17,260,10
     CONTROL         "Unversioned files mark parent folder as modified",IDC_UNVERSIONEDASMODIFIED,

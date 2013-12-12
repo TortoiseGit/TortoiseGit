@@ -4634,10 +4634,6 @@ msgstr ""
 msgid "Git"
 msgstr ""
 
-#. Resource IDs: (16)
-msgid "Git Author"
-msgstr ""
-
 #. Resource IDs: (300)
 msgid "Git Command Progress"
 msgstr ""
@@ -4686,10 +4682,6 @@ msgstr ""
 msgid "Git Remote Settings"
 msgstr ""
 
-#. Resource IDs: (11)
-msgid "Git Revision"
-msgstr ""
-
 #. Resource IDs: (1260)
 msgid "Git Revision List"
 msgstr ""
@@ -4702,16 +4694,8 @@ msgstr ""
 msgid "Git SVN Rebase"
 msgstr ""
 
-#. Resource IDs: (11)
-msgid "Git Status"
-msgstr ""
-
 #. Resource IDs: (326)
 msgid "Git Synchronization"
-msgstr ""
-
-#. Resource IDs: (12)
-msgid "Git URL"
 msgstr ""
 
 #. Resource IDs: (297)
@@ -4740,10 +4724,6 @@ msgstr ""
 
 #. Resource IDs: (2049)
 msgid "Git revision list follows file renames"
-msgstr ""
-
-#. Resource IDs: (12)
-msgid "Git short URL"
 msgstr ""
 
 #. Resource IDs: (93)
@@ -5144,10 +5124,6 @@ msgstr ""
 msgid "Icon Overlays"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Icon Overlays/Status Columns"
-msgstr ""
-
 #. Resource IDs: (184)
 msgid "Icon Overlays::Icon Set"
 msgstr ""
@@ -5494,10 +5470,6 @@ msgstr ""
 
 #. Resource IDs: (1616)
 msgid "Last known &good:"
-msgstr ""
-
-#. Resource IDs: (11)
-msgid "Last saved revision of item"
 msgstr ""
 
 #. Resource IDs: (12)
@@ -7977,10 +7949,6 @@ msgstr ""
 msgid "Short &date/time format in log messages"
 msgstr ""
 
-#. Resource IDs: (12)
-msgid "Short URL of Git items"
-msgstr ""
-
 #. Resource IDs: (1255)
 msgid "Shorten property list"
 msgstr ""
@@ -8442,10 +8410,6 @@ msgstr ""
 
 #. Resource IDs: (196)
 msgid "Status cache only for one folder, no recursive overlays"
-msgstr ""
-
-#. Resource IDs: (11)
-msgid "Status of item in Git"
 msgstr ""
 
 #. Resource IDs: (13)
@@ -8921,10 +8885,6 @@ msgstr ""
 msgid "The two selected URL's are not created from the same root.\nIt's not possible to show the log messages between them!"
 msgstr ""
 
-#. Resource IDs: (16)
-msgid "The user who did the last commit"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Their file:"
 msgstr ""
@@ -9222,10 +9182,6 @@ msgstr ""
 
 #. Resource IDs: (1272)
 msgid "URL history"
-msgstr ""
-
-#. Resource IDs: (12)
-msgid "URL of Git items"
 msgstr ""
 
 #. Resource IDs: (65535)

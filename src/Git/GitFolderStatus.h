@@ -54,7 +54,7 @@ class GitFolderStatus
 public:
 	GitFolderStatus(void);
 	~GitFolderStatus(void);
-	const FileStatusCacheEntry *	GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder, BOOL bColumnProvider = FALSE);
+	const FileStatusCacheEntry *	GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder);
 	const FileStatusCacheEntry *	GetCachedItem(const CTGitPath& filepath);
 
 	FileStatusCacheEntry		invalidstatus;
