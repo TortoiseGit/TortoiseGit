@@ -86,7 +86,7 @@ void CHyperLink::PreSubclassWindow()
 		if (hFont)
 			pFont = CFont::FromHandle(hFont);
 	}
-	ASSERT(pFont->GetSafeHandle());
+	ASSERT(pFont && pFont->GetSafeHandle());
 
 	LOGFONT lf;
 	pFont->GetLogFont(&lf);

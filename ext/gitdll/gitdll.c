@@ -234,8 +234,12 @@ int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list)
 }
 int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 {
-	struct commit_list *l = *(struct commit_list **)list;
-	if(list == NULL || l==NULL)
+	struct commit_list *l;
+	if (list == NULL)
+		return -1;
+
+	l = *(struct commit_list **)list;
+	if (l == NULL)
 		return -1;
 
 	if(hash)
@@ -343,6 +347,9 @@ int git_open_log(GIT_LOG * handle, char * arg)
 
 	if(arg != NULL)
 		argv = strtoargv(arg,&argc);
+
+	if (!argv)
+		return -1;
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	memset(p_Rev,0,sizeof(struct rev_info));
