@@ -82,6 +82,8 @@ IDI_PROPERTIES_WND      ICON                    "..\\Resources\\blameres\\proper
 IDI_PROPERTIES_WND_HC   ICON                    "..\\Resources\\blameres\\properties_wnd_hc.ico"
 IDI_BLAME_POPUP_BLAME   ICON                    "..\\Resources\\menublame.ico"
 IDI_BLAME_POPUP_COMPARE ICON                    "..\\Resources\\menucompare.ico"
+IDI_BLAME_POPUP_LOG     ICON                    "..\\Resources\\menulog.ico"
+IDI_BLAME_POPUP_COPY    ICON                    "..\\Resources\\copy.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -475,10 +475,10 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 			}
 		}
 
-		popup.AppendMenuIcon(ID_SHOWLOG, IDS_BLAME_POPUP_LOG);
+		popup.AppendMenuIcon(ID_SHOWLOG, IDS_BLAME_POPUP_LOG, IDI_BLAME_POPUP_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
-		popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD);
-		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD);
+		popup.AppendMenuIcon(ID_COPYHASHTOCLIPBOARD, IDS_BLAME_POPUP_COPYHASHTOCLIPBOARD, IDI_BLAME_POPUP_COPY);
+		popup.AppendMenuIcon(ID_COPYLOGTOCLIPBOARD, IDS_BLAME_POPUP_COPYLOGTOCLIPBOARD, IDI_BLAME_POPUP_COPY);
 
 		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
 		this->ContextMenuAction(cmd, pRev, parentHashWithFile, parentFilename);

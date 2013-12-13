@@ -47,6 +47,8 @@
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
 #define IDR_MAINFRAME                   223
+#define IDI_BLAME_POPUP_LOG             224
+#define IDI_BLAME_POPUP_COPY            225
 #define IDC_VERSION                     1000
 #define IDC_COPYRIGHT                   1001
 #define IDC_SCINTILLA                   1002

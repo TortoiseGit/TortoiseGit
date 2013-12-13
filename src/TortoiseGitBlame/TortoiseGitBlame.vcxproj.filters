@@ -196,6 +196,12 @@
     <Image Include="..\Resources\menucompare.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\menulog.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Resources\menucopy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseGitBlameENG.rc">
