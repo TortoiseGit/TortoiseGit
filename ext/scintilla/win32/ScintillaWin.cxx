@@ -601,19 +601,16 @@ LRESULT ScintillaWin::WndPaint(uptr_t wParam) {
 		}
 	} else {
 #if defined(USE_D2D)
-		for (int attempt=0;attempt<2;attempt++) {
-			EnsureRenderTarget();
-			AutoSurface surfaceWindow(pRenderTarget, this);
-			if (surfaceWindow) {
-				pRenderTarget->BeginDraw();
-				Paint(surfaceWindow, rcPaint);
-				surfaceWindow->Release();
-				HRESULT hr = pRenderTarget->EndDraw();
-				if (hr == D2DERR_RECREATE_TARGET) {
-					DropRenderTarget();
-				} else {
-					break;
-				}
+		EnsureRenderTarget();
+		AutoSurface surfaceWindow(pRenderTarget, this);
+		if (surfaceWindow) {
+			pRenderTarget->BeginDraw();
+			Paint(surfaceWindow, rcPaint);
+			surfaceWindow->Release();
+			HRESULT hr = pRenderTarget->EndDraw();
+			if (hr == D2DERR_RECREATE_TARGET) {
+				DropRenderTarget();
+				paintState = paintAbandoned;
 			}
 		}
 #endif

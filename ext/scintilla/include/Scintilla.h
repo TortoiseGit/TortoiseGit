@@ -1030,7 +1030,7 @@ struct Sci_TextRange {
 
 struct Sci_TextToFind {
 	struct Sci_CharacterRange chrg;
-	char *lpstrText;
+	const char *lpstrText;
 	struct Sci_CharacterRange chrgText;
 };
 

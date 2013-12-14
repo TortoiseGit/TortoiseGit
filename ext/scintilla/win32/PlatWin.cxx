@@ -44,6 +44,10 @@
 #define IDC_HAND MAKEINTRESOURCE(32649)
 #endif
 
+#ifndef SPI_GETFONTSMOOTHINGCONTRAST
+#define SPI_GETFONTSMOOTHINGCONTRAST	0x200C
+#endif
+
 // Take care of 32/64 bit pointers
 #ifdef GetWindowLongPtr
 static void *PointerFromWindow(HWND hWnd) {
@@ -124,6 +128,8 @@ static RECT RectFromPRectangle(PRectangle prc) {
 #if defined(USE_D2D)
 IDWriteFactory *pIDWriteFactory = 0;
 ID2D1Factory *pD2DFactory = 0;
+IDWriteRenderingParams *defaultRenderingParams = 0;
+IDWriteRenderingParams *customClearTypeRenderingParams = 0;
 
 bool LoadD2D() {
 	static bool triedLoadingD2D = false;
@@ -153,6 +159,24 @@ bool LoadD2D() {
 					reinterpret_cast<IUnknown**>(&pIDWriteFactory));
 			}
 		}
+
+		if (pIDWriteFactory) {
+			HRESULT hr = pIDWriteFactory->CreateRenderingParams(&defaultRenderingParams);
+			if (SUCCEEDED(hr)) {
+				unsigned int clearTypeContrast;
+				::SystemParametersInfo(SPI_GETFONTSMOOTHINGCONTRAST, 0, &clearTypeContrast, 0);
+
+				FLOAT gamma;
+				if (clearTypeContrast >= 1000 && clearTypeContrast <= 2200)
+					gamma = static_cast<FLOAT>(clearTypeContrast) / 1000.0f;
+				else
+					gamma = defaultRenderingParams->GetGamma();
+
+				pIDWriteFactory->CreateCustomRenderingParams(gamma, defaultRenderingParams->GetEnhancedContrast(), defaultRenderingParams->GetClearTypeLevel(), 
+					defaultRenderingParams->GetPixelGeometry(), defaultRenderingParams->GetRenderingMode(), &customClearTypeRenderingParams);
+			}
+		}
+
 	}
 	triedLoadingD2D = true;
 	return pIDWriteFactory && pD2DFactory;
@@ -1295,7 +1319,12 @@ void SurfaceD2D::InitPixMap(int width, int height, Surface *surface_, WindowID) 
 	SurfaceD2D *psurfOther = static_cast<SurfaceD2D *>(surface_);
 	ID2D1BitmapRenderTarget *pCompatibleRenderTarget = NULL;
 	D2D1_SIZE_F desiredSize = D2D1::SizeF(width, height);
-	D2D1_PIXEL_FORMAT desiredFormat = psurfOther->pRenderTarget->GetPixelFormat();
+	D2D1_PIXEL_FORMAT desiredFormat;
+#ifdef __MINGW32__
+	desiredFormat.format = DXGI_FORMAT_UNKNOWN;
+#else
+	desiredFormat = psurfOther->pRenderTarget->GetPixelFormat();
+#endif
 	desiredFormat.alphaMode = D2D1_ALPHA_MODE_IGNORE;
 	HRESULT hr = psurfOther->pRenderTarget->CreateCompatibleRenderTarget(
 		&desiredSize, NULL, &desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &pCompatibleRenderTarget);
@@ -1341,7 +1370,15 @@ void SurfaceD2D::SetFont(Font &font_) {
 		codePageText = CodePageFromCharSet(pfm->characterSet, codePage);
 	}
 	if (pRenderTarget) {
-		pRenderTarget->SetTextAntialiasMode(DWriteMapFontQuality(pfm->extraFontFlag));
+		D2D1_TEXT_ANTIALIAS_MODE aaMode;
+		aaMode = DWriteMapFontQuality(pfm->extraFontFlag);
+
+		if (aaMode == D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE && customClearTypeRenderingParams)
+			pRenderTarget->SetTextRenderingParams(customClearTypeRenderingParams);
+		else if (defaultRenderingParams)
+			pRenderTarget->SetTextRenderingParams(defaultRenderingParams);
+
+		pRenderTarget->SetTextAntialiasMode(aaMode);
 	}
 }
 
@@ -3240,6 +3277,16 @@ void Platform_Initialise(void *hInstance) {
 #endif
 
 void Platform_Finalise() {
+#if defined(USE_D2D)
+	if (defaultRenderingParams) {
+		defaultRenderingParams->Release();
+		defaultRenderingParams = 0;
+	}
+	if (customClearTypeRenderingParams) {
+		customClearTypeRenderingParams->Release();
+		customClearTypeRenderingParams = 0;
+	}
+#endif
 	if (reverseArrowCursor != NULL)
 		::DestroyCursor(reverseArrowCursor);
 	ListBoxX_Unregister();

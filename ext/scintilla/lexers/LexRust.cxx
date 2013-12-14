@@ -34,6 +34,9 @@
 using namespace Scintilla;
 #endif
 
+static const int NUM_RUST_KEYWORD_LISTS = 7;
+static const int MAX_RUST_IDENT_CHARS = 1023;
+
 static bool IsStreamCommentStyle(int style) {
 	return style == SCE_RUST_COMMENTBLOCK ||
 		   style == SCE_RUST_COMMENTBLOCKDOC;
@@ -67,7 +70,7 @@ struct OptionsRust {
 	}
 };
 
-static const char * const rustWordLists[] = {
+static const char * const rustWordLists[NUM_RUST_KEYWORD_LISTS + 1] = {
 			"Primary keywords and identifiers",
 			"Built in types",
 			"Other keywords",
@@ -114,7 +117,7 @@ struct OptionSetRust : public OptionSet<OptionsRust> {
 };
 
 class LexerRust : public ILexer {
-	WordList keywords[7];
+	WordList keywords[NUM_RUST_KEYWORD_LISTS];
 	OptionsRust options;
 	OptionSetRust osRust;
 public:
@@ -159,7 +162,7 @@ int SCI_METHOD LexerRust::PropertySet(const char *key, const char *val) {
 
 int SCI_METHOD LexerRust::WordListSet(int n, const char *wl) {
 	int firstModification = -1;
-	if (n < 7) {
+	if (n < NUM_RUST_KEYWORD_LISTS) {
 		WordList *wordListN = &keywords[n];
 		WordList wlNew;
 		wlNew.Set(wl);
@@ -209,12 +212,12 @@ static void ScanIdentifier(Accessor& styler, int& pos, WordList *keywords) {
 		pos++;
 		styler.ColourTo(pos - 1, SCE_RUST_MACRO);
 	} else {
-		char s[1024];
+		char s[MAX_RUST_IDENT_CHARS + 1];
 		int len = pos - start;
-		len = len > 1024 ? 1024 : len;
+		len = len > MAX_RUST_IDENT_CHARS ? MAX_RUST_IDENT_CHARS : len;
 		GrabString(s, styler, start, len);
 		bool keyword = false;
-		for (int ii = 0; ii < 7; ii++) {
+		for (int ii = 0; ii < NUM_RUST_KEYWORD_LISTS; ii++) {
 			if (keywords[ii].InList(s)) {
 				styler.ColourTo(pos - 1, SCE_RUST_WORD + ii);
 				keyword = true;
@@ -271,7 +274,7 @@ static void ScanNumber(Accessor& styler, int& pos) {
     if (c == 'u' || c == 'i') {
 		pos++;
 		c = styler.SafeGetCharAt(pos, '\0');
-		int n = styler.SafeGetCharAt(pos + 1, '\0');
+		n = styler.SafeGetCharAt(pos + 1, '\0');
 		if (c == '8') {
 			pos++;
 		} else if (c == '1' && n == '6') {
@@ -290,7 +293,7 @@ static void ScanNumber(Accessor& styler, int& pos) {
 		if (c == 'f') {
 			pos++;
 			c = styler.SafeGetCharAt(pos, '\0');
-			int n = styler.SafeGetCharAt(pos + 1, '\0');
+			n = styler.SafeGetCharAt(pos + 1, '\0');
 			if (c == '3' && n == '2') {
 				pos += 2;
 			} else if (c == '6' && n == '4') {
