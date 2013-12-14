@@ -515,6 +515,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 	bool isIncludePreprocessor = false;
 	bool isStringInPreprocessor = false;
 	bool inRERange = false;
+	bool seenDocKeyBrace = false;
 
 	int lineCurrent = styler.GetLine(startPos);
 	if ((MaskActive(initStyle) == SCE_C_PREPROCESSOR) ||
@@ -633,11 +634,18 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 				break;
 			case SCE_C_NUMBER:
 				// We accept almost anything because of hex. and number suffixes
-				if (!(setWord.Contains(sc.ch)
+				if (sc.ch == '_') {
+					sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+				} else if (!(setWord.Contains(sc.ch)
+				   || (sc.ch == '\'')
 				   || ((sc.ch == '+' || sc.ch == '-') && (sc.chPrev == 'e' || sc.chPrev == 'E' ||
 				                                          sc.chPrev == 'p' || sc.chPrev == 'P')))) {
 					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
+				break;
+			case SCE_C_USERLITERAL:
+				if (!(setWord.Contains(sc.ch)))
+					sc.SetState(SCE_C_DEFAULT|activitySet);
 				break;
 			case SCE_C_IDENTIFIER:
 				if (sc.atLineStart || sc.atLineEnd || !setWord.Contains(sc.ch) || (sc.ch == '.')) {
@@ -676,8 +684,9 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 							else
 								sc.ChangeState(SCE_C_CHARACTER|activitySet);
 						}
+					} else {
+						sc.SetState(SCE_C_DEFAULT|activitySet);
 					}
-					sc.SetState(SCE_C_DEFAULT|activitySet);
 				}
 				break;
 			case SCE_C_PREPROCESSOR:
@@ -685,7 +694,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					if (IsASpace(sc.ch)) {
 						sc.SetState(SCE_C_DEFAULT|activitySet);
 					}
-				} else if (isStringInPreprocessor && (sc.Match('>') || sc.Match('\"'))) {
+				} else if (isStringInPreprocessor && (sc.Match('>') || sc.Match('\"') || sc.atLineEnd)) {
 					isStringInPreprocessor = false;
 				} else if (!isStringInPreprocessor) {
 					if ((isIncludePreprocessor && sc.Match('<')) || sc.Match('\"')) {
@@ -749,14 +758,18 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 					sc.ChangeState(SCE_C_COMMENTDOCKEYWORDERROR);
 					sc.Forward();
 					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
-				} else if (!setDoxygen.Contains(sc.ch)) {
+					seenDocKeyBrace = false;
+				} else if (sc.ch == '[' || sc.ch == '{') {
+					seenDocKeyBrace = true;
+				} else if (!setDoxygen.Contains(sc.ch)
+				           && !(seenDocKeyBrace && (sc.ch == ',' || sc.ch == '.'))) {
 					char s[100];
 					if (caseSensitive) {
 						sc.GetCurrent(s, sizeof(s));
 					} else {
 						sc.GetCurrentLowered(s, sizeof(s));
 					}
-					if (!IsASpace(sc.ch)) {
+					if (!(IsASpace(sc.ch) || (sc.ch == 0))) {
 						sc.ChangeState(SCE_C_COMMENTDOCKEYWORDERROR|activitySet);
 					} else if (!keywords3.InList(s + 1)) {
 						int subStyleCDKW = classifierDocKeyWords.ValueFor(s+1);
@@ -767,6 +780,7 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						}
 					}
 					sc.SetState(styleBeforeDCKeyword|activitySet);
+					seenDocKeyBrace = false;
 				}
 				break;
 			case SCE_C_STRING:
@@ -782,7 +796,11 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						sc.Forward();
 					}
 				} else if (sc.ch == '\"') {
-					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					if (sc.chNext == '_') {
+						sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+					} else {
+						sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					}
 				}
 				break;
 			case SCE_C_HASHQUOTEDSTRING:
@@ -810,7 +828,11 @@ void SCI_METHOD LexerCPP::Lex(unsigned int startPos, int length, int initStyle, 
 						sc.Forward();
 					}
 				} else if (sc.ch == '\'') {
-					sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					if (sc.chNext == '_') {
+						sc.ChangeState(SCE_C_USERLITERAL|activitySet);
+					} else {
+						sc.ForwardSetState(SCE_C_DEFAULT|activitySet);
+					}
 				}
 				break;
 			case SCE_C_REGEX:

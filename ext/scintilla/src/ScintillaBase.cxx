@@ -463,9 +463,13 @@ void ScintillaBase::CancelModes() {
 	Editor::CancelModes();
 }
 
-void ScintillaBase::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt) {
+void ScintillaBase::ButtonDownWithModifiers(Point pt, unsigned int curTime, int modifiers) {
 	CancelModes();
-	Editor::ButtonDown(pt, curTime, shift, ctrl, alt);
+	Editor::ButtonDownWithModifiers(pt, curTime, modifiers);
+}
+
+void ScintillaBase::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt) {
+	ButtonDownWithModifiers(pt, curTime, ModifierFlags(shift, ctrl, alt));
 }
 
 #ifdef SCI_LEXER

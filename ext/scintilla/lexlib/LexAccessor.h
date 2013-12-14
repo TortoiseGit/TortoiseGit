@@ -139,7 +139,6 @@ public:
 		return lenDoc;
 	}
 	void Flush() {
-		startPos = extremePosition;
 		if (validLen > 0) {
 			pAccess->SetStyles(validLen, styleBuf);
 			startPosStyling += validLen;

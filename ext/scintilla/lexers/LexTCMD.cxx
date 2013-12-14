@@ -47,11 +47,6 @@ static bool IsBSeparator(char ch) {
 	return (ch == '\\') || (ch == '.') || (ch == ';') || (ch == ' ') || (ch == '\t') || (ch == '[') || (ch == ']') || (ch == '\"') || (ch == '\'') || (ch == '/');
 }
 
-// Tests for Environment Variable symbol
-static inline bool IsEnvironmentVar(char ch) {
-	return isalpha(ch) || isdigit(ch) || (ch == '_') || (ch == '$');
-}
-
 // Find length of CMD FOR variable with modifier (%~...) or return 0
 static unsigned int GetBatchVarLen( char *wordBuffer )
 {

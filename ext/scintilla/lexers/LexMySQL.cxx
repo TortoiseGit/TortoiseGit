@@ -40,13 +40,6 @@ static inline bool IsAWordStart(int ch) {
 	return (ch < 0x80) && (isalpha(ch) || ch == '_');
 }
 
-static inline bool IsADoxygenChar(int ch) {
-	return (islower(ch) || ch == '$' || ch == '@' ||
-	        ch == '\\' || ch == '&' || ch == '<' ||
-	        ch == '>' || ch == '#' || ch == '{' ||
-	        ch == '}' || ch == '[' || ch == ']');
-}
-
 static inline bool IsANumberChar(int ch) {
 	// Not exactly following number definition (several dots are seen as OK, etc.)
 	// but probably enough in most cases.

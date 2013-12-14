@@ -432,6 +432,13 @@
 	<td>OmegaPhil</td>
       </tr><tr>
 	<td>SiegeLord</td>
+	<td>Erik</td>
+	<td>TJF</td>
+	<td>Mark Robinson</td>
+      </tr><tr>
+	<td>Thomas Martitz</td>
+	<td>felix</td>
+	<td>Christian Walther</td>
     </tr>
     </table>
     <p>
@@ -442,6 +449,114 @@
         <a href="http://sourceforge.net/projects/icon-collection/">
         Icons</a> Copyright(C) 1998 by Dean S. Jones<br />
       </li>
+    </ul>
+    <h3>
+       <a href="http://prdownloads.sourceforge.net/scintilla/scite337.zip?download">Release 3.3.7</a>
+    </h3>
+    <ul>
+	<li>
+	Released 12 December 2013.
+	</li>
+	<li>
+	Lexer added for DMAP language.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1026/">Feature #1026.</a>
+	</li>
+	<li>
+	Basic lexer supports multiline comments in FreeBASIC.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/1023/">Feature #1023.</a>
+	</li>
+	<li>
+	Bash lexer allows '#' inside words..
+	<a href="http://sourceforge.net/p/scintilla/bugs/1553/">Bug #1553</a>.
+	</li>
+	<li>
+	C++ lexer recognizes C++11 user-defined lierals and applies lexical class SCE_C_USERLITERAL.
+	</li>
+	<li>
+	C++ lexer allows single quote characters as digit separators in numeric literals like 123'456 as this is
+	included in C++14.
+	</li>
+	<li>
+	C++ lexer fixes bug with #include statements without " or &gt; terminating filename.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1538/">Bug #1538</a>.
+	</li>
+	<li>
+	C++ lexer fixes split of Doxygen keywords @code{.fileExtension} and @param[in,out].
+	<a href="http://sourceforge.net/p/scintilla/bugs/1551/">Bug #1551</a>.
+	</li>
+	<li>
+	C++ lexer styles Doxygen keywords at end of document.
+	</li>
+	<li>
+	Cmake lexer fixes bug with empty comments.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1550/">Bug #1550</a>.
+	</li>
+	<li>
+	Fortran folder improved. Treats "else" as fold header.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/962/">Feature #962.</a>
+	</li>
+	<li>
+	Fix bug with adjacent instances of the same indicator with different values where only the first was drawn.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1560/">Bug #1560</a>.
+	</li>
+	<li>
+	For DirectWrite, use the GDI ClearType gamma value for SC_EFF_QUALITY_LCD_OPTIMIZED as
+	this results in text that is similar in colour intensity to GDI.
+	For the duller default DirectWrite ClearType text appearance, use SC_EFF_QUALITY_DEFAULT.
+	<a href="http://sourceforge.net/p/scintilla/feature-requests/887/">Feature #887.</a>
+	</li>
+	<li>
+	Fix another problem with drawing on Windows with Direct2D when returning from lock screen.
+	The whole window is redrawn as just redrawing the initially required area left other areas black.
+	</li>
+	<li>
+	When scroll width is tracked, take width of annotation lines into account.
+	</li>
+	<li>
+	On Cocoa, apply font quality setting to line numbers.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1544/">Bug #1544</a>.
+	</li>
+	<li>
+	On Cocoa, clicking in margin now sets focus.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1542/">Bug #1542</a>.
+	</li>
+	<li>
+	On Cocoa, correct cursor displayed in margin after showing dialog.
+	</li>
+	<li>
+	On Cocoa, multipaste mode now works.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1541/">Bug #1541</a>.
+	</li>
+	<li>
+	On GTK+, chain up to superclass finalize so that all finalization is performed.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1549/">Bug #1549</a>.
+	</li>
+	<li>
+	On GTK+, fix horizontal scroll bar range to not be double the needed width.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1546/">Bug #1546</a>.
+	</li>
+	<li>
+	On OS X GTK+, report control key as SCI_META for mouse down events.
+	</li>
+	<li>
+	On Qt, bug fixed with drawing of scrollbars, where previous contents were not drawn over with some
+	themes.
+	</li>
+	<li>
+	On Qt, bug fixed with finding monitor rectangle which could lead to autocomplete showing at wrong location.
+	</li>
+	<li>
+	SciTE fix for multiple message boxes when failing to save a file with save.on.deactivate.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1540/">Bug #1540</a>.
+	</li>
+	<li>
+	SciTE on GTK+ fixes SIGCHLD handling so that Lua scripts can determine the exit status of processes
+	they start.
+	<a href="http://sourceforge.net/p/scintilla/bugs/1557/">Bug #1557</a>.
+	</li>
+	<li>
+	SciTE on Windows XP fixes bad display of find and replace values when using strips.
+	</li>
     </ul>
     <h3>
        <a href="http://prdownloads.sourceforge.net/scintilla/scite336.zip?download">Release 3.3.6</a>
@@ -550,6 +665,10 @@
 	<li>
 	Fix linking SciTE on non-Linux Unix systems with GNU toolchain by linking to libdl.
 	<a href="http://sourceforge.net/p/scintilla/bugs/1523/">Bug #1523</a>.
+	</li>
+	<li>
+	On Windows, SciTE's Incremental Search displays match failures by changing the background colour
+	instead of not adding the character that caused failure.
 	</li>
 	<li>
 	Fix SciTE on GTK+ 3.x incremental search to change foreground colour when no match as
