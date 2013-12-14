@@ -4343,7 +4343,7 @@ BEGIN
     IDS_OFFLINEMODE         "System in offline mode. Check Internet Explorer."
     IDS_CHECKNEWER_NETERROR_FORMAT 
                             "Could not check for a newer version! (Error code: 0x%08X)"
-    IDS_PROC_BRANCH_FF       "Branch (FF)"
+    IDS_PROC_BRANCH_FF      "Branch (FF)"
 END
 
 STRINGTABLE
