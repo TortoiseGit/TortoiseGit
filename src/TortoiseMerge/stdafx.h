@@ -34,7 +34,7 @@
 
 #include <afxdlgs.h>
 #include <afxctl.h>
-#include <afxext.h>         // MFC extensions
+#include <afxext.h>             // MFC extensions
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 #include <afxtaskdialog.h>
 
@@ -63,5 +63,5 @@
 #ifdef _WIN64
 #	define APP_X64_STRING	"x64"
 #else
-#	define APP_X64_STRING ""
+#	define APP_X64_STRING	""
 #endif

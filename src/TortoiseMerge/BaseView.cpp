@@ -5122,8 +5122,8 @@ LRESULT CBaseView::OnFindDialogMessage(WPARAM wParam, LPARAM /*lParam*/)
 		}
 		else if ((CFindDlg::FindType)wParam == CFindDlg::FindType::Count)
 		{
-			int count = 0;
-			for (int i = 0; i < m_arFindStringLines.size(); ++i)
+			size_t count = 0;
+			for (size_t i = 0; i < m_arFindStringLines.size(); ++i)
 				count += m_arFindStringLines[i];
 			CString format;
 			format.LoadString(IDS_FIND_COUNT);

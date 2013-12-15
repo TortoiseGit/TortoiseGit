@@ -643,7 +643,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_FIND_COUNT          "Count: %d matches."
+    IDS_FIND_COUNT          "Count: %u matches."
 END
 
 STRINGTABLE
