@@ -3101,7 +3101,7 @@ msgstr ""
 
 #. Resource IDs: (94)
 #, c-format
-msgid "Count: %d matches."
+msgid "Count: %u matches."
 msgstr ""
 
 #. Resource IDs: (1683)
