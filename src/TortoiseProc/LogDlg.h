@@ -24,6 +24,7 @@
 #include "StandAloneDlg.h"
 #include "TGitPath.h"
 #include "registry.h"
+#include "RegHistory.h"
 #include "SplitterControl.h"
 #include "Colors.h"
 #include "LogDlgHelper.h"
@@ -249,6 +250,8 @@ private:
 	CImageList			m_imgList;
 
 	HACCEL				m_hAccel;
+
+	CRegHistory			m_History;
 
 	CGravatar			m_gravatar;
 };

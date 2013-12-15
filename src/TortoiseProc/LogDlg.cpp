@@ -418,6 +418,12 @@ BOOL CLogDlg::OnInitDialog()
 
 	GetDlgItem(IDC_LOGLIST)->SetFocus();
 
+	m_History.SetMaxHistoryItems((LONG)CRegDWORD(_T("Software\\TortoiseGit\\MaxRefHistoryItems"), 5));
+	CString reg;
+	reg.Format(_T("Software\\TortoiseGit\\History\\log-refs\\%s"), g_Git.m_CurrentDir);
+	reg.Replace(_T(':'),_T('_'));
+	m_History.Load(reg, _T("ref"));
+
 	ShowStartRef();
 	return FALSE;
 }
@@ -945,9 +951,55 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 
 void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	// we have two separate context menus:
+	// we have three separate context menus:
+	// one for the branch label in the upper left
 	// one shown on the log message list control,
-	// the other shown in the changed-files list control
+	// one shown in the changed-files list control
+	if (pWnd == GetDlgItem(IDC_STATIC_REF))
+	{
+		CIconMenu popup;
+		if (!popup.CreatePopupMenu())
+			return;
+
+		int cnt = 0;
+		popup.AppendMenuIcon(++cnt, IDS_MENUREFBROWSE);
+		popup.SetDefaultItem(cnt);
+		popup.AppendMenuIcon(++cnt, _T("HEAD"));
+		popup.AppendMenuIcon(++cnt, IDS_ALL);
+		int offset = ++cnt;
+		if (m_History.GetCount() > 0)
+		{
+			popup.AppendMenu(MF_SEPARATOR, 0);
+			for (int i = 0; i < m_History.GetCount(); ++i)
+				popup.AppendMenuIcon(cnt++, m_History.GetEntry(i));
+		}
+
+		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this, 0);
+		if (cmd == 0)
+			return;
+		else if (cmd == 1)
+			OnBnClickedBrowseRef();
+		else if (cmd == 2)
+		{
+			SetRange(g_Git.GetCurrentBranch(true));
+			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
+			OnBnClickedAllBranch();
+		}
+		else if (cmd == 3)
+		{
+			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(TRUE);
+			OnBnClickedAllBranch();
+		}
+		else if (cmd >= offset)
+		{
+			SetRange(m_History.GetEntry(cmd - offset));
+			m_History.AddEntry(m_LogList.m_sRange);
+			m_History.Save();
+			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
+			OnBnClickedAllBranch();
+		}
+		return;
+	}
 	int selCount = m_LogList.GetSelectedCount();
 	if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
 	{
@@ -2386,6 +2438,9 @@ void CLogDlg::OnBnClickedBrowseRef()
 	CString newRef = CBrowseRefsDlg::PickRef(false, m_LogList.GetRange(), gPickRef_All, true);
 	if(newRef.IsEmpty())
 		return;
+
+	m_History.AddEntry(newRef);
+	m_History.Save();
 
 	SetRange(newRef);
 	((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(0);
