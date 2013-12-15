@@ -249,6 +249,7 @@ public: // variables
 	static CLocatorBar * m_pwndLocator;	///< Pointer to the locator bar on the left
 	static CLineDiffBar * m_pwndLineDiffBar;	///< Pointer to the line diff bar at the bottom
 	static CMFCStatusBar * m_pwndStatusBar;///< Pointer to the status bar
+	static CMFCRibbonStatusBar * m_pwndRibbonStatusBar;///< Pointer to the status bar
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
 
 	void			GoToFirstDifference();

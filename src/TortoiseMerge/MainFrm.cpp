@@ -141,6 +141,24 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_INDICATOR_RIGHTVIEW, &CMainFrame::OnIndicatorRightview)
 	ON_COMMAND(ID_INDICATOR_BOTTOMVIEW, &CMainFrame::OnIndicatorBottomview)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOENCODING, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_LEFTVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_RIGHTVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND(ID_INDICATOR_BOTTOMVIEWCOMBOEOL, &CMainFrame::OnDummyEnabled)
+	ON_COMMAND_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnEncodingLeft)
+	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnEncodingRight)
+	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnEncodingBottom)
+	ON_COMMAND_RANGE(ID_INDICATOR_LEFTEOLSTART, ID_INDICATOR_LEFTEOLSTART+19, &CMainFrame::OnEOLLeft)
+	ON_COMMAND_RANGE(ID_INDICATOR_RIGHTEOLSTART, ID_INDICATOR_RIGHTEOLSTART+19, &CMainFrame::OnEOLRight)
+	ON_COMMAND_RANGE(ID_INDICATOR_BOTTOMEOLSTART, ID_INDICATOR_BOTTOMEOLSTART+19, &CMainFrame::OnEOLBottom)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTENCODINGSTART, ID_INDICATOR_LEFTENCODINGSTART+19, &CMainFrame::OnUpdateEncodingLeft)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTENCODINGSTART, ID_INDICATOR_RIGHTENCODINGSTART+19, &CMainFrame::OnUpdateEncodingRight)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMENCODINGSTART, ID_INDICATOR_BOTTOMENCODINGSTART+19, &CMainFrame::OnUpdateEncodingBottom)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_LEFTEOLSTART, ID_INDICATOR_LEFTEOLSTART+19, &CMainFrame::OnUpdateEOLLeft)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_RIGHTEOLSTART, ID_INDICATOR_RIGHTEOLSTART+19, &CMainFrame::OnUpdateEOLRight)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMEOLSTART, ID_INDICATOR_BOTTOMEOLSTART+19, &CMainFrame::OnUpdateEOLBottom)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -247,6 +265,36 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 				}
 			}
 		}
+		if (!m_wndRibbonStatusBar.Create(this))
+		{
+			TRACE0("Failed to create ribbon status bar\n");
+			return -1; // fail to create
+		}
+		m_wndRibbonStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_SEPARATOR, CString(MAKEINTRESOURCE(AFX_IDS_IDLEMESSAGE)), TRUE), L"");
+
+		std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupLeft(new CMFCRibbonButtonsGroup);
+		apBtnGroupLeft->SetID(ID_INDICATOR_LEFTVIEW);
+		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW)), TRUE));
+		CMFCRibbonButton * pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOENCODING, L"");
+		FillEncodingButton(pButton, ID_INDICATOR_LEFTENCODINGSTART);
+		apBtnGroupLeft->AddButton(pButton);
+		pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOEOL, L"");
+		FillEOLButton(pButton, ID_INDICATOR_LEFTEOLSTART);
+		apBtnGroupLeft->AddButton(pButton);
+		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_LEFTVIEW,   L"", TRUE));
+		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupLeft.release(), L"");
+
+		std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupRight(new CMFCRibbonButtonsGroup);
+		apBtnGroupRight->SetID(ID_INDICATOR_RIGHTVIEW);
+		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW)), TRUE));
+		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, L"");
+		FillEncodingButton(pButton, ID_INDICATOR_RIGHTENCODINGSTART);
+		apBtnGroupRight->AddButton(pButton);
+		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOEOL, L"");
+		FillEOLButton(pButton, ID_INDICATOR_RIGHTEOLSTART);
+		apBtnGroupRight->AddButton(pButton);
+		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_RIGHTVIEW,  L"", TRUE));
+		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupRight.release(), L"");
 	}
 	else
 	{
@@ -265,15 +313,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			return -1; // fail to create
 		}
 		m_wndToolBar.SetWindowText(_T("Main"));
+		if (!m_wndStatusBar.Create(this) ||
+			!m_wndStatusBar.SetIndicators(indicators,
+			_countof(indicators)))
+		{
+			TRACE0("Failed to create status bar\n");
+			return -1;		// fail to create
+		}
+		m_wndStatusBar.EnablePaneDoubleClick();
 	}
-	if (!m_wndStatusBar.Create(this) ||
-		!m_wndStatusBar.SetIndicators(indicators,
-		  _countof(indicators)))
-	{
-		TRACE0("Failed to create status bar\n");
-		return -1;      // fail to create
-	}
-	m_wndStatusBar.EnablePaneDoubleClick();
 
 	if (!m_wndLocatorBar.Create(this, IDD_DIFFLOCATOR,
 		CBRS_ALIGN_LEFT | CBRS_SIZE_FIXED, ID_VIEW_LOCATORBAR))
@@ -464,7 +512,10 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	m_pwndBottomView = (CBottomView *)m_wndSplitter.GetPane(1,0);
 	m_pwndBottomView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndBottomView->m_pwndLineDiffBar = &m_wndLineDiffBar;
-	m_pwndBottomView->m_pwndStatusBar = &m_wndStatusBar;
+	if (m_bUseRibbons)
+		m_pwndBottomView->m_pwndRibbonStatusBar = &m_wndRibbonStatusBar;
+	else
+		m_pwndBottomView->m_pwndStatusBar = &m_wndStatusBar;
 	m_pwndBottomView->m_pMainFrame = this;
 
 	// now create the two views inside the nested splitter
@@ -478,7 +529,10 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	m_pwndLeftView = (CLeftView *)m_wndSplitter2.GetPane(0,0);
 	m_pwndLeftView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndLeftView->m_pwndLineDiffBar = &m_wndLineDiffBar;
-	m_pwndLeftView->m_pwndStatusBar = &m_wndStatusBar;
+	if (m_bUseRibbons)
+		m_pwndLeftView->m_pwndRibbonStatusBar = &m_wndRibbonStatusBar;
+	else
+		m_pwndLeftView->m_pwndStatusBar = &m_wndStatusBar;
 	m_pwndLeftView->m_pMainFrame = this;
 
 	if (!m_wndSplitter2.CreateView(0, 1,
@@ -490,7 +544,10 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 	m_pwndRightView = (CRightView *)m_wndSplitter2.GetPane(0,1);
 	m_pwndRightView->m_pwndLocator = &m_wndLocatorBar;
 	m_pwndRightView->m_pwndLineDiffBar = &m_wndLineDiffBar;
-	m_pwndRightView->m_pwndStatusBar = &m_wndStatusBar;
+	if (m_bUseRibbons)
+		m_pwndRightView->m_pwndRibbonStatusBar = &m_wndRibbonStatusBar;
+	else
+		m_pwndRightView->m_pwndStatusBar = &m_wndStatusBar;
 	m_pwndRightView->m_pMainFrame = this;
 	m_bInitSplitter = TRUE;
 
@@ -2356,6 +2413,8 @@ void CMainFrame::OnUpdateEditEnable(CCmdUI *pCmdUI)
 
 void CMainFrame::OnIndicatorLeftview()
 {
+	if (m_bUseRibbons)
+		return;
 	if (IsViewGood(m_pwndLeftView))
 	{
 		m_pwndLeftView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_LEFTVIEW);
@@ -2364,6 +2423,8 @@ void CMainFrame::OnIndicatorLeftview()
 
 void CMainFrame::OnIndicatorRightview()
 {
+	if (m_bUseRibbons)
+		return;
 	if (IsViewGood(m_pwndRightView))
 	{
 		m_pwndRightView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_RIGHTVIEW);
@@ -2372,6 +2433,8 @@ void CMainFrame::OnIndicatorRightview()
 
 void CMainFrame::OnIndicatorBottomview()
 {
+	if (m_bUseRibbons)
+		return;
 	if (IsViewGood(m_pwndBottomView))
 	{
 		m_pwndBottomView->AskUserForNewLineEndingsAndTextType(IDS_STATUSBAR_BOTTOMVIEW);
@@ -2975,3 +3038,151 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	__super::OnTimer(nIDEvent);
 }
 
+void CMainFrame::FillEncodingButton( CMFCRibbonButton * pButton, int start )
+{
+	pButton->SetDefaultCommand(FALSE);
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::ASCII,       L"ASCII"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::BINARY,      L"BINARY"      ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LE,    L"UTF-16LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LEBOM, L"UTF-16LE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BE,    L"UTF-16BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BEBOM, L"UTF-16BE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_LE,    L"UTF-32LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_BE,    L"UTF-32BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8,        L"UTF-8"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8BOM,     L"UTF-8 BOM"   ));
+}
+
+void CMainFrame::FillEOLButton( CMFCRibbonButton * pButton, int start )
+{
+	pButton->SetDefaultCommand(FALSE);
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LF  , L"LF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CRLF, L"CRLF"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LFCR, L"LRCR"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CR  , L"CR"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_VT  , L"VT"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_FF  , L"FF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_NEL , L"NEL" ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LS  , L"LS"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_PS  , L"PS"  ));
+}
+
+void CMainFrame::OnEncodingLeft( UINT cmd )
+{
+	if (m_pwndLeftView)
+	{
+		m_pwndLeftView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_LEFTENCODINGSTART));
+		m_pwndLeftView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEncodingRight( UINT cmd )
+{
+	if (m_pwndRightView)
+	{
+		m_pwndRightView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_RIGHTENCODINGSTART));
+		m_pwndRightView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEncodingBottom( UINT cmd )
+{
+	if (m_pwndBottomView)
+	{
+		m_pwndBottomView->SetTextType(CFileTextLines::UnicodeType(cmd-ID_INDICATOR_BOTTOMENCODINGSTART));
+		m_pwndBottomView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLLeft( UINT cmd )
+{
+	if (m_pwndLeftView)
+	{
+		m_pwndLeftView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_LEFTEOLSTART));
+		m_pwndLeftView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLRight( UINT cmd )
+{
+	if (m_pwndRightView)
+	{
+		m_pwndRightView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_RIGHTEOLSTART));
+		m_pwndRightView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnEOLBottom( UINT cmd )
+{
+	if (m_pwndBottomView)
+	{
+		m_pwndBottomView->ReplaceLineEndings(EOL(cmd-ID_INDICATOR_BOTTOMEOLSTART));
+		m_pwndBottomView->RefreshViews();
+	}
+}
+
+void CMainFrame::OnUpdateEncodingLeft( CCmdUI *pCmdUI )
+{
+	if (m_pwndLeftView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_LEFTENCODINGSTART) == m_pwndLeftView->GetTextType());
+		pCmdUI->Enable(m_pwndLeftView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEncodingRight( CCmdUI *pCmdUI )
+{
+	if (m_pwndRightView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_RIGHTENCODINGSTART) == m_pwndRightView->GetTextType());
+		pCmdUI->Enable(m_pwndRightView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEncodingBottom( CCmdUI *pCmdUI )
+{
+	if (m_pwndBottomView)
+	{
+		pCmdUI->SetCheck(CFileTextLines::UnicodeType(pCmdUI->m_nID - ID_INDICATOR_BOTTOMENCODINGSTART) == m_pwndBottomView->GetTextType());
+		pCmdUI->Enable(m_pwndBottomView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLLeft( CCmdUI *pCmdUI )
+{
+	if (m_pwndLeftView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_LEFTEOLSTART) == m_pwndLeftView->GetLineEndings());
+		pCmdUI->Enable(m_pwndLeftView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLRight( CCmdUI *pCmdUI )
+{
+	if (m_pwndRightView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_RIGHTEOLSTART) == m_pwndRightView->GetLineEndings());
+		pCmdUI->Enable(m_pwndRightView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}
+
+void CMainFrame::OnUpdateEOLBottom( CCmdUI *pCmdUI )
+{
+	if (m_pwndBottomView)
+	{
+		pCmdUI->SetCheck(EOL(pCmdUI->m_nID - ID_INDICATOR_BOTTOMEOLSTART) == m_pwndBottomView->GetLineEndings());
+		pCmdUI->Enable(m_pwndBottomView->IsWritable());
+	}
+	else
+		pCmdUI->Enable(FALSE);
+}

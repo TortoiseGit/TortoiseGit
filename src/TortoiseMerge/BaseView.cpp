@@ -56,6 +56,7 @@ CBaseView * CBaseView::m_pwndBottom = NULL;
 CLocatorBar * CBaseView::m_pwndLocator = NULL;
 CLineDiffBar * CBaseView::m_pwndLineDiffBar = NULL;
 CMFCStatusBar * CBaseView::m_pwndStatusBar = NULL;
+CMFCRibbonStatusBar * CBaseView::m_pwndRibbonStatusBar = NULL;
 CMainFrame * CBaseView::m_pMainFrame = NULL;
 CBaseView::Screen2View CBaseView::m_Screen2View;
 const UINT CBaseView::m_FindDialogMessage = RegisterWindowMessage(FINDMSGSTRING);
@@ -293,13 +294,16 @@ void CBaseView::UpdateStatusBar()
 	CString sBarText;
 	CString sTemp;
 
-	sBarText += CFileTextLines::GetEncodingName(m_texttype);
-	sBarText += sBarText.IsEmpty() ? L"" : L" ";
-	sBarText += GetEolName(m_lineendings);
-	sBarText += sBarText.IsEmpty() ? L"" : L" ";
+	if (m_pwndStatusBar)
+	{
+		sBarText += CFileTextLines::GetEncodingName(m_texttype);
+		sBarText += sBarText.IsEmpty() ? L"" : L" ";
+		sBarText += GetEolName(m_lineendings);
+		sBarText += sBarText.IsEmpty() ? L"" : L" ";
 
-	if (sBarText.IsEmpty())
-		sBarText  += _T(" / ");
+		if (sBarText.IsEmpty())
+			sBarText  += _T(" / ");
+	}
 
 	if (nRemovedLines)
 	{
@@ -322,36 +326,83 @@ void CBaseView::UpdateStatusBar()
 			sBarText += _T(" / ");
 		sBarText += sTemp;
 	}
-	if (m_pwndStatusBar)
+	if (m_pwndStatusBar || m_pwndRibbonStatusBar)
 	{
 		UINT nID;
 		UINT nStyle;
 		int cxWidth;
-		int nIndex = m_pwndStatusBar->CommandToIndex(m_nStatusBarID);
-		if (m_nStatusBarID == ID_INDICATOR_BOTTOMVIEW)
+		if (m_pwndStatusBar)
 		{
-			sBarText.Format(IDS_STATUSBAR_CONFLICTS, nConflictedLines);
+			if (m_nStatusBarID == ID_INDICATOR_BOTTOMVIEW)
+			{
+				sBarText.Format(IDS_STATUSBAR_CONFLICTS, nConflictedLines);
+			}
+			if (m_nStatusBarID == ID_INDICATOR_LEFTVIEW)
+			{
+				sTemp.LoadString(IDS_STATUSBAR_LEFTVIEW);
+				sBarText = sTemp+sBarText;
+			}
+			if (m_nStatusBarID == ID_INDICATOR_RIGHTVIEW)
+			{
+				sTemp.LoadString(IDS_STATUSBAR_RIGHTVIEW);
+				sBarText = sTemp+sBarText;
+			}
+			int nIndex = m_pwndStatusBar->CommandToIndex(m_nStatusBarID);
+			m_pwndStatusBar->GetPaneInfo(nIndex, nID, nStyle, cxWidth);
+			//calculate the width of the text
+			CDC * pDC = m_pwndStatusBar->GetDC();
+			if (pDC)
+			{
+				CSize size = pDC->GetTextExtent(sBarText);
+				m_pwndStatusBar->SetPaneInfo(nIndex, nID, nStyle, size.cx+2);
+				ReleaseDC(pDC);
+			}
+			m_pwndStatusBar->SetPaneText(nIndex, sBarText);
 		}
-		if (m_nStatusBarID == ID_INDICATOR_LEFTVIEW)
+		else if (m_pwndRibbonStatusBar)
 		{
-			sTemp.LoadString(IDS_STATUSBAR_LEFTVIEW);
-			sBarText = sTemp+sBarText;
+			if (!IsViewGood(m_pwndBottom))
+				m_pwndRibbonStatusBar->RemoveElement(ID_INDICATOR_BOTTOMVIEW);
+			if ((m_nStatusBarID == ID_INDICATOR_BOTTOMVIEW) && (IsViewGood(this)))
+			{
+				m_pwndRibbonStatusBar->RemoveElement(ID_INDICATOR_BOTTOMVIEW);
+				std::unique_ptr<CMFCRibbonButtonsGroup> apBtnGroupBottom(new CMFCRibbonButtonsGroup);
+				apBtnGroupBottom->SetID(ID_INDICATOR_BOTTOMVIEW);
+				apBtnGroupBottom->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_BOTTOMVIEW)), TRUE));
+				CMFCRibbonButton * pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOENCODING, L"");
+				m_pMainFrame->FillEncodingButton(pButton, ID_INDICATOR_BOTTOMENCODINGSTART);
+				apBtnGroupBottom->AddButton(pButton);
+				pButton = new CMFCRibbonButton(ID_INDICATOR_BOTTOMVIEWCOMBOEOL, L"");
+				m_pMainFrame->FillEOLButton(pButton, ID_INDICATOR_BOTTOMEOLSTART);
+				apBtnGroupBottom->AddButton(pButton);
+				apBtnGroupBottom->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_BOTTOMVIEW, L"", TRUE));
+				m_pwndRibbonStatusBar->AddExtendedElement(apBtnGroupBottom.release(), L"");
+			}
+
+			CMFCRibbonButtonsGroup * pGroup = DYNAMIC_DOWNCAST(CMFCRibbonButtonsGroup, m_pwndRibbonStatusBar->FindByID(m_nStatusBarID));
+			if (pGroup)
+			{
+				CMFCRibbonStatusBarPane* pPane = DYNAMIC_DOWNCAST(CMFCRibbonStatusBarPane, pGroup->GetButton(3));
+				if (pPane)
+				{
+					pPane->SetText(sBarText);
+				}
+				CMFCRibbonButton * pButton = DYNAMIC_DOWNCAST(CMFCRibbonButton, pGroup->GetButton(1));
+				if (pButton)
+				{
+					pButton->SetText(CFileTextLines::GetEncodingName(m_texttype));
+					pButton->SetDescription(CFileTextLines::GetEncodingName(m_texttype));
+				}
+				pButton = DYNAMIC_DOWNCAST(CMFCRibbonButton, pGroup->GetButton(2));
+				if (pButton)
+				{
+					pButton->SetText(GetEolName(m_lineendings));
+					pButton->SetDescription(GetEolName(m_lineendings));
+				}
+			}
+			m_pwndRibbonStatusBar->RecalcLayout();
+			m_pwndRibbonStatusBar->Invalidate();
 		}
-		if (m_nStatusBarID == ID_INDICATOR_RIGHTVIEW)
-		{
-			sTemp.LoadString(IDS_STATUSBAR_RIGHTVIEW);
-			sBarText = sTemp+sBarText;
-		}
-		m_pwndStatusBar->GetPaneInfo(nIndex, nID, nStyle, cxWidth);
-		//calculate the width of the text
-		CDC * pDC = m_pwndStatusBar->GetDC();
-		if (pDC)
-		{
-			CSize size = pDC->GetTextExtent(sBarText);
-			m_pwndStatusBar->SetPaneInfo(nIndex, nID, nStyle, size.cx+2);
-			ReleaseDC(pDC);
-		}
-		m_pwndStatusBar->SetPaneText(nIndex, sBarText);
 	}
 }
 
