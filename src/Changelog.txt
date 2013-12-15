@@ -37,6 +37,7 @@ Released: Unreleased
  * Fixed issue #2024: Unnamed "remote" should not be created
  * Fixed issue #2027: Failed to preserve selected commit when filter is removed
  * Fixed issue #2030: TortoisePlink crash on x64
+ * Fixed issue #2037: TortoiseGit.dll sometimes does not close it's handles in explorer.exe
 
 = Release 1.8.6.0 =
 Released: 2013-10-20
