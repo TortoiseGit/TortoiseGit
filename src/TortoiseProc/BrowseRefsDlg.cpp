@@ -199,7 +199,48 @@ END_MESSAGE_MAP()
 
 void CBrowseRefsDlg::OnBnClickedOk()
 {
-	OnOK();
+	if (m_bPickOne || m_ListRefLeafs.GetSelectedCount() != 2)
+	{
+		OnOK();
+		return;
+	}
+
+	CIconMenu popupMenu;
+	popupMenu.CreatePopupMenu();
+
+	std::vector<CShadowTree*> selectedLeafs;
+	GetSelectedLeaves(selectedLeafs);
+
+	popupMenu.AppendMenuIcon(1, GetSelectedRef(true, false), IDI_LOG);
+	popupMenu.SetDefaultItem(1);
+	popupMenu.AppendMenuIcon(2, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..")), IDI_LOG);
+	popupMenu.AppendMenuIcon(3, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("...")), IDI_LOG);
+
+	RECT rect;
+	GetDlgItem(IDOK)->GetWindowRect(&rect);
+	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.top, this, 0);
+	switch (selection)
+	{
+	case 1:
+		OnOK();
+		break;
+	case 2:
+		{
+			m_bPickedRefSet = true;
+			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T(".."));
+			OnOK();
+		}
+		break;
+	case 3:
+		{
+			m_bPickedRefSet = true;
+			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, _T("..."));
+			OnOK();
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 BOOL CBrowseRefsDlg::OnInitDialog()
@@ -801,23 +842,24 @@ void CBrowseRefsDlg::OnContextMenu_RefTreeCtrl(CPoint point)
 	ShowContextMenu(point,hTreeItem,tree);
 }
 
+void CBrowseRefsDlg::GetSelectedLeaves(VectorPShadowTree& selectedLeafs)
+{
+	selectedLeafs.reserve(m_ListRefLeafs.GetSelectedCount());
+	POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
+	while (pos)
+	{
+		selectedLeafs.push_back((CShadowTree*)m_ListRefLeafs.GetItemData(m_ListRefLeafs.GetNextSelectedItem(pos)));
+	}
+}
 
 void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 {
 	std::vector<CShadowTree*> selectedLeafs;
-	selectedLeafs.reserve(m_ListRefLeafs.GetSelectedCount());
-	POSITION pos=m_ListRefLeafs.GetFirstSelectedItemPosition();
-	while(pos)
-	{
-		selectedLeafs.push_back(
-			(CShadowTree*)m_ListRefLeafs.GetItemData(
-				m_ListRefLeafs.GetNextSelectedItem(pos)));
-	}
-
+	GetSelectedLeaves(selectedLeafs);
 	ShowContextMenu(point,m_RefTreeCtrl.GetSelectedItem(),selectedLeafs);
 }
 
-CString GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator)
+CString CBrowseRefsDlg::GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator)
 {
 	ASSERT(selectedLeafs.size() == 2);
 
@@ -1286,7 +1328,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 	EndDialog(IDOK);
 }
 
-CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefs)
+CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefsOrRange)
 {
 	CBrowseRefsDlg dlg(CString(),NULL);
 
@@ -1294,7 +1336,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 		initialRef = L"HEAD";
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
-	dlg.m_bPickOne = !pickMultipleRefs;
+	dlg.m_bPickOne = !pickMultipleRefsOrRange;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();

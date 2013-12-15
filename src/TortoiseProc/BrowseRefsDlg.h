@@ -166,8 +166,10 @@ private:
 
 	afx_msg void OnContextMenu(CWnd* pWndFrom, CPoint point);
 
+	void		GetSelectedLeaves(VectorPShadowTree& selectedLeafs);
 	void		OnContextMenu_ListRefLeafs(CPoint point);
 	void		OnContextMenu_RefTreeCtrl(CPoint point);
+	static CString GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator);
 
 	bool		AreAllFrom(VectorPShadowTree& leafs, const wchar_t* from);
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
@@ -188,6 +190,6 @@ private:
 	bool	m_bPickedRefSet;
 
 public:
-	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefs = false);
+	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefsOrRange = false);
 	static bool		PickRefForCombo(CComboBoxEx* pComboBox, int pickRef_Kind = gPickRef_All);
 };

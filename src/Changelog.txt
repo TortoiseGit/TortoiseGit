@@ -17,6 +17,7 @@ Released: Unreleased
  * Fixed issue #2034: Show gravatar in TortoiseGitBlame
  * Fixed issue #871: Blame copy/move detection and other options
  * Fixed issue #1990: TortoiseGitBlame always takes whitespace into account
+ * Fixed issue #1988: Allow tag selection in From/To fields instead of dates only
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done
