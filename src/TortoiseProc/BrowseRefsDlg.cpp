@@ -160,7 +160,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=NULL*/)
 	m_SelectedFilters(LOGFILTER_ALL),
 	m_ColumnManager(&m_ListRefLeafs),
 	m_bPickOne(false),
-	m_bPickCurrentBranch(false)
+	m_bPickedRefSet(false)
 {
 
 }
@@ -225,7 +225,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, _T("BrowseRefs"), _countof(columnNames), columnWidths);
-	m_bPickCurrentBranch = false;
+	m_bPickedRefSet = false;
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
@@ -1255,9 +1255,7 @@ void CBrowseRefsDlg::OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResul
 
 void CBrowseRefsDlg::OnDestroy()
 {
-	if (m_bPickCurrentBranch)
-		m_pickedRef = g_Git.GetCurrentBranch(true);
-	else
+	if (!m_bPickedRefSet)
 		m_pickedRef = GetSelectedRef(true, false);
 
 	int maxcol = m_ColumnManager.GetColumnCount();
@@ -1275,7 +1273,7 @@ void CBrowseRefsDlg::OnItemChangedListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 
 	CShadowTree *item = (CShadowTree*)m_ListRefLeafs.GetItemData(pNMListView->iItem);
-	if (item && pNMListView->uNewState == 2)
+	if (item && pNMListView->uNewState == LVIS_SELECTED)
 		m_sLastSelected = item->GetRefName();
 }
 
@@ -1490,6 +1488,7 @@ void CBrowseRefsDlg::SetFilterCueText()
 
 void CBrowseRefsDlg::OnBnClickedCurrentbranch()
 {
-	m_bPickCurrentBranch = true;
+	m_pickedRef = g_Git.GetCurrentBranch(true);
+	m_bPickedRefSet = true;
 	OnOK();
 }

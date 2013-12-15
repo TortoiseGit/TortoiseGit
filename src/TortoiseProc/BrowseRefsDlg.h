@@ -185,7 +185,7 @@ private:
 	int		m_pickRef_Kind;
 	CString m_pickedRef;
 	bool	m_bPickOne;
-	bool	m_bPickCurrentBranch;
+	bool	m_bPickedRefSet;
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefs = false);
