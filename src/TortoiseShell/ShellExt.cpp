@@ -285,10 +285,18 @@ UINT __stdcall CShellExt::CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTS
 
 UINT __stdcall CShellExt::CopyCallback_Wrap(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
 {
-	if (wFunc == FO_COPY)
-		return IDYES;   // copying is not a problem for us
+	switch (wFunc)
+	{
+	case FO_MOVE:
+	case FO_DELETE:
+	case FO_RENAME:
+		if (pszSrcFile && pszSrcFile[0])
+			m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
+		break;
+	default:
+		break;
+	}
 
-	m_remoteCacheLink.ReleaseLockForPath(CTGitPath(pszSrcFile));
 	// we could now wait a little bit to give the cache time to release the handles.
 	// but the explorer/shell already retries any action for about two seconds
 	// if it first fails. So if the cache hasn't released the handle yet, the explorer
