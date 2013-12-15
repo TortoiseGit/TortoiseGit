@@ -229,6 +229,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 	AddAnchor(IDOK,BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL,BOTTOM_RIGHT);
+	AddAnchor(IDC_CURRENTBRANCH, BOTTOM_RIGHT);
 
 	Refresh(m_initialRef);
 
