@@ -4344,6 +4344,8 @@ BEGIN
     IDS_CHECKNEWER_NETERROR_FORMAT 
                             "Could not check for a newer version! (Error code: 0x%08X)"
     IDS_PROC_BRANCH_FF      "Branch (FF)"
+    IDS_PROC_LOG_LOCAL_BRANCHES "<Local Branches>"
+    IDS_PROC_LOG_SELECT_LOCAL_BRANCHES "All local branches"
 END
 
 STRINGTABLE

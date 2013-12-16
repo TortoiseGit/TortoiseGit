@@ -19,6 +19,7 @@ Released: Unreleased
  * Fixed issue #1990: TortoiseGitBlame always takes whitespace into account
  * Fixed issue #1988: Allow tag selection in From/To fields instead of dates only
  * Fixed issue #2015: Save and load ref lists (selections) in "Show log" -> "Browse references"
+ * Fixed issue #1847: Option to show all local branches in log view
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

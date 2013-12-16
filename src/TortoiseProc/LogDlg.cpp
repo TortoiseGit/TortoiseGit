@@ -320,6 +320,7 @@ BOOL CLogDlg::OnInitDialog()
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
+	m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
 	if(this->m_bAllBranch)
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
 	else
@@ -967,6 +968,8 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(++cnt, _T("HEAD"));
 		popup.AppendMenuIcon(++cnt, IDS_ALL);
 		popup.EnableMenuItem(cnt, m_bFollowRenames);
+		popup.AppendMenuIcon(++cnt, IDS_PROC_LOG_SELECT_LOCAL_BRANCHES);
+		popup.EnableMenuItem(cnt, m_bFollowRenames);
 		int offset = ++cnt;
 		if (m_History.GetCount() > 0)
 		{
@@ -979,8 +982,13 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (cmd == 0)
 			return;
 		else if (cmd == 1)
+		{
 			OnBnClickedBrowseRef();
-		else if (cmd == 2)
+			return;
+		}
+
+		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
+		if (cmd == 2)
 		{
 			SetRange(g_Git.GetCurrentBranch(true));
 			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
@@ -989,6 +997,12 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		else if (cmd == 3)
 		{
 			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(TRUE);
+			OnBnClickedAllBranch();
+		}
+		else if (cmd == 4)
+		{
+			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
+			m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
 			OnBnClickedAllBranch();
 		}
 		else if (cmd >= offset)
@@ -2366,7 +2380,10 @@ void CLogDlg::OnBnClickedAllBranch()
 	this->UpdateData();
 
 	if(this->m_bAllBranch)
+	{
 		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+		m_LogList.m_ShowMask &=~ CGit::LOG_INFO_LOCAL_BRANCHES;
+	}
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
 
@@ -2380,6 +2397,7 @@ void CLogDlg::OnBnClickedFollowRenames()
 	if(m_bFollowRenames)
 	{
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_FOLLOW;
+		m_LogList.m_ShowMask &=~ CGit::LOG_INFO_LOCAL_BRANCHES;
 		if (m_bAllBranch)
 		{
 
@@ -2454,9 +2472,19 @@ void CLogDlg::ShowStartRef()
 	//Show ref name on top
 	if(!::IsWindow(m_hWnd))
 		return;
-	if(m_bAllBranch)
+	if (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES))
 	{
-		m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_ALLBRANCHES)));
+		switch (m_LogList.m_ShowMask & (CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES))
+		{
+		case CGit::LOG_INFO_ALL_BRANCH:
+			m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_ALLBRANCHES)));
+			break;
+
+		case CGit::LOG_INFO_LOCAL_BRANCHES:
+			m_staticRef.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_LOG_LOCAL_BRANCHES)));
+			break;
+		}
+		
 		m_staticRef.Invalidate(TRUE);
 		m_tooltips.DelTool(GetDlgItem(IDC_STATIC_REF));
 		return;

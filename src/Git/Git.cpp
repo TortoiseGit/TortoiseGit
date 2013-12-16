@@ -851,6 +851,9 @@ CString CGit::GetLogCmd(CString &range, CTGitPath *path, int count, int mask, bo
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
 		param += _T(" --all ");
 
+	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
+		param += _T(" --branches ");
+
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
 		param += _T(" -C ");
 
