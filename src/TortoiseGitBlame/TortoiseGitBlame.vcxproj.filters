@@ -190,6 +190,9 @@
     <Image Include="..\Resources\blameres\TortoiseGitBlameDoc.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\copy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="..\Resources\menublame.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -197,9 +200,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Resources\menulog.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Resources\menucopy.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
