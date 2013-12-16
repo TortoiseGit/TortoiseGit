@@ -95,7 +95,7 @@ CLogDlg::CLogDlg(CWnd* pParent /*=NULL*/)
 CLogDlg::~CLogDlg()
 {
 
-	m_regbAllBranch=m_bAllBranch;
+	m_regbAllBranch = (m_bAllBranch == BST_CHECKED) ? BST_CHECKED : BST_UNCHECKED;
 	m_regbShowTags = m_bShowTags;
 	m_regbShowLocalBranches = m_bShowLocalBranches;
 	m_regbShowRemoteBranches = m_bShowRemoteBranches;
@@ -188,7 +188,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_hightlightRevision = hightlightRevision;
 
 	if (!(range.IsEmpty() || range == _T("HEAD")))
-		m_bAllBranch = false;
+		m_bAllBranch = BST_UNCHECKED;
 
 	SetRange(range);
 
@@ -987,32 +987,34 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			return;
 		}
 
-		m_LogList.m_ShowMask &= ~CGit::LOG_INFO_LOCAL_BRANCHES;
+		m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES);
+		m_bAllBranch = BST_UNCHECKED;
 		if (cmd == 2)
 		{
 			SetRange(g_Git.GetCurrentBranch(true));
-			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
-			OnBnClickedAllBranch();
 		}
 		else if (cmd == 3)
 		{
-			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(TRUE);
-			OnBnClickedAllBranch();
+			m_bAllBranch = BST_CHECKED;
+			m_LogList.m_ShowMask |= CGit::LOG_INFO_ALL_BRANCH;
 		}
 		else if (cmd == 4)
 		{
-			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
+			m_bAllBranch = BST_INDETERMINATE;
 			m_LogList.m_ShowMask |= CGit::LOG_INFO_LOCAL_BRANCHES;
-			OnBnClickedAllBranch();
 		}
 		else if (cmd >= offset)
 		{
 			SetRange(m_History.GetEntry(cmd - offset));
 			m_History.AddEntry(m_LogList.m_sRange);
 			m_History.Save();
-			((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(FALSE);
-			OnBnClickedAllBranch();
 		}
+
+		UpdateData(FALSE);
+
+		OnRefresh();
+		FillLogMessageCtrl(false);
+
 		return;
 	}
 	int selCount = m_LogList.GetSelectedCount();
@@ -2377,15 +2379,19 @@ void CLogDlg::OnEnChangeSearchedit()
 
 void CLogDlg::OnBnClickedAllBranch()
 {
-	this->UpdateData();
+	// m_bAllBranch is not auto-toggled by MFC, we have to handle it manually (in order to prevent the indeterminate state)
 
-	if(this->m_bAllBranch)
-	{
-		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
-		m_LogList.m_ShowMask &=~ CGit::LOG_INFO_LOCAL_BRANCHES;
-	}
+	m_LogList.m_ShowMask &=~ (CGit::LOG_INFO_LOCAL_BRANCHES | CGit::LOG_INFO_ALL_BRANCH);
+
+	if (m_bAllBranch)
+		m_bAllBranch = BST_UNCHECKED;
 	else
-		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
+	{
+		m_bAllBranch = BST_CHECKED;
+		m_LogList.m_ShowMask|=CGit::LOG_INFO_ALL_BRANCH;
+	}
+
+	UpdateData(FALSE);
 
 	OnRefresh();
 
@@ -2462,9 +2468,13 @@ void CLogDlg::OnBnClickedBrowseRef()
 	m_History.Save();
 
 	SetRange(newRef);
-	((CButton*)GetDlgItem(IDC_LOG_ALLBRANCH))->SetCheck(0);
 
-	OnBnClickedAllBranch();
+	m_LogList.m_ShowMask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_LOCAL_BRANCHES);
+	m_bAllBranch = BST_UNCHECKED;
+	UpdateData(FALSE);
+
+	OnRefresh();
+	FillLogMessageCtrl(false);
 }
 
 void CLogDlg::ShowStartRef()
