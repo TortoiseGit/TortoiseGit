@@ -966,6 +966,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.SetDefaultItem(cnt);
 		popup.AppendMenuIcon(++cnt, _T("HEAD"));
 		popup.AppendMenuIcon(++cnt, IDS_ALL);
+		popup.EnableMenuItem(cnt, m_bFollowRenames);
 		int offset = ++cnt;
 		if (m_History.GetCount() > 0)
 		{
