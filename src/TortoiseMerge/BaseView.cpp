@@ -121,6 +121,7 @@ CBaseView::CBaseView()
 	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
+	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
 	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
 	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
@@ -241,6 +242,7 @@ void CBaseView::DocumentUpdated()
 	m_nDigits = 0;
 	m_nMouseLine = -1;
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
+	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
 	m_bViewLinenumbers = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewLinenumbers"), 1);
 	m_InlineAddedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineAdded"), INLINEADDED_COLOR);
 	m_InlineRemovedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR);
@@ -3607,8 +3609,21 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		int nViewLine = ptCaretViewPos.y;
 		if ((nViewLine==0)&&(GetViewCount()==0))
 			OnChar(VK_RETURN, 0, 0);
+		int charCount = 1;
 		viewdata lineData = GetViewData(nViewLine);
-		lineData.sLine.Insert(ptCaretViewPos.x, (wchar_t)nChar);
+		if (nChar == VK_TAB)
+		{
+			int indentChars = GetIndentCharsForLine(ptCaretViewPos.x, nViewLine);
+			if (indentChars > 0)
+			{
+				lineData.sLine.Insert(ptCaretViewPos.x, CString(_T(' '), indentChars));
+				charCount = indentChars;
+			}
+			else
+				lineData.sLine.Insert(ptCaretViewPos.x, _T('\t'));
+		}
+		else
+			lineData.sLine.Insert(ptCaretViewPos.x, (wchar_t)nChar);
 		if (IsStateEmpty(lineData.state))
 		{
 			// if not last line set EOL
@@ -3648,7 +3663,8 @@ void CBaseView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			UpdateViewLineNumbers();
 		}
-		MoveCaretRight();
+		for (int i = 0; i < charCount; ++i)
+			MoveCaretRight();
 		UpdateGoalPos();
 	}
 	else if (nChar == 10)
@@ -5815,6 +5831,51 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	RefreshViews();
 }
 
+int CBaseView::GetIndentCharsForLine(int x, int y)
+{
+	const int maxGuessLine = 100;
+	int nTabMode = -1;
+	CString line = GetViewLine(y);
+	if (m_nTabMode & 2)
+	{
+		// detect left char and right char
+		TCHAR lc = x > 0 ? line[x - 1] : '\0';
+		TCHAR rc = x < line.GetLength() ? line[x] : '\0';
+		if (lc == ' ' && rc != '\t' || rc == ' ' && lc != '\t')
+			nTabMode = 1;
+		if (lc == '\t' && rc != ' ' || rc == '\t' && lc != ' ')
+			nTabMode = 0;
+		if (lc == ' ' && rc == '\t' || rc == ' ' && lc == '\t')
+			nTabMode = m_nTabMode & 1;
+
+		// detect lines nearby
+		for (int i = y - 1, j = y + 1; nTabMode == -1; --i, ++j)
+		{
+			bool above = i > 0 && i >= y - maxGuessLine;
+			bool below = j < GetLineCount() && j <= y + maxGuessLine;
+			if (!(above || below))
+				break;
+			TCHAR ac = above ? GetViewLine(i)[0] : '\0';
+			TCHAR bc = below ? GetViewLine(j)[0] : '\0';
+			if (ac == ' ' && bc != '\t' || bc == ' ' && ac != '\t')
+				nTabMode = 1;
+			else if (ac == '\t' && bc != ' ' || bc == '\t' && ac != ' ')
+				nTabMode = 0;
+			else if (ac == ' ' && bc == '\t' || bc == ' ' && ac == '\t')
+				nTabMode = m_nTabMode & 1;
+		}
+	}
+	else
+		nTabMode = m_nTabMode & 1;
+
+	if (nTabMode)
+	{
+		x = CountExpandedChars(line, x);
+		return x % m_nTabSize ? m_nTabSize - (x % m_nTabSize) : m_nTabSize;
+	}
+	return 0;
+}
+
 void CBaseView::AddIndentationForSelectedBlock()
 {
 	bool bModified = false;
@@ -5838,7 +5899,10 @@ void CBaseView::AddIndentationForSelectedBlock()
 			continue;
 		}
 		// add tab to line start (alternatively m_nTabSize spaces can be used)
-		SetViewLine(nViewLine, CString("\t") + sLine);
+		CString tabStr;
+		int indentChars = GetIndentCharsForLine(0, nViewLine);
+		tabStr = indentChars > 0 ? CString(_T(' '), indentChars) : _T("\t");
+		SetViewLine(nViewLine, tabStr + sLine);
 		bModified = true;
 	}
 	if (bModified)
@@ -5848,7 +5912,7 @@ void CBaseView::AddIndentationForSelectedBlock()
 		BuildAllScreen2ViewVector();
 	}
 }
-	
+
 void CBaseView::RemoveIndentationForSelectedBlock()
 {
 	bool bModified = false;

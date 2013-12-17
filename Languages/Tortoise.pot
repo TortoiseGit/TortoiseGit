@@ -8280,6 +8280,10 @@ msgstr ""
 msgid "Slide"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Smart tab char"
+msgstr ""
+
 #. Resource IDs: (89)
 msgid "Soft"
 msgstr ""
@@ -9452,6 +9456,10 @@ msgstr ""
 msgid "Use right block"
 msgstr ""
 
+#. Resource IDs: (156)
+msgid "Use spaces"
+msgstr ""
+
 #. Resource IDs: (1426)
 msgid "Use system locale for date/time"
 msgstr ""
@@ -9698,6 +9706,14 @@ msgstr ""
 
 #. Resource IDs: (316)
 msgid "When resolving conflicts, you always have to save even if there is no conflict shown. TortoiseGitMerge can merge changes that Git can't and won't show a conflict for those!"
+msgstr ""
+
+#. Resource IDs: (2062)
+msgid "When selected, Spaces will be used instead of tab\nUse spaces"
+msgstr ""
+
+#. Resource IDs: (2062)
+msgid "When selected, it tries to infer tab / spaces to use\nSmart tab char"
 msgstr ""
 
 #. Resource IDs: (604)

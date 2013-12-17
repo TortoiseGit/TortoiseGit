@@ -213,6 +213,7 @@ public: // methods
 	static bool		IsViewGood(const CBaseView* view ) { return (view != 0) && view->IsWindowVisible(); }
 	static CBaseView * GetFirstGoodView();
 
+	int				GetIndentCharsForLine(int x, int y);
 	void			AddIndentationForSelectedBlock();
 	void			RemoveIndentationForSelectedBlock();
 	void			ConvertTabToSpaces();
@@ -251,6 +252,8 @@ public: // variables
 	static CMFCStatusBar * m_pwndStatusBar;///< Pointer to the status bar
 	static CMFCRibbonStatusBar * m_pwndRibbonStatusBar;///< Pointer to the status bar
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
+
+	int				m_nTabMode;
 
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();

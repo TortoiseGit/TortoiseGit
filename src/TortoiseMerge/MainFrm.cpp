@@ -108,6 +108,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_INLINEDIFF, &CMainFrame::OnUpdateViewInlinediff)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnUpdateEditCreateunifieddifffile)
 	ON_COMMAND(ID_EDIT_CREATEUNIFIEDDIFFFILE, &CMainFrame::OnEditCreateunifieddifffile)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_TABSPACE, &CMainFrame::OnUpdateEditTabspace)
+	ON_COMMAND(ID_EDIT_TABSPACE, &CMainFrame::OnEditTabspace)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_SMARTTAB, &CMainFrame::OnUpdateEditSmartTab)
+	ON_COMMAND(ID_EDIT_SMARTTAB, &CMainFrame::OnEditSmartTab)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnUpdateViewLinediffbar)
 	ON_COMMAND(ID_VIEW_LINEDIFFBAR, &CMainFrame::OnViewLinediffbar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LOCATORBAR, &CMainFrame::OnUpdateViewLocatorbar)
@@ -2839,6 +2843,48 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		return;
 
 	CAppUtils::CreateUnifiedDiff(origFile, modifiedFile, outputFile, true);
+}
+
+void CMainFrame::OnUpdateEditTabspace(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(true);
+	int nTabMode = CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	pCmdUI->SetCheck(nTabMode & 1);
+}
+
+void CMainFrame::OnEditTabspace()
+{
+	CRegDWORD regTabMode(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	int nTabMode = regTabMode;
+	nTabMode ^= 1;
+	regTabMode = nTabMode;
+	if (IsViewGood(m_pwndLeftView))
+		m_pwndLeftView->m_nTabMode = nTabMode;
+	if (IsViewGood(m_pwndRightView))
+		m_pwndRightView->m_nTabMode = nTabMode;
+	if (IsViewGood(m_pwndBottomView))
+		m_pwndBottomView->m_nTabMode = nTabMode;
+}
+
+void CMainFrame::OnUpdateEditSmartTab(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(true);
+	int nTabMode = CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	pCmdUI->SetCheck(nTabMode & 2);
+}
+
+void CMainFrame::OnEditSmartTab()
+{
+	CRegDWORD regTabMode(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	int nTabMode = regTabMode;
+	nTabMode ^= 2;
+	regTabMode = nTabMode;
+	if (IsViewGood(m_pwndLeftView))
+		m_pwndLeftView->m_nTabMode = nTabMode;
+	if (IsViewGood(m_pwndRightView))
+		m_pwndRightView->m_nTabMode = nTabMode;
+	if (IsViewGood(m_pwndBottomView))
+		m_pwndBottomView->m_nTabMode = nTabMode;
 }
 
 void CMainFrame::OnUpdateViewLinediffbar(CCmdUI *pCmdUI)

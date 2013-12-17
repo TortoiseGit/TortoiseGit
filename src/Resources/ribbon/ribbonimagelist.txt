@@ -43,3 +43,5 @@ Help.png
 Settings.png
 SaveAs.png
 EditEnabled.png
+TabSpace.png
+SmartTab.png

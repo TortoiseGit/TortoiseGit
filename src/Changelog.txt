@@ -20,6 +20,7 @@ Released: Unreleased
  * Fixed issue #1988: Allow tag selection in From/To fields instead of dates only
  * Fixed issue #2015: Save and load ref lists (selections) in "Show log" -> "Browse references"
  * Fixed issue #1847: Option to show all local branches in log view
+ * Fixed issue #1823: Pressing tab key can insert spaces instead of tab in TortoiseGitMerge
 
 == Bug Fixes ==
  * Fixed issue #1947: When editing git notes, spurious reformatting is done

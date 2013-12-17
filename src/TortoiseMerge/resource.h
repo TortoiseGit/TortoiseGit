@@ -427,13 +427,15 @@
 #define ID_BUTTON17                     32971
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978
+#define ID_EDIT_TABSPACE                32979
+#define ID_EDIT_SMARTTAB                32980
 
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        164
-#define _APS_NEXT_COMMAND_VALUE         32979
+#define _APS_NEXT_COMMAND_VALUE         32981
 #define _APS_NEXT_CONTROL_VALUE         1504
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

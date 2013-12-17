@@ -1169,6 +1169,8 @@ END
 STRINGTABLE
 BEGIN
     ID_EDIT_ENABLE          "Allow Editing for this view\nAllow Edit"
+    ID_EDIT_TABSPACE        "When selected, Spaces will be used instead of tab\nUse spaces"
+    ID_EDIT_SMARTTAB        "When selected, it tries to infer tab / spaces to use\nSmart tab char"
 END
 
 STRINGTABLE
