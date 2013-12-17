@@ -46,10 +46,6 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;
 
-	settings[i].sName	= L"ColumnsEveryWhere";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
 	settings[i].sName	= L"Debug";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= false;

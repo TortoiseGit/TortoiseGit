@@ -58,20 +58,6 @@
             </listitem>
         </varlistentry>
         <varlistentry>
-            <term condition="pot">ColumnsEveryWhere</term>
-            <listitem>
-                <para>
-                    The extra columns the TortoiseGit adds to the details view
-                    in Windows Explorer are normally only active in a working
-                    copy. If you want those to be accessible everywhere, not
-                    just in working trees, set this value to
-                    <literal>true</literal>.
-                    Note that the extra columns are only available in XP.
-                    Vista and later doesn't support that feature any more.
-                </para>
-            </listitem>
-        </varlistentry>
-        <varlistentry>
             <term condition="pot">Debug</term>
             <listitem>
                 <para>
