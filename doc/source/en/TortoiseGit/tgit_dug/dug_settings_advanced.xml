@@ -209,6 +209,15 @@
             </listitem>
         </varlistentry>
         <varlistentry>
+            <term condition="pot">MaxRefHistoryItems</term>
+            <listitem>
+                <para>
+                    This options sets the maximum browse ref history (Right click ref hyperlink to find it).
+                    The default is 5.
+                </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
             <term condition="pot">NoSortLocalBranchesFirst</term>
             <listitem>
                 <para>
