@@ -1324,7 +1324,8 @@ void CSyncDlg::FillNewRefMap()
 	auto newRefMap = HashMapToRefMap(m_newHashMap);
 	if (m_refList.OpenRepository())
 	{
-		delete oldRefMap, newRefMap;
+		delete oldRefMap;
+		delete newRefMap;
 		return;
 	}
 	for (auto oit = oldRefMap->begin(); oit != oldRefMap->end(); ++oit)
@@ -1364,7 +1365,8 @@ void CSyncDlg::FillNewRefMap()
 		}
 	}
 	m_refList.CloseRepository();
-	delete oldRefMap, newRefMap;
+	delete oldRefMap;
+	delete newRefMap;
 	m_refList.Show();
 }
 
