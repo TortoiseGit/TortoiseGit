@@ -121,7 +121,7 @@ CBaseView::CBaseView()
 	m_sWordSeparators = CRegString(_T("Software\\TortoiseGitMerge\\WordSeparators"), _T("[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?"));
 	m_bIconLFs = CRegDWORD(_T("Software\\TortoiseGitMerge\\IconLFs"), 0);
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
-	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), TABMODE_NONE);
 	std::fill_n(m_apFonts, fontsCount, (CFont*)NULL);
 	m_hConflictedIcon = LoadIcon(IDI_CONFLICTEDLINE);
 	m_hConflictedIgnoredIcon = LoadIcon(IDI_CONFLICTEDIGNOREDLINE);
@@ -242,7 +242,7 @@ void CBaseView::DocumentUpdated()
 	m_nDigits = 0;
 	m_nMouseLine = -1;
 	m_nTabSize = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabSize"), 4);
-	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), 0);
+	m_nTabMode = (int)(DWORD)CRegDWORD(_T("Software\\TortoiseGitMerge\\TabMode"), TABMODE_NONE);
 	m_bViewLinenumbers = CRegDWORD(_T("Software\\TortoiseGitMerge\\ViewLinenumbers"), 1);
 	m_InlineAddedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineAdded"), INLINEADDED_COLOR);
 	m_InlineRemovedBk = CRegDWORD(_T("Software\\TortoiseGitMerge\\InlineRemoved"), INLINEREMOVED_COLOR);
@@ -5836,7 +5836,7 @@ int CBaseView::GetIndentCharsForLine(int x, int y)
 	const int maxGuessLine = 100;
 	int nTabMode = -1;
 	CString line = GetViewLine(y);
-	if (m_nTabMode & 2)
+	if (m_nTabMode & TABMODE_SMARTINDENT)
 	{
 		// detect left char and right char
 		TCHAR lc = x > 0 ? line[x - 1] : '\0';
@@ -5846,7 +5846,7 @@ int CBaseView::GetIndentCharsForLine(int x, int y)
 		if (lc == '\t' && rc != ' ' || rc == '\t' && lc != ' ')
 			nTabMode = 0;
 		if (lc == ' ' && rc == '\t' || rc == ' ' && lc == '\t')
-			nTabMode = m_nTabMode & 1;
+			nTabMode = m_nTabMode & TABMODE_USESPACES;
 
 		// detect lines nearby
 		for (int i = y - 1, j = y + 1; nTabMode == -1; --i, ++j)
@@ -5862,13 +5862,13 @@ int CBaseView::GetIndentCharsForLine(int x, int y)
 			else if (ac == '\t' && bc != ' ' || bc == '\t' && ac != ' ')
 				nTabMode = 0;
 			else if (ac == ' ' && bc == '\t' || bc == ' ' && ac == '\t')
-				nTabMode = m_nTabMode & 1;
+				nTabMode = m_nTabMode & TABMODE_USESPACES;
 		}
 	}
 	else
-		nTabMode = m_nTabMode & 1;
+		nTabMode = m_nTabMode & TABMODE_USESPACES;
 
-	if (nTabMode)
+	if (nTabMode > 0)
 	{
 		x = CountExpandedChars(line, x);
 		return x % m_nTabSize ? m_nTabSize - (x % m_nTabSize) : m_nTabSize;
