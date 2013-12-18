@@ -138,6 +138,7 @@ UINT CResolveDlg::ResolveThread()
 
 	m_bCancelled = false;
 
+	m_resolveListCtrl.Clear();
 	if (!m_resolveListCtrl.GetStatus(&m_pathList))
 	{
 		m_resolveListCtrl.SetEmptyString(m_resolveListCtrl.GetLastErrorMessage());
