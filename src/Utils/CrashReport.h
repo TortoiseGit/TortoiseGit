@@ -200,7 +200,11 @@ private:
 
 		// hCrshhndlDll should not be unloaded, crash may appear even after return from main().
 		// So hCrshhndlDll is not saved after construction.
-		HMODULE hCrshhndlDll = ::LoadLibraryW(L"crshhndl.dll");
+		BOOL bIsWow = FALSE;
+		IsWow64Process(GetCurrentProcess(), &bIsWow);
+		HMODULE hCrshhndlDll = nullptr;
+		if (bIsWow == FALSE)
+			hCrshhndlDll = ::LoadLibraryW(L"crshhndl.dll");
 		if (hCrshhndlDll != NULL)
 		{
 			m_InitCrashHandler = (pfnInitCrashHandler) GetProcAddress(hCrshhndlDll, "InitCrashHandler");
