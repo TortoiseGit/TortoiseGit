@@ -529,7 +529,7 @@ void CCheckForUpdatesDlg::FillDownloads(CStdioFile &file, CString version)
 #endif
 
 	if (!file.ReadString(m_sFilesURL) || m_sFilesURL.IsEmpty())
-		m_sFilesURL = _T("http://tortoisegit.googlecode.com/files/");
+		m_sFilesURL.Format(_T("http://updater.download.tortoisegit.org/tgit/%s/"), version);
 
 	m_ctrlFiles.InsertItem(0, _T("TortoiseGit"));
 	CString filename;
