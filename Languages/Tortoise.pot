@@ -8656,7 +8656,7 @@ msgid "Tasks Pane"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Temp files"
+msgid "Temp files (including Gravatar images)"
 msgstr ""
 
 #. Resource IDs: (219)
@@ -8998,7 +8998,7 @@ msgid "To avoid fetching wrong tags, if this is not an official remote,\nyou are
 msgstr ""
 
 #. Resource IDs: (606)
-msgid "To clear temporary files, you should ensure that no other TortoiseGit applications are running."
+msgid "To clear temporary files, you should ensure that no other TortoiseGit applications are running.\n\nIf you wish to completely clear Gravatar images,\nyou may also need to clear Internet Explorer Temporary Internet Files."
 msgstr ""
 
 #. Resource IDs: (1201, 65535)
