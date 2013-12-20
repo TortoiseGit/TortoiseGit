@@ -129,6 +129,9 @@ protected:
 	void OnBnClickedCompressedGraph();
 	afx_msg void OnBnClickedBrowseRef();
 
+	afx_msg void GoBack();
+	afx_msg void GoForward();
+
 	afx_msg void OnDtnDropdownDatefrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDropdownDateto(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSize(UINT nType, int cx, int cy);

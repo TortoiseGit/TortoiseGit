@@ -33,6 +33,7 @@
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"
 #include "LogOrdering.h"
+#include <MMSystem.h>
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
@@ -166,6 +167,8 @@ BEGIN_MESSAGE_MAP(CLogDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_REFRESH, &CLogDlg::OnBnClickedRefresh)
 	ON_STN_CLICKED(IDC_STATIC_REF, &CLogDlg::OnBnClickedBrowseRef)
 	ON_COMMAND(ID_LOGDLG_REFRESH, &CLogDlg::OnBnClickedRefresh)
+	ON_COMMAND(ID_GO_BACKWARD, &CLogDlg::GoBack)
+	ON_COMMAND(ID_GO_FORWARD, &CLogDlg::GoForward)
 	ON_COMMAND(ID_LOGDLG_FIND, &CLogDlg::OnFind)
 	ON_COMMAND(ID_LOGDLG_FOCUSFILTER, &CLogDlg::OnFocusFilter)
 	ON_COMMAND(ID_EDIT_COPY, &CLogDlg::OnEditCopy)
@@ -975,6 +978,51 @@ void CLogDlg::OnSizing(UINT fwSide, LPRECT pRect)
 	m_patchViewdlg.MoveWindow(patchrect);
 }
 
+void CLogDlg::GoBack()
+{
+	m_LogList.m_highlight.Empty();
+	CGitHash gotoHash;
+	if (!m_LogList.m_selectionHistory.GoBack(gotoHash))
+	{
+			for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+			{
+				GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+				if (!rev) continue;
+				if (rev->m_CommitHash == gotoHash)
+				{
+					m_LogList.m_highlight = gotoHash;
+					m_LogList.EnsureVisible(i, FALSE);
+					m_LogList.Invalidate();
+					return;
+				}
+			}
+	}
+	m_LogList.Invalidate();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+}
+
+void CLogDlg::GoForward()
+{
+	m_LogList.m_highlight.Empty();
+	CGitHash gotoHash;
+	if (!m_LogList.m_selectionHistory.GoForward(gotoHash))
+	{
+			for (int i = 0; i < m_LogList.m_arShownList.GetCount(); ++i)
+			{
+				GitRev *rev = (GitRev *)m_LogList.m_arShownList.SafeGetAt(i);
+				if (!rev) continue;
+				if (rev->m_CommitHash == gotoHash)
+				{
+					m_LogList.m_highlight = gotoHash;
+					m_LogList.EnsureVisible(i, FALSE);
+					m_LogList.Invalidate();
+				}
+			}
+	}
+	m_LogList.Invalidate();
+	PlaySound((LPCTSTR)SND_ALIAS_SYSTEMASTERISK, nullptr, SND_ASYNC | SND_ALIAS_ID);
+}
+
 void CLogDlg::OnBnClickedRefresh()
 {
 	Refresh (true);
@@ -1468,6 +1516,11 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		return;
 	if (pNMLV->iItem >= 0)
 	{
+		if (!m_LogList.m_highlight.IsEmpty())
+		{
+			m_LogList.m_highlight.Empty();
+			m_LogList.Invalidate();
+		}
 		this->m_LogList.m_nSearchIndex = pNMLV->iItem;
 		GitRev* pLogEntry = reinterpret_cast<GitRev *>(m_LogList.m_arShownList.SafeGetAt(pNMLV->iItem));
 		if (pLogEntry == nullptr)
@@ -1489,6 +1542,8 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 		if (pNMLV->uChanged & LVIF_STATE)
 		{
+			m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
+			m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
 			FillLogMessageCtrl();
 			UpdateData(FALSE);
 		}

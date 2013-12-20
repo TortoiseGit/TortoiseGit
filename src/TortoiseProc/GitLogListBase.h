@@ -71,6 +71,57 @@
 #define MSG_REFLOG_CHANGED		(WM_USER+112)
 #define MSG_FETCHED_DIFF		(WM_USER+113)
 
+class SelectionHistory
+{
+#define HISTORYLENGTH 50
+public:
+	SelectionHistory(void)
+	: location(0)
+	{
+		lastselected.reserve(HISTORYLENGTH);
+	}
+	void Add(CGitHash &hash)
+	{
+		ATLTRACE(hash.ToString() + L"\n");
+		if (hash.IsEmpty())
+			return;
+		if (location > 0 && lastselected[location - 1] == hash)
+			return;
+		if (location != lastselected.size() && hash == lastselected[location - 1])
+		{
+			++location;
+			return;
+		}
+		while (location < lastselected.size())
+		{
+			lastselected.pop_back();
+		}
+		lastselected.push_back(hash);
+		++location;
+		if (lastselected.size() >= HISTORYLENGTH)
+			lastselected.erase(lastselected.cbegin());
+	}
+	BOOL GoBack(CGitHash& historyEntry)
+	{
+		if (location <= 1)
+			return -1;
+
+		historyEntry = lastselected[--location];
+		return 0;
+	}
+	BOOL GoForward(CGitHash& historyEntry)
+	{
+		if (location >= lastselected.size())
+			return -1;
+
+		historyEntry = lastselected[location++];
+		return 0;
+	}
+private:
+	std::vector<CGitHash> lastselected;
+	size_t location;
+};
+
 class CThreadSafePtrArray: public CPtrArray
 {
 	CComCriticalSection *m_critSec;
@@ -338,6 +389,8 @@ public:
 	CTGitPath			m_Path;
 	int					m_ShowMask;
 	CGitHash			m_lastSelectedHash;
+	SelectionHistory	m_selectionHistory;
+	CGitHash			m_highlight;
 	int					m_ShowRefMask;
 
 	void				GetTimeRange(CTime &oldest,CTime &latest);
@@ -541,6 +594,7 @@ protected:
 	HICON				m_hFetchIcon;
 
 	HFONT				m_boldFont;
+	HFONT				m_FontItalics;
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 

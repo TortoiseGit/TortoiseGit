@@ -76,6 +76,9 @@ CGitLogListBase::CGitLogListBase():CHintListCtrl()
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
 	m_boldFont = CreateFontIndirect(&lf);
+	lf.lfWeight = 0;
+	lf.lfItalic = TRUE;
+	m_FontItalics = CreateFontIndirect(&lf);
 
 	m_bShowBugtraqColumn=false;
 
@@ -1184,6 +1187,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (action & LOGACTIONS_REBASE_CURRENT)
 					{
 						SelectObject(pLVCD->nmcd.hdc, m_boldFont);
+						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
+					}
+
+					if (data->m_CommitHash == m_highlight && !m_highlight.IsEmpty())
+					{
+						SelectObject(pLVCD->nmcd.hdc, m_FontItalics);
 						*pResult = CDRF_NOTIFYSUBITEMDRAW | CDRF_NEWFONT;
 					}
 
